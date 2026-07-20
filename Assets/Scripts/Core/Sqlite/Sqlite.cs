@@ -1,0 +1,245 @@
+using System;
+using System.Runtime.InteropServices;
+using System.Text;
+
+namespace CloneZ.Db
+{
+    /// <summary>
+    /// A tiny, self-contained binding to the native SQLite C API — just the handful of
+    /// entry points the save store needs (open / exec / prepared statements). No NuGet,
+    /// no vendored ORM, no bundled binaries.
+    ///
+    /// The native library is resolved by <see cref="Lib"/>. On Windows this is the
+    /// OS-provided <c>winsqlite3.dll</c> (present in System32 on Windows 10 1803+ and
+    /// Windows 11), so nothing has to ship with the project. To target another platform,
+    /// drop a native <c>sqlite3</c> library in <c>Assets/Plugins/&lt;platform&gt;</c> and
+    /// change <see cref="Lib"/> to "sqlite3".
+    /// </summary>
+    internal static class SqliteNative
+    {
+        private const string Lib = "winsqlite3";
+
+        // Result codes.
+        public const int OK = 0;
+        public const int ROW = 100;
+        public const int DONE = 101;
+
+        // Open flags.
+        public const int OPEN_READWRITE = 0x00000002;
+        public const int OPEN_CREATE = 0x00000004;
+
+        // Column type tag (only NULL is interesting to us).
+        public const int TYPE_NULL = 5;
+
+        // Passed as the bind_text destructor so SQLite copies the buffer immediately.
+        public static readonly IntPtr TRANSIENT = new IntPtr(-1);
+
+        [DllImport(Lib, EntryPoint = "sqlite3_open_v2", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int Open(byte[] filename, out IntPtr db, int flags, IntPtr zVfs);
+
+        [DllImport(Lib, EntryPoint = "sqlite3_close_v2", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int Close(IntPtr db);
+
+        [DllImport(Lib, EntryPoint = "sqlite3_exec", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int Exec(IntPtr db, byte[] sql, IntPtr callback, IntPtr arg, out IntPtr errmsg);
+
+        [DllImport(Lib, EntryPoint = "sqlite3_free", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void Free(IntPtr ptr);
+
+        [DllImport(Lib, EntryPoint = "sqlite3_prepare_v2", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int Prepare(IntPtr db, byte[] sql, int nByte, out IntPtr stmt, out IntPtr tail);
+
+        [DllImport(Lib, EntryPoint = "sqlite3_step", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int Step(IntPtr stmt);
+
+        [DllImport(Lib, EntryPoint = "sqlite3_reset", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int ResetStmt(IntPtr stmt);
+
+        [DllImport(Lib, EntryPoint = "sqlite3_finalize", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int Finalize(IntPtr stmt);
+
+        [DllImport(Lib, EntryPoint = "sqlite3_last_insert_rowid", CallingConvention = CallingConvention.Cdecl)]
+        public static extern long LastInsertRowId(IntPtr db);
+
+        [DllImport(Lib, EntryPoint = "sqlite3_bind_text", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int BindText(IntPtr stmt, int index, byte[] value, int n, IntPtr destructor);
+
+        [DllImport(Lib, EntryPoint = "sqlite3_bind_int", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int BindInt(IntPtr stmt, int index, int value);
+
+        [DllImport(Lib, EntryPoint = "sqlite3_bind_int64", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int BindInt64(IntPtr stmt, int index, long value);
+
+        [DllImport(Lib, EntryPoint = "sqlite3_bind_double", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int BindDouble(IntPtr stmt, int index, double value);
+
+        [DllImport(Lib, EntryPoint = "sqlite3_bind_null", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int BindNull(IntPtr stmt, int index);
+
+        [DllImport(Lib, EntryPoint = "sqlite3_column_type", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int ColumnType(IntPtr stmt, int index);
+
+        [DllImport(Lib, EntryPoint = "sqlite3_column_int", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int ColumnInt(IntPtr stmt, int index);
+
+        [DllImport(Lib, EntryPoint = "sqlite3_column_int64", CallingConvention = CallingConvention.Cdecl)]
+        public static extern long ColumnInt64(IntPtr stmt, int index);
+
+        [DllImport(Lib, EntryPoint = "sqlite3_column_double", CallingConvention = CallingConvention.Cdecl)]
+        public static extern double ColumnDouble(IntPtr stmt, int index);
+
+        [DllImport(Lib, EntryPoint = "sqlite3_column_text", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr ColumnText(IntPtr stmt, int index);
+
+        [DllImport(Lib, EntryPoint = "sqlite3_errmsg", CallingConvention = CallingConvention.Cdecl)]
+        public static extern IntPtr ErrMsg(IntPtr db);
+
+        /// <summary>Encodes a string as a null-terminated UTF-8 buffer for the C API.</summary>
+        public static byte[] Utf8(string s)
+        {
+            if (s == null) s = string.Empty;
+            int len = Encoding.UTF8.GetByteCount(s);
+            var bytes = new byte[len + 1];
+            Encoding.UTF8.GetBytes(s, 0, s.Length, bytes, 0);
+            bytes[len] = 0;
+            return bytes;
+        }
+
+        /// <summary>Reads a null-terminated UTF-8 C string into a managed string.</summary>
+        public static string FromUtf8(IntPtr ptr)
+        {
+            if (ptr == IntPtr.Zero) return null;
+            int len = 0;
+            while (Marshal.ReadByte(ptr, len) != 0) len++;
+            if (len == 0) return string.Empty;
+            var bytes = new byte[len];
+            Marshal.Copy(ptr, bytes, 0, len);
+            return Encoding.UTF8.GetString(bytes);
+        }
+    }
+
+    /// <summary>Thrown when the native SQLite API returns an error.</summary>
+    public sealed class SqliteException : Exception
+    {
+        public SqliteException(string message) : base(message) { }
+    }
+
+    /// <summary>
+    /// An open connection to a SQLite database file. Disposing closes the handle.
+    /// </summary>
+    public sealed class SqliteConnection : IDisposable
+    {
+        private IntPtr _db;
+
+        public SqliteConnection(string path)
+        {
+            int rc = SqliteNative.Open(SqliteNative.Utf8(path), out _db,
+                SqliteNative.OPEN_READWRITE | SqliteNative.OPEN_CREATE, IntPtr.Zero);
+            if (rc != SqliteNative.OK)
+            {
+                string msg = _db != IntPtr.Zero
+                    ? SqliteNative.FromUtf8(SqliteNative.ErrMsg(_db))
+                    : ("open failed (rc=" + rc + ")");
+                if (_db != IntPtr.Zero) { SqliteNative.Close(_db); _db = IntPtr.Zero; }
+                throw new SqliteException("sqlite open: " + msg);
+            }
+        }
+
+        internal IntPtr Handle => _db;
+        internal string LastError => SqliteNative.FromUtf8(SqliteNative.ErrMsg(_db));
+
+        public long LastInsertRowId => SqliteNative.LastInsertRowId(_db);
+
+        /// <summary>Runs one or more semicolon-separated statements with no result rows.</summary>
+        public void Execute(string sql)
+        {
+            int rc = SqliteNative.Exec(_db, SqliteNative.Utf8(sql), IntPtr.Zero, IntPtr.Zero, out IntPtr err);
+            if (rc != SqliteNative.OK)
+            {
+                string msg = err != IntPtr.Zero ? SqliteNative.FromUtf8(err) : LastError;
+                if (err != IntPtr.Zero) SqliteNative.Free(err);
+                throw new SqliteException("sqlite exec: " + msg + "\nSQL: " + sql);
+            }
+        }
+
+        public SqliteStatement Prepare(string sql)
+        {
+            int rc = SqliteNative.Prepare(_db, SqliteNative.Utf8(sql), -1, out IntPtr stmt, out _);
+            if (rc != SqliteNative.OK)
+                throw new SqliteException("sqlite prepare: " + LastError + "\nSQL: " + sql);
+            return new SqliteStatement(this, stmt);
+        }
+
+        public void Dispose()
+        {
+            if (_db != IntPtr.Zero) { SqliteNative.Close(_db); _db = IntPtr.Zero; }
+        }
+    }
+
+    /// <summary>
+    /// A prepared statement. Bind parameters (1-based), then either <see cref="Step"/>
+    /// once for writes or loop while <see cref="Step"/> returns true for reads. Call
+    /// <see cref="Reset"/> before re-binding to reuse the statement for another row.
+    /// </summary>
+    public sealed class SqliteStatement : IDisposable
+    {
+        private readonly SqliteConnection _conn;
+        private IntPtr _stmt;
+
+        internal SqliteStatement(SqliteConnection conn, IntPtr stmt) { _conn = conn; _stmt = stmt; }
+
+        public SqliteStatement Bind(int index, string value)
+        {
+            int rc;
+            if (value == null)
+            {
+                rc = SqliteNative.BindNull(_stmt, index);
+            }
+            else
+            {
+                byte[] b = SqliteNative.Utf8(value);
+                rc = SqliteNative.BindText(_stmt, index, b, b.Length - 1, SqliteNative.TRANSIENT);
+            }
+            Check(rc, "bind text");
+            return this;
+        }
+
+        public SqliteStatement Bind(int index, int value) { Check(SqliteNative.BindInt(_stmt, index, value), "bind int"); return this; }
+        public SqliteStatement Bind(int index, long value) { Check(SqliteNative.BindInt64(_stmt, index, value), "bind int64"); return this; }
+        public SqliteStatement Bind(int index, double value) { Check(SqliteNative.BindDouble(_stmt, index, value), "bind double"); return this; }
+        public SqliteStatement Bind(int index, float value) { return Bind(index, (double)value); }
+        public SqliteStatement Bind(int index, bool value) { return Bind(index, value ? 1 : 0); }
+
+        /// <summary>Advances the cursor. Returns true when a row is available, false when done.</summary>
+        public bool Step()
+        {
+            int rc = SqliteNative.Step(_stmt);
+            if (rc == SqliteNative.ROW) return true;
+            if (rc == SqliteNative.DONE) return false;
+            throw new SqliteException("sqlite step: " + _conn.LastError);
+        }
+
+        public void Reset() { SqliteNative.ResetStmt(_stmt); }
+
+        public int GetInt(int col) => SqliteNative.ColumnInt(_stmt, col);
+        public long GetInt64(int col) => SqliteNative.ColumnInt64(_stmt, col);
+        public float GetFloat(int col) => (float)SqliteNative.ColumnDouble(_stmt, col);
+        public bool GetBool(int col) => SqliteNative.ColumnInt(_stmt, col) != 0;
+
+        public string GetString(int col)
+        {
+            if (SqliteNative.ColumnType(_stmt, col) == SqliteNative.TYPE_NULL) return null;
+            return SqliteNative.FromUtf8(SqliteNative.ColumnText(_stmt, col));
+        }
+
+        private void Check(int rc, string what)
+        {
+            if (rc != SqliteNative.OK) throw new SqliteException("sqlite " + what + ": " + _conn.LastError);
+        }
+
+        public void Dispose()
+        {
+            if (_stmt != IntPtr.Zero) { SqliteNative.Finalize(_stmt); _stmt = IntPtr.Zero; }
+        }
+    }
+}
