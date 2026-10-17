@@ -10,13 +10,21 @@ namespace CloneZ
     /// entirely from code by the bootstrapper; visual only, so it never disturbs
     /// the baked navmesh.
     /// </summary>
-    public class CookingStation : MonoBehaviour
+    public class CookingStation : MonoBehaviour, IDemolishable
     {
         public static readonly List<CookingStation> All = new List<CookingStation>();
         public string DisplayName = "Stove";
 
         private void OnEnable() { if (!All.Contains(this)) All.Add(this); }
         private void OnDisable() { All.Remove(this); }
+
+        #region IDemolishable
+        public string DemolishName => "stove";
+        public bool CanDemolish(out string reason) { reason = null; return true; }
+        public void GetSalvage(out int planks, out int nails) { planks = CloneZConfig.SalvageStovePlanks; nails = CloneZConfig.SalvageStoveNails; }
+        public bool CarvesNavMesh => true;
+        public void Dismantle() { All.Remove(this); Destroy(gameObject); }
+        #endregion
 
         /// <summary>Nearest stove within <paramref name="range"/> of a point, or null.</summary>
         public static CookingStation Nearest(Vector3 p, float range)

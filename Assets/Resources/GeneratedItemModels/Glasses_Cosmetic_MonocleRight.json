@@ -1,0 +1,8 @@
+{"version": 1, "id": "Glasses_Cosmetic_MonocleRight", "baseHeight": 0.065, "name": "Glasses Cosmetic Monocle Right", "model": "gpt-oss:120b", "notes": "Cosmetic monocle laid flat: round glass lens (≈40 mm dia) set in a thin metal rim and a short chain of four links hanging from the left side of the rim. Overall footprint ~0.09 m × 0.05 m, thickness ≈6 mm.", "score": 6, "parts": [
+  {"name":"FrameRim","shape":"cylinder","pos":[0.006,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.006,0.045],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"Lens","shape":"cylinder","pos":[0.006,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.04],"color":[0.95,0.97,1.0],"smooth":0.5,"metal":0.0},
+  {"name":"ChainLink1","shape":"cylinder","pos":[-0.018,-0.001,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.003,0.008],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"ChainLink2","shape":"cylinder","pos":[-0.021,-0.001,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.003,0.008],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"ChainLink3","shape":"cylinder","pos":[-0.024,-0.001,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.003,0.008],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"ChainLink4","shape":"cylinder","pos":[-0.027,-0.001,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.003,0.008],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0}
+]}

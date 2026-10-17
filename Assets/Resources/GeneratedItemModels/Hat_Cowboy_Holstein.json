@@ -1,0 +1,13 @@
+{"version": 1, "id": "Hat_Cowboy_Holstein", "baseHeight": 0.1625, "name": "Hat Cowboy Holstein", "model": "gpt-oss:120b", "notes": "Cowboy hat laid flat like a product photo – 30 cm brim diameter, 12 cm crown height, ~1.5 cm thick felt. Main crown, wide brim, dark felt band with a small metal buckle, inner lining, edge‑seam trims and a decorative feather.", "score": 6, "parts": [
+  {"name":"BrimBase","shape":"cylinder","pos":[0.0,-0.095,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"InnerBrim","shape":"cylinder","pos":[0.0,-0.095,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.004,0.28],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdgeSeam","shape":"cylinder","pos":[0.0,-0.0865,0.0],"rot":[0.0,0.0,0.0],"size":[0.305,0.002,0.305],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"CrownLower","shape":"cylinder","pos":[0.0,-0.0525,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.07,0.24],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LiningInside","shape":"cylinder","pos":[0.0,-0.0525,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.07,0.22],"color":[0.66,0.6,0.72],"smooth":0.05,"metal":0.0},
+  {"name":"HatBand","shape":"cylinder","pos":[0.0,-0.0575,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.008,0.24],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Buckle","shape":"cube","pos":[0.0,-0.0575,0.13],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.01],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"CrownUpper","shape":"cylinder","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.05,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownTopSphere","shape":"sphere","pos":[0.0,0.0675,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownSeam","shape":"cylinder","pos":[0.0,0.0335,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.18],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Feather","shape":"cube","pos":[0.08,-0.0125,0.0],"rot":[-15.0,0.0,20.0],"size":[0.12,0.02,0.03],"color":[0.9,0.7,0.5],"smooth":0.1,"metal":0.0}
+]}

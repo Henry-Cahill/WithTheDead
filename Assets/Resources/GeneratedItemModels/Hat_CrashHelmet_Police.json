@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_CrashHelmet_Police", "baseHeight": 0.0755, "name": "Hat Crash Helmet Police", "model": "gpt-oss:120b", "notes": "Flat police crash helmet laid out flat (≈0.38 m overall diameter). Thin crown disc, wide rim, front visor plate, inner padding, black strap loops, silver badge on top.", "score": 6, "parts": [
+  {"name":"CrownBase","shape":"cylinder","pos":[0.0,-0.0055,-0.075],"rot":[0.0,0.0,0.0],"size":[0.34,0.02,0.34],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"BrimOuter","shape":"cylinder","pos":[0.0,-0.0095,-0.075],"rot":[0.0,0.0,0.0],"size":[0.44,0.012,0.44],"color":[0.45,0.42,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"PaddingLayer","shape":"cylinder","pos":[0.0,0.0025,-0.075],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.3],"color":[0.9,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"VisorFront","shape":"cube","pos":[0.0,0.0085,0.095],"rot":[0.0,0.0,0.0],"size":[0.32,0.008,0.06],"color":[0.3,0.3,0.35],"smooth":0.5,"metal":0.0},
+  {"name":"Badge","shape":"cube","pos":[0.0,0.0095,-0.075],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.02],"color":[0.8,0.7,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"StrapLeft","shape":"cube","pos":[-0.16,-0.003,-0.075],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.34],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"StrapRight","shape":"cube","pos":[0.16,-0.003,-0.075],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.34],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdgeL","shape":"cube","pos":[-0.21,-0.0075,-0.075],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.44],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"BrimEdgeR","shape":"cube","pos":[0.21,-0.0075,-0.075],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.44],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"VisorEdge","shape":"cylinder","pos":[0.0,0.0125,0.125],"rot":[0.0,90.0,0.0],"size":[0.34,0.006,0.34],"color":[0.6,0.6,0.65],"smooth":0.5,"metal":1.0}
+]}

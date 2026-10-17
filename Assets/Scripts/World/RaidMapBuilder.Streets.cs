@@ -1,0 +1,192 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace CloneZ
+{
+    public static partial class RaidMapBuilder
+    {
+        private static readonly Color Kerb = new Color(0.62f, 0.62f, 0.60f);
+        private static readonly Color LineYellow = new Color(0.62f, 0.52f, 0.22f);
+        private static readonly Color LineWhite = new Color(0.72f, 0.72f, 0.70f);
+        private static readonly Color PackedSnow = new Color(0.50f, 0.53f, 0.58f);
+        private static readonly Color WetTrack = new Color(0.11f, 0.11f, 0.12f);
+
+        private struct RoadSpec
+        {
+            public bool AlongX;
+            public float Coord, From, To, Width;
+        }
+
+        private static readonly List<RoadSpec> s_Roads = new List<RoadSpec>();
+
+        private static void BuildStreets(RaidTown town)
+        {
+            s_Roads.Clear();
+            // Main Street (north–south) and Depot Road (east–west) cross at the centre of town.
+            Road(town, false, 0f, -GroundHalf, GroundHalf, 8f, -6.5f, 6.5f, true);
+            Road(town, true, 0f, -GroundHalf, GroundHalf, 8f, -6.5f, 6.5f, false);
+            for (int sx = -1; sx <= 1; sx += 2)
+                for (int sz = -1; sz <= 1; sz += 2)
+                    Paved(town, Rect.MinMaxRect(sx > 0 ? 4f : -6.5f, sz > 0 ? 4f : -6.5f, sx > 0 ? 6.5f : -4f, sz > 0 ? 6.5f : -4f), 0.025f, DecorMaterials.Concrete);
+
+            // The crossing: faded zebra stripes on all four approaches.
+            for (int arm = 0; arm < 4; arm++)
+            {
+                for (int i = 0; i < 6; i++)
+                {
+                    float t = -3.2f + i * 1.28f;
+                    Vector3 p;
+                    float w, d;
+                    switch (arm)
+                    {
+                        case 0: p = new Vector3(t, 0.02f, 5.4f); w = 0.6f; d = 1.8f; break;
+                        case 1: p = new Vector3(t, 0.02f, -5.4f); w = 0.6f; d = 1.8f; break;
+                        case 2: p = new Vector3(5.4f, 0.02f, t); w = 1.8f; d = 0.6f; break;
+                        default: p = new Vector3(-5.4f, 0.02f, t); w = 1.8f; d = 0.6f; break;
+                    }
+                    if (town.Rng.NextDouble() < 0.25) continue;
+                    town.Out.Flat(p).Flat(p, w, d, 0f, DecorPalette.Matte(LineWhite * 0.9f));
+                }
+            }
+        }
+
+        /// <summary>An axis-aligned street: asphalt, a faded double centre line, kerbs, sidewalks, banks of
+        /// plowed snow and tyre tracks. Kerbs, sidewalks and lines skip the crossing between
+        /// <paramref name="skipA"/> and <paramref name="skipB"/>; the asphalt skips it too unless
+        /// <paramref name="ownsCrossing"/>.</summary>
+        private static void Road(RaidTown town, bool alongX, float coord, float from, float to, float width,
+            float skipA, float skipB, bool ownsCrossing)
+        {
+            s_Roads.Add(new RoadSpec { AlongX = alongX, Coord = coord, From = from, To = to, Width = width });
+            System.Random rng = town.Rng;
+            float hw = width * 0.5f;
+            Surf asphalt = DecorMaterials.Asphalt;
+            Surf concrete = DecorMaterials.Concrete;
+
+            for (float a = from; a < to - 0.01f; a += 10f)
+            {
+                float b = Mathf.Min(to, a + 10f);
+                if (!ownsCrossing && b > -hw && a < hw)
+                {
+                    if (a < -hw) Slab(town, alongX, coord, a, -hw, -hw, hw, 0.012f, asphalt);
+                    if (b > hw) Slab(town, alongX, coord, hw, b, -hw, hw, 0.012f, asphalt);
+                    continue;
+                }
+                Slab(town, alongX, coord, a, b, -hw, hw, 0.012f, asphalt);
+            }
+
+            for (int side = -1; side <= 1; side += 2)
+            {
+                for (float a = from; a < to - 0.01f; a += 10f)
+                {
+                    float b = Mathf.Min(to, a + 10f);
+                    if (b > skipA && a < skipB)
+                    {
+                        if (a < skipA) SidewalkRun(town, alongX, coord, side, hw, a, skipA, concrete, rng);
+                        if (b > skipB) SidewalkRun(town, alongX, coord, side, hw, skipB, b, concrete, rng);
+                        continue;
+                    }
+                    SidewalkRun(town, alongX, coord, side, hw, a, b, concrete, rng);
+                }
+            }
+
+            // Faded double yellow centre line, broken up by wear.
+            for (float a = from + 1f; a < to - 2f; a += 4.5f)
+            {
+                if (a + 3f > skipA - 2f && a < skipB + 2f) continue;
+                if (rng.NextDouble() < 0.3) continue;
+                float len = R(rng, 1.5f, 3f);
+                Surf yellow = DecorPalette.Matte(LineYellow * R(rng, 0.8f, 1.05f));
+                for (int k = -1; k <= 1; k += 2)
+                    Strip(town, alongX, coord + k * 0.14f, a, a + len, 0.1f, 0.016f, yellow);
+            }
+
+            // Tyre tracks down each lane: packed pale ruts or wet dark ones, wobbling a little.
+            for (int lane = -1; lane <= 1; lane += 2)
+            {
+                float laneC = coord + lane * hw * 0.5f;
+                Color c = rng.NextDouble() < 0.5 ? PackedSnow : WetTrack;
+                for (float a = from + 0.5f; a < to - 1f; a += R(rng, 3f, 7f))
+                {
+                    float len = R(rng, 2f, 6f);
+                    float wob = R(rng, -0.25f, 0.25f);
+                    Surf track = DecorPalette.Matte(c * R(rng, 0.9f, 1.1f));
+                    for (int k = -1; k <= 1; k += 2)
+                        Strip(town, alongX, laneC + wob + k * 0.78f, a, Mathf.Min(to - 0.5f, a + len), 0.24f, 0.015f, track);
+                }
+            }
+        }
+
+        private static void SidewalkRun(RaidTown town, bool alongX, float coord, int side, float hw, float a, float b, in Surf concrete, System.Random rng)
+        {
+            if (b - a < 0.2f) return;
+            // Kerb, then 2.25 m of sidewalk with a dusting of snow.
+            Slab(town, alongX, coord, a, b, side > 0 ? hw : -hw - 0.25f, side > 0 ? hw + 0.25f : -hw, 0.05f, DecorPalette.Matte(Kerb));
+            float s0 = side > 0 ? hw + 0.25f : -hw - 2.5f, s1 = side > 0 ? hw + 2.5f : -hw - 0.25f;
+            Slab(town, alongX, coord, a, b, s0, s1, 0.025f, concrete);
+            if (rng.NextDouble() < 0.6)
+            {
+                float t = R(rng, a, b);
+                Vector3 p = alongX ? new Vector3(t, 0.03f, coord + (s0 + s1) * 0.5f) : new Vector3(coord + (s0 + s1) * 0.5f, 0.03f, t);
+                town.Out.Flat(p).FlatBlob(p, R(rng, 0.6f, 1.6f), R(rng, 0.5f, 1.1f), R(rng, 0f, 360f), 0.4f, rng, DecorPalette.Matte(DecorProps.SnowShade));
+            }
+            // Plowed snow banked along the kerb on the road side.
+            for (float t = a + 0.4f; t < b - 0.4f; t += R(rng, 0.9f, 1.8f))
+            {
+                if (rng.NextDouble() < 0.35) continue;
+                float off = side * (hw - R(rng, 0.25f, 0.45f));
+                Vector3 p = alongX ? new Vector3(t, 0f, coord + off) : new Vector3(coord + off, 0f, t);
+                float w = R(rng, 0.8f, 1.6f), d = R(rng, 0.5f, 0.8f), h = R(rng, 0.12f, 0.2f);
+                RaidMesh m = town.Out.Solid(p);
+                if (alongX) DecorProps.SnowPile(m, rng, p, w, d, h, R(rng, -10f, 10f));
+                else DecorProps.SnowPile(m, rng, p, d, w, h, R(rng, -10f, 10f));
+            }
+        }
+
+        /// <summary>A flat rectangle laid along a road: <paramref name="a"/>..<paramref name="b"/> along it,
+        /// <paramref name="c0"/>..<paramref name="c1"/> across (relative to the road's centre line).</summary>
+        private static void Slab(RaidTown town, bool alongX, float coord, float a, float b, float c0, float c1, float y, in Surf s)
+        {
+            Vector3 center = alongX
+                ? new Vector3((a + b) * 0.5f, y, coord + (c0 + c1) * 0.5f)
+                : new Vector3(coord + (c0 + c1) * 0.5f, y, (a + b) * 0.5f);
+            float len = b - a, wid = c1 - c0;
+            if (alongX) town.Out.Flat(center).Flat(center, len, wid, 0f, s);
+            else town.Out.Flat(center).Flat(center, wid, len, 0f, s);
+        }
+
+        private static void Strip(RaidTown town, bool alongX, float across, float a, float b, float width, float y, in Surf s)
+        {
+            if (b <= a) return;
+            Vector3 c = alongX ? new Vector3((a + b) * 0.5f, y, across) : new Vector3(across, y, (a + b) * 0.5f);
+            if (alongX) town.Out.Flat(c).Flat(c, b - a, width, 0f, s);
+            else town.Out.Flat(c).Flat(c, width, b - a, 0f, s);
+        }
+
+        /// <summary>A flat paved patch (driveway, lot, path, forecourt) at height <paramref name="y"/>.</summary>
+        private static void Paved(RaidTown town, Rect r, float y, in Surf s)
+        {
+            for (float x = r.xMin; x < r.xMax - 0.01f; x += 12f)
+                for (float z = r.yMin; z < r.yMax - 0.01f; z += 12f)
+                {
+                    float x1 = Mathf.Min(r.xMax, x + 12f), z1 = Mathf.Min(r.yMax, z + 12f);
+                    var c = new Vector3((x + x1) * 0.5f, y, (z + z1) * 0.5f);
+                    town.Out.Flat(c).Flat(c, x1 - x, z1 - z, 0f, s);
+                }
+        }
+
+        /// <summary>True when the XZ rect overlaps a street or its sidewalks.</summary>
+        private static bool OnRoad(Rect r)
+        {
+            foreach (RoadSpec rd in s_Roads)
+            {
+                float hw = rd.Width * 0.5f + 2.6f;
+                Rect road = rd.AlongX
+                    ? Rect.MinMaxRect(rd.From, rd.Coord - hw, rd.To, rd.Coord + hw)
+                    : Rect.MinMaxRect(rd.Coord - hw, rd.From, rd.Coord + hw, rd.To);
+                if (road.Overlaps(r)) return true;
+            }
+            return false;
+        }
+    }
+}

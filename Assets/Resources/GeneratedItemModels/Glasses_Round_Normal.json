@@ -1,0 +1,9 @@
+{"version": 1, "id": "Glasses_Round_Normal", "baseHeight": 0.0705, "name": "Glasses Round Normal", "model": "gpt-oss:120b", "notes": "Flat round glasses laid out like a product photo – overall footprint ≈ 0.14 m wide × 0.05 m tall, ~1 cm thick: two tinted lenses, a short bridge and the two folded temples.", "score": 7, "parts": [
+  {"name":"LeftLens","shape":"sphere","pos":[-0.04,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":0.0},
+  {"name":"RightLens","shape":"sphere","pos":[0.04,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.015],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"TempleL","shape":"cylinder","pos":[-0.13,-0.0055,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.12,0.01],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"TempleR","shape":"cylinder","pos":[0.13,-0.0055,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.12,0.01],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"HingeL","shape":"cylinder","pos":[-0.07,0.0045,0.0],"rot":[90.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"HingeR","shape":"cylinder","pos":[0.07,0.0045,0.0],"rot":[90.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0}
+]}

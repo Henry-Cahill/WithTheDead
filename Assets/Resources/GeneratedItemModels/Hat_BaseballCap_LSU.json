@@ -1,0 +1,9 @@
+{"version": 1, "id": "Hat_BaseballCap_LSU", "baseHeight": 0.079, "name": "Hat Baseball Cap LSU", "model": "gpt-oss:120b", "notes": "Flat baseball cap (LSU style) ~0.28 m wide x 0.12 m tall (including brim), about 2‑3 cm thick when laid flat: crown cylinder, surrounding brim disc, front visor panel, stitching rings, small top button and a tiny gold logo patch on the visor.", "score": 6, "parts": [
+  {"name":"Crown","shape":"cylinder","pos":[0.0,-0.004,-0.015],"rot":[0.0,0.0,0.0],"size":[0.18,0.03,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.015,-0.015],"rot":[0.0,0.0,0.0],"size":[0.28,0.008,0.28],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"Visor","shape":"cube","pos":[0.0,-0.004,0.125],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StitchCrown","shape":"cylinder","pos":[0.0,0.013,-0.015],"rot":[0.0,0.0,0.0],"size":[0.2,0.004,0.2],"color":[0.1,0.1,0.1],"smooth":0.6,"metal":0.0},
+  {"name":"StitchBrim","shape":"cylinder","pos":[0.0,-0.0135,-0.015],"rot":[0.0,0.0,0.0],"size":[0.3,0.003,0.3],"color":[0.1,0.1,0.1],"smooth":0.6,"metal":0.0},
+  {"name":"ButtonTop","shape":"cylinder","pos":[0.0,0.015,-0.015],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.9,0.75,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[0.0,0.006,0.15],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.02],"color":[0.9,0.75,0.2],"smooth":0.05,"metal":0.0}
+]}

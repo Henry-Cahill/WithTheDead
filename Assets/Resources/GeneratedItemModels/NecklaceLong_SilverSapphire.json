@@ -1,0 +1,16 @@
+{"version": 1, "id": "NecklaceLong_SilverSapphire", "baseHeight": 0.073, "name": "Necklace Long Silver Sapphire", "model": "gpt-oss:120b", "notes": "Long silver necklace ~0.50 m laid flat on the floor, thin polished‑silver chain (cylinder) with a small clasp at one end and a single sapphire pendant near the centre.", "score": 6, "parts": [
+  {"name":"Chain","shape":"cylinder","pos":[0.0075,-0.009,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.5,0.008],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"Clasp","shape":"cube","pos":[-0.2475,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.012],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"Pendant","shape":"sphere","pos":[0.0075,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.04,0.12,0.78],"smooth":0.2,"metal":0.0},
+  {"name":"PendantFacet1","shape":"cube","pos":[0.0075,0.005,0.006],"rot":[15.0,0.0,0.0],"size":[0.008,0.002,0.012],"color":[0.02,0.08,0.7],"smooth":0.2,"metal":0.0},
+  {"name":"PendantFacet2","shape":"cube","pos":[0.0075,0.005,-0.006],"rot":[-15.0,0.0,0.0],"size":[0.008,0.002,0.012],"color":[0.02,0.08,0.7],"smooth":0.2,"metal":0.0},
+  {"name":"Link1","shape":"cylinder","pos":[-0.1925,-0.009,0.0],"rot":[0.0,0.0,90.0],"size":[0.006,0.04,0.006],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"Link2","shape":"cylinder","pos":[-0.1425,-0.009,0.0],"rot":[0.0,0.0,90.0],"size":[0.006,0.04,0.006],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"Link3","shape":"cylinder","pos":[-0.0925,-0.009,0.0],"rot":[0.0,0.0,90.0],"size":[0.006,0.04,0.006],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"Link4","shape":"cylinder","pos":[-0.0425,-0.009,0.0],"rot":[0.0,0.0,90.0],"size":[0.006,0.04,0.006],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"Link5","shape":"cylinder","pos":[0.0075,-0.009,0.0],"rot":[0.0,0.0,90.0],"size":[0.006,0.04,0.006],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"Link6","shape":"cylinder","pos":[0.0575,-0.009,0.0],"rot":[0.0,0.0,90.0],"size":[0.006,0.04,0.006],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"Link7","shape":"cylinder","pos":[0.1075,-0.009,0.0],"rot":[0.0,0.0,90.0],"size":[0.006,0.04,0.006],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"Link8","shape":"cylinder","pos":[0.1575,-0.009,0.0],"rot":[0.0,0.0,90.0],"size":[0.006,0.04,0.006],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"Link9","shape":"cylinder","pos":[0.2075,-0.009,0.0],"rot":[0.0,0.0,90.0],"size":[0.006,0.04,0.006],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0}
+]}

@@ -10,7 +10,7 @@ the files/functions to wire, dependencies, save impact, and a rough size.
 - `Assets/Scripts/Items/Inventory.cs` — weight-capped stack list (`Add`/`Remove`/`Transfer`; merges keep the older `SpawnHours`).
 - `Assets/Scripts/Items/LootContainer.cs` — world containers + corpses + dropped sacks.
 - `Assets/Scripts/Player/PlayerInventory.cs` — `Use()` (eat/drink/heal/treat/equip/wear), `Equip`/`Drop`/`TakeOff`/`TryCook`/`TryPurify`; capacity = `PlayerCarryCapacity * Skills.CarryCapacityMult`.
-- `Assets/Scripts/UI/InventoryUIController.cs` — 2-column loot panel (Take/Store/Use/Equip/Drop/Cook/Boil), tooltips, freshness tags.
+- `Assets/Scripts/UI/InventoryUIController.cs` (+ `.List.cs`, `.Picker.cs`, `.Grid*.cs`) — two views over the same window API: an Inventory-Tetris-style **grid** (default — the survivor's pockets plus a section per worn bag, the open container or the ground, drag-and-drop with rotation, Transfer All / Transfer only… / Tidy up) and the PZ-style three-pane **list** (verbose details lists for the bag and for the open container / floor, collapsible stacks, a CONTAINERS column, a right-click context menu, double-click to move, tooltips). The toggle is remembered in PlayerPrefs.
 - `Assets/Scripts/Core/CloneZConfig.cs` — tuning constants. Save via `Assets/Scripts/Core/SaveData.cs` + `SaveSystem.cs` (`StackSave` already persists `SpawnHours`).
 
 ## Key architectural insight
@@ -25,8 +25,8 @@ The only per-instance item state today is `ItemStack.SpawnHours` (freshness). An
 
 ## A. Item condition & durability  *(backbone — medium)*
 
-- **Gameplay:** weapons, tools and guns wear out with use and eventually break, so loot stays a renewable need and maintenance matters.
-- **PZ grounding:** `InventoryItem.Condition` (0..max) with `ConditionLowerChanceOneIn` per weapon (axe ~1-in-30, knife ~1-in-10) and `getConditionMax`; firearms degrade and jam.
+[+] **Gameplay:** weapons, tools and guns wear out with use and eventually break, so loot stays a renewable need and maintenance matters.
+- **PZ grounding:** `InventoryItem.getCondition()`/`getConditionMax()` (0..max; starts full, breaks at 0). Each qualifying use rolls `Rand.NextBool(getConditionLowerChance())`, so the script's `ConditionLowerChanceOneIn` is a **1-in-N toughness** (higher N = tougher, degrades less often). Real B42 values span a wide range: crowbar 70, wood axe 40, hammer/axe 30–35, machete 25, baseball bat 20, hunting knife 15, fighting knife 10, kitchen/steak knife 2 (very fragile) — so "one number per category" is a simplification. Firearms wear a separate `headCondition` and jam via `HandWeapon.checkJam` (jam odds climb as condition falls, worsened by low Aiming/Strength).
 - **Data model:** `ItemDef.MaxCondition` (int), `ItemDef.ConditionLossChance` (1-in-N), and a new **per-instance** `ItemStack.Condition` initialised in the `ItemStack` constructor next to `SpawnHours`.
 - **Wiring:** `PlayerCombat` melee swing + firearm shot roll `ConditionLossChance` → decrement condition; at 0, remove the stack and revert to bare hands. Tool jobs in `PlayerBuilder` (hammer) and `PlayerFarming` (trowel/watering can) degrade on completion. Low firearm condition adds a jam roll in the fire path.
 - **UI:** a condition bar/percentage on each row in `InventoryUIController`; a "Condition" line in `ItemDef.Tooltip()`.
@@ -53,6 +53,7 @@ The only per-instance item state today is `ItemStack.SpawnHours` (freshness). An
 - **PZ grounding:** bags add capacity and apply a `WeightReduction` to their contents (a good pack roughly halves felt weight).
 - **Data model:** `ItemDef.IsContainer`, `ContainerCapacity` (extra kg), `WeightReduction` (%); a new **Back** slot in the `ClothingSlot` enum.
 - **Wiring:** equipping a bag raises `Inventory.MaxWeight` in `PlayerInventory` (stacks with the Strength-based `CarryCapacityMult` in `Update`); items `schoolbag`/`duffelbag`/`militarypack` in `ItemDatabase`; a Back-slot button in `HealthPanelController`; save the worn bag.
+- **Status:** shipped as worn containers on new `Back` / `Rig` / `Thigh` slots (`schoolbag`, `hikingbag`, `militarypack`, `chestrig`, `thighbag`, `fannypack`; `ItemDef.Gear = Container`, `ContainerCapacity`, `GridW/GridH`). Each worn bag adds its own grid section with a weight cap (`InventoryLayout` / `GridSection`); taking one off spills its contents into the remaining space and drops the overflow. No weight reduction yet.
 
 ## E. Literature — skill books & recipe magazines  *(medium)*
 
@@ -67,6 +68,7 @@ The only per-instance item state today is `ItemStack.SpawnHours` (freshness). An
 - **PZ grounding:** flashlight/torch cast light and consume battery/fuel; lighters and candles burn down.
 - **Data model:** `ItemDef.IsLightSource`, `LightRange`, `LightDrainPerSec`, `NeedsBattery`.
 - **Wiring:** a new `PlayerLight` component toggles a URP light, drains the existing `battery` item (finally giving it a use), and reads `TimeOfDay` darkness; a HUD on/off + charge indicator.
+- **Status:** shipped in `PlayerGear` (+ `FlashlightFX`): a carried `flashlight` (L), night-vision goggles worn on the `Eyes` slot (N) and a gas mask on `Mask` whose filter burns down in `ToxicZone` gas. Device charge lives in `ItemStack.Condition` (`ItemDef.UsesCharge`, `ChargeSeconds`); a `battery` or `gasmaskfilter` used from the pack tops it up. The HUD shows the battery and the "Filter %" readout.
 
 ## G. Throwables  *(medium)*
 
@@ -80,6 +82,7 @@ The only per-instance item state today is `ItemStack.SpawnHours` (freshness). An
 - **Gameplay:** faster, less fiddly item handling under pressure.
 - **Features:** split a stack (shift-click), a **1–5 hotbar** for quick-equip/use, favourite-lock so Drop and Take-All skip an item, and a right-click context menu consolidating row actions.
 - **Wiring:** mostly `InventoryUIController`; a small split helper in `Inventory`; a new hotbar strip in `HUDController` bound through `GameBootstrapper`; save hotbar assignments + favourite flags.
+- **Status:** the right-click context menu (with Take 1 / Store 1 / Drop 1, double-click to move and whole-stack moves) shipped with the verbose inventory; split, hotbar and favourites remain.
 
 ## I. Canned food needs a can opener  *(small — depends on A)*
 

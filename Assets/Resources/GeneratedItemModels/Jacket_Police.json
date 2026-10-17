@@ -1,0 +1,15 @@
+{"version": 1, "id": "Jacket_Police", "baseHeight": 0.0775, "name": "Jacket Police", "model": "gpt-oss:120b", "notes": "Police jacket laid flat, spread like a product photo – torso panel, two angled sleeves, front collar band, central zip strip, left/right front pockets and pocket flaps. Overall footprint ≈1.2 m wide × 0.7 m deep, 3‑4 cm thick.", "score": 6, "parts": [
+  {"name":"TorsoPanel","shape":"cube","pos":[0.0,-0.0025,-0.0791],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.7],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.45,-0.0025,0.1709],"rot":[0.0,30.0,0.0],"size":[0.6,0.03,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.45,-0.0025,0.1709],"rot":[0.0,-30.0,0.0],"size":[0.6,0.03,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.78,-0.0025,0.1709],"rot":[0.0,30.0,0.0],"size":[0.12,0.02,0.22],"color":[0.4,0.35,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.78,-0.0025,0.1709],"rot":[0.0,-30.0,0.0],"size":[0.12,0.02,0.22],"color":[0.4,0.35,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.0,-0.0025,0.2759],"rot":[0.0,0.0,0.0],"size":[0.55,0.015,0.05],"color":[0.4,0.35,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"ZipStrip","shape":"cube","pos":[0.0,0.005,-0.0791],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.7],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.18,-0.0025,0.0709],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.18,-0.0025,0.0709],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFlapL","shape":"cube","pos":[-0.18,0.0075,0.1709],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.06],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFlapR","shape":"cube","pos":[0.18,0.0075,0.1709],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.06],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"ShoulderStitchL","shape":"cylinder","pos":[-0.275,0.0005,0.2209],"rot":[90.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"ShoulderStitchR","shape":"cylinder","pos":[0.275,0.0005,0.2209],"rot":[90.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0}
+]}

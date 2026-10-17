@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_BaseballCap_ScarletOakDistillery", "baseHeight": 0.083, "name": "Hat Baseball Cap Scarlet Oak Distillery", "model": "gpt-oss:120b", "notes": "Flat baseball cap laid out flat – overall footprint ~0.22 m diameter, total thickness ≈0.12 m. Includes a thin brim disc, a raised crown cylinder, a top seam ring, four fabric panels (front, left side, right side, back), a scarlet logo patch on the front, a short stitching line and a rear strap band.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.018,-0.005],"rot":[0.0,0.0,0.0],"size":[0.22,0.01,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Crown","shape":"cylinder","pos":[0.0,-0.0055,-0.005],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.18],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"TopSeam","shape":"cylinder","pos":[0.0,0.004,-0.005],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.18],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,0.012,0.085],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelL","shape":"cube","pos":[-0.07,0.012,0.025],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelR","shape":"cube","pos":[0.07,0.012,0.025],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,0.012,-0.095],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[0.0,0.022,0.085],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.04],"color":[0.85,0.15,0.15],"smooth":0.2,"metal":0.0},
+  {"name":"StitchFront","shape":"cube","pos":[0.0,0.015,0.085],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.002],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StrapBack","shape":"cylinder","pos":[0.0,0.002,-0.095],"rot":[0.0,0.0,90.0],"size":[0.02,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

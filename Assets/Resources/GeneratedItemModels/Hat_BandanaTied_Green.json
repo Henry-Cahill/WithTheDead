@@ -1,0 +1,11 @@
+{"version": 1, "id": "Hat_BandanaTied_Green", "baseHeight": 0.085, "name": "Hat Bandana Tied Green", "model": "gpt-oss:120b", "notes": "Flat spread bandana hat (≈0.55 m square, 2 cm thick) in muted green‑purple: main cloth sheet, a central knot on the top edge with two tie tails, thin border fringe around edges and a subtle centre fold line.", "score": 6, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.02,0.55],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Knot","shape":"cylinder","pos":[0.0,0.005,-0.225],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TieLeft","shape":"cube","pos":[-0.06,0.0,-0.225],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TieRight","shape":"cube","pos":[0.06,0.0,-0.225],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BorderTop","shape":"cube","pos":[0.0,-0.007,-0.265],"rot":[0.0,0.0,0.0],"size":[0.55,0.015,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BorderBottom","shape":"cube","pos":[0.0,-0.007,0.265],"rot":[0.0,0.0,0.0],"size":[0.55,0.015,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BorderLeft","shape":"cube","pos":[-0.275,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.55],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BorderRight","shape":"cube","pos":[0.275,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.55],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CenterFold","shape":"cube","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.004,0.005],"color":[0.48,0.43,0.53],"smooth":0.05,"metal":0.0}
+]}

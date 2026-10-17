@@ -109,3 +109,7 @@ InitTestScene*.unity*
 
 # Project-specific reference files
 /ref/
+
+# LLM asset pipeline scratch output (previews, logs, gallery)
+/Tools/AssetPipeline/out/
+__pycache__/

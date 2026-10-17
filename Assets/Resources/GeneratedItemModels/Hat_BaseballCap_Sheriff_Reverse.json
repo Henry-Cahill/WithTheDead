@@ -1,0 +1,11 @@
+{"version": 1, "id": "Hat_BaseballCap_Sheriff_Reverse", "baseHeight": 0.0862, "name": "Hat Baseball Cap Sheriff Reverse", "model": "gpt-oss:120b", "notes": "Flat baseball‑cap (Sheriff Reverse) laid out like a product photo – overall brim ≈ 0.28 m diameter, crown fabric ≈ 0.22 m across and 0.03 m thick, with cloth stitching, a metal button on top, a leather front patch bearing a gold badge.", "score": 6, "parts": [
+  {"name":"CrownFabric","shape":"cylinder","pos":[0.0,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.0212,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.01,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TopButton","shape":"sphere","pos":[0.0,0.0187,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"FrontPatch","shape":"cube","pos":[0.0,-0.0012,0.1105],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.002],"color":[0.65,0.5,0.35],"smooth":0.08,"metal":0.0},
+  {"name":"Badge","shape":"cube","pos":[0.0,0.0018,0.1115],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.8,0.7,0.3],"smooth":0.4,"metal":0.9},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,0.0138,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.002],"color":[0.25,0.25,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"StitchFront","shape":"cube","pos":[0.0,-0.0012,0.11],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.002],"color":[0.25,0.25,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"StitchSideL","shape":"cube","pos":[-0.11,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.03,0.15],"color":[0.25,0.25,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"StitchSideR","shape":"cube","pos":[0.11,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.03,0.15],"color":[0.25,0.25,0.25],"smooth":0.2,"metal":0.0}
+]}

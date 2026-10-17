@@ -1,0 +1,11 @@
+{"version": 1, "id": "Hat_BaseballCap_LBMW", "baseHeight": 0.1145, "name": "Hat Baseball Cap LBMW", "model": "gpt-oss:120b", "notes": "Flat product‑photo view of a baseball cap – 0.25 m brim (X) × 0.12 m depth (Z), 1.5 cm thick; rounded crown rendered as a low dome (≈0.18 m wide, 0.09 m tall) sitting on the front‑half of the brim. Main fabric uses the LBMW tint, dark‑gray stitching outlines the bill and crown edge, and a tiny metal button sits at the back of the crown.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cube","pos":[0.046,-0.047,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.015,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownDome","shape":"sphere","pos":[-0.079,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.09,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ButtonBack","shape":"cylinder","pos":[-0.079,0.0505,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.008,0.018],"color":[0.12,0.12,0.12],"smooth":0.6,"metal":1.0},
+  {"name":"StitchBrimFront","shape":"cube","pos":[0.046,-0.038,0.045],"rot":[0.0,0.0,0.0],"size":[0.25,0.003,0.004],"color":[0.15,0.15,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"StitchBrimBack","shape":"cube","pos":[0.046,-0.038,-0.045],"rot":[0.0,0.0,0.0],"size":[0.25,0.003,0.004],"color":[0.15,0.15,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"StitchCrownEdgeFront","shape":"cube","pos":[-0.079,0.0055,0.06],"rot":[0.0,0.0,0.0],"size":[0.18,0.003,0.004],"color":[0.15,0.15,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"StitchCrownEdgeBack","shape":"cube","pos":[-0.079,0.0055,-0.06],"rot":[0.0,0.0,0.0],"size":[0.18,0.003,0.004],"color":[0.15,0.15,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"StitchCrownSideL","shape":"cube","pos":[-0.169,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.045,0.12],"color":[0.15,0.15,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"StitchCrownSideR","shape":"cube","pos":[0.011,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.045,0.12],"color":[0.15,0.15,0.15],"smooth":0.1,"metal":0.0}
+]}

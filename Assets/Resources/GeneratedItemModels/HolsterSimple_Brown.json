@@ -1,0 +1,9 @@
+{"version": 1, "id": "HolsterSimple_Brown", "baseHeight": 0.0775, "name": "Holster Simple Brown", "model": "gpt-oss:120b", "notes": "Simple brown leather holster lying flat on the floor, about 0.26 m long × 0.12 m tall × 0.02 m thick with a strap loop and metal buckle.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0075,-0.005],"rot":[0.0,0.0,0.0],"size":[0.26,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,-0.005,0.053],"rot":[0.0,0.0,0.0],"size":[0.26,0.003,0.004],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[0.0,-0.005,-0.063],"rot":[0.0,0.0,0.0],"size":[0.26,0.003,0.004],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Loop","shape":"cylinder","pos":[-0.09,0.0075,0.053],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"BuckleBase","shape":"cube","pos":[-0.09,0.0,0.053],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.004],"color":[0.7,0.7,0.72],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleProng","shape":"cube","pos":[-0.075,0.0,0.057],"rot":[0.0,0.0,0.0],"size":[0.004,0.015,0.008],"color":[0.7,0.7,0.72],"smooth":0.6,"metal":1.0},
+  {"name":"FlapBack","shape":"cube","pos":[0.0,-0.005,-0.063],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

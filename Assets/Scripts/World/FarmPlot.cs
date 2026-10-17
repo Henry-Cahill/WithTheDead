@@ -16,7 +16,7 @@ namespace CloneZ
     /// never disturbs the baked navmesh. The plot runs its own growth simulation off
     /// the world clock (<see cref="TimeOfDay.Now"/>), matching how perishable food ages.
     /// </summary>
-    public class FarmPlot : MonoBehaviour
+    public class FarmPlot : MonoBehaviour, IDemolishable
     {
         public static readonly List<FarmPlot> All = new List<FarmPlot>();
 
@@ -41,6 +41,14 @@ namespace CloneZ
 
         private void OnEnable() { if (!All.Contains(this)) All.Add(this); }
         private void OnDisable() { All.Remove(this); }
+
+        #region IDemolishable
+        public string DemolishName => "plot";
+        public bool CanDemolish(out string reason) { reason = null; return true; }
+        public void GetSalvage(out int planks, out int nails) { planks = 0; nails = 0; }   // just tilled soil
+        public bool CarvesNavMesh => false;
+        public void Dismantle() { All.Remove(this); Destroy(gameObject); }
+        #endregion
 
         #region Registry queries
         /// <summary>Nearest plot within <paramref name="range"/> of a point, or null.</summary>

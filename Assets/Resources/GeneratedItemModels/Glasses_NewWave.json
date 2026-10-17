@@ -1,0 +1,15 @@
+{"version": 1, "id": "Glasses_NewWave", "baseHeight": 0.068, "name": "Glasses New Wave", "model": "gpt-oss:120b", "notes": "Flat product‑photo view of New Wave glasses ~0.14 m wide × 0.05 m tall × 0.02 m thick: two round lenses, thin plastic frame (top, bottom, bridge), nose pads, and two extended temples that touch the frame at its sides.", "score": 6, "parts": [
+  {"name":"LeftLens","shape":"cylinder","pos":[-0.045,-0.001,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.042,0.008,0.042],"color":[0.75,0.78,0.85],"smooth":0.6,"metal":0.0},
+  {"name":"RightLens","shape":"cylinder","pos":[0.045,-0.001,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.042,0.008,0.042],"color":[0.75,0.78,0.85],"smooth":0.6,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,0.0,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.03,0.008,0.012],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"FrameTop","shape":"cube","pos":[0.0,0.005,0.0195],"rot":[0.0,0.0,0.0],"size":[0.12,0.006,0.008],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"FrameBottom","shape":"cube","pos":[0.0,-0.005,0.0195],"rot":[0.0,0.0,0.0],"size":[0.12,0.006,0.008],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"NosePadL","shape":"sphere","pos":[-0.012,-0.003,0.0195],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"NosePadR","shape":"sphere","pos":[0.012,-0.003,0.0195],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"TempleLeft","shape":"cylinder","pos":[-0.13,0.0,0.0195],"rot":[0.0,0.0,90.0],"size":[0.006,0.14,0.006],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"TempleRight","shape":"cylinder","pos":[0.13,0.0,0.0195],"rot":[0.0,0.0,90.0],"size":[0.006,0.14,0.006],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"ScrewTL","shape":"sphere","pos":[-0.055,0.006,0.0195],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.004],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewTR","shape":"sphere","pos":[0.055,0.006,0.0195],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.004],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewBL","shape":"sphere","pos":[-0.055,-0.004,0.0195],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.004],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewBR","shape":"sphere","pos":[0.055,-0.004,0.0195],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.004],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0}
+]}

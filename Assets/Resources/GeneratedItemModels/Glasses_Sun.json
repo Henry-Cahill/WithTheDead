@@ -1,0 +1,12 @@
+{"version": 1, "id": "Glasses_Sun", "baseHeight": 0.0705, "name": "Glasses Sun", "model": "gpt-oss:120b", "notes": "Sunglasses laid flat as a product shot – total width ≈ 0.25 m from tip of left temple to tip of right, height ≈ 0.05 m, thickness ≈ 0.008 m. Main pieces: two lenses with frame strips, side frames, central bridge, nose‑pad and the two temples extending outward.", "score": 6, "parts": [
+  {"name":"LensL","shape":"cube","pos":[-0.035,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.008,0.045],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"LensR","shape":"cube","pos":[0.035,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.008,0.045],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"FrameTop","shape":"cube","pos":[0.0,-0.0005,0.0225],"rot":[0.0,0.0,0.0],"size":[0.12,0.006,0.008],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.8},
+  {"name":"FrameBottom","shape":"cube","pos":[0.0,-0.0005,-0.0225],"rot":[0.0,0.0,0.0],"size":[0.12,0.006,0.008],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.8},
+  {"name":"BridgeBar","shape":"cube","pos":[0.0,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.008],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.8},
+  {"name":"SideFrameL","shape":"cube","pos":[-0.06,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.008,0.045],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.8},
+  {"name":"SideFrameR","shape":"cube","pos":[0.06,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.008,0.045],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.8},
+  {"name":"TempleL","shape":"cylinder","pos":[-0.125,-0.0055,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.13,0.01],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.8},
+  {"name":"TempleR","shape":"cylinder","pos":[0.125,-0.0055,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.13,0.01],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.8},
+  {"name":"NosePad","shape":"sphere","pos":[0.0,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.45,0.4,0.5],"smooth":0.2,"metal":0.0}
+]}

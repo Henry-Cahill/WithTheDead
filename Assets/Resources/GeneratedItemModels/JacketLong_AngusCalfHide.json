@@ -1,0 +1,22 @@
+{"version": 1, "id": "JacketLong_AngusCalfHide", "baseHeight": 0.0902, "name": "Jacket Long Angus Calf Hide", "model": "gpt-oss:120b", "notes": "Long Angus‑calf hide jacket laid flat, front side up. Overall footprint ≈ 1.00 m (height) × 0.60 m (shoulder width) × 0.04 m thick. Main back and front panels give the classic rectangular silhouette; a standing collar, shoulder blocks and long sleeves project outwards, while two front pockets, a row of five buttons and thin stitch lines provide clear clothing cues.", "score": 6, "parts": [
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.0147,-0.02],"rot":[0.0,0.0,0.0],"size":[1.0,0.015,0.38],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,-0.0147,0.02],"rot":[0.0,0.0,0.0],"size":[1.0,0.015,0.38],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Collar","shape":"cube","pos":[0.0,0.0053,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.01,0.06],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"ShoulderL","shape":"cube","pos":[-0.48,0.0152,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.5],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"ShoulderR","shape":"cube","pos":[0.48,0.0152,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.5],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.48,-0.0047,0.3],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.6],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.48,-0.0047,-0.3],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.6],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.48,-0.0047,0.55],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.12],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.48,-0.0047,-0.55],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.12],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.3,-0.0147,0.07],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.06],"color":[0.58,0.56,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.3,-0.0147,0.07],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.06],"color":[0.58,0.56,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"Button1","shape":"cylinder","pos":[-0.3,-0.0077,0.04],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.015],"color":[0.35,0.33,0.28],"smooth":0.45,"metal":0.0},
+  {"name":"Button2","shape":"cylinder","pos":[-0.15,-0.0077,0.04],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.015],"color":[0.35,0.33,0.28],"smooth":0.45,"metal":0.0},
+  {"name":"Button3","shape":"cylinder","pos":[0.0,-0.0077,0.04],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.015],"color":[0.35,0.33,0.28],"smooth":0.45,"metal":0.0},
+  {"name":"Button4","shape":"cylinder","pos":[0.15,-0.0077,0.04],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.015],"color":[0.35,0.33,0.28],"smooth":0.45,"metal":0.0},
+  {"name":"Button5","shape":"cylinder","pos":[0.3,-0.0077,0.04],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.015],"color":[0.35,0.33,0.28],"smooth":0.45,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.002,0.01],"color":[0.42,0.4,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[0.0,-0.0292,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.002,0.01],"color":[0.42,0.4,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideL","shape":"cube","pos":[-0.48,-0.0147,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.38],"color":[0.42,0.4,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideR","shape":"cube","pos":[0.48,-0.0147,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.38],"color":[0.42,0.4,0.35],"smooth":0.05,"metal":0.0}
+]}

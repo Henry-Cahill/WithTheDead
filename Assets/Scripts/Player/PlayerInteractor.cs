@@ -11,24 +11,37 @@ namespace CloneZ
     public class PlayerInteractor : MonoBehaviour
     {
         public LootContainer Target { get; private set; }
+        public WorldItem PickupTarget { get; private set; }
         public string PromptText { get; private set; } = "";
 
         public bool IsSearching { get; private set; }
         public float SearchProgress { get; private set; }
         public string SearchTargetName { get; private set; } = "";
 
+        /// <summary>The container being rummaged through, or null.</summary>
+        public LootContainer SearchTarget => IsSearching ? _searching : null;
+
         private InventoryUIController _ui;
         private PlayerStats _stats;
         private PlayerController _controller;
+        private PlayerInventory _inventory;
 
         private LootContainer _searching;
         private float _searchTimer;
         private float _searchTotal;
 
+        private float _targetDistSqr = float.MaxValue;
+        private float _pickupDistSqr = float.MaxValue;
+
+        /// <summary>True when a ground item is the nearest thing to interact with, so E picks it up
+        /// rather than opening a container.</summary>
+        private bool PickupPrimary => PickupTarget != null && _pickupDistSqr <= _targetDistSqr;
+
         private void Awake()
         {
             _stats = GetComponent<PlayerStats>();
             _controller = GetComponent<PlayerController>();
+            _inventory = GetComponent<PlayerInventory>();
         }
 
         public void Bind(InventoryUIController ui) => _ui = ui;
@@ -53,6 +66,8 @@ namespace CloneZ
             }
 
             UpdateTarget();
+            UpdatePickup();
+            UpdatePrompt();
             if (IsSearching) TickSearch();
 
             Keyboard kb = Keyboard.current;
@@ -62,6 +77,7 @@ namespace CloneZ
             {
                 if (_ui.IsOpen) _ui.Close();
                 else if (IsSearching) CancelSearch();
+                else if (PickupPrimary) TryPickUp();
                 else if (Target != null) BeginOrOpen(Target);
             }
             else if (kb.iKey.wasPressedThisFrame || kb.tabKey.wasPressedThisFrame)
@@ -93,6 +109,14 @@ namespace CloneZ
             IsSearching = true;
         }
 
+        /// <summary>Opens a container picked from the inventory's container column: at once if it has
+        /// been searched, otherwise after the usual timed rummage, which then opens it in the panel.</summary>
+        public void SearchOrOpen(LootContainer container)
+        {
+            if (container == null || _ui == null) return;
+            BeginOrOpen(container);
+        }
+
         private void TickSearch()
         {
             // Container gone, out of reach, or the player started moving? Abandon the search.
@@ -117,7 +141,8 @@ namespace CloneZ
             }
         }
 
-        private void CancelSearch()
+        /// <summary>Abandons any search in progress.</summary>
+        public void CancelSearch()
         {
             IsSearching = false;
             SearchProgress = 0f;
@@ -140,6 +165,7 @@ namespace CloneZ
                 if (d < bestSqr) { bestSqr = d; best = c; }
             }
             Target = best;
+            _targetDistSqr = best != null ? bestSqr : float.MaxValue;
 
             // Auto-close a container the player has walked away from.
             if (_ui != null && _ui.IsOpen && _ui.CurrentContainer != null)
@@ -148,20 +174,48 @@ namespace CloneZ
                 if ((_ui.CurrentContainer.transform.position - p).sqrMagnitude > leave * leave)
                     _ui.Close();
             }
-
-            UpdatePrompt(best);
         }
 
-        private void UpdatePrompt(LootContainer best)
+        private void UpdatePickup()
+        {
+            float range = CloneZConfig.InteractRange;
+            Vector3 p = transform.position;
+
+            // Only the chunks within reach are searched, rather than every item in the world.
+            WorldItem best = WorldItem.Nearest(p, range);
+
+            PickupTarget = best;
+            _pickupDistSqr = best != null ? (best.Position - p).sqrMagnitude : float.MaxValue;
+        }
+
+        /// <summary>Adds the nearest ground item to the pack (as much as fits); any overflow stays put.</summary>
+        private void TryPickUp()
+        {
+            if (PickupTarget == null || _inventory == null) return;
+            _inventory.PickUp(PickupTarget);
+        }
+
+        private void UpdatePrompt()
         {
             if (IsSearching)
                 PromptText = "Searching " + SearchTargetName + "\u2026   [E] cancel";
             else if (_ui != null && _ui.IsOpen)
                 PromptText = "[E] / [Esc]  Close";
-            else if (best != null)
-                PromptText = best.Searched
-                    ? "[E]  Open " + best.DisplayName + (best.IsEmpty ? "  (empty)" : "")
-                    : "[E]  Search " + best.DisplayName;
+            else if (PickupPrimary)
+            {
+                Inventory inv = _inventory != null ? _inventory.Inventory : null;
+                ItemDef def = PickupTarget.Def;
+                string why = null;
+                if (inv != null && def != null && !inv.WouldFit(def))
+                    why = inv.CurrentWeight + def.Weight > inv.MaxWeight + 1e-4f ? "too heavy" : "no room";
+                PromptText = why == null
+                    ? "[E]  Pick up " + PickupTarget.PickupLabel
+                    : "[E]  Pick up " + PickupTarget.PickupLabel + "  (" + why + ")";
+            }
+            else if (Target != null)
+                PromptText = Target.Searched
+                    ? "[E]  Open " + Target.DisplayName + (Target.IsEmpty ? "  (empty)" : "")
+                    : "[E]  Search " + Target.DisplayName;
             else
                 PromptText = "[I]  Inventory";
         }

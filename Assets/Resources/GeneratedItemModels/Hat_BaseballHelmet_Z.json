@@ -1,0 +1,14 @@
+{"version": 1, "id": "Hat_BaseballHelmet_Z", "baseHeight": 0.1275, "name": "Hat Baseball Helmet Z", "model": "gpt-oss:120b", "notes": "Baseball helmet (Hat_BaseballHelmet_Z) laid out flat like a product shot – circular brim with raised dome, interior padding, strap loops and logo decal. Overall footprint ≈0.30 m diameter, height to top of dome ≈0.14 m.", "score": 6, "parts": [
+  {"name":"BrimOuter","shape":"cylinder","pos":[0.0,-0.06,-0.005],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.3],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"BrimInner","shape":"cylinder","pos":[0.0,-0.059,-0.005],"rot":[0.0,0.0,0.0],"size":[0.26,0.014,0.26],"color":[0.48,0.44,0.53],"smooth":0.3,"metal":0.0},
+  {"name":"BrimRimEdge","shape":"cylinder","pos":[0.0,-0.051,-0.005],"rot":[0.0,0.0,0.0],"size":[0.28,0.003,0.28],"color":[0.3,0.28,0.35],"smooth":0.4,"metal":0.0},
+  {"name":"CrownShell","shape":"sphere","pos":[0.0,0.0075,-0.005],"rot":[0.0,0.0,0.0],"size":[0.22,0.12,0.22],"color":[0.55,0.5,0.6],"smooth":0.35,"metal":0.0},
+  {"name":"CrownPadding","shape":"sphere","pos":[0.0,0.0075,-0.005],"rot":[0.0,0.0,0.0],"size":[0.2,0.1,0.2],"color":[0.7,0.68,0.75],"smooth":0.2,"metal":0.0},
+  {"name":"VisorPlate","shape":"cube","pos":[0.0,-0.05,0.135],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.04],"color":[0.48,0.44,0.53],"smooth":0.3,"metal":0.0},
+  {"name":"LogoDisc","shape":"cylinder","pos":[0.0,0.0175,0.065],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.06],"color":[0.2,0.18,0.25],"smooth":0.5,"metal":0.0},
+  {"name":"RivetFront","shape":"sphere","pos":[0.0,0.0175,0.065],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.3,0.28,0.35],"smooth":0.6,"metal":0.0},
+  {"name":"RivetSideL","shape":"sphere","pos":[-0.07,0.0175,0.085],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.3,0.28,0.35],"smooth":0.6,"metal":0.0},
+  {"name":"RivetSideR","shape":"sphere","pos":[0.07,0.0175,0.085],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.3,0.28,0.35],"smooth":0.6,"metal":0.0},
+  {"name":"StrapLoopL","shape":"cylinder","pos":[-0.08,0.0225,-0.005],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.45,0.42,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"StrapLoopR","shape":"cylinder","pos":[0.08,0.0225,-0.005],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.45,0.42,0.5],"smooth":0.3,"metal":0.0}
+]}

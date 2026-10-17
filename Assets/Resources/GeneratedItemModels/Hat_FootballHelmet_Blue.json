@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_FootballHelmet_Blue", "baseHeight": 0.1025, "name": "Hat Football Helmet Blue", "model": "gpt-oss:120b", "notes": "Football helmet laid flat, overall footprint ≈ 0.34 m diameter, total height 0.09 m when standing; thin brim (1.5 cm), hard‑plastic shell, inner padding, blue tint, metal face‑mask and leather strap.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.035,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.015,0.34],"color":[0.45,0.4,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"OuterShell","shape":"cylinder","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.07,0.28],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"InnerLining","shape":"cylinder","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.06,0.26],"color":[0.2,0.2,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"Visor","shape":"cube","pos":[0.0,0.0075,0.12],"rot":[0.0,0.0,0.0],"size":[0.24,0.02,0.06],"color":[0.45,0.4,0.55],"smooth":0.35,"metal":0.0},
+  {"name":"MaskBarVLeft","shape":"cube","pos":[-0.04,0.0075,0.145],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.004],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"MaskBarVRight","shape":"cube","pos":[0.04,0.0075,0.145],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.004],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"MaskBarHTop","shape":"cube","pos":[0.0,0.0375,0.145],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.004],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"MaskBarHLower","shape":"cube","pos":[0.0,0.0025,0.145],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.004],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"StrapFront","shape":"cylinder","pos":[0.0,-0.0225,0.14],"rot":[0.0,0.0,90.0],"size":[0.015,0.28,0.015],"color":[0.3,0.2,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"StrapBack","shape":"cylinder","pos":[0.0,-0.0225,-0.14],"rot":[0.0,0.0,90.0],"size":[0.015,0.28,0.015],"color":[0.3,0.2,0.15],"smooth":0.1,"metal":0.0}
+]}

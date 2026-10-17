@@ -1,0 +1,12 @@
+{"version": 1, "id": "NecklaceLong_GoldDiamond", "baseHeight": 0.08, "name": "Necklace Long Gold Diamond", "model": "gpt-oss:120b", "notes": "Long gold necklace ~0.55 m laid flat on the floor with a small diamond pendant hanging from its centre. Gold chain (tint 0.6,0.58,0.5) with a clasp at one end and a sparkling white diamond set in a tiny gold bezel.", "score": 6, "parts": [
+  {"name":"ChainBase","shape":"cube","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.01,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Clasp","shape":"cube","pos":[-0.265,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.03],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Link1","shape":"cylinder","pos":[-0.2,0.0125,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.008,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Link2","shape":"cylinder","pos":[-0.12,0.0125,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.008,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Link3","shape":"cylinder","pos":[-0.04,0.0125,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.008,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Link4","shape":"cylinder","pos":[0.04,0.0125,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.008,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Link5","shape":"cylinder","pos":[0.12,0.0125,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.008,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Link6","shape":"cylinder","pos":[0.2,0.0125,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.008,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"PendantBezel","shape":"cylinder","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Diamond","shape":"sphere","pos":[0.0,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.9,0.95,1.0],"smooth":0.7,"metal":0.0}
+]}

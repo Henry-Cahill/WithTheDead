@@ -1,0 +1,12 @@
+{"version": 1, "id": "Glasses_Prescription", "baseHeight": 0.065, "name": "Glasses Prescription", "model": "gpt-oss:120b", "notes": "Prescription glasses laid flat like a product photo – overall width ≈ 0.23 m (temple tips), height ≈ 0.05 m, thickness ≈ 0.01 m. Main tinted plastic frame, clear lenses, thin temples and nose‑pads.", "score": 6, "parts": [
+  {"name":"Bridge","shape":"cube","pos":[0.0,-0.001,0.0025],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.04],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"BridgeRim","shape":"cube","pos":[0.0,0.002,0.0025],"rot":[0.0,0.0,0.0],"size":[0.025,0.006,0.004],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"LeftFrameSide","shape":"cube","pos":[-0.045,-0.001,0.0025],"rot":[0.0,0.0,0.0],"size":[0.07,0.008,0.04],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"RightFrameSide","shape":"cube","pos":[0.045,-0.001,0.0025],"rot":[0.0,0.0,0.0],"size":[0.07,0.008,0.04],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"LensLeft","shape":"sphere","pos":[-0.045,-0.004,0.0025],"rot":[0.0,0.0,0.0],"size":[0.045,0.002,0.045],"color":[0.9,0.95,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"LensRight","shape":"sphere","pos":[0.045,-0.004,0.0025],"rot":[0.0,0.0,0.0],"size":[0.045,0.002,0.045],"color":[0.9,0.95,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"TempleLeft","shape":"cube","pos":[-0.0975,-0.0025,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.075,0.005,0.015],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"TempleRight","shape":"cube","pos":[0.0975,-0.0025,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.075,0.005,0.015],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"NosePadLeft","shape":"cylinder","pos":[-0.005,-0.003,0.0175],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.5,0.45,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"NosePadRight","shape":"cylinder","pos":[0.005,-0.003,0.0175],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.5,0.45,0.55],"smooth":0.2,"metal":0.0}
+]}

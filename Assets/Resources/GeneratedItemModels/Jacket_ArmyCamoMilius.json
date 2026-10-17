@@ -1,0 +1,15 @@
+{"version": 1, "id": "Jacket_ArmyCamoMilius", "baseHeight": 0.0877, "name": "Jacket Army Camo Milius", "model": "gpt-oss:120b", "notes": "Flat army‑camo jacket about 0.48 m wide × 0.62 m deep, 3 cm thick. Main torso panel with angled sleeves, front collar, zip line, side pockets, epaulets and a few dark camouflage patches.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.0123,-0.05],"rot":[0.0,0.0,0.0],"size":[0.48,0.03,0.62],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.5,-0.0123,-0.05],"rot":[0.0,30.0,0.0],"size":[0.45,0.03,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.5,-0.0123,-0.05],"rot":[0.0,-30.0,0.0],"size":[0.45,0.03,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cylinder","pos":[-0.85,-0.0123,0.15],"rot":[0.0,0.0,0.0],"size":[0.1,0.03,0.1],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cylinder","pos":[0.85,-0.0123,-0.25],"rot":[0.0,0.0,0.0],"size":[0.1,0.03,0.1],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CollarFront","shape":"cylinder","pos":[0.0,0.0048,0.3],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.12,-0.0163,0.2],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.12,-0.0163,0.2],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EpauletL","shape":"cube","pos":[-0.22,0.0128,0.1],"rot":[0.0,0.0,0.0],"size":[0.1,0.03,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EpauletR","shape":"cube","pos":[0.22,0.0128,0.1],"rot":[0.0,0.0,0.0],"size":[0.1,0.03,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Zipper","shape":"cube","pos":[0.0,-0.0048,0.26],"rot":[0.0,0.0,0.0],"size":[0.48,0.015,0.01],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"CamouflagePatch1","shape":"cube","pos":[-0.15,-0.0123,0.15],"rot":[0.0,0.0,0.0],"size":[0.12,0.031,0.06],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"CamouflagePatch2","shape":"cube","pos":[0.25,-0.0123,0.05],"rot":[0.0,0.0,0.0],"size":[0.08,0.031,0.05],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0}
+]}

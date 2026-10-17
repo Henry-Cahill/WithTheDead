@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_NewspaperHat", "baseHeight": 0.12, "name": "Hat Newspaper Hat", "model": "gpt-oss:120b", "notes": "Flat newspaper hat ~0.34 m diameter x 0.02 m thick: wide paper brim, folded crown panels, central top button and a thin fabric‑like band.", "score": 6, "parts": [
+  {"name":"BrimBase","shape":"cylinder","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.004,0.32],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdge","shape":"cylinder","pos":[0.0,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.006,0.34],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CrownPanelFront","shape":"cube","pos":[0.0,0.0,0.07],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownPanelBack","shape":"cube","pos":[0.0,0.0,-0.07],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownPanelLeft","shape":"cube","pos":[-0.07,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownPanelRight","shape":"cube","pos":[0.07,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownTopButton","shape":"cylinder","pos":[0.0,0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.12],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Band","shape":"cylinder","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.006,0.22],"color":[0.3,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"BandEndL","shape":"cube","pos":[-0.11,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.04],"color":[0.3,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"BandEndR","shape":"cube","pos":[0.11,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.04],"color":[0.3,0.2,0.2],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "Hat_BaseballCap_AmericanEats", "baseHeight": 0.1087, "name": "Hat Baseball Cap American Eats", "model": "gpt-oss:120b", "notes": "Flat baseball cap laid out for product view – 0.22 m brim diameter, 0.07 m crown height, 2 cm thick brim. Main cloth tint (0.55,0.5,0.6) with a front panel and small logo detail.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.0387,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Crown","shape":"cylinder","pos":[0.0,0.0062,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.07,0.16],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,0.0062,0.0875],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.015],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Logo","shape":"cube","pos":[0.0,0.0062,0.0975],"rot":[0.0,0.0,0.0],"size":[0.03,0.04,0.005],"color":[0.8,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdge","shape":"cylinder","pos":[0.0,-0.0288,0.0],"rot":[0.0,0.0,0.0],"size":[0.224,0.004,0.224],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CrownTop","shape":"cylinder","pos":[0.0,0.0412,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.015,0.14],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Jumper_VNeck", "baseHeight": 0.09, "name": "Jumper VNeck", "model": "gpt-oss:120b", "notes": "Flat jumper V‑neck, approx 0.70 m long × 0.45 m wide × 0.04 m thick. Main body with side seams, angled sleeves, ribbed collar and a simple V‑neck edge.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.01,-0.005],"rot":[0.0,0.0,0.0],"size":[0.45,0.04,0.7],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.225,-0.01,-0.005],"rot":[0.0,0.0,0.0],"size":[0.008,0.04,0.7],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.225,-0.01,-0.005],"rot":[0.0,0.0,0.0],"size":[0.008,0.04,0.7],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.35,-0.01,-0.005],"rot":[0.0,0.0,0.0],"size":[0.25,0.04,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.35,-0.01,-0.005],"rot":[0.0,0.0,0.0],"size":[0.25,0.04,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.5,-0.01,-0.005],"rot":[0.0,0.0,0.0],"size":[0.03,0.04,0.12],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.5,-0.01,-0.005],"rot":[0.0,0.0,0.0],"size":[0.03,0.04,0.12],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"VNeckL","shape":"cube","pos":[-0.07,-0.01,0.325],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.06],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"VNeckR","shape":"cube","pos":[0.07,-0.01,0.325],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.06],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CollarRib","shape":"cylinder","pos":[0.0,0.01,0.325],"rot":[0.0,0.0,90.0],"size":[0.04,0.45,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "Hat_BaseballCap_KnoxDistillery", "baseHeight": 0.095, "name": "Hat Baseball Cap Knox Distillery", "model": "gpt-oss:120b", "notes": "Flat baseball cap ~0.22 m wide × 0.12 m deep × 0.06 m tall (including crown). Main tinted cloth (0.55,0.5,0.6) with low gloss; includes brim, inset crown, front panel and top button.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cube","pos":[0.0,-0.03,-0.01],"rot":[0.0,0.0,0.0],"size":[0.22,0.01,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Crown","shape":"cube","pos":[0.0,-0.01,-0.01],"rot":[0.0,0.0,0.0],"size":[0.18,0.03,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,0.015,0.01],"rot":[0.0,0.0,0.0],"size":[0.16,0.02,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"VisorFront","shape":"cube","pos":[0.0,-0.0275,0.05],"rot":[0.0,0.0,0.0],"size":[0.22,0.005,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TopButton","shape":"sphere","pos":[0.0,0.02,-0.01],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"StitchEdge","shape":"cube","pos":[0.0,-0.024,-0.01],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.12],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

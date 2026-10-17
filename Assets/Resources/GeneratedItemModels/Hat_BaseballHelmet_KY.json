@@ -1,0 +1,8 @@
+{"version": 1, "id": "Hat_BaseballHelmet_KY", "baseHeight": 0.18, "name": "Hat Baseball Helmet KY", "model": "gpt-oss:120b", "notes": "Baseball helmet laid on its side on the floor – wide curved crown (sphere) sitting on a thin rim‑brim cylinder, with a front visor and a dark strap band around the base.", "score": 7, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.1125,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.3],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"RimEdge","shape":"cylinder","pos":[0.0,-0.1075,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.008,0.32],"color":[0.4,0.35,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Crown","shape":"sphere","pos":[0.0,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.22,0.22],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"StrapBand","shape":"cylinder","pos":[0.0,-0.05,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.005,0.24],"color":[0.35,0.3,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"Visor","shape":"cube","pos":[0.0,0.0,0.09],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.04],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"VisorTrim","shape":"cube","pos":[0.0,0.01,0.11],"rot":[0.0,0.0,0.0],"size":[0.14,0.005,0.008],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "JacketLong_SimmentalCalfHide", "baseHeight": 0.103, "name": "Jacket Long Simmental Calf Hide", "model": "gpt-oss:120b", "notes": "Long leather jacket (Simmental calf hide) laid flat: torso ~0.55 m wide × 0.45 m long, 3 cm thick; sleeves ~0.6 m long angled outwards; collar strip, bottom hem band, side pockets and stitching detail.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,0.0,-0.065],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.45],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cube","pos":[0.0,0.016,0.15],"rot":[0.0,0.0,0.0],"size":[0.56,0.008,0.06],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[0.0,0.0,-0.28],"rot":[0.0,0.0,0.0],"size":[0.55,0.01,0.04],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.275,0.0,0.035],"rot":[0.0,0.0,25.0],"size":[0.15,0.025,0.6],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.275,0.0,0.035],"rot":[0.0,0.0,-25.0],"size":[0.15,0.025,0.6],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.275,0.004,-0.315],"rot":[0.0,0.0,25.0],"size":[0.16,0.008,0.04],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.275,0.004,-0.315],"rot":[0.0,0.0,-25.0],"size":[0.16,0.008,0.04],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.12,0.0,0.085],"rot":[0.0,0.0,0.0],"size":[0.1,0.015,0.08],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.12,0.0,0.085],"rot":[0.0,0.0,0.0],"size":[0.1,0.015,0.08],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,0.017,0.15],"rot":[0.0,0.0,0.0],"size":[0.55,0.004,0.02],"color":[0.4,0.35,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"StitchSideL","shape":"cube","pos":[-0.275,0.01,0.16],"rot":[0.0,0.0,25.0],"size":[0.004,0.015,0.2],"color":[0.4,0.35,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"StitchSideR","shape":"cube","pos":[0.275,0.01,0.16],"rot":[0.0,0.0,-25.0],"size":[0.004,0.015,0.2],"color":[0.4,0.35,0.3],"smooth":0.1,"metal":0.0}
+]}

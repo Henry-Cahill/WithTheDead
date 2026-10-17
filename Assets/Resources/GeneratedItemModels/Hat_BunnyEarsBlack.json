@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_BunnyEarsBlack", "baseHeight": 0.119, "name": "Hat Bunny Ears Black", "model": "gpt-oss:120b", "notes": "Flat layout of a black bunny‑ears hat (≈0.25 m tall, 0.24 m brim diameter). Central crown with thin rim, two floppy ears spread left/right, a small tag on the front edge and an inner elastic band.", "score": 6, "parts": [
+  {"name":"BrimOuter","shape":"cylinder","pos":[0.0,-0.055,-0.007],"rot":[0.0,0.0,0.0],"size":[0.24,0.008,0.24],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdge","shape":"cylinder","pos":[0.0,-0.049,-0.007],"rot":[0.0,0.0,0.0],"size":[0.242,0.004,0.242],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBase","shape":"cylinder","pos":[0.0,-0.031,-0.007],"rot":[0.0,0.0,0.0],"size":[0.18,0.04,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownTop","shape":"sphere","pos":[0.0,0.024,-0.007],"rot":[0.0,0.0,0.0],"size":[0.14,0.07,0.14],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"InnerBand","shape":"cylinder","pos":[0.0,-0.031,-0.007],"rot":[0.0,0.0,0.0],"size":[0.182,0.004,0.182],"color":[0.2,0.2,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"EarL_Outer","shape":"cylinder","pos":[-0.195,-0.044,-0.007],"rot":[0.0,0.0,90.0],"size":[0.03,0.15,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EarL_Inner","shape":"cylinder","pos":[-0.195,-0.044,-0.007],"rot":[0.0,0.0,90.0],"size":[0.022,0.15,0.022],"color":[1.0,0.7,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"EarR_Outer","shape":"cylinder","pos":[0.195,-0.044,-0.007],"rot":[0.0,0.0,90.0],"size":[0.03,0.15,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EarR_Inner","shape":"cylinder","pos":[0.195,-0.044,-0.007],"rot":[0.0,0.0,90.0],"size":[0.022,0.15,0.022],"color":[1.0,0.7,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[0.0,-0.0525,0.1205],"rot":[0.0,0.0,0.0],"size":[0.03,0.005,0.015],"color":[0.75,0.73,0.78],"smooth":0.05,"metal":0.0}
+]}

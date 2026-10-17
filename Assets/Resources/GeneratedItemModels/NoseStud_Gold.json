@@ -1,0 +1,8 @@
+{"version": 1, "id": "NoseStud_Gold", "baseHeight": 0.0645, "name": "Nose Stud Gold", "model": "gpt-oss:120b", "notes": "Gold nose stud about 1.5 cm long, 2 mm thick bar with a 4 mm decorative ball at one end, lying flat on the floor.", "score": 7, "parts": [
+  {"name":"Bar","shape":"cylinder","pos":[-0.0015,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.002,0.015,0.002],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Ball","shape":"sphere","pos":[0.01,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Backing","shape":"cylinder","pos":[-0.013,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.002,0.003,0.002],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"ShadowBase","shape":"cube","pos":[-0.0015,-0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.02],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.0,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.002],"color":[0.1,0.08,0.07],"smooth":0.05,"metal":0.0},
+  {"name":"Glow","shape":"sphere","pos":[0.01,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.009,0.009,0.009],"color":[1.0,0.84,0.6],"smooth":0.8,"metal":0.0}
+]}

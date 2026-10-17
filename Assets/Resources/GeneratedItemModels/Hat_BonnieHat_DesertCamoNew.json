@@ -1,0 +1,13 @@
+{"version": 1, "id": "Hat_BonnieHat_DesertCamoNew", "baseHeight": 0.14, "name": "Hat Bonnie Hat Desert Camo New", "model": "gpt-oss:120b", "notes": "Flat Bonnie desert‑camo hat spread like a product photo: wide low brim (≈0.30 m dia), cylindrical crown (≈0.18 m dia × 0.15 m tall) with a thin fabric band, plus four dark camo patches on the brim and four on the crown sides for silhouette detail.", "score": 7, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Crown","shape":"cylinder","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.15,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.0675,0.0],"rot":[0.0,0.0,0.0],"size":[0.19,0.005,0.19],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BrimPatchFL","shape":"cube","pos":[0.08,-0.0675,0.08],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.04],"color":[0.38,0.33,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"BrimPatchFR","shape":"cube","pos":[-0.08,-0.0675,0.08],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.04],"color":[0.38,0.33,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"BrimPatchBL","shape":"cube","pos":[0.08,-0.0675,-0.08],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.04],"color":[0.38,0.33,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"BrimPatchBR","shape":"cube","pos":[-0.08,-0.0675,-0.08],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.04],"color":[0.38,0.33,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"CrownPatchR","shape":"cube","pos":[0.105,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.03],"color":[0.38,0.33,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"CrownPatchL","shape":"cube","pos":[-0.105,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.03],"color":[0.38,0.33,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"CrownPatchF","shape":"cube","pos":[0.0,0.005,0.105],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.03],"color":[0.38,0.33,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"CrownPatchB","shape":"cube","pos":[0.0,0.005,-0.105],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.03],"color":[0.38,0.33,0.18],"smooth":0.05,"metal":0.0}
+]}

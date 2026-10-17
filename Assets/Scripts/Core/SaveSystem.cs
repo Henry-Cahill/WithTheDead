@@ -119,6 +119,10 @@ namespace CloneZ
                 LootContainer c = LootContainer.All[i];
                 if (c != null) data.Containers.Add(CaptureContainer(c));
             }
+            // Ground items are no longer captured here. They used to be written into this list as
+            // sacks, one container plus one stack object each, which made both the save file and the
+            // load time grow with the number of things dropped in the world. They now go straight from
+            // GroundItemStore into their own chunk-indexed table in SqliteSaveStore.
             for (int i = 0; i < Barricade.All.Count; i++)
             {
                 Barricade b = Barricade.All[i];
@@ -131,6 +135,19 @@ namespace CloneZ
                         Health = b.Health,
                         MaxHealth = b.MaxHealth,
                         PerPlank = b.PerPlankHealth,
+                    });
+            }
+            for (int i = 0; i < BuildPiece.All.Count; i++)
+            {
+                BuildPiece p = BuildPiece.All[i];
+                if (p != null && p.Health > 0f)
+                    data.House.Add(new HousePieceSave
+                    {
+                        Type = (int)p.Type,
+                        Position = p.transform.position,
+                        Yaw = p.transform.eulerAngles.y,
+                        Health = p.Health,
+                        MaxHealth = p.MaxHealth,
                     });
             }
             for (int i = 0; i < FarmPlot.All.Count; i++)
@@ -158,6 +175,25 @@ namespace CloneZ
                     Kind = (int)w.Kind,
                     Water = w.Water,
                 });
+            }
+
+            // Pre-placed props the survivor may have torn down (bed / stove / cover). Capturing the
+            // survivors means a demolished one simply isn't written, so it stays gone on reload.
+            data.HasWorldProps = true;
+            for (int i = 0; i < SleepSpot.All.Count; i++)
+            {
+                SleepSpot s = SleepSpot.All[i];
+                if (s != null) data.Props.Add(new PropSave { Kind = PropSave.KindBed, Position = s.transform.position });
+            }
+            for (int i = 0; i < CookingStation.All.Count; i++)
+            {
+                CookingStation s = CookingStation.All[i];
+                if (s != null) data.Props.Add(new PropSave { Kind = PropSave.KindStove, Position = s.transform.position });
+            }
+            for (int i = 0; i < Cover.All.Count; i++)
+            {
+                Cover cv = Cover.All[i];
+                if (cv != null) data.Props.Add(new PropSave { Kind = PropSave.KindCover, Position = cv.transform.position, Size = cv.Size });
             }
 
             return data;
@@ -227,8 +263,8 @@ namespace CloneZ
                 ClothingSlot[] slots = PlayerClothing.Slots;
                 for (int i = 0; i < slots.Length; i++)
                 {
-                    ItemDef d = clothing.GetWorn(slots[i]);
-                    if (d != null) worn.Add(new ClothingSave { Slot = (int)slots[i], Id = d.Id });
+                    PlayerClothing.WornPiece piece = clothing.GetPiece(slots[i]);
+                    if (piece.Exists) worn.Add(new ClothingSave { Slot = (int)slots[i], Id = piece.Def.Id, Condition = piece.Condition, TimesRepaired = piece.TimesRepaired });
                 }
                 s.Clothing = worn.ToArray();
             }
@@ -241,7 +277,7 @@ namespace CloneZ
                 {
                     ItemStack st = stacks[i];
                     if (st == null || st.Def == null) continue;
-                    s.Items.Add(new StackSave { Id = st.Def.Id, Count = st.Count, SpawnHours = st.SpawnHours, Condition = st.Condition });
+                    s.Items.Add(new StackSave { Id = st.Def.Id, Count = st.Count, SpawnHours = st.SpawnHours, Condition = st.Condition, TimesRepaired = st.TimesRepaired });
                 }
                 s.EquippedWeaponId = inv.EquippedWeapon != null ? inv.EquippedWeapon.Id : null;
             }
@@ -269,7 +305,7 @@ namespace CloneZ
                 {
                     ItemStack st = stacks[i];
                     if (st == null || st.Def == null) continue;
-                    save.Items.Add(new StackSave { Id = st.Def.Id, Count = st.Count, SpawnHours = st.SpawnHours, Condition = st.Condition });
+                    save.Items.Add(new StackSave { Id = st.Def.Id, Count = st.Count, SpawnHours = st.SpawnHours, Condition = st.Condition, TimesRepaired = st.TimesRepaired });
                 }
             }
             return save;
@@ -292,12 +328,35 @@ namespace CloneZ
             for (int i = 0; i < data.Containers.Count; i++)
             {
                 ContainerSave c = data.Containers[i];
-                LootContainer.SpawnSaved(world, c.Kind, c.Position, c.Yaw, c.Searched, c.Lifetime, c.Items);
+                if (c.Kind == LootContainer.KindSack)
+                {
+                    // A dropped ground item, saved as a single-stack sack. Parented to the scene root
+                    // (null) so its mesh is never collected into the navmesh bake.
+                    if (c.Items != null && c.Items.Count > 0)
+                    {
+                        StackSave st = c.Items[0];
+                        ItemDef def = ItemDatabase.Get(st.Id);
+                        if (def != null)
+                            WorldItem.Spawn(null, c.Position, def, st.Count,
+                                def.Perishable ? st.SpawnHours : float.NaN,
+                                def.RestoredCondition(st.Condition),
+                                st.TimesRepaired);
+                    }
+                }
+                else
+                {
+                    LootContainer.SpawnSaved(world, c.Kind, c.Position, c.Yaw, c.Searched, c.Lifetime, c.Items);
+                }
             }
             for (int i = 0; i < data.Barricades.Count; i++)
             {
                 BarricadeSave b = data.Barricades[i];
                 Barricade.SpawnRestored(world, b.Position, b.Forward, b.Planks, b.Health, b.MaxHealth, b.PerPlank);
+            }
+            for (int i = 0; i < data.House.Count; i++)
+            {
+                HousePieceSave h = data.House[i];
+                BuildPiece.SpawnRestored(world, (BuildPieceType)h.Type, h.Position, h.Yaw, h.Health, h.MaxHealth);
             }
             for (int i = 0; i < data.Farm.Count; i++)
             {
@@ -310,6 +369,16 @@ namespace CloneZ
                 WaterSourceSave w = data.Water[i];
                 WaterSource src = WaterSource.Spawn(world, w.Position, (WaterSourceKind)w.Kind);
                 src.Restore(w.Water);
+            }
+            for (int i = 0; i < data.Props.Count; i++)
+            {
+                PropSave p = data.Props[i];
+                switch (p.Kind)
+                {
+                    case PropSave.KindBed: SleepSpot.Spawn(world, p.Position); break;
+                    case PropSave.KindStove: CookingStation.Spawn(world, p.Position); break;
+                    case PropSave.KindCover: Cover.Spawn(world, p.Position, p.Size); break;
+                }
             }
         }
 
@@ -355,7 +424,7 @@ namespace CloneZ
                 for (int i = 0; i < s.Clothing.Length; i++)
                 {
                     ItemDef d = ItemDatabase.Get(s.Clothing[i].Id);
-                    if (d != null) clothing.Equip(d);
+                    if (d != null) clothing.Equip(d, d.RestoredCondition(s.Clothing[i].Condition), s.Clothing[i].TimesRepaired);
                 }
             }
 

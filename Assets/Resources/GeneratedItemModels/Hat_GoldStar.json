@@ -1,0 +1,13 @@
+{"version": 1, "id": "Hat_GoldStar", "baseHeight": 0.0925, "name": "Hat Gold Star", "model": "gpt-oss:120b", "notes": "Flat‑lay hat ~0.26 m brim diameter, low crown 0.15 m wide, 3 cm tall; central gold‑star emblem on top. Main cloth colour uses tint (0.55,0.5,0.6); gold star is metallic.", "score": 7, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.0275,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.01,0.26],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdge","shape":"cylinder","pos":[0.0,-0.0235,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.008,0.28],"color":[0.45,0.44,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"Crown","shape":"cylinder","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.03,0.15],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBand","shape":"cylinder","pos":[0.0,0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.004,0.16],"color":[0.42,0.4,0.44],"smooth":0.08,"metal":0.0},
+  {"name":"InnerBand","shape":"cylinder","pos":[0.0,-0.0145,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.004,0.14],"color":[0.48,0.46,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"StarBase","shape":"cylinder","pos":[0.0,0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.006,0.07],"color":[1.0,0.84,0.0],"smooth":0.6,"metal":1.0},
+  {"name":"StarPointFront","shape":"cylinder","pos":[0.0,0.0145,0.035],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[1.0,0.84,0.0],"smooth":0.6,"metal":1.0},
+  {"name":"StarPointBack","shape":"cylinder","pos":[0.0,0.0145,-0.035],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[1.0,0.84,0.0],"smooth":0.6,"metal":1.0},
+  {"name":"StarPointLeft","shape":"cylinder","pos":[-0.03,0.0145,0.0],"rot":[90.0,0.0,90.0],"size":[0.008,0.02,0.008],"color":[1.0,0.84,0.0],"smooth":0.6,"metal":1.0},
+  {"name":"StarPointRight","shape":"cylinder","pos":[0.03,0.0145,0.0],"rot":[90.0,0.0,-90.0],"size":[0.008,0.02,0.008],"color":[1.0,0.84,0.0],"smooth":0.6,"metal":1.0},
+  {"name":"StarPointTop","shape":"cylinder","pos":[0.0,0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[1.0,0.84,0.0],"smooth":0.6,"metal":1.0}
+]}

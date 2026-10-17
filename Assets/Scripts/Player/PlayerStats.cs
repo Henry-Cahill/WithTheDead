@@ -154,6 +154,8 @@ namespace CloneZ
         public void TakeDamage(in DamageInfo info)
         {
             if (IsDead) return;
+            // Under a raid's spawn protection the dead can't hurt the survivor at all.
+            if (ExtractionManager.PlayerProtected && info.Source != null && info.Source.GetComponentInParent<ZombieHealth>() != null) return;
             float dmg = info.Amount * CloneZConfig.PlayerReceivedDamageMultiplier;
             if (Skills != null)
             {
@@ -165,10 +167,10 @@ namespace CloneZ
             if (Health <= 0f) Die("was torn apart");
         }
 
-        /// <summary>Called by a zombie that lands an attack.</summary>
+        /// <summary>Called by a zombie that lands an attack. Ignored while a raid's spawn protection holds.</summary>
         public void ReceiveZombieAttack(bool bite)
         {
-            if (IsDead) return;
+            if (IsDead || ExtractionManager.PlayerProtected) return;
             float mult = Skills != null ? Skills.IncomingDamageMult : 1f;
             if (Skills != null) Skills.AddXp(PlayerSkills.Skill.Fitness, CloneZConfig.XpFitnessOnHurt);
             if (bite)

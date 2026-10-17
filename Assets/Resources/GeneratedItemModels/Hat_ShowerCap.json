@@ -1,0 +1,10 @@
+{"version": 1, "id": "Hat_ShowerCap", "baseHeight": 0.124, "name": "Hat Shower Cap", "model": "gpt-oss:120b", "notes": "Shower‑cap laid flat on the floor: circular rubber base ≈ 0.25 m diameter, shallow dome ≈ 0.12 m high, elastic edge around the rim, a small label patch and a few soft folds for visual texture.", "score": 6, "parts": [
+  {"name":"RimBase","shape":"cylinder","pos":[0.0,-0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.008,0.25],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"DomeBody","shape":"sphere","pos":[0.0,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.12,0.22],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"ElasticBand","shape":"cylinder","pos":[0.0,-0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.27,0.006,0.27],"color":[0.35,0.35,0.38],"smooth":0.3,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[-0.09,-0.014,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.06],"color":[0.9,0.9,0.95],"smooth":0.1,"metal":0.0},
+  {"name":"FoldL","shape":"sphere","pos":[-0.07,-0.034,0.0],"rot":[0.0,15.0,0.0],"size":[0.08,0.02,0.04],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"FoldR","shape":"sphere","pos":[0.07,-0.034,0.0],"rot":[0.0,-15.0,0.0],"size":[0.08,0.02,0.04],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"FoldFront","shape":"sphere","pos":[0.0,-0.029,0.07],"rot":[15.0,0.0,0.0],"size":[0.06,0.018,0.03],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"FoldBack","shape":"sphere","pos":[0.0,-0.029,-0.07],"rot":[-15.0,0.0,0.0],"size":[0.06,0.018,0.03],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0}
+]}

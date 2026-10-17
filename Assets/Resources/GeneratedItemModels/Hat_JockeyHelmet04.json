@@ -1,0 +1,9 @@
+{"version": 1, "id": "Hat_JockeyHelmet04", "baseHeight": 0.08, "name": "Hat Jockey Helmet04", "model": "gpt-oss:120b", "notes": "Flat jockey helmet laid out like a product photo – approx 0.35 m wide × 0.35 m deep and 4 cm thick, with a 7 cm outward brim, inner lining, two side straps and a small front patch.", "score": 6, "parts": [
+  {"name":"CrownOuter","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.04,0.34],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownInner","shape":"sphere","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.036,0.3],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"BrimBase","shape":"cylinder","pos":[0.0,-0.016,0.0],"rot":[0.0,0.0,0.0],"size":[0.48,0.008,0.48],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimRim","shape":"cylinder","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.48,0.012,0.48],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"StrapL","shape":"cylinder","pos":[-0.12,0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.05,0.008],"color":[0.2,0.2,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"StrapR","shape":"cylinder","pos":[0.12,0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.05,0.008],"color":[0.2,0.2,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"FrontPatch","shape":"cube","pos":[0.0,0.005,0.13],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.02],"color":[0.8,0.6,0.4],"smooth":0.05,"metal":0.0}
+]}

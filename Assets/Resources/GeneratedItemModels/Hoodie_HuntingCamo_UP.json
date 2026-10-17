@@ -1,0 +1,13 @@
+{"version": 1, "id": "Hoodie_HuntingCamo_UP", "baseHeight": 0.0753, "name": "Hoodie Hunting Camo UP", "model": "gpt-oss:120b", "notes": "Flat hoodie (camo) ~0.55 m wide × 0.70 m long × 0.025 m thick: torso panel, two sleeves, front & back hood panels, thin draw‑string, front pockets, cuff trims and a ribbed collar band.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.5],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.4,-0.0028,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.022,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.4,-0.0028,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.022,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HoodFront","shape":"cube","pos":[0.0,-0.0013,-0.36],"rot":[0.0,0.0,0.0],"size":[0.55,0.015,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HoodBack","shape":"cube","pos":[0.0,-0.0013,0.36],"rot":[0.0,0.0,0.0],"size":[0.55,0.015,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Drawstring","shape":"cylinder","pos":[0.0,0.0112,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.55,0.008],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.15,-0.0013,-0.2],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.15,-0.0013,-0.2],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.525,-0.0028,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.18],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.525,-0.0028,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.18],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.0,0.0037,-0.24],"rot":[0.0,0.0,0.0],"size":[0.55,0.01,0.02],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0}
+]}

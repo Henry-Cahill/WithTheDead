@@ -1,0 +1,11 @@
+{"version": 1, "id": "Hat_HardHat_Miner", "baseHeight": 0.15, "name": "Hat Hard Hat Miner", "model": "gpt-oss:120b", "notes": "Miner hard‑hat laid flat for a product‑photo view – overall outer diameter ≈ 0.38 m, 0.02 m thick brim, 0.04 m low crown base, 0.12 m tall plastic dome; includes rim (brim), crown slab, rounded dome, inner padding band, front logo patch and four small vent caps.", "score": 7, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.08,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.02,0.38],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"CrownBase","shape":"cylinder","pos":[0.0,-0.05,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.04,0.28],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"Dome","shape":"sphere","pos":[0.0,0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.12,0.28],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"InnerBand","shape":"cylinder","pos":[0.0,-0.026,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.008,0.28],"color":[0.45,0.4,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[0.12,0.05,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.04],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"VentFront","shape":"cylinder","pos":[0.08,0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.018],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":0.0},
+  {"name":"VentBack","shape":"cylinder","pos":[-0.08,0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.018],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":0.0},
+  {"name":"VentLeft","shape":"cylinder","pos":[0.0,0.075,0.08],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.018],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":0.0},
+  {"name":"VentRight","shape":"cylinder","pos":[0.0,0.075,-0.08],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.018],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":0.0}
+]}

@@ -42,7 +42,7 @@ namespace CloneZ
 
             if (Health <= 0f)
             {
-                Die();
+                Die(info.HitDirection);
                 return;
             }
 
@@ -51,14 +51,14 @@ namespace CloneZ
             AI.Stagger(stun, info.HitDirection, info.Knockback);
         }
 
-        private void Die()
+        private void Die(Vector3 hitDirection)
         {
             if (IsDead) return;
             IsDead = true;
             Health = 0f;
             GameManager.Instance?.ReportZombieKill();
             OnDeath?.Invoke(this);
-            AI.Kill();
+            AI.Kill(hitDirection);
         }
     }
 }

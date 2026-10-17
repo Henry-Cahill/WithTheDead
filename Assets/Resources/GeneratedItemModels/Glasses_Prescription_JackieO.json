@@ -1,0 +1,13 @@
+{"version": 1, "id": "Glasses_Prescription_JackieO", "baseHeight": 0.0675, "name": "Glasses Prescription Jackie O", "model": "gpt-oss:120b", "notes": "Prescription glasses Jackie‑O laid flat like a product photo: two rectangular plastic frames (tinted 0.55,0.5,0.6) with thin clear lenses, a short bridge and the two temples extending outward. Overall footprint ≈ 0.30 m wide × 0.05 m tall × 0.02 m thick.", "score": 7, "parts": [
+  {"name":"LeftFrame","shape":"cube","pos":[-0.045,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.025],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"RightFrame","shape":"cube","pos":[0.045,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.025],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.025],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"LeftTemple","shape":"cube","pos":[-0.12,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.015],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"RightTemple","shape":"cube","pos":[0.12,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.015],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"LeftLens","shape":"cylinder","pos":[-0.045,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.058,0.002,0.058],"color":[0.9,0.95,1.0],"smooth":0.4,"metal":0.0},
+  {"name":"RightLens","shape":"cylinder","pos":[0.045,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.058,0.002,0.058],"color":[0.9,0.95,1.0],"smooth":0.4,"metal":0.0},
+  {"name":"NosePadL","shape":"cylinder","pos":[-0.01,-0.0015,-0.012],"rot":[90.0,0.0,0.0],"size":[0.008,0.003,0.008],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"NosePadR","shape":"cylinder","pos":[0.01,-0.0015,-0.012],"rot":[90.0,0.0,0.0],"size":[0.008,0.003,0.008],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"ScrewL","shape":"sphere","pos":[-0.045,0.0035,0.012],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewR","shape":"sphere","pos":[0.045,0.0035,0.012],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0}
+]}

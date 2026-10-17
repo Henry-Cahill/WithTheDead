@@ -1,0 +1,17 @@
+{"version": 1, "id": "Gloves_DenimWrap", "baseHeight": 0.0911, "name": "Gloves Denim Wrap", "model": "gpt-oss:120b", "notes": "Denim wrap gloves laid flat, spread like a product photo – overall footprint ≈0.28 m long (fingertip to wrist) × 0.18 m wide (including thumb), thickness ≈0.02 m. Main palm panel with four fingers extending forward and an angled thumb, plus cuff band and denim seam details.", "score": 6, "parts": [
+  {"name":"PalmBase","shape":"cube","pos":[-0.045,0.0,0.015],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffBand","shape":"cube","pos":[-0.135,0.0,0.015],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.12],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Finger1","shape":"cube","pos":[0.095,0.0,-0.015],"rot":[0.0,0.0,0.0],"size":[0.1,0.018,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Finger2","shape":"cube","pos":[0.095,0.0,0.005],"rot":[0.0,0.0,0.0],"size":[0.1,0.018,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Finger3","shape":"cube","pos":[0.095,0.0,0.025],"rot":[0.0,0.0,0.0],"size":[0.1,0.018,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Finger4","shape":"cube","pos":[0.095,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.1,0.018,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Thumb","shape":"cube","pos":[-0.035,0.0,-0.065],"rot":[0.0,0.0,-45.0],"size":[0.07,0.018,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PalmSeam","shape":"cube","pos":[-0.045,0.001,0.015],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.005],"color":[0.35,0.3,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"FingerSeam1","shape":"cube","pos":[0.095,0.002,-0.015],"rot":[0.0,0.0,0.0],"size":[0.1,0.002,0.002],"color":[0.35,0.3,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"FingerSeam2","shape":"cube","pos":[0.095,0.002,0.005],"rot":[0.0,0.0,0.0],"size":[0.1,0.002,0.002],"color":[0.35,0.3,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"FingerSeam3","shape":"cube","pos":[0.095,0.002,0.025],"rot":[0.0,0.0,0.0],"size":[0.1,0.002,0.002],"color":[0.35,0.3,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"FingerSeam4","shape":"cube","pos":[0.095,0.002,0.045],"rot":[0.0,0.0,0.0],"size":[0.1,0.002,0.002],"color":[0.35,0.3,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"ThumbSeam","shape":"cube","pos":[-0.035,0.002,-0.065],"rot":[0.0,0.0,-45.0],"size":[0.07,0.002,0.002],"color":[0.35,0.3,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"StitchDot1","shape":"sphere","pos":[-0.135,0.008,0.065],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.35,0.3,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"StitchDot2","shape":"sphere","pos":[-0.135,0.008,-0.035],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.35,0.3,0.4],"smooth":0.2,"metal":0.0}
+]}

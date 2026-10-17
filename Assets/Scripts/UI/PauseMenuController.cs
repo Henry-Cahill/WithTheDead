@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace CloneZ
@@ -10,15 +11,25 @@ namespace CloneZ
     /// when no other panel is up, so it never collides with the inventory / skills /
     /// health screens (which also close on Esc). Built from code and created by the
     /// <see cref="GameBootstrapper"/> alongside the HUD.
+    ///
+    /// During an extraction raid there is nothing to save: the menu offers Resume and
+    /// "Abandon Raid" instead (a second click confirms), which counts as missing in action —
+    /// the kit is lost — and returns to the title screen.
     /// </summary>
     public class PauseMenuController : MonoBehaviour
     {
+        private const float AbandonConfirmSeconds = 4f;   // real seconds the "confirm" click stays armed
+
         private Font _font;
         private UIFader _fader;
         private Text _savedFlash;
         private float _savedTimer;
         private bool _open;
         private bool _prevBlocked;   // was some OTHER panel blocking gameplay last frame?
+        private Text _abandonLabel;
+        private Text _abandonWarning;
+        private bool _abandonArmed;
+        private float _abandonArmedAt;
 
         public bool IsOpen => _open;
 
@@ -50,6 +61,8 @@ namespace CloneZ
             else
             {
                 bool playing = GameManager.Instance != null && GameManager.Instance.State == GameState.Playing;
+                // A finished raid belongs to its report screen.
+                if (ExtractionManager.Instance != null && ExtractionManager.Instance.RaidOver) playing = false;
                 bool free = !UIState.GameplayBlocked && !UIState.BuildMode;
                 // Require a clear previous frame too, so the Esc that closes another panel
                 // doesn't also pop the pause menu open on the same press.
@@ -57,6 +70,8 @@ namespace CloneZ
             }
 
             _prevBlocked = UIState.GameplayBlocked && !_open;
+
+            if (_abandonArmed && Time.unscaledTime - _abandonArmedAt > AbandonConfirmSeconds) DisarmAbandon();
 
             if (_savedTimer > 0f)
             {
@@ -86,6 +101,7 @@ namespace CloneZ
             _open = false;
             UIState.GameplayBlocked = false;
             Time.timeScale = 1f;
+            DisarmAbandon();
             if (_fader != null) _fader.Hide();
         }
 
@@ -106,6 +122,43 @@ namespace CloneZ
             Time.timeScale = 1f;
             UIState.GameplayBlocked = false;
             GameManager.Instance?.Restart();   // reloads the scene \u2192 the bootstrapper shows the title screen
+        }
+
+        // First click arms it (the label asks for confirmation), a second click within a few seconds
+        // gives the raid up.
+        private void OnAbandonRaid()
+        {
+            if (!_abandonArmed)
+            {
+                _abandonArmed = true;
+                _abandonArmedAt = Time.unscaledTime;
+                if (_abandonLabel != null) _abandonLabel.text = "Click again to abandon";
+                if (_abandonWarning != null) _abandonWarning.enabled = true;
+                return;
+            }
+
+            // Missing in action: the kit stays in town for good.
+            if (ExtractionManager.Instance != null) ExtractionManager.Instance.Abandon();
+            else RaidLoadout.Clear();
+
+            _open = false;
+            _abandonArmed = false;
+            Time.timeScale = 1f;
+            UIState.GameplayBlocked = false;
+            GameSession.AutoStartRaid = false;   // back to the title screen, not straight into a new raid
+            if (GameManager.Instance != null) GameManager.Instance.Restart();
+            else
+            {
+                NoiseSystem.Clear();
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+        }
+
+        private void DisarmAbandon()
+        {
+            _abandonArmed = false;
+            if (_abandonLabel != null) _abandonLabel.text = "Abandon Raid";
+            if (_abandonWarning != null) _abandonWarning.enabled = false;
         }
 
         #region UI construction
@@ -145,6 +198,22 @@ namespace CloneZ
             var anchor = new Vector2(0.5f, 0.5f);
             const float step = 78f;
             MakeButton(prt, anchor, Vector2.zero, new Vector2(360f, 60f), "Resume", new Color(0.28f, 0.40f, 0.24f), Resume);
+
+            if (GameSession.IsExtraction)
+            {
+                // A raid can't be saved: the only way out besides an exit is to give it up.
+                Button abandon = MakeButton(prt, anchor, new Vector2(0f, -step), new Vector2(360f, 60f), "Abandon Raid", new Color(0.46f, 0.20f, 0.16f), OnAbandonRaid);
+                _abandonLabel = abandon.GetComponentInChildren<Text>();
+
+                _abandonWarning = Label(prt, "AbandonWarning", new Vector2(0.5f, 0.5f), new Vector2(0f, -step * 2f + 8f), new Vector2(700f, 30f), 18, TextAnchor.MiddleCenter, new Color(0.92f, 0.45f, 0.35f));
+                _abandonWarning.text = "Counts as missing in action \u2014 everything you carry is lost";
+                _abandonWarning.enabled = false;
+
+                Label(prt, "Hint", new Vector2(0.5f, 0.14f), Vector2.zero, new Vector2(900f, 26f), 15, TextAnchor.MiddleCenter, new Color(0.5f, 0.54f, 0.6f))
+                    .text = "Esc to resume  \u00b7  raids can't be saved \u2014 reach an exit to keep your kit";
+                return;
+            }
+
             MakeButton(prt, anchor, new Vector2(0f, -step), new Vector2(360f, 60f), "Save Game", new Color(0.24f, 0.34f, 0.46f), OnSave);
             MakeButton(prt, anchor, new Vector2(0f, -step * 2f), new Vector2(360f, 60f), "Save & Quit to Menu", new Color(0.42f, 0.26f, 0.22f), OnQuitToMenu);
 

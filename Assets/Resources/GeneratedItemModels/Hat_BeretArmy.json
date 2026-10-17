@@ -1,0 +1,11 @@
+{"version": 1, "id": "Hat_BeretArmy", "baseHeight": 0.0877, "name": "Hat Beret Army", "model": "gpt-oss:120b", "notes": "Flat army beret hat ~0.28 m overall diameter, 2 cm brim thickness and 3 cm crown height; laid flat with outer brass‑tinted band, wool‑like crown shell, inner lining, stitching line and a small army badge on the front.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.0227,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.01,0.28],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"HatBand","shape":"cylinder","pos":[0.0,-0.0152,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.005,0.28],"color":[0.35,0.33,0.38],"smooth":0.07,"metal":0.0},
+  {"name":"CrownShell","shape":"cylinder","pos":[0.0,-0.0027,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.22],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"CrownLining","shape":"cylinder","pos":[0.0,-0.0048,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.028,0.2],"color":[0.65,0.6,0.7],"smooth":0.07,"metal":0.0},
+  {"name":"StitchLine","shape":"cylinder","pos":[0.0,0.0133,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.22],"color":[0.3,0.28,0.33],"smooth":0.07,"metal":0.0},
+  {"name":"BadgeBase","shape":"cube","pos":[0.0,0.0148,0.07],"rot":[0.0,0.0,0.0],"size":[0.045,0.005,0.045],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"BadgeEmblem","shape":"sphere","pos":[0.0,0.0177,0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.85,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,-0.0027,0.12],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.02],"color":[0.3,0.28,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"SideRim","shape":"cylinder","pos":[0.0,-0.0128,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.004,0.28],"color":[0.45,0.42,0.48],"smooth":0.07,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Necklace_Crucifix", "baseHeight": 0.086, "name": "Necklace Crucifix", "model": "gpt-oss:120b", "notes": "Necklace with crucifix pendant lying on the floor: a short chain of five thin metal links (alternating X‑ and Z‑oriented) with clasp ends, and a simple cross‑shaped pendant hanging from the centre link.", "score": 6, "parts": [
+  {"name":"ClaspL","shape":"cylinder","pos":[-0.14,0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.02,0.012],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Link1","shape":"cylinder","pos":[-0.09,0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.08,0.01],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Link2","shape":"cylinder","pos":[-0.045,0.02,0.0],"rot":[90.0,0.0,0.0],"size":[0.01,0.08,0.01],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Link3","shape":"cylinder","pos":[0.0,0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.08,0.01],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Link4","shape":"cylinder","pos":[0.045,0.02,0.0],"rot":[90.0,0.0,0.0],"size":[0.01,0.08,0.01],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Link5","shape":"cylinder","pos":[0.09,0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.08,0.01],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ClaspR","shape":"cylinder","pos":[0.14,0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.02,0.012],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"PendantRod","shape":"cylinder","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"CrossBar","shape":"cube","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BeadCenter","shape":"sphere","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

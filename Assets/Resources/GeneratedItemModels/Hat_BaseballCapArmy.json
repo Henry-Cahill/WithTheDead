@@ -1,0 +1,10 @@
+{"version": 1, "id": "Hat_BaseballCapArmy", "baseHeight": 0.125, "name": "Hat Baseball Cap Army", "model": "gpt-oss:120b", "notes": "Baseball cap (army style) laid flat like a product photo: rounded crown (~0.24 m wide × 0.12 m tall), short front visor/brim, top button, rear adjustment strap and subtle stitching details. Overall footprint ≈0.26 m × 0.22 m, thickness ≤0.06 m.", "score": 6, "parts": [
+  {"name":"Crown","shape":"sphere","pos":[0.0,-0.005,-0.035],"rot":[0.0,0.0,0.0],"size":[0.24,0.12,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"VisorBrim","shape":"cube","pos":[0.0,-0.0575,0.075],"rot":[0.0,0.0,0.0],"size":[0.26,0.015,0.12],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"VisorEdge","shape":"cube","pos":[0.0,-0.05,0.075],"rot":[0.0,0.0,0.0],"size":[0.26,0.003,0.02],"color":[0.42,0.38,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"TopButton","shape":"sphere","pos":[0.0,0.055,-0.035],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.78,0.78,0.8],"smooth":0.4,"metal":0.0},
+  {"name":"RearStrap","shape":"cube","pos":[0.0,-0.061,-0.125],"rot":[0.0,0.0,0.0],"size":[0.26,0.008,0.015],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.07,-0.035,-0.075],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.015],"color":[0.42,0.38,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.07,-0.035,-0.075],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.015],"color":[0.42,0.38,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CrownTopPatch","shape":"cube","pos":[0.0,0.025,-0.035],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.06],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_JokeKnife", "baseHeight": 0.0845, "name": "Hat Joke Knife", "model": "gpt-oss:120b", "notes": "Flat novelty hat ~0.30 m brim diameter × 0.04 m crown height, muted purple‑gray tint (0.55,0.5,0.6). Small steel joke‑knife attached to front edge of brim, blade pointing forward (+Z).", "score": 6, "parts": [
+  {"name":"Crown","shape":"cylinder","pos":[0.0,-0.0045,-0.0575],"rot":[0.0,0.0,0.0],"size":[0.28,0.04,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.0195,-0.0575],"rot":[0.0,0.0,0.0],"size":[0.4,0.01,0.4],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HatBand","shape":"cylinder","pos":[0.0,0.0075,-0.0575],"rot":[0.0,0.0,0.0],"size":[0.28,0.008,0.28],"color":[0.45,0.42,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"KnifeHandle","shape":"cylinder","pos":[0.0,0.0115,0.1275],"rot":[90.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.3,0.25,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"KnifeGuard","shape":"cylinder","pos":[0.0,0.0135,0.1575],"rot":[90.0,0.0,0.0],"size":[0.018,0.008,0.018],"color":[0.7,0.7,0.72],"smooth":0.4,"metal":1.0},
+  {"name":"KnifeBlade","shape":"cube","pos":[0.0,0.0155,0.1975],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.12],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"FrontPatch","shape":"cube","pos":[0.0,0.0205,0.0325],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.04],"color":[0.7,0.5,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SidePatchL","shape":"cube","pos":[-0.07,0.0205,-0.0575],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.03],"color":[0.7,0.5,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SidePatchR","shape":"cube","pos":[0.07,0.0205,-0.0575],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.03],"color":[0.7,0.5,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTag","shape":"cube","pos":[0.0,0.0235,-0.1775],"rot":[0.0,0.0,0.0],"size":[0.03,0.002,0.015],"color":[0.2,0.2,0.25],"smooth":0.05,"metal":0.0}
+]}

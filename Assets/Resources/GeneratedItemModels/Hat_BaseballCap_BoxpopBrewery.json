@@ -1,0 +1,14 @@
+{"version": 1, "id": "Hat_BaseballCap_BoxpopBrewery", "baseHeight": 0.076, "name": "Hat Baseball Cap Boxpop Brewery", "model": "gpt-oss:120b", "notes": "Flat baseball cap ~0.22 m brim width × 0.20 m depth, crown height ≈0.12 m, 2 cm thick fabric. Central crown panel with front‑side button and four thin brim strips extending outward.", "score": 7, "parts": [
+  {"name":"Crown","shape":"cube","pos":[0.0,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelL","shape":"cube","pos":[-0.075,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelR","shape":"cube","pos":[0.075,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.006,-0.045],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontBrim","shape":"cube","pos":[0.0,-0.011,0.055],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.03],"color":[0.45,0.42,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BackBrim","shape":"cube","pos":[0.0,-0.011,-0.055],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.03],"color":[0.45,0.42,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LeftBrim","shape":"cube","pos":[-0.075,-0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.01,0.08],"color":[0.45,0.42,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RightBrim","shape":"cube","pos":[0.075,-0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.01,0.08],"color":[0.45,0.42,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Button","shape":"cylinder","pos":[0.0,0.006,0.04],"rot":[90.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.7,0.7,0.7],"smooth":0.4,"metal":1.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,0.006,0.04],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.002],"color":[0.4,0.38,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideL","shape":"cube","pos":[-0.06,0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.08],"color":[0.4,0.38,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideR","shape":"cube","pos":[0.06,0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.08],"color":[0.4,0.38,0.45],"smooth":0.05,"metal":0.0}
+]}

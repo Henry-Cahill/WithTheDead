@@ -1,0 +1,13 @@
+{"version": 1, "id": "Hat_BaseballCap_FireDept_Reverse", "baseHeight": 0.1275, "name": "Hat Baseball Cap Fire Dept Reverse", "model": "gpt-oss:120b", "notes": "Flat‑lay baseball cap (fire‑dept reverse) approx 0.22 m across, 0.12 m tall crown with a 0.015 m thick brim. Main cloth colour is muted blue‑gray; includes front panel, metal button, fire badge and back strap.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.015,0.26],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBody","shape":"cylinder","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.12,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,0.0075,0.09],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ButtonTop","shape":"cylinder","pos":[0.0,0.0635,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"BadgeBase","shape":"cylinder","pos":[0.0,0.0075,0.095],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.04],"color":[0.2,0.2,0.25],"smooth":0.3,"metal":0.0},
+  {"name":"BadgeFlame","shape":"sphere","pos":[0.0,0.025,0.095],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.9,0.45,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"StrapBack","shape":"cube","pos":[0.0,0.0575,-0.085],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.005],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"InnerBrimEdge","shape":"cylinder","pos":[0.0,-0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.005,0.22],"color":[0.48,0.44,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"OuterBrimEdge","shape":"cylinder","pos":[0.0,-0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.005,0.26],"color":[0.48,0.44,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"StitchFront","shape":"cube","pos":[0.0,0.0465,0.09],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LabelFireDept","shape":"cube","pos":[0.0,0.0075,0.09],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.04],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0}
+]}

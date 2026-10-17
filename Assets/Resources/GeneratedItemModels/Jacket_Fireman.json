@@ -1,0 +1,13 @@
+{"version": 1, "id": "Jacket_Fireman", "baseHeight": 0.1109, "name": "Jacket Fireman", "model": "gpt-oss:120b", "notes": "Flat fire‑man's jacket ~0.55 m wide x 0.70 m tall (including sleeves) laid out like a product photo. Main body in dark‑purple tint, with collar, front zipper, two chest pockets and a bright‑yellow reflective stripe.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.0,-0.1225],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.425,-0.0,-0.1225],"rot":[0.0,0.0,15.0],"size":[0.3,0.025,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[-0.425,-0.0,-0.1225],"rot":[0.0,0.0,-15.0],"size":[0.3,0.025,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.0,0.0055,0.1125],"rot":[0.0,0.0,0.0],"size":[0.16,0.03,0.16],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.0,0.0075,0.1125],"rot":[0.0,0.0,0.0],"size":[0.12,0.036,0.12],"color":[0.2,0.22,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"FrontZipper","shape":"cube","pos":[0.0,0.0025,0.1225],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.45],"color":[0.8,0.8,0.85],"smooth":0.4,"metal":1.0},
+  {"name":"PocketL","shape":"cube","pos":[0.15,-0.0,0.1225],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[-0.15,-0.0,0.1225],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ReflectStripe","shape":"cube","pos":[0.0,0.0055,0.1125],"rot":[0.0,0.0,0.0],"size":[0.3,0.005,0.01],"color":[1.0,1.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"EpauletteL","shape":"cube","pos":[0.25,0.0055,0.0575],"rot":[0.0,0.0,10.0],"size":[0.04,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EpauletteR","shape":"cube","pos":[-0.25,0.0055,0.0575],"rot":[0.0,0.0,-10.0],"size":[0.04,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

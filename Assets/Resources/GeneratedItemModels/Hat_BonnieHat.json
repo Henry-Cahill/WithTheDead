@@ -1,0 +1,9 @@
+{"version": 1, "id": "Hat_BonnieHat", "baseHeight": 0.14, "name": "Hat Bonnie Hat", "model": "gpt-oss:120b", "notes": "Bonnie hat laid flat like a product photo – wide soft brim 0.28 m dia, low rounded crown 0.12 m dia and ~0.14 m tall, dark fabric band around the crown. Main tint (0.55,0.5,0.6) with slightly darker trims.", "score": 7, "parts": [
+  {"name":"BrimOuter","shape":"cylinder","pos":[0.0,-0.07,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimInner","shape":"cylinder","pos":[0.0,-0.071,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.018,0.26],"color":[0.48,0.44,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"BrimSeam","shape":"cylinder","pos":[0.0,-0.058,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.004,0.28],"color":[0.42,0.38,0.46],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBody","shape":"cylinder","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.1,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownTop","shape":"sphere","pos":[0.0,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.015,0.14],"color":[0.35,0.33,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.09,-0.069,0.0],"rot":[0.0,15.0,0.0],"size":[0.04,0.005,0.01],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0}
+]}

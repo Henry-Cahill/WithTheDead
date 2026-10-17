@@ -6,21 +6,47 @@ namespace CloneZ
 
     /// <summary>
     /// A lightweight weather simulation. Cycles between clear, overcast, fog, rain
-    /// and storm, easing rain and fog intensities so transitions are gradual. Rain
-    /// darkens the sky (feeding <see cref="TimeOfDay"/>), thickens the fog, spawns a
+    /// and storm, easing precipitation and fog intensities so transitions are gradual.
+    /// Rain darkens the sky (feeding <see cref="TimeOfDay"/>), thickens the fog, spawns a
     /// code-built rain particle effect that trails the camera, and — like Project
     /// Zomboid — cuts down how far the zombies can see.
+    ///
+    /// On a winter raid (<see cref="Climate.Winter"/>) the sky starts low (overcast or
+    /// cloudy, sometimes already snowing), fronts last longer and never build into a
+    /// thunderstorm, and precipitation falls as snow whenever the air is cold enough
+    /// (<see cref="Climate.SnowFraction"/>): the rain particles stand down (the vision
+    /// effects draw the snow) and it soaks far more slowly (<see cref="WettingIntensity"/>).
     /// </summary>
     public class WeatherSystem : MonoBehaviour
     {
         public static WeatherSystem Instance { get; private set; }
 
+        // Winter fronts linger: a raid's whole night lasts only half an hour of real time.
+        private const float WinterDurationScale = 3f;
+
         public Weather Current { get; private set; } = Weather.Clear;
-        public float RainIntensity { get; private set; }   // 0..1
+
+        /// <summary>How hard it is precipitating, 0..1 — rain, or on a cold winter night, snow.</summary>
+        public float PrecipitationIntensity { get; private set; }
+
+        /// <summary>Precipitation falling as rain, 0..1. Outside winter this is all of it; in winter
+        /// whatever falls as snow is left out (see <see cref="SnowfallIntensity"/>).</summary>
+        public float RainIntensity => PrecipitationIntensity * (1f - Climate.SnowFraction);
+
+        /// <summary>Precipitation falling as snow, 0..1 (excludes the light night flurry that
+        /// <see cref="Climate.SnowIntensity"/> adds for atmosphere).</summary>
+        public float SnowfallIntensity => PrecipitationIntensity * Climate.SnowFraction;
+
+        /// <summary>How hard the weather soaks someone out in it: rain in full, snow far less.</summary>
+        public float WettingIntensity => RainIntensity + SnowfallIntensity * Climate.SnowWetFactor;
+
+        /// <summary>True while the precipitation falls mostly as snow.</summary>
+        public bool IsSnowing => PrecipitationIntensity > 0.01f && Climate.SnowFraction >= 0.5f;
+
         public float FogIntensity { get; private set; }    // 0..1
         public float Cloudiness { get; private set; }      // 0..1
 
-        private float _targetRain, _targetFog, _targetCloud;
+        private float _targetPrecip, _targetFog, _targetCloud;
         private float _stateTimer;
         private float _flashTimer;
         private bool _restored;   // a saved game set the weather; Start must not clobber it
@@ -44,8 +70,24 @@ namespace CloneZ
         {
             _cam = Camera.main;
             BuildRain();
-            if (!_restored) SetWeather(Weather.Clear);
-            _stateTimer = Random.Range(CloneZConfig.WeatherMinDuration, CloneZConfig.WeatherMaxDuration);
+            if (!_restored)
+            {
+                if (Climate.Winter) StartWinter();
+                else SetWeather(Weather.Clear);
+            }
+            _stateTimer = NextDuration();
+        }
+
+        // A raid opens under a low winter sky — overcast or cloudy, sometimes already snowing — at full
+        // strength rather than easing in from a clear sky.
+        private void StartWinter()
+        {
+            float r = Random.value;
+            SetWeather(r < 0.45f ? Weather.Overcast : r < 0.78f ? Weather.Cloudy : Weather.Rain);
+            PrecipitationIntensity = _targetPrecip;
+            FogIntensity = _targetFog;
+            Cloudiness = _targetCloud;
+            ApplyFog();
         }
 
         private void Update()
@@ -55,11 +97,11 @@ namespace CloneZ
             _stateTimer -= dt;
             if (_stateTimer <= 0f)
             {
-                SetWeather(PickNext(Current));
-                _stateTimer = Random.Range(CloneZConfig.WeatherMinDuration, CloneZConfig.WeatherMaxDuration);
+                SetWeather(NextWeather(Current));
+                _stateTimer = NextDuration();
             }
 
-            RainIntensity = Mathf.MoveTowards(RainIntensity, _targetRain, CloneZConfig.WeatherBlendSpeed * dt);
+            PrecipitationIntensity = Mathf.MoveTowards(PrecipitationIntensity, _targetPrecip, CloneZConfig.WeatherBlendSpeed * dt);
             FogIntensity = Mathf.MoveTowards(FogIntensity, _targetFog, CloneZConfig.WeatherBlendSpeed * dt);
             Cloudiness = Mathf.MoveTowards(Cloudiness, _targetCloud, CloneZConfig.WeatherBlendSpeed * dt);
 
@@ -73,12 +115,12 @@ namespace CloneZ
             Current = w;
             switch (w)
             {
-                case Weather.Clear:    _targetRain = 0f;   _targetFog = 0f;    _targetCloud = 0f;    break;
-                case Weather.Cloudy:   _targetRain = 0f;   _targetFog = 0.08f; _targetCloud = 0.40f; break;
-                case Weather.Overcast: _targetRain = 0f;   _targetFog = 0.20f; _targetCloud = 0.70f; break;
-                case Weather.Fog:      _targetRain = 0f;   _targetFog = 0.85f; _targetCloud = 0.50f; break;
-                case Weather.Rain:     _targetRain = 0.6f; _targetFog = 0.28f; _targetCloud = 0.75f; break;
-                case Weather.Storm:    _targetRain = 1.0f; _targetFog = 0.40f; _targetCloud = 0.95f; break;
+                case Weather.Clear:    _targetPrecip = 0f;   _targetFog = 0f;    _targetCloud = 0f;    break;
+                case Weather.Cloudy:   _targetPrecip = 0f;   _targetFog = 0.08f; _targetCloud = 0.40f; break;
+                case Weather.Overcast: _targetPrecip = 0f;   _targetFog = 0.20f; _targetCloud = 0.70f; break;
+                case Weather.Fog:      _targetPrecip = 0f;   _targetFog = 0.85f; _targetCloud = 0.50f; break;
+                case Weather.Rain:     _targetPrecip = 0.6f; _targetFog = 0.28f; _targetCloud = 0.75f; break;
+                case Weather.Storm:    _targetPrecip = 1.0f; _targetFog = 0.40f; _targetCloud = 0.95f; break;
             }
         }
 
@@ -88,11 +130,27 @@ namespace CloneZ
         {
             _restored = true;
             Current = weather;
-            RainIntensity = _targetRain = Mathf.Clamp01(rain);
+            PrecipitationIntensity = _targetPrecip = Mathf.Clamp01(rain);
             FogIntensity = _targetFog = Mathf.Clamp01(fog);
             Cloudiness = _targetCloud = Mathf.Clamp01(cloud);
-            _stateTimer = Random.Range(CloneZConfig.WeatherMinDuration, CloneZConfig.WeatherMaxDuration);
+            _stateTimer = NextDuration();
             ApplyFog();
+        }
+
+        // How long the next weather state holds.
+        private static float NextDuration()
+        {
+            float d = Random.Range(CloneZConfig.WeatherMinDuration, CloneZConfig.WeatherMaxDuration);
+            return Climate.Winter ? d * WinterDurationScale : d;
+        }
+
+        // A winter raid never builds into a thunderstorm (lightning over falling snow looks wrong):
+        // a front that would have turned stormy just keeps snowing — or raining, if it's mild.
+        private static Weather NextWeather(Weather from)
+        {
+            Weather next = PickNext(from);
+            if (Climate.Winter && next == Weather.Storm) next = Weather.Rain;
+            return next;
         }
 
         // Weather drifts one step at a time so it feels like a front rolling through.
@@ -118,7 +176,7 @@ namespace CloneZ
 
         private void ApplyFog()
         {
-            float fog = Mathf.Max(FogIntensity, RainIntensity * 0.35f);
+            float fog = Mathf.Max(FogIntensity, PrecipitationIntensity * 0.35f);   // falling snow thickens the murk like rain
             RenderSettings.fog = true;
             RenderSettings.fogMode = FogMode.Linear;
             RenderSettings.fogStartDistance = Mathf.Lerp(35f, 6f, fog);
@@ -128,9 +186,9 @@ namespace CloneZ
         /// <summary>Extra dimming from cloud cover, fed into the day/night light level.</summary>
         public float LightMultiplier => Mathf.Lerp(1f, 0.5f, Cloudiness);
 
-        /// <summary>Sight radius scale for zombies: heavy rain and fog shorten their vision.</summary>
+        /// <summary>Sight radius scale for zombies: heavy rain (or snow) and fog shorten their vision.</summary>
         public float VisionMultiplier =>
-            (1f - CloneZConfig.ZombieRainVisionPenalty * RainIntensity) *
+            (1f - CloneZConfig.ZombieRainVisionPenalty * PrecipitationIntensity) *
             (1f - CloneZConfig.ZombieFogVisionPenalty * FogIntensity);
 
         public string Label
@@ -142,8 +200,8 @@ namespace CloneZ
                     case Weather.Cloudy: return "Cloudy";
                     case Weather.Overcast: return "Overcast";
                     case Weather.Fog: return "Fog";
-                    case Weather.Rain: return "Rain";
-                    case Weather.Storm: return "Storm";
+                    case Weather.Rain: return Climate.SnowFraction >= 0.5f ? "Snow" : "Rain";
+                    case Weather.Storm: return Climate.SnowFraction >= 0.5f ? "Blizzard" : "Storm";
                     default: return "Clear";
                 }
             }
@@ -211,9 +269,12 @@ namespace CloneZ
             if (_cam == null) _cam = Camera.main;
             if (_cam != null)
             {
-                Vector3 p = _cam.transform.position;
-                _rain.transform.position = new Vector3(p.x, p.y, p.z);
+                // Rain falls round the survivor: the isometric camera hangs far behind them, so there the box
+                // centres on the point the view looks at; in the close views, on the camera itself.
+                bool iso = ViewState.Current == CameraView.Isometric && IsoCameraFollow.Instance != null;
+                _rain.transform.position = iso ? IsoCameraFollow.FocusPoint : _cam.transform.position;
             }
+            // Only liquid rain draws streaks — falling snow is drawn by the vision effects instead.
             _rainEmission.rateOverTime = RainIntensity * 1500f;
         }
 

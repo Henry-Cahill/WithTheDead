@@ -1,0 +1,8 @@
+{"version": 1, "id": "Earring_Stud_Silver", "baseHeight": 0.066, "name": "Earring Stud Silver", "model": "gpt-oss:120b", "notes": "Silver stud earring about 0.02 m total length, 0.012 m round head and a 0.015 m cylindrical post. Lying flat on the floor with the post along X‑axis; head sphere attached at +X end, tiny backing plate at –X end.", "score": 7, "parts": [
+  {"name":"Post","shape":"cylinder","pos":[-0.0037,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.005,0.015,0.005],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Head","shape":"sphere","pos":[0.0098,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.78,0.76,0.68],"smooth":0.65,"metal":1.0},
+  {"name":"HeadBevel","shape":"cylinder","pos":[0.0098,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.0048,0.0122,0.0048],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"BackingPlate","shape":"cube","pos":[-0.0132,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.006],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"BackingEdge","shape":"cylinder","pos":[-0.0132,-0.001,0.0],"rot":[90.0,0.0,0.0],"size":[0.0055,0.002,0.0055],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"PolishHighlight","shape":"sphere","pos":[0.0105,0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.95,0.94,0.9],"smooth":0.9,"metal":1.0}
+]}

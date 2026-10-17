@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_SantaHat", "baseHeight": 0.1263, "name": "Hat Santa Hat", "model": "gpt-oss:120b", "notes": "Flat Santa hat laid out, approx 0.35 m long × 0.15 m wide × 0.015 m thick. Includes red fabric sheet, white fur trim along the edge, a circular white brim at one end, a small stem and white pom‑pom at the opposite end, two seam lines on the sides of the fabric, and three tiny fluffy spheres around the brim for texture.", "score": 6, "parts": [
+  {"name":"BodyBase","shape":"cube","pos":[-0.015,-0.0537,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.015,0.15],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TrimStripe","shape":"cube","pos":[-0.015,-0.0537,0.065],"rot":[0.0,0.0,0.0],"size":[0.35,0.015,0.02],"color":[1.0,1.0,1.0],"smooth":0.2,"metal":0.0},
+  {"name":"BrimDisc","shape":"cylinder","pos":[-0.07,-0.0587,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.005,0.24],"color":[1.0,1.0,1.0],"smooth":0.2,"metal":0.0},
+  {"name":"PomStem","shape":"cylinder","pos":[0.15,-0.0338,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PomPom","shape":"sphere","pos":[0.15,0.0262,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[1.0,1.0,1.0],"smooth":0.3,"metal":0.0},
+  {"name":"SeamLeft","shape":"cube","pos":[-0.015,-0.0522,0.0725],"rot":[0.0,0.0,0.0],"size":[0.35,0.003,0.005],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamRight","shape":"cube","pos":[-0.015,-0.0522,-0.0725],"rot":[0.0,0.0,0.0],"size":[0.35,0.003,0.005],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffFront","shape":"sphere","pos":[-0.07,-0.0512,0.12],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[1.0,1.0,1.0],"smooth":0.3,"metal":0.0},
+  {"name":"FluffLeft","shape":"sphere","pos":[-0.135,-0.0512,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[1.0,1.0,1.0],"smooth":0.3,"metal":0.0},
+  {"name":"FluffRight","shape":"sphere","pos":[-0.07,-0.0512,-0.12],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[1.0,1.0,1.0],"smooth":0.3,"metal":0.0}
+]}

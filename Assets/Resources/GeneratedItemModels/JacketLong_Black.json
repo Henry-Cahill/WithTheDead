@@ -1,0 +1,11 @@
+{"version": 1, "id": "JacketLong_Black", "baseHeight": 0.0875, "name": "Jacket Long Black", "model": "gpt-oss:120b", "notes": "Flat long jacket ~0.95 m length × 0.55 m width, 3 cm thick; torso panel, two angled sleeves with cuffs that attach to the sleeve ends, front collar, side pockets and a bottom hem.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[-0.0928,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.95,0.03,0.55],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.3472,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.04,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.2572,-0.0125,-0.375],"rot":[0.0,15.0,0.0],"size":[0.6,0.025,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.2572,-0.0125,0.375],"rot":[0.0,-15.0,0.0],"size":[0.6,0.025,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.2572,-0.0125,-0.55],"rot":[0.0,15.0,0.0],"size":[0.12,0.02,0.04],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.2572,-0.0125,0.55],"rot":[0.0,-15.0,0.0],"size":[0.12,0.02,0.04],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[0.2072,-0.0055,-0.15],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.51,0.49,0.425],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.2072,-0.0055,0.15],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.51,0.49,0.425],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[-0.5578,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.55],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "NoseRing_Silver", "baseHeight": 0.065, "name": "Nose Ring Silver", "model": "gpt-oss:120b", "notes": "Silver nose ring about 4 cm across, 0.5 cm thick, lying flat on the floor: a thin hoop (flat disc), a tiny clasp at one side, and a decorative bead on the opposite edge.", "score": 6, "parts": [
+  {"name":"HoopDisc","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.04],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Clasp","shape":"cube","pos":[-0.018,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Bead","shape":"sphere","pos":[0.018,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.65,"metal":1.0},
+  {"name":"ShadowBase","shape":"cube","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.002,0.045],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.0,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.042,0.002,0.042],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"TopHighlight","shape":"sphere","pos":[0.0,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.85,0.84,0.78],"smooth":0.8,"metal":1.0}
+]}

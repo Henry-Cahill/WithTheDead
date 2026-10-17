@@ -1,0 +1,12 @@
+{"version": 1, "id": "Glasses_Prescription_CatsEye_Sun", "baseHeight": 0.124, "name": "Glasses Prescription Cats Eye Sun", "model": "gpt-oss:120b", "notes": "Prescription cat‑eye sunglasses laid flat like a product photo. Overall spread ≈ 0.50 m wide (including temples) × 0.13 m tall, 1–2 cm thick. Parts: two round lenses, thin plastic frame around them (sides, top & bottom bars, central bridge), hinged temples on each side, and a small nose‑pad sphere.", "score": 7, "parts": [
+  {"name":"LeftLens","shape":"cylinder","pos":[-0.07,-0.024,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.12],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":0.0},
+  {"name":"RightLens","shape":"cylinder","pos":[0.07,-0.024,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.12],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,-0.024,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.008],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"FrameSideL","shape":"cube","pos":[-0.13,-0.024,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.08,0.008],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"FrameSideR","shape":"cube","pos":[0.13,-0.024,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.08,0.008],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"FrameTopBar","shape":"cube","pos":[0.0,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.008,0.008],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"FrameBottomBar","shape":"cube","pos":[0.0,-0.05,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.008,0.008],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"LeftTemple","shape":"cube","pos":[-0.205,-0.024,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.008,0.008],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"RightTemple","shape":"cube","pos":[0.205,-0.024,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.008,0.008],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"NosePad","shape":"sphere","pos":[0.0,-0.018,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.45,0.4,0.5],"smooth":0.6,"metal":0.0}
+]}

@@ -1,0 +1,9 @@
+{"version": 1, "id": "Hat_Police_Grey", "baseHeight": 0.095, "name": "Hat Police Grey", "model": "gpt-oss:120b", "notes": "Flat police hat laid out for a product view: 0.30 m brim diameter, 0.04 m tall rounded crown, grey‑tinted cloth with dark stitching and a small metallic badge on the front.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRing","shape":"cylinder","pos":[0.0,-0.023,0.0],"rot":[0.0,0.0,0.0],"size":[0.304,0.004,0.304],"color":[0.4,0.38,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Crown","shape":"cylinder","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.04,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownTop","shape":"sphere","pos":[0.0,0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.18],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"InnerBand","shape":"cylinder","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.01,0.22],"color":[0.48,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"BadgeBase","shape":"cube","pos":[0.0,0.015,0.095],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.008],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"BadgeEmblem","shape":"cube","pos":[0.0,0.018,0.102],"rot":[0.0,0.0,0.0],"size":[0.02,0.012,0.002],"color":[0.1,0.1,0.12],"smooth":0.4,"metal":0.0}
+]}

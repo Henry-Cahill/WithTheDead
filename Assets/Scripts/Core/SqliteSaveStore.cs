@@ -18,13 +18,17 @@ namespace CloneZ
     public static class SqliteSaveStore
     {
         private const string DropSql =
+            "DROP TABLE IF EXISTS ground_item;" +
+            "DROP TABLE IF EXISTS ground_type;" +
             "DROP TABLE IF EXISTS container_item;" +
             "DROP TABLE IF EXISTS player_item;" +
             "DROP TABLE IF EXISTS clothing;" +
             "DROP TABLE IF EXISTS wound;" +
             "DROP TABLE IF EXISTS player_skill;" +
+            "DROP TABLE IF EXISTS world_prop;" +
             "DROP TABLE IF EXISTS water_source;" +
             "DROP TABLE IF EXISTS farm_plot;" +
+            "DROP TABLE IF EXISTS house_piece;" +
             "DROP TABLE IF EXISTS barricade;" +
             "DROP TABLE IF EXISTS container;" +
             "DROP TABLE IF EXISTS player;" +
@@ -53,11 +57,11 @@ namespace CloneZ
             "  disinfected INTEGER, infected INTEGER, prone INTEGER," +
             "  sepsis REAL, healing REAL, healSeconds REAL);" +
 
-            "CREATE TABLE clothing (slot INTEGER PRIMARY KEY, itemId TEXT);" +
+            "CREATE TABLE clothing (slot INTEGER PRIMARY KEY, itemId TEXT, condition INTEGER, timesRepaired INTEGER);" +
 
             "CREATE TABLE player_item (" +
             "  seq INTEGER PRIMARY KEY AUTOINCREMENT," +
-            "  itemId TEXT, count INTEGER, spawnHours REAL, condition INTEGER);" +
+            "  itemId TEXT, count INTEGER, spawnHours REAL, condition INTEGER, timesRepaired INTEGER);" +
 
             "CREATE TABLE container (" +
             "  id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -66,13 +70,17 @@ namespace CloneZ
 
             "CREATE TABLE container_item (" +
             "  seq INTEGER PRIMARY KEY AUTOINCREMENT," +
-            "  containerId INTEGER, itemId TEXT, count INTEGER, spawnHours REAL, condition INTEGER," +
+            "  containerId INTEGER, itemId TEXT, count INTEGER, spawnHours REAL, condition INTEGER, timesRepaired INTEGER," +
             "  FOREIGN KEY (containerId) REFERENCES container(id));" +
 
             "CREATE TABLE barricade (" +
             "  id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "  posX REAL, posY REAL, posZ REAL, fwdX REAL, fwdY REAL, fwdZ REAL," +
             "  planks INTEGER, health REAL, maxHealth REAL, perPlank REAL);" +
+
+            "CREATE TABLE house_piece (" +
+            "  id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "  type INTEGER, posX REAL, posY REAL, posZ REAL, yaw REAL, health REAL, maxHealth REAL);" +
 
             "CREATE TABLE farm_plot (" +
             "  id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -81,7 +89,26 @@ namespace CloneZ
 
             "CREATE TABLE water_source (" +
             "  id INTEGER PRIMARY KEY AUTOINCREMENT," +
-            "  posX REAL, posY REAL, posZ REAL, kind INTEGER, water REAL);";
+            "  posX REAL, posY REAL, posZ REAL, kind INTEGER, water REAL);" +
+
+            "CREATE TABLE world_prop (" +
+            "  id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "  kind INTEGER, posX REAL, posY REAL, posZ REAL, sizeX REAL, sizeY REAL, sizeZ REAL);" +
+
+            // Items lying on the ground. These used to ride in the container table, one row per item
+            // plus one per stack, which made both the save and the load scale with the number of things
+            // dropped in the world — untenable once that runs to millions. They now have a table of
+            // their own, filed by world chunk and indexed on it, so a chunk's worth of items can be
+            // read back on its own without touching the rest. The item id is interned in ground_type
+            // so the per-item row stays narrow.
+            "CREATE TABLE ground_type (idx INTEGER PRIMARY KEY, itemId TEXT);" +
+
+            "CREATE TABLE ground_item (" +
+            "  cx INTEGER, cz INTEGER, type INTEGER," +
+            "  x REAL, z REAL, count INTEGER, spawnHours REAL," +
+            "  condition INTEGER, timesRepaired INTEGER, yaw INTEGER);" +
+
+            "CREATE INDEX ground_item_chunk ON ground_item (cx, cz);";
 
         #region Write
         /// <summary>Persists a snapshot to <paramref name="path"/> as a single atomic transaction.</summary>
@@ -98,9 +125,12 @@ namespace CloneZ
                     WriteMeta(db, data);
                     WritePlayer(db, data.Player);
                     WriteContainers(db, data.Containers);
+                    WriteGroundItems(db);
                     WriteBarricades(db, data.Barricades);
+                    WriteHouse(db, data.House);
                     WriteFarm(db, data.Farm);
                     WriteWater(db, data.Water);
+                    WriteProps(db, data.Props);
                     db.Execute("COMMIT;");
                 }
                 catch
@@ -164,31 +194,30 @@ namespace CloneZ
                     }
 
             if (p.Clothing != null)
-                using (var st = db.Prepare("INSERT INTO clothing (slot,itemId) VALUES (?,?);"))
+                using (var st = db.Prepare("INSERT INTO clothing (slot,itemId,condition,timesRepaired) VALUES (?,?,?,?);"))
                     foreach (ClothingSave c in p.Clothing)
                     {
                         st.Reset();
-                        st.Bind(1, c.Slot).Bind(2, c.Id);
+                        st.Bind(1, c.Slot).Bind(2, c.Id).Bind(3, c.Condition).Bind(4, c.TimesRepaired);
                         st.Step();
                     }
 
             if (p.Items != null)
-                using (var st = db.Prepare("INSERT INTO player_item (itemId,count,spawnHours,condition) VALUES (?,?,?,?);"))
+                using (var st = db.Prepare("INSERT INTO player_item (itemId,count,spawnHours,condition,timesRepaired) VALUES (?,?,?,?,?);"))
                     foreach (StackSave it in p.Items)
                     {
                         st.Reset();
-                        st.Bind(1, it.Id).Bind(2, it.Count).Bind(3, it.SpawnHours).Bind(4, it.Condition);
+                        st.Bind(1, it.Id).Bind(2, it.Count).Bind(3, it.SpawnHours).Bind(4, it.Condition).Bind(5, it.TimesRepaired);
                         st.Step();
                     }
         }
 
         private static void WriteContainers(SqliteConnection db, List<ContainerSave> containers)
-        {
-            if (containers == null) return;
+        {            if (containers == null) return;
             using (var cst = db.Prepare(
                 "INSERT INTO container (kind,posX,posY,posZ,yaw,searched,lifetime) VALUES (?,?,?,?,?,?,?);"))
             using (var ist = db.Prepare(
-                "INSERT INTO container_item (containerId,itemId,count,spawnHours,condition) VALUES (?,?,?,?,?);"))
+                "INSERT INTO container_item (containerId,itemId,count,spawnHours,condition,timesRepaired) VALUES (?,?,?,?,?,?);"))
             {
                 foreach (ContainerSave c in containers)
                 {
@@ -202,8 +231,62 @@ namespace CloneZ
                     foreach (StackSave it in c.Items)
                     {
                         ist.Reset();
-                        ist.Bind(1, containerId).Bind(2, it.Id).Bind(3, it.Count).Bind(4, it.SpawnHours).Bind(5, it.Condition);
+                        ist.Bind(1, containerId).Bind(2, it.Id).Bind(3, it.Count).Bind(4, it.SpawnHours).Bind(5, it.Condition).Bind(6, it.TimesRepaired);
                         ist.Step();
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Writes every item lying on the ground, filed by chunk.
+        ///
+        /// This reads <see cref="GroundItemStore"/> directly rather than going through
+        /// <see cref="SaveData"/>. Ground items are the one thing in the world whose count is
+        /// unbounded, so routing millions of them through a list of DTOs — a container object and a
+        /// stack object each — would cost more in garbage than in database writes.
+        /// </summary>
+        private static void WriteGroundItems(SqliteConnection db)
+        {
+            // Intern the item ids first, so each row carries a small integer instead of a string.
+            var typeIndex = new Dictionary<string, int>(128);
+            using (var tst = db.Prepare("INSERT INTO ground_type (idx,itemId) VALUES (?,?);"))
+            {
+                foreach (GroundItemStore.Chunk chunk in GroundItemStore.AllChunks)
+                {
+                    for (int i = 0; i < chunk.Items.Count; i++)
+                    {
+                        ItemDef def = GroundItemStore.TypeAt(chunk.Items[i].TypeIndex);
+                        if (def == null || typeIndex.ContainsKey(def.Id)) continue;
+
+                        int idx = typeIndex.Count;
+                        typeIndex[def.Id] = idx;
+                        tst.Reset();
+                        tst.Bind(1, idx).Bind(2, def.Id);
+                        tst.Step();
+                    }
+                }
+            }
+
+            using (var st = db.Prepare(
+                "INSERT INTO ground_item (cx,cz,type,x,z,count,spawnHours,condition,timesRepaired,yaw)" +
+                " VALUES (?,?,?,?,?,?,?,?,?,?);"))
+            {
+                foreach (GroundItemStore.Chunk chunk in GroundItemStore.AllChunks)
+                {
+                    GroundItemStore.Coords(chunk.Key, out int cx, out int cz);
+
+                    for (int i = 0; i < chunk.Items.Count; i++)
+                    {
+                        GroundItemStore.Item it = chunk.Items[i];
+                        ItemDef def = GroundItemStore.TypeAt(it.TypeIndex);
+                        if (def == null || !typeIndex.TryGetValue(def.Id, out int type)) continue;
+
+                        st.Reset();
+                        st.Bind(1, cx).Bind(2, cz).Bind(3, type)
+                          .Bind(4, it.X).Bind(5, it.Z).Bind(6, it.Count).Bind(7, it.SpawnHours)
+                          .Bind(8, (int)it.Condition).Bind(9, (int)it.TimesRepaired).Bind(10, (int)it.Yaw);
+                        st.Step();
                     }
                 }
             }
@@ -221,6 +304,20 @@ namespace CloneZ
                     st.Bind(1, b.Position.x).Bind(2, b.Position.y).Bind(3, b.Position.z)
                       .Bind(4, b.Forward.x).Bind(5, b.Forward.y).Bind(6, b.Forward.z)
                       .Bind(7, b.Planks).Bind(8, b.Health).Bind(9, b.MaxHealth).Bind(10, b.PerPlank);
+                    st.Step();
+                }
+        }
+
+        private static void WriteHouse(SqliteConnection db, List<HousePieceSave> house)
+        {
+            if (house == null) return;
+            using (var st = db.Prepare(
+                "INSERT INTO house_piece (type,posX,posY,posZ,yaw,health,maxHealth) VALUES (?,?,?,?,?,?,?);"))
+                foreach (HousePieceSave h in house)
+                {
+                    st.Reset();
+                    st.Bind(1, h.Type).Bind(2, h.Position.x).Bind(3, h.Position.y).Bind(4, h.Position.z)
+                      .Bind(5, h.Yaw).Bind(6, h.Health).Bind(7, h.MaxHealth);
                     st.Step();
                 }
         }
@@ -252,6 +349,20 @@ namespace CloneZ
                     st.Step();
                 }
         }
+
+        private static void WriteProps(SqliteConnection db, List<PropSave> props)
+        {
+            if (props == null) return;
+            using (var st = db.Prepare(
+                "INSERT INTO world_prop (kind,posX,posY,posZ,sizeX,sizeY,sizeZ) VALUES (?,?,?,?,?,?,?);"))
+                foreach (PropSave p in props)
+                {
+                    st.Reset();
+                    st.Bind(1, p.Kind).Bind(2, p.Position.x).Bind(3, p.Position.y).Bind(4, p.Position.z)
+                      .Bind(5, p.Size.x).Bind(6, p.Size.y).Bind(7, p.Size.z);
+                    st.Step();
+                }
+        }
         #endregion
 
         #region Read
@@ -267,9 +378,12 @@ namespace CloneZ
                 if (!ReadMeta(db, data)) return null;
                 data.Player = ReadPlayer(db);
                 ReadContainers(db, data);
+                ReadGroundItems(db);
                 ReadBarricades(db, data);
+                ReadHouse(db, data);
                 ReadFarm(db, data);
                 ReadWater(db, data);
+                ReadProps(db, data);
                 return data;
             }
         }
@@ -370,12 +484,12 @@ namespace CloneZ
                     });
 
             var clothes = new List<ClothingSave>();
-            using (var st = db.Prepare("SELECT slot,itemId FROM clothing ORDER BY slot;"))
+            using (var st = db.Prepare("SELECT slot,itemId,condition,timesRepaired FROM clothing ORDER BY slot;"))
                 while (st.Step())
-                    clothes.Add(new ClothingSave { Slot = st.GetInt(0), Id = st.GetString(1) });
+                    clothes.Add(new ClothingSave { Slot = st.GetInt(0), Id = st.GetString(1), Condition = st.GetInt(2), TimesRepaired = st.GetInt(3) });
             p.Clothing = clothes.ToArray();
 
-            using (var st = db.Prepare("SELECT itemId,count,spawnHours,condition FROM player_item ORDER BY seq;"))
+            using (var st = db.Prepare("SELECT itemId,count,spawnHours,condition,timesRepaired FROM player_item ORDER BY seq;"))
                 while (st.Step())
                     p.Items.Add(new StackSave
                     {
@@ -383,6 +497,7 @@ namespace CloneZ
                         Count = st.GetInt(1),
                         SpawnHours = st.GetFloat(2),
                         Condition = st.GetInt(3),
+                        TimesRepaired = st.GetInt(4),
                     });
 
             return p;
@@ -408,7 +523,7 @@ namespace CloneZ
                 }
 
             using (var st = db.Prepare(
-                "SELECT containerId,itemId,count,spawnHours,condition FROM container_item ORDER BY seq;"))
+                "SELECT containerId,itemId,count,spawnHours,condition,timesRepaired FROM container_item ORDER BY seq;"))
                 while (st.Step())
                     if (byId.TryGetValue(st.GetInt64(0), out ContainerSave c))
                         c.Items.Add(new StackSave
@@ -417,7 +532,96 @@ namespace CloneZ
                             Count = st.GetInt(2),
                             SpawnHours = st.GetFloat(3),
                             Condition = st.GetInt(4),
+                            TimesRepaired = st.GetInt(5),
                         });
+        }
+
+        /// <summary>
+        /// Restores ground items straight into <see cref="GroundItemStore"/>, bypassing
+        /// <see cref="SaveData"/> for the same reason the write does.
+        ///
+        /// Saves written before ground items had a table of their own carry them as sacks in the
+        /// container list instead; those are still restored by <c>SaveSystem.ApplyWorld</c>, so old
+        /// saves keep working and simply migrate to the new table the next time they are written.
+        /// </summary>
+        private static void ReadGroundItems(SqliteConnection db)
+        {
+            // Cleared here rather than in SaveSystem.ApplyWorld, because that runs after this and
+            // would otherwise wipe the items this just restored. Doing it before the table check also
+            // means loading a save that predates the ground_item table still empties the world first.
+            GroundItemStore.Clear();
+
+            if (!TableExists(db, "ground_item")) return;
+
+            var types = new Dictionary<int, ItemDef>(128);
+            using (var st = db.Prepare("SELECT idx,itemId FROM ground_type;"))
+            {
+                while (st.Step())
+                {
+                    ItemDef def = ItemDatabase.Get(st.GetString(1));
+                    if (def != null) types[st.GetInt(0)] = def;
+                }
+            }
+
+            using (var st = db.Prepare(
+                "SELECT type,x,z,count,spawnHours,condition,timesRepaired,yaw FROM ground_item;"))
+            {
+                while (st.Step())
+                {
+                    if (!types.TryGetValue(st.GetInt(0), out ItemDef def)) continue;
+
+                    GroundItemStore.Add(def,
+                        new Vector3(st.GetFloat(1), 0f, st.GetFloat(2)),
+                        st.GetInt(3),
+                        st.GetFloat(4),
+                        st.GetInt(5),
+                        st.GetInt(6),
+                        st.GetInt(7) * (360f / 256f));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Reads back just the items in one chunk. Nothing calls this yet — the load path still
+        /// restores the whole world at once — but it is the hook chunk streaming needs, and it is the
+        /// reason <c>ground_item</c> is indexed on (cx, cz): pulling one chunk's items costs an index
+        /// seek rather than a scan of every item in the save.
+        /// </summary>
+        public static void ReadGroundChunk(string path, int cx, int cz)
+        {
+            if (!File.Exists(path)) return;
+            using (var db = new SqliteConnection(path))
+            {
+                if (!TableExists(db, "ground_item")) return;
+
+                var types = new Dictionary<int, ItemDef>(128);
+                using (var st = db.Prepare("SELECT idx,itemId FROM ground_type;"))
+                {
+                    while (st.Step())
+                    {
+                        ItemDef def = ItemDatabase.Get(st.GetString(1));
+                        if (def != null) types[st.GetInt(0)] = def;
+                    }
+                }
+
+                using (var st = db.Prepare(
+                    "SELECT type,x,z,count,spawnHours,condition,timesRepaired,yaw FROM ground_item WHERE cx=? AND cz=?;"))
+                {
+                    st.Bind(1, cx).Bind(2, cz);
+                    while (st.Step())
+                    {
+                        if (!types.TryGetValue(st.GetInt(0), out ItemDef def)) continue;
+
+                        GroundItemStore.Add(def,
+                            new Vector3(st.GetFloat(1), 0f, st.GetFloat(2)),
+                            st.GetInt(3),
+                            st.GetFloat(4),
+                            st.GetInt(5),
+                            st.GetInt(6),
+                            st.GetInt(7) * (360f / 256f));
+                    }
+                }
+            }
         }
 
         private static void ReadBarricades(SqliteConnection db, SaveData d)
@@ -433,6 +637,22 @@ namespace CloneZ
                         Health = st.GetFloat(7),
                         MaxHealth = st.GetFloat(8),
                         PerPlank = st.GetFloat(9),
+                    });
+        }
+
+        private static void ReadHouse(SqliteConnection db, SaveData d)
+        {
+            if (!TableExists(db, "house_piece")) return;   // older saves predate house building
+            using (var st = db.Prepare(
+                "SELECT type,posX,posY,posZ,yaw,health,maxHealth FROM house_piece ORDER BY id;"))
+                while (st.Step())
+                    d.House.Add(new HousePieceSave
+                    {
+                        Type = st.GetInt(0),
+                        Position = new Vector3(st.GetFloat(1), st.GetFloat(2), st.GetFloat(3)),
+                        Yaw = st.GetFloat(4),
+                        Health = st.GetFloat(5),
+                        MaxHealth = st.GetFloat(6),
                     });
         }
 
@@ -462,6 +682,20 @@ namespace CloneZ
                         Position = new Vector3(st.GetFloat(0), st.GetFloat(1), st.GetFloat(2)),
                         Kind = st.GetInt(3),
                         Water = st.GetFloat(4),
+                    });
+        }
+
+        private static void ReadProps(SqliteConnection db, SaveData d)
+        {
+            if (!TableExists(db, "world_prop")) return;   // pre-furniture-demolish save -> loader rebuilds defaults
+            d.HasWorldProps = true;
+            using (var st = db.Prepare("SELECT kind,posX,posY,posZ,sizeX,sizeY,sizeZ FROM world_prop ORDER BY id;"))
+                while (st.Step())
+                    d.Props.Add(new PropSave
+                    {
+                        Kind = st.GetInt(0),
+                        Position = new Vector3(st.GetFloat(1), st.GetFloat(2), st.GetFloat(3)),
+                        Size = new Vector3(st.GetFloat(4), st.GetFloat(5), st.GetFloat(6)),
                     });
         }
         #endregion

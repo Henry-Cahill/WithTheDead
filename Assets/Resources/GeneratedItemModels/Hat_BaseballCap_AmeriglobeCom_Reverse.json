@@ -1,0 +1,8 @@
+{"version": 1, "id": "Hat_BaseballCap_AmeriglobeCom_Reverse", "baseHeight": 0.0825, "name": "Hat Baseball Cap Ameriglobe Com Reverse", "model": "gpt-oss:120b", "notes": "Flat baseball cap ~0.22 m across, 0.03 m crown thickness, front brim 0.07 m deep. Crown (cotton‑blend), front brim strip, top button, thin seam line.", "score": 6, "parts": [
+  {"name":"Crown","shape":"cylinder","pos":[0.0,-0.0075,0.034],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.22],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"BrimFront","shape":"cube","pos":[0.0,-0.0185,-0.111],"rot":[0.0,0.0,0.0],"size":[0.22,0.008,0.07],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"TopButton","shape":"sphere","pos":[0.0,0.015,0.034],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.3,0.28,0.32],"smooth":0.6,"metal":1.0},
+  {"name":"CrownSeam","shape":"cylinder","pos":[0.0,0.0085,0.034],"rot":[0.0,0.0,0.0],"size":[0.224,0.002,0.224],"color":[0.4,0.38,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"SideStitchL","shape":"cube","pos":[-0.11,-0.0185,0.034],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.18],"color":[0.4,0.38,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"SideStitchR","shape":"cube","pos":[0.11,-0.0185,0.034],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.18],"color":[0.4,0.38,0.45],"smooth":0.07,"metal":0.0}
+]}

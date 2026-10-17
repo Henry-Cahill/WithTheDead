@@ -8,14 +8,34 @@ namespace CloneZ
     /// item eats/drinks/heals via <see cref="PlayerStats"/>, or equips it by swapping
     /// <see cref="PlayerCombat"/> values. Weight beyond a comfortable load slows the
     /// player down (encumbrance).
+    ///
+    /// The pack is arranged on a grid (<see cref="InventoryLayout"/>): the survivor's own pockets,
+    /// plus one section for each worn container — a chest rig, a thigh bag and a backpack — each
+    /// with its own cells and weight cap. Taking a bag off spills its contents into the remaining
+    /// space; anything that no longer fits anywhere is dropped at the survivor's feet.
     /// </summary>
     [RequireComponent(typeof(PlayerStats))]
     public class PlayerInventory : MonoBehaviour
     {
+        /// <summary>The pockets' grid (the survivor's base carry section).</summary>
+        public const int PocketsWidth = 6, PocketsHeight = 4;
+
+        // Worn slots that can hold a container, in the order their sections are listed.
+        private static readonly ClothingSlot[] s_ContainerSlots = { ClothingSlot.Rig, ClothingSlot.Thigh, ClothingSlot.Back };
+
         public Inventory Inventory { get; private set; }
         public ItemDef EquippedWeapon { get; private set; }
 
+        /// <summary>The grid the pack is arranged on.</summary>
+        public InventoryLayout Layout => Inventory != null ? Inventory.Layout : null;
+
+        /// <summary>The survivor's own pockets (always the first section).</summary>
+        public GridSection Pockets => _pockets;
+
         public event System.Action Changed;
+
+        /// <summary>A short message for the player ("No room for Hammer — dropped it").</summary>
+        public event System.Action<string> Notice;
 
         private PlayerStats _stats;
         private PlayerCombat _combat;
@@ -23,6 +43,8 @@ namespace CloneZ
         private PlayerWounds _wounds;
         private PlayerPanic _panic;
         private int _lastStrengthLevel = -1;
+        private GridSection _pockets;
+        private bool _overflowPending;
 
         private PlayerWounds Wounds => _wounds != null ? _wounds : (_wounds = GetComponent<PlayerWounds>());
         private PlayerPanic Panic => _panic != null ? _panic : (_panic = GetComponent<PlayerPanic>());
@@ -39,8 +61,26 @@ namespace CloneZ
             _stats = GetComponent<PlayerStats>();
             _combat = GetComponent<PlayerCombat>();
             Inventory = new Inventory(CloneZConfig.PlayerCarryCapacity);
-            Inventory.Changed += () => Changed?.Invoke();
+            _pockets = new GridSection(GameSession.SurvivorName + "'s Inventory", PocketsWidth, PocketsHeight, CloneZConfig.PlayerCarryCapacity);
+            Inventory.SetLayout(new InventoryLayout(_pockets));
+            Inventory.Changed += OnInventoryChanged;
+            if (Clothing != null) Clothing.Changed += RebuildSections;
             ItemDatabase.EnsureInit();
+        }
+
+        private void OnDestroy()
+        {
+            if (Inventory != null) Inventory.Changed -= OnInventoryChanged;
+            if (_clothing != null) _clothing.Changed -= RebuildSections;
+        }
+
+        private void OnInventoryChanged()
+        {
+            Changed?.Invoke();
+            if (_overflowPending || Inventory.Layout == null) return;
+            List<ItemStack> stacks = Inventory.Stacks;
+            for (int i = 0; i < stacks.Count; i++)
+                if (!stacks[i].IsPlaced) { _overflowPending = true; break; }
         }
 
         // Strength raises how much the survivor can haul (PZ maxWeight scales with Strength).
@@ -51,11 +91,96 @@ namespace CloneZ
             int strength = _skills.GetLevel(PlayerSkills.Skill.Strength);
             if (strength == _lastStrengthLevel) return;
             _lastStrengthLevel = strength;
-            Inventory.MaxWeight = CloneZConfig.PlayerCarryCapacity * _skills.CarryCapacityMult;
+            RebuildSections();
+        }
+
+        // Stacks with no room on the grid (a forced add, or a bag that came off) are dropped at the
+        // end of the frame — once every change in it has landed.
+        private void LateUpdate()
+        {
+            if (!_overflowPending) return;
+            _overflowPending = false;
+            DropOverflow();
+        }
+
+        /// <summary>Re-derives the grid sections from what's worn: the pockets (sized by Strength) plus a
+        /// section per worn container. Sections that survive keep their identity, so items stay put; a
+        /// removed bag's items are re-placed into the remaining space (or dropped next frame).</summary>
+        public void RebuildSections()
+        {
+            InventoryLayout layout = Inventory != null ? Inventory.Layout : null;
+            if (layout == null) return;
+
+            float strengthMult = _skills != null ? _skills.CarryCapacityMult : 1f;
+            _pockets.Name = GameSession.SurvivorName + "'s Inventory";
+            _pockets.Capacity = CloneZConfig.PlayerCarryCapacity * strengthMult;
+
+            var next = new List<GridSection>(4) { _pockets };
+            PlayerClothing clothing = Clothing;
+            if (clothing != null)
+            {
+                for (int i = 0; i < s_ContainerSlots.Length; i++)
+                {
+                    ClothingSlot slot = s_ContainerSlots[i];
+                    ItemDef worn = clothing.GetWorn(slot);
+                    if (worn == null || !worn.IsWornContainer) continue;
+
+                    GridSection keep = null;
+                    for (int k = 0; k < layout.Sections.Count; k++)
+                        if (layout.Sections[k].Source == worn && layout.Sections[k].Slot == slot) { keep = layout.Sections[k]; break; }
+                    next.Add(keep ?? new GridSection(worn.DisplayName, worn.GridW, worn.GridH, worn.ContainerCapacity, false, worn, slot));
+                }
+            }
+
+            bool same = next.Count == layout.Sections.Count;
+            for (int i = 0; same && i < next.Count; i++) same = ReferenceEquals(next[i], layout.Sections[i]);
+
+            layout.Sections.Clear();
+            layout.Sections.AddRange(next);
+            float total = 0f;
+            for (int i = 0; i < next.Count; i++) total += next[i].Capacity;
+            Inventory.MaxWeight = total;
+
+            if (!same && layout.Validate().Count > 0) _overflowPending = true;
             Changed?.Invoke();
         }
 
-        public float Weight => Inventory.CurrentWeight;
+        // Anything still without a spot gets one more chance, then lands on the floor.
+        private void DropOverflow()
+        {
+            InventoryLayout layout = Inventory.Layout;
+            if (layout == null) return;
+
+            List<ItemStack> spill = null;
+            List<ItemStack> stacks = Inventory.Stacks;
+            for (int i = 0; i < stacks.Count; i++)
+                if (!stacks[i].IsPlaced) (spill ?? (spill = new List<ItemStack>())).Add(stacks[i]);
+            if (spill == null) return;
+
+            for (int i = 0; i < spill.Count; i++)
+            {
+                ItemStack st = spill[i];
+                if (layout.AutoPlace(st, checkWeight: true) || layout.AutoPlace(st, checkWeight: false)) continue;
+                string name = st.Def != null ? st.Def.DisplayName : "item";
+                Drop(st, st.Count);
+                Notice?.Invoke("No room for " + name + " \u2014 dropped it");
+            }
+            if (EquippedWeapon != null && EquippedStack == null) EquipBareHands();
+            Inventory.RaiseChanged();
+        }
+
+        /// <summary>Carried weight, minus a discount for the weapon in hand — an equipped weapon
+        /// weighs less on the carry total (PZ-style), easing encumbrance. Never negative.</summary>
+        public float Weight
+        {
+            get
+            {
+                float w = Inventory.CurrentWeight;
+                if (EquippedWeapon != null)
+                    w -= EquippedWeapon.Weight * CloneZConfig.EquippedWeaponWeightReduction;
+                return Mathf.Max(0f, w);
+            }
+        }
         public float Capacity => Inventory.MaxWeight;
         public float Load => Capacity > 0f ? Weight / Capacity : 0f;
 
@@ -77,9 +202,21 @@ namespace CloneZ
             if (stack == null || stack.Count <= 0) return;
             ItemDef def = stack.Def;
 
+            // Batteries, filters and the torch are handled by the gear rig (recharge / swap / switch on).
+            if (def.IsRefill || def.Gear == GearKind.Flashlight)
+            {
+                var gear = GetComponent<PlayerGear>();
+                if (gear != null && gear.TryUseItem(stack)) Changed?.Invoke();
+                return;
+            }
+
             if (def.IsClothing) { WearFromStack(stack); return; }
-            if (def.IsEquippable) { Equip(def); return; }
+            if (def.IsEquippable) { PromoteStack(stack); Equip(def); return; }
             if (!def.IsConsumable && !def.IsMedical) return;
+
+            // A sealed tin has to be opened first — cleanly with a can opener, or with a sharp
+            // knife (which blunts a touch). No opener and no blade means no meal.
+            if (def.IsCanned && !TryOpenCan()) return;
 
             // Apply every effect the item carries; only spend it if something actually helped
             // (so you can't waste a bandage when there's nothing to bandage).
@@ -117,6 +254,13 @@ namespace CloneZ
                 if (def.WaterTainted && def.HoldsWater && Nutrition != null) Nutrition.OnDrankTainted();
 
                 Inventory.Remove(stack, 1);
+
+                // Opening a tin leaves the empty can behind as scrap.
+                if (def.IsCanned)
+                {
+                    ItemDef tin = ItemDatabase.Get("tincan");
+                    if (tin != null) Inventory.Add(tin, 1, enforceWeight: false);
+                }
 
                 // A drained bottle is kept — it can be refilled at a tap or a rain barrel.
                 if (def.IsWaterContainer && def.HoldsWater && !string.IsNullOrEmpty(def.EmptyId))
@@ -227,15 +371,22 @@ namespace CloneZ
         }
         #endregion
 
-        /// <summary>Puts on a garment: wears it and hands whatever it replaced back to the bag.</summary>
+        /// <summary>Puts on a garment: wears it and hands whatever it replaced back to the bag. Wearing a
+        /// twin of what's already on (a fresher hoodie, goggles with a full battery) swaps the two.</summary>
         private void WearFromStack(ItemStack stack)
         {
             if (Clothing == null || stack == null) return;
             ItemDef def = stack.Def;
-            ItemDef prev = Clothing.Equip(def);
+            PlayerClothing.WornPiece twin = Clothing.GetPiece(def.ClothingSlot);
+            bool swapTwin = twin.Exists && twin.Def == def;
+            if (swapTwin) Clothing.Remove(def.ClothingSlot);   // Equip ignores the same item, so take the twin off first
+
+            PlayerClothing.WornPiece prev = Clothing.Equip(def, stack.Condition, stack.TimesRepaired);
+            if (swapTwin) prev = twin;
             Inventory.Remove(stack, 1);                       // it's on your back now, not in the bag
-            if (prev != null && prev != def)
-                Inventory.Add(prev, 1, enforceWeight: false); // the piece it replaced drops into the bag
+            if (prev.Exists)                                  // the piece it replaced drops into the bag, wear and all
+                Inventory.Add(prev.Def, 1, enforceWeight: false,
+                    condition: prev.Def.IsDamageable ? prev.Condition : -1, timesRepaired: prev.TimesRepaired);
             Changed?.Invoke();
         }
 
@@ -243,9 +394,10 @@ namespace CloneZ
         public bool TakeOff(ClothingSlot slot)
         {
             if (Clothing == null) return false;
-            ItemDef removed = Clothing.Remove(slot);
-            if (removed == null) return false;
-            Inventory.Add(removed, 1, enforceWeight: false);
+            PlayerClothing.WornPiece removed = Clothing.Remove(slot);
+            if (!removed.Exists) return false;
+            Inventory.Add(removed.Def, 1, enforceWeight: false,
+                condition: removed.Def.IsDamageable ? removed.Condition : -1, timesRepaired: removed.TimesRepaired);
             Changed?.Invoke();
             return true;
         }
@@ -280,6 +432,21 @@ namespace CloneZ
                 for (int i = 0; i < stacks.Count; i++)
                     if (stacks[i].Def == EquippedWeapon) return stacks[i];
                 return null;
+            }
+        }
+
+        // The weapon in hand is the first pack stack of its kind (see EquippedStack), so equipping a
+        // particular one — the sharper of two knives — first moves it ahead of its twins.
+        private void PromoteStack(ItemStack stack)
+        {
+            List<ItemStack> stacks = Inventory.Stacks;
+            int at = stacks.IndexOf(stack);
+            for (int i = 0; i < at; i++)
+            {
+                if (stacks[i].Def != stack.Def) continue;
+                stacks.RemoveAt(at);
+                stacks.Insert(i, stack);
+                return;
             }
         }
 
@@ -342,6 +509,82 @@ namespace CloneZ
             _combat.SwingCooldown = CloneZConfig.BareHandCooldown;
             _combat.SwingKnockback = CloneZConfig.BareHandKnockback;
             Changed?.Invoke();
+        }
+
+        // ---- Repair (patch worn gear back up; grounded in PZ's diminishing repair) ----
+
+        /// <summary>The material a repair of this item consumes: thread for clothing, duct tape for
+        /// everything else. (Clothing also needs a needle in the pack — a reusable tool.)</summary>
+        private static string RepairMaterialFor(ItemDef def) => def != null && def.IsClothing ? "thread" : "ducttape";
+
+        /// <summary>The condition a repair of this stack could reach right now — its reachable cap
+        /// falls with each prior repair (so a patched item never fully returns to pristine) and rises
+        /// a little with Carpentry. Returned as an absolute value in 0..MaxCondition.</summary>
+        private int RepairCap(ItemStack stack)
+        {
+            int carpentry = Skills != null ? Skills.GetLevel(PlayerSkills.Skill.Carpentry) : 0;
+            float capFrac = CloneZConfig.RepairCapBase
+                - CloneZConfig.RepairCapDecayPerRepair * stack.TimesRepaired
+                + CloneZConfig.RepairCapCarpentryBonus * carpentry;
+            capFrac = Mathf.Clamp(capFrac, CloneZConfig.RepairCapFloor, 1f);
+            return Mathf.RoundToInt(stack.Def.MaxCondition * capFrac);
+        }
+
+        /// <summary>True when a stack is worn gear that a repair could still improve right now — it's
+        /// below its next repair cap and the material (and, for clothing, a needle) is on hand.</summary>
+        public bool CanRepair(ItemStack stack)
+        {
+            if (stack == null || stack.Def == null || !stack.Def.IsDamageable) return false;
+            if (stack.Def.UsesCharge) return false;                        // a device is recharged, not mended
+            if (stack.Condition >= RepairCap(stack)) return false;         // already at (or past) the reachable cap
+            if (!Has(RepairMaterialFor(stack.Def))) return false;
+            if (stack.Def.IsClothing && !Has("needle")) return false;      // no needle, no mending
+            return true;
+        }
+
+        /// <summary>Patches a worn item back up: spends one unit of the repair material (duct tape, or
+        /// thread for clothing) to raise its condition toward — but never fully back to — its
+        /// diminishing cap. Returns true if it repaired.</summary>
+        public bool TryRepair(ItemStack stack)
+        {
+            if (!CanRepair(stack)) return false;
+
+            int cap = RepairCap(stack);
+            int restore = Mathf.Max(1, Mathf.RoundToInt(stack.Def.MaxCondition * CloneZConfig.RepairRestoreFraction));
+            int newCond = Mathf.Min(cap, stack.Condition + restore);
+            if (newCond <= stack.Condition) return false;
+
+            if (Consume(RepairMaterialFor(stack.Def), 1) <= 0) return false;   // the material must actually leave the bag
+            stack.Condition = newCond;
+            stack.TimesRepaired++;
+            if (Skills != null) Skills.AddXp(PlayerSkills.Skill.Carpentry, CloneZConfig.XpRepairPerFix);
+            Changed?.Invoke();
+            return true;
+        }
+
+        // ---- Opening tins (a canned meal needs a can opener or a sharp blade) ----
+
+        /// <summary>Opens a sealed tin so it can be eaten. A can opener does it cleanly; a sharp
+        /// knife works too but takes a little wear. Returns false when neither is on hand.</summary>
+        private bool TryOpenCan()
+        {
+            if (Has("canopener")) return true;
+            ItemStack blade = FindSharpBlade();
+            if (blade == null) return false;
+            WearTool(blade.Def.Id);   // sawing a lid open costs the blade a little
+            return true;
+        }
+
+        // The first sharp blade in the pack (any Blade-skill melee weapon) — good enough to open a tin.
+        private ItemStack FindSharpBlade()
+        {
+            var stacks = Inventory.Stacks;
+            for (int i = 0; i < stacks.Count; i++)
+            {
+                ItemDef d = stacks[i].Def;
+                if (d != null && d.IsWeapon && d.WeaponSkill == PlayerSkills.Skill.Blade) return stacks[i];
+            }
+            return null;
         }
         #endregion
 
@@ -414,7 +657,61 @@ namespace CloneZ
         }
         #endregion
 
-        /// <summary>Drops a stack into a sack at the player's feet so it can be reclaimed.</summary>
+        /// <summary>Picks a ground item up into the pack, taking as much as the carry weight allows (and
+        /// no more than <paramref name="max"/>); any overflow stays on the floor. Perishable age and
+        /// damageable wear ride along so the item is exactly what was dropped. Returns the number of
+        /// units actually taken.</summary>
+        public int PickUp(WorldItem item, int max = int.MaxValue)
+        {
+            if (item == null || item.Def == null || max <= 0) return 0;
+            int moved = Inventory.Add(item.Def, Mathf.Min(item.Count, max), enforceWeight: true,
+                spawnHours: item.Def.Perishable ? item.SpawnHours : float.NaN,
+                condition: item.Def.IsDamageable ? item.Condition : -1,
+                timesRepaired: item.TimesRepaired);
+            if (moved > 0) item.Take(moved);
+            return moved;
+        }
+
+        /// <summary>Picks a ground item up onto a chosen grid spot (a drag from the floor panel): onto a
+        /// matching stack covering that cell, or as a new stack there. Weight is enforced. Returns the
+        /// number of units taken.</summary>
+        public int PickUpAt(WorldItem item, int max, GridSection section, int x, int y, bool rotated)
+        {
+            InventoryLayout layout = Inventory.Layout;
+            if (item == null || item.Def == null || max <= 0 || layout == null) return 0;
+            ItemDef def = item.Def;
+            int want = Mathf.Min(item.Count, max);
+            int moved;
+
+            ItemStack there = layout.StackAt(section, x, y);
+            if (there != null)
+            {
+                if (there.Def != def) return 0;
+                moved = Mathf.Min(want, def.MaxStack - there.Count);
+                if (def.Weight > 0f)
+                {
+                    float room = Inventory.MaxWeight - Inventory.CurrentWeight;
+                    if (!section.Unlimited) room = Mathf.Min(room, section.Capacity - layout.WeightIn(section));
+                    moved = Mathf.Min(moved, Mathf.FloorToInt((room + 1e-4f) / def.Weight));
+                }
+                if (moved <= 0) return 0;
+                if (def.Perishable) there.SpawnHours = Mathf.Min(there.SpawnHours, item.SpawnHours);
+                there.Count += moved;
+                Inventory.RaiseChanged();
+            }
+            else
+            {
+                moved = Inventory.AddAt(def, want, section, x, y, rotated, enforceWeight: true,
+                    spawnHours: def.Perishable ? item.SpawnHours : float.NaN,
+                    condition: def.IsDamageable ? item.Condition : -1,
+                    timesRepaired: item.TimesRepaired);
+            }
+            if (moved > 0) item.Take(moved);
+            return moved;
+        }
+
+        /// <summary>Drops a stack onto the ground as a rendered item the player can walk up to and
+        /// pick back up. Perishable age and damageable wear ride along so the round-trip changes nothing.</summary>
         public void Drop(ItemStack stack, int count)
         {
             if (stack == null) return;
@@ -422,9 +719,52 @@ namespace CloneZ
             if (count <= 0) return;
 
             Vector3 p = transform.position + transform.forward * 0.7f;
-            p.y = 0.25f;
-            LootContainer.SpawnBag(p, stack.Def, count, stack.Def.IsDamageable ? stack.Condition : -1);
+            WorldItem.Spawn(null, p, stack.Def, count,
+                stack.Def.Perishable ? stack.SpawnHours : float.NaN,
+                stack.Def.IsDamageable ? stack.Condition : -1,
+                stack.TimesRepaired);
             Inventory.Remove(stack, count);
+        }
+
+        /// <summary>Empties the whole pack onto the ground as separate rendered items, scattered in a
+        /// ring around the survivor so they don't pile on one spot. Worn clothing stays on; if the
+        /// equipped weapon is among the dropped items the survivor reverts to bare hands.</summary>
+        public void DropAll()
+        {
+            var live = Inventory.Stacks;
+            if (live.Count == 0) return;
+
+            var snapshot = new List<ItemStack>(live);   // dropping mutates the live list
+            bool droppedEquipped = false;
+            int n = snapshot.Count;
+
+            for (int i = 0; i < n; i++)
+            {
+                ItemStack s = snapshot[i];
+                if (s == null || s.Def == null) continue;
+                if (EquippedWeapon != null && s.Def == EquippedWeapon) droppedEquipped = true;
+
+                float ang = n <= 1 ? 0f : (i / (float)n) * Mathf.PI * 2f;
+                Vector3 p = transform.position + transform.forward * 0.3f
+                    + new Vector3(Mathf.Sin(ang), 0f, Mathf.Cos(ang)) * 0.95f;
+                WorldItem.Spawn(null, p, s.Def, s.Count,
+                    s.Def.Perishable ? s.SpawnHours : float.NaN,
+                    s.Def.IsDamageable ? s.Condition : -1,
+                    s.TimesRepaired);
+                Inventory.Remove(s, s.Count);
+            }
+
+            if (droppedEquipped) EquipBareHands();
+        }
+
+        /// <summary>Moves the entire pack into a container. If the equipped weapon is transferred out
+        /// the survivor reverts to bare hands (mirrors <see cref="DropAll"/>).</summary>
+        public void StoreAllInto(Inventory dest)
+        {
+            if (dest == null) return;
+            bool hadEquipped = EquippedWeapon != null;
+            Inventory.TransferAllTo(dest, enforceWeight: false);
+            if (hadEquipped && EquippedStack == null) EquipBareHands();   // the weapon left the pack
         }
 
         public void AddStarter(string id, int count)
@@ -448,7 +788,8 @@ namespace CloneZ
                     if (def == null) continue;
                     Inventory.Add(def, st.Count, enforceWeight: false,
                         spawnHours: def.Perishable ? st.SpawnHours : float.NaN,
-                        condition: def.IsDamageable && st.Condition > 0 ? st.Condition : -1);
+                        condition: def.RestoredCondition(st.Condition),
+                        timesRepaired: st.TimesRepaired);
                 }
             }
 

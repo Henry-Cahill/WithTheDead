@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_Cowboy_Simmental", "baseHeight": 0.1425, "name": "Hat Cowboy Simmental", "model": "gpt-oss:120b", "notes": "Cowboy hat laid flat on a table, brim horizontal (thin wide cylinder) with a slightly darker lip, tall crown stacked above the brim, leather‑like band around the middle of the crown and subtle crease ridges. Overall dimensions ≈ 0.48 m diameter × 0.18 m height.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.44,0.015,0.44],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"RimEdge","shape":"cylinder","pos":[0.0,-0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.48,0.015,0.48],"color":[0.44,0.4,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"CrownBase","shape":"cylinder","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.12,0.35],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"CrownTop","shape":"cylinder","pos":[0.0,0.0675,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.03,0.28],"color":[0.55,0.5,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.36,0.01,0.36],"color":[0.45,0.41,0.51],"smooth":0.1,"metal":0.0},
+  {"name":"HatLining","shape":"cylinder","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.33,0.12,0.33],"color":[0.65,0.6,0.7],"smooth":0.1,"metal":0.0},
+  {"name":"CreaseFront","shape":"cube","pos":[0.0,0.055,0.075],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.15],"color":[0.48,0.44,0.54],"smooth":0.1,"metal":0.0},
+  {"name":"CreaseBack","shape":"cube","pos":[0.0,0.055,-0.075],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.15],"color":[0.48,0.44,0.54],"smooth":0.1,"metal":0.0},
+  {"name":"CreaseLeft","shape":"cube","pos":[-0.075,0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.005,0.02],"color":[0.48,0.44,0.54],"smooth":0.1,"metal":0.0},
+  {"name":"CreaseRight","shape":"cube","pos":[0.075,0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.005,0.02],"color":[0.48,0.44,0.54],"smooth":0.1,"metal":0.0}
+]}

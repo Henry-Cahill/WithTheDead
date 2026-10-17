@@ -1,0 +1,12 @@
+{"version": 1, "id": "Glasses_Reading", "baseHeight": 0.0675, "name": "Glasses Reading", "model": "gpt-oss:120b", "notes": "Flat reading‑glasses spread out like a product photo – two round plastic frames (≈0.05 m diameter) joined by a short bridge (≈0.02 m), thin transparent lenses inside, tiny nose pads under the bridge and metal hinge screws at each side; temples folded flat outward on either side (≈0.13 m long). Overall spread ≈0.40 m across, 0.01 m thick.", "score": 7, "parts": [
+  {"name":"LeftFrame","shape":"cylinder","pos":[-0.03,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.01,0.05],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"RightFrame","shape":"cylinder","pos":[0.03,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.01,0.05],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.05],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"LensL","shape":"cylinder","pos":[-0.03,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.002,0.045],"color":[0.9,0.95,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"LensR","shape":"cylinder","pos":[0.03,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.002,0.045],"color":[0.9,0.95,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"NosePad","shape":"cylinder","pos":[0.0,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.005,0.008],"color":[0.2,0.18,0.22],"smooth":0.1,"metal":0.0},
+  {"name":"TempleL","shape":"cube","pos":[-0.12,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.01,0.005],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"TempleR","shape":"cube","pos":[0.12,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.01,0.005],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"ScrewL","shape":"sphere","pos":[-0.055,0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.7,0.71,0.73],"smooth":0.65,"metal":1.0},
+  {"name":"ScrewR","shape":"sphere","pos":[0.055,0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.7,0.71,0.73],"smooth":0.65,"metal":1.0}
+]}

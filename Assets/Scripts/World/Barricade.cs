@@ -11,7 +11,7 @@ namespace CloneZ
     /// player with a solid collider, so zombies must beat it down to get through. Keeps a
     /// static registry mirroring <see cref="SleepSpot"/> / <see cref="LootContainer"/>.
     /// </summary>
-    public class Barricade : MonoBehaviour, IDamageable
+    public class Barricade : MonoBehaviour, IDamageable, IDemolishable
     {
         public static readonly List<Barricade> All = new List<Barricade>();
 
@@ -238,6 +238,28 @@ namespace CloneZ
             All.Remove(this);
             Destroy(gameObject);
         }
+
+        /// <summary>Pries the barricade apart for salvage (the builder handles the material refund).
+        /// Removes it from the registry at once so AI queries drop it immediately.</summary>
+        public void Dismantle()
+        {
+            Planks = 0;
+            Health = 0f;
+            All.Remove(this);
+            Destroy(gameObject);
+        }
+        #endregion
+
+        #region IDemolishable
+        public string DemolishName => "barricade";
+        public bool CanDemolish(out string reason) { reason = null; return Planks > 0; }
+        public void GetSalvage(out int planks, out int nails)
+        {
+            float f = CloneZConfig.HouseSalvageFraction;
+            planks = Mathf.Max(0, Mathf.RoundToInt(Planks * CloneZConfig.BarricadePlankCost * f));
+            nails = Mathf.Max(0, Mathf.RoundToInt(Planks * CloneZConfig.BarricadeNailCost * f));
+        }
+        public bool CarvesNavMesh => false;   // carves via a NavMeshObstacle (auto-freed on destroy), not a static bake
         #endregion
     }
 }

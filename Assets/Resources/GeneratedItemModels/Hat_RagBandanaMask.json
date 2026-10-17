@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_RagBandanaMask", "baseHeight": 0.08, "name": "Hat Rag Bandana Mask", "model": "gpt-oss:120b", "notes": "Flat bandana‑mask hat ~0.55 m wide × 0.30 m tall × 0.025 m thick. Central mask panel with left/right fabric flaps, a back tie loop, front ties, stitching line and thin fringe strips along the top/bottom edges.", "score": 6, "parts": [
+  {"name":"MainMask","shape":"cube","pos":[0.0,-0.0075,-0.025],"rot":[0.0,0.0,0.0],"size":[0.4,0.025,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftFlap","shape":"cube","pos":[-0.275,-0.0075,-0.025],"rot":[0.0,0.0,0.0],"size":[0.15,0.025,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightFlap","shape":"cube","pos":[0.275,-0.0075,-0.025],"rot":[0.0,0.0,0.0],"size":[0.15,0.025,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TieBack","shape":"cylinder","pos":[0.0,-0.0075,-0.175],"rot":[0.0,0.0,90.0],"size":[0.02,0.35,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Knot","shape":"sphere","pos":[0.0,0.0,-0.175],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieFrontLeft","shape":"cylinder","pos":[-0.275,-0.0075,0.095],"rot":[90.0,0.0,0.0],"size":[0.015,0.2,0.015],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieFrontRight","shape":"cylinder","pos":[0.275,-0.0075,0.095],"rot":[90.0,0.0,0.0],"size":[0.015,0.2,0.015],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLine","shape":"cube","pos":[0.0,0.0075,-0.025],"rot":[0.0,0.0,0.0],"size":[0.4,0.005,0.01],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"FringeTop","shape":"cube","pos":[0.0,0.0105,0.125],"rot":[0.0,0.0,0.0],"size":[0.4,0.005,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FringeBottom","shape":"cube","pos":[0.0,0.0105,-0.175],"rot":[0.0,0.0,0.0],"size":[0.4,0.005,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

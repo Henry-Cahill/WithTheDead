@@ -1,0 +1,14 @@
+{"version": 1, "id": "Jacket_Leather", "baseHeight": 0.08, "name": "Jacket Leather", "model": "gpt-oss:120b", "notes": "Flat leather jacket ~0.75 m long x 0.5 m wide (torso) with sleeves spread sideways (~0.6 m each). Main colour = tint (0.55,0.5,0.6), leather smoothness≈0.2.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.005,-0.0375],"rot":[0.0,0.0,0.0],"size":[0.5,0.03,0.75],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"Collar","shape":"cube","pos":[0.0,0.005,0.2975],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.08],"color":[0.6,0.55,0.65],"smooth":0.2,"metal":0.0},
+  {"name":"LapelL","shape":"cube","pos":[-0.12,0.005,0.2125],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.4],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"LapelR","shape":"cube","pos":[0.12,0.005,0.2125],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.4],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.16,0.0025,0.0625],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.5,0.45,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.16,0.0025,0.0625],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.5,0.45,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"ZipLine","shape":"cube","pos":[0.0,0.005,-0.0375],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.75],"color":[0.4,0.38,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[0.0,0.005,-0.3875],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.05],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.55,-0.005,0.1625],"rot":[0.0,0.0,0.0],"size":[0.6,0.03,0.25],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[-0.55,-0.005,0.1625],"rot":[0.0,0.0,0.0],"size":[0.6,0.03,0.25],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.85,-0.005,0.1625],"rot":[0.0,0.0,0.0],"size":[0.1,0.03,0.25],"color":[0.5,0.45,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[-0.85,-0.005,0.1625],"rot":[0.0,0.0,0.0],"size":[0.1,0.03,0.25],"color":[0.5,0.45,0.55],"smooth":0.2,"metal":0.0}
+]}

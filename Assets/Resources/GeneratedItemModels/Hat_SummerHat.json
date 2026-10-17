@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_SummerHat", "baseHeight": 0.118, "name": "Hat Summer Hat", "model": "gpt-oss:120b", "notes": "Flat summer hat laid out like a product photo – 0.26 m brim diameter, low crown about 0.15 m wide and 0.09 m tall, 2‑3 cm overall thickness. Main fabric uses the tint (0.55,0.5,0.6) with darker trims and a thin straw‑like edge.", "score": 6, "parts": [
+  {"name":"BrimOuter","shape":"cylinder","pos":[0.0,-0.0505,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.015,0.26],"color":[0.65,0.6,0.7],"smooth":0.08,"metal":0.0},
+  {"name":"BrimInner","shape":"cylinder","pos":[0.0,-0.0505,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.015,0.24],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLineBrim","shape":"cylinder","pos":[0.0,-0.043,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.003,0.26],"color":[0.2,0.2,0.2],"smooth":0.03,"metal":0.0},
+  {"name":"CrownBase","shape":"cylinder","pos":[0.0,-0.033,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.15],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HatBand","shape":"cylinder","pos":[0.0,-0.033,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.005,0.16],"color":[0.44,0.4,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"BandTrim","shape":"cylinder","pos":[0.0,-0.0295,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.14],"color":[0.35,0.32,0.38],"smooth":0.07,"metal":0.0},
+  {"name":"CrownDome","shape":"sphere","pos":[0.0,0.017,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.08,0.15],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"CrownTopTrim","shape":"cylinder","pos":[0.0,0.057,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.14],"color":[0.35,0.32,0.38],"smooth":0.07,"metal":0.0},
+  {"name":"CrownRidge","shape":"cylinder","pos":[0.0,-0.023,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.003,0.15],"color":[0.3,0.27,0.33],"smooth":0.04,"metal":0.0},
+  {"name":"LabelTag","shape":"cube","pos":[0.12,-0.043,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.01],"color":[0.4,0.25,0.15],"smooth":0.08,"metal":0.0}
+]}

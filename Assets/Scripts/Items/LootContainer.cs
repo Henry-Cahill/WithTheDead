@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace CloneZ
 {
-    public enum ContainerType { Crate, Locker, Fridge, MedCabinet, Desk, ToolBench, Corpse }
+    public enum ContainerType { Crate, Locker, Fridge, MedCabinet, Desk, ToolBench, Wardrobe, Pantry, GunLocker, Shelf, Corpse }
 
     /// <summary>
     /// A searchable world container. It registers itself in a static list so the
     /// player's interactor can find the nearest one by proximity. Contents are
     /// rolled from a loot table when the container is spawned.
     /// </summary>
-    public class LootContainer : MonoBehaviour
+    public class LootContainer : MonoBehaviour, IDemolishable
     {
         public static readonly List<LootContainer> All = new List<LootContainer>();
 
@@ -25,13 +25,73 @@ namespace CloneZ
         /// <summary>True for a dropped sack — a collider-less pickup rather than a world container.</summary>
         public bool IsSack;
 
-        /// <summary>Save "kind" value for a dropped sack (world containers use their ContainerType int).</summary>
-        public const int KindSack = 7;
+        /// <summary>Save "kind" value for a dropped ground item (world containers use their ContainerType
+        /// int; kept clear of every ContainerType value so the two never collide in a save).</summary>
+        public const int KindSack = 20;
 
         public bool IsEmpty => Contents == null || Contents.Stacks.Count == 0;
 
+        /// <summary>Arranges the contents on a growable grid (once) for the grid inventory view, sized to
+        /// suit the container — a crate is wide, a medicine cabinet narrow. Returns the layout.</summary>
+        public InventoryLayout EnsureLayout()
+        {
+            if (Contents == null) return null;
+            if (Contents.Layout == null)
+                Contents.SetLayout(InventoryLayout.Growable(DisplayName, GridWidthFor(Type, IsSack), GridRowsFor(Type, IsSack)));
+            return Contents.Layout;
+        }
+
+        /// <summary>Columns of a container's grid in the grid inventory view.</summary>
+        public static int GridWidthFor(ContainerType type, bool sack = false)
+        {
+            if (sack) return InventoryLayout.MaxFootprint;
+            switch (type)
+            {
+                case ContainerType.Crate:
+                case ContainerType.ToolBench:
+                case ContainerType.Shelf: return 8;
+                case ContainerType.Wardrobe: return 7;
+                default: return InventoryLayout.MaxFootprint;
+            }
+        }
+
+        /// <summary>Rows a container's grid shows at minimum (it grows to fit whatever it holds).</summary>
+        public static int GridRowsFor(ContainerType type, bool sack = false)
+        {
+            if (sack) return 2;
+            switch (type)
+            {
+                case ContainerType.Crate:
+                case ContainerType.Wardrobe:
+                case ContainerType.Fridge:
+                case ContainerType.GunLocker:
+                case ContainerType.Locker: return 6;
+                case ContainerType.Corpse: return 5;
+                default: return 4;
+            }
+        }
+
         private void OnEnable() { if (!All.Contains(this)) All.Add(this); }
         private void OnDisable() { All.Remove(this); }
+
+        #region IDemolishable
+        public string DemolishName => "container";
+        public bool CanDemolish(out string reason)
+        {
+            if (IsSack) { reason = "Pick the sack up instead"; return false; }
+            if (Type == ContainerType.Corpse) { reason = "Search the body, don't dismantle it"; return false; }
+            if (!IsEmpty) { reason = "Empty it before dismantling"; return false; }
+            reason = null; return true;
+        }
+        public void GetSalvage(out int planks, out int nails) { planks = CloneZConfig.SalvageContainerPlanks; nails = CloneZConfig.SalvageContainerNails; }
+        public bool CarvesNavMesh => !IsSack && Type != ContainerType.Corpse;   // world containers carry colliders baked into the navmesh
+        public void Dismantle()
+        {
+            All.Remove(this);
+            gameObject.SetActive(false);   // drop out of the navmesh bake before the rebuild runs
+            Destroy(gameObject);
+        }
+        #endregion
 
         private void Update()
         {
@@ -95,8 +155,9 @@ namespace CloneZ
         }
 
         /// <summary>Drops a small sack holding a single stack (used when the player drops items).
-        /// A dropped damageable item keeps its <paramref name="condition"/> so wear survives the round-trip.</summary>
-        public static LootContainer SpawnBag(Vector3 position, ItemDef def, int count, int condition = -1)
+        /// A dropped damageable item keeps its <paramref name="condition"/> and repair history so wear
+        /// survives the round-trip.</summary>
+        public static LootContainer SpawnBag(Vector3 position, ItemDef def, int count, int condition = -1, int timesRepaired = 0)
         {
             GameObject go = CloneZUtil.Box("Sack", position, new Vector3(0.5f, 0.4f, 0.5f), new Color(0.45f, 0.38f, 0.28f));
             Collider col = go.GetComponent<Collider>();
@@ -106,7 +167,7 @@ namespace CloneZ
             c.DisplayName = "Sack";
             c.IsSack = true;
             c.Contents = new Inventory(999f);
-            c.Contents.Add(def, count, enforceWeight: false, condition: condition);
+            c.Contents.Add(def, count, enforceWeight: false, condition: condition, timesRepaired: timesRepaired);
             c.SearchTime = 0f;      // your own dropped goods — grab them instantly
             c.Searched = true;
             return c;
@@ -142,7 +203,7 @@ namespace CloneZ
             }
             else
             {
-                var type = (ContainerType)Mathf.Clamp(kind, 0, (int)ContainerType.ToolBench);
+                var type = (ContainerType)Mathf.Clamp(kind, 0, (int)ContainerType.Shelf);
                 Style(type, out Vector3 size, out Color color, out string name);
                 position.y = size.y * 0.5f;
                 GameObject go = CloneZUtil.Box(name, position, size, color, parent);
@@ -162,7 +223,8 @@ namespace CloneZ
                     if (def != null)
                         c.Contents.Add(def, st.Count, enforceWeight: false,
                             spawnHours: def.Perishable ? st.SpawnHours : float.NaN,
-                            condition: def.IsDamageable && st.Condition > 0 ? st.Condition : -1);
+                            condition: def.RestoredCondition(st.Condition),
+                            timesRepaired: st.TimesRepaired);
                 }
             }
             c.Searched = searched;
@@ -189,6 +251,14 @@ namespace CloneZ
                     size = new Vector3(1.6f, 0.9f, 0.9f); color = new Color(0.5f, 0.38f, 0.26f); name = "Desk"; break;
                 case ContainerType.ToolBench:
                     size = new Vector3(1.8f, 1.0f, 0.8f); color = new Color(0.32f, 0.3f, 0.33f); name = "Tool Bench"; break;
+                case ContainerType.Wardrobe:
+                    size = new Vector3(1.0f, 2.0f, 0.6f); color = new Color(0.50f, 0.36f, 0.24f); name = "Wardrobe"; break;
+                case ContainerType.Pantry:
+                    size = new Vector3(1.0f, 1.7f, 0.6f); color = new Color(0.62f, 0.50f, 0.36f); name = "Pantry"; break;
+                case ContainerType.GunLocker:
+                    size = new Vector3(0.8f, 1.9f, 0.6f); color = new Color(0.24f, 0.26f, 0.30f); name = "Gun Locker"; break;
+                case ContainerType.Shelf:
+                    size = new Vector3(1.4f, 1.8f, 0.5f); color = new Color(0.50f, 0.46f, 0.40f); name = "Shelf"; break;
                 default:
                     size = new Vector3(1.1f, 1.0f, 1.1f); color = new Color(0.55f, 0.42f, 0.28f); name = "Crate"; break;
             }

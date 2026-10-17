@@ -1,0 +1,12 @@
+{"version": 1, "id": "Jumper_TankTopDiamondTINT", "baseHeight": 0.079, "name": "Jumper Tank Top Diamond TINT", "model": "gpt-oss:120b", "notes": "Flat jumper tank‑top, approx 0.60 m long × 0.44 m wide × 2.5 cm thick (fabric). Main torso panel with side seams, a ribbed neck band front & back, two shoulder straps, bottom hem bands and a small chest label patch.", "score": 6, "parts": [
+  {"name":"TorsoPanel","shape":"cube","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.44,0.03,0.6],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.22,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.032,0.6],"color":[0.45,0.41,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.22,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.032,0.6],"color":[0.45,0.41,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"NeckBandFront","shape":"cube","pos":[0.0,0.013,0.28],"rot":[0.0,0.0,0.0],"size":[0.44,0.004,0.08],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"NeckBandBack","shape":"cube","pos":[0.0,0.013,-0.28],"rot":[0.0,0.0,0.0],"size":[0.44,0.004,0.08],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"StrapL","shape":"cube","pos":[-0.21,0.015,-0.1],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StrapR","shape":"cube","pos":[0.21,0.015,-0.1],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemBandFront","shape":"cube","pos":[0.0,-0.017,0.28],"rot":[0.0,0.0,0.0],"size":[0.44,0.004,0.08],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"HemBandBack","shape":"cube","pos":[0.0,-0.017,-0.28],"rot":[0.0,0.0,0.0],"size":[0.44,0.004,0.08],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[0.0,0.013,0.1],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.04],"color":[0.42,0.38,0.48],"smooth":0.05,"metal":0.0}
+]}

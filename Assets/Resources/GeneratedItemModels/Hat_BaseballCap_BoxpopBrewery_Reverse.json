@@ -1,0 +1,11 @@
+{"version": 1, "id": "Hat_BaseballCap_BoxpopBrewery_Reverse", "baseHeight": 0.0785, "name": "Hat Baseball Cap Boxpop Brewery Reverse", "model": "gpt-oss:120b", "notes": "Flat baseball cap (≈0.24 m wide × 0.18 m deep) laid out like a product photo: main crown panel, surrounding brim, top button and subtle stitching trims. Fabric tint 0.55,0.5,0.6; brim slightly darker.", "score": 7, "parts": [
+  {"name":"CrownPanel","shape":"cube","pos":[0.0,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.16],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Brim","shape":"cube","pos":[0.0,-0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.26],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TopButton","shape":"cylinder","pos":[0.0,0.016,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.015],"color":[0.7,0.68,0.72],"smooth":0.3,"metal":0.0},
+  {"name":"StitchCrownTop","shape":"cube","pos":[0.0,0.016,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.16],"color":[0.4,0.38,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBrimEdge","shape":"cube","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.004,0.26],"color":[0.4,0.38,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelL","shape":"cube","pos":[-0.11,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.16],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelR","shape":"cube","pos":[0.11,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.16],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,0.001,0.08],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,0.001,-0.08],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

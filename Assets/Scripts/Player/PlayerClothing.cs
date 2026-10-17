@@ -26,62 +26,93 @@ namespace CloneZ
             (ClothingSlot.Hands, 0.14f), (ClothingSlot.Head, 0.12f), (ClothingSlot.Feet, 0.10f),
         };
 
-        private readonly Dictionary<ClothingSlot, ItemDef> _worn = new Dictionary<ClothingSlot, ItemDef>();
+        /// <summary>A worn garment plus its per-piece wear. Reuses the condition model from
+        /// <see cref="ItemStack"/>: full at <see cref="ItemDef.MaxCondition"/>, worn through into a
+        /// useless hole at 0. <see cref="TimesRepaired"/> rides along so mending caps diminish.</summary>
+        public readonly struct WornPiece
+        {
+            public readonly ItemDef Def;
+            public readonly int Condition;
+            public readonly int TimesRepaired;
+            public WornPiece(ItemDef def, int condition, int timesRepaired)
+            { Def = def; Condition = condition; TimesRepaired = timesRepaired; }
+            public bool Exists => Def != null;
+            public float Condition01 => Def == null || Def.MaxCondition <= 0
+                ? 1f : Mathf.Clamp01((float)Condition / Def.MaxCondition);
+        }
+
+        private readonly Dictionary<ClothingSlot, WornPiece> _worn = new Dictionary<ClothingSlot, WornPiece>();
 
         /// <summary>Raised whenever the worn set changes (for UI refresh).</summary>
         public event System.Action Changed;
 
-        public ItemDef GetWorn(ClothingSlot slot) => _worn.TryGetValue(slot, out ItemDef d) ? d : null;
-        public bool IsWearing(ClothingSlot slot) => GetWorn(slot) != null;
+        public ItemDef GetWorn(ClothingSlot slot) => _worn.TryGetValue(slot, out WornPiece p) ? p.Def : null;
+        public bool IsWearing(ClothingSlot slot) => _worn.ContainsKey(slot);
 
-        public int WornCount
-        {
-            get
-            {
-                int n = 0;
-                foreach (KeyValuePair<ClothingSlot, ItemDef> kv in _worn)
-                    if (kv.Value != null) n++;
-                return n;
-            }
-        }
+        /// <summary>The full worn piece (def + wear) on a slot, or an empty <see cref="WornPiece"/>.</summary>
+        public WornPiece GetPiece(ClothingSlot slot) => _worn.TryGetValue(slot, out WornPiece p) ? p : default;
 
-        /// <summary>Wears a garment on its slot; returns whatever it replaced (to return to the bag), or null.</summary>
-        public ItemDef Equip(ItemDef def)
+        /// <summary>How intact the garment on a slot is, 0..1 (1 when the slot is bare).</summary>
+        public float GetCondition01(ClothingSlot slot) => _worn.TryGetValue(slot, out WornPiece p) ? p.Condition01 : 1f;
+
+        public int WornCount => _worn.Count;
+
+        /// <summary>Wears a garment on its slot, carrying its condition and repair history. Returns
+        /// whatever it replaced (to hand back to the bag); <see cref="WornPiece.Exists"/> is false
+        /// when the slot was bare. A negative <paramref name="condition"/> means a pristine garment.</summary>
+        public WornPiece Equip(ItemDef def, int condition = -1, int timesRepaired = 0)
         {
-            if (def == null || !def.IsClothing) return null;
-            ItemDef prev = GetWorn(def.ClothingSlot);
-            if (prev == def) return null;
-            _worn[def.ClothingSlot] = def;
+            if (def == null || !def.IsClothing) return default;
+            _worn.TryGetValue(def.ClothingSlot, out WornPiece prev);
+            if (prev.Def == def) return default;
+            int cond = condition >= 0 ? Mathf.Clamp(condition, 0, def.MaxCondition) : def.MaxCondition;
+            _worn[def.ClothingSlot] = new WornPiece(def, cond, Mathf.Max(0, timesRepaired));
             Changed?.Invoke();
             return prev;
         }
 
-        /// <summary>Takes a garment off; returns it so the caller can drop it in the bag, or null if bare.</summary>
-        public ItemDef Remove(ClothingSlot slot)
+        /// <summary>Takes a garment off; returns it (with its wear) so the caller can drop it in the
+        /// bag, or an empty <see cref="WornPiece"/> if the slot was bare.</summary>
+        public WornPiece Remove(ClothingSlot slot)
         {
-            ItemDef prev = GetWorn(slot);
-            if (prev == null) return null;
+            if (!_worn.TryGetValue(slot, out WornPiece prev)) return default;
             _worn.Remove(slot);
             Changed?.Invoke();
             return prev;
         }
 
-        /// <summary>Total warmth from everything worn; soaked clothes lose most of their insulation.</summary>
+        /// <summary>Sets the condition of the piece worn on a slot — its wear, or for a device (night
+        /// vision, gas mask) its charge. Silent by default so a draining battery doesn't rebuild every
+        /// UI each tick; pass <paramref name="notify"/> to raise <see cref="Changed"/>.</summary>
+        public void SetCondition(ClothingSlot slot, int condition, bool notify = false)
+        {
+            if (!_worn.TryGetValue(slot, out WornPiece p) || p.Def == null) return;
+            int c = Mathf.Clamp(condition, 0, Mathf.Max(0, p.Def.MaxCondition));
+            if (c == p.Condition) return;
+            _worn[slot] = new WornPiece(p.Def, c, p.TimesRepaired);
+            if (notify) Changed?.Invoke();
+        }
+
+        /// <summary>Total warmth from everything worn; holes (low condition) and soaking both bleed it away.</summary>
         public float TotalInsulation(float wetness)
         {
             float sum = 0f;
-            foreach (KeyValuePair<ClothingSlot, ItemDef> kv in _worn)
-                if (kv.Value != null) sum += kv.Value.Insulation;
+            foreach (KeyValuePair<ClothingSlot, WornPiece> kv in _worn)
+                sum += kv.Value.Def.Insulation * kv.Value.Condition01;   // a threadbare garment barely insulates
             float wetMult = 1f - CloneZConfig.WetInsulationLoss * Mathf.Clamp01(wetness);
             return sum * wetMult;
         }
 
-        /// <summary>Best waterproofing among worn clothes — a raincoat keeps most of the rain off.</summary>
+        /// <summary>Best waterproofing among worn clothes — a raincoat keeps most of the rain off
+        /// (a holed one leaks).</summary>
         public float WaterResistance()
         {
             float best = 0f;
-            foreach (KeyValuePair<ClothingSlot, ItemDef> kv in _worn)
-                if (kv.Value != null && kv.Value.WaterResistance > best) best = kv.Value.WaterResistance;
+            foreach (KeyValuePair<ClothingSlot, WornPiece> kv in _worn)
+            {
+                float wr = kv.Value.Def.WaterResistance * kv.Value.Condition01;
+                if (wr > best) best = wr;
+            }
             return best;
         }
 
@@ -91,12 +122,27 @@ namespace CloneZ
         /// <summary>Rolls whether worn clothing turns an incoming scratch (true = no wound got through).</summary>
         public bool BlocksScratch() => RollBlock(false);
 
+        // Picks the struck body area; a garment there absorbs the blow (wearing toward a hole) and
+        // turns it with a chance scaled by how intact it still is.
         private bool RollBlock(bool bite)
         {
-            ItemDef piece = GetWorn(RollHitArea());
-            if (piece == null) return false;
-            float defence = bite ? piece.BiteDefense : piece.ScratchDefense;
+            ClothingSlot area = RollHitArea();
+            if (!_worn.TryGetValue(area, out WornPiece piece)) return false;
+
+            float defence = (bite ? piece.Def.BiteDefense : piece.Def.ScratchDefense) * piece.Condition01;
+            WearPiece(area, piece);   // a covered strike frays the fabric whether or not it turns the blow
             return defence > 0f && Random.value < defence;
+        }
+
+        // One chance-gated point of wear on a struck garment (1-in-ConditionLossChance); a garment
+        // worn to 0 is shredded into a useless rag and falls off the slot.
+        private void WearPiece(ClothingSlot slot, WornPiece piece)
+        {
+            if (Random.Range(0, Mathf.Max(1, piece.Def.ConditionLossChance)) != 0) return;
+            int cond = piece.Condition - 1;
+            if (cond > 0) _worn[slot] = new WornPiece(piece.Def, cond, piece.TimesRepaired);
+            else _worn.Remove(slot);
+            Changed?.Invoke();
         }
 
         private static ClothingSlot RollHitArea()

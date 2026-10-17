@@ -1,0 +1,11 @@
+{"version": 1, "id": "Glasses_JackieO", "baseHeight": 0.067, "name": "Glasses Jackie O", "model": "gpt-oss:120b", "notes": "Flat layout of Jackie O glasses – total width ≈ 0.16 m, height (including temples) ≈ 0.06 m, overall thickness ~2 cm. Main tinted acetate frame (RGB 0.55,0.5,0.6) surrounds two thin lenses; a short bridge links the lenses and the temple arms extend back from each side.", "score": 6, "parts": [
+  {"name":"LeftLens","shape":"cylinder","pos":[-0.045,-0.001,0.0068],"rot":[0.0,0.0,0.0],"size":[0.045,0.004,0.045],"color":[0.9,0.95,1.0],"smooth":0.4,"metal":0.0},
+  {"name":"RightLens","shape":"cylinder","pos":[0.045,-0.001,0.0068],"rot":[0.0,0.0,0.0],"size":[0.045,0.004,0.045],"color":[0.9,0.95,1.0],"smooth":0.4,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,-0.0,0.0068],"rot":[0.0,0.0,0.0],"size":[0.02,0.006,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrameL","shape":"cylinder","pos":[-0.045,0.003,0.0068],"rot":[0.0,0.0,0.0],"size":[0.053,0.008,0.053],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrameR","shape":"cylinder","pos":[0.045,0.003,0.0068],"rot":[0.0,0.0,0.0],"size":[0.053,0.008,0.053],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftTemple","shape":"cube","pos":[-0.07,-0.003,-0.0232],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightTemple","shape":"cube","pos":[0.07,-0.003,-0.0232],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftHinge","shape":"cylinder","pos":[-0.07,0.001,-0.0232],"rot":[0.0,0.0,90.0],"size":[0.012,0.008,0.012],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightHinge","shape":"cylinder","pos":[0.07,0.001,-0.0232],"rot":[0.0,0.0,90.0],"size":[0.012,0.008,0.012],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

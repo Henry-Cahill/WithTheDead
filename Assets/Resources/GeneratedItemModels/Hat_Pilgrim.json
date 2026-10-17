@@ -1,0 +1,8 @@
+{"version": 1, "id": "Hat_Pilgrim", "baseHeight": 0.12, "name": "Hat Pilgrim", "model": "gpt-oss:120b", "notes": "Pilgrim hat laid flat: wide woolen brim (0.36 m dia) with a thin darker rim, side‑lying crown (0.12 m dia × 0.15 m long) attached to the brim edge, thin cloth band around the middle of the crown and a rounded top cap.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[-0.1,-0.0475,0.0],"rot":[0.0,0.0,0.0],"size":[0.36,0.025,0.36],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimRim","shape":"cylinder","pos":[-0.1,-0.0325,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.005,0.38],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Crown","shape":"cylinder","pos":[0.155,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.15,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBand","shape":"cube","pos":[0.155,0.0,0.07],"rot":[0.0,0.0,0.0],"size":[0.15,0.008,0.02],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"CrownTop","shape":"sphere","pos":[0.23,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.12,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBaseCap","shape":"sphere","pos":[0.08,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.12,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

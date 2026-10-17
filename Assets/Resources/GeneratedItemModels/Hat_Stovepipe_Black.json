@@ -1,0 +1,9 @@
+{"version": 1, "id": "Hat_Stovepipe_Black", "baseHeight": 0.1925, "name": "Hat Stovepipe Black", "model": "gpt-oss:120b", "notes": "Flat stovepipe hat laid out for product view – 0.36 m brim diameter, 0.25 m tall crown, 1.5 cm thick felt brim, dark‑tinted cloth (RGB 0.55,0.5,0.6). Includes crown, brim, rolled edge seams, a decorative band and front ribbon.", "score": 7, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.125,0.0],"rot":[0.0,0.0,0.0],"size":[0.36,0.015,0.36],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SeamOuter","shape":"cylinder","pos":[0.0,-0.1155,0.0],"rot":[0.0,0.0,0.0],"size":[0.364,0.004,0.364],"color":[0.45,0.44,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SeamInner","shape":"cylinder","pos":[0.0,-0.1155,0.0],"rot":[0.0,0.0,0.0],"size":[0.352,0.004,0.352],"color":[0.45,0.44,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Crown","shape":"cylinder","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.25,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.1135,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.008,0.13],"color":[0.3,0.3,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"TopFlare","shape":"cylinder","pos":[0.0,0.1225,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.02,0.14],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RibbonFront","shape":"cube","pos":[0.0,0.1125,0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.04],"color":[0.3,0.3,0.35],"smooth":0.1,"metal":0.0}
+]}

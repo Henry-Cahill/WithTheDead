@@ -1,0 +1,13 @@
+{"version": 1, "id": "PonchoTarpDOWN", "baseHeight": 0.09, "name": "Poncho Tarp DOWN", "model": "gpt-oss:120b", "notes": "Poncho‑tarp with down fill, laid flat on the ground (≈1.20 m × 1.00 m, 3 cm thick) with reinforced hem edges, a front hood flap, a side pocket and rope draw‑string loops at each corner.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.03,1.0],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemTop","shape":"cube","pos":[0.0,-0.01,0.49],"rot":[0.0,0.0,0.0],"size":[1.2,0.04,0.02],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"HemBottom","shape":"cube","pos":[0.0,-0.01,-0.49],"rot":[0.0,0.0,0.0],"size":[1.2,0.04,0.02],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"HemLeft","shape":"cube","pos":[-0.59,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,1.0],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"HemRight","shape":"cube","pos":[0.59,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,1.0],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"HoodFlap","shape":"cube","pos":[0.0,-0.015,0.3],"rot":[0.0,0.0,0.0],"size":[0.8,0.03,0.4],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pocket","shape":"cube","pos":[-0.4,-0.02,-0.2],"rot":[0.0,0.0,0.0],"size":[0.4,0.02,0.25],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"LoopTL","shape":"cylinder","pos":[-0.58,0.01,0.48],"rot":[0.0,0.0,0.0],"size":[0.03,0.04,0.03],"color":[0.3,0.28,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"LoopTR","shape":"cylinder","pos":[0.58,0.01,0.48],"rot":[0.0,0.0,0.0],"size":[0.03,0.04,0.03],"color":[0.3,0.28,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"LoopBL","shape":"cylinder","pos":[-0.58,0.01,-0.48],"rot":[0.0,0.0,0.0],"size":[0.03,0.04,0.03],"color":[0.3,0.28,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"LoopBR","shape":"cylinder","pos":[0.58,0.01,-0.48],"rot":[0.0,0.0,0.0],"size":[0.03,0.04,0.03],"color":[0.3,0.28,0.2],"smooth":0.2,"metal":0.0}
+]}

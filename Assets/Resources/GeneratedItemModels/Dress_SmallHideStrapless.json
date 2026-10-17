@@ -1,0 +1,12 @@
+{"version": 1, "id": "Dress_SmallHideStrapless", "baseHeight": 0.0775, "name": "Dress Small Hide Strapless", "model": "gpt-oss:120b", "notes": "Small strapless hide dress laid flat, approx 0.9 m long. Narrow bodice (0.35 m wide) topped by a thin elastic collar, flaring to a wider skirt base (0.5 m). Includes top and hem bands, side seam strips and simple decorative darts.", "score": 6, "parts": [
+  {"name":"Bodice","shape":"cube","pos":[0.0,-0.0075,0.2175],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.55],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SkirtFlare","shape":"cube","pos":[0.0,-0.0075,-0.2325],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.35],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TopBand","shape":"cylinder","pos":[0.0,0.01,0.4925],"rot":[0.0,0.0,0.0],"size":[0.38,0.015,0.38],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cylinder","pos":[0.0,0.01,-0.4075],"rot":[0.0,0.0,0.0],"size":[0.55,0.015,0.55],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cylinder","pos":[0.0,0.0075,0.4825],"rot":[0.0,0.0,0.0],"size":[0.25,0.01,0.25],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"SeamL","shape":"cube","pos":[-0.175,-0.0075,0.0425],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.9],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamR","shape":"cube","pos":[0.175,-0.0075,0.0425],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.9],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontDart","shape":"cube","pos":[0.0,-0.0075,0.2425],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.1],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"BackVent","shape":"cube","pos":[0.0,-0.0075,-0.1575],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.08],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTag","shape":"cube","pos":[0.18,0.0035,-0.1575],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

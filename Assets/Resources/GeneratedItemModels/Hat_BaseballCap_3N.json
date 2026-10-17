@@ -1,0 +1,15 @@
+{"version": 1, "id": "Hat_BaseballCap_3N", "baseHeight": 0.12, "name": "Hat Baseball Cap 3 N", "model": "gpt-oss:120b", "notes": "Flat baseball cap ~0.25 m wide x 0.20 m deep x 0.03 m thick. Main dome (crown) as a low sphere, front visor (brim) as a thin strip, side/front/back panels for outline, button on top and simple stitching edges.", "score": 6, "parts": [
+  {"name":"CrownDome","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.12,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownInner","shape":"sphere","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.1,0.16],"color":[0.62,0.57,0.68],"smooth":0.05,"metal":0.0},
+  {"name":"Brim","shape":"cylinder","pos":[0.0,0.0,0.09],"rot":[0.0,0.0,90.0],"size":[0.02,0.25,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdgeFront","shape":"cube","pos":[0.0,0.01,0.09],"rot":[0.0,0.0,0.0],"size":[0.25,0.004,0.008],"color":[0.45,0.41,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelL","shape":"cube","pos":[-0.09,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelR","shape":"cube","pos":[0.09,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,0.0,0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,0.0,-0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TopButton","shape":"sphere","pos":[0.0,0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.4,0.38,0.45],"smooth":0.6,"metal":0.0},
+  {"name":"StitchFront","shape":"cube","pos":[0.0,0.017,0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.12],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBack","shape":"cube","pos":[0.0,0.017,-0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.12],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLeft","shape":"cube","pos":[-0.09,0.017,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.18],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRight","shape":"cube","pos":[0.09,0.017,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.18],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0}
+]}

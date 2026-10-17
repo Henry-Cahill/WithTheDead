@@ -8,13 +8,21 @@ namespace CloneZ
     /// static registry (mirroring <see cref="LootContainer"/>) so PlayerSleep can
     /// find the nearest one. Built entirely from code by the bootstrapper.
     /// </summary>
-    public class SleepSpot : MonoBehaviour
+    public class SleepSpot : MonoBehaviour, IDemolishable
     {
         public static readonly List<SleepSpot> All = new List<SleepSpot>();
         public string DisplayName = "Bed";
 
         private void OnEnable() { if (!All.Contains(this)) All.Add(this); }
         private void OnDisable() { All.Remove(this); }
+
+        #region IDemolishable
+        public string DemolishName => "bed";
+        public bool CanDemolish(out string reason) { reason = null; return true; }
+        public void GetSalvage(out int planks, out int nails) { planks = CloneZConfig.SalvageBedPlanks; nails = CloneZConfig.SalvageBedNails; }
+        public bool CarvesNavMesh => true;   // rebuild the navmesh so the bed's footprint frees up
+        public void Dismantle() { All.Remove(this); Destroy(gameObject); }
+        #endregion
 
         public static SleepSpot Nearest(Vector3 p, float range, out float distance)
         {
