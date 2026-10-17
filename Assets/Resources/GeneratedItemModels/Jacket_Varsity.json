@@ -1,0 +1,13 @@
+{"version": 1, "id": "Jacket_Varsity", "baseHeight": 0.0875, "name": "Jacket Varsity", "model": "gpt-oss:120b", "notes": "Flat varsity‑style jacket laid flat (≈0.55 m long × 0.45 m wide, ~5 cm thick). Main torso panel with side sleeves, ribbed collar, front pockets, bottom hem and thin side‑stripe trim. Cuffs are now attached to the ends of the sleeves.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[-0.0444,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.05,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.0444,-0.0025,-0.335],"rot":[0.0,15.0,0.0],"size":[0.6,0.05,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[-0.0444,-0.0025,0.335],"rot":[0.0,-15.0,0.0],"size":[0.6,0.05,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.2956,-0.0025,-0.335],"rot":[0.0,15.0,0.0],"size":[0.08,0.05,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.2956,-0.0025,0.335],"rot":[0.0,-15.0,0.0],"size":[0.08,0.05,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.1056,0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.02,0.4],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.1944,-0.0025,0.195],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.06],"color":[0.48,0.44,0.53],"smooth":0.08,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.1056,-0.0025,0.195],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.06],"color":[0.48,0.44,0.53],"smooth":0.08,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[-0.0444,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.015,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StripeL","shape":"cube","pos":[-0.0444,-0.0025,-0.235],"rot":[0.0,0.0,0.0],"size":[0.55,0.005,0.02],"color":[0.3,0.3,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StripeR","shape":"cube","pos":[-0.0444,-0.0025,0.235],"rot":[0.0,0.0,0.0],"size":[0.55,0.005,0.02],"color":[0.3,0.3,0.3],"smooth":0.05,"metal":0.0}
+]}

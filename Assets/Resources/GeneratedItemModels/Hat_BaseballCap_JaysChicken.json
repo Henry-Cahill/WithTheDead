@@ -1,0 +1,11 @@
+{"version": 1, "id": "Hat_BaseballCap_JaysChicken", "baseHeight": 0.0842, "name": "Hat Baseball Cap Jays Chicken", "model": "gpt-oss:120b", "notes": "Baseball cap (Jays Chicken) laid flat like a product photo – low‑profile crown cylinder with front brim, top button and stitched panel seams. Overall footprint ≈0.20 m wide × 0.25 m deep, 0.03 m tall.", "score": 6, "parts": [
+  {"name":"Crown","shape":"cylinder","pos":[0.0,0.0042,-0.015],"rot":[0.0,0.0,0.0],"size":[0.2,0.03,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Brim","shape":"cube","pos":[0.0,0.0042,0.12],"rot":[0.0,0.0,0.0],"size":[0.2,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ButtonTop","shape":"cylinder","pos":[0.0,0.0217,-0.015],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.2,0.2,0.22],"smooth":0.4,"metal":0.0},
+  {"name":"SeamLeft","shape":"cube","pos":[-0.098,0.0032,-0.015],"rot":[0.0,0.0,0.0],"size":[0.004,0.028,0.18],"color":[0.3,0.25,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"SeamRight","shape":"cube","pos":[0.098,0.0032,-0.015],"rot":[0.0,0.0,0.0],"size":[0.004,0.028,0.18],"color":[0.3,0.25,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.0118,-0.085],"rot":[0.0,0.0,0.0],"size":[0.018,0.025,0.14],"color":[0.48,0.44,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,-0.0118,0.055],"rot":[0.0,0.0,0.0],"size":[0.018,0.025,0.14],"color":[0.48,0.44,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelL","shape":"cube","pos":[-0.07,-0.0118,-0.015],"rot":[0.0,0.0,0.0],"size":[0.018,0.025,0.18],"color":[0.48,0.44,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelR","shape":"cube","pos":[0.07,-0.0118,-0.015],"rot":[0.0,0.0,0.0],"size":[0.018,0.025,0.18],"color":[0.48,0.44,0.54],"smooth":0.05,"metal":0.0}
+]}

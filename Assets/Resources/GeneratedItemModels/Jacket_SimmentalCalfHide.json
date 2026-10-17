@@ -1,0 +1,16 @@
+{"version": 1, "id": "Jacket_SimmentalCalfHide", "baseHeight": 0.0775, "name": "Jacket Simmental Calf Hide", "model": "gpt-oss:120b", "notes": "Flat jacket made of Simmental calf hide – torso panel 0.55 m wide × 0.75 m tall, two 0.6 m long sleeves spread out to ~1.2 m total width, with collar, lapels, side pockets, cuffs and a bottom hem. All parts are 3 cm thick (leather matte).", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.0025,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.75],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.4,-0.0025,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.6],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.4,-0.0025,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.6],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.4,0.0,0.2925],"rot":[0.0,0.0,0.0],"size":[0.25,0.025,0.08],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.4,0.0,0.2925],"rot":[0.0,0.0,0.0],"size":[0.25,0.025,0.08],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"Collar","shape":"cube","pos":[0.0,0.0075,0.3725],"rot":[0.0,0.0,0.0],"size":[0.55,0.02,0.07],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"LapelL","shape":"cube","pos":[-0.15,-0.0025,0.3525],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.04],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"LapelR","shape":"cube","pos":[0.15,-0.0025,0.3525],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.04],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.18,-0.0025,0.3125],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.06],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.18,-0.0025,0.3125],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.06],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[0.0,-0.0125,-0.3825],"rot":[0.0,0.0,0.0],"size":[0.55,0.01,0.05],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"FrontSeam","shape":"cube","pos":[0.0,0.0045,0.3725],"rot":[0.0,0.0,0.0],"size":[0.55,0.004,0.01],"color":[0.45,0.4,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.275,-0.0025,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.004,0.03,0.75],"color":[0.45,0.4,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.275,-0.0025,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.004,0.03,0.75],"color":[0.45,0.4,0.5],"smooth":0.2,"metal":0.0}
+]}

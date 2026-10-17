@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_BaseballCap_Fossoil02_Reverse", "baseHeight": 0.1, "name": "Hat Baseball Cap Fossoil02 Reverse", "model": "gpt-oss:120b", "notes": "Flat baseball cap approx 0.22 m wide crown, 0.06 m dome height, brim 0.18 m out front/back and sides; main cloth tint (0.55,0.5,0.6) with dark stitching and a small logo patch.", "score": 6, "parts": [
+  {"name":"CrownBase","shape":"cube","pos":[0.0,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownDome","shape":"sphere","pos":[0.0,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.06,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimFront","shape":"cube","pos":[0.0,-0.036,0.11],"rot":[0.0,0.0,0.0],"size":[0.22,0.008,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimBack","shape":"cube","pos":[0.0,-0.036,-0.11],"rot":[0.0,0.0,0.0],"size":[0.22,0.008,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimLeft","shape":"cube","pos":[-0.11,-0.036,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.008,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimRight","shape":"cube","pos":[0.11,-0.036,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.008,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontSeam","shape":"cube","pos":[0.0,-0.034,0.11],"rot":[0.0,0.0,0.0],"size":[0.21,0.004,0.002],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.11,-0.034,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.004,0.21],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.11,-0.034,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.004,0.21],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[0.0,0.02,0.07],"rot":[0.0,0.0,0.0],"size":[0.05,0.004,0.07],"color":[0.7,0.65,0.75],"smooth":0.05,"metal":0.0}
+]}

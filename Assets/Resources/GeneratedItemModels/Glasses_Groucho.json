@@ -1,0 +1,11 @@
+{"version": 1, "id": "Glasses_Groucho", "baseHeight": 0.0648, "name": "Glasses Groucho", "model": "gpt-oss:120b", "notes": "Flat product‑photo layout of Groucho glasses – total width ≈ 0.28 m, height ≈ 0.05 m, thickness ~5 mm. Includes left/right lenses, plastic frame bridge, outer rims, two temples laid flat outward, and small nose‑pads that sit on the bridge.", "score": 7, "parts": [
+  {"name":"LensL","shape":"cylinder","pos":[-0.0425,-0.0007,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.005,0.045],"color":[0.7,0.75,0.85],"smooth":0.6,"metal":0.0},
+  {"name":"LensR","shape":"cylinder","pos":[0.0425,-0.0007,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.005,0.045],"color":[0.7,0.75,0.85],"smooth":0.6,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,-0.0007,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.015],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.1},
+  {"name":"RimL","shape":"cylinder","pos":[-0.0425,0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.053,0.002,0.053],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.1},
+  {"name":"RimR","shape":"cylinder","pos":[0.0425,0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.053,0.002,0.053],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.1},
+  {"name":"TempleL","shape":"cylinder","pos":[-0.135,-0.0007,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.13,0.008],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.1},
+  {"name":"TempleR","shape":"cylinder","pos":[0.135,-0.0007,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.13,0.008],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.1},
+  {"name":"NosePadL","shape":"sphere","pos":[-0.008,0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"NosePadR","shape":"sphere","pos":[0.008,0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":0.0}
+]}

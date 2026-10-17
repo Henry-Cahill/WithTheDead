@@ -1,0 +1,8 @@
+{"version": 1, "id": "NecklaceLong_SilverDiamond", "baseHeight": 0.0703, "name": "Necklace Long Silver Diamond", "model": "gpt-oss:120b", "notes": "Long silver necklace ~0.5 m long, thin chain (~1.2 cm diameter) lying flat on the floor, three small diamonds spaced along the chain and a metal clasp at one end.", "score": 6, "parts": [
+  {"name":"Chain","shape":"cylinder","pos":[0.0,-0.0042,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.5,0.012],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Clasp","shape":"cube","pos":[-0.245,0.0028,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.03],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"DiamondL","shape":"sphere","pos":[-0.15,0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.9,0.95,1.0],"smooth":0.8,"metal":0.0},
+  {"name":"DiamondC","shape":"sphere","pos":[0.0,0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.9,0.95,1.0],"smooth":0.8,"metal":0.0},
+  {"name":"DiamondR","shape":"sphere","pos":[0.15,0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.9,0.95,1.0],"smooth":0.8,"metal":0.0},
+  {"name":"DropShadow","shape":"cube","pos":[0.0,-0.0092,0.0],"rot":[0.0,0.0,0.0],"size":[0.52,0.002,0.12],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0}
+]}

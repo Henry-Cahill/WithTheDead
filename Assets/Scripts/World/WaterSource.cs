@@ -16,7 +16,7 @@ namespace CloneZ
     /// registry, built entirely from code with its colliders stripped so it never disturbs the
     /// baked navmesh. The barrel runs its fill simulation off the world clock like a farm plot.
     /// </summary>
-    public class WaterSource : MonoBehaviour
+    public class WaterSource : MonoBehaviour, IDemolishable
     {
         public static readonly List<WaterSource> All = new List<WaterSource>();
 
@@ -30,6 +30,19 @@ namespace CloneZ
 
         private void OnEnable() { if (!All.Contains(this)) All.Add(this); }
         private void OnDisable() { All.Remove(this); }
+
+        #region IDemolishable
+        public string DemolishName => DisplayName;   // "rain barrel" or "tap"
+        public bool CanDemolish(out string reason) { reason = null; return true; }
+        public void GetSalvage(out int planks, out int nails)
+        {
+            bool barrel = Kind == WaterSourceKind.RainBarrel;
+            planks = barrel ? CloneZConfig.SalvageBarrelPlanks : CloneZConfig.SalvageTapPlanks;
+            nails = barrel ? CloneZConfig.SalvageBarrelNails : CloneZConfig.SalvageTapNails;
+        }
+        public bool CarvesNavMesh => true;
+        public void Dismantle() { All.Remove(this); Destroy(gameObject); }
+        #endregion
 
         #region Readouts
         /// <summary>A barrel holds tainted water; a tap runs clean.</summary>

@@ -1,0 +1,13 @@
+{"version": 1, "id": "Hat_BaseballCapBlue_Reverse", "baseHeight": 0.087, "name": "Hat Baseball Cap Blue Reverse", "model": "gpt-oss:120b", "notes": "Flat baseball cap laid out as a product photo: shallow cylindrical crown (≈0.18 m dia, 3 cm thick) with cloth rim band and inner sweatband, small top button, front brim plate extending forward, stitched edges and a blue label patch on the side.", "score": 6, "parts": [
+  {"name":"CrownTop","shape":"cylinder","pos":[0.0,-0.012,-0.0355],"rot":[0.0,0.0,0.0],"size":[0.18,0.03,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownSideBand","shape":"cylinder","pos":[0.0,-0.017,-0.0355],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"InnerBand","shape":"cylinder","pos":[0.0,-0.0195,-0.0355],"rot":[0.0,0.0,0.0],"size":[0.16,0.015,0.16],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownRim","shape":"cylinder","pos":[0.0,-0.015,-0.0355],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TopButton","shape":"sphere","pos":[0.0,0.015,-0.0355],"rot":[0.0,0.0,0.0],"size":[0.024,0.024,0.024],"color":[0.3,0.3,0.4],"smooth":0.6,"metal":0.0},
+  {"name":"BrimPlate","shape":"cube","pos":[0.0,-0.017,0.0945],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdge","shape":"cube","pos":[0.0,-0.0145,0.1345],"rot":[0.0,0.0,0.0],"size":[0.2,0.005,0.002],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StitchFront","shape":"cube","pos":[0.0,-0.012,0.1295],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.002],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideL","shape":"cube","pos":[-0.09,-0.0145,0.0945],"rot":[0.0,0.0,0.0],"size":[0.002,0.005,0.08],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideR","shape":"cube","pos":[0.09,-0.0145,0.0945],"rot":[0.0,0.0,0.0],"size":[0.002,0.005,0.08],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[0.06,-0.009,0.0145],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.02],"color":[0.7,0.65,0.8],"smooth":0.05,"metal":0.0}
+]}

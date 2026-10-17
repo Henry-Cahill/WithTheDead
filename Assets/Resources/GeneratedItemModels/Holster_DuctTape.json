@@ -1,0 +1,8 @@
+{"version": 1, "id": "Holster_DuctTape", "baseHeight": 0.096, "name": "Holster Duct Tape", "model": "gpt-oss:120b", "notes": "Duct‑tape roll (Holster_DuctTape) ~0.07 m outer diameter × 0.05 m wide, cardboard core ~0.02 m dia, gray‑brown tape colour (0.6,0.58,0.5). Lying on its side, axis along X.", "score": 6, "parts": [
+  {"name":"TapeOuter","shape":"cylinder","pos":[-0.0037,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.05,0.07],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"CoreCardboard","shape":"cylinder","pos":[-0.0037,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.05,0.02],"color":[0.38,0.34,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.0187,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.025],"color":[0.95,0.95,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[-0.0187,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.023],"color":[0.15,0.15,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"TornEnd","shape":"cube","pos":[0.0213,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.003,0.03],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[-0.0037,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.072,0.05,0.072],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0}
+]}

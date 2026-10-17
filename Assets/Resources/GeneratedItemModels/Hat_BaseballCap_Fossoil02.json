@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_BaseballCap_Fossoil02", "baseHeight": 0.0737, "name": "Hat Baseball Cap Fossoil02", "model": "gpt-oss:120b", "notes": "Flat baseball cap ~0.22 m wide × 0.30 m front‑to‑back, 2–3 cm thick. Main crown panels, front brim, side/back extensions, button and stitch highlights.", "score": 6, "parts": [
+  {"name":"CrownTop","shape":"cube","pos":[0.0,-0.0038,-0.018],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelL","shape":"cube","pos":[-0.13,-0.0038,-0.018],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelR","shape":"cube","pos":[0.13,-0.0038,-0.018],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.0038,-0.078],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontBrim","shape":"cube","pos":[0.0,-0.0063,0.062],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Button","shape":"sphere","pos":[0.0,0.0037,0.042],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,-0.0018,-0.018],"rot":[0.0,0.0,0.0],"size":[0.22,0.003,0.002],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"StitchFront","shape":"cube","pos":[0.0,-0.0048,0.097],"rot":[0.0,0.0,0.0],"size":[0.22,0.003,0.002],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideL","shape":"cube","pos":[-0.15,-0.0038,-0.018],"rot":[0.0,0.0,0.0],"size":[0.003,0.02,0.12],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideR","shape":"cube","pos":[0.15,-0.0038,-0.018],"rot":[0.0,0.0,0.0],"size":[0.003,0.02,0.12],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0}
+]}

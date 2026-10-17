@@ -1,0 +1,8 @@
+{"version": 1, "id": "Hat_Wizard", "baseHeight": 0.24, "name": "Hat Wizard", "model": "gpt-oss:120b", "notes": "Wizard hat laid flat for product view – wide cloth brim (0.36 m dia) with dark trim, tall conical crown flattened onto its side (base 0.36 m dia, tapering to a point), all 2 cm thick; colour tint 0.55 0.5 0.6, cloth texture.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[-0.305,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.36,0.02,0.36],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RimTrim","shape":"cylinder","pos":[-0.305,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.015,0.38],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBase","shape":"cylinder","pos":[-0.105,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.36,0.4,0.36],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownMid","shape":"cylinder","pos":[0.245,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.22,0.3,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Tip","shape":"sphere","pos":[0.445,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.1,0.1],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"CrownSeam","shape":"cube","pos":[0.045,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.36],"color":[0.45,0.41,0.5],"smooth":0.05,"metal":0.0}
+]}

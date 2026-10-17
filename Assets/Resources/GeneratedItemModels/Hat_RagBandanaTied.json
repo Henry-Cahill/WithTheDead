@@ -1,0 +1,15 @@
+{"version": 1, "id": "Hat_RagBandanaTied", "baseHeight": 0.0875, "name": "Hat Rag Bandana Tied", "model": "gpt-oss:120b", "notes": "Flat rag bandana hat laid out like a product photo – square 0.55 m × 0.55 m, 2.5 cm thick cloth with folded edge strips, corner folds, a central tied knot and crossing tie cords, plus a triangular flap that would sit over the forehead when worn.", "score": 6, "parts": [
+  {"name":"BasePanel","shape":"cube","pos":[0.0,-0.015,-0.0805],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.55],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.0,0.0,0.1845],"rot":[0.0,0.0,0.0],"size":[0.55,0.005,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[0.0,0.0,-0.3455],"rot":[0.0,0.0,0.0],"size":[0.55,0.005,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.265,0.0,-0.0805],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.55],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.265,0.0,-0.0805],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.55],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CornerFoldTL","shape":"cube","pos":[0.245,0.0,0.1645],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.06],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CornerFoldTR","shape":"cube","pos":[-0.245,0.0,0.1645],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.06],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CornerFoldBL","shape":"cube","pos":[0.245,0.0,-0.3255],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.06],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CornerFoldBR","shape":"cube","pos":[-0.245,0.0,-0.3255],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.06],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"KnotCore","shape":"cylinder","pos":[0.0,0.0125,-0.0805],"rot":[0.0,0.0,0.0],"size":[0.07,0.03,0.07],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieX","shape":"cylinder","pos":[0.0,0.0125,-0.0805],"rot":[0.0,0.0,90.0],"size":[0.02,0.3,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieZ","shape":"cylinder","pos":[0.0,0.0125,-0.0805],"rot":[90.0,0.0,0.0],"size":[0.02,0.3,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TriangleFlap","shape":"cube","pos":[0.0,-0.0025,0.2495],"rot":[0.0,45.0,0.0],"size":[0.2,0.025,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

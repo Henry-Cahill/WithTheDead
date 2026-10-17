@@ -1,0 +1,11 @@
+{"version": 1, "id": "Hat_Army", "baseHeight": 0.1, "name": "Hat Army", "model": "gpt-oss:120b", "notes": "Flat army cap laid out like a product photo – 0.28 m brim width × 0.22 m depth, 0.015 m thick cloth brim, 0.06 m tall central crown, short front visor, metal button on top and a small insignia badge on the front.", "score": 8, "parts": [
+  {"name":"Brim","shape":"cube","pos":[0.0,-0.0325,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Visor","shape":"cube","pos":[0.0,-0.0325,0.13],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Crown","shape":"cylinder","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.06,0.14],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TopButton","shape":"cylinder","pos":[0.0,0.037,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"Badge","shape":"cylinder","pos":[0.0,0.0375,0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.04],"color":[0.3,0.28,0.32],"smooth":0.4,"metal":1.0},
+  {"name":"StitchFront","shape":"cylinder","pos":[0.0,-0.0245,0.11],"rot":[90.0,0.0,0.0],"size":[0.004,0.28,0.004],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBack","shape":"cylinder","pos":[0.0,-0.0245,-0.11],"rot":[90.0,0.0,0.0],"size":[0.004,0.28,0.004],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLeft","shape":"cylinder","pos":[-0.14,-0.0245,0.0],"rot":[90.0,0.0,90.0],"size":[0.004,0.22,0.004],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRight","shape":"cylinder","pos":[0.14,-0.0245,0.0],"rot":[90.0,0.0,90.0],"size":[0.004,0.22,0.004],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

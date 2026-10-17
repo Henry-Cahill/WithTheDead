@@ -1,0 +1,95 @@
+# CLONE-Z LLM asset pipeline
+
+Generates ground models for the item catalogue with a local LLM on the DGX Spark (`spark-f146`,
+Ollama, `gpt-oss:120b`). The output is CLONE-Z's own model format: a list of coloured cubes,
+spheres and cylinders. That way generated models bake and draw instanced exactly like the
+hand-built ones in `ItemModels.cs`, and nothing has to be imported.
+
+```
+item catalogue ─► gpt-oss:120b ─► sanitise + geometry checks ─► render ─► gemma3:12b critic ─► JSON
+(Resources/*.txt)  (structured JSON)   (scale, floating parts)    (preview)  (score, fix-up loop)   │
+                                                                                                    ▼
+                                  Assets/Resources/GeneratedItemModels/<id>.json ─► GeneratedItemModels.cs
+```
+
+In game, `ItemMeshBaker.Get` resolves a model as **hand-built C# → generated JSON → tinted
+fallback primitive**.
+
+## One-click app
+
+Double-click **`AssetPipeline.bat`** for a menu, or run `.\AssetPipeline.ps1 <action>`:
+
+| Action    | What it does |
+|-----------|--------------|
+| `start`   | Pushes the pipeline and catalogue to the Spark, then starts or resumes generation in tmux session `clonez`. Add `-Critic` for the vision critic, `-Workers N`, or `-Extra '--category','Clothing'`. |
+| `status`  | Shows whether it is running, the latest progress, and counts per category. |
+| `watch`   | Shows the live log. Ctrl+C stops watching only; the run keeps going. |
+| `pull`    | Copies finished models into `Assets/Resources/GeneratedItemModels` and previews into `out/`. |
+| `gallery` | Opens `out/index.html`, a filterable contact sheet of every preview. |
+| `stop`    | Stops gracefully: it finishes the items in flight, then exits. Starting again resumes. |
+
+The run lives on the Spark, so this PC can sleep or reboot. Items that already have a JSON file are
+skipped, so `start` always resumes where it left off.
+
+To attach to the session directly: `ssh henrylawrencecahill@spark-f146 -t tmux attach -t clonez`
+(detach with Ctrl+B then D).
+
+## Running the CLI directly
+
+```
+pip install numpy pillow
+python pipeline.py status
+python pipeline.py generate --workers 4 --critic --category Clothing --limit 50
+python pipeline.py generate --ids Hammer Crowbar --force     # redo specific items
+python pipeline.py generate --match "Dress_*" "Skirt_*"
+python pipeline.py preview                                   # re-render previews + gallery
+```
+
+`--host` defaults to `http://192.168.1.252:11434`. You can override it with the
+`OLLAMA_HOST_URL` environment variable.
+
+## Spark / Ollama setup
+
+`/etc/systemd/system/ollama.service.d/override.conf` on the Spark:
+
+```
+Environment="OLLAMA_NUM_PARALLEL=4"      # 4 concurrent generations ≈ 2x throughput
+Environment="OLLAMA_KEEP_ALIVE=2h"       # keep the 64 GB model resident between items
+Environment="OLLAMA_FLASH_ATTENTION=1"
+Environment="OLLAMA_MAX_LOADED_MODELS=2" # gpt-oss + gemma3 critic side by side
+```
+
+Keep `--workers` equal to `OLLAMA_NUM_PARALLEL`. Keep `--num-ctx` constant between runs, because a
+different context size makes Ollama reload the model.
+
+Measured throughput: about 75 s per item with one worker, and about 35–45 s per item with 4 workers
+(41 s with the critic on). The full catalogue of about 3,600 items takes roughly 40 hours.
+
+## Tuning quality
+
+- `prompts/system.md` holds the modelling rules and three worked examples (an upright can, a tool
+  lying on its side, and a flat garment). Better examples are the biggest quality lever.
+- `CATEGORY_HINTS` in `pipeline.py` adds per-category pose guidance.
+- `geometry.check` rejects models that are wildly out of scale or have floating parts, and sends
+  the problems back to the LLM.
+- With `--critic`, the vision model scores each render from 1 to 10. Anything below `--min-score`
+  (default 6) goes back to the LLM with the reviewer's notes. The score is saved in each JSON file,
+  so weak models are easy to find and redo with `--ids ... --force`.
+
+## File format
+
+```json
+{"version": 1, "id": "Hammer", "baseHeight": 0.08, "name": "...", "model": "...", "notes": "...", "score": 7,
+ "parts": [{"name": "Handle", "shape": "cylinder", "pos": [x,y,z], "rot": [x,y,z], "size": [x,y,z],
+            "color": [r,g,b], "smooth": 0.15, "metal": 0}]}
+```
+
+- `size` is in real metres for every shape; a cylinder's size is `[diameter, length, diameter]`.
+- `rot` is Unity Euler degrees.
+- The model is centred on its origin, and `baseHeight` is the hover height of that centre.
+
+## Next stage: real meshes
+
+Stage B is planned: text → image → 3D mesh (for example TRELLIS or Hunyuan3D-2) on the Spark,
+used for hero items. It needs a GLB import and render path alongside `ItemMeshBaker`, because the
+baker only understands primitives.

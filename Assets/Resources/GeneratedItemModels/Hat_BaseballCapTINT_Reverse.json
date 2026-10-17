@@ -1,0 +1,10 @@
+{"version": 1, "id": "Hat_BaseballCapTINT_Reverse", "baseHeight": 0.0975, "name": "Hat Baseball Cap TINT Reverse", "model": "gpt-oss:120b", "notes": "Flat baseball cap laid out like a product photo – 0.32 m brim diameter, 0.07 m crown height, front visor protruding, stitched edge trim and small top button. Main colour is the reverse tint (0.55, 0.50, 0.60).", "score": 6, "parts": [
+  {"name":"CrownBody","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.07,0.24],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimDisc","shape":"sphere","pos":[0.0,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.015,0.32],"color":[0.495,0.45,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"VisorFront","shape":"cube","pos":[0.0,0.0125,-0.09],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TopButton","shape":"sphere","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.7,0.65,0.75],"smooth":0.6,"metal":0.0},
+  {"name":"StitchCrown","shape":"cylinder","pos":[0.0,0.035,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.005,0.26],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBrim","shape":"cylinder","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.005,0.34],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"InnerBand","shape":"cylinder","pos":[0.0,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.003,0.24],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"PatchLogo","shape":"cube","pos":[0.0,0.0155,-0.09],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.8,0.2,0.2],"smooth":0.05,"metal":0.0}
+]}

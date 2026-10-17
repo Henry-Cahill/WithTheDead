@@ -1,0 +1,13 @@
+{"version": 1, "id": "Jacket_ArmyCamoGreen", "baseHeight": 0.085, "name": "Jacket Army Camo Green", "model": "gpt-oss:120b", "notes": "Flat army‑camo jacket ~0.70 m long × 0.58 m wide, 4 cm thick: torso panel, two sleeves spread sideways and attached to the sides, collar, front pockets with flaps, central zip line and cuff ends on each sleeve.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.005,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.7,0.04,0.58],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.65,-0.0025,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.6,0.045,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.65,-0.0025,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.6,0.045,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cylinder","pos":[-1.04,-0.0025,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.18,0.045,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cylinder","pos":[1.04,-0.0025,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.18,0.045,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[-0.3,0.015,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.14,0.02,0.14],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.1,-0.0025,0.2575],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.1,-0.0025,0.2575],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FlapL","shape":"cube","pos":[-0.1,0.0055,0.2625],"rot":[0.0,0.0,0.0],"size":[0.19,0.004,0.01],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FlapR","shape":"cube","pos":[0.1,0.0055,0.2625],"rot":[0.0,0.0,0.0],"size":[0.19,0.004,0.01],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ZipLine","shape":"cube","pos":[0.0,-0.002,0.0125],"rot":[0.0,0.0,0.0],"size":[0.68,0.006,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

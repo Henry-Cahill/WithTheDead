@@ -1,0 +1,16 @@
+{"version": 1, "id": "Glasses_Cosmetic_Normal_HornRimmed", "baseHeight": 0.068, "name": "Glasses Cosmetic Normal Horn Rimmed", "model": "gpt-oss:120b", "notes": "Flat‑lay of horn‑rimmed cosmetic glasses, total spread ≈ 0.33 m wide × 0.05 m tall × 0.006 m thick. Includes tinted plastic frame/rims, thin glass lenses, bridge with nose pad, hinge caps and tiny metal screws.", "score": 7, "parts": [
+  {"name":"LeftRim","shape":"cylinder","pos":[-0.06,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.066,0.006,0.066],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"RightRim","shape":"cylinder","pos":[0.06,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.066,0.006,0.066],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"LeftLens","shape":"cylinder","pos":[-0.06,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.004,0.05],"color":[0.9,0.95,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"RightLens","shape":"cylinder","pos":[0.06,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.004,0.05],"color":[0.9,0.95,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.006,0.015],"color":[0.45,0.4,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"NosePad","shape":"sphere","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.85,0.86,0.87],"smooth":0.55,"metal":0.0},
+  {"name":"HingeL","shape":"cube","pos":[-0.031,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.006,0.015],"color":[0.45,0.4,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"HingeR","shape":"cube","pos":[0.031,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.006,0.015],"color":[0.45,0.4,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"TempleL","shape":"cube","pos":[-0.163,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.006,0.01],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"TempleR","shape":"cube","pos":[0.163,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.006,0.01],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"ScrewL1","shape":"cube","pos":[-0.06,0.004,0.02],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.7,0.7,0.7],"smooth":0.55,"metal":0.8},
+  {"name":"ScrewL2","shape":"cube","pos":[-0.06,0.004,-0.02],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.7,0.7,0.7],"smooth":0.55,"metal":0.8},
+  {"name":"ScrewR1","shape":"cube","pos":[0.06,0.004,0.02],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.7,0.7,0.7],"smooth":0.55,"metal":0.8},
+  {"name":"ScrewR2","shape":"cube","pos":[0.06,0.004,-0.02],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.7,0.7,0.7],"smooth":0.55,"metal":0.8}
+]}

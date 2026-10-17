@@ -1,0 +1,8 @@
+{"version": 1, "id": "Earring_LoopSmall_Gold_Both", "baseHeight": 0.067, "name": "Earring Loop Small Gold Both", "model": "gpt-oss:120b", "notes": "Two small gold earring loops, each about 2.5 cm in outer diameter and ~2 mm thick, lying side‑by‑side on the floor.", "score": 7, "parts": [
+  {"name":"LoopL","shape":"cylinder","pos":[-0.015,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.002,0.025],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"LoopR","shape":"cylinder","pos":[0.015,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.002,0.025],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"PostL","shape":"cylinder","pos":[-0.015,-0.0005,0.0],"rot":[90.0,0.0,0.0],"size":[0.002,0.012,0.002],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"PostR","shape":"cylinder","pos":[0.015,-0.0005,0.0],"rot":[90.0,0.0,0.0],"size":[0.002,0.012,0.002],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"DropShadow","shape":"cube","pos":[0.0,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.04],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.02],"color":[0.2,0.18,0.15],"smooth":0.1,"metal":0.0}
+]}

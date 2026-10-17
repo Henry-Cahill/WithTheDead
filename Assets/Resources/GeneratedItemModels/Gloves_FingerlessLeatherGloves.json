@@ -1,0 +1,14 @@
+{"version": 1, "id": "Gloves_FingerlessLeatherGloves", "baseHeight": 0.075, "name": "Gloves Fingerless Leather Gloves", "model": "gpt-oss:120b", "notes": "Fingerless leather gloves laid flat side‑by‑side, each ~0.20 m long × 0.09 m wide × 0.015 m thick. The two palms now touch at their inner edges; thumbs protrude from the sides and wrist bands sit flush against the back of each palm.", "score": 6, "parts": [
+  {"name":"PalmL","shape":"cube","pos":[-0.045,0.0,-0.025],"rot":[0.0,0.0,0.0],"size":[0.09,0.015,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ThumbL","shape":"cylinder","pos":[-0.125,0.0,-0.065],"rot":[0.0,0.0,90.0],"size":[0.03,0.07,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FingerL1","shape":"cylinder","pos":[-0.07,0.0,0.115],"rot":[90.0,0.0,0.0],"size":[0.025,0.08,0.025],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FingerL2","shape":"cylinder","pos":[-0.045,0.0,0.115],"rot":[90.0,0.0,0.0],"size":[0.025,0.08,0.025],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FingerL3","shape":"cylinder","pos":[-0.02,0.0,0.115],"rot":[90.0,0.0,0.0],"size":[0.025,0.08,0.025],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"WristBandL","shape":"cube","pos":[-0.045,0.0,-0.14],"rot":[0.0,0.0,0.0],"size":[0.09,0.015,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PalmR","shape":"cube","pos":[0.045,0.0,-0.025],"rot":[0.0,0.0,0.0],"size":[0.09,0.015,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ThumbR","shape":"cylinder","pos":[0.125,0.0,-0.065],"rot":[0.0,0.0,90.0],"size":[0.03,0.07,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FingerR1","shape":"cylinder","pos":[0.02,0.0,0.115],"rot":[90.0,0.0,0.0],"size":[0.025,0.08,0.025],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FingerR2","shape":"cylinder","pos":[0.045,0.0,0.115],"rot":[90.0,0.0,0.0],"size":[0.025,0.08,0.025],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FingerR3","shape":"cylinder","pos":[0.07,0.0,0.115],"rot":[90.0,0.0,0.0],"size":[0.025,0.08,0.025],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"WristBandR","shape":"cube","pos":[0.045,0.0,-0.14],"rot":[0.0,0.0,0.0],"size":[0.09,0.015,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

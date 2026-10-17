@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_JockeyHelmet06", "baseHeight": 0.1875, "name": "Hat Jockey Helmet06", "model": "gpt-oss:120b", "notes": "Flat jockey helmet laid out like a product photo – overall width ≈ 0.28 m (brim), height ≈ 0.18 m, total thickness ~2 cm. Main shell (tinted gray‑purple), thin rim, inner padding, rear strap, small logo patch and four vent holes.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.12,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.28],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"InnerBrim","shape":"cylinder","pos":[0.0,-0.115,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.01,0.26],"color":[0.48,0.44,0.54],"smooth":0.4,"metal":0.0},
+  {"name":"CrownOuter","shape":"sphere","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.24,0.24],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"PaddingInner","shape":"sphere","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.22,0.22],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"RearStrap","shape":"cylinder","pos":[0.0,0.0075,-0.09],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.04],"color":[0.3,0.25,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[0.0,0.0725,0.07],"rot":[0.0,0.0,0.0],"size":[0.05,0.005,0.03],"color":[0.8,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"VentFront","shape":"cylinder","pos":[0.06,0.0075,0.08],"rot":[90.0,0.0,0.0],"size":[0.01,0.02,0.01],"color":[0.05,0.05,0.05],"smooth":0.6,"metal":0.0},
+  {"name":"VentBack","shape":"cylinder","pos":[-0.06,0.0075,-0.08],"rot":[90.0,0.0,0.0],"size":[0.01,0.02,0.01],"color":[0.05,0.05,0.05],"smooth":0.6,"metal":0.0},
+  {"name":"VentLeft","shape":"cylinder","pos":[-0.08,0.0075,0.06],"rot":[90.0,0.0,0.0],"size":[0.01,0.02,0.01],"color":[0.05,0.05,0.05],"smooth":0.6,"metal":0.0},
+  {"name":"VentRight","shape":"cylinder","pos":[0.08,0.0075,-0.06],"rot":[90.0,0.0,0.0],"size":[0.01,0.02,0.01],"color":[0.05,0.05,0.05],"smooth":0.6,"metal":0.0}
+]}

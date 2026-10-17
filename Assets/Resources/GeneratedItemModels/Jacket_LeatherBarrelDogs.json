@@ -1,0 +1,15 @@
+{"version": 1, "id": "Jacket_LeatherBarrelDogs", "baseHeight": 0.0825, "name": "Jacket Leather Barrel Dogs", "model": "gpt-oss:120b", "notes": "Leather jacket (≈0.55 m wide × 0.70 m long × 0.025 m thick) laid flat with sleeves spread out; main torso panel, two angled sleeves, collar band, bottom hem, cuffs and a set of metal barrel‑dogs on the front panels and sleeve ends.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.7],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.45,-0.0075,0.0],"rot":[0.0,-30.0,0.0],"size":[0.35,0.02,0.6],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.45,-0.0075,0.0],"rot":[0.0,30.0,0.0],"size":[0.35,0.02,0.6],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cube","pos":[0.0,0.015,0.35],"rot":[0.0,0.0,0.0],"size":[0.55,0.015,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.75,-0.01,0.0],"rot":[0.0,-30.0,0.0],"size":[0.05,0.015,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.75,-0.01,0.0],"rot":[0.0,30.0,0.0],"size":[0.05,0.015,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[0.0,-0.01,-0.35],"rot":[0.0,0.0,0.0],"size":[0.55,0.015,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"DogFrontCenter","shape":"cylinder","pos":[0.0,-0.0025,0.35],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"DogFrontLeft","shape":"cylinder","pos":[-0.25,-0.0025,0.35],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"DogFrontRight","shape":"cylinder","pos":[0.25,-0.0025,0.35],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"DogSleeveL","shape":"cylinder","pos":[-0.7,-0.0025,0.0],"rot":[0.0,-30.0,0.0],"size":[0.015,0.04,0.015],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"DogSleeveR","shape":"cylinder","pos":[0.7,-0.0025,0.0],"rot":[0.0,30.0,0.0],"size":[0.015,0.04,0.015],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"DogBackCenter","shape":"cylinder","pos":[0.0,-0.0025,-0.35],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0}
+]}

@@ -1,0 +1,11 @@
+{"version": 1, "id": "PonchoGreenDOWN", "baseHeight": 0.084, "name": "Poncho Green DOWN", "model": "gpt-oss:120b", "notes": "Flat down‑filled poncho ~0.9 m wide × 1.2 m long × 0.04 m thick (green‑grey tint). Main sheet with a neck opening rim, reinforced edge hems on all sides and a central raised fold for bulk.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.9,0.04,1.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"NeckRim","shape":"cylinder","pos":[0.0,0.0185,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.005,0.24],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"HemFront","shape":"cube","pos":[0.0,-0.004,0.61],"rot":[0.0,0.0,0.0],"size":[0.9,0.04,0.02],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"HemBack","shape":"cube","pos":[0.0,-0.004,-0.61],"rot":[0.0,0.0,0.0],"size":[0.9,0.04,0.02],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"HemLeft","shape":"cube","pos":[0.46,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,1.2],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"HemRight","shape":"cube","pos":[-0.46,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,1.2],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"FoldCenter","shape":"cube","pos":[0.0,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.9,0.008,0.2],"color":[0.65,0.62,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"TieLoopFront","shape":"cylinder","pos":[-0.12,0.001,0.55],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"TieLoopBack","shape":"cylinder","pos":[-0.12,0.001,-0.55],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0}
+]}

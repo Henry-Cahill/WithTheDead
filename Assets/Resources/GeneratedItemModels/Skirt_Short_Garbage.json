@@ -1,0 +1,14 @@
+{"version": 1, "id": "Skirt_Short_Garbage", "baseHeight": 0.073, "name": "Skirt Short Garbage", "model": "gpt-oss:120b", "notes": "Short garbage skirt laid flat (≈0.34 m waist × 0.20 m length, flares to ≈0.48 m at the front hem). 2.5 cm thick cloth with a waistband, side panels, back panel, front hem strip, small pocket and simple seam lines.", "score": 6, "parts": [
+  {"name":"WaistBand","shape":"cylinder","pos":[0.0,-0.0005,-0.085],"rot":[0.0,0.0,90.0],"size":[0.025,0.34,0.025],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoop","shape":"cylinder","pos":[0.0,-0.0005,-0.085],"rot":[0.0,0.0,90.0],"size":[0.015,0.04,0.015],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"MainBody","shape":"cube","pos":[0.0,-0.0005,0.015],"rot":[0.0,0.0,0.0],"size":[0.34,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelL","shape":"cube","pos":[-0.205,-0.0005,0.015],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelR","shape":"cube","pos":[0.205,-0.0005,0.015],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.0005,-0.11],"rot":[0.0,0.0,0.0],"size":[0.34,0.025,0.05],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemStrip","shape":"cube","pos":[0.0,-0.0005,0.125],"rot":[0.0,0.0,0.0],"size":[0.48,0.025,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pocket","shape":"cube","pos":[-0.12,-0.0005,0.04],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,0.06],"color":[0.58,0.53,0.63],"smooth":0.05,"metal":0.0},
+  {"name":"FrontSeam","shape":"cube","pos":[0.0,0.012,0.115],"rot":[0.0,0.0,0.0],"size":[0.48,0.002,0.002],"color":[0.3,0.3,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"BackSeam","shape":"cube","pos":[0.0,0.012,-0.085],"rot":[0.0,0.0,0.0],"size":[0.34,0.002,0.002],"color":[0.3,0.3,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.17,-0.0005,0.015],"rot":[0.0,0.0,0.0],"size":[0.002,0.025,0.2],"color":[0.3,0.3,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.17,-0.0005,0.015],"rot":[0.0,0.0,0.0],"size":[0.002,0.025,0.2],"color":[0.3,0.3,0.3],"smooth":0.1,"metal":0.0}
+]}

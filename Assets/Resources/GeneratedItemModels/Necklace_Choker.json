@@ -1,0 +1,13 @@
+{"version": 1, "id": "Necklace_Choker", "baseHeight": 0.0875, "name": "Necklace Choker", "model": "gpt-oss:120b", "notes": "Necklace choker ~0.13 m diameter, 1 cm thick, lying flat on the floor. Main leather‑tinted band with a small clasp, pendant hanging from the front, four decorative chain links around the edge and two rivets plus two bead accents that sit on top of the band.", "score": 6, "parts": [
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.01,0.13],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Clasp","shape":"cube","pos":[-0.06,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Pendant","shape":"cylinder","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"LinkFront","shape":"cylinder","pos":[0.0,-0.0175,0.065],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"LinkBack","shape":"cylinder","pos":[0.0,-0.0175,-0.065],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"LinkLeft","shape":"cylinder","pos":[-0.065,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"LinkRight","shape":"cylinder","pos":[0.065,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Rivet1","shape":"cylinder","pos":[-0.03,-0.0085,0.04],"rot":[0.0,0.0,90.0],"size":[0.004,0.008,0.004],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"Rivet2","shape":"cylinder","pos":[0.03,-0.0085,-0.04],"rot":[0.0,0.0,90.0],"size":[0.004,0.008,0.004],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"BeadTop","shape":"sphere","pos":[0.0,-0.0045,0.03],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BeadBottom","shape":"sphere","pos":[0.0,-0.0045,-0.03],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

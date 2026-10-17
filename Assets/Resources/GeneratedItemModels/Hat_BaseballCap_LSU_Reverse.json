@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_BaseballCap_LSU_Reverse", "baseHeight": 0.0725, "name": "Hat Baseball Cap LSU Reverse", "model": "gpt-oss:120b", "notes": "Baseball cap laid flat: crown rectangle 0.22 m × 0.18 m × 0.025 m, four brim strips extending ~0.25 m outward, central metal button and dark stitching around the brim edges.", "score": 6, "parts": [
+  {"name":"CrownBase","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.025,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimFront","shape":"cube","pos":[0.0,-0.005,0.11],"rot":[0.0,0.0,0.0],"size":[0.25,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimBack","shape":"cube","pos":[0.0,-0.005,-0.11],"rot":[0.0,0.0,0.0],"size":[0.25,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimLeft","shape":"cube","pos":[-0.13,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimRight","shape":"cube","pos":[0.13,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ButtonTop","shape":"cylinder","pos":[0.0,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.008,0.03],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"StitchFront","shape":"cylinder","pos":[0.0,-0.003,0.11],"rot":[0.0,0.0,90.0],"size":[0.004,0.04,0.004],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBack","shape":"cylinder","pos":[0.0,-0.003,-0.11],"rot":[0.0,0.0,90.0],"size":[0.004,0.04,0.004],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLeft","shape":"cylinder","pos":[-0.13,-0.003,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.25,0.004],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRight","shape":"cylinder","pos":[0.13,-0.003,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.25,0.004],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0}
+]}

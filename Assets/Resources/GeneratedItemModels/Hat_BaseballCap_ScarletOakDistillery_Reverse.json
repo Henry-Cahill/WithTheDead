@@ -1,0 +1,8 @@
+{"version": 1, "id": "Hat_BaseballCap_ScarletOakDistillery_Reverse", "baseHeight": 0.0725, "name": "Hat Baseball Cap Scarlet Oak Distillery Reverse", "model": "gpt-oss:120b", "notes": "Flat baseball cap laid out for product view: crown 0.22 m wide × 0.14 m deep × 0.02 m thick, front brim strip 0.07 m long × 0.22 m wide × 0.008 m thick, small top button and a logo patch on the front panel.", "score": 6, "parts": [
+  {"name":"Crown","shape":"cube","pos":[0.0,-0.0025,-0.035],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.14],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimFront","shape":"cube","pos":[0.0,-0.0085,0.07],"rot":[0.0,0.0,0.0],"size":[0.22,0.008,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ButtonTop","shape":"cylinder","pos":[0.0,0.01,-0.035],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.015],"color":[0.44,0.4,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[-0.05,0.0015,0.005],"rot":[0.0,0.0,0.0],"size":[0.06,0.008,0.03],"color":[0.8,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"SideBrimL","shape":"cube","pos":[-0.115,-0.0085,-0.0],"rot":[0.0,90.0,0.0],"size":[0.22,0.008,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SideBrimR","shape":"cube","pos":[0.115,-0.0085,-0.0],"rot":[0.0,90.0,0.0],"size":[0.22,0.008,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

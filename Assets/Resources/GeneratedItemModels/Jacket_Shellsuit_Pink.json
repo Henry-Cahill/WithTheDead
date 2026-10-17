@@ -1,0 +1,19 @@
+{"version": 1, "id": "Jacket_Shellsuit_Pink", "baseHeight": 0.281, "name": "Jacket Shellsuit Pink", "model": "gpt-oss:120b", "notes": "Flat pink shellsuit jacket ~0.56 m wide × 0.44 m deep × 0.03 m thick, with sleeves, collar, front zipper, pockets and cuff trims. Main fabric uses the pink tint; metal details (zipper) are dark‑grey.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.0,-0.0795],"rot":[0.0,0.0,0.0],"size":[0.56,0.025,0.44],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LeftSleeve","shape":"cube","pos":[-0.44,-0.0,-0.0795],"rot":[0.0,0.0,0.0],"size":[0.16,0.025,0.38],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RightSleeve","shape":"cube","pos":[0.44,-0.0,-0.0795],"rot":[0.0,0.0,0.0],"size":[0.16,0.025,0.38],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.44,0.0055,0.1005],"rot":[0.0,0.0,0.0],"size":[0.16,0.03,0.04],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.44,0.0055,0.1005],"rot":[0.0,0.0,0.0],"size":[0.16,0.03,0.04],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cube","pos":[0.0,0.0155,0.1405],"rot":[0.0,0.0,0.0],"size":[0.56,0.015,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Zipper","shape":"cube","pos":[0.0,0.0055,0.1405],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.44],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.18,0.0055,0.0405],"rot":[0.0,0.0,0.0],"size":[0.14,0.015,0.08],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.18,0.0055,0.0405],"rot":[0.0,0.0,0.0],"size":[0.14,0.015,0.08],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"ShoulderPadL","shape":"cube","pos":[-0.28,0.0195,0.1405],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.08],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"ShoulderPadR","shape":"cube","pos":[0.28,0.0195,0.1405],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.08],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[0.0,0.0055,-0.2995],"rot":[0.0,0.0,0.0],"size":[0.56,0.015,0.06],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.013,-0.0795],"rot":[0.0,0.0,0.0],"size":[0.562,0.002,0.562],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.012,-0.0795],"rot":[0.0,0.0,0.0],"size":[0.562,0.002,0.562],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"SeamLeft","shape":"cylinder","pos":[-0.28,-0.0,-0.0795],"rot":[90.0,0.0,0.0],"size":[0.442,0.002,0.442],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"SeamRight","shape":"cylinder","pos":[0.28,-0.0,-0.0795],"rot":[90.0,0.0,0.0],"size":[0.442,0.002,0.442],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[0.0,0.0065,-0.0695],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.04],"color":[0.8,0.2,0.3],"smooth":0.05,"metal":0.0}
+]}

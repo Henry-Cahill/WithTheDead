@@ -1,0 +1,10 @@
+{"version": 1, "id": "HolsterSimple_Green", "baseHeight": 0.0875, "name": "Holster Simple Green", "model": "gpt-oss:120b", "notes": "Simple green holster lying flat on the floor – overall size ≈ 0.20 m wide (X) × 0.12 m tall (Z) × 0.04 m deep (Y). Main pouch is a low‑profile rectangular box, a hinged flap folds over the front, and a belt loop protrudes from one side. Small raised seams give it a leather‑like silhouette.", "score": 6, "parts": [
+  {"name":"PouchBase","shape":"cube","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.04,0.12],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Flap","shape":"cube","pos":[0.0,0.0175,0.06],"rot":[0.0,0.0,0.0],"size":[0.2,0.01,0.12],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"BeltLoop","shape":"cylinder","pos":[-0.09,0.0175,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"SeamFront","shape":"cylinder","pos":[0.0,0.0175,0.06],"rot":[90.0,0.0,0.0],"size":[0.018,0.202,0.018],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBack","shape":"cylinder","pos":[0.0,0.0175,-0.06],"rot":[90.0,0.0,0.0],"size":[0.018,0.202,0.018],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cylinder","pos":[-0.1,0.0175,0.0],"rot":[90.0,0.0,0.0],"size":[0.018,0.122,0.018],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cylinder","pos":[0.1,0.0175,0.0],"rot":[90.0,0.0,0.0],"size":[0.018,0.122,0.018],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"BottomRidge","shape":"cube","pos":[0.0,-0.0265,0.0],"rot":[0.0,0.0,0.0],"size":[0.202,0.002,0.122],"color":[0.45,0.43,0.35],"smooth":0.08,"metal":0.0}
+]}

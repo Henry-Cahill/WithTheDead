@@ -1,0 +1,14 @@
+{"version": 1, "id": "Hat_EarMuff_Protectors", "baseHeight": 0.0825, "name": "Hat Ear Muff Protectors", "model": "gpt-oss:120b", "notes": "Flat layout of ear‑muff hat protectors (≈0.30 m wide × 0.16 m tall, 3 cm thick). Two rounded cushions (outer fabric with softer padding) linked by a front and back headband; small strap tabs and metal rivets add detail.", "score": 6, "parts": [
+  {"name":"CupOuterL","shape":"cylinder","pos":[-0.15,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CupInnerL","shape":"cylinder","pos":[-0.15,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.028,0.1],"color":[0.8,0.8,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"CupOuterR","shape":"cylinder","pos":[0.15,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CupInnerR","shape":"cylinder","pos":[0.15,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.028,0.1],"color":[0.8,0.8,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"FrontBand","shape":"cube","pos":[0.0,0.0025,0.07],"rot":[0.0,0.0,0.0],"size":[0.34,0.04,0.02],"color":[0.4,0.35,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"BackBand","shape":"cube","pos":[0.0,0.0025,-0.07],"rot":[0.0,0.0,0.0],"size":[0.34,0.04,0.02],"color":[0.4,0.35,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"StrapFrontL","shape":"cube","pos":[-0.15,-0.0025,0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.4,0.35,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"StrapFrontR","shape":"cube","pos":[0.15,-0.0025,0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.4,0.35,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"StrapBackL","shape":"cube","pos":[-0.15,-0.0025,-0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.4,0.35,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"StrapBackR","shape":"cube","pos":[0.15,-0.0025,-0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.4,0.35,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"RivetL","shape":"sphere","pos":[-0.15,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[0.15,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0}
+]}

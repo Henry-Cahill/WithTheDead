@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_Ranger", "baseHeight": 0.1725, "name": "Hat Ranger", "model": "gpt-oss:120b", "notes": "Flat‑lay Ranger hat ~0.28 m brim diameter, 0.12 m crown height, 0.02 m thick brim. Main tint (0.55,0.5,0.6) with darker band and small feather detail.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[-0.0025,-0.105,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"InnerBrim","shape":"cylinder","pos":[-0.0025,-0.105,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.18],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBody","shape":"cylinder","pos":[-0.0025,-0.0375,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.12,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Band","shape":"cylinder","pos":[-0.0025,-0.0925,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.01,0.2],"color":[0.468,0.425,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"CrownDome","shape":"sphere","pos":[-0.0025,0.0525,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.12,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownRidge","shape":"cylinder","pos":[-0.0025,0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.008,0.22],"color":[0.468,0.425,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"FeatherBase","shape":"cylinder","pos":[0.0675,-0.0255,0.05],"rot":[10.0,0.0,90.0],"size":[0.012,0.15,0.012],"color":[0.7,0.65,0.8],"smooth":0.1,"metal":0.0},
+  {"name":"FeatherTip","shape":"sphere","pos":[0.1275,-0.0025,0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.9,0.9,0.95],"smooth":0.1,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[-0.1025,-0.0825,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"HatPin","shape":"cylinder","pos":[-0.0025,0.0675,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.45,0.4,0.5],"smooth":0.2,"metal":0.0}
+]}

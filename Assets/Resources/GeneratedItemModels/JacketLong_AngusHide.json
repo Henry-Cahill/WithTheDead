@@ -1,0 +1,14 @@
+{"version": 1, "id": "JacketLong_AngusHide", "baseHeight": 0.1307, "name": "Jacket Long Angus Hide", "model": "gpt-oss:120b", "notes": "Flat Angus‑hide jacket ~0.80 m long × 0.55 m wide, 3 cm thick: torso panel, two angled sleeves, a standing collar band, front pockets and stitched trim.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0125,0.0007,0.0],"rot":[0.0,0.0,0.0],"size":[0.8,0.03,0.55],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.1875,-0.0003,0.35],"rot":[0.0,0.0,-15.0],"size":[0.45,0.025,0.18],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[-0.1875,-0.0003,-0.35],"rot":[0.0,0.0,15.0],"size":[0.45,0.025,0.18],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"CollarBand","shape":"cylinder","pos":[0.3925,0.0107,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.04,0.12],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[0.1625,0.0037,0.18],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.06],"color":[0.58,0.56,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.1625,0.0037,-0.18],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.06],"color":[0.58,0.56,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"PocketFlapL","shape":"cube","pos":[0.2125,0.0077,0.18],"rot":[0.0,0.0,5.0],"size":[0.12,0.008,0.03],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"PocketFlapR","shape":"cube","pos":[0.2125,0.0077,-0.18],"rot":[0.0,0.0,-5.0],"size":[0.12,0.008,0.03],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0125,0.0172,0.0],"rot":[0.0,0.0,0.0],"size":[0.8,0.002,0.55],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[0.0125,-0.0128,0.0],"rot":[0.0,0.0,0.0],"size":[0.8,0.002,0.55],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.1875,0.0007,0.44],"rot":[0.0,0.0,0.0],"size":[0.45,0.025,0.004],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[-0.1875,0.0007,-0.44],"rot":[0.0,0.0,0.0],"size":[0.45,0.025,0.004],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0}
+]}

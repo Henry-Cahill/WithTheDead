@@ -1,0 +1,18 @@
+{"version": 1, "id": "Jacket_PaddedDOWN", "baseHeight": 0.1026, "name": "Jacket Padded DOWN", "model": "gpt-oss:120b", "notes": "Padded down jacket lying flat, about 0.58 m wide × 0.78 m long × 0.04 m thick. Main outer shell (brown‑grey), lighter inner lining, collar band, front/back hems and a few small cylindrical baffles to hint at the down padding.", "score": 6, "parts": [
+  {"name":"ShellTorso","shape":"cube","pos":[0.0,0.0,-0.055],"rot":[0.0,0.0,0.0],"size":[0.58,0.04,0.78],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LiningTorso","shape":"cube","pos":[0.0,-0.001,-0.055],"rot":[0.0,0.0,0.0],"size":[0.55,0.038,0.75],"color":[0.75,0.73,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR_Shell","shape":"cube","pos":[0.38,0.0,-0.055],"rot":[0.0,0.0,15.0],"size":[0.18,0.04,0.5],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL_Shell","shape":"cube","pos":[-0.38,0.0,-0.055],"rot":[0.0,0.0,-15.0],"size":[0.18,0.04,0.5],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR_Lining","shape":"cube","pos":[0.38,-0.001,-0.055],"rot":[0.0,0.0,15.0],"size":[0.16,0.036,0.48],"color":[0.75,0.73,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL_Lining","shape":"cube","pos":[-0.38,-0.001,-0.055],"rot":[0.0,0.0,-15.0],"size":[0.16,0.036,0.48],"color":[0.75,0.73,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"CollarShell","shape":"cylinder","pos":[0.0,0.0,0.335],"rot":[0.0,0.0,0.0],"size":[0.24,0.04,0.24],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CollarLining","shape":"cylinder","pos":[0.0,-0.001,0.335],"rot":[0.0,0.0,0.0],"size":[0.22,0.036,0.22],"color":[0.75,0.73,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"HemFront","shape":"cube","pos":[0.0,-0.016,0.335],"rot":[0.0,0.0,0.0],"size":[0.58,0.008,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemBack","shape":"cube","pos":[0.0,-0.016,-0.445],"rot":[0.0,0.0,0.0],"size":[0.58,0.008,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BaffleF1","shape":"cylinder","pos":[-0.15,-0.0025,0.145],"rot":[0.0,0.0,0.0],"size":[0.04,0.035,0.04],"color":[0.8,0.78,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"BaffleF2","shape":"cylinder","pos":[0.0,-0.0025,0.145],"rot":[0.0,0.0,0.0],"size":[0.04,0.035,0.04],"color":[0.8,0.78,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"BaffleF3","shape":"cylinder","pos":[0.15,-0.0025,0.145],"rot":[0.0,0.0,0.0],"size":[0.04,0.035,0.04],"color":[0.8,0.78,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"BaffleB1","shape":"cylinder","pos":[-0.15,-0.0025,-0.255],"rot":[0.0,0.0,0.0],"size":[0.04,0.035,0.04],"color":[0.8,0.78,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"BaffleB2","shape":"cylinder","pos":[0.0,-0.0025,-0.255],"rot":[0.0,0.0,0.0],"size":[0.04,0.035,0.04],"color":[0.8,0.78,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"BaffleB3","shape":"cylinder","pos":[0.15,-0.0025,-0.255],"rot":[0.0,0.0,0.0],"size":[0.04,0.035,0.04],"color":[0.8,0.78,0.7],"smooth":0.05,"metal":0.0}
+]}

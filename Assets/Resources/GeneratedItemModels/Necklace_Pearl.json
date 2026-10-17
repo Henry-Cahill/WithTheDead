@@ -1,0 +1,10 @@
+{"version": 1, "id": "Necklace_Pearl", "baseHeight": 0.0678, "name": "Necklace Pearl", "model": "gpt-oss:120b", "notes": "Strand of seven round pearls (~1.5 cm diameter each) about 0.11 m long, laid on the floor in a gentle S‑curve with a small silver clasp at one end. All pearls touch their neighbours to form a continuous strand.", "score": 7, "parts": [
+  {"name":"Clasp","shape":"cylinder","pos":[-0.0562,-0.0027,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.03,0.01],"color":[0.78,0.78,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Pearl1","shape":"sphere","pos":[-0.0262,0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Pearl2","shape":"sphere","pos":[-0.0112,0.0003,0.003],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Pearl3","shape":"sphere","pos":[0.0038,0.0003,-0.003],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Pearl4","shape":"sphere","pos":[0.0188,0.0003,0.003],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Pearl5","shape":"sphere","pos":[0.0338,0.0003,-0.003],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Pearl6","shape":"sphere","pos":[0.0488,0.0003,0.003],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Pearl7","shape":"sphere","pos":[0.0638,0.0003,-0.003],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0}
+]}

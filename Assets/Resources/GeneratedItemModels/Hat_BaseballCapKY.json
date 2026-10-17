@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_BaseballCapKY", "baseHeight": 0.135, "name": "Hat Baseball Cap KY", "model": "gpt-oss:120b", "notes": "Flat baseball cap (Hat_BaseballCapKY) – 0.22 m brim diameter, 0.12 m crown height, 0.03 m deep front bill, 0.5 kg, cloth tint [0.55,0.5,0.6]. Includes brim, stitched edge, rounded crown base, top dome, side/back panels, front bill and a small logo patch.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.07,-0.0337],"rot":[0.0,0.0,0.0],"size":[0.22,0.01,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StitchOuter","shape":"cylinder","pos":[0.0,-0.066,-0.0337],"rot":[0.0,0.0,0.0],"size":[0.225,0.008,0.225],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchInner","shape":"cylinder","pos":[0.0,-0.066,-0.0337],"rot":[0.0,0.0,0.0],"size":[0.215,0.008,0.215],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBase","shape":"sphere","pos":[0.0,-0.005,-0.0337],"rot":[0.0,0.0,0.0],"size":[0.18,0.12,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownTop","shape":"cube","pos":[0.0,0.065,-0.0337],"rot":[0.0,0.0,0.0],"size":[0.1,0.02,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelL","shape":"cube","pos":[-0.09,-0.005,-0.0337],"rot":[0.0,0.0,0.0],"size":[0.015,0.09,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelR","shape":"cube","pos":[0.09,-0.005,-0.0337],"rot":[0.0,0.0,0.0],"size":[0.015,0.09,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.005,0.0563],"rot":[0.0,0.0,0.0],"size":[0.015,0.09,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontBill","shape":"cube","pos":[0.0,-0.063,-0.1237],"rot":[0.0,0.0,0.0],"size":[0.14,0.015,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[0.05,-0.063,-0.1237],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.002],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0}
+]}

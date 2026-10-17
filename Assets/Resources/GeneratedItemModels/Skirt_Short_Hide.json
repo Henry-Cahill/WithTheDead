@@ -1,0 +1,10 @@
+{"version": 1, "id": "Skirt_Short_Hide", "baseHeight": 0.0805, "name": "Skirt Short Hide", "model": "gpt-oss:120b", "notes": "Flat short hide skirt ~0.48 m wide × 0.28 m long, 2.5 cm thick. Main panel with waistband on top, hem band below, slight side flares, belt‑loops and a decorative stitch line.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.008,-0.001],"rot":[0.0,0.0,0.0],"size":[0.48,0.025,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0085,-0.001],"rot":[0.0,0.0,0.0],"size":[0.48,0.008,0.28],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[0.0,-0.0165,-0.001],"rot":[0.0,0.0,0.0],"size":[0.48,0.008,0.28],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"SideFlareL","shape":"cube","pos":[-0.27,-0.008,-0.001],"rot":[0.0,0.0,0.0],"size":[0.06,0.025,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SideFlareR","shape":"cube","pos":[0.27,-0.008,-0.001],"rot":[0.0,0.0,0.0],"size":[0.06,0.025,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopL","shape":"cylinder","pos":[-0.18,0.0145,-0.001],"rot":[0.0,0.0,0.0],"size":[0.015,0.012,0.015],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopR","shape":"cylinder","pos":[0.18,0.0145,-0.001],"rot":[0.0,0.0,0.0],"size":[0.015,0.012,0.015],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLine","shape":"cube","pos":[0.0,0.0115,0.139],"rot":[0.0,0.0,0.0],"size":[0.46,0.002,0.004],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0}
+]}

@@ -24,9 +24,17 @@ namespace CloneZ
         public bool IsHunting => _state == State.Chase || _state == State.Attack;
         /// <summary>True once the zombie has died and its brain is switched off.</summary>
         public bool IsDeadState => _state == State.Dead;
+        /// <summary>Direction the killing blow travelled (zero if unknown), so the body falls away from it.</summary>
+        public Vector3 DeathDirection { get; private set; }
+
+        /// <summary>Raised as an attack winds up; true when it is aimed at a barricade or wall.</summary>
+        public event System.Action<bool> AttackStarted;
+        /// <summary>Raised when the zombie is knocked back: the push and how long it reels.</summary>
+        public event System.Action<Vector3, float> Staggered;
 
         private NavMeshAgent _agent;
         private Renderer _renderer;
+        private ZombieAvatar _avatar;
         private PlayerStats _player;
         private PlayerController _playerController;
         private PlayerSkills _playerSkills;
@@ -51,10 +59,16 @@ namespace CloneZ
         private float _staggerTimer;
         private Vector3 _knockback;
 
+        // A lit flashlight draws the eye: a zombie standing in its beam spots the survivor from further off.
+        private const float FlashlightBeamRange = 22f;
+        private const float FlashlightVisionMultiplier = 1.6f;
+        private static readonly float FlashlightBeamCos = Mathf.Cos(25f * Mathf.Deg2Rad);
+
         private void Awake()
         {
             _agent = GetComponent<NavMeshAgent>();
             _renderer = GetComponentInChildren<Renderer>();
+            _avatar = GetComponent<ZombieAvatar>();
             _agent.updateRotation = false;
             _agent.stoppingDistance = CloneZConfig.ZombieAttackRange * 0.7f;
         }
@@ -62,13 +76,23 @@ namespace CloneZ
         public void Configure(ZombieType type)
         {
             Type = type;
+            Color tint;
             switch (type)
             {
-                case ZombieType.Sprinter: _baseSpeed = CloneZConfig.ZombieSprinterSpeed; SetColor(new Color(0.45f, 0.18f, 0.15f)); break;
-                case ZombieType.FastShambler: _baseSpeed = CloneZConfig.ZombieFastShamblerSpeed; SetColor(new Color(0.30f, 0.42f, 0.22f)); break;
-                case ZombieType.Crawler: _baseSpeed = CloneZConfig.ZombieCrawlerSpeed; SetColor(new Color(0.5f, 0.5f, 0.42f)); transform.localScale = new Vector3(1f, 0.5f, 1f); break;
-                default: _baseSpeed = CloneZConfig.ZombieShamblerSpeed; SetColor(new Color(0.36f, 0.5f, 0.30f)); break;
+                case ZombieType.Sprinter: _baseSpeed = CloneZConfig.ZombieSprinterSpeed; tint = new Color(0.45f, 0.18f, 0.15f); break;
+                case ZombieType.FastShambler: _baseSpeed = CloneZConfig.ZombieFastShamblerSpeed; tint = new Color(0.30f, 0.42f, 0.22f); break;
+                case ZombieType.Crawler: _baseSpeed = CloneZConfig.ZombieCrawlerSpeed; tint = new Color(0.5f, 0.5f, 0.42f); break;
+                default: _baseSpeed = CloneZConfig.ZombieShamblerSpeed; tint = new Color(0.36f, 0.5f, 0.30f); break;
             }
+
+            if (_avatar == null) _avatar = GetComponent<ZombieAvatar>();
+            if (_avatar != null) _avatar.ApplyType(type, tint);   // the humanoid crawls rather than being squashed
+            else
+            {
+                SetColor(tint);
+                if (type == ZombieType.Crawler) transform.localScale = new Vector3(1f, 0.5f, 1f);
+            }
+
             _agent.speed = _baseSpeed * 0.5f;
             _agent.acceleration = 12f;
             _agent.angularSpeed = 999f;
@@ -93,14 +117,30 @@ namespace CloneZ
             if (_state == State.Stagger) { TickStagger(); return; }
 
             _attackCooldown -= Time.deltaTime;
+            // A survivor under a raid's spawn protection is invisible to the dead: anyone already on
+            // their trail loses interest and goes back to wandering.
+            if (ExtractionManager.PlayerProtected && (_hasTarget || _state == State.Chase || _state == State.Attack))
+                GiveUpTarget();
             Perceive();
             Think();
             FaceMovement();
         }
 
+        private void GiveUpTarget()
+        {
+            StopAllCoroutines();   // drops a lunge or a bash under way (the brain is alive, so no death fall runs)
+            _hasTarget = false;
+            _investigating = false;
+            _lastSeenTime = -999f;
+            EnterIdle();
+        }
+
         #region Perception
         private void Perceive()
         {
+            // Nothing to see or hear of a protected survivor (their own noise included).
+            if (ExtractionManager.PlayerProtected) return;
+
             if (_player != null && !_player.IsDead && CanSeePlayer())
             {
                 _hasTarget = true;
@@ -121,6 +161,7 @@ namespace CloneZ
 
         private bool CanSeePlayer()
         {
+            if (ExtractionManager.PlayerProtected) return false;
             if (_playerController == null) _playerController = _player.GetComponent<PlayerController>();
             if (_playerSkills == null) _playerSkills = _player.GetComponent<PlayerSkills>();
 
@@ -131,6 +172,8 @@ namespace CloneZ
             float radius = EffectiveVisionRadius();
             if (_playerSkills != null && _playerController != null && _playerController.IsSneaking)
                 radius = Mathf.Max(CloneZConfig.ZombieAttackRange + 0.5f, radius * _playerSkills.StealthVisionMult(true));
+            // ...but shining a flashlight at one gives them away, sneaking or not.
+            if (InFlashlightBeam(-to)) radius *= FlashlightVisionMultiplier;
             if (dist > radius) return false;
 
             bool alerted = _state == State.Chase || _state == State.Attack;
@@ -160,6 +203,24 @@ namespace CloneZ
             if (TimeOfDay.Instance != null) m *= TimeOfDay.Instance.ZombieVisionMultiplier;
             if (WeatherSystem.Instance != null) m *= WeatherSystem.Instance.VisionMultiplier;
             return Mathf.Max(CloneZConfig.ZombieAttackRange + 0.5f, CloneZConfig.ZombieVisionRadius * m);
+        }
+
+        /// <summary>True when the survivor's flashlight is on and this zombie stands in its beam: within
+        /// range and inside the cone around the aim direction. <paramref name="fromPlayer"/> is the vector
+        /// from the survivor to this zombie.</summary>
+        private bool InFlashlightBeam(Vector3 fromPlayer)
+        {
+            PlayerGear gear = PlayerGear.Instance;
+            if (gear == null || !gear.FlashlightOn || _playerController == null) return false;
+            fromPlayer.y = 0f;
+            float sqr = fromPlayer.sqrMagnitude;
+            if (sqr > FlashlightBeamRange * FlashlightBeamRange) return false;
+            if (sqr < 0.01f) return true;
+            Vector3 aim = _playerController.AimDirection;
+            aim.y = 0f;
+            float aimSqr = aim.sqrMagnitude;
+            if (aimSqr < 1e-6f) return false;
+            return Vector3.Dot(aim, fromPlayer) / Mathf.Sqrt(aimSqr * sqr) >= FlashlightBeamCos;
         }
         #endregion
 
@@ -254,16 +315,14 @@ namespace CloneZ
                 : _lastKnownPos;
             SafeSetDestination(targetPos);
 
-            // A barricade standing between us and the target has to be torn down first —
-            // the carved NavMesh already dead-ends us against it, so start swinging.
+            // A barricade or house wall standing between us and the target has to be torn down
+            // first — the carved NavMesh already dead-ends us against it, so start swinging.
             if (_attackCooldown <= 0f && _player != null && !_player.IsDead)
             {
-                Barricade wall = Barricade.NearestObstructing(
-                    transform.position, _player.transform.position,
-                    CloneZConfig.ZombieAttackRange + 0.8f);
+                IDamageable wall = NearestObstruction(_player.transform.position);
                 if (wall != null)
                 {
-                    StartCoroutine(DoAttackBarricade(wall));
+                    StartCoroutine(DoAttackStructure(wall));
                     return;
                 }
             }
@@ -278,6 +337,20 @@ namespace CloneZ
 
         private bool _hasTargetVisibleNow() => _player != null && !_player.IsDead && CanSeePlayer();
 
+        // The nearest player-built structure (barricade or house wall/doorway) that blocks the
+        // path to the target — whichever is closer if both are in reach.
+        private IDamageable NearestObstruction(Vector3 targetPos)
+        {
+            float range = CloneZConfig.ZombieAttackRange + 0.8f;
+            Barricade bar = Barricade.NearestObstructing(transform.position, targetPos, range);
+            BuildPiece piece = BuildPiece.NearestObstructing(transform.position, targetPos, range);
+            if (bar == null) return piece;
+            if (piece == null) return bar;
+            float db = (bar.Position - transform.position).sqrMagnitude;
+            float dp = (piece.Position - transform.position).sqrMagnitude;
+            return db <= dp ? (IDamageable)bar : piece;
+        }
+
         private void TickAttack()
         {
             // Handled by the DoAttack coroutine; hold position and face the player.
@@ -289,6 +362,7 @@ namespace CloneZ
             _state = State.Attack;
             _attackCooldown = CloneZConfig.ZombieAttackCooldown;
             SafeStop();
+            AttackStarted?.Invoke(false);
 
             // Wind-up (the lunge) before the strike lands.
             float t = 0f;
@@ -302,8 +376,8 @@ namespace CloneZ
 
             if (_state == State.Dead || _state == State.Stagger) yield break;
 
-            // Land the hit if still in reach.
-            if (_player != null && !_player.IsDead &&
+            // Land the hit if still in reach (and the survivor isn't under a raid's spawn protection).
+            if (_player != null && !_player.IsDead && !ExtractionManager.PlayerProtected &&
                 Vector3.Distance(transform.position, _player.transform.position) <= CloneZConfig.ZombieAttackRange + 0.3f)
             {
                 bool bite = Random.value < CloneZConfig.ZombieBiteChance;
@@ -317,30 +391,34 @@ namespace CloneZ
             }
         }
 
-        // Beats on a barricade that blocks the path to the player, chipping away planks.
-        private IEnumerator DoAttackBarricade(Barricade wall)
+        // Beats on a structure (barricade or house wall) that blocks the path to the player,
+        // chipping away at its health. (The reference is typed as the interface, so we lean on
+        // IsDead — not a Unity null check — to notice it was destroyed mid-swing.)
+        private IEnumerator DoAttackStructure(IDamageable wall)
         {
             _state = State.Attack;
             _attackCooldown = CloneZConfig.ZombieAttackCooldown;
             SafeStop();
+            AttackStarted?.Invoke(true);
 
             float t = 0f;
             while (t < CloneZConfig.ZombieAttackWindup)
             {
                 if (_state == State.Dead || _state == State.Stagger) yield break;
-                if (wall != null) FaceTowards(wall.Position);
+                if (wall != null && !wall.IsDead) FaceTowards(wall.Transform.position);
                 t += Time.deltaTime;
                 yield return null;
             }
 
             if (_state == State.Dead || _state == State.Stagger) yield break;
 
-            if (wall != null &&
-                Vector3.Distance(transform.position, wall.Position) <= CloneZConfig.ZombieAttackRange + 1.0f)
+            if (wall != null && !wall.IsDead &&
+                Vector3.Distance(transform.position, wall.Transform.position) <= CloneZConfig.ZombieAttackRange + 1.0f)
             {
+                Vector3 pos = wall.Transform.position;
                 var info = new DamageInfo(
                     CloneZConfig.ZombieBarricadeDamage, DamageKind.Melee,
-                    wall.Position, CloneZUtil.Flat(wall.Position - transform.position), gameObject);
+                    pos, CloneZUtil.Flat(pos - transform.position), gameObject);
                 wall.TakeDamage(info);
             }
 
@@ -361,6 +439,7 @@ namespace CloneZ
             _staggerTimer = duration;
             _knockback = CloneZUtil.Flat(direction) * force;
             SafeStop();
+            Staggered?.Invoke(CloneZUtil.Flat(direction) * Mathf.Max(force, 0.1f), duration);
         }
 
         private void TickStagger()
@@ -378,10 +457,11 @@ namespace CloneZ
             }
         }
 
-        public void Kill()
+        public void Kill(Vector3 hitDirection = default)
         {
             if (_state == State.Dead) return;
             _state = State.Dead;
+            DeathDirection = CloneZUtil.Flat(hitDirection);
             StopAllCoroutines();
             if (_agent.isOnNavMesh) _agent.isStopped = true;
             _agent.enabled = false;
@@ -391,17 +471,20 @@ namespace CloneZ
 
         private IEnumerator DeathFall()
         {
-            // Topple over and sink into the ground, then despawn.
-            Quaternion from = transform.rotation;
-            Quaternion to = Quaternion.Euler(90f, transform.eulerAngles.y, 0f) ;
-            float t = 0f;
-            while (t < 1f)
+            // Topple over (the humanoid body plays its own collapse), then sink into the ground and despawn.
+            if (_avatar == null)
             {
-                t += Time.deltaTime * 2.5f;
-                transform.rotation = Quaternion.Slerp(from, to, t);
-                yield return null;
+                Quaternion from = transform.rotation;
+                Quaternion to = Quaternion.Euler(90f, transform.eulerAngles.y, 0f);
+                float t = 0f;
+                while (t < 1f)
+                {
+                    t += Time.deltaTime * 2.5f;
+                    transform.rotation = Quaternion.Slerp(from, to, t);
+                    yield return null;
+                }
             }
-            yield return new WaitForSeconds(2.5f);
+            yield return new WaitForSeconds(_avatar == null ? 2.5f : 2.9f);
 
             float s = 0f;
             Vector3 start = transform.position;

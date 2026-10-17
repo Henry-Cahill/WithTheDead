@@ -1,0 +1,17 @@
+{"version": 1, "id": "Jacket_ArmyCamoDesertNew", "baseHeight": 0.0887, "name": "Jacket Army Camo Desert New", "model": "gpt-oss:120b", "notes": "Flat army‑camo jacket about 0.78 m long × 0.58 m wide × 0.03 m thick: torso panel, two angled sleeves, stand‑up collar, front chest pockets with flaps, cuffs, bottom hem and a few camo‑pattern patches.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.0137,0.0],"rot":[0.0,0.0,0.0],"size":[0.58,0.03,0.78],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.37,-0.0137,0.0],"rot":[0.0,-15.0,0.0],"size":[0.16,0.03,0.6],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.37,-0.0137,0.0],"rot":[0.0,15.0,0.0],"size":[0.16,0.03,0.6],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cube","pos":[0.0,0.0163,-0.375],"rot":[0.0,0.0,0.0],"size":[0.22,0.025,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.15,-0.0037,-0.33],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.15,-0.0037,-0.33],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFlapL","shape":"cube","pos":[-0.15,0.0063,-0.29],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.015],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFlapR","shape":"cube","pos":[0.15,0.0063,-0.29],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.015],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.457,-0.0062,-0.023],"rot":[0.0,-15.0,0.0],"size":[0.18,0.015,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.457,-0.0062,0.023],"rot":[0.0,15.0,0.0],"size":[0.18,0.015,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[0.0,-0.0212,0.0],"rot":[0.0,0.0,0.0],"size":[0.58,0.015,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CamoPatch1","shape":"cube","pos":[-0.18,-0.0127,0.25],"rot":[0.0,0.0,0.0],"size":[0.08,0.031,0.12],"color":[0.7,0.65,0.75],"smooth":0.05,"metal":0.0},
+  {"name":"CamoPatch2","shape":"cube","pos":[0.18,-0.0127,0.25],"rot":[0.0,0.0,0.0],"size":[0.08,0.031,0.12],"color":[0.7,0.65,0.75],"smooth":0.05,"metal":0.0},
+  {"name":"CamoPatch3","shape":"cube","pos":[-0.45,-0.0127,-0.2],"rot":[0.0,-15.0,0.0],"size":[0.06,0.031,0.1],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CamoPatch4","shape":"cube","pos":[0.45,-0.0127,-0.2],"rot":[0.0,15.0,0.0],"size":[0.06,0.031,0.1],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0}
+]}

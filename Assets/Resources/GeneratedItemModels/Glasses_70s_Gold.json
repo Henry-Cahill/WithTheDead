@@ -1,0 +1,11 @@
+{"version": 1, "id": "Glasses_70s_Gold", "baseHeight": 0.0638, "name": "Glasses 70s Gold", "model": "gpt-oss:120b", "notes": "70s style gold‑tinted glasses laid flat, total width ≈ 0.16 m (including temples) × height ≈ 0.07 m × thickness ≈ 0.005 m. Parts: two rim cylinders with inner lens discs, a bridge block, left/right temple bars and hinge pins.", "score": 7, "parts": [
+  {"name":"RimL","shape":"cylinder","pos":[-0.03,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.055,0.005,0.055],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"RimR","shape":"cylinder","pos":[0.03,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.055,0.005,0.055],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"LensL","shape":"cylinder","pos":[-0.03,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.004,0.045],"color":[0.78,0.85,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"LensR","shape":"cylinder","pos":[0.03,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.004,0.045],"color":[0.78,0.85,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.045],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"TempleL","shape":"cube","pos":[-0.1225,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.005,0.012],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"TempleR","shape":"cube","pos":[0.1225,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.005,0.012],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"HingeL","shape":"cylinder","pos":[-0.0575,0.0007,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.006,0.008],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"HingeR","shape":"cylinder","pos":[0.0575,0.0007,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.006,0.008],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0}
+]}

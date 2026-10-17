@@ -1,0 +1,16 @@
+{"version": 1, "id": "NecklaceLong_Silver", "baseHeight": 0.067, "name": "Necklace Long Silver", "model": "gpt-oss:120b", "notes": "Long silver necklace ~0.45 m laid flat on the floor: alternating chain‑links (cylinders) forming a readable silhouette, ending with a small clasp that the pendant hangs from. Overall size ≈0.45 m length × 0.015 m width × 0.01 m height.", "score": 7, "parts": [
+  {"name":"Link1","shape":"cylinder","pos":[-0.167,0.002,-0.0005],"rot":[0.0,0.0,90.0],"size":[0.008,0.03,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Link2","shape":"cylinder","pos":[-0.137,0.002,-0.0005],"rot":[90.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Link3","shape":"cylinder","pos":[-0.107,0.002,-0.0005],"rot":[0.0,0.0,90.0],"size":[0.008,0.03,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Link4","shape":"cylinder","pos":[-0.077,0.002,-0.0005],"rot":[90.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Link5","shape":"cylinder","pos":[-0.047,0.002,-0.0005],"rot":[0.0,0.0,90.0],"size":[0.008,0.03,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Link6","shape":"cylinder","pos":[-0.017,0.002,-0.0005],"rot":[90.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Link7","shape":"cylinder","pos":[0.013,0.002,-0.0005],"rot":[0.0,0.0,90.0],"size":[0.008,0.03,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Link8","shape":"cylinder","pos":[0.043,0.002,-0.0005],"rot":[90.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Link9","shape":"cylinder","pos":[0.073,0.002,-0.0005],"rot":[0.0,0.0,90.0],"size":[0.008,0.03,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Link10","shape":"cylinder","pos":[0.103,0.002,-0.0005],"rot":[90.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Link11","shape":"cylinder","pos":[0.133,0.002,-0.0005],"rot":[0.0,0.0,90.0],"size":[0.008,0.03,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Link12","shape":"cylinder","pos":[0.163,0.002,-0.0005],"rot":[90.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Clasp","shape":"cube","pos":[0.1745,0.002,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Pendant","shape":"cylinder","pos":[0.1745,-0.005,0.0095],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0}
+]}

@@ -1,0 +1,9 @@
+{"version": 1, "id": "Glasses_Cosmetic_Round_Normal", "baseHeight": 0.063, "name": "Glasses Cosmetic Round Normal", "model": "gpt-oss:120b", "notes": "Flat cosmetic glasses spread out like a product photo – two round lenses with thin plastic frames, a short central bridge, and both temples (arms) extended outward. Overall width ≈ 0.44 m, height ≈ 0.05 m, thickness ≈ 0.004 m.", "score": 7, "parts": [
+  {"name":"LeftLens","shape":"cylinder","pos":[-0.0325,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.004,0.05],"color":[0.8,0.85,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"RightLens","shape":"cylinder","pos":[0.0325,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.004,0.05],"color":[0.8,0.85,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftArm","shape":"cube","pos":[-0.1325,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.006,0.01],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightArm","shape":"cube","pos":[0.1325,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.006,0.01],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftHinge","shape":"cube","pos":[-0.08,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.01],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightHinge","shape":"cube","pos":[0.08,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.01],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

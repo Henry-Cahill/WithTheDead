@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace CloneZ
@@ -7,12 +8,17 @@ namespace CloneZ
     /// <summary>
     /// Melee combat: a wide swing (left mouse) that damages zombies in an arc,
     /// and a shove (right mouse) that staggers and shoves them back. Damage and
-    /// crit maths follow Project Zomboid's CombatConfig values.
+    /// crit maths follow Project Zomboid's CombatConfig values. With a firearm the
+    /// left mouse shoots instead: level along the aim in the isometric view, or from
+    /// the shouldered gun at whatever the crosshair is on in the mouse-look views.
     /// </summary>
     [RequireComponent(typeof(PlayerController))]
     [RequireComponent(typeof(PlayerStats))]
     public class PlayerCombat : MonoBehaviour
     {
+        // Height of the shouldered gun's muzzle in the shoulder / first-person views.
+        private const float ShoulderMuzzleHeight = 1.35f;
+
         [Header("Melee weapon")]
         public float WeaponDamage = 0.9f;   // raw; the zombie applies the x1.5 received multiplier
         public float WeaponRange = 2.4f;
@@ -34,6 +40,8 @@ namespace CloneZ
         private float _shoveTimer;
         private float _fireTimer;
         private float _reloadTimer;
+        private bool _attackPressOnUi;   // the held left button went down over the UI
+        private bool _shovePressOnUi;    // the held right button went down over the UI
         private readonly HashSet<ZombieHealth> _hitThisAction = new HashSet<ZombieHealth>();
 
         /// <summary>The equipped firearm, or null when using melee / bare hands.</summary>
@@ -62,24 +70,53 @@ namespace CloneZ
             _shoveTimer -= Time.deltaTime;
             _fireTimer -= Time.deltaTime;
             _reloadTimer -= Time.deltaTime;
+
+            Mouse mouse = Mouse.current;
+            TrackUiPresses(mouse);                 // before the early-outs, so a click on a menu is remembered
             if (_stats.IsDead) return;
             if (UIState.GameplayBlocked) return;   // don't act while clicking in the inventory UI
             if (UIState.BuildMode) return;         // in build mode the mouse places barricades, not attacks
-
-            Mouse mouse = Mouse.current;
             if (mouse == null) return;
+
+            bool attack = mouse.leftButton.isPressed && !_attackPressOnUi;
+            bool shove = mouse.rightButton.isPressed && !_shovePressOnUi;
 
             if (EquippedFirearm != null)
             {
                 Keyboard kb = Keyboard.current;
                 if (kb != null && kb.rKey.wasPressedThisFrame) TryReload();
-                if (mouse.leftButton.isPressed && _fireTimer <= 0f && _reloadTimer <= 0f) FireFirearm();
-                else if (mouse.rightButton.isPressed && _shoveTimer <= 0f) Shove();
+                if (attack && _fireTimer <= 0f && _reloadTimer <= 0f) FireFirearm();
+                else if (shove && _shoveTimer <= 0f) Shove();
                 return;
             }
 
-            if (mouse.leftButton.isPressed && _swingTimer <= 0f) Swing();
-            else if (mouse.rightButton.isPressed && _shoveTimer <= 0f) Shove();
+            if (attack && _swingTimer <= 0f) Swing();
+            else if (shove && _shoveTimer <= 0f) Shove();
+        }
+
+        // A press that begins on the UI belongs to the UI, not to the weapon: clicking a HUD button under the
+        // free isometric cursor (or anything while a menu owns the screen) never swings, fires or shoves,
+        // even if the button is held afterwards. With the cursor locked for mouse-look the press always
+        // counts — the crosshair is never "over" the HUD.
+        private void TrackUiPresses(Mouse mouse)
+        {
+            if (mouse == null) return;
+            bool left = mouse.leftButton.wasPressedThisFrame;
+            bool right = mouse.rightButton.wasPressedThisFrame;
+            if (left || right)
+            {
+                bool onUi = UIState.GameplayBlocked || (!ViewState.MouseLook && PointerOverUi());
+                if (left) _attackPressOnUi = onUi;
+                if (right) _shovePressOnUi = onUi;
+            }
+            if (!mouse.leftButton.isPressed) _attackPressOnUi = false;
+            if (!mouse.rightButton.isPressed) _shovePressOnUi = false;
+        }
+
+        private static bool PointerOverUi()
+        {
+            EventSystem events = EventSystem.current;
+            return events != null && events.IsPointerOverGameObject();
         }
 
         private void Swing()
@@ -239,9 +276,15 @@ namespace CloneZ
             float range = gun.FirearmRange * (Skills != null ? Skills.FirearmRangeMult : 1f);
 
             Vector3 aim = _controller.AimDirection;
-            // Cast from just below chest height so shots still connect with short crawlers,
-            // while staying clear of the ground (aim is flat on the XZ plane).
-            Vector3 muzzle = transform.position + Vector3.up * 0.95f + aim * 0.7f;
+            Vector3 muzzle, shotAim;
+            if (ViewState.MouseLook) AimThroughCrosshair(aim, out muzzle, out shotAim);
+            else
+            {
+                // Cast from just below chest height so shots still connect with short crawlers,
+                // while staying clear of the ground (aim is flat on the XZ plane).
+                muzzle = transform.position + Vector3.up * 0.95f + aim * 0.7f;
+                shotAim = aim;
+            }
             float spread = (gun.FirearmSpread +
                 Mathf.Lerp(CloneZConfig.FirearmSpreadWide, CloneZConfig.FirearmSpreadTight, ComputeAimQuality())) * spreadMult;
             // Walls / cover (Default) block the round; zombies live on Ignore Raycast so include that layer.
@@ -252,7 +295,7 @@ namespace CloneZ
             int pellets = Mathf.Max(1, gun.PelletsPerShot);
             for (int i = 0; i < pellets; i++)
             {
-                Vector3 dir = ScatterDir(aim, spread);
+                Vector3 dir = ScatterDir(shotAim, spread);
                 Vector3 end = muzzle + dir * range;
                 if (Physics.Raycast(muzzle, dir, out RaycastHit hit, range, mask, QueryTriggerInteraction.Ignore))
                 {
@@ -282,6 +325,23 @@ namespace CloneZ
             CombatFX.MuzzleFlash(muzzle);
             NoiseSystem.Emit(transform.position, gun.FirearmNoise);   // gunfire draws the horde
             if (Inv != null) Inv.WearEquippedWeapon();   // the shot may cost a condition point; at 0 the gun breaks
+        }
+
+        /// <summary>
+        /// Shoulder / first-person views: the round leaves the shouldered gun and flies at what the
+        /// crosshair is on — a living zombie under it, else the surface behind — so a shot can rise or dip
+        /// (over a counter, down at a crawler) instead of staying level like the isometric aim.
+        /// </summary>
+        private void AimThroughCrosshair(Vector3 flatAim, out Vector3 muzzle, out Vector3 shotAim)
+        {
+            muzzle = transform.position + Vector3.up * ShoulderMuzzleHeight + flatAim * 0.55f;
+            shotAim = flatAim;
+            ZombieHealth zombie = _controller.CrosshairZombie;
+            Vector3 target = zombie != null && !zombie.IsDead ? _controller.CrosshairZombiePoint : _controller.AimPoint;
+            Vector3 to = target - muzzle;
+            if (to.sqrMagnitude < 0.25f) return;                // pressed against it: keep the level aim
+            Vector3 dir = to.normalized;
+            if (Vector3.Dot(dir, flatAim) > 0.1f) shotAim = dir;   // never back over the shoulder
         }
 
         /// <summary>Aim quality 0..1 from PZ's firearm to-hit model (worse while moving).</summary>

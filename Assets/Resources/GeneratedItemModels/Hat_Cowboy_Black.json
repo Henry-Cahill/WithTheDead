@@ -1,0 +1,13 @@
+{"version": 1, "id": "Hat_Cowboy_Black", "baseHeight": 0.1475, "name": "Hat Cowboy Black", "model": "gpt-oss:120b", "notes": "Cowboy hat laid flat, overall width ≈0.28 m, brim thickness 0.015 m, crown height ≈0.12 m. Main dark‑grey tint (0.55,0.5,0.6) with a brown leather band and subtle lining detail.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.08,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdge","shape":"cylinder","pos":[0.0,-0.07,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.005,0.3],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBase","shape":"cylinder","pos":[0.0,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.12,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBand","shape":"cylinder","pos":[0.0,-0.0685,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.008,0.13],"color":[0.3,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"CrownTopDome","shape":"sphere","pos":[0.0,0.0475,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"InnerCrownLining","shape":"cylinder","pos":[0.0,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.115,0.12,0.115],"color":[0.7,0.7,0.75],"smooth":0.05,"metal":0.0},
+  {"name":"FrontBandStripe","shape":"cube","pos":[0.045,-0.0125,0.06],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.04],"color":[0.2,0.15,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"StitchLineFront","shape":"cylinder","pos":[0.0,-0.0725,0.14],"rot":[90.0,0.0,0.0],"size":[0.005,0.28,0.005],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLineBack","shape":"cylinder","pos":[0.0,-0.0725,-0.14],"rot":[90.0,0.0,0.0],"size":[0.005,0.28,0.005],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLineLeft","shape":"cylinder","pos":[-0.14,-0.0725,0.0],"rot":[90.0,0.0,0.0],"size":[0.005,0.28,0.005],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLineRight","shape":"cylinder","pos":[0.14,-0.0725,0.0],"rot":[90.0,0.0,0.0],"size":[0.005,0.28,0.005],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

@@ -23,6 +23,22 @@ namespace CloneZ
         /// <summary>Clock speed multiplier (boosted to fast-forward while sleeping).</summary>
         public float TimeScale { get; set; } = 1f;
 
+        /// <summary>Real seconds per in-game day. The wave arena runs a brisk 12-minute day; a night
+        /// raid runs slowly so the hours before dawn last a whole raid (see <see cref="Configure"/>).</summary>
+        public float DayLengthSeconds { get; private set; } = CloneZConfig.DayLengthSeconds;
+
+        /// <summary>The calendar year (Knox County, 1993).</summary>
+        public const int Year = 1993;
+        /// <summary>Calendar date of Day 1 (PZ's outbreak began on July 9th).</summary>
+        public int StartMonth { get; private set; } = 7;
+        public int StartDayOfMonth { get; private set; } = 9;
+
+        /// <summary>Scales the ambient light, fog and sky colour (1 = normal). Static so the vision /
+        /// night-vision effects can darken or lift the night; reset whenever a clock is created.</summary>
+        public static float AmbientScale = 1f;
+        /// <summary>Scales the moonlight (the sun's night-time floor intensity). Reset like <see cref="AmbientScale"/>.</summary>
+        public static float MoonlightScale = 1f;
+
         /// <summary>Total in-game hours elapsed since the world began (Day 1, StartHour = base).
         /// Used to age perishable food — see <see cref="ItemStack"/>.</summary>
         public float TotalHours => (Day - 1) * 24f + Hour;
@@ -51,6 +67,20 @@ namespace CloneZ
             if (Instance != null && Instance != this) { Destroy(this); return; }
             Instance = this;
             Hour = CloneZConfig.StartHour;
+            AmbientScale = 1f;
+            MoonlightScale = 1f;
+        }
+
+        /// <summary>Sets the clock up for a run: the starting hour, how many real seconds a day lasts
+        /// and the calendar date of Day 1. Called by the bootstrapper right after the clock is created.</summary>
+        public void Configure(float startHour, float dayLengthSeconds, int startMonth, int startDayOfMonth)
+        {
+            Day = 1;
+            Hour = Mathf.Repeat(startHour, 24f);
+            DayLengthSeconds = Mathf.Max(1f, dayLengthSeconds);
+            StartMonth = Mathf.Clamp(startMonth, 1, 12);
+            StartDayOfMonth = Mathf.Clamp(startDayOfMonth, 1, System.DateTime.DaysInMonth(Year, StartMonth));
+            Apply();
         }
 
         private void OnDestroy()
@@ -68,7 +98,7 @@ namespace CloneZ
 
         private void Advance(float dt)
         {
-            float hoursPerSecond = 24f / Mathf.Max(1f, CloneZConfig.DayLengthSeconds);
+            float hoursPerSecond = 24f / Mathf.Max(1f, DayLengthSeconds);
             Hour += hoursPerSecond * TimeScale * dt;
             while (Hour >= 24f) { Hour -= 24f; Day++; }
         }
@@ -102,16 +132,17 @@ namespace CloneZ
                 float yaw = -35f + (Hour / 24f) * 30f;
                 Sun.transform.rotation = Quaternion.Euler(pitch, yaw, 0f);
                 Sun.color = Color.Lerp(DuskSun, NoonSun, warmth);
-                Sun.intensity = Mathf.Lerp(CloneZConfig.NightSunIntensity, CloneZConfig.DaySunIntensity, daylight) * weatherDim;
+                Sun.intensity = Mathf.Lerp(CloneZConfig.NightSunIntensity * MoonlightScale, CloneZConfig.DaySunIntensity, daylight) * weatherDim;
                 Sun.shadowStrength = Mathf.Lerp(0.35f, 0.8f, daylight);
             }
 
-            RenderSettings.ambientLight = Color.Lerp(NightAmbient, DayAmbient, daylight) * Mathf.Lerp(0.7f, 1f, weatherDim);
-            RenderSettings.fogColor = Color.Lerp(NightFog, DayFog, daylight) * Mathf.Lerp(0.75f, 1f, weatherDim);
+            float scale = Mathf.Max(0f, AmbientScale);
+            RenderSettings.ambientLight = Color.Lerp(NightAmbient, DayAmbient, daylight) * Mathf.Lerp(0.7f, 1f, weatherDim) * scale;
+            RenderSettings.fogColor = Color.Lerp(NightFog, DayFog, daylight) * Mathf.Lerp(0.75f, 1f, weatherDim) * scale;
 
             if (_cam == null) _cam = Camera.main;
             if (_cam != null)
-                _cam.backgroundColor = Color.Lerp(NightSky, DaySky, daylight) * Mathf.Lerp(0.6f, 1f, weatherDim);
+                _cam.backgroundColor = Color.Lerp(NightSky, DaySky, daylight) * Mathf.Lerp(0.6f, 1f, weatherDim) * scale;
         }
 
         /// <summary>Sight radius scale for zombies: full by day, reduced in darkness.</summary>
@@ -126,6 +157,34 @@ namespace CloneZ
                 int h = Mathf.FloorToInt(Hour) % 24;
                 int m = Mathf.FloorToInt((Hour - Mathf.Floor(Hour)) * 60f);
                 return string.Format("{0:00}:{1:00}", h, m);
+            }
+        }
+
+        /// <summary>12-hour digital-watch clock without the suffix, e.g. "12:40" (see <see cref="AmPm"/>).</summary>
+        public string Clock12Text
+        {
+            get
+            {
+                int h = Mathf.FloorToInt(Hour) % 24;
+                int m = Mathf.FloorToInt((Hour - Mathf.Floor(Hour)) * 60f);
+                int h12 = h % 12 == 0 ? 12 : h % 12;
+                return string.Format("{0:00}:{1:00}", h12, m);
+            }
+        }
+
+        /// <summary>"AM" before noon, "PM" after.</summary>
+        public string AmPm => Hour < 12f ? "AM" : "PM";
+
+        /// <summary>Today's calendar date (Day 1 is the configured start date).</summary>
+        public System.DateTime Date => new System.DateTime(Year, StartMonth, StartDayOfMonth).AddDays(Mathf.Max(0, Day - 1));
+
+        /// <summary>Month/day as a digital watch shows it, e.g. "12/17".</summary>
+        public string DateText
+        {
+            get
+            {
+                System.DateTime d = Date;
+                return d.Month + "/" + d.Day;
             }
         }
     }

@@ -1,0 +1,8 @@
+{"version": 1, "id": "Hat_BucketHat", "baseHeight": 0.1275, "name": "Hat Bucket Hat", "model": "gpt-oss:120b", "notes": "Flat bucket hat laid out for product view – 0.30 m outer brim diameter, 0.20 m inner crown diameter, 0.12 m crown height, cloth tint (0.55, 0.5, 0.6).", "score": 6, "parts": [
+  {"name":"BrimBase","shape":"cylinder","pos":[0.0,-0.0575,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBody","shape":"cylinder","pos":[0.0,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.12,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBand","shape":"cylinder","pos":[0.0,-0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.008,0.22],"color":[0.48,0.44,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"CrownEdge","shape":"cylinder","pos":[0.0,0.065,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.005,0.22],"color":[0.48,0.44,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"SeamRing","shape":"cylinder","pos":[0.0,0.0575,0.0],"rot":[0.0,0.0,0.0],"size":[0.21,0.003,0.21],"color":[0.45,0.41,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[0.0,0.0055,0.085],"rot":[0.0,0.0,0.0],"size":[0.06,0.006,0.03],"color":[0.65,0.6,0.7],"smooth":0.05,"metal":0.0}
+]}

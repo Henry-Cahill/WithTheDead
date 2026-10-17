@@ -1,0 +1,16 @@
+{"version": 1, "id": "Hat_FootballHelmet_Red", "baseHeight": 0.14, "name": "Hat Football Helmet Red", "model": "gpt-oss:120b", "notes": "Flat football helmet about 0.32 m wide × 0.28 m deep × 0.16 m tall. Red plastic shell, light‑gray interior padding, metal face‑mask grid, black chin strap and a small white logo on top.", "score": 7, "parts": [
+  {"name":"Shell","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.16,0.28],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"Padding","shape":"sphere","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.12,0.24],"color":[0.78,0.78,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"MaskPlate","shape":"cube","pos":[0.0,0.01,0.12],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.04],"color":[0.6,0.6,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"MaskBarV1","shape":"cylinder","pos":[-0.1,0.01,0.12],"rot":[0.0,0.0,0.0],"size":[0.004,0.12,0.004],"color":[0.6,0.6,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"MaskBarV2","shape":"cylinder","pos":[-0.05,0.01,0.12],"rot":[0.0,0.0,0.0],"size":[0.004,0.12,0.004],"color":[0.6,0.6,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"MaskBarV3","shape":"cylinder","pos":[0.0,0.01,0.12],"rot":[0.0,0.0,0.0],"size":[0.004,0.12,0.004],"color":[0.6,0.6,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"MaskBarV4","shape":"cylinder","pos":[0.05,0.01,0.12],"rot":[0.0,0.0,0.0],"size":[0.004,0.12,0.004],"color":[0.6,0.6,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"MaskBarV5","shape":"cylinder","pos":[0.1,0.01,0.12],"rot":[0.0,0.0,0.0],"size":[0.004,0.12,0.004],"color":[0.6,0.6,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"MaskBarH1","shape":"cylinder","pos":[0.0,-0.02,0.12],"rot":[0.0,0.0,90.0],"size":[0.004,0.28,0.004],"color":[0.6,0.6,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"MaskBarH2","shape":"cylinder","pos":[0.0,0.01,0.12],"rot":[0.0,0.0,90.0],"size":[0.004,0.28,0.004],"color":[0.6,0.6,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"MaskBarH3","shape":"cylinder","pos":[0.0,0.04,0.12],"rot":[0.0,0.0,90.0],"size":[0.004,0.28,0.004],"color":[0.6,0.6,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"StrapFront","shape":"cylinder","pos":[0.0,-0.04,0.12],"rot":[0.0,0.0,90.0],"size":[0.004,0.28,0.004],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"StrapBack","shape":"cylinder","pos":[0.0,-0.04,-0.12],"rot":[0.0,0.0,90.0],"size":[0.004,0.28,0.004],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"Logo","shape":"cylinder","pos":[0.0,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.04],"color":[0.95,0.95,0.95],"smooth":0.1,"metal":0.0}
+]}

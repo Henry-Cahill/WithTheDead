@@ -191,7 +191,7 @@ namespace CloneZ
                 bool anyWorn = _clothing != null && _clothing.WornCount > 0;
                 float ins = _clothing != null ? _clothing.TotalInsulation(_stats.Wetness) : 0f;
                 _clothingText.text = "<color=#c8ccd2>Clothing</color>" + (anyWorn
-                    ? "   <size=14><color=#9aa6b2>warmth +" + ins.ToString("0.00") + "   \u00b7   click a slot to take it off</color></size>"
+                    ? "   <size=14><color=#9aa6b2>warmth +" + ins.ToString("0.00") + "   \u00b7   take a slot off, then mend it in your bag</color></size>"
                     : "   <size=14><color=#9aa6b2>nothing worn</color></size>");
             }
             if (_clothingBtns != null)
@@ -202,7 +202,10 @@ namespace CloneZ
                     string slotName = _clothingSlots[i].ToString();
                     if (worn != null)
                     {
-                        _clothingLbls[i].text = "<size=12><color=#9aa6b2>" + slotName + "</color></size>\n" + worn.DisplayName;
+                        float c01 = _clothing.GetCondition01(_clothingSlots[i]);
+                        string cc = c01 > 0.66f ? "#7fc98a" : c01 > 0.33f ? "#d9c14a" : "#d9694a";
+                        _clothingLbls[i].text = "<size=12><color=#9aa6b2>" + slotName + "</color></size>\n" + worn.DisplayName
+                            + "  <size=11><color=" + cc + ">" + Mathf.RoundToInt(c01 * 100f) + "%</color></size>";
                         _clothingLbls[i].color = new Color(0.95f, 0.96f, 0.98f, 1f);
                         _clothingBtns[i].interactable = true;
                     }
@@ -299,7 +302,7 @@ namespace CloneZ
             RectTransform root = canvas.GetComponent<RectTransform>();
 
             const float panelW = 720f;
-            const float panelH = 626f;
+            const float panelH = 678f;   // tall enough for two rows of worn slots (body, then gear)
 
             _panelRoot = new GameObject("HealthPanel");
             var prt = _panelRoot.AddComponent<RectTransform>();
@@ -337,7 +340,7 @@ namespace CloneZ
                 _clothingBtns[i] = ClothingButton(prt, i, _clothingSlots.Length, () => TakeOffSlot(slot), out _clothingLbls[i]);
             }
 
-            _statusText = Label(prt, "Status", new Vector2(0f, 1f), new Vector2(30f, -222f), new Vector2(panelW - 60f, 44f), 18, TextAnchor.UpperLeft, Color.white);
+            _statusText = Label(prt, "Status", new Vector2(0f, 1f), new Vector2(30f, -274f), new Vector2(panelW - 60f, 44f), 18, TextAnchor.UpperLeft, Color.white);
             _statusText.text = "";
 
             // Divider under the header.
@@ -345,16 +348,16 @@ namespace CloneZ
             var drt = div.AddComponent<RectTransform>();
             drt.SetParent(prt, false);
             drt.anchorMin = drt.anchorMax = new Vector2(0.5f, 1f); drt.pivot = new Vector2(0.5f, 1f);
-            drt.anchoredPosition = new Vector2(0f, -264f);
+            drt.anchoredPosition = new Vector2(0f, -316f);
             drt.sizeDelta = new Vector2(panelW - 48f, 2f);
             div.AddComponent<Image>().color = new Color(1f, 1f, 1f, 0.15f);
 
-            _emptyText = Label(prt, "Empty", new Vector2(0.5f, 1f), new Vector2(0f, -304f), new Vector2(panelW - 60f, 30f), 20, TextAnchor.UpperCenter, new Color(0.6f, 0.85f, 0.6f));
+            _emptyText = Label(prt, "Empty", new Vector2(0.5f, 1f), new Vector2(0f, -356f), new Vector2(panelW - 60f, 30f), 20, TextAnchor.UpperCenter, new Color(0.6f, 0.85f, 0.6f));
             _emptyText.text = "No injuries.";
             _emptyText.enabled = false;
 
             _rows = new Text[MaxRows];
-            float top = -284f;
+            float top = -336f;
             for (int i = 0; i < MaxRows; i++)
             {
                 _rows[i] = Label(prt, "Wound" + i, new Vector2(0f, 1f), new Vector2(30f, top - i * 34f), new Vector2(panelW - 60f, 30f), 20, TextAnchor.MiddleLeft, new Color(0.9f, 0.9f, 0.92f));
@@ -386,12 +389,17 @@ namespace CloneZ
             return btn;
         }
 
-        // One take-off button per clothing slot, spread across the clothing row near the top.
+        // One take-off button per worn slot: the five body slots across the first row, the gear slots
+        // (back, rig, thigh, eyes, mask) across a second row beneath.
         private Button ClothingButton(RectTransform parent, int index, int count, UnityEngine.Events.UnityAction onClick, out Text label)
         {
-            const float w = 124f, h = 44f, step = 132f;
-            float x = (index - (count - 1) * 0.5f) * step;   // centre the row of slots
-            Button btn = MakeButton(parent, new Vector2(0.5f, 1f), new Vector2(x, -176f), new Vector2(w, h), "", new Color(0.24f, 0.28f, 0.34f), onClick);
+            const float w = 124f, h = 44f, step = 132f, rowStep = 52f;
+            const int perRow = 5;
+            int row = index / perRow;
+            int col = index % perRow;
+            int inRow = Mathf.Min(perRow, count - row * perRow);
+            float x = (col - (inRow - 1) * 0.5f) * step;   // centre each row of slots
+            Button btn = MakeButton(parent, new Vector2(0.5f, 1f), new Vector2(x, -176f - row * rowStep), new Vector2(w, h), "", new Color(0.24f, 0.28f, 0.34f), onClick);
             label = btn.GetComponentInChildren<Text>();
             label.fontSize = 14;
             label.verticalOverflow = VerticalWrapMode.Overflow;

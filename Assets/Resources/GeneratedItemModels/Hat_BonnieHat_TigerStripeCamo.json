@@ -1,0 +1,13 @@
+{"version": 1, "id": "Hat_BonnieHat_TigerStripeCamo", "baseHeight": 0.1432, "name": "Hat Bonnie Hat Tiger Stripe Camo", "model": "gpt-oss:120b", "notes": "Flat‑lay Bonnie hat with tiger‑stripe camo – wide square brim (0.30 m × 0.30 m, 1 cm thick) and low rectangular crown (0.20 m × 0.20 m, 8 cm tall). Base cloth colour is the given tint; dark brown/black stripes give the camo pattern; a small label patch adds detail.", "score": 7, "parts": [
+  {"name":"BrimBase","shape":"cube","pos":[0.0,-0.0782,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdgeL","shape":"cube","pos":[-0.145,-0.0722,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.012,0.3],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdgeR","shape":"cube","pos":[0.145,-0.0722,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.012,0.3],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdgeF","shape":"cube","pos":[0.0,-0.0722,0.145],"rot":[0.0,0.0,0.0],"size":[0.3,0.012,0.01],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdgeB","shape":"cube","pos":[0.0,-0.0722,-0.145],"rot":[0.0,0.0,0.0],"size":[0.3,0.012,0.01],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"Crown","shape":"cube","pos":[0.0,-0.0332,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.08,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownStripe1","shape":"cube","pos":[0.0,0.0118,0.045],"rot":[0.0,0.0,0.0],"size":[0.2,0.002,0.02],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"CrownStripe2","shape":"cube","pos":[0.0,0.0118,-0.045],"rot":[0.0,0.0,0.0],"size":[0.2,0.002,0.02],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"CrownStripeDiag","shape":"cube","pos":[0.0,0.0118,0.0],"rot":[45.0,0.0,0.0],"size":[0.02,0.002,0.2],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[0.0,0.0068,0.08],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.02],"color":[0.2,0.15,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"InnerBand","shape":"cylinder","pos":[0.0,-0.0382,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.18],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

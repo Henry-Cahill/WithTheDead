@@ -1,0 +1,14 @@
+{"version": 1, "id": "Glasses_Cosmetic_HalfMoon", "baseHeight": 0.0702, "name": "Glasses Cosmetic Half Moon", "model": "gpt-oss:120b", "notes": "Flat half‑moon glasses laid out flat for a product‑photo view – overall width ≈ 0.16 m, height ≈ 0.06 m, total thickness about 1.5 cm. Built from a thin frame base, a central bridge, two semicircular rim blocks with transparent lenses, small nose pads and folded‑down temples on each side.", "score": 7, "parts": [
+  {"name":"FrameBase","shape":"cube","pos":[0.0,-0.0027,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.015,0.06],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,-0.0027,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"LensLeft","shape":"sphere","pos":[-0.06,-0.0027,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.04],"color":[0.8,0.78,0.85],"smooth":0.6,"metal":0.0},
+  {"name":"LensRight","shape":"sphere","pos":[0.06,-0.0027,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.04],"color":[0.8,0.78,0.85],"smooth":0.6,"metal":0.0},
+  {"name":"TempleLeft","shape":"cylinder","pos":[-0.12,-0.0027,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.12,0.015],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"TempleRight","shape":"cylinder","pos":[0.12,-0.0027,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.12,0.015],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"NosePadL","shape":"cylinder","pos":[-0.01,-0.0007,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.4,0.35,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"NosePadR","shape":"cylinder","pos":[0.01,-0.0007,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.4,0.35,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"RimL_Top","shape":"cube","pos":[-0.06,0.0078,0.025],"rot":[0.0,0.0,0.0],"size":[0.07,0.005,0.02],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"RimL_Bottom","shape":"cube","pos":[-0.06,0.0078,-0.025],"rot":[0.0,0.0,0.0],"size":[0.07,0.005,0.02],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"RimR_Top","shape":"cube","pos":[0.06,0.0078,0.025],"rot":[0.0,0.0,0.0],"size":[0.07,0.005,0.02],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"RimR_Bottom","shape":"cube","pos":[0.06,0.0078,-0.025],"rot":[0.0,0.0,0.0],"size":[0.07,0.005,0.02],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0}
+]}

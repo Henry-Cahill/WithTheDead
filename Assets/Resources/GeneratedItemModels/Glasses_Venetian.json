@@ -1,0 +1,13 @@
+{"version": 1, "id": "Glasses_Venetian", "baseHeight": 0.064, "name": "Glasses Venetian", "model": "gpt-oss:120b", "notes": "Flat‑lay Venetian glasses spread out like a product photo – overall outline about 0.18 m wide × 0.05 m tall × 0.008 m thick. Two tinted lenses, metal frame (top, bottom and side rims), bridge with nose pads, and the two temple arms extending outward.", "score": 7, "parts": [
+  {"name":"LeftLens","shape":"cube","pos":[-0.05,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.008,0.045],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"RightLens","shape":"cube","pos":[0.05,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.008,0.045],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"FrameTop","shape":"cube","pos":[0.0,0.0,0.025],"rot":[0.0,0.0,0.0],"size":[0.18,0.006,0.005],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.5},
+  {"name":"FrameBottom","shape":"cube","pos":[0.0,0.0,-0.025],"rot":[0.0,0.0,0.0],"size":[0.18,0.006,0.005],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.5},
+  {"name":"FrameSideLeft","shape":"cube","pos":[-0.088,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.008,0.045],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.5},
+  {"name":"FrameSideRight","shape":"cube","pos":[0.088,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.008,0.045],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.5},
+  {"name":"Bridge","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.008,0.015],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.5},
+  {"name":"NosePadL","shape":"sphere","pos":[-0.01,0.0,-0.005],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.15,0.15,0.15],"smooth":0.25,"metal":0.0},
+  {"name":"NosePadR","shape":"sphere","pos":[0.01,0.0,-0.005],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.15,0.15,0.15],"smooth":0.25,"metal":0.0},
+  {"name":"TempleLeft","shape":"cube","pos":[-0.148,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.006,0.015],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.5},
+  {"name":"TempleRight","shape":"cube","pos":[0.148,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.006,0.015],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.5}
+]}

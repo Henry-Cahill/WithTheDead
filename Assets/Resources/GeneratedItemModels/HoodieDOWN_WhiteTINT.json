@@ -1,0 +1,11 @@
+{"version": 1, "id": "HoodieDOWN_WhiteTINT", "baseHeight": 0.0737, "name": "Hoodie DOWN White TINT", "model": "gpt-oss:120b", "notes": "Flat hoodie (white‑tint) laid out flat like a product photo: overall footprint ≈1.2 m wide × 0.5 m deep, 0.025 m thick; main body, two sleeves, hood panel, front pocket, cuffs, bottom hem and draw‑string detail.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0012,0.0575],"rot":[0.0,0.0,0.0],"size":[0.6,0.025,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.5,-0.0012,0.0575],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.5,-0.0012,0.0575],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HoodPanel","shape":"cube","pos":[0.0,-0.0012,0.2825],"rot":[0.0,0.0,0.0],"size":[0.62,0.025,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Pocket","shape":"cube","pos":[0.0,0.0063,0.2075],"rot":[0.0,0.0,0.0],"size":[0.35,0.015,0.2],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.65,-0.0012,0.0575],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.65,-0.0012,0.0575],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[0.0,0.0038,-0.1675],"rot":[0.0,0.0,0.0],"size":[0.6,0.01,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"DrawString","shape":"cube","pos":[0.0,0.0113,0.2825],"rot":[0.0,0.0,0.0],"size":[0.6,0.005,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

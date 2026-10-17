@@ -1,0 +1,16 @@
+{"version": 1, "id": "Gloves_BurlapWrap", "baseHeight": 0.0775, "name": "Gloves Burlap Wrap", "model": "gpt-oss:120b", "notes": "Burlap wrap gloves laid flat side‑by‑side (left & right). Each glove ~0.18 m long, 0.12 m wide, 0.02 m thick with palm block, four fingers, a thumb and a short cuff. Colour is the burlap tint.", "score": 6, "parts": [
+  {"name":"PalmL","shape":"cube","pos":[-0.07,-0.005,0.0155],"rot":[0.0,0.0,0.0],"size":[0.09,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PalmR","shape":"cube","pos":[0.07,-0.005,0.0155],"rot":[0.0,0.0,0.0],"size":[0.09,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ThumbL","shape":"cylinder","pos":[-0.07,0.005,-0.0545],"rot":[90.0,0.0,0.0],"size":[0.025,0.06,0.025],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ThumbR","shape":"cylinder","pos":[0.07,0.005,-0.0545],"rot":[90.0,0.0,0.0],"size":[0.025,0.06,0.025],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Finger1L","shape":"cylinder","pos":[-0.025,0.005,-0.0145],"rot":[0.0,0.0,90.0],"size":[0.018,0.08,0.018],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Finger2L","shape":"cylinder","pos":[-0.025,0.005,0.0155],"rot":[0.0,0.0,90.0],"size":[0.018,0.08,0.018],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Finger3L","shape":"cylinder","pos":[-0.025,0.005,0.0455],"rot":[0.0,0.0,90.0],"size":[0.018,0.08,0.018],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Finger4L","shape":"cylinder","pos":[-0.025,0.005,0.0755],"rot":[0.0,0.0,90.0],"size":[0.018,0.08,0.018],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Finger1R","shape":"cylinder","pos":[0.025,0.005,-0.0145],"rot":[0.0,0.0,90.0],"size":[0.018,0.08,0.018],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Finger2R","shape":"cylinder","pos":[0.025,0.005,0.0155],"rot":[0.0,0.0,90.0],"size":[0.018,0.08,0.018],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Finger3R","shape":"cylinder","pos":[0.025,0.005,0.0455],"rot":[0.0,0.0,90.0],"size":[0.018,0.08,0.018],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Finger4R","shape":"cylinder","pos":[0.025,0.005,0.0755],"rot":[0.0,0.0,90.0],"size":[0.018,0.08,0.018],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.07,-0.01,0.0155],"rot":[0.0,0.0,0.0],"size":[0.09,0.015,0.13],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.07,-0.01,0.0155],"rot":[0.0,0.0,0.0],"size":[0.09,0.015,0.13],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

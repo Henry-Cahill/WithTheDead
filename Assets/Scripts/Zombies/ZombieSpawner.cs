@@ -5,10 +5,17 @@ using UnityEngine.AI;
 
 namespace CloneZ
 {
+    /// <summary>How the spawner fills the map: escalating waves (wave survival) or a standing
+    /// population of wanderers (an extraction raid).</summary>
+    public enum SpawnerMode { Waves, Ambient }
+
     /// <summary>
-    /// Builds zombies at runtime and drives escalating waves. Zombies spawn on the
-    /// NavMesh in a ring around the player; tougher and faster variants appear in
-    /// later waves. Waves match Project Zomboid's escalating horde pressure.
+    /// Builds zombies at runtime. In <see cref="SpawnerMode.Waves"/> it drives escalating waves: zombies
+    /// spawn on the NavMesh at random points anywhere in the arena (kept a short distance off the
+    /// player) and tougher, faster variants appear in later waves, matching Project Zomboid's escalating
+    /// horde pressure. In <see cref="SpawnerMode.Ambient"/> (a raid) it scatters a standing population
+    /// of wanderers over the whole map and quietly replaces the fallen, out of the survivor's sight.
+    /// Spawns are only ever placed at ground level (never on a roof or a high shelf).
     /// </summary>
     public class ZombieSpawner : MonoBehaviour
     {
@@ -18,13 +25,32 @@ namespace CloneZ
         /// <summary>Wave to resume from when continuing a saved game (0 = fresh start).</summary>
         public int StartWave;
 
+        /// <summary>Waves (default) or an ambient raid population — set before Start.</summary>
+        public SpawnerMode Mode = SpawnerMode.Waves;
+        /// <summary>Ambient mode: how many of the dead roam the map at once.</summary>
+        public int AmbientPopulation = 40;
+
+        // Navmesh points above this height are roofs, counters or shelves — never spawn up there.
+        private const float MaxSpawnHeight = 0.3f;
+
+        // Ambient (raid) population.
+        private const float AmbientStartDistance = 22f;     // the opening spread keeps clear of the survivor
+        private const float AmbientRespawnDistance = 35f;   // replacements appear well away...
+        private const float AmbientRespawnMinDelay = 20f;   // ...a while after a death
+        private const float AmbientRespawnMaxDelay = 40f;
+        private const float AmbientRetrySeconds = 3f;       // no hidden spot right now: look again shortly
+        private const int AmbientSpawnsPerFrame = 4;        // spread the opening spawn over a few frames
+
         private readonly HashSet<ZombieHealth> _alive = new HashSet<ZombieHealth>();
+        private readonly List<float> _respawnDue = new List<float>();   // Time.time each replacement is due
+        private static readonly System.Predicate<ZombieHealth> s_Gone = z => z == null || z.IsDead;
         private int _wave;
 
         private void Start()
         {
             _wave = Mathf.Max(0, StartWave);
-            StartCoroutine(RunWaves());
+            if (Mode == SpawnerMode.Ambient) StartCoroutine(RunAmbient());
+            else StartCoroutine(RunWaves());
         }
 
         private IEnumerator RunWaves()
@@ -64,16 +90,20 @@ namespace CloneZ
         {
             if (Player == null) return;
             if (!TryFindSpawnPoint(out Vector3 pos)) return;
+            Spawn(pos, RollType(), RollHealth());
+        }
 
+        private void Spawn(Vector3 pos, ZombieType type, float health)
+        {
             GameObject go = BuildZombie(pos);
             var ai = go.GetComponent<ZombieAI>();
-            var health = go.GetComponent<ZombieHealth>();
+            var zombieHealth = go.GetComponent<ZombieHealth>();
 
-            ai.Configure(RollType());
-            health.SetMaxHealth(RollHealth());
+            ai.Configure(type);
+            zombieHealth.SetMaxHealth(health);
 
-            _alive.Add(health);
-            health.OnDeath += HandleZombieDeath;
+            _alive.Add(zombieHealth);
+            zombieHealth.OnDeath += HandleZombieDeath;
         }
 
         private void HandleZombieDeath(ZombieHealth z)
@@ -104,14 +134,15 @@ namespace CloneZ
 
         private bool TryFindSpawnPoint(out Vector3 pos)
         {
-            for (int i = 0; i < 12; i++)
+            float half = CloneZConfig.ArenaHalfSize;
+            float minSqr = CloneZConfig.SpawnMinPlayerDistance * CloneZConfig.SpawnMinPlayerDistance;
+            for (int i = 0; i < 24; i++)
             {
-                Vector2 dir = Random.insideUnitCircle.normalized;
-                float dist = Random.Range(CloneZConfig.SpawnRingMin, CloneZConfig.SpawnRingMax);
-                Vector3 candidate = Player.position + new Vector3(dir.x, 0f, dir.y) * dist;
-                candidate.x = Mathf.Clamp(candidate.x, -CloneZConfig.ArenaHalfSize, CloneZConfig.ArenaHalfSize);
-                candidate.z = Mathf.Clamp(candidate.z, -CloneZConfig.ArenaHalfSize, CloneZConfig.ArenaHalfSize);
-                if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, 4f, NavMesh.AllAreas))
+                // A random point anywhere in the box, not a ring around the player.
+                var candidate = new Vector3(Random.Range(-half, half), 0f, Random.Range(-half, half));
+                // Never pop a zombie right on top of the survivor.
+                if (Player != null && (candidate - Player.position).sqrMagnitude < minSqr) continue;
+                if (NavMesh.SamplePosition(candidate, out NavMeshHit hit, 4f, NavMesh.AllAreas) && hit.position.y < MaxSpawnHeight)
                 {
                     pos = hit.position;
                     return true;
@@ -121,28 +152,110 @@ namespace CloneZ
             return false;
         }
 
-        /// <summary>Assembles a zombie GameObject (visual + collider + agent + brain).</summary>
+        #region Ambient (raid) population
+        // Scatters the population over the map, then keeps it topped up: every death (or a shortfall in
+        // the opening spread) books a replacement 20-40 s out, placed far off and out of the survivor's sight.
+        private IEnumerator RunAmbient()
+        {
+            int target = Mathf.Max(0, AmbientPopulation);
+            int attempts = 0;
+            while (_alive.Count < target && attempts < target * 2)
+            {
+                attempts++;
+                SpawnAmbient(AmbientStartDistance, false);
+                if (attempts % AmbientSpawnsPerFrame == 0) yield return null;
+            }
+
+            var tick = new WaitForSeconds(1f);
+            while (true)
+            {
+                yield return tick;
+                if (GameManager.Instance != null && GameManager.Instance.State != GameState.Playing) continue;
+                if (ExtractionManager.Instance != null && ExtractionManager.Instance.RaidOver) continue;
+
+                _alive.RemoveWhere(s_Gone);
+                int missing = Mathf.Max(0, AmbientPopulation) - _alive.Count - _respawnDue.Count;
+                for (int i = 0; i < missing; i++)
+                    _respawnDue.Add(Time.time + Random.Range(AmbientRespawnMinDelay, AmbientRespawnMaxDelay));
+
+                float now = Time.time;
+                for (int i = _respawnDue.Count - 1; i >= 0; i--)
+                {
+                    if (now < _respawnDue[i]) continue;
+                    if (_alive.Count >= AmbientPopulation || SpawnAmbient(AmbientRespawnDistance, true)) _respawnDue.RemoveAt(i);
+                    else _respawnDue[i] = now + AmbientRetrySeconds;
+                }
+            }
+        }
+
+        private bool SpawnAmbient(float minDistance, bool hiddenFromPlayer)
+        {
+            if (!TryFindAmbientPoint(minDistance, hiddenFromPlayer, out Vector3 pos)) return false;
+            Spawn(pos, RollAmbientType(), CloneZConfig.ZombieHealthNormal + Random.Range(0f, CloneZConfig.ZombieHealthVariance));
+            return true;
+        }
+
+        // A random ground-level navmesh point anywhere on the map, at least minDistance (flat) from the
+        // survivor and, when asked, with something solid between it and their eyes.
+        private bool TryFindAmbientPoint(float minDistance, bool hiddenFromPlayer, out Vector3 pos)
+        {
+            float half = Mathf.Max(1f, CloneZConfig.ArenaHalfSize - 1f);
+            float minSqr = minDistance * minDistance;
+            bool hasPlayer = Player != null;
+            Vector3 player = hasPlayer ? Player.position : Vector3.zero;
+            for (int i = 0; i < 30; i++)
+            {
+                var candidate = new Vector3(Random.Range(-half, half), 0f, Random.Range(-half, half));
+                if (hasPlayer && FlatSqr(candidate - player) < minSqr) continue;
+                if (!NavMesh.SamplePosition(candidate, out NavMeshHit hit, 4f, NavMesh.AllAreas)) continue;
+                if (hit.position.y >= MaxSpawnHeight) continue;
+                if (hasPlayer && FlatSqr(hit.position - player) < minSqr) continue;
+                if (hiddenFromPlayer && hasPlayer && InPlayerSight(player, hit.position)) continue;
+                pos = hit.position;
+                return true;
+            }
+            pos = default;
+            return false;
+        }
+
+        // Same line-of-sight test the zombies use: walls and props block it, other zombies don't.
+        private static bool InPlayerSight(Vector3 player, Vector3 point)
+        {
+            Vector3 eye = player + Vector3.up * 1.6f;
+            Vector3 chest = point + Vector3.up * 1.0f;
+            int mask = ~(1 << CloneZConfig.IgnoreRaycastLayer);
+            return !Physics.Linecast(eye, chest, mask, QueryTriggerInteraction.Ignore);
+        }
+
+        private static float FlatSqr(Vector3 v) => v.x * v.x + v.z * v.z;
+
+        // The raid mix: mostly shamblers, some faster ones, the odd crawler and a rare sprinter.
+        private static ZombieType RollAmbientType()
+        {
+            float r = Random.value;
+            if (r < 0.03f) return ZombieType.Sprinter;
+            if (r < 0.08f) return ZombieType.Crawler;
+            if (r < 0.30f) return ZombieType.FastShambler;
+            return ZombieType.Shambler;
+        }
+        #endregion
+
+        /// <summary>Assembles a zombie GameObject (body + collider + agent + brain).</summary>
         public static GameObject BuildZombie(Vector3 pos)
         {
             var root = new GameObject("Zombie");
             root.transform.position = pos;
 
-            // Visual body (capsule keeps its CapsuleCollider for hits & blocking).
-            var body = GameObject.CreatePrimitive(PrimitiveType.Capsule);
-            body.name = "Body";
-            body.transform.SetParent(root.transform);
-            body.transform.localPosition = new Vector3(0f, 1f, 0f);
-            body.transform.localScale = new Vector3(0.85f, 1f, 0.85f);
-            body.GetComponent<Renderer>().sharedMaterial = CloneZUtil.Mat(new Color(0.36f, 0.5f, 0.30f));
+            // Hit and blocking volume: the same capsule the old placeholder body carried.
+            var capsule = root.AddComponent<CapsuleCollider>();
+            capsule.direction = 1;
+            capsule.center = new Vector3(0f, 1f, 0f);
+            capsule.height = 2f;
+            capsule.radius = 0.425f;
 
-            // A small "face" marker so the player can read facing (for shove/back-crits).
-            var face = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            face.name = "Face";
-            Object.Destroy(face.GetComponent<Collider>());
-            face.transform.SetParent(body.transform);
-            face.transform.localScale = new Vector3(0.5f, 0.25f, 0.25f);
-            face.transform.localPosition = new Vector3(0f, 0.55f, 0.42f);
-            face.GetComponent<Renderer>().sharedMaterial = CloneZUtil.Mat(new Color(0.1f, 0.05f, 0.05f));
+            // The body: a randomly dressed humanoid, animated from the brain below. Its face shows the
+            // player which way it's facing (for shoves and back-crits).
+            root.AddComponent<ZombieAvatar>();
 
             SetLayerRecursive(root.transform, CloneZConfig.IgnoreRaycastLayer);
 
@@ -155,6 +268,7 @@ namespace CloneZ
 
             root.AddComponent<ZombieHealth>();
             root.AddComponent<ZombieAI>();
+            root.AddComponent<ZombieVisibility>();   // hidden while outside the survivor's line of sight
             return root;
         }
 

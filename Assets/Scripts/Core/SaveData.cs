@@ -40,8 +40,15 @@ namespace CloneZ
         // Dynamic world objects.
         public List<ContainerSave> Containers = new List<ContainerSave>();
         public List<BarricadeSave> Barricades = new List<BarricadeSave>();
+        public List<HousePieceSave> House = new List<HousePieceSave>();
         public List<FarmPlotSave> Farm = new List<FarmPlotSave>();
         public List<WaterSourceSave> Water = new List<WaterSourceSave>();
+
+        // Pre-placed props (bed, stove, cover). HasWorldProps is false for saves written before
+        // these became demolishable, so the loader knows to rebuild the defaults instead of
+        // ending up with an empty base.
+        public bool HasWorldProps;
+        public List<PropSave> Props = new List<PropSave>();
     }
 
     /// <summary>The survivor's full state.</summary>
@@ -82,6 +89,7 @@ namespace CloneZ
         public int Count;
         public float SpawnHours;
         public int Condition;
+        public int TimesRepaired;
     }
 
     /// <summary>One tracked injury.</summary>
@@ -93,16 +101,20 @@ namespace CloneZ
         public float Sepsis, Healing, HealSeconds;
     }
 
-    /// <summary>A worn garment: which slot and which item.</summary>
+    /// <summary>A worn garment: which slot, which item, and its per-piece wear (condition + how
+    /// many times it has been mended).</summary>
     [Serializable]
     public class ClothingSave
     {
         public int Slot;                // (int)ClothingSlot
         public string Id;
+        public int Condition;
+        public int TimesRepaired;
     }
 
-    /// <summary>A world container. <see cref="Kind"/> is 0..5 for the world container types,
-    /// 6 for a corpse and 7 for a dropped sack (see <see cref="LootContainer.KindSack"/>).</summary>
+    /// <summary>A world container. <see cref="Kind"/> is the <see cref="ContainerType"/> int for the
+    /// world container types (Corpse included), or <see cref="LootContainer.KindSack"/> for a dropped
+    /// ground item (restored as a <see cref="WorldItem"/> from its single saved stack).</summary>
     [Serializable]
     public class ContainerSave
     {
@@ -124,6 +136,18 @@ namespace CloneZ
         public float Health, MaxHealth, PerPlank;
     }
 
+    /// <summary>A player-built house piece (floor, wall, doorway or roof). <see cref="Type"/> is
+    /// the <see cref="BuildPieceType"/>; <see cref="Position"/> is the piece's occupancy centre and
+    /// <see cref="Yaw"/> its facing.</summary>
+    [Serializable]
+    public class HousePieceSave
+    {
+        public int Type;                // (int)BuildPieceType
+        public Vector3 Position;
+        public float Yaw;
+        public float Health, MaxHealth;
+    }
+
     /// <summary>A farm plot and its growing crop.</summary>
     [Serializable]
     public class FarmPlotSave
@@ -141,5 +165,16 @@ namespace CloneZ
         public Vector3 Position;
         public int Kind;                // (int)WaterSourceKind
         public float Water;
+    }
+
+    /// <summary>A pre-placed prop the survivor may have demolished: a bed, a stove or a cover block.
+    /// <see cref="Kind"/> is 0 Bed, 1 Stove, 2 Cover; <see cref="Size"/> is used only by cover.</summary>
+    [Serializable]
+    public class PropSave
+    {
+        public const int KindBed = 0, KindStove = 1, KindCover = 2;
+        public int Kind;
+        public Vector3 Position;
+        public Vector3 Size;
     }
 }

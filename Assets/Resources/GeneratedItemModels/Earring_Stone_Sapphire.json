@@ -1,0 +1,8 @@
+{"version": 1, "id": "Earring_Stone_Sapphire", "baseHeight": 0.0707, "name": "Earring Stone Sapphire", "model": "gpt-oss:120b", "notes": "Small stud earring ~2 cm across: gold backing disc with a sapphire‑colored stone set on top, lying flat on the floor.", "score": 7, "parts": [
+  {"name":"BackingDisc","shape":"cylinder","pos":[0.0,-0.0078,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.002,0.025],"color":[0.8,0.7,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,-0.0073,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.002,0.022],"color":[0.8,0.7,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"SapphireStone","shape":"sphere","pos":[0.0,0.0017,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Prong","shape":"cylinder","pos":[0.0,-0.0028,0.0],"rot":[90.0,0.0,0.0],"size":[0.003,0.008,0.003],"color":[0.8,0.7,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"ShadowBase","shape":"cube","pos":[0.0,-0.0083,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.002,0.03],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.0098,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.2,0.2,0.2],"smooth":0.0,"metal":0.0}
+]}

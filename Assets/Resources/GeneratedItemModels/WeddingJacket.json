@@ -1,0 +1,14 @@
+{"version": 1, "id": "WeddingJacket", "baseHeight": 0.075, "name": "Wedding Jacket", "model": "gpt-oss:120b", "notes": "Flat wedding jacket laid on its back – torso 0.78 m long × 0.50 m wide, 0.03 m thick; two sleeves each 0.35 m wide extending outwards; thin lapels at the front, three metal buttons down the centre and side pocket flaps.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.78,0.03,0.5],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LeftSleeve","shape":"cube","pos":[0.0,-0.0025,0.425],"rot":[0.0,0.0,0.0],"size":[0.78,0.025,0.35],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RightSleeve","shape":"cube","pos":[0.0,-0.0025,-0.425],"rot":[0.0,0.0,0.0],"size":[0.78,0.025,0.35],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LapelLeft","shape":"cube","pos":[0.36,0.003,0.15],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.2],"color":[0.54,0.522,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LapelRight","shape":"cube","pos":[0.36,0.003,-0.15],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.2],"color":[0.54,0.522,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"ButtonTop","shape":"cylinder","pos":[-0.25,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.35,0.33,0.28],"smooth":0.65,"metal":1.0},
+  {"name":"ButtonMiddle","shape":"cylinder","pos":[0.0,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.35,0.33,0.28],"smooth":0.65,"metal":1.0},
+  {"name":"ButtonBottom","shape":"cylinder","pos":[0.25,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.35,0.33,0.28],"smooth":0.65,"metal":1.0},
+  {"name":"PocketLeft","shape":"cube","pos":[-0.25,0.0,0.15],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.12],"color":[0.54,0.522,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PocketRight","shape":"cube","pos":[-0.25,0.0,-0.15],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.12],"color":[0.54,0.522,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveCuffL","shape":"cylinder","pos":[0.0,-0.0025,0.6],"rot":[0.0,0.0,0.0],"size":[0.06,0.008,0.06],"color":[0.54,0.522,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveCuffR","shape":"cylinder","pos":[0.0,-0.0025,-0.6],"rot":[0.0,0.0,0.0],"size":[0.06,0.008,0.06],"color":[0.54,0.522,0.45],"smooth":0.05,"metal":0.0}
+]}

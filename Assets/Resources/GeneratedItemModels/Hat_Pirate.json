@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_Pirate", "baseHeight": 0.337, "name": "Hat Pirate", "model": "gpt-oss:120b", "notes": "Pirate hat laid flat on its side (brim disc ≈ 0.35 m dia, 0.02 m thick; tall crown cylinder ≈ 0.25 m long, 0.24 m dia) with cloth trim, a skull emblem and a red‑yellow feather.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.098,-0.01],"rot":[0.0,0.0,90.0],"size":[0.35,0.02,0.35],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimTrim","shape":"cylinder","pos":[0.0,-0.097,-0.01],"rot":[0.0,0.0,90.0],"size":[0.36,0.004,0.36],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Crown","shape":"cylinder","pos":[0.0,0.032,-0.01],"rot":[0.0,0.0,90.0],"size":[0.24,0.25,0.24],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"InnerBand","shape":"cylinder","pos":[0.0,0.012,-0.01],"rot":[0.0,0.0,90.0],"size":[0.2,0.008,0.2],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SkullBase","shape":"sphere","pos":[0.0,0.032,0.15],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.9,0.9,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"EyeL","shape":"cylinder","pos":[-0.015,0.047,0.15],"rot":[0.0,0.0,90.0],"size":[0.03,0.01,0.03],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"EyeR","shape":"cylinder","pos":[0.015,0.047,0.15],"rot":[0.0,0.0,90.0],"size":[0.03,0.01,0.03],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"FeatherStem","shape":"cylinder","pos":[0.0,0.032,-0.14],"rot":[0.0,0.0,90.0],"size":[0.01,0.12,0.01],"color":[0.9,0.8,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"FeatherPlume","shape":"sphere","pos":[0.0,0.092,-0.14],"rot":[0.0,0.0,0.0],"size":[0.03,0.1,0.03],"color":[0.9,0.8,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"CrownRim","shape":"cylinder","pos":[0.0,0.157,-0.01],"rot":[0.0,0.0,90.0],"size":[0.24,0.006,0.24],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

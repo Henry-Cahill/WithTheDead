@@ -1,0 +1,11 @@
+{"version": 1, "id": "Hat_TinFoilHat", "baseHeight": 0.0745, "name": "Hat Tin Foil Hat", "model": "gpt-oss:120b", "notes": "Tin‑foil hat laid flat: wide circular brim (≈0.30 m dia) with a shallow dome crown (≈0.24 m dia, 2 cm tall). Thin metallic sheets give the silhouette; a few raised crinkles add detail.", "score": 6, "parts": [
+  {"name":"BrimBase","shape":"cylinder","pos":[0.0,-0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.005,0.3],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"CrownBody","shape":"cylinder","pos":[0.0,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.02,0.24],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"CrownRim","shape":"cylinder","pos":[0.0,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.004,0.26],"color":[0.48,0.44,0.54],"smooth":0.6,"metal":1.0},
+  {"name":"CrinkleFront","shape":"cube","pos":[0.1,-0.009,0.0],"rot":[15.0,0.0,0.0],"size":[0.03,0.004,0.015],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"CrinkleBack","shape":"cube","pos":[-0.1,-0.009,0.0],"rot":[-12.0,0.0,0.0],"size":[0.025,0.004,0.012],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"CrinkleLeft","shape":"cube","pos":[0.0,-0.009,0.1],"rot":[0.0,20.0,0.0],"size":[0.028,0.004,0.014],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"CrinkleRight","shape":"cube","pos":[0.0,-0.009,-0.1],"rot":[0.0,-18.0,0.0],"size":[0.027,0.004,0.013],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeFold","shape":"cube","pos":[0.14,-0.008,0.0],"rot":[0.0,0.0,30.0],"size":[0.02,0.002,0.04],"color":[0.48,0.44,0.54],"smooth":0.6,"metal":1.0},
+  {"name":"CenterRidge","shape":"cube","pos":[0.0,0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.02],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0}
+]}

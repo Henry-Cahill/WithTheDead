@@ -1,0 +1,9 @@
+{"version": 1, "id": "HammerForged", "baseHeight": 0.1313, "name": "Hammer Forged", "model": "gpt-oss:120b", "notes": "Forged war‑hammer ~0.85 m long lying on its side (X). Wooden/metal handle, rubber grip near the hand end, massive steel head with a round striking face (+Z) and a small back knob (‑Z). Two rivets hint at forged construction.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.025,-0.0462,-0.0012],"rot":[0.0,0.0,90.0],"size":[0.04,0.85,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.375,-0.0462,-0.0012],"rot":[0.0,0.0,90.0],"size":[0.05,0.12,0.05],"color":[0.15,0.15,0.18],"smooth":0.3,"metal":0.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.325,0.0038,-0.0012],"rot":[0.0,0.0,0.0],"size":[0.25,0.12,0.2],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Face","shape":"cylinder","pos":[0.325,0.0038,0.1088],"rot":[90.0,0.0,0.0],"size":[0.08,0.02,0.08],"color":[0.55,0.55,0.6],"smooth":0.65,"metal":1.0},
+  {"name":"BackKnob","shape":"cylinder","pos":[0.325,0.0038,-0.1112],"rot":[90.0,0.0,0.0],"size":[0.06,0.015,0.06],"color":[0.55,0.55,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"RivetL","shape":"cylinder","pos":[0.325,0.0638,0.0688],"rot":[90.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[0.325,0.0638,-0.0713],"rot":[90.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0}
+]}

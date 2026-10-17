@@ -1,0 +1,20 @@
+{"version": 1, "id": "Jacket_CoatArmy", "baseHeight": 0.085, "name": "Jacket Coat Army", "model": "gpt-oss:120b", "notes": "Flat army jacket coat ≈1.05 m wide × 0.70 m tall × 0.03 m thick (laying on its back). Main silhouette: torso panel, two sleeves spread outward, collar, lapels, front pockets with flaps, cuffs, epaulettes, stitching lines and a dark insignia patch.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.01,-0.125],"rot":[0.0,0.0,0.0],"size":[0.45,0.03,0.6],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.375,-0.01,-0.125],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.5],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.375,-0.01,-0.125],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.5],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.525,-0.01,-0.125],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.1],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.525,-0.01,-0.125],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.1],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.0,0.015,0.175],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.5],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LapelL","shape":"cube","pos":[-0.07,0.0,0.225],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.15],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LapelR","shape":"cube","pos":[0.07,0.0,0.225],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.15],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.15,-0.01,0.075],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.18],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.15,-0.01,0.075],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.18],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFlapL","shape":"cube","pos":[-0.15,0.0015,0.135],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFlapR","shape":"cube","pos":[0.15,0.0015,0.135],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EpauletteL","shape":"cube","pos":[-0.225,0.015,0.125],"rot":[0.0,0.0,0.0],"size":[0.08,0.01,0.12],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EpauletteR","shape":"cube","pos":[0.225,0.015,0.125],"rot":[0.0,0.0,0.0],"size":[0.08,0.01,0.12],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TorsoSeam","shape":"cube","pos":[0.0,0.0075,-0.125],"rot":[0.0,0.0,0.0],"size":[0.45,0.005,0.6],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveSeamL","shape":"cube","pos":[-0.375,0.0075,-0.125],"rot":[0.0,0.0,0.0],"size":[0.3,0.004,0.5],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveSeamR","shape":"cube","pos":[0.375,0.0075,-0.125],"rot":[0.0,0.0,0.0],"size":[0.3,0.004,0.5],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Insignia","shape":"cylinder","pos":[-0.12,0.0,0.025],"rot":[0.0,0.0,0.0],"size":[0.1,0.01,0.1],"color":[0.3,0.25,0.35],"smooth":0.05,"metal":0.0}
+]}

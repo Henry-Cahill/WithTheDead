@@ -1,0 +1,13 @@
+{"version": 1, "id": "Hat_Witch", "baseHeight": 0.245, "name": "Hat Witch", "model": "gpt-oss:120b", "notes": "Witch hat laid flat on the floor: wide cloth brim with rolled edge, tapered crown made of three stacked cylinders ending in a rounded tip, dark purple ribbon band near the base, two vertical seam strips, and a small feather decoration on the side.", "score": 7, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.18,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.01,0.32],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdge","shape":"cylinder","pos":[0.0,-0.173,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.004,0.34],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.16,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.008,0.24],"color":[0.3,0.2,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBase","shape":"cylinder","pos":[0.0,-0.115,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.12,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownMid","shape":"cylinder","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.1,0.15],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownTop","shape":"cylinder","pos":[0.0,0.085,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TipSphere","shape":"sphere","pos":[0.0,0.165,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SeamL","shape":"cylinder","pos":[-0.05,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.3,0.006],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"SeamR","shape":"cylinder","pos":[0.05,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.3,0.006],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"FeatherStem","shape":"cylinder","pos":[0.08,0.145,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.07,0.008],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"FeatherHead","shape":"sphere","pos":[0.115,0.145,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0}
+]}

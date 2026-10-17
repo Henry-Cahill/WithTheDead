@@ -1,0 +1,8 @@
+{"version": 1, "id": "Earring_Stone_Ruby", "baseHeight": 0.0683, "name": "Earring Stone Ruby", "model": "gpt-oss:120b", "notes": "Ruby earring lying flat on the floor (~3 cm tall). Main faceted ruby stone (sphere) ~1.6 cm across, attached to a thin metallic bail (cylinder) that runs horizontally along X. Small metal bead at the end of the bail adds detail.", "score": 7, "parts": [
+  {"name":"RubyStone","shape":"sphere","pos":[0.0035,0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.6,0.58,0.5],"smooth":0.62,"metal":0.0},
+  {"name":"Bail","shape":"cylinder","pos":[-0.0065,0.0003,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.02,0.004],"color":[0.78,0.78,0.8],"smooth":0.45,"metal":1.0},
+  {"name":"BeadEnd","shape":"sphere","pos":[0.0135,0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.78,0.78,0.8],"smooth":0.45,"metal":1.0},
+  {"name":"FacetHighlightL","shape":"cube","pos":[-0.0005,0.0032,0.006],"rot":[0.0,15.0,0.0],"size":[0.002,0.002,0.008],"color":[0.7,0.65,0.55],"smooth":0.6,"metal":0.0},
+  {"name":"FacetHighlightR","shape":"cube","pos":[-0.0005,0.0032,-0.006],"rot":[0.0,-15.0,0.0],"size":[0.002,0.002,0.008],"color":[0.7,0.65,0.55],"smooth":0.6,"metal":0.0},
+  {"name":"ShadowBase","shape":"cube","pos":[0.0035,-0.0072,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.018],"color":[0.1,0.09,0.08],"smooth":0.02,"metal":0.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "Necklace_GoldDiamond", "baseHeight": 0.066, "name": "Necklace Gold Diamond", "model": "gpt-oss:120b", "notes": "Gold necklace (~30 cm) lying flat on the floor: clasp, six linked chain‑cylinders (rotated to run along X), two decorative beads attached to the chain, and a small gold pendant with a diamond set. All parts touch or overlap so the chain is continuous.", "score": 6, "parts": [
+  {"name":"Clasp","shape":"cube","pos":[-0.145,-0.002,0.005],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ChainSeg1","shape":"cylinder","pos":[-0.115,-0.002,0.005],"rot":[0.0,0.0,90.0],"size":[0.008,0.045,0.008],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"ChainSeg2","shape":"cylinder","pos":[-0.07,-0.002,0.005],"rot":[0.0,0.0,90.0],"size":[0.008,0.045,0.008],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"BeadL","shape":"sphere","pos":[-0.08,-0.001,0.02],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"ChainSeg3","shape":"cylinder","pos":[-0.025,-0.002,0.005],"rot":[0.0,0.0,90.0],"size":[0.008,0.045,0.008],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"ChainSeg4","shape":"cylinder","pos":[0.02,-0.002,0.005],"rot":[0.0,0.0,90.0],"size":[0.008,0.045,0.008],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"ChainSeg5","shape":"cylinder","pos":[0.065,-0.002,0.005],"rot":[0.0,0.0,90.0],"size":[0.008,0.045,0.008],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"BeadR","shape":"sphere","pos":[0.075,-0.001,-0.01],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"ChainSeg6","shape":"cylinder","pos":[0.11,-0.002,0.005],"rot":[0.0,0.0,90.0],"size":[0.008,0.045,0.008],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"PendantPlate","shape":"cube","pos":[0.1425,-0.004,-0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.03],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Setting","shape":"cylinder","pos":[0.1425,0.0,-0.01],"rot":[0.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"Diamond","shape":"sphere","pos":[0.1425,0.003,-0.01],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.9,0.95,1.0],"smooth":0.85,"metal":0.0}
+]}

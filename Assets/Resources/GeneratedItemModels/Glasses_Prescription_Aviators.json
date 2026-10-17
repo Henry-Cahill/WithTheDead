@@ -1,0 +1,14 @@
+{"version": 1, "id": "Glasses_Prescription_Aviators", "baseHeight": 0.065, "name": "Glasses Prescription Aviators", "model": "gpt-oss:120b", "notes": "Prescription aviator glasses spread flat (front face up). Overall width ≈ 0.13 m, height ≈ 0.045 m, thickness ≈ 0.003 m. Two lenses with metal frames, a central bridge, nose‑pad and the long temples extending outward.", "score": 6, "parts": [
+  {"name":"LensFrameL","shape":"cube","pos":[-0.0375,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.058,0.003,0.048],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"LensGlassL","shape":"cylinder","pos":[-0.0375,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.055,0.003,0.045],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":0.0},
+  {"name":"LensFrameR","shape":"cube","pos":[0.0375,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.058,0.003,0.048],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"LensGlassR","shape":"cylinder","pos":[0.0375,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.055,0.003,0.045],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.003,0.045],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"NosePad","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.002,0.008],"color":[0.1,0.09,0.08],"smooth":0.3,"metal":0.0},
+  {"name":"TempleL","shape":"cylinder","pos":[-0.135,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.14,0.01],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"TempleR","shape":"cylinder","pos":[0.135,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.14,0.01],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"HingeL","shape":"cube","pos":[-0.065,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.008,0.01],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"HingeR","shape":"cube","pos":[0.065,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.008,0.01],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"ScrewL","shape":"sphere","pos":[-0.0375,0.0015,0.022],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.1,0.09,0.08],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewR","shape":"sphere","pos":[0.0375,0.0015,0.022],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.1,0.09,0.08],"smooth":0.6,"metal":1.0}
+]}

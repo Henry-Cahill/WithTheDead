@@ -1,0 +1,14 @@
+{"version": 1, "id": "Hat_BandanaTied", "baseHeight": 0.12, "name": "Hat Bandana Tied", "model": "gpt-oss:120b", "notes": "Flat bandana ~0.55 m square, 1.5 cm thick, tied in an X‑style knot. Main cloth (tint 0.55,0.5,0.6) forms the base and two crossing strips; a small darker knot sits at the centre with short tie‑ends extending outward; thin edge trims outline the square.", "score": 6, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.045,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.55],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StripX","shape":"cylinder","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.55,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StripZ","shape":"cylinder","pos":[0.0,-0.015,0.0],"rot":[90.0,0.0,0.0],"size":[0.07,0.55,0.07],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Knot","shape":"sphere","pos":[0.0,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieEndL","shape":"cylinder","pos":[-0.06,0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieEndR","shape":"cylinder","pos":[0.06,0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieEndF","shape":"cylinder","pos":[0.0,0.02,0.06],"rot":[90.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieEndB","shape":"cylinder","pos":[0.0,0.02,-0.06],"rot":[90.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.0,-0.0275,0.27],"rot":[0.0,0.0,0.0],"size":[0.55,0.005,0.01],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[0.0,-0.0275,-0.27],"rot":[0.0,0.0,0.0],"size":[0.55,0.005,0.01],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.27,-0.0275,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.55],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.27,-0.0275,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.55],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

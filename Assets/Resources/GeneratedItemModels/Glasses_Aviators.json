@@ -1,0 +1,12 @@
+{"version": 1, "id": "Glasses_Aviators", "baseHeight": 0.09, "name": "Glasses Aviators", "model": "gpt-oss:120b", "notes": "Aviator glasses laid flat like a product photo: total span ≈ 0.18 m wide × 0.07 m tall × 0.01 m thick. Two teardrop lenses (tinted glass), metal‑gray frame rim, central bridge and nose‑pad, and the two temples folded back along –Z.", "score": 6, "parts": [
+  {"name":"LeftLens","shape":"sphere","pos":[-0.045,0.0,0.047],"rot":[0.0,0.0,0.0],"size":[0.08,0.06,0.02],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"RightLens","shape":"sphere","pos":[0.045,0.0,0.047],"rot":[0.0,0.0,0.0],"size":[0.08,0.06,0.02],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"Bridge","shape":"cube","pos":[0.0,0.001,0.047],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.015],"color":[0.2,0.2,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"NosePad","shape":"cube","pos":[0.0,-0.002,0.055],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.008],"color":[0.2,0.2,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"TempleL","shape":"cylinder","pos":[-0.045,-0.003,-0.023],"rot":[90.0,0.0,0.0],"size":[0.01,0.13,0.01],"color":[0.2,0.2,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"TempleR","shape":"cylinder","pos":[0.045,-0.003,-0.023],"rot":[90.0,0.0,0.0],"size":[0.01,0.13,0.01],"color":[0.2,0.2,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"ScrewL","shape":"sphere","pos":[-0.045,0.004,0.052],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.1,0.1,0.12],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewR","shape":"sphere","pos":[0.045,0.004,0.052],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.1,0.1,0.12],"smooth":0.6,"metal":1.0},
+  {"name":"FrameL","shape":"cylinder","pos":[-0.045,0.0,0.047],"rot":[0.0,0.0,0.0],"size":[0.082,0.006,0.082],"color":[0.2,0.2,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"FrameR","shape":"cylinder","pos":[0.045,0.0,0.047],"rot":[0.0,0.0,0.0],"size":[0.082,0.006,0.082],"color":[0.2,0.2,0.25],"smooth":0.15,"metal":0.0}
+]}

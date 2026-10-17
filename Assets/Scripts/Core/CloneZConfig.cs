@@ -78,6 +78,20 @@ namespace CloneZ
         public const float BareHandCooldown = 0.55f;
         public const float BareHandKnockback = 2.5f;
 
+        // ---- Item repair (PZ diminishing repair: each patch restores less and caps lower) ----
+        // A repair consumes one material (duct tape for gear, thread + a needle for clothing) and
+        // raises the item's condition back toward max. The reachable cap falls with every prior
+        // repair, so a heavily-patched item can never be brought fully back to pristine.
+        public const float RepairRestoreFraction = 0.30f;    // each repair restores up to 30% of max condition
+        public const float RepairCapBase = 0.90f;            // the first repair can reach 90% of max
+        public const float RepairCapDecayPerRepair = 0.12f;  // every prior repair lowers the reachable cap
+        public const float RepairCapFloor = 0.30f;           // but the cap never drops below 30% of max
+        public const float RepairCapCarpentryBonus = 0.02f;  // a handy survivor patches a little closer to pristine (per Carpentry level)
+        public const float XpRepairPerFix = 10f;             // Carpentry XP earned for a successful repair
+
+        // ---- Equipped-weapon weight relief (PZ: a weapon in hand weighs less on the carry total) ----
+        public const float EquippedWeaponWeightReduction = 0.5f;  // the wielded weapon counts at half weight
+
         // ---- Zombie health (PZ toughness): tough 3.5 / normal 1.8 / fragile 0.5 (+Rand 0..0.3) ----
         public const float ZombieHealthNormal = 1.8f;
         public const float ZombieHealthTough = 3.5f;
@@ -120,17 +134,31 @@ namespace CloneZ
         public const int WaveBaseZombies = 6;
         public const int WavePerWaveIncrease = 3;
         public const float WaveBreakSeconds = 6f;
-        public const float SpawnRingMin = 22f;
-        public const float SpawnRingMax = 30f;
+        // Zombies spawn at random points across the whole arena; this keep-away radius around the
+        // survivor is the only exclusion, so one never materialises right in their face.
+        public const float SpawnMinPlayerDistance = 12f;
         public const float SprinterUnlockWave = 4;   // sprinters start appearing from this wave
         public const float ToughUnlockWave = 2;
 
         // ---- World ----
-        public const float ArenaHalfSize = 34f;      // playable half-extent (ground is a bit larger)
+        // Playable half-extent (ground is a bit larger). Set per mode by the bootstrapper before the
+        // world is built: the wave arena keeps the default; an extraction raid map is larger.
+        public const float WaveArenaHalfSize = 34f;
+        public static float ArenaHalfSize = WaveArenaHalfSize;
+        public const int LootContainerCount = 50;    // world containers scattered across the arena each build
 
         // ---- Day / night cycle ----
         public const float DayLengthSeconds = 720f;      // real seconds for a full 24h day (12 min)
         public const float StartHour = 8.5f;             // world begins mid-morning
+
+        // ---- Extraction raids (a winter night: 00:40 on December 17th, out before dawn) ----
+        public const float RaidStartHour = 0f + 40f / 60f;     // 00:40
+        public const float RaidDayLengthSeconds = 8640f;       // 6 real minutes per in-game hour
+        public const float RaidDawnHour = 6f;                  // the exits close at dawn (~32 real minutes in)
+        public const int RaidStartMonth = 12;
+        public const int RaidStartDay = 17;
+        public const float RaidSpawnProtectionSeconds = 60f;   // the dead ignore a freshly-arrived survivor
+        public const int RaidZombiePopulation = 40;            // wanderers roaming the town at once
         public const float DaySunIntensity = 1.25f;      // directional light at noon
         public const float NightSunIntensity = 0.05f;    // faint moonlight
         public const float NightLightFloor = 0.09f;      // ambient light level (0..1) at deep night
@@ -218,6 +246,58 @@ namespace CloneZ
         public const float ZombieBarricadeDamage = 14f;      // damage a zombie deals per bash to a barricade
         public const float CarpentryBuildSpeedPerLevel = 0.06f; // build time shrinks this much per Carpentry level
         public const float CarpentryHealthPerLevel = 0.08f;     // barricade HP grows this much per Carpentry level
+
+        // ---- Construction: houses (planks + nails + a hammer -> floors, walls, doorways, roofs) ----
+        // A full building system layered on top of barricades: in build mode the survivor picks a
+        // piece from a palette and places it on a 2 m tile grid, so floors tile, walls sit on the
+        // tile edges and roofs cap the walls. Walls and doorways block movement and carve the
+        // NavMesh (zombies must bash them down like a barricade); floors and roofs are structural.
+        public const float HouseTileSize = 2.0f;            // grid cell / wall length (m) — matches BarricadeWidth
+        public const float HouseWallHeight = 2.6f;          // wall (and doorway) height (m)
+        public const float HouseWallThickness = 0.2f;       // wall depth (m)
+        public const float HouseFloorThickness = 0.12f;     // floor slab thickness (m)
+        public const float HouseRoofThickness = 0.16f;      // roof slab thickness (m)
+        public const float HouseDoorwayGapWidth = 1.4f;     // clear opening in a doorway (m) — roomy enough to walk through (player is ~0.8m wide)
+        public const float HouseDoorwayLintelHeight = 0.5f; // the header beam above a doorway opening (m); visual only, no collider
+        public const float HousePlaceReach = 6f;            // farthest from the survivor a piece can be placed (m)
+
+        // Per-piece plank / nail cost, hammering time (seconds, before Carpentry) and health.
+        public const int HouseFloorPlankCost = 2, HouseFloorNailCost = 1;
+        public const int HouseWallPlankCost = 3, HouseWallNailCost = 2;
+        public const int HouseDoorwayPlankCost = 3, HouseDoorwayNailCost = 2;
+        public const int HouseRoofPlankCost = 2, HouseRoofNailCost = 1;
+        public const float HouseFloorBuildTime = 2.0f;
+        public const float HouseWallBuildTime = 2.8f;
+        public const float HouseDoorwayBuildTime = 3.0f;
+        public const float HouseRoofBuildTime = 2.4f;
+        public const float HouseFloorHealth = 120f;         // structural HP (dismantled, not usually bashed)
+        public const float HouseWallHealth = 200f;          // a wall is tougher than a plank barricade
+        public const float HouseDoorwayHealth = 150f;       // the frame around a doorway
+        public const float HouseRoofHealth = 120f;
+
+        // A window is a wall with an open glazing band — cheaper, a bit weaker, and a clear line of
+        // sight/fire, but it still blocks passage (the sill is too high to step over) and carves the navmesh.
+        public const int HouseWindowPlankCost = 2, HouseWindowNailCost = 1;
+        public const float HouseWindowBuildTime = 2.6f;
+        public const float HouseWindowHealth = 160f;        // a weak point, between wall (200) and doorway (150)
+        public const float HouseWindowSillHeight = 0.95f;   // solid sill height (m); above the CC step, so no walking through
+        public const float HouseWindowHeadHeight = 0.55f;   // solid header height (m); the band between them is the opening
+        public const float HousePieceSnapEpsilon = 0.6f;    // a new piece is refused within this of an existing one (per layer)
+
+        // Disassembly — prying a player-built piece (or barricade) apart recovers part of its
+        // materials. The refund is lossy so it can't be exploited for free repositioning or XP.
+        public const float HouseSalvageFraction = 0.6f;     // fraction of a piece's build cost returned on dismantle
+        public const float HouseSalvageTime = 2.2f;         // seconds of prying to dismantle a piece (before Carpentry)
+        public const float XpCarpentrySalvage = 6f;         // Carpentry XP for dismantling a structure
+
+        // Salvage (planks, nails) from dismantling PRE-PLACED world objects. Flat per-type yields —
+        // these weren't built from a known cost, so they don't use HouseSalvageFraction.
+        public const int SalvageBedPlanks = 3, SalvageBedNails = 1;        // wooden bed frame
+        public const int SalvageStovePlanks = 1, SalvageStoveNails = 2;    // mostly metal
+        public const int SalvageContainerPlanks = 2, SalvageContainerNails = 1;  // a wooden crate/locker
+        public const int SalvageCoverPlanks = 2, SalvageCoverNails = 1;    // a crate/pallet stack
+        public const int SalvageBarrelPlanks = 2, SalvageBarrelNails = 1;  // a rain barrel
+        public const int SalvageTapPlanks = 0, SalvageTapNails = 1;        // a plumbed tap (mostly pipe)
 
         // ---- Wounds / bleeding / pain / medical (PZ BodyDamage) ----
         // A zombie strike now leaves a lasting wound that bleeds and hurts until treated.

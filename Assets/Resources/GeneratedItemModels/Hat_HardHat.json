@@ -1,0 +1,9 @@
+{"version": 1, "id": "Hat_HardHat", "baseHeight": 0.105, "name": "Hat Hard Hat", "model": "gpt-oss:120b", "notes": "Flat hard hat laid out flat: 0.36 m brim diameter, 0.12 m total height. Shallow dome crown, wide rim, inner suspension band and four small vent cylinders around the crown.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.0375,0.0],"rot":[0.0,0.0,0.0],"size":[0.36,0.015,0.36],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"Crown","shape":"sphere","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.08,0.26],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"InnerBand","shape":"cylinder","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.012,0.22],"color":[0.45,0.42,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"VentFront","shape":"cylinder","pos":[0.13,0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"VentBack","shape":"cylinder","pos":[-0.13,0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"VentLeft","shape":"cylinder","pos":[0.0,0.025,0.13],"rot":[90.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"VentRight","shape":"cylinder","pos":[0.0,0.025,-0.13],"rot":[90.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0}
+]}

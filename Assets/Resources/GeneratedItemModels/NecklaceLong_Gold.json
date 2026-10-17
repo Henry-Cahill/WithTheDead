@@ -1,0 +1,10 @@
+{"version": 1, "id": "NecklaceLong_Gold", "baseHeight": 0.067, "name": "Necklace Long Gold", "model": "gpt-oss:120b", "notes": "Long gold necklace ~0.50 m when laid flat: thin golden chain (cylinder) with a few raised link spheres for texture, a small pendant disc in the centre and a rectangular clasp at one end.", "score": 7, "parts": [
+  {"name":"ChainBase","shape":"cylinder","pos":[0.015,-0.003,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.5,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"LinkL2","shape":"sphere","pos":[-0.185,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"LinkL1","shape":"sphere","pos":[-0.085,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"LinkC","shape":"sphere","pos":[0.015,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"LinkR1","shape":"sphere","pos":[0.115,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"LinkR2","shape":"sphere","pos":[0.215,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Pendant","shape":"cylinder","pos":[0.015,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Clasp","shape":"cube","pos":[-0.25,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.008,0.015],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0}
+]}

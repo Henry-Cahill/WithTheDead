@@ -1,0 +1,14 @@
+{"version": 1, "id": "Hat_JockeyHelmet02", "baseHeight": 0.12, "name": "Hat Jockey Helmet02", "model": "gpt-oss:120b", "notes": "Flat jockey helmet laid out like a product photo – overall footprint ~0.34 m wide × 0.30 m deep, total thickness ≈0.13 m (crown + thin rim). Main body is a shallow dome (crown) with a thin outer rim; includes an inner liner, side strap loops, front‑and‑back straps and four rivets around the rim for detail.", "score": 6, "parts": [
+  {"name":"CrownOuter","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.12,0.3],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"CrownInner","shape":"cylinder","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.1,0.28],"color":[0.62,0.57,0.68],"smooth":0.15,"metal":0.0},
+  {"name":"BrimOuter","shape":"cylinder","pos":[0.0,-0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.01,0.34],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"BrimInner","shape":"cylinder","pos":[0.0,-0.056,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.008,0.32],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"LoopL","shape":"cube","pos":[-0.13,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.01],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"LoopR","shape":"cube","pos":[0.13,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.01],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"StrapFront","shape":"cylinder","pos":[0.0,0.02,0.13],"rot":[0.0,0.0,90.0],"size":[0.015,0.1,0.015],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"StrapBack","shape":"cylinder","pos":[0.0,0.02,-0.13],"rot":[0.0,0.0,90.0],"size":[0.015,0.1,0.015],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"RivetN","shape":"sphere","pos":[0.0,-0.05,0.165],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"RivetS","shape":"sphere","pos":[0.0,-0.05,-0.165],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"RivetE","shape":"sphere","pos":[0.165,-0.05,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"RivetW","shape":"sphere","pos":[-0.165,-0.05,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0}
+]}

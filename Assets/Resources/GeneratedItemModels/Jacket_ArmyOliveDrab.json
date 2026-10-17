@@ -1,0 +1,12 @@
+{"version": 1, "id": "Jacket_ArmyOliveDrab", "baseHeight": 0.075, "name": "Jacket Army Olive Drab", "model": "gpt-oss:120b", "notes": "Flat army‑olive jacket about 0.60 m wide × 0.80 m long, 2.5 cm thick when laid out. Main body in the given tint with darker trims: front zipper, collar, cuffs, pockets and bottom hem. Sleeves and cuffs now touch the torso panel.", "score": 6, "parts": [
+  {"name":"TorsoPanel","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.025,0.8],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftSleeve","shape":"cube","pos":[-0.4,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.025,0.4],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightSleeve","shape":"cube","pos":[0.4,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.025,0.4],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.51,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.12],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.51,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.12],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cube","pos":[0.0,-0.005,0.38],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.04],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.15,-0.0075,0.25],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.15,-0.0075,0.25],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"ZipperLine","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.8],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":0.2},
+  {"name":"HemBottom","shape":"cube","pos":[0.0,-0.01,-0.39],"rot":[0.0,0.0,0.0],"size":[0.6,0.01,0.02],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0}
+]}

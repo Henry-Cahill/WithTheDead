@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_ChefHat", "baseHeight": 0.13, "name": "Hat Chef Hat", "model": "gpt-oss:120b", "notes": "Flat chef‑hat laid out like a product photo – wide brim disc with rolled edge and a tall puffed crown. Approx 0.30 m across the brim, ~0.20 m high when upright; flattened to ~0.12 m thickness on the floor.", "score": 7, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"InnerLining","shape":"cylinder","pos":[0.0,-0.061,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.018,0.28],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRoll","shape":"cylinder","pos":[0.0,-0.048,0.0],"rot":[0.0,0.0,0.0],"size":[0.31,0.004,0.31],"color":[0.55,0.5,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"CrownCore","shape":"cylinder","pos":[0.0,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.04,0.14],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownFluff","shape":"sphere","pos":[0.0,0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.08,0.14],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.045,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.01,0.18],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"StitchBottom","shape":"cylinder","pos":[0.0,-0.031,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.08],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"StitchTop","shape":"cylinder","pos":[0.0,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.08],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"LabelPatch","shape":"cube","pos":[0.09,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.002],"color":[0.9,0.9,0.95],"smooth":0.4,"metal":0.0},
+  {"name":"LabelDetail","shape":"cube","pos":[0.09,-0.02,0.003],"rot":[0.0,0.0,0.0],"size":[0.036,0.016,0.002],"color":[0.2,0.2,0.25],"smooth":0.4,"metal":0.0}
+]}

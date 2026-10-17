@@ -1,0 +1,14 @@
+{"version": 1, "id": "Gloves_IceHockeyGloves_White", "baseHeight": 0.075, "name": "Gloves Ice Hockey Gloves White", "model": "gpt-oss:120b", "notes": "Pair of white ice‑hockey gloves laid flat side‑by‑side (≈0.6 m wide × 0.2 m deep × 0.03 m thick). Main blocks for each palm, thumb protrusions, finger panels, wrist cuffs and a couple of raised padding ribs on top.", "score": 6, "parts": [
+  {"name":"PalmL","shape":"cube","pos":[-0.16,0.0,-0.005],"rot":[0.0,0.0,0.0],"size":[0.28,0.03,0.18],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"PalmR","shape":"cube","pos":[0.16,0.0,-0.005],"rot":[0.0,0.0,0.0],"size":[0.28,0.03,0.18],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"ThumbL","shape":"cube","pos":[-0.34,-0.0025,-0.045],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,0.07],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"ThumbR","shape":"cube","pos":[0.34,-0.0025,-0.045],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,0.07],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"FingersL","shape":"cube","pos":[-0.16,-0.005,0.11],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.05],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"FingersR","shape":"cube","pos":[0.16,-0.005,0.11],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.05],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"WristCuffL","shape":"cube","pos":[-0.16,-0.0075,-0.115],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"WristCuffR","shape":"cube","pos":[0.16,-0.0075,-0.115],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"RibL_Front","shape":"cylinder","pos":[-0.16,0.0025,0.035],"rot":[0.0,0.0,90.0],"size":[0.005,0.25,0.005],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"RibL_Back","shape":"cylinder","pos":[-0.16,0.0025,-0.045],"rot":[0.0,0.0,90.0],"size":[0.005,0.25,0.005],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"RibR_Front","shape":"cylinder","pos":[0.16,0.0025,0.035],"rot":[0.0,0.0,90.0],"size":[0.005,0.25,0.005],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"RibR_Back","shape":"cylinder","pos":[0.16,0.0025,-0.045],"rot":[0.0,0.0,90.0],"size":[0.005,0.25,0.005],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0}
+]}

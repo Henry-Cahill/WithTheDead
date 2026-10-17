@@ -4,10 +4,10 @@ using UnityEngine.UI;
 namespace CloneZ
 {
     /// <summary>
-    /// The title screen shown on boot. Lets the player begin a fresh run, continue a
-    /// saved one (only when a save exists on disk) or quit. Built entirely from code
-    /// like the rest of the UI; the <see cref="GameBootstrapper"/> shows it before any
-    /// world is built and it tears itself down once a choice is made.
+    /// The title screen shown on boot. Starts an extraction raid (the default), begins a fresh
+    /// wave-survival run, continues a saved one (only when a save exists on disk) or quits. Built
+    /// entirely from code like the rest of the UI; the <see cref="GameBootstrapper"/> shows it before
+    /// any world is built and it tears itself down once a choice is made.
     /// </summary>
     public class MainMenuController : MonoBehaviour
     {
@@ -50,28 +50,37 @@ namespace CloneZ
             Label(root, "Title", new Vector2(0.5f, 0.72f), Vector2.zero, new Vector2(1000f, 130f), 96, TextAnchor.MiddleCenter, new Color(0.85f, 0.22f, 0.20f))
                 .text = "CLONE-Z";
             Label(root, "Subtitle", new Vector2(0.5f, 0.63f), Vector2.zero, new Vector2(1000f, 44f), 26, TextAnchor.MiddleCenter, new Color(0.70f, 0.74f, 0.80f))
-                .text = "A survival prototype";
+                .text = "Knox County  \u00b7  Winter 1993";
 
             bool hasSave = SaveSystem.HasSave;
 
-            var anchor = new Vector2(0.5f, 0.46f);
-            const float step = 84f;
+            var anchor = new Vector2(0.5f, 0.50f);
+            const float step = 80f;
+            var raidColor = new Color(0.62f, 0.46f, 0.12f);
             var newColor = new Color(0.30f, 0.42f, 0.24f);
             var contColor = hasSave ? new Color(0.24f, 0.34f, 0.46f) : new Color(0.20f, 0.22f, 0.26f);
             var quitColor = new Color(0.42f, 0.26f, 0.22f);
 
-            MakeButton(root, anchor, Vector2.zero, new Vector2(360f, 64f), "New Game", newColor, OnNewGame);
-            Button cont = MakeButton(root, anchor, new Vector2(0f, -step), new Vector2(360f, 64f), "Continue", contColor, OnContinue);
+            MakeButton(root, anchor, Vector2.zero, new Vector2(380f, 64f), "Start Raid  (Extraction)", raidColor, OnStartRaid);
+            MakeButton(root, anchor, new Vector2(0f, -step), new Vector2(380f, 64f), "Wave Survival  (New)", newColor, OnNewGame);
+            Button cont = MakeButton(root, anchor, new Vector2(0f, -step * 2f), new Vector2(380f, 64f), "Continue Wave Survival", contColor, OnContinue);
             cont.interactable = hasSave;
-            MakeButton(root, anchor, new Vector2(0f, -step * 2f), new Vector2(360f, 64f), "Quit", quitColor, OnQuit);
+            MakeButton(root, anchor, new Vector2(0f, -step * 3f), new Vector2(380f, 64f), "Quit", quitColor, OnQuit);
 
-            Label(root, "Hint", new Vector2(0.5f, 0.12f), Vector2.zero, new Vector2(1200f, 30f), 16, TextAnchor.MiddleCenter, new Color(0.5f, 0.54f, 0.6f))
-                .text = hasSave
-                    ? "Continue resumes your last run  \u00b7  New Game starts fresh (overwrites the save)"
-                    : "No save found \u2014 start a New Game";
+            Label(root, "Hint", new Vector2(0.5f, 0.12f), Vector2.zero, new Vector2(1400f, 60f), 16, TextAnchor.MiddleCenter, new Color(0.5f, 0.54f, 0.6f))
+                .text = "Raid: arrive under spawn protection, loot the town, reach an exit before dawn \u2014 die and you lose your kit\n" +
+                        (hasSave
+                            ? "Wave Survival: Continue resumes your last run  \u00b7  New starts fresh (overwrites the save)"
+                            : "Wave Survival: hold the starter house against escalating waves (no save found yet)");
         }
 
         #region Button handlers
+        private void OnStartRaid()
+        {
+            if (_boot != null) _boot.StartRaid();
+            Destroy(gameObject);
+        }
+
         private void OnNewGame()
         {
             if (_boot != null) _boot.StartNewGame();

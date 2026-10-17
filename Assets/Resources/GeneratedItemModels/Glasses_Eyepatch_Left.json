@@ -1,0 +1,10 @@
+{"version": 1, "id": "Glasses_Eyepatch_Left", "baseHeight": 0.075, "name": "Glasses Eyepatch Left", "model": "gpt-oss:120b", "notes": "Left‑eye eyepatch ~8 cm wide × 9 cm tall × 1 cm thick (incl. strap), flat on the floor. Main fabric (tint 0.6,0.58,0.5) with a dark leather rim, two thin straps, a metal rivet and a small metal eye‑plate.", "score": 6, "parts": [
+  {"name":"PatchBase","shape":"cube","pos":[0.0,-0.007,-0.007],"rot":[0.0,0.0,0.0],"size":[0.08,0.008,0.09],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Rim","shape":"cube","pos":[0.0,-0.0065,-0.007],"rot":[0.0,0.0,0.0],"size":[0.082,0.009,0.092],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StrapLeft","shape":"cube","pos":[-0.09,-0.009,-0.007],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.015],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StrapRight","shape":"cube","pos":[0.09,-0.009,-0.007],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.015],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Rivet","shape":"cylinder","pos":[0.0,0.001,-0.007],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"EyePlate","shape":"sphere","pos":[0.0,0.0,0.038],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.3,0.3,0.32],"smooth":0.6,"metal":1.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,-0.006,0.038],"rot":[0.0,0.0,0.0],"size":[0.078,0.002,0.002],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[0.0,-0.006,-0.052],"rot":[0.0,0.0,0.0],"size":[0.078,0.002,0.002],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Necklace_DogTag_Male", "baseHeight": 0.07, "name": "Necklace Dog Tag Male", "model": "gpt-oss:120b", "notes": "Dog‑tag necklace (metal tint 0.6,0.58,0.5) about 0.4 m of thin chain with a rectangular tag hanging in the middle. Chain lies flat on the floor; tag sits on top of the chain and shows a raised engraved area, two mounting holes and a small rivet.", "score": 6, "parts": [
+  {"name":"Chain1","shape":"cylinder","pos":[-0.14,-0.006,-0.011],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Chain2","shape":"cylinder","pos":[-0.04,-0.006,-0.011],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Chain3","shape":"cylinder","pos":[0.06,-0.006,-0.011],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Chain4","shape":"cylinder","pos":[0.16,-0.006,-0.011],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Clasp","shape":"sphere","pos":[-0.21,0.0,-0.011],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TagBase","shape":"cube","pos":[0.01,-0.004,-0.011],"rot":[0.0,0.0,0.0],"size":[0.025,0.004,0.05],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Engrave","shape":"cube","pos":[0.01,-0.0025,0.0135],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.045],"color":[0.3,0.28,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"HoleL","shape":"cylinder","pos":[0.002,-0.004,0.007],"rot":[0.0,0.0,90.0],"size":[0.004,0.008,0.004],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":1.0},
+  {"name":"HoleR","shape":"cylinder","pos":[0.018,-0.004,0.007],"rot":[0.0,0.0,90.0],"size":[0.004,0.008,0.004],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":1.0},
+  {"name":"Rivet","shape":"sphere","pos":[0.01,-0.0005,-0.011],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.45,0.43,0.38],"smooth":0.6,"metal":1.0}
+]}

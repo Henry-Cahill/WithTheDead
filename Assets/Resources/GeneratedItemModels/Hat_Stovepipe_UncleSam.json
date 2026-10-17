@@ -1,0 +1,8 @@
+{"version": 1, "id": "Hat_Stovepipe_UncleSam", "baseHeight": 0.157, "name": "Hat Stovepipe Uncle Sam", "model": "gpt-oss:120b", "notes": "Stovepipe hat laid flat like a product photo – wide circular brim (0.60 m dia) 2 cm thick, tall cylindrical crown (0.22 m dia × 0.18 m high) sitting on the centre of the brim, a thin cloth band near the top of the crown and a small white star emblem on the front face.", "score": 6, "parts": [
+  {"name":"BrimBody","shape":"cylinder","pos":[0.0,-0.087,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.6],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdge","shape":"cylinder","pos":[0.0,-0.0845,0.0],"rot":[0.0,0.0,0.0],"size":[0.62,0.005,0.62],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBody","shape":"cylinder","pos":[0.0,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.18,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Band","shape":"cylinder","pos":[0.0,0.0805,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.22],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StarEmblem","shape":"cube","pos":[0.0,0.068,0.11],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"CrownTopCap","shape":"cylinder","pos":[0.0,0.093,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.008,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}
