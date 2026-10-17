@@ -112,4 +112,6 @@ InitTestScene*.unity*
 
 # LLM asset pipeline scratch output (previews, logs, gallery)
 /Tools/AssetPipeline/out/
+# zomboidmap.com rip output (tens of GB of tiles, data, logs)
+/Tools/MapScraper/out/
 __pycache__/
