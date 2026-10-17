@@ -298,6 +298,15 @@ namespace CloneZ
         public const int SalvageCoverPlanks = 2, SalvageCoverNails = 1;    // a crate/pallet stack
         public const int SalvageBarrelPlanks = 2, SalvageBarrelNails = 1;  // a rain barrel
         public const int SalvageTapPlanks = 0, SalvageTapNails = 1;        // a plumbed tap (mostly pipe)
+        // The starter home's loose furniture (HomeFurniture). Lamps and cardboard boxes yield nothing.
+        public const int SalvageCounterPlanks = 3, SalvageCounterNails = 1;      // kitchen base cabinets
+        public const int SalvageTablePlanks = 2, SalvageTableNails = 1;          // dining table
+        public const int SalvageChairPlanks = 1, SalvageChairNails = 0;          // kitchen chair
+        public const int SalvageNightstandPlanks = 1, SalvageNightstandNails = 1; // bedside table
+        public const int SalvageDresserPlanks = 2, SalvageDresserNails = 1;      // chest of drawers
+        public const int SalvageBookshelfPlanks = 2, SalvageBookshelfNails = 1;  // bookcase
+        public const int SalvageArmchairPlanks = 1, SalvageArmchairNails = 1;    // the frame under the stuffing
+        public const int SalvageShelvingPlanks = 0, SalvageShelvingNails = 2;    // steel shelving: bolts only
 
         // ---- Wounds / bleeding / pain / medical (PZ BodyDamage) ----
         // A zombie strike now leaves a lasting wound that bleeds and hurts until treated.

@@ -13,8 +13,10 @@ namespace CloneZ
     /// <see cref="WeatherSystem"/>) but its water is tainted — safe only once boiled at a stove.
     ///
     /// Follows the <see cref="CookingStation"/> / <see cref="FarmPlot"/> pattern: a static
-    /// registry, built entirely from code with its colliders stripped so it never disturbs the
-    /// baked navmesh. The barrel runs its fill simulation off the world clock like a farm plot.
+    /// registry, built entirely from code with the raid map's furniture builders (the tap is the
+    /// kitchen sink unit, the barrel an open poly drum showing its water). Both are solid and their
+    /// meshes are baked into the navmesh. The barrel runs its fill simulation off the world clock
+    /// like a farm plot.
     /// </summary>
     public class WaterSource : MonoBehaviour, IDemolishable
     {
@@ -41,7 +43,7 @@ namespace CloneZ
             nails = barrel ? CloneZConfig.SalvageBarrelNails : CloneZConfig.SalvageTapNails;
         }
         public bool CarvesNavMesh => true;
-        public void Dismantle() { All.Remove(this); Destroy(gameObject); }
+        public void Dismantle() { All.Remove(this); gameObject.SetActive(false); Destroy(gameObject); }   // out of the rebuild that follows
         #endregion
 
         #region Readouts
@@ -113,9 +115,11 @@ namespace CloneZ
         }
 
         #region Building
-        /// <summary>Builds a tap or a rain barrel from code (colliders stripped) and returns it.</summary>
+        /// <summary>Builds a tap or a rain barrel from code and returns it. A tap is the kitchen sink: a
+        /// run of base cabinets with a steel basin and faucet, its back toward -Z, standing on the floor.</summary>
         public static WaterSource Spawn(Transform parent, Vector3 position, WaterSourceKind kind)
         {
+            position.y = BuildPiece.FloorTopAt(position);
             var root = new GameObject(kind == WaterSourceKind.RainBarrel ? "RainBarrel" : "WaterTap");
             root.transform.SetParent(parent);
             root.transform.position = position;
@@ -124,6 +128,7 @@ namespace CloneZ
             src.Kind = kind;
             if (kind == WaterSourceKind.RainBarrel) src.BuildBarrel(position);
             else src.BuildTap(position);
+            DecorPalette.Apply();
 
             src._lastHours = TimeOfDay.Now;
             src.RefreshVisual();
@@ -132,25 +137,36 @@ namespace CloneZ
 
         private void BuildTap(Vector3 position)
         {
-            var enamel = new Color(0.72f, 0.74f, 0.78f);
-            var pipe = new Color(0.55f, 0.58f, 0.62f);
-            // A little sink: basin, splashback and a spout. Visual only.
-            Strip(CloneZUtil.Box("Basin", position + new Vector3(0f, 0.55f, 0f), new Vector3(0.8f, 0.5f, 0.6f), enamel, transform));
-            Strip(CloneZUtil.Box("Splashback", position + new Vector3(0f, 0.95f, -0.24f), new Vector3(0.8f, 0.4f, 0.12f), enamel, transform));
-            Strip(CloneZUtil.Box("Spout", position + new Vector3(0f, 0.98f, -0.02f), new Vector3(0.08f, 0.08f, 0.36f), pipe, transform));
+            var m = new RaidMesh();
+            m.SetFrame(position, 0f);
+            FurnitureBuilder.KitchenCounter(m, new System.Random(1993), 1.2f, new Color(0.78f, 0.76f, 0.66f), new Color(0.58f, 0.44f, 0.28f), true);
+            m.ResetFrame();
+            m.ApplyTo(gameObject, position);
+            Solid(new Vector3(0f, 0.5f, 0f), new Vector3(1.22f, 1.0f, 0.63f));
         }
 
+        // A blue poly rain barrel, open at the top so the collected water shows inside it.
         private void BuildBarrel(Vector3 position)
         {
             Water = CloneZConfig.WaterBarrelStart;
 
-            var drum = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            drum.name = "Drum";
-            drum.transform.SetParent(transform, false);
-            drum.transform.position = position + new Vector3(0f, 0.6f, 0f);
-            drum.transform.localScale = new Vector3(0.72f, 0.6f, 0.72f);
-            drum.GetComponent<Renderer>().sharedMaterial = CloneZUtil.Mat(new Color(0.26f, 0.33f, 0.31f));
-            Strip(drum);
+            const float r = 0.34f, h = 0.96f, wall = 0.025f;
+            Color plastic = new Color(0.17f, 0.33f, 0.46f);
+            var m = new RaidMesh();
+            m.SetFrame(position, 0f);
+            m.Cylinder(Vector3.zero, r, h, 16, DecorPalette.Gloss(plastic), Quaternion.identity, 1f, false);
+            m.Cylinder(Vector3.zero, r, 0.02f, 16, DecorPalette.Gloss(plastic * 0.8f));
+            foreach (float y in new[] { 0.22f, 0.5f, 0.78f })
+                m.Cylinder(new Vector3(0f, y, 0f), r + 0.008f, 0.04f, 16, DecorPalette.Gloss(plastic * 0.86f), Quaternion.identity, 1f, false);
+            InnerWall(m, r - wall, h, 16, DecorPalette.Matte(plastic * 0.45f));
+            Rim(m, r - wall, r + 0.012f, h, 16, DecorPalette.Gloss(plastic * 0.9f));
+            m.Cylinder(new Vector3(0f, 0.02f, 0f), r - wall, 0.004f, 16, DecorPalette.Matte(plastic * 0.35f));
+            // A brass spigot low on the side.
+            m.CylinderX(new Vector3(0f, 0.16f, r + 0.03f), 0.022f, 0.08f, 8, DecorPalette.Metal(FurnitureBuilder.Brass), 90f);
+            m.Box(new Vector3(0f, 0.2f, r + 0.07f), new Vector3(0.03f, 0.05f, 0.03f), DecorPalette.Metal(FurnitureBuilder.Brass));
+            m.ResetFrame();
+            m.ApplyTo(gameObject, position);
+            Solid(new Vector3(0f, h * 0.5f, 0f), new Vector3(r * 2f, h, r * 2f));
 
             var water = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             water.name = "Water";
@@ -158,6 +174,40 @@ namespace CloneZ
             water.GetComponent<Renderer>().sharedMaterial = CloneZUtil.Mat(BarrelWater, smoothness: 0.7f);
             Strip(water);
             _waterFill = water.transform;
+        }
+
+        // The inside of the barrel's wall, facing inward (seen past the open top).
+        private static void InnerWall(RaidMesh m, float radius, float height, int sides, in Surf s)
+        {
+            for (int i = 0; i < sides; i++)
+            {
+                float a0 = i * Mathf.PI * 2f / sides, a1 = (i + 1) * Mathf.PI * 2f / sides;
+                var p0 = new Vector3(Mathf.Sin(a0), 0f, Mathf.Cos(a0)) * radius;
+                var p1 = new Vector3(Mathf.Sin(a1), 0f, Mathf.Cos(a1)) * radius;
+                m.Quad((p0 + p1) * 0.5f + Vector3.up * (height * 0.5f), (p1 - p0) * 0.5f, Vector3.up * (height * 0.5f), s);
+            }
+        }
+
+        // The flat ring of the barrel's lip between the inner and outer wall.
+        private static void Rim(RaidMesh m, float inner, float outer, float y, int sides, in Surf s)
+        {
+            for (int i = 0; i < sides; i++)
+            {
+                float a0 = i * Mathf.PI * 2f / sides, a1 = (i + 1) * Mathf.PI * 2f / sides;
+                var d0 = new Vector3(Mathf.Sin(a0), 0f, Mathf.Cos(a0));
+                var d1 = new Vector3(Mathf.Sin(a1), 0f, Mathf.Cos(a1));
+                Vector3 top = Vector3.up * y;
+                m.Tri(top + d0 * inner, top + d0 * outer, top + d1 * outer, s);
+                m.Tri(top + d0 * inner, top + d1 * outer, top + d1 * inner, s);
+            }
+        }
+
+        // Kitchen units and barrels are solid, like the furniture round them.
+        private void Solid(Vector3 center, Vector3 size)
+        {
+            var col = gameObject.AddComponent<BoxCollider>();
+            col.center = center;
+            col.size = size;
         }
 
         private static void Strip(GameObject go)
@@ -185,7 +235,7 @@ namespace CloneZ
             }
         }
 
-        // Raises/lowers the water disc inside the drum to match the level.
+        // Raises/lowers the water inside the open barrel to match the level (its surface shows from above).
         private void RefreshVisual()
         {
             if (_waterFill == null) return;
@@ -193,9 +243,9 @@ namespace CloneZ
             _waterFill.gameObject.SetActive(level > 0.02f);
             if (level <= 0.02f) return;
 
-            float h = Mathf.Lerp(0.04f, 0.55f, level);           // visible depth of water in the drum
-            _waterFill.localScale = new Vector3(0.64f, h * 0.5f, 0.64f);
-            _waterFill.position = transform.position + new Vector3(0f, 0.32f + h * 0.5f, 0f);
+            float h = Mathf.Lerp(0.04f, 0.88f, level);           // depth of water standing in the barrel
+            _waterFill.localScale = new Vector3(0.62f, h * 0.5f, 0.62f);
+            _waterFill.position = transform.position + new Vector3(0f, 0.025f + h * 0.5f, 0f);
         }
         #endregion
     }

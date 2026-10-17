@@ -68,6 +68,11 @@ namespace CloneZ
         public static Surf Paper(int kind) => Fitted(DecorTextures.Paper(kind), 0.05f);
         public static Surf Stock(int kind) => Fitted(DecorTextures.Stock(kind), 0.2f);
 
+        // Summer ground for the wave-survival starter home's yard and street.
+        public static Surf Grass => Planar(DecorTextures.Grass(), 3f, 0.04f);
+        public static Surf Mulch(Color c) => Planar(DecorTextures.Mulch(c), 1.5f, 0.02f);
+        public static Surf DryAsphalt => Planar(DecorTextures.DryAsphalt(), 6f, 0.2f);
+
         public static Surf Sign(string text, Color bg, Color fg, out float aspect)
             => Fitted(DecorTextures.Sign(text, bg, fg, out aspect), 0.3f);
     }

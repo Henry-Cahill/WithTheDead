@@ -101,6 +101,7 @@ namespace CloneZ
             Time.timeScale = 1f;
             Climate.Winter = true;
             Shelter.Clear();
+            StarterHome.SetActive(false);   // pieces built during a raid stay rough planking
             GameSession.RaidSeed = Random.Range(1, int.MaxValue);
 
             var gm = new GameObject("GameManager").AddComponent<GameManager>();
@@ -141,6 +142,7 @@ namespace CloneZ
             Time.timeScale = 1f;
             Climate.Winter = false;
             Shelter.Clear();
+            StarterHome.SetActive(true);    // before any house piece is raised or restored
             CloneZConfig.ArenaHalfSize = CloneZConfig.WaveArenaHalfSize;
 
             var gm = new GameObject("GameManager").AddComponent<GameManager>();
@@ -162,19 +164,29 @@ namespace CloneZ
                 // A save written before furniture became demolishable has no stored props — rebuild
                 // the default bed, stove and cover so the base isn't left empty.
                 if (!save.HasWorldProps) BuildDefaultProps(world);
+                // A save from before the home was furnished: move its fittings to their places in the
+                // finished home and furnish it around whatever the run kept.
+                if (!save.HasFurniture)
+                {
+                    StarterHome.MigrateOldLayout();
+                    StarterHome.Furnish(world);
+                }
             }
             else
             {
                 BuildDefaultProps(world);
                 BuildFarm(world);
                 BuildWaterSources(world);
+                StarterHome.Furnish(world);
                 // World loot containers are no longer scattered across the arena — the only
                 // container in a fresh run is the starter house's own supply crate.
             }
             BakeNavMesh(world);
 
-            // The street is flat cosmetic geometry, laid down after the bake so it never affects pathing.
-            BuildStreet(world);
+            // The street and the yard are cosmetic geometry, kept out of the navmesh (this bake and any
+            // later rebuild), so they never affect pathing.
+            StarterHome.BuildStreet(world);
+            StarterHome.DressGrounds(world);
 
             PlayerStats player = BuildPlayer(PickPlayerSpawn(), 0f);
             gm.Player = player;
@@ -271,79 +283,25 @@ namespace CloneZ
             env.AddComponent<WaterMains>();      // schedules the water shut-off a few days in
         }
 
-        // The default base furniture for a fresh run (or a save too old to have persisted it).
+        // The default base for a fresh run (or a save too old to have persisted its props): the starter
+        // home first, so the bed and stove stand on its floor.
         private void BuildDefaultProps(Transform world)
         {
+            StarterHome.Raise(world);
             BuildBed(world);
             BuildStove(world);
-            BuildStarterHouse(world);
         }
 
-        // A bed in the living room where the player can safely sleep off the night.
+        // A bed in the bedroom corner where the player can safely sleep off the night.
         private void BuildBed(Transform world)
         {
-            SleepSpot.Spawn(world, new Vector3(5f, 0f, 5f));
+            SleepSpot.Spawn(world, StarterHome.BedSpot);
         }
 
-        // A stove in the kitchen, set back along the west side so it isn't crammed against the sink.
+        // A stove at the end of the kitchen run along the front wall, beside the sink.
         private void BuildStove(Transform world)
         {
-            CookingStation.Spawn(world, new Vector3(2f, 0f, 5.5f));
-        }
-
-        // A starter house on the north side of the street: an open-topped (roofless, so the iso
-        // camera sees straight in) two-room shelter raised from the very same grid pieces the survivor
-        // can build by hand (see PlayerBuilder). The living room holds the bed and stove; an interior
-        // doorway leads to a back store room with a supply crate, and windows ring the walls. Built
-        // before the navmesh bake so its walls carve it (zombies have to batter them down), and
-        // captured by the save system like any built structure, so it persists and can be demolished.
-        private void BuildStarterHouse(Transform world)
-        {
-            // If a save has already restored this house (or the player's edits to it), its pieces
-            // are present by now — don't raise a duplicate on top of them.
-            if (BuildPiece.All.Count > 0) return;
-
-            // A 3-wide by 3-deep floor on the 2 m grid (x[1,7] x z[3,9]), left open to the sky.
-            float[] cols = { 2f, 4f, 6f };        // tile-centre X
-            float[] rows = { 4f, 6f, 8f };        // tile-centre Z
-
-            foreach (float x in cols)
-                foreach (float z in rows)
-                    PlaceHousePiece(world, BuildPieceType.Floor, x, z, 0f);
-
-            // South wall (z = 3) faces the street: a centred doorway flanked by windows.
-            PlaceHousePiece(world, BuildPieceType.Window, 2f, 3f, 0f);
-            PlaceHousePiece(world, BuildPieceType.Doorway, 4f, 3f, 0f);
-            PlaceHousePiece(world, BuildPieceType.Window, 6f, 3f, 0f);
-
-            // North wall (z = 9), with a window in the middle.
-            PlaceHousePiece(world, BuildPieceType.Wall, 2f, 9f, 0f);
-            PlaceHousePiece(world, BuildPieceType.Window, 4f, 9f, 0f);
-            PlaceHousePiece(world, BuildPieceType.Wall, 6f, 9f, 0f);
-
-            // West wall (x = 1) and east wall (x = 7) run north–south (yaw 90), each with a window.
-            PlaceHousePiece(world, BuildPieceType.Wall, 1f, 4f, 90f);
-            PlaceHousePiece(world, BuildPieceType.Window, 1f, 6f, 90f);
-            PlaceHousePiece(world, BuildPieceType.Wall, 1f, 8f, 90f);
-            PlaceHousePiece(world, BuildPieceType.Wall, 7f, 4f, 90f);
-            PlaceHousePiece(world, BuildPieceType.Window, 7f, 6f, 90f);
-            PlaceHousePiece(world, BuildPieceType.Wall, 7f, 8f, 90f);
-
-            // Interior partition (z = 7) splits the living room (south) from the store room (north),
-            // joined by an interior doorway.
-            PlaceHousePiece(world, BuildPieceType.Wall, 2f, 7f, 0f);
-            PlaceHousePiece(world, BuildPieceType.Doorway, 4f, 7f, 0f);
-            PlaceHousePiece(world, BuildPieceType.Wall, 6f, 7f, 0f);
-
-            // A storage crate in the back room to get the survivor started.
-            LootContainer.Spawn(world, ContainerType.Crate, new Vector3(5f, 0f, 8f), 7777);
-        }
-
-        // Raises one house piece at the (x, z) ground tile, lifted to its layer's occupancy centre.
-        private static void PlaceHousePiece(Transform world, BuildPieceType type, float x, float z, float yaw)
-        {
-            Vector3 center = BuildPiece.CenterFor(type, new Vector3(x, 0f, z));
-            BuildPiece.Spawn(world, type, center, yaw, 1f);
+            CookingStation.Spawn(world, StarterHome.StoveSpot);
         }
 
         // A small garden just west of the spawn. One plot is already sown with potatoes so the
@@ -356,15 +314,14 @@ namespace CloneZ
             FarmPlot.Spawn(world, new Vector3(-3f, 0f, 6f));
         }
 
-        // The kitchen sink (a plumbed tap) sits inside the house beside the stove, under the
-        // south-west window; the rain barrel stays outside by the west wall to catch the rain. The
-        // tap runs clean until the mains are shut off a few days in; after that the barrel's collected
-        // rain — tainted, so boil it — is the renewable water supply. Both are visual-only (colliders
-        // stripped), so the navmesh is untouched.
+        // The kitchen sink (a plumbed tap) sits inside the house under the front window, beside the
+        // stove; the rain barrel stays outside by the west wall to catch the rain. The tap runs clean
+        // until the mains are shut off a few days in; after that the barrel's collected rain — tainted,
+        // so boil it — is the renewable water supply.
         private void BuildWaterSources(Transform world)
         {
-            WaterSource.Spawn(world, new Vector3(2f, 0f, 3.6f), WaterSourceKind.Tap);
-            WaterSource.Spawn(world, new Vector3(0.5f, 0f, 6f), WaterSourceKind.RainBarrel);
+            WaterSource.Spawn(world, StarterHome.SinkSpot, WaterSourceKind.Tap);
+            WaterSource.Spawn(world, StarterHome.BarrelSpot, WaterSourceKind.RainBarrel);
         }
 
 
@@ -386,36 +343,6 @@ namespace CloneZ
             CloneZUtil.Box("Wall_W", new Vector3(-half, 1.5f, 0f), new Vector3(1f, 3f, half * 2f), wallColor, world);
 
             return world;
-        }
-
-        // A road running east–west across the middle of the map, past the front of the house. Purely
-        // cosmetic: flat decals (asphalt, kerb lines and a dashed centre line) laid over the ground with
-        // their colliders stripped, so they never affect movement or the navmesh.
-        private void BuildStreet(Transform world)
-        {
-            float len = CloneZConfig.ArenaHalfSize * 2f;   // span the arena, inside the perimeter walls
-            const float lineY = 0.05f;
-
-            FlatDecal("Street", new Vector3(0f, 0.02f, 0f), new Vector3(len, 0.04f, 6f), new Color(0.13f, 0.13f, 0.14f), world);
-
-            // White kerb lines just inside each edge.
-            var white = new Color(0.82f, 0.82f, 0.80f);
-            FlatDecal("StreetEdgeN", new Vector3(0f, lineY, 2.9f), new Vector3(len, 0.03f, 0.16f), white, world);
-            FlatDecal("StreetEdgeS", new Vector3(0f, lineY, -2.9f), new Vector3(len, 0.03f, 0.16f), white, world);
-
-            // Dashed yellow centre line.
-            var yellow = new Color(0.85f, 0.72f, 0.20f);
-            for (float x = -len * 0.5f + 1.5f; x < len * 0.5f; x += 3f)
-                FlatDecal("StreetDash", new Vector3(x, lineY, 0f), new Vector3(1.5f, 0.03f, 0.18f), yellow, world);
-        }
-
-        // A flat, collider-less decal box laid on the ground (used for road markings).
-        private GameObject FlatDecal(string name, Vector3 pos, Vector3 size, Color color, Transform parent)
-        {
-            var go = CloneZUtil.Box(name, pos, size, color, parent);
-            var col = go.GetComponent<Collider>();
-            if (col != null) Destroy(col);
-            return go;
         }
 
         private void BakeNavMesh(Transform world)
