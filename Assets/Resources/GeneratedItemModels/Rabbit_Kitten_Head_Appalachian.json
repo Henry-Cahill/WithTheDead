@@ -1,0 +1,11 @@
+{"version": 1, "id": "Rabbit_Kitten_Head_Appalachian", "baseHeight": 0.155, "name": "Rabbit Kitten Head Appalachian", "model": "gpt-oss:120b", "notes": "Rabbit kitten head about 0.13 m wide × 0.12 m tall lying on the floor: main plush body sphere, two upright ears with inner fur, small nose and dark eyes.", "score": 6, "parts": [
+  {"name":"Body","shape":"sphere","pos":[-0.0095,-0.035,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.12,0.13],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EarL","shape":"cylinder","pos":[-0.0545,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.07,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EarR","shape":"cylinder","pos":[0.0355,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.07,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"InnerEarL","shape":"cylinder","pos":[-0.0545,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.05,0.02],"color":[0.8,0.75,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"InnerEarR","shape":"cylinder","pos":[0.0355,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.05,0.02],"color":[0.8,0.75,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"Nose","shape":"sphere","pos":[0.0655,-0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.015,0.018],"color":[0.9,0.6,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.0355,-0.02,0.025],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.05,0.05,0.05],"smooth":0.02,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.0355,-0.02,-0.025],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.05,0.05,0.05],"smooth":0.02,"metal":0.0},
+  {"name":"MouthLine","shape":"cylinder","pos":[0.0505,-0.065,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.004,0.015],"color":[0.5,0.45,0.4],"smooth":0.05,"metal":0.0}
+]}

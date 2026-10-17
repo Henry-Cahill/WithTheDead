@@ -1,0 +1,10 @@
+{"version": 1, "id": "Bandage_Groin_Blood", "baseHeight": 0.0728, "name": "Bandage Groin Blood", "model": "gpt-oss:120b", "notes": "Folded gauze bandage ~0.22 m long × 0.12 m wide × 0.015 m thick, beige‑tan tint (0.6,0.58,0.5). Main pad with two cloth tie ends on one side and a small white label patch.", "score": 6, "parts": [
+  {"name":"MainPad","shape":"cube","pos":[0.0,-0.0053,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieLeft","shape":"cylinder","pos":[-0.04,0.0022,0.06],"rot":[90.0,0.0,0.0],"size":[0.01,0.05,0.01],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieRight","shape":"cylinder","pos":[0.04,0.0022,0.06],"rot":[90.0,0.0,0.0],"size":[0.01,0.05,0.01],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[0.0,-0.0008,-0.045],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.03],"color":[0.9,0.9,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeRollFront","shape":"cylinder","pos":[0.0,0.0027,0.06],"rot":[90.0,0.0,0.0],"size":[0.02,0.22,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRollBack","shape":"cylinder","pos":[0.0,0.0027,-0.06],"rot":[90.0,0.0,0.0],"size":[0.02,0.22,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRollLeft","shape":"cylinder","pos":[-0.11,0.0027,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRollRight","shape":"cylinder","pos":[0.11,0.0027,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

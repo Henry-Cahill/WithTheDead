@@ -1,0 +1,14 @@
+{"version": 1, "id": "Boilersuit_SWAT", "baseHeight": 0.0775, "name": "Boilersuit SWAT", "model": "gpt-oss:120b", "notes": "SWAT boilersuit laid flat: central torso panel (≈0.60 m × 0.80 m), two sleeves out to the sides, two pant legs below, front chest pockets, a waist belt band and small knee‑pad blocks on each leg. Overall thickness ≈0.03 m.", "score": 7, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.0025,0.195],"rot":[0.0,0.0,0.0],"size":[0.6,0.03,0.8],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.425,-0.0025,0.195],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.425,-0.0025,0.195],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PantLegL","shape":"cube","pos":[-0.15,-0.0025,-0.355],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.5],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PantLegR","shape":"cube","pos":[0.15,-0.0025,-0.355],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.5],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltBand","shape":"cube","pos":[0.0,0.005,0.195],"rot":[0.0,0.0,0.0],"size":[0.6,0.015,0.02],"color":[0.45,0.42,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.15,0.0075,0.605],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.04],"color":[0.45,0.42,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.15,0.0075,0.605],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.04],"color":[0.45,0.42,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"KneePadL","shape":"cube","pos":[-0.15,0.0075,-0.605],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.04],"color":[0.4,0.38,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"KneePadR","shape":"cube","pos":[0.15,0.0075,-0.605],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.04],"color":[0.4,0.38,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"ShoulderStrapL","shape":"cube","pos":[-0.3,0.0075,0.295],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.04],"color":[0.45,0.42,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"ShoulderStrapR","shape":"cube","pos":[0.3,0.0075,0.295],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.04],"color":[0.45,0.42,0.52],"smooth":0.05,"metal":0.0}
+]}

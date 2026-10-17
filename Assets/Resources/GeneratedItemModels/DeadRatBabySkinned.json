@@ -1,0 +1,8 @@
+{"version": 1, "id": "DeadRatBabySkinned", "baseHeight": 0.08, "name": "Dead Rat Baby Skinned", "model": "gpt-oss:120b", "notes": "Loose skinned baby rat meat, about 8 cm long × 4 cm wide × 3 cm thick, lying on the floor. Main flesh ellipsoid with a tiny bone fragment inside and two small blood droplets for visual cue.", "score": 6, "parts": [
+  {"name":"Meat","shape":"sphere","pos":[0.0,-0.0,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.03],"color":[0.55,0.45,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Bone","shape":"cylinder","pos":[-0.015,0.003,-0.0005],"rot":[0.0,90.0,0.0],"size":[0.008,0.03,0.008],"color":[0.9,0.85,0.8],"smooth":0.1,"metal":0.0},
+  {"name":"BloodDrop1","shape":"sphere","pos":[0.02,-0.011,0.0145],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.8,0.15,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"BloodDrop2","shape":"sphere","pos":[-0.018,-0.012,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.009,0.009,0.009],"color":[0.8,0.15,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"FleshGloss","shape":"cube","pos":[0.0,-0.0,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.04],"color":[0.6,0.5,0.3],"smooth":0.4,"metal":0.0},
+  {"name":"FatLayer","shape":"cube","pos":[0.0,0.013,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.04],"color":[0.7,0.6,0.45],"smooth":0.15,"metal":0.0}
+]}

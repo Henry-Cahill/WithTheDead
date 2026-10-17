@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace CloneZ
 {
-    /// <summary>Whole-body poses: the gait cycle, crouching, posture, crawling, lying and death.
+    /// <summary>Whole-body poses: the gait cycle, crouching, posture, crawling, sitting, lying and death.
     /// Angles are degrees about each bone's bind axes: +X pitch swings a hanging limb backward
     /// (so a leg or arm swings forward with a negative pitch, and a knee bends with a positive one),
     /// and +Z rolls a hanging limb toward +X.</summary>
@@ -181,7 +181,7 @@ namespace CloneZ
         private static readonly float[] Swing2Yaw = { 0f, 40f, -15f, -48f, 0f };
         private static readonly float[] Swing2Pitch = { 0f, -2f, 6f, 4f, 0f };
 
-        // ── Crawling, lying and death ────────────────────────────────────────────────────────────────
+        // ── Crawling, sitting, lying and death ───────────────────────────────────────────────────────
 
         /// <summary>Dragging along on the belly, legs trailing. The root lies face-down, so "forward" for
         /// the arms is up past the head; the hands themselves are planted with IK in CrawlArms.</summary>
@@ -215,7 +215,9 @@ namespace CloneZ
             }
         }
 
-        /// <summary>Asleep on the back: legs out, arms at the sides, head turned on the pillow.</summary>
+        /// <summary>On the back in bed. Asleep: legs out, arms at the sides, the head turned on the pillow. Awake and
+        /// resting (<see cref="Lie"/>): the head up off the pillow, one knee raised, the hands laced behind the head
+        /// (placed exactly by <see cref="RestArms"/>).</summary>
         private void PoseLying()
         {
             for (int i = 0; i < BoneCount; i++) _q2[i] = Quaternion.identity;
@@ -228,6 +230,72 @@ namespace CloneZ
             _q2[UArmR] = E(4f, 0f, 12f); _q2[FArmR] = E(-25f, 0f, 0f);
             _q2[ThighL] = E(-3f, 0f, -3f); _q2[ShinL] = E(4f, 0f, 0f); _q2[FootL] = E(30f, -12f, 0f);
             _q2[ThighR] = E(-8f, 0f, 4f); _q2[ShinR] = E(10f, 0f, 0f); _q2[FootR] = E(28f, 14f, 0f);
+
+            float a = Mathf.SmoothStep(0f, 1f, _awakeW);
+            if (a <= 0.001f) return;
+            float glance = 8f * Mathf.Sin(_time * 0.23f + _seed);
+            Toward(Chest, E(breathe * 1.2f, 0f, 0f), a);
+            Toward(Neck, E(20f, 0f, 0f), a);
+            Toward(HeadB, E(12f, glance, 0f), a);
+            Toward(UArmL, E(-30f, 0f, -100f), a); Toward(FArmL, E(-115f, 0f, 0f), a);
+            Toward(UArmR, E(-30f, 0f, 100f), a); Toward(FArmR, E(-115f, 0f, 0f), a);
+            Toward(ThighL, E(-2f, 0f, -4f), a); Toward(ShinL, E(3f, 0f, 0f), a); Toward(FootL, E(32f, -10f, 0f), a);
+            // The right knee drawn up, its foot flat on the mattress beside the other shin.
+            Toward(ThighR, E(-48f, 0f, 6f), a); Toward(ShinR, E(96f, 0f, 0f), a); Toward(FootR, E(40f, 8f, 0f), a);
+        }
+
+        private void Toward(int bone, Quaternion q, float w) => _q2[bone] = Quaternion.Slerp(_q2[bone], q, w);
+
+        /// <summary>
+        /// Sat down (<see cref="Seated"/>): the hip joints over <see cref="SeatPoint"/>, a thigh's thickness above
+        /// the seat; the thighs out along it and the shins down to the floor, the knees placed where a near-upright
+        /// shin sets each foot flat (a low seat brings the knees up, a high one tips the thighs down); the back
+        /// upright on a dining chair or sunk back into an armchair (<see cref="SeatRecline"/>); the arms forward
+        /// to the lap, where <see cref="Arms"/> rests the hands on the thighs.
+        /// </summary>
+        private void PoseSitting()
+        {
+            for (int i = 0; i < BoneCount; i++) _q2[i] = Quaternion.identity;
+
+            // The seat in the body's own space, from wherever the root stands right now — so the hips stay on the seat
+            // while the body is eased over to it, or up off it (see CarryFrom).
+            Vector3 seat = _root.parent != null ? _root.InverseTransformPoint(SeatPoint) : SeatPoint;
+            float hip = seat.y + _bound.Thigh + 0.018f;
+            _hips2 = new Vector3(seat.x, hip - HumanoidProportions.HipY, seat.z);
+
+            float recline = Mathf.Clamp01(SeatRecline);
+            const float thigh = HumanoidProportions.ThighLength, shin = HumanoidProportions.ShinLength;
+            float lean = Mathf.Lerp(6f, 15f, recline);   // the shins angle forward, more when lounging
+            float kneeY = HumanoidProportions.AnkleY + shin * Mathf.Cos(lean * Mathf.Deg2Rad);
+            float thighPitch = -Mathf.Acos(Mathf.Clamp((hip - kneeY) / thigh, -0.85f, 0.97f)) * Mathf.Rad2Deg;
+            for (int side = 0; side < 2; side++)
+            {
+                float sx = side == 0 ? -1f : 1f;
+                int th = side == 0 ? ThighL : ThighR;
+                float shinPitch = -lean + (side == 0 ? 0f : 5f);   // one foot drawn back a little
+                _q2[th] = Quaternion.AngleAxis(sx * (side == 0 ? 5f : 8f), Vector3.up) * E(thighPitch, 0f, sx * 3f);
+                _q2[th + 1] = E(shinPitch - thighPitch, 0f, 0f);
+                _q2[th + 2] = E(-shinPitch, sx * 5f, 0f);       // sole flat on the floor
+            }
+
+            float breathe = Mathf.Sin(_time * 2f * Mathf.PI / 4.2f + _seed);
+            float spine = Mathf.Lerp(3f, -8f, recline) + breathe * 0.4f;
+            float chest = Mathf.Lerp(1f, -5f, recline) + breathe * 1.1f;
+            float level = -(spine + chest);
+            float glance = 7f * Mathf.Sin(_time * 0.27f + _seed);
+            _q2[Spine] = E(spine, 0f, 0f);
+            _q2[Chest] = E(chest, 0f, 0f);
+            _q2[Neck] = E(level * 0.4f + recline * 6f, 0f, 0f);   // a lounger's chin drops a little
+            _q2[HeadB] = E(level * 0.45f, glance, 0f);
+
+            for (int side = 0; side < 2; side++)
+            {
+                float sx = side == 0 ? -1f : 1f;
+                int ua = side == 0 ? UArmL : UArmR;
+                _q2[ua] = E(-25f, 0f, sx * 9f);
+                _q2[ua + 1] = E(-60f, 0f, 0f);
+                _q2[ua + 2] = E(8f, 0f, sx * -6f);
+            }
         }
 
         /// <summary>Sprawled where the body fell. Arms are flung out sideways (which keeps them on the

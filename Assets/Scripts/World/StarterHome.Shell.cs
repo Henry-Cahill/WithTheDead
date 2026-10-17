@@ -104,7 +104,7 @@ namespace CloneZ
 
             if (piece.Type == BuildPieceType.Window)
             {
-                DrawWindow(m, f, rooms, rng, Is(piece, BuildPieceType.Window, 2f, 3f));
+                DrawWindow(piece, m, f, rooms, rng, Is(piece, BuildPieceType.Window, 2f, 3f));
                 // The finished window has solid jambs either side of its glazing.
                 float h = WindowHead - WindowSill, y = (WindowSill + WindowHead) * 0.5f - WallH * 0.5f;
                 var jamb = new Vector3(WindowJamb, h, CloneZConfig.HouseWallThickness);
@@ -113,7 +113,7 @@ namespace CloneZ
             }
             else if (piece.Type == BuildPieceType.Doorway)
             {
-                DrawDoorway(m, f, rooms, rng);
+                DrawDoorway(piece, m, f, rooms, rng);
             }
             SlotFixtures(piece, m, f, rng);
 
@@ -201,10 +201,11 @@ namespace CloneZ
         #endregion
 
         #region Windows
-        // Linings, casings and sills round a glazed double-hung sash; curtains on a room side, shutters
-        // (and, facing the street, a flower box) outside. The kitchen window gets a short valance instead
+        // Linings, casings and sills round the opening; shutters (and, facing the street, a flower box)
+        // outside. The sashes, glass, curtains and blind are the window's working fittings, built by
+        // WindowFittings (StarterHome.Windows.cs) — the kitchen window gets a valance and blind instead
         // of curtains, clear of the worktop under it.
-        private static void DrawWindow(RaidMesh m, in Frame f, HomeRoom[] rooms, System.Random rng, bool valance)
+        private static void DrawWindow(BuildPiece piece, RaidMesh m, in Frame f, HomeRoom[] rooms, System.Random rng, bool kitchen)
         {
             float o0 = f.Mid - WindowWidth * 0.5f, o1 = f.Mid + WindowWidth * 0.5f;
             float w = WindowWidth, hh = WindowHead - WindowSill, cy = (WindowSill + WindowHead) * 0.5f;
@@ -224,60 +225,12 @@ namespace CloneZ
                 m.Box(f.P(o1 + 0.035f, cy, off), f.Size(0.07f, hh + 0.14f, 0.024f), casing);
                 m.Box(f.P(f.Mid, WindowHead + 0.035f, off), f.Size(w + 0.14f, 0.07f, 0.024f), casing);
                 m.Box(f.P(f.Mid, WindowSill + 0.02f, side * (Half + 0.035f)), f.Size(w + 0.18f, 0.04f, 0.07f), casing);
-                if (room != null)
-                {
-                    if (valance) Valance(m, f, side, room.Curtain);
-                    else Curtains(m, f, side, room.Curtain);
-                    continue;
-                }
+                if (room != null) continue;
                 Shutters(m, f, side);
                 if (f.AlongX && side < 0) FlowerBox(m, f, side, rng);   // the street front
             }
 
-            Surf frame = DecorPalette.Matte(TrimWhite);
-            m.Box(f.P(f.Mid, WindowSill + 0.05f, 0f), f.Size(w - 0.05f, 0.05f, 0.05f), frame);
-            m.Box(f.P(f.Mid, WindowHead - 0.05f, 0f), f.Size(w - 0.05f, 0.05f, 0.05f), frame);
-            m.Box(f.P(o0 + 0.045f, cy, 0f), f.Size(0.04f, hh - 0.08f, 0.05f), frame);
-            m.Box(f.P(o1 - 0.045f, cy, 0f), f.Size(0.04f, hh - 0.08f, 0.05f), frame);
-            m.Box(f.P(f.Mid, cy, 0f), f.Size(0.035f, hh - 0.08f, 0.04f), frame);
-            m.Box(f.P(f.Mid, cy + 0.06f, 0f), f.Size(w - 0.06f, 0.045f, 0.06f), frame);
-            m.Box(f.P(f.Mid, cy, 0f), f.Size(w - 0.08f, hh - 0.1f, 0.008f), DecorPalette.Glass(new Color(0.13f, 0.17f, 0.19f)));
-        }
-
-        // A rod above the casing and two gathered panels drawn back to the sides, falling to the sill.
-        private static void Curtains(RaidMesh m, in Frame f, int side, Color fabric)
-        {
-            float rodY = WindowHead + 0.13f, rodOff = side * (Half + 0.075f);
-            Surf brass = DecorPalette.Metal(FurnitureBuilder.Brass);
-            m.Box(f.P(f.Mid, rodY, rodOff), f.Size(WindowWidth + 0.5f, 0.024f, 0.024f), brass);
-            for (int e = -1; e <= 1; e += 2)
-                m.Ellipsoid(f.P(f.Mid + e * (WindowWidth * 0.5f + 0.26f), rodY, rodOff), new Vector3(0.045f, 0.045f, 0.045f), brass, 6, 4);
-
-            float top = rodY - 0.015f, bottom = WindowSill + 0.06f, h = top - bottom;
-            for (int e = -1; e <= 1; e += 2)
-            {
-                float c = f.Mid + e * (WindowWidth * 0.5f + 0.08f);
-                for (int k = 0; k < 3; k++)
-                {
-                    float fc = c + (k - 1) * 0.085f;
-                    float depth = side * (Half + 0.055f + (k % 2) * 0.022f);
-                    m.Box(f.P(fc, bottom + h * 0.5f, depth), f.Size(0.1f, h, 0.028f), DecorPalette.Matte(fabric * (k % 2 == 0 ? 1f : 0.84f)));
-                }
-                // A tie-back gathering each panel a little below the middle.
-                m.Box(f.P(c, bottom + h * 0.4f, side * (Half + 0.09f)), f.Size(0.3f, 0.04f, 0.012f), DecorPalette.Matte(fabric * 0.7f));
-            }
-        }
-
-        // A short gathered valance across the top of the window.
-        private static void Valance(RaidMesh m, in Frame f, int side, Color fabric)
-        {
-            float y = WindowHead - 0.05f;
-            for (int k = 0; k < 9; k++)
-            {
-                float along = f.Mid - WindowWidth * 0.5f - 0.1f + (k + 0.5f) * (WindowWidth + 0.2f) / 9f;
-                float depth = side * (Half + 0.05f + (k % 2) * 0.02f);
-                m.Box(f.P(along, y, depth), f.Size((WindowWidth + 0.2f) / 9f + 0.01f, 0.3f, 0.025f), DecorPalette.Matte(fabric * (k % 2 == 0 ? 1f : 0.84f)));
-            }
+            WindowFittings(piece, m, f, rooms, rng, kitchen);
         }
 
         // A louvred shutter either side of the window, outside.
@@ -315,9 +268,9 @@ namespace CloneZ
         #endregion
 
         #region Doorways
-        // Linings, casings both sides, a hardwood threshold over the floor's edge and a panelled door hung
-        // open into the room (the store room, for the partition), hinged on the jamb at the piece's low end.
-        private static void DrawDoorway(RaidMesh m, in Frame f, HomeRoom[] rooms, System.Random rng)
+        // Linings, casings both sides and a hardwood threshold over the floor's edge. The doors themselves
+        // (they open, close and — the front door — lock) are built by DoorFittings (StarterHome.Doors.cs).
+        private static void DrawDoorway(BuildPiece piece, RaidMesh m, in Frame f, HomeRoom[] rooms, System.Random rng)
         {
             float gap = DoorGap, o0 = f.Mid - gap * 0.5f, o1 = f.Mid + gap * 0.5f;
             float thick = Half * 2f + 0.01f;
@@ -336,104 +289,33 @@ namespace CloneZ
             }
             m.Box(f.P(f.Mid, (FloorTop + 0.012f) * 0.5f, 0f), f.Size(gap, FloorTop + 0.012f, Half * 2f + 0.05f), DecorPalette.Matte(new Color(0.42f, 0.30f, 0.18f)));
 
-            bool outside = rooms[0] == null || rooms[1] == null;
-            int swing = rooms[1] != null ? 1 : -1;
-            float lean = 6f * Mathf.Deg2Rad;
-            Vector3 dir = f.N(swing) * Mathf.Cos(lean) - f.Along * Mathf.Sin(lean);
-            Vector3 hinge = f.P(o0 - 0.02f, FloorTop + 0.004f, swing * (Half + 0.03f));
-            float leafW = Mathf.Min(1.0f, gap - 0.12f), leafH = DoorTop - FloorTop - 0.03f;
-            m.SetFrame(hinge, Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg - 90f);
-            FurnitureBuilder.DoorLeaf(m, rng, leafW, leafH, outside ? FrontDoorRed : FurnitureBuilder.Oak, false);
-            m.ResetFrame();
+            DoorFittings(piece, m, f, rooms, rng);
         }
         #endregion
 
         #region Fittings
-        // The things hung on particular walls of the home: kitchen cupboards, pictures, a clock, the lamps,
-        // the porch lantern and the house number.
+        // The things hung on particular walls of the home, by area: the kitchen's wall cupboards
+        // (StarterHome.Kitchen.cs); the lights, switches, porch lantern, breaker panel, clock, pictures and house
+        // number (StarterHome.Lighting.cs); the bathroom's mirror cabinet and towel rail (StarterHome.Bathroom.cs).
         private static void SlotFixtures(BuildPiece piece, RaidMesh m, in Frame f, System.Random rng)
         {
-            if (Is(piece, BuildPieceType.Wall, 1f, 4f))
-            {
-                UpperCabinets(m, f, 1, 4.37f, rng);
-            }
-            else if (Is(piece, BuildPieceType.Wall, 2f, 7f))
-            {
-                FurnitureBuilder.FramedPoster(m, rng, Face(f, -1, 1.6f, 1.55f), f.N(-1), 0.42f, 0.56f, 2);
-                Sconce(piece, m, f, -1, 2.48f, 1.95f);
-            }
-            else if (Is(piece, BuildPieceType.Wall, 6f, 7f))
-            {
-                FurnitureBuilder.WallClock(m, rng, Face(f, -1, 5.85f, 2.26f), f.N(-1));
-            }
-            else if (Is(piece, BuildPieceType.Wall, 7f, 4f))
-            {
-                FurnitureBuilder.FramedPoster(m, rng, Face(f, -1, 4.55f, 1.62f), f.N(-1), 0.36f, 0.48f, 2);
-            }
-            else if (Is(piece, BuildPieceType.Wall, 6f, 9f))
-            {
-                Sconce(piece, m, f, -1, 5.55f, 1.95f);
-            }
-            else if (Is(piece, BuildPieceType.Doorway, 4f, 3f))
-            {
-                PorchLantern(piece, m, f, -1, 4.86f, 1.85f);
-                HouseNumber(m, f, -1, 3.14f, 1.62f);
-            }
+            KitchenWallFixtures(piece, m, f, rng);
+            LightingWallFixtures(piece, m, f, rng);
+            BathroomWallFixtures(piece, m, f, rng);
         }
 
+        // The per-area fittings. Each receives the piece (a fixture's root goes under it, so it hides with the
+        // wall when the camera cuts it away and goes when the wall comes down), the wall's static mesh (anything
+        // that never moves can simply be drawn into it), the wall's frame and its stable per-slot random stream.
+        static partial void DoorFittings(BuildPiece piece, RaidMesh m, Frame f, HomeRoom[] rooms, System.Random rng);
+        static partial void WindowFittings(BuildPiece piece, RaidMesh m, Frame f, HomeRoom[] rooms, System.Random rng, bool kitchen);
+        static partial void KitchenWallFixtures(BuildPiece piece, RaidMesh m, Frame f, System.Random rng);
+        static partial void LightingWallFixtures(BuildPiece piece, RaidMesh m, Frame f, System.Random rng);
+        static partial void BathroomWallFixtures(BuildPiece piece, RaidMesh m, Frame f, System.Random rng);
+
+        /// <summary>A point on a wall's face: <paramref name="side"/> -1/+1 picks the face, <paramref name="along"/>
+        /// is the world coordinate along the wall and <paramref name="y"/> the height.</summary>
         private static Vector3 Face(in Frame f, int side, float along, float y) => f.P(along, y, side * (Half + 0.004f));
-
-        // Wall cupboards over the kitchen worktop.
-        private static void UpperCabinets(RaidMesh m, in Frame f, int side, float along, System.Random rng)
-        {
-            Vector3 n = f.N(side);
-            m.SetFrame(Face(f, side, along, FloorTop), Mathf.Atan2(n.x, n.z) * Mathf.Rad2Deg);
-            FurnitureBuilder.UpperCabinets(m, rng, 1.2f, new Color(0.78f, 0.76f, 0.66f));
-            m.ResetFrame();
-        }
-
-        // A brass wall sconce with a frosted globe that lights up at dusk.
-        private static void Sconce(BuildPiece piece, RaidMesh m, in Frame f, int side, float along, float y)
-        {
-            Vector3 n = f.N(side), wall = Face(f, side, along, y);
-            Surf brass = DecorPalette.Metal(FurnitureBuilder.Brass);
-            m.Box(wall + n * 0.01f, f.Size(0.1f, 0.16f, 0.02f), brass);
-            m.Rod(wall + n * 0.02f, wall + n * 0.13f + Vector3.up * 0.03f, 0.018f, brass);
-            Vector3 globe = wall + n * 0.15f + Vector3.up * 0.07f;
-            m.Ellipsoid(globe, new Vector3(0.13f, 0.15f, 0.13f), DecorPalette.Matte(new Color(0.86f, 0.82f, 0.70f)), 8, 5);
-            var glow = new RaidMesh();
-            glow.Ellipsoid(globe, new Vector3(0.14f, 0.16f, 0.14f), DecorPalette.Glow(WarmGlow), 8, 5);
-            HomeLamp.Attach(piece.transform, globe, 5f, 1.6f, true, glow);
-        }
-
-        // A black carriage lantern beside the front door.
-        private static void PorchLantern(BuildPiece piece, RaidMesh m, in Frame f, int side, float along, float y)
-        {
-            Vector3 n = f.N(side), wall = Face(f, side, along, y);
-            Surf black = DecorPalette.Metal(new Color(0.08f, 0.08f, 0.09f));
-            m.Box(wall + n * 0.01f, f.Size(0.1f, 0.22f, 0.02f), black);
-            m.Rod(wall + n * 0.02f, wall + n * 0.1f, 0.02f, black);
-            Vector3 lamp = wall + n * 0.13f;
-            m.Box(lamp + Vector3.up * 0.125f, new Vector3(0.17f, 0.04f, 0.17f), black);
-            m.Box(lamp + Vector3.up * 0.16f, new Vector3(0.08f, 0.04f, 0.08f), black);
-            m.Box(lamp - Vector3.up * 0.115f, new Vector3(0.13f, 0.03f, 0.13f), black);
-            m.Box(lamp, new Vector3(0.12f, 0.2f, 0.12f), DecorPalette.Matte(new Color(0.72f, 0.64f, 0.44f)));
-            for (int i = 0; i < 4; i++)
-                m.Box(lamp + new Vector3(i % 2 == 0 ? -0.062f : 0.062f, 0f, i < 2 ? -0.062f : 0.062f), new Vector3(0.016f, 0.21f, 0.016f), black);
-            var glow = new RaidMesh();
-            glow.Box(lamp, new Vector3(0.128f, 0.206f, 0.128f), DecorPalette.Glow(WarmGlow));
-            HomeLamp.Attach(piece.transform, lamp, 6f, 1.8f, true, glow);
-        }
-
-        // A small enamelled house-number plate.
-        private static void HouseNumber(RaidMesh m, in Frame f, int side, float along, float y)
-        {
-            Vector3 n = f.N(side), at = Face(f, side, along, y);
-            Surf s = DecorMaterials.Sign("12", new Color(0.86f, 0.85f, 0.80f), new Color(0.10f, 0.12f, 0.20f), out float aspect);
-            float h = 0.1f, w = h * aspect;
-            m.Box(at + n * 0.008f, f.Size(w + 0.03f, h + 0.03f, 0.016f), DecorPalette.Matte(new Color(0.10f, 0.12f, 0.20f)));
-            m.Upright(at + n * 0.0175f, n, w, h, s, new Rect(0f, 0f, 1f, 1f));
-        }
         #endregion
 
         #region Floors
@@ -444,7 +326,9 @@ namespace CloneZ
             if (room == null) return false;
             var rng = new System.Random(SlotSeed(BuildPieceType.Floor, c.x, c.z));
             var m = new RaidMesh();
-            Surf floor = room == Store
+            Surf floor = room == Bath
+                ? DecorMaterials.Linoleum(new Color(0.90f, 0.90f, 0.88f), new Color(0.50f, 0.66f, 0.68f), true)   // small bathroom tiles
+                : room == Store
                 ? DecorMaterials.Linoleum(new Color(0.52f, 0.48f, 0.40f), new Color(0.60f, 0.56f, 0.46f), false)
                 : c.x < 3f
                     ? DecorMaterials.Linoleum(new Color(0.80f, 0.78f, 0.70f), new Color(0.24f, 0.26f, 0.28f), true)   // the kitchen-diner

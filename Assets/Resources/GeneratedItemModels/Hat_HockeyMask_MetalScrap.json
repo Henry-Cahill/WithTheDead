@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_HockeyMask_MetalScrap", "baseHeight": 0.0745, "name": "Hat Hockey Mask Metal Scrap", "model": "gpt-oss:120b", "notes": "Flat product‑photo layout of a metal‑scrap hockey mask (≈0.30 m wide × 0.25 m high, 3 cm thick). Main shell, forward visor slab, side ear plates, two strap‑anchor tubes and a few recessed vent holes give the silhouette.", "score": 7, "parts": [
+  {"name":"ShellBack","shape":"cube","pos":[0.0,-0.0045,-0.01],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.18],"color":[0.45,0.4,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"VisorFront","shape":"cube","pos":[0.0,0.0005,0.115],"rot":[0.0,0.0,0.0],"size":[0.26,0.025,0.07],"color":[0.6,0.55,0.65],"smooth":0.3,"metal":1.0},
+  {"name":"SideBarL","shape":"cube","pos":[-0.14,0.0005,-0.01],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.12],"color":[0.45,0.4,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"SideBarR","shape":"cube","pos":[0.14,0.0005,-0.01],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.12],"color":[0.45,0.4,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"StrapLoopL","shape":"cylinder","pos":[-0.12,0.0105,0.04],"rot":[0.0,0.0,0.0],"size":[0.018,0.008,0.018],"color":[0.45,0.4,0.5],"smooth":0.25,"metal":1.0},
+  {"name":"StrapLoopR","shape":"cylinder","pos":[0.12,0.0105,0.04],"rot":[0.0,0.0,0.0],"size":[0.018,0.008,0.018],"color":[0.45,0.4,0.5],"smooth":0.25,"metal":1.0},
+  {"name":"VentHole01","shape":"cylinder","pos":[-0.06,0.003,0.14],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.2,0.18,0.22],"smooth":0.1,"metal":1.0},
+  {"name":"VentHole02","shape":"cylinder","pos":[0.0,0.003,0.14],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.2,0.18,0.22],"smooth":0.1,"metal":1.0},
+  {"name":"VentHole03","shape":"cylinder","pos":[0.06,0.003,0.14],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.2,0.18,0.22],"smooth":0.1,"metal":1.0},
+  {"name":"TopRim","shape":"cylinder","pos":[0.0,0.0105,-0.01],"rot":[0.0,0.0,0.0],"size":[0.28,0.004,0.28],"color":[0.45,0.4,0.5],"smooth":0.2,"metal":1.0}
+]}

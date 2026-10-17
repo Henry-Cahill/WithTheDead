@@ -1,0 +1,14 @@
+{"version": 1, "id": "Maggots", "baseHeight": 0.0767, "name": "Maggots", "model": "gpt-oss:120b", "notes": "Small clear‑plastic bait tub 6 cm × 4 cm × 3 cm tall, with a thin snap‑on lid and a front label; inside are a few wiggly maggots (brown‑yellow).", "score": 6, "parts": [
+  {"name":"ContainerBody","shape":"cube","pos":[0.0,-0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.03,0.04],"color":[0.9,0.92,0.95],"smooth":0.4,"metal":0.0},
+  {"name":"LidBase","shape":"cube","pos":[0.0,0.0142,0.0],"rot":[0.0,0.0,0.0],"size":[0.058,0.002,0.038],"color":[0.85,0.86,0.88],"smooth":0.45,"metal":0.0},
+  {"name":"LidRim","shape":"cylinder","pos":[0.0,0.0158,0.0],"rot":[0.0,0.0,0.0],"size":[0.062,0.002,0.062],"color":[0.8,0.81,0.83],"smooth":0.45,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,0.0052,0.0215],"rot":[0.0,0.0,0.0],"size":[0.045,0.018,0.002],"color":[0.6,0.55,0.4],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0,0.0137,0.0215],"rot":[0.0,0.0,0.0],"size":[0.047,0.002,0.002],"color":[0.45,0.38,0.25],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.0,-0.0033,0.0215],"rot":[0.0,0.0,0.0],"size":[0.047,0.002,0.002],"color":[0.45,0.38,0.25],"smooth":0.12,"metal":0.0},
+  {"name":"Maggot1","shape":"sphere","pos":[-0.015,0.0012,-0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.008],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Maggot2","shape":"sphere","pos":[0.005,0.0003,-0.015],"rot":[0.0,0.0,0.0],"size":[0.018,0.007,0.007],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Maggot3","shape":"sphere","pos":[0.02,0.0022,0.005],"rot":[0.0,0.0,0.0],"size":[0.022,0.009,0.009],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Maggot4","shape":"sphere","pos":[-0.008,-0.0008,0.012],"rot":[0.0,0.0,0.0],"size":[0.019,0.0075,0.0075],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Maggot5","shape":"sphere","pos":[0.012,0.0012,-0.005],"rot":[0.0,0.0,0.0],"size":[0.021,0.0085,0.0085],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Maggot6","shape":"sphere","pos":[-0.01,-0.0018,0.018],"rot":[0.0,0.0,0.0],"size":[0.017,0.0065,0.0065],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

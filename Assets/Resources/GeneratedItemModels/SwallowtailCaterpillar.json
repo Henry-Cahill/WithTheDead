@@ -1,0 +1,13 @@
+{"version": 1, "id": "SwallowtailCaterpillar", "baseHeight": 0.121, "name": "Swallowtail Caterpillar", "model": "gpt-oss:120b", "notes": "Small rectangular tin snack pack ~9 cm × 6 cm × 12 cm holding four swallowtail caterpillars. Tin body with metal lid, thin label on front, internal tray and four elongated ellipsoids for the caterpillars.", "score": 6, "parts": [
+  {"name":"TinBody","shape":"cube","pos":[0.0,-0.011,-0.0062],"rot":[0.0,0.0,0.0],"size":[0.09,0.1,0.06],"color":[0.78,0.78,0.84],"smooth":0.5,"metal":1.0},
+  {"name":"TinLid","shape":"cube","pos":[0.0,0.045,-0.0062],"rot":[0.0,0.0,0.0],"size":[0.092,0.012,0.062],"color":[0.7,0.7,0.78],"smooth":0.45,"metal":1.0},
+  {"name":"LidRim","shape":"cylinder","pos":[0.0,0.051,-0.0062],"rot":[0.0,0.0,0.0],"size":[0.094,0.014,0.094],"color":[0.7,0.7,0.78],"smooth":0.45,"metal":1.0},
+  {"name":"LabelBack","shape":"cube","pos":[0.0,-0.021,0.0243],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.058],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[0.0,-0.02,0.0243],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.005],"color":[0.35,0.25,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"InnerTray","shape":"cube","pos":[0.0,-0.055,-0.0062],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.05],"color":[0.85,0.85,0.86],"smooth":0.4,"metal":0.0},
+  {"name":"Caterpillar1","shape":"sphere","pos":[0.0,-0.041,-0.0212],"rot":[0.0,0.0,0.0],"size":[0.05,0.01,0.015],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Caterpillar2","shape":"sphere","pos":[0.0,-0.041,-0.0112],"rot":[0.0,0.0,0.0],"size":[0.05,0.01,0.015],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Caterpillar3","shape":"sphere","pos":[0.0,-0.041,-0.0012],"rot":[0.0,0.0,0.0],"size":[0.05,0.01,0.015],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Caterpillar4","shape":"sphere","pos":[0.0,-0.041,0.0088],"rot":[0.0,0.0,0.0],"size":[0.05,0.01,0.015],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"LidSeal","shape":"cylinder","pos":[0.0,0.056,-0.0062],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.7,0.7,0.78],"smooth":0.45,"metal":1.0}
+]}

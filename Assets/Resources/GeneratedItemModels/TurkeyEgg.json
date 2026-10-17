@@ -1,0 +1,8 @@
+{"version": 1, "id": "TurkeyEgg", "baseHeight": 0.0938, "name": "Turkey Egg", "model": "gpt-oss:120b", "notes": "Turkey egg ~7 cm long x 4.5 cm wide, ellipsoidal shell sitting in a thin cardboard cup; inner white and yolk shown, with a simple paper label on the cup.", "score": 6, "parts": [
+  {"name":"CupBase","shape":"cylinder","pos":[0.0,-0.0238,0.0],"rot":[0.0,0.0,0.0],"size":[0.058,0.02,0.058],"color":[0.62,0.53,0.42],"smooth":0.2,"metal":0.0},
+  {"name":"CupRim","shape":"cylinder","pos":[0.0,-0.0128,0.0],"rot":[0.0,0.0,0.0],"size":[0.058,0.004,0.058],"color":[0.58,0.48,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.0188,0.0],"rot":[0.0,0.0,0.0],"size":[0.062,0.002,0.062],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"EggShellOuter","shape":"sphere","pos":[0.0,0.0112,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.045,0.045],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EggWhite","shape":"sphere","pos":[0.0,0.0112,0.0],"rot":[0.0,0.0,0.0],"size":[0.066,0.041,0.041],"color":[0.9,0.9,0.85],"smooth":0.1,"metal":0.0},
+  {"name":"Yolk","shape":"sphere","pos":[0.0,0.0112,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.9,0.8,0.2],"smooth":0.3,"metal":0.0}
+]}

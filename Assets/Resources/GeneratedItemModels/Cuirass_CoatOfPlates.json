@@ -1,0 +1,14 @@
+{"version": 1, "id": "Cuirass_CoatOfPlates", "baseHeight": 0.185, "name": "Cuirass Coat Of Plates", "model": "gpt-oss:120b", "notes": "Cuirass coat‑of‑plates laid flat, front side up (≈0.55 m wide × 0.30 m deep × 0.02 m thick). Central torso plate with overlapping side plates, two shoulder discs, leather straps across the front and a few rivet dots for detail.", "score": 6, "parts": [
+  {"name":"TorsoPlate","shape":"cube","pos":[0.0,-0.0075,-0.018],"rot":[0.0,0.0,0.0],"size":[0.5,0.015,0.25],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SidePlateL","shape":"cube","pos":[-0.3,-0.006,-0.018],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.28],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SidePlateR","shape":"cube","pos":[0.3,-0.006,-0.018],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.28],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ShoulderPlateL","shape":"cylinder","pos":[-0.2,-0.0,0.162],"rot":[90.0,0.0,0.0],"size":[0.25,0.012,0.25],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ShoulderPlateR","shape":"cylinder","pos":[0.2,-0.0,0.162],"rot":[90.0,0.0,0.0],"size":[0.25,0.012,0.25],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"StrapCenter","shape":"cube","pos":[0.0,-0.004,-0.018],"rot":[0.0,0.0,0.0],"size":[0.45,0.004,0.03],"color":[0.3,0.2,0.1],"smooth":0.08,"metal":0.0},
+  {"name":"StrapLeft","shape":"cube","pos":[-0.18,-0.004,-0.018],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.3],"color":[0.3,0.2,0.1],"smooth":0.08,"metal":0.0},
+  {"name":"StrapRight","shape":"cube","pos":[0.18,-0.004,-0.018],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.3],"color":[0.3,0.2,0.1],"smooth":0.08,"metal":0.0},
+  {"name":"RivetTL","shape":"sphere","pos":[-0.22,0.001,-0.118],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.4,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"RivetTR","shape":"sphere","pos":[0.22,0.001,-0.118],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.4,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[-0.22,0.001,0.082],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.4,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.22,0.001,0.082],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.4,0.4],"smooth":0.6,"metal":1.0}
+]}

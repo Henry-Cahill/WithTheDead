@@ -1,0 +1,12 @@
+{"version": 1, "id": "HotdogPack", "baseHeight": 0.0902, "name": "Hotdog Pack", "model": "gpt-oss:120b", "notes": "Hotdog pack – rectangular cardboard/plastic container about 0.28 m long × 0.12 m wide × 0.05 m tall, upright on the floor. Main tan tint, lid with thin rim, front and back labels, a few visible hot‑dogs inside, and a clear top film.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0052,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.05,0.12],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0238,0.0],"rot":[0.0,0.0,0.0],"size":[0.285,0.008,0.125],"color":[0.78,0.71,0.48],"smooth":0.45,"metal":0.0},
+  {"name":"TopRim","shape":"cube","pos":[0.0,0.0278,0.0],"rot":[0.0,0.0,0.0],"size":[0.285,0.002,0.125],"color":[0.7,0.6,0.4],"smooth":0.3,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.0,0.0018,0.0615],"rot":[0.0,0.0,0.0],"size":[0.22,0.018,0.002],"color":[0.55,0.15,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[0.0,0.0018,-0.0615],"rot":[0.0,0.0,0.0],"size":[0.24,0.018,0.002],"color":[0.6,0.5,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Hotdog1","shape":"sphere","pos":[-0.07,-0.0152,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.012,0.018],"color":[0.8,0.2,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"Hotdog2","shape":"sphere","pos":[-0.025,-0.0152,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.012,0.018],"color":[0.8,0.2,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"Hotdog3","shape":"sphere","pos":[0.025,-0.0152,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.012,0.018],"color":[0.8,0.2,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"Hotdog4","shape":"sphere","pos":[0.07,-0.0152,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.012,0.018],"color":[0.8,0.2,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"TopFilm","shape":"cube","pos":[0.0,0.0292,0.0],"rot":[0.0,0.0,0.0],"size":[0.285,0.002,0.125],"color":[0.95,0.95,0.96],"smooth":0.6,"metal":0.0}
+]}

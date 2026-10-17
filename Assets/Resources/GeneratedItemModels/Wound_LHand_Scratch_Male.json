@@ -1,0 +1,9 @@
+{"version": 1, "id": "Wound_LHand_Scratch_Male", "baseHeight": 0.0659, "name": "Wound LHand Scratch Male", "model": "gpt-oss:120b", "notes": "Small torn skin patch from a left‑hand scratch, about 7 cm × 4 cm and ~3 mm thick, with ragged edges and a tiny drop of fresh blood.", "score": 7, "parts": [
+  {"name":"BasePatch","shape":"cube","pos":[0.0,-0.0036,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.003,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RagLeft","shape":"cube","pos":[-0.0325,-0.0026,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.005],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"RagRight","shape":"cube","pos":[0.0325,-0.0026,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.005],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"RagTop","shape":"cube","pos":[0.0,-0.0026,0.022],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.008],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"RagBottom","shape":"cube","pos":[0.0,-0.0026,-0.022],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.008],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Fold","shape":"cube","pos":[0.0,-0.0033,0.0],"rot":[5.0,0.0,0.0],"size":[0.04,0.002,0.035],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BloodDrop","shape":"sphere","pos":[-0.025,0.0009,0.01],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.78,0.12,0.12],"smooth":0.2,"metal":0.0}
+]}

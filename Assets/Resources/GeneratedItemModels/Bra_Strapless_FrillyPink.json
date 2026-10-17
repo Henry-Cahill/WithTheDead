@@ -1,0 +1,12 @@
+{"version": 1, "id": "Bra_Strapless_FrillyPink", "baseHeight": 0.074, "name": "Bra Strapless Frilly Pink", "model": "gpt-oss:120b", "notes": "Strapless frilly bra lying flat, spread out for silhouette: two cup panels with a central panel, thin bottom band, decorative frill ribbons around the edges, a lace overlay on the front and a small tag on the back. Overall footprint ≈0.34 m × 0.18 m, thickness ~2–3 cm.", "score": 6, "parts": [
+  {"name":"LeftCup","shape":"cube","pos":[-0.08,-0.004,0.0075],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RightCup","shape":"cube","pos":[0.08,-0.004,0.0075],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CenterPanel","shape":"cube","pos":[0.0,-0.003,0.0075],"rot":[0.0,0.0,0.0],"size":[0.04,0.022,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BottomBand","shape":"cube","pos":[0.0,-0.01,-0.0625],"rot":[0.0,0.0,0.0],"size":[0.34,0.008,0.03],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"TopFrill","shape":"cube","pos":[0.0,0.01,0.0775],"rot":[0.0,0.0,0.0],"size":[0.34,0.008,0.02],"color":[0.62,0.6,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"BottomFrill","shape":"cube","pos":[0.0,-0.01,-0.0625],"rot":[0.0,0.0,0.0],"size":[0.34,0.008,0.02],"color":[0.62,0.6,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"LeftSideFrill","shape":"cube","pos":[-0.13,-0.0015,0.0075],"rot":[0.0,0.0,0.0],"size":[0.008,0.025,0.15],"color":[0.62,0.6,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"RightSideFrill","shape":"cube","pos":[0.13,-0.0015,0.0075],"rot":[0.0,0.0,0.0],"size":[0.008,0.025,0.15],"color":[0.62,0.6,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"LaceOverlay","shape":"cube","pos":[0.0,0.011,0.0075],"rot":[0.0,0.0,0.0],"size":[0.34,0.002,0.15],"color":[0.68,0.66,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[0.0,-0.013,-0.0825],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.01],"color":[0.9,0.9,0.85],"smooth":0.1,"metal":0.0}
+]}

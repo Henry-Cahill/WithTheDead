@@ -1,0 +1,8 @@
+{"version": 1, "id": "FishRoe", "baseHeight": 0.125, "name": "Fish Roe", "model": "gpt-oss:120b", "notes": "Small glass jar 0.07 m diameter × 0.12 m tall (≈100 g) of fish roe: clear amber‑tinted body, silver metal screw‑top lid, thin paper label with dark trim, and a soft orange‑pink lump of roe inside.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.0575,0.0],"rot":[0.0,0.0,0.0],"size":[0.072,0.015,0.072],"color":[0.8,0.81,0.84],"smooth":0.6,"metal":1.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.068,0.002,0.068],"color":[0.55,0.48,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,-0.0038,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.07],"color":[0.35,0.27,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.0063,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.07],"color":[0.35,0.27,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"Roe","shape":"sphere","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.04,0.05],"color":[0.9,0.5,0.3],"smooth":0.15,"metal":0.0}
+]}

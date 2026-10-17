@@ -1,0 +1,8 @@
+{"version": 1, "id": "PastaPot", "baseHeight": 0.17, "name": "Pasta Pot", "model": "gpt-oss:120b", "notes": "Pasta pot in a cardboard box: box ≈ 0.32 m wide × 0.22 m tall × 0.32 m deep; metal pot 0.25 m diameter × 0.15 m high with slightly larger lid, side handle and a front label.", "score": 6, "parts": [
+  {"name":"BoxOuter","shape":"cube","pos":[0.0,0.0,0.0045],"rot":[0.0,0.0,0.0],"size":[0.32,0.22,0.32],"color":[0.6,0.5,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"PotBody","shape":"cylinder","pos":[0.0,-0.035,0.0045],"rot":[0.0,0.0,0.0],"size":[0.25,0.15,0.25],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"PotLid","shape":"cylinder","pos":[0.0,0.045,0.0045],"rot":[0.0,0.0,0.0],"size":[0.27,0.01,0.27],"color":[0.78,0.71,0.48],"smooth":0.5,"metal":1.0},
+  {"name":"LidKnob","shape":"cylinder","pos":[0.0,0.05,0.0045],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.04],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.0,0.01,0.1445],"rot":[0.0,0.0,90.0],"size":[0.03,0.12,0.03],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,0.01,-0.1545],"rot":[0.0,0.0,0.0],"size":[0.28,0.002,0.02],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

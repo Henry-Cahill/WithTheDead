@@ -1,0 +1,17 @@
+{"version": 1, "id": "HazmatSuit", "baseHeight": 0.31, "name": "Hazmat Suit", "model": "gpt-oss:120b", "notes": "Full‑body hazmat coverall (≈0.6 m wide × 1.2 m long × 0.03 m thick) lying flat: torso panel, two sleeves, two legs with boots, a rounded hood, collar band, front zipper and seam trims.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.01,-0.11],"rot":[0.0,0.0,0.0],"size":[0.6,0.03,0.4],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.425,-0.01,-0.11],"rot":[0.0,0.0,-20.0],"size":[0.25,0.03,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.425,-0.01,-0.11],"rot":[0.0,0.0,20.0],"size":[0.25,0.03,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.15,-0.01,-0.11],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.5],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.15,-0.01,-0.11],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.5],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BootUpperL","shape":"cube","pos":[-0.15,-0.01,0.17],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BootUpperR","shape":"cube","pos":[0.15,-0.01,0.17],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SoleL","shape":"cylinder","pos":[-0.15,-0.01,0.25],"rot":[0.0,0.0,90.0],"size":[0.22,0.03,0.22],"color":[0.4,0.38,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"SoleR","shape":"cylinder","pos":[0.15,-0.01,0.25],"rot":[0.0,0.0,90.0],"size":[0.22,0.03,0.22],"color":[0.4,0.38,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"Hood","shape":"sphere","pos":[0.0,0.01,0.14],"rot":[0.0,0.0,0.0],"size":[0.4,0.2,0.4],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cylinder","pos":[0.0,-0.0,0.07],"rot":[0.0,0.0,90.0],"size":[0.5,0.015,0.5],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Zipper","shape":"cube","pos":[0.0,-0.005,0.11],"rot":[0.0,0.0,0.0],"size":[0.58,0.012,0.008],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"SeamFront","shape":"cube","pos":[0.0,-0.007,0.09],"rot":[0.0,0.0,0.0],"size":[0.58,0.004,0.002],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SeamSideL","shape":"cube","pos":[-0.295,-0.007,-0.11],"rot":[0.0,0.0,0.0],"size":[0.004,0.03,0.4],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SeamSideR","shape":"cube","pos":[0.295,-0.007,-0.11],"rot":[0.0,0.0,0.0],"size":[0.004,0.03,0.4],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0}
+]}

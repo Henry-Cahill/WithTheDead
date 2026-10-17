@@ -1,0 +1,12 @@
+{"version": 1, "id": "BoobTube", "baseHeight": 0.1613, "name": "Boob Tube", "model": "gpt-oss:120b", "notes": "Old CRT television (Boob Tube) about 0.38 m wide × 0.28 m long × 0.18 m tall lying flat screen‑up on the floor. Main plastic chassis tinted 0.6,0.58,0.5; thin glass screen on top; two speakers, a few front buttons and a stubby antenna as extra detail.", "score": 6, "parts": [
+  {"name":"Chassis","shape":"cube","pos":[0.0025,-0.0113,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.18,0.28],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"ScreenGlass","shape":"cube","pos":[0.0025,0.0812,0.0],"rot":[0.0,0.0,0.0],"size":[0.36,0.005,0.26],"color":[0.2,0.3,0.4],"smooth":0.6,"metal":0.0},
+  {"name":"SpeakerL","shape":"cylinder","pos":[-0.1175,0.0912,-0.08],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.15,0.15,0.18],"smooth":0.2,"metal":0.0},
+  {"name":"SpeakerR","shape":"cylinder","pos":[0.1225,0.0912,-0.08],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.15,0.15,0.18],"smooth":0.2,"metal":0.0},
+  {"name":"ButtonL","shape":"cube","pos":[0.1725,0.0287,-0.09],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.015],"color":[0.05,0.05,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"ButtonR","shape":"cube","pos":[0.1725,0.0287,0.09],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.015],"color":[0.05,0.05,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"AntennaBase","shape":"cylinder","pos":[-0.1575,0.0187,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.04,0.02],"color":[0.4,0.42,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"AntennaRod","shape":"cylinder","pos":[-0.1575,0.0487,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.12,0.015],"color":[0.6,0.62,0.65],"smooth":0.5,"metal":1.0},
+  {"name":"ControlKnob","shape":"cylinder","pos":[-0.1775,0.0187,0.07],"rot":[0.0,0.0,0.0],"size":[0.03,0.01,0.03],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"VentGrid","shape":"cube","pos":[0.0025,-0.0113,0.12],"rot":[0.0,0.0,0.0],"size":[0.34,0.005,0.04],"color":[0.45,0.44,0.42],"smooth":0.15,"metal":0.0}
+]}

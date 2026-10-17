@@ -1,0 +1,13 @@
+{"version": 1, "id": "GreaveScrap_Right", "baseHeight": 0.0919, "name": "Greave Scrap Right", "model": "gpt-oss:120b", "notes": "Irregular scrap of a right‑leg greave, roughly 0.25 m long × 0.12 m wide × 0.05 m thick. Main metal plate with several jagged chunks, a dent, rust‑stained lump and a few rivet heads – all lying on the floor.", "score": 7, "parts": [
+  {"name":"MainPlate","shape":"cube","pos":[-0.0034,-0.0031,0.0092],"rot":[0.0,0.0,0.0],"size":[0.25,0.04,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeChunkL","shape":"cube","pos":[-0.0934,-0.0111,0.0292],"rot":[3.0,0.0,-5.0],"size":[0.07,0.03,0.08],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeChunkR","shape":"cube","pos":[0.1066,-0.0091,-0.0308],"rot":[-2.0,0.0,8.0],"size":[0.06,0.035,0.07],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Dent","shape":"cylinder","pos":[0.0466,0.0169,0.0092],"rot":[0.0,0.0,0.0],"size":[0.025,0.01,0.025],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"RustLump","shape":"sphere","pos":[-0.0734,0.0219,-0.0208],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.45,0.38,0.3],"smooth":0.2,"metal":1.0},
+  {"name":"Rivet1","shape":"cylinder","pos":[-0.0834,0.0169,0.0392],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet2","shape":"cylinder","pos":[0.0166,0.0169,-0.0408],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet3","shape":"cylinder","pos":[0.1166,0.0169,0.0492],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet4","shape":"cylinder","pos":[-0.0334,0.0169,-0.0308],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"SharpEdge","shape":"cube","pos":[0.0266,-0.0131,-0.0508],"rot":[-10.0,0.0,12.0],"size":[0.02,0.015,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ScrapFlake","shape":"cube","pos":[-0.1234,-0.0161,0.0592],"rot":[5.0,0.0,-8.0],"size":[0.03,0.008,0.025],"color":[0.58,0.55,0.48],"smooth":0.55,"metal":1.0}
+]}

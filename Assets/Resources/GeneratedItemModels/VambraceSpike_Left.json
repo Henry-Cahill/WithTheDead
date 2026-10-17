@@ -1,0 +1,10 @@
+{"version": 1, "id": "VambraceSpike_Left", "baseHeight": 0.09, "name": "Vambrace Spike Left", "model": "gpt-oss:120b", "notes": "Vambrace Spike (left) – a 0.45 m long metal spike lying on its side. Thin steel rod (~0.03 m dia.) runs along X, capped with a small rounded head on the -X end and a pointed tip on the +X end. A reinforcing band near the tip and a rivet in the middle add detail.", "score": 7, "parts": [
+  {"name":"Rod","shape":"cylinder","pos":[0.005,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.38,0.03],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Head","shape":"sphere","pos":[-0.21,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.22,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Band","shape":"cylinder","pos":[0.135,-0.007,0.0],"rot":[0.0,0.0,90.0],"size":[0.032,0.04,0.032],"color":[0.5,0.48,0.42],"smooth":0.45,"metal":1.0},
+  {"name":"RivetMid","shape":"sphere","pos":[-0.045,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"RivetTip","shape":"sphere","pos":[0.185,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"ClampLeft","shape":"cube","pos":[-0.185,-0.005,0.018],"rot":[0.0,15.0,0.0],"size":[0.015,0.025,0.004],"color":[0.5,0.48,0.42],"smooth":0.45,"metal":1.0},
+  {"name":"ClampRight","shape":"cube","pos":[-0.185,-0.005,-0.018],"rot":[0.0,-15.0,0.0],"size":[0.015,0.025,0.004],"color":[0.5,0.48,0.42],"smooth":0.45,"metal":1.0}
+]}

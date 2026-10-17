@@ -1,0 +1,12 @@
+{"version": 1, "id": "Wound_RForearm_Laceration_Female", "baseHeight": 0.0639, "name": "Wound RForearm Laceration Female", "model": "gpt-oss:120b", "notes": "Sterile gauze pad for a forearm laceration, laid flat on the floor. Approx. 0.12 m wide × 0.18 m long × 0.006 m thick with a dark‑tan adhesive strip along one short edge and subtle folded edges. A few raised fiber cylinders give a gauze texture.", "score": 6, "parts": [
+  {"name":"PadBase","shape":"cube","pos":[0.02,-0.0009,-0.025],"rot":[0.0,0.0,0.0],"size":[0.12,0.006,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"AdhesiveStrip","shape":"cube","pos":[0.02,-0.0019,-0.105],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.02],"color":[0.48,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeFoldTop","shape":"cube","pos":[0.02,-0.0029,0.0625],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.005],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFoldBottom","shape":"cube","pos":[0.02,-0.0029,-0.1125],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.005],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SideFoldLeft","shape":"cube","pos":[-0.038,-0.0029,-0.025],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.18],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SideFoldRight","shape":"cube","pos":[0.078,-0.0029,-0.025],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.18],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FiberX1","shape":"cylinder","pos":[0.0,0.0011,-0.065],"rot":[0.0,0.0,90.0],"size":[0.004,0.12,0.004],"color":[0.58,0.56,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"FiberZ1","shape":"cylinder","pos":[0.05,0.0011,0.025],"rot":[90.0,0.0,0.0],"size":[0.004,0.18,0.004],"color":[0.58,0.56,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"FiberDiag","shape":"cylinder","pos":[-0.005,0.0011,0.035],"rot":[45.0,0.0,90.0],"size":[0.004,0.15,0.004],"color":[0.58,0.56,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[0.02,0.0006,-0.105],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.015],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0}
+]}

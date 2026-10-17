@@ -2,7 +2,8 @@ using UnityEngine;
 
 namespace CloneZ
 {
-    /// <summary>Hands and head: two-bone IK for weapon holds, swings, shoves, lunges and jobs, and
+    /// <summary>Hands and head: two-bone IK for weapon holds, swings, shoves, lunges and jobs (working a
+    /// fixture, reading), the hands in the lap when seated or behind the head when resting in bed, and
     /// the head turning toward a target. Hand targets are offsets from the chest in the character's
     /// facing frame (x right, y up, z forward), so they follow a crouch or a lean.</summary>
     public sealed partial class HumanoidAnimator
@@ -67,6 +68,14 @@ namespace CloneZ
             if (_act != Act.None) ActionGoals(ref right, ref left, ref leftOnItem, twoHand);
             if (_activityW > 0.001f) ActivityGoals(ref right, ref left, ref leftOnItem);
 
+            // Sitting, a hand nothing else wants rests on its thigh.
+            if (_sitW > 0.001f && !_dead)
+            {
+                float sw = Mathf.SmoothStep(0f, 1f, _sitW);
+                if (!right.On) right = Goal(LapPoint(ThighR, 1f), LapRot(ThighR, true), sw);
+                if (!left.On && !leftOnItem) left = Goal(LapPoint(ThighL, -1f), LapRot(ThighL, false), sw);
+            }
+
             if (right.On) SolveArm(UArmR, 1f, right.Pos, right.Rot, right.Weight * weight);
             if (leftOnItem && _rig.Held != null)
             {
@@ -79,6 +88,17 @@ namespace CloneZ
 
         private static HandGoal Goal(Vector3 pos, Quaternion rot, float weight) =>
             new HandGoal { On = true, Pos = pos, Rot = rot, Weight = weight };
+
+        /// <summary>A resting hand's place on top of a thigh, two-thirds of the way to the knee.</summary>
+        private Vector3 LapPoint(int thigh, float sx)
+        {
+            Vector3 hip = _b[thigh].position, knee = _b[thigh + 1].position;
+            return Vector3.Lerp(hip, knee, 0.66f) + _frame * new Vector3(-sx * 0.012f, _bound.Thigh + 0.03f, 0f) * _scale;
+        }
+
+        /// <summary>A hand laid flat on a thigh, the fingers toward the knee.</summary>
+        private Quaternion LapRot(int thigh, bool rightHand) =>
+            HandRot(_b[thigh + 1].position - _b[thigh].position, _frame * Vector3.down, rightHand);
 
         /// <summary>Hand rotation that points a held melee weapon along <paramref name="dir"/>.</summary>
         private Quaternion MeleeRot(Vector3 dir)
@@ -265,7 +285,46 @@ namespace CloneZ
                     right = Goal(At(new Vector3(0.18f, -0.2f, 0.36f)), Quaternion.LookRotation(spout, Vector3.up), w);
                     break;
                 }
+
+                case HumanoidActivity.Use:
+                {
+                    // One hand out to whatever is being worked — a tap, a switch, a knob, a drawer — the fingers
+                    // busy at it; with nothing to aim at, straight out in front at chest height.
+                    leftOnItem = false;
+                    Vector3 reach = new Vector3(0.1f, -0.06f, 0.44f);
+                    if (HasReachTarget) reach = ReachOffset(ReachTarget);
+                    reach += new Vector3(0.008f * Mathf.Sin(t * 4.1f), 0.012f * Mathf.Sin(t * 5.3f), 0.01f * Mathf.Sin(t * 3.7f + 1f));
+                    Vector3 fingers = Dir(new Vector3(reach.x * 0.6f - 0.06f, reach.y * 0.5f, 1f));
+                    right = Goal(At(reach), HandRot(fingers, Dir(new Vector3(-0.45f, -1f, 0.15f)), true), w);
+                    break;
+                }
+
+                case HumanoidActivity.Read:
+                {
+                    // A book held open in both hands below the chin; now and then the right hand turns a page.
+                    leftOnItem = false;
+                    float page = Bell(Mathf.Repeat(t / 6.5f + _seed, 1f), 0.84f, 1f);
+                    Vector3 r = new Vector3(0.1f - 0.07f * page, -0.2f + 0.03f * page, 0.3f);
+                    Vector3 l = new Vector3(-0.1f, -0.2f, 0.3f);
+                    right = Goal(At(r), HandRot(Dir(new Vector3(-0.25f, 0.75f, 0.55f)), Dir(new Vector3(-0.8f, 0.5f, -0.2f)), true), w);
+                    left = Goal(At(l), HandRot(Dir(new Vector3(0.25f, 0.75f, 0.55f)), Dir(new Vector3(0.8f, 0.5f, -0.2f)), false), w);
+                    break;
+                }
             }
+        }
+
+        /// <summary>Where a working hand goes for a world point: toward it from the chest, but never behind the body
+        /// and never past arm's length from the right shoulder (a thing out of reach is reached toward).</summary>
+        private Vector3 ReachOffset(Vector3 world)
+        {
+            Vector3 d = Quaternion.Inverse(_frame) * (world - _chest) / Mathf.Max(0.01f, _scale);
+            var shoulder = new Vector3(0.17f, 0.2f, 0f);
+            Vector3 v = d - shoulder;
+            v.z = Mathf.Max(v.z, 0.22f);
+            v.x = Mathf.Clamp(v.x, -0.32f, 0.3f);
+            if (v.sqrMagnitude > 0.54f * 0.54f) v = v.normalized * 0.54f;
+            v.z = Mathf.Max(v.z, 0.18f);
+            return shoulder + v;
         }
 
         private static Vector3 AboveFloor(Vector3 p, float floor)
@@ -306,9 +365,10 @@ namespace CloneZ
 
         /// <summary>
         /// Two-bone IK: turns the upper arm and forearm so the grip centre lands on
-        /// <paramref name="grip"/>, elbow bending down and out, then sets the hand's rotation.
+        /// <paramref name="grip"/>, the elbow bending down and out (or toward <paramref name="pole"/>, a world
+        /// direction, when given), then sets the hand's rotation.
         /// </summary>
-        private void SolveArm(int upper, float sx, Vector3 grip, Quaternion handRot, float weight)
+        private void SolveArm(int upper, float sx, Vector3 grip, Quaternion handRot, float weight, Vector3? pole = null)
         {
             if (weight <= 0.001f) return;
             Transform ua = _b[upper], fa = _b[upper + 1], hand = _b[upper + 2];
@@ -323,8 +383,7 @@ namespace CloneZ
             float c = Mathf.Clamp(toTarget.magnitude, Mathf.Abs(a - b) + 1e-3f, a + b - 1e-3f);
             Vector3 dir = toTarget.sqrMagnitude > 1e-8f ? toTarget.normalized : _frame * Vector3.forward;
 
-            Vector3 pole = _frame * new Vector3(sx * 0.5f, -0.45f, -0.75f);
-            Vector3 bend = Vector3.ProjectOnPlane(pole, dir);
+            Vector3 bend = Vector3.ProjectOnPlane(pole ?? _frame * new Vector3(sx * 0.5f, -0.45f, -0.75f), dir);
             if (bend.sqrMagnitude < 1e-8f) bend = Vector3.ProjectOnPlane(_frame * Vector3.down, dir);
             bend.Normalize();
 
@@ -341,6 +400,22 @@ namespace CloneZ
                 ua.rotation = Quaternion.Slerp(ua0, uaIk, weight);
                 fa.rotation = Quaternion.Slerp(fa0, faIk, weight);
                 hand.rotation = Quaternion.Slerp(h0, handRot, weight);
+            }
+        }
+
+        /// <summary>Lying awake: the hands laced behind the head (under it, on the pillow), the elbows out to the sides.</summary>
+        private void RestArms(float weight)
+        {
+            if (weight <= 0.001f) return;
+            _frame = _root.rotation;
+            _scale = _root.lossyScale.y;
+            Vector3 head = _b[HeadB].position;
+            for (int side = 0; side < 2; side++)
+            {
+                float sx = side == 0 ? -1f : 1f;
+                Vector3 grip = head + _frame * (new Vector3(sx * 0.055f, 0.07f, -0.11f) * _scale);
+                Quaternion rot = HandRot(_frame * new Vector3(-sx, 0.35f, 0f), _frame * Vector3.forward, side == 1);
+                SolveArm(side == 0 ? UArmL : UArmR, sx, grip, rot, weight, _frame * new Vector3(sx, 0.35f, 0.3f));
             }
         }
 

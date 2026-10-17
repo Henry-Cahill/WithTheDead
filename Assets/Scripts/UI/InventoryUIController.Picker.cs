@@ -65,7 +65,8 @@ namespace CloneZ
         }
 
         // Every container within reach — the same reach the world uses to search one — nearest first.
-        // The open container stays listed even if it sits just past that reach.
+        // The open container stays listed even if it sits just past that reach. A fixture's storage (a
+        // cupboard, a drawer) must also be in sight, as [E] needs it to be: never through a wall.
         private void GatherNearby()
         {
             _nearby.Clear();
@@ -76,7 +77,11 @@ namespace CloneZ
             {
                 LootContainer c = all[i];
                 if (c == null || c.Contents == null) continue;
-                if (c == _openContainer || (c.transform.position - p).sqrMagnitude <= r2) _nearby.Add(c);
+                if (c == _openContainer) { _nearby.Add(c); continue; }
+                if ((c.transform.position - p).sqrMagnitude > r2) continue;
+                Interactable owner = c.Owner;
+                if (owner != null && _interactor != null && !_interactor.CanSee(owner.InteractPoint, owner.OcclusionRoot)) continue;
+                _nearby.Add(c);
             }
             _nearby.Sort((a, b) => (a.transform.position - p).sqrMagnitude.CompareTo((b.transform.position - p).sqrMagnitude));
         }

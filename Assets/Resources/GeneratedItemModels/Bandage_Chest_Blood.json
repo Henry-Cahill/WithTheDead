@@ -1,0 +1,12 @@
+{"version": 1, "id": "Bandage_Chest_Blood", "baseHeight": 0.085, "name": "Bandage Chest Blood", "model": "gpt-oss:120b", "notes": "Flat bandage (0.30 m × 0.40 m × 0.02 m) with cloth‑tint, dark edge strips, a folded front edge, two blood stains and a small rolled corner; includes a white tag and a stitching line for detail.", "score": 6, "parts": [
+  {"name":"BaseCloth","shape":"cube","pos":[0.0,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.4],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.1475,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.015,0.4],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.1475,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.015,0.4],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0,-0.0175,-0.1975],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.005],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"FrontFold","shape":"cube","pos":[0.0,-0.0075,0.18],"rot":[0.0,0.0,0.0],"size":[0.3,0.005,0.04],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTag","shape":"cube","pos":[-0.12,-0.009,-0.15],"rot":[0.0,0.0,0.0],"size":[0.03,0.01,0.02],"color":[0.9,0.9,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"BloodStainLarge","shape":"sphere","pos":[-0.05,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.08],"color":[0.7,0.12,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"BloodStainSmall","shape":"sphere","pos":[0.07,-0.009,-0.1],"rot":[0.0,0.0,0.0],"size":[0.05,0.01,0.04],"color":[0.6,0.08,0.08],"smooth":0.2,"metal":0.0},
+  {"name":"RollCorner","shape":"cylinder","pos":[-0.12,0.01,0.18],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLine","shape":"cube","pos":[0.0,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.002,0.004],"color":[0.5,0.48,0.43],"smooth":0.05,"metal":0.0}
+]}

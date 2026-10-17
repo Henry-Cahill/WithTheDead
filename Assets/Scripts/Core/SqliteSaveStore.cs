@@ -25,6 +25,7 @@ namespace CloneZ
             "DROP TABLE IF EXISTS clothing;" +
             "DROP TABLE IF EXISTS wound;" +
             "DROP TABLE IF EXISTS player_skill;" +
+            "DROP TABLE IF EXISTS home_fixture;" +
             "DROP TABLE IF EXISTS home_furniture;" +
             "DROP TABLE IF EXISTS world_prop;" +
             "DROP TABLE IF EXISTS water_source;" +
@@ -40,7 +41,8 @@ namespace CloneZ
             "  id INTEGER PRIMARY KEY CHECK (id = 0)," +
             "  version INTEGER, savedAtUtc TEXT," +
             "  day INTEGER, hour REAL, weather INTEGER, rain REAL, fog REAL, cloud REAL," +
-            "  mainsOn INTEGER, shutoffDay INTEGER, kills INTEGER, wave INTEGER, timeSurvived REAL);" +
+            "  mainsOn INTEGER, shutoffDay INTEGER, kills INTEGER, wave INTEGER, timeSurvived REAL," +
+            "  powerOn INTEGER, powerShutoffDay INTEGER, breakerOn INTEGER);" +
 
             "CREATE TABLE player (" +
             "  id INTEGER PRIMARY KEY CHECK (id = 0)," +
@@ -67,7 +69,7 @@ namespace CloneZ
             "CREATE TABLE container (" +
             "  id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "  kind INTEGER, posX REAL, posY REAL, posZ REAL, yaw REAL," +
-            "  searched INTEGER, lifetime REAL);" +
+            "  searched INTEGER, lifetime REAL, fixtureKey TEXT);" +
 
             "CREATE TABLE container_item (" +
             "  seq INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -81,7 +83,7 @@ namespace CloneZ
 
             "CREATE TABLE house_piece (" +
             "  id INTEGER PRIMARY KEY AUTOINCREMENT," +
-            "  type INTEGER, posX REAL, posY REAL, posZ REAL, yaw REAL, health REAL, maxHealth REAL);" +
+            "  type INTEGER, posX REAL, posY REAL, posZ REAL, yaw REAL, health REAL, maxHealth REAL, prebuilt INTEGER);" +
 
             "CREATE TABLE farm_plot (" +
             "  id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -99,6 +101,12 @@ namespace CloneZ
             "CREATE TABLE home_furniture (" +
             "  id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "  kind INTEGER, posX REAL, posY REAL, posZ REAL, yaw REAL, seed INTEGER);" +
+
+            // The state of every interactive fixture (door open / locked, tap running, lamp lit…), keyed by
+            // the fixture's stable id; what state/a/b/text mean is up to each fixture.
+            "CREATE TABLE home_fixture (" +
+            "  id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "  key TEXT, state INTEGER, a REAL, b REAL, text TEXT);" +
 
             // Items lying on the ground. These used to ride in the container table, one row per item
             // plus one per stack, which made both the save and the load scale with the number of things
@@ -137,6 +145,7 @@ namespace CloneZ
                     WriteWater(db, data.Water);
                     WriteProps(db, data.Props);
                     WriteFurniture(db, data.Furniture);
+                    WriteFixtures(db, data.Fixtures);
                     db.Execute("COMMIT;");
                 }
                 catch
@@ -150,12 +159,13 @@ namespace CloneZ
         private static void WriteMeta(SqliteConnection db, SaveData d)
         {
             using (var st = db.Prepare(
-                "INSERT INTO meta (id,version,savedAtUtc,day,hour,weather,rain,fog,cloud,mainsOn,shutoffDay,kills,wave,timeSurvived)" +
-                " VALUES (0,?,?,?,?,?,?,?,?,?,?,?,?,?);"))
+                "INSERT INTO meta (id,version,savedAtUtc,day,hour,weather,rain,fog,cloud,mainsOn,shutoffDay,kills,wave,timeSurvived,powerOn,powerShutoffDay,breakerOn)" +
+                " VALUES (0,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);"))
             {
                 st.Bind(1, d.Version).Bind(2, d.SavedAtUtc).Bind(3, d.Day).Bind(4, d.Hour)
                   .Bind(5, d.Weather).Bind(6, d.Rain).Bind(7, d.Fog).Bind(8, d.Cloud)
-                  .Bind(9, d.MainsOn).Bind(10, d.ShutoffDay).Bind(11, d.Kills).Bind(12, d.Wave).Bind(13, d.TimeSurvived);
+                  .Bind(9, d.MainsOn).Bind(10, d.ShutoffDay).Bind(11, d.Kills).Bind(12, d.Wave).Bind(13, d.TimeSurvived)
+                  .Bind(14, d.PowerOn).Bind(15, d.PowerShutoffDay).Bind(16, d.BreakerOn);
                 st.Step();
             }
         }
@@ -221,7 +231,7 @@ namespace CloneZ
         private static void WriteContainers(SqliteConnection db, List<ContainerSave> containers)
         {            if (containers == null) return;
             using (var cst = db.Prepare(
-                "INSERT INTO container (kind,posX,posY,posZ,yaw,searched,lifetime) VALUES (?,?,?,?,?,?,?);"))
+                "INSERT INTO container (kind,posX,posY,posZ,yaw,searched,lifetime,fixtureKey) VALUES (?,?,?,?,?,?,?,?);"))
             using (var ist = db.Prepare(
                 "INSERT INTO container_item (containerId,itemId,count,spawnHours,condition,timesRepaired) VALUES (?,?,?,?,?,?);"))
             {
@@ -229,7 +239,7 @@ namespace CloneZ
                 {
                     cst.Reset();
                     cst.Bind(1, c.Kind).Bind(2, c.Position.x).Bind(3, c.Position.y).Bind(4, c.Position.z)
-                       .Bind(5, c.Yaw).Bind(6, c.Searched).Bind(7, c.Lifetime);
+                       .Bind(5, c.Yaw).Bind(6, c.Searched).Bind(7, c.Lifetime).Bind(8, c.FixtureKey);
                     cst.Step();
                     long containerId = db.LastInsertRowId;
 
@@ -318,12 +328,12 @@ namespace CloneZ
         {
             if (house == null) return;
             using (var st = db.Prepare(
-                "INSERT INTO house_piece (type,posX,posY,posZ,yaw,health,maxHealth) VALUES (?,?,?,?,?,?,?);"))
+                "INSERT INTO house_piece (type,posX,posY,posZ,yaw,health,maxHealth,prebuilt) VALUES (?,?,?,?,?,?,?,?);"))
                 foreach (HousePieceSave h in house)
                 {
                     st.Reset();
                     st.Bind(1, h.Type).Bind(2, h.Position.x).Bind(3, h.Position.y).Bind(4, h.Position.z)
-                      .Bind(5, h.Yaw).Bind(6, h.Health).Bind(7, h.MaxHealth);
+                      .Bind(5, h.Yaw).Bind(6, h.Health).Bind(7, h.MaxHealth).Bind(8, h.Prebuilt);
                     st.Step();
                 }
         }
@@ -383,6 +393,19 @@ namespace CloneZ
                     st.Step();
                 }
         }
+
+        private static void WriteFixtures(SqliteConnection db, List<FixtureSave> fixtures)
+        {
+            if (fixtures == null) return;
+            using (var st = db.Prepare("INSERT INTO home_fixture (key,state,a,b,text) VALUES (?,?,?,?,?);"))
+                foreach (FixtureSave f in fixtures)
+                {
+                    if (f == null || string.IsNullOrEmpty(f.Key)) continue;
+                    st.Reset();
+                    st.Bind(1, f.Key).Bind(2, f.State).Bind(3, f.A).Bind(4, f.B).Bind(5, f.Text);
+                    st.Step();
+                }
+        }
         #endregion
 
         #region Read
@@ -405,6 +428,7 @@ namespace CloneZ
                 ReadWater(db, data);
                 ReadProps(db, data);
                 ReadFurniture(db, data);
+                ReadFixtures(db, data);
                 return data;
             }
         }
@@ -416,6 +440,16 @@ namespace CloneZ
                 st.Bind(1, name);
                 return st.Step();
             }
+        }
+
+        // PRAGMA arguments can't be bound, so the table name goes into the statement text; callers only ever
+        // pass one of this store's own table names.
+        private static bool ColumnExists(SqliteConnection db, string table, string column)
+        {
+            using (var st = db.Prepare("PRAGMA table_info(" + table + ");"))
+                while (st.Step())
+                    if (st.GetString(1) == column) return true;   // columns: cid, name, type, notnull, dflt_value, pk
+            return false;
         }
 
         private static bool ReadMeta(SqliteConnection db, SaveData d)
@@ -437,8 +471,18 @@ namespace CloneZ
                 d.Kills = st.GetInt(10);
                 d.Wave = st.GetInt(11);
                 d.TimeSurvived = st.GetFloat(12);
-                return true;
             }
+
+            // The power grid came later: an older save keeps the defaults (power on, failure day 0 = schedule one).
+            if (ColumnExists(db, "meta", "powerOn"))
+                using (var st = db.Prepare("SELECT powerOn,powerShutoffDay,breakerOn FROM meta WHERE id=0;"))
+                    if (st.Step())
+                    {
+                        d.PowerOn = st.GetBool(0);
+                        d.PowerShutoffDay = st.GetInt(1);
+                        d.BreakerOn = st.GetBool(2);
+                    }
+            return true;
         }
 
         private static PlayerSave ReadPlayer(SqliteConnection db)
@@ -527,7 +571,10 @@ namespace CloneZ
         private static void ReadContainers(SqliteConnection db, SaveData d)
         {
             var byId = new Dictionary<long, ContainerSave>();
-            using (var st = db.Prepare("SELECT id,kind,posX,posY,posZ,yaw,searched,lifetime FROM container ORDER BY id;"))
+            bool keys = ColumnExists(db, "container", "fixtureKey");   // older saves had no fixture storage
+            using (var st = db.Prepare(keys
+                ? "SELECT id,kind,posX,posY,posZ,yaw,searched,lifetime,fixtureKey FROM container ORDER BY id;"
+                : "SELECT id,kind,posX,posY,posZ,yaw,searched,lifetime FROM container ORDER BY id;"))
                 while (st.Step())
                 {
                     long id = st.GetInt64(0);
@@ -538,6 +585,7 @@ namespace CloneZ
                         Yaw = st.GetFloat(5),
                         Searched = st.GetBool(6),
                         Lifetime = st.GetFloat(7),
+                        FixtureKey = keys ? st.GetString(8) : null,
                     };
                     byId[id] = c;
                     d.Containers.Add(c);
@@ -664,8 +712,11 @@ namespace CloneZ
         private static void ReadHouse(SqliteConnection db, SaveData d)
         {
             if (!TableExists(db, "house_piece")) return;   // older saves predate house building
-            using (var st = db.Prepare(
-                "SELECT type,posX,posY,posZ,yaw,health,maxHealth FROM house_piece ORDER BY id;"))
+            // Saves from before pieces recorded whether the game raised them have no prebuilt column.
+            d.HasPrebuiltFlags = ColumnExists(db, "house_piece", "prebuilt");
+            using (var st = db.Prepare(d.HasPrebuiltFlags
+                ? "SELECT type,posX,posY,posZ,yaw,health,maxHealth,prebuilt FROM house_piece ORDER BY id;"
+                : "SELECT type,posX,posY,posZ,yaw,health,maxHealth FROM house_piece ORDER BY id;"))
                 while (st.Step())
                     d.House.Add(new HousePieceSave
                     {
@@ -674,6 +725,7 @@ namespace CloneZ
                         Yaw = st.GetFloat(4),
                         Health = st.GetFloat(5),
                         MaxHealth = st.GetFloat(6),
+                        Prebuilt = d.HasPrebuiltFlags && st.GetBool(7),
                     });
         }
 
@@ -732,6 +784,22 @@ namespace CloneZ
                         Position = new Vector3(st.GetFloat(1), st.GetFloat(2), st.GetFloat(3)),
                         Yaw = st.GetFloat(4),
                         Seed = st.GetInt(5),
+                    });
+        }
+
+        private static void ReadFixtures(SqliteConnection db, SaveData d)
+        {
+            if (!TableExists(db, "home_fixture")) return;   // saved before the fixtures were interactive -> loader lays them out
+            d.HasFixtures = true;
+            using (var st = db.Prepare("SELECT key,state,a,b,text FROM home_fixture ORDER BY id;"))
+                while (st.Step())
+                    d.Fixtures.Add(new FixtureSave
+                    {
+                        Key = st.GetString(0),
+                        State = st.GetInt(1),
+                        A = st.GetFloat(2),
+                        B = st.GetFloat(3),
+                        Text = st.GetString(4),
                     });
         }
         #endregion

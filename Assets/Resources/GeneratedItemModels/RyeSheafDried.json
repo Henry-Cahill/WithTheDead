@@ -1,0 +1,16 @@
+{"version": 1, "id": "RyeSheafDried", "baseHeight": 0.12, "name": "Rye Sheaf Dried", "model": "gpt-oss:120b", "notes": "Loose dried rye sheaf bundled in a simple brown paper sack, lying on its side (X‑axis). Sack ~0.22 m × 0.12 m × 0.16 m; bundle of thin straw stalks (~0.25 m long) tied with a short twine band.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[0.009,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.12,0.16],"color":[0.42,0.33,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"BagFlap","shape":"cube","pos":[0.009,0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.01,0.16],"color":[0.42,0.33,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.071,0.03,0.07],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk1","shape":"cylinder","pos":[-0.061,-0.015,-0.02],"rot":[0.0,0.0,90.0],"size":[0.01,0.26,0.01],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk2","shape":"cylinder","pos":[-0.031,-0.013,-0.03],"rot":[0.0,5.0,90.0],"size":[0.01,0.255,0.01],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk3","shape":"cylinder","pos":[-0.001,-0.017,-0.025],"rot":[0.0,-4.0,90.0],"size":[0.01,0.258,0.01],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk4","shape":"cylinder","pos":[0.029,-0.014,-0.015],"rot":[0.0,2.0,90.0],"size":[0.01,0.252,0.01],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk5","shape":"cylinder","pos":[0.064,-0.016,-0.02],"rot":[0.0,-3.0,90.0],"size":[0.01,0.254,0.01],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk6","shape":"cylinder","pos":[-0.061,-0.015,0.02],"rot":[0.0,0.0,90.0],"size":[0.01,0.26,0.01],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk7","shape":"cylinder","pos":[-0.031,-0.013,0.03],"rot":[0.0,-5.0,90.0],"size":[0.01,0.255,0.01],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk8","shape":"cylinder","pos":[-0.001,-0.017,0.025],"rot":[0.0,4.0,90.0],"size":[0.01,0.258,0.01],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk9","shape":"cylinder","pos":[0.029,-0.014,0.015],"rot":[0.0,-2.0,90.0],"size":[0.01,0.252,0.01],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk10","shape":"cylinder","pos":[0.064,-0.016,0.02],"rot":[0.0,3.0,90.0],"size":[0.01,0.254,0.01],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TwineBand","shape":"cylinder","pos":[0.004,-0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.12,0.008],"color":[0.3,0.2,0.1],"smooth":0.2,"metal":0.0}
+]}

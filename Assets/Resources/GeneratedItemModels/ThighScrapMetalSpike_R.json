@@ -1,0 +1,8 @@
+{"version": 1, "id": "ThighScrapMetalSpike_R", "baseHeight": 0.08, "name": "Thigh Scrap Metal Spike R", "model": "gpt-oss:120b", "notes": "Scrap metal spike ~0.35 m long, 4 cm diameter, pointy tip on one end, a small rivet near the middle and a few rust patches; lying on its side (long axis along X) with the shaft resting on the floor.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.02,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.35,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.9},
+  {"name":"Tip","shape":"sphere","pos":[0.175,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.9},
+  {"name":"RivetHead","shape":"cylinder","pos":[-0.02,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.35,0.33,0.3],"smooth":0.2,"metal":0.9},
+  {"name":"RivetPin","shape":"cylinder","pos":[-0.02,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.04,0.008],"color":[0.35,0.33,0.3],"smooth":0.2,"metal":0.9},
+  {"name":"RustPatch1","shape":"cube","pos":[-0.1,0.0,0.024],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.008],"color":[0.42,0.28,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"RustPatch2","shape":"cube","pos":[0.05,0.0,-0.024],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.008],"color":[0.42,0.28,0.12],"smooth":0.05,"metal":0.0}
+]}

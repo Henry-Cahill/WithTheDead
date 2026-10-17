@@ -1,0 +1,11 @@
+{"version": 1, "id": "Vambrace_Left", "baseHeight": 0.11, "name": "Vambrace Left", "model": "gpt-oss:120b", "notes": "Left vambrace ~0.30 m long, 0.10 m wide (outer diameter) and 0.02 m thick when lying on its side. Built as a hollow semi‑cylinder with an inner leather lining, a front strap and four rivets, plus end caps to close the tube.", "score": 6, "parts": [
+  {"name":"OuterShell","shape":"cylinder","pos":[0.0,0.0,-0.012],"rot":[0.0,0.0,90.0],"size":[0.1,0.3,0.1],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"InnerLining","shape":"cylinder","pos":[0.0,0.0,-0.012],"rot":[0.0,0.0,90.0],"size":[0.08,0.3,0.08],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"FrontStrap","shape":"cube","pos":[0.0,0.0,0.048],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.02],"color":[0.5,0.48,0.42],"smooth":0.12,"metal":0.0},
+  {"name":"Rivet1","shape":"sphere","pos":[-0.12,0.008,0.058],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet2","shape":"sphere","pos":[-0.04,0.008,0.058],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet3","shape":"sphere","pos":[0.04,0.008,0.058],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet4","shape":"sphere","pos":[0.12,0.008,0.058],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"EndCapL","shape":"cylinder","pos":[-0.15,0.0,-0.012],"rot":[0.0,0.0,90.0],"size":[0.1,0.02,0.1],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"EndCapR","shape":"cylinder","pos":[0.15,0.0,-0.012],"rot":[0.0,0.0,90.0],"size":[0.1,0.02,0.1],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0}
+]}

@@ -1,0 +1,11 @@
+{"version": 1, "id": "RicePanCopper", "baseHeight": 0.1725, "name": "Rice Pan Copper", "model": "gpt-oss:120b", "notes": "Copper rice‑pan with wooden handle, shallow body (≈0.28 m dia × 0.06 m deep) and a simple dome lid; shown inside an open cardboard sleeve that would be found in the game world.", "score": 6, "parts": [
+  {"name":"BoxShell","shape":"cube","pos":[0.0,-0.0375,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.15,0.38],"color":[0.6,0.5,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"BoxFlap","shape":"cube","pos":[0.0,0.0395,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.02,0.38],"color":[0.58,0.48,0.39],"smooth":0.05,"metal":0.0},
+  {"name":"PanBody","shape":"cylinder","pos":[-0.12,-0.0825,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.06,0.28],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"PanRim","shape":"cylinder","pos":[-0.12,-0.0525,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.3],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.155,-0.0825,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.15,0.03],"color":[0.3,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"LidDome","shape":"sphere","pos":[-0.12,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.22,0.22],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"RiceGrainA","shape":"sphere","pos":[-0.08,-0.0375,0.04],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.95,0.9,0.8],"smooth":0.02,"metal":0.0},
+  {"name":"RiceGrainB","shape":"sphere","pos":[-0.06,-0.0345,-0.03],"rot":[0.0,0.0,0.0],"size":[0.014,0.014,0.014],"color":[0.95,0.9,0.8],"smooth":0.02,"metal":0.0},
+  {"name":"RiceGrainC","shape":"sphere","pos":[-0.1,-0.0405,0.01],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.95,0.9,0.8],"smooth":0.02,"metal":0.0}
+]}

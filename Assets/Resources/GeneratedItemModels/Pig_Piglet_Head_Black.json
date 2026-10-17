@@ -1,0 +1,11 @@
+{"version": 1, "id": "Pig_Piglet_Head_Black", "baseHeight": 0.12, "name": "Pig Piglet Head Black", "model": "gpt-oss:120b", "notes": "Piglet head ~0.16 m wide × 0.12 m tall × 0.18 m long, lying on its side with snout pointing +Z. Main flesh ellipsoid, protruding snout cylinder, two ear cylinders, tiny nostril spheres and a lower‑jaw block for silhouette detail.", "score": 6, "parts": [
+  {"name":"MainHead","shape":"sphere","pos":[0.0,0.0,-0.023],"rot":[0.0,0.0,0.0],"size":[0.16,0.12,0.18],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Snout","shape":"cylinder","pos":[0.0,0.0,0.067],"rot":[90.0,0.0,0.0],"size":[0.05,0.08,0.05],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"NostrilL","shape":"sphere","pos":[-0.015,0.0,0.107],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.2,0.18,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"NostrilR","shape":"sphere","pos":[0.015,0.0,0.107],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.2,0.18,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"EarL","shape":"cylinder","pos":[-0.07,0.03,-0.023],"rot":[0.0,0.0,30.0],"size":[0.02,0.045,0.02],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"EarR","shape":"cylinder","pos":[0.07,0.03,-0.023],"rot":[0.0,0.0,-30.0],"size":[0.02,0.045,0.02],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Jaw","shape":"cube","pos":[0.0,-0.025,-0.063],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.06],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"ChinDetail","shape":"sphere","pos":[0.0,-0.03,-0.093],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.5,0.48,0.42],"smooth":0.2,"metal":0.0},
+  {"name":"SkinFold","shape":"cube","pos":[0.0,0.015,0.017],"rot":[15.0,0.0,0.0],"size":[0.14,0.005,0.06],"color":[0.58,0.56,0.48],"smooth":0.2,"metal":0.0}
+]}

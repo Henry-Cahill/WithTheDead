@@ -1,0 +1,12 @@
+{"version": 1, "id": "Shirt_NoSleeves_Crafted_Burlap", "baseHeight": 0.0825, "name": "Shirt No Sleeves Crafted Burlap", "model": "gpt-oss:120b", "notes": "Sleeveless burlap shirt (tank‑top style) laid flat, ~0.55 m wide × 0.70 m long × 0.025 m thick. Main panel with a round neck opening, side seams, hem band, top edge strip, simple collar pieces and a small patch detail.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.01,-0.02],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.7],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.0,0.0025,0.28],"rot":[0.0,0.0,0.0],"size":[0.18,0.04,0.18],"color":[0.0,0.0,0.0],"smooth":1.0,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.2725,-0.01,-0.02],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.7],"color":[0.48,0.464,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.2725,-0.01,-0.02],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.7],"color":[0.48,0.464,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"TopEdgeStrip","shape":"cube","pos":[0.0,0.0025,0.28],"rot":[0.0,0.0,0.0],"size":[0.55,0.005,0.02],"color":[0.48,0.464,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"CollarFront","shape":"cube","pos":[0.0,0.0025,0.29],"rot":[0.0,0.0,0.0],"size":[0.18,0.005,0.02],"color":[0.48,0.464,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBack","shape":"cube","pos":[0.0,0.0025,0.27],"rot":[0.0,0.0,0.0],"size":[0.18,0.005,0.02],"color":[0.48,0.464,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"HemBack","shape":"cube","pos":[0.0,-0.02,-0.36],"rot":[0.0,0.0,0.0],"size":[0.55,0.005,0.02],"color":[0.48,0.464,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"HemFront","shape":"cube","pos":[0.0,-0.02,0.32],"rot":[0.0,0.0,0.0],"size":[0.55,0.005,0.02],"color":[0.48,0.464,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"Patch","shape":"cube","pos":[0.0,-0.0095,0.08],"rot":[0.0,0.0,0.0],"size":[0.1,0.002,0.15],"color":[0.72,0.696,0.6],"smooth":0.05,"metal":0.0}
+]}

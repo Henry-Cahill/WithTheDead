@@ -1,0 +1,9 @@
+{"version": 1, "id": "Strewberrie", "baseHeight": 0.128, "name": "Strewberrie", "model": "gpt-oss:120b", "notes": "Small jam jar 0.08 m diameter × 0.12 m tall, lying upright on the floor: translucent glass body filled with yellow‑brown jam (tint 0.75,0.68,0.45), thin metal lid, white paper label with dark brown trim.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.12,0.08],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.0605,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.015,0.082],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"LabelBand","shape":"cylinder","pos":[0.0,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.002,0.082],"color":[0.9,0.9,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrim","shape":"cylinder","pos":[0.0,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.084,0.002,0.084],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"JamSurface","shape":"cylinder","pos":[0.0,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.078,0.002,0.078],"color":[0.78,0.66,0.42],"smooth":0.3,"metal":0.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.052,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.004,0.082],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.066,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.004,0.082],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0}
+]}

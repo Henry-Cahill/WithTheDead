@@ -1,0 +1,14 @@
+{"version": 1, "id": "Tshirt_LongSleeve_HuntingCamo", "baseHeight": 0.2208, "name": "Tshirt Long Sleeve Hunting Camo", "model": "gpt-oss:120b", "notes": "Flat long‑sleeve hunting camo shirt laid out flat (≈0.70 m length × 0.45 m torso width, sleeves 0.60 m each). Cloth thickness ~2 cm, base tint 0.55 0.5 0.6 with darker camouflage patches. Sleeves spread outward at ≈30° for a clear silhouette.", "score": 3, "parts": [
+  {"name":"TorsoPanel","shape":"cube","pos":[0.1675,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.03,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftSleevePanel","shape":"cube","pos":[0.1675,-0.0,-0.325],"rot":[0.0,0.0,30.0],"size":[0.6,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightSleevePanel","shape":"cube","pos":[0.1675,-0.0,0.325],"rot":[0.0,0.0,-30.0],"size":[0.6,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftCuff","shape":"cube","pos":[0.4475,-0.0,-0.325],"rot":[0.0,0.0,30.0],"size":[0.12,0.02,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightCuff","shape":"cube","pos":[0.4475,-0.0,0.325],"rot":[0.0,0.0,-30.0],"size":[0.12,0.02,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.4975,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.46],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[-0.1825,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.008,0.46],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CamPatch1","shape":"sphere","pos":[0.3175,0.01,-0.35],"rot":[0.0,0.0,0.0],"size":[0.14,0.09,0.14],"color":[0.34,0.38,0.27],"smooth":0.1,"metal":0.0},
+  {"name":"CamPatch2","shape":"sphere","pos":[-0.0825,0.01,0.15],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.12],"color":[0.42,0.46,0.33],"smooth":0.1,"metal":0.0},
+  {"name":"CamPatch3","shape":"sphere","pos":[0.2175,0.01,0.35],"rot":[0.0,0.0,0.0],"size":[0.1,0.07,0.1],"color":[0.3,0.34,0.24],"smooth":0.1,"metal":0.0},
+  {"name":"CamPatch4","shape":"sphere","pos":[0.1175,0.01,-0.15],"rot":[0.0,0.0,0.0],"size":[0.11,0.075,0.11],"color":[0.38,0.42,0.29],"smooth":0.1,"metal":0.0},
+  {"name":"CamPatch5","shape":"sphere","pos":[0.4675,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.06,0.09],"color":[0.36,0.4,0.28],"smooth":0.1,"metal":0.0}
+]}

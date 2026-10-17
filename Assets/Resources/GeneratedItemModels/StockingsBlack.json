@@ -1,0 +1,9 @@
+{"version": 1, "id": "StockingsBlack", "baseHeight": 0.08, "name": "Stockings Black", "model": "gpt-oss:120b", "notes": "Black stockings ~0.90 m long, two thin leg tubes (0.04 m diameter) lying flat along X with a short waist‑band at the top. Small elastic bands shown near foot and top of each leg.", "score": 6, "parts": [
+  {"name":"LegL","shape":"cylinder","pos":[-0.015,0.0,0.03],"rot":[0.0,0.0,90.0],"size":[0.04,0.9,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cylinder","pos":[-0.015,0.0,-0.03],"rot":[0.0,0.0,90.0],"size":[0.04,0.9,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.405,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FootBandL","shape":"cylinder","pos":[-0.44,0.0,0.03],"rot":[0.0,0.0,90.0],"size":[0.04,0.05,0.04],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"FootBandR","shape":"cylinder","pos":[-0.44,0.0,-0.03],"rot":[0.0,0.0,90.0],"size":[0.04,0.05,0.04],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"TopBandL","shape":"cylinder","pos":[0.41,0.0,0.03],"rot":[0.0,0.0,90.0],"size":[0.04,0.05,0.04],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"TopBandR","shape":"cylinder","pos":[0.41,0.0,-0.03],"rot":[0.0,0.0,90.0],"size":[0.04,0.05,0.04],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0}
+]}

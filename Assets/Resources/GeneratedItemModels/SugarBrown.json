@@ -1,0 +1,9 @@
+{"version": 1, "id": "SugarBrown", "baseHeight": 0.134, "name": "Sugar Brown", "model": "gpt-oss:120b", "notes": "Brown sugar in a paper bag (≈0.08 m wide × 0.14 m tall × 0.05 m deep). Bag body with top seam, front label, twist‑tie around the opening and a loose brown‑sugar ellipsoid inside.", "score": 7, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[0.0,-0.004,-0.0017],"rot":[0.0,0.0,0.0],"size":[0.08,0.14,0.05],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TopSeam","shape":"cube","pos":[0.0,0.064,-0.0017],"rot":[0.0,0.0,0.0],"size":[0.082,0.004,0.052],"color":[0.6,0.55,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,-0.004,0.0238],"rot":[0.0,0.0,0.0],"size":[0.07,0.04,0.002],"color":[0.45,0.35,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"TwistTie","shape":"cylinder","pos":[0.0,0.07,0.0238],"rot":[0.0,0.0,90.0],"size":[0.008,0.09,0.008],"color":[0.4,0.35,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"SugarLump","shape":"sphere","pos":[0.0,-0.024,-0.0017],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.04],"color":[0.55,0.45,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0,0.016,0.0238],"rot":[0.0,0.0,0.0],"size":[0.072,0.003,0.002],"color":[0.35,0.28,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.0,-0.024,0.0238],"rot":[0.0,0.0,0.0],"size":[0.072,0.003,0.002],"color":[0.35,0.28,0.15],"smooth":0.05,"metal":0.0}
+]}

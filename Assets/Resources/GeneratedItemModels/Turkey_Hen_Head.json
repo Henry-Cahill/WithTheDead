@@ -1,0 +1,10 @@
+{"version": 1, "id": "Turkey_Hen_Head", "baseHeight": 0.1375, "name": "Turkey Hen Head", "model": "gpt-oss:120b", "notes": "Turkey hen head about 12 cm long, 8 cm wide and 10 cm tall, lying on the floor face‑up. Main flesh ellipsoid, yellow beak, red snood on top, two red wattles under the beak and black eyes.", "score": 6, "parts": [
+  {"name":"HeadFlesh","shape":"sphere","pos":[0.0,-0.0225,-0.015],"rot":[0.0,0.0,0.0],"size":[0.12,0.11,0.1],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Beak","shape":"cylinder","pos":[0.0,-0.0225,0.065],"rot":[90.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.85,0.75,0.25],"smooth":0.4,"metal":0.0},
+  {"name":"Snood","shape":"cylinder","pos":[0.0,0.0575,-0.015],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.8,0.1,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"WattleL","shape":"cylinder","pos":[-0.01,-0.0425,-0.035],"rot":[0.0,0.0,0.0],"size":[0.012,0.025,0.012],"color":[0.8,0.1,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"WattleR","shape":"cylinder","pos":[0.01,-0.0425,-0.035],"rot":[0.0,0.0,0.0],"size":[0.012,0.025,0.012],"color":[0.8,0.1,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[-0.025,-0.0025,0.025],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.0,0.0,0.0],"smooth":0.6,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.025,-0.0025,0.025],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.0,0.0,0.0],"smooth":0.6,"metal":0.0},
+  {"name":"NeckStub","shape":"cylinder","pos":[0.0,-0.0625,-0.055],"rot":[90.0,0.0,0.0],"size":[0.018,0.06,0.018],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0}
+]}

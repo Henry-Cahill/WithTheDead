@@ -1,0 +1,9 @@
+{"version": 1, "id": "WildGarlic2", "baseHeight": 0.07, "name": "Wild Garlic2", "model": "gpt-oss:120b", "notes": "Loose bunch of wild garlic in a thin paper bag, about 0.15 m long × 0.12 m wide × 0.02 m thick, tied with a small twine loop.", "score": 6, "parts": [
+  {"name":"Bag","shape":"cube","pos":[-0.0004,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.15],"color":[0.8,0.75,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Twine","shape":"cylinder","pos":[-0.0004,0.004,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.5,0.45,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Leaf1","shape":"cube","pos":[-0.0054,0.002,0.02],"rot":[0.0,5.0,0.0],"size":[0.11,0.003,0.018],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf2","shape":"cube","pos":[0.0096,0.003,-0.03],"rot":[0.0,-12.0,0.0],"size":[0.105,0.003,0.02],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf3","shape":"cube","pos":[-0.0084,0.001,-0.01],"rot":[0.0,8.0,0.0],"size":[0.108,0.003,0.017],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf4","shape":"cube","pos":[0.0036,0.004,0.04],"rot":[0.0,-6.0,0.0],"size":[0.102,0.003,0.019],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf5","shape":"cube","pos":[-0.0024,0.002,-0.04],"rot":[0.0,3.0,0.0],"size":[0.11,0.003,0.018],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "FlatheadCatfish", "baseHeight": 0.095, "name": "Flathead Catfish", "model": "gpt-oss:120b", "notes": "Whole flathead catfish (~0.25 m long × 0.10 m wide) in a clear‑plastic tray with thin lid film.  Tray base and walls are light‑gray plastic, fish flesh uses the given tint (0.75,0.68,0.45).  Small black spheres for eyes add a hint of detail.", "score": 6, "parts": [
+  {"name":"TrayBase","shape":"cube","pos":[0.0,-0.023,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.01,0.12],"color":[0.82,0.82,0.84],"smooth":0.2,"metal":0.0},
+  {"name":"TraySideFront","shape":"cube","pos":[0.0,-0.003,0.0555],"rot":[0.0,0.0,0.0],"size":[0.26,0.04,0.01],"color":[0.78,0.78,0.8],"smooth":0.2,"metal":0.0},
+  {"name":"TraySideBack","shape":"cube","pos":[0.0,-0.003,-0.0555],"rot":[0.0,0.0,0.0],"size":[0.26,0.04,0.01],"color":[0.78,0.78,0.8],"smooth":0.2,"metal":0.0},
+  {"name":"TraySideLeft","shape":"cube","pos":[-0.13,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.12],"color":[0.78,0.78,0.8],"smooth":0.2,"metal":0.0},
+  {"name":"TraySideRight","shape":"cube","pos":[0.13,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.12],"color":[0.78,0.78,0.8],"smooth":0.2,"metal":0.0},
+  {"name":"LidFilm","shape":"cube","pos":[0.0,0.017,0.0],"rot":[0.0,0.0,0.0],"size":[0.255,0.002,0.115],"color":[0.95,0.96,0.97],"smooth":0.05,"metal":0.0},
+  {"name":"FishBody","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.07,0.11],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FishHead","shape":"sphere","pos":[-0.105,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.07],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FishTail","shape":"cylinder","pos":[0.115,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,0.03,0.04],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[-0.12,0.004,0.025],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.05,0.05,0.07],"smooth":0.6,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[-0.12,0.004,-0.025],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.05,0.05,0.07],"smooth":0.6,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.019,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.09],"color":[0.42,0.33,0.25],"smooth":0.1,"metal":0.0}
+]}

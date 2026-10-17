@@ -1,0 +1,260 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace CloneZ
+{
+    /// <summary>
+    /// The bathroom's pedestal basin: a single-lever mixer tap and a plug on a chain. The tap runs while the mains do (it
+    /// stops by itself after the shut-off, the lever left up) and can be heard a little way off. With the plug in, running
+    /// water fills the bowl — a basinful is about a drink's worth of clean water, and it stays after the shut-off for as
+    /// long as the plug does; pull the plug and it drains away. It's an <see cref="IWaterPoint"/>: drink from the tap or
+    /// fill a bottle (G works here too). And the everyday things: wash your hands and face, brush your teeth, have a shave
+    /// — each runs the tap for you while the mains are on, or uses some of the basinful once they're off. Saves the tap,
+    /// the plug and the water in the bowl.
+    /// </summary>
+    [DisallowMultipleComponent]
+    public class BasinFixture : Interactable, IWaterPoint
+    {
+        private static readonly string[] BrushLines =
+        {
+            "Two minutes of brushing, counted in your head. A small, stubborn piece of normal.",
+            "You brush until your gums tingle and rinse with a splash. Minty. Almost civilised.",
+        };
+
+        private static readonly string[] ShaveLines =
+        {
+            "A slow, careful shave. You only nick yourself once.",
+            "Lather, scrape, rinse. Steady hands. It's good to do something properly for a change.",
+            "You shave by the mirror's say-so. The face underneath looks almost like the old you.",
+        };
+
+        private HomeFurniture _host;
+        private string _key;
+        private Vector3 _point, _spout;
+        private FixturePart _lever;
+        private Renderer _stream, _sheetRenderer, _plugIn, _plugOut;
+        private Transform _sheet;
+        private Vector3 _sheetFull;
+        private bool _tapOpen, _plugged, _borrowedTap;
+        private float _level;                // water standing in the bowl: 0 none .. 1 full
+        private float _nextNoise;
+
+        public override string DisplayName => "Basin";
+        public override Vector3 InteractPoint => _point;
+        public override Transform OcclusionRoot => _host != null ? _host.transform : transform;
+        public override string SaveKey => _key;
+
+        /// <summary>True while water is actually running from the tap.</summary>
+        public bool Running => _tapOpen && WaterMains.MainsOn;
+
+        #region IWaterPoint
+        public Vector3 WaterPosition => _spout;
+        public string WaterLabel => WaterMains.MainsOn ? "tap" : "basin";
+        public bool HasWater => WaterMains.MainsOn || _level >= CloneZConfig.BasinDrinkLevel;
+        public bool IsTainted => false;
+        public string DryMessage => _level > 0.02f ? "There's barely a puddle left in the basin" : "The tap is dry \u2014 the water's been shut off";
+
+        public void DrawWater()
+        {
+            if (WaterMains.MainsOn) return;   // straight from the tap: as much as you like while it runs
+            _level = Mathf.Max(0f, _level - 1f);   // a basinful makes a single drink
+            ShowWater();
+        }
+        #endregion
+
+        /// <summary>The basin's fixture on <paramref name="host"/> (the basin itself): its points come from the basin's
+        /// drawing (<see cref="FurnitureBuilder.PedestalBasin"/>) and its key from where it stands.</summary>
+        internal static BasinFixture Create(HomeFurniture host)
+        {
+            Vector3 point = BathroomFixtures.Point(host, FurnitureBuilder.BasinReach);
+            var go = new GameObject("BasinFixture");
+            go.transform.SetParent(host.transform, false);
+            go.transform.SetPositionAndRotation(point, Quaternion.identity);
+            var b = go.AddComponent<BasinFixture>();
+            b._host = host;
+            b._point = point;
+            b._spout = BathroomFixtures.Point(host, FurnitureBuilder.BasinSpout);
+            b._key = KeyFor("basin", host.transform.position);
+            return b;
+        }
+
+        /// <summary>Hands over the tap's lever (hinged to lift when on), the stream (shown while it runs), the water sheet
+        /// (drawn full, its origin on the surface's middle; it sinks and narrows with the level) and the plug in the drain
+        /// and out on the deck.</summary>
+        internal void SetParts(FixturePart lever, Renderer stream, Renderer sheet, Renderer plugIn, Renderer plugOut)
+        {
+            _lever = lever;
+            _stream = stream;
+            _sheetRenderer = sheet;
+            _sheet = sheet != null ? sheet.transform : null;
+            if (_sheet != null) _sheetFull = _sheet.position;
+            _plugIn = plugIn;
+            _plugOut = plugOut;
+            SetTap(_tapOpen, true);
+            ShowPlug();
+            ShowWater();
+        }
+
+        private void Update()
+        {
+            bool running = Running;
+            if (_stream != null && _stream.enabled != running) _stream.enabled = running;
+
+            // Plugged, the running tap fills the bowl; unplugged, whatever's in it drains away.
+            float before = _level;
+            if (_plugged)
+            {
+                if (running && _level < 1f) _level = Mathf.Min(1f, _level + Time.deltaTime / CloneZConfig.BasinFillSeconds);
+            }
+            else if (_level > 0f) _level = Mathf.Max(0f, _level - Time.deltaTime / CloneZConfig.BasinDrainSeconds);
+            if (_level != before) ShowWater();
+
+            if (running && Time.time >= _nextNoise)
+            {
+                _nextNoise = Time.time + CloneZConfig.BasinTapNoiseInterval;
+                MakeNoise(CloneZConfig.BasinTapNoiseRadius);
+            }
+        }
+
+        private void ShowWater()
+        {
+            if (_sheet == null) return;
+            bool any = _level > 0.01f;
+            if (_sheetRenderer.enabled != any) _sheetRenderer.enabled = any;
+            float k = FurnitureBuilder.BasinWaterScale(_level);
+            _sheet.localScale = new Vector3(k, 1f, k);
+            _sheet.position = _sheetFull + Vector3.down * ((1f - _level) * FurnitureBuilder.BasinWaterDepth);
+        }
+
+        private void ShowPlug()
+        {
+            if (_plugIn != null && _plugIn.enabled != _plugged) _plugIn.enabled = _plugged;
+            if (_plugOut != null && _plugOut.enabled == _plugged) _plugOut.enabled = !_plugged;
+        }
+
+        public override void GetActions(InteractContext ctx, List<InteractAction> into)
+        {
+            into.Add(new InteractAction(_tapOpen ? "Turn off the tap" : "Turn on the tap", c => Turn(c, !_tapOpen)));
+            into.Add(new InteractAction(_plugged ? "Pull the plug out" : "Put the plug in", c => SetPlug(c, !_plugged)));
+            WaterUse.AddDrinkAndFill(ctx, this, into);
+
+            bool mains = WaterMains.MainsOn;
+            var wash = new InteractAction("Wash your hands and face", Wash)
+                .Timed(CloneZConfig.BasinWashSeconds, "Washing", HumanoidActivity.Use)
+                .DisabledIf(!mains && _level < CloneZConfig.BasinWashWater * 0.5f, DryMessage);
+            wash.Begin = BorrowTap;
+            wash.Stopped = ReturnTap;
+            into.Add(wash);
+
+            var brush = new InteractAction("Brush your teeth", Brush)
+                .Timed(CloneZConfig.BasinBrushSeconds, "Brushing your teeth", HumanoidActivity.Use);
+            brush.Begin = BorrowTap;
+            brush.Stopped = ReturnTap;
+            into.Add(brush);
+
+            var shave = new InteractAction("Have a shave", Shave)
+                .Timed(CloneZConfig.BasinShaveSeconds, "Shaving", HumanoidActivity.Use)
+                .DisabledIf(!mains && _level < CloneZConfig.BasinShaveWater * 0.5f, "There's no water to shave with");
+            shave.Begin = BorrowTap;
+            shave.Stopped = ReturnTap;
+            into.Add(shave);
+        }
+
+        private void Turn(InteractContext ctx, bool open)
+        {
+            _borrowedTap = false;
+            SetTap(open, false);
+            if (open && !WaterMains.MainsOn) ctx.Notify("The tap coughs and shudders, and nothing comes. The water's off.");
+        }
+
+        private void SetTap(bool open, bool instant)
+        {
+            _tapOpen = open;
+            if (_lever != null) _lever.SetOpen(open, instant);
+            if (!instant) MakeNoise(CloneZConfig.BasinTapTurnNoise);
+            bool running = Running;
+            if (_stream != null && _stream.enabled != running) _stream.enabled = running;
+        }
+
+        private void SetPlug(InteractContext ctx, bool plugged)
+        {
+            _plugged = plugged;
+            ShowPlug();
+            if (plugged && Running) ctx.Notify("You push the plug in and the basin starts to fill.");
+            else if (!plugged && _level > 0.05f)
+                ctx.Notify(WaterMains.MainsOn
+                    ? "The water gurgles away down the drain."
+                    : "Out comes the plug, and the water you saved swirls away down the drain.");
+        }
+
+        // A wash, a brush or a shave runs the tap for its length while the mains are on (and turns it off again after).
+        private void BorrowTap(InteractContext ctx)
+        {
+            if (!WaterMains.MainsOn || _tapOpen) return;
+            _borrowedTap = true;
+            SetTap(true, false);
+        }
+
+        private void ReturnTap(InteractContext ctx)
+        {
+            if (!_borrowedTap) return;
+            _borrowedTap = false;
+            SetTap(false, false);
+        }
+
+        // Once the mains are off, a share of the basinful; true when there was water to be had.
+        private bool UseStored(float share)
+        {
+            if (WaterMains.MainsOn) return true;
+            if (_level <= 0.02f) return false;
+            _level = Mathf.Max(0f, _level - share);
+            ShowWater();
+            return true;
+        }
+
+        private void Wash(InteractContext ctx)
+        {
+            bool mains = WaterMains.MainsOn;
+            ReturnTap(ctx);
+            UseStored(CloneZConfig.BasinWashWater);
+            WaterUse.Freshen(ctx, CloneZConfig.BasinWashFreshen);
+            ctx.Notify(!mains ? "You wash in the water you saved in the basin. Every drop counts now."
+                : PowerGrid.HousePowered ? "Warm water and soap. You scrub your hands, splash your face and feel more like yourself."
+                : "The water's cold \u2014 no power for the heater \u2014 but it wakes you up.");
+        }
+
+        private void Brush(InteractContext ctx)
+        {
+            ReturnTap(ctx);
+            bool wet = UseStored(CloneZConfig.BasinBrushWater);
+            BathroomFixtures.Nerves(ctx, -CloneZConfig.BasinBrushCalm);
+            ctx.Notify(wet ? BrushLines[Random.Range(0, BrushLines.Length)]
+                : "No water to rinse with, so you brush dry and spit into the basin. Better than nothing.");
+        }
+
+        private void Shave(InteractContext ctx)
+        {
+            ReturnTap(ctx);
+            UseStored(CloneZConfig.BasinShaveWater);
+            BathroomFixtures.Nerves(ctx, -CloneZConfig.BasinShaveCalm);
+            ctx.Notify(ShaveLines[Random.Range(0, ShaveLines.Length)]);
+        }
+
+        public override void CaptureState(FixtureSave save)
+        {
+            save.State = (_tapOpen && !_borrowedTap ? 1 : 0) | (_plugged ? 2 : 0) | 4;
+            save.A = _level;
+        }
+
+        public override void RestoreState(FixtureSave save)
+        {
+            if ((save.State & 4) == 0) return;
+            _borrowedTap = false;
+            SetTap((save.State & 1) != 0, true);
+            _plugged = (save.State & 2) != 0;
+            ShowPlug();
+            _level = Mathf.Clamp01(save.A);
+            ShowWater();
+        }
+    }
+}

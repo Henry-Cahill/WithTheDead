@@ -1,0 +1,12 @@
+{"version": 1, "id": "Wound_RHand_Laceration_Female", "baseHeight": 0.068, "name": "Wound RHand Laceration Female", "model": "gpt-oss:120b", "notes": "Dried blood clot & torn skin fragment from a right‑hand laceration, roughly 0.08 m wide × 0.02 m high × 0.015 m thick, spread on the floor as a lump with irregular splatter patches.", "score": 6, "parts": [
+  {"name":"MainClot","shape":"sphere","pos":[0.003,-0.0005,-0.0058],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.07],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"SkinFlap","shape":"cube","pos":[-0.017,0.0005,0.0092],"rot":[0.0,15.0,0.0],"size":[0.04,0.004,0.06],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"BloodPatch1","shape":"sphere","pos":[0.018,0.0035,-0.0258],"rot":[0.0,0.0,0.0],"size":[0.03,0.006,0.025],"color":[0.45,0.2,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"BloodPatch2","shape":"sphere","pos":[-0.015,0.0025,0.0192],"rot":[0.0,0.0,0.0],"size":[0.022,0.005,0.02],"color":[0.45,0.2,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"BloodPatch3","shape":"sphere","pos":[0.028,0.0005,-0.0358],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.015],"color":[0.45,0.2,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"DarkSpotA","shape":"sphere","pos":[-0.007,0.0055,0.0092],"rot":[0.0,0.0,0.0],"size":[0.008,0.002,0.007],"color":[0.3,0.05,0.02],"smooth":0.1,"metal":0.0},
+  {"name":"DarkSpotB","shape":"sphere","pos":[0.033,0.0045,-0.0208],"rot":[0.0,0.0,0.0],"size":[0.006,0.002,0.005],"color":[0.3,0.05,0.02],"smooth":0.1,"metal":0.0},
+  {"name":"CrustEdge","shape":"cube","pos":[0.003,0.0065,-0.0058],"rot":[0.0,0.0,0.0],"size":[0.082,0.003,0.072],"color":[0.55,0.45,0.35],"smooth":0.08,"metal":0.0},
+  {"name":"FineSplatter1","shape":"sphere","pos":[-0.022,-0.0015,-0.0258],"rot":[0.0,0.0,0.0],"size":[0.012,0.002,0.011],"color":[0.45,0.2,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"FineSplatter2","shape":"sphere","pos":[0.023,-0.0025,0.0242],"rot":[0.0,0.0,0.0],"size":[0.011,0.002,0.01],"color":[0.45,0.2,0.15],"smooth":0.1,"metal":0.0}
+]}

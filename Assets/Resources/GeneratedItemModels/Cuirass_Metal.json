@@ -1,0 +1,13 @@
+{"version": 1, "id": "Cuirass_Metal", "baseHeight": 0.0725, "name": "Cuirass Metal", "model": "gpt-oss:120b", "notes": "Metal cuirass lying on the floor, about 0.5 m wide × 0.3 m tall × ~2 cm thick overall. Front and back plates with side flares, a top ridge, a thin waist belt, straps and three rivets for detail.", "score": 7, "parts": [
+  {"name":"FrontPlate","shape":"cube","pos":[0.0,-0.005,0.075],"rot":[0.0,0.0,0.0],"size":[0.5,0.015,0.15],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BackPlate","shape":"cube","pos":[0.0,-0.005,-0.075],"rot":[0.0,0.0,0.0],"size":[0.5,0.015,0.15],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"LeftSideFlare","shape":"cube","pos":[-0.275,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.015,0.3],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RightSideFlare","shape":"cube","pos":[0.275,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.015,0.3],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TopRidge","shape":"cube","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.01,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"WaistBelt","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.005,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RivetL","shape":"cylinder","pos":[-0.2,0.0045,0.075],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.8,0.8,0.8],"smooth":0.65,"metal":1.0},
+  {"name":"RivetC","shape":"cylinder","pos":[0.0,0.0045,0.075],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.8,0.8,0.8],"smooth":0.65,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[0.2,0.0045,0.075],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.8,0.8,0.8],"smooth":0.65,"metal":1.0},
+  {"name":"StrapL","shape":"cylinder","pos":[-0.2,0.0025,0.0],"rot":[90.0,0.0,0.0],"size":[0.012,0.12,0.012],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"StrapR","shape":"cylinder","pos":[0.2,0.0025,0.0],"rot":[90.0,0.0,0.0],"size":[0.012,0.12,0.012],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

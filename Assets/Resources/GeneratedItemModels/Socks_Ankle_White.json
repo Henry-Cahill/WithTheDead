@@ -1,0 +1,10 @@
+{"version": 1, "id": "Socks_Ankle_White", "baseHeight": 0.075, "name": "Socks Ankle White", "model": "gpt-oss:120b", "notes": "Ankle sock ~0.23 m long × 0.10 m wide, 3 mm thick foot panel, 6 cm rolled cuff at the top, rounded toe. Main colour from tint (0.55,0.5,0.6) with darker stitching and cuff trim.", "score": 6, "parts": [
+  {"name":"FootBody","shape":"cube","pos":[-0.0075,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.003,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Cuff","shape":"cube","pos":[0.0925,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.005,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffTrim","shape":"cube","pos":[0.0925,0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.1],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"ToeTip","shape":"cylinder","pos":[-0.0925,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.03,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ToeRound","shape":"sphere","pos":[-0.1075,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.004,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HeelBulge","shape":"sphere","pos":[-0.0625,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.006,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StitchMid","shape":"cube","pos":[-0.0075,0.0015,0.045],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.01],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchCuff","shape":"cube","pos":[0.0925,0.004,0.045],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.01],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0}
+]}

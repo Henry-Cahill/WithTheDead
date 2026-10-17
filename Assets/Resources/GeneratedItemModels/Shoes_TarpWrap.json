@@ -1,0 +1,15 @@
+{"version": 1, "id": "Shoes_TarpWrap", "baseHeight": 0.0895, "name": "Shoes Tarp Wrap", "model": "gpt-oss:120b", "notes": "Shoes Tarp Wrap laid flat like a product photo: two shoe soles (left & right) about 0.28 m long × 0.12 m wide × 0.015 m thick, covered by a single rectangular tarp sheet (~0.60 m × 0.20 m) that folds over the tops and sides. Small strap loops at the front for tying. Overall footprint ≈0.6 m × 0.2 m.", "score": 6, "parts": [
+  {"name":"SoleL","shape":"cube","pos":[-0.15,-0.022,-0.05],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.12],"color":[0.18,0.18,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"SoleR","shape":"cube","pos":[0.15,-0.022,-0.05],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.12],"color":[0.18,0.18,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"TarpMain","shape":"cube","pos":[0.0,0.0005,0.01],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TarpFrontFlap","shape":"cube","pos":[0.0,0.0105,0.1],"rot":[0.0,0.0,0.0],"size":[0.6,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TarpBackFlap","shape":"cube","pos":[0.0,0.0105,-0.08],"rot":[0.0,0.0,0.0],"size":[0.6,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TarpSideFlapL","shape":"cube","pos":[-0.31,0.0105,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TarpSideFlapR","shape":"cube","pos":[0.31,0.0105,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StrapLoopL","shape":"cylinder","pos":[-0.25,0.0155,0.08],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StrapLoopR","shape":"cylinder","pos":[0.25,0.0155,0.08],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TieL","shape":"cylinder","pos":[-0.25,0.0255,0.08],"rot":[90.0,0.0,0.0],"size":[0.008,0.025,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TieR","shape":"cylinder","pos":[0.25,0.0255,0.08],"rot":[90.0,0.0,0.0],"size":[0.008,0.025,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HeelWrapL","shape":"cube","pos":[-0.15,0.0005,-0.06],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HeelWrapR","shape":"cube","pos":[0.15,0.0005,-0.06],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "JellyRoll", "baseHeight": 0.1, "name": "Jelly Roll", "model": "gpt-oss:120b", "notes": "Jelly roll ~0.25 m long, ~0.08 m wide, lying on its side. Thin clear‑plastic wrapper (diameter 0.08 m) around the jam‑coloured cake (diameter 0.072 m). Paper label wrapped around the middle of the roll; thin end caps close the ends.", "score": 6, "parts": [
+  {"name":"Wrapper","shape":"cylinder","pos":[-0.0018,-0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.08,0.25,0.08],"color":[0.9,0.9,0.9],"smooth":0.12,"metal":0.0},
+  {"name":"Roll","shape":"cylinder","pos":[-0.0018,-0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.072,0.25,0.072],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0393,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.015,0.12],"color":[0.5,0.4,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"LabelEdge","shape":"cube","pos":[0.0408,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.015,0.12],"color":[0.4,0.35,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"EndCapL","shape":"cube","pos":[-0.0018,-0.0,-0.125],"rot":[0.0,0.0,0.0],"size":[0.015,0.072,0.072],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EndCapR","shape":"cube","pos":[-0.0018,-0.0,0.125],"rot":[0.0,0.0,0.0],"size":[0.015,0.072,0.072],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Shoes_Sandals", "baseHeight": 0.0845, "name": "Shoes Sandals", "model": "gpt-oss:120b", "notes": "Flat pair of sandals laid out side‑by‑side like a product photo. Overall footprint ≈ 0.52 m wide (including small gap) × 0.26 m long, soles 2 cm thick. Three main strap groups: a horizontal “toe‑to‑heel” strap across the tops, front and rear ankle straps on each foot, plus a decorative buckle on the centre strap.", "score": 6, "parts": [
+  {"name":"SoleL","shape":"cube","pos":[-0.15,-0.0145,-0.0162],"rot":[0.0,0.0,0.0],"size":[0.26,0.02,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SoleR","shape":"cube","pos":[0.15,-0.0145,-0.0162],"rot":[0.0,0.0,0.0],"size":[0.26,0.02,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TopStrap","shape":"cube","pos":[0.0,0.0105,-0.0162],"rot":[0.0,0.0,0.0],"size":[0.38,0.015,0.02],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"Buckle","shape":"cube","pos":[0.0,0.0205,-0.0162],"rot":[0.0,0.0,0.0],"size":[0.03,0.008,0.02],"color":[0.3,0.28,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"FrontStrapL","shape":"cylinder","pos":[-0.02,0.0005,0.0288],"rot":[90.0,0.0,0.0],"size":[0.015,0.08,0.015],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"RearStrapL","shape":"cylinder","pos":[-0.28,0.0005,0.0288],"rot":[90.0,0.0,0.0],"size":[0.015,0.08,0.015],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"FrontStrapR","shape":"cylinder","pos":[0.02,0.0005,0.0288],"rot":[90.0,0.0,0.0],"size":[0.015,0.08,0.015],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"RearStrapR","shape":"cylinder","pos":[0.28,0.0005,0.0288],"rot":[90.0,0.0,0.0],"size":[0.015,0.08,0.015],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"ToeCrossStrap","shape":"cube","pos":[0.0,0.0055,0.0288],"rot":[0.0,0.0,0.0],"size":[0.3,0.012,0.015],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"HeelCrossStrap","shape":"cube","pos":[0.0,0.0055,-0.0612],"rot":[0.0,0.0,0.0],"size":[0.3,0.012,0.015],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0}
+]}

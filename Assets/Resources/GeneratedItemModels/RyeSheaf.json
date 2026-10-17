@@ -1,0 +1,9 @@
+{"version": 1, "id": "RyeSheaf", "baseHeight": 0.135, "name": "Rye Sheaf", "model": "gpt-oss:120b", "notes": "Loose rye sheaf bundled in a light paper sack (≈0.48 m × 0.15 m × 0.13 m). Four thin wheat‑coloured stalks lie inside, tied together by a dark twine band around the centre and a small label on the front of the sack.", "score": 6, "parts": [
+  {"name":"Bag","shape":"cube","pos":[-0.01,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.48,0.15,0.13],"color":[0.85,0.78,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"Stalk1","shape":"cylinder","pos":[-0.03,-0.071,-0.03],"rot":[0.0,0.0,90.0],"size":[0.008,0.45,0.008],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Stalk2","shape":"cylinder","pos":[-0.01,-0.071,-0.01],"rot":[0.0,0.0,90.0],"size":[0.008,0.45,0.008],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Stalk3","shape":"cylinder","pos":[0.01,-0.071,0.01],"rot":[0.0,0.0,90.0],"size":[0.008,0.45,0.008],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Stalk4","shape":"cylinder","pos":[0.03,-0.071,0.03],"rot":[0.0,0.0,90.0],"size":[0.008,0.45,0.008],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"TwineBand","shape":"cylinder","pos":[-0.01,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.48,0.012],"color":[0.4,0.25,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.228,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.03,0.08],"color":[0.9,0.9,0.85],"smooth":0.15,"metal":0.0}
+]}

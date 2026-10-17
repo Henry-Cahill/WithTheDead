@@ -1,0 +1,12 @@
+{"version": 1, "id": "Ice_Hockey_Jersey_BlueUni", "baseHeight": 0.0725, "name": "Ice Hockey Jersey Blue Uni", "model": "gpt-oss:120b", "notes": "Flat ice‑hockey jersey (blue‑tinted) about 0.70 m long × 0.48 m wide × 2.5 cm thick. Main torso panel, angled sleeves with cuffs that are attached to the sleeve ends, a front collar, thin side stripes, bottom hem band and a small white logo patch on the chest.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.1198,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.025,0.48],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.4798,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.3198,0.0,0.3],"rot":[0.0,-30.0,0.0],"size":[0.25,0.025,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.3198,0.0,-0.3],"rot":[0.0,30.0,0.0],"size":[0.25,0.025,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.5448,0.0,0.3],"rot":[0.0,-30.0,0.0],"size":[0.07,0.025,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.5448,0.0,-0.3],"rot":[0.0,30.0,0.0],"size":[0.07,0.025,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[-0.2302,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.008,0.48],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[0.2198,0.0025,0.12],"rot":[0.0,0.0,0.0],"size":[0.08,0.005,0.04],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"StripeL","shape":"cube","pos":[0.1198,0.0055,0.24],"rot":[0.0,0.0,0.0],"size":[0.7,0.003,0.01],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"StripeR","shape":"cube","pos":[0.1198,0.0055,-0.24],"rot":[0.0,0.0,0.0],"size":[0.7,0.003,0.01],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0}
+]}

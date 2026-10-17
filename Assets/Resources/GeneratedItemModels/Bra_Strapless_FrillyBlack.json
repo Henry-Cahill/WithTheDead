@@ -1,0 +1,14 @@
+{"version": 1, "id": "Bra_Strapless_FrillyBlack", "baseHeight": 0.07, "name": "Bra Strapless Frilly Black", "model": "gpt-oss:120b", "notes": "Flat strapless bra 0.30 m wide × 0.20 m deep × 0.02 m thick (2 cm). Two cups, a central band, side panels, frilly lace trim around the edges and subtle seam lines.", "score": 6, "parts": [
+  {"name":"CupL","shape":"cube","pos":[-0.07,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.018,0.09],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CupR","shape":"cube","pos":[0.07,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.018,0.09],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CenterBand","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.018,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelL","shape":"cube","pos":[-0.14,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.09],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelR","shape":"cube","pos":[0.14,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.09],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrillTop","shape":"cube","pos":[0.0,0.003,0.11],"rot":[0.0,0.0,0.0],"size":[0.32,0.006,0.02],"color":[0.1,0.1,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"FrillBottom","shape":"cube","pos":[0.0,-0.005,-0.11],"rot":[0.0,0.0,0.0],"size":[0.32,0.006,0.02],"color":[0.1,0.1,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"SideFrillL","shape":"cube","pos":[-0.16,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.02,0.2],"color":[0.1,0.1,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"SideFrillR","shape":"cube","pos":[0.16,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.02,0.2],"color":[0.1,0.1,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"LaceBand","shape":"cube","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.004,0.22],"color":[0.15,0.14,0.16],"smooth":0.05,"metal":0.0},
+  {"name":"SeamL","shape":"cube","pos":[-0.07,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.09],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SeamR","shape":"cube","pos":[0.07,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.09],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0}
+]}

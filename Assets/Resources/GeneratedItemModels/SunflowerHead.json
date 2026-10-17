@@ -1,0 +1,16 @@
+{"version": 1, "id": "SunflowerHead", "baseHeight": 0.095, "name": "Sunflower Head", "model": "gpt-oss:120b", "notes": "Sunflower head about 0.25 m across and 0.1 m thick, lying on the floor. Central dark seed disc, radiating yellow petals, a short green stalk stub and a few dark seed lumps.", "score": 6, "parts": [
+  {"name":"SeedDisc","shape":"cylinder","pos":[0.0,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.02,0.24],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"StemStub","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.07,0.02],"color":[0.2,0.5,0.2],"smooth":0.25,"metal":0.0},
+  {"name":"Petal0","shape":"cube","pos":[0.15,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.03],"color":[0.9,0.8,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"Petal45","shape":"cube","pos":[0.106,-0.01,0.106],"rot":[0.0,45.0,0.0],"size":[0.12,0.008,0.03],"color":[0.9,0.8,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"Petal90","shape":"cube","pos":[0.0,-0.01,0.15],"rot":[0.0,90.0,0.0],"size":[0.12,0.008,0.03],"color":[0.9,0.8,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"Petal135","shape":"cube","pos":[-0.106,-0.01,0.106],"rot":[0.0,135.0,0.0],"size":[0.12,0.008,0.03],"color":[0.9,0.8,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"Petal180","shape":"cube","pos":[-0.15,-0.01,0.0],"rot":[0.0,-180.0,0.0],"size":[0.12,0.008,0.03],"color":[0.9,0.8,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"Petal225","shape":"cube","pos":[-0.106,-0.01,-0.106],"rot":[0.0,-135.0,0.0],"size":[0.12,0.008,0.03],"color":[0.9,0.8,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"Petal270","shape":"cube","pos":[0.0,-0.01,-0.15],"rot":[0.0,-90.0,0.0],"size":[0.12,0.008,0.03],"color":[0.9,0.8,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"Petal315","shape":"cube","pos":[0.106,-0.01,-0.106],"rot":[0.0,-45.0,0.0],"size":[0.12,0.008,0.03],"color":[0.9,0.8,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"Seed1","shape":"sphere","pos":[-0.04,-0.017,0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.35,0.3,0.25],"smooth":0.3,"metal":0.0},
+  {"name":"Seed2","shape":"sphere","pos":[0.03,-0.016,-0.04],"rot":[0.0,0.0,0.0],"size":[0.014,0.014,0.014],"color":[0.35,0.3,0.25],"smooth":0.3,"metal":0.0},
+  {"name":"Seed3","shape":"sphere","pos":[-0.02,-0.018,-0.03],"rot":[0.0,0.0,0.0],"size":[0.013,0.013,0.013],"color":[0.35,0.3,0.25],"smooth":0.3,"metal":0.0},
+  {"name":"Seed4","shape":"sphere","pos":[0.04,-0.017,0.03],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.35,0.3,0.25],"smooth":0.3,"metal":0.0}
+]}

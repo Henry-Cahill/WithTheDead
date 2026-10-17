@@ -1,0 +1,17 @@
+{"version": 1, "id": "DogfoodOpen", "baseHeight": 0.185, "name": "Dogfood Open", "model": "gpt-oss:120b", "notes": "Open dog‑food packaging: a rectangular cardboard box lying on its side with the front flap open and spilling loose kibble onto the floor. Box size ≈0.35 m (X) × 0.25 m (Y) × 0.20 m (Z). All kibble pieces now touch or intersect the plastic bag inside the box.", "score": 7, "parts": [
+  {"name":"BoxBottom","shape":"cube","pos":[0.0,-0.12,-0.02],"rot":[0.0,0.0,0.0],"size":[0.35,0.01,0.2],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"BoxLeftSide","shape":"cube","pos":[-0.17,0.0,-0.02],"rot":[0.0,0.0,0.0],"size":[0.01,0.25,0.2],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"BoxRightSide","shape":"cube","pos":[0.17,0.0,-0.02],"rot":[0.0,0.0,0.0],"size":[0.01,0.25,0.2],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"BoxBack","shape":"cube","pos":[0.0,0.0,-0.115],"rot":[0.0,0.0,0.0],"size":[0.35,0.25,0.01],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"BoxFrontFlap","shape":"cube","pos":[0.0,0.0,0.075],"rot":[0.0,0.0,0.0],"size":[0.35,0.25,0.01],"color":[0.7,0.62,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.03,-0.095],"rot":[0.0,0.0,0.0],"size":[0.2,0.005,0.04],"color":[0.55,0.45,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"BagPlastic","shape":"cylinder","pos":[0.0,-0.055,-0.02],"rot":[0.0,0.0,90.0],"size":[0.12,0.3,0.12],"color":[0.78,0.7,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Kibble1","shape":"cube","pos":[-0.1,-0.11,0.11],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.5,0.4,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"Kibble2","shape":"cube","pos":[0.0,0.01,0.01],"rot":[5.0,-3.0,2.0],"size":[0.022,0.019,0.021],"color":[0.52,0.42,0.22],"smooth":0.2,"metal":0.0},
+  {"name":"Kibble3","shape":"cube","pos":[0.08,-0.113,0.1],"rot":[-4.0,6.0,-1.0],"size":[0.018,0.021,0.019],"color":[0.48,0.38,0.18],"smooth":0.2,"metal":0.0},
+  {"name":"Kibble4","shape":"cube","pos":[-0.08,0.01,-0.04],"rot":[3.0,-5.0,4.0],"size":[0.019,0.018,0.022],"color":[0.51,0.41,0.21],"smooth":0.2,"metal":0.0},
+  {"name":"Kibble5","shape":"cube","pos":[0.1,0.01,-0.02],"rot":[-2.0,3.0,-6.0],"size":[0.02,0.019,0.018],"color":[0.49,0.39,0.19],"smooth":0.2,"metal":0.0},
+  {"name":"Kibble6","shape":"cube","pos":[-0.12,-0.108,0.09],"rot":[1.0,-4.0,5.0],"size":[0.021,0.02,0.019],"color":[0.53,0.43,0.23],"smooth":0.2,"metal":0.0},
+  {"name":"Kibble7","shape":"cube","pos":[0.05,0.01,-0.05],"rot":[-3.0,2.0,-2.0],"size":[0.018,0.022,0.02],"color":[0.47,0.37,0.17],"smooth":0.2,"metal":0.0},
+  {"name":"Kibble8","shape":"cube","pos":[-0.02,-0.109,0.07],"rot":[2.0,-1.0,3.0],"size":[0.019,0.018,0.021],"color":[0.5,0.4,0.2],"smooth":0.2,"metal":0.0}
+]}

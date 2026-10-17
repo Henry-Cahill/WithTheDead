@@ -1,0 +1,12 @@
+{"version": 1, "id": "GrapeLeaves", "baseHeight": 0.146, "name": "Grape Leaves", "model": "gpt-oss:120b", "notes": "Canned grape‑leaves, 0.12 m diameter × 0.15 m tall: metal body with thin top/bottom seams, recessed lid, a simple label, and a handful of flattened leaf shapes inside for silhouette.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0094,-0.011,0.0025],"rot":[0.0,0.0,0.0],"size":[0.12,0.15,0.12],"color":[0.78,0.8,0.82],"smooth":0.55,"metal":0.9},
+  {"name":"SeamBottom","shape":"cylinder","pos":[-0.0094,-0.078,0.0025],"rot":[0.0,0.0,0.0],"size":[0.124,0.016,0.124],"color":[0.78,0.8,0.82],"smooth":0.55,"metal":0.9},
+  {"name":"SeamTop","shape":"cylinder","pos":[-0.0094,0.072,0.0025],"rot":[0.0,0.0,0.0],"size":[0.124,0.016,0.124],"color":[0.78,0.8,0.82],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[-0.0094,0.08,0.0025],"rot":[0.0,0.0,0.0],"size":[0.108,0.012,0.108],"color":[0.7,0.71,0.73],"smooth":0.45,"metal":0.85},
+  {"name":"Label","shape":"cylinder","pos":[-0.0094,-0.011,0.0025],"rot":[0.0,0.0,0.0],"size":[0.112,0.018,0.112],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"Leaf1","shape":"sphere","pos":[-0.0294,-0.016,0.0325],"rot":[0.0,0.0,15.0],"size":[0.08,0.015,0.12],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf2","shape":"sphere","pos":[0.0206,-0.026,-0.0175],"rot":[0.0,0.0,-10.0],"size":[0.09,0.018,0.13],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf3","shape":"sphere","pos":[-0.0344,-0.006,-0.0375],"rot":[0.0,0.0,5.0],"size":[0.07,0.014,0.11],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf4","shape":"sphere","pos":[0.0306,0.004,0.0225],"rot":[0.0,0.0,-12.0],"size":[0.08,0.016,0.12],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf5","shape":"sphere","pos":[-0.0094,-0.011,0.0025],"rot":[0.0,0.0,0.0],"size":[0.09,0.017,0.13],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

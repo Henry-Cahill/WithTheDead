@@ -1,0 +1,11 @@
+{"version": 1, "id": "BlackSageDried", "baseHeight": 0.089, "name": "Black Sage Dried", "model": "gpt-oss:120b", "notes": "Small spice tin 0.08 m diameter × 0.05 m tall containing dried black‑sage leaves (tint 0.75,0.68,0.45). Tin body, thin metal lid, paper label and a handful of leaf ellipsoids.", "score": 6, "parts": [
+  {"name":"TinBody","shape":"cylinder","pos":[0.0,-0.004,-0.015],"rot":[0.0,0.0,0.0],"size":[0.08,0.05,0.08],"color":[0.7,0.6,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"TinLid","shape":"cylinder","pos":[0.0,0.025,-0.015],"rot":[0.0,0.0,0.0],"size":[0.082,0.008,0.082],"color":[0.7,0.6,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.02,0.003,0.026],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.06],"color":[0.93,0.92,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf1","shape":"sphere","pos":[-0.015,-0.011,-0.025],"rot":[0.0,0.0,0.0],"size":[0.014,0.025,0.01],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Leaf2","shape":"sphere","pos":[0.01,-0.007,-0.003],"rot":[0.0,0.0,0.0],"size":[0.013,0.023,0.009],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Leaf3","shape":"sphere","pos":[-0.008,-0.014,-0.033],"rot":[0.0,0.0,0.0],"size":[0.012,0.022,0.011],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Leaf4","shape":"sphere","pos":[0.018,-0.01,-0.01],"rot":[0.0,0.0,0.0],"size":[0.015,0.024,0.01],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Leaf5","shape":"sphere","pos":[-0.012,-0.008,-0.02],"rot":[0.0,0.0,0.0],"size":[0.014,0.023,0.009],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Leaf6","shape":"sphere","pos":[0.005,-0.012,0.003],"rot":[0.0,0.0,0.0],"size":[0.013,0.022,0.01],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0}
+]}

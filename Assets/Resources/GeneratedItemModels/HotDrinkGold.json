@@ -1,0 +1,9 @@
+{"version": 1, "id": "HotDrinkGold", "baseHeight": 0.17, "name": "Hot Drink Gold", "model": "gpt-oss:120b", "notes": "Upright hot‑drink bottle ~0.22 m tall, 0.07 m body diameter, glass body with a narrower neck and plastic cap; translucent liquid fills most of the body, thin label around the mid‑section.", "score": 6, "parts": [
+  {"name":"BodyGlass","shape":"cylinder","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.18,0.07],"color":[0.82,0.88,0.95],"smooth":0.5,"metal":0.0},
+  {"name":"Liquid","shape":"cylinder","pos":[0.0,-0.045,0.0],"rot":[0.0,0.0,0.0],"size":[0.064,0.13,0.064],"color":[0.45,0.6,0.75],"smooth":0.2,"metal":0.0},
+  {"name":"Neck","shape":"cylinder","pos":[0.0,0.08,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.82,0.88,0.95],"smooth":0.5,"metal":0.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.0,0.1,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.02,0.045],"color":[0.45,0.6,0.75],"smooth":0.4,"metal":0.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.072,0.016,0.072],"color":[0.38,0.5,0.63],"smooth":0.15,"metal":0.0},
+  {"name":"SealRing","shape":"cylinder","pos":[0.0,0.085,0.0],"rot":[0.0,0.0,0.0],"size":[0.042,0.004,0.042],"color":[0.75,0.78,0.8],"smooth":0.3,"metal":0.0},
+  {"name":"BaseRim","shape":"cylinder","pos":[0.0,-0.105,0.0],"rot":[0.0,0.0,0.0],"size":[0.075,0.008,0.075],"color":[0.75,0.78,0.8],"smooth":0.3,"metal":0.0}
+]}

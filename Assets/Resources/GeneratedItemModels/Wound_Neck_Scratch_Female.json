@@ -1,0 +1,9 @@
+{"version": 1, "id": "Wound_Neck_Scratch_Female", "baseHeight": 0.0658, "name": "Wound Neck Scratch Female", "model": "gpt-oss:120b", "notes": "Small gauze patch (≈0.12 m × 0.07 m, 6 mm thick) with a folded edge and two dark red blood stains, as it would be found on the floor after a neck scratch.", "score": 6, "parts": [
+  {"name":"BaseCloth","shape":"cube","pos":[0.0,-0.0027,0.0012],"rot":[0.0,0.0,0.0],"size":[0.12,0.006,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FoldLeft","shape":"cube","pos":[-0.055,-0.0017,0.0012],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.07],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FoldRight","shape":"cube","pos":[0.055,-0.0017,0.0012],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.07],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TornCorner","shape":"cube","pos":[-0.055,-0.0027,-0.0312],"rot":[0.0,0.0,0.0],"size":[0.015,0.006,0.015],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BloodSpot1","shape":"sphere","pos":[-0.02,0.0032,0.0162],"rot":[0.0,0.0,0.0],"size":[0.03,0.005,0.04],"color":[0.7,0.12,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpot2","shape":"sphere","pos":[0.025,0.0032,-0.0188],"rot":[0.0,0.0,0.0],"size":[0.022,0.004,0.03],"color":[0.68,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpot3","shape":"sphere","pos":[0.0,0.0032,0.0262],"rot":[0.0,0.0,0.0],"size":[0.018,0.0035,0.025],"color":[0.72,0.14,0.14],"smooth":0.2,"metal":0.0}
+]}

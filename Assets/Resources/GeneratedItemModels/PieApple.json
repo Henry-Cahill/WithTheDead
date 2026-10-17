@@ -1,0 +1,9 @@
+{"version": 1, "id": "PieApple", "baseHeight": 0.0867, "name": "Pie Apple", "model": "gpt-oss:120b", "notes": "Apple pie in a small cardboard tray (≈12 cm square). Shallow golden‑brown crust rim, apple filling, light dome top and simple lattice strips; thin paper label on the side of the tray.", "score": 7, "parts": [
+  {"name":"TrayBase","shape":"cube","pos":[0.0008,-0.0168,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.12],"color":[0.6,0.45,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"CrustRim","shape":"cylinder","pos":[0.0008,0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.015,0.11],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Filling","shape":"cylinder","pos":[0.0008,0.0133,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.01,0.1],"color":[0.5,0.35,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"TopCrust","shape":"sphere","pos":[0.0008,0.0223,0.0],"rot":[0.0,0.0,0.0],"size":[0.105,0.008,0.105],"color":[0.78,0.7,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"LatticeX","shape":"cube","pos":[0.0008,0.0252,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.003,0.008],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"LatticeZ","shape":"cube","pos":[0.0008,0.0252,0.0],"rot":[0.0,90.0,0.0],"size":[0.11,0.003,0.008],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"SideLabel","shape":"cube","pos":[-0.0597,-0.0168,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.018,0.06],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0}
+]}

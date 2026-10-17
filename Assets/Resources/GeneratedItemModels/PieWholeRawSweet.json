@@ -1,0 +1,9 @@
+{"version": 1, "id": "PieWholeRawSweet", "baseHeight": 0.0832, "name": "Pie Whole Raw Sweet", "model": "gpt-oss:120b", "notes": "Whole raw sweet pie ~0.22 m diameter, 4 cm tall, in a shallow metal tray with cardboard lid and paper label. Includes tin body, rim, lid, label, crust edge and pastel‑colored filling.", "score": 6, "parts": [
+  {"name":"TinBody","shape":"cylinder","pos":[0.0,-0.0053,0.0],"rot":[0.0,0.0,0.0],"size":[0.224,0.036,0.224],"color":[0.75,0.75,0.78],"smooth":0.4,"metal":0.9},
+  {"name":"RimBottom","shape":"cylinder","pos":[0.0,-0.0212,0.0],"rot":[0.0,0.0,0.0],"size":[0.228,0.004,0.228],"color":[0.75,0.75,0.78],"smooth":0.4,"metal":0.9},
+  {"name":"RimTop","shape":"cylinder","pos":[0.0,0.0147,0.0],"rot":[0.0,0.0,0.0],"size":[0.228,0.004,0.228],"color":[0.75,0.75,0.78],"smooth":0.4,"metal":0.9},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0197,0.0],"rot":[0.0,0.0,0.0],"size":[0.226,0.006,0.226],"color":[0.78,0.7,0.55],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0222,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.08],"color":[0.45,0.35,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"CrustEdge","shape":"cylinder","pos":[0.0,0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.212,0.004,0.212],"color":[0.65,0.55,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Filling","shape":"sphere","pos":[0.0,-0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.2],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

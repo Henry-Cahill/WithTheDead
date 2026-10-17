@@ -1,0 +1,13 @@
+{"version": 1, "id": "Grapefruit", "baseHeight": 0.125, "name": "Grapefruit", "model": "gpt-oss:120b", "notes": "Grapefruit ~0.13 m diameter upright on floor (y=0). Main body is an outer rind sphere with a slightly smaller flesh sphere inside, a short green stem and two simple leaves. A few darker spots and a small dimple give visual texture.", "score": 6, "parts": [
+  {"name":"OuterRind","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.13,0.13],"color":[0.45,0.6,0.75],"smooth":0.2,"metal":0.0},
+  {"name":"Flesh","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.11,0.11],"color":[0.95,0.85,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"Stem","shape":"cylinder","pos":[0.0,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.2,0.3,0.15],"smooth":0.15,"metal":0.0},
+  {"name":"LeafL","shape":"cube","pos":[0.018,0.025,0.012],"rot":[30.0,0.0,20.0],"size":[0.04,0.005,0.02],"color":[0.2,0.3,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"LeafR","shape":"cube","pos":[-0.018,0.025,-0.012],"rot":[30.0,0.0,-20.0],"size":[0.04,0.005,0.02],"color":[0.2,0.3,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"DimpleTop","shape":"sphere","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.35,0.45,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"Spot1","shape":"sphere","pos":[0.035,0.005,0.03],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.35,0.45,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"Spot2","shape":"sphere","pos":[-0.028,0.01,-0.025],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.35,0.45,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"Spot3","shape":"sphere","pos":[0.02,-0.007,-0.032],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.35,0.45,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"Spot4","shape":"sphere","pos":[-0.03,-0.003,0.028],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.35,0.45,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"Spot5","shape":"sphere","pos":[0.0,0.015,0.035],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.35,0.45,0.55],"smooth":0.1,"metal":0.0}
+]}

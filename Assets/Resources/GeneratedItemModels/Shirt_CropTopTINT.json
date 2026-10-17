@@ -1,0 +1,12 @@
+{"version": 1, "id": "Shirt_CropTopTINT", "baseHeight": 0.0765, "name": "Shirt Crop Top TINT", "model": "gpt-oss:120b", "notes": "Crop‑top shirt ~0.35 m long × 0.38 m wide, 2.5 cm thick when laid flat. Main purple tint with darker seam trims; includes torso panel, shoulder block, short sleeves, collar band with neck opening, bottom hem, side seams and a centre fold.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[-0.0475,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.025,0.38],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ShoulderBlock","shape":"cube","pos":[0.1875,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.44],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.1025,-0.004,0.23],"rot":[0.0,-20.0,0.0],"size":[0.18,0.025,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.1025,-0.004,-0.23],"rot":[0.0,20.0,0.0],"size":[0.18,0.025,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.1175,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.38],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.1175,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.12],"color":[0.2,0.18,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[-0.2025,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.38],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.0475,0.0035,0.185],"rot":[0.0,0.0,0.0],"size":[0.35,0.008,0.01],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[-0.0475,0.0035,-0.185],"rot":[0.0,0.0,0.0],"size":[0.35,0.008,0.01],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Fold","shape":"cube","pos":[-0.0975,0.0145,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.004,0.015],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0}
+]}

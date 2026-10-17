@@ -1,0 +1,15 @@
+{"version": 1, "id": "Hat_HockeyMask_Metal", "baseHeight": 0.2, "name": "Hat Hockey Mask Metal", "model": "gpt-oss:120b", "notes": "Metal hockey mask laid flat for a product‑photo view – overall outline about 0.26 m wide × 0.28 m tall × 0.20 m deep, 2 cm thick shell with front grill (vertical & horizontal bars), a low back strap band and a short visor plate.", "score": 6, "parts": [
+  {"name":"BaseShell","shape":"sphere","pos":[0.0,0.0,0.02],"rot":[0.0,0.0,0.0],"size":[0.26,0.28,0.2],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"VisorPlate","shape":"cube","pos":[0.0,0.04,0.08],"rot":[0.0,0.0,0.0],"size":[0.26,0.02,0.04],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"StrapBand","shape":"cylinder","pos":[0.0,-0.07,-0.06],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.22],"color":[0.45,0.4,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"GrillVertL3","shape":"cylinder","pos":[-0.06,0.0,0.11],"rot":[90.0,0.0,0.0],"size":[0.006,0.12,0.006],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"GrillVertL2","shape":"cylinder","pos":[-0.04,0.0,0.11],"rot":[90.0,0.0,0.0],"size":[0.006,0.12,0.006],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"GrillVertL1","shape":"cylinder","pos":[-0.02,0.0,0.11],"rot":[90.0,0.0,0.0],"size":[0.006,0.12,0.006],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"GrillVertC","shape":"cylinder","pos":[0.0,0.0,0.11],"rot":[90.0,0.0,0.0],"size":[0.006,0.12,0.006],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"GrillVertR1","shape":"cylinder","pos":[0.02,0.0,0.11],"rot":[90.0,0.0,0.0],"size":[0.006,0.12,0.006],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"GrillVertR2","shape":"cylinder","pos":[0.04,0.0,0.11],"rot":[90.0,0.0,0.0],"size":[0.006,0.12,0.006],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"GrillVertR3","shape":"cylinder","pos":[0.06,0.0,0.11],"rot":[90.0,0.0,0.0],"size":[0.006,0.12,0.006],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"GrillHorzTop","shape":"cylinder","pos":[0.0,0.03,0.11],"rot":[0.0,0.0,90.0],"size":[0.006,0.16,0.006],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"GrillHorzMid","shape":"cylinder","pos":[0.0,0.0,0.11],"rot":[0.0,0.0,90.0],"size":[0.006,0.16,0.006],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"GrillHorzBot","shape":"cylinder","pos":[0.0,-0.03,0.11],"rot":[0.0,0.0,90.0],"size":[0.006,0.16,0.006],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "CakeBlackForest", "baseHeight": 0.0975, "name": "Cake Black Forest", "model": "gpt-oss:120b", "notes": "Single‑serve Black Forest cake (≈0.18 m × 0.08 m × 0.04 m) packed in a brown cardboard box with a clear plastic tray and snap‑on lid. The slice shows chocolate sponge, whipped cream and two cherries on top.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.07,0.12],"color":[0.38,0.3,0.22],"smooth":0.2,"metal":0.0},
+  {"name":"BoxLid","shape":"cube","pos":[0.0,0.035,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.005,0.12],"color":[0.38,0.3,0.22],"smooth":0.2,"metal":0.0},
+  {"name":"PlasticTray","shape":"cube","pos":[0.0,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.08],"color":[0.92,0.94,0.96],"smooth":0.4,"metal":0.0},
+  {"name":"CakeBase","shape":"cube","pos":[0.0,-0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.08],"color":[0.35,0.25,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"CreamLayer","shape":"cube","pos":[0.0,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.008,0.08],"color":[0.95,0.94,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"CherryL","shape":"sphere","pos":[-0.04,0.008,0.03],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.8,0.1,0.12],"smooth":0.6,"metal":0.0},
+  {"name":"CherryR","shape":"sphere","pos":[0.04,0.008,0.03],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.8,0.1,0.12],"smooth":0.6,"metal":0.0},
+  {"name":"CherryStemL","shape":"cylinder","pos":[-0.04,0.014,0.03],"rot":[0.0,0.0,90.0],"size":[0.002,0.008,0.002],"color":[0.55,0.45,0.3],"smooth":0.3,"metal":0.0},
+  {"name":"CherryStemR","shape":"cylinder","pos":[0.04,0.014,0.03],"rot":[0.0,0.0,90.0],"size":[0.002,0.008,0.002],"color":[0.55,0.45,0.3],"smooth":0.3,"metal":0.0},
+  {"name":"BoxSideFront","shape":"cube","pos":[0.0,-0.0025,0.06],"rot":[0.0,0.0,0.0],"size":[0.2,0.07,0.002],"color":[0.38,0.3,0.22],"smooth":0.2,"metal":0.0},
+  {"name":"BoxSideBack","shape":"cube","pos":[0.0,-0.0025,-0.06],"rot":[0.0,0.0,0.0],"size":[0.2,0.07,0.002],"color":[0.38,0.3,0.22],"smooth":0.2,"metal":0.0}
+]}

@@ -1,0 +1,16 @@
+{"version": 1, "id": "Shoes_FlipFlop", "baseHeight": 0.09, "name": "Shoes Flip Flop", "model": "gpt-oss:120b", "notes": "Pair of flip‑flops laid flat as a product shot – each foot ~0.28 m long × 0.09 m wide × 0.015 m thick rubber sole with rounded toe, and the classic Y‑shaped fabric strap (two side straps + central thong). Main colour is the tint (0.55,0.5,0.6) for the straps; sole is a slightly darker gray.", "score": 6, "parts": [
+  {"name":"SoleL_Base","shape":"cube","pos":[-0.17,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.015,0.09],"color":[0.4,0.38,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"SoleL_Toe","shape":"sphere","pos":[-0.015,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.4,0.38,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"SoleR_Base","shape":"cube","pos":[0.11,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.015,0.09],"color":[0.4,0.38,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"SoleR_Toe","shape":"sphere","pos":[0.265,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.4,0.38,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"StrapL_Left","shape":"cube","pos":[-0.17,0.01,-0.045],"rot":[0.0,0.0,0.0],"size":[0.25,0.008,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StrapL_Right","shape":"cube","pos":[-0.17,0.01,0.045],"rot":[0.0,0.0,0.0],"size":[0.25,0.008,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StrapR_Left","shape":"cube","pos":[0.11,0.01,-0.045],"rot":[0.0,0.0,0.0],"size":[0.25,0.008,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StrapR_Right","shape":"cube","pos":[0.11,0.01,0.045],"rot":[0.0,0.0,0.0],"size":[0.25,0.008,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ThongL","shape":"cube","pos":[-0.015,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.09],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ThongR","shape":"cube","pos":[0.265,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.09],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StrapL_Trim","shape":"cube","pos":[-0.17,0.012,-0.045],"rot":[0.0,0.0,0.0],"size":[0.25,0.002,0.008],"color":[0.35,0.33,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"StrapL_TrimR","shape":"cube","pos":[-0.17,0.012,0.045],"rot":[0.0,0.0,0.0],"size":[0.25,0.002,0.008],"color":[0.35,0.33,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"StrapR_Trim","shape":"cube","pos":[0.11,0.012,-0.045],"rot":[0.0,0.0,0.0],"size":[0.25,0.002,0.008],"color":[0.35,0.33,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"StrapR_TrimR","shape":"cube","pos":[0.11,0.012,0.045],"rot":[0.0,0.0,0.0],"size":[0.25,0.002,0.008],"color":[0.35,0.33,0.4],"smooth":0.05,"metal":0.0}
+]}

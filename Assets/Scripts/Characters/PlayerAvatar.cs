@@ -7,8 +7,11 @@ namespace CloneZ
     /// <see cref="HumanoidAnimator"/> from the gameplay components: walking, sneaking and sprinting
     /// from the real ground speed; swings, shoves, shots and reloads from <see cref="PlayerCombat"/>;
     /// the clothes from <see cref="PlayerClothing"/>; the weapon in hand from the inventory (or the
-    /// hammer, trowel or watering can while working); sleep in the nearest bed; and the fall on death.
-    /// It reads gameplay state but never changes it.
+    /// hammer, trowel or watering can while working, or empty hands while working a fixture or
+    /// reading); sitting on a chair, the edge of the bed or the toilet and lying on the bed to rest
+    /// from <see cref="PlayerSeat"/>; sleep in the nearest bed; the head turned to the fixture being
+    /// worked (a hand reaching for it); and the fall on death. It reads gameplay state but never
+    /// changes it.
     /// </summary>
     [DisallowMultipleComponent]
     public sealed class PlayerAvatar : MonoBehaviour
@@ -17,6 +20,8 @@ namespace CloneZ
         private const string TrowelId = "trowel";
         private const string WateringCanId = "wateringcan";
         private const float AimHoldSeconds = 2.5f;   // how long the gun stays up after a shot
+        private const float SeatCarrySeconds = 0.45f; // the body eases onto a seat (or off it) this long
+        private const float SeatCarryMaxSqr = 2.5f * 2.5f;   // farther than this, a move is a teleport, not a step
 
         public HumanoidRig Rig { get; private set; }
         public HumanoidAnimator Animator { get; private set; }
@@ -30,6 +35,7 @@ namespace CloneZ
         private PlayerInteractor _interactor;
         private PlayerBuilder _builder;
         private PlayerFarming _farming;
+        private PlayerSeat _seat;
 
         private HumanoidLook _look;
         private readonly ItemDef[] _shownWorn = new ItemDef[PlayerClothing.Slots.Length];
@@ -39,6 +45,10 @@ namespace CloneZ
         private Vector3 _lastPos;
         private bool _hasLastPos;
         private float _aimHold;
+        private int _seatVersion;
+        private Vector3 _rigPos;
+        private Quaternion _rigRot = Quaternion.identity;
+        private bool _hasRigPose;
 
         private void Awake()
         {
@@ -60,6 +70,8 @@ namespace CloneZ
             _interactor = GetComponent<PlayerInteractor>();
             _builder = GetComponent<PlayerBuilder>();
             _farming = GetComponent<PlayerFarming>();
+            _seat = GetComponent<PlayerSeat>();
+            _seatVersion = _seat != null ? _seat.Version : 0;
             _started = true;
             Subscribe();
 
@@ -134,26 +146,84 @@ namespace CloneZ
             _lastPos = pos;
             _hasLastPos = true;
 
-            _aimHold = Mathf.Max(0f, _aimHold - dt);
             HumanoidAnimator a = Animator;
+
+            // Sitting down or getting up sets the body down over the seat (or beside it) in one step: the figure
+            // is eased across instead, and the step is no stride.
+            bool seated = _seat != null && _seat.IsSeated;
+            if (_seat != null && _seat.Version != _seatVersion)
+            {
+                _seatVersion = _seat.Version;
+                if (_hasRigPose && (_rigPos - pos).sqrMagnitude < SeatCarryMaxSqr) a.CarryFrom(_rigPos, _rigRot, SeatCarrySeconds);
+                velocity = Vector3.zero;
+            }
+            if (seated) velocity = Vector3.zero;
+
+            _aimHold = Mathf.Max(0f, _aimHold - dt);
             a.Velocity = velocity;
             a.Gait = HumanoidGait.Survivor;
             a.Sneaking = _controller != null && _controller.IsSneaking;
             a.Activity = activity;
             a.Reloading = _combat != null && _combat.IsReloading;
             a.Aiming = _aimHold > 0f || a.Reloading;
+            a.Seated = seated;
+            if (seated)
+            {
+                a.SeatPoint = _seat.SeatPoint;
+                a.SeatRecline = Mathf.InverseLerp(0.35f, 0.9f, _seat.Comfort);
+            }
 
+            // Asleep in the nearest bed, or lying on the bed awake to rest.
             bool asleep = _sleep != null && _sleep.IsSleeping;
-            if (asleep && !a.IsSleeping) a.Sleep(NearestBed());
-            else if (!asleep && a.IsSleeping) a.WakeUp();
+            bool resting = !asleep && _seat != null && _seat.IsLyingDown;
+            if (asleep || resting)
+            {
+                Transform bed = resting && _seat.RestBed != null ? _seat.RestBed : NearestBed();
+                a.Lie(bed, resting);
+            }
+            else if (a.IsLying) a.WakeUp();
 
+            SetAttention(a, activity);
             a.Evaluate(dt);
+
+            _rigPos = Rig.transform.position;
+            _rigRot = Rig.transform.rotation;
+            _hasRigPose = true;
+        }
+
+        // The head turns to the fixture being worked (or the one whose menu is open), and a hand working it reaches
+        // for it; a reader looks down at the book in their hands.
+        private void SetAttention(HumanoidAnimator a, HumanoidActivity activity)
+        {
+            Interactable f = null;
+            if (_interactor != null)
+            {
+                if (_interactor.IsWorking) f = _interactor.JobTarget;
+                else if (_interactor.MenuOpen) f = _interactor.MenuTarget;
+            }
+
+            if (activity == HumanoidActivity.Read)
+            {
+                Transform chest = Rig.Bone(HumanBone.Chest);
+                a.HasLookTarget = true;
+                a.LookTarget = chest.position + transform.forward * 0.32f - Vector3.up * 0.24f;
+            }
+            else if (f != null)
+            {
+                a.HasLookTarget = true;
+                a.LookTarget = f.InteractPoint;
+            }
+            else a.HasLookTarget = false;
+
+            a.HasReachTarget = f != null && activity == HumanoidActivity.Use;
+            if (a.HasReachTarget) a.ReachTarget = f.InteractPoint;
         }
 
         private HumanoidActivity CurrentActivity()
         {
             if (_stats != null && _stats.IsDead) return HumanoidActivity.None;
             if (_interactor != null && _interactor.IsSearching) return HumanoidActivity.Search;
+            if (_interactor != null && _interactor.IsWorking) return _interactor.JobActivity;
             if (_builder != null && _builder.IsBuilding) return HumanoidActivity.Build;
             if (_farming != null && _farming.IsBusy)
             {
@@ -176,6 +246,8 @@ namespace CloneZ
                 case HumanoidActivity.Dig: def = ItemDatabase.Get(TrowelId); style = HoldStyle.Melee; break;
                 case HumanoidActivity.Water: def = ItemDatabase.Get(WateringCanId); style = HoldStyle.Carry; break;
                 case HumanoidActivity.Plant: break;   // seeds go in by hand
+                case HumanoidActivity.Use:
+                case HumanoidActivity.Read: break;    // the weapon's put by to work a fixture or hold a book
                 default:
                     def = _inventory != null ? _inventory.EquippedWeapon : null;
                     if (def != null) style = def.IsFirearm ? HoldStyle.Firearm : def.IsWeapon ? HoldStyle.Melee : HoldStyle.None;

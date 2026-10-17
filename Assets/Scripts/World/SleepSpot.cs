@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
 
 namespace CloneZ
@@ -6,12 +7,16 @@ namespace CloneZ
     /// <summary>
     /// A bed the player can sleep in to pass the night and shed fatigue. Keeps a
     /// static registry (mirroring <see cref="LootContainer"/>) so PlayerSleep can
-    /// find the nearest one. Built entirely from code by the bootstrapper.
+    /// find the nearest one. Built entirely from code by the bootstrapper, with its
+    /// <see cref="BedFixture"/> (sleep, lie down, sit on the edge, make the bed).
     /// </summary>
     public class SleepSpot : MonoBehaviour, IDemolishable
     {
         public static readonly List<SleepSpot> All = new List<SleepSpot>();
         public string DisplayName = "Bed";
+
+        /// <summary>The bed's size: width along X, length along Z (the head at -Z).</summary>
+        public const float Width = 1.4f, Length = 2.0f;
 
         private void OnEnable() { if (!All.Contains(this)) All.Add(this); }
         private void OnDisable() { All.Remove(this); }
@@ -53,12 +58,32 @@ namespace CloneZ
             // Visual only — no collider, so the survivor can always reach the mattress to lie down.
             var m = new RaidMesh();
             m.SetFrame(position, 0f);
-            FurnitureBuilder.Bed(m, new System.Random(1993), 1.4f, 2.0f, Quilt, FurnitureBuilder.Walnut);
+            FurnitureBuilder.BedFrame(m, new System.Random(1993), Width, Length, FurnitureBuilder.Walnut);
             m.ResetFrame();
             m.ApplyTo(root, position);
+
+            // The bedding, made and rumpled: two renderers the bed's fixture swaps between (kept out of the navmesh).
+            Renderer made = Bedding(root.transform, position, true);
+            Renderer rumpled = Bedding(root.transform, position, false);
             DecorPalette.Apply();
 
-            return root.AddComponent<SleepSpot>();
+            var spot = root.AddComponent<SleepSpot>();
+            root.AddComponent<BedFixture>().Bind(spot, made, rumpled);
+            return spot;
+        }
+
+        private static Renderer Bedding(Transform root, Vector3 position, bool made)
+        {
+            var m = new RaidMesh();
+            m.SetFrame(position, 0f);
+            FurnitureBuilder.BedQuilt(m, new System.Random(made ? 1994 : 1995), Width, Length, Quilt, made);
+            m.ResetFrame();
+            GameObject go = m.Emit(made ? "QuiltMade" : "QuiltRumpled", root, position);
+            if (go == null) return null;
+            go.AddComponent<NavMeshModifier>().ignoreFromBuild = true;
+            var r = go.GetComponent<Renderer>();
+            r.enabled = made;
+            return r;
         }
 
         private static readonly Color Quilt = new Color(0.55f, 0.18f, 0.15f);

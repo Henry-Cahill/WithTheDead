@@ -1,0 +1,12 @@
+{"version": 1, "id": "ChannelCatfish", "baseHeight": 0.285, "name": "Channel Catfish", "model": "gpt-oss:120b", "notes": "Whole Channel Catfish (~0.45 m long) sealed in a clear plastic bag with a white label. Fish lies on its side along X, bag just larger to contain it; simple fins and tail add recognisable silhouette.", "score": 6, "parts": [
+  {"name":"BagOuter","shape":"cube","pos":[-0.025,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.48,0.14,0.22],"color":[0.8,0.9,1.0],"smooth":0.4,"metal":0.0},
+  {"name":"FishBody","shape":"sphere","pos":[-0.025,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.45,0.12,0.18],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"DorsalFin","shape":"cube","pos":[-0.025,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.02,0.04],"color":[0.6,0.55,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"PectoralFinL","shape":"cube","pos":[-0.175,-0.01,0.11],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.04],"color":[0.6,0.55,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"PectoralFinR","shape":"cube","pos":[-0.175,-0.01,-0.11],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.04],"color":[0.6,0.55,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"PelvicFinL","shape":"cube","pos":[0.155,-0.02,0.07],"rot":[0.0,0.0,0.0],"size":[0.06,0.012,0.03],"color":[0.6,0.55,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"PelvicFinR","shape":"cube","pos":[0.155,-0.02,-0.07],"rot":[0.0,0.0,0.0],"size":[0.06,0.012,0.03],"color":[0.6,0.55,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Tail","shape":"cube","pos":[0.235,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.05,0.06],"color":[0.7,0.62,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBase","shape":"cube","pos":[-0.125,0.0775,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.005,0.02],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"LabelStripe","shape":"cube","pos":[-0.125,0.0765,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.002,0.018],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0}
+]}

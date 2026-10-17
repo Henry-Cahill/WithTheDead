@@ -1,0 +1,13 @@
+{"version": 1, "id": "Cockroach", "baseHeight": 0.0798, "name": "Cockroach", "model": "gpt-oss:120b", "notes": "Single dried cockroach laid on its side (long axis ≈ 0.10 m). Three main body sections – head, thorax and abdomen – give the classic oval silhouette; thin cylinders form six legs and two antennae. Colours use the provided tan tint for the exoskeleton and a darker brown for the legs.", "score": 6, "parts": [
+  {"name":"Head","shape":"sphere","pos":[-0.04,0.0048,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.012,0.012],"color":[0.75,0.68,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"Thorax","shape":"cylinder","pos":[-0.0225,0.0048,0.0],"rot":[0.0,0.0,90.0],"size":[0.018,0.02,0.018],"color":[0.75,0.68,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"Abdomen","shape":"sphere","pos":[0.0175,0.0048,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.03,0.025],"color":[0.75,0.68,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"AntennaL","shape":"cylinder","pos":[-0.025,0.0108,0.004],"rot":[0.0,0.0,90.0],"size":[0.002,0.03,0.002],"color":[0.45,0.35,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"AntennaR","shape":"cylinder","pos":[-0.025,0.0108,-0.004],"rot":[0.0,0.0,90.0],"size":[0.002,0.03,0.002],"color":[0.45,0.35,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"LegL1","shape":"cylinder","pos":[-0.03,-0.0072,0.01],"rot":[0.0,0.0,0.0],"size":[0.003,0.025,0.003],"color":[0.4,0.33,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"LegL2","shape":"cylinder","pos":[-0.015,-0.0072,0.01],"rot":[0.0,0.0,0.0],"size":[0.003,0.025,0.003],"color":[0.4,0.33,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"LegL3","shape":"cylinder","pos":[0.0,-0.0072,0.01],"rot":[0.0,0.0,0.0],"size":[0.003,0.025,0.003],"color":[0.4,0.33,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"LegR1","shape":"cylinder","pos":[-0.03,-0.0072,-0.01],"rot":[0.0,0.0,0.0],"size":[0.003,0.025,0.003],"color":[0.4,0.33,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"LegR2","shape":"cylinder","pos":[-0.015,-0.0072,-0.01],"rot":[0.0,0.0,0.0],"size":[0.003,0.025,0.003],"color":[0.4,0.33,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"LegR3","shape":"cylinder","pos":[0.0,-0.0072,-0.01],"rot":[0.0,0.0,0.0],"size":[0.003,0.025,0.003],"color":[0.4,0.33,0.18],"smooth":0.05,"metal":0.0}
+]}

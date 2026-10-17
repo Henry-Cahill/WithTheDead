@@ -17,7 +17,8 @@ namespace CloneZ
     /// movement, shots and sight. A piece comes back <see cref="RestoreDelay"/> seconds after it last stood
     /// in the way, and everything comes back at once when the view leaves isometric. The ground, the
     /// survivor and the zombies are never touched. Allocation-free per frame: non-alloc casts into a fixed
-    /// buffer, and each collider is classified once and cached.
+    /// buffer, and each collider is classified once and cached (a marked piece's renderers are gathered
+    /// again only when its parts are rebuilt — see <see cref="CutawayOccluder.PartsChanged"/>).
     /// </summary>
     public sealed class IsoCutaway
     {
@@ -62,6 +63,7 @@ namespace CloneZ
             public GameObject Root;
             public CutawayOccluder Marker;
             public Renderer[] Renderers;
+            public int Parts;   // the marker's PartsVersion when Renderers was gathered
             public bool Hidden;
             public float LastSeen;
         }
@@ -123,7 +125,11 @@ namespace CloneZ
             {
                 Piece p = _hidden[i];
                 bool gone = p.Root == null;   // knocked down or dismantled while cut away
-                if (!gone && _now - p.LastSeen <= RestoreDelay) continue;
+                if (!gone && _now - p.LastSeen <= RestoreDelay)
+                {
+                    Refresh(p);   // a barricade that nailed on or lost a plank this frame hides its new boards too
+                    continue;
+                }
                 Show(p);
                 _hidden.RemoveAt(i);
                 if (gone) _byRoot.Remove(p.Root);
@@ -222,14 +228,21 @@ namespace CloneZ
             return PieceFor(go, null, c);
         }
 
-        // Gathers the renderers that hide with a piece: everything under a marked occluder, or for an
-        // unmarked object only what overlaps its own colliders (a doorway's two jambs and lintel, a
-        // window's sill and head) and isn't far bigger than them, so a building-wide merged mesh is never
-        // taken along with one tall prop. Floor-level parts always stay.
         private Piece PieceFor(GameObject root, CutawayOccluder marker, Collider fallback)
         {
             if (_byRoot.TryGetValue(root, out Piece p) && p.Root != null) return p;
 
+            p = new Piece { Root = root, Marker = marker, Renderers = Gather(root, fallback), Parts = marker != null ? marker.PartsVersion : 0 };
+            _byRoot[root] = p;
+            return p;
+        }
+
+        // Gathers the renderers that hide with a piece: everything under a marked occluder, or for an
+        // unmarked object only what overlaps its own colliders (a doorway's two jambs and lintel, a
+        // window's sill and head) and isn't far bigger than them, so a building-wide merged mesh is never
+        // taken along with one tall prop. Floor-level parts always stay.
+        private Renderer[] Gather(GameObject root, Collider fallback)
+        {
             _found.Clear();
             _keep.Clear();
             root.GetComponentsInChildren<Renderer>(false, _found);
@@ -261,19 +274,40 @@ namespace CloneZ
                 _keep.Add(r);
                 if (fallback != null && _keep.Count >= MaxFallbackRenderers) break;
             }
+            return _keep.ToArray();
+        }
 
-            p = new Piece { Root = root, Marker = marker, Renderers = _keep.ToArray() };
-            _byRoot[root] = p;
-            return p;
+        // Gathers a marked piece's renderers afresh once its parts have been rebuilt (a barricade nails on or
+        // loses a plank), so while it's cut away its new parts hide with it and its marker still tells the truth.
+        private void Refresh(Piece p)
+        {
+            if (p.Marker == null || p.Marker.PartsVersion == p.Parts) return;
+            if (p.Hidden) Release(p.Renderers);
+            p.Renderers = Gather(p.Root, null);
+            p.Parts = p.Marker.PartsVersion;
+            if (p.Hidden) Hold(p.Renderers);
         }
 
         private void Hide(Piece p)
         {
+            Refresh(p);
             p.Hidden = true;
             _hidden.Add(p);
             if (p.Marker != null) p.Marker.IsCutAway = true;
+            Hold(p.Renderers);
+        }
 
-            Renderer[] rs = p.Renderers;
+        private void Show(Piece p)
+        {
+            p.Hidden = false;
+            if (p.Marker != null) p.Marker.IsCutAway = false;
+            Release(p.Renderers);
+        }
+
+        // Stops a piece's renderers drawing; they keep their shadows. Pieces can share renderers, so each counts
+        // how many pieces hold it.
+        private void Hold(Renderer[] rs)
+        {
             for (int i = 0; i < rs.Length; i++)
             {
                 Renderer r = rs[i];
@@ -302,12 +336,9 @@ namespace CloneZ
             }
         }
 
-        private void Show(Piece p)
+        // Lets go of a piece's renderers; each draws again once no piece holds it.
+        private void Release(Renderer[] rs)
         {
-            p.Hidden = false;
-            if (p.Marker != null) p.Marker.IsCutAway = false;
-
-            Renderer[] rs = p.Renderers;
             for (int i = 0; i < rs.Length; i++)
             {
                 Renderer r = rs[i];

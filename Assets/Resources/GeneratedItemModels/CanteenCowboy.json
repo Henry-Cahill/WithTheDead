@@ -1,0 +1,12 @@
+{"version": 1, "id": "CanteenCowboy", "baseHeight": 0.17, "name": "Canteen Cowboy", "model": "gpt-oss:120b", "notes": "Canteen Cowboy – metal canteen ~0.20 m diameter × 0.25 m long, lying on its side (long axis along X). Body in muted‑tan metal, leather strap around the middle, a small spout on the side, recessed lid with rivets and a dark label.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.006,0.0,-0.025],"rot":[0.0,0.0,90.0],"size":[0.2,0.25,0.2],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Lid","shape":"cylinder","pos":[0.125,0.0,-0.025],"rot":[0.0,0.0,90.0],"size":[0.22,0.012,0.22],"color":[0.55,0.53,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"LidRivetFL","shape":"sphere","pos":[0.118,0.015,0.065],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.3,0.25,0.2],"smooth":0.4,"metal":1.0},
+  {"name":"LidRivetFR","shape":"sphere","pos":[0.118,0.015,-0.115],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.3,0.25,0.2],"smooth":0.4,"metal":1.0},
+  {"name":"LidRivetBL","shape":"sphere","pos":[0.118,-0.015,0.065],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.3,0.25,0.2],"smooth":0.4,"metal":1.0},
+  {"name":"LidRivetBR","shape":"sphere","pos":[0.118,-0.015,-0.115],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.3,0.25,0.2],"smooth":0.4,"metal":1.0},
+  {"name":"StrapBand","shape":"cylinder","pos":[-0.006,0.0,-0.025],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.22],"color":[0.32,0.2,0.12],"smooth":0.1,"metal":0.0},
+  {"name":"Spout","shape":"cylinder","pos":[-0.056,0.0,0.095],"rot":[90.0,0.0,0.0],"size":[0.04,0.08,0.04],"color":[0.58,0.55,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"LabelBase","shape":"cylinder","pos":[-0.066,0.008,-0.025],"rot":[0.0,0.0,90.0],"size":[0.18,0.002,0.12],"color":[0.45,0.4,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"LabelDetail","shape":"cube","pos":[-0.066,0.011,-0.025],"rot":[0.0,0.0,90.0],"size":[0.16,0.002,0.1],"color":[0.3,0.25,0.2],"smooth":0.2,"metal":0.0}
+]}

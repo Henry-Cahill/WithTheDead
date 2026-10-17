@@ -1,0 +1,10 @@
+{"version": 1, "id": "Football_Jersey_Blue", "baseHeight": 0.0725, "name": "Football Jersey Blue", "model": "gpt-oss:120b", "notes": "Flat football jersey 0.75 m long × 0.45 m wide × 0.025 m thick (2‑3 cm). Main torso panel, short sleeves, collar band with neck opening, side seam strips and a small logo patch on the front.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[-0.0175,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.75,0.025,0.45],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.2325,0.0,0.33],"rot":[0.0,0.0,0.0],"size":[0.3,0.022,0.22],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.2325,0.0,-0.33],"rot":[0.0,0.0,0.0],"size":[0.3,0.022,0.22],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.3325,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.48],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.3325,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,0.08],"color":[0.9,0.9,0.92],"smooth":0.05,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[-0.1675,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.018,0.09],"color":[0.93,0.93,0.94],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.0175,0.0,0.225],"rot":[0.0,0.0,0.0],"size":[0.75,0.005,0.01],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[-0.0175,0.0,-0.225],"rot":[0.0,0.0,0.0],"size":[0.75,0.005,0.01],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "BucketOfSoup", "baseHeight": 0.235, "name": "Bucket Of Soup", "model": "gpt-oss:120b", "notes": "Upright bucket of soup ~0.30 m diameter × 0.32 m tall: plastic body with thin rim, simple metal‑look handle (bar across top + two side posts), liquid interior and a front label.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.32,0.28],"color":[0.45,0.6,0.75],"smooth":0.4,"metal":0.0},
+  {"name":"RimTop","shape":"cylinder","pos":[0.0,0.1525,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.3],"color":[0.45,0.6,0.75],"smooth":0.4,"metal":0.0},
+  {"name":"RimBottom","shape":"cylinder","pos":[0.0,-0.1675,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.3],"color":[0.45,0.6,0.75],"smooth":0.4,"metal":0.0},
+  {"name":"HandleBar","shape":"cylinder","pos":[0.0,0.165,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.22,0.02],"color":[0.45,0.6,0.75],"smooth":0.4,"metal":0.0},
+  {"name":"HandleLeft","shape":"cylinder","pos":[-0.12,0.12,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.07,0.02],"color":[0.45,0.6,0.75],"smooth":0.4,"metal":0.0},
+  {"name":"HandleRight","shape":"cylinder","pos":[0.12,0.12,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.07,0.02],"color":[0.45,0.6,0.75],"smooth":0.4,"metal":0.0},
+  {"name":"Soup","shape":"sphere","pos":[0.0,-0.035,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.22,0.24],"color":[0.35,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"LabelPanel","shape":"cube","pos":[0.0,-0.015,0.145],"rot":[0.0,0.0,0.0],"size":[0.18,0.08,0.005],"color":[0.92,0.92,0.93],"smooth":0.1,"metal":0.0},
+  {"name":"LabelStripTop","shape":"cube","pos":[0.0,0.021,0.145],"rot":[0.0,0.0,0.0],"size":[0.18,0.008,0.006],"color":[0.2,0.22,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"LabelStripBottom","shape":"cube","pos":[0.0,-0.051,0.145],"rot":[0.0,0.0,0.0],"size":[0.18,0.008,0.006],"color":[0.2,0.22,0.25],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,18 @@
+{"version": 1, "id": "CakeCheeseCake", "baseHeight": 0.097, "name": "Cake Cheese Cake", "model": "gpt-oss:120b", "notes": "Cheesecake in a rectangular cardboard tray with snap‑on lid. Tray 0.22 m × 0.16 m × 0.046 m (incl. 4 cm sides). Cake body 0.208 m × 0.152 m × 0.036 m, topped by a thin glaze and a few strawberry spheres. Lid adds ~2 cm height and carries a white label.", "score": 6, "parts": [
+  {"name":"TrayBase","shape":"cube","pos":[0.0,-0.034,-0.0137],"rot":[0.0,0.0,0.0],"size":[0.22,0.006,0.16],"color":[0.6,0.55,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"TraySideFront","shape":"cube","pos":[0.0,-0.014,0.0633],"rot":[0.0,0.0,0.0],"size":[0.22,0.04,0.006],"color":[0.6,0.55,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"TraySideBack","shape":"cube","pos":[0.0,-0.014,-0.0907],"rot":[0.0,0.0,0.0],"size":[0.22,0.04,0.006],"color":[0.6,0.55,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"TraySideLeft","shape":"cube","pos":[-0.107,-0.014,-0.0137],"rot":[0.0,0.0,0.0],"size":[0.006,0.04,0.16],"color":[0.6,0.55,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"TraySideRight","shape":"cube","pos":[0.107,-0.014,-0.0137],"rot":[0.0,0.0,0.0],"size":[0.006,0.04,0.16],"color":[0.6,0.55,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"CakeBody","shape":"cube","pos":[0.0,-0.013,-0.0137],"rot":[0.0,0.0,0.0],"size":[0.208,0.036,0.152],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"GlazeTop","shape":"cube","pos":[0.0,0.007,-0.0137],"rot":[0.0,0.0,0.0],"size":[0.208,0.004,0.152],"color":[0.85,0.8,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"LidBase","shape":"cube","pos":[0.0,0.013,-0.0137],"rot":[0.0,0.0,0.0],"size":[0.222,0.008,0.162],"color":[0.6,0.55,0.4],"smooth":0.3,"metal":0.0},
+  {"name":"LidSideFront","shape":"cube","pos":[0.0,0.027,0.0653],"rot":[0.0,0.0,0.0],"size":[0.222,0.02,0.006],"color":[0.6,0.55,0.4],"smooth":0.3,"metal":0.0},
+  {"name":"LidSideBack","shape":"cube","pos":[0.0,0.027,-0.0927],"rot":[0.0,0.0,0.0],"size":[0.222,0.02,0.006],"color":[0.6,0.55,0.4],"smooth":0.3,"metal":0.0},
+  {"name":"LidSideLeft","shape":"cube","pos":[-0.111,0.027,-0.0137],"rot":[0.0,0.0,0.0],"size":[0.006,0.02,0.162],"color":[0.6,0.55,0.4],"smooth":0.3,"metal":0.0},
+  {"name":"LidSideRight","shape":"cube","pos":[0.111,0.027,-0.0137],"rot":[0.0,0.0,0.0],"size":[0.006,0.02,0.162],"color":[0.6,0.55,0.4],"smooth":0.3,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[0.0,0.028,0.0658],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.06],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"Strawberry1","shape":"sphere","pos":[-0.04,0.009,0.0163],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.85,0.15,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Strawberry2","shape":"sphere","pos":[0.03,0.01,-0.0537],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.85,0.15,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Strawberry3","shape":"sphere","pos":[0.05,0.008,0.0263],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.85,0.15,0.2],"smooth":0.4,"metal":0.0}
+]}

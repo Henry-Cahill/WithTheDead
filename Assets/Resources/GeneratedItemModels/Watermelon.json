@@ -1,0 +1,15 @@
+{"version": 1, "id": "Watermelon", "baseHeight": 0.18, "name": "Watermelon", "model": "gpt-oss:120b", "notes": "Flattened oblate watermelon ~0.36 m wide × 0.24 m tall, upright on the floor. Green rind with dark‑green longitudinal stripes, bright red flesh inside, a short brown stem and a green leaf on top, plus a few black seed ellipsoids visible through the rind.", "score": 6, "parts": [
+  {"name":"RindOuter","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.36,0.24,0.36],"color":[0.22,0.58,0.22],"smooth":0.15,"metal":0.0},
+  {"name":"Flesh","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.2,0.32],"color":[0.85,0.12,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"Stem","shape":"cylinder","pos":[0.0,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.4,0.25,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"Leaf","shape":"cube","pos":[0.0,0.045,0.0],"rot":[20.0,0.0,0.0],"size":[0.1,0.008,0.04],"color":[0.3,0.7,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Stripe1","shape":"cylinder","pos":[0.16,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.24,0.015],"color":[0.1,0.35,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"Stripe2","shape":"cylinder","pos":[0.1294,0.0,0.0941],"rot":[0.0,0.0,0.0],"size":[0.015,0.24,0.015],"color":[0.1,0.35,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"Stripe3","shape":"cylinder","pos":[0.0495,0.0,0.1522],"rot":[0.0,0.0,0.0],"size":[0.015,0.24,0.015],"color":[0.1,0.35,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"Stripe4","shape":"cylinder","pos":[-0.0495,0.0,0.1522],"rot":[0.0,0.0,0.0],"size":[0.015,0.24,0.015],"color":[0.1,0.35,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"Stripe5","shape":"cylinder","pos":[-0.1294,0.0,0.0941],"rot":[0.0,0.0,0.0],"size":[0.015,0.24,0.015],"color":[0.1,0.35,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"Seed1","shape":"sphere","pos":[-0.04,0.02,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.02],"color":[0.05,0.05,0.05],"smooth":0.1,"metal":0.0},
+  {"name":"Seed2","shape":"sphere","pos":[0.02,0.01,-0.05],"rot":[0.0,0.0,0.0],"size":[0.018,0.008,0.018],"color":[0.05,0.05,0.05],"smooth":0.1,"metal":0.0},
+  {"name":"Seed3","shape":"sphere","pos":[-0.06,0.0,0.07],"rot":[0.0,0.0,0.0],"size":[0.019,0.008,0.019],"color":[0.05,0.05,0.05],"smooth":0.1,"metal":0.0},
+  {"name":"Seed4","shape":"sphere","pos":[0.05,0.03,-0.02],"rot":[0.0,0.0,0.0],"size":[0.017,0.008,0.017],"color":[0.05,0.05,0.05],"smooth":0.1,"metal":0.0}
+]}

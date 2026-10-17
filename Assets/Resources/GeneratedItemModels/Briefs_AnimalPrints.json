@@ -1,0 +1,11 @@
+{"version": 1, "id": "Briefs_AnimalPrints", "baseHeight": 0.0775, "name": "Briefs Animal Prints", "model": "gpt-oss:120b", "notes": "Flat adult briefs ~0.28 m wide × 0.20 m long × 0.025 m thick, laid out spread on the floor. Includes main front/back panels, a thin waistband, side seam strips and a few animal‑print spots as darker patches.", "score": 6, "parts": [
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,-0.005,0.0588],"rot":[0.0,0.0,0.0],"size":[0.28,0.025,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.005,-0.0612],"rot":[0.0,0.0,0.0],"size":[0.28,0.025,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,-0.005,-0.0012],"rot":[0.0,0.0,0.0],"size":[0.28,0.008,0.02],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.136,-0.005,-0.0012],"rot":[0.0,0.0,0.0],"size":[0.008,0.025,0.2],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.136,-0.005,-0.0012],"rot":[0.0,0.0,0.0],"size":[0.008,0.025,0.2],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Spot1","shape":"sphere","pos":[-0.06,0.005,0.0688],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.35,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Spot2","shape":"sphere","pos":[0.06,0.005,0.0688],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.35,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Spot3","shape":"sphere","pos":[-0.03,0.005,0.0887],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.35,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Spot4","shape":"sphere","pos":[0.03,0.005,0.0887],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.35,0.25,0.2],"smooth":0.05,"metal":0.0}
+]}

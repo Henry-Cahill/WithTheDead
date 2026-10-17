@@ -1,0 +1,14 @@
+{"version": 1, "id": "WheatSheafDried", "baseHeight": 0.08, "name": "Wheat Sheaf Dried", "model": "gpt-oss:120b", "notes": "Dried wheat sheaf ~0.40 m long, ~0.15 m wide, ~0.03 m thick when lying on its side. Central bundle of thin stalks tied near the centre with a short rope and capped by two grain‑head clusters.", "score": 6, "parts": [
+  {"name":"Core","shape":"cylinder","pos":[-0.01,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.4,0.04],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Stalk1","shape":"cylinder","pos":[-0.06,-0.01,-0.06],"rot":[0.0,0.0,90.0],"size":[0.01,0.35,0.01],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Stalk2","shape":"cylinder","pos":[-0.03,-0.01,-0.07],"rot":[0.0,0.0,90.0],"size":[0.01,0.38,0.01],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Stalk3","shape":"cylinder","pos":[-0.01,-0.01,-0.04],"rot":[0.0,0.0,90.0],"size":[0.01,0.36,0.01],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Stalk4","shape":"cylinder","pos":[0.02,-0.01,-0.02],"rot":[0.0,0.0,90.0],"size":[0.01,0.34,0.01],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Stalk5","shape":"cylinder","pos":[-0.04,-0.01,0.04],"rot":[0.0,0.0,90.0],"size":[0.01,0.37,0.01],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Stalk6","shape":"cylinder","pos":[-0.01,-0.01,0.06],"rot":[0.0,0.0,90.0],"size":[0.01,0.33,0.01],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Stalk7","shape":"cylinder","pos":[0.03,-0.01,0.02],"rot":[0.0,0.0,90.0],"size":[0.01,0.35,0.01],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Stalk8","shape":"cylinder","pos":[0.06,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.36,0.01],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Binding","shape":"cylinder","pos":[0.14,0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.12,0.015],"color":[0.55,0.45,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"HeadL","shape":"cube","pos":[-0.21,0.005,-0.08],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.12],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"HeadR","shape":"cube","pos":[-0.21,0.005,0.08],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.12],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0}
+]}

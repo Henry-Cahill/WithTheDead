@@ -1,0 +1,12 @@
+{"version": 1, "id": "PotOfSoup", "baseHeight": 0.132, "name": "Pot Of Soup", "model": "gpt-oss:120b", "notes": "Upright ceramic pot of soup, ~0.22 m diameter × 0.15 m tall. Includes glazed body, metal lid (base + rim + knob), side wooden handle, thin label band, inner lip, visible soup surface and a tiny drip.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.012,-0.0113],"rot":[0.0,0.0,0.0],"size":[0.22,0.12,0.22],"color":[0.45,0.6,0.75],"smooth":0.2,"metal":0.0},
+  {"name":"LidBase","shape":"cylinder","pos":[0.0,0.053,-0.0113],"rot":[0.0,0.0,0.0],"size":[0.2,0.01,0.2],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"LidRim","shape":"cylinder","pos":[0.0,0.06,-0.0113],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.22],"color":[0.5,0.5,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"LidKnob","shape":"cylinder","pos":[0.0,0.067,-0.0113],"rot":[0.0,0.0,0.0],"size":[0.04,0.01,0.04],"color":[0.55,0.55,0.55],"smooth":0.45,"metal":1.0},
+  {"name":"HandleMain","shape":"cylinder","pos":[0.0,-0.012,0.1087],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.45,0.35,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"HandleEnd","shape":"sphere","pos":[0.06,-0.012,0.1087],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.45,0.35,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"SoupSurface","shape":"sphere","pos":[0.0,-0.022,-0.0113],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.2],"color":[0.9,0.8,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBand","shape":"cylinder","pos":[0.0,-0.012,-0.0113],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.22],"color":[0.25,0.3,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"InnerLip","shape":"cylinder","pos":[0.0,0.043,-0.0113],"rot":[0.0,0.0,0.0],"size":[0.21,0.006,0.21],"color":[0.48,0.63,0.78],"smooth":0.2,"metal":0.0},
+  {"name":"Drip","shape":"sphere","pos":[0.0,0.047,0.0938],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0}
+]}

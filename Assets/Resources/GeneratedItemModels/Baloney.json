@@ -1,0 +1,12 @@
+{"version": 1, "id": "Baloney", "baseHeight": 0.082, "name": "Baloney", "model": "gpt-oss:120b", "notes": "Baloney slab 0.22 m long × 0.07 m wide × 0.04 m tall in pink‑tan foil pack; includes the meat block, thin white plastic wrap on all sides, front and back printed labels, a tiny protruding slice to hint at cut edges, and a bottom seal film.", "score": 7, "parts": [
+  {"name":"MeatBlock","shape":"cube","pos":[0.013,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.04,0.07],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"WrapTop","shape":"cube","pos":[0.013,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.222,0.004,0.072],"color":[0.93,0.93,0.95],"smooth":0.3,"metal":0.0},
+  {"name":"WrapSideL","shape":"cube","pos":[-0.099,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.044,0.07],"color":[0.93,0.93,0.95],"smooth":0.3,"metal":0.0},
+  {"name":"WrapSideR","shape":"cube","pos":[0.125,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.044,0.07],"color":[0.93,0.93,0.95],"smooth":0.3,"metal":0.0},
+  {"name":"WrapSideF","shape":"cube","pos":[0.013,-0.0,0.037],"rot":[0.0,0.0,0.0],"size":[0.222,0.044,0.004],"color":[0.93,0.93,0.95],"smooth":0.3,"metal":0.0},
+  {"name":"WrapSideB","shape":"cube","pos":[0.013,-0.0,-0.037],"rot":[0.0,0.0,0.0],"size":[0.222,0.044,0.004],"color":[0.93,0.93,0.95],"smooth":0.3,"metal":0.0},
+  {"name":"BottomSeal","shape":"cube","pos":[0.013,-0.021,0.0],"rot":[0.0,0.0,0.0],"size":[0.222,0.002,0.072],"color":[0.93,0.93,0.95],"smooth":0.3,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[-0.027,0.008,0.0385],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.002],"color":[0.5,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[0.063,0.006,-0.0385],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.002],"color":[0.45,0.18,0.18],"smooth":0.1,"metal":0.0},
+  {"name":"SliceEdge","shape":"cube","pos":[-0.117,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.07],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

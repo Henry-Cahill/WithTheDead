@@ -1,0 +1,20 @@
+{"version": 1, "id": "Shoes_WorkBoots", "baseHeight": 0.0965, "name": "Shoes Work Boots", "model": "gpt-oss:120b", "notes": "Work‑boot pair laid flat (≈0.33 m long × 0.28 m wide × 0.15 m tall). Two rubber soles, leather uppers with laces, steel eyelets and toe caps, raised heels. All right‑hand components now touch their left‑hand counterparts.", "score": 6, "parts": [
+  {"name":"SoleL","shape":"cube","pos":[-0.0025,-0.0215,-0.065],"rot":[0.0,0.0,0.0],"size":[0.33,0.03,0.12],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"SoleR","shape":"cube","pos":[-0.0025,-0.0215,0.055],"rot":[0.0,0.0,0.0],"size":[0.33,0.03,0.12],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"UpperL","shape":"cube","pos":[-0.0025,0.0135,-0.065],"rot":[0.0,0.0,0.0],"size":[0.3,0.04,0.13],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"UpperR","shape":"cube","pos":[-0.0025,0.0135,0.065],"rot":[0.0,0.0,0.0],"size":[0.3,0.04,0.13],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HeelL","shape":"cube","pos":[-0.1325,-0.0015,-0.065],"rot":[0.0,0.0,0.0],"size":[0.07,0.04,0.12],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"HeelR","shape":"cube","pos":[-0.1325,-0.0015,0.055],"rot":[0.0,0.0,0.0],"size":[0.07,0.04,0.12],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"ToeCapL","shape":"cylinder","pos":[0.1275,0.0185,-0.065],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.08],"color":[0.7,0.7,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"ToeCapR","shape":"cylinder","pos":[0.1275,0.0185,0.015],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.08],"color":[0.7,0.7,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"LaceL","shape":"cube","pos":[-0.0025,0.0335,-0.065],"rot":[0.0,0.0,0.0],"size":[0.33,0.006,0.02],"color":[0.3,0.2,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"LaceR","shape":"cube","pos":[-0.0025,0.0335,0.065],"rot":[0.0,0.0,0.0],"size":[0.33,0.006,0.02],"color":[0.3,0.2,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"EyeletL1","shape":"cylinder","pos":[0.0975,0.0335,-0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.7,0.7,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"EyeletL2","shape":"cylinder","pos":[0.0475,0.0335,-0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.7,0.7,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"EyeletL3","shape":"cylinder","pos":[-0.0225,0.0335,-0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.7,0.7,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"EyeletL4","shape":"cylinder","pos":[-0.0825,0.0335,-0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.7,0.7,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"EyeletR1","shape":"cylinder","pos":[0.0975,0.0335,0.065],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.7,0.7,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"EyeletR2","shape":"cylinder","pos":[0.0475,0.0335,0.065],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.7,0.7,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"EyeletR3","shape":"cylinder","pos":[-0.0225,0.0335,0.065],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.7,0.7,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"EyeletR4","shape":"cylinder","pos":[-0.0825,0.0335,0.065],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.7,0.7,0.8],"smooth":0.6,"metal":1.0}
+]}

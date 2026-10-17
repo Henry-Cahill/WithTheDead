@@ -5,9 +5,10 @@ namespace CloneZ
 {
     /// <summary>
     /// Central gameplay tuning. Where a value maps to a Project Zomboid
-    /// constant, the PZ origin is noted in a comment.
+    /// constant, the PZ origin is noted in a comment. Partial: each area of the starter home's
+    /// interactive fixtures keeps its tuning in its own <c>CloneZConfig.*.cs</c> file.
     /// </summary>
-    public static class CloneZConfig
+    public static partial class CloneZConfig
     {
         // ---- Player movement (m/s). PZ relative speeds: sneak .25 / walk .5 / run .75 / sprint 1.0 ----
         public const float PlayerSneakSpeed = 1.4f;

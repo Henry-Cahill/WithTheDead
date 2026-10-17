@@ -98,6 +98,7 @@ namespace CloneZ
         {
             UIState.GameplayBlocked = false;
             UIState.BuildMode = false;
+            UIState.ActionMenuOpen = false;
             Time.timeScale = 1f;
             Climate.Winter = true;
             Shelter.Clear();
@@ -139,6 +140,7 @@ namespace CloneZ
         {
             UIState.GameplayBlocked = false;
             UIState.BuildMode = false;
+            UIState.ActionMenuOpen = false;
             Time.timeScale = 1f;
             Climate.Winter = false;
             Shelter.Clear();
@@ -171,6 +173,13 @@ namespace CloneZ
                     StarterHome.MigrateOldLayout();
                     StarterHome.Furnish(world);
                 }
+                // A save from before the fixtures were interactive: make room for the bathroom and the
+                // fridge, raise the bathroom's partition, then add the furniture that came with them.
+                if (!save.HasFixtures)
+                {
+                    StarterHome.MigrateToFixtureLayout(world);
+                    StarterHome.Furnish(world);
+                }
             }
             else
             {
@@ -187,6 +196,10 @@ namespace CloneZ
             // later rebuild), so they never affect pathing.
             StarterHome.BuildStreet(world);
             StarterHome.DressGrounds(world);
+
+            // Every fixture now stands (the yard's too), so pour the saved states back in: doors, windows,
+            // taps, lamps, switches, and what's kept in the cupboards and drawers.
+            if (loaded) SaveSystem.ApplyFixtures(save);
 
             PlayerStats player = BuildPlayer(PickPlayerSpawn(), 0f);
             gm.Player = player;
@@ -281,6 +294,7 @@ namespace CloneZ
             tod.Sun = sun;
             env.AddComponent<WeatherSystem>();
             env.AddComponent<WaterMains>();      // schedules the water shut-off a few days in
+            env.AddComponent<PowerGrid>();       // .. and the power cut a little later
         }
 
         // The default base for a fresh run (or a save too old to have persisted its props): the starter
@@ -385,6 +399,7 @@ namespace CloneZ
             root.AddComponent<PlayerInventory>();
             root.AddComponent<PlayerInteractor>();
             root.AddComponent<PlayerSleep>();
+            root.AddComponent<PlayerSeat>();          // sitting down on a chair, the armchair, the toilet lid
             root.AddComponent<PlayerBuilder>();
             root.AddComponent<PlayerFarming>();       // till / sow / water / harvest crops (F)
             root.AddComponent<PlayerHydration>();     // drink / fill bottles at a tap or barrel (G)

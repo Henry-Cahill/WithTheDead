@@ -1,0 +1,9 @@
+{"version": 1, "id": "Socks_Long", "baseHeight": 0.2455, "name": "Socks Long", "model": "gpt-oss:120b", "notes": "Long crew‑sock laid flat like a product shot – overall footprint about 0.35 m long × 0.08 m wide, 2 cm thick. Main fabric panel, a ribbed cuff at the top, a raised heel bulge, a toe tip ridge and a central seam line give clear silhouette.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffBand","shape":"cube","pos":[0.145,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.025,0.08],"color":[0.47,0.43,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"SeamLine","shape":"cylinder","pos":[0.0,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.35,0.004,0.004],"color":[0.4,0.36,0.44],"smooth":0.05,"metal":0.0},
+  {"name":"HeelBulge","shape":"cube","pos":[-0.06,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ToeTip","shape":"cylinder","pos":[-0.165,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.004,0.04],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"TopEdge","shape":"cylinder","pos":[0.0,0.0105,0.0],"rot":[0.0,0.0,90.0],"size":[0.35,0.002,0.002],"color":[0.45,0.41,0.49],"smooth":0.05,"metal":0.0},
+  {"name":"BottomEdge","shape":"cylinder","pos":[0.0,-0.0105,0.0],"rot":[0.0,0.0,90.0],"size":[0.35,0.002,0.002],"color":[0.45,0.41,0.49],"smooth":0.05,"metal":0.0}
+]}

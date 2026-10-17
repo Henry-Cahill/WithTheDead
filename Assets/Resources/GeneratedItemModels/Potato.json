@@ -1,0 +1,15 @@
+{"version": 1, "id": "Potato", "baseHeight": 0.14, "name": "Potato", "model": "gpt-oss:120b", "notes": "Loose potatoes in a burlap sack lying on the floor. Sack ~0.35 m long, 0.15 m diameter; three irregular ellipsoidal potatoes (~0.12 m long) inside, each with two dark eye dimples.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cylinder","pos":[0.0,-0.005,-0.0],"rot":[0.0,0.0,90.0],"size":[0.15,0.35,0.15],"color":[0.6,0.5,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BagFlap","shape":"cube","pos":[0.155,0.005,-0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.15],"color":[0.58,0.48,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"HandleL","shape":"cylinder","pos":[0.155,0.04,-0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.4,0.3,0.15],"smooth":0.2,"metal":0.0},
+  {"name":"HandleR","shape":"cylinder","pos":[0.155,0.04,0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.4,0.3,0.15],"smooth":0.2,"metal":0.0},
+  {"name":"Potato1","shape":"sphere","pos":[-0.05,-0.02,-0.03],"rot":[0.0,0.0,0.0],"size":[0.12,0.07,0.07],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Potato1_EyeA","shape":"sphere","pos":[-0.052,0.015,-0.032],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.4,0.3,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"Potato1_EyeB","shape":"sphere","pos":[-0.048,0.015,-0.028],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.4,0.3,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"Potato2","shape":"sphere","pos":[0.0,-0.025,0.04],"rot":[0.0,0.0,0.0],"size":[0.115,0.065,0.07],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Potato2_EyeA","shape":"sphere","pos":[-0.004,0.01,0.042],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.4,0.3,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"Potato2_EyeB","shape":"sphere","pos":[0.004,0.01,0.038],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.4,0.3,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"Potato3","shape":"sphere","pos":[0.06,-0.022,-0.02],"rot":[0.0,0.0,0.0],"size":[0.118,0.068,0.07],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Potato3_EyeA","shape":"sphere","pos":[0.058,0.013,-0.022],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.4,0.3,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"Potato3_EyeB","shape":"sphere","pos":[0.062,0.013,-0.018],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.4,0.3,0.1],"smooth":0.05,"metal":0.0}
+]}

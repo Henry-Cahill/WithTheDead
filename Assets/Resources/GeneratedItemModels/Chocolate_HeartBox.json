@@ -1,0 +1,15 @@
+{"version": 1, "id": "Chocolate_HeartBox", "baseHeight": 0.1, "name": "Chocolate Heart Box", "model": "gpt-oss:120b", "notes": "Chocolate heart gift box ~12 cm × 8 cm × 6 cm tall, standing upright. Cardboard body with thin lid, a pink ribbon around the middle, a front label and a small transparent window that shows four red‑colored chocolate hearts inside.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.009,-0.01,-0.0045],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.08],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.009,0.024,-0.0045],"rot":[0.0,0.0,0.0],"size":[0.122,0.008,0.082],"color":[0.73,0.66,0.42],"smooth":0.07,"metal":0.0},
+  {"name":"Ribbon","shape":"cube","pos":[0.009,-0.006,-0.0045],"rot":[0.0,0.0,0.0],"size":[0.12,0.006,0.02],"color":[0.9,0.3,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.031,0.005,0.037],"rot":[0.0,0.0,0.0],"size":[0.08,0.012,0.002],"color":[0.6,0.55,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Window","shape":"cube","pos":[0.009,0.022,0.0365],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.002],"color":[0.9,0.9,0.95],"smooth":0.6,"metal":0.0},
+  {"name":"Heart1","shape":"sphere","pos":[-0.006,0.03,0.0405],"rot":[0.0,0.0,0.0],"size":[0.018,0.02,0.012],"color":[0.9,0.2,0.3],"smooth":0.3,"metal":0.0},
+  {"name":"Heart2","shape":"sphere","pos":[0.024,0.03,0.0405],"rot":[0.0,0.0,0.0],"size":[0.018,0.02,0.012],"color":[0.9,0.2,0.3],"smooth":0.3,"metal":0.0},
+  {"name":"Heart3","shape":"sphere","pos":[-0.006,0.03,0.0205],"rot":[0.0,0.0,0.0],"size":[0.018,0.02,0.012],"color":[0.9,0.2,0.3],"smooth":0.3,"metal":0.0},
+  {"name":"Heart4","shape":"sphere","pos":[0.024,0.03,0.0205],"rot":[0.0,0.0,0.0],"size":[0.018,0.02,0.012],"color":[0.9,0.2,0.3],"smooth":0.3,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.009,-0.01,0.0365],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.002],"color":[0.73,0.66,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.009,-0.01,-0.0455],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.002],"color":[0.73,0.66,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.052,-0.01,-0.0045],"rot":[0.0,0.0,0.0],"size":[0.002,0.06,0.08],"color":[0.73,0.66,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.07,-0.01,-0.0045],"rot":[0.0,0.0,0.0],"size":[0.002,0.06,0.08],"color":[0.73,0.66,0.42],"smooth":0.05,"metal":0.0}
+]}

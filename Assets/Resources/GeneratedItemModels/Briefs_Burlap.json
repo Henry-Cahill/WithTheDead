@@ -1,0 +1,12 @@
+{"version": 1, "id": "Briefs_Burlap", "baseHeight": 0.2, "name": "Briefs Burlap", "model": "gpt-oss:120b", "notes": "Flat briefs laid out flat (≈0.28 m wide × 0.18 m tall, 0.025 m thick). Main front/back panel, two leg flaps, elastic waistband band, side seams and a small rear pocket hint.", "score": 6, "parts": [
+  {"name":"FrontPanel","shape":"cube","pos":[-0.0538,-0.0,0.03],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[-0.0538,-0.0,-0.03],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegFlapL","shape":"cube","pos":[-0.1138,-0.0,0.07],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegFlapR","shape":"cube","pos":[-0.1138,-0.0,-0.07],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cylinder","pos":[0.0462,-0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.28,0.008,0.28],"color":[0.48,0.44,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamTop","shape":"cube","pos":[-0.0538,0.013,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.003,0.002],"color":[0.45,0.41,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamBottom","shape":"cube","pos":[-0.0538,-0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.003,0.002],"color":[0.45,0.41,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CrotchSeam","shape":"cube","pos":[-0.1437,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.025,0.06],"color":[0.45,0.41,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RearPocket","shape":"cube","pos":[-0.1638,-0.0,-0.04],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.03],"color":[0.48,0.44,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFlap","shape":"cube","pos":[-0.1788,0.008,-0.04],"rot":[0.0,0.0,0.0],"size":[0.015,0.003,0.03],"color":[0.45,0.41,0.5],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "PancakesRecipe", "baseHeight": 0.0875, "name": "Pancakes Recipe", "model": "gpt-oss:120b", "notes": "Upright pancake‑mix box about 0.25 m wide × 0.15 m deep × 0.05 m tall; cardboard body (tint 0.75,0.68,0.45), a paper label on the front, and a small pile of dry mix inside.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0025,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.25,0.05,0.15],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"ContentMix","shape":"cube","pos":[0.0,-0.0125,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.12],"color":[0.85,0.78,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,0.001,0.0712],"rot":[0.0,0.0,0.0],"size":[0.22,0.005,0.002],"color":[0.92,0.88,0.7],"smooth":0.2,"metal":0.0},
+  {"name":"BackLabel","shape":"cube","pos":[0.0,0.001,-0.0737],"rot":[0.0,0.0,0.0],"size":[0.22,0.005,0.002],"color":[0.92,0.88,0.7],"smooth":0.2,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,0.025,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.25,0.005,0.15],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"SideSeamLeft","shape":"cube","pos":[-0.125,-0.0025,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.005,0.05,0.15],"color":[0.68,0.58,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"SideSeamRight","shape":"cube","pos":[0.125,-0.0025,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.005,0.05,0.15],"color":[0.68,0.58,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"BottomSeam","shape":"cube","pos":[0.0,-0.0025,0.0737],"rot":[0.0,0.0,0.0],"size":[0.25,0.05,0.005],"color":[0.68,0.58,0.38],"smooth":0.1,"metal":0.0}
+]}

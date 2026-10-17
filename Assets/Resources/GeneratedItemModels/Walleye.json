@@ -1,0 +1,12 @@
+{"version": 1, "id": "Walleye", "baseHeight": 0.1113, "name": "Walleye", "model": "gpt-oss:120b", "notes": "Whole walleye fish ~0.30 m long, lying on its side (length along X). Main body ellipsoid, rounded head, tail fin, dorsal and pectoral fins, small eye and gill opening; two thin scale rows add texture.", "score": 6, "parts": [
+  {"name":"Body","shape":"sphere","pos":[-0.0307,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.08,0.07],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Head","shape":"sphere","pos":[0.1493,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.1,0.1],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"TailFin","shape":"cube","pos":[-0.1907,0.0188,0.0],"rot":[0.0,0.0,30.0],"size":[0.02,0.04,0.12],"color":[0.7,0.62,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"FinL","shape":"cube","pos":[-0.0307,0.0088,0.035],"rot":[0.0,-20.0,0.0],"size":[0.03,0.01,0.05],"color":[0.7,0.62,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"FinR","shape":"cube","pos":[-0.0307,0.0088,-0.035],"rot":[0.0,20.0,0.0],"size":[0.03,0.01,0.05],"color":[0.7,0.62,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"DorsalFin","shape":"cube","pos":[-0.0507,0.0437,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.06],"color":[0.7,0.62,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"Gills","shape":"cylinder","pos":[0.0893,-0.0012,0.025],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.55,0.48,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Eye","shape":"sphere","pos":[0.1893,0.0188,0.015],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.05,0.05,0.05],"smooth":0.05,"metal":0.0},
+  {"name":"ScaleRowTop","shape":"cylinder","pos":[-0.0307,-0.0212,0.03],"rot":[0.0,0.0,0.0],"size":[0.28,0.004,0.004],"color":[0.65,0.58,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"ScaleRowBottom","shape":"cylinder","pos":[-0.0307,-0.0212,-0.03],"rot":[0.0,0.0,0.0],"size":[0.28,0.004,0.004],"color":[0.65,0.58,0.35],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "Sheep_Ewe_Head_Black", "baseHeight": 0.1425, "name": "Sheep Ewe Head Black", "model": "gpt-oss:120b", "notes": "Sheep ewe head (black wool) approx 0.18 m wide × 0.14 m tall × 0.16 m deep, lying on its back. Main skull ellipsoid, protruding snout, floppy ears, dark eyes and nostrils, thin mouth line and a few wool‑fluff accents.", "score": 6, "parts": [
+  {"name":"Skull","shape":"sphere","pos":[0.0,-0.0125,-0.062],"rot":[0.0,0.0,0.0],"size":[0.18,0.14,0.16],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Snout","shape":"cylinder","pos":[0.0,-0.0125,0.078],"rot":[90.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"EarL","shape":"sphere","pos":[-0.09,0.0275,-0.042],"rot":[0.0,0.0,0.0],"size":[0.06,0.09,0.04],"color":[0.58,0.56,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"EarR","shape":"sphere","pos":[0.09,0.0275,-0.042],"rot":[0.0,0.0,0.0],"size":[0.06,0.09,0.04],"color":[0.58,0.56,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[-0.03,0.0025,0.013],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.0,0.0,0.0],"smooth":0.02,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.03,0.0025,0.013],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.0,0.0,0.0],"smooth":0.02,"metal":0.0},
+  {"name":"NostrilL","shape":"sphere","pos":[-0.012,-0.0225,0.118],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.0,0.0,0.0],"smooth":0.02,"metal":0.0},
+  {"name":"NostrilR","shape":"sphere","pos":[0.012,-0.0225,0.118],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.0,0.0,0.0],"smooth":0.02,"metal":0.0},
+  {"name":"MouthLine","shape":"cube","pos":[0.0,-0.0325,0.133],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.018],"color":[0.45,0.43,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"WoolFluffFront","shape":"cylinder","pos":[0.0,0.0375,0.038],"rot":[90.0,0.0,0.0],"size":[0.09,0.03,0.09],"color":[0.58,0.56,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"WoolFluffSideL","shape":"cylinder","pos":[-0.11,0.0075,-0.062],"rot":[90.0,0.0,0.0],"size":[0.08,0.025,0.08],"color":[0.58,0.56,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"WoolFluffSideR","shape":"cylinder","pos":[0.11,0.0075,-0.062],"rot":[90.0,0.0,0.0],"size":[0.08,0.025,0.08],"color":[0.58,0.56,0.48],"smooth":0.1,"metal":0.0}
+]}

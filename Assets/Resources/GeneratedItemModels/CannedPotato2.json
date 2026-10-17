@@ -1,0 +1,10 @@
+{"version": 1, "id": "CannedPotato2", "baseHeight": 0.2045, "name": "Canned Potato2", "model": "gpt-oss:120b", "notes": "Upright canned potatoes, 0.20 m diameter × 0.28 m tall. Metal body with thin recessed lid, rolled seams at top/bottom, and a muted‑gold label wrapping most of the side.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.28,0.2],"color":[0.78,0.8,0.85],"smooth":0.55,"metal":0.9},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.1295,0.0],"rot":[0.0,0.0,0.0],"size":[0.212,0.012,0.212],"color":[0.78,0.8,0.85],"smooth":0.55,"metal":0.9},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.1385,0.0],"rot":[0.0,0.0,0.0],"size":[0.212,0.012,0.212],"color":[0.78,0.8,0.85],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.1395,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.01,0.18],"color":[0.7,0.71,0.73],"smooth":0.45,"metal":0.9},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.196,0.22,0.196],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.1005,0.0],"rot":[0.0,0.0,0.0],"size":[0.198,0.008,0.198],"color":[0.48,0.4,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.1095,0.0],"rot":[0.0,0.0,0.0],"size":[0.198,0.008,0.198],"color":[0.48,0.4,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"LabelDetail","shape":"cube","pos":[0.0,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.02],"color":[0.58,0.5,0.3],"smooth":0.12,"metal":0.0}
+]}

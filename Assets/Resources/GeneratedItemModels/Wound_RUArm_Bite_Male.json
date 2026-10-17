@@ -1,0 +1,10 @@
+{"version": 1, "id": "Wound_RUArm_Bite_Male", "baseHeight": 0.1, "name": "Wound RUArm Bite Male", "model": "gpt-oss:120b", "notes": "Right‑upper‑arm segment 0.12 m long × 0.08 m diameter lying on its side with a bite wound in the centre; flesh‑coloured base, dark blood‑filled indentation and a few torn skin flaps and drips for readable silhouette.", "score": 6, "parts": [
+  {"name":"ArmBase","shape":"cylinder","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.12,0.08],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"BiteOuter","shape":"sphere","pos":[0.0,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.4,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"BiteInner","shape":"sphere","pos":[0.0,0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.015,0.045],"color":[0.5,0.05,0.05],"smooth":0.2,"metal":0.0},
+  {"name":"SkinFlapL","shape":"cube","pos":[-0.02,0.005,-0.05],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.04],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"SkinFlapR","shape":"cube","pos":[-0.02,0.005,0.05],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.04],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"BloodDrop1","shape":"sphere","pos":[0.02,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.45,0.05,0.05],"smooth":0.2,"metal":0.0},
+  {"name":"BloodDrop2","shape":"sphere","pos":[-0.03,-0.018,0.02],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.45,0.05,0.05],"smooth":0.2,"metal":0.0},
+  {"name":"TissueClot","shape":"cube","pos":[0.0,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.04],"color":[0.4,0.2,0.15],"smooth":0.1,"metal":0.0}
+]}

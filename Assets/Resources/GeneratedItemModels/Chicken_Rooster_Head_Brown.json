@@ -1,0 +1,12 @@
+{"version": 1, "id": "Chicken_Rooster_Head_Brown", "baseHeight": 0.1145, "name": "Chicken Rooster Head Brown", "model": "gpt-oss:120b", "notes": "Rooster head ~0.15 m long × 0.13 m wide × 0.09 m tall, brown feather base with orange beak, red comb & wattle, dark eyes. Lying on floor, silhouette clear from above.", "score": 7, "parts": [
+  {"name":"MainHead","shape":"sphere","pos":[0.005,-0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.09,0.13],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Beak","shape":"cylinder","pos":[0.075,-0.0095,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.04,0.02],"color":[0.82,0.71,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Comb","shape":"cube","pos":[0.005,0.0355,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.03],"color":[0.8,0.2,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"Wattle","shape":"sphere","pos":[0.075,-0.0195,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.02,0.02],"color":[0.78,0.18,0.18],"smooth":0.2,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[-0.025,0.0005,0.035],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.05,0.05,0.05],"smooth":0.05,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[-0.025,0.0005,-0.035],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.05,0.05,0.05],"smooth":0.05,"metal":0.0},
+  {"name":"NeckStub","shape":"cylinder","pos":[-0.065,-0.0095,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.06,0.02],"color":[0.55,0.5,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"FeatherL","shape":"cube","pos":[-0.015,0.0155,0.04],"rot":[10.0,0.0,0.0],"size":[0.03,0.005,0.015],"color":[0.58,0.55,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"FeatherR","shape":"cube","pos":[-0.015,0.0155,-0.04],"rot":[-10.0,0.0,0.0],"size":[0.03,0.005,0.015],"color":[0.58,0.55,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"CrestTip","shape":"cube","pos":[0.005,0.0505,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.015],"color":[0.78,0.2,0.2],"smooth":0.2,"metal":0.0}
+]}

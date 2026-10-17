@@ -1,0 +1,12 @@
+{"version": 1, "id": "FrillyUnderpants_Black", "baseHeight": 0.0745, "name": "Frilly Underpants Black", "model": "gpt-oss:120b", "notes": "Flat black frilly underpants laid out as a product photo – overall footprint ≈ 0.38 m wide (X) × 0.25 m long (Z), 0.02 m thick fabric panel with raised lace‑trim frills around the perimeter.", "score": 4, "parts": [
+  {"name":"MainPanel","shape":"cube","pos":[0.0,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.018,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrillFrontEdge","shape":"cube","pos":[0.0,0.0065,0.135],"rot":[0.0,0.0,0.0],"size":[0.38,0.006,0.02],"color":[0.65,0.6,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"FrillBackEdge","shape":"cube","pos":[0.0,0.0065,-0.135],"rot":[0.0,0.0,0.0],"size":[0.38,0.006,0.02],"color":[0.65,0.6,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"FrillLeftEdge","shape":"cube","pos":[-0.2,0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.006,0.25],"color":[0.65,0.6,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"FrillRightEdge","shape":"cube","pos":[0.2,0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.006,0.25],"color":[0.65,0.6,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"WaistbandFront","shape":"cube","pos":[0.0,0.0105,0.115],"rot":[0.0,0.0,0.0],"size":[0.38,0.008,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"WaistbandBack","shape":"cube","pos":[0.0,0.0105,-0.115],"rot":[0.0,0.0,0.0],"size":[0.38,0.008,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"WaistbandLeft","shape":"cube","pos":[-0.19,0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.25],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"WaistbandRight","shape":"cube","pos":[0.19,0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.25],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLineCenter","shape":"cube","pos":[0.0,0.0045,0.06],"rot":[0.0,0.0,0.0],"size":[0.34,0.002,0.004],"color":[0.35,0.33,0.4],"smooth":0.05,"metal":0.0}
+]}

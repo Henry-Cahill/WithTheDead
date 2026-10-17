@@ -1,0 +1,12 @@
+{"version": 1, "id": "CrispyRiceSquare", "baseHeight": 0.0688, "name": "Crispy Rice Square", "model": "gpt-oss:120b", "notes": "Crispy rice square snack ~0.07 m long × 0.06 m wide × 0.015 m thick, lying flat on the floor in a thin clear wrapper with a printed label on top.", "score": 6, "parts": [
+  {"name":"WrapperBottom","shape":"cube","pos":[0.0,-0.0073,0.0],"rot":[0.0,0.0,0.0],"size":[0.072,0.003,0.062],"color":[0.92,0.93,0.95],"smooth":0.4,"metal":0.0},
+  {"name":"WrapperTop","shape":"cube","pos":[0.0,0.0067,0.0],"rot":[0.0,0.0,0.0],"size":[0.072,0.003,0.062],"color":[0.92,0.93,0.95],"smooth":0.4,"metal":0.0},
+  {"name":"WrapperSideLongL","shape":"cube","pos":[-0.0365,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.015,0.062],"color":[0.92,0.93,0.95],"smooth":0.4,"metal":0.0},
+  {"name":"WrapperSideLongR","shape":"cube","pos":[0.0365,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.015,0.062],"color":[0.92,0.93,0.95],"smooth":0.4,"metal":0.0},
+  {"name":"WrapperSideShortF","shape":"cube","pos":[0.0,0.0,0.031],"rot":[0.0,0.0,0.0],"size":[0.072,0.015,0.003],"color":[0.92,0.93,0.95],"smooth":0.4,"metal":0.0},
+  {"name":"WrapperSideShortB","shape":"cube","pos":[0.0,0.0,-0.031],"rot":[0.0,0.0,0.0],"size":[0.072,0.015,0.003],"color":[0.92,0.93,0.95],"smooth":0.4,"metal":0.0},
+  {"name":"SnackBase","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.066,0.012,0.054],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"CrispRim","shape":"cube","pos":[0.0,0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.058],"color":[0.7,0.62,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,0.0077,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.002,0.05],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBorder","shape":"cylinder","pos":[0.0,0.0078,0.0],"rot":[0.0,0.0,0.0],"size":[0.052,0.002,0.052],"color":[0.8,0.8,0.85],"smooth":0.1,"metal":0.0}
+]}

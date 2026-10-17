@@ -91,7 +91,9 @@ namespace CloneZ
         /// <summary>The home's yard, all cosmetic and kept out of every navmesh bake: a lawn with ragged edges,
         /// a timber-edged vegetable bed round the garden plots, mulched flower beds with shrubs along the
         /// house, stepping stones out to the garden, a concrete stoop and welcome mat at the front door,
-        /// a mailbox at the kerb and a hose reel by the rain barrel.</summary>
+        /// a mailbox at the kerb and a hose reel with an outside tap by the rain barrel. The mat, the mailbox
+        /// and the tap are working fixtures (<see cref="DoormatFixture"/>, <see cref="MailboxFixture"/>,
+        /// <see cref="HoseSpigot"/>).</summary>
         public static void DressGrounds(Transform world)
         {
             var rng = new System.Random(5150);
@@ -134,12 +136,10 @@ namespace CloneZ
 
             // The front stoop and welcome mat.
             solid.Box(new Vector3(4.0f, 0.035f, 2.6f), new Vector3(1.9f, 0.07f, 0.6f), DecorMaterials.Concrete);
-            Surf welcome = DecorMaterials.Sign("WELCOME", new Color(0.46f, 0.34f, 0.18f), new Color(0.16f, 0.11f, 0.07f), out float aspect);
-            flat.Flat(new Vector3(4.0f, 0.073f, 2.62f), 0.86f, 0.46f, 0f, DecorPalette.Matte(new Color(0.16f, 0.13f, 0.10f)));
-            flat.FlatUV(new Vector3(4.0f, 0.075f, 2.62f), 0.78f, 0.78f / aspect, 0f, welcome, new Rect(0f, 0f, 1f, 1f));
+            Doormat(world, solid, new Vector3(4.0f, 0.07f, 2.62f));
 
-            Mailbox(solid, new Vector3(6.1f, 0.03f, 1.95f));
-            HoseReel(solid, new Vector3(0.55f, 0.012f, 6.85f));
+            Mailbox(world, solid, new Vector3(6.1f, 0.03f, 1.95f));
+            HoseReel(world, solid, new Vector3(0.55f, 0.012f, 6.85f));
 
             Cosmetic(flat.Emit("YardGround", world, Vector3.zero, ShadowCastingMode.Off));
             Cosmetic(solid.Emit("Yard", world, Vector3.zero, ShadowCastingMode.On));
@@ -180,27 +180,121 @@ namespace CloneZ
             }
         }
 
-        // A rural mailbox on a cedar post at the kerb, its door to the street and the red flag down.
-        private static void Mailbox(RaidMesh m, Vector3 at)
+        // The coir welcome mat on the stoop (at: the middle of its underside), hinged on its far edge so the survivor can lift
+        // it (see DoormatFixture). Under it lie a square of damp, pale concrete and a dead beetle, both hidden inside the
+        // mat until it's lifted.
+        private static void Doormat(Transform world, RaidMesh m, Vector3 at)
         {
-            m.Box(at + new Vector3(0f, 0.55f, 0f), new Vector3(0.09f, 1.1f, 0.09f), DecorPalette.Matte(new Color(0.40f, 0.28f, 0.17f)));
-            m.Box(at + new Vector3(0f, 1.11f, 0f), new Vector3(0.18f, 0.03f, 0.34f), DecorPalette.Matte(new Color(0.40f, 0.28f, 0.17f)));
+            const float w = 0.86f, d = 0.46f, thick = 0.012f;
+            m.Flat(at + Vector3.up * 0.0015f, w - 0.02f, d - 0.02f, 0f, DecorPalette.Matte(new Color(0.47f, 0.46f, 0.42f)));
+            m.Ellipsoid(at + new Vector3(0.14f, 0.004f, -0.07f), new Vector3(0.024f, 0.007f, 0.016f), DecorPalette.Gloss(new Color(0.10f, 0.07f, 0.05f)), 6, 3);
+
+            var mat = new RaidMesh();
+            mat.Box(at + Vector3.up * (thick * 0.5f), new Vector3(w, thick, d), DecorPalette.Matte(new Color(0.16f, 0.13f, 0.10f)));
+            mat.Flat(at + Vector3.up * (thick + 0.0015f), w - 0.07f, d - 0.07f, 0f, DecorPalette.Matte(new Color(0.46f, 0.34f, 0.18f)));
+            Surf welcome = DecorMaterials.Sign("WELCOME", new Color(0.46f, 0.34f, 0.18f), new Color(0.16f, 0.11f, 0.07f), out float aspect);
+            mat.FlatUV(at + Vector3.up * (thick + 0.003f), 0.7f, 0.7f / aspect, 0f, welcome, new Rect(0f, 0f, 1f, 1f));
+
+            DoormatFixture fixture = DoormatFixture.Create(world, at + new Vector3(0f, 0.03f, 0.04f - d * 0.5f));
+            Cosmetic(fixture.gameObject);
+            // Lifting the near edge turns the mat up about its far edge, toward the door.
+            FixturePart part = FixturePart.Hinge(fixture.transform, "Mat", mat, at + new Vector3(0f, 0f, d * 0.5f), Vector3.right, 65f,
+                ShadowCastingMode.Off).WithSpeed(0.25f);
+            fixture.SetMat(part);
+        }
+
+        // A rural mailbox on a cedar post at the kerb, its door to the street and the red flag down. The door drops open on
+        // its foot and the flag swings up (see MailboxFixture); the post stands in nobody's way.
+        private static void Mailbox(Transform world, RaidMesh m, Vector3 at)
+        {
+            Surf cedar = DecorPalette.Matte(new Color(0.40f, 0.28f, 0.17f));
+            m.Box(at + new Vector3(0f, 0.55f, 0f), new Vector3(0.09f, 1.1f, 0.09f), cedar);
+            m.Box(at + new Vector3(0f, 1.11f, 0f), new Vector3(0.18f, 0.03f, 0.34f), cedar);
             Surf box = DecorPalette.Metal(new Color(0.18f, 0.20f, 0.24f));
             m.Box(at + new Vector3(0f, 1.2f, 0f), new Vector3(0.22f, 0.16f, 0.48f), box);
             m.CylinderX(at + new Vector3(0f, 1.28f, 0f), 0.11f, 0.48f, 10, box, 90f);
-            m.Box(at + new Vector3(0f, 1.22f, -0.245f), new Vector3(0.2f, 0.2f, 0.012f), DecorPalette.Metal(new Color(0.24f, 0.26f, 0.30f)));
-            m.Box(at + new Vector3(0.125f, 1.2f, 0.06f), new Vector3(0.015f, 0.05f, 0.2f), DecorPalette.Matte(new Color(0.72f, 0.12f, 0.10f)));
+            // The dark mouth behind the door, and the boss the flag turns on.
+            Surf dark = DecorPalette.Matte(new Color(0.04f, 0.04f, 0.05f));
+            m.Box(at + new Vector3(0f, 1.205f, -0.241f), new Vector3(0.19f, 0.15f, 0.002f), dark);
+            m.Cylinder(at + new Vector3(0f, 1.28f, -0.242f), 0.095f, 0.002f, 12, dark, Quaternion.Euler(90f, 0f, 0f));
+            m.Cylinder(at + new Vector3(0.11f, 1.18f, 0.2f), 0.014f, 0.012f, 8, box, Quaternion.Euler(0f, 0f, -90f));
+
+            MailboxFixture fixture = MailboxFixture.Create(world, at + new Vector3(0f, 1.25f, -0.3f));
+            Cosmetic(fixture.gameObject);
+
+            // The door: the box's profile (a square foot under a round top), hinged along its bottom edge.
+            var door = new RaidMesh();
+            Surf face = DecorPalette.Metal(new Color(0.24f, 0.26f, 0.30f));
+            door.Box(at + new Vector3(0f, 1.2f, -0.252f), new Vector3(0.226f, 0.16f, 0.012f), face);
+            door.Cylinder(at + new Vector3(0f, 1.28f, -0.258f), 0.113f, 0.012f, 12, face, Quaternion.Euler(90f, 0f, 0f));
+            door.Box(at + new Vector3(0f, 1.35f, -0.262f), new Vector3(0.04f, 0.018f, 0.01f), DecorPalette.Metal(new Color(0.55f, 0.55f, 0.52f)));
+            FixturePart doorPart = FixturePart.Hinge(fixture.transform, "Door", door, at + new Vector3(0f, 1.12f, -0.252f), Vector3.left, 100f);
+
+            // The flag: a red arm lying forward along the box's side with the flag at its end; it swings up on the boss.
+            var flag = new RaidMesh();
+            Surf red = DecorPalette.Matte(new Color(0.72f, 0.12f, 0.10f));
+            Vector3 pivot = at + new Vector3(0.126f, 1.18f, 0.2f);
+            flag.Box(pivot + new Vector3(0f, 0f, -0.12f), new Vector3(0.008f, 0.016f, 0.26f), red);
+            flag.Box(pivot + new Vector3(0f, 0.022f, -0.215f), new Vector3(0.008f, 0.06f, 0.07f), red);
+            FixturePart flagPart = FixturePart.Hinge(fixture.transform, "Flag", flag, pivot, Vector3.right, 90f).WithSpeed(0.3f);
+
+            fixture.SetParts(doorPart, flagPart);
         }
 
-        // A green garden hose coiled on a wall reel.
-        private static void HoseReel(RaidMesh m, Vector3 at)
+        // A green garden hose coiled on a reel, its brass nozzle out on the lawn, fed from the outside tap: a standpipe between
+        // the reel and the wall with a red wheel that turns (see HoseSpigot). While the tap runs, water trickles from the nozzle.
+        private static void HoseReel(Transform world, RaidMesh m, Vector3 at)
         {
             Surf frame = DecorPalette.Metal(new Color(0.22f, 0.24f, 0.22f));
+            Surf hose = DecorPalette.Gloss(new Color(0.16f, 0.42f, 0.18f));
+            Surf brass = DecorPalette.Metal(FurnitureBuilder.Brass);
             m.Box(at + new Vector3(-0.2f, 0.25f, 0f), new Vector3(0.04f, 0.5f, 0.04f), frame);
             m.Box(at + new Vector3(0.2f, 0.25f, 0f), new Vector3(0.04f, 0.5f, 0.04f), frame);
             m.CylinderX(at + new Vector3(0f, 0.36f, 0f), 0.04f, 0.44f, 8, frame);
-            m.CylinderX(at + new Vector3(0f, 0.36f, 0f), 0.2f, 0.3f, 14, DecorPalette.Gloss(new Color(0.16f, 0.42f, 0.18f)));
-            m.Rod(at + new Vector3(-0.1f, 0.2f, 0.1f), at + new Vector3(-0.6f, 0.01f, 0.45f), 0.035f, DecorPalette.Gloss(new Color(0.16f, 0.42f, 0.18f)), 6);
+            m.CylinderX(at + new Vector3(0f, 0.36f, 0f), 0.2f, 0.3f, 14, hose);
+            Vector3 end = at + new Vector3(-0.6f, 0.01f, 0.45f);
+            m.Rod(at + new Vector3(-0.1f, 0.2f, 0.1f), end, 0.035f, hose, 6);
+            Vector3 dir = new Vector3(-0.5f, 0f, 0.35f).normalized;
+            Vector3 tip = end + dir * 0.08f;
+            m.Rod(end, tip, 0.03f, brass, 8);
+
+            // The standpipe, its tap and spout, and the short length of hose from the spout down onto the reel.
+            Vector3 pipe = new Vector3(0.83f, at.y, at.z);
+            m.Cylinder(pipe, 0.016f, 0.6f, 8, DecorPalette.Metal(new Color(0.52f, 0.54f, 0.53f)));
+            Vector3 body = pipe + Vector3.up * 0.63f, elbow = body + new Vector3(-0.065f, 0f, 0f);
+            m.Box(body, new Vector3(0.045f, 0.04f, 0.045f), brass);
+            m.Rod(body, elbow, 0.022f, brass, 8);
+            m.Rod(elbow, elbow - Vector3.up * 0.045f, 0.022f, brass, 8);
+            Vector3 coupling = elbow - Vector3.up * 0.075f;
+            m.Cylinder(coupling, 0.017f, 0.03f, 8, brass);
+            m.Rod(coupling, at + new Vector3(0.12f, 0.52f, 0f), 0.03f, hose, 6);
+            m.Cylinder(body + Vector3.up * 0.018f, 0.005f, 0.016f, 6, brass);
+
+            HoseSpigot tap = HoseSpigot.Create(world, body + Vector3.up * 0.04f, coupling, new Vector3(0.9f, 0f, at.z), Vector3.left);
+            Cosmetic(tap.gameObject);
+
+            // The wheel: a red disc with a spoke and a knob, turning anticlockwise (seen from above) to open.
+            var wheel = new RaidMesh();
+            Surf red = DecorPalette.Matte(new Color(0.66f, 0.12f, 0.09f));
+            Vector3 hub = body + Vector3.up * 0.032f;
+            wheel.Cylinder(hub, 0.032f, 0.01f, 12, red);
+            wheel.Box(hub + Vector3.up * 0.012f, new Vector3(0.058f, 0.006f, 0.01f), DecorPalette.Matte(new Color(0.42f, 0.07f, 0.05f)));
+            wheel.Ellipsoid(hub + new Vector3(0.024f, 0.017f, 0f), new Vector3(0.012f, 0.014f, 0.012f), red, 6, 4);
+            FixturePart wheelPart = FixturePart.Hinge(tap.transform, "Wheel", wheel, hub, Vector3.down, 270f, ShadowCastingMode.Off).WithSpeed(0.6f);
+
+            // The trickle: a glistening run of water from the nozzle and a dark wet patch spreading on the lawn.
+            var water = new RaidMesh();
+            var splash = new System.Random(77);
+            Vector3 pool = tip + dir * 0.16f;
+            water.FlatBlob(new Vector3(pool.x, 0.009f, pool.z), 0.26f, 0.2f, 35f, 0.3f, splash, DecorPalette.Matte(new Color(0.10f, 0.12f, 0.08f)));
+            water.FlatBlob(new Vector3(pool.x, 0.011f, pool.z), 0.15f, 0.11f, 35f, 0.3f, splash, DecorPalette.Gloss(new Color(0.46f, 0.56f, 0.62f)));
+            water.Rod(tip, tip + dir * 0.12f - Vector3.up * 0.01f, 0.012f, DecorPalette.Gloss(new Color(0.56f, 0.66f, 0.72f)), 6);
+            GameObject trickle = water.Emit("Trickle", tap.transform, tip, ShadowCastingMode.Off);
+            trickle.transform.rotation = Quaternion.identity;
+            Renderer trickleRenderer = trickle.GetComponent<Renderer>();
+            trickleRenderer.enabled = false;
+
+            tap.SetParts(wheelPart, trickleRenderer);
         }
         #endregion
     }

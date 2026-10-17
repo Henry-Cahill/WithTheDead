@@ -1,0 +1,14 @@
+{"version": 1, "id": "PoppyPods", "baseHeight": 0.08, "name": "Poppy Pods", "model": "gpt-oss:120b", "notes": "Cluster of three dried poppy seed pods lying on the ground (longest axis along X). Each pod is an elongated ellipsoid with a thin seam line and a handful of dark seed specks.", "score": 7, "parts": [
+  {"name":"PodA","shape":"sphere","pos":[-0.03,0.0,0.0013],"rot":[0.0,0.0,0.0],"size":[0.09,0.04,0.06],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"PodB","shape":"sphere","pos":[0.02,-0.002,0.0163],"rot":[0.0,0.0,0.0],"size":[0.08,0.035,0.055],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"PodC","shape":"sphere","pos":[0.04,-0.001,-0.0187],"rot":[0.0,0.0,0.0],"size":[0.07,0.033,0.05],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"SeamA","shape":"cylinder","pos":[-0.03,0.0,0.0013],"rot":[0.0,0.0,90.0],"size":[0.008,0.09,0.008],"color":[0.45,0.42,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"SeamB","shape":"cylinder","pos":[0.02,-0.002,0.0163],"rot":[0.0,0.0,90.0],"size":[0.008,0.08,0.008],"color":[0.45,0.42,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"SeamC","shape":"cylinder","pos":[0.04,-0.001,-0.0187],"rot":[0.0,0.0,90.0],"size":[0.008,0.07,0.008],"color":[0.45,0.42,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"Seed1","shape":"sphere","pos":[-0.025,0.01,0.0113],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.3,0.2,0.1],"smooth":0.5,"metal":0.0},
+  {"name":"Seed2","shape":"sphere","pos":[-0.015,0.012,-0.0137],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.3,0.2,0.1],"smooth":0.5,"metal":0.0},
+  {"name":"Seed3","shape":"sphere","pos":[0.022,0.005,0.0213],"rot":[0.0,0.0,0.0],"size":[0.005,0.005,0.005],"color":[0.3,0.2,0.1],"smooth":0.5,"metal":0.0},
+  {"name":"Seed4","shape":"sphere","pos":[0.028,0.002,-0.0087],"rot":[0.0,0.0,0.0],"size":[0.005,0.005,0.005],"color":[0.3,0.2,0.1],"smooth":0.5,"metal":0.0},
+  {"name":"Seed5","shape":"sphere","pos":[0.048,0.008,-0.0137],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.3,0.2,0.1],"smooth":0.5,"metal":0.0},
+  {"name":"Seed6","shape":"sphere","pos":[0.052,0.01,0.0063],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.3,0.2,0.1],"smooth":0.5,"metal":0.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "CookiesOatmealDough", "baseHeight": 0.1025, "name": "Cookies Oatmeal Dough", "model": "gpt-oss:120b", "notes": "Oatmeal cookie dough in a rectangular cardboard tub (≈0.28 m × 0.18 m × 0.09 m total). Tub body, thin lid that overhangs, front label and several visible dough clumps (tint 0.75,0.68,0.45) inside.", "score": 6, "parts": [
+  {"name":"TubBody","shape":"cube","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.07,0.18],"color":[0.85,0.84,0.78],"smooth":0.2,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.035,0.0],"rot":[0.0,0.0,0.0],"size":[0.285,0.015,0.185],"color":[0.9,0.89,0.84],"smooth":0.2,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,0.0075,0.0895],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.002],"color":[0.48,0.38,0.28],"smooth":0.1,"metal":0.0},
+  {"name":"DoughClumpA","shape":"sphere","pos":[-0.07,-0.0025,-0.03],"rot":[0.0,0.0,0.0],"size":[0.06,0.035,0.045],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"DoughClumpB","shape":"sphere","pos":[0.03,-0.0025,0.02],"rot":[0.0,0.0,0.0],"size":[0.055,0.032,0.05],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"DoughClumpC","shape":"sphere","pos":[-0.02,0.0025,0.04],"rot":[0.0,0.0,0.0],"size":[0.058,0.034,0.047],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"DoughClumpD","shape":"sphere","pos":[0.08,-0.0045,-0.04],"rot":[0.0,0.0,0.0],"size":[0.052,0.03,0.042],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"DoughClumpE","shape":"sphere","pos":[-0.09,-0.0005,0.06],"rot":[0.0,0.0,0.0],"size":[0.05,0.028,0.04],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

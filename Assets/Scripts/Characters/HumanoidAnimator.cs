@@ -5,16 +5,20 @@ namespace CloneZ
     /// <summary>How a humanoid moves: the survivor's walk and run, or one of the dead's gaits.</summary>
     public enum HumanoidGait : byte { Survivor, Shambler, Lurcher, Runner, Crawler }
 
-    /// <summary>A sustained task that takes over the arms (and often the legs).</summary>
-    public enum HumanoidActivity : byte { None, Search, Build, Dig, Plant, Water }
+    /// <summary>A sustained task that takes over the arms (and often the legs) — rummaging, hammering,
+    /// gardening, <see cref="Use"/>: working a fixture (a tap, a switch, a drawer: one hand reaching out
+    /// toward it at chest height), or <see cref="Read"/>: a book or a magazine held open in both hands,
+    /// the head bowed over it. New values go on the end.</summary>
+    public enum HumanoidActivity : byte { None, Search, Build, Dig, Plant, Water, Use, Read }
 
     /// <summary>
     /// Procedural animation for a <see cref="HumanoidRig"/>. There are no clips: every frame the pose
     /// is computed from what the character is doing — a gait cycle driven by real ground speed (so feet
     /// don't slide), a crouch, the weapon in hand, one-shot actions such as a swing or a lunge, and
-    /// whole-body states (asleep in bed, crawling, dead). Hands that need to land somewhere exact —
-    /// on a gun, on a bat handle, on the ground while searching — are placed with two-bone IK, and
-    /// the hips are lowered every frame until a foot is planted on the floor.
+    /// whole-body states (sitting on a chair, lying in bed asleep or awake, crawling, dead). Hands that
+    /// need to land somewhere exact — on a gun, on a bat handle, on the ground while searching, on a
+    /// switch, in the lap — are placed with two-bone IK, and the hips are lowered every frame until a
+    /// foot is planted on the floor (or set down on the seat).
     ///
     /// A driver (<see cref="PlayerAvatar"/>, <see cref="ZombieAvatar"/>) sets the inputs each frame and
     /// fires the triggers; this component evaluates in LateUpdate, after movement has been applied.
@@ -34,12 +38,22 @@ namespace CloneZ
         [System.NonSerialized] public float Limp;                // 0..1, drags the left leg
         [System.NonSerialized] public bool HasLookTarget;
         [System.NonSerialized] public Vector3 LookTarget;        // world point the head turns toward
+        [System.NonSerialized] public bool HasReachTarget;
+        [System.NonSerialized] public Vector3 ReachTarget;       // world point a working hand reaches for (Use)
+        [System.NonSerialized] public bool Seated;               // sitting: the hips rest on SeatPoint
+        [System.NonSerialized] public Vector3 SeatPoint;         // world point on the seat's surface under the hips
+        [System.NonSerialized] public float SeatRecline;         // 0 sat up straight .. 1 sunk back in an armchair
         [System.NonSerialized] public bool AutoUpdate = true;
         [System.NonSerialized] public bool ProbeGround = true;   // raycast for the floor under the feet
         [System.NonSerialized] public int GroundMask = 1;        // Default layer: floors and terrain
 
         public bool IsDead => _dead;
-        public bool IsSleeping => _sleeping;
+        /// <summary>True while lying in bed asleep.</summary>
+        public bool IsSleeping => _lying && !_lyingAwake;
+        /// <summary>True while lying in bed, asleep or awake.</summary>
+        public bool IsLying => _lying;
+        /// <summary>True once the body has (mostly) settled onto a seat.</summary>
+        public bool IsSitting => _sitW > 0.5f;
 
         private const int BoneCount = HumanoidProportions.BoneCount;
         private const int Hips = 0, Spine = 1, Chest = 2, Neck = 3, HeadB = 4;
@@ -75,11 +89,18 @@ namespace CloneZ
         // Whole-body states.
         private bool _dead, _fallBackward, _diedLying;
         private float _deathT;
-        private bool _sleeping;
+        private bool _lying, _lyingAwake;
         private Transform _bed;
-        private float _lieW;
+        private float _lieW, _awakeW, _sitW;
         private Vector3 _lieFromPos;
         private Quaternion _lieFromRot = Quaternion.identity;
+
+        // The pose the root is being eased over from (see CarryFrom).
+        private Vector3 _carryPos;
+        private Quaternion _carryRot = Quaternion.identity;
+        private float _carryW, _carryDur = 0.4f;
+
+        private const float SitSeconds = 0.55f;   // settling onto a seat, or getting up off it
 
         private Vector2 _look;
 
@@ -155,20 +176,42 @@ namespace CloneZ
             _diedLying = _lieW > 0.5f;   // dying in bed: stay in bed
         }
 
-        /// <summary>Lies down in <paramref name="bed"/> (or on the spot if null) until <see cref="WakeUp"/>.</summary>
-        public void Sleep(Transform bed)
+        /// <summary>Lies down in <paramref name="bed"/> (or on the spot if null) asleep, until <see cref="WakeUp"/>.</summary>
+        public void Sleep(Transform bed) => Lie(bed, false);
+
+        /// <summary>Lies on <paramref name="bed"/> (or on the spot if null) until <see cref="WakeUp"/>: asleep, or
+        /// <paramref name="awake"/> — resting with the hands laced behind the head and a knee up. Already lying
+        /// down, it only drops off or comes round.</summary>
+        public void Lie(Transform bed, bool awake)
         {
-            if (_dead || _sleeping || !Bind()) return;
-            _sleeping = true;
+            if (_dead || !Bind()) return;
+            _lyingAwake = awake;
+            if (_lying) return;
+            _lying = true;
             _bed = bed;
             _lieFromPos = _root.localPosition;
             _lieFromRot = _root.localRotation;
         }
 
-        public void WakeUp() { _sleeping = false; }
+        public void WakeUp()
+        {
+            _lying = false;
+            _lyingAwake = false;
+        }
+
+        /// <summary>Eases the body over from its last world pose (<paramref name="worldPos"/> /
+        /// <paramref name="worldRot"/>: where the rig stood) after the character was moved in one step — set
+        /// down over a chair to sit, or back on its feet beside it — instead of popping across.</summary>
+        public void CarryFrom(Vector3 worldPos, Quaternion worldRot, float seconds)
+        {
+            _carryPos = worldPos;
+            _carryRot = worldRot;
+            _carryDur = Mathf.Max(0.05f, seconds);
+            _carryW = 1f;
+        }
 
         /// <summary>Skips smoothing on the next frame (after a spawn or teleport).</summary>
-        public void Snap() { _groundInit = false; _speed = 0f; }
+        public void Snap() { _groundInit = false; _speed = 0f; _carryW = 0f; }
 
         private void StartAct(Act act, float duration, float windup)
         {
@@ -197,15 +240,18 @@ namespace CloneZ
             PoseUpright();
 
             if (_crawlW > 0.001f) { PoseCrawl(); Blend(_crawlW); }
+            float sit = Mathf.SmoothStep(0f, 1f, _sitW);
+            if (sit > 0.001f) { PoseSitting(); Blend(sit); }
             if (_dead && !_diedLying) { PoseDead(); Blend(Mathf.SmoothStep(0f, 1f, _deathT / 0.85f)); }
             else if (_lieW > 0.001f) { PoseLying(); Blend(Mathf.SmoothStep(0f, 1f, _lieW)); }
 
             Write();
 
             float upright = 1f - Mathf.Max(_crawlW, Mathf.Max(fall, _dead ? 1f : _lieW));
-            Ground(1f - Mathf.Max(_crawlW, Mathf.Max(fall, _lieW)));
+            Ground(1f - Mathf.Max(Mathf.Max(_crawlW, sit), Mathf.Max(fall, _lieW)));   // a seat holds the hips up
             if (upright > 0.01f) Arms(upright);
             else if (_crawlW > 0.01f && !_dead) CrawlArms(_crawlW);
+            if (!_dead && _lieW > 0.01f && _awakeW > 0.01f) RestArms(Mathf.SmoothStep(0f, 1f, _lieW) * Mathf.SmoothStep(0f, 1f, _awakeW));
             if (!_dead) Look(dt, 1f - _lieW);
         }
 
@@ -214,7 +260,7 @@ namespace CloneZ
             Transform frame = _root.parent != null ? _root.parent : _root;
             Vector3 v = Velocity;
             v.y = 0f;
-            float raw = _dead || _sleeping ? 0f : v.magnitude;
+            float raw = _dead || _lying || Seated ? 0f : v.magnitude;
             _speed = Mathf.Lerp(_speed, raw, 1f - Mathf.Exp(-dt * 8f));
             if (raw > 0.05f)
             {
@@ -255,10 +301,18 @@ namespace CloneZ
                 case HumanoidActivity.Dig:
                 case HumanoidActivity.Plant: crouch = Mathf.Max(crouch, 0.95f * _activityW); break;
                 case HumanoidActivity.Build: crouch = Mathf.Max(crouch, 0.18f * _activityW); break;
+                case HumanoidActivity.Use:
+                    // Bob down to a low drawer or the cupboard under a counter.
+                    if (HasReachTarget)
+                        crouch = Mathf.Max(crouch, Mathf.Clamp01((0.95f - (ReachTarget.y - frame.position.y)) / 0.6f) * 0.75f * _activityW);
+                    break;
             }
             _crouch = Mathf.Lerp(_crouch, crouch, k);
 
-            _lieW = Mathf.MoveTowards(_lieW, _sleeping || _diedLying ? 1f : 0f, dt / 0.9f);
+            _lieW = Mathf.MoveTowards(_lieW, _lying || _diedLying ? 1f : 0f, dt / 0.9f);
+            _awakeW = Mathf.MoveTowards(_awakeW, _lyingAwake ? 1f : 0f, dt / 0.6f);
+            _sitW = Mathf.MoveTowards(_sitW, Seated && !_lying && !_dead ? 1f : 0f, dt / (_lying ? 0.25f : SitSeconds));
+            if (_carryW > 0f) _carryW = Mathf.Max(0f, _carryW - dt / _carryDur);
         }
 
         private float CycleLength()
@@ -273,12 +327,15 @@ namespace CloneZ
         private const float FrontLift = 0.135f;
         public const float CrawlShift = -1.0f;
 
-        /// <summary>Places the rig root under the character: on the floor while standing, on the bed
-        /// while asleep, and toppling over when dead. Returns how far through a fall the body is.</summary>
+        /// <summary>Places the rig root under the character: on the floor while standing (or sitting), on the
+        /// bed while lying down, and toppling over when dead; eased over from where it stood after a sudden move
+        /// (see <see cref="CarryFrom"/>). Returns how far through a fall the body is.</summary>
         private float PlaceRoot(float dt)
         {
             Transform parent = _root.parent;
-            if (!_dead)   // the dead keep the floor they fell on (and then sink through it)
+            // The dead keep the floor they fell on (and then sink through it); the seated keep the floor they sat
+            // down from — the ray would only find the chair under them.
+            if (!_dead && !Seated)
             {
                 float target = 0f;
                 if (ProbeGround && parent != null)
@@ -321,8 +378,15 @@ namespace CloneZ
             {
                 float w = Mathf.SmoothStep(0f, 1f, _lieW);
                 LiePose(parent, out Vector3 lpos, out Quaternion lrot);
-                pos = Vector3.Lerp(_sleeping ? _lieFromPos : pos, lpos, w);
-                rot = Quaternion.Slerp(_sleeping ? _lieFromRot : rot, lrot, w);
+                pos = Vector3.Lerp(_lying ? _lieFromPos : pos, lpos, w);
+                rot = Quaternion.Slerp(_lying ? _lieFromRot : rot, lrot, w);
+            }
+
+            if (_carryW > 0.001f && parent != null)
+            {
+                float k = Mathf.SmoothStep(0f, 1f, _carryW);
+                pos = Vector3.Lerp(pos, parent.InverseTransformPoint(_carryPos), k);
+                rot = Quaternion.Slerp(rot, Quaternion.Inverse(parent.rotation) * _carryRot, k);
             }
 
             _root.localPosition = pos;

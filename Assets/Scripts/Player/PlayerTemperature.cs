@@ -150,7 +150,8 @@ namespace CloneZ
             float target = AmbientTemperature()
                 + clothingWarmth
                 - _stats.Wetness * CloneZConfig.TempWetChill
-                + shelter;
+                + shelter
+                + HomeComfort.WarmthAt(transform.position);   // a lit burner, a hot shower close by
             target = Mathf.Clamp01(target);
             Target = target;
 

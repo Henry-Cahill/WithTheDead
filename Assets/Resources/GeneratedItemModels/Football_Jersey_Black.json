@@ -1,0 +1,12 @@
+{"version": 1, "id": "Football_Jersey_Black", "baseHeight": 0.45, "name": "Football Jersey Black", "model": "gpt-oss:120b", "notes": "Flat football jersey, black tint (0.6 0.58 0.5). Approx. 0.78 m long × 0.48 m wide, 2.5 cm thick. Main torso panel with two short sleeves, a simple collar and a small number patch on the front.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[-0.04,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.78,0.03,0.48],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.14,-0.0,0.34],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.14,-0.0,-0.34],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.32,0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.22],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"NeckOpening","shape":"cylinder","pos":[0.32,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.18],"color":[0.12,0.12,0.13],"smooth":0.05,"metal":0.0},
+  {"name":"NumberPatch","shape":"cube","pos":[-0.14,0.003,0.24],"rot":[0.0,0.0,0.0],"size":[0.12,0.006,0.08],"color":[0.9,0.9,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cylinder","pos":[-0.39,-0.0,0.24],"rot":[0.0,0.0,0.0],"size":[0.006,0.78,0.006],"color":[0.3,0.3,0.35],"smooth":0.02,"metal":0.0},
+  {"name":"SideSeamR","shape":"cylinder","pos":[-0.39,-0.0,-0.24],"rot":[0.0,0.0,0.0],"size":[0.006,0.78,0.006],"color":[0.3,0.3,0.35],"smooth":0.02,"metal":0.0},
+  {"name":"BottomHem","shape":"cube","pos":[-0.4,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.028,0.48],"color":[0.58,0.56,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontFold","shape":"cube","pos":[-0.06,0.017,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.004,0.012],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0}
+]}

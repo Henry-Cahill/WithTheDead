@@ -11,7 +11,8 @@ namespace CloneZ
     /// are aimed and hammered up (or an existing one is reinforced with another plank); house
     /// pieces snap to a 2 m tile grid under the cursor so they assemble into a building;
     /// Demolish pries whatever the cursor is over apart, recovering some of its planks and
-    /// nails. Every action costs (or refunds) materials, needs a hammer in the pack, is a timed
+    /// nails (the starter home's own walls and floors come down too, but give nothing back).
+    /// Every action costs (or refunds) materials, needs a hammer in the pack, is a timed
     /// job that cancels if you move, and the hammering draws zombies. B or Esc leaves build
     /// mode; combat is held while it is on.
     /// </summary>
@@ -217,13 +218,16 @@ namespace CloneZ
         }
 
         // Demolish targets whatever demolishable thing the cursor is over: a ray takes the nearest
-        // demolishable collider (barricades, house pieces, containers, cover), skipping the survivor's
-        // own body and the ground; if it finds none, a proximity check catches the collider-less
-        // furniture (bed, stove, plot, water) and any built piece the ray happened to miss.
+        // demolishable collider (barricades, house pieces, containers, cover, furniture) — or the bed or a
+        // farm plot, which have no colliders, where it passes through their meshes first — skipping the
+        // survivor's own body and the ground. A wall, roof or barricade the iso camera has cut away isn't drawn,
+        // so it only counts when nothing else is there. If the ray finds nothing, a proximity check catches
+        // whatever it narrowly missed: furniture, fittings and barricades in view first, then the house's own pieces.
         private void EvaluateDemolish()
         {
             _reinforceTarget = null;
             _demolishTarget = null;
+            IDemolishable hidden = null;   // a cut-away wall, roof or barricade the ray passed through
 
             Vector3 me = transform.position; me.y = 0f;
             float reach = CloneZConfig.HousePlaceReach + 1f;
@@ -240,27 +244,75 @@ namespace CloneZ
                 Ray ray = cam.ScreenPointToRay(sp);
                 int n = Physics.RaycastNonAlloc(ray, _rayBuf, 200f, 1 << 0, QueryTriggerInteraction.Ignore);
                 float reachSqr = reach * reach;
-                float nearest = float.MaxValue;
+                float nearest = float.MaxValue, nearestHidden = float.MaxValue;
                 for (int i = 0; i < n; i++)
                 {
                     RaycastHit h = _rayBuf[i];
-                    if (h.distance >= nearest) continue;
                     IDemolishable d = h.collider.GetComponentInParent<IDemolishable>();
-                    if (d == null) continue;
-                    Vector3 flat = h.point; flat.y = 0f;
-                    if ((flat - me).sqrMagnitude > reachSqr) continue;
-                    nearest = h.distance;
-                    _demolishTarget = d;
+                    if (d == null || !WithinReach(h.point, me, reachSqr)) continue;
+                    if (IsCutAway(d))
+                    {
+                        if (h.distance < nearestHidden) { nearestHidden = h.distance; hidden = d; }
+                    }
+                    else if (h.distance < nearest)
+                    {
+                        nearest = h.distance;
+                        _demolishTarget = d;
+                    }
                 }
+                // The bed and the farm plots have no colliders, so test the ray against their meshes: they then
+                // take the pick from the floor under them or a wall behind them.
+                ConsiderMeshes(SleepSpot.All, ray, me, reachSqr, ref nearest);
+                ConsiderMeshes(FarmPlot.All, ray, me, reachSqr, ref nearest);
             }
 
-            // Fallback: nearest demolishable near the cursor — also catches the collider-less furniture
-            // the ray passes straight through, and any built piece the ray happened to miss.
-            if (_demolishTarget == null)
-                _demolishTarget = NearestDemolishableNearCursor(GroundCursor(), me, reach);
+            // Nothing under the ray: the nearest thing in view around the cursor, then a cut-away wall, roof or
+            // barricade the ray passed through, then the nearest house piece — a floor or wall centre can sit closer
+            // to the cursor than a bed's own, so the pieces only count once nothing else is near.
+            Vector3 cursor = GroundCursor();
+            if (_demolishTarget == null) _demolishTarget = NearestThingNearCursor(cursor, me, reach);
+            if (_demolishTarget == null) _demolishTarget = hidden;
+            if (_demolishTarget == null) _demolishTarget = NearestPieceNearCursor(cursor, me, reach);
 
             _placeValid = _demolishTarget != null;
             UpdateGhost();
+        }
+
+        private static bool WithinReach(Vector3 point, Vector3 me, float reachSqr)
+        {
+            point.y = 0f;
+            return (point - me).sqrMagnitude <= reachSqr;
+        }
+
+        // A wall, roof or barricade the iso camera has cut away (see CutawayOccluder) stops drawing but stays solid.
+        private static bool IsCutAway(IDemolishable d)
+        {
+            if (!(d is Component c)) return false;
+            var cutaway = c.GetComponent<CutawayOccluder>();
+            return cutaway != null && cutaway.IsCutAway;
+        }
+
+        // Takes a collider-less object as the target when the ray enters its meshes' bounds within reach and
+        // nearer than anything hit so far.
+        private void ConsiderMeshes<T>(List<T> list, Ray ray, Vector3 me, float reachSqr, ref float nearest)
+            where T : Component, IDemolishable
+        {
+            float near = Mathf.Sqrt(reachSqr) + 3f;   // nothing standing farther off can reach into range
+            for (int i = 0; i < list.Count; i++)
+            {
+                T c = list[i];
+                if (c == null) continue;
+                Vector3 p = c.transform.position; p.y = 0f;
+                if ((p - me).sqrMagnitude > near * near) continue;
+                MeshRenderer[] rs = c.GetComponentsInChildren<MeshRenderer>();
+                if (rs.Length == 0) continue;
+                Bounds b = rs[0].bounds;
+                for (int r = 1; r < rs.Length; r++) b.Encapsulate(rs[r].bounds);
+                if (!b.IntersectRay(ray, out float dist) || dist >= nearest) continue;
+                if (!WithinReach(ray.GetPoint(Mathf.Max(0f, dist)), me, reachSqr)) continue;
+                nearest = dist;
+                _demolishTarget = c;
+            }
         }
 
         // The ground point under the cursor (used to pick collider-less world objects to demolish).
@@ -271,24 +323,35 @@ namespace CloneZ
             return p;
         }
 
-        // Nearest demolishable to the cursor within a small pick radius and the survivor's reach.
-        // Covers the collider-less furniture (bed, plot) that a ray passes through, plus the player's
-        // own builds and the home's furniture as a safety net when the ray misses them.
-        private IDemolishable NearestDemolishableNearCursor(Vector3 cursor, Vector3 me, float reach)
+        private const float PickRadius = 1.4f;   // how far from the cursor the proximity pick reaches
+
+        // Nearest furniture, fitting or barricade to the cursor within the pick radius and the survivor's reach
+        // (a safety net when the ray narrowly misses one). A barricade the iso camera has cut away is left out:
+        // like a cut-away wall, it only counts when the ray passes right through it and nothing else is there.
+        private IDemolishable NearestThingNearCursor(Vector3 cursor, Vector3 me, float reach)
         {
-            float bestSqr = 1.4f * 1.4f;   // pick radius around the cursor
+            float bestSqr = PickRadius * PickRadius;
             IDemolishable best = null;
             ConsiderRegistry(SleepSpot.All, cursor, me, reach, ref bestSqr, ref best);
             ConsiderRegistry(CookingStation.All, cursor, me, reach, ref bestSqr, ref best);
             ConsiderRegistry(FarmPlot.All, cursor, me, reach, ref bestSqr, ref best);
             ConsiderRegistry(WaterSource.All, cursor, me, reach, ref bestSqr, ref best);
-            ConsiderRegistry(Barricade.All, cursor, me, reach, ref bestSqr, ref best);
-            ConsiderRegistry(BuildPiece.All, cursor, me, reach, ref bestSqr, ref best);
+            ConsiderRegistry(Barricade.All, cursor, me, reach, ref bestSqr, ref best, inViewOnly: true);
             ConsiderRegistry(HomeFurniture.All, cursor, me, reach, ref bestSqr, ref best);
             return best;
         }
 
-        private static void ConsiderRegistry<T>(List<T> list, Vector3 cursor, Vector3 me, float reach, ref float bestSqr, ref IDemolishable best)
+        // Nearest house piece (floor, wall, doorway, window, roof) to the cursor, likewise.
+        private IDemolishable NearestPieceNearCursor(Vector3 cursor, Vector3 me, float reach)
+        {
+            float bestSqr = PickRadius * PickRadius;
+            IDemolishable best = null;
+            ConsiderRegistry(BuildPiece.All, cursor, me, reach, ref bestSqr, ref best);
+            return best;
+        }
+
+        private static void ConsiderRegistry<T>(List<T> list, Vector3 cursor, Vector3 me, float reach, ref float bestSqr, ref IDemolishable best,
+            bool inViewOnly = false)
             where T : Component
         {
             float reachSqr = reach * reach;
@@ -301,6 +364,7 @@ namespace CloneZ
                 if (dc >= bestSqr) continue;
                 float dm = (p.x - me.x) * (p.x - me.x) + (p.z - me.z) * (p.z - me.z);
                 if (dm > reachSqr) continue;
+                if (inViewOnly && IsCutAway(d)) continue;
                 bestSqr = dc; best = d;
             }
         }
@@ -369,8 +433,8 @@ namespace CloneZ
 
         private string ComposePrompt()
         {
-            // Don't fight the container-search prompt for screen space.
-            if (_interactor != null && _interactor.IsSearching) return "";
+            // Don't fight the container-search (or fixture job) prompt for screen space.
+            if (_interactor != null && _interactor.IsBusy) return "";
             return "\u00AB " + PieceName(Selection) + " \u00BB   " + CoreBuildMessage()
                  + "   \u00B7   wheel/1-7 \u00B7 B/Esc exit";
         }
@@ -436,7 +500,7 @@ namespace CloneZ
 
         private bool CanBuildNow()
         {
-            if (_interactor != null && _interactor.IsSearching) return false;
+            if (_interactor != null && _interactor.IsBusy) return false;
             if (!HasHammer()) return false;
             if (Selection == BuildSelection.Demolish) return _demolishTarget != null && _demolishTarget.CanDemolish(out _);
             if (!HasMaterials(Selection)) return false;
@@ -636,17 +700,22 @@ namespace CloneZ
         }
 
         // Tears the captured target down, hands back part of its materials, and re-bakes the navmesh
-        // if it was a baked-in obstacle (a cover block or a world container).
+        // if it was a baked-in obstacle (a cover block, a world container or one of the starter home's floors).
+        // Pulling apart the starter home's own walls, floors, doorways and windows yields neither materials
+        // nor Carpentry XP, so its free shell is no shortcut to planks or skill (its loose furniture still
+        // salvages as before).
         private void CompleteDemolish()
         {
             IDemolishable t = _buildDemolishTarget;
             int plankBack = 0, nailBack = 0;
             Vector3 pos = _buildPos;
+            bool trains = false;
 
             if (t != null && t.CanDemolish(out _))
             {
                 t.GetSalvage(out plankBack, out nailBack);
                 if (t is MonoBehaviour mb && mb != null) pos = mb.transform.position;
+                trains = !(t is BuildPiece piece && piece.Prebuilt);
                 bool carves = t.CarvesNavMesh;
                 t.Dismantle();
                 if (carves) WorldNavMesh.Rebuild();   // free the space the baked obstacle occupied
@@ -654,7 +723,7 @@ namespace CloneZ
 
             if (plankBack > 0) _inventory.AddStarter(PlankId, plankBack);   // added without a weight check so salvage isn't lost
             if (nailBack > 0) _inventory.AddStarter(NailsId, nailBack);
-            if (_skills != null) _skills.AddXp(PlayerSkills.Skill.Carpentry, CloneZConfig.XpCarpentrySalvage);
+            if (trains && _skills != null) _skills.AddXp(PlayerSkills.Skill.Carpentry, CloneZConfig.XpCarpentrySalvage);
             NoiseSystem.Emit(pos, CloneZConfig.NoiseHammering);
             _inventory.WearTool(HammerId);
 

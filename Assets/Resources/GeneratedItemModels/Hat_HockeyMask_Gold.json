@@ -1,0 +1,15 @@
+{"version": 1, "id": "Hat_HockeyMask_Gold", "baseHeight": 0.16, "name": "Hat Hockey Mask Gold", "model": "gpt-oss:120b", "notes": "Flat product‑photo layout of a gold‑tinted hockey mask (≈0.28 m wide × 0.20 m high × 0.025 m thick). Main crown plate, surrounding brim, vertical cage bars, top & chin horizontal bars and front grill. All parts rest on y=0 with the mask lying face‑up.", "score": 6, "parts": [
+  {"name":"CrownPlate","shape":"cube","pos":[0.0,-0.01,-0.001],"rot":[0.0,0.0,0.0],"size":[0.28,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"BrimFront","shape":"cube","pos":[0.0,-0.01,0.109],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"BrimBack","shape":"cube","pos":[0.0,-0.01,-0.111],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"BrimLeft","shape":"cube","pos":[-0.15,-0.01,-0.001],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.2],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"BrimRight","shape":"cube","pos":[0.15,-0.01,-0.001],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.2],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"BarVerticalL1","shape":"cylinder","pos":[-0.08,0.0,-0.001],"rot":[0.0,0.0,0.0],"size":[0.008,0.2,0.008],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"BarVerticalL2","shape":"cylinder","pos":[-0.04,0.0,-0.001],"rot":[0.0,0.0,0.0],"size":[0.008,0.2,0.008],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"BarVerticalC","shape":"cylinder","pos":[0.0,0.0,-0.001],"rot":[0.0,0.0,0.0],"size":[0.008,0.2,0.008],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"BarVerticalR1","shape":"cylinder","pos":[0.04,0.0,-0.001],"rot":[0.0,0.0,0.0],"size":[0.008,0.2,0.008],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"BarVerticalR2","shape":"cylinder","pos":[0.08,0.0,-0.001],"rot":[0.0,0.0,0.0],"size":[0.008,0.2,0.008],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"BarTop","shape":"cylinder","pos":[0.0,0.003,-0.001],"rot":[0.0,0.0,90.0],"size":[0.008,0.28,0.008],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"BarChin","shape":"cylinder","pos":[0.0,-0.005,-0.081],"rot":[0.0,0.0,90.0],"size":[0.008,0.28,0.008],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"FrontGuard","shape":"cube","pos":[0.0,-0.004,0.119],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.004],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0}
+]}

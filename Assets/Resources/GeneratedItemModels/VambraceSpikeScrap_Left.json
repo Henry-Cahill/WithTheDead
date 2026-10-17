@@ -1,0 +1,8 @@
+{"version": 1, "id": "VambraceSpikeScrap_Left", "baseHeight": 0.0941, "name": "Vambrace Spike Scrap Left", "model": "gpt-oss:120b", "notes": "Broken left‑hand vambrace spike scrap ~30 cm long: cylindrical shaft lying on its side, a sharp metal tip and a jagged plate fragment with a few rust spots.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.03,-0.0041,-0.0135],"rot":[0.0,0.0,90.0],"size":[0.04,0.25,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.125,-0.0041,-0.0135],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.58,0.5],"smooth":0.65,"metal":1.0},
+  {"name":"PlateFragment","shape":"cube","pos":[0.06,0.0109,0.0165],"rot":[15.0,30.0,0.0],"size":[0.07,0.04,0.03],"color":[0.58,0.55,0.48],"smooth":0.45,"metal":1.0},
+  {"name":"RustSpot1","shape":"sphere","pos":[-0.09,0.0009,0.0065],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.4,0.28,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"RustSpot2","shape":"sphere","pos":[-0.01,-0.0021,-0.0435],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.42,0.3,0.22],"smooth":0.3,"metal":0.0},
+  {"name":"RustSpot3","shape":"sphere","pos":[0.09,-0.0061,0.0115],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.38,0.26,0.18],"smooth":0.3,"metal":0.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "Vest_Waistcoat", "baseHeight": 0.0775, "name": "Vest Waistcoat", "model": "gpt-oss:120b", "notes": "Vest waistcoat (muted brown cloth) laid flat on the floor, approx 0.55 m tall × 0.42 m wide, 3 cm thick. Front split into left/right panels with a central seam, back panel underneath, collar lapel on top and five button studs down the centre.", "score": 6, "parts": [
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.0025,-0.2],"rot":[0.0,0.0,0.0],"size":[0.42,0.03,0.55],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontLeft","shape":"cube","pos":[-0.105,-0.0025,0.2],"rot":[0.0,0.0,0.0],"size":[0.21,0.03,0.55],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontRight","shape":"cube","pos":[0.105,-0.0025,0.2],"rot":[0.0,0.0,0.0],"size":[0.21,0.03,0.55],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CollarLapel","shape":"cube","pos":[0.0,0.0075,0.2],"rot":[0.0,0.0,0.0],"size":[0.42,0.02,0.07],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"CenterSeam","shape":"cube","pos":[0.0,-0.002,0.2],"rot":[0.0,0.0,0.0],"size":[0.008,0.031,0.55],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Button1","shape":"cylinder","pos":[0.0,-0.0005,0.05],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Button2","shape":"cylinder","pos":[0.0,-0.0005,0.125],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Button3","shape":"cylinder","pos":[0.0,-0.0005,0.2],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Button4","shape":"cylinder","pos":[0.0,-0.0005,0.275],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Button5","shape":"cylinder","pos":[0.0,-0.0005,0.35],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"SideSeamLeft","shape":"cube","pos":[-0.21,-0.002,0.2],"rot":[0.0,0.0,0.0],"size":[0.008,0.031,0.55],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamRight","shape":"cube","pos":[0.21,-0.002,0.2],"rot":[0.0,0.0,0.0],"size":[0.008,0.031,0.55],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0}
+]}

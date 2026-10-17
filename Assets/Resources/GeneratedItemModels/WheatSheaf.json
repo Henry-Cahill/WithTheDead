@@ -1,0 +1,13 @@
+{"version": 1, "id": "WheatSheaf", "baseHeight": 0.135, "name": "Wheat Sheaf", "model": "gpt-oss:120b", "notes": "Wheat sheaf ~0.30 m long, 0.18 m wide, 0.12 m thick, bound by thin straw twine with a small paper tag. Made of several wheat stalks fanned out around a central bundle.", "score": 6, "parts": [
+  {"name":"CoreBundle","shape":"cylinder","pos":[0.0118,-0.063,0.0212],"rot":[0.0,0.0,90.0],"size":[0.024,0.3,0.024],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Twine","shape":"cylinder","pos":[0.0118,0.0,0.0212],"rot":[0.0,0.0,0.0],"size":[0.008,0.15,0.008],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"Stalk01","shape":"cylinder","pos":[-0.0382,-0.057,0.0512],"rot":[0.0,10.0,90.0],"size":[0.012,0.3,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk02","shape":"cylinder","pos":[-0.0582,-0.053,-0.0188],"rot":[0.0,-12.0,90.0],"size":[0.012,0.3,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk03","shape":"cylinder","pos":[0.0318,-0.06,0.0812],"rot":[0.0,5.0,90.0],"size":[0.012,0.3,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk04","shape":"cylinder","pos":[0.0618,-0.05,-0.0388],"rot":[0.0,-8.0,90.0],"size":[0.012,0.3,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk05","shape":"cylinder","pos":[-0.0882,-0.045,0.0212],"rot":[0.0,0.0,90.0],"size":[0.012,0.3,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk06","shape":"cylinder","pos":[0.0918,-0.055,0.0612],"rot":[0.0,15.0,90.0],"size":[0.012,0.3,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk07","shape":"cylinder","pos":[-0.0182,-0.065,-0.0488],"rot":[0.0,-20.0,90.0],"size":[0.012,0.3,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk08","shape":"cylinder","pos":[0.0718,-0.047,0.0412],"rot":[0.0,8.0,90.0],"size":[0.012,0.3,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PaperTag","shape":"cube","pos":[0.1618,-0.05,0.0212],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.03],"color":[0.9,0.85,0.7],"smooth":0.05,"metal":0.0}
+]}

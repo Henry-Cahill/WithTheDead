@@ -1,0 +1,8 @@
+{"version": 1, "id": "Bandage_LeftFoot", "baseHeight": 0.0685, "name": "Bandage Left Foot", "model": "gpt-oss:120b", "notes": "Flat foot‑bandage approx 0.27 m long × 0.12 m wide × 0.015 m thick, beige‑cloth texture (tint 0.6, 0.58, 0.5). Main pad with rolled cloth ends and a central stitching line.", "score": 7, "parts": [
+  {"name":"BasePad","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.27,0.015,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RollFront","shape":"cylinder","pos":[0.13,-0.001,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.04,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RollBack","shape":"cylinder","pos":[-0.13,-0.001,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.04,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLine","shape":"cube","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.27,0.002,0.002],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTrimL","shape":"cube","pos":[-0.135,0.003,-0.055],"rot":[0.0,0.0,0.0],"size":[0.002,0.003,0.11],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTrimR","shape":"cube","pos":[-0.135,0.003,0.055],"rot":[0.0,0.0,0.0],"size":[0.002,0.003,0.11],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "EggOmelette", "baseHeight": 0.084, "name": "Egg Omelette", "model": "gpt-oss:120b", "notes": "Pre‑packaged egg omelette in a shallow cardboard tray with a thin plastic lid, lying on its side (tray upright). Overall footprint ≈0.12 m × 0.09 m, total height ≈0.05 m. Includes tray base & walls, lid, a slab of omelette, a white label and a few pepper specks.", "score": 6, "parts": [
+  {"name":"TrayBase","shape":"cube","pos":[0.0,-0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.09],"color":[0.6,0.5,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"WallFront","shape":"cube","pos":[0.0,0.0035,0.0425],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.005],"color":[0.6,0.5,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"WallBack","shape":"cube","pos":[0.0,0.0035,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.005],"color":[0.6,0.5,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"WallLeft","shape":"cube","pos":[-0.0575,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.09],"color":[0.6,0.5,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"WallRight","shape":"cube","pos":[0.0575,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.09],"color":[0.6,0.5,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"LidTop","shape":"cube","pos":[0.0,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.122,0.008,0.092],"color":[0.7,0.65,0.55],"smooth":0.4,"metal":0.0},
+  {"name":"Omelette","shape":"cube","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.108,0.012,0.082],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.0,0.0035,0.041],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.002],"color":[0.9,0.9,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"Pepper1","shape":"sphere","pos":[-0.02,0.0,0.01],"rot":[0.0,0.0,0.0],"size":[0.005,0.005,0.005],"color":[0.3,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"Pepper2","shape":"sphere","pos":[0.03,-0.001,-0.015],"rot":[0.0,0.0,0.0],"size":[0.005,0.005,0.005],"color":[0.3,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"Pepper3","shape":"sphere","pos":[-0.035,-0.002,0.025],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.3,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"Pepper4","shape":"sphere","pos":[0.015,-0.003,-0.03],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.3,0.2,0.1],"smooth":0.15,"metal":0.0}
+]}

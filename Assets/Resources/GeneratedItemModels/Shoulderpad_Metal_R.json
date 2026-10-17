@@ -1,0 +1,10 @@
+{"version": 1, "id": "Shoulderpad_Metal_R", "baseHeight": 0.13, "name": "Shoulderpad Metal R", "model": "gpt-oss:120b", "notes": "Right‑hand metal shoulder pad, ~0.30 m long × 0.15 m deep × 0.02 m thick, lying flat on its side with the curved front/back ends rounded and a thin strap across the top edge. Four small rivets mark the corners.", "score": 7, "parts": [
+  {"name":"BasePlate","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.018,0.14],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"FrontRound","shape":"cylinder","pos":[0.149,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.14,0.018,0.14],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"BackRound","shape":"cylinder","pos":[-0.149,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.14,0.018,0.14],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"TopStrap","shape":"cube","pos":[0.0,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.004,0.02],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"RivetFL","shape":"sphere","pos":[0.14,0.0,0.07],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.38,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"RivetFR","shape":"sphere","pos":[0.14,0.0,-0.07],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.38,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"RivetBL","shape":"sphere","pos":[-0.14,0.0,0.07],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.38,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"RivetBR","shape":"sphere","pos":[-0.14,0.0,-0.07],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.38,0.3],"smooth":0.2,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "Tshirt_SuperColor", "baseHeight": 0.102, "name": "Tshirt Super Color", "model": "gpt-oss:120b", "notes": "Flat T‑shirt laid out as a product shot (≈ 0.70 m long × 0.50 m wide, 3 cm thick). Main torso panel in the Super‑Color tint, two short sleeves with ribbed cuffs that now meet the sleeve ends, a rounded collar band around a neck opening, a bottom hem strip and a small tag label for detail.", "score": 6, "parts": [
+  {"name":"TorsoPanel","shape":"cube","pos":[0.0675,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.03,0.48],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"NeckOpening","shape":"cylinder","pos":[0.2925,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.12],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"CollarBand","shape":"cylinder","pos":[0.2925,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.18],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.1925,0.0,0.31],"rot":[0.0,0.0,-15.0],"size":[0.22,0.028,0.16],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.1925,0.0,-0.31],"rot":[0.0,0.0,15.0],"size":[0.22,0.028,0.16],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cylinder","pos":[0.3025,0.0,0.31],"rot":[0.0,0.0,0.0],"size":[0.08,0.03,0.08],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cylinder","pos":[0.3025,0.0,-0.31],"rot":[0.0,0.0,0.0],"size":[0.08,0.03,0.08],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemBottom","shape":"cube","pos":[-0.1575,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.004,0.48],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[0.0925,0.016,0.24],"rot":[0.0,0.0,0.0],"size":[0.45,0.002,0.004],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.0925,0.016,-0.24],"rot":[0.0,0.0,0.0],"size":[0.45,0.002,0.004],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TagLabel","shape":"cube","pos":[-0.0825,0.003,0.04],"rot":[0.0,0.0,0.0],"size":[0.04,0.006,0.002],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,9 @@
+{"version": 1, "id": "Yoghurt", "baseHeight": 0.125, "name": "Yoghurt", "model": "gpt-oss:120b", "notes": "Upright yoghurt cup ≈ 0.08 m wide × 0.12 m tall: thin‑walled plastic container, foil snap‑on lid, printed label band around the side.", "score": 6, "parts": [
+  {"name":"CupBody","shape":"cylinder","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.12,0.08],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"CupLip","shape":"cylinder","pos":[0.0,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.084,0.004,0.084],"color":[0.78,0.71,0.48],"smooth":0.4,"metal":0.0},
+  {"name":"LabelBand","shape":"cube","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.09,0.002],"color":[0.62,0.55,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"FoilLid","shape":"cylinder","pos":[0.0,0.061,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.006,0.082],"color":[0.85,0.84,0.8],"smooth":0.6,"metal":0.2},
+  {"name":"LidRim","shape":"cylinder","pos":[0.0,0.064,0.0],"rot":[0.0,0.0,0.0],"size":[0.086,0.002,0.086],"color":[0.8,0.79,0.75],"smooth":0.6,"metal":0.2},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.057,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.008,0.082],"color":[0.7,0.63,0.4],"smooth":0.4,"metal":0.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.061,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.008,0.082],"color":[0.7,0.63,0.4],"smooth":0.4,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Vest_Trucker", "baseHeight": 0.075, "name": "Vest Trucker", "model": "gpt-oss:120b", "notes": "Denim trucker vest laid flat, approx 0.44 m wide × 0.55 m tall × 0.03 m thick. Main panel with collar band, two front pockets (each with a flap) and simple stitching lines around the edges.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.44,0.03,0.55],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.0,0.005,0.265],"rot":[0.0,0.0,0.0],"size":[0.44,0.01,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.12,0.0,-0.1],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.06],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.12,0.0,-0.1],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.06],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFlapL","shape":"cube","pos":[-0.12,0.0075,-0.09],"rot":[0.0,0.0,0.0],"size":[0.08,0.005,0.02],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFlapR","shape":"cube","pos":[0.12,0.0075,-0.09],"rot":[0.0,0.0,0.0],"size":[0.08,0.005,0.02],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,0.0025,0.273],"rot":[0.0,0.0,0.0],"size":[0.44,0.003,0.004],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[0.0,0.0025,-0.273],"rot":[0.0,0.0,0.0],"size":[0.44,0.003,0.004],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideL","shape":"cube","pos":[-0.22,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.55],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideR","shape":"cube","pos":[0.22,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.55],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0}
+]}

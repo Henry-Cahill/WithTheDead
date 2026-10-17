@@ -16,9 +16,11 @@ namespace CloneZ
     /// registry, built entirely from code with the raid map's furniture builders (the tap is the
     /// kitchen sink unit, the barrel an open poly drum showing its water). Both are solid and their
     /// meshes are baked into the navmesh. The barrel runs its fill simulation off the world clock
-    /// like a farm plot.
+    /// like a farm plot. The tap is fitted out as the working kitchen sink (<see cref="KitchenSink"/>,
+    /// on the same object): it fronts the tap as the water point, and can keep a bowlful of water
+    /// standing for after the mains have failed.
     /// </summary>
-    public class WaterSource : MonoBehaviour, IDemolishable
+    public class WaterSource : MonoBehaviour, IDemolishable, IWaterPoint
     {
         public static readonly List<WaterSource> All = new List<WaterSource>();
 
@@ -35,7 +37,14 @@ namespace CloneZ
 
         #region IDemolishable
         public string DemolishName => DisplayName;   // "rain barrel" or "tap"
-        public bool CanDemolish(out string reason) { reason = null; return true; }
+        public bool CanDemolish(out string reason)
+        {
+            // Whatever is kept in the cupboard under the sink would be lost with it.
+            LootContainer holding = Kind == WaterSourceKind.Tap ? FixtureContents.FirstHolding(transform) : null;
+            if (holding != null) { reason = "Empty the " + holding.DisplayName.ToLowerInvariant() + " first"; return false; }
+            reason = null;
+            return true;
+        }
         public void GetSalvage(out int planks, out int nails)
         {
             bool barrel = Kind == WaterSourceKind.RainBarrel;
@@ -66,6 +75,15 @@ namespace CloneZ
 
         /// <summary>A short label for the source (for the hydration prompt).</summary>
         public string DisplayName => Kind == WaterSourceKind.RainBarrel ? "rain barrel" : "tap";
+        #endregion
+
+        #region IWaterPoint
+        public Vector3 WaterPosition => transform.position;
+        public string WaterLabel => DisplayName;
+        public string DryMessage => Kind == WaterSourceKind.Tap
+            ? "The tap is dry \u2014 the water's been shut off"
+            : "The rain barrel is empty";
+        public void DrawWater() => Draw();
         #endregion
 
         #region Registry queries
@@ -116,7 +134,9 @@ namespace CloneZ
 
         #region Building
         /// <summary>Builds a tap or a rain barrel from code and returns it. A tap is the kitchen sink: a
-        /// run of base cabinets with a steel basin and faucet, its back toward -Z, standing on the floor.</summary>
+        /// run of base cabinets with a steel bowl, drainer and mixer tap, its back toward -Z, standing on
+        /// the floor, fitted out as a <see cref="KitchenSink"/>. A barrel is fronted by a
+        /// <see cref="RainBarrelFixture"/>.</summary>
         public static WaterSource Spawn(Transform parent, Vector3 position, WaterSourceKind kind)
         {
             position.y = BuildPiece.FloorTopAt(position);
@@ -126,7 +146,11 @@ namespace CloneZ
 
             var src = root.AddComponent<WaterSource>();
             src.Kind = kind;
-            if (kind == WaterSourceKind.RainBarrel) src.BuildBarrel(position);
+            if (kind == WaterSourceKind.RainBarrel)
+            {
+                src.BuildBarrel(position);
+                root.AddComponent<RainBarrelFixture>();   // fill a bottle, check the level, wash, skim ([E] / Q)
+            }
             else src.BuildTap(position);
             DecorPalette.Apply();
 
@@ -139,10 +163,11 @@ namespace CloneZ
         {
             var m = new RaidMesh();
             m.SetFrame(position, 0f);
-            FurnitureBuilder.KitchenCounter(m, new System.Random(1993), 1.2f, new Color(0.78f, 0.76f, 0.66f), new Color(0.58f, 0.44f, 0.28f), true);
+            FurnitureBuilder.SinkUnit(m, new System.Random(1993), FurnitureBuilder.HomeKitchen);
             m.ResetFrame();
             m.ApplyTo(gameObject, position);
             Solid(new Vector3(0f, 0.5f, 0f), new Vector3(1.22f, 1.0f, 0.63f));
+            KitchenSink.Attach(this);   // the tap, the plug, the water, the washing-up and the cupboard under the bowl
         }
 
         // A blue poly rain barrel, open at the top so the collected water shows inside it.

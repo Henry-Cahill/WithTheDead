@@ -1,0 +1,11 @@
+{"version": 1, "id": "Cherry", "baseHeight": 0.079, "name": "Cherry", "model": "gpt-oss:120b", "notes": "Small clear clamshell (≈0.08 m × 0.06 m × 0.03 m) holding a handful of cherries; thin lid and front label, four ellipsoidal fruit inside.", "score": 6, "parts": [
+  {"name":"BoxBase","shape":"cube","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.03,0.06],"color":[0.92,0.94,0.96],"smooth":0.4,"metal":0.0},
+  {"name":"BoxLid","shape":"cube","pos":[0.0,0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.06],"color":[0.92,0.94,0.96],"smooth":0.4,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,0.014,0.0285],"rot":[0.0,0.0,0.0],"size":[0.06,0.008,0.002],"color":[0.45,0.33,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0,0.018,0.0285],"rot":[0.0,0.0,0.0],"size":[0.062,0.002,0.002],"color":[0.3,0.2,0.12],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.0,0.01,0.0285],"rot":[0.0,0.0,0.0],"size":[0.062,0.002,0.002],"color":[0.3,0.2,0.12],"smooth":0.1,"metal":0.0},
+  {"name":"Cherry1","shape":"sphere","pos":[-0.02,0.003,-0.015],"rot":[0.0,0.0,0.0],"size":[0.018,0.022,0.018],"color":[0.75,0.68,0.45],"smooth":0.6,"metal":0.0},
+  {"name":"Cherry2","shape":"sphere","pos":[0.015,0.002,0.01],"rot":[0.0,0.0,0.0],"size":[0.019,0.023,0.019],"color":[0.75,0.68,0.45],"smooth":0.6,"metal":0.0},
+  {"name":"Cherry3","shape":"sphere","pos":[-0.01,0.001,0.018],"rot":[0.0,0.0,0.0],"size":[0.017,0.021,0.017],"color":[0.75,0.68,0.45],"smooth":0.6,"metal":0.0},
+  {"name":"Cherry4","shape":"sphere","pos":[0.02,0.003,-0.01],"rot":[0.0,0.0,0.0],"size":[0.018,0.022,0.018],"color":[0.75,0.68,0.45],"smooth":0.6,"metal":0.0}
+]}

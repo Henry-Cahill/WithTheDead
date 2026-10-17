@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_HockeyMask_Copper", "baseHeight": 0.14, "name": "Hat Hockey Mask Copper", "model": "gpt-oss:120b", "notes": "Copper hockey mask laid flat for a product‑photo view – overall footprint about 0.30 m wide × 0.25 m deep, 2.5 cm thick. Main copper shell (dome + front visor + side flanges), rear strap, inner padding and four rivet details.", "score": 7, "parts": [
+  {"name":"Dome","shape":"sphere","pos":[0.0,0.005,-0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.15,0.3],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":1.0},
+  {"name":"FrontVisor","shape":"cube","pos":[0.0,-0.07,0.11],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.08],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":1.0},
+  {"name":"SideFlangeL","shape":"cube","pos":[-0.13,-0.07,-0.01],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.2],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":1.0},
+  {"name":"SideFlangeR","shape":"cube","pos":[0.13,-0.07,-0.01],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.2],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":1.0},
+  {"name":"BackStrap","shape":"cylinder","pos":[0.0,-0.07,-0.1],"rot":[0.0,0.0,90.0],"size":[0.02,0.2,0.02],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":1.0},
+  {"name":"InnerPadding","shape":"cube","pos":[0.0,-0.075,0.11],"rot":[0.0,0.0,0.0],"size":[0.28,0.005,0.08],"color":[0.1,0.1,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"RivetFL","shape":"sphere","pos":[-0.13,-0.0535,0.11],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.35,0.33,0.38],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFR","shape":"sphere","pos":[0.13,-0.0535,0.11],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.35,0.33,0.38],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[-0.13,-0.0535,-0.1],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.35,0.33,0.38],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.13,-0.0535,-0.1],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.35,0.33,0.38],"smooth":0.6,"metal":1.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "SmallmouthBass", "baseHeight": 0.1, "name": "Smallmouth Bass", "model": "gpt-oss:120b", "notes": "Whole Smallmouth Bass ~30 cm long x 7 cm high x 5 cm wide, lying on its side (long axis along X). Main flesh tinted 0.75 0.68 0.45, with head, tail fin, dorsal and side fins, eyes, a simple gill cover and a thin transparent plastic wrap.", "score": 6, "parts": [
+  {"name":"PlasticWrap","shape":"cube","pos":[0.005,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.08,0.06],"color":[0.9,0.95,1.0],"smooth":0.2,"metal":0.0},
+  {"name":"Body","shape":"sphere","pos":[-0.015,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.06,0.04],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Head","shape":"sphere","pos":[0.135,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.07,0.05],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TailUpper","shape":"cube","pos":[-0.135,-0.015,0.015],"rot":[0.0,0.0,5.0],"size":[0.08,0.005,0.04],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TailLower","shape":"cube","pos":[-0.135,-0.015,-0.015],"rot":[0.0,0.0,-5.0],"size":[0.08,0.005,0.04],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"DorsalFin","shape":"cube","pos":[-0.015,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.003,0.03],"color":[0.3,0.5,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"SideFinL","shape":"cube","pos":[-0.045,-0.015,0.025],"rot":[0.0,0.0,15.0],"size":[0.08,0.002,0.03],"color":[0.3,0.5,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"SideFinR","shape":"cube","pos":[-0.045,-0.015,-0.025],"rot":[0.0,0.0,-15.0],"size":[0.08,0.002,0.03],"color":[0.3,0.5,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.16,0.005,0.015],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.16,0.005,-0.015],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"GillCover","shape":"cube","pos":[0.125,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.005,0.02],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

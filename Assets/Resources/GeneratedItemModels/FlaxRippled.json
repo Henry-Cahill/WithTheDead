@@ -1,0 +1,15 @@
+{"version": 1, "id": "FlaxRippled", "baseHeight": 0.13, "name": "Flax Rippled", "model": "gpt-oss:120b", "notes": "Loose bunch of rippled flax about 0.14 m wide × 0.10 m deep × 0.07 m tall, lying on the floor as a scattering of thin stalks. Modeled with a low base slab and 12 slender cylinders (stalks) at slightly different angles and lengths.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[-0.006,-0.0651,-0.0043],"rot":[0.0,0.0,0.0],"size":[0.14,0.005,0.1],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk1","shape":"cylinder","pos":[-0.051,-0.0036,-0.0343],"rot":[15.0,0.0,10.0],"size":[0.006,0.128,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk2","shape":"cylinder","pos":[-0.026,-0.0096,0.0207],"rot":[-10.0,0.0,-20.0],"size":[0.006,0.122,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk3","shape":"cylinder","pos":[0.024,0.0024,-0.0193],"rot":[5.0,0.0,30.0],"size":[0.006,0.135,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk4","shape":"cylinder","pos":[0.049,-0.0056,0.0357],"rot":[-12.0,0.0,-5.0],"size":[0.006,0.119,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk5","shape":"cylinder","pos":[-0.036,-0.0076,0.0357],"rot":[20.0,0.0,-15.0],"size":[0.006,0.13,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk6","shape":"cylinder","pos":[0.004,-0.0126,-0.0493],"rot":[-8.0,0.0,25.0],"size":[0.006,0.124,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk7","shape":"cylinder","pos":[-0.061,0.0024,-0.0043],"rot":[12.0,0.0,-10.0],"size":[0.006,0.138,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk8","shape":"cylinder","pos":[0.034,-0.0086,0.0257],"rot":[-15.0,0.0,-25.0],"size":[0.006,0.121,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk9","shape":"cylinder","pos":[-0.021,-0.0056,-0.0443],"rot":[7.0,0.0,15.0],"size":[0.006,0.127,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk10","shape":"cylinder","pos":[0.019,-0.0006,0.0107],"rot":[-18.0,0.0,-12.0],"size":[0.006,0.132,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk11","shape":"cylinder","pos":[-0.046,-0.0066,0.0157],"rot":[10.0,0.0,20.0],"size":[0.006,0.125,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Stalk12","shape":"cylinder","pos":[0.049,-0.0026,-0.0343],"rot":[-6.0,0.0,-22.0],"size":[0.006,0.129,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

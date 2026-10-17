@@ -1,0 +1,204 @@
+using UnityEngine;
+using UnityEngine.Rendering;
+
+namespace CloneZ
+{
+    internal static partial class StarterHome
+    {
+        #region Window fittings
+        private const float SashWidth = WindowWidth - 0.05f;   // between the linings
+        private const float SashDepth = 0.04f;
+        private const float SashTrack = 0.024f;                // each sash's offset from the wall line (the lower one room-side)
+        private const float SashLift = 0.48f;                  // how far the lower sash slides up
+        private const float KitchenBlindBottom = 1.2f;         // the kitchen blind stops above the sink's backsplash
+        private static readonly Color SashGlass = new Color(0.13f, 0.17f, 0.19f);
+
+        // A working double-hung window in a finished window piece: the upper sash fixed in the outer track (drawn into
+        // the wall), the lower sash in the inner track sliding up to open, with a sash lock on the meeting rails; on the
+        // room side, curtains on a brass rod (drawn back, or drawn across) — or, in the kitchen, a valance with a roller
+        // blind (rolled up, or pulled down). The HomeWindow fixture works them, and screens the opening while the
+        // curtains are drawn so nothing sees in (or out).
+        static partial void WindowFittings(BuildPiece piece, RaidMesh m, Frame f, HomeRoom[] rooms, System.Random rng, bool kitchen)
+        {
+            int outSide = rooms[0] == null ? -1 : rooms[1] == null ? 1 : 0;
+            int roomSide = outSide != 0 ? -outSide : 1;
+            float bottom = WindowSill + 0.03f, top = WindowHead - 0.024f;   // the clear opening between the sill and head linings
+            float meet = (bottom + top) * 0.5f;
+            Surf brass = DecorPalette.Metal(FurnitureBuilder.Brass);
+
+            var root = new GameObject("Window");
+            root.transform.SetParent(piece.transform, false);
+            root.transform.SetPositionAndRotation(f.P(f.Mid, 0f, 0f), Quaternion.identity);
+
+            // The upper sash, fixed, and the keeper of the sash lock on its meeting rail.
+            float outer = -roomSide * SashTrack, inner = roomSide * SashTrack;
+            WindowSash(m, f, meet - 0.02f, top, outer, false, roomSide);
+            m.Box(f.P(f.Mid, meet + 0.034f, outer), f.Size(0.04f, 0.008f, 0.03f), brass);
+
+            // The lower sash, sliding up in the inner track; the lock's lever rides on it, turned onto the keeper or away.
+            var lower = new RaidMesh();
+            WindowSash(lower, f, bottom, meet + 0.02f, inner, true, roomSide);
+            lower.Box(f.P(f.Mid, meet + 0.024f, inner), f.Size(0.05f, 0.008f, 0.032f), brass);
+            FixturePart sash = FixturePart.Slide(root.transform, "LowerSash", lower, f.P(f.Mid, bottom, inner), Vector3.up * SashLift)
+                .WithSpeed(CloneZConfig.WindowSashSeconds);
+            Renderer latchShut = WindowLever(sash.transform, "LatchShut", f.P(f.Mid, meet + 0.042f, 0f), f.Size(0.02f, 0.008f, 0.06f), brass);
+            Renderer latchOpen = WindowLever(sash.transform, "LatchOpen", f.P(f.Mid + 0.03f, meet + 0.032f, inner), f.Size(0.06f, 0.008f, 0.02f), brass);
+
+            // Curtains (the kitchen: a valance and a roller blind) on each room side.
+            var open = new RaidMesh();
+            var drawn = new RaidMesh();
+            for (int side = -1; side <= 1; side += 2)
+            {
+                HomeRoom room = rooms[(side + 1) / 2];
+                if (room == null) continue;
+                if (kitchen)
+                {
+                    WindowValance(m, f, side, room.Curtain);
+                    WindowBlind(open, drawn, f, side, Color.Lerp(room.Curtain, FurnitureBuilder.Cream, 0.55f));
+                }
+                else WindowCurtains(m, open, drawn, f, side, room.Curtain);
+            }
+            Vector3 origin = f.P(f.Mid, 0f, 0f);
+            Renderer curtainsOpen = EmitWindowPart(open, "CurtainsOpen", root.transform, origin);
+            Renderer curtainsDrawn = EmitWindowPart(drawn, "CurtainsDrawn", root.transform, origin);
+            DecorPalette.Apply();
+
+            var setup = new HomeWindow.Setup
+            {
+                Name = WindowName(piece, f, rooms, kitchen),
+                Sash = sash,
+                CurtainsOpen = curtainsOpen,
+                CurtainsDrawn = curtainsDrawn,
+                LatchShut = latchShut,
+                LatchOpen = latchOpen,
+                Screen = new Bounds(f.P(f.Mid, (bottom + top) * 0.5f, 0f), f.Size(SashWidth, top - bottom, 0.02f)),
+                Point = f.P(f.Mid, (WindowSill + WindowHead) * 0.5f, 0f),
+                Normal = f.N(1),
+                Along = f.Along,
+                OutSide = outSide,
+                Blind = kitchen,
+            };
+            HomeWindow.Attach(root, piece, setup);
+        }
+
+        // "Kitchen window", "Store room window", "Bathroom window", else the house wall it's in: "Front window".
+        private static string WindowName(BuildPiece piece, in Frame f, HomeRoom[] rooms, bool kitchen)
+        {
+            if (kitchen) return "Kitchen window";
+            HomeRoom room = rooms[0] ?? rooms[1];
+            if (room == Store) return "Store room window";
+            if (room == Bath) return "Bathroom window";
+            if (f.AlongX) return Mathf.Abs(f.Coord - Outline.yMin) < 0.05f ? "Front window" : Mathf.Abs(f.Coord - Outline.yMax) < 0.05f ? "Back window" : "Window";
+            return Mathf.Abs(f.Coord - Outline.xMin) < 0.05f ? "West window" : Mathf.Abs(f.Coord - Outline.xMax) < 0.05f ? "East window" : "Window";
+        }
+
+        // One sash between `y0` and `y1`, `across` from the wall line: stiles, rails (the meeting rail deeper), a glazing
+        // bar down the middle and the glass. The lower sash gets a pair of brass lifts on its bottom rail.
+        private static void WindowSash(RaidMesh m, in Frame f, float y0, float y1, float across, bool lower, int roomSide)
+        {
+            Surf frame = DecorPalette.Matte(TrimWhite);
+            float w = SashWidth, h = y1 - y0, cy = (y0 + y1) * 0.5f;
+            float s0 = f.Mid - w * 0.5f, s1 = f.Mid + w * 0.5f;
+            float topRail = lower ? 0.05f : 0.045f, bottomRail = lower ? 0.06f : 0.05f;
+            m.Box(f.P(s0 + 0.0225f, cy, across), f.Size(0.045f, h, SashDepth), frame);
+            m.Box(f.P(s1 - 0.0225f, cy, across), f.Size(0.045f, h, SashDepth), frame);
+            m.Box(f.P(f.Mid, y1 - topRail * 0.5f, across), f.Size(w - 0.09f, topRail, lower ? SashDepth + 0.005f : SashDepth), frame);
+            m.Box(f.P(f.Mid, y0 + bottomRail * 0.5f, across), f.Size(w - 0.09f, bottomRail, lower ? SashDepth : SashDepth + 0.005f), frame);
+            float glass = h - topRail - bottomRail, gy = y0 + bottomRail + glass * 0.5f;
+            m.Box(f.P(f.Mid, gy, across), f.Size(0.03f, glass, 0.03f), frame);
+            m.Box(f.P(f.Mid, gy, across), f.Size(w - 0.09f, glass, 0.006f), DecorPalette.Glass(SashGlass));
+            if (!lower) return;
+            Surf brass = DecorPalette.Metal(FurnitureBuilder.Brass);
+            for (int e = -1; e <= 1; e += 2)
+                m.Box(f.P(f.Mid + e * 0.3f, y0 + 0.03f, across + roomSide * (SashDepth * 0.5f + 0.008f)), f.Size(0.05f, 0.015f, 0.016f), brass);
+        }
+
+        // A brass rod with finials above the casing (fixed, drawn into the wall), and the curtains in their two states:
+        // gathered panels drawn back to the sides with tie-backs, and the panels drawn across in shallow folds.
+        private static void WindowCurtains(RaidMesh fixedMesh, RaidMesh open, RaidMesh drawn, in Frame f, int side, Color fabric)
+        {
+            float rodY = WindowHead + 0.13f, rodOff = side * (Half + 0.075f);
+            Surf brass = DecorPalette.Metal(FurnitureBuilder.Brass);
+            fixedMesh.Box(f.P(f.Mid, rodY, rodOff), f.Size(WindowWidth + 0.5f, 0.024f, 0.024f), brass);
+            for (int e = -1; e <= 1; e += 2)
+                fixedMesh.Ellipsoid(f.P(f.Mid + e * (WindowWidth * 0.5f + 0.26f), rodY, rodOff), new Vector3(0.045f, 0.045f, 0.045f), brass, 6, 4);
+
+            float top = rodY - 0.015f, bottom = WindowSill + 0.06f, h = top - bottom;
+            for (int e = -1; e <= 1; e += 2)
+            {
+                float c = f.Mid + e * (WindowWidth * 0.5f + 0.08f);
+                for (int k = 0; k < 3; k++)
+                {
+                    float fc = c + (k - 1) * 0.085f;
+                    float depth = side * (Half + 0.055f + (k % 2) * 0.022f);
+                    open.Box(f.P(fc, bottom + h * 0.5f, depth), f.Size(0.1f, h, 0.028f), DecorPalette.Matte(fabric * (k % 2 == 0 ? 1f : 0.84f)));
+                }
+                // A tie-back gathering each panel a little below the middle.
+                open.Box(f.P(c, bottom + h * 0.4f, side * (Half + 0.09f)), f.Size(0.3f, 0.04f, 0.012f), DecorPalette.Matte(fabric * 0.7f));
+            }
+
+            const int folds = 14;
+            float span = WindowWidth + 0.4f, fw = span / folds;
+            for (int k = 0; k < folds; k++)
+            {
+                float along = f.Mid - span * 0.5f + (k + 0.5f) * fw;
+                float depth = side * (Half + 0.058f + (k % 2) * 0.018f);
+                drawn.Box(f.P(along, bottom + h * 0.5f, depth), f.Size(fw + 0.012f, h, 0.026f), DecorPalette.Matte(fabric * (k % 2 == 0 ? 1f : 0.86f)));
+            }
+        }
+
+        // A short gathered valance across the top of the window.
+        private static void WindowValance(RaidMesh m, in Frame f, int side, Color fabric)
+        {
+            float y = WindowHead - 0.05f;
+            for (int k = 0; k < 9; k++)
+            {
+                float along = f.Mid - WindowWidth * 0.5f - 0.1f + (k + 0.5f) * (WindowWidth + 0.2f) / 9f;
+                float depth = side * (Half + 0.05f + (k % 2) * 0.02f);
+                m.Box(f.P(along, y, depth), f.Size((WindowWidth + 0.2f) / 9f + 0.01f, 0.3f, 0.025f), DecorPalette.Matte(fabric * (k % 2 == 0 ? 1f : 0.84f)));
+            }
+        }
+
+        // A roller blind tucked under the valance: rolled up (the roll, its bottom bar and pull cord peeping out under the
+        // valance) or pulled down over the glazing, stopping above the sink's backsplash.
+        private static void WindowBlind(RaidMesh up, RaidMesh down, in Frame f, int side, Color fabric)
+        {
+            float rollY = WindowHead - 0.19f, across = side * (Half + 0.03f), w = WindowWidth + 0.06f;
+            Surf cloth = DecorPalette.Matte(fabric), bar = DecorPalette.Matte(FurnitureBuilder.Pine), cord = DecorPalette.Matte(fabric * 0.6f);
+            Vector3 along = f.Along;
+            foreach (RaidMesh m in new[] { up, down })
+                m.CylinderX(f.P(f.Mid, rollY, across), 0.032f, w, 10, cloth, Mathf.Atan2(along.x, along.z) * Mathf.Rad2Deg - 90f);
+
+            // Rolled up: the bar hangs just under the roll.
+            float upBar = rollY - 0.05f;
+            up.Box(f.P(f.Mid, upBar, across), f.Size(w + 0.02f, 0.022f, 0.018f), bar);
+            up.Box(f.P(f.Mid, upBar - 0.08f, across), f.Size(0.006f, 0.15f, 0.006f), cord);
+            up.Ellipsoid(f.P(f.Mid, upBar - 0.165f, across), new Vector3(0.022f, 0.03f, 0.022f), bar, 6, 4);
+
+            // Pulled down: the cloth over the glazing, the bar at its foot.
+            float downBar = KitchenBlindBottom;
+            down.Box(f.P(f.Mid, (rollY + downBar) * 0.5f, across), f.Size(w, rollY - downBar, 0.006f), cloth);
+            down.Box(f.P(f.Mid, downBar, across), f.Size(w + 0.02f, 0.022f, 0.018f), bar);
+            down.Box(f.P(f.Mid, downBar - 0.08f, across), f.Size(0.006f, 0.15f, 0.006f), cord);
+            down.Ellipsoid(f.P(f.Mid, downBar - 0.165f, across), new Vector3(0.022f, 0.03f, 0.022f), bar, 6, 4);
+        }
+
+        // A small separately drawn box (a sash lock's lever) under `parent`, so it can be shown or hidden on its own.
+        private static Renderer WindowLever(Transform parent, string name, Vector3 centre, Vector3 size, in Surf s)
+        {
+            var m = new RaidMesh();
+            m.Box(centre, size, s);
+            return EmitWindowPart(m, name, parent, centre);
+        }
+
+        // Emits world-axis geometry as its own object under `parent` (shadows off for the little parts), returning its renderer.
+        private static Renderer EmitWindowPart(RaidMesh m, string name, Transform parent, Vector3 origin)
+        {
+            GameObject go = m.Emit(name, parent, origin, ShadowCastingMode.On);
+            if (go == null) return null;
+            go.transform.rotation = Quaternion.identity;
+            return go.GetComponent<Renderer>();
+        }
+        #endregion
+    }
+}

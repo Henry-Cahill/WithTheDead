@@ -1,0 +1,8 @@
+{"version": 1, "id": "Bandage_Head", "baseHeight": 0.0825, "name": "Bandage Head", "model": "gpt-oss:120b", "notes": "Small gauze bandage for the head, laid flat as a rectangular pad (≈0.15 m × 0.10 m) about 2 cm thick with a rolled corner to suggest it’s been used. Cloth tint 0.6,0.58,0.5.", "score": 6, "parts": [
+  {"name":"PadBase","shape":"cube","pos":[-0.0025,-0.0125,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.1],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeX","shape":"cube","pos":[-0.0725,-0.0075,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.1],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeZ","shape":"cube","pos":[-0.0025,-0.0075,-0.0525],"rot":[0.0,0.0,0.0],"size":[0.15,0.01,0.01],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"RollCorner","shape":"cylinder","pos":[0.0675,0.0025,0.0375],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[-0.0625,-0.0015,0.0275],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.015],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"FoldLine","shape":"cube","pos":[-0.0025,-0.0015,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.15,0.002,0.002],"color":[0.52,0.5,0.42],"smooth":0.05,"metal":0.0}
+]}

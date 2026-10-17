@@ -1,0 +1,12 @@
+{"version": 1, "id": "ShinKneeGuard_L_Metal", "baseHeight": 0.0775, "name": "Shin Knee Guard L Metal", "model": "gpt-oss:120b", "notes": "Left shin‑knee guard, approx 0.35 m long × 0.12 m wide × 0.02 m thick (metal slab with a rounded front). Lying on its side, longest axis along X; includes a thin back plate, a curved front bulge and four strap‑like extensions plus a few rivet details.", "score": 7, "parts": [
+  {"name":"BackPlate","shape":"cube","pos":[0.0,-0.0125,-0.025],"rot":[0.0,0.0,0.0],"size":[0.35,0.01,0.12],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"FrontBulge","shape":"sphere","pos":[0.0,-0.0025,0.035],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"StrapTopLeft","shape":"cylinder","pos":[-0.13,0.0075,-0.085],"rot":[0.0,0.0,90.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"StrapTopRight","shape":"cylinder","pos":[-0.13,0.0075,0.035],"rot":[0.0,0.0,90.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"StrapBottomLeft","shape":"cylinder","pos":[0.13,0.0075,-0.085],"rot":[0.0,0.0,90.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"StrapBottomRight","shape":"cylinder","pos":[0.13,0.0075,0.035],"rot":[0.0,0.0,90.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RivetTL","shape":"sphere","pos":[-0.16,-0.0055,-0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.48,0.4],"smooth":0.7,"metal":1.0},
+  {"name":"RivetTR","shape":"sphere","pos":[-0.16,-0.0055,0.025],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.48,0.4],"smooth":0.7,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[0.16,-0.0055,-0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.48,0.4],"smooth":0.7,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.16,-0.0055,0.025],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.48,0.4],"smooth":0.7,"metal":1.0}
+]}

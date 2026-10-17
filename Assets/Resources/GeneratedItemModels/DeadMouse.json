@@ -1,0 +1,15 @@
+{"version": 1, "id": "DeadMouse", "baseHeight": 0.079, "name": "Dead Mouse", "model": "gpt-oss:120b", "notes": "Dead mouse about 0.08 m long lying on its side (long axis +X). Main body cylinder, rounded head sphere with tiny ears, nose and eyes, thin tail, four short legs, plus a small fur‑patch detail.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0065,-0.004,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.06,0.025],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Head","shape":"sphere","pos":[0.0385,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.73,0.66,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"EarL","shape":"sphere","pos":[0.0385,0.015,0.003],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.62,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EarR","shape":"sphere","pos":[0.0385,0.015,-0.003],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.62,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Tail","shape":"cylinder","pos":[-0.0465,-0.004,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.02,0.008],"color":[0.71,0.64,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"LegFL","shape":"cylinder","pos":[0.0135,-0.009,0.01],"rot":[0.0,0.0,0.0],"size":[0.006,0.015,0.006],"color":[0.68,0.6,0.36],"smooth":0.05,"metal":0.0},
+  {"name":"LegFR","shape":"cylinder","pos":[0.0135,-0.009,-0.01],"rot":[0.0,0.0,0.0],"size":[0.006,0.015,0.006],"color":[0.68,0.6,0.36],"smooth":0.05,"metal":0.0},
+  {"name":"LegBL","shape":"cylinder","pos":[-0.0265,-0.009,0.01],"rot":[0.0,0.0,0.0],"size":[0.006,0.015,0.006],"color":[0.68,0.6,0.36],"smooth":0.05,"metal":0.0},
+  {"name":"LegBR","shape":"cylinder","pos":[-0.0265,-0.009,-0.01],"rot":[0.0,0.0,0.0],"size":[0.006,0.015,0.006],"color":[0.68,0.6,0.36],"smooth":0.05,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.0335,0.0015,0.003],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.0335,0.0015,-0.003],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"Nose","shape":"sphere","pos":[0.0535,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.55,0.48,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"FurPatch","shape":"cube","pos":[-0.0215,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.025],"color":[0.7,0.63,0.41],"smooth":0.05,"metal":0.0}
+]}

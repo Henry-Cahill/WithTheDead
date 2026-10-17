@@ -1,0 +1,13 @@
+{"version": 1, "id": "Wound_LUArm_Scratch_Male", "baseHeight": 0.069, "name": "Wound LUArm Scratch Male", "model": "gpt-oss:120b", "notes": "Torn skin patch about 0.12 m long × 0.025 m wide × 0.006 m thick, lying flat on the floor with ragged edges and a few dried‑blood spots. Main colour is the flesh tint (0.6,0.58,0.5) with darker red blood accents.", "score": 6, "parts": [
+  {"name":"BasePatch","shape":"cube","pos":[-0.0003,-0.003,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.12,0.006,0.025],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"RagEdgeL1","shape":"sphere","pos":[-0.0583,-0.002,0.0118],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"RagEdgeL2","shape":"sphere","pos":[-0.0583,-0.002,-0.0123],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"RagEdgeR1","shape":"sphere","pos":[0.0578,-0.002,0.0107],"rot":[0.0,0.0,0.0],"size":[0.009,0.009,0.009],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"RagEdgeR2","shape":"sphere","pos":[0.0578,-0.002,-0.0112],"rot":[0.0,0.0,0.0],"size":[0.009,0.009,0.009],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"BloodSpot1","shape":"sphere","pos":[-0.0203,0.0,0.0047],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.78,0.12,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"BloodSpot2","shape":"sphere","pos":[0.0297,0.0,-0.0043],"rot":[0.0,0.0,0.0],"size":[0.012,0.007,0.012],"color":[0.78,0.12,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"BloodSpot3","shape":"sphere","pos":[0.0097,0.0,0.0118],"rot":[0.0,0.0,0.0],"size":[0.009,0.005,0.009],"color":[0.78,0.12,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"TornFlapL","shape":"cube","pos":[-0.0592,0.0,-0.0003],"rot":[15.0,0.0,0.0],"size":[0.004,0.012,0.025],"color":[0.58,0.56,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"TornFlapR","shape":"cube","pos":[0.0587,0.0,-0.0003],"rot":[-12.0,0.0,0.0],"size":[0.004,0.011,0.025],"color":[0.58,0.56,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeCrack","shape":"cube","pos":[-0.0003,0.003,0.0123],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.002],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0}
+]}

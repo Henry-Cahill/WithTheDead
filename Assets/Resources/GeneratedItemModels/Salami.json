@@ -1,0 +1,12 @@
+{"version": 1, "id": "Salami", "baseHeight": 0.0865, "name": "Salami", "model": "gpt-oss:120b", "notes": "Salami log ~0.25 m long × 0.05 m diameter, loosely wrapped in thin paper. Wrapped cylinder with inner meat, end caps, a central label band and a tying string; small meat bumps add texture.", "score": 7, "parts": [
+  {"name":"WrapperOuter","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.25,0.05],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"MeatInner","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.245,0.045],"color":[0.6,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"EndCapL","shape":"cube","pos":[-0.121,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.05,0.05],"color":[0.68,0.58,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EndCapR","shape":"cube","pos":[0.121,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.05,0.05],"color":[0.68,0.58,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBand","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.005,0.052],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"SeamL","shape":"cylinder","pos":[-0.09,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.053,0.02,0.053],"color":[0.55,0.45,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SeamR","shape":"cylinder","pos":[0.09,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.053,0.02,0.053],"color":[0.55,0.45,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"TieString","shape":"cylinder","pos":[0.0,0.0035,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.03,0.01],"color":[0.35,0.25,0.15],"smooth":0.2,"metal":0.0},
+  {"name":"MeatSpot1","shape":"sphere","pos":[0.05,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.2,0.1],"smooth":0.12,"metal":0.0},
+  {"name":"MeatSpot2","shape":"sphere","pos":[-0.05,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.6,0.2,0.1],"smooth":0.12,"metal":0.0}
+]}

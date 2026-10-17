@@ -1,0 +1,12 @@
+{"version": 1, "id": "FruitSalad", "baseHeight": 0.0885, "name": "Fruit Salad", "model": "gpt-oss:120b", "notes": "Plastic fruit‑salad tub ~0.18 m × 0.12 m × 0.05 m tall with a snap‑on lid, white label on the front and a few colorful fruit pieces (apple, orange, banana, grapes) visible inside.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.006,-0.013],"rot":[0.0,0.0,0.0],"size":[0.18,0.045,0.12],"color":[0.75,0.68,0.45],"smooth":0.25,"metal":0.0},
+  {"name":"LidBase","shape":"cube","pos":[0.0,0.0205,-0.013],"rot":[0.0,0.0,0.0],"size":[0.182,0.008,0.122],"color":[0.78,0.71,0.48],"smooth":0.25,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,0.0265,-0.013],"rot":[0.0,0.0,0.0],"size":[0.19,0.004,0.19],"color":[0.78,0.71,0.48],"smooth":0.25,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.006,0.048],"rot":[0.0,0.0,0.0],"size":[0.16,0.002,0.12],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"AppleSlice","shape":"sphere","pos":[-0.04,-0.0035,-0.033],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.025],"color":[0.85,0.12,0.12],"smooth":0.6,"metal":0.0},
+  {"name":"OrangeChunk","shape":"sphere","pos":[0.035,-0.0065,0.002],"rot":[0.0,0.0,0.0],"size":[0.028,0.018,0.022],"color":[0.96,0.55,0.2],"smooth":0.6,"metal":0.0},
+  {"name":"BananaChunk","shape":"sphere","pos":[0.06,-0.0005,-0.043],"rot":[0.0,0.0,0.0],"size":[0.035,0.018,0.012],"color":[0.96,0.9,0.3],"smooth":0.6,"metal":0.0},
+  {"name":"Grape1","shape":"sphere","pos":[-0.02,-0.0135,-0.053],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.45,0.25,0.65],"smooth":0.6,"metal":0.0},
+  {"name":"Grape2","shape":"sphere","pos":[-0.015,-0.0125,-0.058],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.45,0.25,0.65],"smooth":0.6,"metal":0.0},
+  {"name":"Grape3","shape":"sphere","pos":[-0.018,-0.0145,-0.051],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.45,0.25,0.65],"smooth":0.6,"metal":0.0}
+]}

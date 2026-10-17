@@ -1,0 +1,8 @@
+{"version": 1, "id": "BreadSlices", "baseHeight": 0.09, "name": "Bread Slices", "model": "gpt-oss:120b", "notes": "Packaged sliced bread lying flat on the floor. A thin translucent plastic bag (≈0.32 m × 0.06 m × 0.14 m) holds four individual slices (≈0.30 m × 0.012 m × 0.12 m each). A small paper label is printed on the front of the bag.", "score": 7, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.06,0.14],"color":[0.9,0.9,0.95],"smooth":0.2,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0,0.069],"rot":[0.0,0.0,0.0],"size":[0.2,0.004,0.002],"color":[0.5,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"Slice1","shape":"cube","pos":[0.0,-0.018,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.012,0.12],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Slice2","shape":"cube","pos":[0.0,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.012,0.12],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Slice3","shape":"cube","pos":[0.0,0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.012,0.12],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Slice4","shape":"cube","pos":[0.0,0.018,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.012,0.12],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,15 @@
+{"version": 1, "id": "Hat_MetalScrapHelmet", "baseHeight": 0.088, "name": "Hat Metal Scrap Helmet", "model": "gpt-oss:120b", "notes": "Metal scrap helmet laid flat like a product photo – roughly circular 0.32 m across, 0.03 m thick overall. Main shell, outer rim, four scrap‑plate pieces, inner lining, front/back straps and four rivets.", "score": 7, "parts": [
+  {"name":"BaseShell","shape":"cylinder","pos":[0.0,-0.018,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.3],"color":[0.55,0.5,0.6],"smooth":0.45,"metal":1.0},
+  {"name":"RimOuter","shape":"cylinder","pos":[0.0,-0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.015,0.34],"color":[0.4,0.35,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"ScrapA","shape":"cube","pos":[0.12,0.004,0.02],"rot":[15.0,0.0,0.0],"size":[0.08,0.04,0.02],"color":[0.45,0.4,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"ScrapB","shape":"cube","pos":[-0.13,0.006,-0.03],"rot":[-10.0,5.0,0.0],"size":[0.07,0.035,0.025],"color":[0.45,0.4,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"ScrapC","shape":"cube","pos":[0.0,0.008,0.14],"rot":[0.0,15.0,0.0],"size":[0.06,0.04,0.02],"color":[0.45,0.4,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"ScrapD","shape":"cube","pos":[0.0,0.005,-0.12],"rot":[0.0,-10.0,0.0],"size":[0.05,0.03,0.018],"color":[0.45,0.4,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"StrapFront","shape":"cylinder","pos":[0.0,-0.006,0.08],"rot":[0.0,0.0,90.0],"size":[0.015,0.25,0.015],"color":[0.35,0.3,0.4],"smooth":0.5,"metal":1.0},
+  {"name":"StrapBack","shape":"cylinder","pos":[0.0,-0.006,-0.08],"rot":[0.0,0.0,90.0],"size":[0.015,0.25,0.015],"color":[0.35,0.3,0.4],"smooth":0.5,"metal":1.0},
+  {"name":"Lining","shape":"cube","pos":[0.0,-0.022,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.004,0.28],"color":[0.6,0.55,0.65],"smooth":0.1,"metal":0.0},
+  {"name":"Rivet1","shape":"sphere","pos":[0.15,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet2","shape":"sphere","pos":[-0.15,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet3","shape":"sphere","pos":[0.0,-0.003,0.15],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet4","shape":"sphere","pos":[0.0,-0.003,-0.15],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0}
+]}

@@ -29,6 +29,18 @@ namespace CloneZ
         /// int; kept clear of every ContainerType value so the two never collide in a save).</summary>
         public const int KindSack = 20;
 
+        /// <summary>The fixture this is the storage of (a cupboard, a drawer, the fridge), or null for a
+        /// free-standing container. A fixture's storage has no body of its own: the fixture handles [E], it
+        /// can't be dismantled apart from its furniture, and it's saved under <see cref="FixtureKey"/>.</summary>
+        public Interactable Owner;
+
+        /// <summary>Stable save id of a fixture's storage (null for ordinary containers). A loaded save
+        /// pours its contents back into the live fixture with the same key instead of spawning a box.</summary>
+        public string FixtureKey;
+
+        /// <summary>True for the storage of a fixture (see <see cref="Owner"/>).</summary>
+        public bool IsFixture => FixtureKey != null || Owner != null;
+
         public bool IsEmpty => Contents == null || Contents.Stacks.Count == 0;
 
         /// <summary>Arranges the contents on a growable grid (once) for the grid inventory view, sized to
@@ -78,13 +90,14 @@ namespace CloneZ
         public string DemolishName => "container";
         public bool CanDemolish(out string reason)
         {
+            if (IsFixture) { reason = "It's part of the " + (Owner != null ? Owner.DisplayName.ToLowerInvariant() : "furniture"); return false; }
             if (IsSack) { reason = "Pick the sack up instead"; return false; }
             if (Type == ContainerType.Corpse) { reason = "Search the body, don't dismantle it"; return false; }
             if (!IsEmpty) { reason = "Empty it before dismantling"; return false; }
             reason = null; return true;
         }
         public void GetSalvage(out int planks, out int nails) { planks = CloneZConfig.SalvageContainerPlanks; nails = CloneZConfig.SalvageContainerNails; }
-        public bool CarvesNavMesh => !IsSack && Type != ContainerType.Corpse;   // world containers carry colliders baked into the navmesh
+        public bool CarvesNavMesh => !IsSack && !IsFixture && Type != ContainerType.Corpse;   // world containers carry colliders baked into the navmesh
         public void Dismantle()
         {
             All.Remove(this);
@@ -117,6 +130,54 @@ namespace CloneZ
             ItemDatabase.RollLoot(type, new System.Random(seed), c.Contents);
             if (type == ContainerType.Crate && StarterHome.Active) DressCrate(go);
             return c;
+        }
+
+        /// <summary>The storage of a fixture (see <see cref="StorageFixture"/>): a bodiless container on a child of
+        /// <paramref name="parent"/> at <paramref name="position"/>, titled <paramref name="displayName"/>, filled
+        /// from <paramref name="lootType"/>'s table — unless <paramref name="startEmpty"/>, or it comes up empty on
+        /// <paramref name="emptyChance"/> — and trimmed to <paramref name="maxStacks"/> stacks so the home stays lean.
+        /// A negative <paramref name="searchTime"/> takes the loot type's usual rummaging time.</summary>
+        public static LootContainer SpawnFixture(Transform parent, Vector3 position, ContainerType lootType, string displayName,
+            string fixtureKey, int seed, bool startEmpty = false, float emptyChance = 0f, int maxStacks = int.MaxValue, float searchTime = -1f)
+        {
+            var go = new GameObject("Storage");
+            go.transform.SetParent(parent, false);
+            go.transform.position = position;
+            var c = go.AddComponent<LootContainer>();
+            c.DisplayName = displayName;
+            c.Type = lootType == ContainerType.Corpse ? ContainerType.Shelf : lootType;
+            c.FixtureKey = fixtureKey;
+            c.Contents = new Inventory(999f);
+            c.SearchTime = searchTime >= 0f ? searchTime : SearchTimeFor(c.Type);
+            var rng = new System.Random(seed);
+            if (!startEmpty && rng.NextDouble() >= emptyChance)
+            {
+                ItemDatabase.RollLoot(c.Type, rng, c.Contents);
+                List<ItemStack> stacks = c.Contents.Stacks;
+                if (maxStacks >= 0 && stacks.Count > maxStacks) stacks.RemoveRange(maxStacks, stacks.Count - maxStacks);
+            }
+            if (c.SearchTime <= 0f || (startEmpty && c.IsEmpty)) c.Searched = true;
+            return c;
+        }
+
+        /// <summary>Replaces the contents with a saved game's (a fixture's storage, matched by <see cref="FixtureKey"/>).</summary>
+        public void RestoreContents(bool searched, List<StackSave> items)
+        {
+            Contents = new Inventory(999f);
+            if (items != null)
+            {
+                for (int i = 0; i < items.Count; i++)
+                {
+                    StackSave st = items[i];
+                    ItemDef def = ItemDatabase.Get(st.Id);
+                    if (def != null)
+                        Contents.Add(def, st.Count, enforceWeight: false,
+                            spawnHours: def.Perishable ? st.SpawnHours : float.NaN,
+                            condition: def.RestoredCondition(st.Condition),
+                            timesRepaired: st.TimesRepaired);
+                }
+            }
+            Searched = searched;
         }
 
         /// <summary>Size of a dressed storage crate (see <see cref="DressCrate"/>).</summary>

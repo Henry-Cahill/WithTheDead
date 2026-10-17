@@ -1,0 +1,12 @@
+{"version": 1, "id": "Boilersuit_PrisonerKhaki", "baseHeight": 0.08, "name": "Boilersuit Prisoner Khaki", "model": "gpt-oss:120b", "notes": "Flat cover‑all boilersuit (prisoner khaki) laid out like a product photo: central torso rectangle with collar on top, sleeves spread left/right, pant legs hanging below, front pockets, waist belt‑loop strip and a centre zipper. Approx overall footprint ≈ 0.8 m wide × 1.4 m tall, 3 cm thick.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,0.0,0.31],"rot":[0.0,0.0,0.0],"size":[0.5,0.04,0.8],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cube","pos":[0.0,0.0,0.75],"rot":[0.0,0.0,0.0],"size":[0.5,0.03,0.08],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.36,0.0,0.41],"rot":[0.0,0.0,0.0],"size":[0.2,0.04,0.6],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.36,0.0,0.41],"rot":[0.0,0.0,0.0],"size":[0.2,0.04,0.6],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.125,0.0,-0.44],"rot":[0.0,0.0,0.0],"size":[0.25,0.04,0.7],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.125,0.0,-0.44],"rot":[0.0,0.0,0.0],"size":[0.25,0.04,0.7],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.15,0.005,0.41],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.08],"color":[0.48,0.44,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.15,0.005,0.41],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.08],"color":[0.48,0.44,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoop","shape":"cube","pos":[0.0,0.002,0.21],"rot":[0.0,0.0,0.0],"size":[0.5,0.01,0.04],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"Zipper","shape":"cylinder","pos":[0.0,0.0,0.31],"rot":[90.0,0.0,0.0],"size":[0.02,0.78,0.02],"color":[0.8,0.8,0.85],"smooth":0.5,"metal":1.0}
+]}

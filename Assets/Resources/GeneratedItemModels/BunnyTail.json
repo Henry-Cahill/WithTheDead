@@ -1,0 +1,9 @@
+{"version": 1, "id": "BunnyTail", "baseHeight": 0.1125, "name": "Bunny Tail", "model": "gpt-oss:120b", "notes": "Fluffy bunny tail about 0.12 m wide, 0.10 m tall, lying on its tie‑string: central core sphere, several overlapping fur spheres for a fluffy silhouette, short cotton tie at the base.", "score": 6, "parts": [
+  {"name":"TieString","shape":"cylinder","pos":[0.0,-0.0425,0.005],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.01],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Core","shape":"sphere","pos":[0.0,-0.0075,0.005],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffMidL","shape":"sphere","pos":[-0.02,0.0025,0.005],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffMidR","shape":"sphere","pos":[0.02,0.0025,0.005],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffMidF","shape":"sphere","pos":[0.0,0.0025,0.025],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffOuterL","shape":"sphere","pos":[-0.04,0.0075,-0.015],"rot":[0.0,0.0,0.0],"size":[0.09,0.09,0.09],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffOuterR","shape":"sphere","pos":[0.04,0.0075,-0.015],"rot":[0.0,0.0,0.0],"size":[0.09,0.09,0.09],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

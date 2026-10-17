@@ -1,0 +1,13 @@
+{"version": 1, "id": "Boilersuit_Prisoner", "baseHeight": 0.1316, "name": "Boilersuit Prisoner", "model": "gpt-oss:120b", "notes": "Boilersuit Prisoner – flat product‑photo layout, overall footprint ≈ 1.0 m long × 0.55 m wide, 3 cm thick. Main torso block in prison‑tint fabric with attached sleeves on the sides, pant legs hanging from the rear edge, collar, waist band, front pockets and simple seam strips.", "score": 6, "parts": [
+  {"name":"MainBody","shape":"cube","pos":[0.0,0.0025,0.195],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,1.0],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftSleeve","shape":"cube","pos":[-0.45,0.0,0.195],"rot":[0.0,0.0,20.0],"size":[0.35,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightSleeve","shape":"cube","pos":[0.45,0.0,0.195],"rot":[0.0,0.0,-20.0],"size":[0.35,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftLeg","shape":"cube","pos":[-0.125,0.0,-0.505],"rot":[0.0,0.0,0.0],"size":[0.25,0.025,0.4],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightLeg","shape":"cube","pos":[0.125,0.0,-0.505],"rot":[0.0,0.0,0.0],"size":[0.25,0.025,0.4],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cube","pos":[0.0,0.01,0.645],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.05],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"WaistBand","shape":"cube","pos":[0.0,0.0065,-0.285],"rot":[0.0,0.0,0.0],"size":[0.55,0.008,0.02],"color":[0.45,0.41,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.2,0.01,0.095],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.12],"color":[0.45,0.41,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.2,0.01,0.095],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.12],"color":[0.45,0.41,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"SeamTop","shape":"cube","pos":[0.0,0.018,0.695],"rot":[0.0,0.0,0.0],"size":[0.55,0.002,0.02],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBottom","shape":"cube","pos":[0.0,0.018,-0.305],"rot":[0.0,0.0,0.0],"size":[0.55,0.002,0.02],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0}
+]}

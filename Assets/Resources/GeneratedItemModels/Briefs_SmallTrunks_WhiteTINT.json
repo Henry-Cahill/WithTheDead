@@ -1,0 +1,9 @@
+{"version": 1, "id": "Briefs_SmallTrunks_WhiteTINT", "baseHeight": 0.0725, "name": "Briefs Small Trunks White TINT", "model": "gpt-oss:120b", "notes": "Flat small trunks (briefs) ~0.24 m wide × 0.16 m long × 0.025 m thick, laid flat like a product photo. Main fabric panel, elastic waistband at the waist edge, thin side‑seam strips and a raised front pouch give the recognisable outline.", "score": 6, "parts": [
+  {"name":"MainFabric","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.025,0.16],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0,0.07],"rot":[0.0,0.0,0.0],"size":[0.24,0.008,0.02],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.115,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.16],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.115,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.16],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPouch","shape":"cube","pos":[0.0,0.0038,0.03],"rot":[0.0,0.0,0.0],"size":[0.1,0.008,0.04],"color":[0.58,0.53,0.63],"smooth":0.05,"metal":0.0},
+  {"name":"LegOpeningL","shape":"cube","pos":[-0.07,0.0,-0.06],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegOpeningR","shape":"cube","pos":[0.07,0.0,-0.06],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

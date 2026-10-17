@@ -1,0 +1,13 @@
+{"version": 1, "id": "Vest_DefaultTEXTURE", "baseHeight": 0.0938, "name": "Vest Default TEXTURE", "model": "gpt-oss:120b", "notes": "Flat vest ~0.48 m wide × 0.68 m deep × 0.025 m thick, laid out like a product photo. Main torso panel with front flap, collar band, bottom hem, two side pockets and three decorative buttons.", "score": 6, "parts": [
+  {"name":"TorsoPanel","shape":"cube","pos":[0.0,-0.0213,-0.045],"rot":[0.0,0.0,0.0],"size":[0.48,0.025,0.68],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontFlap","shape":"cube","pos":[0.0,-0.0213,0.315],"rot":[0.0,0.0,0.0],"size":[0.44,0.025,0.04],"color":[0.52,0.48,0.58],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cylinder","pos":[0.0,0.0037,0.265],"rot":[0.0,0.0,0.0],"size":[0.24,0.025,0.24],"color":[0.48,0.44,0.56],"smooth":0.05,"metal":0.0},
+  {"name":"BottomHem","shape":"cube","pos":[0.0,-0.0312,-0.045],"rot":[0.0,0.0,0.0],"size":[0.48,0.005,0.68],"color":[0.52,0.48,0.58],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.16,-0.0213,0.175],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.04],"color":[0.5,0.46,0.56],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.16,-0.0213,0.175],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.04],"color":[0.5,0.46,0.56],"smooth":0.05,"metal":0.0},
+  {"name":"ButtonTop","shape":"cylinder","pos":[0.0,-0.0088,0.295],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.015],"color":[0.45,0.41,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"ButtonMid","shape":"cylinder","pos":[0.0,0.0112,0.295],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.015],"color":[0.45,0.41,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"ButtonBottom","shape":"cylinder","pos":[0.0,0.0312,0.295],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.015],"color":[0.45,0.41,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cylinder","pos":[-0.24,-0.0213,-0.045],"rot":[90.0,0.0,0.0],"size":[0.005,0.48,0.005],"color":[0.48,0.44,0.56],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cylinder","pos":[0.24,-0.0213,-0.045],"rot":[90.0,0.0,0.0],"size":[0.005,0.48,0.005],"color":[0.48,0.44,0.56],"smooth":0.05,"metal":0.0}
+]}

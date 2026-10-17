@@ -1,0 +1,11 @@
+{"version": 1, "id": "PieWholeRaw", "baseHeight": 0.0887, "name": "Pie Whole Raw", "model": "gpt-oss:120b", "notes": "Raw pie in a metal tin ~0.22 m diameter x 0.05 m tall: outer tin body, rolled rim, slightly domed lid, paper label, and the pale filling visible through the thin top.", "score": 6, "parts": [
+  {"name":"TinBody","shape":"cylinder","pos":[0.0,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.045,0.22],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.9},
+  {"name":"RimBottom","shape":"cylinder","pos":[0.0,-0.0262,0.0],"rot":[0.0,0.0,0.0],"size":[0.224,0.005,0.224],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.9},
+  {"name":"RimTop","shape":"cylinder","pos":[0.0,0.0188,0.0],"rot":[0.0,0.0,0.0],"size":[0.224,0.005,0.224],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.0238,0.0],"rot":[0.0,0.0,0.0],"size":[0.215,0.01,0.215],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.9},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.208,0.018,0.208],"color":[0.85,0.73,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.0053,0.0],"rot":[0.0,0.0,0.0],"size":[0.21,0.006,0.21],"color":[0.45,0.38,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.0127,0.0],"rot":[0.0,0.0,0.0],"size":[0.21,0.006,0.21],"color":[0.45,0.38,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"Filling","shape":"sphere","pos":[0.0,0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.04,0.2],"color":[0.78,0.7,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CrustEdge","shape":"cylinder","pos":[0.0,0.0188,0.0],"rot":[0.0,0.0,0.0],"size":[0.215,0.004,0.215],"color":[0.78,0.7,0.48],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "RosePetalsDried", "baseHeight": 0.0677, "name": "Rose Petals Dried", "model": "gpt-oss:120b", "notes": "Loose dried rose petals in a thin paper packet ~0.12 m × 0.08 m, 5 mm thick; packet lies flat on the floor, contains a small clump of petal ellipsoids and a twist‑tie closure.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[0.0,-0.0038,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.08],"color":[0.85,0.78,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.06],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"TwistTie","shape":"cylinder","pos":[-0.045,0.0002,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.003,0.015],"color":[0.2,0.5,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"Petal1","shape":"sphere","pos":[-0.02,-0.0028,0.015],"rot":[0.0,0.0,0.0],"size":[0.018,0.005,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Petal2","shape":"sphere","pos":[0.01,-0.0025,-0.02],"rot":[15.0,30.0,0.0],"size":[0.016,0.0045,0.011],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Petal3","shape":"sphere","pos":[-0.03,-0.0031,-0.01],"rot":[-10.0,20.0,5.0],"size":[0.017,0.0048,0.013],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Petal4","shape":"sphere","pos":[0.025,-0.0027,0.02],"rot":[5.0,-15.0,10.0],"size":[0.015,0.0042,0.01],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Petal5","shape":"sphere","pos":[-0.015,-0.0029,-0.025],"rot":[20.0,-10.0,0.0],"size":[0.019,0.0051,0.014],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Petal6","shape":"sphere","pos":[0.03,-0.0024,-0.005],"rot":[-5.0,25.0,-8.0],"size":[0.016,0.0047,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Petal7","shape":"sphere","pos":[-0.005,-0.003,0.03],"rot":[12.0,-22.0,4.0],"size":[0.018,0.0049,0.013],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Petal8","shape":"sphere","pos":[0.018,-0.0026,-0.015],"rot":[-12.0,18.0,-6.0],"size":[0.017,0.0046,0.011],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "Bra_Strapless_Black", "baseHeight": 0.0695, "name": "Bra Strapless Black", "model": "gpt-oss:120b", "notes": "Strapless bra laid flat, 0.30 m wide × 0.20 m deep × ~0.02 m thick: central elastic band with a thin centre seam, two rounded cups on either side, edge stitching and side seams.", "score": 6, "parts": [
+  {"name":"Band","shape":"cube","pos":[0.0,-0.0045,0.0275],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CenterSeam","shape":"cube","pos":[0.0,0.0015,0.0275],"rot":[0.0,0.0,0.0],"size":[0.3,0.002,0.004],"color":[0.3,0.28,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"CupL","shape":"cylinder","pos":[-0.09,0.0025,0.0275],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CupR","shape":"cylinder","pos":[0.09,0.0025,0.0275],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TrimL","shape":"cylinder","pos":[-0.09,0.0065,0.0275],"rot":[0.0,0.0,0.0],"size":[0.13,0.004,0.13],"color":[0.3,0.28,0.25],"smooth":0.07,"metal":0.0},
+  {"name":"TrimR","shape":"cylinder","pos":[0.09,0.0065,0.0275],"rot":[0.0,0.0,0.0],"size":[0.13,0.004,0.13],"color":[0.3,0.28,0.25],"smooth":0.07,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.15,0.0015,0.0275],"rot":[0.0,0.0,0.0],"size":[0.02,0.012,0.04],"color":[0.3,0.28,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.15,0.0015,0.0275],"rot":[0.0,0.0,0.0],"size":[0.02,0.012,0.04],"color":[0.3,0.28,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"StitchL","shape":"cube","pos":[-0.09,0.0085,-0.0325],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.12],"color":[0.25,0.24,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"StitchR","shape":"cube","pos":[0.09,0.0085,-0.0325],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.12],"color":[0.25,0.24,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[-0.14,0.0025,0.0525],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.015],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":0.0}
+]}

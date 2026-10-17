@@ -1,0 +1,14 @@
+{"version": 1, "id": "BagelPoppy", "baseHeight": 0.1225, "name": "Bagel Poppy", "model": "gpt-oss:120b", "notes": "Bagel Poppy: cardboard snack box ~0.26 m × 0.16 m × 0.09 m, open top with a front label; thin plastic bag inside holding four golden‑brown bagels (≈0.12 m diameter each).", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.0575,0.007],"rot":[0.0,0.0,0.0],"size":[0.26,0.01,0.16],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"WallLeft","shape":"cube","pos":[-0.126,-0.0175,0.007],"rot":[0.0,0.0,0.0],"size":[0.008,0.08,0.16],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"WallRight","shape":"cube","pos":[0.126,-0.0175,0.007],"rot":[0.0,0.0,0.0],"size":[0.008,0.08,0.16],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"WallFront","shape":"cube","pos":[0.0,-0.0175,-0.069],"rot":[0.0,0.0,0.0],"size":[0.26,0.08,0.008],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"WallBack","shape":"cube","pos":[0.0,-0.0175,0.083],"rot":[0.0,0.0,0.0],"size":[0.26,0.08,0.008],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0265,0.007],"rot":[0.0,0.0,0.0],"size":[0.26,0.008,0.16],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.0175,-0.077],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.06],"color":[0.5,0.35,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Bag","shape":"cylinder","pos":[0.0,-0.0225,0.007],"rot":[0.0,0.0,0.0],"size":[0.22,0.07,0.12],"color":[0.9,0.85,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"Bagel1","shape":"sphere","pos":[-0.05,0.0025,0.007],"rot":[0.0,0.0,0.0],"size":[0.12,0.12,0.12],"color":[0.8,0.6,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"Bagel2","shape":"sphere","pos":[0.05,0.0025,0.007],"rot":[0.0,0.0,0.0],"size":[0.12,0.12,0.12],"color":[0.8,0.6,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"Bagel3","shape":"sphere","pos":[0.0,0.0025,-0.033],"rot":[0.0,0.0,0.0],"size":[0.12,0.12,0.12],"color":[0.8,0.6,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"Bagel4","shape":"sphere","pos":[0.0,0.0025,0.047],"rot":[0.0,0.0,0.0],"size":[0.12,0.12,0.12],"color":[0.8,0.6,0.4],"smooth":0.15,"metal":0.0}
+]}

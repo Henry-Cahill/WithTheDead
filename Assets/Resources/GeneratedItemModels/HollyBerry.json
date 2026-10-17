@@ -1,0 +1,12 @@
+{"version": 1, "id": "HollyBerry", "baseHeight": 0.103, "name": "Holly Berry", "model": "gpt-oss:120b", "notes": "Small rectangular snack pack for holly berries (≈0.12 m W × 0.08 m H × 0.05 m D). Cardboard box with a hinged lid, thin paper label and four loose berries inside.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.003,-0.0035],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.05],"color":[0.65,0.58,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"BoxLid","shape":"cube","pos":[0.0,0.039,-0.0035],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.05],"color":[0.68,0.61,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"SideSeamTop","shape":"cube","pos":[0.0,0.0415,-0.0035],"rot":[0.0,0.0,0.0],"size":[0.124,0.002,0.054],"color":[0.55,0.48,0.28],"smooth":0.1,"metal":0.0},
+  {"name":"SideSeamBottom","shape":"cube","pos":[0.0,-0.0415,-0.0035],"rot":[0.0,0.0,0.0],"size":[0.124,0.002,0.054],"color":[0.55,0.48,0.28],"smooth":0.1,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.002,0.023],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.015],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Berry1","shape":"sphere","pos":[-0.025,-0.015,-0.0155],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Berry2","shape":"sphere","pos":[0.01,-0.011,-0.0085],"rot":[0.0,0.0,0.0],"size":[0.014,0.014,0.014],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Berry3","shape":"sphere","pos":[-0.015,-0.013,0.0065],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Berry4","shape":"sphere","pos":[0.02,-0.016,0.0115],"rot":[0.0,0.0,0.0],"size":[0.013,0.013,0.013],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Berry5","shape":"sphere","pos":[-0.005,-0.018,0.0165],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0}
+]}

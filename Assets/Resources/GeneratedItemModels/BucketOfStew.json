@@ -1,0 +1,9 @@
+{"version": 1, "id": "BucketOfStew", "baseHeight": 0.22, "name": "Bucket Of Stew", "model": "gpt-oss:120b", "notes": "Upright steel bucket ~0.22 m dia × 0.30 m tall holding stew liquid (tint 0.45,0.6,0.75). Includes outer body, top/bottom rims, two crossing side handles, a thin label band and the inner stew volume.", "score": 6, "parts": [
+  {"name":"BucketBody","shape":"cylinder","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.3,0.22],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"TopRim","shape":"cylinder","pos":[0.0,0.15,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.02,0.24],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"BottomRim","shape":"cylinder","pos":[0.0,-0.15,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.02,0.24],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"HandleX","shape":"cylinder","pos":[0.0,0.15,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.26,0.015],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"HandleZ","shape":"cylinder","pos":[0.0,0.15,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.26,0.015],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"StewLiquid","shape":"cylinder","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.28,0.2],"color":[0.45,0.6,0.75],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBand","shape":"cylinder","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.005,0.22],"color":[0.35,0.45,0.55],"smooth":0.12,"metal":0.0}
+]}

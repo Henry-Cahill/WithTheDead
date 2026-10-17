@@ -1,0 +1,8 @@
+{"version": 1, "id": "Bandage_LeftUpperLeg", "baseHeight": 0.0757, "name": "Bandage Left Upper Leg", "model": "gpt-oss:120b", "notes": "Bandage for left upper leg, folded flat on the floor (≈0.25 m × 0.07 m × 0.008 m). A small rolled end shows how it would be stored, and a faint white label marks the material.", "score": 6, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.0102,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.008,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RollEnd","shape":"cylinder","pos":[-0.1,0.0008,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.05,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[0.0,-0.0052,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.04],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"FoldLine","shape":"cube","pos":[-0.03,-0.0057,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.07],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeHighlight","shape":"cube","pos":[0.0,-0.0057,0.0],"rot":[0.0,0.0,0.0],"size":[0.251,0.002,0.071],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SideShadow","shape":"cube","pos":[0.0,-0.0147,0.0],"rot":[0.0,0.0,0.0],"size":[0.251,0.002,0.071],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0}
+]}

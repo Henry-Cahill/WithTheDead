@@ -63,13 +63,15 @@ namespace CloneZ
                 bool playing = GameManager.Instance != null && GameManager.Instance.State == GameState.Playing;
                 // A finished raid belongs to its report screen.
                 if (ExtractionManager.Instance != null && ExtractionManager.Instance.RaidOver) playing = false;
-                bool free = !UIState.GameplayBlocked && !UIState.BuildMode;
+                bool free = !UIState.GameplayBlocked && !UIState.BuildMode && !UIState.ActionMenuOpen
+                            && UIState.EscapeConsumedFrame != Time.frameCount
+                            && !(PlayerInteractor.Current != null && PlayerInteractor.Current.IsBusy);   // Esc stops the job instead
                 // Require a clear previous frame too, so the Esc that closes another panel
                 // doesn't also pop the pause menu open on the same press.
                 if (esc && playing && free && !_prevBlocked) Open();
             }
 
-            _prevBlocked = UIState.GameplayBlocked && !_open;
+            _prevBlocked = (UIState.GameplayBlocked || UIState.ActionMenuOpen) && !_open;
 
             if (_abandonArmed && Time.unscaledTime - _abandonArmedAt > AbandonConfirmSeconds) DisarmAbandon();
 

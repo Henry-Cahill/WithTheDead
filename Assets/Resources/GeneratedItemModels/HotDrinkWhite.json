@@ -1,0 +1,8 @@
+{"version": 1, "id": "HotDrinkWhite", "baseHeight": 0.19, "name": "Hot Drink White", "model": "gpt-oss:120b", "notes": "Upright white‑hot‑drink bottle about 0.25 m tall and 0.08 m across: clear plastic body with a slightly narrower neck, dark cap, thin label around the middle, and the tinted liquid inside.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.22,0.08],"color":[0.82,0.83,0.86],"smooth":0.4,"metal":0.0},
+  {"name":"Neck","shape":"cylinder","pos":[0.0,0.105,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.03,0.06],"color":[0.78,0.79,0.82],"smooth":0.4,"metal":0.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.0,0.125,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.01,0.07],"color":[0.32,0.33,0.35],"smooth":0.3,"metal":0.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.004,0.082],"color":[0.45,0.6,0.75],"smooth":0.12,"metal":0.0},
+  {"name":"Liquid","shape":"cylinder","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.076,0.245,0.076],"color":[0.45,0.6,0.75],"smooth":0.05,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,0.1175,0.0],"rot":[0.0,0.0,0.0],"size":[0.068,0.002,0.068],"color":[0.45,0.6,0.75],"smooth":0.05,"metal":0.0}
+]}

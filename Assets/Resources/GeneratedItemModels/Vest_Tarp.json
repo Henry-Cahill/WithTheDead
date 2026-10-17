@@ -1,0 +1,13 @@
+{"version": 1, "id": "Vest_Tarp", "baseHeight": 0.08, "name": "Vest Tarp", "model": "gpt-oss:120b", "notes": "Flat vest made of tarp material (≈0.45 m wide × 0.55 m tall × 0.02 m thick). Main rectangular body with a centre seam, shoulder loops, back loop, top‑edge and bottom‑hem bands, side panels and a front label – all laid flat spread like a product photo.", "score": 6, "parts": [
+  {"name":"MainBody","shape":"cube","pos":[0.0,-0.01,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.45,0.02,0.55],"color":[0.55,0.5,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"CenterSeam","shape":"cube","pos":[0.0,-0.009,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.01,0.022,0.55],"color":[0.35,0.33,0.38],"smooth":0.3,"metal":0.0},
+  {"name":"ShoulderLoopL","shape":"cylinder","pos":[-0.2,0.005,0.2475],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.4,0.35,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"ShoulderLoopR","shape":"cylinder","pos":[0.2,0.005,0.2475],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.4,0.35,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"BackLoop","shape":"cylinder","pos":[0.0,0.005,-0.2525],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.4,0.35,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"TopEdgeBand","shape":"cube","pos":[0.0,0.004,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.45,0.008,0.02],"color":[0.35,0.33,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"BottomHemBand","shape":"cube","pos":[0.0,-0.014,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.45,0.008,0.02],"color":[0.35,0.33,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"SidePanelL","shape":"cube","pos":[-0.225,-0.01,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.55],"color":[0.5,0.45,0.55],"smooth":0.3,"metal":0.0},
+  {"name":"SidePanelR","shape":"cube","pos":[0.225,-0.01,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.55],"color":[0.5,0.45,0.55],"smooth":0.3,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,0.002,0.2675],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.02],"color":[0.9,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[0.0,0.003,0.2675],"rot":[0.0,0.0,0.0],"size":[0.13,0.002,0.018],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0}
+]}

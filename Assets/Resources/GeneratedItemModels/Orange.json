@@ -1,0 +1,8 @@
+{"version": 1, "id": "Orange", "baseHeight": 0.1, "name": "Orange", "model": "gpt-oss:120b", "notes": "Whole orange ~0.08 m diameter lying on its side, bottom touching the floor. Main fruit sphere with a short brown stem protruding from the top.", "score": 6, "parts": [
+  {"name":"Fruit","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Stem","shape":"cylinder","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.4,0.25,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"Leaf","shape":"cube","pos":[0.008,0.018,0.0],"rot":[45.0,0.0,0.0],"size":[0.02,0.002,0.01],"color":[0.2,0.6,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Spot1","shape":"sphere","pos":[-0.015,0.02,0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.5,0.3],"smooth":0.4,"metal":0.0},
+  {"name":"Spot2","shape":"sphere","pos":[0.02,0.01,-0.015],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.6,0.5,0.3],"smooth":0.4,"metal":0.0},
+  {"name":"Spot3","shape":"sphere","pos":[0.01,0.03,0.015],"rot":[0.0,0.0,0.0],"size":[0.007,0.007,0.007],"color":[0.6,0.5,0.3],"smooth":0.4,"metal":0.0}
+]}

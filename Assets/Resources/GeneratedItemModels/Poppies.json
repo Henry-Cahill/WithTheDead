@@ -1,0 +1,11 @@
+{"version": 1, "id": "Poppies", "baseHeight": 0.0875, "name": "Poppies", "model": "gpt-oss:120b", "notes": "Loose poppy seeds in a small rectangular food package (≈0.10 m × 0.06 m × 0.02 m). Box body tinted to the item colour, thin lid on top, front label strip, and a handful of seed ellipsoids inside.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,0.0145,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.02,0.06],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0255,0.0],"rot":[0.0,0.0,0.0],"size":[0.102,0.004,0.062],"color":[0.78,0.71,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,-0.0265,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.058],"color":[0.55,0.45,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"Seed1","shape":"sphere","pos":[-0.03,0.0095,-0.015],"rot":[0.0,0.0,0.0],"size":[0.008,0.006,0.008],"color":[0.3,0.2,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"Seed2","shape":"sphere","pos":[0.02,0.0085,-0.01],"rot":[0.0,0.0,0.0],"size":[0.009,0.007,0.009],"color":[0.32,0.22,0.16],"smooth":0.05,"metal":0.0},
+  {"name":"Seed3","shape":"sphere","pos":[-0.015,0.0105,0.018],"rot":[0.0,0.0,0.0],"size":[0.007,0.005,0.007],"color":[0.28,0.18,0.13],"smooth":0.05,"metal":0.0},
+  {"name":"Seed4","shape":"sphere","pos":[0.03,0.0075,0.01],"rot":[0.0,0.0,0.0],"size":[0.0085,0.0065,0.0085],"color":[0.31,0.21,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"Seed5","shape":"sphere","pos":[-0.025,0.0095,0.022],"rot":[0.0,0.0,0.0],"size":[0.0065,0.0045,0.0065],"color":[0.27,0.17,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"TwistTie","shape":"cylinder","pos":[0.0,0.0155,0.0],"rot":[90.0,0.0,0.0],"size":[0.012,0.002,0.012],"color":[0.6,0.55,0.5],"smooth":0.2,"metal":0.0}
+]}

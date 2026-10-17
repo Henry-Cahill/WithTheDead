@@ -1,0 +1,9 @@
+{"version": 1, "id": "OatsRaw", "baseHeight": 0.235, "name": "Oats Raw", "model": "gpt-oss:120b", "notes": "Upright cardboard box 0.22 m wide × 0.35 m tall × 0.12 m deep containing a paper sack of raw oats; the sack sits on the floor of the box, and a loose pile of oats is visible through the open top. Front label on the box.", "score": 6, "parts": [
+  {"name":"Box","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.35,0.12],"color":[0.6,0.5,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"Sack","shape":"cylinder","pos":[0.0,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.3,0.18],"color":[0.78,0.71,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"OatsPile","shape":"sphere","pos":[0.0,-0.145,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.1],"color":[0.68,0.58,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,0.07,0.061],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.002],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[0.0,0.07,0.0625],"rot":[0.0,0.0,0.0],"size":[0.182,0.022,0.002],"color":[0.2,0.15,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"BoxSeamTop","shape":"cube","pos":[0.0,0.17,0.0],"rot":[0.0,0.0,0.0],"size":[0.224,0.008,0.124],"color":[0.55,0.45,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BoxSeamBottom","shape":"cube","pos":[0.0,-0.17,0.0],"rot":[0.0,0.0,0.0],"size":[0.224,0.008,0.124],"color":[0.55,0.45,0.35],"smooth":0.05,"metal":0.0}
+]}

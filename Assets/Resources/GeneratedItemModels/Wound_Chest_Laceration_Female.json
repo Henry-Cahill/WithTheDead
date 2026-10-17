@@ -1,0 +1,12 @@
+{"version": 1, "id": "Wound_Chest_Laceration_Female", "baseHeight": 0.079, "name": "Wound Chest Laceration Female", "model": "gpt-oss:120b", "notes": "Irregular torn flesh patch ~0.22 m wide × 0.15 m long × 0.02 m thick, lying flat on its side. Main cloth‑like base in the wound tint with ragged edge bits and a few dark blood splatters.", "score": 6, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTopLeft","shape":"cube","pos":[-0.09,0.002,0.07],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.03],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTopRight","shape":"cube","pos":[0.09,0.002,0.07],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.03],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBottomLeft","shape":"cube","pos":[-0.09,0.002,-0.07],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.03],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBottomRight","shape":"cube","pos":[0.09,0.002,-0.07],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.03],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BloodSpot1","shape":"sphere","pos":[-0.04,0.009,0.03],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.7,0.12,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpot2","shape":"sphere","pos":[0.03,0.009,-0.02],"rot":[0.0,0.0,0.0],"size":[0.05,0.018,0.05],"color":[0.68,0.1,0.09],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpot3","shape":"sphere","pos":[0.0,0.009,0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.04],"color":[0.72,0.14,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"Fold1","shape":"cube","pos":[-0.06,-0.001,0.0],"rot":[15.0,0.0,0.0],"size":[0.02,0.005,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Fold2","shape":"cube","pos":[0.06,-0.001,0.0],"rot":[-12.0,0.0,0.0],"size":[0.02,0.005,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "CannedFruitCocktail", "baseHeight": 0.13, "name": "Canned Fruit Cocktail", "model": "gpt-oss:120b", "notes": "Upright canned fruit cocktail ~0.20 m diameter × 0.13 m tall. Metal body with rolled seams, pull‑tab lid, colorful label (tint 0.75 0.68 0.45) and a few visible fruit pieces inside.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.13,0.2],"color":[0.78,0.8,0.82],"smooth":0.55,"metal":0.85},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.0525,0.0],"rot":[0.0,0.0,0.0],"size":[0.212,0.015,0.212],"color":[0.78,0.8,0.82],"smooth":0.55,"metal":0.85},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.0625,0.0],"rot":[0.0,0.0,0.0],"size":[0.212,0.015,0.212],"color":[0.78,0.8,0.82],"smooth":0.55,"metal":0.85},
+  {"name":"LidRing","shape":"cylinder","pos":[0.0,0.0625,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.012,0.18],"color":[0.7,0.71,0.74],"smooth":0.45,"metal":0.85},
+  {"name":"PullTab","shape":"cube","pos":[0.0,0.068,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.06],"color":[0.68,0.69,0.7],"smooth":0.45,"metal":0.85},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.206,0.118,0.206],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.054,0.0],"rot":[0.0,0.0,0.0],"size":[0.208,0.008,0.208],"color":[0.45,0.35,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.064,0.0],"rot":[0.0,0.0,0.0],"size":[0.208,0.008,0.208],"color":[0.45,0.35,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"Fruit1","shape":"sphere","pos":[-0.03,-0.02,0.02],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.85,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Fruit2","shape":"sphere","pos":[0.02,-0.03,-0.03],"rot":[0.0,0.0,0.0],"size":[0.028,0.028,0.028],"color":[0.9,0.7,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"Fruit3","shape":"sphere","pos":[0.01,-0.01,0.03],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.8,0.4,0.15],"smooth":0.05,"metal":0.0}
+]}

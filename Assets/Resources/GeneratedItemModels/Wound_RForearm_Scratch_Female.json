@@ -1,0 +1,11 @@
+{"version": 1, "id": "Wound_RForearm_Scratch_Female", "baseHeight": 0.0658, "name": "Wound RForearm Scratch Female", "model": "gpt-oss:120b", "notes": "A small scratch wound from the right forearm of a female character. Thin rag‑like skin patch (~7 cm × 2 cm) with a raised scar line and a few dried blood droplets. All parts lie flat on the floor (y=0).", "score": 7, "parts": [
+  {"name":"BasePatch","shape":"cube","pos":[0.0,-0.0032,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.005,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"ScarLine","shape":"cylinder","pos":[-0.015,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.04,0.004],"color":[0.45,0.3,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"BloodDropA","shape":"sphere","pos":[-0.03,0.0028,0.004],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.55,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"BloodDropB","shape":"sphere","pos":[-0.005,0.0028,-0.006],"rot":[0.0,0.0,0.0],"size":[0.005,0.005,0.005],"color":[0.55,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"BloodDropC","shape":"sphere","pos":[0.02,0.0028,0.002],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.55,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.035,-0.0032,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.005,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.035,-0.0032,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.005,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TornFlap","shape":"cube","pos":[0.018,-0.0013,0.011],"rot":[15.0,0.0,0.0],"size":[0.012,0.003,0.008],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"TornFlapBack","shape":"cube","pos":[-0.018,-0.0013,-0.011],"rot":[-15.0,0.0,0.0],"size":[0.012,0.003,0.008],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0}
+]}

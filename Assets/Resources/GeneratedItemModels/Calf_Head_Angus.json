@@ -1,0 +1,14 @@
+{"version": 1, "id": "Calf_Head_Angus", "baseHeight": 0.125, "name": "Calf Head Angus", "model": "gpt-oss:120b", "notes": "Calf Head Angus ~0.30 m long × 0.18 m wide × 0.12 m thick, lying on its side (long axis +X). Main flesh cube with bone skull, jaw, eyes, nostrils, teeth, tongue, ears and a thin skin‑fold top.", "score": 6, "parts": [
+  {"name":"MeatBulk","shape":"cube","pos":[-0.025,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.12,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SkullBone","shape":"cylinder","pos":[0.095,0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.26,0.12],"color":[0.92,0.91,0.88],"smooth":0.4,"metal":0.0},
+  {"name":"JawMeat","shape":"cube","pos":[-0.145,-0.045,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.04,0.16],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.155,0.025,0.04],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.025],"color":[0.1,0.1,0.12],"smooth":0.6,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.155,0.025,-0.04],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.025],"color":[0.1,0.1,0.12],"smooth":0.6,"metal":0.0},
+  {"name":"NostrilL","shape":"sphere","pos":[0.195,0.005,0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.12,0.1,0.09],"smooth":0.2,"metal":0.0},
+  {"name":"NostrilR","shape":"sphere","pos":[0.195,0.005,-0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.12,0.1,0.09],"smooth":0.2,"metal":0.0},
+  {"name":"TeethBlock","shape":"cube","pos":[-0.185,-0.035,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.04],"color":[0.9,0.9,0.85],"smooth":0.3,"metal":0.0},
+  {"name":"Tongue","shape":"cube","pos":[-0.115,-0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.015,0.04],"color":[0.78,0.4,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"SkinFoldTop","shape":"cube","pos":[-0.025,0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.008,0.18],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EarL","shape":"sphere","pos":[0.055,0.035,0.06],"rot":[0.0,0.0,0.0],"size":[0.07,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EarR","shape":"sphere","pos":[0.055,0.035,-0.06],"rot":[0.0,0.0,0.0],"size":[0.07,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

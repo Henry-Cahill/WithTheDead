@@ -1,0 +1,10 @@
+{"version": 1, "id": "PastaPotForged", "baseHeight": 0.1375, "name": "Pasta Pot Forged", "model": "gpt-oss:120b", "notes": "Forged pasta pot ~0.26 m diameter × 0.14 m tall: thick steel body with side handles, a lid with top handle, a thin label band, a rim, and the orange‑tan pasta filling inside.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.12,0.26],"color":[0.55,0.55,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"InnerContent","shape":"cylinder","pos":[0.0,-0.0275,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.1,0.24],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.0525,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.28],"color":[0.6,0.6,0.65],"smooth":0.4,"metal":1.0},
+  {"name":"LidHandle","shape":"cylinder","pos":[0.0,0.07,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.04],"color":[0.6,0.6,0.65],"smooth":0.4,"metal":1.0},
+  {"name":"LabelBand","shape":"cube","pos":[0.0,-0.0075,0.13],"rot":[0.0,0.0,0.0],"size":[0.26,0.005,0.02],"color":[0.85,0.82,0.78],"smooth":0.1,"metal":0.0},
+  {"name":"HandleL","shape":"cylinder","pos":[-0.17,-0.0175,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.08,0.03],"color":[0.55,0.55,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"HandleR","shape":"cylinder","pos":[0.17,-0.0175,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.08,0.03],"color":[0.55,0.55,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,0.045,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.005,0.28],"color":[0.55,0.55,0.6],"smooth":0.4,"metal":1.0}
+]}

@@ -1,0 +1,11 @@
+{"version": 1, "id": "Squid", "baseHeight": 0.125, "name": "Squid", "model": "gpt-oss:120b", "notes": "Canned squid 0.09 m diameter × 0.13 m tall, upright on the floor. Metal body with thin rims, a brown‑tan label covering most of the side and a soft‑gloss ellipsoid of squid meat inside.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.13,0.09],"color":[0.78,0.78,0.79],"smooth":0.55,"metal":1.0},
+  {"name":"TopRim","shape":"cylinder","pos":[0.0,0.062,0.0],"rot":[0.0,0.0,0.0],"size":[0.094,0.006,0.094],"color":[0.78,0.78,0.79],"smooth":0.55,"metal":1.0},
+  {"name":"BottomRim","shape":"cylinder","pos":[0.0,-0.062,0.0],"rot":[0.0,0.0,0.0],"size":[0.094,0.006,0.094],"color":[0.78,0.78,0.79],"smooth":0.55,"metal":1.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.12,0.082],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.054,0.0],"rot":[0.0,0.0,0.0],"size":[0.084,0.008,0.084],"color":[0.42,0.33,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.054,0.0],"rot":[0.0,0.0,0.0],"size":[0.084,0.008,0.084],"color":[0.42,0.33,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"SquidMeat","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.06,0.07],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TentacleTipL","shape":"cylinder","pos":[-0.025,0.01,0.03],"rot":[90.0,0.0,0.0],"size":[0.012,0.04,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TentacleTipR","shape":"cylinder","pos":[-0.025,0.01,-0.03],"rot":[90.0,0.0,0.0],"size":[0.012,0.04,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

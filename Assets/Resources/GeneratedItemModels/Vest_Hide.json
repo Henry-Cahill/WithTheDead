@@ -1,0 +1,13 @@
+{"version": 1, "id": "Vest_Hide", "baseHeight": 0.1, "name": "Vest Hide", "model": "gpt-oss:120b", "notes": "Hide vest laid flat, approx 0.44 m wide × 0.55 m long × 0.02 m thick. Main leather body with collar, chest strap, side seams, top/bottom stitching, small metal button, front patch and hanging ties.", "score": 6, "parts": [
+  {"name":"BodyPanel","shape":"cube","pos":[0.0,-0.03,-0.02],"rot":[0.0,0.0,0.0],"size":[0.44,0.02,0.55],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.0,-0.025,0.235],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.12],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"ChestStrap","shape":"cube","pos":[0.0,-0.026,-0.02],"rot":[0.0,0.0,0.0],"size":[0.4,0.008,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,-0.028,0.235],"rot":[0.0,0.0,0.0],"size":[0.44,0.002,0.005],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[0.0,-0.028,-0.275],"rot":[0.0,0.0,0.0],"size":[0.44,0.002,0.005],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.22,-0.03,-0.02],"rot":[0.0,0.0,0.0],"size":[0.004,0.018,0.55],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.22,-0.03,-0.02],"rot":[0.0,0.0,0.0],"size":[0.004,0.018,0.55],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"Button","shape":"sphere","pos":[0.0,-0.024,-0.02],"rot":[0.0,0.0,0.0],"size":[0.024,0.024,0.024],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"TieL","shape":"cube","pos":[-0.12,0.0,-0.275],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.008],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieR","shape":"cube","pos":[0.12,0.0,-0.275],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.008],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPatch","shape":"cube","pos":[0.0,-0.028,-0.02],"rot":[0.0,0.0,0.0],"size":[0.1,0.002,0.05],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

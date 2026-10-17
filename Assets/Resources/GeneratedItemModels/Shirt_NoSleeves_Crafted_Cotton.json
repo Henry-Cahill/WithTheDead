@@ -1,0 +1,9 @@
+{"version": 1, "id": "Shirt_NoSleeves_Crafted_Cotton", "baseHeight": 0.075, "name": "Shirt No Sleeves Crafted Cotton", "model": "gpt-oss:120b", "notes": "Sleeveless cotton shirt (tank‑top) laid flat, about 0.70 m long × 0.45 m wide × 0.025 m thick: main torso panel, rounded neckline collar, bottom hem band, thin side‑seam strips, a front label and a faint stitch line.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[-0.0338,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.025,0.45],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.3232,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.12],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[-0.0338,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.005,0.45],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.0338,0.0,-0.22],"rot":[0.0,0.0,0.0],"size":[0.7,0.025,0.01],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[-0.0338,0.0,0.22],"rot":[0.0,0.0,0.0],"size":[0.7,0.025,0.01],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.3237,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.08],"color":[0.9,0.9,0.9],"smooth":0.4,"metal":0.0},
+  {"name":"StitchLine","shape":"cube","pos":[-0.0338,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.68,0.002,0.005],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

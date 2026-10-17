@@ -1,0 +1,12 @@
+{"version": 1, "id": "Shoes_BurlapWrap", "baseHeight": 0.102, "name": "Shoes Burlap Wrap", "model": "gpt-oss:120b", "notes": "Burlap-wrapped shoe laid flat (≈0.30 m long × 0.12 m wide × 0.04 m thick). Includes rubber sole, raised heel block, front toe block, cloth upper split left/right, central tongue, two lace strips and metal eyelets.", "score": 6, "parts": [
+  {"name":"SoleBase","shape":"cube","pos":[0.0,-0.032,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.12],"color":[0.15,0.15,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"HeelBlock","shape":"cube","pos":[-0.12,-0.017,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.03,0.12],"color":[0.15,0.15,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"ToeBlock","shape":"cube","pos":[0.12,-0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.12],"color":[0.15,0.15,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"UpperLeft","shape":"cube","pos":[0.0,-0.002,0.03],"rot":[0.0,0.0,0.0],"size":[0.28,0.04,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"UpperRight","shape":"cube","pos":[0.0,-0.002,-0.03],"rot":[0.0,0.0,0.0],"size":[0.28,0.04,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Tongue","shape":"cube","pos":[0.0,0.028,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LaceStripL","shape":"cube","pos":[0.0,0.04,0.015],"rot":[0.0,0.0,0.0],"size":[0.25,0.004,0.006],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"LaceStripR","shape":"cube","pos":[0.0,0.04,-0.015],"rot":[0.0,0.0,0.0],"size":[0.25,0.004,0.006],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"EyeletL","shape":"cylinder","pos":[0.08,0.003,0.03],"rot":[0.0,0.0,0.0],"size":[0.008,0.01,0.008],"color":[0.7,0.7,0.7],"smooth":0.5,"metal":0.8},
+  {"name":"EyeletR","shape":"cylinder","pos":[0.08,0.003,-0.03],"rot":[0.0,0.0,0.0],"size":[0.008,0.01,0.008],"color":[0.7,0.7,0.7],"smooth":0.5,"metal":0.8}
+]}

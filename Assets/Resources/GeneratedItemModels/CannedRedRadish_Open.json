@@ -1,0 +1,14 @@
+{"version": 1, "id": "CannedRedRadish_Open", "baseHeight": 0.2, "name": "Canned Red Radish Open", "model": "gpt-oss:120b", "notes": "Opened can of red radishes, 0.20 m diameter × 0.28 m tall. Metal body with thin top rim, lid lying beside it, a shallow liquid surface inside and several sliced radish ellipsoids floating in the brine.", "score": 6, "parts": [
+  {"name":"CanBody","shape":"cylinder","pos":[-0.057,0.0,-0.057],"rot":[0.0,0.0,0.0],"size":[0.2,0.28,0.2],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"RimTop","shape":"cylinder","pos":[-0.057,0.136,-0.057],"rot":[0.0,0.0,0.0],"size":[0.212,0.008,0.212],"color":[0.7,0.65,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"RimBottom","shape":"cylinder","pos":[-0.057,-0.136,-0.057],"rot":[0.0,0.0,0.0],"size":[0.212,0.008,0.212],"color":[0.7,0.65,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"LidLoose","shape":"cube","pos":[0.063,-0.136,0.063],"rot":[0.0,0.0,0.0],"size":[0.2,0.008,0.2],"color":[0.7,0.65,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"LiquidSurface","shape":"cylinder","pos":[-0.057,-0.04,-0.057],"rot":[0.0,0.0,0.0],"size":[0.19,0.004,0.19],"color":[0.6,0.8,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"Radish1","shape":"sphere","pos":[-0.097,-0.07,-0.027],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.06],"color":[0.9,0.2,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Radish2","shape":"sphere","pos":[-0.027,-0.05,-0.097],"rot":[0.0,0.0,0.0],"size":[0.058,0.038,0.058],"color":[0.88,0.22,0.22],"smooth":0.15,"metal":0.0},
+  {"name":"Radish3","shape":"sphere","pos":[-0.077,-0.02,-0.017],"rot":[0.0,0.0,0.0],"size":[0.055,0.036,0.055],"color":[0.92,0.18,0.18],"smooth":0.15,"metal":0.0},
+  {"name":"Radish4","shape":"sphere","pos":[-0.007,-0.08,-0.077],"rot":[0.0,0.0,0.0],"size":[0.059,0.039,0.059],"color":[0.86,0.24,0.24],"smooth":0.15,"metal":0.0},
+  {"name":"LabelRemnant","shape":"cylinder","pos":[-0.057,0.0,-0.057],"rot":[0.0,0.0,0.0],"size":[0.19,0.16,0.19],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelEdgeTop","shape":"cylinder","pos":[-0.057,0.08,-0.057],"rot":[0.0,0.0,0.0],"size":[0.192,0.008,0.192],"color":[0.45,0.35,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"LabelEdgeBottom","shape":"cylinder","pos":[-0.057,-0.08,-0.057],"rot":[0.0,0.0,0.0],"size":[0.192,0.008,0.192],"color":[0.45,0.35,0.2],"smooth":0.12,"metal":0.0}
+]}

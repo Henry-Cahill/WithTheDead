@@ -1,0 +1,8 @@
+{"version": 1, "id": "HotDrinkTeaCeramic", "baseHeight": 0.1095, "name": "Hot Drink Tea Ceramic", "model": "gpt-oss:120b", "notes": "Ceramic tea mug standing upright, about 0.11 m tall and 0.08 m wide. Main body cylinder with a thin base plate, rim lip, right‑hand side handle (cylinder laid along X), and a dark blue label band around the middle.", "score": 7, "parts": [
+  {"name":"BasePlate","shape":"cylinder","pos":[-0.034,-0.0445,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.01,0.08],"color":[0.45,0.6,0.75],"smooth":0.4,"metal":0.0},
+  {"name":"Body","shape":"cylinder","pos":[-0.034,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.09,0.08],"color":[0.45,0.6,0.75],"smooth":0.4,"metal":0.0},
+  {"name":"RimLip","shape":"cylinder","pos":[-0.034,0.0475,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.004,0.082],"color":[0.5,0.65,0.8],"smooth":0.4,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.041,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.07,0.02],"color":[0.45,0.6,0.75],"smooth":0.4,"metal":0.0},
+  {"name":"LabelBand","shape":"cylinder","pos":[-0.034,0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.084,0.005,0.084],"color":[0.2,0.3,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"InnerCavity","shape":"cylinder","pos":[-0.034,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.072,0.08,0.072],"color":[0.12,0.16,0.2],"smooth":0.2,"metal":0.0}
+]}

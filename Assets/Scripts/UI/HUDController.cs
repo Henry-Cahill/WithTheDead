@@ -9,7 +9,8 @@ namespace CloneZ
     /// gas-mask filter / activity / digital watch / alarm bell top-right, moodle tiles down the right
     /// edge, the mode box with the status icon row and exits panel bottom-right, the movement icon and
     /// stamina bar bottom-left, plus raid feedback (spawn protection, extraction, dawn), interaction
-    /// prompts, progress bars, toasts, key hints, the sleep overlay, the damage vignette and the wave
+    /// prompts, the focus label and a fixture's action menu, progress bars, toasts, broadcast captions,
+    /// the water / power cut notices, key hints, the sleep overlay, the damage vignette and the wave
     /// survival death screen. Everything is generated at runtime so no scene wiring is required; the
     /// pieces live in the <c>Hud*</c> widget classes and this component just builds and ticks them.
     /// </summary>
@@ -25,6 +26,8 @@ namespace CloneZ
         private HudRaidOverlay _raid;
         private HudToasts _toasts;
         private HudHints _hints;
+        private HudInteraction _interaction;
+        private HudSubtitles _subtitles;
 
         private Image _damageVignette;
         private float _damageFlash;
@@ -38,6 +41,10 @@ namespace CloneZ
         private Text _waterNoticeText;
         private float _waterNoticeTimer;
         private bool _waterWasOn = true;
+        private Text _powerNoticeText;
+        private float _powerNoticeTimer;
+        private bool _powerWasOn = true;
+        private bool _powerSeen;
         private GameObject _sleepOverlay;
         private Text _sleepText;
         private int _sleepMinute = -1;
@@ -71,6 +78,7 @@ namespace CloneZ
             if (_ctx.Skills != null) _ctx.Skills.OnLevelUp += OnSkillLevelUp;
             if (_ctx.Inventory != null) _ctx.Inventory.Notice += OnNotice;
             if (_ctx.GearComponent != null) _ctx.GearComponent.Notice += OnNotice;
+            if (_ctx.Interactor != null) _ctx.Interactor.Notice += OnNotice;
         }
 
         private static T Find<T>(PlayerStats stats) where T : Component => stats != null ? stats.GetComponent<T>() : null;
@@ -81,6 +89,7 @@ namespace CloneZ
             if (_ctx.Skills != null) _ctx.Skills.OnLevelUp -= OnSkillLevelUp;
             if (_ctx.Inventory != null) _ctx.Inventory.Notice -= OnNotice;
             if (_ctx.GearComponent != null) _ctx.GearComponent.Notice -= OnNotice;
+            if (_ctx.Interactor != null) _ctx.Interactor.Notice -= OnNotice;
         }
 
         private void Awake() => Build();
@@ -94,6 +103,7 @@ namespace CloneZ
         {
             if (GameManager.Instance != null) GameManager.Instance.OnGameOver -= ShowGameOver;
             Unbind();
+            _subtitles?.Dispose();
         }
 
         private void Update()
@@ -112,6 +122,8 @@ namespace CloneZ
             _raid.Tick(dt);
             _toasts.Tick(Time.unscaledDeltaTime);
             _hints.Tick(dt, blocked);
+            _interaction.Tick(blocked);
+            _subtitles.Tick(dt, blocked);
 
             UpdatePrompts(blocked);
             UpdateProgressBars();
@@ -147,9 +159,11 @@ namespace CloneZ
 
         private void UpdateProgressBars()
         {
+            // One bar for rummaging through a container or working at a fixture (washing up, a shower…).
             PlayerInteractor interactor = _ctx.Interactor;
             bool searching = interactor != null && interactor.IsSearching;
-            HudUI.Show(_searchRow, searching);
+            bool job = !searching && interactor != null && interactor.IsWorking;
+            HudUI.Show(_searchRow, searching || job);
             if (searching)
             {
                 _searchFill.fillAmount = Mathf.Clamp01(interactor.SearchProgress);
@@ -157,6 +171,15 @@ namespace CloneZ
                 {
                     _shownSearchTarget = interactor.SearchTargetName;
                     _searchLabel.text = "Searching " + _shownSearchTarget + "\u2026";
+                }
+            }
+            else if (job)
+            {
+                _searchFill.fillAmount = Mathf.Clamp01(interactor.JobProgress);
+                if (!ReferenceEquals(_shownSearchTarget, interactor.JobLabel))
+                {
+                    _shownSearchTarget = interactor.JobLabel;
+                    _searchLabel.text = _shownSearchTarget + "\u2026";
                 }
             }
 
@@ -204,6 +227,23 @@ namespace CloneZ
                 if (!_waterNoticeText.enabled) _waterNoticeText.enabled = true;
             }
             else if (_waterNoticeText.enabled) _waterNoticeText.enabled = false;
+
+            PowerGrid power = PowerGrid.Instance;
+            if (power != null)
+            {
+                bool on = power.IsOn;
+                // The grid just failed — announce it (not a cut a continued run was already living with).
+                if (_powerSeen && _powerWasOn && !on) _powerNoticeTimer = 5f;
+                _powerWasOn = on;
+                _powerSeen = true;
+            }
+            if (_powerNoticeTimer > 0f)
+            {
+                _powerNoticeTimer -= dt;
+                _powerNoticeText.color = HudUI.WithAlpha(_powerNoticeText.color, _powerNoticeTimer > 1f ? 1f : Mathf.Clamp01(_powerNoticeTimer));
+                if (!_powerNoticeText.enabled) _powerNoticeText.enabled = true;
+            }
+            else if (_powerNoticeText.enabled) _powerNoticeText.enabled = false;
         }
 
         private void UpdateSleep(bool blocked)
@@ -328,6 +368,16 @@ namespace CloneZ
                 new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0f, 150f), new Vector2(900f, 60f));
             _waterNoticeText.text = "THE WATER HAS BEEN SHUT OFF";
             _waterNoticeText.enabled = false;
+
+            // Power cut notice (just under the water notice, so both fit if they come together).
+            _powerNoticeText = HudUI.Label(root, "PowerNotice", 30, TextAnchor.MiddleCenter, new Color(1f, 0.82f, 0.45f),
+                new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0f, 105f), new Vector2(900f, 60f));
+            _powerNoticeText.text = "THE POWER HAS GONE OUT";
+            _powerNoticeText.enabled = false;
+
+            // The focus label and a fixture's action menu; captions for the radio and TV.
+            _interaction = new HudInteraction(_ctx, root, worldLayer);
+            _subtitles = new HudSubtitles(root);
 
             BuildSleepOverlay(root);
             BuildGameOver(root);

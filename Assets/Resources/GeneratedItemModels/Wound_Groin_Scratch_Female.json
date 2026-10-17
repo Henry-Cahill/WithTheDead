@@ -1,0 +1,10 @@
+{"version": 1, "id": "Wound_Groin_Scratch_Female", "baseHeight": 0.0716, "name": "Wound Groin Scratch Female", "model": "gpt-oss:120b", "notes": "Small torn cloth patch (≈ 0.12 m × 0.08 m) with a few fresh‑blood splatters, as it might be found on the ground after a groin scratch. Base rag is tan‑beige; blood spots are bright red ellipsoids.", "score": 6, "parts": [
+  {"name":"BaseCloth","shape":"cube","pos":[0.0005,-0.0044,0.001],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TornCornerL","shape":"cube","pos":[-0.0575,-0.0014,-0.037],"rot":[0.0,0.0,30.0],"size":[0.02,0.012,0.04],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"TornCornerR","shape":"cube","pos":[0.0585,-0.0014,0.039],"rot":[0.0,0.0,-25.0],"size":[0.018,0.012,0.036],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BloodSpot1","shape":"sphere","pos":[-0.0195,0.0026,0.016],"rot":[0.0,0.0,0.0],"size":[0.025,0.018,0.022],"color":[0.78,0.12,0.12],"smooth":0.4,"metal":0.0},
+  {"name":"BloodSpot2","shape":"sphere","pos":[0.0305,0.0016,-0.019],"rot":[0.0,0.0,0.0],"size":[0.018,0.015,0.017],"color":[0.71,0.09,0.09],"smooth":0.4,"metal":0.0},
+  {"name":"BloodSpot3","shape":"sphere","pos":[-0.0345,0.0036,0.031],"rot":[0.0,0.0,0.0],"size":[0.02,0.016,0.019],"color":[0.75,0.11,0.11],"smooth":0.4,"metal":0.0},
+  {"name":"DriedBlood1","shape":"sphere","pos":[0.0105,-0.0004,-0.024],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.011],"color":[0.45,0.07,0.07],"smooth":0.3,"metal":0.0},
+  {"name":"DriedBlood2","shape":"sphere","pos":[-0.0145,-0.0004,0.026],"rot":[0.0,0.0,0.0],"size":[0.011,0.007,0.01],"color":[0.45,0.07,0.07],"smooth":0.3,"metal":0.0}
+]}

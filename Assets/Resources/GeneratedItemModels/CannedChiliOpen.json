@@ -1,0 +1,8 @@
+{"version": 1, "id": "CannedChiliOpen", "baseHeight": 0.16, "name": "Canned Chili Open", "model": "gpt-oss:120b", "notes": "Open canned chili, upright metal can ~0.20 m diameter × 0.12 m tall. Thin removable lid lying beside the can, chili‑colored food filling visible inside.", "score": 7, "parts": [
+  {"name":"CanBody","shape":"cylinder","pos":[-0.074,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.12,0.2],"color":[0.78,0.78,0.82],"smooth":0.55,"metal":0.9},
+  {"name":"BottomRim","shape":"cylinder","pos":[-0.074,-0.057,0.0],"rot":[0.0,0.0,0.0],"size":[0.212,0.006,0.212],"color":[0.78,0.78,0.82],"smooth":0.55,"metal":0.9},
+  {"name":"TopRim","shape":"cylinder","pos":[-0.074,0.057,0.0],"rot":[0.0,0.0,0.0],"size":[0.212,0.006,0.212],"color":[0.78,0.78,0.82],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[0.176,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.2,0.008,0.2],"color":[0.78,0.78,0.82],"smooth":0.55,"metal":0.9},
+  {"name":"ChiliContent","shape":"cylinder","pos":[-0.074,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.08,0.18],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBand","shape":"cylinder","pos":[-0.074,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.202,0.004,0.202],"color":[0.55,0.48,0.3],"smooth":0.12,"metal":0.0}
+]}

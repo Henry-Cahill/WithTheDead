@@ -1,0 +1,14 @@
+{"version": 1, "id": "MuffinGeneric", "baseHeight": 0.1155, "name": "Muffin Generic", "model": "gpt-oss:120b", "notes": "Muffin in a paper cupcake liner about 0.10 m tall × 0.07 m wide: paper liner with thin rim and bottom seal, side‑fold, simple label, brown muffin body with slightly raised top, inner crumb core and two small crumb specks.", "score": 6, "parts": [
+  {"name":"Liner","shape":"cylinder","pos":[-0.0005,-0.0155,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.08,0.07],"color":[0.85,0.78,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"LinerRimTop","shape":"cylinder","pos":[-0.0005,0.0285,0.0],"rot":[0.0,0.0,0.0],"size":[0.072,0.008,0.072],"color":[0.78,0.7,0.55],"smooth":0.15,"metal":0.0},
+  {"name":"LinerRimBottom","shape":"cylinder","pos":[-0.0005,-0.0515,0.0],"rot":[0.0,0.0,0.0],"size":[0.072,0.008,0.072],"color":[0.78,0.7,0.55],"smooth":0.15,"metal":0.0},
+  {"name":"BottomSeal","shape":"cylinder","pos":[-0.0005,-0.0535,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.06],"color":[0.85,0.78,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"PaperSideFold","shape":"cube","pos":[-0.036,-0.0155,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.08,0.07],"color":[0.78,0.7,0.55],"smooth":0.15,"metal":0.0},
+  {"name":"LabelBase","shape":"cube","pos":[0.035,-0.0155,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.04,0.03],"color":[1.0,1.0,1.0],"smooth":0.12,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[0.036,-0.0155,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.02,0.015],"color":[0.4,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"MuffinCore","shape":"sphere","pos":[-0.0005,-0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.055,0.085,0.055],"color":[0.68,0.58,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"MuffinBody","shape":"sphere","pos":[-0.0005,-0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.09,0.06],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TopBump","shape":"sphere","pos":[-0.0005,0.0395,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.05],"color":[0.8,0.7,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Crumb1","shape":"sphere","pos":[0.0195,0.0475,0.01],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.015],"color":[0.78,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Crumb2","shape":"sphere","pos":[-0.0185,0.0505,-0.012],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.015],"color":[0.78,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

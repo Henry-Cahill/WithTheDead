@@ -1,0 +1,14 @@
+{"version": 1, "id": "CorpseAnimal", "baseHeight": 0.1525, "name": "Corpse Animal", "model": "gpt-oss:120b", "notes": "Small animal corpse ~0.35 m long, 0.15 m high, lying on its side. Main fur body (ellipsoid), head sphere, four legs, short tail, two ears, eyes and nose for recognisable silhouette.", "score": 7, "parts": [
+  {"name":"Body","shape":"sphere","pos":[-0.015,-0.0325,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.12,0.16],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Head","shape":"sphere","pos":[0.17,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.09,0.09],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Tail","shape":"cylinder","pos":[-0.19,-0.0525,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.07,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LegFL","shape":"cylinder","pos":[0.105,-0.0575,0.07],"rot":[0.0,0.0,0.0],"size":[0.025,0.07,0.025],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegFR","shape":"cylinder","pos":[0.105,-0.0575,-0.07],"rot":[0.0,0.0,0.0],"size":[0.025,0.07,0.025],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegBL","shape":"cylinder","pos":[-0.135,-0.0575,0.07],"rot":[0.0,0.0,0.0],"size":[0.025,0.07,0.025],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegBR","shape":"cylinder","pos":[-0.135,-0.0575,-0.07],"rot":[0.0,0.0,0.0],"size":[0.025,0.07,0.025],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EarL","shape":"cylinder","pos":[0.19,0.0625,0.015],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EarR","shape":"cylinder","pos":[0.19,0.0625,-0.015],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.19,-0.0025,0.015],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.0,0.0,0.0],"smooth":0.2,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.19,-0.0025,-0.015],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.0,0.0,0.0],"smooth":0.2,"metal":0.0},
+  {"name":"Nose","shape":"sphere","pos":[0.215,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.3,0.25,0.2],"smooth":0.05,"metal":0.0}
+]}

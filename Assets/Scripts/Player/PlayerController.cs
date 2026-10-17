@@ -9,6 +9,8 @@ namespace CloneZ
     /// (<see cref="ViewState"/>): in the isometric view the survivor faces the ground point under the
     /// mouse cursor; in the shoulder and first-person views the aim runs through the crosshair at the
     /// screen centre and the survivor faces where the camera looks, strafing as they move.
+    /// Sitting down (or lying on the bed to rest, see <see cref="PlayerSeat"/>) holds the body still —
+    /// no walking, no turning to the aim — until a movement key or Space gets the survivor up again.
     /// </summary>
     [RequireComponent(typeof(CharacterController))]
     [RequireComponent(typeof(PlayerStats))]
@@ -23,6 +25,7 @@ namespace CloneZ
         private PlayerInventory _inventory;
         private PlayerSkills _skills;
         private PlayerCombat _combat;
+        private PlayerSeat _seat;
         private Camera _cam;
 
         private float _verticalVelocity;
@@ -77,8 +80,36 @@ namespace CloneZ
                 return;
             }
 
+            if (HoldWhileSeated()) return;
+
             Move();
             FaceAim();
+        }
+
+        // Seated, or lying on the bed resting: the body stays where it was set down (a seat's own collider would
+        // only shove a walking body off it) and doesn't turn to the aim. A movement key or Space gets the survivor
+        // up; the next frame they walk as normal.
+        private bool HoldWhileSeated()
+        {
+            if (_seat == null) _seat = GetComponent<PlayerSeat>();
+            if (_seat == null || (!_seat.IsSeated && !_seat.IsLyingDown)) return false;
+            _stats.Exertion = Exertion.Idle;
+            CurrentSpeed = 0f;
+            IsSneaking = false;
+            _footstepTimer = 0f;
+            ApplyGravityOnly();
+            if (GetUpPressed()) _seat.GetUpFromInput();
+            return true;
+        }
+
+        private static bool GetUpPressed()
+        {
+            Keyboard kb = Keyboard.current;
+            if (kb == null) return false;
+            return kb.wKey.wasPressedThisFrame || kb.aKey.wasPressedThisFrame || kb.sKey.wasPressedThisFrame || kb.dKey.wasPressedThisFrame
+                || kb.upArrowKey.wasPressedThisFrame || kb.downArrowKey.wasPressedThisFrame
+                || kb.leftArrowKey.wasPressedThisFrame || kb.rightArrowKey.wasPressedThisFrame
+                || kb.spaceKey.wasPressedThisFrame;
         }
 
         private void UpdateAim()
@@ -264,7 +295,7 @@ namespace CloneZ
             _verticalVelocity += CloneZConfig.Gravity * Time.deltaTime;
 
             Vector3 velocity = worldMove * speed + Vector3.up * _verticalVelocity;
-            _controller.Move(velocity * Time.deltaTime);
+            if (_controller.enabled) _controller.Move(velocity * Time.deltaTime);
 
             KeepInsideArena();
             EmitFootsteps(moving, wantSprint);
@@ -300,6 +331,12 @@ namespace CloneZ
 
         private void ApplyGravityOnly()
         {
+            if (!_controller.enabled)
+            {
+                // Seated, the body's capsule is off (the seat holds the survivor up).
+                _verticalVelocity = 0f;
+                return;
+            }
             if (_controller.isGrounded && _verticalVelocity < 0f) _verticalVelocity = -2f;
             _verticalVelocity += CloneZConfig.Gravity * Time.deltaTime;
             _controller.Move(Vector3.up * _verticalVelocity * Time.deltaTime);

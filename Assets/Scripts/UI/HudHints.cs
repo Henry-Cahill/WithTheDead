@@ -34,7 +34,7 @@ namespace CloneZ
             var hints = new List<(string key, string action)>
             {
                 ("WASD", "Move"), ("LMB", "Attack"), ("RMB", "Shove"), ("R", "Reload"), ("Shift", "Sprint"),
-                ("Ctrl", "Sneak"), ("E", "Search"), ("I", "Inventory"), ("B", "Build"), ("F", "Farm"),
+                ("Ctrl", "Sneak"), ("E", "Use"), ("Q", "Actions"), ("I", "Inventory"), ("B", "Build"), ("F", "Farm"),
                 ("G", "Water"), ("K", "Skills"), ("H", "Health"), ("T", "Sleep"), ("N", "Night vision"),
                 ("L", "Light"),
             };

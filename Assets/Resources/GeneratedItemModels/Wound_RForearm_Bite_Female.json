@@ -1,0 +1,9 @@
+{"version": 1, "id": "Wound_RForearm_Bite_Female", "baseHeight": 0.081, "name": "Wound RForearm Bite Female", "model": "gpt-oss:120b", "notes": "Flat torn forearm skin piece ~0.15 m long × 0.08 m wide × 0.02 m thick with two bite‑hole indentations and a few blood droplets, lying on the floor.", "score": 6, "parts": [
+  {"name":"BaseFlesh","shape":"cube","pos":[-0.0099,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BiteHoleL","shape":"cylinder","pos":[-0.0399,-0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.032,0.02,0.032],"color":[0.45,0.35,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"BiteHoleR","shape":"cylinder","pos":[0.0301,-0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.032,0.02,0.032],"color":[0.45,0.35,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"BloodDrop1","shape":"sphere","pos":[-0.0349,0.008,0.02],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.78,0.12,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"BloodDrop2","shape":"sphere","pos":[0.0351,0.012,-0.01],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.78,0.12,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"TissueFold","shape":"cube","pos":[0.0601,-0.0075,0.0],"rot":[0.0,-15.0,0.0],"size":[0.03,0.005,0.08],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"RippedEdge","shape":"cube","pos":[-0.0099,-0.0085,0.036],"rot":[0.0,0.0,0.0],"size":[0.15,0.003,0.008],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

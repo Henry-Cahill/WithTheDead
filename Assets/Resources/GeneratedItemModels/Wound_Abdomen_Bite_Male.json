@@ -1,0 +1,12 @@
+{"version": 1, "id": "Wound_Abdomen_Bite_Male", "baseHeight": 0.121, "name": "Wound Abdomen Bite Male", "model": "gpt-oss:120b", "notes": "Chunk of torn abdominal flesh (≈ 0.12 m × 0.08 m × 0.04 m) lying on the floor with a small blood puddle and a few protruding tissue rag‑like bits; dark red clots hint at fresh gore.", "score": 6, "parts": [
+  {"name":"BaseChunk","shape":"cube","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.08],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"BloodPool","shape":"cylinder","pos":[0.0,-0.0375,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.005,0.14],"color":[0.75,0.12,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"TissueRag1","shape":"sphere","pos":[-0.03,0.02,0.02],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.05],"color":[0.58,0.55,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"TissueRag2","shape":"sphere","pos":[0.035,0.03,-0.025],"rot":[0.0,0.0,0.0],"size":[0.05,0.03,0.04],"color":[0.6,0.57,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"ClotSpot1","shape":"sphere","pos":[0.02,-0.015,0.03],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.78,0.15,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"ClotSpot2","shape":"sphere","pos":[-0.04,-0.018,-0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.81,0.18,0.14],"smooth":0.2,"metal":0.0},
+  {"name":"ClotSpot3","shape":"sphere","pos":[0.0,-0.012,-0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.74,0.13,0.11],"smooth":0.2,"metal":0.0},
+  {"name":"RagFold1","shape":"cube","pos":[-0.045,0.015,0.04],"rot":[15.0,10.0,5.0],"size":[0.03,0.008,0.02],"color":[0.57,0.54,0.44],"smooth":0.08,"metal":0.0},
+  {"name":"RagFold2","shape":"cube","pos":[0.05,0.025,-0.03],"rot":[-10.0,20.0,-8.0],"size":[0.025,0.007,0.018],"color":[0.59,0.56,0.46],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.0,-0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.122,0.003,0.122],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0}
+]}

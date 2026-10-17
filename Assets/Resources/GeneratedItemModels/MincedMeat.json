@@ -1,0 +1,11 @@
+{"version": 1, "id": "MincedMeat", "baseHeight": 0.0848, "name": "Minced Meat", "model": "gpt-oss:120b", "notes": "Minced meat packed in a small rectangular plastic tray (≈0.12 m W × 0.08 m D × 0.04 m H). White thin lid, brown‑tinted minced lump inside, and a dark cardboard label on the lid.", "score": 6, "parts": [
+  {"name":"Bottom","shape":"cube","pos":[0.0,-0.0198,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.08],"color":[0.92,0.92,0.93],"smooth":0.4,"metal":0.0},
+  {"name":"SideL","shape":"cube","pos":[-0.055,0.0002,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.08],"color":[0.92,0.92,0.93],"smooth":0.4,"metal":0.0},
+  {"name":"SideR","shape":"cube","pos":[0.055,0.0002,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.08],"color":[0.92,0.92,0.93],"smooth":0.4,"metal":0.0},
+  {"name":"Front","shape":"cube","pos":[0.0,0.0002,0.045],"rot":[0.0,0.0,0.0],"size":[0.1,0.04,0.01],"color":[0.92,0.92,0.93],"smooth":0.4,"metal":0.0},
+  {"name":"Back","shape":"cube","pos":[0.0,0.0002,-0.045],"rot":[0.0,0.0,0.0],"size":[0.1,0.04,0.01],"color":[0.92,0.92,0.93],"smooth":0.4,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0192,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.08],"color":[0.95,0.95,0.96],"smooth":0.45,"metal":0.0},
+  {"name":"Meat","shape":"sphere","pos":[0.0,-0.0028,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.025,0.07],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"LabelBase","shape":"cube","pos":[0.0,0.0237,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.06],"color":[0.48,0.42,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[0.0,0.0238,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.002,0.062],"color":[0.35,0.3,0.2],"smooth":0.05,"metal":0.0}
+]}

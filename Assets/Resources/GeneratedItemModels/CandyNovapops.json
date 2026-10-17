@@ -1,0 +1,13 @@
+{"version": 1, "id": "CandyNovapops", "baseHeight": 0.151, "name": "Candy Novapops", "model": "gpt-oss:120b", "notes": "Upright candy pack ~0.12 m wide × 0.06 m deep × 0.18 m tall. Main tan‑yellow cardboard body, a thin lid flap on top, front label with brand logo, and a few visible candy spheres peeking from the open top.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.18,0.06],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LidFlap","shape":"cube","pos":[0.0,0.085,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.06],"color":[0.68,0.6,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,0.035,0.0315],"rot":[0.0,0.0,0.0],"size":[0.09,0.04,0.002],"color":[0.85,0.8,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"Logo","shape":"cube","pos":[0.0,0.04,0.0325],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.002],"color":[0.55,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamTop","shape":"cylinder","pos":[0.0,0.09,0.0],"rot":[90.0,0.0,0.0],"size":[0.002,0.12,0.002],"color":[0.6,0.55,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamBottom","shape":"cylinder","pos":[0.0,-0.09,0.0],"rot":[90.0,0.0,0.0],"size":[0.002,0.12,0.002],"color":[0.6,0.55,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Candy1","shape":"sphere","pos":[-0.03,-0.05,-0.015],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.9,0.3,0.3],"smooth":0.4,"metal":0.0},
+  {"name":"Candy2","shape":"sphere","pos":[0.02,-0.02,0.01],"rot":[0.0,0.0,0.0],"size":[0.014,0.014,0.014],"color":[0.3,0.8,0.3],"smooth":0.4,"metal":0.0},
+  {"name":"Candy3","shape":"sphere","pos":[-0.015,0.01,-0.02],"rot":[0.0,0.0,0.0],"size":[0.011,0.011,0.011],"color":[0.3,0.5,0.9],"smooth":0.4,"metal":0.0},
+  {"name":"Candy4","shape":"sphere","pos":[0.04,0.03,0.015],"rot":[0.0,0.0,0.0],"size":[0.013,0.013,0.013],"color":[0.95,0.8,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Candy5","shape":"sphere","pos":[-0.02,0.06,-0.01],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.8,0.3,0.7],"smooth":0.4,"metal":0.0}
+]}

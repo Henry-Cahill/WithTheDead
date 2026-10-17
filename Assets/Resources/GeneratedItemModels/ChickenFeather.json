@@ -1,0 +1,14 @@
+{"version": 1, "id": "ChickenFeather", "baseHeight": 0.068, "name": "Chicken Feather", "model": "gpt-oss:120b", "notes": "Chicken feather ≈0.20 m long, 0.07 m wide at base, 0.005 m thick. Built from a thin central shaft (cylinder) and five overlapping left‑hand and right‑hand bar‑plates that fan out, plus a tiny tip sphere.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.004,-0.004,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.2,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BarbL1","shape":"cube","pos":[-0.084,-0.006,0.035],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BarbL2","shape":"cube","pos":[-0.044,-0.006,0.03],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BarbL3","shape":"cube","pos":[-0.004,-0.006,0.025],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BarbL4","shape":"cube","pos":[0.036,-0.006,0.02],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BarbL5","shape":"cube","pos":[0.076,-0.006,0.015],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BarbR1","shape":"cube","pos":[-0.084,-0.006,-0.035],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BarbR2","shape":"cube","pos":[-0.044,-0.006,-0.03],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BarbR3","shape":"cube","pos":[-0.004,-0.006,-0.025],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BarbR4","shape":"cube","pos":[0.036,-0.006,-0.02],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BarbR5","shape":"cube","pos":[0.076,-0.006,-0.015],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Tip","shape":"sphere","pos":[0.096,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

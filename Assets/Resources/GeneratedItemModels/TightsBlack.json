@@ -1,0 +1,10 @@
+{"version": 1, "id": "TightsBlack", "baseHeight": 0.1, "name": "Tights Black", "model": "gpt-oss:120b", "notes": "Flat black tights ~0.90 m long, two leg tubes side‑by‑side and a thin waistband at the top; 2 cm thick cloth silhouette for easy overhead reading.", "score": 6, "parts": [
+  {"name":"LegL","shape":"cube","pos":[-0.0025,-0.0075,-0.035],"rot":[0.0,0.0,0.0],"size":[0.9,0.015,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[-0.0025,-0.0075,0.035],"rot":[0.0,0.0,0.0],"size":[0.9,0.015,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.4375,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FootL","shape":"cube","pos":[-0.4425,-0.0075,-0.035],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FootR","shape":"cube","pos":[-0.4425,-0.0075,0.035],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.4375,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.08,0.004,0.08],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBottomL","shape":"cylinder","pos":[-0.4425,0.0,-0.035],"rot":[90.0,0.0,0.0],"size":[0.07,0.004,0.07],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBottomR","shape":"cylinder","pos":[-0.4425,0.0,0.035],"rot":[90.0,0.0,0.0],"size":[0.07,0.004,0.07],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0}
+]}

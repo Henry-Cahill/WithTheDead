@@ -1,0 +1,8 @@
+{"version": 1, "id": "Bandeau_FaunHide", "baseHeight": 0.0705, "name": "Bandeau Faun Hide", "model": "gpt-oss:120b", "notes": "Flat faun‑hide bandeau 0.80 m long × 0.12 m tall × 0.02 m thick, laid flat as a single strip with stitched top and bottom edges.", "score": 6, "parts": [
+  {"name":"BaseBand","shape":"cube","pos":[0.0,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.8,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,0.002,0.0585],"rot":[0.0,0.0,0.0],"size":[0.78,0.003,0.002],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[0.0,0.002,-0.0585],"rot":[0.0,0.0,0.0],"size":[0.78,0.003,0.002],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRimL","shape":"cube","pos":[-0.395,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.12],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"EdgeRimR","shape":"cube","pos":[0.395,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.12],"color":[0.45,0.4,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"CenterFold","shape":"cube","pos":[0.0,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.78,0.002,0.12],"color":[0.48,0.44,0.55],"smooth":0.07,"metal":0.0}
+]}

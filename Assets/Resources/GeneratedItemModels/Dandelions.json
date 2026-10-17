@@ -1,0 +1,13 @@
+{"version": 1, "id": "Dandelions", "baseHeight": 0.09, "name": "Dandelions", "model": "gpt-oss:120b", "notes": "Small cardboard tub (≈0.12 m × 0.05 m × 0.04 m) holding a handful of fresh dandelion leaves. Tub is brown paper, lid slightly raised; leaves are flat yellow‑green blades stacked loosely inside.", "score": 6, "parts": [
+  {"name":"TubBody","shape":"cube","pos":[0.0054,-0.005,0.002],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.05],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"LidFlap","shape":"cube","pos":[0.0054,0.011,0.002],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.05],"color":[0.45,0.35,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cylinder","pos":[-0.0396,0.0,0.002],"rot":[90.0,0.0,0.0],"size":[0.06,0.002,0.06],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeafA","shape":"sphere","pos":[-0.0146,0.005,0.017],"rot":[0.0,15.0,0.0],"size":[0.08,0.004,0.025],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeafB","shape":"sphere","pos":[0.0204,0.006,-0.008],"rot":[0.0,-10.0,0.0],"size":[0.07,0.004,0.022],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeafC","shape":"sphere","pos":[-0.0046,0.007,0.027],"rot":[0.0,5.0,0.0],"size":[0.06,0.0035,0.02],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeafD","shape":"sphere","pos":[0.0304,0.008,-0.016],"rot":[0.0,-20.0,0.0],"size":[0.075,0.004,0.023],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeafE","shape":"sphere","pos":[-0.0246,0.009,0.002],"rot":[0.0,12.0,0.0],"size":[0.065,0.0035,0.021],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeafF","shape":"sphere","pos":[0.0154,0.01,-0.02],"rot":[0.0,-8.0,0.0],"size":[0.07,0.004,0.024],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeafG","shape":"sphere","pos":[-0.0096,0.011,0.022],"rot":[0.0,3.0,0.0],"size":[0.06,0.0035,0.019],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeafH","shape":"sphere","pos":[0.0254,0.012,-0.013],"rot":[0.0,-14.0,0.0],"size":[0.072,0.004,0.022],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

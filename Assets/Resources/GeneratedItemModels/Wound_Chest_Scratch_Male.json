@@ -1,0 +1,8 @@
+{"version": 1, "id": "Wound_Chest_Scratch_Male", "baseHeight": 0.0668, "name": "Wound Chest Scratch Male", "model": "gpt-oss:120b", "notes": "Flat rag roughly 0.15 m × 0.10 m × 0.01 m representing a male chest scratch, beige‑brown tint with a few dark red blood splatters as it would be found on the floor.", "score": 7, "parts": [
+  {"name":"BaseCloth","shape":"cube","pos":[0.0,-0.0017,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.01,0.1],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BloodSpotBig","shape":"sphere","pos":[-0.045,0.0042,0.025],"rot":[0.0,0.0,0.0],"size":[0.03,0.005,0.02],"color":[0.75,0.12,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpotSmall1","shape":"sphere","pos":[0.03,0.0042,-0.035],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.012],"color":[0.78,0.15,0.15],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpotSmall2","shape":"sphere","pos":[-0.02,0.0042,-0.04],"rot":[0.0,0.0,0.0],"size":[0.015,0.0035,0.01],"color":[0.73,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRim","shape":"cube","pos":[0.0,0.0042,0.0],"rot":[0.0,0.0,0.0],"size":[0.152,0.002,0.102],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"FoldLine","shape":"cube","pos":[0.0,0.0047,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.002],"color":[0.58,0.56,0.48],"smooth":0.08,"metal":0.0}
+]}

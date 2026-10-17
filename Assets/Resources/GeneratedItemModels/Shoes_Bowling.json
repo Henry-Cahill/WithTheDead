@@ -1,0 +1,14 @@
+{"version": 1, "id": "Shoes_Bowling", "baseHeight": 0.09, "name": "Shoes Bowling", "model": "gpt-oss:120b", "notes": "Pair of low‑poly bowling shoes laid flat as a product shot – each shoe about 0.33 m long × 0.12 m wide × 0.04 m thick. Main leather upper uses the item tint (0.55,0.5,0.6), rubber sole dark gray, laces light fabric. Shoes are placed side‑by‑side along X so all right‑hand parts touch their own shoe body.", "score": 7, "parts": [
+  {"name":"LeftSole","shape":"cube","pos":[-0.175,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.33,0.015,0.12],"color":[0.2,0.2,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"RightSole","shape":"cube","pos":[0.175,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.33,0.015,0.12],"color":[0.2,0.2,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"LeftUpper","shape":"cube","pos":[-0.175,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.33,0.025,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightUpper","shape":"cube","pos":[0.175,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.33,0.025,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftHeel","shape":"cube","pos":[-0.305,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.04,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightHeel","shape":"cube","pos":[0.045,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.04,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftTongue","shape":"cube","pos":[-0.045,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.02,0.072],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightTongue","shape":"cube","pos":[0.305,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.02,0.072],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftLace1","shape":"cylinder","pos":[-0.12,-0.0025,0.0],"rot":[90.0,0.0,0.0],"size":[0.005,0.108,0.005],"color":[0.8,0.78,0.75],"smooth":0.1,"metal":0.0},
+  {"name":"LeftLace2","shape":"cylinder","pos":[-0.04,-0.0025,0.0],"rot":[90.0,0.0,0.0],"size":[0.005,0.108,0.005],"color":[0.8,0.78,0.75],"smooth":0.1,"metal":0.0},
+  {"name":"RightLace1","shape":"cylinder","pos":[0.12,-0.0025,0.0],"rot":[90.0,0.0,0.0],"size":[0.005,0.108,0.005],"color":[0.8,0.78,0.75],"smooth":0.1,"metal":0.0},
+  {"name":"RightLace2","shape":"cylinder","pos":[0.04,-0.0025,0.0],"rot":[90.0,0.0,0.0],"size":[0.005,0.108,0.005],"color":[0.8,0.78,0.75],"smooth":0.1,"metal":0.0}
+]}

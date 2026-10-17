@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -30,6 +31,7 @@ namespace CloneZ
 
         private float _perPlankHealth = CloneZConfig.BarricadeHealthPerPlank;
         private Transform _boardRoot;
+        private CutawayOccluder _cutaway;
         private readonly List<GameObject> _boards = new List<GameObject>();
 
         bool IDamageable.IsDead => this == null || Planks <= 0;
@@ -162,6 +164,12 @@ namespace CloneZ
             obstacle.size = new Vector3(w, h, d);
             obstacle.carving = true;
             obstacle.carveOnlyStationary = true;
+            // Blocks only by carving: a barricade restored from a save sits under the World, and its boards
+            // would otherwise bake into the navmesh as a hole that outlives the barricade being beaten down.
+            gameObject.AddComponent<NavMeshModifier>().ignoreFromBuild = true;
+            // Tall enough for the iso camera to cut away, so it's marked like a house wall: when it's cut away the
+            // build tool knows it's hidden and won't target it through the gap.
+            _cutaway = gameObject.AddComponent<CutawayOccluder>();
 
             var holder = new GameObject("Boards");
             holder.transform.SetParent(transform, false);
@@ -190,6 +198,7 @@ namespace CloneZ
                 var board = Plank(_boardRoot, new Vector3(0f, y, 0f), new Vector3(w, 0.2f, d * 0.75f), PlankColor);
                 _boards.Add(board);
             }
+            if (_cutaway != null) _cutaway.PartsChanged();   // while cut away, the new boards hide with the rest
         }
 
         // A single cube child with a URP material, its own collider stripped (the root

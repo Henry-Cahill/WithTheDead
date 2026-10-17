@@ -1,0 +1,9 @@
+{"version": 1, "id": "Underpants_Black", "baseHeight": 0.071, "name": "Underpants Black", "model": "gpt-oss:120b", "notes": "Flat black underpants laid out flat, ~0.55 m wide (X) × 0.17 m long (Z) × 0.02 m thick. Consist of a top waistband, two leg panels and a central front panel; all in the same fabric tint.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.02,0.05],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CenterPanel","shape":"cube","pos":[0.0,-0.001,-0.085],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegPanelL","shape":"cube","pos":[-0.175,-0.001,-0.085],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegPanelR","shape":"cube","pos":[0.175,-0.001,-0.085],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.275,0.0,-0.085],"rot":[0.0,0.0,0.0],"size":[0.01,0.022,0.12],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.275,0.0,-0.085],"rot":[0.0,0.0,0.0],"size":[0.01,0.022,0.12],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"WaistElastic","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.006,0.55],"color":[0.3,0.28,0.35],"smooth":0.1,"metal":0.0}
+]}

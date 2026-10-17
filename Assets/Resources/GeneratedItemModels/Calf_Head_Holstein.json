@@ -1,0 +1,14 @@
+{"version": 1, "id": "Calf_Head_Holstein", "baseHeight": 0.12, "name": "Calf Head Holstein", "model": "gpt-oss:120b", "notes": "Calf head (Holstein) ~0.28 m wide × 0.22 m deep × 0.12 m thick, lying on its side with snout pointing +Z. Main flesh in light‑brown tint, darker spots for skin texture, ears and eyes as simple protrusions, thin blood pool under the head.", "score": 6, "parts": [
+  {"name":"HeadBulk","shape":"sphere","pos":[0.0,0.0,-0.0663],"rot":[0.0,0.0,0.0],"size":[0.28,0.12,0.22],"color":[0.6,0.58,0.5],"smooth":0.04,"metal":0.0},
+  {"name":"Snout","shape":"cylinder","pos":[0.0,0.0,0.1038],"rot":[90.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.55,0.53,0.45],"smooth":0.04,"metal":0.0},
+  {"name":"NoseTip","shape":"sphere","pos":[0.0,0.0,0.1638],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.025],"color":[0.45,0.42,0.35],"smooth":0.04,"metal":0.0},
+  {"name":"EarL","shape":"cube","pos":[-0.12,0.03,-0.0163],"rot":[0.0,20.0,0.0],"size":[0.04,0.02,0.08],"color":[0.58,0.56,0.48],"smooth":0.04,"metal":0.0},
+  {"name":"EarR","shape":"cube","pos":[0.12,0.03,-0.0163],"rot":[0.0,-20.0,0.0],"size":[0.04,0.02,0.08],"color":[0.58,0.56,0.48],"smooth":0.04,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[-0.045,0.01,-0.0363],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.015],"color":[0.3,0.25,0.2],"smooth":0.04,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.045,0.01,-0.0363],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.015],"color":[0.3,0.25,0.2],"smooth":0.04,"metal":0.0},
+  {"name":"MouthGap","shape":"cylinder","pos":[0.0,-0.015,0.0638],"rot":[90.0,0.0,0.0],"size":[0.05,0.02,0.05],"color":[0.4,0.35,0.3],"smooth":0.04,"metal":0.0},
+  {"name":"SkinSpot1","shape":"sphere","pos":[-0.07,0.02,-0.0963],"rot":[0.0,0.0,0.0],"size":[0.025,0.02,0.02],"color":[0.45,0.42,0.38],"smooth":0.04,"metal":0.0},
+  {"name":"SkinSpot2","shape":"sphere","pos":[0.06,0.01,-0.1163],"rot":[0.0,0.0,0.0],"size":[0.022,0.018,0.018],"color":[0.48,0.45,0.4],"smooth":0.04,"metal":0.0},
+  {"name":"SkinSpot3","shape":"sphere","pos":[0.0,0.03,0.0338],"rot":[0.0,0.0,0.0],"size":[0.018,0.015,0.015],"color":[0.42,0.39,0.34],"smooth":0.04,"metal":0.0},
+  {"name":"BloodPool","shape":"cylinder","pos":[0.0,-0.0575,-0.0663],"rot":[0.0,0.0,0.0],"size":[0.18,0.005,0.18],"color":[0.7,0.15,0.1],"smooth":0.03,"metal":0.0}
+]}

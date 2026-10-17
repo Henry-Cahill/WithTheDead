@@ -1,0 +1,11 @@
+{"version": 1, "id": "Chicken_Chick_Head", "baseHeight": 0.0925, "name": "Chicken Chick Head", "model": "gpt-oss:120b", "notes": "Raw chicken chick head ~8 cm long x 6 cm wide x 5 cm tall, lying on the floor: main fleshy ellipsoid, orange beak, small black eyes, red comb and wattles, a few skin‑fold cubes for texture.", "score": 7, "parts": [
+  {"name":"Head","shape":"sphere","pos":[0.0,-0.0025,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.07,0.06,0.09],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Beak","shape":"cylinder","pos":[0.0,-0.0005,0.045],"rot":[90.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.75,0.6,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[-0.015,0.0075,0.0225],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.02,0.02,0.02],"smooth":0.1,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.015,0.0075,0.0225],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.02,0.02,0.02],"smooth":0.1,"metal":0.0},
+  {"name":"Comb","shape":"cube","pos":[0.0,0.03,-0.0275],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.025],"color":[0.8,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"WattleL","shape":"cylinder","pos":[-0.006,-0.0075,0.0375],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.8,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"WattleR","shape":"cylinder","pos":[0.006,-0.0075,0.0375],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.8,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"SkinFoldL","shape":"cube","pos":[-0.025,0.0025,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.015],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SkinFoldR","shape":"cube","pos":[0.025,0.0025,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.015],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0}
+]}

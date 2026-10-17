@@ -1,0 +1,13 @@
+{"version": 1, "id": "CandyCaramels", "baseHeight": 0.0775, "name": "Candy Caramels", "model": "gpt-oss:120b", "notes": "Caramel candy pack about 10 cm × 6 cm × 3 cm lying on its side: thin cardboard box with a front label and a small pile of wrapped caramels inside.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.03,0.06],"color":[0.6,0.5,0.3],"smooth":0.08,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0145,0.0],"rot":[0.0,0.0,0.0],"size":[0.102,0.004,0.062],"color":[0.58,0.48,0.28],"smooth":0.08,"metal":0.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[0.104,0.002,0.104],"color":[0.55,0.45,0.25],"smooth":0.08,"metal":0.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[0.104,0.002,0.104],"color":[0.55,0.45,0.25],"smooth":0.08,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0025,0.031],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.004],"color":[0.45,0.38,0.22],"smooth":0.1,"metal":0.0},
+  {"name":"Candy1","shape":"sphere","pos":[-0.03,0.0045,-0.01],"rot":[0.0,0.0,0.0],"size":[0.018,0.016,0.018],"color":[0.85,0.78,0.55],"smooth":0.4,"metal":0.0},
+  {"name":"Candy2","shape":"sphere","pos":[0.02,0.0035,0.015],"rot":[0.0,0.0,0.0],"size":[0.018,0.016,0.018],"color":[0.85,0.78,0.55],"smooth":0.4,"metal":0.0},
+  {"name":"Candy3","shape":"sphere","pos":[0.0,0.0055,-0.018],"rot":[0.0,0.0,0.0],"size":[0.018,0.016,0.018],"color":[0.85,0.78,0.55],"smooth":0.4,"metal":0.0},
+  {"name":"Candy4","shape":"sphere","pos":[-0.015,0.0025,0.025],"rot":[0.0,0.0,0.0],"size":[0.018,0.016,0.018],"color":[0.85,0.78,0.55],"smooth":0.4,"metal":0.0},
+  {"name":"Candy5","shape":"sphere","pos":[0.035,0.0015,-0.022],"rot":[0.0,0.0,0.0],"size":[0.018,0.016,0.018],"color":[0.85,0.78,0.55],"smooth":0.4,"metal":0.0},
+  {"name":"Candy6","shape":"sphere","pos":[-0.04,0.0035,0.01],"rot":[0.0,0.0,0.0],"size":[0.018,0.016,0.018],"color":[0.85,0.78,0.55],"smooth":0.4,"metal":0.0}
+]}

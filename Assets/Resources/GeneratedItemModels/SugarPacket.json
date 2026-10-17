@@ -1,0 +1,13 @@
+{"version": 1, "id": "SugarPacket", "baseHeight": 0.064, "name": "Sugar Packet", "model": "gpt-oss:120b", "notes": "Individual sugar packet ~6 cm × 4 cm × 5 mm lying flat on the floor (Y‑up). Main paper body in light‑brown tint, a raised top fold, a thin clear plastic window with a few visible granules, and a darkened label strip for detail.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.005,0.04],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TopFold","shape":"cube","pos":[0.02,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.003,0.04],"color":[0.72,0.65,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"Window","shape":"cube","pos":[-0.015,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.018],"color":[0.9,0.95,1.0],"smooth":0.4,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[-0.015,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.018],"color":[0.55,0.48,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SealEdge","shape":"cube","pos":[-0.025,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.002,0.04],"color":[0.6,0.55,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Granule1","shape":"sphere","pos":[-0.015,0.0012,-0.004],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.95,0.95,0.95],"smooth":0.1,"metal":0.0},
+  {"name":"Granule2","shape":"sphere","pos":[-0.012,0.0011,0.002],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.95,0.95,0.95],"smooth":0.1,"metal":0.0},
+  {"name":"Granule3","shape":"sphere","pos":[-0.018,0.0013,0.001],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.95,0.95,0.95],"smooth":0.1,"metal":0.0},
+  {"name":"Granule4","shape":"sphere","pos":[-0.014,0.001,-0.006],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.95,0.95,0.95],"smooth":0.1,"metal":0.0},
+  {"name":"SeamLineTop","shape":"cylinder","pos":[0.0,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.061,0.002,0.041],"color":[0.6,0.55,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"SeamLineBottom","shape":"cylinder","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.061,0.002,0.041],"color":[0.6,0.55,0.35],"smooth":0.05,"metal":0.0}
+]}

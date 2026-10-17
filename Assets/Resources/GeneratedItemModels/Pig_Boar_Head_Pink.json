@@ -1,0 +1,12 @@
+{"version": 1, "id": "Pig_Boar_Head_Pink", "baseHeight": 0.155, "name": "Pig Boar Head Pink", "model": "gpt-oss:120b", "notes": "Pig boar head, pink raw meat approx 0.30 m long × 0.25 m wide × 0.15 m high. Main skull block, protruding snout cylinder, two floppy ears (ellipsoids), lower jaw cube, nose tip sphere and a pair of dark eye ellipsoids.", "score": 6, "parts": [
+  {"name":"Skull","shape":"cube","pos":[-0.08,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.15,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Snout","shape":"cylinder","pos":[0.125,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.16,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"NoseTip","shape":"sphere","pos":[0.155,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Jaw","shape":"cube","pos":[-0.1,-0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.08,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EarL","shape":"sphere","pos":[-0.13,0.035,0.07],"rot":[0.0,0.0,0.0],"size":[0.06,0.12,0.02],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"EarR","shape":"sphere","pos":[-0.13,0.035,-0.07],"rot":[0.0,0.0,0.0],"size":[0.06,0.12,0.02],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[-0.13,0.025,0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.02],"color":[0.1,0.1,0.1],"smooth":0.03,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[-0.13,0.025,-0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.02],"color":[0.1,0.1,0.1],"smooth":0.03,"metal":0.0},
+  {"name":"EarFlapL","shape":"cube","pos":[-0.15,0.055,0.09],"rot":[20.0,0.0,0.0],"size":[0.02,0.04,0.08],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"EarFlapR","shape":"cube","pos":[-0.15,0.055,-0.09],"rot":[-20.0,0.0,0.0],"size":[0.02,0.04,0.08],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0}
+]}

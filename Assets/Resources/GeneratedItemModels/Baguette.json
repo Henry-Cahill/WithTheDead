@@ -1,0 +1,12 @@
+{"version": 1, "id": "Baguette", "baseHeight": 0.1, "name": "Baguette", "model": "gpt-oss:120b", "notes": "Baguette in its brown paper bag, lying on its side (X‑axis) on the floor. Total length ≈ 0.65 m, crust diameter ≈ 0.066 m, interior dough 0.060 m. Bag adds ~2 cm of thickness around it.", "score": 6, "parts": [
+  {"name":"Crust","shape":"cylinder","pos":[-0.0025,-0.002,-0.0073],"rot":[0.0,0.0,90.0],"size":[0.066,0.65,0.066],"color":[0.6,0.5,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"Dough","shape":"cylinder","pos":[-0.0025,-0.002,-0.0073],"rot":[0.0,0.0,90.0],"size":[0.06,0.65,0.06],"color":[0.85,0.78,0.55],"smooth":0.08,"metal":0.0},
+  {"name":"BagBottom","shape":"cube","pos":[-0.0025,-0.03,-0.0073],"rot":[0.0,0.0,0.0],"size":[0.67,0.01,0.08],"color":[0.4,0.35,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"BagSideL","shape":"cube","pos":[-0.0025,0.005,-0.0398],"rot":[0.0,0.0,0.0],"size":[0.67,0.07,0.005],"color":[0.4,0.35,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"BagSideR","shape":"cube","pos":[-0.0025,0.005,0.0252],"rot":[0.0,0.0,0.0],"size":[0.67,0.07,0.005],"color":[0.4,0.35,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"BagFlap","shape":"cube","pos":[0.335,0.005,-0.0073],"rot":[0.0,0.0,0.0],"size":[0.005,0.07,0.08],"color":[0.4,0.35,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"BagLabel","shape":"cube","pos":[-0.0025,0.01,0.0272],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.04],"color":[0.9,0.9,0.85],"smooth":0.1,"metal":0.0},
+  {"name":"BagTieL","shape":"cube","pos":[-0.1525,0.01,-0.0398],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.005],"color":[0.4,0.35,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"BagTieR","shape":"cube","pos":[-0.1525,0.01,0.0252],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.005],"color":[0.4,0.35,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"CrumbPile","shape":"sphere","pos":[-0.2825,-0.02,-0.0073],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.85,0.78,0.55],"smooth":0.08,"metal":0.0}
+]}

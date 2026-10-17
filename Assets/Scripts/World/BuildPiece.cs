@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -13,24 +14,40 @@ namespace CloneZ
     /// assemble into a house: floors tile the ground, walls stand on the tile edges and roofs
     /// cap the walls. Walls and doorways are solid and carve the baked NavMesh (like a
     /// <see cref="Barricade"/>), so zombies have to beat them down to get through; a doorway
-    /// leaves a walkable opening in its frame. Keeps a static registry mirroring
-    /// <see cref="Barricade"/> / <see cref="LootContainer"/> for save/restore and AI queries.
+    /// leaves a walkable opening in its frame. They are kept out of the bake itself, so the moment
+    /// one is battered down (or dismantled) its carve lifts and the path through opens. Only the
+    /// starter home's floors are baked in (zombies walk on them); a floor or roof the survivor builds
+    /// never is, before or after a reload. Keeps a
+    /// static registry mirroring <see cref="Barricade"/> / <see cref="LootContainer"/> for
+    /// save/restore and AI queries. Any piece can be dismantled with the build tool's Demolish mode;
+    /// one the survivor built returns part of its planks and nails, but a <see cref="Prebuilt"/> one
+    /// (the starter home's own) returns nothing, so the free house can't be stripped for materials.
     /// A piece built (or restored) in one of the wave-survival starter home's slots takes the home's
     /// finished look — siding, wallpaper, glazed windows, hung doors, wood floors — from
     /// <see cref="StarterHome"/> instead of rough planking; its colliders and carvers are the same.
     /// </summary>
-    public class BuildPiece : MonoBehaviour, IDamageable
+    public class BuildPiece : MonoBehaviour, IDamageable, IDemolishable
     {
         public static readonly List<BuildPiece> All = new List<BuildPiece>();
 
         public BuildPieceType Type { get; private set; }
         public float Health { get; private set; }
         public float MaxHealth { get; private set; }
+        /// <summary>True for a piece the game raised for free (the starter home) rather than one the
+        /// survivor paid planks and nails for. It dismantles like any other but gives nothing back.</summary>
+        public bool Prebuilt { get; private set; }
+
+        /// <summary>True when a doorway has a door hung in it (the starter home's), and whether it stands open.
+        /// The dead walk through an open door and have to bash their way past a closed one.</summary>
+        public bool HasDoor { get; set; }
+        public bool DoorOpen { get; set; }
 
         public Vector3 Position => transform.position;
         public float HealthNormalized => MaxHealth > 0f ? Mathf.Clamp01(Health / MaxHealth) : 0f;
         /// <summary>Walls, doorways and windows stand in a zombie's way and must be bashed down; floors/roofs don't.</summary>
         public bool Obstructs => Type == BuildPieceType.Wall || Type == BuildPieceType.Doorway || Type == BuildPieceType.Window;
+        // Only the starter home's floors go into the navmesh bake (see Build); every other piece is kept out of it.
+        private bool BakesIn => Prebuilt && Type == BuildPieceType.Floor;
 
         bool IDamageable.IsDead => this == null || Health <= 0f;
         Transform IDamageable.Transform => transform;
@@ -104,6 +121,7 @@ namespace CloneZ
             {
                 BuildPiece p = All[i];
                 if (p == null || !p.Obstructs || p.Health <= 0f) continue;
+                if (p.HasDoor && p.DoorOpen) continue;   // an open door is a way through, not something to bash
                 Vector3 toP = p.transform.position - from;
                 float s = toP.sqrMagnitude;
                 if (s > bestSqr) continue;
@@ -117,22 +135,23 @@ namespace CloneZ
 
         #region Building
         /// <summary>Raises a fresh piece of the given type at <paramref name="center"/> (its occupancy
-        /// centre from <see cref="CenterFor"/>), facing <paramref name="yaw"/> degrees.</summary>
-        public static BuildPiece Spawn(Transform parent, BuildPieceType type, Vector3 center, float yaw, float healthMult)
+        /// centre from <see cref="CenterFor"/>), facing <paramref name="yaw"/> degrees.
+        /// <paramref name="prebuilt"/> marks a piece the game raises for free (see <see cref="Prebuilt"/>).</summary>
+        public static BuildPiece Spawn(Transform parent, BuildPieceType type, Vector3 center, float yaw, float healthMult, bool prebuilt = false)
         {
             float hp = Mathf.Max(1f, BaseHealthFor(type) * healthMult);
-            return Build(parent, type, center, yaw, hp, hp);
+            return Build(parent, type, center, yaw, hp, hp, prebuilt);
         }
 
         /// <summary>Rebuilds a piece from a saved game with its exact health.</summary>
-        public static BuildPiece SpawnRestored(Transform parent, BuildPieceType type, Vector3 center, float yaw, float health, float maxHealth)
+        public static BuildPiece SpawnRestored(Transform parent, BuildPieceType type, Vector3 center, float yaw, float health, float maxHealth, bool prebuilt)
         {
             float max = maxHealth > 0f ? maxHealth : BaseHealthFor(type);
             float cur = Mathf.Clamp(health, 1f, max);
-            return Build(parent, type, center, yaw, cur, max);
+            return Build(parent, type, center, yaw, cur, max, prebuilt);
         }
 
-        private static BuildPiece Build(Transform parent, BuildPieceType type, Vector3 center, float yaw, float health, float maxHealth)
+        private static BuildPiece Build(Transform parent, BuildPieceType type, Vector3 center, float yaw, float health, float maxHealth, bool prebuilt)
         {
             var root = new GameObject("House_" + type);
             root.transform.SetParent(parent);
@@ -142,7 +161,18 @@ namespace CloneZ
             piece.Type = type;
             piece.MaxHealth = maxHealth;
             piece.Health = health;
+            piece.Prebuilt = prebuilt;
+            // Under the World (the starter home, or any piece restored from a save) the navmesh bake takes in every
+            // piece not kept out of it, and only the starter home's floors belong there. Walls, doorways and windows
+            // block zombies only through their carving obstacles: baked in, their meshes would stay a hole after one
+            // is smashed, until the next rebuild. A floor or roof the survivor builds stands outside the World, so the
+            // bake never sees it; restored under the World from a save, it's kept out too, so a reload doesn't add it.
+            if (!piece.BakesIn) root.AddComponent<NavMeshModifier>().ignoreFromBuild = true;
             piece.BuildGeometry();
+            // Walls and roofs are marked for the iso camera's cutaway (the starter home's finished walls already
+            // are), so when one is cut away the build tool knows it's hidden and won't target it through the gap.
+            if ((piece.Obstructs || type == BuildPieceType.Roof) && root.GetComponent<CutawayOccluder>() == null)
+                root.AddComponent<CutawayOccluder>();
             return piece;
         }
 
@@ -335,6 +365,7 @@ namespace CloneZ
         {
             Health = 0f;
             NoiseSystem.Emit(transform.position, CloneZConfig.NoiseHammering);
+            FixtureContents.Spill(transform);   // whatever was kept in its cupboards ends up on the floor
             All.Remove(this);
             Destroy(gameObject);
         }
@@ -345,6 +376,7 @@ namespace CloneZ
         {
             Health = 0f;
             All.Remove(this);
+            gameObject.SetActive(false);   // drop out of the navmesh bake before the rebuild runs
             Destroy(gameObject);
         }
         #endregion
@@ -358,9 +390,25 @@ namespace CloneZ
             BuildPieceType.Window => "window",
             _ => "roof",
         };
-        public bool CanDemolish(out string reason) { reason = null; return Health > 0f; }
+
+        public bool CanDemolish(out string reason)
+        {
+            reason = null;
+            if (Health <= 0f) return false;
+            // Tearing a floor out from under a bed, stove, sink, crate or piece of furniture would leave it
+            // hanging in the air, so whatever stands on the tile has to go first.
+            IDemolishable load = Type == BuildPieceType.Floor ? StandingOn() : null;
+            if (load != null) { reason = "Clear the " + load.DemolishName + " off this floor first"; return false; }
+            // A wall's cupboards and cabinets come down with it, so they have to be emptied first.
+            LootContainer holding = FixtureContents.FirstHolding(transform);
+            if (holding != null) { reason = "Empty the " + holding.DisplayName.ToLowerInvariant() + " first"; return false; }
+            return true;
+        }
+
         public void GetSalvage(out int planks, out int nails)
         {
+            planks = 0; nails = 0;
+            if (Prebuilt) return;   // the starter home came free, so pulling it apart yields nothing
             int pc, nc;
             switch (Type)
             {
@@ -374,7 +422,53 @@ namespace CloneZ
             planks = Mathf.Max(0, Mathf.RoundToInt(pc * f));
             nails = Mathf.Max(0, Mathf.RoundToInt(nc * f));
         }
-        public bool CarvesNavMesh => false;   // walls carve via NavMeshObstacle (auto-freed); floors/roofs don't carve
+
+        // Only the starter home's floors are baked into the navmesh (see Build), so pulling one out needs a rebuild.
+        // No other piece is baked in: a wall only carves, and the carve lifts with it; the survivor's own floors
+        // and roofs never shaped the navmesh at all.
+        public bool CarvesNavMesh => BakesIn && WorldNavMesh.Collects(transform);
         #endregion
+
+        // The first fitting, container or piece of furniture whose footprint reaches onto this floor tile.
+        private IDemolishable StandingOn()
+        {
+            float half = CloneZConfig.HouseTileSize * 0.5f - 0.05f;
+            Vector3 c = transform.position;
+            Rect tile = Rect.MinMaxRect(c.x - half, c.z - half, c.x + half, c.z + half);
+            return FirstOn(tile, SleepSpot.All) ?? FirstOn(tile, CookingStation.All) ?? FirstOn(tile, WaterSource.All)
+                ?? FirstOn(tile, HomeFurniture.All) ?? FirstOn(tile, LootContainer.All);
+        }
+
+        private static IDemolishable FirstOn<T>(Rect tile, List<T> list) where T : Component, IDemolishable
+        {
+            // Nothing that stands on a floor reaches further than this from its pivot, so farther ones skip the bounds work.
+            float near = tile.width * 0.5f + 2.5f;
+            Vector2 mid = tile.center;
+            for (int i = 0; i < list.Count; i++)
+            {
+                T t = list[i];
+                if (t == null) continue;
+                if (t is LootContainer c && (c.IsSack || c.IsFixture || c.Type == ContainerType.Corpse)) continue;   // on the ground, or part of furniture counted on its own
+                Vector3 p = t.transform.position;
+                if (Mathf.Abs(p.x - mid.x) > near || Mathf.Abs(p.z - mid.y) > near) continue;
+                if (StandsOn(t, tile)) return t;
+            }
+            return null;
+        }
+
+        // Whether an object's meshes reach onto the tile at floor height — not down on the ground a floor was
+        // later laid around (say, a rain barrel), which the floor isn't holding up.
+        private static bool StandsOn(Component c, Rect tile)
+        {
+            MeshRenderer[] rs = c.GetComponentsInChildren<MeshRenderer>();
+            var b = new Bounds(c.transform.position, Vector3.zero);
+            if (rs.Length > 0)
+            {
+                b = rs[0].bounds;
+                for (int i = 1; i < rs.Length; i++) b.Encapsulate(rs[i].bounds);
+            }
+            return b.min.y > CloneZConfig.HouseFloorThickness * 0.5f
+                && Rect.MinMaxRect(b.min.x, b.min.z, b.max.x, b.max.z).Overlaps(tile);
+        }
     }
 }

@@ -1,0 +1,13 @@
+{"version": 1, "id": "RicePotForged", "baseHeight": 0.1837, "name": "Rice Pot Forged", "model": "gpt-oss:120b", "notes": "Forged rice pot, cast‑iron style, 0.22 m diameter × 0.18 m long, sits on its side (long axis +X). Metal body with rim, lid with knob, side handle, cardboard label and foot ring; four tiny screws around the lid.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0175,0.0062,-0.0337],"rot":[0.0,0.0,90.0],"size":[0.22,0.18,0.22],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.9},
+  {"name":"Rim","shape":"cylinder","pos":[-0.0175,0.0112,-0.0337],"rot":[0.0,0.0,90.0],"size":[0.225,0.01,0.225],"color":[0.68,0.6,0.38],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[0.0825,0.0062,-0.0337],"rot":[0.0,0.0,90.0],"size":[0.225,0.02,0.225],"color":[0.7,0.62,0.4],"smooth":0.55,"metal":0.9},
+  {"name":"LidKnob","shape":"cylinder","pos":[0.0825,0.0262,-0.0337],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.05],"color":[0.55,0.48,0.3],"smooth":0.45,"metal":0.9},
+  {"name":"Handle","shape":"cylinder","pos":[-0.0175,0.0062,0.0862],"rot":[90.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.55,0.48,0.3],"smooth":0.45,"metal":0.9},
+  {"name":"Label","shape":"cube","pos":[-0.0575,0.0072,-0.0337],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.12],"color":[0.58,0.5,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"BottomFoot","shape":"cylinder","pos":[-0.0175,-0.0938,-0.0337],"rot":[0.0,0.0,90.0],"size":[0.06,0.02,0.06],"color":[0.68,0.6,0.38],"smooth":0.55,"metal":0.9},
+  {"name":"Screw1","shape":"sphere","pos":[0.0725,0.0162,0.0363],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.9},
+  {"name":"Screw2","shape":"sphere","pos":[0.0725,0.0162,-0.1038],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.9},
+  {"name":"Screw3","shape":"sphere","pos":[0.0925,0.0162,0.0363],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.9},
+  {"name":"Screw4","shape":"sphere","pos":[0.0925,0.0162,-0.1038],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.9}
+]}

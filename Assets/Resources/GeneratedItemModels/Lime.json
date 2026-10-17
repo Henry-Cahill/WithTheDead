@@ -1,0 +1,8 @@
+{"version": 1, "id": "Lime", "baseHeight": 0.104, "name": "Lime", "model": "gpt-oss:120b", "notes": "Small cardboard box of limes (≈0.14 m wide × 0.08 m tall) standing upright, with a thin front label and three ellipsoid lime fruits inside.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.004,-0.0165],"rot":[0.0,0.0,0.0],"size":[0.14,0.08,0.14],"color":[0.62,0.51,0.33],"smooth":0.15,"metal":0.0},
+  {"name":"BoxLid","shape":"cube","pos":[0.0,0.04,-0.0165],"rot":[0.0,0.0,0.0],"size":[0.146,0.008,0.146],"color":[0.62,0.51,0.33],"smooth":0.15,"metal":0.0},
+  {"name":"LabelPanel","shape":"cube","pos":[0.0,0.001,0.0545],"rot":[0.0,0.0,0.0],"size":[0.1,0.002,0.07],"color":[0.92,0.91,0.88],"smooth":0.2,"metal":0.0},
+  {"name":"Lime1","shape":"sphere","pos":[-0.03,-0.019,-0.0365],"rot":[0.0,0.0,0.0],"size":[0.055,0.045,0.055],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Lime2","shape":"sphere","pos":[0.02,-0.019,-0.0165],"rot":[0.0,0.0,0.0],"size":[0.055,0.045,0.055],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Lime3","shape":"sphere","pos":[0.0,-0.019,0.0235],"rot":[0.0,0.0,0.0],"size":[0.055,0.045,0.055],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

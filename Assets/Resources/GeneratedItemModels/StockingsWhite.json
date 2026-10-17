@@ -1,0 +1,13 @@
+{"version": 1, "id": "StockingsWhite", "baseHeight": 0.095, "name": "Stockings White", "model": "gpt-oss:120b", "notes": "White stockings ~0.55 m long each leg, laid flat side‑by‑side on the floor with a thin elastic band at the top and rounded toe caps. Main cloth colour is the given tint; seams and elastic are slightly darker/lighter for contrast.", "score": 6, "parts": [
+  {"name":"LegL","shape":"cylinder","pos":[0.0075,0.0,-0.04],"rot":[0.0,0.0,90.0],"size":[0.07,0.55,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cylinder","pos":[0.0075,0.0,0.04],"rot":[0.0,0.0,90.0],"size":[0.07,0.55,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamL","shape":"cylinder","pos":[0.0075,0.007,-0.04],"rot":[0.0,0.0,90.0],"size":[0.012,0.55,0.012],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"SeamR","shape":"cylinder","pos":[0.0075,0.007,0.04],"rot":[0.0,0.0,90.0],"size":[0.012,0.55,0.012],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"ToeCapL","shape":"sphere","pos":[-0.2675,0.0,-0.04],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"ToeCapR","shape":"sphere","pos":[-0.2675,0.0,0.04],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TopBand","shape":"cube","pos":[0.2775,-0.0275,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.12],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"ElasticL","shape":"cube","pos":[0.2775,-0.0275,-0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.08],"color":[0.85,0.85,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"ElasticR","shape":"cube","pos":[0.2775,-0.0275,0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.08],"color":[0.85,0.85,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"HeelL","shape":"sphere","pos":[-0.2675,0.0,-0.04],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HeelR","shape":"sphere","pos":[-0.2675,0.0,0.04],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

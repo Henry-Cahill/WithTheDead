@@ -1,0 +1,15 @@
+{"version": 1, "id": "Hotdog", "baseHeight": 0.0895, "name": "Hotdog", "model": "gpt-oss:120b", "notes": "Hotdog 0.16 m long × 0.025 m diameter, wrapped in thin paper. Lying on its side along +X, the sausage cylinder is inside a slightly larger white wrapper. A red label with dark trim sits near the left end, three grill‑mark ridges run across the top of the sausage, a small ketchup packet (with cap) is tucked against the right side of the wrapper, and thin paper edge flaps close each end – all parts ", "score": 6, "parts": [
+  {"name":"SausageBody","shape":"cylinder","pos":[-0.0013,-0.004,-0.0118],"rot":[0.0,0.0,90.0],"size":[0.025,0.16,0.025],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Wrapper","shape":"cylinder","pos":[-0.0013,-0.0015,-0.0118],"rot":[0.0,0.0,90.0],"size":[0.03,0.16,0.03],"color":[0.92,0.88,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"WrapperSeamTop","shape":"cylinder","pos":[-0.0013,0.014,-0.0118],"rot":[0.0,0.0,90.0],"size":[0.031,0.002,0.031],"color":[0.85,0.8,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"WrapperSeamBottom","shape":"cylinder","pos":[-0.0013,-0.014,-0.0118],"rot":[0.0,0.0,90.0],"size":[0.031,0.002,0.031],"color":[0.85,0.8,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.0413,0.004,-0.0118],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.018],"color":[0.8,0.12,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[-0.0413,0.005,-0.0118],"rot":[0.0,0.0,0.0],"size":[0.042,0.002,0.02],"color":[0.45,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"GrillMark1","shape":"cube","pos":[-0.0513,0.0115,-0.0118],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.006],"color":[0.4,0.3,0.2],"smooth":0.25,"metal":0.0},
+  {"name":"GrillMark2","shape":"cube","pos":[-0.0013,0.0115,-0.0118],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.006],"color":[0.4,0.3,0.2],"smooth":0.25,"metal":0.0},
+  {"name":"GrillMark3","shape":"cube","pos":[0.0488,0.0115,-0.0118],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.006],"color":[0.4,0.3,0.2],"smooth":0.25,"metal":0.0},
+  {"name":"KetchupPacket","shape":"cube","pos":[0.0688,-0.0015,0.0203],"rot":[0.0,0.0,0.0],"size":[0.025,0.04,0.015],"color":[0.85,0.1,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"KetchupCap","shape":"cylinder","pos":[0.0688,0.0195,0.0203],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.9,0.2,0.15],"smooth":0.2,"metal":0.0},
+  {"name":"PaperEdge","shape":"cube","pos":[-0.0793,-0.0015,-0.0118],"rot":[0.0,0.0,0.0],"size":[0.004,0.025,0.032],"color":[0.92,0.88,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"PaperEdgeOpp","shape":"cube","pos":[0.0767,-0.0015,-0.0118],"rot":[0.0,0.0,0.0],"size":[0.004,0.025,0.032],"color":[0.92,0.88,0.8],"smooth":0.05,"metal":0.0}
+]}

@@ -8,12 +8,15 @@ namespace CloneZ
     /// healing (Project Zomboid's sleeping regen). Sleeping fast-forwards the
     /// day/night clock and is only possible when no zombies are close. The survivor
     /// wakes when rested, at dawn, if attacked, if the horde closes in, or on input.
+    /// T sleeps at the nearest bed; the bed's own fixture asks through <see cref="TrySleep"/>,
+    /// which applies the same checks. Falling asleep gets the survivor up off any seat.
     /// </summary>
     public class PlayerSleep : MonoBehaviour
     {
         private PlayerStats _stats;
         private PlayerWounds _wounds;
         private PlayerPanic _panic;
+        private PlayerSeat _seat;
 
         public bool IsSleeping { get; private set; }
         public bool NearBed { get; private set; }
@@ -25,6 +28,11 @@ namespace CloneZ
 
         private PlayerWounds Wounds => _wounds != null ? _wounds : (_wounds = GetComponent<PlayerWounds>());
         private PlayerPanic Panic => _panic != null ? _panic : (_panic = GetComponent<PlayerPanic>());
+        private PlayerSeat Seat => _seat != null ? _seat : (_seat = GetComponent<PlayerSeat>());
+
+        private const string BleedingReason = "Bandage your wounds before resting";
+        private const string PanickedReason = "Too panicked to sleep";
+        private const string DangerReason = "Too dangerous to sleep \u2014 zombies near";
 
         private void Awake() => _stats = GetComponent<PlayerStats>();
 
@@ -59,21 +67,50 @@ namespace CloneZ
 
             if (NearBed && !UIState.GameplayBlocked)
             {
-                bool danger = ZombiesNearby();
-                bool bleeding = Wounds != null && Wounds.IsBleeding;
-                bool panicked = Panic != null && Panic.TooPanickedToSleep;
-                Prompt = bleeding ? "Bandage your wounds before resting"
-                       : panicked ? "Too panicked to sleep"
-                       : danger ? "Too dangerous to sleep \u2014 zombies near"
-                       : "[T]  Sleep until rested";
-                if (!danger && !bleeding && !panicked && Keyboard.current != null && Keyboard.current.tKey.wasPressedThisFrame)
+                string blocked = SleepBlocker();
+                Prompt = blocked ?? "[T]  Sleep until rested";
+                if (blocked == null && Keyboard.current != null && Keyboard.current.tKey.wasPressedThisFrame)
                     StartSleep();
             }
             else Prompt = "";
         }
 
+        /// <summary>True when the survivor could go to sleep right now: a bed close by, no wound bleeding, nerves
+        /// steady enough and no zombies near (the T key's checks). <paramref name="reason"/> says why not.</summary>
+        public bool CanSleep(out string reason)
+        {
+            reason = null;
+            if (_stats != null && _stats.IsDead) { reason = "You can't sleep now"; return false; }
+            if (IsSleeping) { reason = "You're already asleep"; return false; }
+            if (SleepSpot.Nearest(transform.position, CloneZConfig.SleepRange, out _) == null) { reason = "You need a bed to sleep in"; return false; }
+            reason = SleepBlocker();
+            return reason == null;
+        }
+
+        /// <summary>Goes to sleep in the nearest bed if <see cref="CanSleep"/> allows; otherwise returns false with the reason.</summary>
+        public bool TrySleep(out string reason)
+        {
+            if (!CanSleep(out reason)) return false;
+            StartSleep();
+            return true;
+        }
+
+        // Why sleep is out of the question at the bed right now, or null when it isn't.
+        private string SleepBlocker()
+        {
+            if (Wounds != null && Wounds.IsBleeding) return BleedingReason;
+            if (Panic != null && Panic.TooPanickedToSleep) return PanickedReason;
+            if (ZombiesNearby()) return DangerReason;
+            return null;
+        }
+
         private void StartSleep()
         {
+            if (Seat != null)
+            {
+                Seat.Stand();
+                Seat.GetUp();
+            }
             IsSleeping = true;
             _wakeRequested = false;
             _sleepElapsed = 0f;

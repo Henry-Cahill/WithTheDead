@@ -1,0 +1,8 @@
+{"version": 1, "id": "Cone", "baseHeight": 0.11, "name": "Cone", "model": "gpt-oss:120b", "notes": "Ice‑cream cone lying on its side (≈0.12 m long, 0.04 m wide). Wrapped in a thin paper tube, with a vanilla scoop on the tip and a couple of sprinkles for detail.", "score": 6, "parts": [
+  {"name":"Wrapper","shape":"cylinder","pos":[-0.05,-0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.12,0.045],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"ConeBody","shape":"cylinder","pos":[-0.05,-0.03,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.12,0.04],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"IceCream","shape":"sphere","pos":[0.06,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.1,0.1],"color":[0.95,0.9,0.8],"smooth":0.3,"metal":0.0},
+  {"name":"Sprinkle1","shape":"cylinder","pos":[0.04,0.02,0.02],"rot":[45.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.9,0.2,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Sprinkle2","shape":"cylinder","pos":[0.045,0.01,-0.018],"rot":[-30.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.2,0.6,0.9],"smooth":0.4,"metal":0.0},
+  {"name":"ChocolateDrip","shape":"cylinder","pos":[0.02,-0.02,0.0],"rot":[90.0,0.0,0.0],"size":[0.012,0.025,0.012],"color":[0.4,0.2,0.1],"smooth":0.15,"metal":0.0}
+]}

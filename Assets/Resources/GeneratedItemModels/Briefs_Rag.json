@@ -1,0 +1,11 @@
+{"version": 1, "id": "Briefs_Rag", "baseHeight": 0.075, "name": "Briefs Rag", "model": "gpt-oss:120b", "notes": "Flat ragged briefs, approx 0.30 m wide × 0.25 m long × 0.03 m thick. Main body panel with waistband front & back, two side leg panels, a small fly tab and thin stitch strips for top/bottom seams.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.03,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"WaistbandFront","shape":"cube","pos":[0.0,0.005,0.115],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"WaistbandBack","shape":"cube","pos":[0.0,0.005,-0.115],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.21,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.21,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FlyTab","shape":"cube","pos":[0.0,0.0075,0.115],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.02],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,0.003,0.115],"rot":[0.0,0.0,0.0],"size":[0.3,0.004,0.02],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[0.0,0.003,-0.115],"rot":[0.0,0.0,0.0],"size":[0.3,0.004,0.02],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SideTag","shape":"cube","pos":[-0.21,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.04],"color":[0.3,0.25,0.35],"smooth":0.05,"metal":0.0}
+]}

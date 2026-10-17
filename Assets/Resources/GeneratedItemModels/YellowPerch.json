@@ -1,0 +1,12 @@
+{"version": 1, "id": "YellowPerch", "baseHeight": 0.0825, "name": "Yellow Perch", "model": "gpt-oss:120b", "notes": "Whole Yellow Perch ~0.33 m long (0.18 m body + 0.09 m head + 0.06 m tail), about 0.07 m wide and 0.05 m tall, lying on its side along the X‑axis. Main silhouette is an ellipsoidal body with a rounded head, wedge‑shaped tail and thin fins; added eye and gill detail for recognisability.", "score": 6, "parts": [
+  {"name":"TailBase","shape":"cube","pos":[-0.1245,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.07],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Body","shape":"sphere","pos":[-0.0045,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.04,0.07],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Head","shape":"sphere","pos":[0.1305,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.045,0.06],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"DorsalFin","shape":"cube","pos":[-0.0095,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.07],"color":[0.58,0.51,0.28],"smooth":0.05,"metal":0.0},
+  {"name":"PectoralFinL","shape":"cube","pos":[-0.0395,-0.0045,0.035],"rot":[0.0,0.0,0.0],"size":[0.025,0.01,0.04],"color":[0.58,0.51,0.28],"smooth":0.05,"metal":0.0},
+  {"name":"PectoralFinR","shape":"cube","pos":[-0.0395,-0.0045,-0.035],"rot":[0.0,0.0,0.0],"size":[0.025,0.01,0.04],"color":[0.58,0.51,0.28],"smooth":0.05,"metal":0.0},
+  {"name":"TailFinL","shape":"cube","pos":[-0.1395,-0.0025,0.035],"rot":[0.0,30.0,0.0],"size":[0.06,0.01,0.04],"color":[0.58,0.51,0.28],"smooth":0.05,"metal":0.0},
+  {"name":"TailFinR","shape":"cube","pos":[-0.1395,-0.0025,-0.035],"rot":[0.0,-30.0,0.0],"size":[0.06,0.01,0.04],"color":[0.58,0.51,0.28],"smooth":0.05,"metal":0.0},
+  {"name":"Eye","shape":"sphere","pos":[0.1505,0.0075,0.015],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"Gills","shape":"cylinder","pos":[0.1105,0.0,0.025],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.55,0.48,0.25],"smooth":0.05,"metal":0.0}
+]}

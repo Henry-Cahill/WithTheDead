@@ -1,0 +1,12 @@
+{"version": 1, "id": "Shirt_NoSleeves_Crafted_DenimLight", "baseHeight": 0.08, "name": "Shirt No Sleeves Crafted Denim Light", "model": "gpt-oss:120b", "notes": "Sleeveless crafted denim light shirt (vest) laid flat, approx 0.55 m long × 0.44 m wide × 2.5 cm thick. Main body panel with ribbed collar, neck opening, bottom hem band, side seams, central seam line and a front pocket.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[-0.055,-0.0075,-0.01],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.44],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.21,0.0125,-0.01],"rot":[0.0,0.0,0.0],"size":[0.24,0.015,0.24],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.21,0.008,-0.01],"rot":[0.0,0.0,0.0],"size":[0.18,0.012,0.18],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[-0.055,-0.016,-0.01],"rot":[0.0,0.0,0.0],"size":[0.55,0.008,0.44],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.055,-0.0075,-0.227],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.006],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[-0.055,-0.0075,0.207],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.006],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"CenterSeam","shape":"cube","pos":[-0.055,-0.0075,-0.01],"rot":[0.0,0.0,0.0],"size":[0.55,0.003,0.003],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFront","shape":"cube","pos":[0.095,0.0,0.19],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFlap","shape":"cube","pos":[0.095,0.0075,0.19],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.08],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[-0.055,0.0045,-0.01],"rot":[0.0,0.0,0.0],"size":[0.55,0.002,0.44],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0}
+]}

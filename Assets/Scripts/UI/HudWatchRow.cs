@@ -182,7 +182,7 @@ namespace CloneZ
         private void UpdateActivity()
         {
             bool building = (_ctx.Builder != null && _ctx.Builder.IsBuilding) || (_ctx.Farming != null && _ctx.Farming.IsBusy);
-            bool searching = _ctx.Interactor != null && _ctx.Interactor.IsSearching;
+            bool searching = _ctx.Interactor != null && _ctx.Interactor.IsBusy;
             int state = searching ? 2 : building ? 1 : 0;
             if (state != _activityState)
             {

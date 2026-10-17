@@ -1,0 +1,11 @@
+{"version": 1, "id": "Vest_Hunting_Grey", "baseHeight": 0.0775, "name": "Vest Hunting Grey", "model": "gpt-oss:120b", "notes": "Flat hunting vest 0.70 m long × 0.45 m wide × 0.03 m thick (laying on its back). Main torso panel with a collar band, two side straps and front pockets; all in muted grey‑brown fabric.", "score": 7, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.03,0.45],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[-0.315,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.45],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"StrapLeft","shape":"cube","pos":[0.0,0.005,0.24],"rot":[0.0,0.0,0.0],"size":[0.7,0.015,0.03],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"StrapRight","shape":"cube","pos":[0.0,0.005,-0.24],"rot":[0.0,0.0,0.0],"size":[0.7,0.015,0.03],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[0.18,0.0075,0.12],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.15],"color":[0.5,0.48,0.44],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.18,0.0075,-0.12],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.15],"color":[0.5,0.48,0.44],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFlapL","shape":"cube","pos":[0.24,0.0105,0.12],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.15],"color":[0.45,0.44,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFlapR","shape":"cube","pos":[0.24,0.0105,-0.12],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.15],"color":[0.45,0.44,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"CenterSeam","shape":"cube","pos":[0.0,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.004,0.01],"color":[0.5,0.48,0.44],"smooth":0.05,"metal":0.0}
+]}

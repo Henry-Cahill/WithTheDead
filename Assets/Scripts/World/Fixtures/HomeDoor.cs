@@ -1,0 +1,271 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
+
+namespace CloneZ
+{
+    /// <summary>
+    /// A door of the starter home, hung in a finished doorway <see cref="BuildPiece"/> by <c>StarterHome.Doors.cs</c>:
+    /// a pair of panelled leaves filling the front door's and the store room's wide openings, a single leaf beside a
+    /// fixed panel in the bathroom's. [E] opens or shuts it. The front door and the bathroom door lock — from the
+    /// inside only (the living room, the bathroom); from the far side a locked door just rattles. The front door has
+    /// a peephole onto the street, and anyone can knock on any door (a lure: the dead hear it).
+    ///
+    /// A shut door is solid: a collider over its leaves stops the survivor and every line of sight (the dead's
+    /// included), a carving <see cref="NavMeshObstacle"/> closes the navmesh across the gap, and the doorway is
+    /// flagged (<see cref="BuildPiece.HasDoor"/>, <see cref="BuildPiece.DoorOpen"/>) so the dead batter it down rather
+    /// than walk in. An open door has neither: the swung-back leaves are only for show. Shutting is refused while the
+    /// survivor or one of the dead stands in the doorway. Saved: bit 1 open, bit 2 locked.
+    /// </summary>
+    [DisallowMultipleComponent]
+    public class HomeDoor : Interactable
+    {
+        /// <summary>How a door is hung, handed over by its builder.</summary>
+        internal struct Setup
+        {
+            /// <summary>"Front door" — the name over it.</summary>
+            public string Name;
+            /// <summary>"front door" — for "Open the front door".</summary>
+            public string Noun;
+            /// <summary>The leaves, built shut, hinged to swing a quarter turn open.</summary>
+            public FixturePart[] Leaves;
+            /// <summary>The gap's middle on the wall line at handle height (reached from either side).</summary>
+            public Vector3 Point;
+            /// <summary>The wall's normal toward its +1 side.</summary>
+            public Vector3 Normal;
+            /// <summary>The shut leaves (world, axis-aligned): their collider.</summary>
+            public Bounds Leaf;
+            /// <summary>The gap through the wall's full thickness: the navmesh carve.</summary>
+            public Bounds Gap;
+            /// <summary>Where nobody may stand for the door to shut (the gap, from just above the floor).</summary>
+            public Bounds Block;
+            /// <summary>0: no lock; otherwise the side (of <see cref="Normal"/>) it locks from.</summary>
+            public int LockSide;
+            /// <summary>"inside the house" — told to whoever tries to lock it from the far side.</summary>
+            public string LockFrom;
+            /// <summary>A front door's deadbolt (otherwise a bathroom's little bolt).</summary>
+            public bool Deadbolt;
+            /// <summary>A peephole, looked through from the lock side.</summary>
+            public bool Peephole;
+            /// <summary>A fresh run's state.</summary>
+            public bool Open;
+        }
+
+        private string _name = "Door", _noun = "door", _key;
+        private string _openLabel, _closeLabel, _tryLabel, _lockElsewhere;
+        private BuildPiece _piece;
+        private FixturePart[] _leaves = new FixturePart[0];
+        private BoxCollider _solid;
+        private NavMeshObstacle _carver;
+        private Vector3 _point, _normal = Vector3.forward;
+        private Bounds _block;
+        private int _lockSide;
+        private bool _deadbolt, _peephole;
+        private bool _open, _locked;
+
+        private Action<InteractContext> _openAct, _closeAct, _lockAct, _unlockAct, _rattleAct, _peepAct, _knockAct;
+
+        private static readonly Collider[] s_Hits = new Collider[16];
+        private static readonly int BodyMask = (1 << 0) | (1 << CloneZConfig.IgnoreRaycastLayer);
+        private static readonly Color KnockCaption = new Color(0.86f, 0.74f, 0.52f);
+
+        /// <summary>True while the door stands open.</summary>
+        public bool IsOpen => _open;
+        /// <summary>True while the door is locked (only ever while shut).</summary>
+        public bool IsLocked => _locked;
+
+        public override string DisplayName => _name;
+        public override Vector3 InteractPoint => _point;
+        public override float Reach => CloneZConfig.DoorReach;
+        public override bool IsAvailable => base.IsAvailable && _piece != null && _piece.Health > 0f;
+        public override string SaveKey => _key;
+
+        private void Awake()
+        {
+            _openAct = c => SetOpen(true, true);
+            _closeAct = Close;
+            _lockAct = c => SetLocked(true, c);
+            _unlockAct = c => SetLocked(false, c);
+            _rattleAct = Rattle;
+            _peepAct = Peep;
+            _knockAct = Knock;
+        }
+
+        /// <summary>Makes <paramref name="root"/> (already holding the leaves, under the doorway <paramref name="piece"/>)
+        /// a working door: adds the shut leaves' collider and the gap's carve, and sets the fresh-run state.</summary>
+        internal static HomeDoor Attach(GameObject root, BuildPiece piece, in Setup s)
+        {
+            var d = root.AddComponent<HomeDoor>();
+            d._piece = piece;
+            d._name = string.IsNullOrEmpty(s.Name) ? "Door" : s.Name;
+            d._noun = string.IsNullOrEmpty(s.Noun) ? "door" : s.Noun;
+            d._key = KeyFor("door", piece.transform.position);
+            d._leaves = s.Leaves ?? new FixturePart[0];
+            d._point = s.Point;
+            d._normal = s.Normal.sqrMagnitude > 1e-6f ? s.Normal.normalized : Vector3.forward;
+            d._block = s.Block;
+            d._lockSide = s.LockSide;
+            d._deadbolt = s.Deadbolt;
+            d._peephole = s.Peephole;
+            d._openLabel = "Open the " + d._noun;
+            d._closeLabel = "Close the " + d._noun;
+            d._tryLabel = "Try the " + d._noun;
+            d._lockElsewhere = "It only locks from " + (string.IsNullOrEmpty(s.LockFrom) ? "the other side" : s.LockFrom);
+
+            // The shut leaves' collider sits in world axes (the doorway itself may be turned 90°).
+            var solid = new GameObject("ShutLeaves");
+            solid.transform.SetParent(root.transform, false);
+            solid.transform.SetPositionAndRotation(s.Leaf.center, Quaternion.identity);
+            d._solid = solid.AddComponent<BoxCollider>();
+            d._solid.size = s.Leaf.size;
+
+            var carve = new GameObject("Carver");
+            carve.transform.SetParent(root.transform, false);
+            carve.transform.SetPositionAndRotation(s.Gap.center, Quaternion.identity);
+            d._carver = carve.AddComponent<NavMeshObstacle>();
+            d._carver.shape = NavMeshObstacleShape.Box;
+            d._carver.center = Vector3.zero;
+            d._carver.size = s.Gap.size;
+            d._carver.carving = true;
+            d._carver.carveOnlyStationary = false;   // it never moves: carve the moment the door shuts
+
+            d._open = s.Open;
+            d.Apply(true);
+            return d;
+        }
+
+        public override void GetActions(InteractContext ctx, List<InteractAction> into)
+        {
+            int side = SideOf(ctx.Position, _point, _normal);
+            bool lockSide = _lockSide != 0 && side == _lockSide;
+
+            if (_open)
+                into.Add(new InteractAction(_closeLabel, _closeAct));
+            else if (_locked && !lockSide)
+                into.Add(new InteractAction(_tryLabel, _rattleAct));
+            else
+                into.Add(new InteractAction(_openLabel, _openAct).DisabledIf(_locked, "It's locked \u2014 unlock it first"));
+
+            if (_lockSide != 0)
+            {
+                if (lockSide)
+                {
+                    if (_locked) into.Add(new InteractAction("Unlock the door", _unlockAct));
+                    else into.Add(new InteractAction("Lock the door", _lockAct).DisabledIf(_open, "Close the door first"));
+                }
+                else if (!_locked) into.Add(new InteractAction("Lock the door").DisabledIf(true, _lockElsewhere));
+            }
+
+            if (_peephole && lockSide && !_open)
+                into.Add(new InteractAction("Look through the peephole", _peepAct)
+                    .Timed(CloneZConfig.DoorPeepSeconds, "Peering through the peephole", HumanoidActivity.Use));
+
+            into.Add(new InteractAction("Knock on the door", _knockAct));
+        }
+
+        /// <summary>Opens or shuts the door — with the creak and thud the dead can hear when <paramref name="noisy"/>.
+        /// Unchecked: the action that shuts it first makes sure nobody stands in the way.</summary>
+        public void SetOpen(bool open, bool noisy)
+        {
+            if (_open == open) return;
+            _open = open;
+            if (open) _locked = false;
+            Apply(false);
+            if (noisy) MakeNoise(CloneZConfig.FixtureNoiseDoor);
+        }
+
+        // The leaves, the collider over them, the carve across the gap and the doorway's flags, all in step.
+        private void Apply(bool instant)
+        {
+            for (int i = 0; i < _leaves.Length; i++)
+                if (_leaves[i] != null) _leaves[i].SetOpen(_open, instant);
+            if (_solid != null) _solid.enabled = !_open;
+            if (_carver != null) _carver.enabled = !_open;   // switching it off lifts the carve; on, it carves again
+            if (_piece != null)
+            {
+                _piece.HasDoor = true;
+                _piece.DoorOpen = _open;
+            }
+        }
+
+        private void Close(InteractContext ctx)
+        {
+            if (Obstructed())
+            {
+                ctx.Notify("Something's in the way");
+                return;
+            }
+            SetOpen(false, true);
+        }
+
+        // True while the survivor or one of the dead stands where the shut leaves would be.
+        private bool Obstructed()
+        {
+            int n = Physics.OverlapBoxNonAlloc(_block.center, _block.extents, s_Hits, Quaternion.identity, BodyMask, QueryTriggerInteraction.Ignore);
+            bool blocked = false;
+            for (int i = 0; i < n && !blocked; i++)
+            {
+                Collider c = s_Hits[i];
+                if (c == null) continue;
+                blocked = c is CharacterController
+                    || c.GetComponentInParent<ZombieHealth>() != null
+                    || c.GetComponentInParent<PlayerStats>() != null;
+            }
+            Array.Clear(s_Hits, 0, n);
+            return blocked;
+        }
+
+        private void SetLocked(bool locked, InteractContext ctx)
+        {
+            if (_lockSide == 0 || _locked == locked || (locked && _open)) return;
+            _locked = locked;
+            if (ctx == null) return;
+            if (_deadbolt) ctx.Notify(locked ? "You turn the deadbolt. The " + _noun + " is locked." : "You draw back the deadbolt.");
+            else ctx.Notify(locked ? "You slide the little bolt across. The " + _noun + " is locked." : "You slide the bolt back.");
+        }
+
+        // Trying the handle of a door locked from the other side.
+        private void Rattle(InteractContext ctx)
+        {
+            MakeNoise(CloneZConfig.DoorRattleNoise);
+            ctx.Notify("The handle turns, but the door won't budge \u2014 it's locked from the inside.");
+        }
+
+        // An eye to the peephole: the dead out on the street, as far as the light allows and where nothing hides them.
+        private void Peep(InteractContext ctx)
+        {
+            Vector3 outward = _normal * -_lockSide;
+            float range = Lookout.Range(CloneZConfig.DoorPeepRange, out bool dark);
+            Vector3 eye = _point + Vector3.up * 0.5f + outward * 0.16f;
+            int n = Lookout.Count(eye, _point, outward, range, out float nearest);
+            string seen;
+            if (n == 0) seen = dark ? "It's dark out there \u2014 nothing moves that you can make out." : "The street is clear.";
+            else if (nearest <= CloneZConfig.DoorDoorstepRange)
+                seen = n == 1 ? "One of the dead is right outside the door!"
+                    : Lookout.Capitalised(Lookout.Number(n)) + " of the dead out front \u2014 one right on the doorstep!";
+            else seen = n == 1 ? "You count one of the dead out front." : "You count " + Lookout.Number(n) + " of the dead out front.";
+            if (dark && n > 0) seen += " There may be more in the dark.";
+            ctx.Notify(seen);
+        }
+
+        // A knock carries: the dead nearby come to see who's calling.
+        private void Knock(InteractContext ctx)
+        {
+            MakeNoise(CloneZConfig.DoorKnockNoise);
+            Subtitles.Show(_name, "Knock, knock, knock.", KnockCaption, 2.5f);
+            bool farSide = _lockSide != 0 && SideOf(ctx.Position, _point, _normal) != _lockSide;
+            ctx.Notify(farSide ? "You knock. Nobody answers \u2014 nobody living, anyway."
+                : "You rap on the door. The sound carries \u2014 anything nearby will have heard it.");
+        }
+
+        public override void CaptureState(FixtureSave save) => save.State = (_open ? 1 : 0) | (_locked ? 2 : 0);
+
+        public override void RestoreState(FixtureSave save)
+        {
+            _open = (save.State & 1) != 0;
+            _locked = !_open && _lockSide != 0 && (save.State & 2) != 0;
+            Apply(true);
+        }
+    }
+}

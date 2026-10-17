@@ -1,0 +1,12 @@
+{"version": 1, "id": "Briefs_Hide", "baseHeight": 0.074, "name": "Briefs Hide", "model": "gpt-oss:120b", "notes": "Briefs_Hide laid flat like a product photo – overall footprint ≈ 0.38 m wide × 0.25 m deep × 0.02 m thick. Includes a central waist‑band, left/right leg panels, front pouch, back panel, raised seams and a small tag.", "score": 6, "parts": [
+  {"name":"WaistBand","shape":"cube","pos":[0.0,-0.0065,-0.005],"rot":[0.0,0.0,0.0],"size":[0.38,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.11,-0.004,-0.005],"rot":[0.0,0.0,0.0],"size":[0.16,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.11,-0.004,-0.005],"rot":[0.0,0.0,0.0],"size":[0.16,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"FrontPouch","shape":"cube","pos":[0.0,-0.003,0.075],"rot":[0.0,0.0,0.0],"size":[0.08,0.022,0.12],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.005,-0.085],"rot":[0.0,0.0,0.0],"size":[0.1,0.018,0.1],"color":[0.55,0.5,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"SeamTop","shape":"cube","pos":[0.0,0.003,-0.005],"rot":[0.0,0.0,0.0],"size":[0.38,0.004,0.02],"color":[0.35,0.3,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"SeamLeft","shape":"cube","pos":[-0.188,-0.004,-0.005],"rot":[0.0,0.0,0.0],"size":[0.004,0.02,0.12],"color":[0.35,0.3,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"SeamRight","shape":"cube","pos":[0.188,-0.004,-0.005],"rot":[0.0,0.0,0.0],"size":[0.004,0.02,0.12],"color":[0.35,0.3,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"StitchCenter","shape":"cube","pos":[0.0,-0.003,0.075],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.002],"color":[0.35,0.3,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[0.0,0.011,0.085],"rot":[0.0,0.0,0.0],"size":[0.04,0.006,0.01],"color":[0.8,0.7,0.5],"smooth":0.05,"metal":0.0}
+]}

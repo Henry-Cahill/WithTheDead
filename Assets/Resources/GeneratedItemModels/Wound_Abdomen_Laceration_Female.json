@@ -1,0 +1,11 @@
+{"version": 1, "id": "Wound_Abdomen_Laceration_Female", "baseHeight": 0.0745, "name": "Wound Abdomen Laceration Female", "model": "gpt-oss:120b", "notes": "Lacerated abdomen tissue fragment ~35 cm × 25 cm, ~2 cm thick, lying flat. Main flesh block with ragged torn edge and a small blood‑soaked pool plus a few clots.", "score": 6, "parts": [
+  {"name":"BaseFlesh","shape":"cube","pos":[-0.0091,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TornEdgeL1","shape":"cube","pos":[-0.1391,0.0005,0.07],"rot":[0.0,10.0,0.0],"size":[0.04,0.025,0.06],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"TornEdgeL2","shape":"cube","pos":[-0.0991,0.0005,-0.08],"rot":[0.0,-12.0,0.0],"size":[0.05,0.022,0.04],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"BloodPool","shape":"sphere","pos":[-0.0891,0.0075,0.03],"rot":[0.0,0.0,0.0],"size":[0.09,0.008,0.07],"color":[0.71,0.15,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"ClotA","shape":"sphere","pos":[-0.0691,0.0105,0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.015],"color":[0.55,0.08,0.08],"smooth":0.3,"metal":0.0},
+  {"name":"ClotB","shape":"sphere","pos":[-0.0491,0.0095,-0.02],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.012],"color":[0.55,0.08,0.08],"smooth":0.3,"metal":0.0},
+  {"name":"FlapR","shape":"cube","pos":[0.1109,0.0035,-0.09],"rot":[0.0,5.0,0.0],"size":[0.07,0.022,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FlapR2","shape":"cube","pos":[0.1509,0.0035,-0.02],"rot":[0.0,-8.0,0.0],"size":[0.06,0.021,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RaggedTip","shape":"cube","pos":[-0.1691,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.018,0.08],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0}
+]}

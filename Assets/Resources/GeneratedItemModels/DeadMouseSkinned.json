@@ -1,0 +1,11 @@
+{"version": 1, "id": "DeadMouseSkinned", "baseHeight": 0.08, "name": "Dead Mouse Skinned", "model": "gpt-oss:120b", "notes": "Skinned dead mouse ~9 cm long, laid on the floor: fleshy torso ellipsoid, small head sphere, thin tail cylinder, internal spine, tiny ears and nose, a little skin flap, and a dark blood splatter underneath.", "score": 6, "parts": [
+  {"name":"Torso","shape":"sphere","pos":[0.0195,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.04,0.06],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Head","shape":"sphere","pos":[0.077,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Tail","shape":"cylinder","pos":[-0.0605,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.07,0.01],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Spine","shape":"cylinder","pos":[0.0195,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.06,0.015],"color":[0.55,0.4,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"SkinFlap","shape":"cube","pos":[0.0795,0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.002,0.03],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"BloodSpot","shape":"cylinder","pos":[0.0195,-0.019,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.08],"color":[0.55,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"EarL","shape":"sphere","pos":[0.077,0.005,0.008],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.006],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"EarR","shape":"sphere","pos":[0.077,0.005,-0.008],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.006],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Nose","shape":"sphere","pos":[0.0925,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.004],"color":[0.8,0.5,0.5],"smooth":0.2,"metal":0.0}
+]}

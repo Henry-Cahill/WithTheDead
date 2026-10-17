@@ -1,0 +1,13 @@
+{"version": 1, "id": "Raccoon_Boar_Head", "baseHeight": 0.195, "name": "Raccoon Boar Head", "model": "gpt-oss:120b", "notes": "Raccoon‑Boar hybrid head ~0.35 m long x 0.25 m wide x 0.15 m tall, lying on its side: main skull block, protruding snout, two forward‑pointing tusks, floppy ears, small eyes and nose, plus a soft fur envelope for silhouette.", "score": 6, "parts": [
+  {"name":"MainSkull","shape":"cube","pos":[0.0,-0.06,-0.065],"rot":[0.0,0.0,0.0],"size":[0.25,0.15,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Snout","shape":"cylinder","pos":[0.0,-0.06,0.095],"rot":[90.0,0.0,0.0],"size":[0.08,0.12,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TuskL","shape":"cylinder","pos":[-0.07,-0.095,-0.005],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.9,0.9,0.85],"smooth":0.3,"metal":0.0},
+  {"name":"TuskR","shape":"cylinder","pos":[0.07,-0.095,-0.005],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.9,0.9,0.85],"smooth":0.3,"metal":0.0},
+  {"name":"EarL","shape":"sphere","pos":[-0.09,0.075,-0.065],"rot":[0.0,0.0,0.0],"size":[0.06,0.12,0.03],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"EarR","shape":"sphere","pos":[0.09,0.075,-0.065],"rot":[0.0,0.0,0.0],"size":[0.06,0.12,0.03],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[-0.04,-0.045,-0.015],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.1,0.1,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.04,-0.045,-0.015],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.1,0.1,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"Nose","shape":"sphere","pos":[0.0,-0.065,0.055],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.2,0.18,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"FurFluff","shape":"sphere","pos":[0.0,-0.01,0.015],"rot":[0.0,0.0,0.0],"size":[0.35,0.25,0.3],"color":[0.62,0.6,0.52],"smooth":0.04,"metal":0.0},
+  {"name":"MouthGap","shape":"cube","pos":[0.0,-0.1,-0.005],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.03],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0}
+]}

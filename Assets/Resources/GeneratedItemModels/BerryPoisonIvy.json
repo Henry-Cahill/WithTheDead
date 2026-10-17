@@ -1,0 +1,15 @@
+{"version": 1, "id": "BerryPoisonIvy", "baseHeight": 0.076, "name": "Berry Poison Ivy", "model": "gpt-oss:120b", "notes": "Small plastic clamshell (≈0.12 m × 0.08 m × 0.03 m) holding a handful of poisonous berries. Tray base and thin walls in light‑plastic tint, lid slightly raised, label on top, 6–8 berry spheres inside.", "score": 6, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.08],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"SideFront","shape":"cube","pos":[0.0,0.002,0.036],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.008],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"SideBack","shape":"cube","pos":[0.0,0.002,-0.036],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.008],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"SideLeft","shape":"cube","pos":[-0.056,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.08],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"SideRight","shape":"cube","pos":[0.056,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.08],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.006,0.08],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.115,0.002,0.115],"color":[0.6,0.55,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Berry1","shape":"sphere","pos":[-0.03,0.002,-0.02],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.55,0.45,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Berry2","shape":"sphere","pos":[0.0,0.002,-0.015],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.55,0.45,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Berry3","shape":"sphere","pos":[0.025,0.002,-0.005],"rot":[0.0,0.0,0.0],"size":[0.019,0.019,0.019],"color":[0.55,0.45,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Berry4","shape":"sphere","pos":[-0.02,0.002,0.01],"rot":[0.0,0.0,0.0],"size":[0.021,0.021,0.021],"color":[0.55,0.45,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Berry5","shape":"sphere","pos":[0.03,0.002,0.02],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.55,0.45,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Berry6","shape":"sphere","pos":[-0.04,0.002,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.55,0.45,0.2],"smooth":0.05,"metal":0.0}
+]}

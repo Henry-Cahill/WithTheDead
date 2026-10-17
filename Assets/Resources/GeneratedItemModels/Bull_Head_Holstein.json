@@ -1,0 +1,14 @@
+{"version": 1, "id": "Bull_Head_Holstein", "baseHeight": 0.1501, "name": "Bull Head Holstein", "model": "gpt-oss:120b", "notes": "Bull head (Holstein) about 0.35 m long × 0.25 m wide × 0.18 m tall, lying on its side with the longest axis along X. Includes skull mass, nose, horns, ears, eyes and characteristic black‑white patches.", "score": 6, "parts": [
+  {"name":"HeadBase","shape":"cube","pos":[-0.0325,-0.0001,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.18,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Nose","shape":"cylinder","pos":[0.1475,-0.0301,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.12,0.07],"color":[0.65,0.55,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"HornL","shape":"cylinder","pos":[-0.1325,0.0299,0.08],"rot":[45.0,0.0,0.0],"size":[0.02,0.15,0.02],"color":[0.9,0.85,0.8],"smooth":0.25,"metal":0.0},
+  {"name":"HornR","shape":"cylinder","pos":[-0.1325,0.0299,-0.08],"rot":[-45.0,0.0,0.0],"size":[0.02,0.15,0.02],"color":[0.9,0.85,0.8],"smooth":0.25,"metal":0.0},
+  {"name":"EarL","shape":"cube","pos":[-0.0825,0.0499,0.07],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.02],"color":[0.58,0.55,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"EarR","shape":"cube","pos":[-0.0825,0.0499,-0.07],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.02],"color":[0.58,0.55,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[-0.0925,0.0399,0.04],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.0,0.0,0.0],"smooth":0.02,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[-0.0925,0.0399,-0.04],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.0,0.0,0.0],"smooth":0.02,"metal":0.0},
+  {"name":"PatchWhite1","shape":"sphere","pos":[-0.1025,0.0299,0.05],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.06],"color":[0.95,0.95,0.95],"smooth":0.1,"metal":0.0},
+  {"name":"PatchWhite2","shape":"sphere","pos":[-0.0025,0.0499,-0.06],"rot":[0.0,0.0,0.0],"size":[0.07,0.035,0.05],"color":[0.95,0.95,0.95],"smooth":0.1,"metal":0.0},
+  {"name":"PatchBlack1","shape":"sphere","pos":[0.0475,0.0199,-0.04],"rot":[0.0,0.0,0.0],"size":[0.06,0.03,0.05],"color":[0.05,0.05,0.05],"smooth":0.02,"metal":0.0},
+  {"name":"PatchBlack2","shape":"sphere","pos":[-0.0725,-0.0001,0.07],"rot":[0.0,0.0,0.0],"size":[0.05,0.025,0.04],"color":[0.05,0.05,0.05],"smooth":0.02,"metal":0.0}
+]}

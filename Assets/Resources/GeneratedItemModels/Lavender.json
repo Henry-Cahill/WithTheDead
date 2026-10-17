@@ -1,0 +1,11 @@
+{"version": 1, "id": "Lavender", "baseHeight": 0.124, "name": "Lavender", "model": "gpt-oss:120b", "notes": "Small paper sachet of dried lavender 0.09 m × 0.09 m × 0.12 m tall, with a thin folded lid and a front label; three loose sprigs peek out from the top. Main colour is the lavender tint (0.75,0.68,0.45).", "score": 7, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[0.0,-0.004,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.09,0.12,0.09],"color":[0.78,0.73,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"LidFlap","shape":"cube","pos":[0.0,0.06,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.09,0.008,0.09],"color":[0.8,0.75,0.57],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.006,-0.053],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.04],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StringTie","shape":"cylinder","pos":[0.0,-0.006,0.038],"rot":[90.0,0.0,0.0],"size":[0.006,0.07,0.006],"color":[0.85,0.8,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"Sprig1","shape":"cylinder","pos":[-0.015,0.026,0.0125],"rot":[45.0,0.0,0.0],"size":[0.01,0.07,0.01],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Sprig2","shape":"cylinder","pos":[0.02,0.031,-0.0225],"rot":[30.0,0.0,0.0],"size":[0.01,0.07,0.01],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Sprig3","shape":"cylinder","pos":[-0.018,0.028,-0.0325],"rot":[60.0,0.0,0.0],"size":[0.01,0.07,0.01],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SeamTop","shape":"cube","pos":[0.0,0.0605,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.092,0.002,0.092],"color":[0.7,0.65,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBottom","shape":"cube","pos":[0.0,-0.0585,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.092,0.002,0.092],"color":[0.7,0.65,0.48],"smooth":0.05,"metal":0.0}
+]}

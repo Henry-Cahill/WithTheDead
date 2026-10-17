@@ -1,0 +1,12 @@
+{"version": 1, "id": "Wound_RUArm_Laceration_Female", "baseHeight": 0.071, "name": "Wound RUArm Laceration Female", "model": "gpt-oss:120b", "notes": "Blood‑stained gauze patch for a right‑upper‑arm laceration: roughly 0.15 m long × 0.10 m wide × 0.006 m thick; beige base (tint 0.6,0.58,0.5) with irregular dark‑red blood splatters and torn rag edges.", "score": 6, "parts": [
+  {"name":"BaseCloth","shape":"cube","pos":[0.0025,-0.005,-0.0095],"rot":[0.0,0.0,0.0],"size":[0.15,0.006,0.1],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TornEdgeTop","shape":"cube","pos":[0.0025,-0.0015,0.0355],"rot":[0.0,0.0,0.0],"size":[0.15,0.002,0.01],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"TornEdgeBottom","shape":"cube","pos":[0.0025,-0.0015,-0.0545],"rot":[0.0,0.0,0.0],"size":[0.15,0.002,0.01],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"BloodSpot1","shape":"sphere","pos":[-0.0375,0.0,0.0105],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.55,0.05,0.05],"smooth":0.6,"metal":0.0},
+  {"name":"BloodSpot2","shape":"sphere","pos":[0.0325,0.0,-0.0245],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.55,0.05,0.05],"smooth":0.6,"metal":0.0},
+  {"name":"BloodSpot3","shape":"sphere","pos":[0.0625,0.0,0.0205],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.55,0.05,0.05],"smooth":0.6,"metal":0.0},
+  {"name":"BloodSpot4","shape":"sphere","pos":[-0.0675,0.0,-0.0495],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.55,0.05,0.05],"smooth":0.6,"metal":0.0},
+  {"name":"BloodSpot5","shape":"sphere","pos":[0.0125,0.0,0.0505],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.55,0.05,0.05],"smooth":0.6,"metal":0.0},
+  {"name":"BloodStreak1","shape":"cylinder","pos":[-0.0175,0.0005,0.0355],"rot":[90.0,0.0,0.0],"size":[0.004,0.03,0.004],"color":[0.55,0.05,0.05],"smooth":0.6,"metal":0.0},
+  {"name":"BloodStreak2","shape":"cylinder","pos":[0.0475,0.0005,-0.0395],"rot":[90.0,0.0,0.0],"size":[0.004,0.025,0.004],"color":[0.55,0.05,0.05],"smooth":0.6,"metal":0.0}
+]}

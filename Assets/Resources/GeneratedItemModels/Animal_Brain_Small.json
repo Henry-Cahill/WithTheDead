@@ -1,0 +1,11 @@
+{"version": 1, "id": "Animal_Brain_Small", "baseHeight": 0.095, "name": "Animal Brain Small", "model": "gpt-oss:120b", "notes": "Small animal brain, roughly 7 cm wide × 6 cm deep × 5 cm tall, lying on the floor. Main mass is a soft ellipsoid with two slightly offset lobes and a short stem at the back; thin reddish‑brown veins add detail.", "score": 6, "parts": [
+  {"name":"MainMass","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LobeFront","shape":"sphere","pos":[0.0,0.003,0.015],"rot":[0.0,0.0,0.0],"size":[0.045,0.045,0.045],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"LobeBack","shape":"sphere","pos":[0.0,0.003,-0.015],"rot":[0.0,0.0,0.0],"size":[0.045,0.045,0.045],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BrainStem","shape":"cylinder","pos":[0.0,-0.01,-0.025],"rot":[0.0,0.0,0.0],"size":[0.018,0.03,0.018],"color":[0.55,0.52,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Vein1","shape":"cylinder","pos":[-0.012,0.007,0.008],"rot":[90.0,0.0,0.0],"size":[0.004,0.02,0.004],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"Vein2","shape":"cylinder","pos":[0.012,0.009,-0.008],"rot":[90.0,0.0,0.0],"size":[0.004,0.022,0.004],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"Vein3","shape":"cylinder","pos":[0.0,0.011,0.012],"rot":[90.0,0.0,0.0],"size":[0.004,0.018,0.004],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"Vein4","shape":"cylinder","pos":[0.0,0.013,-0.012],"rot":[90.0,0.0,0.0],"size":[0.004,0.019,0.004],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"SurfaceRidge","shape":"cube","pos":[0.0,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.004,0.07],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0}
+]}

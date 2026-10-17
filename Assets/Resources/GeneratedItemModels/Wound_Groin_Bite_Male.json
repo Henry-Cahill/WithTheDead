@@ -1,0 +1,14 @@
+{"version": 1, "id": "Wound_Groin_Bite_Male", "baseHeight": 0.075, "name": "Wound Groin Bite Male", "model": "gpt-oss:120b", "notes": "Irregular torn flesh chunk about 0.18 m × 0.12 m × 0.02 m, pale‑brown skin tone with dark blood splatters and a deeper wound cavity; includes two ragged skin flaps and a thin blood trail.", "score": 6, "parts": [
+  {"name":"BaseFlesh","shape":"cube","pos":[0.02,-0.0025,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeRough1","shape":"cube","pos":[-0.05,0.0025,0.0375],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.02],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeRough2","shape":"cube","pos":[0.08,-0.0005,-0.0325],"rot":[0.0,0.0,0.0],"size":[0.05,0.022,0.018],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"SkinFlapL","shape":"cube","pos":[-0.07,-0.0045,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.12],"color":[0.5,0.48,0.4],"smooth":0.07,"metal":0.0},
+  {"name":"SkinFlapR","shape":"cube","pos":[0.1,-0.0035,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.018,0.014,0.1],"color":[0.5,0.48,0.4],"smooth":0.07,"metal":0.0},
+  {"name":"WoundCavity","shape":"sphere","pos":[0.02,-0.0075,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.04],"color":[0.2,0.05,0.05],"smooth":0.05,"metal":0.0},
+  {"name":"BloodSpot1","shape":"sphere","pos":[-0.01,0.0095,0.0175],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.7,0.1,0.1],"smooth":0.4,"metal":0.0},
+  {"name":"BloodSpot2","shape":"sphere","pos":[0.06,0.0105,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.018],"color":[0.7,0.1,0.1],"smooth":0.4,"metal":0.0},
+  {"name":"BloodSpot3","shape":"sphere","pos":[0.03,0.0085,0.0475],"rot":[0.0,0.0,0.0],"size":[0.015,0.003,0.015],"color":[0.7,0.1,0.1],"smooth":0.4,"metal":0.0},
+  {"name":"BloodTrail","shape":"cylinder","pos":[-0.07,0.0095,0.0575],"rot":[0.0,0.0,90.0],"size":[0.01,0.08,0.01],"color":[0.65,0.05,0.05],"smooth":0.45,"metal":0.0},
+  {"name":"Clot1","shape":"sphere","pos":[-0.025,0.0065,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.68,0.08,0.08],"smooth":0.4,"metal":0.0},
+  {"name":"Clot2","shape":"sphere","pos":[0.07,0.0055,0.0275],"rot":[0.0,0.0,0.0],"size":[0.011,0.0035,0.011],"color":[0.68,0.08,0.08],"smooth":0.4,"metal":0.0}
+]}

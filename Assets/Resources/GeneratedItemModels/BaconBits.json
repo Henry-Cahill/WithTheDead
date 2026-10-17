@@ -1,0 +1,16 @@
+{"version": 1, "id": "BaconBits", "baseHeight": 0.083, "name": "Bacon Bits", "model": "gpt-oss:120b", "notes": "Small bacon‑bits pack ~12 cm × 8 cm × 4 cm lying flat: thin cardboard box with lid, front label and a few visible bits of the browned snack inside.", "score": 6, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.021,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.08],"color":[0.82,0.73,0.55],"smooth":0.08,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.019,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.08],"color":[0.85,0.78,0.6],"smooth":0.35,"metal":0.8},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,-0.003,0.038],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.004],"color":[0.82,0.73,0.55],"smooth":0.08,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.003,-0.038],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.004],"color":[0.82,0.73,0.55],"smooth":0.08,"metal":0.0},
+  {"name":"LeftSide","shape":"cube","pos":[-0.058,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.04,0.08],"color":[0.82,0.73,0.55],"smooth":0.08,"metal":0.0},
+  {"name":"RightSide","shape":"cube","pos":[0.058,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.04,0.08],"color":[0.82,0.73,0.55],"smooth":0.08,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.0005,0.0405],"rot":[0.0,0.0,0.0],"size":[0.09,0.025,0.002],"color":[0.48,0.38,0.22],"smooth":0.07,"metal":0.0},
+  {"name":"Seal","shape":"cylinder","pos":[0.0,0.021,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.12],"color":[0.6,0.6,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"BaconBit1","shape":"cube","pos":[-0.045,-0.003,-0.015],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"BaconBit2","shape":"cube","pos":[-0.02,-0.001,0.01],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"BaconBit3","shape":"cube","pos":[0.03,-0.005,-0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"BaconBit4","shape":"cube","pos":[0.01,-0.002,0.025],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"BaconBit5","shape":"cube","pos":[-0.03,-0.004,0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"BaconBit6","shape":"cube","pos":[0.045,-0.003,-0.01],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "CannedBellPepper", "baseHeight": 0.131, "name": "Canned Bell Pepper", "model": "gpt-oss:120b", "notes": "Upright canned bell pepper ~0.14 m wide × 0.13 m tall: metal body with rolled seams, recessed lid, full‑width label in the can’s tint showing a green pepper illustration; a few visible pepper pieces inside for extra recognisability.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.13,0.14],"color":[0.78,0.79,0.8],"smooth":0.55,"metal":0.9},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.152,0.008,0.152],"color":[0.78,0.79,0.8],"smooth":0.55,"metal":0.9},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.067,0.0],"rot":[0.0,0.0,0.0],"size":[0.152,0.008,0.152],"color":[0.78,0.79,0.8],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.065,0.0],"rot":[0.0,0.0,0.0],"size":[0.128,0.012,0.128],"color":[0.7,0.71,0.73],"smooth":0.45,"metal":0.9},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.138,0.118,0.138],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.053,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.008,0.14],"color":[0.42,0.33,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.065,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.008,0.14],"color":[0.42,0.33,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"PepperPiece1","shape":"sphere","pos":[-0.02,-0.026,0.03],"rot":[0.0,0.0,0.0],"size":[0.032,0.028,0.036],"color":[0.2,0.5,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"PepperPiece2","shape":"sphere","pos":[0.03,-0.011,-0.025],"rot":[0.0,0.0,0.0],"size":[0.028,0.03,0.032],"color":[0.2,0.5,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"PepperPiece3","shape":"sphere","pos":[-0.015,0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.032,0.028],"color":[0.2,0.5,0.2],"smooth":0.05,"metal":0.0}
+]}

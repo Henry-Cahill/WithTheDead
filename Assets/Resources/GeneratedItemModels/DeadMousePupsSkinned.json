@@ -1,0 +1,9 @@
+{"version": 1, "id": "DeadMousePupsSkinned", "baseHeight": 0.0825, "name": "Dead Mouse Pups Skinned", "model": "gpt-oss:120b", "notes": "Small sealed snack‑pack (~0.12 m × 0.06 m × 0.04 m) containing four skinned mouse pups (≈0.08 m long each). Pack sits on the floor, label on front face, thin seam on top.", "score": 6, "parts": [
+  {"name":"PackBody","shape":"cube","pos":[0.0,-0.0025,-0.001],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.06],"color":[0.55,0.45,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"PackSeal","shape":"cube","pos":[0.0,0.02,-0.001],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.06],"color":[0.6,0.5,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.0025,0.03],"rot":[0.0,0.0,0.0],"size":[0.1,0.008,0.002],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"Pup1","shape":"cylinder","pos":[0.0,0.0025,-0.016],"rot":[0.0,0.0,90.0],"size":[0.02,0.08,0.02],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Pup2","shape":"cylinder","pos":[0.0,0.0025,-0.006],"rot":[0.0,0.0,90.0],"size":[0.02,0.08,0.02],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Pup3","shape":"cylinder","pos":[0.0,0.0025,0.004],"rot":[0.0,0.0,90.0],"size":[0.02,0.08,0.02],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Pup4","shape":"cylinder","pos":[0.0,0.0025,0.014],"rot":[0.0,0.0,90.0],"size":[0.02,0.08,0.02],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

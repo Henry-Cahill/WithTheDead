@@ -1,0 +1,14 @@
+{"version": 1, "id": "PoppyPodsDried", "baseHeight": 0.0688, "name": "Poppy Pods Dried", "model": "gpt-oss:120b", "notes": "Loose pile of dried poppy pods, approx 8 cm across and 2–3 cm tall. Built from a handful of overlapping ellipsoids to give a readable silhouette from above.", "score": 7, "parts": [
+  {"name":"Pod1","shape":"sphere","pos":[-0.0172,0.0003,-0.02],"rot":[0.0,0.0,0.0],"size":[0.028,0.017,0.034],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pod2","shape":"sphere","pos":[0.0128,-0.0013,-0.027],"rot":[0.0,0.0,0.0],"size":[0.025,0.015,0.032],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pod3","shape":"sphere","pos":[-0.0042,0.0007,0.013],"rot":[0.0,0.0,0.0],"size":[0.03,0.016,0.036],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pod4","shape":"sphere","pos":[0.0227,-0.0003,-0.0],"rot":[0.0,0.0,0.0],"size":[0.027,0.015,0.033],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pod5","shape":"sphere","pos":[-0.0232,-0.0008,-0.008],"rot":[0.0,0.0,0.0],"size":[0.026,0.014,0.031],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pod6","shape":"sphere","pos":[0.0068,-0.0,0.019],"rot":[0.0,0.0,0.0],"size":[0.029,0.016,0.035],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pod7","shape":"sphere","pos":[-0.0112,-0.0005,0.006],"rot":[0.0,0.0,0.0],"size":[0.025,0.015,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pod8","shape":"sphere","pos":[0.0187,0.0007,-0.017],"rot":[0.0,0.0,0.0],"size":[0.028,0.016,0.034],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pod9","shape":"sphere","pos":[-0.0182,-0.0003,-0.027],"rot":[0.0,0.0,0.0],"size":[0.027,0.015,0.032],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pod10","shape":"sphere","pos":[0.0048,-0.0011,-0.023],"rot":[0.0,0.0,0.0],"size":[0.024,0.014,0.028],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pod11","shape":"sphere","pos":[-0.0052,0.0001,0.025],"rot":[0.0,0.0,0.0],"size":[0.03,0.016,0.036],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pod12","shape":"sphere","pos":[0.0218,0.0012,0.014],"rot":[0.0,0.0,0.0],"size":[0.028,0.015,0.034],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Socks_Long_Black", "baseHeight": 0.08, "name": "Socks Long Black", "model": "gpt-oss:120b", "notes": "Flat long sock ~0.25 m long × 0.11 m wide × 0.02 m thick laid on its back: foot panel, calf shaft, rib‑cuffed top, heel reinforcement, toe tip, side ribs, small logo and stitching details.", "score": 6, "parts": [
+  {"name":"FootPanel","shape":"cube","pos":[-0.075,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.02,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ShaftPanel","shape":"cube","pos":[0.05,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.02,0.11],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffBand","shape":"cube","pos":[0.12,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.12],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HeelReinf","shape":"cylinder","pos":[-0.115,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,0.03,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"ToeTip","shape":"cube","pos":[-0.125,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RibLeft","shape":"cube","pos":[0.005,0.001,-0.055],"rot":[0.0,0.0,0.0],"size":[0.25,0.022,0.005],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RibRight","shape":"cube","pos":[0.005,0.001,0.055],"rot":[0.0,0.0,0.0],"size":[0.25,0.022,0.005],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TopLogo","shape":"cube","pos":[0.125,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.06],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.12,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.12],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"StitchHeel","shape":"cube","pos":[-0.115,0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.005],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0}
+]}

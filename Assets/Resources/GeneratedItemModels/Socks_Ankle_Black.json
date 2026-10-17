@@ -1,0 +1,11 @@
+{"version": 1, "id": "Socks_Ankle_Black", "baseHeight": 0.1125, "name": "Socks Ankle Black", "model": "gpt-oss:120b", "notes": "Ankle‑sock laid flat, footprint ≈ 0.26 m long × 0.09 m wide, 1.5 cm thick. Main foot rectangle with rounded heel bulge, tapered toe tip and a short elastic cuff at the top that now sits flush on the foot panel.", "score": 6, "parts": [
+  {"name":"FootRect","shape":"cube","pos":[0.03,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.015,0.09],"color":[0.05,0.05,0.07],"smooth":0.05,"metal":0.0},
+  {"name":"HeelBulge","shape":"sphere","pos":[-0.05,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.09],"color":[0.05,0.05,0.07],"smooth":0.05,"metal":0.0},
+  {"name":"ToeTip","shape":"cube","pos":[-0.11,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.07],"color":[0.05,0.05,0.07],"smooth":0.05,"metal":0.0},
+  {"name":"CuffBand","shape":"cube","pos":[0.12,0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.09],"color":[0.05,0.05,0.07],"smooth":0.05,"metal":0.0},
+  {"name":"CuffElastic","shape":"cube","pos":[0.12,0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.09],"color":[0.12,0.12,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"TopEdgeSeam","shape":"cylinder","pos":[0.04,0.0075,0.0],"rot":[90.0,0.0,0.0],"size":[0.09,0.002,0.09],"color":[0.2,0.2,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"BottomEdgeSeam","shape":"cylinder","pos":[0.04,-0.0075,0.0],"rot":[90.0,0.0,0.0],"size":[0.09,0.002,0.09],"color":[0.2,0.2,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"SideEdgeL","shape":"cylinder","pos":[-0.05,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.002,0.015],"color":[0.2,0.2,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"SideEdgeR","shape":"cylinder","pos":[0.1,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.002,0.015],"color":[0.2,0.2,0.25],"smooth":0.05,"metal":0.0}
+]}

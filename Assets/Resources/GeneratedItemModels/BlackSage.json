@@ -1,0 +1,11 @@
+{"version": 1, "id": "BlackSage", "baseHeight": 0.1225, "name": "Black Sage", "model": "gpt-oss:120b", "notes": "Small cardboard box of dried sage, about 9 cm wide × 12 cm tall × 5 cm deep. Includes body, hinged lid, thin side seams, front paper label and a few loose leaf‑shaped ellipsoids inside to hint at the herb.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.11,0.05],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.095,0.015,0.055],"color":[0.73,0.66,0.42],"smooth":0.12,"metal":0.0},
+  {"name":"SeamTop","shape":"cube","pos":[0.0,0.049,0.0],"rot":[0.0,0.0,0.0],"size":[0.092,0.004,0.052],"color":[0.7,0.63,0.4],"smooth":0.12,"metal":0.0},
+  {"name":"SeamBottom","shape":"cube","pos":[0.0,-0.059,0.0],"rot":[0.0,0.0,0.0],"size":[0.092,0.004,0.052],"color":[0.7,0.63,0.4],"smooth":0.12,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.0075,0.0255],"rot":[0.0,0.0,0.0],"size":[0.07,0.08,0.002],"color":[0.55,0.45,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"LeafA","shape":"sphere","pos":[-0.02,0.0075,-0.01],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.018],"color":[0.3,0.55,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"LeafB","shape":"sphere","pos":[0.01,-0.0025,-0.015],"rot":[0.0,0.0,0.0],"size":[0.012,0.009,0.016],"color":[0.32,0.58,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"LeafC","shape":"sphere","pos":[-0.015,-0.0175,0.005],"rot":[0.0,0.0,0.0],"size":[0.014,0.007,0.017],"color":[0.28,0.52,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"LeafD","shape":"sphere","pos":[0.02,0.0175,0.01],"rot":[0.0,0.0,0.0],"size":[0.013,0.0085,0.015],"color":[0.31,0.56,0.21],"smooth":0.05,"metal":0.0}
+]}

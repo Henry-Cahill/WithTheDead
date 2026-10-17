@@ -1,0 +1,10 @@
+{"version": 1, "id": "Sheep_Lamb_Head_White", "baseHeight": 0.15, "name": "Sheep Lamb Head White", "model": "gpt-oss:120b", "notes": "White sheep‑lamb head about 0.22 m long × 0.16 m wide × 0.13 m tall. Consists of a fluffy wool outer sphere, a flesh‑coloured skull sphere, two small ears, a protruding nose, dark eyes and a pink mouth cavity.", "score": 7, "parts": [
+  {"name":"WoolOuter","shape":"sphere","pos":[0.0,0.0,-0.02],"rot":[0.0,0.0,0.0],"size":[0.18,0.18,0.18],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"Skull","shape":"sphere","pos":[0.0,0.0,-0.02],"rot":[0.0,0.0,0.0],"size":[0.16,0.16,0.16],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"EarL","shape":"cube","pos":[-0.07,0.03,-0.02],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.06],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"EarR","shape":"cube","pos":[0.07,0.03,-0.02],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.06],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Nose","shape":"cylinder","pos":[0.0,-0.03,0.085],"rot":[90.0,0.0,0.0],"size":[0.04,0.05,0.04],"color":[0.8,0.4,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[-0.025,0.0,0.05],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.0,0.0,0.0],"smooth":0.6,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.025,0.0,0.05],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.0,0.0,0.0],"smooth":0.6,"metal":0.0},
+  {"name":"MouthCavity","shape":"cube","pos":[0.0,-0.045,0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.03],"color":[0.9,0.5,0.5],"smooth":0.2,"metal":0.0}
+]}

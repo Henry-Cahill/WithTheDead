@@ -31,6 +31,9 @@ namespace CloneZ
         // Utilities & score.
         public bool MainsOn = true;
         public int ShutoffDay;
+        public bool PowerOn = true;
+        public int PowerShutoffDay;     // 0 in a save from before the power grid existed (the loader schedules one)
+        public bool BreakerOn = true;   // the house's main breaker
         public int Kills;
         public int Wave;
         public float TimeSurvived;
@@ -45,6 +48,10 @@ namespace CloneZ
         public List<FarmPlotSave> Farm = new List<FarmPlotSave>();
         public List<WaterSourceSave> Water = new List<WaterSourceSave>();
 
+        // HasPrebuiltFlags is false for saves written before house pieces recorded whether the game raised
+        // them (HousePieceSave.Prebuilt), so the loader infers that from the starter home's blueprint instead.
+        public bool HasPrebuiltFlags;
+
         // Pre-placed props (bed, stove, cover). HasWorldProps is false for saves written before
         // these became demolishable, so the loader knows to rebuild the defaults instead of
         // ending up with an empty base.
@@ -55,6 +62,12 @@ namespace CloneZ
         // was furnished, so the loader knows to furnish it (around whatever the run kept).
         public bool HasFurniture;
         public List<FurnitureSave> Furniture = new List<FurnitureSave>();
+
+        // The state of every interactive fixture (doors, windows, taps, lamps, switches…). HasFixtures is
+        // false for saves written before the home's fixtures were interactive, so the loader knows to lay
+        // out the bathroom, kitchen and media furniture added with them.
+        public bool HasFixtures;
+        public List<FixtureSave> Fixtures = new List<FixtureSave>();
     }
 
     /// <summary>The survivor's full state.</summary>
@@ -129,6 +142,7 @@ namespace CloneZ
         public float Yaw;
         public bool Searched;
         public float Lifetime;
+        public string FixtureKey;       // a fixture's storage (LootContainer.FixtureKey): poured back into the live fixture
         public List<StackSave> Items = new List<StackSave>();
     }
 
@@ -142,9 +156,9 @@ namespace CloneZ
         public float Health, MaxHealth, PerPlank;
     }
 
-    /// <summary>A player-built house piece (floor, wall, doorway or roof). <see cref="Type"/> is
-    /// the <see cref="BuildPieceType"/>; <see cref="Position"/> is the piece's occupancy centre and
-    /// <see cref="Yaw"/> its facing.</summary>
+    /// <summary>A house piece (floor, wall, doorway, window or roof) — the survivor's own, or one of the
+    /// starter home's (<see cref="Prebuilt"/>). <see cref="Type"/> is the <see cref="BuildPieceType"/>;
+    /// <see cref="Position"/> is the piece's occupancy centre and <see cref="Yaw"/> its facing.</summary>
     [Serializable]
     public class HousePieceSave
     {
@@ -152,6 +166,7 @@ namespace CloneZ
         public Vector3 Position;
         public float Yaw;
         public float Health, MaxHealth;
+        public bool Prebuilt;           // raised by the game for free (BuildPiece.Prebuilt): dismantles for nothing
     }
 
     /// <summary>A farm plot and its growing crop.</summary>
@@ -194,5 +209,17 @@ namespace CloneZ
         public Vector3 Position;
         public float Yaw;
         public int Seed;
+    }
+
+    /// <summary>The state of one interactive fixture (<see cref="Interactable"/>), matched back to the live
+    /// fixture by <see cref="Key"/>. What <see cref="State"/>, <see cref="A"/>, <see cref="B"/> and
+    /// <see cref="Text"/> mean is up to the fixture (open/locked bits, a water level, a channel…).</summary>
+    [Serializable]
+    public class FixtureSave
+    {
+        public string Key;
+        public int State;
+        public float A, B;
+        public string Text;
     }
 }

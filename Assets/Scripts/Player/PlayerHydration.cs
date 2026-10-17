@@ -4,10 +4,11 @@ using UnityEngine.InputSystem;
 namespace CloneZ
 {
     /// <summary>
-    /// Lets the survivor get water. Stand at a tap or rain barrel and press G: with an empty
-    /// bottle in the pack you fill it (clean from a running tap, tainted from the barrel);
-    /// otherwise you drink straight from the source. Tap water is safe while the mains run;
-    /// rain-barrel water is tainted and risks a sick stomach unless it's boiled first.
+    /// Lets the survivor get water. Stand at a tap, basin, rain barrel or any other water point
+    /// (<see cref="IWaterPoint"/>) and press G: with an empty bottle in the pack you fill it (clean
+    /// from a running tap, tainted from the barrel); otherwise you drink straight from the source.
+    /// Tap water is safe while the mains run; rain-barrel water is tainted and risks a sick stomach
+    /// unless it's boiled first. (The same drink / fill actions are in each fixture's Q menu.)
     ///
     /// A context action bound to G (not the mouse) — like <see cref="PlayerFarming"/>'s F key,
     /// it never interferes with aiming, swinging or building, and needs no mode toggle.
@@ -21,7 +22,7 @@ namespace CloneZ
         private PlayerFoodSickness _sickness;
         private PlayerInteractor _interactor;
 
-        private WaterSource _source;
+        private IWaterPoint _source;
         private bool _fill;
 
         private void Awake()
@@ -41,7 +42,7 @@ namespace CloneZ
             if (_stats != null && _stats.IsDead) return;
             // A full-screen panel or build mode owns input; don't fight the container-search prompt.
             if (UIState.GameplayBlocked || UIState.BuildMode) return;
-            if (_interactor != null && _interactor.IsSearching) return;
+            if (_interactor != null && (_interactor.IsBusy || _interactor.MenuOpen)) return;
 
             Evaluate();
 
@@ -55,15 +56,13 @@ namespace CloneZ
         private void Evaluate()
         {
             Vector3 pos = transform.position; pos.y = 0f;
-            WaterSource src = WaterSource.Nearest(pos, CloneZConfig.WaterSourceRange);
+            IWaterPoint src = WaterPoints.Nearest(pos, CloneZConfig.WaterSourceRange, _interactor);
             if (src == null) return;
 
             if (!src.HasWater)
             {
                 // Show the status but offer no action (leave _source null so G does nothing).
-                Prompt = src.Kind == WaterSourceKind.Tap
-                    ? "The tap is dry \u2014 the water's been shut off"
-                    : "The rain barrel is empty";
+                Prompt = src.DryMessage;
                 return;
             }
 
@@ -80,8 +79,8 @@ namespace CloneZ
             else
             {
                 Prompt = src.IsTainted
-                    ? "[G]  Drink from the barrel   (tainted)"
-                    : "[G]  Drink from the tap";
+                    ? "[G]  Drink from the " + src.WaterLabel + "   (tainted)"
+                    : "[G]  Drink from the " + src.WaterLabel;
             }
         }
 
@@ -91,15 +90,15 @@ namespace CloneZ
 
             if (_fill)
             {
-                // Fill an empty bottle; only draw the barrel down if a bottle was actually filled.
+                // Fill an empty bottle; only draw the source down if a bottle was actually filled.
                 if (_inventory != null && _inventory.FillOneBottle(_source.IsTainted))
-                    _source.Draw();
+                    _source.DrawWater();
             }
             else
             {
                 _stats.Drink(CloneZConfig.WaterDrinkAmount);
                 if (_source.IsTainted && _sickness != null) _sickness.OnDrankTainted();
-                _source.Draw();
+                _source.DrawWater();
             }
         }
     }

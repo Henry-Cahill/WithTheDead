@@ -1,0 +1,12 @@
+{"version": 1, "id": "ShinKneeGuard_R_Metal", "baseHeight": 0.12, "name": "Shin Knee Guard R Metal", "model": "gpt-oss:120b", "notes": "Right‑hand shin guard, metal, ~0.35 m long × 0.12 m wide × 0.02 m thick. Main curved plate with front bulge, two strap loops and a few vent holes.", "score": 6, "parts": [
+  {"name":"Plate","shape":"cube","pos":[0.075,-0.01,-0.0287],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"FrontBulge","shape":"sphere","pos":[0.075,-0.005,0.0312],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"StrapTop","shape":"cylinder","pos":[-0.075,0.005,-0.0837],"rot":[0.0,0.0,90.0],"size":[0.015,0.35,0.015],"color":[0.5,0.48,0.42],"smooth":0.55,"metal":1.0},
+  {"name":"StrapBottom","shape":"cylinder","pos":[-0.075,0.005,0.0263],"rot":[0.0,0.0,90.0],"size":[0.015,0.35,0.015],"color":[0.5,0.48,0.42],"smooth":0.55,"metal":1.0},
+  {"name":"Vent01","shape":"sphere","pos":[0.005,-0.009,-0.0688],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"Vent02","shape":"sphere","pos":[0.005,-0.009,0.0113],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"Vent03","shape":"sphere","pos":[0.145,-0.009,-0.0688],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"Vent04","shape":"sphere","pos":[0.145,-0.009,0.0113],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRimFront","shape":"cylinder","pos":[0.075,-0.0,0.0312],"rot":[90.0,0.0,0.0],"size":[0.12,0.004,0.12],"color":[0.5,0.48,0.42],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeRimBack","shape":"cylinder","pos":[0.075,-0.0,-0.0887],"rot":[90.0,0.0,0.0],"size":[0.12,0.004,0.12],"color":[0.5,0.48,0.42],"smooth":0.55,"metal":1.0}
+]}

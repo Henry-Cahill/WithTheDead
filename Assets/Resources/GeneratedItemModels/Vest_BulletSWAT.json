@@ -1,0 +1,11 @@
+{"version": 1, "id": "Vest_BulletSWAT", "baseHeight": 0.0798, "name": "Vest Bullet SWAT", "model": "gpt-oss:120b", "notes": "Tactical SWAT bullet‑proof vest lying flat on the floor (≈0.45 m wide × 0.60 m tall × 0.03 m thick). Main fabric panel, shoulder straps, front metal plate, side plates and a small utility pouch are modelled with simple primitives.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0048,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.03,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapLeft","shape":"cube","pos":[-0.135,0.0072,0.1],"rot":[0.0,0.0,0.0],"size":[0.18,0.012,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapRight","shape":"cube","pos":[0.135,0.0072,0.1],"rot":[0.0,0.0,0.0],"size":[0.18,0.012,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPlate","shape":"cube","pos":[0.0,0.0143,0.115],"rot":[0.0,0.0,0.0],"size":[0.38,0.008,0.02],"color":[0.3,0.3,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"SidePlateL","shape":"cube","pos":[-0.215,0.0133,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.012,0.2],"color":[0.3,0.3,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"SidePlateR","shape":"cube","pos":[0.215,0.0133,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.012,0.2],"color":[0.3,0.3,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"Pouch","shape":"cube","pos":[0.0,0.0123,0.05],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.45,0.42,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"StitchTop","shape":"cylinder","pos":[0.0,0.0112,0.125],"rot":[90.0,0.0,0.0],"size":[0.004,0.44,0.004],"color":[0.4,0.38,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cylinder","pos":[0.0,0.0112,-0.125],"rot":[90.0,0.0,0.0],"size":[0.004,0.44,0.004],"color":[0.4,0.38,0.35],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "Vest_Hunting_Khaki", "baseHeight": 0.0825, "name": "Vest Hunting Khaki", "model": "gpt-oss:120b", "notes": "Khaki hunting vest laid flat (≈0.55 m wide × 0.35 m tall × 0.03 m thick). Main torso panel with two front pockets, shoulder straps, collar strip, front belt‑loop and metal buckle, bottom flap and side seam lines.", "score": 6, "parts": [
+  {"name":"MainBody","shape":"cube","pos":[0.0,-0.0075,-0.0325],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.12,0.015,0.1325],"rot":[0.0,0.0,0.0],"size":[0.16,0.015,0.08],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.12,0.015,0.1325],"rot":[0.0,0.0,0.0],"size":[0.16,0.015,0.08],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"ShoulderStrapL","shape":"cube","pos":[-0.225,0.0125,-0.0325],"rot":[0.0,0.0,0.0],"size":[0.2,0.01,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"ShoulderStrapR","shape":"cube","pos":[0.225,0.0125,-0.0325],"rot":[0.0,0.0,0.0],"size":[0.2,0.01,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cube","pos":[0.0,0.0125,0.0975],"rot":[0.0,0.0,0.0],"size":[0.4,0.01,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoop","shape":"cylinder","pos":[0.0,-0.0025,0.0975],"rot":[0.0,0.0,0.0],"size":[0.03,0.008,0.03],"color":[0.3,0.3,0.35],"smooth":0.3,"metal":1.0},
+  {"name":"Buckle","shape":"cube","pos":[0.0,0.0045,0.0975],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.01],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"BottomFlap","shape":"cube","pos":[0.0,-0.0125,-0.1575],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cylinder","pos":[-0.275,-0.0075,-0.0325],"rot":[0.0,0.0,90.0],"size":[0.005,0.03,0.005],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cylinder","pos":[0.275,-0.0075,-0.0325],"rot":[0.0,0.0,90.0],"size":[0.005,0.03,0.005],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0}
+]}

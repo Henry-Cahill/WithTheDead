@@ -1,0 +1,10 @@
+{"version": 1, "id": "Dogfood", "baseHeight": 0.159, "name": "Dogfood", "model": "gpt-oss:120b", "notes": "Upright dog‑food can ~0.12 m diameter × 0.18 m tall: metal body, recessed lid, full‑wrap label in the tan tint, thin border trim, and a small bulge of food inside.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.18,0.12],"color":[0.78,0.78,0.79],"smooth":0.55,"metal":0.9},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.085,0.0],"rot":[0.0,0.0,0.0],"size":[0.124,0.012,0.124],"color":[0.78,0.78,0.79],"smooth":0.55,"metal":0.9},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.093,0.0],"rot":[0.0,0.0,0.0],"size":[0.124,0.012,0.124],"color":[0.78,0.78,0.79],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.092,0.0],"rot":[0.0,0.0,0.0],"size":[0.108,0.014,0.108],"color":[0.7,0.71,0.73],"smooth":0.45,"metal":0.9},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.112,0.176,0.112],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.083,0.0],"rot":[0.0,0.0,0.0],"size":[0.116,0.008,0.116],"color":[0.45,0.38,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.091,0.0],"rot":[0.0,0.0,0.0],"size":[0.116,0.008,0.116],"color":[0.45,0.38,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"FoodBulge","shape":"sphere","pos":[0.0,0.036,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.06,0.09],"color":[0.55,0.45,0.3],"smooth":0.2,"metal":0.0}
+]}

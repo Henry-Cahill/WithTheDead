@@ -1,0 +1,13 @@
+{"version": 1, "id": "Ladybug", "baseHeight": 0.07, "name": "Ladybug", "model": "gpt-oss:120b", "notes": "Small rectangular snack pack (≈6 cm × 4 cm × 2 cm) standing upright on the floor. Contains two stylised ladybugs – red ellipsoids with a few black spot spheres – inside the package.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.001,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.06,0.018,0.04],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.009,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.04],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.001,0.0195],"rot":[0.0,0.0,0.0],"size":[0.045,0.008,0.002],"color":[0.6,0.5,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"Ladybug1Body","shape":"sphere","pos":[-0.015,-0.004,-0.0055],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.02],"color":[0.9,0.12,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"Ladybug1SpotA","shape":"sphere","pos":[-0.012,-0.004,-0.0055],"rot":[0.0,0.0,0.0],"size":[0.005,0.005,0.005],"color":[0.0,0.0,0.0],"smooth":0.6,"metal":0.0},
+  {"name":"Ladybug1SpotB","shape":"sphere","pos":[-0.018,-0.004,-0.0035],"rot":[0.0,0.0,0.0],"size":[0.005,0.005,0.005],"color":[0.0,0.0,0.0],"smooth":0.6,"metal":0.0},
+  {"name":"Ladybug1SpotC","shape":"sphere","pos":[-0.015,-0.004,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.005,0.005,0.005],"color":[0.0,0.0,0.0],"smooth":0.6,"metal":0.0},
+  {"name":"Ladybug2Body","shape":"sphere","pos":[0.015,-0.004,-0.0055],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.02],"color":[0.9,0.12,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"Ladybug2SpotA","shape":"sphere","pos":[0.018,-0.004,-0.0055],"rot":[0.0,0.0,0.0],"size":[0.005,0.005,0.005],"color":[0.0,0.0,0.0],"smooth":0.6,"metal":0.0},
+  {"name":"Ladybug2SpotB","shape":"sphere","pos":[0.012,-0.004,-0.0035],"rot":[0.0,0.0,0.0],"size":[0.005,0.005,0.005],"color":[0.0,0.0,0.0],"smooth":0.6,"metal":0.0},
+  {"name":"Ladybug2SpotC","shape":"sphere","pos":[0.015,-0.004,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.005,0.005,0.005],"color":[0.0,0.0,0.0],"smooth":0.6,"metal":0.0}
+]}

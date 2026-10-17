@@ -1,0 +1,8 @@
+{"version": 1, "id": "SourCream", "baseHeight": 0.09, "name": "Sour Cream", "model": "gpt-oss:120b", "notes": "Upright sour‑cream tub ~9 cm diameter × 5 cm tall, plastic body with a thin white lid and a dark label around the middle.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.05,0.09],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.024,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.008,0.09],"color":[0.95,0.95,0.95],"smooth":0.45,"metal":0.0},
+  {"name":"FoilSeal","shape":"cylinder","pos":[0.0,0.029,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.08],"color":[0.85,0.84,0.78],"smooth":0.2,"metal":0.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.002,0.082],"color":[0.5,0.4,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"TopSeam","shape":"cylinder","pos":[0.0,0.021,0.0],"rot":[0.0,0.0,0.0],"size":[0.092,0.002,0.092],"color":[0.6,0.55,0.4],"smooth":0.3,"metal":0.0},
+  {"name":"BottomSeam","shape":"cylinder","pos":[0.0,-0.029,0.0],"rot":[0.0,0.0,0.0],"size":[0.092,0.002,0.092],"color":[0.6,0.55,0.4],"smooth":0.3,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "KnapsackSprayer", "baseHeight": 0.245, "name": "Knapsack Sprayer", "model": "gpt-oss:120b", "notes": "Knapsack sprayer lying on its side (X‑axis). Main fabric bag 0.45 m long × 0.25 m high × 0.20 m deep, two shoulder straps, metal pump handle and base at the front, thin rubber hose running over the top to a nozzle at the back, small trigger, valve cap and a label on the front.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[-0.0175,-0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.25,0.2],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"StrapL","shape":"cylinder","pos":[-0.1975,0.035,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.15,0.02],"color":[0.4,0.38,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"StrapR","shape":"cylinder","pos":[0.1625,0.035,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.15,0.02],"color":[0.4,0.38,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"PumpBase","shape":"cube","pos":[0.1325,0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.12],"color":[0.7,0.7,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"PumpHandle","shape":"cylinder","pos":[0.1325,0.125,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"Trigger","shape":"cube","pos":[0.1325,0.155,0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.03],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Hose","shape":"cylinder","pos":[-0.0175,0.095,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.4,0.02],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Nozzle","shape":"sphere","pos":[-0.2175,0.095,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.7,0.7,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"ValveCap","shape":"sphere","pos":[-0.2175,0.115,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.7,0.7,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[0.1325,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.09],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0}
+]}

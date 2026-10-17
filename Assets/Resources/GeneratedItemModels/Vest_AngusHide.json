@@ -1,0 +1,12 @@
+{"version": 1, "id": "Vest_AngusHide", "baseHeight": 0.3975, "name": "Vest Angus Hide", "model": "gpt-oss:120b", "notes": "Flat Angus‑hide vest laid out flat for a product view – approx 0.48 m wide × 0.65 m tall with two 1.5 cm thick panels (front & back). Includes V‑neck opening, collar band, central stitching line, side pockets, belt loops and a small chest label.", "score": 6, "parts": [
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.0125,-0.003],"rot":[0.0,0.0,0.0],"size":[0.48,0.65,0.015],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,-0.0125,0.003],"rot":[0.0,0.0,0.0],"size":[0.48,0.65,0.015],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.04,0.18],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.0,-0.0075,0.003],"rot":[0.0,0.0,0.0],"size":[0.48,0.015,0.015],"color":[0.45,0.4,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"StitchLine","shape":"cube","pos":[0.0,0.0125,0.003],"rot":[0.0,0.0,0.0],"size":[0.005,0.65,0.015],"color":[0.3,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.18,0.02,0.008],"rot":[0.0,0.0,0.0],"size":[0.12,0.15,0.02],"color":[0.5,0.45,0.55],"smooth":0.15,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.18,0.02,0.008],"rot":[0.0,0.0,0.0],"size":[0.12,0.15,0.02],"color":[0.5,0.45,0.55],"smooth":0.15,"metal":0.0},
+  {"name":"BeltLoopL","shape":"cylinder","pos":[-0.18,0.01,0.003],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.015],"color":[0.45,0.4,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BeltLoopR","shape":"cylinder","pos":[0.18,0.01,0.003],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.015],"color":[0.45,0.4,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.03,0.009],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.002],"color":[0.6,0.55,0.65],"smooth":0.15,"metal":0.0}
+]}

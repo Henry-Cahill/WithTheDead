@@ -1,0 +1,9 @@
+{"version": 1, "id": "Socks_LegWarmers", "baseHeight": 0.0725, "name": "Socks Leg Warmers", "model": "gpt-oss:120b", "notes": "Flat leg‑warmers spread like a product photo: overall footprint ≈ 0.32 m long × 0.12 m wide, 2 cm thick. Main fabric panel with elastic cuffs at each end, a central seam line and a thin decorative stripe.", "score": 6, "parts": [
+  {"name":"BasePanel","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"UpperCuff","shape":"cube","pos":[0.18,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.13],"color":[0.48,0.44,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"LowerCuff","shape":"cube","pos":[-0.18,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.13],"color":[0.48,0.44,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"CuffElasticTop","shape":"cube","pos":[0.18,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.13],"color":[0.35,0.33,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"CuffElasticBottom","shape":"cube","pos":[-0.18,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.13],"color":[0.35,0.33,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"CenterSeam","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.02,0.005],"color":[0.45,0.41,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"DecorStripe","shape":"cube","pos":[0.0,0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.002,0.12],"color":[0.62,0.58,0.7],"smooth":0.05,"metal":0.0}
+]}

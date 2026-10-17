@@ -1,0 +1,13 @@
+{"version": 1, "id": "Pig_Boar_Head_Black", "baseHeight": 0.175, "name": "Pig Boar Head Black", "model": "gpt-oss:120b", "notes": "Pig boar head (black) ~0.30 m long × 0.20 m wide × 0.25 m tall, lying on its side with snout pointing +X. Main skull block, lower jaw, protruding snout, two ears, a pair of tusks, eyes and nostrils give a clear silhouette.", "score": 6, "parts": [
+  {"name":"MainHead","shape":"cube","pos":[-0.0645,-0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.15,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Jaw","shape":"cube","pos":[-0.0645,-0.095,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.04,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Snout","shape":"cylinder","pos":[0.1455,-0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.12,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EarL","shape":"cube","pos":[-0.0845,0.075,0.08],"rot":[0.0,0.0,0.0],"size":[0.04,0.08,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EarR","shape":"cube","pos":[-0.0845,0.075,-0.08],"rot":[0.0,0.0,0.0],"size":[0.04,0.08,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TuskL","shape":"cylinder","pos":[0.1455,-0.075,0.025],"rot":[0.0,0.0,90.0],"size":[0.015,0.08,0.015],"color":[0.8,0.78,0.7],"smooth":0.2,"metal":0.0},
+  {"name":"TuskR","shape":"cylinder","pos":[0.1455,-0.075,-0.025],"rot":[0.0,0.0,90.0],"size":[0.015,0.08,0.015],"color":[0.8,0.78,0.7],"smooth":0.2,"metal":0.0},
+  {"name":"NostrilL","shape":"sphere","pos":[0.2055,-0.025,0.015],"rot":[0.0,0.0,0.0],"size":[0.018,0.01,0.012],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"NostrilR","shape":"sphere","pos":[0.2055,-0.025,-0.015],"rot":[0.0,0.0,0.0],"size":[0.018,0.01,0.012],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[-0.1445,0.005,0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[-0.1445,0.005,-0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0}
+]}

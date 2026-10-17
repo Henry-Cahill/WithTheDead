@@ -1,0 +1,13 @@
+{"version": 1, "id": "Ice_Hockey_Jersey_Red", "baseHeight": 0.0737, "name": "Ice Hockey Jersey Red", "model": "gpt-oss:120b", "notes": "Flat ice‑hockey jersey ~0.78 m long × 0.55 m wide (including sleeves) × 0.025 m thick. Main body in bright red cloth, white collar trim, dark‑red side stripe and a small white logo patch on the front.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.005,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.78,0.025,0.38],"color":[0.85,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.155,0.0012,0.29],"rot":[0.0,-20.0,0.0],"size":[0.18,0.025,0.22],"color":[0.85,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.155,0.0012,-0.29],"rot":[0.0,20.0,0.0],"size":[0.18,0.025,0.22],"color":[0.85,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.355,0.0038,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.38],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"CollarTrim","shape":"cube","pos":[0.355,0.0047,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.003,0.38],"color":[0.6,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"SideStripeL","shape":"cube","pos":[-0.005,-0.0003,0.19],"rot":[0.0,0.0,0.0],"size":[0.78,0.004,0.02],"color":[0.6,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"SideStripeR","shape":"cube","pos":[-0.005,-0.0003,-0.19],"rot":[0.0,0.0,0.0],"size":[0.78,0.004,0.02],"color":[0.6,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[0.205,0.0117,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.003,0.08],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"LogoTrim","shape":"cube","pos":[0.205,0.0127,0.0],"rot":[0.0,0.0,0.0],"size":[0.124,0.002,0.084],"color":[0.6,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[-0.375,0.0028,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.38],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"HemTrim","shape":"cube","pos":[-0.375,0.0038,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.003,0.38],"color":[0.6,0.0,0.0],"smooth":0.05,"metal":0.0}
+]}

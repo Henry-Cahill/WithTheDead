@@ -1,0 +1,11 @@
+{"version": 1, "id": "HotDrinkCopper", "baseHeight": 0.195, "name": "Hot Drink Copper", "model": "gpt-oss:120b", "notes": "Upright copper‑tinted beverage bottle ~0.07 m dia × 0.25 m tall. Main body is metallic, with a thin bottom rim, top rim, screw‑on cap, mid‑height label (darker tint) and a small logo sphere on the front of the label.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0063,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.25,0.07],"color":[0.45,0.6,0.75],"smooth":0.4,"metal":1.0},
+  {"name":"BottomRim","shape":"cylinder","pos":[-0.0063,-0.1325,0.0],"rot":[0.0,0.0,0.0],"size":[0.075,0.005,0.075],"color":[0.45,0.6,0.75],"smooth":0.4,"metal":1.0},
+  {"name":"TopRim","shape":"cylinder","pos":[-0.0063,0.1125,0.0],"rot":[0.0,0.0,0.0],"size":[0.075,0.005,0.075],"color":[0.45,0.6,0.75],"smooth":0.4,"metal":1.0},
+  {"name":"Cap","shape":"cylinder","pos":[-0.0063,0.125,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.45,0.6,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"LabelBase","shape":"cylinder","pos":[-0.0063,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.069,0.16,0.069],"color":[0.32,0.45,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"LabelBorder","shape":"cylinder","pos":[-0.0063,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.072,0.004,0.072],"color":[0.25,0.35,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LogoSphere","shape":"sphere","pos":[0.0363,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.2,0.25,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"NeckRing","shape":"cylinder","pos":[-0.0063,0.11,0.0],"rot":[0.0,0.0,0.0],"size":[0.068,0.006,0.068],"color":[0.45,0.6,0.75],"smooth":0.4,"metal":1.0},
+  {"name":"BaseScrew","shape":"cylinder","pos":[-0.0063,-0.13,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.008,0.03],"color":[0.45,0.6,0.75],"smooth":0.4,"metal":1.0}
+]}

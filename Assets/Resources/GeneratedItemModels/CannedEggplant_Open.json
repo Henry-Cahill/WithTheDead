@@ -1,0 +1,13 @@
+{"version": 1, "id": "CannedEggplant_Open", "baseHeight": 0.1385, "name": "Canned Eggplant Open", "model": "gpt-oss:120b", "notes": "Open can of eggplant, 0.13 m diameter × 0.15 m tall. Metal body with grey finish, peeled lid lying beside the can, olive‑tinted label on the side, dark brown trim, and a few sliced eggplant pieces inside.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0437,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.15,0.13],"color":[0.78,0.78,0.79],"smooth":0.55,"metal":0.85},
+  {"name":"SeamTop","shape":"cylinder","pos":[-0.0437,0.0705,0.0],"rot":[0.0,0.0,0.0],"size":[0.135,0.016,0.135],"color":[0.78,0.78,0.79],"smooth":0.55,"metal":0.85},
+  {"name":"SeamBottom","shape":"cylinder","pos":[-0.0437,-0.0705,0.0],"rot":[0.0,0.0,0.0],"size":[0.135,0.016,0.135],"color":[0.78,0.78,0.79],"smooth":0.55,"metal":0.85},
+  {"name":"Lid","shape":"cylinder","pos":[0.0462,0.0015,0.0],"rot":[0.0,90.0,0.0],"size":[0.13,0.01,0.13],"color":[0.78,0.78,0.79],"smooth":0.55,"metal":0.85},
+  {"name":"Label","shape":"cylinder","pos":[-0.0437,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.124,0.138,0.124],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[-0.0437,0.0615,0.0],"rot":[0.0,0.0,0.0],"size":[0.126,0.008,0.126],"color":[0.47,0.33,0.14],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[-0.0437,-0.0585,0.0],"rot":[0.0,0.0,0.0],"size":[0.126,0.008,0.126],"color":[0.47,0.33,0.14],"smooth":0.12,"metal":0.0},
+  {"name":"EggSlice1","shape":"sphere","pos":[-0.0638,-0.0435,0.02],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.04],"color":[0.35,0.07,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"EggSlice2","shape":"sphere","pos":[-0.0337,-0.0465,-0.025],"rot":[0.0,0.0,0.0],"size":[0.045,0.018,0.045],"color":[0.35,0.07,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"EggSlice3","shape":"sphere","pos":[-0.0287,-0.0405,0.015],"rot":[0.0,0.0,0.0],"size":[0.042,0.016,0.042],"color":[0.35,0.07,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"EggSlice4","shape":"sphere","pos":[-0.0617,-0.0485,-0.018],"rot":[0.0,0.0,0.0],"size":[0.038,0.014,0.038],"color":[0.35,0.07,0.15],"smooth":0.05,"metal":0.0}
+]}

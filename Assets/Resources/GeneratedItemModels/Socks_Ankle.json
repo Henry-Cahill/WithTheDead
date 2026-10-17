@@ -1,0 +1,9 @@
+{"version": 1, "id": "Socks_Ankle", "baseHeight": 0.0693, "name": "Socks Ankle", "model": "gpt-oss:120b", "notes": "Flat ankle‑sock about 0.22 m long × 0.10 m wide × 0.015 m thick, spread on the floor. Includes main fabric panel, a cuff band around the top edge, darker heel and toe panels, and a ribbed trim on the cuff.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffBand","shape":"cube","pos":[0.0,0.0032,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.008,0.12],"color":[0.58,0.53,0.63],"smooth":0.05,"metal":0.0},
+  {"name":"HeelPanel","shape":"cube","pos":[-0.09,-0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.12],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"ToePanel","shape":"cube","pos":[0.09,-0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.12],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffRibbing","shape":"cylinder","pos":[0.0,0.0072,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.12],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.0062,0.0],"rot":[0.0,0.0,0.0],"size":[0.222,0.002,0.102],"color":[0.48,0.43,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.0078,0.0],"rot":[0.0,0.0,0.0],"size":[0.222,0.002,0.102],"color":[0.48,0.43,0.53],"smooth":0.05,"metal":0.0}
+]}

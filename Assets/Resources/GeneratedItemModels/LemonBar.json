@@ -1,0 +1,12 @@
+{"version": 1, "id": "LemonBar", "baseHeight": 0.069, "name": "Lemon Bar", "model": "gpt-oss:120b", "notes": "Lemon Bar snack, rectangular foil‑wrapped bar about 14 cm long × 5 cm wide × 1.5 cm thick; inner lemon‑tinted candy (tint 0.75,0.68,0.45) wrapped in off‑white paper with a printed label and a small plastic seal at one end.", "score": 6, "parts": [
+  {"name":"Wrapper","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.145,0.018,0.055],"color":[0.9,0.85,0.8],"smooth":0.2,"metal":0.0},
+  {"name":"BarBody","shape":"cube","pos":[0.0,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.015,0.05],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0005,0.005],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.045],"color":[0.3,0.2,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"Seal","shape":"cylinder","pos":[-0.0705,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.004,0.012],"color":[0.8,0.9,1.0],"smooth":0.4,"metal":0.0},
+  {"name":"RimLeft","shape":"cube","pos":[-0.0715,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.018,0.055],"color":[0.85,0.8,0.75],"smooth":0.2,"metal":0.0},
+  {"name":"RimRight","shape":"cube","pos":[0.0715,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.018,0.055],"color":[0.85,0.8,0.75],"smooth":0.2,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0,0.0011,0.005],"rot":[0.0,0.0,0.0],"size":[0.092,0.002,0.002],"color":[0.2,0.15,0.05],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.0,0.0011,0.005],"rot":[0.0,0.0,0.0],"size":[0.092,0.002,0.002],"color":[0.2,0.15,0.05],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0,0.001,0.0265],"rot":[0.0,0.0,0.0],"size":[0.145,0.002,0.002],"color":[0.85,0.8,0.75],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0,0.001,-0.0265],"rot":[0.0,0.0,0.0],"size":[0.145,0.002,0.002],"color":[0.85,0.8,0.75],"smooth":0.2,"metal":0.0}
+]}

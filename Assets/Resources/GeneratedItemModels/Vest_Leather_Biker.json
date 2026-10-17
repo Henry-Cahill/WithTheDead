@@ -1,0 +1,10 @@
+{"version": 1, "id": "Vest_Leather_Biker", "baseHeight": 0.1075, "name": "Vest Leather Biker", "model": "gpt-oss:120b", "notes": "Leather biker vest ~0.45 m wide × 0.35 m tall × 0.015 m thick, laid flat on the floor. Main back panel, two front panels with metal buckles, a chest strap across the top and a loose hanging leather strap; all parts touch or overlap.", "score": 6, "parts": [
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.04,-0.001],"rot":[0.0,0.0,0.0],"size":[0.45,0.015,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPanelL","shape":"cube","pos":[-0.115,-0.0385,-0.001],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.26],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPanelR","shape":"cube","pos":[0.115,-0.0385,-0.001],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.26],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"ChestStrap","shape":"cylinder","pos":[0.0,-0.0325,-0.001],"rot":[0.0,0.0,90.0],"size":[0.025,0.45,0.025],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BuckleL","shape":"cube","pos":[-0.215,-0.0365,0.129],"rot":[0.0,0.0,0.0],"size":[0.02,0.012,0.004],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleR","shape":"cube","pos":[0.215,-0.0365,0.129],"rot":[0.0,0.0,0.0],"size":[0.02,0.012,0.004],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"HangingStrap","shape":"cylinder","pos":[-0.2,0.0075,-0.121],"rot":[0.0,0.0,0.0],"size":[0.015,0.08,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RivetCenter","shape":"sphere","pos":[0.0,-0.0295,-0.001],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.5,0.5,0.5],"smooth":0.7,"metal":1.0}
+]}

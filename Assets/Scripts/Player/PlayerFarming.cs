@@ -81,8 +81,8 @@ namespace CloneZ
             _plot = null;
             Prompt = "";
 
-            // Don't fight the container-search prompt for screen space.
-            if (_interactor != null && _interactor.IsSearching) return;
+            // Don't fight the container-search (or fixture job) prompt for screen space.
+            if (_interactor != null && _interactor.IsBusy) return;
 
             Vector3 pos = transform.position; pos.y = 0f;
             FarmPlot plot = FarmPlot.Nearest(pos, CloneZConfig.FarmActionRange);

@@ -13,7 +13,8 @@ namespace CloneZ
     /// <see cref="Application.persistentDataPath"/>.
     ///
     /// The bootstrapper drives loading: it builds the static arena, then (if a save
-    /// exists) calls <see cref="ApplyWorld"/> before baking the navmesh and
+    /// exists) calls <see cref="ApplyWorld"/> before baking the navmesh,
+    /// <see cref="ApplyFixtures"/> once the whole home and yard stand, and
     /// <see cref="ApplyPlayer"/> after the survivor is spawned.
     /// </summary>
     public static class SaveSystem
@@ -104,6 +105,12 @@ namespace CloneZ
                 data.MainsOn = WaterMains.Instance.IsOn;
                 data.ShutoffDay = WaterMains.Instance.ShutoffDay;
             }
+            if (PowerGrid.Instance != null)
+            {
+                data.PowerOn = PowerGrid.Instance.IsOn;
+                data.PowerShutoffDay = PowerGrid.Instance.ShutoffDay;
+                data.BreakerOn = PowerGrid.Instance.MainBreakerOn;
+            }
 
             GameManager gm = GameManager.Instance;
             if (gm != null)
@@ -148,8 +155,10 @@ namespace CloneZ
                         Yaw = p.transform.eulerAngles.y,
                         Health = p.Health,
                         MaxHealth = p.MaxHealth,
+                        Prebuilt = p.Prebuilt,
                     });
             }
+            data.HasPrebuiltFlags = true;
             for (int i = 0; i < FarmPlot.All.Count; i++)
             {
                 FarmPlot f = FarmPlot.All[i];
@@ -205,6 +214,11 @@ namespace CloneZ
                     data.Furniture.Add(new FurnitureSave { Kind = (int)f.Kind, Position = f.transform.position, Yaw = f.Yaw, Seed = f.Seed });
             }
 
+            // Every interactive fixture's state (doors, windows, taps, lamps…); their storage rode along with
+            // the containers above, under its fixture key.
+            data.HasFixtures = true;
+            Interactable.CaptureAll(data.Fixtures);
+
             return data;
         }
 
@@ -228,6 +242,14 @@ namespace CloneZ
                 Wetness = p.Wetness,
                 Sickness = p.Sickness,
             };
+
+            // Saved sitting down, the survivor would come back inside the chair's collider: keep the spot they stood on.
+            var seat = go.GetComponent<PlayerSeat>();
+            if (seat != null && seat.IsSeated)
+            {
+                s.Position = seat.StoodFrom;
+                s.FacingYaw = seat.StoodYaw;
+            }
 
             var skills = go.GetComponent<PlayerSkills>();
             if (skills != null)
@@ -306,6 +328,7 @@ namespace CloneZ
                 Yaw = c.transform.eulerAngles.y,
                 Searched = c.Searched,
                 Lifetime = c.Lifetime,
+                FixtureKey = c.FixtureKey,
             };
             if (c.Contents != null)
             {
@@ -332,17 +355,25 @@ namespace CloneZ
             if (TimeOfDay.Instance != null) TimeOfDay.Instance.RestoreClock(data.Day, data.Hour);
             if (WeatherSystem.Instance != null) WeatherSystem.Instance.Restore((Weather)data.Weather, data.Rain, data.Fog, data.Cloud);
             if (WaterMains.Instance != null) WaterMains.Instance.Restore(data.MainsOn, data.ShutoffDay);
+            if (PowerGrid.Instance != null) PowerGrid.Instance.Restore(data.PowerOn, data.PowerShutoffDay, data.BreakerOn);
             GameManager.Instance?.RestoreProgress(data.Kills, data.Wave, data.TimeSurvived);
 
             // House pieces first: the containers, fittings and furniture standing on the floor rest on it.
             for (int i = 0; i < data.House.Count; i++)
             {
                 HousePieceSave h = data.House[i];
-                BuildPiece.SpawnRestored(world, (BuildPieceType)h.Type, h.Position, h.Yaw, h.Health, h.MaxHealth);
+                var type = (BuildPieceType)h.Type;
+                // A save from before pieces recorded it: whatever still stands in one of the starter home's own
+                // slots is taken for the original house, so loading it can't turn the free home into planks.
+                bool prebuilt = data.HasPrebuiltFlags ? h.Prebuilt : StarterHome.IsBlueprintSlot(type, h.Position);
+                BuildPiece.SpawnRestored(world, type, h.Position, h.Yaw, h.Health, h.MaxHealth, prebuilt);
             }
             for (int i = 0; i < data.Containers.Count; i++)
             {
                 ContainerSave c = data.Containers[i];
+                // A fixture's storage (a cupboard, a drawer, the fridge) is rebuilt with its fixture; its contents
+                // are poured back in by ApplyFixtures once the whole home stands.
+                if (!string.IsNullOrEmpty(c.FixtureKey)) continue;
                 if (c.Kind == LootContainer.KindSack)
                 {
                     // A dropped ground item, saved as a single-stack sack. Parented to the scene root
@@ -396,6 +427,15 @@ namespace CloneZ
                 if (!System.Enum.IsDefined(typeof(HomeFurnitureKind), f.Kind)) continue;
                 HomeFurniture.Spawn(world, (HomeFurnitureKind)f.Kind, f.Position, f.Yaw, f.Seed);
             }
+        }
+
+        /// <summary>Puts every saved fixture's state (doors, windows, taps, lamps…) and its storage's contents back.
+        /// Call once the whole world stands — after the navmesh bake and the yard are built — so every fixture
+        /// exists to receive its state. Fixtures the save doesn't mention keep their fresh-run defaults.</summary>
+        public static void ApplyFixtures(SaveData data)
+        {
+            if (data == null) return;
+            Interactable.RestoreAll(data.Fixtures, data.Containers);
         }
 
         /// <summary>Pours the saved survivor state onto the freshly built player (called after BuildPlayer).</summary>

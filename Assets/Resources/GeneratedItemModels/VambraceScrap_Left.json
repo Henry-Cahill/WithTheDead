@@ -1,0 +1,13 @@
+{"version": 1, "id": "VambraceScrap_Left", "baseHeight": 0.0762, "name": "Vambrace Scrap Left", "model": "gpt-oss:120b", "notes": "Left‑arm vambrace scrap ~0.25 m long × 0.12 m wide × 0.018 m thick, broken edge on the right side, metal plate with four rivets, two worn leather straps and a small dent.", "score": 6, "parts": [
+  {"name":"Plate","shape":"cube","pos":[-0.035,-0.0073,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.018,0.12],"color":[0.6,0.58,0.5],"smooth":0.5,"metal":1.0},
+  {"name":"RimFront","shape":"cube","pos":[-0.035,-0.0053,0.066],"rot":[0.0,0.0,0.0],"size":[0.25,0.004,0.012],"color":[0.45,0.43,0.38],"smooth":0.4,"metal":1.0},
+  {"name":"RimBack","shape":"cube","pos":[-0.035,-0.0053,-0.066],"rot":[0.0,0.0,0.0],"size":[0.25,0.004,0.012],"color":[0.45,0.43,0.38],"smooth":0.4,"metal":1.0},
+  {"name":"StrapLeft","shape":"cylinder","pos":[-0.115,0.0088,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.4,0.35,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"StrapRight","shape":"cylinder","pos":[0.045,0.0088,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.4,0.35,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"RivetFL","shape":"sphere","pos":[-0.15,0.0027,0.055],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.68,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFR","shape":"sphere","pos":[0.08,0.0027,0.055],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.68,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[-0.15,0.0027,-0.055],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.68,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.08,0.0027,-0.055],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.68,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"Dent","shape":"sphere","pos":[-0.035,0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.5,0.48,0.4],"smooth":0.3,"metal":1.0},
+  {"name":"BrokenChunk","shape":"cube","pos":[0.125,-0.0073,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.018,0.12],"color":[0.6,0.58,0.5],"smooth":0.5,"metal":1.0}
+]}

@@ -1,0 +1,11 @@
+{"version": 1, "id": "Ice_Hockey_Jersey_White", "baseHeight": 0.0725, "name": "Ice Hockey Jersey White", "model": "gpt-oss:120b", "notes": "Ice hockey jersey laid flat, approx 0.78 m long × 0.45 m wide × 0.025 m thick; main torso panel, two sleeves, a collar band, front number label and thin seam strips for readability.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.78,0.025,0.45],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.29,0.0,0.35],"rot":[0.0,0.0,0.0],"size":[0.2,0.025,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.29,0.0,-0.35],"rot":[0.0,0.0,0.0],"size":[0.2,0.025,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.35,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.008,0.45],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"NumberFront","shape":"cube","pos":[-0.12,0.0055,0.15],"rot":[0.0,0.0,0.0],"size":[0.2,0.004,0.12],"color":[0.18,0.18,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[0.0,0.0015,0.225],"rot":[0.0,0.0,0.0],"size":[0.78,0.003,0.008],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.0,0.0015,-0.225],"rot":[0.0,0.0,0.0],"size":[0.78,0.003,0.008],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"ShoulderSeamTop","shape":"cube","pos":[0.25,0.0015,0.35],"rot":[0.0,0.0,0.0],"size":[0.12,0.003,0.008],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"ShoulderSeamBottom","shape":"cube","pos":[0.25,0.0015,-0.35],"rot":[0.0,0.0,0.0],"size":[0.12,0.003,0.008],"color":[0.5,0.48,0.42],"smooth":0.05,"metal":0.0}
+]}

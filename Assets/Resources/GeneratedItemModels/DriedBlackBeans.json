@@ -1,0 +1,14 @@
+{"version": 1, "id": "DriedBlackBeans", "baseHeight": 0.186, "name": "Dried Black Beans", "model": "gpt-oss:120b", "notes": "Upright cardboard box ~0.30 m wide × 0.25 m tall × 0.20 m deep holding dried black beans. Main body is a brown‑tinted carton, lighter lid, thin seam strips, front label with dark trim, and a small lump of beans visible through the open top.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.24,0.2],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.121,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.2],"color":[0.78,0.71,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"SeamTop","shape":"cube","pos":[0.0,0.1215,0.0],"rot":[0.0,0.0,0.0],"size":[0.302,0.004,0.202],"color":[0.65,0.58,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"SeamBottom","shape":"cube","pos":[0.0,-0.119,0.0],"rot":[0.0,0.0,0.0],"size":[0.302,0.004,0.202],"color":[0.65,0.58,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"SeamFront","shape":"cube","pos":[0.0,-0.004,0.1015],"rot":[0.0,0.0,0.0],"size":[0.302,0.244,0.004],"color":[0.65,0.58,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"SeamBack","shape":"cube","pos":[0.0,-0.004,-0.1015],"rot":[0.0,0.0,0.0],"size":[0.302,0.244,0.004],"color":[0.65,0.58,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"SeamLeft","shape":"cube","pos":[-0.1515,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.244,0.202],"color":[0.65,0.58,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"SeamRight","shape":"cube","pos":[0.1515,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.244,0.202],"color":[0.65,0.58,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,0.056,0.1012],"rot":[0.0,0.0,0.0],"size":[0.26,0.08,0.002],"color":[0.42,0.35,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0,0.091,0.1012],"rot":[0.0,0.0,0.0],"size":[0.268,0.004,0.002],"color":[0.3,0.25,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.0,0.021,0.1012],"rot":[0.0,0.0,0.0],"size":[0.268,0.004,0.002],"color":[0.3,0.25,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"BeansPile","shape":"sphere","pos":[0.0,-0.064,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.07,0.12],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0}
+]}

@@ -1,0 +1,9 @@
+{"version": 1, "id": "SugarCubes", "baseHeight": 0.087, "name": "Sugar Cubes", "model": "gpt-oss:120b", "notes": "Small cardboard sugar‑cube pack about 5.8 cm square and 3.6 cm tall, with a thin lid; a few individual cubes (2 cm side) spill out on top to show the contents.", "score": 7, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.058,0.032,0.058],"color":[0.45,0.35,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"BoxLid","shape":"cube","pos":[0.0,0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.06],"color":[0.5,0.4,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"CubeInside","shape":"cube","pos":[0.0,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"CubeTopL","shape":"cube","pos":[-0.012,0.018,-0.012],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"CubeTopR","shape":"cube","pos":[0.012,0.018,-0.012],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"CubeFrontL","shape":"cube","pos":[-0.012,0.018,0.012],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"CubeFrontR","shape":"cube","pos":[0.012,0.018,0.012],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0}
+]}

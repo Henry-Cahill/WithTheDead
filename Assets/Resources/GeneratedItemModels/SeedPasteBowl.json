@@ -1,0 +1,8 @@
+{"version": 1, "id": "SeedPasteBowl", "baseHeight": 0.0975, "name": "Seed Paste Bowl", "model": "gpt-oss:120b", "notes": "Seed paste bowl about 0.12 m across and 0.06 m high, sitting upright on the floor. Thin plastic bowl (light‑grey) with a short cardboard sleeve on top bearing a simple label; the seed‑paste interior is shown as a soft‑coloured ellipsoid.", "score": 6, "parts": [
+  {"name":"BowlOuter","shape":"cylinder","pos":[0.0,-0.0075,-0.0205],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.12],"color":[0.75,0.75,0.75],"smooth":0.3,"metal":0.0},
+  {"name":"RimTop","shape":"cylinder","pos":[0.0,0.0245,-0.0205],"rot":[0.0,0.0,0.0],"size":[0.122,0.004,0.122],"color":[0.75,0.75,0.75],"smooth":0.3,"metal":0.0},
+  {"name":"SeedPaste","shape":"sphere","pos":[0.0,0.0025,-0.0205],"rot":[0.0,0.0,0.0],"size":[0.1,0.02,0.1],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Sleeve","shape":"cube","pos":[0.0,0.03,-0.0205],"rot":[0.0,0.0,0.0],"size":[0.14,0.015,0.14],"color":[0.6,0.55,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.031,0.0545],"rot":[0.0,0.0,0.0],"size":[0.1,0.002,0.07],"color":[0.45,0.38,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[0.0,0.032,0.0545],"rot":[0.0,0.0,0.0],"size":[0.102,0.002,0.072],"color":[0.35,0.3,0.15],"smooth":0.1,"metal":0.0}
+]}

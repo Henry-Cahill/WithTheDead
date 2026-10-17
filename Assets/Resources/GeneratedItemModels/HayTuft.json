@@ -1,0 +1,11 @@
+{"version": 1, "id": "HayTuft", "baseHeight": 0.13, "name": "Hay Tuft", "model": "gpt-oss:120b", "notes": "Hay tuft ~0.15 m wide x 0.12 m tall, loose bundle of dried straw tied with a thin twine. Core sphere represents the bunch centre; several thin cylinders radiate outward as individual straws.", "score": 6, "parts": [
+  {"name":"CoreSphere","shape":"sphere","pos":[0.0,-0.05,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"StrawVert","shape":"cylinder","pos":[0.0,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.12,0.008],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"StrawXPos","shape":"cylinder","pos":[0.06,-0.05,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"StrawXNeg","shape":"cylinder","pos":[-0.06,-0.05,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"StrawZPos","shape":"cylinder","pos":[0.0,-0.05,0.06],"rot":[90.0,0.0,0.0],"size":[0.008,0.12,0.008],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"StrawZNeg","shape":"cylinder","pos":[0.0,-0.05,-0.06],"rot":[90.0,0.0,0.0],"size":[0.008,0.12,0.008],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"StrawDiagFwd","shape":"cylinder","pos":[0.0,-0.01,0.03],"rot":[45.0,0.0,0.0],"size":[0.008,0.12,0.008],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"StrawDiagRight","shape":"cylinder","pos":[0.03,-0.01,0.0],"rot":[0.0,0.0,45.0],"size":[0.008,0.12,0.008],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"TwineBand","shape":"cylinder","pos":[0.0,-0.045,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.15,0.004],"color":[0.4,0.3,0.2],"smooth":0.05,"metal":0.0}
+]}

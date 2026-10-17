@@ -1,0 +1,10 @@
+{"version": 1, "id": "Ham", "baseHeight": 0.095, "name": "Ham", "model": "gpt-oss:120b", "notes": "Ham block ~0.26 m long × 0.16 m wide × 0.06 m thick on a light‑gray plastic tray with clear lid; three thin slice‑line ridges on the top surface and a small red label on the front of the tray.", "score": 7, "parts": [
+  {"name":"TrayBase","shape":"cube","pos":[0.0,-0.032,-0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.006,0.18],"color":[0.9,0.9,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"HamBlock","shape":"cube","pos":[0.0,0.001,-0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.06,0.16],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LidCover","shape":"cube","pos":[0.0,0.033,-0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.004,0.18],"color":[0.95,0.95,1.0],"smooth":0.4,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.032,0.07],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.04],"color":[0.8,0.2,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"SliceLine1","shape":"cube","pos":[0.0,0.032,0.04],"rot":[0.0,0.0,0.0],"size":[0.26,0.002,0.02],"color":[0.6,0.5,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SliceLine2","shape":"cube","pos":[0.0,0.032,-0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.002,0.02],"color":[0.6,0.5,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SliceLine3","shape":"cube","pos":[0.0,0.032,-0.04],"rot":[0.0,0.0,0.0],"size":[0.26,0.002,0.02],"color":[0.6,0.5,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SealFilm","shape":"cube","pos":[0.0,0.0315,-0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.002,0.16],"color":[1.0,1.0,1.0],"smooth":0.45,"metal":0.0}
+]}

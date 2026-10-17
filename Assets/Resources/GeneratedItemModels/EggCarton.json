@@ -1,0 +1,16 @@
+{"version": 1, "id": "EggCarton", "baseHeight": 0.1025, "name": "Egg Carton", "model": "gpt-oss:120b", "notes": "Egg carton ~0.30 m long × 0.20 m wide × 0.08 m high, cardboard body with a thin lid and twelve egg cavities (two rows of six). Eggs are shown as light‑off‑white ellipsoids sitting on the bottom of the carton.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.08,0.2],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.005,0.2],"color":[0.78,0.71,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"Egg01","shape":"cylinder","pos":[-0.125,-0.0125,0.04],"rot":[0.0,0.0,0.0],"size":[0.045,0.06,0.045],"color":[0.95,0.9,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"Egg02","shape":"cylinder","pos":[-0.075,-0.0125,0.04],"rot":[0.0,0.0,0.0],"size":[0.045,0.06,0.045],"color":[0.95,0.9,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"Egg03","shape":"cylinder","pos":[-0.025,-0.0125,0.04],"rot":[0.0,0.0,0.0],"size":[0.045,0.06,0.045],"color":[0.95,0.9,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"Egg04","shape":"cylinder","pos":[0.025,-0.0125,0.04],"rot":[0.0,0.0,0.0],"size":[0.045,0.06,0.045],"color":[0.95,0.9,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"Egg05","shape":"cylinder","pos":[0.075,-0.0125,0.04],"rot":[0.0,0.0,0.0],"size":[0.045,0.06,0.045],"color":[0.95,0.9,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"Egg06","shape":"cylinder","pos":[0.125,-0.0125,0.04],"rot":[0.0,0.0,0.0],"size":[0.045,0.06,0.045],"color":[0.95,0.9,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"Egg07","shape":"cylinder","pos":[-0.125,-0.0125,-0.04],"rot":[0.0,0.0,0.0],"size":[0.045,0.06,0.045],"color":[0.95,0.9,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"Egg08","shape":"cylinder","pos":[-0.075,-0.0125,-0.04],"rot":[0.0,0.0,0.0],"size":[0.045,0.06,0.045],"color":[0.95,0.9,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"Egg09","shape":"cylinder","pos":[-0.025,-0.0125,-0.04],"rot":[0.0,0.0,0.0],"size":[0.045,0.06,0.045],"color":[0.95,0.9,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"Egg10","shape":"cylinder","pos":[0.025,-0.0125,-0.04],"rot":[0.0,0.0,0.0],"size":[0.045,0.06,0.045],"color":[0.95,0.9,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"Egg11","shape":"cylinder","pos":[0.075,-0.0125,-0.04],"rot":[0.0,0.0,0.0],"size":[0.045,0.06,0.045],"color":[0.95,0.9,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"Egg12","shape":"cylinder","pos":[0.125,-0.0125,-0.04],"rot":[0.0,0.0,0.0],"size":[0.045,0.06,0.045],"color":[0.95,0.9,0.8],"smooth":0.05,"metal":0.0}
+]}

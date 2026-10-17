@@ -1,0 +1,12 @@
+{"version": 1, "id": "Boxers_RedStripes", "baseHeight": 0.07, "name": "Boxers Red Stripes", "model": "gpt-oss:120b", "notes": "Boxers Red Stripes – flat layout of boxer‑briefs about 0.34 m total width (including waistband) × 0.25 m length, ~2 cm thick. Main fabric uses the tint colour, a thin red stripe runs down each outer leg edge, and simple stitching lines plus a small tag add detail.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[0.0,-0.0025,0.125],"rot":[0.0,0.0,0.0],"size":[0.34,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftLegPanel","shape":"cube","pos":[-0.075,0.0,-0.02],"rot":[0.0,0.0,0.0],"size":[0.14,0.02,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightLegPanel","shape":"cube","pos":[0.075,0.0,-0.02],"rot":[0.0,0.0,0.0],"size":[0.14,0.02,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CenterSeam","shape":"cube","pos":[0.0,0.0,-0.02],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.25],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"StripeLOuter","shape":"cube","pos":[-0.1475,-0.001,-0.02],"rot":[0.0,0.0,0.0],"size":[0.005,0.018,0.25],"color":[1.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"StripeROuter","shape":"cube","pos":[0.1475,-0.001,-0.02],"rot":[0.0,0.0,0.0],"size":[0.005,0.018,0.25],"color":[1.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,0.001,0.123],"rot":[0.0,0.0,0.0],"size":[0.34,0.004,0.02],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideLeft","shape":"cube","pos":[-0.144,-0.001,-0.02],"rot":[0.0,0.0,0.0],"size":[0.004,0.018,0.25],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"StitchSideRight","shape":"cube","pos":[0.144,-0.001,-0.02],"rot":[0.0,0.0,0.0],"size":[0.004,0.018,0.25],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[0.0,-0.0075,-0.14],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.01],"color":[1.0,0.9,0.2],"smooth":0.05,"metal":0.0}
+]}

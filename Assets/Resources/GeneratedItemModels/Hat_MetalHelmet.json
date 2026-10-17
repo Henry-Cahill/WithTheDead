@@ -1,0 +1,13 @@
+{"version": 1, "id": "Hat_MetalHelmet", "baseHeight": 0.078, "name": "Hat Metal Helmet", "model": "gpt-oss:120b", "notes": "Metal helmet laid flat like a product photo. Overall diameter ~0.28 m including brim, total height ~0.12 m. Main crown slab, outer/inner rim, interior lining, six rivets around the rim and a central vent hole.", "score": 6, "parts": [
+  {"name":"BrimOuter","shape":"cylinder","pos":[0.0,-0.014,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.008,0.28],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"BrimInner","shape":"cylinder","pos":[0.0,-0.014,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.008,0.26],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"Crown","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.22],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"Lining","shape":"cylinder","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.01,0.2],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"VentHole","shape":"cylinder","pos":[0.0,0.008,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.006,0.02],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet01","shape":"cylinder","pos":[0.13,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet02","shape":"cylinder","pos":[-0.065,-0.009,0.1127],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet03","shape":"cylinder","pos":[-0.065,-0.009,-0.1127],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet04","shape":"cylinder","pos":[0.065,-0.009,0.1127],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet05","shape":"cylinder","pos":[0.065,-0.009,-0.1127],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet06","shape":"cylinder","pos":[-0.13,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.55,0.5,0.6],"smooth":0.6,"metal":1.0}
+]}

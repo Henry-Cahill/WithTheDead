@@ -1,0 +1,13 @@
+{"version": 1, "id": "Boilersuit_BlueRed", "baseHeight": 0.075, "name": "Boilersuit Blue Red", "model": "gpt-oss:120b", "notes": "Flat boilersuit (coveralls) about 1 m long × 0.6 m wide, 3 cm thick. Main torso panel with left/right sleeves, collar & neck opening, front pockets, waist belt and sleeve cuffs.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,0.0,-0.035],"rot":[0.0,0.0,0.0],"size":[0.6,0.03,1.0],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftSleeve","shape":"cube","pos":[-0.5,0.0,0.215],"rot":[0.0,0.0,0.0],"size":[0.4,0.03,0.5],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightSleeve","shape":"cube","pos":[0.5,0.0,0.215],"rot":[0.0,0.0,0.0],"size":[0.4,0.03,0.5],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cube","pos":[0.0,0.0,0.525],"rot":[0.0,0.0,0.0],"size":[0.2,0.03,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.0,0.0,0.525],"rot":[0.0,0.0,0.0],"size":[0.14,0.025,0.14],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.18,0.0,0.265],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.2],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.18,0.0,0.265],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.2],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Belt","shape":"cube","pos":[0.0,0.0,-0.085],"rot":[0.0,0.0,0.0],"size":[0.6,0.01,0.12],"color":[0.3,0.25,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"HemFront","shape":"cube","pos":[0.0,0.0,-0.535],"rot":[0.0,0.0,0.0],"size":[0.6,0.01,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.5,0.0,-0.035],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.5,0.0,-0.035],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

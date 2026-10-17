@@ -1,0 +1,14 @@
+{"version": 1, "id": "Wound_Abdomen_Scratch_Male", "baseHeight": 0.075, "name": "Wound Abdomen Scratch Male", "model": "gpt-oss:120b", "notes": "Small torn patch of abdominal skin (scratch) about 10 cm long × 7 cm wide × 1 cm thick, lying flat on the floor. Main brown‑tan tint with darker blood splatter and ragged edges made from overlapping cubes and ellipsoids.", "score": 6, "parts": [
+  {"name":"BasePatch","shape":"cube","pos":[-0.0003,-0.006,-0.0006],"rot":[0.0,0.0,0.0],"size":[0.1,0.01,0.07],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeRag1","shape":"cube","pos":[-0.0453,-0.006,0.0294],"rot":[0.0,15.0,0.0],"size":[0.02,0.012,0.015],"color":[0.55,0.53,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeRag2","shape":"cube","pos":[-0.0453,-0.006,-0.0306],"rot":[0.0,-12.0,0.0],"size":[0.018,0.012,0.014],"color":[0.55,0.53,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeRag3","shape":"cube","pos":[0.0447,-0.006,0.0244],"rot":[0.0,-10.0,0.0],"size":[0.022,0.012,0.016],"color":[0.55,0.53,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeRag4","shape":"cube","pos":[0.0447,-0.006,-0.0256],"rot":[0.0,8.0,0.0],"size":[0.019,0.012,0.015],"color":[0.55,0.53,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"BloodSpot1","shape":"sphere","pos":[-0.0203,0.0,0.0094],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.35,0.05,0.05],"smooth":0.12,"metal":0.0},
+  {"name":"BloodSpot2","shape":"sphere","pos":[0.0297,0.0,-0.0156],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.4,0.07,0.07],"smooth":0.12,"metal":0.0},
+  {"name":"Lump1","shape":"sphere","pos":[-0.0153,0.0,-0.0256],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.58,0.55,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Lump2","shape":"sphere","pos":[0.0197,0.0,0.0244],"rot":[0.0,0.0,0.0],"size":[0.022,0.028,0.022],"color":[0.58,0.55,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"TearFold","shape":"cube","pos":[-0.0003,-0.002,-0.0006],"rot":[0.0,0.0,0.0],"size":[0.1,0.004,0.005],"color":[0.52,0.5,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"DryCrust","shape":"cube","pos":[-0.0303,0.0,0.0294],"rot":[0.0,0.0,0.0],"size":[0.015,0.003,0.012],"color":[0.45,0.43,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"DryCrust2","shape":"cube","pos":[0.0347,0.0,-0.0326],"rot":[0.0,0.0,0.0],"size":[0.014,0.003,0.011],"color":[0.45,0.43,0.38],"smooth":0.08,"metal":0.0}
+]}
