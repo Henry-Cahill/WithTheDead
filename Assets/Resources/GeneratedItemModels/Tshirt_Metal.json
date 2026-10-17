@@ -1,0 +1,15 @@
+{"version": 1, "id": "Tshirt_Metal", "baseHeight": 0.08, "name": "Tshirt Metal", "model": "gpt-oss:120b", "notes": "Flat metal‑tinted T‑shirt about 0.58 m long × 0.78 m wide, ~0.03 m thick, laid flat with the neck opening toward +X. Includes torso panel, shoulder block, sleeves with cuffs, ribbed collar and neck hole, bottom hem and seam details plus a pair of small rivets.", "score": 6, "parts": [
+  {"name":"TorsoPanel","shape":"cube","pos":[-0.025,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.56,0.03,0.46],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.5},
+  {"name":"ShoulderBlock","shape":"cube","pos":[0.175,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.032,0.5],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.5},
+  {"name":"SleeveL","shape":"cube","pos":[0.123,-0.005,0.3],"rot":[0.0,-25.0,0.0],"size":[0.16,0.028,0.2],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.5},
+  {"name":"SleeveR","shape":"cube","pos":[0.123,-0.005,-0.3],"rot":[0.0,25.0,0.0],"size":[0.16,0.028,0.2],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.5},
+  {"name":"CuffL","shape":"cube","pos":[0.081,-0.004,0.391],"rot":[0.0,-25.0,0.0],"size":[0.165,0.03,0.03],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.5},
+  {"name":"CuffR","shape":"cube","pos":[0.081,-0.004,-0.391],"rot":[0.0,25.0,0.0],"size":[0.165,0.03,0.03],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.5},
+  {"name":"Collar","shape":"cylinder","pos":[0.23,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.035,0.16],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.5},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.23,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.036,0.13],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.5},
+  {"name":"Hem","shape":"cube","pos":[-0.295,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.032,0.46],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.5},
+  {"name":"TopSeam","shape":"cube","pos":[-0.025,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.56,0.004,0.02],"color":[0.45,0.4,0.5],"smooth":0.3,"metal":0.2},
+  {"name":"BottomSeam","shape":"cube","pos":[-0.025,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.56,0.004,0.02],"color":[0.45,0.4,0.5],"smooth":0.3,"metal":0.2},
+  {"name":"RivetL","shape":"cylinder","pos":[0.175,0.01,0.22],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.8,0.78,0.85],"smooth":0.7,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[0.175,0.01,-0.22],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.8,0.78,0.85],"smooth":0.7,"metal":1.0}
+]}

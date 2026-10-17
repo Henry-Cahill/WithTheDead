@@ -1,0 +1,12 @@
+{"version": 1, "id": "IceHockeyNeckGuard", "baseHeight": 0.072, "name": "Ice Hockey Neck Guard", "model": "gpt-oss:120b", "notes": "Ice hockey neck guard ~0.26 m wide × 0.15 m tall × 0.02 m thick, laid flat on the floor. Main foam‑plastic body with two side straps, a pair of ventilation holes, thin edge trims and a centre seam.", "score": 6, "parts": [
+  {"name":"BasePlate","shape":"cube","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.02,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HoleL","shape":"cylinder","pos":[-0.07,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.018,0.025],"color":[0.2,0.2,0.2],"smooth":0.02,"metal":0.0},
+  {"name":"HoleR","shape":"cylinder","pos":[0.07,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.018,0.025],"color":[0.2,0.2,0.2],"smooth":0.02,"metal":0.0},
+  {"name":"StrapL","shape":"cylinder","pos":[-0.12,0.006,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.06,0.004],"color":[0.1,0.1,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"StrapR","shape":"cylinder","pos":[0.12,0.006,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.06,0.004],"color":[0.1,0.1,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.0,0.01,0.075],"rot":[0.0,0.0,0.0],"size":[0.26,0.004,0.015],"color":[0.65,0.6,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[0.0,0.01,-0.075],"rot":[0.0,0.0,0.0],"size":[0.26,0.004,0.015],"color":[0.65,0.6,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.13,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.15],"color":[0.65,0.6,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.13,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.15],"color":[0.65,0.6,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"SeamCenter","shape":"cube","pos":[0.0,0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.002,0.015],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

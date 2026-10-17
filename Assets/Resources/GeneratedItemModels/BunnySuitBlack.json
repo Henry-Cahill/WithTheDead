@@ -1,0 +1,15 @@
+{"version": 1, "id": "BunnySuitBlack", "baseHeight": 0.1325, "name": "Bunny Suit Black", "model": "gpt-oss:120b", "notes": "Flat black bunny‑suit costume ~0.78 m long x 0.55 m wide x 0.03 m thick: central torso panel, two sleeves, two pant legs, a hood with floppy ears, collar band and simple cuff/hem trims.", "score": 7, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.0425,-0.1],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.4],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.375,-0.0425,0.025],"rot":[0.0,0.0,0.0],"size":[0.2,0.028,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[-0.375,-0.0425,0.025],"rot":[0.0,0.0,0.0],"size":[0.2,0.028,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[0.18,-0.0425,-0.22],"rot":[0.0,0.0,0.0],"size":[0.18,0.03,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[-0.18,-0.0425,-0.22],"rot":[0.0,0.0,0.0],"size":[0.18,0.03,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Hood","shape":"cylinder","pos":[0.0,-0.0325,0.15],"rot":[0.0,0.0,0.0],"size":[0.3,0.08,0.3],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EarL","shape":"cylinder","pos":[-0.08,0.0125,0.25],"rot":[0.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EarR","shape":"cylinder","pos":[0.08,0.0125,0.25],"rot":[0.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.0,-0.0375,0.1],"rot":[0.0,0.0,0.0],"size":[0.55,0.008,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.375,-0.0385,0.025],"rot":[0.0,0.0,0.0],"size":[0.2,0.006,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[-0.375,-0.0385,0.025],"rot":[0.0,0.0,0.0],"size":[0.2,0.006,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemL","shape":"cube","pos":[0.18,-0.0385,-0.22],"rot":[0.0,0.0,0.0],"size":[0.18,0.006,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemR","shape":"cube","pos":[-0.18,-0.0385,-0.22],"rot":[0.0,0.0,0.0],"size":[0.18,0.006,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

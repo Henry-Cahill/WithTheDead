@@ -1,0 +1,12 @@
+{"version": 1, "id": "Apron_Jay", "baseHeight": 0.0762, "name": "Apron Jay", "model": "gpt-oss:120b", "notes": "Apron Jay – beige‑tan cloth apron lying flat on the floor (≈ 0.45 m wide × 0.55 m tall × 0.025 m thick). Includes main panel, neck loops, back strap, two front waist ties, a front pocket with flap and edge hems.", "score": 7, "parts": [
+  {"name":"MainPanel","shape":"cube","pos":[0.0,-0.0037,-0.0663],"rot":[0.0,0.0,0.0],"size":[0.45,0.025,0.55],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"NeckLoopL","shape":"cylinder","pos":[-0.2,0.0088,-0.3363],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.03],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"NeckLoopR","shape":"cylinder","pos":[0.2,0.0088,-0.3363],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.03],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"BackStrap","shape":"cube","pos":[0.0,0.0062,-0.3512],"rot":[0.0,0.0,0.0],"size":[0.45,0.01,0.015],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"WaistTieL","shape":"cube","pos":[-0.18,-0.0112,0.2337],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.25],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"WaistTieR","shape":"cube","pos":[0.18,-0.0112,0.2337],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.25],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SideHemTop","shape":"cube","pos":[0.0,0.0088,-0.3463],"rot":[0.0,0.0,0.0],"size":[0.45,0.004,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SideHemBottom","shape":"cube","pos":[0.0,0.0088,0.2138],"rot":[0.0,0.0,0.0],"size":[0.45,0.004,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocket","shape":"cube","pos":[0.0,-0.0013,0.0837],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.12],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFlap","shape":"cube","pos":[0.0,0.0027,0.1437],"rot":[0.0,0.0,0.0],"size":[0.22,0.008,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

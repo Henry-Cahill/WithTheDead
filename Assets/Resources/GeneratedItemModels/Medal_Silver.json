@@ -1,0 +1,8 @@
+{"version": 1, "id": "Medal_Silver", "baseHeight": 0.0665, "name": "Medal Silver", "model": "gpt-oss:120b", "notes": "Silver medal ~5 cm diameter, 6 mm thick, lying flat on the floor. Consists of a slightly raised rim, a central disc, a tiny loop for the ribbon and two short crossed ribbons.", "score": 6, "parts": [
+  {"name":"Rim","shape":"cylinder","pos":[0.0,-0.0035,-0.0068],"rot":[0.0,0.0,0.0],"size":[0.06,0.006,0.06],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"CenterDisc","shape":"cylinder","pos":[0.0,-0.003,-0.0068],"rot":[0.0,0.0,0.0],"size":[0.048,0.005,0.048],"color":[0.6,0.58,0.5],"smooth":0.65,"metal":1.0},
+  {"name":"Loop","shape":"cylinder","pos":[0.0,0.0,0.0212],"rot":[90.0,0.0,0.0],"size":[0.012,0.003,0.012],"color":[0.6,0.58,0.5],"smooth":0.65,"metal":1.0},
+  {"name":"RibbonL","shape":"cylinder","pos":[-0.015,0.0025,0.0212],"rot":[90.0,0.0,45.0],"size":[0.004,0.04,0.004],"color":[0.4,0.2,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"RibbonR","shape":"cylinder","pos":[0.015,0.0025,0.0212],"rot":[90.0,0.0,-45.0],"size":[0.004,0.04,0.004],"color":[0.4,0.2,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"RibbonTie","shape":"cube","pos":[0.0,0.0045,0.0212],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.4,0.2,0.1],"smooth":0.3,"metal":0.0}
+]}

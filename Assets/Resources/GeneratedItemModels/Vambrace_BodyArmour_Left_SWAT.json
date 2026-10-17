@@ -1,0 +1,14 @@
+{"version": 1, "id": "Vambrace_BodyArmour_Left_SWAT", "baseHeight": 0.2, "name": "Vambrace Body Armour Left SWAT", "model": "gpt-oss:120b", "notes": "Left‑arm vambrace (forearm guard) ~0.28 m long, outer diameter ≈0.11 m, wall thickness ≈0.015 m. Main tube lies flat on its side; front & back steel plates, top strap with rivets and a buckle give the recognisable silhouette.", "score": 6, "parts": [
+  {"name":"MainTube","shape":"cylinder","pos":[0.0,-0.0125,0.0],"rot":[0.0,0.0,90.0],"size":[0.11,0.28,0.11],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.8},
+  {"name":"InnerLining","shape":"cylinder","pos":[0.0,-0.0125,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.28,0.09],"color":[0.45,0.43,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"FrontPlate","shape":"cube","pos":[0.0,-0.0125,0.06],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.01],"color":[0.55,0.53,0.48],"smooth":0.5,"metal":0.9},
+  {"name":"BackPlate","shape":"cube","pos":[0.0,-0.0125,-0.06],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.01],"color":[0.55,0.53,0.48],"smooth":0.5,"metal":0.9},
+  {"name":"TopStrap","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.28,0.01,0.015],"color":[0.35,0.3,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"Buckle","shape":"cylinder","pos":[-0.12,0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.2,0.18,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"RivetFL","shape":"sphere","pos":[-0.13,-0.0025,0.055],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.18,0.15],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFR","shape":"sphere","pos":[0.13,-0.0025,0.055],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.18,0.15],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[-0.13,-0.0025,-0.055],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.18,0.15],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.13,-0.0025,-0.055],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.18,0.15],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeLump1","shape":"sphere","pos":[-0.14,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.55,0.53,0.48],"smooth":0.5,"metal":0.9},
+  {"name":"EdgeLump2","shape":"sphere","pos":[0.14,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.55,0.53,0.48],"smooth":0.5,"metal":0.9}
+]}

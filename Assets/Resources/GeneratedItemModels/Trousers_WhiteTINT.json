@@ -1,0 +1,19 @@
+{"version": 1, "id": "Trousers_WhiteTINT", "baseHeight": 0.074, "name": "Trousers White TINT", "model": "gpt-oss:120b", "notes": "Flat white‑tinted trousers laid out as a product photo. Overall footprint ≈ 1.00 m long × 0.55 m wide, thickness ≈ 0.02 m. Two legs are side‑by‑side (gap ~0.04 m) with a tapered calf, a waistband at the top, front pockets on each leg, a central fly on the right leg with three metal buttons, outer seam strips and bottom hems for clear silhouette.", "score": 6, "parts": [
+  {"name":"LegL_Upper","shape":"cube","pos":[-0.005,-0.004,-0.2175],"rot":[0.0,0.0,0.0],"size":[1.0,0.02,0.26],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegL_Lower","shape":"cube","pos":[-0.005,-0.005,-0.2175],"rot":[0.0,0.0,0.0],"size":[1.0,0.018,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR_Upper","shape":"cube","pos":[-0.005,-0.004,0.0625],"rot":[0.0,0.0,0.0],"size":[1.0,0.02,0.26],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR_Lower","shape":"cube","pos":[-0.005,-0.005,0.0625],"rot":[0.0,0.0,0.0],"size":[1.0,0.018,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.435,0.001,-0.0775],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.55],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[0.295,0.004,-0.1975],"rot":[0.0,0.0,0.0],"size":[0.18,0.016,0.1],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.295,0.004,0.3025],"rot":[0.0,0.0,0.0],"size":[0.18,0.016,0.1],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Fly","shape":"cube","pos":[0.315,0.004,0.1725],"rot":[0.0,0.0,0.0],"size":[0.38,0.016,0.06],"color":[0.48,0.43,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"Button1","shape":"cylinder","pos":[0.355,0.0085,0.1925],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.018],"color":[0.8,0.8,0.8],"smooth":0.4,"metal":1.0},
+  {"name":"Button2","shape":"cylinder","pos":[0.405,0.0085,0.1925],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.018],"color":[0.8,0.8,0.8],"smooth":0.4,"metal":1.0},
+  {"name":"Button3","shape":"cylinder","pos":[0.455,0.0085,0.1925],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.018],"color":[0.8,0.8,0.8],"smooth":0.4,"metal":1.0},
+  {"name":"SeamOuterL","shape":"cylinder","pos":[-0.005,-0.004,-0.3475],"rot":[0.0,0.0,90.0],"size":[0.008,1.0,0.008],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"SeamOuterR","shape":"cylinder","pos":[-0.005,-0.004,0.1925],"rot":[0.0,0.0,90.0],"size":[0.008,1.0,0.008],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"HemL","shape":"cube","pos":[-0.495,0.005,-0.2175],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.26],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemR","shape":"cube","pos":[-0.495,0.005,0.0625],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.26],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"InnerSeamL","shape":"cylinder","pos":[-0.005,-0.003,-0.2175],"rot":[0.0,0.0,90.0],"size":[0.004,1.0,0.004],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"InnerSeamR","shape":"cylinder","pos":[-0.005,-0.003,0.0625],"rot":[0.0,0.0,90.0],"size":[0.004,1.0,0.004],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0}
+]}

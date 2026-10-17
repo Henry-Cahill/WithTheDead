@@ -1,0 +1,13 @@
+{"version": 1, "id": "Kneepad_Right_Leather", "baseHeight": 0.0727, "name": "Kneepad Right Leather", "model": "gpt-oss:120b", "notes": "Right‑hand leather kneepad ~0.18 m wide × 0.22 m tall × 0.015 m thick, rounded front, thin inner foam layer, top strap with metal buckle and rivet, stitched edges for a clear silhouette.", "score": 6, "parts": [
+  {"name":"PadBase","shape":"cube","pos":[0.0,-0.0048,-0.03],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontRound","shape":"sphere","pos":[0.0,-0.0048,0.08],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.12],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"InnerFoam","shape":"cube","pos":[0.0,-0.0083,-0.03],"rot":[0.0,0.0,0.0],"size":[0.16,0.008,0.2],"color":[0.78,0.77,0.73],"smooth":0.12,"metal":0.0},
+  {"name":"StrapTop","shape":"cube","pos":[0.0,0.0053,-0.03],"rot":[0.0,0.0,0.0],"size":[0.18,0.005,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BackStrap","shape":"cube","pos":[0.0,0.0053,-0.11],"rot":[0.0,0.0,0.0],"size":[0.18,0.005,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Buckle","shape":"cylinder","pos":[0.07,0.0077,-0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet","shape":"cylinder","pos":[0.07,0.0107,-0.03],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.8,0.78,0.76],"smooth":0.6,"metal":1.0},
+  {"name":"StitchTopFront","shape":"cube","pos":[0.0,0.0032,0.08],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.002],"color":[0.35,0.3,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottomFront","shape":"cube","pos":[0.0,-0.0118,0.08],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.002],"color":[0.35,0.3,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLeftSide","shape":"cube","pos":[-0.09,-0.0048,-0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.22],"color":[0.35,0.3,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRightSide","shape":"cube","pos":[0.09,-0.0048,-0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.22],"color":[0.35,0.3,0.25],"smooth":0.05,"metal":0.0}
+]}

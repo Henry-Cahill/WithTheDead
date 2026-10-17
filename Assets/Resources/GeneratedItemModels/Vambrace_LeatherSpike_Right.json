@@ -1,0 +1,9 @@
+{"version": 1, "id": "Vambrace_LeatherSpike_Right", "baseHeight": 0.1, "name": "Vambrace Leather Spike Right", "model": "gpt-oss:120b", "notes": "Leather vambrace ~0.28 m long, 0.08 m wide, 0.04 m thick, lying on its side (X‑axis). Main cuff of tanned leather with a slightly darker inner liner and four short metal spikes projecting from the top surface.", "score": 6, "parts": [
+  {"name":"CuffOuter","shape":"cylinder","pos":[0.0,-0.0,-0.0055],"rot":[0.0,0.0,90.0],"size":[0.08,0.28,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffInner","shape":"cylinder","pos":[0.0,-0.002,-0.0055],"rot":[0.0,0.0,90.0],"size":[0.072,0.28,0.072],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Spike1","shape":"cylinder","pos":[-0.09,0.03,-0.0055],"rot":[90.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"Spike2","shape":"cylinder","pos":[-0.03,0.03,-0.0055],"rot":[90.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"Spike3","shape":"cylinder","pos":[0.03,0.03,-0.0055],"rot":[90.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"Spike4","shape":"cylinder","pos":[0.09,0.03,-0.0055],"rot":[90.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"StrapBand","shape":"cube","pos":[0.0,0.02,0.0395],"rot":[0.0,0.0,0.0],"size":[0.28,0.008,0.012],"color":[0.55,0.5,0.45],"smooth":0.05,"metal":0.0}
+]}

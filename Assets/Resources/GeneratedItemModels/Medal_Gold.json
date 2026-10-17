@@ -1,0 +1,8 @@
+{"version": 1, "id": "Medal_Gold", "baseHeight": 0.076, "name": "Medal Gold", "model": "gpt-oss:120b", "notes": "Gold medal lying on its side (edge) as a flat disc ≈ 30 mm diameter × 4 mm thick, resting on the floor; simple gold‑tinted metal cylinder.", "score": 6, "parts": [
+  {"name":"Disc","shape":"cylinder","pos":[0.0,0.0,0.0208],"rot":[0.0,0.0,90.0],"size":[0.03,0.004,0.03],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RimEdge","shape":"cylinder","pos":[0.0,0.0,0.0208],"rot":[0.0,0.0,90.0],"size":[0.032,0.0045,0.032],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"StampDetail","shape":"cube","pos":[0.0,0.003,0.0208],"rot":[0.0,0.0,0.0],"size":[0.008,0.002,0.008],"color":[0.45,0.44,0.38],"smooth":0.5,"metal":1.0},
+  {"name":"RibbonLoop","shape":"cube","pos":[0.0,0.003,0.0208],"rot":[0.0,0.0,0.0],"size":[0.015,0.002,0.004],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"RibbonTail","shape":"cube","pos":[0.0,-0.005,0.0008],"rot":[0.0,0.0,0.0],"size":[0.015,0.002,0.06],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"RibbonEnd","shape":"cylinder","pos":[0.0,-0.005,-0.0293],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.015],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0}
+]}

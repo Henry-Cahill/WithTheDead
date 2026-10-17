@@ -1,0 +1,13 @@
+{"version": 1, "id": "Tshirt_PoliceGrey", "baseHeight": 0.08, "name": "Tshirt Police Grey", "model": "gpt-oss:120b", "notes": "Flat police‑grey T‑shirt ~0.56 m long × 0.38 m wide, 3 cm thick. Main torso panel, shoulder strip, angled short sleeves with cuffs, front collar band, neck opening, rear hem, a small silver badge on the left chest and a thin navy stripe across the front.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[-0.02,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.56,0.03,0.38],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Shoulders","shape":"cube","pos":[0.19,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.032,0.58],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.128,-0.005,0.33],"rot":[0.0,-25.0,0.0],"size":[0.16,0.028,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.128,-0.005,-0.33],"rot":[0.0,25.0,0.0],"size":[0.16,0.028,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.086,-0.004,0.44],"rot":[0.0,0.0,0.0],"size":[0.165,0.03,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.086,-0.004,-0.44],"rot":[0.0,0.0,0.0],"size":[0.165,0.03,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.235,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.38],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.235,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.036,0.14],"color":[0.4,0.38,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[-0.29,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.032,0.38],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Badge","shape":"cube","pos":[0.06,0.002,-0.12],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.06],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"Stripe","shape":"cylinder","pos":[0.03,-0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.4,0.02],"color":[0.1,0.2,0.5],"smooth":0.3,"metal":0.0}
+]}

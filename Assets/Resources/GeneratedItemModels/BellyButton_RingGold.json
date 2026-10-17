@@ -1,0 +1,10 @@
+{"version": 1, "id": "BellyButton_RingGold", "baseHeight": 0.0656, "name": "Belly Button Ring Gold", "model": "gpt-oss:120b", "notes": "Gold belly‑button ring about 2.5 cm diameter hoop with a small 0.8 cm decorative ball, lying flat on the floor.", "score": 6, "parts": [
+  {"name":"Hoop","shape":"cylinder","pos":[-0.001,-0.0034,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.002,0.025],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Ball","shape":"sphere","pos":[-0.001,0.0016,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Clasp","shape":"cube","pos":[0.0115,-0.0029,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.004],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Post","shape":"cylinder","pos":[-0.001,-0.0014,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.006,0.004],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Base","shape":"cube","pos":[-0.001,-0.0039,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.002,0.025],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"DetailRing","shape":"cylinder","pos":[-0.001,-0.0032,0.0],"rot":[0.0,0.0,0.0],"size":[0.023,0.002,0.023],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"ShineSpot","shape":"sphere","pos":[-0.007,-0.0019,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[1.0,0.9,0.7],"smooth":0.8,"metal":1.0},
+  {"name":"ShadowRing","shape":"cylinder","pos":[-0.001,-0.0046,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.002,0.025],"color":[0.3,0.28,0.25],"smooth":0.1,"metal":0.0}
+]}

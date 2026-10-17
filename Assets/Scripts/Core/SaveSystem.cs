@@ -196,6 +196,15 @@ namespace CloneZ
                 if (cv != null) data.Props.Add(new PropSave { Kind = PropSave.KindCover, Position = cv.transform.position, Size = cv.Size });
             }
 
+            // The starter home's furniture; like the props, anything dismantled simply isn't written.
+            data.HasFurniture = true;
+            for (int i = 0; i < HomeFurniture.All.Count; i++)
+            {
+                HomeFurniture f = HomeFurniture.All[i];
+                if (f != null)
+                    data.Furniture.Add(new FurnitureSave { Kind = (int)f.Kind, Position = f.transform.position, Yaw = f.Yaw, Seed = f.Seed });
+            }
+
             return data;
         }
 
@@ -325,6 +334,12 @@ namespace CloneZ
             if (WaterMains.Instance != null) WaterMains.Instance.Restore(data.MainsOn, data.ShutoffDay);
             GameManager.Instance?.RestoreProgress(data.Kills, data.Wave, data.TimeSurvived);
 
+            // House pieces first: the containers, fittings and furniture standing on the floor rest on it.
+            for (int i = 0; i < data.House.Count; i++)
+            {
+                HousePieceSave h = data.House[i];
+                BuildPiece.SpawnRestored(world, (BuildPieceType)h.Type, h.Position, h.Yaw, h.Health, h.MaxHealth);
+            }
             for (int i = 0; i < data.Containers.Count; i++)
             {
                 ContainerSave c = data.Containers[i];
@@ -353,11 +368,6 @@ namespace CloneZ
                 BarricadeSave b = data.Barricades[i];
                 Barricade.SpawnRestored(world, b.Position, b.Forward, b.Planks, b.Health, b.MaxHealth, b.PerPlank);
             }
-            for (int i = 0; i < data.House.Count; i++)
-            {
-                HousePieceSave h = data.House[i];
-                BuildPiece.SpawnRestored(world, (BuildPieceType)h.Type, h.Position, h.Yaw, h.Health, h.MaxHealth);
-            }
             for (int i = 0; i < data.Farm.Count; i++)
             {
                 FarmPlotSave f = data.Farm[i];
@@ -379,6 +389,12 @@ namespace CloneZ
                     case PropSave.KindStove: CookingStation.Spawn(world, p.Position); break;
                     case PropSave.KindCover: Cover.Spawn(world, p.Position, p.Size); break;
                 }
+            }
+            for (int i = 0; i < data.Furniture.Count; i++)
+            {
+                FurnitureSave f = data.Furniture[i];
+                if (!System.Enum.IsDefined(typeof(HomeFurnitureKind), f.Kind)) continue;
+                HomeFurniture.Spawn(world, (HomeFurnitureKind)f.Kind, f.Position, f.Yaw, f.Seed);
             }
         }
 

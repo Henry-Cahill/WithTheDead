@@ -1,0 +1,12 @@
+{"version": 1, "id": "ElbowPad_Right", "baseHeight": 0.15, "name": "Elbow Pad Right", "model": "gpt-oss:120b", "notes": "Elbow pad (right) ~0.18 m wide × 0.12 m deep × 0.03 m thick, lying flat on the floor. Main fabric cover with a softer foam core, a small strap loop on the front edge, a velcro patch, and thin rim strips to define the outline.", "score": 6, "parts": [
+  {"name":"Cover","shape":"cube","pos":[0.0,-0.003,-0.0095],"rot":[0.0,0.0,0.0],"size":[0.18,0.03,0.12],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FoamCore","shape":"cube","pos":[0.0,-0.004,-0.0095],"rot":[0.0,0.0,0.0],"size":[0.16,0.028,0.1],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StrapLoop","shape":"cylinder","pos":[0.0,0.002,0.0605],"rot":[0.0,0.0,90.0],"size":[0.01,0.08,0.01],"color":[0.4,0.4,0.42],"smooth":0.4,"metal":0.0},
+  {"name":"VelcroPatch","shape":"cube","pos":[-0.04,0.003,0.0605],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.02],"color":[0.35,0.3,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"RimFront","shape":"cube","pos":[0.0,-0.001,0.0495],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.002],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"RimBack","shape":"cube","pos":[0.0,-0.001,-0.0685],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.002],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"RimLeft","shape":"cube","pos":[-0.089,-0.001,-0.0095],"rot":[0.0,0.0,0.0],"size":[0.002,0.004,0.12],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"RimRight","shape":"cube","pos":[0.089,-0.001,-0.0095],"rot":[0.0,0.0,0.0],"size":[0.002,0.004,0.12],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"StitchTop","shape":"cylinder","pos":[0.0,-0.0,0.0495],"rot":[0.0,90.0,0.0],"size":[0.004,0.18,0.004],"color":[0.45,0.44,0.42],"smooth":0.1,"metal":0.0},
+  {"name":"StitchBottom","shape":"cylinder","pos":[0.0,-0.0,-0.0685],"rot":[0.0,90.0,0.0],"size":[0.004,0.18,0.004],"color":[0.45,0.44,0.42],"smooth":0.1,"metal":0.0}
+]}

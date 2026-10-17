@@ -1,0 +1,14 @@
+{"version": 1, "id": "Necklace_Teeth", "baseHeight": 0.0825, "name": "Necklace Teeth", "model": "gpt-oss:120b", "notes": "Necklace of animal teeth ~0.25 m long, thin (≈0.02 m) chain with five dangling tooth pendants; laid on the floor, chain resting on its side and teeth hanging slightly above it.", "score": 6, "parts": [
+  {"name":"Chain","shape":"cylinder","pos":[0.0075,-0.0125,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.25,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Clasp","shape":"cube","pos":[-0.1225,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ToothL2","shape":"sphere","pos":[-0.0725,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.04,0.015],"color":[0.65,0.62,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"ToothL1","shape":"sphere","pos":[-0.0325,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.04,0.015],"color":[0.65,0.62,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"ToothC","shape":"sphere","pos":[0.0075,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.04,0.015],"color":[0.65,0.62,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"ToothR1","shape":"sphere","pos":[0.0475,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.04,0.015],"color":[0.65,0.62,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"ToothR2","shape":"sphere","pos":[0.0875,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.04,0.015],"color":[0.65,0.62,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"RivetL2","shape":"sphere","pos":[-0.0725,0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.5,"metal":1.0},
+  {"name":"RivetL1","shape":"sphere","pos":[-0.0325,0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.5,"metal":1.0},
+  {"name":"RivetC","shape":"sphere","pos":[0.0075,0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.5,"metal":1.0},
+  {"name":"RivetR1","shape":"sphere","pos":[0.0475,0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.5,"metal":1.0},
+  {"name":"RivetR2","shape":"sphere","pos":[0.0875,0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.5,"metal":1.0}
+]}

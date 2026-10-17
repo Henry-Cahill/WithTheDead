@@ -1,0 +1,12 @@
+{"version": 1, "id": "Trousers_CamoDesert", "baseHeight": 0.075, "name": "Trousers Camo Desert", "model": "gpt-oss:120b", "notes": "Flat desert‑camo trousers spread out (≈0.60 m wide × 1.05 m long, 3 cm thick). Main body in camo tint, with waistband, two leg panels, front pockets and four belt‑loop studs.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0,0.4525],"rot":[0.0,0.0,0.0],"size":[0.6,0.03,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.15,0.0,-0.0725],"rot":[0.0,0.0,0.0],"size":[0.28,0.03,0.93],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.15,0.0,-0.0725],"rot":[0.0,0.0,0.0],"size":[0.28,0.03,0.93],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.2,0.0,0.4975],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.08],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.2,0.0,0.4975],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.08],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopFL","shape":"cylinder","pos":[-0.295,0.0,0.5025],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"BeltLoopFR","shape":"cylinder","pos":[0.295,0.0,0.5025],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"BeltLoopBL","shape":"cylinder","pos":[-0.295,0.0,0.4025],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"BeltLoopBR","shape":"cylinder","pos":[0.295,0.0,0.4025],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"CrotchSeam","shape":"cube","pos":[0.0,0.0,-0.2625],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.1],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

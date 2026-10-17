@@ -1,0 +1,14 @@
+{"version": 1, "id": "ShinKneeGuardSpike_L_Baseball", "baseHeight": 0.085, "name": "Shin Knee Guard Spike L Baseball", "model": "gpt-oss:120b", "notes": "Shin‑knee guard (left) ~0.35 m long × 0.12 m wide, 2 cm thick, lying on its side. Main metal plate, front strap, five upward spikes, a few rivet heads and a thin leather backing.", "score": 6, "parts": [
+  {"name":"Plate","shape":"cube","pos":[0.0,-0.015,0.01],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Strap","shape":"cylinder","pos":[0.0,-0.01,0.08],"rot":[0.0,0.0,90.0],"size":[0.03,0.35,0.03],"color":[0.2,0.15,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"LeatherBack","shape":"cube","pos":[0.0,-0.02,-0.045],"rot":[0.0,0.0,0.0],"size":[0.33,0.008,0.1],"color":[0.35,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"SpikeL","shape":"cylinder","pos":[-0.12,0.01,0.01],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"SpikeL2","shape":"cylinder","pos":[-0.06,0.01,0.01],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"SpikeC","shape":"cylinder","pos":[0.0,0.01,0.01],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"SpikeR2","shape":"cylinder","pos":[0.06,0.01,0.01],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"SpikeR","shape":"cylinder","pos":[0.12,0.01,0.01],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"RivetFrontL","shape":"sphere","pos":[-0.14,-0.01,0.065],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFrontR","shape":"sphere","pos":[0.14,-0.01,0.065],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBackL","shape":"sphere","pos":[-0.14,-0.01,-0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBackR","shape":"sphere","pos":[0.14,-0.01,-0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0}
+]}

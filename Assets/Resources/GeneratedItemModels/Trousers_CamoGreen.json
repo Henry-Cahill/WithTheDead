@@ -1,0 +1,14 @@
+{"version": 1, "id": "Trousers_CamoGreen", "baseHeight": 0.08, "name": "Trousers Camo Green", "model": "gpt-oss:120b", "notes": "Flat‑lay trousers (camo green tint 0.55,0.5,0.6) about 1 m long per leg, ~0.2 m wide, 3 cm thick. Main silhouette: two leg panels, a waist band, front & back pockets, belt loops and thin seam strips.", "score": 6, "parts": [
+  {"name":"LegL","shape":"cube","pos":[-0.12,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.03,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.12,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.03,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.44,0.03,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.12,-0.005,0.11],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.04],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.12,-0.005,0.11],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.04],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BackPocket","shape":"cube","pos":[0.0,-0.005,-0.11],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.04],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopFL","shape":"cylinder","pos":[-0.22,0.01,0.07],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopBL","shape":"cylinder","pos":[-0.22,0.01,-0.07],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopFR","shape":"cylinder","pos":[0.22,0.01,0.07],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopBR","shape":"cylinder","pos":[0.22,0.01,-0.07],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"OuterSeamL","shape":"cylinder","pos":[-0.12,0.005,0.11],"rot":[0.0,0.0,90.0],"size":[0.008,1.0,0.008],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"OuterSeamR","shape":"cylinder","pos":[0.12,0.005,0.11],"rot":[0.0,0.0,90.0],"size":[0.008,1.0,0.008],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0}
+]}

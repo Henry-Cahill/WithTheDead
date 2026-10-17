@@ -7,7 +7,8 @@ namespace CloneZ
     /// <summary>
     /// The complete serialisable snapshot of a run — world clock, weather, utilities,
     /// score, the survivor (stats/skills/wounds/clothing/pack/equipment) and every
-    /// dynamic world object (containers, barricades, farm plots, water sources).
+    /// dynamic world object (containers, barricades, house pieces, farm plots, water
+    /// sources, props and the starter home's furniture).
     /// Written to disk as JSON by <see cref="SaveSystem"/> and rebuilt by the
     /// <see cref="GameBootstrapper"/> when a save is found on boot.
     ///
@@ -49,6 +50,11 @@ namespace CloneZ
         // ending up with an empty base.
         public bool HasWorldProps;
         public List<PropSave> Props = new List<PropSave>();
+
+        // The starter home's loose furniture. HasFurniture is false for saves written before the home
+        // was furnished, so the loader knows to furnish it (around whatever the run kept).
+        public bool HasFurniture;
+        public List<FurnitureSave> Furniture = new List<FurnitureSave>();
     }
 
     /// <summary>The survivor's full state.</summary>
@@ -176,5 +182,17 @@ namespace CloneZ
         public int Kind;
         public Vector3 Position;
         public Vector3 Size;
+    }
+
+    /// <summary>A piece of the starter home's furniture: <see cref="Kind"/> is the
+    /// <see cref="HomeFurnitureKind"/>, <see cref="Yaw"/> its facing and <see cref="Seed"/> its
+    /// variation (fabric, wood tone, what's left on it).</summary>
+    [Serializable]
+    public class FurnitureSave
+    {
+        public int Kind;
+        public Vector3 Position;
+        public float Yaw;
+        public int Seed;
     }
 }

@@ -1,0 +1,15 @@
+{"version": 1, "id": "Apron_Garbage", "baseHeight": 0.0875, "name": "Apron Garbage", "model": "gpt-oss:120b", "notes": "Ragged kitchen apron (≈0.55 m wide × 0.75 m long) lying flat on the floor, 2‑3 cm thick. Main cloth panel, two short strap loops at the top, a front pocket, a few torn edge scraps and a couple of dark holes to suggest garbage‑torn fabric.", "score": 6, "parts": [
+  {"name":"Panel","shape":"cube","pos":[0.0022,-0.0075,-0.0022],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.75],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapL","shape":"cube","pos":[-0.2178,-0.002,0.3278],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.02],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StrapR","shape":"cube","pos":[-0.2178,-0.002,-0.3322],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.02],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"PocketBase","shape":"cube","pos":[-0.0978,0.015,-0.0022],"rot":[0.0,0.0,0.0],"size":[0.2,0.015,0.15],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFlap","shape":"cube","pos":[-0.0978,0.025,0.0728],"rot":[0.0,0.0,0.0],"size":[0.2,0.005,0.08],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Hole1","shape":"cylinder","pos":[0.1522,-0.0075,0.1978],"rot":[90.0,0.0,0.0],"size":[0.04,0.002,0.04],"color":[0.12,0.12,0.12],"smooth":0.02,"metal":0.0},
+  {"name":"Hole2","shape":"cylinder","pos":[-0.1778,-0.0075,-0.2522],"rot":[90.0,0.0,0.0],"size":[0.03,0.002,0.03],"color":[0.12,0.12,0.12],"smooth":0.02,"metal":0.0},
+  {"name":"TearTL","shape":"cube","pos":[0.2622,-0.002,0.3478],"rot":[15.0,30.0,0.0],"size":[0.08,0.015,0.04],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"TearTR","shape":"cube","pos":[0.2622,-0.002,-0.3522],"rot":[-12.0,-25.0,0.0],"size":[0.07,0.015,0.04],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"TearBL","shape":"cube","pos":[-0.2578,-0.002,0.3478],"rot":[-10.0,20.0,0.0],"size":[0.06,0.015,0.04],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"TearBR","shape":"cube","pos":[-0.2578,-0.002,-0.3522],"rot":[8.0,-18.0,0.0],"size":[0.07,0.015,0.04],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFrayL","shape":"cube","pos":[-0.2778,-0.002,-0.0022],"rot":[0.0,15.0,0.0],"size":[0.04,0.012,0.08],"color":[0.48,0.46,0.41],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFrayR","shape":"cube","pos":[-0.2778,-0.002,-0.0022],"rot":[0.0,-15.0,0.0],"size":[0.04,0.012,0.08],"color":[0.48,0.46,0.41],"smooth":0.05,"metal":0.0}
+]}

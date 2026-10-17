@@ -1,0 +1,8 @@
+{"version": 1, "id": "NecklaceLong_Teeth", "baseHeight": 0.0675, "name": "Necklace Long Teeth", "model": "gpt-oss:120b", "notes": "Necklace of long teeth laid flat on the floor – a thin disc (chain/cord) about 0.15 m diameter with four tooth pendants sticking out around its edge; each tooth ~0.07 m long, 1.5 cm thick.", "score": 6, "parts": [
+  {"name":"ChainDisc","shape":"cylinder","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.005,0.15],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Clasp","shape":"cylinder","pos":[0.0,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.55,0.53,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"ToothXPos","shape":"cylinder","pos":[0.11,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.07,0.015],"color":[0.65,0.6,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"ToothXNeg","shape":"cylinder","pos":[-0.11,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.07,0.015],"color":[0.65,0.6,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"ToothZPos","shape":"cylinder","pos":[0.0,-0.0,0.11],"rot":[90.0,0.0,0.0],"size":[0.015,0.07,0.015],"color":[0.65,0.6,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"ToothZNeg","shape":"cylinder","pos":[0.0,-0.0,-0.11],"rot":[90.0,0.0,0.0],"size":[0.015,0.07,0.015],"color":[0.65,0.6,0.55],"smooth":0.05,"metal":0.0}
+]}

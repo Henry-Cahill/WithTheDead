@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_HalloweenMaskWitch", "baseHeight": 0.0875, "name": "Hat Halloween Mask Witch", "model": "gpt-oss:120b", "notes": "Witch‑style Halloween hat laid flat: wide cloth brim (≈0.40 m dia), tapered crown disc, a small pointed top, and a front mask panel with side flaps – all in the purple tint (0.55,0.5,0.6).", "score": 6, "parts": [
+  {"name":"BrimBase","shape":"cylinder","pos":[0.0,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.02,0.4],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrimEdge","shape":"cylinder","pos":[0.0,-0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[0.42,0.022,0.42],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BrimInnerEdge","shape":"cylinder","pos":[0.0,-0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.022,0.38],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBase","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownPeak","shape":"sphere","pos":[0.0,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Buckle","shape":"cube","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.02],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"MaskFront","shape":"cube","pos":[0.0,0.0075,0.11],"rot":[0.0,0.0,0.0],"size":[0.14,0.015,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"MaskSideL","shape":"cube","pos":[-0.07,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.12],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"MaskSideR","shape":"cube","pos":[0.07,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.12],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"MaskTop","shape":"cube","pos":[0.0,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.005,0.12],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

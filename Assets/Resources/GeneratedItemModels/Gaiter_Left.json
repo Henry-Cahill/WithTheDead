@@ -1,0 +1,9 @@
+{"version": 1, "id": "Gaiter_Left", "baseHeight": 0.1242, "name": "Gaiter Left", "model": "gpt-oss:120b", "notes": "Left leg gaiter (tint 0.6, 0.58, 0.5) lying on the floor as a tube‑shaped fabric piece. Approx. 0.30 m long, 0.12 m outer diameter, ≈2 cm thick when laid flat; includes elastic cuff at one end and a visible stitching seam.", "score": 6, "parts": [
+  {"name":"MainTube","shape":"cylinder","pos":[-0.0,-0.0042,-0.0226],"rot":[0.0,0.0,90.0],"size":[0.12,0.3,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"InnerLining","shape":"cylinder","pos":[-0.0,-0.0062,-0.0226],"rot":[0.0,0.0,90.0],"size":[0.108,0.298,0.108],"color":[0.68,0.66,0.58],"smooth":0.05,"metal":0.0},
+  {"name":"ElasticCuff","shape":"cylinder","pos":[0.14,-0.0042,-0.0226],"rot":[0.0,0.0,90.0],"size":[0.12,0.02,0.12],"color":[0.45,0.44,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"HemBand","shape":"cylinder","pos":[-0.14,-0.0042,-0.0226],"rot":[0.0,0.0,90.0],"size":[0.12,0.015,0.12],"color":[0.45,0.44,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"StitchSeam","shape":"cube","pos":[-0.0,-0.0027,-0.0226],"rot":[0.0,0.0,0.0],"size":[0.298,0.002,0.004],"color":[0.4,0.38,0.32],"smooth":0.05,"metal":0.0},
+  {"name":"FoldedCorner","shape":"cube","pos":[-0.12,0.0258,0.0374],"rot":[30.0,0.0,45.0],"size":[0.04,0.02,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"ShadowBase","shape":"cube","pos":[-0.0,-0.0632,-0.0226],"rot":[0.0,0.0,0.0],"size":[0.3,0.002,0.12],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "GreaveBone_Left", "baseHeight": 0.1, "name": "Greave Bone Left", "model": "gpt-oss:120b", "notes": "Left greave bone about 30 cm long, 7 cm wide and up to 3 cm thick, lying on its side with the shaft along X. Main curved shaft plus rounded ends, a central ridge and a small crack for visual detail.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.28,0.07],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"EndCapL","shape":"sphere","pos":[-0.14,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"EndCapR","shape":"sphere","pos":[0.14,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"RidgeTop","shape":"cube","pos":[0.0,0.023,0.025],"rot":[0.0,0.0,0.0],"size":[0.24,0.008,0.015],"color":[0.58,0.56,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"RidgeBottom","shape":"cube","pos":[0.0,0.023,-0.025],"rot":[0.0,0.0,0.0],"size":[0.24,0.008,0.015],"color":[0.58,0.56,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"Crack","shape":"cube","pos":[0.03,-0.003,0.0],"rot":[0.0,15.0,0.0],"size":[0.12,0.004,0.025],"color":[0.45,0.44,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"SideNubL","shape":"cube","pos":[-0.06,0.01,0.035],"rot":[0.0,0.0,10.0],"size":[0.02,0.012,0.008],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"SideNubR","shape":"cube","pos":[0.06,0.01,-0.035],"rot":[0.0,0.0,-10.0],"size":[0.02,0.012,0.008],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0}
+]}

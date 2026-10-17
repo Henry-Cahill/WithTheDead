@@ -1,0 +1,13 @@
+{"version": 1, "id": "Shorts_ShortDenim", "baseHeight": 0.0735, "name": "Shorts Short Denim", "model": "gpt-oss:120b", "notes": "Denim shorts (≈0.34 m wide × 0.38 m long × 0.025 m thick) laid flat: waist panel, two leg panels, front pockets, belt loops and stitching seams.", "score": 7, "parts": [
+  {"name":"WaistPanel","shape":"cube","pos":[0.0,-0.001,0.155],"rot":[0.0,0.0,0.0],"size":[0.34,0.025,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.095,-0.001,-0.035],"rot":[0.0,0.0,0.0],"size":[0.15,0.025,0.3],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.095,-0.001,-0.035],"rot":[0.0,0.0,0.0],"size":[0.15,0.025,0.3],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopL","shape":"cylinder","pos":[-0.12,0.0045,0.165],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopR","shape":"cylinder","pos":[0.12,0.0045,0.165],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.04,0.0035,-0.095],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.06],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.04,0.0035,-0.095],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.06],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SeamWaistLeg","shape":"cube","pos":[0.0,0.0115,0.115],"rot":[0.0,0.0,0.0],"size":[0.34,0.003,0.01],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SeamMiddle","shape":"cube","pos":[0.0,0.0115,-0.015],"rot":[0.0,0.0,0.0],"size":[0.34,0.003,0.01],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"HemL","shape":"cube","pos":[-0.095,0.0115,-0.185],"rot":[0.0,0.0,0.0],"size":[0.15,0.003,0.02],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"HemR","shape":"cube","pos":[0.095,0.0115,-0.185],"rot":[0.0,0.0,0.0],"size":[0.15,0.003,0.02],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0}
+]}

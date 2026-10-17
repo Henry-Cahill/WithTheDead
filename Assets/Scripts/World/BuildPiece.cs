@@ -15,6 +15,9 @@ namespace CloneZ
     /// <see cref="Barricade"/>), so zombies have to beat them down to get through; a doorway
     /// leaves a walkable opening in its frame. Keeps a static registry mirroring
     /// <see cref="Barricade"/> / <see cref="LootContainer"/> for save/restore and AI queries.
+    /// A piece built (or restored) in one of the wave-survival starter home's slots takes the home's
+    /// finished look — siding, wallpaper, glazed windows, hung doors, wood floors — from
+    /// <see cref="StarterHome"/> instead of rough planking; its colliders and carvers are the same.
     /// </summary>
     public class BuildPiece : MonoBehaviour, IDamageable
     {
@@ -145,53 +148,76 @@ namespace CloneZ
 
         private void BuildGeometry()
         {
+            // A piece standing in one of the wave-survival starter home's slots builds the home's finished
+            // look; everywhere else it's rough planking. Both keep the same colliders and navmesh carvers.
+            bool visuals = !StarterHome.TryFinish(this);
             float t = CloneZConfig.HouseTileSize;
             switch (Type)
             {
                 case BuildPieceType.Floor:
-                    Slab(new Vector3(t, CloneZConfig.HouseFloorThickness, t), FloorColor, solid: true);
+                    Slab(new Vector3(t, CloneZConfig.HouseFloorThickness, t), FloorColor, visuals);
                     break;
 
                 case BuildPieceType.Roof:
-                    Slab(new Vector3(t + 0.15f, CloneZConfig.HouseRoofThickness, t + 0.15f), RoofColor, solid: true);
+                    Slab(new Vector3(t + 0.15f, CloneZConfig.HouseRoofThickness, t + 0.15f), RoofColor, visuals);
                     break;
 
                 case BuildPieceType.Wall:
-                    BuildWall();
+                    BuildWall(visuals);
                     break;
 
                 case BuildPieceType.Doorway:
-                    BuildDoorway();
+                    BuildDoorway(visuals);
                     break;
 
                 case BuildPieceType.Window:
-                    BuildWindow();
+                    BuildWindow(visuals);
                     break;
             }
         }
 
-        // A single flat panel (floor or roof): one visual cube plus a matching, non-carving collider.
-        private void Slab(Vector3 size, Color color, bool solid)
+        /// <summary>Adds a blocking box in the piece's local space (the finished window's solid jambs).</summary>
+        internal void AddSolid(Vector3 localCenter, Vector3 size)
         {
-            Block(transform, Vector3.zero, size, color);
-            if (solid)
+            var col = gameObject.AddComponent<BoxCollider>();
+            col.center = localCenter;
+            col.size = size;
+        }
+
+        /// <summary>Height of the top of a floor piece under <paramref name="p"/> (XZ), or 0 on bare ground —
+        /// where furniture and fittings standing there should rest.</summary>
+        public static float FloorTopAt(Vector3 p)
+        {
+            float half = CloneZConfig.HouseTileSize * 0.5f;
+            for (int i = 0; i < All.Count; i++)
             {
-                var col = gameObject.AddComponent<BoxCollider>();
-                col.center = Vector3.zero;
-                col.size = size;
+                BuildPiece b = All[i];
+                if (b == null || b.Type != BuildPieceType.Floor || b.Health <= 0f) continue;
+                Vector3 c = b.transform.position;
+                if (Mathf.Abs(p.x - c.x) <= half && Mathf.Abs(p.z - c.z) <= half) return CloneZConfig.HouseFloorThickness;
             }
+            return 0f;
+        }
+
+        // A single flat panel (floor or roof): one visual cube plus a matching, non-carving collider.
+        private void Slab(Vector3 size, Color color, bool visual)
+        {
+            if (visual) Block(transform, Vector3.zero, size, color);
+            var col = gameObject.AddComponent<BoxCollider>();
+            col.center = Vector3.zero;
+            col.size = size;
         }
 
         // A full-height solid wall: one visual cube, a blocking collider and a carving NavMesh
         // obstacle so the pre-baked mesh routes zombies around it (or dead-ends them into bashing it).
-        private void BuildWall()
+        private void BuildWall(bool visual)
         {
             float t = CloneZConfig.HouseTileSize;
             float h = CloneZConfig.HouseWallHeight;
             float thick = CloneZConfig.HouseWallThickness;
             var size = new Vector3(t, h, thick);
 
-            Block(transform, Vector3.zero, size, WallColor);
+            if (visual) Block(transform, Vector3.zero, size, WallColor);
 
             var col = gameObject.AddComponent<BoxCollider>();
             col.center = Vector3.zero;
@@ -202,7 +228,7 @@ namespace CloneZ
 
         // A wall with a walkable opening: two side jambs (each solid and carving) and a header beam
         // across the top. The central gap is left clear so a survivor — and a zombie — can pass through.
-        private void BuildDoorway()
+        private void BuildDoorway(bool visual)
         {
             float t = CloneZConfig.HouseTileSize;
             float h = CloneZConfig.HouseWallHeight;
@@ -214,21 +240,21 @@ namespace CloneZ
             float jambX = (gap + jambW) * 0.5f;               // centre of each jamb along local X
             var jambSize = new Vector3(jambW, h, thick);
 
-            BuildDoorPost(new Vector3(-jambX, 0f, 0f), jambSize);
-            BuildDoorPost(new Vector3(jambX, 0f, 0f), jambSize);
+            BuildDoorPost(new Vector3(-jambX, 0f, 0f), jambSize, visual);
+            BuildDoorPost(new Vector3(jambX, 0f, 0f), jambSize, visual);
 
             // Header beam across the top — VISUAL ONLY (no collider), so the survivor never catches
             // their head on it, even standing on a floor tile. The jambs are the only solid parts.
             var lintelSize = new Vector3(t, lintelH, thick);
             var lintelPos = new Vector3(0f, (h - lintelH) * 0.5f, 0f);
-            Block(transform, lintelPos, lintelSize, FrameColor);
+            if (visual) Block(transform, lintelPos, lintelSize, FrameColor);
         }
 
         // One doorway jamb: a solid post (visual + collider) that also carves the NavMesh, leaving
         // the doorway's centre open for passage.
-        private void BuildDoorPost(Vector3 localCenter, Vector3 size)
+        private void BuildDoorPost(Vector3 localCenter, Vector3 size, bool visual)
         {
-            Block(transform, localCenter, size, FrameColor);
+            if (visual) Block(transform, localCenter, size, FrameColor);
 
             var col = gameObject.AddComponent<BoxCollider>();
             col.center = localCenter;
@@ -244,7 +270,7 @@ namespace CloneZ
         // top, with the gap between them left clear so you can see (and shoot) out. The sill is too
         // tall to step over, and the whole footprint carves the NavMesh, so it blocks passage like a
         // wall while zombies batter it down as a weak point.
-        private void BuildWindow()
+        private void BuildWindow(bool visual)
         {
             float t = CloneZConfig.HouseTileSize;
             float h = CloneZConfig.HouseWallHeight;
@@ -253,16 +279,16 @@ namespace CloneZ
             float headH = CloneZConfig.HouseWindowHeadHeight;
 
             // Local space: the piece centre sits at wall mid-height, so the wall spans y -h/2..+h/2.
-            WindowPanel(new Vector3(0f, -h * 0.5f + sillH * 0.5f, 0f), new Vector3(t, sillH, thick));
-            WindowPanel(new Vector3(0f, h * 0.5f - headH * 0.5f, 0f), new Vector3(t, headH, thick));
+            WindowPanel(new Vector3(0f, -h * 0.5f + sillH * 0.5f, 0f), new Vector3(t, sillH, thick), visual);
+            WindowPanel(new Vector3(0f, h * 0.5f - headH * 0.5f, 0f), new Vector3(t, headH, thick), visual);
 
             AddCarver(gameObject, Vector3.zero, new Vector3(t, h, thick));
         }
 
         // One solid slab of a window (sill or header): a visual block plus a matching collider.
-        private void WindowPanel(Vector3 localCenter, Vector3 size)
+        private void WindowPanel(Vector3 localCenter, Vector3 size, bool visual)
         {
-            Block(transform, localCenter, size, WallColor);
+            if (visual) Block(transform, localCenter, size, WallColor);
             var col = gameObject.AddComponent<BoxCollider>();
             col.center = localCenter;
             col.size = size;

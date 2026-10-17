@@ -1,0 +1,16 @@
+{"version": 1, "id": "Kneepad_Right_Military", "baseHeight": 0.17, "name": "Kneepad Right Military", "model": "gpt-oss:120b", "notes": "Right‑hand military kneepad ~0.22 m wide × 0.18 m tall × 0.02 m thick: padded fabric backing, hard curved front shell, two strap loops on the front/back edges and a set of rivets.", "score": 6, "parts": [
+  {"name":"BasePlate","shape":"cube","pos":[0.0,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontBulge","shape":"sphere","pos":[0.0,0.023,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.04,0.12],"color":[0.65,0.63,0.55],"smooth":0.4,"metal":0.0},
+  {"name":"StrapFront","shape":"cube","pos":[0.0,0.0455,0.045],"rot":[0.0,0.0,0.0],"size":[0.22,0.005,0.015],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StrapBack","shape":"cube","pos":[0.0,0.0455,-0.045],"rot":[0.0,0.0,0.0],"size":[0.22,0.005,0.015],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"LoopFront","shape":"cylinder","pos":[0.0,0.0,0.06],"rot":[0.0,0.0,0.0],"size":[0.015,0.22,0.015],"color":[0.45,0.43,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"LoopBack","shape":"cylinder","pos":[0.0,0.0,-0.06],"rot":[0.0,0.0,0.0],"size":[0.015,0.22,0.015],"color":[0.45,0.43,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"RivetF1","shape":"sphere","pos":[-0.07,0.0,0.06],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RivetF2","shape":"sphere","pos":[-0.02,0.0,0.06],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RivetF3","shape":"sphere","pos":[0.02,0.0,0.06],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RivetF4","shape":"sphere","pos":[0.07,0.0,0.06],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RivetB1","shape":"sphere","pos":[-0.07,0.0,-0.06],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RivetB2","shape":"sphere","pos":[-0.02,0.0,-0.06],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RivetB3","shape":"sphere","pos":[0.02,0.0,-0.06],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RivetB4","shape":"sphere","pos":[0.07,0.0,-0.06],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0}
+]}

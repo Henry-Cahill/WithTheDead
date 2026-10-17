@@ -1,0 +1,8 @@
+{"version": 1, "id": "Bracelet_BangleLeftGold", "baseHeight": 0.0788, "name": "Bracelet Bangle Left Gold", "model": "gpt-oss:120b", "notes": "Gold bangle ~0.18 m outer diameter, 1.5 cm thick, lying flat on the floor. Main solid disc (Band) plus a decorative clasp knob and four small ornamental beads around the rim for recognisable jewellery detail.", "score": 7, "parts": [
+  {"name":"Band","shape":"cylinder","pos":[-0.0075,-0.0112,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.18],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"ClaspKnob","shape":"sphere","pos":[0.0825,0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.85,0.83,0.75],"smooth":0.7,"metal":1.0},
+  {"name":"BeadFront","shape":"sphere","pos":[0.0625,-0.0037,0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"BeadBack","shape":"sphere","pos":[-0.0775,-0.0037,-0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"BeadLeft","shape":"sphere","pos":[-0.0775,-0.0037,0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"BeadRight","shape":"sphere","pos":[0.0625,-0.0037,-0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0}
+]}

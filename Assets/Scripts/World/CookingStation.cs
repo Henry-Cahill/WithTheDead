@@ -7,8 +7,8 @@ namespace CloneZ
     /// A stove the survivor can cook raw ingredients at. Keeps a static registry
     /// (mirroring <see cref="SleepSpot"/> and <see cref="LootContainer"/>) so the
     /// inventory panel can tell when the player is close enough to cook. Built
-    /// entirely from code by the bootstrapper; visual only, so it never disturbs
-    /// the baked navmesh.
+    /// entirely from code by the bootstrapper with the raid map's furniture builder;
+    /// its mesh is baked into the navmesh, so dismantling it rebuilds the navmesh.
     /// </summary>
     public class CookingStation : MonoBehaviour, IDemolishable
     {
@@ -23,7 +23,7 @@ namespace CloneZ
         public bool CanDemolish(out string reason) { reason = null; return true; }
         public void GetSalvage(out int planks, out int nails) { planks = CloneZConfig.SalvageStovePlanks; nails = CloneZConfig.SalvageStoveNails; }
         public bool CarvesNavMesh => true;
-        public void Dismantle() { All.Remove(this); Destroy(gameObject); }
+        public void Dismantle() { All.Remove(this); gameObject.SetActive(false); Destroy(gameObject); }   // out of the rebuild that follows
         #endregion
 
         /// <summary>Nearest stove within <paramref name="range"/> of a point, or null.</summary>
@@ -44,30 +44,28 @@ namespace CloneZ
         /// <summary>True when a stove is within reach of the given point.</summary>
         public static bool InRange(Vector3 p, float range) => Nearest(p, range) != null;
 
-        /// <summary>Builds a simple stove (body, cooktop, two burners) and returns its CookingStation.</summary>
+        /// <summary>Builds a white enamel range (four burners, a knob panel and an oven door, its back toward
+        /// -Z) standing on the floor at <paramref name="position"/>, and returns its CookingStation.</summary>
         public static CookingStation Spawn(Transform parent, Vector3 position)
         {
+            position.y = BuildPiece.FloorTopAt(position);
             var root = new GameObject("Stove");
             root.transform.SetParent(parent);
             root.transform.position = position;
 
-            var body = new Color(0.72f, 0.73f, 0.76f);   // enamelled steel
-            var top = new Color(0.18f, 0.18f, 0.20f);     // dark cooktop
-            var burner = new Color(0.85f, 0.28f, 0.18f);  // warm element
+            var m = new RaidMesh();
+            m.SetFrame(position, 0f);
+            FurnitureBuilder.Stove(m, new System.Random(1993), new Color(0.86f, 0.85f, 0.80f));
+            m.ResetFrame();
+            m.ApplyTo(root, position);
+            DecorPalette.Apply();
 
-            // Visual only — colliders stripped so the stove never blocks the baked navmesh.
-            Strip(CloneZUtil.Box("Body", position + new Vector3(0f, 0.45f, 0f), new Vector3(0.9f, 0.9f, 0.8f), body, root.transform));
-            Strip(CloneZUtil.Box("Cooktop", position + new Vector3(0f, 0.92f, 0f), new Vector3(0.94f, 0.06f, 0.84f), top, root.transform));
-            Strip(CloneZUtil.Box("BurnerL", position + new Vector3(-0.2f, 0.97f, 0.16f), new Vector3(0.28f, 0.04f, 0.28f), burner, root.transform));
-            Strip(CloneZUtil.Box("BurnerR", position + new Vector3(0.2f, 0.97f, -0.16f), new Vector3(0.28f, 0.04f, 0.28f), burner, root.transform));
+            // Solid like the kitchen counters beside it (its mesh is baked into the navmesh either way).
+            var col = root.AddComponent<BoxCollider>();
+            col.center = new Vector3(0f, 0.54f, -0.02f);
+            col.size = new Vector3(0.76f, 1.08f, 0.62f);
 
             return root.AddComponent<CookingStation>();
-        }
-
-        private static void Strip(GameObject go)
-        {
-            var col = go.GetComponent<Collider>();
-            if (col != null) Object.Destroy(col);
         }
     }
 }

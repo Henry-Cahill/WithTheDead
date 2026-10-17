@@ -1,0 +1,10 @@
+{"version": 1, "id": "Shirt_CamoMilius", "baseHeight": 0.1145, "name": "Shirt Camo Milius", "model": "gpt-oss:120b", "notes": "Flat military‑camo shirt ~0.58 m long × 0.36 m chest width, sleeves spread to ≈0.81 m total width, 2.5–3 cm thick. Main torso panel, two angled sleeves with cuffs, a front collar band, neck opening and a small camo patch detail.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,0.0025,-0.01],"rot":[0.0,0.0,0.0],"size":[0.36,0.03,0.58],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[-0.305,0.0,-0.01],"rot":[0.0,0.0,-20.0],"size":[0.25,0.025,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.305,0.0,-0.01],"rot":[0.0,0.0,20.0],"size":[0.25,0.025,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.455,-0.005,-0.01],"rot":[0.0,0.0,-20.0],"size":[0.05,0.015,0.18],"color":[0.48,0.44,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.455,-0.005,-0.01],"rot":[0.0,0.0,20.0],"size":[0.05,0.015,0.18],"color":[0.48,0.44,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[0.0,0.0225,0.24],"rot":[0.0,0.0,0.0],"size":[0.38,0.01,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.0,0.0225,0.24],"rot":[0.0,0.0,0.0],"size":[0.12,0.012,0.12],"color":[0.42,0.38,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CamoPatch","shape":"cube","pos":[0.0,0.004,0.09],"rot":[0.0,0.0,0.0],"size":[0.1,0.003,0.12],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

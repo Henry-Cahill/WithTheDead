@@ -1,0 +1,14 @@
+{"version": 1, "id": "SwimTrunks_Yellow", "baseHeight": 0.07, "name": "Swim Trunks Yellow", "model": "gpt-oss:120b", "notes": "Swim trunks (yellow‑tinted) laid flat on the floor, 0.45 m long × 0.34 m wide × 0.02 m thick. Main fabric body with waistband & drawstring, side pockets, leg‑seam dividers, a small logo patch and thin stitching lines.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.02,0.45],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0,0.215],"rot":[0.0,0.0,0.0],"size":[0.34,0.006,0.02],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"Drawstring","shape":"cylinder","pos":[0.0,0.001,0.215],"rot":[0.0,0.0,90.0],"size":[0.002,0.34,0.002],"color":[0.2,0.2,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.09,0.0,-0.1],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.09,0.0,-0.1],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegSeamL","shape":"cylinder","pos":[-0.12,0.001,0.0],"rot":[90.0,0.0,0.0],"size":[0.002,0.45,0.002],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"LegSeamR","shape":"cylinder","pos":[0.12,0.001,0.0],"rot":[90.0,0.0,0.0],"size":[0.002,0.45,0.002],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"LogoPatch","shape":"cube","pos":[0.0,0.002,0.2],"rot":[0.0,0.0,0.0],"size":[0.06,0.003,0.04],"color":[0.8,0.78,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cylinder","pos":[0.0,0.001,0.215],"rot":[0.0,0.0,90.0],"size":[0.002,0.34,0.002],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cylinder","pos":[0.0,0.001,-0.215],"rot":[0.0,0.0,90.0],"size":[0.002,0.34,0.002],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"SideStitchL","shape":"cylinder","pos":[-0.17,0.001,0.0],"rot":[90.0,0.0,0.0],"size":[0.002,0.45,0.002],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"SideStitchR","shape":"cylinder","pos":[0.17,0.001,0.0],"rot":[90.0,0.0,0.0],"size":[0.002,0.45,0.002],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "Gorget_LeatherWrap", "baseHeight": 0.0683, "name": "Gorget Leather Wrap", "model": "gpt-oss:120b", "notes": "Leather gorget wrap ~0.38 m long × 0.12 m high × 0.015 m thick, lying flat on the floor with a small metal buckle, stitching detail and leather loops at each end.", "score": 6, "parts": [
+  {"name":"BaseBand","shape":"cube","pos":[-0.03,-0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.015,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Lining","shape":"cube","pos":[-0.03,-0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.36,0.012,0.11],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[-0.03,0.0012,0.058],"rot":[0.0,0.0,0.0],"size":[0.38,0.002,0.003],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[-0.03,0.0012,-0.058],"rot":[0.0,0.0,0.0],"size":[0.38,0.002,0.003],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BuckleBody","shape":"cylinder","pos":[-0.18,0.0032,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.008,0.03],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleRivet","shape":"sphere","pos":[-0.18,0.0043,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.6,0.6,0.65],"smooth":0.6,"metal":1.0},
+  {"name":"LoopLeft","shape":"cylinder","pos":[-0.21,-0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"LoopRight","shape":"cylinder","pos":[0.15,-0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[-0.03,0.0072,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.002,0.12],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeatherTag","shape":"cube","pos":[-0.16,0.0043,0.03],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.02],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"TailStrap","shape":"cylinder","pos":[0.19,-0.0008,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.06,0.015],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0}
+]}

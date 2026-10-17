@@ -1,0 +1,8 @@
+{"version": 1, "id": "Ring_Right_MiddleFinger_Signet", "baseHeight": 0.0618, "name": "Ring Right Middle Finger Signet", "model": "gpt-oss:120b", "notes": "Signet ring about 2 cm diameter, 1.5 mm thick band with a raised square medallion (~8 mm) on top and three engraved lines. All parts use the muted metal tint (0.6, 0.58, 0.5).", "score": 7, "parts": [
+  {"name":"BandDisc","shape":"cylinder","pos":[0.0,-0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RimEdge","shape":"cylinder","pos":[0.0,-0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.021,0.002,0.021],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"SignetPlate","shape":"cube","pos":[0.0,0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.002,0.008],"color":[0.58,0.55,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"EngraveLine1","shape":"cube","pos":[-0.0025,0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.006],"color":[0.42,0.4,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"EngraveLine2","shape":"cube","pos":[0.0,0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.006],"color":[0.42,0.4,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"EngraveLine3","shape":"cube","pos":[0.0025,0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.006],"color":[0.42,0.4,0.35],"smooth":0.55,"metal":1.0}
+]}

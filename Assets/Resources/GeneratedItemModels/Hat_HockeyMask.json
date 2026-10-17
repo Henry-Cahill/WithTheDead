@@ -1,0 +1,13 @@
+{"version": 1, "id": "Hat_HockeyMask", "baseHeight": 0.2, "name": "Hat Hockey Mask", "model": "gpt-oss:120b", "notes": "Flat product‑photo layout of a hockey goalie mask ~0.28 m wide × 0.35 m tall × 0.20 m deep, 2 cm thick overall. Main body is tinted plastic (0.55,0.5,0.6); black strap loops and dark vent inserts add contrast.", "score": 7, "parts": [
+  {"name":"MaskBody","shape":"cube","pos":[0.0,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.2],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"TopCrest","shape":"cylinder","pos":[0.0,0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.28],"color":[0.55,0.5,0.6],"smooth":0.45,"metal":0.0},
+  {"name":"BottomBar","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.008,0.28],"color":[0.55,0.5,0.6],"smooth":0.45,"metal":0.0},
+  {"name":"VentLeft","shape":"cylinder","pos":[-0.07,0.015,-0.06],"rot":[90.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.3,0.3,0.35],"smooth":0.5,"metal":0.0},
+  {"name":"VentRight","shape":"cylinder","pos":[0.07,0.015,-0.06],"rot":[90.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.3,0.3,0.35],"smooth":0.5,"metal":0.0},
+  {"name":"StrapLeft","shape":"cylinder","pos":[-0.12,0.03,0.07],"rot":[0.0,0.0,90.0],"size":[0.015,0.2,0.015],"color":[0.05,0.05,0.05],"smooth":0.1,"metal":0.0},
+  {"name":"StrapRight","shape":"cylinder","pos":[0.12,0.03,0.07],"rot":[0.0,0.0,90.0],"size":[0.015,0.2,0.015],"color":[0.05,0.05,0.05],"smooth":0.1,"metal":0.0},
+  {"name":"VisorGlass","shape":"cube","pos":[0.0,0.017,0.09],"rot":[0.0,0.0,0.0],"size":[0.2,0.008,0.02],"color":[0.9,0.95,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"SideFlangeLeft","shape":"cube","pos":[0.0,0.015,-0.11],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.04],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"SideFlangeRight","shape":"cube","pos":[0.0,0.015,0.11],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.04],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"RearGuard","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.28,0.006,0.28],"color":[0.55,0.5,0.6],"smooth":0.45,"metal":0.0}
+]}

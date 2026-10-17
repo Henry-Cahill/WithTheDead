@@ -1,0 +1,11 @@
+{"version": 1, "id": "Scarf_StripeRedWhite", "baseHeight": 0.071, "name": "Scarf Stripe Red White", "model": "gpt-oss:120b", "notes": "Flat scarf ~1.5 m long × 0.15 m wide × 0.02 m thick, lying on its side. Base fabric tinted muted gray (0.6,0.58,0.5) with alternating red and white stripes running along the length.", "score": 8, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[1.5,0.02,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StripeRed1","shape":"cube","pos":[-0.625,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.021,0.14],"color":[0.85,0.12,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"StripeWhite1","shape":"cube","pos":[-0.375,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.021,0.14],"color":[0.95,0.95,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"StripeRed2","shape":"cube","pos":[-0.125,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.021,0.14],"color":[0.85,0.12,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"StripeWhite2","shape":"cube","pos":[0.125,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.021,0.14],"color":[0.95,0.95,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"StripeRed3","shape":"cube","pos":[0.375,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.021,0.14],"color":[0.85,0.12,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"StripeWhite3","shape":"cube","pos":[0.625,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.021,0.14],"color":[0.95,0.95,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFoldTop","shape":"cube","pos":[0.0,0.009,0.0],"rot":[0.0,0.0,0.0],"size":[1.5,0.002,0.15],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"EdgeFoldBottom","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[1.5,0.002,0.15],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0}
+]}

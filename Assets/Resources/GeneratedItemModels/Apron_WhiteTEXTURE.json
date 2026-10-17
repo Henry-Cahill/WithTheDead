@@ -1,0 +1,8 @@
+{"version": 1, "id": "Apron_WhiteTEXTURE", "baseHeight": 0.0825, "name": "Apron White TEXTURE", "model": "gpt-oss:120b", "notes": "Flat kitchen apron ~0.60 m wide × 0.80 m tall × 2.5 cm thick, laid on its side. Main cloth panel with a thin neck loop across the top and two folded waist‑ties at the bottom corners; a simple hem strip adds a bit of detail.", "score": 7, "parts": [
+  {"name":"Panel","shape":"cube","pos":[0.0,-0.01,0.0025],"rot":[0.0,0.0,0.0],"size":[0.6,0.025,0.8],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"NeckLoop","shape":"cylinder","pos":[0.0,0.0125,0.0025],"rot":[0.0,0.0,90.0],"size":[0.02,0.6,0.02],"color":[0.78,0.77,0.73],"smooth":0.05,"metal":0.0},
+  {"name":"TieL","shape":"cube","pos":[-0.24,-0.0025,-0.3475],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.04],"color":[0.78,0.77,0.73],"smooth":0.05,"metal":0.0},
+  {"name":"TieR","shape":"cube","pos":[0.24,-0.0025,-0.3475],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.04],"color":[0.78,0.77,0.73],"smooth":0.05,"metal":0.0},
+  {"name":"HemStrip","shape":"cube","pos":[0.0,-0.0075,-0.3925],"rot":[0.0,0.0,0.0],"size":[0.6,0.005,0.02],"color":[0.78,0.77,0.73],"smooth":0.05,"metal":0.0},
+  {"name":"CollarFold","shape":"cube","pos":[0.0,-0.0045,0.3825],"rot":[0.0,0.0,0.0],"size":[0.4,0.008,0.03],"color":[0.78,0.77,0.73],"smooth":0.05,"metal":0.0}
+]}

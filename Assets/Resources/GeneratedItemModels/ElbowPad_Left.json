@@ -1,0 +1,13 @@
+{"version": 1, "id": "ElbowPad_Left", "baseHeight": 0.075, "name": "Elbow Pad Left", "model": "gpt-oss:120b", "notes": "Left‑hand elbow pad, lying flat on the floor. Main foam pad about 0.18 m long × 0.12 m wide × 0.025 m thick with rounded ends; a thin Velcro strap runs across the top. Colour is the given tan (0.6, 0.58, 0.5) for the pad and dark gray for the strap.", "score": 6, "parts": [
+  {"name":"PadBase","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,0.12],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"EndCapL","shape":"sphere","pos":[-0.09,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.12],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"EndCapR","shape":"sphere","pos":[0.09,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.12],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"StrapBand","shape":"cube","pos":[0.0,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.005,0.02],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StrapEndL","shape":"cylinder","pos":[-0.08,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StrapEndR","shape":"cylinder","pos":[0.08,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.3,0.3,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,0.0095,0.045],"rot":[0.0,0.0,0.0],"size":[0.16,0.002,0.002],"color":[0.45,0.44,0.4],"smooth":0.0,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[0.0,0.0095,-0.045],"rot":[0.0,0.0,0.0],"size":[0.16,0.002,0.002],"color":[0.45,0.44,0.4],"smooth":0.0,"metal":0.0},
+  {"name":"RivetCenter","shape":"sphere","pos":[0.0,0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.2,0.2,0.22],"smooth":0.6,"metal":1.0},
+  {"name":"RivetLeft","shape":"sphere","pos":[-0.07,0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.2,0.2,0.22],"smooth":0.6,"metal":1.0},
+  {"name":"RivetRight","shape":"sphere","pos":[0.07,0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.2,0.2,0.22],"smooth":0.6,"metal":1.0}
+]}

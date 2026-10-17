@@ -21,12 +21,16 @@ namespace CloneZ
         public WainscotStyle Lower;
         public PaperStyle Upper;
         public float RailHeight = 0.9f;
+        /// <summary>How aged the finish is: 1 = the raid town's grime, smoke, water streaks and peeling
+        /// paper; 0 = freshly hung.</summary>
+        public float Wear = 1f;
     }
 
     /// <summary>
     /// Procedurally painted textures for the raid map — snow, asphalt, linoleum, planks, ceiling tiles,
-    /// wallpaper and wainscot, siding and brick, rugs, posters, papers and signs. Every texture is made
-    /// once per session and cached; all are tileable where they repeat. Nothing is loaded from disk.
+    /// wallpaper and wainscot, siding and brick, rugs, posters, papers and signs — and the summer lawn,
+    /// mulch and asphalt around the wave-survival starter home. Every texture is made once per session
+    /// and cached; all are tileable where they repeat. Nothing is loaded from disk.
     /// </summary>
     internal static class DecorTextures
     {
@@ -312,7 +316,7 @@ namespace CloneZ
 
         #region Walls
         /// <summary>An interior wall finish spanning the full wall height: baseboard, wainscot, chair rail
-        /// and wallpaper, aged with grime and water streaks (repeats every 2.8 m).</summary>
+        /// and wallpaper, aged with grime and water streaks as far as the design's wear (repeats every 2.8 m).</summary>
         public static Texture2D WallInterior(WallDesign d)
         {
             string key = "wall_" + d.Key;
@@ -349,7 +353,7 @@ namespace CloneZ
                     {
                         // Darker toward the ceiling (smoke) and just above the rail (scuffs).
                         grime *= 1f - Mathf.Clamp01((h - 2.2f) / 0.6f) * 0.18f;
-                        for (int i = 0; i < streakX.Length; i++)
+                        for (int i = 0; i < streakX.Length && d.Wear >= 0.5f; i++)
                         {
                             int dx = Mathf.Abs(x - streakX[i]);
                             if (dx > S / 2) dx = S - dx;
@@ -357,6 +361,7 @@ namespace CloneZ
                             if (dx < 3 && h > top) grime *= 0.86f + dx * 0.03f + (1f - (h - top) / streakLen[i]) * 0.05f;
                         }
                     }
+                    grime = 1f + (grime - 1f) * d.Wear;
                     px[y * S + x] = C32(Mul(c, grime));
                 }
             }
@@ -429,9 +434,9 @@ namespace CloneZ
                     break;
                 }
             }
-            // Peeling: occasional lighter blotches where the paper has lifted.
+            // Peeling: occasional lighter blotches where the paper has lifted (aged walls only).
             float peel = Value((x + 0.5f) / 256f, (y + 0.5f) / 256f, 10, seed + 9);
-            if (peel > 0.8f) c = Color.Lerp(c, new Color(0.80f, 0.78f, 0.72f), 0.4f);
+            if (peel > 0.8f && d.Wear >= 0.5f) c = Color.Lerp(c, new Color(0.80f, 0.78f, 0.72f), 0.4f);
             return Mul(c, 0.97f + (R01(x, y, 93) - 0.5f) * 0.04f);
         }
 
@@ -849,6 +854,101 @@ namespace CloneZ
             DecorFont.DrawCentered(px, W, H, "TOXIC", 32, 15, 1, black);
             DecorFont.DrawCentered(px, W, H, "GAS", 32, 7, 1, black);
             return Finish("hazsign", W, H, px, repeat: false, point: true);
+        }
+        #endregion
+
+        #region Summer ground (the wave-survival starter home)
+        /// <summary>A mown summer lawn: mottled greens, short blade strokes and a few sun-bleached patches
+        /// (repeats 3 m).</summary>
+        public static Texture2D Grass()
+        {
+            if (TryGet("grass", out Texture2D t)) return t;
+            const int S = 256;
+            var px = new Color32[S * S];
+            var dark = new Color(0.17f, 0.27f, 0.11f);
+            var light = new Color(0.33f, 0.44f, 0.18f);
+            var dry = new Color(0.50f, 0.47f, 0.27f);
+            for (int y = 0; y < S; y++)
+                for (int x = 0; x < S; x++)
+                {
+                    float u = (x + 0.5f) / S, v = (y + 0.5f) / S;
+                    float n = Fbm(u, v, 4, 4, 151);
+                    Color c = Color.Lerp(dark, light, Mathf.SmoothStep(0.25f, 0.75f, n));
+                    float d = Fbm(u, v, 3, 3, 152);
+                    if (d > 0.64f) c = Color.Lerp(c, dry, Mathf.Clamp01((d - 0.64f) / 0.16f) * 0.5f);
+                    px[y * S + x] = C32(Mul(c, 0.94f + (R01(x, y, 153) - 0.5f) * 0.12f));
+                }
+            // Blade strokes: short streaks, lighter tips catching the sun and darker ones in shadow.
+            var rng = new System.Random(154);
+            for (int k = 0; k < 2600; k++)
+            {
+                int bx = rng.Next(S), by = rng.Next(S), len = 2 + rng.Next(4);
+                float tone = rng.NextDouble() < 0.55 ? 1.22f : 0.74f;
+                for (int i = 0; i < len; i++)
+                {
+                    int idx = Wrap(by + i, S) * S + Wrap(bx + (i == len - 1 && (k & 1) == 0 ? 1 : 0), S);
+                    px[idx] = C32(Mul(px[idx], tone));
+                }
+            }
+            return Finish("grass", S, S, px);
+        }
+
+        /// <summary>Bark mulch or turned garden soil in <paramref name="color"/>: clumped chips with pale
+        /// flecks and dark hollows (repeats 1.5 m).</summary>
+        public static Texture2D Mulch(Color color)
+        {
+            string key = "mulch" + ColorKey(color);
+            if (TryGet(key, out Texture2D t)) return t;
+            const int S = 128;
+            var px = new Color32[S * S];
+            for (int y = 0; y < S; y++)
+                for (int x = 0; x < S; x++)
+                {
+                    float u = (x + 0.5f) / S, v = (y + 0.5f) / S;
+                    float chips = Value(u, v, 32, 161) * 0.6f + Fbm(u, v, 4, 3, 162) * 0.4f;
+                    Color c = Mul(color, 0.72f + chips * 0.55f);
+                    float r = R01(x, y, 163);
+                    if (r > 0.96f) c = Mul(c, 1.35f);
+                    else if (r < 0.08f) c = Mul(c, 0.6f);
+                    px[y * S + x] = C32(c);
+                }
+            return Finish(key, S, S, px);
+        }
+
+        /// <summary>Sun-faded summer asphalt: grey aggregate with tar-sealed cracks and the odd oil stain
+        /// (repeats ~6 m).</summary>
+        public static Texture2D DryAsphalt()
+        {
+            if (TryGet("asphalt_dry", out Texture2D t)) return t;
+            const int S = 256;
+            var px = new Color32[S * S];
+            for (int y = 0; y < S; y++)
+                for (int x = 0; x < S; x++)
+                {
+                    float u = (x + 0.5f) / S, v = (y + 0.5f) / S;
+                    float n = Fbm(u, v, 4, 4, 171);
+                    float g = 0.19f + n * 0.07f + (R01(x, y, 172) - 0.5f) * 0.06f;
+                    Color c = new Color(g, g, g * 1.03f);
+                    float oil = Fbm(u, v, 3, 3, 173);
+                    if (oil > 0.7f) c = Mul(c, 1f - Mathf.Clamp01((oil - 0.7f) / 0.1f) * 0.3f);
+                    px[y * S + x] = C32(c);
+                }
+            // Crack sealant: a few thin wandering tar lines (wrapped so the texture still tiles).
+            var rng = new System.Random(174);
+            var tar = new Color32(30, 30, 32, 255);
+            for (int k = 0; k < 4; k++)
+            {
+                float cx = rng.Next(S), cy = rng.Next(S);
+                float ang = (float)(rng.NextDouble() * Mathf.PI * 2f);
+                int len = 30 + rng.Next(70);
+                for (int i = 0; i < len; i++)
+                {
+                    ang += ((float)rng.NextDouble() - 0.5f) * 0.5f;
+                    cx += Mathf.Cos(ang); cy += Mathf.Sin(ang);
+                    px[Wrap((int)cy, S) * S + Wrap((int)cx, S)] = tar;
+                }
+            }
+            return Finish("asphalt_dry", S, S, px);
         }
         #endregion
 

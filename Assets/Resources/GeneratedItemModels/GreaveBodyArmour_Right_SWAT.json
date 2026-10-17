@@ -1,0 +1,14 @@
+{"version": 1, "id": "GreaveBodyArmour_Right_SWAT", "baseHeight": 0.0725, "name": "Greave Body Armour Right SWAT", "model": "gpt-oss:120b", "notes": "Right‑leg greave/body‑armour piece, about 0.42 m long × 0.18 m wide × 0.025 m thick when laid flat. Main kevlar shell with inner foam padding, a front metal reinforcement plate and strap loops with small buckles.", "score": 6, "parts": [
+  {"name":"Shell","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.42,0.025,0.18],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Padding","shape":"cube","pos":[0.0,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.02,0.16],"color":[0.7,0.68,0.6],"smooth":0.06,"metal":0.0},
+  {"name":"FrontPlate","shape":"cube","pos":[0.0,0.005,0.087],"rot":[0.0,0.0,0.0],"size":[0.4,0.015,0.006],"color":[0.85,0.86,0.88],"smooth":0.55,"metal":1.0},
+  {"name":"BackPlate","shape":"cube","pos":[0.0,0.005,-0.087],"rot":[0.0,0.0,0.0],"size":[0.4,0.012,0.004],"color":[0.78,0.78,0.8],"smooth":0.45,"metal":1.0},
+  {"name":"StrapLoopTopL","shape":"cylinder","pos":[-0.18,0.0055,0.07],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"StrapLoopTopR","shape":"cylinder","pos":[-0.18,0.0055,-0.07],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"StrapLoopBottomL","shape":"cylinder","pos":[0.18,0.0055,0.07],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"StrapLoopBottomR","shape":"cylinder","pos":[0.18,0.0055,-0.07],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"BuckleTopL","shape":"cylinder","pos":[-0.18,0.0095,0.07],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.015],"color":[0.85,0.86,0.88],"smooth":0.4,"metal":1.0},
+  {"name":"BuckleTopR","shape":"cylinder","pos":[-0.18,0.0095,-0.07],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.015],"color":[0.85,0.86,0.88],"smooth":0.4,"metal":1.0},
+  {"name":"BuckleBottomL","shape":"cylinder","pos":[0.18,0.0095,0.07],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.015],"color":[0.85,0.86,0.88],"smooth":0.4,"metal":1.0},
+  {"name":"BuckleBottomR","shape":"cylinder","pos":[0.18,0.0095,-0.07],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.015],"color":[0.85,0.86,0.88],"smooth":0.4,"metal":1.0}
+]}

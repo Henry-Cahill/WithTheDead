@@ -1,0 +1,14 @@
+{"version": 1, "id": "Hat_HalloweenMaskSkeleton", "baseHeight": 0.085, "name": "Hat Halloween Mask Skeleton", "model": "gpt-oss:120b", "notes": "Flat Halloween skeleton mask hat, laid out for a product‑photo view: overall footprint ≈ 0.28 m wide × 0.22 m deep, thickness ~3 cm. Main skull body in muted purple‑gray tint, with dark eye cut‑outs, white teeth, a low brim and side straps.", "score": 7, "parts": [
+  {"name":"BaseSkull","shape":"sphere","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.04,0.18],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"BrimFront","shape":"cube","pos":[0.0,0.0,0.11],"rot":[0.0,0.0,0.0],"size":[0.26,0.015,0.04],"color":[0.44,0.4,0.48],"smooth":0.3,"metal":0.0},
+  {"name":"BrimBack","shape":"cube","pos":[0.0,0.0,-0.11],"rot":[0.0,0.0,0.0],"size":[0.26,0.015,0.04],"color":[0.44,0.4,0.48],"smooth":0.3,"metal":0.0},
+  {"name":"BrimSideL","shape":"cube","pos":[0.13,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.26],"color":[0.44,0.4,0.48],"smooth":0.3,"metal":0.0},
+  {"name":"BrimSideR","shape":"cube","pos":[-0.13,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.26],"color":[0.44,0.4,0.48],"smooth":0.3,"metal":0.0},
+  {"name":"CrownBand","shape":"cube","pos":[0.0,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.005,0.02],"color":[0.44,0.4,0.48],"smooth":0.3,"metal":0.0},
+  {"name":"EyeL","shape":"cylinder","pos":[-0.045,0.002,0.03],"rot":[0.0,0.0,0.0],"size":[0.045,0.015,0.045],"color":[0.05,0.05,0.05],"smooth":0.05,"metal":0.0},
+  {"name":"EyeR","shape":"cylinder","pos":[0.045,0.002,0.03],"rot":[0.0,0.0,0.0],"size":[0.045,0.015,0.045],"color":[0.05,0.05,0.05],"smooth":0.05,"metal":0.0},
+  {"name":"Nose","shape":"cylinder","pos":[0.0,0.0,0.06],"rot":[0.0,0.0,0.0],"size":[0.025,0.012,0.025],"color":[0.44,0.4,0.48],"smooth":0.35,"metal":0.0},
+  {"name":"Teeth","shape":"cube","pos":[0.0,-0.007,0.09],"rot":[0.0,0.0,0.0],"size":[0.16,0.008,0.015],"color":[0.9,0.9,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"StrapL","shape":"cylinder","pos":[-0.12,0.01,0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.2,0.2,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"StrapR","shape":"cylinder","pos":[0.12,0.01,0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.2,0.2,0.25],"smooth":0.1,"metal":0.0}
+]}

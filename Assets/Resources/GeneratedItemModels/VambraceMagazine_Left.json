@@ -1,0 +1,11 @@
+{"version": 1, "id": "VambraceMagazine_Left", "baseHeight": 0.069, "name": "Vambrace Magazine Left", "model": "gpt-oss:120b", "notes": "Vambrace left‑hand magazine ~0.18 m long x 0.04 m wide x 0.015 m thick, lying on its side (length along +X). Main steel body tinted brown‑khaki, with feed lips, a rear catch lever and a thin label strip.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0015,-0.0002],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"FrontLip","shape":"cube","pos":[0.09,0.0,-0.0002],"rot":[0.0,0.0,0.0],"size":[0.008,0.018,0.042],"color":[0.55,0.53,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"RearLip","shape":"cube","pos":[-0.09,0.0,-0.0002],"rot":[0.0,0.0,0.0],"size":[0.004,0.018,0.042],"color":[0.55,0.53,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"CatchLever","shape":"cylinder","pos":[-0.075,0.0035,0.0178],"rot":[90.0,0.0,0.0],"size":[0.006,0.02,0.006],"color":[0.55,0.53,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"LabelBase","shape":"cube","pos":[0.03,0.0055,-0.0002],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.036],"color":[0.45,0.44,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.03,0.0065,-0.0002],"rot":[0.0,0.0,0.0],"size":[0.042,0.002,0.038],"color":[0.35,0.34,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.03,0.0045,-0.0002],"rot":[0.0,0.0,0.0],"size":[0.042,0.002,0.038],"color":[0.35,0.34,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"CornerRound1","shape":"cylinder","pos":[-0.09,-0.0015,-0.0202],"rot":[0.0,0.0,90.0],"size":[0.015,0.008,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"CornerRound2","shape":"cylinder","pos":[-0.09,-0.0015,0.0198],"rot":[0.0,0.0,90.0],"size":[0.015,0.008,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

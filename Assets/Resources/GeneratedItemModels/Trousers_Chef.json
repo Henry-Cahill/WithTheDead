@@ -1,0 +1,11 @@
+{"version": 1, "id": "Trousers_Chef", "baseHeight": 0.0812, "name": "Trousers Chef", "model": "gpt-oss:120b", "notes": "Flat‑lay chef trousers ~1 m long, waist 0.40 m wide, two legs 0.18 m wide separated by a 0.04 m crotch gap, 2 cm thick cloth (tint 0.55,0.5,0.6). Includes waistband, both leg panels, belt‑loops and front/back pockets.", "score": 6, "parts": [
+  {"name":"WaistBand","shape":"cube","pos":[0.0,-0.0112,0.46],"rot":[0.0,0.0,0.0],"size":[0.4,0.02,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftLeg","shape":"cube","pos":[-0.11,-0.0112,-0.04],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.92],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightLeg","shape":"cube","pos":[0.11,-0.0112,-0.04],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.92],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopL1","shape":"cylinder","pos":[-0.1,0.0013,0.46],"rot":[0.0,0.0,0.0],"size":[0.025,0.04,0.025],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopL2","shape":"cylinder","pos":[-0.05,0.0013,0.46],"rot":[0.0,0.0,0.0],"size":[0.025,0.04,0.025],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopR1","shape":"cylinder","pos":[0.05,0.0013,0.46],"rot":[0.0,0.0,0.0],"size":[0.025,0.04,0.025],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopR2","shape":"cylinder","pos":[0.1,0.0013,0.46],"rot":[0.0,0.0,0.0],"size":[0.025,0.04,0.025],"color":[0.45,0.4,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocket","shape":"cube","pos":[0.15,-0.0112,-0.04],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.2],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BackPocket","shape":"cube","pos":[-0.15,-0.0112,-0.04],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.2],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Kneepad_Left_Tactical", "baseHeight": 0.081, "name": "Kneepad Left Tactical", "model": "gpt-oss:120b", "notes": "Left tactical kneepad lying flat on the floor, approx 0.28 m wide × 0.20 m tall × 0.025 m thick. Includes a padded base, slightly darker fabric rim, two adjustable straps with metal buckles, a velcro reinforcement patch and thin stitching detail.", "score": 6, "parts": [
+  {"name":"BasePad","shape":"cube","pos":[0.0,-0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.025,0.2],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeRim","shape":"cube","pos":[0.0,0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.284,0.003,0.204],"color":[0.45,0.43,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"StrapL","shape":"cylinder","pos":[0.0,0.013,-0.09],"rot":[0.0,0.0,90.0],"size":[0.012,0.12,0.012],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"StrapR","shape":"cylinder","pos":[0.0,0.013,0.09],"rot":[0.0,0.0,90.0],"size":[0.012,0.12,0.012],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"BuckleL","shape":"cube","pos":[0.0,0.017,-0.09],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.004],"color":[0.3,0.3,0.3],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleR","shape":"cube","pos":[0.0,0.017,0.09],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.004],"color":[0.3,0.3,0.3],"smooth":0.6,"metal":1.0},
+  {"name":"VelcroPatch","shape":"cube","pos":[0.0,0.0055,0.07],"rot":[0.0,0.0,0.0],"size":[0.08,0.003,0.04],"color":[0.5,0.45,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"StitchFront","shape":"cylinder","pos":[0.0,0.006,0.095],"rot":[0.0,0.0,90.0],"size":[0.004,0.28,0.004],"color":[0.2,0.18,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBack","shape":"cylinder","pos":[0.0,0.006,-0.095],"rot":[0.0,0.0,90.0],"size":[0.004,0.28,0.004],"color":[0.2,0.18,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"StitchCenter","shape":"cylinder","pos":[0.0,0.007,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.28,0.004],"color":[0.2,0.18,0.15],"smooth":0.05,"metal":0.0}
+]}

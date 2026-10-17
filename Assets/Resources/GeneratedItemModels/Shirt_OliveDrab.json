@@ -1,0 +1,13 @@
+{"version": 1, "id": "Shirt_OliveDrab", "baseHeight": 0.0825, "name": "Shirt Olive Drab", "model": "gpt-oss:120b", "notes": "Flat olive‑drab shirt laid out flat (≈0.70 m long × 0.80 m wide incl. sleeves, 2.5 cm thick). Main torso panel, two angled sleeves with cuffs, ribbed collar and neck opening, bottom hem strip, front pocket and a few trim strips.", "score": 6, "parts": [
+  {"name":"TorsoPanel","shape":"cube","pos":[0.145,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.03,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.265,-0.0075,0.3],"rot":[0.0,-20.0,0.0],"size":[0.25,0.028,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.265,-0.0075,-0.3],"rot":[0.0,20.0,0.0],"size":[0.25,0.028,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.39,-0.0075,0.45],"rot":[0.0,-20.0,0.0],"size":[0.08,0.03,0.04],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.39,-0.0075,-0.45],"rot":[0.0,20.0,0.0],"size":[0.08,0.03,0.04],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cylinder","pos":[0.475,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.04,0.14],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.475,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.045,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemStrip","shape":"cube","pos":[-0.195,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.01,0.45],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocket","shape":"cube","pos":[0.085,0.0,0.25],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.1],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.395,-0.0075,0.15],"rot":[0.0,-20.0,0.0],"size":[0.02,0.028,0.18],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[0.395,-0.0075,-0.15],"rot":[0.0,20.0,0.0],"size":[0.02,0.028,0.18],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

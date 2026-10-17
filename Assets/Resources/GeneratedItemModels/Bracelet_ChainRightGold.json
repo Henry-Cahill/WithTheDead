@@ -1,0 +1,8 @@
+{"version": 1, "id": "Bracelet_ChainRightGold", "baseHeight": 0.0702, "name": "Bracelet Chain Right Gold", "model": "gpt-oss:120b", "notes": "Coiled gold bracelet chain about 0.22 m across and ~5 mm thick, shown as a flattened ellipsoid base with four short cylindrical link details around the perimeter and a tiny clasp piece.", "score": 6, "parts": [
+  {"name":"BaseCoil","shape":"sphere","pos":[-0.01,-0.0002,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.14],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"LinkXPos","shape":"cylinder","pos":[0.08,0.0048,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.04,0.008],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"LinkXNeg","shape":"cylinder","pos":[-0.1,0.0048,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.04,0.008],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"LinkZPos","shape":"cylinder","pos":[-0.01,0.0048,0.07],"rot":[90.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"LinkZNeg","shape":"cylinder","pos":[-0.01,0.0048,-0.07],"rot":[90.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"Clasp","shape":"cube","pos":[0.11,0.0077,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.03],"color":[0.58,0.55,0.48],"smooth":0.5,"metal":1.0}
+]}

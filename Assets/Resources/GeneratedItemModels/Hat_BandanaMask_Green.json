@@ -1,0 +1,9 @@
+{"version": 1, "id": "Hat_BandanaMask_Green", "baseHeight": 0.0788, "name": "Hat Bandana Mask Green", "model": "gpt-oss:120b", "notes": "Bandana‑mask laid flat, overall square 0.58 m × 0.58 m with a dark fringe rim (0.03 m wide) and a central rectangular opening for the face. Thickness ~2.5 cm. Includes two small knot loops at left/right edges.", "score": 6, "parts": [
+  {"name":"Rim","shape":"cube","pos":[0.0,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.58,0.025,0.58],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BaseFabric","shape":"cube","pos":[0.0,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.55],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Opening","shape":"cylinder","pos":[0.0,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.03,0.2],"color":[0.0,0.0,0.0],"smooth":0.02,"metal":0.0},
+  {"name":"TieLeft","shape":"cylinder","pos":[-0.26,0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"TieRight","shape":"cylinder","pos":[0.26,0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"TieTop","shape":"cylinder","pos":[0.0,0.0088,-0.26],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"TieBottom","shape":"cylinder","pos":[0.0,0.0088,0.26],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0}
+]}

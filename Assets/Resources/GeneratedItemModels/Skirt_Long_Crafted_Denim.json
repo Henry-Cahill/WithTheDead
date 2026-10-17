@@ -1,0 +1,11 @@
+{"version": 1, "id": "Skirt_Long_Crafted_Denim", "baseHeight": 0.0837, "name": "Skirt Long Crafted Denim", "model": "gpt-oss:120b", "notes": "Long denim skirt lying flat: overall size ≈ 0.70 m wide × 0.90 m long × 0.025 m thick. Main fabric panel with waistband and hem strips, side seam tubes and three vertical pleat lines for shape definition.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0112,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.025,0.9],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.72,0.015,0.02],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[0.0,-0.0163,0.0],"rot":[0.0,0.0,0.0],"size":[0.72,0.015,0.02],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"SideSeamL","shape":"cylinder","pos":[-0.346,-0.0112,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.9,0.008],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cylinder","pos":[0.346,-0.0112,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.9,0.008],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"PleatCenter","shape":"cube","pos":[0.0,-0.0112,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.9],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PleatLeft","shape":"cube","pos":[-0.2,-0.0112,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.9],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PleatRight","shape":"cube","pos":[0.2,-0.0112,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.9],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[0.0,0.0212,0.1],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.02],"color":[0.9,0.9,0.9],"smooth":0.2,"metal":0.0}
+]}

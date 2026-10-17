@@ -1,0 +1,11 @@
+{"version": 1, "id": "Apron_IceCream", "baseHeight": 0.1005, "name": "Apron Ice Cream", "model": "gpt-oss:120b", "notes": "Round ice‑cream tub ~0.12 m diameter × 0.07 m tall, beige plastic body with recessed lid, a thin paper label around the side and a small plastic spoon lying beside it. All parts rest on y=0 (floor).", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.039,-0.0055,-0.006],"rot":[0.0,0.0,0.0],"size":[0.12,0.07,0.12],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Lid","shape":"cylinder","pos":[0.039,0.0335,-0.006],"rot":[0.0,0.0,0.0],"size":[0.122,0.008,0.122],"color":[0.68,0.66,0.58],"smooth":0.4,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.039,0.0305,-0.006],"rot":[0.0,0.0,0.0],"size":[0.124,0.002,0.124],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"LabelBand","shape":"cylinder","pos":[0.039,-0.0055,-0.006],"rot":[0.0,0.0,0.0],"size":[0.112,0.004,0.112],"color":[0.45,0.42,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.039,-0.0035,-0.006],"rot":[0.0,0.0,0.0],"size":[0.114,0.002,0.114],"color":[0.35,0.33,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.039,-0.0075,-0.006],"rot":[0.0,0.0,0.0],"size":[0.114,0.002,0.114],"color":[0.35,0.33,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"SpoonHandle","shape":"cylinder","pos":[-0.061,-0.0325,0.064],"rot":[0.0,0.0,90.0],"size":[0.008,0.08,0.008],"color":[0.75,0.78,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"SpoonHead","shape":"cube","pos":[-0.021,-0.0285,0.064],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.008],"color":[0.75,0.78,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Drip","shape":"sphere","pos":[0.054,0.0345,-0.006],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.9,0.85,0.78],"smooth":0.2,"metal":0.0}
+]}

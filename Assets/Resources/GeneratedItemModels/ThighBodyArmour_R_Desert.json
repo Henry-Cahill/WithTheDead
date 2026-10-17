@@ -1,0 +1,14 @@
+{"version": 1, "id": "ThighBodyArmour_R_Desert", "baseHeight": 0.0815, "name": "Thigh Body Armour R Desert", "model": "gpt-oss:120b", "notes": "Right‑thigh body armour, desert camo – approx 0.45 m long × 0.20 m wide × 0.025 m thick. Main protective plate with front/back padding, two side straps and metal buckles, plus corner rivets for detail.", "score": 6, "parts": [
+  {"name":"Plate","shape":"cube","pos":[0.005,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.025,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPad","shape":"cube","pos":[0.005,-0.0065,0.115],"rot":[0.0,0.0,0.0],"size":[0.44,0.02,0.03],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BackPad","shape":"cube","pos":[0.005,-0.0065,-0.115],"rot":[0.0,0.0,0.0],"size":[0.44,0.02,0.03],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StrapLeft","shape":"cylinder","pos":[0.005,0.0105,-0.12],"rot":[0.0,0.0,90.0],"size":[0.02,0.45,0.02],"color":[0.58,0.55,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"StrapRight","shape":"cylinder","pos":[0.005,0.0105,0.12],"rot":[0.0,0.0,90.0],"size":[0.02,0.45,0.02],"color":[0.58,0.55,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"BuckleLeft","shape":"cube","pos":[-0.215,0.0165,-0.12],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.005],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleRight","shape":"cube","pos":[-0.215,0.0165,0.12],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.005],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"RivetTL","shape":"sphere","pos":[-0.22,0.0035,0.095],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.3,0.28,0.22],"smooth":0.5,"metal":1.0},
+  {"name":"RivetTR","shape":"sphere","pos":[-0.22,0.0035,-0.095],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.3,0.28,0.22],"smooth":0.5,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[0.23,0.0035,0.095],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.3,0.28,0.22],"smooth":0.5,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.23,0.0035,-0.095],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.3,0.28,0.22],"smooth":0.5,"metal":1.0},
+  {"name":"LabelPatch","shape":"cylinder","pos":[-0.175,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.12],"color":[0.55,0.5,0.4],"smooth":0.1,"metal":0.0}
+]}

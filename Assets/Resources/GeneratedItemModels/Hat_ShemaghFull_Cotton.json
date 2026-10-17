@@ -1,0 +1,10 @@
+{"version": 1, "id": "Hat_ShemaghFull_Cotton", "baseHeight": 0.0837, "name": "Hat Shemagh Full Cotton", "model": "gpt-oss:120b", "notes": "Flat‑lay of a full‑size cotton shemagh (≈ 0.75 m × 0.75 m, 2.5 cm thick). Main sheet with a thin hem around the perimeter and two raised corner folds to hint at drape; a small tassel hangs from one corner.", "score": 6, "parts": [
+  {"name":"BaseSheet","shape":"cube","pos":[0.0,-0.0112,0.0],"rot":[0.0,0.0,0.0],"size":[0.75,0.025,0.75],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemTop","shape":"cube","pos":[0.0,0.0043,0.365],"rot":[0.0,0.0,0.0],"size":[0.75,0.006,0.02],"color":[0.495,0.45,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"HemBottom","shape":"cube","pos":[0.0,0.0043,-0.365],"rot":[0.0,0.0,0.0],"size":[0.75,0.006,0.02],"color":[0.495,0.45,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"HemLeft","shape":"cube","pos":[-0.365,0.0043,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.006,0.75],"color":[0.495,0.45,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"HemRight","shape":"cube","pos":[0.365,0.0043,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.006,0.75],"color":[0.495,0.45,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"FoldCornerTL","shape":"cube","pos":[-0.33,0.0163,-0.33],"rot":[0.0,0.0,0.0],"size":[0.15,0.015,0.15],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FoldCornerBR","shape":"cube","pos":[0.33,0.0163,0.33],"rot":[0.0,0.0,0.0],"size":[0.15,0.015,0.15],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Tassel","shape":"cylinder","pos":[-0.33,0.0137,-0.33],"rot":[90.0,0.0,0.0],"size":[0.01,0.05,0.01],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

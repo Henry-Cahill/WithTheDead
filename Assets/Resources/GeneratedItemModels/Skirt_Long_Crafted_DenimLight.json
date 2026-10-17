@@ -1,0 +1,17 @@
+{"version": 1, "id": "Skirt_Long_Crafted_DenimLight", "baseHeight": 0.0725, "name": "Skirt Long Crafted Denim Light", "model": "gpt-oss:120b", "notes": "Long crafted denim skirt lying flat on the floor: ~0.90 m long (waist‑to‑hem), waist width ~0.60 m, flares out to ~0.80 m at the hem, overall thickness ≈0.025 m. Includes waistband, main body panel, flared lower panel, side pockets, belt loops, stitching lines and edge seams.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[-0.47,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.6],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"MainBody","shape":"cube","pos":[-0.21,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.025,0.4],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FlarePanel","shape":"cube","pos":[0.19,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.8],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemStrip","shape":"cube","pos":[0.33,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.8],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.33,0.0,-0.25],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,0.12],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[-0.33,0.0,0.25],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,0.12],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopFL","shape":"cylinder","pos":[-0.45,0.0,-0.2],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"BeltLoopFR","shape":"cylinder","pos":[-0.45,0.0,0.2],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"BeltLoopBL","shape":"cylinder","pos":[-0.45,0.0,-0.3],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"BeltLoopBR","shape":"cylinder","pos":[-0.45,0.0,0.3],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"TopStitch","shape":"cube","pos":[-0.21,0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.003,0.01],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"BottomStitch","shape":"cube","pos":[0.33,0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.003,0.01],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cylinder","pos":[-0.03,0.0,-0.35],"rot":[0.0,0.0,90.0],"size":[0.008,0.9,0.008],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"SideSeamR","shape":"cylinder","pos":[-0.03,0.0,0.35],"rot":[0.0,0.0,90.0],"size":[0.008,0.9,0.008],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"Rivet","shape":"sphere","pos":[-0.29,0.0,-0.25],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.3,0.3,0.3],"smooth":0.6,"metal":0.5}
+]}

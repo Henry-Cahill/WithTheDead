@@ -1,0 +1,12 @@
+{"version": 1, "id": "ThighTire_R", "baseHeight": 0.12, "name": "Thigh Tire R", "model": "gpt-oss:120b", "notes": "Thigh‑size tire (rubber) lying flat on the floor, 0.45 m overall diameter, 0.12 m thick: solid outer cylinder, inner void to show the hole, four thin side‑bands for tread detail and four small bumps at the cardinal points of the rim.", "score": 7, "parts": [
+  {"name":"OuterTire","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.12,0.45],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.0},
+  {"name":"InnerVoid","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.12,0.28],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"BandFront","shape":"cube","pos":[0.0,0.01,0.205],"rot":[0.0,0.0,0.0],"size":[0.45,0.02,0.04],"color":[0.55,0.53,0.45],"smooth":0.25,"metal":0.0},
+  {"name":"BandBack","shape":"cube","pos":[0.0,0.01,-0.205],"rot":[0.0,0.0,0.0],"size":[0.45,0.02,0.04],"color":[0.55,0.53,0.45],"smooth":0.25,"metal":0.0},
+  {"name":"BandRight","shape":"cube","pos":[0.205,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.45],"color":[0.55,0.53,0.45],"smooth":0.25,"metal":0.0},
+  {"name":"BandLeft","shape":"cube","pos":[-0.205,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.45],"color":[0.55,0.53,0.45],"smooth":0.25,"metal":0.0},
+  {"name":"BumpFront","shape":"sphere","pos":[0.0,0.03,0.225],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.0},
+  {"name":"BumpBack","shape":"sphere","pos":[0.0,0.03,-0.225],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.0},
+  {"name":"BumpRight","shape":"sphere","pos":[0.225,0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.0},
+  {"name":"BumpLeft","shape":"sphere","pos":[-0.225,0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.0}
+]}

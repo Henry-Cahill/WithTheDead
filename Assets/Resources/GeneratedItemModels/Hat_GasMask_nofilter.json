@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_GasMask_nofilter", "baseHeight": 0.1025, "name": "Hat Gas Mask nofilter", "model": "gpt-oss:120b", "notes": "Flat product‑photo layout of a gas‑mask hat (nofilter). Brim ~0.30 m × 0.20 m, thin rubber crown ~0.12 m wide × 0.08 m high, front mask panel with two eye lenses and an empty filter holder. Overall spread about 0.45 m long × 0.35 m wide, 2‑3 cm thick. Straps now sit flush against the front and back of the mask body.", "score": 6, "parts": [
+  {"name":"Brim","shape":"cube","pos":[0.0,-0.0375,-0.0275],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.2],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"Crown","shape":"cube","pos":[0.0,0.0025,-0.0675],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.12],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"MaskBody","shape":"cube","pos":[0.0,-0.0125,0.0425],"rot":[0.0,0.0,0.0],"size":[0.18,0.06,0.12],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"LensL","shape":"cylinder","pos":[-0.045,-0.0025,0.1025],"rot":[90.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.2,0.22,0.25],"smooth":0.4,"metal":0.0},
+  {"name":"LensR","shape":"cylinder","pos":[0.045,-0.0025,0.1025],"rot":[90.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.2,0.22,0.25],"smooth":0.4,"metal":0.0},
+  {"name":"BandL","shape":"cube","pos":[-0.07,0.0025,-0.0675],"rot":[0.0,0.0,0.0],"size":[0.02,0.06,0.12],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"BandR","shape":"cube","pos":[0.07,0.0025,-0.0675],"rot":[0.0,0.0,0.0],"size":[0.02,0.06,0.12],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"FilterHolder","shape":"cylinder","pos":[-0.06,-0.0175,0.1025],"rot":[90.0,0.0,0.0],"size":[0.02,0.05,0.02],"color":[0.3,0.32,0.35],"smooth":0.25,"metal":1.0},
+  {"name":"StrapFront","shape":"cube","pos":[0.0,-0.0125,0.1125],"rot":[0.0,0.0,0.0],"size":[0.1,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"StrapBack","shape":"cube","pos":[0.0,-0.0125,-0.0475],"rot":[0.0,0.0,0.0],"size":[0.1,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.12,"metal":0.0}
+]}

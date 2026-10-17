@@ -1,0 +1,9 @@
+{"version": 1, "id": "Ring_Right_MiddleFinger_GoldDiamond", "baseHeight": 0.065, "name": "Ring Right Middle Finger Gold Diamond", "model": "gpt-oss:120b", "notes": "Gold ring for the right middle finger, 22 mm outer diameter, 4 mm thick band with a single diamond (≈8 mm) set by four tiny prongs. Lying upright on the floor so its circular silhouette is clear from above.", "score": 6, "parts": [
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.003,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.022,0.004,0.022],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Diamond","shape":"sphere","pos":[0.0,0.001,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.9,0.95,1.0],"smooth":0.65,"metal":0.0},
+  {"name":"ProngFL","shape":"cylinder","pos":[0.006,0.0005,0.0055],"rot":[0.0,0.0,0.0],"size":[0.003,0.002,0.003],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ProngFR","shape":"cylinder","pos":[0.006,0.0005,-0.0065],"rot":[0.0,0.0,0.0],"size":[0.003,0.002,0.003],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ProngBL","shape":"cylinder","pos":[-0.006,0.0005,0.0055],"rot":[0.0,0.0,0.0],"size":[0.003,0.002,0.003],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ProngBR","shape":"cylinder","pos":[-0.006,0.0005,-0.0065],"rot":[0.0,0.0,0.0],"size":[0.003,0.002,0.003],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Engrave","shape":"cube","pos":[0.0,-0.0025,0.0105],"rot":[0.0,0.0,0.0],"size":[0.012,0.002,0.002],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":1.0}
+]}

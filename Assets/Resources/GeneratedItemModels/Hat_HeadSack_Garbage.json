@@ -1,0 +1,13 @@
+{"version": 1, "id": "Hat_HeadSack_Garbage", "baseHeight": 0.1175, "name": "Hat Head Sack Garbage", "model": "gpt-oss:120b", "notes": "Flat sack‑style hat (≈0.62 m wide × 0.30 m tall, 2.5 cm thick) laid out like a product photo: main fabric panel with bottom hem and central seam, top/bottom edge seams, a rim strip around the opening, a drawstring loop with two tie ends, and a small label patch on the side.", "score": 6, "parts": [
+  {"name":"BodyPanel","shape":"cube","pos":[0.0,-0.045,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.62,0.025,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BottomHem","shape":"cube","pos":[0.0,-0.0415,-0.1375],"rot":[0.0,0.0,0.0],"size":[0.62,0.008,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SeamCenter","shape":"cube","pos":[0.0,-0.045,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.6,0.004,0.02],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SeamTop","shape":"cube","pos":[0.0,-0.045,0.1475],"rot":[0.0,0.0,0.0],"size":[0.6,0.004,0.02],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBottom","shape":"cube","pos":[0.0,-0.045,-0.1525],"rot":[0.0,0.0,0.0],"size":[0.6,0.004,0.02],"color":[0.44,0.4,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BrimOuter","shape":"cylinder","pos":[0.0,-0.0175,0.1475],"rot":[0.0,0.0,90.0],"size":[0.03,0.62,0.03],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"BrimInner","shape":"cylinder","pos":[0.0,-0.0205,0.1475],"rot":[0.0,0.0,90.0],"size":[0.024,0.62,0.024],"color":[0.55,0.5,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"Drawstring","shape":"cylinder","pos":[0.0,-0.0125,0.1475],"rot":[0.0,0.0,90.0],"size":[0.008,0.62,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TieL","shape":"cylinder","pos":[-0.3,0.0225,0.1475],"rot":[0.0,0.0,0.0],"size":[0.008,0.07,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TieR","shape":"cylinder","pos":[0.3,0.0225,0.1475],"rot":[0.0,0.0,0.0],"size":[0.008,0.07,0.008],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[-0.2,-0.0445,-0.0525],"rot":[0.0,0.0,0.0],"size":[0.12,0.003,0.06],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0}
+]}

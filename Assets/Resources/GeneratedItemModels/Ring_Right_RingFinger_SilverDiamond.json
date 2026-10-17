@@ -1,0 +1,8 @@
+{"version": 1, "id": "Ring_Right_RingFinger_SilverDiamond", "baseHeight": 0.0725, "name": "Ring Right Ring Finger Silver Diamond", "model": "gpt-oss:120b", "notes": "Silver ring ~2.5 cm diameter lying flat on the floor, thin band and a sparkling diamond set into a tiny bezel.", "score": 7, "parts": [
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.005,0.025],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"Bezel","shape":"cube","pos":[0.0,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.002,0.008],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"Diamond","shape":"sphere","pos":[0.0,0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.95,0.97,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"DiamondGlow","shape":"sphere","pos":[0.0,0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.9,0.93,1.0],"smooth":0.8,"metal":0.0},
+  {"name":"ShadowBase","shape":"cube","pos":[0.0,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.002,0.03],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"Highlight","shape":"cylinder","pos":[-0.008,0.001,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.002,0.015],"color":[1.0,1.0,1.0],"smooth":0.9,"metal":0.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "Trousers_Crafted_Cotton", "baseHeight": 0.0775, "name": "Trousers Crafted Cotton", "model": "gpt-oss:120b", "notes": "Cotton trousers laid flat like a product photo. Waist panel across the top, two long leg panels hanging down, front left/right pockets, a centered back pocket, four small belt‑loop bumps on the waist edges, and thin side‑seam strips along each leg.", "score": 6, "parts": [
+  {"name":"WaistPanel","shape":"cube","pos":[0.0,-0.0025,0.3963],"rot":[0.0,0.0,0.0],"size":[0.48,0.03,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.13,-0.0025,-0.0637],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.8],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.13,-0.0025,-0.0637],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.8],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocketL","shape":"cube","pos":[-0.12,0.005,0.4263],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.04],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocketR","shape":"cube","pos":[0.12,0.005,0.4263],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.04],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"BackPocket","shape":"cube","pos":[0.0,0.005,0.2863],"rot":[0.0,0.0,0.0],"size":[0.09,0.015,0.045],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopFL","shape":"cylinder","pos":[-0.22,0.0075,0.4563],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.5,0.45,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"BeltLoopFR","shape":"cylinder","pos":[0.22,0.0075,0.4563],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.5,0.45,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"BeltLoopBL","shape":"cylinder","pos":[-0.22,0.0075,0.3363],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.5,0.45,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"BeltLoopBR","shape":"cylinder","pos":[0.22,0.0075,0.3363],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.5,0.45,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.24,-0.0025,-0.0637],"rot":[0.0,0.0,0.0],"size":[0.005,0.03,0.8],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.24,-0.0025,-0.0637],"rot":[0.0,0.0,0.0],"size":[0.005,0.03,0.8],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

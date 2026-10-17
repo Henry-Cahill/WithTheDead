@@ -25,6 +25,7 @@ namespace CloneZ
             "DROP TABLE IF EXISTS clothing;" +
             "DROP TABLE IF EXISTS wound;" +
             "DROP TABLE IF EXISTS player_skill;" +
+            "DROP TABLE IF EXISTS home_furniture;" +
             "DROP TABLE IF EXISTS world_prop;" +
             "DROP TABLE IF EXISTS water_source;" +
             "DROP TABLE IF EXISTS farm_plot;" +
@@ -95,6 +96,10 @@ namespace CloneZ
             "  id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "  kind INTEGER, posX REAL, posY REAL, posZ REAL, sizeX REAL, sizeY REAL, sizeZ REAL);" +
 
+            "CREATE TABLE home_furniture (" +
+            "  id INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "  kind INTEGER, posX REAL, posY REAL, posZ REAL, yaw REAL, seed INTEGER);" +
+
             // Items lying on the ground. These used to ride in the container table, one row per item
             // plus one per stack, which made both the save and the load scale with the number of things
             // dropped in the world — untenable once that runs to millions. They now have a table of
@@ -131,6 +136,7 @@ namespace CloneZ
                     WriteFarm(db, data.Farm);
                     WriteWater(db, data.Water);
                     WriteProps(db, data.Props);
+                    WriteFurniture(db, data.Furniture);
                     db.Execute("COMMIT;");
                 }
                 catch
@@ -363,6 +369,20 @@ namespace CloneZ
                     st.Step();
                 }
         }
+
+        private static void WriteFurniture(SqliteConnection db, List<FurnitureSave> furniture)
+        {
+            if (furniture == null) return;
+            using (var st = db.Prepare(
+                "INSERT INTO home_furniture (kind,posX,posY,posZ,yaw,seed) VALUES (?,?,?,?,?,?);"))
+                foreach (FurnitureSave f in furniture)
+                {
+                    st.Reset();
+                    st.Bind(1, f.Kind).Bind(2, f.Position.x).Bind(3, f.Position.y).Bind(4, f.Position.z)
+                      .Bind(5, f.Yaw).Bind(6, f.Seed);
+                    st.Step();
+                }
+        }
         #endregion
 
         #region Read
@@ -384,6 +404,7 @@ namespace CloneZ
                 ReadFarm(db, data);
                 ReadWater(db, data);
                 ReadProps(db, data);
+                ReadFurniture(db, data);
                 return data;
             }
         }
@@ -696,6 +717,21 @@ namespace CloneZ
                         Kind = st.GetInt(0),
                         Position = new Vector3(st.GetFloat(1), st.GetFloat(2), st.GetFloat(3)),
                         Size = new Vector3(st.GetFloat(4), st.GetFloat(5), st.GetFloat(6)),
+                    });
+        }
+
+        private static void ReadFurniture(SqliteConnection db, SaveData d)
+        {
+            if (!TableExists(db, "home_furniture")) return;   // saved before the home was furnished -> loader furnishes it
+            d.HasFurniture = true;
+            using (var st = db.Prepare("SELECT kind,posX,posY,posZ,yaw,seed FROM home_furniture ORDER BY id;"))
+                while (st.Step())
+                    d.Furniture.Add(new FurnitureSave
+                    {
+                        Kind = st.GetInt(0),
+                        Position = new Vector3(st.GetFloat(1), st.GetFloat(2), st.GetFloat(3)),
+                        Yaw = st.GetFloat(4),
+                        Seed = st.GetInt(5),
                     });
         }
         #endregion

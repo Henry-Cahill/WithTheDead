@@ -1,0 +1,8 @@
+{"version": 1, "id": "Ring_Right_MiddleFinger_GoldRuby", "baseHeight": 0.064, "name": "Ring Right Middle Finger Gold Ruby", "model": "gpt-oss:120b", "notes": "Gold ring ~20 mm outer diameter, 4 mm wide, 2 mm thick with a small ruby (~6 mm) set on top of the band.", "score": 7, "parts": [
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.0021,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Ruby","shape":"sphere","pos":[0.0,0.0004,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.78,0.12,0.15],"smooth":0.4,"metal":0.0},
+  {"name":"SettingBezel","shape":"cylinder","pos":[0.0,-0.0001,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.002,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"GemSeat","shape":"cylinder","pos":[0.0,0.0001,0.0],"rot":[0.0,0.0,0.0],"size":[0.0065,0.002,0.0065],"color":[0.12,0.02,0.02],"smooth":0.2,"metal":0.0},
+  {"name":"RubyTop","shape":"sphere","pos":[0.0,0.0011,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.78,0.12,0.15],"smooth":0.4,"metal":0.0},
+  {"name":"ShadowBase","shape":"cylinder","pos":[0.0,-0.0031,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.02],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0}
+]}

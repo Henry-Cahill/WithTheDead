@@ -1,0 +1,18 @@
+{"version": 1, "id": "Gorget_Leather", "baseHeight": 0.0824, "name": "Gorget Leather", "model": "gpt-oss:120b", "notes": "Leather gorget (cut piece) laid flat on the floor, approx 0.36 m wide × 0.20 m deep × 0.006 m thick with a neck opening; dark brown edge rim, light‑stitch strips and four metal rivets at each corner; a small folded flap on the right side.", "score": 6, "parts": [
+  {"name":"Border","shape":"cube","pos":[-0.018,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.368,0.008,0.208],"color":[0.45,0.42,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"LeftPlate","shape":"cube","pos":[-0.138,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.006,0.2],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"RightPlate","shape":"cube","pos":[0.102,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.006,0.2],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"StitchLeftTop","shape":"cube","pos":[-0.138,-0.0,0.09],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.02],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLeftBottom","shape":"cube","pos":[-0.138,-0.0,-0.09],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.02],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRightTop","shape":"cube","pos":[0.102,-0.0,0.09],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.02],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRightBottom","shape":"cube","pos":[0.102,-0.0,-0.09],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.02],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RivetLL","shape":"cylinder","pos":[-0.198,-0.002,0.1],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RivetLR","shape":"cylinder","pos":[-0.198,-0.002,-0.1],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RivetLU","shape":"cylinder","pos":[-0.078,-0.002,0.1],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RivetLD","shape":"cylinder","pos":[-0.078,-0.002,-0.1],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RivetRL","shape":"cylinder","pos":[0.042,-0.002,0.1],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RivetRR","shape":"cylinder","pos":[0.042,-0.002,-0.1],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RivetRU","shape":"cylinder","pos":[0.162,-0.002,0.1],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RivetRD","shape":"cylinder","pos":[0.162,-0.002,-0.1],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"FoldFlap","shape":"cube","pos":[0.182,-0.0,0.0],"rot":[20.0,0.0,0.0],"size":[0.04,0.004,0.12],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0}
+]}

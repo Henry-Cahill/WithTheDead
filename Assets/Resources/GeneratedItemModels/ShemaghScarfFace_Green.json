@@ -1,0 +1,14 @@
+{"version": 1, "id": "ShemaghScarfFace_Green", "baseHeight": 0.09, "name": "Shemagh Scarf Face Green", "model": "gpt-oss:120b", "notes": "Flat Shemagh scarf ~1.20 m long × 0.40 m wide, 2 cm thick: main cloth sheet, reinforced hem borders on all four edges, frayed corner tassels, a central crease, a subtle decorative stripe and a tiny label tag.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.02,0.4],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemTop","shape":"cube","pos":[0.0,-0.003,0.2],"rot":[0.0,0.0,0.0],"size":[1.2,0.004,0.04],"color":[0.45,0.4,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"HemBottom","shape":"cube","pos":[0.0,-0.003,-0.2],"rot":[0.0,0.0,0.0],"size":[1.2,0.004,0.04],"color":[0.45,0.4,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"HemLeft","shape":"cube","pos":[-0.58,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.4],"color":[0.45,0.4,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"HemRight","shape":"cube","pos":[0.58,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.4],"color":[0.45,0.4,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"FrayTL","shape":"sphere","pos":[-0.58,0.0,0.2],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.48,0.43,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"FrayTR","shape":"sphere","pos":[0.58,0.0,0.2],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.48,0.43,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"FrayBL","shape":"sphere","pos":[-0.58,0.0,-0.2],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.48,0.43,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"FrayBR","shape":"sphere","pos":[0.58,0.0,-0.2],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.48,0.43,0.53],"smooth":0.05,"metal":0.0},
+  {"name":"CentralFold","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,1.2,0.02],"color":[0.4,0.35,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"Stripe","shape":"cube","pos":[0.0,-0.01,0.15],"rot":[0.0,0.0,0.0],"size":[1.2,0.004,0.04],"color":[0.62,0.57,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTag","shape":"cube","pos":[-0.55,-0.007,-0.18],"rot":[0.0,0.0,0.0],"size":[0.03,0.006,0.02],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0}
+]}

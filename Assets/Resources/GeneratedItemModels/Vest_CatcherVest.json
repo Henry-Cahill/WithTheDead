@@ -1,0 +1,13 @@
+{"version": 1, "id": "Vest_CatcherVest", "baseHeight": 0.0825, "name": "Vest Catcher Vest", "model": "gpt-oss:120b", "notes": "Catcher vest laid flat on the floor, approx 0.45 m wide × 0.60 m long × 0.03 m thick. Main torso panel with front/back straps, a short collar band, two side pockets and stitched edge detail.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0075,-0.02],"rot":[0.0,0.0,0.0],"size":[0.45,0.03,0.6],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontStrap","shape":"cube","pos":[0.0,0.0115,0.26],"rot":[0.0,0.0,0.0],"size":[0.45,0.008,0.02],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BackStrap","shape":"cube","pos":[0.0,0.0115,-0.3],"rot":[0.0,0.0,0.0],"size":[0.45,0.008,0.02],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"CollarFront","shape":"cube","pos":[0.0,0.0155,0.3],"rot":[0.0,0.0,0.0],"size":[0.45,0.01,0.04],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.15,0.0,-0.22],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.15,0.0,-0.22],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTop","shape":"cylinder","pos":[0.0,0.0115,-0.02],"rot":[0.0,0.0,90.0],"size":[0.008,0.45,0.008],"color":[0.3,0.28,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeBottom","shape":"cylinder","pos":[0.0,-0.0185,-0.02],"rot":[0.0,0.0,90.0],"size":[0.008,0.45,0.008],"color":[0.3,0.28,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"SideSeamL","shape":"cylinder","pos":[-0.225,-0.0075,-0.02],"rot":[90.0,0.0,0.0],"size":[0.008,0.6,0.008],"color":[0.3,0.28,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"SideSeamR","shape":"cylinder","pos":[0.225,-0.0075,-0.02],"rot":[90.0,0.0,0.0],"size":[0.008,0.6,0.008],"color":[0.3,0.28,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTag","shape":"cylinder","pos":[0.0,0.0175,0.26],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.75,0.75,0.75],"smooth":0.6,"metal":1.0}
+]}

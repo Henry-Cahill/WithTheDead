@@ -1,0 +1,12 @@
+{"version": 1, "id": "Tshirt_ThunderGas", "baseHeight": 0.0816, "name": "Tshirt Thunder Gas", "model": "gpt-oss:120b", "notes": "Flat T‑shirt “Thunder Gas”, approx 0.68 m long × 0.44 m wide × 0.03 m thick, laid out flat with sleeves, ribbed collar, cuffs, bottom hem and a stylised front logo.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.16,-0.0066,0.0],"rot":[0.0,0.0,0.0],"size":[0.68,0.03,0.44],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.44,-0.0016,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.035,0.16],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.44,0.0004,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.036,0.12],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.24,-0.0056,0.34],"rot":[0.0,-20.0,0.0],"size":[0.2,0.028,0.24],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.24,-0.0056,-0.34],"rot":[0.0,20.0,0.0],"size":[0.2,0.028,0.24],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.34,-0.0046,0.34],"rot":[0.0,-20.0,0.0],"size":[0.165,0.03,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.34,-0.0046,-0.34],"rot":[0.0,20.0,0.0],"size":[0.165,0.03,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[-0.18,-0.0026,0.0],"rot":[0.0,0.0,0.0],"size":[0.68,0.008,0.44],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LogoBase","shape":"cube","pos":[0.06,-0.0036,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.08],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LogoBolt","shape":"cube","pos":[0.07,0.0004,0.0],"rot":[0.0,0.0,45.0],"size":[0.02,0.04,0.008],"color":[0.9,0.85,0.2],"smooth":0.1,"metal":0.0}
+]}

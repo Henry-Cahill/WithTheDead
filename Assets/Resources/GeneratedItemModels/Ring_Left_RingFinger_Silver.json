@@ -1,0 +1,8 @@
+{"version": 1, "id": "Ring_Left_RingFinger_Silver", "baseHeight": 0.0655, "name": "Ring Left Ring Finger Silver", "model": "gpt-oss:120b", "notes": "Thin silver ring, about 2 cm outer diameter and 0.5 cm thick (height), lying flat on the floor. Main band is a smooth polished‑metal cylinder; a tiny offset sphere adds a sparkle highlight.", "score": 7, "parts": [
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Highlight","shape":"sphere","pos":[0.004,0.0005,0.004],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.9,0.9,1.0],"smooth":0.8,"metal":0.0},
+  {"name":"ShadowEdge","shape":"cylinder","pos":[0.0,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.0195,0.002,0.0195],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":0.0},
+  {"name":"StackMarker","shape":"cube","pos":[-0.006,0.0025,-0.006],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"StackMarker2","shape":"cube","pos":[-0.004,0.0035,-0.004],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"StackMarker3","shape":"cube","pos":[-0.002,0.0045,-0.002],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0}
+]}

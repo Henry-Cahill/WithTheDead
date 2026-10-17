@@ -1,0 +1,14 @@
+{"version": 1, "id": "Shorts_LongDenim", "baseHeight": 0.0762, "name": "Shorts Long Denim", "model": "gpt-oss:120b", "notes": "Denim shorts laid flat, approx 0.55 m waist‑to‑hip width × 0.40 m leg length × 0.025 m thick. Main body in denim tint, with front & back panels, two legs, three pockets and five belt‑loop cylinders.", "score": 6, "parts": [
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,-0.0037,0.15],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.0037,-0.15],"rot":[0.0,0.0,0.0],"size":[0.55,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftLeg","shape":"cube","pos":[-0.18,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.025,0.4],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightLeg","shape":"cube","pos":[0.18,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.025,0.4],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFrontL","shape":"cube","pos":[-0.12,-0.0037,0.15],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.06],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFrontR","shape":"cube","pos":[0.12,-0.0037,0.15],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.06],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"PocketBack","shape":"cube","pos":[0.0,-0.0037,-0.15],"rot":[0.0,0.0,0.0],"size":[0.09,0.025,0.08],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopL1","shape":"cylinder","pos":[-0.2,0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopL2","shape":"cylinder","pos":[-0.1,0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopC","shape":"cylinder","pos":[0.0,0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopR1","shape":"cylinder","pos":[0.1,0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopR2","shape":"cylinder","pos":[0.2,0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

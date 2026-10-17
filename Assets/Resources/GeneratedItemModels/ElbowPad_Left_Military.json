@@ -1,0 +1,11 @@
+{"version": 1, "id": "ElbowPad_Left_Military", "baseHeight": 0.075, "name": "Elbow Pad Left Military", "model": "gpt-oss:120b", "notes": "Left military elbow pad ~0.16 m wide × 0.12 m tall × 0.02 m thick. Main padded fabric, a curved plastic front plate, two strap loops on the back and thin edge ribs for stitching.", "score": 6, "parts": [
+  {"name":"BaseFabric","shape":"cube","pos":[0.0,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.018,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPlate","shape":"sphere","pos":[0.0,-0.004,0.04],"rot":[0.0,0.0,0.0],"size":[0.14,0.02,0.04],"color":[0.62,0.6,0.52],"smooth":0.4,"metal":0.0},
+  {"name":"StrapLeft","shape":"cylinder","pos":[-0.07,0.0,-0.05],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.58,0.56,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"StrapRight","shape":"cylinder","pos":[0.07,0.0,-0.05],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.58,0.56,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.0,-0.004,0.06],"rot":[0.0,0.0,0.0],"size":[0.16,0.004,0.008],"color":[0.5,0.48,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[0.0,-0.008,-0.06],"rot":[0.0,0.0,0.0],"size":[0.16,0.004,0.008],"color":[0.5,0.48,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.08,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.12],"color":[0.5,0.48,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.08,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.12],"color":[0.5,0.48,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[0.0,-0.003,0.045],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.45,0.43,0.35],"smooth":0.2,"metal":0.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "ShinKneeGuard_R_Baseball", "baseHeight": 0.235, "name": "Shin Knee Guard R Baseball", "model": "gpt-oss:120b", "notes": "Right‑hand baseball shin guard ~0.35 m long × 0.12 m wide × 0.04 m thick. Plastic shell with a rounded front bulge, thin side rims and two adjustable strap bands across the top (front & rear) ending in small buckles.", "score": 6, "parts": [
+  {"name":"ShellBase","shape":"cube","pos":[0.0,0.0,-0.035],"rot":[0.0,0.0,0.0],"size":[0.35,0.04,0.12],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"FrontBulge","shape":"sphere","pos":[0.0,0.0,0.035],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.12],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"SideRimL","shape":"cylinder","pos":[-0.165,0.0,-0.035],"rot":[0.0,90.0,0.0],"size":[0.04,0.35,0.04],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"SideRimR","shape":"cylinder","pos":[0.165,0.0,-0.035],"rot":[0.0,90.0,0.0],"size":[0.04,0.35,0.04],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"StrapFront","shape":"cube","pos":[0.0,0.025,0.01],"rot":[0.0,0.0,0.0],"size":[0.35,0.01,0.015],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"StrapRear","shape":"cube","pos":[0.0,0.025,-0.08],"rot":[0.0,0.0,0.0],"size":[0.35,0.01,0.015],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"BuckleFrontL","shape":"cube","pos":[-0.15,0.025,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.01],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.0},
+  {"name":"BuckleFrontR","shape":"cube","pos":[0.15,0.025,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.01],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.0},
+  {"name":"BuckleRearL","shape":"cube","pos":[-0.15,0.025,-0.08],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.01],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.0},
+  {"name":"BuckleRearR","shape":"cube","pos":[0.15,0.025,-0.08],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.01],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.0},
+  {"name":"TopEdge","shape":"cube","pos":[0.0,0.02,-0.035],"rot":[0.0,0.0,0.0],"size":[0.35,0.004,0.12],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"BottomEdge","shape":"cube","pos":[0.0,-0.02,-0.035],"rot":[0.0,0.0,0.0],"size":[0.35,0.004,0.12],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0}
+]}

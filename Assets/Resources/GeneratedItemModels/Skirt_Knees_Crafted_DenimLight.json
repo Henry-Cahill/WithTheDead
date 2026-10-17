@@ -1,0 +1,12 @@
+{"version": 1, "id": "Skirt_Knees_Crafted_DenimLight", "baseHeight": 0.0875, "name": "Skirt Knees Crafted Denim Light", "model": "gpt-oss:120b", "notes": "Flat denim skirt, knees‑length (~0.55 m long) and ~0.60 m wide at the hem, 2.5 cm thick. Main body in light denim (tint 0.55,0.5,0.6) with darker waistband, hem band, front/back stitching lines, two side pockets and a metal button near the waist.", "score": 6, "parts": [
+  {"name":"SkirtBody","shape":"cube","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.025,0.55],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.015,0.56],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[0.0,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.01,0.56],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.18,-0.0065,0.25],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.04],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.18,-0.0065,0.25],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.04],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLineFront","shape":"cylinder","pos":[0.0,-0.015,0.28],"rot":[0.0,0.0,90.0],"size":[0.005,0.6,0.005],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLineBack","shape":"cylinder","pos":[0.0,-0.015,-0.28],"rot":[0.0,0.0,90.0],"size":[0.005,0.6,0.005],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"Button","shape":"sphere","pos":[0.0,0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"BeltLoopL","shape":"cylinder","pos":[-0.12,0.0175,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.015,0.008],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopR","shape":"cylinder","pos":[0.12,0.0175,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.015,0.008],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

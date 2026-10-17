@@ -1,0 +1,8 @@
+{"version": 1, "id": "Bracelet_BangleLeftSilver", "baseHeight": 0.0688, "name": "Bracelet Bangle Left Silver", "model": "gpt-oss:120b", "notes": "Silver bangle ~7 cm outer diameter, 4 cm inner hole, 1 cm thick band lying flat on the floor. Main metal hoop plus a small decorative rivet on the rim.", "score": 7, "parts": [
+  {"name":"Band","shape":"cylinder","pos":[-0.002,-0.0033,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.01,0.07],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet","shape":"sphere","pos":[0.031,0.0027,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.45,0.44,0.38],"smooth":0.5,"metal":1.0},
+  {"name":"InnerHole","shape":"cylinder","pos":[-0.002,-0.0033,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.011,0.04],"color":[0.12,0.13,0.14],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeChamfer","shape":"cylinder","pos":[-0.002,-0.0028,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.07],"color":[0.55,0.53,0.48],"smooth":0.7,"metal":1.0},
+  {"name":"BottomRim","shape":"cylinder","pos":[-0.002,-0.0038,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.07],"color":[0.55,0.53,0.48],"smooth":0.7,"metal":1.0},
+  {"name":"TopRim","shape":"cylinder","pos":[-0.002,-0.0028,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.07],"color":[0.55,0.53,0.48],"smooth":0.7,"metal":1.0}
+]}

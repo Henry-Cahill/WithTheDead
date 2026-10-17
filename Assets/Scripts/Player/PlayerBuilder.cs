@@ -272,8 +272,8 @@ namespace CloneZ
         }
 
         // Nearest demolishable to the cursor within a small pick radius and the survivor's reach.
-        // Covers the collider-less furniture (bed, stove, plot, water) that a ray passes through, plus
-        // the player's own builds (barricades, house pieces) as a safety net when the ray misses them.
+        // Covers the collider-less furniture (bed, plot) that a ray passes through, plus the player's
+        // own builds and the home's furniture as a safety net when the ray misses them.
         private IDemolishable NearestDemolishableNearCursor(Vector3 cursor, Vector3 me, float reach)
         {
             float bestSqr = 1.4f * 1.4f;   // pick radius around the cursor
@@ -284,6 +284,7 @@ namespace CloneZ
             ConsiderRegistry(WaterSource.All, cursor, me, reach, ref bestSqr, ref best);
             ConsiderRegistry(Barricade.All, cursor, me, reach, ref bestSqr, ref best);
             ConsiderRegistry(BuildPiece.All, cursor, me, reach, ref bestSqr, ref best);
+            ConsiderRegistry(HomeFurniture.All, cursor, me, reach, ref bestSqr, ref best);
             return best;
         }
 

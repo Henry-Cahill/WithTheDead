@@ -1,0 +1,13 @@
+{"version": 1, "id": "Shorts_CamoUrbanLong", "baseHeight": 0.0813, "name": "Shorts Camo Urban Long", "model": "gpt-oss:120b", "notes": "Long camo‑urban shorts laid flat, approx 0.85 m long × 0.48 m wide × 0.025 m thick. Main fabric (tint 0.55,0.5,0.6) with waistband, front & back pockets, central seam and four belt‑loop studs.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0012,0.4175],"rot":[0.0,0.0,0.0],"size":[0.5,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftLeg","shape":"cube","pos":[-0.13,-0.0088,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.22,0.025,0.85],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightLeg","shape":"cube","pos":[0.13,-0.0088,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.22,0.025,0.85],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocketL","shape":"cube","pos":[-0.09,-0.0088,0.2125],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,0.06],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocketR","shape":"cube","pos":[0.09,-0.0088,0.2125],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,0.06],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BackPocket","shape":"cube","pos":[0.0,-0.0088,-0.3375],"rot":[0.0,0.0,0.0],"size":[0.1,0.025,0.07],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoop1","shape":"cylinder","pos":[-0.18,0.0112,0.4175],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"BeltLoop2","shape":"cylinder","pos":[-0.06,0.0112,0.4175],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"BeltLoop3","shape":"cylinder","pos":[0.06,0.0112,0.4175],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"BeltLoop4","shape":"cylinder","pos":[0.18,0.0112,0.4175],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"CenterSeam","shape":"cube","pos":[0.0,-0.0088,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.48,0.005,0.85],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0}
+]}

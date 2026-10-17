@@ -1,0 +1,15 @@
+{"version": 1, "id": "Shirt_Sheriff", "baseHeight": 0.0875, "name": "Shirt Sheriff", "model": "gpt-oss:120b", "notes": "Flat Sheriff shirt ~0.70 m long × 0.50 m wide, 3 cm thick. Main torso panel with a standing collar, five front buttons, left‑chest pocket, bottom hem strip, and two sleeves with cuffs. All parts touch the torso; colour is the given tint (0.55,0.5,0.6) for fabric and metal‑gray for buttons.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.0,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.03,0.5],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftSleeve","shape":"cube","pos":[-0.575,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.03,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightSleeve","shape":"cube","pos":[0.575,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.03,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftCuff","shape":"cube","pos":[-0.825,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.03,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightCuff","shape":"cube","pos":[0.825,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.03,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cube","pos":[0.0,0.0175,0.2],"rot":[0.0,0.0,0.0],"size":[0.7,0.02,0.04],"color":[0.48,0.44,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"Pocket","shape":"cube","pos":[-0.15,-0.0025,0.15],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.2],"color":[0.48,0.44,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"HemStrip","shape":"cube","pos":[0.0,-0.0225,-0.22],"rot":[0.0,0.0,0.0],"size":[0.7,0.01,0.04],"color":[0.48,0.44,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"Button1","shape":"cylinder","pos":[0.0,-0.0055,-0.18],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"Button2","shape":"cylinder","pos":[0.0,-0.0055,-0.09],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"Button3","shape":"cylinder","pos":[0.0,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"Button4","shape":"cylinder","pos":[0.0,-0.0055,0.09],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"Button5","shape":"cylinder","pos":[0.0,-0.0055,0.18],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.8,0.78,0.75],"smooth":0.6,"metal":1.0}
+]}

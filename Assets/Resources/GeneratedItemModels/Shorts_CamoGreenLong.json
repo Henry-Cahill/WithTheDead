@@ -1,0 +1,13 @@
+{"version": 1, "id": "Shorts_CamoGreenLong", "baseHeight": 0.0837, "name": "Shorts Camo Green Long", "model": "gpt-oss:120b", "notes": "Flat long shorts, approx 0.52 m length from waist to hem, each leg panel ~0.18 m wide, overall waistband 0.45 m across. Camo‑green tint (0.55,0.5,0.6) with darker pocket panels and simple stitch lines.", "score": 6, "parts": [
+  {"name":"LegL","shape":"cube","pos":[-0.12,-0.0112,0.008],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,0.52],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.12,-0.0112,0.008],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,0.52],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0088,-0.212],"rot":[0.0,0.0,0.0],"size":[0.45,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.12,-0.0037,-0.032],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.08],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.12,-0.0037,-0.032],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.08],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopL","shape":"cylinder","pos":[-0.215,0.0163,-0.212],"rot":[0.0,0.0,0.0],"size":[0.012,0.015,0.012],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopR","shape":"cylinder","pos":[0.215,0.0163,-0.212],"rot":[0.0,0.0,0.0],"size":[0.012,0.015,0.012],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StitchFront","shape":"cube","pos":[0.0,0.0013,-0.212],"rot":[0.0,0.0,0.0],"size":[0.44,0.002,0.002],"color":[0.3,0.25,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBack","shape":"cube","pos":[0.0,0.0013,-0.292],"rot":[0.0,0.0,0.0],"size":[0.44,0.002,0.002],"color":[0.3,0.25,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"HemL","shape":"cube","pos":[-0.12,-0.0227,0.268],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.05],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemR","shape":"cube","pos":[0.12,-0.0227,0.268],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.05],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

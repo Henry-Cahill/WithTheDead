@@ -1,0 +1,10 @@
+{"version": 1, "id": "Skirt_Mini", "baseHeight": 0.0725, "name": "Skirt Mini", "model": "gpt-oss:120b", "notes": "Mini skirt laid flat, 0.36 m waist width, 0.50 m front‑to‑back length, 2.5 cm thick. Main panel with side flares, front/back waistband strips and three decorative pleats.", "score": 6, "parts": [
+  {"name":"MainPanel","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.36,0.025,0.5],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FlareL","shape":"cube","pos":[-0.22,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,0.5],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FlareR","shape":"cube","pos":[0.22,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,0.5],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"WaistbandFront","shape":"cube","pos":[0.0,-0.005,-0.225],"rot":[0.0,0.0,0.0],"size":[0.52,0.015,0.05],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"WaistbandBack","shape":"cube","pos":[0.0,-0.005,0.225],"rot":[0.0,0.0,0.0],"size":[0.52,0.015,0.05],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PleatL","shape":"cylinder","pos":[-0.12,0.0,-0.22],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.008],"color":[0.65,0.6,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"PleatC","shape":"cylinder","pos":[0.0,0.0,-0.22],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.008],"color":[0.65,0.6,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"PleatR","shape":"cylinder","pos":[0.12,0.0,-0.22],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.008],"color":[0.65,0.6,0.7],"smooth":0.05,"metal":0.0}
+]}

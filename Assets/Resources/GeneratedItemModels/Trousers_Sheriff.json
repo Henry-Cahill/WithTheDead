@@ -1,0 +1,14 @@
+{"version": 1, "id": "Trousers_Sheriff", "baseHeight": 0.0775, "name": "Trousers Sheriff", "model": "gpt-oss:120b", "notes": "Flat‑lay trousers (≈1 m long × 0.62 m wide × 0.03 m thick). Main body split into left/right leg tubes, a waistband, front/back/side pockets and four belt‑loops; dark stitching runs along the outer seams.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[0.0,-0.0025,0.465],"rot":[0.0,0.0,0.0],"size":[0.62,0.03,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftLeg","shape":"cube","pos":[-0.18,-0.0025,-0.035],"rot":[0.0,0.0,0.0],"size":[0.28,0.03,0.9],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightLeg","shape":"cube","pos":[0.18,-0.0025,-0.035],"rot":[0.0,0.0,0.0],"size":[0.28,0.03,0.9],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocket","shape":"cube","pos":[-0.08,0.0075,0.215],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.15],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BackPocket","shape":"cube","pos":[0.0,0.0075,-0.235],"rot":[0.0,0.0,0.0],"size":[0.14,0.02,0.18],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SidePocket","shape":"cube","pos":[0.22,0.0045,0.115],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.12],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LoopFL","shape":"cylinder","pos":[-0.15,0.0025,0.215],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"LoopFR","shape":"cylinder","pos":[0.15,0.0025,0.215],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"LoopBL","shape":"cylinder","pos":[-0.15,0.0025,-0.185],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"LoopBR","shape":"cylinder","pos":[0.15,0.0025,-0.185],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLeft","shape":"cylinder","pos":[-0.32,-0.0025,-0.035],"rot":[90.0,0.0,0.0],"size":[0.008,0.9,0.008],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRight","shape":"cylinder","pos":[0.32,-0.0025,-0.035],"rot":[90.0,0.0,0.0],"size":[0.008,0.9,0.008],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,11 @@
+{"version": 1, "id": "Apron_White", "baseHeight": 0.08, "name": "Apron White", "model": "gpt-oss:120b", "notes": "White kitchen apron ~0.60 m wide × 0.75 m tall, laid flat on the floor (2‑3 cm thick). Main cloth panel with side seams, top seam, bottom hem band, front pocket and two shoulder straps.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.005,0.003],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.75],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pocket","shape":"cube","pos":[0.0,0.0025,0.153],"rot":[0.0,0.0,0.0],"size":[0.25,0.015,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapL","shape":"cylinder","pos":[-0.25,-0.0,0.353],"rot":[0.0,0.0,90.0],"size":[0.04,0.4,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapR","shape":"cylinder","pos":[0.25,-0.0,0.353],"rot":[0.0,0.0,90.0],"size":[0.04,0.4,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[0.0,-0.001,-0.372],"rot":[0.0,0.0,0.0],"size":[0.6,0.008,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.296,-0.0,0.003],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.75],"color":[0.54,0.52,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.296,-0.0,0.003],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.75],"color":[0.54,0.52,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TopSeam","shape":"cube","pos":[0.0,0.003,0.378],"rot":[0.0,0.0,0.0],"size":[0.6,0.008,0.008],"color":[0.54,0.52,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFlap","shape":"cube","pos":[0.0,0.0075,0.213],"rot":[0.0,0.0,0.0],"size":[0.25,0.005,0.04],"color":[0.54,0.52,0.45],"smooth":0.05,"metal":0.0}
+]}

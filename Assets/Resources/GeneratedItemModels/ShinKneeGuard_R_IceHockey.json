@@ -1,0 +1,11 @@
+{"version": 1, "id": "ShinKneeGuard_R_IceHockey", "baseHeight": 0.1, "name": "Shin Knee Guard R Ice Hockey", "model": "gpt-oss:120b", "notes": "Right‑hand ice‑hockey shin guard ~0.35 m long × 0.12 m wide × 0.02 m thick, lying on its back. Main plastic shell with a curved front, inner foam padding, two top straps, Velcro patch and small rivets.", "score": 6, "parts": [
+  {"name":"OuterShell","shape":"cube","pos":[0.0,-0.0325,-0.05],"rot":[0.0,0.0,0.0],"size":[0.35,0.015,0.12],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"FrontCurve","shape":"sphere","pos":[0.0,0.0,0.01],"rot":[0.0,0.0,0.0],"size":[0.3,0.08,0.2],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"InnerFoam","shape":"cube","pos":[0.0,-0.035,-0.05],"rot":[0.0,0.0,0.0],"size":[0.33,0.01,0.11],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"StrapFront","shape":"cylinder","pos":[0.0,-0.015,0.01],"rot":[0.0,0.0,90.0],"size":[0.02,0.35,0.02],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.0},
+  {"name":"StrapSide","shape":"cylinder","pos":[-0.15,-0.015,-0.05],"rot":[90.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.0},
+  {"name":"RivetTL","shape":"sphere","pos":[-0.16,-0.0275,0.005],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.6,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"RivetTR","shape":"sphere","pos":[0.16,-0.0275,0.005],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.6,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"VelcroPatch","shape":"cube","pos":[0.0,-0.018,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.005,0.02],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"BottomStrip","shape":"cube","pos":[0.0,-0.038,0.01],"rot":[0.0,0.0,0.0],"size":[0.35,0.004,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0}
+]}

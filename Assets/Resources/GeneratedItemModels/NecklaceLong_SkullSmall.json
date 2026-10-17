@@ -1,0 +1,16 @@
+{"version": 1, "id": "NecklaceLong_SkullSmall", "baseHeight": 0.0845, "name": "Necklace Long Skull Small", "model": "gpt-oss:120b", "notes": "Long necklace ~0.6 m of alternating chain links ending in a small skull pendant; muted bronze tint (0.6,0.58,0.5). Chain lies flat on the floor, slightly curved, with a tiny clasp at one end.", "score": 7, "parts": [
+  {"name":"Clasp","shape":"cylinder","pos":[-0.1467,-0.017,-0.0702],"rot":[0.0,0.0,90.0],"size":[0.015,0.008,0.015],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"Link1","shape":"cylinder","pos":[-0.1217,-0.017,-0.0702],"rot":[0.0,0.0,90.0],"size":[0.012,0.03,0.012],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"Link2","shape":"cylinder","pos":[-0.0917,-0.017,-0.0552],"rot":[90.0,0.0,0.0],"size":[0.012,0.03,0.012],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"Link3","shape":"cylinder","pos":[-0.0617,-0.017,-0.0402],"rot":[0.0,0.0,90.0],"size":[0.012,0.03,0.012],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"Link4","shape":"cylinder","pos":[-0.0318,-0.017,-0.0252],"rot":[90.0,0.0,0.0],"size":[0.012,0.03,0.012],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"Link5","shape":"cylinder","pos":[-0.0018,-0.017,-0.0102],"rot":[0.0,0.0,90.0],"size":[0.012,0.03,0.012],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"Link6","shape":"cylinder","pos":[0.0282,-0.017,0.0048],"rot":[90.0,0.0,0.0],"size":[0.012,0.03,0.012],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"Link7","shape":"cylinder","pos":[0.0583,-0.017,0.0198],"rot":[0.0,0.0,90.0],"size":[0.012,0.03,0.012],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"Link8","shape":"cylinder","pos":[0.0883,-0.017,0.0348],"rot":[90.0,0.0,0.0],"size":[0.012,0.03,0.012],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"SkullBase","shape":"cube","pos":[0.1283,-0.0155,0.0498],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.025],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"Cranium","shape":"sphere","pos":[0.1283,0.0095,0.0498],"rot":[0.0,0.0,0.0],"size":[0.045,0.03,0.045],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"EyeL","shape":"cylinder","pos":[0.1133,0.014,0.0747],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.05,0.05,0.07],"smooth":0.05,"metal":0.0},
+  {"name":"EyeR","shape":"cylinder","pos":[0.1432,0.014,0.0747],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.05,0.05,0.07],"smooth":0.05,"metal":0.0},
+  {"name":"Jaw","shape":"cube","pos":[0.1283,-0.0205,0.0648],"rot":[0.0,0.0,0.0],"size":[0.04,0.006,0.015],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0}
+]}

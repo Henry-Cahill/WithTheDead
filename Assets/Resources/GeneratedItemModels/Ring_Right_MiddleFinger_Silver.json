@@ -1,0 +1,8 @@
+{"version": 1, "id": "Ring_Right_MiddleFinger_Silver", "baseHeight": 0.0655, "name": "Ring Right Middle Finger Silver", "model": "gpt-oss:120b", "notes": "Silver ring (right middle finger) lying flat on the floor: thin cylindrical band (≈24 mm Ø, 4 mm thick) with a small raised knob in the centre.", "score": 7, "parts": [
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.024,0.004],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Knob","shape":"sphere","pos":[0.0,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.7,"metal":1.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.0042,0.0245,0.0042],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"InnerRim","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.0038,0.0235,0.0038],"color":[0.65,0.62,0.55],"smooth":0.4,"metal":1.0},
+  {"name":"BaseShadow","shape":"cube","pos":[0.0,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.002,0.025],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.005,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.006],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0}
+]}

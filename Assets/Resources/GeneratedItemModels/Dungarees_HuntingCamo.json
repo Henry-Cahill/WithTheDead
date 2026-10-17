@@ -1,0 +1,12 @@
+{"version": 1, "id": "Dungarees_HuntingCamo", "baseHeight": 0.075, "name": "Dungarees Hunting Camo", "model": "gpt-oss:120b", "notes": "Hunting‑camo dungarees laid flat, ~1 m long × 0.45 m wide × 0.03 m thick: main bib panel, two leg panels, front & back pockets, shoulder straps and a pair of belt loops. Base colour is the camo tint (0.6,0.58,0.5) with darker brown accents for pockets and trims.", "score": 6, "parts": [
+  {"name":"TorsoBib","shape":"cube","pos":[0.23,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.03,0.45],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.17,0.0,-0.12],"rot":[0.0,0.0,0.0],"size":[0.6,0.03,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[-0.17,0.0,0.12],"rot":[0.0,0.0,0.0],"size":[0.6,0.03,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocket","shape":"cube","pos":[0.1,0.0,-0.18],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.15],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BackPocket","shape":"cube","pos":[0.1,0.0,0.18],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.15],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"ShoulderStrapL","shape":"cube","pos":[0.46,0.0,-0.18],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.35],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"ShoulderStrapR","shape":"cube","pos":[0.46,0.0,0.18],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.35],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopFront","shape":"cube","pos":[-0.04,0.0,-0.15],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.01],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopBack","shape":"cube","pos":[-0.04,0.0,0.15],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.01],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLine","shape":"cube","pos":[0.08,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.44],"color":[0.4,0.38,0.33],"smooth":0.05,"metal":0.0}
+]}

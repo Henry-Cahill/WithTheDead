@@ -1,0 +1,16 @@
+{"version": 1, "id": "Shoulderpads_FootballOnTop_Spiked", "baseHeight": 0.17, "name": "Shoulderpads Football On Top Spiked", "model": "gpt-oss:120b", "notes": "Two football‑style shoulder pads lying flat side‑by‑side (≈0.8 m total width). Padded foam bodies in a muted brown‑gray tint with three short metal spikes on each pad, plus front and back strap loops.", "score": 7, "parts": [
+  {"name":"PadL_body","shape":"cube","pos":[-0.21,-0.005,-0.075],"rot":[0.0,0.0,0.0],"size":[0.38,0.08,0.22],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"PadL_frontBulge","shape":"sphere","pos":[-0.21,0.0,0.075],"rot":[0.0,0.0,0.0],"size":[0.22,0.22,0.22],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"PadR_body","shape":"cube","pos":[0.21,-0.005,-0.075],"rot":[0.0,0.0,0.0],"size":[0.38,0.08,0.22],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"PadR_frontBulge","shape":"sphere","pos":[0.21,0.0,0.075],"rot":[0.0,0.0,0.0],"size":[0.22,0.22,0.22],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"PadL_spike1","shape":"cylinder","pos":[-0.28,0.025,0.025],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.45,0.45,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"PadL_spike2","shape":"cylinder","pos":[-0.21,0.025,0.025],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.45,0.45,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"PadL_spike3","shape":"cylinder","pos":[-0.14,0.025,0.025],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.45,0.45,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"PadR_spike1","shape":"cylinder","pos":[0.14,0.025,0.025],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.45,0.45,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"PadR_spike2","shape":"cylinder","pos":[0.21,0.025,0.025],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.45,0.45,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"PadR_spike3","shape":"cylinder","pos":[0.28,0.025,0.025],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.45,0.45,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"StrapFront","shape":"cylinder","pos":[0.0,0.065,-0.025],"rot":[0.0,0.0,90.0],"size":[0.02,0.85,0.02],"color":[0.35,0.3,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"StrapBack","shape":"cylinder","pos":[0.0,0.065,-0.125],"rot":[0.0,0.0,90.0],"size":[0.02,0.85,0.02],"color":[0.35,0.3,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"LoopL","shape":"cylinder","pos":[-0.42,0.015,-0.075],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.01],"color":[0.35,0.3,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"LoopR","shape":"cylinder","pos":[0.42,0.015,-0.075],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.01],"color":[0.35,0.3,0.25],"smooth":0.15,"metal":0.0}
+]}

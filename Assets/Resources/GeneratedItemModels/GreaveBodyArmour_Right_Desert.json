@@ -1,0 +1,14 @@
+{"version": 1, "id": "GreaveBodyArmour_Right_Desert", "baseHeight": 0.0825, "name": "Greave Body Armour Right Desert", "model": "gpt-oss:120b", "notes": "Right‑side greave/body‑armour piece, desert‑tinted (0.6 · 0.58 · 0.5). Laid flat on the floor: a curved plate approx 0.18 m wide × 0.45 m tall × 0.02 m thick, with metal edging, leather straps and buckles, inner padding and a few rivets.", "score": 6, "parts": [
+  {"name":"BasePlate","shape":"cube","pos":[0.0,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.45],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"MetalEdgeFront","shape":"cube","pos":[0.0,-0.01,0.225],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,0.005],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"MetalEdgeBack","shape":"cube","pos":[0.0,-0.01,-0.225],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,0.005],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"PaddingInner","shape":"sphere","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.01,0.4],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StrapFrontLeft","shape":"cylinder","pos":[-0.06,0.0025,0.15],"rot":[0.0,0.0,90.0],"size":[0.015,0.16,0.015],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"StrapFrontRight","shape":"cylinder","pos":[0.06,0.0025,0.15],"rot":[0.0,0.0,90.0],"size":[0.015,0.16,0.015],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"BuckleFrontLeft","shape":"cube","pos":[-0.12,0.0075,0.15],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.005],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleFrontRight","shape":"cube","pos":[0.12,0.0075,0.15],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.005],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"StrapTop","shape":"cylinder","pos":[0.0,0.0075,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.18,0.015],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"BuckleTop","shape":"cube","pos":[0.0,0.0125,0.09],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.005],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"RivetLeft","shape":"cube","pos":[-0.07,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"RivetRight","shape":"cube","pos":[0.07,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "Apron_Black", "baseHeight": 0.0775, "name": "Apron Black", "model": "gpt-oss:120b", "notes": "Flat black apron ~0.60 m wide × 0.75 m long, 0.02 m thick (cloth). Main panel with a front pocket, two side‑straps folded outwards from the left and right edges, a thin stitching overlay for detail, and a small neck‑tie loop at the top centre.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0075,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.75],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pocket","shape":"cube","pos":[0.0,-0.0065,-0.3025],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.12],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StrapL","shape":"cube","pos":[-0.32,0.01,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.34],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapR","shape":"cube","pos":[0.32,0.01,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.34],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchOverlay","shape":"cube","pos":[0.0,0.0035,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.6,0.002,0.75],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"NeckTieLoop","shape":"cylinder","pos":[0.0,0.0075,0.3475],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

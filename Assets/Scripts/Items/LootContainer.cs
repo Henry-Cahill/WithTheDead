@@ -115,7 +115,33 @@ namespace CloneZ
             c.Contents = new Inventory(999f);
             c.SearchTime = SearchTimeFor(type);
             ItemDatabase.RollLoot(type, new System.Random(seed), c.Contents);
+            if (type == ContainerType.Crate && StarterHome.Active) DressCrate(go);
             return c;
+        }
+
+        /// <summary>Size of a dressed storage crate (see <see cref="DressCrate"/>).</summary>
+        private static readonly Vector3 CrateSize = new Vector3(1.0f, 0.66f, 0.7f);
+
+        // In the wave-survival world a plain crate (the starter home's supply crate) becomes a slatted pine
+        // storage crate standing on the floor, instead of a bare box. Only the root's own mesh and collider
+        // change. (The raid town dresses its containers as furniture itself.)
+        private static void DressCrate(GameObject go)
+        {
+            Vector3 floor = go.transform.position;
+            floor.y = BuildPiece.FloorTopAt(floor);
+            go.transform.localScale = Vector3.one;
+            go.transform.position = floor + Vector3.up * (CrateSize.y * 0.5f);
+            var box = go.GetComponent<BoxCollider>();
+            if (box != null)
+            {
+                box.center = Vector3.zero;
+                box.size = CrateSize;
+            }
+            var m = new RaidMesh();
+            FurnitureBuilder.Crate(m, new System.Random(1993), floor, CrateSize, 0f, false);
+            m.Box(floor + new Vector3(0.22f, CrateSize.y * 0.62f, CrateSize.z * 0.5f + 0.004f), new Vector3(0.26f, 0.16f, 0.004f), DecorPalette.Matte(FurnitureBuilder.Paper));
+            m.ApplyTo(go, go.transform.position);
+            DecorPalette.Apply();
         }
 
         /// <summary>Rolls corpse loot and, only if the body is carrying something, drops a searchable
@@ -211,6 +237,7 @@ namespace CloneZ
                 c.DisplayName = name;
                 c.Type = type;
                 c.SearchTime = SearchTimeFor(type);
+                if (type == ContainerType.Crate && StarterHome.Active) DressCrate(go);
             }
 
             c.Contents = new Inventory(999f);

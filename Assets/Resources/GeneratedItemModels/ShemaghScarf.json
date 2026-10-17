@@ -1,0 +1,14 @@
+{"version": 1, "id": "ShemaghScarf", "baseHeight": 0.0825, "name": "Shemagh Scarf", "model": "gpt-oss:120b", "notes": "Shemagh scarf ~0.80 m long × 0.60 m wide lying flat: thin base sheet, rolled edges on both sides, small rolled corners, a dark diagonal stripe for pattern detail and a fringe of tiny fabric tabs along the left edge.", "score": 6, "parts": [
+  {"name":"BaseSheet","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.8,0.025,0.6],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRollL","shape":"cube","pos":[-0.38,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.045,0.6],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRollR","shape":"cube","pos":[0.38,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.045,0.6],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CornerRollTL","shape":"cylinder","pos":[-0.38,0.0025,0.28],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.06],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CornerRollTR","shape":"cylinder","pos":[0.38,0.0025,0.28],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.06],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CornerRollBL","shape":"cylinder","pos":[-0.38,0.0025,-0.28],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.06],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CornerRollBR","shape":"cylinder","pos":[0.38,0.0025,-0.28],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.06],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"DiagonalStripe","shape":"cube","pos":[0.0,-0.0085,0.0],"rot":[0.0,45.0,0.0],"size":[0.8,0.008,0.02],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Fringe1","shape":"cube","pos":[-0.395,-0.0075,-0.2],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Fringe2","shape":"cube","pos":[-0.395,-0.0075,-0.07],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Fringe3","shape":"cube","pos":[-0.395,-0.0075,0.07],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Fringe4","shape":"cube","pos":[-0.395,-0.0075,0.2],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

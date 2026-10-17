@@ -1,0 +1,15 @@
+{"version": 1, "id": "ThighBodyArmour_R", "baseHeight": 0.095, "name": "Thigh Body Armour R", "model": "gpt-oss:120b", "notes": "Right‑side thigh body armour lying on its side (long axis X). Main composite plate with inner padding, two strap loops (front and back) each ending in a metal buckle, plus rivet details.", "score": 6, "parts": [
+  {"name":"MainPlate","shape":"cube","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.42,0.03,0.2],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.2},
+  {"name":"Padding","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.022,0.18],"color":[0.68,0.66,0.58],"smooth":0.1,"metal":0.0},
+  {"name":"StrapTopFront","shape":"cylinder","pos":[0.0,0.015,0.09],"rot":[0.0,0.0,90.0],"size":[0.04,0.38,0.04],"color":[0.35,0.33,0.28],"smooth":0.2,"metal":0.0},
+  {"name":"StrapTopBack","shape":"cylinder","pos":[0.0,0.015,-0.09],"rot":[0.0,0.0,90.0],"size":[0.04,0.38,0.04],"color":[0.35,0.33,0.28],"smooth":0.2,"metal":0.0},
+  {"name":"StrapBottomFront","shape":"cylinder","pos":[0.0,-0.015,0.09],"rot":[0.0,0.0,90.0],"size":[0.04,0.38,0.04],"color":[0.35,0.33,0.28],"smooth":0.2,"metal":0.0},
+  {"name":"StrapBottomBack","shape":"cylinder","pos":[0.0,-0.015,-0.09],"rot":[0.0,0.0,90.0],"size":[0.04,0.38,0.04],"color":[0.35,0.33,0.28],"smooth":0.2,"metal":0.0},
+  {"name":"BuckleTopFront","shape":"cube","pos":[-0.19,0.015,0.09],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.025],"color":[0.2,0.2,0.2],"smooth":0.5,"metal":1.0},
+  {"name":"BuckleTopBack","shape":"cube","pos":[-0.19,0.015,-0.09],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.025],"color":[0.2,0.2,0.2],"smooth":0.5,"metal":1.0},
+  {"name":"BuckleBottomFront","shape":"cube","pos":[-0.19,-0.015,0.09],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.025],"color":[0.2,0.2,0.2],"smooth":0.5,"metal":1.0},
+  {"name":"BuckleBottomBack","shape":"cube","pos":[-0.19,-0.015,-0.09],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.025],"color":[0.2,0.2,0.2],"smooth":0.5,"metal":1.0},
+  {"name":"RivetCenter","shape":"sphere","pos":[0.0,0.019,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.45,0.44,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"RivetLeft","shape":"sphere","pos":[-0.12,0.019,-0.07],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.45,0.44,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"RivetRight","shape":"sphere","pos":[-0.12,0.019,0.07],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.45,0.44,0.4],"smooth":0.6,"metal":1.0}
+]}
