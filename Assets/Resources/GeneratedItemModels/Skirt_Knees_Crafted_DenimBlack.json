@@ -1,0 +1,17 @@
+{"version": 1, "id": "Skirt_Knees_Crafted_DenimBlack", "baseHeight": 0.075, "name": "Skirt Knees Crafted Denim Black", "model": "gpt-oss:120b", "notes": "Flat denim skirt about 0.55 m long, waist width 0.35 m, hem width ~0.60 m, 3 cm thick. Main silhouette: waist band, central back panel, left/right flare panels, bottom hem strip. Added front pockets with four rivets each for detail.", "score": 6, "parts": [
+  {"name":"WaistBand","shape":"cube","pos":[0.0,0.0,-0.26],"rot":[0.0,0.0,0.0],"size":[0.35,0.03,0.02],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.03,0.55],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"LeftFlare","shape":"cube","pos":[-0.09,0.0,0.0],"rot":[0.0,-15.0,0.0],"size":[0.18,0.03,0.55],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"RightFlare","shape":"cube","pos":[0.09,0.0,0.0],"rot":[0.0,15.0,0.0],"size":[0.18,0.03,0.55],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"HemStrip","shape":"cube","pos":[0.0,0.0,0.265],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.01],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.07,0.0,-0.1],"rot":[0.0,-10.0,0.0],"size":[0.08,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.07,0.0,-0.1],"rot":[0.0,10.0,0.0],"size":[0.08,0.02,0.12],"color":[0.55,0.5,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"RivetL_TL","shape":"cylinder","pos":[-0.11,0.01,-0.04],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"RivetL_TR","shape":"cylinder","pos":[-0.11,0.01,-0.16],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"RivetL_BL","shape":"cylinder","pos":[-0.03,0.01,-0.04],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"RivetL_BR","shape":"cylinder","pos":[-0.03,0.01,-0.16],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR_TL","shape":"cylinder","pos":[0.03,0.01,-0.04],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR_TR","shape":"cylinder","pos":[0.03,0.01,-0.16],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR_BL","shape":"cylinder","pos":[0.11,0.01,-0.04],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR_BR","shape":"cylinder","pos":[0.11,0.01,-0.16],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0}
+]}

@@ -1,0 +1,9 @@
+{"version": 1, "id": "Bracelet_BangleRightSilver", "baseHeight": 0.0945, "name": "Bracelet Bangle Right Silver", "model": "gpt-oss:120b", "notes": "Silver bangle ~7 cm diameter, 1.5 cm thick, lying flat on its side; main hoop as a flattened sphere, tiny rectangular clasp at the front‑right edge.", "score": 6, "parts": [
+  {"name":"MainBand","shape":"sphere","pos":[-0.0005,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.07],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Clasp","shape":"cube","pos":[0.0315,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.004],"color":[0.45,0.44,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"ClaspHole","shape":"cube","pos":[0.0315,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.009,0.0042],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"ShadowBase","shape":"cube","pos":[-0.0005,-0.0145,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.07],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"HighlightEdge","shape":"cylinder","pos":[-0.0005,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.069,0.002,0.069],"color":[0.8,0.78,0.72],"smooth":0.7,"metal":1.0},
+  {"name":"RivetL","shape":"sphere","pos":[-0.0205,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.45,0.44,0.4],"smooth":0.65,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[0.0195,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.45,0.44,0.4],"smooth":0.65,"metal":1.0}
+]}

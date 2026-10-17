@@ -1,0 +1,14 @@
+{"version": 1, "id": "Skirt_Knees", "baseHeight": 0.0825, "name": "Skirt Knees", "model": "gpt-oss:120b", "notes": "Flat knee‑length skirt laid out flat, 0.45 m long from waist to hem, flares to about 0.70 m width at the bottom, 0.02 m thick. Includes a waistband, hem band, four front pleats and a small decorative bow.", "score": 7, "parts": [
+  {"name":"CenterPanel","shape":"cube","pos":[0.0,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.02,0.4],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelL","shape":"cube","pos":[0.0,-0.0125,-0.275],"rot":[0.0,0.0,0.0],"size":[0.45,0.02,0.15],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SidePanelR","shape":"cube","pos":[0.0,-0.0125,0.275],"rot":[0.0,0.0,0.0],"size":[0.45,0.02,0.15],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.015,0.7],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[0.0,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.015,0.7],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pleat1","shape":"cube","pos":[-0.12,-0.0125,0.23],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Pleat2","shape":"cube","pos":[-0.04,-0.0125,0.23],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Pleat3","shape":"cube","pos":[0.04,-0.0125,0.23],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Pleat4","shape":"cube","pos":[0.12,-0.0125,0.23],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.06],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BowKnot","shape":"sphere","pos":[0.0,0.0025,0.2],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"BowLoopL","shape":"cylinder","pos":[-0.03,0.0025,0.2],"rot":[0.0,0.0,90.0],"size":[0.02,0.006,0.02],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"BowLoopR","shape":"cylinder","pos":[0.03,0.0025,0.2],"rot":[0.0,0.0,90.0],"size":[0.02,0.006,0.02],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0}
+]}

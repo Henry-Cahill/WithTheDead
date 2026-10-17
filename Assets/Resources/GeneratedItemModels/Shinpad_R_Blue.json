@@ -1,0 +1,12 @@
+{"version": 1, "id": "Shinpad_R_Blue", "baseHeight": 0.079, "name": "Shinpad R Blue", "model": "gpt-oss:120b", "notes": "Shinpad R Blue – protective shin guard about 0.30 m long × 0.12 m wide × 0.02 m thick, blue‑tinted plastic/foam with a thin elastic strap. Lying flat on the floor, front edge rounded.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"FrontCurve","shape":"sphere","pos":[0.15,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"BackCurve","shape":"sphere","pos":[-0.15,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"StrapLoopFront","shape":"cylinder","pos":[0.15,0.006,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.06,0.015],"color":[0.7,0.68,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"StrapLoopBack","shape":"cylinder","pos":[-0.15,0.006,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.06,0.015],"color":[0.7,0.68,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"StrapBand","shape":"cylinder","pos":[0.0,0.009,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.3,0.02],"color":[0.7,0.68,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.08,0.003,0.045],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.02],"color":[0.2,0.2,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[0.08,0.005,0.045],"rot":[0.0,0.0,0.0],"size":[0.042,0.002,0.022],"color":[0.1,0.12,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeBevelFront","shape":"cube","pos":[0.17,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.018,0.12],"color":[0.58,0.55,0.48],"smooth":0.3,"metal":0.0},
+  {"name":"EdgeBevelBack","shape":"cube","pos":[-0.17,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.018,0.12],"color":[0.58,0.55,0.48],"smooth":0.3,"metal":0.0}
+]}

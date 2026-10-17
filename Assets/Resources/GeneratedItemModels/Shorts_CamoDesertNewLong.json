@@ -1,0 +1,12 @@
+{"version": 1, "id": "Shorts_CamoDesertNewLong", "baseHeight": 0.0837, "name": "Shorts Camo Desert New Long", "model": "gpt-oss:120b", "notes": "Flat shorts laid out flat, approx 0.38 m wide (two leg panels 0.18 m each plus a 0.02 m seam) × 0.40 m long × 0.03 m thick: two leg panels, central side‑seam, waistband strip, front pocket on left leg, back pocket centered, belt‑loops at the waist, and hem bands at the bottom of each leg.", "score": 6, "parts": [
+  {"name":"LegL","shape":"cube","pos":[-0.1,-0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.03,0.4],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.1,-0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.03,0.4],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeam","shape":"cube","pos":[0.0,-0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.4],"color":[0.45,0.4,0.48],"smooth":0.06,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.02,0.4],"color":[0.58,0.53,0.63],"smooth":0.08,"metal":0.0},
+  {"name":"FrontPocketL","shape":"cube","pos":[-0.1,0.0083,0.12],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.06],"color":[0.468,0.425,0.51],"smooth":0.07,"metal":0.0},
+  {"name":"BackPocket","shape":"cube","pos":[0.0,0.0083,-0.15],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.07],"color":[0.468,0.425,0.51],"smooth":0.07,"metal":0.0},
+  {"name":"BeltLoopL","shape":"cylinder","pos":[-0.07,0.0163,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"BeltLoopR","shape":"cylinder","pos":[0.07,0.0163,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"HemBandL","shape":"cube","pos":[-0.1,-0.0187,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.01,0.4],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemBandR","shape":"cube","pos":[0.1,-0.0187,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.01,0.4],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

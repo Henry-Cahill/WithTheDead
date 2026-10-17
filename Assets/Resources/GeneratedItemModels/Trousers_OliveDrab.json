@@ -1,0 +1,13 @@
+{"version": 1, "id": "Trousers_OliveDrab", "baseHeight": 0.0788, "name": "Trousers Olive Drab", "model": "gpt-oss:120b", "notes": "Olive‑drab trousers laid flat (≈0.80 m wide × 1.00 m long, 2–3 cm thick). Main pieces: waist band, two leg panels, side seam strips, front pockets and a few belt‑loop cylinders for recognisable detail.", "score": 6, "parts": [
+  {"name":"WaistBand","shape":"cube","pos":[0.0,-0.0037,0.425],"rot":[0.0,0.0,0.0],"size":[0.8,0.03,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.225,-0.0037,-0.025],"rot":[0.0,0.0,0.0],"size":[0.35,0.03,0.9],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.225,-0.0037,-0.025],"rot":[0.0,0.0,0.0],"size":[0.35,0.03,0.9],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SeamL","shape":"cylinder","pos":[-0.4,-0.0037,-0.025],"rot":[90.0,0.0,0.0],"size":[0.02,0.92,0.02],"color":[0.38,0.34,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"SeamR","shape":"cylinder","pos":[0.4,-0.0037,-0.025],"rot":[90.0,0.0,0.0],"size":[0.02,0.92,0.02],"color":[0.38,0.34,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFL","shape":"cube","pos":[-0.225,0.0112,0.175],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.12],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFR","shape":"cube","pos":[0.225,0.0112,0.175],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.12],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoop1","shape":"cylinder","pos":[-0.3,0.0112,0.455],"rot":[0.0,0.0,90.0],"size":[0.015,0.025,0.015],"color":[0.38,0.34,0.42],"smooth":0.1,"metal":0.0},
+  {"name":"BeltLoop2","shape":"cylinder","pos":[-0.1,0.0112,0.455],"rot":[0.0,0.0,90.0],"size":[0.015,0.025,0.015],"color":[0.38,0.34,0.42],"smooth":0.1,"metal":0.0},
+  {"name":"BeltLoop3","shape":"cylinder","pos":[0.1,0.0112,0.455],"rot":[0.0,0.0,90.0],"size":[0.015,0.025,0.015],"color":[0.38,0.34,0.42],"smooth":0.1,"metal":0.0},
+  {"name":"BeltLoop4","shape":"cylinder","pos":[0.3,0.0112,0.455],"rot":[0.0,0.0,90.0],"size":[0.015,0.025,0.015],"color":[0.38,0.34,0.42],"smooth":0.1,"metal":0.0}
+]}

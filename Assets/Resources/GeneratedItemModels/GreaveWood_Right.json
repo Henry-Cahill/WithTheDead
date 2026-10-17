@@ -1,0 +1,11 @@
+{"version": 1, "id": "GreaveWood_Right", "baseHeight": 0.0757, "name": "Greave Wood Right", "model": "gpt-oss:120b", "notes": "Wooden greave (right side) about 0.42 m long × 0.15 m tall × 0.025 m thick, curved front, rear reinforcement strip, two strap loops near the top front, metal rivets and a raised top edge.", "score": 6, "parts": [
+  {"name":"MainPlate","shape":"cube","pos":[0.0,-0.0007,-0.09],"rot":[0.0,0.0,0.0],"size":[0.42,0.025,0.15],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FrontCurve","shape":"cylinder","pos":[0.0,-0.0007,0.0],"rot":[90.0,0.0,0.0],"size":[0.03,0.42,0.03],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"BackStrip","shape":"cube","pos":[0.0,-0.0007,-0.175],"rot":[0.0,0.0,0.0],"size":[0.42,0.03,0.02],"color":[0.55,0.52,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"StrapLoopL","shape":"cylinder","pos":[-0.15,-0.0007,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.45,0.42,0.35],"smooth":0.12,"metal":0.0},
+  {"name":"StrapLoopR","shape":"cylinder","pos":[0.15,-0.0007,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.45,0.42,0.35],"smooth":0.12,"metal":0.0},
+  {"name":"RivetFront","shape":"cylinder","pos":[0.0,0.0053,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.005,0.008],"color":[0.3,0.3,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBack","shape":"cylinder","pos":[0.0,0.0053,-0.175],"rot":[0.0,0.0,0.0],"size":[0.008,0.005,0.008],"color":[0.3,0.3,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"InnerStave","shape":"cube","pos":[0.0,-0.0007,-0.09],"rot":[0.0,0.0,0.0],"size":[0.42,0.02,0.005],"color":[0.55,0.52,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"TopEdge","shape":"cube","pos":[0.0,0.0138,-0.015],"rot":[0.0,0.0,0.0],"size":[0.42,0.004,0.015],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0}
+]}

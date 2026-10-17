@@ -1,0 +1,11 @@
+{"version": 1, "id": "Gaiter_Right", "baseHeight": 0.08, "name": "Gaiter Right", "model": "gpt-oss:120b", "notes": "Right gaiter laid flat, approx 0.35 m long × 0.14 m wide × 0.025 m thick. Main fabric panel with reinforced cuffs at each end, side‑seam strips and a small label on the top surface.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.025,0.14],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffTop","shape":"cube","pos":[0.135,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.14],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CuffBottom","shape":"cube","pos":[-0.135,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.14],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[0.0,-0.0075,-0.066],"rot":[0.0,0.0,0.0],"size":[0.35,0.025,0.008],"color":[0.48,0.46,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.0,-0.0075,0.066],"rot":[0.0,0.0,0.0],"size":[0.35,0.025,0.008],"color":[0.48,0.46,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"TopEdge","shape":"cube","pos":[0.171,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.025,0.14],"color":[0.48,0.46,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"BottomEdge","shape":"cube","pos":[-0.171,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.025,0.14],"color":[0.48,0.46,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.005,0.12],"color":[0.42,0.4,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[0.0,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.084,0.002,0.124],"color":[0.35,0.33,0.3],"smooth":0.05,"metal":0.0}
+]}

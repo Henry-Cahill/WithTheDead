@@ -1,0 +1,11 @@
+{"version": 1, "id": "Shinpad_L_Blue", "baseHeight": 0.0805, "name": "Shinpad L Blue", "model": "gpt-oss:120b", "notes": "Large left‑shin pad, blue‑tinted (≈0.6,0.58,0.5), about 0.35 m long × 0.12 m wide × 0.02 m thick. Main padded fabric shell with thin edge rims, two elastic straps across the top and a small logo on the front.", "score": 7, "parts": [
+  {"name":"MainPad","shape":"cube","pos":[0.0,-0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"FoamLayer","shape":"cube","pos":[0.0,-0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.33,0.015,0.11],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0,0.0015,0.064],"rot":[0.0,0.0,0.0],"size":[0.35,0.004,0.008],"color":[0.5,0.48,0.42],"smooth":0.07,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0,0.0015,-0.064],"rot":[0.0,0.0,0.0],"size":[0.35,0.004,0.008],"color":[0.5,0.48,0.42],"smooth":0.07,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.179,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.12],"color":[0.5,0.48,0.42],"smooth":0.07,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.179,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.12],"color":[0.5,0.48,0.42],"smooth":0.07,"metal":0.0},
+  {"name":"StrapFront","shape":"cylinder","pos":[0.0,0.0145,0.02],"rot":[0.0,0.0,90.0],"size":[0.012,0.35,0.012],"color":[0.3,0.32,0.34],"smooth":0.3,"metal":0.0},
+  {"name":"StrapBack","shape":"cylinder","pos":[0.0,0.0145,-0.02],"rot":[0.0,0.0,90.0],"size":[0.012,0.35,0.012],"color":[0.3,0.32,0.34],"smooth":0.3,"metal":0.0},
+  {"name":"Logo","shape":"cube","pos":[0.0,0.0045,0.04],"rot":[0.0,0.0,0.0],"size":[0.03,0.005,0.03],"color":[0.4,0.38,0.33],"smooth":0.07,"metal":0.0}
+]}

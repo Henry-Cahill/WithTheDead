@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_ShemaghFull_Green", "baseHeight": 0.0963, "name": "Hat Shemagh Full Green", "model": "gpt-oss:120b", "notes": "Full‑size green shemagh laid flat (≈1.20 m × 0.80 m, 2.5 cm thick). Main cloth panel with darker edge strips, four hanging tassels at the corners and a central crease strip for visual interest.", "score": 6, "parts": [
+  {"name":"BaseCloth","shape":"cube","pos":[0.0,-0.0238,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.025,0.8],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0,-0.0238,0.39],"rot":[0.0,0.0,0.0],"size":[1.2,0.025,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0,-0.0238,-0.39],"rot":[0.0,0.0,0.0],"size":[1.2,0.025,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.59,-0.0238,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.8],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.59,-0.0238,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.8],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TasselFL","shape":"cylinder","pos":[-0.59,0.0062,0.39],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TasselFR","shape":"cylinder","pos":[0.59,0.0062,0.39],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TasselBL","shape":"cylinder","pos":[-0.59,0.0062,-0.39],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TasselBR","shape":"cylinder","pos":[0.59,0.0062,-0.39],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CenterCrease","shape":"cube","pos":[0.0,-0.0238,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.025,0.01],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0}
+]}

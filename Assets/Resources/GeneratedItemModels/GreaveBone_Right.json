@@ -1,0 +1,12 @@
+{"version": 1, "id": "GreaveBone_Right", "baseHeight": 0.095, "name": "Greave Bone Right", "model": "gpt-oss:120b", "notes": "Greave bone (right) approx 0.38 m long × 0.07 m thick, lying on its side. Central shaft cylinder, expanded proximal and distal ends as ellipsoids, internal marrow cavity, a thin ridge along the top, plus a few surface bumps for readable silhouette.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[0.0025,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.3,0.04],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"ProximalEnd","shape":"sphere","pos":[-0.1825,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"DistalEnd","shape":"sphere","pos":[0.1875,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Ridge","shape":"cube","pos":[0.0025,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.008,0.012],"color":[0.54,0.522,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"MarrowShaft","shape":"cylinder","pos":[0.0025,-0.023,0.0],"rot":[0.0,0.0,90.0],"size":[0.024,0.3,0.024],"color":[0.48,0.464,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"ProximalCavity","shape":"sphere","pos":[-0.1825,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.48,0.464,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"DistalCavity","shape":"sphere","pos":[0.1875,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.045,0.045],"color":[0.48,0.464,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"SurfaceDetailL","shape":"sphere","pos":[-0.1175,0.005,0.015],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.63,0.609,0.525],"smooth":0.15,"metal":0.0},
+  {"name":"SurfaceDetailR","shape":"sphere","pos":[0.1225,0.005,-0.015],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.63,0.609,0.525],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeTrim","shape":"cube","pos":[0.0025,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.006,0.004],"color":[0.54,0.522,0.45],"smooth":0.08,"metal":0.0}
+]}

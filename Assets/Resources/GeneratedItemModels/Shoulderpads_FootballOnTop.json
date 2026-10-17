@@ -1,0 +1,12 @@
+{"version": 1, "id": "Shoulderpads_FootballOnTop", "baseHeight": 0.0887, "name": "Shoulderpads Football On Top", "model": "gpt-oss:120b", "notes": "Football‑style shoulder pads, laid on the floor flat. Approx 0.45 m wide × 0.30 m deep × 0.045 m total thickness (soft foam core with a thin hard shell and strap loops).", "score": 7, "parts": [
+  {"name":"FoamCore","shape":"cube","pos":[0.0,-0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.44,0.04,0.28],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TopShell","shape":"cube","pos":[0.0,0.0138,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.005,0.3],"color":[0.55,0.53,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"SideLeft","shape":"cube","pos":[-0.2225,-0.0063,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.045,0.3],"color":[0.55,0.53,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"SideRight","shape":"cube","pos":[0.2225,-0.0063,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.045,0.3],"color":[0.55,0.53,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"FrontRim","shape":"cube","pos":[0.0,-0.0063,0.1375],"rot":[0.0,0.0,0.0],"size":[0.44,0.045,0.005],"color":[0.55,0.53,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"BackRim","shape":"cube","pos":[0.0,-0.0063,-0.1375],"rot":[0.0,0.0,0.0],"size":[0.44,0.045,0.005],"color":[0.55,0.53,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"StrapLoopL","shape":"cylinder","pos":[-0.1,0.0213,0.12],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"StrapLoopR","shape":"cylinder","pos":[0.1,0.0213,0.12],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"LogoPlate","shape":"cube","pos":[0.0,0.0162,0.12],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.005],"color":[0.3,0.25,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"BottomRim","shape":"cube","pos":[0.0,-0.0263,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.005,0.3],"color":[0.55,0.53,0.48],"smooth":0.15,"metal":0.0}
+]}

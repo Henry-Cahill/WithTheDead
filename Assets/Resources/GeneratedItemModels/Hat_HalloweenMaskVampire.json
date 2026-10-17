@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_HalloweenMaskVampire", "baseHeight": 0.1212, "name": "Hat Halloween Mask Vampire", "model": "gpt-oss:120b", "notes": "Halloween vampire mask‑hat laid flat on the floor. Overall outline about 0.30 m wide × 0.25 m deep, overall thickness ≈0.04 m. Main purple‑grey cloth body with a brim, low crown, front mask plate, eye cut‑outs, tiny fangs, decorative top band and a hanging ribbon.", "score": 7, "parts": [
+  {"name":"Brim","shape":"cylinder","pos":[0.0,-0.0212,0.005],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrownBase","shape":"cylinder","pos":[0.0,-0.0013,0.005],"rot":[0.0,0.0,0.0],"size":[0.2,0.08,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"MaskPlate","shape":"cube","pos":[0.0,0.0388,0.085],"rot":[0.0,0.0,0.0],"size":[0.22,0.04,0.03],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EyeLeft","shape":"cylinder","pos":[-0.05,0.0388,0.1],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"EyeRight","shape":"cylinder","pos":[0.05,0.0388,0.1],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"FangL","shape":"cube","pos":[-0.025,0.0338,0.12],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.02],"color":[1.0,1.0,1.0],"smooth":0.2,"metal":0.0},
+  {"name":"FangR","shape":"cube","pos":[0.025,0.0338,0.12],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.02],"color":[1.0,1.0,1.0],"smooth":0.2,"metal":0.0},
+  {"name":"TopBand","shape":"cylinder","pos":[0.0,0.0587,0.005],"rot":[0.0,0.0,0.0],"size":[0.2,0.005,0.2],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"RibbonBack","shape":"cube","pos":[0.0,-0.0413,-0.115],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.1],"color":[0.6,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"BrimTrim","shape":"cylinder","pos":[0.0,-0.0102,0.005],"rot":[0.0,0.0,0.0],"size":[0.32,0.004,0.32],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0}
+]}

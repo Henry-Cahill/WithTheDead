@@ -1,0 +1,16 @@
+{"version": 1, "id": "Trousers_JeanBaggy_Punk", "baseHeight": 0.1, "name": "Trousers Jean Baggy Punk", "model": "gpt-oss:120b", "notes": "Baggy jean trousers spread flat, approx 0.60 m wide × 1.05 m long × 0.025 m thick; main leg panels, waistband, front pockets, back pocket, belt‑loops and rivets give the recognisable denim silhouette.", "score": 6, "parts": [
+  {"name":"LegL","shape":"cube","pos":[-0.13,-0.0,-0.04],"rot":[0.0,0.0,0.0],"size":[0.24,0.025,1.05],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.13,-0.0,-0.04],"rot":[0.0,0.0,0.0],"size":[0.24,0.025,1.05],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,-0.0,0.545],"rot":[0.0,0.0,0.0],"size":[0.6,0.025,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFL","shape":"cube","pos":[-0.12,-0.0,0.505],"rot":[0.0,0.0,0.0],"size":[0.15,0.025,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFR","shape":"cube","pos":[0.12,-0.0,0.505],"rot":[0.0,0.0,0.0],"size":[0.15,0.025,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BackPocket","shape":"cube","pos":[0.0,-0.0,-0.585],"rot":[0.0,0.0,0.0],"size":[0.2,0.025,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopFL","shape":"cylinder","pos":[-0.22,-0.0,0.545],"rot":[0.0,0.0,0.0],"size":[0.018,0.08,0.018],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopFR","shape":"cylinder","pos":[0.22,-0.0,0.545],"rot":[0.0,0.0,0.0],"size":[0.018,0.08,0.018],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopBL","shape":"cylinder","pos":[-0.07,-0.0,0.545],"rot":[0.0,0.0,0.0],"size":[0.018,0.08,0.018],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopBR","shape":"cylinder","pos":[0.07,-0.0,0.545],"rot":[0.0,0.0,0.0],"size":[0.018,0.08,0.018],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RivetL","shape":"cylinder","pos":[-0.02,-0.0,-0.015],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.01],"color":[0.7,0.7,0.7],"smooth":0.4,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[0.02,-0.0,-0.015],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.01],"color":[0.7,0.7,0.7],"smooth":0.4,"metal":1.0},
+  {"name":"HemL","shape":"cube","pos":[-0.13,-0.0,-0.545],"rot":[0.0,0.0,0.0],"size":[0.24,0.025,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemR","shape":"cube","pos":[0.13,-0.0,-0.545],"rot":[0.0,0.0,0.0],"size":[0.24,0.025,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

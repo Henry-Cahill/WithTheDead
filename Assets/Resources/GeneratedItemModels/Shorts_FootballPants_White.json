@@ -1,0 +1,12 @@
+{"version": 1, "id": "Shorts_FootballPants_White", "baseHeight": 0.0788, "name": "Shorts Football Pants White", "model": "gpt-oss:120b", "notes": "Football shorts laid flat – overall footprint ≈ 0.50 m wide (X) × 0.30 m long (Z) × 0.02 m thick (Y). Includes a raised waistband, side seams, front & rear pockets, draw‑string loops and a small logo on the front pocket.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0087,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.005,0.3],"color":[0.8,0.8,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.245,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.3],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.245,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.3],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocket","shape":"cube","pos":[0.0,-0.0012,0.08],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RearPocket","shape":"cube","pos":[0.0,-0.0012,-0.08],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"DrawLoopL","shape":"cylinder","pos":[-0.22,0.0113,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"DrawLoopR","shape":"cylinder","pos":[0.22,0.0113,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Logo","shape":"cube","pos":[0.0,0.0047,0.09],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.01],"color":[0.8,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[0.0,-0.0163,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.005,0.3],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "BellyButton_StudGoldDiamond", "baseHeight": 0.066, "name": "Belly Button Stud Gold Diamond", "model": "gpt-oss:120b", "notes": "Gold belly‑button stud with a small diamond head, about 3 cm long total and 1 cm wide. Lying on its side: gold post cylinder, tiny bezel ring, rounded tip, and a clear‑ish diamond sphere at the opposite end.", "score": 6, "parts": [
+  {"name":"Post","shape":"cylinder","pos":[-0.0025,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.02,0.008],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"Bezel","shape":"cylinder","pos":[0.006,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.002,0.012],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[-0.0135,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"Diamond","shape":"sphere","pos":[0.0125,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.012,0.01],"color":[0.92,0.96,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"FacetHighlight","shape":"cube","pos":[0.0125,0.0,0.0035],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[1.0,1.0,1.0],"smooth":0.8,"metal":0.0},
+  {"name":"ClaspRing","shape":"cylinder","pos":[-0.0075,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.006,0.002,0.006],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":1.0}
+]}

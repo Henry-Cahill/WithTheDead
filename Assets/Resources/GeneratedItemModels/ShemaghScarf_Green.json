@@ -1,0 +1,8 @@
+{"version": 1, "id": "ShemaghScarf_Green", "baseHeight": 0.1, "name": "Shemagh Scarf Green", "model": "gpt-oss:120b", "notes": "Flat shemagh scarf ~1.2 m long × 0.4 m wide, about 2.5 cm thick, folded in half with short fringe tassels at the four corners.", "score": 6, "parts": [
+  {"name":"BaseSheet","shape":"cube","pos":[0.0,-0.0275,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.025,0.4],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FoldLayer","shape":"cube","pos":[0.3,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.025,0.4],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FringeTL","shape":"cylinder","pos":[-0.6,0.0,0.2],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"FringeTR","shape":"cylinder","pos":[0.6,0.0,0.2],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"FringeBL","shape":"cylinder","pos":[-0.6,0.0,-0.2],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"FringeBR","shape":"cylinder","pos":[0.6,0.0,-0.2],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Shirt_CamoUrban", "baseHeight": 0.0925, "name": "Shirt Camo Urban", "model": "gpt-oss:120b", "notes": "Flat camo‑urban shirt laid out as a product photo (≈0.68 m long × 0.48 m wide, 3 cm thick). Main body in base tint with darker cuffs/hem, two sleeves, collar & neck opening, and two camouflage patches. All parts now touch the torso.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.135,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.68,0.03,0.48],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftSleeve","shape":"cube","pos":[0.135,0.0025,0.33],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightSleeve","shape":"cube","pos":[0.135,0.0025,-0.33],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.3,0.0015,0.33],"rot":[0.0,0.0,0.0],"size":[0.03,0.028,0.18],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.3,0.0015,-0.33],"rot":[0.0,0.0,0.0],"size":[0.03,0.028,0.18],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.455,0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.015,0.16],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.455,0.0235,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.12],"color":[0.35,0.33,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[-0.195,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.68,0.02,0.06],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PatchLeft","shape":"cube","pos":[0.235,0.0195,0.15],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.12],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PatchRight","shape":"cube","pos":[0.235,0.0195,-0.15],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.12],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0}
+]}

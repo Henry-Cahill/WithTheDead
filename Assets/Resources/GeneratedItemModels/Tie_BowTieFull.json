@@ -1,0 +1,12 @@
+{"version": 1, "id": "Tie_BowTieFull", "baseHeight": 0.07, "name": "Tie Bow Tie Full", "model": "gpt-oss:120b", "notes": "Full bow‑tie lying flat on the floor, centered at the origin. Overall footprint ≈ 0.36 m wide (left‑wing + right‑wing) × 0.04 m deep × 0.015 m thick. Main fabric colour is the given tint; darker seam strips and a thin loop suggest the tie’s construction.", "score": 6, "parts": [
+  {"name":"WingL","shape":"cube","pos":[-0.09,-0.0025,0.0263],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"WingR","shape":"cube","pos":[0.09,-0.0025,0.0263],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"KnotFront","shape":"cube","pos":[0.0,-0.0025,0.0312],"rot":[0.0,0.0,0.0],"size":[0.05,0.015,0.045],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"KnotBack","shape":"cube","pos":[0.0,-0.0025,0.0213],"rot":[0.0,0.0,0.0],"size":[0.05,0.015,0.045],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamLTop","shape":"cube","pos":[-0.09,-0.0015,0.0483],"rot":[0.0,0.0,0.0],"size":[0.16,0.017,0.004],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"SeamLBottom","shape":"cube","pos":[-0.09,-0.0015,0.0043],"rot":[0.0,0.0,0.0],"size":[0.16,0.017,0.004],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"SeamRTop","shape":"cube","pos":[0.09,-0.0015,0.0483],"rot":[0.0,0.0,0.0],"size":[0.16,0.017,0.004],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"SeamRBottom","shape":"cube","pos":[0.09,-0.0015,0.0043],"rot":[0.0,0.0,0.0],"size":[0.16,0.017,0.004],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Loop","shape":"cylinder","pos":[0.0,-0.0,-0.0037],"rot":[0.0,0.0,90.0],"size":[0.02,0.08,0.02],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Tail","shape":"cube","pos":[0.0,-0.0025,-0.0238],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

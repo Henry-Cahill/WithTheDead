@@ -1,0 +1,9 @@
+{"version": 1, "id": "Ring_Left_RingFinger_Signet", "baseHeight": 0.0653, "name": "Ring Left Ring Finger Signet", "model": "gpt-oss:120b", "notes": "Signet ring for left ring finger – approx 2.4 cm diameter × 0.5 cm thick. Flat metal disc lying on its side, with a slightly raised bezel rim, a central embossed emblem and a thin engraved border.", "score": 6, "parts": [
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.0027,0.0],"rot":[0.0,0.0,0.0],"size":[0.024,0.005,0.024],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BezelRim","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.026,0.005,0.026],"color":[0.48,0.45,0.38],"smooth":0.55,"metal":1.0},
+  {"name":"Emblem","shape":"cylinder","pos":[0.0,-0.0007,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.002,0.012],"color":[0.75,0.72,0.65],"smooth":0.6,"metal":1.0},
+  {"name":"EngraveBorder","shape":"cube","pos":[0.0,0.0001,0.0],"rot":[0.0,0.0,0.0],"size":[0.024,0.002,0.002],"color":[0.38,0.36,0.3],"smooth":0.2,"metal":1.0},
+  {"name":"Gemstone","shape":"sphere","pos":[0.0,0.0023,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.8,0.2,0.2],"smooth":0.7,"metal":0.0},
+  {"name":"SideSupport","shape":"cube","pos":[-0.011,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.003,0.024],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"SideSupportR","shape":"cube","pos":[0.011,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.003,0.024],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0}
+]}

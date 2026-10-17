@@ -1,0 +1,15 @@
+{"version": 1, "id": "Vambrace_LeatherSpike_Left", "baseHeight": 0.0975, "name": "Vambrace Leather Spike Left", "model": "gpt-oss:120b", "notes": "Left forearm vambrace, leather base ~0.28 m long × 0.07 m wide × 0.04 m tall (including spikes). Main leather cuff with five metal spikes and a small steel buckle, lying on its side.", "score": 6, "parts": [
+  {"name":"LeatherCuff","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.28,0.07],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"InnerLining","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.28,0.06],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"Spike1","shape":"cylinder","pos":[-0.1,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"SpikeTip1","shape":"sphere","pos":[-0.1,0.0325,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.3,0.3,0.35],"smooth":0.5,"metal":1.0},
+  {"name":"Spike2","shape":"cylinder","pos":[-0.05,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"SpikeTip2","shape":"sphere","pos":[-0.05,0.0325,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.3,0.3,0.35],"smooth":0.5,"metal":1.0},
+  {"name":"Spike3","shape":"cylinder","pos":[0.0,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"SpikeTip3","shape":"sphere","pos":[0.0,0.0325,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.3,0.3,0.35],"smooth":0.5,"metal":1.0},
+  {"name":"Spike4","shape":"cylinder","pos":[0.05,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"SpikeTip4","shape":"sphere","pos":[0.05,0.0325,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.3,0.3,0.35],"smooth":0.5,"metal":1.0},
+  {"name":"Spike5","shape":"cylinder","pos":[0.1,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"SpikeTip5","shape":"sphere","pos":[0.1,0.0325,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.3,0.3,0.35],"smooth":0.5,"metal":1.0},
+  {"name":"Buckle","shape":"cube","pos":[-0.13,0.0075,0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.01],"color":[0.2,0.2,0.22],"smooth":0.45,"metal":1.0}
+]}

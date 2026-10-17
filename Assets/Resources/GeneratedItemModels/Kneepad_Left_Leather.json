@@ -1,0 +1,9 @@
+{"version": 1, "id": "Kneepad_Left_Leather", "baseHeight": 0.071, "name": "Kneepad Left Leather", "model": "gpt-oss:120b", "notes": "Left leather kneepad approx 0.15 m wide × 0.12 m tall × 0.02 m thick, rounded corners and a rear strap loop, lying flat on the floor.", "score": 6, "parts": [
+  {"name":"PadBody","shape":"cube","pos":[0.0,-0.001,0.0125],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CornerTL","shape":"sphere","pos":[-0.07,-0.001,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CornerTR","shape":"sphere","pos":[0.07,-0.001,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CornerBL","shape":"sphere","pos":[-0.07,-0.001,0.0675],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CornerBR","shape":"sphere","pos":[0.07,-0.001,0.0675],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RearStrap","shape":"cube","pos":[0.0,0.0015,-0.0625],"rot":[0.0,0.0,0.0],"size":[0.15,0.005,0.03],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLine","shape":"cube","pos":[0.0,0.01,0.0125],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.01],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0}
+]}

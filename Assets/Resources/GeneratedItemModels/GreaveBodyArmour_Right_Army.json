@@ -1,0 +1,12 @@
+{"version": 1, "id": "GreaveBodyArmour_Right_Army", "baseHeight": 0.12, "name": "Greave Body Armour Right Army", "model": "gpt-oss:120b", "notes": "Right greave body‑armour, army‑tint drab (≈0.6 × 0.58 × 0.5). Laid flat on the floor, about 0.45 m long, 0.18 m wide and 0.03 m thick with front/back plates, metal edge rims, leather straps and buckles, plus strap‑loops that attach to the front and back edges of the plates.", "score": 6, "parts": [
+  {"name":"BackPlate","shape":"cube","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.03,0.45],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"FrontPlate","shape":"cube","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,0.45],"color":[0.55,0.53,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeRimTop","shape":"cube","pos":[0.0,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.182,0.005,0.452],"color":[0.4,0.42,0.44],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeRimBottom","shape":"cube","pos":[0.0,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.182,0.005,0.452],"color":[0.4,0.42,0.44],"smooth":0.55,"metal":1.0},
+  {"name":"StrapLeft","shape":"cylinder","pos":[-0.09,-0.0,0.18],"rot":[0.0,90.0,0.0],"size":[0.015,0.12,0.015],"color":[0.3,0.28,0.25],"smooth":0.08,"metal":0.0},
+  {"name":"StrapRight","shape":"cylinder","pos":[0.09,-0.0,0.18],"rot":[0.0,90.0,0.0],"size":[0.015,0.12,0.015],"color":[0.3,0.28,0.25],"smooth":0.08,"metal":0.0},
+  {"name":"BuckleL","shape":"cube","pos":[-0.09,0.005,0.12],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.02],"color":[0.45,0.45,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleR","shape":"cube","pos":[0.09,0.005,0.12],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.02],"color":[0.45,0.45,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"StrapLoopFront","shape":"cylinder","pos":[0.0,0.0075,0.22],"rot":[90.0,0.0,0.0],"size":[0.012,0.025,0.012],"color":[0.3,0.28,0.25],"smooth":0.08,"metal":0.0},
+  {"name":"StrapLoopBack","shape":"cylinder","pos":[0.0,0.0075,-0.22],"rot":[90.0,0.0,0.0],"size":[0.012,0.025,0.012],"color":[0.3,0.28,0.25],"smooth":0.08,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "Shinpad_HockeyGoalie_L_White", "baseHeight": 0.13, "name": "Shinpad Hockey Goalie L White", "model": "gpt-oss:120b", "notes": "Large goalie shin‑pad, about 0.44 m long × 0.14 m wide × 0.025 m thick, lying flat on its front side. Main white plastic shell with a slightly lighter foam liner and dark strap loops.", "score": 6, "parts": [
+  {"name":"ShellOuter","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.44,0.025,0.14],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"FoamInner","shape":"cube","pos":[0.0,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.42,0.018,0.13],"color":[0.78,0.76,0.68],"smooth":0.05,"metal":0.0},
+  {"name":"StrapLFront","shape":"cylinder","pos":[-0.18,0.0055,0.06],"rot":[90.0,0.0,0.0],"size":[0.03,0.05,0.03],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"StrapLBack","shape":"cylinder","pos":[-0.18,0.0055,-0.06],"rot":[90.0,0.0,0.0],"size":[0.03,0.05,0.03],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"StrapRFront","shape":"cylinder","pos":[0.18,0.0055,0.06],"rot":[90.0,0.0,0.0],"size":[0.03,0.05,0.03],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"StrapRBack","shape":"cylinder","pos":[0.18,0.0055,-0.06],"rot":[90.0,0.0,0.0],"size":[0.03,0.05,0.03],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"FrontEdgeRound","shape":"cylinder","pos":[0.0,0.0,0.07],"rot":[90.0,0.0,0.0],"size":[0.14,0.44,0.14],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"BackEdgeRound","shape":"cylinder","pos":[0.0,0.0,-0.07],"rot":[90.0,0.0,0.0],"size":[0.14,0.44,0.14],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"LeftSideRound","shape":"cylinder","pos":[-0.22,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.14,0.025,0.14],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"RightSideRound","shape":"cylinder","pos":[0.22,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.14,0.025,0.14],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"TopRim","shape":"cylinder","pos":[0.0,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.44,0.008,0.14],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0}
+]}

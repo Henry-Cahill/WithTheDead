@@ -1,0 +1,12 @@
+{"version": 1, "id": "Skirt_Knees_Crafted_Burlap", "baseHeight": 0.073, "name": "Skirt Knees Crafted Burlap", "model": "gpt-oss:120b", "notes": "Knees‑length burlap skirt laid flat, 1.20 m wide × 0.55 m tall × ~0.03 m thick. Main fabric panel with waistband and hem trim, side‑seam lines, two decorative patches near the bottom, a centre pleat line and belt‑loop tubes on the waist.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[0.0,-0.003,0.255],"rot":[0.0,0.0,0.0],"size":[1.2,0.02,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BodyPanel","shape":"cube","pos":[0.0,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.025,0.47],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemTrim","shape":"cube","pos":[0.0,-0.003,-0.255],"rot":[0.0,0.0,0.0],"size":[1.2,0.02,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cylinder","pos":[-0.595,-0.0005,0.0],"rot":[90.0,0.0,0.0],"size":[0.01,0.47,0.01],"color":[0.2,0.15,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"SideSeamR","shape":"cylinder","pos":[0.595,-0.0005,0.0],"rot":[90.0,0.0,0.0],"size":[0.01,0.47,0.01],"color":[0.2,0.15,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"CenterPleat","shape":"cylinder","pos":[0.0,-0.0005,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.47,0.008],"color":[0.3,0.25,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"PatchL","shape":"cube","pos":[-0.3,-0.0055,-0.2],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.12],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"PatchR","shape":"cube","pos":[0.3,-0.0055,-0.2],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.12],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopL","shape":"cylinder","pos":[-0.3,0.005,0.1],"rot":[0.0,0.0,90.0],"size":[0.016,0.04,0.016],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopR","shape":"cylinder","pos":[0.3,0.005,0.1],"rot":[0.0,0.0,90.0],"size":[0.016,0.04,0.016],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

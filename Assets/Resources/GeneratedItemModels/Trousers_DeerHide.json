@@ -1,0 +1,14 @@
+{"version": 1, "id": "Trousers_DeerHide", "baseHeight": 0.0825, "name": "Trousers Deer Hide", "model": "gpt-oss:120b", "notes": "Deer‑hide trousers laid flat like a product photo. Overall length ≈ 1.00 m (Z), total width ≈ 0.54 m including the crotch gap, thickness ≈ 2.5 cm. Main parts: left & right leg panels, waistband strip, small central crotch bridge, side‑edge seams, inner seam cylinders, front pockets and two belt‑loops.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0025,0.48],"rot":[0.0,0.0,0.0],"size":[0.6,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrotchBridge","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.025,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LeftLegPanel","shape":"cube","pos":[-0.25,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.025,1.0],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightLegPanel","shape":"cube","pos":[0.25,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.025,1.0],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.25,-0.01,0.22],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.14],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.25,-0.01,0.22],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.14],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cylinder","pos":[-0.36,-0.01,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,1.0,0.008],"color":[0.7,0.65,0.75],"smooth":0.2,"metal":0.0},
+  {"name":"SideSeamR","shape":"cylinder","pos":[0.36,-0.01,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,1.0,0.008],"color":[0.7,0.65,0.75],"smooth":0.2,"metal":0.0},
+  {"name":"InnerSeamL","shape":"cylinder","pos":[-0.14,-0.01,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,1.0,0.008],"color":[0.7,0.65,0.75],"smooth":0.2,"metal":0.0},
+  {"name":"InnerSeamR","shape":"cylinder","pos":[0.14,-0.01,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,1.0,0.008],"color":[0.7,0.65,0.75],"smooth":0.2,"metal":0.0},
+  {"name":"BeltLoopL","shape":"cylinder","pos":[-0.2,0.0125,0.48],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.3,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"BeltLoopR","shape":"cylinder","pos":[0.2,0.0125,0.48],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.3,0.2,0.1],"smooth":0.15,"metal":0.0}
+]}

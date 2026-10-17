@@ -1,0 +1,8 @@
+{"version": 1, "id": "Earring_Dangly_Ruby", "baseHeight": 0.0762, "name": "Earring Dangly Ruby", "model": "gpt-oss:120b", "notes": "Dangly ruby earring about 5 cm tall when hanging: bronze‑tinted metal bail and hook, 1.2 cm diameter ruby gem (red). Lying on the floor the ruby rests on the ground with the metal parts extending upward.", "score": 7, "parts": [
+  {"name":"RubyGem","shape":"sphere","pos":[0.0,-0.0103,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.78,0.05,0.07],"smooth":0.4,"metal":0.0},
+  {"name":"Bail","shape":"cylinder","pos":[0.0,0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.01,0.004],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"HookPlate","shape":"cube","pos":[0.0,0.0072,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.003,0.01],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"SideClipL","shape":"cube","pos":[-0.006,0.0072,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.003,0.01],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"SideClipR","shape":"cube","pos":[0.006,0.0072,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.003,0.01],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"LoopEdge","shape":"cylinder","pos":[0.0,0.0092,0.0],"rot":[90.0,0.0,0.0],"size":[0.014,0.004,0.014],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0}
+]}

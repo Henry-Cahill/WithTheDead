@@ -1,0 +1,12 @@
+{"version": 1, "id": "Shorts_FootballPants_Black", "baseHeight": 0.0737, "name": "Shorts Football Pants Black", "model": "gpt-oss:120b", "notes": "Football shorts laid flat, approx 0.38 m wide × 0.26 m deep × 0.025 m thick. Two leg panels, waistband front & back strips, side belt‑loops, front pockets and thin stitching lines.", "score": 6, "parts": [
+  {"name":"LeftLeg","shape":"cube","pos":[-0.09,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,0.26],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightLeg","shape":"cube","pos":[0.09,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,0.26],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"WaistBandFront","shape":"cube","pos":[0.0,0.0012,0.12],"rot":[0.0,0.0,0.0],"size":[0.38,0.008,0.02],"color":[0.48,0.44,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"WaistBandBack","shape":"cube","pos":[0.0,0.0012,-0.12],"rot":[0.0,0.0,0.0],"size":[0.38,0.008,0.02],"color":[0.48,0.44,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.09,0.0042,0.05],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.04],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.09,0.0042,0.05],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.04],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"StitchFront","shape":"cylinder","pos":[0.0,0.0063,0.12],"rot":[0.0,0.0,90.0],"size":[0.004,0.38,0.004],"color":[0.9,0.9,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"StitchBack","shape":"cylinder","pos":[0.0,0.0063,-0.12],"rot":[0.0,0.0,90.0],"size":[0.004,0.38,0.004],"color":[0.9,0.9,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"BeltLoopL","shape":"cylinder","pos":[-0.19,0.0063,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.015,0.006],"color":[0.48,0.44,0.54],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopR","shape":"cylinder","pos":[0.19,0.0063,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.015,0.006],"color":[0.48,0.44,0.54],"smooth":0.05,"metal":0.0}
+]}

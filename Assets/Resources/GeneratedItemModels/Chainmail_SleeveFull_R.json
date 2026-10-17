@@ -1,0 +1,10 @@
+{"version": 1, "id": "Chainmail_SleeveFull_R", "baseHeight": 0.12, "name": "Chainmail Sleeve Full R", "model": "gpt-oss:120b", "notes": "Chainmail sleeve (right arm), full‑length ~0.60 m, outer diameter ≈0.12 m, metal‑tinted gray. Lying on its side, axis along X. Main tube plus a few surface rings to suggest interlocking links.", "score": 6, "parts": [
+  {"name":"OuterShell","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.6,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"InnerCavity","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.1,0.6,0.1],"color":[0.15,0.15,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"LongSeam","shape":"cylinder","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.6,0.008],"color":[0.45,0.43,0.38],"smooth":0.55,"metal":1.0},
+  {"name":"RingA","shape":"sphere","pos":[-0.2,0.0,0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.55,0.53,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"RingB","shape":"sphere","pos":[-0.1,0.0,-0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.55,0.53,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"RingC","shape":"sphere","pos":[0.0,0.0,0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.55,0.53,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"RingD","shape":"sphere","pos":[0.1,0.0,-0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.55,0.53,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"RingE","shape":"sphere","pos":[0.2,0.0,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.55,0.53,0.48],"smooth":0.6,"metal":1.0}
+]}

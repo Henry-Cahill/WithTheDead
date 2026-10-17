@@ -1,0 +1,12 @@
+{"version": 1, "id": "LongJohns_Bottoms", "baseHeight": 0.0725, "name": "Long Johns Bottoms", "model": "gpt-oss:120b", "notes": "Long Johns Bottoms – thermal leggings laid flat as a product photo. Approx. 0.92 m long, 0.48 m wide (both legs spread), 2‑3 cm thick. Main fabric in tint (0.55,0.5,0.6) with darker side‑seams and slightly lighter ankle cuffs.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[0.0,-0.005,0.4575],"rot":[0.0,0.0,0.0],"size":[0.48,0.015,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegL_Upper","shape":"cube","pos":[-0.08,0.0,0.2375],"rot":[0.0,0.0,0.0],"size":[0.14,0.025,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR_Upper","shape":"cube","pos":[0.08,0.0,0.2375],"rot":[0.0,0.0,0.0],"size":[0.14,0.025,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrotchPanel","shape":"cube","pos":[0.0,0.0,0.0175],"rot":[0.0,0.0,0.0],"size":[0.2,0.025,0.1],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegL_Lower","shape":"cube","pos":[-0.08,0.0,-0.2525],"rot":[0.0,0.0,0.0],"size":[0.14,0.025,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR_Lower","shape":"cube","pos":[0.08,0.0,-0.2525],"rot":[0.0,0.0,0.0],"size":[0.14,0.025,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"AnkleCuffL","shape":"cube","pos":[-0.08,-0.0025,-0.4675],"rot":[0.0,0.0,0.0],"size":[0.16,0.015,0.02],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"AnkleCuffR","shape":"cube","pos":[0.08,-0.0025,-0.4675],"rot":[0.0,0.0,0.0],"size":[0.16,0.015,0.02],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.145,0.0,0.0175],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.92],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.145,0.0,0.0175],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.92],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

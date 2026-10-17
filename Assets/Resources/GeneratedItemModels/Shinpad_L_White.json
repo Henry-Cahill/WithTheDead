@@ -1,0 +1,9 @@
+{"version": 1, "id": "Shinpad_L_White", "baseHeight": 0.0725, "name": "Shinpad L White", "model": "gpt-oss:120b", "notes": "Shin pad L White – flat protective pad about 0.25 m long × 0.15 m wide × 0.025 m thick, light‑gray fabric cover over a slightly lighter foam core, with stitched edge strips and a small strap loop on the front side.", "score": 7, "parts": [
+  {"name":"CoverBody","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.025,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FoamCore","shape":"cube","pos":[0.0,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.23,0.022,0.13],"color":[0.7,0.68,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.0,0.001,0.0675],"rot":[0.0,0.0,0.0],"size":[0.25,0.002,0.015],"color":[0.51,0.493,0.425],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[0.0,0.001,-0.0675],"rot":[0.0,0.0,0.0],"size":[0.25,0.002,0.015],"color":[0.51,0.493,0.425],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.125,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.15],"color":[0.51,0.493,0.425],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.125,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.15],"color":[0.51,0.493,0.425],"smooth":0.1,"metal":0.0},
+  {"name":"StrapLoop","shape":"cylinder","pos":[0.11,0.0025,0.07],"rot":[90.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.51,0.493,0.425],"smooth":0.1,"metal":0.0}
+]}

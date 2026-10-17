@@ -1,0 +1,12 @@
+{"version": 1, "id": "Trousers_Shellsuit_Blue", "baseHeight": 0.0775, "name": "Trousers Shellsuit Blue", "model": "gpt-oss:120b", "notes": "Flat trousers (Shellsuit Blue) laid out spread like a product photo: waistband across the top, two long legs with cuffs at the bottom, front pockets on each leg, a central belt‑loop and thin seam strips along the outer edges. Overall silhouette ≈0.72 m wide × 1.10 m long × 0.03 m thick.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[0.0,-0.0025,0.51],"rot":[0.0,0.0,0.0],"size":[0.72,0.03,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.25,-0.0025,-0.05],"rot":[0.0,0.0,0.0],"size":[0.2,0.03,1.0],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.25,-0.0025,-0.05],"rot":[0.0,0.0,0.0],"size":[0.2,0.03,1.0],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.25,-0.0025,-0.51],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.25,-0.0025,-0.51],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.25,0.005,0.15],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.25,0.005,0.15],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoop","shape":"cylinder","pos":[0.0,0.0075,0.53],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamLeft","shape":"cube","pos":[-0.35,-0.0025,-0.05],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,1.0],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamRight","shape":"cube","pos":[0.35,-0.0025,-0.05],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,1.0],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

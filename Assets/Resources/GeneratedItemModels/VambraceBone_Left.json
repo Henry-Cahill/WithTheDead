@@ -1,0 +1,10 @@
+{"version": 1, "id": "VambraceBone_Left", "baseHeight": 0.1125, "name": "Vambrace Bone Left", "model": "gpt-oss:120b", "notes": "Left bone vambrace lying on its side, ~0.25 m long, ~0.10 m wide and ~0.05 m thick. Hollow interior with a slightly darker inner cavity, a leather‑like strap around the middle and three short bone ridges along the outer surface. Small metal rivets at each end.", "score": 6, "parts": [
+  {"name":"OuterShell","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.1,0.25,0.1],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"InnerCavity","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.23,0.08],"color":[0.45,0.43,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"StrapMid","shape":"cube","pos":[0.0,0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.015,0.02],"color":[0.4,0.35,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"RidgeFront","shape":"cube","pos":[-0.09,0.0375,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.04],"color":[0.7,0.68,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"RidgeMid","shape":"cube","pos":[0.0,0.0375,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.04],"color":[0.7,0.68,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"RidgeBack","shape":"cube","pos":[0.09,0.0375,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.04],"color":[0.7,0.68,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"RivetL","shape":"sphere","pos":[-0.125,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.6,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[0.125,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.6,0.6],"smooth":0.5,"metal":1.0}
+]}

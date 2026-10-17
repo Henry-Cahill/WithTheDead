@@ -1,0 +1,8 @@
+{"version": 1, "id": "BellyButton_RingGoldDiamond", "baseHeight": 0.0643, "name": "Belly Button Ring Gold Diamond", "model": "gpt-oss:120b", "notes": "Belly‑button ring ~2 cm diameter, thin gold band (≈1 mm) lying flat on the floor with a tiny sparkling diamond hanging from the bottom. Includes a vertical post through the centre and a small clasp at the top; two tiny rivets mark the ends of the hoop.", "score": 6, "parts": [
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.0027,0.0052],"rot":[0.0,0.0,90.0],"size":[0.002,0.02,0.002],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"Post","shape":"cylinder","pos":[0.0,-0.0002,0.0052],"rot":[0.0,0.0,0.0],"size":[0.002,0.006,0.002],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"Clasp","shape":"cube","pos":[0.0,0.0032,0.0052],"rot":[0.0,0.0,0.0],"size":[0.003,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":1.0},
+  {"name":"Diamond","shape":"sphere","pos":[0.0,-0.0017,-0.0037],"rot":[0.0,0.0,0.0],"size":[0.005,0.005,0.005],"color":[1.0,1.0,1.0],"smooth":0.9,"metal":0.0},
+  {"name":"RivetL","shape":"cylinder","pos":[-0.009,-0.0027,0.0052],"rot":[0.0,0.0,90.0],"size":[0.002,0.002,0.002],"color":[0.45,0.44,0.38],"smooth":0.12,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[0.009,-0.0027,0.0052],"rot":[0.0,0.0,90.0],"size":[0.002,0.002,0.002],"color":[0.45,0.44,0.38],"smooth":0.12,"metal":1.0}
+]}

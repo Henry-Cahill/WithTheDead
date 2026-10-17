@@ -1,0 +1,12 @@
+{"version": 1, "id": "VambraceTire_Right", "baseHeight": 0.26, "name": "Vambrace Tire Right", "model": "gpt-oss:120b", "notes": "Rubber tire (right‑hand side) approx 0.40 m outer diameter × 0.12 m width, lying on its side (axis along X). Rubber body with dark metal rim and a few tread ribs & bolts for detail.", "score": 6, "parts": [
+  {"name":"OuterRubber","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.4,0.12,0.4],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.25,0.12,0.25],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":0.6},
+  {"name":"RibFront","shape":"cube","pos":[0.0,0.0,0.18],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.04],"color":[0.5,0.48,0.42],"smooth":0.2,"metal":0.0},
+  {"name":"RibBack","shape":"cube","pos":[0.0,0.0,-0.18],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.04],"color":[0.5,0.48,0.42],"smooth":0.2,"metal":0.0},
+  {"name":"RibTop","shape":"cube","pos":[0.0,0.18,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.02],"color":[0.5,0.48,0.42],"smooth":0.2,"metal":0.0},
+  {"name":"RibBottom","shape":"cube","pos":[0.0,-0.18,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.02],"color":[0.5,0.48,0.42],"smooth":0.2,"metal":0.0},
+  {"name":"Bolt1","shape":"cylinder","pos":[0.0,0.15,0.15],"rot":[0.0,0.0,90.0],"size":[0.03,0.12,0.03],"color":[0.3,0.3,0.35],"smooth":0.5,"metal":1.0},
+  {"name":"Bolt2","shape":"cylinder","pos":[0.0,-0.15,0.15],"rot":[0.0,0.0,90.0],"size":[0.03,0.12,0.03],"color":[0.3,0.3,0.35],"smooth":0.5,"metal":1.0},
+  {"name":"Bolt3","shape":"cylinder","pos":[0.0,0.15,-0.15],"rot":[0.0,0.0,90.0],"size":[0.03,0.12,0.03],"color":[0.3,0.3,0.35],"smooth":0.5,"metal":1.0},
+  {"name":"Bolt4","shape":"cylinder","pos":[0.0,-0.15,-0.15],"rot":[0.0,0.0,90.0],"size":[0.03,0.12,0.03],"color":[0.3,0.3,0.35],"smooth":0.5,"metal":1.0}
+]}

@@ -1,0 +1,15 @@
+{"version": 1, "id": "Hat_ShemaghFull_Burlap", "baseHeight": 0.0775, "name": "Hat Shemagh Full Burlap", "model": "gpt-oss:120b", "notes": "Flat product‑photo layout of a full shemagh used as a hat (≈0.9 m square, 3 cm thick). Main burlap sheet with a raised hem edge, a central head‑band loop, decorative stitching lines and a small tie‑loop at one corner.", "score": 6, "parts": [
+  {"name":"BaseSheet","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.9,0.03,0.9],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeXPos","shape":"cube","pos":[0.0,0.0075,0.46],"rot":[0.0,0.0,0.0],"size":[0.9,0.02,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeXNeg","shape":"cube","pos":[0.0,0.0075,-0.46],"rot":[0.0,0.0,0.0],"size":[0.9,0.02,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeZPos","shape":"cube","pos":[0.46,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.9],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeZNeg","shape":"cube","pos":[-0.46,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.9],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HeadBand","shape":"cylinder","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.22],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLineH","shape":"cube","pos":[0.0,0.0145,0.0],"rot":[0.0,0.0,0.0],"size":[0.9,0.004,0.01],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLineV","shape":"cube","pos":[0.0,0.0145,0.0],"rot":[0.0,90.0,0.0],"size":[0.9,0.004,0.01],"color":[0.4,0.35,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TieLoop","shape":"cylinder","pos":[0.42,0.0075,0.42],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FringeCornerTL","shape":"cylinder","pos":[0.44,0.0075,0.44],"rot":[90.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FringeCornerTR","shape":"cylinder","pos":[-0.44,0.0075,0.44],"rot":[90.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FringeCornerBL","shape":"cylinder","pos":[0.44,0.0075,-0.44],"rot":[90.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FringeCornerBR","shape":"cylinder","pos":[-0.44,0.0075,-0.44],"rot":[90.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

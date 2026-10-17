@@ -1,0 +1,14 @@
+{"version": 1, "id": "Trousers_DefaultTEXTURE", "baseHeight": 0.08, "name": "Trousers Default TEXTURE", "model": "gpt-oss:120b", "notes": "Flat trousers 1.00 m long × 0.50 m wide × 0.03 m thick (lying on the floor): two leg panels, a waistband, a central crotch panel, front pockets, four belt‑loop tubes and bottom hem bands.", "score": 6, "parts": [
+  {"name":"LeftLeg","shape":"cube","pos":[0.0,-0.005,0.14],"rot":[0.0,0.0,0.0],"size":[1.0,0.03,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RightLeg","shape":"cube","pos":[0.0,-0.005,-0.14],"rot":[0.0,0.0,0.0],"size":[1.0,0.03,0.22],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CrotchPanel","shape":"cube","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.03,0.5],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.44,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.5],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[0.25,0.0025,0.18],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.25,0.0025,-0.18],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopFrontL","shape":"cylinder","pos":[0.44,0.0,0.14],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopBackL","shape":"cylinder","pos":[0.44,0.0,-0.14],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopFrontR","shape":"cylinder","pos":[0.44,0.0,-0.14],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopBackR","shape":"cylinder","pos":[0.44,0.0,0.14],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemL","shape":"cube","pos":[-0.45,-0.0125,0.14],"rot":[0.0,0.0,0.0],"size":[0.1,0.015,0.22],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"HemR","shape":"cube","pos":[-0.45,-0.0125,-0.14],"rot":[0.0,0.0,0.0],"size":[0.1,0.015,0.22],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

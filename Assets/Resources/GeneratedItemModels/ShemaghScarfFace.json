@@ -1,0 +1,12 @@
+{"version": 1, "id": "ShemaghScarfFace", "baseHeight": 0.095, "name": "Shemagh Scarf Face", "model": "gpt-oss:120b", "notes": "Flat Shemagh Scarf (face style) ~0.60 m wide × 0.75 m long, 2–3 cm thick. Main fabric sheet in the tint colour, darkened edge trim around all sides, small fringe cubes at each corner and a rolled‑knot sphere in the centre.", "score": 6, "parts": [
+  {"name":"FabricBase","shape":"cube","pos":[0.0,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.025,0.75],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.0,-0.021,0.37],"rot":[0.0,0.0,0.0],"size":[0.6,0.027,0.01],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[0.0,-0.021,-0.37],"rot":[0.0,0.0,0.0],"size":[0.6,0.027,0.01],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.295,-0.021,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.027,0.75],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.295,-0.021,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.027,0.75],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FringeTL","shape":"cube","pos":[-0.29,-0.0225,0.365],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FringeTR","shape":"cube","pos":[0.29,-0.0225,0.365],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FringeBL","shape":"cube","pos":[-0.29,-0.0225,-0.365],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FringeBR","shape":"cube","pos":[0.29,-0.0225,-0.365],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.02],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CenterKnot","shape":"sphere","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.4,0.35,0.45],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "Trousers_SuitWhite_White", "baseHeight": 0.076, "name": "Trousers Suit White White", "model": "gpt-oss:120b", "notes": "Flat suit trousers laid out flat, spread to show true outline: about 1.05 m long from waist to hem, 0.61 m wide across both legs (including gap), 0.03 m thick. Main cloth colour is the tint (0.55,0.5,0.6) with a slightly darker waistband and simple front pockets.", "score": 6, "parts": [
+  {"name":"LeftLeg","shape":"cube","pos":[0.0,-0.001,-0.165],"rot":[0.0,0.0,0.0],"size":[1.05,0.03,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightLeg","shape":"cube","pos":[0.0,-0.001,0.165],"rot":[0.0,0.0,0.0],"size":[1.05,0.03,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CrotchPanel","shape":"cube","pos":[0.45,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.03,0.61],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.505,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.61],"color":[0.495,0.45,0.54],"smooth":0.08,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[-0.075,-0.001,0.32],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.06],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.075,-0.001,-0.32],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.06],"color":[0.5,0.45,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamLeft","shape":"cube","pos":[0.0,0.015,-0.325],"rot":[0.0,0.0,0.0],"size":[1.05,0.002,0.01],"color":[0.45,0.4,0.5],"smooth":0.04,"metal":0.0},
+  {"name":"SideSeamRight","shape":"cube","pos":[0.0,0.015,0.325],"rot":[0.0,0.0,0.0],"size":[1.05,0.002,0.01],"color":[0.45,0.4,0.5],"smooth":0.04,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "ShinKneeGuard_L_Protective", "baseHeight": 0.0825, "name": "Shin Knee Guard L Protective", "model": "gpt-oss:120b", "notes": "Left‑side protective shin/knee guard, about 0.35 m long × 0.12 m wide × 0.02 m thick. Lying on its side with the curved front bulge up and a thin strap across the top.", "score": 6, "parts": [
+  {"name":"Shell","shape":"cube","pos":[-0.0125,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"FrontBulge","shape":"sphere","pos":[0.1175,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.04,0.12],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"StrapTop","shape":"cube","pos":[-0.0125,0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.005,0.02],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"Buckle","shape":"cylinder","pos":[-0.1725,0.0105,0.0],"rot":[0.0,90.0,0.0],"size":[0.02,0.008,0.02],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"RivetTL","shape":"sphere","pos":[-0.1775,-0.0015,0.055],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.3,0.3],"smooth":0.5,"metal":0.0},
+  {"name":"RivetTR","shape":"sphere","pos":[-0.1775,-0.0015,-0.055],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.3,0.3],"smooth":0.5,"metal":0.0},
+  {"name":"RivetBL","shape":"sphere","pos":[0.1525,-0.0015,0.055],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.3,0.3],"smooth":0.5,"metal":0.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.1525,-0.0015,-0.055],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.3,0.3],"smooth":0.5,"metal":0.0},
+  {"name":"EdgeBand","shape":"cube","pos":[-0.0125,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.004,0.12],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"VelcroTab","shape":"cube","pos":[-0.1525,0.0095,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.01],"color":[0.4,0.38,0.33],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,15 @@
+{"version": 1, "id": "Necklace_BoarTusk_Multi", "baseHeight": 0.1087, "name": "Necklace Boar Tusk Multi", "model": "gpt-oss:120b", "notes": "Four curved boar‑tusk pendants strung on a short metal chain, lying flat on the floor (≈0.25 m × 0.08 m × 0.02 m). The chain is a thin rectangular strip; each tusk is modelled with a shaft cylinder and a rounded tip sphere, slightly tilted forward.", "score": 6, "parts": [
+  {"name":"ChainBase","shape":"cube","pos":[0.0,-0.0412,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.015,0.08],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.8},
+  {"name":"Clasp","shape":"cylinder","pos":[0.0,-0.0337,0.0],"rot":[0.0,0.0,90.0],"size":[0.018,0.025,0.018],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.8},
+  {"name":"Tusk1_Shaft","shape":"cylinder","pos":[-0.08,-0.0062,0.0],"rot":[10.0,0.0,0.0],"size":[0.015,0.07,0.015],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Tusk1_Tip","shape":"sphere","pos":[-0.08,0.0387,0.012],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Tusk2_Shaft","shape":"cylinder","pos":[-0.03,-0.0062,0.0],"rot":[8.0,0.0,0.0],"size":[0.015,0.07,0.015],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Tusk2_Tip","shape":"sphere","pos":[-0.03,0.0387,0.011],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Tusk3_Shaft","shape":"cylinder","pos":[0.02,-0.0062,0.0],"rot":[-6.0,0.0,0.0],"size":[0.015,0.07,0.015],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Tusk3_Tip","shape":"sphere","pos":[0.02,0.0387,-0.011],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Tusk4_Shaft","shape":"cylinder","pos":[0.07,-0.0062,0.0],"rot":[-9.0,0.0,0.0],"size":[0.015,0.07,0.015],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Tusk4_Tip","shape":"sphere","pos":[0.07,0.0387,-0.012],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Bead1","shape":"cube","pos":[-0.04,-0.0337,0.03],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.8},
+  {"name":"Bead2","shape":"cube","pos":[0.01,-0.0337,-0.03],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.8},
+  {"name":"Bead3","shape":"cube","pos":[0.05,-0.0337,0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.8}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "GreaveMagazine_Left", "baseHeight": 0.09, "name": "Greave Magazine Left", "model": "gpt-oss:120b", "notes": "Greave Magazine (left) lying flat on the floor. Approx. 0.18 m long (X), 0.07 m wide (Z) and 0.04 m thick (Y). Main brown‑metal body with front lip, side ribs, a printed label on top and a few brass rounds visible at the front.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.01,-0.005],"rot":[0.0,0.0,0.0],"size":[0.18,0.04,0.07],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"FrontLip","shape":"cube","pos":[0.0,-0.0075,0.035],"rot":[0.0,0.0,0.0],"size":[0.18,0.045,0.01],"color":[0.58,0.55,0.48],"smooth":0.4,"metal":1.0},
+  {"name":"SideRibL","shape":"cube","pos":[0.0,-0.005,-0.036],"rot":[0.0,0.0,0.0],"size":[0.18,0.05,0.008],"color":[0.55,0.52,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"SideRibR","shape":"cube","pos":[0.0,-0.005,0.026],"rot":[0.0,0.0,0.0],"size":[0.18,0.05,0.008],"color":[0.55,0.52,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"TopRim","shape":"cube","pos":[0.0,0.011,-0.005],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.07],"color":[0.58,0.55,0.48],"smooth":0.4,"metal":1.0},
+  {"name":"LabelBase","shape":"cube","pos":[0.0,0.0125,-0.005],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.04],"color":[0.42,0.38,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"LabelStripe","shape":"cube","pos":[0.0,0.0135,-0.005],"rot":[0.0,0.0,0.0],"size":[0.11,0.002,0.036],"color":[0.3,0.27,0.22],"smooth":0.2,"metal":0.0},
+  {"name":"Round1","shape":"cylinder","pos":[-0.03,0.02,0.02],"rot":[0.0,0.0,0.0],"size":[0.016,0.02,0.016],"color":[0.8,0.7,0.4],"smooth":0.5,"metal":1.0},
+  {"name":"Round2","shape":"cylinder","pos":[0.0,0.02,0.02],"rot":[0.0,0.0,0.0],"size":[0.016,0.02,0.016],"color":[0.8,0.7,0.4],"smooth":0.5,"metal":1.0},
+  {"name":"Round3","shape":"cylinder","pos":[0.03,0.02,0.02],"rot":[0.0,0.0,0.0],"size":[0.016,0.02,0.016],"color":[0.8,0.7,0.4],"smooth":0.5,"metal":1.0},
+  {"name":"Round4","shape":"cylinder","pos":[-0.015,0.02,-0.03],"rot":[0.0,0.0,0.0],"size":[0.016,0.02,0.016],"color":[0.8,0.7,0.4],"smooth":0.5,"metal":1.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_NBCmask", "baseHeight": 0.1562, "name": "Hat NBCmask", "model": "gpt-oss:120b", "notes": "Flat NBC‑mask hat ~0.26 m wide × 0.18 m tall × 0.12 m thick, laid out like a product photo. Main rounded dome, front filter canister, visor plate and three strap pieces (left, right, back).", "score": 7, "parts": [
+  {"name":"Dome","shape":"sphere","pos":[0.0,-0.0262,-0.02],"rot":[0.0,0.0,0.0],"size":[0.24,0.14,0.22],"color":[0.55,0.5,0.6],"smooth":0.4,"metal":0.0},
+  {"name":"Visor","shape":"cube","pos":[0.0,-0.0513,0.065],"rot":[0.0,0.0,0.0],"size":[0.22,0.01,0.02],"color":[0.45,0.44,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FilterCan","shape":"cylinder","pos":[0.0,-0.0213,0.1],"rot":[90.0,0.0,0.0],"size":[0.07,0.15,0.07],"color":[0.35,0.35,0.38],"smooth":0.55,"metal":1.0},
+  {"name":"CanisterRing","shape":"cylinder","pos":[0.0,0.0562,0.1],"rot":[90.0,0.0,0.0],"size":[0.08,0.008,0.08],"color":[0.2,0.2,0.22],"smooth":0.6,"metal":1.0},
+  {"name":"StrapLeft","shape":"cube","pos":[-0.115,-0.0813,-0.065],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.09],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StrapRight","shape":"cube","pos":[0.115,-0.0813,-0.065],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.09],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StrapBack","shape":"cube","pos":[0.0,-0.0813,-0.13],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.09],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"VentHole1","shape":"sphere","pos":[-0.06,-0.0262,0.01],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.2,0.22,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"VentHole2","shape":"sphere","pos":[0.06,-0.0262,0.01],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.2,0.22,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"SealEdge","shape":"cube","pos":[0.0,-0.0513,-0.11],"rot":[0.0,0.0,0.0],"size":[0.22,0.008,0.02],"color":[0.45,0.44,0.48],"smooth":0.05,"metal":0.0}
+]}

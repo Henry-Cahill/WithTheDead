@@ -1,0 +1,9 @@
+{"version": 1, "id": "Shoulderpad_Tire_R", "baseHeight": 0.195, "name": "Shoulderpad Tire R", "model": "gpt-oss:120b", "notes": "Upright tire used as a right‑hand shoulder pad – approx. 0.60 m outer diameter, 0.25 m width (Y‑axis). Rubber body with dark hole, thin metal rim band and a few simple tread blocks for recognisable silhouette.", "score": 6, "parts": [
+  {"name":"OuterRubber","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.25,0.6],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"InnerHole","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.27,0.3],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"MetalRim","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.26,0.34],"color":[0.45,0.44,0.42],"smooth":0.4,"metal":1.0},
+  {"name":"TreadFront","shape":"cube","pos":[0.0,0.0,0.28],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.12],"color":[0.55,0.53,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"TreadBack","shape":"cube","pos":[0.0,0.0,-0.28],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.12],"color":[0.55,0.53,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"TreadRight","shape":"cube","pos":[0.28,0.0,0.0],"rot":[0.0,90.0,0.0],"size":[0.08,0.02,0.12],"color":[0.55,0.53,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"TreadLeft","shape":"cube","pos":[-0.28,0.0,0.0],"rot":[0.0,90.0,0.0],"size":[0.08,0.02,0.12],"color":[0.55,0.53,0.48],"smooth":0.2,"metal":0.0}
+]}

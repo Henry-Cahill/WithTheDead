@@ -1,0 +1,13 @@
+{"version": 1, "id": "Earring_BoarTusk", "baseHeight": 0.0693, "name": "Earring Boar Tusk", "model": "gpt-oss:120b", "notes": "Boar‑tusk earring about 0.07 m long, ivory‑coloured tusk with rounded front & back tips, a subtle ridge and two light polish spots; a tiny polished‑metal bail (loop) sits on top with a short vertical‑then‑horizontal hook for the ear.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0013,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.07,0.015],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.0},
+  {"name":"TipFront","shape":"sphere","pos":[0.038,-0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.0},
+  {"name":"TipBack","shape":"sphere","pos":[-0.038,-0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.0},
+  {"name":"MidRidge","shape":"cube","pos":[0.0,-0.0028,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.015],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"PolishSpot1","shape":"sphere","pos":[0.02,0.0022,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.9,0.9,0.95],"smooth":0.6,"metal":0.0},
+  {"name":"PolishSpot2","shape":"sphere","pos":[-0.015,0.0032,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.005,0.005],"color":[0.9,0.9,0.95],"smooth":0.6,"metal":0.0},
+  {"name":"BailRing","shape":"cylinder","pos":[0.0,0.0072,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.012,0.004],"color":[0.9,0.9,0.92],"smooth":0.55,"metal":1.0},
+  {"name":"BailEndL","shape":"sphere","pos":[0.0,0.0072,-0.006],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.9,0.9,0.92],"smooth":0.55,"metal":1.0},
+  {"name":"BailEndR","shape":"sphere","pos":[0.0,0.0072,0.006],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.9,0.9,0.92],"smooth":0.55,"metal":1.0},
+  {"name":"HookVert","shape":"cylinder","pos":[0.0,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.0025,0.015,0.0025],"color":[0.85,0.85,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"HookHoriz","shape":"cylinder","pos":[-0.005,-0.0058,0.0],"rot":[0.0,0.0,90.0],"size":[0.0025,0.01,0.0025],"color":[0.85,0.85,0.88],"smooth":0.6,"metal":1.0}
+]}

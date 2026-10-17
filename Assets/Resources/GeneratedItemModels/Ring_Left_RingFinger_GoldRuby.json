@@ -1,0 +1,8 @@
+{"version": 1, "id": "Ring_Left_RingFinger_GoldRuby", "baseHeight": 0.0638, "name": "Ring Left Ring Finger Gold Ruby", "model": "gpt-oss:120b", "notes": "Gold wedding‑style ring, 70 mm circumference approximated as a thin horizontal cylinder (band) with a small ruby set into the top surface. Overall footprint ~0.07 m long × 0.011 m wide; band thickness 3 mm, ruby about 6 mm across.", "score": 7, "parts": [
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.0022,0.0],"rot":[0.0,0.0,90.0],"size":[0.003,0.07,0.003],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Ruby","shape":"sphere","pos":[-0.02,0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.78,0.1,0.12],"smooth":0.6,"metal":0.0},
+  {"name":"SettingBezel","shape":"cylinder","pos":[-0.02,-0.0002,0.0],"rot":[0.0,0.0,90.0],"size":[0.002,0.012,0.002],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ClaspEdge","shape":"cube","pos":[0.032,-0.0022,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.003,0.011],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"ClaspEdgeOpp","shape":"cube","pos":[-0.032,-0.0022,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.003,0.011],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"PolishSpot","shape":"sphere","pos":[0.015,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[1.0,0.9,0.7],"smooth":0.8,"metal":0.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "ThighBodyArmour_L_SWAT", "baseHeight": 0.09, "name": "Thigh Body Armour L SWAT", "model": "gpt-oss:120b", "notes": "Thigh body armour (left‑side SWAT) ~0.35 m long × 0.20 m wide × 0.02 m thick, with front and back padding, four surrounding straps and rivet detailing. Grey‑brown kevlar/ceramic look.", "score": 6, "parts": [
+  {"name":"Plate","shape":"cube","pos":[0.0,-0.02,-0.01],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.2],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"FrontPad","shape":"cylinder","pos":[0.0,0.01,0.06],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.12],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"BackPad","shape":"cylinder","pos":[0.0,0.005,-0.08],"rot":[0.0,0.0,0.0],"size":[0.08,0.03,0.08],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"LeftStrap","shape":"cylinder","pos":[-0.175,-0.02,-0.01],"rot":[90.0,0.0,0.0],"size":[0.02,0.2,0.02],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"RightStrap","shape":"cylinder","pos":[0.175,-0.02,-0.01],"rot":[90.0,0.0,0.0],"size":[0.02,0.2,0.02],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"TopStrap","shape":"cylinder","pos":[0.0,0.015,-0.01],"rot":[0.0,0.0,90.0],"size":[0.02,0.35,0.02],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"BottomStrap","shape":"cylinder","pos":[0.0,-0.015,-0.01],"rot":[0.0,0.0,90.0],"size":[0.02,0.35,0.02],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"RivetStripFront","shape":"cylinder","pos":[0.0,-0.018,0.09],"rot":[0.0,0.0,90.0],"size":[0.008,0.35,0.008],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"RivetStripBack","shape":"cylinder","pos":[0.0,-0.018,-0.11],"rot":[0.0,0.0,90.0],"size":[0.008,0.35,0.008],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"RivetStripLeft","shape":"cylinder","pos":[-0.175,-0.018,-0.01],"rot":[90.0,0.0,0.0],"size":[0.008,0.2,0.008],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"RivetStripRight","shape":"cylinder","pos":[0.175,-0.018,-0.01],"rot":[90.0,0.0,0.0],"size":[0.008,0.2,0.008],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"CenterRivet","shape":"sphere","pos":[0.0,-0.005,-0.01],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.75,0.75,0.78],"smooth":0.7,"metal":1.0}
+]}

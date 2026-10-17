@@ -1,0 +1,11 @@
+{"version": 1, "id": "Scarf_StripeBlackWhite", "baseHeight": 0.085, "name": "Scarf Stripe Black White", "model": "gpt-oss:120b", "notes": "Flat scarf about 1.5 m long × 0.2 m wide × 0.02 m thick, lying on its side (long axis along +X). Base tint gray‑brown with alternating black/white vertical stripes; thin fringe at each end.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.015,-0.0025],"rot":[0.0,0.0,0.0],"size":[1.5,0.02,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Stripe1","shape":"cube","pos":[0.0,-0.014,-0.0825],"rot":[0.0,0.0,0.0],"size":[1.5,0.018,0.04],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"Stripe2","shape":"cube","pos":[0.0,-0.014,-0.0425],"rot":[0.0,0.0,0.0],"size":[1.5,0.018,0.04],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"Stripe3","shape":"cube","pos":[0.0,-0.014,-0.0025],"rot":[0.0,0.0,0.0],"size":[1.5,0.018,0.04],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"Stripe4","shape":"cube","pos":[0.0,-0.014,0.0375],"rot":[0.0,0.0,0.0],"size":[1.5,0.018,0.04],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"Stripe5","shape":"cube","pos":[0.0,-0.014,0.0775],"rot":[0.0,0.0,0.0],"size":[1.5,0.018,0.04],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"FringeL","shape":"cylinder","pos":[-0.75,0.0,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.02,0.05,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FringeR","shape":"cylinder","pos":[0.75,0.0,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.02,0.05,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[-0.73,-0.008,0.0875],"rot":[0.0,0.0,0.0],"size":[0.03,0.005,0.03],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0}
+]}

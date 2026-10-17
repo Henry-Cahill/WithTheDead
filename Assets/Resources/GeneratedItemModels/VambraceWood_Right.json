@@ -1,0 +1,12 @@
+{"version": 1, "id": "VambraceWood_Right", "baseHeight": 0.105, "name": "Vambrace Wood Right", "model": "gpt-oss:120b", "notes": "Wooden right‑hand vambrace, ~0.28 m long × 0.09 m outer diameter, hollow tube lying on its side with a front leather strap and several steel rivets.", "score": 7, "parts": [
+  {"name":"OuterShell","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.28,0.09],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"InnerCavity","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.28,0.07],"color":[0.5,0.48,0.4],"smooth":0.12,"metal":0.0},
+  {"name":"FrontStrap","shape":"cube","pos":[0.0,0.0075,0.06],"rot":[0.0,0.0,0.0],"size":[0.14,0.015,0.03],"color":[0.35,0.2,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"Rivet_EndL","shape":"cube","pos":[-0.135,0.004,0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet_EndR","shape":"cube","pos":[0.135,0.004,0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet_StripeL","shape":"cube","pos":[-0.04,0.0075,0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet_StripeC","shape":"cube","pos":[0.0,0.0075,0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet_StripeR","shape":"cube","pos":[0.04,0.0075,0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"CapFront","shape":"cube","pos":[0.0,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.02,0.09,0.09],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"CapBack","shape":"cube","pos":[0.0,0.0,-0.045],"rot":[0.0,0.0,0.0],"size":[0.02,0.09,0.09],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0}
+]}

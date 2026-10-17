@@ -1,0 +1,17 @@
+{"version": 1, "id": "ThighBodyArmour_L", "baseHeight": 0.095, "name": "Thigh Body Armour L", "model": "gpt-oss:120b", "notes": "Thigh Body Armour L – a padded thigh guard about 0.45 m long (X), 0.20 m wide (Z) and 0.025 m thick (Y). Rounded front, two strap loops on the outer side, seam line and rivet details.", "score": 6, "parts": [
+  {"name":"MainPlate","shape":"cube","pos":[0.0,-0.0225,-0.05],"rot":[0.0,0.0,0.0],"size":[0.45,0.025,0.2],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"FrontBulge","shape":"sphere","pos":[0.0,0.0,0.05],"rot":[0.0,0.0,0.0],"size":[0.45,0.07,0.2],"color":[0.58,0.55,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"StrapTop","shape":"cylinder","pos":[0.18,-0.015,0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.04],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"StrapBottom","shape":"cylinder","pos":[-0.18,-0.015,0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.04],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"SeamLine","shape":"cube","pos":[0.0,-0.0085,-0.05],"rot":[0.0,0.0,0.0],"size":[0.44,0.002,0.02],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Rivet1","shape":"sphere","pos":[-0.2,-0.01,-0.12],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet2","shape":"sphere","pos":[-0.1,-0.01,-0.12],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet3","shape":"sphere","pos":[0.0,-0.01,-0.12],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet4","shape":"sphere","pos":[0.1,-0.01,-0.12],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet5","shape":"sphere","pos":[0.2,-0.01,-0.12],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet6","shape":"sphere","pos":[-0.2,-0.01,0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet7","shape":"sphere","pos":[-0.1,-0.01,0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet8","shape":"sphere","pos":[0.0,-0.01,0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet9","shape":"sphere","pos":[0.1,-0.01,0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet10","shape":"sphere","pos":[0.2,-0.01,0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0}
+]}

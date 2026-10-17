@@ -1,0 +1,11 @@
+{"version": 1, "id": "ElbowPad_Right_Sport", "baseHeight": 0.08, "name": "Elbow Pad Right Sport", "model": "gpt-oss:120b", "notes": "Elbow pad (right‑hand sport) ~0.22 m long × 0.14 m wide × 0.025 m thick: fabric cover with rounded corners, lighter foam core inside, stitching line, and two small strap loops at each end.", "score": 6, "parts": [
+  {"name":"Cover","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.025,0.14],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FoamCore","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.13],"color":[0.7,0.68,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"CornerFL","shape":"sphere","pos":[-0.1,0.0,-0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CornerFR","shape":"sphere","pos":[-0.1,0.0,0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CornerBL","shape":"sphere","pos":[0.1,0.0,-0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CornerBR","shape":"sphere","pos":[0.1,0.0,0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamLine","shape":"cube","pos":[0.0,0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.14],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StrapLoopL","shape":"cylinder","pos":[-0.09,0.0075,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.03,0.015],"color":[0.15,0.15,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"StrapLoopR","shape":"cylinder","pos":[0.09,0.0075,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.03,0.015],"color":[0.15,0.15,0.15],"smooth":0.3,"metal":0.0}
+]}

@@ -1,0 +1,9 @@
+{"version": 1, "id": "Bracelet_ChainRightSilver", "baseHeight": 0.0722, "name": "Bracelet Chain Right Silver", "model": "gpt-oss:120b", "notes": "Silver bracelet chain (right‑handed) lying on the floor, about 0.18 m long. Main tube 2 cm diameter, with four raised link bumps and a tiny rectangular clasp at one end.", "score": 6, "parts": [
+  {"name":"BaseChain","shape":"cylinder","pos":[0.005,-0.0022,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.18,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"LinkA","shape":"cylinder","pos":[-0.055,0.0048,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"LinkB","shape":"cylinder","pos":[-0.025,0.0048,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"LinkC","shape":"cylinder","pos":[0.035,0.0048,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"LinkD","shape":"cylinder","pos":[0.065,0.0048,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ClaspBody","shape":"cube","pos":[-0.085,0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.01],"color":[0.55,0.53,0.45],"smooth":0.45,"metal":1.0},
+  {"name":"ClaspPin","shape":"cylinder","pos":[-0.07,-0.0022,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.012,0.008],"color":[0.55,0.53,0.45],"smooth":0.45,"metal":1.0}
+]}

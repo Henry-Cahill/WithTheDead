@@ -1,0 +1,9 @@
+{"version": 1, "id": "Shinpad_R", "baseHeight": 0.0678, "name": "Shinpad R", "model": "gpt-oss:120b", "notes": "Rectangular rubber shin‑pad about 0.20 m long × 0.12 m wide × 0.015 m thick, lying flat on the floor. Main body with rounded corners (cylindrical caps) and a small strap loop on one edge.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.015,0.12],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"CornerFL","shape":"cylinder","pos":[0.09,-0.0003,0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"CornerFR","shape":"cylinder","pos":[0.09,-0.0003,-0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"CornerBL","shape":"cylinder","pos":[-0.09,-0.0003,0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"CornerBR","shape":"cylinder","pos":[-0.09,-0.0003,-0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"StrapLoop","shape":"cylinder","pos":[-0.09,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.45,0.43,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"LabelStrip","shape":"cube","pos":[0.0,0.0068,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.005],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0}
+]}

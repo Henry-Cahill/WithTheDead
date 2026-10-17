@@ -1,0 +1,14 @@
+{"version": 1, "id": "Shorts_LongSport", "baseHeight": 0.0735, "name": "Shorts Long Sport", "model": "gpt-oss:120b", "notes": "Flat sport shorts ~0.28 m long (waist‑to‑hem) × 0.38 m wide, 2 cm thick cloth. Main panels for each leg, a waistband strip, front pockets, seam lines and small trim details.", "score": 7, "parts": [
+  {"name":"LeftLeg","shape":"cube","pos":[0.02,-0.0035,-0.095],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.17],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"RightLeg","shape":"cube","pos":[0.02,-0.0035,0.095],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.17],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.02,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.38],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[0.09,0.0025,-0.095],"rot":[0.0,0.0,0.0],"size":[0.06,0.012,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.09,0.0025,0.095],"rot":[0.0,0.0,0.0],"size":[0.06,0.012,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamMid","shape":"cylinder","pos":[0.02,-0.0035,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.28,0.004],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"LeftLegOuterSeam","shape":"cylinder","pos":[0.02,-0.0035,-0.18],"rot":[90.0,0.0,0.0],"size":[0.004,0.28,0.004],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"RightLegOuterSeam","shape":"cylinder","pos":[0.02,-0.0035,0.18],"rot":[90.0,0.0,0.0],"size":[0.004,0.28,0.004],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"WaistbandStitch","shape":"cylinder","pos":[0.02,0.0115,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.28,0.004],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFlapL","shape":"cube","pos":[0.09,0.009,-0.075],"rot":[0.0,0.0,0.0],"size":[0.06,0.005,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketFlapR","shape":"cube","pos":[0.09,0.009,0.075],"rot":[0.0,0.0,0.0],"size":[0.06,0.005,0.02],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BrandTag","shape":"cube","pos":[-0.15,0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.01],"color":[0.35,0.3,0.4],"smooth":0.05,"metal":0.0}
+]}

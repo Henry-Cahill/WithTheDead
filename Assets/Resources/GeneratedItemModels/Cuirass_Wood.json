@@ -1,0 +1,14 @@
+{"version": 1, "id": "Cuirass_Wood", "baseHeight": 0.1, "name": "Cuirass Wood", "model": "gpt-oss:120b", "notes": "Wooden cuirass (breastplate) about 0.40 m wide × 0.50 m tall × 0.04 m thick, lying on its back side. Main solid wood plate with a slightly rounded front, two dark‑brown leather straps and small steel buckles.", "score": 7, "parts": [
+  {"name":"CorePlate","shape":"cube","pos":[0.04,-0.01,-0.12],"rot":[0.0,0.0,0.0],"size":[0.38,0.04,0.48],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FrontCurve","shape":"sphere","pos":[0.04,-0.0,0.12],"rot":[0.0,0.0,0.0],"size":[0.42,0.08,0.48],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"LeftStrap","shape":"cylinder","pos":[-0.14,-0.005,-0.24],"rot":[0.0,0.0,90.0],"size":[0.02,0.22,0.02],"color":[0.2,0.1,0.05],"smooth":0.1,"metal":0.0},
+  {"name":"RightStrap","shape":"cylinder","pos":[-0.14,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.22,0.02],"color":[0.2,0.1,0.05],"smooth":0.1,"metal":0.0},
+  {"name":"LeftBuckleBase","shape":"cube","pos":[-0.14,0.01,-0.24],"rot":[0.0,0.0,0.0],"size":[0.025,0.015,0.005],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"LeftBucklePin","shape":"cylinder","pos":[-0.125,0.015,-0.24],"rot":[90.0,0.0,0.0],"size":[0.005,0.015,0.005],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"RightBuckleBase","shape":"cube","pos":[-0.14,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.015,0.005],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"RightBucklePin","shape":"cylinder","pos":[-0.125,0.015,0.0],"rot":[90.0,0.0,0.0],"size":[0.005,0.015,0.005],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"BackRivetL","shape":"cylinder","pos":[-0.14,-0.0,-0.34],"rot":[90.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.5,0.45,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"BackRivetR","shape":"cylinder","pos":[-0.14,-0.0,0.1],"rot":[90.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.5,0.45,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"FrontRivetL","shape":"cylinder","pos":[0.19,0.01,-0.34],"rot":[90.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.5,0.45,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"FrontRivetR","shape":"cylinder","pos":[0.19,0.01,0.1],"rot":[90.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.5,0.45,0.4],"smooth":0.55,"metal":1.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Vambrace_BodyArmour_Right", "baseHeight": 0.0875, "name": "Vambrace Body Armour Right", "model": "gpt-oss:120b", "notes": "Right‑side body armour piece (~0.25 m wide × 0.4 m tall) lying flat: a main steel plate with a raised shoulder pad, three leather straps across the front and rivets around the edges; a small leather padding sits on the shoulder area.", "score": 6, "parts": [
+  {"name":"MainPlate","shape":"cube","pos":[0.0,-0.0175,-0.07],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.4],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ShoulderPad","shape":"cube","pos":[0.0,-0.0125,0.18],"rot":[0.0,0.0,0.0],"size":[0.28,0.03,0.12],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"StrapTop","shape":"cylinder","pos":[0.0,-0.0065,0.08],"rot":[0.0,0.0,90.0],"size":[0.01,0.26,0.01],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StrapMid","shape":"cylinder","pos":[0.0,-0.0065,-0.07],"rot":[0.0,0.0,90.0],"size":[0.01,0.26,0.01],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StrapBottom","shape":"cylinder","pos":[0.0,-0.0065,-0.22],"rot":[0.0,0.0,90.0],"size":[0.01,0.26,0.01],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"RivetTL","shape":"sphere","pos":[-0.12,-0.0065,0.11],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"RivetTR","shape":"sphere","pos":[0.12,-0.0065,0.11],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[-0.12,-0.0065,-0.25],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.12,-0.0065,-0.25],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"LeatherPadding","shape":"sphere","pos":[0.0,0.0075,0.25],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.35,0.3,0.25],"smooth":0.05,"metal":0.0}
+]}

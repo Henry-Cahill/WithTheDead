@@ -1,0 +1,8 @@
+{"version": 1, "id": "Ring_Right_RingFinger_Gold", "baseHeight": 0.0634, "name": "Ring Right Ring Finger Gold", "model": "gpt-oss:120b", "notes": "Gold wedding‑style ring (right finger) lying flat on the floor: outer band disc ≈ 0.022 m diameter × 0.005 m thick, inner hollow ≈ 0.016 m diameter to show the finger opening. Simple two‑cylinder silhouette with a metallic gold tint.", "score": 6, "parts": [
+  {"name":"BandOuter","shape":"cylinder","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.005,0.022],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"BandInnerHole","shape":"cylinder","pos":[0.0,0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.006,0.016],"color":[0.3,0.3,0.32],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.0,0.0024,0.0],"rot":[0.0,0.0,0.0],"size":[0.0225,0.002,0.0225],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TopHighlight","shape":"cylinder","pos":[0.0,0.0024,0.0],"rot":[0.0,0.0,0.0],"size":[0.0205,0.002,0.0205],"color":[0.78,0.76,0.68],"smooth":0.7,"metal":1.0},
+  {"name":"BottomShade","shape":"cylinder","pos":[0.0,-0.0023,0.0],"rot":[0.0,0.0,0.0],"size":[0.0205,0.002,0.0205],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":1.0},
+  {"name":"SideRim","shape":"cylinder","pos":[0.0,-0.0,0.0],"rot":[0.0,90.0,0.0],"size":[0.022,0.005,0.002],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

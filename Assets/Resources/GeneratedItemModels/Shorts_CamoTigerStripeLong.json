@@ -1,0 +1,13 @@
+{"version": 1, "id": "Shorts_CamoTigerStripeLong", "baseHeight": 0.082, "name": "Shorts Camo Tiger Stripe Long", "model": "gpt-oss:120b", "notes": "Flat long shorts about 0.45 m long × 0.5 m wide (including both legs) × 0.025 m thick. Main fabric uses the camo tint, with a slightly darker pocket panel and a light‑contrast waistband. All parts lie on y=0, centred on x/z.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[-0.0075,0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.015,0.5],"color":[0.6,0.55,0.65],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.0075,-0.0095,0.15],"rot":[0.0,0.0,0.0],"size":[0.45,0.025,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[-0.0075,-0.0095,-0.15],"rot":[0.0,0.0,0.0],"size":[0.45,0.025,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.1275,-0.002,0.23],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[-0.1275,-0.002,-0.23],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopFL","shape":"cylinder","pos":[-0.1875,0.018,0.1],"rot":[0.0,0.0,0.0],"size":[0.018,0.008,0.018],"color":[0.3,0.3,0.32],"smooth":0.6,"metal":1.0},
+  {"name":"BeltLoopFR","shape":"cylinder","pos":[-0.1875,0.018,-0.1],"rot":[0.0,0.0,0.0],"size":[0.018,0.008,0.018],"color":[0.3,0.3,0.32],"smooth":0.6,"metal":1.0},
+  {"name":"BeltLoopBL","shape":"cylinder","pos":[0.1725,0.018,0.1],"rot":[0.0,0.0,0.0],"size":[0.018,0.008,0.018],"color":[0.3,0.3,0.32],"smooth":0.6,"metal":1.0},
+  {"name":"BeltLoopBR","shape":"cylinder","pos":[0.1725,0.018,-0.1],"rot":[0.0,0.0,0.0],"size":[0.018,0.008,0.018],"color":[0.3,0.3,0.32],"smooth":0.6,"metal":1.0},
+  {"name":"HemL","shape":"cube","pos":[0.2125,-0.0095,0.15],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemR","shape":"cube","pos":[0.2125,-0.0095,-0.15],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.18],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0}
+]}

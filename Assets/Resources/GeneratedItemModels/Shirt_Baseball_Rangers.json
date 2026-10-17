@@ -1,0 +1,14 @@
+{"version": 1, "id": "Shirt_Baseball_Rangers", "baseHeight": 0.075, "name": "Shirt Baseball Rangers", "model": "gpt-oss:120b", "notes": "Baseball shirt (Rangers) ~0.60 m long × 0.48 m wide, 3 cm thick, laid flat: torso panel, short sleeves with cuffs, ribbed collar, four metal buttons down the front, red team‑logo patch on the chest.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[0.025,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.03,0.48],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.205,-0.0025,0.34],"rot":[0.0,-20.0,0.0],"size":[0.18,0.025,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.205,-0.0025,-0.34],"rot":[0.0,20.0,0.0],"size":[0.18,0.025,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.205,-0.0025,0.44],"rot":[0.0,-20.0,0.0],"size":[0.04,0.015,0.02],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.205,-0.0025,-0.44],"rot":[0.0,20.0,0.0],"size":[0.04,0.015,0.02],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[-0.255,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.02,0.14],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[-0.255,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,0.08],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"PatchLogo","shape":"cube","pos":[-0.025,-0.0075,0.18],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.08],"color":[0.8,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"Button1","shape":"cylinder","pos":[-0.195,0.002,0.12],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"Button2","shape":"cylinder","pos":[-0.105,0.002,0.12],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"Button3","shape":"cylinder","pos":[-0.015,0.002,0.12],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"Button4","shape":"cylinder","pos":[0.075,0.002,0.12],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0}
+]}

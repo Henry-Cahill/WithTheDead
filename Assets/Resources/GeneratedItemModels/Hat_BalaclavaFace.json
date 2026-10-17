@@ -1,0 +1,12 @@
+{"version": 1, "id": "Hat_BalaclavaFace", "baseHeight": 0.075, "name": "Hat Balaclava Face", "model": "gpt-oss:120b", "notes": "Flat‑lay balaclava mask ~0.32 m wide × 0.38 m tall, 3 cm thick. Main cloth sheet with darker trim rims for eye & mouth openings, a bottom neck rim, side/top/bottom seam strips and an elastic band across the top.", "score": 6, "parts": [
+  {"name":"BaseFabric","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.03,0.38],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EyeL_Rim","shape":"cylinder","pos":[-0.08,0.0,0.09],"rot":[0.0,0.0,0.0],"size":[0.07,0.03,0.07],"color":[0.45,0.4,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"EyeR_Rim","shape":"cylinder","pos":[0.08,0.0,0.09],"rot":[0.0,0.0,0.0],"size":[0.07,0.03,0.07],"color":[0.45,0.4,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"MouthRim","shape":"cylinder","pos":[0.0,0.0,-0.07],"rot":[0.0,0.0,0.0],"size":[0.14,0.03,0.14],"color":[0.45,0.4,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"NeckRim","shape":"cube","pos":[0.0,0.0,-0.18],"rot":[0.0,0.0,0.0],"size":[0.28,0.03,0.02],"color":[0.45,0.4,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"ElasticBand","shape":"cylinder","pos":[0.0,0.003,0.17],"rot":[0.0,0.0,90.0],"size":[0.005,0.32,0.005],"color":[0.15,0.15,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"TopEdgeSeam","shape":"cube","pos":[0.0,0.003,0.19],"rot":[0.0,0.0,0.0],"size":[0.32,0.003,0.01],"color":[0.45,0.4,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"BottomHem","shape":"cube","pos":[0.0,0.003,-0.19],"rot":[0.0,0.0,0.0],"size":[0.32,0.003,0.01],"color":[0.45,0.4,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.1585,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.03,0.38],"color":[0.45,0.4,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.1585,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.03,0.38],"color":[0.45,0.4,0.5],"smooth":0.3,"metal":0.0}
+]}

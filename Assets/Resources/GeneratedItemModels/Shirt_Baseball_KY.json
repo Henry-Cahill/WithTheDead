@@ -1,0 +1,15 @@
+{"version": 1, "id": "Shirt_Baseball_KY", "baseHeight": 0.075, "name": "Shirt Baseball KY", "model": "gpt-oss:120b", "notes": "Flat baseball shirt ~0.70 m long × 0.48 m wide, 3 cm thick. Main torso panel with two short sleeves, a button‑placket, collar, cuffs, a left‑chest pocket and five buttons.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[-0.03,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.68,0.03,0.4],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.12,0.0,0.26],"rot":[0.0,0.0,0.0],"size":[0.3,0.03,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.12,0.0,-0.26],"rot":[0.0,0.0,0.0],"size":[0.3,0.03,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Collar","shape":"cylinder","pos":[0.31,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.025,0.12],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Placket","shape":"cube","pos":[-0.03,0.0,0.02],"rot":[0.0,0.0,0.0],"size":[0.68,0.015,0.04],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Pocket","shape":"cube","pos":[-0.18,0.0,0.22],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.12],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.27,0.0,0.32],"rot":[0.0,0.0,0.0],"size":[0.08,0.018,0.04],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.27,0.0,-0.32],"rot":[0.0,0.0,0.0],"size":[0.08,0.018,0.04],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Button1","shape":"cylinder","pos":[-0.28,0.0,0.03],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Button2","shape":"cylinder","pos":[-0.155,0.0,0.03],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Button3","shape":"cylinder","pos":[-0.03,0.0,0.03],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Button4","shape":"cylinder","pos":[0.095,0.0,0.03],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Button5","shape":"cylinder","pos":[0.22,0.0,0.03],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0}
+]}

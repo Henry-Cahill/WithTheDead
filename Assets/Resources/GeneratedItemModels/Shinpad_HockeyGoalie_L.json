@@ -1,0 +1,12 @@
+{"version": 1, "id": "Shinpad_HockeyGoalie_L", "baseHeight": 0.1, "name": "Shinpad Hockey Goalie L", "model": "gpt-oss:120b", "notes": "Large goalie shin‑pad (size ≈ 0.42 m L × 0.26 m W × 0.04 m T). Thin back plate in gray‑brown tint, a slightly raised curved front bulge, internal foam layer, four strap loops on the top edge and padded corner lumps for visual detail. Small logo disc on the front.", "score": 6, "parts": [
+  {"name":"BackPlate","shape":"cube","pos":[0.0,-0.02,-0.06],"rot":[0.0,0.0,0.0],"size":[0.42,0.04,0.26],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FrontBulge","shape":"sphere","pos":[0.0,0.01,0.07],"rot":[0.0,0.0,0.0],"size":[0.38,0.06,0.28],"color":[0.62,0.6,0.52],"smooth":0.1,"metal":0.0},
+  {"name":"FoamLayer","shape":"cube","pos":[0.0,-0.025,-0.06],"rot":[0.0,0.0,0.0],"size":[0.4,0.02,0.24],"color":[0.8,0.78,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"StrapFront","shape":"cylinder","pos":[0.0,0.005,0.03],"rot":[0.0,0.0,90.0],"size":[0.04,0.38,0.04],"color":[0.4,0.38,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"StrapBack","shape":"cylinder","pos":[0.0,0.005,-0.15],"rot":[0.0,0.0,90.0],"size":[0.04,0.38,0.04],"color":[0.4,0.38,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"PadCornerFL","shape":"sphere","pos":[-0.18,-0.01,0.06],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.06],"color":[0.65,0.63,0.55],"smooth":0.08,"metal":0.0},
+  {"name":"PadCornerFR","shape":"sphere","pos":[0.18,-0.01,0.06],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.06],"color":[0.65,0.63,0.55],"smooth":0.08,"metal":0.0},
+  {"name":"PadCornerBL","shape":"sphere","pos":[-0.18,-0.01,-0.18],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.06],"color":[0.65,0.63,0.55],"smooth":0.08,"metal":0.0},
+  {"name":"PadCornerBR","shape":"sphere","pos":[0.18,-0.01,-0.18],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.06],"color":[0.65,0.63,0.55],"smooth":0.08,"metal":0.0},
+  {"name":"Logo","shape":"cylinder","pos":[0.0,0.03,0.07],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.12],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0}
+]}

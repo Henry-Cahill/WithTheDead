@@ -1,0 +1,8 @@
+{"version": 1, "id": "Tie_Full", "baseHeight": 0.0725, "name": "Tie Full", "model": "gpt-oss:120b", "notes": "Full‑size necktie about 1.2 m long, 4–6 cm wide, lying flat on its side (X axis). Main fabric strip tapered toward the tip, a small rectangular knot near the collar end, a dark centre seam and a tiny label tag at the tip.", "score": 6, "parts": [
+  {"name":"BodyLong","shape":"cube","pos":[-0.085,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.02,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BodyTip","shape":"cube","pos":[0.465,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.018,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"KnotFront","shape":"cube","pos":[-0.535,0.0,0.02],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,0.04],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"KnotBack","shape":"cube","pos":[-0.535,0.0,-0.02],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,0.04],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"CenterSeam","shape":"cube","pos":[-0.085,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.004,0.006],"color":[0.4,0.38,0.34],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTag","shape":"cube","pos":[0.565,-0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.003,0.02],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0}
+]}

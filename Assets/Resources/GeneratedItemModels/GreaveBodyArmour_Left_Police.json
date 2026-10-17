@@ -1,0 +1,12 @@
+{"version": 1, "id": "GreaveBodyArmour_Left_Police", "baseHeight": 0.185, "name": "Greave Body Armour Left Police", "model": "gpt-oss:120b", "notes": "Left‑leg police greave – rectangular protective plate about 0.25 m tall × 0.12 m wide × 0.02 m thick. Dark‑grey kevlar/ceramic main shell with two front strap loops, metal buckles and four rivet studs.", "score": 6, "parts": [
+  {"name":"MainPlate","shape":"cube","pos":[0.0,0.0,-0.004],"rot":[0.0,0.0,0.0],"size":[0.12,0.25,0.02],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"StrapTop","shape":"cube","pos":[0.0,0.095,0.01],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.008],"color":[0.3,0.3,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"StrapMid","shape":"cube","pos":[0.0,-0.005,0.01],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.008],"color":[0.3,0.3,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"StrapRear","shape":"cube","pos":[0.0,0.095,-0.018],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.008],"color":[0.3,0.3,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"BuckleTop","shape":"cube","pos":[0.0,0.095,0.018],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.008],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"BuckleMid","shape":"cube","pos":[0.0,-0.005,0.018],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.008],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RivetTL","shape":"sphere","pos":[-0.045,0.11,0.009],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.85,0.85,0.86],"smooth":0.7,"metal":1.0},
+  {"name":"RivetTR","shape":"sphere","pos":[0.045,0.11,0.009],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.85,0.85,0.86],"smooth":0.7,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[-0.045,-0.11,0.009],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.85,0.85,0.86],"smooth":0.7,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.045,-0.11,0.009],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.85,0.85,0.86],"smooth":0.7,"metal":1.0}
+]}

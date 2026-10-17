@@ -1,0 +1,10 @@
+{"version": 1, "id": "GreaveBodyArmour_Left_SWAT", "baseHeight": 0.0925, "name": "Greave Body Armour Left SWAT", "model": "gpt-oss:120b", "notes": "Left‑side tactical greave/body‑armour, ~0.35 m wide × 0.5 m long × 0.025 m thick, laid flat on the floor. Main kevlar plate with inner padding, three strap ribs (left, right and centre), two metal buckles and a small embossed badge.", "score": 6, "parts": [
+  {"name":"MainPlate","shape":"cube","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.025,0.5],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"InnerPadding","shape":"cube","pos":[0.0,-0.0215,0.0],"rot":[0.0,0.0,0.0],"size":[0.33,0.022,0.48],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StrapLeft","shape":"cylinder","pos":[-0.165,0.0025,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.5,0.02],"color":[0.4,0.38,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"StrapRight","shape":"cylinder","pos":[0.165,0.0025,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.5,0.02],"color":[0.4,0.38,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"CenterStrap","shape":"cylinder","pos":[0.0,0.0025,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.5,0.015],"color":[0.4,0.38,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"BuckleL","shape":"cube","pos":[-0.165,0.0125,-0.22],"rot":[0.0,0.0,0.0],"size":[0.022,0.008,0.022],"color":[0.8,0.78,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"BuckleR","shape":"cube","pos":[0.165,0.0125,-0.22],"rot":[0.0,0.0,0.0],"size":[0.022,0.008,0.022],"color":[0.8,0.78,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"Badge","shape":"sphere","pos":[0.0,0.0125,0.12],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.02],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0}
+]}

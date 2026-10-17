@@ -1,0 +1,14 @@
+{"version": 1, "id": "Shorts_FootballPants", "baseHeight": 0.08, "name": "Shorts Football Pants", "model": "gpt-oss:120b", "notes": "Flat football shorts 0.30 m waist‑to‑hem × 0.45 m hip width, 2.5 cm thick: main fabric panel, raised waistband, side seam strips, front fly opening, two front pockets, bottom hems on each leg and small belt‑loops.", "score": 6, "parts": [
+  {"name":"MainBody","shape":"cube","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.005,0.45],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[0.0,-0.0075,-0.215],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.01],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.0,-0.0075,0.215],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.01],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Fly","shape":"cube","pos":[-0.12,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.008],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.08,-0.0075,-0.15],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[-0.08,-0.0075,0.15],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.08],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"HemL","shape":"cube","pos":[0.0,-0.0175,-0.215],"rot":[0.0,0.0,0.0],"size":[0.3,0.005,0.01],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"HemR","shape":"cube","pos":[0.0,-0.0175,0.215],"rot":[0.0,0.0,0.0],"size":[0.3,0.005,0.01],"color":[0.48,0.44,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"StitchCenter","shape":"cube","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.006],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopL","shape":"cylinder","pos":[-0.14,0.0125,-0.18],"rot":[0.0,0.0,90.0],"size":[0.015,0.004,0.015],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopR","shape":"cylinder","pos":[-0.14,0.0125,0.18],"rot":[0.0,0.0,90.0],"size":[0.015,0.004,0.015],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

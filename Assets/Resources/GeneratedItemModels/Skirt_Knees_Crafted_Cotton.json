@@ -1,0 +1,12 @@
+{"version": 1, "id": "Skirt_Knees_Crafted_Cotton", "baseHeight": 0.075, "name": "Skirt Knees Crafted Cotton", "model": "gpt-oss:120b", "notes": "Knee‑length cotton skirt laid flat, approx 1.00 m wide × 0.55 m long × 0.03 m thick. Main panel with waistband, hem band, side seams and five vertical pleat ribs for silhouette detail.", "score": 6, "parts": [
+  {"name":"BodyPanel","shape":"cube","pos":[0.0,0.0,-0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.03,0.55],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Waistband","shape":"cube","pos":[0.0,0.0,0.29],"rot":[0.0,0.0,0.0],"size":[1.02,0.025,0.03],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemBand","shape":"cube","pos":[0.0,0.0,-0.29],"rot":[0.0,0.0,0.0],"size":[1.02,0.025,0.03],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PleatRibL2","shape":"cube","pos":[-0.4,0.0,-0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.55],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PleatRibL1","shape":"cube","pos":[-0.2,0.0,-0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.55],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PleatRibC","shape":"cube","pos":[0.0,0.0,-0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.55],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PleatRibR1","shape":"cube","pos":[0.2,0.0,-0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.55],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PleatRibR2","shape":"cube","pos":[0.4,0.0,-0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.55],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cube","pos":[-0.51,0.0,-0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.55],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cube","pos":[0.51,0.0,-0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.55],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

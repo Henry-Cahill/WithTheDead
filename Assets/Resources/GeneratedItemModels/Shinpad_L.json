@@ -1,0 +1,8 @@
+{"version": 1, "id": "Shinpad_L", "baseHeight": 0.08, "name": "Shinpad L", "model": "gpt-oss:120b", "notes": "Flat foam shin‑pad about 0.30 m long × 0.12 m wide × 0.02 m thick, slightly rounded front edge and two small strap‑loop studs on the back side.", "score": 7, "parts": [
+  {"name":"PadBase","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"FrontCurve","shape":"cylinder","pos":[0.13,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.58,0.55,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"StrapLoopL","shape":"cylinder","pos":[-0.1,0.004,0.04],"rot":[90.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"StrapLoopR","shape":"cylinder","pos":[-0.1,0.004,-0.04],"rot":[90.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeSeamTop","shape":"cube","pos":[0.0,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.002,0.12],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeSeamBottom","shape":"cube","pos":[0.0,-0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.002,0.12],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0}
+]}

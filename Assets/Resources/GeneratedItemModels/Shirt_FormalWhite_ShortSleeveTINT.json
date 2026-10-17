@@ -1,0 +1,16 @@
+{"version": 1, "id": "Shirt_FormalWhite_ShortSleeveTINT", "baseHeight": 0.26, "name": "Shirt Formal White Short Sleeve TINT", "model": "gpt-oss:120b", "notes": "Formal white short‑sleeve shirt laid flat (neck toward +X). Overall footprint ≈ 0.70 m long × 0.40 m wide × 0.025 m thick. Core torso panel, two short sleeves, a thin collar strip, cuff blocks at the sleeve ends, side seams and five simple buttons give a clear shirt silhouette while staying low‑poly.", "score": 4, "parts": [
+  {"name":"Torso","shape":"cube","pos":[-0.05,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.025,0.4],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cylinder","pos":[-0.33,-0.0,0.25],"rot":[0.0,0.0,90.0],"size":[0.18,0.3,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cylinder","pos":[-0.33,-0.0,-0.25],"rot":[0.0,0.0,90.0],"size":[0.18,0.3,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[-0.48,-0.0,0.25],"rot":[0.0,0.0,0.0],"size":[0.04,0.018,0.06],"color":[0.4,0.38,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[-0.48,-0.0,-0.25],"rot":[0.0,0.0,0.0],"size":[0.04,0.018,0.06],"color":[0.4,0.38,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cube","pos":[-0.38,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.008,0.4],"color":[0.9,0.9,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamL","shape":"cylinder","pos":[0.3,-0.0,0.2],"rot":[90.0,0.0,0.0],"size":[0.018,0.002,0.018],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SideSeamR","shape":"cylinder","pos":[0.3,-0.0,-0.2],"rot":[90.0,0.0,0.0],"size":[0.018,0.002,0.018],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BottomHem","shape":"cylinder","pos":[0.3,-0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.4,0.002,0.4],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Button1","shape":"cylinder","pos":[-0.25,0.018,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.85,0.86,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"Button2","shape":"cylinder","pos":[-0.13,0.018,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.85,0.86,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"Button3","shape":"cylinder","pos":[-0.01,0.018,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.85,0.86,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"Button4","shape":"cylinder","pos":[0.11,0.018,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.85,0.86,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"Button5","shape":"cylinder","pos":[0.23,0.018,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.85,0.86,0.88],"smooth":0.6,"metal":1.0}
+]}

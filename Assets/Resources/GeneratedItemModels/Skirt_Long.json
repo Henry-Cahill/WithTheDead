@@ -1,0 +1,12 @@
+{"version": 1, "id": "Skirt_Long", "baseHeight": 0.0805, "name": "Skirt Long", "model": "gpt-oss:120b", "notes": "Flat long skirt about 1.00 m long × 0.70 m wide, 3 cm thick: waist‑band at the top, front & back panels, side‑flare accents, a thin hem rim and a few vertical pleat strips for texture.", "score": 7, "parts": [
+  {"name":"WaistBand","shape":"cube","pos":[0.1,0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.02,0.7],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.1,-0.0055,0.175],"rot":[0.0,0.0,0.0],"size":[1.0,0.03,0.35],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.1,-0.0055,-0.175],"rot":[0.0,0.0,0.0],"size":[1.0,0.03,0.35],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideFlareL","shape":"cube","pos":[-0.05,-0.0055,0.35],"rot":[0.0,10.0,0.0],"size":[0.3,0.03,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SideFlareR","shape":"cube","pos":[-0.05,-0.0055,-0.35],"rot":[0.0,-10.0,0.0],"size":[0.3,0.03,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HemRim","shape":"cylinder","pos":[0.1,-0.013,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.015,0.7],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Pleat1","shape":"cube","pos":[-0.2,-0.0055,0.1],"rot":[0.0,0.0,0.0],"size":[0.8,0.002,0.01],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Pleat2","shape":"cube","pos":[-0.2,-0.0055,-0.1],"rot":[0.0,0.0,0.0],"size":[0.8,0.002,0.01],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Pleat3","shape":"cube","pos":[-0.2,-0.0055,0.25],"rot":[0.0,0.0,0.0],"size":[0.8,0.002,0.01],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Pleat4","shape":"cube","pos":[-0.2,-0.0055,-0.25],"rot":[0.0,0.0,0.0],"size":[0.8,0.002,0.01],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0}
+]}

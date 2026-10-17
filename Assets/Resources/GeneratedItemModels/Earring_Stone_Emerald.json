@@ -1,0 +1,8 @@
+{"version": 1, "id": "Earring_Stone_Emerald", "baseHeight": 0.0683, "name": "Earring Stone Emerald", "model": "gpt-oss:120b", "notes": "Emerald‑cut stone about 15 mm wide (0.015 m) set in a thin silver bail; total height ≈22 mm when lying on the floor.", "score": 7, "parts": [
+  {"name":"BackPlate","shape":"cube","pos":[-0.005,-0.0063,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.002,0.01],"color":[0.9,0.85,0.7],"smooth":0.2,"metal":1.0},
+  {"name":"Gem","shape":"sphere","pos":[-0.005,0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.012,0.015],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.0},
+  {"name":"Bail","shape":"cylinder","pos":[0.001,0.0027,0.0],"rot":[0.0,0.0,90.0],"size":[0.003,0.025,0.003],"color":[0.9,0.85,0.7],"smooth":0.2,"metal":1.0},
+  {"name":"Clasp","shape":"cylinder","pos":[0.001,0.0072,0.0],"rot":[90.0,0.0,0.0],"size":[0.002,0.004,0.002],"color":[0.9,0.85,0.7],"smooth":0.2,"metal":1.0},
+  {"name":"Highlight","shape":"sphere","pos":[-0.003,0.0047,0.003],"rot":[0.0,0.0,0.0],"size":[0.004,0.003,0.004],"color":[1.0,1.0,1.0],"smooth":0.8,"metal":0.0},
+  {"name":"Shadow","shape":"cube","pos":[-0.005,-0.0073,0.0],"rot":[0.0,0.0,0.0],"size":[0.017,0.002,0.012],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0}
+]}

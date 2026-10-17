@@ -1,0 +1,12 @@
+{"version": 1, "id": "ThighWood_R", "baseHeight": 0.135, "name": "Thigh Wood R", "model": "gpt-oss:120b", "notes": "Wooden thigh piece, right‑side profile, about 0.45 m long. Main shaft is a rectangular block, rounded hip end made from a cylinder, with a few knots and grain‑line details for readability.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cube","pos":[-0.045,0.0,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.28,0.07,0.12],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"HipEnd","shape":"cylinder","pos":[0.145,0.0,-0.0025],"rot":[0.0,0.0,90.0],"size":[0.15,0.1,0.15],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"KnotA","shape":"sphere","pos":[-0.115,0.01,0.0475],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.45,0.42,0.35],"smooth":0.12,"metal":0.0},
+  {"name":"KnotB","shape":"sphere","pos":[0.005,0.005,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.45,0.42,0.35],"smooth":0.12,"metal":0.0},
+  {"name":"KnotC","shape":"sphere","pos":[0.105,-0.005,0.0575],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.45,0.42,0.35],"smooth":0.12,"metal":0.0},
+  {"name":"GrainLine1","shape":"cube","pos":[-0.015,0.02,0.0425],"rot":[0.0,5.0,0.0],"size":[0.22,0.005,0.008],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"GrainLine2","shape":"cube","pos":[0.085,0.015,-0.0325],"rot":[0.0,-7.0,0.0],"size":[0.18,0.005,0.008],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"BarkStrip","shape":"cube","pos":[-0.045,-0.015,0.0675],"rot":[0.0,0.0,0.0],"size":[0.28,0.01,0.02],"color":[0.45,0.42,0.35],"smooth":0.12,"metal":0.0},
+  {"name":"BottomSupport","shape":"cube","pos":[-0.045,-0.02,-0.0625],"rot":[0.0,0.0,0.0],"size":[0.28,0.01,0.02],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeChamfer","shape":"cube","pos":[-0.185,0.0,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.02,0.07,0.12],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0}
+]}

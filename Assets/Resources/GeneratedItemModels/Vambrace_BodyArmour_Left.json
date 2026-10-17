@@ -1,0 +1,12 @@
+{"version": 1, "id": "Vambrace_BodyArmour_Left", "baseHeight": 0.0762, "name": "Vambrace Body Armour Left", "model": "gpt-oss:120b", "notes": "Left‑arm vambrace (forearm + hand) ~0.35 m long × 0.12 m wide × 0.025 m thick. Main steel shell in muted tan, inner padded liner, leather wrist strap and four rivet heads for detail.", "score": 6, "parts": [
+  {"name":"ForearmPlate","shape":"cube","pos":[-0.03,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.025,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"HandPlate","shape":"cube","pos":[0.16,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"InnerPadding","shape":"cube","pos":[-0.03,-0.0073,0.0],"rot":[0.0,0.0,0.0],"size":[0.33,0.018,0.108],"color":[0.7,0.65,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"WristStrap","shape":"cube","pos":[-0.18,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.12],"color":[0.4,0.25,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"RivetFrontTop","shape":"cylinder","pos":[0.11,0.0088,0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.3,0.3,0.3],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFrontBottom","shape":"cylinder","pos":[0.11,0.0088,-0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.3,0.3,0.3],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBackTop","shape":"cylinder","pos":[-0.1,0.0088,0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.3,0.3,0.3],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBackBottom","shape":"cylinder","pos":[-0.1,0.0088,-0.045],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.3,0.3,0.3],"smooth":0.6,"metal":1.0},
+  {"name":"HingePin","shape":"cylinder","pos":[0.11,-0.0037,0.0],"rot":[90.0,0.0,0.0],"size":[0.01,0.02,0.01],"color":[0.55,0.53,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeBevel","shape":"cube","pos":[-0.03,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.003,0.12],"color":[0.55,0.53,0.48],"smooth":0.6,"metal":1.0}
+]}

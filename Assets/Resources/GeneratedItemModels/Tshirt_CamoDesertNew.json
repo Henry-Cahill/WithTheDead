@@ -1,0 +1,14 @@
+{"version": 1, "id": "Tshirt_CamoDesertNew", "baseHeight": 0.105, "name": "Tshirt Camo Desert New", "model": "gpt-oss:120b", "notes": "Flat desert‑camo T‑shirt laid out for a product‑photo view. Overall footprint ≈ 0.78 m wide (including sleeves) × 0.70 m long, thickness ≈ 0.03 m. Main cloth colour uses the item tint (0.55, 0.5, 0.6). Three low‑poly camo blotches (tan/brown ellipsoids) give a desert pattern. All parts now touch or overlap – cuffs are attached to the sleeve ends.", "score": 6, "parts": [
+  {"name":"Torso","shape":"cube","pos":[-0.0464,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.03,0.45],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveL","shape":"cube","pos":[0.2286,-0.007,0.33],"rot":[0.0,10.0,0.0],"size":[0.18,0.03,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SleeveR","shape":"cube","pos":[0.2286,-0.007,-0.33],"rot":[0.0,-10.0,0.0],"size":[0.18,0.03,0.22],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"CuffL","shape":"cube","pos":[0.3036,-0.007,0.44],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.06],"color":[0.42,0.33,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"CuffR","shape":"cube","pos":[0.3036,-0.007,-0.44],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.06],"color":[0.42,0.33,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"CollarBand","shape":"cylinder","pos":[0.2086,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.04,0.16],"color":[0.42,0.33,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"NeckHole","shape":"cylinder","pos":[0.2086,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.036,0.13],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Hem","shape":"cube","pos":[-0.3214,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.032,0.45],"color":[0.42,0.33,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"CenterFold","shape":"cube","pos":[-0.0664,0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.004,0.012],"color":[0.48,0.38,0.28],"smooth":0.05,"metal":0.0},
+  {"name":"CamoPatch1","shape":"sphere","pos":[-0.1664,-0.0,0.15],"rot":[0.0,0.0,0.0],"size":[0.22,0.09,0.22],"color":[0.71,0.55,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"CamoPatch2","shape":"sphere","pos":[0.0336,-0.0,-0.18],"rot":[0.0,0.0,0.0],"size":[0.18,0.07,0.18],"color":[0.6,0.45,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"CamoPatch3","shape":"sphere","pos":[-0.2464,-0.0,-0.1],"rot":[0.0,0.0,0.0],"size":[0.14,0.06,0.14],"color":[0.48,0.36,0.2],"smooth":0.05,"metal":0.0}
+]}

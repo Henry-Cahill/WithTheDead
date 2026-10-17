@@ -1,0 +1,13 @@
+{"version": 1, "id": "Cuirass_Tire", "baseHeight": 0.19, "name": "Cuirass Tire", "model": "gpt-oss:120b", "notes": "Rubber car‑tire 0.55 m outer diameter × 0.22 m width, lying on its side: thick rubber body, steel rim, a few raised tread ridges, thin hub‑caps on each end and four mounting bolts.", "score": 6, "parts": [
+  {"name":"TireBody","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.26,0.22,0.26],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.22,0.12],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":0.9},
+  {"name":"FrontRidge","shape":"cube","pos":[0.0,0.0,0.13],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.04],"color":[0.5,0.48,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"BackRidge","shape":"cube","pos":[0.0,0.0,-0.13],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.04],"color":[0.5,0.48,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"TopRidge","shape":"cube","pos":[0.0,0.105,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.08],"color":[0.5,0.48,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"HubcapL","shape":"cylinder","pos":[-0.11,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.02,0.12],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":0.9},
+  {"name":"HubcapR","shape":"cylinder","pos":[0.11,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.02,0.12],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":0.9},
+  {"name":"BoltFL","shape":"sphere","pos":[-0.09,0.0,0.12],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"BoltFR","shape":"sphere","pos":[0.09,0.0,0.12],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"BoltBL","shape":"sphere","pos":[-0.09,0.0,-0.12],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"BoltBR","shape":"sphere","pos":[0.09,0.0,-0.12],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0}
+]}

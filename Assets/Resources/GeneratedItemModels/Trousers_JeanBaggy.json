@@ -1,0 +1,16 @@
+{"version": 1, "id": "Trousers_JeanBaggy", "baseHeight": 0.085, "name": "Trousers Jean Baggy", "model": "gpt-oss:120b", "notes": "Baggy jean trousers laid flat, ~1.05 m long x 0.68 m wide x 0.03 m thick. Main denim body with waistband, two legs, front pockets, back pocket, four belt‑loops and seam lines.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[0.4725,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.68],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.0075,-0.01,-0.2],"rot":[0.0,0.0,0.0],"size":[1.05,0.03,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[-0.0075,-0.01,0.2],"rot":[0.0,0.0,0.0],"size":[1.05,0.03,0.28],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"FrontPocketL","shape":"cube","pos":[0.1925,-0.003,-0.05],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.12],"color":[0.45,0.4,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"FrontPocketR","shape":"cube","pos":[0.1925,-0.003,0.05],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.12],"color":[0.45,0.4,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"BackPocket","shape":"cube","pos":[0.3425,-0.003,-0.3],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.12],"color":[0.45,0.4,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"BeltLoopFL","shape":"cylinder","pos":[0.4725,0.01,-0.25],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"BeltLoopFR","shape":"cylinder","pos":[0.4725,0.01,0.25],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"BeltLoopBL","shape":"cylinder","pos":[0.4725,0.01,-0.35],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"BeltLoopBR","shape":"cylinder","pos":[0.4725,0.01,0.35],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.45,0.4,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"StitchOuterL","shape":"cube","pos":[-0.0075,0.002,-0.34],"rot":[0.0,0.0,0.0],"size":[1.05,0.005,0.005],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchInnerL","shape":"cube","pos":[-0.0075,0.002,-0.06],"rot":[0.0,0.0,0.0],"size":[1.05,0.005,0.005],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchOuterR","shape":"cube","pos":[-0.0075,0.002,0.34],"rot":[0.0,0.0,0.0],"size":[1.05,0.005,0.005],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchInnerR","shape":"cube","pos":[-0.0075,0.002,0.06],"rot":[0.0,0.0,0.0],"size":[1.05,0.005,0.005],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0}
+]}

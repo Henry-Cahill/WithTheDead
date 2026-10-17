@@ -1,0 +1,13 @@
+{"version": 1, "id": "Shorts_LongDenim_Punk", "baseHeight": 0.0825, "name": "Shorts Long Denim Punk", "model": "gpt-oss:120b", "notes": "Denim shorts (≈0.45 m long × 0.50 m wide) laid flat like a product photo: waistband strip, central crotch panel, left & right leg panels, front pocket pair, centered back pocket, two belt‑loops and thin stitch lines along the front/back edges.", "score": 6, "parts": [
+  {"name":"Waistband","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.015,0.12],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Crotch","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.025,0.2],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegL","shape":"cube","pos":[-0.14,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.025,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cube","pos":[0.14,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.025,0.25],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PocketL","shape":"cube","pos":[-0.14,-0.01,0.145],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PocketR","shape":"cube","pos":[0.14,-0.01,0.145],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BackPocket","shape":"cube","pos":[0.0,-0.01,-0.145],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.04],"color":[0.45,0.4,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BeltLoopL","shape":"cylinder","pos":[-0.23,0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.04,0.015],"color":[0.2,0.2,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"BeltLoopR","shape":"cylinder","pos":[0.23,0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.04,0.015],"color":[0.2,0.2,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"StitchFront","shape":"cube","pos":[0.0,-0.01,0.125],"rot":[0.0,0.0,0.0],"size":[0.5,0.002,0.002],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBack","shape":"cube","pos":[0.0,-0.01,-0.125],"rot":[0.0,0.0,0.0],"size":[0.5,0.002,0.002],"color":[0.3,0.28,0.35],"smooth":0.05,"metal":0.0}
+]}

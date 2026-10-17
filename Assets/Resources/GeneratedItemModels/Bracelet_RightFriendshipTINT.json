@@ -1,0 +1,8 @@
+{"version": 1, "id": "Bracelet_RightFriendshipTINT", "baseHeight": 0.0705, "name": "Bracelet Right Friendship TINT", "model": "gpt-oss:120b", "notes": "Friendship bracelet lying flat on the floor: a thin rectangular band (~0.18 m long × 0.02 m wide × 0.01 m thick) with a rolled edge and a few woven‑thread accent lines.", "score": 6, "parts": [
+  {"name":"BaseBand","shape":"cube","pos":[0.002,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.01,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RollEdge","shape":"cylinder","pos":[-0.083,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.018,0.02],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Weave1","shape":"cylinder","pos":[-0.038,-0.001,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.018,0.004],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Weave2","shape":"cylinder","pos":[0.002,-0.001,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.018,0.004],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Weave3","shape":"cylinder","pos":[0.042,-0.001,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.018,0.004],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Weave4","shape":"cylinder","pos":[0.082,-0.001,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.018,0.004],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}
