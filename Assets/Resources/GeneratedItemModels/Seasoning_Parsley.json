@@ -1,0 +1,10 @@
+{"version": 1, "id": "Seasoning_Parsley", "baseHeight": 0.0785, "name": "Seasoning Parsley", "model": "gpt-oss:120b", "notes": "Loose parsley in a small zip‑lock pouch about 0.15 m long × 0.10 m wide × 0.02 m thick. Green interior (tint 0.75,0.68,0.45), white paper label with dark‑green text, a tiny seal tab at one corner, and a few parsley leaves poking out of the top.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[-0.0013,-0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.1],"color":[0.75,0.68,0.45],"smooth":0.35,"metal":0.0},
+  {"name":"SealTab","shape":"cube","pos":[0.0688,-0.0015,-0.04],"rot":[0.0,0.0,0.0],"size":[0.015,0.006,0.015],"color":[0.9,0.9,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[-0.0313,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.06],"color":[0.95,0.95,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[-0.0313,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.005],"color":[0.2,0.3,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf1","shape":"sphere","pos":[-0.0413,0.0095,0.02],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.01],"color":[0.78,0.71,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Leaf2","shape":"sphere","pos":[0.0487,0.0115,-0.03],"rot":[0.0,0.0,0.0],"size":[0.028,0.014,0.009],"color":[0.78,0.71,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Leaf3","shape":"sphere","pos":[-0.0013,0.0065,0.04],"rot":[0.0,0.0,0.0],"size":[0.032,0.016,0.011],"color":[0.78,0.71,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Leaf4","shape":"sphere","pos":[-0.0613,0.0035,-0.02],"rot":[0.0,0.0,0.0],"size":[0.027,0.013,0.008],"color":[0.78,0.71,0.45],"smooth":0.3,"metal":0.0}
+]}

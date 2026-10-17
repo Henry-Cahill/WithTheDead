@@ -1,0 +1,12 @@
+{"version": 1, "id": "Modjeska", "baseHeight": 0.0808, "name": "Modjeska", "model": "gpt-oss:120b", "notes": "Modjeska candy box ~0.12 m wide × 0.08 m deep × 0.04 m high (incl. lid) with a thin cardboard shell and three chocolate‑covered marshmallow sweets (~0.03 m diameter) inside.", "score": 7, "parts": [
+  {"name":"Bottom","shape":"cube","pos":[0.0,-0.0183,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.08],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,-0.0008,0.0375],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.005],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.0008,-0.0375],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.005],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LeftPanel","shape":"cube","pos":[-0.0575,-0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.03,0.08],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"RightPanel","shape":"cube","pos":[0.0575,-0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.03,0.08],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0167,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.08],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0198,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.07],"color":[0.6,0.55,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Sweet1","shape":"sphere","pos":[-0.03,-0.0008,-0.02],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.15,0.08,0.03],"smooth":0.4,"metal":0.0},
+  {"name":"Sweet2","shape":"sphere","pos":[0.0,-0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.15,0.08,0.03],"smooth":0.4,"metal":0.0},
+  {"name":"Sweet3","shape":"sphere","pos":[0.025,-0.0008,0.025],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.15,0.08,0.03],"smooth":0.4,"metal":0.0}
+]}

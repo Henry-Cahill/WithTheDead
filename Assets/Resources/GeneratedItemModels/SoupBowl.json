@@ -1,0 +1,8 @@
+{"version": 1, "id": "SoupBowl", "baseHeight": 0.1075, "name": "Soup Bowl", "model": "gpt-oss:120b", "notes": "Upright soup bowl ~0.15 m wide × 0.09 m tall (including rim). Shallow ceramic shell on a slightly thicker base, thin outer lip, a subtle mid‑height decorative band and a faint side label.", "score": 7, "parts": [
+  {"name":"BasePlate","shape":"cylinder","pos":[0.0,-0.0375,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.02,0.14],"color":[0.45,0.6,0.75],"smooth":0.35,"metal":0.0},
+  {"name":"OuterShell","shape":"cylinder","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.07,0.15],"color":[0.45,0.6,0.75],"smooth":0.35,"metal":0.0},
+  {"name":"RimLip","shape":"cylinder","pos":[0.0,0.045,0.0],"rot":[0.0,0.0,0.0],"size":[0.155,0.005,0.155],"color":[0.42,0.55,0.7],"smooth":0.4,"metal":0.0},
+  {"name":"DecorBand","shape":"cylinder","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.004,0.15],"color":[0.35,0.48,0.62],"smooth":0.3,"metal":0.0},
+  {"name":"SideLabel","shape":"cube","pos":[0.0745,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.05,0.12],"color":[0.3,0.4,0.55],"smooth":0.3,"metal":0.0},
+  {"name":"InnerCavity","shape":"cylinder","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.138,0.065,0.138],"color":[0.9,0.95,1.0],"smooth":0.2,"metal":0.0}
+]}

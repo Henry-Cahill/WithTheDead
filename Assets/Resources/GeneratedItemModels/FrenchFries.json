@@ -1,0 +1,15 @@
+{"version": 1, "id": "FrenchFries", "baseHeight": 0.079, "name": "French Fries", "model": "gpt-oss:120b", "notes": "Paper fry container ~0.16 m × 0.09 m × 0.04 m with thin walls and a lid; six golden‑brown fries (cylinders) lying on their side inside, all parts touching or overlapping.", "score": 6, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0062,-0.017,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.004,0.09],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"WallFront","shape":"cube","pos":[0.0062,0.0,0.044],"rot":[0.0,0.0,0.0],"size":[0.16,0.03,0.002],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"WallBack","shape":"cube","pos":[0.0062,0.0,-0.044],"rot":[0.0,0.0,0.0],"size":[0.16,0.03,0.002],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"WallLeft","shape":"cube","pos":[-0.0728,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.03,0.09],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"WallRight","shape":"cube","pos":[0.0852,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.03,0.09],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0062,0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[0.162,0.003,0.092],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0062,0.018,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.02],"color":[0.45,0.4,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Fry1","shape":"cylinder","pos":[-0.0138,-0.007,0.0],"rot":[0.0,0.0,90.0],"size":[0.016,0.14,0.016],"color":[0.85,0.78,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"Fry2","shape":"cylinder","pos":[0.0362,-0.007,0.015],"rot":[0.0,0.0,90.0],"size":[0.016,0.13,0.016],"color":[0.85,0.78,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"Fry3","shape":"cylinder","pos":[-0.0338,-0.007,-0.02],"rot":[0.0,0.0,90.0],"size":[0.016,0.12,0.016],"color":[0.85,0.78,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"Fry4","shape":"cylinder","pos":[0.0563,-0.007,-0.025],"rot":[0.0,0.0,90.0],"size":[0.016,0.135,0.016],"color":[0.85,0.78,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"Fry5","shape":"cylinder","pos":[0.0062,-0.007,0.03],"rot":[0.0,0.0,90.0],"size":[0.016,0.125,0.016],"color":[0.85,0.78,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"Fry6","shape":"cylinder","pos":[-0.0537,-0.007,-0.035],"rot":[0.0,0.0,90.0],"size":[0.016,0.14,0.016],"color":[0.85,0.78,0.55],"smooth":0.2,"metal":0.0}
+]}

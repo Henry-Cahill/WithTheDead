@@ -1,0 +1,10 @@
+{"version": 1, "id": "Seasoning_Rosemary", "baseHeight": 0.104, "name": "Seasoning Rosemary", "model": "gpt-oss:120b", "notes": "Small glass spice jar ≈ 0.06 m diameter × 0.08 m tall, clear body with a thin metal screw‑top, green‑tinted rosemary label and a few loose herb sprigs inside.", "score": 7, "parts": [
+  {"name":"JarBody","shape":"cylinder","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.08,0.06],"color":[0.93,0.95,0.96],"smooth":0.6,"metal":0.0},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.062,0.008,0.062],"color":[0.78,0.78,0.8],"smooth":0.45,"metal":1.0},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.058,0.002,0.058],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.0585,0.002,0.0585],"color":[0.55,0.48,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.0585,0.002,0.0585],"color":[0.55,0.48,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Herb1","shape":"sphere","pos":[-0.015,-0.019,0.01],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Herb2","shape":"sphere","pos":[0.01,0.001,-0.012],"rot":[0.0,0.0,0.0],"size":[0.009,0.009,0.009],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Herb3","shape":"sphere","pos":[0.018,0.016,0.015],"rot":[0.0,0.0,0.0],"size":[0.011,0.011,0.011],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "ChocolateCoveredCoffeeBeans", "baseHeight": 0.088, "name": "Chocolate Covered Coffee Beans", "model": "gpt-oss:120b", "notes": "Small rectangular tin (~6 cm × 4 cm × 5 cm) upright on the floor. Light‑metal body with a thin lid, a chocolate‑coloured label on the front, and a handful of ellipsoidal beans inside.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.003,0.0007],"rot":[0.0,0.0,0.0],"size":[0.06,0.05,0.04],"color":[0.78,0.78,0.78],"smooth":0.5,"metal":1.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.025,0.0007],"rot":[0.0,0.0,0.0],"size":[0.062,0.006,0.042],"color":[0.7,0.7,0.7],"smooth":0.5,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0,-0.0207],"rot":[0.0,0.0,0.0],"size":[0.058,0.004,0.002],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Bean1","shape":"sphere","pos":[-0.015,-0.016,-0.0043],"rot":[0.0,0.0,0.0],"size":[0.009,0.004,0.006],"color":[0.55,0.45,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Bean2","shape":"sphere","pos":[0.01,-0.01,0.0087],"rot":[0.0,0.0,0.0],"size":[0.0085,0.0038,0.0065],"color":[0.55,0.45,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Bean3","shape":"sphere","pos":[-0.008,-0.006,-0.0093],"rot":[0.0,0.0,0.0],"size":[0.0092,0.0041,0.0062],"color":[0.55,0.45,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Bean4","shape":"sphere","pos":[0.012,-0.013,0.0007],"rot":[0.0,0.0,0.0],"size":[0.0088,0.0039,0.0061],"color":[0.55,0.45,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Bean5","shape":"sphere","pos":[-0.004,-0.008,0.0127],"rot":[0.0,0.0,0.0],"size":[0.009,0.004,0.0063],"color":[0.55,0.45,0.3],"smooth":0.2,"metal":0.0}
+]}

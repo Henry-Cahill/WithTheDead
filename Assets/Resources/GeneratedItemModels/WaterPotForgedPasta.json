@@ -1,0 +1,10 @@
+{"version": 1, "id": "WaterPotForgedPasta", "baseHeight": 0.1605, "name": "Water Pot Forged Pasta", "model": "gpt-oss:120b", "notes": "Upright forged‑metal water pot (≈0.23 m dia × 0.18 m tall) holding loose pasta. Body is a brushed steel cylinder with a thin rim and screw‑on lid (with side handle). A paper label wraps the middle, and three pasta “clumps” are shown inside as squashed ellipsoids.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0035,-0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.23,0.18,0.23],"color":[0.75,0.68,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"Rim","shape":"cylinder","pos":[-0.0035,0.0785,0.0],"rot":[0.0,0.0,0.0],"size":[0.236,0.008,0.236],"color":[0.7,0.62,0.38],"smooth":0.45,"metal":1.0},
+  {"name":"Lid","shape":"cylinder","pos":[-0.0035,0.087,0.0],"rot":[0.0,0.0,0.0],"size":[0.21,0.015,0.21],"color":[0.78,0.71,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"LidHandle","shape":"cylinder","pos":[0.1015,0.0945,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.04,0.012],"color":[0.55,0.5,0.3],"smooth":0.3,"metal":1.0},
+  {"name":"Label","shape":"cylinder","pos":[-0.0035,-0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.215,0.002,0.215],"color":[0.45,0.35,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"PastaClumpA","shape":"sphere","pos":[-0.0435,-0.0305,0.03],"rot":[0.0,0.0,0.0],"size":[0.06,0.025,0.045],"color":[0.78,0.7,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PastaClumpB","shape":"sphere","pos":[0.0165,-0.0405,-0.04],"rot":[0.0,0.0,0.0],"size":[0.05,0.022,0.04],"color":[0.8,0.72,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"PastaClumpC","shape":"sphere","pos":[0.0565,-0.0205,0.02],"rot":[0.0,0.0,0.0],"size":[0.055,0.024,0.042],"color":[0.77,0.68,0.44],"smooth":0.05,"metal":0.0}
+]}

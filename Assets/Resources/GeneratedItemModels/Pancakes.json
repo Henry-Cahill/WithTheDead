@@ -1,0 +1,9 @@
+{"version": 1, "id": "Pancakes", "baseHeight": 0.105, "name": "Pancakes", "model": "gpt-oss:120b", "notes": "Loose stack of up to 4 pancakes in a shallow cardboard tray. Each pancake ≈ 0.15 m diameter, 0.015 m thick; the tray is 0.18 m square and 0.02 m high. A small butter pat sits on top of the highest pancake.", "score": 6, "parts": [
+  {"name":"TrayBase","shape":"cube","pos":[0.0,-0.035,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.18],"color":[0.6,0.5,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"TrayLid","shape":"cube","pos":[0.0,-0.023,0.0],"rot":[0.0,0.0,0.0],"size":[0.185,0.004,0.185],"color":[0.62,0.52,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"Pancake1","shape":"sphere","pos":[0.0,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.015,0.15],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Pancake2","shape":"sphere","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.015,0.15],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Pancake3","shape":"sphere","pos":[0.0,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.015,0.15],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Pancake4","shape":"sphere","pos":[0.0,0.0275,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.015,0.15],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"ButterPat","shape":"sphere","pos":[0.0,0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.01,0.07],"color":[0.95,0.85,0.4],"smooth":0.08,"metal":0.0}
+]}

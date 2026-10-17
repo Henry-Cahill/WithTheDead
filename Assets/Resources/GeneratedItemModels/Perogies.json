@@ -1,0 +1,12 @@
+{"version": 1, "id": "Perogies", "baseHeight": 0.0978, "name": "Perogies", "model": "gpt-oss:120b", "notes": "Rectangular cardboard box for frozen perogies (~0.12 m W × 0.08 m D × 0.07 m H). Thin plastic lid on top, inner film lining, and a handful of dumpling‑shaped ellipsoids (dough tint 0.75,0.68,0.45) peeking out. Front label on the side.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0022,0.0007],"rot":[0.0,0.0,0.0],"size":[0.12,0.07,0.08],"color":[0.45,0.3,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0352,0.0007],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.08],"color":[0.55,0.4,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"InnerFilm","shape":"cube","pos":[0.0,-0.0367,0.0007],"rot":[0.0,0.0,0.0],"size":[0.115,0.002,0.075],"color":[0.9,0.92,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.0022,0.0417],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.002],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"Dumpling1","shape":"sphere","pos":[-0.025,-0.0172,-0.0143],"rot":[0.0,0.0,0.0],"size":[0.03,0.022,0.025],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Dumpling2","shape":"sphere","pos":[0.015,-0.0152,0.0207],"rot":[0.0,0.0,0.0],"size":[0.028,0.02,0.024],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Dumpling3","shape":"sphere","pos":[-0.01,-0.0122,-0.0293],"rot":[0.0,0.0,0.0],"size":[0.032,0.023,0.027],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Dumpling4","shape":"sphere","pos":[0.03,-0.0192,0.0107],"rot":[0.0,0.0,0.0],"size":[0.029,0.021,0.025],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Dumpling5","shape":"sphere","pos":[-0.02,-0.0072,-0.0043],"rot":[0.0,0.0,0.0],"size":[0.031,0.022,0.026],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Dumpling6","shape":"sphere","pos":[0.02,-0.0162,-0.0243],"rot":[0.0,0.0,0.0],"size":[0.027,0.019,0.023],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0}
+]}

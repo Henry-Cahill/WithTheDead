@@ -1,0 +1,13 @@
+{"version": 1, "id": "BeanBowl", "baseHeight": 0.1, "name": "Bean Bowl", "model": "gpt-oss:120b", "notes": "Shallow bean bowl, 0.15 m diameter × 0.07 m tall tin container with a thin lid and a brown paper label. Inside are a few loose beans shown as small ellipsoids.", "score": 7, "parts": [
+  {"name":"BowlBody","shape":"cylinder","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.07,0.15],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.9},
+  {"name":"RimLip","shape":"cylinder","pos":[0.0,0.0325,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.005,0.16],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.035,0.0],"rot":[0.0,0.0,0.0],"size":[0.158,0.01,0.158],"color":[0.78,0.73,0.48],"smooth":0.55,"metal":0.9},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.148,0.065,0.148],"color":[0.45,0.33,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.026,0.0],"rot":[0.0,0.0,0.0],"size":[0.152,0.008,0.152],"color":[0.33,0.24,0.16],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.035,0.0],"rot":[0.0,0.0,0.0],"size":[0.152,0.008,0.152],"color":[0.33,0.24,0.16],"smooth":0.12,"metal":0.0},
+  {"name":"Bean1","shape":"sphere","pos":[-0.03,-0.008,0.02],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.015],"color":[0.4,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"Bean2","shape":"sphere","pos":[0.01,-0.012,-0.04],"rot":[0.0,0.0,0.0],"size":[0.018,0.022,0.014],"color":[0.42,0.22,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"Bean3","shape":"sphere","pos":[0.025,-0.01,0.035],"rot":[0.0,0.0,0.0],"size":[0.019,0.024,0.016],"color":[0.38,0.19,0.09],"smooth":0.05,"metal":0.0},
+  {"name":"Bean4","shape":"sphere","pos":[-0.02,-0.011,-0.025],"rot":[0.0,0.0,0.0],"size":[0.017,0.021,0.013],"color":[0.41,0.21,0.11],"smooth":0.05,"metal":0.0},
+  {"name":"Bean5","shape":"sphere","pos":[0.04,-0.009,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.015],"color":[0.39,0.2,0.1],"smooth":0.05,"metal":0.0}
+]}

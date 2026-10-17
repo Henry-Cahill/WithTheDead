@@ -1,0 +1,8 @@
+{"version": 1, "id": "Lollipop", "baseHeight": 0.085, "name": "Lollipop", "model": "gpt-oss:120b", "notes": "Lollipop ~0.15 m long, 0.05 m wide candy head on a thin wooden stick; lying on its side with a clear paper wrapper around the stick and head.", "score": 7, "parts": [
+  {"name":"Stick","shape":"cylinder","pos":[-0.0125,-0.017,0.0],"rot":[0.0,0.0,90.0],"size":[0.016,0.12,0.016],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"CandyHead","shape":"sphere","pos":[0.0725,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.75,0.68,0.45],"smooth":0.6,"metal":0.0},
+  {"name":"Wrapper","shape":"cylinder","pos":[-0.0125,-0.013,0.0],"rot":[0.0,0.0,90.0],"size":[0.024,0.17,0.024],"color":[0.95,0.95,0.96],"smooth":0.2,"metal":0.0},
+  {"name":"WrapperEdge","shape":"cylinder","pos":[-0.0125,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.028,0.17,0.028],"color":[0.9,0.9,0.92],"smooth":0.2,"metal":0.0},
+  {"name":"Tip","shape":"cylinder","pos":[-0.0725,-0.017,0.0],"rot":[0.0,0.0,90.0],"size":[0.016,0.004,0.016],"color":[0.75,0.68,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0775,0.0,0.0125],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.015],"color":[0.2,0.3,0.6],"smooth":0.05,"metal":0.0}
+]}

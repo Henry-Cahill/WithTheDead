@@ -1,0 +1,11 @@
+{"version": 1, "id": "PowderedGarlic", "baseHeight": 0.122, "name": "Powdered Garlic", "model": "gpt-oss:120b", "notes": "Powdered garlic in a small cardboard spice tin ~0.08 m wide × 0.12 m tall × 0.05 m deep, upright on the floor. Main beige‑tan tint for the box, darker label, thin lid and a hint of the powder inside.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0187,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.12,0.05],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0187,0.059,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.006,0.052],"color":[0.78,0.71,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[-0.0208,-0.002,0.026],"rot":[0.0,0.0,0.0],"size":[0.078,0.11,0.002],"color":[0.55,0.45,0.25],"smooth":0.08,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[-0.0208,-0.002,-0.026],"rot":[0.0,0.0,0.0],"size":[0.078,0.11,0.002],"color":[0.55,0.45,0.25],"smooth":0.08,"metal":0.0},
+  {"name":"SealRing","shape":"cylinder","pos":[0.0187,0.0575,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.002,0.082],"color":[0.7,0.62,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"PowderPile","shape":"sphere","pos":[0.0187,-0.032,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.85,0.8,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"SideRimFront","shape":"cube","pos":[-0.0208,-0.002,0.0255],"rot":[0.0,0.0,0.0],"size":[0.002,0.12,0.05],"color":[0.7,0.62,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"SideRimBack","shape":"cube","pos":[-0.0208,-0.002,-0.0255],"rot":[0.0,0.0,0.0],"size":[0.002,0.12,0.05],"color":[0.7,0.62,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"BottomSeal","shape":"cylinder","pos":[0.0187,-0.061,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.08],"color":[0.7,0.62,0.4],"smooth":0.12,"metal":0.0}
+]}

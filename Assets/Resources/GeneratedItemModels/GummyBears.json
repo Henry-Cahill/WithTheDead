@@ -1,0 +1,11 @@
+{"version": 1, "id": "GummyBears", "baseHeight": 0.095, "name": "Gummy Bears", "model": "gpt-oss:120b", "notes": "Clear rectangular plastic tub 0.12 m W × 0.08 m D × 0.06 m H standing upright, thin snap‑lid and a simple front label. Six representative gummy bears (ellipsoids) are shown inside to give the silhouette of the candy.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.005,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.08],"color":[0.92,0.93,0.95],"smooth":0.2,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.03,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.122,0.01,0.082],"color":[0.88,0.89,0.92],"smooth":0.25,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.0,0.005,0.0408],"rot":[0.0,0.0,0.0],"size":[0.1,0.04,0.002],"color":[0.45,0.33,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"GummyBear1","shape":"sphere","pos":[-0.035,-0.017,-0.0208],"rot":[0.0,0.0,0.0],"size":[0.018,0.012,0.014],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"GummyBear2","shape":"sphere","pos":[0.02,-0.013,0.0142],"rot":[0.0,0.0,0.0],"size":[0.019,0.013,0.015],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"GummyBear3","shape":"sphere","pos":[0.04,-0.018,-0.0307],"rot":[0.0,0.0,0.0],"size":[0.017,0.011,0.013],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"GummyBear4","shape":"sphere","pos":[-0.02,-0.01,0.0292],"rot":[0.0,0.0,0.0],"size":[0.0185,0.0125,0.0145],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"GummyBear5","shape":"sphere","pos":[0.03,-0.016,-0.0158],"rot":[0.0,0.0,0.0],"size":[0.016,0.01,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"GummyBear6","shape":"sphere","pos":[-0.025,-0.014,0.0243],"rot":[0.0,0.0,0.0],"size":[0.0175,0.0115,0.0135],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "Gum", "baseHeight": 0.068, "name": "Gum", "model": "gpt-oss:120b", "notes": "Small rectangular gum pack ~7 cm × 4 cm × 1.8 cm, plastic blister box with front/back paper label and five pink‑tan gum pieces inside.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.016,0.04],"color":[0.9,0.85,0.75],"smooth":0.25,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,-0.0,0.0205],"rot":[0.0,0.0,0.0],"size":[0.065,0.014,0.002],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BackLabel","shape":"cube","pos":[0.0,-0.0,-0.0205],"rot":[0.0,0.0,0.0],"size":[0.065,0.014,0.002],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Gum1","shape":"cylinder","pos":[-0.02,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.018,0.008],"color":[0.8,0.7,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Gum2","shape":"cylinder","pos":[-0.01,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.018,0.008],"color":[0.8,0.7,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Gum3","shape":"cylinder","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.018,0.008],"color":[0.8,0.7,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Gum4","shape":"cylinder","pos":[0.01,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.018,0.008],"color":[0.8,0.7,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Gum5","shape":"cylinder","pos":[0.02,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.018,0.008],"color":[0.8,0.7,0.5],"smooth":0.4,"metal":0.0}
+]}

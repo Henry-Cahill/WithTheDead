@@ -1,0 +1,11 @@
+{"version": 1, "id": "ShrimpDumpling", "baseHeight": 0.072, "name": "Shrimp Dumpling", "model": "gpt-oss:120b", "notes": "Small plastic clamshell container (≈12 cm × 8 cm × 3 cm) holding six shrimp‑filled dumplings. Container base, thin lid and a front label; each dumpling is a pinkish‑beige ellipsoid on the bottom of the tray.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.007,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.08],"color":[0.9,0.9,0.9],"smooth":0.4,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.006,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.122,0.004,0.082],"color":[0.88,0.88,0.88],"smooth":0.45,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0,0.0405],"rot":[0.0,0.0,0.0],"size":[0.06,0.006,0.002],"color":[0.4,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"Dumpling1","shape":"sphere","pos":[-0.03,0.003,-0.0205],"rot":[0.0,0.0,0.0],"size":[0.028,0.018,0.022],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Dumpling2","shape":"sphere","pos":[0.0,0.003,-0.0205],"rot":[0.0,0.0,0.0],"size":[0.028,0.018,0.022],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Dumpling3","shape":"sphere","pos":[0.03,0.003,-0.0205],"rot":[0.0,0.0,0.0],"size":[0.028,0.018,0.022],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Dumpling4","shape":"sphere","pos":[-0.03,0.003,0.0195],"rot":[0.0,0.0,0.0],"size":[0.028,0.018,0.022],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Dumpling5","shape":"sphere","pos":[0.0,0.003,0.0195],"rot":[0.0,0.0,0.0],"size":[0.028,0.018,0.022],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Dumpling6","shape":"sphere","pos":[0.03,0.003,0.0195],"rot":[0.0,0.0,0.0],"size":[0.028,0.018,0.022],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

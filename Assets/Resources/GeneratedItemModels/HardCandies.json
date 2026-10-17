@@ -1,0 +1,12 @@
+{"version": 1, "id": "HardCandies", "baseHeight": 0.082, "name": "Hard Candies", "model": "gpt-oss:120b", "notes": "Upright rectangular candy box about 0.12 m wide × 0.08 m deep × 0.04 m tall, lying on its side (longest axis along X). Cardboard body with a thin hinged lid and a handful of glossy hard‑candy spheres inside.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.08],"color":[0.78,0.71,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.08],"color":[0.74,0.68,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"SeamFront","shape":"cube","pos":[0.0,-0.0,0.041],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.002],"color":[0.65,0.58,0.42],"smooth":0.1,"metal":0.0},
+  {"name":"SeamBack","shape":"cube","pos":[0.0,-0.0,-0.041],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.002],"color":[0.65,0.58,0.42],"smooth":0.1,"metal":0.0},
+  {"name":"SeamLeft","shape":"cube","pos":[-0.061,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.04,0.08],"color":[0.65,0.58,0.42],"smooth":0.1,"metal":0.0},
+  {"name":"SeamRight","shape":"cube","pos":[0.061,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.04,0.08],"color":[0.65,0.58,0.42],"smooth":0.1,"metal":0.0},
+  {"name":"CandyA","shape":"sphere","pos":[-0.02,0.006,0.015],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.75,0.68,0.45],"smooth":0.5,"metal":0.0},
+  {"name":"CandyB","shape":"sphere","pos":[0.015,0.008,-0.02],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.75,0.68,0.45],"smooth":0.5,"metal":0.0},
+  {"name":"CandyC","shape":"sphere","pos":[-0.025,0.005,-0.015],"rot":[0.0,0.0,0.0],"size":[0.014,0.014,0.014],"color":[0.75,0.68,0.45],"smooth":0.5,"metal":0.0},
+  {"name":"CandyD","shape":"sphere","pos":[0.02,0.007,0.025],"rot":[0.0,0.0,0.0],"size":[0.017,0.017,0.017],"color":[0.75,0.68,0.45],"smooth":0.5,"metal":0.0}
+]}

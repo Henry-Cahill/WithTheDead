@@ -1,0 +1,14 @@
+{"version": 1, "id": "WaterPotForgedRice", "baseHeight": 0.137, "name": "Water Pot Forged Rice", "model": "gpt-oss:120b", "notes": "Upright rice pot ~0.16 m diameter x 0.14 m tall: metallic tin shell, golden‑rice interior, hinged lid with small front handle, label on side and thin rim. Approx. 3 kg, stacks to 4.", "score": 6, "parts": [
+  {"name":"OuterShell","shape":"cylinder","pos":[-0.02,-0.007,-0.002],"rot":[0.0,0.0,0.0],"size":[0.16,0.14,0.16],"color":[0.62,0.62,0.62],"smooth":0.5,"metal":1.0},
+  {"name":"BasePlate","shape":"cylinder","pos":[-0.02,-0.073,-0.002],"rot":[0.0,0.0,0.0],"size":[0.158,0.008,0.158],"color":[0.58,0.58,0.58],"smooth":0.5,"metal":1.0},
+  {"name":"RiceInterior","shape":"cylinder","pos":[-0.02,-0.017,-0.002],"rot":[0.0,0.0,0.0],"size":[0.14,0.12,0.14],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"InnerLid","shape":"cylinder","pos":[-0.02,0.044,-0.002],"rot":[0.0,0.0,0.0],"size":[0.138,0.006,0.138],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Lid","shape":"cylinder","pos":[-0.02,0.059,-0.002],"rot":[0.0,0.0,0.0],"size":[0.162,0.012,0.162],"color":[0.78,0.78,0.78],"smooth":0.55,"metal":1.0},
+  {"name":"LidRim","shape":"cylinder","pos":[-0.02,0.065,-0.002],"rot":[0.0,0.0,0.0],"size":[0.164,0.004,0.164],"color":[0.58,0.58,0.58],"smooth":0.5,"metal":1.0},
+  {"name":"HandleBar","shape":"cylinder","pos":[-0.02,0.061,0.078],"rot":[90.0,0.0,0.0],"size":[0.02,0.012,0.02],"color":[0.5,0.45,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"VentSphere","shape":"sphere","pos":[-0.02,0.068,-0.002],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.9,0.9,0.9],"smooth":0.6,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[0.061,-0.007,-0.002],"rot":[0.0,0.0,0.0],"size":[0.08,0.06,0.002],"color":[0.93,0.93,0.93],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[0.061,-0.007,-0.002],"rot":[0.0,0.0,0.0],"size":[0.082,0.062,0.004],"color":[0.45,0.35,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[-0.02,0.064,-0.002],"rot":[0.0,0.0,0.0],"size":[0.164,0.006,0.164],"color":[0.58,0.58,0.58],"smooth":0.5,"metal":1.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[-0.02,-0.073,-0.002],"rot":[0.0,0.0,0.0],"size":[0.164,0.006,0.164],"color":[0.58,0.58,0.58],"smooth":0.5,"metal":1.0}
+]}

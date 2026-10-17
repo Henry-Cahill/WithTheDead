@@ -1,0 +1,13 @@
+{"version": 1, "id": "GummyWorms", "baseHeight": 0.103, "name": "Gummy Worms", "model": "gpt-oss:120b", "notes": "Small candy box 0.15 m long × 0.12 m wide × 0.08 m tall lying on its side, cardboard brown with a thin white label on the front; contains eight orange‑tan gummy worms (tint 0.75, 0.68, 0.45) modelled as squashed ellipsoids.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.003,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.15,0.08,0.12],"color":[0.6,0.45,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"BoxLid","shape":"cube","pos":[0.0,0.04,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.152,0.006,0.122],"color":[0.68,0.55,0.38],"smooth":0.3,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.0,-0.003,0.0607],"rot":[0.0,0.0,0.0],"size":[0.13,0.002,0.002],"color":[0.9,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"Gummy1","shape":"sphere","pos":[-0.045,-0.008,-0.0307],"rot":[0.0,0.0,0.0],"size":[0.018,0.036,0.012],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Gummy2","shape":"sphere","pos":[0.02,-0.01,0.0243],"rot":[0.0,0.0,0.0],"size":[0.016,0.032,0.01],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Gummy3","shape":"sphere","pos":[-0.02,-0.005,-0.0158],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.014],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Gummy4","shape":"sphere","pos":[0.05,-0.007,0.0092],"rot":[0.0,0.0,0.0],"size":[0.017,0.034,0.011],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Gummy5","shape":"sphere","pos":[-0.06,-0.011,-0.0408],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.009],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Gummy6","shape":"sphere","pos":[0.03,-0.006,-0.0508],"rot":[0.0,0.0,0.0],"size":[0.019,0.038,0.013],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Gummy7","shape":"sphere","pos":[-0.015,-0.009,0.0442],"rot":[0.0,0.0,0.0],"size":[0.018,0.036,0.012],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Gummy8","shape":"sphere","pos":[0.06,-0.004,-0.0208],"rot":[0.0,0.0,0.0],"size":[0.016,0.032,0.01],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0}
+]}

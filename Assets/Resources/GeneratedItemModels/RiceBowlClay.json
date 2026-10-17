@@ -1,0 +1,9 @@
+{"version": 1, "id": "RiceBowlClay", "baseHeight": 0.11, "name": "Rice Bowl Clay", "model": "gpt-oss:120b", "notes": "Clay rice bowl (≈0.12 m diameter × 0.07 m high) in a cardboard take‑out box, with a handful of loose white rice grains on top. Bowl colour matches the clay tint; box is plain brown.", "score": 7, "parts": [
+  {"name":"Box","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.1,0.12],"color":[0.5,0.35,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"BowlOuter","shape":"cylinder","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.07,0.12],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"RiceGrain1","shape":"sphere","pos":[-0.02,0.028,0.01],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.006],"color":[0.93,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"RiceGrain2","shape":"sphere","pos":[0.015,0.028,-0.015],"rot":[0.0,0.0,0.0],"size":[0.011,0.007,0.005],"color":[0.93,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"RiceGrain3","shape":"sphere","pos":[0.0,0.029,0.03],"rot":[0.0,0.0,0.0],"size":[0.013,0.009,0.006],"color":[0.93,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"RiceGrain4","shape":"sphere","pos":[-0.01,0.027,-0.02],"rot":[0.0,0.0,0.0],"size":[0.01,0.007,0.005],"color":[0.93,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"RiceGrain5","shape":"sphere","pos":[0.025,0.028,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.006],"color":[0.93,0.9,0.85],"smooth":0.05,"metal":0.0}
+]}

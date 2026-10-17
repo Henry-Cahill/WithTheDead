@@ -1,0 +1,8 @@
+{"version": 1, "id": "PowderedOnion", "baseHeight": 0.0715, "name": "Powdered Onion", "model": "gpt-oss:120b", "notes": "Powdered onion sold in a thin resealable pouch lying flat (≈ 0.12 m × 0.08 m × 0.015 m).  Beige cardboard body, dark label on top, narrow seal strip at the front edge and a small mound of orange‑tan powder visible through the opening.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.85,0.78,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.002,0.06],"color":[0.55,0.45,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"SealStrip","shape":"cube","pos":[0.0,0.01,0.0375],"rot":[0.0,0.0,0.0],"size":[0.12,0.003,0.005],"color":[0.4,0.33,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"PowderMound","shape":"sphere","pos":[0.0,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.02,0.07],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeFront","shape":"cylinder","pos":[0.0,0.0085,0.04],"rot":[90.0,0.0,0.0],"size":[0.003,0.12,0.003],"color":[0.55,0.45,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBack","shape":"cylinder","pos":[0.0,0.0085,-0.04],"rot":[90.0,0.0,0.0],"size":[0.003,0.12,0.003],"color":[0.55,0.45,0.3],"smooth":0.05,"metal":0.0}
+]}

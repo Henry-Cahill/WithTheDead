@@ -1,0 +1,15 @@
+{"version": 1, "id": "TofuFried", "baseHeight": 0.08, "name": "Tofu Fried", "model": "gpt-oss:120b", "notes": "Shallow rectangular plastic tray 0.12 m × 0.08 m × 0.04 m lying flat; thin walls, clear film lid, green label on front. Five fried‑tofu nuggets (ellipsoids) in golden‑tan colour with a dark brown sauce drizzle.", "score": 6, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.017,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.006,0.08],"color":[0.9,0.9,0.9],"smooth":0.4,"metal":0.0},
+  {"name":"WallFront","shape":"cube","pos":[0.0,0.003,0.038],"rot":[0.0,0.0,0.0],"size":[0.12,0.034,0.004],"color":[0.9,0.9,0.9],"smooth":0.4,"metal":0.0},
+  {"name":"WallBack","shape":"cube","pos":[0.0,0.003,-0.038],"rot":[0.0,0.0,0.0],"size":[0.12,0.034,0.004],"color":[0.9,0.9,0.9],"smooth":0.4,"metal":0.0},
+  {"name":"WallLeft","shape":"cube","pos":[-0.058,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.034,0.08],"color":[0.9,0.9,0.9],"smooth":0.4,"metal":0.0},
+  {"name":"WallRight","shape":"cube","pos":[0.058,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.034,0.08],"color":[0.9,0.9,0.9],"smooth":0.4,"metal":0.0},
+  {"name":"LidFilm","shape":"cube","pos":[0.0,0.019,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.08],"color":[1.0,1.0,1.0],"smooth":0.5,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.003,0.039],"rot":[0.0,0.0,0.0],"size":[0.08,0.012,0.002],"color":[0.2,0.5,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"TofuA","shape":"sphere","pos":[-0.02,-0.008,-0.015],"rot":[0.0,0.0,0.0],"size":[0.025,0.015,0.02],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TofuB","shape":"sphere","pos":[0.03,-0.008,0.01],"rot":[0.0,0.0,0.0],"size":[0.022,0.014,0.018],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TofuC","shape":"sphere","pos":[-0.03,-0.008,0.02],"rot":[0.0,0.0,0.0],"size":[0.024,0.016,0.019],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TofuD","shape":"sphere","pos":[0.015,-0.008,-0.025],"rot":[0.0,0.0,0.0],"size":[0.023,0.015,0.017],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TofuE","shape":"sphere","pos":[0.0,-0.008,0.03],"rot":[0.0,0.0,0.0],"size":[0.021,0.013,0.016],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SauceDrizzle","shape":"sphere","pos":[0.015,-0.002,-0.025],"rot":[0.0,0.0,0.0],"size":[0.03,0.008,0.015],"color":[0.3,0.2,0.1],"smooth":0.15,"metal":0.0}
+]}

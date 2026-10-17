@@ -1,0 +1,10 @@
+{"version": 1, "id": "BBQSauce", "baseHeight": 0.16, "name": "BBQSauce", "model": "gpt-oss:120b", "notes": "Upright BBQ sauce bottle ~0.07 m diameter × 0.18 m tall: clear glass body, dark‑brown label with lighter trim, metal screw cap (with inner plastic liner).", "score": 6, "parts": [
+  {"name":"BodyGlass","shape":"cylinder","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.18,0.07],"color":[0.93,0.94,0.95],"smooth":0.6,"metal":0.0},
+  {"name":"CapMetal","shape":"cylinder","pos":[0.0,0.095,0.0],"rot":[0.0,0.0,0.0],"size":[0.074,0.01,0.074],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"CapLiner","shape":"cylinder","pos":[0.0,0.088,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.008,0.07],"color":[0.85,0.68,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.072,0.15,0.072],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.065,0.0],"rot":[0.0,0.0,0.0],"size":[0.074,0.008,0.074],"color":[0.45,0.33,0.15],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.085,0.0],"rot":[0.0,0.0,0.0],"size":[0.074,0.008,0.074],"color":[0.45,0.33,0.15],"smooth":0.12,"metal":0.0},
+  {"name":"GlassTopRim","shape":"cylinder","pos":[0.0,0.079,0.0],"rot":[0.0,0.0,0.0],"size":[0.072,0.002,0.072],"color":[0.93,0.94,0.95],"smooth":0.6,"metal":0.0},
+  {"name":"BottleNeck","shape":"cylinder","pos":[0.0,0.045,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.04,0.05],"color":[0.93,0.94,0.95],"smooth":0.6,"metal":0.0}
+]}

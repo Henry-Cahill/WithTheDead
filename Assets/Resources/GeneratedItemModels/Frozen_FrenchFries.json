@@ -1,0 +1,11 @@
+{"version": 1, "id": "Frozen_FrenchFries", "baseHeight": 0.0975, "name": "Frozen French Fries", "model": "gpt-oss:120b", "notes": "Frozen French fries in a cardboard box (~0.22 m × 0.15 m × 0.07 m). Thin cardboard walls, a top flap, printed label, an inner clear‑plastic bag and a handful of fry cylinders to hint at the contents.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0025,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.22,0.07,0.15],"color":[0.6,0.5,0.35],"smooth":0.12,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,0.035,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.22,0.005,0.15],"color":[0.6,0.5,0.35],"smooth":0.12,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0075,0.0575],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.07],"color":[0.78,0.7,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"PlasticBag","shape":"cube","pos":[0.0,-0.0045,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.208,0.058,0.138],"color":[0.85,0.9,0.95],"smooth":0.2,"metal":0.0},
+  {"name":"Fry1","shape":"cylinder","pos":[-0.04,-0.0275,-0.0375],"rot":[0.0,0.0,90.0],"size":[0.012,0.09,0.012],"color":[0.85,0.65,0.35],"smooth":0.3,"metal":0.0},
+  {"name":"Fry2","shape":"cylinder","pos":[0.02,-0.0275,0.0125],"rot":[0.0,0.0,90.0],"size":[0.012,0.095,0.012],"color":[0.85,0.65,0.35],"smooth":0.3,"metal":0.0},
+  {"name":"Fry3","shape":"cylinder","pos":[0.05,-0.0275,-0.0575],"rot":[0.0,0.0,90.0],"size":[0.012,0.088,0.012],"color":[0.85,0.65,0.35],"smooth":0.3,"metal":0.0},
+  {"name":"Fry4","shape":"cylinder","pos":[-0.03,-0.0275,0.0225],"rot":[0.0,0.0,90.0],"size":[0.012,0.092,0.012],"color":[0.85,0.65,0.35],"smooth":0.3,"metal":0.0},
+  {"name":"Fry5","shape":"cylinder","pos":[0.0,-0.0275,-0.0175],"rot":[0.0,0.0,90.0],"size":[0.012,0.09,0.012],"color":[0.85,0.65,0.35],"smooth":0.3,"metal":0.0}
+]}

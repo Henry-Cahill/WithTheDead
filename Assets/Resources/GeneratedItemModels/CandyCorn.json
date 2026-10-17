@@ -1,0 +1,11 @@
+{"version": 1, "id": "CandyCorn", "baseHeight": 0.1215, "name": "Candy Corn", "model": "gpt-oss:120b", "notes": "Small cardboard box (≈ 0.09 m × 0.07 m × 0.12 m) standing upright, containing a handful of candy‑corn pieces (≈ 2 cm long). Box body, front label and three representative corn kernels in the classic yellow‑orange‑white colour stack.", "score": 7, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0015,-0.0107],"rot":[0.0,0.0,0.0],"size":[0.09,0.12,0.07],"color":[0.85,0.78,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,0.0185,0.0258],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.04],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CornYellow","shape":"sphere","pos":[-0.02,-0.0315,-0.0107],"rot":[0.0,0.0,0.0],"size":[0.018,0.025,0.015],"color":[0.93,0.82,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"CornOrange","shape":"sphere","pos":[0.0,-0.0315,-0.0107],"rot":[0.0,0.0,0.0],"size":[0.018,0.025,0.015],"color":[1.0,0.6,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"CornWhite","shape":"sphere","pos":[0.02,-0.0315,-0.0107],"rot":[0.0,0.0,0.0],"size":[0.018,0.025,0.015],"color":[0.96,0.96,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"CornYellow2","shape":"sphere","pos":[-0.018,-0.0065,-0.0007],"rot":[0.0,0.0,0.0],"size":[0.018,0.025,0.015],"color":[0.93,0.82,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"CornOrange2","shape":"sphere","pos":[0.002,-0.0065,-0.0207],"rot":[0.0,0.0,0.0],"size":[0.018,0.025,0.015],"color":[1.0,0.6,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"CornWhite2","shape":"sphere","pos":[0.022,-0.0065,-0.0057],"rot":[0.0,0.0,0.0],"size":[0.018,0.025,0.015],"color":[0.96,0.96,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"BoxLidFlap","shape":"cube","pos":[0.0,0.0595,-0.0107],"rot":[0.0,0.0,0.0],"size":[0.09,0.004,0.07],"color":[0.85,0.78,0.55],"smooth":0.2,"metal":0.0}
+]}

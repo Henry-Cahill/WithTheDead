@@ -1,0 +1,12 @@
+{"version": 1, "id": "Crisps4", "baseHeight": 0.15, "name": "Crisps4", "model": "gpt-oss:120b", "notes": "Crisps4 snack pack, lying on its side (longest axis X). Approx 0.18 m long × 0.12 m wide × 0.03 m high. Main paper‑cardboard body, a thin top seal flap, a yellow‑ish chip mass inside, and simple label/branding details.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.03,0.12],"color":[0.78,0.7,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,0.019,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.008,0.12],"color":[0.74,0.66,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"ChipPile","shape":"sphere","pos":[-0.02,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.02,0.1],"color":[0.92,0.86,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"BackLabel","shape":"cube","pos":[0.0,0.001,-0.0595],"rot":[0.0,0.0,0.0],"size":[0.16,0.002,0.1],"color":[0.62,0.55,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,0.001,0.0595],"rot":[0.0,0.0,0.0],"size":[0.16,0.002,0.1],"color":[0.62,0.55,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"BrandLogo","shape":"cube","pos":[-0.07,0.003,0.0595],"rot":[0.0,0.0,0.0],"size":[0.03,0.004,0.02],"color":[0.45,0.35,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"SealEdgeFront","shape":"cylinder","pos":[0.0,0.0,0.06],"rot":[90.0,0.0,0.0],"size":[0.18,0.002,0.18],"color":[0.7,0.62,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"SealEdgeBack","shape":"cylinder","pos":[0.0,0.0,-0.06],"rot":[90.0,0.0,0.0],"size":[0.18,0.002,0.18],"color":[0.7,0.62,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"Crumb1","shape":"sphere","pos":[0.04,0.003,0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.92,0.86,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"Crumb2","shape":"sphere","pos":[-0.03,0.002,-0.025],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.92,0.86,0.55],"smooth":0.2,"metal":0.0}
+]}
