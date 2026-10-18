@@ -268,6 +268,7 @@ namespace CloneZ
         private bool MeetsCondition(RaidExit e, out string reason)
         {
             reason = null;
+            if (GameSession.IsMonsterRun) return true;   // a hunter just melts back into the dark
             switch (e.Condition)
             {
                 case ExitCondition.Pay:
@@ -453,6 +454,7 @@ namespace CloneZ
                 c.ScavReadyUnix = ProfileStore.NowUnix + (long)(SandboxSettings.Current.ScavCooldownMinutes * 60f
                     * (Hideout.LevelOf(c, "intel") > 0 ? 0.75f : 1f));
             }
+            else if (GameSession.IsMonsterRun) { }   // a hunter's death costs the runner nothing
             else if (outcome == RaidState.Dead && (c.Ironman || SandboxSettings.Current.PermadeathCharacters))
             {
                 c.Dead = true;

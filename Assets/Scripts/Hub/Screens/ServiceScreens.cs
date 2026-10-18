@@ -301,8 +301,21 @@ namespace CloneZ
             HubUI.Card(cols[0]);
             RectTransform zones = HubUI.Scroll(cols[0], 0f, 0f, 6f);
             HubUI.Heading(zones, "Choose a Zone", 22);
+            // Playing together, the Zone runs on the host: a client follows the host's raid (or waits for one).
+            bool follower = GameSession.Networked && !NetAuthority.IsServer;
+            if (follower)
+            {
+                if (NetSession.HostRaidZone == null)
+                    HubUI.Para(zones, "The host is still at the bar. When they go into the Zone you can follow them in — as your runner, a scavenger, or something that hunts them.", 16, UIKit.Warn);
+                else
+                {
+                    s_Zone = NetSession.HostRaidZone;
+                    HubUI.Para(zones, "The host's raid is under way. You'll come in wherever you choose to enter.", 15, UIKit.TextDim);
+                }
+            }
             foreach (ZoneDef z in ZoneCatalog.All)
             {
+                if (follower && z.Id != NetSession.HostRaidZone) continue;
                 bool ok = c.Level >= z.MinLevel;
                 RectTransform card = HubUI.CardColumn(zones, s_Zone == z.Id ? new Color(UIKit.Accent.r, UIKit.Accent.g, UIKit.Accent.b, 0.18f) : new Color(1f, 1f, 1f, 0.04f));
                 HubUI.Heading(card, z.Name + "  <size=14><color=#9aa0a8>depth " + z.Depth + (ok ? "" : " — level " + z.MinLevel) + "</color></size>", 19);
@@ -319,6 +332,20 @@ namespace CloneZ
             string[] kinds = { "Your runner (everything carried is at risk)", "Scavenger run (borrowed kit, nothing to lose)", "Open Zone (no clock: stay as long as you last)", "Hunter (play one of the things in the dark)" };
             HubUI.Cycle(side, "Run", kinds, (int)s_Kind, v => { s_Kind = (RaidKind)v; Refresh(); });
             if (s_Kind == RaidKind.Monster && !ServerRules.AllowPlayerMonsters) HubUI.Note(side, "This server doesn't allow hunters.", UIKit.Bad);
+            if (s_Kind == RaidKind.Monster)
+            {
+                var forms = new string[HunterForms.Ids.Length];
+                int at = 0;
+                for (int i = 0; i < forms.Length; i++)
+                {
+                    forms[i] = CreatureCatalog.Get(HunterForms.Ids[i]).Name;
+                    if (HunterForms.Ids[i] == HunterForms.Chosen) at = i;
+                }
+                HubUI.Cycle(side, "Form", forms, at, v => { HunterForms.Chosen = HunterForms.Ids[v]; Refresh(); });
+                HubUI.Para(side, HunterForms.Describe(HunterForms.Chosen), 14, UIKit.TextDim);
+                HubUI.Para(side, "You're paid " + Money.Format(PlayerMonster.PayPerRunner) + " for every runner you take and " + Money.Format(PlayerMonster.PayPerStalker)
+                    + " for a stalker. Your runner's kit stays safe at home.", 14, UIKit.TextDim);
+            }
             if (s_Kind == RaidKind.Scav && ProfileStore.NowUnix < c.ScavReadyUnix)
                 HubUI.Note(side, "Scav run ready in " + HubUI.Duration(c.ScavReadyUnix - ProfileStore.NowUnix), UIKit.Warn);
 
@@ -334,7 +361,8 @@ namespace CloneZ
             HubUI.Para(side, "Every trip costs something. You lose what you carry if you die — never what you learned, never your pouch.", 14, UIKit.TextDim, FontStyle.Italic);
 
             bool canGo = c.Level >= zone.MinLevel && !(s_Kind == RaidKind.Monster && !ServerRules.AllowPlayerMonsters)
-                && !(s_Kind == RaidKind.Scav && ProfileStore.NowUnix < c.ScavReadyUnix);
+                && !(s_Kind == RaidKind.Scav && ProfileStore.NowUnix < c.ScavReadyUnix)
+                && !(follower && NetSession.HostRaidZone == null);
             HubUI.Btn(side, "Go — " + zone.Name, () =>
             {
                 if (s_Heli && s_Kind != RaidKind.Monster && !Money.TrySpend(heliCost, Carried)) { Report(false, "You can't pay the pilot."); return; }

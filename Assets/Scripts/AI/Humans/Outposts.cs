@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -162,28 +162,61 @@ namespace CloneZ
                 into.Add(new InteractAction("Held by " + Factions.NameOf(Owner), null).DisabledIf(true, "Your side holds it"));
                 return;
             }
-            long left = _state != null ? _state.LockedUntilUnix - ProfileStore.NowUnix : 0;
-            string reason = left > 0 ? "Secured for another " + Mathf.CeilToInt(left / 60f) + " min"
-                : GarrisonStanding() ? "The garrison still holds it" : null;
+            CanBeTaken(out string reason);
             into.Add(new InteractAction("Raise the " + Factions.NameOf(me.Faction) + " flag", Capture)
                 .Timed(8f, "Raising the flag...").DisabledIf(reason != null, reason));
+        }
+
+        public long LockedUntil => _state != null ? _state.LockedUntilUnix : 0;
+
+        /// <summary>False (with why) while the outpost is secured or its garrison still stands (the server's view).</summary>
+        public bool CanBeTaken(out string why)
+        {
+            long left = LockedUntil - ProfileStore.NowUnix;
+            why = left > 0 ? "Secured for another " + Mathf.CeilToInt(left / 60f) + " min" : GarrisonStanding() ? "The garrison still holds it" : null;
+            return why == null;
         }
 
         private void Capture(InteractContext ctx)
         {
             Actor me = Actor.LocalPlayer;
-            if (me == null || _state == null || Locked || GarrisonStanding()) return;
+            if (me == null || !CanBeTaken(out _)) return;
+            // Playing together the server decides (it has the garrison); it tells everyone, us included.
+            if (GameSession.Networked && !NetAuthority.IsServer) { NetWorld.RequestOutpost(Id, me.Faction); return; }
+            Taken(me.Faction, ProfileStore.NowUnix + (long)OutpostSystem.LockSeconds, true, null);
+            if (GameSession.Networked) NetWorld.OutpostTaken(this, NetAuthority.LocalClientId);
+        }
+
+        /// <summary>The outpost changes hands (on every peer): the flag, the 30-minute lock, the supply crate; the taker
+        /// gets the standing and the job progress.</summary>
+        public void Taken(string faction, long lockedUntil, bool byMe, string takerName)
+        {
+            if (_state == null) _state = OutpostSystem.State(ProfileStore.Account, Id, GameSession.ZoneId, Owner);
             string old = _state.Owner;
-            _state.Owner = me.Faction;
-            _state.LockedUntilUnix = ProfileStore.NowUnix + (long)OutpostSystem.LockSeconds;
+            _state.Owner = faction;
+            _state.LockedUntilUnix = lockedUntil;
             Recolour();
-            Factions.AdjustReputation(me.Faction, 80f, "took an outpost");
-            if (old != Factions.Scavs) Factions.AdjustReputation(old, -60f, "took their outpost");
-            GameEvents.RaiseToast("Outpost taken for " + Factions.NameOf(me.Faction) + ". It can't be retaken for 30 minutes.");
-            GameEvents.RaiseQuestProgress("capture_outpost", 1f);
-            LootContainer crate = LootContainer.Spawn(transform.parent, ContainerType.GunLocker, _centre + new Vector3(-2f, 0f, -1.2f), Random.Range(int.MinValue, int.MaxValue));
+            if (byMe)
+            {
+                Factions.AdjustReputation(faction, 80f, "took an outpost");
+                if (old != Factions.Scavs) Factions.AdjustReputation(old, -60f, "took their outpost");
+                GameEvents.RaiseToast("Outpost taken for " + Factions.NameOf(faction) + ". It can't be retaken for 30 minutes.");
+                GameEvents.RaiseQuestProgress("capture_outpost", 1f);
+            }
+            else GameEvents.RaiseToast((takerName ?? "Someone") + " took an outpost for " + Factions.NameOf(faction) + ".");
+            // Seeded by the site and the lock time, so every peer finds the same crate in the same place.
+            LootContainer crate = LootContainer.Spawn(transform.parent, ContainerType.GunLocker, _centre + new Vector3(-2f, 0f, -1.2f), HumanUtil.StableHash(Id) ^ (int)(lockedUntil & 0x7FFFFFFF));
             if (crate != null) crate.DisplayName = "Outpost supply crate";
             ProfileStore.Save();
+        }
+
+        /// <summary>A client's view of an outpost it didn't see change hands (joining a raid already under way).</summary>
+        public void Show(string owner, long lockedUntil)
+        {
+            if (_state == null) _state = new OutpostState { Id = Id, ZoneId = GameSession.ZoneId, Owner = owner };
+            _state.Owner = owner;
+            _state.LockedUntilUnix = lockedUntil;
+            Recolour();
         }
     }
 
@@ -199,7 +232,7 @@ namespace CloneZ
             ItemActions.RegisterUse("pda", (inv, stack) => { Read(stack); return true; });
             ItemActions.RegisterMenu((inv, stack, into) =>
             {
-                if (stack.Def == null || stack.Def.Id != "trowel" || !GameSession.IsExtraction || GameSession.IsScavRun) return;
+                if (stack.Def == null || stack.Def.Id != "trowel" || !GameSession.IsExtraction || GameSession.IsBorrowedBody) return;
                 into.Add(new ItemMenuAction("Bury a stash here", () => BuryHere(inv)));
             });
         }
@@ -250,7 +283,7 @@ namespace CloneZ
         public static void SpawnForZone(ZoneDef zone)
         {
             CharacterProfile c = ProfileStore.ActiveCharacter;
-            if (c == null || zone == null || GameSession.IsScavRun) return;
+            if (c == null || zone == null || GameSession.IsBorrowedBody) return;
             foreach (BuriedStash s in c.Stashes)
                 if (s.ZoneId == zone.Id && !s.Opened) StashCache.Spawn(s, false);
         }

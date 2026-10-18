@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace CloneZ
@@ -29,7 +29,7 @@ namespace CloneZ
             _food = GetComponent<PlayerFoodSickness>();
             _wounds = GetComponent<PlayerWounds>();
             CharacterProfile c = ProfileStore.ActiveCharacter;
-            if (c != null && c.Health != null && !GameSession.IsScavRun)
+            if (c != null && c.Health != null && !GameSession.IsBorrowedBody)
                 foreach (string d in c.Health.Diseases) _active.Add(d);
             PlayerFoodSickness.DrankTainted += OnDrankTainted;
             GameEvents.RaidEnded += OnRaidEnded;
@@ -50,7 +50,7 @@ namespace CloneZ
         private void OnRaidEnded(RaidOutcome o, string exit)
         {
             CharacterProfile c = ProfileStore.ActiveCharacter;
-            if (c == null || GameSession.IsScavRun) return;
+            if (c == null || GameSession.IsBorrowedBody) return;
             if (c.Health == null) c.Health = new HealthCarry();
             c.Health.Diseases.Clear();
             c.Health.Diseases.AddRange(_active);

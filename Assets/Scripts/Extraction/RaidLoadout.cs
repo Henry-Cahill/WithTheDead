@@ -72,6 +72,7 @@ namespace CloneZ
         {
             RaidKit kit = Capture(player);
             if (kit == null) return null;
+            if (GameSession.IsMonsterRun) return kit;   // a hunter brings nothing home but its pay
             CharacterProfile c = ProfileStore.ActiveCharacter;
             if (c != null)
             {
@@ -107,7 +108,7 @@ namespace CloneZ
             RaidKit carried = Capture(player);
             CharacterProfile c = ProfileStore.ActiveCharacter;
             if (c == null) { DeleteLegacyFile(); return carried; }
-            if (GameSession.IsScavRun) return carried;   // the scav's kit was never yours
+            if (GameSession.IsBorrowedBody) return carried;   // the scav's kit (or the hunter's claws) was never yours
 
             var kept = new RaidKit { Version = KitVersion, SavedAtUtc = DateTime.UtcNow.ToString("o") };
             var lost = new List<StackSave>();

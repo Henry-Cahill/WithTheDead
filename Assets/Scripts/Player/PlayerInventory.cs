@@ -697,6 +697,10 @@ namespace CloneZ
         /// no more than <paramref name="max"/>); any overflow stays on the floor. Perishable age and
         /// damageable wear ride along so the item is exactly what was dropped. Returns the number of
         /// units actually taken.</summary>
+        /// <summary>Raised when the local survivor takes from / leaves on the ground (the netcode mirrors it).</summary>
+        public static event System.Action<ItemDef, int, Vector3> GroundTaken;
+        public static event System.Action<ItemDef, int, Vector3, ItemExtra> GroundDropped;
+
         public int PickUp(WorldItem item, int max = int.MaxValue)
         {
             if (item == null || item.Def == null || max <= 0) return 0;
@@ -704,7 +708,7 @@ namespace CloneZ
                 spawnHours: item.Def.Perishable ? item.SpawnHours : float.NaN,
                 condition: item.Def.IsDamageable ? item.Condition : -1,
                 timesRepaired: item.TimesRepaired, extra: item.Extra);
-            if (moved > 0) item.Take(moved);
+            if (moved > 0) { item.Take(moved); GroundTaken?.Invoke(item.Def, moved, item.Position); }
             return moved;
         }
 
@@ -742,7 +746,7 @@ namespace CloneZ
                     condition: def.IsDamageable ? item.Condition : -1,
                     timesRepaired: item.TimesRepaired, extra: item.Extra);
             }
-            if (moved > 0) item.Take(moved);
+            if (moved > 0) { item.Take(moved); GroundTaken?.Invoke(def, moved, item.Position); }
             return moved;
         }
 
@@ -759,6 +763,7 @@ namespace CloneZ
                 stack.Def.Perishable ? stack.SpawnHours : float.NaN,
                 stack.Def.IsDamageable ? stack.Condition : -1,
                 stack.TimesRepaired, stack.Extra);
+            GroundDropped?.Invoke(stack.Def, count, p, stack.Extra);
             Inventory.Remove(stack, count);
         }
 

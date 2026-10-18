@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -32,7 +32,7 @@ namespace CloneZ
             _stats = GetComponent<PlayerStats>();
             _limbs = GetComponent<PlayerLimbs>();
             CharacterProfile c = ProfileStore.ActiveCharacter;
-            if (c != null && c.Health != null && !GameSession.IsScavRun) Dose = Mathf.Clamp01(c.Health.Radiation);
+            if (c != null && c.Health != null && !GameSession.IsBorrowedBody) Dose = Mathf.Clamp01(c.Health.Radiation);
             PlayerLimbs.RadiationReceived += OnRadiationHit;
             GameEvents.RaidEnded += OnRaidEnded;
         }
@@ -72,7 +72,7 @@ namespace CloneZ
         public void SaveToProfile()
         {
             CharacterProfile c = ProfileStore.ActiveCharacter;
-            if (c == null || GameSession.IsScavRun) return;
+            if (c == null || GameSession.IsBorrowedBody) return;
             if (c.Health == null) c.Health = new HealthCarry();
             c.Health.Radiation = Dose;
         }

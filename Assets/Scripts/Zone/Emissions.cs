@@ -40,6 +40,32 @@ namespace CloneZ
             Instance.Schedule(true);
         }
 
+        /// <summary>A networked client's director: it never schedules on its own; the server says when (<see cref="RemoteStart"/>).</summary>
+        public static void BeginFollower(ZoneDef zone, int seed)
+        {
+            if (Instance != null) Destroy(Instance.gameObject);
+            if (zone == null) return;
+            var go = new GameObject("EmissionDirector (follower)");
+            Instance = go.AddComponent<EmissionDirector>();
+            Instance._zone = zone;
+            Instance._rng = new System.Random(seed ^ 0xE1155);
+            Instance._follower = true;
+            Instance._nextAt = float.MaxValue;
+        }
+
+        /// <summary>Raised on the server when an emission's warning begins (true = a psi storm), for the netcode.</summary>
+        public static event System.Action<bool> Started;
+
+        /// <summary>The server announced an emission: run the same warning, blast and fade here.</summary>
+        public static void RemoteStart(bool psi)
+        {
+            if (Instance == null || Instance.Current != Phase.Calm) return;
+            Instance.PsiStorm = psi;
+            Instance.StartWarning();
+        }
+
+        private bool _follower;
+
         private void OnDestroy()
         {
             if (Instance == this) Instance = null;
@@ -89,6 +115,7 @@ namespace CloneZ
         {
             Current = Phase.Warning;
             _phaseEnds = Time.time + WarningSeconds;
+            if (!_follower) Started?.Invoke(PsiStorm);
             _siren = Sfx.Loop(SfxIds.EmissionSiren, transform, 0.55f, 10f);
             if (_siren != null) _siren.spatialBlend = 0f;
             GameEvents.RaiseEmission(true);
@@ -124,7 +151,8 @@ namespace CloneZ
                 ZoneExposure.Add(0.15f);
                 GameEvents.RaiseToast("It has passed. The Zone has moved things around.");
             }
-            Schedule(false);
+            if (_follower) _nextAt = float.MaxValue;
+            else Schedule(false);
         }
 
         private void Rumble(float every, float volume)

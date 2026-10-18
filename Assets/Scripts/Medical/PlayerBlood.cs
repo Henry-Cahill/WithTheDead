@@ -90,6 +90,15 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Someone shakes the survivor awake (only when there's blood enough to stay up). True if it worked.</summary>
+        public bool Rouse()
+        {
+            if (!IsUnconscious || Blood < 2900f) return false;
+            _unconscious = Mathf.Min(_unconscious, 1f);
+            Shock = Mathf.Min(Shock, 60f);
+            return true;
+        }
+
         /// <summary>A pint of donor blood through an IV line. Wrong type: a haemolytic reaction.</summary>
         public bool Transfuse(string donorType, out string message)
         {

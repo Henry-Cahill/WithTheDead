@@ -307,7 +307,7 @@ namespace CloneZ
         public static void Apply(string key, float amount)
         {
             CharacterProfile c = ProfileStore.ActiveCharacter;
-            if (c == null || string.IsNullOrEmpty(key)) return;
+            if (c == null || string.IsNullOrEmpty(key) || GameSession.IsMonsterRun) return;   // a hunter's kills aren't the runner's jobs
             foreach (QuestState q in c.Quests)
             {
                 if (q.Status != QuestState.Active) continue;

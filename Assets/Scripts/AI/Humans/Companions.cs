@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace CloneZ
@@ -21,7 +21,7 @@ namespace CloneZ
 
         public static bool CanHire(HumanNpc npc)
         {
-            if (npc == null || npc.IsDead || Current != null || !GameSession.IsExtraction || GameSession.IsScavRun) return false;
+            if (npc == null || npc.IsDead || Current != null || !GameSession.IsExtraction || GameSession.IsBorrowedBody) return false;
             if (npc.Actor.Faction != Factions.Freehold || npc.Actor.Kind == ActorKind.Companion) return false;
             return npc.SquadTag == null || (npc.SquadTag is ALifeSquad s && s.Live.Count <= 1);
         }
@@ -113,7 +113,7 @@ namespace CloneZ
             Current = null;
             CharacterProfile c = ProfileStore.ActiveCharacter;
             Actor me = Actor.LocalPlayer;
-            if (c == null || me == null || GameSession.IsScavRun) return;
+            if (c == null || me == null || GameSession.IsBorrowedBody) return;
             string flag = c.Flags.Find(f => f.StartsWith(HireFlag));
             if (flag == null) return;
             string[] parts = flag.Substring(HireFlag.Length).Split('|');

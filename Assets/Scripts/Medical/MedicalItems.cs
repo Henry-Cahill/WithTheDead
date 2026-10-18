@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CloneZ
 {
@@ -99,7 +99,7 @@ namespace CloneZ
             Body b = Of(inv);
             CharacterProfile c = ProfileStore.ActiveCharacter;
             string type = b.Blood != null ? b.Blood.BloodType : "?";
-            if (c != null && !GameSession.IsScavRun) { c.SetFlag("bloodknown"); ProfileStore.Save(); }
+            if (c != null && !GameSession.IsBorrowedBody) { c.SetFlag("bloodknown"); ProfileStore.Save(); }
             inv.Inventory.Remove(s, 1);
             Done(b, "Your blood type is " + type + ".");
             return true;

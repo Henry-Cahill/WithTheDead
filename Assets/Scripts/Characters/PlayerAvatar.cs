@@ -217,6 +217,15 @@ namespace CloneZ
 
             a.HasReachTarget = f != null && activity == HumanoidActivity.Use;
             if (a.HasReachTarget) a.ReachTarget = f.InteractPoint;
+
+            // Hands up (or cuffed): both hands over the head.
+            Actor self = Actor.LocalPlayer;
+            if (self != null && self.gameObject == gameObject && (self.Surrendered || self.Restrained))
+            {
+                a.Activity = HumanoidActivity.Use;
+                a.HasReachTarget = true;
+                a.ReachTarget = transform.position + Vector3.up * 2.2f;
+            }
         }
 
         private HumanoidActivity CurrentActivity()

@@ -410,10 +410,14 @@ namespace CloneZ
             WorldHooks.RaidStarted += (world, map, zone) =>
             {
                 zone = zone ?? ZoneCatalog.Current;
-                ALifeDirector.Begin(zone, s_Seed);
-                OutpostSystem.Begin(zone, s_Seed);
-                ThreatDirector.Begin(zone, s_Seed);
-                CompanionService.OnRaidStarted();
+                // The server owns the Zone's people and beasts; clients see them through the netcode.
+                if (NetAuthority.IsServer)
+                {
+                    ALifeDirector.Begin(zone, s_Seed);
+                    OutpostSystem.Begin(zone, s_Seed);
+                    ThreatDirector.Begin(zone, s_Seed);
+                    CompanionService.OnRaidStarted();
+                }
                 PdaStashes.SpawnForZone(zone);
             };
             GameEvents.RaidEnded += (o, exit) =>

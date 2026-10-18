@@ -16,7 +16,7 @@ namespace CloneZ
         // First person and bodycam
         HoldBreath,
         // Every view (late additions)
-        WipeVisor,
+        WipeVisor, HandsUp, Squad,
     }
 
     /// <summary>
@@ -57,6 +57,8 @@ namespace CloneZ
             Bind(s_Common, GameAction.Grenade, "<Keyboard>/backquote");
             Bind(s_Common, GameAction.WipeVisor, "<Keyboard>/f2");
             s_Actions[GameAction.WipeVisor].AddBinding("<Mouse>/forwardButton");
+            Bind(s_Common, GameAction.HandsUp, "<Keyboard>/f3");
+            Bind(s_Common, GameAction.Squad, "<Keyboard>/f4");
 
             Bind(s_Iso, GameAction.AimLine, "<Keyboard>/leftAlt");
             Bind(s_Iso, GameAction.RotateView, "<Keyboard>/z");

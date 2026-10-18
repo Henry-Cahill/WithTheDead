@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace CloneZ
@@ -55,7 +55,7 @@ namespace CloneZ
         /// <summary>Adds exposure to the active character; crossing a whole point leaves a new mark.</summary>
         public static void Add(float amount)
         {
-            if (amount <= 0f || GameSession.IsScavRun) return;
+            if (amount <= 0f || GameSession.IsBorrowedBody) return;
             CharacterProfile c = ProfileStore.ActiveCharacter;
             if (c == null) return;
             int before = Mathf.FloorToInt(c.Exposure);
@@ -83,7 +83,7 @@ namespace CloneZ
         public void ApplyMods(StatMods mods)
         {
             CharacterProfile c = ProfileStore.ActiveCharacter;
-            if (c == null || c.ZoneMarks == null || GameSession.IsScavRun) return;
+            if (c == null || c.ZoneMarks == null || GameSession.IsBorrowedBody) return;
             for (int i = 0; i < c.ZoneMarks.Count; i++) ZoneExposure.Get(c.ZoneMarks[i])?.Apply?.Invoke(mods);
         }
     }
@@ -211,7 +211,8 @@ namespace CloneZ
             };
             WorldHooks.RaidStarted += (world, map, zone) =>
             {
-                EmissionDirector.Begin(zone ?? ZoneCatalog.Current, s_Seed);
+                if (NetAuthority.IsServer) EmissionDirector.Begin(zone ?? ZoneCatalog.Current, s_Seed);
+                else EmissionDirector.BeginFollower(zone ?? ZoneCatalog.Current, s_Seed);
                 ArtifactField.AnnouncePrize();
             };
             WorldHooks.HubBuilt += _ => EndRaid();

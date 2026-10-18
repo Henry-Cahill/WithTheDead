@@ -511,8 +511,9 @@ namespace CloneZ
                 }
                 return;
             }
-            if (_c == null) return;
-            float speed = _c.Speed01;
+            if (_c == null && !Driven) return;
+            float speed = _c != null ? _c.Speed01 : ExternalSpeed01;
+            bool attacking = _c != null ? _c.Attacking : ExternalAttack;
             _cycle += Time.deltaTime * Mathf.Lerp(2f, 11f, speed) * (speed > 0.02f ? 1f : 0f);
             float swing = Mathf.Lerp(0f, 38f, Mathf.Clamp01(speed * 2f));
             for (int i = 0; i < _legs.Count; i++)
@@ -520,13 +521,21 @@ namespace CloneZ
             if (_torso != null)
             {
                 float bob = Mathf.Abs(Mathf.Sin(_cycle)) * 0.04f * speed;
-                float lunge = _c.Attacking ? 18f : 0f;
-                _torso.localPosition = new Vector3(_torso.localPosition.x, _torso.localPosition.y, 0f) + Vector3.up * (bob - (_c.Attacking ? 0.05f : 0f)) * 0f;
+                float lunge = attacking ? 18f : 0f;
+                _torso.localPosition = new Vector3(_torso.localPosition.x, _torso.localPosition.y, 0f);
                 _root.localRotation = Quaternion.Euler(lunge * 0.4f, 0f, 0f);
                 _root.localPosition = Vector3.up * bob;
             }
-            SetCloak(_c.Actor.Cloaked);
+            SetCloak(_c != null ? _c.Actor.Cloaked : ExternalCloak);
         }
+
+        /// <summary>Driven from outside (a network proxy, a runner playing the creature) instead of by a <see cref="Creature"/> brain.</summary>
+        public bool Driven => _c == null && (ExternalSpeed01 > 0f || ExternalAttack || ExternalCloak || _driven);
+        public float ExternalSpeed01 { get => _extSpeed; set { _extSpeed = value; _driven = true; } }
+        public bool ExternalAttack;
+        public bool ExternalCloak;
+        private float _extSpeed;
+        private bool _driven;
 
         // The Shade: a smear in the air while it hunts; solid when it strikes or is hurt.
         private void SetCloak(bool on)

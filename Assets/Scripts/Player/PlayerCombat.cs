@@ -100,6 +100,8 @@ namespace CloneZ
             if (UIState.GameplayBlocked) return;   // don't act while clicking in the inventory UI
             if (UIState.BuildMode) return;         // in build mode the mouse places barricades, not attacks
             if (HubRules.SafeZone) return;         // no fighting in the hub
+            Actor self = Actor.LocalPlayer;
+            if (self != null && self.gameObject == gameObject && (self.Surrendered || self.Restrained)) return;   // hands up or cuffed
             if (mouse == null) return;
 
             bool attackHeld = mouse.leftButton.isPressed && !_attackPressOnUi;

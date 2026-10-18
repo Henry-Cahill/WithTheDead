@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace CloneZ
@@ -115,7 +115,7 @@ namespace CloneZ
         {
             s_Live.Clear();
             CharacterProfile c = ProfileStore.ActiveCharacter;
-            if (c == null || GameSession.IsScavRun) return;
+            if (c == null || GameSession.IsBorrowedBody) return;
             foreach (CorpseRecord r in c.Corpses)
             {
                 if (r.Recovered || r.Looted || r.ZoneId != zone.Id || r.Items.Count == 0) continue;

@@ -42,6 +42,9 @@ namespace CloneZ
         public static bool IsScavRun => IsExtraction && Raid == RaidKind.Scav;
         public static bool IsOpenZone => IsExtraction && Raid == RaidKind.OpenZone;
         public static bool IsMonsterRun => IsExtraction && Raid == RaidKind.Monster;
+        /// <summary>A body that isn't the character's own (a scav's, a hunter's): nothing it suffers or carries
+        /// touches the character's health, kit, marks or diseases.</summary>
+        public static bool IsBorrowedBody => IsScavRun || IsMonsterRun;
 
         /// <summary>The survivor's name, shown on the inventory ("Clone Z's Inventory") and the HUD.</summary>
         public static string SurvivorName = "Clone Z";
