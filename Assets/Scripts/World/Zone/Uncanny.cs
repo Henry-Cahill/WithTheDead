@@ -31,7 +31,8 @@ namespace CloneZ
         public static void BeginRaid(GameObject host, ZoneDef zone)
         {
             if (!SandboxSettings.Current.UncannyEvents) return;
-            var d = host.GetComponent<UncannyDirector>() ?? host.AddComponent<UncannyDirector>();
+            var d = host.GetComponent<UncannyDirector>();
+            if (d == null) d = host.AddComponent<UncannyDirector>();
             d._zone = zone;
             d._next = Time.time + Random.Range(60f, 140f);
         }

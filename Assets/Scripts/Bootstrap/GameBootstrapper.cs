@@ -501,6 +501,7 @@ namespace CloneZ
             root.AddComponent<PlayerLimbs>();         // seven hit zones, fractures, blacked-out limbs, armour
             root.AddComponent<PlayerBlood>();         // blood volume, shock, unconsciousness, blood type
             root.AddComponent<Stealth>();             // how visible the survivor is (light, stance, movement)
+            root.AddComponent<GearEffects>();         // armour weight, exo-frame carry
 
             CharacterProfile character = ProfileStore.ActiveCharacter;
             Actor actor = root.AddComponent<Actor>();

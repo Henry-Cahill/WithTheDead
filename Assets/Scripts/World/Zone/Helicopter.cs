@@ -295,7 +295,8 @@ namespace CloneZ
 
         public static void BeginRaid(GameObject host, ZoneDef zone)
         {
-            var d = host.GetComponent<HeliFlyoverDirector>() ?? host.AddComponent<HeliFlyoverDirector>();
+            var d = host.GetComponent<HeliFlyoverDirector>();
+            if (d == null) d = host.AddComponent<HeliFlyoverDirector>();
             Instance = d;
             if (NetAuthority.IsServer && UnityEngine.Random.value < SandboxSettings.Current.HelicopterEventChance)
                 d._at = Time.time + UnityEngine.Random.Range(120f, 600f);

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -123,13 +124,14 @@ namespace CloneZ
 
             if (_player == null || _player.IsDead)
                 _player = GameManager.Instance != null ? GameManager.Instance.Player : null;
+            if (_self == null) _self = GetComponent<Actor>();
 
             if (_state == State.Stagger) { TickStagger(); return; }
 
             _attackCooldown -= Time.deltaTime;
             // A survivor under a raid's spawn protection is invisible to the dead: anyone already on
             // their trail loses interest and goes back to wandering.
-            if (ExtractionManager.PlayerProtected && (_hasTarget || _state == State.Chase || _state == State.Attack))
+            if (_prey != null && IsProtected(_prey) && (_hasTarget || _state == State.Chase || _state == State.Attack))
                 GiveUpTarget();
             Perceive();
             Think();
@@ -142,49 +144,113 @@ namespace CloneZ
             _hasTarget = false;
             _investigating = false;
             _door = null;
+            _prey = null;
             _lastSeenTime = -999f;
             EnterIdle();
         }
 
         #region Perception
+        // What the dead hunt: anything alive and warm that isn't one of the Zone's own — survivors (local and
+        // remote), stalkers, companions. Gathered once a frame for every zombie.
+        private static readonly List<Actor> s_Prey = new List<Actor>(16);
+        private static int s_PreyFrame = -1;
+        private Actor _self;
+        private Actor _prey;
+        private float _retarget;
+
+        /// <summary>What this zombie is hunting (null when it isn't).</summary>
+        public Actor Prey => _prey;
+
+        /// <summary>Where the hunted thing is (for the body's lean and gaze), or null.</summary>
+        public Vector3? HuntTarget => _hasTarget && _prey != null ? _prey.transform.position : (Vector3?)null;
+
+        private static bool IsProtected(Actor a) => a != null && a.Kind == ActorKind.Player && ExtractionManager.PlayerProtected;
+
+        private void RefreshPrey()
+        {
+            if (s_PreyFrame == Time.frameCount) return;
+            s_PreyFrame = Time.frameCount;
+            s_Prey.Clear();
+            for (int i = 0; i < Actor.All.Count; i++)
+            {
+                Actor a = Actor.All[i];
+                if (a == null || a == _self || a.Kind == ActorKind.Zombie || !a.IsAlive || a.Untargetable) continue;
+                if (_self != null && !_self.IsHostileTo(a)) continue;
+                s_Prey.Add(a);
+            }
+        }
+
         private void Perceive()
         {
-            // Nothing to see or hear of a protected survivor (their own noise included).
-            if (ExtractionManager.PlayerProtected) return;
+            if (_prey != null && (!_prey.IsAlive || _prey.Untargetable || IsProtected(_prey))) _prey = null;
+            bool seen = _prey != null && CanSee(_prey);
+            _retarget -= Time.deltaTime;
+            if (_retarget <= 0f)
+            {
+                _retarget = Random.Range(0.3f, 0.5f);
+                Actor best = FindVisiblePrey(seen ? _prey : null);
+                if (best != null) { _prey = best; seen = true; }
+            }
 
-            if (_player != null && !_player.IsDead && CanSeePlayer())
+            if (seen)
             {
                 _hasTarget = true;
-                _lastKnownPos = _player.transform.position;
+                _lastKnownPos = _prey.transform.position;
                 _lastSeenTime = Time.time;
                 _investigating = false;
                 return;
             }
 
-            // Can't see the player — listen for noise instead.
+            // Can't see anyone — listen for noise instead (a protected survivor's own noise included: they make none).
             if (_state != State.Chase && _state != State.Attack &&
                 NoiseSystem.TryHear(transform.position, CloneZConfig.ZombieHearingRadius, out Vector3 noisePos, out _))
             {
+                if (ExtractionManager.PlayerProtected && _player != null && (noisePos - _player.transform.position).sqrMagnitude < 4f) return;
                 _investigatePos = noisePos;
                 _investigating = true;
             }
         }
 
-        private bool CanSeePlayer()
+        // The nearest prey this zombie can see; the current one is kept unless another is much closer.
+        private Actor FindVisiblePrey(Actor current)
         {
-            if (ExtractionManager.PlayerProtected) return false;
-            if (_playerController == null) _playerController = _player.GetComponent<PlayerController>();
-            if (_playerSkills == null) _playerSkills = _player.GetComponent<PlayerSkills>();
+            RefreshPrey();
+            Actor best = current;
+            float bestSqr = current != null ? (current.transform.position - transform.position).sqrMagnitude * 0.5f : float.MaxValue;
+            float far = EffectiveVisionRadius() * 1.2f;
+            for (int i = 0; i < s_Prey.Count; i++)
+            {
+                Actor a = s_Prey[i];
+                if (a == null || a == current || IsProtected(a)) continue;
+                float sqr = (a.transform.position - transform.position).sqrMagnitude;
+                if (sqr > far * far || sqr >= bestSqr) continue;
+                if (!CanSee(a)) continue;
+                best = a;
+                bestSqr = sqr;
+            }
+            return best;
+        }
 
-            Vector3 to = _player.transform.position - transform.position;
+        private bool CanSee(Actor target)
+        {
+            if (target == null || IsProtected(target)) return false;
+            Vector3 to = target.transform.position - transform.position;
             float dist = to.magnitude;
+            if (target.Cloaked && dist > 2.5f) return false;
 
-            // A crouched survivor with Sneak skill is harder to notice (PZ getSneakSpotMod).
-            float radius = EffectiveVisionRadius();
-            if (_playerSkills != null && _playerController != null && _playerController.IsSneaking)
-                radius = Mathf.Max(CloneZConfig.ZombieAttackRange + 0.5f, radius * _playerSkills.StealthVisionMult(true));
-            // ...but shining a flashlight at one gives them away, sneaking or not.
-            if (InFlashlightBeam(-to)) radius *= FlashlightVisionMultiplier;
+            // Light on them, their stance and camouflage (see Stealth) bend how far off they're noticed.
+            float radius = EffectiveVisionRadius() * Mathf.Lerp(0.55f, 1.15f, target.Visibility01);
+            if (_player != null && target.transform == _player.transform)
+            {
+                if (_playerController == null) _playerController = _player.GetComponent<PlayerController>();
+                if (_playerSkills == null) _playerSkills = _player.GetComponent<PlayerSkills>();
+                // A crouched survivor with Sneak skill is harder to notice (PZ getSneakSpotMod).
+                if (_playerSkills != null && _playerController != null && _playerController.IsSneaking)
+                    radius = Mathf.Max(CloneZConfig.ZombieAttackRange + 0.5f, radius * _playerSkills.StealthVisionMult(true));
+                // ...but shining a flashlight at one gives them away, sneaking or not.
+                if (InFlashlightBeam(-to)) radius *= FlashlightVisionMultiplier;
+            }
+            radius = Mathf.Max(CloneZConfig.ZombieAttackRange + 0.5f, radius);
             if (dist > radius) return false;
 
             bool alerted = _state == State.Chase || _state == State.Attack;
@@ -198,9 +264,9 @@ namespace CloneZ
             // Raycast layer) are excluded from the mask so they don't block sight.
             int mask = ~(1 << CloneZConfig.IgnoreRaycastLayer);
             Vector3 eye = transform.position + Vector3.up * 1.6f;
-            Vector3 chest = _player.transform.position + Vector3.up * 1.0f;
+            Vector3 chest = target.transform.position + Vector3.up * 1.0f;
             if (Physics.Linecast(eye, chest, out RaycastHit hit, mask, QueryTriggerInteraction.Ignore))
-                return hit.collider.GetComponentInParent<PlayerStats>() != null;
+                return hit.collider.transform.IsChildOf(target.transform);
             return true;
         }
 
@@ -323,16 +389,16 @@ namespace CloneZ
                 return;
             }
 
-            Vector3 targetPos = (_player != null && Time.time - _lastSeenTime < 0.25f)
-                ? _player.transform.position
+            Vector3 targetPos = (_prey != null && Time.time - _lastSeenTime < 0.25f)
+                ? _prey.transform.position
                 : _lastKnownPos;
             SafeSetDestination(RaidDoor.Registry.Count > 0 ? DoorDetour(targetPos) : targetPos);
 
             // A barricade or house wall standing between us and the target has to be torn down
             // first — the carved NavMesh already dead-ends us against it, so start swinging.
-            if (_attackCooldown <= 0f && _player != null && !_player.IsDead)
+            if (_attackCooldown <= 0f && _prey != null && _prey.IsAlive)
             {
-                IDamageable wall = NearestObstruction(_player.transform.position);
+                IDamageable wall = NearestObstruction(_prey.transform.position);
                 if (wall != null)
                 {
                     StartCoroutine(DoAttackStructure(wall));
@@ -340,15 +406,15 @@ namespace CloneZ
                 }
             }
 
-            if (_player != null && !_player.IsDead)
+            if (_prey != null && _prey.IsAlive)
             {
-                float dist = Vector3.Distance(transform.position, _player.transform.position);
+                float dist = Vector3.Distance(transform.position, _prey.transform.position);
                 if (dist <= CloneZConfig.ZombieAttackRange && _attackCooldown <= 0f)
                     StartCoroutine(DoAttack());
             }
         }
 
-        private bool _hasTargetVisibleNow() => _player != null && !_player.IsDead && CanSeePlayer();
+        private bool _hasTargetVisibleNow() => _prey != null && _prey.IsAlive && CanSee(_prey);
 
         // The nearest player-built structure (barricade or house wall/doorway) that blocks the
         // path to the target — whichever is closer if both are in reach — or, in a raid, a shut
@@ -447,13 +513,14 @@ namespace CloneZ
             _attackCooldown = CloneZConfig.ZombieAttackCooldown;
             SafeStop();
             AttackStarted?.Invoke(false);
+            Sfx.Play(SfxIds.ZombieAttack, transform.position + Vector3.up * 1.6f, 0.8f, Random.Range(0.85f, 1.1f), 22f);
 
             // Wind-up (the lunge) before the strike lands.
             float t = 0f;
             while (t < CloneZConfig.ZombieAttackWindup)
             {
                 if (_state == State.Dead || _state == State.Stagger) yield break;
-                if (_player != null) FaceTowards(_player.transform.position);
+                if (_prey != null) FaceTowards(_prey.transform.position);
                 t += Time.deltaTime;
                 yield return null;
             }
@@ -461,11 +528,20 @@ namespace CloneZ
             if (_state == State.Dead || _state == State.Stagger) yield break;
 
             // Land the hit if still in reach (and the survivor isn't under a raid's spawn protection).
-            if (_player != null && !_player.IsDead && !ExtractionManager.PlayerProtected &&
-                Vector3.Distance(transform.position, _player.transform.position) <= CloneZConfig.ZombieAttackRange + 0.3f)
+            if (_prey != null && _prey.IsAlive && !IsProtected(_prey) &&
+                Vector3.Distance(transform.position, _prey.transform.position) <= CloneZConfig.ZombieAttackRange + 0.3f)
             {
                 bool bite = Random.value < CloneZConfig.ZombieBiteChance;
-                _player.ReceiveZombieAttack(bite);
+                var survivor = _prey.GetComponent<PlayerStats>();
+                IZombieAttackable other = survivor == null ? _prey.GetComponent<IZombieAttackable>() : null;
+                if (survivor != null) survivor.ReceiveZombieAttack(bite);
+                else if (other != null) other.ReceiveZombieAttack(bite);
+                else if (_prey.Damageable != null)
+                {
+                    var info = new DamageInfo(bite ? 1.6f : 0.7f, bite ? DamageKind.Bite : DamageKind.Melee, _prey.Center,
+                        CloneZUtil.Flat(_prey.transform.position - transform.position), gameObject) { BleedChance = 0.4f };
+                    CombatResolver.Apply(_prey.Damageable, info.WithZone(BodyZones.RandomStrike()), _self);
+                }
             }
 
             if (_state != State.Dead && _state != State.Stagger)
@@ -484,6 +560,7 @@ namespace CloneZ
             _attackCooldown = CloneZConfig.ZombieAttackCooldown;
             SafeStop();
             AttackStarted?.Invoke(true);
+            Sfx.Play(SfxIds.DoorBash, transform.position + Vector3.up * 1.2f + transform.forward * 0.6f, 0.6f, Random.Range(0.85f, 1.1f), 30f);
 
             float t = 0f;
             while (t < CloneZConfig.ZombieAttackWindup)

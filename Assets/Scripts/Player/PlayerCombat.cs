@@ -6,11 +6,16 @@ using UnityEngine.InputSystem;
 namespace CloneZ
 {
     /// <summary>
-    /// Melee combat: a wide swing (left mouse) that damages zombies in an arc,
-    /// and a shove (right mouse) that staggers and shoves them back. Damage and
-    /// crit maths follow Project Zomboid's CombatConfig values. With a firearm the
-    /// left mouse shoots instead: level along the aim in the isometric view, or from
-    /// the shouldered gun at whatever the crosshair is on in the mouse-look views.
+    /// Melee and firearms. Melee: a wide swing (left mouse) that damages whatever hostile thing is in the arc, and a
+    /// shove that staggers and shoves back. Damage and crit maths follow Project Zomboid's CombatConfig values.
+    ///
+    /// Firearms (Tarkov's lesson: the round matters more than the gun): every shot leaves the muzzle — never the
+    /// camera, so cover blocks a round even when the camera sees past it — and is resolved by
+    /// <see cref="CombatResolver"/> with the loaded round's damage and penetration against whatever armour it meets.
+    /// The gun's attachments, technician upgrades and fouling bend its spread, recoil, noise, range, magazine and
+    /// jam rate; semi-automatic guns fire once per press, automatic ones while held; follow-up shots bloom with
+    /// recoil. Any round of the gun's calibre chambers, including the military-grade money. In the shoulder and
+    /// first-person views the right button aims down the sights (the shove moves to the middle button).
     /// </summary>
     [RequireComponent(typeof(PlayerController))]
     [RequireComponent(typeof(PlayerStats))]
@@ -18,6 +23,7 @@ namespace CloneZ
     {
         // Height of the shouldered gun's muzzle in the shoulder / first-person views.
         private const float ShoulderMuzzleHeight = 1.35f;
+        private const float DirtPerShot = 0.0022f;
 
         [Header("Melee weapon")]
         public float WeaponDamage = 0.9f;   // raw; the zombie applies the x1.5 received multiplier
@@ -36,27 +42,41 @@ namespace CloneZ
         private PlayerStats _stats;
         private PlayerInventory _inventory;
         private PlayerSkills _skills;
+        private Actor _actor;
         private float _swingTimer;
         private float _shoveTimer;
         private float _fireTimer;
         private float _reloadTimer;
+        private float _bloom;
         private bool _attackPressOnUi;   // the held left button went down over the UI
         private bool _shovePressOnUi;    // the held right button went down over the UI
-        private readonly HashSet<ZombieHealth> _hitThisAction = new HashSet<ZombieHealth>();
+        private readonly HashSet<IDamageable> _hitThisAction = new HashSet<IDamageable>();
+        private readonly List<IDamageable> _targets = new List<IDamageable>();
 
         /// <summary>The equipped firearm, or null when using melee / bare hands.</summary>
         public ItemDef EquippedFirearm { get; private set; }
         public int LoadedAmmo { get; private set; }
+        /// <summary>The kind of round in the magazine (any of the gun's calibre).</summary>
+        public string LoadedAmmoId { get; private set; }
         public bool IsReloading => _reloadTimer > 0f;
+        /// <summary>Aiming down the sights (shoulder / first-person views, right button held).</summary>
+        public bool AimingDownSights { get; private set; }
+        /// <summary>The current gun build (attachments, upgrades, fouling).</summary>
+        public WeaponBuild Build { get; private set; }
 
         public event System.Action OnSwing;
         public event System.Action OnShove;
         public event System.Action OnFire;
         public event System.Action OnReload;
         public event System.Action OnDryFire;
+        /// <summary>Raised on every shot with its recoil kick (the camera and the animator read it).</summary>
+        public event System.Action<float> OnRecoil;
+        /// <summary>Raised when a shot jams.</summary>
+        public event System.Action OnJam;
 
         private PlayerInventory Inv => _inventory != null ? _inventory : (_inventory = GetComponent<PlayerInventory>());
         private PlayerSkills Skills => _skills != null ? _skills : (_skills = GetComponent<PlayerSkills>());
+        private Actor Me => _actor != null ? _actor : (_actor = GetComponent<Actor>());
 
         private void Awake()
         {
@@ -66,31 +86,40 @@ namespace CloneZ
 
         private void Update()
         {
-            _swingTimer -= Time.deltaTime;
-            _shoveTimer -= Time.deltaTime;
-            _fireTimer -= Time.deltaTime;
-            _reloadTimer -= Time.deltaTime;
+            float dt = Time.deltaTime;
+            _swingTimer -= dt;
+            _shoveTimer -= dt;
+            _fireTimer -= dt;
+            _reloadTimer -= dt;
+            _bloom = Mathf.Max(0f, _bloom - dt * 1.6f);
 
             Mouse mouse = Mouse.current;
             TrackUiPresses(mouse);                 // before the early-outs, so a click on a menu is remembered
-            if (_stats.IsDead) return;
+            AimingDownSights = false;
+            if (_stats.IsDead || _stats.Incapacitated) return;
             if (UIState.GameplayBlocked) return;   // don't act while clicking in the inventory UI
             if (UIState.BuildMode) return;         // in build mode the mouse places barricades, not attacks
+            if (HubRules.SafeZone) return;         // no fighting in the hub
             if (mouse == null) return;
 
-            bool attack = mouse.leftButton.isPressed && !_attackPressOnUi;
-            bool shove = mouse.rightButton.isPressed && !_shovePressOnUi;
+            bool attackHeld = mouse.leftButton.isPressed && !_attackPressOnUi;
+            bool attackPressed = mouse.leftButton.wasPressedThisFrame && !_attackPressOnUi;
+            bool rightHeld = mouse.rightButton.isPressed && !_shovePressOnUi;
+            bool shove = ViewState.MouseLook && EquippedFirearm != null ? mouse.middleButton.wasPressedThisFrame : rightHeld;
 
             if (EquippedFirearm != null)
             {
+                Build = Ballistics.Build(Inv != null ? Inv.EquippedStack : null);
+                AimingDownSights = ViewState.MouseLook && rightHeld;
                 Keyboard kb = Keyboard.current;
                 if (kb != null && kb.rKey.wasPressedThisFrame) TryReload();
-                if (attack && _fireTimer <= 0f && _reloadTimer <= 0f) FireFirearm();
+                bool trigger = Build.FullAuto ? attackHeld : attackPressed;
+                if (trigger && _fireTimer <= 0f && _reloadTimer <= 0f) FireFirearm();
                 else if (shove && _shoveTimer <= 0f) Shove();
                 return;
             }
 
-            if (attack && _swingTimer <= 0f) Swing();
+            if (attackHeld && _swingTimer <= 0f) Swing();
             else if (shove && _shoveTimer <= 0f) Shove();
         }
 
@@ -119,12 +148,14 @@ namespace CloneZ
             return events != null && events.IsPointerOverGameObject();
         }
 
+        #region Melee
         private void Swing()
         {
             _swingTimer = SwingCooldown;
             _stats.TryConsumeEndurance(CloneZConfig.MeleeEnduranceCost);
             OnSwing?.Invoke();
             NoiseSystem.Emit(transform.position, CloneZConfig.NoiseMeleeSwing);
+            Sfx.Play(SfxIds.MeleeSwing, transform.position + Vector3.up * 1.2f, 0.6f, Random.Range(0.9f, 1.1f), 12f);
 
             bool exhausted = _stats.Endurance < CloneZConfig.EnduranceDanger;
             bool landedHit = false;
@@ -132,14 +163,18 @@ namespace CloneZ
 
             PlayerSkills.Skill weaponSkill = PlayerSkills.WeaponSkillFor(Inv != null ? Inv.EquippedWeapon : null);
             float skillDamageMult = Skills != null ? Skills.MeleeDamageMult(weaponSkill) : 1f;
+            skillDamageMult *= PlayerModifiers.Current.MeleeDamage;
 
-            foreach (ZombieHealth zombie in FindTargets(WeaponRange, WeaponArc))
+            FindTargets(WeaponRange, WeaponArc, _targets);
+            for (int i = 0; i < _targets.Count; i++)
             {
+                IDamageable target = _targets[i];
                 landedHit = true;
-                Vector3 toZombie = CloneZUtil.Flat(zombie.transform.position - transform.position);
+                Transform tt = target.Transform;
+                Vector3 toTarget = CloneZUtil.Flat(tt.position - transform.position);
 
                 // Crit chance: base 5%, +30% when striking from behind (PZ).
-                bool fromBehind = Vector3.Dot(zombie.transform.forward, toZombie) > 0.25f;
+                bool fromBehind = Vector3.Dot(tt.forward, toTarget) > 0.25f;
                 float critChance = CloneZConfig.CritChanceDefault + (fromBehind ? CloneZConfig.CritChanceFromBehind : 0f);
                 bool crit = Random.value < critChance;
 
@@ -148,20 +183,23 @@ namespace CloneZ
                 raw *= _stats.PainCombatMultiplier;               // pain saps the strength from a blow
                 if (crit) raw *= CloneZConfig.HeadHitDamageSplitModifier;
 
-                var info = new DamageInfo(raw, DamageKind.Melee, zombie.transform.position, toZombie, gameObject)
+                var info = new DamageInfo(raw, DamageKind.Melee, tt.position + Vector3.up * 1.2f, toTarget, gameObject)
                 {
                     FromBehind = fromBehind,
-                    IsHeadshot = crit,
-                    Knockback = SwingKnockback
-                };
-                bool wasDead = zombie.IsDead;
-                zombie.TakeDamage(info);
+                    Knockback = SwingKnockback,
+                    WeaponId = Inv != null && Inv.EquippedWeapon != null ? Inv.EquippedWeapon.Id : "fists",
+                    BleedChance = weaponSkill == PlayerSkills.Skill.Blade ? 0.35f : 0.1f,
+                    FractureChance = weaponSkill == PlayerSkills.Skill.Blunt ? 0.15f : 0.05f,
+                }.WithZone(crit ? BodyZone.Head : BodyZones.RandomStrike());
+                info.IsHeadshot = crit;
+                bool killed = CombatResolver.Apply(target, info, Me);
+                Sfx.Play(SfxIds.MeleeHit, tt.position + Vector3.up * 1.2f, 0.8f, Random.Range(0.9f, 1.1f), 16f);
 
                 if (Skills != null)
                 {
                     Skills.AddXp(weaponSkill, CloneZConfig.XpMeleeHit);
                     Skills.AddXp(PlayerSkills.Skill.Strength, CloneZConfig.XpStrengthPerHit);
-                    if (!wasDead && zombie.IsDead) Skills.AddXp(weaponSkill, CloneZConfig.XpMeleeKill);
+                    if (killed) Skills.AddXp(weaponSkill, CloneZConfig.XpMeleeKill);
                 }
             }
 
@@ -177,16 +215,57 @@ namespace CloneZ
             NoiseSystem.Emit(transform.position, CloneZConfig.NoiseMeleeSwing * 0.5f);
 
             _hitThisAction.Clear();
-            foreach (ZombieHealth zombie in FindTargets(ShoveRange, ShoveArc))
+            FindTargets(ShoveRange, ShoveArc, _targets);
+            for (int i = 0; i < _targets.Count; i++)
             {
-                Vector3 dir = CloneZUtil.Flat(zombie.transform.position - transform.position);
-                var info = new DamageInfo(0f, DamageKind.Shove, zombie.transform.position, dir, gameObject)
+                IDamageable target = _targets[i];
+                Vector3 dir = CloneZUtil.Flat(target.Transform.position - transform.position);
+                var info = new DamageInfo(0f, DamageKind.Shove, target.Transform.position, dir, gameObject)
                 {
                     Knockback = ShoveKnockback
                 };
-                zombie.TakeDamage(info);
+                target.TakeDamage(info);
             }
         }
+
+        /// <summary>Living hostile things inside a cone in front of the aim direction: the dead, mutants, animals,
+        /// hostile stalkers — and other players when PvP is on.</summary>
+        private void FindTargets(float range, float arcDegrees, List<IDamageable> into)
+        {
+            into.Clear();
+            Vector3 origin = transform.position + Vector3.up * 1f;
+            float cos = Mathf.Cos(arcDegrees * 0.5f * Mathf.Deg2Rad);
+            Vector3 aim = _controller.AimDirection;
+
+            Collider[] hits = Physics.OverlapSphere(origin, range, ~0, QueryTriggerInteraction.Ignore);
+            foreach (Collider col in hits)
+            {
+                if (col.transform.IsChildOf(transform)) continue;
+                IDamageable target = null;
+                Hitbox box = col.GetComponent<Hitbox>();
+                if (box != null && box.Owner != null) target = box.Owner.Damageable;
+                if (target == null) target = col.GetComponentInParent<IDamageable>();
+                if (target == null || target.IsDead || !_hitThisAction.Add(target)) continue;
+                if (target is BuildPiece || target is Barricade) continue;   // walls are battered by the dead, not swung at here
+                Actor other = target.Transform != null ? target.Transform.GetComponent<Actor>() : null;
+                if (other != null && Me != null && !CanHarm(other)) continue;
+
+                Vector3 to = CloneZUtil.Flat(target.Transform.position - transform.position);
+                if (to == Vector3.zero || Vector3.Dot(aim, to.normalized) >= cos)
+                    into.Add(target);
+            }
+        }
+
+        // Squadmates are never hit unless friendly fire is on; other players only with PvP on.
+        private bool CanHarm(Actor other)
+        {
+            if (other == Me) return false;
+            bool sameSquad = !string.IsNullOrEmpty(Me.Squad) && Me.Squad == other.Squad;
+            if (sameSquad) return ServerRules.FriendlyFire;
+            if (other.IsPlayerControlled && other.Kind != ActorKind.PlayerMonster) return ServerRules.PvpEnabled;
+            return true;
+        }
+        #endregion
 
         #region Firearm
         /// <summary>Switches to ranged mode with the given gun, chambering a magazine if ammo is on hand.</summary>
@@ -196,6 +275,7 @@ namespace CloneZ
             ReturnLoadedAmmo();          // hand the old gun's rounds back to the pack first
             EquippedFirearm = gun;
             LoadedAmmo = 0;
+            LoadedAmmoId = null;
             _fireTimer = 0f;
             _reloadTimer = 0f;
             TryReload();                 // top up from the pack
@@ -214,7 +294,10 @@ namespace CloneZ
         {
             if (gun == null || !gun.IsFirearm) { EquipMeleeMode(); return; }
             EquippedFirearm = gun;
-            LoadedAmmo = Mathf.Clamp(loaded, 0, gun.MagazineSize);
+            ItemStack st = Inv != null ? Inv.EquippedStack : null;
+            string chosen = st != null && st.Extra != null ? st.Extra.AmmoChoice : null;
+            LoadedAmmoId = Ballistics.Accepts(gun, chosen) ? chosen : gun.AmmoId;
+            LoadedAmmo = Mathf.Clamp(loaded, 0, Mathf.Max(gun.MagazineSize, Ballistics.Build(st).MagSize));
             _fireTimer = 0f;
             _reloadTimer = 0f;
         }
@@ -222,20 +305,55 @@ namespace CloneZ
         private void ReturnLoadedAmmo()
         {
             if (EquippedFirearm != null && LoadedAmmo > 0 && Inv != null)
-                Inv.ReturnAmmo(EquippedFirearm.AmmoId, LoadedAmmo);
+                Inv.ReturnAmmo(string.IsNullOrEmpty(LoadedAmmoId) ? EquippedFirearm.AmmoId : LoadedAmmoId, LoadedAmmo);
             LoadedAmmo = 0;
+            LoadedAmmoId = null;
+        }
+
+        /// <summary>The round to load: the gun's chosen ammunition if any is carried, else any round of its calibre.</summary>
+        public string PickAmmo(ItemDef gun)
+        {
+            if (gun == null || Inv == null) return null;
+            ItemStack st = Inv.EquippedStack;
+            string chosen = st != null && st.Extra != null ? st.Extra.AmmoChoice : null;
+            if (!string.IsNullOrEmpty(chosen) && Inv.AmmoReserve(chosen) > 0) return chosen;
+            if (!string.IsNullOrEmpty(LoadedAmmoId) && Inv.AmmoReserve(LoadedAmmoId) > 0) return LoadedAmmoId;
+            if (Inv.AmmoReserve(gun.AmmoId) > 0) return gun.AmmoId;
+            List<ItemStack> stacks = Inv.Inventory.Stacks;
+            for (int i = 0; i < stacks.Count; i++)
+                if (stacks[i].Def != null && stacks[i].Def.Category == ItemCategory.Ammo && Ballistics.Accepts(gun, stacks[i].Def.Id))
+                    return stacks[i].Def.Id;
+            return null;
+        }
+
+        /// <summary>Unloads the magazine and reloads with a different round of the same calibre.</summary>
+        public void SwitchAmmo(string ammoId)
+        {
+            ItemDef gun = EquippedFirearm;
+            if (gun == null || Inv == null || !Ballistics.Accepts(gun, ammoId)) return;
+            ItemStack st = Inv.EquippedStack;
+            if (st != null) st.Ensure().AmmoChoice = ammoId;
+            ReturnLoadedAmmo();
+            TryReload();
         }
 
         /// <summary>Pulls rounds from the pack into the magazine. Returns true if any were loaded.</summary>
         public bool TryReload()
         {
             ItemDef gun = EquippedFirearm;
-            if (gun == null || LoadedAmmo >= gun.MagazineSize || Inv == null) return false;
-            int got = Inv.TakeAmmo(gun.AmmoId, gun.MagazineSize - LoadedAmmo);
+            if (gun == null || Inv == null) return false;
+            int mag = Mathf.Max(1, Ballistics.Build(Inv.EquippedStack).MagSize);
+            if (LoadedAmmo >= mag) return false;
+            string ammo = LoadedAmmo > 0 ? LoadedAmmoId : PickAmmo(gun);
+            if (string.IsNullOrEmpty(ammo)) return false;
+            int got = Inv.TakeAmmo(ammo, mag - LoadedAmmo);
             if (got <= 0) return false;
             LoadedAmmo += got;
-            _reloadTimer = gun.ReloadTime * (Skills != null ? Skills.ReloadTimeMult : 1f);
+            LoadedAmmoId = ammo;
+            float reloadMult = (Skills != null ? Skills.ReloadTimeMult : 1f) * Ballistics.Build(Inv.EquippedStack).ReloadMult / Mathf.Max(0.3f, PlayerModifiers.Current.ReloadSpeed);
+            _reloadTimer = gun.ReloadTime * reloadMult;
             OnReload?.Invoke();
+            Sfx.Play(SfxIds.Reload, transform.position + Vector3.up * 1.2f, 0.7f, 1f, 14f);
             if (Skills != null) Skills.AddXp(PlayerSkills.Skill.Reloading, CloneZConfig.XpReload);
             return true;
         }
@@ -243,6 +361,7 @@ namespace CloneZ
         private void FireFirearm()
         {
             ItemDef gun = EquippedFirearm;
+            WeaponBuild build = Build;
             if (LoadedAmmo <= 0)
             {
                 if (!TryReload())        // out of rounds — try to reload, else dry-fire
@@ -250,30 +369,31 @@ namespace CloneZ
                     NoiseSystem.Emit(transform.position, CloneZConfig.NoiseDryFire);
                     _fireTimer = 0.3f;
                     OnDryFire?.Invoke();
+                    Sfx.Play(SfxIds.DryFire, transform.position + Vector3.up * 1.2f, 0.6f, 1f, 8f);
                 }
                 return;                  // a reload consumes this trigger pull
             }
 
-            // A worn firearm can jam: the round doesn't fire and the action must be worked before
+            // A worn or fouled firearm can jam: the round doesn't fire and the action must be worked before
             // trying again (the chambered round is kept, so the trigger pull is simply wasted).
-            if (Inv != null && Inv.EquippedFirearmJams())
+            if (Random.value < build.JamChance)
             {
-                _fireTimer = gun.FireCooldown;
+                _fireTimer = Mathf.Max(gun.FireCooldown, 0.9f);
                 NoiseSystem.Emit(transform.position, CloneZConfig.NoiseDryFire);
                 OnDryFire?.Invoke();
+                OnJam?.Invoke();
+                Sfx.Play(SfxIds.Jam, transform.position + Vector3.up * 1.2f, 0.7f, 1f, 8f);
+                GameEvents.RaiseToast("Jammed! Clear it and clean that gun.");
                 return;
             }
 
+            string ammoId = string.IsNullOrEmpty(LoadedAmmoId) ? gun.AmmoId : LoadedAmmoId;
             LoadedAmmo--;
-            _fireTimer = gun.FireCooldown;
+            _fireTimer = gun.FireCooldown / Mathf.Max(0.3f, build.FireRateMult);
             _stats.TryConsumeEndurance(CloneZConfig.FirearmEnduranceCost);
             OnFire?.Invoke();
             if (Skills != null) Skills.AddXp(PlayerSkills.Skill.Aiming, CloneZConfig.XpFirearmShot);
-
-            // Aiming skill tightens the cone, boosts damage and extends effective range (PZ).
-            float dmgMult = Skills != null ? Skills.FirearmDamageMult : 1f;
-            float spreadMult = Skills != null ? Skills.FirearmSpreadMult : 1f;
-            float range = gun.FirearmRange * (Skills != null ? Skills.FirearmRangeMult : 1f);
+            FoulBarrel();
 
             Vector3 aim = _controller.AimDirection;
             Vector3 muzzle, shotAim;
@@ -285,35 +405,42 @@ namespace CloneZ
                 muzzle = transform.position + Vector3.up * 0.95f + aim * 0.7f;
                 shotAim = aim;
             }
-            float spread = (gun.FirearmSpread +
-                Mathf.Lerp(CloneZConfig.FirearmSpreadWide, CloneZConfig.FirearmSpreadTight, ComputeAimQuality())) * spreadMult;
-            // Walls / cover (Default) block the round; zombies live on Ignore Raycast so include that layer.
-            int mask = (1 << 0) | (1 << CloneZConfig.IgnoreRaycastLayer);
-            var tracerColor = new Color(1f, 0.9f, 0.5f);
 
+            if (gun.Id == "flaregun") { FireFlare(muzzle, shotAim); return; }
+
+            // Aiming skill tightens the cone, boosts damage and extends effective range (PZ).
+            float dmgMult = (Skills != null ? Skills.FirearmDamageMult : 1f) * build.DamageMult;
+            float spreadMult = (Skills != null ? Skills.FirearmSpreadMult : 1f) * build.Spread * PlayerModifiers.Current.AimSpread;
+            if (AimingDownSights) spreadMult *= 0.55f * build.AdsSpread;
+            AmmoStats ammo = Ballistics.Ammo(ammoId);
+            float range = gun.FirearmRange * (Skills != null ? Skills.FirearmRangeMult : 1f) * build.Range * (ammo != null ? ammo.RangeMult : 1f);
+            float spread = (gun.FirearmSpread + _bloom +
+                Mathf.Lerp(CloneZConfig.FirearmSpreadWide, CloneZConfig.FirearmSpreadTight, ComputeAimQuality())) * spreadMult;
+
+            int pellets = ammo != null ? Mathf.Max(1, ammo.Pellets) : Mathf.Max(1, gun.PelletsPerShot);
+            float pelletMult = pellets > 1 ? 1f : 1f;
             bool anyHit = false, anyKill = false;
-            int pellets = Mathf.Max(1, gun.PelletsPerShot);
             for (int i = 0; i < pellets; i++)
             {
                 Vector3 dir = ScatterDir(shotAim, spread);
-                Vector3 end = muzzle + dir * range;
-                if (Physics.Raycast(muzzle, dir, out RaycastHit hit, range, mask, QueryTriggerInteraction.Ignore))
+                var req = new ShotRequest
                 {
-                    end = hit.point;
-                    var zombie = hit.collider.GetComponentInParent<ZombieHealth>();
-                    if (zombie != null && !zombie.IsDead)
-                    {
-                        var info = new DamageInfo(gun.FirearmDamage * dmgMult, DamageKind.Bullet, hit.point, CloneZUtil.Flat(dir), gameObject)
-                        {
-                            Knockback = gun.Knockback
-                        };
-                        bool wasDead = zombie.IsDead;
-                        zombie.TakeDamage(info);
-                        anyHit = true;
-                        if (!wasDead && zombie.IsDead) anyKill = true;
-                    }
-                }
-                CombatFX.Tracer(muzzle, end, tracerColor);
+                    Origin = muzzle,
+                    Direction = dir,
+                    Range = range,
+                    AmmoId = ammoId,
+                    WeaponId = gun.Id,
+                    DamageMult = dmgMult * pelletMult,
+                    Shooter = gameObject,
+                    ShooterActor = Me,
+                    ShooterClient = NetAuthority.LocalClientId,
+                    ViewTime = NetClock.ViewTime,
+                };
+                ShotResult r = CombatResolver.Fire(req);
+                if (r.Target != null) anyHit = true;
+                if (r.Killed) anyKill = true;
+                CombatFX.Tracer(muzzle, r.End, build.Suppressed ? new Color(1f, 0.9f, 0.5f, 0.4f) : new Color(1f, 0.9f, 0.5f));
+                if (r.Hit && r.Target == null && Random.value < 0.15f) Sfx.Play(SfxIds.Ricochet, r.End, 0.5f, Random.Range(0.9f, 1.2f), 25f);
             }
 
             if (Skills != null)
@@ -322,14 +449,56 @@ namespace CloneZ
                 if (anyKill) Skills.AddXp(PlayerSkills.Skill.Aiming, CloneZConfig.XpFirearmKill);
             }
 
-            CombatFX.MuzzleFlash(muzzle);
-            NoiseSystem.Emit(transform.position, gun.FirearmNoise);   // gunfire draws the horde
+            if (!build.Suppressed) CombatFX.MuzzleFlash(muzzle);
+            float noise = gun.FirearmNoise * build.Noise;
+            NoiseSystem.Emit(transform.position, noise);   // gunfire draws the horde
+            GameEvents.RaiseWorldEvent(transform.position, noise, "shot");
+            Sfx.Play(GunSound(gun, build), muzzle, build.Suppressed ? 0.45f : 1f, Random.Range(0.96f, 1.04f), build.Suppressed ? 30f : 140f);
+
+            float kick = build.Recoil * PlayerModifiers.Current.Recoil * (AimingDownSights ? 0.75f : 1f);
+            _bloom = Mathf.Min(6f, _bloom + kick * 0.6f);
+            OnRecoil?.Invoke(kick);
             if (Inv != null) Inv.WearEquippedWeapon();   // the shot may cost a condition point; at 0 the gun breaks
+        }
+
+        private static string GunSound(ItemDef gun, WeaponBuild build)
+        {
+            if (build.Suppressed) return SfxIds.GunSuppressed;
+            switch (Ballistics.CaliberOfGun(gun))
+            {
+                case "12g": return SfxIds.GunShotgun;
+                case "545": return SfxIds.GunRifle;
+                case "762r": return SfxIds.GunSniper;
+                case "flare": return SfxIds.GunFlare;
+                default: return SfxIds.GunPistol;
+            }
+        }
+
+        // Every shot fouls the barrel a little; a cleaning kit (or the workbench) clears it.
+        private void FoulBarrel()
+        {
+            ItemStack st = Inv != null ? Inv.EquippedStack : null;
+            if (st == null) return;
+            float add = DirtPerShot * (WeatherSystem.Instance != null && WeatherSystem.Instance.PrecipitationIntensity > 0.2f ? 1.6f : 1f);
+            ItemExtra x = st.Ensure();
+            x.Dirt = Mathf.Min(1f, x.Dirt + add);
+        }
+
+        // A signal flare: up it goes, red and bright, and if a landing zone is near the helicopter answers.
+        private void FireFlare(Vector3 muzzle, Vector3 aim)
+        {
+            Vector3 dir = (aim + Vector3.up * 2.2f).normalized;
+            FlareProjectile.Launch(muzzle, dir);
+            Sfx.Play(SfxIds.GunFlare, muzzle, 1f, 1f, 80f);
+            NoiseSystem.Emit(transform.position, 40f);
+            GameEvents.RaiseWorldEvent(transform.position, 160f, "flare");
+            bool answered = ExtractionManager.Instance != null && ExtractionManager.Instance.CallHelicopter(transform.position);
+            if (!answered) GameEvents.RaiseToast("The flare burns red over the Zone. No landing zone in range — everyone saw it, though.");
         }
 
         /// <summary>
         /// Shoulder / first-person views: the round leaves the shouldered gun and flies at what the
-        /// crosshair is on — a living zombie under it, else the surface behind — so a shot can rise or dip
+        /// crosshair is on — a living target under it, else the surface behind — so a shot can rise or dip
         /// (over a counter, down at a crawler) instead of staying level like the isometric aim.
         /// </summary>
         private void AimThroughCrosshair(Vector3 flatAim, out Vector3 muzzle, out Vector3 shotAim)
@@ -355,6 +524,7 @@ namespace CloneZ
                 case Exertion.Walking: aim -= CloneZConfig.FirearmAimPenaltyWalk; break;
             }
             if (_controller.IsSneaking) aim += CloneZConfig.FirearmAimSneakBonus;
+            aim += Build.Ergonomics / 100f * 0.12f - 0.06f;                 // a handier build steadies faster
             aim -= _stats.PainNormalized * CloneZConfig.PainAimPenalty;    // pain makes the hands shake
             aim -= _stats.PanicNormalized * CloneZConfig.PanicAimPenalty;  // fear makes them shake harder
             aim -= _stats.ColdAimPenalty;                                  // shivering in the cold spoils the aim
@@ -370,23 +540,54 @@ namespace CloneZ
             return dir.normalized;
         }
         #endregion
+    }
 
-        /// <summary>Yields living zombies inside a cone in front of the aim direction.</summary>
-        private IEnumerable<ZombieHealth> FindTargets(float range, float arcDegrees)        {
-            Vector3 origin = transform.position + Vector3.up * 1f;
-            float cos = Mathf.Cos(arcDegrees * 0.5f * Mathf.Deg2Rad);
-            Vector3 aim = _controller.AimDirection;
+    /// <summary>A signal flare in flight: a red light climbing, hanging, drifting down and burning out.</summary>
+    public sealed class FlareProjectile : MonoBehaviour
+    {
+        private Vector3 _vel;
+        private float _life = 22f;
+        private Light _light;
+        private AudioSource _burn;
 
-            Collider[] hits = Physics.OverlapSphere(origin, range, ~0, QueryTriggerInteraction.Ignore);
-            foreach (Collider col in hits)
+        public static void Launch(Vector3 from, Vector3 dir)
+        {
+            var go = new GameObject("Flare");
+            go.transform.position = from;
+            var f = go.AddComponent<FlareProjectile>();
+            f._vel = dir * 38f;
+            f._light = go.AddComponent<Light>();
+            f._light.type = LightType.Point;
+            f._light.color = new Color(1f, 0.25f, 0.15f);
+            f._light.range = 60f;
+            f._light.intensity = 6f;
+            f._light.shadows = LightShadows.None;
+            ZoneKit.Plume(go.transform, from, true, 0.6f, 18f, 0.5f, new Color(0.9f, 0.4f, 0.35f, 0.5f));
+            f._burn = Sfx.Loop(SfxIds.FlareBurn, go.transform, 0.6f, 50f);
+        }
+
+        private void Update()
+        {
+            float dt = Time.deltaTime;
+            _life -= dt;
+            _vel += Physics.gravity * (_vel.y > 0f ? 0.6f : 0.04f) * dt;
+            _vel.y = Mathf.Max(_vel.y, -1.2f);
+            _vel.x *= 1f - 0.4f * dt;
+            _vel.z *= 1f - 0.4f * dt;
+            transform.position += _vel * dt;
+            if (_light != null) _light.intensity = 6f * Mathf.Clamp01(_life / 4f) * (0.85f + Mathf.PerlinNoise(Time.time * 9f, 0f) * 0.3f);
+            if (_life <= 0f || transform.position.y < 0.2f)
             {
-                var zombie = col.GetComponentInParent<ZombieHealth>();
-                if (zombie == null || zombie.IsDead || !_hitThisAction.Add(zombie)) continue;
-
-                Vector3 to = CloneZUtil.Flat(zombie.transform.position - transform.position);
-                if (to == Vector3.zero || Vector3.Dot(aim, to) >= cos)
-                    yield return zombie;
+                if (_burn != null) Sfx.Stop(_burn);
+                Destroy(gameObject);
             }
         }
+    }
+
+    /// <summary>The clock shots are stamped with for lag compensation (set by the netcode; 0 offline).</summary>
+    public static class NetClock
+    {
+        public static System.Func<double> ViewTimeSource;
+        public static double ViewTime => ViewTimeSource != null ? ViewTimeSource() : 0d;
     }
 }
