@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -191,6 +191,25 @@ namespace CloneZ
 
         private bool UseBattery(Inventory inv, ItemStack battery)
         {
+            if (!ChargeFlattest(1f, out string name))
+            {
+                Say(_nvgDef != null || _flash != null || Carries(inv, GearKind.NightVision)
+                    ? "Your batteries are all still full"
+                    : "Nothing to put a battery in");
+                return false;
+            }
+            inv.Remove(battery, 1);
+            Say("Fresh battery in the " + name);
+            return true;
+        }
+
+        /// <summary>Puts <paramref name="fraction"/> of a full charge into the flattest battery device (worn goggles
+        /// or a carried flashlight / goggles): a fresh battery (1) or a few turns of a hand-crank. False when everything is full.</summary>
+        public bool ChargeFlattest(float fraction, out string name)
+        {
+            name = null;
+            Inventory inv = PackInventory;
+            if (inv == null) return false;
             SyncWorn();
             SyncPack();
 
@@ -214,29 +233,22 @@ namespace CloneZ
                 if (charge < lowest) { lowest = charge; target = s; worn = false; }
             }
 
-            if (!worn && target == null)
-            {
-                Say(_nvgDef != null || _flash != null || Carries(inv, GearKind.NightVision)
-                    ? "Your batteries are all still full"
-                    : "Nothing to put a battery in");
-                return false;
-            }
+            if (!worn && target == null) return false;
 
-            string name;
             if (worn)
             {
-                _nvgCharge = _nvgWritten = _nvgDef.MaxCondition;
-                if (Clothing != null) Clothing.SetCondition(ClothingSlot.Eyes, _nvgDef.MaxCondition, true);
+                _nvgCharge = Mathf.Min(_nvgDef.MaxCondition, _nvgCharge + _nvgDef.MaxCondition * fraction);
+                _nvgWritten = Mathf.CeilToInt(_nvgCharge);
+                if (Clothing != null) Clothing.SetCondition(ClothingSlot.Eyes, _nvgWritten, true);
                 name = _nvgDef.DisplayName;
             }
             else
             {
-                target.Condition = target.Def.MaxCondition;
+                float now = target == _flash ? _flashCharge : target.Condition;
+                target.Condition = Mathf.Min(target.Def.MaxCondition, Mathf.CeilToInt(now + target.Def.MaxCondition * fraction));
                 if (target == _flash) LoadFlashCharge();
                 name = target.Def.DisplayName;
             }
-            inv.Remove(battery, 1);
-            Say("Fresh battery in the " + name);
             Publish();
             return true;
         }

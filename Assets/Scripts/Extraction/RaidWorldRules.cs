@@ -10,6 +10,9 @@ namespace CloneZ
     /// </summary>
     public static class RaidWorldRules
     {
+        /// <summary>The insertion point value for walking in through the cordon rather than flying to a landing zone.</summary>
+        public const int OnFoot = -2;
+
         /// <summary>Shows the insertion (the helicopter set-down). Set by the helicopter system; null = a plain arrival.</summary>
         public static System.Action<PlayerStats, Vector3> InsertionPresenter;
 
@@ -91,12 +94,13 @@ namespace CloneZ
         /// <summary>
         /// Picks the arrival point: the chosen landing zone (0 N, 1 E, 2 S, 3 W) or a random side, and closes exits
         /// too close to it (each spawn side reaches its own set of exits). True when it's a helicopter insertion.
+        /// <paramref name="lz"/> = <see cref="OnFoot"/> walks in from the map's own entry point (through the cordon).
         /// </summary>
         public static bool PickInsertion(RaidMapInfo map, int lz, ref Vector3 spawn, ref float yaw)
         {
             IReadOnlyList<Vector3> pads = WorldMarkers.Get(WorldMarkers.Landing);
             bool heli = false;
-            if (pads.Count > 0)
+            if (pads.Count > 0 && lz != OnFoot)
             {
                 int pick = lz >= 0 && lz < pads.Count ? lz : Random.Range(0, pads.Count);
                 spawn = pads[pick] + Vector3.up * 0.6f;

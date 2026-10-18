@@ -62,6 +62,13 @@ namespace CloneZ
 
         private void OnRaidEnded(RaidOutcome outcome, string exit) => SaveToProfile();
 
+        /// <summary>Removes dose (the medic's flush).</summary>
+        public void Purge(float amount)
+        {
+            Dose = Mathf.Max(0f, Dose - amount);
+            SaveToProfile();
+        }
+
         public void SaveToProfile()
         {
             CharacterProfile c = ProfileStore.ActiveCharacter;

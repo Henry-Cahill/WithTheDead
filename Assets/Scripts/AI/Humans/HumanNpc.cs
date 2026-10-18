@@ -572,6 +572,7 @@ namespace CloneZ
             Vector3 away = Actor.LocalPlayer != null ? (transform.position - Actor.LocalPlayer.transform.position).normalized : transform.forward;
             MoveTo(HumanUtil.ClampToMap(transform.position + away * 40f, 6f), 3.5f);
             MoralLedger.Record("let a surrendered stalker go", MoralLedger.SparedSurrendered);
+            GameEvents.RaiseQuestProgress("spare", 1f);
         }
 
         private void FollowLeader()

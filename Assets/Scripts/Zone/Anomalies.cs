@@ -397,6 +397,8 @@ namespace CloneZ
 
         private void OnBolt(Bolt b)
         {
+            GameEvents.RaiseQuestProgress("bolt_anomaly", 1f);
+            ProfileStore.Account?.Learn("anomaly_rule:" + Def.Id);
             switch (Def.Id)
             {
                 case "sinkhole":
