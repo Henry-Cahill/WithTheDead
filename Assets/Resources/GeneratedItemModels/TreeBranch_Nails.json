@@ -1,0 +1,19 @@
+{"version": 1, "id": "TreeBranch_Nails", "baseHeight": 0.13, "name": "Tree Branch Nails", "model": "gpt-oss:120b", "notes": "Tree‑branch club 1.10 m long lying on its side (X axis). Wooden core 0.12 m diam, thin bark layer to 0.14 m, steel nail heads protruding upward (+Y) at seven positions, metal knob at the forward tip for extra weight.", "score": 6, "parts": [
+  {"name":"CoreWood","shape":"cylinder","pos":[-0.03,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,1.1,0.12],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Bark","shape":"cylinder","pos":[-0.03,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.14,1.1,0.14],"color":[0.45,0.38,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"TipKnob","shape":"sphere","pos":[0.52,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.12,0.12],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"NailShaft1","shape":"cylinder","pos":[-0.48,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"NailHead1","shape":"sphere","pos":[-0.48,0.036,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"NailShaft2","shape":"cylinder","pos":[-0.33,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"NailHead2","shape":"sphere","pos":[-0.33,0.036,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"NailShaft3","shape":"cylinder","pos":[-0.18,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"NailHead3","shape":"sphere","pos":[-0.18,0.036,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"NailShaft4","shape":"cylinder","pos":[-0.03,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"NailHead4","shape":"sphere","pos":[-0.03,0.036,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"NailShaft5","shape":"cylinder","pos":[0.12,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"NailHead5","shape":"sphere","pos":[0.12,0.036,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"NailShaft6","shape":"cylinder","pos":[0.27,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"NailHead6","shape":"sphere","pos":[0.27,0.036,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"NailShaft7","shape":"cylinder","pos":[0.42,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"NailHead7","shape":"sphere","pos":[0.42,0.036,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":1.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "SpearCrudeLong", "baseHeight": 0.1075, "name": "Spear Crude Long", "model": "gpt-oss:120b", "notes": "Crude spear ~1.5 m long lying on its side: wooden shaft (cylinder), iron tip (ellipsoid sphere) with a metal cap, a rope‑like binding near the tip, and a thick wooden butt end with a small metal band.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.02,-0.0125,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,1.4,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Tip","shape":"sphere","pos":[0.74,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.12],"color":[0.75,0.75,0.78],"smooth":0.55,"metal":1.0},
+  {"name":"TipCap","shape":"cylinder","pos":[0.71,-0.0075,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.06,0.05],"color":[0.75,0.75,0.78],"smooth":0.55,"metal":1.0},
+  {"name":"Binding","shape":"cylinder","pos":[0.53,-0.0125,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.1,0.07],"color":[0.45,0.3,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"Butt","shape":"cube","pos":[-0.76,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"ButtBand","shape":"cylinder","pos":[-0.73,-0.0075,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.05,0.06],"color":[0.75,0.75,0.78],"smooth":0.55,"metal":1.0}
+]}

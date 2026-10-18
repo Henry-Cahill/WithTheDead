@@ -1,0 +1,13 @@
+{"version": 1, "id": "ShotgunSawnoff", "baseHeight": 0.1013, "name": "Shotgun Sawnoff", "model": "gpt-oss:120b", "notes": "Sawnoff shotgun ~0.55 m long, barrel 0.35 m along +X, short wooden stock, polymer grip, metal trigger‑guard, 6‑round tubular magazine, simple front/rear sights and a safety lever. All parts rest on the floor (y=0) with the barrel radius defining the ground level.", "score": 6, "parts": [
+  {"name":"Barrel","shape":"cylinder","pos":[0.07,-0.0187,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.35,0.04],"color":[0.24,0.25,0.28],"smooth":0.5,"metal":1.0},
+  {"name":"BarrelEndFront","shape":"cylinder","pos":[0.25,-0.0187,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.01,0.045],"color":[0.24,0.25,0.28],"smooth":0.5,"metal":1.0},
+  {"name":"BarrelEndRear","shape":"cylinder","pos":[-0.11,-0.0187,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.01,0.045],"color":[0.24,0.25,0.28],"smooth":0.5,"metal":1.0},
+  {"name":"Stock","shape":"cube","pos":[-0.18,0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.08,0.12],"color":[0.15,0.1,0.05],"smooth":0.15,"metal":0.0},
+  {"name":"GripBlock","shape":"cube","pos":[-0.05,0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.08,0.12],"color":[0.05,0.05,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"TriggerGuard","shape":"cube","pos":[0.0,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.05,0.15],"color":[0.24,0.25,0.28],"smooth":0.5,"metal":1.0},
+  {"name":"MagazineBox","shape":"cube","pos":[0.17,-0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.08],"color":[0.24,0.25,0.28],"smooth":0.5,"metal":1.0},
+  {"name":"FrontSight","shape":"cylinder","pos":[0.22,0.0212,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.24,0.25,0.28],"smooth":0.5,"metal":1.0},
+  {"name":"RearSight","shape":"cylinder","pos":[-0.05,0.0212,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.24,0.25,0.28],"smooth":0.5,"metal":1.0},
+  {"name":"SafetyLever","shape":"cube","pos":[-0.05,0.0113,0.025],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.04],"color":[0.1,0.11,0.13],"smooth":0.2,"metal":0.0},
+  {"name":"EjectorPort","shape":"cylinder","pos":[-0.05,-0.0187,-0.03],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.24,0.25,0.28],"smooth":0.5,"metal":1.0}
+]}

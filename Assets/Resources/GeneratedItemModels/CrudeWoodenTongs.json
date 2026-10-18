@@ -1,0 +1,13 @@
+{"version": 1, "id": "CrudeWoodenTongs", "baseHeight": 0.08, "name": "Crude Wooden Tongs", "model": "gpt-oss:120b", "notes": "Crude wooden tongs ~0.30 m long lying flat on the floor. Two wooden arms hinged at the centre by a small metal pin; each arm is a handle section and a short gripping tip. Arms are splayed slightly (≈5 cm apart) for a clear silhouette.", "score": 6, "parts": [
+  {"name":"HingePin","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.02],"color":[0.4,0.4,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"HingePlateTop","shape":"cylinder","pos":[0.0,0.013,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.04],"color":[0.4,0.4,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"HingePlateBottom","shape":"cylinder","pos":[0.0,-0.013,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.04],"color":[0.4,0.4,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"ArmA_Handle","shape":"cylinder","pos":[0.07,0.0,0.025],"rot":[0.0,0.0,90.0],"size":[0.04,0.14,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"ArmA_Grip","shape":"cylinder","pos":[0.17,0.0,0.025],"rot":[0.0,0.0,90.0],"size":[0.035,0.06,0.035],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"ArmA_Tip","shape":"sphere","pos":[0.2,0.0,0.025],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"ArmB_Handle","shape":"cylinder","pos":[-0.07,0.0,-0.025],"rot":[0.0,0.0,90.0],"size":[0.04,0.14,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"ArmB_Grip","shape":"cylinder","pos":[-0.17,0.0,-0.025],"rot":[0.0,0.0,90.0],"size":[0.035,0.06,0.035],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"ArmB_Tip","shape":"sphere","pos":[-0.2,0.0,-0.025],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"HandleRubberL","shape":"cylinder","pos":[-0.12,0.0,-0.025],"rot":[0.0,0.0,90.0],"size":[0.025,0.02,0.025],"color":[0.1,0.1,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"HandleRubberR","shape":"cylinder","pos":[0.12,0.0,0.025],"rot":[0.0,0.0,90.0],"size":[0.025,0.02,0.025],"color":[0.1,0.1,0.12],"smooth":0.3,"metal":0.0}
+]}

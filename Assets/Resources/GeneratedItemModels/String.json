@@ -1,0 +1,14 @@
+{"version": 1, "id": "String", "baseHeight": 0.0907, "name": "String", "model": "gpt-oss:120b", "notes": "Loose coiled string about 0.70 m long, 0.02 m thick (diameter), lying on the floor in a loose spiral so its silhouette reads as a short wavy line. Main colour is the given brown‑tan tint; surface is soft cloth/fiber.", "score": 7, "parts": [
+  {"name":"Seg1","shape":"cylinder","pos":[-0.55,0.0066,-0.0007],"rot":[0.0,0.0,90.0],"size":[0.02,0.1,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seg2","shape":"cylinder","pos":[-0.45,0.0116,0.0243],"rot":[15.0,0.0,90.0],"size":[0.02,0.1,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seg3","shape":"cylinder","pos":[-0.35,0.0146,0.0493],"rot":[30.0,0.0,90.0],"size":[0.02,0.1,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seg4","shape":"cylinder","pos":[-0.25,0.0166,0.0693],"rot":[45.0,0.0,90.0],"size":[0.02,0.1,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seg5","shape":"cylinder","pos":[-0.15,0.0146,0.0793],"rot":[60.0,0.0,90.0],"size":[0.02,0.1,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seg6","shape":"cylinder","pos":[-0.05,0.0116,0.0743],"rot":[75.0,0.0,90.0],"size":[0.02,0.1,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seg7","shape":"cylinder","pos":[0.05,0.0066,0.0643],"rot":[90.0,0.0,90.0],"size":[0.02,0.1,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seg8","shape":"cylinder","pos":[0.15,0.0016,0.0443],"rot":[105.0,0.0,90.0],"size":[0.02,0.1,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seg9","shape":"cylinder","pos":[0.25,-0.0034,0.0193],"rot":[120.0,0.0,90.0],"size":[0.02,0.1,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seg10","shape":"cylinder","pos":[0.35,-0.0084,-0.0107],"rot":[135.0,0.0,90.0],"size":[0.02,0.1,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seg11","shape":"cylinder","pos":[0.45,-0.0134,-0.0457],"rot":[150.0,0.0,90.0],"size":[0.02,0.1,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seg12","shape":"cylinder","pos":[0.55,-0.0184,-0.0807],"rot":[165.0,0.0,90.0],"size":[0.02,0.1,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0}
+]}

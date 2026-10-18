@@ -1,0 +1,8 @@
+{"version": 1, "id": "LightBulbGreen", "baseHeight": 0.085, "name": "Light Bulb Green", "model": "gpt-oss:120b", "notes": "Green‑tinted incandescent bulb ~5 cm diameter, 6 cm total length lying on its side: glass sphere, metal screw base protruding to –X, tiny amber filament inside.", "score": 7, "parts": [
+  {"name":"GlassSphere","shape":"sphere","pos":[0.0085,0.0,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0},
+  {"name":"MetalBase","shape":"cylinder","pos":[-0.024,0.0,-0.0003],"rot":[0.0,0.0,90.0],"size":[0.01,0.015,0.01],"color":[0.7,0.7,0.7],"smooth":0.4,"metal":1.0},
+  {"name":"BaseRim","shape":"cylinder","pos":[-0.032,0.0,-0.0003],"rot":[0.0,0.0,90.0],"size":[0.012,0.003,0.012],"color":[0.6,0.6,0.6],"smooth":0.45,"metal":1.0},
+  {"name":"Filament","shape":"cylinder","pos":[0.0085,0.0,-0.0003],"rot":[90.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[1.0,0.8,0.2],"smooth":0.55,"metal":0.0},
+  {"name":"GlassSeam","shape":"cube","pos":[0.0085,0.0,0.0243],"rot":[0.0,0.0,0.0],"size":[0.048,0.002,0.002],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":0.0},
+  {"name":"BaseScrewDetail","shape":"cube","pos":[-0.0275,0.0,-0.0003],"rot":[0.0,0.0,0.0],"size":[0.002,0.015,0.004],"color":[0.5,0.5,0.5],"smooth":0.4,"metal":1.0}
+]}

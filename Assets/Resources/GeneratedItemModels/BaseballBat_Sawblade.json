@@ -1,0 +1,11 @@
+{"version": 1, "id": "BaseballBat_Sawblade", "baseHeight": 0.095, "name": "Baseball Bat Sawblade", "model": "gpt-oss:120b", "notes": "Baseball‑bat‑sawblade melee weapon ~1.2 m long, lying on its side (X axis). Wooden bat cylinder with a rubber grip at the handle end and a metal circular saw blade (face up) attached to the far end. Blade shows rim and a few teeth for silhouette clarity.", "score": 6, "parts": [
+  {"name":"BatBody","shape":"cylinder","pos":[-0.08,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,1.0,0.07],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.53,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.12,0.06],"color":[0.3,0.25,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"BladeDisk","shape":"cylinder","pos":[0.43,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.3],"color":[0.75,0.75,0.78],"smooth":0.55,"metal":1.0},
+  {"name":"BladeRim","shape":"cylinder","pos":[0.43,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.004,0.32],"color":[0.5,0.5,0.55],"smooth":0.45,"metal":1.0},
+  {"name":"ToothFront","shape":"cube","pos":[0.43,-0.025,0.165],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.03],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":1.0},
+  {"name":"ToothBack","shape":"cube","pos":[0.43,-0.025,-0.165],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.03],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":1.0},
+  {"name":"ToothLeft","shape":"cube","pos":[0.43,-0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.03],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":1.0},
+  {"name":"ToothRight","shape":"cube","pos":[0.43,-0.025,0.0],"rot":[0.0,0.0,-90.0],"size":[0.015,0.02,0.03],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":1.0},
+  {"name":"HandleEndCap","shape":"cylinder","pos":[-0.58,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.02,0.07],"color":[0.4,0.35,0.3],"smooth":0.15,"metal":0.0}
+]}

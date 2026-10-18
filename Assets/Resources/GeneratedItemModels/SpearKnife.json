@@ -1,0 +1,12 @@
+{"version": 1, "id": "SpearKnife", "baseHeight": 0.105, "name": "Spear Knife", "model": "gpt-oss:120b", "notes": "Spear‑knife ~1.4 m long lying on its side (long axis X). Metal shaft with three small rivets, a steel blade at the +X business end, a thin guard/disc, a butt knob, and a cloth‑style grip wrap near the rear.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.09,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,1.2,0.05],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"BladeBody","shape":"cube","pos":[0.61,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.07,0.03],"color":[0.85,0.85,0.9],"smooth":0.65,"metal":1.0},
+  {"name":"BladeEdgeTop","shape":"cube","pos":[0.61,0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.01,0.03],"color":[0.5,0.5,0.55],"smooth":0.5,"metal":1.0},
+  {"name":"GuardDisc","shape":"cylinder","pos":[0.52,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"GuardRing","shape":"cylinder","pos":[0.52,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.005,0.14],"color":[0.4,0.4,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"ButtKnob","shape":"cube","pos":[-0.67,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.06,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"GripWrap","shape":"cylinder","pos":[-0.44,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.2,0.07],"color":[0.3,0.28,0.32],"smooth":0.05,"metal":0.0},
+  {"name":"Rivet1","shape":"sphere","pos":[-0.39,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.75],"smooth":0.65,"metal":1.0},
+  {"name":"Rivet2","shape":"sphere","pos":[0.01,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.75],"smooth":0.65,"metal":1.0},
+  {"name":"Rivet3","shape":"sphere","pos":[0.31,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.75],"smooth":0.65,"metal":1.0}
+]}

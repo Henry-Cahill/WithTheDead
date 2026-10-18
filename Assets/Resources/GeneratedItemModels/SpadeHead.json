@@ -1,0 +1,11 @@
+{"version": 1, "id": "SpadeHead", "baseHeight": 0.075, "name": "Spade Head", "model": "gpt-oss:120b", "notes": "Spade head (metal) ~0.30 m long x 0.12 m wide x 0.03 m thick, lying on its side with the blade along X; front tip shown as a rounded ellipsoid, rear plate with a handle‑hole.", "score": 6, "parts": [
+  {"name":"BladeCore","shape":"cube","pos":[-0.025,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.125,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.03,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BackPlate","shape":"cube","pos":[-0.155,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.12],"color":[0.55,0.55,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"HandleHole","shape":"cylinder","pos":[-0.155,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.04,0.03],"color":[0.2,0.2,0.22],"smooth":0.4,"metal":1.0},
+  {"name":"RimTop","shape":"cube","pos":[-0.025,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.12],"color":[0.45,0.45,0.48],"smooth":0.4,"metal":1.0},
+  {"name":"RimBottom","shape":"cube","pos":[-0.025,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.12],"color":[0.45,0.45,0.48],"smooth":0.4,"metal":1.0},
+  {"name":"RimLeft","shape":"cube","pos":[-0.025,0.0,0.058],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.004],"color":[0.45,0.45,0.48],"smooth":0.4,"metal":1.0},
+  {"name":"RimRight","shape":"cube","pos":[-0.025,0.0,-0.058],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.004],"color":[0.45,0.45,0.48],"smooth":0.4,"metal":1.0},
+  {"name":"SharpenEdge","shape":"cube","pos":[0.165,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.006,0.12],"color":[0.55,0.55,0.6],"smooth":0.6,"metal":1.0}
+]}

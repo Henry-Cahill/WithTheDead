@@ -1,0 +1,12 @@
+{"version": 1, "id": "KnifeFillet", "baseHeight": 0.07, "name": "Knife Fillet", "model": "gpt-oss:120b", "notes": "Fillet‑style knife ~0.32 m total length (0.25 m steel blade, 0.07 m polymer handle) lying on its side with the blade extending along +X; includes a small cross‑guard, butt rivet and tip cap for clear silhouette.", "score": 6, "parts": [
+  {"name":"Blade","shape":"cube","pos":[0.035,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.006,0.025],"color":[0.75,0.78,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Handle","shape":"cube","pos":[-0.125,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.02,0.03],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Guard","shape":"cylinder","pos":[-0.09,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.04],"color":[0.75,0.78,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RivetButt","shape":"sphere","pos":[-0.155,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.75,0.78,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"TipCap","shape":"sphere","pos":[0.155,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.016,0.008],"color":[0.75,0.78,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"GripWrap","shape":"cylinder","pos":[-0.125,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.018,0.03],"color":[0.45,0.45,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"ScrewGuard","shape":"sphere","pos":[-0.09,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.75,0.78,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeHighlight","shape":"cube","pos":[0.035,-0.0055,0.0125],"rot":[0.0,0.0,0.0],"size":[0.25,0.002,0.002],"color":[0.9,0.92,1.0],"smooth":0.8,"metal":1.0},
+  {"name":"Fuller","shape":"cube","pos":[0.035,-0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.002,0.004],"color":[0.6,0.62,0.65],"smooth":0.55,"metal":1.0},
+  {"name":"TipPoint","shape":"sphere","pos":[0.158,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.75,0.78,0.8],"smooth":0.6,"metal":1.0}
+]}

@@ -1,0 +1,9 @@
+{"version": 1, "id": "Animal_BowtieGold", "baseHeight": 0.08, "name": "Animal Bowtie Gold", "model": "gpt-oss:120b", "notes": "Flat animal bow‑tie (headwear) ~0.30 m wide × 0.04 m thick × 0.15 m deep: central knot, two rounded loops, left/right tails, gold‑metal edge trim and a small clasp at the front centre.", "score": 6, "parts": [
+  {"name":"Knot","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LoopL","shape":"cylinder","pos":[-0.07,-0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,0.08,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"LoopR","shape":"cylinder","pos":[0.07,-0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,0.08,0.04],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TailL","shape":"cube","pos":[-0.18,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.025],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"TailR","shape":"cube","pos":[0.18,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.025],"color":[0.55,0.5,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTrim","shape":"cube","pos":[0.0,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.004,0.17],"color":[0.9,0.75,0.2],"smooth":0.4,"metal":1.0},
+  {"name":"Clasp","shape":"sphere","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.9,0.75,0.2],"smooth":0.5,"metal":1.0}
+]}

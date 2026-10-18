@@ -1,0 +1,12 @@
+{"version": 1, "id": "Leather_Crude_Medium", "baseHeight": 0.22, "name": "Leather Crude Medium", "model": "gpt-oss:120b", "notes": "Chunk of crude leather about 30 cm × 20 cm × 1.5 cm, lying flat on the floor. Main slab with rolled edges, two stitched borders, a couple of dark stain spots, a faint central crease and a torn rag edge.", "score": 6, "parts": [
+  {"name":"BaseSlab","shape":"cube","pos":[0.0,-0.0072,0.0125],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.2],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeRollTop","shape":"cylinder","pos":[0.0,0.0,0.0125],"rot":[90.0,0.0,0.0],"size":[0.32,0.004,0.32],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"StitchLeft","shape":"cube","pos":[-0.145,-0.0022,0.0125],"rot":[0.0,0.0,0.0],"size":[0.3,0.003,0.004],"color":[0.4,0.38,0.32],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRight","shape":"cube","pos":[0.145,-0.0022,0.0125],"rot":[0.0,0.0,0.0],"size":[0.3,0.003,0.004],"color":[0.4,0.38,0.32],"smooth":0.05,"metal":0.0},
+  {"name":"StainSpot1","shape":"sphere","pos":[-0.06,-0.0067,-0.0575],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.25,0.22,0.18],"smooth":0.03,"metal":0.0},
+  {"name":"StainSpot2","shape":"sphere","pos":[0.08,-0.0057,0.0625],"rot":[0.0,0.0,0.0],"size":[0.035,0.018,0.035],"color":[0.28,0.24,0.2],"smooth":0.03,"metal":0.0},
+  {"name":"CentralCrease","shape":"cube","pos":[0.0,-0.0032,0.0125],"rot":[0.0,0.0,0.0],"size":[0.3,0.002,0.015],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"TornEdgeFlap","shape":"cube","pos":[-0.148,-0.0022,-0.0825],"rot":[15.0,0.0,0.0],"size":[0.04,0.008,0.06],"color":[0.45,0.43,0.38],"smooth":0.07,"metal":0.0},
+  {"name":"RagStrip","shape":"cube","pos":[-0.14,-0.0012,-0.0775],"rot":[0.0,0.0,0.0],"size":[0.08,0.006,0.02],"color":[0.48,0.46,0.4],"smooth":0.06,"metal":0.0},
+  {"name":"LeatherTag","shape":"cylinder","pos":[0.12,-0.0007,0.1025],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.35,0.33,0.28],"smooth":0.05,"metal":0.0}
+]}

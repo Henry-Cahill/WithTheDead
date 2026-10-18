@@ -1,0 +1,8 @@
+{"version": 1, "id": "AnimalBone", "baseHeight": 0.18, "name": "Animal Bone", "model": "gpt-oss:120b", "notes": "Animal bone club ~1.2 m long, lying on its side (long axis along X). Main shaft is a thin cylinder, thick rounded blunt end at +X and a small tip at –X for balance.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.08,-0.09,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,1.0,0.06],"color":[0.6,0.6,0.64],"smooth":0.08,"metal":0.0},
+  {"name":"BluntEnd","shape":"sphere","pos":[0.54,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.24,0.24],"color":[0.6,0.6,0.64],"smooth":0.08,"metal":0.0},
+  {"name":"TipEnd","shape":"sphere","pos":[-0.62,-0.08,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.6,0.6,0.64],"smooth":0.08,"metal":0.0},
+  {"name":"Ridge","shape":"cylinder","pos":[0.37,-0.08,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.15,0.07],"color":[0.55,0.55,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"GrindMark","shape":"cube","pos":[0.12,-0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.06],"color":[0.5,0.5,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"BaseSupport","shape":"cube","pos":[-0.28,-0.105,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.06],"color":[0.55,0.55,0.6],"smooth":0.08,"metal":0.0}
+]}

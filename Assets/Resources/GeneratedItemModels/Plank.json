@@ -1,0 +1,12 @@
+{"version": 1, "id": "Plank", "baseHeight": 0.1025, "name": "Plank", "model": "gpt-oss:120b", "notes": "Wooden plank weapon ~1.30 m long, 12 cm wide, 2.5 cm thick (thicker 4 cm business end). Lying on its side with X‑axis length; includes a grip near the handle end, a reinforced metal cap on the striking end, a dark wood stripe for visual detail and a few screw heads.", "score": 7, "parts": [
+  {"name":"MainPlank","shape":"cube","pos":[-0.025,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[1.3,0.025,0.12],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"TaperLeft","shape":"cube","pos":[-0.575,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.025,0.1],"color":[0.58,0.58,0.62],"smooth":0.15,"metal":0.0},
+  {"name":"TaperRight","shape":"cube","pos":[0.525,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.04,0.14],"color":[0.58,0.58,0.62],"smooth":0.15,"metal":0.0},
+  {"name":"MetalCap","shape":"cube","pos":[0.525,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.14],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.525,0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.2,0.08],"color":[0.08,0.08,0.09],"smooth":0.3,"metal":0.0},
+  {"name":"Stripe","shape":"cube","pos":[-0.025,-0.016,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.003,0.12],"color":[0.45,0.45,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"Screw1","shape":"sphere","pos":[-0.325,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.8,0.85],"smooth":0.55,"metal":1.0},
+  {"name":"Screw2","shape":"sphere","pos":[-0.125,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.8,0.85],"smooth":0.55,"metal":1.0},
+  {"name":"Screw3","shape":"sphere","pos":[0.175,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.8,0.85],"smooth":0.55,"metal":1.0},
+  {"name":"Screw4","shape":"sphere","pos":[0.375,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.8,0.85],"smooth":0.55,"metal":1.0}
+]}

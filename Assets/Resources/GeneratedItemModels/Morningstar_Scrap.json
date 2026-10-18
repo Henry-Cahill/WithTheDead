@@ -1,0 +1,14 @@
+{"version": 1, "id": "Morningstar_Scrap", "baseHeight": 0.18, "name": "Morningstar Scrap", "model": "gpt-oss:120b", "notes": "Scrap morningstar melee weapon ~1.30 m long, lying on its side (shaft along X). Main steel shaft with a spiked ball at the far end, three spikes on the ball, a metal flange, a wooden butt end, a grip band and four small rivets for detail.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.09,-0.1,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,1.2,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Flange","shape":"cylinder","pos":[0.51,-0.1,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.01,0.06],"color":[0.55,0.55,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"Ball","shape":"sphere","pos":[0.63,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.24,0.24],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeFwd","shape":"cylinder","pos":[0.63,0.0,0.08],"rot":[90.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeBack","shape":"cylinder","pos":[0.63,0.0,-0.08],"rot":[90.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeUp","shape":"cylinder","pos":[0.63,0.08,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Butt","shape":"cube","pos":[-0.72,-0.1,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.04],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"GripBand","shape":"cylinder","pos":[-0.09,-0.1,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.008,0.05],"color":[0.55,0.55,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"Rivet1","shape":"sphere","pos":[-0.49,-0.096,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet2","shape":"sphere","pos":[-0.09,-0.096,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet3","shape":"sphere","pos":[0.31,-0.096,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetBall","shape":"sphere","pos":[0.514,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

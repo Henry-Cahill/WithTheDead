@@ -1,0 +1,13 @@
+{"version": 1, "id": "CowLeather_Angus_Fur_Tan_Medium", "baseHeight": 0.0955, "name": "Cow Leather Angus Fur Tan Medium", "model": "gpt-oss:120b", "notes": "Flat cow‑leather sheet with Angus fur on one side, size 0.40 m × 0.30 m × 0.006 m (length X × width Z × thickness Y). Leather tinted tan (0.6,0.58,0.5) lies flat on the floor; a few fluffy fur tufts are shown on the opposite side and thin stitching lines run around the edges.", "score": 6, "parts": [
+  {"name":"LeatherSheet","shape":"cube","pos":[0.0,-0.0325,-0.005],"rot":[0.0,0.0,0.0],"size":[0.4,0.006,0.3],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cube","pos":[0.0,-0.0325,0.143],"rot":[0.0,0.0,0.0],"size":[0.4,0.002,0.004],"color":[0.42,0.4,0.33],"smooth":0.08,"metal":0.0},
+  {"name":"StitchBottom","shape":"cube","pos":[0.0,-0.0325,-0.153],"rot":[0.0,0.0,0.0],"size":[0.4,0.002,0.004],"color":[0.42,0.4,0.33],"smooth":0.08,"metal":0.0},
+  {"name":"StitchLeft","shape":"cube","pos":[-0.198,-0.0325,-0.005],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.3],"color":[0.42,0.4,0.33],"smooth":0.08,"metal":0.0},
+  {"name":"StitchRight","shape":"cube","pos":[0.198,-0.0325,-0.005],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.3],"color":[0.42,0.4,0.33],"smooth":0.08,"metal":0.0},
+  {"name":"FurPatch1","shape":"sphere","pos":[-0.12,0.0005,-0.075],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.04],"color":[0.71,0.68,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"FurPatch2","shape":"sphere","pos":[0.05,0.0005,0.075],"rot":[0.0,0.0,0.0],"size":[0.045,0.065,0.045],"color":[0.71,0.68,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"FurPatch3","shape":"sphere","pos":[-0.18,0.0005,0.115],"rot":[0.0,0.0,0.0],"size":[0.038,0.058,0.038],"color":[0.71,0.68,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"FurPatch4","shape":"sphere","pos":[0.15,0.0005,-0.125],"rot":[0.0,0.0,0.0],"size":[0.042,0.062,0.042],"color":[0.71,0.68,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"FurPatch5","shape":"sphere","pos":[0.0,0.0005,-0.005],"rot":[0.0,0.0,0.0],"size":[0.05,0.07,0.05],"color":[0.71,0.68,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"FurPatch6","shape":"sphere","pos":[-0.06,0.0005,0.135],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.04],"color":[0.71,0.68,0.6],"smooth":0.2,"metal":0.0}
+]}

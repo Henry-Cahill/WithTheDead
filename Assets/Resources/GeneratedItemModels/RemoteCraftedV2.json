@@ -1,0 +1,13 @@
+{"version": 1, "id": "RemoteCraftedV2", "baseHeight": 0.0705, "name": "Remote Crafted V2", "model": "gpt-oss:120b", "notes": "Handheld Remote Crafted V2 ~0.22 m long × 0.10 m wide × 0.02 m thick, plastic housing (tint 0.6, 0.58, 0.5) with a small LCD screen, four round buttons, a D‑pad and a side grip; lying flat on the floor.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.002,-0.0005,0.0045],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.1],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Screen","shape":"cube","pos":[-0.043,0.002,0.0045],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.08],"color":[0.2,0.22,0.25],"smooth":0.55,"metal":0.0},
+  {"name":"ButtonA","shape":"cylinder","pos":[0.062,0.0045,0.0395],"rot":[0.0,0.0,0.0],"size":[0.016,0.006,0.016],"color":[0.15,0.15,0.16],"smooth":0.45,"metal":0.0},
+  {"name":"ButtonB","shape":"cylinder","pos":[0.062,0.0045,0.0145],"rot":[0.0,0.0,0.0],"size":[0.016,0.006,0.016],"color":[0.15,0.15,0.16],"smooth":0.45,"metal":0.0},
+  {"name":"ButtonC","shape":"cylinder","pos":[0.062,0.0045,-0.0055],"rot":[0.0,0.0,0.0],"size":[0.016,0.006,0.016],"color":[0.15,0.15,0.16],"smooth":0.45,"metal":0.0},
+  {"name":"ButtonD","shape":"cylinder","pos":[0.062,0.0045,-0.0305],"rot":[0.0,0.0,0.0],"size":[0.016,0.006,0.016],"color":[0.15,0.15,0.16],"smooth":0.45,"metal":0.0},
+  {"name":"DPad","shape":"cube","pos":[-0.068,0.0045,0.0045],"rot":[0.0,0.0,0.0],"size":[0.03,0.004,0.03],"color":[0.15,0.15,0.16],"smooth":0.45,"metal":0.0},
+  {"name":"SideGrip","shape":"cylinder","pos":[-0.088,0.0045,0.0495],"rot":[0.0,0.0,90.0],"size":[0.012,0.018,0.012],"color":[0.55,0.54,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"BatteryCover","shape":"cube","pos":[-0.088,0.0045,-0.0405],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.03],"color":[0.5,0.48,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"LogoPlate","shape":"cylinder","pos":[-0.103,0.002,0.0045],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.018],"color":[0.2,0.22,0.25],"smooth":0.55,"metal":0.0},
+  {"name":"EdgeRim","shape":"cube","pos":[0.002,0.0005,0.0045],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.1],"color":[0.55,0.53,0.48],"smooth":0.4,"metal":0.0}
+]}

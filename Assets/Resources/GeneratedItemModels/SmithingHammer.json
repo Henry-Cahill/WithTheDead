@@ -1,0 +1,13 @@
+{"version": 1, "id": "SmithingHammer", "baseHeight": 0.109, "name": "Smithing Hammer", "model": "gpt-oss:120b", "notes": "Smithing hammer ≈0.96 m long lying on its side: wooden handle with leather grip runs along X, a short steel neck joins to a blocky head that crosses the handle. Striking face is a round disk on +Z, peen on –Z; small wedge and rivets add detail.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.08,-0.015,0.0025],"rot":[0.0,0.0,90.0],"size":[0.05,0.8,0.05],"color":[0.55,0.35,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"LeatherGrip","shape":"cylinder","pos":[-0.23,-0.005,0.0025],"rot":[0.0,0.0,90.0],"size":[0.07,0.2,0.07],"color":[0.25,0.12,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"Neck","shape":"cylinder","pos":[0.34,-0.005,0.0025],"rot":[0.0,0.0,90.0],"size":[0.07,0.12,0.07],"color":[0.7,0.71,0.73],"smooth":0.55,"metal":1.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.42,-0.0,0.0025],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.06],"color":[0.7,0.71,0.73],"smooth":0.55,"metal":1.0},
+  {"name":"Face","shape":"cylinder","pos":[0.42,0.005,0.04],"rot":[90.0,0.0,0.0],"size":[0.07,0.015,0.07],"color":[0.85,0.86,0.88],"smooth":0.65,"metal":1.0},
+  {"name":"Peen","shape":"cylinder","pos":[0.42,0.005,-0.0375],"rot":[90.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.6,0.61,0.63],"smooth":0.55,"metal":1.0},
+  {"name":"Wedge","shape":"cube","pos":[0.42,0.02,0.0025],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.45,0.46,0.48],"smooth":0.4,"metal":1.0},
+  {"name":"RivetL","shape":"cube","pos":[0.4,0.04,0.0275],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.004],"color":[0.3,0.31,0.33],"smooth":0.5,"metal":1.0},
+  {"name":"RivetR","shape":"cube","pos":[0.44,0.04,-0.0225],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.004],"color":[0.3,0.31,0.33],"smooth":0.5,"metal":1.0},
+  {"name":"HeadRimTop","shape":"cylinder","pos":[0.42,0.045,0.0025],"rot":[0.0,0.0,0.0],"size":[0.07,0.008,0.07],"color":[0.65,0.66,0.68],"smooth":0.55,"metal":1.0},
+  {"name":"HeadRimBottom","shape":"cylinder","pos":[0.42,-0.045,0.0025],"rot":[0.0,0.0,0.0],"size":[0.07,0.008,0.07],"color":[0.65,0.66,0.68],"smooth":0.55,"metal":1.0}
+]}

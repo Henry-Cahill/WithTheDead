@@ -1,0 +1,8 @@
+{"version": 1, "id": "Leather_Crude_Small", "baseHeight": 0.0743, "name": "Leather Crude Small", "model": "gpt-oss:120b", "notes": "Small crude leather scrap about 15 cm × 10 cm and 2 cm thick, lying flat on the floor. Chunky main piece with a ragged extra flap, a thin stitched line along one edge, a subtle grain overlay, a tiny punched hole and a torn corner for visual interest.", "score": 6, "parts": [
+  {"name":"MainPiece","shape":"cube","pos":[-0.015,-0.0007,0.006],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.1],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RagFlap","shape":"cube","pos":[0.08,-0.0007,0.006],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.08],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLine","shape":"cylinder","pos":[-0.015,0.0113,-0.039],"rot":[0.0,0.0,90.0],"size":[0.004,0.14,0.004],"color":[0.32,0.28,0.22],"smooth":0.1,"metal":0.0},
+  {"name":"GrainOverlay","shape":"cube","pos":[-0.015,-0.0002,0.006],"rot":[0.0,0.0,0.0],"size":[0.15,0.002,0.1],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PunchHole","shape":"sphere","pos":[-0.055,0.0043,0.036],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.35,0.33,0.28],"smooth":0.05,"metal":0.0},
+  {"name":"TornCorner","shape":"cube","pos":[-0.085,-0.0007,-0.039],"rot":[15.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.57,0.55,0.47],"smooth":0.05,"metal":0.0}
+]}

@@ -46,6 +46,16 @@ namespace CloneZ
                 EmptyChance = CloneZConfig.MirrorCabinetEmptyChance,
                 MaxStacks = CloneZConfig.MirrorCabinetMaxStacks,
             };
+            return Create(wall, point, door, seed, options);
+        }
+
+        /// <summary>The cabinet stocked as <paramref name="options"/> says (a raid house's: one of its main containers, see
+        /// <see cref="RaidBuilding.MainStock"/>); its look in the mirror is added to them.</summary>
+        public static StorageFixture Create(Transform wall, Vector3 point, FixturePart door, int seed, StorageOptions options)
+        {
+            options ??= new StorageOptions { LootType = ContainerType.MedCabinet };
+            options.Noun ??= "bathroom cabinet";
+            options.ContainerName ??= "Bathroom cabinet";
             StorageFixture cabinet = StorageFixture.Create(wall, "Bathroom cabinet", Interactable.KeyFor("mirrorcabinet", point), point,
                 new[] { door }, null, seed, options);
             // The mirror's on the door: an open cabinet is swung shut first.

@@ -1,0 +1,10 @@
+{"version": 1, "id": "SunflowerSeeds", "baseHeight": 0.15, "name": "Sunflower Seeds", "model": "gpt-oss:120b", "notes": "Sunflower seed packet ≈ 0.12 m wide × 0.18 m tall × 0.07 m deep; cardboard body with a brown label, a tiny front flap and a visible pile of seeds inside.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0,-0.0029],"rot":[0.0,0.0,0.0],"size":[0.12,0.18,0.07],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"InnerSeeds","shape":"sphere","pos":[0.0,-0.03,-0.0029],"rot":[0.0,0.0,0.0],"size":[0.09,0.07,0.06],"color":[0.5,0.45,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBase","shape":"cube","pos":[0.0,0.03,0.0339],"rot":[0.0,0.0,0.0],"size":[0.1,0.015,0.002],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0,0.038,0.0339],"rot":[0.0,0.0,0.0],"size":[0.102,0.002,0.002],"color":[0.35,0.25,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.0,0.022,0.0339],"rot":[0.0,0.0,0.0],"size":[0.102,0.002,0.002],"color":[0.35,0.25,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"FrontFlap","shape":"cube","pos":[0.0,0.083,0.0339],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.01],"color":[0.73,0.66,0.42],"smooth":0.1,"metal":0.0},
+  {"name":"BottomSeam","shape":"cube","pos":[0.0,-0.0885,-0.0029],"rot":[0.0,0.0,0.0],"size":[0.122,0.003,0.072],"color":[0.68,0.58,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"TopEdge","shape":"cube","pos":[0.0,0.0885,-0.0029],"rot":[0.0,0.0,0.0],"size":[0.122,0.003,0.072],"color":[0.68,0.58,0.38],"smooth":0.1,"metal":0.0}
+]}

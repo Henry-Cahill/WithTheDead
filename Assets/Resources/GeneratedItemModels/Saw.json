@@ -1,0 +1,8 @@
+{"version": 1, "id": "Saw", "baseHeight": 0.08, "name": "Saw", "model": "gpt-oss:120b", "notes": "Hand‑saw ~0.80 m long lying on its side (blade along –X, wooden handle along +X). Blade steel with simple teeth, wooden cylindrical handle, and a metal rivet at the joint.", "score": 6, "parts": [
+  {"name":"Blade","shape":"cube","pos":[-0.135,-0.015,-0.001],"rot":[0.0,0.0,0.0],"size":[0.55,0.01,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Teeth","shape":"cube","pos":[-0.39,-0.0075,-0.001],"rot":[0.0,0.0,0.0],"size":[0.05,0.015,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.29,0.0,-0.001],"rot":[0.0,0.0,90.0],"size":[0.04,0.25,0.04],"color":[0.38,0.3,0.22],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[0.18,0.0,-0.001],"rot":[0.0,0.0,90.0],"size":[0.04,0.08,0.04],"color":[0.25,0.18,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"Rivet","shape":"sphere","pos":[0.04,-0.0075,-0.001],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.75,0.75,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"BladeEdge","shape":"cube","pos":[-0.135,-0.015,0.019],"rot":[0.0,0.0,0.0],"size":[0.55,0.008,0.004],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "BlockMace", "baseHeight": 0.17, "name": "Block Mace", "model": "gpt-oss:120b", "notes": "Block mace ~1 m long, wooden handle (≈0.8 m) on its side with a solid steel block head (≈0.2 m) and four short spikes on the top of the head. Handle wrapped in dark leather grip.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.085,-0.09,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.8,0.04],"color":[0.45,0.32,0.22],"smooth":0.15,"metal":0.0},
+  {"name":"LeatherWrap","shape":"cylinder","pos":[-0.185,-0.085,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.15,0.05],"color":[0.2,0.1,0.05],"smooth":0.3,"metal":0.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.415,-0.05,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.12,0.12],"color":[0.6,0.6,0.64],"smooth":0.45,"metal":1.0},
+  {"name":"SpikeFL","shape":"cylinder","pos":[0.485,0.04,0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeFR","shape":"cylinder","pos":[0.485,0.04,-0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeBL","shape":"cylinder","pos":[0.345,0.04,0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeBR","shape":"cylinder","pos":[0.345,0.04,-0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"CentralSpike","shape":"cylinder","pos":[0.415,0.07,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.08,0.025],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"HeadRim","shape":"cylinder","pos":[0.415,0.01,0.0],"rot":[90.0,0.0,0.0],"size":[0.14,0.008,0.14],"color":[0.45,0.45,0.48],"smooth":0.4,"metal":1.0},
+  {"name":"HandleEndCap","shape":"cylinder","pos":[-0.485,-0.09,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.06,0.04],"color":[0.45,0.32,0.22],"smooth":0.15,"metal":0.0}
+]}

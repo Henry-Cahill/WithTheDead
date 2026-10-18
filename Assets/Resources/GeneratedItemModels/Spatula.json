@@ -1,0 +1,9 @@
+{"version": 1, "id": "Spatula", "baseHeight": 0.075, "name": "Spatula", "model": "gpt-oss:120b", "notes": "Spatula ~0.33 m long lying on its side (X axis). Metal blade 0.11 m × 0.07 m × 0.005 m, stainless‑steel finish. Tapered plastic/wooden handle 0.22 m long, 0.03 m diameter, tinted tan (0.6,0.58,0.5). Small rivet and grip ring at the blade‑handle junction.", "score": 6, "parts": [
+  {"name":"Blade","shape":"cube","pos":[0.1175,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.005,0.07],"color":[0.85,0.86,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"BladeTopRim","shape":"cube","pos":[0.1175,-0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.002,0.07],"color":[0.85,0.86,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[-0.0475,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.22,0.015],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"HandleEndCap","shape":"sphere","pos":[-0.1575,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Rivet","shape":"cylinder","pos":[0.0625,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.01,0.008,0.01],"color":[0.85,0.86,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"HandleRing","shape":"cylinder","pos":[0.0525,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.018,0.004,0.018],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"GripBand","shape":"cylinder","pos":[-0.0125,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.017,0.02,0.017],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0}
+]}

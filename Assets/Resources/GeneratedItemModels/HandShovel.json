@@ -1,0 +1,8 @@
+{"version": 1, "id": "HandShovel", "baseHeight": 0.085, "name": "Hand Shovel", "model": "gpt-oss:120b", "notes": "Hand shovel ~0.90 m long: wooden handle (0.70 m) lying on its side along X, thin steel scoop blade (0.20 m × 0.12 m) at the business end, metal bolt joining them and a rounded scoop tip.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.135,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.7,0.04],"color":[0.4,0.25,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.435,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.12,0.05],"color":[0.3,0.18,0.07],"smooth":0.2,"metal":0.0},
+  {"name":"Bolt","shape":"sphere","pos":[0.215,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"BladeBase","shape":"cube","pos":[0.315,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeEdge","shape":"cube","pos":[0.395,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.02],"color":[0.55,0.55,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"ScoopTip","shape":"sphere","pos":[0.455,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "NoiseTrapSensorV2", "baseHeight": 0.16, "name": "Noise Trap Sensor V2", "model": "gpt-oss:120b", "notes": "Long blunt weapon ~0.95 m total length: thin alloy rod lying on its side (X‑axis) with a compact sensor head at the +X end, rubberised grip mid‑shaft, end‑cap, wrapped cable and a few antennae/buttons for visual detail.", "score": 6, "parts": [
+  {"name":"Rod","shape":"cylinder","pos":[-0.065,-0.08,-0.02],"rot":[0.0,0.0,90.0],"size":[0.04,0.9,0.04],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":0.7},
+  {"name":"Grip","shape":"cylinder","pos":[-0.265,-0.07,-0.02],"rot":[0.0,0.0,90.0],"size":[0.06,0.25,0.06],"color":[0.22,0.24,0.28],"smooth":0.15,"metal":0.0},
+  {"name":"EndCap","shape":"cylinder","pos":[-0.54,-0.075,-0.02],"rot":[0.0,0.0,90.0],"size":[0.05,0.05,0.05],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":0.7},
+  {"name":"SensorBody","shape":"cube","pos":[0.46,-0.06,-0.02],"rot":[0.0,0.0,0.0],"size":[0.15,0.08,0.12],"color":[0.58,0.58,0.62],"smooth":0.35,"metal":0.5},
+  {"name":"AntennaVertical","shape":"cylinder","pos":[0.46,0.04,-0.02],"rot":[0.0,0.0,0.0],"size":[0.01,0.12,0.01],"color":[0.4,0.42,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"AntennaAngled","shape":"cylinder","pos":[0.485,-0.01,0.02],"rot":[45.0,0.0,0.0],"size":[0.01,0.1,0.01],"color":[0.4,0.42,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Lens","shape":"sphere","pos":[0.555,-0.06,-0.02],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.2,0.25,0.3],"smooth":0.6,"metal":0.0},
+  {"name":"ButtonPanel","shape":"cube","pos":[0.46,-0.05,0.05],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.06],"color":[0.5,0.5,0.55],"smooth":0.25,"metal":0.0},
+  {"name":"Screw1","shape":"sphere","pos":[0.45,-0.045,0.07],"rot":[0.0,0.0,0.0],"size":[0.005,0.005,0.005],"color":[0.2,0.2,0.22],"smooth":0.6,"metal":1.0},
+  {"name":"Screw2","shape":"sphere","pos":[0.47,-0.045,0.07],"rot":[0.0,0.0,0.0],"size":[0.005,0.005,0.005],"color":[0.2,0.2,0.22],"smooth":0.6,"metal":1.0},
+  {"name":"CableWrap","shape":"cylinder","pos":[-0.115,-0.075,-0.02],"rot":[0.0,0.0,90.0],"size":[0.01,0.9,0.01],"color":[0.3,0.32,0.35],"smooth":0.2,"metal":0.0}
+]}

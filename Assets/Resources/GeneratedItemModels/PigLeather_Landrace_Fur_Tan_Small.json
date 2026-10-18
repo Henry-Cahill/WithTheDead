@@ -1,0 +1,13 @@
+{"version": 1, "id": "PigLeather_Landrace_Fur_Tan_Small", "baseHeight": 0.0805, "name": "Pig Leather Landrace Fur Tan Small", "model": "gpt-oss:120b", "notes": "Small piece of pig leather with natural fur, tan (≈0.6 × 0.58 × 0.5). Flat rectangle ~0.18 m × 0.13 m, about 2.5 cm thick, lying on the floor. Main leather slab plus a few fluffy fur clumps and frayed edge strips give shape.", "score": 6, "parts": [
+  {"name":"BaseLeather","shape":"cube","pos":[0.0,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,0.13],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeStripTop","shape":"cube","pos":[0.0,-0.0065,0.065],"rot":[0.0,0.0,0.0],"size":[0.18,0.005,0.01],"color":[0.58,0.55,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeStripBottom","shape":"cube","pos":[0.0,-0.0065,-0.065],"rot":[0.0,0.0,0.0],"size":[0.18,0.005,0.01],"color":[0.58,0.55,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeStripLeft","shape":"cube","pos":[-0.09,-0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.13],"color":[0.58,0.55,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeStripRight","shape":"cube","pos":[0.09,-0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.13],"color":[0.58,0.55,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"FurClump1","shape":"sphere","pos":[-0.04,0.0075,0.03],"rot":[0.0,0.0,0.0],"size":[0.018,0.025,0.018],"color":[0.58,0.55,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"FurClump2","shape":"sphere","pos":[0.03,0.0065,-0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.028,0.02],"color":[0.58,0.55,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"FurClump3","shape":"sphere","pos":[0.05,0.0085,0.04],"rot":[0.0,0.0,0.0],"size":[0.015,0.022,0.015],"color":[0.58,0.55,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"FurClump4","shape":"sphere","pos":[-0.06,0.0055,-0.03],"rot":[0.0,0.0,0.0],"size":[0.017,0.024,0.017],"color":[0.58,0.55,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"FurPatch","shape":"cube","pos":[0.0,0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.09],"color":[0.58,0.55,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"StitchLine","shape":"cube","pos":[0.0,-0.0055,0.06],"rot":[0.0,0.0,0.0],"size":[0.16,0.002,0.004],"color":[0.45,0.42,0.38],"smooth":0.05,"metal":0.0}
+]}

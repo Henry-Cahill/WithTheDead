@@ -1,0 +1,13 @@
+{"version": 1, "id": "ScannerModule", "baseHeight": 0.085, "name": "Scanner Module", "model": "gpt-oss:120b", "notes": "Flat scanner module about 0.12 m long × 0.06 m wide × 0.02 m thick (lying on its side, longest axis along X). Main plastic housing, a dark LCD screen, two round buttons, a side USB‑type port, four tiny screws in the corners and a short antenna rod that sticks up from the top surface.", "score": 7, "parts": [
+  {"name":"Housing","shape":"cube","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.06],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Screen","shape":"cube","pos":[-0.015,-0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.004,0.045],"color":[0.08,0.08,0.1],"smooth":0.6,"metal":0.0},
+  {"name":"ButtonL","shape":"cylinder","pos":[-0.04,-0.003,0.02],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.5,0.48,0.42],"smooth":0.2,"metal":0.0},
+  {"name":"ButtonR","shape":"cylinder","pos":[-0.04,-0.003,-0.02],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.5,0.48,0.42],"smooth":0.2,"metal":0.0},
+  {"name":"Port","shape":"cube","pos":[0.045,-0.01,-0.025],"rot":[0.0,0.0,0.0],"size":[0.018,0.006,0.008],"color":[0.2,0.22,0.25],"smooth":0.3,"metal":0.0},
+  {"name":"Antenna","shape":"cylinder","pos":[0.05,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.03,0.006],"color":[0.55,0.53,0.48],"smooth":0.5,"metal":0.0},
+  {"name":"ScrewFL","shape":"cylinder","pos":[-0.055,-0.011,-0.028],"rot":[0.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.7,0.7,0.71],"smooth":0.55,"metal":1.0},
+  {"name":"ScrewFR","shape":"cylinder","pos":[-0.055,-0.011,0.028],"rot":[0.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.7,0.7,0.71],"smooth":0.55,"metal":1.0},
+  {"name":"ScrewBL","shape":"cylinder","pos":[0.055,-0.011,-0.028],"rot":[0.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.7,0.7,0.71],"smooth":0.55,"metal":1.0},
+  {"name":"ScrewBR","shape":"cylinder","pos":[0.055,-0.011,0.028],"rot":[0.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.7,0.7,0.71],"smooth":0.55,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[-0.03,-0.013,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.55,0.53,0.48],"smooth":0.12,"metal":0.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "DeerLeather_Fur_Tan_Wet", "baseHeight": 0.0775, "name": "Deer Leather Fur Tan Wet", "model": "gpt-oss:120b", "notes": "Flat piece of wet deer leather‑fur, about 0.40 m × 0.30 m × 0.015 m thick. Main sheet with raised edge rims, a few clumps of fur and glossy wet spots to hint at dampness.", "score": 6, "parts": [
+  {"name":"MainSheet","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.015,0.3],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0,0.0075,0.14],"rot":[0.0,0.0,0.0],"size":[0.4,0.02,0.02],"color":[0.45,0.43,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0,0.0075,-0.14],"rot":[0.0,0.0,0.0],"size":[0.4,0.02,0.02],"color":[0.45,0.43,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.19,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.28],"color":[0.45,0.43,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.19,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.28],"color":[0.45,0.43,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"FurPatch1","shape":"sphere","pos":[-0.1,0.0075,0.05],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.06],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FurPatch2","shape":"sphere","pos":[0.12,-0.0015,0.0225],"rot":[0.0,0.0,0.0],"size":[0.05,0.015,0.04],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FurPatch3","shape":"sphere","pos":[-0.15,-0.0015,0.021],"rot":[0.0,0.0,0.0],"size":[0.03,0.012,0.035],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FurPatch4","shape":"sphere","pos":[0.08,-0.0015,0.024],"rot":[0.0,0.0,0.0],"size":[0.045,0.018,0.05],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"WetSpot1","shape":"cylinder","pos":[-0.05,-0.0005,-0.08],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.08],"color":[0.7,0.68,0.62],"smooth":0.3,"metal":0.0},
+  {"name":"WetSpot2","shape":"cylinder","pos":[0.1,-0.0005,0.07],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.06],"color":[0.7,0.68,0.62],"smooth":0.3,"metal":0.0},
+  {"name":"Droplet","shape":"sphere","pos":[0.18,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.75,0.73,0.66],"smooth":0.4,"metal":0.0}
+]}

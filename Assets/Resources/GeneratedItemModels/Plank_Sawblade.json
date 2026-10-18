@@ -1,0 +1,14 @@
+{"version": 1, "id": "Plank_Sawblade", "baseHeight": 0.09, "name": "Plank Sawblade", "model": "gpt-oss:120b", "notes": "Plank‑mounted circular sawblade weapon ~0.8 m wooden handle + 0.3 m diameter steel blade, total reach ≈1.2 m. All parts now touch or intersect the main body: wood handle, leather strap, end‑cap, metal guard band, central bolt, thin front plate, main blade disc with rim and four simple teeth (two on the front face, two on the top/bottom edges).", "score": 6, "parts": [
+  {"name":"Handle","shape":"cube","pos":[-0.035,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.8,0.04,0.06],"color":[0.42,0.28,0.12],"smooth":0.15,"metal":0.0},
+  {"name":"WoodenEndCap","shape":"cube","pos":[-0.485,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.04,0.06],"color":[0.42,0.28,0.12],"smooth":0.15,"metal":0.0},
+  {"name":"LeatherStrap","shape":"cube","pos":[-0.035,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.01,0.04],"color":[0.48,0.22,0.14],"smooth":0.05,"metal":0.0},
+  {"name":"GuardBand","shape":"cylinder","pos":[0.315,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.08],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"Bolt","shape":"sphere","pos":[0.345,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"BladeDisc","shape":"cylinder","pos":[0.375,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.3],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"BladeRim","shape":"cylinder","pos":[0.375,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.008,0.32],"color":[0.55,0.55,0.6],"smooth":0.45,"metal":1.0},
+  {"name":"FrontPlate","shape":"cube","pos":[0.39,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.28],"color":[0.6,0.6,0.64],"smooth":0.45,"metal":1.0},
+  {"name":"ToothN","shape":"cube","pos":[0.375,0.0,0.13],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.04],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"ToothS","shape":"cube","pos":[0.375,0.0,-0.13],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.04],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"ToothE","shape":"cube","pos":[0.375,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.04],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"ToothW","shape":"cube","pos":[0.375,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.04],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0}
+]}

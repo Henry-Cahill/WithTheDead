@@ -1,0 +1,8 @@
+{"version": 1, "id": "CrudeSwordBlade_Broken", "baseHeight": 0.095, "name": "Crude Sword Blade Broken", "model": "gpt-oss:120b", "notes": "Two broken pieces of a crude iron sword blade lying flat on the floor, longest axes along +X. Main fragment ~0.35 m long, 0.07 m wide, 1.5 cm thick; small tip fragment ~0.12 m long, 0.06 m wide, same thickness. A rust‑stained spot marks the break.", "score": 6, "parts": [
+  {"name":"MainBlade","shape":"cube","pos":[-0.07,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.015,0.07],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.8},
+  {"name":"MainEdge","shape":"cylinder","pos":[-0.07,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.07,0.015,0.07],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.8},
+  {"name":"SmallBlade","shape":"cube","pos":[0.185,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.06],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.8},
+  {"name":"SmallEdge","shape":"cylinder","pos":[0.185,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.06,0.015,0.06],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.8},
+  {"name":"RustPatch","shape":"sphere","pos":[-0.19,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.4,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"BreakNotch","shape":"cube","pos":[0.105,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.07],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.8}
+]}

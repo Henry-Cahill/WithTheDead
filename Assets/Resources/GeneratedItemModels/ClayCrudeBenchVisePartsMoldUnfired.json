@@ -1,0 +1,12 @@
+{"version": 1, "id": "ClayCrudeBenchVisePartsMoldUnfired", "baseHeight": 0.1137, "name": "Clay Crude Bench Vise Parts Mold Unfired", "model": "gpt-oss:120b", "notes": "Unfired clay bench‑vise mold ~0.25 m long × 0.15 m wide × 0.09 m thick, lying flat on its largest face. Main body is a rectangular block of raw clay with two shallow half‑cylinder cavities where the vise jaws will be cast, a central rectangular slot for the screw hole, and a few raised ridges indicating alignment ribs.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0062,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.09,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"JawCavityL","shape":"cylinder","pos":[-0.07,0.0238,0.04],"rot":[90.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"JawCavityR","shape":"cylinder","pos":[-0.07,0.0238,-0.04],"rot":[90.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"ScrewSlot","shape":"cube","pos":[0.07,0.0288,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.12],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"RidgeFront","shape":"cube","pos":[-0.115,0.0038,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.15],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"RidgeBack","shape":"cube","pos":[0.115,0.0038,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.15],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTrimTop","shape":"cube","pos":[0.0,0.0387,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.005,0.15],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTrimBottom","shape":"cube","pos":[0.0,-0.0512,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.005,0.15],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SideRidgeL","shape":"cube","pos":[0.0,0.0038,-0.075],"rot":[0.0,0.0,0.0],"size":[0.25,0.01,0.02],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SideRidgeR","shape":"cube","pos":[0.0,0.0038,0.075],"rot":[0.0,0.0,0.0],"size":[0.25,0.01,0.02],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0}
+]}

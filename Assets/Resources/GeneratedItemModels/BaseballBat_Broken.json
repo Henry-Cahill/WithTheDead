@@ -1,0 +1,8 @@
+{"version": 1, "id": "BaseballBat_Broken", "baseHeight": 0.1, "name": "Baseball Bat Broken", "model": "gpt-oss:120b", "notes": "Broken baseball bat ~0.85 m total length, lying on its side (long axis X). Barrel piece (0.5 m) thick, handle piece (0.35 m) slimmer, separated by a small gap at the break. Rounded tip, wooden knob at the butt, thin metal band around the break and a dark crack mark.", "score": 6, "parts": [
+  {"name":"BarrelPiece","shape":"cylinder","pos":[0.1775,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.5,0.07],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"HandlePiece","shape":"cylinder","pos":[-0.2575,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.35,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"TipSphere","shape":"sphere","pos":[0.4225,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Knob","shape":"sphere","pos":[-0.4275,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"MetalBand","shape":"cylinder","pos":[-0.0775,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.015,0.08],"color":[0.4,0.4,0.42],"smooth":0.45,"metal":1.0},
+  {"name":"Crack","shape":"cube","pos":[-0.0775,0.002,0.02],"rot":[0.0,0.0,0.0],"size":[0.07,0.004,0.03],"color":[0.05,0.05,0.05],"smooth":0.1,"metal":0.0}
+]}

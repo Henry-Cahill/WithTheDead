@@ -1,0 +1,14 @@
+{"version": 1, "id": "BarbedWireStack", "baseHeight": 0.26, "name": "Barbed Wire Stack", "model": "gpt-oss:120b", "notes": "Barbed‑wire stack about 0.6 m long × 0.4 m wide × 0.2 m tall. Three concentric coils of galvanized steel cable (large, medium and small diameter) lie on the floor; short metal barbs jut out from each coil to give the classic spiky silhouette. All barbs now sit flush against their respective coil surfaces.", "score": 6, "parts": [
+  {"name":"CoilLarge","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.4,0.08,0.4],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"CoilMedium","shape":"cylinder","pos":[0.0,-0.05,0.0],"rot":[0.0,0.0,90.0],"size":[0.3,0.08,0.3],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"CoilSmall","shape":"cylinder","pos":[0.0,-0.1,0.0],"rot":[0.0,0.0,90.0],"size":[0.2,0.08,0.2],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"BarbL1","shape":"cylinder","pos":[-0.02,0.0,0.22],"rot":[90.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.5,0.45,0.4],"smooth":0.65,"metal":1.0},
+  {"name":"BarbL2","shape":"cylinder","pos":[0.0,0.0,-0.22],"rot":[90.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.5,0.45,0.4],"smooth":0.65,"metal":1.0},
+  {"name":"BarbL3","shape":"cylinder","pos":[0.02,0.0,-0.22],"rot":[90.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.5,0.45,0.4],"smooth":0.65,"metal":1.0},
+  {"name":"BarbM1","shape":"cylinder","pos":[-0.01,-0.05,0.17],"rot":[90.0,0.0,0.0],"size":[0.008,0.035,0.008],"color":[0.5,0.45,0.4],"smooth":0.65,"metal":1.0},
+  {"name":"BarbM2","shape":"cylinder","pos":[0.01,-0.05,-0.17],"rot":[90.0,0.0,0.0],"size":[0.008,0.035,0.008],"color":[0.5,0.45,0.4],"smooth":0.65,"metal":1.0},
+  {"name":"BarbM3","shape":"cylinder","pos":[0.0,-0.05,0.18],"rot":[90.0,0.0,0.0],"size":[0.008,0.035,0.008],"color":[0.5,0.45,0.4],"smooth":0.65,"metal":1.0},
+  {"name":"BarbS1","shape":"cylinder","pos":[-0.06,-0.08,-0.08],"rot":[90.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.5,0.45,0.4],"smooth":0.65,"metal":1.0},
+  {"name":"BarbS2","shape":"cylinder","pos":[0.06,-0.08,0.08],"rot":[90.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.5,0.45,0.4],"smooth":0.65,"metal":1.0},
+  {"name":"BarbS3","shape":"cylinder","pos":[0.0,-0.08,-0.14],"rot":[90.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.5,0.45,0.4],"smooth":0.65,"metal":1.0}
+]}

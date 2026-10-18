@@ -1,0 +1,13 @@
+{"version": 1, "id": "IronBloom", "baseHeight": 0.1425, "name": "Iron Bloom", "model": "gpt-oss:120b", "notes": "Rough iron bloom ~0.35 m long × 0.22 m wide × 0.15 m high, lying on its side (long axis along X). Main block of forged steel with a few irregular protrusions and dark rust patches for visual interest.", "score": 6, "parts": [
+  {"name":"MainBody","shape":"cube","pos":[0.01,-0.0125,-0.0155],"rot":[0.0,0.0,0.0],"size":[0.34,0.14,0.2],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"ProtrusionA","shape":"cylinder","pos":[0.13,0.0325,0.0745],"rot":[0.0,0.0,30.0],"size":[0.06,0.08,0.06],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"ProtrusionB","shape":"cylinder","pos":[-0.13,0.0425,-0.0855],"rot":[0.0,0.0,-20.0],"size":[0.05,0.06,0.05],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"BumpSphere","shape":"sphere","pos":[0.09,0.0475,-0.0155],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"RustPatch1","shape":"cube","pos":[-0.04,-0.0025,0.0445],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.04],"color":[0.38,0.3,0.22],"smooth":0.2,"metal":0.0},
+  {"name":"RustPatch2","shape":"cube","pos":[0.11,0.0075,-0.0955],"rot":[0.0,0.0,0.0],"size":[0.08,0.012,0.03],"color":[0.38,0.3,0.22],"smooth":0.2,"metal":0.0},
+  {"name":"Rivet1","shape":"cylinder","pos":[-0.11,-0.0125,0.0745],"rot":[90.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.55,0.52,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet2","shape":"cylinder","pos":[0.16,-0.0125,-0.0755],"rot":[90.0,0.0,0.0],"size":[0.015,0.028,0.015],"color":[0.55,0.52,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet3","shape":"cylinder","pos":[0.01,-0.0125,0.1045],"rot":[90.0,0.0,0.0],"size":[0.015,0.032,0.015],"color":[0.55,0.52,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeChamfer","shape":"cube","pos":[-0.16,-0.0125,-0.1055],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.03],"color":[0.58,0.55,0.48],"smooth":0.45,"metal":1.0},
+  {"name":"SurfaceScrape","shape":"cube","pos":[0.06,0.0375,0.0245],"rot":[0.0,10.0,0.0],"size":[0.06,0.008,0.02],"color":[0.55,0.53,0.47],"smooth":0.4,"metal":1.0}
+]}

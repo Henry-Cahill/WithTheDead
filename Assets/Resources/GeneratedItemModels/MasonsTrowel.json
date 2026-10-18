@@ -1,0 +1,8 @@
+{"version": 1, "id": "MasonsTrowel", "baseHeight": 0.09, "name": "Masons Trowel", "model": "gpt-oss:120b", "notes": "Mason's trowel ~0.9 m long on its side (X‑axis). Wooden handle (~0.6 m) ending in a rubber grip, flat steel blade (~0.3 m × 0.15 m) with a small metal rivet at the junction.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.15,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.6,0.04],"color":[0.38,0.3,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.42,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.08,0.06],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"Blade","shape":"cube","pos":[0.3,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.15],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"BladeEdge","shape":"cube","pos":[0.45,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.012,0.16],"color":[0.55,0.55,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet","shape":"sphere","pos":[-0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.55,0.55,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"BladeBack","shape":"cube","pos":[0.3,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.004,0.15],"color":[0.55,0.55,0.6],"smooth":0.45,"metal":1.0}
+]}

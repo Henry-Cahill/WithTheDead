@@ -1,0 +1,10 @@
+{"version": 1, "id": "WoodenCrudeBenchVisePartsMold", "baseHeight": 0.11, "name": "Wooden Crude Bench Vise Parts Mold", "model": "gpt-oss:120b", "notes": "Wooden crude bench‑vise parts mold ~0.30 m long × 0.15 m wide × 0.10 m tall: solid wood block with two shallow cavities (jaw shape and screw housing), three mounting holes, and a couple of grain‑line ribs for visual texture.", "score": 6, "parts": [
+  {"name":"MainBlock","shape":"cube","pos":[0.0175,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.1,0.15],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"CavityJaws","shape":"cube","pos":[-0.0625,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.12],"color":[0.42,0.4,0.36],"smooth":0.1,"metal":0.0},
+  {"name":"CavityScrewHousing","shape":"cylinder","pos":[0.1075,0.025,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,0.03,0.04],"color":[0.42,0.4,0.36],"smooth":0.1,"metal":0.0},
+  {"name":"MountHoleL","shape":"cylinder","pos":[-0.1025,0.0,-0.06],"rot":[90.0,0.0,0.0],"size":[0.012,0.02,0.012],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"MountHoleC","shape":"cylinder","pos":[-0.1025,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.012,0.02,0.012],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"MountHoleR","shape":"cylinder","pos":[-0.1025,0.0,0.06],"rot":[90.0,0.0,0.0],"size":[0.012,0.02,0.012],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"GrainRib1","shape":"cube","pos":[-0.0425,0.005,0.07],"rot":[0.0,0.0,0.0],"size":[0.25,0.004,0.02],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"GrainRib2","shape":"cube","pos":[-0.0425,-0.005,-0.07],"rot":[0.0,0.0,0.0],"size":[0.25,0.004,0.02],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "BarBell_Forged", "baseHeight": 0.16, "name": "Bar Bell Forged", "model": "gpt-oss:120b", "notes": "Forged bar‑bell melee weapon ~1.5 m long lying on its side (X axis). Steel shaft with thicker central grip, two large forged weights at each end and a few decorative bands/rivets.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[0.0,-0.075,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,1.2,0.05],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[0.0,-0.06,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.3,0.08],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"WeightL","shape":"cylinder","pos":[-0.675,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.2,0.15,0.2],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"WeightR","shape":"cylinder","pos":[0.675,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.2,0.15,0.2],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"RingL","shape":"cylinder","pos":[-0.48,-0.065,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.015,0.06],"color":[0.55,0.55,0.6],"smooth":0.45,"metal":1.0},
+  {"name":"RingR","shape":"cylinder","pos":[0.48,-0.065,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.015,0.06],"color":[0.55,0.55,0.6],"smooth":0.45,"metal":1.0},
+  {"name":"RivetL","shape":"sphere","pos":[-0.2,-0.065,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"RivetC","shape":"sphere","pos":[0.0,-0.065,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[0.2,-0.065,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"BrandPlate","shape":"cube","pos":[0.0,-0.068,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.005,0.06],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":1.0}
+]}

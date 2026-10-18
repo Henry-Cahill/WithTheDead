@@ -1,0 +1,10 @@
+{"version": 1, "id": "IcecreamSandwich", "baseHeight": 0.07, "name": "Icecream Sandwich", "model": "gpt-oss:120b", "notes": "Ice‑cream sandwich ~13 cm long × 9 cm wide × 1.8 cm thick, lying flat on the floor. Two chocolate cookies with a creamy centre, wrapped in a thin paper/foil band.", "score": 6, "parts": [
+  {"name":"BottomCookie","shape":"cube","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.005,0.09],"color":[0.55,0.4,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"IceCream","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.008,0.09],"color":[0.9,0.95,0.97],"smooth":0.2,"metal":0.0},
+  {"name":"TopCookie","shape":"cube","pos":[0.0,0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.005,0.09],"color":[0.55,0.4,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"WrapFront","shape":"cube","pos":[0.0,0.0,0.046],"rot":[0.0,0.0,0.0],"size":[0.13,0.02,0.002],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"WrapBack","shape":"cube","pos":[0.0,0.0,-0.046],"rot":[0.0,0.0,0.0],"size":[0.13,0.02,0.002],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"WrapLeft","shape":"cube","pos":[-0.065,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.02,0.09],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"WrapRight","shape":"cube","pos":[0.065,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.02,0.09],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"WrapTopFlap","shape":"cube","pos":[0.0,0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.002,0.09],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

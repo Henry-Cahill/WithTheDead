@@ -1,0 +1,8 @@
+{"version": 1, "id": "SaucepanCopper", "baseHeight": 0.085, "name": "Saucepan Copper", "model": "gpt-oss:120b", "notes": "Copper saucepan used as a blunt melee weapon ~1 m long: long thin handle (cylinder) along X, shallow pan body (cube) at the +X end with a raised rim and a couple of rivet spheres on the handle. Overall dimensions ≈ 0.78 m handle + 0.22 m pan = 1.00 m length, 0.15 m wide, 0.04 m thick.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.115,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.78,0.04],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"RivetFront","shape":"sphere","pos":[0.245,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.55,0.45,0.35],"smooth":0.5,"metal":1.0},
+  {"name":"RivetRear","shape":"sphere","pos":[-0.405,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.55,0.45,0.35],"smooth":0.5,"metal":1.0},
+  {"name":"PanBody","shape":"cube","pos":[0.385,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.04,0.15],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"PanRim","shape":"cube","pos":[0.385,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.005,0.16],"color":[0.65,0.55,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"PanBottom","shape":"cylinder","pos":[0.385,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.005,0.15],"color":[0.58,0.55,0.57],"smooth":0.4,"metal":1.0}
+]}

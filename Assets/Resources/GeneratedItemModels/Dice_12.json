@@ -1,0 +1,12 @@
+{"version": 1, "id": "Dice_12", "baseHeight": 0.069, "name": "Dice 12", "model": "gpt-oss:120b", "notes": "12‑sided die modelled as a 0.018 m diameter sphere (plastic tint 0.6,0.58,0.5). Small black cylinders represent the raised numbers on each of the twelve faces and three thin cross‑bars hint the dodecahedron edges for silhouette clarity.", "score": 7, "parts": [
+  {"name":"Body","shape":"sphere","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"NumTop","shape":"cylinder","pos":[0.0,0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.004],"color":[0.05,0.05,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"NumFront","shape":"cylinder","pos":[0.0,-0.0,0.008],"rot":[-90.0,0.0,0.0],"size":[0.004,0.002,0.004],"color":[0.05,0.05,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"NumBack","shape":"cylinder","pos":[0.0,-0.0,-0.008],"rot":[90.0,0.0,0.0],"size":[0.004,0.002,0.004],"color":[0.05,0.05,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"NumRight","shape":"cylinder","pos":[0.008,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.002,0.004],"color":[0.05,0.05,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"NumLeft","shape":"cylinder","pos":[-0.008,-0.0,0.0],"rot":[0.0,0.0,-90.0],"size":[0.004,0.002,0.004],"color":[0.05,0.05,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"NumBottom","shape":"cylinder","pos":[0.0,-0.008,0.0],"rot":[-180.0,0.0,0.0],"size":[0.004,0.002,0.004],"color":[0.05,0.05,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"CrossX","shape":"cube","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.004,0.004],"color":[0.4,0.38,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"CrossY","shape":"cube","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.018,0.004],"color":[0.4,0.38,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"CrossZ","shape":"cube","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.018],"color":[0.4,0.38,0.35],"smooth":0.2,"metal":0.0}
+]}

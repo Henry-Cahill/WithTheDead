@@ -1,0 +1,10 @@
+{"version": 1, "id": "BookAimingSet", "baseHeight": 0.0737, "name": "Book Aiming Set", "model": "gpt-oss:120b", "notes": "Three paper‑back aiming manuals bundled together with a thin leather strap, lying flat on the floor. Each book ~0.24 m wide × 0.28 m tall × 0.018 m thick; the strap runs across the stack along the X‑axis.", "score": 7, "parts": [
+  {"name":"Book1_Cover","shape":"cube","pos":[-0.03,-0.0048,-0.02],"rot":[0.0,0.0,0.0],"size":[0.242,0.018,0.282],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Book1_Pages","shape":"cube","pos":[-0.03,-0.0067,-0.02],"rot":[0.0,0.0,0.0],"size":[0.236,0.014,0.276],"color":[0.9,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"Book2_Cover","shape":"cube","pos":[0.0,-0.0048,0.0],"rot":[0.0,0.0,0.0],"size":[0.242,0.018,0.282],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Book2_Pages","shape":"cube","pos":[0.0,-0.0067,0.0],"rot":[0.0,0.0,0.0],"size":[0.236,0.014,0.276],"color":[0.9,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"Book3_Cover","shape":"cube","pos":[0.03,-0.0048,0.02],"rot":[0.0,0.0,0.0],"size":[0.242,0.018,0.282],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Book3_Pages","shape":"cube","pos":[0.03,-0.0067,0.02],"rot":[0.0,0.0,0.0],"size":[0.236,0.014,0.276],"color":[0.9,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"LeatherStrap","shape":"cylinder","pos":[0.0,0.0057,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.26,0.012],"color":[0.4,0.35,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"StrapTie","shape":"cylinder","pos":[0.0,0.0077,0.0],"rot":[90.0,0.0,0.0],"size":[0.012,0.03,0.012],"color":[0.4,0.35,0.3],"smooth":0.1,"metal":0.0}
+]}

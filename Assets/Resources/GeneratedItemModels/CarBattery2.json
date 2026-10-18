@@ -1,0 +1,14 @@
+{"version": 1, "id": "CarBattery2", "baseHeight": 0.142, "name": "Car Battery2", "model": "gpt-oss:120b", "notes": "Car battery 0.30 m L × 0.18 m W × 0.15 m H lying on its side (long axis X). Main plastic case, metal caps and terminals, vent holes and a label strip.", "score": 7, "parts": [
+  {"name":"Case","shape":"cube","pos":[0.001,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.15,0.18],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"TopPlate","shape":"cube","pos":[0.001,0.065,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.008,0.18],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":0.0},
+  {"name":"BottomPlate","shape":"cube","pos":[0.001,-0.079,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.006,0.18],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":0.0},
+  {"name":"VentHoleL","shape":"cylinder","pos":[-0.079,0.065,0.07],"rot":[90.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"VentHoleR","shape":"cylinder","pos":[-0.079,0.065,-0.07],"rot":[90.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"TerminalPos","shape":"cylinder","pos":[0.121,0.073,0.04],"rot":[90.0,0.0,0.0],"size":[0.018,0.03,0.018],"color":[0.3,0.3,0.32],"smooth":0.6,"metal":1.0},
+  {"name":"TerminalNeg","shape":"cylinder","pos":[0.121,0.073,-0.04],"rot":[90.0,0.0,0.0],"size":[0.018,0.03,0.018],"color":[0.3,0.3,0.32],"smooth":0.6,"metal":1.0},
+  {"name":"LabelStrip","shape":"cube","pos":[-0.119,0.056,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.18],"color":[0.2,0.22,0.25],"smooth":0.5,"metal":0.0},
+  {"name":"ClampL","shape":"cube","pos":[0.121,0.048,0.08],"rot":[0.0,15.0,0.0],"size":[0.02,0.015,0.04],"color":[0.45,0.44,0.42],"smooth":0.5,"metal":1.0},
+  {"name":"ClampR","shape":"cube","pos":[0.121,0.048,-0.08],"rot":[0.0,-15.0,0.0],"size":[0.02,0.015,0.04],"color":[0.45,0.44,0.42],"smooth":0.5,"metal":1.0},
+  {"name":"SideRimTop","shape":"cube","pos":[-0.149,0.065,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.008,0.18],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":0.0},
+  {"name":"SideRimBottom","shape":"cube","pos":[-0.149,-0.079,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.006,0.18],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":0.0}
+]}

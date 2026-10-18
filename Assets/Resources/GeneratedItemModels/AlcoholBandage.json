@@ -1,0 +1,13 @@
+{"version": 1, "id": "AlcoholBandage", "baseHeight": 0.0702, "name": "Alcohol Bandage", "model": "gpt-oss:120b", "notes": "Flat alcohol‑soaked bandage pack ~0.12 m × 0.06 m, 1 cm thick, lying on the floor. Main cloth pad (tint 0.6,0.58,0.5) with a slightly darker edge strip, a small plastic wrapper, a printed label, a tie‑string at one corner and a few raised gauze‑lumps for texture.", "score": 6, "parts": [
+  {"name":"PadBase","shape":"cube","pos":[0.0045,-0.0053,0.0003],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeStrip","shape":"cube","pos":[0.0045,0.0007,0.0003],"rot":[0.0,0.0,0.0],"size":[0.124,0.002,0.064],"color":[0.55,0.52,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PlasticWrap","shape":"cube","pos":[0.0045,0.0023,0.0003],"rot":[0.0,0.0,0.0],"size":[0.128,0.003,0.07],"color":[0.8,0.85,0.9],"smooth":0.3,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[-0.0405,0.0043,0.0203],"rot":[0.0,0.0,0.0],"size":[0.03,0.002,0.015],"color":[0.9,0.85,0.75],"smooth":0.1,"metal":0.0},
+  {"name":"LabelPrint","shape":"cube","pos":[-0.0405,0.0044,0.0203],"rot":[0.0,0.0,0.0],"size":[0.028,0.002,0.013],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"TieString","shape":"cylinder","pos":[-0.0535,0.0052,-0.0248],"rot":[0.0,0.0,90.0],"size":[0.004,0.03,0.004],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"GauzeLump1","shape":"sphere","pos":[-0.0155,0.0068,-0.0147],"rot":[0.0,0.0,0.0],"size":[0.008,0.006,0.008],"color":[0.62,0.6,0.52],"smooth":0.1,"metal":0.0},
+  {"name":"GauzeLump2","shape":"sphere","pos":[0.0195,0.0068,0.0103],"rot":[0.0,0.0,0.0],"size":[0.009,0.007,0.009],"color":[0.62,0.6,0.52],"smooth":0.1,"metal":0.0},
+  {"name":"GauzeLump3","shape":"sphere","pos":[-0.0255,0.0068,0.0253],"rot":[0.0,0.0,0.0],"size":[0.007,0.005,0.007],"color":[0.62,0.6,0.52],"smooth":0.1,"metal":0.0},
+  {"name":"GauzeLump4","shape":"sphere","pos":[0.0445,0.0068,-0.0198],"rot":[0.0,0.0,0.0],"size":[0.008,0.006,0.008],"color":[0.62,0.6,0.52],"smooth":0.1,"metal":0.0},
+  {"name":"CornerFold","shape":"cube","pos":[-0.0535,-0.0013,-0.0278],"rot":[0.0,0.0,0.0],"size":[0.015,0.002,0.015],"color":[0.55,0.52,0.45],"smooth":0.05,"metal":0.0}
+]}

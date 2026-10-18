@@ -1,0 +1,13 @@
+{"version": 1, "id": "BookMechanicsSet", "baseHeight": 0.109, "name": "Book Mechanics Set", "model": "gpt-oss:120b", "notes": "Five mechanic manuals (≈0.28 m×0.22 m×0.03 m each) scattered on the floor; each book is a cover box with slightly smaller inner pages. Overall spread ≈0.6 m × 0.4 m, thickness of each cover ≈0.032 m.", "score": 6, "parts": [
+  {"name":"Book1_Cover","shape":"cube","pos":[-0.115,-0.031,-0.07],"rot":[0.0,0.0,0.0],"size":[0.28,0.032,0.22],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Book1_Pages","shape":"cube","pos":[-0.115,-0.032,-0.07],"rot":[0.0,0.0,0.0],"size":[0.27,0.028,0.21],"color":[0.92,0.91,0.88],"smooth":0.05,"metal":0.0},
+  {"name":"Book2_Cover","shape":"cube","pos":[0.085,-0.032,0.04],"rot":[0.0,0.0,0.0],"size":[0.28,0.032,0.22],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Book2_Pages","shape":"cube","pos":[0.085,-0.033,0.04],"rot":[0.0,0.0,0.0],"size":[0.27,0.028,0.21],"color":[0.92,0.91,0.88],"smooth":0.05,"metal":0.0},
+  {"name":"Book3_Cover","shape":"cube","pos":[-0.015,-0.03,0.11],"rot":[0.0,0.0,0.0],"size":[0.28,0.032,0.22],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Book3_Pages","shape":"cube","pos":[-0.015,-0.031,0.11],"rot":[0.0,0.0,0.0],"size":[0.27,0.028,0.21],"color":[0.92,0.91,0.88],"smooth":0.05,"metal":0.0},
+  {"name":"Book4_Cover","shape":"cube","pos":[0.145,-0.033,-0.11],"rot":[0.0,0.0,0.0],"size":[0.28,0.032,0.22],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Book4_Pages","shape":"cube","pos":[0.145,-0.034,-0.11],"rot":[0.0,0.0,0.0],"size":[0.27,0.028,0.21],"color":[0.92,0.91,0.88],"smooth":0.05,"metal":0.0},
+  {"name":"Book5_Cover","shape":"cube","pos":[-0.145,-0.031,-0.01],"rot":[0.0,0.0,0.0],"size":[0.28,0.032,0.22],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Book5_Pages","shape":"cube","pos":[-0.145,-0.032,-0.01],"rot":[0.0,0.0,0.0],"size":[0.27,0.028,0.21],"color":[0.92,0.91,0.88],"smooth":0.05,"metal":0.0},
+  {"name":"Bookmark","shape":"cylinder","pos":[-0.015,0.009,0.21],"rot":[0.0,0.0,0.0],"size":[0.015,0.08,0.015],"color":[0.5,0.1,0.1],"smooth":0.4,"metal":0.0}
+]}

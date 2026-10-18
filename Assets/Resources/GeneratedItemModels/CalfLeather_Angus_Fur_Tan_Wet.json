@@ -1,0 +1,15 @@
+{"version": 1, "id": "CalfLeather_Angus_Fur_Tan_Wet", "baseHeight": 0.0705, "name": "Calf Leather Angus Fur Tan Wet", "model": "gpt-oss:120b", "notes": "Flat calf‑leather sheet with wet tan colour, approx 0.55 m × 0.45 m × 4 mm thick, laid on the floor. Includes stitched edge strips, a folded corner, a few fluffy fur patches, a tiny label tag and two water droplets for the “wet” look.", "score": 6, "parts": [
+  {"name":"BaseLeather","shape":"cube","pos":[0.005,-0.0035,0.02],"rot":[0.0,0.0,0.0],"size":[0.55,0.004,0.45],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.005,-0.0005,0.24],"rot":[0.0,0.0,0.0],"size":[0.55,0.006,0.01],"color":[0.45,0.42,0.35],"smooth":0.07,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.005,-0.0005,-0.2],"rot":[0.0,0.0,0.0],"size":[0.55,0.006,0.01],"color":[0.45,0.42,0.35],"smooth":0.07,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.265,-0.0005,0.02],"rot":[0.0,0.0,0.0],"size":[0.01,0.006,0.45],"color":[0.45,0.42,0.35],"smooth":0.07,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.275,-0.0005,0.02],"rot":[0.0,0.0,0.0],"size":[0.01,0.006,0.45],"color":[0.45,0.42,0.35],"smooth":0.07,"metal":0.0},
+  {"name":"FoldCorner","shape":"cube","pos":[-0.22,-0.0065,-0.185],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.12],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FurPatch1","shape":"cylinder","pos":[0.155,-0.0025,0.12],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.06],"color":[0.62,0.6,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"FurPatch2","shape":"cylinder","pos":[-0.095,-0.0025,-0.13],"rot":[0.0,0.0,0.0],"size":[0.07,0.0025,0.07],"color":[0.62,0.6,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"FurPatch3","shape":"cylinder","pos":[0.055,-0.0025,-0.03],"rot":[0.0,0.0,0.0],"size":[0.05,0.002,0.05],"color":[0.62,0.6,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"FurPatch4","shape":"cylinder","pos":[-0.195,-0.0025,0.2],"rot":[0.0,0.0,0.0],"size":[0.065,0.0022,0.065],"color":[0.62,0.6,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTag","shape":"cube","pos":[0.245,0.0025,0.22],"rot":[0.0,0.0,0.0],"size":[0.03,0.004,0.015],"color":[0.35,0.3,0.25],"smooth":0.08,"metal":0.0},
+  {"name":"WaterDrop1","shape":"sphere","pos":[-0.115,0.0005,0.09],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.8,0.9,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"WaterDrop2","shape":"sphere","pos":[0.085,0.0005,-0.1],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.8,0.9,1.0],"smooth":0.6,"metal":0.0}
+]}

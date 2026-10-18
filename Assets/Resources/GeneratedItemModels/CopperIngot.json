@@ -1,0 +1,8 @@
+{"version": 1, "id": "CopperIngot", "baseHeight": 0.092, "name": "Copper Ingot", "model": "gpt-oss:120b", "notes": "Copper ingot ~15 cm long × 7 cm wide × 6.4 cm high, lying on its side (long axis along +X). Main block of polished copper with a thin beveled edge and a shallow stamped logo on the top surface.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.064,0.07],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"BevelEdge","shape":"cube","pos":[0.0,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.152,0.006,0.072],"color":[0.55,0.5,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"StampLogo","shape":"cylinder","pos":[0.05,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.04],"color":[0.45,0.4,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"TopHighlight","shape":"cube","pos":[-0.045,0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.07],"color":[0.68,0.66,0.58],"smooth":0.65,"metal":1.0},
+  {"name":"SideRivetL","shape":"cylinder","pos":[-0.06,0.0,-0.03],"rot":[90.0,0.0,0.0],"size":[0.008,0.018,0.008],"color":[0.45,0.4,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"SideRivetR","shape":"cylinder","pos":[-0.06,0.0,0.03],"rot":[90.0,0.0,0.0],"size":[0.008,0.018,0.008],"color":[0.45,0.4,0.35],"smooth":0.55,"metal":1.0}
+]}

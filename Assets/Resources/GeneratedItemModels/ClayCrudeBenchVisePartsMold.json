@@ -1,0 +1,10 @@
+{"version": 1, "id": "ClayCrudeBenchVisePartsMold", "baseHeight": 0.1175, "name": "Clay Crude Bench Vise Parts Mold", "model": "gpt-oss:120b", "notes": "A low‑poly clay bench‑vise parts mold lying on its side (long axis X). Main slab ≈ 0.30 m × 0.15 m × 0.08 m, split into two halves with raised cavity walls for the jaws and a central screw‑thread cavity. Includes a shallow handle slot and a label strip.", "score": 7, "parts": [
+  {"name":"BaseLeft","shape":"cube","pos":[-0.075,-0.0175,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.13,0.08,0.15],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"BaseRight","shape":"cube","pos":[0.075,-0.0175,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.13,0.08,0.15],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"JawMoldLeft","shape":"cube","pos":[-0.075,0.0125,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.12],"color":[0.48,0.464,0.4],"smooth":0.25,"metal":0.0},
+  {"name":"JawMoldRight","shape":"cube","pos":[0.075,0.0125,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.12],"color":[0.48,0.464,0.4],"smooth":0.25,"metal":0.0},
+  {"name":"ScrewThreadMold","shape":"cylinder","pos":[0.0,0.0325,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.02,0.05,0.02],"color":[0.48,0.464,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"HandleSlot","shape":"cylinder","pos":[0.0,0.0175,-0.0075],"rot":[0.0,0.0,90.0],"size":[0.025,0.02,0.025],"color":[0.48,0.464,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"LabelStrip","shape":"cube","pos":[0.0,0.0245,0.0625],"rot":[0.0,0.0,0.0],"size":[0.25,0.004,0.04],"color":[0.7,0.68,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"Gap","shape":"cube","pos":[0.0,-0.0125,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.14],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0}
+]}

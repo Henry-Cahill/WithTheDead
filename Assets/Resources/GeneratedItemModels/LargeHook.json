@@ -1,0 +1,13 @@
+{"version": 1, "id": "LargeHook", "baseHeight": 0.096, "name": "Large Hook", "model": "gpt-oss:120b", "notes": "Large Hook ~0.9 m long, 0.04 m thick metal handle lying on its side (X‑axis). Near the forward end a short Z‑oriented shaft ends in a rounded hook tip; a grip band and rivets add detail.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.0088,-0.0,-0.071],"rot":[0.0,0.0,90.0],"size":[0.04,0.7,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"GripBand","shape":"cylinder","pos":[-0.3087,0.002,-0.071],"rot":[0.0,0.0,90.0],"size":[0.045,0.08,0.045],"color":[0.45,0.45,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"HookShaft","shape":"cylinder","pos":[0.3412,-0.0,-0.011],"rot":[90.0,0.0,0.0],"size":[0.03,0.12,0.03],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"HookTip","shape":"sphere","pos":[0.3412,-0.0,0.074],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"ReinforcementRing","shape":"cylinder","pos":[0.1913,0.0025,-0.071],"rot":[0.0,0.0,90.0],"size":[0.045,0.02,0.045],"color":[0.55,0.55,0.6],"smooth":0.45,"metal":1.0},
+  {"name":"RivetL","shape":"sphere","pos":[0.1913,0.02,-0.051],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[0.1913,0.02,-0.091],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"EndCapTop","shape":"cylinder","pos":[-0.3588,0.005,-0.071],"rot":[0.0,0.0,90.0],"size":[0.045,0.015,0.045],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"EndCapBottom","shape":"cylinder","pos":[-0.3588,-0.005,-0.071],"rot":[0.0,0.0,90.0],"size":[0.045,0.015,0.045],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[-0.0088,0.015,-0.071],"rot":[0.0,0.0,90.0],"size":[0.042,0.008,0.042],"color":[0.55,0.55,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[-0.0088,-0.015,-0.071],"rot":[0.0,0.0,90.0],"size":[0.042,0.008,0.042],"color":[0.55,0.55,0.6],"smooth":0.55,"metal":1.0}
+]}

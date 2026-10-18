@@ -1,0 +1,8 @@
+{"version": 1, "id": "ChristmasOrnament_Green1", "baseHeight": 0.112, "name": "Christmas Ornament Green1", "model": "gpt-oss:120b", "notes": "Round glass‑like Christmas ornament about 7 cm across, lying on its side on the floor. Main green sphere, a thin equatorial seam, and a tiny metal hook attached to the top of the sphere.", "score": 6, "parts": [
+  {"name":"Body","shape":"sphere","pos":[0.0,0.017,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Seam","shape":"cylinder","pos":[0.0,0.017,0.0],"rot":[90.0,0.0,0.0],"size":[0.072,0.004,0.004],"color":[0.5,0.48,0.42],"smooth":0.3,"metal":0.0},
+  {"name":"HookStem","shape":"cylinder","pos":[0.0,0.027,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"HookLoop","shape":"cylinder","pos":[0.01,0.037,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.008,0.008],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"HookEnd","shape":"sphere","pos":[0.02,0.037,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"BaseIndent","shape":"cylinder","pos":[0.0,-0.017,0.0],"rot":[90.0,0.0,0.0],"size":[0.07,0.002,0.07],"color":[0.5,0.48,0.42],"smooth":0.3,"metal":0.0}
+]}

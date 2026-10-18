@@ -1,0 +1,9 @@
+{"version": 1, "id": "Nightstick", "baseHeight": 0.095, "name": "Nightstick", "model": "gpt-oss:120b", "notes": "Nightstick ~1.20 m long lying on its side (X‑axis). Polycarbonate/wood shaft with a rubber grip in the middle, metal end‑caps at both ends and a small steel striking tip protruding from the business end.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.0175,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,1.2,0.04],"color":[0.6,0.6,0.64],"smooth":0.3,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.0175,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.3,0.06],"color":[0.12,0.12,0.13],"smooth":0.4,"metal":0.0},
+  {"name":"FrontCap","shape":"cylinder","pos":[0.5925,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.02,0.07],"color":[0.55,0.55,0.55],"smooth":0.55,"metal":0.9},
+  {"name":"RearCap","shape":"cylinder","pos":[-0.6275,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.02,0.07],"color":[0.55,0.55,0.55],"smooth":0.55,"metal":0.9},
+  {"name":"MetalTip","shape":"cylinder","pos":[0.6175,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.04,0.02],"color":[0.45,0.45,0.45],"smooth":0.65,"metal":1.0},
+  {"name":"SeamFront","shape":"cylinder","pos":[0.5325,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.005,0.045],"color":[0.45,0.45,0.48],"smooth":0.3,"metal":0.0},
+  {"name":"SeamRear","shape":"cylinder","pos":[-0.5675,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.005,0.045],"color":[0.45,0.45,0.48],"smooth":0.3,"metal":0.0}
+]}

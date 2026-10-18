@@ -1,0 +1,10 @@
+{"version": 1, "id": "Cudgel_Sawblade", "baseHeight": 0.2512, "name": "Cudgel Sawblade", "model": "gpt-oss:120b", "notes": "Cudgel‑sawblade weapon ~1.5 m long lying on its side (X axis). Wooden handle with a metal pommel, a thin circular sawblade at the forward end, a small metal collar, and four simple saw‑teeth around the upper half of the blade.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[0.055,-0.0112,-0.0075],"rot":[0.0,0.0,90.0],"size":[0.1,1.3,0.1],"color":[0.5,0.4,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"Blade","shape":"cylinder","pos":[0.715,-0.0112,-0.0075],"rot":[0.0,0.0,90.0],"size":[0.36,0.02,0.36],"color":[0.6,0.6,0.64],"smooth":0.45,"metal":1.0},
+  {"name":"Band","shape":"cylinder","pos":[0.555,-0.0112,-0.0075],"rot":[0.0,0.0,90.0],"size":[0.12,0.02,0.12],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"Pommel","shape":"sphere","pos":[-0.655,0.0088,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.14,0.14,0.14],"color":[0.45,0.45,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Tooth0","shape":"cube","pos":[0.715,-0.0112,0.18],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.6,0.6,0.64],"smooth":0.45,"metal":1.0},
+  {"name":"Tooth45","shape":"cube","pos":[0.715,0.1215,0.1252],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.6,0.6,0.64],"smooth":0.45,"metal":1.0},
+  {"name":"Tooth90","shape":"cube","pos":[0.715,0.1762,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.6,0.6,0.64],"smooth":0.45,"metal":1.0},
+  {"name":"Tooth135","shape":"cube","pos":[0.715,0.1215,-0.1402],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.6,0.6,0.64],"smooth":0.45,"metal":1.0}
+]}

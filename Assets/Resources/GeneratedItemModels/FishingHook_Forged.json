@@ -1,0 +1,13 @@
+{"version": 1, "id": "FishingHook_Forged", "baseHeight": 0.0678, "name": "Fishing Hook Forged", "model": "gpt-oss:120b", "notes": "Forged steel fishing hook ~10 cm long, lying on its side: thin shank (X‑axis), right‑angle bend (Z‑axis) with a rounded joint, pointed tip, eye loop at the opposite end and a few surface details. Overall footprint ≈0.12 m × 0.04 m.", "score": 7, "parts": [
+  {"name":"EyeLoop","shape":"sphere","pos":[-0.0405,0.0037,-0.0062],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Shank","shape":"cylinder","pos":[-0.0155,-0.0003,-0.0062],"rot":[0.0,0.0,90.0],"size":[0.008,0.06,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"JointSphere","shape":"sphere","pos":[0.0145,0.0017,-0.0062],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"BendSegment","shape":"cylinder","pos":[0.0145,-0.0003,0.0038],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"TipPoint","shape":"sphere","pos":[0.0145,-0.0003,0.0188],"rot":[0.0,0.0,0.0],"size":[0.005,0.015,0.005],"color":[0.6,0.58,0.5],"smooth":0.7,"metal":1.0},
+  {"name":"Rivet","shape":"sphere","pos":[0.0145,0.0047,-0.0062],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.55,0.53,0.48],"smooth":0.4,"metal":1.0},
+  {"name":"ScrapeL","shape":"cube","pos":[-0.0055,0.0017,0.0088],"rot":[0.0,15.0,0.0],"size":[0.002,0.002,0.008],"color":[0.55,0.53,0.48],"smooth":0.3,"metal":1.0},
+  {"name":"ScrapeR","shape":"cube","pos":[-0.0005,0.0017,-0.0182],"rot":[0.0,-10.0,0.0],"size":[0.002,0.002,0.006],"color":[0.55,0.53,0.48],"smooth":0.3,"metal":1.0},
+  {"name":"RustSpot","shape":"sphere","pos":[-0.0255,0.0037,-0.0062],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.45,0.3,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeBevelFront","shape":"cube","pos":[0.0445,-0.0003,0.0188],"rot":[0.0,0.0,0.0],"size":[0.002,0.008,0.002],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeBevelBack","shape":"cube","pos":[-0.0435,-0.0003,-0.0062],"rot":[0.0,0.0,0.0],"size":[0.002,0.008,0.002],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

@@ -1,0 +1,9 @@
+{"version": 1, "id": "CannedCorn_Box", "baseHeight": 0.1303, "name": "Canned Corn Box", "model": "gpt-oss:120b", "notes": "Upright canned corn tin ~0.07 m diameter × 0.13 m tall. Body is metal with a slightly darker rim, recessed pull‑tab lid and a rectangular label wrapped around the middle showing the corn‑yellow tint.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0028,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.13,0.07],"color":[0.73,0.66,0.4],"smooth":0.55,"metal":0.9},
+  {"name":"RimTop","shape":"cylinder","pos":[0.0,0.0607,0.0],"rot":[0.0,0.0,0.0],"size":[0.074,0.008,0.074],"color":[0.7,0.63,0.38],"smooth":0.55,"metal":0.9},
+  {"name":"RimBottom","shape":"cylinder","pos":[0.0,-0.0663,0.0],"rot":[0.0,0.0,0.0],"size":[0.074,0.008,0.074],"color":[0.7,0.63,0.38],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.0643,0.0],"rot":[0.0,0.0,0.0],"size":[0.065,0.012,0.065],"color":[0.78,0.71,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,-0.0028,0.0],"rot":[0.0,0.0,0.0],"size":[0.068,0.09,0.068],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.0422,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.008,0.07],"color":[0.55,0.48,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.0478,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.008,0.07],"color":[0.55,0.48,0.3],"smooth":0.12,"metal":0.0}
+]}

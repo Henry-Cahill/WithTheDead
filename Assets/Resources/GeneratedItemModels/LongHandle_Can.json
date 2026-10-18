@@ -1,0 +1,10 @@
+{"version": 1, "id": "LongHandle_Can", "baseHeight": 0.176, "name": "Long Handle Can", "model": "gpt-oss:120b", "notes": "Long‑handle can melee weapon ~1.30 m long, lying on its side (X‑axis). Metal rod handle (~1.00 m) with rubber grip at the far end, a steel‑tinted cylindrical can (~0.30 m long, 0.12 m diameter) as the business end, rim caps and a simple label.", "score": 6, "parts": [
+  {"name":"HandleRod","shape":"cylinder","pos":[-0.152,-0.04,-0.0375],"rot":[0.0,0.0,90.0],"size":[0.04,1.0,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"GripWrap","shape":"cylinder","pos":[-0.552,-0.0375,-0.0375],"rot":[0.0,0.0,90.0],"size":[0.045,0.2,0.045],"color":[0.12,0.12,0.13],"smooth":0.3,"metal":0.0},
+  {"name":"CanBody","shape":"cylinder","pos":[0.498,0.0,-0.0375],"rot":[0.0,0.0,90.0],"size":[0.12,0.3,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"CanTopRim","shape":"cylinder","pos":[0.648,0.003,-0.0375],"rot":[0.0,0.0,90.0],"size":[0.13,0.008,0.13],"color":[0.55,0.55,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"CanBottomRim","shape":"cylinder","pos":[0.348,0.003,-0.0375],"rot":[0.0,0.0,90.0],"size":[0.13,0.008,0.13],"color":[0.55,0.55,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"CanLabel","shape":"cube","pos":[0.498,0.06,0.0325],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.14],"color":[0.3,0.25,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"CanSeamTop","shape":"cylinder","pos":[0.498,0.055,0.0225],"rot":[0.0,0.0,90.0],"size":[0.122,0.004,0.122],"color":[0.45,0.45,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"CanSeamBottom","shape":"cylinder","pos":[0.498,-0.055,0.0225],"rot":[0.0,0.0,90.0],"size":[0.122,0.004,0.122],"color":[0.45,0.45,0.48],"smooth":0.55,"metal":1.0}
+]}

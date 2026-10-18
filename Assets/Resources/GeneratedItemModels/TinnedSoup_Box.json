@@ -1,0 +1,12 @@
+{"version": 1, "id": "TinnedSoup_Box", "baseHeight": 0.153, "name": "Tinned Soup Box", "model": "gpt-oss:120b", "notes": "Upright rectangular tin‑soup box about 0.11 m wide × 0.075 m deep × 0.18 m tall. Main metal body with thin lid, bottom rim and raised side seams; front label printed on a thin paper sheet with darker trim bands.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.18,0.075],"color":[0.75,0.68,0.45],"smooth":0.2,"metal":0.8},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.09,0.0],"rot":[0.0,0.0,0.0],"size":[0.112,0.006,0.077],"color":[0.7,0.63,0.4],"smooth":0.2,"metal":0.8},
+  {"name":"BottomRim","shape":"cube","pos":[0.0,-0.09,0.0],"rot":[0.0,0.0,0.0],"size":[0.112,0.006,0.077],"color":[0.72,0.65,0.42],"smooth":0.2,"metal":0.8},
+  {"name":"SideSeamFront","shape":"cube","pos":[0.0,-0.003,0.0355],"rot":[0.0,0.0,0.0],"size":[0.102,0.015,0.004],"color":[0.6,0.55,0.35],"smooth":0.2,"metal":0.8},
+  {"name":"SideSeamBack","shape":"cube","pos":[0.0,-0.003,-0.0355],"rot":[0.0,0.0,0.0],"size":[0.102,0.015,0.004],"color":[0.6,0.55,0.35],"smooth":0.2,"metal":0.8},
+  {"name":"SideSeamLeft","shape":"cube","pos":[-0.053,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.015,0.067],"color":[0.6,0.55,0.35],"smooth":0.2,"metal":0.8},
+  {"name":"SideSeamRight","shape":"cube","pos":[0.053,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.015,0.067],"color":[0.6,0.55,0.35],"smooth":0.2,"metal":0.8},
+  {"name":"LabelBase","shape":"cube","pos":[0.0,-0.003,0.0367],"rot":[0.0,0.0,0.0],"size":[0.09,0.12,0.002],"color":[0.45,0.34,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0,0.055,0.0367],"rot":[0.0,0.0,0.0],"size":[0.092,0.004,0.002],"color":[0.4,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.0,-0.061,0.0367],"rot":[0.0,0.0,0.0],"size":[0.092,0.004,0.002],"color":[0.4,0.3,0.2],"smooth":0.05,"metal":0.0}
+]}

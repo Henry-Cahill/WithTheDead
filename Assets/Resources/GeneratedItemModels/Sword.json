@@ -1,0 +1,9 @@
+{"version": 1, "id": "Sword", "baseHeight": 0.1, "name": "Sword", "model": "gpt-oss:120b", "notes": "Sword ~1.4 m total length, lying on its side with blade extending +X. Steel blade, guard and pommel; leather‑wrapped wooden grip.", "score": 6, "parts": [
+  {"name":"Grip","shape":"cylinder","pos":[-0.51,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.3,0.04],"color":[0.35,0.25,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"Wrap","shape":"cylinder","pos":[-0.51,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.3,0.05],"color":[0.3,0.2,0.15],"smooth":0.08,"metal":0.0},
+  {"name":"Pommel","shape":"sphere","pos":[-0.66,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Guard","shape":"cube","pos":[-0.36,-0.029,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.2],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"GuardRivet","shape":"sphere","pos":[-0.36,-0.018,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.4,0.42,0.45],"smooth":0.65,"metal":1.0},
+  {"name":"Blade","shape":"cube","pos":[0.14,-0.034,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.012,0.025],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.67,-0.034,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.012,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "LightBulbRed", "baseHeight": 0.0905, "name": "Light Bulb Red", "model": "gpt-oss:120b", "notes": "Red incandescent light bulb, lying on its side (base down) with the long axis along X. Total size ≈ 0.08 m long × 0.06 m wide × 0.06 m high. Glass envelope tinted red, metal screw base and threads, bright orange filament coil.", "score": 7, "parts": [
+  {"name":"GlassOuter","shape":"sphere","pos":[0.0135,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.85,0.2,0.2],"smooth":0.5,"metal":0.0},
+  {"name":"GlassInner","shape":"sphere","pos":[0.0135,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.054,0.054,0.054],"color":[0.75,0.15,0.15],"smooth":0.5,"metal":0.0},
+  {"name":"BaseMetal","shape":"cylinder","pos":[-0.0255,-0.0195,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.018,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"ThreadRing","shape":"cylinder","pos":[-0.0255,-0.0195,0.0],"rot":[0.0,0.0,90.0],"size":[0.022,0.018,0.022],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":1.0},
+  {"name":"ContactTip","shape":"cylinder","pos":[-0.0365,-0.0255,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.004,0.008],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"FilamentCoil","shape":"cylinder","pos":[-0.0105,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.018,0.004],"color":[1.0,0.6,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"LabelBand","shape":"cylinder","pos":[0.0135,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.062,0.004,0.062],"color":[0.5,0.05,0.05],"smooth":0.05,"metal":0.0},
+  {"name":"BulbRim","shape":"cylinder","pos":[-0.0135,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.062,0.006,0.062],"color":[0.8,0.18,0.18],"smooth":0.4,"metal":0.0},
+  {"name":"Thread1","shape":"cylinder","pos":[-0.0255,-0.0195,0.0],"rot":[0.0,0.0,90.0],"size":[0.018,0.018,0.018],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"Thread2","shape":"cylinder","pos":[-0.0255,-0.0195,0.0],"rot":[0.0,0.0,90.0],"size":[0.016,0.018,0.016],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0}
+]}

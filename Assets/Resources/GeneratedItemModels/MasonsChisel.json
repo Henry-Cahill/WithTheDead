@@ -1,0 +1,12 @@
+{"version": 1, "id": "MasonsChisel", "baseHeight": 0.09, "name": "Masons Chisel", "model": "gpt-oss:120b", "notes": "Mason's chisel ~0.35 m long lying on its side (handle along X). Wooden handle with rubber grip, metal guard, thin steel blade ending in a cylindrical tip, edge strip and three rivets that sit flush against the metal parts.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.0088,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.35,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"GripRubber","shape":"cylinder","pos":[-0.1288,-0.0075,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.08,0.045],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"WoodEnd","shape":"cube","pos":[-0.1938,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"MetalGuard","shape":"cylinder","pos":[0.1212,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.005,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeBody","shape":"cube","pos":[0.1762,-0.0275,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.09],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeStrip","shape":"cube","pos":[0.1762,-0.0245,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.09],"color":[0.8,0.8,0.85],"smooth":0.55,"metal":1.0},
+  {"name":"BladeTip","shape":"cylinder","pos":[0.2062,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.015,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetCenter","shape":"cylinder","pos":[0.1512,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetSideL","shape":"cylinder","pos":[0.1512,-0.015,-0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetTip","shape":"cylinder","pos":[0.2062,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.02,0.006],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0}
+]}

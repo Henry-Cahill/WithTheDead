@@ -1,0 +1,9 @@
+{"version": 1, "id": "KnifeParing", "baseHeight": 0.0707, "name": "Knife Paring", "model": "gpt-oss:120b", "notes": "Paring knife ~0.19 m long lying on its side (long axis X). Consists of a thin metal blade, a small metal guard, a short wooden‑plastic handle and a pointed tip.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.067,0.0002,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.07,0.015],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"HandleRidge","shape":"cube","pos":[-0.092,0.0047,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.018],"color":[0.5,0.5,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"Guard","shape":"cylinder","pos":[-0.037,0.0007,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.012,0.02],"color":[0.7,0.7,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"Blade","shape":"cube","pos":[0.028,-0.0033,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.03],"color":[0.7,0.7,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.098,-0.0033,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFront","shape":"sphere","pos":[0.078,-0.0013,0.012],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBack","shape":"sphere","pos":[-0.052,-0.0013,-0.008],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0}
+]}

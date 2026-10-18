@@ -1,0 +1,10 @@
+{"version": 1, "id": "SpadeHead_Forged", "baseHeight": 0.12, "name": "Spade Head Forged", "model": "gpt-oss:120b", "notes": "Forged spade head, ~0.30 m long × 0.12 m wide × 0.02 m thick, metal tint (0.6,0.58,0.5). Lying on its flat side with the blade length along X; includes main blade, rounded tip, eye‑hole for handle, reinforcing flange, rivet, top ridge and a small wear mark.", "score": 6, "parts": [
+  {"name":"BladeBody","shape":"cube","pos":[-0.09,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TipCylinder","shape":"cylinder","pos":[0.09,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.06,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TipSphere","shape":"sphere","pos":[0.18,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.12,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EyeHole","shape":"cylinder","pos":[-0.21,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.03],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"EyeFlange","shape":"cube","pos":[-0.21,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.022,0.04],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet","shape":"sphere","pos":[-0.23,0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.8,0.78,0.7],"smooth":0.65,"metal":1.0},
+  {"name":"TopRidge","shape":"cube","pos":[-0.09,0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.004,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"WearMark","shape":"cube","pos":[-0.14,0.001,0.04],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.02],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0}
+]}

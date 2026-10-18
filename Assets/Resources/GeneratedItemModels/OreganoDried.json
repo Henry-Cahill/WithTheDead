@@ -1,0 +1,8 @@
+{"version": 1, "id": "OreganoDried", "baseHeight": 0.11, "name": "Oregano Dried", "model": "gpt-oss:120b", "notes": "Small clear glass jar (≈0.07 m dia × 0.09 m tall) lying on its side, filled with dried oregano (tint 0.75,0.68,0.45). Includes a thin paper label with darker trim around the middle of the jar.", "score": 6, "parts": [
+  {"name":"JarBody","shape":"cylinder","pos":[-0.0155,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.09,0.07],"color":[0.93,0.94,0.95],"smooth":0.55,"metal":0.0},
+  {"name":"HerbFill","shape":"cylinder","pos":[-0.0155,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.064,0.07,0.064],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Lid","shape":"cylinder","pos":[-0.0155,0.045,0.0],"rot":[0.0,0.0,0.0],"size":[0.072,0.01,0.072],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":0.8},
+  {"name":"Label","shape":"cube","pos":[0.0205,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.002],"color":[0.55,0.4,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[0.0205,-0.005,0.0008],"rot":[0.0,0.0,0.0],"size":[0.062,0.042,0.002],"color":[0.35,0.25,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"RimSeam","shape":"cylinder","pos":[-0.0155,0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.072,0.004,0.072],"color":[0.8,0.8,0.8],"smooth":0.4,"metal":0.7}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "BakingSoda", "baseHeight": 0.12, "name": "Baking Soda", "model": "gpt-oss:120b", "notes": "Upright cardboard box of baking soda ~0.12 m tall × 0.075 m wide × 0.06 m deep, lying on its side with the front label facing +Z. Contains a white‑powder fill and a small spill of powder on the floor.", "score": 6, "parts": [
+  {"name":"BoxShell","shape":"cube","pos":[0.0107,0.0,-0.0155],"rot":[0.0,0.0,0.0],"size":[0.075,0.12,0.06],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"TopEdge","shape":"cube","pos":[0.0107,0.058,-0.0155],"rot":[0.0,0.0,0.0],"size":[0.077,0.004,0.062],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"BottomEdge","shape":"cube","pos":[0.0107,-0.058,-0.0155],"rot":[0.0,0.0,0.0],"size":[0.077,0.004,0.062],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0107,0.01,0.016],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.059],"color":[0.45,0.44,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0107,0.0115,0.016],"rot":[0.0,0.0,0.0],"size":[0.062,0.002,0.061],"color":[0.35,0.34,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.0107,0.0085,0.016],"rot":[0.0,0.0,0.0],"size":[0.062,0.002,0.061],"color":[0.35,0.34,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"PowderFill","shape":"cube","pos":[0.0107,-0.005,-0.0155],"rot":[0.0,0.0,0.0],"size":[0.07,0.09,0.055],"color":[0.85,0.84,0.78],"smooth":0.05,"metal":0.0},
+  {"name":"PowderSpill","shape":"sphere","pos":[-0.0293,-0.05,0.0045],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.85,0.84,0.78],"smooth":0.05,"metal":0.0}
+]}

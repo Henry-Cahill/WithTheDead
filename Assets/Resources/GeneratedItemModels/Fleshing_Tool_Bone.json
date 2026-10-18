@@ -1,0 +1,9 @@
+{"version": 1, "id": "Fleshing_Tool_Bone", "baseHeight": 0.09, "name": "Fleshing Tool Bone", "model": "gpt-oss:120b", "notes": "Bone fleshing tool ~0.41 m long, lying on its side (long axis X). Thick handle end, slender shaft, flat scraping tip and a small carved notch. Main colour bone‑tint (0.6,0.58,0.5) with darker leather strap.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.175,0.0,-0.0075],"rot":[0.0,0.0,90.0],"size":[0.06,0.07,0.06],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Shaft","shape":"cylinder","pos":[0.01,-0.01,-0.0075],"rot":[0.0,0.0,90.0],"size":[0.04,0.3,0.04],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"ScrapeTip","shape":"cube","pos":[0.18,-0.0175,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.08],"color":[0.58,0.55,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"Notch","shape":"cube","pos":[0.13,0.005,0.0225],"rot":[0.0,15.0,0.0],"size":[0.02,0.015,0.01],"color":[0.45,0.42,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"LeatherStrap","shape":"cylinder","pos":[-0.06,-0.01,-0.0075],"rot":[0.0,0.0,90.0],"size":[0.022,0.1,0.022],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeBevel","shape":"cube","pos":[0.2,-0.012,0.0325],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.03],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"TipRidge","shape":"cylinder","pos":[0.18,-0.005,0.0325],"rot":[90.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0}
+]}

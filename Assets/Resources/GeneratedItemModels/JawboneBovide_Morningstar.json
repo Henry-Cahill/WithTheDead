@@ -1,0 +1,16 @@
+{"version": 1, "id": "JawboneBovide_Morningstar", "baseHeight": 0.205, "name": "Jawbone Bovide Morningstar", "model": "gpt-oss:120b", "notes": "Morningstar weapon ~1.3 m long lying on its side: wooden butt with leather grip, steel shaft (X‑axis), short metal chain of six links, spiked steel ball at the far end with four protruding spikes.", "score": 6, "parts": [
+  {"name":"Butt","shape":"cylinder","pos":[-0.745,-0.105,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.1,0.08],"color":[0.45,0.35,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.595,-0.115,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.2,0.06],"color":[0.2,0.1,0.05],"smooth":0.05,"metal":0.0},
+  {"name":"Shaft","shape":"cylinder","pos":[-0.245,-0.12,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.9,0.05],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"ChainLink1","shape":"cylinder","pos":[0.23,-0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"ChainLink2","shape":"cylinder","pos":[0.28,-0.075,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"ChainLink3","shape":"cylinder","pos":[0.33,-0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"ChainLink4","shape":"cylinder","pos":[0.38,-0.075,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"ChainLink5","shape":"cylinder","pos":[0.43,-0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"ChainLink6","shape":"cylinder","pos":[0.48,-0.075,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Ball","shape":"sphere","pos":[0.63,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.25,0.25],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"SpikeXPos","shape":"cylinder","pos":[0.775,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.04,0.02],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"SpikeYPos","shape":"cylinder","pos":[0.63,0.125,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"SpikeZPos","shape":"cylinder","pos":[0.63,-0.02,0.145],"rot":[90.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"SpikeZNeg","shape":"cylinder","pos":[0.63,-0.02,-0.145],"rot":[90.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0}
+]}

@@ -1,0 +1,22 @@
+{"version": 1, "id": "BrokenFishingNet", "baseHeight": 0.16, "name": "Broken Fishing Net", "model": "gpt-oss:120b", "notes": "Broken fishing net spread on the floor about 0.6 m × 0.6 m, thin rope strands (≈1.5 cm diameter) forming a grid, a few torn edge pieces and dangling rope fragments to show it’s damaged. All stray strands now intersect the main grid so they touch the body.", "score": 6, "parts": [
+  {"name":"VLineL","shape":"cylinder","pos":[-0.3,-0.0075,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.6,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"VLineML","shape":"cylinder","pos":[-0.15,-0.0075,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.6,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"VLineC","shape":"cylinder","pos":[0.0,-0.0075,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.6,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"VLineMR","shape":"cylinder","pos":[0.15,-0.0075,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.6,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"VLineR","shape":"cylinder","pos":[0.3,-0.0075,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.6,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HLineF","shape":"cylinder","pos":[0.0,-0.0075,-0.3],"rot":[0.0,0.0,90.0],"size":[0.015,0.6,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HLineMF","shape":"cylinder","pos":[0.0,-0.0075,-0.15],"rot":[0.0,0.0,90.0],"size":[0.015,0.6,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HLineC","shape":"cylinder","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.6,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HLineMP","shape":"cylinder","pos":[0.0,-0.0075,0.15],"rot":[0.0,0.0,90.0],"size":[0.015,0.6,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HLineR","shape":"cylinder","pos":[0.0,-0.0075,0.3],"rot":[0.0,0.0,90.0],"size":[0.015,0.6,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrandA","shape":"cylinder","pos":[-0.3,0.0,-0.3],"rot":[0.0,0.0,0.0],"size":[0.012,0.2,0.012],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrandB","shape":"cylinder","pos":[0.3,0.0,0.3],"rot":[0.0,0.0,0.0],"size":[0.012,0.2,0.012],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrandC","shape":"cylinder","pos":[-0.15,0.0,-0.15],"rot":[0.0,0.0,0.0],"size":[0.012,0.2,0.012],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrandD","shape":"cylinder","pos":[0.15,0.0,0.15],"rot":[0.0,0.0,0.0],"size":[0.012,0.2,0.012],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrandE","shape":"cylinder","pos":[-0.05,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.2,0.012],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrandF","shape":"cylinder","pos":[0.15,0.0,-0.18],"rot":[0.0,0.0,0.0],"size":[0.012,0.2,0.012],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTL","shape":"cube","pos":[-0.33,0.0,-0.33],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTR","shape":"cube","pos":[0.33,0.0,-0.33],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBL","shape":"cube","pos":[-0.33,0.0,0.33],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBR","shape":"cube","pos":[0.33,0.0,0.33],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

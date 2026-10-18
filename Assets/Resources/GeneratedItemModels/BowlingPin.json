@@ -1,0 +1,8 @@
+{"version": 1, "id": "BowlingPin", "baseHeight": 0.105, "name": "Bowling Pin", "model": "gpt-oss:120b", "notes": "Bowling pin (weapon) lying on its side, total length ≈ 0.38 m (longest axis along X). Built from three tapered cylinders – bottom cap, middle bulge and top cap – plus a dark seam band for visual detail.", "score": 7, "parts": [
+  {"name":"BottomCap","shape":"cylinder","pos":[-0.16,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.06,0.07],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"MiddleBulge","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.26,0.09],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"TopCap","shape":"cylinder","pos":[0.16,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.06,0.07],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"SeamBand","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.008,0.095],"color":[0.4,0.4,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TipRing","shape":"cube","pos":[0.16,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.006,0.07],"color":[0.45,0.45,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BaseRing","shape":"cube","pos":[-0.16,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.006,0.07],"color":[0.45,0.45,0.5],"smooth":0.05,"metal":0.0}
+]}

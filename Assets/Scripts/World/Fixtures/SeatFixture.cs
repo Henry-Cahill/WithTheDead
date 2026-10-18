@@ -16,7 +16,7 @@ namespace CloneZ
         private static readonly List<SeatFixture> s_Seats = new List<SeatFixture>();
 
         private Transform _furniture;
-        private string _name, _sitLabel, _standLabel;
+        private string _name, _sitLabel, _standLabel, _loungeLabel;
         private Vector3 _seatLocal;   // on the furniture, in its own frame (front +Z)
         private float _yaw, _comfort;
         private bool _lounge;         // the armchair: can be sunk back into
@@ -37,9 +37,10 @@ namespace CloneZ
         public override Vector3 InteractPoint => Frame(_seatLocal + new Vector3(0f, 0.14f, 0.2f));
 
         /// <summary>A seat on <paramref name="furniture"/> (its root, unrotated: the piece is drawn turned by
-        /// <paramref name="yaw"/>), the hips resting at <paramref name="seatLocal"/> in the piece's own frame.</summary>
+        /// <paramref name="yaw"/>), the hips resting at <paramref name="seatLocal"/> in the piece's own frame. A
+        /// <paramref name="lounge"/> seat can be sunk back into — "<paramref name="loungeLabel"/>" (the armchair's, by default).</summary>
         internal static SeatFixture Create(Transform furniture, string displayName, Vector3 seatLocal, float yaw, float comfort,
-            string sitLabel, string standLabel, bool lounge)
+            string sitLabel, string standLabel, bool lounge, string loungeLabel = null)
         {
             var go = new GameObject("Seat_" + displayName);
             go.transform.SetParent(furniture, false);
@@ -52,6 +53,7 @@ namespace CloneZ
             s._sitLabel = sitLabel;
             s._standLabel = standLabel;
             s._lounge = lounge;
+            s._loungeLabel = loungeLabel ?? "Sink back into the armchair";
             go.transform.SetPositionAndRotation(s.SeatPoint, Quaternion.Euler(0f, yaw, 0f));
             return s;
         }
@@ -84,7 +86,7 @@ namespace CloneZ
                 if (_lounge)
                 {
                     bool sunk = seat.Comfort > _comfort + 0.01f;
-                    into.Add(new InteractAction(sunk ? "Sit up straight" : "Sink back into the armchair", c => Settle(c, !sunk)));
+                    into.Add(new InteractAction(sunk ? "Sit up straight" : _loungeLabel, c => Settle(c, !sunk)));
                 }
                 return;
             }

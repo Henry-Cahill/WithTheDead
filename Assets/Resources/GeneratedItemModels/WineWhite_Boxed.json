@@ -1,0 +1,22 @@
+{"version": 1, "id": "WineWhite_Boxed", "baseHeight": 0.2395, "name": "Wine White Boxed", "model": "gpt-oss:120b", "notes": "Cardboard case for boxed white wine (≈ 0.32 m W × 0.22 m D × 0.27 m H) lying upright on the floor. Thin walls and a hinged lid, with a dark label on the front. Inside are six small wine bottles laid on their sides in two rows of three.", "score": 7, "parts": [
+  {"name":"Bottom","shape":"cube","pos":[0.0,-0.0935,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.32,0.008,0.22],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"SideLeft","shape":"cube","pos":[-0.156,0.041,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.008,0.277,0.22],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"SideRight","shape":"cube","pos":[0.156,0.041,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.008,0.277,0.22],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Front","shape":"cube","pos":[0.0,0.041,0.1052],"rot":[0.0,0.0,0.0],"size":[0.32,0.277,0.008],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Back","shape":"cube","pos":[0.0,0.041,-0.1067],"rot":[0.0,0.0,0.0],"size":[0.32,0.277,0.008],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.1695,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.32,0.008,0.22],"color":[0.78,0.71,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"LabelBase","shape":"cube","pos":[0.0,0.041,0.1077],"rot":[0.0,0.0,0.0],"size":[0.24,0.002,0.006],"color":[0.55,0.45,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[0.0,0.0411,0.1077],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.004],"color":[0.9,0.85,0.7],"smooth":0.1,"metal":0.0},
+  {"name":"Bottle1","shape":"cylinder","pos":[-0.09,-0.0545,-0.0607],"rot":[0.0,90.0,0.0],"size":[0.07,0.25,0.07],"color":[0.95,0.95,0.98],"smooth":0.05,"metal":0.0},
+  {"name":"Bottle2","shape":"cylinder","pos":[0.0,-0.0545,-0.0607],"rot":[0.0,90.0,0.0],"size":[0.07,0.25,0.07],"color":[0.95,0.95,0.98],"smooth":0.05,"metal":0.0},
+  {"name":"Bottle3","shape":"cylinder","pos":[0.09,-0.0545,-0.0607],"rot":[0.0,90.0,0.0],"size":[0.07,0.25,0.07],"color":[0.95,0.95,0.98],"smooth":0.05,"metal":0.0},
+  {"name":"Bottle4","shape":"cylinder","pos":[-0.09,-0.0545,0.0592],"rot":[0.0,90.0,0.0],"size":[0.07,0.25,0.07],"color":[0.95,0.95,0.98],"smooth":0.05,"metal":0.0},
+  {"name":"Bottle5","shape":"cylinder","pos":[0.0,-0.0545,0.0592],"rot":[0.0,90.0,0.0],"size":[0.07,0.25,0.07],"color":[0.95,0.95,0.98],"smooth":0.05,"metal":0.0},
+  {"name":"Bottle6","shape":"cylinder","pos":[0.09,-0.0545,0.0592],"rot":[0.0,90.0,0.0],"size":[0.07,0.25,0.07],"color":[0.95,0.95,0.98],"smooth":0.05,"metal":0.0},
+  {"name":"BottleCap1","shape":"cylinder","pos":[-0.09,-0.0295,-0.0607],"rot":[0.0,90.0,0.0],"size":[0.025,0.005,0.025],"color":[0.8,0.8,0.75],"smooth":0.3,"metal":0.0},
+  {"name":"BottleCap2","shape":"cylinder","pos":[0.0,-0.0295,-0.0607],"rot":[0.0,90.0,0.0],"size":[0.025,0.005,0.025],"color":[0.8,0.8,0.75],"smooth":0.3,"metal":0.0},
+  {"name":"BottleCap3","shape":"cylinder","pos":[0.09,-0.0295,-0.0607],"rot":[0.0,90.0,0.0],"size":[0.025,0.005,0.025],"color":[0.8,0.8,0.75],"smooth":0.3,"metal":0.0},
+  {"name":"BottleCap4","shape":"cylinder","pos":[-0.09,-0.0295,0.0592],"rot":[0.0,90.0,0.0],"size":[0.025,0.005,0.025],"color":[0.8,0.8,0.75],"smooth":0.3,"metal":0.0},
+  {"name":"BottleCap5","shape":"cylinder","pos":[0.0,-0.0295,0.0592],"rot":[0.0,90.0,0.0],"size":[0.025,0.005,0.025],"color":[0.8,0.8,0.75],"smooth":0.3,"metal":0.0},
+  {"name":"BottleCap6","shape":"cylinder","pos":[0.09,-0.0295,0.0592],"rot":[0.0,90.0,0.0],"size":[0.025,0.005,0.025],"color":[0.8,0.8,0.75],"smooth":0.3,"metal":0.0}
+]}

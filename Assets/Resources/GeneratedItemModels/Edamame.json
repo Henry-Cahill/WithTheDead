@@ -1,0 +1,14 @@
+{"version": 1, "id": "Edamame", "baseHeight": 0.139, "name": "Edamame", "model": "gpt-oss:120b", "notes": "Small clear plastic clamshell of edamame, 0.12 m × 0.07 m × 0.15 m (W × D × H). Thin walls (~5 mm), hinged lid on top, green‑tan soybeans inside as a loose pile.", "score": 6, "parts": [
+  {"name":"OuterShell","shape":"cube","pos":[0.0,-0.004,-0.0178],"rot":[0.0,0.0,0.0],"size":[0.12,0.15,0.07],"color":[0.85,0.9,0.95],"smooth":0.4,"metal":0.0},
+  {"name":"InnerShell","shape":"cube","pos":[0.0,-0.004,-0.0178],"rot":[0.0,0.0,0.0],"size":[0.11,0.14,0.06],"color":[1.0,1.0,1.0],"smooth":0.4,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.075,-0.0178],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.07],"color":[0.85,0.9,0.95],"smooth":0.4,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.004,0.0187],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.068],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Bean1","shape":"sphere","pos":[-0.02,-0.069,-0.0178],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Bean2","shape":"sphere","pos":[0.03,-0.059,-0.0278],"rot":[0.0,0.0,0.0],"size":[0.014,0.014,0.014],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Bean3","shape":"sphere","pos":[-0.04,-0.054,-0.0028],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Bean4","shape":"sphere","pos":[0.0,-0.044,-0.0378],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Bean5","shape":"sphere","pos":[0.02,-0.029,-0.0078],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Bean6","shape":"sphere","pos":[-0.03,-0.009,-0.0328],"rot":[0.0,0.0,0.0],"size":[0.014,0.014,0.014],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Bean7","shape":"sphere","pos":[0.04,0.011,-0.0178],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Bean8","shape":"sphere","pos":[0.01,0.041,0.0022],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

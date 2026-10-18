@@ -1,0 +1,8 @@
+{"version": 1, "id": "GlassPanel", "baseHeight": 0.0648, "name": "Glass Panel", "model": "gpt-oss:120b", "notes": "Flat glass panel about 15 cm × 12 cm × 6 mm lying on the floor, tinted light‑gray. Main sheet with thin raised rim around all edges and a small broken shard for visual interest.", "score": 7, "parts": [
+  {"name":"Panel","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.006,0.12],"color":[0.6,0.58,0.5],"smooth":0.7,"metal":0.0},
+  {"name":"RimFront","shape":"cube","pos":[0.0,0.0035,-0.059],"rot":[0.0,0.0,0.0],"size":[0.15,0.002,0.002],"color":[0.48,0.46,0.38],"smooth":0.6,"metal":0.0},
+  {"name":"RimBack","shape":"cube","pos":[0.0,0.0035,0.059],"rot":[0.0,0.0,0.0],"size":[0.15,0.002,0.002],"color":[0.48,0.46,0.38],"smooth":0.6,"metal":0.0},
+  {"name":"RimLeft","shape":"cube","pos":[-0.074,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.12],"color":[0.48,0.46,0.38],"smooth":0.6,"metal":0.0},
+  {"name":"RimRight","shape":"cube","pos":[0.074,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.12],"color":[0.48,0.46,0.38],"smooth":0.6,"metal":0.0},
+  {"name":"Chip","shape":"cube","pos":[-0.05,0.0,0.03],"rot":[15.0,30.0,0.0],"size":[0.02,0.006,0.015],"color":[0.62,0.6,0.52],"smooth":0.65,"metal":0.0}
+]}

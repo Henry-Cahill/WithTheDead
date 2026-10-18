@@ -1,0 +1,12 @@
+{"version": 1, "id": "StoneAxeLarge", "baseHeight": 0.11, "name": "Stone Axe Large", "model": "gpt-oss:120b", "notes": "Large stone axe ~1.5 m long lying on its side. Wooden handle (1.2 m) with leather wrap and a thin steel band, small wooden butt cap, metal back‑guard, chunky stone head (0.3 m) with ridge and pointed tip. Silhouette shows the blade end clearly.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.14,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,1.2,0.07],"color":[0.4,0.25,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"LeatherWrap","shape":"cylinder","pos":[0.26,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.2,0.09],"color":[0.35,0.18,0.08],"smooth":0.1,"metal":0.0},
+  {"name":"MetalBand","shape":"cube","pos":[0.41,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.09],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"BackGuard","shape":"cube","pos":[0.48,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.08,0.22],"color":[0.45,0.45,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.61,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.07,0.2],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":0.0},
+  {"name":"StoneRidgeTop","shape":"cube","pos":[0.61,0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.01,0.22],"color":[0.55,0.55,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"BladeTip","shape":"sphere","pos":[0.81,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.07,0.2],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"ButtCap","shape":"cube","pos":[-0.8,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.07,0.07],"color":[0.4,0.25,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeDetail","shape":"cube","pos":[0.61,-0.005,0.105],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.01],"color":[0.55,0.55,0.6],"smooth":0.1,"metal":0.0},
+  {"name":"Screw","shape":"sphere","pos":[0.41,0.005,0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0}
+]}

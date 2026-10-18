@@ -1,0 +1,11 @@
+{"version": 1, "id": "FlashLight_AngleHead_Army", "baseHeight": 0.0886, "name": "Flash Light Angle Head Army", "model": "gpt-oss:120b", "notes": "Tactical flashlight ~0.12 m long, 0.04 m diameter tube lying on its side (X‑axis) with an angled head pointing up‑forward at 45°. Olive‑drab metal body, rubber grip, small button, tail cap and clear lens.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0111,-0.0086,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.1,0.04],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.0111,-0.0061,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.1,0.045],"color":[0.15,0.15,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"Head","shape":"cylinder","pos":[0.0495,0.002,0.0],"rot":[0.0,0.0,45.0],"size":[0.045,0.03,0.045],"color":[0.6,0.58,0.5],"smooth":0.5,"metal":1.0},
+  {"name":"Lens","shape":"sphere","pos":[0.0601,0.0126,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.9,0.9,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"Button","shape":"cube","pos":[-0.0511,-0.0036,0.02],"rot":[0.0,0.0,0.0],"size":[0.012,0.006,0.008],"color":[0.05,0.05,0.05],"smooth":0.2,"metal":0.0},
+  {"name":"TailCap","shape":"cylinder","pos":[-0.0661,-0.0061,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.01,0.045],"color":[0.6,0.58,0.5],"smooth":0.5,"metal":1.0},
+  {"name":"BatteryCompartment","shape":"cube","pos":[-0.0561,-0.0036,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.03],"color":[0.45,0.44,0.4],"smooth":0.3,"metal":0.0},
+  {"name":"HeadRing","shape":"cylinder","pos":[0.0439,-0.0006,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.004,0.05],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Reflector","shape":"cylinder","pos":[0.0495,0.002,0.0],"rot":[0.0,0.0,45.0],"size":[0.04,0.028,0.04],"color":[0.3,0.35,0.2],"smooth":0.5,"metal":1.0}
+]}

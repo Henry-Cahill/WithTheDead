@@ -1,0 +1,14 @@
+{"version": 1, "id": "TinOpener_Old", "baseHeight": 0.0825, "name": "Tin Opener Old", "model": "gpt-oss:120b", "notes": "Old‑style tin opener used as a melee weapon – total reach ≈ 0.8 m. Metal shaft (0.7 m long) with rubber‑grip, a small guard ring near the handle, and a flat blade plate at the business end capped by a rounded tip. 13 low‑poly parts, all touching.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.0125,-0.0125,-0.01],"rot":[0.0,0.0,90.0],"size":[0.02,0.7,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.2625,0.0025,-0.01],"rot":[0.0,0.0,90.0],"size":[0.04,0.2,0.04],"color":[0.22,0.22,0.24],"smooth":0.3,"metal":0.0},
+  {"name":"GuardRing","shape":"cylinder","pos":[-0.1625,-0.005,-0.01],"rot":[0.0,0.0,0.0],"size":[0.03,0.004,0.03],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladePlate","shape":"cube","pos":[0.35,-0.005,-0.01],"rot":[0.0,0.0,0.0],"size":[0.025,0.015,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeTip","shape":"sphere","pos":[0.35,-0.005,0.06],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet01","shape":"sphere","pos":[-0.3425,-0.0085,-0.01],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.85,0.85,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet02","shape":"sphere","pos":[-0.2625,-0.0085,-0.01],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.85,0.85,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet03","shape":"sphere","pos":[-0.1625,-0.0085,-0.01],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.85,0.85,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet04","shape":"sphere","pos":[-0.0625,-0.0085,-0.01],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.85,0.85,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet05","shape":"sphere","pos":[0.0375,-0.0085,-0.01],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.85,0.85,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet06","shape":"sphere","pos":[0.1375,-0.0085,-0.01],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.85,0.85,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet07","shape":"sphere","pos":[0.2375,-0.0085,-0.01],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.85,0.85,0.88],"smooth":0.6,"metal":1.0}
+]}

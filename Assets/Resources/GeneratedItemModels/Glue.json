@@ -1,0 +1,8 @@
+{"version": 1, "id": "Glue", "baseHeight": 0.1, "name": "Glue", "model": "gpt-oss:120b", "notes": "Glue bottle ~0.20 m long × 0.07 m diameter, lying on its side. Plastic body with screw‑cap, white label and small squeeze nozzle.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0175,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.2,0.07],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"CapBase","shape":"cylinder","pos":[0.0725,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.075,0.02,0.075],"color":[0.45,0.44,0.38],"smooth":0.35,"metal":0.0},
+  {"name":"CapRim","shape":"cylinder","pos":[0.0805,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.005,0.08],"color":[0.4,0.39,0.34],"smooth":0.35,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[-0.0375,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.006,0.069],"color":[0.92,0.92,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[-0.0375,0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.124,0.002,0.073],"color":[0.3,0.28,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"Nozzle","shape":"cylinder","pos":[0.0975,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.04,0.025],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":0.0}
+]}

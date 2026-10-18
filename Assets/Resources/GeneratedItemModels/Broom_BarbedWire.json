@@ -1,0 +1,13 @@
+{"version": 1, "id": "Broom_BarbedWire", "baseHeight": 0.12, "name": "Broom Barbed Wire", "model": "gpt-oss:120b", "notes": "Broom‑BarbedWire melee weapon ~1.6 m long. Wooden/metal handle (diam 0.04 m) lies on its side along X; a metal band marks the business end, a short block holds coarse bristles and a coil of barbed wire with four sharp spikes pointing outward.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.135,-0.04,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,1.5,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"MetalBand","shape":"cylinder","pos":[0.565,-0.035,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.02,0.07],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"HeadBase","shape":"cube","pos":[0.715,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.12,0.12],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"BristleCenter","shape":"cube","pos":[0.815,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.02,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"BristleLeft","shape":"cube","pos":[0.805,0.01,0.03],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"BristleRight","shape":"cube","pos":[0.805,0.01,-0.03],"rot":[0.0,0.0,0.0],"size":[0.12,0.018,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"WireCore","shape":"cylinder","pos":[0.645,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.02,0.09],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"BarbZPos","shape":"cylinder","pos":[0.645,-0.02,0.045],"rot":[90.0,0.0,0.0],"size":[0.01,0.06,0.01],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"BarbZNeg","shape":"cylinder","pos":[0.645,-0.02,-0.045],"rot":[90.0,0.0,0.0],"size":[0.01,0.06,0.01],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"BarbXPos","shape":"cylinder","pos":[0.69,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.06,0.01],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"BarbXNeg","shape":"cylinder","pos":[0.6,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.06,0.01],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0}
+]}

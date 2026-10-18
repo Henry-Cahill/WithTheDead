@@ -1,0 +1,12 @@
+{"version": 1, "id": "AerosolbombSensorV3", "baseHeight": 0.195, "name": "Aerosolbomb Sensor V3", "model": "gpt-oss:120b", "notes": "Aerosolbomb Sensor V3 – a 1.5 m long pole‑weapon with a thick wooden‑rubber grip on the left, a metal shaft, and a chunky sensor head on the right (business end). Main colour is muted steel‑gray (0.6,0.6,0.64) with darker brown grip and dark‑grey battery pack.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[0.0088,-0.1,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,1.2,0.07],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"HandleBase","shape":"cylinder","pos":[-0.7412,-0.09,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.3,0.09],"color":[0.2,0.15,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"GripOverlay","shape":"cylinder","pos":[-0.7412,-0.095,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.28,0.08],"color":[0.12,0.1,0.09],"smooth":0.3,"metal":0.0},
+  {"name":"SensorBody","shape":"cube","pos":[0.6888,-0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.12,0.16],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":0.0},
+  {"name":"SensorLens","shape":"sphere","pos":[0.8138,-0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.09,0.09],"color":[0.5,0.7,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"TriggerButton","shape":"cube","pos":[0.6588,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.4,0.42,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Antenna","shape":"cylinder","pos":[0.6888,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.15,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BatteryPack","shape":"cube","pos":[-0.1912,-0.065,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.04,0.06],"color":[0.3,0.3,0.35],"smooth":0.45,"metal":0.0},
+  {"name":"EndCap","shape":"cylinder","pos":[0.8688,-0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.02,0.045],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Wiring","shape":"cylinder","pos":[-0.3912,-0.055,0.0],"rot":[90.0,0.0,0.0],"size":[0.01,0.3,0.01],"color":[0.5,0.5,0.55],"smooth":0.2,"metal":0.0}
+]}

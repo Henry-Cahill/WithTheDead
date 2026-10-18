@@ -168,5 +168,69 @@ namespace CloneZ
             m.Upright(at + normal * 0.0175f, normal, w, h, DecorMaterials.Poster(kind), new Rect(0f, 0f, 1f, 1f));
         }
         #endregion
+
+        #region Raid town lamps and switches
+        // The raid town's working lights: the lit parts of its lamps drawn apart as glow shells (each just proud of the
+        // lamp drawn unlit), the porch lantern by a house's front door and a tent's switch box.
+
+        /// <summary>The lit bulb of a <see cref="DeskLamp"/> standing at <paramref name="at"/> turned <paramref name="yaw"/>,
+        /// in the same frame — the lamp's glow shell. Mirrors DeskLamp's arm and shade, so keep the two together.</summary>
+        public static void DeskLampGlow(RaidMesh glow, Vector3 at, float yaw)
+        {
+            Quaternion q = Yaw(yaw);
+            Vector3 j2 = at + q * new Vector3(0f, 0.44f, 0.22f);
+            Vector3 axis = q * Quaternion.Euler(150f, 0f, 0f) * Vector3.up;
+            Vector3 mouth = j2 + axis * 0.15f;
+            glow.Ellipsoid(mouth - axis * 0.045f, new Vector3(0.068f, 0.068f, 0.068f), Gl(WarmGlow), 6, 4);
+        }
+
+        /// <summary>The lit shade of a <see cref="Nightstand"/>'s lamp, in the nightstand's own frame — its glow shell (the
+        /// same shell the starter home's bedside lamp wears).</summary>
+        public static void NightstandGlow(RaidMesh glow)
+            => glow.Cylinder(new Vector3(0f, 0.836f, -0.04f), 0.158f, 0.208f, 10, Gl(new Color(0.95f, 0.78f, 0.52f)), Quaternion.identity, 0.65f, false);
+
+        /// <summary>A black carriage lantern on a wall beside a door — a backplate and an arm on the wall face at
+        /// <paramref name="wall"/> holding a glazed lantern under a little roof, with snow on top when <paramref name="snow"/>.
+        /// Returns the lantern's centre (its bulb); <paramref name="glow"/> gets its lit glass.</summary>
+        public static Vector3 CarriageLantern(RaidMesh m, RaidMesh glow, Vector3 wall, Vector3 normal, bool snow)
+        {
+            Quaternion q = Quaternion.LookRotation(normal, Vector3.up);
+            Surf black = Mt(new Color(0.08f, 0.08f, 0.09f));
+            m.Box(wall + normal * 0.01f, new Vector3(0.1f, 0.22f, 0.02f), q, black);
+            m.Rod(wall + normal * 0.02f, wall + normal * 0.1f, 0.02f, black);
+            Vector3 lamp = wall + normal * 0.13f;
+            m.Box(lamp + Vector3.up * 0.125f, new Vector3(0.17f, 0.04f, 0.17f), q, black);
+            m.Box(lamp + Vector3.up * 0.16f, new Vector3(0.08f, 0.04f, 0.08f), q, black);
+            m.Box(lamp - Vector3.up * 0.115f, new Vector3(0.13f, 0.03f, 0.13f), q, black);
+            m.Box(lamp, new Vector3(0.12f, 0.2f, 0.12f), q, M(new Color(0.72f, 0.64f, 0.44f)));
+            for (int i = 0; i < 4; i++)
+                m.Box(lamp + q * new Vector3(i % 2 == 0 ? -0.062f : 0.062f, 0f, i < 2 ? -0.062f : 0.062f), new Vector3(0.016f, 0.21f, 0.016f), q, black);
+            if (snow)
+            {
+                m.Box(lamp + Vector3.up * 0.15f, new Vector3(0.16f, 0.012f, 0.16f), q, M(DecorProps.SnowWhite));
+                m.Box(lamp + Vector3.up * 0.185f, new Vector3(0.07f, 0.01f, 0.07f), q, M(DecorProps.SnowWhite));
+            }
+            glow?.Box(lamp, new Vector3(0.128f, 0.206f, 0.128f), q, Gl(new Color(1f, 0.84f, 0.58f)));
+            return lamp;
+        }
+
+        /// <summary>A weatherproof olive switch box for a tent's lights, its back centred on <paramref name="at"/> (on the
+        /// wall face) and <paramref name="depth"/> deep, with its cable running up to <paramref name="cableTop"/> (a
+        /// height). The lever is drawn apart (<see cref="BreakerHandle"/>); returns its pivot.</summary>
+        public static Vector3 SwitchBox(RaidMesh m, Vector3 at, Vector3 normal, float depth, float cableTop)
+        {
+            Quaternion q = Quaternion.LookRotation(normal, Vector3.up);
+            Color olive = new Color(0.25f, 0.28f, 0.18f);
+            m.Box(at + normal * (depth * 0.5f), new Vector3(0.11f, 0.16f, depth), q, Mt(olive));
+            m.Box(at + normal * (depth + 0.003f), new Vector3(0.09f, 0.14f, 0.006f), q, Mt(olive * 1.12f));
+            m.Box(at + normal * (depth + 0.0065f) + Vector3.up * 0.045f, new Vector3(0.06f, 0.025f, 0.002f), q, M(new Color(0.82f, 0.80f, 0.70f)));
+            Vector3 pivot = at + normal * (depth + 0.006f) - Vector3.up * 0.02f;
+            m.Box(pivot, new Vector3(0.028f, 0.028f, 0.006f), q, M(Black));
+            Vector3 gland = at + normal * (depth * 0.5f) + Vector3.up * 0.08f;
+            m.Cylinder(gland, 0.012f, 0.02f, 6, M(Black));
+            if (cableTop > gland.y + 0.02f) m.Rod(gland, new Vector3(gland.x, cableTop, gland.z), 0.012f, M(Black));
+            return pivot + normal * 0.003f;
+        }
+        #endregion
     }
 }

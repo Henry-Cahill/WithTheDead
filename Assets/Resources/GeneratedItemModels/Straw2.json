@@ -1,0 +1,13 @@
+{"version": 1, "id": "Straw2", "baseHeight": 0.0703, "name": "Straw2", "model": "gpt-oss:120b", "notes": "Loose bundle of dried straw ~0.35 m long, 0.12 m wide, 0.07 m high. Central packed core (thin slab) with many individual stalks fanning out, all lying on the floor.", "score": 6, "parts": [
+  {"name":"Core","shape":"cube","pos":[-0.0275,0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.1],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Straw01","shape":"cylinder","pos":[-0.1475,-0.0037,0.03],"rot":[0.0,0.0,90.0],"size":[0.012,0.28,0.012],"color":[0.62,0.6,0.52],"smooth":0.02,"metal":0.0},
+  {"name":"Straw02","shape":"cylinder","pos":[-0.1075,-0.0037,-0.04],"rot":[5.0,0.0,90.0],"size":[0.012,0.25,0.012],"color":[0.58,0.55,0.48],"smooth":0.02,"metal":0.0},
+  {"name":"Straw03","shape":"cylinder","pos":[-0.0275,-0.0037,0.05],"rot":[-3.0,0.0,90.0],"size":[0.012,0.3,0.012],"color":[0.6,0.57,0.5],"smooth":0.02,"metal":0.0},
+  {"name":"Straw04","shape":"cylinder","pos":[0.0425,-0.0037,-0.03],"rot":[2.0,0.0,90.0],"size":[0.012,0.27,0.012],"color":[0.59,0.56,0.49],"smooth":0.02,"metal":0.0},
+  {"name":"Straw05","shape":"cylinder","pos":[0.1225,-0.0037,0.02],"rot":[-4.0,0.0,90.0],"size":[0.012,0.32,0.012],"color":[0.61,0.59,0.51],"smooth":0.02,"metal":0.0},
+  {"name":"Straw06","shape":"cylinder","pos":[-0.0775,-0.0037,-0.07],"rot":[6.0,0.0,90.0],"size":[0.012,0.24,0.012],"color":[0.57,0.55,0.47],"smooth":0.02,"metal":0.0},
+  {"name":"Straw07","shape":"cylinder","pos":[0.1925,-0.0037,0.04],"rot":[-2.0,0.0,90.0],"size":[0.012,0.29,0.012],"color":[0.6,0.58,0.5],"smooth":0.02,"metal":0.0},
+  {"name":"Straw08","shape":"cylinder","pos":[-0.2075,-0.0037,-0.02],"rot":[3.0,0.0,90.0],"size":[0.012,0.26,0.012],"color":[0.59,0.57,0.49],"smooth":0.02,"metal":0.0},
+  {"name":"Straw09","shape":"cylinder","pos":[0.0225,-0.0037,0.07],"rot":[-5.0,0.0,90.0],"size":[0.012,0.31,0.012],"color":[0.62,0.6,0.52],"smooth":0.02,"metal":0.0},
+  {"name":"Straw10","shape":"cylinder","pos":[0.0925,-0.0037,-0.06],"rot":[4.0,0.0,90.0],"size":[0.012,0.28,0.012],"color":[0.58,0.55,0.48],"smooth":0.02,"metal":0.0}
+]}

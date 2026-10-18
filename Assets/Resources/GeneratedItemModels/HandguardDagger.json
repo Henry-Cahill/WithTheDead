@@ -1,0 +1,14 @@
+{"version": 1, "id": "HandguardDagger", "baseHeight": 0.0845, "name": "Handguard Dagger", "model": "gpt-oss:120b", "notes": "Handguard dagger ~0.90 m long lying on its side (X‑axis). Metal blade 0.60 m with pointed tip, a rectangular hand‑guard near the junction, steel handle with pommel and rubber grip wrap.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.3225,-0.0095,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.2,0.03],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Pommel","shape":"sphere","pos":[-0.4225,-0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.0},
+  {"name":"GripWrap","shape":"cylinder","pos":[-0.2725,-0.0065,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.035,0.025],"color":[0.15,0.15,0.17],"smooth":0.3,"metal":0.0},
+  {"name":"BladeBody","shape":"cube","pos":[0.0775,-0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.015,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeRidge","shape":"cylinder","pos":[0.0775,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.6,0.004],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeSideL","shape":"cube","pos":[0.0775,-0.0095,-0.021],"rot":[0.0,0.0,0.0],"size":[0.6,0.015,0.002],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeSideR","shape":"cube","pos":[0.0775,-0.0095,0.021],"rot":[0.0,0.0,0.0],"size":[0.6,0.015,0.002],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.4275,-0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.03],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Handguard","shape":"cube","pos":[-0.1925,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"GuardPlateTop","shape":"cube","pos":[-0.1925,0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"GuardPlateBottom","shape":"cube","pos":[-0.1925,-0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet","shape":"sphere","pos":[-0.1925,0.0205,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.3,0.32],"smooth":0.4,"metal":1.0}
+]}

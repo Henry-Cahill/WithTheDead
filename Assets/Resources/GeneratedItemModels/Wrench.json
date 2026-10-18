@@ -1,0 +1,9 @@
+{"version": 1, "id": "Wrench", "baseHeight": 0.0963, "name": "Wrench", "model": "gpt-oss:120b", "notes": "Adjustable wrench used as a melee weapon – total length ~0.85 m, 0.04 m thick handle lying along X with a metal “C‑jaw” at the +X end and a rubber grip around the middle. Main colour is steel tint (0.6,0.6,0.64).", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.01,-0.0112,0.0326],"rot":[0.0,0.0,90.0],"size":[0.04,0.8,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.06,0.0137,0.0326],"rot":[0.0,0.0,90.0],"size":[0.045,0.3,0.045],"color":[0.15,0.15,0.18],"smooth":0.2,"metal":0.0},
+  {"name":"FixedJaw","shape":"cube","pos":[0.37,-0.0112,0.0326],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"MovableJaw","shape":"cube","pos":[0.37,-0.0112,-0.0374],"rot":[0.0,10.0,0.0],"size":[0.06,0.04,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"AdjustScrewHead","shape":"cylinder","pos":[0.37,0.0088,0.0926],"rot":[0.0,0.0,90.0],"size":[0.018,0.015,0.018],"color":[0.2,0.2,0.22],"smooth":0.4,"metal":1.0},
+  {"name":"AdjustScrewBody","shape":"cylinder","pos":[0.37,-0.0112,0.0926],"rot":[0.0,0.0,90.0],"size":[0.012,0.03,0.012],"color":[0.2,0.2,0.22],"smooth":0.4,"metal":1.0},
+  {"name":"EndRing","shape":"cylinder","pos":[0.4,-0.0112,0.0326],"rot":[0.0,0.0,90.0],"size":[0.05,0.008,0.05],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

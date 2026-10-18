@@ -1,0 +1,9 @@
+{"version": 1, "id": "Hinge", "baseHeight": 0.085, "name": "Hinge", "model": "gpt-oss:120b", "notes": "Standard metal hinge ~10 cm long x 4 cm tall leaves, 2 cm barrel diameter, 5 cm pin length; lying on the floor with leaves flat (Y‑thickness) and the pin cylinder upright. Two rivet heads on each leaf.", "score": 7, "parts": [
+  {"name":"LeafA","shape":"cube","pos":[0.0,-0.021,-0.025],"rot":[0.0,0.0,0.0],"size":[0.1,0.008,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"LeafB","shape":"cube","pos":[0.0,-0.021,0.025],"rot":[0.0,0.0,0.0],"size":[0.1,0.008,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Pin","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.05,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RivetA_Left","shape":"sphere","pos":[-0.035,-0.017,-0.025],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.48,0.42],"smooth":0.3,"metal":1.0},
+  {"name":"RivetA_Right","shape":"sphere","pos":[0.035,-0.017,-0.025],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.48,0.42],"smooth":0.3,"metal":1.0},
+  {"name":"RivetB_Left","shape":"sphere","pos":[-0.035,-0.017,0.025],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.48,0.42],"smooth":0.3,"metal":1.0},
+  {"name":"RivetB_Right","shape":"sphere","pos":[0.035,-0.017,0.025],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.48,0.42],"smooth":0.3,"metal":1.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "PigLeather_Landrace_Fur_Tan_Wet", "baseHeight": 0.0842, "name": "Pig Leather Landrace Fur Tan Wet", "model": "gpt-oss:120b", "notes": "A wet pig‑leather hide about 0.70 m × 0.50 m, 1–2 cm thick, lying on the ground. Main slab of tan fur, a rolled wet edge, a folded corner and a few clumped fur tufts give shape.", "score": 6, "parts": [
+  {"name":"BaseSlab","shape":"cube","pos":[0.02,-0.009,0.0201],"rot":[0.0,0.0,0.0],"size":[0.7,0.012,0.5],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RolledEdge","shape":"cylinder","pos":[0.02,0.007,0.2801],"rot":[0.0,0.0,90.0],"size":[0.02,0.7,0.02],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"FoldCorner","shape":"cube","pos":[-0.31,0.0,-0.2299],"rot":[15.0,0.0,0.0],"size":[0.12,0.018,0.12],"color":[0.58,0.55,0.48],"smooth":0.06,"metal":0.0},
+  {"name":"FurClump1","shape":"sphere","pos":[-0.08,0.003,0.1401],"rot":[0.0,0.0,0.0],"size":[0.032,0.032,0.032],"color":[0.57,0.54,0.46],"smooth":0.04,"metal":0.0},
+  {"name":"FurClump2","shape":"sphere","pos":[0.2,0.004,-0.0599],"rot":[0.0,0.0,0.0],"size":[0.028,0.028,0.028],"color":[0.59,0.56,0.48],"smooth":0.04,"metal":0.0},
+  {"name":"FurClump3","shape":"sphere","pos":[0.07,0.002,0.2201],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.56,0.53,0.45],"smooth":0.04,"metal":0.0},
+  {"name":"FurClump4","shape":"sphere","pos":[-0.23,0.001,-0.1299],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.58,0.55,0.47],"smooth":0.04,"metal":0.0},
+  {"name":"WetSpot1","shape":"cylinder","pos":[0.14,0.003,0.0701],"rot":[90.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.4,0.42,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"WetSpot2","shape":"cylinder","pos":[-0.13,0.004,-0.1799],"rot":[90.0,0.0,0.0],"size":[0.012,0.018,0.012],"color":[0.42,0.44,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.02,-0.009,-0.2399],"rot":[0.0,0.0,90.0],"size":[0.02,0.7,0.02],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"CornerFoldEdge","shape":"cylinder","pos":[-0.31,0.009,-0.2299],"rot":[90.0,0.0,0.0],"size":[0.008,0.12,0.008],"color":[0.58,0.55,0.48],"smooth":0.06,"metal":0.0}
+]}

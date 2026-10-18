@@ -1,0 +1,11 @@
+{"version": 1, "id": "Gravy", "baseHeight": 0.14, "name": "Gravy", "model": "gpt-oss:120b", "notes": "Upright gravy jar ~0.10 m diameter × 0.15 m tall, glass/plastic body (tint 0.75 0.68 0.45), metal screw‑on lid, thin brown label with darker trim, small pour spout at the front.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.005,-0.0105],"rot":[0.0,0.0,0.0],"size":[0.1,0.15,0.1],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.066,-0.0105],"rot":[0.0,0.0,0.0],"size":[0.108,0.008,0.108],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.076,-0.0105],"rot":[0.0,0.0,0.0],"size":[0.108,0.008,0.108],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.075,-0.0105],"rot":[0.0,0.0,0.0],"size":[0.095,0.01,0.095],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.005,-0.0105],"rot":[0.0,0.0,0.0],"size":[0.09,0.12,0.09],"color":[0.5,0.45,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.055,-0.0105],"rot":[0.0,0.0,0.0],"size":[0.092,0.006,0.092],"color":[0.35,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.065,-0.0105],"rot":[0.0,0.0,0.0],"size":[0.092,0.006,0.092],"color":[0.35,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Spout","shape":"cylinder","pos":[0.0,0.058,0.0445],"rot":[90.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"Content","shape":"cylinder","pos":[0.0,-0.005,-0.0105],"rot":[0.0,0.0,0.0],"size":[0.088,0.13,0.088],"color":[0.7,0.6,0.35],"smooth":0.2,"metal":0.0}
+]}

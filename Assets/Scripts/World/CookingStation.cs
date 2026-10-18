@@ -50,14 +50,15 @@ namespace CloneZ
         public static bool InRange(Vector3 p, float range) => Nearest(p, range) != null;
 
         /// <summary>Builds a white enamel gas range (four burners under cast grates, a back-guard of knobs, a broiler
-        /// drawer and an oven with a drop-down door, its back toward -Z) standing on the floor at
-        /// <paramref name="position"/>, fits its controls (<see cref="KitchenStove"/>) and returns its CookingStation.</summary>
-        public static CookingStation Spawn(Transform parent, Vector3 position)
+        /// drawer and an oven with a drop-down door, its back toward -Z, turned by <paramref name="yaw"/> degrees) standing
+        /// on the floor at <paramref name="position"/>, fits its controls (<see cref="KitchenStove"/>) and returns its
+        /// CookingStation.</summary>
+        public static CookingStation Spawn(Transform parent, Vector3 position, float yaw = 0f)
         {
             position.y = BuildPiece.FloorTopAt(position);
             var root = new GameObject("Stove");
             root.transform.SetParent(parent);
-            root.transform.position = position;
+            root.transform.SetPositionAndRotation(position, Quaternion.Euler(0f, yaw, 0f));
 
             var m = new RaidMesh();
             m.SetFrame(position, 0f);

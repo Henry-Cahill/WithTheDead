@@ -1,0 +1,12 @@
+{"version": 1, "id": "StoneAxeHead", "baseHeight": 0.0863, "name": "Stone Axe Head", "model": "gpt-oss:120b", "notes": "Stone axe head ~0.12 m long × 0.07 m wide × 0.05 m thick, lying on its side (long axis +X). Central hafting hole near the rear end and a beveled cutting edge on the front face.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.05,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HaftHole","shape":"cylinder","pos":[-0.04,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.05,0.015],"color":[0.1,0.09,0.08],"smooth":0.02,"metal":0.0},
+  {"name":"TopBevel","shape":"cube","pos":[0.0,0.01,0.0],"rot":[15.0,0.0,0.0],"size":[0.12,0.015,0.07],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BottomBevel","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[-15.0,0.0,0.0],"size":[0.12,0.015,0.07],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FrontCutFace","shape":"cube","pos":[0.045,0.0,0.0365],"rot":[0.0,0.0,0.0],"size":[0.06,0.045,0.003],"color":[0.52,0.5,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"BackCutFace","shape":"cube","pos":[-0.045,0.0,-0.0365],"rot":[0.0,0.0,0.0],"size":[0.06,0.045,0.003],"color":[0.52,0.5,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRidge","shape":"cube","pos":[0.045,0.0,0.0365],"rot":[0.0,0.0,0.0],"size":[0.06,0.005,0.002],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StoneSpot1","shape":"sphere","pos":[-0.02,0.015,0.025],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"StoneSpot2","shape":"sphere","pos":[0.03,-0.01,-0.02],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.57,0.55,0.47],"smooth":0.05,"metal":0.0},
+  {"name":"StoneSpot3","shape":"sphere","pos":[-0.035,-0.005,-0.03],"rot":[0.0,0.0,0.0],"size":[0.007,0.007,0.007],"color":[0.56,0.54,0.46],"smooth":0.05,"metal":0.0}
+]}

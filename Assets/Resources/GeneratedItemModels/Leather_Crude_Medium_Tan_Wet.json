@@ -1,0 +1,13 @@
+{"version": 1, "id": "Leather_Crude_Medium_Tan_Wet", "baseHeight": 0.0887, "name": "Leather Crude Medium Tan Wet", "model": "gpt-oss:120b", "notes": "Wet crude leather sheet about 0.60 m × 0.40 m, ~1 cm thick (≈3 kg). Laid flat on the floor with raised stitched edge and a few water droplets; one corner is folded over.", "score": 7, "parts": [
+  {"name":"MainSheet","shape":"cube","pos":[0.0,-0.005,0.0048],"rot":[0.0,0.0,0.0],"size":[0.6,0.01,0.4],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.0,0.0075,0.2098],"rot":[0.0,0.0,0.0],"size":[0.6,0.015,0.01],"color":[0.45,0.42,0.35],"smooth":0.25,"metal":0.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[0.0,0.0075,-0.2002],"rot":[0.0,0.0,0.0],"size":[0.6,0.015,0.01],"color":[0.45,0.42,0.35],"smooth":0.25,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.305,0.0075,0.0048],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.4],"color":[0.45,0.42,0.35],"smooth":0.25,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.305,0.0075,0.0048],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.4],"color":[0.45,0.42,0.35],"smooth":0.25,"metal":0.0},
+  {"name":"StitchLine","shape":"cube","pos":[0.0,0.002,-0.1902],"rot":[0.0,0.0,0.0],"size":[0.6,0.004,0.003],"color":[0.3,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"Droplet1","shape":"sphere","pos":[-0.15,0.001,0.0548],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.8,0.9,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"Droplet2","shape":"sphere","pos":[0.1,0.001,-0.0652],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.8,0.9,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"Droplet3","shape":"sphere","pos":[0.25,0.001,0.1248],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.8,0.9,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"Droplet4","shape":"sphere","pos":[-0.22,0.001,-0.1452],"rot":[0.0,0.0,0.0],"size":[0.019,0.019,0.019],"color":[0.8,0.9,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"FoldCorner","shape":"cube","pos":[-0.26,-0.0,-0.1752],"rot":[30.0,0.0,0.0],"size":[0.08,0.02,0.08],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0}
+]}

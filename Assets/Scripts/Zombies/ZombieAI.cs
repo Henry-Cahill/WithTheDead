@@ -59,6 +59,16 @@ namespace CloneZ
         private float _staggerTimer;
         private Vector3 _knockback;
 
+        // A raid's shut doors: a chase that dead-ends against them (a partial path) makes for the nearest one in the way and
+        // batters it, rather than milling against a wall. Nothing of this runs where there are no raid doors.
+        private RaidDoor _door;
+        private Vector3 _doorStand;
+        private float _doorRethinkAt;
+        private int _doorChanges;          // RaidDoor.Changes when the way round was last looked for
+        private bool _doorRecheck;         // .. and look once more (a carve lifts a frame or so after its door opens)
+        private Vector3 _doorTarget;       // .. and where the target was then
+        private static NavMeshPath s_DoorPath;
+
         // A lit flashlight draws the eye: a zombie standing in its beam spots the survivor from further off.
         private const float FlashlightBeamRange = 22f;
         private const float FlashlightVisionMultiplier = 1.6f;
@@ -131,6 +141,7 @@ namespace CloneZ
             StopAllCoroutines();   // drops a lunge or a bash under way (the brain is alive, so no death fall runs)
             _hasTarget = false;
             _investigating = false;
+            _door = null;
             _lastSeenTime = -999f;
             EnterIdle();
         }
@@ -300,10 +311,12 @@ namespace CloneZ
         {
             _agent.speed = _baseSpeed;
 
-            bool lost = Time.time - _lastSeenTime > CloneZConfig.ZombieForgetTime;
+            // A zombie set on a shut door keeps at it a while after its prey drops out of sight behind it.
+            bool lost = Time.time - _lastSeenTime > (_door != null ? CloneZConfig.ZombieDoorForgetTime : CloneZConfig.ZombieForgetTime);
             if (lost && !_hasTargetVisibleNow())
             {
                 _hasTarget = false;
+                _door = null;
                 _investigatePos = _lastKnownPos;
                 _investigating = true;
                 _state = State.Investigate;
@@ -313,7 +326,7 @@ namespace CloneZ
             Vector3 targetPos = (_player != null && Time.time - _lastSeenTime < 0.25f)
                 ? _player.transform.position
                 : _lastKnownPos;
-            SafeSetDestination(targetPos);
+            SafeSetDestination(RaidDoor.Registry.Count > 0 ? DoorDetour(targetPos) : targetPos);
 
             // A barricade or house wall standing between us and the target has to be torn down
             // first — the carved NavMesh already dead-ends us against it, so start swinging.
@@ -338,17 +351,88 @@ namespace CloneZ
         private bool _hasTargetVisibleNow() => _player != null && !_player.IsDead && CanSeePlayer();
 
         // The nearest player-built structure (barricade or house wall/doorway) that blocks the
-        // path to the target — whichever is closer if both are in reach.
+        // path to the target — whichever is closer if both are in reach — or, in a raid, a shut
+        // door standing in the way.
         private IDamageable NearestObstruction(Vector3 targetPos)
         {
             float range = CloneZConfig.ZombieAttackRange + 0.8f;
             Barricade bar = Barricade.NearestObstructing(transform.position, targetPos, range);
             BuildPiece piece = BuildPiece.NearestObstructing(transform.position, targetPos, range);
-            if (bar == null) return piece;
-            if (piece == null) return bar;
-            float db = (bar.Position - transform.position).sqrMagnitude;
-            float dp = (piece.Position - transform.position).sqrMagnitude;
-            return db <= dp ? (IDamageable)bar : piece;
+            IDamageable wall;
+            if (bar == null) wall = piece;
+            else if (piece == null) wall = bar;
+            else
+            {
+                float db = (bar.Position - transform.position).sqrMagnitude;
+                float dp = (piece.Position - transform.position).sqrMagnitude;
+                wall = db <= dp ? (IDamageable)bar : piece;
+            }
+            if (RaidDoor.Registry.Count == 0) return wall;
+
+            RaidDoor door = DoorInReach(targetPos, range);
+            if (door == null) return wall;
+            if (wall == null) return door;
+            return door.SqrDistance(transform.position) <= (wall.Transform.position - transform.position).sqrMagnitude ? door : wall;
+        }
+
+        // The shut raid door to batter: the one this zombie made for once it's within reach, or — while the target can't be
+        // reached at all — one in reach standing between them (which it then sticks with). Never a door it could simply
+        // walk round.
+        private RaidDoor DoorInReach(Vector3 targetPos, float range)
+        {
+            Vector3 p = transform.position;
+            if (_door != null && _door.Obstructs && _door.SqrDistance(p) <= range * range) return _door;
+            if (!_agent.enabled || !_agent.isOnNavMesh || _agent.pathPending || _agent.pathStatus != NavMeshPathStatus.PathPartial) return null;
+            RaidDoor door = RaidDoor.NearestObstructing(p, targetPos, range);
+            if (door != null)
+            {
+                _door = door;
+                _doorStand = door.StandingPoint(door.SideOfDoor(p));
+                _doorChanges = RaidDoor.Changes;
+                _doorTarget = targetPos;
+            }
+            return door;
+        }
+
+        // While the target is out of reach behind shut doors (the path ends short of it), heads for the nearest shut door it
+        // can walk up to that leads toward the target, and stays with it until the door opens or bursts, or a way round turns
+        // up — looked for only when a door has changed or the target has moved. Thought over a few times a second at most
+        // (less often while no door offers a way), with a path shared by every zombie (no allocation).
+        private Vector3 DoorDetour(Vector3 targetPos)
+        {
+            if (_door != null && !_door.Obstructs) _door = null;   // opened, or battered down: on through
+            float now = Time.time;
+            if (now >= _doorRethinkAt && _agent.enabled && _agent.isOnNavMesh && !_agent.pathPending)
+            {
+                _doorRethinkAt = now + CloneZConfig.ZombieDoorRethink * Random.Range(0.75f, 1.25f);
+                if (s_DoorPath == null) s_DoorPath = new NavMeshPath();
+                if (_door == null)
+                {
+                    if (_agent.pathStatus == NavMeshPathStatus.PathPartial)
+                    {
+                        _door = RaidDoor.Detour(transform.position, targetPos, CloneZConfig.ZombieDoorSearchRange, s_DoorPath, out _doorStand);
+                        if (_door == null) _doorRethinkAt = now + CloneZConfig.ZombieDoorIdleRethink * Random.Range(0.75f, 1.25f);
+                        _doorChanges = RaidDoor.Changes;
+                        _doorTarget = targetPos;
+                    }
+                }
+                else if (RaidDoor.Changes != _doorChanges || _doorRecheck || (targetPos - _doorTarget).sqrMagnitude > 2.25f)
+                {
+                    _doorRecheck = RaidDoor.Changes != _doorChanges;
+                    _doorChanges = RaidDoor.Changes;
+                    _doorTarget = targetPos;
+                    if (Reachable(targetPos)) _door = null;   // a way round has opened up
+                }
+            }
+            return _door != null ? _doorStand : targetPos;
+        }
+
+        // True when a complete path runs from here to (the navmesh nearest) `target`.
+        private bool Reachable(Vector3 target)
+        {
+            if (NavMesh.SamplePosition(target, out NavMeshHit hit, 1.5f, NavMesh.AllAreas)) target = hit.position;
+            return NavMesh.CalculatePath(transform.position, target, NavMesh.AllAreas, s_DoorPath)
+                && s_DoorPath.status == NavMeshPathStatus.PathComplete;
         }
 
         private void TickAttack()

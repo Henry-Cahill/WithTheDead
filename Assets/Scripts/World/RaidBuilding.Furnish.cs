@@ -170,30 +170,59 @@ namespace CloneZ
         #endregion
 
         #region Lights
-        /// <summary>A ceiling fitting in the style of the room at local (x, z); a lit room also gets the
-        /// warm point light under it. <paramref name="height"/> overrides the ceiling height (tent ridge).</summary>
+        /// <summary>A ceiling fitting in the style of the room at local (x, z), working as the starter home's lights do: a
+        /// lamp on the room's circuit (<see cref="CircuitOf"/>) — switched on to begin with in a <see cref="RaidRoom.Lit"/>
+        /// room, worked from the switch by the room's door — whose lit glow shows only while it's on, flickering in a
+        /// <see cref="RaidRoom.Flicker"/> room. <paramref name="height"/> overrides the ceiling height (tent ridge).</summary>
         public void CeilingLight(RaidRoom room, float lx, float lz, float lyaw = 0f, float height = -1f)
         {
             Vector3 pos = W(lx, height > 0f ? height : WallH, lz);
+            // The fitting is drawn dark; its lit look is the lamp's glow, shown while the light is on.
+            var glow = new RaidMesh();
             float drop;
             switch (room.Light)
             {
-                case LightStyle.Dome: FurnitureBuilder.CeilingDome(Ceil, pos, room.Lit); drop = 0.16f; break;
-                case LightStyle.Bulb: FurnitureBuilder.HangingBulb(Ceil, pos, 0.35f, room.Lit); drop = 0.43f; break;
-                case LightStyle.ShopLamp: FurnitureBuilder.ShopLamp(Ceil, pos, 0.45f, room.Lit); drop = 0.58f; break;
-                default: FurnitureBuilder.CeilingPanel(Ceil, pos, Yaw(lyaw), room.Lit); drop = 0.16f; break;
+                case LightStyle.Dome:
+                    FurnitureBuilder.CeilingDome(Ceil, pos, false);
+                    FurnitureBuilder.CeilingDomeGlow(glow, pos);
+                    drop = 0.16f;
+                    break;
+                case LightStyle.Bulb:
+                    FurnitureBuilder.HangingBulb(Ceil, pos, 0.35f, false);
+                    FurnitureBuilder.HangingBulbGlow(glow, pos, 0.35f);
+                    drop = 0.43f;
+                    break;
+                case LightStyle.ShopLamp:
+                    FurnitureBuilder.ShopLamp(Ceil, pos, 0.45f, false);
+                    FurnitureBuilder.ShopLampGlow(glow, pos, 0.45f);
+                    drop = 0.58f;
+                    break;
+                default:
+                    FurnitureBuilder.CeilingPanel(Ceil, pos, Yaw(lyaw), false);
+                    FurnitureBuilder.CeilingPanelGlow(glow, pos, Yaw(lyaw));
+                    drop = 0.16f;
+                    break;
             }
-            if (!room.Lit) return;
             float size = Mathf.Max(room.World.width, room.World.height);
             float range = Mathf.Clamp(size * 0.95f, 6f, 9f);
             float intensity = 2.0f + (float)Rng.NextDouble() * 1.0f;
-            // The fitting's own glowing bulb sits at the light, just under the panel / dome / shade.
-            Town.Light(Root, pos - Vector3.up * drop, CeilingLightColor, range, intensity, room.Flicker, true);
+            // The light sits at the fitting's own bulb, just under the panel / dome / shade.
+            HomeLamp lamp = HomeLamp.Attach(Root, pos - Vector3.up * drop, range, intensity, true, glow, CircuitOf(room), color: CeilingLightColor);
+            lamp.HangFromCeiling();
+            lamp.Flicker = room.Flicker;
+            RoomLamps(room).Add(lamp);
+            Town.LightCount++;
         }
 
-        /// <summary>A desk / table lamp's light at a world bulb position.</summary>
-        public void LampLight(Vector3 bulb, bool shadows)
-            => Town.Light(Root, bulb, DeskLampColor, 3.6f, 1.7f, Rng.NextDouble() < 0.12, shadows);
+        /// <summary>A desk / table / bedside lamp at a world bulb position, working as the starter home's lamps do: a lamp
+        /// with a switch of its own, under the piece being drawn (<see cref="CurrentBody"/>, from a <see cref="FixtureBody"/>
+        /// draw callback, so the reach for its switch passes that piece's collider) or else the building. Its callers draw
+        /// it lit, so it starts on; <paramref name="startOn"/> false leaves one off (draw that one unlit).
+        /// <paramref name="glow"/> (world space, may be null) is its lit shade or bulb, shown only while it's lit —
+        /// <see cref="DeskLamp"/> and <see cref="BedsideTable"/> draw a lamp unlit with its glow. <paramref name="name"/>
+        /// overrides its name (by default from the piece: "Desk lamp", "Bedside lamp", "Lamp").</summary>
+        public void LampLight(Vector3 bulb, bool shadows, bool startOn = true, RaidMesh glow = null, string name = null)
+            => FreeStandingLamp(bulb, shadows, startOn, glow, name);
         #endregion
 
         #region Walls: decor, vines and grime
@@ -226,28 +255,30 @@ namespace CloneZ
             return Static;
         }
 
-        /// <summary>A framed poster on a room wall (local coordinate along the wall).</summary>
+        /// <summary>A framed poster on a room wall (local coordinate along the wall), a fixture as the home's pictures are —
+        /// look at it, straighten it — described for what it shows and where it hangs; it hangs under its wall segment.</summary>
         public void Poster(RaidRoom room, char side, float t, float y, float w, float h, int kind)
         {
             Vector3 at = WallFace(room, side, t, y, out Vector3 n);
-            FurnitureBuilder.FramedPoster(WallMeshAt(at), Rng, at, n, w, h, kind);
+            // The tilt and the frame the static poster drew from the stream, in the same order.
+            float roll = -4f + (float)Rng.NextDouble() * 8f;
+            Color frame = Rng.NextDouble() < 0.5 ? new Color(0.16f, 0.12f, 0.08f) : new Color(0.55f, 0.55f, 0.52f);
+            string description = PosterText(kind);
+            KeepWallClear(at, n, w * 0.5f + 0.04f, h * 0.5f + 0.04f);
+            Later(() => HangPoster(at, n, w, h, kind, roll, frame, description));
         }
 
-        /// <summary>A wall clock on a room wall.</summary>
+        /// <summary>A battery wall clock on a room wall, as the home's (check the time, listen to it tick) — unless its
+        /// battery has run down. The case and dial are drawn into the wall; the clock and its hands hang under the segment.</summary>
         public void Clock(RaidRoom room, char side, float t, float y)
         {
             Vector3 at = WallFace(room, side, t, y, out Vector3 n);
-            FurnitureBuilder.WallClock(WallMeshAt(at), Rng, at, n);
-        }
-
-        /// <summary>Wall cupboards above a counter on a room wall (local coordinate of their centre).</summary>
-        public void UpperCabinets(RaidRoom room, char side, float t, float len, Color cabinet)
-        {
-            Vector3 at = WallFace(room, side, t, 0f, out Vector3 n);
-            RaidMesh m = WallMeshAt(at + Vector3.up * 1.8f);
-            m.SetFrame(at, Mathf.Atan2(n.x, n.z) * Mathf.Rad2Deg);
-            FurnitureBuilder.UpperCabinets(m, Rng, len, cabinet);
-            m.ResetFrame();
+            FurnitureBuilder.ClockDial(WallMeshAt(at), at, n);
+            // Two draws from the stream, as the static clock's hands took.
+            bool flat = Rng.NextDouble() < CloneZConfig.RaidClockStoppedChance;
+            float stoppedAt = (float)Rng.NextDouble() * 12f;
+            KeepWallClear(at, n, 0.18f, 0.18f);
+            Later(() => ClockFixture.Create(WallObjectAt(at), at + n * 0.06f, at, n, flat ? stoppedAt : -1f).AddHands());
         }
 
         /// <summary>A painted sign board over the outside of a doorway at local (x, z) on a wall line.</summary>
@@ -276,28 +307,10 @@ namespace CloneZ
             Town.Warn(Name + ": no doorway for sign '" + text + "'");
         }
 
-        /// <summary>A rolled-up shutter drum over the inside of the doorway at local (x, z).</summary>
-        public void RollUpDoor(float lx, float lz)
-        {
-            Vector3 p = W(lx, 0f, lz);
-            foreach (Opening o in _openings)
-            {
-                if (o.Kind != OpeningKind.Door) continue;
-                Vector3 c = RunPoint(o.Run, o.Pos, 0f, 0f);
-                if ((c - p).sqrMagnitude > 1f) continue;
-                int outside = OutsideSide(o.Run, o.Pos);
-                int inside = outside == 0 ? 1 : -outside;
-                Vector3 at = RunPoint(o.Run, o.Pos, 2.45f, inside * (Half + 0.2f));
-                RaidMesh m = WallMeshAt(RunPoint(o.Run, o.Pos, 2.5f, 0f));
-                m.CylinderX(at, 0.2f, o.Width + 0.2f, 10, DecorPalette.Metal(new Color(0.45f, 0.46f, 0.44f)), o.Run.AlongX ? 0f : 90f);
-                m.Box(RunPoint(o.Run, o.Pos, 2.27f, inside * (Half + 0.05f)), RunSize(o.Run, o.Width + 0.1f, 0.12f, 0.04f), DecorPalette.Metal(new Color(0.40f, 0.41f, 0.40f)));
-                return;
-            }
-            Town.Warn(Name + ": no doorway for a roll-up door");
-        }
-
         private void DecorateWalls()
         {
+            // The working lights first — the switches, a house's porch lantern — so the vines and grime keep clear of them.
+            PlanWallLighting();
             foreach (WallPiece p in _pieces)
             {
                 if (p.Opening != null) continue;
@@ -324,7 +337,10 @@ namespace CloneZ
                         float c = a + 0.15f + w * 0.5f + (float)Rng.NextDouble() * (b - a - 0.3f - w);
                         bool hang = Rng.NextDouble() < 0.35;
                         float h = WallH * (0.55f + (float)Rng.NextDouble() * 0.4f);
-                        FurnitureBuilder.Vines(p.Mesh, Rng, RunPoint(r, c, hang ? WallH - 0.05f : 0.02f, off), n, w, h, hang);
+                        float y0 = hang ? WallH - 0.05f - h : 0.02f;
+                        // The stems wander a little past the patch's width.
+                        if (!CoversFitting(r, side, c, w * 0.5f + 0.35f, y0, y0 + h))
+                            FurnitureBuilder.Vines(p.Mesh, Rng, RunPoint(r, c, hang ? WallH - 0.05f : 0.02f, off), n, w, h, hang);
                     }
                     double stainChance = outside ? 0.3 : 0.4;
                     if (Rng.NextDouble() < stainChance)
@@ -339,7 +355,8 @@ namespace CloneZ
                             float lo = room.Design.RailHeight + 0.75f, hi = Mathf.Max(lo, WallH - 0.7f);
                             y = lo + (y - 0.5f) / 1.7f * (hi - lo);
                         }
-                        FurnitureBuilder.WallStain(p.Mesh, Rng, RunPoint(r, c, y, off), n, wall);
+                        if (!CoversFitting(r, side, c, 0.6f, y - 0.7f, y + 0.7f))
+                            FurnitureBuilder.WallStain(p.Mesh, Rng, RunPoint(r, c, y, off), n, wall);
                     }
                 }
             }
@@ -476,6 +493,7 @@ namespace CloneZ
                 string name = p.Opening == null ? "Wall" : (p.Opening.Kind == OpeningKind.Door ? "DoorHead" : "Window");
                 GameObject go = p.Mesh.Emit(name, Root, c);
                 if (go == null) continue;
+                p.Object = go;
                 foreach (Bounds b in p.Colliders)
                 {
                     var bc = go.AddComponent<BoxCollider>();
@@ -493,6 +511,8 @@ namespace CloneZ
 
             Rect f = Footprint;
             Shelter.Register(new Bounds(new Vector3(f.center.x, WallH * 0.5f, f.center.y), new Vector3(f.width - 0.4f, WallH, f.height - 0.4f)));
+
+            RunLater();
         }
         #endregion
     }

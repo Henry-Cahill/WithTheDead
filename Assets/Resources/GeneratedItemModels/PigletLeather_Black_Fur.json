@@ -1,0 +1,13 @@
+{"version": 1, "id": "PigletLeather_Black_Fur", "baseHeight": 0.105, "name": "Piglet Leather Black Fur", "model": "gpt-oss:120b", "notes": "Flat chunk of piglet leather with black fur, about 0.34 m × 0.24 m × 0.04 m: a thin leather backing, a squashed fur mound on top, several fluffy tufts and stitched edge details.", "score": 7, "parts": [
+  {"name":"Backing","shape":"cube","pos":[0.0,-0.042,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.006,0.24],"color":[0.35,0.33,0.28],"smooth":0.1,"metal":0.0},
+  {"name":"FurBase","shape":"sphere","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.05,0.22],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"TuftA","shape":"sphere","pos":[-0.09,0.01,-0.06],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"TuftB","shape":"sphere","pos":[0.08,0.013,0.05],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"TuftC","shape":"sphere","pos":[-0.04,0.007,0.09],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"TuftD","shape":"sphere","pos":[0.12,0.009,-0.08],"rot":[0.0,0.0,0.0],"size":[0.055,0.055,0.055],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"TuftE","shape":"sphere","pos":[-0.1,0.006,0.07],"rot":[0.0,0.0,0.0],"size":[0.045,0.045,0.045],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"StitchTop","shape":"cylinder","pos":[0.0,-0.037,0.12],"rot":[0.0,0.0,90.0],"size":[0.006,0.34,0.006],"color":[0.2,0.18,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"StitchBottom","shape":"cylinder","pos":[0.0,-0.037,-0.12],"rot":[0.0,0.0,90.0],"size":[0.006,0.34,0.006],"color":[0.2,0.18,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"StitchSideL","shape":"cylinder","pos":[-0.17,-0.037,0.0],"rot":[90.0,0.0,0.0],"size":[0.006,0.24,0.006],"color":[0.2,0.18,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"StitchSideR","shape":"cylinder","pos":[0.17,-0.037,0.0],"rot":[90.0,0.0,0.0],"size":[0.006,0.24,0.006],"color":[0.2,0.18,0.15],"smooth":0.3,"metal":0.0}
+]}

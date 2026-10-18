@@ -1,0 +1,12 @@
+{"version": 1, "id": "P38", "baseHeight": 0.08, "name": "P38", "model": "gpt-oss:120b", "notes": "Walther P‑38 pistol ~0.21 m long × 0.14 m tall when laid on its side (long axis along X). Main barrel cylinder, slide‑frame block, grip slab, trigger‑guard flanges and a thin top rail give the recognisable silhouette.", "score": 7, "parts": [
+  {"name":"SlideFrame","shape":"cube","pos":[-0.0275,0.0,0.0005],"rot":[0.0,0.0,0.0],"size":[0.18,0.04,0.03],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Barrel","shape":"cylinder","pos":[0.0675,0.0,0.0005],"rot":[0.0,0.0,90.0],"size":[0.012,0.12,0.012],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Grip","shape":"cube","pos":[-0.0975,-0.005,-0.0095],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.02],"color":[0.3,0.25,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"TriggerGuardL","shape":"cube","pos":[-0.0875,0.005,0.0155],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TriggerGuardR","shape":"cube","pos":[-0.0875,0.005,-0.0145],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Trigger","shape":"cube","pos":[-0.0855,0.002,0.0005],"rot":[0.0,0.0,0.0],"size":[0.004,0.008,0.002],"color":[0.2,0.18,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"Magazine","shape":"cube","pos":[-0.1175,-0.01,-0.0045],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.012],"color":[0.55,0.53,0.48],"smooth":0.4,"metal":1.0},
+  {"name":"TopRail","shape":"cube","pos":[-0.0275,0.012,0.0005],"rot":[0.0,0.0,0.0],"size":[0.16,0.004,0.03],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SafetyLever","shape":"cube","pos":[-0.0525,0.016,0.0125],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.002],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SlideBack","shape":"cube","pos":[-0.1075,0.0,0.0005],"rot":[0.0,0.0,0.0],"size":[0.04,0.035,0.03],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

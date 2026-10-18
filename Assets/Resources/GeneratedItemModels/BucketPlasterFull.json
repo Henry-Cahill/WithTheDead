@@ -1,0 +1,12 @@
+{"version": 1, "id": "BucketPlasterFull", "baseHeight": 0.21, "name": "Bucket Plaster Full", "model": "gpt-oss:120b", "notes": "Plastic bucket (~0.25 m dia × 0.30 m tall) full of white plaster powder, upright on the floor. Includes lid, side rope handle, a label on the front, a thin seam ring, a small spill of powder on the ground and an inner liner for realism.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.025,-0.01,-0.005],"rot":[0.0,0.0,0.0],"size":[0.25,0.28,0.25],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"RimTop","shape":"cylinder","pos":[-0.025,0.125,-0.005],"rot":[0.0,0.0,0.0],"size":[0.27,0.01,0.27],"color":[0.55,0.53,0.48],"smooth":0.4,"metal":0.0},
+  {"name":"Lid","shape":"cylinder","pos":[-0.025,0.14,-0.005],"rot":[0.0,0.0,0.0],"size":[0.24,0.02,0.24],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.1,0.07,-0.005],"rot":[90.0,0.0,0.0],"size":[0.02,0.18,0.02],"color":[0.4,0.38,0.35],"smooth":0.3,"metal":0.0},
+  {"name":"Powder","shape":"cylinder","pos":[-0.025,-0.025,-0.005],"rot":[0.0,0.0,0.0],"size":[0.24,0.25,0.24],"color":[0.95,0.95,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"SpillPile","shape":"cube","pos":[0.125,-0.14,0.045],"rot":[0.0,0.0,0.0],"size":[0.07,0.02,0.07],"color":[0.95,0.95,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[-0.025,-0.01,0.12],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.04],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"SideSeam","shape":"cylinder","pos":[-0.025,-0.01,-0.005],"rot":[0.0,0.0,0.0],"size":[0.255,0.005,0.255],"color":[0.45,0.44,0.4],"smooth":0.3,"metal":0.0},
+  {"name":"BottomRim","shape":"cylinder","pos":[-0.025,-0.145,-0.005],"rot":[0.0,0.0,0.0],"size":[0.26,0.01,0.26],"color":[0.55,0.53,0.48],"smooth":0.4,"metal":0.0},
+  {"name":"InnerLiner","shape":"cylinder","pos":[-0.025,-0.01,-0.005],"rot":[0.0,0.0,0.0],"size":[0.235,0.28,0.235],"color":[0.9,0.88,0.85],"smooth":0.2,"metal":0.0}
+]}

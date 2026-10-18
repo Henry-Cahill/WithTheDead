@@ -1,0 +1,12 @@
+{"version": 1, "id": "ChristmasOrnament_Gold1", "baseHeight": 0.098, "name": "Christmas Ornament Gold1", "model": "gpt-oss:120b", "notes": "Gold‑tinted Christmas ornament ~7 cm diameter lying on the floor: glossy spherical body, a small metallic cap with hanging hook, a thin decorative band around the middle and a few sparkling highlights.", "score": 7, "parts": [
+  {"name":"Body","shape":"sphere","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"CapBase","shape":"cylinder","pos":[0.0,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.02],"color":[0.78,0.77,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"CapTop","shape":"cylinder","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.002,0.015],"color":[0.84,0.82,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"HookStem","shape":"cylinder","pos":[0.0,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.03,0.006],"color":[0.78,0.77,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"HookLoop","shape":"cylinder","pos":[0.0,0.035,0.0],"rot":[90.0,0.0,0.0],"size":[0.006,0.015,0.006],"color":[0.78,0.77,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"Band","shape":"cylinder","pos":[0.0,-0.003,0.0],"rot":[90.0,0.0,0.0],"size":[0.07,0.004,0.07],"color":[0.45,0.42,0.35],"smooth":0.5,"metal":1.0},
+  {"name":"SparkleA","shape":"cube","pos":[0.0124,-0.0077,0.0124],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.9,0.85,0.6],"smooth":0.8,"metal":0.0},
+  {"name":"SparkleB","shape":"cube","pos":[-0.0172,-0.0319,0.0299],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.9,0.85,0.6],"smooth":0.8,"metal":0.0},
+  {"name":"SparkleC","shape":"cube","pos":[-0.0263,-0.0205,-0.0152],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.9,0.85,0.6],"smooth":0.8,"metal":0.0},
+  {"name":"SparkleD","shape":"cube","pos":[0.0124,-0.0133,-0.0215],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.9,0.85,0.6],"smooth":0.8,"metal":0.0}
+]}

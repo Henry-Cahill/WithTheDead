@@ -75,7 +75,8 @@ namespace CloneZ
             town.Keepout.Add(Around(pos, r, r));
         }
 
-        /// <summary>A wrecked car (with its collider) at a world placement.</summary>
+        /// <summary>A wrecked car (with its collider) at a world placement, its glovebox and trunk to search
+        /// (<see cref="WreckStorage"/>).</summary>
         private static void Wreck(RaidTown town, Vector3 pos, float yaw, DecorProps.CarKind kind, Color paint)
         {
             RaidMesh m = town.Out.Solid(pos);
@@ -85,6 +86,7 @@ namespace CloneZ
             town.PropCollider(pos + Vector3.up * (size.y * 0.5f), new Vector3(size.x, size.y, size.z), yaw);
             float r = Mathf.Max(size.x, size.z) * 0.5f;
             town.Keepout.Add(Around(pos, r, r));
+            WreckStorage(town, pos, yaw, kind, size);
         }
 
         private static readonly Color[] CarPaints =
@@ -111,8 +113,9 @@ namespace CloneZ
                 m.Box(new Vector3(0.3f, 6.37f, 0.012f), new Vector3(0.5f, 0.3f, 0.01f), Quaternion.Euler(0f, 0f, -8f), DecorPalette.Matte(new Color(0.14f, 0.18f, 0.34f)));
             });
             Wreck(town, new Vector3(9.6f, 0f, -29.8f), 4f, DecorProps.CarKind.ArmyTruck, Color.white);
-            Prop(town, new Vector3(31.5f, 0f, -20f), 90f, new Vector3(1.9f, 1.3f, 1.1f), true, (m, r) => DecorProps.Dumpster(m, r));
+            DumpsterProp(town, new Vector3(31.5f, 0f, -20f), 90f);
             for (int i = 0; i < 3; i++) DecorProps.TrashBag(town.Out.Solid(new Vector3(31.5f, 0f, -22f)), town.Rng, new Vector3(R(town.Rng, 30.8f, 32.4f), 0f, R(town.Rng, -22.6f, -21.4f)));
+            TrashBagsProp(town, new Vector3(31.6f, 0f, -22f));
             Vector3 sign = new Vector3(7.6f, 0f, -26.5f);
             Prop(town, sign, 270f, new Vector3(2.2f, 2f, 0.2f), true, (m, r) => DecorProps.PostSign(m, r, "ARMORY", new Color(0.20f, 0.26f, 0.16f), new Color(0.86f, 0.84f, 0.74f), 0.5f, 1.2f));
         }
@@ -130,8 +133,9 @@ namespace CloneZ
             Wreck(town, new Vector3(34.4f, 0f, 13.5f), 88f, DecorProps.CarKind.Sedan, Paint(town));
             Wreck(town, new Vector3(34.0f, 0f, 19.6f), 95f, DecorProps.CarKind.Wagon, Paint(town));
             Paved(town, Rect.MinMaxRect(24.6f, 6.5f, 26.4f, 8.9f), 0.028f, DecorMaterials.Concrete);
-            Prop(town, new Vector3(13f, 0f, 25f), 0f, new Vector3(1.9f, 1.3f, 1.1f), true, (m, r) => DecorProps.Dumpster(m, r));
+            DumpsterProp(town, new Vector3(13f, 0f, 25f), 0f);
             for (int i = 0; i < 4; i++) DecorProps.TrashBag(town.Out.Solid(new Vector3(13f, 0f, 26.5f)), town.Rng, new Vector3(R(town.Rng, 11.5f, 15f), 0f, R(town.Rng, 26.2f, 27.2f)));
+            TrashBagsProp(town, new Vector3(13.2f, 0f, 26.7f));
         }
 
         private static void DressGasStation(RaidTown town, RaidBuilding b)
@@ -142,8 +146,7 @@ namespace CloneZ
             Paved(town, apron, 0.03f, DecorMaterials.Concrete);
             town.Keepout.Add(apron);
             Vector3[] pumps = { new Vector3(9.4f, 0f, 43f), new Vector3(9.4f, 0f, 49f) };
-            foreach (Vector3 p in pumps)
-                Prop(town, p, 0f, new Vector3(1.0f, 1.7f, 1.6f), true, (m, r) => DecorProps.GasPump(m, r));
+            foreach (Vector3 p in pumps) PumpProp(town, p, 0f);
             float[] px = { 7.4f, 11.4f };
             float[] pz = { 40.5f, 51.5f };
             Surf pillar = DecorPalette.Matte(new Color(0.78f, 0.78f, 0.76f));
@@ -176,7 +179,7 @@ namespace CloneZ
 
             Wreck(town, new Vector3(7.0f, 0f, 46f), 2f, DecorProps.CarKind.Pickup, Paint(town));
             Prop(town, new Vector3(5.4f, 0f, 36.5f), 270f, new Vector3(2.4f, 3.2f, 0.3f), true, (m, r) => DecorProps.PostSign(m, r, "GAS 1.09", new Color(0.86f, 0.84f, 0.78f), new Color(0.62f, 0.10f, 0.08f), 0.5f, 2.6f));
-            Prop(town, new Vector3(25f, 0f, 43f), 90f, new Vector3(1.9f, 1.3f, 1.1f), true, (m, r) => DecorProps.Dumpster(m, r));
+            DumpsterProp(town, new Vector3(25f, 0f, 43f), 90f);
         }
 
         private static void DressDepot(RaidTown town, RaidBuilding b)
@@ -186,7 +189,7 @@ namespace CloneZ
             town.Keepout.Add(Rect.MinMaxRect(38.5f, 6.5f, 62f, 32.8f));
             Wreck(town, new Vector3(56f, 0f, 22f), 0f, DecorProps.CarKind.ArmyTruck, Color.white);
             Wreck(town, new Vector3(42f, 0f, 17f), 170f, DecorProps.CarKind.Pickup, Paint(town));
-            Prop(town, new Vector3(40f, 0f, 31f), 0f, new Vector3(1.9f, 1.3f, 1.1f), true, (m, r) => DecorProps.Dumpster(m, r));
+            DumpsterProp(town, new Vector3(40f, 0f, 31f), 0f);
             Prop(town, new Vector3(60.5f, 0f, 30f), 0f, new Vector3(1.2f, 1.2f, 1.0f), true, (m, r) => FurnitureBuilder.Pallet(m, r, Vector3.zero, 0f, true));
             Prop(town, new Vector3(60.5f, 0f, 27.8f), 0f, new Vector3(1.2f, 1.2f, 1.0f), true, (m, r) => FurnitureBuilder.Pallet(m, r, Vector3.zero, 90f, true));
             Prop(town, new Vector3(48f, 0f, 29f), 0f, new Vector3(2.4f, 1.4f, 2.0f), true, (m, r) => DecorProps.SnowPile(m, r, Vector3.zero, 2.6f, 2.2f, 1.2f, 20f));
@@ -194,7 +197,7 @@ namespace CloneZ
 
         private static void DressClinic(RaidTown town, RaidBuilding clinic, RaidBuilding tent)
         {
-            Prop(town, new Vector3(-33.6f, 0f, -14f), 90f, new Vector3(1.9f, 1.3f, 1.1f), true, (m, r) => DecorProps.Dumpster(m, r));
+            DumpsterProp(town, new Vector3(-33.6f, 0f, -14f), 90f);
             Wreck(town, new Vector3(-10f, 0f, -16f), 182f, DecorProps.CarKind.Sedan, new Color(0.82f, 0.82f, 0.80f));
 
             // The quarantine site behind the clinic: a toxic cloud centred on the tent, warning barrels and
@@ -225,7 +228,7 @@ namespace CloneZ
             }
             Prop(town, new Vector3(-28.5f, 0f, -35f), 90f, new Vector3(1.8f, 0.7f, 0.5f), true, (m, r) => DecorProps.SandbagWall(m, r, 1.8f, 4));
             Prop(town, new Vector3(-19.5f, 0f, -35f), 90f, new Vector3(1.8f, 0.7f, 0.5f), true, (m, r) => DecorProps.SandbagWall(m, r, 1.8f, 4));
-            Prop(town, new Vector3(-19.4f, 0f, -42f), 0f, new Vector3(1.1f, 0.8f, 0.7f), true, (m, r) => DecorProps.Generator(m, r));
+            GeneratorProp(town, new Vector3(-19.4f, 0f, -42f), 0f);
             for (int i = 0; i < 5; i++)
             {
                 var p = new Vector3(R(town.Rng, -32f, -16f), 0f, R(town.Rng, -50f, -30f));
@@ -243,7 +246,9 @@ namespace CloneZ
             town.Light(tent.Root, lampPost + new Vector3(0f, 2.3f, 0.24f), new Color(1f, 0.45f, 0.25f), 6f, 1.4f, true, false);
         }
 
-        /// <summary>A house's front walk out to the sidewalk, a mailbox by it, maybe a car in the drive.</summary>
+        /// <summary>A house's front yard, fitted like the starter home's: the front walk out to the sidewalk, the mailbox by it
+        /// with the house's last post in it, the welcome mat on the step, the number by the door and the outside tap on the
+        /// side wall — all of them working — and maybe a car in the drive.</summary>
         private static void DressHouse(RaidTown town, RaidBuilding b, float doorLx, float yard)
         {
             Vector3 door = b.W(doorLx, 0f, -b.HalfD - 0.1f);
@@ -258,7 +263,13 @@ namespace CloneZ
             Vector3 side = b.Dir(1f, 0f);
             Vector3 box = end - dir * 0.7f + side * 1.3f;
             if (!town.Blocked(Around(box, 0.3f, 0.3f)))
-                Prop(town, box, b.Yaw(180f), new Vector3(0.3f, 1.4f, 0.5f), false, (m, r) => DecorProps.Mailbox(m, r, false));
+            {
+                b.YardMailbox(box, RaidHomeLiving.Post(town.Rng));
+                town.Keepout.Add(Around(box, 0.3f, 0.3f));
+            }
+            b.FrontDoormat(doorLx);
+            b.HouseNumber(doorLx, (3 + town.Rng.Next(60)).ToString());
+            b.OutsideTap(b.HalfD > 4.75f ? 0.6f : 0.3f);   // on the side wall, between its two windows
 
             // A driveway beside the house with a dead car on it (about half the houses).
             if (town.Rng.NextDouble() < 0.6)

@@ -1,0 +1,12 @@
+{"version": 1, "id": "BookCookingSet", "baseHeight": 0.147, "name": "Book Cooking Set", "model": "gpt-oss:120b", "notes": "Cooking set lying on the floor: a thick cookbook (pages with front/back covers and spine), a small metal saucepan, and a wooden ladle with a metal scoop. Overall footprint ~0.5 m wide x 0.3 m deep, height up to ~0.18 m.", "score": 6, "parts": [
+  {"name":"BookPages","shape":"cube","pos":[-0.0475,-0.072,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.03,0.25],"color":[0.9,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"FrontCover","shape":"cube","pos":[0.1525,-0.085,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.004,0.25],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"BackCover","shape":"cube","pos":[-0.2575,-0.085,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.004,0.25],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Spine","shape":"cube","pos":[-0.1525,-0.072,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.25],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"PotBody","shape":"cylinder","pos":[0.2225,-0.027,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.12,0.15],"color":[0.7,0.7,0.72],"smooth":0.6,"metal":1.0},
+  {"name":"PotBottom","shape":"cylinder","pos":[0.2225,-0.082,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.01,0.14],"color":[0.7,0.7,0.72],"smooth":0.6,"metal":1.0},
+  {"name":"PotHandle","shape":"cylinder","pos":[0.3275,-0.007,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.06,0.025],"color":[0.7,0.7,0.72],"smooth":0.6,"metal":1.0},
+  {"name":"LadleHandle","shape":"cylinder","pos":[0.0725,0.043,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.15,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"LadleScoop","shape":"sphere","pos":[0.1875,0.043,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.7,0.7,0.72],"smooth":0.6,"metal":1.0},
+  {"name":"LadleRim","shape":"cylinder","pos":[0.1875,0.083,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.008,0.09],"color":[0.7,0.7,0.72],"smooth":0.6,"metal":1.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "TimerCrafted", "baseHeight": 0.0925, "name": "Timer Crafted", "model": "gpt-oss:120b", "notes": "Crafted timer ~0.12 m × 0.08 m × 0.05 m, lying flat on its side (bottom face on Y=0). Main plastic body with darker front panel, tiny LCD screen, central knob on top, two push‑buttons, four screws, a recessed battery compartment on the back and a thin label strip.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0075,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.12,0.05,0.08],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,-0.0075,0.0405],"rot":[0.0,0.0,0.0],"size":[0.108,0.045,0.006],"color":[0.48,0.45,0.38],"smooth":0.12,"metal":0.0},
+  {"name":"Screen","shape":"cube","pos":[-0.02,0.005,0.0445],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.004],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.4},
+  {"name":"Knob","shape":"cylinder","pos":[0.0,0.025,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.04],"color":[0.55,0.53,0.45],"smooth":0.25,"metal":0.2},
+  {"name":"ButtonL","shape":"cylinder","pos":[-0.04,-0.0015,0.0275],"rot":[0.0,0.0,0.0],"size":[0.016,0.012,0.016],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"ButtonR","shape":"cylinder","pos":[0.04,-0.0015,0.0275],"rot":[0.0,0.0,0.0],"size":[0.016,0.012,0.016],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"ScrewFL","shape":"sphere","pos":[-0.05,0.0125,0.0325],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewFR","shape":"sphere","pos":[0.05,0.0125,0.0325],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewBL","shape":"sphere","pos":[-0.05,0.0125,-0.0375],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewBR","shape":"sphere","pos":[0.05,0.0125,-0.0375],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"BatteryComp","shape":"cube","pos":[0.0,-0.0075,-0.0445],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.004],"color":[0.45,0.43,0.38],"smooth":0.12,"metal":0.0},
+  {"name":"LabelStrip","shape":"cube","pos":[0.0,0.018,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.02],"color":[0.85,0.84,0.78],"smooth":0.05,"metal":0.0}
+]}

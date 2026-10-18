@@ -1,0 +1,14 @@
+{"version": 1, "id": "Receiver", "baseHeight": 0.077, "name": "Receiver", "model": "gpt-oss:120b", "notes": "Receiver (gun core) ~0.15 m long × 0.06 m wide × 0.02 m thick, lying flat on its side (long axis +X). Main steel block with a barrel extension, trigger‑guard & trigger, safety lever, magazine well inset and a few screw heads for detail.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[-0.019,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.06],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Barrel","shape":"cylinder","pos":[0.096,-0.003,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.08,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"FrontPlate","shape":"cube","pos":[0.096,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.03,0.06],"color":[0.55,0.53,0.48],"smooth":0.45,"metal":1.0},
+  {"name":"RearPlate","shape":"cube","pos":[-0.134,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.03,0.06],"color":[0.55,0.53,0.48],"smooth":0.45,"metal":1.0},
+  {"name":"TriggerGuard","shape":"cube","pos":[-0.059,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.025],"color":[0.58,0.56,0.51],"smooth":0.55,"metal":1.0},
+  {"name":"Trigger","shape":"cylinder","pos":[-0.074,-0.0045,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.58,0.56,0.51],"smooth":0.6,"metal":1.0},
+  {"name":"SafetyLever","shape":"cube","pos":[-0.109,0.005,0.018],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.004],"color":[0.58,0.56,0.51],"smooth":0.55,"metal":1.0},
+  {"name":"MagazineWell","shape":"cylinder","pos":[-0.089,-0.008,0.0],"rot":[0.0,0.0,90.0],"size":[0.018,0.04,0.018],"color":[0.45,0.43,0.38],"smooth":0.4,"metal":1.0},
+  {"name":"ScrewHeadTL","shape":"sphere","pos":[-0.089,0.006,0.022],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":1.0},
+  {"name":"ScrewHeadTR","shape":"sphere","pos":[-0.089,0.006,-0.022],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":1.0},
+  {"name":"ScrewHeadBL","shape":"sphere","pos":[0.051,0.006,0.022],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":1.0},
+  {"name":"ScrewHeadBR","shape":"sphere","pos":[0.051,0.006,-0.022],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":1.0}
+]}

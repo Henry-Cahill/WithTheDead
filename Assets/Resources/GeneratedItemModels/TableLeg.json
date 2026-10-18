@@ -1,0 +1,13 @@
+{"version": 1, "id": "TableLeg", "baseHeight": 0.1013, "name": "Table Leg", "model": "gpt-oss:120b", "notes": "Table leg used as a blunt melee weapon – 0.70 m long, ~0.07 m diameter shaft lying on its side (X‑axis). Broad foot at the business end and a small metal cap on the opposite end, with a mid‑shaft band and a few rivet details.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.06,-0.0062,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.7,0.07],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"FootBase","shape":"cube","pos":[0.35,-0.0062,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.07,0.12],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"Cap","shape":"cylinder","pos":[-0.42,-0.0062,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"MidBand","shape":"cube","pos":[-0.06,-0.0062,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.008,0.09],"color":[0.45,0.45,0.48],"smooth":0.3,"metal":1.0},
+  {"name":"RivetL1","shape":"cylinder","pos":[-0.26,0.0338,0.035],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.8,0.8,0.85],"smooth":0.7,"metal":1.0},
+  {"name":"RivetL2","shape":"cylinder","pos":[-0.26,0.0338,-0.035],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.8,0.8,0.85],"smooth":0.7,"metal":1.0},
+  {"name":"RivetR1","shape":"cylinder","pos":[0.14,0.0338,0.035],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.8,0.8,0.85],"smooth":0.7,"metal":1.0},
+  {"name":"RivetR2","shape":"cylinder","pos":[0.14,0.0338,-0.035],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.8,0.8,0.85],"smooth":0.7,"metal":1.0},
+  {"name":"Engrave","shape":"cube","pos":[-0.16,0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.4,0.4,0.45],"smooth":0.2,"metal":1.0},
+  {"name":"TipRound","shape":"sphere","pos":[-0.42,-0.0062,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"FootRound","shape":"sphere","pos":[0.41,-0.0062,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "FabricRoll_DenimBlack", "baseHeight": 0.265, "name": "Fabric Roll Denim Black", "model": "gpt-oss:120b", "notes": "Rolled black denim fabric on a cardboard core, lying on its side. Approx. 1.20 m long, 0.40 m outer diameter (0.20 m radius), 0.12 m inner tube. Includes white label band and end caps.", "score": 7, "parts": [
+  {"name":"OuterFabric","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.4,1.2,0.4],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CoreTube","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,1.15,0.12],"color":[0.82,0.71,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"LabelBand","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.41,0.12,0.41],"color":[0.9,0.9,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"EndCapL","shape":"cylinder","pos":[-0.6,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.4,0.02,0.4],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EndCapR","shape":"cylinder","pos":[0.6,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.4,0.02,0.4],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieString","shape":"cylinder","pos":[0.55,0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.08,0.025],"color":[0.1,0.1,0.1],"smooth":0.15,"metal":0.0}
+]}

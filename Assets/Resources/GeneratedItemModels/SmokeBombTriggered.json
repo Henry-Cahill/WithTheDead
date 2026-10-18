@@ -1,0 +1,11 @@
+{"version": 1, "id": "SmokeBombTriggered", "baseHeight": 0.12, "name": "Smoke Bomb Triggered", "model": "gpt-oss:120b", "notes": "SmokeBombTriggered – about 1.0 m long lying on its side (long axis along X). A thin metal shaft with a rubber‑grip section, a chunky blunt head at the +X end, a red trigger button on the front of the head, a safety‑pin near the handle and a vent slit on the side of the head. Overall silhouette is a long cylinder ending in a blocky club.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.1,-0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,1.0,0.07],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"GripWrap","shape":"cylinder","pos":[-0.3,-0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.3,0.07],"color":[0.12,0.12,0.12],"smooth":0.25,"metal":0.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.475,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.12,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TriggerButton","shape":"sphere","pos":[0.565,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.85,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"VentSlit","shape":"cylinder","pos":[0.505,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.12,0.008,0.12],"color":[0.4,0.4,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"SafetyPin","shape":"cylinder","pos":[-0.55,0.0,0.0],"rot":[0.0,90.0,0.0],"size":[0.015,0.04,0.015],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":1.0},
+  {"name":"PinClip","shape":"cube","pos":[-0.57,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":1.0},
+  {"name":"EndCapLeft","shape":"cylinder","pos":[-0.6,-0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.02,0.07],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"EndCapRight","shape":"cylinder","pos":[0.55,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.12,0.02,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "LightBulbYellow", "baseHeight": 0.0935, "name": "Light Bulb Yellow", "model": "gpt-oss:120b", "notes": "Standard incandescent‑style bulb, lying on its side. Yellow‑tinted glass sphere (~45 mm dia) rests on the floor, metal screw base (≈15 mm long) sticks out to the left, thin copper filament coil inside.", "score": 7, "parts": [
+  {"name":"GlassSphere","shape":"sphere","pos":[0.0085,-0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.045,0.045],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"MetalBase","shape":"cylinder","pos":[-0.0215,-0.011,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.015,0.01],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":1.0},
+  {"name":"BaseThreads","shape":"cylinder","pos":[-0.0215,-0.003,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.002,0.012],"color":[0.25,0.25,0.25],"smooth":0.3,"metal":1.0},
+  {"name":"FilamentCoil","shape":"cylinder","pos":[0.0085,-0.011,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.02,0.004],"color":[0.8,0.5,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"BaseTip","shape":"cylinder","pos":[-0.029,-0.011,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.004,0.008],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":1.0},
+  {"name":"GlassSeam","shape":"cylinder","pos":[0.0085,0.0115,0.0],"rot":[90.0,0.0,0.0],"size":[0.044,0.002,0.044],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "CannedRoe_Open", "baseHeight": 0.1275, "name": "Canned Roe Open", "model": "gpt-oss:120b", "notes": "Open canned salmon roe ~0.09 m diameter × 0.13 m tall, lying on its side with the lid tipped off to the +X side. Main tin body (metal), dark label around the middle, thin rims at top/bottom, a shallow pool of pink‑orange roe inside and a tiny droplet on the rim.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0135,-0.0025,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.09,0.13,0.09],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.85},
+  {"name":"RimTop","shape":"cylinder","pos":[-0.0135,0.0605,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.094,0.008,0.094],"color":[0.78,0.71,0.48],"smooth":0.55,"metal":0.85},
+  {"name":"RimBottom","shape":"cylinder","pos":[-0.0135,-0.0635,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.094,0.008,0.094],"color":[0.78,0.71,0.48],"smooth":0.55,"metal":0.85},
+  {"name":"Lid","shape":"cylinder","pos":[0.0565,0.0225,-0.0015],"rot":[0.0,0.0,90.0],"size":[0.09,0.008,0.09],"color":[0.75,0.68,0.45],"smooth":0.55,"metal":0.85},
+  {"name":"Label","shape":"cylinder","pos":[-0.0135,-0.0025,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.086,0.12,0.086],"color":[0.55,0.45,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[-0.0135,0.0565,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.088,0.008,0.088],"color":[0.42,0.33,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[-0.0135,-0.0615,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.088,0.008,0.088],"color":[0.42,0.33,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"RoePool","shape":"sphere","pos":[-0.0135,-0.0275,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.07,0.04,0.07],"color":[0.92,0.38,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"RoeClump1","shape":"sphere","pos":[-0.0285,-0.0225,0.0185],"rot":[0.0,0.0,0.0],"size":[0.018,0.012,0.018],"color":[0.9,0.35,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"RoeClump2","shape":"sphere","pos":[0.0065,-0.0205,-0.0195],"rot":[0.0,0.0,0.0],"size":[0.016,0.011,0.016],"color":[0.88,0.36,0.39],"smooth":0.05,"metal":0.0},
+  {"name":"Drip","shape":"sphere","pos":[-0.0135,0.0625,0.0435],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.94,0.92,0.9],"smooth":0.6,"metal":0.0}
+]}

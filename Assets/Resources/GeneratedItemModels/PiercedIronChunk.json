@@ -1,0 +1,12 @@
+{"version": 1, "id": "PiercedIronChunk", "baseHeight": 0.0757, "name": "Pierced Iron Chunk", "model": "gpt-oss:120b", "notes": "Irregular iron chunk ~7 cm × 3 cm × 5 cm lying flat, dark‑metal tint with two pierced holes and a few rust patches for visual interest.", "score": 7, "parts": [
+  {"name":"ChunkBody","shape":"cube","pos":[-0.0025,-0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.03,0.05],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"HoleA","shape":"cylinder","pos":[-0.0175,-0.0008,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.05,0.008],"color":[0.2,0.18,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"HoleB","shape":"cylinder","pos":[0.0175,-0.0008,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.05,0.008],"color":[0.2,0.18,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"RustPatch1","shape":"cube","pos":[-0.0275,0.0123,0.018],"rot":[0.0,0.0,0.0],"size":[0.01,0.004,0.008],"color":[0.35,0.25,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"RustPatch2","shape":"cube","pos":[0.0275,0.0123,-0.015],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.009],"color":[0.35,0.25,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"RustPatch3","shape":"cube","pos":[-0.0225,0.0123,-0.022],"rot":[0.0,0.0,0.0],"size":[0.009,0.004,0.007],"color":[0.35,0.25,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"RustPatch4","shape":"cube","pos":[0.0125,0.0123,0.022],"rot":[0.0,0.0,0.0],"size":[0.011,0.004,0.008],"color":[0.35,0.25,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeJag","shape":"cube","pos":[0.0295,0.0022,-0.025],"rot":[0.0,20.0,0.0],"size":[0.015,0.008,0.006],"color":[0.58,0.55,0.48],"smooth":0.12,"metal":1.0},
+  {"name":"EdgeJag2","shape":"cube","pos":[-0.0345,0.0022,0.025],"rot":[0.0,-20.0,0.0],"size":[0.015,0.008,0.006],"color":[0.58,0.55,0.48],"smooth":0.12,"metal":1.0},
+  {"name":"TopRim","shape":"cube","pos":[-0.0025,0.0147,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.05],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":1.0}
+]}

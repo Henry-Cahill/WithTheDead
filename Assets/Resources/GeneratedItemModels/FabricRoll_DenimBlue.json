@@ -1,0 +1,8 @@
+{"version": 1, "id": "FabricRoll_DenimBlue", "baseHeight": 0.66, "name": "Fabric Roll Denim Blue", "model": "gpt-oss:120b", "notes": "Fabric roll 1.2 m long × 0.30 m diameter denim‑blue bolt: outer fabric tube, inner cardboard core, thin label band around the middle and a contrasting seam stripe on the side.", "score": 6, "parts": [
+  {"name":"OuterFabric","shape":"cylinder","pos":[0.0,-0.145,0.0],"rot":[0.0,0.0,90.0],"size":[0.3,1.2,0.3],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CoreCardboard","shape":"cylinder","pos":[0.0,-0.145,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,1.2,0.08],"color":[0.85,0.8,0.75],"smooth":0.12,"metal":0.0},
+  {"name":"LabelBand","shape":"cylinder","pos":[0.0,-0.14,0.0],"rot":[0.0,0.0,90.0],"size":[0.32,0.015,0.32],"color":[0.5,0.48,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"SeamStripe","shape":"cube","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[1.2,0.01,0.02],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"EndCapL","shape":"cube","pos":[-0.6,-0.145,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.3,0.3],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EndCapR","shape":"cube","pos":[0.6,-0.145,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.3,0.3],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0}
+]}

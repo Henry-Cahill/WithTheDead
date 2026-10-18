@@ -1,0 +1,14 @@
+{"version": 1, "id": "WaterPurificationTablets", "baseHeight": 0.069, "name": "Water Purification Tablets", "model": "gpt-oss:120b", "notes": "Small cardboard packet of water‑purification tablets ~9 cm × 5 cm × 2 cm lying flat (longest side along X).  Packet body in muted tan, thin dark label strip, and a handful of white‑ish tablet discs scattered on top for detail.", "score": 6, "parts": [
+  {"name":"PackBody","shape":"cube","pos":[0.0,0.0,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.09,0.018,0.05],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"LabelStrip","shape":"cube","pos":[-0.028,0.003,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.045],"color":[0.45,0.43,0.38],"smooth":0.12,"metal":0.0},
+  {"name":"Tablet1","shape":"cylinder","pos":[-0.015,0.0035,0.0075],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.015],"color":[0.85,0.84,0.78],"smooth":0.05,"metal":0.0},
+  {"name":"Tablet2","shape":"cylinder","pos":[0.005,0.0035,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.015],"color":[0.85,0.84,0.78],"smooth":0.05,"metal":0.0},
+  {"name":"Tablet3","shape":"cylinder","pos":[0.02,0.0035,0.0155],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.015],"color":[0.85,0.84,0.78],"smooth":0.05,"metal":0.0},
+  {"name":"Tablet4","shape":"cylinder","pos":[-0.025,0.0035,-0.0225],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.015],"color":[0.85,0.84,0.78],"smooth":0.05,"metal":0.0},
+  {"name":"Tablet5","shape":"cylinder","pos":[0.03,0.0035,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.015],"color":[0.85,0.84,0.78],"smooth":0.05,"metal":0.0},
+  {"name":"Tablet6","shape":"cylinder","pos":[-0.01,0.0035,0.0225],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.015],"color":[0.85,0.84,0.78],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRimFront","shape":"cube","pos":[0.045,0.0,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.002,0.018,0.05],"color":[0.5,0.48,0.44],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeRimBack","shape":"cube","pos":[-0.045,0.0,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.002,0.018,0.05],"color":[0.5,0.48,0.44],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeRimLeft","shape":"cube","pos":[0.0,0.0,-0.0275],"rot":[0.0,0.0,0.0],"size":[0.09,0.018,0.002],"color":[0.5,0.48,0.44],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeRimRight","shape":"cube","pos":[0.0,0.0,0.0225],"rot":[0.0,0.0,0.0],"size":[0.09,0.018,0.002],"color":[0.5,0.48,0.44],"smooth":0.12,"metal":0.0}
+]}

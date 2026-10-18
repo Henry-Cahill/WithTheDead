@@ -1,0 +1,15 @@
+{"version": 1, "id": "MuffinTray", "baseHeight": 0.085, "name": "Muffin Tray", "model": "gpt-oss:120b", "notes": "Rectangular aluminum muffin tray ~0.30 m × 0.20 m × 0.02 m, holding a 2‑row × 6‑column grid of 12 circular cups (≈0.05 m dia., 0.04 m deep). Base metal tint 0.6 0.58 0.5; each cup is a recessed cylinder.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.2],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Cup00","shape":"cylinder","pos":[-0.125,0.005,-0.05],"rot":[0.0,0.0,0.0],"size":[0.05,0.04,0.05],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"Cup01","shape":"cylinder","pos":[-0.075,0.005,-0.05],"rot":[0.0,0.0,0.0],"size":[0.05,0.04,0.05],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"Cup02","shape":"cylinder","pos":[-0.025,0.005,-0.05],"rot":[0.0,0.0,0.0],"size":[0.05,0.04,0.05],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"Cup03","shape":"cylinder","pos":[0.025,0.005,-0.05],"rot":[0.0,0.0,0.0],"size":[0.05,0.04,0.05],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"Cup04","shape":"cylinder","pos":[0.075,0.005,-0.05],"rot":[0.0,0.0,0.0],"size":[0.05,0.04,0.05],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"Cup05","shape":"cylinder","pos":[0.125,0.005,-0.05],"rot":[0.0,0.0,0.0],"size":[0.05,0.04,0.05],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"Cup10","shape":"cylinder","pos":[-0.125,0.005,0.05],"rot":[0.0,0.0,0.0],"size":[0.05,0.04,0.05],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"Cup11","shape":"cylinder","pos":[-0.075,0.005,0.05],"rot":[0.0,0.0,0.0],"size":[0.05,0.04,0.05],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"Cup12","shape":"cylinder","pos":[-0.025,0.005,0.05],"rot":[0.0,0.0,0.0],"size":[0.05,0.04,0.05],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"Cup13","shape":"cylinder","pos":[0.025,0.005,0.05],"rot":[0.0,0.0,0.0],"size":[0.05,0.04,0.05],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"Cup14","shape":"cylinder","pos":[0.075,0.005,0.05],"rot":[0.0,0.0,0.0],"size":[0.05,0.04,0.05],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"Cup15","shape":"cylinder","pos":[0.125,0.005,0.05],"rot":[0.0,0.0,0.0],"size":[0.05,0.04,0.05],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":1.0}
+]}

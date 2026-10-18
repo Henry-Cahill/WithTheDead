@@ -1,0 +1,12 @@
+{"version": 1, "id": "Stone2", "baseHeight": 0.17, "name": "Stone2", "model": "gpt-oss:120b", "notes": "Stone blunt weapon ~0.8 m long lying on its side (X‑axis). Wooden grip at the rear, stone head at the front with a metal band and a few surface cracks for detail.", "score": 6, "parts": [
+  {"name":"StoneHead","shape":"cylinder","pos":[0.135,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.18,0.5,0.18],"color":[0.6,0.6,0.64],"smooth":0.1,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[-0.265,-0.06,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.3,0.06],"color":[0.4,0.25,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"MetalBand","shape":"cylinder","pos":[-0.115,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.22,0.02,0.22],"color":[0.3,0.3,0.35],"smooth":0.5,"metal":0.6},
+  {"name":"LeatherWrap","shape":"cylinder","pos":[-0.265,-0.055,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.3,0.07],"color":[0.4,0.25,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"Crack1","shape":"sphere","pos":[0.335,0.03,0.03],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.45,0.45,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Crack2","shape":"sphere","pos":[0.235,0.04,-0.02],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.45,0.45,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Ridge","shape":"cube","pos":[0.365,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.18],"color":[0.6,0.6,0.64],"smooth":0.1,"metal":0.0},
+  {"name":"GripRidgeL","shape":"cube","pos":[-0.405,-0.06,0.035],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.07],"color":[0.4,0.25,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"GripRidgeR","shape":"cube","pos":[-0.405,-0.06,-0.035],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.07],"color":[0.4,0.25,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"TipSphere","shape":"sphere","pos":[0.385,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.6,0.64],"smooth":0.1,"metal":0.0}
+]}

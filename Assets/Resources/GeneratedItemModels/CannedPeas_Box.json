@@ -1,0 +1,15 @@
+{"version": 1, "id": "CannedPeas_Box", "baseHeight": 0.1375, "name": "Canned Peas Box", "model": "gpt-oss:120b", "notes": "Upright rectangular box of canned peas (~0.16 m × 0.16 m × 0.14 m). Cardboard body with lid seam, front label and reinforcing side bands; four small metal cans shown inside for silhouette detail.", "score": 7, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.165,0.135,0.165],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.165,0.005,0.165],"color":[0.78,0.71,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"TopSeam","shape":"cube","pos":[0.0,0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[0.165,0.003,0.165],"color":[0.7,0.62,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"BottomRim","shape":"cube","pos":[0.0,-0.056,0.0],"rot":[0.0,0.0,0.0],"size":[0.175,0.003,0.175],"color":[0.7,0.62,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"FrontBand","shape":"cube","pos":[0.0,0.0125,0.0775],"rot":[0.0,0.0,0.0],"size":[0.165,0.005,0.01],"color":[0.7,0.62,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"BackBand","shape":"cube","pos":[0.0,0.0125,-0.0775],"rot":[0.0,0.0,0.0],"size":[0.165,0.005,0.01],"color":[0.7,0.62,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"LeftBand","shape":"cube","pos":[-0.0775,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.165],"color":[0.7,0.62,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"RightBand","shape":"cube","pos":[0.0775,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.165],"color":[0.7,0.62,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,0.0125,0.0815],"rot":[0.0,0.0,0.0],"size":[0.12,0.1,0.002],"color":[0.3,0.6,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Can1","shape":"cylinder","pos":[-0.04,-0.0175,-0.04],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.7,0.73,0.75],"smooth":0.55,"metal":0.8},
+  {"name":"Can2","shape":"cylinder","pos":[0.04,-0.0175,-0.04],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.7,0.73,0.75],"smooth":0.55,"metal":0.8},
+  {"name":"Can3","shape":"cylinder","pos":[-0.04,-0.0175,0.04],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.7,0.73,0.75],"smooth":0.55,"metal":0.8},
+  {"name":"Can4","shape":"cylinder","pos":[0.04,-0.0175,0.04],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.7,0.73,0.75],"smooth":0.55,"metal":0.8}
+]}

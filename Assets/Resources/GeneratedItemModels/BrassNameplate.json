@@ -1,0 +1,8 @@
+{"version": 1, "id": "BrassNameplate", "baseHeight": 0.075, "name": "Brass Nameplate", "model": "gpt-oss:120b", "notes": "Brass name‑plate melee weapon ~1.1 m long, lying on its side (X axis). A thin brass rod (handle) ends in a flat rectangular plate (business end) with shallow engraved lettering.", "score": 6, "parts": [
+  {"name":"Rod","shape":"cylinder","pos":[-0.1525,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.8,0.03],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"RodEndCap","shape":"sphere","pos":[-0.5525,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"PlateBody","shape":"cube","pos":[0.3975,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.08],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"EngraveStrip","shape":"cube","pos":[0.3975,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.003,0.006],"color":[0.45,0.45,0.48],"smooth":0.3,"metal":1.0},
+  {"name":"PlateRim","shape":"cube","pos":[0.3975,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.304,0.004,0.084],"color":[0.55,0.55,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"TipGuard","shape":"cylinder","pos":[0.5475,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.04,0.025],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0}
+]}

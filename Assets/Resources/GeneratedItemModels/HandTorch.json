@@ -1,0 +1,11 @@
+{"version": 1, "id": "HandTorch", "baseHeight": 0.1, "name": "Hand Torch", "model": "gpt-oss:120b", "notes": "Hand torch ~0.28 m long, 0.06–0.08 m diameter: metal body cylinder lying on its side (X‑axis), larger head cylinder attached to the front, glass lens set into the head, rubber grip band near the rear, side switch button, battery‑cap end and a thin label ring around the body.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0225,-0.0,-0.0005],"rot":[0.0,0.0,90.0],"size":[0.06,0.22,0.06],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Head","shape":"cylinder","pos":[0.1175,-0.0,-0.0005],"rot":[0.0,0.0,90.0],"size":[0.08,0.06,0.08],"color":[0.58,0.55,0.48],"smooth":0.5,"metal":1.0},
+  {"name":"Lens","shape":"sphere","pos":[0.1275,-0.0,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.85,0.92,1.0],"smooth":0.75,"metal":0.0},
+  {"name":"GripBand","shape":"cylinder","pos":[-0.1225,0.005,-0.0005],"rot":[0.0,0.0,90.0],"size":[0.07,0.015,0.07],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"SwitchButton","shape":"cylinder","pos":[-0.0225,0.0075,0.0395],"rot":[90.0,0.0,0.0],"size":[0.015,0.01,0.015],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"BatteryCap","shape":"cylinder","pos":[-0.1375,-0.005,-0.0005],"rot":[0.0,0.0,90.0],"size":[0.05,0.02,0.05],"color":[0.55,0.53,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"LabelRing","shape":"cube","pos":[-0.0225,0.006,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.22,0.003,0.008],"color":[0.45,0.42,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"Screw","shape":"sphere","pos":[-0.0225,0.015,-0.0405],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.18,0.15],"smooth":0.3,"metal":1.0},
+  {"name":"Reflector","shape":"cylinder","pos":[0.09,-0.0,-0.0005],"rot":[0.0,0.0,90.0],"size":[0.075,0.005,0.075],"color":[0.2,0.22,0.25],"smooth":0.6,"metal":1.0}
+]}

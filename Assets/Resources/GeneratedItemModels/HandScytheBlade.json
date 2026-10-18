@@ -1,0 +1,13 @@
+{"version": 1, "id": "HandScytheBlade", "baseHeight": 0.07, "name": "Hand Scythe Blade", "model": "gpt-oss:120b", "notes": "Hand‑scythe blade, ~0.55 m long × 0.12 m wide × 0.01 m thick, metal (tint 0.6 0.58 0.5). Lying flat on the floor, longest axis along X; thin rim and rounded tip give the classic curved silhouette.", "score": 6, "parts": [
+  {"name":"MainPlate","shape":"cube","pos":[-0.0375,0.0,-0.0012],"rot":[0.0,0.0,0.0],"size":[0.55,0.01,0.12],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"OuterRim","shape":"cylinder","pos":[-0.0375,0.0,0.0688],"rot":[0.0,0.0,90.0],"size":[0.02,0.55,0.02],"color":[0.5,0.48,0.42],"smooth":0.6,"metal":1.0},
+  {"name":"TipEllipsoid","shape":"sphere","pos":[0.2775,0.0,-0.0012],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.06],"color":[0.55,0.53,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"HandleHole","shape":"cylinder","pos":[-0.2975,0.0,-0.0012],"rot":[0.0,0.0,90.0],"size":[0.018,0.04,0.018],"color":[0.2,0.2,0.22],"smooth":0.4,"metal":1.0},
+  {"name":"RivetFrontL","shape":"cylinder","pos":[0.1425,0.006,0.0438],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.3,0.28,0.25],"smooth":0.5,"metal":1.0},
+  {"name":"RivetFrontR","shape":"cylinder","pos":[0.1425,0.006,-0.0462],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.3,0.28,0.25],"smooth":0.5,"metal":1.0},
+  {"name":"RivetMidL","shape":"cylinder","pos":[-0.0375,0.006,0.0438],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.3,0.28,0.25],"smooth":0.5,"metal":1.0},
+  {"name":"RivetMidR","shape":"cylinder","pos":[-0.0375,0.006,-0.0462],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.3,0.28,0.25],"smooth":0.5,"metal":1.0},
+  {"name":"RivetBackL","shape":"cylinder","pos":[-0.2175,0.006,0.0438],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.3,0.28,0.25],"smooth":0.5,"metal":1.0},
+  {"name":"RivetBackR","shape":"cylinder","pos":[-0.2175,0.006,-0.0462],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.3,0.28,0.25],"smooth":0.5,"metal":1.0},
+  {"name":"BackEdgeRim","shape":"cylinder","pos":[-0.2975,0.0,-0.0713],"rot":[0.0,0.0,90.0],"size":[0.015,0.04,0.015],"color":[0.5,0.48,0.42],"smooth":0.6,"metal":1.0}
+]}

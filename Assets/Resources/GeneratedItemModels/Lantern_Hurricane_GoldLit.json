@@ -1,0 +1,13 @@
+{"version": 1, "id": "Lantern_Hurricane_GoldLit", "baseHeight": 0.205, "name": "Lantern Hurricane Gold Lit", "model": "gpt-oss:120b", "notes": "Hurricane lantern ~0.30 m tall, 0.16 m wide: squat metal base, brass‑tinted body, glass dome, side handle and wick. Lying on its side with the handle pointing +X; overall gold tint (0.6,0.58,0.5).", "score": 7, "parts": [
+  {"name":"Base","shape":"cylinder","pos":[0.0,-0.125,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.04,0.16],"color":[0.55,0.52,0.45],"smooth":0.15,"metal":1.0},
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.18,0.14],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"GlassDome","shape":"sphere","pos":[0.0,0.11,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.07,0.12],"color":[0.9,0.95,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"DomeRim","shape":"cylinder","pos":[0.0,0.08,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.008,0.13],"color":[0.55,0.52,0.45],"smooth":0.2,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.07,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.55,0.52,0.45],"smooth":0.2,"metal":1.0},
+  {"name":"Wick","shape":"cylinder","pos":[0.0,0.07,0.0],"rot":[90.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.2,0.15,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[-0.03,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.09],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.03,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.09],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"SideRimLeft","shape":"cylinder","pos":[-0.07,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.14,0.015],"color":[0.55,0.52,0.45],"smooth":0.2,"metal":1.0},
+  {"name":"SideRimRight","shape":"cylinder","pos":[0.07,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.14,0.015],"color":[0.55,0.52,0.45],"smooth":0.2,"metal":1.0},
+  {"name":"TopCap","shape":"cylinder","pos":[0.0,0.14,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.12],"color":[0.55,0.52,0.45],"smooth":0.2,"metal":1.0}
+]}

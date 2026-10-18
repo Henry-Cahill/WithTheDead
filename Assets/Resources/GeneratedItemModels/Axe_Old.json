@@ -1,0 +1,11 @@
+{"version": 1, "id": "Axe_Old", "baseHeight": 0.105, "name": "Axe Old", "model": "gpt-oss:120b", "notes": "Old axe ~1 m total length, wooden handle on its side (X‑axis) with a metal head at the +X end. Metal head uses the grey‑blue tint, wood is dark brown, leather strap near the head. Blade extends forward (+Z), poll back (-Z).", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[0.0,-0.01,-0.085],"rot":[0.0,0.0,90.0],"size":[0.07,0.9,0.07],"color":[0.38,0.28,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Strap","shape":"cylinder","pos":[0.3,0.0,-0.085],"rot":[0.0,0.0,90.0],"size":[0.09,0.12,0.09],"color":[0.28,0.18,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"HeadBase","shape":"cube","pos":[0.39,-0.005,-0.085],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.08],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Blade","shape":"cube","pos":[0.39,0.005,0.08],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.25],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Poll","shape":"cube","pos":[0.39,0.005,-0.165],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.08],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"RivetFrontL","shape":"sphere","pos":[0.39,0.025,-0.045],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.7,0.72],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFrontR","shape":"sphere","pos":[0.39,0.025,-0.125],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.7,0.72],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBackL","shape":"sphere","pos":[0.39,0.025,-0.045],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.7,0.72],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBackR","shape":"sphere","pos":[0.39,0.025,-0.125],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.7,0.72],"smooth":0.6,"metal":1.0}
+]}

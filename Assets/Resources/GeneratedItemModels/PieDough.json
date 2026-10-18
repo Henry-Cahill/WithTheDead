@@ -1,0 +1,12 @@
+{"version": 1, "id": "PieDough", "baseHeight": 0.075, "name": "Pie Dough", "model": "gpt-oss:120b", "notes": "Flat pie‑dough sheet (≈0.25 m × 0.20 m × 0.018 m) wrapped in clear plastic, on a thin cardboard backing with a printed label and a snap‑on cardboard lid. Includes bottom board, two layers of film, seal strip, label border and flap.", "score": 6, "parts": [
+  {"name":"TrayBottom","shape":"cube","pos":[0.0,-0.0125,0.005],"rot":[0.0,0.0,0.0],"size":[0.26,0.005,0.21],"color":[0.6,0.45,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"WrapBottom","shape":"cube","pos":[0.0,-0.012,0.005],"rot":[0.0,0.0,0.0],"size":[0.255,0.002,0.205],"color":[0.9,0.9,0.95],"smooth":0.4,"metal":0.0},
+  {"name":"DoughBase","shape":"cube","pos":[0.0,-0.0025,0.005],"rot":[0.0,0.0,0.0],"size":[0.25,0.018,0.2],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"WrapTop","shape":"cube","pos":[0.0,0.007,0.005],"rot":[0.0,0.0,0.0],"size":[0.255,0.002,0.205],"color":[0.9,0.9,0.95],"smooth":0.4,"metal":0.0},
+  {"name":"SealStrip","shape":"cube","pos":[0.0,0.0075,-0.1025],"rot":[0.0,0.0,0.0],"size":[0.25,0.002,0.005],"color":[0.5,0.5,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"LabelBorderBottom","shape":"cube","pos":[0.0,0.0075,0.005],"rot":[0.0,0.0,0.0],"size":[0.082,0.002,0.004],"color":[0.3,0.03,0.03],"smooth":0.1,"metal":0.0},
+  {"name":"LabelBorderTop","shape":"cube","pos":[0.0,0.01,0.005],"rot":[0.0,0.0,0.0],"size":[0.082,0.002,0.004],"color":[0.3,0.03,0.03],"smooth":0.1,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0085,0.005],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.04],"color":[0.8,0.15,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.012,0.005],"rot":[0.0,0.0,0.0],"size":[0.26,0.004,0.21],"color":[0.6,0.45,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"LidFlap","shape":"cube","pos":[0.0,0.012,-0.105],"rot":[0.0,0.0,0.0],"size":[0.26,0.006,0.01],"color":[0.6,0.45,0.3],"smooth":0.15,"metal":0.0}
+]}

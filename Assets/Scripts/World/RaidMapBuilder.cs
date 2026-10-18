@@ -43,8 +43,10 @@ namespace CloneZ
             DecorPalette.Apply();
 
             int objects = RaidTown.CountObjects(world) + RaidTown.CountObjects(town.Overhead) + RaidTown.CountObjects(town.Scenery);
-            LastStats = "Raid map " + seed + ": " + town.Buildings.Count + " buildings, " + town.ContainerCount + " containers, "
-                + town.LightCount + " lights, " + objects + " objects, " + CeilingVisibility.Count + " ceilings";
+            int fixtures = world.GetComponentsInChildren<Interactable>(true).Length;
+            int storage = world.GetComponentsInChildren<LootContainer>(true).Length;
+            LastStats = "Raid map " + seed + ": " + town.Buildings.Count + " buildings, " + storage + " containers, "
+                + fixtures + " fixtures, " + town.LightCount + " lights, " + objects + " objects, " + CeilingVisibility.Count + " ceilings";
             if (town.Warnings.Count > 0)
                 Debug.LogWarning("[CloneZ] Raid map layout notes (" + town.Warnings.Count + "): " + string.Join(" | ", town.Warnings) + "\n" + LastStats);
 #if CLONEZ_MAPTEST

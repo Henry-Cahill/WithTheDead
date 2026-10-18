@@ -1,0 +1,8 @@
+{"version": 1, "id": "KitchenKnifeForged", "baseHeight": 0.08, "name": "Kitchen Knife Forged", "model": "gpt-oss:120b", "notes": "Forged kitchen knife 0.90 m long lying on its side (longest axis along X). Steel blade and metal handle with a small guard and rounded tip; a tiny rivet marks the handle end.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.275,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.35,0.04],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"Guard","shape":"cube","pos":[-0.075,-0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.018,0.07],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"BladeBody","shape":"cube","pos":[0.2,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.015,0.07],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"BladeTip","shape":"sphere","pos":[0.435,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet","shape":"cylinder","pos":[-0.43,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"Bolster","shape":"cube","pos":[-0.15,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.022,0.07],"color":[0.55,0.55,0.6],"smooth":0.6,"metal":1.0}
+]}

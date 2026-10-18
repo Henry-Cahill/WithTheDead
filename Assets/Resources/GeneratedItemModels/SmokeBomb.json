@@ -1,0 +1,9 @@
+{"version": 1, "id": "SmokeBomb", "baseHeight": 0.13, "name": "Smoke Bomb", "model": "gpt-oss:120b", "notes": "Smoke bomb ~0.20 m long x 0.12 m diameter lying on its side (X‑axis). Metal body with a rounded business end, a short fuse sticking out forward, a safety pin near the end and a thin label band around the middle.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.06,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.2,0.12],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"CapFront","shape":"sphere","pos":[0.04,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.14,0.14],"color":[0.6,0.6,0.64],"smooth":0.45,"metal":1.0},
+  {"name":"Fuse","shape":"cylinder","pos":[0.135,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.05,0.02],"color":[0.08,0.07,0.07],"smooth":0.2,"metal":0.0},
+  {"name":"SafetyPin","shape":"cylinder","pos":[0.07,0.03,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.85,0.85,0.86],"smooth":0.5,"metal":1.0},
+  {"name":"LabelBand","shape":"cylinder","pos":[-0.09,0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.122,0.018,0.122],"color":[0.75,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"VentLeft","shape":"sphere","pos":[-0.12,0.02,0.04],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.5,0.5,0.55],"smooth":0.3,"metal":1.0},
+  {"name":"VentRight","shape":"sphere","pos":[-0.12,0.02,-0.04],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.5,0.5,0.55],"smooth":0.3,"metal":1.0}
+]}

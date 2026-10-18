@@ -1,0 +1,8 @@
+{"version": 1, "id": "MintHerbDried", "baseHeight": 0.0633, "name": "Mint Herb Dried", "model": "gpt-oss:120b", "notes": "Small dried‑mint packet, lying flat on the floor (≈0.07 m × 0.04 m × 0.005 m). Main paper body in mint‑herb tint, dark edge trim, a simple label on top and a visible clump of green herbs inside; a tiny sealed flap at the front.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0002,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.005,0.04],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTrim","shape":"cube","pos":[0.0,-0.0002,0.0],"rot":[0.0,0.0,0.0],"size":[0.072,0.005,0.042],"color":[0.48,0.38,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[0.0,0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.002,0.025],"color":[0.85,0.8,0.6],"smooth":0.07,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[0.0,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.002,0.022],"color":[0.3,0.35,0.15],"smooth":0.07,"metal":0.0},
+  {"name":"HerbPile","shape":"sphere","pos":[0.0,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.025],"color":[0.45,0.6,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"SealFlap","shape":"cube","pos":[0.0,0.0017,0.018],"rot":[0.0,0.0,0.0],"size":[0.02,0.003,0.005],"color":[0.7,0.62,0.4],"smooth":0.05,"metal":0.0}
+]}

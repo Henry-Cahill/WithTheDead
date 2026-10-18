@@ -1,0 +1,14 @@
+{"version": 1, "id": "CottonBallsBox", "baseHeight": 0.0845, "name": "Cotton Balls Box", "model": "gpt-oss:120b", "notes": "Cardboard box of cotton balls, approx 0.12 m long × 0.08 m wide × 0.06 m high (including lid). Box sits flat on the floor, lid slightly ajar with a few white cotton‑ball spheres spilling out. Main colour is the given tan tint; cotton balls are white.", "score": 7, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0015,0.0115],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.08],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0215,0.0115],"rot":[0.0,0.0,0.0],"size":[0.12,0.006,0.08],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FrontFlap","shape":"cube","pos":[0.0,-0.0225,-0.0335],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.01],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0065,0.0525],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.002],"color":[0.5,0.45,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"CottonBall1","shape":"sphere","pos":[-0.03,-0.0115,-0.0335],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.95,0.95,0.95],"smooth":0.6,"metal":0.0},
+  {"name":"CottonBall2","shape":"sphere","pos":[0.0,-0.0095,-0.0385],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.95,0.95,0.95],"smooth":0.6,"metal":0.0},
+  {"name":"CottonBall3","shape":"sphere","pos":[0.025,-0.0125,-0.0305],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.95,0.95,0.95],"smooth":0.6,"metal":0.0},
+  {"name":"CottonBall4","shape":"sphere","pos":[-0.015,-0.0105,-0.0265],"rot":[0.0,0.0,0.0],"size":[0.019,0.019,0.019],"color":[0.95,0.95,0.95],"smooth":0.6,"metal":0.0},
+  {"name":"CottonBall5","shape":"sphere","pos":[0.01,-0.0085,-0.0435],"rot":[0.0,0.0,0.0],"size":[0.021,0.021,0.021],"color":[0.95,0.95,0.95],"smooth":0.6,"metal":0.0},
+  {"name":"SeamFront","shape":"cube","pos":[0.0,0.0005,0.053],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.002],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"SeamSideL","shape":"cube","pos":[-0.0605,0.0005,0.0115],"rot":[0.0,0.0,0.0],"size":[0.002,0.04,0.08],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"SeamSideR","shape":"cube","pos":[0.0605,0.0005,0.0115],"rot":[0.0,0.0,0.0],"size":[0.002,0.04,0.08],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Whisk", "baseHeight": 0.12, "name": "Whisk", "model": "gpt-oss:120b", "notes": "Whisk ~0.30 m long lying on its side: short metal handle (cylinder) along X, ending in a tangled wire ball approximated by a central sphere with eight thin wire cylinders radiating outward.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.015,-0.05,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.18,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"CoreSphere","shape":"sphere","pos":[0.075,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Wire01","shape":"cylinder","pos":[0.075,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.12,0.006],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Wire02","shape":"cylinder","pos":[0.075,0.0,0.0],"rot":[45.0,0.0,0.0],"size":[0.006,0.12,0.006],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Wire03","shape":"cylinder","pos":[0.075,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.006,0.12,0.006],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Wire04","shape":"cylinder","pos":[0.075,0.0,0.0],"rot":[135.0,0.0,0.0],"size":[0.006,0.12,0.006],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Wire05","shape":"cylinder","pos":[0.075,0.0,0.0],"rot":[-180.0,0.0,0.0],"size":[0.006,0.12,0.006],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Wire06","shape":"cylinder","pos":[0.075,0.0,0.0],"rot":[-135.0,0.0,0.0],"size":[0.006,0.12,0.006],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Wire07","shape":"cylinder","pos":[0.075,0.0,0.0],"rot":[-90.0,0.0,0.0],"size":[0.006,0.12,0.006],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Wire08","shape":"cylinder","pos":[0.075,0.0,0.0],"rot":[-45.0,0.0,0.0],"size":[0.006,0.12,0.006],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "LongStick_Broken", "baseHeight": 0.1, "name": "Long Stick Broken", "model": "gpt-oss:120b", "notes": "Broken long stick ~1.3 m total length, two wooden cylinders (≈0.04 m thick) with a gap at the centre; right‑hand segment is offset in Z to expose the tip. Tip shown as a small sphere.", "score": 7, "parts": [
+  {"name":"SegmentA","shape":"cylinder","pos":[-0.375,0.0,-0.0082],"rot":[0.0,0.0,90.0],"size":[0.04,0.6,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"SegmentB","shape":"cylinder","pos":[0.275,0.0,0.0218],"rot":[0.0,0.0,90.0],"size":[0.04,0.7,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Tip","shape":"sphere","pos":[0.655,0.0,0.0218],"rot":[0.0,0.0,0.0],"size":[0.04,0.08,0.04],"color":[0.55,0.55,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"BreakGap","shape":"cube","pos":[-0.075,0.0,-0.0082],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.06],"color":[0.5,0.5,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"Splinter1","shape":"cube","pos":[-0.095,0.02,0.0118],"rot":[15.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.55,0.55,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"Splinter2","shape":"cube","pos":[-0.095,0.02,-0.0282],"rot":[-10.0,0.0,0.0],"size":[0.015,0.025,0.015],"color":[0.55,0.55,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"Splinter3","shape":"cube","pos":[-0.055,0.025,0.0168],"rot":[5.0,20.0,0.0],"size":[0.012,0.022,0.012],"color":[0.55,0.55,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"Splinter4","shape":"cube","pos":[-0.055,0.025,-0.0332],"rot":[5.0,-20.0,0.0],"size":[0.012,0.022,0.012],"color":[0.55,0.55,0.6],"smooth":0.12,"metal":0.0}
+]}

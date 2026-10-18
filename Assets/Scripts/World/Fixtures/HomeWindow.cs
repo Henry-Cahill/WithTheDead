@@ -12,6 +12,9 @@ namespace CloneZ
     /// window opens, and an open one can be climbed in through. Drawn curtains or a lowered blind hide whoever is
     /// inside: a collider across the opening blocks every line of sight, the dead's included (glass alone doesn't).
     /// Saved: bit 1 open, bit 2 curtains drawn / blind down, bit 4 latched.
+    ///
+    /// A window needn't sit in a <see cref="BuildPiece"/>: the raid town's (<see cref="RaidWindow"/>) are fitted in a
+    /// raid building's wall segments with no piece at all — keyed by where they stand, hiding with their segment.
     /// </summary>
     [DisallowMultipleComponent]
     public class HomeWindow : Interactable
@@ -37,6 +40,11 @@ namespace CloneZ
             public int OutSide;
             /// <summary>The kitchen's roller blind instead of curtains.</summary>
             public bool Blind;
+            /// <summary>A fresh run finds the sash up, the curtains drawn, the sash lock off (by default: shut, open, latched).</summary>
+            public bool Open, Drawn, Unlatched;
+            /// <summary>The cutaway marker its parts hide with; by default the window piece's, else the nearest one above the
+            /// window (a raid window: its wall segment's).</summary>
+            public CutawayOccluder Occluder;
         }
 
         private string _name = "Window", _key;
@@ -78,10 +86,23 @@ namespace CloneZ
         public override string DisplayName => _name;
         public override Vector3 InteractPoint => _point;
         public override float Reach => CloneZConfig.WindowReach;
-        public override bool IsAvailable => base.IsAvailable && _piece != null && _piece.Health > 0f;
+        public override bool IsAvailable => base.IsAvailable && (_piece == null || _piece.Health > 0f);
         public override string SaveKey => _key;
 
-        private void Awake()
+        /// <summary>The outdoors side of <see cref="Normal"/> (-1/+1), or 0 with a room either side.</summary>
+        protected int OutSide => _outSide;
+        /// <summary>The wall's normal toward its +1 side, and its run.</summary>
+        protected Vector3 Normal => _normal;
+        protected Vector3 Along => _along;
+        /// <summary>The window's own actions' work, for a window that lists them its own way.</summary>
+        protected Action<InteractContext> OpenAction => _openAct;
+        protected Action<InteractContext> CloseAction => _closeAct;
+        protected Action<InteractContext> LatchAction => _latchAct;
+        protected Action<InteractContext> UnlatchAction => _unlatchAct;
+        protected Action<InteractContext> CurtainAction => _curtainAct;
+        protected Action<InteractContext> LookAction => _lookAct;
+
+        protected virtual void Awake()
         {
             _openAct = c => SetOpen(true, true);
             _closeAct = c => SetOpen(false, true);
@@ -95,12 +116,18 @@ namespace CloneZ
         /// <summary>Makes <paramref name="root"/> (already holding the sash and the curtains, under the window
         /// <paramref name="piece"/>) a working window: adds the drawn curtains' screen and sets the fresh-run state —
         /// shut, latched, curtains open.</summary>
-        internal static HomeWindow Attach(GameObject root, BuildPiece piece, in Setup s)
+        internal static HomeWindow Attach(GameObject root, BuildPiece piece, in Setup s) => Attach<HomeWindow>(root, piece, s);
+
+        /// <summary>As <see cref="Attach(GameObject, BuildPiece, in Setup)"/>, for a window of a kind built on this one (a raid's
+        /// <see cref="RaidWindow"/>), with the fresh-run state <paramref name="s"/> asks for. <paramref name="piece"/> may be
+        /// null: a window fitted in a raid building's wall, keyed by where <paramref name="root"/> stands.</summary>
+        internal static T Attach<T>(GameObject root, BuildPiece piece, in Setup s) where T : HomeWindow
         {
-            var w = root.AddComponent<HomeWindow>();
+            var w = root.AddComponent<T>();
             w._piece = piece;
+            w._occluder = s.Occluder;
             w._name = string.IsNullOrEmpty(s.Name) ? "Window" : s.Name;
-            w._key = KeyFor("window", piece.transform.position);
+            w._key = KeyFor("window", piece != null ? piece.transform.position : root.transform.position);
             w._sash = s.Sash;
             w._curtainsOpen = s.CurtainsOpen;
             w._curtainsDrawn = s.CurtainsDrawn;
@@ -119,9 +146,9 @@ namespace CloneZ
             w._screen = screen.AddComponent<BoxCollider>();
             w._screen.size = s.Screen.size;
 
-            w._open = false;
-            w._drawn = false;
-            w._latched = true;
+            w._open = s.Open;
+            w._drawn = s.Drawn;
+            w._latched = !s.Open && !s.Unlatched;
             w.Apply(true);
             return w;
         }
@@ -153,15 +180,25 @@ namespace CloneZ
             else if (!_open) AddClimb(ctx, side, false, into);
         }
 
-        private void AddClimb(InteractContext ctx, int side, bool inside, List<InteractAction> into)
+        protected void AddClimb(InteractContext ctx, int side, bool inside, List<InteractAction> into)
         {
-            string label = _outSide == 0 ? "Climb through the window" : inside ? "Climb out of the window" : "Climb in through the window";
-            var a = new InteractAction(label, _climbAct)
-                .Timed(CloneZConfig.WindowClimbSeconds, _outSide == 0 ? "Climbing through" : inside ? "Climbing out" : "Climbing in", HumanoidActivity.Search);
-            if (!_open) a.DisabledIf(true, "The window is shut");
+            var a = new InteractAction(ClimbLabel(inside), _climbAct)
+                .Timed(CloneZConfig.WindowClimbSeconds, ClimbBusyLabel(inside), HumanoidActivity.Search);
+            if (!CanClimb) a.DisabledIf(true, ClimbBlocked);
             else if (!ClimbClear(ctx, side)) a.DisabledIf(true, "Something's blocking the other side");
             into.Add(a);
         }
+
+        /// <summary>True while there's a way through to climb (the sash is up).</summary>
+        protected virtual bool CanClimb => _open;
+        /// <summary>Why there's no way through.</summary>
+        protected virtual string ClimbBlocked => "The window is shut";
+        /// <summary>"Climb out of the window", from inside (or "Climb in…", from outside).</summary>
+        protected virtual string ClimbLabel(bool inside)
+            => _outSide == 0 ? "Climb through the window" : inside ? "Climb out of the window" : "Climb in through the window";
+        protected virtual string ClimbBusyLabel(bool inside) => _outSide == 0 ? "Climbing through" : inside ? "Climbing out" : "Climbing in";
+        /// <summary>Called once the survivor has climbed through and landed on the far side.</summary>
+        protected virtual void OnClimbed(InteractContext ctx) { }
 
         /// <summary>Throws the lower sash up or pulls it down (a latched window won't open). Noisy when
         /// <paramref name="noisy"/>: sashes rattle.</summary>
@@ -215,9 +252,9 @@ namespace CloneZ
 
         // A renderer switched on or off: the camera's cutaway gathers the wall's parts afresh, so a look shown while
         // the wall is cut away hides with it.
-        private void PartsChanged()
+        protected void PartsChanged()
         {
-            if (_occluder == null && _piece != null) _occluder = _piece.GetComponent<CutawayOccluder>();
+            if (_occluder == null) _occluder = _piece != null ? _piece.GetComponent<CutawayOccluder>() : GetComponentInParent<CutawayOccluder>();
             if (_occluder != null) _occluder.PartsChanged();
         }
 
@@ -237,9 +274,14 @@ namespace CloneZ
             else seen = n == 1 ? "One of the dead shuffles past " + where + "."
                 : Lookout.Capitalised(Lookout.Number(n)) + " of the dead shuffle past " + where + ".";
             if (dark && n > 0) seen += " There may be more in the dark.";
-            if (_drawn) seen = (_blind ? "You lift the edge of the blind and peer out. " : "You ease the curtain aside and peer out. ") + seen;
+            string peek = LookPrefix;
+            if (peek != null) seen = peek + seen;
             ctx.Notify(seen);
         }
+
+        /// <summary>What the survivor does first to see out (ease the drawn curtain aside), or null when nothing's in the way.</summary>
+        protected virtual string LookPrefix
+            => !_drawn ? null : _blind ? "You lift the edge of the blind and peer out. " : "You ease the curtain aside and peer out. ";
 
         private bool ClimbClear(InteractContext ctx, int side)
         {
@@ -254,9 +296,9 @@ namespace CloneZ
         // Through the open window to the far side, facing away from the wall — if there's still room to land.
         private void Climb(InteractContext ctx)
         {
-            if (!_open)
+            if (!CanClimb)
             {
-                ctx.Notify("The window is shut");
+                ctx.Notify(ClimbBlocked);
                 return;
             }
             int to = -SideOf(ctx.Position, _point, _normal);
@@ -270,6 +312,7 @@ namespace CloneZ
             ctx.Teleport(at, Mathf.Atan2(n.x, n.z) * Mathf.Rad2Deg);
             if (ctx.Stats != null) ctx.Stats.TryConsumeEndurance(CloneZConfig.WindowClimbEndurance);
             MakeNoise(CloneZConfig.WindowClimbNoise);
+            OnClimbed(ctx);
         }
 
         // The first clear spot on side `toSide` to land on: room to stand (nothing solid, none of the dead) and a clear

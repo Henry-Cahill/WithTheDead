@@ -1,0 +1,12 @@
+{"version": 1, "id": "PaintRed", "baseHeight": 0.2057, "name": "Paint Red", "model": "gpt-oss:120b", "notes": "5 kg red paint bucket about 0.30 m diameter × 0.25 m tall – metal body, thin inner paint volume, wide D‑shaped handle on top, lip rim, a bright red label and a couple of rivets for detail.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0202,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.25,0.3],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"InnerPaint","shape":"cylinder","pos":[0.0,-0.0302,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.23,0.28],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RimTop","shape":"cylinder","pos":[0.0,0.1053,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.01,0.32],"color":[0.55,0.55,0.55],"smooth":0.4,"metal":1.0},
+  {"name":"RimBottom","shape":"cylinder","pos":[0.0,-0.1407,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.01,0.32],"color":[0.55,0.55,0.55],"smooth":0.4,"metal":1.0},
+  {"name":"Lip","shape":"cylinder","pos":[0.0,0.0973,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.008,0.3],"color":[0.58,0.58,0.58],"smooth":0.45,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.0,0.1248,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.34,0.02],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.0052,0.151],"rot":[0.0,0.0,0.0],"size":[0.18,0.03,0.002],"color":[0.8,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"RivetL","shape":"cube","pos":[-0.13,0.0973,0.151],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.004],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"cube","pos":[0.13,0.0973,0.151],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.004],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.0,0.1397,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.012,0.06],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":1.0}
+]}

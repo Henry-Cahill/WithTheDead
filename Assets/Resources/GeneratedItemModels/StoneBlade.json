@@ -1,0 +1,12 @@
+{"version": 1, "id": "StoneBlade", "baseHeight": 0.0675, "name": "Stone Blade", "model": "gpt-oss:120b", "notes": "Rough stone blade about 0.25 m long, 0.07 m wide and 1.5 cm thick. Tapered tip, uneven edges and a few chipped flakes give it a recognisable silhouette when lying on the floor.", "score": 7, "parts": [
+  {"name":"BladeBody","shape":"cube","pos":[-0.015,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.06],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Tip","shape":"cube","pos":[0.11,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.012,0.04],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"LeftEdgeChip1","shape":"cube","pos":[-0.035,0.0,0.034],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.008],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"LeftEdgeChip2","shape":"cube","pos":[0.055,-0.0015,0.036],"rot":[0.0,0.0,0.0],"size":[0.08,0.012,0.006],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"RightEdgeChip1","shape":"cube","pos":[-0.035,0.0,-0.034],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.008],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"RightEdgeChip2","shape":"cube","pos":[0.055,-0.0015,-0.036],"rot":[0.0,0.0,0.0],"size":[0.08,0.012,0.006],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"TopFlake1","shape":"cube","pos":[-0.055,0.002,0.015],"rot":[0.0,0.0,0.0],"size":[0.05,0.004,0.03],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"TopFlake2","shape":"cube","pos":[0.045,0.0023,-0.018],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.025],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"BottomFlake1","shape":"cube","pos":[0.035,-0.002,-0.02],"rot":[0.0,0.0,0.0],"size":[0.06,0.003,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"BottomFlake2","shape":"cube","pos":[-0.075,-0.0022,0.022],"rot":[0.0,0.0,0.0],"size":[0.045,0.003,0.018],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0}
+]}

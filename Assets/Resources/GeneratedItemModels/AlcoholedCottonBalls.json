@@ -1,0 +1,11 @@
+{"version": 1, "id": "AlcoholedCottonBalls", "baseHeight": 0.0965, "name": "Alcoholed Cotton Balls", "model": "gpt-oss:120b", "notes": "Paper bag about 0.12 m wide × 0.15 m long × 0.02 m thick lying flat, open on top, containing a loose pile of ~6 soft cotton balls (≈0.04 m diameter). Bag is light‑brown paper with faint label; cotton balls are off‑white with a subtle alcohol sheen.", "score": 7, "parts": [
+  {"name":"BagBase","shape":"cube","pos":[0.0,-0.0285,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BagFlap","shape":"cube","pos":[0.0,-0.0185,0.03],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BagLabel","shape":"cylinder","pos":[-0.035,-0.0215,0.0],"rot":[90.0,0.0,0.0],"size":[0.03,0.002,0.03],"color":[0.45,0.42,0.35],"smooth":0.07,"metal":0.0},
+  {"name":"CottonBall1","shape":"sphere","pos":[-0.025,0.0015,-0.04],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.9,0.92,0.88],"smooth":0.12,"metal":0.0},
+  {"name":"CottonBall2","shape":"sphere","pos":[0.015,0.0045,0.02],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.9,0.92,0.88],"smooth":0.12,"metal":0.0},
+  {"name":"CottonBall3","shape":"sphere","pos":[-0.03,0.0085,-0.01],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.9,0.92,0.88],"smooth":0.12,"metal":0.0},
+  {"name":"CottonBall4","shape":"sphere","pos":[0.02,0.0115,-0.035],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.9,0.92,0.88],"smooth":0.12,"metal":0.0},
+  {"name":"CottonBall5","shape":"sphere","pos":[-0.01,0.0165,0.04],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.9,0.92,0.88],"smooth":0.12,"metal":0.0},
+  {"name":"CottonBall6","shape":"sphere","pos":[0.03,0.0045,-0.045],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.9,0.92,0.88],"smooth":0.12,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Gavel", "baseHeight": 0.08, "name": "Gavel", "model": "gpt-oss:120b", "notes": "Gavel ~0.33 m long lying on its side: wooden handle (cylinder) along X, leather grip band near the left end, small wood cap, metal head block crossing the handle at the right end with a front striking plate, rear knob and four rivets for detail.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.03,-0.0075,0.0075],"rot":[0.0,0.0,90.0],"size":[0.025,0.25,0.025],"color":[0.45,0.35,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"GripBand","shape":"cylinder","pos":[-0.11,-0.004,0.0075],"rot":[0.0,0.0,90.0],"size":[0.032,0.05,0.032],"color":[0.25,0.15,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"GripEndCap","shape":"cube","pos":[-0.165,-0.0075,0.0075],"rot":[0.0,0.0,0.0],"size":[0.02,0.025,0.025],"color":[0.45,0.35,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.135,0.0,0.0075],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"FacePlate","shape":"cube","pos":[0.135,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.08,0.008,0.015],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RearKnob","shape":"sphere","pos":[0.135,0.0,-0.0375],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetTL","shape":"cylinder","pos":[0.11,0.01,0.0395],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RivetTR","shape":"cylinder","pos":[0.16,0.01,0.0395],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"cylinder","pos":[0.11,-0.01,0.0395],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"cylinder","pos":[0.16,-0.01,0.0395],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0}
+]}

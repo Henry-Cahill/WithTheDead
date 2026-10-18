@@ -1,0 +1,8 @@
+{"version": 1, "id": "SilverBar", "baseHeight": 0.0725, "name": "Silver Bar", "model": "gpt-oss:120b", "notes": "Silver bar 0.30 m long × 0.15 m wide × 0.025 m tall (8 kg) lying flat on the floor. Main rectangular slab with thin raised edges to suggest a beveled/rolled rim and a small stamped label on the front face.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0,0.015],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.15],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0,0.0,-0.0575],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.005],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0,0.0,0.0875],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.005],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.1475,0.0,0.015],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.15],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.1475,0.0,0.015],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.15],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"StampLabel","shape":"cube","pos":[-0.1,0.0113,-0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.08],"color":[0.2,0.2,0.25],"smooth":0.3,"metal":0.0}
+]}

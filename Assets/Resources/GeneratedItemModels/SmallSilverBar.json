@@ -1,0 +1,8 @@
+{"version": 1, "id": "SmallSilverBar", "baseHeight": 0.08, "name": "Small Silver Bar", "model": "gpt-oss:120b", "notes": "Small silver bar (~0.12 m long × 0.04 m wide × 0.02 m thick) lying on its side (long axis along +X). Main polished metal body with a thin stamped logo detail on the top surface.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Stamp","shape":"cube","pos":[0.0,0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.03],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":1.0},
+  {"name":"EndCapL","shape":"cylinder","pos":[-0.055,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.008,0.04],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"EndCapR","shape":"cylinder","pos":[0.055,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.008,0.04],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"RimTop","shape":"cube","pos":[0.0,0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.04],"color":[0.58,0.56,0.48],"smooth":0.4,"metal":1.0},
+  {"name":"RimBottom","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.04],"color":[0.58,0.56,0.48],"smooth":0.4,"metal":1.0}
+]}

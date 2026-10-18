@@ -1,0 +1,8 @@
+{"version": 1, "id": "GardenHoe", "baseHeight": 0.125, "name": "Garden Hoe", "model": "gpt-oss:120b", "notes": "Garden hoe ~1.4 m long lying on its side (handle along X). Wooden handle (cylinder) ≈1.2 m, metal blade (thin rectangular block) ≈0.25 m wide, rivet joint at the meeting point.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.02,-0.045,-0.06],"rot":[0.0,0.0,90.0],"size":[0.04,1.2,0.04],"color":[0.45,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.52,-0.04,-0.06],"rot":[0.0,0.0,90.0],"size":[0.05,0.1,0.05],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"Blade","shape":"cube","pos":[0.6,-0.005,0.065],"rot":[0.0,0.0,0.0],"size":[0.04,0.12,0.25],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"Rivet","shape":"sphere","pos":[0.58,-0.025,-0.06],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.6,0.64],"smooth":0.45,"metal":1.0},
+  {"name":"BladeEdge","shape":"cube","pos":[0.6,0.06,0.065],"rot":[0.0,0.0,0.0],"size":[0.04,0.01,0.25],"color":[0.6,0.6,0.64],"smooth":0.45,"metal":1.0},
+  {"name":"BladeBack","shape":"cube","pos":[0.6,-0.005,-0.185],"rot":[0.0,0.0,0.0],"size":[0.04,0.12,0.01],"color":[0.6,0.6,0.64],"smooth":0.45,"metal":1.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "PigletLeather_Landrace_Fur", "baseHeight": 0.124, "name": "Piglet Leather Landrace Fur", "model": "gpt-oss:120b", "notes": "Flat piglet leather hide with short fur, about 0.28 m × 0.22 m and ~1.5 cm thick. Main leather sheet, a thin fluffy fur overlay, dark stitching around the edges, a small tag‑label corner and a rolled‑up corner for visual interest.", "score": 6, "parts": [
+  {"name":"BaseLeather","shape":"cube","pos":[0.0,0.052,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.012,0.22],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"FurOverlay","shape":"cube","pos":[0.0,0.0625,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.003,0.22],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"StitchNorth","shape":"cube","pos":[0.0,0.052,0.111],"rot":[0.0,0.0,0.0],"size":[0.28,0.002,0.008],"color":[0.38,0.34,0.3],"smooth":0.08,"metal":0.0},
+  {"name":"StitchSouth","shape":"cube","pos":[0.0,0.052,-0.111],"rot":[0.0,0.0,0.0],"size":[0.28,0.002,0.008],"color":[0.38,0.34,0.3],"smooth":0.08,"metal":0.0},
+  {"name":"StitchEast","shape":"cube","pos":[0.141,0.052,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.002,0.22],"color":[0.38,0.34,0.3],"smooth":0.08,"metal":0.0},
+  {"name":"StitchWest","shape":"cube","pos":[-0.141,0.052,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.002,0.22],"color":[0.38,0.34,0.3],"smooth":0.08,"metal":0.0},
+  {"name":"TagLabel","shape":"cube","pos":[0.115,0.059,0.09],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.015],"color":[0.45,0.42,0.38],"smooth":0.07,"metal":0.0},
+  {"name":"RollCorner","shape":"cylinder","pos":[-0.12,-0.044,0.015],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.62,0.6,0.53],"smooth":0.05,"metal":0.0}
+]}

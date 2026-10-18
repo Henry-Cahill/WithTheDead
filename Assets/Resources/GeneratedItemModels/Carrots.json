@@ -1,0 +1,13 @@
+{"version": 1, "id": "Carrots", "baseHeight": 0.1775, "name": "Carrots", "model": "gpt-oss:120b", "notes": "Loose carrots in a thin paper/mesh sack (≈0.15 m × 0.22 m × 0.05 m). Four tapered orange carrots lie upright inside, each capped with a tiny green leaf that touches the carrot tip. The sack has a simple label on its front and a short draw‑string handle.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[0.0,-0.0075,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.15,0.22,0.05],"color":[0.58,0.48,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"BagLabel","shape":"cube","pos":[0.0,0.1005,-0.0013],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.04],"color":[0.92,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"BagHandle","shape":"cylinder","pos":[0.0,0.11,0.0238],"rot":[0.0,0.0,90.0],"size":[0.015,0.06,0.015],"color":[0.58,0.48,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"CarrotA","shape":"sphere","pos":[-0.045,-0.0275,-0.0163],"rot":[0.0,0.0,90.0],"size":[0.03,0.18,0.03],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeafA","shape":"cylinder","pos":[-0.045,0.075,-0.0163],"rot":[0.0,0.0,0.0],"size":[0.008,0.025,0.008],"color":[0.25,0.55,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"CarrotB","shape":"sphere","pos":[-0.015,-0.0275,-0.0163],"rot":[0.0,0.0,90.0],"size":[0.03,0.18,0.03],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeafB","shape":"cylinder","pos":[-0.015,0.075,-0.0163],"rot":[0.0,0.0,0.0],"size":[0.008,0.025,0.008],"color":[0.25,0.55,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"CarrotC","shape":"sphere","pos":[0.015,-0.0275,-0.0163],"rot":[0.0,0.0,90.0],"size":[0.03,0.18,0.03],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeafC","shape":"cylinder","pos":[0.015,0.075,-0.0163],"rot":[0.0,0.0,0.0],"size":[0.008,0.025,0.008],"color":[0.25,0.55,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"CarrotD","shape":"sphere","pos":[0.045,-0.0275,-0.0163],"rot":[0.0,0.0,90.0],"size":[0.03,0.18,0.03],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeafD","shape":"cylinder","pos":[0.045,0.075,-0.0163],"rot":[0.0,0.0,0.0],"size":[0.008,0.025,0.008],"color":[0.25,0.55,0.22],"smooth":0.05,"metal":0.0}
+]}

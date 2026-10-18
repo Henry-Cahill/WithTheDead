@@ -1,0 +1,14 @@
+{"version": 1, "id": "Fork_Gold", "baseHeight": 0.1175, "name": "Fork Gold", "model": "gpt-oss:120b", "notes": "Gold fork melee weapon, about 0.80 m total length (handle ≈ 0.50 m, guard ≈ 0.04 m, tines ≈ 0.12 m tall). Lying on its side with the handle along X; the guard and tines are flush against the handle so nothing floats.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.0187,-0.0425,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.5,0.03],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"HandleEndCap","shape":"sphere","pos":[-0.2688,-0.0425,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"GuardPlate","shape":"cube","pos":[0.2213,-0.0425,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.07],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineBase","shape":"cube","pos":[0.2562,-0.0325,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.07],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineL1","shape":"cylinder","pos":[0.2712,0.0125,-0.018],"rot":[0.0,0.0,0.0],"size":[0.008,0.06,0.008],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"TineL2","shape":"cylinder","pos":[0.2712,0.0125,-0.006],"rot":[0.0,0.0,0.0],"size":[0.008,0.06,0.008],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"TineR1","shape":"cylinder","pos":[0.2712,0.0125,0.006],"rot":[0.0,0.0,0.0],"size":[0.008,0.06,0.008],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"TineR2","shape":"cylinder","pos":[0.2712,0.0125,0.018],"rot":[0.0,0.0,0.0],"size":[0.008,0.06,0.008],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"TineTipL1","shape":"sphere","pos":[0.2712,0.0525,-0.018],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"TineTipL2","shape":"sphere","pos":[0.2712,0.0525,-0.006],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"TineTipR1","shape":"sphere","pos":[0.2712,0.0525,0.006],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"TineTipR2","shape":"sphere","pos":[0.2712,0.0525,0.018],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0}
+]}

@@ -17,6 +17,9 @@ namespace CloneZ
     /// flagged (<see cref="BuildPiece.HasDoor"/>, <see cref="BuildPiece.DoorOpen"/>) so the dead batter it down rather
     /// than walk in. An open door has neither: the swung-back leaves are only for show. Shutting is refused while the
     /// survivor or one of the dead stands in the doorway. Saved: bit 1 open, bit 2 locked.
+    ///
+    /// A door needn't hang in a <see cref="BuildPiece"/>: the raid town's (<see cref="RaidDoor"/>) hang in a raid
+    /// building's doorways with no piece at all — keyed by where they hang, hiding with the wall segment above them.
     /// </summary>
     [DisallowMultipleComponent]
     public class HomeDoor : Interactable
@@ -50,11 +53,19 @@ namespace CloneZ
             public bool Peephole;
             /// <summary>A fresh run's state.</summary>
             public bool Open;
+            /// <summary>A fresh run finds it locked (only a shut door with a lock).</summary>
+            public bool Locked;
+            /// <summary>Glazed leaves: the shut door stops the survivor and the dead's way through, but not their eyes.</summary>
+            public bool SeeThrough;
+            /// <summary>The cutaway marker its parts hide with; by default the doorway piece's, else the nearest one above the
+            /// door (a raid door: its wall segment's).</summary>
+            public CutawayOccluder Occluder;
         }
 
         private string _name = "Door", _noun = "door", _key;
         private string _openLabel, _closeLabel, _tryLabel, _lockElsewhere;
         private BuildPiece _piece;
+        private CutawayOccluder _occluder;
         private FixturePart[] _leaves = new FixturePart[0];
         private BoxCollider _solid;
         private NavMeshObstacle _carver;
@@ -78,10 +89,19 @@ namespace CloneZ
         public override string DisplayName => _name;
         public override Vector3 InteractPoint => _point;
         public override float Reach => CloneZConfig.DoorReach;
-        public override bool IsAvailable => base.IsAvailable && _piece != null && _piece.Health > 0f;
+        public override bool IsAvailable => base.IsAvailable && (_piece == null || _piece.Health > 0f);
         public override string SaveKey => _key;
 
-        private void Awake()
+        /// <summary>The leaves, for a door that poses them itself (a raid door battered off its hinges).</summary>
+        protected FixturePart[] Leaves => _leaves;
+        /// <summary>The wall's normal toward its +1 side.</summary>
+        protected Vector3 Normal => _normal;
+        /// <summary>0: no lock; otherwise the side of <see cref="Normal"/> it locks from.</summary>
+        protected int LockSide => _lockSide;
+        /// <summary>"front door".</summary>
+        protected string Noun => _noun;
+
+        protected virtual void Awake()
         {
             _openAct = c => SetOpen(true, true);
             _closeAct = Close;
@@ -94,13 +114,19 @@ namespace CloneZ
 
         /// <summary>Makes <paramref name="root"/> (already holding the leaves, under the doorway <paramref name="piece"/>)
         /// a working door: adds the shut leaves' collider and the gap's carve, and sets the fresh-run state.</summary>
-        internal static HomeDoor Attach(GameObject root, BuildPiece piece, in Setup s)
+        internal static HomeDoor Attach(GameObject root, BuildPiece piece, in Setup s) => Attach<HomeDoor>(root, piece, s);
+
+        /// <summary>As <see cref="Attach(GameObject, BuildPiece, in Setup)"/>, for a door of a kind built on this one (a raid's
+        /// <see cref="RaidDoor"/>). <paramref name="piece"/> may be null: a door hung in a raid building's doorway, keyed by
+        /// where <paramref name="root"/> stands.</summary>
+        internal static T Attach<T>(GameObject root, BuildPiece piece, in Setup s) where T : HomeDoor
         {
-            var d = root.AddComponent<HomeDoor>();
+            var d = root.AddComponent<T>();
             d._piece = piece;
+            d._occluder = s.Occluder;
             d._name = string.IsNullOrEmpty(s.Name) ? "Door" : s.Name;
             d._noun = string.IsNullOrEmpty(s.Noun) ? "door" : s.Noun;
-            d._key = KeyFor("door", piece.transform.position);
+            d._key = KeyFor("door", piece != null ? piece.transform.position : root.transform.position);
             d._leaves = s.Leaves ?? new FixturePart[0];
             d._point = s.Point;
             d._normal = s.Normal.sqrMagnitude > 1e-6f ? s.Normal.normalized : Vector3.forward;
@@ -117,6 +143,7 @@ namespace CloneZ
             var solid = new GameObject("ShutLeaves");
             solid.transform.SetParent(root.transform, false);
             solid.transform.SetPositionAndRotation(s.Leaf.center, Quaternion.identity);
+            if (s.SeeThrough) solid.layer = CloneZConfig.IgnoreRaycastLayer;   // still solid, but sight lines pass, as through glass
             d._solid = solid.AddComponent<BoxCollider>();
             d._solid.size = s.Leaf.size;
 
@@ -131,6 +158,7 @@ namespace CloneZ
             d._carver.carveOnlyStationary = false;   // it never moves: carve the moment the door shuts
 
             d._open = s.Open;
+            d._locked = !s.Open && s.LockSide != 0 && s.Locked;
             d.Apply(true);
             return d;
         }
@@ -149,12 +177,14 @@ namespace CloneZ
 
             if (_lockSide != 0)
             {
+                string fault = LockFault;
                 if (lockSide)
                 {
                     if (_locked) into.Add(new InteractAction("Unlock the door", _unlockAct));
-                    else into.Add(new InteractAction("Lock the door", _lockAct).DisabledIf(_open, "Close the door first"));
+                    else into.Add(new InteractAction("Lock the door", _lockAct).DisabledIf(_open, "Close the door first")
+                        .DisabledIf(fault != null, fault));
                 }
-                else if (!_locked) into.Add(new InteractAction("Lock the door").DisabledIf(true, _lockElsewhere));
+                else if (!_locked) into.Add(new InteractAction("Lock the door").DisabledIf(true, fault ?? _lockElsewhere));
             }
 
             if (_peephole && lockSide && !_open)
@@ -176,17 +206,34 @@ namespace CloneZ
         }
 
         // The leaves, the collider over them, the carve across the gap and the doorway's flags, all in step.
-        private void Apply(bool instant)
+        protected virtual void Apply(bool instant)
         {
             for (int i = 0; i < _leaves.Length; i++)
                 if (_leaves[i] != null) _leaves[i].SetOpen(_open, instant);
-            if (_solid != null) _solid.enabled = !_open;
-            if (_carver != null) _carver.enabled = !_open;   // switching it off lifts the carve; on, it carves again
+            SetSolid(!_open);
             if (_piece != null)
             {
                 _piece.HasDoor = true;
                 _piece.DoorOpen = _open;
             }
+        }
+
+        /// <summary>Switches the shut door's collider and its carve across the gap on or off.</summary>
+        protected void SetSolid(bool solid)
+        {
+            if (_solid != null) _solid.enabled = solid;
+            if (_carver != null) _carver.enabled = solid;   // switching it off lifts the carve; on, it carves again
+        }
+
+        /// <summary>Why the lock can't be turned (it's been kicked out of the frame), or null while it works.</summary>
+        protected virtual string LockFault => null;
+
+        /// <summary>Tells the camera's cutaway the door's parts changed (a renderer added or shown), so they hide with its
+        /// wall while it's cut away.</summary>
+        protected void PartsChanged()
+        {
+            if (_occluder == null) _occluder = _piece != null ? _piece.GetComponent<CutawayOccluder>() : GetComponentInParent<CutawayOccluder>();
+            if (_occluder != null) _occluder.PartsChanged();
         }
 
         private void Close(InteractContext ctx)
@@ -218,7 +265,7 @@ namespace CloneZ
 
         private void SetLocked(bool locked, InteractContext ctx)
         {
-            if (_lockSide == 0 || _locked == locked || (locked && _open)) return;
+            if (_lockSide == 0 || _locked == locked || (locked && (_open || LockFault != null))) return;
             _locked = locked;
             if (ctx == null) return;
             if (_deadbolt) ctx.Notify(locked ? "You turn the deadbolt. The " + _noun + " is locked." : "You draw back the deadbolt.");

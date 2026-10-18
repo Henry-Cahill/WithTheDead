@@ -1,0 +1,10 @@
+{"version": 1, "id": "AerosolbombSensorV1", "baseHeight": 0.23, "name": "Aerosolbomb Sensor V1", "model": "gpt-oss:120b", "notes": "Aerosolbomb Sensor V1 – a 1.3 m long blunt melee weapon lying on its side. Thick rubber‑grip at the left, slender metal shaft along X, and a rounded sensor head (sphere) with a thin rim, trigger button and indicator LED at the right business end.", "score": 6, "parts": [
+  {"name":"Grip","shape":"cylinder","pos":[-0.555,-0.115,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.2,0.07],"color":[0.22,0.22,0.25],"smooth":0.18,"metal":0.0},
+  {"name":"Shaft","shape":"cylinder","pos":[-0.055,-0.125,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.8,0.05],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SensorBody","shape":"sphere","pos":[0.495,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.3,0.3],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"SensorRim","shape":"cylinder","pos":[0.495,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.34,0.02,0.34],"color":[0.45,0.45,0.48],"smooth":0.5,"metal":1.0},
+  {"name":"TriggerButton","shape":"cube","pos":[0.635,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.02],"color":[0.2,0.18,0.22],"smooth":0.3,"metal":0.0},
+  {"name":"LED","shape":"sphere","pos":[0.495,0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[1.0,0.2,0.2],"smooth":0.7,"metal":0.0},
+  {"name":"RivetFront","shape":"cylinder","pos":[0.555,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBack","shape":"cylinder","pos":[0.435,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "Piglet_Skull", "baseHeight": 0.1, "name": "Piglet Skull", "model": "gpt-oss:120b", "notes": "Piglet skull ~0.15 m long × 0.09 m wide × 0.07 m high, lying on its side with the snout pointing +X. Main bone block plus a protruding snout cylinder, lower jaw slab, small crest ridge and a few tooth cubes give a clear silhouette.", "score": 6, "parts": [
+  {"name":"SkullBlock","shape":"cube","pos":[-0.015,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.07,0.09],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Snout","shape":"cylinder","pos":[0.09,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.06,0.04],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"LowerJaw","shape":"cube","pos":[0.015,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"CrestRidge","shape":"cylinder","pos":[-0.06,0.03,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"ToothFrontL","shape":"cube","pos":[0.1,-0.025,0.012],"rot":[0.0,0.0,0.0],"size":[0.008,0.006,0.004],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"ToothFrontR","shape":"cube","pos":[0.1,-0.025,-0.012],"rot":[0.0,0.0,0.0],"size":[0.008,0.006,0.004],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"ToothSideL","shape":"cube","pos":[0.065,-0.025,0.025],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.003],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"ToothSideR","shape":"cube","pos":[0.065,-0.025,-0.025],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.003],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0}
+]}

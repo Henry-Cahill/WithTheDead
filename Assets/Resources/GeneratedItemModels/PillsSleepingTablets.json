@@ -1,0 +1,11 @@
+{"version": 1, "id": "PillsSleepingTablets", "baseHeight": 0.1283, "name": "Pills Sleeping Tablets", "model": "gpt-oss:120b", "notes": "Small plastic sleeping‑tablet bottle ~0.07 m diameter × 0.13 m tall: round body with screw cap, thin label on the front and a few pills visible at the bottom.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0083,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.0,0.0592,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.08],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"CapRim","shape":"cylinder","pos":[0.0,0.0673,0.0],"rot":[0.0,0.0,0.0],"size":[0.085,0.002,0.085],"color":[0.52,0.5,0.42],"smooth":0.4,"metal":0.0},
+  {"name":"LabelPlate","shape":"cube","pos":[0.0365,-0.0083,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.08,0.06],"color":[0.93,0.94,0.95],"smooth":0.1,"metal":0.0},
+  {"name":"LabelLine1","shape":"cube","pos":[0.037,0.0018,-0.015],"rot":[0.0,0.0,0.0],"size":[0.002,0.008,0.045],"color":[0.22,0.22,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"LabelLine2","shape":"cube","pos":[0.037,-0.0103,-0.015],"rot":[0.0,0.0,0.0],"size":[0.002,0.008,0.045],"color":[0.22,0.22,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"Pill1","shape":"sphere","pos":[-0.015,-0.0483,-0.01],"rot":[0.0,0.0,0.0],"size":[0.012,0.018,0.012],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Pill2","shape":"sphere","pos":[0.01,-0.0433,0.015],"rot":[0.0,0.0,0.0],"size":[0.012,0.018,0.012],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Pill3","shape":"sphere","pos":[-0.005,-0.0383,0.02],"rot":[0.0,0.0,0.0],"size":[0.012,0.018,0.012],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0}
+]}

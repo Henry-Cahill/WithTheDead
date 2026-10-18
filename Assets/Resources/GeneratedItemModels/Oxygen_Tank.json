@@ -1,0 +1,10 @@
+{"version": 1, "id": "Oxygen_Tank", "baseHeight": 0.195, "name": "Oxygen Tank", "model": "gpt-oss:120b", "notes": "Horizontal oxygen tank ~0.55 m long × 0.25 m diameter (radius 0.125 m) lying on its side. Main aluminium body, metal valve at one end, thin strap around the middle, end caps, and a rectangular label on the front.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,0.0,-0.0425],"rot":[0.0,0.0,90.0],"size":[0.25,0.55,0.25],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"CapL","shape":"cylinder","pos":[-0.265,0.0,-0.0425],"rot":[0.0,0.0,90.0],"size":[0.27,0.02,0.27],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"CapR","shape":"cylinder","pos":[0.265,0.0,-0.0425],"rot":[0.0,0.0,90.0],"size":[0.27,0.02,0.27],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"Valve","shape":"cylinder","pos":[0.235,0.06,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.45,0.44,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"Strap","shape":"cube","pos":[0.0,0.0,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.55,0.015,0.25],"color":[0.5,0.48,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"LabelBase","shape":"cube","pos":[0.0,0.0015,0.0875],"rot":[0.0,0.0,0.0],"size":[0.38,0.003,0.18],"color":[0.3,0.28,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0,0.003,0.0875],"rot":[0.0,0.0,0.0],"size":[0.4,0.002,0.18],"color":[0.2,0.19,0.15],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.0,0.0,0.0875],"rot":[0.0,0.0,0.0],"size":[0.4,0.002,0.18],"color":[0.2,0.19,0.15],"smooth":0.12,"metal":0.0}
+]}

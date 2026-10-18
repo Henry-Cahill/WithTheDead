@@ -1,0 +1,11 @@
+{"version": 1, "id": "PipeBombRemote", "baseHeight": 0.089, "name": "Pipe Bomb Remote", "model": "gpt-oss:120b", "notes": "Pipe bomb remote ~0.30 m long x 0.05 m diameter lying on its side (X‑axis). Main metal pipe body, front and rear caps, a protruding red trigger button at the business end, a copper‑tone coil near the centre, a white label strip, and two tiny screws.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.002,0.0,-0.0125],"rot":[0.0,0.0,90.0],"size":[0.05,0.3,0.05],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"EndCapFront","shape":"cylinder","pos":[0.153,0.0,-0.0125],"rot":[0.0,0.0,90.0],"size":[0.058,0.012,0.058],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"EndCapBack","shape":"cylinder","pos":[-0.157,0.0,-0.0125],"rot":[0.0,0.0,90.0],"size":[0.058,0.012,0.058],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"ButtonBase","shape":"cylinder","pos":[0.153,0.0,0.0175],"rot":[90.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.6,0.6,0.64],"smooth":0.3,"metal":0.8},
+  {"name":"ButtonTop","shape":"sphere","pos":[0.153,0.0,0.0325],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.8,0.1,0.1],"smooth":0.4,"metal":0.0},
+  {"name":"WireCoil","shape":"sphere","pos":[-0.002,0.0,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.85,0.5,0.2],"smooth":0.25,"metal":0.7},
+  {"name":"LabelPlate","shape":"cube","pos":[-0.052,0.015,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.06],"color":[0.9,0.9,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"Screw1","shape":"cylinder","pos":[0.128,0.02,-0.0375],"rot":[0.0,0.0,90.0],"size":[0.008,0.012,0.008],"color":[0.7,0.7,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"Screw2","shape":"cylinder","pos":[0.128,-0.02,-0.0375],"rot":[0.0,0.0,90.0],"size":[0.008,0.012,0.008],"color":[0.7,0.7,0.75],"smooth":0.55,"metal":1.0}
+]}

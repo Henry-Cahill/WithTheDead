@@ -1,0 +1,11 @@
+{"version": 1, "id": "BeerBottle", "baseHeight": 0.1802, "name": "Beer Bottle", "model": "gpt-oss:120b", "notes": "Upright 330 ml beer bottle ~0.23 m tall: tinted glass body (≈0.06 m dia × 0.18 m), narrower neck, metal crown cap, thin brown paper label with top/bottom trim, slight outward rim at bottom and a small lip at the neck.", "score": 7, "parts": [
+  {"name":"BodyGlass","shape":"cylinder","pos":[0.0,-0.0272,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.18,0.06],"color":[0.75,0.68,0.45],"smooth":0.6,"metal":0.0},
+  {"name":"NeckGlass","shape":"cylinder","pos":[0.0,0.0828,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.04,0.025],"color":[0.75,0.68,0.45],"smooth":0.6,"metal":0.0},
+  {"name":"CapMetal","shape":"cylinder","pos":[0.0,0.1103,0.0],"rot":[0.0,0.0,0.0],"size":[0.028,0.015,0.028],"color":[0.2,0.2,0.2],"smooth":0.5,"metal":1.0},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,-0.0372,0.0],"rot":[0.0,0.0,0.0],"size":[0.062,0.16,0.062],"color":[0.4,0.25,0.15],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.0418,0.0],"rot":[0.0,0.0,0.0],"size":[0.064,0.008,0.064],"color":[0.3,0.18,0.1],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.1162,0.0],"rot":[0.0,0.0,0.0],"size":[0.064,0.008,0.064],"color":[0.3,0.18,0.1],"smooth":0.12,"metal":0.0},
+  {"name":"BottomRim","shape":"cylinder","pos":[0.0,-0.1132,0.0],"rot":[0.0,0.0,0.0],"size":[0.065,0.008,0.065],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"NeckLip","shape":"cylinder","pos":[0.0,0.1028,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.006,0.03],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"CapRidge","shape":"cylinder","pos":[0.0,0.1182,0.0],"rot":[0.0,0.0,0.0],"size":[0.032,0.004,0.032],"color":[0.2,0.2,0.2],"smooth":0.5,"metal":1.0}
+]}

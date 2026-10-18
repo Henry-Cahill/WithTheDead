@@ -1,0 +1,10 @@
+{"version": 1, "id": "PlantainDried", "baseHeight": 0.0808, "name": "Plantain Dried", "model": "gpt-oss:120b", "notes": "Dried plantain chips, a loose pile about 0.15 m long × 0.08 m wide × 0.03 m high. Five overlapping rectangular slices with slight random tilts and a few raised ridges to hint at the dry, fibrous texture.", "score": 6, "parts": [
+  {"name":"Slice1","shape":"cube","pos":[-0.0127,-0.0112,0.0013],"rot":[0.0,2.0,5.0],"size":[0.15,0.006,0.08],"color":[0.6,0.58,0.5],"smooth":0.18,"metal":0.0},
+  {"name":"Slice2","shape":"cube","pos":[0.0123,-0.0052,0.0063],"rot":[0.0,-3.0,-4.0],"size":[0.148,0.006,0.078],"color":[0.6,0.58,0.5],"smooth":0.18,"metal":0.0},
+  {"name":"Slice3","shape":"cube","pos":[-0.0027,0.0008,-0.0067],"rot":[0.0,1.0,2.0],"size":[0.152,0.006,0.082],"color":[0.6,0.58,0.5],"smooth":0.18,"metal":0.0},
+  {"name":"Slice4","shape":"cube","pos":[0.0143,0.0068,0.0033],"rot":[0.0,-2.0,6.0],"size":[0.147,0.006,0.077],"color":[0.6,0.58,0.5],"smooth":0.18,"metal":0.0},
+  {"name":"Slice5","shape":"cube","pos":[-0.0057,0.0128,-0.0027],"rot":[0.0,3.0,-3.0],"size":[0.149,0.006,0.079],"color":[0.6,0.58,0.5],"smooth":0.18,"metal":0.0},
+  {"name":"RidgeA","shape":"cylinder","pos":[-0.0177,0.0188,0.0113],"rot":[90.0,0.0,0.0],"size":[0.004,0.018,0.004],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"RidgeB","shape":"cylinder","pos":[0.0323,0.0108,-0.0107],"rot":[90.0,0.0,0.0],"size":[0.0035,0.015,0.0035],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"RidgeC","shape":"cylinder","pos":[0.0073,0.0038,0.0263],"rot":[90.0,0.0,0.0],"size":[0.0038,0.017,0.0038],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0}
+]}

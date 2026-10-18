@@ -1,0 +1,8 @@
+{"version": 1, "id": "SweetPotatoSeed", "baseHeight": 0.0631, "name": "Sweet Potato Seed", "model": "gpt-oss:120b", "notes": "Small sweet‑potato seed packet ~3 cm × 2 cm × 0.5 cm thick, brown‑tinted paper with a darker label; a few tiny seed ellipsoids visible inside the opened top.", "score": 7, "parts": [
+  {"name":"PacketBody","shape":"cube","pos":[0.0,-0.0006,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.005,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.028,0.002,0.018],"color":[0.38,0.34,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Seed1","shape":"sphere","pos":[-0.008,-0.0016,-0.006],"rot":[0.0,0.0,0.0],"size":[0.006,0.003,0.003],"color":[0.45,0.4,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"Seed2","shape":"sphere","pos":[0.004,-0.0016,0.005],"rot":[0.0,0.0,0.0],"size":[0.006,0.003,0.003],"color":[0.45,0.4,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"Seed3","shape":"sphere","pos":[0.001,-0.0016,-0.002],"rot":[0.0,0.0,0.0],"size":[0.006,0.003,0.003],"color":[0.45,0.4,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"OpenFlap","shape":"cube","pos":[0.0,0.0022,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.002,0.02],"color":[0.55,0.53,0.48],"smooth":0.05,"metal":0.0}
+]}

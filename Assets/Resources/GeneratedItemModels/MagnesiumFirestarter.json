@@ -1,0 +1,12 @@
+{"version": 1, "id": "MagnesiumFirestarter", "baseHeight": 0.0717, "name": "Magnesium Firestarter", "model": "gpt-oss:120b", "notes": "Magnesium firestarter ~6 cm long × 3 cm deep × 2 cm high, lying on its side (X‑axis). Main magnesium block with a steel striker strip on the front face, a short steel tip, paper label on top, shallow groove, safety clip and two rivets.", "score": 6, "parts": [
+  {"name":"Block","shape":"cube","pos":[0.0,-0.0017,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.03],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"StrikerBase","shape":"cube","pos":[0.0,-0.0017,0.005],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.005],"color":[0.4,0.42,0.45],"smooth":0.65,"metal":1.0},
+  {"name":"StrikerTip","shape":"cylinder","pos":[0.0,-0.0017,0.0175],"rot":[90.0,0.0,0.0],"size":[0.004,0.02,0.004],"color":[0.6,0.62,0.66],"smooth":0.7,"metal":1.0},
+  {"name":"LabelBack","shape":"cube","pos":[0.0,-0.0012,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[0.0,-0.0012,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.035,0.002,0.015],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"Groove","shape":"cube","pos":[-0.005,-0.0012,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.05,0.002,0.006],"color":[0.35,0.33,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Clip","shape":"cylinder","pos":[0.0,0.0058,0.0125],"rot":[0.0,0.0,0.0],"size":[0.006,0.012,0.006],"color":[0.4,0.42,0.45],"smooth":0.65,"metal":1.0},
+  {"name":"RivetL","shape":"sphere","pos":[-0.02,0.0072,0.005],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.8,0.8,0.85],"smooth":0.7,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[0.02,0.0072,0.005],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.8,0.8,0.85],"smooth":0.7,"metal":1.0},
+  {"name":"TopBorder","shape":"cube","pos":[0.0,-0.0012,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.03],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0}
+]}

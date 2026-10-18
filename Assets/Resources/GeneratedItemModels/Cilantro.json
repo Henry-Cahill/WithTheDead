@@ -1,0 +1,16 @@
+{"version": 1, "id": "Cilantro", "baseHeight": 0.0932, "name": "Cilantro", "model": "gpt-oss:120b", "notes": "Loose cilantro bunch in a thin‑wall plastic clamshell, about 0.12 m long × 0.08 m wide × 0.04 m high when lying on its side. Green leaves are packed inside and tied with a small plastic strap.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[0.0,-0.0017,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.08],"color":[0.9,0.95,1.0],"smooth":0.2,"metal":0.0},
+  {"name":"BagSideL","shape":"cube","pos":[-0.058,-0.0017,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.036,0.076],"color":[0.8,0.85,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"BagSideR","shape":"cube","pos":[0.058,-0.0017,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.036,0.076],"color":[0.8,0.85,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"BagFront","shape":"cube","pos":[0.0,-0.0017,-0.042],"rot":[0.0,0.0,0.0],"size":[0.112,0.036,0.004],"color":[0.8,0.85,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"BagBack","shape":"cube","pos":[0.0,-0.0017,0.042],"rot":[0.0,0.0,0.0],"size":[0.112,0.036,0.004],"color":[0.8,0.85,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"TieStrap","shape":"cylinder","pos":[0.0,0.0163,0.0],"rot":[90.0,0.0,0.0],"size":[0.012,0.06,0.012],"color":[0.6,0.6,0.65],"smooth":0.15,"metal":0.0},
+  {"name":"Leaf1","shape":"sphere","pos":[-0.02,0.0033,-0.015],"rot":[0.0,0.0,0.0],"size":[0.03,0.06,0.015],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf2","shape":"sphere","pos":[0.01,0.0003,0.01],"rot":[0.0,0.0,0.0],"size":[0.028,0.055,0.014],"color":[0.73,0.66,0.43],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf3","shape":"sphere","pos":[-0.03,-0.0037,0.02],"rot":[0.0,0.0,0.0],"size":[0.025,0.05,0.012],"color":[0.72,0.65,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf4","shape":"sphere","pos":[0.03,-0.0027,-0.02],"rot":[0.0,0.0,0.0],"size":[0.027,0.053,0.013],"color":[0.74,0.67,0.44],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf5","shape":"sphere","pos":[0.0,-0.0007,0.0],"rot":[0.0,0.0,0.0],"size":[0.032,0.065,0.016],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf6","shape":"sphere","pos":[-0.015,0.0013,0.025],"rot":[0.0,0.0,0.0],"size":[0.024,0.048,0.011],"color":[0.71,0.64,0.41],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf7","shape":"sphere","pos":[0.018,0.0023,-0.025],"rot":[0.0,0.0,0.0],"size":[0.026,0.051,0.012],"color":[0.73,0.66,0.43],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0103,-0.038],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.002],"color":[0.6,0.55,0.4],"smooth":0.1,"metal":0.0}
+]}

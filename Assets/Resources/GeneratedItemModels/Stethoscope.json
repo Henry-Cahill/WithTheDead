@@ -1,0 +1,14 @@
+{"version": 1, "id": "Stethoscope", "baseHeight": 0.0705, "name": "Stethoscope", "model": "gpt-oss:120b", "notes": "Stethoscope ~0.48 m long lying on its side: two metal ear‑cups, a short connecting tube, a thin headband above the cups, a main flexible tube to a chest piece (metal disc with rubber rim and diaphragm).", "score": 6, "parts": [
+  {"name":"EarCupL","shape":"cylinder","pos":[-0.2125,-0.003,-0.005],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.04],"color":[0.7,0.68,0.65],"smooth":0.55,"metal":1.0},
+  {"name":"EarCupR","shape":"cylinder","pos":[-0.0925,-0.003,-0.005],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.04],"color":[0.7,0.68,0.65],"smooth":0.55,"metal":1.0},
+  {"name":"RivetL","shape":"sphere","pos":[-0.2125,0.0075,-0.005],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.7,0.68,0.65],"smooth":0.55,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[-0.0925,0.0075,-0.005],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.7,0.68,0.65],"smooth":0.55,"metal":1.0},
+  {"name":"TubeBetween","shape":"cylinder","pos":[-0.1525,-0.0045,-0.005],"rot":[0.0,0.0,90.0],"size":[0.012,0.12,0.012],"color":[0.7,0.68,0.65],"smooth":0.55,"metal":1.0},
+  {"name":"Headband","shape":"cylinder","pos":[-0.1525,0.0065,-0.005],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.7,0.68,0.65],"smooth":0.55,"metal":1.0},
+  {"name":"Connector","shape":"cube","pos":[-0.1525,-0.003,-0.005],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.7,0.68,0.65],"smooth":0.55,"metal":1.0},
+  {"name":"MainTube","shape":"cylinder","pos":[0.0225,-0.0045,-0.005],"rot":[0.0,0.0,90.0],"size":[0.012,0.35,0.012],"color":[0.7,0.68,0.65],"smooth":0.55,"metal":1.0},
+  {"name":"ChestBody","shape":"cylinder","pos":[0.1975,-0.0055,-0.005],"rot":[0.0,0.0,0.0],"size":[0.06,0.01,0.06],"color":[0.7,0.68,0.65],"smooth":0.55,"metal":1.0},
+  {"name":"RubberRim","shape":"cylinder","pos":[0.1975,-0.0035,-0.005],"rot":[0.0,0.0,0.0],"size":[0.07,0.004,0.07],"color":[0.25,0.2,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"Diaphragm","shape":"cylinder","pos":[0.1975,0.0005,-0.005],"rot":[0.0,0.0,0.0],"size":[0.05,0.002,0.05],"color":[0.7,0.68,0.65],"smooth":0.55,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[0.1975,-0.004,0.03],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.9,0.9,0.9],"smooth":0.3,"metal":0.0}
+]}

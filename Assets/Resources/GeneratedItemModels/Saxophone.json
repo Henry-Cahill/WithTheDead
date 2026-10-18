@@ -1,0 +1,11 @@
+{"version": 1, "id": "Saxophone", "baseHeight": 0.12, "name": "Saxophone", "model": "gpt-oss:120b", "notes": "Saxophone about 1.2 m long lying on its side (longest axis along X). Metal body with thin lower/upper tubes, flared bell at the business end, mouthpiece at the opposite end, four small keys and a dark leather strap.", "score": 6, "parts": [
+  {"name":"Mouthpiece","shape":"sphere","pos":[-0.625,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"LowerTube","shape":"cylinder","pos":[-0.295,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.55,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"UpperTube","shape":"cylinder","pos":[0.205,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.45,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"BellFlare","shape":"cylinder","pos":[0.555,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.2,0.12],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Key1","shape":"cube","pos":[0.005,0.005,0.03],"rot":[0.0,0.0,0.0],"size":[0.06,0.01,0.02],"color":[0.2,0.2,0.25],"smooth":0.3,"metal":0.0},
+  {"name":"Key2","shape":"cube","pos":[0.105,0.005,-0.03],"rot":[0.0,0.0,0.0],"size":[0.06,0.01,0.02],"color":[0.2,0.2,0.25],"smooth":0.3,"metal":0.0},
+  {"name":"Key3","shape":"cube","pos":[0.205,0.005,0.03],"rot":[0.0,0.0,0.0],"size":[0.06,0.01,0.02],"color":[0.2,0.2,0.25],"smooth":0.3,"metal":0.0},
+  {"name":"Key4","shape":"cube","pos":[0.305,0.005,-0.03],"rot":[0.0,0.0,0.0],"size":[0.06,0.01,0.02],"color":[0.2,0.2,0.25],"smooth":0.3,"metal":0.0},
+  {"name":"Strap","shape":"cylinder","pos":[-0.295,0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.55,0.06],"color":[0.1,0.07,0.05],"smooth":0.2,"metal":0.0}
+]}

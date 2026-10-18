@@ -1,0 +1,13 @@
+{"version": 1, "id": "CannedPineapple_Box", "baseHeight": 0.2062, "name": "Canned Pineapple Box", "model": "gpt-oss:120b", "notes": "Upright cardboard box for canned pineapple, about 0.24 m wide × 0.18 m deep × 0.28 m high. Main body in the tint colour, a slightly lighter lid with a front tab, dark printed label on the front, reinforced edge strips and a small logo embossing.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0062,0.0345],"rot":[0.0,0.0,0.0],"size":[0.24,0.28,0.18],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.1387,0.0345],"rot":[0.0,0.0,0.0],"size":[0.26,0.01,0.2],"color":[0.8,0.73,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"FrontTab","shape":"cube","pos":[0.0,0.1387,-0.0605],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.008],"color":[0.8,0.73,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,-0.0062,-0.0545],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.16],"color":[0.45,0.35,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Logo","shape":"cylinder","pos":[-0.07,-0.0053,-0.0545],"rot":[90.0,0.0,0.0],"size":[0.03,0.002,0.03],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"TopEdgeStrip","shape":"cube","pos":[0.0,0.1298,0.0345],"rot":[0.0,0.0,0.0],"size":[0.24,0.008,0.008],"color":[0.6,0.5,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"BottomEdgeStrip","shape":"cube","pos":[0.0,-0.1422,0.0345],"rot":[0.0,0.0,0.0],"size":[0.24,0.008,0.008],"color":[0.6,0.5,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"FrontEdgeStrip","shape":"cube","pos":[0.0,-0.0062,-0.0545],"rot":[0.0,0.0,0.0],"size":[0.24,0.008,0.008],"color":[0.6,0.5,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"BackEdgeStrip","shape":"cube","pos":[0.0,-0.0062,0.1235],"rot":[0.0,0.0,0.0],"size":[0.24,0.008,0.008],"color":[0.6,0.5,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"LeftSideStrip","shape":"cube","pos":[-0.119,-0.0062,0.0345],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.18],"color":[0.6,0.5,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"RightSideStrip","shape":"cube","pos":[0.119,-0.0062,0.0345],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.18],"color":[0.6,0.5,0.3],"smooth":0.12,"metal":0.0}
+]}

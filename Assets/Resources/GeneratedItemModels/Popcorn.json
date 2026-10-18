@@ -1,0 +1,22 @@
+{"version": 1, "id": "Popcorn", "baseHeight": 0.099, "name": "Popcorn", "model": "gpt-oss:120b", "notes": "Microwave popcorn in a folded paper bag (~0.28 m × 0.38 m × 0.02 m). Bag body, top flap and front label give the packaging; twelve overlapping puffed kernels (elongated spheres) inside create a fluffy, recognizable silhouette with a bright buttery‑yellow tint.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[0.0,-0.0275,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.38],"color":[0.78,0.7,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,-0.015,0.19],"rot":[20.0,0.0,0.0],"size":[0.28,0.006,0.07],"color":[0.78,0.7,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[-0.04,-0.026,-0.15],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.24],"color":[0.45,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Kernel1","shape":"sphere","pos":[-0.09,-0.0025,-0.06],"rot":[0.0,0.0,0.0],"size":[0.045,0.055,0.045],"color":[0.96,0.78,0.35],"smooth":0.35,"metal":0.0},
+  {"name":"Kernel2","shape":"sphere","pos":[-0.02,0.0025,-0.08],"rot":[0.0,0.0,0.0],"size":[0.05,0.06,0.05],"color":[0.96,0.78,0.35],"smooth":0.35,"metal":0.0},
+  {"name":"Kernel3","shape":"sphere","pos":[0.04,0.0005,-0.02],"rot":[0.0,0.0,0.0],"size":[0.048,0.058,0.048],"color":[0.96,0.78,0.35],"smooth":0.35,"metal":0.0},
+  {"name":"Kernel4","shape":"sphere","pos":[0.1,-0.0015,0.04],"rot":[0.0,0.0,0.0],"size":[0.047,0.057,0.047],"color":[0.96,0.78,0.35],"smooth":0.35,"metal":0.0},
+  {"name":"Kernel5","shape":"sphere","pos":[-0.07,0.0045,0.06],"rot":[0.0,0.0,0.0],"size":[0.052,0.062,0.052],"color":[0.96,0.78,0.35],"smooth":0.35,"metal":0.0},
+  {"name":"Kernel6","shape":"sphere","pos":[0.0,0.0075,0.1],"rot":[0.0,0.0,0.0],"size":[0.053,0.063,0.053],"color":[0.96,0.78,0.35],"smooth":0.35,"metal":0.0},
+  {"name":"Kernel7","shape":"sphere","pos":[-0.12,0.0005,-0.02],"rot":[0.0,0.0,0.0],"size":[0.046,0.056,0.046],"color":[0.96,0.78,0.35],"smooth":0.35,"metal":0.0},
+  {"name":"Kernel8","shape":"sphere","pos":[0.08,0.0015,-0.12],"rot":[0.0,0.0,0.0],"size":[0.049,0.059,0.049],"color":[0.96,0.78,0.35],"smooth":0.35,"metal":0.0},
+  {"name":"Kernel9","shape":"sphere","pos":[-0.04,-0.0005,0.13],"rot":[0.0,0.0,0.0],"size":[0.045,0.055,0.045],"color":[0.96,0.78,0.35],"smooth":0.35,"metal":0.0},
+  {"name":"Kernel10","shape":"sphere","pos":[0.12,0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.051,0.061,0.051],"color":[0.96,0.78,0.35],"smooth":0.35,"metal":0.0},
+  {"name":"Kernel11","shape":"sphere","pos":[-0.02,0.0035,-0.14],"rot":[0.0,0.0,0.0],"size":[0.047,0.057,0.047],"color":[0.96,0.78,0.35],"smooth":0.35,"metal":0.0},
+  {"name":"Kernel12","shape":"sphere","pos":[0.06,0.0055,0.16],"rot":[0.0,0.0,0.0],"size":[0.05,0.06,0.05],"color":[0.96,0.78,0.35],"smooth":0.35,"metal":0.0},
+  {"name":"BottomSeam","shape":"cylinder","pos":[0.0,-0.0365,0.0],"rot":[0.0,0.0,0.0],"size":[0.285,0.002,0.285],"color":[0.7,0.62,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SideRimFront","shape":"cylinder","pos":[0.0,-0.0265,-0.19],"rot":[90.0,0.0,0.0],"size":[0.025,0.38,0.025],"color":[0.7,0.62,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SideRimBack","shape":"cylinder","pos":[0.0,-0.0265,0.19],"rot":[90.0,0.0,0.0],"size":[0.025,0.38,0.025],"color":[0.7,0.62,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SideRimLeft","shape":"cylinder","pos":[-0.14,-0.0265,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.38,0.025],"color":[0.7,0.62,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"SideRimRight","shape":"cylinder","pos":[0.14,-0.0265,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.38,0.025],"color":[0.7,0.62,0.38],"smooth":0.05,"metal":0.0}
+]}

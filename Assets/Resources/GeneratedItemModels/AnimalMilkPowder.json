@@ -1,0 +1,13 @@
+{"version": 1, "id": "AnimalMilkPowder", "baseHeight": 0.2487, "name": "Animal Milk Powder", "model": "gpt-oss:120b", "notes": "Upright animal‑milk‑powder tin ~0.28 m tall × 0.20 m wide × 0.12 m deep: bottom base, main body, top rim, screw‑on lid cap, white label band with dark printed area, and a small visible powder mound inside.", "score": 6, "parts": [
+  {"name":"BottomBase","shape":"cube","pos":[0.0,-0.1787,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.14],"color":[0.68,0.62,0.38],"smooth":0.4,"metal":0.0},
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0487,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.24,0.12],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"TopRim","shape":"cube","pos":[0.0,0.0813,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.02,0.14],"color":[0.6,0.55,0.35],"smooth":0.5,"metal":1.0},
+  {"name":"LidCap","shape":"cylinder","pos":[0.0,0.0988,0.0],"rot":[90.0,0.0,0.0],"size":[0.18,0.015,0.18],"color":[0.55,0.5,0.3],"smooth":0.6,"metal":1.0},
+  {"name":"LabelBand","shape":"cube","pos":[0.0,-0.0487,0.0],"rot":[0.0,0.0,0.0],"size":[0.202,0.015,0.122],"color":[0.95,0.95,0.9],"smooth":0.12,"metal":0.0},
+  {"name":"LabelPrint","shape":"cube","pos":[0.0,-0.0412,0.0605],"rot":[0.0,0.0,0.0],"size":[0.16,0.008,0.002],"color":[0.4,0.3,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"PowderMound","shape":"sphere","pos":[0.0,-0.1187,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.1,0.1],"color":[0.92,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"SeamFront","shape":"cube","pos":[0.0,-0.0487,0.061],"rot":[0.0,0.0,0.0],"size":[0.202,0.002,0.002],"color":[0.55,0.5,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"SeamBack","shape":"cube","pos":[0.0,-0.0487,-0.061],"rot":[0.0,0.0,0.0],"size":[0.202,0.002,0.002],"color":[0.55,0.5,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"SeamLeft","shape":"cube","pos":[-0.101,-0.0487,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.24,0.122],"color":[0.55,0.5,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"SeamRight","shape":"cube","pos":[0.101,-0.0487,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.24,0.122],"color":[0.55,0.5,0.35],"smooth":0.2,"metal":0.0}
+]}

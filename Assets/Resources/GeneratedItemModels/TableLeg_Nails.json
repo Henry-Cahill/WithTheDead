@@ -1,0 +1,9 @@
+{"version": 1, "id": "TableLeg_Nails", "baseHeight": 0.15, "name": "Table Leg Nails", "model": "gpt-oss:120b", "notes": "Table‑leg nail club ~1 m long, lying on its side (X axis). A wooden table‑leg cylinder with a flat end cap and four short metal nails – top, bottom, front (+X) and back (–X) – to show the brutal business end. Rough dimensions: 0.07 m diameter, 1.00 m length, nail heads ~0.008 m radius, 0.08 m long.", "score": 6, "parts": [
+  {"name":"Leg","shape":"cylinder","pos":[-0.04,0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,1.0,0.07],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"EndCap","shape":"cube","pos":[0.47,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.07,0.07],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"LeatherStrap","shape":"cylinder","pos":[-0.04,0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.3,0.012],"color":[0.3,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"NailTop","shape":"cylinder","pos":[0.44,0.05,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.08,0.008],"color":[0.5,0.5,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"NailBottom","shape":"cylinder","pos":[0.44,-0.05,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.08,0.008],"color":[0.5,0.5,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"NailFront","shape":"cylinder","pos":[0.5,0.01,0.0],"rot":[0.0,0.0,-90.0],"size":[0.008,0.08,0.008],"color":[0.5,0.5,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"NailBack","shape":"cylinder","pos":[0.42,0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.08,0.008],"color":[0.5,0.5,0.5],"smooth":0.4,"metal":1.0}
+]}

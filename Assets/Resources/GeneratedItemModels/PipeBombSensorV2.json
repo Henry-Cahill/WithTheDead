@@ -1,0 +1,11 @@
+{"version": 1, "id": "PipeBombSensorV2", "baseHeight": 0.175, "name": "Pipe Bomb Sensor V2", "model": "gpt-oss:120b", "notes": "Long pipe‑style melee weapon (≈1.5 m long, 6 cm diameter) lying on its side with the sensor/trigger end pointing +Z. Main metal body tinted gray‑blue, steel cap, plastic sensor housing with two buttons and a short antenna.", "score": 6, "parts": [
+  {"name":"PipeBody","shape":"cylinder","pos":[-0.03,-0.085,-0.085],"rot":[0.0,0.0,90.0],"size":[0.06,1.5,0.06],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":0.85},
+  {"name":"EndCap","shape":"cylinder","pos":[0.71,-0.075,-0.085],"rot":[0.0,0.0,90.0],"size":[0.08,0.02,0.08],"color":[0.55,0.55,0.6],"smooth":0.55,"metal":0.9},
+  {"name":"SensorBox","shape":"cube","pos":[0.72,-0.075,-0.045],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.06],"color":[0.5,0.52,0.58],"smooth":0.3,"metal":0.0},
+  {"name":"Antenna","shape":"cylinder","pos":[0.72,0.04,-0.085],"rot":[0.0,0.0,0.0],"size":[0.02,0.15,0.02],"color":[0.45,0.45,0.5],"smooth":0.4,"metal":0.7},
+  {"name":"ButtonL","shape":"cube","pos":[0.7,-0.055,-0.02],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.7,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"ButtonR","shape":"cube","pos":[0.74,-0.055,-0.02],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.2,0.7,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"GripBand","shape":"cylinder","pos":[-0.73,-0.075,-0.085],"rot":[0.0,0.0,90.0],"size":[0.08,0.1,0.08],"color":[0.2,0.15,0.1],"smooth":0.25,"metal":0.0},
+  {"name":"OppositeCap","shape":"cylinder","pos":[-0.77,-0.075,-0.085],"rot":[0.0,0.0,90.0],"size":[0.08,0.02,0.08],"color":[0.55,0.55,0.6],"smooth":0.55,"metal":0.9},
+  {"name":"LabelStrip","shape":"cube","pos":[-0.03,-0.08,0.115],"rot":[0.0,0.0,0.0],"size":[0.6,0.004,0.02],"color":[0.3,0.35,0.4],"smooth":0.05,"metal":0.0}
+]}

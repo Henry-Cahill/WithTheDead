@@ -1,0 +1,9 @@
+{"version": 1, "id": "Axe", "baseHeight": 0.095, "name": "Axe", "model": "gpt-oss:120b", "notes": "Axe ~1.2 m long lying on its side (X‑axis). Wooden handle with metal band, heavy steel head at +X end, forward‑pointing blade (+Z) and rear counter‑weight. Total X extent ≈1.28 m, Y height up to 0.07 m.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.04,-0.01,-0.06],"rot":[0.0,0.0,90.0],"size":[0.05,1.2,0.05],"color":[0.4,0.25,0.15],"smooth":0.15,"metal":0.0},
+  {"name":"MetalBand","shape":"cylinder","pos":[0.51,-0.005,-0.06],"rot":[0.0,0.0,90.0],"size":[0.055,0.12,0.055],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.6,0.0,-0.08],"rot":[0.0,0.0,0.0],"size":[0.08,0.07,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Blade","shape":"cube","pos":[0.6,-0.0275,0.065],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.25],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BackPlate","shape":"cube","pos":[0.6,0.0,-0.18],"rot":[0.0,0.0,0.0],"size":[0.04,0.07,0.02],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"RivetFront","shape":"sphere","pos":[0.54,-0.005,-0.06],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBack","shape":"sphere","pos":[0.54,-0.005,-0.14],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0}
+]}

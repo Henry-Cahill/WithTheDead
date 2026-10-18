@@ -1,0 +1,10 @@
+{"version": 1, "id": "Vodka", "baseHeight": 0.2375, "name": "Vodka", "model": "gpt-oss:120b", "notes": "Upright vodka bottle ~0.35 m tall x 0.08 m wide: clear glass body, amber liquid, narrow neck with metal cap, rectangular label around the mid‑section.", "score": 7, "parts": [
+  {"name":"BodyGlass","shape":"cylinder","pos":[0.0,-0.0375,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.28,0.08],"color":[0.92,0.96,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"Liquid","shape":"cylinder","pos":[0.0,-0.0625,0.0],"rot":[0.0,0.0,0.0],"size":[0.076,0.23,0.076],"color":[0.75,0.68,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"Neck","shape":"cylinder","pos":[0.0,0.1325,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.04],"color":[0.92,0.96,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.0,0.17,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.015,0.045],"color":[0.8,0.81,0.84],"smooth":0.55,"metal":1.0},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,-0.0375,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.18,0.082],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.0475,0.0],"rot":[0.0,0.0,0.0],"size":[0.084,0.008,0.084],"color":[0.45,0.35,0.15],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.1225,0.0],"rot":[0.0,0.0,0.0],"size":[0.084,0.008,0.084],"color":[0.45,0.35,0.15],"smooth":0.12,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,0.1625,0.0],"rot":[0.0,0.0,0.0],"size":[0.042,0.004,0.042],"color":[0.92,0.96,1.0],"smooth":0.6,"metal":0.0}
+]}

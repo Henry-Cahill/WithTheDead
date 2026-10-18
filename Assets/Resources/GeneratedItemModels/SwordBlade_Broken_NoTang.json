@@ -1,0 +1,11 @@
+{"version": 1, "id": "SwordBlade_Broken_NoTang", "baseHeight": 0.0858, "name": "Sword Blade Broken No Tang", "model": "gpt-oss:120b", "notes": "Broken sword blade fragment (~0.6 m long, 4 cm wide, 1‑2 cm thick) lying flat on its side. Main steel blade body with tapered tip, a jagged broken chunk at the hilt end, thin edge strips for bevels, a raised top rim and a small rust‑stained spot near the break.", "score": 7, "parts": [
+  {"name":"BladeBody","shape":"cube","pos":[-0.0293,-0.005,0.0018],"rot":[0.0,0.0,0.0],"size":[0.5,0.012,0.035],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BladeTip","shape":"sphere","pos":[0.2507,-0.005,0.0018],"rot":[0.0,0.0,0.0],"size":[0.07,0.012,0.035],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BreakChunk","shape":"cube","pos":[-0.2493,-0.0,-0.0032],"rot":[15.0,0.0,20.0],"size":[0.07,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.0293,-0.005,-0.0137],"rot":[0.0,0.0,0.0],"size":[0.5,0.012,0.004],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeRight","shape":"cube","pos":[-0.0293,-0.005,0.0173],"rot":[0.0,0.0,0.0],"size":[0.5,0.012,0.004],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TopRim","shape":"cube","pos":[-0.0293,-0.003,0.0018],"rot":[0.0,0.0,0.0],"size":[0.5,0.004,0.035],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RustPatch","shape":"sphere","pos":[-0.2293,-0.003,0.0118],"rot":[0.0,0.0,0.0],"size":[0.04,0.012,0.04],"color":[0.5,0.3,0.2],"smooth":0.25,"metal":0.0},
+  {"name":"Shard1","shape":"cube","pos":[-0.1493,-0.002,-0.0182],"rot":[-10.0,5.0,30.0],"size":[0.03,0.015,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Shard2","shape":"cube","pos":[-0.1093,-0.002,0.0198],"rot":[8.0,-12.0,-20.0],"size":[0.025,0.014,0.022],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

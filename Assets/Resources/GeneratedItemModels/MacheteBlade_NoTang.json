@@ -1,0 +1,9 @@
+{"version": 1, "id": "MacheteBlade_NoTang", "baseHeight": 0.095, "name": "Machete Blade No Tang", "model": "gpt-oss:120b", "notes": "Machete blade with no tang – just the steel blade lying flat on the floor. Approx. 0.52 m long, 0.09 m wide and 8 mm thick, made of polished steel (tint 0.6, 0.58, 0.5).", "score": 6, "parts": [
+  {"name":"BladeMain","shape":"cube","pos":[-0.02,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.48,0.008,0.08],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BladeTip","shape":"cylinder","pos":[0.24,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.04,0.07],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeBevel","shape":"cube","pos":[-0.02,0.0045,0.0395],"rot":[0.0,0.0,0.0],"size":[0.48,0.002,0.08],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"BackPlate","shape":"cube","pos":[-0.02,-0.0025,-0.0395],"rot":[0.0,0.0,0.0],"size":[0.48,0.002,0.08],"color":[0.65,0.62,0.55],"smooth":0.4,"metal":1.0},
+  {"name":"RustSpot","shape":"sphere","pos":[-0.14,0.002,-0.02],"rot":[0.0,0.0,0.0],"size":[0.03,0.004,0.03],"color":[0.4,0.25,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"SharpEdgeL","shape":"cube","pos":[-0.02,0.0045,0.02],"rot":[0.0,0.0,0.0],"size":[0.48,0.002,0.04],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"SharpEdgeR","shape":"cube","pos":[-0.02,0.0045,-0.02],"rot":[0.0,0.0,0.0],"size":[0.48,0.002,0.04],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0}
+]}

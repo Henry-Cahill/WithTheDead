@@ -1,0 +1,15 @@
+{"version": 1, "id": "GardeningSprayCigarettes", "baseHeight": 0.142, "name": "Gardening Spray Cigarettes", "model": "gpt-oss:120b", "notes": "Rectangular cigarette pack (≈0.09 m × 0.14 m × 0.02 m) lying flat on its back, six loose cigarettes inside, a small metal gardening‑spray can attached to the side of the pack. Main tint is muted olive‑gray; cigarettes are off‑white and the spray can is brushed‑metal with a green label.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[-0.01,-0.072,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.09,0.02,0.14],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"BoxFlap","shape":"cube","pos":[-0.01,-0.0595,0.0625],"rot":[0.0,0.0,0.0],"size":[0.09,0.005,0.03],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"BoxSeam","shape":"cube","pos":[-0.01,-0.0705,-0.0725],"rot":[0.0,0.0,0.0],"size":[0.09,0.003,0.01],"color":[0.4,0.35,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"CigA1","shape":"cylinder","pos":[-0.035,-0.072,-0.0475],"rot":[0.0,0.0,90.0],"size":[0.008,0.08,0.008],"color":[0.9,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"CigA2","shape":"cylinder","pos":[-0.01,-0.072,-0.0475],"rot":[0.0,0.0,90.0],"size":[0.008,0.08,0.008],"color":[0.9,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"CigA3","shape":"cylinder","pos":[0.015,-0.072,-0.0475],"rot":[0.0,0.0,90.0],"size":[0.008,0.08,0.008],"color":[0.9,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"CigB1","shape":"cylinder","pos":[-0.035,-0.072,0.0325],"rot":[0.0,0.0,90.0],"size":[0.008,0.08,0.008],"color":[0.9,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"CigB2","shape":"cylinder","pos":[-0.01,-0.072,0.0325],"rot":[0.0,0.0,90.0],"size":[0.008,0.08,0.008],"color":[0.9,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"CigB3","shape":"cylinder","pos":[0.015,-0.072,0.0325],"rot":[0.0,0.0,90.0],"size":[0.008,0.08,0.008],"color":[0.9,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"SprayCanBody","shape":"cylinder","pos":[0.055,-0.022,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.78,0.78,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"SprayCanNeck","shape":"cylinder","pos":[0.055,0.058,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.025,0.04,0.025],"color":[0.78,0.78,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"SprayNozzle","shape":"cylinder","pos":[0.055,0.078,0.015],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"CanLabel","shape":"cube","pos":[0.073,-0.022,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.002,0.04,0.025],"color":[0.3,0.5,0.2],"smooth":0.1,"metal":0.0}
+]}

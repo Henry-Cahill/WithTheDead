@@ -1,0 +1,10 @@
+{"version": 1, "id": "FireAxeHead", "baseHeight": 0.11, "name": "Fire Axe Head", "model": "gpt-oss:120b", "notes": "Fire‑axe head ~0.30 m long × 0.12 m wide × 0.04 m thick, steel with a flat axe blade, rear hammer poll and a small spike tip. Four rivets mark the mounting points.", "score": 6, "parts": [
+  {"name":"BladeBody","shape":"cube","pos":[0.0225,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.04,0.12],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeBevel","shape":"cube","pos":[0.1375,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.04,0.12],"color":[0.5,0.48,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"HammerPoll","shape":"cube","pos":[-0.1175,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.04,0.07],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"SpikeTip","shape":"cylinder","pos":[0.1425,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.06,0.012],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFL","shape":"cylinder","pos":[0.1025,-0.03,0.05],"rot":[0.0,0.0,0.0],"size":[0.016,0.02,0.016],"color":[0.9,0.9,0.9],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFR","shape":"cylinder","pos":[0.1025,-0.03,-0.05],"rot":[0.0,0.0,0.0],"size":[0.016,0.02,0.016],"color":[0.9,0.9,0.9],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"cylinder","pos":[-0.0575,-0.03,0.05],"rot":[0.0,0.0,0.0],"size":[0.016,0.02,0.016],"color":[0.9,0.9,0.9],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"cylinder","pos":[-0.0575,-0.03,-0.05],"rot":[0.0,0.0,0.0],"size":[0.016,0.02,0.016],"color":[0.9,0.9,0.9],"smooth":0.6,"metal":1.0}
+]}

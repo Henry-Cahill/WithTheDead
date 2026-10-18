@@ -1,0 +1,9 @@
+{"version": 1, "id": "Sword_Shard", "baseHeight": 0.08, "name": "Sword Shard", "model": "gpt-oss:120b", "notes": "Irregular steel shard about 30 cm long, 3 cm wide and 1 cm thick, with a pointed tip and two jagged off‑cuts. Lying flat on the floor (y = 0) with its longest axis along X.", "score": 7, "parts": [
+  {"name":"MainShard","shape":"cube","pos":[-0.04,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.01,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Tip","shape":"cylinder","pos":[0.14,-0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.08,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"JagLeft","shape":"cube","pos":[-0.11,0.006,0.015],"rot":[0.0,20.0,0.0],"size":[0.06,0.012,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"JagRight","shape":"cube","pos":[-0.11,0.006,-0.015],"rot":[0.0,-20.0,0.0],"size":[0.06,0.012,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RidgeTop","shape":"cylinder","pos":[-0.04,0.006,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.25,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Chip","shape":"sphere","pos":[-0.16,0.007,0.01],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeFlake","shape":"cube","pos":[0.0,0.003,0.018],"rot":[0.0,-10.0,0.0],"size":[0.03,0.008,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

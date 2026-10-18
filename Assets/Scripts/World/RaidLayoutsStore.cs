@@ -5,12 +5,15 @@ namespace CloneZ
     internal static partial class RaidLayouts
     {
         #region Gas station
-        /// <summary>The gas station's food mart: checkout counter, gondolas, glowing drinks coolers, a
-        /// stock room and a restroom. 14 × 10 m; the pumps and canopy are added outside by the map.</summary>
+        /// <summary>The gas station's food mart: the checkout counter with its till, gondolas of shelves to browse from
+        /// either aisle, glass-door drinks coolers lit from within, a stock room with its shelving and a locked floor safe
+        /// (work the dial), and a restroom with the home's own toilet and basin. 14 × 10 m; the pumps and canopy are added
+        /// outside by the map.</summary>
         public static RaidBuilding GasStation(RaidTown town, Vector2 center, int turns)
         {
             var b = new RaidBuilding(town, "FoodMart", center, turns, false, 14f, 10f)
             {
+                Kind = RaidBuildingKind.Store,
                 Exterior = ExteriorStyle.Brick,
                 ExteriorColor = new Color(0.62f, 0.60f, 0.56f),
                 DoorWood = new Color(0.60f, 0.60f, 0.58f),
@@ -32,28 +35,28 @@ namespace CloneZ
             b.Window(-7f, -2.0f); b.Window(7f, -2.6f);
             b.BuildShell();
 
-            b.Container(store, ContainerType.Desk, "Register", b.Wst(store, -2.2f, 0.72f), Sz(2.2f, 1.4f, 0.72f), (m, r) => FurnitureBuilder.ShopCounter(m, r, 2.2f));
-            b.Container(store, ContainerType.Pantry, "Store Shelf", new RaidBuilding.Place(-1.0f, -1.6f, 90f), Sz(3.2f, 1.5f, 0.9f), (m, r) => FurnitureBuilder.Gondola(m, r, 3.2f));
-            b.Container(store, ContainerType.Pantry, "Store Shelf", new RaidBuilding.Place(2.4f, -1.6f, 90f), Sz(3.2f, 1.5f, 0.9f), (m, r) => FurnitureBuilder.Gondola(m, r, 3.2f));
+            CheckoutAt(b, store, b.Wst(store, -2.2f, 0.72f), 2.2f);
+            GondolaAt(b, store, new RaidBuilding.Place(-1.0f, -1.6f, 90f), 3.2f, Chance(rng, 0.5));
+            GondolaAt(b, store, new RaidBuilding.Place(2.4f, -1.6f, 90f), 3.2f, Chance(rng, 0.5));
             bool power = store.Lit;
-            b.Container(store, ContainerType.Fridge, "Drinks Cooler", b.E(store, -0.85f, 0.75f), Sz(0.9f, 2.0f, 0.75f), (m, r) => FurnitureBuilder.DrinksCooler(m, r, power));
-            b.Furnish(store, b.E(store, 0.1f, 0.75f), Sz(0.9f, 2.0f, 0.75f), true, (m, r) => FurnitureBuilder.DrinksCooler(m, r, power), "cooler");
-            // A cool light inside the cooler cabinet (its bulb hidden in the body) spills onto the aisle.
+            DrinksCoolerAt(b, store, b.E(store, -0.85f, 0.75f), power, true);
+            DrinksCoolerAt(b, store, b.E(store, 0.1f, 0.75f), power, false);
             b.Clutter(store, 2, false);
             b.Poster(store, 'N', -1.2f, 1.6f, 0.45f, 0.65f, 3);
             b.CeilingLight(store, -3.0f, -1.8f);
             b.CeilingLight(store, 3.5f, -1.8f);
             b.Litter(store, 1.3f);
 
-            b.Furnish(back, b.N(back, -1.0f, 0.5f), Sz(1.8f, 1.9f, 0.5f), true, (m, r) => FurnitureBuilder.MetalShelf(m, r, 1.8f, 0.5f, 1.9f, 4, 0, new Color(0.40f, 0.40f, 0.38f)), "shelf");
-            b.Container(back, ContainerType.Shelf, "Stock Shelf", b.E(back, 3.2f, 0.5f), Sz(1.4f, 1.9f, 0.5f), (m, r) => FurnitureBuilder.MetalShelf(m, r, 1.4f, 0.5f, 1.9f, 4, 0, new Color(0.40f, 0.40f, 0.38f)));
-            b.Furnish(back, b.Wst(back, 2.4f, 0.6f), Sz(0.8f, 1.9f, 0.6f), true, (m, r) => FurnitureBuilder.GunSafe(m, r), "safe");
+            Color shelf = new Color(0.40f, 0.40f, 0.38f);
+            b.Shelving(back, b.N(back, -1.0f, 0.5f), Sz(1.8f, 1.9f, 0.5f), 4, 0, shelf, ContainerType.Shelf, "Stock shelf", false);
+            b.Shelving(back, b.E(back, 3.2f, 0.5f), Sz(1.4f, 1.9f, 0.5f), 4, 0, shelf, ContainerType.Shelf, "Stock shelf", true);
+            SafeAt(b, back, b.Wst(back, 2.4f, 0.6f));
             b.Clutter(back, 2, false);
             b.CeilingLight(back, -2.5f, 3.2f);
             b.Litter(back, 0.6f);
 
-            b.Furnish(rest, b.N(rest, 6.2f, 0.6f), Sz(0.45f, 0.8f, 0.6f), true, (m, r) => FurnitureBuilder.Toilet(m, r), "toilet");
-            b.Furnish(rest, b.N(rest, 3.0f, 0.45f), Sz(0.55f, 1.8f, 0.45f), true, (m, r) => FurnitureBuilder.WashBasin(m, r), "basin");
+            b.HomePiece(rest, b.N(rest, 6.2f, 0.70f), HomeFurnitureKind.Toilet);
+            b.HomePiece(rest, b.N(rest, 3.0f, 0.45f), HomeFurnitureKind.Basin);
             b.CeilingLight(rest, 4.5f, 3.5f);
             b.Litter(rest, 0.5f);
 
@@ -65,11 +68,13 @@ namespace CloneZ
 
         #region Quarantine tent (toxic hot spot)
         /// <summary>A military quarantine tent (6 × 9 m canvas, open flap at the front) holding the
-        /// map's best loot: a weapons locker, an equipment locker, a medical kit and supply crates.</summary>
+        /// map's best loot: a weapons locker, an equipment locker, a medical kit and supply crates — and the field desk
+        /// whose radio is still on the Guard's nets, a camp cot to rest on and a drum of decon fluid.</summary>
         public static RaidBuilding QuarantineTent(RaidTown town, Vector2 center, int turns)
         {
             var b = new RaidBuilding(town, "QuarantineTent", center, turns, false, 6f, 9f)
             {
+                Kind = RaidBuildingKind.Tent,
                 WallH = 1.9f,
                 Exterior = ExteriorStyle.Canvas,
                 ExteriorColor = new Color(0.33f, 0.35f, 0.22f),
@@ -84,30 +89,18 @@ namespace CloneZ
             b.Door(0f, -4.5f, 1.6f, false);
             b.BuildShell();
 
-            LootContainer gun = b.Container(tent, ContainerType.GunLocker, "Weapons Locker", b.N(tent, -1.8f, 0.6f), Sz(0.8f, 1.9f, 0.6f), (m, r) => FurnitureBuilder.GunSafe(m, r));
-            LootContainer kit = b.Container(tent, ContainerType.Locker, "Equipment Locker", b.N(tent, 0.3f, 0.5f), Sz(1.0f, 1.9f, 0.5f), (m, r) => FurnitureBuilder.LockerBank(m, r, 2, new Color(0.26f, 0.30f, 0.20f)));
-            b.Container(tent, ContainerType.Crate, "Supply Crate", b.E(tent, 2.5f, 0.62f), Sz(0.9f, 0.6f, 0.62f), (m, r) => FurnitureBuilder.Crate(m, r, Vector3.zero, Sz(0.88f, 0.58f, 0.6f), 0f, true));
-            b.Container(tent, ContainerType.MedCabinet, "Field Medical Kit", b.Wst(tent, 1.0f, 0.42f), Sz(0.9f, 1.8f, 0.42f), (m, r) => FurnitureBuilder.MedCabinet(m, r));
-            Enrich(gun, b.Rng);
-            Enrich(kit, b.Rng);
+            StorageFixture gun = b.GunSafe(tent, b.N(tent, -1.8f, 0.6f), ContainerType.GunLocker, "Weapons Locker");
+            StorageFixture kit = b.Lockers(tent, b.N(tent, 0.3f, 0.5f), Sz(1.0f, 1.9f, 0.5f), 2, new Color(0.26f, 0.30f, 0.20f), ContainerType.Locker, "Equipment Locker");
+            b.SupplyCrate(tent, b.E(tent, 2.5f, 0.62f), Sz(0.9f, 0.6f, 0.62f), true, ContainerType.Crate, "Supply Crate");
+            b.MedicineCabinet(tent, b.Wst(tent, 1.0f, 0.42f), ContainerType.MedCabinet, "Field Medical Kit");
+            Enrich(gun != null ? gun.Container : null, b.Rng);
+            Enrich(kit != null ? kit.Container : null, b.Rng);
 
-            b.Furnish(tent, b.E(tent, -1.0f, 0.75f), Sz(1.5f, 0.9f, 0.75f), true, (m, r) =>
-            {
-                FurnitureBuilder.Table(m, r, 1.5f, 0.75f, OliveDrab);
-                FurnitureBuilder.FieldRadio(m, r, new Vector3(-0.3f, 0.755f, -0.05f), 5f);
-                Vector3 bulb = FurnitureBuilder.DeskLamp(m, r, new Vector3(0.45f, 0.755f, -0.15f), 30f, GreenShade, true);
-                b.LampLight(RaidBuilding.WorldOf(m, bulb), false);
-                DeskClutter(m, r, 1.2f);
-            }, "field desk");
-            b.Furnish(tent, b.Wst(tent, -2.4f, 0.8f), Sz(1.9f, 0.5f, 0.8f), true, (m, r) =>
-            {
-                Surf frame = DecorPalette.Metal(new Color(0.25f, 0.27f, 0.22f));
-                Surf cloth = DecorPalette.Matte(new Color(0.36f, 0.38f, 0.26f));
-                for (int i = 0; i < 4; i++) m.Box(new Vector3(i % 2 == 0 ? -0.85f : 0.85f, 0.2f, i < 2 ? -0.32f : 0.32f), Sz(0.04f, 0.4f, 0.04f), frame);
-                m.Box(new Vector3(0f, 0.42f, 0f), Sz(1.9f, 0.04f, 0.75f), cloth);
-                m.Box(new Vector3(0.2f, 0.47f, 0f), Sz(1.2f, 0.06f, 0.7f), DecorPalette.Matte(OliveDrab));
-            }, "cot");
-            b.Furnish(tent, new RaidBuilding.Place(1.6f, -3.6f, 0f), Sz(0.6f, 0.9f, 0.6f), true, (m, r) => FurnitureBuilder.Barrel(m, r, Vector3.zero, new Color(0.62f, 0.52f, 0.12f), true), "barrel");
+            FieldDeskAt(b, tent, b.E(tent, -1.0f, 0.75f));
+            RaidBuilding.Place cot = b.Wst(tent, -2.4f, 0.8f);
+            Transform cotBody = b.FixtureBody(tent, cot, Sz(1.9f, 0.5f, 0.8f), true, (m, r) => FurnitureBuilder.TentCot(m, r, OliveDrab), "Camp cot");
+            RaidStoreCot.Create(cotBody, b.Yaw(cot.Yaw));
+            DrumAt(b, tent, new RaidBuilding.Place(1.6f, -3.6f, 0f), new Color(0.62f, 0.52f, 0.12f), true);
             b.Poster(tent, 'N', 2.2f, 1.2f, 0.4f, 0.4f, 0);
             b.CeilingLight(tent, 0f, 0.5f, 0f, 2.95f);
             b.Litter(tent, 0.8f);
@@ -161,6 +154,114 @@ namespace CloneZ
             if (filter != null) c.Contents.Add(filter, 1, enforceWeight: false);
             ItemDef battery = ItemDatabase.Get("battery");
             if (battery != null && rng.NextDouble() < 0.7) c.Contents.Add(battery, 1, enforceWeight: false);
+        }
+
+        /// <summary>The tent's field desk (1.5 × 0.9 × 0.75): an olive table with its lamp, its papers, and the field radio
+        /// still on the Guard's nets (<see cref="RaidTownFieldRadio"/>).</summary>
+        private static void FieldDeskAt(RaidBuilding b, RaidRoom room, RaidBuilding.Place p)
+        {
+            Vector3 dial = Vector3.zero;
+            Transform t = b.FixtureBody(room, p, Sz(1.5f, 0.9f, 0.75f), true, (m, r) =>
+            {
+                FurnitureBuilder.Table(m, r, 1.5f, 0.75f, OliveDrab);
+                dial = FurnitureBuilder.TownFieldRadio(m, r, new Vector3(-0.3f, 0.755f, -0.05f), 0f);
+                b.DeskLamp(m, r, new Vector3(0.45f, 0.755f, -0.15f), 30f, GreenShade, true, false);
+                DeskClutter(m, r, 1.2f);
+            }, "Field desk");
+            KitchenFrame f = b.FrameOf(p);
+            MeshRenderer glow = KitchenParts.PieceAt(t, "RadioDial", f, dial, FurnitureBuilder.TownFieldRadioDial);
+            RaidTownFieldRadio.Create(t, "Field radio", f.P(-0.3f, 0.95f, 0.2f), glow, b.Rng.Next());
+        }
+        #endregion
+
+        #region Food mart furniture, made usable
+        /// <summary>The checkout counter (<paramref name="len"/> × 1.4 × 0.72) with its cash register: the till's drawer
+        /// shoots out on "Open the till" (a little loose change's worth of odds and ends), "Ring it up" for old times'
+        /// sake, and the shelves under the counter — the store's register stock, as before.</summary>
+        private static void CheckoutAt(RaidBuilding b, RaidRoom room, RaidBuilding.Place p, float len)
+        {
+            float rx = 0f;
+            Transform t = b.FixtureBody(room, p, Sz(len, 1.4f, 0.72f), true, (m, r) => rx = FurnitureBuilder.MartCounterBody(m, r, len), "Checkout counter");
+            KitchenFrame f = b.FrameOf(p);
+            var dr = new System.Random(b.Rng.Next());
+            FixturePart drawer = KitchenParts.Drawer(t, "CashDrawer", f, m => FurnitureBuilder.MartTillDrawer(m, dr, rx),
+                new Vector3(rx, FurnitureBuilder.MartTillY, FurnitureBuilder.MartTillFront), new Vector3(0f, 0f, CloneZConfig.RaidTillTravel));
+            Vector3 tillPoint = f.P(rx, FurnitureBuilder.MartTillY, FurnitureBuilder.MartTillFront + 0.04f);
+            StorageFixture till = null;
+            StorageOptions o = RaidBuilding.SmallStock(ContainerType.Desk, "till");
+            o.ContainerName = "Cash drawer";
+            o.CloseVerb = "Shut";
+            o.Noise = CloneZConfig.RaidTillBellNoise;
+            o.ExtraActions = (ctx, list) => list.Add(new InteractAction("Ring it up", c =>
+            {
+                NoiseSystem.Emit(tillPoint, CloneZConfig.RaidTillBellNoise);
+                if (till != null) till.SetOpen(true, false);
+                c.Notify("You punch in a sale. The register chatters out a receipt \u2014 TOTAL $0.00, THANK YOU COME AGAIN \u2014 and the drawer rings open.");
+            }));
+            till = StorageFixture.Create(t, "Till", Interactable.KeyFor("till", t.position), tillPoint, new[] { drawer }, t, b.Rng.Next(), o);
+
+            StorageOptions under = RaidBuilding.MainStock(ContainerType.Desk, "counter");
+            under.ContainerName = "Register";
+            under.LookLabel = "Search under the counter";
+            StorageFixture.Create(t, "Checkout counter", Interactable.KeyFor("register", t.position), f.P(len * 0.2f, 0.7f, 0.39f), null, t, b.Rng.Next(), under);
+        }
+
+        /// <summary>A double-sided gondola of store shelves (<paramref name="len"/> × 1.5 × 0.9), each face browsed from its own
+        /// aisle: one the store's stocked shelves (a main container, as before), the other picked over.</summary>
+        private static void GondolaAt(RaidBuilding b, RaidRoom room, RaidBuilding.Place p, float len, bool frontStocked)
+        {
+            Transform t = b.FixtureBody(room, p, Sz(len, 1.5f, 0.9f), true, (m, r) => FurnitureBuilder.Gondola(m, r, len), "Store shelves");
+            for (int side = 0; side < 2; side++)
+            {
+                bool stocked = (side == 0) == frontStocked;
+                StorageOptions o = stocked ? RaidBuilding.MainStock(ContainerType.Pantry, "shelves") : RaidBuilding.SmallStock(ContainerType.Pantry, "shelves");
+                o.ContainerName = "Store shelves";
+                o.LookLabel = "Browse the shelves";
+                // No occlusion root: the gondola itself stands between a face and the far aisle.
+                StorageFixture.Create(t, "Store shelves", Interactable.KeyFor("gondola", t.position, side), b.At(p, 0f, 1.0f, side == 0 ? 0.48f : -0.48f),
+                    null, null, b.Rng.Next(), o);
+            }
+        }
+
+        /// <summary>A glass-door drinks cooler (0.9 × 2.0 × 0.75): the door swings out on its hinge, a cool light burns
+        /// inside while the store has its lights (<paramref name="lit"/>), and the drinks are a main container when
+        /// <paramref name="stocked"/>, else a few cans at most.</summary>
+        private static void DrinksCoolerAt(RaidBuilding b, RaidRoom room, RaidBuilding.Place p, bool lit, bool stocked)
+        {
+            Transform t = b.FixtureBody(room, p, Sz(0.9f, 2.0f, 0.75f), true, (m, r) => FurnitureBuilder.MartCoolerBody(m, r, lit), "Drinks cooler");
+            KitchenFrame f = b.FrameOf(p);
+            FixturePart door = KitchenParts.Door(t, "CoolerDoor", f, FurnitureBuilder.MartCoolerDoor, FurnitureBuilder.MartCoolerHinge,
+                Vector3.right, Vector3.forward, CloneZConfig.RaidMartCoolerDoorAngle);
+            if (lit) b.Town.Light(t, f.P(0f, 1.1f, 0.05f), new Color(0.80f, 0.90f, 1f), CloneZConfig.RaidMartCoolerLightRange,
+                CloneZConfig.RaidMartCoolerLightIntensity, false, false);
+            StorageOptions o = stocked ? RaidBuilding.MainStock(ContainerType.Fridge, "drinks cooler") : RaidBuilding.SmallStock(ContainerType.Fridge, "drinks cooler");
+            o.ExtraActions = (ctx, list) => list.Add(new InteractAction("Feel how cold it is", c => c.Notify(lit
+                ? "Cold air rolls out over your boots. The compressor's still humming away."
+                : "No colder than the shop. The compressor's silent \u2014 somebody's pulled the plug.")));
+            StorageFixture.Create(t, "Drinks cooler", Interactable.KeyFor("cooler", t.position), f.P(0.2f, 1.05f, FurnitureBuilder.MartCoolerFront + 0.07f),
+                new[] { door }, t, b.Rng.Next(), o);
+        }
+
+        /// <summary>The stock room's floor safe (0.8 × 1.9 × 0.6): locked until somebody works the dial
+        /// (<see cref="RaidStoreSafe"/>), then a safe like any other — a coin flip whether the takings were cleared out.</summary>
+        private static void SafeAt(RaidBuilding b, RaidRoom room, RaidBuilding.Place p)
+        {
+            Color steel = new Color(0.20f, 0.23f, 0.21f);
+            Transform t = b.FixtureBody(room, p, Sz(0.8f, 1.9f, 0.6f), true, (m, r) => steel = FurnitureBuilder.MartSafeBody(m, r), "Safe");
+            KitchenFrame f = b.FrameOf(p);
+            FixturePart door = KitchenParts.Door(t, "SafeDoor", f, m => FurnitureBuilder.MartSafeDoor(m, steel), FurnitureBuilder.MartSafeHinge,
+                Vector3.right, Vector3.forward, CloneZConfig.RaidSafeDoorAngle);
+            StorageFixture safe = StorageFixture.Create(t, "Safe", Interactable.KeyFor("safe", t.position), f.P(0.1f, 1.1f, 0.36f), new[] { door }, t, b.Rng.Next(),
+                new StorageOptions
+                {
+                    Noun = "safe",
+                    LootType = ContainerType.GunLocker,
+                    EmptyChance = CloneZConfig.RaidSafeEmptyChance,
+                    MaxStacks = CloneZConfig.RaidSafeMaxStacks,
+                    Noise = CloneZConfig.FixtureNoiseDoor,
+                    RaidBoost = false,
+                });
+            RaidStoreSafe.Create(t, f.P(FurnitureBuilder.MartSafeDial + new Vector3(0f, 0f, 0.03f)), safe);
         }
         #endregion
     }

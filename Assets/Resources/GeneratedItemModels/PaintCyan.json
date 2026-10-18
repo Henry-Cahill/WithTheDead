@@ -1,0 +1,10 @@
+{"version": 1, "id": "PaintCyan", "baseHeight": 0.2, "name": "Paint Cyan", "model": "gpt-oss:120b", "notes": "Upright paint can ~0.22 m diameter × 0.27 m tall (5 kg). Steel body with thin top/bottom rims, metal screw‑on lid, side handle and a cyan label strip.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0175,-0.01,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.22,0.26,0.22],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"BottomRim","shape":"cylinder","pos":[-0.0175,-0.135,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.23,0.01,0.23],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"TopRim","shape":"cylinder","pos":[-0.0175,0.115,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.23,0.01,0.23],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"Lid","shape":"cylinder","pos":[-0.0175,0.1325,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.22],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.1025,-0.01,-0.0425],"rot":[0.0,0.0,90.0],"size":[0.02,0.06,0.02],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"LabelBand","shape":"cube","pos":[-0.0175,-0.01,0.0675],"rot":[0.0,0.0,0.0],"size":[0.005,0.2,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[-0.0175,0.09,0.0675],"rot":[0.0,0.0,0.0],"size":[0.006,0.008,0.18],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[-0.0175,-0.11,0.0675],"rot":[0.0,0.0,0.0],"size":[0.006,0.008,0.18],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0}
+]}

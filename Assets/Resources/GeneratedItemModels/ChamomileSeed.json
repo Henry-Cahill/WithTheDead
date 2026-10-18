@@ -1,0 +1,16 @@
+{"version": 1, "id": "ChamomileSeed", "baseHeight": 0.064, "name": "Chamomile Seed", "model": "gpt-oss:120b", "notes": "Small heap of chamomile seeds, roughly 4 cm across and 1 cm high, lying loose on the floor as a loose pile.", "score": 7, "parts": [
+  {"name":"Seed01","shape":"sphere","pos":[-0.0073,0.0,-0.0063],"rot":[0.0,0.0,12.0],"size":[0.009,0.0045,0.012],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Seed02","shape":"sphere","pos":[0.0107,0.0,-0.0023],"rot":[0.0,0.0,-8.0],"size":[0.0085,0.0042,0.011],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Seed03","shape":"sphere","pos":[-0.0113,0.0,0.0027],"rot":[0.0,0.0,20.0],"size":[0.0092,0.0046,0.0118],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Seed04","shape":"sphere","pos":[0.0067,0.0,0.0077],"rot":[0.0,0.0,-15.0],"size":[0.0088,0.0044,0.0122],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Seed05","shape":"sphere","pos":[-0.0023,0.0,0.0107],"rot":[0.0,0.0,5.0],"size":[0.009,0.0045,0.012],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Seed06","shape":"sphere","pos":[0.0147,0.0,-0.0103],"rot":[0.0,0.0,-12.0],"size":[0.0087,0.0043,0.0115],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Seed07","shape":"sphere","pos":[-0.0143,0.0,-0.0143],"rot":[0.0,0.0,18.0],"size":[0.0091,0.0047,0.0121],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Seed08","shape":"sphere","pos":[0.0027,0.0,-0.0153],"rot":[0.0,0.0,-9.0],"size":[0.0084,0.0041,0.0112],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Seed09","shape":"sphere","pos":[-0.0063,0.0,0.0147],"rot":[0.0,0.0,22.0],"size":[0.0093,0.0048,0.0124],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Seed10","shape":"sphere","pos":[0.0117,0.0,0.0007],"rot":[0.0,0.0,-7.0],"size":[0.0089,0.0044,0.0116],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Seed11","shape":"sphere","pos":[-0.0083,0.0,-0.0033],"rot":[0.0,0.0,14.0],"size":[0.0086,0.0042,0.0114],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Seed12","shape":"sphere","pos":[0.0057,0.0,0.0057],"rot":[0.0,0.0,-11.0],"size":[0.0092,0.0046,0.012],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Seed13","shape":"sphere","pos":[-0.0123,0.0,-0.0003],"rot":[0.0,0.0,9.0],"size":[0.0088,0.0044,0.0118],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Seed14","shape":"sphere","pos":[0.0097,0.0,-0.0073],"rot":[0.0,0.0,-13.0],"size":[0.009,0.0045,0.0122],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0}
+]}

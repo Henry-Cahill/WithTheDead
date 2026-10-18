@@ -1,0 +1,16 @@
+{"version": 1, "id": "L92_Carbine", "baseHeight": 0.135, "name": "L92 Carbine", "model": "gpt-oss:120b", "notes": "L92 Carbine ~0.92 m long, lying on its side (barrel +X). Updated proportions: shorter barrel, realistic receiver block with ejection port, angled wooden‑polymer stock with rounded butt, muzzle device, box‑style front & rear sights, correctly shaped detachable magazine, grip, trigger‑guard, bolt handle and a few rivet details. Colours use the base tint (0.24 0.25 0.28) lightened for metal parts (≈0", "score": 6, "parts": [
+  {"name":"Barrel","shape":"cylinder","pos":[0.2575,-0.005,-0.0037],"rot":[0.0,0.0,90.0],"size":[0.04,0.45,0.04],"color":[0.3,0.31,0.34],"smooth":0.6,"metal":0.9},
+  {"name":"MuzzleDevice","shape":"cylinder","pos":[0.4875,-0.005,-0.0037],"rot":[0.0,0.0,90.0],"size":[0.08,0.03,0.08],"color":[0.3,0.31,0.34],"smooth":0.6,"metal":0.9},
+  {"name":"Receiver","shape":"cube","pos":[0.0075,-0.005,-0.0037],"rot":[0.0,0.0,0.0],"size":[0.25,0.09,0.07],"color":[0.3,0.31,0.34],"smooth":0.55,"metal":0.85},
+  {"name":"EjectionPort","shape":"cube","pos":[0.0875,-0.005,0.0412],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.005],"color":[0.2,0.21,0.23],"smooth":0.55,"metal":0.85},
+  {"name":"StockBody","shape":"cube","pos":[-0.2425,-0.015,-0.0037],"rot":[0.0,0.0,0.0],"size":[0.3,0.12,0.08],"color":[0.35,0.3,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"StockButt","shape":"cylinder","pos":[-0.4425,-0.015,-0.0037],"rot":[0.0,0.0,90.0],"size":[0.08,0.12,0.08],"color":[0.35,0.3,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Grip","shape":"cube","pos":[0.1275,-0.045,-0.0037],"rot":[0.0,0.0,0.0],"size":[0.1,0.04,0.03],"color":[0.24,0.25,0.28],"smooth":0.15,"metal":0.0},
+  {"name":"Magazine","shape":"cylinder","pos":[-0.0125,-0.06,-0.0037],"rot":[0.0,0.0,90.0],"size":[0.025,0.2,0.025],"color":[0.24,0.25,0.28],"smooth":0.15,"metal":0.0},
+  {"name":"TriggerGuard","shape":"cube","pos":[0.1275,-0.005,-0.0037],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.05],"color":[0.3,0.31,0.34],"smooth":0.55,"metal":0.85},
+  {"name":"RearSight","shape":"cube","pos":[-0.1125,0.065,0.0262],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.01],"color":[0.3,0.31,0.34],"smooth":0.6,"metal":0.9},
+  {"name":"FrontSight","shape":"cube","pos":[0.4275,0.065,-0.0037],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.005],"color":[0.3,0.31,0.34],"smooth":0.6,"metal":0.9},
+  {"name":"BoltHandle","shape":"cube","pos":[-0.1425,0.045,-0.0037],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.01],"color":[0.3,0.31,0.34],"smooth":0.55,"metal":0.85},
+  {"name":"RivetTop","shape":"cube","pos":[0.0575,0.055,0.0213],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.31,0.34],"smooth":0.55,"metal":0.85},
+  {"name":"RivetBottom","shape":"cube","pos":[0.0575,0.055,-0.0288],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.31,0.34],"smooth":0.55,"metal":0.85}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "PaintBlue", "baseHeight": 0.2085, "name": "Paint Blue", "model": "gpt-oss:120b", "notes": "Upright paint‑can 0.23 m wide × 0.28 m tall: brushed‑metal body with rolled seams, recessed metal lid, blue paper label wrapped around the side and a small pull‑tab on the front of the lid.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.23,0.28,0.23],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.1375,0.0],"rot":[0.0,0.0,0.0],"size":[0.242,0.012,0.242],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.1425,0.0],"rot":[0.0,0.0,0.0],"size":[0.242,0.012,0.242],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.139,0.0],"rot":[0.0,0.0,0.0],"size":[0.21,0.015,0.21],"color":[0.55,0.54,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.225,0.26,0.225],"color":[0.2,0.35,0.75],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.1165,0.0],"rot":[0.0,0.0,0.0],"size":[0.235,0.008,0.235],"color":[0.35,0.3,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.1335,0.0],"rot":[0.0,0.0,0.0],"size":[0.235,0.008,0.235],"color":[0.35,0.3,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"PullTab","shape":"cube","pos":[0.0,0.1465,0.09],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.01],"color":[0.55,0.54,0.48],"smooth":0.6,"metal":1.0}
+]}

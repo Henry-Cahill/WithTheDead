@@ -1,0 +1,9 @@
+{"version": 1, "id": "AerosolbombTriggered", "baseHeight": 0.143, "name": "Aerosolbomb Triggered", "model": "gpt-oss:120b", "notes": "Aerosol‑bomb triggered melee weapon ~0.9 m long: a thin metal pipe (handle) lying on its side, an attached aerosol can at the business end with a protruding nozzle and a red trigger button, wrapped in a white label.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.125,-0.0525,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.7,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"CanBody","shape":"cylinder","pos":[0.325,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.14,0.2,0.14],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Nozzle","shape":"cylinder","pos":[0.445,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.06,0.04],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"TriggerButton","shape":"sphere","pos":[0.325,-0.0025,-0.08],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.8,0.12,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.325,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.16,0.005,0.2],"color":[0.92,0.92,0.94],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.325,0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.162,0.002,0.202],"color":[0.4,0.4,0.42],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.325,-0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.162,0.002,0.202],"color":[0.4,0.4,0.42],"smooth":0.12,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "WaterRationCan_Box", "baseHeight": 0.12, "name": "Water Ration Can Box", "model": "gpt-oss:120b", "notes": "Cardboard ration box ~0.22 m wide (X) × 0.15 m deep (Z) × 0.08 m tall (Y), tint‑brown (0.75,0.68,0.45). Inside are four small metal water cans (≈0.12 m tall, 0.06 m diameter) arranged in two rows. Simple lid flap and can label detail added.", "score": 7, "parts": [
+  {"name":"OuterBox","shape":"cube","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.08,0.15],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BoxFlapTop","shape":"cube","pos":[0.0,0.022,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.008,0.15],"color":[0.73,0.66,0.43],"smooth":0.05,"metal":0.0},
+  {"name":"CanLFront","shape":"cylinder","pos":[-0.055,0.0,-0.045],"rot":[0.0,0.0,0.0],"size":[0.06,0.12,0.06],"color":[0.6,0.7,0.9],"smooth":0.55,"metal":1.0},
+  {"name":"CanLBack","shape":"cylinder","pos":[-0.055,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.06,0.12,0.06],"color":[0.6,0.7,0.9],"smooth":0.55,"metal":1.0},
+  {"name":"CanRFront","shape":"cylinder","pos":[0.055,0.0,-0.045],"rot":[0.0,0.0,0.0],"size":[0.06,0.12,0.06],"color":[0.6,0.7,0.9],"smooth":0.55,"metal":1.0},
+  {"name":"CanRBack","shape":"cylinder","pos":[0.055,0.0,0.045],"rot":[0.0,0.0,0.0],"size":[0.06,0.12,0.06],"color":[0.6,0.7,0.9],"smooth":0.55,"metal":1.0},
+  {"name":"LabelLFront","shape":"cylinder","pos":[-0.055,0.03,-0.045],"rot":[0.0,0.0,0.0],"size":[0.058,0.004,0.058],"color":[0.2,0.3,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"LabelLBack","shape":"cylinder","pos":[-0.055,0.03,0.045],"rot":[0.0,0.0,0.0],"size":[0.058,0.004,0.058],"color":[0.2,0.3,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"LabelRFront","shape":"cylinder","pos":[0.055,0.03,-0.045],"rot":[0.0,0.0,0.0],"size":[0.058,0.004,0.058],"color":[0.2,0.3,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"LabelRBack","shape":"cylinder","pos":[0.055,0.03,0.045],"rot":[0.0,0.0,0.0],"size":[0.058,0.004,0.058],"color":[0.2,0.3,0.5],"smooth":0.12,"metal":0.0}
+]}

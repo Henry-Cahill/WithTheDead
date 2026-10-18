@@ -1,0 +1,18 @@
+{"version": 1, "id": "FlaxBroken", "baseHeight": 0.0676, "name": "Flax Broken", "model": "gpt-oss:120b", "notes": "Pile of broken flax stalks about 0.14 m wide × 0.08 m deep × 0.03 m high, thin straw‑coloured cylinders and a few short bundles lying on the floor.", "score": 6, "parts": [
+  {"name":"Stalk1","shape":"cylinder","pos":[-0.05,-0.0014,0.0125],"rot":[0.0,0.0,90.0],"size":[0.009,0.14,0.009],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Stalk2","shape":"cylinder","pos":[0.025,-0.0004,-0.0325],"rot":[90.0,0.0,0.0],"size":[0.008,0.13,0.008],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Stalk3","shape":"cylinder","pos":[-0.02,-0.0014,0.0375],"rot":[15.0,0.0,90.0],"size":[0.01,0.12,0.01],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Stalk4","shape":"cylinder","pos":[0.045,-0.0004,-0.0475],"rot":[-10.0,0.0,90.0],"size":[0.009,0.15,0.009],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Stalk5","shape":"cylinder","pos":[-0.035,-0.0014,-0.0275],"rot":[0.0,0.0,90.0],"size":[0.008,0.13,0.008],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Stalk6","shape":"cylinder","pos":[0.015,-0.0004,0.0275],"rot":[90.0,0.0,0.0],"size":[0.009,0.14,0.009],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Stalk7","shape":"cylinder","pos":[-0.055,-0.0014,-0.0375],"rot":[-12.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Stalk8","shape":"cylinder","pos":[0.035,-0.0004,0.0025],"rot":[0.0,0.0,90.0],"size":[0.009,0.13,0.009],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Stalk9","shape":"cylinder","pos":[-0.025,-0.0014,0.0225],"rot":[90.0,0.0,0.0],"size":[0.008,0.15,0.008],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Stalk10","shape":"cylinder","pos":[0.01,-0.0004,-0.0525],"rot":[-8.0,0.0,90.0],"size":[0.009,0.14,0.009],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Bundle1","shape":"cube","pos":[0.025,0.0006,0.0175],"rot":[0.0,10.0,0.0],"size":[0.022,0.014,0.04],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Bundle2","shape":"cube","pos":[-0.04,-0.0004,-0.0225],"rot":[0.0,-12.0,0.0],"size":[0.02,0.012,0.036],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Bundle3","shape":"cube","pos":[0.0,-0.0004,0.0325],"rot":[0.0,5.0,0.0],"size":[0.018,0.013,0.038],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Clump1","shape":"cube","pos":[-0.045,-0.0004,0.0275],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.02],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.0},
+  {"name":"Clump2","shape":"cube","pos":[0.04,-0.0004,-0.0375],"rot":[0.0,0.0,0.0],"size":[0.014,0.009,0.022],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.0},
+  {"name":"Clump3","shape":"cube","pos":[-0.02,-0.0004,-0.0475],"rot":[0.0,0.0,0.0],"size":[0.011,0.007,0.019],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.0}
+]}

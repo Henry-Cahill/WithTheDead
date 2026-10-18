@@ -1,0 +1,17 @@
+{"version": 1, "id": "Handle_Nails", "baseHeight": 0.12, "name": "Handle Nails", "model": "gpt-oss:120b", "notes": "Handle Nails – a 1.10 m long blunt weapon lying on its side (X‑axis). Chunky wooden handle with a thicker head and six metal spikes protruding from the head for clear silhouette.", "score": 7, "parts": [
+  {"name":"HandleBody","shape":"cylinder","pos":[-0.1,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,1.1,0.08],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.55,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.12,0.12],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":0.0},
+  {"name":"GripBand","shape":"cylinder","pos":[-0.1,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.15,0.09],"color":[0.3,0.2,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"Nail1","shape":"cylinder","pos":[0.35,0.0,0.095],"rot":[90.0,0.0,0.0],"size":[0.015,0.07,0.015],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"NailTip1","shape":"sphere","pos":[0.35,0.0,0.12],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.8,0.85],"smooth":0.7,"metal":1.0},
+  {"name":"Nail2","shape":"cylinder","pos":[0.4,0.0,0.095],"rot":[90.0,0.0,0.0],"size":[0.015,0.07,0.015],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"NailTip2","shape":"sphere","pos":[0.4,0.0,0.12],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.8,0.85],"smooth":0.7,"metal":1.0},
+  {"name":"Nail3","shape":"cylinder","pos":[0.45,0.0,0.095],"rot":[90.0,0.0,0.0],"size":[0.015,0.07,0.015],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"NailTip3","shape":"sphere","pos":[0.45,0.0,0.12],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.8,0.85],"smooth":0.7,"metal":1.0},
+  {"name":"Nail4","shape":"cylinder","pos":[0.35,0.0,-0.095],"rot":[-90.0,0.0,0.0],"size":[0.015,0.07,0.015],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"NailTip4","shape":"sphere","pos":[0.35,0.0,-0.12],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.8,0.85],"smooth":0.7,"metal":1.0},
+  {"name":"Nail5","shape":"cylinder","pos":[0.4,0.0,-0.095],"rot":[-90.0,0.0,0.0],"size":[0.015,0.07,0.015],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"NailTip5","shape":"sphere","pos":[0.4,0.0,-0.12],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.8,0.85],"smooth":0.7,"metal":1.0},
+  {"name":"Nail6","shape":"cylinder","pos":[0.45,0.0,-0.095],"rot":[-90.0,0.0,0.0],"size":[0.015,0.07,0.015],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"NailTip6","shape":"sphere","pos":[0.45,0.0,-0.12],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.8,0.85],"smooth":0.7,"metal":1.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "LightBulbPurple", "baseHeight": 0.0837, "name": "Light Bulb Purple", "model": "gpt-oss:120b", "notes": "Purple glass light bulb ~6 cm tall × 3 cm wide with metal screw base, lying on its side on the floor.", "score": 7, "parts": [
+  {"name":"GlassBulb","shape":"sphere","pos":[0.0037,0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.045,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Base","shape":"cylinder","pos":[-0.0112,-0.0178,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.015,0.012],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":1.0},
+  {"name":"ThreadRing","shape":"cylinder","pos":[-0.0112,-0.0148,0.0],"rot":[0.0,0.0,90.0],"size":[0.014,0.003,0.014],"color":[0.25,0.25,0.28],"smooth":0.3,"metal":1.0},
+  {"name":"Filament","shape":"cylinder","pos":[0.0037,0.0083,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.1,0.1,0.1],"smooth":0.6,"metal":1.0},
+  {"name":"GlassHighlight","shape":"sphere","pos":[0.0037,0.0013,0.005],"rot":[0.0,0.0,0.0],"size":[0.018,0.03,0.018],"color":[0.8,0.78,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"BaseCap","shape":"cylinder","pos":[-0.0112,-0.0118,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.004,0.01],"color":[0.2,0.18,0.15],"smooth":0.25,"metal":1.0}
+]}

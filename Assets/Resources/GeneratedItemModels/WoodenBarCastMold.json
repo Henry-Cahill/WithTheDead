@@ -1,0 +1,11 @@
+{"version": 1, "id": "WoodenBarCastMold", "baseHeight": 0.0925, "name": "Wooden Bar Cast Mold", "model": "gpt-oss:120b", "notes": "Wooden bar‑cast mold ~30 cm long × 15 cm deep × 5 cm thick, lying on its side (long axis X). Main wooden block with two parallel rectangular cavities for casting bars, two small grip knobs at the ends and four metal screws in the corners.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.05,0.15],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"CavityL","shape":"cube","pos":[-0.01,-0.0175,0.045],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.04],"color":[0.4,0.38,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"CavityR","shape":"cube","pos":[-0.01,-0.0175,-0.045],"rot":[0.0,0.0,0.0],"size":[0.28,0.02,0.04],"color":[0.4,0.38,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"HandleL","shape":"cylinder","pos":[-0.13,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"HandleR","shape":"cylinder","pos":[0.13,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"ScrewFL","shape":"cube","pos":[-0.12,0.0095,0.07],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewFR","shape":"cube","pos":[-0.12,0.0095,-0.07],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewBL","shape":"cube","pos":[0.12,0.0095,0.07],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewBR","shape":"cube","pos":[0.12,0.0095,-0.07],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0}
+]}

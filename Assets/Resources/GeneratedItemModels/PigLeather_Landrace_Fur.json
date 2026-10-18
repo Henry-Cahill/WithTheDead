@@ -1,0 +1,13 @@
+{"version": 1, "id": "PigLeather_Landrace_Fur", "baseHeight": 0.1525, "name": "Pig Leather Landrace Fur", "model": "gpt-oss:120b", "notes": "Rolled pig leather hide about 0.25 m long × 0.15 m diameter lying on its side, with several loose tufts of fur spilling around it to show the fuzzy texture.", "score": 6, "parts": [
+  {"name":"HideRoll","shape":"cylinder","pos":[-0.0137,-0.0175,0.0007],"rot":[0.0,0.0,90.0],"size":[0.15,0.25,0.15],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[-0.0137,-0.0135,0.0007],"rot":[0.0,0.0,90.0],"size":[0.158,0.255,0.158],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FurClump1","shape":"sphere","pos":[-0.0938,0.0475,0.0707],"rot":[0.0,0.0,0.0],"size":[0.06,0.05,0.07],"color":[0.6,0.58,0.5],"smooth":0.02,"metal":0.0},
+  {"name":"FurClump2","shape":"sphere","pos":[0.1062,0.0375,-0.0893],"rot":[0.0,0.0,0.0],"size":[0.07,0.06,0.05],"color":[0.6,0.58,0.5],"smooth":0.02,"metal":0.0},
+  {"name":"FurClump3","shape":"sphere","pos":[0.0163,0.0275,0.1107],"rot":[0.0,0.0,0.0],"size":[0.05,0.04,0.06],"color":[0.6,0.58,0.5],"smooth":0.02,"metal":0.0},
+  {"name":"FurClump4","shape":"sphere","pos":[-0.1138,0.0175,-0.0793],"rot":[0.0,0.0,0.0],"size":[0.055,0.045,0.05],"color":[0.6,0.58,0.5],"smooth":0.02,"metal":0.0},
+  {"name":"FurClump5","shape":"sphere","pos":[0.0563,0.0575,0.0007],"rot":[0.0,0.0,0.0],"size":[0.06,0.05,0.06],"color":[0.6,0.58,0.5],"smooth":0.02,"metal":0.0},
+  {"name":"LooseStrip1","shape":"cube","pos":[-0.0537,-0.0025,0.1207],"rot":[15.0,0.0,0.0],"size":[0.08,0.015,0.02],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"LooseStrip2","shape":"cube","pos":[0.0462,0.0025,-0.1293],"rot":[-12.0,0.0,0.0],"size":[0.07,0.015,0.02],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FurTassel","shape":"cylinder","pos":[0.1163,0.0325,0.0407],"rot":[0.0,90.0,0.0],"size":[0.02,0.09,0.02],"color":[0.6,0.58,0.5],"smooth":0.03,"metal":0.0},
+  {"name":"FurTasselTip","shape":"sphere","pos":[0.1163,0.0825,0.0407],"rot":[0.0,0.0,0.0],"size":[0.025,0.02,0.025],"color":[0.6,0.58,0.5],"smooth":0.02,"metal":0.0}
+]}

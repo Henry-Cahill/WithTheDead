@@ -1,0 +1,12 @@
+{"version": 1, "id": "SutureNeedle", "baseHeight": 0.0639, "name": "Suture Needle", "model": "gpt-oss:120b", "notes": "Suture needle ~4 cm long, thin (~2 mm diameter) steel curve lying on its side; a straight shaft, two short angled segments form the C‑shape, a tiny eye at the tip and a small plastic hub at the base. Includes subtle seam rings and a marking strip.", "score": 6, "parts": [
+  {"name":"Hub","shape":"cube","pos":[-0.0162,-0.0017,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.75,0.73,0.65],"smooth":0.2,"metal":0.0},
+  {"name":"GripRing","shape":"cylinder","pos":[-0.0162,0.0007,0.0],"rot":[0.0,0.0,90.0],"size":[0.0065,0.002,0.0065],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Shaft","shape":"cylinder","pos":[-0.0032,-0.0022,0.0],"rot":[0.0,0.0,90.0],"size":[0.003,0.02,0.003],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SeamStart","shape":"cylinder","pos":[-0.0132,-0.0022,0.0],"rot":[0.0,0.0,90.0],"size":[0.0035,0.002,0.0035],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"SeamEnd","shape":"cylinder","pos":[0.0068,-0.0022,0.0],"rot":[0.0,0.0,90.0],"size":[0.0035,0.002,0.0035],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"MarkStrip","shape":"cube","pos":[-0.0002,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.003],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Curve1","shape":"cylinder","pos":[0.0096,-0.0022,0.0028],"rot":[90.0,45.0,0.0],"size":[0.003,0.008,0.003],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Curve2","shape":"cylinder","pos":[0.0153,-0.0022,-0.0028],"rot":[90.0,-45.0,0.0],"size":[0.003,0.008,0.003],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Eye","shape":"cylinder","pos":[0.016,-0.0022,-0.0035],"rot":[90.0,-45.0,0.0],"size":[0.002,0.002,0.002],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.0167,-0.0022,-0.0042],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0}
+]}

@@ -1,0 +1,11 @@
+{"version": 1, "id": "Strainer", "baseHeight": 0.098, "name": "Strainer", "model": "gpt-oss:120b", "notes": "Strainer (metal colander) ~0.15 m Ø × 0.07 m tall, with a short cylindrical handle on the side and a few representative perforations on the rim. Lying on its side so the bowl silhouette is clear from above.", "score": 6, "parts": [
+  {"name":"Bowl","shape":"cylinder","pos":[-0.058,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.07,0.15],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"RimEdge","shape":"cylinder","pos":[-0.058,0.034,0.0],"rot":[0.0,0.0,0.0],"size":[0.158,0.008,0.158],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.077,-0.003,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.12,0.03],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Hole01","shape":"sphere","pos":[-0.103,0.032,0.04],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.5,0.48,0.42],"smooth":0.55,"metal":1.0},
+  {"name":"Hole02","shape":"sphere","pos":[-0.103,0.032,-0.04],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.5,0.48,0.42],"smooth":0.55,"metal":1.0},
+  {"name":"Hole03","shape":"sphere","pos":[-0.058,0.032,0.06],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.5,0.48,0.42],"smooth":0.55,"metal":1.0},
+  {"name":"Hole04","shape":"sphere","pos":[-0.058,0.032,-0.06],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.5,0.48,0.42],"smooth":0.55,"metal":1.0},
+  {"name":"Hole05","shape":"sphere","pos":[-0.013,0.032,0.04],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.5,0.48,0.42],"smooth":0.55,"metal":1.0},
+  {"name":"Hole06","shape":"sphere","pos":[-0.013,0.032,-0.04],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.5,0.48,0.42],"smooth":0.55,"metal":1.0}
+]}

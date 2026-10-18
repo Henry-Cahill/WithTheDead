@@ -1,0 +1,11 @@
+{"version": 1, "id": "CrudeKnife", "baseHeight": 0.0825, "name": "Crude Knife", "model": "gpt-oss:120b", "notes": "Crude knife ~0.9 m long lying on its side (X‑axis). Rough steel blade (~0.68 m) with a short tip, simple wooden handle (~0.2 m) wrapped in dark leather, tiny metal rivets and a modest guard between blade and grip.", "score": 6, "parts": [
+  {"name":"HandleCore","shape":"cylinder","pos":[-0.3787,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.2,0.04],"color":[0.4,0.25,0.15],"smooth":0.12,"metal":0.0},
+  {"name":"GripWrap","shape":"cylinder","pos":[-0.3787,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.2,0.045],"color":[0.25,0.15,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"RivetL","shape":"sphere","pos":[-0.4487,0.0025,0.018],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.5,0.5,0.55],"smooth":0.7,"metal":1.0},
+  {"name":"RivetM","shape":"sphere","pos":[-0.3787,0.0025,0.018],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.5,0.5,0.55],"smooth":0.7,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[-0.3088,0.0025,0.018],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.5,0.5,0.55],"smooth":0.7,"metal":1.0},
+  {"name":"Guard","shape":"cube","pos":[-0.2288,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.08],"color":[0.5,0.5,0.55],"smooth":0.55,"metal":1.0},
+  {"name":"BladeBody","shape":"cube","pos":[0.1212,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.68,0.01,0.03],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"BladeTip","shape":"sphere","pos":[0.4713,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeBevel","shape":"cube","pos":[0.1212,-0.0195,0.017],"rot":[0.0,0.0,0.0],"size":[0.68,0.004,0.002],"color":[0.45,0.45,0.5],"smooth":0.6,"metal":1.0}
+]}

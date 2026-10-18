@@ -1,0 +1,16 @@
+{"version": 1, "id": "TennisRacket", "baseHeight": 0.2, "name": "Tennis Racket", "model": "gpt-oss:120b", "notes": "Tennis racket ~0.68 m total length, 0.33 m circular head, 0.27 m wooden‑graphite handle (diameter ≈ 0.04 m). Lying on its side with the handle along X; all parts now touch each other: grip at the butt end, handle in the middle, throat bridging to the head, and a metal cap covering the face of the head.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.1525,0.014,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.27,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.3275,0.014,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.08,0.045],"color":[0.1,0.1,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"TipCap","shape":"cylinder","pos":[0.2025,0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.015,0.05],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"Throat","shape":"cylinder","pos":[0.0325,0.014,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.06,0.05],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"HeadRim","shape":"cylinder","pos":[0.2025,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.33,0.01,0.33],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":1.0},
+  {"name":"StringPlane","shape":"cube","pos":[0.2025,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.002,0.28],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"StringX1","shape":"cylinder","pos":[0.2025,-0.0,-0.07],"rot":[0.0,0.0,90.0],"size":[0.004,0.28,0.004],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"StringX2","shape":"cylinder","pos":[0.2025,-0.0,-0.035],"rot":[0.0,0.0,90.0],"size":[0.004,0.28,0.004],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"StringX3","shape":"cylinder","pos":[0.2025,-0.0,0.035],"rot":[0.0,0.0,90.0],"size":[0.004,0.28,0.004],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"StringX4","shape":"cylinder","pos":[0.2025,-0.0,0.07],"rot":[0.0,0.0,90.0],"size":[0.004,0.28,0.004],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"StringZ1","shape":"cylinder","pos":[0.1675,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.28,0.004],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"StringZ2","shape":"cylinder","pos":[0.1325,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.28,0.004],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"StringZ3","shape":"cylinder","pos":[0.2725,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.28,0.004],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"StringZ4","shape":"cylinder","pos":[0.3075,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.28,0.004],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0}
+]}

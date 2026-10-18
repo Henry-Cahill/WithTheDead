@@ -1,0 +1,10 @@
+{"version": 1, "id": "Fertilizer", "baseHeight": 0.09, "name": "Fertilizer", "model": "gpt-oss:120b", "notes": "Fertilizer sack ~0.40 m long × 0.20 m wide × 0.06 m thick, lying on its side. Main brown‑paper body with a stitched seam, a white label and two thin twine ties crossing the centre.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.06,0.2],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"SeamTop","shape":"cube","pos":[0.0,0.028,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.004,0.2],"color":[0.45,0.43,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"SeamBottom","shape":"cube","pos":[0.0,-0.028,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.004,0.2],"color":[0.45,0.43,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.002,0.18],"color":[0.9,0.9,0.9],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[0.0,0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.002,0.2],"color":[0.4,0.38,0.34],"smooth":0.12,"metal":0.0},
+  {"name":"TieLeft","shape":"cylinder","pos":[-0.1,0.015,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.2,0.008],"color":[0.3,0.28,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"TieRight","shape":"cylinder","pos":[0.1,0.015,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.2,0.008],"color":[0.3,0.28,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"TieLoop","shape":"cylinder","pos":[0.0,0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.02,0.008],"color":[0.3,0.28,0.25],"smooth":0.15,"metal":0.0}
+]}

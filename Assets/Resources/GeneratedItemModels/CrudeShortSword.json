@@ -1,0 +1,11 @@
+{"version": 1, "id": "CrudeShortSword", "baseHeight": 0.075, "name": "Crude Short Sword", "model": "gpt-oss:120b", "notes": "Crude short sword ~0.75 m long lying on its side: metal blade with rounded tip, simple cross‑guard, wooden handle and a small metal pommel at the opposite end.", "score": 7, "parts": [
+  {"name":"Blade","shape":"cube","pos":[0.1375,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.015,0.03],"color":[0.7,0.7,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"BladeTip","shape":"sphere","pos":[0.3875,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.7,0.7,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"Crossguard","shape":"cube","pos":[-0.1175,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.12],"color":[0.65,0.66,0.73],"smooth":0.55,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[-0.2375,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.25,0.02],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Pommel","shape":"cylinder","pos":[-0.3625,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.08],"color":[0.5,0.5,0.55],"smooth":0.5,"metal":1.0},
+  {"name":"GuardEdgeL","shape":"cube","pos":[-0.1175,-0.0025,0.06],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.015],"color":[0.65,0.66,0.73],"smooth":0.55,"metal":1.0},
+  {"name":"GuardEdgeR","shape":"cube","pos":[-0.1175,-0.0025,-0.06],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.015],"color":[0.65,0.66,0.73],"smooth":0.55,"metal":1.0},
+  {"name":"BladeRidge","shape":"cube","pos":[0.1375,-0.0025,0.015],"rot":[0.0,0.0,0.0],"size":[0.48,0.005,0.003],"color":[0.7,0.7,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"BladeRidgeOpp","shape":"cube","pos":[0.1375,-0.0025,-0.015],"rot":[0.0,0.0,0.0],"size":[0.48,0.005,0.003],"color":[0.7,0.7,0.78],"smooth":0.6,"metal":1.0}
+]}

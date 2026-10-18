@@ -1,0 +1,11 @@
+{"version": 1, "id": "BookTailoringSet", "baseHeight": 0.1, "name": "Book Tailoring Set", "model": "gpt-oss:120b", "notes": "Tailoring set spread on the floor (~0.38 m × 0.45 m footprint, ~0.07 m high). Includes a pattern book, a pair of metal‑blade scissors with plastic handles, a rolled measuring‑tape case, a small thread spool and three loose needles.", "score": 6, "parts": [
+  {"name":"Book","shape":"cube","pos":[-0.0725,-0.0325,-0.0225],"rot":[0.0,0.0,0.0],"size":[0.38,0.015,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BookTitleStrip","shape":"cube","pos":[-0.0725,-0.024,0.1025],"rot":[0.0,0.0,0.0],"size":[0.38,0.002,0.01],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"ScissorBlade","shape":"cylinder","pos":[0.0975,-0.036,0.0575],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.78,0.78,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"ScissorHandle","shape":"cylinder","pos":[0.1675,-0.0275,0.0575],"rot":[0.0,0.0,90.0],"size":[0.025,0.06,0.025],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":0.0},
+  {"name":"MeasuringTapeCase","shape":"cylinder","pos":[0.2475,0.0,-0.1225],"rot":[0.0,0.0,90.0],"size":[0.08,0.03,0.08],"color":[0.45,0.35,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"ThreadSpool","shape":"cylinder","pos":[-0.2025,-0.005,0.1275],"rot":[0.0,0.0,90.0],"size":[0.07,0.02,0.07],"color":[0.8,0.75,0.7],"smooth":0.1,"metal":0.0},
+  {"name":"Needle1","shape":"cylinder","pos":[-0.0025,-0.025,0.0175],"rot":[0.0,0.0,90.0],"size":[0.002,0.06,0.002],"color":[0.78,0.78,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Needle2","shape":"cylinder","pos":[-0.0325,-0.022,-0.0525],"rot":[0.0,0.0,90.0],"size":[0.002,0.06,0.002],"color":[0.78,0.78,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Needle3","shape":"cylinder","pos":[0.0475,-0.028,-0.0925],"rot":[0.0,0.0,90.0],"size":[0.002,0.06,0.002],"color":[0.78,0.78,0.8],"smooth":0.6,"metal":1.0}
+]}

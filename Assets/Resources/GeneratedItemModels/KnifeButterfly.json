@@ -1,0 +1,12 @@
+{"version": 1, "id": "KnifeButterfly", "baseHeight": 0.08, "name": "Knife Butterfly", "model": "gpt-oss:120b", "notes": "Butterfly (balisong) knife ~0.9 m long, metal blade and hinges, two round handles that swing out to each side of the blade. Blade lies flat on the floor along X; handles extend beyond the ends on opposite Z sides. Main parts: thin steel blade, central hinge block, left & right cylindrical handles, a few rivet spheres for detail.", "score": 6, "parts": [
+  {"name":"Blade","shape":"cube","pos":[0.0,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.9,0.015,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"HingeBlock","shape":"cube","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.5,0.5,0.55],"smooth":0.45,"metal":1.0},
+  {"name":"HandleL","shape":"cylinder","pos":[-0.625,0.0,-0.07],"rot":[0.0,0.0,90.0],"size":[0.04,0.35,0.04],"color":[0.55,0.55,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"HandleR","shape":"cylinder","pos":[0.625,0.0,0.07],"rot":[0.0,0.0,90.0],"size":[0.04,0.35,0.04],"color":[0.55,0.55,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"RivetL1","shape":"sphere","pos":[-0.48,0.0,-0.07],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"RivetL2","shape":"sphere","pos":[-0.78,0.0,-0.07],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR1","shape":"sphere","pos":[0.48,0.0,0.07],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR2","shape":"sphere","pos":[0.78,0.0,0.07],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"PommelL","shape":"cylinder","pos":[-0.795,0.0,-0.07],"rot":[0.0,0.0,90.0],"size":[0.03,0.05,0.03],"color":[0.55,0.55,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"PommelR","shape":"cylinder","pos":[0.795,0.0,0.07],"rot":[0.0,0.0,90.0],"size":[0.03,0.05,0.03],"color":[0.55,0.55,0.6],"smooth":0.2,"metal":0.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "CuttingBoardPlastic", "baseHeight": 0.071, "name": "Cutting Board Plastic", "model": "gpt-oss:120b", "notes": "Plastic cutting board ~0.38 m × 0.28 m × 0.02 m, light‑brown tint (0.6,0.58,0.5). Main flat slab with a thin raised rim, a shallow juice‑groove across the centre, a small colour sticker and corner bevels for visual interest.", "score": 7, "parts": [
+  {"name":"Board","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.02,0.28],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Rim","shape":"cube","pos":[0.0,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.382,0.003,0.282],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Groove","shape":"cylinder","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.26,0.004],"color":[0.45,0.44,0.38],"smooth":0.3,"metal":0.0},
+  {"name":"Sticker","shape":"cube","pos":[-0.15,0.01,0.12],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.04],"color":[0.8,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"CornerBevelFL","shape":"cube","pos":[-0.18,0.0015,-0.13],"rot":[0.0,0.0,0.0],"size":[0.02,0.003,0.02],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"CornerBevelFR","shape":"cube","pos":[-0.18,0.0015,0.13],"rot":[0.0,0.0,0.0],"size":[0.02,0.003,0.02],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"CornerBevelBL","shape":"cube","pos":[0.18,0.0015,-0.13],"rot":[0.0,0.0,0.0],"size":[0.02,0.003,0.02],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"CornerBevelBR","shape":"cube","pos":[0.18,0.0015,0.13],"rot":[0.0,0.0,0.0],"size":[0.02,0.003,0.02],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"GripMidXNeg","shape":"cylinder","pos":[-0.18,0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.5,0.48,0.42],"smooth":0.4,"metal":0.0},
+  {"name":"GripMidXPos","shape":"cylinder","pos":[0.18,0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.5,0.48,0.42],"smooth":0.4,"metal":0.0},
+  {"name":"GripMidZNeg","shape":"cylinder","pos":[0.0,0.008,-0.14],"rot":[0.0,90.0,0.0],"size":[0.008,0.004,0.008],"color":[0.5,0.48,0.42],"smooth":0.4,"metal":0.0},
+  {"name":"GripMidZPos","shape":"cylinder","pos":[0.0,0.008,0.14],"rot":[0.0,90.0,0.0],"size":[0.008,0.004,0.008],"color":[0.5,0.48,0.42],"smooth":0.4,"metal":0.0}
+]}

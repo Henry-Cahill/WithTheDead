@@ -1,0 +1,10 @@
+{"version": 1, "id": "WoodenStick_Broken", "baseHeight": 0.1608, "name": "Wooden Stick Broken", "model": "gpt-oss:120b", "notes": "Wooden stick (broken) ~1.10 m total length, 0.04 m diameter. Main shaft 0.90 m lying on its side along X, a broken tip 0.20 m angled upward at the +X end, a bark ring and end‑caps at the base, plus three small splinters showing the fracture.", "score": 7, "parts": [
+  {"name":"MainShaft","shape":"cylinder","pos":[-0.1081,-0.02,0.0017],"rot":[0.0,0.0,90.0],"size":[0.04,0.9,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"BrokenTip","shape":"cylinder","pos":[0.4419,0.0,0.0017],"rot":[0.0,0.0,20.0],"size":[0.04,0.2,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"BarkRing","shape":"cylinder","pos":[-0.5581,-0.015,0.0017],"rot":[0.0,0.0,90.0],"size":[0.045,0.012,0.045],"color":[0.45,0.35,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"MainEndCap","shape":"cylinder","pos":[-0.5581,-0.02,0.0017],"rot":[0.0,0.0,90.0],"size":[0.045,0.015,0.045],"color":[0.45,0.35,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"TipEndCap","shape":"cylinder","pos":[0.5419,0.0,0.0017],"rot":[0.0,0.0,20.0],"size":[0.045,0.015,0.045],"color":[0.45,0.35,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"SplinterA","shape":"cube","pos":[0.3719,0.03,0.0267],"rot":[0.0,0.0,-12.0],"size":[0.06,0.015,0.025],"color":[0.5,0.45,0.42],"smooth":0.15,"metal":0.0},
+  {"name":"SplinterB","shape":"cube","pos":[0.4119,0.02,-0.0283],"rot":[0.0,0.0,14.0],"size":[0.05,0.012,0.022],"color":[0.5,0.45,0.42],"smooth":0.15,"metal":0.0},
+  {"name":"SplinterC","shape":"cube","pos":[0.4719,0.04,0.0117],"rot":[0.0,0.0,-6.0],"size":[0.04,0.01,0.018],"color":[0.5,0.45,0.42],"smooth":0.15,"metal":0.0}
+]}

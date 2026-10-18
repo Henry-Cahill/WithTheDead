@@ -1,0 +1,12 @@
+{"version": 1, "id": "AluminumScrap", "baseHeight": 0.1276, "name": "Aluminum Scrap", "model": "gpt-oss:120b", "notes": "Small pile of aluminum scrap ~0.25 m wide × 0.15 m deep × 0.07 m tall: a handful of thin sheets, bent rods and lumped bits overlapping in an irregular heap.", "score": 7, "parts": [
+  {"name":"SheetA","shape":"cube","pos":[-0.027,-0.0,0.0225],"rot":[0.0,0.0,5.0],"size":[0.18,0.12,0.012],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"SheetB","shape":"cube","pos":[0.043,0.002,-0.0275],"rot":[0.0,0.0,-12.0],"size":[0.14,0.1,0.011],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"SheetC","shape":"cube","pos":[-0.017,0.007,-0.0375],"rot":[2.0,0.0,8.0],"size":[0.12,0.08,0.01],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"RodStraight","shape":"cylinder","pos":[0.063,0.014,0.0325],"rot":[90.0,0.0,0.0],"size":[0.015,0.09,0.015],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"RodBent","shape":"cylinder","pos":[-0.047,0.017,0.0025],"rot":[70.0,20.0,0.0],"size":[0.014,0.07,0.014],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"RodTwist","shape":"cylinder","pos":[0.003,0.022,-0.0475],"rot":[50.0,-30.0,15.0],"size":[0.013,0.08,0.013],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"LumpA","shape":"cube","pos":[-0.067,0.024,0.0425],"rot":[10.0,-5.0,3.0],"size":[0.06,0.05,0.03],"color":[0.6,0.58,0.5],"smooth":0.35,"metal":1.0},
+  {"name":"LumpB","shape":"cube","pos":[0.083,0.027,-0.0575],"rot":[-8.0,12.0,-4.0],"size":[0.05,0.04,0.025],"color":[0.6,0.58,0.5],"smooth":0.35,"metal":1.0},
+  {"name":"Rivet1","shape":"sphere","pos":[-0.012,0.032,0.0025],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet2","shape":"sphere","pos":[0.048,0.034,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.007,0.007,0.007],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0}
+]}

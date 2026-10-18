@@ -1,0 +1,12 @@
+{"version": 1, "id": "RadioReceiver", "baseHeight": 0.099, "name": "Radio Receiver", "model": "gpt-oss:120b", "notes": "Portable tabletop radio ~0.22 m × 0.12 m × 0.04 m thick, lying face‑up on the floor. Main plastic housing (tint 0.6,0.58,0.5) with recessed speaker grill, a round dial knob, three push buttons and a thin antenna rod.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[-0.015,-0.014,-0.001],"rot":[0.0,0.0,0.0],"size":[0.22,0.04,0.12],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[-0.015,-0.012,0.044],"rot":[0.0,0.0,0.0],"size":[0.2,0.036,0.004],"color":[0.55,0.53,0.48],"smooth":0.3,"metal":0.0},
+  {"name":"SpeakerGrill","shape":"cylinder","pos":[-0.015,-0.009,0.057],"rot":[90.0,0.0,0.0],"size":[0.06,0.008,0.06],"color":[0.3,0.28,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"DialKnob","shape":"cylinder","pos":[-0.085,0.002,0.029],"rot":[0.0,0.0,90.0],"size":[0.02,0.025,0.02],"color":[0.45,0.44,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"ButtonL","shape":"cube","pos":[-0.055,0.002,0.049],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.2,0.2,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"ButtonC","shape":"cube","pos":[-0.055,0.002,0.029],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.2,0.2,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"ButtonR","shape":"cube","pos":[-0.055,0.002,0.009],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.2,0.2,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"AntennaBase","shape":"cylinder","pos":[0.065,0.011,-0.001],"rot":[0.0,0.0,90.0],"size":[0.008,0.02,0.008],"color":[0.5,0.48,0.44],"smooth":0.2,"metal":0.0},
+  {"name":"AntennaRod","shape":"cylinder","pos":[0.065,0.036,-0.001],"rot":[0.0,0.0,90.0],"size":[0.006,0.12,0.006],"color":[0.5,0.48,0.44],"smooth":0.2,"metal":0.0},
+  {"name":"BatteryLid","shape":"cube","pos":[-0.015,-0.006,-0.046],"rot":[0.0,0.0,0.0],"size":[0.18,0.004,0.02],"color":[0.55,0.53,0.48],"smooth":0.3,"metal":0.0}
+]}

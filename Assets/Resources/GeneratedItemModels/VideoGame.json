@@ -1,0 +1,10 @@
+{"version": 1, "id": "VideoGame", "baseHeight": 0.0675, "name": "Video Game", "model": "gpt-oss:120b", "notes": "Boxed video‑game case (≈0.135 m × 0.190 m × 0.015 m) lying flat on the floor; main plastic shell with a front art panel, thin spine label, a CD/DVD disc inside and a paper manual.", "score": 7, "parts": [
+  {"name":"CaseShell","shape":"cube","pos":[0.0,0.0,0.0168],"rot":[0.0,0.0,0.0],"size":[0.135,0.015,0.19],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,0.0,0.1123],"rot":[0.0,0.0,0.0],"size":[0.133,0.014,0.002],"color":[0.71,0.69,0.61],"smooth":0.4,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,0.0,-0.0788],"rot":[0.0,0.0,0.0],"size":[0.133,0.014,0.002],"color":[0.71,0.69,0.61],"smooth":0.4,"metal":0.0},
+  {"name":"SpineLabel","shape":"cube","pos":[-0.0665,0.0,0.0168],"rot":[0.0,0.0,0.0],"size":[0.002,0.014,0.188],"color":[0.38,0.36,0.28],"smooth":0.4,"metal":0.0},
+  {"name":"Disc","shape":"cylinder","pos":[0.0,0.0,0.0168],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.12],"color":[0.85,0.86,0.88],"smooth":0.6,"metal":0.0},
+  {"name":"Manual","shape":"cube","pos":[0.0,0.0022,-0.0232],"rot":[0.0,0.0,0.0],"size":[0.13,0.005,0.18],"color":[0.92,0.92,0.93],"smooth":0.05,"metal":0.0},
+  {"name":"TrayEdgeL","shape":"cube","pos":[-0.064,0.001,0.0168],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.19],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"TrayEdgeR","shape":"cube","pos":[0.064,0.001,0.0168],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.19],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0}
+]}

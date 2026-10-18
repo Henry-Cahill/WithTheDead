@@ -1,0 +1,11 @@
+{"version": 1, "id": "CannedMilk_Box", "baseHeight": 0.1467, "name": "Canned Milk Box", "model": "gpt-oss:120b", "notes": "Upright milk can ~0.09 m square x 0.16 m tall: metal body with rolled seams, recessed lid, printed label on front and a pull‑tab on the lid.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.0068,-0.0145],"rot":[0.0,0.0,0.0],"size":[0.09,0.16,0.09],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.9},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.0838,-0.0145],"rot":[0.0,0.0,0.0],"size":[0.095,0.006,0.095],"color":[0.7,0.63,0.4],"smooth":0.12,"metal":0.9},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.0712,-0.0145],"rot":[0.0,0.0,0.0],"size":[0.095,0.006,0.095],"color":[0.7,0.63,0.4],"smooth":0.12,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.0772,-0.0145],"rot":[0.0,0.0,0.0],"size":[0.09,0.008,0.09],"color":[0.78,0.71,0.48],"smooth":0.15,"metal":0.9},
+  {"name":"PullTab","shape":"cylinder","pos":[0.0,0.0813,-0.0145],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.6,0.55,0.45],"smooth":0.25,"metal":0.9},
+  {"name":"Rivet","shape":"sphere","pos":[0.0,0.0828,-0.0145],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.55,0.5,0.4],"smooth":0.3,"metal":1.0},
+  {"name":"LabelBase","shape":"cube","pos":[0.0,0.0032,0.031],"rot":[0.0,0.0,0.0],"size":[0.085,0.002,0.06],"color":[0.6,0.54,0.35],"smooth":0.08,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0,0.0042,0.031],"rot":[0.0,0.0,0.0],"size":[0.087,0.002,0.062],"color":[0.45,0.4,0.25],"smooth":0.08,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.0,0.0022,0.031],"rot":[0.0,0.0,0.0],"size":[0.087,0.002,0.062],"color":[0.45,0.4,0.25],"smooth":0.08,"metal":0.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "NailsBox", "baseHeight": 0.0907, "name": "Nails Box", "model": "gpt-oss:120b", "notes": "Nails box ~0.22 m wide × 0.12 m deep × 0.06 m tall, cardboard with a metal clasp and a paper label on the lid. A few visible nails are shown inside to hint at its contents.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.0032,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.055,0.12],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0268,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.005,0.12],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Clasp","shape":"cylinder","pos":[0.0,0.0093,-0.055],"rot":[0.0,0.0,90.0],"size":[0.01,0.2,0.01],"color":[0.4,0.4,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0297,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.08],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"Nail1","shape":"cylinder","pos":[-0.04,-0.0158,0.02],"rot":[0.0,0.0,90.0],"size":[0.004,0.03,0.004],"color":[0.5,0.5,0.5],"smooth":0.65,"metal":1.0},
+  {"name":"Nail2","shape":"cylinder","pos":[0.05,-0.0158,-0.03],"rot":[90.0,0.0,0.0],"size":[0.004,0.028,0.004],"color":[0.5,0.5,0.5],"smooth":0.65,"metal":1.0},
+  {"name":"Nail3","shape":"cylinder","pos":[-0.06,-0.0158,-0.02],"rot":[0.0,0.0,90.0],"size":[0.004,0.032,0.004],"color":[0.5,0.5,0.5],"smooth":0.65,"metal":1.0},
+  {"name":"Nail4","shape":"cylinder","pos":[0.03,-0.0158,0.04],"rot":[90.0,0.0,0.0],"size":[0.004,0.025,0.004],"color":[0.5,0.5,0.5],"smooth":0.65,"metal":1.0}
+]}

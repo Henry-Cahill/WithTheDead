@@ -1,0 +1,8 @@
+{"version": 1, "id": "CopperSheet", "baseHeight": 0.0765, "name": "Copper Sheet", "model": "gpt-oss:120b", "notes": "Copper sheet 0.60 m long × 0.40 m wide × 0.001 m thick, lying flat on the floor. Main plate with thin beveled edges around all sides and a small torn‑corner flap for visual interest.", "score": 7, "parts": [
+  {"name":"Plate","shape":"cube","pos":[0.0046,-0.0025,-0.0059],"rot":[0.0,0.0,0.0],"size":[0.6,0.002,0.4],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0046,-0.0017,0.1991],"rot":[0.0,0.0,0.0],"size":[0.6,0.002,0.01],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0046,-0.0017,-0.2109],"rot":[0.0,0.0,0.0],"size":[0.6,0.002,0.01],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.3004,-0.0017,-0.0059],"rot":[0.0,0.0,0.0],"size":[0.01,0.002,0.4],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.3096,-0.0017,-0.0059],"rot":[0.0,0.0,0.0],"size":[0.01,0.002,0.4],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"TornCornerFlap","shape":"cube","pos":[-0.2904,0.0,0.1891],"rot":[15.0,0.0,20.0],"size":[0.05,0.004,0.05],"color":[0.58,0.56,0.48],"smooth":0.4,"metal":1.0}
+]}

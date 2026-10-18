@@ -28,9 +28,11 @@ namespace CloneZ
         private bool _onAir = true;
         private float _bright = 1f, _brightTarget = 1f, _flickerAt, _airCheckAt;
         private float _thumpCalmAt;
+        private float _reach;   // a set across a bigger room reaches farther (0: the usual)
+        private string _name;
 
-        public override string DisplayName => "Portable TV";
-        public override float Reach => CloneZConfig.TvReach;
+        public override string DisplayName => _name ?? "Portable TV";
+        public override float Reach => _reach > 0f ? _reach : CloneZConfig.TvReach;
         protected override BroadcastStation[] Dial => Broadcasts.TvChannels;
         protected override string SaveKind => "tv";
         protected override string SourceName => "TV";
@@ -49,8 +51,12 @@ namespace CloneZ
 
         /// <summary>Builds the TV's fixture on <paramref name="host"/> (the TV's furniture root): <paramref name="screen"/>
         /// is the middle of the glass (world), <paramref name="facing"/> the way the screen faces, <paramref name="picture"/>
-        /// the lit picture's renderer and <paramref name="light"/> the glow it casts on the room.</summary>
-        internal static TvFixture Create(Transform host, Vector3 screen, Vector3 facing, Renderer picture, RoomLight light)
+        /// the lit picture's renderer and <paramref name="light"/> the glow it casts on the room. A set in a bigger room
+        /// (a raid house's living room) may reach farther than the bedroom's — <paramref name="reach"/>, so it can be
+        /// watched from the sofa — go by its own <paramref name="displayName"/>, and stand on a stand of its own
+        /// (<paramref name="freeStanding"/>) rather than on a dresser.</summary>
+        internal static TvFixture Create(Transform host, Vector3 screen, Vector3 facing, Renderer picture, RoomLight light,
+            float reach = 0f, string displayName = null, bool freeStanding = false)
         {
             var go = new GameObject("Fixture_TV");
             go.transform.SetParent(host, false);
@@ -59,7 +65,9 @@ namespace CloneZ
             tv._picture = picture;
             tv._light = light;
             tv._block = new MaterialPropertyBlock();
-            tv.Init(host, screen, HomeFurnitureKind.Dresser);
+            tv._reach = reach;
+            tv._name = displayName;
+            tv.Init(host, screen, HomeFurnitureKind.Dresser, freeStanding);
             return tv;
         }
 

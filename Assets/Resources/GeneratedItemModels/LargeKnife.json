@@ -1,0 +1,8 @@
+{"version": 1, "id": "LargeKnife", "baseHeight": 0.0925, "name": "Large Knife", "model": "gpt-oss:120b", "notes": "Large knife ~0.95 m long lying on its side (X‑axis). Metal blade 0.70 m, thin rectangular prism; wooden/​rubber grip handle 0.25 m long with a metal guard and a rounded pommel at the rear.", "score": 6, "parts": [
+  {"name":"Blade","shape":"cube","pos":[0.14,-0.0235,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.008,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Guard","shape":"cylinder","pos":[-0.21,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"HandleCore","shape":"cylinder","pos":[-0.335,-0.0125,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.25,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.335,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.26,0.045],"color":[0.2,0.2,0.25],"smooth":0.3,"metal":0.0},
+  {"name":"Pommel","shape":"sphere","pos":[-0.46,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.05,0.05,0.07],"smooth":0.2,"metal":0.0},
+  {"name":"BladeEdgeHighlight","shape":"cube","pos":[0.14,-0.0285,0.0],"rot":[0.0,0.0,0.0],"size":[0.68,0.002,0.042],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0}
+]}

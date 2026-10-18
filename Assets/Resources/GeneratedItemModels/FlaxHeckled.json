@@ -1,0 +1,12 @@
+{"version": 1, "id": "FlaxHeckled", "baseHeight": 0.095, "name": "Flax Heckled", "model": "gpt-oss:120b", "notes": "Loose bundle of dried flax stalks tied together, about 0.25 m long × 0.07 m diameter, lying on its side. Main sheaf (tinted straw colour) with a dark rope tie around the centre and a few stray stalks poking out; each stray stalk ends in a small tip that contacts the end of its cylinder.", "score": 6, "parts": [
+  {"name":"Sheaf","shape":"cylinder","pos":[-0.0008,0.0,-0.0005],"rot":[0.0,0.0,90.0],"size":[0.07,0.25,0.07],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"TieBand","shape":"cube","pos":[-0.0008,0.0075,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.07],"color":[0.32,0.22,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"Stalk1","shape":"cylinder","pos":[-0.0907,0.025,0.0295],"rot":[0.0,0.0,90.0],"size":[0.01,0.12,0.01],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Stalk2","shape":"cylinder","pos":[-0.0708,0.02,-0.0255],"rot":[0.0,0.0,90.0],"size":[0.01,0.11,0.01],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Stalk3","shape":"cylinder","pos":[0.0793,0.023,0.0195],"rot":[0.0,0.0,90.0],"size":[0.01,0.13,0.01],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Stalk4","shape":"cylinder","pos":[0.0592,0.015,-0.0305],"rot":[0.0,0.0,90.0],"size":[0.01,0.1,0.01],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"StalkTip1","shape":"sphere","pos":[-0.0307,0.025,0.0295],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"StalkTip2","shape":"sphere","pos":[-0.0158,0.02,-0.0255],"rot":[0.0,0.0,0.0],"size":[0.011,0.011,0.011],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"StalkTip3","shape":"sphere","pos":[0.1442,0.023,0.0195],"rot":[0.0,0.0,0.0],"size":[0.013,0.013,0.013],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"StalkTip4","shape":"sphere","pos":[0.1092,0.015,-0.0305],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0}
+]}

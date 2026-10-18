@@ -1,0 +1,12 @@
+{"version": 1, "id": "LambLeather_Fur_Tan_Wet", "baseHeight": 0.09, "name": "Lamb Leather Fur Tan Wet", "model": "gpt-oss:120b", "notes": "Flat wet lamb‑leather/fur sheet about 0.35 m × 0.45 m, 2 cm thick with raised edges, a rolled corner curl and a few small damp fur piles for texture.", "score": 6, "parts": [
+  {"name":"MainSheet","shape":"cube","pos":[0.01,-0.015,0.005],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.45],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.01,-0.0125,0.22],"rot":[0.0,0.0,0.0],"size":[0.35,0.005,0.02],"color":[0.58,0.56,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[0.01,-0.0125,-0.21],"rot":[0.0,0.0,0.0],"size":[0.35,0.005,0.02],"color":[0.58,0.56,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.155,-0.0125,0.005],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.45],"color":[0.58,0.56,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.175,-0.0125,0.005],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.45],"color":[0.58,0.56,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"CurlCorner","shape":"cylinder","pos":[-0.145,0.0,-0.2],"rot":[0.0,0.0,90.0],"size":[0.06,0.08,0.06],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"FurPile1","shape":"sphere","pos":[0.06,0.005,0.105],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.06],"color":[0.58,0.56,0.48],"smooth":0.14,"metal":0.0},
+  {"name":"FurPile2","shape":"sphere","pos":[-0.07,0.003,-0.115],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.58,0.56,0.48],"smooth":0.14,"metal":0.0},
+  {"name":"DampSpot","shape":"sphere","pos":[0.01,-0.01,0.005],"rot":[0.0,0.0,0.0],"size":[0.07,0.025,0.07],"color":[0.4,0.38,0.3],"smooth":0.25,"metal":0.0},
+  {"name":"FrayStrip","shape":"cube","pos":[0.01,-0.011,0.225],"rot":[0.0,0.0,0.0],"size":[0.35,0.003,0.01],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0}
+]}

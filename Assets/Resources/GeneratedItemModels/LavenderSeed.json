@@ -1,0 +1,13 @@
+{"version": 1, "id": "LavenderSeed", "baseHeight": 0.0658, "name": "Lavender Seed", "model": "gpt-oss:120b", "notes": "Small lavender seed packet about 4 cm × 3 cm × 0.6 cm lying flat: paper body with dark border, off‑white label and raised purple text, a few loose seeds on top and a short string loop on the left edge.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0035,-0.0027,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.006,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Border","shape":"cube","pos":[0.0035,0.0007,0.0],"rot":[0.0,0.0,0.0],"size":[0.042,0.002,0.032],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBase","shape":"cube","pos":[0.0035,0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.036,0.002,0.026],"color":[0.9,0.88,0.8],"smooth":0.05,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[0.0035,0.0014,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.004],"color":[0.3,0.2,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"Seed1","shape":"sphere","pos":[-0.0065,0.0037,-0.005],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Seed2","shape":"sphere","pos":[0.0115,0.0037,0.006],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Seed3","shape":"sphere","pos":[-0.0085,0.0037,0.01],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Seed4","shape":"sphere","pos":[0.0185,0.0037,-0.008],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Seed5","shape":"sphere","pos":[-0.0005,0.0037,0.012],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Seed6","shape":"sphere","pos":[0.0065,0.0037,-0.011],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"String","shape":"cylinder","pos":[-0.0145,0.0023,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.02,0.004],"color":[0.5,0.45,0.4],"smooth":0.05,"metal":0.0}
+]}

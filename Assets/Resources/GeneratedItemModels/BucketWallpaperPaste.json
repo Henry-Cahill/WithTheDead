@@ -1,0 +1,12 @@
+{"version": 1, "id": "BucketWallpaperPaste", "baseHeight": 0.1895, "name": "Bucket Wallpaper Paste", "model": "gpt-oss:120b", "notes": "Bucket of wallpaper paste ~0.15 m diameter × 0.25 m tall, lying on its side with a blob of thick paste sloshing out the front. Main body is metal (tint 0.6,0.58,0.5), handle and rim metal, paste off‑white, label dark brown, rivets tiny steel caps.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.005,-0.0045,-0.005],"rot":[0.0,0.0,0.0],"size":[0.15,0.25,0.15],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"RimTop","shape":"cylinder","pos":[0.005,0.1155,-0.005],"rot":[0.0,0.0,0.0],"size":[0.16,0.02,0.16],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.005,0.0905,0.075],"rot":[0.0,0.0,90.0],"size":[0.02,0.16,0.02],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"Lid","shape":"cylinder","pos":[0.005,0.1255,-0.005],"rot":[0.0,0.0,0.0],"size":[0.155,0.008,0.155],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"PasteBlob","shape":"sphere","pos":[-0.025,0.0105,-0.005],"rot":[0.0,0.0,0.0],"size":[0.12,0.12,0.12],"color":[0.85,0.83,0.75],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.005,0.0205,0.07],"rot":[0.0,0.0,0.0],"size":[0.08,0.12,0.005],"color":[0.32,0.25,0.18],"smooth":0.2,"metal":0.0},
+  {"name":"RivetFL","shape":"sphere","pos":[-0.065,0.1155,0.065],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFR","shape":"sphere","pos":[0.075,0.1155,0.065],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[-0.065,0.1155,-0.075],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.075,0.1155,-0.075],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0}
+]}

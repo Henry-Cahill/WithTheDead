@@ -1,0 +1,9 @@
+{"version": 1, "id": "Sword_Scrap", "baseHeight": 0.1, "name": "Sword Scrap", "model": "gpt-oss:120b", "notes": "Rag‑torn scrap sword about 1.5 m total length lying on its side (X‑axis). Thin steel blade with a jagged tip, a short cross‑guard, a rough wooden/leather grip and a metal pommel sphere.", "score": 6, "parts": [
+  {"name":"Blade","shape":"cube","pos":[0.015,-0.0325,-0.0026],"rot":[0.0,0.0,0.0],"size":[1.4,0.015,0.08],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"JagTip","shape":"cube","pos":[0.74,-0.0325,-0.0026],"rot":[0.0,0.0,0.0],"size":[0.05,0.015,0.02],"color":[0.45,0.4,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"Guard","shape":"cube","pos":[-0.635,-0.0325,-0.0026],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.535,-0.02,-0.0026],"rot":[0.0,0.0,90.0],"size":[0.04,0.3,0.04],"color":[0.32,0.24,0.16],"smooth":0.15,"metal":0.0},
+  {"name":"Pommel","shape":"sphere","pos":[-0.725,0.0,-0.0026],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeScrap1","shape":"cube","pos":[0.315,-0.0325,0.0424],"rot":[0.0,15.0,0.0],"size":[0.08,0.015,0.04],"color":[0.45,0.4,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeScrap2","shape":"cube","pos":[-0.285,-0.0325,-0.0476],"rot":[0.0,-12.0,0.0],"size":[0.07,0.015,0.035],"color":[0.45,0.4,0.35],"smooth":0.4,"metal":1.0}
+]}

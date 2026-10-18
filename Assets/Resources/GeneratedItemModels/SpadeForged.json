@@ -1,0 +1,8 @@
+{"version": 1, "id": "SpadeForged", "baseHeight": 0.12, "name": "Spade Forged", "model": "gpt-oss:120b", "notes": "Forged spade (metal blade + wooden handle) ~1.2 m long lying on its side, handle along X, flat steel blade protruding forward at the right‑hand end; metal tip and rivet show the business end clearly.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[0.005,-0.045,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,1.2,0.03],"color":[0.4,0.25,0.15],"smooth":0.2,"metal":0.0},
+  {"name":"WoodGrip","shape":"cylinder","pos":[-0.545,-0.04,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.2,0.04],"color":[0.4,0.25,0.15],"smooth":0.2,"metal":0.0},
+  {"name":"EndCap","shape":"cylinder","pos":[-0.59,-0.045,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.02,0.03],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"BladePlate","shape":"cube","pos":[0.615,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.12,0.18],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"BladeTip","shape":"sphere","pos":[0.625,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Rivet","shape":"cylinder","pos":[0.6,-0.045,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.015,0.01],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0}
+]}

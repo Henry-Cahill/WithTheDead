@@ -1,0 +1,8 @@
+{"version": 1, "id": "MacheteKnife", "baseHeight": 0.093, "name": "Machete Knife", "model": "gpt-oss:120b", "notes": "Machete knife ~0.9 m long lying on its side (X‑axis). Blade 0.7 m × 0.10 m × 0.012 m steel, wooden grip 0.20 m long × 0.04 m diameter, small metal guard between blade and grip.", "score": 6, "parts": [
+  {"name":"Blade","shape":"cube","pos":[0.0975,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.012,0.1],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[-0.3525,0.013,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.2,0.04],"color":[0.38,0.28,0.18],"smooth":0.15,"metal":0.0},
+  {"name":"Guard","shape":"cylinder","pos":[-0.2525,-0.003,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.015,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeEdgeHighlight","shape":"cube","pos":[0.0975,0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.002,0.1],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"HandleEndCap","shape":"cylinder","pos":[-0.4525,0.013,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.38,0.28,0.18],"smooth":0.15,"metal":0.0},
+  {"name":"BladeTip","shape":"cube","pos":[0.4525,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.012,0.08],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

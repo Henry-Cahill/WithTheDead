@@ -1,0 +1,12 @@
+{"version": 1, "id": "SwordBlade_Broken", "baseHeight": 0.0935, "name": "Sword Blade Broken", "model": "gpt-oss:120b", "notes": "Broken sword blade about 0.5 m long, lying on its side (X‑axis). Main steel blade with a jagged tip fragment, thin edge ridges, a few rust spots, a short hilt remnant and some scrap shards.", "score": 7, "parts": [
+  {"name":"MainBlade","shape":"cube","pos":[-0.0325,0.002,0.0395],"rot":[0.0,0.0,0.0],"size":[0.38,0.012,0.05],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TipFragment","shape":"cube","pos":[0.2175,0.0,0.0395],"rot":[0.0,0.0,30.0],"size":[0.12,0.008,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeRidgeRight","shape":"cylinder","pos":[0.0275,0.005,0.0145],"rot":[0.0,0.0,90.0],"size":[0.006,0.5,0.006],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeRidgeLeft","shape":"cylinder","pos":[0.0275,0.005,0.0645],"rot":[0.0,0.0,90.0],"size":[0.006,0.5,0.006],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RustPatch1","shape":"sphere","pos":[-0.1225,0.004,0.0495],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.02],"color":[0.4,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"RustPatch2","shape":"sphere","pos":[0.1075,0.005,0.0095],"rot":[0.0,0.0,0.0],"size":[0.035,0.012,0.018],"color":[0.4,0.3,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"ScrapChunk","shape":"cube","pos":[0.0775,0.011,-0.0405],"rot":[0.0,15.0,0.0],"size":[0.06,0.03,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"HandleRemnant","shape":"cylinder","pos":[-0.2525,0.008,0.0395],"rot":[0.0,0.0,90.0],"size":[0.025,0.07,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Bolt","shape":"cylinder","pos":[0.0075,0.007,0.0575],"rot":[0.0,0.0,0.0],"size":[0.005,0.02,0.005],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"EdgeBurr","shape":"cube","pos":[0.2775,0.002,0.0395],"rot":[0.0,0.0,20.0],"size":[0.02,0.004,0.03],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

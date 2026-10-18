@@ -1,0 +1,12 @@
+{"version": 1, "id": "BucketMace_Metal", "baseHeight": 0.22, "name": "Bucket Mace Metal", "model": "gpt-oss:120b", "notes": "Bucket‑mace 1.4 m long lying on its side: thin steel shaft (X‑axis) ~0.9 m, a rounded metal bucket head (~0.25 m diameter) with a rim and four short spikes, plus a reinforcing ring at the junction and a small cap/handle wrap on the opposite end.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.1275,-0.13,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.9,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BucketBody","shape":"sphere","pos":[0.4475,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.25,0.25],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"MetalRing","shape":"cylinder","pos":[0.3225,-0.13,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.02,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeFront","shape":"cylinder","pos":[0.4475,-0.025,0.155],"rot":[90.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeBack","shape":"cylinder","pos":[0.4475,-0.025,-0.155],"rot":[-90.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeTop","shape":"cylinder","pos":[0.4475,0.13,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.5725,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"GripCap","shape":"cylinder","pos":[-0.5775,-0.13,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.02,0.05],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"HandleWrap","shape":"cylinder","pos":[-0.4275,-0.13,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.015,0.06],"color":[0.55,0.55,0.6],"smooth":0.45,"metal":1.0},
+  {"name":"BucketLid","shape":"cylinder","pos":[0.5825,-0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.26,0.005,0.26],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "DoubleBarrelShotgunSawnoff", "baseHeight": 0.11, "name": "Double Barrel Shotgun Sawnoff", "model": "gpt-oss:120b", "notes": "Saw‑off double‑barrel shotgun ~0.5 m long, barrels side‑by‑side along +X, short wooden stock at –X, vertical grip, trigger guard, small tubular magazine under the barrels, front and rear sights.", "score": 6, "parts": [
+  {"name":"BarrelL","shape":"cylinder","pos":[0.0625,-0.0275,-0.025],"rot":[0.0,0.0,90.0],"size":[0.04,0.25,0.04],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"BarrelR","shape":"cylinder","pos":[0.0625,-0.0275,0.025],"rot":[0.0,0.0,90.0],"size":[0.04,0.25,0.04],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"BarrelCapL","shape":"cylinder","pos":[-0.0625,-0.0275,-0.025],"rot":[0.0,0.0,90.0],"size":[0.045,0.015,0.045],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"BarrelCapR","shape":"cylinder","pos":[-0.0625,-0.0275,0.025],"rot":[0.0,0.0,90.0],"size":[0.045,0.015,0.045],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"Receiver","shape":"cube","pos":[0.0625,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.08],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"Stock","shape":"cube","pos":[-0.1125,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.08,0.12],"color":[0.35,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cube","pos":[0.0125,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.03],"color":[0.24,0.25,0.28],"smooth":0.4,"metal":1.0},
+  {"name":"TriggerGuard","shape":"cube","pos":[0.0225,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.025],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"MagazineBox","shape":"cube","pos":[0.0625,-0.0375,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.04],"color":[0.24,0.25,0.28],"smooth":0.5,"metal":1.0},
+  {"name":"FrontSight","shape":"cube","pos":[0.2025,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.03],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"RearSight","shape":"cube","pos":[-0.1775,0.0425,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.015,0.03],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "PlasterTrowel", "baseHeight": 0.076, "name": "Plaster Trowel", "model": "gpt-oss:120b", "notes": "Plaster trowel ~0.45 m long lying on its side: wooden handle (cylinder) along –X, thin steel blade (cube) along +X, a rubber‑grip band near the joint and a small rivet at the blade‑handle connection; optional plastic end cap on the far handle.", "score": 6, "parts": [
+  {"name":"Blade","shape":"cube","pos":[0.1125,-0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.008,0.06],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[-0.0875,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.25,0.03],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"GripBand","shape":"cylinder","pos":[-0.0325,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.032,0.025,0.032],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Rivet","shape":"sphere","pos":[0.0125,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"EndCap","shape":"cylinder","pos":[-0.1775,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.03,0.02],"color":[0.5,0.45,0.4],"smooth":0.3,"metal":0.0},
+  {"name":"BladeEdge","shape":"cube","pos":[0.1125,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.004,0.06],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0}
+]}

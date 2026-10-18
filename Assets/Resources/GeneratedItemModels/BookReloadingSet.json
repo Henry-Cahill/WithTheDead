@@ -1,0 +1,16 @@
+{"version": 1, "id": "BookReloadingSet", "baseHeight": 0.1152, "name": "Book Reloading Set", "model": "gpt-oss:120b", "notes": "Stack of five reloading manuals (≈0.22 m × 0.16 m) lying on a thin cardboard box; books are paper‑tinted, box is darker brown, front label and a metal binder clip add detail. Total height ≈0.10 m.", "score": 6, "parts": [
+  {"name":"BoxBottom","shape":"cube","pos":[0.0,-0.0513,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.008,0.18],"color":[0.45,0.42,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"BoxSideL","shape":"cube","pos":[-0.116,-0.0103,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.09,0.18],"color":[0.45,0.42,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"BoxSideR","shape":"cube","pos":[0.116,-0.0103,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.09,0.18],"color":[0.45,0.42,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"BoxFront","shape":"cube","pos":[0.0,-0.0103,0.094],"rot":[0.0,0.0,0.0],"size":[0.24,0.09,0.008],"color":[0.45,0.42,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"BoxBack","shape":"cube","pos":[0.0,-0.0103,-0.094],"rot":[0.0,0.0,0.0],"size":[0.24,0.09,0.008],"color":[0.45,0.42,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.0103,0.0995],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.006],"color":[0.3,0.3,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Book1","shape":"cube","pos":[0.0,-0.0382,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.018,0.16],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Book2","shape":"cube","pos":[0.0,-0.0202,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.018,0.16],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Book3","shape":"cube","pos":[0.0,-0.0023,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.018,0.16],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Book4","shape":"cube","pos":[0.0,0.0157,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.018,0.16],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Book5","shape":"cube","pos":[0.0,0.0337,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.018,0.16],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BinderClip","shape":"cylinder","pos":[0.0,0.0477,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"LoosePaperA","shape":"cube","pos":[-0.05,0.0467,0.03],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.2],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"LoosePaperB","shape":"cube","pos":[0.06,0.0487,-0.04],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.18],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0}
+]}

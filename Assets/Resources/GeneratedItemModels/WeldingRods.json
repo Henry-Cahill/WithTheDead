@@ -1,0 +1,18 @@
+{"version": 1, "id": "WeldingRods", "baseHeight": 0.071, "name": "Welding Rods", "model": "gpt-oss:120b", "notes": "Bundle of up to 8 steel welding rods lying on the floor. Each rod ≈ 0.45 m long × 0.018 m diameter, coated with a thin flux sheath (≈ 0.022 m outer dia). The pile is shown as overlapping cylinders with a slight random spread.", "score": 7, "parts": [
+  {"name":"Rod1_Coil","shape":"cylinder","pos":[-0.07,0.0,0.07],"rot":[0.0,0.0,90.0],"size":[0.022,0.452,0.022],"color":[0.7,0.65,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"Rod1_Core","shape":"cylinder","pos":[-0.07,0.0,0.07],"rot":[0.0,0.0,90.0],"size":[0.018,0.45,0.018],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Rod2_Coil","shape":"cylinder","pos":[-0.01,0.0,-0.02],"rot":[0.0,0.0,90.0],"size":[0.022,0.452,0.022],"color":[0.7,0.65,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"Rod2_Core","shape":"cylinder","pos":[-0.01,0.0,-0.02],"rot":[0.0,0.0,90.0],"size":[0.018,0.45,0.018],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Rod3_Coil","shape":"cylinder","pos":[0.05,0.0,0.09],"rot":[0.0,0.0,90.0],"size":[0.022,0.452,0.022],"color":[0.7,0.65,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"Rod3_Core","shape":"cylinder","pos":[0.05,0.0,0.09],"rot":[0.0,0.0,90.0],"size":[0.018,0.45,0.018],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Rod4_Coil","shape":"cylinder","pos":[0.11,0.0,0.01],"rot":[0.0,0.0,90.0],"size":[0.022,0.452,0.022],"color":[0.7,0.65,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"Rod4_Core","shape":"cylinder","pos":[0.11,0.0,0.01],"rot":[0.0,0.0,90.0],"size":[0.018,0.45,0.018],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Rod5_Coil","shape":"cylinder","pos":[-0.11,0.0,0.03],"rot":[0.0,0.0,90.0],"size":[0.022,0.452,0.022],"color":[0.7,0.65,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"Rod5_Core","shape":"cylinder","pos":[-0.11,0.0,0.03],"rot":[0.0,0.0,90.0],"size":[0.018,0.45,0.018],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Rod6_Coil","shape":"cylinder","pos":[0.01,0.0,-0.09],"rot":[0.0,0.0,90.0],"size":[0.022,0.452,0.022],"color":[0.7,0.65,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"Rod6_Core","shape":"cylinder","pos":[0.01,0.0,-0.09],"rot":[0.0,0.0,90.0],"size":[0.018,0.45,0.018],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Rod7_Coil","shape":"cylinder","pos":[-0.05,0.0,0.01],"rot":[0.0,0.0,90.0],"size":[0.022,0.452,0.022],"color":[0.7,0.65,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"Rod7_Core","shape":"cylinder","pos":[-0.05,0.0,0.01],"rot":[0.0,0.0,90.0],"size":[0.018,0.45,0.018],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Rod8_Coil","shape":"cylinder","pos":[-0.03,0.0,-0.05],"rot":[0.0,0.0,90.0],"size":[0.022,0.452,0.022],"color":[0.7,0.65,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"Rod8_Core","shape":"cylinder","pos":[-0.03,0.0,-0.05],"rot":[0.0,0.0,90.0],"size":[0.018,0.45,0.018],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0}
+]}
