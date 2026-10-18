@@ -1,0 +1,9 @@
+{"version": 1, "id": "Leash", "baseHeight": 0.0785, "name": "Leash", "model": "gpt-oss:120b", "notes": "Leash ~0.35 m total length, coiled into a flat disc about 0.12 m diameter × 0.02 m thick, with a short rope tail and a metal clip on the side. Rope colour is muted brown‑tan (tint 0.6,0.58,0.5).", "score": 6, "parts": [
+  {"name":"CoilBody","shape":"cylinder","pos":[-0.0745,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CoilRopeEdge","shape":"cylinder","pos":[-0.0745,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.122,0.022,0.122],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Knot","shape":"sphere","pos":[-0.0145,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Tail","shape":"cylinder","pos":[0.0605,-0.0035,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.15,0.01],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"ClipBase","shape":"cube","pos":[-0.0045,0.0115,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.008,0.04],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"ClipBar","shape":"cylinder","pos":[-0.0045,0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.6,0.6,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"ClipPin","shape":"cylinder","pos":[0.0105,0.0135,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.55,0.55,0.55],"smooth":0.6,"metal":1.0}
+]}

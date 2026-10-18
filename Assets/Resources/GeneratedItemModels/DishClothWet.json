@@ -1,0 +1,12 @@
+{"version": 1, "id": "DishClothWet", "baseHeight": 0.1025, "name": "Dish Cloth Wet", "model": "gpt-oss:120b", "notes": "Wet dish cloth ~0.40 m × 0.30 m, 1½ cm thick when laid flat; a loose fold on one side, a rolled corner, two damp bulges and a few surface wrinkles give the soggy texture.", "score": 6, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0214,-0.035,-0.0117],"rot":[0.0,0.0,0.0],"size":[0.4,0.015,0.3],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FoldEdge","shape":"cube","pos":[0.0214,-0.0225,0.1283],"rot":[0.0,0.0,0.0],"size":[0.4,0.02,0.03],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CornerRoll","shape":"cylinder","pos":[-0.1586,0.0225,0.1183],"rot":[0.0,0.0,90.0],"size":[0.04,0.1,0.04],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"BulgeCenter","shape":"sphere","pos":[0.0214,-0.0125,-0.0117],"rot":[0.0,0.0,0.0],"size":[0.08,0.06,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BulgeSide","shape":"sphere","pos":[0.1414,-0.0175,-0.0817],"rot":[0.0,0.0,0.0],"size":[0.06,0.045,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Wrinkle1","shape":"cube","pos":[-0.0786,-0.0345,0.0683],"rot":[0.0,15.0,0.0],"size":[0.3,0.004,0.01],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Wrinkle2","shape":"cube","pos":[0.1014,-0.0335,-0.0717],"rot":[0.0,-12.0,0.0],"size":[0.25,0.004,0.01],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Wrinkle3","shape":"cube","pos":[0.0014,-0.0355,0.1383],"rot":[0.0,8.0,0.0],"size":[0.35,0.003,0.008],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRim","shape":"cube","pos":[0.0214,-0.0335,-0.1617],"rot":[0.0,0.0,0.0],"size":[0.4,0.008,0.01],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"DampSpot","shape":"sphere","pos":[-0.1186,-0.0225,0.0783],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

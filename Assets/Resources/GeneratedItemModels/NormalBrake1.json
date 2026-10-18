@@ -1,0 +1,10 @@
+{"version": 1, "id": "NormalBrake1", "baseHeight": 0.0712, "name": "Normal Brake1", "model": "gpt-oss:120b", "notes": "Standard brake disc (≈0.26 m dia × 0.02 m thick) lying flat on the floor: outer rim, central hub, bolt‑ring and four mounting bolts. Grey‑brown tint with steel‑like shine.", "score": 7, "parts": [
+  {"name":"OuterDisc","shape":"cylinder","pos":[0.0,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.02,0.26],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"Hub","shape":"cylinder","pos":[0.0,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.018,0.08],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":1.0},
+  {"name":"BoltRing","shape":"cylinder","pos":[0.0,0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.004,0.14],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":1.0},
+  {"name":"BoltFL","shape":"cylinder","pos":[0.09,0.0013,0.09],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.015],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":1.0},
+  {"name":"BoltFR","shape":"cylinder","pos":[-0.09,0.0013,0.09],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.015],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":1.0},
+  {"name":"BoltBL","shape":"cylinder","pos":[0.09,0.0013,-0.09],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.015],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":1.0},
+  {"name":"BoltBR","shape":"cylinder","pos":[-0.09,0.0013,-0.09],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.015],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0102,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.04],"color":[0.2,0.18,0.15],"smooth":0.1,"metal":0.0}
+]}

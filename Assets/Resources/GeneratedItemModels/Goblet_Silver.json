@@ -1,0 +1,13 @@
+{"version": 1, "id": "Goblet_Silver", "baseHeight": 0.1113, "name": "Goblet Silver", "model": "gpt-oss:120b", "notes": "Silver goblet lying on its side (max height ≈ 0.09 m). Main components: cup (outer & inner), thin rim, slender stem, flat base with outer edge, and a decorative inner‑cup lip. All parts are shifted up by the largest radius (0.045 m) so the lowest point rests on y = 0.", "score": 6, "parts": [
+  {"name":"CupOuter","shape":"cylinder","pos":[0.062,-0.0063,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.07,0.07],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"CupInner","shape":"cylinder","pos":[0.062,-0.0063,0.0],"rot":[0.0,0.0,90.0],"size":[0.064,0.066,0.064],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.099,-0.0063,0.0],"rot":[0.0,0.0,90.0],"size":[0.075,0.008,0.075],"color":[0.62,0.6,0.52],"smooth":0.58,"metal":1.0},
+  {"name":"Stem","shape":"cylinder","pos":[-0.013,-0.0063,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.08,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Base","shape":"cylinder","pos":[-0.058,-0.0063,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.01,0.09],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BaseEdge","shape":"cylinder","pos":[-0.058,0.0037,0.0],"rot":[0.0,0.0,90.0],"size":[0.095,0.004,0.095],"color":[0.62,0.6,0.52],"smooth":0.58,"metal":1.0},
+  {"name":"InnerLip","shape":"cylinder","pos":[0.094,-0.0063,0.0],"rot":[0.0,0.0,90.0],"size":[0.068,0.004,0.068],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"EngraveL","shape":"cube","pos":[0.042,0.0007,0.018],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.002],"color":[0.48,0.46,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"EngraveR","shape":"cube","pos":[0.042,0.0007,-0.018],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.002],"color":[0.48,0.46,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"StemBand","shape":"cylinder","pos":[-0.013,-0.0063,0.0],"rot":[0.0,0.0,90.0],"size":[0.024,0.008,0.024],"color":[0.58,0.56,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"BaseShadow","shape":"cube","pos":[-0.058,-0.0463,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.01,0.09],"color":[0.3,0.28,0.24],"smooth":0.1,"metal":0.0}
+]}

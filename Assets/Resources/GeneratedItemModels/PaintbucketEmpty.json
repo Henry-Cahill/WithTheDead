@@ -1,0 +1,10 @@
+{"version": 1, "id": "PaintbucketEmpty", "baseHeight": 0.2125, "name": "Paintbucket Empty", "model": "gpt-oss:120b", "notes": "Empty paint‑bucket ~0.25 m diameter × 0.30 m tall, standing upright. Main steel body with thin metal rims, a short plastic handle loop across the front, and a faint label strip around the middle.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.3,0.25],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.85},
+  {"name":"BottomRim","shape":"cylinder","pos":[0.0,-0.1445,0.0],"rot":[0.0,0.0,0.0],"size":[0.27,0.016,0.27],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":0.85},
+  {"name":"TopRim","shape":"cylinder","pos":[0.0,0.1395,0.0],"rot":[0.0,0.0,0.0],"size":[0.27,0.016,0.27],"color":[0.55,0.53,0.45],"smooth":0.55,"metal":0.85},
+  {"name":"HandleBar","shape":"cylinder","pos":[0.0,0.1325,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,0.18,0.04],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"HandleEndL","shape":"cylinder","pos":[0.0,0.1325,-0.09],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"HandleEndR","shape":"cylinder","pos":[0.0,0.1325,0.09],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"LabelStrip","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.255,0.005,0.255],"color":[0.45,0.43,0.35],"smooth":0.12,"metal":0.0},
+  {"name":"InnerCoating","shape":"cylinder","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.245,0.28,0.245],"color":[0.65,0.63,0.55],"smooth":0.2,"metal":0.0}
+]}

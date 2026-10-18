@@ -1,0 +1,11 @@
+{"version": 1, "id": "ClayPlateUnfired", "baseHeight": 0.0825, "name": "Clay Plate Unfired", "model": "gpt-oss:120b", "notes": "Unfired clay plate about 0.25 m diameter, 2 cm thick with a slightly raised rim and subtle surface irregularities; lying flat on the floor.", "score": 7, "parts": [
+  {"name":"Base","shape":"cylinder","pos":[0.0,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.27,0.025,0.27],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CenterDome","shape":"sphere","pos":[0.0,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.01,0.18],"color":[0.62,0.6,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeChipL","shape":"cube","pos":[0.12,-0.0105,0.12],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.03],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeChipR","shape":"cube","pos":[-0.12,-0.0105,-0.12],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.03],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CrackLine","shape":"cube","pos":[0.0,-0.0015,0.0],"rot":[0.0,0.0,5.0],"size":[0.22,0.002,0.01],"color":[0.48,0.46,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"SurfaceRough1","shape":"sphere","pos":[0.07,-0.0005,-0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SurfaceRough2","shape":"sphere","pos":[-0.08,-0.0005,0.04],"rot":[0.0,0.0,0.0],"size":[0.035,0.018,0.035],"color":[0.57,0.55,0.47],"smooth":0.05,"metal":0.0},
+  {"name":"DustLayer","shape":"cylinder","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.002,0.24],"color":[0.62,0.6,0.52],"smooth":0.05,"metal":0.0}
+]}

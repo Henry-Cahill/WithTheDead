@@ -1,0 +1,13 @@
+{"version": 1, "id": "CrudeWhetstone", "baseHeight": 0.0803, "name": "Crude Whetstone", "model": "gpt-oss:120b", "notes": "Crude whetstone slab ~0.15 m long × 0.09 m wide × 0.04 m thick, lying flat on the floor (y=0). Main stone body with a few raised grit bumps and three chipped corners to convey a rough, used look.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0016,-0.0003,-0.0032],"rot":[0.0,0.0,0.0],"size":[0.15,0.04,0.09],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Bump1","shape":"sphere","pos":[-0.0434,0.0077,0.0168],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"Bump2","shape":"sphere","pos":[0.0316,0.0067,-0.0282],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"Bump3","shape":"sphere","pos":[0.0616,0.0088,0.0268],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"ChipFrontLeft","shape":"cube","pos":[-0.0684,0.0048,0.0418],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.015],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"ChipFrontRight","shape":"cube","pos":[0.0716,0.0048,0.0418],"rot":[0.0,0.0,0.0],"size":[0.028,0.018,0.012],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"ChipBackLeft","shape":"cube","pos":[-0.0584,0.0017,-0.0432],"rot":[0.0,0.0,0.0],"size":[0.025,0.015,0.01],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRough1","shape":"cube","pos":[-0.0734,-0.0023,-0.0032],"rot":[0.0,15.0,0.0],"size":[0.02,0.025,0.09],"color":[0.58,0.55,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRough2","shape":"cube","pos":[0.0766,-0.0023,-0.0032],"rot":[0.0,-12.0,0.0],"size":[0.018,0.022,0.09],"color":[0.58,0.55,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"BottomFlat","shape":"cube","pos":[0.0016,-0.0192,-0.0032],"rot":[0.0,0.0,0.0],"size":[0.15,0.002,0.09],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"TopWear","shape":"cube","pos":[0.0016,0.0192,-0.0032],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.08],"color":[0.52,0.5,0.42],"smooth":0.15,"metal":0.0}
+]}

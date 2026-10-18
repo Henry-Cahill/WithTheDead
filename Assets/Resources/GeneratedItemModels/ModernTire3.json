@@ -1,0 +1,13 @@
+{"version": 1, "id": "ModernTire3", "baseHeight": 0.16, "name": "Modern Tire3", "model": "gpt-oss:120b", "notes": "Modern car tire lying flat on the ground – outer rubber ring (≈0.65 m dia × 0.20 m width), dark steel rim (≈0.30 m dia), four raised tread ribs for silhouette, and a thin side‑wall label strip.", "score": 6, "parts": [
+  {"name":"OuterRing","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.65,0.2,0.65],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"InnerRim","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.2,0.3],"color":[0.32,0.33,0.35],"smooth":0.4,"metal":1.0},
+  {"name":"TreadRibFront","shape":"cube","pos":[0.0,0.02,0.3],"rot":[0.0,0.0,0.0],"size":[0.55,0.02,0.05],"color":[0.58,0.55,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"TreadRibBack","shape":"cube","pos":[0.0,0.02,-0.3],"rot":[0.0,0.0,0.0],"size":[0.55,0.02,0.05],"color":[0.58,0.55,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"TreadRibLeft","shape":"cube","pos":[-0.3,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.55],"color":[0.58,0.55,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"TreadRibRight","shape":"cube","pos":[0.3,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.55],"color":[0.58,0.55,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"SideLabelStrip","shape":"cube","pos":[0.2,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.4],"color":[0.25,0.27,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"RimBoltTL","shape":"sphere","pos":[-0.08,0.02,0.1],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.2,0.2,0.22],"smooth":0.5,"metal":1.0},
+  {"name":"RimBoltTR","shape":"sphere","pos":[-0.08,0.02,-0.1],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.2,0.2,0.22],"smooth":0.5,"metal":1.0},
+  {"name":"RimBoltBL","shape":"sphere","pos":[0.08,0.02,0.1],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.2,0.2,0.22],"smooth":0.5,"metal":1.0},
+  {"name":"RimBoltBR","shape":"sphere","pos":[0.08,0.02,-0.1],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.2,0.2,0.22],"smooth":0.5,"metal":1.0}
+]}

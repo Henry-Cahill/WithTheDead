@@ -1,0 +1,16 @@
+{"version": 1, "id": "RippedSheetsBundle", "baseHeight": 0.106, "name": "Ripped Sheets Bundle", "model": "gpt-oss:120b", "notes": "Ripped sheets bundle about 0.8 m × 0.6 m lying flat, ~3 cm thick overall. Main sheet with several torn/flapped pieces and a few frayed edge strips for silhouette clarity.", "score": 7, "parts": [
+  {"name":"BaseSheet","shape":"cube","pos":[0.002,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.8,0.03,0.6],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TearFrontLeft","shape":"cube","pos":[-0.348,-0.008,0.25],"rot":[0.0,0.0,15.0],"size":[0.2,0.025,0.12],"color":[0.52,0.5,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"TearFrontRight","shape":"cube","pos":[0.352,-0.011,0.28],"rot":[0.0,0.0,-12.0],"size":[0.18,0.022,0.1],"color":[0.52,0.5,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"TearBackLeft","shape":"cube","pos":[-0.298,-0.012,-0.22],"rot":[0.0,0.0,8.0],"size":[0.15,0.024,0.09],"color":[0.52,0.5,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"TearBackRight","shape":"cube","pos":[0.282,-0.009,-0.25],"rot":[0.0,0.0,-10.0],"size":[0.17,0.023,0.11],"color":[0.52,0.5,0.42],"smooth":0.05,"metal":0.0},
+  {"name":"FoldCornerL","shape":"cube","pos":[-0.378,-0.005,-0.28],"rot":[0.0,20.0,0.0],"size":[0.1,0.02,0.08],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FoldCornerR","shape":"cube","pos":[0.382,-0.006,-0.3],"rot":[0.0,-18.0,0.0],"size":[0.09,0.02,0.07],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeStripTop","shape":"cube","pos":[0.002,-0.002,0.31],"rot":[0.0,0.0,0.0],"size":[0.78,0.015,0.04],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeStripBottom","shape":"cube","pos":[0.002,-0.002,-0.31],"rot":[0.0,0.0,0.0],"size":[0.78,0.015,0.04],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"ThreadLineTop","shape":"cylinder","pos":[0.002,0.002,0.31],"rot":[90.0,0.0,0.0],"size":[0.008,0.78,0.008],"color":[0.42,0.4,0.34],"smooth":0.05,"metal":0.0},
+  {"name":"ThreadLineBottom","shape":"cylinder","pos":[0.002,0.002,-0.31],"rot":[90.0,0.0,0.0],"size":[0.008,0.78,0.008],"color":[0.42,0.4,0.34],"smooth":0.05,"metal":0.0},
+  {"name":"RaggedEdgeLeft","shape":"cube","pos":[-0.408,-0.01,0.0],"rot":[0.0,0.0,5.0],"size":[0.06,0.022,0.6],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"RaggedEdgeRight","shape":"cube","pos":[0.412,-0.011,0.0],"rot":[0.0,0.0,-6.0],"size":[0.07,0.021,0.6],"color":[0.48,0.46,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"LooseFlap","shape":"cube","pos":[0.002,0.005,0.05],"rot":[15.0,0.0,0.0],"size":[0.3,0.018,0.25],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

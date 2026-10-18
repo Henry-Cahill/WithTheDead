@@ -1,0 +1,14 @@
+{"version": 1, "id": "ScissorsBlunt", "baseHeight": 0.08, "name": "Scissors Blunt", "model": "gpt-oss:120b", "notes": "Blunt scissors about 0.20 m long, 0.04 m wide and 0.02 m thick lying flat on the floor. Two thin blade plates cross at a central pivot; each end has a short cylindrical handle loop. Small screw‑head and rivet details mark the joint.", "score": 6, "parts": [
+  {"name":"BladeL","shape":"cube","pos":[0.0,-0.017,0.008],"rot":[0.0,0.0,0.0],"size":[0.16,0.006,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BladeR","shape":"cube","pos":[0.0,-0.017,-0.008],"rot":[0.0,0.0,0.0],"size":[0.16,0.006,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"HandleL","shape":"cylinder","pos":[-0.09,-0.0,0.008],"rot":[0.0,0.0,90.0],"size":[0.04,0.07,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"HandleR","shape":"cylinder","pos":[-0.09,-0.0,-0.008],"rot":[0.0,0.0,90.0],"size":[0.04,0.07,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"HandleL_End","shape":"cylinder","pos":[0.09,-0.0,0.008],"rot":[0.0,0.0,90.0],"size":[0.04,0.07,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"HandleR_End","shape":"cylinder","pos":[0.09,-0.0,-0.008],"rot":[0.0,0.0,90.0],"size":[0.04,0.07,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"PivotBody","shape":"cube","pos":[0.0,-0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.006,0.018],"color":[0.5,0.48,0.42],"smooth":0.55,"metal":1.0},
+  {"name":"ScrewHead","shape":"cylinder","pos":[0.0,-0.008,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.3,0.28,0.24],"smooth":0.65,"metal":1.0},
+  {"name":"RivetL","shape":"sphere","pos":[-0.07,0.005,0.008],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.4,0.38,0.33],"smooth":0.65,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[-0.07,0.005,-0.008],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.4,0.38,0.33],"smooth":0.65,"metal":1.0},
+  {"name":"EdgeDetailL","shape":"cube","pos":[0.0,-0.0185,0.008],"rot":[0.0,0.0,0.0],"size":[0.16,0.002,0.002],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeDetailR","shape":"cube","pos":[0.0,-0.0185,-0.008],"rot":[0.0,0.0,0.0],"size":[0.16,0.002,0.002],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0}
+]}

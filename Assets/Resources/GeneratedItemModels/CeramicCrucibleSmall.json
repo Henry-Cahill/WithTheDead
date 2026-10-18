@@ -1,0 +1,8 @@
+{"version": 1, "id": "CeramicCrucibleSmall", "baseHeight": 0.1275, "name": "Ceramic Crucible Small", "model": "gpt-oss:120b", "notes": "Small ceramic crucible ~0.15 m tall × 0.10 m wide, lying on its side (long axis along X). Thick cylindrical body, slightly flared glazed rim, thin glaze seam around the middle, a faint metal reinforcement band, and a flat base for stability.", "score": 7, "parts": [
+  {"name":"Base","shape":"cylinder","pos":[0.0,-0.0635,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.008,0.1],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.12,0.1],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"RimOuter","shape":"cylinder","pos":[0.0,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.108,0.015,0.108],"color":[0.55,0.53,0.48],"smooth":0.45,"metal":0.0},
+  {"name":"GlazeSeam","shape":"cylinder","pos":[0.0,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.102,0.006,0.102],"color":[0.45,0.43,0.38],"smooth":0.5,"metal":0.0},
+  {"name":"MetalBand","shape":"cylinder","pos":[0.0,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.105,0.008,0.105],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"RimInnerLip","shape":"cylinder","pos":[0.0,0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.098,0.004,0.098],"color":[0.55,0.53,0.48],"smooth":0.45,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "GlassBlowingPipeUnfired", "baseHeight": 0.095, "name": "Glass Blowing Pipe Unfired", "model": "gpt-oss:120b", "notes": "Unfired glass blowing pipe ~0.42 m long, lying on its side (X‑axis). Main shaft cylinder, bulbous bowl sphere with thin rim, small mouthpiece cylinder and tip sphere, plus surface seam rings and a couple of tiny glass‑mark details.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.0132,-0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.3,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.0},
+  {"name":"BowlBody","shape":"sphere","pos":[0.1718,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.0},
+  {"name":"BowlRim","shape":"cylinder","pos":[0.1718,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.075,0.005,0.075],"color":[0.65,0.63,0.55],"smooth":0.45,"metal":0.0},
+  {"name":"Mouthpiece","shape":"cylinder","pos":[-0.1833,-0.031,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.04,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.0},
+  {"name":"Tip","shape":"sphere","pos":[-0.2062,-0.032,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.0},
+  {"name":"SeamMid","shape":"cylinder","pos":[-0.0132,-0.024,0.0],"rot":[0.0,0.0,90.0],"size":[0.022,0.3,0.022],"color":[0.45,0.43,0.38],"smooth":0.3,"metal":0.0},
+  {"name":"SeamNearMouth","shape":"cylinder","pos":[-0.1532,-0.024,0.0],"rot":[0.0,0.0,90.0],"size":[0.022,0.02,0.022],"color":[0.45,0.43,0.38],"smooth":0.3,"metal":0.0},
+  {"name":"SeamNearBowl","shape":"cylinder","pos":[0.1268,-0.024,0.0],"rot":[0.0,0.0,90.0],"size":[0.022,0.02,0.022],"color":[0.45,0.43,0.38],"smooth":0.3,"metal":0.0},
+  {"name":"GlassMark","shape":"cube","pos":[-0.0633,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.01,0.02],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":0.0},
+  {"name":"FlawSpot","shape":"sphere","pos":[0.0668,-0.023,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.5,0.48,0.42],"smooth":0.55,"metal":0.0}
+]}

@@ -1,0 +1,15 @@
+{"version": 1, "id": "TrunkDoor1", "baseHeight": 0.08, "name": "Trunk Door1", "model": "gpt-oss:120b", "notes": "Trunk door panel ~1.2 m × 0.8 m, 2.5 cm thick, painted brown (tint 0.6,0.58,0.5). Includes thin metal edge strips, two hinge pins on the left side, a simple lock assembly on the right, and four corner rivets.", "score": 7, "parts": [
+  {"name":"DoorPanel","shape":"cube","pos":[-0.0113,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.025,0.8],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.7},
+  {"name":"EdgeTop","shape":"cube","pos":[-0.0113,0.0055,0.39],"rot":[0.0,0.0,0.0],"size":[1.2,0.01,0.02],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":0.9},
+  {"name":"EdgeBottom","shape":"cube","pos":[-0.0113,0.0055,-0.39],"rot":[0.0,0.0,0.0],"size":[1.2,0.01,0.02],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":0.9},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.6013,0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.8],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":0.9},
+  {"name":"EdgeRight","shape":"cube","pos":[0.5787,0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.8],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":0.9},
+  {"name":"HingePinTop","shape":"cylinder","pos":[-0.6162,0.0,0.25],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"HingePinBottom","shape":"cylinder","pos":[-0.6162,0.0,-0.25],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"LockBody","shape":"cube","pos":[0.5837,0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.03],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.8},
+  {"name":"LockKnob","shape":"cylinder","pos":[0.6038,0.0055,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.04,0.02],"color":[0.05,0.05,0.07],"smooth":0.5,"metal":1.0},
+  {"name":"RivetTL","shape":"cylinder","pos":[-0.5913,0.0055,0.38],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.7,0.71,0.73],"smooth":0.55,"metal":1.0},
+  {"name":"RivetTR","shape":"cylinder","pos":[0.5687,0.0055,0.38],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.7,0.71,0.73],"smooth":0.55,"metal":1.0},
+  {"name":"RivetBL","shape":"cylinder","pos":[-0.5913,0.0055,-0.38],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.7,0.71,0.73],"smooth":0.55,"metal":1.0},
+  {"name":"RivetBR","shape":"cylinder","pos":[0.5687,0.0055,-0.38],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.01],"color":[0.7,0.71,0.73],"smooth":0.55,"metal":1.0}
+]}

@@ -1,0 +1,15 @@
+{"version": 1, "id": "NormalCarSeat1", "baseHeight": 0.37, "name": "Normal Car Seat1", "model": "gpt-oss:120b", "notes": "Car seat (bucket style) about 0.55 m wide × 0.45 m deep × 0.60 m tall. Built as a padded upholstery block with thin metal frame, four leg supports and a small head‑rest cylinder. Dark‑grey metal parts use the generic metal colour; fabric uses the given tint (0.6, 0.58, 0.5).", "score": 6, "parts": [
+  {"name":"FrameSeat","shape":"cube","pos":[0.0,-0.275,0.04],"rot":[0.0,0.0,0.0],"size":[0.56,0.07,0.46],"color":[0.3,0.3,0.32],"smooth":0.15,"metal":1.0},
+  {"name":"SeatUpholstery","shape":"cube","pos":[0.0,-0.285,0.04],"rot":[0.0,0.0,0.0],"size":[0.55,0.05,0.45],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrameBack","shape":"cube","pos":[0.0,0.0,-0.21],"rot":[0.0,0.0,0.0],"size":[0.56,0.62,0.06],"color":[0.3,0.3,0.32],"smooth":0.15,"metal":1.0},
+  {"name":"BackUpholstery","shape":"cube","pos":[0.0,-0.01,-0.21],"rot":[0.0,0.0,0.0],"size":[0.55,0.6,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Headrest","shape":"cylinder","pos":[0.0,0.3,-0.21],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.12],"color":[0.65,0.62,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"LegFL","shape":"cylinder","pos":[-0.23,-0.21,0.22],"rot":[0.0,0.0,0.0],"size":[0.03,0.2,0.03],"color":[0.3,0.3,0.32],"smooth":0.15,"metal":1.0},
+  {"name":"LegFR","shape":"cylinder","pos":[0.23,-0.21,0.22],"rot":[0.0,0.0,0.0],"size":[0.03,0.2,0.03],"color":[0.3,0.3,0.32],"smooth":0.15,"metal":1.0},
+  {"name":"LegBL","shape":"cylinder","pos":[-0.23,-0.21,-0.14],"rot":[0.0,0.0,0.0],"size":[0.03,0.2,0.03],"color":[0.3,0.3,0.32],"smooth":0.15,"metal":1.0},
+  {"name":"LegBR","shape":"cylinder","pos":[0.23,-0.21,-0.14],"rot":[0.0,0.0,0.0],"size":[0.03,0.2,0.03],"color":[0.3,0.3,0.32],"smooth":0.15,"metal":1.0},
+  {"name":"BoltFL","shape":"sphere","pos":[-0.26,-0.24,0.25],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.2,0.2,0.22],"smooth":0.15,"metal":1.0},
+  {"name":"BoltFR","shape":"sphere","pos":[0.26,-0.24,0.25],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.2,0.2,0.22],"smooth":0.15,"metal":1.0},
+  {"name":"BoltBL","shape":"sphere","pos":[-0.26,-0.24,-0.17],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.2,0.2,0.22],"smooth":0.15,"metal":1.0},
+  {"name":"BoltBR","shape":"sphere","pos":[0.26,-0.24,-0.17],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.2,0.2,0.22],"smooth":0.15,"metal":1.0}
+]}

@@ -1,0 +1,18 @@
+{"version": 1, "id": "Bullets45", "baseHeight": 0.0727, "name": "Bullets45", "model": "gpt-oss:120b", "notes": "Stack of eight .45 ACP rounds lying on the floor, each ~0.032 m long × 0.0115 m diameter. The pile is about 0.04 m wide × 0.03 m deep × 0.02 m tall. Brass‑coloured cylinders with a dark primer sphere at the front of each round.", "score": 7, "parts": [
+  {"name":"Bullet0","shape":"cylinder","pos":[0.0,-0.007,-0.007],"rot":[0.0,0.0,90.0],"size":[0.0115,0.032,0.0115],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.8},
+  {"name":"Primer0","shape":"sphere","pos":[0.0145,-0.007,-0.007],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Bullet1","shape":"cylinder","pos":[0.0,-0.005,-0.003],"rot":[0.0,0.0,90.0],"size":[0.0115,0.032,0.0115],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.8},
+  {"name":"Primer1","shape":"sphere","pos":[0.0145,-0.005,-0.003],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Bullet2","shape":"cylinder","pos":[0.0,-0.003,0.001],"rot":[0.0,0.0,90.0],"size":[0.0115,0.032,0.0115],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.8},
+  {"name":"Primer2","shape":"sphere","pos":[0.0145,-0.003,0.001],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Bullet3","shape":"cylinder","pos":[0.0,-0.001,0.005],"rot":[0.0,0.0,90.0],"size":[0.0115,0.032,0.0115],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.8},
+  {"name":"Primer3","shape":"sphere","pos":[0.0145,-0.001,0.005],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Bullet4","shape":"cylinder","pos":[0.0,0.001,-0.005],"rot":[0.0,0.0,90.0],"size":[0.0115,0.032,0.0115],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.8},
+  {"name":"Primer4","shape":"sphere","pos":[0.0145,0.001,-0.005],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Bullet5","shape":"cylinder","pos":[0.0,0.003,0.003],"rot":[0.0,0.0,90.0],"size":[0.0115,0.032,0.0115],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.8},
+  {"name":"Primer5","shape":"sphere","pos":[0.0145,0.003,0.003],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Bullet6","shape":"cylinder","pos":[0.0,0.005,0.007],"rot":[0.0,0.0,90.0],"size":[0.0115,0.032,0.0115],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.8},
+  {"name":"Primer6","shape":"sphere","pos":[0.0145,0.005,0.007],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Bullet7","shape":"cylinder","pos":[0.0,0.007,0.001],"rot":[0.0,0.0,90.0],"size":[0.0115,0.032,0.0115],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.8},
+  {"name":"Primer7","shape":"sphere","pos":[0.0145,0.007,0.001],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0}
+]}

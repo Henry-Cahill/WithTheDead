@@ -1,0 +1,12 @@
+{"version": 1, "id": "RearWindow3", "baseHeight": 0.075, "name": "Rear Window3", "model": "gpt-oss:120b", "notes": "Rear vehicle window sheet ~0.45 m wide × 0.35 m tall × 1 cm thick, with thin painted frame strips and corner rivets; laid flat on the floor.", "score": 7, "parts": [
+  {"name":"GlassPane","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.45,0.01,0.35],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0},
+  {"name":"TopFrame","shape":"cube","pos":[0.0,-0.0,0.175],"rot":[0.0,0.0,0.0],"size":[0.49,0.02,0.01],"color":[0.4,0.38,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"BottomFrame","shape":"cube","pos":[0.0,-0.0,-0.175],"rot":[0.0,0.0,0.0],"size":[0.49,0.02,0.01],"color":[0.4,0.38,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"LeftFrame","shape":"cube","pos":[-0.225,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.37],"color":[0.4,0.38,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"RightFrame","shape":"cube","pos":[0.225,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.37],"color":[0.4,0.38,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"RivetTL","shape":"sphere","pos":[-0.225,0.01,0.175],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"RivetTR","shape":"sphere","pos":[0.225,0.01,0.175],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[-0.225,0.01,-0.175],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.225,0.01,-0.175],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"Crack","shape":"cube","pos":[0.0,-0.009,0.0],"rot":[0.0,45.0,0.0],"size":[0.45,0.004,0.01],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":0.0}
+]}

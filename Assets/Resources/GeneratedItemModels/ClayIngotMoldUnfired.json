@@ -1,0 +1,12 @@
+{"version": 1, "id": "ClayIngotMoldUnfired", "baseHeight": 0.0925, "name": "Clay Ingot Mold Unfired", "model": "gpt-oss:120b", "notes": "Unfired clay ingot mold ~0.20 m long × 0.10 m wide × 0.05 m high, shallow rectangular tray with raised rim, interior cavity and two small handling knobs on front and left side.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0037,0.0025,-0.005],"rot":[0.0,0.0,0.0],"size":[0.2,0.05,0.1],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"RimFront","shape":"cube","pos":[0.0037,0.03,0.05],"rot":[0.0,0.0,0.0],"size":[0.2,0.005,0.01],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"RimBack","shape":"cube","pos":[0.0037,0.03,-0.06],"rot":[0.0,0.0,0.0],"size":[0.2,0.005,0.01],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"RimLeft","shape":"cube","pos":[-0.1013,0.03,-0.005],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.1],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"RimRight","shape":"cube","pos":[0.1087,0.03,-0.005],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.1],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"TopBand","shape":"cube","pos":[0.0037,0.0287,-0.005],"rot":[0.0,0.0,0.0],"size":[0.2,0.0025,0.1],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"InteriorCavity","shape":"cube","pos":[0.0037,0.0025,-0.005],"rot":[0.0,0.0,0.0],"size":[0.18,0.045,0.08],"color":[0.65,0.63,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"FrontKnob","shape":"cylinder","pos":[0.0037,0.01,0.05],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.03],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"SideHandle","shape":"cylinder","pos":[-0.1013,0.01,-0.005],"rot":[0.0,0.0,0.0],"size":[0.025,0.015,0.025],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"BottomFoot","shape":"cube","pos":[0.0037,-0.0275,-0.005],"rot":[0.0,0.0,0.0],"size":[0.04,0.01,0.04],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0}
+]}

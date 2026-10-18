@@ -1,0 +1,11 @@
+{"version": 1, "id": "Calipers", "baseHeight": 0.08, "name": "Calipers", "model": "gpt-oss:120b", "notes": "Calipers ~0.18 m long, 0.03 m deep, 0.02 m thick, lying on floor with main beam along X. Metal body (tint 0.6,0.58,0.5) plus fixed jaw, sliding jaw, thumb‑screw knob and a few scale marks.", "score": 7, "parts": [
+  {"name":"MainBeam","shape":"cube","pos":[0.0,-0.01,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.03],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"FixedJaw","shape":"cube","pos":[0.075,-0.011,0.015],"rot":[0.0,0.0,0.0],"size":[0.03,0.018,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SlidingJaw","shape":"cube","pos":[-0.075,-0.011,0.015],"rot":[0.0,0.0,0.0],"size":[0.03,0.018,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ThumbScrew","shape":"cylinder","pos":[-0.07,0.01,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.018,0.02,0.018],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ScaleMark1","shape":"cube","pos":[-0.06,-0.008,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.002,0.015,0.025],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"ScaleMark2","shape":"cube","pos":[-0.03,-0.008,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.002,0.015,0.025],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"ScaleMark3","shape":"cube","pos":[0.0,-0.008,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.002,0.015,0.025],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"ScaleMark4","shape":"cube","pos":[0.03,-0.008,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.002,0.015,0.025],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"ScaleMark5","shape":"cube","pos":[0.06,-0.008,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.002,0.015,0.025],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Cube", "baseHeight": 0.1105, "name": "Cube", "model": "gpt-oss:120b", "notes": "Small wooden‑looking material cube ~0.10 m per side, lying on its side (y=0). Main block with subtle edge bevels, a worn bottom spot and a few surface scratches for recognisable texture.", "score": 8, "parts": [
+  {"name":"MainBody","shape":"cube","pos":[0.0,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.1,0.1],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeBevel","shape":"cube","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.108,0.005,0.108],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"BottomWear","shape":"cylinder","pos":[0.0,-0.048,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.005,0.09],"color":[0.48,0.46,0.4],"smooth":0.08,"metal":0.0},
+  {"name":"Scratch1","shape":"cylinder","pos":[-0.02,0.0245,0.03],"rot":[45.0,0.0,0.0],"size":[0.008,0.025,0.008],"color":[0.5,0.48,0.42],"smooth":0.1,"metal":0.0},
+  {"name":"Scratch2","shape":"cylinder","pos":[0.03,0.0195,-0.02],"rot":[-30.0,0.0,0.0],"size":[0.008,0.022,0.008],"color":[0.5,0.48,0.42],"smooth":0.1,"metal":0.0},
+  {"name":"Scratch3","shape":"cylinder","pos":[0.015,0.0295,0.04],"rot":[15.0,0.0,0.0],"size":[0.008,0.018,0.008],"color":[0.5,0.48,0.42],"smooth":0.1,"metal":0.0},
+  {"name":"CornerRoundingFL","shape":"sphere","pos":[-0.05,0.0445,-0.05],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"CornerRoundingFR","shape":"sphere","pos":[-0.05,0.0445,0.05],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"CornerRoundingBL","shape":"sphere","pos":[0.05,0.0445,-0.05],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"CornerRoundingBR","shape":"sphere","pos":[0.05,0.0445,0.05],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "RubberHose", "baseHeight": 0.0875, "name": "Rubber Hose", "model": "gpt-oss:120b", "notes": "Rubber hose ~1 m long, 5 cm diameter, coiled in a gentle S‑shape on the floor. Three connected rubber cylinders with inner reinforcement tubes and metal clamps at each end; small bend joints mark the coil turns.", "score": 6, "parts": [
+  {"name":"OuterSeg1","shape":"cylinder","pos":[-0.28,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.3,0.05],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"OuterSeg2","shape":"cylinder","pos":[-0.005,-0.0025,0.02],"rot":[0.0,0.0,90.0],"size":[0.05,0.25,0.05],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"OuterSeg3","shape":"cylinder","pos":[0.27,-0.0025,-0.02],"rot":[0.0,0.0,90.0],"size":[0.05,0.3,0.05],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"InnerSeg1","shape":"cylinder","pos":[-0.28,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.28,0.04],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"InnerSeg2","shape":"cylinder","pos":[-0.005,-0.0025,0.02],"rot":[0.0,0.0,90.0],"size":[0.04,0.23,0.04],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"InnerSeg3","shape":"cylinder","pos":[0.27,-0.0025,-0.02],"rot":[0.0,0.0,90.0],"size":[0.04,0.28,0.04],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"ClampLeft","shape":"sphere","pos":[-0.43,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.7,0.7,0.7],"smooth":0.55,"metal":1.0},
+  {"name":"ClampRight","shape":"sphere","pos":[0.43,0.0125,-0.02],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.7,0.7,0.7],"smooth":0.55,"metal":1.0},
+  {"name":"BendJoint1","shape":"sphere","pos":[-0.13,-0.0025,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"BendJoint2","shape":"sphere","pos":[0.12,-0.0025,-0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0}
+]}

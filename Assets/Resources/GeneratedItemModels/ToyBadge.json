@@ -1,0 +1,8 @@
+{"version": 1, "id": "ToyBadge", "baseHeight": 0.0755, "name": "Toy Badge", "model": "gpt-oss:120b", "notes": "Flat round toy badge about 8 cm across, 1 cm thick, lying on its side. Main body in muted olive tint, a slightly darker rim, a raised central emblem and a tiny metal safety‑pin back visible from underneath.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.01,0.08],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.7},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.012,0.09],"color":[0.48,0.46,0.4],"smooth":0.25,"metal":0.7},
+  {"name":"Emblem","shape":"cylinder","pos":[0.0,0.0115,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.04],"color":[0.72,0.7,0.6],"smooth":0.35,"metal":0.4},
+  {"name":"PinBack","shape":"cylinder","pos":[0.0,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.02,0.004],"color":[0.3,0.3,0.32],"smooth":0.45,"metal":1.0},
+  {"name":"PinHead","shape":"cylinder","pos":[0.0,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.35,0.34,0.36],"smooth":0.45,"metal":1.0},
+  {"name":"ShadowBase","shape":"cube","pos":[0.0,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.002,0.082],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0}
+]}

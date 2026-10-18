@@ -1,0 +1,15 @@
+{"version": 1, "id": "ToyBear_Crafted_Burlap", "baseHeight": 0.1825, "name": "Toy Bear Crafted Burlap", "model": "gpt-oss:120b", "notes": "Stuffed toy bear made of burlap (tint 0.6,0.58,0.5), about 0.35 m tall when lying on its side: rounded torso and head, short stubby legs underneath, floppy arms forward, tiny ears, nose, eyes and a couple of dark stitching lines for detail.", "score": 6, "parts": [
+  {"name":"Body","shape":"sphere","pos":[-0.025,-0.0475,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.15,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Head","shape":"sphere","pos":[0.065,0.0525,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.1,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LeftArm","shape":"cylinder","pos":[-0.075,-0.0325,0.07],"rot":[90.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RightArm","shape":"cylinder","pos":[-0.075,-0.0325,-0.07],"rot":[90.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LeftLeg","shape":"cylinder","pos":[-0.095,-0.0825,0.05],"rot":[0.0,0.0,0.0],"size":[0.06,0.08,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"RightLeg","shape":"cylinder","pos":[-0.095,-0.0825,-0.05],"rot":[0.0,0.0,0.0],"size":[0.06,0.08,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EarL","shape":"sphere","pos":[0.09,0.1125,0.03],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EarR","shape":"sphere","pos":[0.09,0.1125,-0.03],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Nose","shape":"sphere","pos":[0.105,0.0425,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.0,0.0,0.0],"smooth":0.1,"metal":0.0},
+  {"name":"EyeL","shape":"cube","pos":[0.095,0.0575,0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.002],"color":[0.1,0.08,0.06],"smooth":0.1,"metal":0.0},
+  {"name":"EyeR","shape":"cube","pos":[0.095,0.0575,-0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.002],"color":[0.1,0.08,0.06],"smooth":0.1,"metal":0.0},
+  {"name":"StitchBack","shape":"cube","pos":[-0.025,-0.0325,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.01,0.02],"color":[0.3,0.25,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"StitchBelly","shape":"cube","pos":[0.015,-0.0525,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.008,0.015],"color":[0.3,0.25,0.2],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "Paperclip", "baseHeight": 0.0629, "name": "Paperclip", "model": "gpt-oss:120b", "notes": "Paperclip ~0.018 m long, 0.004 m tall, thin wire (≈0.0015 m thick) forming a classic ‘U’ shape, lying flat on the floor.", "score": 6, "parts": [
+  {"name":"BaseBar","shape":"cube","pos":[0.0,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"LeftLeg","shape":"cube","pos":[-0.009,-0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.004,0.002],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RightLeg","shape":"cube","pos":[0.009,-0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.004,0.002],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"TopBar","shape":"cube","pos":[0.0,0.0019,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"ClipJoint","shape":"sphere","pos":[-0.009,0.0019,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"ClipJointR","shape":"sphere","pos":[0.009,0.0019,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0}
+]}

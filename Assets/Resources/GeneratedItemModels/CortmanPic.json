@@ -1,0 +1,12 @@
+{"version": 1, "id": "CortmanPic", "baseHeight": 0.07, "name": "Cortman Pic", "model": "gpt-oss:120b", "notes": "Framed picture about 0.32 m wide × 0.24 m tall × 0.02 m thick. Wooden‑tinted frame (tint 0.6,0.58,0.5) with a thin paper photo inset. Lying flat on the floor.", "score": 7, "parts": [
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.004,0.24],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.0,0.0,0.1125],"rot":[0.0,0.0,0.0],"size":[0.32,0.02,0.015],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[0.0,0.0,-0.1125],"rot":[0.0,0.0,0.0],"size":[0.32,0.02,0.015],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.1525,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.24],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.1525,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.24],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Photo","shape":"cube","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.29,0.004,0.21],"color":[0.72,0.7,0.66],"smooth":0.05,"metal":0.0},
+  {"name":"BorderTrimTop","shape":"cube","pos":[0.0,0.0015,0.1087],"rot":[0.0,0.0,0.0],"size":[0.28,0.004,0.006],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"BorderTrimBottom","shape":"cube","pos":[0.0,0.0015,-0.1087],"rot":[0.0,0.0,0.0],"size":[0.28,0.004,0.006],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"BorderTrimLeft","shape":"cube","pos":[-0.1487,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.19],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"BorderTrimRight","shape":"cube","pos":[0.1487,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.19],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0}
+]}

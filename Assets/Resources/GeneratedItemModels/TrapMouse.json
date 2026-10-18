@@ -1,0 +1,12 @@
+{"version": 1, "id": "TrapMouse", "baseHeight": 0.0785, "name": "Trap Mouse", "model": "gpt-oss:120b", "notes": "Snap‑style mouse trap about 0.12 m long × 0.07 m wide × 0.03 m high, lying on its side: wooden base board, steel spring, metal snap bar, bait cup and trigger lever with hinge pin.", "score": 7, "parts": [
+  {"name":"BaseBoard","shape":"cube","pos":[-0.01,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.022,0.07],"color":[0.55,0.53,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"BaitCup","shape":"cylinder","pos":[-0.055,0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.58,0.55,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SnapBar","shape":"cube","pos":[0.03,0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.006,0.015],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"SpringCoil","shape":"cylinder","pos":[0.015,0.0135,0.0],"rot":[90.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"TriggerLever","shape":"cube","pos":[-0.03,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.015],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"HingePin","shape":"cylinder","pos":[-0.028,0.0005,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"WoodGrainLine","shape":"cube","pos":[-0.01,0.0045,0.025],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.002],"color":[0.48,0.46,0.42],"smooth":0.08,"metal":0.0},
+  {"name":"MetalEdgeL","shape":"cube","pos":[-0.055,0.0095,0.035],"rot":[0.0,0.0,0.0],"size":[0.004,0.006,0.015],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"MetalEdgeR","shape":"cube","pos":[-0.055,0.0095,-0.035],"rot":[0.0,0.0,0.0],"size":[0.004,0.006,0.015],"color":[0.7,0.71,0.73],"smooth":0.6,"metal":1.0},
+  {"name":"BaseRimFront","shape":"cube","pos":[-0.065,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.022,0.07],"color":[0.55,0.53,0.48],"smooth":0.12,"metal":0.0}
+]}

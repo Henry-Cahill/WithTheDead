@@ -1,0 +1,13 @@
+{"version": 1, "id": "MetalworkingPliers", "baseHeight": 0.0752, "name": "Metalworking Pliers", "model": "gpt-oss:120b", "notes": "Metalworking pliers ~0.25 m long, lying on their side: two parallel steel handles (with black rubber grip) along X, a central pivot sphere, a small screw/bolt, and the crossing jaws at the far end.", "score": 6, "parts": [
+  {"name":"HandleL","shape":"cylinder","pos":[-0.0025,-0.0027,-0.012],"rot":[0.0,0.0,90.0],"size":[0.02,0.22,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"HandleR","shape":"cylinder","pos":[-0.0025,-0.0027,0.012],"rot":[0.0,0.0,90.0],"size":[0.02,0.22,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"RubberGrip","shape":"cylinder","pos":[-0.0025,-0.0027,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.04,0.025],"color":[0.05,0.05,0.07],"smooth":0.3,"metal":0.0},
+  {"name":"PivotSphere","shape":"sphere","pos":[-0.0025,-0.0027,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"PivotBolt","shape":"cylinder","pos":[-0.0025,-0.0027,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.5,0.5,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"UpperJaw","shape":"cube","pos":[0.1025,-0.0052,-0.012],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.06],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"LowerJaw","shape":"cube","pos":[0.1025,-0.0052,0.012],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.06],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"JawClampL","shape":"cube","pos":[0.1125,0.0023,-0.012],"rot":[0.0,0.0,5.0],"size":[0.01,0.025,0.06],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"JawClampR","shape":"cube","pos":[0.1125,0.0023,0.012],"rot":[0.0,0.0,-5.0],"size":[0.01,0.025,0.06],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"HandleEndCapL","shape":"cube","pos":[-0.1125,-0.0037,-0.012],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.018],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"HandleEndCapR","shape":"cube","pos":[-0.1125,-0.0037,0.012],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.018],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "OldCarMuffler1", "baseHeight": 0.1725, "name": "Old Car Muffler1", "model": "gpt-oss:120b", "notes": "Old car muffler ~0.55 m long × 0.22 m diameter, 2 cm thick steel shell with a smaller perforated core and three cross‑tube baffles; lies on its side (long axis along +X) on the floor.", "score": 6, "parts": [
+  {"name":"Shell","shape":"cylinder","pos":[0.0,0.0,-0.0037],"rot":[0.0,0.0,90.0],"size":[0.22,0.55,0.22],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"EndCapL","shape":"cylinder","pos":[-0.275,0.0,-0.0037],"rot":[0.0,0.0,90.0],"size":[0.225,0.02,0.225],"color":[0.55,0.53,0.48],"smooth":0.4,"metal":1.0},
+  {"name":"EndCapR","shape":"cylinder","pos":[0.275,0.0,-0.0037],"rot":[0.0,0.0,90.0],"size":[0.225,0.02,0.225],"color":[0.55,0.53,0.48],"smooth":0.4,"metal":1.0},
+  {"name":"Core","shape":"cylinder","pos":[0.0,0.005,-0.0037],"rot":[0.0,0.0,90.0],"size":[0.12,0.53,0.12],"color":[0.45,0.44,0.38],"smooth":0.5,"metal":1.0},
+  {"name":"Baffle1","shape":"cylinder","pos":[-0.18,0.01,-0.0037],"rot":[90.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.45,0.44,0.38],"smooth":0.5,"metal":1.0},
+  {"name":"Baffle2","shape":"cylinder","pos":[0.0,0.01,-0.0037],"rot":[90.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.45,0.44,0.38],"smooth":0.5,"metal":1.0},
+  {"name":"Baffle3","shape":"cylinder","pos":[0.18,0.01,-0.0037],"rot":[90.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.45,0.44,0.38],"smooth":0.5,"metal":1.0},
+  {"name":"ClampL","shape":"cube","pos":[-0.275,0.015,0.0862],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.06],"color":[0.5,0.48,0.44],"smooth":0.3,"metal":1.0},
+  {"name":"ClampR","shape":"cube","pos":[0.275,0.015,0.0862],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.06],"color":[0.5,0.48,0.44],"smooth":0.3,"metal":1.0},
+  {"name":"RustPatch","shape":"sphere","pos":[0.12,0.005,0.0663],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.7,0.4,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"BoltL","shape":"cylinder","pos":[-0.275,0.015,-0.0837],"rot":[0.0,0.0,90.0],"size":[0.02,0.015,0.02],"color":[0.4,0.4,0.38],"smooth":0.6,"metal":1.0},
+  {"name":"BoltR","shape":"cylinder","pos":[0.275,0.015,-0.0837],"rot":[0.0,0.0,90.0],"size":[0.02,0.015,0.02],"color":[0.4,0.4,0.38],"smooth":0.6,"metal":1.0}
+]}

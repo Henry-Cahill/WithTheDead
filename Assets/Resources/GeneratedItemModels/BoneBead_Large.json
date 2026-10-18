@@ -1,0 +1,8 @@
+{"version": 1, "id": "BoneBead_Large", "baseHeight": 0.1113, "name": "Bone Bead Large", "model": "gpt-oss:120b", "notes": "Large bone bead about 10 cm diameter (≈0.1 m) lying on its side: roughly spherical main body, a drilled hole through the centre, two shallow ridges for texture and a thin surface crack. Tint is muted bone colour.", "score": 7, "parts": [
+  {"name":"Body","shape":"sphere","pos":[0.0,0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.1,0.1],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Hole","shape":"cylinder","pos":[0.0,0.0013,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.12,0.015],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"RidgeFront","shape":"cylinder","pos":[0.03,0.0213,0.02],"rot":[90.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.5,0.48,0.4],"smooth":0.12,"metal":0.0},
+  {"name":"RidgeBack","shape":"cylinder","pos":[-0.03,0.0213,-0.02],"rot":[90.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.5,0.48,0.4],"smooth":0.12,"metal":0.0},
+  {"name":"Crack","shape":"cube","pos":[0.0,0.0412,0.015],"rot":[0.0,15.0,0.0],"size":[0.08,0.002,0.01],"color":[0.45,0.43,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"DustSpot","shape":"sphere","pos":[-0.02,-0.0438,0.03],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "FrontCarDoor1", "baseHeight": 0.155, "name": "Front Car Door1", "model": "gpt-oss:120b", "notes": "Front car door lying flat on the floor: 0.90 m wide × 1.20 m tall × 0.04 m thick metal panel, inset window glass with thin frame, exterior pull‑handle with knob, and four rivets at the corners.", "score": 7, "parts": [
+  {"name":"Panel","shape":"cube","pos":[0.0,-0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.9,0.04,1.2],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.9},
+  {"name":"WindowGlass","shape":"cube","pos":[0.0,-0.0675,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.015,0.8],"color":[0.85,0.92,0.95],"smooth":0.05,"metal":0.0},
+  {"name":"FrameTop","shape":"cube","pos":[0.0,-0.0675,0.405],"rot":[0.0,0.0,0.0],"size":[0.72,0.015,0.01],"color":[0.4,0.38,0.3],"smooth":0.15,"metal":0.8},
+  {"name":"FrameBottom","shape":"cube","pos":[0.0,-0.0675,-0.405],"rot":[0.0,0.0,0.0],"size":[0.72,0.015,0.01],"color":[0.4,0.38,0.3],"smooth":0.15,"metal":0.8},
+  {"name":"FrameLeft","shape":"cube","pos":[-0.355,-0.0675,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.82],"color":[0.4,0.38,0.3],"smooth":0.15,"metal":0.8},
+  {"name":"FrameRight","shape":"cube","pos":[0.355,-0.0675,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.82],"color":[0.4,0.38,0.3],"smooth":0.15,"metal":0.8},
+  {"name":"HandleBase","shape":"cylinder","pos":[0.35,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.12,0.03],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":0.9},
+  {"name":"HandleKnob","shape":"sphere","pos":[0.35,0.07,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.6,0.6,0.65],"smooth":0.6,"metal":1.0},
+  {"name":"RivetTL","shape":"sphere","pos":[-0.445,-0.075,0.595],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.8,0.85],"smooth":0.5,"metal":1.0},
+  {"name":"RivetTR","shape":"sphere","pos":[0.445,-0.075,0.595],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.8,0.85],"smooth":0.5,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[-0.445,-0.075,-0.595],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.8,0.85],"smooth":0.5,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.445,-0.075,-0.595],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.8,0.8,0.85],"smooth":0.5,"metal":1.0}
+]}

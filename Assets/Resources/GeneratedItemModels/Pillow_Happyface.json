@@ -1,0 +1,9 @@
+{"version": 1, "id": "Pillow_Happyface", "baseHeight": 0.12, "name": "Pillow Happyface", "model": "gpt-oss:120b", "notes": "Soft rectangular pillow ~0.5 m × 0.35 m × 0.12 m lying on its side with a happy‑face printed on the front (+Z) side: two white eyes, black pupils, a simple curved mouth and a tiny red nose.", "score": 7, "parts": [
+  {"name":"Pillow","shape":"cube","pos":[0.0,0.0,-0.0113],"rot":[0.0,0.0,0.0],"size":[0.5,0.12,0.35],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[-0.1,0.01,0.1737],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.02],"color":[0.9,0.9,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.1,0.01,0.1737],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.02],"color":[0.9,0.9,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"PupilL","shape":"sphere","pos":[-0.1,0.012,0.1837],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.005],"color":[0.05,0.05,0.05],"smooth":0.05,"metal":0.0},
+  {"name":"PupilR","shape":"sphere","pos":[0.1,0.012,0.1837],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.005],"color":[0.05,0.05,0.05],"smooth":0.05,"metal":0.0},
+  {"name":"Mouth","shape":"cylinder","pos":[0.0,0.01,0.1737],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.05,0.05,0.05],"smooth":0.05,"metal":0.0},
+  {"name":"Nose","shape":"sphere","pos":[0.0,0.015,0.1737],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.008],"color":[0.9,0.2,0.2],"smooth":0.1,"metal":0.0}
+]}

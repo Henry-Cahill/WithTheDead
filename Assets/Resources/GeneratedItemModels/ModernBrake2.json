@@ -1,0 +1,12 @@
+{"version": 1, "id": "ModernBrake2", "baseHeight": 0.095, "name": "Modern Brake2", "model": "gpt-oss:120b", "notes": "Modern brake assembly ~0.25 m disc diameter, 0.18 m caliper housing, two pistons and pads, lying on the floor with the disc forward. Main tint 0.6 0.58 0.5 (metal), rubber pads dark gray, bolts darker metal.", "score": 6, "parts": [
+  {"name":"CaliperBody","shape":"cube","pos":[0.0,0.0,-0.0925],"rot":[0.0,0.0,0.0],"size":[0.18,0.07,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"PistonL","shape":"cylinder","pos":[-0.05,0.0,-0.0925],"rot":[90.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"PistonR","shape":"cylinder","pos":[0.05,0.0,-0.0925],"rot":[90.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.5,0.48,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"PadL","shape":"cube","pos":[-0.05,0.0,-0.0625],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.06],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"PadR","shape":"cube","pos":[0.05,0.0,-0.0625],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.06],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Disc","shape":"cylinder","pos":[0.0,-0.0275,0.0275],"rot":[0.0,0.0,0.0],"size":[0.25,0.015,0.25],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BoltFL","shape":"cylinder","pos":[-0.07,-0.02,0.0875],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"BoltFR","shape":"cylinder","pos":[0.07,-0.02,0.0875],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"BoltBL","shape":"cylinder","pos":[-0.07,-0.02,-0.0325],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"BoltBR","shape":"cylinder","pos":[0.07,-0.02,-0.0325],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0}
+]}

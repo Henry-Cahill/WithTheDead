@@ -1,0 +1,11 @@
+{"version": 1, "id": "Specimen_MonkeyHead", "baseHeight": 0.15, "name": "Specimen Monkey Head", "model": "gpt-oss:120b", "notes": "Monkey head specimen about 0.18 m tall × 0.15 m wide × 0.12 m deep, lying on its side with the face pointing upward so the silhouette reads clearly from above.", "score": 6, "parts": [
+  {"name":"Cranium","shape":"sphere","pos":[0.0,0.0,0.0125],"rot":[0.0,0.0,0.0],"size":[0.15,0.18,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Jaw","shape":"cube","pos":[0.0,-0.07,-0.0325],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.08],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EarL","shape":"sphere","pos":[0.08,0.04,0.0125],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EarR","shape":"sphere","pos":[-0.08,0.04,0.0125],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Nose","shape":"sphere","pos":[0.0,0.05,0.0125],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.025],"color":[0.45,0.4,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.03,0.025,0.0125],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.05,0.05,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[-0.03,0.025,0.0125],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.05,0.05,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"MouthLine","shape":"cube","pos":[0.0,-0.015,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.08,0.008,0.004],"color":[0.45,0.4,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"HairTuft","shape":"cylinder","pos":[0.0,0.075,0.0125],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

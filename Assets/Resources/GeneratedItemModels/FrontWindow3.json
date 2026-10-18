@@ -1,0 +1,11 @@
+{"version": 1, "id": "FrontWindow3", "baseHeight": 0.07, "name": "Front Window3", "model": "gpt-oss:120b", "notes": "Front window pane about 0.80 m wide × 1.20 m tall, 5 mm thick glass with a thin metal frame (≈2 cm wide). Lying flat on the floor, the pane is the main tinted element; the frame gives a readable silhouette and a few crack lines for detail.", "score": 7, "parts": [
+  {"name":"GlassPane","shape":"cube","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.78,0.005,1.18],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0},
+  {"name":"FrameTop","shape":"cube","pos":[0.0,0.0,0.595],"rot":[0.0,0.0,0.0],"size":[0.82,0.02,0.02],"color":[0.4,0.4,0.4],"smooth":0.15,"metal":1.0},
+  {"name":"FrameBottom","shape":"cube","pos":[0.0,0.0,-0.595],"rot":[0.0,0.0,0.0],"size":[0.82,0.02,0.02],"color":[0.4,0.4,0.4],"smooth":0.15,"metal":1.0},
+  {"name":"FrameLeft","shape":"cube","pos":[-0.405,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,1.22],"color":[0.4,0.4,0.4],"smooth":0.15,"metal":1.0},
+  {"name":"FrameRight","shape":"cube","pos":[0.405,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,1.22],"color":[0.4,0.4,0.4],"smooth":0.15,"metal":1.0},
+  {"name":"CrackA","shape":"cylinder","pos":[-0.12,-0.007,0.2],"rot":[90.0,0.0,0.0],"size":[0.004,0.18,0.004],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0},
+  {"name":"CrackB","shape":"cylinder","pos":[0.05,-0.007,-0.35],"rot":[90.0,0.0,30.0],"size":[0.004,0.22,0.004],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0},
+  {"name":"CrackC","shape":"cylinder","pos":[0.2,-0.007,0.05],"rot":[90.0,0.0,-20.0],"size":[0.004,0.15,0.004],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.0,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.822,0.004,0.822],"color":[0.45,0.45,0.45],"smooth":0.2,"metal":1.0}
+]}

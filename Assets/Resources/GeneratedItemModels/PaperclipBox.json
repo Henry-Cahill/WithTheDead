@@ -1,0 +1,13 @@
+{"version": 1, "id": "PaperclipBox", "baseHeight": 0.0747, "name": "Paperclip Box", "model": "gpt-oss:120b", "notes": "Small cardboard paper‑clip box ~12 cm × 8 cm × 2.5 cm lying on its side, open lid shown with a label and a few loose metal clips inside.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.0133,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.003,0.08],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SideFront","shape":"cube","pos":[0.0,-0.0008,0.039],"rot":[0.0,0.0,0.0],"size":[0.12,0.022,0.002],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SideBack","shape":"cube","pos":[0.0,-0.0008,-0.039],"rot":[0.0,0.0,0.0],"size":[0.12,0.022,0.002],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SideLeft","shape":"cube","pos":[-0.059,-0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.022,0.08],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SideRight","shape":"cube","pos":[0.059,-0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.022,0.08],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.0117,0.0],"rot":[0.0,0.0,0.0],"size":[0.122,0.003,0.082],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0138,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.06],"color":[0.4,0.38,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Clip1","shape":"cylinder","pos":[-0.025,-0.0103,-0.015],"rot":[0.0,0.0,90.0],"size":[0.002,0.014,0.002],"color":[0.85,0.85,0.9],"smooth":0.6,"metal":1.0},
+  {"name":"Clip2","shape":"cylinder","pos":[0.015,-0.01,0.02],"rot":[0.0,15.0,90.0],"size":[0.002,0.016,0.002],"color":[0.85,0.85,0.9],"smooth":0.6,"metal":1.0},
+  {"name":"Clip3","shape":"cylinder","pos":[0.03,-0.0106,-0.025],"rot":[0.0,-10.0,90.0],"size":[0.002,0.013,0.002],"color":[0.85,0.85,0.9],"smooth":0.6,"metal":1.0},
+  {"name":"Clip4","shape":"cylinder","pos":[-0.018,-0.01,0.03],"rot":[0.0,5.0,90.0],"size":[0.002,0.015,0.002],"color":[0.85,0.85,0.9],"smooth":0.6,"metal":1.0}
+]}

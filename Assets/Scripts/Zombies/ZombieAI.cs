@@ -164,6 +164,17 @@ namespace CloneZ
         /// <summary>Where the hunted thing is (for the body's lean and gaze), or null.</summary>
         public Vector3? HuntTarget => _hasTarget && _prey != null ? _prey.transform.position : (Vector3?)null;
 
+        /// <summary>Points this zombie at a target as if it had seen it (a Puppeteer's command, a lure).</summary>
+        public void Command(Actor target)
+        {
+            if (_state == State.Dead || target == null || !target.IsAlive || IsProtected(target)) return;
+            _prey = target;
+            _hasTarget = true;
+            _lastKnownPos = target.transform.position;
+            _lastSeenTime = Time.time;
+            _investigating = false;
+        }
+
         private static bool IsProtected(Actor a) => a != null && a.Kind == ActorKind.Player && ExtractionManager.PlayerProtected;
 
         private void RefreshPrey()

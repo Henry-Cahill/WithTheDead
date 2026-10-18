@@ -1,0 +1,15 @@
+{"version": 1, "id": "SnowGlobe", "baseHeight": 0.125, "name": "Snow Globe", "model": "gpt-oss:120b", "notes": "Snow globe about 0.15 m tall: wooden base (≈9×7 cm, 4 cm high) with a metal rim, clear glass sphere (~8 cm dia.) containing water, floating snow flakes and a tiny figurine. Simple label on the front of the base.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.045,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.04,0.07],"color":[0.48,0.464,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.01,0.09],"color":[0.7,0.5,0.2],"smooth":0.45,"metal":1.0},
+  {"name":"GlassSphere","shape":"sphere","pos":[0.0,0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0},
+  {"name":"Water","shape":"sphere","pos":[0.0,0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.5,0.75,0.9],"smooth":0.4,"metal":0.0},
+  {"name":"Snow1","shape":"sphere","pos":[-0.015,0.05,0.01],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"Snow2","shape":"sphere","pos":[0.02,0.055,-0.005],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"Snow3","shape":"sphere","pos":[-0.02,0.043,-0.015],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"Snow4","shape":"sphere","pos":[0.01,0.047,0.015],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"Snow5","shape":"sphere","pos":[-0.005,0.053,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"Snow6","shape":"sphere","pos":[0.015,0.045,-0.012],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"FigurineBase","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.008,0.018],"color":[0.48,0.464,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"FigurineHead","shape":"cylinder","pos":[0.0,0.014,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.48,0.464,0.4],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.045,0.036],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.002],"color":[0.3,0.2,0.15],"smooth":0.1,"metal":0.0}
+]}

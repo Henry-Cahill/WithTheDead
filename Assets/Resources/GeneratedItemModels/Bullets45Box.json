@@ -1,0 +1,11 @@
+{"version": 1, "id": "Bullets45Box", "baseHeight": 0.086, "name": "Bullets45 Box", "model": "gpt-oss:120b", "notes": "Small cardboard .45 ammo box about 12 cm × 7 cm × 2 cm lying flat, open‑top with a few brass bullets poking out and a printed label on the lid.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[-0.0015,-0.0185,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.07],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[-0.0015,-0.005,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.12,0.012,0.07],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"LabelTop","shape":"cube","pos":[-0.0015,0.0015,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.06],"color":[0.4,0.38,0.33],"smooth":0.12,"metal":0.0},
+  {"name":"Bullet1","shape":"cylinder","pos":[-0.0315,0.0135,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.012,0.025,0.012],"color":[0.8,0.65,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"Bullet2","shape":"cylinder","pos":[-0.0015,0.0135,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.012,0.025,0.012],"color":[0.8,0.65,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"Bullet3","shape":"cylinder","pos":[0.0285,0.0135,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.012,0.025,0.012],"color":[0.8,0.65,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"SideFlap","shape":"cube","pos":[0.06,-0.0125,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.003,0.015,0.07],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"FrontFlap","shape":"cube","pos":[-0.0015,-0.0125,0.035],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.003],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"BottomRim","shape":"cube","pos":[-0.0015,-0.0245,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.12,0.003,0.07],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0}
+]}

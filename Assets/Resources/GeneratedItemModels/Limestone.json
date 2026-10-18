@@ -1,0 +1,11 @@
+{"version": 1, "id": "Limestone", "baseHeight": 0.1, "name": "Limestone", "model": "gpt-oss:120b", "notes": "Rough limestone chunk ~0.15 m × 0.09 m × 0.07 m (L×W×H) lying on the floor. Main block with a few uneven bumps to read as stone from above.", "score": 7, "parts": [
+  {"name":"MainBlock","shape":"cube","pos":[0.0005,-0.005,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.15,0.07,0.09],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"BumpFront","shape":"sphere","pos":[0.0405,0.015,0.0292],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.58,0.55,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"BumpBack","shape":"sphere","pos":[-0.0445,0.02,-0.0258],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.62,0.6,0.52],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeChipL","shape":"cube","pos":[-0.0695,-0.015,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.09],"color":[0.57,0.55,0.47],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeChipR","shape":"cube","pos":[0.0705,-0.015,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.018,0.045,0.08],"color":[0.59,0.57,0.49],"smooth":0.1,"metal":0.0},
+  {"name":"TopRidge","shape":"cube","pos":[0.0005,0.035,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.13,0.01,0.07],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"SideRoughL","shape":"sphere","pos":[-0.0295,0.005,0.0393],"rot":[0.0,0.0,0.0],"size":[0.035,0.035,0.035],"color":[0.58,0.55,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"SideRoughR","shape":"sphere","pos":[0.0255,0.002,-0.0408],"rot":[0.0,0.0,0.0],"size":[0.032,0.032,0.032],"color":[0.62,0.6,0.52],"smooth":0.1,"metal":0.0},
+  {"name":"BottomFlat","shape":"cube","pos":[0.0005,-0.035,-0.0008],"rot":[0.0,0.0,0.0],"size":[0.15,0.01,0.09],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0}
+]}

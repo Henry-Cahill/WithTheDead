@@ -1,0 +1,13 @@
+{"version": 1, "id": "BorisBadger", "baseHeight": 0.16, "name": "Boris Badger", "model": "gpt-oss:120b", "notes": "Flat badger‑fur hide about 0.30 m long × 0.20 m wide, 2.5 cm thick, with folded edges, a stitched seam, a small label tag and a stray bone lying nearby.", "score": 7, "parts": [
+  {"name":"MainFur","shape":"cube","pos":[-0.0025,0.0,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FoldLeft","shape":"cube","pos":[-0.155,0.0,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.2],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"FoldRight","shape":"cube","pos":[0.15,0.0,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.2],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"FoldFront","shape":"cube","pos":[-0.0025,0.0,0.101],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.005],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"FoldBack","shape":"cube","pos":[-0.0025,0.0,-0.104],"rot":[0.0,0.0,0.0],"size":[0.3,0.025,0.005],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"TagBack","shape":"cube","pos":[-0.1225,0.0025,0.0885],"rot":[0.0,0.0,0.0],"size":[0.06,0.005,0.02],"color":[0.3,0.28,0.2],"smooth":0.25,"metal":0.0},
+  {"name":"TagText","shape":"cube","pos":[-0.1225,0.005,0.0975],"rot":[0.0,0.0,0.0],"size":[0.055,0.002,0.018],"color":[0.9,0.9,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"SeamLeft","shape":"cylinder","pos":[-0.155,0.0,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.003,0.2,0.003],"color":[0.4,0.38,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"SeamRight","shape":"cylinder","pos":[0.15,0.0,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.003,0.2,0.003],"color":[0.4,0.38,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"Bone","shape":"cylinder","pos":[0.1175,-0.005,-0.0915],"rot":[0.0,0.0,90.0],"size":[0.015,0.08,0.015],"color":[0.93,0.91,0.85],"smooth":0.15,"metal":0.0},
+  {"name":"DirtClump","shape":"sphere","pos":[-0.0525,-0.0025,0.0385],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.35,0.3,0.28],"smooth":0.4,"metal":0.0}
+]}

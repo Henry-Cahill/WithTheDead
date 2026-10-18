@@ -1,0 +1,12 @@
+{"version": 1, "id": "WateredCan", "baseHeight": 0.23, "name": "Watered Can", "model": "gpt-oss:120b", "notes": "Watered can ~0.45 m long × 0.12 m wide × 0.15 m high, lying on its side. Main cylindrical body with a short spout and tip, removable lid, vertical handle with an overhead loop, plus a few rivets for detail.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.05,-0.11,-0.05],"rot":[0.0,0.0,90.0],"size":[0.12,0.35,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"Spout","shape":"cylinder","pos":[0.19,-0.11,-0.05],"rot":[90.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"SpoutTip","shape":"sphere","pos":[0.19,-0.11,0.09],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[0.05,-0.105,-0.05],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"HandleRod","shape":"cylinder","pos":[-0.1,0.05,-0.05],"rot":[0.0,0.0,0.0],"size":[0.04,0.2,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"HandleLoop","shape":"cylinder","pos":[-0.1,0.15,-0.05],"rot":[0.0,0.0,90.0],"size":[0.04,0.25,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"RivetFL","shape":"cube","pos":[0.12,-0.11,-0.01],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.48,0.46,0.4],"smooth":0.55,"metal":0.9},
+  {"name":"RivetFR","shape":"cube","pos":[0.12,-0.11,-0.09],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.48,0.46,0.4],"smooth":0.55,"metal":0.9},
+  {"name":"RivetBL","shape":"cube","pos":[-0.02,-0.11,-0.01],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.48,0.46,0.4],"smooth":0.55,"metal":0.9},
+  {"name":"RivetBR","shape":"cube","pos":[-0.02,-0.11,-0.09],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.48,0.46,0.4],"smooth":0.55,"metal":0.9}
+]}

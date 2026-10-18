@@ -1,0 +1,10 @@
+{"version": 1, "id": "CanPipe", "baseHeight": 0.0865, "name": "Can Pipe", "model": "gpt-oss:120b", "notes": "Steel pipe about 0.40 m long, 0.05 m outer diameter, lying on its side (long axis along X). Includes two flange caps, a seam ridge, a faint label strip and a few rust spots for visual interest.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.4,0.05],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.9},
+  {"name":"FlangeFront","shape":"cylinder","pos":[0.2,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.052,0.012,0.052],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.9},
+  {"name":"FlangeBack","shape":"cylinder","pos":[-0.2,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.052,0.012,0.052],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.9},
+  {"name":"SeamRidge","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.053,0.004,0.053],"color":[0.5,0.48,0.4],"smooth":0.12,"metal":0.9},
+  {"name":"LabelStrip","shape":"cube","pos":[0.0,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.002,0.005],"color":[0.3,0.32,0.34],"smooth":0.1,"metal":0.0},
+  {"name":"RustSpotA","shape":"sphere","pos":[-0.08,0.02,0.015],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.3,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"RustSpotB","shape":"sphere","pos":[0.05,0.02,-0.018],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.55,0.28,0.08],"smooth":0.2,"metal":0.0},
+  {"name":"RustSpotC","shape":"sphere","pos":[0.18,0.02,0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.58,0.32,0.12],"smooth":0.2,"metal":0.0}
+]}

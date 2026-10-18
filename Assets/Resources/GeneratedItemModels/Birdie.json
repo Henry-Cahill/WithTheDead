@@ -1,0 +1,11 @@
+{"version": 1, "id": "Birdie", "baseHeight": 0.105, "name": "Birdie", "model": "gpt-oss:120b", "notes": "Small bird carcass about 0.20 m long × 0.10 m tall lying on its side; main body, head, beak, two wings, tail and a pair of legs.", "score": 7, "parts": [
+  {"name":"Body","shape":"sphere","pos":[-0.0213,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.08],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Head","shape":"sphere","pos":[0.0638,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.04,0.045],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Beak","shape":"cylinder","pos":[0.1037,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.03,0.01],"color":[0.55,0.5,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"WingL","shape":"sphere","pos":[-0.0213,0.015,-0.04],"rot":[-20.0,0.0,0.0],"size":[0.09,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"WingR","shape":"sphere","pos":[-0.0213,0.015,0.04],"rot":[20.0,0.0,0.0],"size":[0.09,0.02,0.12],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Tail","shape":"cube","pos":[-0.0913,-0.02,0.0],"rot":[10.0,0.0,0.0],"size":[0.05,0.02,0.03],"color":[0.55,0.53,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"LegL","shape":"cylinder","pos":[-0.0463,-0.025,-0.015],"rot":[0.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.5,0.48,0.44],"smooth":0.05,"metal":0.0},
+  {"name":"LegR","shape":"cylinder","pos":[-0.0463,-0.025,0.015],"rot":[0.0,0.0,0.0],"size":[0.008,0.04,0.008],"color":[0.5,0.48,0.44],"smooth":0.05,"metal":0.0},
+  {"name":"FeatherTip","shape":"cube","pos":[-0.1113,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.01],"color":[0.58,0.55,0.5],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "LargeStone", "baseHeight": 0.21, "name": "Large Stone", "model": "gpt-oss:120b", "notes": "Irregular large stone ~0.35 m across, 0.4 m long, 0.3 m high (≈40 kg). Built from a central sphere plus several overlapping cubes and thin ridges to give a rugged silhouette when lying on the floor.", "score": 7, "parts": [
+  {"name":"CoreSphere","shape":"sphere","pos":[-0.06,0.0,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.3,0.3,0.3],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"ChunkA","shape":"cube","pos":[-0.11,-0.09,0.0675],"rot":[0.0,0.0,0.0],"size":[0.25,0.12,0.18],"color":[0.58,0.55,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"ChunkB","shape":"cube","pos":[0.01,-0.1,-0.1025],"rot":[0.0,0.0,0.0],"size":[0.18,0.1,0.22],"color":[0.61,0.59,0.51],"smooth":0.07,"metal":0.0},
+  {"name":"ChunkC","shape":"cube","pos":[0.06,-0.075,0.0275],"rot":[0.0,0.0,0.0],"size":[0.2,0.15,0.14],"color":[0.59,0.56,0.49],"smooth":0.07,"metal":0.0},
+  {"name":"ChunkD","shape":"cube","pos":[-0.16,-0.11,-0.0825],"rot":[0.0,0.0,0.0],"size":[0.16,0.08,0.2],"color":[0.6,0.57,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"RidgeX1","shape":"cylinder","pos":[0.09,0.03,-0.0125],"rot":[0.0,0.0,90.0],"size":[0.04,0.3,0.04],"color":[0.58,0.55,0.48],"smooth":0.07,"metal":0.0},
+  {"name":"RidgeZ1","shape":"cylinder","pos":[-0.18,0.05,0.0875],"rot":[90.0,0.0,0.0],"size":[0.05,0.25,0.05],"color":[0.61,0.59,0.51],"smooth":0.07,"metal":0.0},
+  {"name":"Crack1","shape":"cube","pos":[-0.06,-0.07,-0.0125],"rot":[0.0,15.0,0.0],"size":[0.02,0.04,0.15],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"Crack2","shape":"cube","pos":[-0.12,-0.06,0.0375],"rot":[0.0,-10.0,0.0],"size":[0.018,0.036,0.12],"color":[0.55,0.53,0.45],"smooth":0.07,"metal":0.0},
+  {"name":"BaseFlat","shape":"cube","pos":[-0.06,-0.14,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.35],"color":[0.6,0.58,0.5],"smooth":0.07,"metal":0.0},
+  {"name":"SmallPebble","shape":"sphere","pos":[-0.2,-0.11,0.1075],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.57,0.55,0.48],"smooth":0.07,"metal":0.0}
+]}

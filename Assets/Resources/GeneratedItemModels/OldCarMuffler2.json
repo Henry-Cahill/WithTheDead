@@ -1,0 +1,12 @@
+{"version": 1, "id": "OldCarMuffler2", "baseHeight": 0.135, "name": "Old Car Muffler2", "model": "gpt-oss:120b", "notes": "Old car muffler ~0.40 m long, 0.15 m diameter, lying on its side (long axis along X). Two inlet/outlet pipes each 0.07 m dia × 0.12 m long, internal metal baffles, mounting brackets and a thin heat‑shield plate; a couple of rust spots add visual detail.", "score": 6, "parts": [
+  {"name":"MainBody","shape":"cylinder","pos":[0.0,-0.0,0.0383],"rot":[0.0,0.0,90.0],"size":[0.15,0.4,0.15],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"PipeLeft","shape":"cylinder","pos":[-0.26,-0.04,0.0383],"rot":[0.0,0.0,90.0],"size":[0.07,0.12,0.07],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"PipeRight","shape":"cylinder","pos":[0.26,-0.04,0.0383],"rot":[0.0,0.0,90.0],"size":[0.07,0.12,0.07],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BaffleFront","shape":"cube","pos":[-0.08,0.005,0.0383],"rot":[0.0,15.0,0.0],"size":[0.12,0.01,0.13],"color":[0.5,0.48,0.42],"smooth":0.45,"metal":1.0},
+  {"name":"BaffleRear","shape":"cube","pos":[0.08,0.005,0.0383],"rot":[0.0,-12.0,0.0],"size":[0.12,0.01,0.13],"color":[0.5,0.48,0.42],"smooth":0.45,"metal":1.0},
+  {"name":"BracketL","shape":"cube","pos":[-0.32,-0.055,0.0383],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.06],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BracketR","shape":"cube","pos":[0.32,-0.055,0.0383],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.06],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"HeatShield","shape":"cube","pos":[0.0,-0.0725,-0.0417],"rot":[0.0,0.0,0.0],"size":[0.4,0.005,0.15],"color":[0.45,0.44,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"RustSpot1","shape":"sphere","pos":[-0.22,-0.065,0.0783],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.3,0.2,0.15],"smooth":0.2,"metal":0.0},
+  {"name":"RustSpot2","shape":"sphere","pos":[0.22,-0.065,-0.0017],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.3,0.2,0.15],"smooth":0.2,"metal":0.0}
+]}
