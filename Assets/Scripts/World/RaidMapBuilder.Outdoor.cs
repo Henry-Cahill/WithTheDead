@@ -29,9 +29,9 @@ namespace CloneZ
 
             // Hydrants and blue mail drop boxes on the sidewalks.
             Vector3[] hydrants = { new Vector3(5.2f, 0f, -9.5f), new Vector3(-5.2f, 0f, 22f), new Vector3(-19f, 0f, -5.3f), new Vector3(31f, 0f, 5.3f) };
-            foreach (Vector3 h in hydrants) Prop(town, h, R(rng, 0f, 360f), new Vector3(0.4f, 0.8f, 0.4f), false, (m, r) => DecorProps.Hydrant(m, r));
-            Prop(town, new Vector3(5.3f, 0f, 19.5f), 270f, new Vector3(0.5f, 1.4f, 0.5f), true, (m, r) => DecorProps.Mailbox(m, r, true));
-            Prop(town, new Vector3(-5.3f, 0f, -21f), 90f, new Vector3(0.5f, 1.4f, 0.5f), true, (m, r) => DecorProps.Mailbox(m, r, true));
+            foreach (Vector3 h in hydrants) HydrantProp(town, h, R(rng, 0f, 360f));
+            MailDropProp(town, new Vector3(5.3f, 0f, 19.5f), 270f);
+            MailDropProp(town, new Vector3(-5.3f, 0f, -21f), 90f);
 
             // Bare trees in the yards and verges.
             int trees = 0;
@@ -121,7 +121,7 @@ namespace CloneZ
                 Prop(town, new Vector3(s * 7.6f, 0f, -59.5f), 90f, new Vector3(4f, 0.8f, 0.5f), true, (m, r) => DecorProps.SandbagWall(m, r, 4f, 5));
             for (int i = -1; i <= 1; i++)
                 Prop(town, new Vector3(i * 3.2f, 0f, -69.6f), 0f, new Vector3(2.6f, 0.9f, 0.6f), true, (m, r) => DecorProps.JerseyBarrier(m, r, 2.6f, true));
-            Prop(town, new Vector3(9.8f, 0f, -63.5f), 270f, new Vector3(1.7f, 2.5f, 1.7f), true, (m, r) => GuardBooth(m, r));
+            GuardBoothProp(town, new Vector3(9.8f, 0f, -63.5f), 270f);
             Wreck(town, new Vector3(-10.5f, 0f, -57f), 0f, DecorProps.CarKind.ArmyTruck, Color.white);
             Vector3 tower = new Vector3(8.6f, 0f, -54f);
             Prop(town, tower, 0f, new Vector3(0.4f, 5f, 0.4f), true, (m, r) =>
@@ -187,17 +187,6 @@ namespace CloneZ
             m.Box(new Vector3(0.2f, 2.0f, 0.08f), new Vector3(0.22f, 0.22f, 0.12f), DecorPalette.Matte(new Color(0.12f, 0.12f, 0.12f)));
             m.Box(new Vector3(-0.2f, 2.0f, 0.141f), new Vector3(0.14f, 0.14f, 0.01f), DecorPalette.Glass(new Color(0.35f, 0.06f, 0.05f)));
             m.Box(new Vector3(0.2f, 2.0f, 0.141f), new Vector3(0.14f, 0.14f, 0.01f), DecorPalette.Glass(new Color(0.35f, 0.06f, 0.05f)));
-        }
-
-        private static void GuardBooth(RaidMesh m, System.Random rng)
-        {
-            Color wall = new Color(0.34f, 0.36f, 0.26f);
-            m.Box(new Vector3(0f, 0.55f, 0f), new Vector3(1.6f, 1.1f, 1.6f), DecorPalette.Matte(wall));
-            for (int i = 0; i < 4; i++)
-                m.Box(new Vector3(i % 2 == 0 ? -0.76f : 0.76f, 1.55f, i < 2 ? -0.76f : 0.76f), new Vector3(0.08f, 0.9f, 0.08f), DecorPalette.Matte(wall));
-            m.Box(new Vector3(0f, 1.55f, 0f), new Vector3(1.5f, 0.85f, 1.5f), DecorPalette.Glass(new Color(0.08f, 0.10f, 0.11f)));
-            m.Box(new Vector3(0f, 2.1f, 0f), new Vector3(1.9f, 0.2f, 1.9f), DecorPalette.Matte(wall * 0.8f));
-            m.Box(new Vector3(0f, 2.23f, 0f), new Vector3(1.7f, 0.06f, 1.7f), DecorPalette.Matte(DecorProps.SnowWhite));
         }
         #endregion
     }

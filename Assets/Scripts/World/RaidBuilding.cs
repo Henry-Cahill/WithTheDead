@@ -41,6 +41,10 @@ namespace CloneZ
 
     internal enum OpeningKind { Door, Window }
 
+    /// <summary>What a raid building is, for the policies its fixtures follow (which doors lock, what hangs at the
+    /// windows, how its storage is stocked).</summary>
+    internal enum RaidBuildingKind { House, Office, Store, Clinic, Army, Depot, Tent }
+
     /// <summary>
     /// A furnished building of the raid map, authored in its own local frame (front wall on local -Z,
     /// facing the street) and placed in the world with a quarter-turn rotation and optional mirror.
@@ -66,6 +70,8 @@ namespace CloneZ
         public readonly System.Random Rng;
 
         public float WallH = 2.8f;
+        /// <summary>What the building is (set by its layout).</summary>
+        public RaidBuildingKind Kind = RaidBuildingKind.House;
         public ExteriorStyle Exterior = ExteriorStyle.Siding;
         public Color ExteriorColor = new Color(0.78f, 0.76f, 0.68f);
         public Color DoorWood = new Color(0.42f, 0.27f, 0.15f);
@@ -118,6 +124,8 @@ namespace CloneZ
             public Opening Opening;
             public readonly RaidMesh Mesh = new RaidMesh();
             public readonly List<Bounds> Colliders = new List<Bounds>(2);
+            /// <summary>The emitted segment (set in <see cref="Finish"/>); fixtures hung on the wall go under it.</summary>
+            public GameObject Object;
         }
 
         public RaidBuilding(RaidTown town, string name, Vector2 center, int turns, bool mirror, float width, float depth)
@@ -441,7 +449,6 @@ namespace CloneZ
             WallRun r = p.Run;
             Opening o = p.Opening;
             Surf wood = DecorPalette.Matte(Casing * 1.1f);
-            Surf frame = DecorPalette.Matte(new Color(0.70f, 0.68f, 0.62f));
             float w = o.Width, hh = HeadHeight - SillHeight, cy = (SillHeight + HeadHeight) * 0.5f;
             // Linings inside the opening.
             p.Mesh.Box(RunPoint(r, o.A + 0.012f, cy, 0f), RunSize(r, 0.024f, hh, Half * 2f + 0.01f), wood);
@@ -457,43 +464,10 @@ namespace CloneZ
                 // A deeper sill ledge, with snow on the outside one.
                 p.Mesh.Box(RunPoint(r, o.Pos, SillHeight + 0.02f, side * (Half + 0.035f)), RunSize(r, w + 0.16f, 0.04f, 0.07f), wood);
             }
-            // The sash: a frame with a cross bar, glazed, broken or gone.
-            p.Mesh.Box(RunPoint(r, o.Pos, SillHeight + 0.05f, 0f), RunSize(r, w - 0.05f, 0.05f, 0.05f), frame);
-            p.Mesh.Box(RunPoint(r, o.Pos, HeadHeight - 0.05f, 0f), RunSize(r, w - 0.05f, 0.05f, 0.05f), frame);
-            p.Mesh.Box(RunPoint(r, o.Pos, cy, 0f), RunSize(r, 0.04f, hh - 0.08f, 0.04f), frame);
-            p.Mesh.Box(RunPoint(r, o.Pos, cy + 0.12f, 0f), RunSize(r, w - 0.06f, 0.035f, 0.035f), frame);
-            if (o.Intact)
-            {
-                Surf glass = DecorPalette.Glass(new Color(0.10f, 0.13f, 0.15f));
-                p.Mesh.Box(RunPoint(r, o.Pos, cy, 0f), RunSize(r, w - 0.08f, hh - 0.1f, 0.008f), glass);
-            }
-            else
-            {
-                // Shards left in the corners of the frame.
-                Surf shard = DecorPalette.Glass(new Color(0.30f, 0.36f, 0.40f));
-                Vector3 along = r.AlongX ? Vector3.right : Vector3.forward;
-                for (int i = 0; i < 4; i++)
-                {
-                    float sa = (i % 2 == 0 ? o.A + 0.08f : o.B - 0.08f);
-                    float sy = i < 2 ? SillHeight + 0.12f : HeadHeight - 0.12f;
-                    float k = (float)Rng.NextDouble() * 0.08f + 0.05f;
-                    p.Mesh.Diamond(RunPoint(r, sa, sy, 0.002f), along * k, Vector3.up * k * 1.6f, shard);
-                    p.Mesh.Diamond(RunPoint(r, sa, sy, -0.002f), -along * k, Vector3.up * k * 1.6f, shard);
-                }
-            }
-            if (o.Boarded)
-            {
-                Surf plank = DecorMaterials.Planks(new Color(0.50f, 0.40f, 0.28f));
-                int outside = OutsideSide(r, o.Pos);
-                for (int i = 0; i < 3; i++)
-                {
-                    float y = SillHeight + 0.25f + i * 0.38f;
-                    float tilt = ((float)Rng.NextDouble() - 0.5f) * 14f;
-                    Vector3 c = RunPoint(r, o.Pos, y, outside * (Half + 0.04f));
-                    Quaternion q = Quaternion.LookRotation(RunNormal(r, outside)) * Quaternion.Euler(0f, 0f, tilt);
-                    p.Mesh.Box(c, new Vector3(w + 0.3f, 0.16f, 0.03f), q, plank);
-                }
-            }
+            // The upper sash, fixed in the outer track (and, outside a house, its shutters and flower box). What moves or
+            // changes — the lower sash, the glass, the lock's lever, the dressing, any boards — is fitted once the segment is
+            // an object of its own (FitWindow, RaidBuilding.Windows.cs).
+            WindowFrame(p);
             int sx = OutsideSide(r, o.Pos);
             if (sx != 0) p.Mesh.Box(RunPoint(r, o.Pos, SillHeight + 0.05f, sx * (Half + 0.04f)), RunSize(r, w + 0.1f, 0.03f, 0.06f), DecorPalette.Matte(DecorProps.SnowWhite));
         }
@@ -574,35 +548,50 @@ namespace CloneZ
             }
         }
 
-        /// <summary>Hangs the door leaves once the rooms are furnished: each swings open against the wall
-        /// beside its gap (never across it), on whichever side and hinge leaves it clear of furniture. A
-        /// doorway with no clear swing is left without a leaf.</summary>
+        /// <summary>Hangs the doors once the rooms are furnished, and queues the windows' working parts: a doorway declared
+        /// with a leaf gets a pair of leaves hinged at its jambs (<see cref="HangDoor"/>, a working <see cref="RaidDoor"/>),
+        /// swinging open into whichever room leaves them clear of furniture and other doorways, to rest leaning back near the
+        /// wall beside the gap (never across it). A doorway with no clear swing is left without a door. Every window is
+        /// fitted with its sash, glass and dressing (<see cref="FitWindow"/>), once its segment is an object.</summary>
         private void PlaceAllLeaves()
         {
             foreach (Opening o in _openings)
                 if (o.Kind == OpeningKind.Door && o.Leaf) PlaceLeaves(o);
+            foreach (WallPiece p in _pieces)
+            {
+                if (p.Opening == null || p.Opening.Kind != OpeningKind.Window) continue;
+                WallPiece piece = p;
+                Later(() => FitWindow(piece));
+            }
         }
 
         private void PlaceLeaves(Opening o)
         {
             WallRun r = o.Run;
             RaidRoom plus = RoomAt(RunPoint(r, o.Pos, 0f, 0.6f)), minus = RoomAt(RunPoint(r, o.Pos, 0f, -0.6f));
-            int first = plus == null ? -1 : (minus != null && Rng.NextDouble() < 0.5 ? -1 : 1);
-            bool dbl = o.Width >= 1.7f;
-            float leafW = dbl ? o.Width * 0.5f - 0.03f : Mathf.Min(1.0f, o.Width - 0.12f);
-            bool hingeA = Rng.NextDouble() < 0.5;
+            // An outer door swings in; between two rooms, into the smaller one (a bedroom or a bathroom off the living room,
+            // an office off the hall) when its swing is clear.
+            int first;
+            if (plus == null) first = -1;
+            else if (minus == null) first = 1;
+            else
+            {
+                float ap = plus.World.width * plus.World.height, am = minus.World.width * minus.World.height;
+                first = Mathf.Abs(ap - am) < 0.5f ? (Rng.NextDouble() < 0.5 ? -1 : 1) : (ap < am ? 1 : -1);
+            }
+            // A pair of leaves fills the doorway (raid doorways are 1.5 m or more), each hinged at its jamb.
+            float leafW = (o.Width - 2f * LeafClear - LeafMeet) * 0.5f;
             float leanPick = 5f + (float)Rng.NextDouble() * 25f;
             var rects = new Rect[2];
-            var yaws = new float[2];
-            var hinges = new Vector3[2];
+            var leans = new float[2];
+            Vector3 along = r.AlongX ? Vector3.right : Vector3.forward;
 
-            for (int attempt = 0; attempt < 8; attempt++)
+            for (int attempt = 0; attempt < 4; attempt++)
             {
                 int side = (attempt & 1) == 0 ? first : -first;
                 RaidRoom room = side > 0 ? plus : minus;
                 if (room == null) continue;
-                bool atAFirst = (attempt & 2) == 0 ? hingeA : !hingeA;
-                float leanWanted = attempt < 4 ? leanPick : 0f;
+                float leanWanted = attempt < 2 ? leanPick : 0f;
 
                 // The room's clear extent along this wall bounds how far a leaf may lean.
                 float ra = r.A, rb = r.B;
@@ -610,15 +599,13 @@ namespace CloneZ
                 foreach (var sr in _sideRooms)
                     if (o.Pos > sr.a && o.Pos < sr.b) { ra = sr.a; rb = sr.b; }
                 Vector3 n = RunNormal(r, side);
-                Vector3 along = r.AlongX ? Vector3.right : Vector3.forward;
 
-                int leaves = dbl ? 2 : 1;
                 bool clear = true;
-                for (int i = 0; i < leaves && clear; i++)
+                for (int i = 0; i < 2 && clear; i++)
                 {
-                    bool atA = dbl ? i == 0 : atAFirst;
-                    float hingeAlong = atA ? o.A - 0.02f : o.B + 0.02f;
-                    Vector3 hinge = RunPoint(r, hingeAlong, 0f, side * (Half + 0.03f));
+                    bool atA = i == 0;
+                    float hingeAlong = atA ? o.A + LeafClear : o.B - LeafClear;
+                    Vector3 hinge = RunPoint(r, hingeAlong, 0f, side * (Half - LeafInset));
                     float free = (atA ? hingeAlong - ra : rb - hingeAlong) - 0.12f;
                     float maxLean = Mathf.Asin(Mathf.Clamp01(free / leafW)) * Mathf.Rad2Deg;
                     float lean = Mathf.Min(maxLean, leanWanted);
@@ -626,21 +613,18 @@ namespace CloneZ
                     Vector3 dir = n * Mathf.Cos(lean * Mathf.Deg2Rad) + away * Mathf.Sin(lean * Mathf.Deg2Rad);
                     Vector3 tip = hinge + dir * leafW;
                     rects[i] = Rect.MinMaxRect(Mathf.Min(hinge.x, tip.x) - 0.1f, Mathf.Min(hinge.z, tip.z) - 0.1f, Mathf.Max(hinge.x, tip.x) + 0.1f, Mathf.Max(hinge.z, tip.z) + 0.1f);
-                    yaws[i] = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg - 90f;
-                    hinges[i] = hinge;
+                    leans[i] = lean;
                     if (room.Overlaps(rects[i], false)) clear = false;
                     foreach (Rect z in room.Reserved)
                         if (!o.Zones.Contains(z) && z.Overlaps(rects[i])) clear = false;
                 }
                 if (!clear) continue;
 
-                for (int i = 0; i < leaves; i++)
-                {
-                    Static.SetFrame(hinges[i], yaws[i]);
-                    FurnitureBuilder.DoorLeaf(Static, Rng, leafW, DoorHeight - 0.05f, DoorWood, o.Glass);
-                    Static.ResetFrame();
-                    room.Furniture.Add(rects[i]);
-                }
+                room.Furniture.Add(rects[0]);
+                room.Furniture.Add(rects[1]);
+                int swing = side;
+                float leanA = leans[0], leanB = leans[1];
+                Later(() => HangDoor(o, swing, leafW, leanA, leanB));
                 return;
             }
         }

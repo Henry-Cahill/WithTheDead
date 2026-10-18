@@ -6,7 +6,8 @@ namespace CloneZ
     /// <summary>
     /// A framed print on the wall. "Look at the picture" describes it and, now and then, steadies the nerves a
     /// little. A picture hanging crooked — as the house came, or knocked askew when the dead batter its wall — can
-    /// be straightened. The frame and print turn about the wall's normal as one object; the tilt is saved.
+    /// be straightened. The frame and print turn about the wall's normal as one object; the tilt is saved. The same
+    /// fixture serves any framed thing on a wall — the raid town's posters, calendars and notices — named for what it is.
     /// </summary>
     [DisallowMultipleComponent]
     public class PictureFixture : Interactable
@@ -16,6 +17,8 @@ namespace CloneZ
 
         private string _key;
         private string _description;
+        private string _name = "Picture", _lookLabel = "Look at the picture", _straightenLabel = "Straighten the picture";
+        private bool _calming = true;
         private Vector3 _point, _face, _normal;
         private Transform _frame;
         private BuildPiece _wall;
@@ -24,7 +27,7 @@ namespace CloneZ
         private float _calmAgainAt;
         private float _nextCheck;
 
-        public override string DisplayName => "Picture";
+        public override string DisplayName => _name;
         public override Vector3 InteractPoint => _point;
         public override bool IsAvailable => base.IsAvailable && LightingFixtures.SurvivorInFront(_face, _normal);
         public override string SaveKey => _key;
@@ -33,20 +36,39 @@ namespace CloneZ
         public bool IsCrooked => Mathf.Abs(_roll) > CrookedAbove;
 
         /// <summary>A picture under <paramref name="wall"/>'s piece, centred on <paramref name="face"/> (on the wall face)
-        /// and looking along <paramref name="normal"/>, hanging <paramref name="roll"/> degrees off level.</summary>
+        /// and looking along <paramref name="normal"/>, hanging <paramref name="roll"/> degrees off level. A blow to the
+        /// wall can knock it askew.</summary>
         internal static PictureFixture Create(BuildPiece wall, Vector3 point, Vector3 face, Vector3 normal, float roll, string description)
         {
-            var go = new GameObject("PictureFixture");
-            go.transform.SetParent(wall.transform, false);
-            go.transform.SetPositionAndRotation(face, Quaternion.identity);
-            var p = go.AddComponent<PictureFixture>();
+            PictureFixture p = Create(wall.transform, point, face, normal, roll, description);
             p._wall = wall;
             p._wallHealth = wall.Health;
+            return p;
+        }
+
+        /// <summary>A picture under <paramref name="host"/> (the wall segment it hangs on), centred on <paramref name="face"/>
+        /// (on the wall face) and looking along <paramref name="normal"/>, hanging <paramref name="roll"/> degrees off level.
+        /// <paramref name="noun"/> names it in its prompts ("poster": "Look at the poster"); a <paramref name="calming"/>
+        /// one steadies the nerves now and then when looked at.</summary>
+        internal static PictureFixture Create(Transform host, Vector3 point, Vector3 face, Vector3 normal, float roll, string description,
+            string noun = "picture", bool calming = true)
+        {
+            var go = new GameObject("PictureFixture");
+            go.transform.SetParent(host, false);
+            go.transform.SetPositionAndRotation(face, Quaternion.identity);
+            var p = go.AddComponent<PictureFixture>();
             p._point = point;
             p._face = face;
             p._normal = normal;
             p._roll = p._shownRoll = Mathf.Clamp(roll, -CloneZConfig.PictureMaxRoll, CloneZConfig.PictureMaxRoll);
             p._description = description;
+            if (!string.IsNullOrEmpty(noun) && noun != "picture")
+            {
+                p._name = char.ToUpperInvariant(noun[0]) + noun.Substring(1);
+                p._lookLabel = "Look at the " + noun;
+                p._straightenLabel = "Straighten the " + noun;
+            }
+            p._calming = calming;
             p._key = KeyFor("picture", point);
             return p;
         }
@@ -84,15 +106,15 @@ namespace CloneZ
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
-            into.Add(new InteractAction("Look at the picture", Look));
-            if (IsCrooked) into.Add(new InteractAction("Straighten the picture", Straighten));
+            into.Add(new InteractAction(_lookLabel, Look));
+            if (IsCrooked) into.Add(new InteractAction(_straightenLabel, Straighten));
         }
 
         private void Look(InteractContext ctx)
         {
             ctx.Notify(_description);
             if (IsCrooked) ctx.Notify("It's hanging a little crooked.");
-            if (Time.time < _calmAgainAt) return;
+            if (!_calming || Time.time < _calmAgainAt) return;
             LightingFixtures.Calm(ctx, CloneZConfig.PictureCalm);
             _calmAgainAt = Time.time + CloneZConfig.PictureCalmCooldown;
         }

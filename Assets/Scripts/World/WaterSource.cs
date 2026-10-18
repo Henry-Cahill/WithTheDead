@@ -134,15 +134,15 @@ namespace CloneZ
 
         #region Building
         /// <summary>Builds a tap or a rain barrel from code and returns it. A tap is the kitchen sink: a
-        /// run of base cabinets with a steel bowl, drainer and mixer tap, its back toward -Z, standing on
-        /// the floor, fitted out as a <see cref="KitchenSink"/>. A barrel is fronted by a
-        /// <see cref="RainBarrelFixture"/>.</summary>
-        public static WaterSource Spawn(Transform parent, Vector3 position, WaterSourceKind kind)
+        /// run of base cabinets with a steel bowl, drainer and mixer tap, its back toward -Z (turned by
+        /// <paramref name="yaw"/> degrees), standing on the floor, fitted out as a <see cref="KitchenSink"/>.
+        /// A barrel is fronted by a <see cref="RainBarrelFixture"/>.</summary>
+        public static WaterSource Spawn(Transform parent, Vector3 position, WaterSourceKind kind, float yaw = 0f)
         {
             position.y = BuildPiece.FloorTopAt(position);
             var root = new GameObject(kind == WaterSourceKind.RainBarrel ? "RainBarrel" : "WaterTap");
             root.transform.SetParent(parent);
-            root.transform.position = position;
+            root.transform.SetPositionAndRotation(position, Quaternion.Euler(0f, yaw, 0f));
 
             var src = root.AddComponent<WaterSource>();
             src.Kind = kind;

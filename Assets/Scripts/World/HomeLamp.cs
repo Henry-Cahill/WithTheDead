@@ -14,13 +14,18 @@ namespace CloneZ
     /// while it's dark out. A wall light hangs on one of the house's circuits (<see cref="LightCircuits"/>) and is
     /// worked by that circuit's wall switch; a free-standing lamp has a switch of its own, a <see cref="LampSwitch"/>
     /// fixture the survivor reaches for. Created with <see cref="Attach"/>; it lives on the light's own object, so it
-    /// goes when the furniture or wall it hangs on is dismantled.
+    /// goes when the furniture or wall it hangs on is dismantled. The raid town's lamps are the same lamps, with a few
+    /// things the home never needed: a ceiling fitting (<see cref="HangFromCeiling"/>), a failing tube's flicker and a
+    /// bulb that has gone (<see cref="DeadBulb"/>).
     /// </summary>
     [DisallowMultipleComponent]
     public class HomeLamp : MonoBehaviour
     {
         /// <summary>Daylight (<see cref="TimeOfDay.LightLevel"/>, 1 at noon) below which a dusk sensor turns its lamp on.</summary>
         public const float SwitchOnBelow = 0.45f;
+
+        // A flickering lamp's glowing shade drops out with its light through the deeper dips and the outages.
+        private const float FlickerGlowLevel = 0.45f;
 
         private static readonly List<HomeLamp> s_All = new List<HomeLamp>();
 
@@ -31,6 +36,9 @@ namespace CloneZ
         private bool _duskSensor;
         private bool _dark;
         private bool _switchedOn;
+        private bool _deadBulb;
+        private bool _overhead, _ceilingsShown;
+        private bool _lit;
         private float _next;
 
         /// <summary>True while the lamp is lit.</summary>
@@ -45,15 +53,42 @@ namespace CloneZ
         /// <summary>True when the lamp's switch (its own, or its circuit's) is on — lit or not.</summary>
         public bool SwitchedOn => _circuit != null ? LightCircuits.IsOn(_circuit) : _switchedOn;
 
+        /// <summary>True when the lamp's bulb has gone: it stays dark whatever its switch says.</summary>
+        public bool DeadBulb
+        {
+            get => _deadBulb;
+            internal set
+            {
+                if (_deadBulb == value) return;
+                _deadBulb = value;
+                Refresh();
+            }
+        }
+
+        /// <summary>True while the lamp flickers like a failing tube (its glowing shade dropping out with the deeper dips).</summary>
+        public bool Flicker
+        {
+            get => _light != null && _light.Flicker;
+            internal set
+            {
+                if (_light == null) return;
+                _light.Flicker = value;
+                SyncGlow();
+            }
+        }
+
         /// <summary>Hangs a lamp's light at <paramref name="bulb"/> (world) under <paramref name="parent"/>, with
         /// <paramref name="glow"/> (world-space geometry, may be null) as its lit shade. A lamp on a
         /// <paramref name="circuit"/> is worked by that circuit's wall switch; one without is free-standing and gets
         /// its own switch fixture, named <paramref name="displayName"/> (by default from the furniture it stands on).
-        /// A <paramref name="duskSensor"/> keeps the lamp dark by day even when it's switched on.</summary>
+        /// A <paramref name="duskSensor"/> keeps the lamp dark by day even when it's switched on. The light is
+        /// <paramref name="color"/> (by default <see cref="RoomLight.DefaultColor"/>); <paramref name="furniture"/> is the
+        /// piece a free-standing lamp stands on, whose colliders mustn't block the reach for its switch (by default
+        /// <paramref name="parent"/>).</summary>
         internal static HomeLamp Attach(Transform parent, Vector3 bulb, float range, float intensity, bool shadows, RaidMesh glow,
-            string circuit = null, bool duskSensor = false, string displayName = null)
+            string circuit = null, bool duskSensor = false, string displayName = null, Color? color = null, Transform furniture = null)
         {
-            RoomLight light = RoomLight.Spawn(parent, bulb, RoomLight.DefaultColor, range, intensity, false, shadows);
+            RoomLight light = RoomLight.Spawn(parent, bulb, color ?? RoomLight.DefaultColor, range, intensity, false, shadows);
             var lamp = light.gameObject.AddComponent<HomeLamp>();
             lamp._light = light;
             lamp._circuit = string.IsNullOrEmpty(circuit) ? null : circuit;
@@ -72,8 +107,23 @@ namespace CloneZ
             if (b != null) lamp._bulb = b.GetComponent<Renderer>();
             lamp._next = Time.time + Random.value * CloneZConfig.LampCheckInterval;   // spread the lamps' checks over the frames
             lamp.Refresh();
-            if (lamp._circuit == null) LampSwitch.Add(lamp, parent, displayName ?? LampSwitch.NameFor(parent));
+            if (lamp._circuit == null)
+            {
+                Transform piece = furniture != null ? furniture : parent;
+                LampSwitch.Add(lamp, piece, displayName ?? LampSwitch.NameFor(piece));
+            }
             return lamp;
+        }
+
+        /// <summary>Makes this a ceiling fitting's lamp: its glowing shade shows only in the views that show the ceilings
+        /// (the shoulder and first-person cameras). The isometric camera looks down into roofless rooms, so there the lit
+        /// lamp shows its bare bulb instead, hanging where the fitting is.</summary>
+        internal void HangFromCeiling()
+        {
+            _overhead = true;
+            _ceilingsShown = ViewState.CeilingsVisible;
+            if (_light != null) _light.ShowBulb = !_ceilingsShown;
+            SyncGlow();
         }
 
         /// <summary>Switches the lamp on or off: a free-standing lamp's own switch, or a wall light's whole circuit.</summary>
@@ -100,15 +150,22 @@ namespace CloneZ
         }
 
         /// <summary>How many lamps hang on <paramref name="circuit"/>, and how many of them are lit right now.</summary>
-        public static void CountOnCircuit(string circuit, out int lamps, out int lit)
+        public static void CountOnCircuit(string circuit, out int lamps, out int lit) => CountOnCircuit(circuit, out lamps, out lit, out _, out _);
+
+        /// <summary>How many lamps hang on <paramref name="circuit"/> and how many of them are lit right now — and of the
+        /// dark ones, how many have a dead bulb and how many are only waiting for dusk (switched on, with power, but their
+        /// sensor still sees daylight).</summary>
+        public static void CountOnCircuit(string circuit, out int lamps, out int lit, out int dead, out int waiting)
         {
-            lamps = lit = 0;
+            lamps = lit = dead = waiting = 0;
             for (int i = 0; i < s_All.Count; i++)
             {
                 HomeLamp l = s_All[i];
                 if (l == null || l._circuit != circuit) continue;
                 lamps++;
                 if (l.IsOn) lit++;
+                else if (l._deadBulb) dead++;
+                else if (l._duskSensor && !l._dark && l.SwitchedOn && PowerGrid.HousePowered) waiting++;
             }
         }
 
@@ -124,6 +181,7 @@ namespace CloneZ
 
         private void Update()
         {
+            if (_overhead || (_glow != null && _light != null && _light.Flicker)) SyncGlow();
             if (Time.time < _next) return;
             _next = Time.time + CloneZConfig.LampCheckInterval;
             Refresh();
@@ -137,11 +195,30 @@ namespace CloneZ
                 float level = tod != null ? tod.LightLevel : 0f;
                 _dark = _dark ? level < SwitchOnBelow + CloneZConfig.LampDuskHysteresis : level < SwitchOnBelow;
             }
-            bool lit = SwitchedOn && PowerGrid.HousePowered && (!_duskSensor || _dark);
+            bool lit = SwitchedOn && PowerGrid.HousePowered && (!_duskSensor || _dark) && !_deadBulb;
+            _lit = lit;
             if (_light != null && _light.On != lit) _light.On = lit;
-            if (_glow != null && _glow.enabled != lit) _glow.enabled = lit;
+            SyncGlow();
             // A dark lamp's bulb never shows (the camera's cutaway can leave one drawing when it lets go of it).
             if (!lit && _bulb != null && !_bulb.forceRenderingOff) _bulb.forceRenderingOff = true;
+        }
+
+        // Shows the glowing shade while the lamp is lit — a ceiling fitting's only while the ceilings show, a flickering
+        // lamp's not through its dips — and hands a ceiling fitting its bare bulb whenever the view leaves the ceilings out.
+        private void SyncGlow()
+        {
+            if (_overhead)
+            {
+                bool ceilings = ViewState.CeilingsVisible;
+                if (ceilings != _ceilingsShown)
+                {
+                    _ceilingsShown = ceilings;
+                    if (_light != null) _light.ShowBulb = !ceilings;
+                }
+            }
+            if (_glow == null) return;
+            bool show = _lit && (!_overhead || _ceilingsShown) && (_light == null || !_light.Flicker || _light.Level > FlickerGlowLevel);
+            if (_glow.enabled != show) _glow.enabled = show;
         }
     }
 }

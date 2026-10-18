@@ -7,8 +7,9 @@ namespace CloneZ
     /// The rural mailbox at the kerb. "Check the mail" opens its door and reads whatever has come, a line at a
     /// time: the last ordinary post of the first few days — a bill and a church flyer, then a county public-health
     /// notice, then a neighbour's note pushed in by hand — and after that nothing at all, because the mail stopped
-    /// coming. The little red flag goes up and down, for all the good it does. Remembers how much of the post has
-    /// been read (<see cref="FixtureSave.A"/>), the door and the flag.
+    /// coming. The little red flag goes up and down, for all the good it does. A raid house's box holds its own post
+    /// instead, all of it come already (see the overload of <see cref="Create(Transform, Vector3, string[][])"/>).
+    /// Remembers how much of the post has been read (<see cref="FixtureSave.A"/>), the door and the flag.
     /// </summary>
     [DisallowMultipleComponent]
     public class MailboxFixture : Interactable
@@ -42,6 +43,7 @@ namespace CloneZ
         private FixturePart _door, _flag;
         private bool _open, _flagUp;
         private int _read;   // deliveries read so far
+        private string[][] _post;   // a raid house's own post, all of it come already (null: the starter home's days of post)
 
         public override string DisplayName => "Mailbox";
         public override Vector3 InteractPoint => _point;
@@ -58,6 +60,17 @@ namespace CloneZ
             m._key = KeyFor("mailbox", point);
             return m;
         }
+
+        /// <summary>A mailbox whose <paramref name="post"/> has all come already (a raid house's: the letters nobody was
+        /// home to read), read a delivery at a time like the starter home's.</summary>
+        internal static MailboxFixture Create(Transform host, Vector3 point, string[][] post)
+        {
+            MailboxFixture m = Create(host, point);
+            m._post = post != null && post.Length > 0 ? post : null;
+            return m;
+        }
+
+        private string[][] Post => _post ?? Deliveries;
 
         /// <summary>Hands over the door (hinged at its foot to drop open) and the flag (hinged to swing up).</summary>
         internal void SetParts(FixturePart door, FixturePart flag)
@@ -80,13 +93,16 @@ namespace CloneZ
             }
         }
 
+        // How many deliveries this box holds by now (a raid house's post has all come).
+        private int Come => _post != null ? _post.Length : Delivered;
+
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
-            InteractAction check = _read < Delivered ? ReadNext() : new InteractAction("Check the mail", CheckEmpty);
+            InteractAction check = _read < Come ? ReadNext() : new InteractAction("Check the mail", CheckEmpty);
             InteractAction close = _open ? new InteractAction("Close the mailbox", c => SetOpen(false, false)) : null;
-            if (close != null && _read >= Delivered) into.Add(close);
+            if (close != null && _read >= Come) into.Add(close);
             into.Add(check);
-            if (close != null && _read < Delivered) into.Add(close);
+            if (close != null && _read < Come) into.Add(close);
             into.Add(_flagUp
                 ? new InteractAction("Lower the flag", c => SetFlag(c, false))
                 : new InteractAction("Raise the flag", c => SetFlag(c, true)));
@@ -95,7 +111,7 @@ namespace CloneZ
         // Reading the oldest unread delivery: the door drops open and the letter's lines come up one by one.
         private InteractAction ReadNext()
         {
-            string[] lines = Deliveries[_read];
+            string[] lines = Post[_read];
             int shown = 0;
             var a = new InteractAction("Check the mail")
                 .Timed(lines.Length * CloneZConfig.MailLineSeconds, "Reading the mail", HumanoidActivity.Use);
@@ -111,8 +127,8 @@ namespace CloneZ
             };
             a.Run = c =>
             {
-                _read = Mathf.Min(_read + 1, Deliveries.Length);
-                if (_read < Delivered) c.Notify("There's more post underneath.");
+                _read = Mathf.Min(_read + 1, Post.Length);
+                if (_read < Come) c.Notify("There's more post underneath.");
             };
             return a;
         }
@@ -120,6 +136,11 @@ namespace CloneZ
         private void CheckEmpty(InteractContext ctx)
         {
             SetOpen(true, false);
+            if (_post != null)
+            {
+                ctx.Notify("Nothing else in the box. Whoever lived here never came out for it.");
+                return;
+            }
             TimeOfDay tod = TimeOfDay.Instance;
             int day = tod != null ? tod.Day : 1;
             if (day > Deliveries.Length) ctx.Notify("Nothing. The mail stopped coming.");
@@ -152,7 +173,7 @@ namespace CloneZ
 
         public override void RestoreState(FixtureSave save)
         {
-            _read = Mathf.Clamp(Mathf.RoundToInt(save.A), 0, Deliveries.Length);
+            _read = Mathf.Clamp(Mathf.RoundToInt(save.A), 0, Post.Length);
             SetOpen((save.State & 1) != 0, true);
             _flagUp = (save.State & 2) != 0;
             if (_flag != null) _flag.SetOpen(_flagUp, true);

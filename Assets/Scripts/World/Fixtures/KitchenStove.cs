@@ -47,7 +47,7 @@ namespace CloneZ
         private Action<InteractContext> _allOff, _toggleOven, _toggleDoor, _cook;
 
         public override string DisplayName => "Gas stove";
-        public override Vector3 InteractPoint => transform.position + new Vector3(0f, 0.95f, 0.2f);
+        public override Vector3 InteractPoint => transform.position + transform.rotation * new Vector3(0f, 0.95f, 0.2f);
         public override string SaveKey => KeyFor("gasstove", transform.position);
 
         #region IWarmthSource
@@ -118,7 +118,8 @@ namespace CloneZ
             if (_fittings != null) Destroy(_fittings.gameObject);
             Vector3 o = transform.position;
             _builtAt = o;
-            var f = new KitchenFrame(o, 0f);
+            // The range faces the way its root is turned (a raid kitchen's stove stands against any wall).
+            var f = new KitchenFrame(o, transform.eulerAngles.y);
             _fittings = new GameObject("StoveFittings").transform;
             _fittings.SetParent(transform, false);
             _fittings.SetPositionAndRotation(o, Quaternion.identity);

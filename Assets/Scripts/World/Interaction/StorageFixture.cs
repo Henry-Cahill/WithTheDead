@@ -31,6 +31,10 @@ namespace CloneZ
         public Action<InteractContext, List<InteractAction>> ExtraActions;
         /// <summary>Called whenever the doors / drawers open (true) or close (false), e.g. to light the fridge.</summary>
         public Action<bool> OnOpenChanged;
+        /// <summary>In an extraction raid the town's storage is fuller than the lean wave home's: the odds above are scaled
+        /// (<see cref="CloneZConfig.RaidStorageEmptyScale"/>, <see cref="CloneZConfig.RaidStorageExtraStacks"/>). False keeps
+        /// them exactly as given — for storage the raid stocks itself (<see cref="RaidBuilding.MainStock"/>).</summary>
+        public bool RaidBoost = true;
     }
 
     /// <summary>
@@ -90,9 +94,16 @@ namespace CloneZ
             f._occlusion = occlusionRoot;
             f._parts = parts ?? new FixturePart[0];
             f._opt = options ?? new StorageOptions();
+            float emptyChance = f._opt.EmptyChance;
+            int maxStacks = f._opt.MaxStacks;
+            if (GameSession.IsExtraction && f._opt.RaidBoost && !f._opt.StartEmpty)
+            {
+                emptyChance *= CloneZConfig.RaidStorageEmptyScale;
+                if (maxStacks >= 0 && maxStacks < int.MaxValue - CloneZConfig.RaidStorageExtraStacks) maxStacks += CloneZConfig.RaidStorageExtraStacks;
+            }
             f.Container = LootContainer.SpawnFixture(go.transform, interactPoint, f._opt.LootType,
-                f._opt.ContainerName ?? displayName, key + "/items", seed, f._opt.StartEmpty, f._opt.EmptyChance,
-                f._opt.MaxStacks, f._opt.SearchTime);
+                f._opt.ContainerName ?? displayName, key + "/items", seed, f._opt.StartEmpty, emptyChance,
+                maxStacks, f._opt.SearchTime);
             f.Container.Owner = f;
             return f;
         }

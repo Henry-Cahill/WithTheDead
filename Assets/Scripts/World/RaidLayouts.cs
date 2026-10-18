@@ -51,8 +51,8 @@ namespace CloneZ
             if (Chance(r, 0.4)) m.Box(new Vector3(R(r, -w * 0.3f, w * 0.3f), 0.79f, -0.1f), new Vector3(0.22f, 0.06f, 0.3f), Quaternion.Euler(0f, R(r, -20f, 20f), 0f), DecorPalette.Matte(new Color(0.62f, 0.52f, 0.30f)));
         }
 
-        /// <summary>An office desk with a CRT, keyboard and (optionally) an articulated lamp; the lamp's
-        /// light is spawned when lit. Desk front faces local +Z.</summary>
+        /// <summary>An office desk with a CRT, keyboard and (optionally) an articulated lamp; the lamp works from its own
+        /// switch (<see cref="RaidBuilding.DeskLamp"/>) and starts on when <paramref name="lamp"/> is 2. Desk front faces local +Z.</summary>
         private static void OfficeDesk(RaidBuilding b, RaidMesh m, System.Random r, float w, Color wood, bool screenOn, int lamp, bool lampShadows)
         {
             FurnitureBuilder.Desk(m, r, w, 0.75f, wood, r.NextDouble() < 0.5);
@@ -60,21 +60,44 @@ namespace CloneZ
             FurnitureBuilder.Keyboard(m, r, new Vector3(0.08f, 0.76f, 0.2f), R(r, -6f, 6f));
             DeskClutter(m, r, w);
             if (lamp > 0)
+                b.DeskLamp(m, r, new Vector3(-w * 0.5f + 0.2f, 0.76f, -0.18f), R(r, 15f, 40f), r.NextDouble() < 0.5 ? GreenShade : BlackShade, lamp == 2, lampShadows);
+        }
+
+        /// <summary>An office desk as a piece of its own (w × 0.9 × 0.75 m, front toward the placement's +Z): what
+        /// <see cref="OfficeDesk"/> draws — the CRT, the keyboard, the clutter and (optionally) the lamp — on a desk whose three
+        /// pedestal drawers and pencil drawer each slide out on their own (<see cref="RaidBuilding.DrawerDesk"/>): the top drawer
+        /// one of the raid's main containers when <paramref name="stocked"/>, else a few odds and ends at most, the rest lean.
+        /// The computer switches on and off (<see cref="RaidBuilding.DeskMonitor"/>), starting as <paramref name="screenOn"/>
+        /// says. Returns its body.</summary>
+        internal static Transform WorkDesk(RaidBuilding b, RaidRoom room, RaidBuilding.Place p, float w, Color wood, bool screenOn, int lamp,
+            bool lampShadows, bool stocked, string name = "Desk")
+        {
+            var crt = new Vector3(0.1f, 0.76f, -0.1f);
+            float crtYaw = 0f;
+            Transform t = b.DrawerDesk(room, p, w, wood, stocked, name, (m, r) =>
             {
-                bool lit = lamp == 2;
-                Vector3 bulb = FurnitureBuilder.DeskLamp(m, r, new Vector3(-w * 0.5f + 0.2f, 0.76f, -0.18f), R(r, 15f, 40f), r.NextDouble() < 0.5 ? GreenShade : BlackShade, lit);
-                if (lit) b.LampLight(RaidBuilding.WorldOf(m, bulb), lampShadows);
-            }
+                crtYaw = R(r, -12f, 12f);
+                FurnitureBuilder.CrtMonitorBody(m, r, crt, crtYaw);
+                FurnitureBuilder.Keyboard(m, r, new Vector3(0.08f, 0.76f, 0.2f), R(r, -6f, 6f));
+                DeskClutter(m, r, w);
+                if (lamp > 0)
+                    b.DeskLamp(m, r, new Vector3(-w * 0.5f + 0.2f, 0.76f, -0.18f), R(r, 15f, 40f), r.NextDouble() < 0.5 ? GreenShade : BlackShade, lamp == 2, lampShadows);
+            });
+            b.DeskMonitor(t, p, crt, crtYaw, screenOn);
+            return t;
         }
         #endregion
 
         #region National Guard post (photo 1)
         /// <summary>The National Guard post / Army surplus: operations room with kitchenette, lockers and
-        /// desks (photo 1), an armory, barracks, a storeroom and the CO's office. 18 × 14 m.</summary>
+        /// desks (photo 1), an armory, barracks, a storeroom and the CO's office. 18 × 14 m. Everything in it works: the
+        /// kitchenette's sink and fridge, every locker, drawer, safe and crate, the field radio on the Guard's nets, the
+        /// computer, the bunks to rest on, the chairs, and the CO's bookcase.</summary>
         public static RaidBuilding ArmyPost(RaidTown town, Vector2 center, int turns)
         {
             var b = new RaidBuilding(town, "NationalGuard", center, turns, false, 18f, 14f)
             {
+                Kind = RaidBuildingKind.Army,
                 Exterior = ExteriorStyle.Brick,
                 ExteriorColor = new Color(0.50f, 0.31f, 0.22f),
                 DoorWood = new Color(0.40f, 0.26f, 0.14f),
@@ -110,43 +133,36 @@ namespace CloneZ
             b.BuildShell();
 
             // --- Operations room: the photo-1 room ---
-            b.Furnish(ops, b.N(ops, -7.55f, 0.65f), Sz(2.6f, 1.1f, 0.65f), true, (m, r) =>
+            // The kitchenette: a steel counter with a working sink and cupboards under it, and the cream fridge beside it.
+            b.SteelCounter(ops, b.N(ops, -7.55f, 0.65f), 2.6f, 0.45f, ContainerType.Pantry, "Steel counter", (m, r) =>
             {
-                FurnitureBuilder.SteelCounter(m, r, 2.6f, true);
                 FurnitureBuilder.BoxStack(m, r, new Vector3(-0.92f, 0.96f, -0.04f), 6f, 2);
-                if (Chance(r, 0.7)) FurnitureBuilder.CardboardBox(m, r, new Vector3(0.95f, 0.96f, 0f), Sz(0.36f, 0.26f, 0.3f), -12f);
-            }, "steel counter");
-            b.Container(ops, ContainerType.Fridge, "Fridge", b.N(ops, -5.75f, 0.72f), Sz(0.76f, 1.75f, 0.72f),
-                (m, r) => FurnitureBuilder.Fridge(m, r, FurnitureBuilder.Cream));
+                if (Chance(r, 0.7)) FurnitureBuilder.CardboardBox(m, r, new Vector3(1.05f, 0.96f, 0f), Sz(0.36f, 0.26f, 0.3f), -12f);
+            });
+            b.WorkFridge(ops, b.N(ops, -5.75f, 0.72f), FurnitureBuilder.Cream, ContainerType.Fridge, "Fridge", false);
             b.Furnish(ops, b.N(ops, -4.85f, 0.5f), Sz(0.6f, 1.1f, 0.5f), true, (m, r) => FurnitureBuilder.BoxStack(m, r, Vector3.zero, 0f, 3), "box stack");
             b.Poster(ops, 'N', -1.95f, 1.55f, 0.55f, 0.8f, 0);
 
-            b.Container(ops, ContainerType.Locker, "Locker", b.Wst(ops, 0.2f, 0.5f), Sz(1.5f, 1.9f, 0.5f),
-                (m, r) => FurnitureBuilder.LockerBank(m, r, 3, FurnitureBuilder.Maroon));
-            b.Container(ops, ContainerType.Desk, "Desk", b.Wst(ops, -2.4f, 0.75f), Sz(1.6f, 0.9f, 0.75f), (m, r) =>
+            // The lockers, and the radio desk: the Guard's own nets on the field radio, a lamp left burning over it.
+            b.Lockers(ops, b.Wst(ops, 0.2f, 0.5f), Sz(1.5f, 1.9f, 0.5f), 3, FurnitureBuilder.Maroon, ContainerType.Locker, "Locker");
+            RaidBuilding.Place radioDesk = b.Wst(ops, -2.4f, 0.75f);
+            Transform desk = b.DrawerDesk(ops, radioDesk, 1.6f, FurnitureBuilder.Oak, true, "Desk", (m, r) =>
             {
-                FurnitureBuilder.Desk(m, r, 1.6f, 0.75f, FurnitureBuilder.Oak, true);
-                FurnitureBuilder.FieldRadio(m, r, new Vector3(-0.3f, 0.76f, -0.08f), 8f);
-                Vector3 bulb = FurnitureBuilder.DeskLamp(m, r, new Vector3(0.55f, 0.76f, -0.16f), 25f, GreenShade, true);
-                b.LampLight(RaidBuilding.WorldOf(m, bulb), true);
+                b.DeskLamp(m, r, new Vector3(0.55f, 0.76f, -0.16f), 25f, GreenShade, true, true);
                 DeskClutter(m, r, 1.2f);
-            });
-            b.Furnish(ops, new RaidBuilding.Place(-7.55f, -2.4f, 270f), Sz(0.55f, 1f, 0.55f), false, (m, r) => FurnitureBuilder.OfficeChair(m, r, new Color(0.20f, 0.22f, 0.18f)), "chair");
-            b.Container(ops, ContainerType.Crate, "Supply Crate", b.Wst(ops, -5.6f, 0.62f), Sz(0.9f, 1.05f, 0.62f), (m, r) =>
-            {
-                FurnitureBuilder.Crate(m, r, Vector3.zero, Sz(0.88f, 0.5f, 0.6f), 0f, true);
-                FurnitureBuilder.Crate(m, r, new Vector3(0.02f, 0.5f, 0f), Sz(0.78f, 0.42f, 0.54f), 4f, true);
-                FurnitureBuilder.AmmoCan(m, r, new Vector3(-0.1f, 0.92f, 0f), 20f);
-            });
-            b.Furnish(ops, b.S(ops, -7.25f, 0.45f), Sz(0.45f, 0.9f, 0.45f), false, (m, r) => FurnitureBuilder.WoodChair(m, r, FurnitureBuilder.Oak), "chair");
-            b.Furnish(ops, b.S(ops, -6.6f, 0.45f), Sz(0.45f, 0.9f, 0.45f), false, (m, r) => FurnitureBuilder.WoodChair(m, r, FurnitureBuilder.Oak), "chair");
+            }, true);
+            b.FieldRadio(desk, radioDesk, new Vector3(-0.3f, 0.76f, -0.08f), 8f);
+            b.OfficeChairSeat(ops, new RaidBuilding.Place(-7.55f, -2.4f, 270f), new Color(0.20f, 0.22f, 0.18f));
+            b.StackedCrate(ops, b.Wst(ops, -5.6f, 0.62f), Sz(0.9f, 1.05f, 0.62f), Sz(0.88f, 0.5f, 0.6f), Sz(0.78f, 0.42f, 0.54f), 0.02f, 4f,
+                true, ContainerType.Crate, "Supply Crate", true);
+            b.WoodChairSeat(ops, b.S(ops, -7.25f, 0.45f), FurnitureBuilder.Oak);
+            b.WoodChairSeat(ops, b.S(ops, -6.6f, 0.45f), FurnitureBuilder.Oak);
             b.Furnish(ops, b.S(ops, -1.65f, 0.6f), Sz(0.6f, 0.9f, 0.6f), true, (m, r) => FurnitureBuilder.Barrel(m, r, Vector3.zero, new Color(0.16f, 0.26f, 0.40f)), "barrel");
             b.Furnish(ops, b.S(ops, -0.98f, 0.6f), Sz(0.6f, 0.9f, 0.6f), true, (m, r) => FurnitureBuilder.Barrel(m, r, Vector3.zero, new Color(0.26f, 0.30f, 0.18f)), "barrel");
 
-            b.Container(ops, ContainerType.Desk, "Desk", b.E(ops, -2.0f, 0.75f), Sz(1.5f, 0.9f, 0.75f),
-                (m, r) => OfficeDesk(b, m, r, 1.5f, FurnitureBuilder.Oak, true, 2, true));
-            b.Furnish(ops, new RaidBuilding.Place(-0.3f, -2.0f, 0f), Sz(0.45f, 0.7f, 0.45f), false, (m, r) => FurnitureBuilder.Stool(m, r, new Color(0.22f, 0.12f, 0.10f)), "stool");
-            b.Furnish(ops, b.E(ops, -3.25f, 0.62f), Sz(0.46f, 1.4f, 0.62f), true, (m, r) => FurnitureBuilder.FilingCabinet(m, r, 4, OliveDrab), "filing cabinet");
+            WorkDesk(b, ops, b.E(ops, -2.0f, 0.75f), 1.5f, FurnitureBuilder.Oak, true, 2, true, true);
+            b.StoolSeat(ops, new RaidBuilding.Place(-0.3f, -2.0f, 90f), new Color(0.22f, 0.12f, 0.10f));
+            b.FilingCabinet(ops, b.E(ops, -3.25f, 0.62f), 4, OliveDrab);
             b.RugAt(-4.6f, -2.4f, 2.6f, 1.8f, 0f, 0);
             b.Clock(ops, 'S', -5.4f, 2.2f);
             b.CeilingLight(ops, -6.2f, -2.4f, 90f);
@@ -155,54 +171,43 @@ namespace CloneZ
             b.Litter(ops, 1.0f);
 
             // --- Armory ---
-            b.Container(armory, ContainerType.GunLocker, "Gun Locker", b.E(armory, -3.0f, 0.6f), Sz(0.8f, 1.9f, 0.6f), (m, r) => FurnitureBuilder.GunSafe(m, r));
-            b.Container(armory, ContainerType.Locker, "Locker", b.E(armory, -2.05f, 0.5f), Sz(1.0f, 1.9f, 0.5f),
-                (m, r) => FurnitureBuilder.LockerBank(m, r, 2, new Color(0.28f, 0.32f, 0.27f)));
-            b.Furnish(armory, b.N(armory, 5.0f, 0.35f), Sz(2.0f, 1.6f, 0.35f), true, (m, r) => WeaponRack(m, r), "weapon rack");
-            b.Container(armory, ContainerType.Crate, "Ammo Crate", b.S(armory, 6.6f, 0.62f), Sz(0.9f, 0.75f, 0.62f), (m, r) =>
-            {
-                FurnitureBuilder.Crate(m, r, Vector3.zero, Sz(0.88f, 0.55f, 0.6f), 0f, true);
-                FurnitureBuilder.AmmoCan(m, r, new Vector3(-0.2f, 0.55f, 0f), 5f);
-                FurnitureBuilder.AmmoCan(m, r, new Vector3(0.2f, 0.55f, 0.02f), -8f);
-            });
-            b.Furnish(armory, b.S(armory, 7.9f, 0.62f), Sz(0.9f, 1.0f, 0.62f), true, (m, r) =>
-            {
-                FurnitureBuilder.Crate(m, r, Vector3.zero, Sz(0.88f, 0.5f, 0.6f), 0f, true);
-                FurnitureBuilder.Crate(m, r, new Vector3(0f, 0.5f, 0f), Sz(0.8f, 0.45f, 0.55f), -5f, true);
-            }, "crates");
-            b.Furnish(armory, new RaidBuilding.Place(4.5f, -4.0f, 0f), Sz(1.6f, 0.9f, 0.8f), true, (m, r) =>
+            b.GunSafe(armory, b.E(armory, -3.0f, 0.6f), ContainerType.GunLocker, "Gun Locker");
+            b.Lockers(armory, b.E(armory, -2.05f, 0.5f), Sz(1.0f, 1.9f, 0.5f), 2, new Color(0.28f, 0.32f, 0.27f), ContainerType.Locker, "Locker");
+            b.WeaponRack(armory, b.N(armory, 5.0f, 0.35f), Sz(2.0f, 1.6f, 0.35f), (m, r) => WeaponRack(m, r), "Weapon rack");
+            b.SupplyCrate(armory, b.S(armory, 6.6f, 0.62f), Sz(0.9f, 0.57f, 0.62f), true, ContainerType.Crate, "Ammo Crate");
+            b.StackedCrate(armory, b.S(armory, 7.9f, 0.62f), Sz(0.9f, 1.0f, 0.62f), Sz(0.88f, 0.5f, 0.6f), Sz(0.8f, 0.45f, 0.55f), 0f, -5f,
+                true, ContainerType.Crate, "Crate", false);
+            StorageOptions cans = RaidBuilding.SpareStock(ContainerType.Crate, "ammo cans");
+            cans.ContainerName = "Ammo cans";
+            cans.LookLabel = "Check the ammo cans";
+            b.WorkTable(armory, new RaidBuilding.Place(4.5f, -4.0f, 0f), Sz(1.6f, 0.9f, 0.8f), (m, r) =>
             {
                 FurnitureBuilder.Table(m, r, 1.6f, 0.8f, OliveDrab);
                 for (int i = 0; i < 3; i++) FurnitureBuilder.AmmoCan(m, r, new Vector3(-0.5f + i * 0.45f, 0.755f, R(r, -0.15f, 0.15f)), R(r, -20f, 20f));
-            }, "table");
+            }, "Table", cans);
             b.CeilingLight(armory, 5f, -4f);
             b.Litter(armory, 0.6f);
             b.Clutter(armory, 1, true);
 
             // --- Barracks ---
-            b.Furnish(barracks, b.N(barracks, 2.6f, 2.0f), Sz(0.95f, 1.75f, 2.0f), true, (m, r) => FurnitureBuilder.BunkBed(m, r), "bunk");
-            b.Furnish(barracks, b.N(barracks, 7.4f, 2.0f), Sz(0.95f, 1.75f, 2.0f), true, (m, r) => FurnitureBuilder.BunkBed(m, r), "bunk");
-            b.Furnish(barracks, new RaidBuilding.Place(2.6f, 4.6f, 180f), Sz(0.8f, 0.42f, 0.42f), true,
-                (m, r) => FurnitureBuilder.Crate(m, r, Vector3.zero, Sz(0.8f, 0.4f, 0.42f), 0f, true), "footlocker");
-            b.Furnish(barracks, new RaidBuilding.Place(7.4f, 4.6f, 180f), Sz(0.8f, 0.42f, 0.42f), true,
-                (m, r) => FurnitureBuilder.Crate(m, r, Vector3.zero, Sz(0.8f, 0.4f, 0.42f), 0f, true), "footlocker");
-            b.Container(barracks, ContainerType.Locker, "Wall Locker", b.Wst(barracks, 3.0f, 0.5f), Sz(1.0f, 1.9f, 0.5f),
-                (m, r) => FurnitureBuilder.LockerBank(m, r, 2, new Color(0.30f, 0.33f, 0.24f)));
-            b.Furnish(barracks, new RaidBuilding.Place(5.0f, 1.6f, 0f), Sz(1.2f, 0.8f, 0.8f), true, (m, r) => FurnitureBuilder.Table(m, r, 1.2f, 0.8f, FurnitureBuilder.Oak), "table");
-            b.Furnish(barracks, new RaidBuilding.Place(5.0f, 0.75f, 0f), Sz(0.45f, 0.9f, 0.45f), false, (m, r) => FurnitureBuilder.WoodChair(m, r, FurnitureBuilder.Oak), "chair");
-            b.Furnish(barracks, new RaidBuilding.Place(5.1f, 2.45f, 190f), Sz(0.45f, 0.9f, 0.45f), false, (m, r) => FurnitureBuilder.WoodChair(m, r, FurnitureBuilder.Oak), "chair");
+            b.ArmyBunk(barracks, b.N(barracks, 2.6f, 2.0f));
+            b.ArmyBunk(barracks, b.N(barracks, 7.4f, 2.0f));
+            b.Footlocker(barracks, new RaidBuilding.Place(2.6f, 4.6f, 180f));
+            b.Footlocker(barracks, new RaidBuilding.Place(7.4f, 4.6f, 180f));
+            b.Lockers(barracks, b.Wst(barracks, 3.0f, 0.5f), Sz(1.0f, 1.9f, 0.5f), 2, new Color(0.30f, 0.33f, 0.24f), ContainerType.Locker, "Wall Locker");
+            b.WorkTable(barracks, new RaidBuilding.Place(5.0f, 1.6f, 0f), Sz(1.2f, 0.8f, 0.8f), (m, r) => FurnitureBuilder.Table(m, r, 1.2f, 0.8f, FurnitureBuilder.Oak), "Table", null, true);
+            b.WoodChairSeat(barracks, new RaidBuilding.Place(5.0f, 0.75f, 0f), FurnitureBuilder.Oak);
+            b.WoodChairSeat(barracks, new RaidBuilding.Place(5.1f, 2.45f, 190f), FurnitureBuilder.Oak);
             b.Poster(barracks, 'W', 5.2f, 1.5f, 0.5f, 0.72f, 0);
             b.CeilingLight(barracks, 5f, 3f);
             b.Litter(barracks, 0.6f);
             b.Clutter(barracks, 2, true);
 
             // --- Storeroom ---
-            b.Container(storage, ContainerType.Shelf, "Supply Shelf", b.Wst(storage, 2.9f, 0.5f), Sz(1.4f, 1.9f, 0.5f),
-                (m, r) => FurnitureBuilder.MetalShelf(m, r, 1.4f, 0.5f, 1.9f, 4, 3, new Color(0.34f, 0.36f, 0.33f)));
-            b.Furnish(storage, b.Wst(storage, 5.9f, 0.5f), Sz(1.4f, 1.9f, 0.5f), true,
-                (m, r) => FurnitureBuilder.MetalShelf(m, r, 1.4f, 0.5f, 1.9f, 4, 3, new Color(0.34f, 0.36f, 0.33f)), "shelf");
-            b.Furnish(storage, b.N(storage, -3.0f, 0.62f), Sz(0.9f, 0.6f, 0.62f), true,
-                (m, r) => FurnitureBuilder.Crate(m, r, Vector3.zero, Sz(0.88f, 0.58f, 0.6f), 0f, true), "crate");
+            Color shelfGrey = new Color(0.34f, 0.36f, 0.33f);
+            b.Shelving(storage, b.Wst(storage, 2.9f, 0.5f), Sz(1.4f, 1.9f, 0.5f), 4, 3, shelfGrey, ContainerType.Shelf, "Supply Shelf", true);
+            b.Shelving(storage, b.Wst(storage, 5.9f, 0.5f), Sz(1.4f, 1.9f, 0.5f), 4, 3, shelfGrey, "Shelf", RaidBuilding.SpareStock(ContainerType.Shelf, "shelf"));
+            b.SupplyCrate(storage, b.N(storage, -3.0f, 0.62f), Sz(0.9f, 0.6f, 0.62f), true, ContainerType.Crate, "Crate", false);
             b.Furnish(storage, b.E(storage, 4.2f, 0.6f), Sz(0.6f, 0.9f, 0.6f), true, (m, r) => FurnitureBuilder.Barrel(m, r, Vector3.zero, new Color(0.45f, 0.24f, 0.10f)), "barrel");
             b.Furnish(storage, b.E(storage, 4.86f, 0.6f), Sz(0.6f, 0.9f, 0.6f), true, (m, r) => FurnitureBuilder.Barrel(m, r, Vector3.zero, new Color(0.24f, 0.28f, 0.18f)), "barrel");
             b.Furnish(storage, new RaidBuilding.Place(-5.5f, 4.0f, 0f), Sz(1.2f, 1.0f, 1.0f), true, (m, r) => FurnitureBuilder.Pallet(m, r, Vector3.zero, 0f, true), "pallet");
@@ -210,17 +215,14 @@ namespace CloneZ
             b.Litter(storage, 0.5f);
 
             // --- CO office ---
-            b.Container(office, ContainerType.Desk, "Desk", b.N(office, -0.5f, 0.75f), Sz(1.5f, 0.9f, 0.75f), (m, r) =>
+            b.DrawerDesk(office, b.N(office, -0.5f, 0.75f), 1.5f, FurnitureBuilder.Walnut, true, "Desk", (m, r) =>
             {
-                FurnitureBuilder.Desk(m, r, 1.5f, 0.75f, FurnitureBuilder.Walnut, false);
-                bool lit = Chance(r, 0.6);
-                Vector3 bulb = FurnitureBuilder.DeskLamp(m, r, new Vector3(0.5f, 0.76f, -0.18f), -25f, GreenShade, lit);
-                if (lit) b.LampLight(RaidBuilding.WorldOf(m, bulb), false);
+                b.DeskLamp(m, r, new Vector3(0.5f, 0.76f, -0.18f), -25f, GreenShade, Chance(r, 0.6), false);
                 DeskClutter(m, r, 1.2f);
-            });
-            b.Furnish(office, new RaidBuilding.Place(-0.5f, 5.7f, 0f), Sz(0.55f, 1f, 0.55f), false, (m, r) => FurnitureBuilder.OfficeChair(m, r, new Color(0.16f, 0.10f, 0.08f)), "chair");
-            b.Furnish(office, b.E(office, 4.0f, 0.62f), Sz(0.46f, 1.4f, 0.62f), true, (m, r) => FurnitureBuilder.FilingCabinet(m, r, 4, OliveDrab), "filing cabinet");
-            b.Furnish(office, b.Wst(office, 4.5f, 0.32f), Sz(0.9f, 1.8f, 0.32f), true, (m, r) => FurnitureBuilder.Bookshelf(m, r, FurnitureBuilder.Walnut), "bookshelf");
+            }, false);
+            b.OfficeChairSeat(office, new RaidBuilding.Place(-0.5f, 5.7f, 0f), new Color(0.16f, 0.10f, 0.08f));
+            b.FilingCabinet(office, b.E(office, 4.0f, 0.62f), 4, OliveDrab);
+            b.ReadingShelf(office, b.Wst(office, 4.5f, 0.32f), FurnitureBuilder.Walnut, 1, CivicReading.Shelf.Army);
             b.Poster(office, 'W', 3.0f, 1.6f, 0.5f, 0.72f, 0);
             b.Litter(office, 0.8f);
 

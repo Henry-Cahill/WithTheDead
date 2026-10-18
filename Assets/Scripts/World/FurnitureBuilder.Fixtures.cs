@@ -109,6 +109,25 @@ namespace CloneZ
             m.Cylinder(head - Vector3.up * 0.16f, 0.24f, 0.16f, 12, G(new Color(0.16f, 0.30f, 0.20f)), Quaternion.identity, 0.25f, false);
             m.Ellipsoid(head - Vector3.up * 0.13f, new Vector3(0.09f, 0.09f, 0.09f), lit ? Gl(new Color(1f, 0.85f, 0.58f)) : Gs(new Color(0.5f, 0.5f, 0.46f)), 6, 4);
         }
+
+        // The lit look of each ceiling fitting, drawn apart as a glow shell just proud of the fitting drawn unlit at the
+        // same spot (same tessellation, a few mm larger), so a working light can show it only while it's on.
+
+        /// <summary>The lit diffuser of a <see cref="CeilingPanel"/> at <paramref name="at"/>.</summary>
+        public static void CeilingPanelGlow(RaidMesh m, Vector3 at, float yaw)
+            => m.Box(at + new Vector3(0f, -0.0645f, 0f), new Vector3(0.53f, 0.007f, 1.11f), Yaw(yaw), Gl(new Color(1f, 0.93f, 0.78f)));
+
+        /// <summary>The lit dome of a <see cref="CeilingDome"/> at <paramref name="at"/>.</summary>
+        public static void CeilingDomeGlow(RaidMesh m, Vector3 at)
+            => m.Ellipsoid(at + new Vector3(0f, -0.06f, 0f), new Vector3(0.352f, 0.132f, 0.352f), Gl(new Color(1f, 0.88f, 0.66f)), 10, 4);
+
+        /// <summary>The lit bulb of a <see cref="HangingBulb"/> hung <paramref name="drop"/> below <paramref name="ceiling"/>.</summary>
+        public static void HangingBulbGlow(RaidMesh m, Vector3 ceiling, float drop)
+            => m.Ellipsoid(ceiling - Vector3.up * (drop + 0.08f), new Vector3(0.078f, 0.098f, 0.078f), Gl(new Color(1f, 0.82f, 0.52f)), 6, 4);
+
+        /// <summary>The lit bulb of a <see cref="ShopLamp"/> hung <paramref name="drop"/> below <paramref name="ceiling"/>.</summary>
+        public static void ShopLampGlow(RaidMesh m, Vector3 ceiling, float drop)
+            => m.Ellipsoid(ceiling - Vector3.up * (drop + 0.13f), new Vector3(0.098f, 0.098f, 0.098f), Gl(new Color(1f, 0.85f, 0.58f)), 6, 4);
         #endregion
 
         #region Overgrowth and grime

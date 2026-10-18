@@ -4,9 +4,10 @@ using UnityEngine;
 namespace CloneZ
 {
     /// <summary>
-    /// The switch of a free-standing lamp — the bedside lamp, the standard lamp: [E] turns it on or off. With the
-    /// power out (or the main breaker thrown) the switch still clicks over, but nothing lights until the power's
-    /// back. Lives on the lamp's own object (see <see cref="HomeLamp.Attach"/>) and is saved by the lamp's position.
+    /// The switch of a free-standing lamp — the bedside lamp, the standard lamp, a desk lamp: [E] turns it on or off. With
+    /// the power out (or the main breaker thrown) the switch still clicks over, but nothing lights until the power's
+    /// back — nor ever, once its bulb has gone. Lives on the lamp's own object (see <see cref="HomeLamp.Attach"/>) and is
+    /// saved by the lamp's position.
     /// </summary>
     [DisallowMultipleComponent]
     public class LampSwitch : Interactable
@@ -55,6 +56,7 @@ namespace CloneZ
             _lamp.SetSwitchedOn(on);
             MakeNoise(CloneZConfig.LightSwitchNoise);
             if (on && !PowerGrid.HousePowered) ctx.Notify(LightingFixtures.NothingHappens());
+            else if (on && _lamp.DeadBulb) ctx.Notify("Nothing happens. The bulb must have gone.");
         }
 
         public override void CaptureState(FixtureSave save) => save.State = _lamp != null && _lamp.SwitchedOn ? 1 : 0;

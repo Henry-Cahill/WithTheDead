@@ -47,13 +47,13 @@ namespace CloneZ
         private Action<InteractContext> _toggleTap, _putPlug, _pullPlug, _wash, _rinse, _washDishes, _openForJob, _endJob;
 
         public override string DisplayName => "Kitchen sink";
-        public override Vector3 InteractPoint => transform.position + PointLocal;
+        public override Vector3 InteractPoint => transform.position + transform.rotation * PointLocal;
         public override string SaveKey => KeyFor("kitchensink", transform.position);
 
         private bool Dirty => TimeOfDay.Now >= _cleanUntil;
 
         #region IWaterPoint
-        public Vector3 WaterPosition => transform.position + DrainLocal + new Vector3(0f, 0.1f, 0f);
+        public Vector3 WaterPosition => transform.position + transform.rotation * DrainLocal + new Vector3(0f, 0.1f, 0f);
         public string WaterLabel => WaterMains.MainsOn ? "tap" : "sink";
         public bool HasWater => WaterMains.MainsOn || _level >= CloneZConfig.KitchenBasinDraw - 0.001f;
         public bool IsTainted => false;
@@ -95,7 +95,8 @@ namespace CloneZ
             if (_fittings != null) Destroy(_fittings.gameObject);
             Vector3 o = transform.position;
             _builtAt = o;
-            var f = new KitchenFrame(o, 0f);
+            // The unit faces the way its root is turned (a raid kitchen's sink stands against any wall).
+            var f = new KitchenFrame(o, transform.eulerAngles.y);
             _fittings = new GameObject("SinkFittings").transform;
             _fittings.SetParent(transform, false);
             _fittings.SetPositionAndRotation(o, Quaternion.identity);
@@ -120,7 +121,7 @@ namespace CloneZ
             // The cold tap's cross-head turns as the tap opens.
             Vector3 head = f.P(FurnitureBuilder.SinkColdTap);
             var hm = new RaidMesh();
-            hm.SetFrame(head, 0f);
+            hm.SetFrame(head, f.Yaw);
             FurnitureBuilder.SinkTapHead(hm);
             hm.ResetFrame();
             _tapHead = FixturePart.Hinge(_fittings, "ColdTap", hm, head, Vector3.up, -TapTurn).WithSpeed(0.25f);

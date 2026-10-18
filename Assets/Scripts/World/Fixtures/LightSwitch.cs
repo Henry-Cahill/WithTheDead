@@ -4,11 +4,11 @@ using UnityEngine;
 namespace CloneZ
 {
     /// <summary>
-    /// A wall light switch by a door: a cream plate of one or more toggles, each working one of the house's lighting
-    /// circuits (<see cref="LightCircuits"/>) — [E] flips the first, Q lists them all. A toggle visibly flips up (on)
-    /// and down (off) and clicks (a faint noise). With the power out it still flips, but nothing lights until the
-    /// power's back. Usable only from the room it's in: the wall stops the reach from the far side. Saves its
-    /// circuits' states by its position.
+    /// A wall light switch by a door: a cream plate of one or more toggles (in a tent, a switch box's lever), each working
+    /// one of the house's lighting circuits (<see cref="LightCircuits"/>) — [E] flips the first, Q lists them all. A toggle
+    /// visibly flips up (on) and down (off) and clicks (a faint noise). With the power out it still flips, but nothing
+    /// lights until the power's back; a circuit whose bulbs have gone stays dark either way. Usable only from the room
+    /// it's in: the wall stops the reach from the far side. Saves its circuits' states by its position.
     /// </summary>
     [DisallowMultipleComponent]
     public class LightSwitch : Interactable
@@ -91,9 +91,11 @@ namespace CloneZ
                 ctx.Notify(LightingFixtures.NothingHappens());
                 return;
             }
-            HomeLamp.CountOnCircuit(circuit, out int lamps, out int lit);
+            HomeLamp.CountOnCircuit(circuit, out int lamps, out int lit, out int dead, out int waiting);
             if (lamps == 0) ctx.Notify("Nothing happens. Whatever it was wired to is gone.");
-            else if (lit == 0 && circuit == LightCircuits.Porch) ctx.Notify("The porch lantern stays dark for now \u2014 its sensor waits for dusk.");
+            else if (lit > 0) return;
+            else if (dead == lamps) ctx.Notify(lamps == 1 ? "Nothing happens. The bulb must have gone." : "Nothing happens. The bulbs must have gone.");
+            else if (waiting > 0) ctx.Notify("The porch lantern stays dark for now \u2014 its sensor waits for dusk.");
         }
 
         public override void CaptureState(FixtureSave save)

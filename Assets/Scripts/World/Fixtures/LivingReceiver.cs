@@ -81,12 +81,14 @@ namespace CloneZ
         }
 
         /// <summary>Sets the set up on <paramref name="host"/> (its furniture root), its knobs at <paramref name="point"/>,
-        /// standing on furniture of <paramref name="support"/> kind.</summary>
-        protected void Init(Transform host, Vector3 point, HomeFurnitureKind support)
+        /// standing on furniture of <paramref name="support"/> kind — or, <paramref name="freeStanding"/>, on a stand of its own
+        /// that's part of the host (nothing else to look for under it).</summary>
+        protected void Init(Transform host, Vector3 point, HomeFurnitureKind support, bool freeStanding = false)
         {
             _host = host;
             _point = point;
             _supportKind = support;
+            _supportFound = freeStanding;
             _cursors = new int[Dial.Length];
             IsOn = false;
             ShowOn(false);

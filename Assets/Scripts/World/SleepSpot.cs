@@ -45,15 +45,19 @@ namespace CloneZ
         }
 
         /// <summary>Builds a bed — a wooden frame with headboard, made up with a quilt and pillows, head
-        /// toward -Z — standing on the floor at <paramref name="position"/>, and returns its SleepSpot.</summary>
-        public static SleepSpot Spawn(Transform parent, Vector3 position)
+        /// toward -Z (turned by <paramref name="yaw"/> degrees) — standing on the floor at
+        /// <paramref name="position"/>, and returns its SleepSpot. <paramref name="quilt"/> colours the quilt
+        /// (the starter home's red by default).</summary>
+        public static SleepSpot Spawn(Transform parent, Vector3 position, float yaw = 0f, Color? quilt = null)
         {
             // Stand on the house floor where there is one: the sleep pose lies on the mattress 0.51 m above
             // the bed's own position, so the position itself has to rise with the floor.
             position.y = BuildPiece.FloorTopAt(position);
             var root = new GameObject("Bed");
             root.transform.SetParent(parent);
-            root.transform.position = position;
+            // The frame and bedding are drawn unturned round the position; the root's turn (which the sleep pose
+            // and the bed's fixture both follow) turns them with it.
+            root.transform.SetPositionAndRotation(position, Quaternion.Euler(0f, yaw, 0f));
 
             // Visual only — no collider, so the survivor can always reach the mattress to lie down.
             var m = new RaidMesh();
@@ -63,8 +67,9 @@ namespace CloneZ
             m.ApplyTo(root, position);
 
             // The bedding, made and rumpled: two renderers the bed's fixture swaps between (kept out of the navmesh).
-            Renderer made = Bedding(root.transform, position, true);
-            Renderer rumpled = Bedding(root.transform, position, false);
+            Color cover = quilt ?? Quilt;
+            Renderer made = Bedding(root.transform, position, true, cover);
+            Renderer rumpled = Bedding(root.transform, position, false, cover);
             DecorPalette.Apply();
 
             var spot = root.AddComponent<SleepSpot>();
@@ -72,11 +77,11 @@ namespace CloneZ
             return spot;
         }
 
-        private static Renderer Bedding(Transform root, Vector3 position, bool made)
+        private static Renderer Bedding(Transform root, Vector3 position, bool made, Color quilt)
         {
             var m = new RaidMesh();
             m.SetFrame(position, 0f);
-            FurnitureBuilder.BedQuilt(m, new System.Random(made ? 1994 : 1995), Width, Length, Quilt, made);
+            FurnitureBuilder.BedQuilt(m, new System.Random(made ? 1994 : 1995), Width, Length, quilt, made);
             m.ResetFrame();
             GameObject go = m.Emit(made ? "QuiltMade" : "QuiltRumpled", root, position);
             if (go == null) return null;
