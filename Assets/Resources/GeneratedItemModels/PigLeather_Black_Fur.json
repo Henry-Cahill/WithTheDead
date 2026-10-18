@@ -1,0 +1,10 @@
+{"version": 1, "id": "PigLeather_Black_Fur", "baseHeight": 0.077, "name": "Pig Leather Black Fur", "model": "gpt-oss:120b", "notes": "Flat pig‑leather hide with black fur, about 0.70 m long × 0.50 m wide and ~6 mm thick. One rolled edge and a torn corner give it shape; several dark fur clumps sit on top.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.014,0.0055],"rot":[0.0,0.0,0.0],"size":[0.7,0.006,0.5],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRoll","shape":"cube","pos":[-0.31,-0.008,0.0055],"rot":[0.0,0.0,0.0],"size":[0.04,0.012,0.5],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CornerTear","shape":"cube","pos":[0.31,-0.0065,-0.2145],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.06],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FurClump1","shape":"sphere","pos":[-0.2,-0.001,0.1055],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.08,0.07,0.09],"smooth":0.2,"metal":0.0},
+  {"name":"FurClump2","shape":"sphere","pos":[0.15,0.001,-0.1145],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.09,0.08,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"FurClump3","shape":"sphere","pos":[0.05,0.0,0.2255],"rot":[0.0,0.0,0.0],"size":[0.028,0.028,0.028],"color":[0.07,0.06,0.08],"smooth":0.2,"metal":0.0},
+  {"name":"FurClump4","shape":"sphere","pos":[-0.12,-0.002,-0.2445],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.09,0.07,0.09],"smooth":0.2,"metal":0.0},
+  {"name":"FurClump5","shape":"sphere","pos":[0.25,0.002,0.0555],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.08,0.07,0.09],"smooth":0.2,"metal":0.0}
+]}

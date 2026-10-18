@@ -1,0 +1,9 @@
+{"version": 1, "id": "Sandbag", "baseHeight": 0.1375, "name": "Sandbag", "model": "gpt-oss:120b", "notes": "Sandbag (tint 0.6,0.58,0.5) about 0.35 m long × 0.14 m wide, lying on its side with a canvas body, a thin seam line and a small rope knot on top. Sand interior shown as darker filler.", "score": 7, "parts": [
+  {"name":"BagBody","shape":"cylinder","pos":[0.0,-0.0075,0.0095],"rot":[0.0,0.0,90.0],"size":[0.14,0.35,0.14],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SeamLine","shape":"cylinder","pos":[0.0,-0.0075,0.0095],"rot":[0.0,0.0,90.0],"size":[0.015,0.35,0.015],"color":[0.45,0.42,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"SandFill","shape":"sphere","pos":[0.0,-0.0075,0.0095],"rot":[0.0,0.0,0.0],"size":[0.12,0.12,0.12],"color":[0.45,0.4,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"RopeKnot","shape":"sphere","pos":[0.0,0.0625,0.0095],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.35,0.33,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Spill1","shape":"sphere","pos":[-0.15,-0.0375,-0.0505],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.45,0.4,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Spill2","shape":"sphere","pos":[0.12,-0.0475,0.0795],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.45,0.4,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Spill3","shape":"sphere","pos":[0.08,-0.0275,-0.0805],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.45,0.4,0.35],"smooth":0.05,"metal":0.0}
+]}

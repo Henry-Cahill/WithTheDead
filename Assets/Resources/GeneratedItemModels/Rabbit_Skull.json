@@ -1,0 +1,12 @@
+{"version": 1, "id": "Rabbit_Skull", "baseHeight": 0.095, "name": "Rabbit Skull", "model": "gpt-oss:120b", "notes": "Rabbit skull approx 0.12 m long × 0.08 m high × 0.06 m wide, lying on its side (long axis along X). Main bone tinted 0.6 0.58 0.5 with a few darker indentations for eye‑sockets and teeth.", "score": 6, "parts": [
+  {"name":"Cranium","shape":"sphere","pos":[0.0012,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.07,0.09],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Jaw","shape":"cube","pos":[0.0012,-0.0275,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.04],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"ToothCenter","shape":"cube","pos":[0.0462,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.009,0.006,0.018],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"ToothLeft","shape":"cube","pos":[0.0462,-0.0225,0.01],"rot":[0.0,0.0,0.0],"size":[0.008,0.005,0.015],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"ToothRight","shape":"cube","pos":[0.0462,-0.0225,-0.01],"rot":[0.0,0.0,0.0],"size":[0.008,0.005,0.015],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"EyeSocketL","shape":"sphere","pos":[-0.0288,0.01,0.025],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.35,0.34,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EyeSocketR","shape":"sphere","pos":[-0.0288,0.01,-0.025],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.35,0.34,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"NasalBone","shape":"cube","pos":[0.0612,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.012],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"CraniumRidge","shape":"cube","pos":[0.0012,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.005,0.015],"color":[0.58,0.56,0.48],"smooth":0.3,"metal":0.0},
+  {"name":"JawJoint","shape":"cylinder","pos":[-0.0588,-0.0225,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0}
+]}

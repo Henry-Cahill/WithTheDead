@@ -1,0 +1,8 @@
+{"version": 1, "id": "IronBand", "baseHeight": 0.067, "name": "Iron Band", "model": "gpt-oss:120b", "notes": "Flat iron band 0.34 m long × 0.07 m wide × 0.012 m thick, lying on its side. Main steel strap with two rivet heads at the ends, a shallow top ridge for grip, a matching bottom ridge, and a dark punched‑through hole near the centre.", "score": 7, "parts": [
+  {"name":"MainBar","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.012,0.07],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"RivetL","shape":"cylinder","pos":[-0.155,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.45,0.44,0.38],"smooth":0.3,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[0.155,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.45,0.44,0.38],"smooth":0.3,"metal":1.0},
+  {"name":"TopRidge","shape":"cube","pos":[0.0,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.002,0.07],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"BottomRidge","shape":"cube","pos":[0.0,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.002,0.07],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"CenterHole","shape":"cylinder","pos":[0.0,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0}
+]}

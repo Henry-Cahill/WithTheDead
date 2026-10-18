@@ -1,0 +1,10 @@
+{"version": 1, "id": "Cologne", "baseHeight": 0.16, "name": "Cologne", "model": "gpt-oss:120b", "notes": "Upright glass cologne bottle ~0.07 m wide × 0.20 m tall: tinted glass body, metal spray cap and nozzle, thin label around the mid‑section, and a visible liquid fill.", "score": 6, "parts": [
+  {"name":"Base","shape":"cylinder","pos":[0.0,-0.0925,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.07],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0},
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.13,0.06],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0},
+  {"name":"Neck","shape":"cylinder","pos":[0.0,0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.0,0.0725,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.015,0.045],"color":[0.8,0.8,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"Nozzle","shape":"sphere","pos":[0.0,0.09,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.85,0.85,0.85],"smooth":0.65,"metal":1.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.062,0.002,0.062],"color":[0.4,0.38,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"Liquid","shape":"sphere","pos":[0.0,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.058,0.12,0.058],"color":[0.7,0.68,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"SprayButton","shape":"cylinder","pos":[0.0,0.0975,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.75,0.75,0.78],"smooth":0.55,"metal":1.0}
+]}

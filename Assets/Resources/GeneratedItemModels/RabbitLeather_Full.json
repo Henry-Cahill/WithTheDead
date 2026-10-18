@@ -1,0 +1,9 @@
+{"version": 1, "id": "RabbitLeather_Full", "baseHeight": 0.0625, "name": "Rabbit Leather Full", "model": "gpt-oss:120b", "notes": "Flat rabbit‑leather hide about 0.35 m × 0.25 m, ~3 mm thick, laid on the floor. Includes slightly raised frayed edge strips, a small punch‑hole near a corner and a gentle centre fold for visual interest.", "score": 7, "parts": [
+  {"name":"BaseSheet","shape":"cube","pos":[0.0,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.003,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.0,0.0,0.1225],"rot":[0.0,0.0,0.0],"size":[0.35,0.002,0.005],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBottom","shape":"cube","pos":[0.0,0.0,-0.1225],"rot":[0.0,0.0,0.0],"size":[0.35,0.002,0.005],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.1725,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.002,0.25],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.1725,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.002,0.25],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Fold","shape":"cube","pos":[0.0,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.002,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PunchHole","shape":"cylinder","pos":[-0.14,-0.0005,-0.1],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.02],"color":[0.1,0.1,0.1],"smooth":0.2,"metal":0.0}
+]}

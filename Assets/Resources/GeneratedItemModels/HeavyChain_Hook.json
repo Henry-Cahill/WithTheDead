@@ -1,0 +1,8 @@
+{"version": 1, "id": "HeavyChain_Hook", "baseHeight": 0.15, "name": "Heavy Chain Hook", "model": "gpt-oss:120b", "notes": "Heavy chain hook ~0.35 m long, thick steel shank with a short vertical stem and rounded hook tip; lying on its side with the shank along X. Three rivet heads mark the forged joint.", "score": 7, "parts": [
+  {"name":"Shank","shape":"cylinder","pos":[-0.02,-0.07,-0.03],"rot":[0.0,0.0,90.0],"size":[0.04,0.25,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"HookStem","shape":"cylinder","pos":[0.105,-0.02,-0.03],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"HookTip","shape":"sphere","pos":[0.105,0.05,0.01],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RivetA","shape":"cylinder","pos":[-0.08,-0.0425,-0.03],"rot":[0.0,0.0,90.0],"size":[0.008,0.015,0.008],"color":[0.4,0.38,0.3],"smooth":0.45,"metal":1.0},
+  {"name":"RivetB","shape":"cylinder","pos":[-0.02,-0.0425,-0.03],"rot":[0.0,0.0,90.0],"size":[0.008,0.015,0.008],"color":[0.4,0.38,0.3],"smooth":0.45,"metal":1.0},
+  {"name":"RivetC","shape":"cylinder","pos":[0.04,-0.0425,-0.03],"rot":[0.0,0.0,90.0],"size":[0.008,0.015,0.008],"color":[0.4,0.38,0.3],"smooth":0.45,"metal":1.0}
+]}

@@ -1,0 +1,9 @@
+{"version": 1, "id": "ButterKnife", "baseHeight": 0.07, "name": "Butter Knife", "model": "gpt-oss:120b", "notes": "Butter knife used as a melee weapon – total length 0.80 m (0.20 m wooden‑style handle + 0.60 m steel blade) lying flat on its side, longest axis along X with the pointed business end (+X).", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.3,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.2,0.02],"color":[0.5,0.5,0.55],"smooth":0.15,"metal":0.0},
+  {"name":"Blade","shape":"cube","pos":[0.1,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.004,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeRim","shape":"cube","pos":[0.1,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.58,0.002,0.042],"color":[0.4,0.4,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Tip","shape":"cube","pos":[0.395,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.004,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet","shape":"sphere","pos":[-0.2,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"BladeSideL","shape":"cube","pos":[0.1,-0.008,0.021],"rot":[0.0,0.0,0.0],"size":[0.6,0.004,0.002],"color":[0.5,0.5,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"BladeSideR","shape":"cube","pos":[0.1,-0.008,-0.021],"rot":[0.0,0.0,0.0],"size":[0.6,0.004,0.002],"color":[0.5,0.5,0.55],"smooth":0.05,"metal":0.0}
+]}

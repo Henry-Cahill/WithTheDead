@@ -1,0 +1,11 @@
+{"version": 1, "id": "ScrapWeaponSpade", "baseHeight": 0.21, "name": "Scrap Weapon Spade", "model": "gpt-oss:120b", "notes": "Scrap spade melee weapon ≈1.25 m long lying on its side (handle along X). Wooden handle, rubber grip near the butt, metal blade with a rectangular plate and a curved scoop front, metal end‑cap and four rivets at the blade‑handle joint.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.0125,-0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,1.2,0.04],"color":[0.45,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.5125,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.2,0.06],"color":[0.05,0.05,0.07],"smooth":0.3,"metal":0.0},
+  {"name":"EndCap","shape":"cylinder","pos":[-0.6025,-0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"BladePlate","shape":"cube","pos":[0.4625,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.05,0.3],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Scoop","shape":"cylinder","pos":[0.4625,-0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.3,0.15,0.3],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"RivetFrontLeft","shape":"cylinder","pos":[0.5675,-0.0,0.13],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFrontRight","shape":"cylinder","pos":[0.5675,-0.0,-0.13],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetTop","shape":"cylinder","pos":[0.5375,0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBottom","shape":"cylinder","pos":[0.5375,-0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0}
+]}

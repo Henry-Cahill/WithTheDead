@@ -1,0 +1,12 @@
+{"version": 1, "id": "RabbitLeather_Grey_Fur_Tan", "baseHeight": 0.0953, "name": "Rabbit Leather Grey Fur Tan", "model": "gpt-oss:120b", "notes": "Rabbit hide with grey‑tan fur, laid flat on the floor: approx 0.55 m long × 0.40 m wide, ~2.5 cm thick; base leather slab, fuzzy fur layer on top, stitched edge trim and a small tag.", "score": 7, "parts": [
+  {"name":"BaseLeather","shape":"cube","pos":[0.0,-0.0192,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.015,0.4],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"FurTop","shape":"sphere","pos":[0.0,-0.0043,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.02,0.4],"color":[0.68,0.66,0.58],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeStitchFront","shape":"cylinder","pos":[0.0,-0.0088,0.196],"rot":[0.0,0.0,90.0],"size":[0.008,0.55,0.008],"color":[0.3,0.28,0.24],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeStitchBack","shape":"cylinder","pos":[0.0,-0.0088,-0.196],"rot":[0.0,0.0,90.0],"size":[0.008,0.55,0.008],"color":[0.3,0.28,0.24],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeStitchLeft","shape":"cylinder","pos":[-0.271,-0.0088,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.4,0.008],"color":[0.3,0.28,0.24],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeStitchRight","shape":"cylinder","pos":[0.271,-0.0088,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.4,0.008],"color":[0.3,0.28,0.24],"smooth":0.05,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[-0.25,-0.0017,0.15],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.01],"color":[0.32,0.3,0.26],"smooth":0.05,"metal":0.0},
+  {"name":"FurClump1","shape":"sphere","pos":[-0.2,-0.0017,-0.1],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.04],"color":[0.68,0.66,0.58],"smooth":0.15,"metal":0.0},
+  {"name":"FurClump2","shape":"sphere","pos":[0.1,0.0003,0.12],"rot":[0.0,0.0,0.0],"size":[0.05,0.07,0.05],"color":[0.68,0.66,0.58],"smooth":0.15,"metal":0.0},
+  {"name":"FurClump3","shape":"sphere","pos":[-0.05,-0.0027,0.05],"rot":[0.0,0.0,0.0],"size":[0.045,0.065,0.045],"color":[0.68,0.66,0.58],"smooth":0.15,"metal":0.0}
+]}

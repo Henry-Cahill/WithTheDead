@@ -1,0 +1,11 @@
+{"version": 1, "id": "TobaccoSeed", "baseHeight": 0.0689, "name": "Tobacco Seed", "model": "gpt-oss:120b", "notes": "Tobacco seeds lie as a small irregular mound about 0.04 m across and 0.01–0.015 m high. A low‑poly pile of tiny ellipsoids gives a clear silhouette from above.", "score": 6, "parts": [
+  {"name":"Base","shape":"cylinder","pos":[0.0,-0.0039,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.01,0.04],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"Seed1","shape":"sphere","pos":[-0.012,0.0021,0.008],"rot":[0.0,0.0,0.0],"size":[0.009,0.0045,0.006],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seed2","shape":"sphere","pos":[0.015,0.0031,-0.009],"rot":[10.0,0.0,15.0],"size":[0.0085,0.004,0.0055],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seed3","shape":"sphere","pos":[-0.006,0.0001,-0.012],"rot":[-8.0,12.0,0.0],"size":[0.0075,0.0038,0.0052],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seed4","shape":"sphere","pos":[0.01,0.0051,0.012],"rot":[5.0,-10.0,8.0],"size":[0.0092,0.0047,0.0061],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seed5","shape":"sphere","pos":[-0.014,0.0041,-0.005],"rot":[-12.0,6.0,3.0],"size":[0.0088,0.0042,0.0063],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seed6","shape":"sphere","pos":[0.003,-0.0009,0.015],"rot":[3.0,-7.0,12.0],"size":[0.0079,0.0039,0.0054],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seed7","shape":"sphere","pos":[-0.008,0.0031,-0.014],"rot":[9.0,4.0,-6.0],"size":[0.0095,0.0048,0.0065],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seed8","shape":"sphere","pos":[0.012,0.0061,0.004],"rot":[-4.0,-9.0,7.0],"size":[0.0083,0.0041,0.0057],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0}
+]}

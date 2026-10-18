@@ -1,0 +1,12 @@
+{"version": 1, "id": "HandAxe_Old", "baseHeight": 0.097, "name": "Hand Axe Old", "model": "gpt-oss:120b", "notes": "Old‑style hand axe ~0.75 m long lying on its side: wooden handle (≈0.65 m) along X, metal head block at the tip with a forward blade (+Z) and a rear spike (‑Z). Metal rivets and a leather strap add detail.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.06,-0.017,-0.04],"rot":[0.0,0.0,90.0],"size":[0.04,0.65,0.04],"color":[0.38,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"GripBand","shape":"cylinder","pos":[0.22,-0.007,-0.04],"rot":[0.0,0.0,90.0],"size":[0.045,0.02,0.045],"color":[0.1,0.08,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.325,-0.002,-0.04],"rot":[0.0,0.0,0.0],"size":[0.12,0.07,0.08],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Blade","shape":"cube","pos":[0.325,-0.017,0.06],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BackSpike","shape":"cube","pos":[0.325,-0.017,-0.1],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetTL","shape":"cylinder","pos":[0.28,0.033,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.014,0.008],"color":[0.45,0.45,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"RivetTR","shape":"cylinder","pos":[0.28,0.033,-0.08],"rot":[90.0,0.0,0.0],"size":[0.008,0.014,0.008],"color":[0.45,0.45,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"cylinder","pos":[0.38,0.033,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.014,0.008],"color":[0.45,0.45,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"cylinder","pos":[0.38,0.033,-0.08],"rot":[90.0,0.0,0.0],"size":[0.008,0.014,0.008],"color":[0.45,0.45,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"LeatherStrap","shape":"cylinder","pos":[0.24,-0.012,-0.04],"rot":[0.0,0.0,90.0],"size":[0.012,0.03,0.012],"color":[0.25,0.15,0.1],"smooth":0.1,"metal":0.0}
+]}

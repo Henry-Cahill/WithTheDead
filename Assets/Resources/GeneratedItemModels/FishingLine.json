@@ -1,0 +1,11 @@
+{"version": 1, "id": "FishingLine", "baseHeight": 0.0835, "name": "Fishing Line", "model": "gpt-oss:120b", "notes": "Coiled fishing line about 0.15 m across, thin rope ~2 mm diameter (shown as a 4 mm thick cylinder for visibility). A small central sphere gives the tangled core and several intersecting cylinders form the loose coil lying on the floor. All coil sections now touch or overlap each other.", "score": 6, "parts": [
+  {"name":"CoreSphere","shape":"sphere","pos":[0.0265,-0.0035,0.0175],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"CoilX1","shape":"cylinder","pos":[0.0265,-0.0135,0.0175],"rot":[0.0,0.0,90.0],"size":[0.004,0.14,0.004],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"CoilZ1","shape":"cylinder","pos":[0.0265,-0.0085,0.0175],"rot":[90.0,0.0,0.0],"size":[0.004,0.12,0.004],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"CoilX2","shape":"cylinder","pos":[0.0265,0.0015,0.0475],"rot":[0.0,0.0,90.0],"size":[0.004,0.13,0.004],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"CoilZ2","shape":"cylinder","pos":[0.0265,0.0065,-0.0025],"rot":[90.0,0.0,0.0],"size":[0.004,0.11,0.004],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"CoilX3","shape":"cylinder","pos":[0.0265,0.0115,0.0025],"rot":[0.0,0.0,90.0],"size":[0.004,0.09,0.004],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"CoilZ3","shape":"cylinder","pos":[0.0265,0.0165,-0.0275],"rot":[90.0,0.0,0.0],"size":[0.004,0.1,0.004],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"CoilX4","shape":"cylinder","pos":[0.0265,0.0215,-0.0275],"rot":[0.0,0.0,90.0],"size":[0.004,0.07,0.004],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"LooseEnd","shape":"cylinder","pos":[-0.0435,-0.0085,0.0175],"rot":[0.0,30.0,90.0],"size":[0.004,0.12,0.004],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0}
+]}

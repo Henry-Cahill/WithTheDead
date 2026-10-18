@@ -1,0 +1,11 @@
+{"version": 1, "id": "BareHands", "baseHeight": 0.13, "name": "Bare Hands", "model": "gpt-oss:120b", "notes": "Bare hands weapon ~1.1 m reach, lying on side (X‑axis). Forearm cylinder, wrist cube, palm ellipsoid, knuckle block, four fingers as thin cylinders and a small skin‑fold detail.", "score": 6, "parts": [
+  {"name":"Forearm","shape":"cylinder","pos":[-0.05,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.14,1.02,0.14],"color":[0.6,0.6,0.64],"smooth":0.05,"metal":0.0},
+  {"name":"Wrist","shape":"cube","pos":[-0.6,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.12,0.08],"color":[0.6,0.6,0.64],"smooth":0.05,"metal":0.0},
+  {"name":"Palm","shape":"sphere","pos":[0.55,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.12,0.08],"color":[0.6,0.6,0.64],"smooth":0.05,"metal":0.0},
+  {"name":"Knuckles","shape":"cube","pos":[0.55,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.04,0.08],"color":[0.55,0.55,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Finger1","shape":"cylinder","pos":[0.61,0.02,0.045],"rot":[90.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.6,0.6,0.64],"smooth":0.05,"metal":0.0},
+  {"name":"Finger2","shape":"cylinder","pos":[0.61,0.02,0.015],"rot":[90.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.6,0.6,0.64],"smooth":0.05,"metal":0.0},
+  {"name":"Finger3","shape":"cylinder","pos":[0.61,0.02,-0.015],"rot":[90.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.6,0.6,0.64],"smooth":0.05,"metal":0.0},
+  {"name":"Finger4","shape":"cylinder","pos":[0.61,0.02,-0.045],"rot":[90.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.6,0.6,0.64],"smooth":0.05,"metal":0.0},
+  {"name":"SkinFold","shape":"cube","pos":[-0.53,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.04],"color":[0.58,0.58,0.62],"smooth":0.05,"metal":0.0}
+]}

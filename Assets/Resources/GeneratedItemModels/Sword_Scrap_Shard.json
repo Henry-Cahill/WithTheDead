@@ -1,0 +1,13 @@
+{"version": 1, "id": "Sword_Scrap_Shard", "baseHeight": 0.15, "name": "Sword Scrap Shard", "model": "gpt-oss:120b", "notes": "Irregular jagged blade fragment about 0.25 m long × 0.07 m wide × 0.02 m thick, lying flat on the floor with a pointed tip and ragged edges – typical scrap shard you’d find in a zombie‑infested junkyard.", "score": 7, "parts": [
+  {"name":"BasePlate","shape":"cube","pos":[-0.0047,-0.003,0.0013],"rot":[0.0,0.0,0.0],"size":[0.2,0.016,0.06],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Tip","shape":"cube","pos":[0.1203,-0.003,0.0013],"rot":[0.0,0.0,0.0],"size":[0.05,0.016,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"RagLeft1","shape":"cube","pos":[-0.0447,-0.003,-0.0287],"rot":[0.0,0.0,15.0],"size":[0.06,0.014,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"RagLeft2","shape":"cube","pos":[-0.0847,-0.003,-0.0437],"rot":[0.0,0.0,-10.0],"size":[0.04,0.014,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"RagRight1","shape":"cube","pos":[-0.0447,-0.003,0.0312],"rot":[0.0,0.0,-12.0],"size":[0.07,0.014,0.018],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"RagRight2","shape":"cube","pos":[-0.0947,-0.003,0.0462],"rot":[0.0,0.0,8.0],"size":[0.05,0.014,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"CenterRidge","shape":"cylinder","pos":[-0.0247,0.0,0.0013],"rot":[0.0,90.0,0.0],"size":[0.015,0.18,0.015],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"EdgeNotchL","shape":"cube","pos":[0.0553,-0.003,-0.0307],"rot":[0.0,0.0,20.0],"size":[0.03,0.012,0.01],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeNotchR","shape":"cube","pos":[0.0553,-0.003,0.0333],"rot":[0.0,0.0,-18.0],"size":[0.03,0.012,0.01],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ScrapFlake","shape":"cube","pos":[-0.1247,-0.003,-0.0187],"rot":[0.0,0.0,30.0],"size":[0.04,0.012,0.025],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ScrapFlake2","shape":"cube","pos":[-0.1247,-0.003,0.0213],"rot":[0.0,0.0,-25.0],"size":[0.04,0.012,0.025],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0}
+]}

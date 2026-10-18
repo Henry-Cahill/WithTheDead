@@ -1,0 +1,13 @@
+{"version": 1, "id": "LargePlank", "baseHeight": 0.1124, "name": "Large Plank", "model": "gpt-oss:120b", "notes": "Large wooden plank (≈2 m × 0.15 m × 0.07 m) lying flat on the floor, longest axis along X. Main board with beveled edges, two grain strips, three nail heads and end caps for clear silhouette.", "score": 7, "parts": [
+  {"name":"Board","shape":"cube","pos":[0.1,-0.0174,-0.0085],"rot":[0.0,0.0,0.0],"size":[2.0,0.07,0.15],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeLongLeft","shape":"cube","pos":[0.1,0.0051,-0.0785],"rot":[0.0,0.0,0.0],"size":[2.0,0.015,0.01],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeLongRight","shape":"cube","pos":[0.1,0.0051,0.0615],"rot":[0.0,0.0,0.0],"size":[2.0,0.015,0.01],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeEndLeft","shape":"cube","pos":[-0.895,-0.0099,-0.0085],"rot":[0.0,0.0,0.0],"size":[0.01,0.07,0.15],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeEndRight","shape":"cube","pos":[1.095,-0.0099,-0.0085],"rot":[0.0,0.0,0.0],"size":[0.01,0.07,0.15],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"GrainStrip1","shape":"cube","pos":[-0.2,0.0136,0.0365],"rot":[0.0,0.0,0.0],"size":[1.8,0.002,0.02],"color":[0.5,0.48,0.4],"smooth":0.12,"metal":0.0},
+  {"name":"GrainStrip2","shape":"cube","pos":[-0.2,0.0136,-0.0535],"rot":[0.0,0.0,0.0],"size":[1.8,0.002,0.02],"color":[0.5,0.48,0.4],"smooth":0.12,"metal":0.0},
+  {"name":"NailHead1","shape":"cylinder","pos":[-0.8,0.0206,-0.0085],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":1.0},
+  {"name":"NailHead2","shape":"cylinder","pos":[-0.75,0.0206,0.0215],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":1.0},
+  {"name":"NailHead3","shape":"cylinder","pos":[-0.7,0.0206,-0.0385],"rot":[0.0,0.0,0.0],"size":[0.016,0.004,0.016],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":1.0},
+  {"name":"Splinter","shape":"cube","pos":[0.7,0.0376,0.0615],"rot":[15.0,0.0,0.0],"size":[0.12,0.02,0.04],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0}
+]}

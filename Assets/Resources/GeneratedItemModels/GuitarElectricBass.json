@@ -1,0 +1,15 @@
+{"version": 1, "id": "GuitarElectricBass", "baseHeight": 0.12, "name": "Guitar Electric Bass", "model": "gpt-oss:120b", "notes": "Electric bass guitar ~1.4 m long lying on its side (X‑axis). Wood‑tinted body, neck and headstock; metal pickups, bridge, knobs and strap button. Main silhouette shows the elongated neck and chunky body with the business end (bridge & knobs) at +X.", "score": 6, "parts": [
+  {"name":"Headstock","shape":"cube","pos":[-0.6275,-0.02,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.15,0.08,0.35],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Neck","shape":"cylinder","pos":[-0.1775,-0.04,-0.0075],"rot":[0.0,0.0,90.0],"size":[0.04,0.75,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"BodyMain","shape":"cube","pos":[0.4475,0.0,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.5,0.12,0.34],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Fretboard","shape":"cube","pos":[-0.1775,-0.0375,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.75,0.005,0.04],"color":[0.55,0.55,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"Pickguard","shape":"cube","pos":[0.4475,0.004,0.1725],"rot":[0.0,0.0,0.0],"size":[0.5,0.008,0.02],"color":[0.7,0.7,0.75],"smooth":0.15,"metal":0.0},
+  {"name":"PickupFront","shape":"cube","pos":[0.5475,0.01,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.04],"color":[0.3,0.3,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"PickupMiddle","shape":"cube","pos":[0.3475,0.01,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.04],"color":[0.3,0.3,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"Bridge","shape":"cube","pos":[0.6775,0.0075,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.05,0.015,0.03],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Knob1","shape":"cylinder","pos":[0.5975,0.0125,-0.1275],"rot":[0.0,0.0,0.0],"size":[0.018,0.025,0.018],"color":[0.45,0.45,0.48],"smooth":0.65,"metal":1.0},
+  {"name":"Knob2","shape":"cylinder","pos":[0.6175,0.0125,-0.1275],"rot":[0.0,0.0,0.0],"size":[0.018,0.025,0.018],"color":[0.45,0.45,0.48],"smooth":0.65,"metal":1.0},
+  {"name":"Knob3","shape":"cylinder","pos":[0.6375,0.0125,-0.1275],"rot":[0.0,0.0,0.0],"size":[0.018,0.025,0.018],"color":[0.45,0.45,0.48],"smooth":0.65,"metal":1.0},
+  {"name":"ControlPanel","shape":"cube","pos":[0.5775,0.01,-0.0875],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.04],"color":[0.45,0.45,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"StrapButton","shape":"sphere","pos":[-0.2025,-0.045,-0.1575],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.45,0.45,0.48],"smooth":0.65,"metal":1.0}
+]}

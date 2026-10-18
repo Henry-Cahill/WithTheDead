@@ -1,0 +1,9 @@
+{"version": 1, "id": "HideTent_Packed", "baseHeight": 0.17, "name": "Hide Tent Packed", "model": "gpt-oss:120b", "notes": "Packed hide tent rolled into a compact cylinder about 0.60 m long × 0.20 m wide (radius 0.10 m). Main roll of tan‑brown hide, a dark rope strap band around the centre, thin label on one side and short end caps to hint at folded edges.", "score": 7, "parts": [
+  {"name":"RollBody","shape":"cylinder","pos":[0.005,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.2,0.6,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrapBand","shape":"cube","pos":[0.005,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.015,0.025],"color":[0.25,0.22,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.275,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.04],"color":[0.4,0.38,0.34],"smooth":0.05,"metal":0.0},
+  {"name":"EndCapFront","shape":"cylinder","pos":[0.305,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.22,0.02,0.22],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EndCapBack","shape":"cylinder","pos":[-0.295,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.22,0.02,0.22],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"LooseEdgeL","shape":"cube","pos":[-0.095,0.02,0.09],"rot":[0.0,15.0,0.0],"size":[0.08,0.02,0.04],"color":[0.55,0.52,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LooseEdgeR","shape":"cube","pos":[-0.095,0.02,-0.09],"rot":[0.0,-15.0,0.0],"size":[0.08,0.02,0.04],"color":[0.55,0.52,0.45],"smooth":0.05,"metal":0.0}
+]}

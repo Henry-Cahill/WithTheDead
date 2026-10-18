@@ -1,0 +1,13 @@
+{"version": 1, "id": "JawboneBovide_Axe", "baseHeight": 0.1675, "name": "Jawbone Bovide Axe", "model": "gpt-oss:120b", "notes": "Jawbone Bovide Axe ≈1.20 m total length (≈0.90 m handle + ≈0.30 m head). Lying on its side with the longest axis along X; all parts now touch the main body.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.05,-0.0325,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.9,0.07],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"GripWrap","shape":"cylinder","pos":[0.4,-0.0225,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.2,0.09],"color":[0.35,0.2,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"ButtCap","shape":"cylinder","pos":[-0.53,-0.0325,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.06,0.08],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"HeadBase","shape":"cube","pos":[0.46,-0.0325,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.15,0.25],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Rivet","shape":"cylinder","pos":[0.46,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.12,0.016],"color":[0.45,0.45,0.48],"smooth":0.6,"metal":1.0},
+  {"name":"BladeFront","shape":"cube","pos":[0.52,0.0375,0.125],"rot":[0.0,0.0,0.0],"size":[0.02,0.14,0.2],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeRidge","shape":"cube","pos":[0.52,0.1025,0.125],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.2],"color":[0.5,0.5,0.55],"smooth":0.65,"metal":1.0},
+  {"name":"BladeBack","shape":"cube","pos":[0.52,0.0375,-0.125],"rot":[0.0,0.0,0.0],"size":[0.02,0.14,0.2],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeTip","shape":"sphere","pos":[0.54,0.0475,0.225],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"JawToothPos","shape":"cube","pos":[0.54,0.0425,0.255],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"JawToothNeg","shape":"cube","pos":[0.54,0.0425,-0.255],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

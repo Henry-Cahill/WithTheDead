@@ -1,0 +1,8 @@
+{"version": 1, "id": "ShortSwordBlade", "baseHeight": 0.391, "name": "Short Sword Blade", "model": "gpt-oss:120b", "notes": "Short sword blade lying on its side, about 0.72 m long, 0.08 m wide and ~0.01 m thick. Main rectangular section plus a tapered tip made from a flattened sphere. Steel‑tinted (0.6,0.58,0.5) with full metal reflectivity.", "score": 6, "parts": [
+  {"name":"BladeBody","shape":"cube","pos":[-0.02,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.65,0.01,0.08],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.32,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.08],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeBevelL","shape":"cylinder","pos":[-0.22,-0.001,0.04],"rot":[0.0,90.0,0.0],"size":[0.015,0.65,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeBevelR","shape":"cylinder","pos":[-0.22,-0.001,-0.04],"rot":[0.0,90.0,0.0],"size":[0.015,0.65,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BackPlate","shape":"cylinder","pos":[-0.22,0.006,0.0],"rot":[0.0,90.0,0.0],"size":[0.01,0.65,0.01],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"FrontPlate","shape":"cylinder","pos":[-0.22,-0.006,-0.001],"rot":[0.0,90.0,0.0],"size":[0.01,0.65,0.01],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

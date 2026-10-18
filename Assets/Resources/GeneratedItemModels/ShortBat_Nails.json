@@ -1,0 +1,11 @@
+{"version": 1, "id": "ShortBat_Nails", "baseHeight": 0.095, "name": "Short Bat Nails", "model": "gpt-oss:120b", "notes": "Short bat ~0.80 m long, 0.07 m diameter, lying on its side (X‑axis). Wooden‑tinted body with a rubber‑grip near the handle, a short metal cap at the tip and six steel nails protruding from the tip face (+Z and –Z) to show the business end clearly.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.005,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.8,0.07],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"GripWrap","shape":"cylinder","pos":[-0.345,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.12,0.07],"color":[0.4,0.3,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"MetalCap","shape":"cylinder","pos":[0.385,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.04,0.07],"color":[0.5,0.5,0.55],"smooth":0.45,"metal":1.0},
+  {"name":"NailPosTop","shape":"cylinder","pos":[0.375,0.015,0.03],"rot":[90.0,0.0,0.0],"size":[0.01,0.06,0.01],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"NailPosMid","shape":"cylinder","pos":[0.375,0.0,0.03],"rot":[90.0,0.0,0.0],"size":[0.01,0.06,0.01],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"NailPosBottom","shape":"cylinder","pos":[0.375,-0.015,0.03],"rot":[90.0,0.0,0.0],"size":[0.01,0.06,0.01],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"NailNegTop","shape":"cylinder","pos":[0.375,0.015,-0.03],"rot":[-90.0,0.0,0.0],"size":[0.01,0.06,0.01],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"NailNegMid","shape":"cylinder","pos":[0.375,0.0,-0.03],"rot":[-90.0,0.0,0.0],"size":[0.01,0.06,0.01],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0},
+  {"name":"NailNegBottom","shape":"cylinder","pos":[0.375,-0.015,-0.03],"rot":[-90.0,0.0,0.0],"size":[0.01,0.06,0.01],"color":[0.7,0.7,0.75],"smooth":0.5,"metal":1.0}
+]}

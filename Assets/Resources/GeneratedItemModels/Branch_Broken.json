@@ -1,0 +1,12 @@
+{"version": 1, "id": "Branch_Broken", "baseHeight": 0.13, "name": "Branch Broken", "model": "gpt-oss:120b", "notes": "Broken branch melee weapon ~1.2 m long, gray‑brown bark tint (0.6,0.6,0.64). Main shaft is a thin cylinder, thick broken chunk at the business end with a rounded tip, a few splinters and knots for detail.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.22,-0.035,-0.0006],"rot":[0.0,0.0,90.0],"size":[0.07,0.9,0.07],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"ChunkMain","shape":"cylinder","pos":[0.38,-0.01,-0.0006],"rot":[0.0,0.0,90.0],"size":[0.12,0.3,0.12],"color":[0.55,0.5,0.55],"smooth":0.15,"metal":0.0},
+  {"name":"TipSphere","shape":"sphere","pos":[0.6,0.0,-0.0006],"rot":[0.0,0.0,0.0],"size":[0.14,0.14,0.14],"color":[0.5,0.45,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SplinterL","shape":"cube","pos":[0.43,0.02,0.0794],"rot":[10.0,0.0,20.0],"size":[0.04,0.02,0.06],"color":[0.65,0.6,0.62],"smooth":0.12,"metal":0.0},
+  {"name":"SplinterR","shape":"cube","pos":[0.46,0.02,-0.0806],"rot":[-5.0,0.0,-15.0],"size":[0.04,0.02,0.06],"color":[0.65,0.6,0.62],"smooth":0.12,"metal":0.0},
+  {"name":"KnotFront","shape":"sphere","pos":[-0.47,-0.005,-0.0006],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.4,0.35,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"KnotBack","shape":"sphere","pos":[-0.07,-0.01,-0.0006],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.42,0.37,0.33],"smooth":0.12,"metal":0.0},
+  {"name":"BarkPatchTop","shape":"cylinder","pos":[-0.32,-0.025,-0.0006],"rot":[0.0,0.0,90.0],"size":[0.09,0.5,0.09],"color":[0.48,0.44,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"BarkPatchBottom","shape":"cylinder","pos":[0.08,-0.03,-0.0006],"rot":[0.0,0.0,90.0],"size":[0.08,0.4,0.08],"color":[0.46,0.42,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Crack","shape":"cube","pos":[0.43,-0.01,-0.0006],"rot":[0.0,90.0,0.0],"size":[0.02,0.002,0.12],"color":[0.55,0.5,0.55],"smooth":0.1,"metal":0.0}
+]}

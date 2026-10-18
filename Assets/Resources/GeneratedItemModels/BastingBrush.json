@@ -1,0 +1,8 @@
+{"version": 1, "id": "BastingBrush", "baseHeight": 0.095, "name": "Basting Brush", "model": "gpt-oss:120b", "notes": "Basting brush ~0.30 m long lying on its side (handle along +X). Wooden handle, metal ferrule, bundle of natural‑hair bristles and a tiny metal tip.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.0325,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.25,0.03],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Ferrule","shape":"cylinder","pos":[0.1025,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.5,0.5,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"BristleBundle","shape":"sphere","pos":[0.1325,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.07,0.05],"color":[0.78,0.76,0.68],"smooth":0.05,"metal":0.0},
+  {"name":"TipCap","shape":"cylinder","pos":[0.1575,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.01,0.02],"color":[0.5,0.5,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ShadowBase","shape":"cube","pos":[-0.0075,-0.024,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.002,0.08],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0},
+  {"name":"HandleEndCap","shape":"cylinder","pos":[-0.1575,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.01,0.02],"color":[0.5,0.5,0.5],"smooth":0.55,"metal":1.0}
+]}

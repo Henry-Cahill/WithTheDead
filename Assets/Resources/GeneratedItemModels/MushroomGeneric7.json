@@ -1,0 +1,11 @@
+{"version": 1, "id": "MushroomGeneric7", "baseHeight": 0.126, "name": "Mushroom Generic7", "model": "gpt-oss:120b", "notes": "Upright canned mushrooms 0.08 m diameter × 0.12 m tall: metal body with top/bottom seams, recessed lid, brown‑tinted label and two simple mushroom pieces inside.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.12,0.08],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.058,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.008,0.082],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.062,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.008,0.082],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.062,0.0],"rot":[0.0,0.0,0.0],"size":[0.075,0.008,0.075],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.078,0.108,0.078],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.046,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.008,0.08],"color":[0.5,0.4,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.058,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.008,0.08],"color":[0.5,0.4,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"MushroomCap","shape":"sphere","pos":[0.0,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"MushroomStem","shape":"cylinder","pos":[0.0,-0.041,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.6,0.5,0.3],"smooth":0.1,"metal":0.0}
+]}

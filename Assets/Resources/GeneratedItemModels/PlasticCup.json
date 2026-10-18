@@ -1,0 +1,8 @@
+{"version": 1, "id": "PlasticCup", "baseHeight": 0.1075, "name": "Plastic Cup", "model": "gpt-oss:120b", "notes": "Plastic cup (tint 0.6, 0.58, 0.5) about 0.12 m tall, 0.09 m top diameter, 0.07 m bottom diameter, lying on its side: thin‑walled body cylinder, slightly larger rim lip at one end, smaller base disc at the other.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.12,0.09],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.062,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.095,0.004,0.095],"color":[0.62,0.6,0.52],"smooth":0.4,"metal":0.0},
+  {"name":"Base","shape":"cylinder","pos":[-0.062,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.004,0.07],"color":[0.58,0.55,0.48],"smooth":0.4,"metal":0.0},
+  {"name":"LipEdge","shape":"cylinder","pos":[0.062,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.095,0.002,0.095],"color":[0.64,0.62,0.55],"smooth":0.4,"metal":0.0},
+  {"name":"BottomEdge","shape":"cylinder","pos":[-0.062,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.002,0.07],"color":[0.55,0.53,0.46],"smooth":0.4,"metal":0.0},
+  {"name":"SideRimHighlight","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.002,0.09],"color":[0.66,0.64,0.58],"smooth":0.4,"metal":0.0}
+]}

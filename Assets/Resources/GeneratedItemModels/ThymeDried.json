@@ -1,0 +1,8 @@
+{"version": 1, "id": "ThymeDried", "baseHeight": 0.123, "name": "Thyme Dried", "model": "gpt-oss:120b", "notes": "Upright dried‑thyme packet about 0.08 m wide × 0.12 m tall × 0.06 m deep: cardboard box body, thin flapped lid, dark paper label on the front, and a loose herb fill visible through the opening.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.003,-0.0142],"rot":[0.0,0.0,0.0],"size":[0.08,0.12,0.06],"color":[0.78,0.72,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"LidFlap","shape":"cube","pos":[0.0,0.06,-0.0142],"rot":[0.0,0.0,0.0],"size":[0.082,0.006,0.062],"color":[0.78,0.72,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"TopRim","shape":"cylinder","pos":[0.0,0.059,-0.0142],"rot":[0.0,0.0,0.0],"size":[0.084,0.004,0.064],"color":[0.55,0.48,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.003,0.0173],"rot":[0.0,0.0,0.0],"size":[0.078,0.002,0.058],"color":[0.6,0.5,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"HerbFill","shape":"sphere","pos":[0.0,-0.018,-0.0142],"rot":[0.0,0.0,0.0],"size":[0.07,0.02,0.05],"color":[0.75,0.68,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"InnerLidFlap","shape":"cube","pos":[0.0,0.045,-0.0142],"rot":[0.0,0.0,0.0],"size":[0.074,0.004,0.054],"color":[0.7,0.64,0.44],"smooth":0.12,"metal":0.0}
+]}

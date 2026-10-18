@@ -1,0 +1,9 @@
+{"version": 1, "id": "CalfLeather_Simmental_Full", "baseHeight": 0.0775, "name": "Calf Leather Simmental Full", "model": "gpt-oss:120b", "notes": "Flat calf‑leather sheet about 0.40 m long × 0.30 m wide × 0.015 m thick (≈1 kg). Includes two parallel stitch lines across the centre, a small folded corner, and a metal tag with a short leather string hanging from one opposite corner.", "score": 6, "parts": [
+  {"name":"Sheet","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.015,0.3],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLineL","shape":"cube","pos":[0.0,-0.0015,-0.015],"rot":[0.0,0.0,0.0],"size":[0.38,0.002,0.005],"color":[0.4,0.35,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"StitchLineR","shape":"cube","pos":[0.0,-0.0015,0.015],"rot":[0.0,0.0,0.0],"size":[0.38,0.002,0.005],"color":[0.4,0.35,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"FoldCorner","shape":"cube","pos":[0.16,-0.0005,0.12],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TagPlate","shape":"cube","pos":[-0.16,-0.0,-0.12],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.015],"color":[0.7,0.45,0.2],"smooth":0.4,"metal":1.0},
+  {"name":"TagString","shape":"cylinder","pos":[-0.16,-0.01,-0.12],"rot":[0.0,0.0,0.0],"size":[0.002,0.015,0.002],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"GrainSpot","shape":"sphere","pos":[-0.05,0.0075,0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0}
+]}

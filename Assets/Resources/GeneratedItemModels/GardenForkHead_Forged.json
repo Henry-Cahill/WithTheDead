@@ -1,0 +1,12 @@
+{"version": 1, "id": "GardenForkHead_Forged", "baseHeight": 0.083, "name": "Garden Fork Head Forged", "model": "gpt-oss:120b", "notes": "Forged garden‑fork head ~0.25 m wide (X), 0.12 m deep (Z) and 0.04 m thick (Y). Main steel plate with four short tines sticking out the front (+Z) and a round socket on the back for the handle. Small rivets mark the forged joints.", "score": 6, "parts": [
+  {"name":"Plate","shape":"cube","pos":[0.0,-0.003,-0.02],"rot":[0.0,0.0,0.0],"size":[0.25,0.04,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Socket","shape":"cylinder","pos":[0.0,-0.003,-0.09],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.5,0.5,0.55],"smooth":0.55,"metal":1.0},
+  {"name":"TineL1","shape":"cylinder","pos":[-0.075,-0.003,0.08],"rot":[90.0,0.0,0.0],"size":[0.012,0.08,0.012],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineL2","shape":"cylinder","pos":[-0.025,-0.003,0.08],"rot":[90.0,0.0,0.0],"size":[0.012,0.08,0.012],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineR1","shape":"cylinder","pos":[0.025,-0.003,0.08],"rot":[90.0,0.0,0.0],"size":[0.012,0.08,0.012],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineR2","shape":"cylinder","pos":[0.075,-0.003,0.08],"rot":[90.0,0.0,0.0],"size":[0.012,0.08,0.012],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetL1","shape":"sphere","pos":[-0.075,0.019,0.04],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetL2","shape":"sphere","pos":[-0.025,0.019,0.04],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR1","shape":"sphere","pos":[0.025,0.019,0.04],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR2","shape":"sphere","pos":[0.075,0.019,0.04],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0}
+]}

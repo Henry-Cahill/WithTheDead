@@ -1,0 +1,10 @@
+{"version": 1, "id": "CanoePadelX2_Broken", "baseHeight": 0.09, "name": "Canoe Padel X2 Broken", "model": "gpt-oss:120b", "notes": "Broken canoe paddle ~1.6 m long, lying on its side (X‑axis). Left end has a rubber grip, then the wooden shaft left piece, a small split (SeamLeft), the right shaft piece, another tiny split (SeamRight), a flat blade and a metal tip. All parts now touch or overlap correctly.", "score": 6, "parts": [
+  {"name":"Grip","shape":"cylinder","pos":[-0.803,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.1,0.06],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"ShaftLeft","shape":"cylinder","pos":[-0.378,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.75,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"SeamLeft","shape":"cylinder","pos":[0.001,0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.008,0.045],"color":[0.55,0.55,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"ShaftRight","shape":"cylinder","pos":[0.28,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.55,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"SeamRight","shape":"cylinder","pos":[0.559,0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.008,0.045],"color":[0.55,0.55,0.6],"smooth":0.15,"metal":0.0},
+  {"name":"Binding","shape":"cube","pos":[0.147,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.1],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Blade","shape":"cube","pos":[0.688,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.3],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"MetalTip","shape":"cylinder","pos":[0.833,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.04,0.03],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0}
+]}

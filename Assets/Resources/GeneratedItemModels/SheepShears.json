@@ -1,0 +1,14 @@
+{"version": 1, "id": "SheepShears", "baseHeight": 0.0725, "name": "Sheep Shears", "model": "gpt-oss:120b", "notes": "Sheep shears ~0.26 m long, 0.12 m wide (blade span) and ~2 cm thick. Two plastic‑tinted handles, a metal pivot, two steel blades crossing the pivot, a central screw and a few grip ribs/end caps for detail.", "score": 6, "parts": [
+  {"name":"HandleL","shape":"cylinder","pos":[-0.0575,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.07,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"HandleR","shape":"cylinder","pos":[0.0325,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.07,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"BladeL","shape":"cube","pos":[0.0475,-0.005,0.03],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.02],"color":[0.7,0.68,0.65],"smooth":0.6,"metal":1.0},
+  {"name":"BladeR","shape":"cube","pos":[0.0475,-0.005,-0.03],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.02],"color":[0.7,0.68,0.65],"smooth":0.6,"metal":1.0},
+  {"name":"Pivot","shape":"cylinder","pos":[-0.0125,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.02,0.025],"color":[0.55,0.53,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Screw","shape":"sphere","pos":[-0.0125,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.9,0.9,0.9],"smooth":0.5,"metal":1.0},
+  {"name":"GripRibL1","shape":"cube","pos":[-0.0825,-0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.018],"color":[0.45,0.43,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"GripRibL2","shape":"cube","pos":[-0.0325,-0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.018],"color":[0.45,0.43,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"GripRibR1","shape":"cube","pos":[0.0575,-0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.018],"color":[0.45,0.43,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"GripRibR2","shape":"cube","pos":[0.0075,-0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.008,0.018],"color":[0.45,0.43,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"EndCapL","shape":"cube","pos":[-0.1025,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"EndCapR","shape":"cube","pos":[0.0775,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0}
+]}

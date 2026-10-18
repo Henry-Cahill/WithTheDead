@@ -1,0 +1,16 @@
+{"version": 1, "id": "AluminumFragments", "baseHeight": 0.0847, "name": "Aluminum Fragments", "model": "gpt-oss:120b", "notes": "Loose aluminum fragments forming a small irregular pile ~0.25 m across and ~0.05 m high, as found scattered on the floor. Main colour is the given aluminium tint with metallic shine; pieces are simple cubes, cylinders and ellipsoids overlapping to suggest broken shavings.", "score": 7, "parts": [
+  {"name":"ShardA","shape":"cube","pos":[-0.0414,-0.002,0.0193],"rot":[12.0,-8.0,3.0],"size":[0.14,0.018,0.045],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ShardB","shape":"cube","pos":[0.0286,-0.0,-0.0107],"rot":[-5.0,15.0,0.0],"size":[0.11,0.02,0.05],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ShardC","shape":"cylinder","pos":[0.0586,-0.003,0.0393],"rot":[0.0,0.0,90.0],"size":[0.018,0.03,0.018],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"ShardD","shape":"cylinder","pos":[-0.0714,-0.004,-0.0507],"rot":[90.0,0.0,0.0],"size":[0.022,0.025,0.022],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"ShardE","shape":"sphere","pos":[0.0086,0.003,0.0693],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.58,0.5],"smooth":0.42,"metal":1.0},
+  {"name":"ShardF","shape":"cube","pos":[-0.0214,-0.001,-0.0707],"rot":[20.0,-12.0,5.0],"size":[0.09,0.017,0.04],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ShardG","shape":"cylinder","pos":[0.0436,-0.006,-0.0007],"rot":[0.0,45.0,90.0],"size":[0.015,0.028,0.015],"color":[0.6,0.58,0.5],"smooth":0.44,"metal":1.0},
+  {"name":"ShardH","shape":"cube","pos":[-0.0514,-0.003,0.0593],"rot":[-10.0,8.0,-3.0],"size":[0.07,0.016,0.03],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ShardI","shape":"cylinder","pos":[0.0186,0.002,-0.0407],"rot":[90.0,30.0,0.0],"size":[0.017,0.032,0.017],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"ShardJ","shape":"sphere","pos":[-0.0314,0.006,0.0093],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.6,0.58,0.5],"smooth":0.42,"metal":1.0},
+  {"name":"ShardK","shape":"cube","pos":[0.0686,-0.005,-0.0607],"rot":[-15.0,20.0,-10.0],"size":[0.08,0.015,0.045],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ShardL","shape":"cylinder","pos":[-0.0614,-0.0,0.0293],"rot":[45.0,0.0,90.0],"size":[0.02,0.029,0.02],"color":[0.6,0.58,0.5],"smooth":0.44,"metal":1.0},
+  {"name":"ShardM","shape":"cube","pos":[-0.0014,0.008,-0.0807],"rot":[5.0,-3.0,12.0],"size":[0.06,0.018,0.04],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ShardN","shape":"sphere","pos":[0.0486,0.01,0.0893],"rot":[0.0,0.0,0.0],"size":[0.028,0.028,0.028],"color":[0.6,0.58,0.5],"smooth":0.42,"metal":1.0}
+]}

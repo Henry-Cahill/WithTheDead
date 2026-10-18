@@ -1,0 +1,11 @@
+{"version": 1, "id": "FawnLeather_Fur_Tan_Wet", "baseHeight": 0.0637, "name": "Fawn Leather Fur Tan Wet", "model": "gpt-oss:120b", "notes": "Flat piece of wet fawn‑colored leather with a short fur nap on one side. Approx. 0.60 m × 0.40 m, 5 mm thick leather base, 1 mm fluffy fur overlay and a thin glossy wet film. Edge strips give a slightly darker bound look.", "score": 7, "parts": [
+  {"name":"BaseLeather","shape":"cube","pos":[0.0,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.005,0.4],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"FurNap","shape":"cube","pos":[0.0,0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.595,0.002,0.395],"color":[0.65,0.62,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"WetGloss","shape":"cube","pos":[0.0,0.0027,0.0],"rot":[0.0,0.0,0.0],"size":[0.59,0.002,0.39],"color":[0.7,0.68,0.6],"smooth":0.45,"metal":0.0},
+  {"name":"EdgeZPos","shape":"cube","pos":[0.0,-0.0022,0.195],"rot":[0.0,0.0,0.0],"size":[0.6,0.003,0.01],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeZNeg","shape":"cube","pos":[0.0,-0.0022,-0.195],"rot":[0.0,0.0,0.0],"size":[0.6,0.003,0.01],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeXPos","shape":"cube","pos":[0.295,-0.0022,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.003,0.4],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeXNeg","shape":"cube","pos":[-0.295,-0.0022,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.003,0.4],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"StitchRun1","shape":"cylinder","pos":[-0.28,0.0008,0.0],"rot":[90.0,0.0,0.0],"size":[0.002,0.58,0.002],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRun2","shape":"cylinder","pos":[0.28,0.0008,0.0],"rot":[90.0,0.0,0.0],"size":[0.002,0.58,0.002],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0}
+]}

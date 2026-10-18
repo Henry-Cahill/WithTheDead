@@ -1,0 +1,8 @@
+{"version": 1, "id": "LightBulbPink", "baseHeight": 0.09, "name": "Light Bulb Pink", "model": "gpt-oss:120b", "notes": "Pink‑tinted glass bulb lying on its side (~0.085 m long): clear rounded glass sphere, screw base of brushed metal, tiny filament coil inside.", "score": 7, "parts": [
+  {"name":"GlassSphere","shape":"sphere","pos":[0.0125,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0},
+  {"name":"MetalBase","shape":"cylinder","pos":[-0.03,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.025,0.015],"color":[0.7,0.7,0.72],"smooth":0.3,"metal":1.0},
+  {"name":"Filament","shape":"cylinder","pos":[0.0125,0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.018,0.008],"color":[0.9,0.7,0.2],"smooth":0.65,"metal":1.0},
+  {"name":"BaseRim","shape":"cylinder","pos":[-0.03,-0.0075,0.0],"rot":[0.0,0.0,90.0],"size":[0.017,0.003,0.017],"color":[0.65,0.66,0.68],"smooth":0.3,"metal":1.0},
+  {"name":"GlassHighlight","shape":"sphere","pos":[0.0125,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.058,0.058,0.058],"color":[0.8,0.78,0.75],"smooth":0.9,"metal":0.0},
+  {"name":"BaseScrewThread","shape":"cylinder","pos":[-0.03,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.014,0.022,0.014],"color":[0.6,0.62,0.64],"smooth":0.2,"metal":1.0}
+]}

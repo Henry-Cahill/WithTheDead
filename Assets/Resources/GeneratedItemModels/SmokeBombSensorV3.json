@@ -1,0 +1,8 @@
+{"version": 1, "id": "SmokeBombSensorV3", "baseHeight": 0.11, "name": "Smoke Bomb Sensor V3", "model": "gpt-oss:120b", "notes": "Blunt melee sensor‑baton ~0.6 m long lying on its side (X axis). Thick rubber grip at the -X end, steel shaft, a rectangular sensor housing at the +X business end with a button and an indicator light.", "score": 6, "parts": [
+  {"name":"Grip","shape":"cylinder","pos":[-0.2588,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.12,0.06],"color":[0.2,0.2,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"Shaft","shape":"cylinder","pos":[-0.0587,-0.03,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.5,0.04],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"MetalBand","shape":"cylinder","pos":[-0.0587,-0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.015,0.045],"color":[0.6,0.6,0.64],"smooth":0.45,"metal":1.0},
+  {"name":"SensorBody","shape":"cube","pos":[0.2512,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.06],"color":[0.55,0.55,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"Button","shape":"sphere","pos":[0.3113,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"IndicatorLight","shape":"sphere","pos":[0.2512,0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[1.0,0.5,0.0],"smooth":0.2,"metal":0.0}
+]}

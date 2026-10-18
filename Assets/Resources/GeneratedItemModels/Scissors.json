@@ -1,0 +1,14 @@
+{"version": 1, "id": "Scissors", "baseHeight": 0.09, "name": "Scissors", "model": "gpt-oss:120b", "notes": "Scissors ~0.5 m long (X) with two looped handles and crossing steel blades showing the cutting ends. Main metal tint (0.6,0.6,0.64); handles are a slightly darker plastic. All parts now touch or overlap the main body.", "score": 6, "parts": [
+  {"name":"HandleL","shape":"cylinder","pos":[-0.12,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.12,0.06],"color":[0.5,0.5,0.55],"smooth":0.3,"metal":0.0},
+  {"name":"HandleR","shape":"cylinder","pos":[0.12,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.12,0.06],"color":[0.5,0.5,0.55],"smooth":0.3,"metal":0.0},
+  {"name":"PivotSphere","shape":"sphere","pos":[0.0,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"PivotHead","shape":"cylinder","pos":[0.0,0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.005,0.025],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeL","shape":"cube","pos":[-0.05,0.01,0.125],"rot":[0.0,10.0,0.0],"size":[0.02,0.015,0.25],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeR","shape":"cube","pos":[0.05,0.01,-0.125],"rot":[0.0,-10.0,0.0],"size":[0.02,0.015,0.25],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeEdgeL","shape":"cylinder","pos":[-0.05,0.0175,0.25],"rot":[90.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeEdgeR","shape":"cylinder","pos":[0.05,0.0175,-0.25],"rot":[90.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"ScrewNutL","shape":"cylinder","pos":[-0.02,0.015,0.03],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"ScrewNutR","shape":"cylinder","pos":[0.02,0.015,-0.03],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.012],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetL","shape":"cylinder","pos":[-0.17,0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.015,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[0.17,0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.015,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

@@ -1,0 +1,9 @@
+{"version": 1, "id": "PaintBlack", "baseHeight": 0.209, "name": "Paint Black", "model": "gpt-oss:120b", "notes": "Upright steel paint‑can 0.20 m diameter × 0.28 m tall (≈5 kg). Body is brushed metal, thin recessed lid, and a dark‑gray label indicating the black paint.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.28,0.2],"color":[0.7,0.71,0.73],"smooth":0.55,"metal":1.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.137,0.0],"rot":[0.0,0.0,0.0],"size":[0.212,0.012,0.212],"color":[0.7,0.71,0.73],"smooth":0.55,"metal":1.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.143,0.0],"rot":[0.0,0.0,0.0],"size":[0.212,0.012,0.212],"color":[0.7,0.71,0.73],"smooth":0.55,"metal":1.0},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.143,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.012,0.18],"color":[0.55,0.56,0.58],"smooth":0.45,"metal":1.0},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.206,0.19,0.206],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.087,0.0],"rot":[0.0,0.0,0.0],"size":[0.208,0.008,0.208],"color":[0.45,0.44,0.38],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.103,0.0],"rot":[0.0,0.0,0.0],"size":[0.208,0.008,0.208],"color":[0.45,0.44,0.38],"smooth":0.12,"metal":0.0}
+]}

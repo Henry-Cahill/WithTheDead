@@ -1,0 +1,8 @@
+{"version": 1, "id": "FawnLeather_Full", "baseHeight": 0.0638, "name": "Fawn Leather Full", "model": "gpt-oss:120b", "notes": "Fawn leather hide, roughly full‑size sheet ~0.55 m wide × 0.75 m long × 5 mm thick, lying flat on the floor. Main slab with a slightly darker stitched border around all edges.", "score": 6, "parts": [
+  {"name":"MainSheet","shape":"cube","pos":[0.0,-0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.005,0.75],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0,0.0017,0.375],"rot":[0.0,0.0,0.0],"size":[0.55,0.002,0.01],"color":[0.45,0.43,0.35],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0,0.0017,-0.375],"rot":[0.0,0.0,0.0],"size":[0.55,0.002,0.01],"color":[0.45,0.43,0.35],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.275,0.0017,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.002,0.75],"color":[0.45,0.43,0.35],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.275,0.0017,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.002,0.75],"color":[0.45,0.43,0.35],"smooth":0.08,"metal":0.0},
+  {"name":"LabelTag","shape":"cube","pos":[-0.23,0.0027,0.33],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.3,0.28,0.22],"smooth":0.05,"metal":0.0}
+]}

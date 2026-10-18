@@ -1,0 +1,16 @@
+{"version": 1, "id": "FurTuft_Brownlight", "baseHeight": 0.1113, "name": "Fur Tuft Brownlight", "model": "gpt-oss:120b", "notes": "Loose bundle of brown fur tufts, approx. 0.15 m across and 0.07 m tall when lying on the floor. A low flat base with many short, randomly‑oriented cylinders (and a few spheres) creates a fluffy, readable silhouette.", "score": 6, "parts": [
+  {"name":"Base","shape":"cylinder","pos":[0.0071,-0.0326,-0.0012],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.15],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Tuft01","shape":"cylinder","pos":[-0.0229,-0.0076,0.0188],"rot":[30.0,0.0,45.0],"size":[0.04,0.07,0.04],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Tuft02","shape":"cylinder","pos":[0.0321,-0.0006,-0.0312],"rot":[-20.0,0.0,10.0],"size":[0.035,0.08,0.035],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Tuft03","shape":"cylinder","pos":[0.0471,-0.0046,0.0388],"rot":[15.0,0.0,-30.0],"size":[0.045,0.06,0.045],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Tuft04","shape":"cylinder","pos":[-0.0429,-0.0106,-0.0212],"rot":[-10.0,0.0,60.0],"size":[0.038,0.075,0.038],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Tuft05","shape":"cylinder","pos":[0.0171,0.0024,0.0488],"rot":[25.0,0.0,-15.0],"size":[0.042,0.065,0.042],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Tuft06","shape":"cylinder","pos":[-0.0129,-0.0026,-0.0462],"rot":[-35.0,0.0,20.0],"size":[0.036,0.07,0.036],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Tuft07","shape":"cylinder","pos":[0.0371,-0.0046,0.0088],"rot":[10.0,0.0,-40.0],"size":[0.04,0.06,0.04],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Tuft08","shape":"cylinder","pos":[-0.0279,-0.0006,0.0288],"rot":[-25.0,0.0,70.0],"size":[0.038,0.075,0.038],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Tuft09","shape":"cylinder","pos":[0.0521,-0.0066,-0.0412],"rot":[20.0,0.0,-25.0],"size":[0.042,0.065,0.042],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Tuft10","shape":"cylinder","pos":[-0.0079,0.0074,0.0438],"rot":[-15.0,0.0,35.0],"size":[0.04,0.07,0.04],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Fluff01","shape":"sphere","pos":[0.0271,0.0154,0.0188],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Fluff02","shape":"sphere","pos":[-0.0209,0.0124,-0.0262],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Fluff03","shape":"sphere","pos":[0.0421,0.0104,0.0388],"rot":[0.0,0.0,0.0],"size":[0.024,0.024,0.024],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0}
+]}

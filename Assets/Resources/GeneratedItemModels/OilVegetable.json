@@ -1,0 +1,8 @@
+{"version": 1, "id": "OilVegetable", "baseHeight": 0.185, "name": "Oil Vegetable", "model": "gpt-oss:120b", "notes": "Upright vegetable‑oil bottle ~0.27 m tall × 0.07 m diameter: clear plastic body tinted yellow‑brown, screw‑cap, white label with dark trim.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.23,0.07],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"CapBase","shape":"cylinder","pos":[0.0,0.115,0.0],"rot":[0.0,0.0,0.0],"size":[0.075,0.02,0.075],"color":[0.12,0.12,0.13],"smooth":0.3,"metal":0.0},
+  {"name":"CapTop","shape":"cylinder","pos":[0.0,0.1205,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.005,0.07],"color":[0.09,0.09,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.18],"color":[0.93,0.93,0.92],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0,-0.0092,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.003,0.18],"color":[0.25,0.22,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.0,-0.0108,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.003,0.18],"color":[0.25,0.22,0.15],"smooth":0.05,"metal":0.0}
+]}

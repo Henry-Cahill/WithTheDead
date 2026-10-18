@@ -1,0 +1,15 @@
+{"version": 1, "id": "ChristmasHanging", "baseHeight": 0.1, "name": "Christmas Hanging", "model": "gpt-oss:120b", "notes": "Flat fabric Christmas hanging (~0.40 m × 0.25 m, 2 cm thick) with a metal loop at the top and three small decorative baubles (red, green, gold). Added edge seams and two crossing ribbons for visual detail.", "score": 7, "parts": [
+  {"name":"BaseCloth","shape":"cube","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.02,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LoopMetal","shape":"cylinder","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.04],"color":[0.85,0.85,0.86],"smooth":0.6,"metal":1.0},
+  {"name":"OrnamentRed","shape":"sphere","pos":[-0.12,0.005,0.08],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[1.0,0.0,0.0],"smooth":0.4,"metal":0.0},
+  {"name":"OrnamentGreen","shape":"sphere","pos":[-0.12,0.005,-0.08],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.0,0.6,0.0],"smooth":0.4,"metal":0.0},
+  {"name":"OrnamentGold","shape":"sphere","pos":[0.15,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[1.0,0.84,0.0],"smooth":0.4,"metal":0.0},
+  {"name":"EdgeSeamTop","shape":"cube","pos":[0.0,-0.0175,0.125],"rot":[0.0,0.0,0.0],"size":[0.4,0.005,0.01],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeSeamBottom","shape":"cube","pos":[0.0,-0.0175,-0.125],"rot":[0.0,0.0,0.0],"size":[0.4,0.005,0.01],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeSeamLeft","shape":"cube","pos":[-0.2,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.25],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeSeamRight","shape":"cube","pos":[0.2,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.25],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Ribbon1","shape":"cylinder","pos":[0.0,-0.019,0.07],"rot":[0.0,0.0,90.0],"size":[0.012,0.38,0.012],"color":[0.7,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Ribbon2","shape":"cylinder","pos":[0.0,-0.019,-0.07],"rot":[0.0,0.0,90.0],"size":[0.012,0.38,0.012],"color":[0.2,0.5,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"FringeLeft","shape":"cylinder","pos":[-0.18,-0.025,-0.12],"rot":[0.0,90.0,0.0],"size":[0.008,0.03,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FringeRight","shape":"cylinder","pos":[0.18,-0.025,-0.12],"rot":[0.0,90.0,0.0],"size":[0.008,0.03,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "Katana_Shard", "baseHeight": 0.067, "name": "Katana Shard", "model": "gpt-oss:120b", "notes": "Katana shard ~0.15 m long, thin (~5 mm thick) broken blade lying on its side (long axis along X). Main steel fragment with a few jagged off‑cuts and a rust spot for visual interest.", "score": 6, "parts": [
+  {"name":"MainBlade","shape":"cube","pos":[-0.0017,-0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.005,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TipFragment","shape":"cylinder","pos":[0.0733,-0.003,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.03,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"HandleChunk","shape":"cube","pos":[-0.0617,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.01,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeSpikeL","shape":"cube","pos":[-0.0717,-0.001,0.012],"rot":[0.0,20.0,0.0],"size":[0.03,0.008,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeSpikeR","shape":"cube","pos":[-0.0717,-0.001,-0.012],"rot":[0.0,-20.0,0.0],"size":[0.03,0.008,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SideBevelL","shape":"cylinder","pos":[-0.0017,-0.003,0.011],"rot":[90.0,0.0,0.0],"size":[0.003,0.14,0.003],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SideBevelR","shape":"cylinder","pos":[-0.0017,-0.003,-0.011],"rot":[90.0,0.0,0.0],"size":[0.003,0.14,0.003],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RustPatch","shape":"sphere","pos":[-0.0317,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.4,0.2,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"DebrisSmall1","shape":"cube","pos":[0.0383,-0.004,0.018],"rot":[10.0,15.0,0.0],"size":[0.015,0.004,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"DebrisSmall2","shape":"cube","pos":[-0.0817,-0.004,-0.018],"rot":[-8.0,-12.0,0.0],"size":[0.012,0.004,0.007],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeChip","shape":"cylinder","pos":[0.0683,-0.001,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.02,0.004],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

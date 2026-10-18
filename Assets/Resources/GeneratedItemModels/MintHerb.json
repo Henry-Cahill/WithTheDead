@@ -1,0 +1,12 @@
+{"version": 1, "id": "MintHerb", "baseHeight": 0.0735, "name": "Mint Herb", "model": "gpt-oss:120b", "notes": "Loose dried mint herb in a small paper sachet about 0.08 m × 0.05 m × 0.008 m (L × W × T). The packet is a brown‑paper wrapper with a greenish tint showing the leaf contents; a thin flap folds over the top and a few leaf ellipsoids are visible inside.", "score": 6, "parts": [
+  {"name":"PacketBody","shape":"cube","pos":[0.0,-0.001,0.003],"rot":[0.0,0.0,0.0],"size":[0.08,0.008,0.05],"color":[0.6,0.45,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"Flap","shape":"cube","pos":[0.0,0.0045,0.003],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.05],"color":[0.58,0.43,0.28],"smooth":0.12,"metal":0.0},
+  {"name":"Leaf1","shape":"sphere","pos":[-0.02,0.0,0.018],"rot":[0.0,0.0,0.0],"size":[0.018,0.025,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf2","shape":"sphere","pos":[-0.005,0.0,-0.012],"rot":[0.0,0.0,0.0],"size":[0.016,0.022,0.011],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf3","shape":"sphere","pos":[0.015,0.0,0.013],"rot":[0.0,0.0,0.0],"size":[0.019,0.027,0.013],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf4","shape":"sphere","pos":[0.025,0.0,-0.017],"rot":[0.0,0.0,0.0],"size":[0.017,0.023,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf5","shape":"sphere","pos":[-0.015,0.0,-0.007],"rot":[0.0,0.0,0.0],"size":[0.018,0.024,0.011],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf6","shape":"sphere","pos":[0.0,0.0,0.023],"rot":[0.0,0.0,0.0],"size":[0.016,0.022,0.01],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf7","shape":"sphere","pos":[-0.025,0.0,0.003],"rot":[0.0,0.0,0.0],"size":[0.017,0.023,0.011],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf8","shape":"sphere","pos":[0.02,0.0,-0.022],"rot":[0.0,0.0,0.0],"size":[0.019,0.026,0.012],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

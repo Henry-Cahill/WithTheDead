@@ -1,0 +1,10 @@
+{"version": 1, "id": "Chopsticks", "baseHeight": 0.0675, "name": "Chopsticks", "model": "gpt-oss:120b", "notes": "Two wooden chopsticks 0.25 m long × 0.015 m diameter lying side‑by‑side on the floor (y=0). Each stick is a cylinder laid along X with rounded tip caps.", "score": 7, "parts": [
+  {"name":"StickL","shape":"cylinder","pos":[0.0,0.0,-0.008],"rot":[0.0,0.0,90.0],"size":[0.015,0.25,0.015],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"StickR","shape":"cylinder","pos":[0.0,0.0,0.008],"rot":[0.0,0.0,90.0],"size":[0.015,0.25,0.015],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"TipL_Pos","shape":"sphere","pos":[-0.125,0.0,-0.008],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.48,0.46,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"TipL_Neg","shape":"sphere","pos":[0.125,0.0,-0.008],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.48,0.46,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"TipR_Pos","shape":"sphere","pos":[-0.125,0.0,0.008],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.48,0.46,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"TipR_Neg","shape":"sphere","pos":[0.125,0.0,0.008],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.48,0.46,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"GrainL","shape":"cube","pos":[0.0,0.005,-0.008],"rot":[0.0,0.0,0.0],"size":[0.24,0.002,0.003],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"GrainR","shape":"cube","pos":[0.0,0.005,0.008],"rot":[0.0,0.0,0.0],"size":[0.24,0.002,0.003],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0}
+]}

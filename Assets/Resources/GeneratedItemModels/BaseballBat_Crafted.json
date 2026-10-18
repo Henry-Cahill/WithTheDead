@@ -1,0 +1,10 @@
+{"version": 1, "id": "BaseballBat_Crafted", "baseHeight": 0.1005, "name": "Baseball Bat Crafted", "model": "gpt-oss:120b", "notes": "Crafted baseball bat ≈0.84 m long, wood‑tinted (0.6,0.6,0.64). Lying on its side with the thick barrel pointing +X; main shaft, tapered barrel, wooden knob and a few grain/detail strips.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.23,-0.0055,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.35,0.04],"color":[0.6,0.6,0.64],"smooth":0.12,"metal":0.0},
+  {"name":"Barrel","shape":"cylinder","pos":[0.07,-0.0055,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.3,0.07],"color":[0.6,0.6,0.64],"smooth":0.12,"metal":0.0},
+  {"name":"Knob","shape":"sphere","pos":[0.37,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.55,0.55,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"BarrelCap","shape":"cylinder","pos":[0.235,-0.0055,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.02,0.07],"color":[0.5,0.5,0.55],"smooth":0.15,"metal":0.0},
+  {"name":"GripBand","shape":"cylinder","pos":[-0.1,-0.0055,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.015,0.045],"color":[0.2,0.15,0.1],"smooth":0.25,"metal":0.0},
+  {"name":"GrainStripTop","shape":"cube","pos":[0.07,0.0045,0.025],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.008],"color":[0.48,0.48,0.52],"smooth":0.08,"metal":0.0},
+  {"name":"GrainStripBottom","shape":"cube","pos":[0.07,0.0045,-0.025],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.008],"color":[0.48,0.48,0.52],"smooth":0.08,"metal":0.0},
+  {"name":"TipRim","shape":"cylinder","pos":[0.235,0.0045,0.0],"rot":[0.0,0.0,90.0],"size":[0.072,0.006,0.072],"color":[0.55,0.55,0.6],"smooth":0.12,"metal":0.0}
+]}

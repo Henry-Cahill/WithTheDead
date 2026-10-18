@@ -1,0 +1,17 @@
+{"version": 1, "id": "GuitarElectricNeck_Broken", "baseHeight": 0.075, "name": "Guitar Electric Neck Broken", "model": "gpt-oss:120b", "notes": "Broken electric‑guitar neck (≈0.8 m total) lying on its side, longest axis X. Right side shows headstock; left side is a detached fragment offset in Z to expose the break. Wood tint 0.6 0.6 0.64, steel strings and truss‑rod.", "score": 6, "parts": [
+  {"name":"NeckBroken","shape":"cube","pos":[-0.275,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.045],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"NeckIntact","shape":"cube","pos":[0.025,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.045],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Headstock","shape":"cube","pos":[0.275,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.025,0.07],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"TrussRod","shape":"cylinder","pos":[-0.15,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.4,0.008],"color":[0.8,0.8,0.85],"smooth":0.5,"metal":1.0},
+  {"name":"String1","shape":"cylinder","pos":[0.125,-0.0043,-0.018],"rot":[0.0,0.0,90.0],"size":[0.002,0.55,0.002],"color":[0.85,0.85,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"String2","shape":"cylinder","pos":[0.125,-0.0043,-0.012],"rot":[0.0,0.0,90.0],"size":[0.002,0.55,0.002],"color":[0.85,0.85,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"String3","shape":"cylinder","pos":[0.125,-0.0043,-0.006],"rot":[0.0,0.0,90.0],"size":[0.002,0.55,0.002],"color":[0.85,0.85,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"String4","shape":"cylinder","pos":[0.125,-0.0043,0.0],"rot":[0.0,0.0,90.0],"size":[0.002,0.55,0.002],"color":[0.85,0.85,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"String5","shape":"cylinder","pos":[0.125,-0.0043,0.006],"rot":[0.0,0.0,90.0],"size":[0.002,0.55,0.002],"color":[0.85,0.85,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"String6","shape":"cylinder","pos":[0.125,-0.0043,0.012],"rot":[0.0,0.0,90.0],"size":[0.002,0.55,0.002],"color":[0.85,0.85,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"Fret1","shape":"cube","pos":[-0.07,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.02,0.045],"color":[0.7,0.7,0.75],"smooth":0.4,"metal":0.9},
+  {"name":"Fret2","shape":"cube","pos":[0.01,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.02,0.045],"color":[0.7,0.7,0.75],"smooth":0.4,"metal":0.9},
+  {"name":"Fret3","shape":"cube","pos":[0.09,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.02,0.045],"color":[0.7,0.7,0.75],"smooth":0.4,"metal":0.9},
+  {"name":"BreakEdgeLeft","shape":"cube","pos":[-0.16,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.045],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"BreakEdgeRight","shape":"cube","pos":[-0.14,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.045],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0}
+]}

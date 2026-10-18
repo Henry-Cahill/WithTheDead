@@ -1,0 +1,13 @@
+{"version": 1, "id": "Revolver_Long", "baseHeight": 0.12, "name": "Revolver Long", "model": "gpt-oss:120b", "notes": "Long revolver ~0.40 m long x 0.12 m high x 0.04 m wide, lying on its side (barrel along +X). Main steel body in dark‑gray tint, wooden‑polymer grip, detachable box magazine (15 rnd) attached under the grip, front/rear sights, hammer and trigger guard.", "score": 6, "parts": [
+  {"name":"Barrel","shape":"cylinder","pos":[0.01,0.0,-0.001],"rot":[0.0,0.0,90.0],"size":[0.025,0.3,0.025],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"Frame","shape":"cube","pos":[0.01,0.0,-0.001],"rot":[0.0,0.0,0.0],"size":[0.38,0.12,0.04],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"CylinderBlock","shape":"cylinder","pos":[-0.07,0.0,-0.001],"rot":[0.0,0.0,0.0],"size":[0.035,0.07,0.035],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"Grip","shape":"cube","pos":[-0.14,-0.04,-0.001],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.03],"color":[0.18,0.1,0.06],"smooth":0.2,"metal":0.0},
+  {"name":"Magazine","shape":"cube","pos":[-0.17,-0.03,-0.001],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.03],"color":[0.3,0.31,0.32],"smooth":0.4,"metal":0.0},
+  {"name":"TriggerGuard","shape":"cube","pos":[-0.11,-0.015,-0.001],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.04],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"Trigger","shape":"cube","pos":[-0.105,-0.02,-0.001],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.03],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"Hammer","shape":"cylinder","pos":[-0.12,0.03,-0.001],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"FrontSight","shape":"cube","pos":[0.165,0.015,-0.001],"rot":[0.0,0.0,0.0],"size":[0.01,0.003,0.02],"color":[0.1,0.1,0.12],"smooth":0.55,"metal":1.0},
+  {"name":"RearSight","shape":"cube","pos":[-0.145,0.015,-0.001],"rot":[0.0,0.0,0.0],"size":[0.015,0.003,0.02],"color":[0.1,0.1,0.12],"smooth":0.55,"metal":1.0},
+  {"name":"SafetyLever","shape":"cube","pos":[-0.12,0.01,0.017],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.008],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0}
+]}

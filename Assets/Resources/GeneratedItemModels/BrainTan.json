@@ -1,0 +1,11 @@
+{"version": 1, "id": "BrainTan", "baseHeight": 0.1258, "name": "Brain Tan", "model": "gpt-oss:120b", "notes": "Brain tan ~0.16 m wide × 0.13 m tall × 0.11 m deep, lying flat on the floor. Main mass is a soft ellipsoid with a few raised cortical folds and two dark‑vein streaks for recognisable silhouette.", "score": 7, "parts": [
+  {"name":"MainBrain","shape":"sphere","pos":[0.0,-0.0008,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.13,0.11],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FoldFront","shape":"cube","pos":[0.0,0.0542,0.03],"rot":[15.0,0.0,0.0],"size":[0.12,0.005,0.04],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FoldBack","shape":"cube","pos":[0.0,0.0522,-0.03],"rot":[-12.0,0.0,0.0],"size":[0.11,0.004,0.035],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FoldSideL","shape":"cube","pos":[-0.04,0.0493,0.0],"rot":[0.0,20.0,0.0],"size":[0.03,0.006,0.09],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FoldSideR","shape":"cube","pos":[0.04,0.0493,0.0],"rot":[0.0,-18.0,0.0],"size":[0.03,0.006,0.09],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Vein1","shape":"cylinder","pos":[-0.03,0.0043,0.02],"rot":[0.0,0.0,90.0],"size":[0.008,0.06,0.008],"color":[0.4,0.35,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"Vein2","shape":"cylinder","pos":[0.025,0.0092,-0.015],"rot":[0.0,0.0,90.0],"size":[0.007,0.07,0.007],"color":[0.4,0.35,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"BloodClot","shape":"sphere","pos":[0.02,0.0242,-0.04],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.45,0.2,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"SurfaceRidge","shape":"cube","pos":[0.0,0.0643,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.003,0.02],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0}
+]}

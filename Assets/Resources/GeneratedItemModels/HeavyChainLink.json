@@ -1,0 +1,8 @@
+{"version": 1, "id": "HeavyChainLink", "baseHeight": 0.088, "name": "Heavy Chain Link", "model": "gpt-oss:120b", "notes": "Heavy chain link approx 0.12 m long, 0.05 m tube diameter; lying flat on the floor with one loop crossing the other at right‑angles (horizontal X‑loop intersecting vertical Z‑loop).", "score": 6, "parts": [
+  {"name":"HorizontalLoop","shape":"cylinder","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.12,0.05],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"VerticalLoop","shape":"cylinder","pos":[0.0,-0.001,0.0],"rot":[90.0,0.0,0.0],"size":[0.05,0.12,0.05],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"IntersectionCap","shape":"sphere","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BasePlate","shape":"cube","pos":[0.0,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.14],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"Shadow","shape":"cube","pos":[0.0,-0.027,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.002,0.14],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.027,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.8,0.7,0.5],"smooth":0.05,"metal":0.0}
+]}

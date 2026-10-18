@@ -1,0 +1,10 @@
+{"version": 1, "id": "CreditCard", "baseHeight": 0.0614, "name": "Credit Card", "model": "gpt-oss:120b", "notes": "Standard credit card 0.085 m × 0.054 m × ~0.001 m lying flat, longest side along X. Main plastic body with raised EMV chip, black magnetic stripe near the top edge and a small embossed logo in the centre.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.0004,0.0],"rot":[0.0,0.0,0.0],"size":[0.0856,0.002,0.054],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Chip","shape":"cube","pos":[-0.025,0.0003,0.015],"rot":[0.0,0.0,0.0],"size":[0.012,0.002,0.008],"color":[0.45,0.44,0.38],"smooth":0.3,"metal":0.0},
+  {"name":"MagStripe","shape":"cube","pos":[0.0,0.0002,-0.0225],"rot":[0.0,0.0,0.0],"size":[0.0856,0.002,0.005],"color":[0.05,0.05,0.05],"smooth":0.1,"metal":0.0},
+  {"name":"Logo","shape":"cylinder","pos":[0.0,0.0004,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.018],"color":[0.2,0.22,0.25],"smooth":0.5,"metal":0.0},
+  {"name":"CornerRoundingFL","shape":"cylinder","pos":[0.0428,-0.0004,0.027],"rot":[0.0,90.0,0.0],"size":[0.012,0.002,0.012],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"CornerRoundingFR","shape":"cylinder","pos":[0.0428,-0.0004,-0.027],"rot":[0.0,90.0,0.0],"size":[0.012,0.002,0.012],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"CornerRoundingBL","shape":"cylinder","pos":[-0.0428,-0.0004,0.027],"rot":[0.0,90.0,0.0],"size":[0.012,0.002,0.012],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"CornerRoundingBR","shape":"cylinder","pos":[-0.0428,-0.0004,-0.027],"rot":[0.0,90.0,0.0],"size":[0.012,0.002,0.012],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "PlasticSpoon", "baseHeight": 0.0714, "name": "Plastic Spoon", "model": "gpt-oss:120b", "notes": "Plastic spoon ~0.18 m long, 0.03 m high when lying flat. Main handle cylinder, rounded tip, two small grip ridges, a slight bend near the bowl, decorative dot on the handle, shallow ellipsoidal bowl (outer & inner), thin lip and base for the bowl.", "score": 7, "parts": [
+  {"name":"HandleMain","shape":"cylinder","pos":[-0.0215,-0.0026,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.12,0.012],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"HandleTip","shape":"sphere","pos":[-0.0815,-0.0006,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"GripRidgeFront","shape":"cylinder","pos":[-0.0065,-0.0006,0.0],"rot":[0.0,0.0,90.0],"size":[0.014,0.02,0.014],"color":[0.58,0.56,0.48],"smooth":0.45,"metal":0.0},
+  {"name":"GripRidgeBack","shape":"cylinder","pos":[-0.0215,-0.0006,0.0],"rot":[0.0,0.0,90.0],"size":[0.014,0.018,0.014],"color":[0.58,0.56,0.48],"smooth":0.45,"metal":0.0},
+  {"name":"Bend","shape":"cylinder","pos":[-0.0115,-0.0006,0.0],"rot":[0.0,0.0,10.0],"size":[0.012,0.02,0.012],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"DecorativeDot","shape":"sphere","pos":[-0.0415,-0.0006,0.006],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"BowlOuter","shape":"sphere","pos":[0.0685,0.0014,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"BowlInner","shape":"sphere","pos":[0.0685,0.0024,0.0],"rot":[0.0,0.0,0.0],"size":[0.036,0.018,0.036],"color":[0.62,0.6,0.52],"smooth":0.45,"metal":0.0},
+  {"name":"BowlLip","shape":"cube","pos":[0.0685,0.0029,0.0],"rot":[0.0,0.0,0.0],"size":[0.042,0.002,0.022],"color":[0.58,0.56,0.48],"smooth":0.45,"metal":0.0},
+  {"name":"BowlBase","shape":"cube","pos":[0.0685,0.0004,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.58,0.56,0.48],"smooth":0.45,"metal":0.0}
+]}

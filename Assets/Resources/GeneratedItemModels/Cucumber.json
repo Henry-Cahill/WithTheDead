@@ -1,0 +1,12 @@
+{"version": 1, "id": "Cucumber", "baseHeight": 0.17, "name": "Cucumber", "model": "gpt-oss:120b", "notes": "Cucumber – organic vegetable approx. 0.18 m tall × 0.04 m thick, slight gentle curve, tapered ends and a few dark seed speckles. Main colour uses the given tint (blue‑green) with a matte leaf‑like finish.", "score": 6, "parts": [
+  {"name":"BaseEnd","shape":"sphere","pos":[0.0,-0.09,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.45,0.6,0.75],"smooth":0.05,"metal":0.0},
+  {"name":"MidCylinder","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.14,0.04],"color":[0.45,0.6,0.75],"smooth":0.05,"metal":0.0},
+  {"name":"TipEnd","shape":"sphere","pos":[0.0,0.09,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.45,0.6,0.75],"smooth":0.05,"metal":0.0},
+  {"name":"CurveUp","shape":"cylinder","pos":[-0.015,-0.02,0.0],"rot":[0.0,15.0,0.0],"size":[0.04,0.06,0.04],"color":[0.45,0.6,0.75],"smooth":0.05,"metal":0.0},
+  {"name":"CurveDown","shape":"cylinder","pos":[0.015,0.02,0.0],"rot":[0.0,-15.0,0.0],"size":[0.04,0.06,0.04],"color":[0.45,0.6,0.75],"smooth":0.05,"metal":0.0},
+  {"name":"Seed1","shape":"cube","pos":[-0.045,0.0,0.012],"rot":[0.0,0.0,0.0],"size":[0.003,0.002,0.002],"color":[0.15,0.25,0.1],"smooth":0.02,"metal":0.0},
+  {"name":"Seed2","shape":"cube","pos":[-0.015,0.002,-0.011],"rot":[0.0,0.0,0.0],"size":[0.003,0.002,0.002],"color":[0.15,0.25,0.1],"smooth":0.02,"metal":0.0},
+  {"name":"Seed3","shape":"cube","pos":[0.02,-0.002,0.009],"rot":[0.0,0.0,0.0],"size":[0.003,0.002,0.002],"color":[0.15,0.25,0.1],"smooth":0.02,"metal":0.0},
+  {"name":"Seed4","shape":"cube","pos":[0.045,-0.005,-0.008],"rot":[0.0,0.0,0.0],"size":[0.003,0.002,0.002],"color":[0.15,0.25,0.1],"smooth":0.02,"metal":0.0},
+  {"name":"SkinHighlight","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.038,0.14,0.038],"color":[0.48,0.63,0.78],"smooth":0.1,"metal":0.0}
+]}

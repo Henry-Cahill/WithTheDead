@@ -1,0 +1,8 @@
+{"version": 1, "id": "Pop3Empty", "baseHeight": 0.123, "name": "Pop3 Empty", "model": "gpt-oss:120b", "notes": "Empty Pop3 soda can, 0.066 m diameter × 0.122 m tall, lying upright on the floor. Main body is brushed‑metal with a muted beige tint; thin top and bottom rims, plus a small pull‑ring tab on the side.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.009,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.066,0.122,0.066],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.9},
+  {"name":"RimTop","shape":"cylinder","pos":[-0.009,0.061,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.004,0.07],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":0.9},
+  {"name":"RimBottom","shape":"cylinder","pos":[-0.009,-0.061,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.004,0.07],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":0.9},
+  {"name":"PullRing","shape":"cube","pos":[0.034,0.027,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.008],"color":[0.5,0.48,0.42],"smooth":0.55,"metal":0.9},
+  {"name":"LipInner","shape":"cylinder","pos":[-0.009,0.061,0.0],"rot":[0.0,0.0,0.0],"size":[0.064,0.002,0.064],"color":[0.58,0.56,0.48],"smooth":0.55,"metal":0.9},
+  {"name":"LipOuter","shape":"cylinder","pos":[-0.009,0.061,0.0],"rot":[0.0,0.0,0.0],"size":[0.068,0.002,0.068],"color":[0.52,0.5,0.44],"smooth":0.55,"metal":0.9}
+]}

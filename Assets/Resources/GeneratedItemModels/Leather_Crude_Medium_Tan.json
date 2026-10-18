@@ -1,0 +1,9 @@
+{"version": 1, "id": "Leather_Crude_Medium_Tan", "baseHeight": 0.0712, "name": "Leather Crude Medium Tan", "model": "gpt-oss:120b", "notes": "Crude leather hide, medium‑tan, laid flat on the ground as a roughly cut sheet (~0.60 m × 0.40 m, 1.5 cm thick). Main brown‑tan sheet with thin stitched edge strips and a small punched hole for hanging.", "score": 7, "parts": [
+  {"name":"Sheet","shape":"cube","pos":[0.0,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.015,0.4],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0,0.0053,0.1975],"rot":[0.0,0.0,0.0],"size":[0.6,0.003,0.005],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0,0.0053,-0.1975],"rot":[0.0,0.0,0.0],"size":[0.6,0.003,0.005],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.2975,0.0053,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.003,0.4],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.2975,0.0053,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.003,0.4],"color":[0.45,0.43,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"HolePunch","shape":"cylinder","pos":[-0.25,0.0013,-0.15],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.01],"color":[0.35,0.33,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"StitchCenter","shape":"cube","pos":[0.0,0.0053,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.002,0.004],"color":[0.4,0.38,0.35],"smooth":0.05,"metal":0.0}
+]}

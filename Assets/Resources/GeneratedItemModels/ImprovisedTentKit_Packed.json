@@ -1,0 +1,14 @@
+{"version": 1, "id": "ImprovisedTentKit_Packed", "baseHeight": 0.11, "name": "Improvised Tent Kit Packed", "model": "gpt-oss:120b", "notes": "Improvised tent kit packed into a compact canvas sack (~0.35 m × 0.15 m × 0.08 m).  Inside are a rolled tarp, bundled wooden poles, a coil of rope, two metal stakes and a side strap; thin seam strips mark the top/bottom of the sack.", "score": 6, "parts": [
+  {"name":"SackBody","shape":"cube","pos":[0.0075,-0.01,-0.0162],"rot":[0.0,0.0,0.0],"size":[0.35,0.08,0.15],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"TarpRoll","shape":"cylinder","pos":[0.0075,0.0,-0.0162],"rot":[0.0,0.0,90.0],"size":[0.06,0.3,0.06],"color":[0.65,0.62,0.55],"smooth":0.15,"metal":0.0},
+  {"name":"PoleBundleX","shape":"cylinder","pos":[-0.0825,-0.01,-0.0663],"rot":[0.0,0.0,90.0],"size":[0.04,0.25,0.04],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"PoleBundleZ","shape":"cylinder","pos":[0.0975,-0.01,0.0338],"rot":[90.0,0.0,0.0],"size":[0.04,0.12,0.04],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"RopeCoil1","shape":"cylinder","pos":[-0.0225,-0.02,-0.0762],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.45,0.35,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"RopeCoil2","shape":"cylinder","pos":[0.0075,-0.02,-0.0762],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.45,0.35,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"RopeCoil3","shape":"cylinder","pos":[0.0375,-0.02,-0.0762],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.45,0.35,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"StakeFrontL","shape":"cube","pos":[0.1275,-0.03,-0.0862],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"StakeFrontR","shape":"cube","pos":[-0.1125,-0.03,-0.0862],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"StrapHandle","shape":"cylinder","pos":[0.1875,0.02,-0.0162],"rot":[0.0,0.0,0.0],"size":[0.04,0.06,0.04],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"SeamTop","shape":"cube","pos":[0.0075,0.0275,-0.0162],"rot":[0.0,0.0,0.0],"size":[0.35,0.005,0.15],"color":[0.4,0.38,0.3],"smooth":0.3,"metal":0.0},
+  {"name":"SeamBottom","shape":"cube","pos":[0.0075,-0.0475,-0.0162],"rot":[0.0,0.0,0.0],"size":[0.35,0.005,0.15],"color":[0.4,0.38,0.3],"smooth":0.3,"metal":0.0}
+]}

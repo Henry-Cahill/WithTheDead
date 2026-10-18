@@ -1,0 +1,10 @@
+{"version": 1, "id": "Cudgel_Railspike", "baseHeight": 0.13, "name": "Cudgel Railspike", "model": "gpt-oss:120b", "notes": "Cudgel‑Railspike ~1.4 m long: wooden shaft (≈1.2 m) with a leather grip, metal reinforcement band and end‑cap on the butt, plus a steel rail‑spike (cylinder + rounded tip) on the forward end.", "score": 6, "parts": [
+  {"name":"ShaftWood","shape":"cylinder","pos":[-0.105,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,1.2,0.12],"color":[0.55,0.4,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"GripLeather","shape":"cylinder","pos":[-0.305,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.14,0.15,0.14],"color":[0.35,0.25,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"EndCapMetal","shape":"cylinder","pos":[-0.725,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.14,0.04,0.14],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"MetalBand","shape":"cylinder","pos":[0.42,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.14,0.04,0.14],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"SpikeBody","shape":"cylinder","pos":[0.57,-0.03,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.15,0.08],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"SpikeTip","shape":"sphere","pos":[0.695,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.1,0.1],"color":[0.6,0.6,0.64],"smooth":0.6,"metal":1.0},
+  {"name":"RivetL","shape":"cube","pos":[0.42,0.02,-0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.55,0.55,0.58],"smooth":0.5,"metal":1.0},
+  {"name":"RivetR","shape":"cube","pos":[0.42,0.02,0.07],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.55,0.55,0.58],"smooth":0.5,"metal":1.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "CeramicCrucibleSmall_Iron", "baseHeight": 0.106, "name": "Ceramic Crucible Small Iron", "model": "gpt-oss:120b", "notes": "Small ceramic crucible about 0.12 m long × 0.09 m diameter with a thin iron lid and a short iron handle loop; lying on its side (axis along X) so the bottom of the body rests on the floor.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0285,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.12,0.09],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"InnerCavity","shape":"cylinder","pos":[-0.0285,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.115,0.07],"color":[0.45,0.44,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"IronLid","shape":"cylinder","pos":[0.0325,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.008,0.11],"color":[0.55,0.55,0.55],"smooth":0.4,"metal":1.0},
+  {"name":"HandleLoop","shape":"cylinder","pos":[-0.0285,0.015,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.55,0.55,0.55],"smooth":0.4,"metal":1.0},
+  {"name":"RimEdge","shape":"cylinder","pos":[-0.0285,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.092,0.004,0.092],"color":[0.58,0.56,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"LidClamp","shape":"cylinder","pos":[0.0325,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.112,0.002,0.112],"color":[0.55,0.55,0.55],"smooth":0.4,"metal":1.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "Thread_Aramid", "baseHeight": 0.0886, "name": "Thread Aramid", "model": "gpt-oss:120b", "notes": "Loose ball of aramid thread ~0.12 m across, flattened to about 3 cm thick; central fuzzy core plus a few stray strands poking out for recognisable texture.", "score": 6, "parts": [
+  {"name":"Core","shape":"cylinder","pos":[-0.0018,-0.0136,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strand1","shape":"cylinder","pos":[0.0332,0.0014,0.02],"rot":[45.0,0.0,0.0],"size":[0.008,0.06,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strand2","shape":"cylinder","pos":[-0.0418,0.0034,-0.015],"rot":[30.0,0.0,90.0],"size":[0.008,0.055,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strand3","shape":"cylinder","pos":[0.0082,-0.0006,-0.045],"rot":[-20.0,0.0,45.0],"size":[0.008,0.05,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strand4","shape":"cylinder","pos":[-0.0218,0.0014,0.04],"rot":[15.0,0.0,-30.0],"size":[0.008,0.058,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strand5","shape":"cylinder","pos":[0.0432,-0.0036,0.0],"rot":[-10.0,0.0,75.0],"size":[0.008,0.052,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

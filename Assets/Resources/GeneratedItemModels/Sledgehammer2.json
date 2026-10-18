@@ -1,0 +1,9 @@
+{"version": 1, "id": "Sledgehammer2", "baseHeight": 0.135, "name": "Sledgehammer2", "model": "gpt-oss:120b", "notes": "Sledgehammer ~1.5 m long lying on its side (X‑axis). Wooden handle with rubber grip, heavy steel head at the far end, four small rivets on the top of the head for detail.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.04,-0.04,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,1.2,0.07],"color":[0.45,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[0.485,-0.03,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.15,0.09],"color":[0.12,0.12,0.13],"smooth":0.3,"metal":0.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.6,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.15,0.25],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetTL","shape":"cylinder","pos":[0.62,0.01,0.08],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.55,0.55,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"RivetTR","shape":"cylinder","pos":[0.62,0.01,-0.08],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.55,0.55,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"cylinder","pos":[0.58,0.01,0.08],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.55,0.55,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"cylinder","pos":[0.58,0.01,-0.08],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.55,0.55,0.6],"smooth":0.6,"metal":1.0}
+]}

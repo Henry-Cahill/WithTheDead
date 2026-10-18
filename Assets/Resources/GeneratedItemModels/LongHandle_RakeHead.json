@@ -1,0 +1,12 @@
+{"version": 1, "id": "LongHandle_RakeHead", "baseHeight": 0.095, "name": "Long Handle Rake Head", "model": "gpt-oss:120b", "notes": "Long‑handle rake head ~1.2 m total length, wooden handle (0.9 m) on its side along X with a metal head at the +X end; five thin steel tines protrude forward to show the business end clearly.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.16,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.9,0.04],"color":[0.55,0.38,0.22],"smooth":0.15,"metal":0.0},
+  {"name":"GripEnd","shape":"cylinder","pos":[-0.55,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.12,0.06],"color":[0.55,0.38,0.22],"smooth":0.2,"metal":0.0},
+  {"name":"HeadBase","shape":"cube","pos":[0.415,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.06,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineL2","shape":"cube","pos":[0.575,0.01,-0.04],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.01],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineL1","shape":"cube","pos":[0.575,0.01,-0.02],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.01],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineC","shape":"cube","pos":[0.575,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.01],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineR1","shape":"cube","pos":[0.575,0.01,0.02],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.01],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TineR2","shape":"cube","pos":[0.575,0.01,0.04],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.01],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetFrontL","shape":"cylinder","pos":[0.54,0.02,-0.04],"rot":[0.0,0.0,90.0],"size":[0.008,0.015,0.008],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFrontR","shape":"cylinder","pos":[0.54,0.02,0.04],"rot":[0.0,0.0,90.0],"size":[0.008,0.015,0.008],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "SugarBeetSeed", "baseHeight": 0.0655, "name": "Sugar Beet Seed", "model": "gpt-oss:120b", "notes": "Small paper packet of sugar beet seeds, about 6 cm × 4 cm × 0.6 cm lying flat on the ground. The packet is a light‑brown paper envelope with a front label strip and a tiny metal clip; inside are a few brown seed ellipsoids and a loose seed dust sphere.", "score": 6, "parts": [
+  {"name":"PacketBody","shape":"cube","pos":[-0.0005,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.006,0.04],"color":[0.9,0.85,0.75],"smooth":0.05,"metal":0.0},
+  {"name":"Flap","shape":"cube","pos":[0.022,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.006,0.04],"color":[0.85,0.8,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"LabelStrip","shape":"cube","pos":[-0.0005,0.002,0.018],"rot":[0.0,0.0,0.0],"size":[0.045,0.002,0.004],"color":[0.5,0.45,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"Clip","shape":"cube","pos":[0.0245,0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.004,0.002],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"Seed1","shape":"sphere","pos":[-0.0155,0.0005,-0.01],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.006],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seed2","shape":"sphere","pos":[0.0095,0.0005,0.012],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.006],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seed3","shape":"sphere","pos":[-0.0055,-0.0005,0.005],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.006],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seed4","shape":"sphere","pos":[0.0145,-0.0015,-0.015],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.006],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Seed5","shape":"sphere","pos":[-0.0205,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.006],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"SeedDust","shape":"sphere","pos":[-0.0005,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0}
+]}

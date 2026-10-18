@@ -1,0 +1,12 @@
+{"version": 1, "id": "FlashLight_AngleHead", "baseHeight": 0.0925, "name": "Flash Light Angle Head", "model": "gpt-oss:120b", "notes": "Angled flashlight head ~0.12 m long × 0.06 m wide × 0.04 m high, lying on its side (long axis along X). Main plastic housing tinted 0.6 0.58 0.5, dark metal reflector and clear lens at the angled front.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0238,-0.0025,-0.0092],"rot":[0.0,0.0,90.0],"size":[0.06,0.12,0.06],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"FrontAngle","shape":"cube","pos":[0.0463,-0.0025,0.0058],"rot":[0.0,30.0,0.0],"size":[0.04,0.06,0.06],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Lens","shape":"sphere","pos":[0.0663,-0.0025,0.0158],"rot":[0.0,0.0,0.0],"size":[0.035,0.035,0.02],"color":[0.9,0.95,1.0],"smooth":0.4,"metal":0.0},
+  {"name":"Reflector","shape":"cylinder","pos":[0.0463,-0.0025,0.0158],"rot":[0.0,0.0,90.0],"size":[0.015,0.04,0.015],"color":[0.2,0.22,0.24],"smooth":0.5,"metal":0.8},
+  {"name":"Ring","shape":"cylinder","pos":[0.0263,0.0,-0.0092],"rot":[0.0,0.0,90.0],"size":[0.065,0.005,0.065],"color":[0.3,0.32,0.34],"smooth":0.45,"metal":0.7},
+  {"name":"ScrewL","shape":"cylinder","pos":[-0.0537,0.0125,0.0108],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.1,0.1,0.1],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewR","shape":"cylinder","pos":[-0.0537,0.0125,-0.0292],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.1,0.1,0.1],"smooth":0.6,"metal":1.0},
+  {"name":"BatteryContact","shape":"cube","pos":[-0.0738,0.0025,-0.0092],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.025],"color":[0.15,0.13,0.12],"smooth":0.25,"metal":0.0},
+  {"name":"Label","shape":"cylinder","pos":[-0.0437,-0.0015,-0.0092],"rot":[0.0,0.0,90.0],"size":[0.058,0.002,0.058],"color":[0.55,0.53,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeBevel","shape":"cube","pos":[0.0713,-0.0025,0.0158],"rot":[0.0,0.0,0.0],"size":[0.005,0.008,0.01],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0}
+]}

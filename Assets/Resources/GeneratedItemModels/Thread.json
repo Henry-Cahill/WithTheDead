@@ -1,0 +1,14 @@
+{"version": 1, "id": "Thread", "baseHeight": 0.1224, "name": "Thread", "model": "gpt-oss:120b", "notes": "Loose ball of cotton thread about 0.14 m across and 0.04 m thick, lying on the floor as a tangled skein. Main colour is a muted beige‑tan; strands are represented by thin cylinders radiating from a central flattened sphere. End spheres have been moved so they touch the core sphere.", "score": 7, "parts": [
+  {"name":"CoreSphere","shape":"sphere","pos":[-0.016,-0.0,-0.0071],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrandXPos","shape":"cylinder","pos":[0.014,-0.0,-0.0071],"rot":[0.0,0.0,45.0],"size":[0.008,0.12,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrandXNeg","shape":"cylinder","pos":[-0.048,-0.0,-0.0071],"rot":[0.0,0.0,-30.0],"size":[0.008,0.11,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrandZPos","shape":"cylinder","pos":[-0.016,-0.0,0.0279],"rot":[0.0,90.0,20.0],"size":[0.008,0.13,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrandZNeg","shape":"cylinder","pos":[-0.016,-0.0,-0.0371],"rot":[0.0,90.0,-15.0],"size":[0.008,0.1,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrandDiag1","shape":"cylinder","pos":[0.004,0.005,0.0179],"rot":[0.0,45.0,10.0],"size":[0.008,0.09,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrandDiag2","shape":"cylinder","pos":[-0.038,-0.002,-0.0311],"rot":[0.0,-45.0,-20.0],"size":[0.008,0.095,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StrandLoop","shape":"cylinder","pos":[-0.016,0.01,-0.0071],"rot":[90.0,0.0,0.0],"size":[0.008,0.07,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EndSphere1","shape":"sphere","pos":[0.074,-0.0,-0.0071],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EndSphere2","shape":"sphere","pos":[-0.0555,-0.0,-0.0071],"rot":[0.0,0.0,0.0],"size":[0.009,0.009,0.009],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EndSphere3","shape":"sphere","pos":[-0.016,-0.0,0.0309],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EndSphere4","shape":"sphere","pos":[-0.016,-0.0,-0.0451],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

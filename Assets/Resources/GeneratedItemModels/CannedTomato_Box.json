@@ -1,0 +1,13 @@
+{"version": 1, "id": "CannedTomato_Box", "baseHeight": 0.131, "name": "Canned Tomato Box", "model": "gpt-oss:120b", "notes": "Rectangular cardboard box (≈0.16 m × 0.14 m × 0.16 m) holding a 2×2 grid of metal tomato cans (Ø 0.07 m, H 0.12 m). Box tint is light‑tan; cans are steel with red tomato label bands. Includes front paper label and a small lid flap.", "score": 7, "parts": [
+  {"name":"BoxShell","shape":"cube","pos":[0.0,-0.001,-0.001],"rot":[0.0,0.0,0.0],"size":[0.16,0.14,0.16],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,0.044,0.08],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.002],"color":[0.55,0.45,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"LidFlap","shape":"cube","pos":[0.0,0.067,0.069],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.02],"color":[0.7,0.62,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"Can1","shape":"cylinder","pos":[-0.04,-0.011,-0.041],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.8,0.8,0.85],"smooth":0.55,"metal":1.0},
+  {"name":"Can2","shape":"cylinder","pos":[0.04,-0.011,-0.041],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.8,0.8,0.85],"smooth":0.55,"metal":1.0},
+  {"name":"Can3","shape":"cylinder","pos":[-0.04,-0.011,0.039],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.8,0.8,0.85],"smooth":0.55,"metal":1.0},
+  {"name":"Can4","shape":"cylinder","pos":[0.04,-0.011,0.039],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.8,0.8,0.85],"smooth":0.55,"metal":1.0},
+  {"name":"CanLabel1","shape":"cylinder","pos":[-0.04,-0.011,-0.041],"rot":[0.0,0.0,0.0],"size":[0.07,0.006,0.07],"color":[0.8,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"CanLabel2","shape":"cylinder","pos":[0.04,-0.011,-0.041],"rot":[0.0,0.0,0.0],"size":[0.07,0.006,0.07],"color":[0.8,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"CanLabel3","shape":"cylinder","pos":[-0.04,-0.011,0.039],"rot":[0.0,0.0,0.0],"size":[0.07,0.006,0.07],"color":[0.8,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"CanLabel4","shape":"cylinder","pos":[0.04,-0.011,0.039],"rot":[0.0,0.0,0.0],"size":[0.07,0.006,0.07],"color":[0.8,0.2,0.2],"smooth":0.05,"metal":0.0}
+]}

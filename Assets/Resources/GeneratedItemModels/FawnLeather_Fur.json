@@ -1,0 +1,12 @@
+{"version": 1, "id": "FawnLeather_Fur", "baseHeight": 0.25, "name": "Fawn Leather Fur", "model": "gpt-oss:120b", "notes": "Flat piece of fawn‑coloured leather/fur about 0.55 m long × 0.38 m wide, 2 cm thick, lying on the ground with its edges slightly rolled and a few loose fur tufts poking up.", "score": 7, "parts": [
+  {"name":"BaseSheet","shape":"cube","pos":[0.0,-0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.02,0.38],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRollTop","shape":"cylinder","pos":[0.0,0.0,0.19],"rot":[90.0,0.0,0.0],"size":[0.55,0.015,0.015],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRollBottom","shape":"cylinder","pos":[0.0,0.0,-0.19],"rot":[90.0,0.0,0.0],"size":[0.55,0.015,0.015],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRollLeft","shape":"cylinder","pos":[-0.275,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.38,0.015,0.015],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeRollRight","shape":"cylinder","pos":[0.275,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.38,0.015,0.015],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"FurTuft1","shape":"sphere","pos":[-0.12,0.014,0.08],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.04],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"FurTuft2","shape":"sphere","pos":[0.05,0.017,-0.12],"rot":[0.0,0.0,0.0],"size":[0.025,0.03,0.035],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"FurTuft3","shape":"sphere","pos":[0.18,0.011,0.15],"rot":[0.0,0.0,0.0],"size":[0.028,0.028,0.04],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"FurTuft4","shape":"sphere","pos":[-0.22,0.015,-0.14],"rot":[0.0,0.0,0.0],"size":[0.03,0.032,0.045],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"FurTuft5","shape":"sphere","pos":[0.0,0.019,0.0],"rot":[0.0,0.0,0.0],"size":[0.035,0.035,0.05],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0}
+]}

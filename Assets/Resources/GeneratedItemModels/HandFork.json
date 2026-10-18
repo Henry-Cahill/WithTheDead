@@ -1,0 +1,13 @@
+{"version": 1, "id": "HandFork", "baseHeight": 0.0815, "name": "Hand Fork", "model": "gpt-oss:120b", "notes": "Hand‑fork melee weapon, total length ≈0.90 m lying on its side (handle along X) with a metal shaft, rubber grip, short guard band, rectangular head and two prongs (each ~0.15 m long). Main metal tint [0.6,0.6,0.64]; grip brown; rivets darker grey. All parts now touch the main body.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[0.0,-0.0035,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.9,0.03],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.25,0.0015,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.2,0.04],"color":[0.4,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"HandleBand","shape":"cylinder","pos":[0.1,-0.0035,0.0],"rot":[0.0,0.0,90.0],"size":[0.036,0.02,0.036],"color":[0.55,0.55,0.58],"smooth":0.45,"metal":1.0},
+  {"name":"HeadBase","shape":"cube","pos":[0.38,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.12],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"ProngL","shape":"cube","pos":[0.44,-0.0135,0.035],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.15],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"ProngR","shape":"cube","pos":[0.44,-0.0135,-0.035],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.15],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"TipL","shape":"sphere","pos":[0.44,-0.0135,0.11],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.55,0.55,0.58],"smooth":0.6,"metal":1.0},
+  {"name":"TipR","shape":"sphere","pos":[0.44,-0.0135,-0.11],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.55,0.55,0.58],"smooth":0.6,"metal":1.0},
+  {"name":"RivetCenter","shape":"sphere","pos":[0.35,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"ProngRivetL","shape":"sphere","pos":[0.44,-0.0135,0.035],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"ProngRivetR","shape":"sphere","pos":[0.44,-0.0135,-0.035],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0}
+]}

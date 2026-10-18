@@ -1,0 +1,13 @@
+{"version": 1, "id": "RaccoonLeather_Grey_Fur_Tan", "baseHeight": 0.0875, "name": "Raccoon Leather Grey Fur Tan", "model": "gpt-oss:120b", "notes": "Raccoon leather hide with grey‑fur, laid flat on the ground ~0.60 m long × 0.40 m wide, 1.5 cm thick leather plus a thin fur layer and rolled edges. Includes a stitched edge line and a small scrap patch.", "score": 6, "parts": [
+  {"name":"BaseHide","shape":"cube","pos":[0.0,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.015,0.4],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FurLayer","shape":"sphere","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.58,0.02,0.38],"color":[0.65,0.63,0.55],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeFurL","shape":"cylinder","pos":[-0.295,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.65,0.63,0.55],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeFurR","shape":"cylinder","pos":[0.295,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.65,0.63,0.55],"smooth":0.08,"metal":0.0},
+  {"name":"FrontEdgeFur","shape":"cylinder","pos":[0.0,-0.0025,0.195],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.65,0.63,0.55],"smooth":0.08,"metal":0.0},
+  {"name":"BackEdgeFur","shape":"cylinder","pos":[0.0,-0.0025,-0.195],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.65,0.63,0.55],"smooth":0.08,"metal":0.0},
+  {"name":"StitchLine","shape":"cube","pos":[0.0,-0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.58,0.002,0.004],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"ScrapPatch","shape":"cube","pos":[-0.15,-0.0165,-0.05],"rot":[0.0,0.0,0.0],"size":[0.1,0.008,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FurFluff1","shape":"sphere","pos":[0.12,0.0175,0.08],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.04],"color":[0.68,0.66,0.58],"smooth":0.1,"metal":0.0},
+  {"name":"FurFluff2","shape":"sphere","pos":[-0.18,0.0175,-0.12],"rot":[0.0,0.0,0.0],"size":[0.05,0.018,0.035],"color":[0.68,0.66,0.58],"smooth":0.1,"metal":0.0},
+  {"name":"FurFluff3","shape":"sphere","pos":[0.0,0.0175,0.18],"rot":[0.0,0.0,0.0],"size":[0.055,0.019,0.038],"color":[0.68,0.66,0.58],"smooth":0.1,"metal":0.0}
+]}

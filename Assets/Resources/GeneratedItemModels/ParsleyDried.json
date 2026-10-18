@@ -1,0 +1,13 @@
+{"version": 1, "id": "ParsleyDried", "baseHeight": 0.068, "name": "Parsley Dried", "model": "gpt-oss:120b", "notes": "Flat dried‑parsley packet about 0.12 m wide × 0.07 m deep × 0.015 m thick (1.5 cm). Paper box in the herb tint, a darker label strip on the front and several small leaf clumps visible inside.", "score": 6, "parts": [
+  {"name":"Box","shape":"cube","pos":[0.0,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.07],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.003,0.07],"color":[0.7,0.63,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[-0.02,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.05],"color":[0.55,0.48,0.3],"smooth":0.07,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[-0.02,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.05],"color":[0.55,0.48,0.3],"smooth":0.07,"metal":0.0},
+  {"name":"TieString","shape":"cylinder","pos":[-0.045,0.0065,0.0],"rot":[0.0,0.0,90.0],"size":[0.003,0.03,0.003],"color":[0.3,0.2,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"LeafClumpA","shape":"sphere","pos":[-0.025,0.0015,-0.015],"rot":[0.0,0.0,0.0],"size":[0.018,0.006,0.012],"color":[0.3,0.55,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"LeafClumpB","shape":"sphere","pos":[0.015,0.0018,0.02],"rot":[0.0,0.0,0.0],"size":[0.016,0.005,0.011],"color":[0.28,0.53,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"LeafClumpC","shape":"sphere","pos":[-0.03,0.0012,0.025],"rot":[0.0,0.0,0.0],"size":[0.014,0.0045,0.01],"color":[0.32,0.58,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"LeafClumpD","shape":"sphere","pos":[0.03,0.0016,-0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.011],"color":[0.31,0.56,0.21],"smooth":0.05,"metal":0.0},
+  {"name":"LeafBit1","shape":"sphere","pos":[-0.04,0.001,0.01],"rot":[0.0,0.0,0.0],"size":[0.008,0.0025,0.006],"color":[0.29,0.54,0.19],"smooth":0.05,"metal":0.0},
+  {"name":"LeafBit2","shape":"sphere","pos":[0.04,0.0013,-0.01],"rot":[0.0,0.0,0.0],"size":[0.008,0.0025,0.006],"color":[0.29,0.54,0.19],"smooth":0.05,"metal":0.0}
+]}

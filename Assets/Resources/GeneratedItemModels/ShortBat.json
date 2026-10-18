@@ -1,0 +1,8 @@
+{"version": 1, "id": "ShortBat", "baseHeight": 0.095, "name": "Short Bat", "model": "gpt-oss:120b", "notes": "Short wooden bat ~0.65 m long lying on its side (X‑axis). Thin handle (4 cm dia) with a small knob, thicker barrel (7 cm dia) ending in the business end. Added rubber grip and wood‑grain ribs for recognisable silhouette.", "score": 6, "parts": [
+  {"name":"Barrel","shape":"cylinder","pos":[0.115,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.45,0.07],"color":[0.6,0.6,0.64],"smooth":0.12,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[-0.21,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.2,0.04],"color":[0.6,0.6,0.64],"smooth":0.12,"metal":0.0},
+  {"name":"Knob","shape":"sphere","pos":[-0.315,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.4,0.35,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.105,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.06,0.045],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"Rib1","shape":"cylinder","pos":[0.015,0.0,0.03],"rot":[0.0,0.0,90.0],"size":[0.07,0.42,0.015],"color":[0.5,0.5,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"Rib2","shape":"cylinder","pos":[0.015,0.0,-0.03],"rot":[0.0,0.0,90.0],"size":[0.07,0.42,0.015],"color":[0.5,0.5,0.55],"smooth":0.12,"metal":0.0}
+]}

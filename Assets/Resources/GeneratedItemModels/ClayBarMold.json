@@ -1,0 +1,12 @@
+{"version": 1, "id": "ClayBarMold", "baseHeight": 0.09, "name": "Clay Bar Mold", "model": "gpt-oss:120b", "notes": "Flat clay‑bar mold ~0.16 m long × 0.12 m wide × 0.04 m tall, shallow rectangular cavity with raised edges, a central ridge and a small front knob for lifting. Main colour is the clay‑tint (0.6,0.58,0.5).", "score": 7, "parts": [
+  {"name":"BasePlate","shape":"cube","pos":[0.0,-0.025,0.007],"rot":[0.0,0.0,0.0],"size":[0.16,0.01,0.12],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":0.0},
+  {"name":"FrontWall","shape":"cube","pos":[0.0,-0.005,-0.049],"rot":[0.0,0.0,0.0],"size":[0.144,0.03,0.008],"color":[0.45,0.44,0.38],"smooth":0.25,"metal":0.0},
+  {"name":"BackWall","shape":"cube","pos":[0.0,-0.005,0.063],"rot":[0.0,0.0,0.0],"size":[0.144,0.03,0.008],"color":[0.45,0.44,0.38],"smooth":0.25,"metal":0.0},
+  {"name":"LeftWall","shape":"cube","pos":[-0.076,-0.005,0.007],"rot":[0.0,0.0,0.0],"size":[0.008,0.03,0.12],"color":[0.45,0.44,0.38],"smooth":0.25,"metal":0.0},
+  {"name":"RightWall","shape":"cube","pos":[0.076,-0.005,0.007],"rot":[0.0,0.0,0.0],"size":[0.008,0.03,0.12],"color":[0.45,0.44,0.38],"smooth":0.25,"metal":0.0},
+  {"name":"CenterRidge","shape":"cube","pos":[0.0,-0.018,0.007],"rot":[0.0,0.0,0.0],"size":[0.144,0.004,0.108],"color":[0.5,0.48,0.44],"smooth":0.2,"metal":0.0},
+  {"name":"SideRidgeL","shape":"cube","pos":[-0.07,-0.018,0.007],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.108],"color":[0.5,0.48,0.44],"smooth":0.2,"metal":0.0},
+  {"name":"SideRidgeR","shape":"cube","pos":[0.07,-0.018,0.007],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.108],"color":[0.5,0.48,0.44],"smooth":0.2,"metal":0.0},
+  {"name":"FrontKnob","shape":"cylinder","pos":[0.0,0.015,-0.057],"rot":[90.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.45,0.44,0.38],"smooth":0.3,"metal":0.0},
+  {"name":"LabelStrip","shape":"cube","pos":[0.0,-0.012,0.007],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.08],"color":[0.4,0.38,0.34],"smooth":0.2,"metal":0.0}
+]}

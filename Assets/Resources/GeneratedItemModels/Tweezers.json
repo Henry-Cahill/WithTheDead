@@ -1,0 +1,8 @@
+{"version": 1, "id": "Tweezers", "baseHeight": 0.0685, "name": "Tweezers", "model": "gpt-oss:120b", "notes": "Flat pair of tweezers ~0.15 m long lying on its side (long axis along +X). Two thin metal arms joined by a small block at the base and ending in rounded tips.", "score": 6, "parts": [
+  {"name":"JointBlock","shape":"cube","pos":[-0.062,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ArmL","shape":"cylinder","pos":[0.008,-0.001,0.003],"rot":[0.0,0.0,90.0],"size":[0.004,0.12,0.004],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ArmR","shape":"cylinder","pos":[0.008,-0.001,-0.003],"rot":[0.0,0.0,90.0],"size":[0.004,0.12,0.004],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TipL","shape":"sphere","pos":[0.068,-0.001,0.003],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TipR","shape":"sphere","pos":[0.068,-0.001,-0.003],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"PivotScrew","shape":"cylinder","pos":[-0.062,0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

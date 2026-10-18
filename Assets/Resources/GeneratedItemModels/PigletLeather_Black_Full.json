@@ -1,0 +1,12 @@
+{"version": 1, "id": "PigletLeather_Black_Full", "baseHeight": 0.07, "name": "Piglet Leather Black Full", "model": "gpt-oss:120b", "notes": "Flat piglet‑leather sheet ~0.30 m × 0.20 m, 8 mm thick, black‑tinted. Front edge folded over, stitched border all around, a small leather tag with metal rivet on the front‑right corner, and a tail‑hole cutout near the back.", "score": 7, "parts": [
+  {"name":"MainSheet","shape":"cube","pos":[0.0,-0.006,-0.005],"rot":[0.0,0.0,0.0],"size":[0.3,0.008,0.2],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"FoldEdge","shape":"cube","pos":[0.0,0.004,0.085],"rot":[0.0,0.0,0.0],"size":[0.3,0.012,0.02],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"StitchFront","shape":"cylinder","pos":[0.0,-0.001,0.094],"rot":[0.0,0.0,90.0],"size":[0.002,0.3,0.002],"color":[0.3,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBack","shape":"cylinder","pos":[0.0,-0.001,-0.104],"rot":[0.0,0.0,90.0],"size":[0.002,0.3,0.002],"color":[0.3,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLeft","shape":"cylinder","pos":[-0.149,-0.001,-0.005],"rot":[90.0,0.0,0.0],"size":[0.002,0.2,0.002],"color":[0.3,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRight","shape":"cylinder","pos":[0.149,-0.001,-0.005],"rot":[90.0,0.0,0.0],"size":[0.002,0.2,0.002],"color":[0.3,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"LeatherTag","shape":"cube","pos":[0.13,0.0,0.085],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.04],"color":[0.58,0.55,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"Rivet","shape":"cylinder","pos":[0.13,0.002,0.085],"rot":[0.0,0.0,0.0],"size":[0.01,0.004,0.01],"color":[0.78,0.77,0.76],"smooth":0.6,"metal":1.0},
+  {"name":"TailHole","shape":"cylinder","pos":[-0.12,-0.006,-0.095],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.02],"color":[0.25,0.22,0.18],"smooth":0.05,"metal":0.0},
+  {"name":"LeatherStrap","shape":"cube","pos":[-0.14,-0.006,-0.005],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.1],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0}
+]}

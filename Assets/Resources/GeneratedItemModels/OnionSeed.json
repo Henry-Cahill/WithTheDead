@@ -1,0 +1,8 @@
+{"version": 1, "id": "OnionSeed", "baseHeight": 0.0705, "name": "Onion Seed", "model": "gpt-oss:120b", "notes": "Small onion‑seed packet ~7 cm × 5 cm × 0.8 cm lying flat: thin paper body, front label with darker trim, a tiny pile of brownish seeds on top.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.005,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.07,0.008,0.05],"color":[0.75,0.7,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.0015,0.0175],"rot":[0.0,0.0,0.0],"size":[0.058,0.002,0.032],"color":[0.55,0.52,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[0.0,-0.0014,0.0175],"rot":[0.0,0.0,0.0],"size":[0.062,0.002,0.036],"color":[0.4,0.38,0.33],"smooth":0.08,"metal":0.0},
+  {"name":"Seeds","shape":"sphere","pos":[0.0,0.0005,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.58,0.5],"smooth":0.35,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,-0.0005,-0.0185],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.014],"color":[0.7,0.66,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"BottomSeal","shape":"cylinder","pos":[0.0,-0.0095,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.07],"color":[0.7,0.66,0.55],"smooth":0.12,"metal":0.0}
+]}

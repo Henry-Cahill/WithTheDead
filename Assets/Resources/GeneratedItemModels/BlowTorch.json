@@ -1,0 +1,13 @@
+{"version": 1, "id": "BlowTorch", "baseHeight": 0.0975, "name": "Blow Torch", "model": "gpt-oss:120b", "notes": "Blow torch ~0.30 m long, 0.07 m wide, 0.10 m high when lying on its side. Main steel gas cylinder, rubber‑grip overlay, metal nozzle pointing +Z, trigger lever on top, label strip, four rivets, safety cap and a small orange flame indicator.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.005,-0.0025,-0.01],"rot":[0.0,0.0,90.0],"size":[0.07,0.25,0.07],"color":[0.55,0.55,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"Grip","shape":"cube","pos":[-0.055,0.0075,-0.01],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.08],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Nozzle","shape":"cylinder","pos":[0.12,-0.0025,0.02],"rot":[90.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.45,0.45,0.45],"smooth":0.65,"metal":1.0},
+  {"name":"Trigger","shape":"cube","pos":[-0.005,0.0175,-0.01],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.025],"color":[0.48,0.48,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[-0.065,-0.0025,-0.01],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.12],"color":[0.3,0.3,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Rivet1","shape":"sphere","pos":[-0.065,-0.0025,0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"Rivet2","shape":"sphere","pos":[-0.065,-0.0025,-0.04],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"Rivet3","shape":"sphere","pos":[0.055,-0.0025,0.02],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"Rivet4","shape":"sphere","pos":[0.055,-0.0025,-0.04],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"SafetyCap","shape":"cylinder","pos":[0.12,-0.0025,0.06],"rot":[90.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.4,0.4,0.4],"smooth":0.55,"metal":1.0},
+  {"name":"Flame","shape":"cylinder","pos":[0.12,0.0175,0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[1.0,0.5,0.0],"smooth":0.3,"metal":0.0}
+]}

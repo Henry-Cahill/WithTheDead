@@ -1,0 +1,11 @@
+{"version": 1, "id": "PaintGreen", "baseHeight": 0.232, "name": "Paint Green", "model": "gpt-oss:120b", "notes": "Paint bucket (green) ~0.25 m dia × 0.33 m tall, upright: steel body with recessed lid, side‑handle loop, green label on front, inner paint surface visible through thin metal wall.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0075,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.33,0.25],"color":[0.72,0.73,0.78],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[-0.0075,0.1605,0.0],"rot":[0.0,0.0,0.0],"size":[0.23,0.015,0.23],"color":[0.68,0.69,0.74],"smooth":0.55,"metal":0.9},
+  {"name":"RimTop","shape":"cylinder","pos":[-0.0075,0.168,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.008,0.26],"color":[0.7,0.71,0.76],"smooth":0.55,"metal":0.9},
+  {"name":"RimBottom","shape":"cylinder","pos":[-0.0075,-0.014,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.008,0.26],"color":[0.7,0.71,0.76],"smooth":0.55,"metal":0.9},
+  {"name":"Handle","shape":"cylinder","pos":[0.1175,0.043,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.04,0.02],"color":[0.55,0.56,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[-0.0085,0.073,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.12],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[-0.0085,0.074,0.0],"rot":[0.0,0.0,0.0],"size":[0.182,0.002,0.122],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[-0.0085,0.072,0.0],"rot":[0.0,0.0,0.0],"size":[0.182,0.002,0.122],"color":[0.45,0.44,0.38],"smooth":0.1,"metal":0.0},
+  {"name":"PaintInner","shape":"cylinder","pos":[-0.0075,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.242,0.322,0.242],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

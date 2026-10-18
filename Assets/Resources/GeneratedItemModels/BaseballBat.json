@@ -1,0 +1,8 @@
+{"version": 1, "id": "BaseballBat", "baseHeight": 0.095, "name": "Baseball Bat", "model": "gpt-oss:120b", "notes": "Wooden baseball bat ≈ 0.85 m long lying on its side (long axis along X). Main barrel, tapered middle section, thin handle, rubber grip at the knob end, a metal band around the handle and a flat wooden end‑cap on the business end.", "score": 7, "parts": [
+  {"name":"Barrel","shape":"cylinder","pos":[0.25,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.35,0.07],"color":[0.55,0.35,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"TaperMid","shape":"cylinder","pos":[-0.025,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.2,0.05],"color":[0.55,0.35,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[-0.275,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.3,0.03],"color":[0.55,0.35,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.39,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.07,0.04],"color":[0.1,0.1,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"MetalBand","shape":"cube","pos":[-0.15,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.008,0.07],"color":[0.4,0.4,0.45],"smooth":0.5,"metal":0.8},
+  {"name":"EndCap","shape":"cylinder","pos":[0.415,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.01,0.07],"color":[0.6,0.45,0.25],"smooth":0.15,"metal":0.0}
+]}

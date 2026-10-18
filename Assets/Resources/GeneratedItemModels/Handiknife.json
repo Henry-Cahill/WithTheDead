@@ -1,0 +1,12 @@
+{"version": 1, "id": "Handiknife", "baseHeight": 0.085, "name": "Handiknife", "model": "gpt-oss:120b", "notes": "Long hand‑knife ~0.9 m total length, lying on its side (X‑axis). Main sections: wooden‑plastic grip handle, metal guard, steel blade with tip, a pommel and three rivets on the handle for detail. All parts rest on the floor (y = half thickness) and touch each other.", "score": 6, "parts": [
+  {"name":"HandleGrip","shape":"cylinder","pos":[-0.3525,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.3,0.05],"color":[0.6,0.6,0.64],"smooth":0.3,"metal":0.0},
+  {"name":"HandleCore","shape":"cylinder","pos":[-0.3525,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.3,0.04],"color":[0.5,0.45,0.4],"smooth":0.2,"metal":0.0},
+  {"name":"Pommel","shape":"sphere","pos":[-0.5025,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.4,0.35,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"Guard","shape":"cube","pos":[-0.1825,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.12],"color":[0.8,0.8,0.85],"smooth":0.55,"metal":1.0},
+  {"name":"BladeBody","shape":"cube","pos":[0.1375,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.08],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"BladeEdge","shape":"cube","pos":[0.1375,-0.007,0.036],"rot":[0.0,0.0,0.0],"size":[0.58,0.004,0.008],"color":[0.85,0.85,0.9],"smooth":0.65,"metal":1.0},
+  {"name":"BladeTip","shape":"cylinder","pos":[0.4775,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.08,0.02],"color":[0.85,0.85,0.9],"smooth":0.65,"metal":1.0},
+  {"name":"Rivet1","shape":"sphere","pos":[-0.4525,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.9,0.9,0.92],"smooth":0.7,"metal":1.0},
+  {"name":"Rivet2","shape":"sphere","pos":[-0.3525,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.9,0.9,0.92],"smooth":0.7,"metal":1.0},
+  {"name":"Rivet3","shape":"sphere","pos":[-0.2525,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.9,0.9,0.92],"smooth":0.7,"metal":1.0}
+]}

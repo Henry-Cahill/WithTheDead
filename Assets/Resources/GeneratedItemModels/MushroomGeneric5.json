@@ -1,0 +1,11 @@
+{"version": 1, "id": "MushroomGeneric5", "baseHeight": 0.145, "name": "Mushroom Generic5", "model": "gpt-oss:120b", "notes": "Upright tin can of generic mushrooms ≈ 0.12 m diameter × 0.15 m tall: metal body with rolled seams, recessed lid rim, brown‑tinted label with a simple mushroom icon.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.15,0.12],"color":[0.78,0.77,0.75],"smooth":0.55,"metal":0.9},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.068,0.0],"rot":[0.0,0.0,0.0],"size":[0.132,0.012,0.132],"color":[0.78,0.77,0.75],"smooth":0.55,"metal":0.9},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.079,0.0],"rot":[0.0,0.0,0.0],"size":[0.132,0.012,0.132],"color":[0.78,0.77,0.75],"smooth":0.55,"metal":0.9},
+  {"name":"LidRim","shape":"cylinder","pos":[0.0,0.0715,0.0],"rot":[0.0,0.0,0.0],"size":[0.108,0.008,0.108],"color":[0.73,0.72,0.7],"smooth":0.45,"metal":0.85},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.118,0.142,0.118],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelBorderTop","shape":"cylinder","pos":[0.0,0.0645,0.0],"rot":[0.0,0.0,0.0],"size":[0.122,0.008,0.122],"color":[0.45,0.38,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"LabelBorderBottom","shape":"cylinder","pos":[0.0,-0.0755,0.0],"rot":[0.0,0.0,0.0],"size":[0.122,0.008,0.122],"color":[0.45,0.38,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"MushroomCap","shape":"sphere","pos":[0.0,0.0775,0.04],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.03],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"MushroomStem","shape":"cylinder","pos":[0.0,0.072,0.04],"rot":[90.0,0.0,0.0],"size":[0.008,0.025,0.008],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0}
+]}

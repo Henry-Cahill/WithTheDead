@@ -1,0 +1,8 @@
+{"version": 1, "id": "SageDried", "baseHeight": 0.0707, "name": "Sage Dried", "model": "gpt-oss:120b", "notes": "Loose dried sage in a small paper sachet about 12 cm × 8 cm × 1.5 cm thick, with a simple front label and three visible clumps of herb inside.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[0.0,-0.0013,-0.0158],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,0.0087,-0.0158],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.08],"color":[0.7,0.62,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0007,0.0257],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.06],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LeafA","shape":"sphere","pos":[-0.03,-0.0038,-0.0358],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.005],"color":[0.55,0.48,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"LeafB","shape":"sphere","pos":[0.015,-0.0028,-0.0058],"rot":[15.0,0.0,0.0],"size":[0.018,0.009,0.0045],"color":[0.58,0.51,0.32],"smooth":0.05,"metal":0.0},
+  {"name":"LeafC","shape":"sphere","pos":[0.04,-0.0048,-0.0308],"rot":[-10.0,5.0,0.0],"size":[0.022,0.011,0.0055],"color":[0.52,0.45,0.28],"smooth":0.05,"metal":0.0}
+]}

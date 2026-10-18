@@ -1,0 +1,9 @@
+{"version": 1, "id": "GardeningSprayAphids", "baseHeight": 0.1725, "name": "Gardening Spray Aphids", "model": "gpt-oss:120b", "notes": "Upright garden‑spray bottle ~0.10 m wide × 0.26 m tall: plastic body, dark label, front pump/trigger, tiny metal nozzle, thin cap rim and two seam rings.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0225,-0.0375],"rot":[0.0,0.0,0.0],"size":[0.09,0.18,0.09],"color":[0.6,0.58,0.5],"smooth":0.35,"metal":0.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.0225,-0.0375],"rot":[0.0,0.0,0.0],"size":[0.095,0.015,0.095],"color":[0.45,0.42,0.35],"smooth":0.12,"metal":0.0},
+  {"name":"CapRim","shape":"cylinder","pos":[0.0,0.0715,-0.0375],"rot":[0.0,0.0,0.0],"size":[0.1,0.008,0.1],"color":[0.58,0.56,0.48],"smooth":0.35,"metal":0.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.0635,-0.0375],"rot":[0.0,0.0,0.0],"size":[0.092,0.008,0.092],"color":[0.7,0.7,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.1085,-0.0375],"rot":[0.0,0.0,0.0],"size":[0.092,0.008,0.092],"color":[0.7,0.7,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"Pump","shape":"cube","pos":[0.0,0.0875,0.0375],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.06],"color":[0.65,0.62,0.55],"smooth":0.38,"metal":0.0},
+  {"name":"Nozzle","shape":"cylinder","pos":[0.0,0.1075,0.0775],"rot":[90.0,0.0,0.0],"size":[0.01,0.02,0.01],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0}
+]}

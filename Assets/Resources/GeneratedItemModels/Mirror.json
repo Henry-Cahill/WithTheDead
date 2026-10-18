@@ -1,0 +1,8 @@
+{"version": 1, "id": "Mirror", "baseHeight": 0.0695, "name": "Mirror", "model": "gpt-oss:120b", "notes": "Hand‑held mirror lying flat, overall footprint ~0.48 m wide × 0.34 m deep, total thickness ≈2 cm. Thin glass pane (tinted beige) set inside a low‑profile wooden‑look frame with a backing plate.", "score": 7, "parts": [
+  {"name":"BackPlate","shape":"cube","pos":[0.0,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.44,0.004,0.31],"color":[0.35,0.34,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"GlassPane","shape":"cube","pos":[0.0,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.44,0.008,0.31],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0},
+  {"name":"FrameTop","shape":"cube","pos":[0.0,0.0005,0.165],"rot":[0.0,0.0,0.0],"size":[0.46,0.018,0.02],"color":[0.4,0.38,0.33],"smooth":0.15,"metal":0.0},
+  {"name":"FrameBottom","shape":"cube","pos":[0.0,0.0005,-0.165],"rot":[0.0,0.0,0.0],"size":[0.46,0.018,0.02],"color":[0.4,0.38,0.33],"smooth":0.15,"metal":0.0},
+  {"name":"FrameLeft","shape":"cube","pos":[-0.23,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.33],"color":[0.4,0.38,0.33],"smooth":0.15,"metal":0.0},
+  {"name":"FrameRight","shape":"cube","pos":[0.23,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.33],"color":[0.4,0.38,0.33],"smooth":0.15,"metal":0.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "ThymeSeed", "baseHeight": 0.0715, "name": "Thyme Seed", "model": "gpt-oss:120b", "notes": "Small paper packet of thyme seeds (≈ 9 cm × 7 cm × 6 mm) lying flat on the floor with a thin folded edge and a printed label; a modest mound of seed material sits on top, represented by a few ellipsoids for readability.", "score": 6, "parts": [
+  {"name":"PacketBody","shape":"cube","pos":[-0.0008,-0.0085,-0.001],"rot":[0.0,0.0,0.0],"size":[0.09,0.006,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FoldEdgeTop","shape":"cube","pos":[-0.0008,-0.005,0.035],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.002],"color":[0.48,0.46,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"FoldEdgeSide","shape":"cube","pos":[0.0447,-0.0085,-0.001],"rot":[0.0,0.0,0.0],"size":[0.002,0.006,0.07],"color":[0.48,0.46,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[-0.0008,-0.007,-0.001],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.03],"color":[0.42,0.4,0.34],"smooth":0.04,"metal":0.0},
+  {"name":"SeedPileMain","shape":"sphere","pos":[-0.0208,0.002,-0.001],"rot":[0.0,0.0,0.0],"size":[0.025,0.015,0.025],"color":[0.65,0.6,0.55],"smooth":0.08,"metal":0.0},
+  {"name":"Seed1","shape":"sphere","pos":[-0.0187,0.0085,0.009],"rot":[0.0,0.0,0.0],"size":[0.008,0.006,0.008],"color":[0.65,0.6,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"Seed2","shape":"sphere","pos":[-0.0227,0.0075,-0.013],"rot":[0.0,0.0,0.0],"size":[0.007,0.005,0.007],"color":[0.65,0.6,0.55],"smooth":0.1,"metal":0.0},
+  {"name":"Seed3","shape":"sphere","pos":[-0.0158,0.0065,-0.009],"rot":[0.0,0.0,0.0],"size":[0.006,0.004,0.006],"color":[0.65,0.6,0.55],"smooth":0.1,"metal":0.0}
+]}

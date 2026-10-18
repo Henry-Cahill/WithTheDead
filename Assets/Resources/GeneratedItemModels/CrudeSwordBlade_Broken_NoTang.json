@@ -1,0 +1,8 @@
+{"version": 1, "id": "CrudeSwordBlade_Broken_NoTang", "baseHeight": 0.09, "name": "Crude Sword Blade Broken No Tang", "model": "gpt-oss:120b", "notes": "Crude broken sword blade fragment ~0.53 m long, 6 cm wide, 2 cm thick, made of dull steel (tint 0.6,0.58,0.5). Lying flat on the floor with its longest axis along X; a short tip piece and a small jagged chip give it recognisable sword shape.", "score": 6, "parts": [
+  {"name":"BladeMain","shape":"cube","pos":[-0.0175,0.0,-0.0081],"rot":[0.0,0.0,0.0],"size":[0.45,0.02,0.06],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.8},
+  {"name":"BladeTip","shape":"cylinder","pos":[0.2175,0.0,-0.0081],"rot":[0.0,0.0,90.0],"size":[0.06,0.08,0.06],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.8},
+  {"name":"JaggedChip","shape":"cube","pos":[-0.1975,0.005,0.0269],"rot":[15.0,0.0,0.0],"size":[0.08,0.025,0.04],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":0.8},
+  {"name":"EdgeRidge","shape":"cube","pos":[-0.1175,0.005,-0.0381],"rot":[-10.0,0.0,0.0],"size":[0.12,0.018,0.02],"color":[0.58,0.56,0.48],"smooth":0.5,"metal":0.8},
+  {"name":"RustSpot","shape":"sphere","pos":[0.1325,0.005,0.0119],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"DropShadow","shape":"cube","pos":[-0.0175,-0.009,-0.0081],"rot":[0.0,0.0,0.0],"size":[0.48,0.002,0.07],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0}
+]}

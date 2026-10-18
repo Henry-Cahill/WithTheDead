@@ -1,0 +1,11 @@
+{"version": 1, "id": "LargeBoneClub_Spiked", "baseHeight": 0.1375, "name": "Large Bone Club Spiked", "model": "gpt-oss:120b", "notes": "Large bone club ~1.10 m long, lying on its side with X‑axis as the longest axis. Thick wooden‑bone handle (cylinder) ends in a rounded cap, a chunky bone head (ellipsoid) with a central forward spike and three side spikes for visual impact, plus a thin rim around the head and a leather‑style grip wrap on the handle.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.11,-0.0375,-0.0075],"rot":[0.0,0.0,90.0],"size":[0.07,0.8,0.07],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"EndCap","shape":"sphere","pos":[-0.51,-0.0375,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"GripWrap","shape":"cylinder","pos":[-0.31,-0.0375,-0.0075],"rot":[0.0,0.0,90.0],"size":[0.08,0.02,0.08],"color":[0.3,0.3,0.35],"smooth":0.25,"metal":0.0},
+  {"name":"HeadCore","shape":"sphere","pos":[0.415,0.0025,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.25,0.15,0.35],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":0.0},
+  {"name":"HeadRim","shape":"cube","pos":[0.415,0.0075,-0.0075],"rot":[0.0,0.0,0.0],"size":[0.26,0.01,0.36],"color":[0.55,0.55,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"CentralSpike","shape":"cylinder","pos":[0.415,0.0025,0.2425],"rot":[90.0,0.0,0.0],"size":[0.02,0.15,0.02],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"SpikeFrontLeft","shape":"cylinder","pos":[0.345,0.0025,0.2425],"rot":[90.0,0.0,0.0],"size":[0.018,0.12,0.018],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"SpikeFrontRight","shape":"cylinder","pos":[0.485,0.0025,0.2425],"rot":[90.0,0.0,0.0],"size":[0.018,0.12,0.018],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"SpikeBack","shape":"cylinder","pos":[0.415,0.0025,-0.2575],"rot":[-90.0,0.0,0.0],"size":[0.018,0.12,0.018],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0}
+]}

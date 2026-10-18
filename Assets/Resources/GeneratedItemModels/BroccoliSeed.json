@@ -1,0 +1,8 @@
+{"version": 1, "id": "BroccoliSeed", "baseHeight": 0.0644, "name": "Broccoli Seed", "model": "gpt-oss:120b", "notes": "Broccoli seed, oval‑shaped about 1.8 cm long × 1.2 cm wide × 0.8 cm thick. Lying on its side (long axis along X) with a subtle longitudinal ridge and two tiny surface bumps near the ends. All dimensions are in metres.", "score": 6, "parts": [
+  {"name":"SeedBody","shape":"sphere","pos":[0.0,0.0004,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.008,0.012],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Ridge","shape":"cylinder","pos":[0.0,0.0013,0.0],"rot":[0.0,0.0,90.0],"size":[0.002,0.016,0.002],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"BumpL","shape":"cube","pos":[-0.0065,0.0015,0.0],"rot":[0.0,10.0,0.0],"size":[0.002,0.002,0.002],"color":[0.58,0.56,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"BumpR","shape":"cube","pos":[0.0065,0.0015,0.0],"rot":[0.0,-10.0,0.0],"size":[0.002,0.002,0.002],"color":[0.58,0.56,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"ShadowBase","shape":"cube","pos":[0.0,-0.0034,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.002,0.016],"color":[0.18,0.17,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"Highlight","shape":"sphere","pos":[0.0,0.0019,0.003],"rot":[0.0,0.0,0.0],"size":[0.0024,0.0024,0.0024],"color":[0.75,0.73,0.66],"smooth":0.6,"metal":0.0}
+]}

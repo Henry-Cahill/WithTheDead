@@ -1,0 +1,9 @@
+{"version": 1, "id": "CraftedFishingRod", "baseHeight": 0.09, "name": "Crafted Fishing Rod", "model": "gpt-oss:120b", "notes": "Crafted fishing rod ≈1.6 m long lying on its side (X‑axis). Thin grey‑blue fiberglass shaft, wooden/foam grip at the rear, a small metal reel near the tip and a pointed metal tip to show the business end.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[0.065,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,1.4,0.02],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[-0.71,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.15,0.04],"color":[0.45,0.35,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"ReelBody","shape":"cylinder","pos":[0.365,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.08,0.06],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":1.0},
+  {"name":"ReelSpokes","shape":"cube","pos":[0.365,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.008,0.008],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.775,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.8,0.8,0.85],"smooth":0.6,"metal":1.0},
+  {"name":"Line","shape":"cylinder","pos":[-0.135,-0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.005,1.2,0.005],"color":[0.6,0.6,0.64],"smooth":0.05,"metal":0.0},
+  {"name":"GripWrap","shape":"cube","pos":[-0.71,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.015,0.045],"color":[0.2,0.15,0.1],"smooth":0.3,"metal":0.0}
+]}

@@ -1,0 +1,11 @@
+{"version": 1, "id": "Earbuds", "baseHeight": 0.069, "name": "Earbuds", "model": "gpt-oss:120b", "notes": "Two plastic earbuds with a short cable lying on the floor (long axis along X). Each earbud consists of a molded shell, an inner speaker dome, a mesh‑grill front face and a tiny silicone tip. The cable is a thin plastic tube connecting the shells.", "score": 6, "parts": [
+  {"name":"Cable","shape":"cylinder","pos":[0.0,-0.005,0.0005],"rot":[0.0,0.0,90.0],"size":[0.008,0.07,0.008],"color":[0.1,0.1,0.1],"smooth":0.4,"metal":0.0},
+  {"name":"LeftShell","shape":"sphere","pos":[-0.05,0.0,0.0005],"rot":[0.0,0.0,0.0],"size":[0.025,0.018,0.025],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"RightShell","shape":"sphere","pos":[0.05,0.0,0.0005],"rot":[0.0,0.0,0.0],"size":[0.025,0.018,0.025],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"LeftSpeaker","shape":"sphere","pos":[-0.05,0.0,0.0055],"rot":[0.0,0.0,0.0],"size":[0.015,0.012,0.015],"color":[0.2,0.2,0.2],"smooth":0.55,"metal":0.0},
+  {"name":"RightSpeaker","shape":"sphere","pos":[0.05,0.0,0.0055],"rot":[0.0,0.0,0.0],"size":[0.015,0.012,0.015],"color":[0.2,0.2,0.2],"smooth":0.55,"metal":0.0},
+  {"name":"LeftGrill","shape":"cylinder","pos":[-0.05,0.0,0.014],"rot":[90.0,0.0,0.0],"size":[0.012,0.002,0.012],"color":[0.15,0.15,0.15],"smooth":0.55,"metal":0.0},
+  {"name":"RightGrill","shape":"cylinder","pos":[0.05,0.0,0.014],"rot":[90.0,0.0,0.0],"size":[0.012,0.002,0.012],"color":[0.15,0.15,0.15],"smooth":0.55,"metal":0.0},
+  {"name":"LeftTip","shape":"cylinder","pos":[-0.05,0.0,-0.013],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.2,0.18,0.16],"smooth":0.4,"metal":0.0},
+  {"name":"RightTip","shape":"cylinder","pos":[0.05,0.0,-0.013],"rot":[90.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.2,0.18,0.16],"smooth":0.4,"metal":0.0}
+]}

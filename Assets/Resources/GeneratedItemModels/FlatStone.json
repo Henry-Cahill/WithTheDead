@@ -1,0 +1,10 @@
+{"version": 1, "id": "FlatStone", "baseHeight": 0.0772, "name": "Flat Stone", "model": "gpt-oss:120b", "notes": "Flat stone ~0.48 m long × 0.34 m wide × 0.025 m thick, lying on the floor. Main slab with slightly rounded edges, two cracked chips and a small moss patch for visual interest.", "score": 7, "parts": [
+  {"name":"Slab","shape":"cube","pos":[0.0,-0.0048,0.0],"rot":[0.0,0.0,0.0],"size":[0.48,0.025,0.34],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeRimFront","shape":"cube","pos":[0.0,0.0003,0.165],"rot":[0.0,0.0,0.0],"size":[0.48,0.005,0.01],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeRimBack","shape":"cube","pos":[0.0,0.0003,-0.165],"rot":[0.0,0.0,0.0],"size":[0.48,0.005,0.01],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeRimLeft","shape":"cube","pos":[-0.24,0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.34],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeRimRight","shape":"cube","pos":[0.24,0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.34],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"ChipA","shape":"cube","pos":[-0.12,0.0007,0.07],"rot":[15.0,30.0,0.0],"size":[0.06,0.015,0.04],"color":[0.5,0.48,0.42],"smooth":0.08,"metal":0.0},
+  {"name":"ChipB","shape":"cube","pos":[0.1,0.0007,-0.09],"rot":[-10.0,-20.0,0.0],"size":[0.05,0.012,0.03],"color":[0.5,0.48,0.42],"smooth":0.08,"metal":0.0},
+  {"name":"MossPatch","shape":"sphere","pos":[0.18,0.0097,0.12],"rot":[0.0,0.0,0.0],"size":[0.07,0.015,0.07],"color":[0.2,0.35,0.15],"smooth":0.04,"metal":0.0}
+]}

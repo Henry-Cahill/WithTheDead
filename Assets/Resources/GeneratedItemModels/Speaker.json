@@ -1,0 +1,12 @@
+{"version": 1, "id": "Speaker", "baseHeight": 0.195, "name": "Speaker", "model": "gpt-oss:120b", "notes": "Portable speaker about 0.22 m wide × 0.25 m tall × 0.15 m deep, lying on its side. Main plastic body (tint 0.6,0.58,0.5) with a metal front grill, recessed driver cone, three top control knobs, two rear ports, a small logo plate and a cable plug protruding from the back.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.01,-0.0225],"rot":[0.0,0.0,0.0],"size":[0.22,0.25,0.15],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"GrillFront","shape":"cylinder","pos":[0.0,-0.01,0.0475],"rot":[0.0,0.0,0.0],"size":[0.2,0.01,0.2],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"DriverCone","shape":"cylinder","pos":[0.0,-0.01,0.0175],"rot":[0.0,0.0,0.0],"size":[0.18,0.015,0.18],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"ButtonPower","shape":"cylinder","pos":[-0.05,0.125,0.0475],"rot":[0.0,0.0,0.0],"size":[0.018,0.02,0.018],"color":[0.9,0.5,0.1],"smooth":0.4,"metal":0.0},
+  {"name":"KnobVolUp","shape":"cylinder","pos":[0.0,0.125,0.0475],"rot":[0.0,0.0,0.0],"size":[0.018,0.02,0.018],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"KnobVolDown","shape":"cylinder","pos":[0.05,0.125,0.0475],"rot":[0.0,0.0,0.0],"size":[0.018,0.02,0.018],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"PortLeft","shape":"cylinder","pos":[-0.05,0.015,-0.0925],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.03],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"PortRight","shape":"cylinder","pos":[0.05,0.015,-0.0925],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.03],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"LogoPlate","shape":"cube","pos":[0.0,-0.015,0.0485],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.002],"color":[0.2,0.15,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"CablePlug","shape":"cylinder","pos":[0.0,-0.01,-0.1375],"rot":[0.0,0.0,90.0],"size":[0.02,0.08,0.02],"color":[0.6,0.6,0.6],"smooth":0.5,"metal":1.0}
+]}

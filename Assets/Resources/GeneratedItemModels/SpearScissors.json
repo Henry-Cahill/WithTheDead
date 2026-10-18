@@ -1,0 +1,12 @@
+{"version": 1, "id": "SpearScissors", "baseHeight": 0.0975, "name": "Spear Scissors", "model": "gpt-oss:120b", "notes": "Spear‑scissors 1.4 m reach: long metal shaft (cylinder) lying on its side, thick grip at the rear, a small knuckle/pivot near the front and two thin crossing blades extending forward as the business end.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[0.015,-0.0175,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,1.2,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.735,-0.0075,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.3,0.06],"color":[0.35,0.32,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"GuardRing","shape":"cylinder","pos":[-0.535,0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.02,0.07],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"PivotKnuckle","shape":"cylinder","pos":[0.565,0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.04,0.05],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"BladeA","shape":"cube","pos":[0.715,-0.0225,0.012],"rot":[0.0,0.0,2.0],"size":[0.3,0.005,0.02],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"BladeB","shape":"cube","pos":[0.715,-0.0225,-0.012],"rot":[0.0,0.0,-2.0],"size":[0.3,0.005,0.02],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"TipA","shape":"cylinder","pos":[0.875,-0.0225,0.012],"rot":[0.0,0.0,90.0],"size":[0.008,0.02,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TipB","shape":"cylinder","pos":[0.875,-0.0225,-0.012],"rot":[0.0,0.0,90.0],"size":[0.008,0.02,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeEdgeL","shape":"sphere","pos":[0.865,-0.0225,0.012],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeEdgeR","shape":"sphere","pos":[0.865,-0.0225,-0.012],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

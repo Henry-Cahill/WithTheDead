@@ -1,0 +1,8 @@
+{"version": 1, "id": "Doorknob", "baseHeight": 0.105, "name": "Doorknob", "model": "gpt-oss:120b", "notes": "Brass‑coloured doorknob lying on its side: round spherical knob (≈0.07 m dia) with a thin mounting plate attached at the back and a knurled metal band around the sphere.", "score": 6, "parts": [
+  {"name":"KnobSphere","shape":"sphere","pos":[0.005,0.0,0.0227],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"MountPlate","shape":"cylinder","pos":[0.005,0.0,-0.0153],"rot":[0.0,0.0,90.0],"size":[0.09,0.005,0.09],"color":[0.58,0.55,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"KnurlBand","shape":"cylinder","pos":[0.005,0.0,0.0227],"rot":[0.0,0.0,90.0],"size":[0.075,0.008,0.075],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"ScrewHead","shape":"cylinder","pos":[-0.04,0.0,-0.0153],"rot":[0.0,0.0,90.0],"size":[0.012,0.004,0.012],"color":[0.5,0.48,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"ScrewShank","shape":"cylinder","pos":[-0.04,0.0,-0.0193],"rot":[0.0,0.0,90.0],"size":[0.008,0.02,0.008],"color":[0.5,0.48,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"PlateEdge","shape":"cube","pos":[0.005,0.0025,-0.0153],"rot":[0.0,0.0,0.0],"size":[0.09,0.002,0.002],"color":[0.58,0.55,0.45],"smooth":0.5,"metal":1.0}
+]}

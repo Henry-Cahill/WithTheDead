@@ -1,0 +1,9 @@
+{"version": 1, "id": "Corn", "baseHeight": 0.1293, "name": "Corn", "model": "gpt-oss:120b", "notes": "Canned corn 0.12 m diameter × 0.13 m tall, lying upright on the floor: steel body with rolled seams, recessed lid, and a yellow‑gold label that shows the corn tint (0.75,0.68,0.45).", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0043,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.13,0.12],"color":[0.78,0.79,0.8],"smooth":0.55,"metal":0.9},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.0532,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.015,0.13],"color":[0.78,0.79,0.8],"smooth":0.55,"metal":0.9},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.0618,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.015,0.13],"color":[0.78,0.79,0.8],"smooth":0.55,"metal":0.9},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.0633,0.0],"rot":[0.0,0.0,0.0],"size":[0.108,0.012,0.108],"color":[0.7,0.71,0.73],"smooth":0.45,"metal":0.9},
+  {"name":"LabelBase","shape":"cylinder","pos":[0.0,-0.0043,0.0],"rot":[0.0,0.0,0.0],"size":[0.118,0.12,0.118],"color":[0.75,0.68,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cylinder","pos":[0.0,0.0457,0.0],"rot":[0.0,0.0,0.0],"size":[0.119,0.008,0.119],"color":[0.5,0.44,0.3],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cylinder","pos":[0.0,-0.0543,0.0],"rot":[0.0,0.0,0.0],"size":[0.119,0.008,0.119],"color":[0.5,0.44,0.3],"smooth":0.12,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "CrudeSwordBlade_NoTang", "baseHeight": 0.07, "name": "Crude Sword Blade No Tang", "model": "gpt-oss:120b", "notes": "Crude sword blade ~0.9 m long, thin metal blade with a tapered tip, lying flat on the floor (length along +X). Main blade is a rectangular prism, tip is a short cylinder ending in a small sphere. A few rust‑spot spheres add visual detail; thin edge cylinders give a clear silhouette from above.", "score": 6, "parts": [
+  {"name":"BladeBody","shape":"cube","pos":[-0.0775,-0.007,0.0005],"rot":[0.0,0.0,0.0],"size":[0.8,0.006,0.03],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"BladeTip","shape":"cylinder","pos":[0.3725,0.0,0.0005],"rot":[0.0,0.0,90.0],"size":[0.02,0.1,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"TipPoint","shape":"sphere","pos":[0.4725,-0.005,0.0005],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeLeft","shape":"cylinder","pos":[-0.0775,-0.006,0.0185],"rot":[0.0,0.0,90.0],"size":[0.008,0.78,0.008],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"EdgeRight","shape":"cylinder","pos":[-0.0775,-0.006,-0.0175],"rot":[0.0,0.0,90.0],"size":[0.008,0.78,0.008],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"RustSpot1","shape":"sphere","pos":[-0.2775,-0.0025,0.0155],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.35,0.3,0.25],"smooth":0.5,"metal":0.0},
+  {"name":"RustSpot2","shape":"sphere","pos":[0.0225,-0.005,-0.0115],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.35,0.3,0.25],"smooth":0.5,"metal":0.0},
+  {"name":"RustSpot3","shape":"sphere","pos":[-0.1275,-0.004,-0.0195],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.35,0.3,0.25],"smooth":0.5,"metal":0.0},
+  {"name":"RustSpot4","shape":"sphere","pos":[0.2225,-0.002,0.0185],"rot":[0.0,0.0,0.0],"size":[0.014,0.014,0.014],"color":[0.35,0.3,0.25],"smooth":0.5,"metal":0.0},
+  {"name":"RustSpot5","shape":"sphere","pos":[-0.4275,-0.004,-0.0145],"rot":[0.0,0.0,0.0],"size":[0.011,0.011,0.011],"color":[0.35,0.3,0.25],"smooth":0.5,"metal":0.0}
+]}

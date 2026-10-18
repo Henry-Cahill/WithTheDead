@@ -1,0 +1,12 @@
+{"version": 1, "id": "FishingTrash", "baseHeight": 0.1475, "name": "Fishing Trash", "model": "gpt-oss:120b", "notes": "A small pile of fishing debris (~0.30 m wide × 0.20 m deep × 0.15 m high) consisting of a broken rod piece, a plastic bottle (body and cap now resting directly on the rod), a tangled line coil, a rusted hook, a torn net fragment and a ragged bag scrap. Main colour is the muted tan‑grey tint (0.6, 0.58, 0.5).", "score": 7, "parts": [
+  {"name":"RodPiece","shape":"cylinder","pos":[0.0025,-0.0625,-0.0475],"rot":[0.0,0.0,90.0],"size":[0.02,0.25,0.02],"color":[0.58,0.55,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"BottleBody","shape":"cylinder","pos":[0.0525,0.0025,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.07,0.15,0.07],"color":[0.62,0.6,0.55],"smooth":0.4,"metal":0.0},
+  {"name":"BottleCap","shape":"cylinder","pos":[0.0525,0.0825,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.075,0.01,0.075],"color":[0.55,0.53,0.48],"smooth":0.45,"metal":0.0},
+  {"name":"LineCoil","shape":"sphere","pos":[-0.0675,-0.0525,0.0525],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.12],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"HookHead","shape":"cylinder","pos":[0.1225,-0.0575,-0.0675],"rot":[90.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.45,0.4,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"HookShaft","shape":"cylinder","pos":[0.1225,-0.0175,-0.0675],"rot":[0.0,0.0,0.0],"size":[0.008,0.08,0.008],"color":[0.45,0.4,0.35],"smooth":0.55,"metal":1.0},
+  {"name":"NetStrandX","shape":"cylinder","pos":[0.0025,-0.0675,-0.0175],"rot":[0.0,0.0,90.0],"size":[0.006,0.15,0.006],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"NetStrandZ","shape":"cylinder","pos":[0.0025,-0.0675,-0.0175],"rot":[90.0,0.0,0.0],"size":[0.006,0.15,0.006],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"NetStrandX2","shape":"cylinder","pos":[-0.0375,-0.0675,-0.0175],"rot":[0.0,0.0,90.0],"size":[0.006,0.12,0.006],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"BagRag","shape":"cube","pos":[-0.0675,-0.0695,-0.0775],"rot":[0.0,0.0,15.0],"size":[0.12,0.005,0.07],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,9 @@
+{"version": 1, "id": "AdhesiveBandageBox", "baseHeight": 0.095, "name": "Adhesive Bandage Box", "model": "gpt-oss:120b", "notes": "Adhesive‑bandage cardboard box ~0.12 m × 0.08 m × 0.04 m lying on its side, beige tint, with a white label and red cross and one loose rolled bandage beside it.", "score": 6, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0055,-0.003],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.08],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"LabelBase","shape":"cube","pos":[0.0,-0.0055,0.038],"rot":[0.0,0.0,0.0],"size":[0.09,0.015,0.002],"color":[1.0,1.0,1.0],"smooth":0.05,"metal":0.0},
+  {"name":"LabelCrossH","shape":"cube","pos":[0.0,-0.004,0.038],"rot":[0.0,0.0,0.0],"size":[0.07,0.003,0.002],"color":[0.8,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"LabelCrossV","shape":"cube","pos":[0.0,0.0,0.038],"rot":[0.0,0.0,0.0],"size":[0.003,0.07,0.002],"color":[0.8,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"BandageRoll","shape":"cylinder","pos":[-0.04,0.0095,0.038],"rot":[0.0,0.0,90.0],"size":[0.01,0.025,0.01],"color":[0.9,0.7,0.7],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeSeamFront","shape":"cube","pos":[0.0,-0.0035,0.0375],"rot":[0.0,0.0,0.0],"size":[0.118,0.002,0.002],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeSeamTop","shape":"cube","pos":[0.0,0.0135,-0.003],"rot":[0.0,0.0,0.0],"size":[0.118,0.002,0.078],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0}
+]}

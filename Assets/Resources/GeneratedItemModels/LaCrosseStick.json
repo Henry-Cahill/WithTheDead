@@ -1,0 +1,12 @@
+{"version": 1, "id": "LaCrosseStick", "baseHeight": 0.1775, "name": "La Crosse Stick", "model": "gpt-oss:120b", "notes": "Lacrosse stick ~1.6 m long lying on its side (X axis). Wooden shaft 0.04 m diameter, rubber grip near the handle, metal head‑base and curved basket at the +X end that protrudes forward (+Z) with a metal rim and simple netting.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.17,-0.0925,-0.105],"rot":[0.0,0.0,90.0],"size":[0.04,1.4,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.77,-0.0875,-0.105],"rot":[0.0,0.0,90.0],"size":[0.06,0.2,0.06],"color":[0.1,0.1,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"HeadBase","shape":"cylinder","pos":[0.55,-0.0875,-0.105],"rot":[0.0,0.0,90.0],"size":[0.05,0.08,0.05],"color":[0.4,0.4,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"BasketShell","shape":"sphere","pos":[0.73,0.0075,-0.005],"rot":[0.0,0.0,0.0],"size":[0.28,0.22,0.28],"color":[0.4,0.4,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.73,0.0075,0.115],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.4,0.4,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.73,0.0075,0.075],"rot":[90.0,0.0,0.0],"size":[0.02,0.28,0.02],"color":[0.4,0.4,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"NetV1","shape":"cube","pos":[0.65,0.0075,-0.105],"rot":[0.0,0.0,0.0],"size":[0.006,0.16,0.22],"color":[0.4,0.4,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"NetV2","shape":"cube","pos":[0.81,0.0075,-0.105],"rot":[0.0,0.0,0.0],"size":[0.006,0.16,0.22],"color":[0.4,0.4,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"NetH1","shape":"cube","pos":[0.73,0.0875,-0.105],"rot":[0.0,0.0,0.0],"size":[0.18,0.006,0.22],"color":[0.4,0.4,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"NetH2","shape":"cube","pos":[0.73,-0.0725,-0.105],"rot":[0.0,0.0,0.0],"size":[0.18,0.006,0.22],"color":[0.4,0.4,0.45],"smooth":0.55,"metal":1.0}
+]}

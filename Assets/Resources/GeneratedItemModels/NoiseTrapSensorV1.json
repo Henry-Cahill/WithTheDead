@@ -1,0 +1,12 @@
+{"version": 1, "id": "NoiseTrapSensorV1", "baseHeight": 0.23, "name": "Noise Trap Sensor V1", "model": "gpt-oss:120b", "notes": "Noise Trap Sensor V1 – a compact ~1 m blunt “pole” weapon. A thin steel tube (0.05 m dia, 0.7 m long) lies on its side along X, a rubber‑grip band around the centre, and a rectangular sensor head (0.25 m long × 0.2 m high × 0.4 m deep) attached to the +X end showing an antenna, front lens and a small control panel with four screws.", "score": 6, "parts": [
+  {"name":"Pole","shape":"cylinder","pos":[-0.145,-0.145,-0.04],"rot":[0.0,0.0,90.0],"size":[0.05,0.7,0.05],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"GripBand","shape":"cube","pos":[-0.145,-0.16,-0.04],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.12],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"SensorBody","shape":"cube","pos":[0.33,-0.07,-0.04],"rot":[0.0,0.0,0.0],"size":[0.25,0.2,0.4],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":0.6},
+  {"name":"Antenna","shape":"cylinder","pos":[0.43,0.095,-0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.15,0.02],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"Lens","shape":"sphere","pos":[0.455,-0.07,-0.04],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.02],"color":[0.2,0.8,1.0],"smooth":0.7,"metal":0.0},
+  {"name":"Panel","shape":"cube","pos":[0.36,-0.015,0.18],"rot":[0.0,0.0,0.0],"size":[0.2,0.02,0.1],"color":[0.2,0.2,0.25],"smooth":0.5,"metal":0.8},
+  {"name":"ScrewFL","shape":"cylinder","pos":[0.29,-0.004,0.125],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewFR","shape":"cylinder","pos":[0.29,-0.004,0.235],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewBL","shape":"cylinder","pos":[0.43,-0.004,0.125],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewBR","shape":"cylinder","pos":[0.43,-0.004,0.235],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0}
+]}

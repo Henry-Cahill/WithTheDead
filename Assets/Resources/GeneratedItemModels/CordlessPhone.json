@@ -1,0 +1,12 @@
+{"version": 1, "id": "CordlessPhone", "baseHeight": 0.09, "name": "Cordless Phone", "model": "gpt-oss:120b", "notes": "Cordless phone handset ~0.18 m long × 0.09 m wide × 0.04 m tall, lying on its side (long axis along X). Main tinted‑plastic body with recessed screen, three front buttons, a rear speaker grill, a short metal antenna stub and a low‑profile battery indicator strip. A small rectangular charging dock sits beside it.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.06,-0.01,-0.0043],"rot":[0.0,0.0,0.0],"size":[0.18,0.04,0.09],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Screen","shape":"cube","pos":[0.06,-0.0075,0.0357],"rot":[0.0,0.0,0.0],"size":[0.16,0.005,0.085],"color":[0.05,0.05,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"ButtonL","shape":"cylinder","pos":[0.01,0.012,-0.0343],"rot":[0.0,0.0,0.0],"size":[0.01,0.004,0.01],"color":[0.2,0.2,0.2],"smooth":0.65,"metal":0.9},
+  {"name":"ButtonC","shape":"cylinder","pos":[0.06,0.012,-0.0343],"rot":[0.0,0.0,0.0],"size":[0.01,0.004,0.01],"color":[0.2,0.2,0.2],"smooth":0.65,"metal":0.9},
+  {"name":"ButtonR","shape":"cylinder","pos":[0.11,0.012,-0.0343],"rot":[0.0,0.0,0.0],"size":[0.01,0.004,0.01],"color":[0.2,0.2,0.2],"smooth":0.65,"metal":0.9},
+  {"name":"SpeakerGrill","shape":"cylinder","pos":[0.02,-0.01,-0.0483],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.06],"color":[0.15,0.15,0.18],"smooth":0.5,"metal":0.8},
+  {"name":"AntennaStub","shape":"cylinder","pos":[0.13,0.02,0.0407],"rot":[0.0,0.0,0.0],"size":[0.006,0.02,0.006],"color":[0.7,0.7,0.75],"smooth":0.7,"metal":1.0},
+  {"name":"BatteryStrip","shape":"cube","pos":[-0.02,-0.018,-0.0043],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.01],"color":[0.3,0.25,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"DockBase","shape":"cube","pos":[-0.09,-0.0225,-0.0043],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.07],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"DockConnector","shape":"cylinder","pos":[-0.03,-0.015,0.0307],"rot":[0.0,0.0,0.0],"size":[0.008,0.005,0.008],"color":[0.2,0.2,0.25],"smooth":0.55,"metal":0.7}
+]}

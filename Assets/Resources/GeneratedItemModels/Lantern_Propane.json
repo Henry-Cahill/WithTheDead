@@ -1,0 +1,13 @@
+{"version": 1, "id": "Lantern_Propane", "baseHeight": 0.1775, "name": "Lantern Propane", "model": "gpt-oss:120b", "notes": "Propane lantern lying on its side (~0.35 m long, 0.12 m diameter). Main metal fuel cylinder, glass dome at one end, small metal handle loop, rubber foot pads, a valve knob, metal band and label for detail.", "score": 6, "parts": [
+  {"name":"BodyCylinder","shape":"cylinder","pos":[-0.07,-0.0575,-0.0038],"rot":[0.0,0.0,90.0],"size":[0.12,0.35,0.12],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.9},
+  {"name":"GlassDome","shape":"sphere","pos":[0.175,-0.0275,-0.0038],"rot":[0.0,0.0,0.0],"size":[0.14,0.14,0.14],"color":[0.85,0.88,0.92],"smooth":0.6,"metal":0.0},
+  {"name":"DomeCap","shape":"cylinder","pos":[0.175,0.0475,-0.0038],"rot":[0.0,0.0,90.0],"size":[0.14,0.01,0.14],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.9},
+  {"name":"HandleBar","shape":"cylinder","pos":[-0.12,-0.0175,-0.0038],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.9},
+  {"name":"BasePadL","shape":"cylinder","pos":[-0.22,-0.1125,-0.0038],"rot":[0.0,0.0,0.0],"size":[0.03,0.01,0.03],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"BasePadR","shape":"cylinder","pos":[0.08,-0.1125,-0.0038],"rot":[0.0,0.0,0.0],"size":[0.03,0.01,0.03],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"FuelValve","shape":"cylinder","pos":[0.03,-0.0575,0.0663],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.9},
+  {"name":"BodyBand","shape":"cylinder","pos":[-0.07,-0.0575,-0.0038],"rot":[0.0,0.0,90.0],"size":[0.12,0.01,0.12],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.9},
+  {"name":"Label","shape":"cube","pos":[-0.19,-0.0475,-0.0038],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.08],"color":[0.4,0.35,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Screw1","shape":"cube","pos":[-0.15,-0.0475,0.0362],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.9},
+  {"name":"Screw2","shape":"cube","pos":[-0.15,-0.0475,-0.0438],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.9}
+]}

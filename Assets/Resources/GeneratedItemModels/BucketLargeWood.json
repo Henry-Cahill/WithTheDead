@@ -1,0 +1,9 @@
+{"version": 1, "id": "BucketLargeWood", "baseHeight": 0.3075, "name": "Bucket Large Wood", "model": "gpt-oss:120b", "notes": "Large wooden bucket ~0.36 m diameter × 0.45 m tall, upright on the floor. Main body is solid wood, thin wooden rim, a dark metal band near the top and simple wooden handles arching over the front and back.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.36,0.45,0.36],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,0.2175,0.0],"rot":[0.0,0.0,0.0],"size":[0.38,0.02,0.38],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"MetalBand","shape":"cylinder","pos":[0.0,0.1925,0.0],"rot":[0.0,0.0,0.0],"size":[0.36,0.015,0.36],"color":[0.3,0.3,0.3],"smooth":0.4,"metal":1.0},
+  {"name":"HandleFront","shape":"cylinder","pos":[0.0,0.2275,-0.18],"rot":[90.0,0.0,0.0],"size":[0.04,0.3,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"HandleBack","shape":"cylinder","pos":[0.0,0.2275,0.18],"rot":[90.0,0.0,0.0],"size":[0.04,0.3,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"LeftSupport","shape":"cylinder","pos":[-0.18,0.2275,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.3,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"RightSupport","shape":"cylinder","pos":[0.18,0.2275,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.3,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0}
+]}

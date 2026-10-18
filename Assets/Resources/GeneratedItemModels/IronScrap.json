@@ -1,0 +1,12 @@
+{"version": 1, "id": "IronScrap", "baseHeight": 0.1013, "name": "Iron Scrap", "model": "gpt-oss:120b", "notes": "Irregular iron scrap pile about 0.4 m wide × 0.3 m deep × 0.15 m tall: a flat plate, bent rod, two crossed bars, a bolt (head + shaft), a rust‑stained chunk, a coil of wire, a short pipe and a small rust patch.", "score": 6, "parts": [
+  {"name":"BasePlate","shape":"cube","pos":[0.0025,0.0012,-0.0062],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.18],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":1.0},
+  {"name":"BentRod","shape":"cylinder","pos":[-0.0475,0.0112,0.0538],"rot":[0.0,0.0,90.0],"size":[0.04,0.35,0.04],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":1.0},
+  {"name":"TwistedBar1","shape":"cylinder","pos":[0.0825,0.0163,-0.0562],"rot":[45.0,0.0,90.0],"size":[0.03,0.28,0.03],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":1.0},
+  {"name":"TwistedBar2","shape":"cylinder","pos":[-0.0675,0.0092,-0.0662],"rot":[-30.0,0.0,90.0],"size":[0.03,0.22,0.03],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":1.0},
+  {"name":"BoltHead","shape":"cube","pos":[0.1225,0.0012,0.0938],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":1.0},
+  {"name":"BoltShaft","shape":"cylinder","pos":[0.1225,0.0112,0.0938],"rot":[0.0,0.0,90.0],"size":[0.015,0.08,0.015],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":1.0},
+  {"name":"RustChunk","shape":"sphere","pos":[-0.1175,0.0212,0.0438],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.07],"color":[0.45,0.42,0.35],"smooth":0.15,"metal":1.0},
+  {"name":"WireCoil","shape":"cylinder","pos":[0.0025,-0.0013,-0.1262],"rot":[90.0,0.0,0.0],"size":[0.08,0.015,0.08],"color":[0.58,0.55,0.48],"smooth":0.2,"metal":1.0},
+  {"name":"ShortPipe","shape":"cylinder","pos":[-0.0275,0.0032,-0.1062],"rot":[0.0,0.0,90.0],"size":[0.025,0.15,0.025],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":1.0},
+  {"name":"RustPatch","shape":"sphere","pos":[0.0525,0.0062,0.1138],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.04],"color":[0.48,0.45,0.38],"smooth":0.15,"metal":1.0}
+]}

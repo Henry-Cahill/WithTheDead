@@ -1,0 +1,12 @@
+{"version": 1, "id": "Generator_Blue", "baseHeight": 0.36, "name": "Generator Blue", "model": "gpt-oss:120b", "notes": "Portable generator ~0.55 m wide × 0.45 m deep × 0.60 m tall. Main blue housing with dark‑metal base, top cover, front grill, two wheels, side vents and a fold‑out handle.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.025,-0.225,0.005],"rot":[0.0,0.0,0.0],"size":[0.55,0.15,0.45],"color":[0.4,0.38,0.35],"smooth":0.2,"metal":0.9},
+  {"name":"Body","shape":"cube","pos":[0.025,0.025,0.005],"rot":[0.0,0.0,0.0],"size":[0.5,0.35,0.4],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"TopCover","shape":"cube","pos":[0.025,0.25,0.005],"rot":[0.0,0.0,0.0],"size":[0.45,0.1,0.35],"color":[0.5,0.48,0.44],"smooth":0.2,"metal":0.8},
+  {"name":"FrontGrill","shape":"cube","pos":[0.025,0.15,-0.22],"rot":[0.0,0.0,0.0],"size":[0.48,0.12,0.02],"color":[0.25,0.24,0.22],"smooth":0.1,"metal":0.9},
+  {"name":"Handle","shape":"cylinder","pos":[-0.155,0.27,-0.175],"rot":[0.0,0.0,90.0],"size":[0.04,0.3,0.04],"color":[0.5,0.48,0.44],"smooth":0.2,"metal":0.8},
+  {"name":"WheelL","shape":"cylinder","pos":[-0.155,-0.225,-0.145],"rot":[0.0,0.0,0.0],"size":[0.15,0.03,0.15],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.9},
+  {"name":"WheelR","shape":"cylinder","pos":[0.205,-0.225,-0.145],"rot":[0.0,0.0,0.0],"size":[0.15,0.03,0.15],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.9},
+  {"name":"VentLeft","shape":"cylinder","pos":[-0.235,0.1,0.005],"rot":[0.0,0.0,0.0],"size":[0.04,0.28,0.04],"color":[0.45,0.44,0.42],"smooth":0.2,"metal":0.8},
+  {"name":"VentRight","shape":"cylinder","pos":[0.285,0.1,0.005],"rot":[0.0,0.0,0.0],"size":[0.04,0.28,0.04],"color":[0.45,0.44,0.42],"smooth":0.2,"metal":0.8},
+  {"name":"Label","shape":"cube","pos":[0.025,0.28,0.005],"rot":[0.0,0.0,0.0],"size":[0.3,0.005,0.12],"color":[0.15,0.13,0.1],"smooth":0.05,"metal":0.0}
+]}

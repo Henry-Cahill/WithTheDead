@@ -1,0 +1,8 @@
+{"version": 1, "id": "StoneKnifeLong", "baseHeight": 0.085, "name": "Stone Knife Long", "model": "gpt-oss:120b", "notes": "Long stone knife ~0.80 m total length, 0.04 m wide, ~0.02 m thick. Wooden handle (cylinder) on the left, a small metal guard, then a stone blade ending in a pointed tip. All parts touch each other along the X‑axis.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.3187,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.2,0.05],"color":[0.45,0.35,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"Guard","shape":"cube","pos":[-0.2038,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeBody","shape":"cube","pos":[0.0862,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.015,0.04],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":0.0},
+  {"name":"BladeTip","shape":"cylinder","pos":[0.3862,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.05,0.02],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeHighlight","shape":"cube","pos":[0.0862,-0.0085,0.0],"rot":[0.0,0.0,0.0],"size":[0.55,0.003,0.042],"color":[0.75,0.75,0.78],"smooth":0.2,"metal":0.0},
+  {"name":"TipPoint","shape":"sphere","pos":[0.4113,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":0.0}
+]}

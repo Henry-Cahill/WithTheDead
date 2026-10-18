@@ -1,0 +1,13 @@
+{"version": 1, "id": "SteelBar", "baseHeight": 0.094, "name": "Steel Bar", "model": "gpt-oss:120b", "notes": "Steel bar melee weapon 1.20 m long lying on its side (X‑axis). Thin steel rod with rubber grip, metal end caps, a heavier square striking head at the +X end, a rolled seam and four rivets for detail.", "score": 7, "parts": [
+  {"name":"MainRod","shape":"cylinder","pos":[-0.052,-0.014,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,1.2,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.052,-0.009,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,1.0,0.05],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Seam","shape":"cylinder","pos":[-0.052,-0.012,0.0],"rot":[0.0,0.0,90.0],"size":[0.042,1.2,0.042],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":1.0},
+  {"name":"EndCapLeft","shape":"cylinder","pos":[-0.662,-0.014,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"EndCapRight","shape":"cylinder","pos":[0.558,-0.014,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.608,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.08],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetTL","shape":"sphere","pos":[0.548,0.03,0.028],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.9,0.9,0.95],"smooth":0.6,"metal":1.0},
+  {"name":"RivetTR","shape":"sphere","pos":[0.548,0.03,-0.028],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.9,0.9,0.95],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[0.668,0.03,0.028],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.9,0.9,0.95],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.668,0.03,-0.028],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.9,0.9,0.95],"smooth":0.6,"metal":1.0},
+  {"name":"Stripe","shape":"cube","pos":[-0.052,-0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.8,0.004,0.008],"color":[0.05,0.05,0.07],"smooth":0.2,"metal":0.0}
+]}

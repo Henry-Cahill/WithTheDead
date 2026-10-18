@@ -1,0 +1,8 @@
+{"version": 1, "id": "FieldHockeyStick", "baseHeight": 0.0825, "name": "Field Hockey Stick", "model": "gpt-oss:120b", "notes": "Field hockey stick ~1.35 m long lying on its side (X‑axis). Thin wooden/composite shaft with black grip tape, a reinforced band near the head, and a flat blade projecting forward (+Z) to show the business end.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[0.1075,-0.0025,-0.025],"rot":[0.0,0.0,90.0],"size":[0.03,1.2,0.03],"color":[0.6,0.6,0.64],"smooth":0.2,"metal":0.0},
+  {"name":"GripTape","shape":"cylinder","pos":[0.5325,-0.0015,-0.025],"rot":[0.0,0.0,90.0],"size":[0.032,0.4,0.032],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"Reinforcement","shape":"cylinder","pos":[-0.5175,0.0025,-0.025],"rot":[0.0,0.0,90.0],"size":[0.04,0.12,0.04],"color":[0.7,0.7,0.75],"smooth":0.25,"metal":0.0},
+  {"name":"Blade","shape":"cube","pos":[-0.6425,-0.0075,0.01],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.07],"color":[0.55,0.55,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"BladeEdge","shape":"cube","pos":[-0.7025,-0.01,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.07],"color":[0.5,0.5,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"Tip","shape":"sphere","pos":[-0.7175,-0.0075,0.01],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.55,0.55,0.6],"smooth":0.2,"metal":0.0}
+]}

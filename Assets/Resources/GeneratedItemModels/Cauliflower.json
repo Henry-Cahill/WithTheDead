@@ -1,0 +1,14 @@
+{"version": 1, "id": "Cauliflower", "baseHeight": 0.1514, "name": "Cauliflower", "model": "gpt-oss:120b", "notes": "Loose cauliflower head ~0.16 m wide, 0.13 m tall. Central sphere for the dense core plus several overlapping florets and a few thin leaf cylinders give a clear silhouette from above.", "score": 6, "parts": [
+  {"name":"Core","shape":"sphere","pos":[0.0,-0.0164,0.0087],"rot":[0.0,0.0,0.0],"size":[0.12,0.12,0.12],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FloretA","shape":"sphere","pos":[0.045,0.0036,0.0087],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FloretB","shape":"sphere","pos":[-0.04,0.0086,0.0387],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FloretC","shape":"sphere","pos":[0.02,-0.0014,-0.0363],"rot":[0.0,0.0,0.0],"size":[0.075,0.075,0.075],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FloretD","shape":"sphere","pos":[-0.03,-0.0064,0.0487],"rot":[0.0,0.0,0.0],"size":[0.065,0.065,0.065],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FloretE","shape":"sphere","pos":[0.0,-0.0114,-0.0513],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf1","shape":"cylinder","pos":[0.08,0.0436,0.0087],"rot":[45.0,0.0,0.0],"size":[0.015,0.12,0.015],"color":[0.3,0.5,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Leaf2","shape":"cylinder","pos":[-0.07,0.0386,0.0287],"rot":[-30.0,0.0,0.0],"size":[0.015,0.11,0.015],"color":[0.3,0.5,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Leaf3","shape":"cylinder","pos":[0.0,0.0336,-0.0613],"rot":[20.0,0.0,90.0],"size":[0.012,0.09,0.012],"color":[0.3,0.5,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"BagBase","shape":"cube","pos":[0.0,-0.0764,0.0087],"rot":[0.0,0.0,0.0],"size":[0.18,0.02,0.12],"color":[0.9,0.9,0.95],"smooth":0.3,"metal":0.0},
+  {"name":"BagSideLeft","shape":"cube","pos":[-0.09,-0.0714,0.0087],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.12],"color":[0.9,0.9,0.95],"smooth":0.3,"metal":0.0},
+  {"name":"BagSideRight","shape":"cube","pos":[0.09,-0.0714,0.0087],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.12],"color":[0.9,0.9,0.95],"smooth":0.3,"metal":0.0}
+]}

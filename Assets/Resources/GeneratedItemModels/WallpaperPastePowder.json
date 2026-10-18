@@ -1,0 +1,9 @@
+{"version": 1, "id": "WallpaperPastePowder", "baseHeight": 0.095, "name": "Wallpaper Paste Powder", "model": "gpt-oss:120b", "notes": "Loose wallpaper‑paste powder in a rectangular paper sack ~0.35 m long × 0.20 m wide × 0.05 m thick, lying on its side (long axis along +X). Includes the paper bag shell, the powder bulk, a front label, a tied string and a small spill of dust on the floor.", "score": 6, "parts": [
+  {"name":"BagShell","shape":"cube","pos":[-0.0175,0.01,0.0035],"rot":[0.0,0.0,0.0],"size":[0.35,0.05,0.2],"color":[0.62,0.6,0.55],"smooth":0.12,"metal":0.0},
+  {"name":"Powder","shape":"cube","pos":[-0.0175,0.0075,0.0035],"rot":[0.0,0.0,0.0],"size":[0.33,0.045,0.18],"color":[0.48,0.46,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.1025,0.02,0.1045],"rot":[0.0,0.0,0.0],"size":[0.14,0.004,0.08],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.1025,0.024,0.1045],"rot":[0.0,0.0,0.0],"size":[0.144,0.002,0.084],"color":[0.4,0.38,0.3],"smooth":0.08,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.1025,0.016,0.1045],"rot":[0.0,0.0,0.0],"size":[0.144,0.002,0.084],"color":[0.4,0.38,0.3],"smooth":0.08,"metal":0.0},
+  {"name":"TieString","shape":"cylinder","pos":[-0.1825,0.02,0.0035],"rot":[90.0,0.0,0.0],"size":[0.012,0.06,0.012],"color":[0.3,0.28,0.22],"smooth":0.15,"metal":0.0},
+  {"name":"SpillDust","shape":"sphere","pos":[0.1625,-0.005,-0.1165],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.48,0.46,0.4],"smooth":0.05,"metal":0.0}
+]}

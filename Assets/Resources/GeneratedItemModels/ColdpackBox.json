@@ -1,0 +1,11 @@
+{"version": 1, "id": "ColdpackBox", "baseHeight": 0.21, "name": "Coldpack Box", "model": "gpt-oss:120b", "notes": "Coldpack box, a cardboard container for cold packs, lying on its side (longest dimension X). Approx. 0.35 m long × 0.25 m wide × 0.12 m thick, with thin flaps, an inner plastic liner and a label strip.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.12,0.25],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"InnerLiner","shape":"cube","pos":[0.0,-0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.33,0.1,0.23],"color":[0.7,0.68,0.6],"smooth":0.08,"metal":0.0},
+  {"name":"FlapFront","shape":"cube","pos":[0.0,-0.055,0.15],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.05],"color":[0.58,0.55,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"FlapBack","shape":"cube","pos":[0.0,-0.055,-0.15],"rot":[0.0,0.0,0.0],"size":[0.35,0.02,0.05],"color":[0.58,0.55,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"TopEdge","shape":"cube","pos":[0.0,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.01,0.25],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"SideEdgeLeft","shape":"cube","pos":[-0.175,-0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.12,0.25],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"SideEdgeRight","shape":"cube","pos":[0.175,-0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.12,0.25],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelSide","shape":"cube","pos":[0.0,-0.045,0.11],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.08],"color":[0.4,0.35,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"RopeHandle","shape":"cylinder","pos":[0.0,-0.0,0.0],"rot":[0.0,90.0,0.0],"size":[0.015,0.3,0.015],"color":[0.45,0.42,0.38],"smooth":0.2,"metal":0.0}
+]}

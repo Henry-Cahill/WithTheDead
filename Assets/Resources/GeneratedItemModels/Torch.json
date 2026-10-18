@@ -1,0 +1,8 @@
+{"version": 1, "id": "Torch", "baseHeight": 0.1, "name": "Torch", "model": "gpt-oss:120b", "notes": "Torch about 1.2 m long, 0.07 m thick wooden stick lying on its side (X‑axis). Metal cap at the far end and a soaked cloth rag wrapped around the tip give it a recognisable silhouette.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.0564,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,1.2,0.07],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"MetalCap","shape":"cylinder","pos":[0.5236,0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.06,0.04],"color":[0.4,0.4,0.42],"smooth":0.6,"metal":1.0},
+  {"name":"ClothRag","shape":"cube","pos":[0.5636,0.01,0.0],"rot":[0.0,15.0,0.0],"size":[0.16,0.03,0.12],"color":[0.5,0.45,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"RagFold1","shape":"cube","pos":[0.6036,0.018,0.04],"rot":[0.0,-10.0,20.0],"size":[0.07,0.015,0.03],"color":[0.48,0.43,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"RagFold2","shape":"cube","pos":[0.6036,0.018,-0.04],"rot":[0.0,10.0,-20.0],"size":[0.07,0.015,0.03],"color":[0.48,0.43,0.33],"smooth":0.05,"metal":0.0},
+  {"name":"TipRidge","shape":"cube","pos":[0.5136,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.07,0.04],"color":[0.45,0.43,0.38],"smooth":0.2,"metal":0.0}
+]}

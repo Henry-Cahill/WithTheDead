@@ -1,0 +1,12 @@
+{"version": 1, "id": "CowLeather_Holstein_Fur", "baseHeight": 0.0765, "name": "Cow Leather Holstein Fur", "model": "gpt-oss:120b", "notes": "Flat Holstein cow‑leather hide about 0.60 m × 0.80 m, 1.5 cm thick, lying on the floor with a short leather rope tied around one edge. Black/white Holstein spots are shown as small dark spheres on the surface.", "score": 6, "parts": [
+  {"name":"Hide","shape":"cube","pos":[0.0075,-0.009,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.6,0.015,0.8],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeRope","shape":"cylinder","pos":[0.0075,0.006,0.3925],"rot":[0.0,0.0,90.0],"size":[0.02,0.6,0.02],"color":[0.35,0.3,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Spot1","shape":"sphere","pos":[-0.1425,0.0015,-0.2025],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"Spot2","shape":"sphere","pos":[0.0575,0.0015,0.2475],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"Spot3","shape":"sphere","pos":[-0.2425,0.0015,0.0975],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"Spot4","shape":"sphere","pos":[0.2275,0.0015,-0.3525],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"Spot5","shape":"sphere","pos":[0.1075,0.0015,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"Spot6","shape":"sphere","pos":[-0.0425,0.0015,0.3275],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"Spot7","shape":"sphere","pos":[0.2875,0.0015,-0.1025],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"Spot8","shape":"sphere","pos":[-0.2925,0.0015,-0.3825],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0}
+]}

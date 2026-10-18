@@ -1,0 +1,13 @@
+{"version": 1, "id": "Chicken_Rooster_Skull", "baseHeight": 0.1087, "name": "Chicken Rooster Skull", "model": "gpt-oss:120b", "notes": "Rooster skull ~0.12 m long, 0.08 m wide, 0.07 m tall, lying on its side (long axis along +X). Main bone cube, beak cylinder, comb and wattle ellipsoids, eye sockets dark spheres, lower jaw slab, plus a few crack details.", "score": 6, "parts": [
+  {"name":"SkullBody","shape":"cube","pos":[-0.02,-0.0188,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.08],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Beak","shape":"cylinder","pos":[0.06,-0.0188,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.04,0.02],"color":[0.55,0.4,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"CombBase","shape":"sphere","pos":[-0.04,0.0213,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.025,0.04],"color":[0.8,0.15,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"CombTip","shape":"sphere","pos":[-0.035,0.0412,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.025],"color":[0.85,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Wattle","shape":"sphere","pos":[0.06,-0.0338,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.025],"color":[0.78,0.12,0.12],"smooth":0.05,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[-0.04,-0.0038,0.025],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[-0.04,-0.0038,-0.025],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.1,0.1,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"Jaw","shape":"cube","pos":[-0.0,-0.0338,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.015,0.04],"color":[0.58,0.55,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Crack1","shape":"cube","pos":[-0.05,-0.0238,0.02],"rot":[10.0,0.0,5.0],"size":[0.015,0.005,0.01],"color":[0.35,0.35,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"Crack2","shape":"cube","pos":[0.02,-0.0208,-0.015],"rot":[-8.0,0.0,-12.0],"size":[0.012,0.004,0.009],"color":[0.35,0.35,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"Crack3","shape":"cube","pos":[-0.035,-0.0088,0.0],"rot":[5.0,0.0,15.0],"size":[0.01,0.003,0.008],"color":[0.35,0.35,0.35],"smooth":0.2,"metal":0.0}
+]}

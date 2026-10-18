@@ -1,0 +1,14 @@
+{"version": 1, "id": "ScrapMetal", "baseHeight": 0.1175, "name": "Scrap Metal", "model": "gpt-oss:120b", "notes": "A loose pile of assorted scrap metal about 0.22 m wide × 0.15 m long × 0.09 m tall: a main chunk of bent sheet, a few short pipe sections, a twisted rod, rust‑stained bolts and nails, and thin flake pieces. All parts overlap to form a readable silhouette from above.", "score": 6, "parts": [
+  {"name":"BaseChunk","shape":"cube","pos":[-0.01,-0.0375,0.0013],"rot":[0.0,0.0,0.0],"size":[0.22,0.04,0.18],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"PipeSectionL","shape":"cylinder","pos":[-0.07,0.0125,0.0413],"rot":[0.0,0.0,90.0],"size":[0.03,0.12,0.03],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":1.0},
+  {"name":"PipeSectionR","shape":"cylinder","pos":[0.06,0.0175,-0.0487],"rot":[0.0,0.0,90.0],"size":[0.025,0.14,0.025],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":1.0},
+  {"name":"BentRod","shape":"cylinder","pos":[0.07,0.0325,-0.0287],"rot":[90.0,0.0,0.0],"size":[0.028,0.15,0.028],"color":[0.6,0.58,0.5],"smooth":0.22,"metal":1.0},
+  {"name":"BoltCluster","shape":"sphere","pos":[-0.06,0.0375,-0.0587],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"NailPile","shape":"cylinder","pos":[-0.04,0.0325,0.0613],"rot":[90.0,0.0,0.0],"size":[0.015,0.07,0.015],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"SheetFlakeTop","shape":"cube","pos":[0.03,-0.0125,0.0713],"rot":[5.0,-12.0,3.0],"size":[0.12,0.01,0.1],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"SheetFlakeSide","shape":"cube","pos":[-0.03,-0.0075,-0.0687],"rot":[-8.0,15.0,-4.0],"size":[0.09,0.008,0.11],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0},
+  {"name":"RustPatchL","shape":"sphere","pos":[0.05,0.0225,0.0213],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"RustPatchR","shape":"sphere","pos":[-0.08,0.0025,-0.0187],"rot":[0.0,0.0,0.0],"size":[0.045,0.045,0.045],"color":[0.42,0.37,0.32],"smooth":0.05,"metal":0.0},
+  {"name":"WireCoil","shape":"cylinder","pos":[0.01,0.0125,0.0313],"rot":[90.0,0.0,0.0],"size":[0.01,0.06,0.01],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":1.0},
+  {"name":"SmallPlate","shape":"cube","pos":[-0.05,-0.0225,0.0513],"rot":[2.0,-3.0,1.0],"size":[0.07,0.006,0.09],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":1.0}
+]}

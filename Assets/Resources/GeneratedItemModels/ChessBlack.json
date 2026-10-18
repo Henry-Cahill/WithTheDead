@@ -1,0 +1,9 @@
+{"version": 1, "id": "ChessBlack", "baseHeight": 0.1145, "name": "Chess Black", "model": "gpt-oss:120b", "notes": "Black pawn‑style chess piece ~0.11 m tall: round base, bulging body sphere, narrow neck cylinder, smaller head sphere with a short crown rim. Main colour is the supplied dark‑tan tint; seams and trim are a slightly darker shade.", "score": 6, "parts": [
+  {"name":"Base","shape":"cylinder","pos":[0.0,-0.0445,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BaseSeam","shape":"cylinder","pos":[0.0,-0.0335,0.0],"rot":[0.0,0.0,0.0],"size":[0.032,0.004,0.032],"color":[0.45,0.43,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"Body","shape":"sphere","pos":[0.0,-0.0145,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Neck","shape":"cylinder","pos":[0.0,0.013,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.015,0.025],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Head","shape":"sphere","pos":[0.0,0.028,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"CrownRim","shape":"cylinder","pos":[0.0,0.048,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.01,0.03],"color":[0.45,0.43,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"CrownTrim","shape":"cube","pos":[0.0,0.0535,0.0],"rot":[0.0,0.0,0.0],"size":[0.028,0.002,0.028],"color":[0.45,0.43,0.35],"smooth":0.15,"metal":0.0}
+]}

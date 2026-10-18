@@ -1,0 +1,14 @@
+{"version": 1, "id": "BakingTray", "baseHeight": 0.0837, "name": "Baking Tray", "model": "gpt-oss:120b", "notes": "Flat sheet‑metal baking tray ~0.33 m × 0.23 m × 0.015 m thick with a raised rim (~0.025 m high). Includes four side rims, corner reinforcement blocks, two tiny side handles and a printed label on the top.", "score": 7, "parts": [
+  {"name":"BasePlate","shape":"cube","pos":[0.0,-0.0163,0.0],"rot":[0.0,0.0,0.0],"size":[0.33,0.015,0.23],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"RimFront","shape":"cube","pos":[0.0,0.0037,0.1175],"rot":[0.0,0.0,0.0],"size":[0.33,0.025,0.005],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"RimBack","shape":"cube","pos":[0.0,0.0037,-0.1175],"rot":[0.0,0.0,0.0],"size":[0.33,0.025,0.005],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"RimLeft","shape":"cube","pos":[-0.1675,0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.23],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"RimRight","shape":"cube","pos":[0.1675,0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.23],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"CornerFL","shape":"cube","pos":[-0.1675,0.0037,0.1175],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.005],"color":[0.52,0.5,0.42],"smooth":0.4,"metal":1.0},
+  {"name":"CornerFR","shape":"cube","pos":[0.1675,0.0037,0.1175],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.005],"color":[0.52,0.5,0.42],"smooth":0.4,"metal":1.0},
+  {"name":"CornerBL","shape":"cube","pos":[-0.1675,0.0037,-0.1175],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.005],"color":[0.52,0.5,0.42],"smooth":0.4,"metal":1.0},
+  {"name":"CornerBR","shape":"cube","pos":[0.1675,0.0037,-0.1175],"rot":[0.0,0.0,0.0],"size":[0.005,0.025,0.005],"color":[0.52,0.5,0.42],"smooth":0.4,"metal":1.0},
+  {"name":"HandleL","shape":"cylinder","pos":[-0.1675,0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.48,0.46,0.38],"smooth":0.4,"metal":1.0},
+  {"name":"HandleR","shape":"cylinder","pos":[0.1675,0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.48,0.46,0.38],"smooth":0.4,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.0083,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.002,0.15],"color":[0.35,0.33,0.28],"smooth":0.2,"metal":0.0}
+]}

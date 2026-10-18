@@ -1,0 +1,14 @@
+{"version": 1, "id": "DryFirestarterBlock", "baseHeight": 0.07, "name": "Dry Firestarter Block", "model": "gpt-oss:120b", "notes": "Dry firestarter block about 0.11 m long × 0.06 m wide × 0.02 m thick, compressed sawdust/charcoal with a darker edge rim, a thin lighter coating on top, a small paper label and a few visible charcoal grains.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.11,0.02,0.06],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"TopCoating","shape":"cube","pos":[0.0,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.108,0.005,0.058],"color":[0.7,0.68,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0,0.0,0.028],"rot":[0.0,0.0,0.0],"size":[0.108,0.018,0.004],"color":[0.45,0.42,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0,0.0,-0.028],"rot":[0.0,0.0,0.0],"size":[0.108,0.018,0.004],"color":[0.45,0.42,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.053,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.018,0.058],"color":[0.45,0.42,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.053,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.018,0.058],"color":[0.45,0.42,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"LabelBase","shape":"cube","pos":[0.0,0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.02],"color":[0.9,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[0.0,0.0056,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.018],"color":[0.3,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Grain1","shape":"sphere","pos":[-0.03,0.004,-0.015],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.18,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"Grain2","shape":"sphere","pos":[0.02,0.004,0.01],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.18,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"Grain3","shape":"sphere","pos":[-0.04,0.004,0.018],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.18,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"Grain4","shape":"sphere","pos":[0.045,0.004,-0.025],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.2,0.18,0.15],"smooth":0.1,"metal":0.0}
+]}

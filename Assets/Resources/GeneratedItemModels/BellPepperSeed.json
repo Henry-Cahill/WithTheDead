@@ -1,0 +1,9 @@
+{"version": 1, "id": "BellPepperSeed", "baseHeight": 0.0613, "name": "Bell Pepper Seed", "model": "gpt-oss:120b", "notes": "A loose handful of bell‑pepper seeds (~8 mm long, ~4 mm wide, ~1.5 mm thick) lying on the floor as a small pile about 2 cm across.", "score": 6, "parts": [
+  {"name":"SeedA","shape":"sphere","pos":[-0.0095,0.0004,-0.0073],"rot":[0.0,12.0,0.0],"size":[0.008,0.002,0.004],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeedB","shape":"sphere","pos":[0.0065,0.0004,0.0067],"rot":[0.0,-8.0,0.0],"size":[0.008,0.002,0.004],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeedC","shape":"sphere","pos":[-0.0035,0.0004,0.0097],"rot":[0.0,20.0,0.0],"size":[0.008,0.002,0.004],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeedD","shape":"sphere","pos":[0.0095,0.0004,-0.0043],"rot":[0.0,-15.0,0.0],"size":[0.008,0.002,0.004],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeedE","shape":"sphere","pos":[-0.0065,0.0004,0.0027],"rot":[0.0,5.0,0.0],"size":[0.008,0.002,0.004],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeedF","shape":"sphere","pos":[0.0015,0.0004,-0.0093],"rot":[0.0,30.0,0.0],"size":[0.008,0.002,0.004],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"GroundDisc","shape":"cylinder","pos":[-0.0005,-0.0003,0.0007],"rot":[0.0,0.0,0.0],"size":[0.015,0.002,0.015],"color":[0.55,0.53,0.48],"smooth":0.08,"metal":0.0}
+]}

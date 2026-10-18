@@ -1,0 +1,12 @@
+{"version": 1, "id": "Perfume", "baseHeight": 0.143, "name": "Perfume", "model": "gpt-oss:120b", "notes": "Perfume bottle ~0.16 m tall, 5 cm wide: glass body cylinder, slender neck, metal spray nozzle with cap, thin label ring, foot base and a hint of liquid inside. All parts rest on the floor (y=0).", "score": 6, "parts": [
+  {"name":"BaseFoot","shape":"cylinder","pos":[0.0,-0.081,0.0],"rot":[0.0,0.0,0.0],"size":[0.055,0.004,0.055],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.12,0.05],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.0},
+  {"name":"BodyRim","shape":"cylinder","pos":[0.0,0.038,0.0],"rot":[0.0,0.0,0.0],"size":[0.052,0.002,0.052],"color":[0.58,0.56,0.48],"smooth":0.55,"metal":0.0},
+  {"name":"LabelRing","shape":"cylinder","pos":[0.0,-0.013,0.0],"rot":[0.0,0.0,0.0],"size":[0.051,0.002,0.051],"color":[0.48,0.46,0.38],"smooth":0.4,"metal":0.0},
+  {"name":"Liquid","shape":"cylinder","pos":[0.0,-0.038,0.0],"rot":[0.0,0.0,0.0],"size":[0.048,0.09,0.048],"color":[0.65,0.63,0.55],"smooth":0.6,"metal":0.0},
+  {"name":"Neck","shape":"cylinder","pos":[0.0,0.052,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.58,0.56,0.48],"smooth":0.55,"metal":0.0},
+  {"name":"NeckRing","shape":"cylinder","pos":[0.0,0.065,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.018],"color":[0.45,0.43,0.38],"smooth":0.4,"metal":0.0},
+  {"name":"SprayNozzle","shape":"sphere","pos":[0.0,0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.75,0.75,0.78],"smooth":0.65,"metal":1.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.0,0.073,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.012,0.022],"color":[0.7,0.68,0.71],"smooth":0.6,"metal":1.0},
+  {"name":"Button","shape":"cube","pos":[0.008,0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.002,0.006],"color":[0.3,0.3,0.32],"smooth":0.5,"metal":1.0}
+]}

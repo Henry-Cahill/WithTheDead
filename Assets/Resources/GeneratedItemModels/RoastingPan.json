@@ -1,0 +1,12 @@
+{"version": 1, "id": "RoastingPan", "baseHeight": 0.082, "name": "Roasting Pan", "model": "gpt-oss:120b", "notes": "Shallow roasting pan ~0.44 m × 0.34 m, 8 mm thick base with 40 mm high side walls and a short metal handle on the right side. Four tiny rivets sit in each inner corner of the wall frame (flush against the front‑/back‑ and left‑/right‑walls).", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[-0.033,-0.018,0.0],"rot":[0.0,0.0,0.0],"size":[0.44,0.008,0.34],"color":[0.6,0.58,0.5],"smooth":0.5,"metal":1.0},
+  {"name":"FrontWall","shape":"cube","pos":[-0.033,0.002,-0.166],"rot":[0.0,0.0,0.0],"size":[0.44,0.04,0.008],"color":[0.6,0.58,0.5],"smooth":0.5,"metal":1.0},
+  {"name":"BackWall","shape":"cube","pos":[-0.033,0.002,0.166],"rot":[0.0,0.0,0.0],"size":[0.44,0.04,0.008],"color":[0.6,0.58,0.5],"smooth":0.5,"metal":1.0},
+  {"name":"LeftWall","shape":"cube","pos":[-0.249,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.04,0.34],"color":[0.6,0.58,0.5],"smooth":0.5,"metal":1.0},
+  {"name":"RightWall","shape":"cube","pos":[0.183,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.04,0.34],"color":[0.6,0.58,0.5],"smooth":0.5,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.193,0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RivetFL","shape":"cylinder","pos":[-0.249,0.002,-0.166],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.45,0.43,0.38],"smooth":0.3,"metal":1.0},
+  {"name":"RivetFR","shape":"cylinder","pos":[0.183,0.002,-0.166],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.45,0.43,0.38],"smooth":0.3,"metal":1.0},
+  {"name":"RivetBL","shape":"cylinder","pos":[-0.249,0.002,0.166],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.45,0.43,0.38],"smooth":0.3,"metal":1.0},
+  {"name":"RivetBR","shape":"cylinder","pos":[0.183,0.002,0.166],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.45,0.43,0.38],"smooth":0.3,"metal":1.0}
+]}

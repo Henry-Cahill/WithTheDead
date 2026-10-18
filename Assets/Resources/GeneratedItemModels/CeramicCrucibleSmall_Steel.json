@@ -1,0 +1,11 @@
+{"version": 1, "id": "CeramicCrucibleSmall_Steel", "baseHeight": 0.15, "name": "Ceramic Crucible Small Steel", "model": "gpt-oss:120b", "notes": "Small ceramic crucible (≈0.15 m Ø × 0.20 m tall) lying on its side. Chunky ceramic body in a muted stone tint, thin steel rim around the open mouth and a short steel handle‑loop. Added seam ring, inner metal lip and a printed label for recognisable detail.", "score": 7, "parts": [
+  {"name":"OuterBody","shape":"cylinder","pos":[-0.015,-0.01,-0.0025],"rot":[0.0,0.0,90.0],"size":[0.15,0.2,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"InnerCavity","shape":"cylinder","pos":[-0.015,-0.01,-0.0025],"rot":[0.0,0.0,90.0],"size":[0.13,0.18,0.13],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"SteelRim","shape":"cylinder","pos":[0.09,-0.01,-0.0025],"rot":[0.0,0.0,90.0],"size":[0.16,0.01,0.16],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"InnerRimEdge","shape":"cylinder","pos":[0.09,-0.01,-0.0025],"rot":[0.0,0.0,90.0],"size":[0.13,0.008,0.13],"color":[0.55,0.55,0.55],"smooth":0.4,"metal":1.0},
+  {"name":"SteelHandle","shape":"cylinder","pos":[0.105,0.04,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.6,0.6,0.6],"smooth":0.4,"metal":1.0},
+  {"name":"HandleCap","shape":"sphere","pos":[0.105,0.08,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.6,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"SeamRing","shape":"cylinder","pos":[-0.015,-0.01,-0.0025],"rot":[0.0,0.0,90.0],"size":[0.152,0.005,0.152],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[-0.035,-0.01,0.0675],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.03],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"DripDrop","shape":"sphere","pos":[-0.075,0.03,-0.0425],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.5,0.45,0.4],"smooth":0.2,"metal":0.0}
+]}

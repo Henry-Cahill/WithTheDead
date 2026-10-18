@@ -1,0 +1,10 @@
+{"version": 1, "id": "CocktailUmbrella", "baseHeight": 0.07, "name": "Cocktail Umbrella", "model": "gpt-oss:120b", "notes": "Collapsed cocktail umbrella ~0.12 m long: thin metal rod with a tip and decorative bead, paper canopy folded into four thin panels around the centre, plus a small metal clamp holding the paper.", "score": 6, "parts": [
+  {"name":"Rod","shape":"cylinder","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.12,0.008],"color":[0.3,0.3,0.3],"smooth":0.4,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[-0.06,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.3,0.3],"smooth":0.4,"metal":1.0},
+  {"name":"Bead","shape":"sphere","pos":[0.06,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.3,0.3],"smooth":0.4,"metal":1.0},
+  {"name":"Clamp","shape":"cube","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.006,0.012],"color":[0.3,0.3,0.3],"smooth":0.4,"metal":1.0},
+  {"name":"PanelA","shape":"cube","pos":[0.0,-0.0,0.015],"rot":[15.0,0.0,0.0],"size":[0.07,0.002,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PanelB","shape":"cube","pos":[0.0,-0.0,-0.015],"rot":[-15.0,0.0,0.0],"size":[0.07,0.002,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PanelC","shape":"cube","pos":[0.02,-0.0,0.0],"rot":[0.0,0.0,15.0],"size":[0.07,0.002,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PanelD","shape":"cube","pos":[-0.02,-0.0,0.0],"rot":[0.0,0.0,-15.0],"size":[0.07,0.002,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

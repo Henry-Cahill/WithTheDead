@@ -1,0 +1,11 @@
+{"version": 1, "id": "VHS_Home", "baseHeight": 0.0725, "name": "VHS Home", "model": "gpt-oss:120b", "notes": "VHS cassette 0.19 m long × 0.105 m wide × 0.025 m thick lying flat on its front side (Y up = half‑thickness). Main plastic case, two internal reels, a front label with thin trim and two tiny metal screws.", "score": 7, "parts": [
+  {"name":"CaseBody","shape":"cube","pos":[0.0,0.0,-0.0205],"rot":[0.0,0.0,0.0],"size":[0.19,0.025,0.105],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,0.0015,0.033],"rot":[0.0,0.0,0.0],"size":[0.165,0.002,0.07],"color":[0.32,0.33,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[0.0,0.001,0.033],"rot":[0.0,0.0,0.0],"size":[0.175,0.002,0.08],"color":[0.45,0.44,0.42],"smooth":0.1,"metal":0.0},
+  {"name":"ReelLeft","shape":"cylinder","pos":[-0.06,0.0,-0.0205],"rot":[0.0,0.0,0.0],"size":[0.04,0.018,0.04],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"ReelRight","shape":"cylinder","pos":[0.06,0.0,-0.0205],"rot":[0.0,0.0,0.0],"size":[0.04,0.018,0.04],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"ScrewTL","shape":"cylinder","pos":[-0.075,0.002,0.0245],"rot":[90.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewTR","shape":"cylinder","pos":[-0.075,0.002,-0.0655],"rot":[90.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewBL","shape":"cylinder","pos":[0.075,0.002,0.0245],"rot":[90.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewBR","shape":"cylinder","pos":[0.075,0.002,-0.0655],"rot":[90.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.2,0.2,0.2],"smooth":0.6,"metal":1.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "ShortBat_RailSpike", "baseHeight": 0.09, "name": "Short Bat Rail Spike", "model": "gpt-oss:120b", "notes": "Short bat‑style rail spike ~0.95 m long (shaft 0.90 m, steel) lying on its side along X. Wooden grip at the far end, a short metal spike pointing +Z with a conical tip.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[0.0,0.0,-0.0775],"rot":[0.0,0.0,90.0],"size":[0.06,0.9,0.06],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.35,0.0,-0.0775],"rot":[0.0,0.0,90.0],"size":[0.04,0.2,0.04],"color":[0.44,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"SpikeStem","shape":"cylinder","pos":[0.45,0.0,-0.0025],"rot":[90.0,0.0,0.0],"size":[0.03,0.15,0.03],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"SpikeTip","shape":"sphere","pos":[0.45,0.0,0.0925],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"EndCap","shape":"sphere","pos":[-0.45,0.0,-0.0775],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"MidBand","shape":"cube","pos":[0.0,0.015,-0.0775],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.07],"color":[0.5,0.5,0.55],"smooth":0.4,"metal":1.0}
+]}

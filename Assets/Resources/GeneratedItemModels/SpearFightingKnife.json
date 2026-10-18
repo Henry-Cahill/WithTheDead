@@ -1,0 +1,11 @@
+{"version": 1, "id": "SpearFightingKnife", "baseHeight": 0.1, "name": "Spear Fighting Knife", "model": "gpt-oss:120b", "notes": "Spear‑Fighting‑Knife ≈1.5 m total length. Wooden pole (0.04 m dia) on its side along X, rubber‑grip near the rear, metal pommel, a metal guard and a 25 cm long blade pointing forward (+Z). Simple rope band around the middle of the shaft for detail.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[0.0288,-0.02,-0.125],"rot":[0.0,0.0,90.0],"size":[0.04,1.2,0.04],"color":[0.6,0.6,0.64],"smooth":0.12,"metal":0.0},
+  {"name":"GripWrap","shape":"cylinder","pos":[-0.3712,-0.025,-0.125],"rot":[0.0,0.0,90.0],"size":[0.03,0.2,0.03],"color":[0.15,0.15,0.18],"smooth":0.3,"metal":0.0},
+  {"name":"Pommel","shape":"sphere","pos":[-0.6112,0.0,-0.125],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"MiddleBand","shape":"cylinder","pos":[0.0288,-0.015,-0.125],"rot":[0.0,0.0,0.0],"size":[0.045,0.05,0.045],"color":[0.45,0.44,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"Guard","shape":"cube","pos":[0.5988,-0.02,-0.125],"rot":[0.0,0.0,0.0],"size":[0.06,0.04,0.08],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Blade","shape":"cylinder","pos":[0.6288,-0.015,-0.0],"rot":[90.0,0.0,0.0],"size":[0.045,0.25,0.045],"color":[0.7,0.71,0.73],"smooth":0.65,"metal":1.0},
+  {"name":"BladeTip","shape":"sphere","pos":[0.6288,-0.015,0.145],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.7,0.71,0.73],"smooth":0.65,"metal":1.0},
+  {"name":"EdgeRidge","shape":"cube","pos":[0.6288,0.005,-0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.008,0.12],"color":[0.7,0.71,0.73],"smooth":0.55,"metal":1.0},
+  {"name":"RearCap","shape":"cube","pos":[-0.5712,-0.02,-0.125],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.06],"color":[0.6,0.6,0.64],"smooth":0.12,"metal":0.0}
+]}

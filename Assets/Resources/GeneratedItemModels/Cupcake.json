@@ -1,0 +1,13 @@
+{"version": 1, "id": "Cupcake", "baseHeight": 0.1325, "name": "Cupcake", "model": "gpt-oss:120b", "notes": "Cupcake in paper cup ~0.08 m diameter, 0.09 m tall cup + 0.03 m frosting dome (total ≈0.12 m height). Includes cup, rim, creamy frosting, cherry top and a few colorful sprinkles on a small plate.", "score": 7, "parts": [
+  {"name":"CupBase","shape":"cylinder","pos":[0.0,-0.0275,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.09,0.08],"color":[0.6,0.45,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"CupRim","shape":"cylinder","pos":[0.0,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.005,0.082],"color":[0.6,0.45,0.3],"smooth":0.2,"metal":0.0},
+  {"name":"Frosting","shape":"sphere","pos":[0.0,0.0375,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.04,0.09],"color":[0.75,0.68,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Cherry","shape":"sphere","pos":[0.0,0.065,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.8,0.1,0.1],"smooth":0.5,"metal":0.0},
+  {"name":"Sprinkle1","shape":"cylinder","pos":[0.02,0.0525,0.01],"rot":[45.0,0.0,30.0],"size":[0.008,0.015,0.008],"color":[0.9,0.2,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Sprinkle2","shape":"cylinder","pos":[-0.018,0.0515,-0.02],"rot":[20.0,0.0,70.0],"size":[0.008,0.015,0.008],"color":[0.2,0.8,0.3],"smooth":0.3,"metal":0.0},
+  {"name":"Sprinkle3","shape":"cylinder","pos":[0.01,0.0535,-0.03],"rot":[60.0,0.0,10.0],"size":[0.008,0.015,0.008],"color":[0.2,0.4,0.9],"smooth":0.3,"metal":0.0},
+  {"name":"Sprinkle4","shape":"cylinder","pos":[-0.025,0.0505,0.02],"rot":[30.0,0.0,45.0],"size":[0.008,0.015,0.008],"color":[0.95,0.8,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"Sprinkle5","shape":"cylinder","pos":[0.03,0.0515,-0.015],"rot":[15.0,0.0,80.0],"size":[0.008,0.015,0.008],"color":[0.8,0.2,0.8],"smooth":0.3,"metal":0.0},
+  {"name":"Sprinkle6","shape":"cylinder","pos":[-0.022,0.0525,0.025],"rot":[70.0,0.0,20.0],"size":[0.008,0.015,0.008],"color":[0.9,0.5,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"Plate","shape":"cylinder","pos":[0.0,-0.0675,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.01,0.12],"color":[0.9,0.9,0.9],"smooth":0.1,"metal":0.0}
+]}

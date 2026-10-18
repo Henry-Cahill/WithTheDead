@@ -1,0 +1,12 @@
+{"version": 1, "id": "RadioTransmitter", "baseHeight": 0.0832, "name": "Radio Transmitter", "model": "gpt-oss:120b", "notes": "Compact radio transmitter about 0.12 m long × 0.07 m wide × 0.03 m tall lying on its side (long axis along X). Main plastic housing, a thin LCD screen front, three rotary knobs on top, a short metal antenna sticking up from the back, and a recessed battery compartment lid.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[-0.0062,-0.0083,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.03,0.07],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Screen","shape":"cube","pos":[0.0387,-0.0022,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.008,0.065],"color":[0.15,0.18,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"KnobL","shape":"cylinder","pos":[-0.0362,0.0048,0.02],"rot":[0.0,0.0,90.0],"size":[0.008,0.012,0.008],"color":[0.3,0.31,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"KnobC","shape":"cylinder","pos":[-0.0362,0.0048,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.012,0.008],"color":[0.3,0.31,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"KnobR","shape":"cylinder","pos":[-0.0362,0.0048,-0.02],"rot":[0.0,0.0,90.0],"size":[0.008,0.012,0.008],"color":[0.3,0.31,0.33],"smooth":0.2,"metal":0.0},
+  {"name":"AntennaBase","shape":"cylinder","pos":[-0.0563,0.0067,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.015,0.004],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"AntennaRod","shape":"cylinder","pos":[-0.0563,0.0217,0.0],"rot":[90.0,0.0,0.0],"size":[0.003,0.04,0.003],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"BatteryLid","shape":"cube","pos":[-0.0612,-0.0053,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.06],"color":[0.45,0.44,0.42],"smooth":0.3,"metal":0.0},
+  {"name":"ConnectorPort","shape":"cylinder","pos":[0.0488,-0.0053,0.02],"rot":[0.0,90.0,0.0],"size":[0.006,0.008,0.006],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.0},
+  {"name":"SpeakerGrill","shape":"cylinder","pos":[0.0488,-0.0053,-0.02],"rot":[0.0,90.0,0.0],"size":[0.008,0.004,0.008],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "TobaccoLoose", "baseHeight": 0.0793, "name": "Tobacco Loose", "model": "gpt-oss:120b", "notes": "Loose tobacco pile approx 0.12 m × 0.08 m × 0.02 m, lying on the floor as a small heap of thin brown‑tan leaves. Main bulk is a flat base cube; individual leaf bundles are added as thin cuboids at slight angles for readable silhouette.", "score": 6, "parts": [
+  {"name":"BasePile","shape":"cube","pos":[-0.0007,-0.0019,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf1","shape":"cube","pos":[-0.0307,0.0001,0.02],"rot":[5.0,0.0,12.0],"size":[0.09,0.002,0.01],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf2","shape":"cube","pos":[0.0193,0.0004,-0.015],"rot":[-4.0,0.0,-10.0],"size":[0.07,0.002,0.012],"color":[0.62,0.6,0.52],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf3","shape":"cube","pos":[0.0393,0.0008,0.03],"rot":[8.0,0.0,25.0],"size":[0.08,0.0025,0.009],"color":[0.55,0.53,0.47],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf4","shape":"cube","pos":[-0.0407,-0.0006,-0.02],"rot":[-6.0,0.0,-20.0],"size":[0.06,0.002,0.011],"color":[0.6,0.57,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf5","shape":"cube","pos":[0.0093,-0.0004,0.0],"rot":[3.0,0.0,5.0],"size":[0.1,0.0022,0.008],"color":[0.59,0.56,0.49],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf6","shape":"cube","pos":[-0.0207,-0.0001,-0.03],"rot":[-2.0,0.0,-15.0],"size":[0.075,0.002,0.01],"color":[0.57,0.54,0.46],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf7","shape":"cube","pos":[0.0293,0.0011,0.04],"rot":[10.0,0.0,30.0],"size":[0.065,0.002,0.009],"color":[0.61,0.59,0.51],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf8","shape":"cube","pos":[-0.0507,-0.0009,-0.04],"rot":[-7.0,0.0,-25.0],"size":[0.055,0.002,0.012],"color":[0.56,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf9","shape":"cube","pos":[0.0143,0.0016,-0.005],"rot":[12.0,0.0,8.0],"size":[0.09,0.0023,0.0095],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Leaf10","shape":"cube","pos":[-0.0107,0.0014,0.025],"rot":[-3.0,0.0,-12.0],"size":[0.07,0.0021,0.011],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"PaperScrap","shape":"cube","pos":[0.0593,-0.0044,0.02],"rot":[0.0,0.0,45.0],"size":[0.04,0.002,0.03],"color":[0.82,0.78,0.72],"smooth":0.3,"metal":0.0}
+]}

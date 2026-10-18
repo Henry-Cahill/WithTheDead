@@ -1,0 +1,9 @@
+{"version": 1, "id": "CarpentryChisel", "baseHeight": 0.0775, "name": "Carpentry Chisel", "model": "gpt-oss:120b", "notes": "Carpentry chisel ~0.25 m long lying on its side (X‑axis). Wooden handle with metal ferrule, short steel blade and a raised cutting edge. Simple wood‑grain band for extra silhouette detail.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.005,-0.0025,-0.0222],"rot":[0.0,0.0,90.0],"size":[0.03,0.18,0.03],"color":[0.48,0.32,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Ferrule","shape":"cylinder","pos":[0.07,0.0,-0.0222],"rot":[0.0,0.0,90.0],"size":[0.035,0.015,0.035],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Blade","shape":"cube","pos":[0.065,-0.0075,0.0077],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Edge","shape":"cube","pos":[0.065,-0.0075,0.0358],"rot":[0.0,0.0,0.0],"size":[0.04,0.018,0.008],"color":[0.55,0.55,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"GripBand","shape":"cylinder","pos":[-0.035,-0.0015,-0.0222],"rot":[0.0,0.0,90.0],"size":[0.032,0.008,0.032],"color":[0.55,0.55,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"WoodGrainTop","shape":"cube","pos":[-0.045,0.0035,-0.0222],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.028],"color":[0.42,0.28,0.18],"smooth":0.1,"metal":0.0},
+  {"name":"WoodGrainBottom","shape":"cube","pos":[0.055,0.0035,-0.0222],"rot":[0.0,0.0,0.0],"size":[0.1,0.004,0.028],"color":[0.42,0.28,0.18],"smooth":0.1,"metal":0.0}
+]}

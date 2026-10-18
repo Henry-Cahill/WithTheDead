@@ -1,0 +1,8 @@
+{"version": 1, "id": "FabricRoll_DenimDarkBlue", "baseHeight": 0.26, "name": "Fabric Roll Denim Dark Blue", "model": "gpt-oss:120b", "notes": "Denim fabric roll about 1.0 m long × 0.40 m diameter, lying on its side (axis along X). Central cardboard core, outer denim tube, end caps, a side label and a thin seam band for visual detail.", "score": 6, "parts": [
+  {"name":"Core","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.9,0.08],"color":[0.71,0.62,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"DenimTube","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.4,1.0,0.4],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EndCapL","shape":"cube","pos":[-0.51,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.38,0.38],"color":[0.71,0.62,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"EndCapR","shape":"cube","pos":[0.51,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.38,0.38],"color":[0.71,0.62,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SideLabel","shape":"cube","pos":[0.2,0.08,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.12,0.18],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBand","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.38,1.0,0.38],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "ClosedUmbrellaBlack", "baseHeight": 0.095, "name": "Closed Umbrella Black", "model": "gpt-oss:120b", "notes": "Closed black umbrella used as a blunt melee weapon – total length ≈ 1.0 m lying on its side with the collapsed canopy at the +X end for clear silhouette. All handle parts now touch or slightly overlap the shaft, and the tip is flush with the shaft’s far end.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.04,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.7,0.02],"color":[0.3,0.3,0.35],"smooth":0.5,"metal":1.0},
+  {"name":"HandleGrip","shape":"cylinder","pos":[-0.42,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.2,0.04],"color":[0.05,0.05,0.07],"smooth":0.2,"metal":0.0},
+  {"name":"GripEnd","shape":"sphere","pos":[-0.62,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.05,0.05,0.07],"smooth":0.2,"metal":0.0},
+  {"name":"Tip","shape":"cylinder","pos":[0.33,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.04,0.01],"color":[0.3,0.3,0.35],"smooth":0.5,"metal":1.0},
+  {"name":"CanopyOuter","shape":"sphere","pos":[0.51,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.06,0.28],"color":[0.6,0.6,0.64],"smooth":0.1,"metal":0.0},
+  {"name":"CanopyInner","shape":"sphere","pos":[0.51,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.05,0.24],"color":[0.4,0.4,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"RibEast","shape":"cylinder","pos":[0.57,0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.12,0.01],"color":[0.3,0.3,0.35],"smooth":0.5,"metal":1.0},
+  {"name":"RibWest","shape":"cylinder","pos":[0.45,0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.12,0.01],"color":[0.3,0.3,0.35],"smooth":0.5,"metal":1.0},
+  {"name":"RibNorth","shape":"cylinder","pos":[0.51,0.015,0.06],"rot":[90.0,0.0,0.0],"size":[0.01,0.12,0.01],"color":[0.3,0.3,0.35],"smooth":0.5,"metal":1.0},
+  {"name":"RibSouth","shape":"cylinder","pos":[0.51,0.015,-0.06],"rot":[90.0,0.0,0.0],"size":[0.01,0.12,0.01],"color":[0.3,0.3,0.35],"smooth":0.5,"metal":1.0}
+]}

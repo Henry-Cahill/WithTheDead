@@ -1,0 +1,12 @@
+{"version": 1, "id": "PickAxeForged", "baseHeight": 0.0988, "name": "Pick Axe Forged", "model": "gpt-oss:120b", "notes": "Forged pick‑axe ~1.6 m long lying on its side: thick metal‑tinted handle (cylinder) along X, dark rubber grip band, tapered spike on +X end, rectangular hammer head on –X end with three rivet studs.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.048,-0.0187,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,1.3,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"GripBand","shape":"cylinder","pos":[-0.248,-0.0137,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.22,0.045],"color":[0.15,0.12,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"SpikeStem","shape":"cylinder","pos":[0.702,-0.0187,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.2,0.02],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"SpikeTip","shape":"sphere","pos":[0.817,-0.0187,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"HammerBlock","shape":"cube","pos":[-0.758,-0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.22],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"RivetL","shape":"cylinder","pos":[-0.828,0.0313,0.08],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.4,0.4,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"RivetC","shape":"cylinder","pos":[-0.828,0.0313,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.4,0.4,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[-0.828,0.0313,-0.08],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.4,0.4,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"HeadEdge","shape":"cube","pos":[-0.758,0.0313,0.12],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.02],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"HeadEdgeBack","shape":"cube","pos":[-0.758,0.0313,-0.12],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.02],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0}
+]}

@@ -1,0 +1,13 @@
+{"version": 1, "id": "FieldHockeyStick_Broken_Nails", "baseHeight": 0.0912, "name": "Field Hockey Stick Broken Nails", "model": "gpt-oss:120b", "notes": "Field hockey stick ~1.3 m long, shaft 0.04 m dia wood‑tint cylinder lying on its side (X axis). Blade is a flat rectangular wood block at the +X end with several short metal nail spikes protruding upward to show broken nails.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.02,-0.0062,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,1.2,0.04],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.52,-0.0012,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.2,0.06],"color":[0.3,0.3,0.35],"smooth":0.3,"metal":0.0},
+  {"name":"TapeWrap","shape":"cube","pos":[-0.52,0.0063,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.005,0.06],"color":[0.9,0.85,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"Ferrule","shape":"cylinder","pos":[0.56,0.0088,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.02,0.045],"color":[0.5,0.5,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"Blade","shape":"cube","pos":[0.64,-0.0062,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.08],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Tip","shape":"cube","pos":[-0.66,-0.0062,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.04],"color":[0.4,0.4,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Nail1","shape":"cylinder","pos":[0.6,0.0088,-0.02],"rot":[0.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Nail2","shape":"cylinder","pos":[0.66,0.0088,0.015],"rot":[5.0,0.0,0.0],"size":[0.01,0.03,0.01],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Nail3","shape":"cylinder","pos":[0.68,0.0088,-0.03],"rot":[-7.0,2.0,0.0],"size":[0.01,0.03,0.01],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Nail4","shape":"cylinder","pos":[0.62,0.0088,0.03],"rot":[3.0,-3.0,0.0],"size":[0.01,0.03,0.01],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"Nail5","shape":"cylinder","pos":[0.64,0.0088,0.0],"rot":[-4.0,1.0,0.0],"size":[0.01,0.03,0.01],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0}
+]}

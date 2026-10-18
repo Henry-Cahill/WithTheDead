@@ -1,0 +1,12 @@
+{"version": 1, "id": "IronChunk", "baseHeight": 0.09, "name": "Iron Chunk", "model": "gpt-oss:120b", "notes": "Rough iron chunk about 0.12 m × 0.08 m × 0.06 m with a few protruding bits, a rounded nub and an indented dent – all lying on the floor.", "score": 7, "parts": [
+  {"name":"MainBody","shape":"cube","pos":[-0.0175,-0.01,0.0125],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.08],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ProtrusionXPos","shape":"cube","pos":[0.0725,-0.015,0.0125],"rot":[0.0,0.0,0.0],"size":[0.06,0.03,0.04],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"ProtrusionZNeg","shape":"cube","pos":[-0.0175,-0.0175,-0.0525],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.05],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"NubCylinder","shape":"cylinder","pos":[-0.0475,0.02,0.0325],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"DentSphere","shape":"sphere","pos":[0.0025,-0.015,0.0025],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.45,0.44,0.38],"smooth":0.3,"metal":1.0},
+  {"name":"CornerCube1","shape":"cube","pos":[0.055,-0.01,0.065],"rot":[0.0,0.0,0.0],"size":[0.025,0.018,0.025],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"CornerCube2","shape":"cube","pos":[0.055,-0.01,-0.04],"rot":[0.0,0.0,0.0],"size":[0.025,0.018,0.025],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"CornerCube3","shape":"cube","pos":[-0.09,-0.01,0.065],"rot":[0.0,0.0,0.0],"size":[0.025,0.018,0.025],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"CornerCube4","shape":"cube","pos":[-0.09,-0.01,-0.04],"rot":[0.0,0.0,0.0],"size":[0.025,0.018,0.025],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeShard","shape":"cube","pos":[-0.0175,0.014,0.0125],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0}
+]}

@@ -1,0 +1,9 @@
+{"version": 1, "id": "Hammer", "baseHeight": 0.12, "name": "Hammer", "model": "gpt-oss:120b", "notes": "Hammer 1.10 m long lying on its side (X axis). Wooden handle with rubber grip, steel head crossing the handle along Z showing a round striking face and split claw.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.055,-0.01,-0.0244],"rot":[0.0,0.0,90.0],"size":[0.06,1.0,0.06],"color":[0.45,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.455,-0.0,-0.0244],"rot":[0.0,0.0,90.0],"size":[0.08,0.12,0.08],"color":[0.1,0.1,0.11],"smooth":0.3,"metal":0.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.495,-0.0,-0.0244],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Neck","shape":"cylinder","pos":[0.495,-0.0,0.0306],"rot":[90.0,0.0,0.0],"size":[0.04,0.05,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Face","shape":"cylinder","pos":[0.495,-0.0,0.0656],"rot":[90.0,0.0,0.0],"size":[0.12,0.02,0.12],"color":[0.6,0.6,0.64],"smooth":0.65,"metal":1.0},
+  {"name":"ClawL","shape":"cube","pos":[0.475,-0.0,-0.0594],"rot":[0.0,-20.0,0.0],"size":[0.04,0.06,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"ClawR","shape":"cube","pos":[0.515,-0.0,-0.0594],"rot":[0.0,20.0,0.0],"size":[0.04,0.06,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

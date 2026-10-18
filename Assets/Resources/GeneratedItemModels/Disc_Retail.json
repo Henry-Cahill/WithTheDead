@@ -1,0 +1,12 @@
+{"version": 1, "id": "Disc_Retail", "baseHeight": 0.0671, "name": "Disc Retail", "model": "gpt-oss:120b", "notes": "Retail CD jewel‑case ~13.5 cm × 10.8 cm × 1.4 cm, standing upright on the floor. Main body (plastic), thin front/back panels, a spine strip, inner plastic tray, the 12 cm disc with printed label, and a thin booklet inside.", "score": 7, "parts": [
+  {"name":"CaseBody","shape":"cube","pos":[0.0,0.0001,0.0],"rot":[0.0,0.0,0.0],"size":[0.135,0.014,0.108],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,0.0001,0.0535],"rot":[0.0,0.0,0.0],"size":[0.135,0.014,0.002],"color":[0.78,0.77,0.73],"smooth":0.45,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,0.0001,-0.0535],"rot":[0.0,0.0,0.0],"size":[0.135,0.014,0.002],"color":[0.78,0.77,0.73],"smooth":0.45,"metal":0.0},
+  {"name":"Spine","shape":"cube","pos":[-0.0625,0.0001,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.014,0.108],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"TrayRim","shape":"cylinder","pos":[0.0,-0.0061,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.002,0.13],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"DiscBody","shape":"cylinder","pos":[0.0,-0.0054,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.12],"color":[0.62,0.6,0.55],"smooth":0.4,"metal":0.0},
+  {"name":"DiscLabel","shape":"cylinder","pos":[0.0,-0.0046,0.0],"rot":[0.0,0.0,0.0],"size":[0.116,0.002,0.116],"color":[0.2,0.2,0.22],"smooth":0.05,"metal":0.0},
+  {"name":"Booklet","shape":"cube","pos":[0.0,0.0001,0.04],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.002],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"CoverArtFront","shape":"cube","pos":[0.0,0.0001,0.0534],"rot":[0.0,0.0,0.0],"size":[0.12,0.014,0.002],"color":[0.45,0.44,0.42],"smooth":0.45,"metal":0.0},
+  {"name":"CoverArtBack","shape":"cube","pos":[0.0,0.0001,-0.0534],"rot":[0.0,0.0,0.0],"size":[0.12,0.014,0.002],"color":[0.45,0.44,0.42],"smooth":0.45,"metal":0.0}
+]}

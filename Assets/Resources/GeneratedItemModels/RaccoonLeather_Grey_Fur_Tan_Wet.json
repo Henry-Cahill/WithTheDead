@@ -1,0 +1,14 @@
+{"version": 1, "id": "RaccoonLeather_Grey_Fur_Tan_Wet", "baseHeight": 0.0772, "name": "Raccoon Leather Grey Fur Tan Wet", "model": "gpt-oss:120b", "notes": "Flat raccoon leather hide with grey‑fur surface, laid on the ground. Approx. 0.50 m × 0.40 m × 0.015 m thick, wet sheen (high smooth), edge binding and several fuzzy fur patches for silhouette detail.", "score": 6, "parts": [
+  {"name":"HideBase","shape":"cube","pos":[0.0,-0.0083,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.015,0.4],"color":[0.6,0.58,0.5],"smooth":0.35,"metal":0.0},
+  {"name":"EdgeXPos","shape":"cube","pos":[0.0,-0.0083,0.21],"rot":[0.0,0.0,0.0],"size":[0.5,0.018,0.02],"color":[0.45,0.43,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeXNeg","shape":"cube","pos":[0.0,-0.0083,-0.21],"rot":[0.0,0.0,0.0],"size":[0.5,0.018,0.02],"color":[0.45,0.43,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeZPos","shape":"cube","pos":[0.255,-0.0083,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.4],"color":[0.45,0.43,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeZNeg","shape":"cube","pos":[-0.255,-0.0083,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.018,0.4],"color":[0.45,0.43,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"FurPatch1","shape":"sphere","pos":[-0.12,0.0022,0.08],"rot":[0.0,0.0,0.0],"size":[0.06,0.025,0.07],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"FurPatch2","shape":"sphere","pos":[0.05,0.0032,-0.12],"rot":[0.0,0.0,0.0],"size":[0.07,0.028,0.08],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"FurPatch3","shape":"sphere","pos":[0.18,0.0013,0.15],"rot":[0.0,0.0,0.0],"size":[0.05,0.022,0.06],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"FurPatch4","shape":"sphere","pos":[-0.22,0.0022,-0.05],"rot":[0.0,0.0,0.0],"size":[0.06,0.024,0.07],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"FurPatch5","shape":"sphere","pos":[0.0,0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.03,0.09],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"FurPatch6","shape":"sphere","pos":[-0.08,0.0032,-0.18],"rot":[0.0,0.0,0.0],"size":[0.05,0.021,0.06],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"WetSheen","shape":"cube","pos":[0.0,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.002,0.4],"color":[0.62,0.6,0.52],"smooth":0.6,"metal":0.0}
+]}

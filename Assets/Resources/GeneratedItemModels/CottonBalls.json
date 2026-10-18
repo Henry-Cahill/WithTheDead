@@ -1,0 +1,12 @@
+{"version": 1, "id": "CottonBalls", "baseHeight": 0.0845, "name": "Cotton Balls", "model": "gpt-oss:120b", "notes": "Loose cotton balls about 4 cm in diameter, piled in a small heap roughly 10 cm across and 5 cm high. Each ball is a fluffy white sphere with a slight squash to suggest soft fibers.", "score": 7, "parts": [
+  {"name":"Ball1","shape":"sphere","pos":[-0.016,-0.0025,-0.01],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Ball2","shape":"sphere","pos":[0.004,-0.0005,0.012],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Ball3","shape":"sphere","pos":[0.017,-0.0035,-0.018],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Ball4","shape":"sphere","pos":[-0.009,0.0005,0.025],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Ball5","shape":"sphere","pos":[0.011,-0.0015,-0.03],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Ball6","shape":"sphere","pos":[-0.021,-0.0045,0.03],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffA","shape":"sphere","pos":[-0.006,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.035,0.045],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffB","shape":"sphere","pos":[0.009,0.0045,-0.005],"rot":[0.0,0.0,0.0],"size":[0.045,0.04,0.038],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffC","shape":"sphere","pos":[-0.013,-0.0005,0.018],"rot":[0.0,0.0,0.0],"size":[0.042,0.036,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FluffD","shape":"sphere","pos":[0.017,0.0015,0.022],"rot":[0.0,0.0,0.0],"size":[0.048,0.042,0.043],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

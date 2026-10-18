@@ -1,0 +1,9 @@
+{"version": 1, "id": "Aluminum", "baseHeight": 0.066, "name": "Aluminum", "model": "gpt-oss:120b", "notes": "Aluminum scrap fragment – a thin sheet about 5 cm long × 3 cm wide × 1 cm thick lying flat on the floor, with raised beveled edges and two small off‑cut pieces that are attached to its sides.", "score": 7, "parts": [
+  {"name":"MainBlock","shape":"cube","pos":[-0.0025,-0.001,0.0032],"rot":[0.0,0.0,0.0],"size":[0.05,0.01,0.03],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeFront","shape":"cube","pos":[-0.0025,0.005,0.0187],"rot":[0.0,0.0,0.0],"size":[0.05,0.002,0.002],"color":[0.68,0.66,0.56],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeBack","shape":"cube","pos":[-0.0025,0.005,-0.0123],"rot":[0.0,0.0,0.0],"size":[0.05,0.002,0.002],"color":[0.68,0.66,0.56],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.028,0.005,0.0032],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.03],"color":[0.68,0.66,0.56],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.023,0.005,0.0032],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.03],"color":[0.68,0.66,0.56],"smooth":0.4,"metal":1.0},
+  {"name":"ScrapA","shape":"cube","pos":[0.03,-0.003,0.0032],"rot":[0.0,0.0,0.0],"size":[0.015,0.006,0.012],"color":[0.62,0.6,0.52],"smooth":0.4,"metal":1.0},
+  {"name":"ScrapB","shape":"cube","pos":[-0.0325,-0.0035,-0.0158],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.008],"color":[0.62,0.6,0.52],"smooth":0.4,"metal":1.0}
+]}

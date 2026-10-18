@@ -1,0 +1,8 @@
+{"version": 1, "id": "StoneChisel", "baseHeight": 0.0775, "name": "Stone Chisel", "model": "gpt-oss:120b", "notes": "Stone chisel ~0.12 m long: wooden handle (cylinder) lying on its side along X, a short wood grip sleeve at the far end, a metal ferrule near the head, and a steel blade crossing perpendicular to the handle along Z.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.0075,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.12,0.025],"color":[0.55,0.45,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"GripSleeve","shape":"cylinder","pos":[-0.0525,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.035,0.03,0.035],"color":[0.5,0.4,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"Ferrule","shape":"cylinder","pos":[0.0425,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.02,0.03],"color":[0.6,0.6,0.65],"smooth":0.55,"metal":1.0},
+  {"name":"Blade","shape":"cube","pos":[0.06,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.04],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"BladeEdge","shape":"cube","pos":[0.06,-0.01,0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.004],"color":[0.55,0.55,0.6],"smooth":0.65,"metal":1.0},
+  {"name":"BladeBack","shape":"cube","pos":[0.06,-0.01,-0.02],"rot":[0.0,0.0,0.0],"size":[0.015,0.005,0.004],"color":[0.55,0.55,0.6],"smooth":0.65,"metal":1.0}
+]}

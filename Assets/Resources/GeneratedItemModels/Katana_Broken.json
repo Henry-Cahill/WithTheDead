@@ -1,0 +1,11 @@
+{"version": 1, "id": "Katana_Broken", "baseHeight": 0.09, "name": "Katana Broken", "model": "gpt-oss:120b", "notes": "Broken katana ~1.2 m total (blade ≈0.8 m, handle 0.3 m, pommel). Lying on its side along X, blade ends abruptly and a small fragment shows the break.", "score": 7, "parts": [
+  {"name":"BladeMain","shape":"cylinder","pos":[0.13,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.8,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeEdge","shape":"cube","pos":[0.13,-0.029,0.011],"rot":[0.0,0.0,0.0],"size":[0.8,0.002,0.02],"color":[0.85,0.86,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"TipFragment","shape":"sphere","pos":[0.61,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Guard","shape":"cube","pos":[-0.25,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.1],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"GuardSideL","shape":"cube","pos":[-0.25,-0.0225,-0.07],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"GuardSideR","shape":"cube","pos":[-0.25,-0.0225,0.07],"rot":[0.0,0.0,0.0],"size":[0.12,0.015,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[-0.42,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.3,0.03],"color":[0.4,0.25,0.15],"smooth":0.15,"metal":0.0},
+  {"name":"HandleWrap","shape":"cylinder","pos":[-0.42,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.32,0.04],"color":[0.3,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"Pommel","shape":"sphere","pos":[-0.6,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

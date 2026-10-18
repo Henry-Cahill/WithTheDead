@@ -1,0 +1,12 @@
+{"version": 1, "id": "BookGlassmakingSet", "baseHeight": 0.0915, "name": "Book Glassmaking Set", "model": "gpt-oss:120b", "notes": "Flat Book‑Glassmaking Set ~0.25 m tall × 0.20 m wide × 0.04 m thick lying on its front cover (+Z). Main paper tint (0.6,0.58,0.5) with a dark metal clasp and a small glass tube resting across the top.", "score": 6, "parts": [
+  {"name":"CoverFront","shape":"cube","pos":[0.0,-0.0115,0.097],"rot":[0.0,0.0,0.0],"size":[0.25,0.04,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CoverBack","shape":"cube","pos":[0.0,-0.0115,-0.097],"rot":[0.0,0.0,0.0],"size":[0.25,0.04,0.006],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pages","shape":"cube","pos":[0.0,-0.0115,0.0],"rot":[0.0,0.0,0.0],"size":[0.245,0.04,0.188],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"BindingSpine","shape":"cylinder","pos":[0.0,-0.0115,0.0],"rot":[90.0,0.0,0.0],"size":[0.025,0.26,0.025],"color":[0.4,0.35,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"MetalClasp","shape":"cylinder","pos":[-0.115,0.0045,0.0975],"rot":[0.0,0.0,0.0],"size":[0.012,0.018,0.012],"color":[0.3,0.3,0.32],"smooth":0.4,"metal":1.0},
+  {"name":"GlassTube","shape":"cylinder","pos":[0.0,0.0185,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.78,0.88,0.95],"smooth":0.6,"metal":0.0},
+  {"name":"GlassShard","shape":"sphere","pos":[-0.08,0.0265,0.04],"rot":[0.0,0.0,0.0],"size":[0.015,0.01,0.02],"color":[0.78,0.88,0.95],"smooth":0.6,"metal":0.0},
+  {"name":"CoverSeamFront","shape":"cube","pos":[0.0,-0.0135,0.0945],"rot":[0.0,0.0,0.0],"size":[0.25,0.004,0.002],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CoverSeamBack","shape":"cube","pos":[0.0,-0.0135,-0.0945],"rot":[0.0,0.0,0.0],"size":[0.25,0.004,0.002],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PageEdgeHighlight","shape":"cube","pos":[0.0,-0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.245,0.002,0.188],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,11 @@
+{"version": 1, "id": "Awl_Bone", "baseHeight": 0.075, "name": "Awl Bone", "model": "gpt-oss:120b", "notes": "Awl bone ~0.18 m long, slender pointed tool lying on its side (X‑axis). Main shaft of bone, a tapered tip, a thicker grip base and subtle ridges/grain for visual detail.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[0.0038,-0.0075,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.12,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Tip","shape":"sphere","pos":[0.0788,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BaseGrip","shape":"cube","pos":[-0.0712,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.025],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"MidRidge","shape":"cylinder","pos":[0.0038,-0.006,0.0],"rot":[0.0,0.0,90.0],"size":[0.018,0.12,0.018],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"GripL","shape":"cube","pos":[-0.0712,-0.001,0.0125],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.005],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"GripR","shape":"cube","pos":[-0.0712,-0.001,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.005],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTop","shape":"cube","pos":[0.0038,-0.0065,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.004],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"Grain1","shape":"cube","pos":[0.0038,-0.0075,0.0],"rot":[0.0,30.0,0.0],"size":[0.08,0.002,0.002],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"Grain2","shape":"cube","pos":[0.0038,-0.0075,0.0],"rot":[0.0,-30.0,0.0],"size":[0.07,0.002,0.002],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0}
+]}

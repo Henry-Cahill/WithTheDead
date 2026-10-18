@@ -1,0 +1,8 @@
+{"version": 1, "id": "SpearCrafted", "baseHeight": 0.12, "name": "Spear Crafted", "model": "gpt-oss:120b", "notes": "Crafted spear about 1.5 m long (1.3 m wooden shaft + 0.2 m blunt metal tip). Lying on its side with the shaft along X; includes a leather grip, a metal band near the tip and a small end‑cap at the far end.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.045,-0.04,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,1.3,0.04],"color":[0.45,0.35,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.345,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.2,0.08],"color":[0.3,0.15,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"TipRing","shape":"cylinder","pos":[0.555,-0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.04,0.07],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":1.0},
+  {"name":"MetalTip","shape":"sphere","pos":[0.665,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.12,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"EndCap","shape":"cube","pos":[-0.72,-0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.04,0.04],"color":[0.45,0.35,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"TipSpike","shape":"cylinder","pos":[0.735,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0}
+]}

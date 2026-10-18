@@ -1,0 +1,8 @@
+{"version": 1, "id": "CarBattery1", "baseHeight": 0.16, "name": "Car Battery1", "model": "gpt-oss:120b", "notes": "Car battery ~0.30 m long × 0.20 m wide × 0.15 m high, lying on its side (long axis along X). Main plastic case in muted lead‑acid tint, two copper terminals on the +Z face and a white label on the opposite side.", "score": 7, "parts": [
+  {"name":"Case","shape":"cube","pos":[0.0,0.0,-0.0208],"rot":[90.0,0.0,0.0],"size":[0.3,0.15,0.2],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.2},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0,-0.0968],"rot":[90.0,0.0,0.0],"size":[0.24,0.015,0.002],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"TerminalL","shape":"cylinder","pos":[-0.06,0.0,0.0793],"rot":[90.0,0.0,0.0],"size":[0.02,0.05,0.02],"color":[0.8,0.45,0.2],"smooth":0.4,"metal":1.0},
+  {"name":"TerminalR","shape":"cylinder","pos":[0.06,0.0,0.0793],"rot":[90.0,0.0,0.0],"size":[0.02,0.05,0.02],"color":[0.8,0.45,0.2],"smooth":0.4,"metal":1.0},
+  {"name":"VentCapL","shape":"cylinder","pos":[-0.08,0.0,-0.0958],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.7,0.72,0.75],"smooth":0.2,"metal":0.0},
+  {"name":"VentCapR","shape":"cylinder","pos":[0.08,0.0,-0.0958],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.015],"color":[0.7,0.72,0.75],"smooth":0.2,"metal":0.0}
+]}

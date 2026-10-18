@@ -1,0 +1,10 @@
+{"version": 1, "id": "FlameTrapSensorV3", "baseHeight": 0.175, "name": "Flame Trap Sensor V3", "model": "gpt-oss:120b", "notes": "Flame Trap Sensor V3 – a 2 m long blunt melee weapon lying on its side (X‑axis). Thin steel shaft with rubber grip, red trigger button, and a rectangular sensor head at the +X end that houses a forward‑pointing flame emitter, a glowing lens, and two small rivets.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.1,-0.09,-0.125],"rot":[0.0,0.0,90.0],"size":[0.05,1.8,0.05],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":0.9},
+  {"name":"Grip","shape":"cylinder","pos":[-0.7,-0.08,-0.125],"rot":[0.0,0.0,90.0],"size":[0.07,0.4,0.07],"color":[0.2,0.2,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"TriggerButton","shape":"sphere","pos":[-0.45,-0.045,-0.125],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[1.0,0.0,0.0],"smooth":0.3,"metal":0.0},
+  {"name":"HeadHousing","shape":"cube","pos":[0.9,-0.04,-0.125],"rot":[0.0,0.0,0.0],"size":[0.2,0.15,0.12],"color":[0.55,0.55,0.6],"smooth":0.5,"metal":0.8},
+  {"name":"FlameEmitter","shape":"cylinder","pos":[0.9,-0.04,0.06],"rot":[90.0,0.0,0.0],"size":[0.06,0.25,0.06],"color":[0.7,0.3,0.2],"smooth":0.6,"metal":0.7},
+  {"name":"SensorLens","shape":"sphere","pos":[0.9,0.075,-0.125],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[1.0,0.6,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"RivetL","shape":"cylinder","pos":[0.83,-0.04,-0.065],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.4,0.4,0.45],"smooth":0.55,"metal":0.9},
+  {"name":"RivetR","shape":"cylinder","pos":[0.97,-0.04,-0.065],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.4,0.4,0.45],"smooth":0.55,"metal":0.9}
+]}

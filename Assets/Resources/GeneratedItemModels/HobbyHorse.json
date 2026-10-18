@@ -1,0 +1,12 @@
+{"version": 1, "id": "HobbyHorse", "baseHeight": 0.17, "name": "Hobby Horse", "model": "gpt-oss:120b", "notes": "Hobby horse melee weapon ~1.2 m long lying on its side (X‑axis). Wooden shaft 6 cm diameter, thicker carved horse head at +X end with nose, ears, eyes and a simple bridle strap; thin grip band around the middle of the shaft.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.125,-0.08,-0.08],"rot":[0.0,0.0,90.0],"size":[0.06,1.2,0.06],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"GripBand","shape":"cylinder","pos":[-0.125,-0.08,-0.08],"rot":[0.0,0.0,90.0],"size":[0.025,0.3,0.025],"color":[0.5,0.45,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"HeadBase","shape":"cube","pos":[0.6,-0.01,-0.08],"rot":[0.0,0.0,0.0],"size":[0.25,0.2,0.15],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"Nose","shape":"sphere","pos":[0.6,-0.01,0.075],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.16],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"EarL","shape":"cylinder","pos":[0.53,0.05,-0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"EarR","shape":"cylinder","pos":[0.67,0.05,-0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.12,0.02],"color":[0.6,0.6,0.64],"smooth":0.15,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.56,0.01,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.64,0.01,0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"Mouth","shape":"cube","pos":[0.6,-0.04,0.05],"rot":[0.0,0.0,0.0],"size":[0.15,0.01,0.02],"color":[0.1,0.08,0.09],"smooth":0.12,"metal":0.0},
+  {"name":"BridleStrap","shape":"cylinder","pos":[0.6,0.01,-0.06],"rot":[0.0,0.0,90.0],"size":[0.015,0.25,0.015],"color":[0.4,0.35,0.38],"smooth":0.2,"metal":0.0}
+]}

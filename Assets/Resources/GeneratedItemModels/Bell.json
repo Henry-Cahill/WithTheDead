@@ -1,0 +1,8 @@
+{"version": 1, "id": "Bell", "baseHeight": 0.1355, "name": "Bell", "model": "gpt-oss:120b", "notes": "Metal bell (tin/bronze tint 0.6,0.58,0.5) about 0.15 m long x 0.12 m wide, lying on its side. Main cup is a cylinder with a rounded dome end, a thin rim at the opening and a small hanging clapper inside.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0425,-0.0155,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.15,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Dome","shape":"sphere","pos":[0.0625,-0.0155,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0325,0.0145,0.0],"rot":[0.0,0.0,90.0],"size":[0.122,0.008,0.122],"color":[0.45,0.43,0.38],"smooth":0.55,"metal":1.0},
+  {"name":"Clapper","shape":"cylinder","pos":[0.0275,0.0345,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.04,0.012],"color":[0.5,0.48,0.44],"smooth":0.6,"metal":1.0},
+  {"name":"ClapperHead","shape":"sphere","pos":[0.0275,0.0545,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.5,0.48,0.44],"smooth":0.6,"metal":1.0},
+  {"name":"BasePlate","shape":"cube","pos":[-0.1125,-0.0605,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.12],"color":[0.45,0.43,0.38],"smooth":0.4,"metal":1.0}
+]}

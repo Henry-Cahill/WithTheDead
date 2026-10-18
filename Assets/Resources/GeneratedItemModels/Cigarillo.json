@@ -1,0 +1,12 @@
+{"version": 1, "id": "Cigarillo", "baseHeight": 0.069, "name": "Cigarillo", "model": "gpt-oss:120b", "notes": "Loose cigarillo lying on its side, total length ≈ 0.12 m, diameter ≈ 0.015 m. Brown tobacco leaf wrapped in thin paper, light filter tip at +X end, dark brand band and a small white label on the side.", "score": 6, "parts": [
+  {"name":"CigarBody","shape":"cylinder","pos":[-0.0,0.0,-0.0038],"rot":[0.0,0.0,90.0],"size":[0.015,0.12,0.015],"color":[0.75,0.68,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"WrapperSeam","shape":"cylinder","pos":[-0.0,0.0,-0.0038],"rot":[0.0,0.0,90.0],"size":[0.017,0.12,0.017],"color":[0.6,0.5,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"FilterTip","shape":"cylinder","pos":[0.05,0.0,-0.0038],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.9,0.85,0.7],"smooth":0.2,"metal":0.0},
+  {"name":"CapTop","shape":"cube","pos":[0.059,0.0,-0.0038],"rot":[0.0,0.0,0.0],"size":[0.002,0.015,0.015],"color":[0.6,0.5,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"CapBottom","shape":"cube","pos":[-0.059,0.0,-0.0038],"rot":[0.0,0.0,0.0],"size":[0.002,0.015,0.015],"color":[0.6,0.5,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"BrandBand","shape":"cylinder","pos":[-0.0,0.0,-0.0038],"rot":[0.0,0.0,90.0],"size":[0.018,0.04,0.018],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.0,0.001,0.0052],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.015],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[-0.0,0.0011,0.0057],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.002],"color":[0.2,0.15,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"FilterRing","shape":"cylinder","pos":[0.04,0.0,-0.0038],"rot":[0.0,0.0,90.0],"size":[0.018,0.004,0.018],"color":[0.4,0.3,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"SeamLine","shape":"cube","pos":[-0.0,0.002,-0.0038],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.002],"color":[0.5,0.4,0.25],"smooth":0.05,"metal":0.0}
+]}

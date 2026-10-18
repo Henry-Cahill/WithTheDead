@@ -1,0 +1,15 @@
+{"version": 1, "id": "Doily", "baseHeight": 0.0682, "name": "Doily", "model": "gpt-oss:120b", "notes": "Flat circular doily ~0.20 m diameter x 0.01 m thick, beige lace pattern: central hub, six radial ribs and a thin raised rim.", "score": 6, "parts": [
+  {"name":"BaseDisc","shape":"cylinder","pos":[0.0,-0.0032,-0.015],"rot":[0.0,0.0,0.0],"size":[0.2,0.01,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,0.0028,-0.015],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.22],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"CenterHub","shape":"cylinder","pos":[0.0,0.0038,-0.015],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.04],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"RadialBar1","shape":"cube","pos":[0.0,0.0038,0.065],"rot":[0.0,0.0,15.0],"size":[0.008,0.004,0.12],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"RadialBar2","shape":"cube","pos":[0.0,0.0038,0.065],"rot":[0.0,0.0,-15.0],"size":[0.008,0.004,0.12],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"RadialBar3","shape":"cube","pos":[0.069,0.0038,0.02],"rot":[0.0,0.0,75.0],"size":[0.008,0.004,0.12],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"RadialBar4","shape":"cube","pos":[-0.069,0.0038,0.02],"rot":[0.0,0.0,-75.0],"size":[0.008,0.004,0.12],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"RadialBar5","shape":"cube","pos":[0.069,0.0038,-0.05],"rot":[0.0,0.0,105.0],"size":[0.008,0.004,0.12],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"RadialBar6","shape":"cube","pos":[-0.069,0.0038,-0.05],"rot":[0.0,0.0,-105.0],"size":[0.008,0.004,0.12],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFringe1","shape":"cube","pos":[0.095,0.0038,-0.015],"rot":[0.0,0.0,0.0],"size":[0.01,0.004,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFringe2","shape":"cube","pos":[-0.095,0.0038,-0.015],"rot":[0.0,0.0,0.0],"size":[0.01,0.004,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFringe3","shape":"cube","pos":[0.0,0.0038,0.08],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.01],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFringe4","shape":"cube","pos":[0.0,0.0038,-0.11],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.01],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "AxeStone", "baseHeight": 0.155, "name": "Axe Stone", "model": "gpt-oss:120b", "notes": "Stone axe ~1.2 m long lying on its side. Wooden handle (~0.9 m) runs along X, capped with a thicker butt end. A roughly‑cuboid stone head (≈0.25 × 0.15 × 0.20 m) sits flush against the handle’s tip; a thin cutting slab rests on top of the head, and two rounded stone lumps sit on the front‑top and side of the head. A small metal rivet ties the head to the handle.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.0925,-0.065,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.9,0.06],"color":[0.45,0.35,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"ButtCap","shape":"cylinder","pos":[-0.5925,-0.055,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.1,0.08],"color":[0.45,0.35,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"LeatherStrap","shape":"cylinder","pos":[0.2575,-0.05,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.3,0.2,0.15],"smooth":0.12,"metal":0.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.4825,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.15,0.2],"color":[0.6,0.6,0.64],"smooth":0.05,"metal":0.0},
+  {"name":"CuttingSlab","shape":"cube","pos":[0.4825,0.065,0.09],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.12],"color":[0.55,0.55,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"StoneLumpTop","shape":"sphere","pos":[0.6075,0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.04,0.07],"color":[0.6,0.6,0.64],"smooth":0.05,"metal":0.0},
+  {"name":"StoneLumpSide","shape":"sphere","pos":[0.4825,-0.02,-0.12],"rot":[0.0,0.0,0.0],"size":[0.06,0.03,0.06],"color":[0.6,0.6,0.64],"smooth":0.05,"metal":0.0},
+  {"name":"Rivet","shape":"cylinder","pos":[0.3775,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.45,0.45,0.48],"smooth":0.6,"metal":1.0}
+]}

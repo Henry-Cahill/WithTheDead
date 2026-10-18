@@ -1,0 +1,12 @@
+{"version": 1, "id": "SheepLeather_Full", "baseHeight": 0.075, "name": "Sheep Leather Full", "model": "gpt-oss:120b", "notes": "Full sheep‑leather hide ~1.20 m × 0.90 m, 3 cm thick, laid flat on the ground. Main sheet with slightly darker inner panel, a thin raised edge border and dark stitching along all four sides.", "score": 6, "parts": [
+  {"name":"MainLeather","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.03,0.9],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"InnerLeather","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[1.18,0.025,0.88],"color":[0.54,0.52,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BorderTop","shape":"cube","pos":[0.0,-0.0125,0.445],"rot":[0.0,0.0,0.0],"size":[1.2,0.005,0.01],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BorderBottom","shape":"cube","pos":[0.0,-0.0125,-0.445],"rot":[0.0,0.0,0.0],"size":[1.2,0.005,0.01],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BorderRight","shape":"cube","pos":[0.595,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.9],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"BorderLeft","shape":"cube","pos":[-0.595,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,0.9],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"StitchTop","shape":"cylinder","pos":[0.0,-0.007,0.445],"rot":[0.0,0.0,90.0],"size":[0.006,1.18,0.006],"color":[0.2,0.18,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"StitchBottom","shape":"cylinder","pos":[0.0,-0.007,-0.445],"rot":[0.0,0.0,90.0],"size":[0.006,1.18,0.006],"color":[0.2,0.18,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"StitchRight","shape":"cylinder","pos":[0.595,-0.007,0.0],"rot":[90.0,0.0,0.0],"size":[0.006,0.88,0.006],"color":[0.2,0.18,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"StitchLeft","shape":"cylinder","pos":[-0.595,-0.007,0.0],"rot":[90.0,0.0,0.0],"size":[0.006,0.88,0.006],"color":[0.2,0.18,0.15],"smooth":0.05,"metal":0.0}
+]}

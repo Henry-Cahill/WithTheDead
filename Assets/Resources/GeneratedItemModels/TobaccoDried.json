@@ -1,0 +1,13 @@
+{"version": 1, "id": "TobaccoDried", "baseHeight": 0.0726, "name": "Tobacco Dried", "model": "gpt-oss:120b", "notes": "Dried tobacco bundle about 0.15 m long × 0.07 m wide × 0.02 m thick, brown‑tan colour (tint 0.6,0.58,0.5) tied in the middle with a thin rope. Slightly bulged leaf layers give texture.", "score": 6, "parts": [
+  {"name":"BundleBase","shape":"cube","pos":[0.0,-0.0026,-0.0011],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LeafLayer1","shape":"cube","pos":[0.0,-0.0006,-0.0011],"rot":[2.0,0.0,0.0],"size":[0.14,0.004,0.065],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LeafLayer2","shape":"cube","pos":[0.0,0.0019,-0.0011],"rot":[-3.0,0.0,1.0],"size":[0.138,0.004,0.064],"color":[0.57,0.55,0.47],"smooth":0.05,"metal":0.0},
+  {"name":"LeafLayer3","shape":"cube","pos":[0.0,0.0044,-0.0011],"rot":[1.0,0.0,-2.0],"size":[0.136,0.004,0.062],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"TieBand","shape":"cube","pos":[0.0,-0.0001,-0.0011],"rot":[0.0,0.0,0.0],"size":[0.16,0.006,0.008],"color":[0.2,0.18,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"TieLoop","shape":"cylinder","pos":[0.0,0.0039,-0.0011],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.2,0.18,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[-0.07,0.0054,0.0309],"rot":[0.0,0.0,10.0],"size":[0.02,0.004,0.012],"color":[0.15,0.12,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"LeafEdgeL","shape":"cube","pos":[-0.072,0.0024,-0.0011],"rot":[0.0,5.0,0.0],"size":[0.02,0.004,0.07],"color":[0.54,0.52,0.44],"smooth":0.05,"metal":0.0},
+  {"name":"LeafEdgeR","shape":"cube","pos":[0.072,0.0024,-0.0011],"rot":[0.0,-5.0,0.0],"size":[0.02,0.004,0.07],"color":[0.54,0.52,0.44],"smooth":0.05,"metal":0.0},
+  {"name":"TopRuffle","shape":"cube","pos":[0.0,0.0084,-0.0011],"rot":[-5.0,0.0,0.0],"size":[0.13,0.003,0.06],"color":[0.56,0.54,0.46],"smooth":0.05,"metal":0.0},
+  {"name":"BottomRuffle","shape":"cube","pos":[0.0,-0.0076,-0.0011],"rot":[5.0,0.0,0.0],"size":[0.13,0.003,0.06],"color":[0.56,0.54,0.46],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,9 @@
+{"version": 1, "id": "Multitool", "baseHeight": 0.0838, "name": "Multitool", "model": "gpt-oss:120b", "notes": "Multitool melee weapon about 1 m long: short polymer‑filled handle (cylinder) lying on its side, metal guard, thin steel blade (cube) extending forward for a 0.9 m reach, tip block, saw strip on the top edge and a screwdriver protrusion on the side; tiny pocket‑clip under the handle.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.04,-0.0037,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.4,0.04],"color":[0.55,0.55,0.6],"smooth":0.2,"metal":0.0},
+  {"name":"Guard","shape":"cube","pos":[0.18,0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Blade","shape":"cube","pos":[0.2,-0.0162,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.015,0.9],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeTip","shape":"cube","pos":[0.2,-0.0162,0.4],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.1],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SawStrip","shape":"cube","pos":[0.2,-0.0142,0.3],"rot":[0.0,0.0,0.0],"size":[0.08,0.005,0.2],"color":[0.55,0.55,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"Screwdriver","shape":"cylinder","pos":[-0.04,0.0163,-0.03],"rot":[0.0,0.0,90.0],"size":[0.015,0.08,0.015],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"PocketClip","shape":"cube","pos":[-0.04,-0.0212,-0.1],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.04],"color":[0.55,0.55,0.6],"smooth":0.2,"metal":0.0}
+]}

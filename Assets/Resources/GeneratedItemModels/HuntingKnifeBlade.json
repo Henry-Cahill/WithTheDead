@@ -1,0 +1,9 @@
+{"version": 1, "id": "HuntingKnifeBlade", "baseHeight": 0.0645, "name": "Hunting Knife Blade", "model": "gpt-oss:120b", "notes": "Hunting knife blade ~0.26 m long (tip to tang), 0.03–0.04 m wide, 5–8 mm thick. Steel tint 0.6 0.58 0.5, with a few rust specks. Lying flat on the floor, thin side up.", "score": 6, "parts": [
+  {"name":"BladeBody","shape":"cube","pos":[0.02,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.005,0.03],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"BladeTip","shape":"cube","pos":[0.12,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.03],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Tang","shape":"cube","pos":[-0.1,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.008,0.04],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeRidge","shape":"cube","pos":[0.02,-0.0005,0.0135],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.003],"color":[0.6,0.58,0.5],"smooth":0.7,"metal":1.0},
+  {"name":"BackRidge","shape":"cube","pos":[0.02,-0.0005,-0.0135],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.003],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"RustSpotTip","shape":"sphere","pos":[0.1,-0.0005,0.01],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"RustSpotTang","shape":"sphere","pos":[-0.1,0.0005,-0.015],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.5,0.2,0.1],"smooth":0.05,"metal":0.0}
+]}

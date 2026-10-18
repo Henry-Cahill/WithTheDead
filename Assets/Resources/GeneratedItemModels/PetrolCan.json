@@ -1,0 +1,12 @@
+{"version": 1, "id": "PetrolCan", "baseHeight": 0.13, "name": "Petrol Can", "model": "gpt-oss:120b", "notes": "Petrol can ~0.28 m long, 0.12 m diameter (radius 0.06 m) lying on its side; painted steel body with a side‑handle, front spout nozzle, end caps and a printed label. Includes a few rivets for detail.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.005,-0.0312],"rot":[0.0,0.0,90.0],"size":[0.12,0.28,0.12],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"CapFront","shape":"cylinder","pos":[0.14,-0.005,-0.0312],"rot":[0.0,0.0,90.0],"size":[0.13,0.02,0.13],"color":[0.58,0.55,0.48],"smooth":0.25,"metal":0.0},
+  {"name":"CapBack","shape":"cylinder","pos":[-0.14,-0.005,-0.0312],"rot":[0.0,0.0,90.0],"size":[0.13,0.02,0.13],"color":[0.58,0.55,0.48],"smooth":0.25,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[-0.08,0.055,-0.0312],"rot":[90.0,0.0,0.0],"size":[0.03,0.08,0.03],"color":[0.45,0.43,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"SpoutBase","shape":"cylinder","pos":[0.0,0.025,0.0388],"rot":[90.0,0.0,0.0],"size":[0.04,0.05,0.04],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"SpoutTip","shape":"sphere","pos":[0.0,0.025,0.0737],"rot":[0.0,0.0,0.0],"size":[0.045,0.045,0.045],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.05,0.0,-0.0312],"rot":[0.0,0.0,0.0],"size":[0.2,0.005,0.12],"color":[0.35,0.33,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"RivetL","shape":"sphere","pos":[-0.06,0.03,0.0088],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[-0.06,0.03,-0.0713],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"SpoutRing","shape":"cylinder","pos":[0.0,0.025,0.0388],"rot":[90.0,0.0,0.0],"size":[0.045,0.004,0.045],"color":[0.55,0.53,0.48],"smooth":0.2,"metal":0.0}
+]}

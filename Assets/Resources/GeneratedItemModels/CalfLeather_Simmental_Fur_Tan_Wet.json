@@ -1,0 +1,8 @@
+{"version": 1, "id": "CalfLeather_Simmental_Fur_Tan_Wet", "baseHeight": 0.071, "name": "Calf Leather Simmental Fur Tan Wet", "model": "gpt-oss:120b", "notes": "Flat wet calf‑leather sheet with Simmental fur, about 0.28 m × 0.18 m and ~8 mm thick. Main leather body, a thin glossy wet film on top, a slightly darker edge rim for silhouette contrast, and a few raised fur tufts.", "score": 6, "parts": [
+  {"name":"BaseLeather","shape":"cube","pos":[0.0,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.008,0.18],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"WetGloss","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.274,0.002,0.174],"color":[0.65,0.63,0.55],"smooth":0.4,"metal":0.0},
+  {"name":"EdgeRim","shape":"cube","pos":[0.0,-0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.285,0.008,0.185],"color":[0.45,0.43,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"FurTuftA","shape":"cylinder","pos":[-0.08,0.0,-0.05],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.58,0.55,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"FurTuftB","shape":"cylinder","pos":[0.06,0.0,0.04],"rot":[0.0,0.0,0.0],"size":[0.018,0.022,0.018],"color":[0.58,0.55,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"FurTuftC","shape":"cylinder","pos":[0.02,0.0,-0.07],"rot":[0.0,0.0,0.0],"size":[0.012,0.018,0.012],"color":[0.58,0.55,0.48],"smooth":0.2,"metal":0.0}
+]}

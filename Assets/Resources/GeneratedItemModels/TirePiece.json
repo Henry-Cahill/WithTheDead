@@ -1,0 +1,12 @@
+{"version": 1, "id": "TirePiece", "baseHeight": 0.13, "name": "Tire Piece", "model": "gpt-oss:120b", "notes": "Chunk of tire ~0.4 m long, 0.12 m thick and curved like a half‑torus. Main rubber body with a cut edge, raised tread ribs, a dark wear patch, a thin steel bead around the outer curve and two small metal screws on the bead.", "score": 6, "parts": [
+  {"name":"MainBody","shape":"cylinder","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.4,0.12],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CutEdge","shape":"cube","pos":[0.0,-0.01,0.08],"rot":[0.0,0.0,0.0],"size":[0.38,0.02,0.04],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SideRim","shape":"cube","pos":[0.0,-0.01,-0.08],"rot":[0.0,0.0,0.0],"size":[0.38,0.02,0.04],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"BeadRing","shape":"cylinder","pos":[0.0,0.06,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.4,0.02],"color":[0.7,0.7,0.72],"smooth":0.6,"metal":1.0},
+  {"name":"TreadRibL","shape":"cube","pos":[-0.12,0.055,-0.03],"rot":[0.0,0.0,0.0],"size":[0.2,0.01,0.04],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"TreadRibC","shape":"cube","pos":[0.0,0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.01,0.04],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"TreadRibR","shape":"cube","pos":[0.12,0.055,0.03],"rot":[0.0,0.0,0.0],"size":[0.2,0.01,0.04],"color":[0.65,0.63,0.55],"smooth":0.05,"metal":0.0},
+  {"name":"WearPatch","shape":"cube","pos":[0.05,0.045,-0.02],"rot":[0.0,0.0,0.0],"size":[0.1,0.005,0.08],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Screw1","shape":"sphere","pos":[-0.15,0.06,0.05],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.7,0.7,0.72],"smooth":0.65,"metal":1.0},
+  {"name":"Screw2","shape":"sphere","pos":[0.15,0.06,-0.05],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.7,0.7,0.72],"smooth":0.65,"metal":1.0}
+]}

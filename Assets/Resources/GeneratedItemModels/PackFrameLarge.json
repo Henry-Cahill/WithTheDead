@@ -1,0 +1,13 @@
+{"version": 1, "id": "PackFrameLarge", "baseHeight": 0.0975, "name": "Pack Frame Large", "model": "gpt-oss:120b", "notes": "Large pack frame (≈1.2 m × 0.9 m) lying flat on the ground. Four wooden side beams form a rectangle, metal‑type corner brackets, two internal cross‑bars for rigidity and a thin canvas sheet that would be stretched over it.", "score": 7, "parts": [
+  {"name":"SideBeamX_PosZ","shape":"cube","pos":[0.0,-0.0175,0.43],"rot":[0.0,0.0,0.0],"size":[1.2,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SideBeamX_NegZ","shape":"cube","pos":[0.0,-0.0175,-0.43],"rot":[0.0,0.0,0.0],"size":[1.2,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SideBeamZ_PosX","shape":"cube","pos":[0.58,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.9],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SideBeamZ_NegX","shape":"cube","pos":[-0.58,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.9],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"CornerBR","shape":"cylinder","pos":[0.58,-0.0175,0.43],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"CornerBL","shape":"cylinder","pos":[0.58,-0.0175,-0.43],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"CornerTR","shape":"cylinder","pos":[-0.58,-0.0175,0.43],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"CornerTL","shape":"cylinder","pos":[-0.58,-0.0175,-0.43],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"CrossBarX","shape":"cube","pos":[0.0,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[1.12,0.02,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"CrossBarZ","shape":"cube","pos":[0.0,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.84],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"CanvasSheet","shape":"cube","pos":[0.0,0.0325,0.0],"rot":[0.0,0.0,0.0],"size":[1.12,0.01,0.84],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,10 @@
+{"version": 1, "id": "BlackSageSeed", "baseHeight": 0.0617, "name": "Black Sage Seed", "model": "gpt-oss:120b", "notes": "Loose pile of black sage seeds, each about 6 mm long × 3–4 mm wide, lying on the ground as a small cluster (up to 8 seeds).", "score": 7, "parts": [
+  {"name":"Seed1","shape":"sphere","pos":[-0.0101,-0.0,-0.0056],"rot":[0.0,12.0,0.0],"size":[0.006,0.003,0.004],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed2","shape":"sphere","pos":[-0.0041,0.0001,0.0034],"rot":[0.0,-8.0,0.0],"size":[0.006,0.003,0.004],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed3","shape":"sphere","pos":[0.0019,-0.0001,-0.0016],"rot":[0.0,15.0,0.0],"size":[0.006,0.003,0.004],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed4","shape":"sphere","pos":[0.0079,0.0001,-0.0076],"rot":[0.0,-20.0,0.0],"size":[0.006,0.003,0.004],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed5","shape":"sphere","pos":[-0.0071,-0.0003,0.0074],"rot":[0.0,5.0,0.0],"size":[0.006,0.003,0.004],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed6","shape":"sphere","pos":[0.0049,0.0003,-0.0036],"rot":[0.0,-12.0,0.0],"size":[0.006,0.003,0.004],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed7","shape":"sphere","pos":[-0.0031,-0.0,0.0104],"rot":[0.0,22.0,0.0],"size":[0.006,0.003,0.004],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Seed8","shape":"sphere","pos":[0.0099,-0.0001,-0.0106],"rot":[0.0,-18.0,0.0],"size":[0.006,0.003,0.004],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

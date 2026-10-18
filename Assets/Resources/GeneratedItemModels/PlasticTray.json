@@ -1,0 +1,8 @@
+{"version": 1, "id": "PlasticTray", "baseHeight": 0.0735, "name": "Plastic Tray", "model": "gpt-oss:120b", "notes": "Plastic tray about 0.30 m long × 0.25 m wide × 0.02 m deep, shallow dish with a raised rim and a small back‑handle; laid flat on the floor.", "score": 7, "parts": [
+  {"name":"BasePlate","shape":"cube","pos":[0.0,-0.0115,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.004,0.25],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"RimFront","shape":"cube","pos":[0.0,-0.004,0.12],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.01],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"RimBack","shape":"cube","pos":[0.0,-0.004,-0.12],"rot":[0.0,0.0,0.0],"size":[0.3,0.015,0.01],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"RimLeft","shape":"cube","pos":[-0.145,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.23],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"RimRight","shape":"cube","pos":[0.145,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.23],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.0,0.0085,-0.12],"rot":[0.0,0.0,90.0],"size":[0.01,0.04,0.01],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0}
+]}

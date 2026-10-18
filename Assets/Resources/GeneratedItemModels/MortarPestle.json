@@ -1,0 +1,8 @@
+{"version": 1, "id": "MortarPestle", "baseHeight": 0.105, "name": "Mortar Pestle", "model": "gpt-oss:120b", "notes": "Stone mortar ~15 cm diameter × 9 cm tall standing upright; thin darker rim around the top. Pestle ~20 cm long, 4 cm thick, lying on its side next to the mortar with a rounded tip.", "score": 6, "parts": [
+  {"name":"MortarBody","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.09,0.15],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"MortarRim","shape":"cylinder","pos":[0.0,0.041,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.008,0.16],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"PestleShaft","shape":"cylinder","pos":[0.025,-0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.2,0.04],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"PestleTip","shape":"sphere","pos":[0.125,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"PestleBase","shape":"cylinder","pos":[-0.075,-0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.03,0.04],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"PestleBaseCap","shape":"sphere","pos":[-0.125,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0}
+]}

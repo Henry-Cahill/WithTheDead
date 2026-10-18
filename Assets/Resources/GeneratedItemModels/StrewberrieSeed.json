@@ -1,0 +1,16 @@
+{"version": 1, "id": "StrewberrieSeed", "baseHeight": 0.069, "name": "Strewberrie Seed", "model": "gpt-oss:120b", "notes": "Small paper seed packet about 6 cm × 4 cm × 1 cm lying flat on the floor. Light‑tan paper with a printed front label and a handful of dark brown Strewberrie seeds inside.", "score": 7, "parts": [
+  {"name":"PacketBody","shape":"cube","pos":[0.0,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.01,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,0.005,0.01],"rot":[0.0,0.0,0.0],"size":[0.03,0.008,0.02],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"SeamFront","shape":"cube","pos":[0.0,-0.0035,0.021],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.002],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBack","shape":"cube","pos":[0.0,-0.0035,-0.021],"rot":[0.0,0.0,0.0],"size":[0.06,0.002,0.002],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SeamLeft","shape":"cube","pos":[-0.031,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.04],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SeamRight","shape":"cube","pos":[0.031,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.04],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.0,0.0015,0.012],"rot":[0.0,0.0,0.0],"size":[0.045,0.002,0.025],"color":[0.3,0.45,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[0.0,0.0015,-0.012],"rot":[0.0,0.0,0.0],"size":[0.045,0.002,0.025],"color":[0.3,0.45,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Seed1","shape":"sphere","pos":[-0.015,-0.001,-0.01],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.3,0.2,0.1],"smooth":0.4,"metal":0.0},
+  {"name":"Seed2","shape":"sphere","pos":[0.01,-0.001,0.005],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.3,0.2,0.1],"smooth":0.4,"metal":0.0},
+  {"name":"Seed3","shape":"sphere","pos":[-0.008,-0.001,0.012],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.3,0.2,0.1],"smooth":0.4,"metal":0.0},
+  {"name":"Seed4","shape":"sphere","pos":[0.015,-0.001,-0.014],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.3,0.2,0.1],"smooth":0.4,"metal":0.0},
+  {"name":"Seed5","shape":"sphere","pos":[-0.012,-0.001,0.018],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.3,0.2,0.1],"smooth":0.4,"metal":0.0},
+  {"name":"Seed6","shape":"sphere","pos":[0.018,-0.001,-0.018],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.3,0.2,0.1],"smooth":0.4,"metal":0.0}
+]}

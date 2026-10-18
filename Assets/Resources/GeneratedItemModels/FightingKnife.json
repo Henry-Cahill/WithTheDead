@@ -1,0 +1,12 @@
+{"version": 1, "id": "FightingKnife", "baseHeight": 0.075, "name": "Fighting Knife", "model": "gpt-oss:120b", "notes": "Fighting knife ~0.30 m long lying on its side (X‑axis). Blade thin steel, pointed tip, small cross‑guard, wooden‑scaled handle with pommel and a few rivets for detail.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.0965,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.12,0.03],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Pommel","shape":"sphere","pos":[-0.1565,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.024,0.024,0.024],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Guard","shape":"cube","pos":[-0.0215,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetL","shape":"cylinder","pos":[-0.0315,0.007,0.018],"rot":[90.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[-0.0315,0.007,-0.018],"rot":[90.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"Blade","shape":"cube","pos":[0.0685,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.008,0.03],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"BladeEdge","shape":"cube","pos":[0.0685,0.004,0.015],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.005],"color":[0.5,0.5,0.55],"smooth":0.6,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.1585,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"ScaleL","shape":"cube","pos":[-0.0965,0.007,0.018],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.008],"color":[0.3,0.2,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"ScaleR","shape":"cube","pos":[-0.0965,0.007,-0.018],"rot":[0.0,0.0,0.0],"size":[0.12,0.004,0.008],"color":[0.3,0.2,0.15],"smooth":0.1,"metal":0.0}
+]}

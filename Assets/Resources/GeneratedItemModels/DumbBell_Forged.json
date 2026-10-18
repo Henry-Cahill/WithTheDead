@@ -1,0 +1,11 @@
+{"version": 1, "id": "DumbBell_Forged", "baseHeight": 0.15, "name": "Dumb Bell Forged", "model": "gpt-oss:120b", "notes": "Forged metal dumbbell ~0.5 m long lying on its side (handle along X). Two round weight plates at each end, a thin steel handle, rubber grip, flanges and rivets for detail, and a small label on the right plate.", "score": 7, "parts": [
+  {"name":"WeightL","shape":"sphere","pos":[-0.25,0.0,-0.003],"rot":[0.0,0.0,0.0],"size":[0.18,0.18,0.18],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"WeightR","shape":"sphere","pos":[0.25,0.0,-0.003],"rot":[0.0,0.0,0.0],"size":[0.18,0.18,0.18],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.0,-0.07,-0.003],"rot":[0.0,0.0,90.0],"size":[0.04,0.3,0.04],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[0.0,-0.06,-0.003],"rot":[0.0,0.0,90.0],"size":[0.06,0.3,0.06],"color":[0.1,0.1,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"FlangeL","shape":"cube","pos":[-0.155,-0.07,-0.003],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.08],"color":[0.8,0.8,0.85],"smooth":0.55,"metal":1.0},
+  {"name":"FlangeR","shape":"cube","pos":[0.155,-0.07,-0.003],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.08],"color":[0.8,0.8,0.85],"smooth":0.55,"metal":1.0},
+  {"name":"RivetL","shape":"cylinder","pos":[-0.155,-0.05,-0.003],"rot":[0.0,0.0,90.0],"size":[0.008,0.012,0.008],"color":[0.9,0.9,0.92],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[0.155,-0.05,-0.003],"rot":[0.0,0.0,90.0],"size":[0.008,0.012,0.008],"color":[0.9,0.9,0.92],"smooth":0.6,"metal":1.0},
+  {"name":"LabelR","shape":"cube","pos":[0.25,0.0,0.092],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.002],"color":[0.05,0.05,0.07],"smooth":0.1,"metal":0.0}
+]}

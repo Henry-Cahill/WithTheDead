@@ -1,0 +1,8 @@
+{"version": 1, "id": "MetalworkingPunch", "baseHeight": 0.1, "name": "Metalworking Punch", "model": "gpt-oss:120b", "notes": "Metalworking Punch about 0.60 m long lying on its side (handle along X). Metal cylindrical handle, thicker steel head with a flat striking face and a small shoulder ring at the junction.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.065,-0.02,-0.0077],"rot":[0.0,0.0,90.0],"size":[0.04,0.45,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Head","shape":"cylinder","pos":[0.235,0.0,-0.0077],"rot":[0.0,0.0,90.0],"size":[0.08,0.15,0.08],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"ShoulderRing","shape":"cylinder","pos":[0.15,0.0,-0.0077],"rot":[0.0,0.0,90.0],"size":[0.06,0.02,0.06],"color":[0.5,0.5,0.55],"smooth":0.45,"metal":1.0},
+  {"name":"FacePlate","shape":"cube","pos":[0.235,0.0,0.0348],"rot":[0.0,0.0,0.0],"size":[0.13,0.06,0.005],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Bolt","shape":"sphere","pos":[0.235,0.0,0.0377],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.4,0.4,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"GripEndCap","shape":"cube","pos":[-0.29,-0.02,-0.0077],"rot":[0.0,0.0,90.0],"size":[0.04,0.04,0.04],"color":[0.5,0.5,0.55],"smooth":0.45,"metal":1.0}
+]}

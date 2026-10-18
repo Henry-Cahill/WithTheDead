@@ -1,0 +1,13 @@
+{"version": 1, "id": "PanForged", "baseHeight": 0.2, "name": "Pan Forged", "model": "gpt-oss:120b", "notes": "Forged steel pan melee weapon ~0.80 m long: 0.60 m narrow wooden‑grip handle (diameter 0.03 m) with four rivets, a 0.12 m deep bowl of 0.25 m diameter and a slightly larger 0.28 m rim for the cooking edge.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.06,-0.125,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.6,0.03],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.3,-0.12,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.12,0.04],"color":[0.55,0.5,0.56],"smooth":0.25,"metal":0.0},
+  {"name":"BowlBody","shape":"cylinder","pos":[0.3,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.25,0.12,0.25],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RimOuter","shape":"cylinder","pos":[0.3,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.28,0.12,0.28],"color":[0.5,0.5,0.58],"smooth":0.55,"metal":1.0},
+  {"name":"RivetFrontL","shape":"cylinder","pos":[0.09,-0.125,0.02],"rot":[0.0,0.0,90.0],"size":[0.01,0.015,0.01],"color":[0.45,0.45,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFrontR","shape":"cylinder","pos":[0.09,-0.125,-0.02],"rot":[0.0,0.0,90.0],"size":[0.01,0.015,0.01],"color":[0.45,0.45,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RivetMidL","shape":"cylinder","pos":[0.19,-0.125,0.02],"rot":[0.0,0.0,90.0],"size":[0.01,0.015,0.01],"color":[0.45,0.45,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RivetMidR","shape":"cylinder","pos":[0.19,-0.125,-0.02],"rot":[0.0,0.0,90.0],"size":[0.01,0.015,0.01],"color":[0.45,0.45,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBackL","shape":"cylinder","pos":[-0.01,-0.125,0.02],"rot":[0.0,0.0,90.0],"size":[0.01,0.015,0.01],"color":[0.45,0.45,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBackR","shape":"cylinder","pos":[-0.01,-0.125,-0.02],"rot":[0.0,0.0,90.0],"size":[0.01,0.015,0.01],"color":[0.45,0.45,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"BowlInner","shape":"cylinder","pos":[0.3,-0.025,0.0],"rot":[0.0,0.0,90.0],"size":[0.22,0.11,0.22],"color":[0.58,0.58,0.62],"smooth":0.55,"metal":1.0}
+]}

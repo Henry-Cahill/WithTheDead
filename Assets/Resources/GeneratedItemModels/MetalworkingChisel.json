@@ -1,0 +1,12 @@
+{"version": 1, "id": "MetalworkingChisel", "baseHeight": 0.105, "name": "Metalworking Chisel", "model": "gpt-oss:120b", "notes": "Metalworking chisel 1.20 m long lying on its side (X‑axis). Metal shaft and tip in steel tint, wooden handle around the shaft, visible blade end pointing +Z with a small pointed tip. Includes rivets and a grip band.", "score": 6, "parts": [
+  {"name":"MetalShaft","shape":"cylinder","pos":[-0.0325,-0.005,-0.015],"rot":[0.0,0.0,90.0],"size":[0.04,1.0,0.04],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"WoodHandle","shape":"cylinder","pos":[-0.0325,-0.005,-0.015],"rot":[0.0,0.0,90.0],"size":[0.08,1.0,0.08],"color":[0.4,0.28,0.15],"smooth":0.2,"metal":0.0},
+  {"name":"GripBand","shape":"cylinder","pos":[-0.2325,0.0,-0.015],"rot":[0.0,0.0,90.0],"size":[0.09,0.005,0.09],"color":[0.35,0.25,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"BladeBlock","shape":"cube","pos":[0.5275,-0.005,0.015],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.06],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"BladeFace","shape":"cube","pos":[0.5275,-0.005,0.05],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.01],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.5975,-0.005,0.05],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":1.0},
+  {"name":"Rivet1","shape":"cylinder","pos":[-0.4325,0.0,-0.015],"rot":[0.0,0.0,90.0],"size":[0.01,0.015,0.01],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet2","shape":"cylinder","pos":[-0.0325,0.0,-0.015],"rot":[0.0,0.0,90.0],"size":[0.01,0.015,0.01],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet3","shape":"cylinder","pos":[0.3675,0.0,-0.015],"rot":[0.0,0.0,90.0],"size":[0.01,0.015,0.01],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"LabelMark","shape":"cube","pos":[-0.5325,0.0,0.015],"rot":[0.0,0.0,0.0],"size":[0.15,0.002,0.04],"color":[0.2,0.2,0.25],"smooth":0.1,"metal":0.0}
+]}

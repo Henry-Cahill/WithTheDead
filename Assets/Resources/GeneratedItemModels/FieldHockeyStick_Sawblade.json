@@ -1,0 +1,12 @@
+{"version": 1, "id": "FieldHockeyStick_Sawblade", "baseHeight": 0.19, "name": "Field Hockey Stick Sawblade", "model": "gpt-oss:120b", "notes": "Field hockey stick with a circular sawblade attached to the tip, total length ≈ 1.6 m (shaft ≈ 1.5 m, blade radius ≈ 0.12 m). Shaft lies on its side along X; the disc‑shaped blade faces forward (+X) so the business end is clear.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[0.035,-0.11,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,1.5,0.04],"color":[0.6,0.6,0.64],"smooth":0.4,"metal":0.7},
+  {"name":"GripTape","shape":"cylinder","pos":[-0.645,-0.105,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.12,0.05],"color":[0.3,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"HandleWrap","shape":"cylinder","pos":[-0.465,-0.1,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.2,0.06],"color":[0.3,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"EndCap","shape":"sphere","pos":[-0.755,-0.09,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.45,0.3,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"SawBlade","shape":"cylinder","pos":[0.765,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.24,0.02,0.24],"color":[0.6,0.6,0.64],"smooth":0.5,"metal":0.8},
+  {"name":"BladeFaceDetail","shape":"cylinder","pos":[0.765,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.22,0.018,0.22],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":0.9},
+  {"name":"TeethRim","shape":"cylinder","pos":[0.765,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.26,0.025,0.26],"color":[0.35,0.35,0.38],"smooth":0.3,"metal":0.7},
+  {"name":"Bolt","shape":"cylinder","pos":[0.765,-0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.03,0.04],"color":[0.2,0.2,0.22],"smooth":0.65,"metal":1.0},
+  {"name":"BoltHead","shape":"cylinder","pos":[0.765,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.01,0.06],"color":[0.2,0.2,0.22],"smooth":0.55,"metal":1.0},
+  {"name":"BladeEdgeHighlight","shape":"cube","pos":[0.765,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.26],"color":[0.85,0.85,0.9],"smooth":0.2,"metal":0.0}
+]}

@@ -1,0 +1,9 @@
+{"version": 1, "id": "MetalPipe", "baseHeight": 0.105, "name": "Metal Pipe", "model": "gpt-oss:120b", "notes": "Metal pipe melee weapon ~1.2 m long, 5 cm diameter, lying on its side (X‑axis) with a flared weighted end to show the business side clearly. Simple metal body plus three rivet details.", "score": 7, "parts": [
+  {"name":"MainPipe","shape":"cylinder","pos":[-0.075,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,1.2,0.05],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"TipFlare","shape":"cylinder","pos":[0.6,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.15,0.09],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetA","shape":"sphere","pos":[-0.475,-0.012,0.03],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.45,0.45,0.5],"smooth":0.6,"metal":0.9},
+  {"name":"RivetB","shape":"sphere","pos":[-0.075,-0.012,-0.03],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.45,0.45,0.5],"smooth":0.6,"metal":0.9},
+  {"name":"RivetC","shape":"sphere","pos":[0.325,-0.012,0.03],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.45,0.45,0.5],"smooth":0.6,"metal":0.9},
+  {"name":"RivetD","shape":"sphere","pos":[-0.275,-0.012,-0.03],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.45,0.45,0.5],"smooth":0.6,"metal":0.9},
+  {"name":"RivetE","shape":"sphere","pos":[0.125,-0.012,0.03],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.45,0.45,0.5],"smooth":0.6,"metal":0.9}
+]}

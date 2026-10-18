@@ -1,0 +1,13 @@
+{"version": 1, "id": "BakingPan", "baseHeight": 0.085, "name": "Baking Pan", "model": "gpt-oss:120b", "notes": "Rectangular metal baking pan ~0.33 m × 0.23 m × 0.04 m (including 2 cm base and 4 cm high side walls). Main metal body with raised edges, a small side handle, four rivets on the top surface and a thin label strip.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[-0.025,-0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.33,0.02,0.23],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"FrontWall","shape":"cube","pos":[-0.025,0.005,0.1075],"rot":[0.0,0.0,0.0],"size":[0.33,0.04,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"BackWall","shape":"cube","pos":[-0.025,0.005,-0.1075],"rot":[0.0,0.0,0.0],"size":[0.33,0.04,0.015],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"LeftWall","shape":"cube","pos":[-0.1825,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.23],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"RightWall","shape":"cube","pos":[0.1325,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.23],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.15,0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.08,0.02],"color":[0.5,0.45,0.4],"smooth":0.3,"metal":1.0},
+  {"name":"RivetFL","shape":"sphere","pos":[-0.155,-0.004,0.09],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":1.0},
+  {"name":"RivetFR","shape":"sphere","pos":[0.105,-0.004,0.09],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[-0.155,-0.004,-0.09],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.105,-0.004,-0.09],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[-0.025,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.12],"color":[0.45,0.42,0.38],"smooth":0.1,"metal":0.0}
+]}

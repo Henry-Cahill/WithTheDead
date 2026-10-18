@@ -1,0 +1,8 @@
+{"version": 1, "id": "Wallpaper_GreenFloral", "baseHeight": 0.1525, "name": "Wallpaper Green Floral", "model": "gpt-oss:120b", "notes": "Rolled wallpaper lying on its side: outer paper roll (~0.53 m wide, 0.18 m diameter) in the green‑floral tint, thin brown cardboard core inside, and a dark‑green label strip around the outside.", "score": 7, "parts": [
+  {"name":"PaperRoll","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.18,0.53,0.18],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Core","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.53,0.06],"color":[0.45,0.32,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"LabelStrip","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.185,0.015,0.185],"color":[0.33,0.38,0.27],"smooth":0.1,"metal":0.0},
+  {"name":"EndCapTop","shape":"cylinder","pos":[-0.265,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.18,0.012,0.18],"color":[0.55,0.53,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"EndCapBottom","shape":"cylinder","pos":[0.265,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.18,0.012,0.18],"color":[0.55,0.53,0.48],"smooth":0.08,"metal":0.0},
+  {"name":"PaperEdge","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.182,0.53,0.182],"color":[0.58,0.55,0.48],"smooth":0.07,"metal":0.0}
+]}

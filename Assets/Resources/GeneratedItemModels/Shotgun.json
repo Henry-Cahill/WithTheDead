@@ -1,0 +1,13 @@
+{"version": 1, "id": "Shotgun", "baseHeight": 0.1325, "name": "Shotgun", "model": "gpt-oss:120b", "notes": "Shotgun ~1.0 m long lying on its side (barrel +X). Dark‑metal barrel and receiver, wooden stock at the rear, vertical grip, low magazine tube under the barrel, simple front/rear sights and a trigger guard. All sight and stock parts now touch the main body.", "score": 6, "parts": [
+  {"name":"Barrel","shape":"cylinder","pos":[0.045,-0.0475,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.6,0.04],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":0.9},
+  {"name":"Receiver","shape":"cube","pos":[-0.105,-0.0275,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.09],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":0.9},
+  {"name":"Grip","shape":"cylinder","pos":[-0.175,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.14,0.03],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":0.9},
+  {"name":"TriggerGuard","shape":"cube","pos":[-0.135,-0.0275,-0.045],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.03],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":0.9},
+  {"name":"MagazineTube","shape":"cylinder","pos":[-0.005,-0.055,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.5,0.025],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":0.9},
+  {"name":"FrontSight","shape":"cube","pos":[0.355,-0.0375,0.02],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.01],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":0.9},
+  {"name":"RearSight","shape":"cube","pos":[-0.17,-0.0375,0.02],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.01],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":0.9},
+  {"name":"StockBase","shape":"cube","pos":[-0.265,-0.0275,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.08,0.12],"color":[0.18,0.13,0.09],"smooth":0.15,"metal":0.0},
+  {"name":"StockShoulder","shape":"cylinder","pos":[-0.225,-0.0075,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.12,0.08],"color":[0.18,0.13,0.09],"smooth":0.15,"metal":0.0},
+  {"name":"BarrelRim","shape":"cylinder","pos":[0.345,-0.0475,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.02,0.05],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":0.9},
+  {"name":"EjectorPort","shape":"cylinder","pos":[-0.075,-0.0275,0.045],"rot":[90.0,0.0,0.0],"size":[0.015,0.01,0.015],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":0.9}
+]}

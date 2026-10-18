@@ -1,0 +1,9 @@
+{"version": 1, "id": "Pager", "baseHeight": 0.073, "name": "Pager", "model": "gpt-oss:120b", "notes": "Pager ~0.10 m long × 0.06 m wide × 0.02 m thick: rectangular plastic body in muted beige, dark LCD screen on the front, three small push‑buttons, a tiny antenna on the back and a speaker grill on the left side.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0003,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.018,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Screen","shape":"cube","pos":[0.0003,0.0045,0.0295],"rot":[0.0,0.0,0.0],"size":[0.094,0.002,0.002],"color":[0.08,0.09,0.11],"smooth":0.6,"metal":0.0},
+  {"name":"ButtonL","shape":"cylinder","pos":[-0.0198,0.007,0.0285],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.2,0.22,0.25],"smooth":0.3,"metal":0.0},
+  {"name":"ButtonC","shape":"cylinder","pos":[0.0003,0.007,0.0285],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.2,0.22,0.25],"smooth":0.3,"metal":0.0},
+  {"name":"ButtonR","shape":"cylinder","pos":[0.0203,0.007,0.0285],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.2,0.22,0.25],"smooth":0.3,"metal":0.0},
+  {"name":"Antenna","shape":"cylinder","pos":[0.0003,0.009,-0.0295],"rot":[0.0,0.0,0.0],"size":[0.006,0.008,0.006],"color":[0.15,0.16,0.18],"smooth":0.4,"metal":0.0},
+  {"name":"Speaker","shape":"cube","pos":[-0.0493,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.008,0.02],"color":[0.1,0.11,0.13],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "TableLeg_Broken_Nails", "baseHeight": 0.1163, "name": "Table Leg Broken Nails", "model": "gpt-oss:120b", "notes": "Broken table leg used as a blunt melee weapon – total length ≈ 0.95 m, main shaft ~0.08 m diameter tapering to ~0.06 m at the business end. Lying on its side (long axis +X) with a metal‑band around the middle and several jagged nails protruding from the tip.", "score": 6, "parts": [
+  {"name":"LegBody","shape":"cylinder","pos":[-0.0716,-0.0113,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.9,0.08],"color":[0.6,0.6,0.64],"smooth":0.12,"metal":0.0},
+  {"name":"TopTip","shape":"cylinder","pos":[0.4284,-0.0113,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.1,0.06],"color":[0.58,0.58,0.62],"smooth":0.12,"metal":0.0},
+  {"name":"MidBand","shape":"cylinder","pos":[-0.0716,-0.0063,0.0],"rot":[0.0,0.0,90.0],"size":[0.1,0.02,0.1],"color":[0.45,0.44,0.48],"smooth":0.25,"metal":0.0},
+  {"name":"Nail1","shape":"cylinder","pos":[0.4784,0.0187,0.03],"rot":[90.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.7,0.71,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"Nail2","shape":"cylinder","pos":[0.4584,0.0187,-0.03],"rot":[90.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.7,0.71,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"Nail3","shape":"cylinder","pos":[0.4884,0.0387,0.0],"rot":[0.0,0.0,45.0],"size":[0.01,0.04,0.01],"color":[0.7,0.71,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"Nail4","shape":"cylinder","pos":[0.4884,-0.0313,0.0],"rot":[0.0,0.0,-45.0],"size":[0.01,0.04,0.01],"color":[0.7,0.71,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"Nail5","shape":"cylinder","pos":[0.5084,0.0087,0.02],"rot":[45.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.7,0.71,0.75],"smooth":0.55,"metal":1.0},
+  {"name":"Splinter","shape":"cube","pos":[0.4984,0.0287,-0.02],"rot":[0.0,15.0,0.0],"size":[0.04,0.015,0.03],"color":[0.55,0.53,0.58],"smooth":0.12,"metal":0.0},
+  {"name":"RustPatch","shape":"sphere","pos":[-0.2716,-0.0063,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.45,0.38,0.3],"smooth":0.4,"metal":0.0}
+]}

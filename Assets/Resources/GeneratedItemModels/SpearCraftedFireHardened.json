@@ -1,0 +1,12 @@
+{"version": 1, "id": "SpearCraftedFireHardened", "baseHeight": 0.097, "name": "Spear Crafted Fire Hardened", "model": "gpt-oss:120b", "notes": "Spear ~1.4 m long lying on its side (X‑axis). Wooden shaft with leather grip, metal fire‑hardened tip, metal socket and butt‑cap, a dark wood band and four small rivets for detail.", "score": 7, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.06,-0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,1.28,0.05],"color":[0.45,0.35,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[0.0,0.003,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.12,0.06],"color":[0.4,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"Band","shape":"cylinder","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.008,0.07],"color":[0.35,0.25,0.15],"smooth":0.12,"metal":0.0},
+  {"name":"ButtCap","shape":"cylinder","pos":[-0.69,-0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.02,0.07],"color":[0.6,0.5,0.45],"smooth":0.55,"metal":0.9},
+  {"name":"Socket","shape":"cylinder","pos":[0.57,-0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.02,0.07],"color":[0.6,0.5,0.45],"smooth":0.55,"metal":0.9},
+  {"name":"Tip","shape":"sphere","pos":[0.64,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.06,0.06],"color":[0.7,0.4,0.3],"smooth":0.6,"metal":1.0},
+  {"name":"RivetL","shape":"sphere","pos":[-0.3,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet2","shape":"sphere","pos":[-0.1,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet3","shape":"sphere","pos":[0.1,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[0.3,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0}
+]}

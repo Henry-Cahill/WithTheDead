@@ -1,0 +1,11 @@
+{"version": 1, "id": "Fork_Bone", "baseHeight": 0.087, "name": "Fork Bone", "model": "gpt-oss:120b", "notes": "Bone‑fork melee weapon about 0.8 m reach: a single wooden‑tinted handle lying on its side along X that runs straight into the tip block, then three prongs extending forward (+Z). Overall size ≈0.55 m long × 0.20 m wide × 0.03 m thick.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.025,-0.005,-0.102],"rot":[0.0,0.0,90.0],"size":[0.02,0.7,0.02],"color":[0.58,0.58,0.62],"smooth":0.12,"metal":0.0},
+  {"name":"HandleGrip","shape":"cylinder","pos":[0.295,-0.0,-0.102],"rot":[0.0,0.0,90.0],"size":[0.025,0.04,0.025],"color":[0.45,0.45,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.35,-0.0,-0.102],"rot":[0.0,0.0,0.0],"size":[0.05,0.03,0.08],"color":[0.6,0.6,0.64],"smooth":0.1,"metal":0.0},
+  {"name":"ProngCenter","shape":"cylinder","pos":[0.35,-0.0,0.038],"rot":[90.0,0.0,0.0],"size":[0.012,0.2,0.012],"color":[0.58,0.58,0.62],"smooth":0.12,"metal":0.0},
+  {"name":"ProngLeft","shape":"cylinder","pos":[0.35,0.02,0.038],"rot":[90.0,0.0,0.0],"size":[0.012,0.2,0.012],"color":[0.58,0.58,0.62],"smooth":0.12,"metal":0.0},
+  {"name":"ProngRight","shape":"cylinder","pos":[0.35,-0.02,0.038],"rot":[90.0,0.0,0.0],"size":[0.012,0.2,0.012],"color":[0.58,0.58,0.62],"smooth":0.12,"metal":0.0},
+  {"name":"ProngTipCenter","shape":"cube","pos":[0.35,-0.0,0.138],"rot":[0.0,0.0,0.0],"size":[0.014,0.014,0.008],"color":[0.55,0.55,0.58],"smooth":0.15,"metal":0.0},
+  {"name":"ProngTipLeft","shape":"cube","pos":[0.35,0.02,0.138],"rot":[0.0,0.0,0.0],"size":[0.014,0.014,0.008],"color":[0.55,0.55,0.58],"smooth":0.15,"metal":0.0},
+  {"name":"ProngTipRight","shape":"cube","pos":[0.35,-0.02,0.138],"rot":[0.0,0.0,0.0],"size":[0.014,0.014,0.008],"color":[0.55,0.55,0.58],"smooth":0.15,"metal":0.0}
+]}

@@ -1,0 +1,16 @@
+{"version": 1, "id": "CannedPeaches_Box", "baseHeight": 0.1375, "name": "Canned Peaches Box", "model": "gpt-oss:120b", "notes": "Rectangular cardboard box ~0.32 m L × 0.22 m W × 0.15 m H (tint golden‑tan) standing upright, containing four standard peach cans (metal gray with peach‑orange label band). The lid flap is shown slightly open for readability.", "score": 7, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.15,0.22],"color":[0.75,0.68,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"BoxLidFlap","shape":"cube","pos":[0.0,0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.32,0.005,0.22],"color":[0.73,0.66,0.43],"smooth":0.1,"metal":0.0},
+  {"name":"CanA","shape":"cylinder","pos":[-0.07,0.0125,-0.05],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"CanB","shape":"cylinder","pos":[0.07,0.0125,-0.05],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"CanC","shape":"cylinder","pos":[-0.07,0.0125,0.05],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"CanD","shape":"cylinder","pos":[0.07,0.0125,0.05],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.78,0.78,0.8],"smooth":0.55,"metal":1.0},
+  {"name":"LabelA","shape":"cylinder","pos":[-0.07,0.0675,-0.05],"rot":[0.0,0.0,0.0],"size":[0.072,0.004,0.072],"color":[0.92,0.6,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LabelB","shape":"cylinder","pos":[0.07,0.0675,-0.05],"rot":[0.0,0.0,0.0],"size":[0.072,0.004,0.072],"color":[0.92,0.6,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LabelC","shape":"cylinder","pos":[-0.07,0.0675,0.05],"rot":[0.0,0.0,0.0],"size":[0.072,0.004,0.072],"color":[0.92,0.6,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LabelD","shape":"cylinder","pos":[0.07,0.0675,0.05],"rot":[0.0,0.0,0.0],"size":[0.072,0.004,0.072],"color":[0.92,0.6,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"PeachSphere1","shape":"sphere","pos":[-0.07,0.0425,-0.05],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.96,0.55,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"PeachSphere2","shape":"sphere","pos":[0.07,0.0425,-0.05],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.96,0.55,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"PeachSphere3","shape":"sphere","pos":[-0.07,0.0425,0.05],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.96,0.55,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"PeachSphere4","shape":"sphere","pos":[0.07,0.0425,0.05],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.96,0.55,0.35],"smooth":0.2,"metal":0.0}
+]}

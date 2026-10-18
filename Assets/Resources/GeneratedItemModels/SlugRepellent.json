@@ -1,0 +1,9 @@
+{"version": 1, "id": "SlugRepellent", "baseHeight": 0.205, "name": "Slug Repellent", "model": "gpt-oss:120b", "notes": "Slug Repellent spray bottle ~0.12 m diameter × 0.29 m tall, lying on its side (upright) on the floor: brown‑tinted plastic body, metal pump cap, thin label around mid‑section and a small nozzle protruding forward.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.02,-0.0183],"rot":[0.0,0.0,0.0],"size":[0.12,0.25,0.12],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.0,0.125,-0.0183],"rot":[0.0,0.0,0.0],"size":[0.13,0.04,0.13],"color":[0.78,0.78,0.79],"smooth":0.6,"metal":1.0},
+  {"name":"Label","shape":"cylinder","pos":[0.0,-0.02,-0.0183],"rot":[0.0,0.0,0.0],"size":[0.122,0.002,0.122],"color":[0.38,0.34,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"Nozzle","shape":"cylinder","pos":[0.0,0.125,0.0517],"rot":[90.0,0.0,0.0],"size":[0.02,0.04,0.02],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Trigger","shape":"cube","pos":[0.0,0.12,0.0717],"rot":[0.0,15.0,0.0],"size":[0.015,0.005,0.02],"color":[0.55,0.53,0.48],"smooth":0.2,"metal":0.0},
+  {"name":"BaseRing","shape":"cylinder","pos":[0.0,-0.135,-0.0183],"rot":[0.0,0.0,0.0],"size":[0.13,0.008,0.13],"color":[0.3,0.28,0.25],"smooth":0.15,"metal":0.0},
+  {"name":"SprayGuard","shape":"cube","pos":[0.0,0.125,0.0267],"rot":[0.0,0.0,0.0],"size":[0.06,0.004,0.03],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0}
+]}

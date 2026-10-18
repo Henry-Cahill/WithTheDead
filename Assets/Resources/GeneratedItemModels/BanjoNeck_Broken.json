@@ -1,0 +1,12 @@
+{"version": 1, "id": "BanjoNeck_Broken", "baseHeight": 0.1116, "name": "Banjo Neck Broken", "model": "gpt-oss:120b", "notes": "Broken banjo neck – ~1.2 m long wooden shaft lying on its side (X‑axis) with the snapped business end pointing +X. Main shaft touches a broken tip, a jagged break edge, a thin metal reinforcement strip and a loose bundle of strings. Metal head plate and four tuning pegs sit at the far end.", "score": 6, "parts": [
+  {"name":"ShaftMain","shape":"cylinder","pos":[-0.2,-0.025,-0.0143],"rot":[0.0,0.0,90.0],"size":[0.04,0.8,0.04],"color":[0.6,0.6,0.64],"smooth":0.12,"metal":0.0},
+  {"name":"BrokenTip","shape":"cylinder","pos":[0.4,-0.025,-0.0143],"rot":[0.0,0.0,90.0],"size":[0.04,0.4,0.04],"color":[0.6,0.6,0.64],"smooth":0.12,"metal":0.0},
+  {"name":"BreakEdge","shape":"cube","pos":[0.2,0.0,0.0157],"rot":[15.0,0.0,0.0],"size":[0.06,0.08,0.1],"color":[0.55,0.55,0.6],"smooth":0.12,"metal":0.0},
+  {"name":"MetalReinf","shape":"cylinder","pos":[0.05,-0.005,-0.0143],"rot":[0.0,0.0,90.0],"size":[0.015,0.3,0.015],"color":[0.48,0.48,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"HeadPlate","shape":"cube","pos":[0.55,-0.015,-0.0143],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.12],"color":[0.45,0.45,0.48],"smooth":0.4,"metal":1.0},
+  {"name":"TuningPegA","shape":"cylinder","pos":[0.5,-0.005,0.0107],"rot":[0.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.48,0.48,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"TuningPegB","shape":"cylinder","pos":[0.5,-0.005,-0.0393],"rot":[0.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.48,0.48,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"TuningPegC","shape":"cylinder","pos":[0.525,-0.005,-0.0143],"rot":[0.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.48,0.48,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"TuningPegD","shape":"cylinder","pos":[0.525,-0.005,-0.0143],"rot":[-180.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.48,0.48,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"StringBundle","shape":"cylinder","pos":[-0.3,-0.02,-0.0143],"rot":[0.0,0.0,90.0],"size":[0.006,0.6,0.006],"color":[0.45,0.45,0.5],"smooth":0.2,"metal":0.0}
+]}

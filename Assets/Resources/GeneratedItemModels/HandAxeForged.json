@@ -1,0 +1,12 @@
+{"version": 1, "id": "HandAxeForged", "baseHeight": 0.105, "name": "Hand Axe Forged", "model": "gpt-oss:120b", "notes": "Hand axe forged ~1.1 m total length, wooden handle (≈0.9 m) lying on its side along X with metal head at the +X end; blade extends forward (+Z) and a small back‑spike points rearward. Includes wood grip, leather strap, steel butt cap and rivets.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[0.01,-0.005,-0.075],"rot":[0.0,0.0,90.0],"size":[0.04,0.9,0.04],"color":[0.45,0.3,0.15],"smooth":0.15,"metal":0.0},
+  {"name":"ButtCap","shape":"sphere","pos":[-0.46,0.015,-0.075],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"HeadBlock","shape":"cube","pos":[0.45,0.005,-0.075],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.12],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"Blade","shape":"cube","pos":[0.45,0.01,0.085],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.2],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"SpikeBack","shape":"cylinder","pos":[0.45,0.005,-0.145],"rot":[90.0,0.0,0.0],"size":[0.015,0.08,0.015],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetL","shape":"cylinder","pos":[0.45,0.02,-0.115],"rot":[0.0,0.0,90.0],"size":[0.008,0.03,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[0.45,0.02,-0.035],"rot":[0.0,0.0,90.0],"size":[0.008,0.03,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetTop","shape":"cylinder","pos":[0.45,0.035,-0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"RivetBottom","shape":"cylinder","pos":[0.45,-0.035,-0.075],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.6,0.6,0.64],"smooth":0.55,"metal":1.0},
+  {"name":"LeatherStrap","shape":"cylinder","pos":[0.31,0.02,-0.075],"rot":[0.0,0.0,90.0],"size":[0.025,0.2,0.025],"color":[0.3,0.15,0.05],"smooth":0.1,"metal":0.0}
+]}

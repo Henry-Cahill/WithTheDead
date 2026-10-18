@@ -1,0 +1,12 @@
+{"version": 1, "id": "Sheep_Skull", "baseHeight": 0.1562, "name": "Sheep Skull", "model": "gpt-oss:120b", "notes": "Sheep skull ~0.25 m long x 0.15 m wide x 0.12 m high, lying on its side (long axis along +X). Main bone body, lower jaw, two curved horns and a few suture‑line details.", "score": 6, "parts": [
+  {"name":"Cranium","shape":"sphere","pos":[0.0187,-0.0362,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.12,0.16],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Jaw","shape":"cube","pos":[-0.0713,-0.0712,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.14],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"HornL","shape":"cylinder","pos":[0.0787,0.0238,0.07],"rot":[0.0,-20.0,30.0],"size":[0.03,0.15,0.03],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"HornR","shape":"cylinder","pos":[0.0787,0.0238,-0.07],"rot":[0.0,-20.0,-30.0],"size":[0.03,0.15,0.03],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"SutureFront","shape":"cube","pos":[-0.0013,-0.0162,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.14],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SutureSideL","shape":"cube","pos":[0.0587,-0.0162,0.06],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.006],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SutureSideR","shape":"cube","pos":[0.0587,-0.0162,-0.06],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.006],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"NasalBone","shape":"cube","pos":[-0.0513,-0.0612,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.06],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"EyeSocketL","shape":"cylinder","pos":[0.0037,-0.0162,0.04],"rot":[90.0,0.0,0.0],"size":[0.018,0.025,0.018],"color":[0.48,0.46,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"EyeSocketR","shape":"cylinder","pos":[0.0037,-0.0162,-0.04],"rot":[90.0,0.0,0.0],"size":[0.018,0.025,0.018],"color":[0.48,0.46,0.4],"smooth":0.05,"metal":0.0}
+]}

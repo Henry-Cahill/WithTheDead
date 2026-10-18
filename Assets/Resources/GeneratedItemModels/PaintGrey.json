@@ -1,0 +1,9 @@
+{"version": 1, "id": "PaintGrey", "baseHeight": 0.2188, "name": "Paint Grey", "model": "gpt-oss:120b", "notes": "Upright grey paint bucket about 0.25 m diameter × 0.30 m tall, standing on the floor. Main body (plastic), a thin metal rim, snap‑on lid, a simple metal handle across the front and a rectangular label on one side.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.0088,-0.0168],"rot":[0.0,0.0,0.0],"size":[0.25,0.3,0.25],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,0.1362,-0.0168],"rot":[0.0,0.0,0.0],"size":[0.27,0.01,0.27],"color":[0.55,0.53,0.45],"smooth":0.25,"metal":0.0},
+  {"name":"Lid","shape":"cylinder","pos":[0.0,0.1512,-0.0168],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.22],"color":[0.62,0.6,0.52],"smooth":0.3,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.0,0.1213,-0.1467],"rot":[0.0,0.0,90.0],"size":[0.015,0.16,0.015],"color":[0.7,0.7,0.7],"smooth":0.6,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.0612,0.1133],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.08],"color":[0.4,0.42,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.0,0.0622,0.1133],"rot":[0.0,0.0,0.0],"size":[0.182,0.002,0.082],"color":[0.3,0.32,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[0.0,0.0602,0.1133],"rot":[0.0,0.0,0.0],"size":[0.182,0.002,0.082],"color":[0.3,0.32,0.35],"smooth":0.05,"metal":0.0}
+]}

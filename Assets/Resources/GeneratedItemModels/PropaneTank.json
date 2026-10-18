@@ -1,0 +1,10 @@
+{"version": 1, "id": "PropaneTank", "baseHeight": 0.193, "name": "Propane Tank", "model": "gpt-oss:120b", "notes": "Propane tank lying on its side (≈0.50 m long × 0.25 m diameter). Main steel body, valve assembly at one end, safety label wrapped around the middle and a thin seam ridge.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.06,-0.007,-0.0663],"rot":[0.0,0.0,90.0],"size":[0.25,0.5,0.25],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"SeamRing","shape":"cylinder","pos":[-0.06,-0.007,-0.0663],"rot":[0.0,0.0,90.0],"size":[0.252,0.5,0.252],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"ValveBody","shape":"cylinder","pos":[0.26,0.053,-0.0663],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.12],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"ValveCap","shape":"sphere","pos":[0.26,0.103,-0.0663],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.4,0.38,0.35],"smooth":0.65,"metal":1.0},
+  {"name":"BaseDisc","shape":"cylinder","pos":[-0.31,-0.002,-0.0663],"rot":[0.0,0.0,90.0],"size":[0.255,0.02,0.255],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"LabelBack","shape":"cube","pos":[-0.06,-0.007,0.0638],"rot":[0.0,0.0,0.0],"size":[0.4,0.005,0.25],"color":[0.9,0.9,0.9],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[-0.06,-0.004,0.0638],"rot":[0.0,0.0,0.0],"size":[0.42,0.002,0.26],"color":[0.2,0.2,0.2],"smooth":0.12,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[-0.06,-0.01,0.0638],"rot":[0.0,0.0,0.0],"size":[0.42,0.002,0.26],"color":[0.2,0.2,0.2],"smooth":0.12,"metal":0.0}
+]}

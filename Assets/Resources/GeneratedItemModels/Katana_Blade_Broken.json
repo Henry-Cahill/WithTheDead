@@ -1,0 +1,8 @@
+{"version": 1, "id": "Katana_Blade_Broken", "baseHeight": 0.0638, "name": "Katana Blade Broken", "model": "gpt-oss:120b", "notes": "Broken katana blade, total length ~0.8 m split into three pieces to show the fracture and slight curve: a straight root (0.35 m), a curved mid‑section (0.20 m) bent toward +Z, and a broken tip fragment (0.12 m) angled away. All parts lie flat on the floor (y≈0) with steel‑like tint 0.6 / 0.58 / 0.5, glossy metal surface.", "score": 6, "parts": [
+  {"name":"BladeRoot","shape":"cube","pos":[-0.0983,-0.0007,-0.0004],"rot":[0.0,0.0,0.0],"size":[0.35,0.006,0.03],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BladeCurve","shape":"cube","pos":[0.0517,-0.0007,0.0146],"rot":[0.0,15.0,0.0],"size":[0.2,0.006,0.03],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"BrokenTip","shape":"cube","pos":[0.2117,-0.0007,-0.0204],"rot":[0.0,-20.0,0.0],"size":[0.12,0.006,0.03],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeRimRoot","shape":"cube","pos":[-0.0983,0.0027,-0.0004],"rot":[0.0,0.0,0.0],"size":[0.35,0.002,0.03],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeRimCurve","shape":"cube","pos":[0.0517,0.0027,0.0146],"rot":[0.0,15.0,0.0],"size":[0.2,0.002,0.03],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeRimTip","shape":"cube","pos":[0.2117,0.0027,-0.0204],"rot":[0.0,-20.0,0.0],"size":[0.12,0.002,0.03],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0}
+]}

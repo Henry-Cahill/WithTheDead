@@ -1,0 +1,12 @@
+{"version": 1, "id": "CarrotSeed", "baseHeight": 0.0619, "name": "Carrot Seed", "model": "gpt-oss:120b", "notes": "Small carrot‑seed packet ~2 cm × 1.5 cm × 0.25 cm lying flat on the ground. Brown paper envelope with a white label and a few orange seed specks visible on top.", "score": 7, "parts": [
+  {"name":"EnvelopeBody","shape":"cube","pos":[-0.002,-0.0009,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Flap","shape":"cube","pos":[0.01,-0.0006,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.0025,0.015],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBase","shape":"cube","pos":[-0.002,0.0001,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.013],"color":[0.93,0.92,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"LabelBorder","shape":"cube","pos":[-0.002,0.0001,0.0],"rot":[0.0,0.0,0.0],"size":[0.019,0.002,0.014],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"Seed1","shape":"sphere","pos":[-0.006,0.0009,-0.003],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.95,0.5,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Seed2","shape":"sphere","pos":[-0.001,0.0009,0.002],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.95,0.5,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Seed3","shape":"sphere","pos":[-0.009,0.0009,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.95,0.5,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Seed4","shape":"sphere","pos":[0.003,0.0009,-0.004],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.95,0.5,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Seed5","shape":"sphere","pos":[0.004,0.0009,0.003],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.95,0.5,0.2],"smooth":0.3,"metal":0.0},
+  {"name":"Seed6","shape":"sphere","pos":[-0.004,0.0009,0.004],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.95,0.5,0.2],"smooth":0.3,"metal":0.0}
+]}

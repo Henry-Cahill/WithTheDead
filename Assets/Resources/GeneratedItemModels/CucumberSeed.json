@@ -1,0 +1,10 @@
+{"version": 1, "id": "CucumberSeed", "baseHeight": 0.0726, "name": "Cucumber Seed", "model": "gpt-oss:120b", "notes": "Cucumber seed packet ~2 cm long × 1.5 cm wide × 0.4 cm thick, green‑brown tint with a light label strip; a tiny loose pile of seeds sits on top.", "score": 6, "parts": [
+  {"name":"BagBody","shape":"cube","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"LabelStrip","shape":"cube","pos":[-0.006,0.0022,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.002,0.014],"color":[0.8,0.75,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0,0.0021,0.0],"rot":[90.0,0.0,0.0],"size":[0.021,0.002,0.021],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[0.0,-0.0021,0.0],"rot":[90.0,0.0,0.0],"size":[0.021,0.002,0.021],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"SeedPile","shape":"sphere","pos":[0.003,0.0045,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.45,0.55,0.35],"smooth":0.4,"metal":0.0},
+  {"name":"Seed1","shape":"sphere","pos":[0.0025,0.0048,-0.001],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.45,0.55,0.35],"smooth":0.4,"metal":0.0},
+  {"name":"Seed2","shape":"sphere","pos":[0.0035,0.0049,0.001],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.45,0.55,0.35],"smooth":0.4,"metal":0.0},
+  {"name":"Seed3","shape":"sphere","pos":[0.0032,0.0051,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[0.45,0.55,0.35],"smooth":0.4,"metal":0.0}
+]}
