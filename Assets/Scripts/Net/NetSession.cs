@@ -73,6 +73,8 @@ namespace CloneZ
         public static bool Active => Instance != null && Instance._nm != null && (Instance._nm.IsServer || Instance._nm.IsConnectedClient);
         public static NetworkManager NM => Instance != null ? Instance._nm : null;
         public static readonly Dictionary<ulong, NetClientInfo> Clients = new Dictionary<ulong, NetClientInfo>();
+        /// <summary>Server: a client dropped out of the session (camps and cars they brought leave with them).</summary>
+        public static event Action<ulong> ClientLeft;
 
         private NetworkManager _nm;
         private UnityTransport _utp;
@@ -195,6 +197,7 @@ namespace CloneZ
                     o.S(SandboxSettings.Current.ToJson());
                     WriteHostStage(o);
                     o.F(TimeOfDay.Instance != null ? TimeOfDay.Instance.Hour : 12f);
+                    o.S(CentralEconomy.ToJson());
                     SendTo(id, "cz.session", o, NetworkDelivery.ReliableFragmentedSequenced);
                 }
                 GameEvents.RaiseToast((Clients.TryGetValue(id, out NetClientInfo ci) ? ci.Name : "A runner") + " joined.");
@@ -216,6 +219,8 @@ namespace CloneZ
                 Clients.Remove(id);
                 NetPlayers.RemoveProxy(id);
                 BroadcastRoster();
+                try { ClientLeft?.Invoke(id); }
+                catch (Exception e) { Debug.LogException(e); }
                 return;
             }
             // We were dropped (or refused).
@@ -314,6 +319,7 @@ namespace CloneZ
             if (s != null) SandboxSettings.Adopt(s);
             ReadHostStage(m);
             NetWorld.PendingHour = m.F();
+            CentralEconomy.Adopt(m.S());
             GameSession.AutoStartHub = true;
             GameSession.AutoStartRaid = false;
             GameFlow.Reload();

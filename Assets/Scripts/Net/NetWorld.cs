@@ -232,26 +232,39 @@ namespace CloneZ
             List<StackSave> items = ProfileStore.ToSaves(c.Contents);
             using (var o = new NetOut(512, 1 << 16))
             {
-                o.S(KeyOf(c));
+                o.S(KeyOf(c)).B(true);
                 NetCodec.Write(o, items);
                 NetSession.ToServer("cz.cont", o, NetworkDelivery.ReliableFragmentedSequenced);
+            }
+        }
+
+        /// <summary>Server: a container's contents changed without anyone opening it (the Central Economy restocked it).</summary>
+        public static void BroadcastContents(LootContainer c)
+        {
+            if (!NetSession.Active || c == null || !NetSession.NM.IsServer) return;
+            using (var o = new NetOut(512, 1 << 16))
+            {
+                o.S(KeyOf(c)).B(c.Searched);
+                NetCodec.Write(o, ProfileStore.ToSaves(c.Contents));
+                NetSession.ToClients("cz.cont", o, NetworkDelivery.ReliableFragmentedSequenced);
             }
         }
 
         private static void OnContents(ulong sender, NetIn m)
         {
             string key = m.S();
+            bool searched = m.B();
             List<StackSave> items = NetCodec.ReadSaves(m);
             if (NetSession.NM.IsServer)
                 using (var o = new NetOut(512, 1 << 16))
                 {
-                    o.S(key);
+                    o.S(key).B(searched);
                     NetCodec.Write(o, items);
                     NetSession.ToClients("cz.cont", o, NetworkDelivery.ReliableFragmentedSequenced, sender);
                 }
             if (sender == NetSession.NM.LocalClientId) return;
             LootContainer c = Find(key);
-            if (c != null) c.RestoreContents(true, items);
+            if (c != null) c.RestoreContents(searched, items);
         }
 
         private static void SendGround(bool drop, ItemDef def, int n, Vector3 at, ItemExtra extra)
@@ -259,6 +272,9 @@ namespace CloneZ
             if (!NetSession.Active || def == null) return;
             using (var o = new NetOut(96)) { o.B(drop).S(def.Id).I(n).V(at).S(extra != null ? ItemExtra.Serialize(extra) : ""); NetSession.ToServer("cz.ground", o); }
         }
+
+        /// <summary>Server: a ground item vanished on its own (the Central Economy's lifetime) — gone for everyone.</summary>
+        public static void GroundGone(ItemDef def, int n, Vector3 at) => SendGround(false, def, n, at, null);
 
         private static void OnGround(ulong sender, NetIn m)
         {

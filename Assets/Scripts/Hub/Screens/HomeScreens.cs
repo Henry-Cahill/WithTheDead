@@ -311,6 +311,8 @@ namespace CloneZ
             HubUI.Heading(b, "Loot, needs and death", 18);
             UIKit.Slider(b, "Loot abundance", 0.2f, 3f, s.LootAbundance, v => s.LootAbundance = v);
             UIKit.Toggle(b, "Central economy (loot targets)", s.CentralEconomy, v => s.CentralEconomy = v);
+            HubUI.Para(b, "Loot targets live in " + CentralEconomy.FilePath + " (nominal, min, lifetime, restock per category and item).", 12, UIKit.TextDim);
+            HubUI.Btn(b, "Reload economy.json", () => { CentralEconomy.Load(); Report(true, "Economy reloaded: " + CentralEconomy.Config.Categories.Count + " categories, " + CentralEconomy.Config.Items.Count + " item rules."); }, 260f, 30f, null, edit);
             UIKit.Slider(b, "Hunger rate", 0f, 3f, s.HungerRate, v => s.HungerRate = v);
             UIKit.Slider(b, "Thirst rate", 0f, 3f, s.ThirstRate, v => s.ThirstRate = v);
             UIKit.Toggle(b, "Tune needs to raid length", s.AutoTuneDrainToRaid, v => s.AutoTuneDrainToRaid = v);

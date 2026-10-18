@@ -25,6 +25,8 @@ namespace CloneZ
 
         public HumanoidRig Rig { get; private set; }
         public HumanoidAnimator Animator { get; private set; }
+        /// <summary>A seat that isn't a fixture (a car's driver's seat): the figure sits on it while set.</summary>
+        public Transform ExternalSeat;
 
         private PlayerController _controller;
         private PlayerCombat _combat;
@@ -150,7 +152,8 @@ namespace CloneZ
 
             // Sitting down or getting up sets the body down over the seat (or beside it) in one step: the figure
             // is eased across instead, and the step is no stride.
-            bool seated = _seat != null && _seat.IsSeated;
+            bool driving = ExternalSeat != null;
+            bool seated = driving || (_seat != null && _seat.IsSeated);
             if (_seat != null && _seat.Version != _seatVersion)
             {
                 _seatVersion = _seat.Version;
@@ -167,7 +170,12 @@ namespace CloneZ
             a.Reloading = _combat != null && _combat.IsReloading;
             a.Aiming = _aimHold > 0f || a.Reloading;
             a.Seated = seated;
-            if (seated)
+            if (driving)
+            {
+                a.SeatPoint = ExternalSeat.position;
+                a.SeatRecline = 0.2f;
+            }
+            else if (seated)
             {
                 a.SeatPoint = _seat.SeatPoint;
                 a.SeatRecline = Mathf.InverseLerp(0.35f, 0.9f, _seat.Comfort);

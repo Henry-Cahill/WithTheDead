@@ -38,7 +38,7 @@ namespace CloneZ
     /// </summary>
     public static class NetSocial
     {
-        public const float VoiceRange = 30f;
+        public static float VoiceRange => Mathf.Max(5f, SandboxSettings.Current.VoiceRange);
         public const int Channels = 8;
         public const int MaxSquad = 4;
 

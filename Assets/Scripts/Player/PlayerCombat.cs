@@ -249,7 +249,8 @@ namespace CloneZ
                 if (box != null && box.Owner != null) target = box.Owner.Damageable;
                 if (target == null) target = col.GetComponentInParent<IDamageable>();
                 if (target == null || target.IsDead || !_hitThisAction.Add(target)) continue;
-                if (target is BuildPiece || target is Barricade) continue;   // walls are battered by the dead, not swung at here
+                if (target is BuildPiece piece && !ZoneCamps.CanBash(piece.Owner)) continue;   // walls are battered by the dead —
+                if (target is Barricade planks && !ZoneCamps.CanBash(planks.Owner)) continue;  // and by raiders breaking into someone else's camp
                 Actor other = target.Transform != null ? target.Transform.GetComponent<Actor>() : null;
                 if (other != null && Me != null && !CanHarm(other)) continue;
 

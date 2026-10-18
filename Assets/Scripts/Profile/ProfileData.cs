@@ -13,6 +13,8 @@ namespace CloneZ
     {
         public int Version = 1;
         public string AccountName = "Runner";
+        /// <summary>A random id for this account (tells camps and cars apart when playing together).</summary>
+        public string Id;
         public int Season = 1;
         public long SeasonStartedUnix;
         public int Wipes;
@@ -120,6 +122,8 @@ namespace CloneZ
         public List<string> Flags = new List<string>();
         public List<string> UnlockedHubs = new List<string> { "kettle" };
         public string Hub = "kettle";
+        /// <summary>Saved kits (the field tablet's loadouts): worn pieces and carried items, refilled from the stash.</summary>
+        public List<LoadoutPreset> Loadouts = new List<LoadoutPreset>();
 
         // Statistics.
         public int Raids, Extracts, Deaths, Kills, PlayerKills, ScavRuns, ArtifactsFound;
@@ -267,6 +271,42 @@ namespace CloneZ
         public List<string> LootedContainers = new List<string>();
         public int EmissionsSeen;
         public long LastVisitUnix;
+        /// <summary>The runner's camp here (DayZ base building): it stands in the Zone only while its owner is in it.</summary>
+        public List<HousePieceSave> Camp = new List<HousePieceSave>();
+        public List<BarricadeSave> CampBarricades = new List<BarricadeSave>();
+        public List<CampGateSave> Gates = new List<CampGateSave>();
+        /// <summary>The cars found here, as they were left (parts, fuel, where they stand).</summary>
+        public List<VehicleSave> Vehicles = new List<VehicleSave>();
+    }
+
+    /// <summary>A saved kit (the field tablet's loadouts): what was worn and carried, refilled from the stash.</summary>
+    [Serializable]
+    public class LoadoutPreset
+    {
+        public string Name;
+        public List<string> Worn = new List<string>();
+        public List<StackSave> Carried = new List<StackSave>();
+    }
+
+    /// <summary>A gate hung in a camp doorway, and its combination lock.</summary>
+    [Serializable]
+    public class CampGateSave
+    {
+        public Vector3 Position;
+        public bool Open, Locked;
+        public string Code;
+    }
+
+    /// <summary>One car: which spot it was found at, its parts, its fuel, where it was left.</summary>
+    [Serializable]
+    public class VehicleSave
+    {
+        public int Spot;
+        public Vector3 Position;
+        public float Yaw;
+        public int Wheels;
+        public bool Battery, SparkPlug, Radiator, Hotwired;
+        public float Fuel, Engine = 1f, Charge = 1f;
     }
 
     [Serializable]
