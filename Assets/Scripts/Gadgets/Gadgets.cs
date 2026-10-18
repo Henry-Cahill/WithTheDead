@@ -139,7 +139,7 @@ namespace CloneZ
                 Vector3 next = transform.position + Quaternion.Euler(0f, _yaw, 0f) * Vector3.forward * speed * dt;
                 if (Physics.SphereCast(transform.position + Vector3.up * 0.15f, 0.15f, (next - transform.position).normalized, out _, Mathf.Abs(speed * dt) + 0.05f, ~(1 << CloneZConfig.IgnoreRaycastLayer), QueryTriggerInteraction.Ignore))
                     next = transform.position;
-                if (Physics.Raycast(next + Vector3.up, Vector3.down, out RaycastHit g, 3f, Actor.SightMask, QueryTriggerInteraction.Ignore)) next.y = g.point.y;
+                if (GroundProbe.Below(next + Vector3.up, 3f, transform, out float groundY)) next.y = groundY;
                 transform.SetPositionAndRotation(next, Quaternion.Euler(0f, _yaw, 0f));
                 _vel = Quaternion.Euler(0f, _yaw, 0f) * Vector3.forward * speed;
             }

@@ -736,7 +736,7 @@ namespace CloneZ
             else if (e.Kind == EntryKind.Floor) InfoLine(sb, "Status", "On the floor");
             if (s.Count > 1) InfoLine(sb, "Stack", "\u00d7" + s.Count + "  \u00b7  " + Kg(s.Weight) + " kg");
             if (d.IsDamageable)
-                InfoLine(sb, "Wear", Pct(s.Condition01) + "  (" + s.Condition + " / " + d.MaxCondition + ")"
+                InfoLine(sb, "Wear", ItemConditionTiers.Label(s.Condition01) + "  \u00b7  " + Pct(s.Condition01) + "  (" + s.Condition + " / " + d.MaxCondition + ")"
                     + (s.TimesRepaired > 0 ? "  \u00b7  repaired \u00d7" + s.TimesRepaired : ""));
             if (d.Perishable)
                 InfoLine(sb, "Freshness", s.State + "  \u00b7  " + Mathf.RoundToInt(s.AgeHours) + "h old of ~" + Mathf.RoundToInt(d.ShelfLifeHours) + "h");

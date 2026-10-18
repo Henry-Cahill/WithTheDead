@@ -23,7 +23,12 @@ namespace CloneZ
         private static Inventory s_Stash;
         private static CharacterProfile s_StashOwner;
 
-        public static string FilePath => Path.Combine(Application.persistentDataPath, FileName);
+        public static string FilePath => Path.Combine(Application.persistentDataPath, PathOverride ?? FileName);
+
+        /// <summary>Test harnesses only (see <see cref="SmokeTest"/>): a different profile file, and no touching the
+        /// player's legacy files. Set before anything loads the profile.</summary>
+        public static string PathOverride;
+        public static bool Sandboxed => PathOverride != null;
 
         public static long NowUnix => DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
@@ -145,6 +150,7 @@ namespace CloneZ
         // Before profiles there was one extracted-kit file; turn it into the first character's kit.
         private static void MigrateOldKit()
         {
+            if (Sandboxed) return;
             RaidKit old = RaidLoadout.LoadLegacyFile();
             if (old == null || old.IsEmpty) return;
             CharacterProfile c = NewCharacter("Clone Z", "drifter", new List<string>(), Factions.Freehold, "O+", false);

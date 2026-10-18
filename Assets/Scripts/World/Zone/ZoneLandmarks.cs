@@ -35,9 +35,10 @@ namespace CloneZ
                 Vector2 size = SizeOf(id);
                 float yaw = rng.Next(4) * 90f;
                 float edge = id == "cooling_tower" ? 18f : 10f;
-                if (!site.TryFind(rng, size, yaw, 2f, ZoneSiteMap.Hard | SiteCell.Edge, edge,
-                        p => Vector3.Distance(p, map.PlayerSpawn) < 30f ? -1f : (float)rng.NextDouble() + Vector3.Distance(p, map.PlayerSpawn) / 140f,
-                        120, out Vector3 at))
+                System.Func<Vector3, float> score = p => Vector3.Distance(p, map.PlayerSpawn) < 30f ? -1f : (float)rng.NextDouble() + Vector3.Distance(p, map.PlayerSpawn) / 140f;
+                // A crowded town may only have room with a tighter apron round the piece.
+                if (!site.TryFind(rng, size, yaw, 2f, ZoneSiteMap.Hard | SiteCell.Edge, edge, score, 120, out Vector3 at)
+                    && !site.TryFind(rng, size, yaw, 0.5f, ZoneSiteMap.Hard | SiteCell.Edge, edge, score, 0, out at))
                     continue;
                 var sb = new SiteBuilder(world, "Landmark_" + id, at, yaw, rng);
                 switch (id)
@@ -259,27 +260,30 @@ namespace CloneZ
                 Vector3 target = sides[s] * (half - (zone.HasCordon ? CordonRules.BeltWidth + 6f : 16f));
                 Vector3 pad = target;
                 if (site.TryFind(rng, new Vector2(10f, 10f), 0f, 1f, ZoneSiteMap.Hard | SiteCell.Edge, 4f,
-                        p => -Vector3.Distance(p, target), 160, out Vector3 found) && Vector3.Distance(found, target) < 26f)
+                        p => 1f / (1f + Vector3.Distance(p, target)), 160, out Vector3 found) && Vector3.Distance(found, target) < 26f)
                     pad = found;
                 site.Claim(pad, new Vector2(10f, 10f), 0f);
                 WorldMarkers.Add(WorldMarkers.Landing, pad);
                 ZoneWorld.LandingZones.Add(pad);
             }
 
-            int vehicles = 0;
-            for (int i = 0; i < 400 && vehicles < 4; i++)
+            // Cars left where they died: on a road or a lot inside the wire, with room to walk round them.
+            float carEdge = zone.HasCordon ? CordonRules.BeltWidth + 4f : 10f;
+            for (int i = 0; i < 4; i++)
             {
-                var p = new Vector3(ZoneKit.R(rng, -half + 10f, half - 10f), 0f, ZoneKit.R(rng, -half + 10f, half - 10f));
-                if ((site.At(p) & SiteCell.Paved) == 0 || site.Any(p, 3f, ZoneSiteMap.Hard)) continue;
-                site.MarkCircle(p, 3f, SiteCell.Taken);
-                WorldMarkers.Add(WorldMarkers.VehicleSpot, p);
-                vehicles++;
+                if (!site.TryFind(rng, new Vector2(5.5f, 5.5f), 0f, 0.25f, ZoneSiteMap.Hard, carEdge,
+                        p => (site.At(p) & SiteCell.Paved) != 0 && site.Coverage(p, 2.5f, SiteCell.Paved) >= 0.5f ? (float)rng.NextDouble() : -1f,
+                        100, out Vector3 car))
+                    break;
+                site.MarkCircle(car, 3f, SiteCell.Taken);
+                WorldMarkers.Add(WorldMarkers.VehicleSpot, car);
             }
 
             for (int i = 0; i < 2; i++)
             {
-                if (!site.TryFind(rng, new Vector2(12f, 12f), 0f, 2f, ZoneSiteMap.Hard | SiteCell.Edge, 12f,
-                        p => Vector3.Distance(p, map.PlayerSpawn) < 35f ? -1f : (float)rng.NextDouble(), 80, out Vector3 at))
+                System.Func<Vector3, float> score = p => Vector3.Distance(p, map.PlayerSpawn) < 35f ? -1f : (float)rng.NextDouble();
+                if (!site.TryFind(rng, new Vector2(12f, 12f), 0f, 2f, ZoneSiteMap.Hard | SiteCell.Edge, 12f, score, 80, out Vector3 at)
+                    && !site.TryFind(rng, new Vector2(12f, 12f), 0f, 0.5f, ZoneSiteMap.Hard | SiteCell.Edge, 12f, score, 0, out at))
                     continue;
                 site.Claim(at, new Vector2(12f, 12f), 0f);
                 WorldMarkers.Add(WorldMarkers.Outpost, at);

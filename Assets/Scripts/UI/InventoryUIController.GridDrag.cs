@@ -931,7 +931,7 @@ namespace CloneZ
             if (s.Count > 1) InfoLine(sb, "Stack", "\u00d7" + s.Count + "  \u00b7  " + Kg(s.Weight) + " kg");
             if (d.UsesCharge) InfoLine(sb, d.Gear == GearKind.GasMask ? "Filter" : "Battery", Pct(s.Charge01));
             else if (d.IsDamageable)
-                InfoLine(sb, "Wear", Pct(s.Condition01) + "  (" + s.Condition + " / " + d.MaxCondition + ")"
+                InfoLine(sb, "Wear", ItemConditionTiers.Label(s.Condition01) + "  \u00b7  " + Pct(s.Condition01) + "  (" + s.Condition + " / " + d.MaxCondition + ")"
                     + (s.TimesRepaired > 0 ? "  \u00b7  repaired \u00d7" + s.TimesRepaired : ""));
             if (d.Perishable)
                 InfoLine(sb, "Freshness", s.State + "  \u00b7  " + Mathf.RoundToInt(s.AgeHours) + "h old of ~" + Mathf.RoundToInt(d.ShelfLifeHours) + "h");
@@ -951,7 +951,7 @@ namespace CloneZ
             var sb = new System.Text.StringBuilder(200);
             InfoLine(sb, "Status", "Worn \u00b7 " + ev.Slot.ToString().ToLowerInvariant());
             if (p.Def.UsesCharge) InfoLine(sb, p.Def.Gear == GearKind.GasMask ? "Filter" : "Battery", Pct(p.Condition01));
-            else if (p.Def.IsDamageable) InfoLine(sb, "Wear", Pct(p.Condition01) + "  (" + p.Condition + " / " + p.Def.MaxCondition + ")");
+            else if (p.Def.IsDamageable) InfoLine(sb, "Wear", ItemConditionTiers.Label(p.Condition01) + "  \u00b7  " + Pct(p.Condition01) + "  (" + p.Condition + " / " + p.Def.MaxCondition + ")");
             sb.Append("\n<size=12><color=#8b93a0>Right-click or double-click to take it off</color></size>");
             ShowTooltip(p.Def, Rule + sb.ToString());
         }

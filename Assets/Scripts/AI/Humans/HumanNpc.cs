@@ -33,7 +33,7 @@ namespace CloneZ
         public Transform Transform => transform;
 
         /// <summary>A squad this person belongs to (A-Life), or null.</summary>
-        public object SquadTag;
+        [System.NonSerialized] public object SquadTag;
         /// <summary>Guard post / travel goal / the actor to follow.</summary>
         public Vector3 Goal;
         public Actor FollowTarget;
@@ -857,14 +857,14 @@ namespace CloneZ
             Actor a = _npc.Actor;
             if (a.Surrendered || a.Restrained)
             {
-                bool cuffs = ctx.Inventory != null && ctx.Inventory.Has("handcuffs");
+                string tie = ctx.Inventory == null ? null : ctx.Inventory.Has("handcuffs") ? "handcuffs" : ctx.Inventory.Has("rope") ? "rope" : null;
                 if (!a.Restrained)
-                    into.Add(new InteractAction("Restrain", c =>
+                    into.Add(new InteractAction(tie == "rope" ? "Tie their hands" : "Restrain", c =>
                     {
+                        if (tie == null || c.Inventory.Consume(tie, 1) <= 0) return;
                         a.Restrained = true;
-                        c.Inventory.Consume("handcuffs", 1);
                         Sfx.Play(SfxIds.Handcuffs, transform.position + Vector3.up, 0.7f, 1f, 10f);
-                    }).Timed(2f, "Cuffing...").DisabledIf(!cuffs, "Needs handcuffs"));
+                    }).Timed(2f, tie == "rope" ? "Tying..." : "Cuffing...").DisabledIf(tie == null, "Needs handcuffs or rope"));
                 into.Add(new InteractAction("Search", c =>
                 {
                     MoralLedger.Record("robbed someone who gave up", MoralLedger.RobbedHelpless);

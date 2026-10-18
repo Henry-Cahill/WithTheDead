@@ -40,5 +40,17 @@ namespace CloneZ.EditorTools
             Debug.Log("[CloneZBatch] Build result: " + report.summary.result + " (" + report.summary.totalErrors + " errors)");
             if (report.summary.result != BuildResult.Succeeded) EditorApplication.Exit(1);
         }
+
+        /// <summary>
+        /// Opens the game scene and enters play mode in a batch editor. Pair it with <c>-clonez-smoke solo|hunter|host|client</c>:
+        /// the runtime <see cref="CloneZ.SmokeTest"/> plays the flows and exits the editor with its result.
+        /// </summary>
+        public static void SmokePlay()
+        {
+            string scene = EditorBuildSettings.scenes.Where(s => s.enabled).Select(s => s.path).FirstOrDefault() ?? "Assets/Scenes/SampleScene.unity";
+            UnityEditor.SceneManagement.EditorSceneManager.OpenScene(scene);
+            Debug.Log("[CloneZBatch] Entering play mode in " + scene);
+            EditorApplication.EnterPlaymode();
+        }
     }
 }

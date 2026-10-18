@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace CloneZ
 {
-    /// <summary>One of the Zones left behind by the Visitation: a map with its own rules. Nobody explains why.</summary>
+    /// <summary>One of the Zones left behind by the Passing: a map with its own rules. Nobody explains why.</summary>
     public sealed class ZoneDef
     {
         public string Id, Name, Blurb, Rule;

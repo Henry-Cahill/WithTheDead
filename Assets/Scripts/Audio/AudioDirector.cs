@@ -14,7 +14,7 @@ namespace CloneZ
             var synth = new SfxSynth();
             Sfx.Backend = synth;
             _ = GameSettings.Current;   // loading applies the saved master volume
-#if UNITY_EDITOR || DEVELOPMENT_BUILD
+#if UNITY_EDITOR || DEBUG
             foreach (FieldInfo f in typeof(SfxIds).GetFields(BindingFlags.Public | BindingFlags.Static))
                 if (f.IsLiteral && f.GetValue(null) is string id && !synth.Has(id))
                     Debug.LogWarning("[CloneZ] No sound recipe for '" + id + "'.");

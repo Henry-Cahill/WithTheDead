@@ -143,7 +143,8 @@ namespace CloneZ
         /// Looks for a clear rect of <paramref name="size"/> (with <paramref name="margin"/> round it) free of every flag
         /// in <paramref name="mask"/>, at least <paramref name="edge"/> metres inside the map edge. Random candidates are
         /// scored by <paramref name="score"/> (higher is better; negative rejects) and the best of the first few valid
-        /// ones wins.
+        /// ones wins. When none of the <paramref name="tries"/> lands clear (a crowded town leaves only a few lots
+        /// open), every placement on a one-metre lattice is tried instead, so a spot that exists is always found.
         /// </summary>
         public bool TryFind(System.Random rng, Vector2 size, float yaw, float margin, SiteCell mask, float edge,
             Func<Vector3, float> score, int tries, out Vector3 found)
@@ -167,7 +168,39 @@ namespace CloneZ
                     found = p;
                 }
             }
-            return valid > 0;
+            return valid > 0 || Scan(rng, size, yaw, margin, mask, reach, score, out found);
+        }
+
+        // The exhaustive pass behind TryFind: a summed-area table of the masked cells makes each rect test four lookups.
+        private bool Scan(System.Random rng, Vector2 size, float yaw, float margin, SiteCell mask, float reach,
+            Func<Vector3, float> score, out Vector3 found)
+        {
+            found = Vector3.zero;
+            int w = _n + 1;
+            var sat = new int[w * w];
+            for (int z = 0; z < _n; z++)
+                for (int x = 0; x < _n; x++)
+                    sat[(z + 1) * w + x + 1] = ((_cells[z * _n + x] & mask) != 0 ? 1 : 0)
+                        + sat[z * w + x + 1] + sat[(z + 1) * w + x] - sat[z * w + x];
+
+            float best = float.NegativeInfinity;
+            bool any = false;
+            int steps = Mathf.FloorToInt(reach * 2f / CellSize);
+            for (int iz = 0; iz <= steps; iz++)
+                for (int ix = 0; ix <= steps; ix++)
+                {
+                    var p = new Vector3(-reach + ix * CellSize, 0f, -reach + iz * CellSize);
+                    Rect r = Grow(Footprint(p, size, yaw), margin);
+                    if (r.xMin < -Half || r.xMax > Half || r.yMin < -Half || r.yMax > Half) continue;
+                    int x0 = Ix(r.xMin), x1 = Ix(r.xMax - 0.001f), z0 = Ix(r.yMin), z1 = Ix(r.yMax - 0.001f);
+                    if (sat[(z1 + 1) * w + x1 + 1] - sat[z0 * w + x1 + 1] - sat[(z1 + 1) * w + x0] + sat[z0 * w + x0] != 0) continue;
+                    float s = score != null ? score(p) : (float)rng.NextDouble();
+                    if (s < 0f || s <= best) continue;
+                    best = s;
+                    found = p;
+                    any = true;
+                }
+            return any;
         }
 
         /// <summary>Marks a structure's footprint as taken.</summary>
@@ -198,7 +231,9 @@ namespace CloneZ
                 if (TryBounds(child, out Bounds b)) m.Mark(Grow(ToRect(b), 1.5f), SiteCell.Building);
             }
 
-            // Paving: the upward faces of the flat ground meshes standing a little proud of the snow.
+            // Paving: the upward faces of the flat ground meshes standing a little proud of the snow. The outdoor
+            // batches carry the odd standing scrap with the paving (a bin bag, a bottle), so faces are judged one at a
+            // time; a mesh is passed over whole only when it lies above the paving band or is too small to be paving.
             var filters = new List<MeshFilter>(64);
             world.GetComponentsInChildren(true, filters);
             for (int i = 0; i < filters.Count; i++)
@@ -208,7 +243,7 @@ namespace CloneZ
                 var mr = mf.GetComponent<MeshRenderer>();
                 if (mr == null || mr.shadowCastingMode != UnityEngine.Rendering.ShadowCastingMode.Off) continue;
                 Bounds rb = mr.bounds;
-                if (rb.size.y > 0.25f || rb.max.y > 0.3f) continue;
+                if (rb.min.y > PaveTop || (rb.size.x < PaveMinSpan && rb.size.z < PaveMinSpan)) continue;
                 RasterizeFlat(m, mf);
             }
 
@@ -259,7 +294,9 @@ namespace CloneZ
 
         private static Rect ToRect(Bounds b) => Rect.MinMaxRect(b.min.x, b.min.z, b.max.x, b.max.z);
 
-        // Marks the cells under each upward-facing triangle lying above the bare snow (snow patches sit lower).
+        // Marks the cells under each upward-facing triangle in the paving band: above the bare snow (snow patches sit
+        // lower), below anything standing (a bag's top, a step). Scraps (litter, leaves, slush) are no paving; paving
+        // comes in long pieces.
         private static void RasterizeFlat(ZoneSiteMap m, MeshFilter mf)
         {
             Mesh mesh = mf.sharedMesh;
@@ -271,16 +308,19 @@ namespace CloneZ
             for (int i = 0; i + 2 < t.Length; i += 3)
             {
                 Vector3 a = v[t[i]], b = v[t[i + 1]], c = v[t[i + 2]];
-                if (a.y < 0.008f || b.y < 0.008f || c.y < 0.008f) continue;
+                if (a.y < PaveBottom || b.y < PaveBottom || c.y < PaveBottom) continue;
+                if (a.y > PaveTop || b.y > PaveTop || c.y > PaveTop) continue;
                 Vector3 n = Vector3.Cross(b - a, c - a);
                 float len = n.magnitude;
                 if (len < 1e-6f || Mathf.Abs(n.y / len) < 0.7f) continue;
                 float x0 = Mathf.Min(a.x, Mathf.Min(b.x, c.x)), x1 = Mathf.Max(a.x, Mathf.Max(b.x, c.x));
                 float z0 = Mathf.Min(a.z, Mathf.Min(b.z, c.z)), z1 = Mathf.Max(a.z, Mathf.Max(b.z, c.z));
-                if (x1 - x0 < 0.05f && z1 - z0 < 0.05f) continue;
+                if (x1 - x0 < PaveMinSpan && z1 - z0 < PaveMinSpan) continue;
                 m.Mark(Rect.MinMaxRect(x0, z0, x1, z1), SiteCell.Paved);
             }
         }
+
+        private const float PaveBottom = 0.008f, PaveTop = 0.3f, PaveMinSpan = 1f;
         #endregion
     }
 }

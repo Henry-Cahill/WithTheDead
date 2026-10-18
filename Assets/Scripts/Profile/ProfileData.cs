@@ -306,7 +306,7 @@ namespace CloneZ
         public float Yaw;
         public int Wheels;
         public bool Battery, SparkPlug, Radiator, Hotwired;
-        public float Fuel, Engine = 1f, Charge = 1f;
+        public float Fuel, Engine = 1f, Charge = 1f, Tyres = 1f;
     }
 
     [Serializable]

@@ -163,4 +163,11 @@ namespace CloneZ
             s.Ensure().FoundInRaid = true;
         }
     }
+
+    /// <summary>DayZ's condition words: pristine, worn, damaged, badly damaged, ruined.</summary>
+    public static class ItemConditionTiers
+    {
+        public static string Label(float c01) =>
+            c01 <= 0f ? "Ruined" : c01 < 0.3f ? "Badly damaged" : c01 < 0.5f ? "Damaged" : c01 < 0.7f ? "Worn" : "Pristine";
+    }
 }

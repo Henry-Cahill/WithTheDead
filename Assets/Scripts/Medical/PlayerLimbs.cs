@@ -180,6 +180,7 @@ namespace CloneZ
             DamageZone(zone, hp, CauseFor(info.Kind, zone));
             if (_stats.IsDead) return;
             OpenWounds(info, zone, hp, penetrated);
+            if (info.Kind == DamageKind.Bullet || info.Kind == DamageKind.Explosion || info.Kind == DamageKind.Melee) GearCollateral(zone, hp, info.Kind);
             if (_blood != null && (info.Kind == DamageKind.Bullet || info.Kind == DamageKind.Explosion || info.Kind == DamageKind.Shock))
                 _blood.AddShock(hp * (penetrated ? 0.45f : 0.25f));
             _stats.Pain = Mathf.Min(CloneZConfig.PainMax, _stats.Pain + hp * (penetrated ? 0.35f : 0.5f));
@@ -256,6 +257,31 @@ namespace CloneZ
             if (loss <= 0f || _clothing == null || !piece.Exists) return;
             int dmg = Mathf.Max(1, Mathf.RoundToInt(loss * WeaponUpgrades.WearMult(piece.Extra)));
             _clothing.SetCondition(slot, Mathf.Max(0, piece.Condition - dmg), true);
+        }
+
+        // DayZ: a hit damages what's worn there — and a round through the back can ruin what's in the bag.
+        private void GearCollateral(BodyZone zone, float hp, DamageKind kind)
+        {
+            if (_clothing == null) return;
+            ClothingSlot worn = zone == BodyZone.Head ? ClothingSlot.Head
+                : zone == BodyZone.LeftLeg || zone == BodyZone.RightLeg ? ClothingSlot.Legs : ClothingSlot.Torso;
+            PlayerClothing.WornPiece p = _clothing.GetPiece(worn);
+            if (p.Exists && p.Def != null && p.Def.MaxCondition > 0 && Random.value < 0.6f)
+                _clothing.SetCondition(worn, Mathf.Max(0, p.Condition - Mathf.Max(1, Mathf.RoundToInt(hp * 0.05f))), true);
+            if (zone != BodyZone.Thorax && zone != BodyZone.Stomach && kind != DamageKind.Explosion) return;
+            if (Random.value > (kind == DamageKind.Explosion ? 0.6f : 0.3f)) return;
+            PlayerInventory inv = GetComponent<PlayerInventory>();
+            if (inv == null) return;
+            var carried = new System.Collections.Generic.List<ItemStack>();
+            foreach (ItemStack s in inv.Inventory.Stacks)
+                if (s != null && s.Def != null && s.Def.IsDamageable && s.Condition > 0 && s.Section != null && s.Section.Source != null
+                    && (s.Section.Slot == ClothingSlot.Back || s.Section.Slot == ClothingSlot.Rig))
+                    carried.Add(s);
+            if (carried.Count == 0) return;
+            ItemStack hit = carried[Random.Range(0, carried.Count)];
+            hit.Condition = Mathf.Max(0, hit.Condition - Mathf.Max(1, Mathf.RoundToInt(hit.Def.MaxCondition * Random.Range(0.05f, 0.2f))));
+            inv.Inventory.RaiseChanged();
+            if (hit.Condition == 0) GameEvents.RaiseToast("The hit ruined the " + hit.Def.DisplayName + " in your pack.");
         }
 
         /// <summary>Total resistance to a damage type: the survivor's own (traits, artifacts, Zone marks) plus worn suits.</summary>

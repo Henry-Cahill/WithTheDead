@@ -281,7 +281,7 @@ namespace CloneZ
             // The dead within 25 m go for the runner nearest the hunter.
             Actor prey = Actor.Nearest(at, 40f, a => (a.Kind == ActorKind.Player || a.Kind == ActorKind.RemotePlayer || a.Kind == ActorKind.Human) && hunter != null && hunter.IsHostileTo(a));
             if (prey == null) return;
-            foreach (ZombieAI z in UnityEngine.Object.FindObjectsByType<ZombieAI>(FindObjectsSortMode.None))
+            foreach (ZombieAI z in UnityEngine.Object.FindObjectsByType<ZombieAI>())
                 if (z != null && (z.transform.position - at).sqrMagnitude < 25f * 25f) z.Command(prey);
         }
     }

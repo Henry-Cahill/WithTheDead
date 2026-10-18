@@ -275,7 +275,7 @@ namespace CloneZ
     /// </summary>
     public sealed class CampGate : Interactable
     {
-        public static readonly List<CampGate> All = new List<CampGate>();
+        public static new readonly List<CampGate> All = new List<CampGate>();
         public BuildPiece Piece { get; private set; }
         public bool Hung { get; private set; }
         public bool Open { get; private set; }

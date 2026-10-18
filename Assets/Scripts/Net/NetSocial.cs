@@ -358,7 +358,7 @@ namespace CloneZ
     /// </summary>
     public sealed class VoiceCapture : MonoBehaviour
     {
-        private const int MicRate = 16000, FrameSamples = 320;
+        private const int MicrophoneRate = 16000, FrameSamples = 320;
         public static bool Talking { get; private set; }
         public static bool OnRadio { get; private set; }
         public static bool NoMicrophone { get; private set; }
@@ -369,8 +369,8 @@ namespace CloneZ
         private int _read;
         private readonly byte[] _frame = new byte[FrameSamples];
         private int _fill;
-        private float _carry;
-        private bool _odd;
+        private float _carry, _speakingUntil;
+        private bool _odd, _voiceActivated;
 
         public static void Ensure()
         {
@@ -384,13 +384,16 @@ namespace CloneZ
         {
             Actor me = Actor.LocalPlayer;
             bool alive = me != null && me.IsAlive;
-            bool proximity = GameInput.HeldRaw(GameAction.PushToTalk);
+            GameSettings gs = GameSettings.Current;
+            // Push-to-talk (Caps Lock) by default; with it off, the mic is open and frames go out while you speak.
+            bool proximity = !gs.PushToTalk || GameInput.HeldRaw(GameAction.PushToTalk);
             bool radio = GameInput.HeldRaw(GameAction.Radio) && NetSocial.HasWalkie && NetSocial.RadioChannel > 0;
-            bool want = NetSession.Active && alive && (proximity || radio) && !NoMicrophone;
+            bool want = NetSession.Active && alive && (proximity || radio) && gs.Microphone && !NoMicrophone;
             OnRadio = want && radio;
+            _voiceActivated = !gs.PushToTalk && !radio;
             if (want && _mic == null) Begin();
             else if (!want && _mic != null) End();
-            Talking = _mic != null;
+            Talking = _mic != null && (!_voiceActivated || Time.unscaledTime < _speakingUntil);
             if (_mic != null) Pump();
         }
 
@@ -402,8 +405,9 @@ namespace CloneZ
                 GameEvents.RaiseToast("No microphone found — voice is off.");
                 return;
             }
-            _device = Microphone.devices[0];
-            _mic = Microphone.Start(_device, true, 1, MicRate);
+            string wanted = GameSettings.Current.MicrophoneDevice;
+            _device = !string.IsNullOrEmpty(wanted) && System.Array.IndexOf(Microphone.devices, wanted) >= 0 ? wanted : Microphone.devices[0];
+            _mic = Microphone.Start(_device, true, 1, MicrophoneRate);
             _read = 0;
             _fill = 0;
             if (OnRadio) Sfx.PlayUI(SfxIds.UiClick, 0.6f);
@@ -442,6 +446,14 @@ namespace CloneZ
             var copy = new byte[_fill];
             Array.Copy(_frame, copy, _fill);
             _fill = 0;
+            if (_voiceActivated)
+            {
+                // Open mic: only frames loud enough to be speech go out (with a short hang so words aren't clipped).
+                float sum = 0f;
+                for (int i = 0; i < copy.Length; i++) { float s = MuLaw.Decode(copy[i]); sum += s * s; }
+                if (Mathf.Sqrt(sum / Mathf.Max(1, copy.Length)) > 0.02f) _speakingUntil = Time.unscaledTime + 0.35f;
+                if (Time.unscaledTime >= _speakingUntil) return;
+            }
             NetSocial.SendVoice(copy, OnRadio);
         }
 
@@ -571,6 +583,7 @@ namespace CloneZ
 
         private void LateUpdate()
         {
+            if (_src != null) _src.volume = (_radio ? 0.85f : 1f) * GameSettings.Current.VoiceVolume;
             if (_radio)
             {
                 Actor me = Actor.LocalPlayer;
@@ -634,8 +647,8 @@ namespace CloneZ
             {
                 if (GameInput.Held(GameAction.HandsUp))
                 {
-                    Struggle01 += Time.deltaTime / StruggleSeconds;
-                    if (Struggle01 >= 1f) { Free(); GameEvents.RaiseToast("You work your hands free of the cuffs."); }
+                    Struggle01 += Time.deltaTime / (TiedWith == "rope" ? StruggleSeconds * 0.6f : StruggleSeconds);
+                    if (Struggle01 >= 1f) { Free(); GameEvents.RaiseToast("You work your hands free."); }
                 }
                 return;
             }
@@ -646,17 +659,21 @@ namespace CloneZ
             }
         }
 
-        public void Cuff(string by)
+        public void Cuff(string by, string tie = "handcuffs")
         {
             if (_actor == null) return;
             _actor.Restrained = true;
             _actor.Surrendered = true;
             Struggle01 = 0f;
+            TiedWith = tie;
             Sfx.PlayUI(SfxIds.Handcuffs);
             PlayerInventory inv = GetComponent<PlayerInventory>();
             if (inv != null) inv.EquipBareHands();
-            GameEvents.RaiseToast(by + " cuffs your hands. Hold [" + GameInput.KeyName(GameAction.HandsUp) + "] to struggle free.");
+            GameEvents.RaiseToast(by + (tie == "rope" ? " ties your hands." : " cuffs your hands.") + " Hold [" + GameInput.KeyName(GameAction.HandsUp) + "] to struggle free.");
         }
+
+        /// <summary>What binds the hands ("handcuffs" or "rope"); rope comes off faster when struggling.</summary>
+        public string TiedWith { get; private set; } = "handcuffs";
 
         public void Free()
         {
@@ -682,18 +699,22 @@ namespace CloneZ
         {
             NetSocial.Peer("act.cuff", (from, m) =>
             {
+                string tie = m.S();
+                if (string.IsNullOrEmpty(tie)) tie = "handcuffs";
                 PlayerRestraint r = PlayerRestraint.Local;
                 PlayerStats st = r != null ? r.GetComponent<PlayerStats>() : null;
                 bool helpless = r != null && (r.HandsUp || (st != null && st.Incapacitated));
-                if (r == null || r.Cuffed || !helpless) { NetSocial.SendPeer(from, "act.refund", o => o.S("handcuffs").S("They pulled away.")); return; }
-                r.Cuff(NetSocial.NameOf(from));
+                if (r == null || r.Cuffed || !helpless) { NetSocial.SendPeer(from, "act.refund", o => o.S(tie).S("They pulled away.")); return; }
+                r.Cuff(NetSocial.NameOf(from), tie);
             });
             NetSocial.Peer("act.uncuff", (from, m) =>
             {
                 PlayerRestraint r = PlayerRestraint.Local;
                 if (r == null || !r.Cuffed) return;
+                string tie = r.TiedWith;
                 r.Free();
-                GameEvents.RaiseToast(NetSocial.NameOf(from) + " takes the cuffs off.");
+                GameEvents.RaiseToast(NetSocial.NameOf(from) + (tie == "rope" ? " cuts the rope." : " takes the cuffs off."));
+                if (tie == "handcuffs") NetSocial.SendPeer(from, "act.refund", o => o.S("handcuffs").S(""));
             });
             NetSocial.Peer("act.refund", (from, m) =>
             {
@@ -777,18 +798,16 @@ namespace CloneZ
             PlayerInventory inv = ctx.Inventory;
 
             if (helpless && !a.Restrained)
-                into.Add(new InteractAction("Cuff " + name, c =>
+            {
+                string tie = inv.Has("handcuffs") ? "handcuffs" : inv.Has("rope") ? "rope" : null;
+                into.Add(new InteractAction(tie == "rope" ? "Tie " + name + "'s hands" : "Cuff " + name, c =>
                 {
-                    if (c.Inventory.Consume("handcuffs", 1) <= 0) return;
-                    NetSocial.SendPeer(who, "act.cuff");
-                }).Timed(3f, "Cuffing...").DisabledIf(!inv.Has("handcuffs"), "You need handcuffs"));
+                    if (tie == null || c.Inventory.Consume(tie, 1) <= 0) return;
+                    NetSocial.SendPeer(who, "act.cuff", o => o.S(tie));
+                }).Timed(3f, tie == "rope" ? "Tying..." : "Cuffing...").DisabledIf(tie == null, "You need handcuffs or rope"));
+            }
             if (a.Restrained)
-                into.Add(new InteractAction("Take the cuffs off " + name, c =>
-                {
-                    NetSocial.SendPeer(who, "act.uncuff");
-                    ItemDef cuffs = ItemDatabase.Get("handcuffs");
-                    if (cuffs != null) c.Inventory.Inventory.Add(cuffs, 1, enforceWeight: false);
-                }).Timed(2f, "Unlocking..."));
+                into.Add(new InteractAction("Free " + name + "'s hands", c => NetSocial.SendPeer(who, "act.uncuff")).Timed(2f, "Freeing..."));
             if (helpless && !string.IsNullOrEmpty(_p.Held))
                 into.Add(new InteractAction("Make them drop the " + HumanUtil.Pretty(_p.Held), c => NetSocial.SendPeer(who, "act.disarm")));
             if (_p.Incapacitated)

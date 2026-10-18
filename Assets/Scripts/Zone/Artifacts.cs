@@ -11,7 +11,7 @@ namespace CloneZ
     /// </summary>
     public sealed class ArtifactNode : Interactable
     {
-        public static readonly List<ArtifactNode> All = new List<ArtifactNode>();
+        public static new readonly List<ArtifactNode> All = new List<ArtifactNode>();
 
         public string ArtifactId { get; private set; }
         public int Tier { get; private set; }

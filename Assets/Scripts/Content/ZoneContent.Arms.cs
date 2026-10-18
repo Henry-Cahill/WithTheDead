@@ -39,7 +39,7 @@ namespace CloneZ
             Ammo(b, "ammo545_ps", "5.45x39 PS Rounds", "545", 50f, 28f, 0.45f, 0.20f, "Standard rifle rounds. Steel core, decent penetration.");
             Ammo(b, "ammo545_bp", "5.45x39 BP Rounds", "545", 46f, 45f, 0.60f, 0.15f, "Armour-piercing. Rare, expensive, worth it.");
             ItemDef mg = Ammo(b, Currency, "Military-grade 5.45 (MG)", "545", 58f, 55f, 0.70f, 0.20f,
-                "Pre-Visitation military stock, still sealed. The best round in the Zone, and the only money anyone takes. Firing it means spending your savings.", 1, 500);
+                "pre-Passing military stock, still sealed. The best round in the Zone, and the only money anyone takes. Firing it means spending your savings.", 1, 500);
             Ballistics.Ammo(Currency).Currency = true;
             mg.Tint = new Color(0.86f, 0.74f, 0.32f);
             // 7.62x54R for the bolt-action rifle.

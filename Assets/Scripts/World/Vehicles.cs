@@ -13,13 +13,13 @@ namespace CloneZ
     /// </summary>
     public sealed class Vehicle : Interactable
     {
-        public static readonly List<Vehicle> All = new List<Vehicle>();
+        public static new readonly List<Vehicle> All = new List<Vehicle>();
         public const float TankLitres = 40f, MaxSpeed = 19f, ReverseSpeed = 5f;
 
         public int Spot { get; private set; }
         public int Wheels;
         public bool Battery, SparkPlug, Radiator, Hotwired;
-        public float Fuel, Engine = 1f, Charge = 1f, Heat;
+        public float Fuel, Engine = 1f, Charge = 1f, Heat, Tyres = 1f;
         public bool EngineOn { get; private set; }
         public float Speed { get; private set; }
         public PlayerStats Driver { get; private set; }
@@ -152,7 +152,7 @@ namespace CloneZ
         public VehicleSave Capture() => new VehicleSave
         {
             Spot = Spot, Position = transform.position, Yaw = transform.eulerAngles.y, Wheels = Wheels, Battery = Battery, SparkPlug = SparkPlug,
-            Radiator = Radiator, Hotwired = Hotwired, Fuel = Fuel, Engine = Engine, Charge = Charge,
+            Radiator = Radiator, Hotwired = Hotwired, Fuel = Fuel, Engine = Engine, Charge = Charge, Tyres = Tyres,
         };
 
         public void Load(VehicleSave s)
@@ -160,6 +160,7 @@ namespace CloneZ
             Wheels = Mathf.Clamp(s.Wheels, 0, 4);
             Battery = s.Battery; SparkPlug = s.SparkPlug; Radiator = s.Radiator; Hotwired = s.Hotwired;
             Fuel = Mathf.Clamp(s.Fuel, 0f, TankLitres); Engine = Mathf.Clamp01(s.Engine); Charge = Mathf.Clamp01(s.Charge);
+            Tyres = s.Tyres > 0f ? Mathf.Clamp01(s.Tyres) : 1f;
             RefreshParts();
         }
         #endregion
@@ -337,6 +338,7 @@ namespace CloneZ
                 if (impact > 7f)
                 {
                     Engine = Mathf.Max(0f, Engine - impact * 0.012f);
+                    Tyres = Mathf.Max(0f, Tyres - impact * 0.01f);
                     Sfx.Play(SfxIds.DoorBash, transform.position, 1f, 0.6f, 40f);
                     NoiseSystem.Emit(transform.position, 40f);
                     if (Driver != null) Driver.LimbDamage(impact * 1.5f, "a car crash");
@@ -350,6 +352,18 @@ namespace CloneZ
             _rb.MovePosition(next);
             _rb.MoveRotation(rot);
             RunOver();
+
+            // Tyres wear with distance; a worn one bursts (a wheel to replace).
+            Tyres = Mathf.Max(0f, Tyres - step.magnitude * 0.00003f);
+            if (Tyres <= 0f && Wheels > 0)
+            {
+                Wheels--;
+                Tyres = 0.7f;
+                RefreshParts();
+                Sfx.Play(SfxIds.Ricochet, transform.position, 1f, 0.5f, 40f);
+                GameEvents.RaiseToast("A tyre bursts. You'll need another wheel.");
+                Changed();
+            }
 
             // The engine: fuel, heat, charge.
             if (EngineOn)
@@ -382,11 +396,8 @@ namespace CloneZ
                     _wheels[i].localRotation = Quaternion.Euler(0f, i < 2 ? _steer * 25f : 0f, 90f) * Quaternion.Euler(0f, _wheelSpin, 0f);
         }
 
-        private static float GroundAt(Vector3 p)
-        {
-            if (Physics.Raycast(p + Vector3.up * 2f, Vector3.down, out RaycastHit hit, 4f, Actor.SightMask, QueryTriggerInteraction.Ignore)) return Mathf.Max(0f, hit.point.y);
-            return 0f;
-        }
+        // The surface under a point, never the car's own body (whose roof the ray starts above) nor anyone under the wheels.
+        private float GroundAt(Vector3 p) => GroundProbe.Below(p + Vector3.up * 2f, 4f, transform, out float y) ? Mathf.Max(0f, y) : 0f;
 
         // Anything alive in front of the bumper at speed is hit.
         private void RunOver()
@@ -534,7 +545,7 @@ namespace CloneZ
 
         public static HudVehicle Create()
         {
-            RectTransform slot = HudLayer.Anchor("Vehicle", new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, 180f), new Vector2(560f, 40f));
+            RectTransform slot = HudLayer.Anchor("Vehicle", new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, 180f), new Vector2(900f, 40f));
             var h = slot.gameObject.AddComponent<HudVehicle>();
             h._text = UIKit.Label(slot, "", 17, new Color(0.9f, 0.88f, 0.75f), TextAnchor.MiddleCenter);
             UIKit.Stretch(h._text.rectTransform);
@@ -548,7 +559,8 @@ namespace CloneZ
             Vehicle c = d.Car;
             _text.text = Mathf.RoundToInt(Mathf.Abs(c.Speed) * 3.6f) + " km/h   fuel " + c.Fuel.ToString("0.0") + " L   "
                 + (c.EngineOn ? (c.Radiator ? "running" : UIKit.Colored("heat " + Mathf.RoundToInt(c.Heat * 100f) + "%", UIKit.Warn)) : UIKit.Colored("engine off", UIKit.TextDim))
-                + (c.Engine < 0.5f ? UIKit.Colored("   engine damaged", UIKit.Bad) : "") + "   [E] get out";
+                + "   engine " + Mathf.RoundToInt(c.Engine * 100f) + "%  tyres " + Mathf.RoundToInt(c.Tyres * 100f) + "%  battery " + Mathf.RoundToInt(c.Charge * 100f) + "%"
+                + "   [E] get out";
         }
     }
 
@@ -654,16 +666,16 @@ namespace CloneZ
         }
 
         private static void Write(NetOut o, Vehicle v)
-            => o.I(v.Spot).V(v.transform.position).F(v.transform.eulerAngles.y).I(v.Wheels).B(v.Battery).B(v.SparkPlug).B(v.Radiator).B(v.Hotwired).F(v.Fuel).F(v.Engine).F(v.Charge);
+            => o.I(v.Spot).V(v.transform.position).F(v.transform.eulerAngles.y).I(v.Wheels).B(v.Battery).B(v.SparkPlug).B(v.Radiator).B(v.Hotwired).F(v.Fuel).F(v.Engine).F(v.Charge).F(v.Tyres);
 
         private static void OnState(ulong sender, NetIn m)
         {
             int spot = m.I();
-            var s = new VehicleSave { Spot = spot, Position = m.V(), Yaw = m.F(), Wheels = m.I(), Battery = m.B(), SparkPlug = m.B(), Radiator = m.B(), Hotwired = m.B(), Fuel = m.F(), Engine = m.F(), Charge = m.F() };
+            var s = new VehicleSave { Spot = spot, Position = m.V(), Yaw = m.F(), Wheels = m.I(), Battery = m.B(), SparkPlug = m.B(), Radiator = m.B(), Hotwired = m.B(), Fuel = m.F(), Engine = m.F(), Charge = m.F(), Tyres = m.F() };
             if (NetSession.NM.IsServer && sender != NetSession.NM.LocalClientId)
                 using (var o = new NetOut(96))
                 {
-                    o.I(spot).V(s.Position).F(s.Yaw).I(s.Wheels).B(s.Battery).B(s.SparkPlug).B(s.Radiator).B(s.Hotwired).F(s.Fuel).F(s.Engine).F(s.Charge);
+                    o.I(spot).V(s.Position).F(s.Yaw).I(s.Wheels).B(s.Battery).B(s.SparkPlug).B(s.Radiator).B(s.Hotwired).F(s.Fuel).F(s.Engine).F(s.Charge).F(s.Tyres);
                     NetSession.ToClients("cz.vehstate", o, Unity.Netcode.NetworkDelivery.ReliableSequenced, sender);
                 }
             Vehicle v = Find(spot);
@@ -675,6 +687,26 @@ namespace CloneZ
         internal static void AskForCars()
         {
             if (NetSession.Active && !NetSession.NM.IsServer) using (var o = new NetOut(8)) NetSession.ToServer("cz.vehq", o);
+        }
+    }
+
+    /// <summary>The ground under things that move themselves over it (cars, ground drones): the highest surface below,
+    /// skipping the mover's own body and anyone underfoot.</summary>
+    internal static class GroundProbe
+    {
+        private static readonly RaycastHit[] s_Hits = new RaycastHit[8];
+
+        public static bool Below(Vector3 from, float distance, Transform self, out float y)
+        {
+            int n = Physics.RaycastNonAlloc(from, Vector3.down, s_Hits, distance, Actor.SightMask, QueryTriggerInteraction.Ignore);
+            y = float.NegativeInfinity;
+            for (int i = 0; i < n; i++)
+            {
+                Collider c = s_Hits[i].collider;
+                if (c == null || (self != null && c.transform.IsChildOf(self)) || c.GetComponentInParent<Actor>() != null) continue;
+                y = Mathf.Max(y, s_Hits[i].point.y);
+            }
+            return y > float.NegativeInfinity;
         }
     }
 

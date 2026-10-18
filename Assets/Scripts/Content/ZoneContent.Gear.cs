@@ -38,7 +38,7 @@ namespace CloneZ
             Tool(b, "pda", "Dead Runner's PDA", 0.3f, 1, "Somebody's last messages. Sometimes a stash location, sometimes a route.", "Read");
             Tool(b, "map_zone", "Zone Map", 0.1f, 1, "A hand-annotated map of one Zone. No dot says where you are — that part is up to you.", "Unfold", 1, 1);
             Tool(b, "compass", "Compass", 0.1f, 1, "Points north. In the Zone, usually.", null);
-            Tool(b, "gps", "GPS Unit", 0.3f, 1, "Rare pre-Visitation receiver. Puts a dot on your map.", "Switch on");
+            Tool(b, "gps", "GPS Unit", 0.3f, 1, "Rare pre-Passing receiver. Puts a dot on your map.", "Switch on");
             Tool(b, "watch_wrist", "Wristwatch", 0.05f, 1, "Time, a filter timer and a little lamp that glows when you're easy to see.", null);
             Tool(b, "lodestar_page", "Burned Journal Page", 0.02f, 5, "Part of a pilgrim's journal. It mentions a light at the bottom of the Spillway.", "Read");
             Tool(b, "lodestar_hymnal", "Choir Hymnal", 0.2f, 1, "The Hollow Choir sing to something. The verses read like directions.", "Read");
