@@ -208,7 +208,7 @@ namespace CloneZ
                     WorldItem.Spawn(null, at + new Vector3(jitter.x, 0f, jitter.y), st.Def, st.Count,
                         st.Def.Perishable ? st.SpawnHours : float.NaN,
                         st.Def.IsDamageable ? st.Condition : -1,
-                        st.TimesRepaired);
+                        st.TimesRepaired, st.Extra);
                 }
                 c.Contents.Clear();
             }

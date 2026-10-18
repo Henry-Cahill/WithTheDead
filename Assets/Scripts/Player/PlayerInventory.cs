@@ -20,8 +20,24 @@ namespace CloneZ
         /// <summary>The pockets' grid (the survivor's base carry section).</summary>
         public const int PocketsWidth = 6, PocketsHeight = 4;
 
-        // Worn slots that can hold a container, in the order their sections are listed.
-        private static readonly ClothingSlot[] s_ContainerSlots = { ClothingSlot.Rig, ClothingSlot.Thigh, ClothingSlot.Back };
+        // Worn slots that can hold a container, in the order their sections are listed: a jacket's and a pair
+        // of trousers' own pockets (DayZ: the outfit is the loadout), the armour's pouches, the rig, the thigh
+        // bag, the backpack, and last the secure pouch whose contents survive death.
+        private static readonly ClothingSlot[] s_ContainerSlots =
+            { ClothingSlot.Torso, ClothingSlot.Legs, ClothingSlot.Armor, ClothingSlot.Rig, ClothingSlot.Thigh, ClothingSlot.Back, ClothingSlot.Pouch };
+
+        /// <summary>The secure pouch's grid section (null when none is worn).</summary>
+        public GridSection PouchSection
+        {
+            get
+            {
+                InventoryLayout layout = Layout;
+                if (layout == null) return null;
+                for (int i = 0; i < layout.Sections.Count; i++)
+                    if (layout.Sections[i].Slot == ClothingSlot.Pouch && layout.Sections[i].Source != null) return layout.Sections[i];
+                return null;
+            }
+        }
 
         public Inventory Inventory { get; private set; }
         public ItemDef EquippedWeapon { get; private set; }
@@ -202,6 +218,13 @@ namespace CloneZ
             if (stack == null || stack.Count <= 0) return;
             ItemDef def = stack.Def;
 
+            // Items a feature module knows how to use (bolts, splints, blood bags, books, artifacts...).
+            if (def.CustomUse && ItemActions.TryUse(this, stack))
+            {
+                Changed?.Invoke();
+                return;
+            }
+
             // Batteries, filters and the torch are handled by the gear rig (recharge / swap / switch on).
             if (def.IsRefill || def.Gear == GearKind.Flashlight)
             {
@@ -381,12 +404,12 @@ namespace CloneZ
             bool swapTwin = twin.Exists && twin.Def == def;
             if (swapTwin) Clothing.Remove(def.ClothingSlot);   // Equip ignores the same item, so take the twin off first
 
-            PlayerClothing.WornPiece prev = Clothing.Equip(def, stack.Condition, stack.TimesRepaired);
+            PlayerClothing.WornPiece prev = Clothing.Equip(def, stack.Condition, stack.TimesRepaired, stack.Extra);
             if (swapTwin) prev = twin;
             Inventory.Remove(stack, 1);                       // it's on your back now, not in the bag
             if (prev.Exists)                                  // the piece it replaced drops into the bag, wear and all
                 Inventory.Add(prev.Def, 1, enforceWeight: false,
-                    condition: prev.Def.IsDamageable ? prev.Condition : -1, timesRepaired: prev.TimesRepaired);
+                    condition: prev.Def.IsDamageable ? prev.Condition : -1, timesRepaired: prev.TimesRepaired, extra: prev.Extra);
             Changed?.Invoke();
         }
 
@@ -397,7 +420,7 @@ namespace CloneZ
             PlayerClothing.WornPiece removed = Clothing.Remove(slot);
             if (!removed.Exists) return false;
             Inventory.Add(removed.Def, 1, enforceWeight: false,
-                condition: removed.Def.IsDamageable ? removed.Condition : -1, timesRepaired: removed.TimesRepaired);
+                condition: removed.Def.IsDamageable ? removed.Condition : -1, timesRepaired: removed.TimesRepaired, extra: removed.Extra);
             Changed?.Invoke();
             return true;
         }
@@ -667,7 +690,7 @@ namespace CloneZ
             int moved = Inventory.Add(item.Def, Mathf.Min(item.Count, max), enforceWeight: true,
                 spawnHours: item.Def.Perishable ? item.SpawnHours : float.NaN,
                 condition: item.Def.IsDamageable ? item.Condition : -1,
-                timesRepaired: item.TimesRepaired);
+                timesRepaired: item.TimesRepaired, extra: item.Extra);
             if (moved > 0) item.Take(moved);
             return moved;
         }
@@ -686,7 +709,7 @@ namespace CloneZ
             ItemStack there = layout.StackAt(section, x, y);
             if (there != null)
             {
-                if (there.Def != def) return 0;
+                if (there.Def != def || !ItemExtra.CanStack(there.Extra, item.Extra)) return 0;
                 moved = Mathf.Min(want, def.MaxStack - there.Count);
                 if (def.Weight > 0f)
                 {
@@ -704,7 +727,7 @@ namespace CloneZ
                 moved = Inventory.AddAt(def, want, section, x, y, rotated, enforceWeight: true,
                     spawnHours: def.Perishable ? item.SpawnHours : float.NaN,
                     condition: def.IsDamageable ? item.Condition : -1,
-                    timesRepaired: item.TimesRepaired);
+                    timesRepaired: item.TimesRepaired, extra: item.Extra);
             }
             if (moved > 0) item.Take(moved);
             return moved;
@@ -722,7 +745,7 @@ namespace CloneZ
             WorldItem.Spawn(null, p, stack.Def, count,
                 stack.Def.Perishable ? stack.SpawnHours : float.NaN,
                 stack.Def.IsDamageable ? stack.Condition : -1,
-                stack.TimesRepaired);
+                stack.TimesRepaired, stack.Extra);
             Inventory.Remove(stack, count);
         }
 
@@ -750,7 +773,7 @@ namespace CloneZ
                 WorldItem.Spawn(null, p, s.Def, s.Count,
                     s.Def.Perishable ? s.SpawnHours : float.NaN,
                     s.Def.IsDamageable ? s.Condition : -1,
-                    s.TimesRepaired);
+                    s.TimesRepaired, s.Extra);
                 Inventory.Remove(s, s.Count);
             }
 
@@ -789,7 +812,7 @@ namespace CloneZ
                     Inventory.Add(def, st.Count, enforceWeight: false,
                         spawnHours: def.Perishable ? st.SpawnHours : float.NaN,
                         condition: def.RestoredCondition(st.Condition),
-                        timesRepaired: st.TimesRepaired);
+                        timesRepaired: st.TimesRepaired, extra: ItemExtra.Parse(st.Extra));
                 }
             }
 

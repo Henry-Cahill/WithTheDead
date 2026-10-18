@@ -277,6 +277,8 @@ namespace CloneZ
                         Sepsis = w.Sepsis,
                         Healing = w.Healing,
                         HealSeconds = w.HealSeconds,
+                        Zone = (int)w.Zone,
+                        Flags = (w.NeedsStitches ? 1 : 0) | (w.Lodged ? 2 : 0) | (w.Tourniquet ? 4 : 0),
                     });
                 }
                 s.AntibioticTimer = wounds.AntibioticTimer;
@@ -295,7 +297,7 @@ namespace CloneZ
                 for (int i = 0; i < slots.Length; i++)
                 {
                     PlayerClothing.WornPiece piece = clothing.GetPiece(slots[i]);
-                    if (piece.Exists) worn.Add(new ClothingSave { Slot = (int)slots[i], Id = piece.Def.Id, Condition = piece.Condition, TimesRepaired = piece.TimesRepaired });
+                    if (piece.Exists) worn.Add(new ClothingSave { Slot = (int)slots[i], Id = piece.Def.Id, Condition = piece.Condition, TimesRepaired = piece.TimesRepaired, Extra = ItemExtra.Serialize(piece.Extra) });
                 }
                 s.Clothing = worn.ToArray();
             }
@@ -308,7 +310,7 @@ namespace CloneZ
                 {
                     ItemStack st = stacks[i];
                     if (st == null || st.Def == null) continue;
-                    s.Items.Add(new StackSave { Id = st.Def.Id, Count = st.Count, SpawnHours = st.SpawnHours, Condition = st.Condition, TimesRepaired = st.TimesRepaired });
+                    s.Items.Add(new StackSave { Id = st.Def.Id, Count = st.Count, SpawnHours = st.SpawnHours, Condition = st.Condition, TimesRepaired = st.TimesRepaired, Extra = ItemExtra.Serialize(st.Extra) });
                 }
                 s.EquippedWeaponId = inv.EquippedWeapon != null ? inv.EquippedWeapon.Id : null;
             }
@@ -337,7 +339,7 @@ namespace CloneZ
                 {
                     ItemStack st = stacks[i];
                     if (st == null || st.Def == null) continue;
-                    save.Items.Add(new StackSave { Id = st.Def.Id, Count = st.Count, SpawnHours = st.SpawnHours, Condition = st.Condition, TimesRepaired = st.TimesRepaired });
+                    save.Items.Add(new StackSave { Id = st.Def.Id, Count = st.Count, SpawnHours = st.SpawnHours, Condition = st.Condition, TimesRepaired = st.TimesRepaired, Extra = ItemExtra.Serialize(st.Extra) });
                 }
             }
             return save;
@@ -386,7 +388,7 @@ namespace CloneZ
                             WorldItem.Spawn(null, c.Position, def, st.Count,
                                 def.Perishable ? st.SpawnHours : float.NaN,
                                 def.RestoredCondition(st.Condition),
-                                st.TimesRepaired);
+                                st.TimesRepaired, ItemExtra.Parse(st.Extra));
                     }
                 }
                 else
@@ -480,7 +482,7 @@ namespace CloneZ
                 for (int i = 0; i < s.Clothing.Length; i++)
                 {
                     ItemDef d = ItemDatabase.Get(s.Clothing[i].Id);
-                    if (d != null) clothing.Equip(d, d.RestoredCondition(s.Clothing[i].Condition), s.Clothing[i].TimesRepaired);
+                    if (d != null) clothing.Equip(d, d.RestoredCondition(s.Clothing[i].Condition), s.Clothing[i].TimesRepaired, ItemExtra.Parse(s.Clothing[i].Extra));
                 }
             }
 

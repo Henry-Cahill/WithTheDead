@@ -109,6 +109,7 @@ namespace CloneZ
         public float SpawnHours;
         public int Condition;
         public int TimesRepaired;
+        public string Extra;            // ItemExtra.Serialize (found-in-raid, mods, dirt, upgrades…); null when plain
     }
 
     /// <summary>One tracked injury.</summary>
@@ -118,6 +119,8 @@ namespace CloneZ
         public int Type;                // (int)WoundType
         public bool Bleeding, Bandaged, CleanBandage, Disinfected, Infected, Prone;
         public float Sepsis, Healing, HealSeconds;
+        public int Zone = (int)BodyZone.Thorax;   // (int)BodyZone
+        public int Flags;               // 1 needs stitches, 2 shard lodged, 4 tourniquet on
     }
 
     /// <summary>A worn garment: which slot, which item, and its per-piece wear (condition + how
@@ -129,6 +132,7 @@ namespace CloneZ
         public string Id;
         public int Condition;
         public int TimesRepaired;
+        public string Extra;            // ItemExtra.Serialize; null when plain
     }
 
     /// <summary>A world container. <see cref="Kind"/> is the <see cref="ContainerType"/> int for the

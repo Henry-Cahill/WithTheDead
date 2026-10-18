@@ -112,7 +112,7 @@ namespace CloneZ
 
         /// <summary>Drops an item on the ground. Returns its stable id, or 0 if it could not be placed.</summary>
         public static uint Add(ItemDef def, Vector3 position, int count,
-            float spawnHours = float.NaN, int condition = -1, int timesRepaired = 0, float yawDegrees = -1f)
+            float spawnHours = float.NaN, int condition = -1, int timesRepaired = 0, float yawDegrees = -1f, ItemExtra extra = null)
         {
             if (def == null || count <= 0) return 0;
 
@@ -131,11 +131,27 @@ namespace CloneZ
                 Yaw = (byte)(Mathf.RoundToInt(Mathf.Repeat(yawDegrees, 360f) * (256f / 360f)) & 0xFF),
                 Id = s_NextId++,
             };
+            SetExtra(item.Id, extra);
 
             Chunk chunk = GetOrCreate(KeyOf(position.x, position.z));
             chunk.Items.Add(item);
             chunk.Dirty = true;
             return item.Id;
+        }
+
+        // Per-instance extras (found-in-raid, gun mods…) for the few ground items that carry any, kept
+        // beside the packed records so the record itself stays small.
+        private static readonly Dictionary<uint, ItemExtra> s_Extras = new Dictionary<uint, ItemExtra>();
+
+        /// <summary>The extras of the ground item with this id, or null.</summary>
+        public static ItemExtra ExtraOf(uint id) => s_Extras.TryGetValue(id, out ItemExtra e) ? e : null;
+
+        /// <summary>Attaches (or clears, for null / empty) the extras of a ground item.</summary>
+        public static void SetExtra(uint id, ItemExtra extra)
+        {
+            ItemExtra copy = ItemExtra.CopyOf(extra);
+            if (copy == null) s_Extras.Remove(id);
+            else s_Extras[id] = copy;
         }
 
         /// <summary>Takes units off a stack. Returns true when the stack emptied and was removed.</summary>
@@ -171,6 +187,7 @@ namespace CloneZ
         private static void RemoveAt(Chunk chunk, int index)
         {
             int last = chunk.Items.Count - 1;
+            s_Extras.Remove(chunk.Items[index].Id);
             chunk.Items[index] = chunk.Items[last];   // swap the tail down; order on the floor is meaningless
             chunk.Items.RemoveAt(last);
             chunk.Dirty = true;
@@ -319,6 +336,7 @@ namespace CloneZ
         public static void Clear()
         {
             s_Chunks.Clear();
+            s_Extras.Clear();
             s_NextId = 1;
         }
 

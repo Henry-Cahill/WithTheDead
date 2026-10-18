@@ -45,12 +45,23 @@ namespace CloneZ
             UIState.BuildMode = false;
             Time.timeScale = 1f;
             EnsureEventSystem();
+            GameModules.EnsureInit();
+            ServerRules.FromSandbox(SandboxSettings.Current);
+            WorldMarkers.Clear();
+            HubRules.SafeZone = false;
 
-            // "Next Raid" from a raid summary reloads the scene straight into a fresh raid.
+            // "Next Raid" / a deploy from the hub reloads the scene straight into a raid; a raid's end (or
+            // "Return to hub") reloads straight into the hub.
             if (GameSession.AutoStartRaid)
             {
                 GameSession.AutoStartRaid = false;
                 StartRaid();
+                return;
+            }
+            if (GameSession.AutoStartHub)
+            {
+                GameSession.AutoStartHub = false;
+                StartHub();
                 return;
             }
             ShowMainMenu();
@@ -63,8 +74,8 @@ namespace CloneZ
             menu.Bind(this);
         }
 
-        /// <summary>Begins an extraction raid — the default mode (called by the title screen). Raids
-        /// never touch the wave-survival save; the kit carried out of a raid persists on its own.</summary>
+        /// <summary>Begins an extraction raid into <see cref="GameSession.ZoneId"/> as <see cref="GameSession.Raid"/>.
+        /// Raids never touch the wave-survival save; the kit belongs to the active character.</summary>
         public void StartRaid()
         {
             if (_worldBuilt) return;
@@ -73,12 +84,27 @@ namespace CloneZ
             BuildRaidWorld();
         }
 
+        /// <summary>Opens the hub (the bar between raids) for the active character.</summary>
+        public void StartHub()
+        {
+            if (_worldBuilt) return;
+            if (ProfileStore.ActiveCharacter == null || ProfileStore.ActiveCharacter.Dead)
+            {
+                ShowMainMenu();
+                return;
+            }
+            _worldBuilt = true;
+            GameSession.Mode = GameMode.Hub;
+            BuildHubWorld();
+        }
+
         /// <summary>Begins a brand-new wave-survival run, discarding any existing save (called by the title screen).</summary>
         public void StartNewGame()
         {
             if (_worldBuilt) return;
             _worldBuilt = true;
             GameSession.Mode = GameMode.WaveSurvival;
+            WorldMarkers.Clear();
             SaveSystem.Delete();
             BuildWorld(false);
         }
@@ -92,9 +118,77 @@ namespace CloneZ
             BuildWorld(true);
         }
 
-        // A raid: a winter night in a run-down town. The survivor arrives under spawn protection with
-        // whatever kit they last extracted with, loots what they can and must reach an exit before dawn.
+        // A raid into one of the Zones. The map's layout is the zone's own, fixed layout (the same streets every
+        // time, so routes can be learned); the loot, the open exits, the anomalies and the threats are rolled
+        // fresh from the raid's seed. The survivor arrives by helicopter at the chosen landing zone (or on foot at
+        // the map's spawn), with whatever kit the character carries, and must reach an exit — before dawn,
+        // unless it's an open-zone run.
         private void BuildRaidWorld()
+        {
+            UIState.GameplayBlocked = false;
+            UIState.BuildMode = false;
+            UIState.ActionMenuOpen = false;
+            Time.timeScale = 1f;
+            ZoneDef zone = ZoneCatalog.Current;
+            Climate.Winter = zone.Winter;
+            Shelter.Clear();
+            WorldMarkers.Clear();
+            StarterHome.SetActive(false);   // pieces built during a raid stay rough planking
+            if (!GameSession.Networked || GameSession.RaidSeed == 0) GameSession.RaidSeed = Random.Range(1, int.MaxValue);
+            var raidRng = new System.Random(GameSession.RaidSeed);
+
+            var gm = new GameObject("GameManager").AddComponent<GameManager>();
+
+            Light sun = SetupEnvironment();
+            SetupTimeAndWeather(sun);
+            if (TimeOfDay.Instance != null)
+                TimeOfDay.Instance.Configure(zone.StartHour, CloneZConfig.RaidDayLengthSeconds,
+                    CloneZConfig.RaidStartMonth, CloneZConfig.RaidStartDay);
+            EnsureEventSystem();
+
+            var world = new GameObject("World").transform;
+            RaidMapInfo map = RaidMapBuilder.Build(world, zone.LayoutSeed);
+            CloneZConfig.ArenaHalfSize = map.HalfSize;
+            RaidWorldRules.RerollLoot(world, GameSession.RaidSeed);
+            RaidWorldRules.RollExits(map, raidRng);
+            WorldHooks.RaiseRaidMapBuilt(world, map, zone, new System.Random(GameSession.RaidSeed ^ 0x2F6E));
+            BakeNavMesh(world);
+
+            Vector3 spawn = map.PlayerSpawn;
+            float yaw = map.PlayerSpawnYaw;
+            bool heliInsertion = RaidWorldRules.PickInsertion(map, GameSession.InsertionPoint, ref spawn, ref yaw);
+
+            PlayerStats player = BuildPlayer(spawn, yaw);
+            gm.Player = player;
+            if (!GameSession.IsMonsterRun)
+                RaidLoadout.Apply(player.GetComponent<PlayerInventory>(), player.GetComponent<PlayerClothing>());
+
+            BuildSurvivorViews(player);
+
+            ZombieSpawner spawner = BuildSpawner(player.transform);
+            spawner.Mode = SpawnerMode.Ambient;
+            spawner.AmbientPopulation = Mathf.RoundToInt(CloneZConfig.RaidZombiePopulation * zone.ZombieDensity * SandboxSettings.Current.ZombiePopulation);
+            spawner.enabled = NetAuthority.IsServer;
+
+            ExtractionManager.Begin(player, map.Exits, CloneZConfig.RaidSpawnProtectionSeconds);
+            if (heliInsertion) RaidWorldRules.PlayInsertion(player, spawn);
+
+            CharacterProfile character = ProfileStore.ActiveCharacter;
+            if (character != null)
+            {
+                character.Raids++;
+                if (GameSession.IsScavRun) character.ScavRuns++;
+            }
+            WorldHooks.RaiseRaidStarted(world, map, zone);
+            GameEvents.RaiseRaidStarted(zone.Id, GameSession.Raid);
+
+            new GameObject("PauseMenu").AddComponent<PauseMenuController>();
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+
+        // The hub: the bar, its people and its counters. A safe place: no fighting, no dead, needs paused.
+        private void BuildHubWorld()
         {
             UIState.GameplayBlocked = false;
             UIState.BuildMode = false;
@@ -102,38 +196,34 @@ namespace CloneZ
             Time.timeScale = 1f;
             Climate.Winter = true;
             Shelter.Clear();
-            StarterHome.SetActive(false);   // pieces built during a raid stay rough planking
-            GameSession.RaidSeed = Random.Range(1, int.MaxValue);
+            WorldMarkers.Clear();
+            StarterHome.SetActive(false);
+            HubRules.SafeZone = true;
+            CloneZConfig.ArenaHalfSize = 16f;
 
             var gm = new GameObject("GameManager").AddComponent<GameManager>();
-
             Light sun = SetupEnvironment();
             SetupTimeAndWeather(sun);
-            if (TimeOfDay.Instance != null)
-                TimeOfDay.Instance.Configure(CloneZConfig.RaidStartHour, CloneZConfig.RaidDayLengthSeconds,
-                    CloneZConfig.RaidStartMonth, CloneZConfig.RaidStartDay);
+            if (TimeOfDay.Instance != null) TimeOfDay.Instance.Configure(20f, CloneZConfig.RaidDayLengthSeconds * 4f, CloneZConfig.RaidStartMonth, CloneZConfig.RaidStartDay);
+            sun.intensity = 0.05f;
             EnsureEventSystem();
 
+            CharacterProfile c = ProfileStore.ActiveCharacter;
+            HubDef hub = HubCatalog.Get(c != null ? c.Hub : HubCatalog.Kettle);
             var world = new GameObject("World").transform;
-            RaidMapInfo map = RaidMapBuilder.Build(world, GameSession.RaidSeed);
-            CloneZConfig.ArenaHalfSize = map.HalfSize;
+            HubWorld.Result built = HubWorld.Build(world, hub);
             BakeNavMesh(world);
 
-            PlayerStats player = BuildPlayer(map.PlayerSpawn, map.PlayerSpawnYaw);
+            PlayerStats player = BuildPlayer(built.PlayerSpawn, built.PlayerYaw);
             gm.Player = player;
             RaidLoadout.Apply(player.GetComponent<PlayerInventory>(), player.GetComponent<PlayerClothing>());
-
             BuildSurvivorViews(player);
 
-            ZombieSpawner spawner = BuildSpawner(player.transform);
-            spawner.Mode = SpawnerMode.Ambient;
-            spawner.AmbientPopulation = CloneZConfig.RaidZombiePopulation;
-
-            ExtractionManager.Begin(player, map.Exits, CloneZConfig.RaidSpawnProtectionSeconds);
-
+            WorldHooks.RaiseHubBuilt(world);
             new GameObject("PauseMenu").AddComponent<PauseMenuController>();
             Cursor.visible = true;
             Cursor.lockState = CursorLockMode.None;
+            GameEvents.RaiseToast("Welcome back to " + hub.Name + ". Day " + (c != null ? c.Day : 1) + ".");
         }
 
         private void BuildWorld(bool loadSave)
@@ -217,6 +307,7 @@ namespace CloneZ
 
             BuildSurvivorViews(player);
             BuildSpawner(player.transform);
+            WorldHooks.RaiseArenaBuilt(world);
 
             // The pause menu (Esc) freezes the world and offers save / quit-to-menu.
             new GameObject("PauseMenu").AddComponent<PauseMenuController>();
@@ -405,7 +496,25 @@ namespace CloneZ
             root.AddComponent<PlayerHydration>();     // drink / fill bottles at a tap or barrel (G)
             root.AddComponent<PlayerGear>();          // night vision (N), flashlight (L), gas mask + filters
             root.AddComponent<PlayerAvatar>();        // Clone Z's body: a rigged humanoid animated from all of the above
-            return root.GetComponent<PlayerStats>();
+            root.AddComponent<PlayerModifiers>();     // the sum of traits, artifacts, Zone marks, broken limbs...
+            root.AddComponent<TraitEffects>();        // the character's chosen traits
+            root.AddComponent<PlayerLimbs>();         // seven hit zones, fractures, blacked-out limbs, armour
+            root.AddComponent<PlayerBlood>();         // blood volume, shock, unconsciousness, blood type
+            root.AddComponent<Stealth>();             // how visible the survivor is (light, stance, movement)
+
+            CharacterProfile character = ProfileStore.ActiveCharacter;
+            Actor actor = root.AddComponent<Actor>();
+            actor.Height = 1.8f;
+            actor.DisplayName = character != null ? character.Name : GameSession.SurvivorName;
+            actor.Faction = GameSession.IsScavRun ? Factions.Scavs : (character != null ? character.Faction : Factions.Freehold);
+            actor.NetId = Actor.AllocateNetId();
+            actor.MakeLocalPlayer();
+            if (character != null) GameSession.SurvivorName = character.Name;
+
+            PlayerStats stats = root.GetComponent<PlayerStats>();
+            WorldHooks.RaisePlayerBuilt(stats);
+            GameEvents.RaiseLocalPlayerSpawned(stats);
+            return stats;
         }
 
         // Picks a random clear spot anywhere in the arena for the player to start a new game.

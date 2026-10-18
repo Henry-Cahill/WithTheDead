@@ -29,12 +29,19 @@ namespace CloneZ
         public bool IsDead { get; private set; }
         public Transform Transform => transform;
 
+        /// <summary>Knocked out (shock, blood loss): no movement, no actions, until it wears off.</summary>
+        public bool Incapacitated;
+
+        /// <summary>This body is the survivor played on this machine (remote players are proxies, not PlayerStats).</summary>
+        public bool IsLocal => true;
+
         public float HealthNormalized => Mathf.Clamp01(Health / CloneZConfig.HealthMax);
         public float InfectionNormalized => Mathf.Clamp01(Infection / CloneZConfig.InfectionMax);
         public float PainNormalized => Mathf.Clamp01(Pain / CloneZConfig.PainMax);
         public float PanicNormalized => Mathf.Clamp01(Panic / CloneZConfig.PanicMax);
         public float SicknessNormalized => Mathf.Clamp01(Sickness / CloneZConfig.SicknessMax);
-        public bool CanSprint => Endurance > 0.05f && Fatigue < CloneZConfig.FatigueExhaustedThreshold && !IsDead;
+        public bool CanSprint => Endurance > 0.05f && Fatigue < CloneZConfig.FatigueExhaustedThreshold && !IsDead && !Incapacitated
+                                 && (Limbs == null || Limbs.CanSprint);
 
         /// <summary>How cold the survivor feels, 0 (comfortable) .. 1 (freezing).</summary>
         public float ColdStrength =>
@@ -81,15 +88,25 @@ namespace CloneZ
         private PlayerClothing _clothing;
         private PlayerClothing Clothing => _clothing != null ? _clothing : (_clothing = GetComponent<PlayerClothing>());
 
+        private PlayerLimbs _limbs;
+        private PlayerLimbs Limbs => _limbs != null ? _limbs : (_limbs = GetComponent<PlayerLimbs>());
+
+        private PlayerBlood _blood;
+        private PlayerBlood BloodPool => _blood != null ? _blood : (_blood = GetComponent<PlayerBlood>());
+
         private void Update()
         {
             if (IsDead) return;
             float dt = Time.deltaTime;
 
             UpdateEndurance(dt);
-            UpdateSurvival(dt);
-            UpdateFatigue(dt);
-            UpdateInfection(dt);
+            // The hub is a safe, warm room: needs don't tick down while you trade and talk.
+            if (!HubRules.SafeZone)
+            {
+                UpdateSurvival(dt);
+                UpdateFatigue(dt);
+                UpdateInfection(dt);
+            }
             UpdatePassiveHealth(dt);
 
             if (Health <= 0f) Die("succumbed to their wounds");
@@ -97,17 +114,20 @@ namespace CloneZ
 
         private void UpdateEndurance(float dt)
         {
+            StatMods mods = PlayerModifiers.Current;
+            float drainMult = mods.StaminaDrain * (Skills != null ? Mathf.Max(0.5f, Skills.EnduranceDrainMult) : 1f);
             switch (Exertion)
             {
                 case Exertion.Sprinting:
-                    Endurance -= CloneZConfig.EnduranceSprintDrain * dt;
+                    Endurance -= CloneZConfig.EnduranceSprintDrain * drainMult * dt;
+                    if (Skills != null) Skills.AddXp(PlayerSkills.Skill.Endurance, 0.6f * dt);
                     break;
                 case Exertion.Running:
-                    Endurance -= CloneZConfig.EnduranceRunDrain * dt;
+                    Endurance -= CloneZConfig.EnduranceRunDrain * drainMult * dt;
                     break;
                 default:
                     // A tired body catches its breath more slowly.
-                    float regen = CloneZConfig.EnduranceRegen * (1f - CloneZConfig.FatigueEnduranceRegenPenalty * Fatigue);
+                    float regen = CloneZConfig.EnduranceRegen * (1f - CloneZConfig.FatigueEnduranceRegenPenalty * Fatigue) * mods.StaminaRegen;
                     Endurance += regen * dt;
                     break;
             }
@@ -121,13 +141,18 @@ namespace CloneZ
             else if (Exertion == Exertion.Running) rate += CloneZConfig.FatigueExertionBonus * 0.5f;
             if (TimeOfDay.Instance != null && TimeOfDay.Instance.IsNight) rate *= CloneZConfig.FatigueNightMultiplier;
             if (Skills != null) rate *= Skills.FatigueRateMult;   // Fitness tires you more slowly (PZ)
+            rate *= PlayerModifiers.Current.FatigueRate * SandboxSettings.Current.FatigueRate * SandboxSettings.Current.DrainScale("fatigue");
             Fatigue = Mathf.Clamp01(Fatigue + rate * dt);
         }
 
         private void UpdateSurvival(float dt)
         {
-            Hunger = Mathf.Clamp01(Hunger + CloneZConfig.HungerRatePerSec * dt);
-            Thirst = Mathf.Clamp01(Thirst + CloneZConfig.ThirstRatePerSec * dt);
+            SandboxSettings sb = SandboxSettings.Current;
+            StatMods mods = PlayerModifiers.Current;
+            float metabolism = Skills != null ? Mathf.Max(0.5f, Skills.MetabolismMult) : 1f;
+            Hunger = Mathf.Clamp01(Hunger + CloneZConfig.HungerRatePerSec * mods.HungerRate * sb.HungerRate * sb.DrainScale("hunger") * metabolism * dt);
+            Thirst = Mathf.Clamp01(Thirst + CloneZConfig.ThirstRatePerSec * mods.ThirstRate * sb.ThirstRate * sb.DrainScale("thirst") * metabolism * dt);
+            if (Skills != null && (Hunger < 0.3f && Thirst < 0.3f)) Skills.AddXp(PlayerSkills.Skill.Metabolism, 0.05f * dt);
 
             if (Hunger >= 1f) Health -= CloneZConfig.StarvingHealthDrainPerSec * dt;
             if (Thirst >= 1f) Health -= CloneZConfig.DehydratedHealthDrainPerSec * dt;
@@ -148,31 +173,47 @@ namespace CloneZ
             // A body fighting food poisoning can't spare anything for healing.
             bool wellFed = Hunger < 0.75f && Thirst < 0.75f && Sickness < CloneZConfig.SicknessRegenBlock;
             if (wellFed && !Infected && Health < CloneZConfig.HealthMax)
-                Health = Mathf.Min(CloneZConfig.HealthMax, Health + CloneZConfig.HealthRegenPerSec * dt);
+                Health = Mathf.Min(CloneZConfig.HealthMax, Health + CloneZConfig.HealthRegenPerSec * PlayerModifiers.Current.HealRate * dt);
         }
 
         public void TakeDamage(in DamageInfo info)
         {
-            if (IsDead) return;
+            if (IsDead || HubRules.SafeZone) return;
             // Under a raid's spawn protection the dead can't hurt the survivor at all.
             if (ExtractionManager.PlayerProtected && info.Source != null && info.Source.GetComponentInParent<ZombieHealth>() != null) return;
-            float dmg = info.Amount * CloneZConfig.PlayerReceivedDamageMultiplier;
-            if (Skills != null)
+            if (Skills != null) Skills.AddXp(PlayerSkills.Skill.Fitness, CloneZConfig.XpFitnessOnHurt);
+            if (Limbs != null)
             {
-                dmg *= Skills.IncomingDamageMult;   // Fitness + Nimble soak some of the blow (PZ)
-                Skills.AddXp(PlayerSkills.Skill.Fitness, CloneZConfig.XpFitnessOnHurt);
+                // The limb model handles armour, resistances, wounds and the health pool.
+                Limbs.ApplyHit(info);
+                if (!IsDead) OnDamaged?.Invoke();
+                return;
             }
+            float dmg = info.AmountArena * CloneZConfig.PlayerReceivedDamageMultiplier;
+            if (Skills != null) dmg *= Skills.IncomingDamageMult;   // Fitness + Nimble soak some of the blow (PZ)
             Health -= dmg;
             OnDamaged?.Invoke();
             if (Health <= 0f) Die("was torn apart");
         }
 
+        /// <summary>Health lost to hit points taken off a body zone (driven by <see cref="PlayerLimbs"/>).</summary>
+        public void LimbDamage(float health, string cause)
+        {
+            if (IsDead || health <= 0f) return;
+            Health -= health;
+            if (Health <= 0f) Die(cause);
+        }
+
+        /// <summary>Ends the survivor's life outright (a destroyed head or thorax, total blood loss).</summary>
+        public void Kill(string cause) => Die(cause);
+
         /// <summary>Called by a zombie that lands an attack. Ignored while a raid's spawn protection holds.</summary>
         public void ReceiveZombieAttack(bool bite)
         {
-            if (IsDead || ExtractionManager.PlayerProtected) return;
+            if (IsDead || ExtractionManager.PlayerProtected || HubRules.SafeZone) return;
             float mult = Skills != null ? Skills.IncomingDamageMult : 1f;
             if (Skills != null) Skills.AddXp(PlayerSkills.Skill.Fitness, CloneZConfig.XpFitnessOnHurt);
+            InfectionMode infection = SandboxSettings.Current.Infection;
             if (bite)
             {
                 // Sturdy clothing (leather especially) can stop the teeth reaching skin — the
@@ -184,9 +225,17 @@ namespace CloneZ
                     if (Health <= 0f) Die("was torn apart");
                     return;
                 }
-                Health -= CloneZConfig.ZombieBiteDamage * mult;
-                Wounds?.Inflict(WoundType.Bite);
-                if (!Infected)
+                BodyZone zone = BodyZones.RandomStrike();
+                if (Limbs != null && !Limbs.ZombieStrike(true, CloneZConfig.ZombieBiteDamage * mult, out zone))
+                {
+                    OnDamaged?.Invoke();   // armour turned the teeth
+                    return;
+                }
+                if (Limbs == null) Health -= CloneZConfig.ZombieBiteDamage * mult;
+                if (IsDead) return;
+                Wounds?.Inflict(WoundType.Bite, zone);
+                bool turns = infection == InfectionMode.BiteLethal || (infection == InfectionMode.BiteChance && UnityEngine.Random.value < 0.25f);
+                if (turns && !Infected && UnityEngine.Random.value >= PlayerModifiers.Current.InfectionResist * 0.5f)
                 {
                     Infected = true;      // In PZ a bite is effectively a death sentence.
                     OnBitten?.Invoke();
@@ -202,13 +251,20 @@ namespace CloneZ
                     if (Health <= 0f) Die("was torn apart");
                     return;
                 }
-                Health -= CloneZConfig.ZombieScratchDamage * mult;
+                BodyZone zone = BodyZones.RandomStrike();
+                if (Limbs != null && !Limbs.ZombieStrike(false, CloneZConfig.ZombieScratchDamage * mult, out zone))
+                {
+                    OnDamaged?.Invoke();
+                    return;
+                }
+                if (Limbs == null) Health -= CloneZConfig.ZombieScratchDamage * mult;
+                if (IsDead) return;
                 // A deeper laceration is the common non-bite wound (PZ baseLacerationChance 65%).
                 WoundType wt = UnityEngine.Random.value < CloneZConfig.ZombieScratchChance
                     ? WoundType.Laceration : WoundType.Scratch;
-                Wounds?.Inflict(wt);
+                Wounds?.Inflict(wt, zone);
                 // A scratch also carries a small chance of the zombie virus.
-                if (!Infected && UnityEngine.Random.value < 0.07f)
+                if (infection != InfectionMode.Off && !Infected && UnityEngine.Random.value < 0.07f * (1f - PlayerModifiers.Current.InfectionResist))
                 {
                     Infected = true;
                     OnBitten?.Invoke();
@@ -226,11 +282,13 @@ namespace CloneZ
         }
 
         /// <summary>Continuous health loss from an open wound (driven by <see cref="PlayerWounds"/>).
-        /// Deliberately silent — it must not fire OnDamaged every frame (that would jolt a sleeper awake).</summary>
+        /// Deliberately silent — it must not fire OnDamaged every frame (that would jolt a sleeper awake).
+        /// The blood that runs out comes out of the blood pool too.</summary>
         public void Bleed(float amount)
         {
             if (IsDead || amount <= 0f) return;
             Health -= amount;
+            if (BloodPool != null) BloodPool.LoseBloodForHealth(amount);
             if (Health <= 0f) Die("bled out");
         }
 
@@ -274,7 +332,10 @@ namespace CloneZ
             if (IsDead) return;
             IsDead = true;
             Health = 0f;
+            Incapacitated = false;
             OnDied?.Invoke();
+            Actor me = GetComponent<Actor>();
+            GameEvents.RaiseActorKilled(new KillInfo { Victim = me, Position = transform.position, WeaponId = cause });
             GameManager.Instance?.TriggerGameOver(cause);
         }
     }
