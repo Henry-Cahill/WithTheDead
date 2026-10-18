@@ -49,7 +49,8 @@ namespace CloneZ
 
         private void LateUpdate()
         {
-            bool show = IsoCameraFollow.MouseLookEngaged;
+            // No crosshair through the bodycam, or in hardcore: aim with the weapon itself.
+            bool show = IsoCameraFollow.MouseLookEngaged && ViewState.Current != CameraView.Bodycam && GameSettings.Current.ShowCrosshair;
             if (_canvas.enabled != show) _canvas.enabled = show;
             if (!show)
             {

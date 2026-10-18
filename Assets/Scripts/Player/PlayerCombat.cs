@@ -111,6 +111,7 @@ namespace CloneZ
             {
                 Build = Ballistics.Build(Inv != null ? Inv.EquippedStack : null);
                 AimingDownSights = ViewState.MouseLook && rightHeld;
+                if (AimingDownSights && GameInput.Held(GameAction.HoldBreath)) _stats.TryConsumeEndurance(0.12f * Time.deltaTime);
                 Keyboard kb = Keyboard.current;
                 if (kb != null && kb.rKey.wasPressedThisFrame) TryReload();
                 bool trigger = Build.FullAuto ? attackHeld : attackPressed;
@@ -412,6 +413,8 @@ namespace CloneZ
             float dmgMult = (Skills != null ? Skills.FirearmDamageMult : 1f) * build.DamageMult;
             float spreadMult = (Skills != null ? Skills.FirearmSpreadMult : 1f) * build.Spread * PlayerModifiers.Current.AimSpread;
             if (AimingDownSights) spreadMult *= 0.55f * build.AdsSpread;
+            // Holding your breath (first person / bodycam) steadies a sighted shot, for as long as the lungs last.
+            if (AimingDownSights && GameInput.Held(GameAction.HoldBreath) && _stats.Endurance > 0.1f) spreadMult *= 0.6f;
             AmmoStats ammo = Ballistics.Ammo(ammoId);
             float range = gun.FirearmRange * (Skills != null ? Skills.FirearmRangeMult : 1f) * build.Range * (ammo != null ? ammo.RangeMult : 1f);
             float spread = (gun.FirearmSpread + _bloom +
