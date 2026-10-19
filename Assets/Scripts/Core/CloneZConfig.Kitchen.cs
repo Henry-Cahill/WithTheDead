@@ -1,5 +1,6 @@
 namespace CloneZ
 {
+    // The kitchen's settings (KitchenSink, KitchenStove, KitchenFridge): the sink, the gas range, the fridge-freezer and what its cupboards and drawers start with.
     public static partial class CloneZConfig
     {
         // ---- The kitchen sink (KitchenSink): tap, plug and basin ----

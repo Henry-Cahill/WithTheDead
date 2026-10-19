@@ -3,6 +3,7 @@ using UnityEngine.Rendering;
 
 namespace CloneZ
 {
+    // The starter home's lighting and wall decor.
     internal static partial class StarterHome
     {
         #region Lighting and wall decor

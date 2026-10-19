@@ -53,7 +53,20 @@ case "${1:-status}" in
     ;;
   health) running ;;
   status) exec "$PY" "$HERE/nightshift.py" status ;;
-  log) exec tail -n 40 -f "$LOG" ;;
+  log)
+    echo "Watching the night shift (Ctrl+C stops watching; the work keeps going)"
+    # One color per worker; landings bright green, failures red, run headers white.
+    tail -n 60 -F "$LOG" 2>/dev/null | awk 'BEGIN { c[0] = "36"; c[1] = "33"; c[2] = "35"; c[3] = "32"; c[4] = "34"; n = 0 }
+    {
+      col = ""
+      if (match($0, /\[[^]]+\]/)) { w = substr($0, RSTART, RLENGTH); if (!(w in m)) { m[w] = c[n % 5]; n++ }; col = m[w] }
+      if ($0 ~ /landed /) col = "1;92"
+      else if ($0 ~ /\] (failed|gave up)|\(failed\)|not using|night shift stopped|agent error|exited with code|time limit/) col = "1;91"
+      else if ($0 ~ /^=====|starting ·|workers:|done:/) col = "1;97"
+      if (col != "") printf "\033[%sm%s\033[0m\n", col, $0; else print $0
+      fflush()
+    }'
+    ;;
   check) exec bash "$HERE/check.sh" ;;
   chat) shift; exec "$PY" "$HERE/nightshift.py" chat "$@" ;;
   *) echo "usage: $0 start|finish|stop|health|status|log|check|chat"; exit 2 ;;

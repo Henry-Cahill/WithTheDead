@@ -1,5 +1,6 @@
 namespace CloneZ
 {
+    // The starter home's doors and windows (HomeDoor, HomeWindow): open and close, lock, peephole, curtains, look out, climb through.
     public static partial class CloneZConfig
     {
         // ---- The starter home's doors (HomeDoor): open, close, lock, peephole, knock ----

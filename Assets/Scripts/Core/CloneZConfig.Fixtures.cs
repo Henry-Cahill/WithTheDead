@@ -1,5 +1,6 @@
 namespace CloneZ
 {
+    // The starter home's interactive fixtures: their reach, cursor pick, timing and noise, the power grid's failure and the planks and nails salvaged from them.
     public static partial class CloneZConfig
     {
         // ---- Interactive fixtures (the starter home's everyday things: E = main action, Q = action menu) ----

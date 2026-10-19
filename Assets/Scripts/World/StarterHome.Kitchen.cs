@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace CloneZ
 {
+    // The kitchen's wall cupboards over the worktop on the west wall: the carcass, shelf and crockery drawn into the wall's own mesh, with the two doors hung as moving parts and a storage fixture behind them.
     internal static partial class StarterHome
     {
         #region Kitchen wall fittings

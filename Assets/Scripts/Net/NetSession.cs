@@ -12,10 +12,14 @@ namespace CloneZ
     public sealed class NetOut : IDisposable
     {
         public FastBufferWriter W;
-        public NetOut(int size = 256, int max = 1 << 16) { W = new FastBufferWriter(size, Allocator.Temp, max); }
-        public NetOut I(int v) { W.WriteValueSafe(v); return this; }
-        public NetOut U(uint v) { W.WriteValueSafe(v); return this; }
-        public NetOut UL(ulong v) { W.WriteValueSafe(v); return this; }
+        /// <summary>Creates a new NetOut with a pre‑allocated buffer of the given size and maximum capacity.</summary>
+public NetOut(int size = 256, int max = 1 << 16) { W = new FastBufferWriter(size, Allocator.Temp, max); }
+        /// <summary>Writes an int to the buffer and returns this for chaining.</summary>
+public NetOut I(int v) { W.WriteValueSafe(v); return this; }
+        /// <summary>Writes a uint to the buffer and returns this for chaining.</summary>
+public NetOut U(uint v) { W.WriteValueSafe(v); return this; }
+        /// <summary>Writes an unsigned long to the buffer and returns this for chaining.</summary>
+public NetOut UL(ulong v) { W.WriteValueSafe(v); return this; }
         public NetOut F(float v) { W.WriteValueSafe(v); return this; }
         public NetOut D(double v) { W.WriteValueSafe(v); return this; }
         public NetOut B(bool v) { W.WriteValueSafe(v); return this; }
@@ -32,17 +36,28 @@ namespace CloneZ
     {
         public FastBufferReader R;
         public NetIn(FastBufferReader r) { R = r; }
-        public int I() { R.ReadValueSafe(out int v); return v; }
-        public uint U() { R.ReadValueSafe(out uint v); return v; }
-        public ulong UL() { R.ReadValueSafe(out ulong v); return v; }
-        public float F() { R.ReadValueSafe(out float v); return v; }
-        public double D() { R.ReadValueSafe(out double v); return v; }
-        public bool B() { R.ReadValueSafe(out bool v); return v; }
-        public byte By() { R.ReadValueSafe(out byte v); return v; }
-        public string S() { R.ReadValueSafe(out string v); return v; }
-        public Vector3 V() { R.ReadValueSafe(out Vector3 v); return v; }
-        public Quaternion Q() { R.ReadValueSafe(out Quaternion v); return v; }
-        public byte[] Bytes() { R.ReadValueSafe(out byte[] v); return v; }
+        /// <summary>Reads an int from the buffer.</summary>
+public int I() { R.ReadValueSafe(out int v); return v; }
+        /// <summary>Reads a uint from the buffer.</summary>
+public uint U() { R.ReadValueSafe(out uint v); return v; }
+        /// <summary>Reads an unsigned long from the buffer.</summary>
+public ulong UL() { R.ReadValueSafe(out ulong v); return v; }
+        /// <summary>Reads a float from the buffer.</summary>
+public float F() { R.ReadValueSafe(out float v); return v; }
+        /// <summary>Reads a double from the buffer.</summary>
+public double D() { R.ReadValueSafe(out double v); return v; }
+        /// <summary>Reads a bool from the buffer.</summary>
+public bool B() { R.ReadValueSafe(out bool v); return v; }
+        /// <summary>Reads a byte from the buffer.</summary>
+public byte By() { R.ReadValueSafe(out byte v); return v; }
+        /// <summary>Reads a string from the buffer.</summary>
+public string S() { R.ReadValueSafe(out string v); return v; }
+        /// <summary>Reads a Vector3 from the buffer.</summary>
+public Vector3 V() { R.ReadValueSafe(out Vector3 v); return v; }
+        /// <summary>Reads a Quaternion from the buffer.</summary>
+public Quaternion Q() { R.ReadValueSafe(out Quaternion v); return v; }
+        /// <summary>Reads a byte array from the buffer.</summary>
+public byte[] Bytes() { R.ReadValueSafe(out byte[] v); return v; }
     }
 
     /// <summary>What the server knows about each connected runner.</summary>
@@ -69,12 +84,17 @@ namespace CloneZ
     public sealed class NetSession : MonoBehaviour
     {
         public const string Version = "clonez-1";
-        public static NetSession Instance { get; private set; }
-        public static bool Active => Instance != null && Instance._nm != null && (Instance._nm.IsServer || Instance._nm.IsConnectedClient);
-        public static NetworkManager NM => Instance != null ? Instance._nm : null;
-        public static readonly Dictionary<ulong, NetClientInfo> Clients = new Dictionary<ulong, NetClientInfo>();
+        /// <summary>Singleton instance of the current NetSession, created by Create().</summary>
+public static NetSession Instance { get; private set; }
+        /// <summary>Gets whether the session is active (connected as server or client).</summary>
+public static bool Active => Instance != null && Instance._nm != null && (Instance._nm.IsServer || Instance._nm.IsConnectedClient);
+        /// <summary>Gets the underlying NetworkManager, or null if the session isn't running.</summary>
+public static NetworkManager NM => Instance != null ? Instance._nm : null;
+        /// <summary>Dictionary of all known clients keyed by their network IDs.</summary>
+public static readonly Dictionary<ulong, NetClientInfo> Clients = new Dictionary<ulong, NetClientInfo>();
         /// <summary>Server: a client dropped out of the session (camps and cars they brought leave with them).</summary>
-        public static event Action<ulong> ClientLeft;
+        /// <summary>Invoked on the server when a client disconnects or is removed.</summary>
+public static event Action<ulong> ClientLeft;
 
         private NetworkManager _nm;
         private UnityTransport _utp;
@@ -101,7 +121,8 @@ namespace CloneZ
         }
 
         /// <summary>Hosts a session on <paramref name="port"/> and walks the host into the hub.</summary>
-        public static void Host(ushort port)
+        /// <summary>Hosts a new game session on the given port and moves the host into the hub.</summary>
+public static void Host(ushort port)
         {
             NetSession s = Create();
             s._utp.SetConnectionData("0.0.0.0", port, "0.0.0.0");
@@ -124,7 +145,8 @@ namespace CloneZ
         }
 
         /// <summary>Joins a host; the session's stage (hub or raid, with its seed) arrives once connected.</summary>
-        public static void Join(string address, ushort port)
+        /// <summary>Joins a remote host at the address/port and moves the client into the hub when connected.</summary>
+public static void Join(string address, ushort port)
         {
             NetSession s = Create();
             s._utp.SetConnectionData(string.IsNullOrEmpty(address) ? "127.0.0.1" : address, port);
@@ -141,7 +163,8 @@ namespace CloneZ
             GameEvents.RaiseToast("Connecting to " + address + ":" + port + "...");
         }
 
-        public static void Stop()
+        /// <summary>Stops the current session, shuts down the network and clears all state.</summary>
+public static void Stop()
         {
             if (Instance == null) return;
             if (Instance._nm != null && !Instance._nm.ShutdownInProgress) Instance._nm.Shutdown();
@@ -232,7 +255,8 @@ namespace CloneZ
         #endregion
 
         #region Messaging
-        public static void Register(string name, Action<ulong, NetIn> handler) => s_Handlers[name] = handler;
+        /// <summary>Registers a handler for a named message.</summary>
+public static void Register(string name, Action<ulong, NetIn> handler) => s_Handlers[name] = handler;
 
         private void RegisterAll()
         {
@@ -267,7 +291,8 @@ namespace CloneZ
             NetClock.ViewTimeSource = () => _nm != null ? _nm.ServerTime.Time - (_nm.IsServer ? 0d : NetPlayers.InterpolationDelay) : 0d;
         }
 
-        public static void SendTo(ulong client, string name, NetOut o, NetworkDelivery d = NetworkDelivery.ReliableSequenced)
+        /// <summary>Sends a message to a specific client (or the host if the client is local).</summary>
+public static void SendTo(ulong client, string name, NetOut o, NetworkDelivery d = NetworkDelivery.ReliableSequenced)
         {
             NetworkManager nm = NM;
             if (nm == null) return;
@@ -275,7 +300,8 @@ namespace CloneZ
             nm.CustomMessagingManager.SendNamedMessage(name, client, o.W, d);
         }
 
-        public static void ToServer(string name, NetOut o, NetworkDelivery d = NetworkDelivery.ReliableSequenced)
+        /// <summary>Sends a message from the client to the server.</summary>
+public static void ToServer(string name, NetOut o, NetworkDelivery d = NetworkDelivery.ReliableSequenced)
         {
             NetworkManager nm = NM;
             if (nm == null) return;
@@ -284,7 +310,8 @@ namespace CloneZ
         }
 
         /// <summary>Server: sends to every client except <paramref name="except"/> (and never loops back to the host's own handler unless asked).</summary>
-        public static void ToClients(string name, NetOut o, NetworkDelivery d = NetworkDelivery.ReliableSequenced, ulong except = ulong.MaxValue, bool includeHost = false)
+        /// <summary>Sends a message from the server to all clients (optionally excluding one).</summary>
+public static void ToClients(string name, NetOut o, NetworkDelivery d = NetworkDelivery.ReliableSequenced, ulong except = ulong.MaxValue, bool includeHost = false)
         {
             NetworkManager nm = NM;
             if (nm == null || !nm.IsServer) return;
@@ -309,8 +336,10 @@ namespace CloneZ
 
         #region Session and stage
         /// <summary>The raid the host is running (null while the host is in the hub) — the one clients deploy into.</summary>
-        public static string HostRaidZone { get; private set; }
-        public static int HostRaidSeed { get; private set; }
+        /// <summary>Gets or sets the host's raid zone name (null if none).</summary>
+public static string HostRaidZone { get; private set; }
+        /// <summary>Gets or sets the host's raid seed (0 if none).</summary>
+public static int HostRaidSeed { get; private set; }
 
         // A newcomer learns the rules, the host's clock and whether a raid is running, and walks into their own hub.
         private void OnSession(ulong sender, NetIn m)
@@ -325,13 +354,15 @@ namespace CloneZ
             GameFlow.Reload();
         }
 
-        private static void WriteHostStage(NetOut o)
+        /// <summary>Writes the current host stage (raid flag, zone, seed) to the buffer.</summary>
+private static void WriteHostStage(NetOut o)
         {
             bool raid = GameSession.IsExtraction;
             o.B(raid).S(raid ? GameSession.ZoneId : "").I(raid ? GameSession.RaidSeed : 0);
         }
 
-        private static void ReadHostStage(NetIn m)
+        /// <summary>Reads the host stage (raid flag, zone, seed) from the buffer and stores them.</summary>
+private static void ReadHostStage(NetIn m)
         {
             bool raid = m.B();
             string zone = m.S();
@@ -407,7 +438,8 @@ namespace CloneZ
             }
         }
 
-        public static void PushRoster() { if (Instance != null && Instance._nm != null && Instance._nm.IsServer) Instance.BroadcastRoster(); }
+        /// <summary>Pushes the latest roster to all clients.</summary>
+public static void PushRoster() { if (Instance != null && Instance._nm != null && Instance._nm.IsServer) Instance.BroadcastRoster(); }
 
         private void OnRoster(ulong sender, NetIn m)
         {

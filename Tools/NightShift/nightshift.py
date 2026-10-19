@@ -338,6 +338,7 @@ def run_opencode(repo: Path, prompt: str, cfg_path: Path, model: str, timeout_s:
                 elif kind == "text" and (part.get("text") or "").strip():
                     last_msg = part.get("messageID", "")
                     texts.setdefault(last_msg, []).append(part["text"].strip())
+                    log("  > " + " ".join(part["text"].split())[:170])
                 elif kind == "step_finish":
                     tokens = part.get("tokens") or {}
                     res.tokens_in += tokens.get("input", 0)
@@ -650,8 +651,10 @@ class Night:
         self.entries: list[Entry] = []
         self.unfinished: list[str] = []  # tasks tried tonight that are still unchecked
         self.tokens = [0, 0, 0]  # in, out, cached
-        self.dir = REPORTS / date
-        self.file = REPORTS / f"{date}.md"
+        # A second run on the same date gets its own report rather than overwriting the first.
+        name = date if not (REPORTS / f"{date}.md").exists() else f"{date}-{self.started:%H%M}"
+        self.dir = REPORTS / name
+        self.file = REPORTS / f"{name}.md"
 
     def add(self, entry: Entry) -> None:
         self.entries.append(entry)
@@ -681,7 +684,7 @@ class Night:
             if e.files:
                 lines += ["", "Files: " + ", ".join(f"`{f}`" for f in e.files[:25])]
             if e.patch_file:
-                lines += ["", f"The attempt is saved in [{Path(e.patch_file).name}]({self.date}/{Path(e.patch_file).name})."]
+                lines += ["", f"The attempt is saved in [{Path(e.patch_file).name}]({self.dir.name}/{Path(e.patch_file).name})."]
             if e.errors:
                 lines += ["", "```", e.errors.strip()[-1500:], "```"]
         if self.unfinished:
@@ -929,7 +932,7 @@ class Coordinator:
         else:
             entry.outcome = "failed" if res.status == "failed" else "gave up"
             entry.errors = res.errors
-            mark, note = "!", f"{stamp} {entry.outcome} ({worker.name}, {res.minutes:g} min); see reports/{night.date}.md"
+            mark, note = "!", f"{stamp} {entry.outcome} ({worker.name}, {res.minutes:g} min); see reports/{night.file.name}"
             if res.patch:
                 night.dir.mkdir(parents=True, exist_ok=True)
                 entry.patch_file = str(night.dir / f"{entry.n:02d}-{slug(task.key)}.patch")
@@ -1046,7 +1049,7 @@ class Coordinator:
             self.night.write()
             self.commit_pending("Night shift: report", OWN_PATHS)
         landed = sum(1 for e in self.night.entries if e.outcome == "landed")
-        log(f"done: {landed} of {len(self.night.entries)} tasks landed on {self.night.branch}; report in {REL}/reports/{date}.md")
+        log(f"done: {landed} of {len(self.night.entries)} tasks landed on {self.night.branch}; report in {REL}/reports/{self.night.file.name}")
 
 
 # --- Memory: the project map --------------------------------------------------------------------------------
