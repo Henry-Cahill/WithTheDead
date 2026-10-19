@@ -3,6 +3,7 @@ using UnityEngine.Rendering;
 
 namespace CloneZ
 {
+    // The starter home builds window fittings (sashes, curtains, blinds, etc.).
     internal static partial class StarterHome
     {
         #region Window fittings
