@@ -1,5 +1,6 @@
 namespace CloneZ
 {
+    // The living room, bedroom and store room settings (SeatFixture, BedFixture, LivingReading, LivingReceiver): sitting and lying down, reading at the bookcase, and the portable TV and the kitchen radio.
     public static partial class CloneZConfig
     {
         // ---- Sitting (dining chairs, the armchair, the edge of the bed, the toilet lid) ----

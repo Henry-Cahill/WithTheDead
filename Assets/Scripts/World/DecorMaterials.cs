@@ -46,12 +46,19 @@ namespace CloneZ
         public static Surf Fitted(Texture2D tex, float smoothness = 0.1f)
             => new Surf(Lit(tex, smoothness, 0f), Vector2.zero, 0f);
 
+        /// <summary>Snow surface material, tiled for snowy ground.</summary>
         public static Surf Snow => Planar(DecorTextures.Snow(), 9f, 0.3f);
+        /// <summary>Asphalt surface material, tiled for road surfaces.</summary>
         public static Surf Asphalt => Planar(DecorTextures.Asphalt(), 6f, 0.25f);
+        /// <summary>Concrete surface material, tiled for interior floors.</summary>
         public static Surf Concrete => Planar(DecorTextures.Concrete(), 2f, 0.1f);
+        /// <summary>Gravel surface material, tiled for small ground details.</summary>
         public static Surf Gravel => Planar(DecorTextures.Gravel(), 1.5f, 0.05f);
+        /// <summary>Ceiling surface material, tiled for ceiling tiles.</summary>
         public static Surf Ceiling => Planar(DecorTextures.CeilingTiles(), 2.4f, 0.05f);
+        /// <summary>Hazard stripe material, tiled for warning patterns.</summary>
         public static Surf Hazard => Planar(DecorTextures.HazardStripes(), 0.6f, 0.3f);
+        /// <summary>Hazard sign material, fitted to a quad.</summary>
         public static Surf HazardSign => Fitted(DecorTextures.HazardSign(), 0.2f);
 
         public static Surf WallInterior(WallDesign d) => Planar(DecorTextures.WallInterior(d), DecorTextures.WallSpan, 0.12f);

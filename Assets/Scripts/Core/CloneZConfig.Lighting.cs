@@ -1,5 +1,6 @@
 namespace CloneZ
 {
+    // The home's lighting, wall decor and yard settings (LightSwitch, LampSwitch, BreakerPanel, MailboxFixture, HoseSpigot, DoormatFixture): the switches, lamps and breaker panel, the pictures and the clock, and the yard's mailbox, garden tap and doormat.
     public static partial class CloneZConfig
     {
         // ---- Home lighting: wall switches, lamps and the breaker panel ----

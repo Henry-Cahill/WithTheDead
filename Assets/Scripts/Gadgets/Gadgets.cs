@@ -18,16 +18,24 @@ namespace CloneZ
     {
         public static readonly List<Drone> All = new List<Drone>();
 
-        public DroneKind Kind { get; private set; }
-        public float Battery01 { get; private set; } = 1f;
-        public bool HasGrenade { get; private set; }
-        public bool IsDead { get; private set; }
-        public Transform Transform => transform;
-        public Camera Cam { get; private set; }
+        /// <summary>What kind of drone this is.</summary>
+public DroneKind Kind { get; private set; }
+        /// <summary>Current battery charge (0‑1).</summary>
+public float Battery01 { get; private set; } = 1f;
+        /// <summary>True if the drone carries a grenade (FPV only).</summary>
+public bool HasGrenade { get; private set; }
+        /// <summary>True when the drone has been destroyed.</summary>
+public bool IsDead { get; private set; }
+        /// <summary>Convenient access to this GameObject's Transform.</summary>
+public Transform Transform => transform;
+        /// <summary>The drone's camera, created on build.</summary>
+public Camera Cam { get; private set; }
         public bool Piloted;
         public ulong Owner = ulong.MaxValue;
-        public bool Remote { get; private set; }
-        public float Speed => _vel.magnitude;
+        /// <summary>True if this drone is a remote copy (network‑synced).</summary>
+public bool Remote { get; private set; }
+        /// <summary>Current speed magnitude of the drone.</summary>
+public float Speed => _vel.magnitude;
 
         private float _hp = 60f, _yaw, _lift;
         private Vector3 _vel;
@@ -42,7 +50,8 @@ namespace CloneZ
         private void OnEnable() { if (!All.Contains(this)) All.Add(this); }
         private void OnDisable() => All.Remove(this);
 
-        public static Drone Create(DroneKind kind, Vector3 at, float yaw, bool grenade, bool remote)
+        /// <summary>Factory method that creates and configures a new Drone instance.</summary>
+public static Drone Create(DroneKind kind, Vector3 at, float yaw, bool grenade, bool remote)
         {
             var go = new GameObject(kind == DroneKind.Fpv ? "FPV drone" : "Ground drone");
             go.transform.SetPositionAndRotation(at, Quaternion.Euler(0f, yaw, 0f));
@@ -156,14 +165,16 @@ namespace CloneZ
             return true;
         }
 
-        public void TakeDamage(in DamageInfo info)
+        /// <summary>Handle incoming damage, delegating to network or local processing.</summary>
+public void TakeDamage(in DamageInfo info)
         {
             if (IsDead) return;
             if (Remote) { DroneNet.Hit(Owner, info.AmountHp); return; }
             Hurt(info.AmountHp);
         }
 
-        public void Hurt(float hp)
+        /// <summary>Apply hit‑points loss, potentially triggering a crash.</summary>
+public void Hurt(float hp)
         {
             _hp -= hp;
             if (_hp <= 0f) Crash(false);
@@ -218,11 +229,15 @@ namespace CloneZ
     {
         private Drone _d;
         private void Awake() => _d = GetComponent<Drone>();
-        public override string DisplayName => _d != null && _d.Kind == DroneKind.Fpv ? "FPV drone" : "Ground drone";
-        public override float Reach => 2f;
-        public override bool IsAvailable => isActiveAndEnabled && _d != null && !_d.Piloted && !_d.IsDead && !_d.Remote;
+        /// <summary>Human‑readable name of the drone when picked up.</summary>
+public override string DisplayName => _d != null && _d.Kind == DroneKind.Fpv ? "FPV drone" : "Ground drone";
+        /// <summary>How far the player can reach to interact with the drone.</summary>
+public override float Reach => 2f;
+        /// <summary>Whether the drone can be interacted with (not piloted, alive, and local).</summary>
+public override bool IsAvailable => isActiveAndEnabled && _d != null && !_d.Piloted && !_d.IsDead && !_d.Remote;
 
-        public override void GetActions(InteractContext ctx, List<InteractAction> into)
+        /// <summary>Populate the interaction menu for the picked‑up drone.</summary>
+public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             into.Add(new InteractAction("Pick up the drone", c =>
             {

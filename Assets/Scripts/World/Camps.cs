@@ -29,9 +29,11 @@ namespace CloneZ
             }
         }
 
-        public static bool IsMine(string owner) => owner != null && owner == MyTag;
+        /// <summary>Checks if the given owner tag matches the local player's tag.</summary>
+public static bool IsMine(string owner) => owner != null && owner == MyTag;
 
-        public static bool IsSquadmate(string owner)
+        /// <summary>Checks if the given owner tag belongs to a teammate in the same squad.</summary>
+public static bool IsSquadmate(string owner)
             => owner != null && NetSession.Active && s_TagClient.TryGetValue(owner, out ulong c) && NetSocial.SameSquad(c);
 
         /// <summary>True when the local runner may attack a structure: someone else's camp, in the Zone.</summary>
@@ -120,13 +122,15 @@ namespace CloneZ
             return tag != null && s_TagClient.TryGetValue(tag, out ulong c) ? c : ulong.MaxValue;
         }
 
-        public static void Announce(BuildPiece p)
+        /// <summary>Broadcasts a newly built piece to other players.</summary>
+public static void Announce(BuildPiece p)
         {
             if (!NetSession.Active || p == null || p.Owner == null) return;
             using (var o = new NetOut(128)) { WritePiece(o, p); Send("cz.build", o); }
         }
 
-        public static void Announce(Barricade b)
+        /// <summary>Broadcasts a newly built barricade to other players.</summary>
+public static void Announce(Barricade b)
         {
             if (!NetSession.Active || b == null || b.Owner == null) return;
             using (var o = new NetOut(128)) { WriteBarricade(o, b); Send("cz.build", o); }
@@ -254,13 +258,15 @@ namespace CloneZ
             if (NetSession.Active && !NetSession.NM.IsServer) using (var o = new NetOut(8)) NetSession.ToServer("cz.campq", o);
         }
 
-        public static BuildPiece FindPiece(Vector3 pos)
+        /// <summary>Finds a built piece at the given world position.</summary>
+public static BuildPiece FindPiece(Vector3 pos)
         {
             foreach (BuildPiece p in BuildPiece.All) if (p != null && (p.transform.position - pos).sqrMagnitude < 0.01f) return p;
             return null;
         }
 
-        public static Barricade FindBarricade(Vector3 pos)
+        /// <summary>Finds a barricade at the given world position.</summary>
+public static Barricade FindBarricade(Vector3 pos)
         {
             foreach (Barricade b in Barricade.All) if (b != null && (b.transform.position - pos).sqrMagnitude < 0.01f) return b;
             return null;
@@ -276,17 +282,23 @@ namespace CloneZ
     public sealed class CampGate : Interactable
     {
         public static new readonly List<CampGate> All = new List<CampGate>();
-        public BuildPiece Piece { get; private set; }
-        public bool Hung { get; private set; }
-        public bool Open { get; private set; }
-        public bool Locked { get; private set; }
-        public string Code { get; private set; }
+        /// <summary>The build piece this gate is attached to.</summary>
+public BuildPiece Piece { get; private set; }
+        /// <summary>Whether the gate is currently hung (installed).</summary>
+public bool Hung { get; private set; }
+        /// <summary>Whether the gate is currently open.</summary>
+public bool Open { get; private set; }
+        /// <summary>Whether the gate is currently locked with a combination lock.</summary>
+public bool Locked { get; private set; }
+        /// <summary>The combination lock code, if the gate is locked.</summary>
+public string Code { get; private set; }
 
         private Transform _pivot;
         private GameObject _block;
         private float _noiseAt;
 
-        public static CampGate On(BuildPiece p)
+        /// <summary>Creates or retrieves the CampGate component for a piece.</summary>
+public static CampGate On(BuildPiece p)
         {
             CampGate g = p.GetComponent<CampGate>();
             if (g == null) g = p.gameObject.AddComponent<CampGate>();
@@ -294,7 +306,8 @@ namespace CloneZ
             return g;
         }
 
-        public static CampGate At(Vector3 pos)
+        /// <summary>Finds the CampGate at the given world position.</summary>
+public static CampGate At(Vector3 pos)
         {
             foreach (CampGate g in All) if (g != null && (g.transform.position - pos).sqrMagnitude < 0.01f) return g;
             return null;
@@ -374,7 +387,8 @@ namespace CloneZ
                 }).Timed(2f, "Unlocking..."));
         }
 
-        public void Apply(bool hung, bool open, bool locked, string code)
+        /// <summary>Applies the gate's hung/open/locked state and updates its visuals.</summary>
+public void Apply(bool hung, bool open, bool locked, string code)
         {
             Hung = hung;
             Open = open;
@@ -387,7 +401,8 @@ namespace CloneZ
             _block.SetActive(!Open);
         }
 
-        public void Broadcast()
+        /// <summary>Sends the gate's current state to other players.</summary>
+public void Broadcast()
         {
             if (!NetSession.Active) return;
             using (var o = new NetOut(48))
@@ -398,7 +413,8 @@ namespace CloneZ
             }
         }
 
-        public CampGateSave Capture() => new CampGateSave { Position = transform.position, Open = Open, Locked = Locked, Code = Code };
+        /// <summary>Creates a saved representation of the gate's state.</summary>
+public CampGateSave Capture() => new CampGateSave { Position = transform.position, Open = Open, Locked = Locked, Code = Code };
 
         // A plank leaf on a hinge at the left jamb, and a blocking box (with a navmesh carve) while it's shut.
         private void EnsureLeaf()
@@ -446,7 +462,8 @@ namespace CloneZ
     /// <summary>Blasts break camps: every wall, gate and barricade near an explosion takes its force.</summary>
     public sealed class StructureBlast : IExplosionTarget
     {
-        public void OnExplosion(Vector3 center, float radius, float damage)
+        /// <summary>Handles an explosion, damaging nearby structures.</summary>
+public void OnExplosion(Vector3 center, float radius, float damage)
         {
             float reach = radius + 1.2f;
             foreach (BuildPiece p in new List<BuildPiece>(BuildPiece.All))
@@ -474,7 +491,8 @@ namespace CloneZ
     /// </summary>
     public static class NetExplosions
     {
-        public static void Detonate(Vector3 at, float radius, float damage, GameObject source, string weapon)
+        /// <summary>Detonates an explosion and synchronises it over the network.</summary>
+public static void Detonate(Vector3 at, float radius, float damage, GameObject source, string weapon)
         {
             if (GameSession.Networked && NetSession.Active && !NetSession.NM.IsServer)
             {
@@ -516,7 +534,8 @@ namespace CloneZ
         private Material _ballMat, _smokeMat;
         private float _t, _radius;
 
-        public static void Play(Vector3 at, float radius)
+        /// <summary>Spawns the visual effect for an explosion.</summary>
+public static void Play(Vector3 at, float radius)
         {
             var go = new GameObject("Explosion");
             go.transform.position = at + Vector3.up * 0.3f;
@@ -584,7 +603,8 @@ namespace CloneZ
             ItemActions.RegisterUse("breachcharge", (inv, s) => { Arm(inv); return true; });
         }
 
-        public static void Throw(PlayerInventory inv)
+        /// <summary>Throws a grenade from the given inventory.</summary>
+public static void Throw(PlayerInventory inv)
         {
             if (inv == null || HubRules.SafeZone || inv.Consume("grenade", 1) <= 0) { if (inv != null && !inv.Has("grenade")) GameEvents.RaiseToast("No grenades."); return; }
             Transform t = inv.transform;
@@ -600,7 +620,8 @@ namespace CloneZ
             Grenade.Spawn(t.position + Vector3.up * 1.6f + aim * 0.5f, v, inv.gameObject);
         }
 
-        public static void Arm(PlayerInventory inv)
+        /// <summary>Arms a breach charge from the given inventory.</summary>
+public static void Arm(PlayerInventory inv)
         {
             if (inv == null || HubRules.SafeZone) return;
             Vector3 at = inv.transform.position + inv.transform.forward * 0.6f;
@@ -616,7 +637,8 @@ namespace CloneZ
         private float _fuse = Explosives.GrenadeFuse;
         private GameObject _thrower;
 
-        public static void Spawn(Vector3 at, Vector3 velocity, GameObject thrower)
+        /// <summary>Spawns a grenade object with the given parameters.</summary>
+public static void Spawn(Vector3 at, Vector3 velocity, GameObject thrower)
         {
             var go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             go.name = "Grenade";
@@ -657,7 +679,8 @@ namespace CloneZ
         private GameObject _owner;
         private Light _led;
 
-        public static void Place(Vector3 at, GameObject owner)
+        /// <summary>Places a breaching charge at the given location.</summary>
+public static void Place(Vector3 at, GameObject owner)
         {
             var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
             go.name = "Breaching charge";
@@ -697,9 +720,11 @@ namespace CloneZ
     /// <summary>Wires camps (save, restore, gates, net), structural blasts and the explosives in.</summary>
     public sealed class CampModule : IGameModule
     {
-        public int Order => 94;
+        /// <summary>Order of execution for the camp module during bootstrap.</summary>
+public int Order => 94;
 
-        public void Init()
+        /// <summary>Initialises the camp system, registering events and hooks.</summary>
+public void Init()
         {
             CombatResolver.Breakables.Add(new StructureBlast());
             Explosives.Register();

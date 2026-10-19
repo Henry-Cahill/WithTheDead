@@ -1,5 +1,6 @@
 namespace CloneZ
 {
+    // The raid town's doors, zombie interactions, and windows settings.
     public static partial class CloneZConfig
     {
         // ---- The raid town's doors (RaidDoor): the home's door, plus the dead battering it and a boot to a locked one ----

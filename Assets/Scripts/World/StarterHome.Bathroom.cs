@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace CloneZ
 {
+    // The bathroom's wall fittings: the mirror cabinet over the basin on the back wall and the towel rail over the toilet on the east wall (the vanity light above the cabinet and the switch by the door are the lighting's).
     internal static partial class StarterHome
     {
         #region Bathroom wall fittings

@@ -11,7 +11,9 @@ namespace CloneZ
     /// </summary>
     public sealed class PlayerChannel : MonoBehaviour
     {
+        /// <summary>Singleton instance of the local player's channel for field actions.</summary>
         public static PlayerChannel Local { get; private set; }
+        /// <summary>True if a field action is currently active.</summary>
         public bool Busy => _onDone != null;
 
         private Action _onDone;
@@ -36,6 +38,7 @@ namespace CloneZ
 
         private void OnDestroy() { if (Local == this) Local = null; if (_slot != null) Destroy(_slot.gameObject); }
 
+        /// <summary>Starts a timed field action with a label and duration, unless the player is busy or dead.</summary>
         public bool Begin(string label, float seconds, Action onDone, HumanoidActivity activity = HumanoidActivity.Use)
         {
             if (Busy || _stats == null || _stats.IsDead || _stats.Incapacitated) return false;
@@ -51,6 +54,7 @@ namespace CloneZ
             return true;
         }
 
+        /// <summary>Cancels the current field action, optionally showing a toast message.</summary>
         public void Cancel(string why = null)
         {
             if (!Busy) return;
@@ -79,6 +83,7 @@ namespace CloneZ
             catch (Exception e) { Debug.LogException(e); }
         }
 
+        /// <summary>Ensures the HUD elements for the channel exist.</summary>
         private void EnsureHud()
         {
             if (_slot != null) return;
@@ -99,8 +104,10 @@ namespace CloneZ
     /// </summary>
     public static class FieldSurvival
     {
+        /// <summary>Returns true if a point is near the river and a raid is in extraction mode.</summary>
         public static bool NearRiver(Vector3 p) => p.x < -64f && GameSession.IsExtraction;
 
+        /// <summary>Initiates a foraging action, adding items based on environment and skills.</summary>
         public static void Forage(PlayerInventory inv)
         {
             if (inv == null || PlayerChannel.Local == null) return;
@@ -124,6 +131,7 @@ namespace CloneZ
             }, HumanoidActivity.Search);
         }
 
+        /// <summary>Attempts to add an item to the inventory based on chance and context.</summary>
         private static void Roll(PlayerInventory inv, string id, float chance, int min, int max, List<string> found, bool allowed)
         {
             if (!allowed || UnityEngine.Random.value > chance) return;
@@ -133,6 +141,7 @@ namespace CloneZ
             if (inv.Inventory.Add(d, n, false, extra: new ItemExtra { FoundInRaid = true }) > 0) found.Add(n + "x " + d.DisplayName);
         }
 
+        /// <summary>Starts a fishing action if near water and the player has a rod and bait.</summary>
         public static void Fish(PlayerInventory inv)
         {
             if (inv == null || PlayerChannel.Local == null) return;
@@ -160,6 +169,7 @@ namespace CloneZ
             }, HumanoidActivity.Use);
         }
 
+        /// <summary>Places a snare trap after checking inventory and location.</summary>
         public static void SetSnare(PlayerInventory inv)
         {
             if (inv == null || !inv.Has("snare")) { GameEvents.RaiseToast("You need a snare."); return; }
@@ -173,6 +183,7 @@ namespace CloneZ
             }, HumanoidActivity.Dig);
         }
 
+        /// <summary>Attempts to light a fire if the player has fuel and a lighter or matches.</summary>
         public static bool LightFire(PlayerInventory inv)
         {
             if (inv == null) return false;
@@ -190,6 +201,7 @@ namespace CloneZ
             return true;
         }
 
+        /// <summary>Starts a cranking action to charge a battery if the player has a crank.</summary>
         public static void Crank(PlayerInventory inv)
         {
             var gear = inv != null ? inv.GetComponent<PlayerGear>() : null;
@@ -204,6 +216,7 @@ namespace CloneZ
 
         #region Disassembly
         /// <summary>What an item breaks down into (scrap, wires, rags, chemicals), or null when it can't be taken apart.</summary>
+        /// <summary>Returns the parts an item can be salvaged into, or null if not salvageable.</summary>
         public static (string id, int n)[] SalvageOf(ItemDef d)
         {
             if (d == null) return null;
@@ -223,6 +236,7 @@ namespace CloneZ
             return null;
         }
 
+        /// <summary>Disassembles an item stack into its component parts, applying skill bonuses.</summary>
         public static bool Disassemble(PlayerInventory inv, ItemStack s)
         {
             (string id, int n)[] parts = SalvageOf(s?.Def);

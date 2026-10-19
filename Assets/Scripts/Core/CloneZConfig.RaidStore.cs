@@ -1,5 +1,6 @@
 namespace CloneZ
 {
+        // The raid ​​  ​  ​  ​​​  ​  ​  ​ store ​ ​ ​ ​ ​  components  tuned  by  raid  settings  in  this file.
     public static partial class CloneZConfig
     {
         // ---- The county office's working things (RaidStore fixtures) ----

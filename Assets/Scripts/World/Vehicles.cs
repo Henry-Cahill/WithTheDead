@@ -16,15 +16,20 @@ namespace CloneZ
         public static new readonly List<Vehicle> All = new List<Vehicle>();
         public const float TankLitres = 40f, MaxSpeed = 19f, ReverseSpeed = 5f;
 
-        public int Spot { get; private set; }
+        /// <summary>Spot index of the car in the world.</summary>
+public int Spot { get; private set; }
         public int Wheels;
         public bool Battery, SparkPlug, Radiator, Hotwired;
         public float Fuel, Engine = 1f, Charge = 1f, Heat, Tyres = 1f;
-        public bool EngineOn { get; private set; }
-        public float Speed { get; private set; }
-        public PlayerStats Driver { get; private set; }
+        /// <summary>Whether the engine is currently running.</summary>
+public bool EngineOn { get; private set; }
+        /// <summary>Current speed of the car (m/s).</summary>
+public float Speed { get; private set; }
+        /// <summary>Driver's player stats (null when no one is driving).</summary>
+public PlayerStats Driver { get; private set; }
         public ulong RemoteDriver = ulong.MaxValue;
-        public Transform Seat { get; private set; }
+        /// <summary>Transform of the driver's seat.</summary>
+public Transform Seat { get; private set; }
 
         private Rigidbody _rb;
         private Transform _bodyRoot;
@@ -36,7 +41,8 @@ namespace CloneZ
         private Vector3 _netFrom, _netTo;
         private float _netYawFrom, _netYawTo, _netT = 1f;
 
-        public bool Drivable => Wheels == 4 && Engine > 0f;
+        /// <summary>Whether the car can be driven (has all wheels and a functional engine).</summary>
+public bool Drivable => Wheels == 4 && Engine > 0f;
         public string Missing
         {
             get
@@ -60,7 +66,8 @@ namespace CloneZ
         protected override void OnDisable() { base.OnDisable(); All.Remove(this); }
 
         #region Building
-        public static Vehicle Spawn(int spot, Vector3 at, float yaw, int seed)
+        /// <summary>Creates a new car at the given spot, position, yaw and random seed.</summary>
+public static Vehicle Spawn(int spot, Vector3 at, float yaw, int seed)
         {
             var go = new GameObject("Car " + spot);
             go.transform.SetPositionAndRotation(new Vector3(at.x, 0f, at.z), Quaternion.Euler(0f, yaw, 0f));
@@ -143,19 +150,22 @@ namespace CloneZ
         }
 
         /// <summary>Shows the wheels that are on; a car short of wheels sits on its belly.</summary>
-        public void RefreshParts()
+        /// <summary>Refreshes wheel visibility and body position based on current parts.</summary>
+public void RefreshParts()
         {
             for (int i = 0; i < 4; i++) if (_wheels[i] != null) _wheels[i].gameObject.SetActive(i < Wheels);
             if (_bodyRoot != null) _bodyRoot.localPosition = Wheels < 4 ? new Vector3(0f, -0.22f, 0f) : Vector3.zero;
         }
 
-        public VehicleSave Capture() => new VehicleSave
+        /// <summary>Capture the car's current state for saving.</summary>
+public VehicleSave Capture() => new VehicleSave
         {
             Spot = Spot, Position = transform.position, Yaw = transform.eulerAngles.y, Wheels = Wheels, Battery = Battery, SparkPlug = SparkPlug,
             Radiator = Radiator, Hotwired = Hotwired, Fuel = Fuel, Engine = Engine, Charge = Charge, Tyres = Tyres,
         };
 
-        public void Load(VehicleSave s)
+        /// <summary>Load a saved car state, applying parts and fuel.</summary>
+public void Load(VehicleSave s)
         {
             Wheels = Mathf.Clamp(s.Wheels, 0, 4);
             Battery = s.Battery; SparkPlug = s.SparkPlug; Radiator = s.Radiator; Hotwired = s.Hotwired;
@@ -166,7 +176,8 @@ namespace CloneZ
         #endregion
 
         #region Working on it
-        public override void GetActions(InteractContext ctx, List<InteractAction> into)
+        /// <summary>Provide interactable actions for the car (enter, fix, fuel, hotwire, etc.).</summary>
+public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             PlayerInventory inv = ctx.Inventory;
             if (inv == null || GameSession.IsMonsterRun) return;
@@ -264,7 +275,8 @@ namespace CloneZ
         #endregion
 
         #region Driving
-        public void Enter(PlayerStats who)
+        /// <summary>Tell the car a player has entered as driver.</summary>
+public void Enter(PlayerStats who)
         {
             if (who == null || Driver != null || RemoteDriver != ulong.MaxValue) return;
             Driver = who;
@@ -274,7 +286,8 @@ namespace CloneZ
             VehicleNet.Claim(this, true);
         }
 
-        public void Exit()
+        /// <summary>Tell the car the driver has exited.</summary>
+public void Exit()
         {
             if (Driver == null) return;
             EngineOn = false;
@@ -286,7 +299,8 @@ namespace CloneZ
         }
 
         /// <summary>The driver turns the key (or touches the wires together).</summary>
-        public bool TryStart(out string why)
+        /// <summary>Attempt to start the engine; returns true if successful and sets why if not.</summary>
+public bool TryStart(out string why)
         {
             why = null;
             if (EngineOn) return true;
@@ -317,7 +331,8 @@ namespace CloneZ
         private void OnDestroy() { if (_engine != null) Sfx.Stop(_engine); }
 
         /// <summary>One physics step of driving: throttle -1..1, steer -1..1, brake.</summary>
-        public void Drive(float throttle, float steer, bool brake, float dt)
+        /// <summary>Drive the car for one physics step based on throttle, steer, brake and delta time.</summary>
+public void Drive(float throttle, float steer, bool brake, float dt)
         {
             if (!EngineOn || !Drivable) throttle = 0f;
             float target = throttle > 0f ? throttle * MaxSpeed * Mathf.Lerp(0.55f, 1f, Engine) : throttle * ReverseSpeed;
@@ -424,7 +439,8 @@ namespace CloneZ
         }
 
         // Someone else is driving: follow their updates smoothly.
-        public void PushRemote(Vector3 pos, float yaw, float speed, bool engine)
+        /// <summary>Send the car's position, rotation and speed to remote clients.</summary>
+public void PushRemote(Vector3 pos, float yaw, float speed, bool engine)
         {
             _netFrom = transform.position;
             _netTo = pos;
@@ -445,7 +461,8 @@ namespace CloneZ
             if (_engine != null) _engine.pitch = 0.7f + Mathf.Abs(Speed) / MaxSpeed * 0.9f;
         }
 
-        public void RemoteSeat(ulong who)
+        /// <summary>Update the remote driver's seat status, handling disconnection and engine state.</summary>
+public void RemoteSeat(ulong who)
         {
             RemoteDriver = who;
             if (who == ulong.MaxValue && EngineOn) { EngineOn = false; UpdateEngineFx(); }
@@ -469,7 +486,8 @@ namespace CloneZ
         private PlayerAvatar _avatar;
         private float _startAt, _enteredAt;
 
-        public void Begin(Vehicle car)
+        /// <summary>Begin control of this vehicle for the given player (sets driver state and disables input).</summary>
+public void Begin(Vehicle car)
         {
             Car = car;
             Local = this;
@@ -488,7 +506,8 @@ namespace CloneZ
             if (UnityEngine.Object.FindAnyObjectByType<HudVehicle>() == null) HudVehicle.Create();
         }
 
-        private void FixedUpdate()
+        /// <summary>FixedUpdate drives the car each physics tick and handles hotwiring input.</summary>
+private void FixedUpdate()
         {
             if (Car == null) { Leave(); return; }
             Keyboard kb = Keyboard.current;
@@ -515,7 +534,8 @@ namespace CloneZ
             if (exitKey || (st != null && (st.IsDead || st.Incapacitated))) Leave();
         }
 
-        public void Leave()
+        /// <summary>Leave the vehicle, resetting driver state and repositioning the character.</summary>
+public void Leave()
         {
             Vehicle car = Car;
             Car = null;
@@ -543,7 +563,8 @@ namespace CloneZ
     {
         private Text _text;
 
-        public static HudVehicle Create()
+        /// <summary>Create the HUD element showing vehicle speed, fuel, heat, engine status, etc.</summary>
+public static HudVehicle Create()
         {
             RectTransform slot = HudLayer.Anchor("Vehicle", new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, 180f), new Vector2(900f, 40f));
             var h = slot.gameObject.AddComponent<HudVehicle>();
@@ -654,7 +675,8 @@ namespace CloneZ
             v.RemoteSeat(sitting ? who : ulong.MaxValue);
         }
 
-        public static void SendState(Vehicle v)
+        /// <summary>Send the car's state (parts, fuel, engine) to all clients.</summary>
+public static void SendState(Vehicle v)
         {
             if (!NetSession.Active || v == null) return;
             using (var o = new NetOut(96))
@@ -665,7 +687,8 @@ namespace CloneZ
             }
         }
 
-        private static void Write(NetOut o, Vehicle v)
+        /// <summary>Write the vehicle's data into a network message for syncing.</summary>
+private static void Write(NetOut o, Vehicle v)
             => o.I(v.Spot).V(v.transform.position).F(v.transform.eulerAngles.y).I(v.Wheels).B(v.Battery).B(v.SparkPlug).B(v.Radiator).B(v.Hotwired).F(v.Fuel).F(v.Engine).F(v.Charge).F(v.Tyres);
 
         private static void OnState(ulong sender, NetIn m)
@@ -696,7 +719,8 @@ namespace CloneZ
     {
         private static readonly RaycastHit[] s_Hits = new RaycastHit[8];
 
-        public static bool Below(Vector3 from, float distance, Transform self, out float y)
+        /// <summary>Check if a point is above ground, ignoring the car's own collider and any actors below.</summary>
+public static bool Below(Vector3 from, float distance, Transform self, out float y)
         {
             int n = Physics.RaycastNonAlloc(from, Vector3.down, s_Hits, distance, Actor.SightMask, QueryTriggerInteraction.Ignore);
             y = float.NegativeInfinity;

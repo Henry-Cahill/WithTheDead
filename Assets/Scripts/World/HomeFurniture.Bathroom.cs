@@ -3,6 +3,9 @@ using UnityEngine.Rendering;
 
 namespace CloneZ
 {
+    // The bathroom's loose furniture (see the per-area hooks in HomeFurniture.cs): the toilet, the pedestal basin and
+    // the shower stall, drawn in china, glass and chrome (FurnitureBuilder.Bathroom.cs), with the parts that move and
+    // the water kept apart for each piece's fixture (ToiletFixture, BasinFixture, ShowerFixture).
     public partial class HomeFurniture
     {
         #region Bathroom

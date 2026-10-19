@@ -18,10 +18,15 @@ namespace CloneZ
 
         public static readonly List<HumanNpc> All = new List<HumanNpc>();
 
+        /// <summary>Human's display name used in UI.</summary>
         public string Name { get; private set; }
+        /// <summary>Loadout that defines this human's gear and stats.</summary>
         public HumanLoadout Loadout { get; private set; }
+        /// <summary>Actor component representing this human in the world.</summary>
         public Actor Actor { get; private set; }
+        /// <summary>Current behavioral state of the human.</summary>
         public Mode State { get; private set; } = Mode.Idle;
+        /// <summary>The current attack target, if any.</summary>
         public Actor Target => _target;
         public bool InCover => _inCover;
         public bool Crouched { get; private set; }
