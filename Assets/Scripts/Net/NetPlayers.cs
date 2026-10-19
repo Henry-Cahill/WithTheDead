@@ -19,6 +19,7 @@ namespace CloneZ
         private static uint s_Seq;
         private static string s_LastHeld = "";
 
+        /// <summary>Read‑only map of remote player IDs to their proxy objects.</summary>
         public static IReadOnlyDictionary<ulong, RemotePlayer> Proxies => s_Proxies;
 
         internal static void Register()
@@ -39,12 +40,14 @@ namespace CloneZ
 
         private static PlayerStats LocalStats => Actor.LocalPlayer != null ? Actor.LocalPlayer.GetComponent<PlayerStats>() : null;
 
+        /// <summary>Remove a remote player proxy and destroy its GameObject.</summary>
         public static void RemoveProxy(ulong id)
         {
             if (s_Proxies.TryGetValue(id, out RemotePlayer p) && p != null) Object.Destroy(p.gameObject);
             s_Proxies.Remove(id);
         }
 
+        /// <summary>Get the proxy RemotePlayer for a given player ID, or null if none.</summary>
         public static RemotePlayer ProxyOf(ulong id) => s_Proxies.TryGetValue(id, out RemotePlayer p) ? p : null;
 
         #region Sending our own state
@@ -331,6 +334,7 @@ namespace CloneZ
     {
         private static NetTicker s_Instance;
 
+        /// <summary>Create the singleton NetTicker GameObject if not already present.</summary>
         public static void Ensure()
         {
             if (s_Instance != null) return;
@@ -351,6 +355,7 @@ namespace CloneZ
     /// <summary>A brief tracer line for a shot seen over the network.</summary>
     public static class NetTracer
     {
+        /// <summary>Draw a brief line segment representing a shot across the network.</summary>
         public static void Draw(Vector3 from, Vector3 to)
         {
             var go = new GameObject("Tracer");
@@ -376,10 +381,15 @@ namespace CloneZ
     {
         private struct Snap { public double T; public Vector3 P; public float Yaw, Pitch; }
 
+        /// <summary>Unique identifier of the remote player this proxy represents.</summary>
         public ulong Owner { get; private set; }
+        /// <summary>The Actor component attached to the remote player's body.</summary>
         public Actor Actor { get; private set; }
+        /// <summary>Whether the remote player is dead.</summary>
         public bool IsDead { get; private set; }
+        /// <summary>Convenient accessor for this object's Transform.</summary>
         public Transform Transform => transform;
+        /// <summary>Name of the item currently held by the remote player, or empty string.</summary>
         public string Held { get; private set; } = "";
         /// <summary>Out cold (knocked out by shock or blood loss).</summary>
         public bool Incapacitated => (_flags & 8) != 0;
@@ -394,6 +404,7 @@ namespace CloneZ
         private byte _flags;
         private bool _monster;
 
+        /// <summary>Spawn a new RemotePlayer proxy for a given network ID.</summary>
         public static RemotePlayer Spawn(ulong owner, NetClientInfo info, Vector3 pos, float yaw, bool monster)
         {
             var go = new GameObject("Runner " + owner);
@@ -429,6 +440,7 @@ namespace CloneZ
             return p;
         }
 
+        /// <summary>Update this proxy's state with the latest snapshot from the server.</summary>
         public void Push(uint seq, double now, Vector3 pos, float yaw, float pitch, byte flags, string held, byte hp)
         {
             _buffer.Add(new Snap { T = now, P = pos, Yaw = yaw, Pitch = pitch });
@@ -506,8 +518,10 @@ namespace CloneZ
             _anim.Evaluate(dt);
         }
 
+        /// <summary>Trigger the firing animation on this proxy's weapon.</summary>
         public void Fired() { if (_anim != null) _anim.Fire(); }
 
+        /// <summary>Mark this remote player as dead and play the death animation.</summary>
         public void Die()
         {
             if (IsDead) return;
@@ -518,6 +532,7 @@ namespace CloneZ
             if (col != null) col.enabled = false;
         }
 
+        /// <summary>Rewind or restore this proxy's position for lag compensation.</summary>
         public void Rewind(double time, bool rewind)
         {
             if (rewind)
