@@ -193,8 +193,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   Use only the game's own names (the Zone, the Passing, the Institute, the Wardens, the Choir, Freehold, Vanguard, Kestrel, Mirelock, the Spillway, the Lodestar), nothing from books, films or other games. Change nothing else.
 - [ ] Add to the kitchen radio's schedule in Assets/Scripts/Core/Broadcasts.cs: append two lines to every programme of the three radio stations (Easy 91.3, Talk 1040 and Highway Advisory) that isn't a Dead(...) one, each fitting its programme's days (ordinary with a growing unease on day 1, curfews and boil-water notices on days 2-3, the skeleton crew after) and that station's voice.
   Follow the conventions in the summary on Broadcasts: optional ?water:/?nowater:/?power:/?nopower: prefixes, {greeting} and {weekday}, sounds between asterisks. Wave survival is summer (July 1993). Don't touch the TV stations, the order of existing lines or any code.
-- [ ] Add three more posters to the raid town's walls in Assets/Scripts/World/RaidBuilding.Lighting.cs: append three entries to ArmyPosters in the same voice (1993 recruiting and public-information posters, all original wording).
+- [x] Add three more posters to the raid town's walls in Assets/Scripts/World/RaidBuilding.Lighting.cs: append three entries to ArmyPosters in the same voice (1993 recruiting and public-information posters, all original wording).
   Match the existing entries' length and punctuation; change nothing but the array.
+  - 18:16 landed by hts-llm in 1.6 min: 
 
 ### Documentation: one-sentence summaries where they're missing (filler for the small hours)
 

@@ -573,6 +573,9 @@ namespace CloneZ
             "U.S. ARMY, over a white star. Somebody has given the star a pair of goggle eyes in biro.",
             "The Guard's old recruiting poster, curling at the corners. A drawing pin is missing, so the bottom lifts in every draught.",
             "A recruiting poster. Pencilled down the margin: a phone number, crossed out, and under it, \"ask for Dale\".",
+            "A faded Army flyer, the bold lettering half‑eroded: \"JOIN THE RANKS\" beneath a sun‑bleached cartoon soldier holding a rifle.",
+            "U.S. ARMY recruitment notice, torn at the edges, the paper yellowed, a handwritten phone number in the margin: 555‑0199.",
+            "An old propaganda poster, the star dimmed, a slogan scrawled over the top: \"DEFEND FREEDOM\", the bottom smudged with rain.",
         };
 
         private static readonly string[] TentPosters =
