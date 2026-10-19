@@ -1,5 +1,6 @@
 namespace CloneZ
 {
+    // The bathroom's fittings (ToiletFixture, BasinFixture, ShowerFixture, TowelRail, MirrorCabinet): seat and lid, the taps, the water and the heat.
     public static partial class CloneZConfig
     {
         // ---- The bathroom's toilet (ToiletFixture): seat, lid, flush and the cistern's last water ----
