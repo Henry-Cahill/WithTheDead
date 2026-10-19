@@ -379,11 +379,16 @@ function Add-Task {
     $b64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($text))
     Invoke-Remote @"
 python3 - <<'PY'
-import base64, pathlib
+import base64, fcntl, pathlib
 p = pathlib.Path.home() / '$SparkProject' / 'Tools' / 'NightShift' / 'tasks.md'
 text = base64.b64decode('$b64').decode('utf-8')
-body = p.read_text(encoding='utf-8')
-p.write_text(body + ('' if body.endswith('\n') else '\n') + '- [ ] ' + text + '\n', encoding='utf-8')
+lock_path = p.parent / '.state' / 'tasks.lock'
+lock_path.parent.mkdir(parents=True, exist_ok=True)
+with lock_path.open('a+b') as lock:
+    fcntl.flock(lock, fcntl.LOCK_EX)
+    body = p.read_text(encoding='utf-8')
+    p.write_text(body + ('' if body.endswith('\n') else '\n') + '- [ ] ' + text + '\n', encoding='utf-8')
+    fcntl.flock(lock, fcntl.LOCK_UN)
 print('Queued: ' + text)
 PY
 "@ | Out-Null
@@ -493,14 +498,17 @@ function Publish-NightShift {
     $remote = "$(Invoke-Tool 'git ls-remote on GitHub' git @('-C', $Root, 'ls-remote', 'origin', "refs/heads/$branch"))".Split("`t ")[0]
     $prs = Invoke-Tool 'gh pr list (check: gh auth status)' gh @('pr', 'list', '--repo', $repo, '--head', $branch, '--state', 'open', '--json', 'number,url')
     $open = @(if ("$prs".Trim()) { ($prs -join "`n") | ConvertFrom-Json | ForEach-Object { $_ } })
+    # The night's reports that aren't on main yet. Without them there's no new work: the branch's last pull request
+    # was merged and only tooling or merges came after, so don't open another one for that.
+    $reports = @(& git -C $Root diff --name-only --diff-filter=AM "origin/main...$sha" -- 'Tools/NightShift/reports/*.md' |
+        Sort-Object { $_ -replace '\.md$', '' } -Descending)
+    if ($open.Count -eq 0 -and $reports.Count -eq 0) { Write-Host "Nothing new from the night shift on $branch since its last pull request."; return }
     # Refresh PR metadata even when the branch is already pushed, so failed edits can be retried.
     if ($remote -ne $sha) {
         Invoke-Tool "git push of $branch to GitHub" git @('-C', $Root, 'push', '-q', 'origin', "${sha}:refs/heads/$branch") | Out-Null
     }
 
     # Description: what to check before merging, then every run's report on the branch, newest first.
-    $reports = @(& git -C $Root diff --name-only --diff-filter=AM "origin/main...$sha" -- 'Tools/NightShift/reports/*.md' |
-        Sort-Object { $_ -replace '\.md$', '' } -Descending)
     $texts = foreach ($r in $reports) {
         $base = "https://github.com/$repo/blob/$branch/" + ($r -replace '[^/]+$', '')
         # Links in a report are relative to the reports folder; point them at the branch on GitHub.
