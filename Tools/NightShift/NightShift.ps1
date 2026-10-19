@@ -379,11 +379,16 @@ function Add-Task {
     $b64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($text))
     Invoke-Remote @"
 python3 - <<'PY'
-import base64, pathlib
+import base64, fcntl, pathlib
 p = pathlib.Path.home() / '$SparkProject' / 'Tools' / 'NightShift' / 'tasks.md'
 text = base64.b64decode('$b64').decode('utf-8')
-body = p.read_text(encoding='utf-8')
-p.write_text(body + ('' if body.endswith('\n') else '\n') + '- [ ] ' + text + '\n', encoding='utf-8')
+lock_path = p.parent / '.state' / 'tasks.lock'
+lock_path.parent.mkdir(parents=True, exist_ok=True)
+with lock_path.open('a+b') as lock:
+    fcntl.flock(lock, fcntl.LOCK_EX)
+    body = p.read_text(encoding='utf-8')
+    p.write_text(body + ('' if body.endswith('\n') else '\n') + '- [ ] ' + text + '\n', encoding='utf-8')
+    fcntl.flock(lock, fcntl.LOCK_UN)
 print('Queued: ' + text)
 PY
 "@ | Out-Null
