@@ -182,8 +182,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 18:03 landed by hts-llm in 4.1 min: Added five new “read‑screen” lines to **Assets/Scripts/World/RaidBuilding.Civic.cs**:
 - [ ] Add more of the raid town houses' paperwork in Assets/Scripts/World/Fixtures/RaidHomeLiving.cs: append four magazines to Magazines (lower-case "a ..." like the others), three deliveries to Letters (each delivery is a string[] of two to four lines, read in turn) and three lines to NumberLines (each must contain {0} exactly once: it's the string.Format placeholder for the house number). December 1993.
   All original: no real brands or people and no names from books, films or other games. Match the existing entries' voice and punctuation. Only append to the arrays; change nothing else.
-- [ ] Put four more magazines on the starter home's bookcase in Assets/Scripts/World/Fixtures/LivingReading.cs: append four entries to Magazines (what "Flick through a magazine" finds), lower-case "a ..." like the others, July 1993.
+- [x] Put four more magazines on the starter home's bookcase in Assets/Scripts/World/Fixtures/LivingReading.cs: append four entries to Magazines (what "Flick through a magazine" finds), lower-case "a ..." like the others, July 1993.
   All original: no real brands, titles or people. Match the existing entries' length, voice and punctuation. Only append to the array; change nothing else.
+  - 18:07 landed by 1htsserver in 2.2 min: Implemented four additional magazine entries in **Assets/Scripts/World/Fixtures/LivingReading.cs**.
 - [x] Give the radio that switches itself on more to say in Assets/Scripts/World/Zone/Uncanny.cs: append six lines to s_RadioLines in the same "...fragment..." form: wrong, sad or unsettling, never gory or threatening (the Zone is indifferent, not evil).
   Original only, using only the game's own names (the Passing, the Institute, the Choir, the Spillway). Change nothing but the array.
   - 18:07 landed by 0htsserver in 1.6 min: **Changed:**

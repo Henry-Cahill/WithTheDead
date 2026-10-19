@@ -39,12 +39,16 @@ namespace CloneZ
 
         private static readonly string[] Magazines =
         {
-            "a dog-eared Chrome & Gasket \u2014 a two-page spread on a cherry-red pickup. Somebody circled it in biro.",
-            "last spring's Valley Homemaker. \u201CTen Thrifty Ways With Leftover Ham.\u201D Somebody tried number four.",
+            "a dog-eared Chrome & Gasket — a two-page spread on a cherry-red pickup. Somebody circled it in biro.",
+            "last spring's Valley Homemaker. “Ten Thrifty Ways With Leftover Ham.” Somebody tried number four.",
             "a Tackle Box Digest with a tide table for a coast a thousand miles from here.",
             "a Rainy Day Crosswords with the easy ones filled in, in two different hands.",
             "a Starlight Screen Gossip. Everyone in it is on a yacht, worried about nothing at all.",
             "the County Seed Catalogue. Pole beans, sweetcorn, a giant pumpkin promised by October.",
+            "a July 1993 Homebrew Gazette — a spread on making your own cider in the backyard.",
+            "a July 1993 Survivalist's Almanac. Tips on building a rain collector and warding off pests.",
+            "a July 1993 Retro Tech Review — a two‑page look at busted radios and tin‑plate bikes.",
+            "a July 1993 Wildlife Watch, issue 7. A photo essay of deer tracks in early summer snows.",
         };
 
         private static readonly string[] Tidying =
