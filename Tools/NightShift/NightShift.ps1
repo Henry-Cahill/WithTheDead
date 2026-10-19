@@ -442,26 +442,46 @@ function Write-PrLog([string]$Message) {
     Add-Content -Path (Join-Path $dir 'pr.log') -Value "$(Get-Date -Format 'yyyy-MM-dd HH:mm') $Message" -Encoding UTF8
 }
 
+# Runs git or gh and returns its output lines. Network hiccups get retried; if it still fails, the error says why
+# (the scheduled task has no window, so pr.log is the only place anyone sees it).
+function Invoke-Tool([string]$What, [string]$Exe, [string[]]$Arguments, [int]$Tries = 3) {
+    for ($try = 1; ; $try++) {
+        $out = New-Object Collections.Generic.List[string]
+        $err = New-Object Collections.Generic.List[string]
+        $eap = $ErrorActionPreference; $ErrorActionPreference = 'Continue'  # stderr isn't failure; the exit code says
+        try {
+            & $Exe @Arguments 2>&1 | ForEach-Object { if ($_ -is [Management.Automation.ErrorRecord]) { $err.Add("$_") } else { $out.Add("$_") } }
+            $code = $LASTEXITCODE
+        }
+        finally { $ErrorActionPreference = $eap }
+        if ($code -eq 0) { return $out.ToArray() }
+        if ($try -ge $Tries) {
+            $why = (@($err) + @($out) | Where-Object { $_ -match '\S' } | Select-Object -Last 3) -join ' / '
+            throw "$What failed (exit $code): $why"
+        }
+        Start-Sleep -Seconds (15 * $try)
+    }
+}
+
 # Pushes the Spark's night shift branch to GitHub and opens its pull request, or updates the open one.
 function Publish-NightShift {
     [Console]::OutputEncoding = [Text.Encoding]::UTF8  # the reports are UTF-8; PowerShell 5 would read git's output as OEM
     $state = Get-NightState
     $branch = "$($state.branch)"
     if ($branch -notlike 'nightshift/*') { Write-Host "The Spark's project is on '$branch', not a night shift branch, so there's nothing to publish."; return }
-    $done = (-not $state.running) -or ($state.working -eq 0 -and $state.dispatchable -eq 0)
+    # Coordinators from before "dispatchable" only say whether they've gone idle.
+    $left = if ($null -ne $state.dispatchable) { $state.dispatchable } elseif ($state.idle_since) { 0 } else { $state.queued }
+    $done = (-not $state.running) -or ($state.working -eq 0 -and $left -eq 0)
     if ($WhenDone -and -not $done) {
         Write-Host "Still working on $branch ($($state.working) in progress, $($state.queued) queued); the pull request waits until it's done."
         return
     }
     $old = $env:GIT_SSH_COMMAND
     $env:GIT_SSH_COMMAND = 'C:/Windows/System32/OpenSSH/ssh.exe -o BatchMode=yes -o ConnectTimeout=10'
-    try {
-        & git -C $Root fetch -q "${SparkHost}:$SparkProject" "+refs/heads/${branch}:refs/remotes/spark/$branch"
-        if ($LASTEXITCODE -ne 0) { throw "git fetch of $branch from the Spark failed" }
-    }
+    try { Invoke-Tool "git fetch of $branch from the Spark" git @('-C', $Root, 'fetch', '-q', "${SparkHost}:$SparkProject", "+refs/heads/${branch}:refs/remotes/spark/$branch") | Out-Null }
     finally { $env:GIT_SSH_COMMAND = $old }
-    & git -C $Root fetch -q origin main
-    if ($LASTEXITCODE -ne 0) { throw 'git fetch of main from GitHub failed' }
+    $env:GIT_TERMINAL_PROMPT = '0'; $env:GCM_INTERACTIVE = 'never'  # fail rather than wait for a sign-in nobody sees
+    Invoke-Tool 'git fetch of main from GitHub' git @('-C', $Root, 'fetch', '-q', 'origin', 'main') | Out-Null
     $sha = "$(& git -C $Root rev-parse "refs/remotes/spark/$branch")".Trim()
     if ([int]"$(& git -C $Root rev-list --count "origin/main..$sha")" -eq 0) { Write-Host "$branch has nothing that isn't on main yet."; return }
     # Never publish what must stay on the Spark (its SSH key for the helpers, Unity's DLLs) or anything like a private key.
@@ -470,14 +490,11 @@ function Publish-NightShift {
     $private += @(& git -C $Root log --format=%h -G 'BEGIN [A-Z ]*PRIVATE KEY' "origin/main..$sha" | ForEach-Object { "a private key in commit $_" })
     if ($private.Count -gt 0) { throw "$branch has files that must not leave the Spark ($(($private | Select-Object -First 3) -join ', ')), so it wasn't pushed" }
     $repo = Get-GitHubRepo
-    $remote = "$(& git -C $Root ls-remote origin "refs/heads/$branch")".Split("`t ")[0]
-    $prs = & gh pr list --repo $repo --head $branch --state open --json 'number,url'
-    if ($LASTEXITCODE -ne 0) { throw 'gh pr list failed (check: gh auth status)' }
+    $remote = "$(Invoke-Tool 'git ls-remote on GitHub' git @('-C', $Root, 'ls-remote', 'origin', "refs/heads/$branch"))".Split("`t ")[0]
+    $prs = Invoke-Tool 'gh pr list (check: gh auth status)' gh @('pr', 'list', '--repo', $repo, '--head', $branch, '--state', 'open', '--json', 'number,url')
     $open = @(if ("$prs".Trim()) { ($prs -join "`n") | ConvertFrom-Json | ForEach-Object { $_ } })
     if ($remote -ne $sha) {
-        $env:GIT_TERMINAL_PROMPT = '0'; $env:GCM_INTERACTIVE = 'never'  # fail rather than wait for a sign-in nobody sees
-        & git -C $Root push -q origin "${sha}:refs/heads/$branch"
-        if ($LASTEXITCODE -ne 0) { throw "git push of $branch to GitHub failed" }
+        Invoke-Tool "git push of $branch to GitHub" git @('-C', $Root, 'push', '-q', 'origin', "${sha}:refs/heads/$branch") | Out-Null
     }
 
     # Description: what to check before merging, then every run's report on the branch, newest first.
@@ -509,13 +526,13 @@ Work by the CLONE-Z Night Shift: local AI agents (Ollama on the DGX Spark and th
     try {
         [IO.File]::WriteAllText($file, $body, (New-Object Text.UTF8Encoding $false))
         if ($open.Count -gt 0) {
-            & gh pr edit $open[0].number --repo $repo --title $title --body-file $file | Out-Null
-            if ($LASTEXITCODE -ne 0) { throw 'gh pr edit failed' }
+            # No retries for edits and creates: a retry after a reply that got lost could open a second pull request.
+            Invoke-Tool 'gh pr edit' gh @('pr', 'edit', "$($open[0].number)", '--repo', $repo, '--title', $title, '--body-file', $file) 1 | Out-Null
             Write-PrLog "Updated $($open[0].url): $landed landed, $failed failed"
         }
         else {
-            $url = & gh pr create --repo $repo --base main --head $branch --title $title --body-file $file
-            if ($LASTEXITCODE -ne 0) { throw 'gh pr create failed' }
+            $url = Invoke-Tool 'gh pr create' gh @('pr', 'create', '--repo', $repo, '--base', 'main', '--head', $branch, '--title', $title, '--body-file', $file) 1 |
+                Where-Object { $_ -match '^https://' } | Select-Object -Last 1
             Write-PrLog "Opened $url : $landed landed, $failed failed"
         }
     }
