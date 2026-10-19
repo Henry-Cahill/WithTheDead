@@ -504,7 +504,12 @@ function Publish-NightShift {
     # came after), so don't open another pull request for that.
     $reports = @(& git -C $Root diff --name-only --diff-filter=AM origin/main $sha -- 'Tools/NightShift/reports/*.md' |
         Sort-Object { $_ -replace '\.md$', '' } -Descending)
-    if ($open.Count -eq 0 -and $reports.Count -eq 0) { Write-Host "Nothing new from the night shift on $branch since its last pull request."; return }
+    $newReports = @($reports | Where-Object {
+        & git -C $Root diff --quiet origin/main $sha -- $_
+        if ($LASTEXITCODE -gt 1) { throw "Couldn't compare report '$_' with main." }
+        $LASTEXITCODE -eq 1
+    })
+    if ($open.Count -eq 0 -and $newReports.Count -eq 0) { Write-Host "Nothing new from the night shift on $branch since its last pull request."; return }
     # Refresh PR metadata even when the branch is already pushed, so failed edits can be retried.
     if ($remote -ne $sha) {
         Invoke-Tool "git push of $branch to GitHub" git @('-C', $Root, 'push', '-q', 'origin', "${sha}:refs/heads/$branch") | Out-Null
