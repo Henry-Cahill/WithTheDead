@@ -72,6 +72,8 @@ shift's branch, the night shift stops so nothing lands on the other branch.
   patch), `[~]` nothing needed changing. `reports/<date>.md` has a summary of each task.
 - With the automatic pull request on, the pull request is waiting on GitHub. Choose **P** (or
   `.\NightShift.ps1 pr`) to open or update it right away, even while the agents are still working.
+  GitHub-side edits on the same branch are preserved: publishing merges them with the Spark's results in
+  a temporary checkout, without switching this PC's checkout or changing the running Spark. It never force-pushes.
 - Choose **7** (or `.\NightShift.ps1 fetch`) to fetch the branch into this repo, then
   `git switch -c nightshift/<date> spark/nightshift/<date>` and try it in Unity. The night shift can
   compile but not play the game, so play-test before merging.
@@ -126,5 +128,14 @@ local model, for interactive work in JupyterLab's terminal).
   `tasks.md` is fine at any time; leave the other files alone while it runs.
 - **No pull request appeared**: `.state\pr.log` on this PC says why (for example a failed push). The
   automatic one waits until nothing is left to do; **P** makes it right away.
+- **Publishing reports a merge conflict**: nothing was pushed or changed on the Spark. Stop the night shift,
+  fetch the GitHub and Spark versions of the branch, and reconcile them manually before retrying **P**.
+  If GitHub changed during publishing, retry **P** to fetch and reconcile the latest commits.
 - **Logs**: `Tools/NightShift/.state/nightshift.log` (coordinator), and each worker's
   `.state/runs/*.jsonl` (full agent transcripts).
+
+## Publication regression tests
+
+Run `pwsh -NoProfile -File Tools/NightShift/tests/Publish.Tests.ps1` from the repository root (or use
+`powershell -NoProfile -File ...` on Windows PowerShell 5). Tests use temporary local Git history only;
+they do not connect to the Spark or GitHub.
