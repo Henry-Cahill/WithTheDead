@@ -19,12 +19,19 @@ namespace CloneZ
 
         public static readonly List<Creature> All = new List<Creature>();
 
+        /// <summary>Gets the creature definition, describing its stats and behavior.</summary>
         public CreatureDef Def { get; private set; }
+        /// <summary>Gets the associated Actor component for this creature.</summary>
         public Actor Actor { get; private set; }
+        /// <summary>Current AI mode (wander, hunt, flee, dead).</summary>
         public Mode State { get; private set; }
+        /// <summary>Whether this creature is dead.</summary>
         public bool IsDead { get; private set; }
+        /// <summary>Gets the Unity Transform of the creature.</summary>
         public Transform Transform => transform;
+        /// <summary>Normalized speed (0‑1) based on NavMeshAgent velocity and the creature's run speed.</summary>
         public float Speed01 => _agent != null && _agent.enabled ? Mathf.Clamp01(_agent.velocity.magnitude / Mathf.Max(0.1f, Def.RunSpeed)) : 0f;
+        /// <summary>Whether the creature is currently in an attack animation.</summary>
         public bool Attacking => Time.time < _attackAnimUntil;
         public List<Creature> Pack;
 
