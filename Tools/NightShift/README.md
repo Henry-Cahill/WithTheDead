@@ -1,7 +1,8 @@
 # Night Shift
 
 Local AI coding agents that work through [tasks.md](tasks.md) overnight, so CLONE-Z gets built while you
-sleep without spending cloud AI tokens. The model runs in Ollama on the DGX Spark (`qwen3.8` by default),
+sleep without spending cloud AI tokens. The models run in Ollama on the DGX Spark (`qwen3.8` and
+`gpt-oss:120b`),
 [OpenCode](https://opencode.ai) is the agent, and everything runs on your own machines:
 
 - **The Spark** runs the model and the coordinator, inside the AI Workbench project container. In AI
@@ -70,8 +71,10 @@ container on the Spark and as the helper user on the helpers.
 
 ## Settings
 
-[nightshift.env](nightshift.env) sets the model (`gpt-oss:120b` is about twice as fast as `qwen3.8`),
-the stop time, the time limit per task and the number of fix rounds. It's read at every start.
+[nightshift.env](nightshift.env) sets the models, the stop time, the time limit per task and the number of
+fix rounds. It's read at every start. The Spark's own agent uses `qwen3.8`, and the helpers use
+`gpt-oss:120b`: Ollama serves `qwen3.8` one request at a time, so helpers on it would only wait their turn,
+while `gpt-oss:120b` runs several at once (and is about twice as fast).
 
 Inside the container, `bash Tools/NightShift/nightshift.sh` also has `finish` (stop after the current
 tasks), `stop`, `check` (compile the project as it is) and `chat` (OpenCode in a terminal with the same
