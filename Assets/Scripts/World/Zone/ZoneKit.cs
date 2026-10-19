@@ -11,13 +11,29 @@ namespace CloneZ
     /// </summary>
     internal static class ZoneKit
     {
+        /// <summary>Creates a matte surface with the given colour.</summary>
+        /// <summary>Creates a matte surface with the given colour.</summary>
         public static Surf M(Color c) => DecorPalette.Matte(c);
+        /// <summary>Creates a glossy surface with the given colour.</summary>
+        /// <summary>Creates a glossy surface with the given colour.</summary>
         public static Surf G(Color c) => DecorPalette.Gloss(c);
+        /// <summary>Creates a metal surface with the given colour.</summary>
+        /// <summary>Creates a metal surface with the given colour.</summary>
         public static Surf Mt(Color c) => DecorPalette.Metal(c);
+        /// <summary>Creates a glass surface with the given colour.</summary>
+        /// <summary>Creates a glass surface with the given colour.</summary>
         public static Surf Gs(Color c) => DecorPalette.Glass(c);
+        /// <summary>Creates a glowing surface with the given colour.</summary>
+        /// <summary>Creates a glowing surface with the given colour.</summary>
         public static Surf Gl(Color c) => DecorPalette.Glow(c);
+        /// <summary>Generates a random float between <paramref name="a"/> and <paramref name="b"/>.</summary>
+        /// <summary>Generates a random float between two bounds.</summary>
         public static float R(System.Random rng, float a, float b) => a + (float)rng.NextDouble() * (b - a);
+        /// <summary>Returns true with probability <paramref name="p"/>.</summary>
+        /// <summary>Returns true with given probability.</summary>
         public static bool Chance(System.Random rng, double p) => rng.NextDouble() < p;
+        /// <summary>Vary the colour <paramref name="c"/> slightly with randomness.</summary>
+        /// <summary>Varies a colour by a small random amount.</summary>
         public static Color V(Color c, System.Random rng, float amount = 0.08f) => DecorPalette.Vary(c, amount, rng);
 
         public static readonly Color Rust = new Color(0.40f, 0.21f, 0.11f);
@@ -31,6 +47,7 @@ namespace CloneZ
 
         #region Objects
         /// <summary>A child object at a world position (unrotated), on the Default layer.</summary>
+        /// <summary>Creates a child GameObject at a given world position on the Default layer.</summary>
         public static Transform Child(Transform parent, string name, Vector3 position)
         {
             var go = new GameObject(name);
@@ -40,6 +57,7 @@ namespace CloneZ
         }
 
         /// <summary>A solid box collider at a world placement under <paramref name="parent"/>.</summary>
+        /// <summary>Creates a solid box collider at a world position under the given parent.</summary>
         public static BoxCollider Solid(Transform parent, Vector3 center, Vector3 size, Quaternion rotation)
         {
             var go = new GameObject("Solid");
@@ -51,6 +69,7 @@ namespace CloneZ
         }
 
         /// <summary>Keeps an object (and everything under it) out of the navmesh bake.</summary>
+        /// <summary>Marks a GameObject to be ignored by NavMesh baking.</summary>
         public static void NoBake(GameObject go)
         {
             if (go == null || go.GetComponent<NavMeshModifier>() != null) return;
@@ -59,6 +78,7 @@ namespace CloneZ
         }
 
         /// <summary>Emits a mesh with its origin at <paramref name="origin"/> and returns the renderer (null when empty).</summary>
+        /// <summary>Emits a mesh from a RaidMesh and returns its renderer, or null if empty.</summary>
         public static MeshRenderer Emit(RaidMesh m, string name, Transform parent, Vector3 origin, ShadowCastingMode shadows = ShadowCastingMode.On)
         {
             if (m == null || m.IsEmpty) return null;
@@ -66,6 +86,7 @@ namespace CloneZ
             return go != null ? go.GetComponent<MeshRenderer>() : null;
         }
 
+        /// <summary>Recursively sets the Unity layer on a transform and all its children.</summary>
         public static void SetLayer(Transform t, int layer)
         {
             t.gameObject.layer = layer;
@@ -396,6 +417,7 @@ namespace CloneZ
         private readonly Dictionary<long, RaidMesh> _meshes = new Dictionary<long, RaidMesh>();
         private readonly List<long> _order = new List<long>();
 
+        /// <summary>Creates a ZoneChunks helper for a given chunk size.</summary>
         public ZoneChunks(float size) { _size = Mathf.Max(2f, size); }
 
         private long Key(Vector3 p)
@@ -444,11 +466,15 @@ namespace CloneZ
         public static readonly List<ZoneFlameLight> All = new List<ZoneFlameLight>();
         public const float CullDistance = 48f;
 
+        /// <summary>Gets the Light component for this flame light.</summary>
         public Light Light { get; private set; }
+        /// <summary>Base intensity for the flame light.</summary>
         public float Intensity = 1.5f;
         /// <summary>0 steady .. 1 wild.</summary>
+        /// <summary>Flicker amount (0 steady … 1 wild).</summary>
         public float Flicker = 0.3f;
         /// <summary>Multiplies the output (1 = normal); the uncanny events dip it.</summary>
+        /// <summary>Multiplier applied by events (1 = normal).</summary>
         public float Disturb = 1f;
 
         private float _seed;
@@ -529,6 +555,7 @@ namespace CloneZ
         /// <summary>Roof meshes drawn here go to <see cref="CeilingVisibility"/> (hidden from the isometric view).</summary>
         public readonly RaidMesh Roof = new RaidMesh();
 
+        /// <summary>Creates a SiteBuilder for constructing a zone site.</summary>
         public SiteBuilder(Transform parent, string name, Vector3 center, float yaw, System.Random rng, bool cutaway = true)
         {
             Center = new Vector3(center.x, 0f, center.z);
@@ -547,13 +574,18 @@ namespace CloneZ
         }
 
         /// <summary>A local point in world space.</summary>
+        /// <summary>Transform a local point to world space.</summary>
         public Vector3 W(float x, float y, float z) => Center + Rot * new Vector3(x, y, z);
+        /// <summary>Transform a local vector to world space.</summary>
         public Vector3 W(Vector3 local) => Center + Rot * local;
         /// <summary>A local yaw in world degrees.</summary>
+        /// <summary>Adds a local yaw offset to the base yaw.</summary>
         public float WYaw(float localYaw) => Yaw + localYaw;
+        /// <summary>Rotates a local vector by the builder's rotation.</summary>
         public Vector3 Dir(Vector3 local) => Rot * local;
 
         /// <summary>A solid box collider in the local frame (yaw-only local rotation).</summary>
+        /// <summary>Adds a solid box collider at a local point with optional yaw.</summary>
         public void Collider(Vector3 localCenter, Vector3 size, float localYaw = 0f)
         {
             if (_colliders == null) _colliders = ZoneKit.Child(Root, "Colliders", Center);
@@ -561,6 +593,7 @@ namespace CloneZ
         }
 
         /// <summary>A solid box collider with a full local rotation.</summary>
+        /// <summary>Adds a solid box collider at a local point with full rotation.</summary>
         public void Collider(Vector3 localCenter, Vector3 size, Quaternion localRot)
         {
             if (_colliders == null) _colliders = ZoneKit.Child(Root, "Colliders", Center);
@@ -568,6 +601,7 @@ namespace CloneZ
         }
 
         /// <summary>Draws into <paramref name="m"/> with the frame moved to a local point and yaw, then puts it back.</summary>
+        /// <summary>Draw into a mesh with a temporary frame offset then restore.</summary>
         public void At(RaidMesh m, Vector3 local, float localYaw, System.Action<RaidMesh> draw)
         {
             m.SetFrame(W(local), Yaw + localYaw);
@@ -576,6 +610,7 @@ namespace CloneZ
         }
 
         /// <summary>A storage fixture (a gun locker, a medicine chest...) whose reach point is a local point.</summary>
+        /// <summary>Creates a storage fixture with a given reach point.</summary>
         public StorageFixture Storage(string displayName, string keyKind, Vector3 localReach, ContainerType type, int maxStacks, float emptyChance = 0f)
         {
             Vector3 reach = W(localReach);
@@ -591,6 +626,7 @@ namespace CloneZ
         }
 
         /// <summary>Emits the meshes. Call once, after drawing.</summary>
+        /// <summary>Emits all stored meshes for this builder.</summary>
         public void Finish()
         {
             ZoneKit.Emit(Solid, "Solid", Root, Center, ShadowCastingMode.On);
