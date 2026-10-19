@@ -63,12 +63,12 @@ sentence of its summary. Grep the code for details.
 - Actor.cs (198) ActorKind, Actor, IZombieAttackable: What sort of creature an Actor is.
 - Broadcasts.cs (354) BroadcastStation, Broadcasts, Programme: The stations the home's sets can pick up: the portable TV's three channels, then the kitchen radio's
 - Climate.cs (224) Climate: The outdoor weather in real units, for the HUD watch and the body-temperature model.
-- CloneZConfig.Bathroom.cs (68) CloneZConfig
-- CloneZConfig.Doors.cs (27) CloneZConfig
-- CloneZConfig.Fixtures.cs (30) CloneZConfig
-- CloneZConfig.Kitchen.cs (54) CloneZConfig
-- CloneZConfig.Lighting.cs (33) CloneZConfig
-- CloneZConfig.Living.cs (78) CloneZConfig
+- CloneZConfig.Bathroom.cs (69) CloneZConfig: The bathroom's fittings (ToiletFixture, BasinFixture, ShowerFixture, TowelRail, MirrorCabinet): seat
+- CloneZConfig.Doors.cs (28) CloneZConfig: The starter home's doors and windows (HomeDoor, HomeWindow): open and close, lock, peephole, curtain
+- CloneZConfig.Fixtures.cs (31) CloneZConfig: The starter home's interactive fixtures: their reach, cursor pick, timing and noise, the power grid'
+- CloneZConfig.Kitchen.cs (55) CloneZConfig: The kitchen's settings (KitchenSink, KitchenStove, KitchenFridge): the sink, the gas range, the frid
+- CloneZConfig.Lighting.cs (34) CloneZConfig: The home's lighting, wall decor and yard settings (LightSwitch, LampSwitch, BreakerPanel, MailboxFix
+- CloneZConfig.Living.cs (79) CloneZConfig: The living room, bedroom and store room settings (SeatFixture, BedFixture, LivingReading, LivingRece
 - CloneZConfig.Raid.cs (13) CloneZConfig
 - CloneZConfig.RaidCivic.cs (52) CloneZConfig
 - CloneZConfig.RaidHomes.cs (53) CloneZConfig
@@ -289,7 +289,7 @@ sentence of its summary. Grep the code for details.
 - GeneratedItemModels.cs (128) GeneratedItemModels, FilePart, FileModel: Ground models produced by the offline LLM asset pipeline (Tools/AssetPipeline), loaded from Resource
 - GroundItemRenderer.cs (188) GroundItemRenderer: Draws every item lying on the ground near the player.
 - GroundItemStore.cs (352) GroundItemStore, Item, Chunk: Every item lying on the ground in the world, held as data rather than as scene objects.
-- HomeFurniture.Bathroom.cs (98) HomeFurniture
+- HomeFurniture.Bathroom.cs (101) HomeFurniture: The bathroom's loose furniture (see the per-area hooks in HomeFurniture.cs): the toilet, the pedesta
 - HomeFurniture.Kitchen.cs (89) HomeFurniture: The kitchen's loose furniture (see the per-area hooks in HomeFurniture.cs): the counter along the we
 - HomeFurniture.Living.cs (271) HomeFurniture: The living room's, bedroom's and store room's furniture (see HomeFurniture): the dining table (a sur
 - HomeFurniture.cs (361) HomeFurnitureKind, HomeFurniture: The loose furniture that dresses the starter home.
@@ -312,8 +312,8 @@ sentence of its summary. Grep the code for details.
 - RaidLayoutsHomes.cs (246) RaidLayouts: A family house: the 12 × 10 ranch (living room, kitchen, bedroom, bathroom with a bath, den) or the 
 - RaidLayoutsOffice.cs (255) RaidLayouts: The county office: an open-plan floor of desks with CRTs and lamps (photo 3), a lobby with reception
 - RaidLayoutsStore.cs (269) RaidLayouts: The gas station's food mart: the checkout counter with its till, gondolas of shelves to browse from 
-- RaidMapBuilder.Edge.cs (256) RaidMapBuilder
-- RaidMapBuilder.Outdoor.cs (194) RaidMapBuilder
+- RaidMapBuilder.Edge.cs (261) RaidMapBuilder: The map edge and what lies past it (the exit roads it opens onto are defined in RaidMapBuilder.Town.
+- RaidMapBuilder.Outdoor.cs (199) RaidMapBuilder: The outdoor fill of the streets and verges (the same props made usable and their interactive pieces 
 - RaidMapBuilder.Props.cs (227) RaidMapBuilder: The object every interactive outdoor prop hangs under (made on first use).
 - RaidMapBuilder.Streets.cs (193) RaidMapBuilder, RoadSpec: An axis-aligned street: asphalt, a faded double centre line, kerbs, sidewalks, banks of plowed snow 
 - RaidMapBuilder.Town.cs (295) RaidMapBuilder: Draws a prop into the outdoor mesh at a world placement, with an optional collider (size.y = 0 for n
@@ -321,10 +321,10 @@ sentence of its summary. Grep the code for details.
 - RaidMesh.cs (490) Surf, RaidMesh: How a piece of raid-map geometry is skinned: a material plus the way its UVs are generated.
 - RaidTown.cs (195) RaidTown, OutdoorBatches: Shared state while one raid map is being built: the seeded random stream, the three roots (the baked
 - SleepSpot.cs (97) SleepSpot: A bed the player can sleep in to pass the night and shed fatigue.
-- StarterHome.Bathroom.cs (65) StarterHome
-- StarterHome.Doors.cs (130) StarterHome
+- StarterHome.Bathroom.cs (66) StarterHome: The bathroom's wall fittings: the mirror cabinet over the basin on the back wall and the towel rail 
+- StarterHome.Doors.cs (131) StarterHome: The home's doors in their finished doorways: a pair of panelled leaves in the wide gaps (the front d
 - StarterHome.Grounds.cs (302) StarterHome: The street past the front of the home: sun-faded asphalt with a dashed yellow centre line and white 
-- StarterHome.Kitchen.cs (51) StarterHome
+- StarterHome.Kitchen.cs (52) StarterHome: The kitchen's wall cupboards over the worktop on the west wall: the carcass, shelf and crockery draw
 - StarterHome.Lighting.cs (217) StarterHome
 - StarterHome.Shell.cs (365) StarterHome, Frame, Band: Builds the finished look onto a house piece standing in one of the home's slots — its visible geomet
 - StarterHome.Windows.cs (205) StarterHome
