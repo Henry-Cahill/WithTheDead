@@ -29,6 +29,7 @@ import socket
 import struct
 import subprocess
 import sys
+import tempfile
 import threading
 import time
 import urllib.request
@@ -109,8 +110,9 @@ def git_run(repo: Path | str, *args: str, env: dict | None = None) -> subprocess
     for attempt in range(8):
         r = subprocess.run(["git", *GIT_SAFE, "-C", str(repo), *args], capture_output=True, text=True, env=env,
                            stdin=subprocess.DEVNULL)
-        # AI Workbench (or someone in a terminal) running git in the same repo holds index.lock for a moment; wait it out.
-        if r.returncode == 0 or "index.lock" not in r.stderr or attempt == 7:
+        # AI Workbench (or someone in a terminal) running git in the same repo holds a lock (index.lock, HEAD.lock) for
+        # a moment; wait it out.
+        if r.returncode == 0 or ".lock" not in r.stderr or "File exists" not in r.stderr or attempt == 7:
             return r
         time.sleep(2)
 
@@ -618,16 +620,23 @@ def write_atomic(path: Path, text: str) -> None:
     os.replace(tmp, path)
 
 
-def mark_task(key: str, mark: str, note: str) -> None:
+def with_mark(text: str, key: str, mark: str, note: str) -> str | None:
+    """`text` (tasks.md) with the unchecked task `key` marked and `note` added under it, or None if it isn't there."""
+    lines = text.splitlines()
+    for i, line in enumerate(lines):
+        m = BOX.match(line)
+        if m and m.group(2) == " " and m.group(3) == key:
+            lines[i] = f"{m.group(1)}- [{mark}] {m.group(3)}"
+            lines.insert(_block_end(lines, i, len(m.group(1))), " " * (len(m.group(1)) + 2) + "- " + note)
+            return "\n".join(lines) + "\n"
+    return None
+
+
+def mark_task(key: str, mark: str, note: str, path: Path = TASKS) -> None:
     with TASKS_LOCK:
-        lines = TASKS.read_text(encoding="utf-8").splitlines()
-        for i, line in enumerate(lines):
-            m = BOX.match(line)
-            if m and m.group(2) == " " and m.group(3) == key:
-                lines[i] = f"{m.group(1)}- [{mark}] {m.group(3)}"
-                lines.insert(_block_end(lines, i, len(m.group(1))), " " * (len(m.group(1)) + 2) + "- " + note)
-                write_atomic(TASKS, "\n".join(lines) + "\n")
-                return
+        text = with_mark(path.read_text(encoding="utf-8"), key, mark, note)
+        if text is not None:
+            write_atomic(path, text)
 
 
 def slug(text: str) -> str:
@@ -854,6 +863,8 @@ class Coordinator:
         self.queue_lock, self.land_lock = threading.Lock(), threading.Lock()
         self.in_flight: dict[str, tuple[str, str]] = {}  # task key -> (worker, since)
         self.dispatches: dict[str, int] = {}  # task key -> times handed to a worker tonight (never decreases)
+        self.completed: set[str] = set()
+        self.frozen = False  # the project folder and the night's branch got out of step; commit nothing more there
         self.idle_since: str | None = None  # HH:MM when the last task finished and nothing was left to start
         self.workers: list[Worker] = []
         self.night: Night | None = None
@@ -877,10 +888,61 @@ class Coordinator:
             STOPPING.set()
         return False
 
+    def sync_landed_checkout(self, branch: str, mark: tuple[str, str, str] | None = None) -> None:
+        """Brings the project folder up to the night's branch after a landing moved the branch, like `git checkout`.
+        If tasks.md was edited there meanwhile (tasks queued from the PC or JupyterLab), the edit is kept and the
+        landing's `mark` (task key, mark, note) is applied to it again. Raises if the folder can't be brought up to
+        date: the caller then moves the branch back, because a folder whose index lags behind its branch would turn
+        the next commit into a revert of the landing."""
+        lock_path = Path(git(ROOT, "rev-parse", "--git-path", "HEAD.lock").strip())
+        if not lock_path.is_absolute():
+            lock_path = ROOT / lock_path
+        for _ in range(30):  # AI Workbench may be committing or switching branch this very moment; wait for it
+            try:
+                fd = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o666)
+                break
+            except FileExistsError:
+                time.sleep(1)
+        else:
+            raise RuntimeError("the project folder's git stayed busy (HEAD.lock) for 30 s")
+        try:
+            if git_run(ROOT, "symbolic-ref", "--short", "HEAD").stdout.strip() != branch:
+                return  # switched to another branch: none of the night's work is checked out, so there's nothing to refresh
+            tasks_rel = f"{REL}/tasks.md"
+            with TASKS_LOCK:
+                edited = None
+                if TASKS.exists() and git_run(ROOT, "diff", "--quiet", "--", tasks_rel).returncode:
+                    edited = TASKS.read_bytes().decode("utf-8", "surrogateescape")
+                    git(ROOT, "checkout", "--", tasks_rel)  # the copy the landing started from, so the refresh can't trip
+                refreshed = git_run(ROOT, "read-tree", "-m", "-u", "HEAD")
+                if refreshed.returncode:
+                    if edited is not None:
+                        TASKS.write_bytes(edited.encode("utf-8", "surrogateescape"))
+                    raise RuntimeError("couldn't bring the project folder up to date with the landing: "
+                                       + first_line(refreshed.stderr or refreshed.stdout, 300))
+                if edited is not None:
+                    redone = with_mark(edited, *mark) if mark else None
+                    TASKS.write_bytes((edited if redone is None else redone).encode("utf-8", "surrogateescape"))
+        finally:
+            os.close(fd)
+            lock_path.unlink(missing_ok=True)
+
+    def undo_landing(self, ref: str, head: str, landed: str) -> None:
+        """Moves the night's branch back to `head` when the project folder couldn't follow it to `landed`, so the folder
+        matches its branch again. If even that fails, the night shift stops and commits nothing more in the folder."""
+        undone = git_run(ROOT, "update-ref", ref, head, landed)
+        if undone.returncode:
+            self.frozen = True
+            log(f"the night's branch and the project folder no longer match and couldn't be put back "
+                f"({first_line(undone.stderr, 200)}), so the night shift is stopping without committing anything more. "
+                f"Check 'git status' in the project before starting it again.")
+            STOPPING.set()
+
     def write_status(self) -> None:
         status = {"pid": os.getpid(), "model": self.model, "deadline": f"{self.deadline:%a %H:%M}" if self.deadline else "",
                   "branch": self.night.branch if self.night else "", "workers": [w.name for w in self.workers],
                   "working": {k: {"worker": v[0], "since": v[1]} for k, v in self.in_flight.items()},
+                  "dispatches": self.dispatches,
                   "idle_since": self.idle_since}
         STATUS_FILE.write_text(json.dumps(status, indent=2), encoding="utf-8")
 
@@ -889,7 +951,8 @@ class Coordinator:
             if self.off_duty() or not self.on_branch():
                 return None
             for mark, task in read_tasks():
-                if mark == " " and task.key not in self.in_flight and self.dispatches.get(task.key, 0) < MAX_DISPATCH:
+                if mark == " " and task.key not in self.in_flight and task.key not in self.completed \
+                        and self.dispatches.get(task.key, 0) < MAX_DISPATCH:
                     self.in_flight[task.key] = (worker.name, dt.datetime.now().strftime("%H:%M"))
                     self.dispatches[task.key] = self.dispatches.get(task.key, 0) + 1
                     self.idle_since = None
@@ -909,14 +972,16 @@ class Coordinator:
         log(f"idle: nothing left to start in tasks.md ({landed} of {len(self.night.entries)} landed so far); "
             f"new tasks added there start within a minute · {self.until()}")
 
-    def commit_pending(self, subject: str, paths: list[str] | None = None) -> None:
+    def commit_pending(self, subject: str, paths: list[str] | None = None, repo: Path = ROOT) -> None:
         """Commits changes under `paths` (default: everything) if there are any."""
-        git(ROOT, "add", "-A", "--", *(paths or ["."]))
-        if git_run(ROOT, "diff", "--cached", "--quiet").returncode != 0:
-            git_commit(ROOT, subject)
+        if self.frozen and repo == ROOT:
+            return
+        git(repo, "add", "-A", "--", *(paths or ["."]))
+        if git_run(repo, "diff", "--cached", "--quiet").returncode != 0:
+            git_commit(repo, subject)
 
-    def add_lessons(self, lessons: list[str]) -> None:
-        path = ROOT / LESSONS_REL
+    def add_lessons(self, lessons: list[str], repo: Path = ROOT) -> None:
+        path = repo / LESSONS_REL
         body = path.read_text(encoding="utf-8") if path.exists() else "# Lessons\n"
         new = [l if l.startswith("- ") else "- " + l.lstrip("-* ") for l in lessons]
         new = [l for l in dict.fromkeys(new) if l not in body]
@@ -925,7 +990,7 @@ class Coordinator:
 
     def land(self, worker: Worker, task: Task, res: Result) -> None:
         with self.land_lock:
-            if not self.on_branch():
+            if self.frozen or not self.on_branch():
                 return  # the task stays unchecked on the night's branch
             night = self.night
             night.tokens = [night.tokens[0] + res.tokens_in, night.tokens[1] + res.tokens_out, night.tokens[2] + res.tokens_cached]
@@ -937,44 +1002,72 @@ class Coordinator:
             # failed landing below can never throw away someone's changes.
             self.commit_pending("Night shift: queue update", OWN_PATHS)
             self.commit_pending("Night shift: changes found in the project folder")
-            head = git(ROOT, "rev-parse", "HEAD").strip()
+            ref = f"refs/heads/{night.branch}"
+            head = git(ROOT, "rev-parse", ref).strip()
+            temp_dir = Path(tempfile.mkdtemp(prefix="nightshift-land-"))
+            repo = temp_dir / "checkout"
+            worktree_added = False
+            original_dir, original_file = night.dir, night.file
             entry = Entry(len(night.entries) + 1, task.text, "", worker.name, res.minutes, res.summary, res.files)
             try:
-                self._land(worker, task, res, entry, head, can_retry)
+                git(ROOT, "worktree", "add", "--quiet", "--detach", str(repo), head)
+                worktree_added = True
+                night.dir = repo / original_dir.relative_to(ROOT)
+                night.file = repo / original_file.relative_to(ROOT)
+                mark = self._land(worker, task, res, entry, head, can_retry, repo)
+                landed_head = git(repo, "rev-parse", "HEAD").strip()
+                if landed_head != head:
+                    git(ROOT, "update-ref", ref, landed_head, head)
+                    try:
+                        self.sync_landed_checkout(night.branch, mark)
+                    except Exception:
+                        self.undo_landing(ref, head, landed_head)
+                        raise
+                    self.completed.add(task.key)
             except Exception:
-                git_run(ROOT, "cherry-pick", "--abort")
-                git(ROOT, "reset", "-q", "--hard", head)
-                git(ROOT, "clean", "-q", "-fd")
+                if worktree_added:
+                    git_run(repo, "cherry-pick", "--abort")
+                    git_run(repo, "reset", "-q", "--hard", head)
+                    git_run(repo, "clean", "-q", "-fd")
                 if entry in night.entries:
                     night.entries.remove(entry)
                 raise
+            finally:
+                night.dir, night.file = original_dir, original_file
+                if worktree_added:
+                    git_run(ROOT, "worktree", "remove", "--force", str(repo))
+                shutil.rmtree(temp_dir, ignore_errors=True)
 
-    def _land(self, worker: Worker, task: Task, res: Result, entry: Entry, head: str, can_retry: bool) -> None:
+    def _land(self, worker: Worker, task: Task, res: Result, entry: Entry, head: str, can_retry: bool,
+              repo: Path = ROOT) -> tuple[str, str, str] | None:
+        """Lands the result in `repo` and returns the (task key, mark, note) it put in tasks.md, or None if it didn't."""
         night, stamp = self.night, dt.datetime.now().strftime("%H:%M")
         if res.status == "ok":
-            pick = git_run(ROOT, "cherry-pick", "--no-commit", res.sha)
+            pick = git_run(repo, "cherry-pick", "--no-commit", res.sha)
+            # The landing checkout comes fresh from git, without the untracked reference assemblies; use the project's.
             ok, out = (False, "Conflicts with work landed earlier tonight:\n" + pick.stdout + pick.stderr) if pick.returncode \
-                else compile_check(ROOT, dict(os.environ))
+                else compile_check(repo, dict(os.environ, NIGHTSHIFT_UNITYREFS=str(HERE / ".unityrefs")))
             if ok:
-                self.add_lessons(res.lessons)
+                self.add_lessons(res.lessons, repo)
                 entry.outcome = "landed"
-                mark_task(task.key, "x", f"{stamp} landed by {worker.name} in {res.minutes:g} min: {first_line(res.summary)}")
+                note = f"{stamp} landed by {worker.name} in {res.minutes:g} min: {first_line(res.summary)}"
+                mark_task(task.key, "x", note, repo / f"{REL}/tasks.md")
                 night.add(entry)
                 night.write()
-                git(ROOT, "add", "-A")
+                git(repo, "add", "-A")
                 body = (f"{res.summary.strip()}\n\nTask: {task.text}\n\nWorker: {worker.name} · model {worker.model} "
                         f"(Ollama on the DGX Spark) · {res.minutes:g} min · compile check passed")
-                entry.sha = git_commit(ROOT, "Night shift: " + task.key[:70], body)
+                entry.sha = git_commit(repo, "Night shift: " + task.key[:70], body)
                 log(f"landed {entry.sha[:9]}: {task.key[:90]}", worker.name)
-                return
-            git_run(ROOT, "cherry-pick", "--abort")
-            git(ROOT, "reset", "-q", "--hard", head)
-            git(ROOT, "clean", "-q", "-fd")
+                return task.key, "x", note
+            git_run(repo, "cherry-pick", "--abort")
+            git(repo, "reset", "-q", "--hard", head)
+            git(repo, "clean", "-q", "-fd")
             if can_retry:
                 log("the change doesn't fit on top of tonight's other work; it goes back in the queue", worker.name)
-                return
+                return None
             res.status, res.errors = "failed", out[-4000:]
-            res.patch = git(ROOT, "format-patch", "--stdout", "-1", res.sha)
+            res.patch = git(repo, "format-patch", "--stdout", "-1", res.sha)
         if res.status == "nochange":
             entry.outcome, mark, note = "no change", "~", f"{stamp} {worker.name} made no changes: {first_line(res.summary)}"
         else:
@@ -985,12 +1078,13 @@ class Coordinator:
                 night.dir.mkdir(parents=True, exist_ok=True)
                 entry.patch_file = str(night.dir / f"{entry.n:02d}-{slug(task.key)}.patch")
                 Path(entry.patch_file).write_text(res.patch, encoding="utf-8")
-        self.add_lessons(res.lessons)
-        mark_task(task.key, mark, note)
+        self.add_lessons(res.lessons, repo)
+        mark_task(task.key, mark, note, repo / f"{REL}/tasks.md")
         night.add(entry)
         night.write()
-        self.commit_pending(f"Night shift: {entry.outcome}: {task.key[:60]}", OWN_PATHS)
+        self.commit_pending(f"Night shift: {entry.outcome}: {task.key[:60]}", OWN_PATHS, repo)
         log(f"{entry.outcome}: {task.key[:90]}", worker.name)
+        return task.key, mark, note
 
     def worker_loop(self, worker: Worker) -> None:
         while True:
@@ -1183,12 +1277,16 @@ def cmd_state() -> int:
     load_config()
     pid = coordinator_pid()
     st = json.loads(STATUS_FILE.read_text(encoding="utf-8")) if pid and STATUS_FILE.exists() else {}
-    marks = [m for m, _ in read_tasks()]
+    tasks = read_tasks()
+    marks = [m for m, _ in tasks]
+    dispatches = st.get("dispatches") or {}
     print(json.dumps({
         "running": bool(pid),
         "branch": st.get("branch") or git(ROOT, "rev-parse", "--abbrev-ref", "HEAD", check=False).strip(),
         "working": len(st.get("working") or {}),
         "queued": marks.count(" "),
+        "dispatchable": sum(1 for mark, task in tasks
+                            if mark == " " and dispatches.get(task.key, 0) < MAX_DISPATCH),
         "idle_since": st.get("idle_since"),
     }))
     return 0
