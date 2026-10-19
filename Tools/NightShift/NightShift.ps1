@@ -13,12 +13,17 @@
              once, and again after upgrading Unity or changing packages.
     helpers  Set up the helper machines (tools, SSH access from the Spark, Unity references).
     add      Queue a task (one line, plain English).
-    start    Start working through the queue (same as switching the Workbench toggle on).
+    start    Start working through the queue (same as switching the Workbench toggle on). With no stop time
+             set in nightshift.env it keeps going into the day, picking up new tasks, until you stop it.
     status   Progress, current tasks and recent commits.
     watch    Follow the live log (Ctrl+C stops watching, not the run).
     finish   Stop after the tasks in progress.
     stop     Stop now; unfinished tasks are rolled back and stay queued.
     fetch    Fetch the night's branches from the Spark into this repo for review (no GitHub needed).
+    pr       Push the night shift's branch to GitHub and open (or update) its pull request. With -WhenDone
+             it does so only once nothing is left to do (idle or stopped).
+    autopr   Turn on the automatic pull request: a scheduled task on this PC runs "pr -WhenDone" every
+             15 minutes (it needs this PC on and logged in; gh is already signed in here). -Off turns it off.
 
   Run with no arguments for a menu.
 
@@ -26,11 +31,15 @@
   .\NightShift.ps1 add -Task "Let the player drink straight from a kitchen tap with E"
   .\NightShift.ps1 helpers -Helpers htsadmin@192.168.1.200, htsadmin@192.168.1.201
   .\NightShift.ps1 fetch
+  .\NightShift.ps1 autopr
 #>
 param(
-    [ValidateSet('menu', 'refs', 'helpers', 'add', 'start', 'status', 'watch', 'finish', 'stop', 'fetch')]
+    [ValidateSet('menu', 'refs', 'helpers', 'add', 'start', 'status', 'watch', 'finish', 'stop', 'fetch', 'pr', 'autopr')]
     [string]$Action = 'menu',
     [string]$Task,
+    # pr: only when the night shift has nothing left to do. autopr: turn the scheduled task off.
+    [switch]$WhenDone,
+    [switch]$Off,
     [string]$SparkHost = $(if ($env:CLONEZ_SPARK) { $env:CLONEZ_SPARK } else { 'henrylawrencecahill@192.168.1.252' }),
     # The AI Workbench project folder on the Spark, relative to the Spark user's home.
     [string]$SparkProject = 'nvidia-workbench/Henry-Cahill-CLONE-Z',
@@ -68,6 +77,43 @@ if ! docker ps --format '{{.Names}}' | grep -qx '$Container'; then
   exit 3
 fi
 docker exec $Container bash /project/Tools/NightShift/nightshift.sh $Command
+"@
+}
+
+# Starts the night shift through AI Workbench's CLI, like switching on the night-shift toggle, so the toggle shows the
+# truth. That also starts the project container when it isn't running.
+function Start-NightShift {
+    return Invoke-Remote @"
+NVWB="`$HOME/.nvwb/bin/nvwb-cli"
+if [ -x "`$NVWB" ]; then
+  "`$NVWB" start night-shift -c local -p "`$HOME/$SparkProject" --no-browser || exit `$?
+elif docker ps --format '{{.Names}}' | grep -qx '$Container'; then
+  docker exec $Container bash /project/Tools/NightShift/nightshift.sh start || exit `$?
+else
+  echo 'The project container is not running. In AI Workbench, open Henry-Cahill-CLONE-Z on spark-f146 and start the Project Container.'
+  exit 3
+fi
+sleep 3
+if docker exec $Container bash /project/Tools/NightShift/nightshift.sh health; then
+  echo 'The night shift is running. Watch it with 4 in the menu (or: NightShift.bat watch).'
+else
+  echo "The night shift didn't start:"; docker exec $Container tail -n 15 /project/Tools/NightShift/.state/nightshift.log; exit 1
+fi
+"@
+}
+
+# Stops the night shift now, then tells AI Workbench so the toggle shows it as off (Workbench also stops the project
+# container if no other app, such as JupyterLab, is using it).
+function Stop-NightShift {
+    return Invoke-Remote @"
+if docker ps --format '{{.Names}}' | grep -qx '$Container'; then
+  docker exec $Container bash /project/Tools/NightShift/nightshift.sh stop
+else
+  echo 'The night shift is not running (the project container is stopped).'
+fi
+NVWB="`$HOME/.nvwb/bin/nvwb-cli"
+[ -x "`$NVWB" ] && "`$NVWB" stop night-shift -c local -p "`$HOME/$SparkProject" >/dev/null 2>&1
+exit 0
 "@
 }
 
@@ -367,6 +413,139 @@ function Get-NightBranches {
 
 function Watch-Log { try { & ssh -t @Ssh $SparkHost "bash $RemoteDir/nightshift.sh log" } catch { } }
 
+#region Pull request
+
+$AutoPrTask = 'CLONE-Z Night Shift pull request'
+
+# What the Spark's night shift is doing: running or not, tasks in progress and queued, and its branch.
+function Get-NightState {
+    $out = Get-RemoteOutput @"
+if docker ps --format '{{.Names}}' | grep -qx '$Container'; then
+  docker exec $Container bash /project/Tools/NightShift/nightshift.sh state
+else
+  printf '{"running": false, "branch": "%s", "working": 0, "queued": 0, "idle_since": null}\n' "`$(git -C ~/$SparkProject rev-parse --abbrev-ref HEAD)"
+fi
+"@
+    return (@($out)[-1] | ConvertFrom-Json)
+}
+
+function Get-GitHubRepo {
+    $url = "$(& git -C $Root remote get-url origin)".Trim()
+    if ($url -notmatch 'github\.com[:/](.+?)(\.git)?/?$') { throw "origin ($url) isn't a GitHub repository" }
+    return $Matches[1]
+}
+
+function Write-PrLog([string]$Message) {
+    Write-Host $Message
+    $dir = Join-Path $Here '.state'
+    New-Item -ItemType Directory -Force -Path $dir | Out-Null
+    Add-Content -Path (Join-Path $dir 'pr.log') -Value "$(Get-Date -Format 'yyyy-MM-dd HH:mm') $Message" -Encoding UTF8
+}
+
+# Pushes the Spark's night shift branch to GitHub and opens its pull request, or updates the open one.
+function Publish-NightShift {
+    [Console]::OutputEncoding = [Text.Encoding]::UTF8  # the reports are UTF-8; PowerShell 5 would read git's output as OEM
+    $state = Get-NightState
+    $branch = "$($state.branch)"
+    if ($branch -notlike 'nightshift/*') { Write-Host "The Spark's project is on '$branch', not a night shift branch, so there's nothing to publish."; return }
+    $done = (-not $state.running) -or $state.idle_since -or ($state.working -eq 0 -and $state.queued -eq 0)
+    if ($WhenDone -and -not $done) {
+        Write-Host "Still working on $branch ($($state.working) in progress, $($state.queued) queued); the pull request waits until it's done."
+        return
+    }
+    $old = $env:GIT_SSH_COMMAND
+    $env:GIT_SSH_COMMAND = 'C:/Windows/System32/OpenSSH/ssh.exe -o BatchMode=yes -o ConnectTimeout=10'
+    try {
+        & git -C $Root fetch -q "${SparkHost}:$SparkProject" "+refs/heads/${branch}:refs/remotes/spark/$branch"
+        if ($LASTEXITCODE -ne 0) { throw "git fetch of $branch from the Spark failed" }
+    }
+    finally { $env:GIT_SSH_COMMAND = $old }
+    & git -C $Root fetch -q origin main
+    if ($LASTEXITCODE -ne 0) { throw 'git fetch of main from GitHub failed' }
+    $sha = "$(& git -C $Root rev-parse "refs/remotes/spark/$branch")".Trim()
+    if ([int]"$(& git -C $Root rev-list --count "origin/main..$sha")" -eq 0) { Write-Host "$branch has nothing that isn't on main yet."; return }
+    # Never publish what must stay on the Spark (its SSH key for the helpers, Unity's DLLs) or anything like a private key.
+    $private = @(& git -C $Root log --format= --name-only "origin/main..$sha" | Where-Object {
+            $_ -match '(^|/)(\.state|\.unityrefs)/|(^|/)id_(rsa|ecdsa|ed25519)$|\.(pem|pfx|p12)$' } | Select-Object -Unique)
+    $private += @(& git -C $Root log --format=%h -G 'BEGIN [A-Z ]*PRIVATE KEY' "origin/main..$sha" | ForEach-Object { "a private key in commit $_" })
+    if ($private.Count -gt 0) { throw "$branch has files that must not leave the Spark ($(($private | Select-Object -First 3) -join ', ')), so it wasn't pushed" }
+    $repo = Get-GitHubRepo
+    $remote = "$(& git -C $Root ls-remote origin "refs/heads/$branch")".Split("`t ")[0]
+    $prs = & gh pr list --repo $repo --head $branch --state open --json 'number,url'
+    if ($LASTEXITCODE -ne 0) { throw 'gh pr list failed (check: gh auth status)' }
+    $open = @(if ("$prs".Trim()) { ($prs -join "`n") | ConvertFrom-Json | ForEach-Object { $_ } })
+    if ($remote -eq $sha -and $open.Count -gt 0) { Write-Host "$($open[0].url) is up to date."; return }
+    if ($remote -ne $sha) {
+        $env:GIT_TERMINAL_PROMPT = '0'; $env:GCM_INTERACTIVE = 'never'  # fail rather than wait for a sign-in nobody sees
+        & git -C $Root push -q origin "${sha}:refs/heads/$branch"
+        if ($LASTEXITCODE -ne 0) { throw "git push of $branch to GitHub failed" }
+    }
+
+    # Description: what to check before merging, then every run's report on the branch, newest first.
+    $reports = @(& git -C $Root diff --name-only --diff-filter=AM "origin/main...$sha" -- 'Tools/NightShift/reports/*.md' |
+        Sort-Object { $_ -replace '\.md$', '' } -Descending)
+    $texts = foreach ($r in $reports) {
+        $base = "https://github.com/$repo/blob/$branch/" + ($r -replace '[^/]+$', '')
+        # Links in a report are relative to the reports folder; point them at the branch on GitHub.
+        [regex]::Replace(((& git -C $Root show "${sha}:$r") -join "`n"), '\]\((?![A-Za-z][A-Za-z0-9+.-]*:|#|/)([^)\s]+)\)',
+            { param($m) '](' + $base + $m.Groups[1].Value + ')' })
+    }
+    $all = $texts -join "`n"
+    $landed = ([regex]::Matches($all, '(?m)^\*\*landed\*\* by')).Count
+    $failed = ([regex]::Matches($all, '(?m)^\*\*(failed|gave up)\*\* by')).Count
+    $none = ([regex]::Matches($all, '(?m)^\*\*no change\*\* by')).Count
+    $head = @"
+Work by the CLONE-Z Night Shift: local AI agents (Ollama on the DGX Spark and the helper machines, no cloud tokens) working through ``Tools/NightShift/tasks.md``.
+
+**$landed landed, $failed failed, $none no change.** Every change compiled against Unity's assemblies before it landed, but the agents can't play the game, so **play-test in Unity before merging**: ``git fetch origin $branch`` then ``git switch $branch``.
+
+``NightShift.ps1 pr`` opened this and keeps it up to date whenever the night shift has nothing left to do; tasks finished later land on the same branch.
+"@
+    $body = (@($head) + @($texts | Where-Object { $_ })) -join "`n`n---`n`n"
+    if ($body.Length -gt 60000) {
+        $body = $body.Substring(0, 60000) + "`n`n_(Cut short at GitHub's limit; the full reports are in Tools/NightShift/reports/ on the branch.)_"
+    }
+    $title = "Night shift: $landed task$(if ($landed -ne 1) { 's' }) landed on $branch"
+    $file = [IO.Path]::GetTempFileName()
+    try {
+        [IO.File]::WriteAllText($file, $body, (New-Object Text.UTF8Encoding $false))
+        if ($open.Count -gt 0) {
+            & gh pr edit $open[0].number --repo $repo --title $title --body-file $file | Out-Null
+            if ($LASTEXITCODE -ne 0) { throw 'gh pr edit failed' }
+            Write-PrLog "Updated $($open[0].url): $landed landed, $failed failed"
+        }
+        else {
+            $url = & gh pr create --repo $repo --base main --head $branch --title $title --body-file $file
+            if ($LASTEXITCODE -ne 0) { throw 'gh pr create failed' }
+            Write-PrLog "Opened $url : $landed landed, $failed failed"
+        }
+    }
+    finally { Remove-Item $file -ErrorAction SilentlyContinue }
+}
+
+function Get-AutoPr { return [bool](Get-ScheduledTask -TaskName $AutoPrTask -ErrorAction SilentlyContinue) }
+
+function Set-AutoPr([bool]$On) {
+    if (-not $On) {
+        Unregister-ScheduledTask -TaskName $AutoPrTask -Confirm:$false -ErrorAction SilentlyContinue
+        Write-Host 'The automatic pull request is off.'
+        return
+    }
+    $ps = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
+    # conhost --headless keeps the check every 15 minutes from flashing a console window.
+    $action = New-ScheduledTaskAction -Execute (Join-Path $env:SystemRoot 'System32\conhost.exe') -WorkingDirectory $Here `
+        -Argument "--headless `"$ps`" -NoProfile -NonInteractive -ExecutionPolicy Bypass -File `"$PSCommandPath`" pr -WhenDone"
+    $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) -RepetitionInterval (New-TimeSpan -Minutes 15)
+    $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -MultipleInstances IgnoreNew -AllowStartIfOnBatteries `
+        -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Minutes 10)
+    Register-ScheduledTask -TaskName $AutoPrTask -Action $action -Trigger $trigger -Settings $settings -Force `
+        -Description "Opens or updates the GitHub pull request for the CLONE-Z Night Shift's branch once the agents have nothing left to do ($PSCommandPath pr -WhenDone)." | Out-Null
+    Write-Host 'The automatic pull request is on. Every 15 minutes this PC checks the Spark; once nothing is left to do, it pushes'
+    Write-Host "the night shift's branch to GitHub and opens or updates its pull request. Log: $Here\.state\pr.log"
+}
+
+#endregion
+
 function Show-Menu {
     while ($true) {
         Write-Host ''
@@ -380,31 +559,42 @@ function Show-Menu {
         Write-Host ' 7) Fetch the results into this repo'
         Write-Host ' 8) Upload Unity references (once, and after Unity/package changes)'
         Write-Host ' 9) Set up helper machines'
+        Write-Host ' P) Open or update the GitHub pull request now'
+        Write-Host " A) Automatic pull request when the work is done: $(if (Get-AutoPr) { 'ON (A turns it off)' } else { 'off (A turns it on)' })"
         Write-Host ' Q) Quit (a running night shift keeps going on the Spark)'
         switch ((Read-Host 'Choose').Trim().ToUpper()) {
             '1' { $script:Task = $null; Add-Task }
-            '2' { Invoke-Container 'start' | Out-Null }
+            '2' { Start-NightShift | Out-Null }
             '3' { Invoke-Container 'status' | Out-Null }
             '4' { Watch-Log }
             '5' { Invoke-Container 'finish' | Out-Null }
-            '6' { Invoke-Container 'stop' | Out-Null }
+            '6' { Stop-NightShift | Out-Null }
             '7' { Get-NightBranches }
             '8' { Send-UnityRefs }
             '9' { Install-Helpers }
+            'P' { try { Publish-NightShift } catch { Write-Host $_.Exception.Message -ForegroundColor Red } }
+            'A' { Set-AutoPr (-not (Get-AutoPr)) }
             'Q' { return }
         }
     }
 }
 
+if ($MyInvocation.InvocationName -eq '.') { return }  # dot-sourced (tests): only define the functions
+
 switch ($Action) {
     'refs' { Send-UnityRefs }
     'helpers' { Install-Helpers }
     'add' { Add-Task }
-    'start' { exit (Invoke-Container 'start') }
+    'start' { exit (Start-NightShift) }
     'status' { exit (Invoke-Container 'status') }
     'watch' { Watch-Log }
     'finish' { exit (Invoke-Container 'finish') }
-    'stop' { exit (Invoke-Container 'stop') }
+    'stop' { exit (Stop-NightShift) }
     'fetch' { Get-NightBranches }
+    'pr' {
+        try { Publish-NightShift }
+        catch { Write-PrLog "Pull request not made: $($_.Exception.Message)"; exit 1 }
+    }
+    'autopr' { Set-AutoPr (-not $Off) }
     default { Show-Menu }
 }
