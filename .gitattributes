@@ -169,3 +169,8 @@ Packages/packages-lock.json linguist-generated
 
 # Exceptions for .asset files such as lightning pre-baking
 LightingData.asset     binary
+
+# Scripts that run on Linux (the AI Workbench container and the Night Shift helpers) keep LF everywhere
+/*.bash                 text eol=lf
+/Tools/NightShift/*.sh  text eol=lf
+/Tools/NightShift/*.py  text eol=lf
