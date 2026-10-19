@@ -13,9 +13,13 @@ namespace CloneZ
     {
         public static new readonly List<ArtifactNode> All = new List<ArtifactNode>();
 
+        /// <summary>The artifact's catalogue id — what it is, and where the game looks up its properties.</summary>
         public string ArtifactId { get; private set; }
+        /// <summary>The highest detector tier that can sense it: below this it stays invisible.</summary>
         public int Tier { get; private set; }
+        /// <summary>Whether this is the raid's shared prize (the Sunken Star), which sings and stays where it lies.</summary>
         public bool IsPrize { get; private set; }
+        /// <summary>Whether a detector has switched it on: its visual stays hidden until this is true.</summary>
         public bool Revealed { get; private set; }
 
         private Transform _visual;
@@ -26,6 +30,7 @@ namespace CloneZ
         public override bool IsAvailable => isActiveAndEnabled && Revealed;
         public override float Reach => 1.8f;
 
+        /// <summary>Bring one artifact into the world at at under parent, built from its catalogue def (the prize sits at tier 1).</summary>
         public static ArtifactNode Spawn(Transform parent, string artifactId, Vector3 at, bool prize)
         {
             ArtifactCatalog.Def def = ArtifactCatalog.Get(artifactId);
@@ -144,8 +149,10 @@ namespace CloneZ
         private static ZoneDef s_Zone;
         private static int s_Seed, s_Reshuffles;
 
+        /// <summary>The raid's shared prize (the Sunken Star), or null before it is placed or after the raid ends.</summary>
         public static ArtifactNode Prize { get; private set; }
 
+        /// <summary>Lay the field for one raid: scatter artifacts into the anomalies and set the shared prize, all drawn from the raid's seed.</summary>
         public static void Build(Transform root, ZoneDef zone, int seed)
         {
             s_Root = root;
@@ -201,6 +208,7 @@ namespace CloneZ
             Prize = ArtifactNode.Spawn(s_Root, "art_sunkenstar", InsidePoint(best, rng), true);
         }
 
+        /// <summary>Put the word on every frequency: one radio line telling the Zone where the Sunken Star surfaced.</summary>
         public static void AnnouncePrize()
         {
             if (Prize == null || s_Zone == null) return;
@@ -220,6 +228,7 @@ namespace CloneZ
             Scatter(new System.Random(s_Seed ^ (0x5EED * (s_Reshuffles + 1))));
         }
 
+        /// <summary>End the raid: forget the root and the prize so the next raid starts fresh.</summary>
         public static void Clear()
         {
             s_Root = null;
@@ -244,8 +253,10 @@ namespace CloneZ
         private float _tick, _lureAt;
         private readonly Dictionary<string, float> _wornSeconds = new Dictionary<string, float>();
 
+        /// <summary>The artifacts the survivor currently has on the belt — the ones whose properties apply.</summary>
         public IReadOnlyList<string> Worn => _belt;
 
+        /// <summary>How many belt slots the survivor has right now: the base, plus more when wearing a Zone suit.</summary>
         public int Slots
         {
             get
@@ -334,6 +345,7 @@ namespace CloneZ
             mods.RadiationPerSec += _loose * 0.004f;
         }
 
+        /// <summary>How many artifacts an inventory's stacks have on the belt — the gate for the “Wear on belt” verb.</summary>
         public static int CountOnBelt(PlayerInventory inv)
         {
             int n = 0;
