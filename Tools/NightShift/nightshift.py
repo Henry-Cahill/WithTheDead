@@ -72,6 +72,10 @@ PROTECTED = re.compile(
 
 STOPPING = threading.Event()
 LOG_LOCK = threading.Lock()
+# The night shift's own git calls skip the repo's hooks (Git LFS ones, and git-lfs isn't in the container or
+# on the helpers) and pass LFS pointer files through untouched, so checkouts never try to download LFS objects.
+GIT_SAFE = ["-c", "core.hooksPath=/dev/null", "-c", "filter.lfs.required=false", "-c", "filter.lfs.smudge=cat",
+            "-c", "filter.lfs.clean=cat", "-c", "filter.lfs.process="]
 
 
 def load_config() -> dict:
@@ -98,8 +102,13 @@ def log(msg: str, who: str = "") -> None:
         print(f"{stamp} {'[' + who + '] ' if who else ''}{msg}", flush=True)
 
 
+def git_run(repo: Path | str, *args: str, env: dict | None = None) -> subprocess.CompletedProcess:
+    return subprocess.run(["git", *GIT_SAFE, "-C", str(repo), *args], capture_output=True, text=True, env=env,
+                          stdin=subprocess.DEVNULL)
+
+
 def git(repo: Path | str, *args: str, check: bool = True, env: dict | None = None) -> str:
-    r = subprocess.run(["git", "-C", str(repo), *args], capture_output=True, text=True, env=env)
+    r = git_run(repo, *args, env=env)
     if check and r.returncode != 0:
         raise RuntimeError(f"git {' '.join(args)}: {(r.stderr or r.stdout).strip()}")
     return r.stdout
@@ -261,8 +270,8 @@ def run_opencode(repo: Path, prompt: str, cfg_path: Path, model: str, timeout_s:
     res = AgentRun()
     texts: dict[str, list[str]] = {}
     last_msg = ""
-    proc = subprocess.Popen(cmd, cwd=repo, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
-                            bufsize=1, start_new_session=True)
+    proc = subprocess.Popen(cmd, cwd=repo, env=env, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
+                            stderr=subprocess.STDOUT, text=True, bufsize=1, start_new_session=True)
 
     def on_timeout() -> None:
         res.timed_out = True
@@ -311,7 +320,8 @@ def run_opencode(repo: Path, prompt: str, cfg_path: Path, model: str, timeout_s:
 # --- Checks and clean-up in a worker checkout ---------------------------------------------------------------
 
 def compile_check(repo: Path, env: dict) -> tuple[bool, str]:
-    r = subprocess.run(["bash", str(repo / REL / "check.sh")], cwd=repo, capture_output=True, text=True, env=env, timeout=1200)
+    r = subprocess.run(["bash", str(repo / REL / "check.sh")], cwd=repo, capture_output=True, text=True, env=env,
+                       timeout=1200, stdin=subprocess.DEVNULL)
     out = (r.stdout + r.stderr).strip()
     if r.returncode == 2:
         raise RuntimeError(out)
@@ -325,7 +335,7 @@ def changed_files(repo: Path, base: str) -> list[str]:
 
 
 def in_commit(repo: Path, rev: str, path: str) -> bool:
-    return subprocess.run(["git", "-C", str(repo), "cat-file", "-e", f"{rev}:{path}"], capture_output=True).returncode == 0
+    return git_run(repo, "cat-file", "-e", f"{rev}:{path}").returncode == 0
 
 
 def revert_protected(repo: Path, base: str) -> list[str]:
@@ -666,21 +676,22 @@ command -v dotnet >/dev/null || {{ echo ".NET SDK is not installed"; exit 1; }}
 curl -s --max-time 5 {self.ollama}/api/version >/dev/null || {{ echo "can't reach Ollama at {self.ollama}"; exit 1; }}
 echo READY"""
         try:
-            r = subprocess.run(self._cmd(script), capture_output=True, text=True, timeout=60)
+            r = subprocess.run(self._cmd(script), capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
         except subprocess.TimeoutExpired:
             return "timed out"
         return None if "READY" in r.stdout else (r.stdout + r.stderr).strip()[-300:] or f"exit {r.returncode}"
 
     def run(self, task: Task, base: str, minutes: float, model: str, fix_rounds: int, context: int) -> Result:
-        git(ROOT, "push", "-q", "--force", self.dest, f"{base}:refs/heads/nightshift-base", env=self._git_env())
+        git(ROOT, "push", "-q", "--no-verify", "--force", self.dest, f"{base}:refs/heads/nightshift-base", env=self._git_env())
         b64 = base64.b64encode(task.text.encode("utf-8")).decode()
+        safe_git = "git " + " ".join(shlex.quote(a) for a in GIT_SAFE)
         script = (f'export PATH="$HOME/.local/bin:$HOME/.opencode/bin:$HOME/.dotnet:/opt/dotnet:$PATH" && '
-                  f"cd {self.repo} && git checkout -q --detach --force nightshift-base && "
+                  f"cd {self.repo} && {safe_git} checkout -q --detach --force nightshift-base && "
                   f"{self.nice}{self.python} {REL}/nightshift.py work --repo . --base {base} --task-b64 {b64} "
                   f"--model {shlex.quote(model)} --ollama {self.ollama} --minutes {minutes:.0f} --fix-rounds {fix_rounds} "
                   f"--context {context} --unityrefs {self.unityrefs}")
-        self.proc = proc = subprocess.Popen(self._cmd(script), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
-                                            bufsize=1, start_new_session=True)
+        self.proc = proc = subprocess.Popen(self._cmd(script), stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
+                                            stderr=subprocess.STDOUT, text=True, bufsize=1, start_new_session=True)
         hard_stop = threading.Timer((minutes + 15) * 60, lambda: kill_group(proc))
         hard_stop.start()
         result = None
@@ -705,7 +716,8 @@ echo READY"""
         if self.proc:
             kill_group(self.proc)
         try:
-            subprocess.run(self._cmd(f"kill -TERM $(cat {self.pid_file} 2>/dev/null) 2>/dev/null; true"), capture_output=True, timeout=20)
+            subprocess.run(self._cmd(f"kill -TERM $(cat {self.pid_file} 2>/dev/null) 2>/dev/null; true"), capture_output=True,
+                           timeout=20, stdin=subprocess.DEVNULL)
         except Exception:
             pass
 
@@ -769,8 +781,7 @@ class Coordinator:
             entry = Entry(len(night.entries) + 1, task.text, "", worker.name, res.minutes, res.summary, res.files)
             if res.status == "ok":
                 head = git(ROOT, "rev-parse", "HEAD").strip()
-                pick = subprocess.run(["git", "-C", str(ROOT), "cherry-pick", "--no-commit", f"refs/nightshift/{worker.name}"],
-                                      capture_output=True, text=True)
+                pick = git_run(ROOT, "cherry-pick", "--no-commit", f"refs/nightshift/{worker.name}")
                 ok, out = (False, "Conflicts with work landed earlier tonight:\n" + pick.stdout + pick.stderr) if pick.returncode \
                     else compile_check(ROOT, dict(os.environ))
                 if ok:
@@ -925,6 +936,11 @@ def build_project_map(repo: Path) -> str:
                 s = re.sub(r'<(?:see|seealso|paramref|typeparamref)\s+\w+="([^"]+)"\s*/>', r"\1", s)
                 s = " ".join(re.sub(r"<[^>]+>", "", s).split())
                 summary = re.split(r"(?<=[.!?])\s", s)[0][:100]
+            else:  # partial-class files often carry a plain // header comment above the type instead
+                first_type = TYPE_RE.search(text)
+                head = text[:first_type.start()] if first_type else ""
+                header = re.search(r"^\s*//(?!/)\s*(\S.*)$", head, re.M)
+                summary = header.group(1).strip()[:100] if header else ""
             line = f"- {f.name} ({text.count(chr(10)) + 1}) {', '.join(types)}"
             out.append(line + (f": {summary}" if summary else ""))
         out.append("")

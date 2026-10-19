@@ -244,7 +244,7 @@ sentence of its summary. Grep the code for details.
 - InventoryUIController.GridActions.cs (249) InventoryUIController: Switches between the grid windows and the verbose list (remembered across runs).
 - InventoryUIController.GridDrag.cs (997) InventoryUIController, DragState, DropKind: The item being dragged, where it came from and how it's held.
 - InventoryUIController.List.cs (811) InventoryUIController, SortKey, EntryKind: One listed item: a stack in the bag or a container, a worn garment, or a floor pile.
-- InventoryUIController.Picker.cs (300) InventoryUIController
+- InventoryUIController.Picker.cs (300) InventoryUIController: The CONTAINERS column down the right of the inventory: Project Zomboid's strip of container
 - MainMenuController.cs (229) MainMenuController: The title screen: your runners (up to three per account), making a new one, hosting or joining a ser
 - PauseMenuController.cs (282) PauseMenuController: The in-game pause menu (Esc).
 - SkillsPanelController.cs (215) SkillsPanelController: A code-built skills screen (toggled with K) listing every perk with its current level and progress t
@@ -291,8 +291,8 @@ sentence of its summary. Grep the code for details.
 - GroundItemStore.cs (352) GroundItemStore, Item, Chunk: Every item lying on the ground in the world, held as data rather than as scene objects.
 - HomeFurniture.Bathroom.cs (98) HomeFurniture
 - HomeFurniture.cs (361) HomeFurnitureKind, HomeFurniture: The loose furniture that dresses the starter home.
-- HomeFurniture.Kitchen.cs (89) HomeFurniture
-- HomeFurniture.Living.cs (271) HomeFurniture
+- HomeFurniture.Kitchen.cs (89) HomeFurniture: The kitchen's loose furniture (see the per-area hooks in HomeFurniture.cs): the counter along the we
+- HomeFurniture.Living.cs (271) HomeFurniture: The living room's, bedroom's and store room's furniture (see HomeFurniture): the dining table (a sur
 - HomeLamp.cs (225) HomeLamp: A lamp of the wave-survival starter home — the bedside lamp, the standard lamp, the kitchen-diner's 
 - ItemMeshBaker.cs (253) ItemMeshBaker, Lod, Baked: Turns an ItemModelDesc into a single combined mesh that can be drawn instanced.
 - ItemModelDesc.cs (230) PartShape, PartMat, Part: Which primitive mesh a part is cut from.
