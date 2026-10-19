@@ -12,10 +12,21 @@ namespace CloneZ
     /// </summary>
     public class PlayerSkills : MonoBehaviour
     {
-        public enum Skill { Blade, Blunt, Aiming, Reloading, Fitness, Strength, Sprinting, Nimble, Sneak, Lightfooted, Carpentry, Cooking, Farming }
+        // Appended skills keep the saved indexes of the original thirteen intact.
+        public enum Skill
+        {
+            Blade, Blunt, Aiming, Reloading, Fitness, Strength, Sprinting, Nimble, Sneak, Lightfooted, Carpentry, Cooking, Farming,
+            Endurance, Vitality, Metabolism, FirstAid, Mechanics, Foraging, Fishing, Trapping, Perception, Charisma,
+        }
 
-        private const int SkillCount = 13;
+        private static readonly int SkillCount = Enum.GetValues(typeof(Skill)).Length;
         private readonly float[] _xp = new float[SkillCount];
+
+        /// <summary>Every skill, for UIs and saves.</summary>
+        public static readonly Skill[] AllSkills = (Skill[])Enum.GetValues(typeof(Skill));
+
+        /// <summary>Optional per-skill XP multiplier (skill books, the character's level perks).</summary>
+        public static Func<Skill, int, float> XpMultiplier;
 
         /// <summary>Raised when a skill crosses into a new level: (skill, newLevel).</summary>
         public event Action<Skill, int> OnLevelUp;
@@ -41,11 +52,20 @@ namespace CloneZ
         private static readonly string[] DisplayNames =
         {
             "Blade", "Blunt", "Aiming", "Reloading", "Fitness",
-            "Strength", "Sprinting", "Nimble", "Sneaking", "Lightfooted", "Carpentry", "Cooking", "Farming"
+            "Strength", "Sprinting", "Nimble", "Sneaking", "Lightfooted", "Carpentry", "Cooking", "Farming",
+            "Endurance", "Vitality", "Metabolism", "First Aid", "Mechanics", "Foraging", "Fishing", "Trapping", "Perception", "Charisma",
         };
 
         #region XP & levels
         public float GetXp(Skill s) => _xp[(int)s];
+
+        /// <summary>The XP a skill needs to reach <paramref name="level"/> (general curve).</summary>
+        public static float XpForLevel(int level)
+        {
+            int[] curve = CloneZConfig.SkillXpCurve;
+            if (level <= 0) return 0f;
+            return curve[Mathf.Clamp(level - 1, 0, curve.Length - 1)];
+        }
 
         public int GetLevel(Skill s)
         {
@@ -75,6 +95,12 @@ namespace CloneZ
         {
             if (amount <= 0f) return;
             int before = GetLevel(s);
+            amount *= PlayerModifiers.Current.XpMult;
+            if (XpMultiplier != null)
+            {
+                try { amount *= Mathf.Max(0f, XpMultiplier(s, before)); }
+                catch (Exception e) { Debug.LogException(e); }
+            }
             _xp[(int)s] += amount;
             OnXpGained?.Invoke();
 
@@ -82,6 +108,9 @@ namespace CloneZ
             for (int lvl = before + 1; lvl <= after; lvl++)
                 OnLevelUp?.Invoke(s, lvl);
         }
+
+        /// <summary>A copy of every skill's XP, indexed by the Skill enum.</summary>
+        public float[] ExportXp() => (float[])_xp.Clone();
 
         /// <summary>Overwrites all skill XP from a saved game (indexed by the Skill enum order).</summary>
         public void LoadXp(float[] xp)
@@ -147,6 +176,30 @@ namespace CloneZ
 
         /// <summary>How much a zombie's sight radius shrinks toward this player while crouched.</summary>
         public float StealthVisionMult(bool sneaking) => sneaking ? SneakTable[GetLevel(Skill.Sneak)] : 1f;
+
+        // ---- The Zone skills (Tarkov-style physical skills plus the trades) ----
+        /// <summary>Stamina drain multiplier (Endurance: -3% per level).</summary>
+        public float EnduranceDrainMult => 1f - GetLevel(Skill.Endurance) * 0.03f;
+        /// <summary>Bleeding multiplier (Vitality: -4% per level).</summary>
+        public float VitalityBleedMult => 1f - GetLevel(Skill.Vitality) * 0.04f;
+        /// <summary>Healing multiplier (Vitality: +5% per level).</summary>
+        public float VitalityHealMult => 1f + GetLevel(Skill.Vitality) * 0.05f;
+        /// <summary>Hunger and thirst multiplier (Metabolism: -3% per level).</summary>
+        public float MetabolismMult => 1f - GetLevel(Skill.Metabolism) * 0.03f;
+        /// <summary>How much more every medical item does (First Aid: +8% per level).</summary>
+        public float FirstAidMult => 1f + GetLevel(Skill.FirstAid) * 0.08f;
+        /// <summary>Repair efficiency and vehicle work speed (Mechanics: +6% per level).</summary>
+        public float MechanicsMult => 1f + GetLevel(Skill.Mechanics) * 0.06f;
+        /// <summary>Foraging finds multiplier.</summary>
+        public float ForagingMult => 1f + GetLevel(Skill.Foraging) * 0.12f;
+        /// <summary>Fishing bite chance multiplier.</summary>
+        public float FishingMult => 1f + GetLevel(Skill.Fishing) * 0.12f;
+        /// <summary>Trap catch chance multiplier.</summary>
+        public float TrappingMult => 1f + GetLevel(Skill.Trapping) * 0.12f;
+        /// <summary>Detector and hearing range multiplier (Perception: +4% per level).</summary>
+        public float PerceptionMult => 1f + GetLevel(Skill.Perception) * 0.04f;
+        /// <summary>Trader price multiplier (Charisma: -1% per level when buying).</summary>
+        public float CharismaPriceMult => 1f - GetLevel(Skill.Charisma) * 0.01f;
 
         /// <summary>Maps an equipped melee weapon to the skill it trains (bare hands = Blunt).</summary>
         public static Skill WeaponSkillFor(ItemDef weapon) => weapon != null ? weapon.WeaponSkill : Skill.Blunt;

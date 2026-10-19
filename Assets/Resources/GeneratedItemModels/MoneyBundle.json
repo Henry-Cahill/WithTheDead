@@ -1,0 +1,10 @@
+{"version": 1, "id": "MoneyBundle", "baseHeight": 0.0767, "name": "Money Bundle", "model": "gpt-oss:120b", "notes": "Flat cash bundle about 0.22 m long × 0.10 m wide × 0.03 m thick, tied with two thin rubber‑band strips crossing at the centre. Main body is paper‑coloured (tint 0.6,0.58,0.5).", "score": 6, "parts": [
+  {"name":"BundleBody","shape":"cube","pos":[0.0,-0.0018,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.03,0.1],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BandX","shape":"cube","pos":[0.0,0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.012],"color":[0.2,0.18,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"BandZ","shape":"cube","pos":[0.0,0.0012,0.0],"rot":[0.0,90.0,0.0],"size":[0.1,0.004,0.012],"color":[0.2,0.18,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0,0.0147,0.045],"rot":[0.0,0.0,0.0],"size":[0.22,0.003,0.002],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0,0.0147,-0.045],"rot":[0.0,0.0,0.0],"size":[0.22,0.003,0.002],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.11,0.0147,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.003,0.1],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.11,0.0147,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.003,0.1],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"TopFold","shape":"cube","pos":[0.0,0.0158,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.002,0.08],"color":[0.58,0.56,0.48],"smooth":0.05,"metal":0.0}
+]}

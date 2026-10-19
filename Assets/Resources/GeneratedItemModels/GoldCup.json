@@ -1,0 +1,9 @@
+{"version": 1, "id": "GoldCup", "baseHeight": 0.124, "name": "Gold Cup", "model": "gpt-oss:120b", "notes": "Gold cup about 12 cm tall, 9 cm top diameter, 7 cm base diameter. Simple metal body with thin rim & base, a curved handle made from a short horizontal cylinder and two rounded caps, plus a decorative band.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0223,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.12,0.09],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"TopRim","shape":"cylinder","pos":[-0.0223,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.095,0.008,0.095],"color":[0.58,0.55,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"Base","shape":"cylinder","pos":[-0.0223,-0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.008,0.07],"color":[0.58,0.55,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"HandleBar","shape":"cylinder","pos":[0.0427,-0.004,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.04,0.012],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"HandleCapNear","shape":"sphere","pos":[0.0227,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.014,0.014,0.014],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"HandleCapFar","shape":"sphere","pos":[0.0628,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.014,0.014,0.014],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"DecorBand","shape":"cylinder","pos":[-0.0223,-0.014,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.004,0.09],"color":[0.55,0.52,0.44],"smooth":0.6,"metal":1.0}
+]}

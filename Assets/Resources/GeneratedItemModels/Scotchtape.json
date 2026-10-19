@@ -1,0 +1,8 @@
+{"version": 1, "id": "Scotchtape", "baseHeight": 0.121, "name": "Scotchtape", "model": "gpt-oss:120b", "notes": "Scotchtape roll lying on its side (axis along X). Outer diameter ≈ 0.12 m, core diameter ≈ 0.04 m, tape width ≈ 0.05 m. Main grey‑brown tape colour with a dark core and a thin printed stripe.", "score": 6, "parts": [
+  {"name":"TapeOuter","shape":"cylinder","pos":[0.014,0.001,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.05,0.12],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Core","shape":"cylinder","pos":[0.014,0.001,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.05,0.04],"color":[0.25,0.25,0.27],"smooth":0.2,"metal":0.0},
+  {"name":"LabelStripe","shape":"cube","pos":[-0.008,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.052,0.12],"color":[0.2,0.18,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"TapeEnd","shape":"cube","pos":[0.042,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.05,0.12],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"EdgeHighlight","shape":"cube","pos":[-0.044,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.05,0.12],"color":[0.8,0.78,0.75],"smooth":0.5,"metal":0.0},
+  {"name":"ShadowRing","shape":"cylinder","pos":[0.014,-0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.118,0.048,0.118],"color":[0.45,0.44,0.42],"smooth":0.2,"metal":0.0}
+]}

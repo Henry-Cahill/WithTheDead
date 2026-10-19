@@ -1,0 +1,12 @@
+{"version": 1, "id": "IndustrialDye", "baseHeight": 0.1325, "name": "Industrial Dye", "model": "gpt-oss:120b", "notes": "Small industrial dye bottle ~15 cm tall × 5 cm wide, lying on its side. Main plastic body with inner liner, short neck and screw‑cap, dark label band, tiny pour‑spout, a dropper tube on the side and a thin metal thread ring near the cap.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0225,-0.0125,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.05,0.12,0.05],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"InnerLiner","shape":"cylinder","pos":[-0.0225,-0.0125,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.046,0.12,0.046],"color":[0.7,0.68,0.6],"smooth":0.45,"metal":0.0},
+  {"name":"Neck","shape":"cylinder","pos":[-0.0225,0.0575,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"CapBase","shape":"cylinder","pos":[-0.0225,0.0635,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.035,0.012,0.035],"color":[0.4,0.4,0.4],"smooth":0.55,"metal":0.0},
+  {"name":"CapRim","shape":"cylinder","pos":[-0.0225,0.071,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.038,0.003,0.038],"color":[0.4,0.4,0.4],"smooth":0.55,"metal":0.0},
+  {"name":"ThreadRing","shape":"cylinder","pos":[-0.0225,0.0595,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.033,0.004,0.033],"color":[0.5,0.5,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"LabelBand","shape":"cylinder","pos":[-0.0225,-0.0125,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.052,0.004,0.052],"color":[0.3,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Spout","shape":"sphere","pos":[-0.0225,0.0575,0.0225],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"DropperTube","shape":"cylinder","pos":[0.0225,-0.0125,-0.0005],"rot":[0.0,0.0,90.0],"size":[0.006,0.04,0.006],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"DropperTip","shape":"sphere","pos":[0.0465,-0.0125,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0}
+]}

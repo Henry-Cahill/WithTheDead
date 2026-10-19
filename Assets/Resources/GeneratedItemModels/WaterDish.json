@@ -1,0 +1,12 @@
+{"version": 1, "id": "WaterDish", "baseHeight": 0.08, "name": "Water Dish", "model": "gpt-oss:120b", "notes": "Shallow water dish about 0.22 m across and ~0.04 m tall, lying flat on the floor. Consists of a thin bottom plate, a slightly taller inner basin, an outer rim wall, a decorative lip and four small rivets.", "score": 7, "parts": [
+  {"name":"BottomPlate","shape":"cylinder","pos":[0.0,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.005,0.18],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"InnerBasin","shape":"cylinder","pos":[0.0,0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,0.18],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"OuterRim","shape":"cylinder","pos":[0.0,-0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.015,0.22],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"LipEdge","shape":"cylinder","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.003,0.2],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"RivetFL","shape":"sphere","pos":[-0.09,-0.002,-0.09],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.38,0.33],"smooth":0.3,"metal":0.0},
+  {"name":"RivetFR","shape":"sphere","pos":[-0.09,-0.002,0.09],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.38,0.33],"smooth":0.3,"metal":0.0},
+  {"name":"RivetBL","shape":"sphere","pos":[0.09,-0.002,-0.09],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.38,0.33],"smooth":0.3,"metal":0.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.09,-0.002,0.09],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.38,0.33],"smooth":0.3,"metal":0.0},
+  {"name":"SideSeam","shape":"cylinder","pos":[0.0,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.002,0.22],"color":[0.5,0.48,0.42],"smooth":0.15,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[0.0,0.002,0.09],"rot":[0.0,0.0,0.0],"size":[0.04,0.002,0.02],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0}
+]}

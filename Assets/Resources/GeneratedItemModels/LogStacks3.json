@@ -1,0 +1,11 @@
+{"version": 1, "id": "LogStacks3", "baseHeight": 0.175, "name": "Log Stacks3", "model": "gpt-oss:120b", "notes": "Three wooden logs (≈0.15 m diameter × 1.2 m long) stacked on the ground: two side‑by‑side along X and a third laid across them along Z. Bark knots add a bit of detail.", "score": 7, "parts": [
+  {"name":"LogBaseL","shape":"cylinder","pos":[0.0075,-0.04,-0.08],"rot":[0.0,0.0,90.0],"size":[0.15,1.2,0.15],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"LogBaseR","shape":"cylinder","pos":[0.0075,-0.04,0.08],"rot":[0.0,0.0,90.0],"size":[0.15,1.2,0.15],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"LogTop","shape":"cylinder","pos":[0.0075,0.04,0.0],"rot":[90.0,0.0,0.0],"size":[0.15,1.2,0.15],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"KnotL1","shape":"sphere","pos":[-0.3925,0.005,-0.08],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"KnotL2","shape":"sphere","pos":[0.3075,-0.025,-0.08],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"KnotR1","shape":"sphere","pos":[-0.1925,0.015,0.08],"rot":[0.0,0.0,0.0],"size":[0.028,0.028,0.028],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"KnotR2","shape":"sphere","pos":[0.5075,-0.035,0.08],"rot":[0.0,0.0,0.0],"size":[0.022,0.022,0.022],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"KnotTop1","shape":"sphere","pos":[-0.5925,0.085,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"KnotTop2","shape":"sphere","pos":[0.4075,0.065,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.025,0.025],"color":[0.45,0.42,0.35],"smooth":0.05,"metal":0.0}
+]}

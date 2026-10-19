@@ -1,0 +1,11 @@
+{"version": 1, "id": "Specimen_Beetles", "baseHeight": 0.1412, "name": "Specimen Beetles", "model": "gpt-oss:120b", "notes": "Glass specimen jar about 0.14 m tall × 0.14 m diameter, standing upright on the floor. Contains several small brown ellipsoid beetles (tint 0.6, 0.58, 0.5) and a paper label.", "score": 7, "parts": [
+  {"name":"JarBody","shape":"cylinder","pos":[0.0,-0.0063,-0.0097],"rot":[0.0,0.0,0.0],"size":[0.07,0.15,0.07],"color":[0.85,0.92,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"JarLid","shape":"cylinder","pos":[0.0,0.0737,-0.0097],"rot":[0.0,0.0,0.0],"size":[0.075,0.015,0.075],"color":[0.75,0.75,0.78],"smooth":0.5,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[0.036,0.0387,0.0272],"rot":[0.0,0.0,0.0],"size":[0.002,0.08,0.04],"color":[0.93,0.9,0.85],"smooth":0.1,"metal":0.0},
+  {"name":"Beetle1","shape":"sphere","pos":[-0.015,-0.0462,-0.0297],"rot":[0.0,0.0,0.0],"size":[0.018,0.009,0.012],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Beetle2","shape":"sphere","pos":[0.01,-0.0363,0.0053],"rot":[0.0,0.0,0.0],"size":[0.016,0.008,0.011],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Beetle3","shape":"sphere","pos":[-0.02,-0.0213,0.0153],"rot":[0.0,0.0,0.0],"size":[0.017,0.0095,0.013],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Beetle4","shape":"sphere","pos":[0.018,-0.0533,-0.0397],"rot":[0.0,0.0,0.0],"size":[0.015,0.008,0.01],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Beetle5","shape":"sphere","pos":[0.005,-0.0312,-0.0348],"rot":[0.0,0.0,0.0],"size":[0.019,0.01,0.014],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"AirGap","shape":"cylinder","pos":[0.0,-0.0013,-0.0097],"rot":[0.0,0.0,0.0],"size":[0.068,0.12,0.068],"color":[0.94,0.96,1.0],"smooth":0.6,"metal":0.0}
+]}

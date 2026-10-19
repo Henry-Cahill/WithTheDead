@@ -1,0 +1,14 @@
+{"version": 1, "id": "GloveBox2", "baseHeight": 0.134, "name": "Glove Box2", "model": "gpt-oss:120b", "notes": "Rectangular glove storage box about 0.36 m × 0.26 m × 0.13 m tall, lying on its side. Main body is canvas‑tinted (0.6,0.58,0.5) with a thin wooden‑tone lid, a front label, a strap loop and four metal rivets at the lid corners that now sit flush against the lid.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.069,0.0005],"rot":[0.0,0.0,0.0],"size":[0.36,0.01,0.26],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"SideL","shape":"cube","pos":[-0.175,-0.009,0.0005],"rot":[0.0,0.0,0.0],"size":[0.01,0.12,0.26],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"SideR","shape":"cube","pos":[0.175,-0.009,0.0005],"rot":[0.0,0.0,0.0],"size":[0.01,0.12,0.26],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Front","shape":"cube","pos":[0.0,-0.009,-0.1245],"rot":[0.0,0.0,0.0],"size":[0.36,0.12,0.01],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Back","shape":"cube","pos":[0.0,-0.009,0.1255],"rot":[0.0,0.0,0.0],"size":[0.36,0.12,0.01],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.055,0.0005],"rot":[0.0,0.0,0.0],"size":[0.36,0.008,0.26],"color":[0.55,0.5,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.0,-0.049,-0.1305],"rot":[0.0,0.0,0.0],"size":[0.25,0.04,0.002],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Strap","shape":"cylinder","pos":[0.0,0.0665,-0.1095],"rot":[0.0,0.0,90.0],"size":[0.015,0.32,0.015],"color":[0.4,0.38,0.33],"smooth":0.07,"metal":0.0},
+  {"name":"RivetFL","shape":"sphere","pos":[-0.175,0.059,-0.1245],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.6,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"RivetFR","shape":"sphere","pos":[0.175,0.059,-0.1245],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.6,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[-0.175,0.059,0.1255],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.6,0.6],"smooth":0.5,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.175,0.059,0.1255],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.6,0.6,0.6],"smooth":0.5,"metal":1.0}
+]}

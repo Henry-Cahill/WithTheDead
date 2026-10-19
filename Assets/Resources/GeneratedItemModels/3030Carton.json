@@ -1,0 +1,13 @@
+{"version": 1, "id": "3030Carton", "baseHeight": 0.1875, "name": "3030 Carton", "model": "gpt-oss:120b", "notes": "Medium cardboard carton ~0.40 m wide × 0.30 m deep × 0.26 m high (including 1 cm thick walls). Lying on its side, base panel flat on the floor, four wall panels folded up, a top flap slightly raised and a printed label on the lid.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.1225,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.01,0.3],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"SideFront","shape":"cube","pos":[0.0,0.0025,0.155],"rot":[0.0,0.0,0.0],"size":[0.4,0.25,0.01],"color":[0.58,0.55,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"SideBack","shape":"cube","pos":[0.0,0.0025,-0.155],"rot":[0.0,0.0,0.0],"size":[0.4,0.25,0.01],"color":[0.58,0.55,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"SideLeft","shape":"cube","pos":[0.205,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.25,0.3],"color":[0.58,0.55,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"SideRight","shape":"cube","pos":[-0.205,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.25,0.3],"color":[0.58,0.55,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,-0.1115,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.01,0.3],"color":[0.59,0.56,0.49],"smooth":0.1,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,-0.11,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.002,0.1],"color":[0.3,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"SeamFront","shape":"cube","pos":[0.0,0.0025,0.156],"rot":[0.0,0.0,0.0],"size":[0.4,0.25,0.002],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"SeamBack","shape":"cube","pos":[0.0,0.0025,-0.156],"rot":[0.0,0.0,0.0],"size":[0.4,0.25,0.002],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"SeamLeft","shape":"cube","pos":[0.206,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.25,0.3],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.0},
+  {"name":"SeamRight","shape":"cube","pos":[-0.206,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.25,0.3],"color":[0.45,0.42,0.35],"smooth":0.1,"metal":0.0}
+]}

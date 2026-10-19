@@ -1,0 +1,8 @@
+{"version": 1, "id": "Paintbrush", "baseHeight": 0.1, "name": "Paintbrush", "model": "gpt-oss:120b", "notes": "Paintbrush ~0.32 m long: wooden handle tapering to a brass ferrule and a short nylon‑bristle bundle, lying on its side with the handle along X. All parts touch or overlap correctly.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.049,-0.029,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.22,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"HandleTaper","shape":"cylinder","pos":[-0.119,-0.029,0.0],"rot":[0.0,0.0,90.0],"size":[0.016,0.04,0.016],"color":[0.58,0.55,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"GripBand","shape":"cylinder","pos":[-0.029,-0.031,0.0],"rot":[0.0,0.0,90.0],"size":[0.018,0.012,0.018],"color":[0.2,0.12,0.08],"smooth":0.3,"metal":0.0},
+  {"name":"Ferrule","shape":"cylinder","pos":[0.076,-0.024,0.0],"rot":[0.0,0.0,90.0],"size":[0.026,0.03,0.026],"color":[0.82,0.71,0.33],"smooth":0.4,"metal":1.0},
+  {"name":"Bristles","shape":"cylinder","pos":[0.106,-0.004,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.07,0.015],"color":[0.9,0.9,0.85],"smooth":0.05,"metal":0.0},
+  {"name":"BristleTip","shape":"sphere","pos":[0.15,0.031,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.018,0.018],"color":[0.88,0.88,0.82],"smooth":0.05,"metal":0.0}
+]}

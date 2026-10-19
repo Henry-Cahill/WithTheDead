@@ -1,0 +1,11 @@
+{"version": 1, "id": "FreddyFox", "baseHeight": 0.1175, "name": "Freddy Fox", "model": "gpt-oss:120b", "notes": "Flat fox pelt about 0.52 m long × 0.28 m wide × 0.03 m thick, laid on its side. Rounded head with ears at the +X end and a fluffy tail sticking out of the –X end. Main colour is a muted orange‑brown (0.6, 0.58, 0.5).", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.02,-0.0275,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.5,0.03,0.28],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Head","shape":"sphere","pos":[0.305,-0.0025,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.12,0.08,0.1],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EarL","shape":"cylinder","pos":[0.35,0.0275,0.0225],"rot":[0.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EarR","shape":"cylinder","pos":[0.35,0.0275,-0.0475],"rot":[0.0,0.0,0.0],"size":[0.02,0.06,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TailBase","shape":"cylinder","pos":[-0.26,-0.0275,-0.0125],"rot":[0.0,0.0,90.0],"size":[0.04,0.15,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TailTip","shape":"sphere","pos":[-0.335,-0.0275,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBandTop","shape":"cube","pos":[0.02,-0.0145,-0.0125],"rot":[0.0,0.0,0.0],"size":[0.5,0.004,0.28],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"FurPatch","shape":"sphere","pos":[0.14,-0.0075,0.1275],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"FurPatch2","shape":"sphere","pos":[-0.08,-0.0075,-0.1325],"rot":[0.0,0.0,0.0],"size":[0.05,0.05,0.05],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0}
+]}

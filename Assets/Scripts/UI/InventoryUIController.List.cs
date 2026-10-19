@@ -105,7 +105,7 @@ namespace CloneZ
                     PlayerClothing.WornPiece piece = _clothing.GetPiece(slots[i]);
                     if (!piece.Exists) continue;
                     // A display copy carries the garment's wear so its row reads like any other item.
-                    var shown = new ItemStack(piece.Def, 1) { Condition = piece.Condition, TimesRepaired = piece.TimesRepaired };
+                    var shown = new ItemStack(piece.Def, 1) { Condition = piece.Condition, TimesRepaired = piece.TimesRepaired, Extra = piece.Extra };
                     pinned.Add(new Entry { Kind = EntryKind.Worn, Stack = shown, Slot = slots[i] });
                 }
             }
@@ -163,6 +163,7 @@ namespace CloneZ
                 s.Condition = Mathf.Clamp(item.Condition, 0, item.Def.MaxCondition);
                 s.TimesRepaired = item.TimesRepaired;
             }
+            s.Extra = item.Extra;
             return s;
         }
         #endregion
@@ -511,6 +512,7 @@ namespace CloneZ
             }
             a.Menu.Add(new MenuOption(s.Count > 1 ? "Drop all " + s.Count : "Drop", dropAll));
             if (s.Count > 1) a.Menu.Add(new MenuOption("Drop 1", () => DropStack(s, 1)));
+            AddFeatureVerbs(a.Menu, s);
         }
 
         // A collapsed row moves every item of its kind at once; Use / Equip picks the best one.
@@ -557,7 +559,8 @@ namespace CloneZ
             return a;
         }
 
-        private static string UseVerb(ItemDef d) => d.IsClothing ? "Wear" : d.IsEquippable ? "Equip" : d.IsCanned ? "Open" : "Use";
+        private static string UseVerb(ItemDef d) => d.CustomUse && !string.IsNullOrEmpty(d.UseVerb) ? d.UseVerb
+            : d.IsClothing ? "Wear" : d.IsEquippable ? "Equip" : d.IsCanned ? "Open" : "Use";
 
         private static Color MoveColor(string label)
         {
@@ -733,7 +736,7 @@ namespace CloneZ
             else if (e.Kind == EntryKind.Floor) InfoLine(sb, "Status", "On the floor");
             if (s.Count > 1) InfoLine(sb, "Stack", "\u00d7" + s.Count + "  \u00b7  " + Kg(s.Weight) + " kg");
             if (d.IsDamageable)
-                InfoLine(sb, "Wear", Pct(s.Condition01) + "  (" + s.Condition + " / " + d.MaxCondition + ")"
+                InfoLine(sb, "Wear", ItemConditionTiers.Label(s.Condition01) + "  \u00b7  " + Pct(s.Condition01) + "  (" + s.Condition + " / " + d.MaxCondition + ")"
                     + (s.TimesRepaired > 0 ? "  \u00b7  repaired \u00d7" + s.TimesRepaired : ""));
             if (d.Perishable)
                 InfoLine(sb, "Freshness", s.State + "  \u00b7  " + Mathf.RoundToInt(s.AgeHours) + "h old of ~" + Mathf.RoundToInt(d.ShelfLifeHours) + "h");

@@ -1,0 +1,11 @@
+{"version": 1, "id": "Specimen_Tapeworm", "baseHeight": 0.075, "name": "Specimen Tapeworm", "model": "gpt-oss:120b", "notes": "Flat tapeworm specimen ~0.55 m long, 0.05 m wide, 0.01 m thick, coiled into a loose spiral on the floor. Main ribbon uses the tint (0.6,0.58,0.5); a darker scolex (head) sits in the centre.", "score": 6, "parts": [
+  {"name":"Head","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.03,0.05],"color":[0.5,0.45,0.4],"smooth":0.07,"metal":0.0},
+  {"name":"Segment0","shape":"cube","pos":[0.08,-0.01,0.0],"rot":[0.0,90.0,0.0],"size":[0.07,0.01,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Segment1","shape":"cube","pos":[0.0566,-0.01,0.0566],"rot":[0.0,135.0,0.0],"size":[0.07,0.01,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Segment2","shape":"cube","pos":[0.0,-0.01,0.08],"rot":[0.0,-180.0,0.0],"size":[0.07,0.01,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Segment3","shape":"cube","pos":[-0.0566,-0.01,0.0566],"rot":[0.0,-135.0,0.0],"size":[0.07,0.01,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Segment4","shape":"cube","pos":[-0.08,-0.01,0.0],"rot":[0.0,-90.0,0.0],"size":[0.07,0.01,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Segment5","shape":"cube","pos":[-0.0566,-0.01,-0.0566],"rot":[0.0,-45.0,0.0],"size":[0.07,0.01,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Segment6","shape":"cube","pos":[0.0,-0.01,-0.08],"rot":[0.0,0.0,0.0],"size":[0.07,0.01,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Segment7","shape":"cube","pos":[0.0566,-0.01,-0.0566],"rot":[0.0,45.0,0.0],"size":[0.07,0.01,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

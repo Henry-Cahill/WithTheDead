@@ -79,9 +79,18 @@ namespace CloneZ
             if (_ctx.Inventory != null) _ctx.Inventory.Notice += OnNotice;
             if (_ctx.GearComponent != null) _ctx.GearComponent.Notice += OnNotice;
             if (_ctx.Interactor != null) _ctx.Interactor.Notice += OnNotice;
+            GameEvents.Toast += OnNotice;
+            GameEvents.Subtitle += OnSubtitle;
         }
 
         private static T Find<T>(PlayerStats stats) where T : Component => stats != null ? stats.GetComponent<T>() : null;
+
+        // Spoken lines from the world (NPCs, the radio, the Zone) go to the caption bar, if captions are on.
+        private static void OnSubtitle(string speaker, string line)
+        {
+            if (!GameSettings.Current.Subtitles) return;
+            Subtitles.Show(speaker, line, new Color(0.85f, 0.75f, 0.5f), Mathf.Clamp(2.5f + line.Length * 0.05f, 3f, 9f));
+        }
 
         private void Unbind()
         {
@@ -90,6 +99,8 @@ namespace CloneZ
             if (_ctx.Inventory != null) _ctx.Inventory.Notice -= OnNotice;
             if (_ctx.GearComponent != null) _ctx.GearComponent.Notice -= OnNotice;
             if (_ctx.Interactor != null) _ctx.Interactor.Notice -= OnNotice;
+            GameEvents.Toast -= OnNotice;
+            GameEvents.Subtitle -= OnSubtitle;
         }
 
         private void Awake() => Build();

@@ -1,0 +1,14 @@
+{"version": 1, "id": "Bullets357Box", "baseHeight": 0.0805, "name": "Bullets357 Box", "model": "gpt-oss:120b", "notes": "Flat ammo box ~0.15 m × 0.10 m × 0.05 m lying on its side. Main brown‑gray cardboard body with a slightly raised lid, thin edge seams, a front label and an internal divider separating two rows of .357 rounds.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.0105,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.1],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.152,0.015,0.102],"color":[0.58,0.55,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeSeamTop","shape":"cube","pos":[0.0,0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.154,0.003,0.104],"color":[0.55,0.52,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"EdgeSeamBottom","shape":"cube","pos":[0.0,-0.0155,0.0],"rot":[0.0,0.0,0.0],"size":[0.154,0.003,0.104],"color":[0.55,0.52,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"SideSeamLeft","shape":"cube","pos":[-0.0755,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.022,0.102],"color":[0.55,0.52,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"SideSeamRight","shape":"cube","pos":[0.0755,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.022,0.102],"color":[0.55,0.52,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"FrontSeam","shape":"cube","pos":[0.0,-0.003,-0.0515],"rot":[0.0,0.0,0.0],"size":[0.154,0.022,0.003],"color":[0.55,0.52,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"BackSeam","shape":"cube","pos":[0.0,-0.003,0.0515],"rot":[0.0,0.0,0.0],"size":[0.154,0.022,0.003],"color":[0.55,0.52,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.03,0.013,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.09],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Divider","shape":"cube","pos":[0.0,0.0045,-0.035],"rot":[0.0,0.0,0.0],"size":[0.15,0.004,0.02],"color":[0.58,0.55,0.48],"smooth":0.1,"metal":0.0},
+  {"name":"BulletPileA","shape":"cylinder","pos":[-0.04,0.0115,0.025],"rot":[0.0,0.0,0.0],"size":[0.008,0.018,0.008],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":1.0},
+  {"name":"BulletPileB","shape":"cylinder","pos":[0.04,0.0115,-0.025],"rot":[0.0,0.0,0.0],"size":[0.008,0.018,0.008],"color":[0.2,0.2,0.2],"smooth":0.3,"metal":1.0}
+]}

@@ -112,9 +112,9 @@ namespace CloneZ
             a.Hunting = hunting;
             a.ArmsOut = hunting || _reaches;
 
-            PlayerStats prey = hunting && GameManager.Instance != null ? GameManager.Instance.Player : null;
-            a.HasLookTarget = prey != null && !prey.IsDead;
-            if (a.HasLookTarget) a.LookTarget = prey.transform.position + Vector3.up * 1.6f;
+            Vector3? prey = hunting && _ai != null ? _ai.HuntTarget : null;
+            a.HasLookTarget = prey.HasValue;
+            if (prey.HasValue) a.LookTarget = prey.Value + Vector3.up * 1.6f;
 
             a.Evaluate(dt);
         }

@@ -1,0 +1,18 @@
+{"version": 1, "id": "Stairs", "baseHeight": 0.1575, "name": "Stairs", "model": "gpt-oss:120b", "notes": "Four wooden stair steps (tint 0.6, 0.58, 0.5) lying on the ground as a broken pile. Each step has a horizontal tread, a vertical riser at its back and two small nails in the front corners.", "score": 7, "parts": [
+  {"name":"Step1_Tread","shape":"cube","pos":[-0.6,-0.0825,0.01],"rot":[0.0,0.0,0.0],"size":[0.9,0.03,0.25],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Step1_Riser","shape":"cube","pos":[-0.6,0.0075,-0.125],"rot":[0.0,0.0,0.0],"size":[0.9,0.18,0.02],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Step1_NailL","shape":"cylinder","pos":[-0.95,-0.0775,0.13],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.3,0.28,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Step1_NailR","shape":"cylinder","pos":[-0.25,-0.0775,0.13],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.3,0.28,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Step2_Tread","shape":"cube","pos":[-0.2,-0.0825,0.01],"rot":[0.0,0.0,0.0],"size":[0.9,0.03,0.25],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Step2_Riser","shape":"cube","pos":[-0.2,0.0075,-0.125],"rot":[0.0,0.0,0.0],"size":[0.9,0.18,0.02],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Step2_NailL","shape":"cylinder","pos":[-0.55,-0.0775,0.13],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.3,0.28,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Step2_NailR","shape":"cylinder","pos":[0.15,-0.0775,0.13],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.3,0.28,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Step3_Tread","shape":"cube","pos":[0.2,-0.0825,0.01],"rot":[0.0,0.0,0.0],"size":[0.9,0.03,0.25],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Step3_Riser","shape":"cube","pos":[0.2,0.0075,-0.125],"rot":[0.0,0.0,0.0],"size":[0.9,0.18,0.02],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Step3_NailL","shape":"cylinder","pos":[-0.15,-0.0775,0.13],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.3,0.28,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Step3_NailR","shape":"cylinder","pos":[0.55,-0.0775,0.13],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.3,0.28,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Step4_Tread","shape":"cube","pos":[0.6,-0.0825,0.01],"rot":[0.0,0.0,0.0],"size":[0.9,0.03,0.25],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Step4_Riser","shape":"cube","pos":[0.6,0.0075,-0.125],"rot":[0.0,0.0,0.0],"size":[0.9,0.18,0.02],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"Step4_NailL","shape":"cylinder","pos":[0.25,-0.0775,0.13],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.3,0.28,0.2],"smooth":0.4,"metal":0.0},
+  {"name":"Step4_NailR","shape":"cylinder","pos":[0.95,-0.0775,0.13],"rot":[0.0,0.0,0.0],"size":[0.01,0.015,0.01],"color":[0.3,0.28,0.2],"smooth":0.4,"metal":0.0}
+]}

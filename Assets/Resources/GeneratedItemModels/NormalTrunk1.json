@@ -1,0 +1,13 @@
+{"version": 1, "id": "NormalTrunk1", "baseHeight": 0.27, "name": "Normal Trunk1", "model": "gpt-oss:120b", "notes": "Wooden log (Normal Trunk) about 0.60 m long × 0.38 m diameter, lying on its side (X‑axis). Main cylinder with bark caps, four longitudinal bark ridges, three embedded knots and a thin metal band around the middle.", "score": 7, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.38,0.6,0.38],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"EndCapFront","shape":"cube","pos":[0.31,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.38,0.38],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"EndCapBack","shape":"cube","pos":[-0.31,-0.015,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.38,0.38],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"BarkRidge1","shape":"cube","pos":[0.0,-0.005,0.18],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.05],"color":[0.52,0.5,0.42],"smooth":0.15,"metal":0.0},
+  {"name":"BarkRidge2","shape":"cube","pos":[0.0,-0.005,-0.18],"rot":[0.0,0.0,0.0],"size":[0.6,0.02,0.05],"color":[0.52,0.5,0.42],"smooth":0.15,"metal":0.0},
+  {"name":"BarkRidge3","shape":"cube","pos":[-0.2,-0.005,0.1],"rot":[0.0,0.0,0.0],"size":[0.4,0.02,0.05],"color":[0.52,0.5,0.42],"smooth":0.15,"metal":0.0},
+  {"name":"BarkRidge4","shape":"cube","pos":[0.2,-0.005,-0.1],"rot":[0.0,0.0,0.0],"size":[0.4,0.02,0.05],"color":[0.52,0.5,0.42],"smooth":0.15,"metal":0.0},
+  {"name":"KnotA","shape":"sphere","pos":[-0.12,-0.065,0.08],"rot":[0.0,0.0,0.0],"size":[0.08,0.08,0.08],"color":[0.45,0.42,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"KnotB","shape":"sphere","pos":[0.05,-0.045,-0.12],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.45,0.42,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"KnotC","shape":"sphere","pos":[0.15,-0.025,0.05],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.45,0.42,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"MetalBand","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.42,0.015,0.42],"color":[0.55,0.55,0.55],"smooth":0.4,"metal":1.0}
+]}

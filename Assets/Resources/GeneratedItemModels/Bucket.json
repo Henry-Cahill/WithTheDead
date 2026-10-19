@@ -1,0 +1,15 @@
+{"version": 1, "id": "Bucket", "baseHeight": 0.23, "name": "Bucket", "model": "gpt-oss:120b", "notes": "Bucket ~0.30 m Ø × 0.25 m long (lying on its side). Main metal shell with thin walls, a short rim‑flange at the open end, a simple straight handle bar, a dark label and a few rivet dots.", "score": 7, "parts": [
+  {"name":"OuterShell","shape":"cylinder","pos":[-0.0088,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.3,0.25,0.3],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.85},
+  {"name":"InnerShell","shape":"cylinder","pos":[-0.0088,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.26,0.245,0.26],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.85},
+  {"name":"RimFlange","shape":"cylinder","pos":[0.1162,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.34,0.02,0.34],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.85},
+  {"name":"HandleBar","shape":"cylinder","pos":[0.1263,0.035,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.015,0.12],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.85},
+  {"name":"HandleEndL","shape":"cube","pos":[0.0662,0.035,0.06],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.015],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.85},
+  {"name":"HandleEndR","shape":"cube","pos":[0.0662,0.035,-0.06],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.015],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.85},
+  {"name":"LabelBase","shape":"cube","pos":[-0.0488,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.12],"color":[0.3,0.25,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[-0.0488,0.018,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.002,0.122],"color":[0.2,0.15,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[-0.0488,0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.082,0.002,0.122],"color":[0.2,0.15,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"Rivet01","shape":"sphere","pos":[0.1112,0.015,0.14],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet02","shape":"sphere","pos":[0.1112,0.015,-0.14],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet03","shape":"sphere","pos":[-0.0888,0.015,0.12],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0},
+  {"name":"Rivet04","shape":"sphere","pos":[-0.0888,0.015,-0.12],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0}
+]}

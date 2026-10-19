@@ -106,9 +106,11 @@ namespace CloneZ
                     case ClothingSlot.Torso:
                     case ClothingSlot.Legs:
                     case ClothingSlot.Mask:
+                    case ClothingSlot.Pouch:
                     case ClothingSlot.Rig: return new Vector2Int(2, 2);
                     case ClothingSlot.Feet:
                     case ClothingSlot.Eyes: return new Vector2Int(2, 1);
+                    case ClothingSlot.Armor:
                     case ClothingSlot.Back: return new Vector2Int(3, 3);
                     case ClothingSlot.Thigh: return new Vector2Int(1, 2);
                     default: return Vector2Int.one;   // hats, gloves

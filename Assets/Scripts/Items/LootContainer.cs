@@ -174,7 +174,7 @@ namespace CloneZ
                         Contents.Add(def, st.Count, enforceWeight: false,
                             spawnHours: def.Perishable ? st.SpawnHours : float.NaN,
                             condition: def.RestoredCondition(st.Condition),
-                            timesRepaired: st.TimesRepaired);
+                            timesRepaired: st.TimesRepaired, extra: ItemExtra.Parse(st.Extra));
                 }
             }
             Searched = searched;
@@ -312,7 +312,7 @@ namespace CloneZ
                         c.Contents.Add(def, st.Count, enforceWeight: false,
                             spawnHours: def.Perishable ? st.SpawnHours : float.NaN,
                             condition: def.RestoredCondition(st.Condition),
-                            timesRepaired: st.TimesRepaired);
+                            timesRepaired: st.TimesRepaired, extra: ItemExtra.Parse(st.Extra));
                 }
             }
             c.Searched = searched;

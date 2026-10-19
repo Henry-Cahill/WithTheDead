@@ -1,0 +1,13 @@
+{"version": 1, "id": "ModernSuspension1", "baseHeight": 0.1375, "name": "Modern Suspension1", "model": "gpt-oss:120b", "notes": "Modern suspension shock absorber ~0.35 m long x 0.07 m diameter, lying on its side (axis along X). Main steel tube with caps, inner coil spring, central hydraulic damper and a few bolts.", "score": 7, "parts": [
+  {"name":"BodyTube","shape":"cylinder","pos":[0.0,-0.0425,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.35,0.07],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"CapFront","shape":"cube","pos":[0.17,-0.0425,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.07,0.07],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"CapRear","shape":"cube","pos":[-0.17,-0.0425,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.07,0.07],"color":[0.55,0.53,0.45],"smooth":0.5,"metal":1.0},
+  {"name":"InnerSpring","shape":"cylinder","pos":[0.0,-0.0425,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.33,0.045],"color":[0.5,0.48,0.4],"smooth":0.45,"metal":1.0},
+  {"name":"DamperCylinder","shape":"cylinder","pos":[0.0,0.0275,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.07,0.02],"color":[0.2,0.22,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"DamperHead","shape":"sphere","pos":[0.0,0.0675,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.04],"color":[0.2,0.22,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"RubberSeal","shape":"sphere","pos":[0.0,-0.0425,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.01,0.06],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"BoltFrontL","shape":"cylinder","pos":[0.165,-0.0225,0.025],"rot":[90.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.45,0.44,0.4],"smooth":0.5,"metal":1.0},
+  {"name":"BoltFrontR","shape":"cylinder","pos":[0.165,-0.0225,-0.025],"rot":[90.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.45,0.44,0.4],"smooth":0.5,"metal":1.0},
+  {"name":"BoltRearL","shape":"cylinder","pos":[-0.165,-0.0225,0.025],"rot":[90.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.45,0.44,0.4],"smooth":0.5,"metal":1.0},
+  {"name":"BoltRearR","shape":"cylinder","pos":[-0.165,-0.0225,-0.025],"rot":[90.0,0.0,0.0],"size":[0.008,0.015,0.008],"color":[0.45,0.44,0.4],"smooth":0.5,"metal":1.0}
+]}

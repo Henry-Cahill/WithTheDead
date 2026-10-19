@@ -141,21 +141,20 @@ namespace CloneZ
             BindPlayer(player != null ? player : (GameManager.Instance != null ? GameManager.Instance.Player : null));
             _killsAtStart = GameManager.Instance != null ? GameManager.Instance.ZombieKills : 0;
 
-            // Dawn is fixed on the clock when the raid starts; the countdown is read off the clock after
-            // that, so sleeping (which fast-forwards it) brings dawn closer too.
+            // Dawn is fixed on the clock when the raid starts (the sandbox's raid length in in-game hours); the
+            // countdown is read off the clock after that, so sleeping (which fast-forwards it) brings dawn closer too.
             TimeOfDay tod = TimeOfDay.Instance;
+            float raidHours = Mathf.Clamp(SandboxSettings.Current.RaidHours, 1f, 23f);
             if (tod != null)
             {
-                float until = Mathf.Repeat(CloneZConfig.RaidDawnHour - tod.Hour, 24f);
-                if (until < 0.01f) until = 24f;
+                float until = raidHours;
                 _dawnTotalHours = tod.TotalHours + until;
                 _arrivedClock = ClockLabel(tod);
                 RaidSecondsRemaining = until * tod.DayLengthSeconds / 24f;
             }
             else
             {
-                float until = Mathf.Repeat(CloneZConfig.RaidDawnHour - CloneZConfig.RaidStartHour, 24f);
-                RaidSecondsRemaining = until * CloneZConfig.RaidDayLengthSeconds / 24f;
+                RaidSecondsRemaining = raidHours * CloneZConfig.RaidDayLengthSeconds / 24f;
             }
 
             var root = new GameObject("ExitBeacons").transform;
@@ -186,20 +185,114 @@ namespace CloneZ
             RaidElapsedSeconds += dt;
             if (SpawnProtectionRemaining > 0f) SpawnProtectionRemaining = Mathf.Max(0f, SpawnProtectionRemaining - dt);
             TickDawnClock(dt);
+            TickHelicopters(dt);
 
             if (_player == null && GameManager.Instance != null) BindPlayer(GameManager.Instance.Player);
             if (_player != null && _player.IsDead) { EndRaid(RaidState.Dead, null); return; }
-            if (RaidSecondsRemaining <= 0f) { EndRaid(RaidState.MissingInAction, null); return; }
+            if (!NoDeadline && RaidSecondsRemaining <= 0f) { EndRaid(RaidState.MissingInAction, null); return; }
             TickExtraction(dt);
         }
 
+        /// <summary>True in an open-zone run (Gray Zone Warfare: no raid timer — stay as long as supplies and nerve last).</summary>
+        public static bool NoDeadline => GameSession.IsOpenZone || SandboxSettings.Current.OpenZoneNoTimer || GameSession.IsMonsterRun;
+
+        /// <summary>Why the exit the survivor stands in won't let them out yet (null when it will).</summary>
+        public string BlockedReason { get; private set; }
+
         private void TickDawnClock(float dt)
         {
+            if (NoDeadline) { RaidSecondsRemaining = 99999f; return; }
             TimeOfDay tod = TimeOfDay.Instance;
             if (tod != null && _dawnTotalHours >= 0f)
                 RaidSecondsRemaining = Mathf.Max(0f, (_dawnTotalHours - tod.TotalHours) * tod.DayLengthSeconds / 24f);
             else
                 RaidSecondsRemaining = Mathf.Max(0f, RaidSecondsRemaining - dt);
+        }
+
+        /// <summary>Calls the helicopter to a flare exit near <paramref name="flarePos"/> (within 30 m). True if one answers.</summary>
+        public bool CallHelicopter(Vector3 flarePos)
+        {
+            for (int i = 0; i < _exits.Count; i++)
+            {
+                RaidExit e = _exits[i];
+                if (e.Condition != ExitCondition.Flare || e.HeliCalled) continue;
+                if (FlatDistance(e.Position, flarePos) > 30f) continue;
+                e.HeliCalled = true;
+                e.HeliLanded = false;
+                e.HeliEta = 55f;
+                GameEvents.RaiseToast("The helicopter saw your flare. ETA 55 seconds — hold the landing zone.");
+                GameEvents.RaiseWorldEvent(e.Position, 160f, "flare");
+                HelicopterCalled?.Invoke(e);
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>Raised when a flare calls the helicopter to an exit (the helicopter visuals listen).</summary>
+        public static event System.Action<RaidExit> HelicopterCalled;
+        /// <summary>Raised when the helicopter at an exit gives up and leaves.</summary>
+        public static event System.Action<RaidExit> HelicopterLeft;
+
+        private void TickHelicopters(float dt)
+        {
+            for (int i = 0; i < _exits.Count; i++)
+            {
+                RaidExit e = _exits[i];
+                if (!e.HeliCalled) continue;
+                if (!e.HeliLanded)
+                {
+                    e.HeliEta -= dt;
+                    if (e.HeliEta <= 0f)
+                    {
+                        e.HeliLanded = true;
+                        e.HeliEta = 40f;   // it waits this long on the ground
+                        GameEvents.RaiseToast("The helicopter is down at " + e.Name + ". Get aboard!");
+                        NoiseSystem.Emit(e.Position, 70f);
+                    }
+                }
+                else
+                {
+                    e.HeliEta -= dt;
+                    if (e.HeliEta <= 0f)
+                    {
+                        e.HeliCalled = false;
+                        e.HeliLanded = false;
+                        GameEvents.RaiseToast("The helicopter couldn't wait any longer. It's gone.");
+                        HelicopterLeft?.Invoke(e);
+                    }
+                }
+            }
+        }
+
+        // Whether an open exit lets this survivor out right now.
+        private bool MeetsCondition(RaidExit e, out string reason)
+        {
+            reason = null;
+            if (GameSession.IsMonsterRun) return true;   // a hunter just melts back into the dark
+            switch (e.Condition)
+            {
+                case ExitCondition.Pay:
+                    var inv = _player != null ? _player.GetComponent<PlayerInventory>() : null;
+                    if (inv == null || Money.Count(inv.Inventory) < e.Cost) { reason = "The smuggler wants " + Money.Format(e.Cost) + " (carried)"; return false; }
+                    return true;
+                case ExitCondition.NoBackpack:
+                    var clothing = _player != null ? _player.GetComponent<PlayerClothing>() : null;
+                    if (clothing != null && clothing.IsWearing(ClothingSlot.Back)) { reason = "Too tight with a backpack on"; return false; }
+                    return true;
+                case ExitCondition.Switch:
+                    if (!e.Powered) { reason = "The gate has no power"; return false; }
+                    return true;
+                case ExitCondition.CoopScav:
+                    if (GameSession.IsScavRun) return true;
+                    if (Actor.Nearest(e.Position, 12f, a => a.Faction == Factions.Scavs && a.Kind != ActorKind.Player && Actor.LocalPlayer != null && !a.IsHostileTo(Actor.LocalPlayer)) != null) return true;
+                    reason = "The scavs only let their own through";
+                    return false;
+                case ExitCondition.Flare:
+                    if (!e.HeliLanded) { reason = e.HeliCalled ? "Hold out — the helicopter is coming" : "Fire a flare to call the helicopter"; return false; }
+                    return true;
+                default:
+                    return true;
+            }
         }
 
         // Standing inside an open exit fills the extraction; stepping out (or into another) starts over.
@@ -230,6 +323,7 @@ namespace CloneZ
             {
                 ActiveExit = null;
                 ExtractProgress01 = 0f;
+                BlockedReason = null;
                 State = RaidState.InRaid;
                 return;
             }
@@ -239,9 +333,25 @@ namespace CloneZ
                 ActiveExit = open;
                 ExtractProgress01 = 0f;
             }
+            if (!MeetsCondition(open, out string reason))
+            {
+                BlockedReason = reason;
+                ExtractProgress01 = 0f;
+                State = RaidState.InRaid;
+                return;
+            }
+            BlockedReason = null;
             State = RaidState.Extracting;
             ExtractProgress01 = Mathf.Clamp01(ExtractProgress01 + dt / Mathf.Max(0.1f, open.ExtractSeconds));
-            if (ExtractProgress01 >= 1f) EndRaid(RaidState.Extracted, open);
+            if (ExtractProgress01 >= 1f)
+            {
+                if (open.Condition == ExitCondition.Pay)
+                {
+                    var inv = _player != null ? _player.GetComponent<PlayerInventory>() : null;
+                    if (inv == null || Money.Take(inv.Inventory, open.Cost) > 0) { BlockedReason = "Couldn't pay"; ExtractProgress01 = 0f; return; }
+                }
+                EndRaid(RaidState.Extracted, open);
+            }
         }
 
         private void HandlePlayerDied()
@@ -263,17 +373,15 @@ namespace CloneZ
                 ExtractProgress01 = 0f;
             }
 
-            // The kit goes home with the survivor, or stays in town for good.
+            // The kit goes home with the survivor, or stays in the Zone (all but the secure pouch).
             RaidKit kit;
             if (outcome == RaidState.Extracted) kit = RaidLoadout.SaveExtracted(_player);
-            else
-            {
-                kit = RaidLoadout.Capture(_player);
-                RaidLoadout.Clear();
-            }
+            else kit = RaidLoadout.Forfeit(_player);
+            RecordOutcome(outcome);
 
             RaidSummary summary = BuildSummary(outcome, exit, kit);
             RaidEnded?.Invoke(outcome);
+            GameEvents.RaiseRaidEnded(ToOutcome(outcome), exit != null ? exit.Name : null);
 
             if (outcome == RaidState.Dead) StartCoroutine(ShowSummaryAfter(summary, DeathSummaryDelay));
             else RaidSummaryUI.Show(summary);
@@ -321,5 +429,46 @@ namespace CloneZ
         }
 
         private static string ClockLabel(TimeOfDay tod) => tod.Clock12Text + " " + tod.AmPm;
+
+        private static RaidOutcome ToOutcome(RaidState s)
+        {
+            switch (s)
+            {
+                case RaidState.Extracted: return RaidOutcome.Extracted;
+                case RaidState.Dead: return RaidOutcome.Killed;
+                default: return RaidOutcome.MissingInAction;
+            }
+        }
+
+        // The character's record of the raid: statistics, the scav run's standing with the fence, permadeath.
+        private void RecordOutcome(RaidState outcome)
+        {
+            CharacterProfile c = ProfileStore.ActiveCharacter;
+            if (c == null) return;
+            if (outcome == RaidState.Extracted) c.Extracts++;
+            else if (outcome == RaidState.Dead) c.Deaths++;
+            if (GameSession.IsScavRun)
+            {
+                TraderState fence = c.Trader(TraderCatalog.Fence);
+                fence.Rep = Mathf.Clamp(fence.Rep + (outcome == RaidState.Extracted ? 0.02f : -0.01f), -1f, 1f);
+                c.ScavReadyUnix = ProfileStore.NowUnix + (long)(SandboxSettings.Current.ScavCooldownMinutes * 60f
+                    * (Hideout.LevelOf(c, "intel") > 0 ? 0.75f : 1f));
+            }
+            else if (GameSession.IsMonsterRun) { }   // a hunter's death costs the runner nothing
+            else if (outcome == RaidState.Dead && (c.Ironman || SandboxSettings.Current.PermadeathCharacters))
+            {
+                c.Dead = true;
+                c.CauseOfDeath = GameManager.Instance != null ? GameManager.Instance.CauseOfDeath : "the Zone";
+            }
+            ProfileStore.Save();
+        }
+
+        /// <summary>The raid summary's "continue": back to the hub (or, without a profile, the title screen).</summary>
+        public static void ReturnFromRaid()
+        {
+            CharacterProfile c = ProfileStore.ActiveCharacter;
+            if (c != null && !c.Dead) GameFlow.GoToHub();
+            else GameFlow.ToMainMenu();
+        }
     }
 }

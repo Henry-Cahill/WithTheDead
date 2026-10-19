@@ -1,0 +1,8 @@
+{"version": 1, "id": "ClayPotUnfired", "baseHeight": 0.125, "name": "Clay Pot Unfired", "model": "gpt-oss:120b", "notes": "Unfired clay pot about 0.15 m wide × 0.12 m tall, lying on its side (longest axis along X). Main body is a thick cylinder of earthy tint, with a slightly wider lip, a short flat base and a simple wooden‑style handle looped over the front.", "score": 7, "parts": [
+  {"name":"Base","shape":"cylinder","pos":[-0.0012,-0.0575,0.0],"rot":[0.0,0.0,0.0],"size":[0.16,0.015,0.16],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Body","shape":"cylinder","pos":[-0.0012,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.12,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Lip","shape":"cylinder","pos":[-0.0012,0.06,0.0],"rot":[0.0,0.0,0.0],"size":[0.165,0.01,0.165],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.0738,0.025,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,0.08,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"HandleEndL","shape":"cylinder","pos":[0.0738,0.025,-0.04],"rot":[0.0,0.0,90.0],"size":[0.02,0.015,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"HandleEndR","shape":"cylinder","pos":[0.0738,0.025,0.04],"rot":[0.0,0.0,90.0],"size":[0.02,0.015,0.02],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0}
+]}

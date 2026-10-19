@@ -1,0 +1,16 @@
+{"version": 1, "id": "SmallSawblade", "baseHeight": 0.0675, "name": "Small Sawblade", "model": "gpt-oss:120b", "notes": "Small sawblade about 0.15 m diameter × 0.015 m thick, lying on the floor: central steel hub, thin outer rim and a ring of radial teeth.", "score": 7, "parts": [
+  {"name":"Hub","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.04],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.012,0.14],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"Tooth0","shape":"cube","pos":[0.079,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Tooth30","shape":"cube","pos":[0.068,0.0,0.04],"rot":[0.0,30.0,0.0],"size":[0.008,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Tooth60","shape":"cube","pos":[0.04,0.0,0.068],"rot":[0.0,60.0,0.0],"size":[0.008,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Tooth90","shape":"cube","pos":[0.0,0.0,0.079],"rot":[0.0,90.0,0.0],"size":[0.008,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Tooth120","shape":"cube","pos":[-0.04,0.0,0.068],"rot":[0.0,120.0,0.0],"size":[0.008,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Tooth150","shape":"cube","pos":[-0.068,0.0,0.04],"rot":[0.0,150.0,0.0],"size":[0.008,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Tooth180","shape":"cube","pos":[-0.079,0.0,0.0],"rot":[0.0,-180.0,0.0],"size":[0.008,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Tooth210","shape":"cube","pos":[-0.068,0.0,-0.04],"rot":[0.0,-150.0,0.0],"size":[0.008,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Tooth240","shape":"cube","pos":[-0.04,0.0,-0.068],"rot":[0.0,-120.0,0.0],"size":[0.008,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Tooth270","shape":"cube","pos":[0.0,0.0,-0.079],"rot":[0.0,-90.0,0.0],"size":[0.008,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Tooth300","shape":"cube","pos":[0.04,0.0,-0.068],"rot":[0.0,-60.0,0.0],"size":[0.008,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Tooth330","shape":"cube","pos":[0.068,0.0,-0.04],"rot":[0.0,-30.0,0.0],"size":[0.008,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0}
+]}

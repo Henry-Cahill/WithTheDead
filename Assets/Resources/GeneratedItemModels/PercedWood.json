@@ -1,0 +1,15 @@
+{"version": 1, "id": "PercedWood", "baseHeight": 0.0813, "name": "Perced Wood", "model": "gpt-oss:120b", "notes": "Flat perforated wood plank ~0.5 m long × 0.2 m wide × 0.02 m thick, light‑brown tint (0.6,0.58,0.5). Board lies on the floor, with six round holes (4 cm dia) in a 3×2 grid and two dark wood knots. Thin edge borders frame the board for extra silhouette detail.", "score": 7, "parts": [
+  {"name":"Board","shape":"cube","pos":[0.0,-0.0087,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.2],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Hole1","shape":"cylinder","pos":[-0.18,-0.0087,-0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.04],"color":[0.15,0.12,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"Hole2","shape":"cylinder","pos":[0.0,-0.0087,-0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.04],"color":[0.15,0.12,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"Hole3","shape":"cylinder","pos":[0.18,-0.0087,-0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.04],"color":[0.15,0.12,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"Hole4","shape":"cylinder","pos":[-0.18,-0.0087,0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.04],"color":[0.15,0.12,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"Hole5","shape":"cylinder","pos":[0.0,-0.0087,0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.04],"color":[0.15,0.12,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"Hole6","shape":"cylinder","pos":[0.18,-0.0087,0.06],"rot":[0.0,0.0,0.0],"size":[0.04,0.025,0.04],"color":[0.15,0.12,0.1],"smooth":0.1,"metal":0.0},
+  {"name":"BorderFront","shape":"cube","pos":[0.0,-0.0087,0.105],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.01],"color":[0.45,0.42,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"BorderBack","shape":"cube","pos":[0.0,-0.0087,-0.105],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.01],"color":[0.45,0.42,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"BorderLeft","shape":"cube","pos":[-0.255,-0.0087,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.2],"color":[0.45,0.42,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"BorderRight","shape":"cube","pos":[0.255,-0.0087,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.2],"color":[0.45,0.42,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"Knot1","shape":"sphere","pos":[-0.12,0.0063,0.04],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.35,0.3,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"Knot2","shape":"sphere","pos":[0.1,0.0063,-0.05],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.35,0.3,0.25],"smooth":0.2,"metal":0.0}
+]}

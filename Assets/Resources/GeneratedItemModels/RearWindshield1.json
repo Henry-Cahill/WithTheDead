@@ -1,0 +1,10 @@
+{"version": 1, "id": "RearWindshield1", "baseHeight": 0.069, "name": "Rear Windshield1", "model": "gpt-oss:120b", "notes": "Rear windshield fragment, roughly car‑size: 1.20 m wide × 0.60 m tall × 0.005 m thick glass with thin metal‑looking frame edges (2 cm wide). Includes a cracked line and a small sticker for visual detail.", "score": 7, "parts": [
+  {"name":"GlassPane","shape":"cube","pos":[0.0211,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.005,0.6],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0},
+  {"name":"FrameTop","shape":"cube","pos":[0.0211,0.0015,0.29],"rot":[0.0,0.0,0.0],"size":[1.2,0.015,0.02],"color":[0.2,0.2,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"FrameBottom","shape":"cube","pos":[0.0211,0.0015,-0.29],"rot":[0.0,0.0,0.0],"size":[1.2,0.015,0.02],"color":[0.2,0.2,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"FrameLeft","shape":"cube","pos":[-0.5689,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.6],"color":[0.2,0.2,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"FrameRight","shape":"cube","pos":[0.6111,0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.6],"color":[0.2,0.2,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"CrackLine","shape":"cube","pos":[-0.2289,-0.005,-0.1],"rot":[0.0,12.0,0.0],"size":[0.8,0.002,0.01],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"Sticker","shape":"cube","pos":[-0.4289,-0.002,0.2],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.08],"color":[0.8,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"ShadowEdge","shape":"cube","pos":[0.0211,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.002,0.6],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0}
+]}

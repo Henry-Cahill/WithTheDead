@@ -1,0 +1,13 @@
+{"version": 1, "id": "BurlapPiece", "baseHeight": 0.0825, "name": "Burlap Piece", "model": "gpt-oss:120b", "notes": "Flat burlap sheet about 0.6 m × 0.8 m, 2.5 cm thick, lying on the floor. Main cloth body with dark frayed edges, four corner fiber rolls and a slight fold on one side for visual interest.", "score": 7, "parts": [
+  {"name":"Sheet","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.025,0.8],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.295,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.8],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.295,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.025,0.8],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0,-0.01,0.395],"rot":[0.0,0.0,0.0],"size":[0.6,0.025,0.01],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0,-0.01,-0.395],"rot":[0.0,0.0,0.0],"size":[0.6,0.025,0.01],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"CornerFR","shape":"cylinder","pos":[0.295,-0.01,0.395],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.03],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"CornerFL","shape":"cylinder","pos":[-0.295,-0.01,0.395],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.03],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"CornerBR","shape":"cylinder","pos":[0.295,-0.01,-0.395],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.03],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"CornerBL","shape":"cylinder","pos":[-0.295,-0.01,-0.395],"rot":[0.0,0.0,0.0],"size":[0.03,0.025,0.03],"color":[0.45,0.43,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"FoldedEdge","shape":"cube","pos":[0.0,0.005,-0.35],"rot":[0.0,0.0,0.0],"size":[0.6,0.015,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"StitchPatch","shape":"sphere","pos":[-0.1,0.0025,0.2],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0}
+]}

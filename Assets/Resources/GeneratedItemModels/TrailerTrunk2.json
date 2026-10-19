@@ -1,0 +1,17 @@
+{"version": 1, "id": "TrailerTrunk2", "baseHeight": 0.56, "name": "Trailer Trunk2", "model": "gpt-oss:120b", "notes": "Trailer trunk, wood‑tone body ~1.0 m long × 0.5 m wide × 0.4 m tall, lying on its side (long axis X). Main box with hinged lid, metal corner brackets, steel latch and a short hand‑grip.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[1.0,0.4,0.5],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"LidBase","shape":"cube","pos":[-0.48,0.21,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.5],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"LidFlap","shape":"cube","pos":[-0.48,0.24,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.5],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"FrontBracketL","shape":"cylinder","pos":[-0.48,0.0,-0.25],"rot":[0.0,90.0,0.0],"size":[0.02,1.0,0.02],"color":[0.75,0.75,0.78],"smooth":0.55,"metal":1.0},
+  {"name":"FrontBracketR","shape":"cylinder","pos":[-0.48,0.0,0.25],"rot":[0.0,90.0,0.0],"size":[0.02,1.0,0.02],"color":[0.75,0.75,0.78],"smooth":0.55,"metal":1.0},
+  {"name":"BackBracketL","shape":"cylinder","pos":[0.48,0.0,-0.25],"rot":[0.0,90.0,0.0],"size":[0.02,1.0,0.02],"color":[0.75,0.75,0.78],"smooth":0.55,"metal":1.0},
+  {"name":"BackBracketR","shape":"cylinder","pos":[0.48,0.0,0.25],"rot":[0.0,90.0,0.0],"size":[0.02,1.0,0.02],"color":[0.75,0.75,0.78],"smooth":0.55,"metal":1.0},
+  {"name":"SideBandTop","shape":"cylinder","pos":[0.0,0.19,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,1.0,0.02],"color":[0.75,0.75,0.78],"smooth":0.55,"metal":1.0},
+  {"name":"SideBandBottom","shape":"cylinder","pos":[0.0,-0.19,0.0],"rot":[90.0,0.0,0.0],"size":[0.02,1.0,0.02],"color":[0.75,0.75,0.78],"smooth":0.55,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[-0.3,0.25,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.12,0.04],"color":[0.2,0.2,0.22],"smooth":0.4,"metal":1.0},
+  {"name":"Latch","shape":"cube","pos":[-0.45,0.13,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.12],"color":[0.2,0.2,0.22],"smooth":0.4,"metal":1.0},
+  {"name":"CornerTrimFL","shape":"sphere","pos":[-0.48,0.19,-0.25],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.75,0.75,0.78],"smooth":0.55,"metal":1.0},
+  {"name":"CornerTrimFR","shape":"sphere","pos":[-0.48,0.19,0.25],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.75,0.75,0.78],"smooth":0.55,"metal":1.0},
+  {"name":"CornerTrimBL","shape":"sphere","pos":[0.48,0.19,-0.25],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.75,0.75,0.78],"smooth":0.55,"metal":1.0},
+  {"name":"CornerTrimBR","shape":"sphere","pos":[0.48,0.19,0.25],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.75,0.75,0.78],"smooth":0.55,"metal":1.0}
+]}

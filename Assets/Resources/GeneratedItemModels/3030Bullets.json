@@ -1,0 +1,14 @@
+{"version": 1, "id": "3030Bullets", "baseHeight": 0.0645, "name": "3030 Bullets", "model": "gpt-oss:120b", "notes": "Loose pile of up to eight 9 mm‑style brass bullets (≈30 mm long, 9 mm dia.) lying on their sides. Each bullet is a short cylinder with a rounded tip; the tint (0.6, 0.58, 0.5) gives a muted brass/lead colour.", "score": 7, "parts": [
+  {"name":"Bullet1Body","shape":"cylinder","pos":[-0.0195,-0.0,-0.0025],"rot":[0.0,0.0,90.0],"size":[0.009,0.028,0.009],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Bullet1Tip","shape":"sphere","pos":[-0.001,-0.0,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.009,0.009,0.009],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Bullet2Body","shape":"cylinder","pos":[0.0005,-0.0,0.0075],"rot":[0.0,0.0,90.0],"size":[0.009,0.028,0.009],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Bullet2Tip","shape":"sphere","pos":[0.019,-0.0,0.0075],"rot":[0.0,0.0,0.0],"size":[0.009,0.009,0.009],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Bullet3Body","shape":"cylinder","pos":[0.0205,-0.0,-0.0175],"rot":[0.0,0.0,90.0],"size":[0.009,0.028,0.009],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Bullet3Tip","shape":"sphere","pos":[0.039,-0.0,-0.0175],"rot":[0.0,0.0,0.0],"size":[0.009,0.009,0.009],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Bullet4Body","shape":"cylinder","pos":[-0.0295,-0.0,0.0095],"rot":[0.0,0.0,90.0],"size":[0.009,0.028,0.009],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Bullet4Tip","shape":"sphere","pos":[-0.011,-0.0,0.0095],"rot":[0.0,0.0,0.0],"size":[0.009,0.009,0.009],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Bullet5Body","shape":"cylinder","pos":[0.0155,-0.0,0.0225],"rot":[0.0,0.0,90.0],"size":[0.009,0.028,0.009],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Bullet5Tip","shape":"sphere","pos":[0.034,-0.0,0.0225],"rot":[0.0,0.0,0.0],"size":[0.009,0.009,0.009],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Bullet6Body","shape":"cylinder","pos":[-0.0095,-0.0,-0.0225],"rot":[0.0,0.0,90.0],"size":[0.009,0.028,0.009],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Bullet6Tip","shape":"sphere","pos":[0.009,-0.0,-0.0225],"rot":[0.0,0.0,0.0],"size":[0.009,0.009,0.009],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0}
+]}

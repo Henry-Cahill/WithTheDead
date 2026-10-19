@@ -1,0 +1,12 @@
+{"version": 1, "id": "RearCarDoor2", "baseHeight": 0.1, "name": "Rear Car Door2", "model": "gpt-oss:120b", "notes": "Rear car door (approx 0.90 m wide × 1.20 m tall × 0.03 m thick) lying flat on the floor. Main painted‑metal panel, thin edge frames, a rectangular glass window, right‑hand handle with knob, and two steel hinges on the left side.", "score": 7, "parts": [
+  {"name":"DoorPanel","shape":"cube","pos":[0.0,-0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.9,0.03,1.2],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.8},
+  {"name":"FrameTop","shape":"cube","pos":[0.0,-0.024,0.59],"rot":[0.0,0.0,0.0],"size":[0.9,0.032,0.02],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.8},
+  {"name":"FrameBottom","shape":"cube","pos":[0.0,-0.024,-0.59],"rot":[0.0,0.0,0.0],"size":[0.9,0.032,0.02],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.8},
+  {"name":"FrameLeft","shape":"cube","pos":[-0.44,-0.024,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.032,1.2],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.8},
+  {"name":"FrameRight","shape":"cube","pos":[0.44,-0.024,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.032,1.2],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.8},
+  {"name":"WindowGlass","shape":"cube","pos":[0.0,-0.023,0.15],"rot":[0.0,0.0,0.0],"size":[0.7,0.018,0.5],"color":[0.9,0.95,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"HandleBase","shape":"cube","pos":[0.33,-0.015,-0.25],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.04],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":0.5},
+  {"name":"HandleKnob","shape":"cylinder","pos":[0.39,-0.005,-0.25],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.2,0.2,0.2],"smooth":0.4,"metal":0.5},
+  {"name":"HingeTop","shape":"cylinder","pos":[-0.43,0.0,0.45],"rot":[0.0,0.0,0.0],"size":[0.03,0.08,0.03],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0},
+  {"name":"HingeMiddle","shape":"cylinder","pos":[-0.43,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.08,0.03],"color":[0.6,0.6,0.6],"smooth":0.55,"metal":1.0}
+]}

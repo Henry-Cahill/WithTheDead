@@ -1,0 +1,11 @@
+{"version": 1, "id": "DenimStripsBundle", "baseHeight": 0.27, "name": "Denim Strips Bundle", "model": "gpt-oss:120b", "notes": "Denim strips bundle ~0.4 m long × 0.12 m wide × 0.06 m thick, eight thin denim pieces tied together with a short rope. Lying flat on the floor, strips are stacked with slight offsets for a readable silhouette.", "score": 6, "parts": [
+  {"name":"Strip1","shape":"cube","pos":[0.0,-0.028,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.008,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strip2","shape":"cube","pos":[0.0,-0.02,-0.005],"rot":[0.0,1.0,0.0],"size":[0.4,0.008,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strip3","shape":"cube","pos":[0.0,-0.012,0.005],"rot":[0.0,-1.0,0.0],"size":[0.4,0.008,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strip4","shape":"cube","pos":[0.0,-0.004,-0.01],"rot":[0.0,2.0,0.0],"size":[0.4,0.008,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strip5","shape":"cube","pos":[0.0,0.004,0.01],"rot":[0.0,-2.0,0.0],"size":[0.4,0.008,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strip6","shape":"cube","pos":[0.0,0.012,-0.015],"rot":[0.0,3.0,0.0],"size":[0.4,0.008,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strip7","shape":"cube","pos":[0.0,0.02,0.015],"rot":[0.0,-3.0,0.0],"size":[0.4,0.008,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Strip8","shape":"cube","pos":[0.0,0.028,-0.02],"rot":[0.0,0.0,0.0],"size":[0.4,0.008,0.02],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TieRope","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.42,0.015,0.42],"color":[0.25,0.22,0.2],"smooth":0.3,"metal":0.0}
+]}

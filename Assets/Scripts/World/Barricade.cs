@@ -245,12 +245,28 @@ namespace CloneZ
             Health = 0f;
             NoiseSystem.Emit(transform.position, CloneZConfig.NoiseHammering);
             All.Remove(this);
+            Removed?.Invoke(this);
             Destroy(gameObject);
         }
 
         /// <summary>Pries the barricade apart for salvage (the builder handles the material refund).
         /// Removes it from the registry at once so AI queries drop it immediately.</summary>
         public void Dismantle()
+        {
+            Planks = 0;
+            Health = 0f;
+            All.Remove(this);
+            Removed?.Invoke(this);
+            Destroy(gameObject);
+        }
+
+        /// <summary>Who raised it in the Zone (a camp owner's tag; null for the game's own).</summary>
+        public string Owner;
+        /// <summary>A barricade a runner raised, and one that broke or was torn down — camps and the netcode listen.</summary>
+        public static event System.Action<Barricade> Raised, Removed;
+        public static void RaiseRaised(Barricade b) { if (b != null) Raised?.Invoke(b); }
+        /// <summary>Gone without a trace (mirroring another peer's loss).</summary>
+        public void Vanish()
         {
             Planks = 0;
             Health = 0f;

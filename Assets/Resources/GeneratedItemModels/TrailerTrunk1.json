@@ -1,0 +1,17 @@
+{"version": 1, "id": "TrailerTrunk1", "baseHeight": 0.175, "name": "Trailer Trunk1", "model": "gpt-oss:120b", "notes": "Trailer trunk (metal storage box) lying on its side, 0.80 m long × 0.50 m wide × 0.20 m high. Main body is a rectangular metal shell with thin walls, a recessed lid, a top‑mounted handle and rivet details.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.105,0.0],"rot":[0.0,0.0,0.0],"size":[0.8,0.02,0.5],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.7},
+  {"name":"FrontWall","shape":"cube","pos":[0.0,-0.005,0.24],"rot":[0.0,0.0,0.0],"size":[0.78,0.18,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.7},
+  {"name":"BackWall","shape":"cube","pos":[0.0,-0.005,-0.24],"rot":[0.0,0.0,0.0],"size":[0.78,0.18,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.7},
+  {"name":"LeftSide","shape":"cube","pos":[-0.39,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.18,0.48],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.7},
+  {"name":"RightSide","shape":"cube","pos":[0.39,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.18,0.48],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.7},
+  {"name":"Lid","shape":"cube","pos":[0.0,0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.78,0.02,0.48],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.7},
+  {"name":"Handle","shape":"cylinder","pos":[0.0,0.1,0.22],"rot":[0.0,0.0,90.0],"size":[0.03,0.4,0.03],"color":[0.5,0.48,0.42],"smooth":0.2,"metal":0.8},
+  {"name":"RivetFL","shape":"sphere","pos":[-0.37,0.095,0.22],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.45,0.44,0.38],"smooth":0.3,"metal":1.0},
+  {"name":"RivetFR","shape":"sphere","pos":[0.37,0.095,0.22],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.45,0.44,0.38],"smooth":0.3,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[-0.37,0.095,-0.22],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.45,0.44,0.38],"smooth":0.3,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.37,0.095,-0.22],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.45,0.44,0.38],"smooth":0.3,"metal":1.0},
+  {"name":"CornerRivetTL","shape":"sphere","pos":[-0.39,0.075,0.24],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.45,0.44,0.38],"smooth":0.3,"metal":1.0},
+  {"name":"CornerRivetTR","shape":"sphere","pos":[0.39,0.075,0.24],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.45,0.44,0.38],"smooth":0.3,"metal":1.0},
+  {"name":"CornerRivetBL","shape":"sphere","pos":[-0.39,0.075,-0.24],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.45,0.44,0.38],"smooth":0.3,"metal":1.0},
+  {"name":"CornerRivetBR","shape":"sphere","pos":[0.39,0.075,-0.24],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.45,0.44,0.38],"smooth":0.3,"metal":1.0}
+]}

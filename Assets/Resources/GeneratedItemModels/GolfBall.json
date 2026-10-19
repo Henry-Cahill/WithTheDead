@@ -1,0 +1,8 @@
+{"version": 1, "id": "GolfBall", "baseHeight": 0.081, "name": "Golf Ball", "model": "gpt-oss:120b", "notes": "Golf ball ~0.042 m diameter lying on the floor (y=0). Main sphere in the given cream‑white tint, a thin darker “logo” disc around the equator to hint at the printed mark and give a readable silhouette.", "score": 6, "parts": [
+  {"name":"Ball","shape":"sphere","pos":[0.0004,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.042,0.042,0.042],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":0.0},
+  {"name":"LogoDisc","shape":"cylinder","pos":[0.0004,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.045,0.002,0.045],"color":[0.45,0.42,0.35],"smooth":0.2,"metal":0.0},
+  {"name":"DimplePatch1","shape":"sphere","pos":[-0.0146,-0.003,0.01],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"DimplePatch2","shape":"sphere","pos":[0.0124,-0.002,-0.014],"rot":[0.0,0.0,0.0],"size":[0.007,0.007,0.007],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"DimplePatch3","shape":"sphere","pos":[0.0184,-0.001,0.016],"rot":[0.0,0.0,0.0],"size":[0.0065,0.0065,0.0065],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"DimplePatch4","shape":"sphere","pos":[-0.0196,-0.002,-0.018],"rot":[0.0,0.0,0.0],"size":[0.0065,0.0065,0.0065],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0}
+]}

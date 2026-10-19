@@ -1,0 +1,12 @@
+{"version": 1, "id": "Sapphire", "baseHeight": 0.0755, "name": "Sapphire", "model": "gpt-oss:120b", "notes": "Sapphire gem ~3 cm across, faceted octahedral shape lying on its side. Main body is a smooth sphere with thin flat facets (top, bottom and four side plates) and a subtle edge ring for sparkle.", "score": 7, "parts": [
+  {"name":"Body","shape":"sphere","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"TopFacet","shape":"cylinder","pos":[0.0,0.0145,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.018],"color":[0.7,0.68,0.6],"smooth":0.3,"metal":0.0},
+  {"name":"BottomFacet","shape":"cylinder","pos":[0.0,-0.0145,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.002,0.018],"color":[0.45,0.43,0.35],"smooth":0.3,"metal":0.0},
+  {"name":"FacetXPos","shape":"cube","pos":[0.0155,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.02,0.015],"color":[0.45,0.43,0.35],"smooth":0.25,"metal":0.0},
+  {"name":"FacetXNeg","shape":"cube","pos":[-0.0155,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.02,0.015],"color":[0.45,0.43,0.35],"smooth":0.25,"metal":0.0},
+  {"name":"FacetZPos","shape":"cube","pos":[0.0,0.0,0.0155],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.002],"color":[0.45,0.43,0.35],"smooth":0.25,"metal":0.0},
+  {"name":"FacetZNeg","shape":"cube","pos":[0.0,0.0,-0.0155],"rot":[0.0,0.0,0.0],"size":[0.015,0.02,0.002],"color":[0.45,0.43,0.35],"smooth":0.25,"metal":0.0},
+  {"name":"EdgeRing","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.002,0.03],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"DiagFacet1","shape":"cube","pos":[0.0107,0.0,0.0107],"rot":[0.0,45.0,0.0],"size":[0.002,0.018,0.012],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"DiagFacet2","shape":"cube","pos":[-0.0107,0.0,-0.0107],"rot":[0.0,-45.0,0.0],"size":[0.002,0.018,0.012],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0}
+]}

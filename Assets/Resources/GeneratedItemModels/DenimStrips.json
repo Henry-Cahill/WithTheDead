@@ -1,0 +1,10 @@
+{"version": 1, "id": "DenimStrips", "baseHeight": 0.0767, "name": "Denim Strips", "model": "gpt-oss:120b", "notes": "Denim strips lying on the floor: each strip ~0.30 m long × 0.05 m wide × 0.008 m thick, piled slightly offset for a small messy pile; dark stitching runs along one long edge of each strip.", "score": 6, "parts": [
+  {"name":"Strip1","shape":"cube","pos":[-0.0075,-0.0128,0.0045],"rot":[0.0,0.0,0.0],"size":[0.3,0.008,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Stitch1","shape":"cube","pos":[-0.0075,-0.0083,0.0295],"rot":[0.0,0.0,0.0],"size":[0.3,0.002,0.002],"color":[0.2,0.18,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"Strip2","shape":"cube","pos":[0.0125,-0.0048,0.0145],"rot":[0.0,0.0,0.0],"size":[0.3,0.008,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Stitch2","shape":"cube","pos":[0.0125,-0.0003,0.0395],"rot":[0.0,0.0,0.0],"size":[0.3,0.002,0.002],"color":[0.2,0.18,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"Strip3","shape":"cube","pos":[-0.0225,0.0032,-0.0105],"rot":[0.0,0.0,0.0],"size":[0.3,0.008,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Stitch3","shape":"cube","pos":[-0.0225,0.0077,-0.0055],"rot":[0.0,0.0,0.0],"size":[0.3,0.002,0.002],"color":[0.2,0.18,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"Strip4","shape":"cube","pos":[0.0225,0.0112,-0.0155],"rot":[0.0,0.0,0.0],"size":[0.3,0.008,0.05],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Stitch4","shape":"cube","pos":[0.0225,0.0158,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.3,0.002,0.002],"color":[0.2,0.18,0.15],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,9 @@
+{"version": 1, "id": "Goblet_Wood", "baseHeight": 0.1075, "name": "Goblet Wood", "model": "gpt-oss:120b", "notes": "Wooden goblet about 0.14 m tall, bowl diameter ~0.09 m, stem ~0.06 m long, flat base ~0.02 m thick. Lying on its side (long axis along X) with the bowl opening facing +X and a simple wooden handle protruding to +Z.", "score": 6, "parts": [
+  {"name":"BowlOuter","shape":"cylinder","pos":[-0.04,0.0,-0.0263],"rot":[0.0,0.0,90.0],"size":[0.09,0.04,0.09],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BowlInner","shape":"cylinder","pos":[-0.04,0.0,-0.0263],"rot":[0.0,0.0,90.0],"size":[0.08,0.036,0.08],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"Stem","shape":"cylinder","pos":[0.01,0.0,-0.0263],"rot":[0.0,0.0,90.0],"size":[0.03,0.06,0.03],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Base","shape":"cylinder","pos":[0.05,0.0,-0.0263],"rot":[0.0,0.0,90.0],"size":[0.06,0.02,0.06],"color":[0.58,0.56,0.48],"smooth":0.15,"metal":0.0},
+  {"name":"RimTrim","shape":"cylinder","pos":[-0.018,0.0,-0.0263],"rot":[0.0,0.0,90.0],"size":[0.095,0.004,0.095],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[-0.04,0.0,0.0337],"rot":[90.0,0.0,0.0],"size":[0.015,0.08,0.015],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Bead","shape":"sphere","pos":[0.04,0.0,-0.0263],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0}
+]}

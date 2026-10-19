@@ -1,0 +1,8 @@
+{"version": 1, "id": "SleepingBag_Cheap_Blue_Packed", "baseHeight": 0.153, "name": "Sleeping Bag Cheap Blue Packed", "model": "gpt-oss:120b", "notes": "Rolled cheap blue sleeping bag, about 0.8 m long × 0.18 m diameter (fabric tube). Main fabric roll with a darker seam line, a zip‑edge strip at one end, a small label patch, and tiny loop caps on each side.", "score": 6, "parts": [
+  {"name":"MainRoll","shape":"cylinder","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,90.0],"size":[0.18,0.8,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SeamLine","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.186,0.8,0.186],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"ZipEdge","shape":"cube","pos":[0.39,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.08,0.18],"color":[0.3,0.3,0.32],"smooth":0.2,"metal":0.0},
+  {"name":"LabelPatch","shape":"cube","pos":[-0.22,0.029,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.01,0.1],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"LoopLeft","shape":"cylinder","pos":[-0.38,0.029,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.45,0.44,0.4],"smooth":0.1,"metal":0.0},
+  {"name":"LoopRight","shape":"cylinder","pos":[0.38,0.029,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.45,0.44,0.4],"smooth":0.1,"metal":0.0}
+]}

@@ -1,0 +1,14 @@
+{"version": 1, "id": "HoodOrnament_Beaver", "baseHeight": 0.1075, "name": "Hood Ornament Beaver", "model": "gpt-oss:120b", "notes": "Beaver hood ornament ~0.18 m long, 0.10 m wide, 0.07 m tall when upright. Lying on its side with the body cylinder along X, tail and head at opposite ends, four short legs underneath, tiny eyes, nose and teeth as detail.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0025,-0.0075,0.0],"rot":[0.0,0.0,90.0],"size":[0.08,0.12,0.08],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Tail","shape":"cylinder","pos":[0.0925,-0.0225,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.06,0.05],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Head","shape":"sphere","pos":[-0.0875,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.07,0.07],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"LegFL","shape":"cylinder","pos":[-0.0275,-0.0275,0.025],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"LegFR","shape":"cylinder","pos":[-0.0275,-0.0275,-0.025],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"LegRL","shape":"cylinder","pos":[0.0325,-0.0275,0.025],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"LegRR","shape":"cylinder","pos":[0.0325,-0.0275,-0.025],"rot":[0.0,0.0,0.0],"size":[0.01,0.04,0.01],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"EyeL","shape":"sphere","pos":[-0.0925,0.0225,0.015],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[-0.0925,0.0225,-0.015],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"Nose","shape":"sphere","pos":[-0.1125,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.2,0.15,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"ToothL","shape":"cube","pos":[-0.1175,0.0105,0.008],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.002],"color":[0.95,0.95,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"ToothR","shape":"cube","pos":[-0.1175,0.0105,-0.008],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.002],"color":[0.95,0.95,0.9],"smooth":0.05,"metal":0.0}
+]}

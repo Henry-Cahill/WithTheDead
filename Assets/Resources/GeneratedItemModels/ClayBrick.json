@@ -1,0 +1,10 @@
+{"version": 1, "id": "ClayBrick", "baseHeight": 0.089, "name": "Clay Brick", "model": "gpt-oss:120b", "notes": "Standard clay brick lying on its side (length ≈ 0.19 m along X, width ≈ 0.09 m along Z, height ≈ 0.057 m). Main body in brick‑red tint, with a slightly darker worn top surface, a light dusted bottom, thin mortar‑line edges and a small chipped corner piece.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0017,-0.0005,0.0008],"rot":[0.0,0.0,0.0],"size":[0.19,0.057,0.09],"color":[0.6,0.58,0.5],"smooth":0.08,"metal":0.0},
+  {"name":"TopWear","shape":"cube","pos":[0.0017,0.0275,0.0008],"rot":[0.0,0.0,0.0],"size":[0.188,0.003,0.088],"color":[0.52,0.48,0.42],"smooth":0.06,"metal":0.0},
+  {"name":"BottomDust","shape":"cube","pos":[0.0017,-0.0275,0.0008],"rot":[0.0,0.0,0.0],"size":[0.188,0.003,0.088],"color":[0.68,0.66,0.58],"smooth":0.07,"metal":0.0},
+  {"name":"EdgeXPos","shape":"cube","pos":[0.0973,-0.0005,0.0008],"rot":[0.0,0.0,0.0],"size":[0.002,0.055,0.088],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeXNeg","shape":"cube","pos":[-0.0938,-0.0005,0.0008],"rot":[0.0,0.0,0.0],"size":[0.002,0.055,0.088],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeZPos","shape":"cube","pos":[0.0017,-0.0005,0.0457],"rot":[0.0,0.0,0.0],"size":[0.188,0.055,0.002],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeZNeg","shape":"cube","pos":[0.0017,-0.0005,-0.0442],"rot":[0.0,0.0,0.0],"size":[0.188,0.055,0.002],"color":[0.55,0.53,0.45],"smooth":0.08,"metal":0.0},
+  {"name":"ChipCorner","shape":"cube","pos":[-0.0882,-0.0005,-0.0393],"rot":[0.0,0.0,0.0],"size":[0.02,0.03,0.015],"color":[0.48,0.45,0.38],"smooth":0.07,"metal":0.0}
+]}

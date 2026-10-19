@@ -102,17 +102,21 @@ namespace CloneZ
 
         private void OnMainMenu() => Leave(false);
 
-        // Reloading the scene lets the bootstrapper rebuild from scratch: straight into a new raid when
-        // asked, otherwise to the title screen.
+        // Reloading the scene lets the bootstrapper rebuild from scratch: back to the hub (the combined loop —
+        // every path returns to the hub), straight into a new raid without a profile, or to the title screen.
         private void Leave(bool nextRaid)
         {
             if (_leaving) return;
             _leaving = true;
             Time.timeScale = 1f;
             UIState.GameplayBlocked = false;
+            if (nextRaid && ProfileStore.ActiveCharacter != null)
+            {
+                ExtractionManager.ReturnFromRaid();
+                return;
+            }
             GameSession.AutoStartRaid = nextRaid;
-            NoiseSystem.Clear();
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            GameFlow.Reload();
         }
 
         #region UI construction
@@ -191,7 +195,8 @@ namespace CloneZ
             BuildItemRows(prt, s);
 
             var bottom = new Vector2(0.5f, 0f);
-            Button next = MakeButton(prt, bottom, new Vector2(-170f, 40f), new Vector2(300f, 60f), "Next Raid", RaidButton, OnNextRaid);
+            bool toHub = ProfileStore.ActiveCharacter != null;
+            Button next = MakeButton(prt, bottom, new Vector2(-170f, 40f), new Vector2(300f, 60f), toHub ? "Return to the Hub" : "Next Raid", RaidButton, OnNextRaid);
             MakeButton(prt, bottom, new Vector2(170f, 40f), new Vector2(300f, 60f), "Main Menu", MenuButton, OnMainMenu);
             next.Select();
 

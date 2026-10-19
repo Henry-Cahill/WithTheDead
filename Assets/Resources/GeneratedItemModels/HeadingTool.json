@@ -1,0 +1,9 @@
+{"version": 1, "id": "HeadingTool", "baseHeight": 0.085, "name": "Heading Tool", "model": "gpt-oss:120b", "notes": "Short heading tool ~0.28 m long lying on its side: wooden handle along X, rubber grip at the tail, steel head with a pointed tip at the front, three small rivets through the handle.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.04,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.2,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[-0.155,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.03,0.045],"color":[0.1,0.1,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"Head","shape":"cube","pos":[0.1,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.05,0.07],"color":[0.45,0.45,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"Tip","shape":"cylinder","pos":[0.16,-0.005,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.02,0.04],"color":[0.45,0.45,0.48],"smooth":0.55,"metal":1.0},
+  {"name":"RivetL","shape":"cylinder","pos":[-0.07,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"RivetM","shape":"cylinder","pos":[-0.01,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"cylinder","pos":[0.05,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.008,0.012],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0}
+]}

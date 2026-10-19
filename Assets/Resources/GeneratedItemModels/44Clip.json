@@ -1,0 +1,9 @@
+{"version": 1, "id": "44Clip", "baseHeight": 0.07, "name": "44 Clip", "model": "gpt-oss:120b", "notes": "Rectangular .44 ammo clip lying on its side (long axis +X). Main metal body with a thin spring inside, front/back lips and a stamped label on the top surface. Approx. 0.14 m × 0.05 m × 0.015 m.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.14,0.015,0.05],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Spring","shape":"cylinder","pos":[0.0,0.004,0.0],"rot":[0.0,0.0,90.0],"size":[0.012,0.12,0.012],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":1.0},
+  {"name":"FrontLip","shape":"cube","pos":[0.063,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.014,0.015,0.05],"color":[0.58,0.55,0.48],"smooth":0.4,"metal":1.0},
+  {"name":"BackLip","shape":"cube","pos":[-0.063,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.014,0.015,0.05],"color":[0.58,0.55,0.48],"smooth":0.4,"metal":1.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.002,0.04],"color":[0.35,0.3,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"SeamTop","shape":"cube","pos":[0.0,0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.138,0.002,0.048],"color":[0.45,0.43,0.38],"smooth":0.4,"metal":1.0},
+  {"name":"SeamBottom","shape":"cube","pos":[0.0,-0.009,0.0],"rot":[0.0,0.0,0.0],"size":[0.138,0.002,0.048],"color":[0.45,0.43,0.38],"smooth":0.4,"metal":1.0}
+]}

@@ -1,0 +1,17 @@
+{"version": 1, "id": "PancakeHedgehog", "baseHeight": 0.1, "name": "Pancake Hedgehog", "model": "gpt-oss:120b", "notes": "Pancake hedgehog about 0.25 m long × 0.18 m wide × 0.04 m thick pancake body with short brown “spikes” of syrup, two chocolate eyes, a tiny nose, a butter cube on its back and a couple of syrup drips for extra texture.", "score": 6, "parts": [
+  {"name":"Body","shape":"sphere","pos":[-0.0038,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.04,0.18],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"SpikeF","shape":"cylinder","pos":[0.0962,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.35,0.25,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"SpikeB","shape":"cylinder","pos":[-0.1038,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.35,0.25,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"SpikeL","shape":"cylinder","pos":[-0.0038,0.01,-0.07],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.35,0.25,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"SpikeR","shape":"cylinder","pos":[-0.0038,0.01,0.07],"rot":[0.0,0.0,0.0],"size":[0.015,0.06,0.015],"color":[0.35,0.25,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"SpikeFL","shape":"cylinder","pos":[0.0762,0.01,-0.05],"rot":[0.0,0.0,0.0],"size":[0.015,0.055,0.015],"color":[0.35,0.25,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"SpikeFR","shape":"cylinder","pos":[0.0762,0.01,0.05],"rot":[0.0,0.0,0.0],"size":[0.015,0.055,0.015],"color":[0.35,0.25,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"SpikeBL","shape":"cylinder","pos":[-0.0838,0.01,-0.05],"rot":[0.0,0.0,0.0],"size":[0.015,0.055,0.015],"color":[0.35,0.25,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"SpikeBR","shape":"cylinder","pos":[-0.0838,0.01,0.05],"rot":[0.0,0.0,0.0],"size":[0.015,0.055,0.015],"color":[0.35,0.25,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.1162,-0.005,-0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.1162,-0.005,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.0,0.0,0.0],"smooth":0.05,"metal":0.0},
+  {"name":"Nose","shape":"sphere","pos":[0.1362,-0.008,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.35,0.25,0.15],"smooth":0.05,"metal":0.0},
+  {"name":"Butter","shape":"cube","pos":[-0.1238,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.03],"color":[0.9,0.85,0.4],"smooth":0.4,"metal":0.0},
+  {"name":"SyrupL","shape":"sphere","pos":[-0.0538,0.005,-0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.35,0.25,0.15],"smooth":0.3,"metal":0.0},
+  {"name":"SyrupR","shape":"sphere","pos":[-0.0538,0.005,0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.35,0.25,0.15],"smooth":0.3,"metal":0.0}
+]}

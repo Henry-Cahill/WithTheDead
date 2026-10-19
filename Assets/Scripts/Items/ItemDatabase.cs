@@ -7,8 +7,9 @@ namespace CloneZ
 
     /// <summary>Where a piece of clothing is worn. One item per slot at a time. The first five are body
     /// areas (they take hits and dress the model); the rest carry gear: a backpack, a chest rig, a thigh
-    /// bag, head-mounted optics (night vision) and a face mask (gas mask).</summary>
-    public enum ClothingSlot { Head, Torso, Legs, Feet, Hands, Back, Rig, Thigh, Eyes, Mask }
+    /// bag, head-mounted optics (night vision), a face mask (gas mask), body armour (a vest or plate carrier)
+    /// and the secure pouch that keeps its contents through death.</summary>
+    public enum ClothingSlot { Head, Torso, Legs, Feet, Hands, Back, Rig, Thigh, Eyes, Mask, Armor, Pouch }
 
     /// <summary>What special job an item does beyond its category. Containers (backpacks, rigs, thigh
     /// bags) are worn and add a carry section; devices run down a charge stored in the stack's
@@ -144,12 +145,21 @@ namespace CloneZ
         // Optional flavour line shown at the foot of the tooltip.
         public string Description;
 
+        /// <summary>Using this item is handled by a feature module (see <see cref="ItemActions"/>), not the base inventory.</summary>
+        public bool CustomUse;
+        /// <summary>The verb shown for <see cref="CustomUse"/> items ("Throw", "Read", "Wear on belt"); defaults to "Use".</summary>
+        public string UseVerb;
+
+        /// <summary>Extra tooltip lines from feature modules (ballistics, armour class, an artifact's known properties).
+        /// Each provider returns its lines for a def, or null.</summary>
+        public static readonly List<System.Func<ItemDef, string>> TooltipProviders = new List<System.Func<ItemDef, string>>();
+
         public bool IsConsumable =>
             HungerRestore > 0f || ThirstRestore > 0f || HealthRestore > 0f || InfectionReduce > 0f;
         public bool IsMedical =>
             StopsBleeding || Disinfects || CuresWoundInfection || PainRelief > 0f || CalmsPanic;
         public bool IsEquippable => IsWeapon || IsFirearm || IsClothing;
-        public bool IsUsable => IsConsumable || IsMedical || IsEquippable || IsRefill || Gear == GearKind.Flashlight;
+        public bool IsUsable => IsConsumable || IsMedical || IsEquippable || IsRefill || Gear == GearKind.Flashlight || CustomUse;
 
         /// <summary>Gear that wears out with use and can break (weapons, firearms, tools).</summary>
         public bool IsDamageable => MaxCondition > 0;
@@ -245,6 +255,13 @@ namespace CloneZ
 
             if (!string.IsNullOrEmpty(Description))
                 sb.Append("\n<size=13><color=#9aa0a8><i>").Append(Description).Append("</i></color></size>");
+            for (int p = 0; p < TooltipProviders.Count; p++)
+            {
+                string extra = null;
+                try { extra = TooltipProviders[p](this); }
+                catch (System.Exception e) { Debug.LogException(e); }
+                if (!string.IsNullOrEmpty(extra)) sb.Append('\n').Append(extra);
+            }
             return sb.ToString();
         }
 
@@ -284,6 +301,10 @@ namespace CloneZ
         public bool Rotated;
 
         public bool IsPlaced => Section != null;
+
+        /// <summary>Per-instance extras (found-in-raid, insurance, gun mods and dirt, upgrades, a note), or
+        /// null for a plain stack. Carried through every transfer and save (see <see cref="ItemExtra"/>).</summary>
+        public ItemExtra Extra;
 
         /// <summary>For a powered device (<see cref="ItemDef.UsesCharge"/>): battery / filter left, 0..1.</summary>
         public float Charge01 => Def != null && Def.UsesCharge && Def.MaxCondition > 0
@@ -390,7 +411,27 @@ namespace CloneZ
                 Debug.LogError("[CloneZ] Content DB unavailable — no items/loot loaded: " + e.Message);
                 FarmCrop.SetAll(seedCrops);
             }
+
+            // Code-defined content (the Zone's items, ballistics, medical kit...) fills in whatever the database
+            // doesn't define; a database row always wins an id clash.
+            if (s_Tables == null) s_Tables = new Dictionary<ContainerType, LootTable>();
+            ContentRegistry.Apply(s_Items, s_Tables);
         }
+
+        /// <summary>Every item id in the catalogue (code content included).</summary>
+        public static IEnumerable<string> AllIds
+        {
+            get { EnsureInit(); return s_Items.Keys; }
+        }
+
+        /// <summary>
+        /// Optional gate on loot generation (the Central Economy): asked for each rolled item id; false skips the
+        /// draw. Null lets everything through.
+        /// </summary>
+        public static System.Func<string, bool> LootGate;
+
+        /// <summary>Told about every stack loot generation creates (the Central Economy counts them).</summary>
+        public static System.Action<string, int> LootRolled;
 
         // ---- Item catalogue -----------------------------------------------------------------------
         // The whole catalogue is authored as INSERT statements in two bundled resources: the 68 curated
@@ -423,13 +464,22 @@ namespace CloneZ
             public int MinRolls; public int MaxRolls; public int EmptyWeight; public LootEntry[] Entries;
         }
 
-        /// <summary>Fills <paramref name="dest"/> with a random draw from the container's loot table.</summary>
+        /// <summary>Fills <paramref name="dest"/> with a random draw from the container's loot table. In a raid every
+        /// rolled stack is marked found-in-raid; the sandbox's loot abundance and the zone's loot multiplier scale
+        /// the number of draws, and the Central Economy (<see cref="LootGate"/>) can veto items at their cap.</summary>
         public static void RollLoot(ContainerType type, System.Random rng, Inventory dest)
         {
             EnsureInit();
             if (s_Tables == null || !s_Tables.TryGetValue(type, out LootTable table)) return;
 
             int rolls = rng.Next(table.MinRolls, table.MaxRolls + 1);
+            float abundance = SandboxSettings.Current.LootAbundance * (GameSession.IsExtraction ? ZoneCatalog.Current.LootMultiplier : 1f);
+            if (!Mathf.Approximately(abundance, 1f))
+            {
+                float scaled = rolls * Mathf.Max(0f, abundance);
+                rolls = Mathf.FloorToInt(scaled) + (rng.NextDouble() < scaled - Mathf.Floor(scaled) ? 1 : 0);
+            }
+            ItemExtra raidLoot = GameSession.IsExtraction ? new ItemExtra { FoundInRaid = true } : null;
             for (int r = 0; r < rolls; r++)
             {
                 int total = table.EmptyWeight;
@@ -447,7 +497,11 @@ namespace CloneZ
                     {
                         ItemDef def = Get(e.Id);
                         int n = rng.Next(e.Min, e.Max + 1);
-                        if (def != null && n > 0) dest.Add(def, n, enforceWeight: false);
+                        if (def != null && n > 0 && (LootGate == null || LootGate(def.Id)))
+                        {
+                            int added = dest.Add(def, n, enforceWeight: false, extra: raidLoot);
+                            if (added > 0) LootRolled?.Invoke(def.Id, added);
+                        }
                         break;
                     }
                     pick -= e.Weight;

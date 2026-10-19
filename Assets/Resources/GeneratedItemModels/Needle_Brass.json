@@ -1,0 +1,9 @@
+{"version": 1, "id": "Needle_Brass", "baseHeight": 0.0625, "name": "Needle Brass", "model": "gpt-oss:120b", "notes": "Brass sewing needle about 0.04 m long × 0.002 m diameter, lying on its side (long axis along X). Main shaft, small eye near the blunt end, tapered tip at the opposite end, plus a subtle seam line for visual detail.", "score": 6, "parts": [
+  {"name":"ShaftOuter","shape":"cylinder","pos":[-0.0019,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.002,0.04,0.002],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"ShaftInner","shape":"cylinder","pos":[-0.0019,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.002,0.04,0.002],"color":[0.5,0.48,0.42],"smooth":0.6,"metal":1.0},
+  {"name":"EyeRing","shape":"cylinder","pos":[-0.0189,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.005,0.002,0.005],"color":[0.45,0.44,0.38],"smooth":0.6,"metal":1.0},
+  {"name":"EyeDisc","shape":"cylinder","pos":[-0.0189,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.004,0.002,0.004],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"TipSphere","shape":"sphere","pos":[0.0196,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"TipHighlight","shape":"sphere","pos":[0.0209,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.002,0.002],"color":[1.0,0.9,0.6],"smooth":0.8,"metal":1.0},
+  {"name":"SeamLine","shape":"cylinder","pos":[-0.0019,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.002,0.002,0.002],"color":[0.4,0.38,0.33],"smooth":0.6,"metal":1.0}
+]}

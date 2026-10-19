@@ -1,0 +1,12 @@
+{"version": 1, "id": "WoodenBrickMold", "baseHeight": 0.1025, "name": "Wooden Brick Mold", "model": "gpt-oss:120b", "notes": "Open‑top wooden brick mold roughly the size of a standard brick (≈0.25 m × 0.08 m × 0.13 m). Made of light wood, with thin walls, a bottom panel and a small handle on the back side; metal rivets mark the corners.", "score": 7, "parts": [
+  {"name":"Bottom","shape":"cube","pos":[0.0,-0.0375,0.0013],"rot":[0.0,0.0,0.0],"size":[0.22,0.01,0.1],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SideFront","shape":"cube","pos":[0.0,0.0025,0.0588],"rot":[0.0,0.0,0.0],"size":[0.22,0.07,0.015],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SideBack","shape":"cube","pos":[0.0,0.0025,-0.0563],"rot":[0.0,0.0,0.0],"size":[0.22,0.07,0.015],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SideLeft","shape":"cube","pos":[-0.1175,0.0025,0.0013],"rot":[0.0,0.0,0.0],"size":[0.015,0.07,0.1],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"SideRight","shape":"cube","pos":[0.1175,0.0025,0.0013],"rot":[0.0,0.0,0.0],"size":[0.015,0.07,0.1],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.0,0.0325,-0.0563],"rot":[0.0,0.0,90.0],"size":[0.02,0.2,0.02],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"RivetFL","shape":"sphere","pos":[-0.11,0.0325,0.0513],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.45,0.42,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"RivetFR","shape":"sphere","pos":[0.11,0.0325,0.0513],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.45,0.42,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"RivetBL","shape":"sphere","pos":[-0.11,0.0325,-0.0488],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.45,0.42,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.11,0.0325,-0.0488],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.45,0.42,0.38],"smooth":0.2,"metal":0.0}
+]}

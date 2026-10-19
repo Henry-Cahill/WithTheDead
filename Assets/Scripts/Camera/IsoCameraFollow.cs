@@ -196,7 +196,16 @@ namespace CloneZ
             _cutaway = new IsoCutaway();
             _isoSize = ZoomSize();
             ViewState.Current = View;   // every run opens in the isometric view
+            // Cinemachine owns the real camera: each view drives its own virtual camera, the brain blends them.
+            _views = CinemachineViews.Attach(_cam);
+            ViewBlendSeconds = 0f;
         }
+
+        private CinemachineViews _views;
+        private PlayerCombat _combat;
+
+        /// <summary>True when the server allows only first-person views in this raid (tension 10: no shoulder-peeking in PvP).</summary>
+        public static bool FirstPersonOnly => ServerRules.FirstPersonOnly && ServerRules.PvpEnabled && GameSession.Networked && GameSession.IsExtraction;
 
         private void OnEnable()
         {
@@ -289,13 +298,20 @@ namespace CloneZ
             if (view != CameraView.FirstPerson) SetBodyHidden(false);   // leaving first person shows the body at once
         }
 
-        /// <summary>Steps to the next view: Isometric → Third person → First person → Isometric.</summary>
+        /// <summary>Steps to the next view: Isometric → Third person → First person → Bodycam → Isometric (first person
+        /// and bodycam only, when the server forbids the others in PvP).</summary>
         public void CycleView()
         {
+            if (FirstPersonOnly)
+            {
+                SetView(View == CameraView.FirstPerson ? CameraView.Bodycam : CameraView.FirstPerson);
+                return;
+            }
             switch (View)
             {
                 case CameraView.Isometric: SetView(CameraView.ThirdPerson); break;
                 case CameraView.ThirdPerson: SetView(CameraView.FirstPerson); break;
+                case CameraView.FirstPerson: SetView(CameraView.Bodycam); break;
                 default: SetView(CameraView.Isometric); break;
             }
         }
@@ -314,6 +330,12 @@ namespace CloneZ
 
             Keyboard kb = Keyboard.current;
             if (kb != null && kb.vKey.wasPressedThisFrame) CycleView();
+            if (FirstPersonOnly && View != CameraView.FirstPerson && View != CameraView.Bodycam && !(_stats != null && _stats.IsDead)) SetView(CameraView.FirstPerson);
+
+            // Each view's own controls (its action map): rotate the isometric view, swap the shoulder.
+            GameInput.ApplyView(View);
+            if (View == CameraView.Isometric && GameInput.Pressed(GameAction.RotateView)) IsoYaw = Mathf.Repeat(IsoYaw + 90f, 360f);
+            if (View == CameraView.ThirdPerson && GameInput.Pressed(GameAction.SwapShoulder)) ShoulderOffset.x = -ShoulderOffset.x;
 
             // The wheel zooms the isometric view, unless build mode has it cycling the palette.
             if (View == CameraView.Isometric && !UIState.BuildMode) ReadZoom();
@@ -366,8 +388,9 @@ namespace CloneZ
             if (mouse == null) return;
             Vector2 d = mouse.delta.ReadValue();
             if (_skipMouseFrames > 0) { _skipMouseFrames--; return; }
-            _yaw = Mathf.Repeat(_yaw + d.x * MouseSensitivity, 360f);
-            _pitch -= d.y * MouseSensitivity;
+            float sens = MouseSensitivity * Mathf.Max(0.05f, GameSettings.Current.MouseSensitivity);
+            _yaw = Mathf.Repeat(_yaw + d.x * sens, 360f);
+            _pitch -= d.y * sens;
             ClampPitch();
         }
 
@@ -417,7 +440,26 @@ namespace CloneZ
                 fov = Mathf.Lerp(_blendFov, fov, s);
             }
             transform.SetPositionAndRotation(pos, rot);
-            ApplyLens(fov, blending);
+            if (_views != null)
+            {
+                if (View != CameraView.Isometric)
+                {
+                    if (_combat == null && Target != null) _combat = Target.GetComponent<PlayerCombat>();
+                    if (View == CameraView.FirstPerson || View == CameraView.Bodycam)
+                    {
+                        if (View == CameraView.FirstPerson) fov = GameSettings.Current.FieldOfView;
+                        if (_combat != null && _combat.AimingDownSights)
+                        {
+                            GunStats gs = Ballistics.Gun(_combat.EquippedFirearm != null ? _combat.EquippedFirearm.Id : null);
+                            float zoom = _combat.Build.Zoom > 1f ? _combat.Build.Zoom : gs != null ? gs.AdsZoom : 1.15f;
+                            fov /= Mathf.Max(1f, zoom);
+                        }
+                    }
+                }
+                float near = View == CameraView.Isometric ? IsoNearClip : MouseLookNearClip;
+                _views.Drive(View, pos, rot, fov, _isoSize, near, _cam != null ? _cam.farClipPlane : 400f);
+            }
+            else ApplyLens(fov, blending);
 
             UpdateBodyVisibility();
             if (_cutaway != null)
@@ -456,6 +498,10 @@ namespace CloneZ
                 case CameraView.FirstPerson:
                     PoseFirstPerson(out pos, out rot);
                     fov = FirstPersonFov;
+                    break;
+                case CameraView.Bodycam:
+                    PoseBodycam(out pos, out rot);
+                    fov = BodycamFov;
                     break;
                 default:
                     PoseIsometric(dt, out pos, out rot);
@@ -532,6 +578,32 @@ namespace CloneZ
             Vector3 eye = Target.position + Vector3.up * EyeHeightNow;
             pos = eye + rot * Vector3.forward * EyeForward;
             FocusPoint = eye;
+        }
+
+        [Header("Bodycam")]
+        [Tooltip("The bodycam's wide lens (the URP lens distortion bends it further, per the accessibility setting).")]
+        public float BodycamFov = 100f;
+        [Tooltip("How much of the chest's own sway (breathing, the walk, recoil) the strapped-on camera takes.")]
+        public float BodycamSway = 0.65f;
+
+        // Bodycam: strapped to the chest, not the eyes. It turns with the body, takes only part of the look's pitch,
+        // and carries every lurch of the torso — the heavy camera motion that sells the view.
+        private void PoseBodycam(out Vector3 pos, out Quaternion rot)
+        {
+            Quaternion look = Quaternion.Euler(_pitch * 0.8f, _yaw, 0f);
+            Transform chest = _avatar != null && _avatar.Rig != null && _avatar.Rig.Bones != null ? _avatar.Rig.Bone(HumanBone.Chest) : null;
+            if (chest != null)
+            {
+                Quaternion bodyLocal = Quaternion.Inverse(Target.rotation) * chest.rotation;
+                rot = look * Quaternion.Slerp(Quaternion.identity, bodyLocal, BodycamSway);
+                pos = chest.position + look * new Vector3(0.04f, 0.05f, 0.2f);
+            }
+            else
+            {
+                rot = look;
+                pos = Target.position + Vector3.up * (EyeHeightNow - 0.35f) + look * Vector3.forward * 0.2f;
+            }
+            FocusPoint = pos;
         }
 
         // Remembers where the camera is so the next mouse-look view can glide in from there.

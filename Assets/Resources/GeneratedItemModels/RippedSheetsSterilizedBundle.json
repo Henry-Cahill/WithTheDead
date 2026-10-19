@@ -1,0 +1,12 @@
+{"version": 1, "id": "RippedSheetsSterilizedBundle", "baseHeight": 0.0777, "name": "Ripped Sheets Sterilized Bundle", "model": "gpt-oss:120b", "notes": "Bundle of sterilized ripped cloth sheets, about 0.45 m × 0.35 m footprint, three overlapping sheets (≈8 mm each) with ragged edges and a small white sterile tag tied together with a thin brown cord.", "score": 6, "parts": [
+  {"name":"BaseSheet","shape":"cube","pos":[0.0016,-0.0137,-0.0056],"rot":[0.0,0.0,0.0],"size":[0.45,0.008,0.35],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"MidSheet","shape":"cube","pos":[-0.0184,-0.0057,-0.0206],"rot":[0.0,2.0,0.0],"size":[0.42,0.008,0.33],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TopSheet","shape":"cube","pos":[0.0166,0.0023,0.0044],"rot":[0.0,-3.0,0.0],"size":[0.38,0.008,0.3],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTornTop","shape":"cube","pos":[0.0016,0.0053,0.1594],"rot":[0.0,0.0,0.0],"size":[0.38,0.006,0.015],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTornSideL","shape":"cube","pos":[-0.2234,0.0053,-0.0056],"rot":[0.0,0.0,0.0],"size":[0.015,0.006,0.3],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeTornSideR","shape":"cube","pos":[0.2266,0.0053,-0.0056],"rot":[0.0,0.0,0.0],"size":[0.015,0.006,0.3],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"TearFragmentA","shape":"cube","pos":[0.1816,0.0103,0.1694],"rot":[10.0,5.0,0.0],"size":[0.07,0.008,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TearFragmentB","shape":"cube","pos":[-0.1884,0.0103,-0.1656],"rot":[-8.0,-4.0,0.0],"size":[0.06,0.008,0.035],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"SterileTag","shape":"cube","pos":[-0.0984,0.0043,-0.0056],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.04],"color":[0.9,0.9,0.9],"smooth":0.1,"metal":0.0},
+  {"name":"BundleTie","shape":"cylinder","pos":[0.0016,0.0033,-0.0056],"rot":[0.0,0.0,90.0],"size":[0.015,0.25,0.015],"color":[0.4,0.25,0.15],"smooth":0.2,"metal":0.0}
+]}

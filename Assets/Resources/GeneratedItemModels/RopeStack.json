@@ -1,0 +1,13 @@
+{"version": 1, "id": "RopeStack", "baseHeight": 0.1525, "name": "Rope Stack", "model": "gpt-oss:120b", "notes": "Rope stack of up to 8 coiled ropes, brown‑tan tint 0.6,0.58,0.5. Base coil ~0.25 m diameter, each successive coil slightly smaller and offset, total height ≈0.16 m. A few loose rope ends lie on top for visual interest.", "score": 7, "parts": [
+  {"name":"CoilBase","shape":"cylinder","pos":[0.0375,-0.0825,0.0175],"rot":[0.0,0.0,0.0],"size":[0.25,0.02,0.25],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Coil2","shape":"cylinder","pos":[0.0575,-0.0625,0.0375],"rot":[0.0,0.0,0.0],"size":[0.23,0.018,0.23],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Coil3","shape":"cylinder","pos":[0.0225,-0.0425,0.0075],"rot":[0.0,0.0,0.0],"size":[0.21,0.016,0.21],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Coil4","shape":"cylinder","pos":[0.0475,-0.0225,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.19,0.014,0.19],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Coil5","shape":"cylinder","pos":[0.0175,-0.0025,0.0325],"rot":[0.0,0.0,0.0],"size":[0.17,0.012,0.17],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Coil6","shape":"cylinder","pos":[0.0525,0.0175,-0.0005],"rot":[0.0,0.0,0.0],"size":[0.15,0.01,0.15],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Coil7","shape":"cylinder","pos":[0.0275,0.0375,0.0375],"rot":[0.0,0.0,0.0],"size":[0.13,0.008,0.13],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Coil8","shape":"cylinder","pos":[0.0425,0.0575,0.0025],"rot":[0.0,0.0,0.0],"size":[0.11,0.006,0.11],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"End1","shape":"cylinder","pos":[-0.0825,0.0675,0.0175],"rot":[0.0,0.0,90.0],"size":[0.012,0.18,0.012],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"End2","shape":"cylinder","pos":[0.1175,0.0725,-0.0825],"rot":[90.0,0.0,0.0],"size":[0.01,0.14,0.01],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"FrayedTip","shape":"sphere","pos":[0.0575,0.0775,0.0575],"rot":[0.0,0.0,0.0],"size":[0.03,0.03,0.03],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

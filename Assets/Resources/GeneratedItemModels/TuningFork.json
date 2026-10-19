@@ -1,0 +1,8 @@
+{"version": 1, "id": "TuningFork", "baseHeight": 0.068, "name": "Tuning Fork", "model": "gpt-oss:120b", "notes": "Tuning fork about 0.20 m total length: a thin metal handle (≈0.12 m) lying on its side along X, with two parallel tines (≈0.07 m each) extending forward along Z from the right‑hand end of the handle. All parts rest on Y=0, thickness ~4 mm.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.005,-0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.12,0.015],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"TineL","shape":"cylinder","pos":[0.055,-0.0005,-0.035],"rot":[90.0,0.0,0.0],"size":[0.008,0.07,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"TineR","shape":"cylinder","pos":[0.055,-0.0005,0.035],"rot":[90.0,0.0,0.0],"size":[0.008,0.07,0.008],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"BasePlate","shape":"cube","pos":[0.055,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.004,0.08],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"TineConnector","shape":"cube","pos":[0.05,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.08],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeRim","shape":"cylinder","pos":[0.055,0.0035,0.0],"rot":[90.0,0.0,0.0],"size":[0.009,0.002,0.009],"color":[0.5,0.48,0.42],"smooth":0.65,"metal":1.0}
+]}

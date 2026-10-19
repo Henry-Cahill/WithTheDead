@@ -1,0 +1,19 @@
+{"version": 1, "id": "RearCarDoorDouble1", "baseHeight": 0.66, "name": "Rear Car Door Double1", "model": "gpt-oss:120b", "notes": "Rear car door double (two hinged panels) ~1.6 m wide × 1.2 m tall × 0.04 m thick, painted steel (tint 0.6,0.58,0.5). Two side‑by‑side rectangular sheets with a central hinge bar, rivet rows around the perimeter and simple door handles.", "score": 6, "parts": [
+  {"name":"PanelL","shape":"cube","pos":[-0.39,-0.0,-0.017],"rot":[0.0,0.0,0.0],"size":[0.78,0.04,1.2],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"PanelR","shape":"cube","pos":[0.39,-0.0,-0.017],"rot":[0.0,0.0,0.0],"size":[0.78,0.04,1.2],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":1.0},
+  {"name":"HingeBar","shape":"cylinder","pos":[0.0,-0.0,-0.017],"rot":[0.0,0.0,0.0],"size":[0.06,1.2,0.06],"color":[0.45,0.44,0.42],"smooth":0.3,"metal":1.0},
+  {"name":"RivetL_TopFront","shape":"cylinder","pos":[-0.39,0.01,0.583],"rot":[0.0,0.0,0.0],"size":[0.012,0.02,0.012],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"RivetL_TopMid","shape":"cylinder","pos":[-0.195,0.01,0.583],"rot":[0.0,0.0,0.0],"size":[0.012,0.02,0.012],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"RivetL_BottomMid","shape":"cylinder","pos":[-0.195,0.01,-0.617],"rot":[0.0,0.0,0.0],"size":[0.012,0.02,0.012],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"RivetL_BottomFront","shape":"cylinder","pos":[-0.39,0.01,-0.617],"rot":[0.0,0.0,0.0],"size":[0.012,0.02,0.012],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"RivetL_TopFront2","shape":"cylinder","pos":[-0.585,0.01,0.583],"rot":[0.0,0.0,0.0],"size":[0.012,0.02,0.012],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"RivetL_BottomFront2","shape":"cylinder","pos":[-0.585,0.01,-0.617],"rot":[0.0,0.0,0.0],"size":[0.012,0.02,0.012],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR_TopFront","shape":"cylinder","pos":[0.39,0.01,0.583],"rot":[0.0,0.0,0.0],"size":[0.012,0.02,0.012],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR_TopMid","shape":"cylinder","pos":[0.195,0.01,0.583],"rot":[0.0,0.0,0.0],"size":[0.012,0.02,0.012],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR_BottomMid","shape":"cylinder","pos":[0.195,0.01,-0.617],"rot":[0.0,0.0,0.0],"size":[0.012,0.02,0.012],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR_BottomFront","shape":"cylinder","pos":[0.39,0.01,-0.617],"rot":[0.0,0.0,0.0],"size":[0.012,0.02,0.012],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR_TopFront2","shape":"cylinder","pos":[0.585,0.01,0.583],"rot":[0.0,0.0,0.0],"size":[0.012,0.02,0.012],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR_BottomFront2","shape":"cylinder","pos":[0.585,0.01,-0.617],"rot":[0.0,0.0,0.0],"size":[0.012,0.02,0.012],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"HandleL","shape":"cylinder","pos":[-0.39,-0.0,0.603],"rot":[0.0,0.0,90.0],"size":[0.04,0.12,0.04],"color":[0.45,0.44,0.42],"smooth":0.5,"metal":1.0},
+  {"name":"HandleR","shape":"cylinder","pos":[0.39,-0.0,0.603],"rot":[0.0,0.0,90.0],"size":[0.04,0.12,0.04],"color":[0.45,0.44,0.42],"smooth":0.5,"metal":1.0}
+]}

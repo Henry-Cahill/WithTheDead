@@ -1,0 +1,15 @@
+{"version": 1, "id": "Sparklers", "baseHeight": 0.066, "name": "Sparklers", "model": "gpt-oss:120b", "notes": "Bundle of six sparklers ~0.28 m long each, lying on their side (X‑axis). Thin cardboard wrapper around them. Small orange fuse tip on the forward (+X) end of each sparkler.", "score": 6, "parts": [
+  {"name":"Wrapper","shape":"cube","pos":[-0.003,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.07],"color":[0.4,0.35,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"Sparkler1","shape":"cylinder","pos":[-0.003,0.0,-0.018],"rot":[0.0,0.0,90.0],"size":[0.008,0.28,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Sparkler2","shape":"cylinder","pos":[-0.003,0.0,-0.009],"rot":[0.0,0.0,90.0],"size":[0.008,0.28,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Sparkler3","shape":"cylinder","pos":[-0.003,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.28,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Sparkler4","shape":"cylinder","pos":[-0.003,0.0,0.009],"rot":[0.0,0.0,90.0],"size":[0.008,0.28,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Sparkler5","shape":"cylinder","pos":[-0.003,0.0,0.018],"rot":[0.0,0.0,90.0],"size":[0.008,0.28,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Sparkler6","shape":"cylinder","pos":[-0.003,0.0,0.027],"rot":[0.0,0.0,90.0],"size":[0.008,0.28,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"FuseTip1","shape":"sphere","pos":[0.147,0.0,-0.018],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.9,0.5,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"FuseTip2","shape":"sphere","pos":[0.147,0.0,-0.009],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.9,0.5,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"FuseTip3","shape":"sphere","pos":[0.147,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.9,0.5,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"FuseTip4","shape":"sphere","pos":[0.147,0.0,0.009],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.9,0.5,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"FuseTip5","shape":"sphere","pos":[0.147,0.0,0.018],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.9,0.5,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"FuseTip6","shape":"sphere","pos":[0.147,0.0,0.027],"rot":[0.0,0.0,0.0],"size":[0.012,0.012,0.012],"color":[0.9,0.5,0.1],"smooth":0.2,"metal":0.0}
+]}

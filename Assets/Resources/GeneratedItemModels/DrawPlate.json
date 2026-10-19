@@ -1,0 +1,11 @@
+{"version": 1, "id": "DrawPlate", "baseHeight": 0.0715, "name": "Draw Plate", "model": "gpt-oss:120b", "notes": "Flat wooden drawing plate, about 0.40 m long × 0.30 m wide and 2 cm thick, lying on the floor. Slightly darker beveled edge rim and a small label sticker on the top surface give recognisable detail.", "score": 7, "parts": [
+  {"name":"Board","shape":"cube","pos":[0.0,-0.0015,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.02,0.3],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0,-0.0005,0.152],"rot":[0.0,0.0,0.0],"size":[0.4,0.022,0.008],"color":[0.52,0.5,0.44],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0,-0.0005,-0.152],"rot":[0.0,0.0,0.0],"size":[0.4,0.022,0.008],"color":[0.52,0.5,0.44],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.202,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.022,0.3],"color":[0.52,0.5,0.44],"smooth":0.12,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.202,-0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.022,0.3],"color":[0.52,0.5,0.44],"smooth":0.12,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.15,0.0095,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.004,0.04],"color":[0.8,0.75,0.7],"smooth":0.05,"metal":0.0},
+  {"name":"Grain1","shape":"cylinder","pos":[-0.01,0.0,-0.08],"rot":[0.0,0.0,90.0],"size":[0.004,0.38,0.004],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Grain2","shape":"cylinder","pos":[-0.01,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.38,0.004],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"Grain3","shape":"cylinder","pos":[-0.01,0.0,0.08],"rot":[0.0,0.0,90.0],"size":[0.004,0.38,0.004],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0}
+]}
