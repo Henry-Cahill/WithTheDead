@@ -201,9 +201,10 @@ you want to see in game. Indent extra lines under a task to add detail.
 
 ### Documentation: one-sentence summaries where they're missing (filler for the small hours)
 
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/Sqlite/Sqlite.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/Sqlite/Sqlite.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 18:25 landed by hts-llm in 8.5 min: Added concise `/// <summary>` documentation to all public members of **Assets/Scripts/Core/Sqlite/Sqlite.cs** that previously lacked it:
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/UIKit.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
