@@ -82,11 +82,10 @@ execution:
           start_command: bash /project/Tools/NightShift/nightshift.sh start
           health_check_command: bash /project/Tools/NightShift/nightshift.sh health
           stop_command: bash /project/Tools/NightShift/nightshift.sh stop
-          user_msg: "The night shift is working through Tools/NightShift/tasks.md with the local model. Log: Tools/NightShift/.state/nightshift.log"
-          icon_url: ""
+          user_msg: 'The night shift is working through Tools/NightShift/tasks.md with the local model. Log: Tools/NightShift/.state/nightshift.log'
+          logfile_path: ""
           timeout_seconds: 120
-          process_options:
-              wait_until_finished: false
+          icon_url: ""
     resources:
         gpu:
             requested: 1
