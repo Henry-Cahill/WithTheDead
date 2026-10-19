@@ -27,7 +27,12 @@ namespace CloneZ
             "\"Gone to the church supper. Casserole's in the oven \u2014 350 for forty minutes. Don't let it burn! \u2014 M\"",
             "A child's crayon drawing of this house: yellow walls, a red door, and a lopsided sun wearing sunglasses.",
             "A phone number with no name beside it, underlined three times.",
-        };
+                        "A grocery receipt dated 07/03/1993, items: canned beans, bottled water, and a single loaf of bread.",
+                "A handwritten note: \"Remember to lock the back door before bed \u2014 Mom\".",
+                "A faded Polaroid of the family at the kitchen table, captioned \"Summer BBQ 1993\".",
+                "A child's drawing of a zombie with a balloon, scribbled \"Don’t let him eat the pizza! \u2014 Dad\".",
+                "A torn page from a diary: \"July 12 \u2014 heard strange noises outside, tried to ignore them.\"",
+            };
 
         private StorageFixture _fridge, _freezer;
         private RoomLight _lamp;

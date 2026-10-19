@@ -161,8 +161,9 @@ you want to see in game. Indent extra lines under a task to add detail.
 
 ### Flavour text: append-only writing that makes the world feel lived in (original wording only)
 
-- [ ] Add five more notes to the starter home's fridge door in Assets/Scripts/World/Fixtures/KitchenFridge.cs: append five entries to the Notes array (read in turn by "Read the notes on the door"): small, specific traces of the family who lived here, funny or sad, in July 1993 as the outbreak begins (wave survival is summer, so no snow).
+- [x] Add five more notes to the starter home's fridge door in Assets/Scripts/World/Fixtures/KitchenFridge.cs: append five entries to the Notes array (read in turn by "Read the notes on the door"): small, specific traces of the family who lived here, funny or sad, in July 1993 as the outbreak begins (wave survival is summer, so no snow).
   All original: no real brands or people and no names from books, films or other games. Match the existing notes' length, voice and punctuation (including the \u2014 escapes). Only append to the array; change nothing else.
+  - 17:56 landed by 0htsserver in 9.8 min: **Summary**
 - [ ] Add four more letters to the raid town's mail drop box in Assets/Scripts/World/Fixtures/RaidTownMailDrop.cs: append four entries to Letters (shown in turn by "Pull open the chute"): glimpses of post nobody will collect, in a snowbound Kentucky town in mid-December 1993, the week the county was emptied.
   All original: no real brands or people and no names from books, films or other games. Match the existing letters' length, voice and punctuation (the same \u201C \u201D \u2014 escapes). Only append to the array; change nothing else.
 - [ ] Give the county office's photocopier more to find on its glass in Assets/Scripts/World/Fixtures/RaidStoreCopier.cs: append five sheets to Originals (county memos, forms and notices from the week the county was emptied, December 1993) and two lines each to Jams, Copies and Clears, in the same dry voice.
