@@ -66,7 +66,7 @@ namespace CloneZ
         public const string FileName = "clonez_sandbox.json";
         /// <summary>The full path to the sandbox settings file in the persistent data folder.</summary>
 
-public static string FilePath => Path.Combine(Application.persistentDataPath, FileName);
+        public static string FilePath => Path.Combine(Application.persistentDataPath, FileName);
 
         private static SandboxSettings s_Current;
 

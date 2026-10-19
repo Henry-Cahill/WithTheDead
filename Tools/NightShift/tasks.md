@@ -123,8 +123,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   Use the battery item the flashlight takes (grep "battery" in Assets/Scripts/Player/PlayerGear.cs and Assets/Scripts/Items for its id), and check for and consume it the way the "Hang a gate (4 planks, 6 nails)" action in Assets/Scripts/World/Camps.cs does. Notify in the file's voice, e.g. "You swap in a fresh battery. The minute hand twitches, then creeps on." If the game has no carryable battery item, change nothing.
   Without a battery nothing new shows. Running clocks, "Check the time", "Listen to it tick" and the hand angles behave exactly as before. Raid clocks aren't saved, so add no saving.
   - 17:19 0htsserver made no changes: Open ClockFixture.cs.
-- [ ] Re-indent declarations that earlier nights' doc edits left at column 0 in Assets/Scripts/Core/GameEvents.cs, Assets/Scripts/Core/SandboxSettings.cs and Assets/Scripts/Economy/Trading.cs: every line inside the namespace that starts at column 0 with `public` or `///` (for example GameEvents' Raise... methods, SandboxSettings.FilePath and LoadFromDisk, Trading.LoyaltyOf, NextLevelNeeds and Visible) gets the same indentation as the members around it.
+- [x] Re-indent declarations that earlier nights' doc edits left at column 0 in Assets/Scripts/Core/GameEvents.cs, Assets/Scripts/Core/SandboxSettings.cs and Assets/Scripts/Economy/Trading.cs: every line inside the namespace that starts at column 0 with `public` or `///` (for example GameEvents' Raise... methods, SandboxSettings.FilePath and LoadFromDisk, Trading.LoyaltyOf, NextLevelNeeds and Visible) gets the same indentation as the members around it.
   Whitespace only: change no code or comment text. The project must compile exactly as before.
+  - 17:54 landed by 1htsserver in 45.2 min: All targeted members now have proper 8‑space indentation inside their namespaces/classes.
 
 ### Frame-time trims: stop redoing work every frame (what the player sees must not change)
 
