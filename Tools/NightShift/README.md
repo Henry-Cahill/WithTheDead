@@ -120,6 +120,9 @@ local model, for interactive work in JupyterLab's terminal).
   compile; fix it (or switch branch) first. Errors that only appear on the Spark usually mean the
   references are stale; rerun `refs`.
 - **A helper is "not used"**: the log says why. Rerun `.\NightShift.ps1 helpers` for that machine.
+- **"couldn't bring the project folder up to date with the landing"**: a file that landing changed was edited in
+  the project folder while it ran, so the landing was undone and the task stays queued. Adding tasks to
+  `tasks.md` is fine at any time; leave the other files alone while it runs.
 - **No pull request appeared**: `.state\pr.log` on this PC says why (for example a failed push). The
   automatic one waits until nothing is left to do; **P** makes it right away.
 - **Logs**: `Tools/NightShift/.state/nightshift.log` (coordinator), and each worker's
