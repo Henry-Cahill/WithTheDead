@@ -42,4 +42,5 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 22:21 landed by 1htsserver in 31.4 min: Implemented comprehensive `<summary>` documentation for each public method and property in **Assets/Scripts/World/DecorMaterials.cs**. Added
 - [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Survival/FieldSurvival.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Skip fields and constants, and don't change any code.
   - 22:07 landed by hts-llm in 8.2 min: **Changed files**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/AI/Humans/Outposts.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Skip fields and constants, and don't change any code.
+- [!] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/AI/Humans/Outposts.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Skip fields and constants, and don't change any code.
+  - 22:39 failed (0htsserver, 34.9 min); see reports/2026-10-18-2131.md
