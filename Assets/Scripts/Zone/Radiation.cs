@@ -17,12 +17,12 @@ namespace CloneZ
         public const float Scale = 0.05f;
 
         /// <summary>Singleton instance of the player radiation component.</summary>
-public static PlayerRadiation Local { get; private set; }
+    public static PlayerRadiation Local { get; private set; }
 
         /// <summary>Current radiation dose (0..1) the survivor carries.</summary>
-public float Dose { get; private set; }
+    public float Dose { get; private set; }
         /// <summary>Current radiation intake rate per second.</summary>
-public float Intake { get; private set; }
+    public float Intake { get; private set; }
         /// <summary>Whether the survivor is currently protected by iodine (reduces intake).</summary>
 public bool Shielded => Time.time < _iodineUntil;
 
@@ -262,7 +262,7 @@ public static RadiationSpot Spawn(Transform parent, Vector3 at, float radius, fl
         private Image _fill;
 
         /// <summary>Factory method to create the HUD element showing radiation dose.</summary>
-public static HudRadiation Create()
+    public static HudRadiation Create()
         {
             RectTransform slot = HudLayer.Anchor("Radiation", new Vector2(1f, 0f), new Vector2(1f, 0f), new Vector2(-24f, 360f), new Vector2(200f, 40f));
             var h = slot.gameObject.AddComponent<HudRadiation>();
@@ -275,15 +275,33 @@ public static HudRadiation Create()
             return h;
         }
 
-        private void LateUpdate()
+    private bool _prevShow;
+    private string _prevDose = "";
+    private string _prevTrend = "";
+    private bool _prevShielded;
+
+    private void LateUpdate()
+    {
+        PlayerRadiation r = PlayerRadiation.Local;
+        bool show = r != null && (r.Dose > 0.01f || r.Intake > 0.00002f);
+        if (show != _prevShow)
         {
-            PlayerRadiation r = PlayerRadiation.Local;
-            bool show = r != null && (r.Dose > 0.01f || r.Intake > 0.00002f);
-            for (int i = 0; i < transform.childCount; i++) transform.GetChild(i).gameObject.SetActive(show);
-            if (!show) return;
-            string trend = r.Intake > 0.0002f ? "  \u25B2\u25B2" : r.Intake > 0.00002f ? "  \u25B2" : "";
-            _text.text = "\u2622 " + (r.Dose * 6f).ToString("0.00") + " Sv" + trend + (r.Shielded ? "  (iodine)" : "");
-            UIKit.SetBar(_fill, r.Dose);
+            for (int i = 0; i < transform.childCount; i++)
+                transform.GetChild(i).gameObject.SetActive(show);
+            _prevShow = show;
         }
+        if (!show) return;
+        string trend = r.Intake > 0.0002f ? "  \u25B2\u25B2" : r.Intake > 0.00002f ? "  \u25B2" : "";
+        string doseStr = (r.Dose * 6f).ToString("0.00");
+        bool shielded = r.Shielded;
+        if (doseStr != _prevDose || trend != _prevTrend || shielded != _prevShielded)
+        {
+            _text.text = "\u2622 " + doseStr + " Sv" + trend + (shielded ? "  (iodine)" : "");
+            UIKit.SetBar(_fill, r.Dose);
+            _prevDose = doseStr;
+            _prevTrend = trend;
+            _prevShielded = shielded;
+        }
+    }
     }
 }
