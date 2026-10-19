@@ -379,22 +379,19 @@ function Add-Task {
     $b64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($text))
     Invoke-Remote @"
 python3 - <<'PY'
-import base64, pathlib
-import fcntl
+import base64, fcntl, pathlib
 p = pathlib.Path.home() / '$SparkProject' / 'Tools' / 'NightShift' / 'tasks.md'
 lock_path = p.parent / '.state' / 'tasks.lock'
 lock_path.parent.mkdir(parents=True, exist_ok=True)
 text = base64.b64decode('$b64').decode('utf-8')
-with lock_path.open('a+') as lock:
-    fcntl.flock(lock, fcntl.LOCK_EX)
-    try:
-        body = p.read_text(encoding='utf-8')
-        tmp = p.with_name(p.name + '.tmp')
-        tmp.write_text(body + ('' if body.endswith('\n') else '\n') + '- [ ] ' + text + '\n', encoding='utf-8')
-        tmp.replace(p)
-        print('Queued: ' + text)
-    finally:
-        fcntl.flock(lock, fcntl.LOCK_UN)
+with lock_path.open('a+b') as lock:
+   fcntl.flock(lock, fcntl.LOCK_EX)
+   body = p.read_text(encoding='utf-8')
+   tmp = p.with_name(p.name + '.tmp')
+   tmp.write_text(body + ('' if body.endswith('\n') else '\n') + '- [ ] ' + text + '\n', encoding='utf-8')
+   tmp.replace(p)
+   fcntl.flock(lock, fcntl.LOCK_UN)
+print('Queued: ' + text)
 PY
 "@ | Out-Null
 }

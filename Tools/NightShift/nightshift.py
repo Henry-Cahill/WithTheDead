@@ -19,6 +19,7 @@ import argparse
 import base64
 import contextlib
 import datetime as dt
+import difflib
 import fcntl
 import json
 import os
@@ -582,19 +583,20 @@ def cmd_work(args: argparse.Namespace) -> int:
 # --- tasks.md and the night's report -------------------------------------------------------------------------
 
 BOX = re.compile(r"^(\s*)- \[([ xX!~])\] (.+?)\s*$")
-TASKS_LOCK = threading.Lock()
+TASKS_THREAD_LOCK = threading.Lock()
+TASKS_LOCK_PATH = STATE / "tasks.lock"
 
 
 @contextlib.contextmanager
-def task_file_lock(path: Path = TASKS):
-    lock_path = path.parent / ".state" / "tasks.lock"
-    lock_path.parent.mkdir(parents=True, exist_ok=True)
-    with TASKS_LOCK, lock_path.open("a+") as lock:
-        fcntl.flock(lock, fcntl.LOCK_EX)
-        try:
-            yield
-        finally:
-            fcntl.flock(lock, fcntl.LOCK_UN)
+def tasks_lock():
+    with TASKS_THREAD_LOCK:
+        STATE.mkdir(parents=True, exist_ok=True)
+        with TASKS_LOCK_PATH.open("a+b") as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX)
+            try:
+                yield
+            finally:
+                fcntl.flock(lock, fcntl.LOCK_UN)
 
 
 @dataclass
@@ -611,7 +613,7 @@ def _block_end(lines: list[str], i: int, indent: int) -> int:
 
 
 def read_tasks() -> list[tuple[str, Task]]:
-    with task_file_lock():
+    with tasks_lock():
         if not TASKS.exists():
             return []
         lines = TASKS.read_text(encoding="utf-8").splitlines()
@@ -663,8 +665,66 @@ def with_mark(text: str, key: str, mark: str, note: str) -> str | None:
     return None
 
 
+def merge_task_edits(base: bytes, current: bytes, edited: bytes) -> bytes | None:
+    base_lines = base.splitlines(keepends=True)
+
+    def changes(text: bytes) -> list[tuple[int, int, list[bytes]]]:
+        lines = text.splitlines(keepends=True)
+        return [(i1, i2, lines[j1:j2]) for tag, i1, i2, j1, j2 in
+                difflib.SequenceMatcher(None, base_lines, lines, autojunk=False).get_opcodes() if tag != "equal"]
+
+    left, right = changes(current), changes(edited)
+    merged = list(left)
+    for start, end, replacement in right:
+        duplicate = next((i for i, (other_start, other_end, other_replacement) in enumerate(merged)
+                          if (start, end) == (other_start, other_end)), None)
+        if duplicate is not None:
+            other_start, other_end, other_replacement = merged[duplicate]
+            if replacement == other_replacement:
+                continue
+            if start == end:
+                merged[duplicate] = (start, end, other_replacement + [line for line in replacement
+                                                                       if line not in other_replacement])
+                continue
+            return None
+        if any(max(start, other_start) < min(end, other_end)
+               or (start == end and other_start < start < other_end)
+               or (other_start == other_end and start < other_start < end)
+               for other_start, other_end, _ in merged):
+            return None
+        merged.append((start, end, replacement))
+
+    result, cursor = [], 0
+    for start, end, replacement in sorted(merged, key=lambda change: (change[0], change[1])):
+        if start < cursor:
+            return None
+        result.extend(base_lines[cursor:start])
+        result.extend(replacement)
+        cursor = end
+    result.extend(base_lines[cursor:])
+    return b"".join(result)
+
+
+def reconcile_task_edits(base: bytes, edited: bytes, mark: tuple[str, str, str] | None = None) -> bool:
+    for _ in range(10):
+        latest = TASKS.read_bytes()
+        merged = merge_task_edits(base, latest, edited)
+        if merged is None:
+            TASKS.write_bytes(merge_task_text(base, latest, edited)[0])
+            return False
+        if TASKS.read_bytes() != latest:
+            continue
+        text = merged.decode("utf-8", "surrogateescape")
+        redone = with_mark(text, *mark) if mark else None
+        TASKS.write_bytes((text if redone is None else redone).encode("utf-8", "surrogateescape"))
+        return True
+    latest = TASKS.read_bytes()
+    TASKS.write_bytes(merge_task_text(base, latest, edited)[0])
+    return False
+
+
 def mark_task(key: str, mark: str, note: str, path: Path = TASKS) -> None:
-    with task_file_lock(path):
+    with tasks_lock():
         text = with_mark(path.read_text(encoding="utf-8"), key, mark, note)
         if text is not None:
             write_atomic(path, text)
@@ -940,63 +1000,38 @@ class Coordinator:
             if git_run(ROOT, "symbolic-ref", "--short", "HEAD").stdout.strip() != branch:
                 return  # switched to another branch: none of the night's work is checked out, so there's nothing to refresh
             tasks_rel = f"{REL}/tasks.md"
-            with task_file_lock():
-                base = git(ROOT, "show", f":{tasks_rel}").encode("utf-8", "surrogateescape")
+            with tasks_lock():
                 edited = None
-                if TASKS.exists() and git_run(ROOT, "diff", "--quiet", "--", tasks_rel).returncode:
-                    edited_bytes = TASKS.read_bytes()
-                    edited = edited_bytes.decode("utf-8", "surrogateescape")
-                    latest = TASKS.read_bytes()
-                    if latest != edited_bytes:
-                        edited = latest.decode("utf-8", "surrogateescape")
-                    git(ROOT, "checkout", "--", tasks_rel)  # the copy the landing started from, so the refresh can't trip
-                editor_edits = []
-                checked_out = TASKS.read_bytes()
-                if checked_out != base:
-                    editor_edits.append(checked_out)
+                base = None
+                if TASKS.exists():
+                    edited = TASKS.read_bytes()
+                    indexed = subprocess.run(["git", *GIT_SAFE, "-C", str(ROOT), "show", f":{tasks_rel}"],
+                                             capture_output=True)
+                    if indexed.returncode:
+                        raise RuntimeError("couldn't save the task queue before refreshing it: "
+                                           + first_line(indexed.stderr.decode("utf-8", "replace"), 300))
+                    base = indexed.stdout
+                    if git_run(ROOT, "diff", "--quiet", "--", tasks_rel).returncode:
+                        git(ROOT, "checkout", "--", tasks_rel)  # the copy the landing started from, so the refresh can't trip
                 refreshed = git_run(ROOT, "read-tree", "-m", "-u", "HEAD")
                 if refreshed.returncode:
-                    latest = TASKS.read_bytes()
-                    if latest != base and latest not in editor_edits:
-                        editor_edits.append(latest)
-                    if edited is not None or editor_edits:
-                        local = edited.encode("utf-8", "surrogateescape") if edited is not None else base
-                        for editor_edit in editor_edits:
-                            local, conflict = merge_task_text(base, local, editor_edit)
-                            if conflict:
-                                TASKS.write_bytes(local)
-                                raise RuntimeError("tasks.md editor saves conflict during landing; resolve the marked "
-                                                   "conflict in tasks.md before restarting")
-                        TASKS.write_bytes(local)
+                    if edited is not None and not reconcile_task_edits(base, edited):
+                        raise RuntimeError("the task queue changed incompatibly while the checkout was refreshing; "
+                                           "resolve the marked conflict in tasks.md before restarting")
                     raise RuntimeError("couldn't bring the project folder up to date with the landing: "
                                        + first_line(refreshed.stderr or refreshed.stdout, 300))
-                updated = git(ROOT, "show", f"HEAD:{tasks_rel}").encode("utf-8", "surrogateescape")
-                current = TASKS.read_bytes()
-                if current != updated and current not in editor_edits:
-                    editor_edits.append(current)
-                if edited is not None or editor_edits:
-                    local = edited.encode("utf-8", "surrogateescape") if edited is not None else base
-                    for editor_edit in editor_edits:
-                        local, conflict = merge_task_text(base, local, editor_edit)
-                        if conflict:
-                            TASKS.write_bytes(local)
-                            raise RuntimeError("tasks.md editor saves conflict during landing; resolve the marked "
-                                               "conflict in tasks.md before restarting")
-                    restored, conflict = merge_task_text(base, updated, local)
-                    if conflict:
-                        TASKS.write_bytes(restored)
-                        raise RuntimeError("tasks.md edits conflict with the landing; resolve the marked conflict "
-                                           "in tasks.md before restarting")
-                    restored = restored.decode("utf-8", "surrogateescape")
-                    redone = with_mark(restored, *mark) if mark else None
-                    TASKS.write_bytes((restored if redone is None else redone).encode("utf-8", "surrogateescape"))
+                if edited is not None:
+                    if not reconcile_task_edits(base, edited, mark):
+                        raise RuntimeError("the task queue changed incompatibly while the checkout was refreshing; "
+                                           "resolve the marked conflict in tasks.md before restarting")
         finally:
             os.close(fd)
             lock_path.unlink(missing_ok=True)
 
     def undo_landing(self, ref: str, head: str, landed: str) -> None:
         """Moves the night's branch back to `head` when the project folder couldn't follow it to `landed`, so the folder
-        matches its branch again. If even that fails, the night shift stops and commits nothing more in the folder."""
+        matches its branch again. A failed refresh leaves the folder's consistency uncertain, so its caller freezes
+        further commits even if this rollback succeeds. If the rollback fails, the night shift also stops."""
         undone = git_run(ROOT, "update-ref", ref, head, landed)
         if undone.returncode:
             self.frozen = True
@@ -1088,6 +1123,10 @@ class Coordinator:
                     try:
                         self.sync_landed_checkout(night.branch, mark)
                     except Exception:
+                        self.frozen = True
+                        STOPPING.set()
+                        log("the project folder may be out of sync after the failed refresh; Night Shift is stopping "
+                            "without further commits. Check 'git status' before starting it again.")
                         self.undo_landing(ref, head, landed_head)
                         raise
                     self.completed.add(task.key)
