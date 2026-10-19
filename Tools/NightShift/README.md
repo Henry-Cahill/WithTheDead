@@ -34,8 +34,10 @@ Every change is compiled against Unity's own assemblies before it lands, and lan
    concrete tasks work best: name the place and say what you want to see in game.
 2. **Start it.** Switch on **night-shift** under *Applications* in AI Workbench, or choose **2**. It stays on
    duty until 07:00, picking up tasks you add during the night, then stops taking new ones.
-3. **Check on it** any time with **3** (status) or **4** (live log). New tasks added during the night
-   are picked up.
+3. **Watch it work** with **4** in the menu: a live, color-coded log of every agent's steps and messages
+   (one color per machine, landings in green, failures in red). The same view is
+   `bash /project/Tools/NightShift/nightshift.sh log` in a JupyterLab terminal. **3** shows a status summary.
+   New tasks added during the night are picked up.
 
 ## In the morning
 

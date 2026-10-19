@@ -338,6 +338,7 @@ def run_opencode(repo: Path, prompt: str, cfg_path: Path, model: str, timeout_s:
                 elif kind == "text" and (part.get("text") or "").strip():
                     last_msg = part.get("messageID", "")
                     texts.setdefault(last_msg, []).append(part["text"].strip())
+                    log("  > " + " ".join(part["text"].split())[:170])
                 elif kind == "step_finish":
                     tokens = part.get("tokens") or {}
                     res.tokens_in += tokens.get("input", 0)

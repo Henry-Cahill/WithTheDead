@@ -365,7 +365,7 @@ function Get-NightBranches {
     Write-Host "The night's report is Tools/NightShift/reports/ on that branch." -ForegroundColor Green
 }
 
-function Watch-Log { try { & ssh -t @Ssh $SparkHost "tail -n 40 -f $RemoteDir/.state/nightshift.log" } catch { } }
+function Watch-Log { try { & ssh -t @Ssh $SparkHost "bash $RemoteDir/nightshift.sh log" } catch { } }
 
 function Show-Menu {
     while ($true) {
