@@ -22,6 +22,7 @@ namespace CloneZ
             for (int i = 0; i < 8; i++) NextUInt();
         }
 
+        /// <summary>The next raw 32-bit word of the stream (an xorshift draw) — the material every other draw is built from.</summary>
         public uint NextUInt()
         {
             uint x = _s;
@@ -36,12 +37,17 @@ namespace CloneZ
         public float Next() => (NextUInt() >> 8) * (1f / 16777216f);
         /// <summary>Uniform in [-1, 1).</summary>
         public float Bipolar() => Next() * 2f - 1f;
+        /// <summary>Uniform in [a, b).</summary>
         public float Range(float a, float b) => a + (b - a) * Next();
+        /// <summary>An integer drawn uniform in [min, maxExclusive), or min itself when the range is empty.</summary>
         public int Int(int min, int maxExclusive) => maxExclusive <= min ? min : Math.Min(maxExclusive - 1, min + (int)(Next() * (maxExclusive - min)));
+        /// <summary>True with probability p.</summary>
         public bool Chance(float p) => Next() < p;
         /// <summary>The value scaled by a random factor in [1 - spread, 1 + spread].</summary>
         public float Vary(float v, float spread) => v * (1f + Bipolar() * spread);
+        /// <summary>How many samples <paramref name="seconds"/> occupies at this source's rate (rounded, at least one).</summary>
         public int N(float seconds) => Math.Max(1, (int)(seconds * Rate + 0.5f));
+        /// <summary>A float buffer sized to hold <paramref name="seconds"/> of this source.</summary>
         public float[] Buffer(float seconds) => new float[N(seconds)];
     }
 
@@ -50,6 +56,7 @@ namespace CloneZ
     {
         public float A, Z;
 
+        /// <summary>A fresh one-pole filter tuned to <paramref name="hz"/> at the source's <paramref name="rate"/>.</summary>
         public static OnePole At(float hz, int rate)
         {
             var f = new OnePole();
@@ -57,8 +64,11 @@ namespace CloneZ
             return f;
         }
 
+        /// <summary>Tunes the cutoff to <paramref name="hz"/> at <paramref name="rate"/> (clamped into the source's band).</summary>
         public void Set(float hz, int rate) => A = MathF.Exp(-Dsp.TwoPi * Math.Min(Math.Max(hz, 0.01f), rate * 0.45f) / rate);
+        /// <summary>One sample through the lowpass half of the filter (Z keeps its memory between calls).</summary>
         public float Lp(float x) { Z = x + (Z - x) * A; return Z; }
+        /// <summary>One sample through the highpass half — whatever the lowpass half would have removed.</summary>
         public float Hp(float x) => x - Lp(x);
 
         /// <summary>The factor that brings this lowpass's output, fed uniform white noise in [-1, 1), to unit deviation.</summary>
@@ -70,11 +80,16 @@ namespace CloneZ
     {
         private float _b0, _b1, _b2, _a1, _a2, _z1, _z2;
 
+        /// <summary>A fresh low-pass biquad (resonance <paramref name="q"/>) for <paramref name="rate"/>.</summary>
         public static Biquad LP(float hz, float q, int rate) { var b = new Biquad(); b.SetLP(hz, q, rate); return b; }
+        /// <summary>A fresh high-pass biquad (resonance <paramref name="q"/>) for <paramref name="rate"/>.</summary>
         public static Biquad HP(float hz, float q, int rate) { var b = new Biquad(); b.SetHP(hz, q, rate); return b; }
+        /// <summary>A fresh band-pass biquad (resonance <paramref name="q"/>) for <paramref name="rate"/>.</summary>
         public static Biquad BP(float hz, float q, int rate) { var b = new Biquad(); b.SetBP(hz, q, rate); return b; }
+        /// <summary>A fresh peaking (parametric EQ) biquad for <paramref name="rate"/>.</summary>
         public static Biquad Peak(float hz, float q, float db, int rate) { var b = new Biquad(); b.SetPeak(hz, q, db, rate); return b; }
 
+        /// <summary>Tunes this biquad as a low-pass at <paramref name="hz"/> (resonance <paramref name="q"/>) for <paramref name="rate"/>.</summary>
         public void SetLP(float hz, float q, int rate)
         {
             Prep(hz, q, rate, out float cs, out float alpha);
@@ -82,6 +97,7 @@ namespace CloneZ
             Set(k * 0.5f, k, k * 0.5f, 1f + alpha, -2f * cs, 1f - alpha);
         }
 
+        /// <summary>Tunes this biquad as a high-pass at <paramref name="hz"/> (resonance <paramref name="q"/>) for <paramref name="rate"/>.</summary>
         public void SetHP(float hz, float q, int rate)
         {
             Prep(hz, q, rate, out float cs, out float alpha);
@@ -96,6 +112,7 @@ namespace CloneZ
             Set(alpha, 0f, -alpha, 1f + alpha, -2f * cs, 1f - alpha);
         }
 
+        /// <summary>Tunes this biquad as a peaking shelf: a ±<paramref name="db"/> bump at <paramref name="hz"/>.</summary>
         public void SetPeak(float hz, float q, float db, int rate)
         {
             Prep(hz, q, rate, out float cs, out float alpha);
@@ -121,6 +138,7 @@ namespace CloneZ
             _a2 = a2 * inv;
         }
 
+        /// <summary>Advances the filter by one sample of <paramref name="x"/> and returns the filtered sample.</summary>
         public float Run(float x)
         {
             float y = _b0 * x + _z1;
@@ -151,6 +169,7 @@ namespace CloneZ
         public static readonly Vowel Er = new Vowel(490f, 1350f, 1690f);
         public static readonly Vowel[] Speech = { A, Aw, U, Uh, E, Ae, I, O, Er };
 
+        /// <summary>The vowel between <paramref name="a"/> and <paramref name="b"/> at t (formants and bandwidths all slide).</summary>
         public static Vowel Lerp(Vowel a, Vowel b, float t)
         {
             t = Dsp.Clamp01(t);
@@ -165,8 +184,11 @@ namespace CloneZ
     /// <summary>Settings for <see cref="Dsp.Voice"/>: a glottal source through three formants. Curves take u = 0..1 over the sound.</summary>
     internal sealed class VoiceParams
     {
+        /// <summary>The f0 pitch curve, u = 0..1 over the sound.</summary>
         public Func<float, float> F0 = u => 110f;
+        /// <summary>The formant (vowel) curve, u = 0..1.</summary>
         public Func<float, Vowel> Formants = u => Vowel.Uh;
+        /// <summary>The amplitude (loudness) curve, u = 0..1.</summary>
         public Func<float, float> Amp = u => 1f;
         /// <summary>Aspiration noise mixed with the voiced source (0 = clean voice).</summary>
         public float Breath = 0.15f;
@@ -174,11 +196,13 @@ namespace CloneZ
         public float Rough;
         /// <summary>Wet, gargling amplitude bursts (0..1).</summary>
         public float Gurgle;
+        /// <summary>Vibrato: its rate (Hz) and how much f0 it bends (0..1).</summary>
         public float VibratoHz = 5f, VibratoDepth;
         /// <summary>Slow random pitch wander (standard deviation, as a fraction of f0).</summary>
         public float Jitter = 0.01f;
         /// <summary>Lowpass on the glottal source (spectral tilt).</summary>
         public float Tilt = 2200f;
+        /// <summary>Gain of each of the three formant band-passes.</summary>
         public float G1 = 1f, G2 = 0.6f, G3 = 0.3f;
         /// <summary>Unformanted source mixed in (body).</summary>
         public float Direct = 0.05f;
@@ -196,11 +220,15 @@ namespace CloneZ
         public const float Pi = 3.14159265f, TwoPi = 6.28318531f;
 
         #region Maths
+        /// <summary>Clamps to [0, 1].</summary>
         public static float Clamp01(float v) => v < 0f ? 0f : v > 1f ? 1f : v;
+        /// <summary>Linear blend of a toward b as t goes 0..1.</summary>
         public static float Lerp(float a, float b, float t) => a + (b - a) * t;
+        /// <summary>A smoothed 0..1 ramp (ease in and out), safe for t outside [0, 1].</summary>
         public static float SmoothStep(float t) { t = Clamp01(t); return t * t * (3f - 2f * t); }
         /// <summary>Exponential glide from a to b as t goes 0..1 (a and b &gt; 0).</summary>
         public static float Glide(float a, float b, float t) => a * MathF.Pow(b / a, Clamp01(t));
+        /// <summary>A MIDI note number as its frequency in Hz (69 = A4 = 440).</summary>
         public static float Midi(float note) => 440f * MathF.Pow(2f, (note - 69f) / 12f);
         /// <summary>A frequency nudged to a whole number of cycles per loop, so a tone wraps seamlessly.</summary>
         public static float Snap(float hz, float loopSeconds) => MathF.Max(1f, MathF.Round(hz * loopSeconds)) / loopSeconds;
@@ -288,10 +316,12 @@ namespace CloneZ
             return v - Blep(p2, dt);
         }
 
+        /// <summary>Phases p back into [0, 1).</summary>
         public static float Wrap(float p) => p - MathF.Floor(p);
         #endregion
 
         #region Noise
+        /// <summary><paramref name="n"/> of uniform white noise at the given level.</summary>
         public static float[] White(SynthGen g, int n, float amp = 1f)
         {
             var x = new float[n];
@@ -344,36 +374,42 @@ namespace CloneZ
         #endregion
 
         #region Filters
+        /// <summary>Low-pass <paramref name="x"/> in place at <paramref name="hz"/>.</summary>
         public static void LP(float[] x, float hz, int rate, float q = 0.7071f)
         {
             Biquad f = Biquad.LP(hz, q, rate);
             for (int i = 0; i < x.Length; i++) x[i] = f.Run(x[i]);
         }
 
+        /// <summary>High-pass <paramref name="x"/> in place at <paramref name="hz"/>.</summary>
         public static void HP(float[] x, float hz, int rate, float q = 0.7071f)
         {
             Biquad f = Biquad.HP(hz, q, rate);
             for (int i = 0; i < x.Length; i++) x[i] = f.Run(x[i]);
         }
 
+        /// <summary>Band-pass <paramref name="x"/> in place around <paramref name="hz"/>.</summary>
         public static void BP(float[] x, float hz, float q, int rate)
         {
             Biquad f = Biquad.BP(hz, q, rate);
             for (int i = 0; i < x.Length; i++) x[i] = f.Run(x[i]);
         }
 
+        /// <summary>A parametric EQ bump or dip on <paramref name="x"/>: ±<paramref name="db"/> around <paramref name="hz"/>.</summary>
         public static void PeakEq(float[] x, float hz, float q, float db, int rate)
         {
             Biquad f = Biquad.Peak(hz, q, db, rate);
             for (int i = 0; i < x.Length; i++) x[i] = f.Run(x[i]);
         }
 
+        /// <summary>A one-pole low-pass on <paramref name="x"/> (simpler and cheaper than <see cref="LP"/>).</summary>
         public static void LP1(float[] x, float hz, int rate)
         {
             OnePole f = OnePole.At(hz, rate);
             for (int i = 0; i < x.Length; i++) x[i] = f.Lp(x[i]);
         }
 
+        /// <summary>A one-pole high-pass on <paramref name="x"/>.</summary>
         public static void HP1(float[] x, float hz, int rate)
         {
             OnePole f = OnePole.At(hz, rate);
@@ -410,6 +446,7 @@ namespace CloneZ
             for (int i = 0; i < x.Length; i++) x[i] = f.Run(x[i]);
         }
 
+        /// <summary>Runs a highpass over a loop twice so the filter's state wraps around the seam.</summary>
         public static void LoopHP(float[] x, float hz, int rate, float q = 0.7071f)
         {
             Biquad f = Biquad.HP(hz, q, rate);
@@ -417,6 +454,7 @@ namespace CloneZ
             for (int i = 0; i < x.Length; i++) x[i] = f.Run(x[i]);
         }
 
+        /// <summary>Runs a band-pass over a loop twice so the filter's state wraps around the seam.</summary>
         public static void LoopBP(float[] x, float hz, float q, int rate)
         {
             Biquad f = Biquad.BP(hz, q, rate);
@@ -424,6 +462,7 @@ namespace CloneZ
             for (int i = 0; i < x.Length; i++) x[i] = f.Run(x[i]);
         }
 
+        /// <summary>Runs a peaking EQ over a loop twice so the filter's state wraps around the seam.</summary>
         public static void LoopPeakEq(float[] x, float hz, float q, float db, int rate)
         {
             Biquad f = Biquad.Peak(hz, q, db, rate);
@@ -433,6 +472,7 @@ namespace CloneZ
         #endregion
 
         #region Building blocks
+        /// <summary>Multiples <paramref name="x"/> sample by sample by env(t seconds) — its envelope.</summary>
         public static void Shape(float[] x, int rate, Func<float, float> env)
         {
             for (int i = 0; i < x.Length; i++) x[i] *= env(i / (float)rate);
@@ -470,6 +510,7 @@ namespace CloneZ
             return b;
         }
 
+        /// <summary>A <see cref="Burst"/> dropped into <paramref name="x"/> at <paramref name="at"/> seconds, at <paramref name="gain"/>.</summary>
         public static void AddBurst(float[] x, SynthGen g, float at, float gain, float attack, float tau, float lpHz = 0f, float hpHz = 0f)
             => Mix(x, Burst(g, attack, tau, lpHz, hpHz), (int)(at * g.Rate), gain);
 
@@ -801,6 +842,7 @@ namespace CloneZ
         #endregion
 
         #region Levels and loops
+        /// <summary>The largest absolute sample — a cheap measure of how loud a buffer is.</summary>
         public static float Peak(float[] x)
         {
             float p = 0f;
@@ -812,6 +854,7 @@ namespace CloneZ
             return p;
         }
 
+        /// <summary>Root-mean-square level — a buffer's steady loudness, rather than its loudest instant.</summary>
         public static float Rms(float[] x)
         {
             double s = 0;
@@ -819,6 +862,7 @@ namespace CloneZ
             return x.Length > 0 ? (float)Math.Sqrt(s / x.Length) : 0f;
         }
 
+        /// <summary>Rescales <paramref name="x"/> in place until its peak is <paramref name="target"/>.</summary>
         public static void Norm(float[] x, float target = 1f)
         {
             float p = Peak(x);
@@ -827,17 +871,20 @@ namespace CloneZ
             for (int i = 0; i < x.Length; i++) x[i] *= k;
         }
 
+        /// <summary>Multipplies every sample of <paramref name="x"/> by <paramref name="k"/>.</summary>
         public static void Gain(float[] x, float k)
         {
             for (int i = 0; i < x.Length; i++) x[i] *= k;
         }
 
+        /// <summary>Replaces any NaN or infinite sample with silence (a bad filter setting must never leak into the player's ears).</summary>
         public static void Sanitize(float[] x)
         {
             for (int i = 0; i < x.Length; i++)
                 if (float.IsNaN(x[i]) || float.IsInfinity(x[i])) x[i] = 0f;
         }
 
+        /// <summary>Subtracts the buffer's DC offset so AC-coupled things (like a human ear's attention) stop hissing.</summary>
         public static void RemoveMean(float[] x)
         {
             double s = 0;
@@ -846,6 +893,7 @@ namespace CloneZ
             for (int i = 0; i < x.Length; i++) x[i] -= m;
         }
 
+        /// <summary>Smooths the first <paramref name="n"/> samples up from silence (a squared half-sine), so a cut-in never clicks.</summary>
         public static void FadeIn(float[] x, int n)
         {
             n = Math.Min(n, x.Length);
@@ -856,6 +904,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Smooths the last <paramref name="n"/> samples down to silence (a squared half-sine).</summary>
         public static void FadeOut(float[] x, int n)
         {
             n = Math.Min(n, x.Length);
