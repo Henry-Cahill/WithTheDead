@@ -1,0 +1,12 @@
+{"version": 1, "id": "Pillow", "baseHeight": 0.12, "name": "Pillow", "model": "gpt-oss:120b", "notes": "Pillow ~0.75 m long × 0.50 m wide × 0.12 m thick lying flat on the floor. Main soft body with rounded corners, thin stitched edge strips and a small tag corner detail.", "score": 8, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.75,0.12,0.5],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CornerTL","shape":"cylinder","pos":[0.375,0.0,0.25],"rot":[0.0,0.0,0.0],"size":[0.08,0.12,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CornerTR","shape":"cylinder","pos":[-0.375,0.0,0.25],"rot":[0.0,0.0,0.0],"size":[0.08,0.12,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CornerBL","shape":"cylinder","pos":[0.375,0.0,-0.25],"rot":[0.0,0.0,0.0],"size":[0.08,0.12,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CornerBR","shape":"cylinder","pos":[-0.375,0.0,-0.25],"rot":[0.0,0.0,0.0],"size":[0.08,0.12,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0,0.048,0.26],"rot":[0.0,0.0,0.0],"size":[0.75,0.008,0.02],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0,0.048,-0.26],"rot":[0.0,0.0,0.0],"size":[0.75,0.008,0.02],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[0.365,0.048,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.5],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[-0.365,0.048,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.5],"color":[0.45,0.44,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[0.32,0.055,0.22],"rot":[0.0,0.0,0.0],"size":[0.04,0.005,0.03],"color":[0.8,0.2,0.2],"smooth":0.05,"metal":0.0}
+]}

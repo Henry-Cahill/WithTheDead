@@ -1,0 +1,11 @@
+{"version": 1, "id": "ClayTool", "baseHeight": 0.0775, "name": "Clay Tool", "model": "gpt-oss:120b", "notes": "Clay sculpting tool ~0.25 m long x 0.06 m wide x 0.03 m thick, lying on its side. Main clay body with a short wooden‑style cylindrical handle, metal tip, thin decorative edge and a faint label.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.005,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.03,0.06],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[-0.07,-0.0025,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.15,0.03],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"GripWrap","shape":"cylinder","pos":[-0.07,0.0005,0.0],"rot":[0.0,0.0,90.0],"size":[0.034,0.12,0.034],"color":[0.48,0.46,0.38],"smooth":0.15,"metal":0.0},
+  {"name":"MetalTip","shape":"cube","pos":[0.13,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.04],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"ClayEdge","shape":"cube","pos":[0.005,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.2,0.005,0.06],"color":[0.58,0.56,0.48],"smooth":0.25,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.045,0.0145,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.002,0.06],"color":[0.4,0.38,0.3],"smooth":0.1,"metal":0.0},
+  {"name":"JointRivet","shape":"sphere","pos":[-0.12,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.5,0.48,0.42],"smooth":0.3,"metal":0.0},
+  {"name":"BottomRim","shape":"cube","pos":[0.005,-0.0165,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.002,0.055],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"TopRim","shape":"cube","pos":[0.005,0.0115,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.002,0.055],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0}
+]}

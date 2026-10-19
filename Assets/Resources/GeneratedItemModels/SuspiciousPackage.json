@@ -1,0 +1,14 @@
+{"version": 1, "id": "SuspiciousPackage", "baseHeight": 0.124, "name": "Suspicious Package", "model": "gpt-oss:120b", "notes": "Rectangular cardboard package ~0.30 m long × 0.20 m wide × 0.12 m high lying on its side (long axis along X). Main brown‑tinted box with white tape seams, a yellow warning label on the front face and a short brown twist‑tie around the middle.", "score": 7, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,0.0,0.046],"rot":[0.0,0.0,0.0],"size":[0.3,0.12,0.2],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"TapeTop","shape":"cube","pos":[0.0,0.062,0.046],"rot":[0.0,0.0,0.0],"size":[0.32,0.004,0.22],"color":[0.9,0.9,0.9],"smooth":0.3,"metal":0.0},
+  {"name":"TapeBottom","shape":"cube","pos":[0.0,-0.06,-0.076],"rot":[0.0,0.0,0.0],"size":[0.32,0.004,0.22],"color":[0.9,0.9,0.9],"smooth":0.3,"metal":0.0},
+  {"name":"TapeSideL","shape":"cube","pos":[-0.152,0.0,0.046],"rot":[0.0,0.0,0.0],"size":[0.004,0.128,0.22],"color":[0.9,0.9,0.9],"smooth":0.3,"metal":0.0},
+  {"name":"TapeSideR","shape":"cube","pos":[0.152,0.0,0.046],"rot":[0.0,0.0,0.0],"size":[0.004,0.128,0.22],"color":[0.9,0.9,0.9],"smooth":0.3,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.0,0.005,0.141],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.002],"color":[0.8,0.75,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"LabelBorder","shape":"cube","pos":[0.0,0.009,0.141],"rot":[0.0,0.0,0.0],"size":[0.124,0.004,0.002],"color":[0.45,0.35,0.15],"smooth":0.1,"metal":0.0},
+  {"name":"TieLoop","shape":"cylinder","pos":[0.0,0.0,0.046],"rot":[90.0,0.0,0.0],"size":[0.012,0.28,0.012],"color":[0.4,0.25,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"TieEndL","shape":"cylinder","pos":[-0.14,0.0,0.046],"rot":[90.0,0.0,0.0],"size":[0.012,0.02,0.012],"color":[0.4,0.25,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"TieEndR","shape":"cylinder","pos":[0.14,0.0,0.046],"rot":[90.0,0.0,0.0],"size":[0.012,0.02,0.012],"color":[0.4,0.25,0.1],"smooth":0.2,"metal":0.0},
+  {"name":"CornerRimL","shape":"cube","pos":[-0.15,0.0,-0.049],"rot":[0.0,0.0,0.0],"size":[0.004,0.128,0.004],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"CornerRimR","shape":"cube","pos":[0.15,0.0,-0.049],"rot":[0.0,0.0,0.0],"size":[0.004,0.128,0.004],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0}
+]}

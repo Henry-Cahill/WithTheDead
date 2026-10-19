@@ -1,0 +1,10 @@
+{"version": 1, "id": "DogTag_Pet", "baseHeight": 0.0622, "name": "Dog Tag Pet", "model": "gpt-oss:120b", "notes": "Flat pet dog‑tag about 2 cm × 1.5 cm × 3 mm thick lying on its side, metal tint 0.6 0.58 0.5. Main plate with a punched hole and a raised embossed label.", "score": 7, "parts": [
+  {"name":"Plate","shape":"cube","pos":[0.0,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.003,0.015],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Hole","shape":"cylinder","pos":[0.0,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.004,0.005],"color":[0.3,0.28,0.25],"smooth":0.6,"metal":1.0},
+  {"name":"BevelTop","shape":"cube","pos":[0.0,0.0013,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.015],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"BevelFront","shape":"cube","pos":[0.0,-0.0003,0.0077],"rot":[0.0,0.0,0.0],"size":[0.02,0.003,0.002],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"BevelBack","shape":"cube","pos":[0.0,-0.0003,-0.0077],"rot":[0.0,0.0,0.0],"size":[0.02,0.003,0.002],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"BevelLeft","shape":"cube","pos":[-0.0097,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.003,0.015],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"BevelRight","shape":"cube","pos":[0.0097,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.002,0.003,0.015],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"Stamp","shape":"cube","pos":[-0.004,0.0008,0.0055],"rot":[0.0,0.0,0.0],"size":[0.012,0.002,0.003],"color":[0.45,0.43,0.38],"smooth":0.2,"metal":1.0}
+]}

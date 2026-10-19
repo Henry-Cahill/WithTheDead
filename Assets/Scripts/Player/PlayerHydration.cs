@@ -97,6 +97,7 @@ namespace CloneZ
             else
             {
                 _stats.Drink(CloneZConfig.WaterDrinkAmount);
+                Sfx.PlayUI(SfxIds.Drink, 0.6f, Random.Range(0.9f, 1.1f));
                 if (_source.IsTainted && _sickness != null) _sickness.OnDrankTainted();
                 _source.DrawWater();
             }

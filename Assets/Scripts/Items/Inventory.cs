@@ -52,10 +52,10 @@ namespace CloneZ
         internal void RaiseChanged() => Changed?.Invoke();
 
         /// <summary>True when one more unit would fit — by weight, and by grid space when arranged.</summary>
-        public bool WouldFit(ItemDef def)
+        public bool WouldFit(ItemDef def, ItemExtra extra = null)
         {
             if (def == null || CurrentWeight + def.Weight > MaxWeight + 1e-4f) return false;
-            if (Layout == null || FindStackWithRoom(def, true) != null) return true;
+            if (Layout == null || FindStackWithRoom(def, true, extra) != null) return true;
             return Layout.TryFindSpot(def, def.Weight, true, out _, out _, out _, out _);
         }
 
@@ -65,8 +65,9 @@ namespace CloneZ
         /// created/merged perishable stack inherits the older age so food can't be laundered fresh.
         /// When <paramref name="condition"/> is &gt;= 0, a new damageable stack keeps that wear
         /// (a transfer / restore) instead of starting pristine, so gear can't be repaired by moving it.
-        /// <paramref name="timesRepaired"/> carries the item's repair history alongside its wear.</summary>
-        public int Add(ItemDef def, int count, bool enforceWeight = true, float spawnHours = float.NaN, int condition = -1, int timesRepaired = 0)
+        /// <paramref name="timesRepaired"/> carries the item's repair history alongside its wear, and
+        /// <paramref name="extra"/> its per-instance extras (merging only into stacks whose extras agree).</summary>
+        public int Add(ItemDef def, int count, bool enforceWeight = true, float spawnHours = float.NaN, int condition = -1, int timesRepaired = 0, ItemExtra extra = null)
         {
             if (def == null || count <= 0) return 0;
             bool carryAge = def.Perishable && !float.IsNaN(spawnHours);
@@ -74,7 +75,7 @@ namespace CloneZ
             while (count > 0)
             {
                 if (enforceWeight && CurrentWeight + def.Weight > MaxWeight + 1e-4f) break;
-                ItemStack stack = FindStackWithRoom(def, enforceWeight);
+                ItemStack stack = FindStackWithRoom(def, enforceWeight, extra);
                 if (stack != null)
                 {
                     stack.Count++;
@@ -91,7 +92,7 @@ namespace CloneZ
                         if (enforceWeight) break;   // no room left on the grid
                         section = null;             // forced in unplaced; the owner decides what happens to it
                     }
-                    ItemStack ns = NewStack(def, spawnHours, condition, timesRepaired);
+                    ItemStack ns = NewStack(def, spawnHours, condition, timesRepaired, extra);
                     if (section != null) InventoryLayout.Assign(ns, section, gx, gy, rot);
                     Stacks.Add(ns);
                 }
@@ -105,7 +106,7 @@ namespace CloneZ
         /// <summary>Adds up to one stack's worth as a new stack at a chosen grid spot (a drag-and-drop
         /// arriving from elsewhere). Returns the number added (0 if the spot doesn't fit).</summary>
         public int AddAt(ItemDef def, int count, GridSection section, int x, int y, bool rotated,
-            bool enforceWeight = true, float spawnHours = float.NaN, int condition = -1, int timesRepaired = 0)
+            bool enforceWeight = true, float spawnHours = float.NaN, int condition = -1, int timesRepaired = 0, ItemExtra extra = null)
         {
             if (def == null || count <= 0 || Layout == null || section == null) return 0;
             count = Mathf.Min(count, Mathf.Max(1, def.MaxStack));
@@ -118,7 +119,7 @@ namespace CloneZ
             }
             if (!Layout.FitsNew(def, def.Weight * count, section, x, y, rotated, enforceWeight)) return 0;
 
-            ItemStack ns = NewStack(def, spawnHours, condition, timesRepaired);
+            ItemStack ns = NewStack(def, spawnHours, condition, timesRepaired, extra);
             ns.Count = count;
             InventoryLayout.Assign(ns, section, x, y, rotated);
             Stacks.Add(ns);
@@ -139,7 +140,7 @@ namespace CloneZ
             if (!section.Unlimited && !ReferenceEquals(stack.Section, section)
                 && !Layout.HasWeightRoom(section, stack.Def.Weight * count)) return null;
 
-            ItemStack ns = NewStack(stack.Def, stack.SpawnHours, stack.Def.IsDamageable ? stack.Condition : -1, stack.TimesRepaired);
+            ItemStack ns = NewStack(stack.Def, stack.SpawnHours, stack.Def.IsDamageable ? stack.Condition : -1, stack.TimesRepaired, stack.Extra);
             ns.Count = count;
             stack.Count -= count;
             InventoryLayout.Assign(ns, section, x, y, rotated);
@@ -156,6 +157,7 @@ namespace CloneZ
         {
             if (target == null || from == null || source == null || target == from) return 0;
             if (target.Def != from.Def || !Stacks.Contains(target) || !source.Stacks.Contains(from)) return 0;
+            if (!ItemExtra.CanStack(target.Extra, from.Extra)) return 0;
             int moved = Mathf.Min(count, from.Count, target.Def.MaxStack - target.Count);
             if (enforceWeight && target.Def.Weight > 0f)
             {
@@ -198,12 +200,12 @@ namespace CloneZ
             }
 
             int moved = other.AddAt(stack.Def, count, section, x, y, rotated, enforceWeight, stack.SpawnHours,
-                stack.Def != null && stack.Def.IsDamageable ? stack.Condition : -1, stack.TimesRepaired);
+                stack.Def != null && stack.Def.IsDamageable ? stack.Condition : -1, stack.TimesRepaired, stack.Extra);
             if (moved > 0) Remove(stack, moved);
             return moved;
         }
 
-        private static ItemStack NewStack(ItemDef def, float spawnHours, int condition, int timesRepaired)
+        private static ItemStack NewStack(ItemDef def, float spawnHours, int condition, int timesRepaired, ItemExtra extra = null)
         {
             var ns = new ItemStack(def, 1);
             if (def.Perishable && !float.IsNaN(spawnHours)) ns.SpawnHours = spawnHours;
@@ -212,6 +214,7 @@ namespace CloneZ
                 ns.Condition = Mathf.Clamp(condition, 0, def.MaxCondition);
                 ns.TimesRepaired = Mathf.Max(0, timesRepaired);
             }
+            ns.Extra = ItemExtra.CopyOf(extra);
             return ns;
         }
 
@@ -242,7 +245,7 @@ namespace CloneZ
             count = Mathf.Min(count, stack.Count);
             int moved = other.Add(stack.Def, count, enforceWeight, stack.SpawnHours,   // carry freshness across
                 stack.Def != null && stack.Def.IsDamageable ? stack.Condition : -1,     // and wear, so it isn't laundered
-                stack.TimesRepaired);                                                   // (along with its repair history)
+                stack.TimesRepaired, stack.Extra);                                      // (along with its repair history and extras)
             if (moved > 0) Remove(stack, moved);
             return moved;
         }
@@ -253,14 +256,15 @@ namespace CloneZ
                 TransferTo(other, Stacks[i], Stacks[i].Count, enforceWeight);
         }
 
-        // A stack of the same item with room to merge into. On an arranged inventory with weight
-        // enforced, a stack whose section is already at its weight cap doesn't count.
-        private ItemStack FindStackWithRoom(ItemDef def, bool enforceWeight)
+        // A stack of the same item with room to merge into (and matching extras). On an arranged inventory
+        // with weight enforced, a stack whose section is already at its weight cap doesn't count.
+        private ItemStack FindStackWithRoom(ItemDef def, bool enforceWeight, ItemExtra extra = null)
         {
             for (int i = 0; i < Stacks.Count; i++)
             {
                 ItemStack s = Stacks[i];
                 if (s.Def != def || s.Count >= def.MaxStack) continue;
+                if (!ItemExtra.CanStack(s.Extra, extra)) continue;
                 if (enforceWeight && Layout != null && s.Section != null && !Layout.HasWeightRoom(s.Section, def.Weight)) continue;
                 return s;
             }

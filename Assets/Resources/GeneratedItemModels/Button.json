@@ -1,0 +1,8 @@
+{"version": 1, "id": "Button", "baseHeight": 0.0653, "name": "Button", "model": "gpt-oss:120b", "notes": "Round plastic button about 2.5 cm across and 0.6 cm thick, lying flat on the floor. Main disc with a slightly darker outer rim, a shallow domed top, a central shank hole and a tiny printed label.", "score": 7, "parts": [
+  {"name":"BaseDisc","shape":"cylinder","pos":[0.0,-0.0022,0.0],"rot":[0.0,0.0,0.0],"size":[0.025,0.006,0.025],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,-0.0002,0.0],"rot":[0.0,0.0,0.0],"size":[0.028,0.002,0.028],"color":[0.5,0.48,0.42],"smooth":0.4,"metal":0.0},
+  {"name":"TopDome","shape":"sphere","pos":[0.0,0.0023,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.003,0.022],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":0.0},
+  {"name":"ShankHole","shape":"cylinder","pos":[0.0,-0.0022,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.006,0.008],"color":[0.15,0.15,0.18],"smooth":0.2,"metal":0.0},
+  {"name":"LabelBack","shape":"cube","pos":[0.0,0.0033,0.0],"rot":[0.0,0.0,0.0],"size":[0.012,0.002,0.006],"color":[0.2,0.22,0.25],"smooth":0.1,"metal":0.0},
+  {"name":"LabelMark","shape":"cube","pos":[0.0,0.0043,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.002,0.004],"color":[0.8,0.78,0.75],"smooth":0.1,"metal":0.0}
+]}

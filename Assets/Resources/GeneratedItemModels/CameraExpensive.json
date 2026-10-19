@@ -1,0 +1,13 @@
+{"version": 1, "id": "CameraExpensive", "baseHeight": 0.08, "name": "Camera Expensive", "model": "gpt-oss:120b", "notes": "Expensive DSLR camera ~0.15 m wide × 0.09 m tall × 0.02 m thick, lying on its back (screen up). Main body in matte gray‑brown, glass lens with metal ring, LCD screen, side strap loop, view‑finder bump and a few tiny screws for detail.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0025,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.02,0.09],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"Screen","shape":"cube","pos":[0.0025,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.004,0.07],"color":[0.2,0.22,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"LensRing","shape":"cylinder","pos":[0.0425,0.0125,0.0],"rot":[0.0,0.0,0.0],"size":[0.058,0.005,0.058],"color":[0.85,0.85,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"Lens","shape":"cylinder","pos":[0.0425,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.02,0.05],"color":[0.05,0.05,0.07],"smooth":0.7,"metal":0.0},
+  {"name":"ShutterButton","shape":"cube","pos":[-0.0475,0.005,0.03],"rot":[0.0,0.0,0.0],"size":[0.008,0.004,0.008],"color":[0.1,0.1,0.12],"smooth":0.1,"metal":0.0},
+  {"name":"StrapLoop","shape":"cylinder","pos":[-0.0675,-0.002,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.85,0.85,0.88],"smooth":0.6,"metal":1.0},
+  {"name":"Viewfinder","shape":"cube","pos":[-0.0575,0.005,-0.03],"rot":[0.0,0.0,0.0],"size":[0.01,0.008,0.012],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"ScrewTL","shape":"sphere","pos":[-0.0675,0.001,-0.04],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.1,0.1,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"ScrewTR","shape":"sphere","pos":[-0.0675,0.001,0.04],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.1,0.1,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"ScrewBL","shape":"sphere","pos":[0.0725,0.001,-0.04],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.1,0.1,0.12],"smooth":0.2,"metal":0.0},
+  {"name":"ScrewBR","shape":"sphere","pos":[0.0725,0.001,0.04],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.1,0.1,0.12],"smooth":0.2,"metal":0.0}
+]}

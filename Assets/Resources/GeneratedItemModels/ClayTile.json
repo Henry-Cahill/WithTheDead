@@ -1,0 +1,15 @@
+{"version": 1, "id": "ClayTile", "baseHeight": 0.0922, "name": "Clay Tile", "model": "gpt-oss:120b", "notes": "Flat rectangular clay tile about 30 cm × 20 cm × 1 cm thick, slightly raised rim on all sides and a few surface bumps to hint at the uneven baked‑clay texture.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0031,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.01,0.2],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeXPos","shape":"cube","pos":[0.1456,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.014,0.2],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeXNeg","shape":"cube","pos":[-0.1394,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.014,0.2],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeZPos","shape":"cube","pos":[0.0031,0.001,0.0925],"rot":[0.0,0.0,0.0],"size":[0.27,0.014,0.015],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeZNeg","shape":"cube","pos":[0.0031,0.001,-0.0925],"rot":[0.0,0.0,0.0],"size":[0.27,0.014,0.015],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CrackLine","shape":"cube","pos":[-0.0369,0.0,0.03],"rot":[5.0,0.0,15.0],"size":[0.24,0.002,0.006],"color":[0.42,0.39,0.34],"smooth":0.05,"metal":0.0},
+  {"name":"Bump1","shape":"sphere","pos":[-0.0769,0.0,-0.04],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Bump2","shape":"sphere","pos":[0.0631,0.0,0.05],"rot":[0.0,0.0,0.0],"size":[0.018,0.009,0.018],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Bump3","shape":"sphere","pos":[0.1231,0.0,-0.07],"rot":[0.0,0.0,0.0],"size":[0.022,0.011,0.022],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CornerTL","shape":"cylinder","pos":[-0.1394,0.001,0.0925],"rot":[90.0,0.0,0.0],"size":[0.015,0.014,0.015],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CornerTR","shape":"cylinder","pos":[0.1456,0.001,0.0925],"rot":[90.0,0.0,0.0],"size":[0.015,0.014,0.015],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CornerBL","shape":"cylinder","pos":[-0.1394,0.001,-0.0925],"rot":[90.0,0.0,0.0],"size":[0.015,0.014,0.015],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"CornerBR","shape":"cylinder","pos":[0.1456,0.001,-0.0925],"rot":[90.0,0.0,0.0],"size":[0.015,0.014,0.015],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "GolfTee", "baseHeight": 0.065, "name": "Golf Tee", "model": "gpt-oss:120b", "notes": "Golf tee (plastic) ~0.10 m long when lying on its side, shaft diameter ≈0.008 m, small tip at one end and a flared cup‑shaped head at the other. Tint is light brownish (0.6, 0.58, 0.5).", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.0015,-0.001,0.0],"rot":[0.0,0.0,90.0],"size":[0.008,0.08,0.008],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Tip","shape":"sphere","pos":[-0.0465,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"FlaredHead","shape":"sphere","pos":[0.0435,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.018,0.008,0.018],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"RimDetail","shape":"cylinder","pos":[0.0435,0.003,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.018,0.004],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"BaseChamfer","shape":"cylinder","pos":[-0.0465,0.003,0.0],"rot":[0.0,0.0,90.0],"size":[0.003,0.012,0.003],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Shadow","shape":"cube","pos":[-0.0015,-0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.102,0.002,0.018],"color":[0.1,0.09,0.08],"smooth":0.05,"metal":0.0}
+]}

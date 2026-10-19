@@ -1,0 +1,8 @@
+{"version": 1, "id": "DogTag_Pet_Blank", "baseHeight": 0.0634, "name": "Dog Tag Pet Blank", "model": "gpt-oss:120b", "notes": "Flat pet dog‑tag, blank (no engraving). Approx 5 cm × 2.5 cm × 0.5 cm thick metal plate lying flat on the floor with a small circular hole near the top edge for the chain.", "score": 7, "parts": [
+  {"name":"TagPlate","shape":"cube","pos":[0.0,0.0002,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.005,0.025],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Hole","shape":"cylinder","pos":[0.018,0.0002,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.006,0.008],"color":[0.1,0.1,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.018,0.0002,0.0],"rot":[0.0,0.0,0.0],"size":[0.009,0.005,0.009],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeBevel","shape":"cube","pos":[0.0,0.0024,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.002,0.025],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"Shadow","shape":"cube","pos":[0.0,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.002,0.025],"color":[0.0,0.0,0.0],"smooth":0.0,"metal":0.0},
+  {"name":"LabelArea","shape":"cube","pos":[-0.015,0.0012,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.022],"color":[0.7,0.68,0.6],"smooth":0.1,"metal":0.0}
+]}

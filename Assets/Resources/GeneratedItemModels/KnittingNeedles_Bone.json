@@ -1,0 +1,10 @@
+{"version": 1, "id": "KnittingNeedles_Bone", "baseHeight": 0.071, "name": "Knitting Needles Bone", "model": "gpt-oss:120b", "notes": "Two bone‑colored knitting needles, each 0.34 m long with a 1 cm shaft diameter. One end has a rounded ivory tip, the opposite end a short thicker knob. The pair lie side‑by‑side on the floor, shafts aligned along X and spaced ~2 cm apart in Z.", "score": 7, "parts": [
+  {"name":"NeedleL_Shaft","shape":"cylinder","pos":[0.012,-0.005,-0.01],"rot":[0.0,0.0,90.0],"size":[0.012,0.34,0.012],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"NeedleL_Tip","shape":"sphere","pos":[0.19,-0.003,-0.01],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"NeedleL_Knob","shape":"cylinder","pos":[-0.178,0.0,-0.01],"rot":[0.0,0.0,90.0],"size":[0.022,0.04,0.022],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"NeedleR_Shaft","shape":"cylinder","pos":[0.012,-0.005,0.01],"rot":[0.0,0.0,90.0],"size":[0.012,0.34,0.012],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"NeedleR_Tip","shape":"sphere","pos":[0.19,-0.003,0.01],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"NeedleR_Knob","shape":"cylinder","pos":[-0.178,0.0,0.01],"rot":[0.0,0.0,90.0],"size":[0.022,0.04,0.022],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Tip_RidgeL","shape":"cube","pos":[0.177,-0.002,-0.01],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.012],"color":[0.58,0.56,0.48],"smooth":0.4,"metal":0.0},
+  {"name":"Tip_RidgeR","shape":"cube","pos":[0.177,-0.002,0.01],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.012],"color":[0.58,0.56,0.48],"smooth":0.4,"metal":0.0}
+]}

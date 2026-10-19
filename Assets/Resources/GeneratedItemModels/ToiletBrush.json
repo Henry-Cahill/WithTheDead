@@ -1,0 +1,11 @@
+{"version": 1, "id": "ToiletBrush", "baseHeight": 0.1182, "name": "Toilet Brush", "model": "gpt-oss:120b", "notes": "Toilet brush ~0.38 m long lying on its side: thin plastic/nylon handle (diam 0.025 m) along X, rubber grip near the far end, a short metal ferrule, a wide cup‑shaped head (≈0.09 m diameter) with fluffy bristles. Overall height ≈0.10 m, width ≈0.09 m.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.0315,-0.0442,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.34,0.025],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"RubberGrip","shape":"cylinder","pos":[-0.1815,-0.0418,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.05,0.03],"color":[0.07,0.07,0.07],"smooth":0.2,"metal":0.0},
+  {"name":"Ferrule","shape":"cylinder","pos":[0.1385,-0.0418,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.015,0.03],"color":[0.75,0.75,0.77],"smooth":0.55,"metal":1.0},
+  {"name":"BrushCup","shape":"cylinder","pos":[0.1615,-0.0118,0.0],"rot":[0.0,0.0,90.0],"size":[0.09,0.03,0.09],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"BristleCore","shape":"sphere","pos":[0.1615,0.0133,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.09,0.09],"color":[0.78,0.74,0.66],"smooth":0.05,"metal":0.0},
+  {"name":"BristleL","shape":"sphere","pos":[0.1615,0.0133,-0.03],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.78,0.74,0.66],"smooth":0.05,"metal":0.0},
+  {"name":"BristleR","shape":"sphere","pos":[0.1615,0.0133,0.03],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.78,0.74,0.66],"smooth":0.05,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[0.1615,-0.0118,0.025],"rot":[0.0,0.0,0.0],"size":[0.07,0.002,0.045],"color":[0.2,0.2,0.2],"smooth":0.1,"metal":0.0},
+  {"name":"CapRing","shape":"cylinder","pos":[-0.2015,-0.0442,0.0],"rot":[0.0,0.0,90.0],"size":[0.028,0.004,0.028],"color":[0.75,0.75,0.77],"smooth":0.55,"metal":1.0}
+]}

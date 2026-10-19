@@ -1,0 +1,13 @@
+{"version": 1, "id": "Specimen_FetalLamb", "baseHeight": 0.13, "name": "Specimen Fetal Lamb", "model": "gpt-oss:120b", "notes": "Fetal lamb carcass about 0.35 m long × 0.20 m wide × 0.12 m high, lying on its side. Main torso ellipsoid, small head sphere, short neck bridge, four stubby legs, tiny tail nub, paired ears and a nose tip give a recognizable silhouette.", "score": 6, "parts": [
+  {"name":"Torso","shape":"sphere","pos":[-0.0588,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.14,0.18],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Head","shape":"sphere","pos":[0.1613,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.09,0.09],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"NeckBridge","shape":"cylinder","pos":[0.1113,0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.06,0.07],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"LegFrontLeft","shape":"cylinder","pos":[0.0412,-0.025,0.06],"rot":[0.0,0.0,0.0],"size":[0.03,0.07,0.03],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"LegFrontRight","shape":"cylinder","pos":[0.0412,-0.025,-0.06],"rot":[0.0,0.0,0.0],"size":[0.03,0.07,0.03],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"LegBackLeft","shape":"cylinder","pos":[-0.1588,-0.025,0.06],"rot":[0.0,0.0,0.0],"size":[0.03,0.07,0.03],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"LegBackRight","shape":"cylinder","pos":[-0.1588,-0.025,-0.06],"rot":[0.0,0.0,0.0],"size":[0.03,0.07,0.03],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Tail","shape":"cylinder","pos":[-0.2087,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"EarLeft","shape":"cube","pos":[0.1713,0.06,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"EarRight","shape":"cube","pos":[0.1713,0.06,-0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.04],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"NoseTip","shape":"sphere","pos":[0.2062,0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.015],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0}
+]}

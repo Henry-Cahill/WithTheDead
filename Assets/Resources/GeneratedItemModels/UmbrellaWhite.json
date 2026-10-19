@@ -1,0 +1,15 @@
+{"version": 1, "id": "UmbrellaWhite", "baseHeight": 0.36, "name": "Umbrella White", "model": "gpt-oss:120b", "notes": "Collapsed white umbrella 0.9 m long lying on its side (shaft along X). Steel rib frame radiates from the top of the shaft, a thin white fabric dome covers the ribs, and a short curved handle caps the opposite end.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[-0.09,-0.11,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.9,0.02],"color":[0.4,0.42,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"HandleBase","shape":"cylinder","pos":[-0.53,-0.09,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.12,0.015],"color":[0.4,0.42,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"HandleGrip","shape":"cylinder","pos":[-0.53,-0.04,0.0],"rot":[90.0,0.0,0.0],"size":[0.03,0.02,0.03],"color":[0.2,0.18,0.17],"smooth":0.3,"metal":0.0},
+  {"name":"Rib1","shape":"cylinder","pos":[0.29,-0.1,0.0],"rot":[0.0,45.0,0.0],"size":[0.01,0.32,0.01],"color":[0.4,0.42,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Rib2","shape":"cylinder","pos":[0.29,-0.1,0.0],"rot":[0.0,-45.0,0.0],"size":[0.01,0.32,0.01],"color":[0.4,0.42,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Rib3","shape":"cylinder","pos":[0.29,-0.1,0.0],"rot":[0.0,0.0,45.0],"size":[0.01,0.32,0.01],"color":[0.4,0.42,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Rib4","shape":"cylinder","pos":[0.29,-0.1,0.0],"rot":[0.0,0.0,-45.0],"size":[0.01,0.32,0.01],"color":[0.4,0.42,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"Canopy","shape":"sphere","pos":[0.29,0.1,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.2,0.6],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CanopyEdge","shape":"cylinder","pos":[0.29,0.0,0.0],"rot":[90.0,0.0,0.0],"size":[0.6,0.015,0.6],"color":[0.55,0.53,0.45],"smooth":0.1,"metal":0.0},
+  {"name":"RibCap1","shape":"sphere","pos":[0.29,0.22,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.4,0.42,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"RibCap2","shape":"sphere","pos":[0.29,0.22,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.4,0.42,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"RibCap3","shape":"sphere","pos":[0.29,0.22,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.4,0.42,0.45],"smooth":0.55,"metal":1.0},
+  {"name":"RibCap4","shape":"sphere","pos":[0.29,0.22,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.4,0.42,0.45],"smooth":0.55,"metal":1.0}
+]}

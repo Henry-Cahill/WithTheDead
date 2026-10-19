@@ -1,0 +1,10 @@
+{"version": 1, "id": "KatePic", "baseHeight": 0.071, "name": "Kate Pic", "model": "gpt-oss:120b", "notes": "Framed picture lying flat on the floor (~0.34 m × 0.44 m, 2 cm thick). Main wooden frame (tint), backing board, printed image, thin glass front and four corner nails.", "score": 7, "parts": [
+  {"name":"OuterFrame","shape":"cube","pos":[0.0,-0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.02,0.44],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"BackBoard","shape":"cube","pos":[0.0,-0.0035,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.015,0.4],"color":[0.55,0.53,0.45],"smooth":0.12,"metal":0.0},
+  {"name":"Picture","shape":"cube","pos":[0.0,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.002,0.38],"color":[0.72,0.7,0.62],"smooth":0.05,"metal":0.0},
+  {"name":"Glass","shape":"cube","pos":[0.0,0.0055,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.002,0.4],"color":[0.9,0.95,1.0],"smooth":0.6,"metal":0.0},
+  {"name":"NailFL","shape":"cylinder","pos":[-0.165,0.007,-0.205],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.4,0.38,0.35],"smooth":0.3,"metal":1.0},
+  {"name":"NailFR","shape":"cylinder","pos":[-0.165,0.007,0.205],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.4,0.38,0.35],"smooth":0.3,"metal":1.0},
+  {"name":"NailBL","shape":"cylinder","pos":[0.165,0.007,-0.205],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.4,0.38,0.35],"smooth":0.3,"metal":1.0},
+  {"name":"NailBR","shape":"cylinder","pos":[0.165,0.007,0.205],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.4,0.38,0.35],"smooth":0.3,"metal":1.0}
+]}

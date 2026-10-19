@@ -1,0 +1,8 @@
+{"version": 1, "id": "KnittingNeedles", "baseHeight": 0.0742, "name": "Knitting Needles", "model": "gpt-oss:120b", "notes": "Two wooden knitting needles, each about 0.40 m long and 2 cm in diameter, lying side‑by‑side on the floor with their tapered tips together. The main body is a muted brown (tint 0.6,0.58,0.5) wood texture; the very tip is a slightly shinier steel point.", "score": 7, "parts": [
+  {"name":"NeedleL","shape":"cylinder","pos":[0.0,-0.0017,-0.015],"rot":[0.0,0.0,90.0],"size":[0.02,0.4,0.02],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"NeedleR","shape":"cylinder","pos":[0.0,-0.0017,0.015],"rot":[0.0,0.0,90.0],"size":[0.02,0.4,0.02],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"TipL","shape":"sphere","pos":[-0.2,0.0062,-0.015],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.75,0.74,0.73],"smooth":0.45,"metal":1.0},
+  {"name":"TipR","shape":"sphere","pos":[0.2,0.0062,0.015],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.75,0.74,0.73],"smooth":0.45,"metal":1.0},
+  {"name":"FerruleL","shape":"cylinder","pos":[-0.18,-0.0017,-0.015],"rot":[0.0,0.0,90.0],"size":[0.025,0.02,0.025],"color":[0.7,0.69,0.68],"smooth":0.4,"metal":1.0},
+  {"name":"FerruleR","shape":"cylinder","pos":[0.18,-0.0017,0.015],"rot":[0.0,0.0,90.0],"size":[0.025,0.02,0.025],"color":[0.7,0.69,0.68],"smooth":0.4,"metal":1.0}
+]}

@@ -34,8 +34,9 @@ namespace CloneZ
             public readonly ItemDef Def;
             public readonly int Condition;
             public readonly int TimesRepaired;
-            public WornPiece(ItemDef def, int condition, int timesRepaired)
-            { Def = def; Condition = condition; TimesRepaired = timesRepaired; }
+            public readonly ItemExtra Extra;
+            public WornPiece(ItemDef def, int condition, int timesRepaired, ItemExtra extra = null)
+            { Def = def; Condition = condition; TimesRepaired = timesRepaired; Extra = extra; }
             public bool Exists => Def != null;
             public float Condition01 => Def == null || Def.MaxCondition <= 0
                 ? 1f : Mathf.Clamp01((float)Condition / Def.MaxCondition);
@@ -60,13 +61,13 @@ namespace CloneZ
         /// <summary>Wears a garment on its slot, carrying its condition and repair history. Returns
         /// whatever it replaced (to hand back to the bag); <see cref="WornPiece.Exists"/> is false
         /// when the slot was bare. A negative <paramref name="condition"/> means a pristine garment.</summary>
-        public WornPiece Equip(ItemDef def, int condition = -1, int timesRepaired = 0)
+        public WornPiece Equip(ItemDef def, int condition = -1, int timesRepaired = 0, ItemExtra extra = null)
         {
             if (def == null || !def.IsClothing) return default;
             _worn.TryGetValue(def.ClothingSlot, out WornPiece prev);
             if (prev.Def == def) return default;
             int cond = condition >= 0 ? Mathf.Clamp(condition, 0, def.MaxCondition) : def.MaxCondition;
-            _worn[def.ClothingSlot] = new WornPiece(def, cond, Mathf.Max(0, timesRepaired));
+            _worn[def.ClothingSlot] = new WornPiece(def, cond, Mathf.Max(0, timesRepaired), ItemExtra.CopyOf(extra));
             Changed?.Invoke();
             return prev;
         }
@@ -89,7 +90,7 @@ namespace CloneZ
             if (!_worn.TryGetValue(slot, out WornPiece p) || p.Def == null) return;
             int c = Mathf.Clamp(condition, 0, Mathf.Max(0, p.Def.MaxCondition));
             if (c == p.Condition) return;
-            _worn[slot] = new WornPiece(p.Def, c, p.TimesRepaired);
+            _worn[slot] = new WornPiece(p.Def, c, p.TimesRepaired, p.Extra);
             if (notify) Changed?.Invoke();
         }
 
@@ -140,7 +141,7 @@ namespace CloneZ
         {
             if (Random.Range(0, Mathf.Max(1, piece.Def.ConditionLossChance)) != 0) return;
             int cond = piece.Condition - 1;
-            if (cond > 0) _worn[slot] = new WornPiece(piece.Def, cond, piece.TimesRepaired);
+            if (cond > 0) _worn[slot] = new WornPiece(piece.Def, cond, piece.TimesRepaired, piece.Extra);
             else _worn.Remove(slot);
             Changed?.Invoke();
         }

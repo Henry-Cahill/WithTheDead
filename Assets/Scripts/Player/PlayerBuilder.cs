@@ -97,6 +97,8 @@ namespace CloneZ
 
             // Any full-screen panel (inventory / skills / sleep) forces build mode off.
             if (UIState.GameplayBlocked) { ExitBuildMode(); return; }
+            // No building in the bar, and the Zone's things don't hammer nails.
+            if (HubRules.SafeZone || GameSession.IsMonsterRun) { ExitBuildMode(); return; }
 
             // B flips build mode on or off, abandoning any hammering in progress.
             if (kb != null && kb.bKey.wasPressedThisFrame)
@@ -684,12 +686,14 @@ namespace CloneZ
                 }
                 else
                 {
-                    Barricade.Spawn(null, _buildPos, _buildForward, healthMult);
+                    Barricade b = Barricade.Spawn(null, _buildPos, _buildForward, healthMult);
+                    if (GameSession.IsExtraction && b != null) { b.Owner = ZoneCamps.MyTag; Barricade.RaiseRaised(b); }
                 }
             }
             else
             {
-                BuildPiece.Spawn(null, (BuildPieceType)((int)_buildSelection - 1), _buildPos, _houseYaw, healthMult);
+                BuildPiece p = BuildPiece.Spawn(null, (BuildPieceType)((int)_buildSelection - 1), _buildPos, _houseYaw, healthMult);
+                if (GameSession.IsExtraction && p != null) { p.Owner = ZoneCamps.MyTag; BuildPiece.RaiseRaised(p); }
             }
 
             // Bigger pieces cost more planks, so they train Carpentry proportionally more.

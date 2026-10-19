@@ -1,0 +1,16 @@
+{"version": 1, "id": "LeatherStripsDirty", "baseHeight": 0.0669, "name": "Leather Strips Dirty", "model": "gpt-oss:120b", "notes": "Pile of dirty leather strips, roughly 0.12 m across and ~0.025 m thick. Individual strips are thin (≈5 mm) flat cuboids with a worn brown‑gray tint.", "score": 7, "parts": [
+  {"name":"Strip01","shape":"cube","pos":[-0.0256,0.0,0.0154],"rot":[0.0,5.0,-3.0],"size":[0.1,0.005,0.018],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Strip02","shape":"cube","pos":[0.0194,0.0,-0.0296],"rot":[0.0,-7.0,2.0],"size":[0.095,0.005,0.02],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Strip03","shape":"cube","pos":[-0.0136,0.0,0.0354],"rot":[0.0,3.0,-4.0],"size":[0.11,0.005,0.017],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Strip04","shape":"cube","pos":[0.0294,0.0,0.0054],"rot":[0.0,-2.0,5.0],"size":[0.09,0.005,0.019],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Strip05","shape":"cube","pos":[-0.0176,0.0,-0.0346],"rot":[0.0,6.0,-2.0],"size":[0.105,0.005,0.018],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Strip06","shape":"cube","pos":[0.0364,0.0,0.0254],"rot":[0.0,-4.0,3.0],"size":[0.092,0.005,0.021],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Strip07","shape":"cube","pos":[-0.0356,0.0,-0.0046],"rot":[0.0,8.0,-1.0],"size":[0.108,0.005,0.016],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Strip08","shape":"cube","pos":[0.0144,0.0,0.0404],"rot":[0.0,-3.0,4.0],"size":[0.097,0.005,0.019],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Strip09","shape":"cube","pos":[-0.0106,0.0,-0.0496],"rot":[0.0,2.0,-5.0],"size":[0.102,0.005,0.018],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Strip10","shape":"cube","pos":[0.0444,0.0,-0.0196],"rot":[0.0,-6.0,2.0],"size":[0.09,0.005,0.02],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Strip11","shape":"cube","pos":[-0.0206,0.0,0.0304],"rot":[0.0,4.0,-3.0],"size":[0.095,0.005,0.017],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Strip12","shape":"cube","pos":[0.0244,0.0,-0.0046],"rot":[0.0,-2.0,-4.0],"size":[0.11,0.005,0.019],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Strip13","shape":"cube","pos":[-0.0056,0.0,0.0454],"rot":[0.0,7.0,1.0],"size":[0.098,0.005,0.018],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Strip14","shape":"cube","pos":[0.0344,0.0,-0.0446],"rot":[0.0,-5.0,3.0],"size":[0.103,0.005,0.016],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0}
+]}

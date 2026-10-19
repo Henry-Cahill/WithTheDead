@@ -367,6 +367,7 @@ namespace CloneZ
             NoiseSystem.Emit(transform.position, CloneZConfig.NoiseHammering);
             FixtureContents.Spill(transform);   // whatever was kept in its cupboards ends up on the floor
             All.Remove(this);
+            Removed?.Invoke(this);
             Destroy(gameObject);
         }
 
@@ -376,7 +377,22 @@ namespace CloneZ
         {
             Health = 0f;
             All.Remove(this);
+            Removed?.Invoke(this);
             gameObject.SetActive(false);   // drop out of the navmesh bake before the rebuild runs
+            Destroy(gameObject);
+        }
+
+        /// <summary>Who raised it in the Zone (a camp owner's tag; null for the game's own pieces).</summary>
+        public string Owner;
+        /// <summary>A piece a runner raised (the builder), and one that broke or was torn down — camps and the netcode listen.</summary>
+        public static event System.Action<BuildPiece> Raised, Removed;
+        public static void RaiseRaised(BuildPiece p) { if (p != null) Raised?.Invoke(p); }
+        /// <summary>Gone without a trace (the netcode mirroring another peer's loss): no spill, no events.</summary>
+        public void Vanish()
+        {
+            Health = 0f;
+            All.Remove(this);
+            gameObject.SetActive(false);
             Destroy(gameObject);
         }
         #endregion

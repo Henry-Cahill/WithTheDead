@@ -1,0 +1,13 @@
+{"version": 1, "id": "ShotgunShellsBox", "baseHeight": 0.1074, "name": "Shotgun Shells Box", "model": "gpt-oss:120b", "notes": "Shotgun shells box ~0.30 m long × 0.15 m wide × 0.07 m tall, cardboard with flapped lid, front label and a few shells peeking out of the slightly opened top.", "score": 7, "parts": [
+  {"name":"Base","shape":"cube","pos":[0.0,-0.0449,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.005,0.15],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"SideL","shape":"cube","pos":[-0.146,-0.0099,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.065,0.15],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"SideR","shape":"cube","pos":[0.146,-0.0099,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.065,0.15],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"FrontPanel","shape":"cube","pos":[0.0,-0.0099,-0.073],"rot":[0.0,0.0,0.0],"size":[0.292,0.065,0.004],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"BackPanel","shape":"cube","pos":[0.0,-0.0099,0.073],"rot":[0.0,0.0,0.0],"size":[0.292,0.065,0.004],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"TopFlap","shape":"cube","pos":[0.0,0.0206,0.0],"rot":[20.0,0.0,0.0],"size":[0.292,0.004,0.146],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"FrontLabel","shape":"cube","pos":[0.0,-0.0064,-0.0715],"rot":[0.0,0.0,0.0],"size":[0.2,0.004,0.002],"color":[0.4,0.35,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"Shell1","shape":"cylinder","pos":[-0.06,-0.0174,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.045,0.02],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"Shell2","shape":"cylinder","pos":[-0.015,-0.0174,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.045,0.02],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"Shell3","shape":"cylinder","pos":[0.03,-0.0174,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.045,0.02],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0},
+  {"name":"Shell4","shape":"cylinder","pos":[0.075,-0.0174,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.045,0.02],"color":[0.75,0.75,0.78],"smooth":0.6,"metal":1.0}
+]}

@@ -1,0 +1,8 @@
+{"version": 1, "id": "CapGunCap", "baseHeight": 0.0616, "name": "Cap Gun Cap", "model": "gpt-oss:120b", "notes": "Tiny cap‑gun cap ~0.022 m diameter × 0.002 m thick lying on its side: flat brass‑tinted disc with a slight raised rim and a small stamped imprint in the centre.", "score": 7, "parts": [
+  {"name":"DiscBody","shape":"cylinder","pos":[0.0,-0.0004,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.002,0.02],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Rim","shape":"cylinder","pos":[0.0,0.0004,0.0],"rot":[0.0,0.0,0.0],"size":[0.022,0.002,0.022],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"ImprintBase","shape":"cylinder","pos":[0.0,-0.0003,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.002,0.004],"color":[0.45,0.43,0.38],"smooth":0.5,"metal":1.0},
+  {"name":"ImprintDetail","shape":"cube","pos":[0.0,-0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.002,0.003],"color":[0.4,0.38,0.33],"smooth":0.5,"metal":1.0},
+  {"name":"ShadowEdge","shape":"cylinder","pos":[0.0,-0.0006,0.0],"rot":[0.0,0.0,0.0],"size":[0.019,0.002,0.019],"color":[0.5,0.48,0.42],"smooth":0.4,"metal":1.0},
+  {"name":"EdgeHighlight","shape":"cylinder","pos":[0.0,0.0006,0.0],"rot":[0.0,0.0,0.0],"size":[0.0215,0.002,0.0215],"color":[0.65,0.62,0.55],"smooth":0.45,"metal":1.0}
+]}

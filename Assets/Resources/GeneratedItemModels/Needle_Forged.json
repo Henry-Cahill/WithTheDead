@@ -1,0 +1,11 @@
+{"version": 1, "id": "Needle_Forged", "baseHeight": 0.0631, "name": "Needle Forged", "model": "gpt-oss:120b", "notes": "Forged needle ~6 cm long, 4 mm thick, lying on its side. Main steel shaft with a rounded tip, tiny eye loop near the tip, subtle forged ridges along the top, a rust speck and a small bright spot for wear.", "score": 6, "parts": [
+  {"name":"Shaft","shape":"cylinder","pos":[0.0,-0.0001,0.0],"rot":[0.0,0.0,90.0],"size":[0.004,0.06,0.004],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Tip","shape":"sphere","pos":[0.032,-0.0001,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EyeLoop","shape":"cylinder","pos":[0.02,-0.0001,0.0],"rot":[90.0,0.0,0.0],"size":[0.002,0.008,0.002],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":1.0},
+  {"name":"RustSpot","shape":"sphere","pos":[-0.01,-0.0001,0.0],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.4,0.2,0.1],"smooth":0.3,"metal":0.0},
+  {"name":"Ridge1","shape":"cube","pos":[-0.015,0.0021,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.002,0.004],"color":[0.62,0.6,0.52],"smooth":0.55,"metal":1.0},
+  {"name":"Ridge2","shape":"cube","pos":[0.0,0.0021,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.002,0.004],"color":[0.62,0.6,0.52],"smooth":0.55,"metal":1.0},
+  {"name":"Ridge3","shape":"cube","pos":[0.015,0.0021,0.0],"rot":[0.0,0.0,0.0],"size":[0.05,0.002,0.004],"color":[0.62,0.6,0.52],"smooth":0.55,"metal":1.0},
+  {"name":"WearSpot","shape":"sphere","pos":[-0.018,-0.0001,0.0],"rot":[0.0,0.0,0.0],"size":[0.003,0.003,0.003],"color":[0.9,0.9,0.9],"smooth":0.2,"metal":0.0},
+  {"name":"EndCapLeft","shape":"cube","pos":[-0.03,-0.0001,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0}
+]}

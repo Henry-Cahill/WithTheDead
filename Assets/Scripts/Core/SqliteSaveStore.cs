@@ -58,13 +58,13 @@ namespace CloneZ
             "  id INTEGER PRIMARY KEY AUTOINCREMENT," +
             "  type INTEGER, bleeding INTEGER, bandaged INTEGER, cleanBandage INTEGER," +
             "  disinfected INTEGER, infected INTEGER, prone INTEGER," +
-            "  sepsis REAL, healing REAL, healSeconds REAL);" +
+            "  sepsis REAL, healing REAL, healSeconds REAL, zone INTEGER, flags INTEGER);" +
 
-            "CREATE TABLE clothing (slot INTEGER PRIMARY KEY, itemId TEXT, condition INTEGER, timesRepaired INTEGER);" +
+            "CREATE TABLE clothing (slot INTEGER PRIMARY KEY, itemId TEXT, condition INTEGER, timesRepaired INTEGER, extra TEXT);" +
 
             "CREATE TABLE player_item (" +
             "  seq INTEGER PRIMARY KEY AUTOINCREMENT," +
-            "  itemId TEXT, count INTEGER, spawnHours REAL, condition INTEGER, timesRepaired INTEGER);" +
+            "  itemId TEXT, count INTEGER, spawnHours REAL, condition INTEGER, timesRepaired INTEGER, extra TEXT);" +
 
             "CREATE TABLE container (" +
             "  id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -73,7 +73,7 @@ namespace CloneZ
 
             "CREATE TABLE container_item (" +
             "  seq INTEGER PRIMARY KEY AUTOINCREMENT," +
-            "  containerId INTEGER, itemId TEXT, count INTEGER, spawnHours REAL, condition INTEGER, timesRepaired INTEGER," +
+            "  containerId INTEGER, itemId TEXT, count INTEGER, spawnHours REAL, condition INTEGER, timesRepaired INTEGER, extra TEXT," +
             "  FOREIGN KEY (containerId) REFERENCES container(id));" +
 
             "CREATE TABLE barricade (" +
@@ -119,7 +119,7 @@ namespace CloneZ
             "CREATE TABLE ground_item (" +
             "  cx INTEGER, cz INTEGER, type INTEGER," +
             "  x REAL, z REAL, count INTEGER, spawnHours REAL," +
-            "  condition INTEGER, timesRepaired INTEGER, yaw INTEGER);" +
+            "  condition INTEGER, timesRepaired INTEGER, yaw INTEGER, extra TEXT);" +
 
             "CREATE INDEX ground_item_chunk ON ground_item (cx, cz);";
 
@@ -199,31 +199,32 @@ namespace CloneZ
 
             if (p.Wounds != null)
                 using (var st = db.Prepare(
-                    "INSERT INTO wound (type,bleeding,bandaged,cleanBandage,disinfected,infected,prone,sepsis,healing,healSeconds)" +
-                    " VALUES (?,?,?,?,?,?,?,?,?,?);"))
+                    "INSERT INTO wound (type,bleeding,bandaged,cleanBandage,disinfected,infected,prone,sepsis,healing,healSeconds,zone,flags)" +
+                    " VALUES (?,?,?,?,?,?,?,?,?,?,?,?);"))
                     foreach (WoundSave w in p.Wounds)
                     {
                         st.Reset();
                         st.Bind(1, w.Type).Bind(2, w.Bleeding).Bind(3, w.Bandaged).Bind(4, w.CleanBandage).Bind(5, w.Disinfected)
-                          .Bind(6, w.Infected).Bind(7, w.Prone).Bind(8, w.Sepsis).Bind(9, w.Healing).Bind(10, w.HealSeconds);
+                          .Bind(6, w.Infected).Bind(7, w.Prone).Bind(8, w.Sepsis).Bind(9, w.Healing).Bind(10, w.HealSeconds)
+                          .Bind(11, w.Zone).Bind(12, w.Flags);
                         st.Step();
                     }
 
             if (p.Clothing != null)
-                using (var st = db.Prepare("INSERT INTO clothing (slot,itemId,condition,timesRepaired) VALUES (?,?,?,?);"))
+                using (var st = db.Prepare("INSERT INTO clothing (slot,itemId,condition,timesRepaired,extra) VALUES (?,?,?,?,?);"))
                     foreach (ClothingSave c in p.Clothing)
                     {
                         st.Reset();
-                        st.Bind(1, c.Slot).Bind(2, c.Id).Bind(3, c.Condition).Bind(4, c.TimesRepaired);
+                        st.Bind(1, c.Slot).Bind(2, c.Id).Bind(3, c.Condition).Bind(4, c.TimesRepaired).Bind(5, c.Extra);
                         st.Step();
                     }
 
             if (p.Items != null)
-                using (var st = db.Prepare("INSERT INTO player_item (itemId,count,spawnHours,condition,timesRepaired) VALUES (?,?,?,?,?);"))
+                using (var st = db.Prepare("INSERT INTO player_item (itemId,count,spawnHours,condition,timesRepaired,extra) VALUES (?,?,?,?,?,?);"))
                     foreach (StackSave it in p.Items)
                     {
                         st.Reset();
-                        st.Bind(1, it.Id).Bind(2, it.Count).Bind(3, it.SpawnHours).Bind(4, it.Condition).Bind(5, it.TimesRepaired);
+                        st.Bind(1, it.Id).Bind(2, it.Count).Bind(3, it.SpawnHours).Bind(4, it.Condition).Bind(5, it.TimesRepaired).Bind(6, it.Extra);
                         st.Step();
                     }
         }
@@ -233,7 +234,7 @@ namespace CloneZ
             using (var cst = db.Prepare(
                 "INSERT INTO container (kind,posX,posY,posZ,yaw,searched,lifetime,fixtureKey) VALUES (?,?,?,?,?,?,?,?);"))
             using (var ist = db.Prepare(
-                "INSERT INTO container_item (containerId,itemId,count,spawnHours,condition,timesRepaired) VALUES (?,?,?,?,?,?);"))
+                "INSERT INTO container_item (containerId,itemId,count,spawnHours,condition,timesRepaired,extra) VALUES (?,?,?,?,?,?,?);"))
             {
                 foreach (ContainerSave c in containers)
                 {
@@ -247,7 +248,7 @@ namespace CloneZ
                     foreach (StackSave it in c.Items)
                     {
                         ist.Reset();
-                        ist.Bind(1, containerId).Bind(2, it.Id).Bind(3, it.Count).Bind(4, it.SpawnHours).Bind(5, it.Condition).Bind(6, it.TimesRepaired);
+                        ist.Bind(1, containerId).Bind(2, it.Id).Bind(3, it.Count).Bind(4, it.SpawnHours).Bind(5, it.Condition).Bind(6, it.TimesRepaired).Bind(7, it.Extra);
                         ist.Step();
                     }
                 }
@@ -285,8 +286,8 @@ namespace CloneZ
             }
 
             using (var st = db.Prepare(
-                "INSERT INTO ground_item (cx,cz,type,x,z,count,spawnHours,condition,timesRepaired,yaw)" +
-                " VALUES (?,?,?,?,?,?,?,?,?,?);"))
+                "INSERT INTO ground_item (cx,cz,type,x,z,count,spawnHours,condition,timesRepaired,yaw,extra)" +
+                " VALUES (?,?,?,?,?,?,?,?,?,?,?);"))
             {
                 foreach (GroundItemStore.Chunk chunk in GroundItemStore.AllChunks)
                 {
@@ -301,7 +302,8 @@ namespace CloneZ
                         st.Reset();
                         st.Bind(1, cx).Bind(2, cz).Bind(3, type)
                           .Bind(4, it.X).Bind(5, it.Z).Bind(6, it.Count).Bind(7, it.SpawnHours)
-                          .Bind(8, (int)it.Condition).Bind(9, (int)it.TimesRepaired).Bind(10, (int)it.Yaw);
+                          .Bind(8, (int)it.Condition).Bind(9, (int)it.TimesRepaired).Bind(10, (int)it.Yaw)
+                          .Bind(11, ItemExtra.Serialize(GroundItemStore.ExtraOf(it.Id)));
                         st.Step();
                     }
                 }
@@ -531,8 +533,10 @@ namespace CloneZ
                 foreach (var kv in skills) p.SkillXp[kv.Key] = kv.Value;
             }
 
-            using (var st = db.Prepare(
-                "SELECT type,bleeding,bandaged,cleanBandage,disinfected,infected,prone,sepsis,healing,healSeconds FROM wound ORDER BY id;"))
+            bool woundZones = ColumnExists(db, "wound", "zone");   // saves from before the limb model had none
+            using (var st = db.Prepare(woundZones
+                ? "SELECT type,bleeding,bandaged,cleanBandage,disinfected,infected,prone,sepsis,healing,healSeconds,zone,flags FROM wound ORDER BY id;"
+                : "SELECT type,bleeding,bandaged,cleanBandage,disinfected,infected,prone,sepsis,healing,healSeconds FROM wound ORDER BY id;"))
                 while (st.Step())
                     p.Wounds.Add(new WoundSave
                     {
@@ -546,15 +550,23 @@ namespace CloneZ
                         Sepsis = st.GetFloat(7),
                         Healing = st.GetFloat(8),
                         HealSeconds = st.GetFloat(9),
+                        Zone = woundZones ? st.GetInt(10) : (int)BodyZone.Thorax,
+                        Flags = woundZones ? st.GetInt(11) : 0,
                     });
 
             var clothes = new List<ClothingSave>();
-            using (var st = db.Prepare("SELECT slot,itemId,condition,timesRepaired FROM clothing ORDER BY slot;"))
+            bool clothExtra = ColumnExists(db, "clothing", "extra");   // saves from before item extras had none
+            using (var st = db.Prepare(clothExtra
+                ? "SELECT slot,itemId,condition,timesRepaired,extra FROM clothing ORDER BY slot;"
+                : "SELECT slot,itemId,condition,timesRepaired FROM clothing ORDER BY slot;"))
                 while (st.Step())
-                    clothes.Add(new ClothingSave { Slot = st.GetInt(0), Id = st.GetString(1), Condition = st.GetInt(2), TimesRepaired = st.GetInt(3) });
+                    clothes.Add(new ClothingSave { Slot = st.GetInt(0), Id = st.GetString(1), Condition = st.GetInt(2), TimesRepaired = st.GetInt(3), Extra = clothExtra ? st.GetString(4) : null });
             p.Clothing = clothes.ToArray();
 
-            using (var st = db.Prepare("SELECT itemId,count,spawnHours,condition,timesRepaired FROM player_item ORDER BY seq;"))
+            bool itemExtra = ColumnExists(db, "player_item", "extra");
+            using (var st = db.Prepare(itemExtra
+                ? "SELECT itemId,count,spawnHours,condition,timesRepaired,extra FROM player_item ORDER BY seq;"
+                : "SELECT itemId,count,spawnHours,condition,timesRepaired FROM player_item ORDER BY seq;"))
                 while (st.Step())
                     p.Items.Add(new StackSave
                     {
@@ -563,6 +575,7 @@ namespace CloneZ
                         SpawnHours = st.GetFloat(2),
                         Condition = st.GetInt(3),
                         TimesRepaired = st.GetInt(4),
+                        Extra = itemExtra ? st.GetString(5) : null,
                     });
 
             return p;
@@ -591,8 +604,10 @@ namespace CloneZ
                     d.Containers.Add(c);
                 }
 
-            using (var st = db.Prepare(
-                "SELECT containerId,itemId,count,spawnHours,condition,timesRepaired FROM container_item ORDER BY seq;"))
+            bool cExtra = ColumnExists(db, "container_item", "extra");
+            using (var st = db.Prepare(cExtra
+                ? "SELECT containerId,itemId,count,spawnHours,condition,timesRepaired,extra FROM container_item ORDER BY seq;"
+                : "SELECT containerId,itemId,count,spawnHours,condition,timesRepaired FROM container_item ORDER BY seq;"))
                 while (st.Step())
                     if (byId.TryGetValue(st.GetInt64(0), out ContainerSave c))
                         c.Items.Add(new StackSave
@@ -602,6 +617,7 @@ namespace CloneZ
                             SpawnHours = st.GetFloat(3),
                             Condition = st.GetInt(4),
                             TimesRepaired = st.GetInt(5),
+                            Extra = cExtra ? st.GetString(6) : null,
                         });
         }
 
@@ -632,8 +648,10 @@ namespace CloneZ
                 }
             }
 
-            using (var st = db.Prepare(
-                "SELECT type,x,z,count,spawnHours,condition,timesRepaired,yaw FROM ground_item;"))
+            bool gExtra = ColumnExists(db, "ground_item", "extra");
+            using (var st = db.Prepare(gExtra
+                ? "SELECT type,x,z,count,spawnHours,condition,timesRepaired,yaw,extra FROM ground_item;"
+                : "SELECT type,x,z,count,spawnHours,condition,timesRepaired,yaw FROM ground_item;"))
             {
                 while (st.Step())
                 {
@@ -645,7 +663,8 @@ namespace CloneZ
                         st.GetFloat(4),
                         st.GetInt(5),
                         st.GetInt(6),
-                        st.GetInt(7) * (360f / 256f));
+                        st.GetInt(7) * (360f / 256f),
+                        gExtra ? ItemExtra.Parse(st.GetString(8)) : null);
                 }
             }
         }

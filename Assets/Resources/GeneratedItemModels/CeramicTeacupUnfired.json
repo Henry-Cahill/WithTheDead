@@ -1,0 +1,8 @@
+{"version": 1, "id": "CeramicTeacupUnfired", "baseHeight": 0.103, "name": "Ceramic Teacup Unfired", "model": "gpt-oss:120b", "notes": "Unfired ceramic teacup about 8 cm tall, 7 cm rim diameter, thin walls of raw clay, with a small curved‑handle. Rendered as a squat cylinder with a thin top rim and a side handle.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0175,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.08,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Rim","shape":"cylinder","pos":[-0.0175,0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.075,0.006,0.075],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.0275,-0.003,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.04,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"InnerCavity","shape":"cylinder","pos":[-0.0175,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.075,0.06],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"BaseLip","shape":"cylinder","pos":[-0.0175,-0.04,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.006,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"HandleEnd","shape":"sphere","pos":[0.0475,-0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.015,0.015],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

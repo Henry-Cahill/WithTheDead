@@ -1,0 +1,15 @@
+{"version": 1, "id": "Whetstone", "baseHeight": 0.08, "name": "Whetstone", "model": "gpt-oss:120b", "notes": "Whetstone ~12 cm × 7 cm × 4 cm lying flat, longest axis along X. Main stone body in muted gray, thin rubber foot on the underside, a slightly lighter worn top slab, a dark side ridge and a small rough patch to hint at texture.", "score": 6, "parts": [
+  {"name":"Body","shape":"cube","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.07],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"RubberFoot","shape":"cylinder","pos":[0.0,-0.0175,0.0],"rot":[0.0,0.0,0.0],"size":[0.13,0.005,0.13],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"TopSlab","shape":"cube","pos":[0.0,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.115,0.008,0.065],"color":[0.65,0.63,0.55],"smooth":0.15,"metal":0.0},
+  {"name":"SideRidge","shape":"cube","pos":[0.0,0.0,0.0355],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.01],"color":[0.45,0.43,0.38],"smooth":0.2,"metal":0.0},
+  {"name":"RoughPatch","shape":"sphere","pos":[-0.025,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.04],"color":[0.5,0.48,0.4],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeBevelFront","shape":"cube","pos":[0.06,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.036,0.07],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeBevelBack","shape":"cube","pos":[-0.06,-0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.004,0.036,0.07],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeBevelLeft","shape":"cube","pos":[0.0,-0.002,-0.0355],"rot":[0.0,0.0,0.0],"size":[0.12,0.036,0.004],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"EdgeBevelRight","shape":"cube","pos":[0.0,-0.002,0.0355],"rot":[0.0,0.0,0.0],"size":[0.12,0.036,0.004],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"CornerBevelTL","shape":"cube","pos":[0.058,0.016,0.0335],"rot":[0.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"CornerBevelTR","shape":"cube","pos":[0.058,0.016,-0.0335],"rot":[0.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"CornerBevelBL","shape":"cube","pos":[-0.058,0.016,0.0335],"rot":[0.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0},
+  {"name":"CornerBevelBR","shape":"cube","pos":[-0.058,0.016,-0.0335],"rot":[0.0,0.0,0.0],"size":[0.004,0.008,0.004],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":0.0}
+]}

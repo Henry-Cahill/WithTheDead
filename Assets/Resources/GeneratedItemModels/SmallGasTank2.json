@@ -1,0 +1,12 @@
+{"version": 1, "id": "SmallGasTank2", "baseHeight": 0.33, "name": "Small Gas Tank2", "model": "gpt-oss:120b", "notes": "Small steel gas tank ~0.25 m diameter × 0.55 m long, lying on its side (long axis along X). Main body cylinder, reinforced rim, bottom flange, valve assembly and a safety‑label tag.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[0.0125,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.25,0.55,0.25],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"RimTop","shape":"cylinder","pos":[0.0125,0.13,0.0],"rot":[0.0,0.0,90.0],"size":[0.27,0.02,0.27],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":1.0},
+  {"name":"RimBottom","shape":"cylinder","pos":[0.0125,-0.13,0.0],"rot":[0.0,0.0,90.0],"size":[0.27,0.02,0.27],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":1.0},
+  {"name":"Seam","shape":"cylinder","pos":[0.0125,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.252,0.01,0.252],"color":[0.5,0.48,0.42],"smooth":0.4,"metal":1.0},
+  {"name":"ValveBase","shape":"cylinder","pos":[-0.2375,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.12,0.04,0.12],"color":[0.45,0.44,0.4],"smooth":0.5,"metal":1.0},
+  {"name":"ValveKnob","shape":"cylinder","pos":[-0.2675,0.02,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,0.03,0.04],"color":[0.3,0.3,0.3],"smooth":0.6,"metal":1.0},
+  {"name":"SafetyTag","shape":"cube","pos":[0.1625,0.055,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.08],"color":[0.8,0.2,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrim","shape":"cube","pos":[0.1625,0.056,0.0],"rot":[0.0,0.0,0.0],"size":[0.124,0.002,0.084],"color":[0.6,0.55,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BottomFlange","shape":"cylinder","pos":[0.0125,-0.13,0.0],"rot":[0.0,0.0,90.0],"size":[0.28,0.015,0.28],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":1.0},
+  {"name":"TopFlange","shape":"cylinder","pos":[0.0125,0.13,0.0],"rot":[0.0,0.0,90.0],"size":[0.28,0.015,0.28],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":1.0}
+]}

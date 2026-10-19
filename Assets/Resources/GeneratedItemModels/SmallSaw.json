@@ -1,0 +1,13 @@
+{"version": 1, "id": "SmallSaw", "baseHeight": 0.09, "name": "Small Saw", "model": "gpt-oss:120b", "notes": "Small hand‑saw ~0.47 m long lying on its side: wooden D‑handle, thin steel blade with serrated edge, metal guard ring and two rivets at the handle end.", "score": 7, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.1775,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.12,0.06],"color":[0.38,0.3,0.22],"smooth":0.12,"metal":0.0},
+  {"name":"GuardRing","shape":"cube","pos":[-0.1375,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.08],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"Blade","shape":"cube","pos":[0.0625,-0.026,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.008,0.04],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"Tooth01","shape":"cube","pos":[-0.1025,-0.026,0.025],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.01],"color":[0.58,0.56,0.48],"smooth":0.45,"metal":1.0},
+  {"name":"Tooth02","shape":"cube","pos":[-0.0625,-0.026,0.025],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.01],"color":[0.58,0.56,0.48],"smooth":0.45,"metal":1.0},
+  {"name":"Tooth03","shape":"cube","pos":[-0.0225,-0.026,0.025],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.01],"color":[0.58,0.56,0.48],"smooth":0.45,"metal":1.0},
+  {"name":"Tooth04","shape":"cube","pos":[0.0175,-0.026,0.025],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.01],"color":[0.58,0.56,0.48],"smooth":0.45,"metal":1.0},
+  {"name":"Tooth05","shape":"cube","pos":[0.0575,-0.026,0.025],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.01],"color":[0.58,0.56,0.48],"smooth":0.45,"metal":1.0},
+  {"name":"Tooth06","shape":"cube","pos":[0.0975,-0.026,0.025],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.01],"color":[0.58,0.56,0.48],"smooth":0.45,"metal":1.0},
+  {"name":"RivetA","shape":"sphere","pos":[-0.1925,0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.9,0.9,0.9],"smooth":0.6,"metal":1.0},
+  {"name":"RivetB","shape":"sphere","pos":[-0.1625,0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.9,0.9,0.9],"smooth":0.6,"metal":1.0}
+]}

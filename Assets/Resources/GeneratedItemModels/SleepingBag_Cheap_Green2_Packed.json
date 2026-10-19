@@ -1,0 +1,11 @@
+{"version": 1, "id": "SleepingBag_Cheap_Green2_Packed", "baseHeight": 0.15, "name": "Sleeping Bag Cheap Green2 Packed", "model": "gpt-oss:120b", "notes": "Rolled cheap green sleeping bag (≈0.60 m long × 0.18 m diameter) lying on its side. Main outer fabric, inner lining, thin padding, end caps, a dark zipper seam with pull tab, a draw‑string coil and a small tag.", "score": 6, "parts": [
+  {"name":"OuterFabric","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.18,0.6,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"InnerLining","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.16,0.58,0.16],"color":[0.7,0.68,0.6],"smooth":0.05,"metal":0.0},
+  {"name":"PaddingFoam","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.14,0.55,0.14],"color":[0.8,0.8,0.8],"smooth":0.1,"metal":0.0},
+  {"name":"EndCapFront","shape":"cube","pos":[0.31,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.18,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EndCapBack","shape":"cube","pos":[-0.31,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.18,0.18],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"ZipperLine","shape":"cube","pos":[0.0,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.6,0.004,0.18],"color":[0.3,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"ZipPull","shape":"cube","pos":[0.31,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.02],"color":[0.5,0.5,0.5],"smooth":0.3,"metal":0.0},
+  {"name":"DrawStringCoil","shape":"cylinder","pos":[-0.15,0.04,0.0],"rot":[90.0,0.0,0.0],"size":[0.04,0.08,0.04],"color":[0.3,0.25,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"Tag","shape":"cube","pos":[-0.2,0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.005,0.02],"color":[0.9,0.4,0.2],"smooth":0.05,"metal":0.0}
+]}

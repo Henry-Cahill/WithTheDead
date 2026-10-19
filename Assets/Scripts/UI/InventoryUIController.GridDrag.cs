@@ -766,7 +766,7 @@ namespace CloneZ
         private void WearFromContainer(ItemStack s)
         {
             if (!Holds(_openInventory, s) || !s.Def.IsClothing || RefuseWornAlready(s.Def)) return;
-            ItemStack passing = PassThroughPack(s.Def, s.SpawnHours, s.Def.IsDamageable ? s.Condition : -1, s.TimesRepaired);
+            ItemStack passing = PassThroughPack(s.Def, s.SpawnHours, s.Def.IsDamageable ? s.Condition : -1, s.TimesRepaired, s.Extra);
             if (passing == null) return;
             _openInventory.Remove(s, 1);
             _player.Use(passing);
@@ -776,18 +776,18 @@ namespace CloneZ
         private void WearFromGround(WorldItem w)
         {
             if (w == null || w.Def == null || !w.Def.IsClothing || !w.StillThere || RefuseWornAlready(w.Def)) return;
-            ItemStack passing = PassThroughPack(w.Def, w.SpawnHours, w.Def.IsDamageable ? w.Condition : -1, w.TimesRepaired);
+            ItemStack passing = PassThroughPack(w.Def, w.SpawnHours, w.Def.IsDamageable ? w.Condition : -1, w.TimesRepaired, w.Extra);
             if (passing == null) return;
             w.Take(1);
             _player.Use(passing);
             MarkDirty();
         }
 
-        private ItemStack PassThroughPack(ItemDef def, float spawnHours, int condition, int timesRepaired)
+        private ItemStack PassThroughPack(ItemDef def, float spawnHours, int condition, int timesRepaired, ItemExtra extra)
         {
             List<ItemStack> stacks = _player.Inventory.Stacks;
             int before = stacks.Count;
-            if (_player.Inventory.Add(def, 1, enforceWeight: false, spawnHours: spawnHours, condition: condition, timesRepaired: timesRepaired) <= 0)
+            if (_player.Inventory.Add(def, 1, enforceWeight: false, spawnHours: spawnHours, condition: condition, timesRepaired: timesRepaired, extra: extra) <= 0)
                 return null;
             if (stacks.Count > before) return stacks[stacks.Count - 1];   // a new stack lands at the end
             for (int i = 0; i < stacks.Count; i++)
@@ -850,6 +850,20 @@ namespace CloneZ
             options.Add(new MenuOption(s.Count > 1 ? "Drop all " + s.Count : "Drop", () => DropStack(s, s.Count)));
             if (s.Count > 1) options.Add(new MenuOption("Drop 1", () => DropStack(s, 1)));
             AddSplitRotate(options, _player.Inventory, s);
+            AddFeatureVerbs(options, s);
+        }
+
+        // Verbs contributed by feature modules (attach a mod, strip a gun, insure, throw a bolt...).
+        private readonly List<ItemMenuAction> _featureVerbs = new List<ItemMenuAction>();
+        private void AddFeatureVerbs(List<MenuOption> options, ItemStack s)
+        {
+            ItemActions.Gather(_player, s, _featureVerbs);
+            for (int i = 0; i < _featureVerbs.Count; i++)
+            {
+                ItemMenuAction a = _featureVerbs[i];
+                System.Action run = a.Run;
+                options.Add(new MenuOption(a.Label, run == null ? null : (System.Action)(() => { run(); MarkDirty(); }), a.Enabled));
+            }
         }
 
         private void ContainerMenu(List<MenuOption> options, ItemStack s)
@@ -886,6 +900,7 @@ namespace CloneZ
 
         private static string GridUseVerb(ItemDef d)
         {
+            if (d.CustomUse && !string.IsNullOrEmpty(d.UseVerb)) return d.UseVerb;
             if (d.IsClothing) return "Wear";
             if (d.IsEquippable) return "Equip";
             if (d.IsCanned) return "Open & eat";
@@ -916,7 +931,7 @@ namespace CloneZ
             if (s.Count > 1) InfoLine(sb, "Stack", "\u00d7" + s.Count + "  \u00b7  " + Kg(s.Weight) + " kg");
             if (d.UsesCharge) InfoLine(sb, d.Gear == GearKind.GasMask ? "Filter" : "Battery", Pct(s.Charge01));
             else if (d.IsDamageable)
-                InfoLine(sb, "Wear", Pct(s.Condition01) + "  (" + s.Condition + " / " + d.MaxCondition + ")"
+                InfoLine(sb, "Wear", ItemConditionTiers.Label(s.Condition01) + "  \u00b7  " + Pct(s.Condition01) + "  (" + s.Condition + " / " + d.MaxCondition + ")"
                     + (s.TimesRepaired > 0 ? "  \u00b7  repaired \u00d7" + s.TimesRepaired : ""));
             if (d.Perishable)
                 InfoLine(sb, "Freshness", s.State + "  \u00b7  " + Mathf.RoundToInt(s.AgeHours) + "h old of ~" + Mathf.RoundToInt(d.ShelfLifeHours) + "h");
@@ -936,7 +951,7 @@ namespace CloneZ
             var sb = new System.Text.StringBuilder(200);
             InfoLine(sb, "Status", "Worn \u00b7 " + ev.Slot.ToString().ToLowerInvariant());
             if (p.Def.UsesCharge) InfoLine(sb, p.Def.Gear == GearKind.GasMask ? "Filter" : "Battery", Pct(p.Condition01));
-            else if (p.Def.IsDamageable) InfoLine(sb, "Wear", Pct(p.Condition01) + "  (" + p.Condition + " / " + p.Def.MaxCondition + ")");
+            else if (p.Def.IsDamageable) InfoLine(sb, "Wear", ItemConditionTiers.Label(p.Condition01) + "  \u00b7  " + Pct(p.Condition01) + "  (" + p.Condition + " / " + p.Def.MaxCondition + ")");
             sb.Append("\n<size=12><color=#8b93a0>Right-click or double-click to take it off</color></size>");
             ShowTooltip(p.Def, Rule + sb.ToString());
         }

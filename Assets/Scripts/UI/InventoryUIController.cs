@@ -198,6 +198,9 @@ namespace CloneZ
         #endregion
 
         #region Open / close
+        /// <summary>Raised when the local survivor opens / leaves a container (the netcode locks and syncs it).</summary>
+        public static event System.Action<LootContainer> ContainerOpened, ContainerClosed;
+
         /// <summary>Opens the window on a container — or, when it's already open, switches the loot pane
         /// to it (picked from the container column, or a search started there just finished).</summary>
         public void OpenContainer(LootContainer container)
@@ -206,6 +209,7 @@ namespace CloneZ
             if (IsOpen && container == _openContainer) { MarkDirty(); return; }
             DetachContainer();
             _openContainer = container;
+            ContainerOpened?.Invoke(container);
             _openInventory = container.Contents;
             container.Searched = true;
             if (_gridMode) container.EnsureLayout();   // arranged before we listen, so it doesn't refresh twice
@@ -230,6 +234,7 @@ namespace CloneZ
         private void DetachContainer()
         {
             if (_openInventory != null && _markDirty != null) _openInventory.Changed -= _markDirty;
+            if (_openContainer != null) ContainerClosed?.Invoke(_openContainer);
             _openInventory = null;
             _openContainer = null;
         }

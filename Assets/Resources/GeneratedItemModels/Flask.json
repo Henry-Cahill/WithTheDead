@@ -1,0 +1,10 @@
+{"version": 1, "id": "Flask", "baseHeight": 0.1, "name": "Flask", "model": "gpt-oss:120b", "notes": "Hip‑flask ~0.15 m long × 0.07 m diameter lying on its side: brushed‑metal body, screw cap at +X end, recessed label around the middle and a thin rim detail.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.0075,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.15,0.07],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":1.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.075,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.06,0.015,0.06],"color":[0.55,0.53,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"Rim","shape":"cylinder","pos":[-0.0775,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.072,0.004,0.072],"color":[0.5,0.48,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"LabelBase","shape":"cube","pos":[-0.0075,0.001,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.065],"color":[0.48,0.45,0.38],"smooth":0.05,"metal":0.0},
+  {"name":"LabelText","shape":"cube","pos":[-0.0075,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.108,0.002,0.059],"color":[0.35,0.33,0.28],"smooth":0.05,"metal":0.0},
+  {"name":"SeamTop","shape":"cylinder","pos":[0.0375,0.004,0.0],"rot":[0.0,0.0,90.0],"size":[0.072,0.003,0.072],"color":[0.5,0.48,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"SeamBottom","shape":"cylinder","pos":[-0.0525,-0.004,0.0],"rot":[0.0,0.0,90.0],"size":[0.072,0.003,0.072],"color":[0.5,0.48,0.4],"smooth":0.6,"metal":1.0},
+  {"name":"CapThread","shape":"cylinder","pos":[0.07,0.006,0.0],"rot":[0.0,0.0,90.0],"size":[0.058,0.002,0.058],"color":[0.48,0.46,0.38],"smooth":0.6,"metal":1.0}
+]}

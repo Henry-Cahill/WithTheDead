@@ -64,7 +64,7 @@ namespace CloneZ
             if (_cam == null) _cam = Camera.main;
             UpdateAim();
 
-            if (_stats.IsDead)
+            if (_stats.IsDead || _stats.Incapacitated)
             {
                 _stats.Exertion = Exertion.Idle;
                 CurrentSpeed = 0f;
@@ -288,6 +288,10 @@ namespace CloneZ
             speed *= _stats.PainMoveMultiplier;
             speed *= _stats.ColdMoveMultiplier;   // cold-stiff muscles and heavy wet clothes drag
             speed *= _stats.SicknessMoveMultiplier; // food poisoning slows a queasy survivor to a trudge
+            // Broken legs, blood loss, overload, artifacts, traits and Zone marks.
+            StatMods mods = PlayerModifiers.Current;
+            speed *= Mathf.Max(0.02f, mods.MoveSpeed);
+            if (wantSprint) speed *= Mathf.Max(0.1f, mods.SprintSpeed);
             CurrentSpeed = speed;
 
             // Gravity keeps us pinned to the ground.
@@ -315,10 +319,15 @@ namespace CloneZ
 
             // Lightfooted survivors tread more quietly, drawing fewer zombies (PZ getLightfootMod).
             if (_skills != null) radius *= _skills.FootstepNoiseMult;
+            radius *= PlayerModifiers.Current.NoiseMult;
 
             NoiseSystem.Emit(transform.position, radius);
+            Footstep?.Invoke(sprinting, IsSneaking);
             _footstepTimer = interval;
         }
+
+        /// <summary>Raised on every footstep of the survivor (sprinting, sneaking) — the audio plays steps from it.</summary>
+        public event System.Action<bool, bool> Footstep;
 
         private void FaceAim()
         {

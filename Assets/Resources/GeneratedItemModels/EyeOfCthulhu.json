@@ -1,0 +1,10 @@
+{"version": 1, "id": "EyeOfCthulhu", "baseHeight": 0.187, "name": "Eye Of Cthulhu", "model": "gpt-oss:120b", "notes": "Round eye‑orb ~0.24 m across, lying on its side with the “eye” face up. Main glassy sphere tinted gray‑brown, thin iris ring and black pupil on top, plus a few dark vein spikes for texture.", "score": 6, "parts": [
+  {"name":"Body","shape":"sphere","pos":[0.0,-0.007,0.0],"rot":[0.0,0.0,0.0],"size":[0.24,0.24,0.24],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"IrisRing","shape":"cylinder","pos":[0.0,0.114,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.008,0.18],"color":[0.4,0.38,0.33],"smooth":0.15,"metal":0.0},
+  {"name":"Pupil","shape":"cylinder","pos":[0.0,0.118,0.0],"rot":[0.0,0.0,0.0],"size":[0.09,0.006,0.09],"color":[0.05,0.05,0.07],"smooth":0.1,"metal":0.0},
+  {"name":"VeinA","shape":"cylinder","pos":[-0.06,0.013,0.08],"rot":[45.0,0.0,0.0],"size":[0.02,0.07,0.02],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"VeinB","shape":"cylinder","pos":[0.07,0.003,-0.05],"rot":[-30.0,0.0,20.0],"size":[0.018,0.06,0.018],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"VeinC","shape":"cylinder","pos":[0.04,-0.017,0.07],"rot":[20.0,0.0,-15.0],"size":[0.016,0.05,0.016],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"VeinD","shape":"cylinder","pos":[-0.08,0.023,-0.04],"rot":[-40.0,0.0,10.0],"size":[0.022,0.08,0.022],"color":[0.3,0.28,0.25],"smooth":0.2,"metal":0.0},
+  {"name":"GlowHalo","shape":"cylinder","pos":[0.0,0.125,0.0],"rot":[0.0,0.0,0.0],"size":[0.22,0.004,0.22],"color":[0.5,0.48,0.42],"smooth":0.3,"metal":0.0}
+]}

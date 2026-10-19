@@ -202,7 +202,11 @@ namespace CloneZ
             _open = open;
             if (open) _locked = false;
             Apply(false);
-            if (noisy) MakeNoise(CloneZConfig.FixtureNoiseDoor);
+            if (noisy)
+            {
+                MakeNoise(CloneZConfig.FixtureNoiseDoor);
+                Sfx.Play(open ? SfxIds.DoorOpen : SfxIds.DoorClose, transform.position + Vector3.up * 1.2f, 0.75f, UnityEngine.Random.Range(0.92f, 1.08f), 22f);
+            }
         }
 
         // The leaves, the collider over them, the carve across the gap and the doorway's flags, all in step.

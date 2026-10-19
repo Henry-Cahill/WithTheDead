@@ -1,0 +1,13 @@
+{"version": 1, "id": "Tarp", "baseHeight": 0.08, "name": "Tarp", "model": "gpt-oss:120b", "notes": "Flat tarp 2.4 m long × 1.6 m wide, 2 cm thick (0.02 m) with reinforced edge strips and four metal grommets at the corners; a rope loop is tied around each short side.", "score": 7, "parts": [
+  {"name":"MainSheet","shape":"cube","pos":[0.0,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[2.4,0.02,1.6],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"EdgeFront","shape":"cube","pos":[0.0,-0.0075,0.76],"rot":[0.0,0.0,0.0],"size":[2.4,0.025,0.08],"color":[0.45,0.44,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeBack","shape":"cube","pos":[0.0,-0.0075,-0.76],"rot":[0.0,0.0,0.0],"size":[2.4,0.025,0.08],"color":[0.45,0.44,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-1.16,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,1.6],"color":[0.45,0.44,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"EdgeRight","shape":"cube","pos":[1.16,-0.0075,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.025,1.6],"color":[0.45,0.44,0.38],"smooth":0.08,"metal":0.0},
+  {"name":"GrommetTL","shape":"cylinder","pos":[-1.16,-0.005,0.76],"rot":[0.0,0.0,0.0],"size":[0.03,0.01,0.03],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"GrommetTR","shape":"cylinder","pos":[1.16,-0.005,0.76],"rot":[0.0,0.0,0.0],"size":[0.03,0.01,0.03],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"GrommetBL","shape":"cylinder","pos":[-1.16,-0.005,-0.76],"rot":[0.0,0.0,0.0],"size":[0.03,0.01,0.03],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"GrommetBR","shape":"cylinder","pos":[1.16,-0.005,-0.76],"rot":[0.0,0.0,0.0],"size":[0.03,0.01,0.03],"color":[0.3,0.3,0.35],"smooth":0.6,"metal":1.0},
+  {"name":"RopeFront","shape":"cylinder","pos":[0.0,0.0125,0.76],"rot":[0.0,0.0,90.0],"size":[0.015,2.4,0.015],"color":[0.4,0.25,0.15],"smooth":0.2,"metal":0.0},
+  {"name":"RopeBack","shape":"cylinder","pos":[0.0,0.0125,-0.76],"rot":[0.0,0.0,90.0],"size":[0.015,2.4,0.015],"color":[0.4,0.25,0.15],"smooth":0.2,"metal":0.0}
+]}

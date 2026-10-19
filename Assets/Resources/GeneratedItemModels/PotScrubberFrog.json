@@ -1,0 +1,14 @@
+{"version": 1, "id": "PotScrubberFrog", "baseHeight": 0.09, "name": "Pot Scrubber Frog", "model": "gpt-oss:120b", "notes": "Pot‑scrubber frog ~0.15 m long × 0.08 m wide × 0.06 m high (lying on its side). Main squishy body, rounded head with two dark eyes, a simple mouth line and four little foot pads at the corners. All parts rest on y=0.", "score": 7, "parts": [
+  {"name":"Body","shape":"sphere","pos":[-0.0215,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.15,0.06,0.08],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Head","shape":"sphere","pos":[0.0735,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.045,0.07],"color":[0.58,0.55,0.48],"smooth":0.4,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.0935,0.015,0.02],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.3,0.35,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.0935,0.015,-0.02],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.3,0.35,0.2],"smooth":0.2,"metal":0.0},
+  {"name":"MouthLine","shape":"cube","pos":[0.0835,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.008,0.04],"color":[0.4,0.42,0.35],"smooth":0.3,"metal":0.0},
+  {"name":"FootFL","shape":"cube","pos":[0.0485,-0.026,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.02],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"FootFR","shape":"cube","pos":[0.0485,-0.026,-0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.02],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"FootBL","shape":"cube","pos":[-0.0915,-0.026,0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.02],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"FootBR","shape":"cube","pos":[-0.0915,-0.026,-0.03],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.02],"color":[0.55,0.53,0.45],"smooth":0.3,"metal":0.0},
+  {"name":"RidgeTop","shape":"cube","pos":[-0.0215,0.015,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.006,0.06],"color":[0.58,0.55,0.48],"smooth":0.4,"metal":0.0},
+  {"name":"RidgeSideL","shape":"cube","pos":[-0.0215,0.0,0.04],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.006],"color":[0.58,0.55,0.48],"smooth":0.4,"metal":0.0},
+  {"name":"RidgeSideR","shape":"cube","pos":[-0.0215,0.0,-0.04],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.006],"color":[0.58,0.55,0.48],"smooth":0.4,"metal":0.0}
+]}

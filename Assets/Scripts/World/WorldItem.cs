@@ -26,6 +26,8 @@ namespace CloneZ
         public int Condition { get; private set; }
         public int TimesRepaired { get; private set; }
         public Vector3 Position { get; private set; }
+        /// <summary>The item's extras (found-in-raid, gun mods…), or null.</summary>
+        public ItemExtra Extra { get; private set; }
 
         private WorldItem() { }
 
@@ -43,6 +45,7 @@ namespace CloneZ
                 Condition = item.Condition,
                 TimesRepaired = item.TimesRepaired,
                 Position = item.Position,
+                Extra = GroundItemStore.ExtraOf(item.Id),
             };
         }
 
@@ -53,12 +56,12 @@ namespace CloneZ
         /// <summary>Drops an item onto the ground. The <paramref name="parent"/> is accepted and ignored
         /// — ground items are no longer scene objects — so existing callers need no change.</summary>
         public static WorldItem Spawn(Transform parent, Vector3 position, ItemDef def, int count,
-            float spawnHours = float.NaN, int condition = -1, int timesRepaired = 0)
+            float spawnHours = float.NaN, int condition = -1, int timesRepaired = 0, ItemExtra extra = null)
         {
             if (def == null || count <= 0) return null;
 
             position.y = 0f;
-            uint id = GroundItemStore.Add(def, position, count, spawnHours, condition, timesRepaired);
+            uint id = GroundItemStore.Add(def, position, count, spawnHours, condition, timesRepaired, -1f, extra);
             if (id == 0) return null;
 
             long key = GroundItemStore.KeyOf(position.x, position.z);

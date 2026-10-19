@@ -1,0 +1,14 @@
+{"version": 1, "id": "SmallTrunk2", "baseHeight": 0.14, "name": "Small Trunk2", "model": "gpt-oss:120b", "notes": "Small wooden trunk (≈0.5 m L × 0.30 m W × 0.25 m H) lying on its side – main box, slightly larger hinged lid, two metal hinges, a rectangular lock, two thin metal straps and a short metal handle on the front of the lid.", "score": 7, "parts": [
+  {"name":"Body","shape":"cube","pos":[-0.14,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.15,0.3],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Lid","shape":"cube","pos":[0.13,0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.52,0.07,0.32],"color":[0.58,0.55,0.48],"smooth":0.12,"metal":0.0},
+  {"name":"HingeFront","shape":"cylinder","pos":[0.08,0.02,0.145],"rot":[0.0,0.0,0.0],"size":[0.015,0.12,0.015],"color":[0.4,0.38,0.35],"smooth":0.3,"metal":1.0},
+  {"name":"HingeBack","shape":"cylinder","pos":[0.08,0.02,-0.145],"rot":[0.0,0.0,0.0],"size":[0.015,0.12,0.015],"color":[0.4,0.38,0.35],"smooth":0.3,"metal":1.0},
+  {"name":"Lock","shape":"cylinder","pos":[0.14,0.05,0.0],"rot":[90.0,0.0,0.0],"size":[0.025,0.04,0.025],"color":[0.3,0.27,0.25],"smooth":0.4,"metal":1.0},
+  {"name":"StrapMid","shape":"cylinder","pos":[-0.14,-0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.01,0.48,0.01],"color":[0.45,0.42,0.38],"smooth":0.3,"metal":1.0},
+  {"name":"StrapTop","shape":"cylinder","pos":[-0.14,0.06,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.48,0.008],"color":[0.45,0.42,0.38],"smooth":0.3,"metal":1.0},
+  {"name":"Handle","shape":"cylinder","pos":[0.17,0.05,0.0],"rot":[90.0,0.0,0.0],"size":[0.012,0.06,0.012],"color":[0.35,0.33,0.3],"smooth":0.4,"metal":1.0},
+  {"name":"RivetFrontL","shape":"sphere","pos":[-0.36,0.01,0.13],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.26],"smooth":0.5,"metal":1.0},
+  {"name":"RivetFrontR","shape":"sphere","pos":[-0.36,0.01,-0.13],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.26],"smooth":0.5,"metal":1.0},
+  {"name":"RivetBackL","shape":"sphere","pos":[0.08,0.01,0.13],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.26],"smooth":0.5,"metal":1.0},
+  {"name":"RivetBackR","shape":"sphere","pos":[0.08,0.01,-0.13],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.3,0.28,0.26],"smooth":0.5,"metal":1.0}
+]}

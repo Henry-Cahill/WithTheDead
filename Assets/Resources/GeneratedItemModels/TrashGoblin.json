@@ -1,0 +1,14 @@
+{"version": 1, "id": "TrashGoblin", "baseHeight": 0.1429, "name": "Trash Goblin", "model": "gpt-oss:120b", "notes": "A haphazard pile of assorted trash about 0.35 m wide × 0.30 m deep × 0.15 m tall: a soda can, plastic bottle, rag, scrap wood, crumpled paper, metal bolt, tin‑foil lump, shoe sole, glass shard and a few tiny bits. All parts rest on the floor (y=0) and overlap to form one recognisable junk heap.", "score": 6, "parts": [
+  {"name":"CanBody","shape":"cylinder","pos":[-0.0644,-0.0071,-0.0033],"rot":[0.0,0.0,0.0],"size":[0.07,0.12,0.07],"color":[0.58,0.55,0.48],"smooth":0.55,"metal":0.8},
+  {"name":"Bottle","shape":"cylinder","pos":[0.0856,0.0079,-0.0533],"rot":[0.0,0.0,0.0],"size":[0.05,0.15,0.05],"color":[0.55,0.58,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Rag","shape":"cube","pos":[0.0156,-0.0571,0.0967],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.08],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"ScrapWoodL","shape":"cube","pos":[-0.1044,-0.0471,-0.0433],"rot":[10.0,0.0,15.0],"size":[0.09,0.04,0.06],"color":[0.52,0.48,0.42],"smooth":0.15,"metal":0.0},
+  {"name":"ScrapWoodR","shape":"cube","pos":[0.1356,-0.0421,0.0167],"rot":[-5.0,0.0,-10.0],"size":[0.09,0.04,0.06],"color":[0.55,0.5,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"PaperSheet","shape":"cube","pos":[-0.1044,-0.0521,-0.0833],"rot":[0.0,5.0,0.0],"size":[0.15,0.02,0.1],"color":[0.58,0.55,0.48],"smooth":0.05,"metal":0.0},
+  {"name":"Bolt","shape":"cylinder","pos":[0.1156,-0.0371,0.0467],"rot":[0.0,0.0,90.0],"size":[0.012,0.025,0.012],"color":[0.45,0.45,0.45],"smooth":0.6,"metal":1.0},
+  {"name":"TinFoilBall","shape":"sphere","pos":[-0.0544,-0.0271,0.0767],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.06],"color":[0.62,0.6,0.55],"smooth":0.4,"metal":0.0},
+  {"name":"ShoeSole","shape":"cube","pos":[0.0456,-0.0546,-0.1233],"rot":[0.0,0.0,0.0],"size":[0.18,0.025,0.12],"color":[0.4,0.38,0.35],"smooth":0.15,"metal":0.0},
+  {"name":"GlassShard","shape":"sphere","pos":[-0.0344,0.0029,-0.0033],"rot":[45.0,0.0,0.0],"size":[0.04,0.02,0.06],"color":[0.7,0.73,0.78],"smooth":0.6,"metal":0.0},
+  {"name":"PlasticClip","shape":"cylinder","pos":[0.1356,-0.0421,0.0167],"rot":[0.0,90.0,0.0],"size":[0.008,0.015,0.008],"color":[0.55,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"ClothPatch","shape":"cube","pos":[-0.0044,-0.0491,0.1467],"rot":[5.0,0.0,-5.0],"size":[0.1,0.03,0.07],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0}
+]}

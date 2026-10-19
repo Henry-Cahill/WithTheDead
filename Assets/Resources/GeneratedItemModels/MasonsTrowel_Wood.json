@@ -1,0 +1,14 @@
+{"version": 1, "id": "MasonsTrowel_Wood", "baseHeight": 0.08, "name": "Masons Trowel Wood", "model": "gpt-oss:120b", "notes": "Wooden mason's trowel ~0.30 m long lying on its side: wooden handle with a rounded knob, rubber‑grip strip and a subtle seam, metal blade with front bevel, back plate and side rims, rivet and screw head at the joint, plus a small metal edge cap.", "score": 6, "parts": [
+  {"name":"Handle","shape":"cylinder","pos":[-0.065,-0.0075,-0.018],"rot":[0.0,0.0,90.0],"size":[0.025,0.15,0.025],"color":[0.6,0.58,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"GripKnob","shape":"sphere","pos":[-0.14,0.0,-0.018],"rot":[0.0,0.0,0.0],"size":[0.04,0.04,0.04],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"GripStrip","shape":"cylinder","pos":[-0.08,-0.006,-0.018],"rot":[0.0,0.0,90.0],"size":[0.028,0.04,0.028],"color":[0.45,0.42,0.35],"smooth":0.3,"metal":0.0},
+  {"name":"HandleSeam","shape":"cylinder","pos":[-0.02,-0.0075,-0.018],"rot":[0.0,0.0,90.0],"size":[0.025,0.004,0.025],"color":[0.55,0.53,0.45],"smooth":0.15,"metal":0.0},
+  {"name":"BladeBody","shape":"cube","pos":[0.07,-0.016,0.022],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.08],"color":[0.3,0.3,0.32],"smooth":0.55,"metal":1.0},
+  {"name":"BladeFrontBevel","shape":"cube","pos":[0.14,-0.016,0.022],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.08],"color":[0.3,0.3,0.32],"smooth":0.55,"metal":1.0},
+  {"name":"BladeBackPlate","shape":"cube","pos":[0.07,-0.019,0.022],"rot":[0.0,0.0,0.0],"size":[0.12,0.002,0.08],"color":[0.3,0.3,0.32],"smooth":0.55,"metal":1.0},
+  {"name":"BladeSideRimL","shape":"cube","pos":[0.07,-0.016,0.024],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.004],"color":[0.3,0.3,0.32],"smooth":0.55,"metal":1.0},
+  {"name":"BladeSideRimR","shape":"cube","pos":[0.07,-0.016,-0.06],"rot":[0.0,0.0,0.0],"size":[0.12,0.008,0.004],"color":[0.3,0.3,0.32],"smooth":0.55,"metal":1.0},
+  {"name":"Rivet","shape":"cylinder","pos":[0.01,-0.014,-0.018],"rot":[0.0,0.0,0.0],"size":[0.01,0.004,0.01],"color":[0.4,0.4,0.42],"smooth":0.6,"metal":1.0},
+  {"name":"ScrewHead","shape":"sphere","pos":[0.01,-0.011,-0.018],"rot":[0.0,0.0,0.0],"size":[0.016,0.016,0.016],"color":[0.5,0.5,0.52],"smooth":0.6,"metal":1.0},
+  {"name":"EdgeCap","shape":"cube","pos":[0.15,-0.016,-0.018],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.04],"color":[0.3,0.3,0.32],"smooth":0.55,"metal":1.0}
+]}

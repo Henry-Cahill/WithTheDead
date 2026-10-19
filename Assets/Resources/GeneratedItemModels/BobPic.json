@@ -1,0 +1,8 @@
+{"version": 1, "id": "BobPic", "baseHeight": 0.0685, "name": "Bob Pic", "model": "gpt-oss:120b", "notes": "Flat picture/photo 0.30 m × 0.20 m, about 2 cm thick with a thin cardboard backing and a light wooden‑look frame border (≈8 mm high).", "score": 7, "parts": [
+  {"name":"BackingBoard","shape":"cube","pos":[0.0,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.005,0.2],"color":[0.55,0.53,0.45],"smooth":0.05,"metal":0.0},
+  {"name":"PhotoPanel","shape":"cube","pos":[0.0,0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.26,0.012,0.16],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"BorderTop","shape":"cube","pos":[0.0,0.0005,0.09],"rot":[0.0,0.0,0.0],"size":[0.3,0.008,0.02],"color":[0.51,0.49,0.425],"smooth":0.15,"metal":0.0},
+  {"name":"BorderBottom","shape":"cube","pos":[0.0,0.0005,-0.09],"rot":[0.0,0.0,0.0],"size":[0.3,0.008,0.02],"color":[0.51,0.49,0.425],"smooth":0.15,"metal":0.0},
+  {"name":"BorderLeft","shape":"cube","pos":[-0.14,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.2],"color":[0.51,0.49,0.425],"smooth":0.15,"metal":0.0},
+  {"name":"BorderRight","shape":"cube","pos":[0.14,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.008,0.2],"color":[0.51,0.49,0.425],"smooth":0.15,"metal":0.0}
+]}

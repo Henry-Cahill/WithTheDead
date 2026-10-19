@@ -1,0 +1,15 @@
+{"version": 1, "id": "RearWindow1", "baseHeight": 0.072, "name": "Rear Window1", "model": "gpt-oss:120b", "notes": "Rear window sheet about 1.20 m × 0.50 m, ~6 mm thick, lying on the floor broken into a central glass pane with scattered shards and four short frame remnants plus corner screws.", "score": 7, "parts": [
+  {"name":"MainPane","shape":"cube","pos":[0.0,-0.009,-0.01],"rot":[0.0,0.0,0.0],"size":[1.2,0.006,0.5],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0},
+  {"name":"FrameTop","shape":"cube","pos":[0.0,-0.002,0.25],"rot":[0.0,0.0,0.0],"size":[1.22,0.02,0.02],"color":[0.2,0.2,0.2],"smooth":0.15,"metal":1.0},
+  {"name":"FrameBottom","shape":"cube","pos":[0.0,-0.002,-0.27],"rot":[0.0,0.0,0.0],"size":[1.22,0.02,0.02],"color":[0.2,0.2,0.2],"smooth":0.15,"metal":1.0},
+  {"name":"FrameLeft","shape":"cube","pos":[-0.61,-0.002,-0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.52],"color":[0.2,0.2,0.2],"smooth":0.15,"metal":1.0},
+  {"name":"FrameRight","shape":"cube","pos":[0.61,-0.002,-0.01],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.52],"color":[0.2,0.2,0.2],"smooth":0.15,"metal":1.0},
+  {"name":"ShardA","shape":"cube","pos":[-0.25,-0.009,0.09],"rot":[0.0,0.0,0.0],"size":[0.3,0.006,0.12],"color":[0.65,0.62,0.55],"smooth":0.6,"metal":0.0},
+  {"name":"ShardB","shape":"cube","pos":[0.2,-0.009,-0.09],"rot":[0.0,0.0,0.0],"size":[0.25,0.006,0.15],"color":[0.65,0.62,0.55],"smooth":0.6,"metal":0.0},
+  {"name":"ShardC","shape":"cube","pos":[-0.1,-0.009,-0.21],"rot":[0.0,0.0,0.0],"size":[0.18,0.006,0.1],"color":[0.65,0.62,0.55],"smooth":0.6,"metal":0.0},
+  {"name":"ShardD","shape":"cube","pos":[0.35,-0.009,0.21],"rot":[0.0,0.0,0.0],"size":[0.22,0.006,0.14],"color":[0.65,0.62,0.55],"smooth":0.6,"metal":0.0},
+  {"name":"ScrewTL","shape":"cylinder","pos":[-0.6,0.006,0.23],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.75,0.75,0.78],"smooth":0.3,"metal":1.0},
+  {"name":"ScrewTR","shape":"cylinder","pos":[0.6,0.006,0.23],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.75,0.75,0.78],"smooth":0.3,"metal":1.0},
+  {"name":"ScrewBL","shape":"cylinder","pos":[-0.6,0.006,-0.25],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.75,0.75,0.78],"smooth":0.3,"metal":1.0},
+  {"name":"ScrewBR","shape":"cylinder","pos":[0.6,0.006,-0.25],"rot":[0.0,0.0,0.0],"size":[0.008,0.012,0.008],"color":[0.75,0.75,0.78],"smooth":0.3,"metal":1.0}
+]}

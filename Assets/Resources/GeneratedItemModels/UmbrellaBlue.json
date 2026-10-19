@@ -1,0 +1,16 @@
+{"version": 1, "id": "UmbrellaBlue", "baseHeight": 0.11, "name": "Umbrella Blue", "model": "gpt-oss:120b", "notes": "Flat open umbrella lying on the floor, approx 0.90 m wide. Blue canopy (tint 0.6,0.58,0.5) with eight thin metal ribs radiating from a central hub, and a collapsed shaft with curved handle resting beside it.", "score": 7, "parts": [
+  {"name":"Canopy","shape":"sphere","pos":[0.2,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.9,0.04,0.9],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"CanopyLabel","shape":"cube","pos":[0.2,0.012,0.0],"rot":[0.0,0.0,0.0],"size":[0.4,0.004,0.2],"color":[0.15,0.2,0.35],"smooth":0.05,"metal":0.0},
+  {"name":"Hub","shape":"cylinder","pos":[0.2,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.08,0.06],"color":[0.5,0.5,0.5],"smooth":0.4,"metal":0.8},
+  {"name":"Rib1","shape":"cylinder","pos":[0.2,0.01,0.0],"rot":[0.0,0.0,90.0],"size":[0.01,0.45,0.01],"color":[0.5,0.5,0.5],"smooth":0.4,"metal":0.8},
+  {"name":"Rib2","shape":"cylinder","pos":[0.2,0.01,0.0],"rot":[0.0,45.0,90.0],"size":[0.01,0.45,0.01],"color":[0.5,0.5,0.5],"smooth":0.4,"metal":0.8},
+  {"name":"Rib3","shape":"cylinder","pos":[0.2,0.01,0.0],"rot":[0.0,90.0,90.0],"size":[0.01,0.45,0.01],"color":[0.5,0.5,0.5],"smooth":0.4,"metal":0.8},
+  {"name":"Rib4","shape":"cylinder","pos":[0.2,0.01,0.0],"rot":[0.0,135.0,90.0],"size":[0.01,0.45,0.01],"color":[0.5,0.5,0.5],"smooth":0.4,"metal":0.8},
+  {"name":"Rib5","shape":"cylinder","pos":[0.2,0.01,0.0],"rot":[0.0,-180.0,90.0],"size":[0.01,0.45,0.01],"color":[0.5,0.5,0.5],"smooth":0.4,"metal":0.8},
+  {"name":"Rib6","shape":"cylinder","pos":[0.2,0.01,0.0],"rot":[0.0,-135.0,90.0],"size":[0.01,0.45,0.01],"color":[0.5,0.5,0.5],"smooth":0.4,"metal":0.8},
+  {"name":"Rib7","shape":"cylinder","pos":[0.2,0.01,0.0],"rot":[0.0,-90.0,90.0],"size":[0.01,0.45,0.01],"color":[0.5,0.5,0.5],"smooth":0.4,"metal":0.8},
+  {"name":"Rib8","shape":"cylinder","pos":[0.2,0.01,0.0],"rot":[0.0,-45.0,90.0],"size":[0.01,0.45,0.01],"color":[0.5,0.5,0.5],"smooth":0.4,"metal":0.8},
+  {"name":"Shaft","shape":"cylinder","pos":[-0.1,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.95,0.02],"color":[0.4,0.4,0.45],"smooth":0.2,"metal":0.6},
+  {"name":"HandleBase","shape":"sphere","pos":[-0.575,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.1,0.1,0.12],"smooth":0.3,"metal":0.0},
+  {"name":"HandleGrip","shape":"cylinder","pos":[-0.61,-0.02,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.08,0.015],"color":[0.12,0.12,0.13],"smooth":0.3,"metal":0.0}
+]}

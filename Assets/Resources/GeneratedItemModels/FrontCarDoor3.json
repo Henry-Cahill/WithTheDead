@@ -1,0 +1,15 @@
+{"version": 1, "id": "FrontCarDoor3", "baseHeight": 0.0887, "name": "Front Car Door3", "model": "gpt-oss:120b", "notes": "Front car door ~0.90 m wide × 1.20 m tall × 0.04 m thick lying flat on the floor (longest side along X). Main painted steel panel with recessed glass window, metal pull‑handle, thin edge trim and a few rivet studs for detail.", "score": 7, "parts": [
+  {"name":"DoorPanel","shape":"cube","pos":[0.0013,-0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.9,0.04,1.2],"color":[0.6,0.58,0.5],"smooth":0.3,"metal":0.9},
+  {"name":"WindowGlass","shape":"cube","pos":[0.0013,0.0037,0.0],"rot":[0.0,0.0,0.0],"size":[0.7,0.015,0.8],"color":[0.82,0.86,0.94],"smooth":0.1,"metal":0.0},
+  {"name":"HandleBar","shape":"cylinder","pos":[0.3512,0.0162,-0.45],"rot":[0.0,0.0,90.0],"size":[0.025,0.12,0.025],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"HandleGrip","shape":"cylinder","pos":[0.3512,0.0162,-0.45],"rot":[90.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.7,0.7,0.75],"smooth":0.6,"metal":1.0},
+  {"name":"TrimTop","shape":"cube","pos":[0.0013,0.0138,0.595],"rot":[0.0,0.0,0.0],"size":[0.9,0.005,0.01],"color":[0.55,0.53,0.45],"smooth":0.25,"metal":0.8},
+  {"name":"TrimBottom","shape":"cube","pos":[0.0013,0.0138,-0.595],"rot":[0.0,0.0,0.0],"size":[0.9,0.005,0.01],"color":[0.55,0.53,0.45],"smooth":0.25,"metal":0.8},
+  {"name":"TrimLeft","shape":"cube","pos":[-0.4437,0.0138,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,1.2],"color":[0.55,0.53,0.45],"smooth":0.25,"metal":0.8},
+  {"name":"TrimRight","shape":"cube","pos":[0.4463,0.0138,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.005,1.2],"color":[0.55,0.53,0.45],"smooth":0.25,"metal":0.8},
+  {"name":"RivetTL","shape":"sphere","pos":[-0.4387,0.0162,0.59],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.7],"smooth":0.5,"metal":1.0},
+  {"name":"RivetTR","shape":"sphere","pos":[0.4413,0.0162,0.59],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.7],"smooth":0.5,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[-0.4387,0.0162,-0.59],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.7],"smooth":0.5,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.4413,0.0162,-0.59],"rot":[0.0,0.0,0.0],"size":[0.008,0.008,0.008],"color":[0.7,0.7,0.7],"smooth":0.5,"metal":1.0},
+  {"name":"HingePin","shape":"cylinder","pos":[-0.4437,0.0162,0.0],"rot":[90.0,0.0,0.0],"size":[0.015,0.02,0.015],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.9}
+]}

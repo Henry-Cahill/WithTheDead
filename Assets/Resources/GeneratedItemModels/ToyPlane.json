@@ -1,0 +1,12 @@
+{"version": 1, "id": "ToyPlane", "baseHeight": 0.09, "name": "Toy Plane", "model": "gpt-oss:120b", "notes": "Toy plane ~0.20 m long, 0.25 m wingspan, plastic tint 0.6 0.58 0.5. Lying on its side: fuselage cylinder along X, central wing slab, tail fin, small horizontal stabiliser, nose cone, propeller hub + blade, two simple landing‑gear wheels.", "score": 7, "parts": [
+  {"name":"Fuselage","shape":"cylinder","pos":[-0.02,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.2,0.03],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"NoseCone","shape":"sphere","pos":[0.09,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.06,0.06],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"Wing","shape":"cube","pos":[-0.02,-0.011,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.008,0.24],"color":[0.6,0.58,0.5],"smooth":0.35,"metal":0.0},
+  {"name":"TailFin","shape":"cube","pos":[-0.11,0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.04,0.01],"color":[0.55,0.53,0.45],"smooth":0.35,"metal":0.0},
+  {"name":"StabLeft","shape":"cube","pos":[-0.09,-0.009,0.06],"rot":[0.0,0.0,0.0],"size":[0.05,0.008,0.12],"color":[0.6,0.58,0.5],"smooth":0.35,"metal":0.0},
+  {"name":"StabRight","shape":"cube","pos":[-0.09,-0.009,-0.06],"rot":[0.0,0.0,0.0],"size":[0.05,0.008,0.12],"color":[0.6,0.58,0.5],"smooth":0.35,"metal":0.0},
+  {"name":"PropHub","shape":"cylinder","pos":[0.07,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"PropBlade","shape":"cube","pos":[0.075,0.0025,0.07],"rot":[0.0,0.0,0.0],"size":[0.08,0.005,0.01],"color":[0.55,0.53,0.45],"smooth":0.4,"metal":0.0},
+  {"name":"WheelFront","shape":"cylinder","pos":[0.03,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.2,0.2,0.2],"smooth":0.5,"metal":0.0},
+  {"name":"WheelRear","shape":"cylinder","pos":[-0.09,-0.005,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.005,0.02],"color":[0.2,0.2,0.2],"smooth":0.5,"metal":0.0}
+]}

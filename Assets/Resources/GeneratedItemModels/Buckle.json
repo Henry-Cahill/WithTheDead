@@ -1,0 +1,12 @@
+{"version": 1, "id": "Buckle", "baseHeight": 0.07, "name": "Buckle", "model": "gpt-oss:120b", "notes": "Belt buckle ~8 cm wide × 4 cm deep × 1.2 cm thick lying flat on the floor. Main metal body with raised edge frame, a front‑facing pin hole and protruding pin, two rivets at the top corners, and a small prong on the right side.", "score": 6, "parts": [
+  {"name":"BasePlate","shape":"cube","pos":[-0.0075,-0.004,0.007],"rot":[0.0,0.0,0.0],"size":[0.08,0.012,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeLeft","shape":"cube","pos":[-0.0435,-0.001,0.007],"rot":[0.0,0.0,0.0],"size":[0.008,0.018,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeRight","shape":"cube","pos":[0.0285,-0.001,0.007],"rot":[0.0,0.0,0.0],"size":[0.008,0.018,0.04],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeFront","shape":"cube","pos":[-0.0075,-0.001,-0.009],"rot":[0.0,0.0,0.0],"size":[0.08,0.018,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"EdgeBack","shape":"cube","pos":[-0.0075,-0.001,0.023],"rot":[0.0,0.0,0.0],"size":[0.08,0.018,0.008],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"Prong","shape":"cylinder","pos":[0.0375,-0.001,0.007],"rot":[0.0,0.0,90.0],"size":[0.006,0.02,0.006],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"PinHole","shape":"cylinder","pos":[-0.0075,0.003,-0.008],"rot":[0.0,0.0,0.0],"size":[0.004,0.014,0.004],"color":[0.45,0.44,0.38],"smooth":0.4,"metal":1.0},
+  {"name":"Pin","shape":"cylinder","pos":[-0.0075,0.003,-0.018],"rot":[90.0,0.0,0.0],"size":[0.004,0.018,0.004],"color":[0.6,0.58,0.5],"smooth":0.55,"metal":1.0},
+  {"name":"RivetL","shape":"sphere","pos":[-0.0435,0.005,0.023],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.75,0.73,0.68],"smooth":0.6,"metal":1.0},
+  {"name":"RivetR","shape":"sphere","pos":[0.0285,0.005,0.023],"rot":[0.0,0.0,0.0],"size":[0.006,0.006,0.006],"color":[0.75,0.73,0.68],"smooth":0.6,"metal":1.0}
+]}

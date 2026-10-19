@@ -1,0 +1,17 @@
+{"version": 1, "id": "OldBrake1", "baseHeight": 0.08, "name": "Old Brake1", "model": "gpt-oss:120b", "notes": "Old brake disc (≈0.30 m dia × 0.04 m thick) lying flat: central hub, outer rim dust‑cover, and six bolt‑head fasteners around the hub. Dull steel‑gray tint.", "score": 6, "parts": [
+  {"name":"DiscBody","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.04,0.3],"color":[0.6,0.58,0.5],"smooth":0.25,"metal":1.0},
+  {"name":"Hub","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.1,0.04,0.1],"color":[0.55,0.53,0.45],"smooth":0.2,"metal":1.0},
+  {"name":"DustCover","shape":"cylinder","pos":[0.0,0.003,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.006,0.34],"color":[0.48,0.46,0.4],"smooth":0.15,"metal":1.0},
+  {"name":"BoltHeadFL","shape":"cylinder","pos":[0.12,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.45,0.44,0.38],"smooth":0.2,"metal":1.0},
+  {"name":"BoltHeadFR","shape":"cylinder","pos":[-0.12,0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.45,0.44,0.38],"smooth":0.2,"metal":1.0},
+  {"name":"BoltHeadL","shape":"cylinder","pos":[0.06,0.01,0.104],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.45,0.44,0.38],"smooth":0.2,"metal":1.0},
+  {"name":"BoltHeadR","shape":"cylinder","pos":[-0.06,0.01,0.104],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.45,0.44,0.38],"smooth":0.2,"metal":1.0},
+  {"name":"BoltHeadBL","shape":"cylinder","pos":[0.06,0.01,-0.104],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.45,0.44,0.38],"smooth":0.2,"metal":1.0},
+  {"name":"BoltHeadBR","shape":"cylinder","pos":[-0.06,0.01,-0.104],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.45,0.44,0.38],"smooth":0.2,"metal":1.0},
+  {"name":"BoltShaftFL","shape":"cylinder","pos":[0.12,-0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.018,0.008],"color":[0.5,0.48,0.42],"smooth":0.2,"metal":1.0},
+  {"name":"BoltShaftFR","shape":"cylinder","pos":[-0.12,-0.005,0.0],"rot":[90.0,0.0,0.0],"size":[0.008,0.018,0.008],"color":[0.5,0.48,0.42],"smooth":0.2,"metal":1.0},
+  {"name":"BoltShaftL","shape":"cylinder","pos":[0.06,-0.005,0.104],"rot":[90.0,0.0,0.0],"size":[0.008,0.018,0.008],"color":[0.5,0.48,0.42],"smooth":0.2,"metal":1.0},
+  {"name":"BoltShaftR","shape":"cylinder","pos":[-0.06,-0.005,0.104],"rot":[90.0,0.0,0.0],"size":[0.008,0.018,0.008],"color":[0.5,0.48,0.42],"smooth":0.2,"metal":1.0},
+  {"name":"BoltShaftBL","shape":"cylinder","pos":[0.06,-0.005,-0.104],"rot":[90.0,0.0,0.0],"size":[0.008,0.018,0.008],"color":[0.5,0.48,0.42],"smooth":0.2,"metal":1.0},
+  {"name":"BoltShaftBR","shape":"cylinder","pos":[-0.06,-0.005,-0.104],"rot":[90.0,0.0,0.0],"size":[0.008,0.018,0.008],"color":[0.5,0.48,0.42],"smooth":0.2,"metal":1.0}
+]}

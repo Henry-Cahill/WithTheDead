@@ -1,0 +1,11 @@
+{"version": 1, "id": "NormalCarMuffler3", "baseHeight": 0.18, "name": "Normal Car Muffler3", "model": "gpt-oss:120b", "notes": "Car muffler lying on its side (≈0.45 m long × 0.18 m overall dia.). Main steel cylinder, inner perforated core, inlet & outlet flanges welded to the ends, a small mounting bracket on the side and four bolt heads sitting on the flange surfaces.", "score": 7, "parts": [
+  {"name":"MainShell","shape":"cylinder","pos":[0.0,0.0,-0.015],"rot":[0.0,0.0,90.0],"size":[0.18,0.45,0.18],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":1.0},
+  {"name":"Core","shape":"cylinder","pos":[0.0,0.0,-0.015],"rot":[0.0,0.0,90.0],"size":[0.12,0.42,0.12],"color":[0.5,0.48,0.4],"smooth":0.3,"metal":1.0},
+  {"name":"InletFlange","shape":"cylinder","pos":[0.235,0.0,-0.015],"rot":[0.0,0.0,90.0],"size":[0.24,0.02,0.24],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"OutletFlange","shape":"cylinder","pos":[-0.235,0.0,-0.015],"rot":[0.0,0.0,90.0],"size":[0.24,0.02,0.24],"color":[0.6,0.58,0.5],"smooth":0.45,"metal":1.0},
+  {"name":"BoltInletL","shape":"cylinder","pos":[0.235,0.018,0.035],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"BoltInletR","shape":"cylinder","pos":[0.235,0.018,-0.065],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"BoltOutletL","shape":"cylinder","pos":[-0.235,0.018,0.035],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"BoltOutletR","shape":"cylinder","pos":[-0.235,0.018,-0.065],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.02],"color":[0.8,0.8,0.8],"smooth":0.6,"metal":1.0},
+  {"name":"MountBracket","shape":"cube","pos":[0.0,0.0,0.105],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.06],"color":[0.3,0.3,0.3],"smooth":0.2,"metal":0.0}
+]}

@@ -1,0 +1,12 @@
+{"version": 1, "id": "Crayons", "baseHeight": 0.071, "name": "Crayons", "model": "gpt-oss:120b", "notes": "Loose pile of eight wax crayons (0.175 m long × 0.022 m dia.) in a muted gray‑brown tint, scattered on the floor with a thin cardboard base that held them together when new.", "score": 6, "parts": [
+  {"name":"BoxBase","shape":"cube","pos":[-0.0175,-0.006,0.0005],"rot":[0.0,0.0,0.0],"size":[0.18,0.01,0.08],"color":[0.78,0.7,0.5],"smooth":0.15,"metal":0.0},
+  {"name":"Label","shape":"cube","pos":[-0.0875,0.0,0.0005],"rot":[0.0,0.0,0.0],"size":[0.04,0.004,0.06],"color":[0.6,0.58,0.5],"smooth":0.12,"metal":0.0},
+  {"name":"Crayon1","shape":"cylinder","pos":[-0.0875,0.0,0.0255],"rot":[0.0,0.0,90.0],"size":[0.022,0.175,0.022],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Crayon2","shape":"cylinder","pos":[-0.0625,0.0,-0.0195],"rot":[0.0,0.0,90.0],"size":[0.022,0.175,0.022],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Crayon3","shape":"cylinder","pos":[-0.0375,0.0,0.0155],"rot":[0.0,0.0,90.0],"size":[0.022,0.175,0.022],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Crayon4","shape":"cylinder","pos":[-0.0125,0.0,-0.0295],"rot":[0.0,0.0,90.0],"size":[0.022,0.175,0.022],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Crayon5","shape":"cylinder","pos":[0.0125,0.0,0.0205],"rot":[0.0,0.0,90.0],"size":[0.022,0.175,0.022],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Crayon6","shape":"cylinder","pos":[0.0375,0.0,-0.0145],"rot":[0.0,0.0,90.0],"size":[0.022,0.175,0.022],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Crayon7","shape":"cylinder","pos":[0.0625,0.0,0.0055],"rot":[0.0,0.0,90.0],"size":[0.022,0.175,0.022],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"Crayon8","shape":"cylinder","pos":[0.0875,0.0,-0.0245],"rot":[0.0,0.0,90.0],"size":[0.022,0.175,0.022],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0}
+]}

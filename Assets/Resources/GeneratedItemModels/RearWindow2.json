@@ -1,0 +1,12 @@
+{"version": 1, "id": "RearWindow2", "baseHeight": 0.1441, "name": "Rear Window2", "model": "gpt-oss:120b", "notes": "Rear window pane about 1.20 m wide × 0.50 m tall × 0.01 m thick (gray‑tinted glass) lying flat on the floor. Thin metal framing strips run around its edges and a couple of cracked lines plus three small shards give it the look of a broken rear window.", "score": 7, "parts": [
+  {"name":"GlassPane","shape":"cube","pos":[0.0,-0.006,0.0],"rot":[0.0,0.0,0.0],"size":[1.2,0.01,0.5],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0},
+  {"name":"FrameTop","shape":"cube","pos":[0.0,0.004,0.245],"rot":[0.0,0.0,0.0],"size":[1.2,0.01,0.02],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":1.0},
+  {"name":"FrameBottom","shape":"cube","pos":[0.0,0.004,-0.245],"rot":[0.0,0.0,0.0],"size":[1.2,0.01,0.02],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":1.0},
+  {"name":"FrameLeft","shape":"cube","pos":[-0.59,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.5],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":1.0},
+  {"name":"FrameRight","shape":"cube","pos":[0.59,0.004,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.01,0.5],"color":[0.3,0.3,0.35],"smooth":0.2,"metal":1.0},
+  {"name":"CrackA","shape":"cube","pos":[-0.15,0.0,0.1],"rot":[0.0,0.0,12.0],"size":[0.8,0.002,0.01],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.0},
+  {"name":"CrackB","shape":"cube","pos":[0.1,0.0,-0.12],"rot":[0.0,0.0,-8.0],"size":[0.55,0.002,0.01],"color":[0.2,0.2,0.22],"smooth":0.3,"metal":0.0},
+  {"name":"Shard1","shape":"cube","pos":[0.25,-0.003,0.05],"rot":[15.0,30.0,5.0],"size":[0.07,0.004,0.09],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0},
+  {"name":"Shard2","shape":"cube","pos":[-0.3,-0.003,-0.08],"rot":[-10.0,20.0,-12.0],"size":[0.06,0.004,0.08],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0},
+  {"name":"Shard3","shape":"cube","pos":[0.05,-0.003,-0.2],"rot":[5.0,-15.0,22.0],"size":[0.05,0.004,0.07],"color":[0.6,0.58,0.5],"smooth":0.6,"metal":0.0}
+]}

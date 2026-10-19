@@ -426,6 +426,9 @@ namespace CloneZ
             return null;
         }
 
+        /// <summary>Raised after the local survivor finishes an action on a fixture (the netcode replicates its new state).</summary>
+        public static event System.Action<Interactable> ActionRan;
+
         /// <summary>Carries out <paramref name="a"/> at <paramref name="f"/>: at once, or as a timed job.</summary>
         public void Perform(Interactable f, InteractAction a)
         {
@@ -438,6 +441,7 @@ namespace CloneZ
             if (!a.IsTimed)
             {
                 a.Run?.Invoke(_ctx);
+                ActionRan?.Invoke(f);
                 return;
             }
             CancelSearch();
@@ -481,6 +485,7 @@ namespace CloneZ
             {
                 ClearJob();
                 job.Run?.Invoke(_ctx);
+                ActionRan?.Invoke(f);
             }
         }
 

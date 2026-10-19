@@ -1,0 +1,10 @@
+{"version": 1, "id": "CapGunCapBox", "baseHeight": 0.0825, "name": "Cap Gun Cap Box", "model": "gpt-oss:120b", "notes": "Small cardboard cap‑gun ammo box ~12 cm × 8 cm × 4 cm lying on the floor, with a front flap lid, printed label on the front face and several tiny caps (paper discs) both inside and spilling out.", "score": 7, "parts": [
+  {"name":"BoxBody","shape":"cube","pos":[0.0,-0.0025,-0.0188],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.08],"color":[0.6,0.58,0.5],"smooth":0.2,"metal":0.0},
+  {"name":"LidFlap","shape":"cube","pos":[0.0,0.02,0.0312],"rot":[0.0,0.0,0.0],"size":[0.12,0.005,0.02],"color":[0.65,0.63,0.55],"smooth":0.2,"metal":0.0},
+  {"name":"LabelFront","shape":"cube","pos":[0.0,0.0025,0.0217],"rot":[0.0,0.0,0.0],"size":[0.08,0.02,0.002],"color":[0.4,0.38,0.3],"smooth":0.05,"metal":0.0},
+  {"name":"CapInside1","shape":"cylinder","pos":[-0.03,-0.0025,-0.0288],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.015],"color":[0.35,0.33,0.3],"smooth":0.4,"metal":0.0},
+  {"name":"CapInside2","shape":"cylinder","pos":[0.02,-0.0025,0.0012],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.015],"color":[0.35,0.33,0.3],"smooth":0.4,"metal":0.0},
+  {"name":"CapInside3","shape":"cylinder","pos":[-0.04,-0.0025,0.0112],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.015],"color":[0.35,0.33,0.3],"smooth":0.4,"metal":0.0},
+  {"name":"CapSpill1","shape":"cylinder","pos":[-0.05,0.0195,0.0412],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.015],"color":[0.35,0.33,0.3],"smooth":0.4,"metal":0.0},
+  {"name":"CapSpill2","shape":"cylinder","pos":[0.04,0.0195,0.0513],"rot":[0.0,0.0,0.0],"size":[0.015,0.004,0.015],"color":[0.35,0.33,0.3],"smooth":0.4,"metal":0.0}
+]}

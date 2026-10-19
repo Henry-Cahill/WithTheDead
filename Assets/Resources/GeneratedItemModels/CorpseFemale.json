@@ -1,0 +1,20 @@
+{"version": 1, "id": "CorpseFemale", "baseHeight": 0.1725, "name": "Corpse Female", "model": "gpt-oss:120b", "notes": "Female corpse lying on its back, approx 1.65 m long. Main silhouette built from a head ellipsoid, torso‑pelvis block, two arms, two legs and simple clothing strips. All parts now touch each other: pelvis meets torso, arms meet torso sides, shirt panels sit on the torso surface, pants panels sit on the pelvis, **legs are attached to the hips** (their front faces line up with the rear face of the pe", "score": 6, "parts": [
+  {"name":"Head","shape":"sphere","pos":[0.58,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.22,0.18],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"EyeL","shape":"sphere","pos":[0.61,0.0175,0.045],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.0,0.0,0.0],"smooth":0.3,"metal":0.0},
+  {"name":"EyeR","shape":"sphere","pos":[0.61,0.0175,-0.045],"rot":[0.0,0.0,0.0],"size":[0.02,0.02,0.02],"color":[0.0,0.0,0.0],"smooth":0.3,"metal":0.0},
+  {"name":"Torso","shape":"cube","pos":[0.08,-0.0025,0.0],"rot":[0.0,0.0,0.0],"size":[0.5,0.22,0.2],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"ShirtFront","shape":"cube","pos":[0.08,0.0175,0.105],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.01],"color":[0.2,0.2,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"ShirtBack","shape":"cube","pos":[0.08,0.0175,-0.105],"rot":[0.0,0.0,0.0],"size":[0.5,0.02,0.01],"color":[0.2,0.2,0.25],"smooth":0.05,"metal":0.0},
+  {"name":"ArmL","shape":"cube","pos":[0.455,-0.0025,0.13],"rot":[0.0,0.0,0.0],"size":[0.25,0.14,0.1],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"ArmR","shape":"cube","pos":[0.455,-0.0025,-0.13],"rot":[0.0,0.0,0.0],"size":[0.25,0.14,0.1],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Pelvis","shape":"cube","pos":[-0.32,-0.0225,0.0],"rot":[0.0,0.0,0.0],"size":[0.3,0.18,0.2],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"PantsFront","shape":"cube","pos":[-0.32,-0.0025,0.105],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.01],"color":[0.15,0.12,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"PantsBack","shape":"cube","pos":[-0.32,-0.0025,-0.105],"rot":[0.0,0.0,0.0],"size":[0.3,0.02,0.01],"color":[0.15,0.12,0.1],"smooth":0.05,"metal":0.0},
+  {"name":"LegL_Upper","shape":"cube","pos":[-0.57,0.0225,0.07],"rot":[0.0,0.0,0.0],"size":[0.2,0.18,0.12],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"LegL_Lower","shape":"cube","pos":[-0.57,-0.0225,0.07],"rot":[0.0,0.0,0.0],"size":[0.2,0.18,0.12],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"LegR_Upper","shape":"cube","pos":[-0.57,0.0225,-0.07],"rot":[0.0,0.0,0.0],"size":[0.2,0.18,0.12],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"LegR_Lower","shape":"cube","pos":[-0.57,-0.0225,-0.07],"rot":[0.0,0.0,0.0],"size":[0.2,0.18,0.12],"color":[0.6,0.58,0.5],"smooth":0.1,"metal":0.0},
+  {"name":"Hair","shape":"cylinder","pos":[0.61,0.0675,0.0],"rot":[90.0,0.0,0.0],"size":[0.08,0.12,0.08],"color":[0.1,0.07,0.05],"smooth":0.3,"metal":0.0},
+  {"name":"NailL","shape":"cube","pos":[0.61,-0.0225,0.045],"rot":[0.0,0.0,0.0],"size":[0.015,0.003,0.015],"color":[0.9,0.9,0.9],"smooth":0.6,"metal":0.0},
+  {"name":"NailR","shape":"cube","pos":[0.61,-0.0225,-0.045],"rot":[0.0,0.0,0.0],"size":[0.015,0.003,0.015],"color":[0.9,0.9,0.9],"smooth":0.6,"metal":0.0}
+]}

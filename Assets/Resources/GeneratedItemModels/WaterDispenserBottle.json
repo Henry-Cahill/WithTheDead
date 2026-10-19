@@ -1,0 +1,11 @@
+{"version": 1, "id": "WaterDispenserBottle", "baseHeight": 0.095, "name": "Water Dispenser Bottle", "model": "gpt-oss:120b", "notes": "Water dispenser bottle ~0.30 m long × 0.07 m diameter, lying on its side. Main plastic body, narrower neck, screw‑cap (with thread), bottom disc and a simple white label with dark trim. All parts now touch the main cylinder.", "score": 6, "parts": [
+  {"name":"Body","shape":"cylinder","pos":[-0.01,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.3,0.07],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Neck","shape":"cylinder","pos":[0.115,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.05,0.045],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"Cap","shape":"cylinder","pos":[0.15,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.05,0.02,0.05],"color":[0.4,0.38,0.35],"smooth":0.4,"metal":0.0},
+  {"name":"BottomDisc","shape":"cylinder","pos":[-0.1525,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.07,0.015,0.07],"color":[0.6,0.58,0.5],"smooth":0.4,"metal":0.0},
+  {"name":"LabelBand","shape":"cube","pos":[-0.01,0.002,0.0],"rot":[0.0,0.0,0.0],"size":[0.28,0.004,0.072],"color":[0.9,0.9,0.9],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimTop","shape":"cube","pos":[0.13,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.006,0.072],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"LabelTrimBottom","shape":"cube","pos":[-0.15,0.0,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.006,0.072],"color":[0.2,0.2,0.2],"smooth":0.05,"metal":0.0},
+  {"name":"CapThread","shape":"cylinder","pos":[0.15,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.052,0.004,0.052],"color":[0.35,0.33,0.3],"smooth":0.4,"metal":0.0},
+  {"name":"NeckRim","shape":"cylinder","pos":[0.11,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.047,0.006,0.047],"color":[0.55,0.53,0.48],"smooth":0.4,"metal":0.0}
+]}

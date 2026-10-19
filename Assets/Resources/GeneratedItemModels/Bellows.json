@@ -1,0 +1,16 @@
+{"version": 1, "id": "Bellows", "baseHeight": 0.09, "name": "Bellows", "model": "gpt-oss:120b", "notes": "Collapsed hand‑bellows ~0.34 m wide × 0.20 m deep × 0.07 m tall, lying on its side: wooden frame strips around the perimeter, five leather pleat cylinders inside, a top strap, and four metal rivets at the corners.", "score": 6, "parts": [
+  {"name":"FrameFront","shape":"cube","pos":[0.0,-0.02,-0.095],"rot":[0.0,0.0,0.0],"size":[0.34,0.02,0.01],"color":[0.4,0.35,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"FrameBack","shape":"cube","pos":[0.0,-0.02,0.095],"rot":[0.0,0.0,0.0],"size":[0.34,0.02,0.01],"color":[0.4,0.35,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"FrameLeft","shape":"cube","pos":[-0.165,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.18],"color":[0.4,0.35,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"FrameRight","shape":"cube","pos":[0.165,-0.02,0.0],"rot":[0.0,0.0,0.0],"size":[0.01,0.02,0.18],"color":[0.4,0.35,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"Pleat1","shape":"cylinder","pos":[0.0,0.0,-0.07],"rot":[0.0,0.0,90.0],"size":[0.04,0.32,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pleat2","shape":"cylinder","pos":[0.0,0.0,-0.035],"rot":[0.0,0.0,90.0],"size":[0.04,0.32,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pleat3","shape":"cylinder","pos":[0.0,0.0,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.32,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pleat4","shape":"cylinder","pos":[0.0,0.0,0.035],"rot":[0.0,0.0,90.0],"size":[0.04,0.32,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"Pleat5","shape":"cylinder","pos":[0.0,0.0,0.07],"rot":[0.0,0.0,90.0],"size":[0.04,0.32,0.04],"color":[0.6,0.58,0.5],"smooth":0.05,"metal":0.0},
+  {"name":"TopStrap","shape":"cube","pos":[0.0,0.025,0.0],"rot":[0.0,0.0,0.0],"size":[0.34,0.01,0.02],"color":[0.4,0.35,0.3],"smooth":0.15,"metal":0.0},
+  {"name":"RivetFL","shape":"sphere","pos":[-0.165,-0.015,-0.095],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.6,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"RivetFR","shape":"sphere","pos":[-0.165,-0.015,0.095],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.6,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBL","shape":"sphere","pos":[0.165,-0.015,-0.095],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.6,0.6],"smooth":0.6,"metal":1.0},
+  {"name":"RivetBR","shape":"sphere","pos":[0.165,-0.015,0.095],"rot":[0.0,0.0,0.0],"size":[0.01,0.01,0.01],"color":[0.6,0.6,0.6],"smooth":0.6,"metal":1.0}
+]}
