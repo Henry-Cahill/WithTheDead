@@ -1,5 +1,6 @@
 namespace CloneZ
 {
+        // The raid town's lighting, switches and wall decor settings.
     public static partial class CloneZConfig
     {
         // ---- The raid town's lights, switches and wall decor ----
