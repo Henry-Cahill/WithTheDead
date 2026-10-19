@@ -21,6 +21,11 @@ namespace CloneZ
             "A hand-drawn map of town with arrows to the Guard post: \u201CDISTRIBUTION POINT \u2014 WATER AND BLANKETS. BRING PHOTO ID.\u201D",
             "A missing-person form, half filled in. The description stops at \u201Clast seen wearing\u201D.",
             "Somebody's hand, pressed flat on the glass. By the look of the tray they copied it a dozen times.",
+            "A county memo about budget cuts: \u201CAll non-essential purchases suspended until further notice.\u201D",
+            "A flyer for the town meeting: \u201CAgenda – infrastructure, health, security.\u201D",
+            "A draft of a permit application: \u201CConstruction of new community center – pending approval.\u201D",
+            "A notice of street closure: \u201CMain St. closed for repairs – detour via 2nd Ave.\u201D",
+            "A form for reporting potholes: \u201CReport #: ____ – location – description.\u201D"
         };
 
         private static readonly string[] Jams =
@@ -28,18 +33,23 @@ namespace CloneZ
             "Halfway through, the rollers clunk and stop. A red lamp blinks: PAPER JAM \u2014 AREA B. Of course it does.",
             "It chews the sheet, shudders and gives up. The red lamp comes on and stays on.",
             "There's a crunch from deep inside, then silence and a smell of hot toner. Jammed.",
+            "The jam alarm chirps: PAPER JAM \u2014 TRAY FULL. Of course it does.",
+            "A thud echoes as the rollers stall. Red lamp blinks: JAM DETECTED \u2014 CLEAR MANUALLY.",
         };
-
         private static readonly string[] Copies =
         {
             "A warm copy slides into the tray: the sheet on the glass, a shade greyer and a touch crooked.",
             "It spits out a copy with a black stripe down one side. Good enough for county work.",
+            "A pale copy drifts out, the ink faint, the paper curling at the edges.",
+            "A crisp, bright copy lands with a thin line of toner, almost perfect.",
         };
 
         private static readonly string[] Clears =
         {
             "You swing the side panel open and tease out a warm, pleated concertina of paper. The red lamp goes out.",
             "You prise a crumpled sheet from between the rollers and smudge toner up to your wrist. The lamp goes out.",
+            "You yank the jammed sheet free, the plastic creaks as the rollers part.",
+            "You tap the tray, and a fresh sheet slides out, the red lamp dimming.",
         };
 
         private Transform _body;
