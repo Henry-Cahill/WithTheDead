@@ -17,22 +17,27 @@ namespace CloneZ
         private static readonly List<KeyValuePair<string, Vector3>> s_Landmarks = new List<KeyValuePair<string, Vector3>>(16);
         private static readonly string[] s_Compass = { "north", "north-east", "east", "south-east", "south", "south-west", "west", "north-west" };
 
+        /// <summary>Gets half the size of the arena, clamped to a minimum of 10 units.</summary>
         public static float MapHalf => Mathf.Max(10f, CloneZConfig.ArenaHalfSize);
 
+        /// <summary>Calculates the flat (XZ) squared distance between two points, ignoring height.</summary>
         public static float FlatSqr(Vector3 a, Vector3 b)
         {
             float dx = a.x - b.x, dz = a.z - b.z;
             return dx * dx + dz * dz;
         }
 
+        /// <summary>Computes the flat (XZ) distance between two points.</summary>
         public static float FlatDistance(Vector3 a, Vector3 b) => Mathf.Sqrt(FlatSqr(a, b));
 
+        /// <summary>Returns a copy of the vector with zero vertical component.</summary>
         public static Vector3 Flat(Vector3 v)
         {
             v.y = 0f;
             return v;
         }
 
+        /// <summary>Samples the NavMesh around a point within radius, returning the nearest valid position.</summary>
         public static bool SampleNav(Vector3 p, float radius, out Vector3 result)
         {
             if (NavMesh.SamplePosition(p, out NavMeshHit hit, radius, NavMesh.AllAreas))
@@ -66,6 +71,7 @@ namespace CloneZ
             return best;
         }
 
+        /// <summary>Clamps a point to stay within the map bounds, leaving a margin from the edge.</summary>
         public static Vector3 ClampToMap(Vector3 p, float margin)
         {
             float h = Mathf.Max(1f, MapHalf - margin);
@@ -74,7 +80,8 @@ namespace CloneZ
             return p;
         }
 
-        /// <summary>A random point on the map's edge band, <paramref name="inset"/> metres in from the fence.</summary>
+
+        /// <summary>Generates a random point on the map's edge band, inset from the fence by a given distance.</summary>
         public static Vector3 EdgePoint(System.Random rng, float inset)
         {
             float h = Mathf.Max(1f, MapHalf - inset);
@@ -89,6 +96,7 @@ namespace CloneZ
         }
 
         /// <summary>The point of the edge band (inset from the fence) nearest <paramref name="p"/>.</summary>
+        /// <summary>Finds the nearest point on the edge band (inset from fence) to a given position.</summary>
         public static Vector3 NearestEdge(Vector3 p, float inset)
         {
             float h = Mathf.Max(1f, MapHalf - inset);
@@ -100,6 +108,7 @@ namespace CloneZ
             return p;
         }
 
+        /// <summary>Creates a random point anywhere on the map, keeping a margin off the fence.</summary>
         public static Vector3 RandomMapPoint(System.Random rng, float margin)
         {
             float h = Mathf.Max(1f, MapHalf - margin);
@@ -107,6 +116,7 @@ namespace CloneZ
         }
 
         /// <summary>A random ground-level navmesh point anywhere on the map (kept <paramref name="margin"/> off the fence).</summary>
+        /// <summary>Generates a random ground-level NavMesh point on the map, respecting a margin from the fence.</summary>
         public static bool RandomNavPoint(System.Random rng, float margin, out Vector3 result, int tries = 20)
         {
             for (int i = 0; i < tries; i++)
@@ -118,6 +128,7 @@ namespace CloneZ
         }
 
         /// <summary>A navmesh point within <paramref name="radius"/> of <paramref name="center"/>.</summary>
+        /// <summary>Attempts to find a NavMesh point within a radius of a center point, trying random offsets.</summary>
         public static bool NavPointNear(Vector3 center, float radius, System.Random rng, out Vector3 result, int tries = 10)
         {
             for (int i = 0; i < tries; i++)
@@ -130,6 +141,7 @@ namespace CloneZ
         }
 
         /// <summary>"north", "south-east"... for a flat direction (+Z is north, +X east).</summary>
+        /// <summary>Converts a flat direction vector into a compass word like "north" or "south-east".</summary>
         public static string Compass(Vector3 dir)
         {
             dir.y = 0f;
@@ -140,13 +152,17 @@ namespace CloneZ
         }
 
         /// <summary>"crashed_helicopter" → "crashed helicopter".</summary>
+        /// <summary>Makes a readable string from an identifier by replacing underscores with spaces.</summary>
         public static string Pretty(string id) => string.IsNullOrEmpty(id) ? "" : id.Replace('_', ' ');
 
+        /// <summary>Formats a float to a short string with invariant culture.</summary>
         public static string Inv(float f) => f.ToString("0.#", CultureInfo.InvariantCulture);
 
+        /// <summary>Tries to parse a string into a float using invariant culture.</summary>
         public static bool TryParse(string s, out float f) => float.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out f);
 
         /// <summary>A hash that is the same on every run (string.GetHashCode is not).</summary>
+        /// <summary>Computes a stable hash code for a string that is consistent across runs.</summary>
         public static int StableHash(string s)
         {
             unchecked
@@ -158,8 +174,10 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Picks a random element from a list, or default if empty.</summary>
         public static T Pick<T>(System.Random rng, IList<T> list) => list == null || list.Count == 0 ? default : list[rng.Next(list.Count)];
 
+        /// <summary>True when the game time indicates nighttime.</summary>
         public static bool IsNight => TimeOfDay.Instance != null && TimeOfDay.Instance.IsNight;
 
         public static float LightLevel => TimeOfDay.Instance != null ? TimeOfDay.Instance.LightLevel : 1f;
