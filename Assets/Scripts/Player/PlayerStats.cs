@@ -26,12 +26,12 @@ namespace CloneZ
         public float Sickness;                              // 0..100 (food poisoning / nausea; slows and stops healing) — owned by PlayerFoodSickness
 
         /// <summary>Current exertion state of the survivor (idle, walking, running, sprinting).</summary>
-public Exertion Exertion = Exertion.Idle;
+        public Exertion Exertion = Exertion.Idle;
         /// <summary>Whether the survivor is dead; once true no further actions are processed.</summary>
-public bool IsDead { get; private set; }
+        public bool IsDead { get; private set; }
         /// <summary>The Transform of this PlayerStats component (convenient alias for Unity's transform).
 /// </summary>
-public Transform Transform => transform;
+        public Transform Transform => transform;
 
         /// <summary>Knocked out (shock, blood loss): no movement, no actions, until it wears off.</summary>
         public bool Incapacitated;
@@ -40,20 +40,20 @@ public Transform Transform => transform;
         public bool IsLocal => true;
 
         /// <summary>Normalized health (0..1) based on the configured maximum.</summary>
-public float HealthNormalized => Mathf.Clamp01(Health / CloneZConfig.HealthMax);
+        public float HealthNormalized => Mathf.Clamp01(Health / CloneZConfig.HealthMax);
         /// <summary>Normalized infection level (0..1) based on the configured maximum.</summary>
-public float InfectionNormalized => Mathf.Clamp01(Infection / CloneZConfig.InfectionMax);
+        public float InfectionNormalized => Mathf.Clamp01(Infection / CloneZConfig.InfectionMax);
         /// <summary>Normalized Pain (0..1) based on the configured maximum.<//summary>
         /// <summary>Normalized panic (0..1) based on the configured maximum.</summary>
-public float PanicNormalized => Mathf.Clamp01(Panic / CloneZConfig.PanicMax);
+        public float PanicNormalized => Mathf.Clamp01(Panic / CloneZConfig.PanicMax);
         /// <summary>Normalized sickness (0..1) based on the configured maximum.</summary>
-public float SicknessNormalized => Mathf.Clamp01(Sickness / CloneZConfig.SicknessMax);
+        public float SicknessNormalized => Mathf.Clamp01(Sickness / CloneZConfig.SicknessMax);
 /// <summary>Whether the survivor can sprint (endurance, fatigue, not dead/incapacitated, limbs allow).</summary>
-public bool CanSprint => Endurance > 0.05f && Fatigue < CloneZConfig.FatigueExhaustedThreshold && !IsDead && !Incapacitated && (Limbs == null || Limbs.CanSprint);
+        public bool CanSprint => Endurance > 0.05f && Fatigue < CloneZConfig.FatigueExhaustedThreshold && !IsDead && !Incapacitated && (Limbs == null || Limbs.CanSprint);
 
         /// <summary>How cold the survivor feels, 0 (comfortable) .. 1 (freezing).</summary>
         /// <summary>Calculate the survivor's cold feeling strength (0 comfortable .. 1 freezing).</summary>
-public float ColdStrength =>
+        public float ColdStrength =>
             Mathf.Clamp01((CloneZConfig.TempComfortLow - Temperature) / Mathf.Max(0.01f, CloneZConfig.TempComfortLow));
 
         /// <summary>How hot the survivor feels, 0 (comfortable) .. 1 (overheating).</summary>
