@@ -276,13 +276,28 @@ namespace CloneZ
         {
             Color pole = new Color(0.32f, 0.33f, 0.34f);
             Quaternion tilt = Quaternion.Euler(lean, 0f, 0f);
+            // Base concrete pole and low box remain unchanged
             m.Box(new Vector3(0f, 0.05f, 0f), new Vector3(0.35f, 0.1f, 0.35f), M(new Color(0.45f, 0.45f, 0.42f)));
             m.Cylinder(Vector3.zero, 0.09f, 5.5f, 8, Mt(pole), tilt, 0.6f);
             Vector3 top = tilt * new Vector3(0f, 5.45f, 0f);
             Vector3 head = top + tilt * new Vector3(0f, 0.15f, 1.5f);
             m.Rod(top, head, 0.07f, Mt(pole));
-            m.Box(head + tilt * new Vector3(0f, 0f, 0.2f), new Vector3(0.3f, 0.14f, 0.6f), tilt, M(new Color(0.24f, 0.25f, 0.26f)));
-            m.Box(head + tilt * new Vector3(0f, -0.075f, 0.2f), new Vector3(0.24f, 0.01f, 0.48f), tilt, lit ? Gl(new Color(1f, 0.74f, 0.42f)) : Gs(new Color(0.3f, 0.3f, 0.28f)));
+            // Determine deterministic variation from world position (head) using Perlin noise
+            float noise = Mathf.PerlinNoise(head.x * 0.13f, head.z * 0.13f);
+            // +/-6% brightness variation for the cobra‑head housing colour
+            float housingFactor = 0.94f + 0.12f * noise; // range ~0.94‑1.06
+            Color baseHousing = new Color(0.24f, 0.25f, 0.26f);
+            Color variedHousing = baseHousing * housingFactor;
+            m.Box(head + tilt * new Vector3(0f, 0f, 0.2f), new Vector3(0.3f, 0.14f, 0.6f), tilt, M(variedHousing));
+            // Slight colour‑temperature variation for the lit bulb (still warm sodium)
+            Color baseBulb = new Color(1f, 0.74f, 0.42f);
+            // Use a second noise sample for the bulb colour
+            float bulbNoise = Mathf.PerlinNoise(head.x * 0.17f + 100f, head.z * 0.17f + 100f);
+            // Vary brightness a few percent, keep within warm range
+            float bulbFactor = 0.95f + 0.1f * bulbNoise; // ~0.95‑1.05
+            Color variedBulb = baseBulb * bulbFactor;
+            m.Box(head + tilt * new Vector3(0f, -0.075f, 0.2f), new Vector3(0.24f, 0.01f, 0.48f), tilt,
+                lit ? Gl(variedBulb) : Gs(new Color(0.3f, 0.3f, 0.28f)));
             m.Box(head + tilt * new Vector3(0f, 0.08f, 0.2f), new Vector3(0.26f, 0.03f, 0.5f), tilt, M(SnowWhite));
             return head + tilt * new Vector3(0f, -0.2f, 0.2f);
         }
