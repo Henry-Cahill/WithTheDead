@@ -50,9 +50,12 @@ SSH_KEY = STATE / "ssh" / "id_ed25519"
 SSH_KNOWN_HOSTS = STATE / "ssh" / "known_hosts"
 RESULT_MARK = "NIGHTSHIFT_RESULT "
 AUTHOR = ("CLONE-Z Night Shift", "nightshift@clone-z.local")
+MAX_DISPATCH = 3  # a task is handed out at most this many times a night (retries after errors or collisions)
+OWN_PATHS = [f"{REL}/tasks.md", f"{REL}/reports", f"{REL}/memory"]  # files the coordinator itself writes
 
 DEFAULTS = {
     "NIGHTSHIFT_MODEL": "qwen3.8",
+    "NIGHTSHIFT_HELPER_MODEL": "gpt-oss:120b",
     "NIGHTSHIFT_STOP_AT": "07:00",
     "NIGHTSHIFT_TZ": "America/Chicago",
     "NIGHTSHIFT_TASK_MINUTES": "120",
@@ -67,7 +70,7 @@ DEFAULTS = {
 # Paths the agent must not change; anything it does to them is rolled back before the compile check.
 PROTECTED = re.compile(
     r"^(ProjectSettings/|Packages/|\.project/|\.git|Assets/Resources/GeneratedItemModels/|Tools/(AssetPipeline|MapScraper)/"
-    r"|Tools/NightShift/(?!memory/LESSONS\.md$))|\.(unity|meta)$|^[^/]+\.(bash|env|txt|yaml|yml|ipynb)$"
+    r"|Tools/NightShift/(?!memory/LESSONS\.md$))|\.(unity|meta|asmdef|asmref)$|^[^/]+\.(bash|env|txt|yaml|yml|ipynb)$"
 )
 
 STOPPING = threading.Event()
@@ -247,6 +250,40 @@ def kill_group(proc: subprocess.Popen, sig: int = signal.SIGTERM) -> None:
         pass
 
 
+def terminate(proc: subprocess.Popen, grace: float = 20) -> None:
+    """TERM the process group, then KILL it if it is still there after `grace` seconds."""
+    if proc.poll() is not None:
+        return
+    kill_group(proc)
+    try:
+        proc.wait(timeout=grace)
+    except subprocess.TimeoutExpired:
+        kill_group(proc, signal.SIGKILL)
+        proc.wait()
+
+
+def die_with_parent() -> None:
+    """preexec_fn: have Linux kill the child if this process dies, so an agent never outlives its worker."""
+    try:
+        import ctypes
+        ctypes.CDLL("libc.so.6", use_errno=True).prctl(1, signal.SIGKILL)  # PR_SET_PDEATHSIG
+    except Exception:
+        pass
+
+
+def run_in_group(cmd: list[str], timeout: float, **kwargs) -> tuple[int, str]:
+    """Runs cmd in its own process group and returns (exit code, output); on timeout the whole group goes."""
+    proc = subprocess.Popen(cmd, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True,
+                            start_new_session=True, **kwargs)
+    try:
+        out, _ = proc.communicate(timeout=timeout)
+        return proc.returncode, out or ""
+    except subprocess.TimeoutExpired:
+        terminate(proc, grace=10)
+        out, _ = proc.communicate()
+        return 124, (out or "") + f"\n(timed out after {timeout:.0f}s)"
+
+
 def describe_tool(part: dict, repo: Path) -> str:
     state = part.get("state") or {}
     args = state.get("input") or {}
@@ -271,15 +308,17 @@ def run_opencode(repo: Path, prompt: str, cfg_path: Path, model: str, timeout_s:
     texts: dict[str, list[str]] = {}
     last_msg = ""
     proc = subprocess.Popen(cmd, cwd=repo, env=env, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
-                            stderr=subprocess.STDOUT, text=True, bufsize=1, start_new_session=True)
+                            stderr=subprocess.STDOUT, text=True, bufsize=1, start_new_session=True,
+                            preexec_fn=die_with_parent)
 
-    def on_timeout() -> None:
-        res.timed_out = True
-        kill_group(proc)
+    def stop_agent(timed_out: bool) -> None:
+        if timed_out:
+            res.timed_out = True
+        threading.Thread(target=terminate, args=(proc, 20), daemon=True).start()
 
-    timer = threading.Timer(max(timeout_s, 60), on_timeout)
+    timer = threading.Timer(max(timeout_s, 60), stop_agent, args=(True,))
     timer.start()
-    stop_watch = threading.Thread(target=lambda: (STOPPING.wait(), kill_group(proc)), daemon=True)
+    stop_watch = threading.Thread(target=lambda: (STOPPING.wait(), stop_agent(False)), daemon=True)
     stop_watch.start()
     try:
         with open(log_file, "a", encoding="utf-8") as lf:
@@ -310,8 +349,7 @@ def run_opencode(repo: Path, prompt: str, cfg_path: Path, model: str, timeout_s:
         proc.wait()
     finally:
         timer.cancel()
-        if proc.poll() is None:
-            kill_group(proc, signal.SIGKILL)
+        terminate(proc, grace=5)
     res.rc = proc.returncode
     res.text = "\n".join(texts.get(last_msg, []))
     return res
@@ -320,12 +358,11 @@ def run_opencode(repo: Path, prompt: str, cfg_path: Path, model: str, timeout_s:
 # --- Checks and clean-up in a worker checkout ---------------------------------------------------------------
 
 def compile_check(repo: Path, env: dict) -> tuple[bool, str]:
-    r = subprocess.run(["bash", str(repo / REL / "check.sh")], cwd=repo, capture_output=True, text=True, env=env,
-                       timeout=1200, stdin=subprocess.DEVNULL)
-    out = (r.stdout + r.stderr).strip()
-    if r.returncode == 2:
+    rc, out = run_in_group(["bash", str(repo / REL / "check.sh")], timeout=1200, cwd=repo, env=env)
+    out = out.strip()
+    if rc == 2:
         raise RuntimeError(out)
-    return r.returncode == 0, out
+    return rc == 0, out
 
 
 def changed_files(repo: Path, base: str) -> list[str]:
@@ -367,8 +404,17 @@ FOLDER_META = ("fileFormatVersion: 2\nguid: {guid}\nfolderAsset: yes\nDefaultImp
 
 
 def sync_meta(repo: Path, base: str) -> None:
-    """Unity needs a .meta beside every asset. Write them for new scripts and folders (as Unity would) and drop
-    the ones whose script was deleted, so the branch imports cleanly on the PC."""
+    """Unity needs a .meta beside every asset. A renamed script keeps its old .meta (and so its GUID, which
+    scenes and prefabs reference); new scripts and folders get fresh ones, as Unity would write them; a deleted
+    script's .meta goes too. That way the branch imports cleanly on the PC."""
+    git(repo, "add", "-A")
+    for line in git(repo, "diff", "--cached", "-M", "--name-status", base).splitlines():
+        parts = line.split("\t")
+        if parts[0].startswith("R") and len(parts) == 3 and parts[2].startswith("Assets/"):
+            old_meta, new_meta = parts[1] + ".meta", repo / (parts[2] + ".meta")
+            if in_commit(repo, base, old_meta) and not new_meta.exists():
+                new_meta.write_bytes(subprocess.run(["git", *GIT_SAFE, "-C", str(repo), "show", f"{base}:{old_meta}"],
+                                                    capture_output=True, stdin=subprocess.DEVNULL).stdout)
     for path in changed_files(repo, base):
         if not path.startswith("Assets/") or path.endswith(".meta"):
             continue
@@ -447,6 +493,8 @@ def do_task(repo: Path, base: str, task: str, model: str, ollama: str, minutes: 
     log_file = runs_dir / (dt.datetime.now().strftime("%Y%m%d-%H%M%S") + ".jsonl")
     cfg_path = write_opencode_config(repo, ollama, model, context)
 
+    trouble: list[str] = []
+
     def agent(prompt: str, session: str | None = None) -> AgentRun:
         run = run_opencode(repo, prompt, cfg_path, model, deadline - time.time(), log_file, env,
                            session=session, title=None if session else "nightshift: " + task.splitlines()[0])
@@ -457,7 +505,13 @@ def do_task(repo: Path, base: str, task: str, model: str, ollama: str, minutes: 
         if run.text:
             res.summary = run.text
         if run.timed_out:
-            log("  time limit reached")
+            trouble.append(f"the agent hit the {minutes:.0f}-minute time limit")
+        elif run.error:
+            trouble.append("the agent reported an error: " + run.error)
+        elif run.rc != 0 and not STOPPING.is_set():
+            trouble.append(f"the agent exited with code {run.rc}")
+        if trouble:
+            log("  " + trouble[-1][:200])
         return run
 
     first = agent(PROMPT.format(task=task))
@@ -467,7 +521,7 @@ def do_task(repo: Path, base: str, task: str, model: str, ollama: str, minutes: 
     res.lessons += take_lessons(repo, base)
     ok, out = compile_check(repo, env)
     rounds = 0
-    while not ok and rounds < fix_rounds and time.time() < deadline - 120 and not STOPPING.is_set():
+    while not ok and not trouble and rounds < fix_rounds and time.time() < deadline - 120 and not STOPPING.is_set():
         rounds += 1
         log(f"  compile check failed; fix round {rounds}/{fix_rounds}")
         agent(FIX_PROMPT.format(errors=out[-6000:]), session=first.session)
@@ -477,16 +531,19 @@ def do_task(repo: Path, base: str, task: str, model: str, ollama: str, minutes: 
     sync_meta(repo, base)
     res.files = changed_files(repo, base)
     res.minutes = round((time.time() - started) / 60, 1)
+    git(repo, "add", "-A")
     if STOPPING.is_set():
         res.status, res.errors = "error", "stopped"
+    elif trouble and not res.files:
+        res.status, res.errors = "error", "; ".join(trouble)
+    elif trouble or not ok:
+        # Unfinished or not compiling: keep the attempt for a human, but never land it.
+        res.status = "failed"
+        res.errors = "\n".join(trouble + ([] if ok else [out[-4000:]]))
+        res.patch = git(repo, "diff", "--cached", base)[:400_000]
     elif not res.files:
         res.status = "nochange"
-    elif not ok:
-        res.status, res.errors = "failed", out[-4000:]
-        git(repo, "add", "-A")
-        res.patch = git(repo, "diff", "--cached", base)[:400_000]
     else:
-        git(repo, "add", "-A")
         res.sha = git_commit(repo, "Night shift: " + task.splitlines()[0][:70], res.summary)
         res.status = "ok"
         git(repo, "branch", "-f", "nightshift-result", res.sha)
@@ -506,7 +563,8 @@ def cmd_work(args: argparse.Namespace) -> int:
     except Exception as e:  # report the failure to the coordinator instead of dying silently
         res = Result(status="error", errors=str(e)[-2000:])
     finally:
-        pid_file.unlink(missing_ok=True)
+        if pid_file.exists() and pid_file.read_text().strip() == str(os.getpid()):
+            pid_file.unlink(missing_ok=True)
     print(RESULT_MARK + json.dumps(asdict(res)), flush=True)
     return 0
 
@@ -531,9 +589,10 @@ def _block_end(lines: list[str], i: int, indent: int) -> int:
 
 
 def read_tasks() -> list[tuple[str, Task]]:
-    if not TASKS.exists():
-        return []
-    lines = TASKS.read_text(encoding="utf-8").splitlines()
+    with TASKS_LOCK:
+        if not TASKS.exists():
+            return []
+        lines = TASKS.read_text(encoding="utf-8").splitlines()
     tasks, i = [], 0
     while i < len(lines):
         m = BOX.match(lines[i])
@@ -547,6 +606,12 @@ def read_tasks() -> list[tuple[str, Task]]:
     return tasks
 
 
+def write_atomic(path: Path, text: str) -> None:
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_text(text, encoding="utf-8")
+    os.replace(tmp, path)
+
+
 def mark_task(key: str, mark: str, note: str) -> None:
     with TASKS_LOCK:
         lines = TASKS.read_text(encoding="utf-8").splitlines()
@@ -555,7 +620,7 @@ def mark_task(key: str, mark: str, note: str) -> None:
             if m and m.group(2) == " " and m.group(3) == key:
                 lines[i] = f"{m.group(1)}- [{mark}] {m.group(3)}"
                 lines.insert(_block_end(lines, i, len(m.group(1))), " " * (len(m.group(1)) + 2) + "- " + note)
-                TASKS.write_text("\n".join(lines) + "\n", encoding="utf-8")
+                write_atomic(TASKS, "\n".join(lines) + "\n")
                 return
 
 
@@ -583,6 +648,7 @@ class Night:
         self.started = dt.datetime.now()
         self.workers: list[str] = []
         self.entries: list[Entry] = []
+        self.unfinished: list[str] = []  # tasks tried tonight that are still unchecked
         self.tokens = [0, 0, 0]  # in, out, cached
         self.dir = REPORTS / date
         self.file = REPORTS / f"{date}.md"
@@ -618,6 +684,10 @@ class Night:
                 lines += ["", f"The attempt is saved in [{Path(e.patch_file).name}]({self.date}/{Path(e.patch_file).name})."]
             if e.errors:
                 lines += ["", "```", e.errors.strip()[-1500:], "```"]
+        if self.unfinished:
+            lines += ["", "## Unfinished", "", "Tried tonight but neither landed nor failed for good (stopped, time ran out or the "
+                      "worker kept erroring); they are still unchecked in tasks.md:", ""]
+            lines += [f"- {t}" for t in self.unfinished]
         self.file.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
@@ -645,6 +715,9 @@ def helpers(cfg: dict) -> list[tuple[str, str]]:
 class Worker:
     def __init__(self, name: str, target: str | None, cfg: dict, ollama: str):
         self.name, self.target, self.cfg = name, target, cfg
+        # qwen3.8's architecture serves one request at a time in Ollama, so helpers default to a model that runs in
+        # parallel; otherwise they would only queue behind the Spark's own agent.
+        self.model = (cfg.get("NIGHTSHIFT_HELPER_MODEL") or cfg["NIGHTSHIFT_MODEL"]) if target else cfg["NIGHTSHIFT_MODEL"]
         home_dir = cfg["NIGHTSHIFT_HELPER_DIR"]
         if target:  # a helper machine, reached over SSH; paths are relative to its home
             self.repo, self.dest = f"{home_dir}/repo", f"{target}:{home_dir}/repo"
@@ -655,6 +728,7 @@ class Worker:
             self.ollama, self.unityrefs = ollama, str(HERE / ".unityrefs")
             self.pid_file, self.python, self.nice = "/tmp/nightshift-work/spark/work.pid", sys.executable, ""
         self.proc: subprocess.Popen | None = None
+        self.lock = threading.Lock()
         self.errors = 0
 
     def _cmd(self, script: str) -> list[str]:
@@ -667,13 +741,14 @@ class Worker:
         """Returns why this worker can't be used, or None when it is ready."""
         if self.target and not SSH_KEY.exists():
             return "no SSH key for helpers yet (run NightShift.ps1 helpers on the PC)"
+        repo = shlex.quote(self.repo)
         script = f"""set -e
 export PATH="$HOME/.local/bin:$HOME/.opencode/bin:$HOME/.dotnet:/opt/dotnet:$PATH"
-mkdir -p {self.repo} && cd {self.repo} && (git rev-parse --git-dir >/dev/null 2>&1 || git init -q)
+mkdir -p {repo} && cd {repo} && (git rev-parse --git-dir >/dev/null 2>&1 || git init -q)
 command -v opencode >/dev/null || {{ echo "OpenCode is not installed"; exit 1; }}
 command -v dotnet >/dev/null || {{ echo ".NET SDK is not installed"; exit 1; }}
 [ -f "{self.unityrefs}/Runtime.csproj" ] || {{ echo "Unity reference assemblies are missing"; exit 1; }}
-curl -s --max-time 5 {self.ollama}/api/version >/dev/null || {{ echo "can't reach Ollama at {self.ollama}"; exit 1; }}
+curl -s --max-time 5 {shlex.quote(self.ollama)}/api/version >/dev/null || {{ echo "can't reach Ollama at {self.ollama}"; exit 1; }}
 echo READY"""
         try:
             r = subprocess.run(self._cmd(script), capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
@@ -682,18 +757,29 @@ echo READY"""
         return None if "READY" in r.stdout else (r.stdout + r.stderr).strip()[-300:] or f"exit {r.returncode}"
 
     def run(self, task: Task, base: str, minutes: float, model: str, fix_rounds: int, context: int) -> Result:
+        self.reap()  # a work process left over from an earlier task must be gone before its checkout is reused
         git(ROOT, "push", "-q", "--no-verify", "--force", self.dest, f"{base}:refs/heads/nightshift-base", env=self._git_env())
         b64 = base64.b64encode(task.text.encode("utf-8")).decode()
         safe_git = "git " + " ".join(shlex.quote(a) for a in GIT_SAFE)
+        # exec makes the worker's Python the session leader, so its pid is the process group that reap() kills.
         script = (f'export PATH="$HOME/.local/bin:$HOME/.opencode/bin:$HOME/.dotnet:/opt/dotnet:$PATH" && '
-                  f"cd {self.repo} && {safe_git} checkout -q --detach --force nightshift-base && "
-                  f"{self.nice}{self.python} {REL}/nightshift.py work --repo . --base {base} --task-b64 {b64} "
-                  f"--model {shlex.quote(model)} --ollama {self.ollama} --minutes {minutes:.0f} --fix-rounds {fix_rounds} "
-                  f"--context {context} --unityrefs {self.unityrefs}")
-        self.proc = proc = subprocess.Popen(self._cmd(script), stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
-                                            stderr=subprocess.STDOUT, text=True, bufsize=1, start_new_session=True)
-        hard_stop = threading.Timer((minutes + 15) * 60, lambda: kill_group(proc))
-        hard_stop.start()
+                  f"cd {shlex.quote(self.repo)} && {safe_git} checkout -q --detach --force nightshift-base && "
+                  f"exec {self.nice}{shlex.quote(self.python)} {REL}/nightshift.py work --repo . --base {base} --task-b64 {b64} "
+                  f"--model {shlex.quote(model)} --ollama {shlex.quote(self.ollama)} --minutes {minutes:.0f} "
+                  f'--fix-rounds {fix_rounds} --context {context} --unityrefs "{self.unityrefs}"')
+        with self.lock:
+            if STOPPING.is_set():
+                return Result(status="error", errors="stopped")
+            self.proc = proc = subprocess.Popen(self._cmd(script), stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
+                                                stderr=subprocess.STDOUT, text=True, bufsize=1, start_new_session=True)
+
+        def hard_stop() -> None:
+            log("over the hard time limit; ending this task", self.name)
+            self.reap(grace=10)
+            terminate(proc, grace=10)
+
+        timer = threading.Timer((minutes + 15) * 60, hard_stop)
+        timer.start()
         result = None
         try:
             for line in proc.stdout:
@@ -704,22 +790,38 @@ echo READY"""
                     log(re.sub(r"^\d\d:\d\d:\d\d ", "", line)[:220], self.name)
             proc.wait()
         finally:
-            hard_stop.cancel()
-            self.proc = None
+            timer.cancel()
+            terminate(proc, grace=5)
+            with self.lock:
+                self.proc = None
         if result is None:
             return Result(status="error", errors=f"the worker exited without a result (exit {proc.returncode})")
         if result.status == "ok":
-            git(ROOT, "fetch", "-q", self.dest, f"+refs/heads/nightshift-result:refs/nightshift/{self.name}", env=self._git_env())
+            ref = f"refs/nightshift/{self.name}"
+            git(ROOT, "fetch", "-q", self.dest, f"+refs/heads/nightshift-result:{ref}", env=self._git_env())
+            if git(ROOT, "rev-parse", ref).strip() != result.sha:
+                return Result(status="error", errors=f"fetched {ref} doesn't match the worker's commit {result.sha[:9]}")
         return result
 
-    def stop(self) -> None:
-        if self.proc:
-            kill_group(self.proc)
+    REAP = ('p=$(cat {pid} 2>/dev/null); if [ -n "$p" ] && kill -0 "$p" 2>/dev/null; then '
+            'kill -TERM -- "-$p" 2>/dev/null || kill -TERM "$p" 2>/dev/null; '
+            'for i in $(seq 1 {grace}); do kill -0 "$p" 2>/dev/null || break; sleep 1; done; '
+            'kill -KILL -- "-$p" 2>/dev/null; kill -KILL "$p" 2>/dev/null; fi; rm -f {pid}; true')
+
+    def reap(self, grace: int = 15) -> None:
+        """Ends this worker's work process, if one is running (TERM, then KILL after `grace` seconds)."""
         try:
-            subprocess.run(self._cmd(f"kill -TERM $(cat {self.pid_file} 2>/dev/null) 2>/dev/null; true"), capture_output=True,
-                           timeout=20, stdin=subprocess.DEVNULL)
+            subprocess.run(self._cmd(self.REAP.format(pid=shlex.quote(self.pid_file), grace=grace)), capture_output=True,
+                           timeout=grace + 30, stdin=subprocess.DEVNULL)
         except Exception:
             pass
+
+    def stop(self) -> None:
+        with self.lock:
+            proc = self.proc
+        self.reap(grace=10)
+        if proc:
+            terminate(proc, grace=5)
 
 
 class Coordinator:
@@ -736,7 +838,7 @@ class Coordinator:
             self.deadline += dt.timedelta(days=1)
         self.queue_lock, self.land_lock = threading.Lock(), threading.Lock()
         self.in_flight: dict[str, tuple[str, str]] = {}  # task key -> (worker, since)
-        self.attempts: dict[str, int] = {}
+        self.dispatches: dict[str, int] = {}  # task key -> times handed to a worker tonight (never decreases)
         self.workers: list[Worker] = []
         self.night: Night | None = None
 
@@ -748,17 +850,20 @@ class Coordinator:
 
     def claim(self, worker: Worker) -> Task | None:
         with self.queue_lock:
+            if STOPPING.is_set() or FINISH_FLAG.exists() or dt.datetime.now() >= self.deadline:
+                return None
             for mark, task in read_tasks():
-                if mark == " " and task.key not in self.in_flight and self.attempts.get(task.key, 0) < 2:
+                if mark == " " and task.key not in self.in_flight and self.dispatches.get(task.key, 0) < MAX_DISPATCH:
                     self.in_flight[task.key] = (worker.name, dt.datetime.now().strftime("%H:%M"))
-                    self.attempts[task.key] = self.attempts.get(task.key, 0) + 1
+                    self.dispatches[task.key] = self.dispatches.get(task.key, 0) + 1
                     self.write_status()
                     return task
         return None
 
-    def commit_pending(self, subject: str) -> None:
-        if git(ROOT, "status", "--porcelain").strip():
-            git(ROOT, "add", "-A")
+    def commit_pending(self, subject: str, paths: list[str] | None = None) -> None:
+        """Commits changes under `paths` (default: everything) if there are any."""
+        git(ROOT, "add", "-A", "--", *(paths or ["."]))
+        if git_run(ROOT, "diff", "--cached", "--quiet").returncode != 0:
             git_commit(ROOT, subject)
 
     def add_lessons(self, lessons: list[str]) -> None:
@@ -771,57 +876,73 @@ class Coordinator:
 
     def land(self, worker: Worker, task: Task, res: Result) -> None:
         with self.land_lock:
-            night, stamp = self.night, dt.datetime.now().strftime("%H:%M")
+            night = self.night
             night.tokens = [night.tokens[0] + res.tokens_in, night.tokens[1] + res.tokens_out, night.tokens[2] + res.tokens_cached]
-            if res.status == "error" and (STOPPING.is_set() or self.attempts[task.key] < 2):
-                self.attempts[task.key] -= 1 if not STOPPING.is_set() else 0
+            can_retry = self.dispatches.get(task.key, 0) < MAX_DISPATCH and not STOPPING.is_set()
+            if res.status == "error" and (can_retry or STOPPING.is_set()):
                 log(f"not finished ({first_line(res.errors, 160)}); it stays in the queue", worker.name)
                 return
-            self.commit_pending("Night shift: queue update")
+            # Commit queue edits (and anything else found in the project folder) first, so rolling back a
+            # failed landing below can never throw away someone's changes.
+            self.commit_pending("Night shift: queue update", OWN_PATHS)
+            self.commit_pending("Night shift: changes found in the project folder")
+            head = git(ROOT, "rev-parse", "HEAD").strip()
             entry = Entry(len(night.entries) + 1, task.text, "", worker.name, res.minutes, res.summary, res.files)
-            if res.status == "ok":
-                head = git(ROOT, "rev-parse", "HEAD").strip()
-                pick = git_run(ROOT, "cherry-pick", "--no-commit", f"refs/nightshift/{worker.name}")
-                ok, out = (False, "Conflicts with work landed earlier tonight:\n" + pick.stdout + pick.stderr) if pick.returncode \
-                    else compile_check(ROOT, dict(os.environ))
-                if ok:
-                    self.add_lessons(res.lessons)
-                    entry.outcome = "landed"
-                    mark_task(task.key, "x", f"{stamp} landed by {worker.name} in {res.minutes:g} min: {first_line(res.summary)}")
-                    night.add(entry)
-                    night.write()
-                    git(ROOT, "add", "-A")
-                    body = (f"{res.summary.strip()}\n\nTask: {task.text}\n\nWorker: {worker.name} · model {self.model} "
-                            f"(Ollama on the DGX Spark) · {res.minutes:g} min · compile check passed")
-                    entry.sha = git_commit(ROOT, "Night shift: " + task.key[:70], body)
-                    log(f"landed {entry.sha[:9]}: {task.key[:90]}", worker.name)
-                    return
+            try:
+                self._land(worker, task, res, entry, head, can_retry)
+            except Exception:
+                git_run(ROOT, "cherry-pick", "--abort")
                 git(ROOT, "reset", "-q", "--hard", head)
                 git(ROOT, "clean", "-q", "-fd")
-                if self.attempts[task.key] < 2:
-                    log("the change doesn't fit on top of tonight's other work; it goes back in the queue", worker.name)
-                    return
-                res.status, res.errors = "failed", out[-4000:]
-                res.patch = git(ROOT, "format-patch", "--stdout", "-1", f"refs/nightshift/{worker.name}")
-            if res.status == "nochange":
-                entry.outcome, mark, note = "no change", "~", f"{stamp} {worker.name} made no changes: {first_line(res.summary)}"
-            else:
-                entry.outcome = "failed" if res.status == "failed" else "gave up"
-                entry.errors = res.errors
-                mark, note = "!", f"{stamp} {entry.outcome} ({worker.name}, {res.minutes:g} min); see reports/{night.date}.md"
-                if res.patch:
-                    night.dir.mkdir(parents=True, exist_ok=True)
-                    entry.patch_file = str(night.dir / f"{entry.n:02d}-{slug(task.key)}.patch")
-                    Path(entry.patch_file).write_text(res.patch, encoding="utf-8")
-            self.add_lessons(res.lessons)
-            mark_task(task.key, mark, note)
-            night.add(entry)
-            night.write()
-            self.commit_pending(f"Night shift: {entry.outcome}: {task.key[:60]}")
-            log(f"{entry.outcome}: {task.key[:90]}", worker.name)
+                if entry in night.entries:
+                    night.entries.remove(entry)
+                raise
+
+    def _land(self, worker: Worker, task: Task, res: Result, entry: Entry, head: str, can_retry: bool) -> None:
+        night, stamp = self.night, dt.datetime.now().strftime("%H:%M")
+        if res.status == "ok":
+            pick = git_run(ROOT, "cherry-pick", "--no-commit", res.sha)
+            ok, out = (False, "Conflicts with work landed earlier tonight:\n" + pick.stdout + pick.stderr) if pick.returncode \
+                else compile_check(ROOT, dict(os.environ))
+            if ok:
+                self.add_lessons(res.lessons)
+                entry.outcome = "landed"
+                mark_task(task.key, "x", f"{stamp} landed by {worker.name} in {res.minutes:g} min: {first_line(res.summary)}")
+                night.add(entry)
+                night.write()
+                git(ROOT, "add", "-A")
+                body = (f"{res.summary.strip()}\n\nTask: {task.text}\n\nWorker: {worker.name} · model {worker.model} "
+                        f"(Ollama on the DGX Spark) · {res.minutes:g} min · compile check passed")
+                entry.sha = git_commit(ROOT, "Night shift: " + task.key[:70], body)
+                log(f"landed {entry.sha[:9]}: {task.key[:90]}", worker.name)
+                return
+            git_run(ROOT, "cherry-pick", "--abort")
+            git(ROOT, "reset", "-q", "--hard", head)
+            git(ROOT, "clean", "-q", "-fd")
+            if can_retry:
+                log("the change doesn't fit on top of tonight's other work; it goes back in the queue", worker.name)
+                return
+            res.status, res.errors = "failed", out[-4000:]
+            res.patch = git(ROOT, "format-patch", "--stdout", "-1", res.sha)
+        if res.status == "nochange":
+            entry.outcome, mark, note = "no change", "~", f"{stamp} {worker.name} made no changes: {first_line(res.summary)}"
+        else:
+            entry.outcome = "failed" if res.status == "failed" else "gave up"
+            entry.errors = res.errors
+            mark, note = "!", f"{stamp} {entry.outcome} ({worker.name}, {res.minutes:g} min); see reports/{night.date}.md"
+            if res.patch:
+                night.dir.mkdir(parents=True, exist_ok=True)
+                entry.patch_file = str(night.dir / f"{entry.n:02d}-{slug(task.key)}.patch")
+                Path(entry.patch_file).write_text(res.patch, encoding="utf-8")
+        self.add_lessons(res.lessons)
+        mark_task(task.key, mark, note)
+        night.add(entry)
+        night.write()
+        self.commit_pending(f"Night shift: {entry.outcome}: {task.key[:60]}", OWN_PATHS)
+        log(f"{entry.outcome}: {task.key[:90]}", worker.name)
 
     def worker_loop(self, worker: Worker) -> None:
-        while not STOPPING.is_set() and not FINISH_FLAG.exists() and dt.datetime.now() < self.deadline:
+        while True:
             task = self.claim(worker)
             if not task:
                 break
@@ -830,14 +951,14 @@ class Coordinator:
                 base = git(ROOT, "rev-parse", "HEAD").strip()
             left = (self.deadline - dt.datetime.now()).total_seconds() / 60 + 30
             try:
-                res = worker.run(task, base, max(20.0, min(self.minutes, left)), self.model, self.fix_rounds, self.context)
+                res = worker.run(task, base, max(20.0, min(self.minutes, left)), worker.model, self.fix_rounds, self.context)
             except Exception as e:
                 res = Result(status="error", errors=str(e)[-1500:])
             worker.errors = worker.errors + 1 if res.status == "error" else 0
             try:
                 self.land(worker, task, res)
             except Exception as e:
-                log(f"couldn't record the result: {e}", worker.name)
+                log(f"couldn't record the result ({e}); the task stays in the queue", worker.name)
             finally:
                 with self.queue_lock:
                     self.in_flight.pop(task.key, None)
@@ -880,6 +1001,18 @@ class Coordinator:
         candidates = [Worker("spark", None, self.cfg, ollama)] if self.cfg["NIGHTSHIFT_LOCAL_WORKER"] != "0" else []
         candidates += [Worker(name, target, self.cfg, ollama) for name, target in helpers(self.cfg)]
         for w in candidates:
+            if w.model != self.model and not has_model(ollama, w.model):
+                log(f"{w.model} isn't in Ollama on the Spark; {w.name} uses {self.model} instead")
+                w.model = self.model
+        for extra in sorted({w.model for w in candidates} - {self.model}):
+            log(f"loading {extra} into memory...")
+            warm_model(ollama, extra)
+        taken: set[str] = set()
+        for w in candidates:
+            name, n = w.name, 2
+            while w.name in taken:  # each worker's result ref is named after it, so names must be unique
+                w.name, n = f"{name}-{n}", n + 1
+            taken.add(w.name)
             problem = w.prepare()
             if problem:
                 log(f"not using {w.name}: {problem}")
@@ -887,7 +1020,8 @@ class Coordinator:
                 self.workers.append(w)
         if not self.workers:
             raise RuntimeError("no workers are ready")
-        self.night.workers = [w.name for w in self.workers]
+        self.night.workers = [f"{w.name} ({w.model})" for w in self.workers]
+        self.night.model = ", ".join(sorted({w.model for w in self.workers}))
         self.write_status()
         log("workers: " + ", ".join(self.night.workers))
         threads = [threading.Thread(target=self.worker_loop, args=(w,), daemon=True) for w in self.workers]
@@ -896,14 +1030,17 @@ class Coordinator:
         while any(t.is_alive() for t in threads):
             if STOPPING.wait(2):
                 log("stopping: unfinished tasks are rolled back and stay in the queue")
-                for w in self.workers:
-                    w.stop()
-                for t in threads:
-                    t.join(timeout=60)
+                stoppers = [threading.Thread(target=w.stop, daemon=True) for w in self.workers]
+                for s in stoppers:
+                    s.start()
+                end = time.time() + 45  # nightshift.sh waits 90 s before it kills everything
+                for t in stoppers + threads:
+                    t.join(timeout=max(0.0, end - time.time()))
                 break
         with self.land_lock:
+            self.night.unfinished = [t.key for m, t in read_tasks() if m == " " and self.dispatches.get(t.key)]
             self.night.write()
-            self.commit_pending("Night shift: report")
+            self.commit_pending("Night shift: report", OWN_PATHS)
         landed = sum(1 for e in self.night.entries if e.outcome == "landed")
         log(f"done: {landed} of {len(self.night.entries)} tasks landed on {self.night.branch}; report in {REL}/reports/{date}.md")
 
@@ -993,6 +1130,15 @@ def cmd_chat(extra: list[str]) -> int:
 def cmd_run() -> int:
     cfg = load_config()
     STATE.mkdir(parents=True, exist_ok=True)
+    import fcntl
+    lock = open(STATE / "coordinator.lock", "w")
+    try:
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)  # held for the coordinator's lifetime
+    except OSError:
+        log("another night shift coordinator is already running")
+        return 0
+    pid_file = STATE / "nightshift.pid"
+    write_atomic(pid_file, str(os.getpid()))
     FINISH_FLAG.unlink(missing_ok=True)
     for sig in (signal.SIGTERM, signal.SIGINT):
         signal.signal(sig, lambda *_: STOPPING.set())
@@ -1004,6 +1150,8 @@ def cmd_run() -> int:
         return 1
     finally:
         STATUS_FILE.unlink(missing_ok=True)
+        if pid_file.exists() and pid_file.read_text().strip() == str(os.getpid()):
+            pid_file.unlink(missing_ok=True)
 
 
 def main(argv: list[str] | None = None) -> int:
