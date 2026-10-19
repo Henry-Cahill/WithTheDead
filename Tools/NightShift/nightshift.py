@@ -944,7 +944,7 @@ class Coordinator:
                   "working": {k: {"worker": v[0], "since": v[1]} for k, v in self.in_flight.items()},
                   "dispatches": self.dispatches,
                   "idle_since": self.idle_since}
-        STATUS_FILE.write_text(json.dumps(status, indent=2), encoding="utf-8")
+        write_atomic(STATUS_FILE, json.dumps(status, indent=2))
 
     def claim(self, worker: Worker) -> Task | None:
         with self.queue_lock:

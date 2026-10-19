@@ -92,12 +92,12 @@ namespace CloneZ
             float hour = Mathf.Repeat(hours, 12f) * 30f;
             float minute = Mathf.Repeat(hours, 1f) * 360f;
             // Only assign rotations if angle changed > 0.5 degrees since last assignment
-            if (_hour != null && Mathf.Abs(Mathf.DeltaAngle(_lastHourAngle, hour)) > 0.5f)
+            if (_hour != null && (float.IsNaN(_lastHourAngle) || Mathf.Abs(Mathf.DeltaAngle(_lastHourAngle, hour)) > 0.5f))
             {
                 _hour.rotation = Quaternion.AngleAxis(hour, _normal);
                 _lastHourAngle = hour;
             }
-            if (_minute != null && Mathf.Abs(Mathf.DeltaAngle(_lastMinuteAngle, minute)) > 0.5f)
+            if (_minute != null && (float.IsNaN(_lastMinuteAngle) || Mathf.Abs(Mathf.DeltaAngle(_lastMinuteAngle, minute)) > 0.5f))
             {
                 _minute.rotation = Quaternion.AngleAxis(minute, _normal);
                 _lastMinuteAngle = minute;
