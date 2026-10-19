@@ -5,6 +5,7 @@
 #   stop    stop now; unfinished tasks are rolled back and stay queued
 #   health  exit 0 while running (Workbench health check)
 #   status  progress, current tasks and recent commits
+#   state   one line of JSON (running, busy or idle, branch) for NightShift.ps1
 #   log     follow the live log
 #   check   compile check of the project as it is now
 #   chat    interactive OpenCode with the same local model and settings
@@ -53,6 +54,7 @@ case "${1:-status}" in
     ;;
   health) running ;;
   status) exec "$PY" "$HERE/nightshift.py" status ;;
+  state) exec "$PY" "$HERE/nightshift.py" state ;;
   log)
     echo "Watching the night shift (Ctrl+C stops watching; the work keeps going)"
     # One color per worker; landings bright green, failures red, run headers white.
@@ -60,8 +62,9 @@ case "${1:-status}" in
     {
       col = ""
       if (match($0, /\[[^]]+\]/)) { w = substr($0, RSTART, RLENGTH); if (!(w in m)) { m[w] = c[n % 5]; n++ }; col = m[w] }
-      if ($0 ~ /landed /) col = "1;92"
-      else if ($0 ~ /\] (failed|gave up)|\(failed\)|not using|night shift stopped|agent error|exited with code|time limit/) col = "1;91"
+      if ($0 ~ / idle: /) col = "1;97"
+      else if ($0 ~ /landed /) col = "1;92"
+      else if ($0 ~ /\] (failed|gave up)|\(failed\)|not using|night shift stopped|agent error|exited with code|time limit|was switched from/) col = "1;91"
       else if ($0 ~ /^=====|starting ·|workers:|done:/) col = "1;97"
       if (col != "") printf "\033[%sm%s\033[0m\n", col, $0; else print $0
       fflush()
@@ -69,5 +72,5 @@ case "${1:-status}" in
     ;;
   check) exec bash "$HERE/check.sh" ;;
   chat) shift; exec "$PY" "$HERE/nightshift.py" chat "$@" ;;
-  *) echo "usage: $0 start|finish|stop|health|status|log|check|chat"; exit 2 ;;
+  *) echo "usage: $0 start|finish|stop|health|status|state|log|check|chat"; exit 2 ;;
 esac

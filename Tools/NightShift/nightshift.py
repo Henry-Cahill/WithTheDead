@@ -56,7 +56,7 @@ OWN_PATHS = [f"{REL}/tasks.md", f"{REL}/reports", f"{REL}/memory"]  # files the 
 DEFAULTS = {
     "NIGHTSHIFT_MODEL": "qwen3.8",
     "NIGHTSHIFT_HELPER_MODEL": "gpt-oss:120b",
-    "NIGHTSHIFT_STOP_AT": "07:00",
+    "NIGHTSHIFT_STOP_AT": "",
     "NIGHTSHIFT_TZ": "America/Chicago",
     "NIGHTSHIFT_TASK_MINUTES": "120",
     "NIGHTSHIFT_FIX_ROUNDS": "2",
@@ -106,8 +106,13 @@ def log(msg: str, who: str = "") -> None:
 
 
 def git_run(repo: Path | str, *args: str, env: dict | None = None) -> subprocess.CompletedProcess:
-    return subprocess.run(["git", *GIT_SAFE, "-C", str(repo), *args], capture_output=True, text=True, env=env,
-                          stdin=subprocess.DEVNULL)
+    for attempt in range(8):
+        r = subprocess.run(["git", *GIT_SAFE, "-C", str(repo), *args], capture_output=True, text=True, env=env,
+                           stdin=subprocess.DEVNULL)
+        # AI Workbench (or someone in a terminal) running git in the same repo holds index.lock for a moment; wait it out.
+        if r.returncode == 0 or "index.lock" not in r.stderr or attempt == 7:
+            return r
+        time.sleep(2)
 
 
 def git(repo: Path | str, *args: str, check: bool = True, env: dict | None = None) -> str:
@@ -701,6 +706,17 @@ def first_line(text: str, width: int = 140) -> str:
     return line[:width]
 
 
+def stop_time(setting: str, now: dt.datetime | None = None) -> dt.datetime | None:
+    """When to stop taking new tasks: the next HH:MM, or None (work until stopped) when the setting is empty or off."""
+    setting = (setting or "").strip().lower()
+    if setting in ("", "off", "never", "none"):
+        return None
+    now = now or dt.datetime.now()
+    hour, minute = (int(x) for x in setting.split(":"))
+    at = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
+    return at if at > now else at + dt.timedelta(days=1)
+
+
 def helpers(cfg: dict) -> list[tuple[str, str]]:
     """(name, user@host) for every helper machine, from .state/helpers.txt and NIGHTSHIFT_HELPERS."""
     lines = HELPERS_FILE.read_text(encoding="utf-8").splitlines() if HELPERS_FILE.exists() else []
@@ -834,34 +850,64 @@ class Coordinator:
         self.minutes = float(cfg["NIGHTSHIFT_TASK_MINUTES"])
         self.fix_rounds = int(cfg["NIGHTSHIFT_FIX_ROUNDS"])
         self.context = int(cfg["NIGHTSHIFT_CONTEXT"])
-        hour, minute = (int(x) for x in cfg["NIGHTSHIFT_STOP_AT"].split(":"))
-        now = dt.datetime.now()
-        self.deadline = now.replace(hour=hour, minute=minute, second=0, microsecond=0)
-        if self.deadline <= now:
-            self.deadline += dt.timedelta(days=1)
+        self.deadline = stop_time(cfg.get("NIGHTSHIFT_STOP_AT", ""))  # None: on duty until stopped
         self.queue_lock, self.land_lock = threading.Lock(), threading.Lock()
         self.in_flight: dict[str, tuple[str, str]] = {}  # task key -> (worker, since)
         self.dispatches: dict[str, int] = {}  # task key -> times handed to a worker tonight (never decreases)
+        self.idle_since: str | None = None  # HH:MM when the last task finished and nothing was left to start
         self.workers: list[Worker] = []
         self.night: Night | None = None
 
+    def until(self) -> str:
+        return f"no new tasks after {self.deadline:%a %H:%M}" if self.deadline else "on duty until stopped"
+
+    def off_duty(self) -> bool:
+        """True once no new task may start: stopping, a finish was requested, or the stop time has passed."""
+        return STOPPING.is_set() or FINISH_FLAG.exists() or (self.deadline is not None and dt.datetime.now() >= self.deadline)
+
+    def on_branch(self) -> bool:
+        """False, and the night shift stops, once the project folder is on another branch than the night's (say after a
+        branch switch in AI Workbench), so the agents' work can never land on main or anything else by accident."""
+        current = git_run(ROOT, "rev-parse", "--abbrev-ref", "HEAD").stdout.strip()
+        if current == self.night.branch:
+            return True
+        if not STOPPING.is_set():
+            log(f"the project folder was switched from {self.night.branch} to {current or 'another branch'}, so the night "
+                f"shift is stopping and nothing lands there. Switch back to {self.night.branch} and start it again.")
+            STOPPING.set()
+        return False
+
     def write_status(self) -> None:
-        status = {"pid": os.getpid(), "model": self.model, "deadline": f"{self.deadline:%a %H:%M}",
+        status = {"pid": os.getpid(), "model": self.model, "deadline": f"{self.deadline:%a %H:%M}" if self.deadline else "",
                   "branch": self.night.branch if self.night else "", "workers": [w.name for w in self.workers],
-                  "working": {k: {"worker": v[0], "since": v[1]} for k, v in self.in_flight.items()}}
+                  "working": {k: {"worker": v[0], "since": v[1]} for k, v in self.in_flight.items()},
+                  "idle_since": self.idle_since}
         STATUS_FILE.write_text(json.dumps(status, indent=2), encoding="utf-8")
 
     def claim(self, worker: Worker) -> Task | None:
         with self.queue_lock:
-            if STOPPING.is_set() or FINISH_FLAG.exists() or dt.datetime.now() >= self.deadline:
+            if self.off_duty() or not self.on_branch():
                 return None
             for mark, task in read_tasks():
                 if mark == " " and task.key not in self.in_flight and self.dispatches.get(task.key, 0) < MAX_DISPATCH:
                     self.in_flight[task.key] = (worker.name, dt.datetime.now().strftime("%H:%M"))
                     self.dispatches[task.key] = self.dispatches.get(task.key, 0) + 1
+                    self.idle_since = None
                     self.write_status()
                     return task
         return None
+
+    def note_idle(self) -> None:
+        """Says once, when the last task in progress has finished, that there's nothing left to start, so a quiet log
+        doesn't look like a crash. The status shows it too, and NightShift.ps1 takes it as the cue for a pull request."""
+        with self.queue_lock:
+            if self.idle_since or self.in_flight:
+                return
+            self.idle_since = dt.datetime.now().strftime("%H:%M")
+            self.write_status()
+        landed = sum(1 for e in self.night.entries if e.outcome == "landed")
+        log(f"idle: nothing left to start in tasks.md ({landed} of {len(self.night.entries)} landed so far); "
+            f"new tasks added there start within a minute · {self.until()}")
 
     def commit_pending(self, subject: str, paths: list[str] | None = None) -> None:
         """Commits changes under `paths` (default: everything) if there are any."""
@@ -879,6 +925,8 @@ class Coordinator:
 
     def land(self, worker: Worker, task: Task, res: Result) -> None:
         with self.land_lock:
+            if not self.on_branch():
+                return  # the task stays unchecked on the night's branch
             night = self.night
             night.tokens = [night.tokens[0] + res.tokens_in, night.tokens[1] + res.tokens_out, night.tokens[2] + res.tokens_cached]
             can_retry = self.dispatches.get(task.key, 0) < MAX_DISPATCH and not STOPPING.is_set()
@@ -948,15 +996,16 @@ class Coordinator:
         while True:
             task = self.claim(worker)
             if not task:
-                if STOPPING.is_set() or FINISH_FLAG.exists() or dt.datetime.now() >= self.deadline:
+                if self.off_duty() or self.cfg.get("NIGHTSHIFT_WAIT_FOR_TASKS", "1") == "0":
                     break
-                if self.cfg.get("NIGHTSHIFT_WAIT_FOR_TASKS", "1") == "0" or STOPPING.wait(60):
+                self.note_idle()
+                if STOPPING.wait(60):
                     break
-                continue  # on duty until the stop time: tasks added to tasks.md during the night get picked up
+                continue  # on duty: tasks added to tasks.md in the meantime get picked up
             log(f"starting: {first_line(task.key, 120)}", worker.name)
             with self.land_lock:
                 base = git(ROOT, "rev-parse", "HEAD").strip()
-            left = (self.deadline - dt.datetime.now()).total_seconds() / 60 + 30
+            left = (self.deadline - dt.datetime.now()).total_seconds() / 60 + 30 if self.deadline else self.minutes
             try:
                 res = worker.run(task, base, max(20.0, min(self.minutes, left)), worker.model, self.fix_rounds, self.context)
             except Exception as e:
@@ -976,8 +1025,8 @@ class Coordinator:
 
     def prepare_branch(self, date: str) -> str:
         current = git(ROOT, "rev-parse", "--abbrev-ref", "HEAD").strip()
-        if current == f"nightshift/{date}" or current.startswith(f"nightshift/{date}-"):
-            return current
+        if current.startswith("nightshift/"):
+            return current  # starting again (after a stop, or past midnight) carries on with the same branch and PR
         name, n = f"nightshift/{date}", 2
         while git(ROOT, "rev-parse", "--verify", "--quiet", f"refs/heads/{name}", check=False).strip():
             name, n = f"nightshift/{date}-{n}", n + 1
@@ -985,7 +1034,7 @@ class Coordinator:
         return name
 
     def run(self) -> None:
-        log(f"Night shift starting · model {self.model} · no new tasks after {self.deadline:%a %H:%M}")
+        log(f"Night shift starting · model {self.model} · {self.until()}")
         ollama = find_ollama(self.cfg)
         if not has_model(ollama, self.model):
             raise RuntimeError(f"Ollama at {ollama} doesn't have {self.model}; run 'ollama pull {self.model}' on the Spark")
@@ -1045,9 +1094,10 @@ class Coordinator:
                     t.join(timeout=max(0.0, end - time.time()))
                 break
         with self.land_lock:
-            self.night.unfinished = [t.key for m, t in read_tasks() if m == " " and self.dispatches.get(t.key)]
-            self.night.write()
-            self.commit_pending("Night shift: report", OWN_PATHS)
+            if self.on_branch():
+                self.night.unfinished = [t.key for m, t in read_tasks() if m == " " and self.dispatches.get(t.key)]
+                self.night.write()
+                self.commit_pending("Night shift: report", OWN_PATHS)
         landed = sum(1 for e in self.night.entries if e.outcome == "landed")
         log(f"done: {landed} of {len(self.night.entries)} tasks landed on {self.night.branch}; report in {REL}/reports/{self.night.file.name}")
 
@@ -1108,8 +1158,11 @@ def cmd_status() -> int:
     print(f"Night shift: {'RUNNING (pid ' + str(pid) + ')' if pid else 'not running'}")
     if STATUS_FILE.exists():
         st = json.loads(STATUS_FILE.read_text(encoding="utf-8"))
+        until = f"no new tasks after {st['deadline']}" if st.get("deadline") else "on duty until stopped"
         print(f"Branch {st.get('branch') or '-'} · model {st.get('model')} · workers {', '.join(st.get('workers', [])) or '-'}"
-              f" · no new tasks after {st.get('deadline')}")
+              f" · {until}")
+        if pid and st.get("idle_since"):
+            print(f"  idle since {st['idle_since']}: nothing left to start; tasks added to tasks.md start within a minute")
         for key, w in (st.get("working") or {}).items() if pid else []:
             print(f"  {w['worker']:>12} since {w['since']}: {key[:100]}")
     marks = [m for m, _ in read_tasks()]
@@ -1122,6 +1175,22 @@ def cmd_status() -> int:
             print("  " + line)
     print("\nRecent commits:")
     print(git(ROOT, "log", "--oneline", "-6", check=False))
+    return 0
+
+
+def cmd_state() -> int:
+    """One line of JSON for NightShift.ps1: is the coordinator running, is anything left to do, and on which branch."""
+    load_config()
+    pid = coordinator_pid()
+    st = json.loads(STATUS_FILE.read_text(encoding="utf-8")) if pid and STATUS_FILE.exists() else {}
+    marks = [m for m, _ in read_tasks()]
+    print(json.dumps({
+        "running": bool(pid),
+        "branch": st.get("branch") or git(ROOT, "rev-parse", "--abbrev-ref", "HEAD", check=False).strip(),
+        "working": len(st.get("working") or {}),
+        "queued": marks.count(" "),
+        "idle_since": st.get("idle_since"),
+    }))
     return 0
 
 
@@ -1166,6 +1235,7 @@ def main(argv: list[str] | None = None) -> int:
     sub = parser.add_subparsers(dest="cmd", required=True)
     sub.add_parser("run", help="work through tasks.md (coordinator)")
     sub.add_parser("status", help="progress summary")
+    sub.add_parser("state", help="one line of JSON: running, busy or idle, and the branch (for NightShift.ps1)")
     sub.add_parser("map", help="rebuild memory/PROJECT_MAP.md")
     chat = sub.add_parser("chat", help="interactive OpenCode with the night shift's model and settings")
     chat.add_argument("extra", nargs=argparse.REMAINDER)
@@ -1184,6 +1254,8 @@ def main(argv: list[str] | None = None) -> int:
         return cmd_run()
     if args.cmd == "status":
         return cmd_status()
+    if args.cmd == "state":
+        return cmd_state()
     if args.cmd == "map":
         (ROOT / MAP_REL).write_text(build_project_map(ROOT), encoding="utf-8")
         print(f"wrote {MAP_REL}")
