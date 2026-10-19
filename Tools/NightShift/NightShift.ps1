@@ -529,9 +529,11 @@ function Publish-NightShift {
     $repo = Get-GitHubRepo
     $prs = Invoke-Tool 'gh pr list (check: gh auth status)' gh @('pr', 'list', '--repo', $repo, '--head', $branch, '--state', 'open', '--json', 'number,url')
     $open = @(if ("$prs".Trim()) { ($prs -join "`n") | ConvertFrom-Json | ForEach-Object { $_ } })
-    # The night's reports that aren't on main yet. Without them there's no new work: the branch's last pull request
-    # was merged and only tooling or merges came after, so don't open another one for that.
-    $reports = @(& git -C $Root diff --name-only --diff-filter=AM "origin/main...$sha" -- 'Tools/NightShift/reports/*.md' |
+    # The night's reports that aren't on main yet, by comparing the two trees: merges between main and the night's
+    # branch can leave several merge bases, and a three-dot diff from an older one shows merged reports as new.
+    # Without new reports there's no new work (the last night pull request was merged and only tooling or merges
+    # came after), so don't open another pull request for that.
+    $reports = @(& git -C $Root diff --name-only --diff-filter=AM origin/main $sha -- 'Tools/NightShift/reports/*.md' |
         Sort-Object { $_ -replace '\.md$', '' } -Descending)
     $newReports = @($reports | Where-Object {
         & git -C $Root diff --quiet origin/main $sha -- $_
