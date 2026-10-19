@@ -2,14 +2,14 @@
 # Source: https://github.com/github/gitignore/blob/main/Unity.gitignore
 # Last synced: 2025-12-18
 # License: CC0-1.0
-#
+
 # This template is maintained from the github/gitignore repository
 # and distributed under Creative Commons Zero v1.0 Universal license.
 
 # This .gitignore file should be placed at the root of your Unity project directory
-#
+
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
-#
+
 .utmp/
 /[Ll]ibrary/
 /[Tt]emp/
@@ -115,3 +115,58 @@ InitTestScene*.unity*
 # zomboidmap.com rip output (tens of GB of tiles, data, logs)
 /Tools/MapScraper/out/
 __pycache__/
+
+# Ignore generated or temporary files managed by the Workbench
+.project/*
+!.project/spec.yaml
+!.project/configpacks
+
+# General ignores
+.DS_Store
+
+# Byte-compiled / optimized / DLL files
+*.py[cod]
+*$py.class
+
+# Temp directories, notebooks created by jupyterlab
+.ipynb_checkpoints
+.Trash-*/
+.jupyter/
+.local/
+
+# Python distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# Workbench Project Layout
