@@ -1,0 +1,410 @@
+<#
+.SYNOPSIS
+  Control the CLONE-Z Night Shift from this PC: local-LLM coding agents that work through
+  Tools/NightShift/tasks.md overnight on the DGX Spark and the helper machines.
+
+.DESCRIPTION
+  The agents (OpenCode driving a model in the Spark's Ollama) run inside the AI Workbench project container
+  and on helper machines, so no cloud AI tokens are spent and everything keeps going while this PC sleeps. In
+  AI Workbench the same thing is the "night-shift" toggle under Applications. This script adds the PC parts:
+
+    refs     Export Unity's reference assemblies from this PC and upload them to the Spark and the helpers.
+             Every change is compiled against them (there is no Unity editor on those machines). Needed
+             once, and again after upgrading Unity or changing packages.
+    helpers  Set up the helper machines (tools, SSH access from the Spark, Unity references).
+    add      Queue a task (one line, plain English).
+    start    Start working through the queue (same as switching the Workbench toggle on).
+    status   Progress, current tasks and recent commits.
+    watch    Follow the live log (Ctrl+C stops watching, not the run).
+    finish   Stop after the tasks in progress.
+    stop     Stop now; unfinished tasks are rolled back and stay queued.
+    fetch    Fetch the night's branches from the Spark into this repo for review (no GitHub needed).
+
+  Run with no arguments for a menu.
+
+.EXAMPLE
+  .\NightShift.ps1 add -Task "Let the player drink straight from a kitchen tap with E"
+  .\NightShift.ps1 helpers -Helpers htsadmin@192.168.1.200, htsadmin@192.168.1.201
+  .\NightShift.ps1 fetch
+#>
+param(
+    [ValidateSet('menu', 'refs', 'helpers', 'add', 'start', 'status', 'watch', 'finish', 'stop', 'fetch')]
+    [string]$Action = 'menu',
+    [string]$Task,
+    [string]$SparkHost = $(if ($env:CLONEZ_SPARK) { $env:CLONEZ_SPARK } else { 'henrylawrencecahill@192.168.1.252' }),
+    # The AI Workbench project folder on the Spark, relative to the Spark user's home.
+    [string]$SparkProject = 'nvidia-workbench/Henry-Cahill-CLONE-Z',
+    [string]$Container = 'project-henry-cahill-clone-z',
+    # Helper machines (user@host) that run extra agents; each needs SSH access from this PC.
+    [string[]]$Helpers = $(if ($env:CLONEZ_HELPERS) { $env:CLONEZ_HELPERS -split '[,; ]+' } else { @('htsadmin@192.168.1.200', 'htsadmin@192.168.1.201', 'htsadmin@192.168.1.202') }),
+    # The Unity project whose generated .csproj files and Library/ hold the reference assemblies.
+    [string]$UnityProject
+)
+
+$ErrorActionPreference = 'Stop'
+$Here = $PSScriptRoot
+$Root = (Resolve-Path (Join-Path $Here '..\..')).Path
+if (-not $UnityProject) { $UnityProject = $Root }
+$UnityProject = (Resolve-Path $UnityProject).Path.TrimEnd('\')
+$Ssh = @('-o', 'BatchMode=yes', '-o', 'ConnectTimeout=10')
+$RemoteDir = "~/$SparkProject/Tools/NightShift"
+$HelperDir = 'clonez-nightshift'
+$OpenCodeVersion = '1.19.3'
+$SparkIp = ($SparkHost -split '@')[-1]
+
+# PowerShell 5 mangles quotes on native command lines and appends CRLF when piping to them, so remote
+# scripts travel base64-encoded (only [A-Za-z0-9+/=], nothing to escape) and are decoded on the far side.
+function Invoke-Remote([string]$Script, [string]$Target = $SparkHost) {
+    $b64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes(($Script -replace "`r", '') + "`n"))
+    & ssh @Ssh $Target "echo $b64 | base64 -d | bash" | Out-Host
+    return $LASTEXITCODE
+}
+
+# Runs nightshift.sh inside the Workbench project container on the Spark.
+function Invoke-Container([string]$Command) {
+    return Invoke-Remote @"
+if ! docker ps --format '{{.Names}}' | grep -qx '$Container'; then
+  echo 'The project container is not running. In AI Workbench, open Henry-Cahill-CLONE-Z on spark-f146 and start the Project Container.'
+  exit 3
+fi
+docker exec $Container bash /project/Tools/NightShift/nightshift.sh $Command
+"@
+}
+
+#region Unity reference assemblies
+
+function Resolve-ProjectPath([string]$p) {
+    if ([IO.Path]::IsPathRooted($p)) { return [IO.Path]::GetFullPath($p) }
+    return [IO.Path]::GetFullPath((Join-Path $UnityProject $p))
+}
+
+function Get-CsprojInfo([string]$Name) {
+    $path = Join-Path $UnityProject $Name
+    if (-not (Test-Path $path)) {
+        throw "$Name is missing from $UnityProject. Open the project in Unity once (or Assets > Open C# Project) so Unity generates it."
+    }
+    [xml]$x = Get-Content $path -Raw
+    $props = @{}
+    foreach ($pg in $x.Project.PropertyGroup) {
+        foreach ($n in $pg.ChildNodes) { if ($n.NodeType -eq 'Element') { $props[$n.LocalName] = $n.InnerText } }
+    }
+    $refs = @(foreach ($r in $x.Project.ItemGroup.Reference) { if ($r -and $r.HintPath) { Resolve-ProjectPath $r.HintPath } })
+    # The Visual Studio Tools for Unity analyzer only adds IDE suggestions; Unity's own generators are kept.
+    $analyzers = @(foreach ($a in $x.Project.ItemGroup.Analyzer) {
+            if ($a -and $a.Include -and $a.Include -notmatch 'Visual Studio') { Resolve-ProjectPath $a.Include }
+        })
+    [pscustomobject]@{ Props = $props; References = $refs; Analyzers = $analyzers }
+}
+
+# Where a DLL from this PC goes in the bundle: editor/... (the Unity install), project/... (Library), other/...
+function Get-BundlePath([string]$Full, [string]$EditorData) {
+    if ($Full.StartsWith($EditorData, [StringComparison]::OrdinalIgnoreCase)) {
+        return 'editor/' + $Full.Substring($EditorData.Length).Replace('\', '/')
+    }
+    if ($Full.StartsWith($UnityProject + '\', [StringComparison]::OrdinalIgnoreCase)) {
+        return 'project/' + $Full.Substring($UnityProject.Length + 1).Replace('\', '/')
+    }
+    return 'other/' + [IO.Path]::GetFileName($Full)
+}
+
+function New-CheckProject([string]$Kind, $Info, [string]$EditorData) {
+    $p = $Info.Props
+    $esc = { param($s) [Security.SecurityElement]::Escape($s) }
+    $refLines = foreach ($r in $Info.References) {
+        $name = [IO.Path]::GetFileNameWithoutExtension($r)
+        "    <Reference Include=`"$(& $esc $name)`"><HintPath>`$(MSBuildThisFileDirectory)refs/$(& $esc (Get-BundlePath $r $EditorData))</HintPath><Private>false</Private></Reference>"
+    }
+    $analyzerLines = foreach ($a in $Info.Analyzers) {
+        "    <Analyzer Include=`"`$(MSBuildThisFileDirectory)refs/$(& $esc (Get-BundlePath $a $EditorData))`" />"
+    }
+    if ($Kind -eq 'Runtime') {
+        $compile = '    <Compile Include="$(ProjectRoot)Assets/**/*.cs" Exclude="$(ProjectRoot)Assets/**/Editor/**" />'
+    }
+    else {
+        $compile = '    <Compile Include="$(ProjectRoot)Assets/**/Editor/**/*.cs" />' + "`n" +
+        '    <Reference Include="Assembly-CSharp"><HintPath>$(NightShiftOut)bin/Assembly-CSharp.dll</HintPath><Private>false</Private></Reference>'
+    }
+    $noWarn = if ($p.NoWarn) { $p.NoWarn } else { '0169' }
+    $unsafe = if ($p.AllowUnsafeBlocks) { $p.AllowUnsafeBlocks } else { 'False' }
+    $lang = if ($p.LangVersion) { $p.LangVersion } else { '9.0' }
+    @"
+<Project>
+  <!-- Generated by Tools/NightShift/NightShift.ps1 from $(& $esc $p.AssemblyName).csproj (Unity $(& $esc $p.UnityVersion)). Do not edit. -->
+  <PropertyGroup>
+    <ProjectRoot Condition="'`$(ProjectRoot)' == ''">`$([System.IO.Path]::GetFullPath('`$(MSBuildThisFileDirectory)../../../'))</ProjectRoot>
+    <NightShiftOut Condition="'`$(NightShiftOut)' == ''">`$(MSBuildThisFileDirectory)</NightShiftOut>
+    <BaseIntermediateOutputPath>`$(NightShiftOut)obj/$Kind/</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>`$(BaseIntermediateOutputPath)</IntermediateOutputPath>
+    <OutputPath>`$(NightShiftOut)bin/</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+  <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk" />
+  <PropertyGroup>
+    <AssemblyName>$(& $esc $p.AssemblyName)</AssemblyName>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>$lang</LangVersion>
+    <OutputType>Library</OutputType>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
+    <NoStandardLibraries>true</NoStandardLibraries>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <DisableImplicitFrameworkReferences>true</DisableImplicitFrameworkReferences>
+    <AllowUnsafeBlocks>$unsafe</AllowUnsafeBlocks>
+    <NoWarn>$(& $esc $noWarn)</NoWarn>
+    <MSBuildWarningsAsMessages>MSB3277</MSBuildWarningsAsMessages>
+    <DefineConstants>$(& $esc $p.DefineConstants)</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+$compile
+  </ItemGroup>
+  <ItemGroup>
+$($refLines -join "`n")
+  </ItemGroup>
+  <ItemGroup>
+$($analyzerLines -join "`n")
+  </ItemGroup>
+  <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+</Project>
+"@
+}
+
+function Export-UnityRefs {
+    Write-Host "Reading Unity's project files from $UnityProject..." -ForegroundColor Cyan
+    $runtime = Get-CsprojInfo 'Assembly-CSharp.csproj'
+    $editor = Get-CsprojInfo 'Assembly-CSharp-Editor.csproj'
+    $sample = @($runtime.References + $editor.References) | Where-Object { $_ -match '\\Editor\\Data\\' } | Select-Object -First 1
+    if (-not $sample) { throw 'Could not find the Unity editor install in the project references.' }
+    $editorData = $sample.Substring(0, $sample.IndexOf('\Editor\Data\', [StringComparison]::OrdinalIgnoreCase) + '\Editor\Data\'.Length)
+
+    $out = Join-Path $Here '.unityrefs'
+    if (Test-Path $out) { Remove-Item -Recurse -Force $out }
+    New-Item -ItemType Directory -Path (Join-Path $out 'refs') | Out-Null
+    $files = @($runtime.References + $editor.References + $runtime.Analyzers + $editor.Analyzers) | Sort-Object -Unique
+    $missing = @(); $bytes = 0
+    foreach ($f in $files) {
+        if (-not (Test-Path $f)) { $missing += $f; continue }
+        $dest = Join-Path (Join-Path $out 'refs') (Get-BundlePath $f $editorData)
+        New-Item -ItemType Directory -Force -Path (Split-Path $dest) | Out-Null
+        Copy-Item $f $dest
+        $bytes += (Get-Item $f).Length
+    }
+    if ($missing.Count -gt 0) { Write-Host "Skipped $($missing.Count) missing file(s), e.g. $($missing[0])" -ForegroundColor Yellow }
+    $utf8 = New-Object Text.UTF8Encoding($false)
+    [IO.File]::WriteAllText((Join-Path $out 'Runtime.csproj'), (New-CheckProject 'Runtime' $runtime $editorData).Replace("`r", ''), $utf8)
+    [IO.File]::WriteAllText((Join-Path $out 'Editor.csproj'), (New-CheckProject 'Editor' $editor $editorData).Replace("`r", ''), $utf8)
+    Write-Host ("Bundled {0} assemblies ({1:N0} MB)." -f ($files.Count - $missing.Count), ($bytes / 1MB)) -ForegroundColor Green
+    return $out
+}
+
+function Test-RefsLocally([string]$Out) {
+    if (-not (Get-Command dotnet -ErrorAction SilentlyContinue)) { return }
+    Write-Host 'Checking that the bundle compiles the project on this PC...' -ForegroundColor Cyan
+    $build = Join-Path $env:TEMP 'clonez-refcheck\'
+    foreach ($kind in 'Runtime', 'Editor') {
+        $log = & dotnet build (Join-Path $Out "$kind.csproj") -nologo -v:q -clp:NoSummary "-p:ProjectRoot=$UnityProject\" "-p:NightShiftOut=$build" 2>&1
+        if ($LASTEXITCODE -ne 0) {
+            $log | Select-String ': error ' | Select-Object -First 15 | ForEach-Object { Write-Host $_.Line -ForegroundColor Red }
+            throw "The $kind check build failed on this PC; fix the errors above (or reopen the project in Unity) and retry."
+        }
+    }
+    Remove-Item -Recurse -Force $build -ErrorAction SilentlyContinue
+    Write-Host 'It compiles cleanly here.' -ForegroundColor Green
+}
+
+function New-RefsArchive {
+    $out = Export-UnityRefs
+    Test-RefsLocally $out
+    $tgz = Join-Path $env:TEMP 'clonez-unityrefs.tgz'
+    & tar.exe -czf $tgz -C $out .
+    if ($LASTEXITCODE -ne 0) { throw 'tar failed' }
+    return $tgz
+}
+
+# Uploads the bundle and unpacks it at $Dest (a path on $Target, relative to the home directory).
+function Send-RefsArchive([string]$Tgz, [string]$Target, [string]$Dest) {
+    & ssh @Ssh $Target "mkdir -p $Dest"
+    & scp -q @Ssh $Tgz "${Target}:$Dest.tgz"
+    if ($LASTEXITCODE -ne 0) { throw "scp to $Target failed" }
+    $code = Invoke-Remote "rm -rf $Dest && mkdir -p $Dest && tar -xzf $Dest.tgz -C $Dest && rm $Dest.tgz && echo 'Unity references are on $Target.'" $Target
+    if ($code -ne 0) { throw "Unpacking on $Target failed ($code)" }
+}
+
+function Send-UnityRefs {
+    $tgz = New-RefsArchive
+    Write-Host "Uploading to the Spark..." -ForegroundColor Cyan
+    Send-RefsArchive $tgz $SparkHost "$RemoteDir/.unityrefs"
+    foreach ($h in (Get-SparkHelpers)) {
+        Write-Host "Uploading to $($h.Name)..." -ForegroundColor Cyan
+        Send-RefsArchive $tgz $h.Target "$HelperDir/unityrefs"
+    }
+    Remove-Item $tgz
+}
+
+#endregion
+
+function Get-RemoteOutput([string]$Script, [string]$Target = $SparkHost) {
+    $b64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes(($Script -replace "`r", '') + "`n"))
+    $out = & ssh @Ssh $Target "echo $b64 | base64 -d | bash"
+    if ($LASTEXITCODE -ne 0) { throw "A command on $Target failed (exit $LASTEXITCODE): $out" }
+    return $out
+}
+
+# Helpers the Spark's coordinator knows about (.state/helpers.txt: "name user@host" per line).
+function Get-SparkHelpers {
+    $lines = & ssh @Ssh $SparkHost "cat $RemoteDir/.state/helpers.txt 2>/dev/null"
+    return @(foreach ($l in $lines) { $p = "$l".Trim() -split '\s+'; if ($p.Count -eq 2) { [pscustomobject]@{ Name = $p[0]; Target = $p[1] } } })
+}
+
+function Install-Helpers {
+    if (-not $Helpers -or $Helpers.Count -eq 0) { throw 'No helper machines given (-Helpers user@host, ...).' }
+    # The coordinator's own key: kept in the project's ignored .state folder on the Spark and accepted by the
+    # helpers only from the Spark's address.
+    Write-Host 'Preparing the SSH key the Spark uses to reach the helpers...' -ForegroundColor Cyan
+    $pub = (Get-RemoteOutput @"
+d=$RemoteDir/.state/ssh
+mkdir -p "`$d" && chmod 700 "`$d"
+[ -f "`$d/id_ed25519" ] || ssh-keygen -q -t ed25519 -N '' -C nightshift@spark -f "`$d/id_ed25519"
+cat "`$d/id_ed25519.pub"
+"@ | Select-Object -Last 1).Trim()
+    if ($pub -notmatch '^ssh-ed25519 (\S+)') { throw "Unexpected key from the Spark: $pub" }
+    $keyBody = $Matches[1]
+    $knownHosts = Join-Path $env:USERPROFILE '.ssh\known_hosts'
+    $ready = @(); $hostKeys = @()
+    foreach ($target in $Helpers) {
+        $ip = ($target -split '@')[-1]
+        Write-Host "`nSetting up $target..." -ForegroundColor Cyan
+        try {
+            $out = Get-RemoteOutput @"
+set -e
+DIR="`$HOME/$HelperDir"
+mkdir -p "`$DIR/repo" "`$HOME/.local/bin" "`$HOME/.ssh" && chmod 700 "`$HOME/.ssh"
+cd "`$DIR/repo" && (git rev-parse --git-dir >/dev/null 2>&1 || git init -q)
+touch "`$HOME/.ssh/authorized_keys" && chmod 600 "`$HOME/.ssh/authorized_keys"
+grep -qF '$keyBody' "`$HOME/.ssh/authorized_keys" || echo 'from="$SparkIp" $pub' >> "`$HOME/.ssh/authorized_keys"
+case "`$(uname -m)" in x86_64) arch=x64 ;; aarch64|arm64) arch=arm64 ;; *) echo "unsupported CPU `$(uname -m)"; exit 1 ;; esac
+if [ "`$("`$HOME/.local/bin/opencode" --version 2>/dev/null)" != "$OpenCodeVersion" ]; then
+  echo "installing OpenCode $OpenCodeVersion..."
+  curl -fsSL "https://github.com/anomalyco/opencode/releases/download/v$OpenCodeVersion/opencode-linux-`$arch.tar.gz" | tar -xz -C "`$HOME/.local/bin" opencode
+fi
+if [ ! -x "`$HOME/.dotnet/dotnet" ]; then
+  echo "installing the .NET SDK..."
+  curl -fsSL https://dot.net/v1/dotnet-install.sh -o /tmp/nightshift-dotnet-install.sh
+  bash /tmp/nightshift-dotnet-install.sh --channel 10.0 --install-dir "`$HOME/.dotnet" >/dev/null
+  rm -f /tmp/nightshift-dotnet-install.sh
+fi
+curl -fs --max-time 5 http://${SparkIp}:11434/api/version >/dev/null || { echo "can't reach Ollama on the Spark"; exit 1; }
+echo "READY `$(hostname) opencode `$("`$HOME/.local/bin/opencode" --version) dotnet `$("`$HOME/.dotnet/dotnet" --version)"
+"@ $target
+            $out | Where-Object { $_ -notmatch '^READY' } | ForEach-Object { Write-Host "  $_" }
+            $readyLine = $out | Where-Object { $_ -match '^READY' } | Select-Object -Last 1
+            if (-not $readyLine) { throw 'setup did not finish' }
+            $name = ($readyLine -split ' ')[1]
+            $keys = @(& ssh-keygen -F $ip -f $knownHosts | Where-Object { $_ -and $_ -notmatch '^#' })
+            if ($keys.Count -eq 0) { throw "$ip isn't in this PC's known_hosts; connect to it once with ssh first" }
+            $hostKeys += $keys
+            $ready += [pscustomobject]@{ Name = $name; Target = $target }
+            Write-Host "  ready: $readyLine" -ForegroundColor Green
+        }
+        catch { Write-Host "  skipped ${target}: $($_.Exception.Message)" -ForegroundColor Yellow }
+    }
+    if ($ready.Count -eq 0) { throw 'No helper machine could be set up.' }
+
+    $tgz = New-RefsArchive
+    foreach ($h in $ready) { Send-RefsArchive $tgz $h.Target "$HelperDir/unityrefs" }
+    Remove-Item $tgz
+
+    $helpersB64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes((($ready | ForEach-Object { "$($_.Name) $($_.Target)" }) -join "`n") + "`n"))
+    $hostsB64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes(($hostKeys -join "`n") + "`n"))
+    Invoke-Remote @"
+echo $helpersB64 | base64 -d > $RemoteDir/.state/helpers.txt
+echo $hostsB64 | base64 -d > $RemoteDir/.state/ssh/known_hosts
+echo 'The Spark will use: ' `$(cut -d' ' -f1 $RemoteDir/.state/helpers.txt | tr '\n' ' ')
+"@ | Out-Null
+}
+
+function Add-Task {
+    $text = $Task
+    if (-not $text) { $text = Read-Host 'Task (plain English, one line)' }
+    $text = ($text -replace '\s+', ' ').Trim()
+    if (-not $text) { return }
+    $b64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($text))
+    Invoke-Remote @"
+python3 - <<'PY'
+import base64, pathlib
+p = pathlib.Path.home() / '$SparkProject' / 'Tools' / 'NightShift' / 'tasks.md'
+text = base64.b64decode('$b64').decode('utf-8')
+body = p.read_text(encoding='utf-8')
+p.write_text(body + ('' if body.endswith('\n') else '\n') + '- [ ] ' + text + '\n', encoding='utf-8')
+print('Queued: ' + text)
+PY
+"@ | Out-Null
+}
+
+function Get-NightBranches {
+    $old = $env:GIT_SSH_COMMAND
+    # Git for Windows ships its own ssh; use the Windows one so the same keys and known_hosts apply.
+    $env:GIT_SSH_COMMAND = 'C:/Windows/System32/OpenSSH/ssh.exe -o BatchMode=yes -o ConnectTimeout=10'
+    try {
+        Write-Host 'Fetching night shift branches from the Spark...' -ForegroundColor Cyan
+        & git -C $Root fetch --prune "${SparkHost}:$SparkProject" '+refs/heads/nightshift/*:refs/remotes/spark/nightshift/*'
+        if ($LASTEXITCODE -ne 0) { throw 'git fetch from the Spark failed' }
+    }
+    finally { $env:GIT_SSH_COMMAND = $old }
+    $branches = @(& git -C $Root for-each-ref --sort=-committerdate --format='%(refname:short)' refs/remotes/spark/nightshift)
+    if ($branches.Count -eq 0 -or -not $branches[0]) { Write-Host 'No night shift branches on the Spark yet.' -ForegroundColor Yellow; return }
+    $latest = $branches[0]
+    $local = $latest -replace '^spark/', ''
+    Write-Host "`nLatest: $latest" -ForegroundColor Green
+    $base = & git -C $Root merge-base origin/main $latest 2>$null
+    if ($base) { & git -C $Root --no-pager log --oneline --no-decorate "$base..$latest" }
+    Write-Host "`nTry it in Unity:      git switch -c $local $latest" -ForegroundColor Green
+    Write-Host "Publish it for a PR:  git push origin ${latest}:refs/heads/$local   (or press Push in AI Workbench)" -ForegroundColor Green
+    Write-Host "The night's report is Tools/NightShift/reports/ on that branch." -ForegroundColor Green
+}
+
+function Watch-Log { try { & ssh -t @Ssh $SparkHost "tail -n 40 -f $RemoteDir/.state/nightshift.log" } catch { } }
+
+function Show-Menu {
+    while ($true) {
+        Write-Host ''
+        Write-Host '=== CLONE-Z Night Shift (local AI on the DGX Spark) ===' -ForegroundColor Cyan
+        Write-Host ' 1) Add a task'
+        Write-Host ' 2) Start the night shift'
+        Write-Host ' 3) Status'
+        Write-Host ' 4) Watch the live log'
+        Write-Host ' 5) Finish the tasks in progress, then stop'
+        Write-Host ' 6) Stop now'
+        Write-Host ' 7) Fetch the results into this repo'
+        Write-Host ' 8) Upload Unity references (once, and after Unity/package changes)'
+        Write-Host ' 9) Set up helper machines'
+        Write-Host ' Q) Quit (a running night shift keeps going on the Spark)'
+        switch ((Read-Host 'Choose').Trim().ToUpper()) {
+            '1' { $script:Task = $null; Add-Task }
+            '2' { Invoke-Container 'start' | Out-Null }
+            '3' { Invoke-Container 'status' | Out-Null }
+            '4' { Watch-Log }
+            '5' { Invoke-Container 'finish' | Out-Null }
+            '6' { Invoke-Container 'stop' | Out-Null }
+            '7' { Get-NightBranches }
+            '8' { Send-UnityRefs }
+            '9' { Install-Helpers }
+            'Q' { return }
+        }
+    }
+}
+
+switch ($Action) {
+    'refs' { Send-UnityRefs }
+    'helpers' { Install-Helpers }
+    'add' { Add-Task }
+    'start' { exit (Invoke-Container 'start') }
+    'status' { exit (Invoke-Container 'status') }
+    'watch' { Watch-Log }
+    'finish' { exit (Invoke-Container 'finish') }
+    'stop' { exit (Invoke-Container 'stop') }
+    'fetch' { Get-NightBranches }
+    default { Show-Menu }
+}

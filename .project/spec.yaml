@@ -75,7 +75,17 @@ environment:
             target: /opt/conda
     compose_file_path: ""
 execution:
-    apps: []
+    apps:
+        - name: night-shift
+          type: custom
+          class: process
+          start_command: bash /project/Tools/NightShift/nightshift.sh start
+          health_check_command: bash /project/Tools/NightShift/nightshift.sh health
+          stop_command: bash /project/Tools/NightShift/nightshift.sh stop
+          user_msg: 'The night shift is working through Tools/NightShift/tasks.md with the local model. Log: Tools/NightShift/.state/nightshift.log'
+          logfile_path: ""
+          timeout_seconds: 120
+          icon_url: ""
     resources:
         gpu:
             requested: 1
