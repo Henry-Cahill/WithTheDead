@@ -339,7 +339,7 @@ sentence of its summary. Grep the code for details.
 - BathroomFixtures.cs (79) BathroomFixtures: Small helpers shared by the bathroom's fixtures (ToiletFixture, BasinFixture, ShowerFixture, TowelRa
 - BedFixture.cs (174) BedFixture: The bed (on its SleepSpot).
 - BreakerPanel.cs (117) BreakerPanel: The house's breaker panel, in the store room: a grey steel box whose tin door opens on the dead-fron
-- ClockFixture.cs (137) ClockFixture: The living room's battery wall clock.
+- ClockFixture.cs (149) ClockFixture: The living room's battery wall clock.
 - DoormatFixture.cs (75) DoormatFixture: The coir welcome mat on the front stoop: wipe your feet on it, or lift its near edge to see what's u
 - HomeDoor.cs (323) HomeDoor, Setup: A door of the starter home, hung in a finished doorway BuildPiece by StarterHome.Doors.cs: a pair of
 - HomeWindow.cs (422) HomeWindow, Setup, Lookout: A window of the starter home, glazed and hung by StarterHome.Windows.cs: a fixed upper sash over a l
