@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace CloneZ
 {
+    // The home's doors in their finished doorways: a pair of panelled leaves in the wide gaps (the front door red, the others oak), or — in the bathroom's doorway — a single painted leaf beside a fixed panel finished like the walls.
     internal static partial class StarterHome
     {
         #region Doors
