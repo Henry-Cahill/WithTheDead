@@ -48,8 +48,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   The HUD must show exactly the same text as today. Don't touch vehicle physics, input or networking.
 - [ ] Make idle sinks cheaper in Assets/Scripts/World/Fixtures/KitchenSink.cs: in KitchenSink.Update, return early when the tap is off and the water level can't change this frame (the basin is empty, or the plug is in), and call RefreshWater only when the water level actually changed.
   Read the whole Update first. Filling, draining, overflow messages, dish refresh, dry running and the tap-noise timing must behave exactly as before.
-- [ ] Stop rewriting the clock hands every frame in Assets/Scripts/World/Fixtures/ClockFixture.cs: in Turn(), work out the hour and minute angles as it does now, but only assign _hour.rotation and _minute.rotation when that hand's angle moved more than 0.5 degrees since it was last assigned (cache the last angles, starting at float.NaN so the first call always assigns).
+- [x] Stop rewriting the clock hands every frame in Assets/Scripts/World/Fixtures/ClockFixture.cs: in Turn(), work out the hour and minute angles as it does now, but only assign _hour.rotation and _minute.rotation when that hand's angle moved more than 0.5 degrees since it was last assigned (cache the last angles, starting at float.NaN so the first call always assigns).
   Stopped clocks, the time shown and the interaction text must behave exactly as before.
+  - 05:15 landed by 1htsserver in 10.8 min: **Changed**
 - [x] Fit raid ceiling lights to their rooms in Assets/Scripts/World/RaidBuilding.Furnish.cs: in RaidBuilding.CeilingLight the range is currently Mathf.Clamp(size * 0.95f, 6f, 9f), so even a small bathroom gets a 6 m light that leaks through the walls into the next rooms (only the four nearest lamps cast shadows). Use 1.3 times the room's half-diagonal (0.5 * sqrt(width^2 + height^2) of room.World) clamped to 3.5..9 m instead.
   Keep the intensity, colour, circuit, flicker, switch behaviour, glow mesh and shadow argument exactly as they are.
   - 05:15 landed by hts-llm in 10.5 min: **Changes Made**
