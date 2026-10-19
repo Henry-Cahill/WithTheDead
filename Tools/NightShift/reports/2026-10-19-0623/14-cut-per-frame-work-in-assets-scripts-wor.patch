@@ -1,0 +1,31 @@
+diff --git a/Assets/Scripts/World/Vehicles.cs b/Assets/Scripts/World/Vehicles.cs
+index f923382..5573a53 100644
+--- a/Assets/Scripts/World/Vehicles.cs
++++ b/Assets/Scripts/World/Vehicles.cs
+@@ -484,6 +484,7 @@ public sealed class VehicleDriver : MonoBehaviour
+         private PlayerCombat _combat;
+         private PlayerInteractor _interactor;
+         private PlayerAvatar _avatar;
++        private PlayerStats _stats;
+         private float _startAt, _enteredAt;
+ 
+         /// <summary>Begin control of this vehicle for the given player (sets driver state and disables input).</summary>
+@@ -497,6 +498,7 @@ public void Begin(Vehicle car)
+             _combat = GetComponent<PlayerCombat>();
+             _interactor = GetComponent<PlayerInteractor>();
+             _avatar = GetComponent<PlayerAvatar>();
++            _stats = GetComponent<PlayerStats>();
+             if (_ctrl != null) _ctrl.enabled = false;
+             if (_cc != null) _cc.enabled = false;
+             if (_combat != null) _combat.enabled = false;
+@@ -529,9 +531,8 @@ private void LateUpdate()
+             if (Car == null) return;
+             transform.SetPositionAndRotation(Car.Seat.position - Vector3.up * 0.45f, Car.transform.rotation);
+             Keyboard kb = Keyboard.current;
+-            PlayerStats st = GetComponent<PlayerStats>();
+             bool exitKey = kb != null && kb.eKey.wasPressedThisFrame && !GameInput.Blocked && Time.time - _enteredAt > 0.4f;
+-            if (exitKey || (st != null && (st.IsDead || st.Incapacitated))) Leave();
++            if (exitKey || (_stats != null && (_stats.IsDead || _stats.Incapacitated))) Leave();
+         }
+ 
+         /// <summary>Leave the vehicle, resetting driver state and repositioning the character.</summary>
