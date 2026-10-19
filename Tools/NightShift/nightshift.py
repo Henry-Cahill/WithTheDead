@@ -17,7 +17,9 @@ from __future__ import annotations
 
 import argparse
 import base64
+import contextlib
 import datetime as dt
+import fcntl
 import json
 import os
 import re
@@ -583,6 +585,18 @@ BOX = re.compile(r"^(\s*)- \[([ xX!~])\] (.+?)\s*$")
 TASKS_LOCK = threading.Lock()
 
 
+@contextlib.contextmanager
+def task_file_lock(path: Path = TASKS):
+    lock_path = path.parent / ".state" / "tasks.lock"
+    lock_path.parent.mkdir(parents=True, exist_ok=True)
+    with TASKS_LOCK, lock_path.open("a+") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        try:
+            yield
+        finally:
+            fcntl.flock(lock, fcntl.LOCK_UN)
+
+
 @dataclass
 class Task:
     key: str   # the text on the checkbox line; identifies the task
@@ -597,7 +611,7 @@ def _block_end(lines: list[str], i: int, indent: int) -> int:
 
 
 def read_tasks() -> list[tuple[str, Task]]:
-    with TASKS_LOCK:
+    with task_file_lock():
         if not TASKS.exists():
             return []
         lines = TASKS.read_text(encoding="utf-8").splitlines()
@@ -620,6 +634,23 @@ def write_atomic(path: Path, text: str) -> None:
     os.replace(tmp, path)
 
 
+def merge_task_text(base: bytes, current: bytes, other: bytes) -> tuple[bytes, bool]:
+    with tempfile.TemporaryDirectory(prefix="nightshift-tasks-") as temp:
+        base_path, current_path, other_path = (Path(temp) / name for name in ("base", "current", "other"))
+        base_path.write_bytes(base)
+        current_path.write_bytes(current)
+        other_path.write_bytes(other)
+        merged = subprocess.run(["git", "merge-file", "-p", "-L", "refreshed", "-L", "before landing",
+                                 "-L", "editor save", str(current_path), str(base_path), str(other_path)],
+                                capture_output=True)
+    if merged.returncode == 1:
+        return merged.stdout, True
+    if merged.returncode:
+        raise RuntimeError("couldn't reconcile tasks.md edits during landing: "
+                           + merged.stderr.decode("utf-8", "replace").strip())
+    return merged.stdout, False
+
+
 def with_mark(text: str, key: str, mark: str, note: str) -> str | None:
     """`text` (tasks.md) with the unchecked task `key` marked and `note` added under it, or None if it isn't there."""
     lines = text.splitlines()
@@ -633,7 +664,7 @@ def with_mark(text: str, key: str, mark: str, note: str) -> str | None:
 
 
 def mark_task(key: str, mark: str, note: str, path: Path = TASKS) -> None:
-    with TASKS_LOCK:
+    with task_file_lock(path):
         text = with_mark(path.read_text(encoding="utf-8"), key, mark, note)
         if text is not None:
             write_atomic(path, text)
@@ -909,20 +940,56 @@ class Coordinator:
             if git_run(ROOT, "symbolic-ref", "--short", "HEAD").stdout.strip() != branch:
                 return  # switched to another branch: none of the night's work is checked out, so there's nothing to refresh
             tasks_rel = f"{REL}/tasks.md"
-            with TASKS_LOCK:
+            with task_file_lock():
+                base = git(ROOT, "show", f":{tasks_rel}").encode("utf-8", "surrogateescape")
                 edited = None
                 if TASKS.exists() and git_run(ROOT, "diff", "--quiet", "--", tasks_rel).returncode:
-                    edited = TASKS.read_bytes().decode("utf-8", "surrogateescape")
+                    edited_bytes = TASKS.read_bytes()
+                    edited = edited_bytes.decode("utf-8", "surrogateescape")
+                    latest = TASKS.read_bytes()
+                    if latest != edited_bytes:
+                        edited = latest.decode("utf-8", "surrogateescape")
                     git(ROOT, "checkout", "--", tasks_rel)  # the copy the landing started from, so the refresh can't trip
+                editor_edits = []
+                checked_out = TASKS.read_bytes()
+                if checked_out != base:
+                    editor_edits.append(checked_out)
                 refreshed = git_run(ROOT, "read-tree", "-m", "-u", "HEAD")
                 if refreshed.returncode:
-                    if edited is not None:
-                        TASKS.write_bytes(edited.encode("utf-8", "surrogateescape"))
+                    latest = TASKS.read_bytes()
+                    if latest != base and latest not in editor_edits:
+                        editor_edits.append(latest)
+                    if edited is not None or editor_edits:
+                        local = edited.encode("utf-8", "surrogateescape") if edited is not None else base
+                        for editor_edit in editor_edits:
+                            local, conflict = merge_task_text(base, local, editor_edit)
+                            if conflict:
+                                TASKS.write_bytes(local)
+                                raise RuntimeError("tasks.md editor saves conflict during landing; resolve the marked "
+                                                   "conflict in tasks.md before restarting")
+                        TASKS.write_bytes(local)
                     raise RuntimeError("couldn't bring the project folder up to date with the landing: "
                                        + first_line(refreshed.stderr or refreshed.stdout, 300))
-                if edited is not None:
-                    redone = with_mark(edited, *mark) if mark else None
-                    TASKS.write_bytes((edited if redone is None else redone).encode("utf-8", "surrogateescape"))
+                updated = git(ROOT, "show", f"HEAD:{tasks_rel}").encode("utf-8", "surrogateescape")
+                current = TASKS.read_bytes()
+                if current != updated and current not in editor_edits:
+                    editor_edits.append(current)
+                if edited is not None or editor_edits:
+                    local = edited.encode("utf-8", "surrogateescape") if edited is not None else base
+                    for editor_edit in editor_edits:
+                        local, conflict = merge_task_text(base, local, editor_edit)
+                        if conflict:
+                            TASKS.write_bytes(local)
+                            raise RuntimeError("tasks.md editor saves conflict during landing; resolve the marked "
+                                               "conflict in tasks.md before restarting")
+                    restored, conflict = merge_task_text(base, updated, local)
+                    if conflict:
+                        TASKS.write_bytes(restored)
+                        raise RuntimeError("tasks.md edits conflict with the landing; resolve the marked conflict "
+                                           "in tasks.md before restarting")
+                    restored = restored.decode("utf-8", "surrogateescape")
+                    redone = with_mark(restored, *mark) if mark else None
+                    TASKS.write_bytes((restored if redone is None else redone).encode("utf-8", "surrogateescape"))
         finally:
             os.close(fd)
             lock_path.unlink(missing_ok=True)

@@ -36,8 +36,10 @@ Every change is compiled against Unity's own assemblies before it lands, and lan
 ## Every night
 
 1. **Queue tasks** in [tasks.md](tasks.md), one `- [ ]` line each. Edit it in JupyterLab (*Open
-   JupyterLab* in AI Workbench, then `Tools/NightShift/tasks.md`), or choose **1** in the menu. Small,
-   concrete tasks work best: name the place and say what you want to see in game.
+   JupyterLab* in AI Workbench, then `Tools/NightShift/tasks.md`), or choose **1** in the menu. Menu additions
+   are coordinated with landings; JupyterLab edits are carried across them, and overlapping edits are reported
+   with conflict markers to resolve before restarting. Small, concrete tasks work best: name the place and say
+   what you want to see in game.
 2. **Start it.** Switch on **night-shift** under *Applications* in AI Workbench, or choose **2**. It keeps
    going into the day until you stop it, picking up tasks you add in the meantime. (Set
    `NIGHTSHIFT_STOP_AT` in [nightshift.env](nightshift.env) for a fixed time to stop taking new tasks.)
@@ -123,6 +125,8 @@ local model, for interactive work in JupyterLab's terminal).
 - **"couldn't bring the project folder up to date with the landing"**: a file that landing changed was edited in
   the project folder while it ran, so the landing was undone and the task stays queued. Adding tasks to
   `tasks.md` is fine at any time; leave the other files alone while it runs.
+- **"tasks.md edits conflict with the landing"** or **"tasks.md editor saves conflict during landing"**: resolve
+  the conflict markers in `tasks.md`, then restart the night shift.
 - **No pull request appeared**: `.state\pr.log` on this PC says why (for example a failed push). The
   automatic one waits until nothing is left to do; **P** makes it right away.
 - **Logs**: `Tools/NightShift/.state/nightshift.log` (coordinator), and each worker's
