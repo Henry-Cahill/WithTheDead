@@ -498,9 +498,11 @@ function Publish-NightShift {
     $remote = "$(Invoke-Tool 'git ls-remote on GitHub' git @('-C', $Root, 'ls-remote', 'origin', "refs/heads/$branch"))".Split("`t ")[0]
     $prs = Invoke-Tool 'gh pr list (check: gh auth status)' gh @('pr', 'list', '--repo', $repo, '--head', $branch, '--state', 'open', '--json', 'number,url')
     $open = @(if ("$prs".Trim()) { ($prs -join "`n") | ConvertFrom-Json | ForEach-Object { $_ } })
-    # The night's reports that aren't on main yet. Without them there's no new work: the branch's last pull request
-    # was merged and only tooling or merges came after, so don't open another one for that.
-    $reports = @(& git -C $Root diff --name-only --diff-filter=AM "origin/main...$sha" -- 'Tools/NightShift/reports/*.md' |
+    # The night's reports that aren't on main yet, by comparing the two trees: merges between main and the night's
+    # branch can leave several merge bases, and a three-dot diff from an older one shows merged reports as new.
+    # Without new reports there's no new work (the last night pull request was merged and only tooling or merges
+    # came after), so don't open another pull request for that.
+    $reports = @(& git -C $Root diff --name-only --diff-filter=AM origin/main $sha -- 'Tools/NightShift/reports/*.md' |
         Sort-Object { $_ -replace '\.md$', '' } -Descending)
     if ($open.Count -eq 0 -and $reports.Count -eq 0) { Write-Host "Nothing new from the night shift on $branch since its last pull request."; return }
     # Refresh PR metadata even when the branch is already pushed, so failed edits can be retried.
