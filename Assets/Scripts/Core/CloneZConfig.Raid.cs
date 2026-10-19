@@ -1,5 +1,6 @@
 namespace CloneZ
 {
+    // The raid town's interactive storage settings (every cupboard, drawer, locker and fridge in its buildings): how often they are bare and what they start with.
     public static partial class CloneZConfig
     {
         // ---- The raid town's interactive storage (every cupboard, drawer, locker and fridge in its buildings) ----

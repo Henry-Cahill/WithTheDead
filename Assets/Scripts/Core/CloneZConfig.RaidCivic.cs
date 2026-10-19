@@ -1,5 +1,6 @@
 namespace CloneZ
 {
+    // The raid town's workplace settings (CivicSink, CivicRest, CivicRadio, the filing cabinets, lockers, safes and benches): each fixture's noise, reach, timing and how bare it starts.
     public static partial class CloneZConfig
     {
         // ---- The raid town's workplace furniture kit (filing cabinets, lockers, safes, crates, benches, desks) ----

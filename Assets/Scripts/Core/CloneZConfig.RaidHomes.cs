@@ -1,5 +1,6 @@
 namespace CloneZ
 {
+    // The raid town's houses' settings (RaidHomeBath, RaidHomeWasher, the sofa and TV): the bath's taps and water, the washing machine's cycle, and the sofa and den's comfort.
     public static partial class CloneZConfig
     {
         // ---- The raid town's houses: the sofa, the living room's TV, the den's chair ----
