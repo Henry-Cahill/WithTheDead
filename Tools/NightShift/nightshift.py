@@ -1012,7 +1012,8 @@ class Coordinator:
 
     def undo_landing(self, ref: str, head: str, landed: str) -> None:
         """Moves the night's branch back to `head` when the project folder couldn't follow it to `landed`, so the folder
-        matches its branch again. If even that fails, the night shift stops and commits nothing more in the folder."""
+        matches its branch again. A failed refresh leaves the folder's consistency uncertain, so its caller freezes
+        further commits even if this rollback succeeds. If the rollback fails, the night shift also stops."""
         undone = git_run(ROOT, "update-ref", ref, head, landed)
         if undone.returncode:
             self.frozen = True
@@ -1104,6 +1105,10 @@ class Coordinator:
                     try:
                         self.sync_landed_checkout(night.branch, mark)
                     except Exception:
+                        self.frozen = True
+                        STOPPING.set()
+                        log("the project folder may be out of sync after the failed refresh; Night Shift is stopping "
+                            "without further commits. Check 'git status' before starting it again.")
                         self.undo_landing(ref, head, landed_head)
                         raise
                     self.completed.add(task.key)
