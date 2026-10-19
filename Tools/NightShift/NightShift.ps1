@@ -474,7 +474,6 @@ function Publish-NightShift {
     $prs = & gh pr list --repo $repo --head $branch --state open --json 'number,url'
     if ($LASTEXITCODE -ne 0) { throw 'gh pr list failed (check: gh auth status)' }
     $open = @(if ("$prs".Trim()) { ($prs -join "`n") | ConvertFrom-Json | ForEach-Object { $_ } })
-    if ($remote -eq $sha -and $open.Count -gt 0) { Write-Host "$($open[0].url) is up to date."; return }
     if ($remote -ne $sha) {
         $env:GIT_TERMINAL_PROMPT = '0'; $env:GCM_INTERACTIVE = 'never'  # fail rather than wait for a sign-in nobody sees
         & git -C $Root push -q origin "${sha}:refs/heads/$branch"
