@@ -283,7 +283,8 @@ namespace CloneZ
             Vector3 head = top + tilt * new Vector3(0f, 0.15f, 1.5f);
             m.Rod(top, head, 0.07f, Mt(pole));
             // Determine deterministic variation from world position (head) using Perlin noise
-            float noise = Mathf.PerlinNoise(head.x * 0.13f, head.z * 0.13f);
+            Vector3 at = m.FrameOrigin;
+        float noise = Mathf.PerlinNoise(at.x * 0.13f, at.z * 0.13f);
             // +/-6% brightness variation for the cobra‑head housing colour
             float housingFactor = 0.94f + 0.12f * noise; // range ~0.94‑1.06
             Color baseHousing = new Color(0.24f, 0.25f, 0.26f);
@@ -292,7 +293,7 @@ namespace CloneZ
             // Slight colour‑temperature variation for the lit bulb (still warm sodium)
             Color baseBulb = new Color(1f, 0.74f, 0.42f);
             // Use a second noise sample for the bulb colour
-            float bulbNoise = Mathf.PerlinNoise(head.x * 0.17f + 100f, head.z * 0.17f + 100f);
+            float bulbNoise = Mathf.PerlinNoise(at.x * 0.17f + 100f, at.z * 0.17f + 100f);
             // Vary brightness a few percent, keep within warm range
             float bulbFactor = 0.95f + 0.1f * bulbNoise; // ~0.95‑1.05
             Color variedBulb = baseBulb * bulbFactor;

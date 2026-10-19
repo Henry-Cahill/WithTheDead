@@ -291,6 +291,7 @@ namespace CloneZ
     {
         private Text _text;
         private readonly List<RectTransform> _marks = new List<RectTransform>();
+        private readonly List<Image> _markImages = new List<Image>();
         private RectTransform _markRoot;
         private Camera _cam;
 
@@ -309,7 +310,15 @@ namespace CloneZ
         {
             PlayerMonster m = PlayerMonster.Local;
             if (m == null || m.Def == null) { _text.text = ""; Hide(0); return; }
-            _text.text = m.Def.Name + "   claws " + Bar(m.StrikeReady01) + "   trick " + Bar(m.AbilityReady01) + "   earned " + Money.Format(m.Earned);
+            // Update the info line only when needed
+            if (_lastDefName != m.Def.Name || _lastBar != Bar(m.StrikeReady01) || _lastAbility != Bar(m.AbilityReady01) || _lastEarned != Money.Format(m.Earned))
+            {
+                _text.text = m.Def.Name + "   claws " + Bar(m.StrikeReady01) + "   trick " + Bar(m.AbilityReady01) + "   earned " + Money.Format(m.Earned);
+                _lastDefName = m.Def.Name;
+                _lastBar = Bar(m.StrikeReady01);
+                _lastAbility = Bar(m.AbilityReady01);
+                _lastEarned = Money.Format(m.Earned);
+            }
             if (_cam == null) _cam = Camera.main;
             if (_cam == null) return;
             int n = 0;
@@ -325,10 +334,16 @@ namespace CloneZ
                 RectTransform mark = Mark(n++);
                 mark.position = sp;
                 float pulse = 0.55f + 0.45f * Mathf.Sin(Time.time * 6f + i);
-                mark.GetComponent<Image>().color = new Color(0.9f, 0.1f, 0.1f, 0.35f + 0.4f * pulse);
+                // Use cached Image reference
+                _markImages[n-1].color = new Color(0.9f, 0.1f, 0.1f, 0.35f + 0.4f * pulse);
             }
             Hide(n);
         }
+        // cache last displayed values to avoid rebuilding every frame
+        private string _lastDefName = "";
+        private string _lastBar = "";
+        private string _lastAbility = "";
+        private string _lastEarned = "";
 
         private static string Bar(float f) => f >= 1f ? "ready" : Mathf.RoundToInt(f * 100f) + "%";
 
@@ -340,8 +355,10 @@ namespace CloneZ
                 img.rectTransform.sizeDelta = new Vector2(18f, 18f);
                 img.raycastTarget = false;
                 _marks.Add(img.rectTransform);
+                _markImages.Add(img);
             }
             _marks[i].gameObject.SetActive(true);
+            _markImages[i].gameObject.SetActive(true);
             return _marks[i];
         }
 

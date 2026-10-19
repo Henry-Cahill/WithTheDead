@@ -236,22 +236,36 @@ namespace CloneZ
 
         private static readonly string[] s_Points = { "N", "NE", "E", "SE", "S", "SW", "W", "NW" };
 
+        private System.Text.StringBuilder _sb = new System.Text.StringBuilder();
+        private float _lastYaw;
+        private bool _lastVisible;
+
         private void LateUpdate()
         {
+            // Update compass possession check once per second
             if (Time.time > _check) { _check = Time.time + 1f; _has = _inv != null && _inv.Has("compass"); }
             Camera cam = Camera.main;
-            if (!_has || cam == null || GameSettings.Current.Hud == HudMode.Hardcore) { _text.text = ""; return; }
+            bool visible = _has && cam != null && GameSettings.Current.Hud != HudMode.Hardcore;
+            // Clear text immediately when compass is not visible (lost, camera missing, or hardcore HUD)
+            if (!visible) { _text.text = ""; _lastVisible = false; return; }
             float yaw = cam.transform.eulerAngles.y;
-            var sb = new System.Text.StringBuilder();
-            for (int d = -60; d <= 60; d += 15)
+            // Rebuild strip only if visibility changed or yaw moved enough
+            if (!_lastVisible || Mathf.Abs(Mathf.DeltaAngle(yaw, _lastYaw)) > 0.2f)
             {
-                float h = Mathf.Repeat(yaw + d, 360f);
-                int idx = Mathf.RoundToInt(h / 45f) % 8;
-                if (Mathf.Abs(Mathf.DeltaAngle(h, idx * 45f)) < 7.5f) sb.Append(d == 0 ? "[" + s_Points[idx] + "]" : s_Points[idx]);
-                else sb.Append(d == 0 ? "|" : "\u00b7");
-                sb.Append("  ");
+                _sb.Clear();
+                for (int d = -60; d <= 60; d += 15)
+                {
+                    float h = Mathf.Repeat(yaw + d, 360f);
+                    int idx = Mathf.RoundToInt(h / 45f) % 8;
+                    if (Mathf.Abs(Mathf.DeltaAngle(h, idx * 45f)) < 7.5f) _sb.Append(d == 0 ? "[" + s_Points[idx] + "]" : s_Points[idx]);
+                    else _sb.Append(d == 0 ? "|" : "\u00b7");
+                    _sb.Append("  ");
+                }
+                _text.text = _sb.ToString();
+                _lastYaw = yaw;
+                _lastVisible = true;
             }
-            _text.text = sb.ToString();
+            // else keep existing text unchanged
         }
     }
 }

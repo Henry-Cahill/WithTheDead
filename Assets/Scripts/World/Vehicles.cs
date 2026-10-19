@@ -17,16 +17,16 @@ namespace CloneZ
         public const float TankLitres = 40f, MaxSpeed = 19f, ReverseSpeed = 5f;
 
         /// <summary>Spot index of the car in the world.</summary>
-public int Spot { get; private set; }
+        public int Spot { get; private set; }
         public int Wheels;
         public bool Battery, SparkPlug, Radiator, Hotwired;
         public float Fuel, Engine = 1f, Charge = 1f, Heat, Tyres = 1f;
         /// <summary>Whether the engine is currently running.</summary>
-public bool EngineOn { get; private set; }
+        public bool EngineOn { get; private set; }
         /// <summary>Current speed of the car (m/s).</summary>
-public float Speed { get; private set; }
+        public float Speed { get; private set; }
         /// <summary>Driver's player stats (null when no one is driving).</summary>
-public PlayerStats Driver { get; private set; }
+        public PlayerStats Driver { get; private set; }
         public ulong RemoteDriver = ulong.MaxValue;
         /// <summary>Transform of the driver's seat.</summary>
 public Transform Seat { get; private set; }
@@ -391,7 +391,10 @@ public void Drive(float throttle, float steer, bool brake, float dt)
                 if (Time.time >= _noiseAt) { _noiseAt = Time.time + 0.5f; NoiseSystem.Emit(transform.position, 30f + Mathf.Abs(Speed) * 2f); }
                 if (Fuel < 3f && Time.time >= _fuelWarnAt) { _fuelWarnAt = Time.time + 30f; GameEvents.RaiseToast("Fuel light's on."); }
             }
-            if (_engine != null) _engine.pitch = 0.7f + Mathf.Abs(Speed) / MaxSpeed * 0.9f;
+            if (_engine != null) {
+                float newPitch = 0.7f + Mathf.Abs(Speed) / MaxSpeed * 0.9f;
+                if (Mathf.Abs(newPitch - _engine.pitch) > 0.001f) _engine.pitch = newPitch;
+            }
             SpinWheels(dt);
         }
 
@@ -458,7 +461,10 @@ public void PushRemote(Vector3 pos, float yaw, float speed, bool engine)
             transform.position = Vector3.Lerp(_netFrom, _netTo, _netT);
             transform.rotation = Quaternion.Euler(0f, Mathf.LerpAngle(_netYawFrom, _netYawTo, _netT), 0f);
             SpinWheels(Time.deltaTime);
-            if (_engine != null) _engine.pitch = 0.7f + Mathf.Abs(Speed) / MaxSpeed * 0.9f;
+            if (_engine != null) {
+                float newPitch = 0.7f + Mathf.Abs(Speed) / MaxSpeed * 0.9f;
+                if (Mathf.Abs(newPitch - _engine.pitch) > 0.001f) _engine.pitch = newPitch;
+            }
         }
 
         /// <summary>Update the remote driver's seat status, handling disconnection and engine state.</summary>

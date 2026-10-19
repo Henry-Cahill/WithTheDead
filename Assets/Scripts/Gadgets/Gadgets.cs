@@ -19,13 +19,13 @@ namespace CloneZ
         public static readonly List<Drone> All = new List<Drone>();
 
         /// <summary>What kind of drone this is.</summary>
-public DroneKind Kind { get; private set; }
+        public DroneKind Kind { get; private set; }
         /// <summary>Current battery charge (0‑1).</summary>
-public float Battery01 { get; private set; } = 1f;
+        public float Battery01 { get; private set; } = 1f;
         /// <summary>True if the drone carries a grenade (FPV only).</summary>
-public bool HasGrenade { get; private set; }
+        public bool HasGrenade { get; private set; }
         /// <summary>True when the drone has been destroyed.</summary>
-public bool IsDead { get; private set; }
+        public bool IsDead { get; private set; }
         /// <summary>Convenient access to this GameObject's Transform.</summary>
 public Transform Transform => transform;
         /// <summary>The drone's camera, created on build.</summary>
@@ -360,8 +360,9 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
     /// <summary>The drone's on-screen display: battery, height, speed, payload, the way back.</summary>
     public sealed class HudDrone : MonoBehaviour
     {
-        private Text _text;
+                private Text _text;
         private Image _frame;
+        private string _cachedText = string.Empty;
 
         public static HudDrone Create()
         {
@@ -380,10 +381,24 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             DronePilot p = DronePilot.Local;
             bool on = p != null && p.Drone != null;
-            _text.text = !on ? "" : (p.Drone.Kind == DroneKind.Fpv ? "FPV" : "UGV") + "  BAT " + Mathf.RoundToInt(p.Drone.Battery01 * 100f) + "%"
-                + "   ALT " + p.Drone.transform.position.y.ToString("0.0") + " m   SPD " + Mathf.RoundToInt(p.Drone.Speed * 3.6f) + " km/h"
-                + "\nDIST " + (Actor.LocalPlayer != null ? Mathf.RoundToInt(Vector3.Distance(Actor.LocalPlayer.transform.position, p.Drone.transform.position)) : 0) + " m"
-                + (p.Drone.HasGrenade ? "   PAYLOAD ARMED [LMB]" : "") + "\n[E] land and hand back";
+            string newText;
+            if (!on)
+            {
+                newText = "";
+            }
+            else
+            {
+                var d = p.Drone;
+                newText = (d.Kind == DroneKind.Fpv ? "FPV" : "UGV") + "  BAT " + Mathf.RoundToInt(d.Battery01 * 100f) + "%"
+                    + "   ALT " + d.transform.position.y.ToString("0.0") + " m   SPD " + Mathf.RoundToInt(d.Speed * 3.6f) + " km/h"
+                    + "\nDIST " + (Actor.LocalPlayer != null ? Mathf.RoundToInt(Vector3.Distance(Actor.LocalPlayer.transform.position, d.transform.position)) : 0) + " m"
+                    + (d.HasGrenade ? "   PAYLOAD ARMED [LMB]" : "") + "\n[E] land and hand back";
+            }
+            if (newText != _cachedText)
+            {
+                _cachedText = newText;
+                _text.text = newText;
+            }
             _frame.color = on ? new Color(0f, 0.05f, 0f, 0.12f) : new Color(0f, 0f, 0f, 0f);
         }
     }

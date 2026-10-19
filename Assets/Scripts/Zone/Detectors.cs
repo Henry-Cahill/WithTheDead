@@ -156,6 +156,11 @@ namespace CloneZ
         private readonly List<Image> _dots = new List<Image>();
         private readonly List<ArtifactNode> _sensed = new List<ArtifactNode>();
         private Image _anomalyRing;
+        // Cache for title text to avoid per‑frame string allocations
+        private DetectorDevice.Model _cachedModel;
+        private string _cachedUpperName;
+        private int _cachedDist;
+        private bool _cachedHasTarget;
 
         public static HudDetector Create(DetectorDevice d)
         {
@@ -187,7 +192,33 @@ namespace CloneZ
         {
             if (_d == null || _d.Active == null) return;
             int tier = _d.Active.Tier;
-            _title.text = _d.Active.Name.ToUpperInvariant() + (_d.Target != null ? "  " + Mathf.RoundToInt(_d.TargetDistance) + "m" : "");
+
+            // Update title only when needed
+            bool modelChanged = _d.Active != _cachedModel;
+            bool hasTarget = _d.Target != null;
+            int dist = hasTarget ? Mathf.RoundToInt(_d.TargetDistance) : 0;
+            string upperName = _d.Active.Name.ToUpperInvariant();
+
+            if (modelChanged)
+            {
+                // New active detector – reset cache
+                _cachedModel = _d.Active;
+                _cachedUpperName = upperName;
+                _cachedHasTarget = hasTarget;
+                _cachedDist = dist;
+                _title.text = _cachedUpperName + (hasTarget ? "  " + dist + "m" : "");
+            }
+            else
+            {
+                // Same model – update only if target state or distance changed
+                if (hasTarget != _cachedHasTarget || (hasTarget && dist != _cachedDist))
+                {
+                    _cachedHasTarget = hasTarget;
+                    _cachedDist = dist;
+                    _title.text = _cachedUpperName + (hasTarget ? "  " + dist + "m" : "");
+                }
+            }
+
             float anomaly = _d.NearestAnomaly < 4f ? Mathf.Lerp(0.35f, 0f, _d.NearestAnomaly / 4f) : 0f;
             _anomalyRing.color = new Color(1f, 0.3f, 0.2f, anomaly * (0.6f + 0.4f * Mathf.Sin(Time.time * 18f)));
 

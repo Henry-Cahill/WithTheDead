@@ -23,6 +23,8 @@ namespace CloneZ
         private PlayerStats _stats;
         private PlayerGear _gear;
         private Actor _for;
+        private Camera _cachedCam;
+        private UniversalAdditionalCameraData _cachedData;
 
         public static void Ensure()
         {
@@ -48,12 +50,22 @@ namespace CloneZ
         private void LateUpdate()
         {
             Camera cam = Camera.main;
-            if (cam != null)
+            // Update cached camera and URP data only when needed
+            if (cam != _cachedCam || _cachedData == null)
             {
-                var data = cam.GetComponent<UniversalAdditionalCameraData>();
-                if (data == null) data = cam.gameObject.AddComponent<UniversalAdditionalCameraData>();
-                if (!data.renderPostProcessing) data.renderPostProcessing = true;
+                _cachedCam = cam;
+                if (cam != null)
+                {
+                    var data = cam.GetComponent<UniversalAdditionalCameraData>();
+                    if (data == null) data = cam.gameObject.AddComponent<UniversalAdditionalCameraData>();
+                    _cachedData = data;
+                }
+                else
+                {
+                    _cachedData = null;
+                }
             }
+            if (_cachedData != null && !_cachedData.renderPostProcessing) _cachedData.renderPostProcessing = true;
             Actor me = Actor.LocalPlayer;
             if (me != _for)
             {
