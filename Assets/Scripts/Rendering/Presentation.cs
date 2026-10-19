@@ -119,6 +119,8 @@ namespace CloneZ
         private PlayerClothing _clothing;
         private PlayerStats _stats;
         private float _condensation;
+        private bool _filterShown;
+        private int _filterPct = -1;
         private static Texture2D s_Cracks, s_Fog;
 
         public static GasVisorOverlay Create(PlayerStats p)
@@ -151,7 +153,14 @@ namespace CloneZ
             bool mask = _gear != null && _gear.HasGasMask && _stats != null && !_stats.IsDead;
             bool inside = mask && ViewState.FirstPersonLike;
             _canvas.enabled = inside;
-            _filter.text = mask && !inside ? "Mask filter " + Mathf.RoundToInt(_gear.FilterCharge01 * 100f) + "%" : "";
+            bool shown = mask && !inside;
+            int pct = shown ? Mathf.RoundToInt(_gear.FilterCharge01 * 100f) : -1;
+            if (shown != _filterShown || pct != _filterPct)
+            {
+                _filterShown = shown;
+                _filterPct = pct;
+                _filter.text = shown ? "Mask filter " + pct + "%" : "";
+            }
             if (!mask) { _condensation = 0f; return; }
 
             float exertion = _stats.Exertion == Exertion.Sprinting ? 1f : _stats.Exertion == Exertion.Walking ? 0.3f : 0.1f;
@@ -302,6 +311,9 @@ namespace CloneZ
         private PlayerGear _gear;
         private float _check;
         private bool _wearing;
+        private int _timeH = -1, _timeM = -1;
+        private bool _filterShown;
+        private int _filterPct = -1;
 
         public static DiegeticWatch Create(PlayerStats p)
         {
@@ -334,9 +346,21 @@ namespace CloneZ
             if (t != null)
             {
                 int h = Mathf.FloorToInt(t.Hour), m = Mathf.FloorToInt((t.Hour - h) * 60f);
-                _time.text = h.ToString("00") + ":" + m.ToString("00");
+                if (h != _timeH || m != _timeM)
+                {
+                    _timeH = h;
+                    _timeM = m;
+                    _time.text = h.ToString("00") + ":" + m.ToString("00");
+                }
             }
-            _filter.text = _gear != null && _gear.HasGasMask ? "filter " + Mathf.RoundToInt(_gear.FilterCharge01 * 100f) + "%" : "";
+            bool fShown = _gear != null && _gear.HasGasMask;
+            int fPct = fShown ? Mathf.RoundToInt(_gear.FilterCharge01 * 100f) : -1;
+            if (fShown != _filterShown || fPct != _filterPct)
+            {
+                _filterShown = fShown;
+                _filterPct = fPct;
+                _filter.text = fShown ? "filter " + fPct + "%" : "";
+            }
             float vis = Actor.LocalPlayer != null ? Actor.LocalPlayer.Visibility01 : 0f;
             _lamp.color = Color.Lerp(new Color(0.1f, 0.25f, 0.1f), new Color(1f, 0.85f, 0.2f), vis);
         }

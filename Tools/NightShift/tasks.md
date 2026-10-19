@@ -157,8 +157,9 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [x] Rebuild the car HUD only when it changes in Assets/Scripts/World/Vehicles.cs, part 2 of 2: in HudVehicle.LateUpdate, rebuild the HUD string only when one of the displayed values (rounded km/h, fuel to one decimal, and the other values it shows) changed since the last frame, still clearing the text at once when there is no driver.
   The HUD must show exactly the same text as today. Don't touch VehicleDriver, Vehicle, physics, input or networking.
   - 17:46 landed by 0htsserver in 6.7 min: Implemented optimized HUD update in **Assets/Scripts/World/Vehicles.cs**:
-- [ ] Rebuild the gas-mask and wristwatch readouts only when they change in Assets/Scripts/Rendering/Presentation.cs: GasVisorOverlay.Update builds "Mask filter NN%" every frame, and DiegeticWatch.Update builds "HH:MM" and "filter NN%" every frame while it's shown. In each class, cache the last shown filter percent (and, for the watch, the last hour and minute) and assign each Text only when its value, or whether it's shown, changed.
+- [x] Rebuild the gas-mask and wristwatch readouts only when they change in Assets/Scripts/Rendering/Presentation.cs: GasVisorOverlay.Update builds "Mask filter NN%" every frame, and DiegeticWatch.Update builds "HH:MM" and "filter NN%" every frame while it's shown. In each class, cache the last shown filter percent (and, for the watch, the last hour and minute) and assign each Text only when its value, or whether it's shown, changed.
   What the player sees must be identical, including clearing the texts when the mask comes off. Don't touch PostFx (an earlier task changes it).
+  - 18:18 landed by spark in 33.4 min: Both classes updated and the file compiles.
 
 ### Flavour text: append-only writing that makes the world feel lived in (original wording only)
 
