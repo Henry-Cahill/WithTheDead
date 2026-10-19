@@ -1,0 +1,30 @@
+{
+  "pid": 13846,
+  "model": "qwen3.8",
+  "deadline": "Mon 07:00",
+  "branch": "nightshift/2026-10-18",
+  "workers": [
+    "spark",
+    "0htsserver",
+    "1htsserver",
+    "hts-llm"
+  ],
+  "working": {
+    "Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/AI/Humans/Outposts.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Skip fields, constants and constructors, and don't change any code. Work through the file one member at a time.": {
+      "worker": "spark",
+      "since": "04:23"
+    },
+    "Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/GameEvents.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Skip fields and constants, and don't change any code.": {
+      "worker": "1htsserver",
+      "since": "04:24"
+    },
+    "Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/GameManager.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Skip fields and constants, and don't change any code.": {
+      "worker": "hts-llm",
+      "since": "04:24"
+    },
+    "Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Profile/ProfileData.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Skip fields and constants, and don't change any code.": {
+      "worker": "0htsserver",
+      "since": "04:24"
+    }
+  }
+}
