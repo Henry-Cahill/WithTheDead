@@ -173,8 +173,9 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [x] Fill in the checkpoint guard's day in Assets/Scripts/World/RaidMapBuilder.Props.cs: BoothLog ("Read the logbook" in the guard booth) is read a page at a time: 0600, 1140, 1615, 2050. Insert three pages in time order between them (for example 0830, 1320 and 1840) that build the same day's dread (traffic turned back, orders that stop making sense, the radio going quiet), keeping the 2050 page last.
   Same terse log-entry voice, invented names only, the same \u201C \u201D escapes. Change nothing but the BoothLog array.
   - 17:59 landed by hts-llm in 1.9 min: **Changed file**
-- [ ] Add more notes to the workplace fridges in Assets/Scripts/World/Fixtures/RaidCivicFridge.cs: append four entries to GuardNotes (the National Guard post's kitchenette: barracks humour going sour) and four to ClinicNotes (the clinic's medical fridge: clinical notes growing worried), December 1993.
+- [x] Add more notes to the workplace fridges in Assets/Scripts/World/Fixtures/RaidCivicFridge.cs: append four entries to GuardNotes (the National Guard post's kitchenette: barracks humour going sour) and four to ClinicNotes (the clinic's medical fridge: clinical notes growing worried), December 1993.
   All original: no real brands or people and no names from books, films or other games. Match the existing notes' length, voice and punctuation. Only append to the two arrays; change nothing else.
+  - 18:05 landed by 1htsserver in 7.1 min: **Changes made**
 - [x] Add five more things to read on the town's office computers in Assets/Scripts/World/RaidBuilding.Civic.cs: append five entries to CivicScreenLines ("Read the screen" on a desk CRT): green text on black, 1993 office software, ordinary work cut off mid-task.
   All original: no real brands or people. Match the existing lines' length, voice and punctuation. Only append to the array; change nothing else.
   - 18:03 landed by hts-llm in 4.1 min: Added five new “read‑screen” lines to **Assets/Scripts/World/RaidBuilding.Civic.cs**:
