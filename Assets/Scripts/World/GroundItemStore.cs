@@ -41,7 +41,9 @@ namespace CloneZ
             public byte Yaw;           // facing, quantised to 256 steps — plenty for a dropped object
             public uint Id;            // stable identity, so a handle survives items moving in the list
 
+            /// <summary>World position of the ground item, with Y forced to zero.</summary>
             public Vector3 Position => new Vector3(X, 0f, Z);
+            /// <summary>Yaw in degrees, computed from the stored byte representation.</summary>
             public float YawDegrees => Yaw * (360f / 256f);
         }
 
@@ -65,7 +67,8 @@ namespace CloneZ
 
         private static uint s_NextId = 1;
 
-        public static int ChunkCount => s_Chunks.Count;
+        /// <summary>Number of chunks currently in memory.</summary>
+    public static int ChunkCount => s_Chunks.Count;
 
         /// <summary>Total items held, loaded or not. Walks the chunks, so it is for diagnostics.</summary>
         public static int DebugCountAll()
@@ -77,16 +80,19 @@ namespace CloneZ
 
         // ── Chunk keys ────────────────────────────────────────────────────────────────────────────────
 
-        public static long KeyOf(float x, float z)
+        /// <summary>Computes the chunk key for a world position (x,z).</summary>
+    public static long KeyOf(float x, float z)
         {
             int cx = Mathf.FloorToInt(x / ChunkSize);
             int cz = Mathf.FloorToInt(z / ChunkSize);
             return Key(cx, cz);
         }
 
-        public static long Key(int cx, int cz) => ((long)cx << 32) ^ (uint)cz;
+        /// <summary>Combines chunk X and Z indices into a single long key.</summary>
+    public static long Key(int cx, int cz) => ((long)cx << 32) ^ (uint)cz;
 
-        public static void Coords(long key, out int cx, out int cz)
+        /// <summary>Decodes a chunk key into its X and Z indices.</summary>
+    public static void Coords(long key, out int cx, out int cz)
         {
             cx = (int)(key >> 32);
             cz = (int)(key & 0xFFFFFFFF);
@@ -94,7 +100,8 @@ namespace CloneZ
 
         // ── Item types ────────────────────────────────────────────────────────────────────────────────
 
-        public static int TypeIndexOf(ItemDef def)
+        /// <summary>Gets (or creates) the type index for an item definition.</summary>
+    public static int TypeIndexOf(ItemDef def)
         {
             if (def == null) return -1;
             if (s_TypeIndex.TryGetValue(def.Id, out int i)) return i;
@@ -105,7 +112,8 @@ namespace CloneZ
             return i;
         }
 
-        public static ItemDef TypeAt(int index)
+        /// <summary>Returns the item definition for a given type index, or null if out of range.</summary>
+    public static ItemDef TypeAt(int index)
             => index >= 0 && index < s_Types.Count ? s_Types[index] : null;
 
         // ── Adding and removing ───────────────────────────────────────────────────────────────────────
@@ -198,7 +206,8 @@ namespace CloneZ
             if (chunk.Items.Count == 0) s_Chunks.Remove(chunk.Key);
         }
 
-        private static Chunk GetOrCreate(long key)
+        /// <summary>Gets the chunk containing the given key, creating it if missing.</summary>
+    private static Chunk GetOrCreate(long key)
         {
             if (!s_Chunks.TryGetValue(key, out Chunk c))
             {
@@ -208,7 +217,8 @@ namespace CloneZ
             return c;
         }
 
-        public static bool TryGetChunk(long key, out Chunk chunk) => s_Chunks.TryGetValue(key, out chunk);
+        /// <summary>Attempts to retrieve a chunk by key; returns true if found.</summary>
+    public static bool TryGetChunk(long key, out Chunk chunk) => s_Chunks.TryGetValue(key, out chunk);
 
         // ── Handles ───────────────────────────────────────────────────────────────────────────────────
 
@@ -234,7 +244,8 @@ namespace CloneZ
             public static readonly Handle None = new Handle(0, -1, 0);
         }
 
-        private static bool Resolve(in Handle handle, out Chunk chunk, out int index)
+        /// <summary>Attempts to resolve a handle to its chunk and index; returns false if invalid.</summary>
+    private static bool Resolve(in Handle handle, out Chunk chunk, out int index)
         {
             index = -1;
             if (!handle.IsValid || !s_Chunks.TryGetValue(handle.ChunkKey, out chunk)) { chunk = null; return false; }
@@ -257,7 +268,8 @@ namespace CloneZ
             return false;
         }
 
-        public static bool TryGet(in Handle handle, out Item item)
+        /// <summary>Attempts to get the item for a handle; returns true if found.</summary>
+    public static bool TryGet(in Handle handle, out Item item)
         {
             if (Resolve(handle, out Chunk chunk, out int index)) { item = chunk.Items[index]; return true; }
             item = default;
@@ -271,7 +283,8 @@ namespace CloneZ
         /// chunks the radius actually overlaps are examined, so this costs the same whether the world
         /// holds a hundred items or ten million.
         /// </summary>
-        public static bool TryFindNearest(Vector3 position, float radius, out Handle handle, out Item item)
+        /// <summary>Finds the nearest ground item to a position within a radius.</summary>
+    public static bool TryFindNearest(Vector3 position, float radius, out Handle handle, out Item item)
         {
             handle = Handle.None;
             item = default;
@@ -311,7 +324,8 @@ namespace CloneZ
 
         /// <summary>Adds every chunk overlapping the given world-space square to <paramref name="into"/>.
         /// Used by the renderer to gather what is worth drawing.</summary>
-        public static void ChunksInRange(Vector3 centre, float radius, List<Chunk> into)
+        /// <summary>Adds all chunks intersecting a world-space circle to a list, for rendering.</summary>
+    public static void ChunksInRange(Vector3 centre, float radius, List<Chunk> into)
         {
             into.Clear();
 
@@ -333,7 +347,8 @@ namespace CloneZ
         public static Dictionary<long, Chunk>.ValueCollection AllChunks => s_Chunks.Values;
 
         /// <summary>Empties the world of ground items — used when loading a save or starting over.</summary>
-        public static void Clear()
+        /// <summary>Clears all ground items, resetting the store for a new run or load.</summary>
+    public static void Clear()
         {
             s_Chunks.Clear();
             s_Extras.Clear();
@@ -341,7 +356,8 @@ namespace CloneZ
         }
 
         /// <summary>Restores an item exactly as it was saved, keeping its identity.</summary>
-        public static void AddRaw(in Item item)
+        /// <summary>Adds a raw item record back into the store, preserving its saved identity.</summary>
+    public static void AddRaw(in Item item)
         {
             Chunk chunk = GetOrCreate(KeyOf(item.X, item.Z));
             chunk.Items.Add(item);
