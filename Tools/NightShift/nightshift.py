@@ -945,7 +945,11 @@ class Coordinator:
         while True:
             task = self.claim(worker)
             if not task:
-                break
+                if STOPPING.is_set() or FINISH_FLAG.exists() or dt.datetime.now() >= self.deadline:
+                    break
+                if self.cfg.get("NIGHTSHIFT_WAIT_FOR_TASKS", "1") == "0" or STOPPING.wait(60):
+                    break
+                continue  # on duty until the stop time: tasks added to tasks.md during the night get picked up
             log(f"starting: {first_line(task.key, 120)}", worker.name)
             with self.land_lock:
                 base = git(ROOT, "rev-parse", "HEAD").strip()
@@ -985,7 +989,7 @@ class Coordinator:
         opencode_bin()
         if not (HERE / ".unityrefs" / "Runtime.csproj").exists():
             raise RuntimeError("Unity's reference assemblies aren't on the Spark yet; run 'NightShift.ps1 refs' on the PC")
-        if not any(mark == " " for mark, _ in read_tasks()):
+        if not any(mark == " " for mark, _ in read_tasks()) and self.cfg.get("NIGHTSHIFT_WAIT_FOR_TASKS", "1") == "0":
             log("tasks.md has no unchecked tasks, so there's nothing to do")
             return
         date = dt.date.today().isoformat()

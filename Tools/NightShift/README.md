@@ -32,8 +32,8 @@ Every change is compiled against Unity's own assemblies before it lands, and lan
 1. **Queue tasks** in [tasks.md](tasks.md), one `- [ ]` line each. Edit it in JupyterLab (*Open
    JupyterLab* in AI Workbench, then `Tools/NightShift/tasks.md`), or choose **1** in the menu. Small,
    concrete tasks work best: name the place and say what you want to see in game.
-2. **Start it.** Switch on **night-shift** under *Applications* in AI Workbench, or choose **2**. It stops
-   taking new tasks at 07:00 and stops on its own when the queue is empty.
+2. **Start it.** Switch on **night-shift** under *Applications* in AI Workbench, or choose **2**. It stays on
+   duty until 07:00, picking up tasks you add during the night, then stops taking new ones.
 3. **Check on it** any time with **3** (status) or **4** (live log). New tasks added during the night
    are picked up.
 
