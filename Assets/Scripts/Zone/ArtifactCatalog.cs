@@ -80,21 +80,31 @@ namespace CloneZ
         private static void D(string id, string name, Color color, int tier, int value, params string[] props)
             => s_Defs[id] = new Def { Id = id, Name = name, Color = color, DetectorTier = tier, Value = value, Properties = props };
 
-        public static Def Get(string id) => id != null && s_Defs.TryGetValue(id, out Def d) ? d : null;
-        public static Property Prop(string id) => id != null && s_Props.TryGetValue(id, out Property p) ? p : null;
-        public static bool IsArtifact(string id) => id != null && s_Defs.ContainsKey(id);
+        /// <summary>Gets the artifact definition by id, or null if not found.</summary>
+public static Def Get(string id) => id != null && s_Defs.TryGetValue(id, out Def d) ? d : null;
+        /// <summary>Gets the property definition by id, or null if not found.</summary>
+public static Property Prop(string id) => id != null && s_Props.TryGetValue(id, out Property p) ? p : null;
+        /// <summary>Returns true if the given id corresponds to a known artifact.</summary>
+public static bool IsArtifact(string id) => id != null && s_Defs.ContainsKey(id);
+                /// <summary>Returns true if the given ItemDef corresponds to an artifact.</summary>
         public static bool IsArtifact(ItemDef def) => def != null && IsArtifact(def.Id);
+                /// <summary>All artifact definitions in the catalog.</summary>
         public static IEnumerable<Def> All => s_Defs.Values;
 
+                /// <summary>Gets the display name of an artifact, or returns the id if unknown.</summary>
         public static string NameOf(string id) { Def d = Get(id); return d != null ? d.Name : id; }
+                /// <summary>Gets the colour of an artifact for UI, or white if unknown.</summary>
         public static Color ColorOf(string id) { Def d = Get(id); return d != null ? d.Color : Color.white; }
 
         #region Knowledge
+                /// <summary>Gets the key string for a specific artifact property.</summary>
         private static string Key(string artifact, string prop) => artifact + ":" + prop;
 
+                /// <summary>Returns true if the given artifact property has been learned.</summary>
         public static bool IsKnown(string artifact, string prop)
             => ProfileStore.Account != null && ProfileStore.Account.ArtifactKnowledge.Contains(Key(artifact, prop));
 
+                /// <summary>Counts how many properties of an artifact are known.</summary>
         public static int KnownCount(string artifact)
         {
             Def d = Get(artifact);
@@ -105,6 +115,7 @@ namespace CloneZ
         }
 
         /// <summary>Learns one property (returns true when it was new). Raises <see cref="GameEvents.ArtifactPropertyLearned"/>.</summary>
+                /// <summary>Learns one property of an artifact, optionally announcing it.</summary>
         public static bool Learn(string artifact, string prop, bool announce = true)
         {
             AccountProfile a = ProfileStore.Account;
@@ -120,6 +131,7 @@ namespace CloneZ
         }
 
         /// <summary>Learns every property of an artifact (the Institute's analysis).</summary>
+                /// <summary>Learns all properties of an artifact (Institute analysis).</summary>
         public static int LearnAll(string artifact)
         {
             Def d = Get(artifact);
@@ -130,6 +142,7 @@ namespace CloneZ
         }
 
         /// <summary>Tooltip lines: the known properties, and a "???" for each one still unknown.</summary>
+                /// <summary>Creates tooltip description text for an artifact's known/unknown properties.</summary>
         public static string Describe(string artifact)
         {
             Def d = Get(artifact);

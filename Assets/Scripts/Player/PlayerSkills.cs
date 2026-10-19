@@ -57,6 +57,7 @@ namespace CloneZ
         };
 
         #region XP & levels
+        /// <summary>Gets the current XP stored for the given skill.</summary>
         public float GetXp(Skill s) => _xp[(int)s];
 
         /// <summary>The XP a skill needs to reach <paramref name="level"/> (general curve).</summary>
@@ -67,6 +68,7 @@ namespace CloneZ
             return curve[Mathf.Clamp(level - 1, 0, curve.Length - 1)];
         }
 
+        /// <summary>Gets the current level of the given skill, capped by the game's maximum skill level.</summary>
         public int GetLevel(Skill s)
         {
             int[] curve = CurveFor(s);
@@ -91,6 +93,7 @@ namespace CloneZ
             return Mathf.Clamp01((_xp[(int)s] - prev) / Mathf.Max(1f, next - prev));
         }
 
+        /// <summary>Adds XP to a skill, applying multipliers and raising events for level‑up and UI refresh.</summary>
         public void AddXp(Skill s, float amount)
         {
             if (amount <= 0f) return;
@@ -124,12 +127,16 @@ namespace CloneZ
         private static int[] CurveFor(Skill s)
             => (s == Skill.Fitness || s == Skill.Strength) ? CloneZConfig.PhysicalXpCurve : CloneZConfig.SkillXpCurve;
 
+        /// <summary>Returns the display name for a skill enum value.</summary>
         public static string NameOf(Skill s) => DisplayNames[(int)s];
         #endregion
 
         #region Effect accessors (read by the combat / movement / stat systems)
+        /// <summary>Base firearm damage multiplier from the Aiming skill.</summary>
         public float FirearmDamageMult => AimDamageTable[GetLevel(Skill.Aiming)];
+        /// <summary>Base firearm spread (cone) multiplier from the Aiming skill.</summary>
         public float FirearmSpreadMult => AimSpreadTable[GetLevel(Skill.Aiming)];
+        /// <summary>Base firearm effective range multiplier from the Aiming skill.</summary>
         public float FirearmRangeMult => AimRangeTable[GetLevel(Skill.Aiming)];
 
         /// <summary>Reload-time multiplier (PZ getReloadingMod = 3.5 − lvl·0.25, normalised).</summary>
@@ -142,11 +149,16 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Movement speed multiplier while aiming, derived from the Nimble skill.</summary>
         public float NimbleMoveMult => NimbleTable[GetLevel(Skill.Nimble)];
+        /// <summary>Fatigue accumulation rate multiplier from the Fitness skill.</summary>
         public float FatigueRateMult => FatigueTable[GetLevel(Skill.Fitness)];
+        /// <summary>Footstep noise multiplier from the Lightfooted skill.</summary>
         public float FootstepNoiseMult => LightfootTable[GetLevel(Skill.Lightfooted)];
+        /// <summary>Sprint speed multiplier based on the Sprinting skill.</summary>
         public float SprintSpeedMult => 1f + GetLevel(Skill.Sprinting) * CloneZConfig.SprintSkillSpeedPerLevel;
         // Skills start at 0 here (PZ defaults to 5), so Strength only ever adds capacity.
+        /// <summary>Carry capacity multiplier from the Strength skill.</summary>
         public float CarryCapacityMult => 1f + GetLevel(Skill.Strength) * CloneZConfig.StrengthCarryPerLevel;
 
         /// <summary>Build-time multiplier for carpentry work (higher Carpentry = faster hammering).</summary>

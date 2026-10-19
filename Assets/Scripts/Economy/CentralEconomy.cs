@@ -43,7 +43,9 @@ namespace CloneZ
     /// </summary>
     public static class CentralEconomy
     {
+        /// <summary>The loaded economy configuration, populated from economy.json.</summary>
         public static EconomyConfig Config { get; private set; }
+        /// <summary>The full path to the economy.json file in the persistent data folder.</summary>
         public static string FilePath => Path.Combine(Application.persistentDataPath, "economy.json");
 
         private static readonly Dictionary<string, EconomyRule> s_Items = new Dictionary<string, EconomyRule>();
@@ -57,6 +59,7 @@ namespace CloneZ
         /// <summary>The loot gate runs on every peer (they all roll the same seeded loot, so it must agree); restocks
         /// and expiry are the server's.</summary>
         public static bool GateOn => SandboxSettings.Current.CentralEconomy && GameSession.IsExtraction;
+        /// <summary>Whether the central economy is active on the server (GateOn and this instance is the server).</summary>
         public static bool Active => GateOn && NetAuthority.IsServer;
 
         /// <summary>Playing together, the host's economy is everyone's (the gate must agree on every machine).</summary>
@@ -71,9 +74,11 @@ namespace CloneZ
             catch (Exception e) { Debug.LogWarning("[CloneZ] The host's economy didn't parse: " + e.Message); }
         }
 
+        /// <summary>Serialize the current economy config to JSON, or return empty if none.</summary>
         public static string ToJson() => Config != null ? JsonUtility.ToJson(Config) : "";
 
         #region The file
+        /// <summary>Load the economy configuration from disk (or defaults) and apply it.</summary>
         public static void Load()
         {
             EconomyConfig cfg = null;
@@ -123,7 +128,7 @@ namespace CloneZ
             return c;
         }
 
-        /// <summary>The rule for an item: its own, else its category's (a blank rule when neither exists).</summary>
+        /// <summary>Get the rule for an item ID, falling back to its category or a blank rule.</summary>
         public static EconomyRule RuleFor(string id)
         {
             if (Config == null) Load();
@@ -144,8 +149,11 @@ namespace CloneZ
         }
 
         private static float Scale => GameSession.IsExtraction ? Mathf.Max(0.2f, ZoneCatalog.Current.LootMultiplier * SandboxSettings.Current.LootAbundance) : 1f;
+        /// <summary>Calculate the nominal max count for an item ID, scaling with loot multipliers.</summary>
         public static int NominalOf(string id) { EconomyRule r = RuleFor(id); return r.Nominal < 0 ? int.MaxValue : Mathf.CeilToInt(r.Nominal * Scale); }
+        /// <summary>Calculate the minimum required count for an item ID, scaling with loot multipliers.</summary>
         public static int MinOf(string id) { EconomyRule r = RuleFor(id); return r.Min < 0 ? 0 : Mathf.CeilToInt(r.Min * Scale); }
+        /// <summary>Get the current tracked count for an item ID.</summary>
         public static int Count(string id) => s_Counts.TryGetValue(id, out int n) ? n : 0;
         #endregion
 
@@ -273,7 +281,9 @@ namespace CloneZ
 
     public sealed class CentralEconomyModule : IGameModule
     {
+        /// <summary>Module order for installation.</summary>
         public int Order => 15;
+        /// <summary>Initialize the central economy system at game start.</summary>
         public void Init() => CentralEconomy.Install();
     }
 }

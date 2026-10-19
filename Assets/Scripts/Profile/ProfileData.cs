@@ -34,13 +34,20 @@ namespace CloneZ
 
         public const int MaxCharacters = 3;
 
+        /// <summary>Gets the currently active character profile, or null if none.</summary>
         public CharacterProfile Active =>
             ActiveIndex >= 0 && ActiveIndex < Characters.Count ? Characters[ActiveIndex] : null;
 
+        /// <summary>Returns true if the object has the given flag.</summary>
+        /// <summary>Returns true if the character has the given flag.</summary>
         public bool HasFlag(string f) => Flags.Contains(f);
+        /// <summary>Adds the flag if not already present.</summary>
+        /// <summary>Adds the flag to the character if not present.</summary>
         public void SetFlag(string f) { if (!Flags.Contains(f)) Flags.Add(f); }
 
+        /// <summary>Checks if the account knows the given knowledge key.</summary>
         public bool Knows(string k) => Knowledge.Contains(k);
+        /// <summary>Attempts to learn a new knowledge key; returns false if empty or already known.</summary>
         public bool Learn(string k)
         {
             if (string.IsNullOrEmpty(k) || Knowledge.Contains(k)) return false;
@@ -48,6 +55,7 @@ namespace CloneZ
             return true;
         }
 
+        /// <summary>Gets or creates a ZoneWorldState for the given zone id.</summary>
         public ZoneWorldState Zone(string id)
         {
             for (int i = 0; i < Zones.Count; i++) if (Zones[i].ZoneId == id) return Zones[i];
@@ -128,15 +136,21 @@ namespace CloneZ
         // Statistics.
         public int Raids, Extracts, Deaths, Kills, PlayerKills, ScavRuns, ArtifactsFound;
 
+        /// <summary>Returns true if the object has the given flag.</summary>
+        /// <summary>Returns true if the character has the given flag.</summary>
         public bool HasFlag(string f) => Flags.Contains(f);
+        /// <summary>Adds the flag if not already present.</summary>
+        /// <summary>Adds the flag to the character if not present.</summary>
         public void SetFlag(string f) { if (!Flags.Contains(f)) Flags.Add(f); }
 
+        /// <summary>Retrieves the reputation value for a faction, defaulting to 0 or 400 for own faction.</summary>
         public float GetFactionRep(string faction)
         {
             for (int i = 0; i < FactionRep.Count; i++) if (FactionRep[i].Faction == faction) return FactionRep[i].Rep;
             return faction == Faction ? 400f : 0f;
         }
 
+        /// <summary>Adds delta to the reputation for a faction, clamped between -1000 and 1000.</summary>
         public void AddFactionRep(string faction, float delta)
         {
             for (int i = 0; i < FactionRep.Count; i++)
@@ -148,6 +162,7 @@ namespace CloneZ
             FactionRep.Add(new FactionRepEntry { Faction = faction, Rep = Mathf.Clamp(GetFactionRep(faction) + delta, -1000f, 1000f) });
         }
 
+        /// <summary>Gets or creates a TraderState for the given trader id.</summary>
         public TraderState Trader(string id)
         {
             for (int i = 0; i < Traders.Count; i++) if (Traders[i].Id == id) return Traders[i];
@@ -156,12 +171,14 @@ namespace CloneZ
             return t;
         }
 
+        /// <summary>Gets a QuestState by id, or null if not found.</summary>
         public QuestState Quest(string id)
         {
             for (int i = 0; i < Quests.Count; i++) if (Quests[i].Id == id) return Quests[i];
             return null;
         }
 
+        /// <summary>Gets or creates a HideoutModuleState for the given module id.</summary>
         public HideoutModuleState Module(string id)
         {
             for (int i = 0; i < Hideout.Count; i++) if (Hideout[i].Id == id) return Hideout[i];
@@ -170,6 +187,7 @@ namespace CloneZ
             return m;
         }
 
+        /// <summary>Gets skill XP at index, or 0 if out of range.</summary>
         public float GetSkillXp(int idx) => idx >= 0 && idx < SkillXp.Count ? SkillXp[idx] : 0f;
     }
 
