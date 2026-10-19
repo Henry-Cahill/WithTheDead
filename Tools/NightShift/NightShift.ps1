@@ -448,7 +448,7 @@ function Publish-NightShift {
     $state = Get-NightState
     $branch = "$($state.branch)"
     if ($branch -notlike 'nightshift/*') { Write-Host "The Spark's project is on '$branch', not a night shift branch, so there's nothing to publish."; return }
-    $done = (-not $state.running) -or $state.idle_since -or ($state.working -eq 0 -and $state.queued -eq 0)
+    $done = (-not $state.running) -or ($state.working -eq 0 -and $state.dispatchable -eq 0)
     if ($WhenDone -and -not $done) {
         Write-Host "Still working on $branch ($($state.working) in progress, $($state.queued) queued); the pull request waits until it's done."
         return

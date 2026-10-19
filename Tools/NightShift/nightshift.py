@@ -902,6 +902,7 @@ class Coordinator:
         status = {"pid": os.getpid(), "model": self.model, "deadline": f"{self.deadline:%a %H:%M}" if self.deadline else "",
                   "branch": self.night.branch if self.night else "", "workers": [w.name for w in self.workers],
                   "working": {k: {"worker": v[0], "since": v[1]} for k, v in self.in_flight.items()},
+                  "dispatches": self.dispatches,
                   "idle_since": self.idle_since}
         STATUS_FILE.write_text(json.dumps(status, indent=2), encoding="utf-8")
 
@@ -1227,12 +1228,16 @@ def cmd_state() -> int:
     load_config()
     pid = coordinator_pid()
     st = json.loads(STATUS_FILE.read_text(encoding="utf-8")) if pid and STATUS_FILE.exists() else {}
-    marks = [m for m, _ in read_tasks()]
+    tasks = read_tasks()
+    marks = [m for m, _ in tasks]
+    dispatches = st.get("dispatches") or {}
     print(json.dumps({
         "running": bool(pid),
         "branch": st.get("branch") or git(ROOT, "rev-parse", "--abbrev-ref", "HEAD", check=False).strip(),
         "working": len(st.get("working") or {}),
         "queued": marks.count(" "),
+        "dispatchable": sum(1 for mark, task in tasks
+                            if mark == " " and dispatches.get(task.key, 0) < MAX_DISPATCH),
         "idle_since": st.get("idle_since"),
     }))
     return 0
