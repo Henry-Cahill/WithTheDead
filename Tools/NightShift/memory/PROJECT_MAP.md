@@ -18,8 +18,8 @@ sentence of its summary. Grep the code for details.
 - Companions.cs (225) CompanionService, Order, Candidate: Hired guns.
 - HumanLoadouts.cs (353) GunPick, LootPick, HumanLoadout: One weighted gun choice of a loadout; the round defaults to the gun's own.
 - HumanNpc.cs (958) HumanNpc, Mode, HumanNpcAvatar: A person in the Zone: a stalker, a soldier, a scavenger, a warden on a tower, a zealot of the Choir,
-- HumanUtil.cs (254) HumanUtil, HumanRunner: Small helpers shared by the Zone's people (stalkers, A-Life squads, outposts, wardens, companions): 
-- Outposts.cs (351) OutpostSystem, Outpost, PdaStashes: Warfare outposts (Gray Zone Warfare's PvEvP): sandbagged positions held by a faction's garrison.
+- HumanUtil.cs (272) HumanUtil, HumanRunner: Small helpers shared by the Zone's people (stalkers, A-Life squads, outposts, wardens, companions): 
+- Outposts.cs (366) OutpostSystem, Outpost, PdaStashes: Warfare outposts (Gray Zone Warfare's PvEvP): sandbagged positions held by a faction's garrison.
 
 ## Assets/Scripts/Audio
 - AudioDirector.cs (291) AudioModule, ListenerRig, FootstepAudio: Installs the synthesiser as the game's sound backend and wires the sounds no single system owns.
@@ -81,16 +81,16 @@ sentence of its summary. Grep the code for details.
 - CombatResolver.cs (208) Hitbox, ShotRequest, ShotResult: A collider that belongs to one body zone of an actor (heads take more, armour covers some).
 - DamageModel.cs (204) DamageKind, BodyZone, BodyZones: What kind of harm a blow does.
 - Factions.cs (152) Factions, Def, CordonRules: The groups that live in (and around) the Zone, how they feel about each other, and how they feel abo
-- GameEvents.cs (66) RaidOutcome, KillInfo, GameEvents: How a raid ended for the local survivor.
+- GameEvents.cs (80) RaidOutcome, KillInfo, GameEvents: How a raid ended for the local survivor.
 - GameInput.cs (124) GameAction, GameInput: Gameplay actions bound through GameInput (the original controls read the keyboard directly).
-- GameManager.cs (119) GameState, GameManager: Owns global game state: score, waves, and win/lose flow.
+- GameManager.cs (131) GameState, GameManager: Owns global game state: score, waves, and win/lose flow.
 - GameModules.cs (78) IGameModule, GameModules, WorldHooks: A gameplay feature that wires itself in at boot: registers item actions, subscribes to GameEvents an
 - GameSession.cs (91) GameMode, RaidKind, CameraView: The kind of run being played, picked on the title screen or in the hub.
 - IDemolishable.cs (28) IDemolishable: Anything the build tool's Demolish mode can tear down — player-built structures (barricades, house p
 - NoiseSystem.cs (67) NoiseSystem, Pulse: Lightweight world sound system.
 - PlayerModifiers.cs (99) StatMods, IStatModSource, PlayerModifiers: The survivor's combined stat modifiers for this frame — the sum of everything that bends the base ru
 - PowerGrid.cs (90) PowerGrid: The electricity supply.
-- SandboxSettings.cs (205) InfectionMode, DeathPenalty, SandboxSettings: The sandbox dials (Project Zomboid style) plus the server rules: nearly everything that changes how 
+- SandboxSettings.cs (208) InfectionMode, DeathPenalty, SandboxSettings: The sandbox dials (Project Zomboid style) plus the server rules: nearly everything that changes how 
 - SaveData.cs (230) SaveData, PlayerSave, StackSave: The complete serialisable snapshot of a run — world clock, weather, utilities, score, the survivor (
 - SaveSystem.cs (495) SaveSystem: Reads and writes the game to disk and knows how to capture a live run into a SaveData and pour a Sav
 - Shelter.cs (32) Shelter: The interiors of the current world — boxes of space under a roof.
@@ -110,13 +110,13 @@ sentence of its summary. Grep the code for details.
 - SmokeTest.cs (400) SmokeTest: An automated smoke test, inert unless the game (or a batch-mode editor in play mode) is started with
 
 ## Assets/Scripts/Economy
-- CentralEconomy.cs (280) EconomyRule, EconomyConfig, CentralEconomy: One loot rule: how many of a thing the Zone holds (nominal), the floor restocks refill to (min), how
+- CentralEconomy.cs (290) EconomyRule, EconomyConfig, CentralEconomy: One loot rule: how many of a thing the Zone holds (nominal), the floor restocks refill to (min), how
 - Hideout.cs (362) ModuleLevel, ModuleDef, Recipe: One level of a hideout module: what it costs to build and what it gives.
 - Insurance.cs (152) InsuranceDesk, CorpseRecovery: Insurance, Tarkov style: pay a share of an item's value and, if you die carrying it and nobody walks
 - Money.cs (170) Money, StarterPack: The money: military-grade 5.45 rounds (ZoneContent.Currency).
 - MoralLedger.cs (81) MoralLedger, HubScreens: The hidden morality track (Metro): sparing people who give up, listening to the bar's stories, helpi
 - TraderCatalog.cs (146) TraderOffer, LoyaltyLevel, TraderDef: One thing a trader sells: for money, or as a barter for other items.
-- Trading.cs (195) Trading: Buying, bartering and selling against the active character's stash, and the loyalty that gates what 
+- Trading.cs (219) Trading: Buying, bartering and selling against the active character's stash, and the loyalty that gates what 
 
 ## Assets/Scripts/Extraction
 - ExtractionBeacon.cs (391) ExtractionBeacon: The in-world beacon for one RaidExit: a tall glowing light column that reads across the dark town, a
@@ -182,16 +182,16 @@ sentence of its summary. Grep the code for details.
 - PlayerInventory.cs (865) PlayerInventory: The player's carried items plus the currently-equipped melee weapon.
 - PlayerPanic.cs (189) PlayerPanic: The survivor's fear response — Project Zomboid's Panic moodle.
 - PlayerSeat.cs (298) PlayerSeat: Sitting down — on a dining chair, the armchair, the edge of the bed, the toilet lid — and lying down
-- PlayerSkills.cs (209) PlayerSkills, Skill: The player's Project Zomboid–style skills (perks).
+- PlayerSkills.cs (221) PlayerSkills, Skill: The player's Project Zomboid–style skills (perks).
 - PlayerSleep.cs (177) PlayerSleep: Lets the player sleep at a bed to pass the night, shedding fatigue and slowly healing (Project Zombo
-- PlayerStats.cs (343) Exertion, PlayerStats: Survival stats for the player: health, endurance, hunger, thirst and the zombie infection.
+- PlayerStats.cs (370) Exertion, PlayerStats: Survival stats for the player: health, endurance, hunger, thirst and the zombie infection.
 - PlayerTemperature.cs (199) PlayerTemperature: The survivor's thermoregulation — Project Zomboid's body-temperature and wetness model.
 - PlayerWounds.cs (560) WoundType, Wound, PlayerWounds: Kinds of injury.
 - Stealth.cs (151) Stealth, HudStealth: How easily the survivor is seen and heard right now (Metro's wrist light, Gray Zone Warfare's visibi
 
 ## Assets/Scripts/Profile
 - ProfessionCatalog.cs (129) ProfessionDef, TraitDef, ProfessionCatalog: A starting profession: skill head-starts, a little kit, and how many trait points it leaves.
-- ProfileData.cs (323) AccountProfile, CharacterProfile, HealthCarry: The account: its characters (up to three), the season, and what was learned that no wipe takes away.
+- ProfileData.cs (341) AccountProfile, CharacterProfile, HealthCarry: The account: its characters (up to three), the season, and what was learned that no wipe takes away.
 - ProfileStore.cs (348) ProfileStore: Loads, saves and edits the account profile (clonez_profile.json under the persistent data path): the
 - Progression.cs (50) Progression: The character's level: experience from kills, extractions, found loot, quests and exploration.
 
@@ -254,7 +254,7 @@ sentence of its summary. Grep the code for details.
 - UITheme.cs (43) UITheme: Shared styling helpers for the code-built UI.
 
 ## Assets/Scripts/Weapons
-- Ballistics.cs (218) ModSlot, AmmoStats, GunStats: Where an attachment goes on a gun.
+- Ballistics.cs (228) ModSlot, AmmoStats, GunStats: Where an attachment goes on a gun.
 - GearEffects.cs (31) GearEffects: What worn armour and Zone suits do to the body besides stopping rounds: plates and exo-frames weigh 
 - WeaponItems.cs (236) WeaponItems: The inventory verbs for guns and their parts: attach an attachment (to the gun in hand, else the fir
 - WeaponUpgrades.cs (125) WeaponUpgrades, Node: The technician's branching upgrade trees (STALKER-style).
@@ -269,7 +269,7 @@ sentence of its summary. Grep the code for details.
 - DecorFont.cs (112) DecorFont: A tiny 5×7 bitmap font for painting text into procedural textures (the "U.S.
 - DecorMaterials.cs (87) DecorMaterials: Cached URP materials for the raid map's textured surfaces (snow, asphalt, floors, walls, ceilings, c
 - DecorPalette.cs (120) DecorPalette: One small point-filtered texture holding every flat colour the raid map uses, one texel per colour.
-- DecorProps.cs (452) DecorProps, CarKind: Outdoor props and loose debris for the raid map: wrecked cars, bare trees and pines, dumpsters, sand
+- DecorProps.cs (467) DecorProps, CarKind: Outdoor props and loose debris for the raid map: wrecked cars, bare trees and pines, dumpsters, sand
 - DecorTextures.cs (970) WainscotStyle, PaperStyle, ExteriorStyle: The interior wall finishes the raid map paints rooms with: a dark lower wainscot under a pale paper,
 - FallbackItemModel.cs (98) FallbackItemModel: A plain stand-in model for items that have no bespoke one yet — a single tinted primitive picked by 
 - FarmPlot.cs (349) FarmPlot, PlotState, FarmCrop: A tilled patch of soil the survivor can sow, water and harvest — Project Zomboid's farming plot.
@@ -325,7 +325,7 @@ sentence of its summary. Grep the code for details.
 - StarterHome.Doors.cs (131) StarterHome: The home's doors in their finished doorways: a pair of panelled leaves in the wide gaps (the front d
 - StarterHome.Grounds.cs (302) StarterHome: The street past the front of the home: sun-faded asphalt with a dashed yellow centre line and white 
 - StarterHome.Kitchen.cs (52) StarterHome: The kitchen's wall cupboards over the worktop on the west wall: the carcass, shelf and crockery draw
-- StarterHome.Lighting.cs (218) StarterHome: The starter home's lighting and wall decor.
+- StarterHome.Lighting.cs (239) StarterHome: The starter home's lighting and wall decor.
 - StarterHome.Shell.cs (365) StarterHome, Frame, Band: Builds the finished look onto a house piece standing in one of the home's slots — its visible geomet
 - StarterHome.Windows.cs (206) StarterHome: The starter home builds window fittings (sashes, curtains, blinds, etc.).
 - StarterHome.cs (447) StarterHome, HomeRoom, Slot: The wave-survival starter home, finished to the extraction town's standard.
@@ -346,7 +346,7 @@ sentence of its summary. Grep the code for details.
 - HoseSpigot.cs (175) HoseSpigot: The outside tap: a standpipe with a red wheel beside the hose reel, round the west side of the house
 - KitchenFridge.cs (206) KitchenFridge: The workings of the kitchen's fridge-freezer (HomeFurniture of kind Fridge): a small freezer over a 
 - KitchenParts.cs (157) KitchenFrame, KitchenParts: A kitchen fitting's local frame, as the furniture builders draw it (front toward +Z, origin on the f
-- KitchenSink.cs (472) KitchenSink: The kitchen sink under the front window — the fixture fronting the kitchen tap's WaterSource.
+- KitchenSink.cs (480) KitchenSink: The kitchen sink under the front window — the fixture fronting the kitchen tap's WaterSource.
 - KitchenStove.cs (272) KitchenStove: The gas range's controls — the fixture on the kitchen's CookingStation.
 - LampSwitch.cs (70) LampSwitch: The switch of a free-standing lamp — the bedside lamp, the standard lamp, a desk lamp: [E] turns it 
 - LightCircuits.cs (97) LightCircuits, Wiring: The starter home's lighting circuits — the living room's, the porch's, the store room's and the bath
@@ -414,11 +414,11 @@ sentence of its summary. Grep the code for details.
 
 ## Assets/Scripts/Zone
 - Anomalies.cs (514) AnomalyDef, AnomalyCatalog, Anomaly: One kind of anomaly: what it does and the single consistent rule a survivor can learn about it.
-- ArtifactCatalog.cs (196) ArtifactCatalog, Property, Def: What each artifact actually does.
+- ArtifactCatalog.cs (209) ArtifactCatalog, Property, Def: What each artifact actually does.
 - Artifacts.cs (373) ArtifactNode, ArtifactField, ArtifactBelt: An artifact lying in an anomaly, latent: invisible until a detector good enough for its tier is swit
 - Bolts.cs (198) Bolt, BoltThrower: A thrown nut with a strip of rag tied on: the oldest tool in the Zone.
 - Detectors.cs (241) DetectorDevice, Model, HudDetector: The artifact detector, switched on with O (or "Switch on" in the pack).
 - Emissions.cs (211) EmissionDirector, Phase: Emissions: the Zone's periodic convulsion.
-- Radiation.cs (273) PlayerRadiation, RadiationSpot, HudRadiation: Radiation as a dose the body keeps (0..1; 1 is lethal) rather than a bar that refills: the Zone's ba
+- Radiation.cs (290) PlayerRadiation, RadiationSpot, HudRadiation: Radiation as a dose the body keeps (0..1; 1 is lethal) rather than a bar that refills: the Zone's ba
 - ZoneCatalog.cs (96) ZoneDef, ZoneCatalog: One of the Zones left behind by the Passing: a map with its own rules.
 - ZoneHazards.cs (241) ZoneExposure, Mark, ZoneMarkEffects: The Zone's cost on the body, across runs: radiation taken, emissions lived through and artifacts wor
