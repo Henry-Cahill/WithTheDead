@@ -104,9 +104,10 @@ you want to see in game. Indent extra lines under a task to add detail.
 
 ### Evening batch 2026-10-19: fixes and retries first, then frame-time trims, flavour text, and documentation for the small hours
 
-- [ ] Make the raid street lights' lived-in variation really differ per light in Assets/Scripts/World/DecorProps.cs: DecorProps.StreetLight samples Mathf.PerlinNoise at `head`, but `head` is in the RaidMesh's local frame (RaidMapBuilder.Outdoor.cs calls m.SetFrame(p, yaw) right before StreetLight), so every upright street light gets exactly the same housing grey and bulb tint.
+- [x] Make the raid street lights' lived-in variation really differ per light in Assets/Scripts/World/DecorProps.cs: DecorProps.StreetLight samples Mathf.PerlinNoise at `head`, but `head` is in the RaidMesh's local frame (RaidMapBuilder.Outdoor.cs calls m.SetFrame(p, yaw) right before StreetLight), so every upright street light gets exactly the same housing grey and bulb tint.
   Sample both noises at the pole's position instead: add `Vector3 at = m.FrameOrigin;` and use at.x and at.z where head.x and head.z are used in the two Mathf.PerlinNoise calls, keeping the 0.13 and 0.17 scales, the +100 offsets and the factor ranges.
   Change nothing else: the geometry, the lit/unlit materials, the shared System.Random draws and the returned bulb position stay exactly as they are.
+  - 17:08 landed by 0htsserver in 2.8 min: **Changes made**
 - [ ] Cut per-frame work in Assets/Scripts/World/Vehicles.cs, part 1 of 2 (a retry: the first try died on a model timeout, not a code problem): in VehicleDriver, cache the PlayerStats component in Begin next to the other cached components and use that field in LateUpdate instead of calling GetComponent<PlayerStats>() every frame; in Vehicle.Update, set _engine.pitch only when the new pitch differs from the last one set by more than 0.001.
   Keep the same null checks as today. Also indent the declarations an earlier night left at column 0 near the top of the file (public int Spot, public bool EngineOn, public float Speed, public PlayerStats Driver and their neighbours) like the members around them.
   Don't touch HudVehicle (part 2 is a separate task), vehicle physics, input or networking.
