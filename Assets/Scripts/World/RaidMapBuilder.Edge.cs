@@ -2,6 +2,11 @@ using UnityEngine;
 
 namespace CloneZ
 {
+    // The map edge and what lies past it (the exit roads it opens onto are defined in RaidMapBuilder.Town.cs): the
+    // barrier around the clamp line — runs of rusty corrugated sheet, plank fence, wire fence and banked snow, broken
+    // only where the four exit roads leave town and closed at the east and west gaps by a low barrier — then the
+    // never-baked scenery beyond (the snowfields, the pine woods, the frozen river and dock, the truss bridge, the
+    // roads and rails running on out), closing with the survivor's in-room spawn.
     public static partial class RaidMapBuilder
     {
         #region Map edge

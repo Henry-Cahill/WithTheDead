@@ -2,6 +2,11 @@ using UnityEngine;
 
 namespace CloneZ
 {
+    // The outdoor fill of the streets and verges (the same props made usable and their interactive pieces live in
+    // RaidMapBuilder.Props.cs): dead cars nosed in the road, street lights (most dead, one leaning), the Guard
+    // checkpoint and the police road block at the south and north exits, the rail line with its crossbuck, hydrants
+    // and mail drop boxes on the sidewalks, bare trees in the yards, plowed snow heaps, walk-through drifts and blown
+    // litter.
     public static partial class RaidMapBuilder
     {
         #region Outdoor props

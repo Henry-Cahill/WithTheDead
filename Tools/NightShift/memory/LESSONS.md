@@ -25,3 +25,4 @@ appends one short bullet at the end. Keep each bullet to a line or two.
 - `.meta` files for new scripts and folders are written automatically; don't create them.
 
 ## Learned on earlier nights
+- Partial-class header comments: when a `partial` file has no class-level doc, put a wrapped `//` block what it builds right after the `namespace {` and before the `partial class` line (see HomeFurniture.Kitchen.cs); the primary file keeps the `/// <summary>`. Reference the sibling partials (e.g. "the exit roads are in RaidMapBuilder.Town.cs") rather than restate them.
