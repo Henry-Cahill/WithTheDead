@@ -81,11 +81,11 @@ namespace CloneZ
             => s_Defs[id] = new Def { Id = id, Name = name, Color = color, DetectorTier = tier, Value = value, Properties = props };
 
         /// <summary>Gets the artifact definition by id, or null if not found.</summary>
-public static Def Get(string id) => id != null && s_Defs.TryGetValue(id, out Def d) ? d : null;
+        public static Def Get(string id) => id != null && s_Defs.TryGetValue(id, out Def d) ? d : null;
         /// <summary>Gets the property definition by id, or null if not found.</summary>
-public static Property Prop(string id) => id != null && s_Props.TryGetValue(id, out Property p) ? p : null;
+        public static Property Prop(string id) => id != null && s_Props.TryGetValue(id, out Property p) ? p : null;
         /// <summary>Returns true if the given id corresponds to a known artifact.</summary>
-public static bool IsArtifact(string id) => id != null && s_Defs.ContainsKey(id);
+        public static bool IsArtifact(string id) => id != null && s_Defs.ContainsKey(id);
                 /// <summary>Returns true if the given ItemDef corresponds to an artifact.</summary>
         public static bool IsArtifact(ItemDef def) => def != null && IsArtifact(def.Id);
                 /// <summary>All artifact definitions in the catalog.</summary>
