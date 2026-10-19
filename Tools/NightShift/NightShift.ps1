@@ -468,6 +468,36 @@ function Invoke-Tool([string]$What, [string]$Exe, [string[]]$Arguments, [int]$Tr
     }
 }
 
+# Preserve GitHub-side edits without switching this checkout or changing the running Spark's branch.
+function Get-PublishCommit([string]$Branch, [string]$Sha, [string]$Remote) {
+    if (-not $Remote -or $Remote -eq $Sha) { return $Sha }
+    Invoke-Tool "git fetch of $Branch from GitHub" git @('-C', $Root, 'fetch', '-q', 'origin', "refs/heads/$Branch") | Out-Null
+    $remoteSha = "$(Invoke-Tool 'read fetched GitHub commit' git @('-C', $Root, 'rev-parse', 'FETCH_HEAD') 1)".Trim()
+    & git -C $Root merge-base --is-ancestor $remoteSha $Sha
+    if ($LASTEXITCODE -eq 0) { return $Sha }
+    if ($LASTEXITCODE -ne 1) { throw "Couldn't compare $Branch with GitHub." }
+    & git -C $Root merge-base --is-ancestor $Sha $remoteSha
+    if ($LASTEXITCODE -eq 0) { return $remoteSha }
+    if ($LASTEXITCODE -ne 1) { throw "Couldn't compare $Branch with the Spark." }
+
+    $worktree = Join-Path ([IO.Path]::GetTempPath()) ("clonez-nightshift-" + [guid]::NewGuid().ToString('N'))
+    Invoke-Tool 'create isolated publication worktree' git @('-C', $Root, 'worktree', 'add', '--detach', $worktree, $Sha) 1 | Out-Null
+    try {
+        Write-Host "Merging GitHub's changes to $Branch with the Spark's results..."
+        try {
+            Invoke-Tool "merge GitHub's $Branch" git @('-C', $worktree, '-c', 'user.name=CLONE-Z Night Shift',
+                '-c', 'user.email=nightshift@localhost', 'merge', '--no-ff', '--no-edit', '--no-gpg-sign', $remoteSha) 1 | Out-Null
+        }
+        catch {
+            throw "Couldn't merge GitHub's $Branch with the Spark's results; nothing was pushed. Stop the night shift, reconcile the two branches manually, then retry P. $($_.Exception.Message)"
+        }
+        return "$(Invoke-Tool 'read publication commit' git @('-C', $worktree, 'rev-parse', 'HEAD') 1)".Trim()
+    }
+    finally {
+        Invoke-Tool 'remove publication worktree' git @('-C', $Root, 'worktree', 'remove', '--force', $worktree) 1 | Out-Null
+    }
+}
+
 # Pushes the Spark's night shift branch to GitHub and opens its pull request, or updates the open one.
 function Publish-NightShift {
     [Console]::OutputEncoding = [Text.Encoding]::UTF8  # the reports are UTF-8; PowerShell 5 would read git's output as OEM
@@ -488,6 +518,8 @@ function Publish-NightShift {
     $env:GIT_TERMINAL_PROMPT = '0'; $env:GCM_INTERACTIVE = 'never'  # fail rather than wait for a sign-in nobody sees
     Invoke-Tool 'git fetch of main from GitHub' git @('-C', $Root, 'fetch', '-q', 'origin', 'main') | Out-Null
     $sha = "$(& git -C $Root rev-parse "refs/remotes/spark/$branch")".Trim()
+    $remote = "$(Invoke-Tool 'git ls-remote on GitHub' git @('-C', $Root, 'ls-remote', 'origin', "refs/heads/$branch"))".Split("`t ")[0]
+    $sha = Get-PublishCommit $branch $sha $remote
     if ([int]"$(& git -C $Root rev-list --count "origin/main..$sha")" -eq 0) { Write-Host "$branch has nothing that isn't on main yet."; return }
     # Never publish what must stay on the Spark (its SSH key for the helpers, Unity's DLLs) or anything like a private key.
     $private = @(& git -C $Root log --format= --name-only "origin/main..$sha" | Where-Object {
@@ -495,7 +527,6 @@ function Publish-NightShift {
     $private += @(& git -C $Root log --format=%h -G 'BEGIN [A-Z ]*PRIVATE KEY' "origin/main..$sha" | ForEach-Object { "a private key in commit $_" })
     if ($private.Count -gt 0) { throw "$branch has files that must not leave the Spark ($(($private | Select-Object -First 3) -join ', ')), so it wasn't pushed" }
     $repo = Get-GitHubRepo
-    $remote = "$(Invoke-Tool 'git ls-remote on GitHub' git @('-C', $Root, 'ls-remote', 'origin', "refs/heads/$branch"))".Split("`t ")[0]
     $prs = Invoke-Tool 'gh pr list (check: gh auth status)' gh @('pr', 'list', '--repo', $repo, '--head', $branch, '--state', 'open', '--json', 'number,url')
     $open = @(if ("$prs".Trim()) { ($prs -join "`n") | ConvertFrom-Json | ForEach-Object { $_ } })
     # The night's reports that aren't on main yet. Without them there's no new work: the branch's last pull request
