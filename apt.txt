@@ -1,1 +1,5 @@
 # apt packages to install should be listed one per line
+# Night Shift (Tools/NightShift): fast code search for the agent, ICU for the .NET SDK, ssh to reach helper machines
+ripgrep
+libicu74
+openssh-client
