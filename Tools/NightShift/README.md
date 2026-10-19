@@ -29,7 +29,8 @@ Every change is compiled against Unity's own assemblies before it lands, and lan
    low CPU priority, so game servers on the same machines aren't affected.
 4. **Automatic pull request (optional).** Choose **A** in the menu, or run `.\NightShift.ps1 autopr`. Every
    15 minutes this PC checks the Spark, and once the agents have nothing left to do it pushes their branch to
-   GitHub and opens a pull request (or updates the open one) with the reports as its description. It uses
+   GitHub and opens a pull request (or updates the open one) with the reports as its description. Once that
+   pull request is merged, a new one opens only when more tasks finish on the branch. It uses
    this PC's `gh` sign-in, so no GitHub token goes near the agents. It runs only while this PC is on and
    you're logged in; `.\NightShift.ps1 autopr -Off` turns it off, and `.state\pr.log` records what it did.
 

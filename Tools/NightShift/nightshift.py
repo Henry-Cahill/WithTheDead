@@ -962,9 +962,9 @@ class Coordinator:
     def sync_landed_checkout(self, branch: str, mark: tuple[str, str, str] | None = None) -> None:
         """Brings the project folder up to the night's branch after a landing moved the branch, like `git checkout`.
         If tasks.md was edited there meanwhile (tasks queued from the PC or JupyterLab), the edit is kept and the
-        landing's `mark` (task key, mark, note) is applied to it again. Raises if the folder can't be brought up to
-        date: the caller then moves the branch back, because a folder whose index lags behind its branch would turn
-        the next commit into a revert of the landing."""
+        landing's `mark` (task key, mark, note) is applied to it again; an edit that collides with the mark wins over
+        it. Raises if the folder can't be brought up to date: the caller then moves the branch back, because a folder
+        whose index lags behind its branch would turn the next commit into a revert of the landing."""
         lock_path = Path(git(ROOT, "rev-parse", "--git-path", "HEAD.lock").strip())
         if not lock_path.is_absolute():
             lock_path = ROOT / lock_path
@@ -996,13 +996,16 @@ class Coordinator:
                 refreshed = git_run(ROOT, "read-tree", "-m", "-u", "HEAD")
                 if refreshed.returncode:
                     if edited is not None and not reconcile_task_edits(base, edited):
-                        raise RuntimeError("the task queue changed incompatibly while the checkout was refreshing; "
-                                           "the current edit was left in place")
+                        TASKS.write_bytes(edited)  # nothing else in the folder changed, so the edit as it was wins
                     raise RuntimeError("couldn't bring the project folder up to date with the landing: "
                                        + first_line(refreshed.stderr or refreshed.stdout, 300))
-                if edited is not None:
-                    if not reconcile_task_edits(base, edited, mark):
-                        raise RuntimeError("the task queue kept changing while the checkout was refreshing")
+                if edited is not None and not reconcile_task_edits(base, edited, mark):
+                    # The edit collides with the landing's own mark (say the landing task itself was reworded meanwhile).
+                    # Raising now would move the branch back while the folder already follows the landing, and lose
+                    # the edit, so the edit wins and the mark is applied to it again where it still fits.
+                    text = edited.decode("utf-8", "surrogateescape")
+                    redone = with_mark(text, *mark) if mark else None
+                    TASKS.write_bytes((text if redone is None else redone).encode("utf-8", "surrogateescape"))
         finally:
             os.close(fd)
             lock_path.unlink(missing_ok=True)
