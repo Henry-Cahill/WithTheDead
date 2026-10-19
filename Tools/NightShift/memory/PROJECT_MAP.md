@@ -69,12 +69,12 @@ sentence of its summary. Grep the code for details.
 - CloneZConfig.Kitchen.cs (55) CloneZConfig: The kitchen's settings (KitchenSink, KitchenStove, KitchenFridge): the sink, the gas range, the frid
 - CloneZConfig.Lighting.cs (34) CloneZConfig: The home's lighting, wall decor and yard settings (LightSwitch, LampSwitch, BreakerPanel, MailboxFix
 - CloneZConfig.Living.cs (79) CloneZConfig: The living room, bedroom and store room settings (SeatFixture, BedFixture, LivingReading, LivingRece
-- CloneZConfig.Raid.cs (13) CloneZConfig
-- CloneZConfig.RaidCivic.cs (52) CloneZConfig
-- CloneZConfig.RaidHomes.cs (53) CloneZConfig
-- CloneZConfig.RaidLighting.cs (14) CloneZConfig
-- CloneZConfig.RaidOpenings.cs (55) CloneZConfig
-- CloneZConfig.RaidStore.cs (95) CloneZConfig
+- CloneZConfig.Raid.cs (14) CloneZConfig: The raid town's interactive storage settings (every cupboard, drawer, locker and fridge in its build
+- CloneZConfig.RaidCivic.cs (53) CloneZConfig: The raid town's workplace settings (CivicSink, CivicRest, CivicRadio, the filing cabinets, lockers, 
+- CloneZConfig.RaidHomes.cs (54) CloneZConfig: The raid town's houses' settings (RaidHomeBath, RaidHomeWasher, the sofa and TV): the bath's taps an
+- CloneZConfig.RaidLighting.cs (15) CloneZConfig: The raid town's lighting, switches and wall decor settings.
+- CloneZConfig.RaidOpenings.cs (56) CloneZConfig: The raid town's doors, zombie interactions, and windows settings.
+- CloneZConfig.RaidStore.cs (96) CloneZConfig: The raid ​​  ​  ​  ​​​  ​  ​  ​ store ​ ​ ​ ​ ​  components  tuned  by  raid  settings  in  this fil
 - CloneZConfig.cs (514) CloneZConfig: Central gameplay tuning.
 - CloneZUtil.cs (100) CloneZUtil: Small helpers shared across the bootstrapper and gameplay.
 - CombatFX.cs (73) CombatFX, FxFade: Throwaway visual feedback for gunfire: a fading tracer line and a brief muzzle flash.
@@ -325,9 +325,9 @@ sentence of its summary. Grep the code for details.
 - StarterHome.Doors.cs (131) StarterHome: The home's doors in their finished doorways: a pair of panelled leaves in the wide gaps (the front d
 - StarterHome.Grounds.cs (302) StarterHome: The street past the front of the home: sun-faded asphalt with a dashed yellow centre line and white 
 - StarterHome.Kitchen.cs (52) StarterHome: The kitchen's wall cupboards over the worktop on the west wall: the carcass, shelf and crockery draw
-- StarterHome.Lighting.cs (217) StarterHome
+- StarterHome.Lighting.cs (218) StarterHome: The starter home's lighting and wall decor.
 - StarterHome.Shell.cs (365) StarterHome, Frame, Band: Builds the finished look onto a house piece standing in one of the home's slots — its visible geomet
-- StarterHome.Windows.cs (205) StarterHome
+- StarterHome.Windows.cs (206) StarterHome: The starter home builds window fittings (sashes, curtains, blinds, etc.).
 - StarterHome.cs (447) StarterHome, HomeRoom, Slot: The wave-survival starter home, finished to the extraction town's standard.
 - ToxicZone.cs (293) ToxicZone: A cloud of toxic gas: breathing it without a gas mask (or with a spent filter) sickens and hurts the
 - Vehicles.cs (761) Vehicle, VehicleDriver, HudVehicle: A car (DayZ's vehicle assembly, Zomboid's hotwiring): they're found broken at the Zone's parking spo
