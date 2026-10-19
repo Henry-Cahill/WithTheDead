@@ -17,7 +17,7 @@ sentence of its summary. Grep the code for details.
 - ALife.cs (434) ALifeSquad, ALifeDirector, ZonePeopleModule: One squad of the Zone's people, alive whether or not anyone is watching.
 - Companions.cs (225) CompanionService, Order, Candidate: Hired guns.
 - HumanLoadouts.cs (353) GunPick, LootPick, HumanLoadout: One weighted gun choice of a loadout; the round defaults to the gun's own.
-- HumanNpc.cs (953) HumanNpc, Mode, HumanNpcAvatar: A person in the Zone: a stalker, a soldier, a scavenger, a warden on a tower, a zealot of the Choir,
+- HumanNpc.cs (958) HumanNpc, Mode, HumanNpcAvatar: A person in the Zone: a stalker, a soldier, a scavenger, a warden on a tower, a zealot of the Choir,
 - HumanUtil.cs (254) HumanUtil, HumanRunner: Small helpers shared by the Zone's people (stalkers, A-Life squads, outposts, wardens, companions): 
 - Outposts.cs (351) OutpostSystem, Outpost, PdaStashes: Warfare outposts (Gray Zone Warfare's PvEvP): sandbagged positions held by a faction's garrison.
 
@@ -27,7 +27,7 @@ sentence of its summary. Grep the code for details.
 - SfxSynth.cs (585) SfxSynth, Recipe: Every sound in the game, synthesised in code on first use (there are no audio assets): gunshots with
 
 ## Assets/Scripts/Audio/Synth
-- SynthCore.cs (932) SynthGen, OnePole, Biquad: The deterministic random source and buffer helpers for one generated sound (one variation of one id)
+- SynthCore.cs (981) SynthGen, OnePole, Biquad: The deterministic random source and buffer helpers for one generated sound (one variation of one id)
 
 ## Assets/Scripts/Bootstrap
 - GameBootstrapper.cs (647) GameBootstrapper: Builds the entire playable world from code — ground, cover, lighting, the player, the isometric came
@@ -130,7 +130,7 @@ sentence of its summary. Grep the code for details.
 - GameFlow.cs (63) GameFlow: The combined core loop's transitions: title → hub → (deploy) raid → summary → hub.
 
 ## Assets/Scripts/Gadgets
-- Gadgets.cs (683) DroneKind, Drone, DronePickup: Bodycam's drones: a flying FPV drone (fast, loud, can carry a grenade to drop) and a tracked ground 
+- Gadgets.cs (698) DroneKind, Drone, DronePickup: Bodycam's drones: a flying FPV drone (fast, loud, can carry a grenade to drop) and a tracked ground 
 
 ## Assets/Scripts/Hub
 - HubCatalog.cs (33) HubDef, HubCatalog: One of the places runners live between raids.
@@ -163,8 +163,8 @@ sentence of its summary. Grep the code for details.
 ## Assets/Scripts/Net
 - NetAuthority.cs (33) NetAuthority: Who decides what happens.
 - NetPlayers.cs (558) NetPlayers, NetTicker, NetTracer: The other runners.
-- NetSession.cs (455) NetOut, NetIn, NetClientInfo: A message being written (a thin wrapper over the netcode's buffer writer).
-- NetSocial.cs (1283) NetCodec, NetSocial, VoiceCapture: Item lists on the wire (every field a stack carries: wear, age, repairs, extras).
+- NetSession.cs (487) NetOut, NetIn, NetClientInfo: A message being written (a thin wrapper over the netcode's buffer writer).
+- NetSocial.cs (1284) NetCodec, NetSocial, VoiceCapture: Item lists on the wire (every field a stack carries: wear, age, repairs, extras).
 - NetWorld.cs (500) NetWorld, NetAgentProxy: The shared world.
 
 ## Assets/Scripts/Player
@@ -214,7 +214,7 @@ sentence of its summary. Grep the code for details.
 
 ## Assets/Scripts/Survival
 - Diseases.cs (164) PlayerDiseases, DiseaseModule: DayZ's illnesses, each with its own cause and its own cure — survival needs that interact rather tha
-- FieldSurvival.cs (517) PlayerChannel, FieldSurvival, SnareTrap: A timed action the survivor performs in the field (foraging, fishing, reading, cranking a charger): 
+- FieldSurvival.cs (531) PlayerChannel, FieldSurvival, SnareTrap: A timed action the survivor performs in the field (foraging, fishing, reading, cranking a charger): 
 - Navigation.cs (258) ZoneMapScreen, Mark, JournalScreen: The Zone map (P), on a clipboard: streets and buildings, the landmarks, the exits — and no dot sayin
 
 ## Assets/Scripts/UI
@@ -262,12 +262,12 @@ sentence of its summary. Grep the code for details.
 ## Assets/Scripts/World
 - Barricade.cs (291) Barricade: A player-built wooden barricade (Project Zomboid's planked windows/doorways).
 - BuildPiece.cs (491) BuildPieceType, BuildPiece: The kind of structural piece a survivor can raise when building a house.
-- Camps.cs (746) ZoneCamps, CampGate, StructureBlast: DayZ's base building and raiding, fitted to raids into a Zone.
+- Camps.cs (771) ZoneCamps, CampGate, StructureBlast: DayZ's base building and raiding, fitted to raids into a Zone.
 - CeilingVisibility.cs (58) CeilingVisibility: Shows interior ceilings (and other overhead pieces such as the tent roof and the gas-station canopy)
 - CookingStation.cs (80) CookingStation: A stove the survivor can cook raw ingredients at.
 - Cover.cs (53) Cover: A scattered arena cover block — a solid box that breaks line of sight and carves the baked NavMesh.
 - DecorFont.cs (112) DecorFont: A tiny 5×7 bitmap font for painting text into procedural textures (the "U.S.
-- DecorMaterials.cs (80) DecorMaterials: Cached URP materials for the raid map's textured surfaces (snow, asphalt, floors, walls, ceilings, c
+- DecorMaterials.cs (87) DecorMaterials: Cached URP materials for the raid map's textured surfaces (snow, asphalt, floors, walls, ceilings, c
 - DecorPalette.cs (120) DecorPalette: One small point-filtered texture holding every flat colour the raid map uses, one texel per colour.
 - DecorProps.cs (452) DecorProps, CarKind: Outdoor props and loose debris for the raid map: wrecked cars, bare trees and pines, dumpsters, sand
 - DecorTextures.cs (970) WainscotStyle, PaperStyle, ExteriorStyle: The interior wall finishes the raid map paints rooms with: a dark lower wainscot under a pale paper,
@@ -330,7 +330,7 @@ sentence of its summary. Grep the code for details.
 - StarterHome.Windows.cs (206) StarterHome: The starter home builds window fittings (sashes, curtains, blinds, etc.).
 - StarterHome.cs (447) StarterHome, HomeRoom, Slot: The wave-survival starter home, finished to the extraction town's standard.
 - ToxicZone.cs (293) ToxicZone: A cloud of toxic gas: breathing it without a gas mask (or with a spent filter) sickens and hurts the
-- Vehicles.cs (761) Vehicle, VehicleDriver, HudVehicle: A car (DayZ's vehicle assembly, Zomboid's hotwiring): they're found broken at the Zone's parking spo
+- Vehicles.cs (785) Vehicle, VehicleDriver, HudVehicle: A car (DayZ's vehicle assembly, Zomboid's hotwiring): they're found broken at the Zone's parking spo
 - WaterSource.cs (278) WaterSourceKind, WaterSource: Where the survivor can get water — a plumbed tap or a rain barrel.
 - WorldItem.cs (124) WorldItem: A handle to one item lying on the ground.
 

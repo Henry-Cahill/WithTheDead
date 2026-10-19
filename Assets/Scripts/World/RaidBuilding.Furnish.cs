@@ -203,8 +203,8 @@ namespace CloneZ
                     drop = 0.16f;
                     break;
             }
-            float size = Mathf.Max(room.World.width, room.World.height);
-            float range = Mathf.Clamp(size * 0.95f, 6f, 9f);
+            float halfDiagonal = 0.5f * Mathf.Sqrt(room.World.width * room.World.width + room.World.height * room.World.height);
+            float range = Mathf.Clamp(1.3f * halfDiagonal, 3.5f, 9f);
             float intensity = 2.0f + (float)Rng.NextDouble() * 1.0f;
             // The light sits at the fitting's own bulb, just under the panel / dome / shade.
             HomeLamp lamp = HomeLamp.Attach(Root, pos - Vector3.up * drop, range, intensity, true, glow, CircuitOf(room), color: CeilingLightColor);
