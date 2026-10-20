@@ -1206,3 +1206,16 @@ you want to see in game. Indent extra lines under a task to add detail.
   *Create the right hinge:* `m.Box(f.P(o1 + 0.015f, hingeY, 0f), f.Size(0.03f, 0.08f, 0.02f), DecorPalette.Matte(TrimWhite * 0.7f));`
   Use the same `TrimWhite` colour (already defined) tinted darker for a metal look; no new materials or colliders are needed.
   Leave the subsequent `DoorFittings` call and the rest of the method untouched.
+- [ ] Fix the exclusion‑by‑equality bug in `GroundItemStore.TryFindNearest` (Assets/Scripts/World/GroundItemStore.cs)
+  The method claims to return the nearest item *within* `radius`, but it discards items whose squared distance `d2` is exactly equal to `best` ( `radius*radius` ) by using `if (d2 >= best) continue;`.
+  This makes items placed precisely at the edge of the player’s interaction radius unreachable, contradicting the expected “within radius” behaviour.
+  Change the comparison to strict greater‑than so that equality is accepted:
+- [ ] Add two tiny brass hinge pins to each wardrobe door in `FurnitureBuilder.WardrobeDoor` (Assets/Scripts/World/FurnitureBuilder.RaidHome.cs)
+  · After the existing `m.Box` calls that draw the door panel and the brass knob, insert two vertical cylinders to suggest the door’s hinge pins.
+  · For the left door (when `left` is true) place pins at the outer –X edge:
+  `var topPin = new Vector3(x0 - 0.005f, WardrobeDoorY1 - 0.06f, WardrobeFront + 0.01f);`
+  `var botPin = new Vector3(x0 - 0.005f, WardrobeDoorY0 + 0.06f, WardrobeFront + 0.01f);`
+  · For the right door (when `left` is false) place pins at the +X edge:
+  `var topPin = new Vector3(x1 + 0.005f, WardrobeDoorY1 - 0.06f, WardrobeFront + 0.01f);`
+  `var botPin = new Vector3(x1 + 0.005f, WardrobeDoorY0 + 0.06f, WardrobeFront + 0.01f);`
+  · Draw each pin with `m.Cylinder(topPin, 0.005f, 0.02f, 8, Mt(Brass));` and `m.Cylinder(botPin, 0.005f, 0.02f, 8, Mt(Brass));`.
