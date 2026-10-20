@@ -3552,13 +3552,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Vector3 eye = ListenerRig.Active ? ListenerRig.Position : (Actor.LocalPlayer != null ? Actor.LocalPlayer.transform.position : Vector3.zero);`
   This prevents the distance `d` from being calculated as zero before the player exists, so anomalies stay invisible until the survivor actually approaches them, matching the intended “fade in only nearby” behavior. All other code remains unchanged.
   - 14:49 landed by 0htsserver in 0.9 min: Changed anomaly eye‑position fallback in **Assets/Scripts/Zone/Anomalies.cs**.
-- [ ] In Assets/Scripts/World/Fixtures/KitchenStove.cs: Optimize KitchenStove.Update by eliminating the per‑frame position‑change check that rebuilds fittings.
+- [x] In Assets/Scripts/World/Fixtures/KitchenStove.cs: Optimize KitchenStove.Update by eliminating the per‑frame position‑change check that rebuilds fittings.
   Add a private `bool _needsRebuild` field, default `false`.
   In `Attach` (after `BuildFittings()`) set `_needsRebuild = false`.
   Remove the line `if ((transform.position - _builtAt).sqrMagnitude > 1e-6f) BuildFittings();` from `Update`.
   Add a small protected method `MarkRebuildNeeded()` that sets `_needsRebuild = true`; call it only from places that might move the stove (currently none).
   In `Update`, after the early‑out `if (_lit == 0) return;`, insert `if (_needsRebuild) { BuildFittings(); _needsRebuild = false; }`.
   This keeps the existing behaviour when the stove is (unlikely) moved, but prevents the expensive vector subtraction and magnitude check every frame, reducing per‑frame CPU work without changing any visual aspect.
+  - 14:56 landed by 0htsserver in 7.5 min: **Changes Made**
 - [x] Append five new entries to the `CivicUnderBunk` array in Assets/Scripts/World/RaidBuilding.Civic.cs (class `RaidBuilding`)
   Add the lines after the existing three entries in the `private static readonly string[] CivicUnderBunk` initializer.
   Use the existing entry `"A pair of boots, a sock with a hole in it and a paperback with the cover torn off."` as the style reference.
