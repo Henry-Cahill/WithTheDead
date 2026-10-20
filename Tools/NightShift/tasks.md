@@ -1735,7 +1735,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   The collider will still be disabled/enabled exactly as before, so the bolt’s visual and physical behaviour is unchanged.
   This eliminates per‑frame `GetComponent` allocations, reducing garbage and CPU load without affecting what the player sees.
   - 06:21 landed by 0htsserver in 3.7 min: **Summary of changes**
-- [ ] Modify Assets/Scripts/World/Fixtures/KitchenStove.cs to add a “Light all burners” action.
+- [x] Modify Assets/Scripts/World/Fixtures/KitchenStove.cs to add a “Light all burners” action.
+  - 06:23 landed by 1htsserver in 5.7 min: **Summary**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Content/ContentRegistry.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
