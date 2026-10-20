@@ -4007,3 +4007,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace the two hard‑coded roof calls:
   In `Enterable` change `over.Tri(..., DecorMaterials.Snow);` to `over.Tri(..., RoofSurf(b, rng));`
   In `Scenery` change `m.Tri(..., DecorMaterials.Snow);` to `m.Tri(..., RoofSurf(f.Data, rng));`
+- [ ] Fix the duplicate side‑mirror creation in Assets/Scripts/World/Vehicles.cs (Build method)
+  The code creates the left‑ and right‑hand mirror housings inside the `for (int i = 0; i < 2; i++)` loop that also builds the two headlights. This makes the mirrors be instantiated twice (four mirrors total) and ties their placement to the light‑creation loop, needlessly allocating extra GameObjects each frame the car is built.
+  Move the two `Box(_bodyRoot, …)` calls that build the mirror housings out of the headlights loop so they run only once after the loop finishes.
+  Change:
+  `_lights = new Light[2];`
+  `for (int i = 0; i < 2; i++)`
+  `{`
+  `var l = new GameObject("Headlight").AddComponent<Light>();`
+  `… // headlight setup`
