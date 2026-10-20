@@ -325,6 +325,12 @@ namespace CloneZ
             RectTransform face = UIKit.Place(UIKit.Rect("Face", w._canvas.transform), new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(30f, 30f), new Vector2(170f, 170f));
             Image strap = UIKit.Panel(face, "Strap", new Color(0.15f, 0.12f, 0.1f));
             UIKit.Place(strap.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(70f, 200f));
+            Image stitch1 = UIKit.Panel(strap.rectTransform, "Stitch1", Color.white);
+            UIKit.Place(stitch1.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(2f, 30f));
+            stitch1.rectTransform.anchoredPosition = new Vector2(0f, -45f);
+            Image stitch2 = UIKit.Panel(strap.rectTransform, "Stitch2", Color.white);
+            UIKit.Place(stitch2.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(2f, 30f));
+            stitch2.rectTransform.anchoredPosition = new Vector2(0f, -15f);
             Image dial = UIKit.Panel(face, "Dial", new Color(0.08f, 0.09f, 0.08f));
             UIKit.Stretch(dial.rectTransform, 10f, 10f, 10f, 10f);
             w._time = UIKit.Label(dial.rectTransform, "", 30, new Color(0.65f, 0.95f, 0.6f), TextAnchor.MiddleCenter, FontStyle.Bold);

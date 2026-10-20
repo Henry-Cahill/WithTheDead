@@ -608,7 +608,7 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Zone/Emissions.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
-- [ ] Add subtle stitching detail to the watch strap in Assets/Scripts/Rendering/Presentation.cs, class DiegeticWatch, method Create.
+- [x] Add subtle stitching detail to the watch strap in Assets/Scripts/Rendering/Presentation.cs, class DiegeticWatch, method Create.
   *After the line* `UIKit.Place(strap.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(70f, 200f));`
   add four thin white panels to simulate hand‑stitched thread:
   `Image stitch1 = UIKit.Panel(strap.rectTransform, "Stitch1", Color.white);`
@@ -617,6 +617,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Image stitch2 = UIKit.Panel(strap.rectTransform, "Stitch2", Color.white);`
   `UIKit.Place(stitch2.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(2f, 30f));`
   `stitch2.rectTransform.anchoredPosition = new Vector2(0f, -15f);`
+  - 00:19 landed by hts-llm in 1.9 min: **Changed**
 - [ ] Add a small metal strap detail to the checkpoint “CHECKPOINT” post sign in Assets/Scripts/World/RaidMapBuilder.Outdoor.cs
   Modify the `Prop` call at line `Prop(town, new Vector3(-7.0f, 0f, -52.4f), 0f, new Vector3(2.4f, 2.2f, 0.3f), true, (m, r) => DecorProps.PostSign(m, r, "CHECKPOINT", new Color(0.20f, 0.26f, 0.16f), new Color(0.88f, 0.86f, 0.74f), 0.42f, 1.3f));`
   ‑ Change the lambda to a block, call `DecorProps.PostSign` first, then add a thin box representing a rust‑stained metal strap: `m.Box(new Vector3(0f, 2.15f, 0f), new Vector3(0.05f, 0.02f, 0.3f), DecorPalette.Metal(new Color(0.40f, 0.40f, 0.35f)));`
