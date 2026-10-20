@@ -87,6 +87,7 @@ namespace CloneZ
                 m.Ellipsoid(dir * 0.3f + Vector3.up * 0.03f, new Vector3(0.05f, 0.05f, 0.05f), M(b), 6, 3);
             }
             m.Cylinder(new Vector3(0f, 0.07f, 0f), 0.025f, 0.36f, 6, Mt(Chrome));
+            m.Cylinder(new Vector3(0f, 0.43f, 0f), 0.012f, 0.008f, 6, Mt(Chrome));
             m.Box(new Vector3(0f, 0.46f, 0.02f), new Vector3(0.48f, 0.08f, 0.46f), M(f));
             m.Box(new Vector3(0f, 0.48f, -0.2f), new Vector3(0.06f, 0.18f, 0.04f), M(b));
             m.Box(new Vector3(0f, 0.78f, -0.25f), new Vector3(0.44f, 0.46f, 0.07f), Quaternion.Euler(-8f, 0f, 0f), M(f));
