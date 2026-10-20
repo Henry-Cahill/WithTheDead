@@ -51,12 +51,20 @@ namespace CloneZ
             into.Add(new InteractAction(on ? "Turn off the lamp" : "Turn on the lamp", c => Flip(c, !on)));
             // Secondary inspect action
             into.Add(new InteractAction("Inspect lamp", Inspect));
+            // New secondary action to check power status
+            into.Add(new InteractAction("Check power", CheckPower));
         }
 
         // Shows the lamp's name in a HUD toast.
         private void Inspect(InteractContext ctx)
         {
             ctx.Notify($"You look at the {DisplayName}.");
+        }
+
+        // Notifies whether the house currently has electricity.
+        private void CheckPower(InteractContext ctx)
+        {
+            ctx.Notify(PowerGrid.HousePowered ? "The house has power." : "The house is without power.");
         }
 
         private void Flip(InteractContext ctx, bool on)

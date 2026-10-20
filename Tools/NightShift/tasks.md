@@ -3984,12 +3984,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   add a short loop that places 2‑4 rust‑stained bolt heads around the tank’s top rim.
   - 18:01 landed by 0htsserver in 1.8 min: **Changed file**: `Assets/Scripts/World/Zone/ZoneOverlays.cs`
 - [ ] Cache `PlayerSkills` in `Awake` and simplify the `bleedMult` / `healMult` getters in `Assets/Scripts/Player/PlayerWounds.cs` to avoid a per‑frame `GetComponent` call (the getters currently do `if (_skills == null) _skills = GetComponent<PlayerSkills>();` each frame).
-- [ ] In Assets/Scripts/World/Fixtures/LampSwitch.cs: Add a “Check power” action to LampSwitch.GetActions that notifies the player whether the house has electricity, using the existing PowerGrid.HousePowered flag.
+- [x] In Assets/Scripts/World/Fixtures/LampSwitch.cs: Add a “Check power” action to LampSwitch.GetActions that notifies the player whether the house has electricity, using the existing PowerGrid.HousePowered flag.
   In `GetActions` after the existing Inspect line, add:
   `into.Add(new InteractAction("Check power", CheckPower));`
   Create a private method `CheckPower(InteractContext ctx)` that does:
   `ctx.Notify(PowerGrid.HousePowered ? "The house has power." : "The house is without power.");`
   Keep the current toggle and inspect actions unchanged; the new action appears as a secondary option when the player interacts with the lamp.
+  - 18:06 landed by hts-llm in 2.2 min: **Changed**
 - [ ] Append four new exposure‑mark entries to the static constructor of `ZoneExposure` in `Assets/Scripts/Zone/ZoneHazards.cs`; each call must follow the existing `M(id, name, description, ...)` pattern and supply a description that consists of whole sentences, period‑terminated, evocative of a 1993 rural Kentucky winter (cold hardship, snow‑blindness, static radio interference, lingering farm superstition). Use the existing entry `"Your pupils never quite close now. You see further in the dark; bright light leaves you exposed."` as a style reference.
   Add:
   `M("ice_fingers", "Ice Fingers", "Your fingers are locked in a perpetual chill; even the warmest hand‑warmer feels like an ember.", m => { });`
