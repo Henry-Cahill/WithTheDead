@@ -100,7 +100,7 @@ namespace CloneZ
             m.Rod(wall + n * 0.02f, wall + n * 0.13f + Vector3.up * 0.03f, 0.018f, brass);
             // subtle brass knob and optional screw on the sconce rod
             Vector3 knobPos = wall + n * 0.13f + Vector3.up * 0.03f;
-            Surf knobMat = UnityEngine.Random.value < 0.3f ? DecorPalette.Metal(new Color(0.75f,0.60f,0.45f)) : brass;
+            Surf knobMat = LightVariation(knobPos) < 0.98f ? DecorPalette.Metal(new Color(0.75f, 0.60f, 0.45f)) : brass;
             m.Cylinder(knobPos, 0.008f, 0.015f, 6, knobMat);
             // tiny screw detail (adds realism)
             Vector3 screwPos = knobPos + n * 0.005f + Vector3.up * 0.005f;
