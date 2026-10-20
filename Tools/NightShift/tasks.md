@@ -420,12 +420,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(new Vector3(0f, 1.62f, 0.285f), new Vector3(0.18f, 0.03f, 0.004f), Mt(Chrome));`
   Use the existing Chrome material (`Mt(Chrome)`) so the plate looks like a brushed‑metal emboss, giving the safe a period‑correct visual label without altering colliders, interaction points, or any other geometry.
   - 23:18 landed by hts-llm in 6.1 min: **Changes made**
-- [ ] In Assets/Scripts/Rendering/IsoVisionShade.cs: Cache the per‑ray direction vectors in IsoVisionShade so they aren’t recomputed each Rebuild()
+- [x] In Assets/Scripts/Rendering/IsoVisionShade.cs: Cache the per‑ray direction vectors in IsoVisionShade so they aren’t recomputed each Rebuild()
   Add a private static readonly Vector3[] `_rayDirs` field sized `Rays` and fill it in `Awake()` with
   `_rayDirs[i] = Quaternion.Euler(0f, i * (360f / Rays), 0f) * Vector3.forward;`
   Replace the line `Vector3 dir = Quaternion.Euler(0f, ang, 0f) * Vector3.forward;` in `Rebuild()` with `Vector3 dir = _rayDirs[i];`
   Optionally also cache the outer offset `Vector3 _rayOuter = dir * Outer;` in a second static array to avoid the multiplication inside the loop.
   The visual result (the shaded fog‑of‑war ring) stays identical, but the per‑frame work drops the 180 Quaternion/Euler constructions and two multiplications, reducing allocations and CPU time during the nightly updates.
+  - 23:26 landed by 0htsserver in 13.5 min: **Changed file**
 - [x] In Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs: Add a “Turn off the pilot” action to `RaidStoreWaterHeater.GetActions` that lets the player extinguish the heater’s pilot flame when it is lit.
   In `GetActions`, after the existing “Check the pilot light” line, insert a counterpart conditional:
   `if (_pilot)`

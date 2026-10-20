@@ -13,6 +13,11 @@ namespace CloneZ
     public sealed class IsoVisionShade : MonoBehaviour
     {
         private const int Rays = 180;
+        private static readonly Vector3[] _rayDirs = new Vector3[Rays];
+        // Optional cache for outer offset (dir * Outer) to avoid per‑frame multiplication
+        private static readonly Vector3[] _rayOuter = new Vector3[Rays];
+        
+        
         private const float Range = 40f, Behind = 3.5f, ConeHalf = 105f, Outer = 95f, Height = 0.05f;
 
         private Mesh _mesh;
@@ -34,7 +39,16 @@ namespace CloneZ
 
         private void Awake()
         {
-            _mesh = new Mesh { name = "Vision shade" };
+                        // Populate static ray direction and outer offset caches
+            for (int i = 0; i < Rays; i++)
+            {
+                float ang = i * (360f / Rays);
+                Vector3 dir = Quaternion.Euler(0f, ang, 0f) * Vector3.forward;
+                _rayDirs[i] = dir;
+                _rayOuter[i] = dir * Outer;
+            }
+
+
             _mesh.MarkDynamic();
             _verts = new Vector3[Rays * 2];
             var tris = new int[Rays * 6];
@@ -83,13 +97,13 @@ namespace CloneZ
             for (int i = 0; i < Rays; i++)
             {
                 float ang = i * (360f / Rays);
-                Vector3 dir = Quaternion.Euler(0f, ang, 0f) * Vector3.forward;
+                Vector3 dir = _rayDirs[i];
+                Vector3 outer = _rayOuter[i];
                 float max = Vector3.Angle(facing, dir) <= ConeHalf ? Range : Behind;
                 float d = max;
                 if (Physics.Raycast(eye, dir, out RaycastHit hit, max, Actor.SightMask, QueryTriggerInteraction.Ignore))
                     d = hit.distance + 0.35f;   // the wall itself stays in the light
                 Vector3 inner = feet + dir * d;
-                Vector3 outer = feet + dir * Outer;
                 inner.y = outer.y = feet.y + Height;
                 _verts[i] = inner;
                 _verts[Rays + i] = outer;
