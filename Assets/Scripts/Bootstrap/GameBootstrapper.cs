@@ -147,7 +147,14 @@ namespace CloneZ
             EnsureEventSystem();
 
             var world = new GameObject("World").transform;
-            RaidMapInfo map = RaidMapBuilder.Build(world, zone.LayoutSeed);
+            RaidMapInfo map = null;
+            if (!string.IsNullOrEmpty(zone.RealPlace))
+            {
+                // A real place, built from the world store on the NAS; if it can't be read, the procedural town instead.
+                map = KentuckyMap.Build(world, zone, out string why);
+                if (map == null) Debug.LogWarning("[CloneZ] " + zone.Name + " couldn't be built from the world store (" + why + "); building the procedural town instead.");
+            }
+            if (map == null) map = RaidMapBuilder.Build(world, zone.LayoutSeed);
             CloneZConfig.ArenaHalfSize = map.HalfSize;
             RaidWorldRules.RerollLoot(world, GameSession.RaidSeed);
             RaidWorldRules.RollExits(map, raidRng);

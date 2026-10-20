@@ -56,7 +56,7 @@ fewer are waiting than there are workers plus two. It takes the focus areas in `
 | Focus | What the planner looks for |
 |---|---|
 | `map` | the real-world raid map's code (`Assets/Scripts/World/Map/`): buildings, streets and props that look and play like the hand-built town |
-| `graphics` | small visual detail or variation on an object a script builds from primitives |
+| `graphics` | small visual detail or variation on an object a script builds from 3D shapes (boxes, cylinders, quads) |
 | `fixes` | a bug it can prove from the code |
 | `perf` | work repeated every frame that could be cached |
 | `features` | a small addition next to an existing action or mechanic |

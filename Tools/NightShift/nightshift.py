@@ -790,7 +790,7 @@ class Night:
 AUTOPLAN_STATE = STATE / "autoplan.json"  # the focus rotation and when each script was last shown to the planner
 PLAN_MAX_LINES = 1200  # longer scripts aren't shown to the planner (it reads them whole), nor is ItemModels.cs
 PLAN_PRIMITIVES = re.compile(r"\.(?:Box|BoxOn|Quad|QuadUV|Flat|FlatUV|Upright|Tri|Diamond|Blob|FlatBlob|Cylinder|CylinderX|"
-                             r"Ellipsoid|Rod)\s*\(|CreatePrimitive|\bnew Color(?:32)?\s*\(")
+                             r"Ellipsoid|Rod)\s*\(|CreatePrimitive")  # 3D shapes only: colours alone are UI, not objects
 PLAN_FRAME = re.compile(r"\bvoid\s+(?:Update|LateUpdate|FixedUpdate)\s*\(")
 PLAN_FRAME_WORK = re.compile(r"GetComponent|FindObjectsByType|FindAnyObjectByType|FindObjectOfType|Camera\.main|\.text\s*=|"
                              r"string\.Format|\$\"|\.ToList\(\)|\.Where\(|\.Select\(|new List<")
