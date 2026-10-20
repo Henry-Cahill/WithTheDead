@@ -2479,9 +2479,10 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [x] Reduce per‑second allocations in `HudQuestTracker.Update` (Assets/Scripts/Quests/QuestBook.cs) by reusing a `StringBuilder` and iterating the quest list without a `foreach`.
   - 09:59 landed by hts-llm in 2.7 min: **Changed files**
 - [ ] In Assets/Scripts/World/Fixtures/RadioFixture.cs: Add a “Tune to the previous station” action to RadioFixture.GetActions and implement its handler.
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/GroundItemRenderer.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/GroundItemRenderer.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 10:02 landed by 0htsserver in 4.7 min: Added concise XML‑style summaries to every public member in `Assets/Scripts/World/GroundItemRenderer.cs` that previously lacked documentatio
 - [ ] Add tiny metal‑screw cylinders to each yard‑edge timber board in `StarterHome.Edging(RaidMesh m, Rect r)` of Assets/Scripts/World/StarterHome.Grounds.cs
   After each `m.Box(..., wood);` call, insert two `m.Cylinder` primitives (radius 0.004 m, height 0.012 m) using the existing `wood` surface to represent small screws.
   North edge board (`m.Box(new Vector3(r.center.x, 0.04f, r.yMin), new Vector3(r.width + 0.1f, 0.08f, 0.06f), wood);`) – place screws at the board’s left‑most and right‑most ends:

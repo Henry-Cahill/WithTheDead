@@ -20,18 +20,25 @@ namespace CloneZ
     [DefaultExecutionOrder(100)]
     public sealed class GroundItemRenderer : MonoBehaviour
     {
+        /// <summary>Singleton instance of the renderer for easy access.</summary>
         public static GroundItemRenderer Instance { get; private set; }
 
         [Tooltip("Items beyond this range are not drawn at all.")]
+
+        /// <summary>Maximum distance at which items are drawn; beyond this they are invisible.</summary>
         public float DrawRadius = 60f;
 
         [Tooltip("Past this range items drop to the cheap silhouette mesh.")]
+        /// <summary>Distance at which items switch to a cheap silhouette mesh.</summary>
         public float NearRadius = 14f;
 
         [Tooltip("Items spin and bob so they catch the eye, as they always have.")]
+        /// <summary>Whether dropped items animate with a spin and bob to catch the player's eye.</summary>
         public bool Animate = true;
 
+        /// <summary>Number of items drawn in the most recent frame.</summary>
         public int DrawnLastFrame { get; private set; }
+        /// <summary>Number of draw batches submitted in the most recent frame.</summary>
         public int BatchesLastFrame { get; private set; }
 
         // Unity's instanced draw path takes at most 1023 matrices in one go.
