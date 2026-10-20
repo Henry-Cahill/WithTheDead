@@ -461,7 +461,7 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/DecorMaterials.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
-- [ ] In Assets/Scripts/Player/PlayerClothing.cs: Fix the wear‑off logic in PlayerClothing.WearPiece so that clothing with a `ConditionLossChance` of 0 never loses condition.
+- [x] In Assets/Scripts/Player/PlayerClothing.cs: Fix the wear‑off logic in PlayerClothing.WearPiece so that clothing with a `ConditionLossChance` of 0 never loses condition.
   Change the early‑exit test from
   `if (Random.Range(0, Mathf.Max(1, piece.Def.ConditionLossChance)) != 0) return;`
   to
@@ -469,6 +469,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `if (piece.Def.ConditionLossChance <= 0) return;`
   `if (Random.Range(0, piece.Def.ConditionLossChance) != 0) return;`
   This ensures that garments whose `ConditionLossChance` is 0 (e.g., rain‑coats or reinforced gear) do not degrade on every zombie strike, matching the intended design where a zero chance means “no wear”. The rest of the method (reducing condition, removing the garment, invoking `Changed`) stays unchanged.
+  - 23:37 landed by 0htsserver in 1.7 min: **Summary of changes**
 - [ ] Add a small mailbox flag to the front‑yard mailbox in `Assets/Scripts/World/RaidMapBuilder.Town.cs` → method `DressHouse`, after the line `b.YardMailbox(box, RaidHomeLiving.Post(town.Rng));`
   Create a 0.02 m radius, 0.30 m tall metal pole at the mailbox’s top front: `m.Cylinder(box + new Vector3(0f, 0.15f, 0f), 0.02f, 0.3f, 6, DecorPalette.Metal(new Color(0.5f,0.5f,0.5f)), Quaternion.identity, 1f);`
   Attach a red‑brown cloth flag (0.15 m × 0.10 m × 0.02 m) to the pole: `m.Box(box + new Vector3(0f, 0.30f, 0f), new Vector3(0.15f, 0.1f, 0.02f), DecorPalette.Matte(new Color(0.6f, 0.1f, 0.1f)));`

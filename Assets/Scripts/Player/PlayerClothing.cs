@@ -143,7 +143,9 @@ namespace CloneZ
         // worn to 0 is shredded into a useless rag and falls off the slot.
         private void WearPiece(ClothingSlot slot, WornPiece piece)
         {
-            if (Random.Range(0, Mathf.Max(1, piece.Def.ConditionLossChance)) != 0) return;
+            // If the garment is defined to never lose condition, skip the wear roll.
+if (piece.Def.ConditionLossChance <= 0) return;
+if (Random.Range(0, piece.Def.ConditionLossChance) != 0) return;
             int cond = piece.Condition - 1;
             if (cond > 0) _worn[slot] = new WornPiece(piece.Def, cond, piece.TimesRepaired, piece.Extra);
             else _worn.Remove(slot);
