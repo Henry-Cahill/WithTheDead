@@ -2839,11 +2839,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Use the same parent `prt` (the panel’s RectTransform), the same anchor/pivot as the trim (center‑bottom), and size it to the full panel width with a modest height, re‑using the translucent off‑white colour used for the divider (≈ `new Color(1f, 1f, 1f, 0.15f)`).
   This adds a period‑appropriate visual cue of the winter setting without affecting any colliders or interaction logic and stays within the 12‑primitive limit.
   - 11:17 landed by 0htsserver in 1.6 min: **Changes made**
-- [ ] Cache the per‑frame lookup of the player interactor in Assets/Scripts/World/Fixtures/BedFixture.cs to avoid repeated `PlayerInteractor.Current` calls.
+- [x] Cache the per‑frame lookup of the player interactor in Assets/Scripts/World/Fixtures/BedFixture.cs to avoid repeated `PlayerInteractor.Current` calls.
   Add a private field `private PlayerInteractor _playerInteractor;` and set it in `Awake()` (or `Start()`) with `_playerInteractor = PlayerInteractor.Current;`.
   Replace `PlayerInteractor pi = PlayerInteractor.Current;` in `Update()` with `PlayerInteractor pi = _playerInteractor;`.
   If the field is null (e.g., player not yet instantiated), obtain it lazily the first time: `if (_playerInteractor == null) _playerInteractor = PlayerInteractor.Current;`.
   No other code changes are required; the bed’s appearance and behaviour remain identical, but the per‑frame lookup is now cached, reducing allocation and FindObject‑type overhead.
+  - 11:20 landed by hts-llm in 3.3 min: Implemented proper caching of the player interactor in **BedFixture.cs**:
 - [x] Add a “Knock on the window” action to Assets/Scripts/World/Fixtures/HomeWindow.cs
   – Declare a new field `private Action<InteractContext> _knockAct;` alongside the other action fields.
   – In `Awake()` assign it: `_knockAct = c => { MakeNoise(CloneZConfig.WindowNoise); c.Notify("You rap a fist against the window."); };` (use the already‑existing `MakeNoise` method and `CloneZConfig.WindowNoise` value).
