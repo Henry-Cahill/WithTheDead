@@ -2276,12 +2276,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Delete the line `if (_seat == null) _seat = GetComponent<PlayerSeat>();` from HoldWhileSeated.
   Delete the blocks `if (_skills == null) _skills = GetComponent<PlayerSkills>();` and `if (_combat == null) _combat = GetComponent<PlayerCombat>();` from Move.
   Delete the block `if (_inventory == null) _inventory = GetComponent<PlayerInventory>();` from Move.
-- [ ] In Assets/Scripts/World/Fixtures/BreakerPanel.cs: Add a tiny “Inspect breaker panel” action to BreakerPanel.GetActions so the survivor can see whether the panel’s door is open or closed.
+- [x] In Assets/Scripts/World/Fixtures/BreakerPanel.cs: Add a tiny “Inspect breaker panel” action to BreakerPanel.GetActions so the survivor can see whether the panel’s door is open or closed.
   In `BreakerPanel.cs` edit the `GetActions` method (currently ending with `into.Add(new InteractAction("Check the power", CheckPower));`).
   Insert a new line after that call, before the method’s closing brace:
   `into.Add(new InteractAction("Inspect breaker panel", c => c.Notify(_open ? "The panel's door is ajar." : "The panel's door is shut.")));`
   The new action will appear alongside “Check the power” in the interaction menu and will simply display a notification about the door state.
   No other code, UI screens, or assets need to change.
+  - 08:57 landed by hts-llm in 1 min: Changed **Assets/Scripts/World/Fixtures/BreakerPanel.cs**:
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/AI/Creatures/CreatureContent.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
