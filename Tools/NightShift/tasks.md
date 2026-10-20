@@ -439,3 +439,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
 - [ ] Add chrome hinge pins to the side frames of the medicine cabinet in Assets/Scripts/World/FurnitureBuilder.Utility.cs (`FurnitureBuilder.MedCabinet`).
 - [ ] Fix the bribe‑action logic in `CordonGate.GetActions` (Assets/Scripts/World/Zone/ZoneCordon.cs) – the current check treats a successful money deduction as a failure, preventing players who have enough cash from bribing the Warden.
+- [ ] In Assets/Scripts/Rendering/VisionController.cs: Cache the URP asset used in UpdateSurvivorRenderers() to avoid a per‑frame static property lookup.
+  Add a private field `private UniversalRenderPipelineAsset _urpAsset;` to VisionController.
+  In Bind() after other initialisation set `_urpAsset = UniversalRenderPipeline.asset;`.
+  Replace the line `UniversalRenderPipelineAsset urp = UniversalRenderPipeline.asset;` in UpdateSurvivorRenderers() with `UniversalRenderPipelineAsset urp = _urpAsset;`.
+  If the asset can change at runtime (unlikely), add a cheap check at the start of LateUpdate: `if (_urpAsset != UniversalRenderPipeline.asset) _urpAsset = UniversalRenderPipeline.asset;`.
+  No visual change: the rendering‑layer logic and shadow‑hiding behaviour remain identical.
+  This removes the per‑frame native‑side lookup of UniversalRenderPipeline.asset, reducing allocations and CPU time.
