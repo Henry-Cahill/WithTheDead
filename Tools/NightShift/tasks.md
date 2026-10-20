@@ -1557,11 +1557,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `capRt.anchoredPosition = new Vector2(-2f, 0f);`
   `capRt.sizeDelta = new Vector2(4f, 14f);`
   - 04:58 landed by 1htsserver in 1.9 min: **Changed file**
-- [ ] Cache PostFx per‑frame settings in Assets/Scripts/Rendering/Presentation.cs, class PostFx, method LateUpdate
+- [x] Cache PostFx per‑frame settings in Assets/Scripts/Rendering/Presentation.cs, class PostFx, method LateUpdate
   Add private fields (e.g. `float _lastBrightness; bool _lastMotionBlur; float _lastLens; bool _lastBody; bool _lastEyes; Color _lastVignetteColor; float _lastVignetteIntensity;`) to store the last‑applied values.
   In LateUpdate, after getting `GameSettings g`, `bool body = ViewState.Current == CameraView.Bodycam;` and `bool eyes = ViewState.FirstPersonLike;`, compare each setting to its cached counterpart and only call the corresponding `Override`/`active` assignments when the value has changed.
   Also cache `_blood?.Blood01` and `_stats?.Health` thresholds so the saturation, vignette color/intensity/smoothness calculations run only on change.
   The visual result stays identical (brightness, motion blur, lens distortion, vignette appearance, saturation) because the same values are applied, but the numerous per‑frame `Override` calls and trivial math are skipped when nothing changed, reducing GC pressure and CPU load.
+  - 05:12 landed by 0htsserver in 14.7 min: **Changes made**
 - [x] Add a “Kick the chair” action to Assets/Scripts/World/Fixtures/RaidStoreSwivelSeat.cs that lets the survivor give the chair a stronger spin when they are not sitting.
   In `GetActions` after the existing “Give the chair a spin” line, add
   `into.Add(new InteractAction("Kick the chair", Kick));`

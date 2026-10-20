@@ -25,6 +25,18 @@ namespace CloneZ
         private Actor _for;
         private Camera _cachedCam;
         private UniversalAdditionalCameraData _cachedData;
+        // Caching previous frame values to reduce redundant post-processing updates
+        private float _lastBrightness;
+        private bool _lastMotionBlur;
+        private float _lastLens;
+        private bool _lastBody;
+        private bool _lastEyes;
+        private float _lastBlood01 = -1f;
+        private float _lastHealth = -1f;
+        private bool _lastVignetteActive;
+        private Color _lastVignetteColor = Color.clear;
+        private float _lastVignetteIntensity = -1f;
+        private float _lastVignetteSmoothness = -1f;
 
         public static void Ensure()
         {
@@ -78,29 +90,84 @@ namespace CloneZ
             bool body = ViewState.Current == CameraView.Bodycam;
             bool eyes = ViewState.FirstPersonLike;
 
-            _color.postExposure.Override(g.Brightness * 1.2f);
+            // Brightness
+            if (g.Brightness != _lastBrightness)
+            {
+                _color.postExposure.Override(g.Brightness * 1.2f);
+                _lastBrightness = g.Brightness;
+            }
+
+            // Saturation based on blood and body view
             float blood01 = _blood != null ? _blood.Blood01 : 1f;
-            _color.saturation.Override(Mathf.Lerp(-85f, 0f, Mathf.InverseLerp(0.45f, 0.85f, blood01)) + (body ? -12f : 0f));
+            if (Mathf.Abs(blood01 - _lastBlood01) > 0.0001f || body != _lastBody)
+            {
+                _color.saturation.Override(Mathf.Lerp(-85f, 0f, Mathf.InverseLerp(0.45f, 0.85f, blood01)) + (body ? -12f : 0f));
+                _lastBlood01 = blood01;
+                _lastBody = body;
+            }
 
-            _blur.active = g.MotionBlur && ViewState.MouseLook;
-            _blur.intensity.Override(0.35f);
+            // Motion blur
+            bool motionBlur = g.MotionBlur && ViewState.MouseLook;
+            if (motionBlur != _lastMotionBlur)
+            {
+                _blur.active = motionBlur;
+                if (motionBlur) _blur.intensity.Override(0.35f);
+                _lastMotionBlur = motionBlur;
+            }
 
+            // Lens distortion and chromatic aberration
             float lens = body ? g.LensDistortion : 0f;
-            _lens.active = lens > 0.01f;
-            _lens.intensity.Override(-0.42f * lens);
-            _lens.scale.Override(1f + 0.08f * lens);
-            _chroma.active = lens > 0.01f;
-            _chroma.intensity.Override(0.3f * lens);
-            _grain.active = body;
-            _grain.intensity.Override(0.35f);
-            _grain.type.Override(FilmGrainLookup.Medium3);
+            if (Mathf.Abs(lens - _lastLens) > 0.0001f)
+            {
+                bool lensActive = lens > 0.01f;
+                _lens.active = lensActive;
+                _lens.intensity.Override(-0.42f * lens);
+                _lens.scale.Override(1f + 0.08f * lens);
+                _chroma.active = lensActive;
+                _chroma.intensity.Override(0.3f * lens);
+                _lastLens = lens;
+            }
 
+            // Grain (body view)
+            if (body != _lastBody)
+            {
+                _grain.active = body;
+                if (body)
+                {
+                    _grain.intensity.Override(0.35f);
+                    _grain.type.Override(FilmGrainLookup.Medium3);
+                }
+            }
+
+            // Vignette based on health, gas mask and body view
             float hurt = _stats != null ? Mathf.InverseLerp(45f, 10f, _stats.Health) : 0f;
             bool mask = eyes && _gear != null && _gear.HasGasMask;
-            _vignette.active = hurt > 0.01f || mask || body;
-            _vignette.color.Override(hurt > 0.01f ? new Color(0.45f, 0f, 0f) : Color.black);
-            _vignette.intensity.Override(Mathf.Max(mask ? 0.5f : 0f, body ? 0.3f : 0f, hurt * 0.45f));
-            _vignette.smoothness.Override(mask ? 0.25f : 0.45f);
+            bool vignActive = hurt > 0.01f || mask || body;
+            if (vignActive != _lastVignetteActive)
+            {
+                _vignette.active = vignActive;
+                _lastVignetteActive = vignActive;
+            }
+            Color vignColor = hurt > 0.01f ? new Color(0.45f, 0f, 0f) : Color.black;
+            if (vignColor != _lastVignetteColor)
+            {
+                _vignette.color.Override(vignColor);
+                _lastVignetteColor = vignColor;
+            }
+            float vignIntensity = Mathf.Max(mask ? 0.5f : 0f, body ? 0.3f : 0f, hurt * 0.45f);
+            if (Mathf.Abs(vignIntensity - _lastVignetteIntensity) > 0.0001f)
+            {
+                _vignette.intensity.Override(vignIntensity);
+                _lastVignetteIntensity = vignIntensity;
+            }
+            float vignSmooth = mask ? 0.25f : 0.45f;
+            if (Mathf.Abs(vignSmooth - _lastVignetteSmoothness) > 0.0001f)
+            {
+                _vignette.smoothness.Override(vignSmooth);
+                _lastVignetteSmoothness = vignSmooth;
+            }
+            // Update health cache for next frame
+            _lastHealth = _stats != null ? _stats.Health : -1f;
         }
     }
 
