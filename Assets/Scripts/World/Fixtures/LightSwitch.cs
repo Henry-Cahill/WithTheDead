@@ -72,11 +72,48 @@ namespace CloneZ
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
+            // Toggle all circuits at once: if any are off, turn all on; otherwise turn all off.
+            bool anyOff = false;
+            for (int i = 0; i < _circuits.Length; i++)
+            {
+                if (!LightCircuits.IsOn(_circuits[i])) { anyOff = true; break; }
+            }
+            bool targetOn = anyOff; // turn on if any are off, else turn off
+            string toggleAllLabel = targetOn ? "Switch all lights on" : "Switch all lights off";
+            into.Add(new InteractAction(toggleAllLabel, c => ToggleAll(c, targetOn)));
+
             for (int i = 0; i < _circuits.Length; i++)
             {
                 string circuit = _circuits[i];
                 bool on = LightCircuits.IsOn(circuit);
                 into.Add(new InteractAction((on ? "Switch off the " : "Switch on the ") + LightCircuits.Noun(circuit), c => Flip(c, circuit, !on)));
+            }
+        }
+
+        // Handles toggling every circuit to the same state.
+        private void ToggleAll(InteractContext ctx, bool on)
+        {
+            for (int i = 0; i < _circuits.Length; i++)
+            {
+                LightCircuits.Set(_circuits[i], on);
+            }
+            Sync(false);
+            MakeNoise(CloneZConfig.LightSwitchNoise);
+            // Basic feedback similar to individual flip when turning on.
+            if (!on) return;
+            if (!PowerGrid.HousePowered)
+            {
+                ctx.Notify(LightingFixtures.NothingHappens());
+                return;
+            }
+            // Count lamps on the first circuit for a simple notification.
+            if (_circuits.Length > 0)
+            {
+                HomeLamp.CountOnCircuit(_circuits[0], out int lamps, out int lit, out int dead, out int waiting);
+                if (lamps == 0) ctx.Notify("Nothing happens. Whatever it was wired to is gone.");
+                else if (lit > 0) return;
+                else if (dead == lamps) ctx.Notify(lamps == 1 ? "Nothing happens. The bulb must have gone." : "Nothing happens. The bulbs must have gone.");
+                else if (waiting > 0) ctx.Notify("The porch lantern stays dark for now — its sensor waits for dusk.");
             }
         }
 
