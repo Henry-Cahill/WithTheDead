@@ -3494,10 +3494,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   – No visual change: the same camera continues to drive all vision effects; the player sees exactly the same lighting and UI.
   – All other behaviour stays unchanged; the field Camera remains a public getter‑only property as before.
   - 14:28 landed by hts-llm in 2.4 min: **Changed files**
-- [ ] In Assets/Scripts/World/Fixtures/RaidTownGenerator.cs: Add a “Estimate runtime” action to RaidTownGenerator so the player can see roughly how long the generator will keep running with the fuel that’s left.
+- [x] In Assets/Scripts/World/Fixtures/RaidTownGenerator.cs: Add a “Estimate runtime” action to RaidTownGenerator so the player can see roughly how long the generator will keep running with the fuel that’s left.
   Modify `RaidTownGenerator.GetActions` to insert `into.Add(new InteractAction("Estimate runtime", EstimateRuntime));` after the existing “Check the fuel” line.
   Add a private method `EstimateRuntime(InteractContext ctx)` that computes remaining time from `_fuel` (fuel drains at 1 unit per second) and notifies the player, e.g.
   `float secs = _fuel; int mins = (int)(secs / 60); secs = secs % 60;`
   `ctx.Notify(_fuel <= 0f ? "No fuel left – the generator can’t run any longer." : $"It will run for about {mins} min {(int)secs}s more.");`
   The generator’s existing behavior, fields, and other actions remain unchanged.
+  - 14:30 landed by 1htsserver in 4.2 min: **Changed file**
 - [ ] Add period‑correct cast‑iron rivets to the radiator built in `Assets/Scripts/World/FurnitureBuilder.Fixtures.cs` `FurnitureBuilder.Radiator` so the metal heating unit shows small fasteners.

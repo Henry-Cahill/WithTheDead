@@ -62,6 +62,7 @@ namespace CloneZ
                     .Timed(CloneZConfig.RaidGeneratorPullSeconds, "Pulling the cord", HumanoidActivity.Use)
                     .DisabledIf(_fuel <= 0f, "Its tank is dry"));
             into.Add(new InteractAction("Check the fuel", CheckFuel));
+            into.Add(new InteractAction("Estimate runtime", EstimateRuntime));
             into.Add(new InteractAction("Inspect generator", Inspect));
         }
 
@@ -113,6 +114,20 @@ namespace CloneZ
                 f < 0.7f ? "The tank's about half full. Enough to make a racket for a while." :
                 "Most of a tank. Somebody filled it and never got to use it.");
         }
+
+        private void EstimateRuntime(InteractContext ctx)
+        {
+            if (_fuel <= 0f)
+            {
+                ctx.Notify("No fuel left – the generator can’t run any longer.");
+                return;
+            }
+            float secs = _fuel; // fuel drains at 1 unit per second
+            int mins = (int)(secs / 60f);
+            secs = secs % 60f;
+            ctx.Notify($"It will run for about {mins} min {(int)secs}s more.");
+        }
+
         private void ShowRunning(bool on)
         {
             if (_lamp != null) _lamp.enabled = on;
