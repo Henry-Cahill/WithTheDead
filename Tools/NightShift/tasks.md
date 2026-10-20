@@ -3709,3 +3709,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `- TopTrimColor = Shade(c, 0.72f);`
   `+ TopTrimColor = def == null ? TopColor : Shade(c, 0.72f);`
   `TopGloss = GarmentStyles.Gloss(k, 0.08f);`
+- [ ] Add a small icy‑icicle detail to the exterior side of each window in `RaidBuilding.DrawWindow` (Assets/Scripts/World/RaidBuilding.cs)
+  Inside `DrawWindow`, after the existing interior‑side loop but before the call to `WindowFrame(p)`, insert code that:
+  Calls `int side = OutsideSide(r, o.Pos);` and proceeds only if `side != 0`.
+  Uses `Rng.NextDouble() < 0.08` to give ≈ 8 % chance per window for an icicle.
+  Defines a pale‑blue ice material: `var ice = DecorPalette.Matte(new Color(0.85f, 0.90f, 1f));`
+  Places a thin vertical box protruding from the top of the window frame on the outside side:
+  `Vector3 iciclePos = RunPoint(r, o.Pos, HeadHeight - 0.01f, side * (Half + 0.04f));`
+  `p.Mesh.Box(iciclePos, RunSize(r, 0.02f, 0.08f, 0.02f), ice);`
+  The icicle is ~2 cm wide/deep and ~8 cm long, positioned just below the window head, hanging outward on the exterior wall.
