@@ -666,6 +666,7 @@ namespace CloneZ
             m.Box(new Vector3(sinkX, 1.25f, -0.17f), new Vector3(0.03f, 0.03f, 0.22f), chrome);
             m.Box(new Vector3(sinkX + SteelSpout.x, 1.22f, SteelSpout.z), new Vector3(0.025f, 0.06f, 0.025f), chrome);
             m.Box(new Vector3(sinkX - SteelColdTap.x, 0.98f, SteelColdTap.z), new Vector3(0.04f, 0.04f, 0.04f), chrome);
+            if (Chance(rng, 0.5)) m.Cylinder(new Vector3(sinkX - SteelColdTap.x - 0.07f, SteelDeckY + 0.01f, SteelColdTap.z - 0.05f), 0.03f, 0.12f, 8, M(Paper));
             m.Box(new Vector3(sinkX + SteelColdTap.x, 0.98f, SteelColdTap.z), new Vector3(0.04f, 0.04f, 0.04f), chrome);
             KitchenTapHead(m, new Vector3(sinkX - SteelColdTap.x, SteelColdTap.y, SteelColdTap.z), TapHotRed);
 

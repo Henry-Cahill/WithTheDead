@@ -1438,11 +1438,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 04:32 landed by 0htsserver in 4.7 min: **Changes Made**
 - [x] In Assets/Scripts/UI/HealthPanelController.cs: Fix off‑by‑one bug in HealthPanelController → Refresh that hides the last visible wound when there are more than MaxRows wounds.
   - 04:30 landed by hts-llm in 2.9 min: **Changes made**
-- [ ] Add a small paper‑towel roll to the steel counter sink area in Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method SteelCounterBody.
+- [x] Add a small paper‑towel roll to the steel counter sink area in Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method SteelCounterBody.
   *After the existing call that draws the cold tap’s head* (`m.Box(new Vector3(sinkX - SteelColdTap.x, 0.98f, SteelColdTap.z), new Vector3(0.04f, 0.04f, 0.04f), chrome);`)
   *add a short cylinder to represent a rolled towel*:
   `if (Chance(rng, 0.5)) m.Cylinder(new Vector3(sinkX - SteelColdTap.x - 0.07f, SteelDeckY + 0.01f, SteelColdTap.z - 0.05f), 0.03f, 0.12f, 8, M(Paper));`
   The cylinder (radius 0.03 m, length 0.12 m) sits just to the left and slightly forward of the cold tap, uses the existing Paper material, keeps colliders and interaction points unchanged, and adds only one new primitive.
+  - 04:34 landed by hts-llm in 3.4 min: **Summary**
 - [x] Modify Assets/Scripts/World/Fixtures/RaidStoreCopier.cs to let the survivor take the original sheet from the copier glass as a one‑time action.
   Add a new private field `bool _originalTaken;` to store whether the sheet has already been taken.
   In `GetActions(InteractContext ctx, List<InteractAction> into)`, after the existing “Read what's on the glass” action (when the lid is open), insert a new action:
