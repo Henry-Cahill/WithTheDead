@@ -712,3 +712,10 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/AI/Creatures/CreatureCatalog.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add a small metal door handle to the fridge in Assets/Scripts/World/HomeFurniture.cs → `DrawPlain` method, `case HomeFurnitureKind.Fridge:`
+  After the existing `FurnitureBuilder.Fridge(m, rng, …)` call, insert code that creates a thin box primitive for a handle:
+  Use `bool left = rng.Next(2) == 0;` to pick left or right side deterministically.
+  Position the handle at `new Vector3(left ? -0.33f : 0.33f, 0.5f, 0.05f)` (meters from the fridge centre).
+  Size the handle `new Vector3(0.02f, 0.12f, 0.02f)`.
+  Apply a dark‑metal material: `DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f))`.
+  Result: each fridge now shows a realistic metal door handle, with left/right variation per seed, while keeping all colliders, interaction points and existing geometry unchanged.
