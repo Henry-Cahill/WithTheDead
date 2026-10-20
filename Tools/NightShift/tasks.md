@@ -2086,7 +2086,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
   - 08:14 landed by 0htsserver in 3.1 min: Added a concise XML summary for the public `TreeCount` property:
-- [ ] In Assets/Scripts/Player/PlayerSeat.cs: Fix PlayerSeat.GetUpFromInput so the survivor actually stands up from a bed instead of just ending the lying‑down state, which currently leaves the player stuck on the mattress.
+- [x] In Assets/Scripts/Player/PlayerSeat.cs: Fix PlayerSeat.GetUpFromInput so the survivor actually stands up from a bed instead of just ending the lying‑down state, which currently leaves the player stuck on the mattress.
   Change the method in Assets/Scripts/Player/PlayerSeat.cs:
   `public void GetUpFromInput()`
   `{`
@@ -2095,6 +2095,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `if (Interactor != null && Interactor.IsWorking) Interactor.StopJob();`
   `// move the survivor to a clear spot in front of the bed before clearing the lying‑down flags`
   `if (RestBed != null)`
+  - 08:16 landed by 1htsserver in 3.6 min: **Changed** `Assets/Scripts/Player/PlayerSeat.cs`
 - [x] Add a tiny brass switch knob to the bedside lamp shade in `FurnitureBuilder.BedsideTable` (Assets/Scripts/World/FurnitureBuilder.Living.cs)
   After the lamp shade box `m.Cylinder(new Vector3(0f, 0.84f, -0.04f), 0.15f, 0.2f, 10, M(new Color(0.78f, 0.70f, 0.55f)), Quaternion.identity, 0.65f, false);` add a small brass cylinder `m.Cylinder(new Vector3(0.07f, 0.84f, -0.04f), 0.01f, 0.03f, 6, Mt(Brass));`
   The knob is 0.01 m radius, 0.03 m tall, positioned 0.07 m to the right of the shade centre (still at the same Z‑height), using the existing `Mt(Brass)` material so it inherits the deterministic colour. This gives the lamp a realistic manual switch without altering colliders or interaction points.
