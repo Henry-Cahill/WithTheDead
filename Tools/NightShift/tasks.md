@@ -2729,12 +2729,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `}`
   Add a private helper that notifies the survivor about the bed’s comfort level using the existing `_comfort` field:
   `private void ComfortInfo(InteractContext ctx)`
-- [ ] Append five new sentences to the `Tidying` string array in Assets/Scripts/World/Fixtures/LivingReading.cs, each describing a small, period‑correct cleaning action the survivor can perform at the bookcase.
+- [x] Append five new sentences to the `Tidying` string array in Assets/Scripts/World/Fixtures/LivingReading.cs, each describing a small, period‑correct cleaning action the survivor can perform at the bookcase.
   Add the entries after the existing lines, keeping the comma after the last original element and the final semicolon after the closing brace.
   Use the same “You …” phrasing; each entry may contain two short sentences separated by a period, mirroring the style of `"You dust the shelves, wiping away a thin layer of time."`.
   Themes to cover: polishing a brass knob on the shelf, clearing a thin film of snow‑dust from the top shelf, straightening a tilted family photo, tightening a loose shelf bracket, and sweeping away a faint cobweb in a corner.
   All strings should start with “You” (capitalised) and otherwise be lower‑case, ending with a period.
   Do not modify any other code or data.
+  - 11:01 landed by hts-llm in 2.2 min: **Changed file**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/GridDragHandle.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
