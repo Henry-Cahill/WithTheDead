@@ -1272,11 +1272,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Keep the existing collider and mesh logic unchanged; the latch is a child primitive added to the same `RaidMesh` before `m.ApplyTo`.
   Result: dressed storage crates sometimes show a realistic metal latch, adding period‑appropriate visual variety without altering gameplay.
   - 03:42 landed by 0htsserver in 2.6 min: **Changed**
-- [ ] Fix mis‑aligned rumpled quilt in `FurnitureBuilder.BedQuilt` (Assets/Scripts/World/FurnitureBuilder.Living.cs)
+- [x] Fix mis‑aligned rumpled quilt in `FurnitureBuilder.BedQuilt` (Assets/Scripts/World/FurnitureBuilder.Living.cs)
   In the rumpled branch the quilt box is created with a hard‑coded X offset of `0.05f`, shifting the whole quilt to the right of the mattress, so players see a visibly off‑center bed cover.
   Change the line
   `m.Box(new Vector3(0.05f, 0.535f, bz), new Vector3(w + 0.02f, 0.05f, bl), Yaw(yaw), M(b));`
   to use a centered X coordinate:
+  - 03:44 landed by 1htsserver in 2 min: **Changed**
 - [ ] Add four subtle metal‑rivets to the inventory window panel in Assets/Scripts/UI/InventoryUIController.cs (Build method) to give the UI a period‑correct, worn‑metal look.
   Insert the following after the line
   `_window = Panel(modalRt, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(WinW, WinH), new Color(0.11f, 0.12f, 0.14f, 0.98f));`

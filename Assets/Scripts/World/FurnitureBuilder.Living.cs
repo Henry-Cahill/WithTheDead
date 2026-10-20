@@ -276,7 +276,7 @@ namespace CloneZ
             float bl = l * 0.45f;
             float bz = l * 0.5f - 0.06f - bl * 0.5f;
             float yaw = R(rng, -6f, 6f);
-            m.Box(new Vector3(0.05f, 0.535f, bz), new Vector3(w + 0.02f, 0.05f, bl), Yaw(yaw), M(b));
+            m.Box(new Vector3(0f, 0.535f, bz), new Vector3(w + 0.02f, 0.05f, bl), Yaw(yaw), M(b));
             m.Box(new Vector3(-w * 0.5f - 0.01f, 0.39f, bz), new Vector3(0.03f, 0.3f, bl), M(b * 0.9f));
             m.Box(new Vector3(w * 0.5f + 0.01f, 0.39f, bz), new Vector3(0.03f, 0.3f, bl), M(b * 0.9f));
             m.CylinderX(new Vector3(0.03f, 0.6f, bz - bl * 0.5f + 0.06f), 0.08f, w * 0.95f, 8, M(b * 1.06f), yaw);
