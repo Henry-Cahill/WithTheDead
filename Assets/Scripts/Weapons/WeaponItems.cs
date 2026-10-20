@@ -141,7 +141,24 @@ namespace CloneZ
                     into.Add(new ItemMenuAction("Clean (" + Mathf.RoundToInt(s.DirtLevel() * 100f) + "% fouled)", () =>
                     {
                         ItemStack kit = Find(inv, "cleaningkit");
-                        if (kit != null) { ItemStack hand = s; s.Ensure().Dirt = Mathf.Max(0f, s.DirtLevel() - 0.75f); if (Random.value < 0.25f) inv.Inventory.Remove(kit, 1); GameEvents.RaiseToast("Cleaned the " + hand.Def.DisplayName + "."); }
+                        if (kit != null)
+                        {
+                            ItemStack hand = s;
+                            hand.Ensure().Dirt = Mathf.Max(0f, hand.DirtLevel() - 0.75f);
+                            if (kit.Def.MaxCondition > 0)
+                            {
+                                kit.Condition--;
+                                if (kit.Condition <= 0) inv.Inventory.Remove(kit, 1);
+                            }
+                            else if (Random.value < 0.25f)
+                            {
+                                inv.Inventory.Remove(kit, 1);
+                            }
+                            var skills = inv.GetComponent<PlayerSkills>();
+                            if (skills != null) skills.AddXp(PlayerSkills.Skill.Mechanics, 3f);
+                            Sfx.PlayUI(SfxIds.Reload, 0.5f, 0.8f);
+                            GameEvents.RaiseToast("Cleaned the " + hand.Def.DisplayName + ".");
+                        }
                     }));
             }
             if (GameSession.IsHub && InsuranceDesk.Insurable(s) && !s.IsInsured())
