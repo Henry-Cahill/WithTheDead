@@ -33,16 +33,23 @@ namespace CloneZ
 
         /// <summary>Raised on every hit that lands (zone, hit points lost) — the HUD flashes, the camera shakes.</summary>
         public event System.Action<BodyZone, float> Hit;
+                /// <summary>Raised when any limb data changes (e.g., health, fracture) and UI should update.</summary>
         public event System.Action Changed;
 
         private static readonly ClothingSlot[] s_ArmorSlots = { ClothingSlot.Armor, ClothingSlot.Head, ClothingSlot.Torso };
 
+                /// <summary>Gets the current hit points of the specified limb.</summary>
         public float Hp(BodyZone z) => _hp[(int)z];
+                /// <summary>Gets the maximum hit points for the specified limb.</summary>
         public float Max(BodyZone z) => _max[(int)z];
+                /// <summary>Normalized hit points (0‑1) of a limb, or 0 when the limb has no max.</summary>
         public float Hp01(BodyZone z) => _max[(int)z] > 0f ? Mathf.Clamp01(_hp[(int)z] / _max[(int)z]) : 0f;
+                /// <summary>Whether the specified limb is completely disabled (hit points ≤ 0).</summary>
         public bool IsBlackedOut(BodyZone z) => _hp[(int)z] <= 0f;
+                /// <summary>Whether the specified limb is fractured.</summary>
         public bool IsFractured(BodyZone z) => _fractured[(int)z];
 
+                /// <summary>Total hit points across all limbs (ignores negatives).</summary>
         public float TotalHp
         {
             get
@@ -53,6 +60,7 @@ namespace CloneZ
             }
         }
 
+                /// <summary>Number of limbs currently fractured.</summary>
         public int FractureCount
         {
             get
@@ -66,6 +74,7 @@ namespace CloneZ
         private bool Painkilled => _wounds != null && _wounds.PainkillersActive;
 
         /// <summary>False with a broken or blacked-out leg (unless painkillers mask it).</summary>
+                /// <summary>Whether the survivor can sprint (no broken or blacked‑out legs, unless painkillers hide it).</summary>
         public bool CanSprint
         {
             get
@@ -108,6 +117,7 @@ namespace CloneZ
         }
 
         #region Persistence
+                /// <summary>Loads limb data from the saved profile if applicable.</summary>
         public void LoadFromProfile()
         {
             _loaded = true;
@@ -126,6 +136,7 @@ namespace CloneZ
             Changed?.Invoke();
         }
 
+                /// <summary>Saves current limb data back to the player profile.</summary>
         public void SaveToProfile()
         {
             CharacterProfile c = ProfileStore.ActiveCharacter;
@@ -145,6 +156,7 @@ namespace CloneZ
 
         #region Taking hits
         /// <summary>Applies any blow, bullet, blast or Zone effect to the body.</summary>
+                /// <summary>Applies a damage hit (bullet, melee, etc.) to the survivor's body.</summary>
         public void ApplyHit(in DamageInfo info)
         {
             if (_stats == null || _stats.IsDead) return;
@@ -188,9 +200,11 @@ namespace CloneZ
         }
 
         /// <summary>Radiation dose arriving as damage (the radiation system turns it into a dose).</summary>
+                /// <summary>Registers a listener for radiation damage events.</summary>
         public static event System.Action<PlayerLimbs, float> RadiationReceived;
 
         /// <summary>A zombie's teeth or nails on one zone: armour there stops them cold. Returns true when it got through.</summary>
+                /// <summary>Handles a zombie bite or claw strike, applying damage and possibly breaking the limb.</summary>
         public bool ZombieStrike(bool bite, float healthDamage, out BodyZone zone)
         {
             zone = BodyZones.RandomStrike();
@@ -230,6 +244,7 @@ namespace CloneZ
         }
 
         /// <summary>The highest-class worn armour that covers <paramref name="zone"/> and still has durability.</summary>
+                /// <summary>Finds the highest‑class armor covering a zone that still has durability.</summary>
         public bool FindArmor(BodyZone zone, out ClothingSlot slot, out ArmorStats armor, out PlayerClothing.WornPiece piece)
         {
             slot = ClothingSlot.Armor;
@@ -285,6 +300,7 @@ namespace CloneZ
         }
 
         /// <summary>Total resistance to a damage type: the survivor's own (traits, artifacts, Zone marks) plus worn suits.</summary>
+                /// <summary>Calculates total resistance to a specific damage kind from traits, artifacts and armor.</summary>
         public float ResistFor(DamageKind kind)
         {
             float r = PlayerModifiers.Current.Resist.For(kind);
@@ -304,6 +320,7 @@ namespace CloneZ
         }
 
         /// <summary>Takes hit points off one zone. A blacked-out zone passes the damage on across the rest of the body.</summary>
+                /// <summary>Applies damage to a limb, spreading excess to others if the limb is blacked out.</summary>
         public void DamageZone(BodyZone zone, float hp, string cause)
         {
             if (hp <= 0f || _stats.IsDead) return;
@@ -381,6 +398,7 @@ namespace CloneZ
             }
         }
 
+                /// <summary>Fractures a limb, updates pain and UI.</summary>
         public void Fracture(BodyZone zone)
         {
             if (!(BodyZones.IsArm(zone) || BodyZones.IsLeg(zone)) || _fractured[(int)zone]) return;
@@ -409,6 +427,7 @@ namespace CloneZ
 
         #region Treatment
         /// <summary>Sets the worst fracture (legs first). False when nothing is broken.</summary>
+                /// <summary>Attempts to splint the worst fracture (legs first). Returns true if a fracture was repaired.</summary>
         public bool Splint()
         {
             BodyZone[] order = { BodyZone.LeftLeg, BodyZone.RightLeg, BodyZone.LeftArm, BodyZone.RightArm };
@@ -423,6 +442,7 @@ namespace CloneZ
         }
 
         /// <summary>Restores hit points to the most damaged zones that aren't blacked out. Returns the amount used.</summary>
+                /// <summary>Heals the most damaged, non‑blacked‑out limbs up to the given amount of health.</summary>
         public float HealLimbs(float amount)
         {
             float used = 0f;
@@ -447,6 +467,7 @@ namespace CloneZ
         }
 
         /// <summary>Surgery on a blacked-out limb: it works again, but never as well (its maximum drops by a quarter).</summary>
+                /// <summary>Performs surgery on a blacked‑out limb, restoring some functionality.</summary>
         public bool Surgery()
         {
             for (int i = 0; i < _hp.Length; i++)
@@ -461,6 +482,7 @@ namespace CloneZ
             return false;
         }
 
+                /// <summary>Whether any limb is currently blacked out.</summary>
         public bool AnyBlackedOut
         {
             get
@@ -470,6 +492,7 @@ namespace CloneZ
             }
         }
 
+                /// <summary>Restores all limbs to full health and clears fractures.</summary>
         public void FullHeal()
         {
             for (int i = 0; i < _hp.Length; i++) { _max[i] = BaseMax[i]; _hp[i] = BaseMax[i]; _fractured[i] = false; }
@@ -511,6 +534,7 @@ namespace CloneZ
             if (changed && Time.frameCount % 30 == 0) Changed?.Invoke();
         }
 
+                /// <summary>Applies stat‑modifiers based on current limb health and injuries.</summary>
         public void ApplyMods(StatMods m)
         {
             bool pk = Painkilled;
