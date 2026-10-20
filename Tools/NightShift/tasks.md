@@ -2232,7 +2232,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace each occurrence of `SandboxSettings.Current.Diseases` in `Update()` with `_sandboxSettings.Diseases`.
   The player sees no change – disease‑catching logic still runs only when the setting is enabled, but the per‑frame cost of repeatedly fetching the static `Current` property is eliminated.
   - 08:47 landed by hts-llm in 5.4 min: Modified **Assets/Scripts/Survival/Diseases.cs**
-- [ ] In Assets/Scripts/World/Fixtures/RaidStoreWaterCooler.cs: Add a “Listen for glug” action to RaidStoreWaterCooler.GetActions that tells the player whether the cooler still has water, re‑using the same messages shown when water is drawn.
+- [x] In Assets/Scripts/World/Fixtures/RaidStoreWaterCooler.cs: Add a “Listen for glug” action to RaidStoreWaterCooler.GetActions that tells the player whether the cooler still has water, re‑using the same messages shown when water is drawn.
+  - 08:50 landed by hts-llm in 3.4 min: **Changed file**
 - [ ] In Assets/Scripts/Core/Broadcasts.cs, edit the `Schedule` entry for Channel 4 where `Days(1, 1, …)` is defined and append 5 new string sentences to its `Lines` array (the list of whole‑sentence quotes).
   Use the existing entry `"Police are asking residents to lock their doors and stay off the roads until morning."` as the style reference.
   The new sentences should cover these themes:

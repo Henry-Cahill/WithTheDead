@@ -64,6 +64,7 @@ namespace CloneZ
             WaterUse.AddDrinkAndFill(ctx, this, into);
             into.Add(new InteractAction("Check the jug", CheckJug));
             into.Add(new InteractAction("Try the red tap", TryHot));
+            into.Add(new InteractAction("Listen for glug", ListenGlug));
         }
 
         private void CheckJug(InteractContext ctx)
@@ -81,6 +82,11 @@ namespace CloneZ
                 ? "Still cold. The heater's unplugged; there's a space heater's plug where its own should be."
                 : "The red tap runs as cold as the blue one. So much for a hot drink.");
             _triedHot = true;
+        }
+
+        private void ListenGlug(InteractContext ctx)
+        {
+            ctx.Notify(_drinks > 0 ? "The jug glugs, a fat bubble wobbling up through what's left." : "The jug gives a last hollow glug. That's the end of it.");
         }
 
         // The water in the jug, from its neck up to the level.
