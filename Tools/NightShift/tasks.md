@@ -410,3 +410,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `float angle = i * Mathf.PI * 0.25f; // 45° steps`
   `// Base position on the outer radius of the lowest ring (≈9 m)`
   `Vector3 basePos = new Vector3(Mathf.Cos(angle) * 9f, 2f, Mathf.Sin(angle) * 9f);`
+- [ ] Fix the zombie‑type roll in Assets/Scripts/Zombies/ZombieSpawner.cs (`RollType`) so that crawlers can still appear after the tough‑unlock wave; the current order makes the `FastShambler` check consume the whole `< 0.35` range before the crawler test, preventing crawlers from ever being chosen once `_wave >= CloneZConfig.ToughUnlockWave`.
+- [ ] Add a small stamped metal “SAFE” plate to the gun‑safe body in Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method GunSafeBody.
+  Create a thin box about 0.18 m × 0.03 m × 0.004 m (width × height × depth) positioned just in front of the door’s centre:
+  `m.Box(new Vector3(0f, 1.62f, 0.285f), new Vector3(0.18f, 0.03f, 0.004f), Mt(Chrome));`
+  Use the existing Chrome material (`Mt(Chrome)`) so the plate looks like a brushed‑metal emboss, giving the safe a period‑correct visual label without altering colliders, interaction points, or any other geometry.
