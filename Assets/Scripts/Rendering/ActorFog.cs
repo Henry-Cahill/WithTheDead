@@ -25,13 +25,13 @@ namespace CloneZ
         {
             _actor = GetComponent<Actor>();
             _next = Time.time + Random.value * 0.1f;
+            Cache();
         }
 
         private void LateUpdate()
         {
             if (Time.time < _next) return;
             _next = Time.time + 0.1f;
-            if (transform.hierarchyCount != _count) Cache();
 
             bool show = true;
             if (ZombieVisibility.HasSight && Actor.LocalPlayer != null && _actor != Actor.LocalPlayer)
@@ -65,11 +65,19 @@ namespace CloneZ
                 if (_renderers[i] != null) _renderers[i].forceRenderingOff = !_shown;
         }
 
+
+
+        private void OnTransformChildrenChanged()
+        {
+            Cache();
+        }
+
         private void OnDisable()
         {
             if (_renderers == null) return;
             for (int i = 0; i < _renderers.Length; i++)
                 if (_renderers[i] != null) _renderers[i].forceRenderingOff = false;
         }
+
     }
 }

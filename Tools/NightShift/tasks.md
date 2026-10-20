@@ -797,13 +797,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   `/// <summary>World‑space position of this piece.</summary>`
   `public Vector3 Position => transform.position;`
   - 01:00 landed by hts-llm in 2.3 min: **Changed**
-- [ ] In Assets/Scripts/Rendering/ActorFog.cs, replace the per‑frame hierarchy‑count check with Unity’s hierarchy‑change callback to avoid the `transform.hierarchyCount` lookup each LateUpdate.
+- [x] In Assets/Scripts/Rendering/ActorFog.cs, replace the per‑frame hierarchy‑count check with Unity’s hierarchy‑change callback to avoid the `transform.hierarchyCount` lookup each LateUpdate.
   Remove the line `if (transform.hierarchyCount != _count) Cache();` from `LateUpdate()`.
   Add a new method:
   `private void OnTransformChildrenChanged() { Cache(); }`
   (Unity calls this automatically whenever the actor’s child hierarchy is modified.)
   Keep the existing `Cache()` call in `Start()` so the initial renderer list is built.
   This change stops a per‑frame property access and conditional call, saving a tiny but unnecessary allocation‑free check while preserving visual behaviour – actors still update their renderers only when their hierarchy actually changes.
+  - 01:07 landed by 0htsserver in 8 min: **Changed file**
 - [x] In Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs: Add a “Previous channel” action to `RaidTownFieldRadio.GetActions` and implement its handler
   In `GetActions` add a line after the existing “Change channel” entry:
   `into.Add(new InteractAction("Previous channel", PrevChannel).DisabledIf(!near, TooFar));`
