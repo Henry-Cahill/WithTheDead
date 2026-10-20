@@ -106,6 +106,8 @@ namespace CloneZ
             m.Cylinder(new Vector3(0f, 0.6f, -0.04f), 0.07f, 0.04f, 8, G(new Color(0.6f, 0.5f, 0.35f)));
             m.Cylinder(new Vector3(0f, 0.64f, -0.04f), 0.02f, 0.22f, 6, Mt(Brass));
             m.Cylinder(new Vector3(0f, 0.84f, -0.04f), 0.15f, 0.2f, 10, M(new Color(0.78f, 0.70f, 0.55f)), Quaternion.identity, 0.65f, false);
+            // Tiny brass switch knob on the shade
+            m.Cylinder(new Vector3(0.07f, 0.84f, -0.04f), 0.01f, 0.03f, 6, Mt(Brass));
             return new Vector3(0f, 0.9f, -0.04f);
         }
 
