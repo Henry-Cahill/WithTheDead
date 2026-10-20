@@ -2225,3 +2225,20 @@ you want to see in game. Indent extra lines under a task to add detail.
   `ctx.Notify("The spray splutters and dies. The water's been shut off.");`
   `// Turn the shower off so it won't magically restart when the mains come back on`
   - 08:40 landed by hts-llm in 1.1 min: **Changed file:** `Assets/Scripts/World/Fixtures/ShowerFixture.cs`
+- [ ] In Assets/Scripts/Survival/Diseases.cs: Cache the frequently accessed `SandboxSettings.Current` reference in `PlayerDiseases` to avoid per‑frame property lookups in `Update`
+  Add a private field `private SandboxSettings _sandboxSettings;` filled in `Awake()` (`_sandboxSettings = SandboxSettings.Current;`).
+  Replace each occurrence of `SandboxSettings.Current.Diseases` in `Update()` with `_sandboxSettings.Diseases`.
+  The player sees no change – disease‑catching logic still runs only when the setting is enabled, but the per‑frame cost of repeatedly fetching the static `Current` property is eliminated.
+- [ ] In Assets/Scripts/World/Fixtures/RaidStoreWaterCooler.cs: Add a “Listen for glug” action to RaidStoreWaterCooler.GetActions that tells the player whether the cooler still has water, re‑using the same messages shown when water is drawn.
+- [ ] In Assets/Scripts/Core/Broadcasts.cs, edit the `Schedule` entry for Channel 4 where `Days(1, 1, …)` is defined and append 5 new string sentences to its `Lines` array (the list of whole‑sentence quotes).
+  Use the existing entry `"Police are asking residents to lock their doors and stay off the roads until morning."` as the style reference.
+  The new sentences should cover these themes:
+  Winter‑time safety (e.g., icy sidewalks, heating advice)
+  Local supply shortages (e.g., fuel, canned goods)
+  Community solidarity messages (e.g., checking on neighbours)
+  Outbreak‑related caution (e.g., avoiding crowds, symptoms)
+  A brief nod to regional folklore or a local landmark to reinforce setting authenticity.
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Player/PlayerFarming.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] In Assets/Scripts/World/Zone/ZoneOverlays.cs, modify ZoneIndustry.Build inside the *pipe runs on trestles* loop to add a few rust‑stained bolt heads on each rectangular pipe‑support box.
