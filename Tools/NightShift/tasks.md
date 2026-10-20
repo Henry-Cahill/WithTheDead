@@ -3930,9 +3930,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   This creates a small rectangular brass plate (≈6 cm × 1.5 cm × 1.5 cm) positioned near the right edge of the dresser top (x ≈ 0.45 m, y = 0.825 m, z ≈ 0.18 m).
   The plate uses the existing `Mt(Brass)` material, keeps all colliders and interaction points unchanged, and adds a period‑correct decorative detail that could hold a tiny photograph or label.
   - 17:33 landed by hts-llm in 1.4 min: **Changes Made**
-- [ ] In Assets/Scripts/Core/TimeOfDay.cs: Cache the formatted clock and date strings in `TimeOfDay` so they are not rebuilt on every UI read each frame.
+- [x] In Assets/Scripts/Core/TimeOfDay.cs: Cache the formatted clock and date strings in `TimeOfDay` so they are not rebuilt on every UI read each frame.
   · Add private fields `int _lastHourInt = -1; string _clockText; string _clock12Text; string _amPm; string _dateText;` to the class.
   · In `Apply()` (after the sky‑colour logic) insert a block that recomputes the caches only when the hour’s integer part changes:
+  - 17:39 landed by 0htsserver in 6.4 min: **Changed file**
 - [ ] Append five new `Book` entries to the `Books` array in Assets/Scripts/World/Fixtures/LivingReading.cs.
   The change is a simple extension of the existing initializer for `private static readonly Book[] Books`; keep every line that is already present unchanged and add the new lines after the last `new Book(...);` entry.
   When the survivor chooses “Read a book”, the new titles will appear in the rotation, showing the title, author and a single‑sentence “thought” that is displayed in the notification (e.g. `You read a few chapters of “...” by … . …`).
