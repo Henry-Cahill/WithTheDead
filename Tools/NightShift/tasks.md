@@ -1294,3 +1294,9 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Zone/Bolts.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add a subtle “scratch” detail to the floor‑safe front in `Assets/Scripts/World/RaidLayoutsStore.cs` → method `SafeAt`
+  In the `FixtureBody` lambda that builds the safe (`(m, r) => steel = FurnitureBuilder.MartSafeBody(m, r)`) insert a thin box to simulate a worn‑metal scratch.
+  Create the box with `m.Box(new Vector3(0.25f, 0.9f, 0.31f), new Vector3(0.10f, 0.30f, 0.02f), steel);` – size ≈ 0.10 m × 0.30 m × 0.02 m, positioned slightly right of centre on the safe’s front face.
+  Use the `steel` colour already obtained from `MartSafeBody` so the detail matches the safe’s metal finish.
+  Guard the addition with `if (rng.NextDouble() < 0.5) { … }` to give a 50 % chance of the scratch, using the existing `rng` (from `b.Rng`).
+  No new colliders, interaction points or pivots are changed; the safe’s functionality remains identical.
