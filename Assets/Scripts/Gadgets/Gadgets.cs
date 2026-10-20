@@ -249,6 +249,13 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
                 Destroy(_d.gameObject);
             }));
             into.Add(new InteractAction("Fly it again", c => DronePilot.Take(c.Stats, _d)).DisabledIf(_d.Battery01 <= 0.02f, "The battery's flat"));
+            into.Add(new InteractAction("Inspect", c => {
+                var d = _d;
+                if (d == null) return;
+                string msg = "Battery " + Mathf.RoundToInt(d.Battery01 * 100f) + "%";
+                if (d.HasGrenade) msg += ", grenade armed";
+                GameEvents.RaiseToast(msg);
+            }));
         }
     }
 

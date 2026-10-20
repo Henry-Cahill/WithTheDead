@@ -1404,11 +1404,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Using the same `red` material ensures colour consistency; no new colliders or interaction points are introduced, preserving existing behaviour.
   Result: the wheel now shows a realistic pattern of tiny metal rivets around its centre, adding period‑appropriate visual detail to the garden‑hose reel.
   - 04:20 landed by 0htsserver in 1.8 min: Added six tiny red rivet cylinders around the hose‑reel wheel for visual detail.
-- [ ] Add a quick‑inspect action to the drone pickup menu in Assets/Scripts/Gadgets/Gadgets.cs, inside `DronePickup.GetActions`.
+- [x] Add a quick‑inspect action to the drone pickup menu in Assets/Scripts/Gadgets/Gadgets.cs, inside `DronePickup.GetActions`.
   Insert a new `InteractAction` after the existing ones, e.g.:
   `into.Add(new InteractAction("Inspect", c => { var d = _d; if (d == null) return; string msg = "Battery " + Mathf.RoundToInt(d.Battery01 * 100f) + "%"; if (d.HasGrenade) msg += ", grenade armed"; GameEvents.RaiseToast(msg); }));`
   This lets the player press Q (or the secondary action key) on a landed drone to see its current battery percentage and whether a grenade is attached, without changing any existing functionality.
   No new UI screens, assets, or method signatures are introduced; it reuses `Drone.Battery01`, `Drone.HasGrenade`, `Mathf`, and `GameEvents.RaiseToast` which already exist in the file.
+  - 04:22 landed by 0htsserver in 2.1 min: Added a quick‑inspect action to the drone pickup menu:
 - [ ] Append five new transmission lines to the `Lines` array of the “Medical net” (`Channel 2`) in Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs so the radio conveys period‑appropriate, winter‑time survivor lore.
   Add the entries after the existing line `"This is Tent One. Anyone listening: the spare filters are in the equipment locker. Take them. We won't need them."` inside the `new Net` block for `Channel 2`.
   Quote the style reference: `"Mercy Six, this is Tent One. Two more in the cots with the fever and the shakes. Requesting antibiotics, over."` – the new lines should be full sentences in the same tone.
