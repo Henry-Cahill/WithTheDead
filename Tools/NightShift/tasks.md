@@ -1079,13 +1079,14 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Player/Stealth.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
-- [ ] Add small door‐handle trims to each side of the car in `Vehicle.Build(System.Random rng)` (Assets/Scripts/World/Vehicles.cs)
+- [x] Add small door‐handle trims to each side of the car in `Vehicle.Build(System.Random rng)` (Assets/Scripts/World/Vehicles.cs)
   After the first body `Box` call (`Box(_bodyRoot, new Vector3(0f, 0.62f, 0f), new Vector3(1.8f, 0.55f, 4.2f), paint);`) insert two additional `Box` primitives representing door handles.
   Use the same deterministic `rng` to give each handle a tiny random rotation ± 5° around the Y‑axis and a slight position jitter ± 0.02 m on X/Z so cars look individually varied.
   *Left handle:* `Box(_bodyRoot, new Vector3(-0.68f + (float)(rng.NextDouble() - 0.5) * 0.04f, 0.94f, (float)(rng.NextDouble() - 0.5) * 0.04f), new Vector3(0.05f, 0.03f, 0.18f), new Color(0.12f, 0.12f, 0.14f));` then rotate the resulting GameObject by `rng.Next(-5, 6)` degrees on Y.
   *Right handle:* same but X = +0.68f.
   Reuse the existing `CloneZUtil.Mat` material via the `Box` helper; no extra colliders or interaction points are added.
   Total added primitives: 2 (well under the 12‑primitive limit). The car will now show period‑appropriate metal door handles with subtle random variation, enhancing visual realism without altering gameplay.
+  - 02:35 landed by hts-llm in 3.1 min: **Changed file:** `Assets/Scripts/World/Vehicles.cs`
 - [ ] Add a thin chrome trim to the top edge of each switch plate in `Assets/Scripts/World/FurnitureBuilder.Lighting.cs` `SwitchPlate` method
   – After the existing line `m.Box(at + normal * 0.004f, new Vector3(width, 0.114f, 0.008f), q, G(SwitchCream));` add a second box that draws a raised metal strip:
   – `m.Box(at + normal * 0.004f + Vector3.up * (0.114f * 0.5f - 0.001f), new Vector3(width, 0.002f, 0.001f), q, Mt(Chrome));`
