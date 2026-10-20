@@ -3807,3 +3807,6 @@ you want to see in game. Indent extra lines under a task to add detail.
   `{`
   `float x = side == 0 ? -0.95f : 0.95f;`
   `for (int i = 0; i < 3; i++)`
+- [ ] In Assets/Scripts/World/Fixtures/LightSwitch.cs: Fix LightSwitch.GetActions to skip the “Toggle all lights” action when the switch has no circuits, preventing a meaningless action that still makes noise.
+  Add a guard at the start of GetActions: `if (_circuits == null || _circuits.Length == 0) return;` or wrap the toggle‑all block in `if (_circuits.Length > 0) { … }`.
+  This ensures the player no longer sees a “Switch all lights on/off” option on an empty switch, so interacting with the switch will only show the per‑circuit actions that actually affect lighting. The rest of the script (state saving, Sync, Flip, Inspect, etc.) remains unchanged.
