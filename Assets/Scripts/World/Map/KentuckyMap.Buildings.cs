@@ -89,7 +89,7 @@ namespace CloneZ
                 else Wall(site, a, d, inset, -Thick * 0.5f, len + Thick * 0.5f, 0f, groundTop, yaw, outside, true);
                 if (height > groundTop)
                     Wall(site, a, d, inset, -Thick * 0.5f, len + Thick * 0.5f, groundTop, height, yaw, outside, false);
-                if (b.kind != "ruin" && b.kind != "silo") Windows(site, a, d, outward, len, height, i == door ? len * 0.5f : -1f);
+                if (b.kind != "ruin" && b.kind != "silo") Windows(site, a, d, outward, len, height, i == door ? len * 0.5f : -1f, rng, outside);
             }
 
             List<int> tris = MapGeometry.Triangulate(p);
@@ -131,7 +131,7 @@ namespace CloneZ
         }
 
         // Dark panes about every 3.2 m along a wall, on every storey, clear of the door.
-        private static void Windows(Site site, Vector2 a, Vector2 d, Vector2 outward, float len, float height, float doorAt)
+        private static void Windows(Site site, Vector2 a, Vector2 d, Vector2 outward, float len, float height, float doorAt, System.Random rng, Surf outside)
         {
             if (len < 2.4f) return;
             int count = Mathf.Max(1, Mathf.FloorToInt(len / 3.2f));
@@ -147,6 +147,11 @@ namespace CloneZ
                     Vector3 c = To3(at, y);
                     RaidMesh m = y < GroundStorey ? site.Town.Out.Solid(c) : site.Overhead.At(c);
                     m.Upright(c, normal, 1.0f, 1.15f, Glass);
+float sillHeight = 0.08f;
+float sillDepth = 0.02f + 0.02f * (float)rng.NextDouble(); // slight random variation
+var sillCenter = To3(at, y - sillHeight * 0.5f);
+var sillSize = new Vector3(1.0f, sillHeight, sillDepth);
+site.Town.Out.Solid(sillCenter).Box(sillCenter, sillSize, outside);
                 }
             }
         }

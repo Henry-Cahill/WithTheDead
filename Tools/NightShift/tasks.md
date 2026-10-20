@@ -3888,7 +3888,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   This guarantees `ReceiveZombieAttack` (which reads `_cachedSandbox.Infection` and `_cachedMods.InfectionResist`) won’t throw a NullReferenceException if a zombie attacks the player before the first Update call.
   The rest of the script stays unchanged; the player's stats and death handling behave as before, but the game no longer crashes when early zombie damage occurs.
   - 17:21 landed by 0htsserver in 1.3 min: Added an `Awake` method to **Assets/Scripts/Player/PlayerStats.cs** that initializes the cached fields `_cachedMods` and `_cachedSandbox` be
-- [ ] Add a thin wooden window sill under each window in the `Windows` method of Assets/Scripts/World/Map/KentuckyMap.Buildings.cs
+- [x] Add a thin wooden window sill under each window in the `Windows` method of Assets/Scripts/World/Map/KentuckyMap.Buildings.cs
   Locate the line `m.Upright(c, normal, 1.0f, 1.15f, Glass);` and insert the following code directly after it:
   `float sillHeight = 0.08f;`
   `float sillDepth = 0.02f + 0.02f * (float)rng.NextDouble(); // slight random variation`
@@ -3896,6 +3896,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `var sillSize = new Vector3(1.0f, sillHeight, sillDepth);`
   `site.Town.Out.Solid(sillCenter).Box(sillCenter, sillSize, outside);`
   This adds a ~8 cm high wooden sill (width 1 m, depth 2‑4 cm) beneath each glass pane, using the same exterior surface material as the wall, with a tiny deterministic size variation from `rng`. No colliders or interaction points are changed, and the total added primitives stay well under the 12‑primitive limit.
+  - 17:27 landed by 0htsserver in 5.9 min: **Changed files**
 - [x] Cache the per‑frame sinusoid used for each ToxicZone’s glow intensity in Assets/Scripts/World/ToxicZone.cs
   Add two static fields `static int s_GlowCacheFrame = -1;` and `static float s_GlowFactor;` near the other static members.
   Create a private static helper `static float GetGlowFactor(float phase)` that checks `if (s_GlowCacheFrame != Time.frameCount)` and, when dirty, computes `s_GlowFactor = 0.8f + 0.2f * Mathf.Sin(Time.time * 0.7f + phase);` stores `s_GlowCacheFrame = Time.frameCount;` otherwise returns the cached `s_GlowFactor`.
