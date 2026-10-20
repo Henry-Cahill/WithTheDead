@@ -55,6 +55,11 @@ namespace CloneZ
                     "Tent One, Mercy Six. Burn the linens. Double-glove. Keep your mask on, whatever happens. Over.",
                     "*somebody coughing, a long time, before the handset clicks off*",
                     "This is Tent One. Anyone listening: the spare filters are in the equipment locker. Take them. We won't need them.",
+"Tent One, Mercy Six. Supplies of warm clothing are dwindling; only a few threadbare jackets remain, conserve heat.",
+"Mercy Six, Tent One. The generator at the field clinic is broken, run on batteries only and limit power usage.",
+"Tent One, Mercy Six. Child in cot two broke his arm, need a splint from the med kit ASAP.",
+"Mercy Six, Tent One. The creek north has frozen solid, water collection is hazardous—use melt rigs.",
+"Tent One, Mercy Six. Wind is picking up, we need extra firewood for the heaters, anyone with logs, over.",
                 },
             },
             new Net
