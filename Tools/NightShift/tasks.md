@@ -1087,10 +1087,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   Reuse the existing `CloneZUtil.Mat` material via the `Box` helper; no extra colliders or interaction points are added.
   Total added primitives: 2 (well under the 12‑primitive limit). The car will now show period‑appropriate metal door handles with subtle random variation, enhancing visual realism without altering gameplay.
   - 02:35 landed by hts-llm in 3.1 min: **Changed file:** `Assets/Scripts/World/Vehicles.cs`
-- [ ] Add a thin chrome trim to the top edge of each switch plate in `Assets/Scripts/World/FurnitureBuilder.Lighting.cs` `SwitchPlate` method
+- [x] Add a thin chrome trim to the top edge of each switch plate in `Assets/Scripts/World/FurnitureBuilder.Lighting.cs` `SwitchPlate` method
   – After the existing line `m.Box(at + normal * 0.004f, new Vector3(width, 0.114f, 0.008f), q, G(SwitchCream));` add a second box that draws a raised metal strip:
   – `m.Box(at + normal * 0.004f + Vector3.up * (0.114f * 0.5f - 0.001f), new Vector3(width, 0.002f, 0.001f), q, Mt(Chrome));`
   – This creates a ~2 mm tall, 1 mm deep chrome edge along the plate’s upper side, giving the period‑correct switch a subtle worn‑metal detail without altering any existing colliders or interaction logic.
+  - 02:35 landed by 0htsserver in 1.3 min: **Summary**
 - [ ] In Assets/Scripts/World/Zone/ZoneKit.cs: Reduce redundant per‑frame calls to `ZoneKit.TintByAmbient()` in `ZoneSmokeTint.Update` by guarding with a static frame‑counter cache.
   Add a private static `int s_LastFrame = -1;` to `ZoneSmokeTint`.
   Replace the existing `Update` body `=> ZoneKit.TintByAmbient();` with:

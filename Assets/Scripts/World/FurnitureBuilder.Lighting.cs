@@ -16,6 +16,7 @@ namespace CloneZ
         {
             Quaternion q = Quaternion.LookRotation(normal, Vector3.up);
             m.Box(at + normal * 0.004f, new Vector3(width, 0.114f, 0.008f), q, G(SwitchCream));
+            m.Box(at + normal * 0.004f + Vector3.up * (0.114f * 0.5f - 0.001f), new Vector3(width, 0.002f, 0.001f), q, Mt(Chrome));
         }
 
         /// <summary>A toggle's slot and the two screws above and below it, on a plate whose face is at <paramref name="at"/>.</summary>
