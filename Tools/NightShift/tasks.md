@@ -3615,12 +3615,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   (Alternatively use `~0`.)
   After this fix the footstep system will correctly detect the material under the player's feet on any layer, so the player hears snow, wood, concrete, etc., matching the actual terrain they walk on. All other code should remain unchanged.
   - 15:03 landed by hts-llm in 1 min: **Changed file**
-- [ ] In Assets/Scripts/World/CeilingVisibility.cs: Optimize CeilingVisibility to disable its MonoBehaviour when no ceilings need updating, removing the per‑frame LateUpdate call in idle states.
+- [x] In Assets/Scripts/World/CeilingVisibility.cs: Optimize CeilingVisibility to disable its MonoBehaviour when no ceilings need updating, removing the per‑frame LateUpdate call in idle states.
   Add `enabled = true;` at the end of `Register` so the component wakes when the first renderer is added.
   In `Clear` (after `s_Renderers.Clear();`) set `enabled = false;` to sleep when the map is torn down.
   At the end of `LateUpdate`, after the loop, add `if (s_Renderers.Count == 0) enabled = false;` so the script disables itself once all renderers are gone.
   The `LateUpdate` logic itself stays unchanged; only the enable/disable toggles are added.
   Result: when the ceiling system is not needed (e.g., during menus, loading screens, or maps without ceilings), the component is disabled and no per‑frame check runs, reducing unnecessary work while preserving the exact visual behavior.
+  - 15:06 landed by 1htsserver in 2.4 min: **Changed file**
 - [x] Add a “Check volume” action to `Assets/Scripts/World/Fixtures/TvFixture.cs` that lets the survivor see the current TV volume level.
   In `GetActions(InteractContext ctx, List<InteractAction> into)`, after the line `into.Add(new InteractAction("Adjust the rabbit ears", AdjustAerial).DisabledIf(!near, TooFar));` insert:
   `into.Add(new InteractAction("Check volume", ctx => ctx.Notify("Volume: " + VolumeWord)).DisabledIf(!near, TooFar));`
