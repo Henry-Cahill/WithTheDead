@@ -72,7 +72,7 @@ namespace CloneZ
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
-            // Toggle all circuits at once: if any are off, turn all on; otherwise turn all off.
+            if (_circuits == null || _circuits.Length == 0) return;            // Toggle all circuits at once: if any are off, turn all on; otherwise turn all off.
             bool anyOff = false;
             for (int i = 0; i < _circuits.Length; i++)
             {
