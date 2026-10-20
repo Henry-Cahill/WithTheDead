@@ -964,3 +964,16 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Fix the ground‑height detection in Assets/Scripts/Zone/ZoneHazards.cs so anomalies are placed at the actual terrain height instead of constantly at y = 0.
   In `AnomalyField.GroundY` the raycast uses a hard‑coded layer mask `1`, which only checks the Default layer and misses the terrain layer used in the game. This causes the method to return 0 for most positions, spawning anomalies floating in the air or buried underground.
   Change the layer‑mask argument to include all layers (e.g. `Physics.DefaultRaycastLayers` or `~0`) or simply omit it. The corrected method should be:
+- [ ] Add subtle rivet‑like rust specks to the corrugated‑sheet‑metal texture (Assets/Scripts/World/DecorTextures.cs → `public static Texture2D Corrugated(Color color)`)
+  After the line `Color c = Mul(color, 0.78f + 0.26f * Mathf.Sin(u * Mathf.PI * 2f * 8f));` insert a deterministic rust‑spot test using the existing `R01` function; e.g. `float spot = R01(x, y, 122);`
+  If `spot < 0.018f` (≈ 2 % of pixels) treat the pixel as the centre of a tiny rivet and darken it: `c = Mul(c, 0.45f);` (roughly a 2 cm‑wide spot at the texture’s 64 px scale)
+  If `spot` is between `0.018f` and `0.030f` add a slight highlight to suggest a brushed‑metal edge: `c = Mul(c, 0.65f);`
+  Keep the existing rust overlay (`if (r > 0.55f) …`) unchanged; the new spots will blend with it because they use the same deterministic seed (`122`).
+  No new colliders or interaction points are added; the texture generation remains tileable and uses at most a dozen extra per‑pixel condition checks.
+- [ ] Cache per‑frame lookups in `Assets/Scripts/Core/TimeOfDay.cs` by storing `Camera.main` and `WeatherSystem.Instance` in fields set once, then use those cached references in `Apply()` so the visual output (sky colour, fog, sun rotation, LightLevel, etc.) stays identical.
+  Add a private field `private WeatherSystem _weather;`.
+  In `Awake()` (after setting `Instance`) assign `_cam = Camera.main;` and `_weather = WeatherSystem.Instance;`.
+  Replace the line `float weatherDim = WeatherSystem.Instance != null ? WeatherSystem.Instance.LightMultiplier : 1f;` with `float weatherDim = _weather != null ? _weather.LightMultiplier : 1f;`.
+  Remove the null‑check `if (_cam == null) _cam = Camera.main;` from `Apply()` (the cached `_cam` is already set).
+  Optionally guard against late creation by lazily setting `_weather = WeatherSystem.Instance` the first time `Apply()` runs if `_weather` is still null.
+  No change to how the sky, fog, ambient light, sun colour/intensity or zombie vision are computed, so the player sees exactly the same lighting cycle.
