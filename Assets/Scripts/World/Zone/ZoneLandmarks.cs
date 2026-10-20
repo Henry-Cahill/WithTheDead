@@ -224,6 +224,13 @@ namespace CloneZ
                     if (r.NextDouble() < 0.4) sb.Flat.Box(p + new Vector3(0f, 0.02f, -0.9f), new Vector3(0.8f, 0.02f, 1.6f), ZoneKit.M(new Color(0.12f, 0.09f, 0.07f)));
                 }
             sb.Solid.Box(new Vector3(0f, 1.4f, 5.4f), new Vector3(4f, 2.8f, 2.4f), ZoneKit.M(stone));
+            // Rust‑tinted latch and bolts on the front of the crypt niche
+            Color rust = new Color(0.5f, 0.3f, 0.1f);
+            Vector3 latchPos = new Vector3(0f, 1.5f, 5.4f + 1.2f + 0.02f) + new Vector3(ZoneKit.R(sb.Rng, -0.05f, 0.05f), ZoneKit.R(sb.Rng, -0.02f, 0.02f), 0f);
+            sb.Solid.Box(latchPos, new Vector3(0.3f, 0.1f, 0.02f), ZoneKit.M(ZoneKit.V(rust, sb.Rng, 0.02f)));
+            Vector3 boltOffset = new Vector3(0.12f, 0f, 0f);
+            sb.Solid.Box(latchPos + boltOffset, new Vector3(0.02f, 0.05f, 0.02f), ZoneKit.M(ZoneKit.V(rust, sb.Rng, 0.02f)));
+            sb.Solid.Box(latchPos - boltOffset, new Vector3(0.02f, 0.05f, 0.02f), ZoneKit.M(ZoneKit.V(rust, sb.Rng, 0.02f)));
             sb.Collider(new Vector3(0f, 1.4f, 5.4f), new Vector3(4f, 2.8f, 2.4f));
             sb.Storage("Crypt niche", "lm_cemetery_crypt", new Vector3(0f, 1f, 4.1f), ContainerType.Desk, 3);
             ZoneFlameLight.Spawn(sb.Root, sb.W(0.8f, 1.4f, 4f), new Color(0.6f, 0.75f, 1f), 6f, 0.7f, 0.4f);

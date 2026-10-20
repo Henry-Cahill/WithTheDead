@@ -3443,7 +3443,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 14:13 landed by hts-llm in 4.3 min: **Changes made**
 - [x] Append four Kentucky‑winter themed flavour‑text trait entries to the `ProfessionCatalog.Traits` list in Assets/Scripts/Profile/ProfessionCatalog.cs; each entry must use a full‑sentence blurb that could appear on a note, radio log, wall scribble or scrap of paper the survivor might find, and the `Apply` action can be a harmless no‑op (e.g. `m => {}`).
   - 14:16 landed by hts-llm in 3.6 min: **Changed file**
-- [ ] Add a small rust‑colored latch and two bolts to the front of the crypt niche in the cemetery landmark (Assets/Scripts/World/Zone/ZoneLandmarks.cs, method Cemetery(SiteBuilder sb))
+- [x] Add a small rust‑colored latch and two bolts to the front of the crypt niche in the cemetery landmark (Assets/Scripts/World/Zone/ZoneLandmarks.cs, method Cemetery(SiteBuilder sb))
   Quote the existing crypt‑niche geometry: `sb.Solid.Box(new Vector3(0f, 1.4f, 5.4f), new Vector3(4f, 2.8f, 2.4f), ZoneKit.M(stone));`
   After that line, insert a rust‑tint material: `Color rust = new Color(0.5f, 0.3f, 0.1f);`
   Create a latch plate centered on the front face (≈ Z + 1.2 m) with slight RNG jitter:
@@ -3452,6 +3452,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add two bolt pins on either side of the latch (≈ ±0.12 m X offset) using the same rust material:
   `Vector3 boltOffset = new Vector3(0.12f, 0f, 0f);`
   `sb.Solid.Box(latchPos + boltOffset, new Vector3(0.02f, 0.05f, 0.02f), ZoneKit.M(ZoneKit.V(rust, sb.Rng, 0.02f)));`
+  - 14:19 landed by hts-llm in 2.4 min: **Changed file**
 - [ ] In Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method LockerDoor, add a tiny metal “locker‑number” plate to each door’s lower front edge.
 - [ ] In Assets/Scripts/Rendering/IsoVisionShade.cs: Cache the TimeOfDay singleton in IsoVisionShade so LateUpdate doesn’t call a costly FindAnyObjectByType each frame
   Add a private static `TimeOfDay _timeOfDay;` field to the class.
