@@ -3241,11 +3241,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Leave colliders, interaction points and the rest of the container code untouched; the player will now see subtle rust‑stained rivet heads spaced irregularly across each container, adding period‑correct wear without adding new assets.
   - 12:59 landed by hts-llm in 2 min: **Changed file**: `Assets/Scripts/World/Zone/ZoneOverlays.cs`
 - [ ] In Assets/Scripts/World/Fixtures/HomeDoor.cs: Add a “Force open the door” action to `HomeDoor.GetActions` (copy the pattern of the lock/unlock branch)
-- [ ] Append five period‑correct transmission strings to the `Lines` array of the `Channel` named "Channel 19" in Assets/Scripts/World/Fixtures/RaidCivicRadio.cs; after the existing last line (`"Anybody on nineteen? Anybody at all? ...Come back.",`) add new entries that fit the 1993 rural Kentucky winter setting.
+- [x] Append five period‑correct transmission strings to the `Lines` array of the `Channel` named "Channel 19" in Assets/Scripts/World/Fixtures/RaidCivicRadio.cs; after the existing last line (`"Anybody on nineteen? Anybody at all? ...Come back.",`) add new entries that fit the 1993 rural Kentucky winter setting.
   Use the existing entry `"Breaker one‑nine, anybody got their ears on out by the interstate?"` as the style reference.
   The new strings should cover: a report of a stranded tractor stuck in the snow, a warning about thin ice on the creek, a brief notice of a medicine shortage at the makeshift clinic, a reminder to keep transmissions brief to save battery, and a personal plea from a farmer asking for help locating a lost dog.
   Each string must be a full sentence enclosed in double quotes and end with a period inside the quotes.
   Do not alter any other code, ordering, or comments.
+  - 13:05 landed by 1htsserver in 1.6 min: **Changed file**
 - [ ] Add a subtle emissive “status light” to each vending machine in Assets/Scripts/World/RaidLayoutsOffice.cs – in the `VendingAt` method, after the glass pieces are created, place a tiny glowing panel near the top front of the machine using a random slight horizontal offset.
   Create a new piece with `KitchenParts.PieceAt(t, "VendingLED", f, ledPos, m => { m.Box(Vector3.zero, new Vector3(0.04f, 0.02f, 0.001f), FurnitureBuilder.OfficeCopierJamGlow); });`
   Calculate `float ledX = (float)(b.Rng.NextDouble() * 0.02 - 0.01);` and set `Vector3 ledPos = new Vector3(ledX, 1.7f, 0.42f);` – the glow material already used for the copier jam lamp gives a faint amber light that fits a 1993 office aesthetic.
