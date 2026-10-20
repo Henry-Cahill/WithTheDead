@@ -594,7 +594,8 @@ you want to see in game. Indent extra lines under a task to add detail.
 
 ### Auto-planned 2026-10-20: written by the night shift when the queue ran low (delete any you don't want)
 
-- [ ] Add two small rivet boxes to the backpack’s top tube in Assets/Scripts/Player/PlayerGearVisuals.cs, method BuildBackpack(ItemDef def), to give the pack a worn‑metal look.
+- [x] Add two small rivet boxes to the backpack’s top tube in Assets/Scripts/Player/PlayerGearVisuals.cs, method BuildBackpack(ItemDef def), to give the pack a worn‑metal look.
+  - 00:16 landed by 0htsserver in 9.5 min: Added two small rivet boxes to the backpack’s top tube in **PlayerGearVisuals.cs**. The new boxes sit on the front and back of the tube, usi
 - [x] In Assets/Scripts/World/CeilingVisibility.cs: Optimize CeilingVisibility — remove the unused `s_Applied` flag and simplify the per‑frame check in `LateUpdate` so the script only compares the current view state to the cached `s_Shown` value.
   - 00:15 landed by 1htsserver in 3.3 min: **Changed file**
 - [ ] Modify Assets/Scripts/World/Fixtures/RaidCivicSink.cs by adding four to eight new sentences to the `ScrubLines` array in the `CivicSink` class.
