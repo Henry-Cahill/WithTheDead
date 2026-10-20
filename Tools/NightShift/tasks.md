@@ -1943,11 +1943,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   · In `Boot()` after `s_Mode = args[i + 1].ToLowerInvariant();` add `s_Errors = 0; s_FirstErrors.Clear();`
   · This prevents error counts from previous runs (e.g. when the editor re‑enters play mode) from being carried over, which would make the test report failures even though the current run succeeded.
   · Player experience is unchanged – the fix only affects the reliability of the automated smoke test in the editor/command‑line runs.
-- [ ] Add a subtle faded‑logo tint variation to caps in Assets/Scripts/Characters/HumanoidLook.cs → `HumanoidLook.Wear` → `case ClothingSlot.Head:`
+- [x] Add a subtle faded‑logo tint variation to caps in Assets/Scripts/Characters/HumanoidLook.cs → `HumanoidLook.Wear` → `case ClothingSlot.Head:`
   After the existing line `HatTrimColor = Shade(c, 0.7f);` insert code that, when `Shape.Headwear` is `HeadwearStyle.Cap` or `HeadwearStyle.CapBackward`, computes a deterministic variation from the shape hash and blends a faint brown‑ish logo colour into `HatTrimColor`.
   Use the same deterministic method as the helmet scuff code: `int seed = Shape.GetHashCode(); float var = ((seed >> 7) & 0xF) / 100f;` (range 0‑0.15).
   Blend with `Color.Lerp(HatTrimColor, new Color(0.78f, 0.63f, 0.45f, 1f), var);` and assign back to `HatTrimColor`.
   No new colliders or geometry are added; the visual change is purely colour‑based, keeping the existing caps’ size and position unchanged.
+  - 07:32 landed by hts-llm in 2.1 min: **Changed file**
 - [ ] Cache the per‑frame fade work in Assets/Scripts/UI/UIFader.cs by disabling the `MonoBehaviour` when no fading is needed and re‑enabling it only while the panel is transitioning.
   In `Awake()` add `enabled = false;` after initializing `_group`.
   In `Show()` and `Hide()` set `enabled = true;` (right after setting `_target`).

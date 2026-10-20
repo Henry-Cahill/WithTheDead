@@ -163,6 +163,13 @@ namespace CloneZ
                     Shape.Headwear = def == null ? HeadwearStyle.None : GarmentStyles.Headwear(k);
                     HatColor = c;
                     HatTrimColor = Shape.Headwear == HeadwearStyle.Glasses ? DarkGlass : Shade(c, 0.7f);
+                    // subtle faded‑logo tint for caps
+                    if (Shape.Headwear == HeadwearStyle.Cap || Shape.Headwear == HeadwearStyle.CapBackward)
+                    {
+                        int seed = Shape.GetHashCode();
+                        float var = ((seed >> 7) & 0xF) / 100f; // 0‑0.15 deterministic variation
+                        HatTrimColor = Color.Lerp(HatTrimColor, new Color(0.78f, 0.63f, 0.45f, 1f), var);
+                    }
                     HatGloss = GarmentStyles.Gloss(k, Shape.Headwear == HeadwearStyle.Helmet ? 0.5f : 0.12f);
                     if (Shape.Headwear == HeadwearStyle.Helmet)
                     {
