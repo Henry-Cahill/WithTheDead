@@ -2028,3 +2028,18 @@ you want to see in game. Indent extra lines under a task to add detail.
   Create a thin rectangular box that sits on the copier’s control panel (near `OfficeCopierPanel`) to look like a faded “COPY” sticker.
   Generate a slightly varied paper colour with the existing random source and give the label a tiny random yaw for realism.
   Insert the new primitive after the green ready‑lamp box (the line `m.Box(new Vector3(0.22f, 1.03f, 0.321f), … Gl(new Color(0.2f, 0.62f, 0.32f)));`
+- [ ] In Assets/Scripts/Characters/PlayerAvatar.cs: Cache the costly `Actor.LocalPlayer` lookup in PlayerAvatar to avoid a per‑frame search.
+  Add a private `Actor _localActor;` field.
+  In `Awake()` (or after `Start()` when the player object exists) set `_localActor = Actor.LocalPlayer;`.
+  Replace the line `Actor self = Actor.LocalPlayer;` in `SetAttention` with `Actor self = _localActor;`.
+  If `_localActor` is ever null (e.g., during hot‑reload), guard with a null‑check or re‑assign lazily: `if (_localActor == null) _localActor = Actor.LocalPlayer;`.
+  This change does not alter any visible behavior; the player’s surrender/restraint checks still run, but the lookup is now cached, reducing per‑frame allocations and Find‑by‑type overhead.
+- [ ] In Assets/Scripts/World/Fixtures/RaidWindow.cs: Add an “Inspect the window” action to RaidWindow.GetActions that reports the current glass and board state.
+  In GetActions, after the block that adds the “Look inside” / “Look outside” actions (inside ? … : …), insert:
+  `if (inside) into.Add(new InteractAction("Inspect the window", InspectWindow));`
+  Add a private helper method to RaidWindow:
+  `private void InspectWindow(InteractContext ctx) {`
+  ` string msg = _boarded ? "The window is boarded up." :`
+  ` (_glass == Glazing.Intact) ? "The glass is intact." :`
+  ` (_glass == Glazing.Smashed) ? "The glass is shattered; shards still bristle in the frame." :`
+  ` "The window frame is empty.";`
