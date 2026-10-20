@@ -206,6 +206,7 @@ namespace CloneZ
             {
                 if (c.Inventory.Consume("zone_permit", 1) <= 0) return;
                 Grant(c, "He stamps it and waves you through.");
+                Factions.AdjustReputation(Factions.Wardens, 2f);
             }).DisabledIf(paid, "Already paid").DisabledIf(!paid && !permit, "You have no permit"));
             into.Add(new InteractAction("Ask about the Zone", c =>
                 GameEvents.RaiseSubtitle("Warden", CordonRules.PassBought ? "Keep to the road. Stay off the belt after dark." : "No pass, no passage. Off the belt, or we shoot.")));

@@ -907,13 +907,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   All other behaviour of the cycle button (cycling through the provided options, invoking `onChanged`, playing the click SFX) stays exactly the same.
   - 01:49 landed by 0htsserver in 6.4 min: **Changed**
 - [ ] Add a subtle metal band around the barrels created in `RaidBuilding.Clutter` (Assets/Scripts/World/RaidBuilding.Furnish.cs) to give them a worn‑out, period‑appropriate look.
-- [ ] Add a small reputation boost when the player shows a zone permit in `CordonGate.GetActions` (Assets/Scripts/World/Zone/ZoneCordon.cs)
+- [x] Add a small reputation boost when the player shows a zone permit in `CordonGate.GetActions` (Assets/Scripts/World/Zone/ZoneCordon.cs)
   Locate the `into.Add(new InteractAction("Show a Zone Permit", c =>` block.
   After the existing call to `Grant(c, "He stamps it and waves you through.");` insert
   `Factions.AdjustReputation(Factions.Wardens, 2f);`
   This gives the Wardens a +2 reputation increase when the permit is shown, while keeping the same dialog and UI feedback.
   The player will see the same "He stamps it and waves you through." subtitle, and the reputation system will reflect the extra boost.
   All other code, fields, and constants remain unchanged.
+  - 01:50 landed by 0htsserver in 1.7 min: **Summary**
 - [ ] Append five new sentences to the `Lines` array of the `Days(1, 1)` programme for the “Public Television” station (Channel 12) in Assets/Scripts/Core/Broadcasts.cs
   Locate the `Station` entry with `Name = "Channel 12"` and `Title = "Public Television"`.
   Within its `Schedule` array, find the `Days(1, 1, …)` call that currently contains the pie‑crust tutorial lines.
