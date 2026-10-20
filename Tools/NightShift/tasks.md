@@ -763,7 +763,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 00:49 landed by hts-llm in 3.6 min: **Changed file**
 - [x] Fix HasUsableContent in Assets/Scripts/Items/ContentDatabase.cs so it verifies *all* required tables exist, not just `content_meta` and `item`.
   - 00:51 landed by 0htsserver in 2 min: **Changed**
-- [ ] Add a subtle four‑edge metal border to the main report panel in Assets/Scripts/Extraction/RaidSummaryUI.cs (method `Build`) so the UI feels like a worn wooden/metal board appropriate to a 1993 rural setting.
+- [x] Add a subtle four‑edge metal border to the main report panel in Assets/Scripts/Extraction/RaidSummaryUI.cs (method `Build`) so the UI feels like a worn wooden/metal board appropriate to a 1993 rural setting.
+  - 00:55 landed by hts-llm in 5.8 min: **Changes made**
 - [ ] In Assets/Scripts/World/Fixtures/OutdoorLantern.cs: Add a second interaction “Check power” to OutdoorLantern.GetActions by copying the existing Tap entry and inserting a new `InteractAction` that calls a private `CheckPower` method.
   · In `GetActions` after `into.Add(new InteractAction("Tap the lantern", Tap));` add
   `into.Add(new InteractAction("Check power", CheckPower));`
