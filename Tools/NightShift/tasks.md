@@ -3377,7 +3377,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 13:53 landed by 1htsserver in 2.9 min: **Changed file**
 - [x] In Assets/Scripts/Characters/WeaponHandIK.cs: Cache the frequently‑queried bone and grip transforms in WeaponHandIK so LateUpdate no longer calls _rig.Bone each frame; add private Transform fields (e.g. _handL, _chest, _gripR), assign them once in TryBuild after _rig is set, and replace the per‑frame _rig.Bone(HumanBone.HandL) and _rig.Bone(HumanBone.Chest) (and use _gripR instead of _rig.GripR) with the cached fields. This removes unnecessary per‑frame bone lookups while keeping the visual hand‑IK behavior unchanged.
   - 13:52 landed by hts-llm in 2.2 min: **Changes Made**
-- [ ] Add a third interaction “Yell at the house number” to Assets/Scripts/World/Fixtures/OutdoorHouseNumber.cs
+- [x] Add a third interaction “Yell at the house number” to Assets/Scripts/World/Fixtures/OutdoorHouseNumber.cs
   In `GetActions`, after the existing `Knock` line, add:
   `into.Add(new InteractAction("Yell at the house number", Yell));`
   Create a new private method `Yell(InteractContext ctx)` that mirrors `Knock` but uses a louder noise:
@@ -3386,4 +3386,5 @@ you want to see in game. Indent extra lines under a task to add detail.
   ` MakeNoise(CloneZConfig.FixtureNoiseMedium);`
   ` ctx.Notify("Your voice bounces off the enamel plate, echoing loudly.");`
   `}`
+  - 13:56 landed by 0htsserver in 4.3 min: Implemented a third interaction for the house-number fixture.
 - [ ] Add a subtle rust spot on the kitchen sink’s metal mixer tap in Assets/Scripts/World/FurnitureBuilder.Kitchen.cs, inside the SinkUnit method, using the existing `rng` and `chrome` material.

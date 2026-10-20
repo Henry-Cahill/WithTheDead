@@ -35,6 +35,14 @@ namespace CloneZ
             into.Add(new InteractAction("Read the house number", c =>
                 c.Notify(_remark ?? "Number " + _number + ", says the little enamel plate by the door. Home \u2014 for now.")));
             into.Add(new InteractAction("Knock on the door", Knock));
+            into.Add(new InteractAction("Yell at the house number", Yell));
+        }
+
+        private void Yell(InteractContext ctx)
+        {
+            // Louder thump, like shouting against a metal plate
+            MakeNoise(CloneZConfig.FixtureNoiseDoor);
+            ctx.Notify("Your voice bounces off the enamel plate, echoing loudly.");
         }
 
         private void Knock(InteractContext ctx)
