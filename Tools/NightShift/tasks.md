@@ -1698,12 +1698,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Position it centered on the strap with `UIKit.Place(buckle.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(0.08f, 0.02f));` (size ≈ 0.08 m × 0.02 m).
   No changes to colliders, interaction points, or existing layout; the buckle is a purely visual detail using the same UI material as other watch parts.
   - 06:10 landed by 0htsserver in 2.5 min: - **File updated:** `Assets/Scripts/Rendering/Presentation.cs`
-- [ ] Modify Assets/Scripts/Core/PlayerModifiers.cs to cache modifier recomputation instead of doing it every frame.
+- [x] Modify Assets/Scripts/Core/PlayerModifiers.cs to cache modifier recomputation instead of doing it every frame.
   Add a private `bool _dirty` field to `PlayerModifiers`.
   Set `_dirty = true` in `Awake()` (after the initial `Recompute()`), in `Register(IStatModSource src)` and in `Unregister(IStatModSource src)` so that any change to the source list marks the data stale.
   Change `Update()` to `if (_dirty) Recompute();`.
   At the end of `Recompute()` set `_dirty = false;`.
   Leave the rest of the class unchanged – the computed values in `StatMods` remain identical, so the player sees exactly the same speeds, resistances, etc., but the per‑frame overhead of `GetComponents(_found)` and the reset loop is eliminated when nothing has changed.
+  - 06:18 landed by 1htsserver in 7.9 min: **Summary of changes**
 - [x] Add a “Check the machine” action to `RaidStoreVending.GetActions` in Assets/Scripts/World/Fixtures/RaidStoreVending.cs
   · Insert `into.Add(new InteractAction("Check the machine", CheckStock));` inside the `if (!_broken)` block, after the “Press a button” line.
   · Add a private method `void CheckStock(InteractContext ctx)` that runs `if (_stock != null && !_stock.IsEmpty) ctx.Notify("The vending machine seems to still hold something."); else ctx.Notify("The vending machine looks empty.");`.
