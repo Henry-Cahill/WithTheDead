@@ -220,6 +220,9 @@ namespace CloneZ
         {
             Transform t = b.FixtureBody(room, p, Sz(0.9f, 1.85f, 0.8f), true, (m, r) => FurnitureBuilder.OfficeVendingBody(m, r), "Vending machine");
             KitchenFrame f = b.FrameOf(p);
+            // Coin slot detail with slight random horizontal offset
+            float xOff = (float)(b.Rng.NextDouble() * 0.02 - 0.01);
+            KitchenParts.PieceAt(t, "CoinSlot", f, new Vector3(xOff, 0.6f, 0.41f), (m) => { m.Box(Vector3.zero, new Vector3(0.08f, 0.02f, 0.02f), DecorPalette.Metal(FurnitureBuilder.Chrome)); });
             int seed = b.Rng.Next();
             var wr = new System.Random(seed);
             var at = new Vector3(-0.1f, 1.1f, 0.37f);
