@@ -2960,7 +2960,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Change the method to initialise `produceId` to `null`, perform the maturity and null‑crop check, and only assign `produceId = Crop.ProduceId` after those checks succeed.
   The player will now see no produce listed when harvesting an unripe or empty plot, matching the actual outcome, while all other behaviour stays unchanged.
   - 11:45 landed by 1htsserver in 1 min: **Changed file**
-- [ ] Add thin metal label plates to the front of the WeaponRack in Assets/Scripts/World/RaidLayouts.cs to suggest period‑correct hardware tags on the rack’s vertical posts.
+- [x] Add thin metal label plates to the front of the WeaponRack in Assets/Scripts/World/RaidLayouts.cs to suggest period‑correct hardware tags on the rack’s vertical posts.
   In the `WeaponRack(RaidMesh m, System.Random r)` method, after the four bracket boxes (the calls with `bracketMat`) insert two new `m.Box` calls that create a 0.02 × 0.10 × 0.001 m metal plate on each side of the rack.
   Use the existing metal material: `var plateMat = DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f));`
   Position the plates relative to the vertical posts:
@@ -2968,6 +2968,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(new Vector3( 0.95f, 0.8f, 0.06f), Sz(0.02f, 0.1f, 0.001f), plateMat);`
   These plates are thin enough to be visually noticeable as label tags while keeping colliders unchanged.
   No other code, colliders, interaction points, or pivots are altered; the added primitives stay within the ~12‑primitive limit.
+  - 11:46 landed by 0htsserver in 1.8 min: **Changed file**
 - [ ] In Assets/Scripts/World/Fixtures/TowelRail.cs: Cache the bathroom‑side availability check in TowelRail.Update to avoid calling `BathroomFixtures.SurvivorInFront` every frame
   Add a private field `float _nextAvailCheck;` and `bool _cachedAvailable;` initialized to 0f and true.
   In `Update()` after the existing `_nextCheck` logic, insert:

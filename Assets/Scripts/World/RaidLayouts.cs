@@ -249,6 +249,9 @@ namespace CloneZ
             m.Box(new Vector3(-0.95f, 1.33f, 0.08f), Sz(0.02f, 0.10f, 0.02f), bracketMat);
             m.Box(new Vector3( 0.95f, 1.33f, -0.08f), Sz(0.02f, 0.10f, 0.02f), bracketMat);
             m.Box(new Vector3( 0.95f, 1.33f, 0.08f), Sz(0.02f, 0.10f, 0.02f), bracketMat);
+            var plateMat = DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f));
+            m.Box(new Vector3(-0.95f, 0.8f, 0.06f), Sz(0.02f, 0.1f, 0.001f), plateMat);
+            m.Box(new Vector3( 0.95f, 0.8f, 0.06f), Sz(0.02f, 0.1f, 0.001f), plateMat);
             int guns = r.Next(2, 6);
             for (int i = 0; i < guns; i++)
             {
