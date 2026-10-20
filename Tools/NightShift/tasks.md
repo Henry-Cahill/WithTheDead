@@ -1370,10 +1370,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   `_stats.Sickness = Mathf.Clamp(_stats.Sickness + CloneZConfig.SicknessTaintedGain, 0f, CloneZConfig.SicknessMax);`
   `DrankTainted?.Invoke(this); // raise only when actually sick`
   - 04:15 landed by 1htsserver in 1.8 min: **Changed file**
-- [ ] Add a third interaction to Assets/Scripts/World/Fixtures/RaidTownHydrant.cs in the GetActions method, after the brush action, so the hydrant also offers “Inspect the metal”.
+- [x] Add a third interaction to Assets/Scripts/World/Fixtures/RaidTownHydrant.cs in the GetActions method, after the brush action, so the hydrant also offers “Inspect the metal”.
   Change `GetActions` to include:
   `into.Add(new InteractAction("Inspect the metal", c => c.Notify("The hydrant’s iron is corroded and stained by years of winter ice.")));`
   This adds a new “[E] Inspect the metal” option visible alongside “Try the valve cap” and “Knock the snow off it”/“Read the tag”. No other code, fields, or UI need to be altered.
+  - 04:16 landed by 0htsserver in 1.8 min: **Changed**
 - [ ] Append 4–8 new sentences to the `Tidying` string array in Assets/Scripts/World/Fixtures/LivingReading.cs
   Use the existing entry `"You line the spines up neatly, tallest to shortest. It helps, a little."` as the style reference.
   The new entries should describe additional small comfort actions the survivor can perform while straightening the bookcase (e.g., dusting, adjusting a loose hinge, checking for missing pages, smoothing a warped board).

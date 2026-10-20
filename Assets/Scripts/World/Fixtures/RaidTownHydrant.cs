@@ -32,6 +32,7 @@ namespace CloneZ
             into.Add(new InteractAction("Try the valve cap", c => c.Notify(
                 "You wrench at the cap with both hands. Frozen solid \u2014 and the valve nut wants a pentagon wrench you haven't got.")));
             into.Add(new InteractAction(_brushed ? "Read the tag" : "Knock the snow off it", Brush));
+            into.Add(new InteractAction("Inspect the metal", c => c.Notify("The hydrant’s iron is corroded and stained by years of winter ice.")));
         }
 
         private void Brush(InteractContext ctx)
