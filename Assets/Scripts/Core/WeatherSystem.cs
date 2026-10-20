@@ -19,11 +19,13 @@ namespace CloneZ
     /// </summary>
     public class WeatherSystem : MonoBehaviour
     {
+        /// <summary>Singleton instance of the WeatherSystem.</summary>
         public static WeatherSystem Instance { get; private set; }
 
         // Winter fronts linger: a raid's whole night lasts only half an hour of real time.
         private const float WinterDurationScale = 3f;
 
+        /// <summary>Current weather condition.</summary>
         public Weather Current { get; private set; } = Weather.Clear;
 
         /// <summary>How hard it is precipitating, 0..1 — rain, or on a cold winter night, snow.</summary>
@@ -43,7 +45,9 @@ namespace CloneZ
         /// <summary>True while the precipitation falls mostly as snow.</summary>
         public bool IsSnowing => PrecipitationIntensity > 0.01f && Climate.SnowFraction >= 0.5f;
 
+        /// <summary>Current fog intensity, 0..1.</summary>
         public float FogIntensity { get; private set; }    // 0..1
+        /// <summary>Current cloudiness level, 0..1.</summary>
         public float Cloudiness { get; private set; }      // 0..1
 
         private float _targetPrecip, _targetFog, _targetCloud;
@@ -192,6 +196,7 @@ namespace CloneZ
             (1f - CloneZConfig.ZombieRainVisionPenalty * PrecipitationIntensity) *
             (1f - CloneZConfig.ZombieFogVisionPenalty * FogIntensity);
 
+        /// <summary>Display label for the current weather state.</summary>
         public string Label
         {
             get

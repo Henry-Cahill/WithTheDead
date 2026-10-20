@@ -775,9 +775,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   · The new action re‑uses only members already present (`PowerGrid.HousePowered`, `PowerGrid.NoPowerReason`, `InteractContext.Notify`).
   · When the player selects “Check power” the game will display a short message telling whether the house has electricity and, if not, the stored `NoPowerReason`.
   - 00:57 landed by 0htsserver in 6.1 min: **Changed files**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/WeatherSystem.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/WeatherSystem.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 00:58 landed by hts-llm in 2.4 min: Added concise one‑sentence XML summaries to every public member in **Assets/Scripts/Core/WeatherSystem.cs** that previously lacked documenta
 - [ ] Add a small brass latch to each louvred shutter panel in `Assets/Scripts/World/FurnitureBuilder.RaidOpenings.cs` → method `OpeningShutters`
   After the line `m.Box(l.P(c, cy, side * (face + 0.02f)), l.Size(sw, sh, 0.03f), panel);` insert a new primitive for a latch.
   Use the existing brass material `Mt(Brass)`.
