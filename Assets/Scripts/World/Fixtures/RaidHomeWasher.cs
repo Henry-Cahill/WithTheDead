@@ -101,9 +101,12 @@ namespace CloneZ
                 .DisabledIf(power && !water, "There's no water to wash with \u2014 the water's been shut off")
                 .DisabledIf(power && water && open, "Shut the door first"));
             into.Add(new InteractAction("Read the dial", ReadDial));
-            // Open the washing machine door to access the drum when not running
+// Open the washing machine door to access the drum when not running
             into.Add(new InteractAction("Open washing machine", OpenDoor)
-                .DisabledIf(_drum != null && _drum.IsOpen, "It's already open"));
+            .DisabledIf(_drum != null && _drum.IsOpen, "It's already open"));
+            // Close the washing machine door after opening it
+            into.Add(new InteractAction("Close washing machine", CloseDoor)
+            .DisabledIf(_drum == null || !_drum.IsOpen, "It's already closed"));
         }
 
         private void StartWash(InteractContext ctx)
@@ -171,6 +174,20 @@ namespace CloneZ
             {
                 _drum.SetOpen(true, false);
                 ctx.Notify("You open the washing machine door, revealing the drum inside.");
+            }
+            else
+            {
+                ctx.Notify("There's nothing inside the machine.");
+            }
+        }
+
+        // Close the washing machine door after it has been opened
+        private void CloseDoor(InteractContext ctx)
+        {
+            if (_drum != null)
+            {
+                _drum.SetOpen(false, false);
+                ctx.Notify("You close the washing machine door.");
             }
             else
             {

@@ -3905,7 +3905,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `if (_glow != null) _glow.intensity = GlowIntensity * GetGlowFactor(_phase);`
   This removes a separate `Mathf.Sin` call for every ToxicZone each frame, reducing per‑frame CPU work while keeping the visual flicker unchanged.
   - 17:26 landed by hts-llm in 2 min: **Changed file**
-- [ ] Add a “Close washing machine” action to Assets/Scripts/World/Fixtures/RaidHomeWasher.cs that lets the player shut the door after opening it.
+- [x] Add a “Close washing machine” action to Assets/Scripts/World/Fixtures/RaidHomeWasher.cs that lets the player shut the door after opening it.
   In `GetActions`, after the existing “Open washing machine” line, add:
   `into.Add(new InteractAction("Close washing machine", CloseDoor).DisabledIf(_drum == null || !_drum.IsOpen, "It's already closed"));`
   Create a private method `CloseDoor(InteractContext ctx)` mirroring `OpenDoor`:
+  - 17:27 landed by 1htsserver in 2.7 min: **Changed file**
