@@ -19,6 +19,27 @@ namespace CloneZ
             // side‑panel seams – thin worn metal strips
             m.Box(new Vector3(2.48f, 1.7f, 0f), new Vector3(0.02f, 1.2f, 6.0f), DecorPalette.Metal(hull * 0.6f));
             m.Box(new Vector3(-2.48f, 1.7f, 0f), new Vector3(0.02f, 1.2f, 6.0f), DecorPalette.Metal(hull * 0.6f));
+            // Add subtle rivets along the side‑panel seams for period‑appropriate visual detail
+            // We'll place 4 rivets spaced evenly along each strip
+            const int rivetCount = 4;
+            float rivetRadius = 0.012f;
+            Color rivetColor = new Color(0.5f, 0.5f, 0.5f); // dull metal
+            // Positive‑x seam
+            for (int i = 0; i < rivetCount; i++)
+            {
+                float t = (i + 0.5f) / rivetCount; // center within segment
+                float y = 1.7f; // same height as seam
+                float z = Mathf.Lerp(-3.0f, 3.0f, t); // seam length is 6.0f
+                m.Cylinder(new Vector3(2.48f, y, z), rivetRadius, rivetRadius, 6, DecorPalette.Matte(rivetColor));
+            }
+            // Negative‑x seam
+            for (int i = 0; i < rivetCount; i++)
+            {
+                float t = (i + 0.5f) / rivetCount;
+                float y = 1.7f;
+                float z = Mathf.Lerp(-3.0f, 3.0f, t);
+                m.Cylinder(new Vector3(-2.48f, y, z), rivetRadius, rivetRadius, 6, DecorPalette.Matte(rivetColor));
+            }
             // Radio antenna: thin metal rod and dish perched on top of the fuselage
             m.Cylinder(new Vector3(0f, 2.5f, 0f), 0.02f, 0.8f, 8, DecorPalette.Metal(hull));
             m.Box(new Vector3(0f, 2.9f, 0f), new Vector3(0.2f, 0.05f, 0.2f), DecorPalette.Metal(hull * 0.8f));
