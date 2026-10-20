@@ -109,6 +109,10 @@ namespace CloneZ
                 Color nc = paper ? Paper : new Color(R(rng, 0.2f, 0.8f), R(rng, 0.2f, 0.6f), R(rng, 0.1f, 0.5f));
                 m.Box(new Vector3(x, y, 0.327f), paper ? new Vector3(0.1f, 0.13f, 0.004f) : new Vector3(0.04f, 0.04f, 0.012f), Yaw(0f) * Quaternion.Euler(0f, 0f, R(rng, -12f, 12f)), M(nc));
             }
+            // Add a small metal pull‑handle to the fridge door for period‑correct grip.
+            float hx = R(rng, -0.15f, 0.15f);
+            float hy = R(rng, 0.9f, 1.2f);
+            m.Box(new Vector3(hx, hy, 0.31f), new Vector3(0.02f, 0.07f, 0.005f), Mt(Chrome));
         }
 
         /// <summary>A bank of tall steel lockers (0.5 m each, 0.5 deep, 1.85 high) with vents, handles

@@ -1967,7 +1967,7 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/HudViewKit.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
-- [ ] In Assets/Scripts/World/FurnitureBuilder.cs: Add a small metal pull‑handle to each fridge in `FurnitureBuilder.Fridge(RaidMesh m, System.Random rng, Color body)` so the appliance has a period‑correct grip.
+- [x] In Assets/Scripts/World/FurnitureBuilder.cs: Add a small metal pull‑handle to each fridge in `FurnitureBuilder.Fridge(RaidMesh m, System.Random rng, Color body)` so the appliance has a period‑correct grip.
   Inside the method, after the magnet/note loop, insert a box for the handle using the existing chrome material.
   Use a deterministic random offset for realism:
   `float hx = R(rng, -0.15f, 0.15f); // horizontal offset from centre`
@@ -1975,6 +1975,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(new Vector3(hx, hy, 0.31f), new Vector3(0.02f, 0.07f, 0.005f), Mt(Chrome));`
   The handle sits slightly in front of the fridge (z ≈ 0.31 m), is 2 cm wide, 7 cm tall and 0.5 cm deep, and uses the same `Mt(Chrome)` surface as other metal parts.
   No other geometry, colliders or interaction points are altered; the addition stays within the existing primitive budget.
+  - 07:40 landed by hts-llm in 2.2 min: **Changed**
 - [ ] Add a subtle brass knob (and optional tiny screw) to the kitchen‑diner sconce in Assets/Scripts/World/StarterHome.Lighting.cs, inside the `Sconce` builder method, using the method’s existing `rng` for a small random colour/placement variation.
   *After the line `m.Rod(wall + n * 0.02f, wall + n * 0.13f + Vector3.up * 0.03f, 0.018f, brass);` insert a brass cylinder `m.Cylinder(knobPos, 0.008f, 0.015f, 6, knobMat);` where `knobPos = wall + n * 0.13f + Vector3.up * 0.03f;` and `knobMat = rng.NextDouble() < 0.3f ? DecorPalette.Metal(new Color(0.75f,0.60f,0.45f)) : brass;`
   Optionally add a tiny black screw `m.Box(screwPos, new Vector3(0.004f,0.004f,0.004f), DecorPalette.Matte(new Color(0.08f,0.08f,0.09f)))` with `screwPos = knobPos + n * 0.005f + Vector3.up * 0.005f;`
