@@ -2698,3 +2698,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   `{`
   `0f => new Vector3(0.35f, 0.9f, 0f),`
   - 10:53 landed by hts-llm in 2.5 min: Implemented a wooden latch for each window in `StarterHome.Raise`. The latch uses deterministic seeding, aligns with the window’s yaw, and i
+- [ ] Fix the backpack‑placement calculation in Assets/Scripts/Player/PlayerGearVisuals.cs, method BuildBackpack
+  In the loop that finds the deepest back surface the variable `backZ` is initialised to `0f`, then only ever reduced with `Mathf.Min`. Because surface values returned by `_torso.Surface` are positive, `backZ` stays 0, pushing the whole pack far inside the survivor’s back and causing visible clipping.
+  Change the initialisation to a large positive value so the minimum correctly becomes the deepest point: replace
+  `float backZ = 0f;`
+  with
+  `float backZ = float.MaxValue;`
+  The player will now see the backpack sit correctly against the back, with its front face just off the torso rather than intersecting it. All other logic, colours and strap positioning remain unchanged.
