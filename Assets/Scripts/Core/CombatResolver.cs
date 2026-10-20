@@ -102,7 +102,8 @@ namespace CloneZ
 
                 Hitbox box = h.collider.GetComponent<Hitbox>();
                 IDamageable target = box != null && box.Owner != null ? box.Owner.Damageable : h.collider.GetComponentInParent<IDamageable>();
-                if (target == null || target.IsDead) break;    // the world stops the round
+                if (target == null) break; // world geometry stops the round
+                if (target.IsDead) continue; // skip dead actors
                 Actor actor = box != null ? box.Owner : (target.Transform != null ? target.Transform.GetComponent<Actor>() : null);
                 BodyZone zone = box != null ? box.Zone : BodyZones.FromHit(target.Transform, h.point, actor != null ? actor.Height : 1.8f);
                 result.Target = target;
