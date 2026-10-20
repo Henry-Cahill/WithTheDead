@@ -4051,7 +4051,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 18:24 landed by 1htsserver in 3.4 min: **Changes made**
 - [x] Add a small exhaust pipe with a glowing tip to the portable generator in Assets/Scripts/World/DecorProps.cs, method `DecorProps.Generator`.
   - 18:25 landed by 0htsserver in 2.8 min: **Changes made**
-- [ ] Reduce per‑frame GrenadeKey updates by attaching a single GrenadeKey to the player instead of to every built piece (Assets/Scripts/World/Camps.cs, modify CampModule.Init)
+- [~] Reduce per‑frame GrenadeKey updates by attaching a single GrenadeKey to the player instead of to every built piece (Assets/Scripts/World/Camps.cs, modify CampModule.Init)
+  - 18:31 hts-llm made no changes: I examined the codebase to locate the GrenadeKey handling. The only registration is in **Assets/Scripts/World/Camps.cs** where a `WorldHooks
 - [x] Add a calming effect when the survivor uses the toilet (Assets/Scripts/World/Fixtures/ToiletFixture.cs)
   In the `Used` method, after the existing line `ctx.Notify(line);` insert a call to the existing calm helper: `LightingFixtures.Calm(ctx, CloneZConfig.ToiletUseCalm);`.
   This gives the player a small stress‑reduction boost identical to the one from wiping the seat, without altering any other behaviour or UI.
