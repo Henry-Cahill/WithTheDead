@@ -223,6 +223,11 @@ namespace CloneZ
             // Coin slot detail with slight random horizontal offset
             float xOff = (float)(b.Rng.NextDouble() * 0.02 - 0.01);
             KitchenParts.PieceAt(t, "CoinSlot", f, new Vector3(xOff, 0.6f, 0.41f), (m) => { m.Box(Vector3.zero, new Vector3(0.08f, 0.02f, 0.02f), DecorPalette.Metal(FurnitureBuilder.Chrome)); });
+            // Small metal logo plate above the coin slot, random horizontal jitter
+            float logoX = (float)(b.Rng.NextDouble() * 0.04 - 0.02);
+            Vector3 logoPos = new Vector3(logoX, 1.4f, 0.41f);
+            KitchenParts.PieceAt(t, "VendingLogo", f, logoPos,
+                m => { m.Box(Vector3.zero, new Vector3(0.10f, 0.02f, 0.001f), DecorPalette.Metal(FurnitureBuilder.Chrome)); });
             int seed = b.Rng.Next();
             var wr = new System.Random(seed);
             var at = new Vector3(-0.1f, 1.1f, 0.37f);
