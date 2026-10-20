@@ -307,7 +307,7 @@ namespace CloneZ
             bool big = k > 1.08f;
 
             // The pack's face rests just off the deepest point of the back over its height.
-            float backZ = 0f;
+            float backZ = float.MaxValue;
             for (float y = Mathf.Max(bottom, 0.95f); y <= top; y += 0.04f)
                 backZ = Mathf.Min(backZ, _torso.Surface(y, 0f, _inflate, false));
             float cz = backZ - 0.012f - d * 0.5f;
