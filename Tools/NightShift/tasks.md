@@ -3323,3 +3323,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `handle.transform.localScale = new Vector3(0.06f, 0.02f, 0.06f);`
   Copy the container’s material to the knob the same way the front‑handle does (`rend.sharedMaterial = go.GetComponent<Renderer>().sharedMaterial;`).
   This adds a period‑appropriate metal knob to frozen‑food fridges, giving them a bit more visual detail while respecting the existing deterministic random source and staying within the ≤ 12‑primitive limit.
+- [ ] Fix the LOS‑light cookie never producing fully transparent pixels in Assets/Scripts/Rendering/VisionAssets.cs (method `VisionCookie`).
