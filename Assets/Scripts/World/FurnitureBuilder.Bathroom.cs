@@ -550,6 +550,16 @@ namespace CloneZ
             const float t = 0.016f;
             m.Box(front + normal * (t * 0.5f), new Vector3(w, h, t), q, G(BathCabinetWhite));
             m.Box(front + normal * (t + 0.0015f), new Vector3(w - 0.024f, h - 0.024f, 0.003f), q, Mt(BathMirror));
+            // Thin chrome frame around mirror pane (≈2 mm thick)
+            Surf chrome = Mt(Chrome);
+            // Top frame
+            m.Box(front + normal * (t + 0.0015f) + Vector3.up * ((h - 0.024f) * 0.5f - 0.001f), new Vector3(w - 0.024f, 0.002f, 0.003f), q, chrome);
+            // Bottom frame
+            m.Box(front + normal * (t + 0.0015f) - Vector3.up * ((h - 0.024f) * 0.5f - 0.001f), new Vector3(w - 0.024f, 0.002f, 0.003f), q, chrome);
+            // Left frame
+            m.Box(front + normal * (t + 0.0015f) - hingeSide * ((w - 0.024f) * 0.5f - 0.001f), new Vector3(0.002f, h - 0.028f, 0.003f), q, chrome);
+            // Right frame
+            m.Box(front + normal * (t + 0.0015f) + hingeSide * ((w - 0.024f) * 0.5f - 0.001f), new Vector3(0.002f, h - 0.028f, 0.003f), q, chrome);
             m.Box(front + normal * (t + 0.006f) - hingeSide * (w * 0.5f - 0.016f), new Vector3(0.008f, 0.07f, 0.008f), q, Mt(Chrome));
         }
 
