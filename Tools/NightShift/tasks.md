@@ -2657,11 +2657,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Result: each actor gets a unique visual randomisation regardless of how many actors exist, so players will no longer see different zombies/humans sharing the exact same look due to seed overflow.
   - 10:41 landed by 1htsserver in 1.2 min: **Changed file**: `Assets/Scripts/Net/NetWorld.cs`
 - [ ] In Assets/Scripts/World/Zone/ZoneKit.cs: Add a tiny rust‑coloured metal cap to the beam’s bracket in `ZoneKit.Beam` to suggest a screw/hinge, improving period‑correct detail.
-- [ ] In Assets/Scripts/Characters/ZombieAvatar.cs: Cache the Transform used in ZombieAvatar.LateUpdate to avoid the per‑frame transform property lookup.
+- [x] In Assets/Scripts/Characters/ZombieAvatar.cs: Cache the Transform used in ZombieAvatar.LateUpdate to avoid the per‑frame transform property lookup.
   Add a private field `private Transform _cachedTransform;` to the class.
   In Awake() or Start() assign `_cachedTransform = transform;`.
   Replace every `transform.position` in LateUpdate with `_cachedTransform.position`.
   No other code changes are required; the zombie’s movement, animation and death visuals remain identical.
+  - 10:43 landed by 1htsserver in 2.4 min: **Changed file**
 - [ ] Modify `Assets/Scripts/World/Fixtures/RaidTownMailDrop.cs` – in the `PeerIn` method, replace the wrap‑around indexing with a check that stops after the final entry, notifying the player that the chute is empty.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Characters/HumanoidAnimator.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.

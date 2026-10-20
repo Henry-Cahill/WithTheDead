@@ -21,18 +21,20 @@ namespace CloneZ
         private bool _deathShown;
         private Vector3 _lastPos;
         private bool _hasLastPos;
+        private Transform _cachedTransform;
 
-        private void Awake()
-        {
-            var rng = new System.Random(Random.Range(int.MinValue, int.MaxValue));
-            _look = HumanoidLook.RandomZombie(rng);
-            Rig = HumanoidRig.Create(transform, _look);
-            Animator = Rig.gameObject.AddComponent<HumanoidAnimator>();
-            Animator.AutoUpdate = false;
-            Animator.Gait = HumanoidGait.Shambler;
-            Animator.Limp = rng.NextDouble() < 0.3 ? 0.4f + 0.6f * (float)rng.NextDouble() : 0f;
-            _reaches = rng.NextDouble() < 0.5;
-        }
+    private void Awake()
+    {
+        var rng = new System.Random(Random.Range(int.MinValue, int.MaxValue));
+        _look = HumanoidLook.RandomZombie(rng);
+        Rig = HumanoidRig.Create(transform, _look);
+        Animator = Rig.gameObject.AddComponent<HumanoidAnimator>();
+        Animator.AutoUpdate = false;
+        Animator.Gait = HumanoidGait.Shambler;
+        Animator.Limp = rng.NextDouble() < 0.3 ? 0.4f + 0.6f * (float)rng.NextDouble() : 0f;
+        _reaches = rng.NextDouble() < 0.5;
+        _cachedTransform = transform;
+    }
 
         /// <summary>Sets the gait for the zombie type and tints the skin with the type's colour, so the
         /// dangerous ones still read at a glance. A crawler keeps the low hit box it always had.</summary>
@@ -88,7 +90,7 @@ namespace CloneZ
             float dt = Time.deltaTime;
             if (dt <= 0f || Rig == null) return;
 
-            Vector3 pos = transform.position;
+            Vector3 pos = _cachedTransform.position;
             Vector3 velocity = _hasLastPos ? (pos - _lastPos) / dt : Vector3.zero;
             if (velocity.sqrMagnitude > 400f) velocity = Vector3.zero;
             _lastPos = pos;
