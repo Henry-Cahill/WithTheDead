@@ -2707,12 +2707,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `float backZ = float.MaxValue;`
   The player will now see the backpack sit correctly against the back, with its front face just off the torso rather than intersecting it. All other logic, colours and strap positioning remain unchanged.
   - 10:55 landed by 0htsserver in 1.1 min: **Changes Made**
-- [ ] Add a subtle worn edge ring to the wristwatch dial in DiegeticWatch.Create (Assets/Scripts/Rendering/Presentation.cs)
+- [x] Add a subtle worn edge ring to the wristwatch dial in DiegeticWatch.Create (Assets/Scripts/Rendering/Presentation.cs)
   Create a new `Image` child of the existing `dial` after the call to `UIKit.Stretch(dial.rectTransform, 10f, 10f, 10f, 10f);`
   `Image rim = UIKit.Panel(dial.rectTransform, "DialRim", new Color(0f, 0f, 0f, 0.12f));`
   Place it centered with a slightly larger size to act as a thin dark border: `UIKit.Place(rim.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(178f, 178f));`
   The rim’s thickness is about 0.02 m (≈2 % of the dial’s 0.18 m width), giving the watch a faint, period‑accurate wear line.
   No new materials, colliders, or interaction logic are added; the rim inherits the existing UI canvas settings.
+  - 10:57 landed by 1htsserver in 1.2 min: **Changed file**
 - [ ] In Assets/Scripts/Net/NetWorld.cs: Optimize NetWorld.SendAi by caching the per‑client temporary collections instead of allocating them each tick.
   Declare two private static fields in NetWorld: `private static readonly List<Actor> s_Visible = new List<Actor>(64);` and `private static readonly HashSet<uint> s_Keep = new HashSet<uint>(64);`.
   In SendAi, replace `var visible = new List<Actor>();` with `s_Visible.Clear();` and use `s_Visible` for the visibility loop.

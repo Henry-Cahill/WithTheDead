@@ -402,6 +402,8 @@ UIKit.Place(buckle.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5
             stitch2.rectTransform.anchoredPosition = new Vector2(0f, -15f);
             Image dial = UIKit.Panel(face, "Dial", new Color(0.08f, 0.09f, 0.08f));
             UIKit.Stretch(dial.rectTransform, 10f, 10f, 10f, 10f);
+            Image rim = UIKit.Panel(dial.rectTransform, "DialRim", new Color(0f, 0f, 0f, 0.12f));
+            UIKit.Place(rim.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(178f, 178f));
             w._time = UIKit.Label(dial.rectTransform, "", 30, new Color(0.65f, 0.95f, 0.6f), TextAnchor.MiddleCenter, FontStyle.Bold);
             UIKit.Place(w._time.rectTransform, new Vector2(0.5f, 0.62f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(150f, 40f));
             w._filter = UIKit.Label(dial.rectTransform, "", 15, new Color(0.65f, 0.9f, 0.9f), TextAnchor.MiddleCenter);
