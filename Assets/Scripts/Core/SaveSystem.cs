@@ -22,10 +22,13 @@ namespace CloneZ
         public const int SaveVersion = 1;
         private const string FileName = "clonez_save.db";
 
+        /// <summary>Gets the full file path of the save database.</summary>
         public static string FilePath => Path.Combine(Application.persistentDataPath, FileName);
+        /// <summary>Indicates whether a saved game file currently exists on disk.</summary>
         public static bool HasSave => File.Exists(FilePath);
 
         #region Disk
+        /// <summary>Saves the given SaveData to disk.</summary>
         public static void Save(SaveData data)
         {
             if (data == null) return;
@@ -40,6 +43,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Attempts to load a SaveData from disk; returns true on success.</summary>
         public static bool TryLoad(out SaveData data)
         {
             data = null;
@@ -59,6 +63,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Deletes any existing save file and its SQLite side‑car files.</summary>
         public static void Delete()
         {
             try

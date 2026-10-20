@@ -1200,9 +1200,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   The new lines should each be a single full sentence in quotes and cover these themes: cold‑night fatigue, the echo of distant gunfire, a grim reminder of lost family, a wry comment on the stale air, a fleeting hope of warmth, and a dark‑humored observation about the water.
   Edit the `private static readonly string[] UseLines = { … }` initializer to include the additional strings, e.g. after the last existing entry, add:
   - 03:21 landed by 0htsserver in 2.5 min: **Changed file**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/SaveSystem.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/SaveSystem.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 03:24 landed by 1htsserver in 5 min: Added concise XML‑style summaries to the public members of **Assets/Scripts/Core/SaveSystem.cs** that lacked them:
 - [x] Add subtle metal hinge details to each doorway in `Assets/Scripts/World/StarterHome.Shell.cs` inside the `DrawDoorway` method
   After the three lining `m.Box` calls, insert two small hinge boxes using the existing `rng` for variation.
   Define `float hingeY = DoorTop * 0.5f + (float)(rng.NextDouble() - 0.5) * 0.02f;` for a slight random vertical offset.
