@@ -121,6 +121,11 @@ namespace CloneZ
             sb.Solid.Box(new Vector3(4.5f, 1.2f, 0f), new Vector3(2.2f, 2.4f, 2.2f), ZoneKit.M(ZoneKit.WardenOlive));
             sb.Collider(new Vector3(4.5f, 1.2f, 0f), new Vector3(2.2f, 2.4f, 2.2f));
             sb.Storage("Warden locker", "lm_cp_locker", new Vector3(4.5f, 1f, -1.3f), ContainerType.Locker, 4);
+            System.Random r = sb.Rng;
+            float yawJitter = (float)r.NextDouble() * 10f - 5f; // -5° … +5°
+            Vector3 posJitter = new Vector3(ZoneKit.R(r, -0.02f, 0.02f), 0f, ZoneKit.R(r, -0.02f, 0.02f));
+            Vector3 handlePos = new Vector3(4.5f, 1f, -1.25f) + posJitter;
+            sb.Solid.CylinderX(handlePos, 0.015f, 0.07f, 8, ZoneKit.M(new Color(0.6f, 0.6f, 0.6f)), yawJitter);
             ZoneFlameLight.Spawn(sb.Root, sb.W(4.5f, 2.6f, -1.3f), new Color(1f, 0.85f, 0.6f), 9f, 1f, 0.03f);
         }
 
