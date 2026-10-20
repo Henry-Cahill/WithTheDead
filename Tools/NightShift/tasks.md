@@ -3470,3 +3470,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add `"A torn flyer clipped to the door: ‘Free flu shots this Friday, community center, bring a blanket.’"` to the array.
   Add `"A faded weather chart taped nearby, dated Dec 1993, showing a low‑pressure front moving east – ‘Expect heavy snow Tuesday.’"` to the array.
   Add `"A crumpled grocery slip: ‘Eggs, canned beans, fire‑starter tablets – restock ASAP.’"` to the array.
+- [ ] Add a tiny chrome pull‑handle to the front of the shop‑counter cash register in Assets/Scripts/World/FurnitureBuilder.Utility.cs – `FurnitureBuilder.ShopCounter`
+  – After the line `m.Box(new Vector3(rx, 1.32f, -0.15f), new Vector3(0.2f, 0.1f, 0.04f), M(new Color(0.15f, 0.15f, 0.16f)));`
+  – Insert a new primitive: `m.Box(new Vector3(rx, 1.35f, -0.127f), new Vector3(0.02f, 0.04f, 0.005f), Mt(Chrome));`
+  – This adds a realistic chrome handle (≈2 cm × 4 cm × 0.5 cm) centered on the register’s front panel, using the existing `Chrome` material and keeping all colliders and interaction points unchanged.
