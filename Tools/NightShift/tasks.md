@@ -585,12 +585,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
   - 00:11 landed by 1htsserver in 6.5 min: Added concise XML `<summary>` comments above each public method/property in **Assets/Scripts/AI/Creatures/CreatureMeshes.cs** that previousl
-- [ ] Add a small door‑handle to every interior doorway built in `Assets/Scripts/World/StarterHome.cs` by extending the `Raise` method.
+- [x] Add a small door‑handle to every interior doorway built in `Assets/Scripts/World/StarterHome.cs` by extending the `Raise` method.
   After the line `BuildPiece.Spawn(world, s.Type, BuildPiece.CenterFor(s.Type, new Vector3(s.X, 0f, s.Z)), s.Yaw, 1f, prebuilt: true);` insert code that, when `s.Type == BuildPieceType.Doorway`, creates one `PrimitiveType.Cylinder` child named “Handle” on the just‑spawned piece.
   Size the cylinder to `new Vector3(0.04f, 0.02f, 0.02f)` (localScale) and place it ≈ 0.9 m above the floor on the side opposite the hinge (use `s.Yaw` to pick the offset: 0° → `(0.35f,0.9f,0f)`, 90° → `(0f,0.9f,0.35f)`, 180° → `(-0.35f,0.9f,0f)`, 270° → `(0f,0.9f,-0.35f)`).
   Apply a tiny deterministic jitter (±0.01 m) using `int seed = StarterHome.SlotSeed(s.Type, s.X, s.Z); UnityEngine.Random.InitState(seed);` and `offset += (UnityEngine.Random.value-0.5f)*0.02f` on the X/Z components.
   Reuse the doorway’s existing material for the handle (`handle.GetComponent<Renderer>().sharedMaterial = door.GetComponentInChildren<Renderer>().sharedMaterial`).
   Leave colliders, interaction points and existing pivots untouched; the added cylinder is purely visual and adds at most one primitive per doorway (well under the 12‑primitive limit).
+  - 00:17 landed by hts-llm in 11.4 min: **Changes Made**
 
 ### Auto-planned 2026-10-20: written by the night shift when the queue ran low (delete any you don't want)
 

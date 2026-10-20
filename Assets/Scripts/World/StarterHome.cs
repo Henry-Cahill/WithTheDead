@@ -201,8 +201,32 @@ namespace CloneZ
         public static void Raise(Transform world)
         {
             if (BuildPiece.All.Count > 0) return;
-            foreach (Slot s in Slots)
-                BuildPiece.Spawn(world, s.Type, BuildPiece.CenterFor(s.Type, new Vector3(s.X, 0f, s.Z)), s.Yaw, 1f, prebuilt: true);
+foreach (Slot s in Slots)
+            {
+                var piece = BuildPiece.Spawn(world, s.Type, BuildPiece.CenterFor(s.Type, new Vector3(s.X, 0f, s.Z)), s.Yaw, 1f, prebuilt: true);
+                if (s.Type == BuildPieceType.Doorway)
+                {
+                    int seed = StarterHome.SlotSeed(s.Type, s.X, s.Z);
+                    UnityEngine.Random.InitState(seed);
+                    var handle = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                    handle.name = "Handle";
+                    handle.transform.SetParent(piece.transform, false);
+                    Vector3 offset = s.Yaw switch
+                    {
+                        0f => new Vector3(0.35f, 0.9f, 0f),
+                        90f => new Vector3(0f, 0.9f, 0.35f),
+                        180f => new Vector3(-0.35f, 0.9f, 0f),
+                        270f => new Vector3(0f, 0.9f, -0.35f),
+                        _ => new Vector3(0.35f, 0.9f, 0f)
+                    };
+                    offset.x += (UnityEngine.Random.value - 0.5f) * 0.02f;
+                    offset.z += (UnityEngine.Random.value - 0.5f) * 0.02f;
+                    handle.transform.localPosition = offset;
+                    handle.transform.localScale = new Vector3(0.04f, 0.02f, 0.02f);
+                    var rend = piece.GetComponentInChildren<Renderer>();
+                    if (rend != null) handle.GetComponent<Renderer>().sharedMaterial = rend.sharedMaterial;
+                }
+            }
             LootContainer.Spawn(world, ContainerType.Crate, CrateSpot, 7777);
         }
 
