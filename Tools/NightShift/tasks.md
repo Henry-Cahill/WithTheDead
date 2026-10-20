@@ -2466,9 +2466,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 09:48 landed by 1htsserver in 2.4 min: **Changed files**
 - [x] In Assets/Scripts/World/Fixtures/MailboxFixture.cs: Add a subtle “hope” notification after the last mail item is read in `MailboxFixture.ReadNext()` (modify the `Run` lambda).
   - 09:50 landed by 1htsserver in 1.2 min: **Changed**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/KitchenSink.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [~] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/KitchenSink.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 09:57 1htsserver made no changes: The KitchenSink file only has public method DrawWater (already summarized) and internal static Attach (has summary), and GetActions override
 - [ ] Make the current opensource map the most detailed!!!
 - [x] Fix the focus‑label update in `Assets/Scripts/UI/HudInteraction.cs` so the label text isn’t refreshed every frame.
   - 09:53 landed by hts-llm in 1.1 min: **Changed**
