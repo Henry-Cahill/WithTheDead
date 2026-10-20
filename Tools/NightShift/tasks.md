@@ -949,3 +949,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `else { GameEvents.RaiseSubtitle(_npc.Name, "You think you can scare me?"); }`
   `}).DisabledIf(!ctx.Inventory.Has("pistol"), "Need a weapon"));`
   This uses the existing `pistol` item ID, the public `HumanNpc.Surrender()` method, and the existing `GameEvents.RaiseSubtitle` call, providing a new small interaction that fits the tense, winter‑bound setting.
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Zombies/ZombieHealth.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add small chrome tap‑knobs to the water‑cooler model in Assets/Scripts/World/FurnitureBuilder.RaidStore.cs, method OfficeWaterCoolerBody
+  After the two tap boxes (the blue tap at `new Vector3(-0.04f, 0.785f, 0.175f)` and the red tap at `new Vector3(0.04f, 0.785f, 0.175f)`) insert two tiny cylinders to represent the turn‑knobs.
+  Create a cylinder for the blue tap: `m.Cylinder(new Vector3(-0.04f, 0.795f, 0.185f), 0.005f, 0.015f, 6, Mt(Chrome));`
+  Create a cylinder for the red tap: `m.Cylinder(new Vector3(0.04f, 0.795f, 0.185f), 0.005f, 0.015f, 6, Mt(Chrome));`
+  Each knob is 0.005 m radius and 0.015 m tall, placed 0.01 m above and slightly forward of its tap to look like a realistic metal handle.
+  Use the existing chrome material (`Mt(Chrome)`) so colour/shade stays consistent. No other code changes are required.
