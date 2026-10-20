@@ -811,3 +811,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `_net = (_net + Nets.Length - 1) % Nets.Length;`
   `MakeNoise(CloneZConfig.ReceiverKnobNoise);`
   `_captionAt = Time.time + CloneZConfig.ReceiverFirstCaption * 0.5f;`
+- [ ] In Assets/Scripts/Hub/Screens/ServiceScreens.cs, class DeployScreen, method BuildContent, extend the `string[] kinds` array that currently reads
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/PauseMenuController.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
