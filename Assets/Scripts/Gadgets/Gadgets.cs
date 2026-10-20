@@ -267,7 +267,9 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
     /// </summary>
     public sealed class DronePilot : MonoBehaviour
     {
+        /// <summary>Singleton reference to the currently active drone pilot.</summary>
         public static DronePilot Local { get; private set; }
+        /// <summary>Reference to the currently controlled drone instance.</summary>
         public Drone Drone { get; private set; }
 
         private PlayerController _ctrl;
@@ -343,6 +345,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             if (!blocked && Time.time - _since > 0.4f && (kb.eKey.wasPressedThisFrame || kb.escapeKey.wasPressedThisFrame)) End();
         }
 
+        /// <summary>Ends the drone piloting session and restores normal controls.</summary>
         public void End()
         {
             if (Drone != null) Drone.Piloted = false;

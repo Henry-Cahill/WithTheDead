@@ -2525,9 +2525,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 10:08 landed by hts-llm in 1.6 min: **Summary**
 - [x] Append four new flavour‑text strings to the `UseLines` array in Assets/Scripts/World/Fixtures/ToiletFixture.cs, preserving the existing entries and placing the new sentences after the current last line; the player will see one of these lines when they “use” the toilet.
   - 10:11 landed by hts-llm in 3 min: **Changes made**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Gadgets/Gadgets.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Gadgets/Gadgets.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 10:21 landed by 0htsserver in 12.6 min: {"include":"*.cs","path":"Assets/Scripts/Gadgets/Gadgets.cs","pattern":"public static void"}
 - [~] Assets\Scripts\Player\PlayerController.cs(58,9): error CS0106: The modifier 'private' is not valid for this item. Multiple compilation errors
   - 10:12 hts-llm made no changes: Compilation currently passes; error mentioned earlier must be outdated. No further errors.**Summary of changes**
 - [x] Add a small chrome flush handle to the toilet tank in `FurnitureBuilder.Toilet` (Assets/Scripts/World/FurnitureBuilder.Utility.cs)
