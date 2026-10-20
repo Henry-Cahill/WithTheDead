@@ -900,3 +900,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   Change the existing `int cur = Mathf.Clamp(index, 0, options.Length - 1);` line to remain unchanged – it will now only run when `options.Length > 0`.
   This prevents a `IndexOutOfRangeException` when a cycle control is built with an empty options list (e.g., a mis‑configured setting), so the hub screen loads correctly and the player sees the rest of the UI instead of a crash.
   All other behaviour of the cycle button (cycling through the provided options, invoking `onChanged`, playing the click SFX) stays exactly the same.
+- [ ] Add a subtle metal band around the barrels created in `RaidBuilding.Clutter` (Assets/Scripts/World/RaidBuilding.Furnish.cs) to give them a worn‑out, period‑appropriate look.
