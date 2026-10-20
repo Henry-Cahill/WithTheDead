@@ -3862,7 +3862,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `fill < 0.85f ? "Nearly full, the surface ripples with the faint glow of distant snow." :`
   These new strings are full sentences the player will read when checking the barrel level, preserving period‑correct, winter‑time tone and fitting the existing style.
   - 16:19 landed by hts-llm in 4.8 min: **Changed file**
-- [ ] Add a subtle metal strap on the front of crates created in the `Clutter` method of Assets/Scripts/World/RaidBuilding.Furnish.cs.
+- [x] Add a subtle metal strap on the front of crates created in the `Clutter` method of Assets/Scripts/World/RaidBuilding.Furnish.cs.
+  - 16:20 landed by 1htsserver in 4.8 min: **Changes made**
 - [ ] Fix a compilation error in `Assets/Scripts/World/FurnitureBuilder.RaidOpenings.cs` by correcting the stray parenthesis in the final `DoorSplinters` call, so the method compiles and the brass lock strike plate appears correctly.
   In `DoorSplinters` the last box is built with
   `m.Box(l.P(mid + R(rng, -0.3f, 0.3f), 0.034f, side * R(rng, 0.3f, 0.7f)), new Vector3(0.12f, 0.004f, 0.03f), Quaternion.Euler(0f, R(rng, 0f, 180f), 0f), Mt(Brass));`

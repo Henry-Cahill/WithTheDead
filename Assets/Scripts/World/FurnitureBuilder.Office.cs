@@ -182,6 +182,9 @@ namespace CloneZ
                     m.Box(c + q * new Vector3(sx * (size.x * 0.5f - t * 0.4f), 0f, sz * (size.z * 0.5f - t * 0.4f)), new Vector3(t, size.y + 0.005f, t), q, M(bat));
             m.Box(c + q * new Vector3(0f, size.y * 0.5f - t * 0.4f, size.z * 0.5f - t * 0.4f), new Vector3(size.x, t, t), q, M(bat));
             m.Box(c + q * new Vector3(0f, size.y * 0.5f - t * 0.4f, -size.z * 0.5f + t * 0.4f), new Vector3(size.x, t, t), q, M(bat));
+            // Subtle metal strap on the front face of the crate
+            m.Box(c + q * new Vector3(0f, size.y * 0.5f, size.z * 0.5f - 0.015f), new Vector3(size.x * 0.8f, 0.02f, 0.018f), q, DecorPalette.Metal(new Color(0.45f, 0.44f, 0.43f)));
+
             if (military)
             {
                 m.Box(c + q * new Vector3(0f, size.y * 0.1f, size.z * 0.5f + 0.003f), new Vector3(size.x * 0.6f, size.y * 0.14f, 0.004f), q, M(new Color(0.80f, 0.74f, 0.50f)));
