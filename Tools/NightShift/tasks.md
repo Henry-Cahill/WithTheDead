@@ -3655,3 +3655,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   All other code, including the two timed dial actions and the “Listen at the door” action, must remain unchanged.
   - 15:12 landed by 1htsserver in 1.2 min: **Changed file**
 - [ ] In Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs, extend the water‑knocking feedback in the `private void Knock(InteractContext ctx)` method by adding four more distinct sentences for intermediate water levels, keeping the existing ones.
+- [ ] Add a small chrome adjustment knob to the top of the OfficeChair’s gas post in `Assets/Scripts/World/FurnitureBuilder.Office.cs` → `public static void OfficeChair(RaidMesh m, System.Random rng, Color fabric)`
+  Locate the cylinder that creates the gas post: `m.Cylinder(new Vector3(0f, 0.07f, 0f), 0.025f, 0.36f, 6, Mt(Chrome));`
+  After this line, insert a tiny chrome disc to represent a height‑adjust knob:
+  `m.Cylinder(new Vector3(0f, 0.43f, 0f), 0.012f, 0.008f, 6, Mt(Chrome));`
+  The knob is 0.012 m radius, 0.008 m thick, placed at y = 0.07 + 0.36 = 0.43 m (the post’s top).
+  Use the existing `Mt(Chrome)` material; no new colliders or interaction points are added. This gives each office chair a subtle, period‑appropriate adjustment detail.
