@@ -3852,7 +3852,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 16:13 landed by 1htsserver in 1.3 min: **Changed file**: `Assets/Scripts/World/StarterHome.Lighting.cs`
 - [x] In Assets/Scripts/Hub/HubNpc.cs, modify `HubNpcTalk.GetActions` to give the beggar a second, cheaper donation option.
   - 16:15 landed by 0htsserver in 1.5 min: **Changed file**: `Assets/Scripts/Hub/HubNpc.cs`
-- [ ] In Assets/Scripts/World/Fixtures/RainBarrelFixture.cs, extend the `CheckLevel` method’s fill‑level message chain by inserting four new thresholds with fresh sentences, keeping the existing order and logic intact.
+- [x] In Assets/Scripts/World/Fixtures/RainBarrelFixture.cs, extend the `CheckLevel` method’s fill‑level message chain by inserting four new thresholds with fresh sentences, keeping the existing order and logic intact.
   Quote the current chain for reference:
   `fill <= 0.01f ? "Bone dry. It needs a good downpour." :`
   Add the following entries in order (from lowest to highest fill) before the final `: "Brimming — it can't hold another drop.";` line:
@@ -3861,6 +3861,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `fill < 0.60f ? "Halfway full – the water is dark and still." :`
   `fill < 0.85f ? "Nearly full, the surface ripples with the faint glow of distant snow." :`
   These new strings are full sentences the player will read when checking the barrel level, preserving period‑correct, winter‑time tone and fitting the existing style.
+  - 16:19 landed by hts-llm in 4.8 min: **Changed file**
 - [ ] Add a subtle metal strap on the front of crates created in the `Clutter` method of Assets/Scripts/World/RaidBuilding.Furnish.cs.
 - [ ] Fix a compilation error in `Assets/Scripts/World/FurnitureBuilder.RaidOpenings.cs` by correcting the stray parenthesis in the final `DoorSplinters` call, so the method compiles and the brass lock strike plate appears correctly.
   In `DoorSplinters` the last box is built with

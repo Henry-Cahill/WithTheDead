@@ -48,9 +48,13 @@ namespace CloneZ
             float fill = Barrel != null ? Barrel.Fill01 : 0f;
             string level =
                 fill <= 0.01f ? "Bone dry. It needs a good downpour." :
+                fill < 0.10f ? "A thin film of slush clings to the bottom." :
+                fill < 0.20f ? "Just a shallow pool, enough for a quick sip." :
                 fill < 0.25f ? "Barely a puddle in the bottom." :
                 fill < 0.5f ? "About a quarter full \u2014 a drink or two's worth." :
+                fill < 0.60f ? "Halfway full – the water is dark and still." :
                 fill < 0.75f ? "Roughly half full." :
+                fill < 0.85f ? "Nearly full, the surface ripples with the faint glow of distant snow." :
                 fill < 0.99f ? "Most of the way to the brim." :
                 "Brimming \u2014 it can't hold another drop.";
             WeatherSystem w = WeatherSystem.Instance;
