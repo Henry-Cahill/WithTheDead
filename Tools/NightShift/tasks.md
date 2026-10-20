@@ -3850,3 +3850,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(screwPos, new Vector3(0.004f, 0.004f, 0.004f), DecorPalette.Matte(new Color(0.08f, 0.08f, 0.09f)));`
   This adds a subtle, period‑correct hardware detail without affecting colliders, interaction points or pivots, and stays within the 12‑primitive limit.
   - 16:13 landed by 1htsserver in 1.3 min: **Changed file**: `Assets/Scripts/World/StarterHome.Lighting.cs`
+- [ ] In Assets/Scripts/Hub/HubNpc.cs, modify `HubNpcTalk.GetActions` to give the beggar a second, cheaper donation option.
+- [ ] In Assets/Scripts/World/Fixtures/RainBarrelFixture.cs, extend the `CheckLevel` method’s fill‑level message chain by inserting four new thresholds with fresh sentences, keeping the existing order and logic intact.
+  Quote the current chain for reference:
+  `fill <= 0.01f ? "Bone dry. It needs a good downpour." :`
+  Add the following entries in order (from lowest to highest fill) before the final `: "Brimming — it can't hold another drop.";` line:
+  `fill < 0.10f ? "A thin film of slush clings to the bottom." :`
+  `fill < 0.20f ? "Just a shallow pool, enough for a quick sip." :`
+  `fill < 0.60f ? "Halfway full – the water is dark and still." :`
+  `fill < 0.85f ? "Nearly full, the surface ripples with the faint glow of distant snow." :`
+  These new strings are full sentences the player will read when checking the barrel level, preserving period‑correct, winter‑time tone and fitting the existing style.
