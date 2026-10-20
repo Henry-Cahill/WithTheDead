@@ -3933,3 +3933,16 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] In Assets/Scripts/Core/TimeOfDay.cs: Cache the formatted clock and date strings in `TimeOfDay` so they are not rebuilt on every UI read each frame.
   · Add private fields `int _lastHourInt = -1; string _clockText; string _clock12Text; string _amPm; string _dateText;` to the class.
   · In `Apply()` (after the sky‑colour logic) insert a block that recomputes the caches only when the hour’s integer part changes:
+- [ ] Append five new `Book` entries to the `Books` array in Assets/Scripts/World/Fixtures/LivingReading.cs.
+  The change is a simple extension of the existing initializer for `private static readonly Book[] Books`; keep every line that is already present unchanged and add the new lines after the last `new Book(...);` entry.
+  When the survivor chooses “Read a book”, the new titles will appear in the rotation, showing the title, author and a single‑sentence “thought” that is displayed in the notification (e.g. `You read a few chapters of “...” by … . …`).
+  Existing code, struct layout, and the surrounding comments must remain exactly as they are.
+- [ ] Modify `MapGeometry.Inside` in Assets/Scripts/World/Map/MapGeometry.cs to treat points on the clipping rectangle edges as inside, preventing lost vertices for buildings that sit on the map border.
+  Add a small epsilon tolerance (`private const float EPS = 1e-5f;`) to the class.
+  Change the four `case` returns to:
+  `case 0: return p.x >= r.xMin - EPS;`
+  `case 1: return p.x <= r.xMax + EPS;`
+  `case 2: return p.y >= r.yMin - EPS;`
+  `default: return p.y <= r.yMax + EPS;`
+  The rest of the code stays unchanged.
+  Result: buildings whose footprints touch the map’s clipping rectangle now retain all border vertices, so their walls, roofs and props render correctly without gaps.
