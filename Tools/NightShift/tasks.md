@@ -1700,3 +1700,19 @@ you want to see in game. Indent extra lines under a task to add detail.
   Change `Update()` to `if (_dirty) Recompute();`.
   At the end of `Recompute()` set `_dirty = false;`.
   Leave the rest of the class unchanged – the computed values in `StatMods` remain identical, so the player sees exactly the same speeds, resistances, etc., but the per‑frame overhead of `GetComponents(_found)` and the reset loop is eliminated when nothing has changed.
+- [ ] Add a “Check the machine” action to `RaidStoreVending.GetActions` in Assets/Scripts/World/Fixtures/RaidStoreVending.cs
+  · Insert `into.Add(new InteractAction("Check the machine", CheckStock));` inside the `if (!_broken)` block, after the “Press a button” line.
+  · Add a private method `void CheckStock(InteractContext ctx)` that runs `if (_stock != null && !_stock.IsEmpty) ctx.Notify("The vending machine seems to still hold something."); else ctx.Notify("The vending machine looks empty.");`.
+  · No other code changes; the existing actions, noise, and loot mechanics stay exactly as they are.
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Net/NetAuthority.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] In Assets/Scripts/World/RaidMapBuilder.Outdoor.cs: Add a thin, slightly rust‑stained metal grill to the top of the floodlight tower in `RaidMapBuilder.Outdoor.Checkpoint` (the `Prop` call for `tower`), so the tower looks like a battered but functional floodlight.
+  Locate the lambda inside `Prop(town, tower, 0f, new Vector3(0.4f, 5f, 0.4f), true, (m, r) => { … })` and after the existing `m.Box` that creates the top plate (`m.Box(new Vector3(0f, 5.0f, 0f), new Vector3(0.9f, 0.1f, 0.2f), …)`) insert:
+  `// Add a rust‑stained metal grill on the front of the floodlight`
+  `float grillZ = 0.12f; // just in front of the top plate`
+  `Vector3 grillPos = new Vector3(0f, 5.05f, grillZ);`
+  `Vector3 grillSize = new Vector3(0.38f, 0.02f, 0.02f);`
+  `Color grillColor = new Color(0.45f, 0.38f, 0.33f); // dull rust tone`
+  ℹ️ `m.Box(grillPos, grillSize, DecorPalette.Metal(grillColor));`
+  ℹ️ Optionally add a random slight tilt using the method’s `rng` (e.g., `Quaternion.Euler(0f, 0f, (float)rng.NextDouble()*2f-1f)`) to vary each tower. This adds no new colliders or interaction points and stays within the existing 12‑primitive limit.
