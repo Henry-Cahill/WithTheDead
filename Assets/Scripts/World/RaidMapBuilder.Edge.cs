@@ -103,7 +103,17 @@ namespace CloneZ
                     h = 2.0f;
                     Surf post = DecorPalette.Matte(new Color(0.32f, 0.25f, 0.17f));
                     for (float x = -len * 0.5f; x <= len * 0.5f + 0.01f; x += 2.2f)
-                        m.Box(new Vector3(x, 1.05f, -0.06f), new Vector3(0.12f, 2.1f, 0.12f), post);
+                        {
+                            m.Box(new Vector3(x, 1.05f, -0.06f), new Vector3(0.12f, 2.1f, 0.12f), post);
+                            // metal cap on top of post
+                            m.Cylinder(new Vector3(x, 2.6f, -0.06f), 0.04f, 0.05f, 6, DecorPalette.Metal(new Color(0.50f, 0.45f, 0.40f)));
+                            // occasional rust stain above cap (30% chance)
+                            if (rng.NextDouble() < 0.3)
+                            {
+                                float w = R(rng, 0.05f, 0.08f);
+                                m.Box(new Vector3(x, 2.62f, -0.06f), new Vector3(w, 0.01f, 0.01f), DecorPalette.Matte(new Color(0.55f, 0.30f, 0.20f)));
+                            }
+                        }
                     m.Box(new Vector3(0f, 1.0f, 0f), new Vector3(len, 2.0f, 0.05f), DecorMaterials.Planks(new Color(0.46f, 0.38f, 0.28f)));
                     m.Box(new Vector3(0f, 2.03f, 0f), new Vector3(len, 0.05f, 0.1f), DecorPalette.Matte(DecorProps.SnowWhite));
                     break;

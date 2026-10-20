@@ -2609,12 +2609,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 10:34 landed by hts-llm in 5.2 min: 
 - [x] Add a subtle metal‑rivet detail to the gas‑station price sign in `Assets/Scripts/World/RaidMapBuilder.Town.cs` → method `DressGasStation`, modify the `Prop` call that creates the `"GAS 1.09"` sign.
   - 10:35 landed by 1htsserver in 5.8 min: **Changed file**
-- [ ] Add rust‑tinted metal caps (and occasional tiny rust stains) to the wooden fence posts built in the `case 1:` block of `EdgeSegment` in Assets/Scripts/World/RaidMapBuilder.Edge.cs.
+- [x] Add rust‑tinted metal caps (and occasional tiny rust stains) to the wooden fence posts built in the `case 1:` block of `EdgeSegment` in Assets/Scripts/World/RaidMapBuilder.Edge.cs.
   Locate the loop that creates the vertical post boxes: `m.Box(new Vector3(x, 1.05f, -0.06f), new Vector3(0.12f, 2.1f, 0.12f), post);`.
   After that line, insert a second loop (using the same `x` iteration) that places a short metal cylinder on top of each post: `m.Cylinder(new Vector3(x, 2.6f, -0.06f), 0.04f, 0.05f, 6, DecorPalette.Metal(new Color(0.50f, 0.45f, 0.40f)));`.
   With a 30 % chance per post, add a tiny matte rust patch just above the cap: `float w = R(rng, 0.05f, 0.08f); m.Box(new Vector3(x, 2.62f, -0.06f), new Vector3(w, 0.01f, 0.01f), DecorPalette.Matte(new Color(0.55f, 0.30f, 0.20f)));`.
   Each cap is a cylinder (≈ 0.04 m radius, 0.05 m height) positioned at the post’s top (y ≈ 2.6 m), matching the post’s X‑Z centre. The optional rust patch is a flat matte box (≈ 0.05‑0.08 m wide, 0.01 m high) placed at y ≈ 2.62 m.
   This adds up to 12 primitives total (one cylinder per post plus occasional rust box) and supplies period‑appropriate metal hardware and subtle wear, making the plank fence feel more lived‑in without altering colliders or interaction points.
+  - 10:35 landed by 0htsserver in 2.3 min: **Summary of changes**
 - [ ] Optimize per‑frame freezing in `Assets/Scripts/Extraction/RaidSummaryUI.cs` by caching the freeze call.
   In `LateUpdate()` add a conditional so `Freeze()` runs only once (or only when needed) instead of every frame while the UI is open.
   Change the method from
