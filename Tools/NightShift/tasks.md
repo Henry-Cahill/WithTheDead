@@ -2927,3 +2927,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(c + q * new Vector3(e * (w * 0.5f - 0.02f), -0.07f, 0f), new Vector3(0.012f, 0.012f, 0.006f), q, Mt(DarkSteel));`
   Loop `e` over `-1` and `1` to place one bracket on each side.
   These brackets give the nailed‑plank boards a weathered, hand‑crafted look without altering colliders, interaction points, or existing geometry.
+- [ ] Fix double‑registration of built‑in named message handlers in Assets/Scripts/Net/NetSession.cs
+  The method `RegisterAll()` first registers all handlers stored in `s_Handlers` (which already includes the built‑in handlers added a few lines earlier with `Register("cz.session", …)` etc.).
+  Afterwards it loops over `new[] { "cz.session", "cz.hoststage", "cz.joinraid", "cz.leftraid", "cz.roster" }` and registers the same names again.
+  This causes every incoming built‑in message to be processed twice (e.g., the roster is applied twice, the host‑stage toast appears twice), leading to duplicated side‑effects and occasional “already added” errors.
+  Fix: Remove the second registration loop or guard it so it only registers names not already present in `s_Handlers`.
+  `// Remove this whole block (or wrap it in a check for !s_Handlers.ContainsKey(name)):`
+  `// foreach (string n in new[] { "cz.session", "cz.hoststage", "cz.joinraid", "cz.leftraid", "cz.roster" })`
+  `// {`
+  `// Action<ulong, NetIn> h = s_Handlers[n];`
