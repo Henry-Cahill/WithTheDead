@@ -2120,3 +2120,12 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/RaidBuilding.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add a thin inner “worn‑edge” frame to every card built by `HubUI.Card(RectTransform area, Color? color = null)` in Assets/Scripts/Hub/Screens/HubUI.cs
+  Create a child `RectTransform` named “Border” inside the card’s `area` and inset it a few pixels to form an inner border.
+  `// after setting the card’s Image component`
+  `RectTransform border = UIKit.Rect("Border", area);`
+  `border.offsetMin = new Vector2(1f, 1f); // inset 1 m from left/bottom`
+  `border.offsetMax = new Vector2(-1f, -1f); // inset 1 m from right/top`
+  `var borderImg = border.gameObject.AddComponent<Image>();`
+  `// use a slightly darker version of the card colour for a subtle worn look`
+  `float darken = 0.15f;`
