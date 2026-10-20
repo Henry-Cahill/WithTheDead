@@ -3085,12 +3085,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   When the component is disabled (`OnDisable`) clear the cache (`_playerInteractor = null;`) to handle player respawn
   The player will see exactly the same behavior – entering, exiting, and auto‑teleporting from the stall remains unchanged, but the per‑frame overhead of repeatedly searching for the `PlayerInteractor` instance is eliminated.
   - 12:19 landed by 1htsserver in 2.5 min: **Summary of changes**
-- [ ] In Assets/Scripts/World/Fixtures/PictureFixture.cs: Add a second “Inspect the picture” action to PictureFixture so the survivor can view the description again with extra flavor text
+- [x] In Assets/Scripts/World/Fixtures/PictureFixture.cs: Add a second “Inspect the picture” action to PictureFixture so the survivor can view the description again with extra flavor text
   In `PictureFixture.GetActions` after the existing `into.Add(new InteractAction(_lookLabel, Look));` line, add
   `into.Add(new InteractAction("Inspect the picture", Inspect));`
   Create a new private method `Inspect` in the class:
   `private void Inspect(InteractContext ctx) { Look(ctx); ctx.Notify("A brief memory of home flits through your mind."); }`
   The new action should always appear (no condition), reuse the existing `Look` logic, and then give the extra message, giving the player an additional way to interact with the picture without altering any other behavior.
+  - 12:23 landed by 1htsserver in 3.6 min: **Changed files**
 - [ ] Fix the glasses geometry in Assets/Scripts/Characters/HumanoidBodyBuilder.Gear.cs so the lenses are oriented correctly
   In `BuildHeadwear`, case `HeadwearStyle.Glasses`, the `Limb` call that creates the bridge uses `Vector3.up` as the forward direction, which orients the bridge vertically and can make the glasses appear twisted or invisible.
   Change the argument `Vector3.up` to the proper forward direction `Fwd` (the same vector used for other headwear limbs).

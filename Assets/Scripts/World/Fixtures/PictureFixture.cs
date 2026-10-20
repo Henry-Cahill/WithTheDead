@@ -107,9 +107,15 @@ namespace CloneZ
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             into.Add(new InteractAction(_lookLabel, Look));
+            into.Add(new InteractAction("Inspect the picture", Inspect));
             if (IsCrooked) into.Add(new InteractAction(_straightenLabel, Straighten));
         }
 
+        private void Inspect(InteractContext ctx)
+        {
+            Look(ctx);
+            ctx.Notify("A brief memory of home flits through your mind.");
+        }
         private void Look(InteractContext ctx)
         {
             ctx.Notify(_description);
