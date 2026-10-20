@@ -14,6 +14,7 @@ namespace CloneZ
     public class RainBarrelFixture : Interactable
     {
         private const float WashSeconds = 3f, SkimSeconds = 2.5f;
+        private const float ShakeSeconds = 1.5f;
         private WaterSource _barrel;
 
         public override string DisplayName => "Rain barrel";
@@ -39,6 +40,7 @@ namespace CloneZ
                 .Timed(WashSeconds, "Washing your face")
                 .DisabledIf(!water, b.DryMessage));
             into.Add(new InteractAction("Skim the leaves off the top", Skim).Timed(SkimSeconds, "Skimming the barrel"));
+            into.Add(new InteractAction("Shake the barrel", Shake).Timed(ShakeSeconds, "Shaking the barrel").DisabledIf(!Barrel.HasWater, Barrel.DryMessage));
         }
 
         private void CheckLevel(InteractContext ctx)
@@ -67,6 +69,12 @@ namespace CloneZ
             // Slightly less refreshing than washing hands
             WaterUse.Freshen(ctx, 0.4f);
             ctx.Notify("You splash water on your face. It's chilly, but it helps.");
+        }
+
+        private static void Shake(InteractContext ctx)
+        {
+            WaterUse.Freshen(ctx, 0.2f);
+            ctx.Notify("You shake the barrel, splashing cold water over yourself.");
         }
 
         private void Skim(InteractContext ctx)
