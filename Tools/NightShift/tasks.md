@@ -3465,12 +3465,13 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] In Assets/Scripts/World/Fixtures/ShowerFixture.cs: Add a context‑only “Turn off water” action to ShowerFixture.GetActions so survivors can quickly stop the flow while they’re inside the stall
   In Assets/Scripts/World/Fixtures/ShowerFixture.cs modify the GetActions method: after the existing into.Add calls, insert a conditional block that checks `_inside` and, if true, adds a new `InteractAction("Turn off water", c => Turn(c, false))` to `into`
   This uses the already‑implemented Turn method, requires no new UI, and lets players stop the shower without exiting the stall; all other behaviour (door handling, water state) stays unchanged.
-- [ ] In Assets/Scripts/World/Fixtures/RaidCivicFridge.cs, append four new sentences to the `ClinicNotes` array, keeping the existing entries unchanged.
+- [x] In Assets/Scripts/World/Fixtures/RaidCivicFridge.cs, append four new sentences to the `ClinicNotes` array, keeping the existing entries unchanged.
   Use the existing entry `"A temperature log on a clipboard, ticked off every four hours. The last tick is at eight o'clock tonight."` as a style reference; the new notes should cover themes of supply reminders, community health notices, weather warnings, and personal procurement lists.
   Add `"A handwritten reminder on a sticky pad: ‘Check the backup generator before night shift – power’s fickle.’"` to the array.
   Add `"A torn flyer clipped to the door: ‘Free flu shots this Friday, community center, bring a blanket.’"` to the array.
   Add `"A faded weather chart taped nearby, dated Dec 1993, showing a low‑pressure front moving east – ‘Expect heavy snow Tuesday.’"` to the array.
   Add `"A crumpled grocery slip: ‘Eggs, canned beans, fire‑starter tablets – restock ASAP.’"` to the array.
+  - 14:23 landed by hts-llm in 1.6 min: **Summary**
 - [ ] Add a tiny chrome pull‑handle to the front of the shop‑counter cash register in Assets/Scripts/World/FurnitureBuilder.Utility.cs – `FurnitureBuilder.ShopCounter`
   – After the line `m.Box(new Vector3(rx, 1.32f, -0.15f), new Vector3(0.2f, 0.1f, 0.04f), M(new Color(0.15f, 0.15f, 0.16f)));`
   – Insert a new primitive: `m.Box(new Vector3(rx, 1.35f, -0.127f), new Vector3(0.02f, 0.04f, 0.005f), Mt(Chrome));`

@@ -37,6 +37,10 @@ namespace CloneZ
             "A handwritten note: \u201CStock low on bandages – order ASAP.\u201D",
             "A marginal doodle: \u201CDecember 1993 – patient intake up 12%\u201D",
             "A torn prescription pad entry, Dec 1993: \u201CIV antibiotics – keep refrigerated.\u201D",
+            "A handwritten reminder on a sticky pad: ‘Check the backup generator before night shift – power’s fickle.’",
+            "A torn flyer clipped to the door: ‘Free flu shots this Friday, community center, bring a blanket.’",
+            "A faded weather chart taped nearby, dated Dec 1993, showing a low‑pressure front moving east – ‘Expect heavy snow Tuesday.’",
+            "A crumpled grocery slip: ‘Eggs, canned beans, fire‑starter tablets – restock ASAP.’",
         };
 
         private static readonly Color LampColour = new Color(0.86f, 0.93f, 1f);
