@@ -2834,10 +2834,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 11:16 landed by 0htsserver in 2.3 min: **Changed**
 - [x] Fix missing visibility spike when firing a weapon in Assets/Scripts/Player/Stealth.cs (method `Update`)
   - 11:16 landed by hts-llm in 1.7 min: **Changed file**
-- [ ] Add a subtle “snow‑drift” strip along the bottom edge of the health panel in Assets/Scripts/UI/HealthPanelController.cs
+- [x] Add a subtle “snow‑drift” strip along the bottom edge of the health panel in Assets/Scripts/UI/HealthPanelController.cs
   Inside `Build()`, immediately after the four `Rivet(prt, …)` calls, create a thin `Image` rectangle that represents a light layer of snow that has settled on the metal frame.
   Use the same parent `prt` (the panel’s RectTransform), the same anchor/pivot as the trim (center‑bottom), and size it to the full panel width with a modest height, re‑using the translucent off‑white colour used for the divider (≈ `new Color(1f, 1f, 1f, 0.15f)`).
   This adds a period‑appropriate visual cue of the winter setting without affecting any colliders or interaction logic and stays within the 12‑primitive limit.
+  - 11:17 landed by 0htsserver in 1.6 min: **Changes made**
 - [ ] Cache the per‑frame lookup of the player interactor in Assets/Scripts/World/Fixtures/BedFixture.cs to avoid repeated `PlayerInteractor.Current` calls.
   Add a private field `private PlayerInteractor _playerInteractor;` and set it in `Awake()` (or `Start()`) with `_playerInteractor = PlayerInteractor.Current;`.
   Replace `PlayerInteractor pi = PlayerInteractor.Current;` in `Update()` with `PlayerInteractor pi = _playerInteractor;`.

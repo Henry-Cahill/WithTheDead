@@ -363,10 +363,20 @@ trimRt.sizeDelta = new Vector2(panelW + 4f, panelH + 4f);
 trimGo.AddComponent<Image>().color = new Color(0.04f, 0.03f, 0.05f, 0.9f);
 
 // Add rivet decorations at the panel corners
-Rivet(prt, new Vector2(-panelW / 2 + 8f, panelH / 2 - 8f)); // top‑left
-Rivet(prt, new Vector2( panelW / 2 - 8f, panelH / 2 - 8f)); // top‑right
-Rivet(prt, new Vector2(-panelW / 2 + 8f, -panelH / 2 + 8f)); // bottom‑left
-Rivet(prt, new Vector2( panelW / 2 - 8f, -panelH / 2 + 8f)); // bottom‑right
+    Rivet(prt, new Vector2(-panelW / 2 + 8f, panelH / 2 - 8f)); // top‑left
+    Rivet(prt, new Vector2( panelW / 2 - 8f, panelH / 2 - 8f)); // top‑right
+    Rivet(prt, new Vector2(-panelW / 2 + 8f, -panelH / 2 + 8f)); // bottom‑left
+    Rivet(prt, new Vector2( panelW / 2 - 8f, -panelH / 2 + 8f)); // bottom‑right
+    // Subtle snow‑drift strip at the bottom edge of the panel
+    var snow = new GameObject("SnowDrift");
+    var snowRt = snow.AddComponent<RectTransform>();
+    snowRt.SetParent(prt, false);
+    snowRt.anchorMin = snowRt.anchorMax = new Vector2(0.5f, 0.5f);
+    snowRt.pivot = new Vector2(0.5f, 0.5f);
+    float snowHeight = 6f; // modest height for a light snow layer
+    snowRt.anchoredPosition = new Vector2(0f, -panelH / 2 + snowHeight / 2f);
+    snowRt.sizeDelta = new Vector2(panelW, snowHeight);
+    snow.AddComponent<Image>().color = new Color(1f, 1f, 1f, 0.15f);
 
             Label(prt, "Title", new Vector2(0.5f, 1f), new Vector2(0f, -18f), new Vector2(panelW, 40f), 30, TextAnchor.UpperCenter, new Color(0.95f, 0.7f, 0.7f))
                 .text = "HEALTH";
