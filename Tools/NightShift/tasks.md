@@ -687,7 +687,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   position: centered at `new Vector3(0f, h * 0.5f, 0f)` (mid‑height of barrel)
   material: reuse existing `plastic` colour with a darker matte tint (`plastic * 0.6f`) via `DecorPalette.Matte` – no new assets needed
   keeps existing colliders, interaction points, and pivots unchanged; adds only one primitive, staying under the ~12 limit.
-- [ ] Fix a memory‑leak bug in Assets/Scripts/World/Zone/ZoneWorld.cs: `ZoneWorld.Reset()` clears the static references but never destroys the temporary GameObjects it creates (`ZoneUnbaked` and the `ZoneRuntime` host), so each raid leaves orphan objects in the scene, eventually causing performance drops and invisible “ghost” colliders.
+- [x] Fix a memory‑leak bug in Assets/Scripts/World/Zone/ZoneWorld.cs: `ZoneWorld.Reset()` clears the static references but never destroys the temporary GameObjects it creates (`ZoneUnbaked` and the `ZoneRuntime` host), so each raid leaves orphan objects in the scene, eventually causing performance drops and invisible “ghost” colliders.
+  - 00:35 landed by 0htsserver in 1.4 min: **Changed file**
 - [ ] Add a thin dark trim around the health panel to give it a worn‑metal frame in Assets/Scripts/UI/HealthPanelController.cs, inside the `Build()` method right after the line `_panelRoot.AddComponent<Image>().color = new Color(0.06f, 0.05f, 0.06f, 0.95f);`
   Create a child GameObject “PanelTrim”, give it a `RectTransform` matching the panel’s anchor/pivot, set its size slightly larger than the panel (e.g. `new Vector2(panelW + 4f, panelH + 4f)` ≈ 0.01 m border on each side), add an `Image` component and colour it a slightly darker shade such as `new Color(0.04f, 0.03f, 0.05f, 0.9f)`.
   This adds a subtle frame without altering colliders, interaction points or existing UI layout, keeping the panel’s functionality unchanged while giving it a period‑appropriate brushed‑metal edge.

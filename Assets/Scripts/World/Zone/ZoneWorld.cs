@@ -29,6 +29,12 @@ namespace CloneZ
 
         public static void Reset()
         {
+            // Destroy temporary objects created per‑raid to avoid orphan GameObjects.
+            if (Unbaked != null && Unbaked.gameObject != null)
+                Object.Destroy(Unbaked.gameObject);
+            if (Runtime != null && Runtime.gameObject != null)
+                Object.Destroy(Runtime.gameObject);
+
             World = null;
             Unbaked = null;
             Site = null;
