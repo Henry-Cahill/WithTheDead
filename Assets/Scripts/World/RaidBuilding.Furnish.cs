@@ -51,10 +51,12 @@ namespace CloneZ
                 _colliders.transform.SetParent(Root, false);
             }
             float k = Mathf.Repeat(yaw, 90f);
-            if (k < 1f || k > 89f)
+            // Treat angles within 0.5° of an axis as axis‑aligned: use a simple, non‑rotated BoxCollider.
+            if (k < 0.5f || k > 89.5f)
             {
                 var bc = _colliders.AddComponent<BoxCollider>();
                 bc.center = center;
+                // Compute axis‑aligned size to account for the small rotation.
                 bc.size = AabbSize(size, yaw);
             }
             else
