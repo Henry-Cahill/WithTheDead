@@ -588,6 +588,9 @@ namespace CloneZ
             _sleepOverlay = rt.gameObject;
             var bg = _sleepOverlay.AddComponent<Image>();
             bg.color = new Color(0.02f, 0.02f, 0.05f, 0.92f);
+            var outline = _sleepOverlay.AddComponent<Outline>();
+            outline.effectColor = new Color(0.08f, 0.08f, 0.12f, 0.8f);
+            outline.effectDistance = new Vector2(3f, 3f);
             _sleepText = HudUI.Label(rt, "SleepText", 46, TextAnchor.MiddleCenter, new Color(0.8f, 0.85f, 0.95f),
                 new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(900f, 220f));
             _sleepText.text = "Sleeping\u2026";
