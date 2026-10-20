@@ -1319,9 +1319,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Create two new `Box` primitives using the existing `brass` surface, each 0.02 m × 0.005 m × 0.016 m, positioned at the inner ends of the bottom rail:
   - 03:56 landed by hts-llm in 3 min: **Changed files**
 - [ ] In Assets/Scripts/World/Fixtures/BasinFixture.cs, add a tiny “check water level” action next to the existing plug action in `GetActions` and implement its handler.
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/StarterHome.Shell.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [~] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/StarterHome.Shell.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 04:09 hts-llm made no changes: **Result**
 - [x] Add a small chrome knob to the flush lever for visual detail in Assets/Scripts/World/FurnitureBuilder.Bathroom.cs, method ToiletLever
   Insert a tiny cylinder at the lever’s pivot (`ToiletLeverPivot`) to represent a knob, using the existing chrome material (`chrome = Mt(Chrome)`).
   Add `m.Cylinder(ToiletLeverPivot, 0.008f, 0.004f, 12, chrome);` after the existing three `m.Box` calls (e.g., after `m.Box(new Vector3(0.209f, 0.70f, -0.148f), new Vector3(0.011f, 0.02f, 0.016f), chrome);`).
