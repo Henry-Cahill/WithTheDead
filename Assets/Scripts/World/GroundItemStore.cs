@@ -309,7 +309,7 @@ namespace CloneZ
                         float dx = items[i].X - position.x;
                         float dz = items[i].Z - position.z;
                         float d2 = dx * dx + dz * dz;
-                        if (d2 >= best) continue;
+                        if (d2 > best) continue;
 
                         best = d2;
                         item = items[i];

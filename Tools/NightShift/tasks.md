@@ -1212,10 +1212,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   Use the same `TrimWhite` colour (already defined) tinted darker for a metal look; no new materials or colliders are needed.
   Leave the subsequent `DoorFittings` call and the rest of the method untouched.
   - 03:23 landed by 0htsserver in 1.9 min: **Changes made**
-- [ ] Fix the exclusion‑by‑equality bug in `GroundItemStore.TryFindNearest` (Assets/Scripts/World/GroundItemStore.cs)
+- [x] Fix the exclusion‑by‑equality bug in `GroundItemStore.TryFindNearest` (Assets/Scripts/World/GroundItemStore.cs)
   The method claims to return the nearest item *within* `radius`, but it discards items whose squared distance `d2` is exactly equal to `best` ( `radius*radius` ) by using `if (d2 >= best) continue;`.
   This makes items placed precisely at the edge of the player’s interaction radius unreachable, contradicting the expected “within radius” behaviour.
   Change the comparison to strict greater‑than so that equality is accepted:
+  - 03:25 landed by 0htsserver in 1 min: **Summary**
 - [ ] Add two tiny brass hinge pins to each wardrobe door in `FurnitureBuilder.WardrobeDoor` (Assets/Scripts/World/FurnitureBuilder.RaidHome.cs)
   · After the existing `m.Box` calls that draw the door panel and the brass knob, insert two vertical cylinders to suggest the door’s hinge pins.
   · For the left door (when `left` is true) place pins at the outer –X edge:
