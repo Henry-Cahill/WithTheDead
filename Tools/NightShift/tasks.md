@@ -2181,3 +2181,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Change it to: `if (side && Vector3.Dot(_hits[i].point - _feet, _viewAhead) < SideProbeMargin) continue;`
   Explanation: The comment states a side ray should only cut when the hit lies at least `SideProbeMargin` in front of the survivor. The original check uses the opposite inequality and a negative margin, causing almost all side hits to be discarded, so walls beside or behind the player remain visible when they should be hidden. After the fix, side probes will correctly hide walls only when the hit is sufficiently forward, eliminating visual clipping while preserving intended cut‑away behavior.
   All other code remains unchanged.
+- [ ] Cache the `WeatherSystem` singleton in `FarmPlot` and use the cached reference in the per‑frame growth simulation (Assets/Scripts/World/FarmPlot.cs)
+  Add a private field `private WeatherSystem _weather;`
+  Set `_weather = WeatherSystem.Instance;` in `OnEnable` (or `Awake`) after the base call.
+  Replace the line `float rain = WeatherSystem.Instance != null ? WeatherSystem.Instance.RainIntensity : 0f;` in `Advance()` with `float rain = _weather != null ? _weather.RainIntensity : 0f;`.
+  This removes the per‑frame lookup of the singleton, eliminating unnecessary FindObject‑type work while keeping visual behavior unchanged.
