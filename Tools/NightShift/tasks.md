@@ -3527,3 +3527,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   This adds at most one extra primitive per post (max ≈ 8 total for a typical segment), stays within the 12‑primitive limit, reuses existing material definitions, and provides period‑appropriate visual detail without affecting colliders or interaction points.
   - 14:43 landed by hts-llm in 3.3 min: All changes compile successfully.**Changed file**
 - [ ] In Assets/Scripts/UI/SkillsPanelController.cs, inside `SkillsPanelController.Build()` within the `for (int i = 0; i < n; i++)` loop, add a thin “separator” rectangle under each skill row to suggest a worn metal seam between entries.
+- [ ] In Assets/Scripts/World/Fixtures/KitchenStove.cs: Add a “Feel the heat” action to KitchenStove so the player can see how much warmth the stove is currently providing.
+  In `public override void GetActions(InteractContext ctx, List<InteractAction> into)` insert after the existing actions:
+  `into.Add(new InteractAction("Feel the heat", ShowWarmth));`
+  Add a new private method `void ShowWarmth(InteractContext ctx)` that calls `ctx.Notify($"The stove radiates warmth ({Warmth:F1}).");`
+  No other code changes are required; the method uses the existing `Warmth` property and `InteractContext.Notify` already used elsewhere.
+  The player will now see a tooltip like “The stove radiates warmth (3.5).” when selecting “Feel the heat”.
+  This addition keeps all existing functionality untouched and does not introduce new UI screens or assets.
