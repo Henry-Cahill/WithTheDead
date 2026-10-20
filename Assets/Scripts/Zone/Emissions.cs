@@ -13,10 +13,14 @@ namespace CloneZ
     {
         public enum Phase { Calm, Warning, Blast, Fading }
 
+        /// <summary>Singleton instance of the EmissionDirector.</summary>
         public static EmissionDirector Instance { get; private set; }
+                /// <summary>True when an emission is currently in the warning or blast phase.</summary>
         public static bool Active => Instance != null && (Instance.Current == Phase.Warning || Instance.Current == Phase.Blast);
 
+                /// <summary>Current emission phase; private set because only the director changes it.</summary>
         public Phase Current { get; private set; } = Phase.Calm;
+                /// <summary>True when this emission is a psi storm instead of a standard blast.</summary>
         public bool PsiStorm { get; private set; }
         /// <summary>Seconds left in the current phase.</summary>
         public float PhaseLeft => Mathf.Max(0f, _phaseEnds - Time.time);
@@ -28,6 +32,7 @@ namespace CloneZ
         private float _nextAt, _phaseEnds, _tick, _rumbleAt;
         private AudioSource _siren;
 
+                /// <summary>Start the emission system for the given zone and random seed.</summary>
         public static void Begin(ZoneDef zone, int seed)
         {
             if (Instance != null) Destroy(Instance.gameObject);
