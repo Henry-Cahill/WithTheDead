@@ -2377,12 +2377,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `private void WipeSeat(InteractContext ctx) {`
   ` ctx.Notify("You wipe away grime from the cold porcelain.");`
   ` // a small calming effect, re‑using the existing toilet‑use calm value`
-- [ ] In Assets/Scripts/Hub/HubNpc.cs, extend the `"merc"` entry in the `Lines` dictionary by appending five new sentences that keep the terse, world‑weary tone (example style: “Two of us see twice as much.”) and cover themes of winter travel hazards, rumors about the Zone, the merc’s pricing quirks, loyalty to whoever pays, and a warning about over‑reaching into the snow‑bound ruins.
+- [x] In Assets/Scripts/Hub/HubNpc.cs, extend the `"merc"` entry in the `Lines` dictionary by appending five new sentences that keep the terse, world‑weary tone (example style: “Two of us see twice as much.”) and cover themes of winter travel hazards, rumors about the Zone, the merc’s pricing quirks, loyalty to whoever pays, and a warning about over‑reaching into the snow‑bound ruins.
   Add `"The roads are slick with ice; a slip can get you buried before you draw a weapon."`
   Add `"I've heard the old well under the ice still whispers, and the dead listen."`
   Add `"My fee climbs with the wind—extra for a night that drifts like a white shroud."`
   Add `"I'll fight for the highest bidder, but I won’t turn my back on a comrade in a blizzard."`
   Add `"Don't chase a shadow through the snowbank unless you’re ready to become one."`
+  - 09:24 landed by 1htsserver in 1.9 min: **Changed file**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Vehicles.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
