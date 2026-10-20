@@ -919,3 +919,6 @@ you want to see in game. Indent extra lines under a task to add detail.
   Style reference: `"Now, the secret to a good pie crust is cold butter. Very cold butter."` – the new lines should match this straightforward, spoken‑word style.
   Themes for the new entries:
   A safety reminder about heavy snow on roofs: “Heavy snow has piled on low‑slope roofs; clear the edges before they give way.”
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/TooltipTrigger.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
