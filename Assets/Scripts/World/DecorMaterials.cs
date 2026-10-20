@@ -61,25 +61,40 @@ namespace CloneZ
         /// <summary>Hazard sign material, fitted to a quad.</summary>
         public static Surf HazardSign => Fitted(DecorTextures.HazardSign(), 0.2f);
 
+        /// <summary>Creates a planar material for interior walls using the given design.</summary>
         public static Surf WallInterior(WallDesign d) => Planar(DecorTextures.WallInterior(d), DecorTextures.WallSpan, 0.12f);
+        /// <summary>Creates a planar material for exterior walls using the given style and colour.</summary>
         public static Surf WallExterior(ExteriorStyle s, Color c) => Planar(DecorTextures.WallExterior(s, c), DecorTextures.WallSpan, 0.08f);
 
+        /// <summary>Creates a Linoleum surface material with optional checker pattern.</summary>
         public static Surf Linoleum(Color a, Color b, bool checker) => Planar(DecorTextures.Linoleum(a, b, checker), 1.2f, 0.35f);
+        /// <summary>Creates a wood floor material with the given colour.</summary>
         public static Surf WoodFloor(Color c) => Planar(DecorTextures.WoodFloor(c), 2.4f, 0.3f);
+        /// <summary>Creates a carpet material with the given colour.</summary>
         public static Surf Carpet(Color c) => Planar(DecorTextures.Carpet(c), 1f, 0.02f);
+        /// <summary>Creates a planks material with the given colour.</summary>
         public static Surf Planks(Color c) => Planar(DecorTextures.Planks(c), 0.6f, 0.08f);
+        /// <summary>Creates a corrugated metal material with the given colour.</summary>
         public static Surf Corrugated(Color c) => Planar(DecorTextures.Corrugated(c), 0.8f, 0.35f, 0.3f);
 
+        /// <summary>Creates a rug material for the given variant.</summary>
         public static Surf Rug(int variant) => Fitted(DecorTextures.Rug(variant), 0.02f);
+        /// <summary>Creates a poster material of the specified kind.</summary>
         public static Surf Poster(int kind) => Fitted(DecorTextures.Poster(kind), 0.2f);
+        /// <summary>Creates a paper material of the specified kind.</summary>
         public static Surf Paper(int kind) => Fitted(DecorTextures.Paper(kind), 0.05f);
+        /// <summary>Creates a stock material of the specified kind.</summary>
         public static Surf Stock(int kind) => Fitted(DecorTextures.Stock(kind), 0.2f);
 
         // Summer ground for the wave-survival starter home's yard and street.
+        /// <summary>Creates a grass material for summer ground.</summary>
         public static Surf Grass => Planar(DecorTextures.Grass(), 3f, 0.04f);
+        /// <summary>Creates a mulch material with the given colour.</summary>
         public static Surf Mulch(Color c) => Planar(DecorTextures.Mulch(c), 1.5f, 0.02f);
+        /// <summary>Creates a dry asphalt material for summer ground.</summary>
         public static Surf DryAsphalt => Planar(DecorTextures.DryAsphalt(), 6f, 0.2f);
 
+        /// <summary>Creates a sign material with the given text and colours, outputting its aspect ratio.</summary>
         public static Surf Sign(string text, Color bg, Color fg, out float aspect)
             => Fitted(DecorTextures.Sign(text, bg, fg, out aspect), 0.3f);
     }

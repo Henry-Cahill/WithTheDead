@@ -458,9 +458,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Keep the existing actions (“Check the mail”, “Close the mailbox”, raise/lower flag) untouched.
   No new fields, UI screens, or assets are required; the player will now see a descriptive message when selecting “Inspect the mailbox”.
   - 23:35 landed by hts-llm in 1.5 min: **Changed**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/DecorMaterials.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/DecorMaterials.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 23:42 landed by hts-llm in 7.7 min: Implemented concise one‑sentence XML summaries for all public methods and properties in **Assets/Scripts/World/DecorMaterials.cs** that prev
 - [x] In Assets/Scripts/Player/PlayerClothing.cs: Fix the wear‑off logic in PlayerClothing.WearPiece so that clothing with a `ConditionLossChance` of 0 never loses condition.
   Change the early‑exit test from
   `if (Random.Range(0, Mathf.Max(1, piece.Def.ConditionLossChance)) != 0) return;`
