@@ -1421,3 +1421,12 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add a small metal handle to the Warden locker in the checkpoint landmark (Assets/Scripts/World/Zone/ZoneLandmarks.cs, method `Checkpoint`)
+  Insert after the line `sb.Storage("Warden locker", "lm_cp_locker", new Vector3(4.5f, 1f, -1.3f), ContainerType.Locker, 4);`
+  Create a local `System.Random r = sb.Rng;` and use it for a tiny yaw jitter (±5°) and a slight position jitter (±0.02 m) so each generated locker gets a unique‑looking handle.
+  Add a horizontal cylinder (handle) with radius 0.015 m, length 0.07 m, using a brushed‑metal colour (`new Color(0.6f,0.6f,0.6f)`). Example code:
+  `System.Random r = sb.Rng;`
+  `float yawJitter = (float)r.NextDouble() * 10f - 5f; // -5° … +5°`
+  `Vector3 posJitter = new Vector3(ZoneKit.R(r, -0.02f, 0.02f), 0f, ZoneKit.R(r, -0.02f, 0.02f));`
+  `Vector3 handlePos = new Vector3(4.5f, 1f, -1.25f) + posJitter;`
+  `sb.Solid.CylinderX(handlePos, 0.015f, 0.07f, 8, ZoneKit.M(new Color(0.6f, 0.6f, 0.6f)), yawJitter);`
