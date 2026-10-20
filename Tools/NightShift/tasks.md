@@ -3214,7 +3214,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   In `GetActions` append `into.Add(new InteractAction("Check water level", ShowWaterLevel));` (place it after the existing “Empty the sink” action block).
   Implement a private method `ShowWaterLevel(InteractContext ctx)` that computes the fill percentage using `_level` and `CloneZConfig.KitchenBasinCapacity` and notifies the player, e.g. `ctx.Notify($"The sink holds {(_level/CloneZConfig.KitchenBasinCapacity*100f):0}% of its capacity.");`.
   No new UI screens, items, or external assets are required; the method uses only fields and constants already present in the class.
-- [ ] Append six new flavor‑text strings to the `BrushLines` array in Assets/Scripts/World/Fixtures/BasinFixture.cs; they will be displayed randomly when the player brushes their teeth.
+- [x] Append six new flavor‑text strings to the `BrushLines` array in Assets/Scripts/World/Fixtures/BasinFixture.cs; they will be displayed randomly when the player brushes their teeth.
   Quote the existing entry `"You brush until your gums tingle and rinse with a splash. Minty. Almost civilised."` as the style reference.
   The new lines should each be a single sentence, period‑ended, written in the same terse, reflective tone, and cover these themes: the bite of winter air, the sound of the tap echoing in an empty house, a fleeting memory of pre‑outbreak routines, the taste of metal water, the feel of a cracked mirror, and a quiet moment of personal resolve.
   Add the lines after the current last entry (`"Each swipe feels like a small rebellion against the cold that sees through the cracked walls."`).
@@ -3223,6 +3223,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// … existing entries …`
   `"Each swipe feels like a small rebellion against the cold that sees through the cracked walls.",`
   `"The thin winter air steadies your breath as the water splashes, reminding you breath itself is a fire.",`
+  - 12:57 landed by hts-llm in 4.7 min: **Changed file**
 - [x] Add a small metal foot‑ring to each bar‑stool built in `HubWorld.BuildBar` (Assets/Scripts/Hub/HubWorld.cs)
   In the `for (int i = 0; i < 6; i++)` loop after the existing `Solid(world, "BarStool", …)` call, create a decorative cylinder at the stool base:
   `var pos = new Vector3(-6f + i * 1.6f, 0.01f, 5.3f);`

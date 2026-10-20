@@ -25,6 +25,12 @@ namespace CloneZ
             "The metal of the tap feels icy, and you wonder how long the mains will stay silent.",
             "You spit the frothy foam into the basin, hearing it echo in the tiny, empty space.",
             "Each swipe feels like a small rebellion against the cold that seeps through the cracked walls.",
+            "The bite of winter air sharpens the mint as you brush your teeth.",
+            "The tap's echo fills the empty house, a hollow sound that fades like a forgotten habit.",
+            "A flash of pre‑outbreak routine surfaces, the simple rhythm of brushing before the world fell.",
+            "The water tastes of metal, a thin grit that clings to the mint and to memory.",
+            "Your reflection shivers in the cracked mirror, the fractured glass framing a resolve that steadies your hand.",
+            "In that brief pause you find a quiet resolve, each brushstroke a small claim against the silence.",
         };
 
         private static readonly string[] ShaveLines =
