@@ -1062,3 +1062,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add `_sleep = GetComponent<PlayerSleep>();` to the existing Awake method (alongside the existing `_stats` assignment).
   Remove the line `if (_sleep == null) _sleep = GetComponent<PlayerSleep>();` from Update.
   Result: the per‑frame `GetComponent<PlayerSleep>()` call is eliminated, reducing allocation‑free but costly reflection work each frame while keeping player behavior unchanged – the wound‑healing speed while sleeping remains identical because `_sleep` is set once at start.
+- [ ] In Assets/Scripts/World/Fixtures/HoseSpigot.cs: Add a “Check tap” action to `HoseSpigot.GetActions` that simply reports the tap’s current state (open/closed and whether mains water is flowing).
+  Locate the first `into.Add` in `GetActions` (the turn‑on/off action) and insert a new `InteractAction` right after it.
+  Use:
+  `into.Add(new InteractAction("Check tap", c => { if (_open) { c.Notify(WaterMains.MainsOn ? "The tap is open and water is running." : "The tap is open but the mains are shut off."); } else { c.Notify("The tap is closed."); } }));`
+  No new fields, assets, or UI screens are required; it reuses the existing `_open` field and `WaterMains.MainsOn` property.
+  The player will now see a brief message when selecting “Check tap” in the interaction menu, giving immediate feedback without altering any other behaviour.
