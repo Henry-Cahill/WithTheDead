@@ -991,7 +991,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   No other code changes are required; existing open/close/search functionality stays unchanged.
   This gives the survivor a way to make noise without opening the storage, affecting zombie attraction.
   - 02:10 landed by hts-llm in 1.3 min: **Changed:** `Assets/Scripts/World/Interaction/StorageFixture.cs`
-- [ ] Append five new entries to the `CivicScreenLines` array in Assets/Scripts/World/RaidBuilding.Civic.cs (class `RaidBuilding`, field `CivicScreenLines`) to give the player more period‑appropriate screen text to read.
+- [x] Append five new entries to the `CivicScreenLines` array in Assets/Scripts/World/RaidBuilding.Civic.cs (class `RaidBuilding`, field `CivicScreenLines`) to give the player more period‑appropriate screen text to read.
   Use the existing entry `"Green letters on black: a memo about the coffee fund, half typed. The cursor blinks after “and furthermore”.` as the style reference – each new line should be a single‑sentence description of a 1993‑era office screen, covering themes such as an unfinished inventory list, a weather forecast, a personal note, a supply request, and a government notice.
   Example new entries (replace the placeholder text with these exact strings):
   `"A half‑filled spreadsheet shows fuel allocations, column C empty and the cursor waiting over a formula."`
@@ -1000,6 +1000,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `"An urgent supply request list titled “MEDICAL RESTOCK” lists bandages, IV bags and an unfinished line."`
   `"A government bulletin scrolls: “County emergency shelter capacity at 78 %…”, the text pauses briefly before the next line."`
   The new strings must be added after the existing entries, keeping the array syntax unchanged.
+  - 02:14 landed by hts-llm in 3.8 min: **Changed file**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/RaidStoreWaterCooler.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
