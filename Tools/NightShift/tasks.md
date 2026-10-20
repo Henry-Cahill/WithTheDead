@@ -3043,3 +3043,24 @@ you want to see in game. Indent extra lines under a task to add detail.
   Change the mask to exclude the ignore‑raycast layer instead of only including it: replace `1 << CloneZConfig.IgnoreRaycastLayer` with `~(1 << CloneZConfig.IgnoreRaycastLayer)`.
   After this fix the player will see the red crosshair when aiming at a living zombie and the gun will auto‑target correctly.
   - 12:03 landed by 1htsserver in 0.8 min: **Changed:**
+- [ ] Add a small brass pull‑handle to the interior side of the lower sash in `RaidBuilding.FitWindow` (Assets/Scripts/World/RaidBuilding.Windows.cs)
+  Add the handle right after the lower sash’s main box is created: after
+  `lower.Box(l.P(o.Pos, SashMeet + 0.024f, inner), l.Size(0.05f, 0.008f, 0.032f), brass);`
+  insert
+  `WindowBox(sash.transform, "PullHandle", l.P(o.Pos + 0.025f, SashBottom + 0.12f, inner), new Vector3(0.018f, 0.018f, 0.006f), brass);`
+  The handle is a 1.8 cm × 1.8 cm × 0.6 cm brass box, positioned 2.5 cm inward from the left edge of the sash and 12 cm above the sash bottom, on the room‑side face (the same `inner` offset used for the lower sash).
+  No colliders or interaction points are altered; the new primitive reuses the existing brass material and stays within the existing `lower`/`sash` hierarchy.
+- [ ] In Assets/Scripts/Zombies/ZombieAI.cs: Cache the PlayerGear singleton and player‑component lookups in ZombieAI to remove per‑frame FindObject/​GetComponent calls (Update → CanSee → InFlashlightBeam).
+- [ ] Add a “Add fuel” interaction to the campfire (Assets/Scripts/Survival/FieldSurvival.cs)
+  Change the class declaration from `public sealed class Campfire : MonoBehaviour, IWarmthSource` to `public sealed class Campfire : Interactable, IWarmthSource` so the fire can receive interaction actions.
+  Add an override of `GetActions(InteractContext ctx, List<InteractAction> into)` that:
+  Offers a new `InteractAction("Add fuel", c => { … })` only when the player’s inventory contains `plank`, `rag`, or `paper`.
+  Inside the action: pick the first available fuel type, `c.Inventory.Consume(fuel,1)`, increase `_until` by `240f` for a plank or `90f` for rag/paper (matching the durations used in `LightFire`), play the lighter SFX (`Sfx.Play(SfxIds.Lighter, transform.position,0.6f,1f,8f)`), and raise a toast like `"Added plank, the fire will burn longer."`.
+  If the player lacks any fuel, the action is omitted (or added with `.DisabledIf(true, "No fuel")`).
+  Result: players can extend an existing campfire’s burn time with extra wood or rag, reinforcing the survival loop without adding UI screens.
+- [ ] Add a small brass pressure‑relief valve to the gas water heater model in Assets/Scripts/World/FurnitureBuilder.RaidStore.cs, method OfficeWaterHeater
+  Insert after the line `m.Cylinder(new Vector3(0f, 1.55f, -0.1f), 0.05f, 1.2f, 8, Mt(new Color(0.46f, 0.47f, 0.48f)));`
+  Add a cylinder representing the valve: `m.Cylinder(new Vector3(0.07f, 1.58f, 0.06f), 0.015f, 0.04f, 6, Mt(Brass));`
+  Diameter ≈ 0.03 m, height ≈ 0.04 m, placed on the right side of the top gas pipe (0.07 m X, 1.58 m Y, 0.06 m Z).
+  Uses the existing brass material `Mt(Brass)` for consistency with other heater fittings.
+  Keeps colliders, interaction points and pivots unchanged; adds only one primitive.
