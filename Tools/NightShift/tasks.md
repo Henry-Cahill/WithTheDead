@@ -1744,3 +1744,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Use `m.Box(at + q * new Vector3(-0.15f, 0.30f, 0.07f), new Vector3(0.01f, 0.005f, 0.004f), q, Mt(Chrome));`
   The button is 1 cm × 0.5 cm × 0.4 cm, positioned 15 cm left of centre, 30 cm up, and 7 cm outward from the front face, following the monitor’s orientation `q`.
   No new materials are introduced; `Mt(Chrome)` already exists, and the added primitive inherits the existing collider handling.
+- [ ] Add a subtle rust‑stained metal cap on the rain barrel’s lip in Assets/Scripts/World/WaterSource.cs to give the barrel a makeshift handle feel and a bit of visual variety.
+- [ ] In Assets/Scripts/World/GroundItemRenderer.cs: Cache the expensive `Camera.main` lookup in `GroundItemRenderer` instead of calling it every LateUpdate.
+  Add a private field `private Camera _cachedMain;` initialized in `OnEnable` (or `Awake`) with `Camera.main`.
+  In `LateUpdate` replace `Camera cam = Camera.main;` by `if (_cachedMain == null || _cachedMain != Camera.main) _cachedMain = Camera.main; Camera cam = _cachedMain;`.
+  This eliminates the per‑frame tag‑based search while preserving the current behaviour – the same camera is used for frustum calculation and drawing, and the player sees no visual change.
+  No other code or assets need to be modified.
+- [ ] Add an “Abandon outpost” action for players who already own the outpost (Assets/Scripts/AI/Humans/Outposts.cs → Outpost.GetActions and a new private void Abandon method).
+  In GetActions, after the existing “Held by …” disabled action, append into.Add(new InteractAction("Abandon outpost", Abandon).Timed(3f, "Tearing down the flag…")); so owners can voluntarily give up the site.
+  Implement private void Abandon(InteractContext ctx) to set _state.Owner to Factions.Vanguard, clear _state.LockedUntilUnix (0), call Recolour(), raise a toast "Outpost abandoned.", and call ProfileStore.Save().
+  The flag colour will revert to the Vanguard colour, the outpost becomes neutral and can be captured by anyone again.
