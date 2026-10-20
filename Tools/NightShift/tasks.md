@@ -1755,3 +1755,20 @@ you want to see in game. Indent extra lines under a task to add detail.
   In GetActions, after the existing “Held by …” disabled action, append into.Add(new InteractAction("Abandon outpost", Abandon).Timed(3f, "Tearing down the flag…")); so owners can voluntarily give up the site.
   Implement private void Abandon(InteractContext ctx) to set _state.Owner to Factions.Vanguard, clear _state.LockedUntilUnix (0), call Recolour(), raise a toast "Outpost abandoned.", and call ProfileStore.Save().
   The flag colour will revert to the Vanguard colour, the outpost becomes neutral and can be captured by anyone again.
+- [ ] Add four new miss notifications to the `Misses` array in Assets/Scripts/World/Fixtures/RaidStoreVending.cs
+  Edit the private static readonly string[] Misses field to append four additional string literals after the existing three.
+  Follow the style of the existing entry `"The machine booms like a drum. Something inside shifts, then settles. Nothing drops."`.
+  The new entries should cover themes of a futile thump, the machine’s stubbornness, the echoing clang, and a lingering hint of potential loot.
+  Write each entry as a single complete sentence ending with a period, e.g., `"Your thump reverberates, but the coils remain stubbornly still."`.
+  Do not alter any other code, ordering, or formatting.
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/HoseSpigot.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add four tiny “rivet” decorations to the health panel background in Assets/Scripts/UI/HealthPanelController.cs, inside the `Build()` method right after the line `trimGo.AddComponent<Image>().color = new Color(0.04f, 0.03f, 0.05f, 0.9f);`
+  Create a new private helper `Rivet(RectTransform parent, Vector2 anchoredPos)` that makes a `GameObject` with a `RectTransform` (size Δ = `new Vector2(6f, 6f)`) and an `Image` coloured `new Color(0.12f, 0.10f, 0.08f, 1f)` (dark metal); set its `anchorMin`, `anchorMax`, and `pivot` to `new Vector2(0.5f, 0.5f)` and its `anchoredPosition` to the supplied `anchoredPos`.
+  Call this helper four times to place rivets at the panel corners:
+  `Rivet(prt, new Vector2(-panelW / 2 + 8f, panelH / 2 - 8f));` // top‑left
+  `Rivet(prt, new Vector2( panelW / 2 - 8f, panelH / 2 - 8f));` // top‑right
+  `Rivet(prt, new Vector2(-panelW / 2 + 8f, ‑panelH / 2 + 8f));` // bottom‑left
+  `Rivet(prt, new Vector2( panelW / 2 - 8f, ‑panelH / 2 + 8f));` // bottom‑right
+  These twelve primitives (four images) add subtle worn‑metal rivet detail without altering colliders, interaction points, or existing UI layout.
