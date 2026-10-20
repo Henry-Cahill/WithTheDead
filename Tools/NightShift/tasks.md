@@ -2891,3 +2891,20 @@ you want to see in game. Indent extra lines under a task to add detail.
   `notes.Add("The stale, icy air carries the scent of pine resin from the nearby woods.");`
   - 11:30 landed by hts-llm in 2.1 min: **Changes made**
 - [ ] Add a subtle frost‑patch detail to interior window frames in Assets/Scripts/World/RaidBuilding.cs – modify `RaidBuilding.DrawWindow` to create a thin pale‑blue rectangle on the inside of each window (≈30 % of its width, 0.03 m tall, 0.006 m thick) at roughly eye‑level, with a ~12 % random chance per window, using the existing `Rng` and materials.
+- [ ] In Assets/Scripts/UI/InventoryUIController.cs: Fix the Y‑position clamping in `InventoryUIController.ShowMenu` so the context menu can appear on screen instead of being forced off‑screen.
+  In `ShowMenu` the line
+  `float y = Mathf.Clamp(local.y + 2f, r.yMin + h + 4f, r.yMax - 4f);`
+  incorrectly uses `r.yMin + h + 4f` as the lower bound and `r.yMax - 4f` as the upper bound. Because `h` > 0, the lower bound is larger than the upper bound, causing `Mathf.Clamp` to always return the lower bound and push the menu outside the canvas.
+  Change the clamping to use the canvas bottom as the lower bound and the top minus the menu height as the upper bound:
+  `float y = Mathf.Clamp(local.y + 2f, r.yMin + 4f, r.yMax - h - 4f);`
+  This mirrors the X‑clamp logic and lets the menu stay fully visible.
+  After this change right‑clicking a row or “…” button will correctly display the context menu within the inventory window. All other behavior remains unchanged.
+- [ ] Add small screw decorations to the report panel in Assets/Scripts/Extraction/RaidSummaryUI.cs (method `Build`) to give the worn board a period‑appropriate hardware feel.
+  Insert a call after the existing rivet line: `AddRivets(prt, new Color(0.12f, 0.12f, 0.12f, 1f), 6f);` → `AddScrews(prt, new Color(0.20f, 0.20f, 0.20f, 1f), 4f);`
+  Create a private static method `AddScrews(RectTransform panel, Color color, float size = 4f)` that:
+  Instantiates four GameObjects named “ScrewTop”, “ScrewBottom”, “ScrewLeft”, “ScrewRight”.
+  Adds a RectTransform to each, sets its parent to `panel` (false), and anchors/pivots to the centre of the corresponding edge:
+  ‑ Top `anchorMin = anchorMax = new Vector2(0.5f, 1f); pivot = new Vector2(0.5f, 1f); anchoredPosition = Vector2.zero;`
+  ‑ Bottom `anchorMin = anchorMax = new Vector2(0.5f, 0f); pivot = new Vector2(0.5f, 0f);`
+  ‑ Left `anchorMin = anchorMax = new Vector2(0f, 0.5f); pivot = new Vector2(0f, 0.5f);`
+  ‑ Right `anchorMin = anchorMax = new Vector2(1f, 0.5f); pivot = new Vector2(1f, 0.5f);`
