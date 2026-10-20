@@ -551,11 +551,12 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [x] In Assets/Scripts/World/Fixtures/KitchenFridge.cs: Fix KitchenFridge so its lamp lens is disabled at start, preventing the fridge to appear lit before the first lamp refresh.
   In `Assets/Scripts/World/Fixtures/KitchenFridge.cs` inside `Assemble`, after the line ` _lamp.On = false;` add the line `_lens.enabled = false;` (or call `RefreshLamp()` once). This ensures the mesh renderer that represents the lamp’s glow is off when the game begins, matching the description “A cool‑white lamp comes on inside while the fridge door is open, if there's power to light it.” Without this, the fridge door can look illuminated even when closed and powered off. All other logic and fields remain unchanged.
   - 23:58 landed by 1htsserver in 3.6 min: **Changed:**
-- [ ] In Assets/Scripts/Gadgets/Gadgets.cs, inside `Drone.Build()`’s ground‑drone branch (`else` block), add a tiny front‑sensor panel so the ground drone looks a bit more industrial: after the existing `Part` calls (the three side‑panels and the top‑cube), insert
+- [x] In Assets/Scripts/Gadgets/Gadgets.cs, inside `Drone.Build()`’s ground‑drone branch (`else` block), add a tiny front‑sensor panel so the ground drone looks a bit more industrial: after the existing `Part` calls (the three side‑panels and the top‑cube), insert
   `Part(new Vector3(0f, 0.28f, 0.28f), new Vector3(0.06f, 0.02f, 0.02f), new Color(0.23f, 0.18f, 0.13f));`
   – size ≈ 6 cm × 2 cm × 2 cm, positioned just above the front‑center of the chassis (`0f, 0.28f, 0.28f` relative to the drone’s origin, i.e. a bit forward of the main body `Part(new Vector3(0f, 0.12f, 0f), new Vector3(0.36f, 0.12f, 0.5f), dark);`).
   – Uses a muted brown colour from the existing palette, rendered with `CloneZUtil.Mat` via the `Part` helper, keeping colliders and interaction points unchanged.
   – No more than one extra primitive is added, staying within the ≤12‑primitive limit.
+  - 23:59 landed by 0htsserver in 4.8 min: **Changed file**: `Assets/Scripts/Gadgets/Gadgets.cs`
 - [ ] Cache per‑frame lookups in Assets/Scripts/Player/PlayerPanic.cs
   – Add a private field `private TimeOfDay _timeOfDay;` and assign it in Awake with `_timeOfDay = TimeOfDay.Instance;`.
   – Add a private readonly int `_ignoreRaycastMask = 1 << CloneZConfig.IgnoreRaycastLayer;` and a private readonly int `_defaultRaycastMask = 1 << 0;` (initialize these in Awake or as inline field initializers).

@@ -87,6 +87,7 @@ public static Drone Create(DroneKind kind, Vector3 at, float yaw, bool grenade, 
                 Part(new Vector3(-0.2f, 0.07f, 0f), new Vector3(0.08f, 0.12f, 0.56f), new Color(0.07f, 0.07f, 0.07f));
                 Part(new Vector3(0.2f, 0.07f, 0f), new Vector3(0.08f, 0.12f, 0.56f), new Color(0.07f, 0.07f, 0.07f));
                 Part(new Vector3(0f, 0.24f, 0.18f), new Vector3(0.08f, 0.08f, 0.08f), new Color(0.05f, 0.05f, 0.08f));
+                Part(new Vector3(0f, 0.28f, 0.28f), new Vector3(0.06f, 0.02f, 0.02f), new Color(0.23f, 0.18f, 0.13f));
                 var box = gameObject.AddComponent<BoxCollider>();
                 box.center = new Vector3(0f, 0.13f, 0f);
                 box.size = new Vector3(0.44f, 0.26f, 0.56f);
