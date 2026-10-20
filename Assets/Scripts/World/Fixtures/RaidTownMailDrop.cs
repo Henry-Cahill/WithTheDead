@@ -22,6 +22,12 @@ namespace CloneZ
             "A yellowed flyer, corners browned: \u201CFREE COLD‑CUT HAM – PICK‑UP TODAY\u201D. The address points to the shuttered town hall.",
             "A handwritten note, ink smudged by frost: \u201CMeet me at the old oak, midnight. Bring the lockbox.\u201D No signature.",
             "A glossy catalog, pages half‑frosted, advertising winter coats labeled \u201CLimited stock\u201D. The price tag reads \u201C$0 – sample\u201D.",
+            "An eviction notice, type‑written on yellowed stock, stating the lease ends March 1st and the landlord will lock the doors at sunrise. No response.",
+            "The Sunday church bulletin, folded thin, lists a prayer circle for “the ones lost in the woods” and a call for donations to repair the stained‑glass window.",
+            "A handwritten recipe card, ink smudged: “Grandma’s turnip soup – 2 cups water, 1 cup diced turnips, pinch of salt, simmer till tender. Share with anyone who’s cold.”",
+            "A faded flyer, corners torn: “Missing: 8‑year‑old Ellie Harper, last seen near Miller’s Creek, wearing a red sweater and blue boots. Please call the sheriff.”",
+            "A ration‑card reminder, stamped “County Health Dept”: “Winter food rations will be distributed at the school gym, 9 AM–12 PM, bring your metal ID tag.”",
+            "A hand‑drawn weather warning, charcoal on cheap paper: “Heavy snow expected tonight. Stay indoors after dark; roads will be impassable.”",
         };
 
         private Vector3 _point;
