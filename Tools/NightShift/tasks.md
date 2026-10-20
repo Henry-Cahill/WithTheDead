@@ -3368,12 +3368,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Right frame: `m.Box(front + normal * (t + 0.0015f) + hingeSide * ((w - 0.024f) * 0.5f - 0.001f), new Vector3(0.002f, h - 0.028f, 0.003f), q, chrome);`
   The frame adds a period‑correct brushed‑metal trim (≈2 mm thick) to the mirror, enhancing visual detail without affecting colliders or interaction points.
   - 13:49 landed by 0htsserver in 2.1 min: **Changes Made**
-- [ ] Add a chance for a small rusted metal plate on the outer face of each guard‑tower post in `ZoneCordon.BuildTower` (Assets/Scripts/World/Zone/ZoneCordon.cs)
+- [x] Add a chance for a small rusted metal plate on the outer face of each guard‑tower post in `ZoneCordon.BuildTower` (Assets/Scripts/World/Zone/ZoneCordon.cs)
   Locate the post creation line `sb.Solid.Box(new Vector3(x, h * 0.5f, z), new Vector3(0.22f, h, 0.22f), ZoneKit.M(ZoneKit.WetWood));`.
   Before that line introduce a local variable `Vector3 post = new Vector3(x, h * 0.5f, z);` and `Vector3 normal = new Vector3(x, 0f, z).normalized;`.
   After the box call add a 15 % random check using the method’s `rng`: `if (ZoneKit.R(rng, 0f, 1f) < 0.15f) { sb.Solid.Box(post + Vector3.up * 1.0f + normal * 0.11f, new Vector3(0.08f, 0.02f, 0.001f), ZoneKit.Mt(ZoneKit.RustDark)); }`.
   The plate size (0.08 m × 0.02 m × 0.001 m) matches the existing fence‑plate, uses the same rust material, and is offset outward by half the post width (0.11 m) so it sits on the exterior face.
   This adds visual wear to tower posts without altering colliders, interaction points, or overall primitive count (max 4 plates per tower).
+  - 13:53 landed by 1htsserver in 2.9 min: **Changed file**
 - [x] In Assets/Scripts/Characters/WeaponHandIK.cs: Cache the frequently‑queried bone and grip transforms in WeaponHandIK so LateUpdate no longer calls _rig.Bone each frame; add private Transform fields (e.g. _handL, _chest, _gripR), assign them once in TryBuild after _rig is set, and replace the per‑frame _rig.Bone(HumanBone.HandL) and _rig.Bone(HumanBone.Chest) (and use _gripR instead of _rig.GripR) with the cached fields. This removes unnecessary per‑frame bone lookups while keeping the visual hand‑IK behavior unchanged.
   - 13:52 landed by hts-llm in 2.2 min: **Changes Made**
 - [ ] Add a third interaction “Yell at the house number” to Assets/Scripts/World/Fixtures/OutdoorHouseNumber.cs
