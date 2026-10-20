@@ -230,6 +230,11 @@ namespace CloneZ
             m.Box(at + q * new Vector3(0f, 0.185f, 0f), new Vector3(0.31f, 0.012f, 0.16f), q, M(c * 0.8f));
             m.Box(at + q * new Vector3(0f, 0.2f, 0f), new Vector3(0.12f, 0.015f, 0.02f), q, M(c * 0.6f));
             m.Box(at + q * new Vector3(0f, 0.1f, 0.077f), new Vector3(0.2f, 0.03f, 0.004f), q, M(new Color(0.75f, 0.66f, 0.30f)));
+            // Add a small period‑correct metal latch‑handle on the front of the ammo can.
+            float lx = R(rng, -0.01f, 0.01f);
+            m.Box(at + q * new Vector3(lx, 0.22f, 0.075f), new Vector3(0.02f, 0.04f, 0.005f), q, Mt(Chrome));
+            // Tiny rivet detail on the latch for extra realism.
+            m.Box(at + q * new Vector3(lx, 0.235f, 0.077f), new Vector3(0.003f, 0.003f, 0.001f), q, M(Black));
         }
         #endregion
     }

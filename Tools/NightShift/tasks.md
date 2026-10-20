@@ -3833,8 +3833,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   `into.Add(new InteractAction("Shake the barrel", Shake).Timed(ShakeSeconds, "Shaking the barrel").DisabledIf(!Barrel.HasWater, Barrel.DryMessage));`
   Create a new private static method `Shake(InteractContext ctx)` that calls `WaterUse.Freshen(ctx, 0.2f);` and then `ctx.Notify("You shake the barrel, splashing cold water over yourself.");`
   Result: when the barrel still contains water the player can press [Q] to “Shake the barrel”, see a short progress bar (1.5 s) and receive a modest freshness gain, with an on‑screen message confirming the action. All existing code and UI remain unchanged.
-- [ ] In Assets/Scripts/World/FurnitureBuilder.cs: Add a small metal latch‑handle to the ammo can in `FurnitureBuilder.AmmoCan(RaidMesh m, System.Random rng, Vector3 at, float yaw)` so the can has a period‑correct front latch.
+- [x] In Assets/Scripts/World/FurnitureBuilder.cs: Add a small metal latch‑handle to the ammo can in `FurnitureBuilder.AmmoCan(RaidMesh m, System.Random rng, Vector3 at, float yaw)` so the can has a period‑correct front latch.
   Use the existing metal surface material: `Mt(Chrome)`.
   Compute a slight random x‑offset for visual variation: `float lx = R(rng, -0.01f, 0.01f);`.
   Place the latch near the top front of the can: `m.Box(at + q * new Vector3(lx, 0.22f, 0.075f), new Vector3(0.02f, 0.04f, 0.005f), q, Mt(Chrome));`.
   (Optional) Add a tiny rivet detail on the latch for extra realism: `m.Box(at + q * new Vector3(lx, 0.235f, 0.077f), new Vector3(0.003f, 0.003f, 0.001f), q, M(Black));`.
+  - 16:10 landed by hts-llm in 1.5 min: Added a period‑correct metal latch‑handle (with optional rivet detail) to the ammo can model:
