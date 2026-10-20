@@ -2280,3 +2280,6 @@ you want to see in game. Indent extra lines under a task to add detail.
   `into.Add(new InteractAction("Inspect breaker panel", c => c.Notify(_open ? "The panel's door is ajar." : "The panel's door is shut.")));`
   The new action will appear alongside “Check the power” in the interaction menu and will simply display a notification about the door state.
   No other code, UI screens, or assets need to change.
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/AI/Creatures/CreatureContent.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
