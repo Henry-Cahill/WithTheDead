@@ -430,7 +430,7 @@ namespace CloneZ
                 Mathf.Lerp(CloneZConfig.FirearmSpreadWide, CloneZConfig.FirearmSpreadTight, ComputeAimQuality())) * spreadMult;
 
             int pellets = ammo != null ? Mathf.Max(1, ammo.Pellets) : Mathf.Max(1, gun.PelletsPerShot);
-            float pelletMult = pellets > 1 ? 1f : 1f;
+            float pelletMult = pellets > 1 ? 1f / pellets : 1f;
             bool anyHit = false, anyKill = false;
             for (int i = 0; i < pellets; i++)
             {
