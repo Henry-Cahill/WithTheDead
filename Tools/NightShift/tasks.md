@@ -2528,7 +2528,8 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Gadgets/Gadgets.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
-- [ ] Assets\Scripts\Player\PlayerController.cs(58,9): error CS0106: The modifier 'private' is not valid for this item. Multiple compilation errors
+- [~] Assets\Scripts\Player\PlayerController.cs(58,9): error CS0106: The modifier 'private' is not valid for this item. Multiple compilation errors
+  - 10:12 hts-llm made no changes: Compilation currently passes; error mentioned earlier must be outdated. No further errors.**Summary of changes**
 - [ ] Add a small chrome flush handle to the toilet tank in `FurnitureBuilder.Toilet` (Assets/Scripts/World/FurnitureBuilder.Utility.cs)
   Quote the existing tank primitive: `m.Cylinder(new Vector3(0f, 0f, 0.02f), 0.15f, 0.3f, 10, G(w), Quaternion.identity, 1.25f);`
   Insert a new box for the handle after that line:
