@@ -1195,10 +1195,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   Leave the existing “Listen to it tick” action unchanged; the new action should be available whether the clock is stopped or running.
   Do not modify any other files or introduce new UI elements.
   - 03:19 landed by 1htsserver in 5.4 min: **Changed file**
-- [ ] Append 4‑8 new entries to the `UseLines` array in Assets/Scripts/World/Fixtures/ToiletFixture.cs, keeping the existing three lines unchanged and adding the new ones after them; the player will see these sentences when “using the toilet”.
+- [x] Append 4‑8 new entries to the `UseLines` array in Assets/Scripts/World/Fixtures/ToiletFixture.cs, keeping the existing three lines unchanged and adding the new ones after them; the player will see these sentences when “using the toilet”.
   Use the existing entry `"Business seen to. Some things don't change, even now."` as the style reference – short, period‑correct, gritty, winter‑torn Kentucky tone.
   The new lines should each be a single full sentence in quotes and cover these themes: cold‑night fatigue, the echo of distant gunfire, a grim reminder of lost family, a wry comment on the stale air, a fleeting hope of warmth, and a dark‑humored observation about the water.
   Edit the `private static readonly string[] UseLines = { … }` initializer to include the additional strings, e.g. after the last existing entry, add:
+  - 03:21 landed by 0htsserver in 2.5 min: **Changed file**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/SaveSystem.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
