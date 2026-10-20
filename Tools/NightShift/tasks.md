@@ -3452,3 +3452,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Vector3 boltOffset = new Vector3(0.12f, 0f, 0f);`
   `sb.Solid.Box(latchPos + boltOffset, new Vector3(0.02f, 0.05f, 0.02f), ZoneKit.M(ZoneKit.V(rust, sb.Rng, 0.02f)));`
 - [ ] In Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method LockerDoor, add a tiny metal “locker‑number” plate to each door’s lower front edge.
+- [ ] In Assets/Scripts/Rendering/IsoVisionShade.cs: Cache the TimeOfDay singleton in IsoVisionShade so LateUpdate doesn’t call a costly FindAnyObjectByType each frame
+  Add a private static `TimeOfDay _timeOfDay;` field to the class.
+  In `Awake()` set `_timeOfDay = TimeOfDay.Instance;`.
+  In `LateUpdate()` replace `TimeOfDay.Instance` with `_timeOfDay`, and if `_timeOfDay` is null (e.g., after a scene reload) assign `_timeOfDay = TimeOfDay.Instance;` before using it.
+  The shading appearance and fade behaviour stay exactly the same; only the per‑frame singleton lookup is eliminated, reducing GC and CPU load.
