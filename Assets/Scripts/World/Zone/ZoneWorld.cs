@@ -14,8 +14,11 @@ namespace CloneZ
         /// <summary>A scene-level root for pieces that must stay out of the navmesh bake (canopies, undergrowth,
         /// backdrops, plumes); it dies with the scene like the town's own scenery.</summary>
         public static Transform Unbaked;
+        /// <summary>The site map generated from the world and raid map.</summary>
         public static ZoneSiteMap Site;
+        /// <summary>The current zone definition used for this raid.</summary>
         public static ZoneDef Zone;
+        /// <summary>Information about the raid map being built.</summary>
         public static RaidMapInfo Map;
         /// <summary>The raid seed this context was built for.</summary>
         public static int Seed;
@@ -25,8 +28,10 @@ namespace CloneZ
         /// <summary>Landing zones published this raid, N, E, S, W.</summary>
         public static readonly List<Vector3> LandingZones = new List<Vector3>(4);
 
+        /// <summary>The half‑size of the map, defaulting to the arena half‑size if the map is not yet set.</summary>
         public static float Half => Map != null ? Map.HalfSize : CloneZConfig.ArenaHalfSize;
 
+        /// <summary>Resets temporary zone data for a new raid.</summary>
         public static void Reset()
         {
             // Destroy temporary objects created per‑raid to avoid orphan GameObjects.
@@ -157,6 +162,7 @@ namespace CloneZ
     /// </summary>
     public sealed class ZoneRuntime : MonoBehaviour
     {
+        /// <summary>Whether the zone runtime has started its events.</summary>
         public bool EventsStarted { get; private set; }
         private float _fallbackAt = -1f;
 
