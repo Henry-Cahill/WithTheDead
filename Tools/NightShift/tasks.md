@@ -3719,3 +3719,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Vector3 iciclePos = RunPoint(r, o.Pos, HeadHeight - 0.01f, side * (Half + 0.04f));`
   `p.Mesh.Box(iciclePos, RunSize(r, 0.02f, 0.08f, 0.02f), ice);`
   The icicle is ~2 cm wide/deep and ~8 cm long, positioned just below the window head, hanging outward on the exterior wall.
+- [ ] In Assets/Scripts/Core/WeatherSystem.cs: Cache fog‑setting work in WeatherSystem.ApplyFog() to skip redundant RenderSettings updates each frame
+  Add a private field `float _cachedFog = -1f;` to store the last fog intensity used.
+  In `ApplyFog()` compute `float fog = Mathf.Max(FogIntensity, PrecipitationIntensity * 0.35f);` as before, then `if (Mathf.Approximately(_cachedFog, fog)) return;` before setting `RenderSettings.fog`, `RenderSettings.fogMode`, `fogStartDistance`, and `fogEndDistance`.
+  After applying the settings, assign `_cachedFog = fog;`.
+  This change removes per‑frame assignments when fog hasn’t changed, reducing unnecessary work without altering any visual outcome.
