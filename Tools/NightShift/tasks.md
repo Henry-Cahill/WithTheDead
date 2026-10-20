@@ -380,7 +380,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace the two occurrences of `IsoCameraFollow.Instance` (in `LateUpdate` for the `show` calculation and in `Bind()` for the target lookup) with the cached `_cam`.
   If `_cam` becomes null (e.g. the camera is destroyed), keep the existing logic by checking `_cam != null` before using it; otherwise the behaviour is identical.
   The crosshair’s visibility, tinting, and kick animation remain unchanged; the player sees no visual difference, but the per‑frame overhead of the singleton lookup is eliminated.
-- [ ] Add a “Tap the nozzle” action to Assets/Scripts/World/Fixtures/RaidTownGasPump.cs that only works when the nozzle is lifted, plays the pump’s noise and shows a short message.
+- [x] Add a “Tap the nozzle” action to Assets/Scripts/World/Fixtures/RaidTownGasPump.cs that only works when the nozzle is lifted, plays the pump’s noise and shows a short message.
   In `GetActions` insert after the “Sniff the hose” line:
   `into.Add(new InteractAction("Tap the nozzle", TapNozzle));`
   Create a private method `TapNozzle(InteractContext ctx)` that:
@@ -388,6 +388,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `MakeNoise(CloneZConfig.RaidPumpNoise);`
   `ctx.Notify("You give the nozzle a quick tap; it squeaks faintly but nothing else happens.");`
   The player will now see the new option when looking at the pump, hear the same pump noise as when lifting, and receive context‑sensitive text instead of nothing. All existing fields, methods, and constants remain unchanged.
+  - 23:06 landed by 1htsserver in 4.7 min: **Summary**
 - [ ] Append five new office‑wall notices to the `OfficeNotices` array in Assets/Scripts/World/RaidBuilding.Lighting.cs, keeping the existing entries unchanged and adding the new strings after them; the player will read these on office walls during exploration.
   Reference style: `"The county's SAFETY FIRST notice: lift with your knees, report every spill, know where the first‑aid kit is. Nobody ever knew where the first‑aid kit was."` – the new entries should match its terse, matter‑of‑fact tone.
   Themes for the new entries:
