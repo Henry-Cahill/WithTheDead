@@ -821,3 +821,11 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a small metal knob to the kitchen upper cabinets built in `RaidLayouts.Ranch` (Assets/Scripts/World/RaidLayoutsHomes.cs)
   After the line `b.UpperCabinets(kitchen, 'S', 1.72f, 1.1f, FurnitureBuilder.HomeCabinetPaint);` insert a primitive box that represents a cabinet knob.
   Use the existing deterministic RNG (`rng`) to vary the knob’s horizontal offset and colour:
+- [ ] Add four small metal bolt cylinders to the `WeaponRack(RaidMesh m, System.Random r)` builder in Assets/Scripts/World/RaidLayouts.cs so the rack’s wooden frame shows mounting hardware.
+  Insert after the line `m.Box(new Vector3(0f, 0.25f, 0f), Sz(1.9f, 0.08f, 0.3f), wood);` the following primitives:
+  `// mounting bolts`
+  `var boltMat = DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f));`
+  `float boltRadius = 0.015f; float boltHeight = 0.02f;`
+  `Vector3[] boltPos = { new Vector3(-0.95f, 0.41f, 0.05f), new Vector3(-0.95f, 0.41f, -0.05f), new Vector3(0.95f, 0.41f, 0.05f), new Vector3(0.95f, 0.41f, -0.05f) };`
+  `foreach (var p in boltPos) m.Cylinder(p, boltRadius, boltHeight, 8, boltMat);`
+  Each cylinder is 0.015 m radius, 0.02 m tall, placed on the lower‑side of the two vertical posts to suggest realistic mounting screws. No collider or interaction changes are needed; the added primitives use existing materials and the deterministic random source is unchanged.
