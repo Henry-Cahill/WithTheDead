@@ -1582,9 +1582,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   `{ "rustyradio", new Def { Id = "rustyradio", Name = "Rusty Radio", Color = new Color(0.55f, 0.55f, 0.55f), Blurb = "Static crackles, then a faint voice: ‘Supplies moving through the south ridge, watch the cordon.’" } },`
   `{ "graffitihint", new Def { Id = "graffitihint", Name = "Graffiti", Color = new Color(0.30f, 0.65f, 0.30f), Blurb = "Scrawled on a broken fence: ‘The choir’s sleep is broken; run while it’s dark.’" } },`
   - 05:03 landed by 1htsserver in 1.9 min: Implemented the requested lore entries in **Assets/Scripts/Core/Factions.cs** by extending `s_Defs` with:
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Zone/ZoneHazards.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Zone/ZoneHazards.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 05:10 landed by 1htsserver in 7.6 min: Added concise XML‑style `/// <summary>` documentation to every public (or otherwise exposed) method, property, and event‑hook in **Assets/Sc
 - [x] Add a small rust‑coloured metal bracket at the base of each beam created in `ZoneKit.Beam` (Assets/Scripts/World/Zone/ZoneKit.cs) to suggest a period‑correct projector housing and give the beam a bit of wear.
   Create a primitive cylinder named "BeamBracket" as a child of the beam’s root GameObject (`go.transform`).
   Set its local position to `(0f, 0f, 0f)` (centered on the beam origin).
