@@ -3082,3 +3082,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   Change `Watch()` to use the cached `_playerInteractor` instead of `PlayerInteractor.Current`
   When the component is disabled (`OnDisable`) clear the cache (`_playerInteractor = null;`) to handle player respawn
   The player will see exactly the same behavior – entering, exiting, and auto‑teleporting from the stall remains unchanged, but the per‑frame overhead of repeatedly searching for the `PlayerInteractor` instance is eliminated.
+- [ ] In Assets/Scripts/World/Fixtures/PictureFixture.cs: Add a second “Inspect the picture” action to PictureFixture so the survivor can view the description again with extra flavor text
+  In `PictureFixture.GetActions` after the existing `into.Add(new InteractAction(_lookLabel, Look));` line, add
+  `into.Add(new InteractAction("Inspect the picture", Inspect));`
+  Create a new private method `Inspect` in the class:
+  `private void Inspect(InteractContext ctx) { Look(ctx); ctx.Notify("A brief memory of home flits through your mind."); }`
+  The new action should always appear (no condition), reuse the existing `Look` logic, and then give the extra message, giving the player an additional way to interact with the picture without altering any other behavior.
