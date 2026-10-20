@@ -511,12 +511,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Use the default UI sprite (no extra assets) and keep the existing colliders and interaction logic untouched.
   This gives the panel a period‑appropriate metal‑fastener detail without altering layout or functionality.
   - 23:48 landed by hts-llm in 2 min: **Changed file**
-- [ ] Cache player actors for NearAnyone checks in Assets/Scripts/Economy/CentralEconomy.cs
+- [x] Cache player actors for NearAnyone checks in Assets/Scripts/Economy/CentralEconomy.cs
   Add a private static readonly List<Actor> `s_PlayerCache = new List<Actor>();` to the class.
   In `CentralEconomy.Tick()` (just after `if (!Active || Config == null) return;`) clear and fill the cache:
   `s_PlayerCache.Clear(); foreach (Actor a in Actor.All) if (a != null && a.IsPlayerControlled) s_PlayerCache.Add(a);`
   Change `NearAnyone(Vector3 p, float range)` to iterate over `s_PlayerCache` instead of `Actor.All`.
   This removes the per‑container per‑tick enumeration of the full `Actor.All` list, reducing allocations and CPU work while preserving the same player‑proximity logic; the player‑visible behavior (which containers are considered “near anyone”) stays identical.
+  - 23:49 landed by 1htsserver in 1.8 min: **Changed files**
 - [ ] Add a “Check channel” action to Assets/Scripts/World/Fixtures/RaidCivicRadio.cs that lets the survivor see which channel the radio is currently tuned to.
   Declare a new field `private Action<InteractContext> _checkChannel;` alongside the other Action fields.
   In `Awake()` assign it: `_checkChannel = ctx => ctx.Notify("Current channel: " + Tuned.Name);`.
