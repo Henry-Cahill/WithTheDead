@@ -20,6 +20,7 @@ namespace CloneZ
                 (new Vector3(2.0f, 0f, 27f), 8f), (new Vector3(-2.1f, 0f, -42f), 186f), (new Vector3(-1.8f, 0f, 46f), 172f),
                 (new Vector3(2.2f, 0f, -14f), 15f), (new Vector3(28f, 0f, -2.0f), 95f), (new Vector3(-28f, 0f, 2.1f), 268f),
                 (new Vector3(-46f, 0f, -1.8f), 84f), (new Vector3(50f, 0f, 2.0f), 280f),
+                (new Vector3(10f, 0f, 30f), 45f), (new Vector3(-15f, 0f, -30f), 120f), (new Vector3(35f, 0f, 10f), 200f),
             };
             foreach (var s in street)
             {

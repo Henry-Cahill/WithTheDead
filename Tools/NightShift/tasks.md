@@ -2470,7 +2470,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
   - 09:57 1htsserver made no changes: The KitchenSink file only has public method DrawWater (already summarized) and internal static Attach (has summary), and GetActions override
-- [ ] Make the current opensource map the most detailed!!!
+- [x] Make the current opensource map the most detailed!!!
+  - 09:57 landed by 0htsserver in 6.1 min: **What changed**
 - [x] Fix the focus‑label update in `Assets/Scripts/UI/HudInteraction.cs` so the label text isn’t refreshed every frame.
   - 09:53 landed by hts-llm in 1.1 min: **Changed**
 - [x] Add a small “blood‑splotch” detail to each zombie in Assets/Scripts/Zombies/ZombieAI.cs inside the `Configure(ZombieType type)` method, using the same deterministic random source as the existing rust patches, to give the zombie’s face a gritty, period‑appropriate wound‑mark.
