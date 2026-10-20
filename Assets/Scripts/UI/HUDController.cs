@@ -61,6 +61,8 @@ namespace CloneZ
         private float _powerNoticeTimer;
         private bool _powerWasOn = true;
         private bool _powerSeen;
+        private WaterMains _waterMains;
+        private PowerGrid _powerGrid;
         private GameObject _sleepOverlay;
         private Text _sleepText;
         private int _sleepMinute = -1;
@@ -124,7 +126,12 @@ namespace CloneZ
             GameEvents.Subtitle -= OnSubtitle;
         }
 
-        private void Awake() => Build();
+        private void Awake()
+        {
+            Build();
+            _waterMains = WaterMains.Instance;
+            _powerGrid = PowerGrid.Instance;
+        }
 
         private void Start()
         {
@@ -313,7 +320,7 @@ namespace CloneZ
             }
             else if (_levelUpText.enabled) _levelUpText.enabled = false;
 
-            WaterMains water = WaterMains.Instance;
+            WaterMains water = _waterMains;
             if (water != null)
             {
                 bool on = water.IsOn;
@@ -328,7 +335,7 @@ namespace CloneZ
             }
             else if (_waterNoticeText.enabled) _waterNoticeText.enabled = false;
 
-            PowerGrid power = PowerGrid.Instance;
+            PowerGrid power = _powerGrid;
             if (power != null)
             {
                 bool on = power.IsOn;

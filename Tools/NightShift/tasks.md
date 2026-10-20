@@ -2799,12 +2799,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(rustPos, rustSize, M(new Color(0.55f, 0.33f, 0.28f))); // muted rust colour`
   `}`
   - 11:11 landed by 0htsserver in 1.3 min: **Summary**
-- [ ] In Assets/Scripts/UI/HUDController.cs: Cache the singleton look‑ups used in `HUDController.UpdateNotices` by adding fields for `WaterMains` and `PowerGrid`, filling them once in `Awake`, and replacing the per‑frame `WaterMains.Instance` / `PowerGrid.Instance` calls with the cached fields.
+- [x] In Assets/Scripts/UI/HUDController.cs: Cache the singleton look‑ups used in `HUDController.UpdateNotices` by adding fields for `WaterMains` and `PowerGrid`, filling them once in `Awake`, and replacing the per‑frame `WaterMains.Instance` / `PowerGrid.Instance` calls with the cached fields.
   Add private fields `private WaterMains _waterMains;` and `private PowerGrid _powerGrid;` to the class.
   In `Awake()` (after `Build();`) assign `_waterMains = WaterMains.Instance;` and `_powerGrid = PowerGrid.Instance;`.
   In `UpdateNotices(float dt)` replace `WaterMains water = WaterMains.Instance;` with `WaterMains water = _waterMains;` and replace `PowerGrid power = PowerGrid.Instance;` with `PowerGrid power = _powerGrid;`.
   The player sees exactly the same water‑shut‑off and power‑cut notices; no visual or gameplay change occurs.
   This eliminates two singleton property look‑ups each frame, reducing GC pressure and CPU time.
+  - 11:12 landed by 1htsserver in 2.1 min: **Changes Made**
 - [ ] Add a “Check radio status” action to `RaidTownFieldRadio.GetActions` and implement its handler in `Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs`
   Insert `into.Add(new InteractAction("Check radio status", CheckStatus).DisabledIf(!near, TooFar));` after the “Turn it down” line in `GetActions`.
   Add a private method `CheckStatus(InteractContext ctx)` that builds a short message with the current channel and volume and sends it via `ctx.Notify`.
