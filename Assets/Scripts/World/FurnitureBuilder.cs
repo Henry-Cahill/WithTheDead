@@ -172,6 +172,8 @@ namespace CloneZ
             m.Box(new Vector3(0f, 0.95f, -0.02f), new Vector3(0.8f, 1.9f, 0.56f), M(c));
             m.Box(new Vector3(0f, 0.95f, 0.27f), new Vector3(0.72f, 1.8f, 0.04f), G(c * 1.15f));
             m.Box(new Vector3(0f, 1.8f, 0.3f), new Vector3(0.5f, 0.05f, 0.01f), M(Brass));
+            // Period‑correct metal number‑plate label on the safe front
+            m.Box(new Vector3(0f, 1.74f, 0.31f), new Vector3(0.08f, 0.02f, 0.005f), Mt(Chrome));
             m.Cylinder(new Vector3(0.12f, 1.05f, 0.29f), 0.09f, 0.03f, 10, Mt(Chrome), Quaternion.Euler(90f, 0f, 0f));
             for (int i = 0; i < 3; i++)
                 m.Box(new Vector3(0.12f, 1.05f, 0.33f), new Vector3(0.24f, 0.02f, 0.02f), Quaternion.Euler(0f, 0f, i * 60f), Mt(Chrome));
