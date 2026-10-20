@@ -1623,9 +1623,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   a hint of local superstition or folklore,
   an unexpected but period‑appropriate detail (e.g., a rusted lantern).
   Insert the following strings into the array (preserving the existing order):
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/SleepSpot.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/SleepSpot.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 05:53 landed by 1htsserver in 2.9 min: Added concise `/// <summary>` XML documentation above the two public static methods in **Assets/Scripts/World/SleepSpot.cs**:
 - [x] In Assets/Scripts/Gadgets/Gadgets.cs, inside `Drone.Build()` → the `if (Kind == DroneKind.Fpv)` block, add a tiny top‑antenna primitive so the FPV drone looks a bit more industrial.
   After the existing central‑body call
   `Part(new Vector3(0f, 0f, 0f), new Vector3(0.22f, 0.06f, 0.22f), dark);`
