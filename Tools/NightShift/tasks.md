@@ -1147,3 +1147,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   Use the already‑available `st.Metal` material defined in the `Style` struct; no new materials or textures are required.
   The knob is decorative only – it adds no collider or interaction, preserving the existing door collider.
   This adds only one primitive (well under the ~12‑primitive limit).
+- [ ] Fix the bandage‑hint logic in Assets/Scripts/Player/PlayerWounds.cs – the `CanBandage` property currently returns true for a heavy bleed that isn’t bandaged, causing the UI to suggest a bandage even though a bandage can’t stop a heavy bleed.
