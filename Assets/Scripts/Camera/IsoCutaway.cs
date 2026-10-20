@@ -195,7 +195,7 @@ namespace CloneZ
             {
                 Collider c = _hits[i].collider;
                 if (c == null) continue;
-                if (side && Vector3.Dot(_hits[i].point - _feet, _viewAhead) > -SideProbeMargin) continue;
+                if (side && Vector3.Dot(_hits[i].point - _feet, _viewAhead) < SideProbeMargin) continue;
                 Piece p = Classify(c);
                 if (p == NotAnOccluder) continue;
                 p.LastSeen = _now;

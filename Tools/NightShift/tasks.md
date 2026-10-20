@@ -2176,11 +2176,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Keep the current quaternion `q` for orientation so the plate stays flush with the lantern’s face.
   No new colliders or interaction points are added; the plate is purely visual.
   - 08:31 landed by hts-llm in 1.3 min: Added a chrome handle plate to the front of the carriage lantern:
-- [ ] Fix the side‑probe cut‑away condition in Assets/Scripts/Camera/IsoCutaway.cs → method `Probe` so that side rays correctly ignore hits that are not sufficiently in front of the survivor.
+- [x] Fix the side‑probe cut‑away condition in Assets/Scripts/Camera/IsoCutaway.cs → method `Probe` so that side rays correctly ignore hits that are not sufficiently in front of the survivor.
   Current line: `if (side && Vector3.Dot(_hits[i].point - _feet, _viewAhead) > -SideProbeMargin) continue;`
   Change it to: `if (side && Vector3.Dot(_hits[i].point - _feet, _viewAhead) < SideProbeMargin) continue;`
   Explanation: The comment states a side ray should only cut when the hit lies at least `SideProbeMargin` in front of the survivor. The original check uses the opposite inequality and a negative margin, causing almost all side hits to be discarded, so walls beside or behind the player remain visible when they should be hidden. After the fix, side probes will correctly hide walls only when the hit is sufficiently forward, eliminating visual clipping while preserving intended cut‑away behavior.
   All other code remains unchanged.
+  - 08:32 landed by 1htsserver in 1.3 min: **Changed**
 - [ ] Cache the `WeatherSystem` singleton in `FarmPlot` and use the cached reference in the per‑frame growth simulation (Assets/Scripts/World/FarmPlot.cs)
   Add a private field `private WeatherSystem _weather;`
   Set `_weather = WeatherSystem.Instance;` in `OnEnable` (or `Awake`) after the base call.
