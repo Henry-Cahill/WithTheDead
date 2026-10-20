@@ -89,6 +89,16 @@ namespace CloneZ
             float cx = (x0 + x1) * 0.5f, cy = (y0 + y1) * 0.5f, w = x1 - x0, h = y1 - y0;
             m.Box(new Vector3(cx, cy, zFront - 0.01f), new Vector3(w, h, 0.02f), M(t.Door));
             m.Box(new Vector3(cx, cy, zFront + 0.0015f), new Vector3(w - 0.08f, h - 0.09f, 0.003f), M(t.Door * 0.95f));
+            // Thin chrome edge strip around the painted panel for realism
+            float edgeThickness = 0.001f;
+            // Top edge
+            m.Box(new Vector3(cx, cy + (h - 0.09f) / 2f - edgeThickness / 2f, zFront + 0.0015f), new Vector3(w - 0.08f, edgeThickness, 0.003f), Mt(Chrome));
+            // Bottom edge
+            m.Box(new Vector3(cx, cy - (h - 0.09f) / 2f + edgeThickness / 2f, zFront + 0.0015f), new Vector3(w - 0.08f, edgeThickness, 0.003f), Mt(Chrome));
+            // Left edge
+            m.Box(new Vector3(cx - (w - 0.08f) / 2f + edgeThickness / 2f, cy, zFront + 0.0015f), new Vector3(edgeThickness, h - 0.09f, 0.003f), Mt(Chrome));
+            // Right edge
+            m.Box(new Vector3(cx + (w - 0.08f) / 2f - edgeThickness / 2f, cy, zFront + 0.0015f), new Vector3(edgeThickness, h - 0.09f, 0.003f), Mt(Chrome));
             Quaternion outward = Quaternion.Euler(90f, 0f, 0f);
             m.Cylinder(new Vector3(knobX, knobY, zFront), 0.008f, 0.02f, 6, Mt(Brass), outward);
             m.Cylinder(new Vector3(knobX, knobY, zFront + 0.016f), 0.015f, 0.01f, 8, Mt(Brass), outward);

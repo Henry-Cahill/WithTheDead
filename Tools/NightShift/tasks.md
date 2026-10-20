@@ -2455,7 +2455,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `public bool Driven => ExternalSpeed01 > 0f || ExternalAttack || ExternalCloak || _driven;`
   *Result*: When external code sets speed, attack, or cloak flags, `CreatureBody.LateUpdate` will recognise the body as driven and apply the correct animation and cloak state, preventing the creature from appearing dead‑locked or invisible when it should be moving under external control. All other behaviour remains unchanged.
   - 09:46 landed by 0htsserver in 1.1 min: **Changed file**
-- [ ] Add a thin chrome edge strip to each kitchen cupboard door built in FurnitureBuilder.KitchenCupboardDoor (Assets/Scripts/World/FurnitureBuilder.Kitchen.cs) to give the painted panel a realistic metal border.
+- [x] Add a thin chrome edge strip to each kitchen cupboard door built in FurnitureBuilder.KitchenCupboardDoor (Assets/Scripts/World/FurnitureBuilder.Kitchen.cs) to give the painted panel a realistic metal border.
+  - 09:51 landed by 0htsserver in 5.1 min: Implemented a thin chrome edge strip around each kitchen cupboard door in `FurnitureBuilder.Kitchen.cs`. The compilation now succeeds (`COMP
 - [x] Cache the survivor lookup in Assets/Scripts/Rendering/RoomLight.cs to avoid per‑budget GameManager and Camera.main searches.
   Add a private static Transform field `_survivorTransform` to store the last‑found survivor target.
   In `TryGetSurvivor` first check `if (_survivorTransform != null && _survivorTransform.gameObject != null)` and return its `.position`.
