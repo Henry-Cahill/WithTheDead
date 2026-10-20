@@ -804,7 +804,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   (Unity calls this automatically whenever the actor’s child hierarchy is modified.)
   Keep the existing `Cache()` call in `Start()` so the initial renderer list is built.
   This change stops a per‑frame property access and conditional call, saving a tiny but unnecessary allocation‑free check while preserving visual behaviour – actors still update their renderers only when their hierarchy actually changes.
-- [ ] In Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs: Add a “Previous channel” action to `RaidTownFieldRadio.GetActions` and implement its handler
+- [x] In Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs: Add a “Previous channel” action to `RaidTownFieldRadio.GetActions` and implement its handler
   In `GetActions` add a line after the existing “Change channel” entry:
   `into.Add(new InteractAction("Previous channel", PrevChannel).DisabledIf(!near, TooFar));`
   Create a private method `PrevChannel(InteractContext ctx)` that mirrors `Retune` but steps the channel backwards:
@@ -813,6 +813,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `_net = (_net + Nets.Length - 1) % Nets.Length;`
   `MakeNoise(CloneZConfig.ReceiverKnobNoise);`
   `_captionAt = Time.time + CloneZConfig.ReceiverFirstCaption * 0.5f;`
+  - 01:04 landed by hts-llm in 3.9 min: **Changed files**
 - [ ] In Assets/Scripts/Hub/Screens/ServiceScreens.cs, class DeployScreen, method BuildContent, extend the `string[] kinds` array that currently reads
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/PauseMenuController.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.

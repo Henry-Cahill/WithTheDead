@@ -123,6 +123,7 @@ namespace CloneZ
             }
             into.Add(new InteractAction("Switch off the radio", c => Switch(false)).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Change channel", Retune).DisabledIf(!near, TooFar));
+            into.Add(new InteractAction("Previous channel", PrevChannel).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Turn it up", c => Louder(c, 1)).DisabledIf(_volume >= MaxVolume, "It won't go any louder").DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Turn it down", c => Louder(c, -1)).DisabledIf(_volume <= 0, "It's down as low as it goes").DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Key the handset", KeyHandset).DisabledIf(!near, TooFar));
@@ -156,6 +157,16 @@ namespace CloneZ
             Net n = Nets[_net];
             ctx.Notify("You click the channel selector round to " + n.Name + " \u2014 " + n.Title + ".");
         }
+
+        private void PrevChannel(InteractContext ctx)
+        {
+            _net = (_net + Nets.Length - 1) % Nets.Length;
+            MakeNoise(CloneZConfig.ReceiverKnobNoise);
+            _captionAt = Time.time + CloneZConfig.ReceiverFirstCaption * 0.5f;
+            Net n = Nets[_net];
+            ctx.Notify("You click the channel selector round to " + n.Name + " \u2014 " + n.Title + ".");
+        }
+
 
         private void Louder(InteractContext ctx, int step)
         {
