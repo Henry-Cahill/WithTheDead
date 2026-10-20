@@ -2742,11 +2742,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
   - 11:02 hts-llm made no changes: Added no changes – all public members in **Assets/Scripts/UI/GridDragHandle.cs** already have appropriate `<summary>` documentation, and the
-- [ ] Add a tiny carabiner‑style loop to the backpack’s top tube in Assets/Scripts/Player/PlayerGearVisuals.cs, method BuildBackpack(ItemDef def)
+- [x] Add a tiny carabiner‑style loop to the backpack’s top tube in Assets/Scripts/Player/PlayerGearVisuals.cs, method BuildBackpack(ItemDef def)
   After the line `PlayerGearParts.Tube(root, "BagTop", new Vector3(0f, top - d * 0.5f, cz), Vector3.right, w, d * 0.5f, body, true);` insert a small metal “Carabiner” box to suggest a worn attachment point.
   Create it with `PlayerGearParts.Box(root, "Carabiner", new Vector3(0f, top - d * 0.5f + 0.018f, cz + d * 0.5f + 0.006f), new Vector3(0.008f, 0.018f, 0.008f), hardware);`
   Size ≈ 0.008 m × 0.018 m × 0.008 m (thin rectangular loop); placed 0.018 m above the top‑tube surface and 0.006 m outward from the tube’s outer face, using the existing `hardware` material.
   No new colliders or interaction points are added; the primitive follows the same parent as the tube, so it moves with the backpack.
+  - 11:03 landed by 1htsserver in 2.5 min: **Changed file**
 - [ ] Fix null‑reference when capturing loot‑container contents in Assets/Scripts/Core/SaveSystem.cs → `CaptureContainer`
   *Current code* creates a `ContainerSave` and then does `save.Items.Add(...)` without ever creating the list, so any container that holds items throws a `NullReferenceException` during save.
   *Change* the initializer to create the list:
