@@ -1858,3 +1858,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   It sits just below the panel’s top edge (`cy + sh/2 - 0.02`) and a little forward of the panel surface (`face + 0.04`).
   Uses the existing brass material via `Mt(Brass)`.
   Adds only two new primitives total (one per panel) and does not affect colliders or interaction points.
+- [ ] Cache the per‑frame `Camera.main` lookup in `NetPlayers.Tick` (Assets/Scripts/Net/NetPlayers.cs)
+  Add a private static field `static Camera s_MainCamera;` inside the `NetPlayers` class.
+  At the start of `Tick()` obtain the camera with `if (s_MainCamera == null || !s_MainCamera) s_MainCamera = Camera.main;` and then use `s_MainCamera` instead of `Camera.main`.
+  Replace the line `Camera cam = Camera.main;` with `Camera cam = s_MainCamera;`.
+  This removes the costly `FindObjectByType` call each frame; the visual result (player pitch when mouse‑looking) remains unchanged because the same camera is used, and the cache will refresh automatically if the scene creates a new main camera.
+- [ ] In Assets/Scripts/World/Fixtures/RaidStoreSafe.cs: Add a “Force the dial” timed action to RaidStoreSafe.GetActions that takes twice as long as the normal dial work but still opens the safe when finished.
+  In `RaidStoreSafe.GetActions` create a new `InteractAction` named `"Force the dial"` using `CloneZConfig.RaidSafeDialSeconds * 2` for the duration and the same activity `HumanoidActivity.Use`.
+  Assign `Begin` and `Tick` delegates identical to the existing “Work the dial” action (setting `_noiseAt` and calling `MakeNoise(CloneZConfig.RaidSafeDialNoise)`), then set `Run = Crack;`.
+  Add this action to `into` (e.g., `into.Add(force);`) before the existing “Try the handle” action.
+  Result: the player can now choose a slower, more deliberate method to open the safe, seeing the same “Working the dial” progress UI and hearing the same noises, and upon completion the safe opens just like the original action.
+  All existing fields, methods, and config values remain unchanged.
