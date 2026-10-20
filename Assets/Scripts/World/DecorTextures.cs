@@ -551,6 +551,16 @@ namespace CloneZ
                     else if (spot < 0.030f) c = Mul(c, 0.65f); // brushed‑metal edge highlight
                     float r = Fbm(u, v, 4, 3, 121);
                     if (r > 0.55f) c = Color.Lerp(c, rust, Mathf.Clamp01((r - 0.55f) / 0.2f) * 0.8f);
+                    // Add tiny low‑gloss metal scratches
+                    float scr = R01(x, y, 124);
+                    if (scr < 0.004f) {
+                        int len = 2 + (int)(R01(x, y, 125) * 3);
+                        float shade = 0.55f;
+                        for (int i = 0; i < len; i++) {
+                            int ix = Wrap(x + i, S);
+                            px[y * S + ix] = C32(Mul(c, shade));
+                        }
+                    }
                     px[y * S + x] = C32(c);
                 }
             return Finish(key, S, S, px);

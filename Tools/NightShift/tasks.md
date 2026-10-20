@@ -2060,7 +2060,7 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/PlayerModifiers.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
-- [ ] Enhance the “rusty corrugated sheet metal” texture (Assets/Scripts/World/DecorTextures.cs → `public static Texture2D Corrugated(Color color)`) by adding a few tiny, low‑gloss metal scratches that vary per‑tile using the existing deterministic random source.
+- [x] Enhance the “rusty corrugated sheet metal” texture (Assets/Scripts/World/DecorTextures.cs → `public static Texture2D Corrugated(Color color)`) by adding a few tiny, low‑gloss metal scratches that vary per‑tile using the existing deterministic random source.
   Inside the nested `for (int y …) for (int x …)` loop, after the existing rivet‑like rust‑spot logic but before the line `px[y * S + x] = C32(c);`, insert a scratch test:
   `float scr = R01(x, y, 124);`
   `if (scr < 0.004f) { // ~0.4 % of pixels become a scratch`
@@ -2069,6 +2069,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `for (int i = 0; i < len; i++) {`
   `int ix = Wrap(x + i, S);`
   `c = Mul(c, shade); // apply darker tint for the scratch`
+  - 08:07 landed by 1htsserver in 2.7 min: **Changes Made**
 - [x] Add a zone‑check to the fetch‑item gathering logic in Assets/Scripts/Quests/QuestBook.cs so that fetch objectives respect their `Zone` field.
   - 08:07 landed by hts-llm in 1.7 min: **Changed file**
 - [ ] In Assets/Scripts/Survival/Navigation.cs, class ZoneMapScreen, method Build(), add a subtle random “ink blot” on the paper to convey age‑and‑use.
