@@ -94,6 +94,13 @@ namespace CloneZ
 
             Vector3 front = back + normal * solid;
             m.Box(front + normal * 0.001f, new Vector3(w - 0.04f, h - 0.04f, 0.002f), q, M(PanelGrey * 0.8f));
+            // Add four chrome rivet heads on the front panel
+            float rivetX = w * 0.5f - 0.02f;
+            float rivetY = h * 0.5f - 0.02f;
+            m.Box(front + normal * 0.0015f + right * rivetX + Vector3.up * rivetY, new Vector3(0.008f, 0.008f, 0.001f), q, Mt(Chrome));
+            m.Box(front + normal * 0.0015f - right * rivetX + Vector3.up * rivetY, new Vector3(0.008f, 0.008f, 0.001f), q, Mt(Chrome));
+            m.Box(front + normal * 0.0015f + right * rivetX - Vector3.up * rivetY, new Vector3(0.008f, 0.008f, 0.001f), q, Mt(Chrome));
+            m.Box(front + normal * 0.0015f - right * rivetX - Vector3.up * rivetY, new Vector3(0.008f, 0.008f, 0.001f), q, Mt(Chrome));
             Surf body = M(new Color(0.09f, 0.09f, 0.10f)), nub = M(new Color(0.20f, 0.20f, 0.21f));
             for (int col = -1; col <= 1; col += 2)
                 for (int row = 0; row < 5; row++)

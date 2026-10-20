@@ -3146,7 +3146,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   This adds only two primitives, stays inside the existing builder, keeps colliders removed (as `Box` already does), and gives the car a period‑correct visual cue (small metal mirrors) without any modern lighting.
   - 12:40 landed by hts-llm in 3.3 min: Implemented side‑mirror housings for the car:
 - [ ] Fix a missing unsubscription that can cause a hidden‑memory‑leak and potential null‑reference when the hub is re‑initialized, in Assets/Scripts/Hub/Screens/HomeScreens.cs → `HubScreensModule.Init()`
-- [ ] Add four small chrome rivet heads to the front panel of each breaker box in `Assets/Scripts/World/FurnitureBuilder.Lighting.cs` `BreakerBox` method
+- [x] Add four small chrome rivet heads to the front panel of each breaker box in `Assets/Scripts/World/FurnitureBuilder.Lighting.cs` `BreakerBox` method
   Add the rivets after the line `m.Box(front + normal * 0.001f, new Vector3(w - 0.04f, h - 0.04f, 0.002f), q, M(PanelGrey * 0.8f));`
   Compute the panel‑edge offsets: `float rivetX = w * 0.5f - 0.02f; float rivetY = h * 0.5f - 0.02f;`
   Place four tiny boxes (0.008 m × 0.008 m × 0.001 m) slightly in front of the panel:
@@ -3155,6 +3155,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(front + normal * 0.0015f + right * rivetX - Vector3.up * rivetY, new Vector3(0.008f, 0.008f, 0.001f), q, Mt(Chrome));`
   `m.Box(front + normal * 0.0015f - right * rivetX - Vector3.up * rivetY, new Vector3(0.008f, 0.008f, 0.001f), q, Mt(Chrome));`
   These rivets give the steel breaker box a period‑appropriate fastener detail without altering colliders or interaction points.
+  - 12:43 landed by hts-llm in 1.9 min: **Summary**
 - [ ] In Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs: cache the per‑frame “radio‑off” check by disabling the MonoBehaviour when the radio is off and re‑enabling it when turned on.
   Change `Switch(bool on)` to set `this.enabled = on;` after updating `_on`.
   In `Create(...)` set `r.enabled = false;` (the radio starts off).
