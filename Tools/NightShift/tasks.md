@@ -2254,3 +2254,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   *Fix:* remove the stray `)` after the position `Vector3` so the call has the correct four arguments. The corrected line should be:
   `m.Box(new Vector3(R(rng, -0.2f, 0.6f), 0.93f, R(rng, -0.2f, 0.25f)), new Vector3(R(rng, 0.04f, 0.2f), 0.025f, 0.04f), Yaw(R(rng, 0f, 180f)), Mt(new Color(0.4f, 0.4f, 0.42f)));`
   *Result:* the script compiles, allowing the tool‑bench to appear with its randomly placed tool‑box decorations; the rest of the game’s visuals remain unchanged.
+- [ ] Add a small metal “logo plate” detail to each vending machine built in `VendingAt(RaidBuilding b, RaidRoom room, RaidBuilding.Place p, bool lit)` in Assets/Scripts/World/RaidLayoutsOffice.cs
+  Add a thin rectangular box (≈0.10 m × 0.02 m × 0.001 m) on the front face, slightly above the coin slot, with a tiny random horizontal offset so every machine looks a bit different.
+  Insert the following code right after the existing coin‑slot PieceAt call (preserving the existing comment):
+  `// Small metal logo plate above the coin slot, random horizontal jitter`
+  `float logoX = (float)(b.Rng.NextDouble() * 0.04 - 0.02);`
+  `Vector3 logoPos = new Vector3(logoX, 1.4f, 0.41f);`
+  `KitchenParts.PieceAt(t, "VendingLogo", f, logoPos,`
+  `m => { m.Box(Vector3.zero, new Vector3(0.10f, 0.02f, 0.001f),`
+  `DecorPalette.Metal(FurnitureBuilder.Chrome)); });`
