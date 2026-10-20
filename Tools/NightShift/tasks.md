@@ -732,12 +732,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   In Awake() add `_cam = Camera.main;` so the reference is obtained at startup.
   Remove the null‑check/lookup inside ApplyRain(): delete the lines
   - 00:44 landed by 1htsserver in 3 min: **Changes made**
-- [ ] Add a simple “Inspect” extra action to CivicToggle in Assets/Scripts/World/Fixtures/RaidCivicFixtures.cs
+- [x] Add a simple “Inspect” extra action to CivicToggle in Assets/Scripts/World/Fixtures/RaidCivicFixtures.cs
   In class `CivicToggle` create a private method `void Inspect(InteractContext ctx)` that calls
   `ctx.Notify($"The {_name} is currently {(_on ? "on" : "off")}.");`
   In the static `Create` method, after the line `t._offLabel = offLabel;` add:
   `t._extra = (c, list) => list.Add(new InteractAction("Inspect", Inspect));`
   This adds a second action listed after the main toggle action; pressing [Q] will show the current on/off state without changing anything. All existing fields and behavior remain unchanged.
+  - 00:49 landed by 0htsserver in 6.7 min: Implemented a new **Inspect** action for `CivicToggle`:
 - [x] In Assets/Scripts/World/Fixtures/RaidTownMailDrop.cs append six new flavor letters to the `Letters` array, using the style of the first entry ("A drift of envelopes. The top one is addressed to the county tax office in a careful hand, stamped and sealed. Somebody still meant to pay.") and covering themes of eviction, church notice, family recipe, missing‑child flyer, ration‑card reminder, and a winter‑storm warning.
   Add the following quoted strings after the current last element in the `Letters` initializer, preserving the existing commas and formatting:
   "An eviction notice, type‑written on yellowed stock, stating the lease ends March 1st and the landlord will lock the doors at sunrise. No response."
