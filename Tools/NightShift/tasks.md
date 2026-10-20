@@ -2347,3 +2347,7 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Player/PlayerCombat.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Fix null SaveKey in Assets/Scripts/World/Fixtures/LivingReceiver.cs so saving/loading never throws a NullReferenceException
+  Current line: `public override string SaveKey => _host != null ? KeyFor(SaveKind, _host.position) : null;`
+  When the fixture is instantiated but Init has not yet run, _host is null, so SaveKey returns null. The save system later uses this value as a dictionary key, causing a NullReferenceException or key‑collision errors.
+  Change the getter to always return a valid key, falling back to the component’s own transform when the host is missing:
