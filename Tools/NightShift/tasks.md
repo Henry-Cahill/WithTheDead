@@ -946,7 +946,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   insert a new mesh that creates a small box (representing a knob) of size `new Vector3(0.012f, 0.012f, 0.005f)` positioned at `l.P(o.Pos + 0.03f, SashMeet + 0.038f, inner + 0.011f)` using the same `brass` material, and attach it under `latchOpen.transform` via `WindowPart`.
   This adds a period‑correct brass detail to the latch, visible on every window, without altering colliders or interaction points.
   - 02:01 landed by hts-llm in 2.9 min: **Changed file**
-- [ ] In Assets/Scripts/AI/Humans/HumanNpc.cs: Add an “Intimidate” action to HumanNpcInteract.GetActions that lets the player force a non‑surrendered NPC to give up if the player is visibly armed.
+- [x] In Assets/Scripts/AI/Humans/HumanNpc.cs: Add an “Intimidate” action to HumanNpcInteract.GetActions that lets the player force a non‑surrendered NPC to give up if the player is visibly armed.
   In HumanNpcInteract.GetActions, after the existing `into.Add(new InteractAction("Talk", Talk));` line, insert:
   `into.Add(new InteractAction("Intimidate", c => {`
   `if (!c.Inventory.Has("pistol")) return;`
@@ -954,6 +954,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `else { GameEvents.RaiseSubtitle(_npc.Name, "You think you can scare me?"); }`
   `}).DisabledIf(!ctx.Inventory.Has("pistol"), "Need a weapon"));`
   This uses the existing `pistol` item ID, the public `HumanNpc.Surrender()` method, and the existing `GameEvents.RaiseSubtitle` call, providing a new small interaction that fits the tense, winter‑bound setting.
+  - 02:04 landed by 0htsserver in 3.7 min: **Changes made**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Zombies/ZombieHealth.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.

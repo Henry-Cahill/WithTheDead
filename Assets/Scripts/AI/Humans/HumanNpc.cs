@@ -563,7 +563,7 @@ namespace CloneZ
             Bark("Falling back!");
         }
 
-        private void Surrender()
+        public void Surrender()
         {
             State = Mode.Surrendered;
             Actor.Surrendered = true;
@@ -896,6 +896,11 @@ namespace CloneZ
             }
 
             into.Add(new InteractAction("Talk", Talk));
+                into.Add(new InteractAction("Intimidate", c => {
+                    if (!c.Inventory.Has("pistol")) return;
+                    if (Random.value < 0.5f) { _npc.Surrender(); GameEvents.RaiseSubtitle(_npc.Name, "I don't want any trouble… I give up!"); }
+                    else { GameEvents.RaiseSubtitle(_npc.Name, "You think you can scare me?"); }
+                }).DisabledIf(!ctx.Inventory.Has("pistol"), "Need a weapon"));
             if (CompanionService.CanHire(_npc))
             {
                 int fee = CompanionService.FeeFor(_npc);
