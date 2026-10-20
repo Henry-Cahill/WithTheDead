@@ -1964,9 +1964,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   This gives the survivor a non‑functional description action, appearing as an extra option next to the “Throw the power switch” action in the interaction UI.
   No other code, assets, or UI changes are required.
   - 07:38 landed by hts-llm in 2 min: **Changed**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/HudViewKit.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/HudViewKit.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 07:45 landed by 0htsserver in 8 min: **Changed files**
 - [x] In Assets/Scripts/World/FurnitureBuilder.cs: Add a small metal pull‑handle to each fridge in `FurnitureBuilder.Fridge(RaidMesh m, System.Random rng, Color body)` so the appliance has a period‑correct grip.
   Inside the method, after the magnet/note loop, insert a box for the handle using the existing chrome material.
   Use a deterministic random offset for realism:
