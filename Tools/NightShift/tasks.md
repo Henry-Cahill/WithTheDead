@@ -1154,3 +1154,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   Locate the line
   `wall.At(wall.Solid, new Vector3(x, 0f, 0f), 0f, m => m.Box(new Vector3(0f, 6f, 0f), new Vector3(8.1f, 12f, 2.2f), ZoneKit.M(ZoneKit.V(ZoneKit.ConcreteDark, rng))));`
   After this call (or as a second `wall.At` on the same position) add up to four tiny cylinders representing bolts:
+- [ ] In Assets/Scripts/Player/PlayerStats.cs: Cache PlayerModifiers.Current and SandboxSettings.Current once per frame in PlayerStats.Update to avoid repeated static/property lookups and dictionary string lookups in the survival‑updates.
