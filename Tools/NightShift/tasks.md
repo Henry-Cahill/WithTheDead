@@ -2077,3 +2077,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   Size the blot 0.03 m × 0.03 m (≈ 30 px square) and colour it `new Color(0.2f, 0.15f, 0.1f, 0.85f)` (dark brown, semi‑transparent).
   Place it with `UIKit.Place(ink.rectTransform, new Vector2(0.5f,0.5f), new Vector2(0.5f,0.5f), new Vector2(offsetX, offsetY), new Vector2(30f,30f));`.
   Keep the blot as a child of `_paper` so colliders, interaction points and pivots remain unchanged, and add no more than one primitive (the blot) to stay within the ~12‑primitive limit.
+- [ ] In Assets/Scripts/World/Fixtures/RainBarrelFixture.cs: Add a “Wash your face in the barrel” timed action to `RainBarrelFixture.GetActions` (clone the existing Wash action but use a smaller Freshen factor and a different notification).
