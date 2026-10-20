@@ -3873,3 +3873,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   (Only the stray `)` is removed; all other arguments remain unchanged.)
   After this fix the script compiles, the door splinter geometry is generated, and the brass strike plate shows up as intended.
 - [ ] In Assets/Scripts/UI/InventoryUIController.List.cs, enhance each item entry row with a subtle “wear‑edge” strip that hints at the item’s condition.
+- [ ] Add a generic “Shake” instant action helper to Assets/Scripts/World/Interaction/Interactable.cs that lets any fixture emit a short noise and give the player a toast, e.g. to lure zombies or alert the survivor.
