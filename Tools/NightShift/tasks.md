@@ -1847,9 +1847,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   “Barn door hinges seized from the cold; any handy tools can be dropped off at the cooper’s shed.”
   “Church bulletin: pot‑luck after Sunday service—bring a casserole or preserves; no store‑bought food.”
   - 06:56 landed by 1htsserver in 1.8 min: **Changed**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/ToiletFixture.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/ToiletFixture.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 07:09 landed by 1htsserver in 13.3 min: Added concise XML‑summary comments to every public, non‑override member in **Assets/Scripts/World/Fixtures/ToiletFixture.cs**:
 - [ ] In Assets/Scripts/Extraction/RaidSummaryUI.cs, enhance the report Panel built in `Build` by adding four tiny dark “rivet” squares at its corners to suggest a worn metal‑framed board.
 - [x] Add a subtle brass hinge near the top‑outer edge of each louvred shutter panel in `Assets/Scripts/World/FurnitureBuilder.RaidOpenings.cs` → method `OpeningShutters` so the shutters look properly hung.
   After the line `m.Box(l.P(c, cy, side * (face + 0.02f)), l.Size(sw, sh, 0.03f), panel);` insert

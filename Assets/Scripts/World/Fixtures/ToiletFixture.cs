@@ -65,14 +65,20 @@ namespace CloneZ
         #region IWaterPoint
         // While the cistern's lid is on there's no getting at the water, so the point lies far out of reach and G passes
         // the toilet over (for the basin, say).
+        /// <summary>World-space position of the cistern's water point (or far away when the lid is closed).</summary>
         public Vector3 WaterPosition => _cisternOff ? _water : OutOfReach;
+        /// <summary>Label used for UI when displaying water source information.</summary>
         public string WaterLabel => "cistern";
+        /// <summary>Indicates whether the cistern currently holds enough water to drink.</summary>
         public bool HasWater => _cisternOff && _level >= DrinkShare * 0.5f;
+        /// <summary>Indicates the cistern water is always considered tainted (unfiltered).</summary>
         public bool IsTainted => true;
+        /// <summary>Message shown when the cistern lid is on or water is unavailable.</summary>
         public string DryMessage => !_cisternOff ? "The cistern's lid is on"
             : WaterMains.MainsOn ? "The cistern's empty \u2014 it's filling again"
             : "The cistern's dry, and with the water off it won't fill again";
 
+        /// <summary>Reduces the cistern water level by one drink share and updates the visual level.</summary>
         public void DrawWater()
         {
             _level = Mathf.Max(0f, _level - DrinkShare);
@@ -82,6 +88,7 @@ namespace CloneZ
 
         /// <summary>The toilet's fixture on <paramref name="host"/> (the toilet itself): its points come from the toilet's
         /// drawing (<see cref="FurnitureBuilder.ToiletBody"/>) and its key from where it stands.</summary>
+        /// <summary>Creates a new toilet fixture instance attached to the given home furniture.</summary>
         internal static ToiletFixture Create(HomeFurniture host)
         {
             Vector3 point = BathroomFixtures.Point(host, FurnitureBuilder.ToiletReach);
@@ -99,6 +106,7 @@ namespace CloneZ
 
         /// <summary>Hands over the moving parts (seat, lid, cistern lid and flush lever, each hinged to open) and the
         /// cistern's water sheet (drawn full; it sinks with the level).</summary>
+        /// <summary>Sets up the moving parts (seat, lid, cistern lid, lever, sheet) for the toilet.</summary>
         internal void SetParts(FixturePart seat, FixturePart lid, FixturePart cisternLid, FixturePart lever, Renderer sheet)
         {
             _seat = seat;
@@ -127,6 +135,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Updates the visual parts of the toilet (seat, lid, cistern lid) instantly.</summary>
         private void ShowParts(bool instant)
         {
             if (_seat != null) _seat.SetOpen(_seatUp, instant);
@@ -134,6 +143,7 @@ namespace CloneZ
             if (_cisternLid != null) _cisternLid.SetOpen(_cisternOff, instant);
         }
 
+        /// <summary>Updates the visual water sheet to reflect the current cistern level.</summary>
         private void ShowLevel()
         {
             if (_sheet == null) return;
@@ -142,6 +152,7 @@ namespace CloneZ
             _sheet.position = _sheetFull + Vector3.down * ((1f - _level) * FurnitureBuilder.ToiletCisternDepth);
         }
 
+        /// <summary>Generates the list of actions (lift lid, use, flush, sit, etc.) for the player.</summary>
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             // [E] follows the everyday round: lift the lid, use it, flush it, close the lid.
@@ -160,6 +171,7 @@ namespace CloneZ
             into.Add(new InteractAction("Look into the cistern", LookIn));
         }
 
+        /// <summary>Adds a single interaction step (lid, use, or flush) to the action list.</summary>
         private void AddStep(List<InteractAction> into, Step step)
         {
             switch (step)
@@ -181,6 +193,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Sets the lid state and updates related parts (seat, flush state).</summary>
         private void SetLid(bool up)
         {
             _lidUp = up;
@@ -193,6 +206,7 @@ namespace CloneZ
             MakeNoise(up ? CloneZConfig.ToiletLiftNoise : CloneZConfig.ToiletLidNoise);
         }
 
+        /// <summary>Sets the seat state and ensures the lid is up if the seat is raised.</summary>
         private void SetSeat(bool up)
         {
             _seatUp = up;
@@ -201,6 +215,7 @@ namespace CloneZ
             MakeNoise(up ? CloneZConfig.ToiletLiftNoise : CloneZConfig.ToiletLidNoise);
         }
 
+        /// <summary>Handles the player trying to sit on the toilet, with appropriate checks.</summary>
         private void SitDown(InteractContext ctx)
         {
             if (ctx.Seat == null)
@@ -212,6 +227,7 @@ namespace CloneZ
         }
 
         // Sits down for the job (unless already sitting here), and gets up again after.
+        /// <summary>Prepares the survivor to sit for using the toilet, handling initial sit if needed.</summary>
         private void SitToUse(InteractContext ctx)
         {
             _satToUse = false;
@@ -220,6 +236,7 @@ namespace CloneZ
             _satToUse = seat.TrySit(this, SitPoint, Facing, CloneZConfig.ToiletSitComfort, out _);
         }
 
+        /// <summary>Makes the survivor stand up after using the toilet if they were seated.</summary>
         private void StandFromUse(InteractContext ctx)
         {
             if (!_satToUse) return;
@@ -228,6 +245,7 @@ namespace CloneZ
             if (seat != null && seat.IsSeated && seat.CurrentSeat == this) seat.Stand();
         }
 
+        /// <summary>Handles the core "use" action: sits, sets flush flag, and notifies a random line.</summary>
         private void Used(InteractContext ctx)
         {
             StandFromUse(ctx);
@@ -239,6 +257,7 @@ namespace CloneZ
             ctx.Notify(line);
         }
 
+        /// <summary>Flushes the cistern, plays sound, and notifies the player of the result.</summary>
         private void Flush(InteractContext ctx)
         {
             bool mains = WaterMains.MainsOn;
@@ -257,6 +276,7 @@ namespace CloneZ
                 : "Down it all goes with a roar, then silence. The cistern doesn't refill. The water's off.");
         }
 
+        /// <summary>Opens or closes the heavy cistern lid and updates the visual state.</summary>
         private void SetCisternLid(InteractContext ctx, bool off)
         {
             _cisternOff = off;
@@ -267,6 +287,7 @@ namespace CloneZ
                 : "You set the cistern lid back on with a careful clunk.");
         }
 
+        /// <summary>Shows a description of the current cistern water level to the player.</summary>
         private void LookIn(InteractContext ctx)
         {
             bool mains = WaterMains.MainsOn;
@@ -281,12 +302,14 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Saves the toilet's state (seat, lid, cistern, flush flag, level).</summary>
         public override void CaptureState(FixtureSave save)
         {
             save.State = (_seatUp ? 1 : 0) | (_lidUp ? 2 : 0) | (_cisternOff ? 4 : 0) | (_wantsFlush ? 8 : 0) | 16;
             save.A = _level;
         }
 
+        /// <summary>Restores the toilet's saved state, resetting visual parts accordingly.</summary>
         public override void RestoreState(FixtureSave save)
         {
             if ((save.State & 16) == 0) return;
