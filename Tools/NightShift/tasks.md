@@ -712,9 +712,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   – "Don't trust the warden's radio—static's a sign they're listening."
   Preserve all existing entries and the overall dictionary syntax; only the Freehold array should be modified.
   - 00:39 landed by 1htsserver in 4.2 min: **Changed file**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/AI/Creatures/CreatureCatalog.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [~] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/AI/Creatures/CreatureCatalog.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 00:40 0htsserver made no changes: **Changed file**
 - [x] Add a small metal door handle to the fridge in Assets/Scripts/World/HomeFurniture.cs → `DrawPlain` method, `case HomeFurnitureKind.Fridge:`
   After the existing `FurnitureBuilder.Fridge(m, rng, …)` call, insert code that creates a thin box primitive for a handle:
   Use `bool left = rng.Next(2) == 0;` to pick left or right side deterministically.
