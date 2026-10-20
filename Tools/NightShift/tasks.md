@@ -3126,3 +3126,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Set its offsets to `new Vector2(1f, 1f)` and `new Vector2(-1f, -1f)` (≈ 1 pixel inset on all sides) to create a 1‑unit inner frame.
   Add an `Image` component to the border and colour it `new Color(0f, 0f, 0f, 0.2f)` (a subtle dark tint).
   This gives every UI button a faint beveled edge that matches the existing colour palette while keeping colliders and interaction unchanged.
+- [ ] Add a “Check battery” action to Assets/Scripts/World/Fixtures/ClockFixture.cs that reports whether the clock’s battery is flat or still functional.
+  Add `into.Add(new InteractAction("Check battery", CheckBattery));` next to the existing “Check the time” line in GetActions.
+  Implement a private method `CheckBattery(InteractContext ctx)` that reads `_stoppedAt` and notifies:
+  If `_stoppedAt >= 0f` → `"The battery is dead; the hands have stopped."`
+  Otherwise → `"The battery is fine; the clock is running."`
+  No new fields, UI screens, or external methods are required; only the existing `_stoppedAt` field and `ctx.Notify` are used.
+  In‑game the survivor now sees a “Check battery” option when interacting with the wall clock, giving clear feedback on the clock’s power state.
