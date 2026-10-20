@@ -1015,13 +1015,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   `{`
   `float offsetX = (float)rng.NextDouble() * 6f - 3f; // ±3 px random shift`
   `float width = 760f - (float)rng.NextDouble() * 20f; // slight length variation`
-- [ ] Fix the armor class upgrade check in Assets/Scripts/Weapons/WeaponUpgrades.cs so that the “Ceramic inserts” upgrade always raises armor class (up to 6) instead of being ignored when the base class is 0.
+- [x] Fix the armor class upgrade check in Assets/Scripts/Weapons/WeaponUpgrades.cs so that the “Ceramic inserts” upgrade always raises armor class (up to 6) instead of being ignored when the base class is 0.
   In `Effective(ArmorStats a, ItemExtra extra)` the line
   `if (u.Contains("a_plate2") && e.Class > 0) e.Class = Mathf.Min(6, e.Class + 1);`
   prevents the upgrade from applying to armor pieces whose `Class` starts at 0, contradicting the node description “+1 armour class (max 6)”.
   Change it to:
   `if (u.Contains("a_plate2")) e.Class = Mathf.Min(6, e.Class + 1);`
   The player will now see the “Ceramic inserts” upgrade increase armor class for any applicable armor, including those with class 0, matching the intended game mechanic. All other behavior stays unchanged.
+  - 02:19 landed by hts-llm in 0.9 min: **Changed**: `Assets/Scripts/Weapons/WeaponUpgrades.cs` – removed the `e.Class > 0` guard in the ceramic inserts upgrade logic.
 - [ ] Add a subtle torn‑fur strip to the torso of all quadruped creatures built in `CreatureBody.Build` (method `Quad` in *Assets/Scripts/AI/Creatures/Creatures.cs*).
   In the `CreatureParts.Attach(_torso, …)` call, append an extra `Add` that creates a thin box representing a ragged strip of fur.
   Use a size of 0.1 m × 0.2 m × 0.02 m (`new Vector3(bodyW * 0.1f, bodyH * 0.2f, 0.02f)`).
