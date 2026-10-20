@@ -60,6 +60,7 @@ namespace CloneZ
         public bool IsTainted => false;
         public string DryMessage => _level > 0.02f ? "There's barely a puddle left in the basin" : "The tap is dry \u2014 the water's been shut off";
 
+        /// <summary>Drains water from the basin when the mains are off, reducing the stored level and updating the visual.</summary>
         public void DrawWater()
         {
             if (WaterMains.MainsOn) return;   // straight from the tap: as much as you like while it runs
