@@ -213,6 +213,7 @@ namespace CloneZ
             into.Add(new InteractAction("Turn off the radio", _turnOff).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Change channel", _retune).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Turn it up", _louder).DisabledIf(_volume >= MaxVolume, "It won't go any louder").DisabledIf(!near, TooFar));
+                into.Add(new InteractAction("Turn it down", _softer).DisabledIf(_volume <= 0, "It won't go any quieter").DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Check channel", _checkChannel).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Key the handset and call for help", _callIn)
                 .Timed(2.5f, "Calling in", HumanoidActivity.Use)

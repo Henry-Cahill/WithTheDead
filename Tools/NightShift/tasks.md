@@ -2515,11 +2515,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Remove the line `if (_cam == null) _cam = Camera.main;` from `UpdateFocus()` so the cached field is always used.
   Keep the `_cam` field declaration unchanged; no other logic changes.
   This eliminates a per‑frame search of the scene hierarchy for the main camera, improving performance with no visible effect for the player.
-- [ ] Add a “Turn it down” action to Assets/Scripts/World/Fixtures/RaidCivicRadio.cs so the survivor can lower the radio volume.
+- [x] Add a “Turn it down” action to Assets/Scripts/World/Fixtures/RaidCivicRadio.cs so the survivor can lower the radio volume.
   Insert a new InteractAction after the existing “Turn it up” line in GetActions :
   `into.Add(new InteractAction("Turn it down", _softer).DisabledIf(_volume <= 0, "It won't go any quieter").DisabledIf(!near, TooFar));`
   This uses the already‑defined _softer delegate, mirrors the “Turn it up” disabled conditions, and keeps all other logic unchanged.
   The player will now see a “[Q] Turn it down” option when near the knobs, and the volume will decrement with the same notification text as Turn provides.
+  - 10:08 landed by hts-llm in 1.6 min: **Summary**
 - [ ] Append four new flavour‑text strings to the `UseLines` array in Assets/Scripts/World/Fixtures/ToiletFixture.cs, preserving the existing entries and placing the new sentences after the current last line; the player will see one of these lines when they “use” the toilet.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Gadgets/Gadgets.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
