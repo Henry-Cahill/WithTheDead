@@ -3208,3 +3208,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   – In `Stop()` after setting `_running = false;` add `enabled = false;` to suspend the per‑frame callback until the next successful pull.
   – Keep the existing `ShowRunning(bool)` logic unchanged; it still toggles the lamp visual.
   – The player will see exactly the same behaviour (generator starts, runs, stops, lamp lights) because the visual and audio logic remains identical; only the hidden `Update` calls are suppressed when the generator is idle, reducing unnecessary frame‑time work.
+- [ ] Add a “Check water level” action to Assets/Scripts/World/Fixtures/KitchenSink.cs that lets the player see how much water is left in the sink.
+  In `GetActions` append `into.Add(new InteractAction("Check water level", ShowWaterLevel));` (place it after the existing “Empty the sink” action block).
+  Implement a private method `ShowWaterLevel(InteractContext ctx)` that computes the fill percentage using `_level` and `CloneZConfig.KitchenBasinCapacity` and notifies the player, e.g. `ctx.Notify($"The sink holds {(_level/CloneZConfig.KitchenBasinCapacity*100f):0}% of its capacity.");`.
+  No new UI screens, items, or external assets are required; the method uses only fields and constants already present in the class.
