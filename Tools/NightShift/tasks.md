@@ -2300,9 +2300,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 09:04 landed by 1htsserver in 5.1 min: **Changed file**
 - [x] Add a second interaction “Inspect lamp” to Assets/Scripts/World/Fixtures/LampSwitch.cs by extending LampSwitch.GetActions and adding a small private method.
   - 09:02 landed by 0htsserver in 1.7 min: **Changed files**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/RaidCivicSink.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/RaidCivicSink.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 09:06 landed by 0htsserver in 4.3 min: Added concise one‑sentence XML‑summary comments for every public member of **Assets/Scripts/World/Fixtures/RaidCivicSink.cs** that lacked do
 - [ ] Fix a potential out‑of‑range exception in `Dsp.CrossfadeLoop` (Assets/Scripts/Audio/Synth/SynthCore.cs)
   · The method assumes `loopLen <= x.Length` and does `Array.Copy(x, o, loopLen);` which throws if a longer loop length is requested.
   · Add a guard that caps `loopLen` to `x.Length` before allocating and copying, e.g. `if (loopLen > x.Length) loopLen = x.Length;`.
