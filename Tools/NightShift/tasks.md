@@ -3431,7 +3431,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   In Awake() after `Build();` assign them: `_viewState = ViewState.Instance;` and `_settings = GameSettings.Instance;`.
   Replace the line `bool show = IsoCameraFollow.MouseLookEngaged && ViewState.Current != CameraView.Bodycam && GameSettings.Current.ShowCrosshair;` with `bool show = _cam.MouseLookEngaged && _viewState.Current != CameraView.Bodycam && _settings.ShowCrosshair;`.
   This removes three static/property lookups each frame (the `IsoCameraFollow` singleton, `ViewState.Current`, and `GameSettings.Current`) while preserving the exact visual behavior of the crosshair.
-- [ ] Add a “Relax” timed action for survivors sitting in the RaidStoreSwivelSeat (Assets/Scripts/World/Fixtures/RaidStoreSwivelSeat.cs)
+- [x] Add a “Relax” timed action for survivors sitting in the RaidStoreSwivelSeat (Assets/Scripts/World/Fixtures/RaidStoreSwivelSeat.cs)
   In `GetActions` inside the `if (seat.IsSittingOn(this))` block, after adding `SpinRound()` insert `into.Add(Relax());`
   Create a new private method `InteractAction Relax()` similar to `SpinRound()` that:
   Uses `CloneZConfig.RaidSwivelSpinSeconds` for its duration (no actual spinning occurs)
@@ -3439,6 +3439,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Does not modify `_spin` or `_spinSpeed`
   Plays the same small fixture noise via `MakeNoise(CloneZConfig.FixtureNoiseSmall);` when the action begins
   The player should now see an extra “Relax” option when already seated, allowing a short timed rest that grants the same calm bonus as a spin round without turning the chair. All existing fields, constants and methods remain unchanged.
+  - 14:13 landed by hts-llm in 4.3 min: **Changes made**
 - [ ] Append four Kentucky‑winter themed flavour‑text trait entries to the `ProfessionCatalog.Traits` list in Assets/Scripts/Profile/ProfessionCatalog.cs; each entry must use a full‑sentence blurb that could appear on a note, radio log, wall scribble or scrap of paper the survivor might find, and the `Apply` action can be a harmless no‑op (e.g. `m => {}`).
 - [ ] Add a small rust‑colored latch and two bolts to the front of the crypt niche in the cemetery landmark (Assets/Scripts/World/Zone/ZoneLandmarks.cs, method Cemetery(SiteBuilder sb))
   Quote the existing crypt‑niche geometry: `sb.Solid.Box(new Vector3(0f, 1.4f, 5.4f), new Vector3(4f, 2.8f, 2.4f), ZoneKit.M(stone));`
