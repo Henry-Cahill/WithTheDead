@@ -3668,3 +3668,17 @@ you want to see in game. Indent extra lines under a task to add detail.
   In the `Wash`, `Brush` and `Shave` methods, delete the line `ReturnTap(ctx);` that appears as the first statement.
   After this change, when the mains are off and the player has the plug in, the basin will stay filled during the timed “wash”, “brush”, or “shave” actions, letting the player actually use the stored water instead of instantly getting a “dry” message.
   All other code, including the `Begin = BorrowTap` and `Stopped = ReturnTap` assignments in `GetActions`, should remain unchanged.
+- [ ] In Assets/Scripts/World/WaterSource.cs: Add a ring of tiny brass rivet heads around the barrel’s mid‑section in `WaterSource.BuildBarrel` so the rain barrel looks weathered and metal‑fastened.
+  Create a `System.Random` with the same seed (`1993`) already used for the tap and use it to place 4–6 rivets evenly spaced around the barrel at `y = 0.5f` (mid‑height).
+  For each rivet call `m.Cylinder(new Vector3(Mathf.Sin(angle) * (r + 0.01f), 0.5f, Mathf.Cos(angle) * (r + 0.01f)), 0.008f, 0.004f, 8, DecorPalette.Metal(FurnitureBuilder.Brass));`
+  `r` is the barrel radius (`const float r = 0.34f`).
+  This adds ≤ 8 primitives, reuses the existing `Brass` metal material, keeps colliders unchanged, and gives the barrel a period‑appropriate, worn look.
+- [ ] In Assets/Scripts/Extraction/ExtractionManager.cs: Cache the GameManager singleton in ExtractionManager to avoid per‑frame look‑ups
+  Add a private field `private GameManager _gm;` to the class.
+  In `Setup(PlayerStats player)` assign `_gm = GameManager.Instance;` after `_killsAtStart` is set.
+  Replace all `GameManager.Instance` usages inside per‑frame methods with `_gm`:
+  – In `TickRaid` change `if (_player == null && GameManager.Instance != null) BindPlayer(GameManager.Instance.Player);` to `if (_player == null && _gm != null) BindPlayer(_gm.Player);`.
+  – In `TickRaid` change `if (_player != null && _player.IsDead) { EndRaid(RaidState.Dead, null); return; }` (no change).
+  – In `TickDawnClock` keep as is (no GameManager).
+  – In `BuildSummary` replace `GameManager gm = GameManager.Instance;` with `GameManager gm = _gm;`.
+  – In `RecordOutcome` replace `CharacterProfile c = ProfileStore.ActiveCharacter;` stays, but keep existing GameManager calls unchanged.
