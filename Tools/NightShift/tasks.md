@@ -2245,3 +2245,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
 - [ ] In Assets/Scripts/World/Zone/ZoneOverlays.cs, modify ZoneIndustry.Build inside the *pipe runs on trestles* loop to add a few rust‑stained bolt heads on each rectangular pipe‑support box.
+- [ ] Fix a compilation‑breaking typo in `FurnitureBuilder.ToolBench` (Assets/Scripts/World/FurnitureBuilder.Utility.cs)
+  The `for`‑loop that adds random tool‑box decorations contains an extra closing parenthesis, breaking the `m.Box` call and preventing the script from compiling.
+  Current line:
+  `m.Box(new Vector3(R(rng, -0.2f, 0.6f), 0.93f, R(rng, -0.2f, 0.25f)), new Vector3(R(rng, 0.04f, 0.2f), 0.025f, 0.04f), Yaw(R(rng, 0f, 180f)), Mt(new Color(0.4f, 0.4f, 0.42f)));`
+  *Fix:* remove the stray `)` after the position `Vector3` so the call has the correct four arguments. The corrected line should be:
+  `m.Box(new Vector3(R(rng, -0.2f, 0.6f), 0.93f, R(rng, -0.2f, 0.25f)), new Vector3(R(rng, 0.04f, 0.2f), 0.025f, 0.04f), Yaw(R(rng, 0f, 180f)), Mt(new Color(0.4f, 0.4f, 0.42f)));`
+  *Result:* the script compiles, allowing the tool‑bench to appear with its randomly placed tool‑box decorations; the rest of the game’s visuals remain unchanged.
