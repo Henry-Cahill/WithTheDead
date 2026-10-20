@@ -2774,3 +2774,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   `"*three falling tones; the relay begins again*",`
   `"Evacuation notice: snow‑blocked roads on Highway 7, expect delays. Seek shelter until cleared.",`
   `"All units, maintain firewatch; temperatures dropping below minus ten, frostbite risk high.",`
+- [ ] Add a tiny “metal‑cap” visual to each pause‑menu item’s accent bar in Assets/Scripts/UI/PauseMenuController.cs, inside the `BuildItem(Item it, int index)` method right after the existing accent Image is created.
+  Create a new GameObject `Cap{index}` with a RectTransform parented to `it.Accent.transform`.
+  Set the anchor & pivot to the top‑center (`anchorMin = anchorMax = new Vector2(0.5f, 1f)`), pivot `new Vector2(0.5f, 1f)`.
+  Position it at `anchoredPosition = new Vector2(0f, 0f)` and give it a size of `new Vector2(6f, 4f)` (metres are UI units; matches existing UI scale).
+  Add an Image component, set its color to `HudUI.WithAlpha(Dim, 0.6f)` (re‑using the Dim colour already defined).
+  Vary the width slightly for visual variety using the deterministic index: `float w = 5f + (index % 3) * 0.5f; rrt.sizeDelta = new Vector2(w, 4f);`
+  Result: each menu row now shows a small rectangular “cap” at the top of the coloured accent bar, giving a subtle worn‑metal look that fits the 1993‑rural aesthetic without affecting colliders, interaction points, or existing layout.
