@@ -4105,11 +4105,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   A static‑filled radio transmission giving a last‑minute evacuation order.
   Add them as follows (replace `<…>` with the exact strings):
   - 18:44 landed by 0htsserver in 6.5 min: Added four new faction definitions to **Assets/Scripts/Core/Factions.cs** after the existing `caverelative` entry:
-- [ ] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildStreetLights` to make lit street‑light poles scatter randomly instead of being limited to the closest `LitPoles` entries.
+- [x] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildStreetLights` to make lit street‑light poles scatter randomly instead of being limited to the closest `LitPoles` entries.
   Add an `int litCount = 0;` before the pole‑creation `for` loop.
   Replace `bool lit = i < LitPoles && lean == 0f && rng.NextDouble() < 0.8;` with `bool lit = litCount < LitPoles && lean == 0f && rng.NextDouble() < 0.8;`.
   After the call to `site.Town.Light(...)` (or immediately after determining `lit`), add `if (lit) litCount++;`.
   Result: up to `LitPoles` (~10) illuminated poles appear at random distances along streets, better matching the hand‑crafted raid town’s uneven lighting while leaving all other geometry, colliders and colour handling unchanged.
+  - 18:46 landed by 1htsserver in 6.5 min: **Changes made**
 - [x] Add a rusted‑metal door handle on the front face of the checkpoint booth built in `ZoneCordon.BuildCheckpoint` (Assets/Scripts/World/Zone/ZoneCordon.cs)
   Insert after the line
   `sb.Solid.Box(new Vector3(0f, 1.2f, 0f), new Vector3(2.4f, 2.4f, 2.4f), ZoneKit.M(ZoneKit.WardenOlive));`
