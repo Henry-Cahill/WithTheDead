@@ -3896,7 +3896,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `var sillSize = new Vector3(1.0f, sillHeight, sillDepth);`
   `site.Town.Out.Solid(sillCenter).Box(sillCenter, sillSize, outside);`
   This adds a ~8 cm high wooden sill (width 1 m, depth 2‑4 cm) beneath each glass pane, using the same exterior surface material as the wall, with a tiny deterministic size variation from `rng`. No colliders or interaction points are changed, and the total added primitives stay well under the 12‑primitive limit.
-- [ ] Cache the per‑frame sinusoid used for each ToxicZone’s glow intensity in Assets/Scripts/World/ToxicZone.cs
+- [x] Cache the per‑frame sinusoid used for each ToxicZone’s glow intensity in Assets/Scripts/World/ToxicZone.cs
   Add two static fields `static int s_GlowCacheFrame = -1;` and `static float s_GlowFactor;` near the other static members.
   Create a private static helper `static float GetGlowFactor(float phase)` that checks `if (s_GlowCacheFrame != Time.frameCount)` and, when dirty, computes `s_GlowFactor = 0.8f + 0.2f * Mathf.Sin(Time.time * 0.7f + phase);` stores `s_GlowCacheFrame = Time.frameCount;` otherwise returns the cached `s_GlowFactor`.
   In `Update()` replace the line
@@ -3904,6 +3904,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   with
   `if (_glow != null) _glow.intensity = GlowIntensity * GetGlowFactor(_phase);`
   This removes a separate `Mathf.Sin` call for every ToxicZone each frame, reducing per‑frame CPU work while keeping the visual flicker unchanged.
+  - 17:26 landed by hts-llm in 2 min: **Changed file**
 - [ ] Add a “Close washing machine” action to Assets/Scripts/World/Fixtures/RaidHomeWasher.cs that lets the player shut the door after opening it.
   In `GetActions`, after the existing “Open washing machine” line, add:
   `into.Add(new InteractAction("Close washing machine", CloseDoor).DisabledIf(_drum == null || !_drum.IsOpen, "It's already closed"));`

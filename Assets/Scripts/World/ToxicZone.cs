@@ -33,6 +33,17 @@ namespace CloneZ
         private static Texture2D s_Texture;
         private static int s_ColorId;
         private static int s_TintFrame = -1;
+        private static int s_GlowCacheFrame = -1;
+        private static float s_GlowFactor;
+        private static float GetGlowFactor(float phase)
+        {
+            if (s_GlowCacheFrame != Time.frameCount)
+            {
+                s_GlowFactor = 0.8f + 0.2f * Mathf.Sin(Time.time * 0.7f + phase);
+                s_GlowCacheFrame = Time.frameCount;
+            }
+            return s_GlowFactor;
+        }
 
         private ParticleSystem _particles;
         private Light _glow;
@@ -90,7 +101,7 @@ namespace CloneZ
         {
             if (Mathf.Abs(_builtRadius - Radius) > 0.01f) Build();   // resized after spawning
             UpdateSharedTint();
-            if (_glow != null) _glow.intensity = GlowIntensity * (0.8f + 0.2f * Mathf.Sin(Time.time * 0.7f + _phase));
+            if (_glow != null) _glow.intensity = GlowIntensity * GetGlowFactor(_phase);
         }
 
         private void Build()
