@@ -2558,7 +2558,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
   - 10:27 landed by hts-llm in 7.7 min: **Changes Made**
-- [ ] Add occasional icy patches on sidewalks in `Assets/Scripts/World/RaidMapBuilder.Streets.cs` → method `SidewalkRun`
+- [x] Add occasional icy patches on sidewalks in `Assets/Scripts/World/RaidMapBuilder.Streets.cs` → method `SidewalkRun`
   After the concrete sidewalk slab (`Slab(town, alongX, coord, a, b, s0, s1, 0.025f, concrete);`) insert a 20 % chance to place a small translucent ice square.
   Use the existing deterministic `rng` and helper `R` for size and position.
   Example implementation (replace the comment line):
@@ -2567,6 +2567,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `float iceSize = R(rng, 0.15f, 0.3f);`
   `float icePos = R(rng, a, b);`
   `Vector3 iceCenter = alongX`
+  - 10:33 landed by 0htsserver in 12.1 min: **What changed**
 - [x] In Assets/Scripts/World/Fixtures/TvFixture.cs: Fix TvFixture.ChangeChannel so the TV updates its signal state and picture tint immediately after the player switches channels.
   In `TvFixture.ChangeChannel(InteractContext ctx)` the code only calls `TuneNext()` and notifies the player, leaving `_onAir` and `_tint` stale until the next periodic refresh in `Animate`.
   `BroadcastStation s = TuneNext();`

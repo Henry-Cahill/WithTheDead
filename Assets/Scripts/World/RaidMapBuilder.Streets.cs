@@ -159,6 +159,15 @@ namespace CloneZ
             Slab(town, alongX, coord, a, b, side > 0 ? hw : -hw - 0.25f, side > 0 ? hw + 0.25f : -hw, 0.05f, DecorPalette.Matte(Kerb));
             float s0 = side > 0 ? hw + 0.25f : -hw - 2.5f, s1 = side > 0 ? hw + 2.5f : -hw - 0.25f;
             Slab(town, alongX, coord, a, b, s0, s1, 0.025f, concrete);
+            // Occasionally add a small translucent ice patch on the sidewalk (20% chance)
+            if (rng.NextDouble() < 0.2)
+            {
+                float iceSize = R(rng, 0.15f, 0.3f);
+                float icePos = R(rng, a, b);
+                Vector3 iceCenter = alongX ? new Vector3(icePos, 0.03f, coord + (s0 + s1) * 0.5f) : new Vector3(coord + (s0 + s1) * 0.5f, 0.03f, icePos);
+                // Use a light bluish glass material to look like ice; size controls radius X and Z
+                town.Out.Flat(iceCenter).FlatBlob(iceCenter, iceSize, iceSize, R(rng, 0f, 360f), 0.2f, rng, DecorPalette.Glass(new Color(0.7f, 0.85f, 1f)));
+            }
             if (rng.NextDouble() < 0.6)
             {
                 float t = R(rng, a, b);
