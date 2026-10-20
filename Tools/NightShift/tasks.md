@@ -1939,10 +1939,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   The brackets attach to the top horizontal beam (already created by `m.Box(new Vector3(0f, 1.3f, -0.08f), Sz(1.9f, 0.06f, 0.12f), wood);`).
   No new colliders, interaction points, or pivots are introduced, and the random seed is not altered, keeping deterministic builds.
   - 07:29 landed by 0htsserver in 3.6 min: **Changed file**
-- [ ] Fix static error counters in Assets/Scripts/Dev/SmokeTest.cs so a new smoke‑test run starts with a clean slate
+- [x] Fix static error counters in Assets/Scripts/Dev/SmokeTest.cs so a new smoke‑test run starts with a clean slate
   · In `Boot()` after `s_Mode = args[i + 1].ToLowerInvariant();` add `s_Errors = 0; s_FirstErrors.Clear();`
   · This prevents error counts from previous runs (e.g. when the editor re‑enters play mode) from being carried over, which would make the test report failures even though the current run succeeded.
   · Player experience is unchanged – the fix only affects the reliability of the automated smoke test in the editor/command‑line runs.
+  - 07:37 landed by 0htsserver in 7.5 min: **Changed file**
 - [x] Add a subtle faded‑logo tint variation to caps in Assets/Scripts/Characters/HumanoidLook.cs → `HumanoidLook.Wear` → `case ClothingSlot.Head:`
   After the existing line `HatTrimColor = Shade(c, 0.7f);` insert code that, when `Shape.Headwear` is `HeadwearStyle.Cap` or `HeadwearStyle.CapBackward`, computes a deterministic variation from the shape hash and blends a faint brown‑ish logo colour into `HatTrimColor`.
   Use the same deterministic method as the helmet scuff code: `int seed = Shape.GetHashCode(); float var = ((seed >> 7) & 0xF) / 100f;` (range 0‑0.15).

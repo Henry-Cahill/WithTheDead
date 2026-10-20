@@ -33,6 +33,8 @@ namespace CloneZ
             int i = Array.IndexOf(args, "-clonez-smoke");
             if (i < 0 || i + 1 >= args.Length || s_Mode != null) return;
             s_Mode = args[i + 1].ToLowerInvariant();
+            s_Errors = 0;
+            s_FirstErrors.Clear();
             ProfileStore.PathOverride = "smoke_" + s_Mode + "_profile.json";
             try { if (File.Exists(ProfileStore.FilePath)) File.Delete(ProfileStore.FilePath); } catch { }
             Application.logMessageReceived += OnLog;
