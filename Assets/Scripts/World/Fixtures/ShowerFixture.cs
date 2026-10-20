@@ -23,6 +23,7 @@ namespace CloneZ
         private Collider _stall;
         private bool _on, _doorOpen;
         private bool _inside, _turnedOnToShower, _hasEntry, _flick;
+        private PlayerInteractor _playerInteractor;
         private Vector3 _enteredFrom;
         private float _enteredYaw;
         private float _underWater;
@@ -59,6 +60,7 @@ namespace CloneZ
         {
             base.OnDisable();
             HomeComfort.Unregister(this);
+            _playerInteractor = null;
             if (!_inside) return;
             _inside = false;
             SetStallSolid(true);
@@ -99,6 +101,9 @@ namespace CloneZ
 
         private void Update()
         {
+            if (_playerInteractor == null)
+                _playerInteractor = PlayerInteractor.Current;
+            
             if (Running)
             {
                 if (Time.time >= _nextFlick)
@@ -127,7 +132,7 @@ namespace CloneZ
         // (however the job ended), nor shut inside it with the collider back (a save made mid-shower puts them there).
         private void Watch()
         {
-            PlayerInteractor pi = PlayerInteractor.Current;
+            PlayerInteractor pi = _playerInteractor;
             if (_inside)
             {
                 if (pi != null && pi.JobTarget == this) return;
