@@ -107,9 +107,9 @@ namespace CloneZ
         public void OnDrankTainted()
         {
             if (_stats == null || _stats.IsDead) return;
-            DrankTainted?.Invoke(this);
             if (Random.value > CloneZConfig.WaterTaintedSickChance) return;   // got away with it this time
             _stats.Sickness = Mathf.Clamp(_stats.Sickness + CloneZConfig.SicknessTaintedGain, 0f, CloneZConfig.SicknessMax);
+            DrankTainted?.Invoke(this);
         }
 
         /// <summary>Raised whenever the survivor drinks tainted water raw (cholera rides in on it).</summary>

@@ -1360,7 +1360,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
   - 04:13 landed by 1htsserver in 2.3 min: Added concise `/// <summary>` XML documentation to each public method in **HomeScreens.cs** that previously lacked it:
-- [ ] Fix Assets/Scripts/Player/PlayerFoodSickness.cs so the DrankTainted event is raised only when the survivor actually becomes sick from tainted water.
+- [x] Fix Assets/Scripts/Player/PlayerFoodSickness.cs so the DrankTainted event is raised only when the survivor actually becomes sick from tainted water.
   In OnDrankTainted() the code currently invokes the static event before the random‑chance check, causing UI or listeners to react even when the player “got away with it”.
   Change the method to call DrankTainted?.Invoke(this) *after* the chance test and only when sickness is applied.
   `public void OnDrankTainted()`
@@ -1369,6 +1369,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `if (Random.value > CloneZConfig.WaterTaintedSickChance) return; // got away with it this time`
   `_stats.Sickness = Mathf.Clamp(_stats.Sickness + CloneZConfig.SicknessTaintedGain, 0f, CloneZConfig.SicknessMax);`
   `DrankTainted?.Invoke(this); // raise only when actually sick`
+  - 04:15 landed by 1htsserver in 1.8 min: **Changed file**
 - [ ] Add a third interaction to Assets/Scripts/World/Fixtures/RaidTownHydrant.cs in the GetActions method, after the brush action, so the hydrant also offers “Inspect the metal”.
   Change `GetActions` to include:
   `into.Add(new InteractAction("Inspect the metal", c => c.Notify("The hydrant’s iron is corroded and stained by years of winter ice.")));`
