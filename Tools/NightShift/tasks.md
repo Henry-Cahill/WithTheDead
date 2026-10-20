@@ -3409,11 +3409,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   change the noise‑timing check `if (running && Time.time >= _nextNoise)` to use `_tapNoiseInterval` when setting `_nextNoise`.
   change the `MakeNoise` call `MakeNoise(CloneZConfig.BathTapNoiseRadius);` to use `_tapNoiseRadius`.
   - 14:03 landed by hts-llm in 3.7 min: **Changes made**
-- [ ] Add a “Place breaching charge” action for trusted players to CampGate.GetActions(InteractContext ctx, List<InteractAction> into) in Assets/Scripts/World/Camps.cs.
+- [!] Add a “Place breaching charge” action for trusted players to CampGate.GetActions(InteractContext ctx, List<InteractAction> into) in Assets/Scripts/World/Camps.cs.
   *After the existing lock‑off actions (the block that adds “Take the lock off …”), insert a new InteractAction that is offered only when the player’s inventory contains a “breachcharge” and the gate is trusted (owner is mine or a squadmate).
   *The action should read “Place breaching charge”, call `Explosives.Arm(c.Inventory);` in its callback, have a 5‑second timed progress with the message “Arming breaching charge…”, and be disabled with the tooltip “Needs a breaching charge” when the item is missing.
   *Result in‑game: when a trusted survivor stands at a gate and has a breaching charge, the interaction menu shows the new option; selecting it consumes one “breachcharge”, places the charge at the gate, shows the toast “Charge armed — ten seconds. Get clear.” and proceeds with the existing breaching‑charge explosion logic.
   *All other code, including the subsequent `if (!Trusted) return;` guard, must remain unchanged.
+  - 14:18 failed (1htsserver, 17.6 min); see reports/2026-10-20.md
 - [x] Enhance Assets/Scripts/Zombies/ZombieAI.cs by adding a small “torn‑cloth strip” visual detail to each zombie in the `Configure(ZombieType type)` method, after the existing blood‑splotch block.
   Add up to two strips (deterministic per zombie) using the same random source, each as a `PrimitiveType.Cube` child of the zombie, scaled `new Vector3(0.01f, 0.08f, 0.02f)`, positioned near the torso at `new Vector3(Random.Range(-0.07f, 0.07f), 1.45f, Random.Range(-0.02f, 0.02f))`, with a slight random Y‑rotation `Quaternion.Euler(0f, Random.Range(0f, 360f), Random.Range(-15f, 15f))`.
   Set its material colour to a faded, worn fabric tone based on the existing rust colour: `Color base = new Color(0.5f, 0.4f, 0.35f); float v = Random.Range(-0.04f, 0.04f); Color col = new Color(base.r+v, base.g+v, base.b+v);` then apply via `rend.material.color = col; if (rend.material.HasProperty("_BaseColor")) rend.material.SetColor("_BaseColor", col);`.
