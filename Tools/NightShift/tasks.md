@@ -3639,3 +3639,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Array.Clear(s_Doors, 0, MaxCandidates);` leaves old scores and stand positions in `s_Scores` and `s_Stands`.
   On the next call those stale values are compared against new candidates (`if (n == MaxCandidates && score >= s_Scores[n - 1])`) and can incorrectly reject valid doors or select wrong stand points, causing zombies to take sub‑optimal detours or even fail to find a path.
   Clear all three arrays before returning so each invocation starts with a clean slate.
+- [ ] Add a subtle “wear” strip to each pause‑menu item’s accent bar in Assets/Scripts/UI/PauseMenuController.cs, inside the `BuildItem(Item it, int index)` method right after the line `it.Accent = accent.gameObject.AddComponent<Image>();`
+  Create a new GameObject named `Wear{index}` and add a `RectTransform` as child of `it.Accent.transform` (set `SetParent(it.Accent.transform, false)`).
+  Anchor the strip to the bottom centre: `anchorMin = anchorMax = new Vector2(0.5f, 0f); pivot = new Vector2(0.5f, 0f); anchoredPosition = new Vector2(0f, 0f);`.
+  Size it to be a thin horizontal line: `sizeDelta = new Vector2(0.8f * it.Accent.rectTransform.sizeDelta.x, 2f);` (2 metres high in UI space).
+  Add an `Image` component, set its color to a dimmed, slightly desaturated version of the accent colour: `img.color = HudUI.WithAlpha(Dim, 0.4f);`.
+  Ensure `img.raycastTarget = false;` so it does not block input.
+  This adds only one primitive (the wear strip) and re‑uses the existing `Dim` colour, giving each row a faint “worn” look that varies by index because the strip width is based on the accent’s current width.
