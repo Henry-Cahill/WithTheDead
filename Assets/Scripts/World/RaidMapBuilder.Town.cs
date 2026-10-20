@@ -264,8 +264,19 @@ namespace CloneZ
             Vector3 box = end - dir * 0.7f + side * 1.3f;
             if (!town.Blocked(Around(box, 0.3f, 0.3f)))
             {
-                b.YardMailbox(box, RaidHomeLiving.Post(town.Rng));
-                town.Keepout.Add(Around(box, 0.3f, 0.3f));
+            b.YardMailbox(box, RaidHomeLiving.Post(town.Rng));
+            // Add a small mailbox flag on ~40% of mailboxes
+            if (town.Rng.NextDouble() < 0.4)
+            {
+                var m = town.Out.Solid(box);
+                // metal pole at the top front of the mailbox
+                m.Cylinder(box + new Vector3(0f, 0.15f, 0f), 0.02f, 0.3f, 6,
+                    DecorPalette.Metal(new Color(0.5f, 0.5f, 0.5f)), Quaternion.identity, 1f);
+                // red‑brown cloth flag attached to the pole
+                m.Box(box + new Vector3(0f, 0.30f, 0f), new Vector3(0.15f, 0.1f, 0.02f),
+                    DecorPalette.Matte(new Color(0.6f, 0.1f, 0.1f)));
+            }
+            town.Keepout.Add(Around(box, 0.3f, 0.3f));
             }
             b.FrontDoormat(doorLx);
             b.HouseNumber(doorLx, (3 + town.Rng.Next(60)).ToString());

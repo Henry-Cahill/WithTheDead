@@ -470,12 +470,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `if (Random.Range(0, piece.Def.ConditionLossChance) != 0) return;`
   This ensures that garments whose `ConditionLossChance` is 0 (e.g., rain‑coats or reinforced gear) do not degrade on every zombie strike, matching the intended design where a zero chance means “no wear”. The rest of the method (reducing condition, removing the garment, invoking `Changed`) stays unchanged.
   - 23:37 landed by 0htsserver in 1.7 min: **Summary of changes**
-- [ ] Add a small mailbox flag to the front‑yard mailbox in `Assets/Scripts/World/RaidMapBuilder.Town.cs` → method `DressHouse`, after the line `b.YardMailbox(box, RaidHomeLiving.Post(town.Rng));`
+- [x] Add a small mailbox flag to the front‑yard mailbox in `Assets/Scripts/World/RaidMapBuilder.Town.cs` → method `DressHouse`, after the line `b.YardMailbox(box, RaidHomeLiving.Post(town.Rng));`
   Create a 0.02 m radius, 0.30 m tall metal pole at the mailbox’s top front: `m.Cylinder(box + new Vector3(0f, 0.15f, 0f), 0.02f, 0.3f, 6, DecorPalette.Metal(new Color(0.5f,0.5f,0.5f)), Quaternion.identity, 1f);`
   Attach a red‑brown cloth flag (0.15 m × 0.10 m × 0.02 m) to the pole: `m.Box(box + new Vector3(0f, 0.30f, 0f), new Vector3(0.15f, 0.1f, 0.02f), DecorPalette.Matte(new Color(0.6f, 0.1f, 0.1f)));`
   Wrap the addition in `if (town.Rng.NextDouble() < 0.4) { … }` so the flag appears on roughly 40 % of mailboxes, using the deterministic `town.Rng`.
   Use `town.Out.Solid(box)` to obtain the mesh builder so the flag shares the mailbox’s collider and keep‑out area.
   No new colliders or interaction points are added; the flag is purely visual and stays within the existing mailbox footprint.
+  - 23:40 landed by 1htsserver in 3.8 min: **Summary**
 - [ ] In Assets/Scripts/World/Zone/ZoneAtmosphere.cs: Cache the singleton lookups in ZoneAtmosphere so LateUpdate doesn’t call `TimeOfDay.Instance`, `GameSettings.Current` and `SandboxSettings.Current` every frame
   Add three private fields: `private TimeOfDay _tod; private GameSettings _gs; private SandboxSettings _ss;`
   Initialize them once in `Awake()` (or the first `LateUpdate` if they’re null) with ` _tod = TimeOfDay.Instance; _gs = GameSettings.Current; _ss = SandboxSettings.Current;`
