@@ -1811,7 +1811,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Create the border via `Rect("Border", img.rectTransform)`, set `anchorMin = Vector2.zero; anchorMax = Vector2.one; offsetMin = new Vector2(2f,2f); offsetMax = new Vector2(-2f,-2f);` then add the `Image` component and assign the colour.
   Leave the original panel colour, colliders and interaction logic unchanged; this adds at most one extra primitive per panel, staying within the ~12‑primitive limit.
   - 06:49 landed by hts-llm in 3.2 min: **Modified:** `Assets/Scripts/UI/UIKit.cs`
-- [ ] In Assets/Scripts/Zone/ArtifactCatalog.cs: Add validation in `ArtifactCatalog.Learn(string artifact, string prop, bool announce = true)` to reject property IDs that are not defined for the given artifact, preventing impossible knowledge entries.
+- [x] In Assets/Scripts/Zone/ArtifactCatalog.cs: Add validation in `ArtifactCatalog.Learn(string artifact, string prop, bool announce = true)` to reject property IDs that are not defined for the given artifact, preventing impossible knowledge entries.
+  - 06:51 landed by hts-llm in 2 min: **Changed**
 - [ ] Add a subtle weather‑worn paint‑chip detail to exterior wall faces built in `RaidBuilding.SkinBand` (Assets/Scripts/World/RaidBuilding.cs)
   In the block that creates the exterior face (`p.Mesh.Upright(..., DecorMaterials.WallExterior(...))`) insert a small box to represent a chipped paint spot.
   Use the building’s `Rng` for a ~10 % chance per wall segment: `if (Rng.NextDouble() < 0.1)`.
