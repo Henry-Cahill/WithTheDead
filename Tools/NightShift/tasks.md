@@ -3299,13 +3299,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   `b.Furnish(pharm,`
   `new RaidBuilding.Place(fridgePos.x + 0.45f, fridgePos.z, 0f),`
   `Sz(0.04f, 0.10f, 0.02f),`
-- [ ] Reduce per‑frame wound‑bleeding checks in Assets/Scripts/Medical/PlayerLimbs.cs by caching them in HudLimbs
+- [x] Reduce per‑frame wound‑bleeding checks in Assets/Scripts/Medical/PlayerLimbs.cs by caching them in HudLimbs
   · Add a private field `private readonly bool[] _bleeding = new bool[BodyZones.Count];` to the `HudLimbs` class.
   · Create a method `private void RefreshBleedingCache()` that loops `for (int i = 0; i < _bleeding.Length; i++) { var z = (BodyZone)i; _bleeding[i] = _wounds != null && _wounds.IsBleedingOn(z); }`.
   · Subscribe to the limb change event: after `h._wounds = limbs.GetComponent<PlayerWounds>();` add `limbs.Changed += h.RefreshBleedingCache;` and also call `h.RefreshBleedingCache();` once to initialise.
   · In `HudLimbs.Update()` replace `bool bleeding = _wounds != null && _wounds.IsBleedingOn(z);` with `bool bleeding = _bleeding[i];`.
   · Unsubscribe in `OnDestroy()` with `if (_limbs != null) _limbs.Changed -= RefreshBleedingCache;`.
   · The player’s HUD appearance stays identical; only the per‑frame call to `IsBleedingOn` is eliminated, reducing allocations and CPU work.
+  - 13:30 landed by hts-llm in 4.4 min: **Changes made**
 - [ ] Append six new world‑text entries to the `Pages` array in `ManualScreen` (Assets/Scripts/Hub/Screens/HomeScreens.cs), adding them after the existing final entry `("Old maps", "Hand‑drawn maps in the bar show safe routes, fresh water sources, and marked danger zones; study them before venturing out to avoid ambushes.")`.
   Use the existing entry `("Old maps", "Hand‑drawn maps …")` as the style reference – each new entry should be a single‑sentence `body` string written in the same terse, period‑correct voice, describing a piece of in‑world text the survivor might find (notes, graffiti, broadcast snippets, or item descriptions).
   The six new entries should cover:
