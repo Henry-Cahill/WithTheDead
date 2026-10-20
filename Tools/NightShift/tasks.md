@@ -1537,3 +1537,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   `for (float x = -len * 0.5f + 0.3f; x < len * 0.5f; x += R(rng, 2f, 4f))`
   `{`
   `float w = R(rng, 0.2f, 0.4f);`
+- [ ] Fix missing pull‑handle on an ajar locker door in `Assets/Scripts/World/FurnitureBuilder.cs` → `FurnitureBuilder.LockerBank(RaidMesh m, System.Random rng, int count, Color body)`
+  In the `if (i == ajar)` branch the door geometry is created but the metal pull‑handle (`m.Box(... Mt(Chrome))`) that’s added for every closed locker is omitted, leaving the open locker visibly handle‑less.
+  Add a handle box rotated with the door, e.g.:
+  `// handle on the open door (mirrors the closed‑door handle)`
+  `m.Box(hinge + open * new Vector3(0.23f, 1.25f, 0.022f), new Vector3(0.02f, 0.12f, 0.005f), open, Mt(Chrome));`
+  The handle now appears on the ajar door’s front edge, matching the visual style of closed lockers. All other code stays unchanged.
