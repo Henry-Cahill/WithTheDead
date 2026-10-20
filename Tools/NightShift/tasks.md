@@ -2607,7 +2607,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
   - 10:34 landed by hts-llm in 5.2 min: 
-- [ ] Add a subtle metal‑rivet detail to the gas‑station price sign in `Assets/Scripts/World/RaidMapBuilder.Town.cs` → method `DressGasStation`, modify the `Prop` call that creates the `"GAS 1.09"` sign.
+- [x] Add a subtle metal‑rivet detail to the gas‑station price sign in `Assets/Scripts/World/RaidMapBuilder.Town.cs` → method `DressGasStation`, modify the `Prop` call that creates the `"GAS 1.09"` sign.
+  - 10:35 landed by 1htsserver in 5.8 min: **Changed file**
 - [ ] Add rust‑tinted metal caps (and occasional tiny rust stains) to the wooden fence posts built in the `case 1:` block of `EdgeSegment` in Assets/Scripts/World/RaidMapBuilder.Edge.cs.
   Locate the loop that creates the vertical post boxes: `m.Box(new Vector3(x, 1.05f, -0.06f), new Vector3(0.12f, 2.1f, 0.12f), post);`.
   After that line, insert a second loop (using the same `x` iteration) that places a short metal cylinder on top of each post: `m.Cylinder(new Vector3(x, 2.6f, -0.06f), 0.04f, 0.05f, 6, DecorPalette.Metal(new Color(0.50f, 0.45f, 0.40f)));`.

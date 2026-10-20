@@ -178,7 +178,26 @@ namespace CloneZ
             town.OverheadCollider(rc, new Vector3(6.4f, 0.3f, 13.4f), Quaternion.identity);
 
             Wreck(town, new Vector3(7.0f, 0f, 46f), 2f, DecorProps.CarKind.Pickup, Paint(town));
-            Prop(town, new Vector3(5.4f, 0f, 36.5f), 270f, new Vector3(2.4f, 3.2f, 0.3f), true, (m, r) => DecorProps.PostSign(m, r, "GAS 1.09", new Color(0.86f, 0.84f, 0.78f), new Color(0.62f, 0.10f, 0.08f), 0.5f, 2.6f));
+            Prop(town, new Vector3(5.4f, 0f, 36.5f), 270f, new Vector3(2.4f, 3.2f, 0.3f), true, (m, r) => {
+                // Base price sign
+                DecorProps.PostSign(m, r, "GAS 1.09", new Color(0.86f, 0.84f, 0.78f), new Color(0.62f, 0.10f, 0.08f), 0.5f, 2.6f);
+                // Add subtle metal rivets at the four corners of the sign board
+                // Rough approximation of sign width based on aspect ~1.5
+                float signHeight = 0.5f;
+                float signBottom = 2.6f;
+                float signAspect = 1.5f;
+                float signWidth = signHeight * signAspect;
+                float rivetRadius = 0.02f;
+                Color rivetColor = new Color(0.6f, 0.6f, 0.6f);
+                // Top‑left
+                m.Cylinder(new Vector3(-signWidth * 0.5f + rivetRadius, signBottom + signHeight - rivetRadius, 0.01f), rivetRadius, rivetRadius, 6, DecorPalette.Matte(rivetColor));
+                // Top‑right
+                m.Cylinder(new Vector3(signWidth * 0.5f - rivetRadius, signBottom + signHeight - rivetRadius, 0.01f), rivetRadius, rivetRadius, 6, DecorPalette.Matte(rivetColor));
+                // Bottom‑left
+                m.Cylinder(new Vector3(-signWidth * 0.5f + rivetRadius, signBottom + rivetRadius, 0.01f), rivetRadius, rivetRadius, 6, DecorPalette.Matte(rivetColor));
+                // Bottom‑right
+                m.Cylinder(new Vector3(signWidth * 0.5f - rivetRadius, signBottom + rivetRadius, 0.01f), rivetRadius, rivetRadius, 6, DecorPalette.Matte(rivetColor));
+            });
             DumpsterProp(town, new Vector3(25f, 0f, 43f), 90f);
         }
 
