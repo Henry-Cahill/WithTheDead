@@ -2431,3 +2431,6 @@ you want to see in game. Indent extra lines under a task to add detail.
   These strips add a subtle seal line while leaving colliders and interaction points unchanged.
   - 09:37 landed by 1htsserver in 1.5 min: **Changed file**
 - [ ] Add an “Inspect water level” action to Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs that tells the player the exact amount of water remaining in the heater’s tank.
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Zone/Uncanny.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
