@@ -1647,3 +1647,30 @@ you want to see in game. Indent extra lines under a task to add detail.
   `180f => new Vector3(-0.35f, 0.95f, 0f),`
   `270f => new Vector3(0f, 0.95f, -0.35f),`
   `_ => new Vector3(0.35f, 0.95f, 0f)`
+- [ ] Optimize per‑frame UI string allocation in Assets/Scripts/Player/PlayerBuilder.cs by caching the composed prompt.
+  Add a private field `string _promptCache` and a flag `bool _promptDirty` to store the last built prompt.
+  Mark the prompt dirty whenever any data that influences it changes: in `HandleSelectionInput` after changing `Selection`; at the end of `EvaluateBarricade`, `EvaluateHouse`, and `EvaluateDemolish` after setting `_placeValid`, `_reinforceTarget`, or `_demolishTarget`; and in `EnterBuildMode`, `ExitBuildMode`, `StartBuild`, `CancelBuild`, and `CompleteBuild`.
+  Replace the direct assignment `Prompt = ComposePrompt();` in `Evaluate()` with `if (_promptDirty) { _promptCache = ComposePrompt(); _promptDirty = false; } Prompt = _promptCache;`.
+  Remove the existing `Prompt = "";` assignments that reset it each frame (e.g., in the early‑exit branch of `Update` when not in build mode) and instead set `_promptDirty = true` before returning, ensuring the empty prompt is cached once.
+  The player’s UI text remains identical, but string concatenations now occur only when the underlying state changes, eliminating the per‑frame allocation of new prompt strings.
+- [ ] In Assets/Scripts/World/Fixtures/RaidTownGenerator.cs: Add a small “Inspect generator” action to RaidTownGenerator so the player can see if it’s running and roughly how much fuel remains.
+  In `RaidTownGenerator.GetActions` after the existing `Check the fuel` line, insert:
+  `into.Add(new InteractAction("Inspect generator", Inspect));`
+  Create a new private method `Inspect(InteractContext ctx)` that uses the existing fields and config:
+  `private void Inspect(InteractContext ctx)`
+  `{`
+  `float percent = _fuel / CloneZConfig.RaidGeneratorFuelMax;`
+  `if (_running)`
+  `ctx.Notify($"The generator rumbles on. Fuel gauge reads about {(int)(percent * 100)}%.");`
+- [ ] Append five new entries to the `HomePrints` string array in Assets/Scripts/World/RaidBuilding.Lighting.cs (class `RaidBuilding`, method/field `HomePrints`).
+  Add the new strings after the last existing entry, keeping the current three untouched.
+  These entries will appear on the framed pictures that hang in houses; the player will be able to read them as they inspect the wall art.
+  Use the existing entry `"Hills at sundown in a frame from the dime store. It has hung there so long the wallpaper round it has faded."` as the style reference.
+  Themes for the new entries:
+  a faded family portrait with a caption,
+  a clipped newspaper article about the 1993 snowstorm,
+  a winter‑time countryside photograph,
+  a retro advertisement for a local tractor dealership,
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/TimeOfDay.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
