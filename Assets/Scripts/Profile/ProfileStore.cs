@@ -192,22 +192,29 @@ namespace CloneZ
             return c;
         }
 
-                /// <summary>Adds a character to the account (replacing a dead one if the slot limit is reached).</summary>
-        public static void AddCharacter(CharacterProfile c)
+        /// <summary>Adds a character and makes it the active one. <paramref name="replaceSlot"/> names a dead
+        /// character's slot for it to take; otherwise it takes a free slot, or with the roster full the first dead one's.</summary>
+        public static void AddCharacter(CharacterProfile c, int replaceSlot = -1)
         {
             if (c == null) return;
-            if (Account.Characters.Count >= AccountProfile.MaxCharacters)
+            List<CharacterProfile> roster = Account.Characters;
+            if (replaceSlot >= 0 && replaceSlot < roster.Count && roster[replaceSlot].Dead)
+            {
+                roster[replaceSlot] = c;
+                Account.ActiveIndex = replaceSlot;
+            }
+            else if (roster.Count >= AccountProfile.MaxCharacters)
             {
                 // Replace the first dead character, else refuse.
-                int dead = Account.Characters.FindIndex(x => x.Dead);
+                int dead = roster.FindIndex(x => x.Dead);
                 if (dead < 0) return;
-                Account.Characters[dead] = c;
+                roster[dead] = c;
                 Account.ActiveIndex = dead;
             }
             else
             {
-                Account.Characters.Add(c);
-                Account.ActiveIndex = Account.Characters.Count - 1;
+                roster.Add(c);
+                Account.ActiveIndex = roster.Count - 1;
             }
             s_Stash = null;
             Save();

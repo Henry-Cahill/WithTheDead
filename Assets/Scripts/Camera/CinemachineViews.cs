@@ -99,6 +99,9 @@ namespace CloneZ
                 for (int k = 0; k < 4; k++) _vcams[k].Priority = k == i ? 20 : 0;
                 _live = view;
             }
+            // With the world frozen (the pause menu switching views), blends still play out in real time.
+            bool paused = Time.timeScale <= 0f;
+            if (_brain.IgnoreTimeScale != paused) _brain.IgnoreTimeScale = paused;
             _brain.ManualUpdate();
         }
 

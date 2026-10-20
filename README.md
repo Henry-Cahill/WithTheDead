@@ -23,7 +23,7 @@ Highlights:
 ## Get Started
 1. **Install**: You need Windows 10/11 and Unity Hub with editor **6000.7.0a2** (a Unity 6.7 alpha). Open `unityhub://6000.7.0a2/83605ec097c0` to install that exact build. Visual Studio with the *Game development with Unity* workload is recommended; Rider also works.
 2. **Clone and open**: Run `git clone https://github.com/Henry-Cahill/CLONE-Z.git`. In Unity Hub, choose **Add → Add project from disk** and select the `CLONE-Z` folder. The first import rebuilds `Library/` and is slow because there are thousands of generated item models.
-3. **Play**: Open `Assets/Scenes/SampleScene.unity` and press **Play**. The bootstrapper builds everything and shows the title screen: **Start Raid (Extraction)**, **Wave Survival (New)** or **Continue Wave Survival**.
+3. **Play**: Open `Assets/Scenes/SampleScene.unity` and press **Play**. The bootstrapper builds everything and shows the title screen. For raids, pick a runner card's **Play** (or **New runner** on an empty slot or a dead runner's card) to enter the bar, then use the **Door to the Zone** to deploy. For the arena, choose **Wave survival (new)** or **Continue waves**.
 4. **Controls**: WASD move · LMB attack · RMB shove · R reload · Shift sprint · Ctrl sneak · E use · Q actions · I inventory · B build · F farm · G water · H health · K skills · T sleep · N night vision · L light · M exits (raids) · V camera view · F5 quick-save (Wave Survival) · Esc pause · F1 toggle key hints.
 5. **Save data** is in `%USERPROFILE%\AppData\LocalLow\DefaultCompany\CLONE-Z\`:
    - `clonez_save.db` is the Wave Survival save.
