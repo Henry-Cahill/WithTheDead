@@ -31,6 +31,10 @@ namespace CloneZ
         private TimeOfDay _timeOfDay;
         private readonly int _ignoreRaycastMask = 1 << CloneZConfig.IgnoreRaycastLayer;
         private readonly int _defaultRaycastMask = 1 << 0;
+        // Cached panic level and descriptor; updated only when panic value changes
+        private int _cachedLevel;
+        private string _cachedDescriptor;
+        private float _lastPanic = float.NaN;
 
         public bool BetaBlockersActive => _betaTimer > 0f;
         /// <summary>Beta-blocker cover remaining, in seconds (captured/restored by the save system).</summary>
@@ -44,28 +48,40 @@ namespace CloneZ
         {
             get
             {
-                float p = _stats != null ? _stats.Panic : 0f;
-                if (p >= CloneZConfig.PanicLevel4) return 4;
-                if (p >= CloneZConfig.PanicLevel3) return 3;
-                if (p >= CloneZConfig.PanicLevel2) return 2;
-                if (p >= CloneZConfig.PanicLevel1) return 1;
-                return 0;
+                if (_stats == null) return 0;
+                float p = _stats.Panic;
+                if (p != _lastPanic)
+                {
+                    // Recalculate and cache level and descriptor when panic changes
+                    _lastPanic = p;
+                    if (p >= CloneZConfig.PanicLevel4) _cachedLevel = 4;
+                    else if (p >= CloneZConfig.PanicLevel3) _cachedLevel = 3;
+                    else if (p >= CloneZConfig.PanicLevel2) _cachedLevel = 2;
+                    else if (p >= CloneZConfig.PanicLevel1) _cachedLevel = 1;
+                    else _cachedLevel = 0;
+                    // Update descriptor cache according to new level
+                    switch (_cachedLevel)
+                    {
+                        case 4: _cachedDescriptor = "Terrified"; break;
+                        case 3: _cachedDescriptor = "Panicked"; break;
+                        case 2: _cachedDescriptor = "Anxious"; break;
+                        case 1: _cachedDescriptor = "Uneasy"; break;
+                        default: _cachedDescriptor = "Calm"; break;
+                    }
+                }
+                return _cachedLevel;
             }
         }
+
 
         /// <summary>A short word for the current fear level (for the HUD / health panel).</summary>
         public string Descriptor
         {
             get
             {
-                switch (Level)
-                {
-                    case 4: return "Terrified";
-                    case 3: return "Panicked";
-                    case 2: return "Anxious";
-                    case 1: return "Uneasy";
-                    default: return "Calm";
-                }
+                // Ensure cache is updated based on current panic value
+                var _ = Level; // triggers cache refresh if needed
+                return _cachedDescriptor;
             }
         }
 

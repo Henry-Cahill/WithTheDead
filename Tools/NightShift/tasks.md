@@ -3583,7 +3583,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `0f => new Vector3(0f, WallH - 0.04f, 0.36f), // north‑facing wall`
   `180f => new Vector3(0f, WallH - 0.04f, -0.36f), // south‑facing wall`
   - 14:58 landed by hts-llm in 2.3 min: **Changed file**
-- [ ] Cache the panic level and its descriptor in Assets/Scripts/Player/PlayerPanic.cs so they are only recalculated when the panic value actually changes, not on every Update or UI read.
+- [x] Cache the panic level and its descriptor in Assets/Scripts/Player/PlayerPanic.cs so they are only recalculated when the panic value actually changes, not on every Update or UI read.
+  - 15:01 landed by 1htsserver in 5 min: **Changed files**
 - [ ] Add an “Inspect” verb to ArtifactNode so revealed artifacts can be examined before taking them, by editing `Assets/Scripts/Zone/Artifacts.cs`
   In `public override void GetActions(InteractContext ctx, List<InteractAction> into)`, after the existing `Take` action, add:
   `into.Add(new InteractAction("Inspect " + ArtifactCatalog.NameOf(ArtifactId), Inspect).Timed(0.5f, "Looking closely..."));`
