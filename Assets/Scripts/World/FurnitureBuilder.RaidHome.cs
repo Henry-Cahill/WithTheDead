@@ -166,6 +166,21 @@ namespace CloneZ
             m.Box(new Vector3(cx, 1.35f, WardrobeFront + 0.003f), new Vector3(w - 0.12f, 0.6f, 0.01f), M(wood * 0.94f));
             m.Box(new Vector3(cx, 0.6f, WardrobeFront + 0.003f), new Vector3(w - 0.12f, 0.6f, 0.01f), M(wood * 0.94f));
             m.Box(new Vector3(s * 0.04f, 1.0f, WardrobeFront + 0.01f), new Vector3(0.02f, 0.08f, 0.03f), Mt(Brass));
+            // Hinge pins
+            if (left)
+            {
+                var topPin = new Vector3(x0 - 0.005f, WardrobeDoorY1 - 0.06f, WardrobeFront + 0.01f);
+                var botPin = new Vector3(x0 - 0.005f, WardrobeDoorY0 + 0.06f, WardrobeFront + 0.01f);
+                m.Cylinder(topPin, 0.005f, 0.02f, 8, Mt(Brass));
+                m.Cylinder(botPin, 0.005f, 0.02f, 8, Mt(Brass));
+            }
+            else
+            {
+                var topPin = new Vector3(x1 + 0.005f, WardrobeDoorY1 - 0.06f, WardrobeFront + 0.01f);
+                var botPin = new Vector3(x1 + 0.005f, WardrobeDoorY0 + 0.06f, WardrobeFront + 0.01f);
+                m.Cylinder(topPin, 0.005f, 0.02f, 8, Mt(Brass));
+                m.Cylinder(botPin, 0.005f, 0.02f, 8, Mt(Brass));
+            }
         }
         #endregion
 

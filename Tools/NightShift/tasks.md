@@ -1217,7 +1217,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   This makes items placed precisely at the edge of the player’s interaction radius unreachable, contradicting the expected “within radius” behaviour.
   Change the comparison to strict greater‑than so that equality is accepted:
   - 03:25 landed by 0htsserver in 1 min: **Summary**
-- [ ] Add two tiny brass hinge pins to each wardrobe door in `FurnitureBuilder.WardrobeDoor` (Assets/Scripts/World/FurnitureBuilder.RaidHome.cs)
+- [x] Add two tiny brass hinge pins to each wardrobe door in `FurnitureBuilder.WardrobeDoor` (Assets/Scripts/World/FurnitureBuilder.RaidHome.cs)
   · After the existing `m.Box` calls that draw the door panel and the brass knob, insert two vertical cylinders to suggest the door’s hinge pins.
   · For the left door (when `left` is true) place pins at the outer –X edge:
   `var topPin = new Vector3(x0 - 0.005f, WardrobeDoorY1 - 0.06f, WardrobeFront + 0.01f);`
@@ -1226,6 +1226,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `var topPin = new Vector3(x1 + 0.005f, WardrobeDoorY1 - 0.06f, WardrobeFront + 0.01f);`
   `var botPin = new Vector3(x1 + 0.005f, WardrobeDoorY0 + 0.06f, WardrobeFront + 0.01f);`
   · Draw each pin with `m.Cylinder(topPin, 0.005f, 0.02f, 8, Mt(Brass));` and `m.Cylinder(botPin, 0.005f, 0.02f, 8, Mt(Brass));`.
+  - 03:27 landed by 1htsserver in 3.1 min: **Changes made**
 - [ ] Add a “toggle all lights” action to LightSwitch so the survivor can switch every circuit on or off with one interaction, updating the script in Assets/Scripts/World/Fixtures/LightSwitch.cs
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/GameModules.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
