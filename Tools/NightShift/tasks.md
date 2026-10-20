@@ -1472,3 +1472,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Use `m.Cylinder(..., 0.005f, 0.004f, 6, Mt(Chrome));` (radius 0.005 m, height 0.004 m, 6 sides) so the rivets are tiny chrome caps.
   This introduces at most eight new primitives (2 × 4 posts) and reuses the existing Chrome material; colliders and interaction points stay unchanged.
   The deterministic random offset gives each shelf a slightly different wear pattern while keeping the look period‑correct.
+- [ ] Fix the prying‑noise timer in Assets/Scripts/World/Fixtures/RaidWindow.cs so that the interval between nail‑shriek sounds stays constant instead of growing each tick.
+  In `PryTick` the line
+  `_pryNext += CloneZConfig.RaidWindowPryInterval;`
+  adds the interval to the previous target time, which means every time a nail shrieks the next target moves farther ahead and the noise becomes progressively rarer.
+  Replace it with a calculation based on the current clock:
