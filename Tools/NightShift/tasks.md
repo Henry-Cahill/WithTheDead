@@ -3201,3 +3201,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   Keep the preceding `if (HasReachTarget) reach = ReachOffset(ReachTarget);` unchanged (or remove it, but the essential fix is the conditional world‑space conversion).
   After this change, when the survivor uses a tap, switch, knob, drawer, etc., the right hand reaches the correct spot on the object instead of overshooting, resulting in realistic interaction animations that match the 1993 rural setting.
 - [ ] Add period‑appropriate rivets to the helicopter’s side‑panel seams in Assets/Scripts/World/Zone/Helicopter.cs, inside HelicopterModel.Build right after the two `m.Box` calls that create the side‑panel strips.
+- [ ] In Assets/Scripts/World/Fixtures/RaidTownGenerator.cs, modify the component so it disables its `Update` loop while the generator is off, eliminating a per‑frame call that does nothing.
+  – In `Create(...)` add `g.enabled = false;` after `g.ShowRunning(false);` to start the MonoBehaviour disabled.
+  – In `Pull(…)` after setting `_running = true;` add `enabled = true;` so the `Update` method starts receiving ticks again.
+  – In `Stop()` after setting `_running = false;` add `enabled = false;` to suspend the per‑frame callback until the next successful pull.
+  – Keep the existing `ShowRunning(bool)` logic unchanged; it still toggles the lamp visual.
+  – The player will see exactly the same behaviour (generator starts, runs, stops, lamp lights) because the visual and audio logic remains identical; only the hidden `Update` calls are suppressed when the generator is idle, reducing unnecessary frame‑time work.
