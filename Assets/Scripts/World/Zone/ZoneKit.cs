@@ -431,6 +431,19 @@ namespace CloneZ
             r.receiveShadows = false;
             ps.Play();
 
+            // Add a subtle scorched‑ground decal beneath the fire
+            var scorch = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            scorch.name = "Scorch";
+            scorch.transform.SetParent(go.transform, false);
+            scorch.transform.localPosition = new Vector3(0f, 0.01f, 0f);
+            scorch.transform.localScale = Vector3.one * 0.4f * scale;
+            // Remove the default collider
+            Object.Destroy(scorch.GetComponent<Collider>());
+            // Set the material colour to a concrete‑dark shade
+            var mr = scorch.GetComponent<MeshRenderer>();
+            mr.sharedMaterial = new Material(mr.sharedMaterial) { color = ConcreteDark };
+            ZoneKit.NoBake(scorch);
+
             Plume(parent, at + Vector3.up * 0.6f * scale, true, 0.9f * scale, 3f, 0.7f, new Color(0.35f, 0.33f, 0.31f, 0.45f));
             ZoneFlameLight.Spawn(parent, at + Vector3.up * 0.5f * scale, new Color(1f, 0.58f, 0.26f), 7f * scale, 2.4f, 0.35f);
         }
