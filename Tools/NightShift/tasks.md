@@ -1116,3 +1116,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `outline.effectColor = new Color(0.08f, 0.08f, 0.12f, 0.8f); // matches the dim twilight palette`
   `outline.effectDistance = new Vector2(3f, 3f); // ≈0.002 m screen‑space thickness`
   This adds only one extra UI primitive (the Outline component) and re‑uses the existing Image, keeping all colliders, interaction points and pivots untouched. No new assets or prefabs are required.
+- [ ] Fix the cleaning menu action in Assets/Scripts/Weapons/WeaponItems.cs so that using a cleaning kit from the gun‑menu correctly reduces the kit’s condition (or removes it) just like the dedicated `Clean` method does.
+  In `GunVerbs` the lambda for the “Clean (…)” action only calls `Random.value < 0.25f` to possibly delete the kit and never touches `kit.Condition`, allowing players to clean guns infinitely with a kit that has a MaxCondition.
+  Update the lambda to mirror the logic in `Clean`: after reducing the gun’s dirt level, if `kit.Def.MaxCondition > 0` decrement `kit.Condition` and remove the kit when it reaches 0; otherwise apply the 25 % chance removal.
+  Result: cleaning a gun via the inventory menu consumes the kit correctly, preventing an exploit where cleaning kits never wear out.
+- [ ] Add a small period‑appropriate radio antenna to the helicopter’s fuselage in Assets/Scripts/World/Zone/Helicopter.cs, inside `HelicopterModel.Build`.
+  Insert two primitives after the first `m.Ellipsoid` (the main hull) to create a thin metal rod and a tiny dish at the top centre of the fuselage.
+  `m.Cylinder(new Vector3(0f, 2.5f, 0f), 0.02f, 0.8f, 8, DecorPalette.Metal(hull), 0f);` – a 0.04 m‑diameter, 0.8 m‑tall rod placed at the hull’s highest point.
+  `m.Box(new Vector3(0f, 2.9f, 0f), new Vector3(0.2f, 0.05f, 0.2f), DecorPalette.Metal(hull * 0.8f));` – a flat 0.2 m × 0.2 m × 0.05 m metal “dish” perched on the rod’s tip, slightly darker to suggest wear.
+  The antenna uses the same `hull` colour (and a muted variation) so it blends with the existing metal palette, adds visual interest without affecting colliders or interaction points, and stays within the ~12‑primitive limit.
