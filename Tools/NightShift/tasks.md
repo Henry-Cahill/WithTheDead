@@ -3711,7 +3711,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `+ TopTrimColor = def == null ? TopColor : Shade(c, 0.72f);`
   `TopGloss = GarmentStyles.Gloss(k, 0.08f);`
   - 15:41 landed by 0htsserver in 1.6 min: **Changed file**
-- [ ] Add a small icy‑icicle detail to the exterior side of each window in `RaidBuilding.DrawWindow` (Assets/Scripts/World/RaidBuilding.cs)
+- [x] Add a small icy‑icicle detail to the exterior side of each window in `RaidBuilding.DrawWindow` (Assets/Scripts/World/RaidBuilding.cs)
   Inside `DrawWindow`, after the existing interior‑side loop but before the call to `WindowFrame(p)`, insert code that:
   Calls `int side = OutsideSide(r, o.Pos);` and proceeds only if `side != 0`.
   Uses `Rng.NextDouble() < 0.08` to give ≈ 8 % chance per window for an icicle.
@@ -3720,6 +3720,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Vector3 iciclePos = RunPoint(r, o.Pos, HeadHeight - 0.01f, side * (Half + 0.04f));`
   `p.Mesh.Box(iciclePos, RunSize(r, 0.02f, 0.08f, 0.02f), ice);`
   The icicle is ~2 cm wide/deep and ~8 cm long, positioned just below the window head, hanging outward on the exterior wall.
+  - 15:46 landed by 0htsserver in 4.5 min: **Summary of changes**
 - [x] In Assets/Scripts/Core/WeatherSystem.cs: Cache fog‑setting work in WeatherSystem.ApplyFog() to skip redundant RenderSettings updates each frame
   Add a private field `float _cachedFog = -1f;` to store the last fog intensity used.
   In `ApplyFog()` compute `float fog = Mathf.Max(FogIntensity, PrecipitationIntensity * 0.35f);` as before, then `if (Mathf.Approximately(_cachedFog, fog)) return;` before setting `RenderSettings.fog`, `RenderSettings.fogMode`, `fogStartDistance`, and `fogEndDistance`.
