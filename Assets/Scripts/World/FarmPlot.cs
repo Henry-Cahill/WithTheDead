@@ -34,7 +34,8 @@ namespace CloneZ
         public float Health { get; private set; } = 1f; // 0..1; hits 0 -> the crop dies
 
         private float _lastHours;                        // world hour the sim last advanced
-        private GameObject _plant;                       // the growing shoot (null when bare)
+        private WeatherSystem _weather;
+        private GameObject _plant;
         private Renderer _plantRenderer;
         private Renderer _soilRenderer;
 
@@ -44,7 +45,7 @@ namespace CloneZ
         private static readonly Color Wilt = new Color(0.58f, 0.52f, 0.24f);
         private static readonly Color Dead = new Color(0.32f, 0.27f, 0.20f);
 
-        private void OnEnable() { if (!All.Contains(this)) All.Add(this); }
+        private void OnEnable() { if (!All.Contains(this)) All.Add(this); _weather = WeatherSystem.Instance; }
         private void OnDisable() { All.Remove(this); }
 
         #region IDemolishable
@@ -220,7 +221,7 @@ namespace CloneZ
             if (dH <= 0f) { RefreshVisual(); return; }
 
             // Rain tops the plot up; the sun and soil draw the moisture back down.
-            float rain = WeatherSystem.Instance != null ? WeatherSystem.Instance.RainIntensity : 0f;
+            float rain = _weather != null ? _weather.RainIntensity : 0f;
             Water += CloneZConfig.FarmWaterRainPerHour * rain * dH;
             Water -= CloneZConfig.FarmWaterDryPerHour * dH;
             Water = Mathf.Clamp(Water, 0f, CloneZConfig.FarmWaterMax);

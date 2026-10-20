@@ -2182,11 +2182,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Explanation: The comment states a side ray should only cut when the hit lies at least `SideProbeMargin` in front of the survivor. The original check uses the opposite inequality and a negative margin, causing almost all side hits to be discarded, so walls beside or behind the player remain visible when they should be hidden. After the fix, side probes will correctly hide walls only when the hit is sufficiently forward, eliminating visual clipping while preserving intended cut‑away behavior.
   All other code remains unchanged.
   - 08:32 landed by 1htsserver in 1.3 min: **Changed**
-- [ ] Cache the `WeatherSystem` singleton in `FarmPlot` and use the cached reference in the per‑frame growth simulation (Assets/Scripts/World/FarmPlot.cs)
+- [x] Cache the `WeatherSystem` singleton in `FarmPlot` and use the cached reference in the per‑frame growth simulation (Assets/Scripts/World/FarmPlot.cs)
   Add a private field `private WeatherSystem _weather;`
   Set `_weather = WeatherSystem.Instance;` in `OnEnable` (or `Awake`) after the base call.
   Replace the line `float rain = WeatherSystem.Instance != null ? WeatherSystem.Instance.RainIntensity : 0f;` in `Advance()` with `float rain = _weather != null ? _weather.RainIntensity : 0f;`.
   This removes the per‑frame lookup of the singleton, eliminating unnecessary FindObject‑type work while keeping visual behavior unchanged.
+  - 08:35 landed by hts-llm in 2.2 min: **Changes made**
 - [ ] Add an “Open washing machine” action to Assets/Scripts/World/Fixtures/RaidHomeWasher.cs that works when the washer isn’t running, opens the drum storage and gives the player a brief description.
   modify `GetActions` (the `if (_running) { … } else { … }` block) to insert after the existing “Read the dial” line:
   `into.Add(new InteractAction("Open washing machine", OpenDoor)`
