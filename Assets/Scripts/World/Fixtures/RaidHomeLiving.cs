@@ -29,6 +29,10 @@ namespace CloneZ
         {
             "You plump the cushions and set them square. It looks like somebody still lives here.",
             "You beat the dust out of the cushions and stand them up against the back. Old habits.",
+            "You shake the cushions, sending a puff of old flour dust into the air; someone must've baked recently.",
+            "You fluff the cushions, and a whisper of pine from the fireplace drifts over them.",
+            "You straighten the cushions, noticing a crooked photo of a winter family portrait tucked behind an arm.",
+            "You press the cushions firm, feeling the worn stitching that someone kept mending through the cold nights.",
         };
 
         // The post that came to the town's houses in its last days, a delivery at a time (all original).
