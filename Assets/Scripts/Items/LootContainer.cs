@@ -12,6 +12,7 @@ namespace CloneZ
     /// </summary>
     public class LootContainer : MonoBehaviour, IDemolishable
     {
+        /// <summary>Global list of all active loot containers in the world.</summary>
         public static readonly List<LootContainer> All = new List<LootContainer>();
 
         public string DisplayName = "Container";
@@ -41,6 +42,7 @@ namespace CloneZ
         /// <summary>True for the storage of a fixture (see <see cref="Owner"/>).</summary>
         public bool IsFixture => FixtureKey != null || Owner != null;
 
+        /// <summary>Indicates whether the container has no items (null contents or empty stack list).</summary>
         public bool IsEmpty => Contents == null || Contents.Stacks.Count == 0;
 
         /// <summary>Arranges the contents on a growable grid (once) for the grid inventory view, sized to
@@ -87,6 +89,7 @@ namespace CloneZ
         private void OnDisable() { All.Remove(this); }
 
         #region IDemolishable
+        /// <summary>Name used when displaying this container as a demolishable object.</summary>
         public string DemolishName => "container";
         public bool CanDemolish(out string reason)
         {
