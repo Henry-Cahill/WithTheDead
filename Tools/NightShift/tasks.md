@@ -1906,13 +1906,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   In Update() replace `if (Sleep != null && Sleep.IsSleeping)` with `if (_sleepCache != null && _sleepCache.IsSleeping)`.
   All other logic stays unchanged; the player’s sickness decay and health drain behave exactly the same, but the per‑frame GetComponent lookup is eliminated.
   - 07:17 landed by 1htsserver in 2.2 min: **Changes made**
-- [ ] Modify Assets/Scripts/World/Fixtures/RaidCivicSink.cs by adding a new “Check water temperature” action in `CivicSink.GetActions` right after the existing rinse action.
+- [x] Modify Assets/Scripts/World/Fixtures/RaidCivicSink.cs by adding a new “Check water temperature” action in `CivicSink.GetActions` right after the existing rinse action.
   In `GetActions`, after `into.Add(rinse);` insert:
   `var temp = new InteractAction("Check water temperature", ctx => { ctx.Notify(PowerGrid.HousePowered ? "The water feels warm." : "The water is icy‑cold."); })`
   `.DisabledIf(!WaterMains.MainsOn, Dry);`
   `into.Add(temp);`
   This uses the already‑present `PowerGrid.HousePowered` flag (used in `Wash`) and the `Dry` constant, so no new code or assets are required.
   In‑game the player will now see an extra `[E] Check water temperature` option when standing at the sink; selecting it will tell them whether the running water is warm (powered) or cold, and it will be disabled with the “The tap is dry …” message when the mains are off.
+  - 07:19 landed by 1htsserver in 1.4 min: **Changed file**
 - [ ] Append six new period‑correct transmission strings to the `Lines` array of the first `Channel` in `GuardNets` in Assets/Scripts/World/Fixtures/RaidCivicRadio.cs
   Quote style reference: `"Ironwood, Ironwood, this is Juniper Base. Radio check, over."` – the new entries should match this terse, radio‑call format and stay true to 1993 rural Kentucky winter.
   Themes to cover:
