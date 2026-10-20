@@ -2304,12 +2304,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
   - 09:06 landed by 0htsserver in 4.3 min: Added concise one‑sentence XML‑summary comments for every public member of **Assets/Scripts/World/Fixtures/RaidCivicSink.cs** that lacked do
-- [ ] Fix a potential out‑of‑range exception in `Dsp.CrossfadeLoop` (Assets/Scripts/Audio/Synth/SynthCore.cs)
+- [x] Fix a potential out‑of‑range exception in `Dsp.CrossfadeLoop` (Assets/Scripts/Audio/Synth/SynthCore.cs)
   · The method assumes `loopLen <= x.Length` and does `Array.Copy(x, o, loopLen);` which throws if a longer loop length is requested.
   · Add a guard that caps `loopLen` to `x.Length` before allocating and copying, e.g. `if (loopLen > x.Length) loopLen = x.Length;`.
   · Keep the existing cross‑fade logic unchanged; it will now safely handle oversize requests without crashing.
   · After the fix, calling `CrossfadeLoop` with any `loopLen` will never raise an exception, so loops used for seamless audio playback will always succeed.
   · No other code changes are required.
+  - 09:07 landed by 1htsserver in 1.4 min: **Changed file**
 - [ ] Add a small metal nozzle and a glass‑like gauge to the 1990s gas pump in Assets/Scripts/World/DecorProps.cs to give the pump a lived‑in, functional look.
   In `DecorProps.GasPump` after the `for (int s = -1; s <= 1; s += 2) { … }` loop and before the final snow‑capped top box, insert:
   `float nozzleLen = R(rng, 0.20f, 0.28f); // length variation`
