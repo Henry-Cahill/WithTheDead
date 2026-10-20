@@ -1,5 +1,6 @@
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -227,7 +228,7 @@ namespace CloneZ
             }
 
             int capacity = RowsPerColumn * 2;
-            int shown = lines.Count <= capacity ? lines.Count : capacity - 1;
+            int shown = Math.Min(lines.Count, capacity);
             for (int i = 0; i < shown; i++)
             {
                 RaidSummaryLine line = lines[i];
