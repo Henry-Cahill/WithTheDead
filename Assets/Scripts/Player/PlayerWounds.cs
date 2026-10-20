@@ -188,6 +188,7 @@ namespace CloneZ
         private void Awake() {
     _stats = GetComponent<PlayerStats>();
     _sleep = GetComponent<PlayerSleep>();
+    _skills = GetComponent<PlayerSkills>();
 }
 
         /// <summary>Opens a fresh wound of the given kind (called when a zombie lands a hit).</summary>
@@ -445,23 +446,9 @@ namespace CloneZ
 
         // Bleeding and healing bent by traits, artifacts, Zone marks and the Vitality skill.
         private PlayerSkills _skills;
-        private float bleedMult
-        {
-            get
-            {
-                if (_skills == null) _skills = GetComponent<PlayerSkills>();
-                return PlayerModifiers.Current.BleedRate * (_skills != null ? Mathf.Max(0.4f, _skills.VitalityBleedMult) : 1f);
-            }
-        }
+private float bleedMult => PlayerModifiers.Current.BleedRate * Mathf.Max(0.4f, (_skills != null ? _skills.VitalityBleedMult : 1f));
 
-        private float healMult
-        {
-            get
-            {
-                if (_skills == null) _skills = GetComponent<PlayerSkills>();
-                return PlayerModifiers.Current.HealRate * (_skills != null ? _skills.VitalityHealMult : 1f);
-            }
-        }
+private float healMult => PlayerModifiers.Current.HealRate * (_skills != null ? _skills.VitalityHealMult : 1f);
 
         #region Treatment (driven by medical items)
         /// <summary>Dresses the most urgent open wound. Returns false if nothing needed dressing. A heavy bleed
