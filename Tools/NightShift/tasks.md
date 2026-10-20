@@ -566,13 +566,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   – Replace `TimeOfDay.Instance` in `Update` with the cached `_timeOfDay` (use a null‑check on `_timeOfDay`).
   – The player’s visual behaviour stays identical; only the per‑frame cost of repeatedly constructing the layer‑mask ints and fetching the singleton is removed.
   - 00:05 landed by 1htsserver in 6.8 min: **Changed files**
-- [ ] Add a quick “Bang the roll‑up door” action to Assets/Scripts/World/Fixtures/RollUpShutter.cs that lets the survivor slap the curtain for noise without changing its state.
+- [x] Add a quick “Bang the roll‑up door” action to Assets/Scripts/World/Fixtures/RollUpShutter.cs that lets the survivor slap the curtain for noise without changing its state.
   In `Awake()` add ` _bangAct = Bang;` alongside the existing assignments.
   Implement a private method `void Bang(InteractContext ctx) => MakeNoise(CloneZConfig.RollUpNoise);`.
   In `GetActions(...)` after the existing raise/lower entry, add:
   `into.Add(new InteractAction("Bang the roll‑up door", _bangAct).Timed(0f, "Banging the door", HumanoidActivity.Use));`
   This action is always available (no state check), plays the same roll‑up noise defined by `CloneZConfig.RollUpNoise`, and costs no time, giving the player a way to distract zombies or test the door.
   All other fields, methods and behaviours stay unchanged.
+  - 00:06 landed by 0htsserver in 6.8 min: **Modified file**
 - [x] Append four new deliveries to the `Deliveries` array in `Assets/Scripts/World/Fixtures/MailboxFixture.cs`
   Locate the static readonly field `private static readonly string[][] Deliveries` and add four more elements after the existing ones, each defined as a `new[] { "...", "...", "..." }` block.
   Base the style on the entry `"A county public-health notice, photocopied slightly crooked. URGENT — READ AND KEEP."` – each line should be a full sentence, period‑correct, and convey a distinct theme.
