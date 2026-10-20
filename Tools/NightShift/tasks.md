@@ -2713,3 +2713,18 @@ you want to see in game. Indent extra lines under a task to add detail.
   Place it centered with a slightly larger size to act as a thin dark border: `UIKit.Place(rim.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(178f, 178f));`
   The rim’s thickness is about 0.02 m (≈2 % of the dial’s 0.18 m width), giving the watch a faint, period‑accurate wear line.
   No new materials, colliders, or interaction logic are added; the rim inherits the existing UI canvas settings.
+- [ ] In Assets/Scripts/Net/NetWorld.cs: Optimize NetWorld.SendAi by caching the per‑client temporary collections instead of allocating them each tick.
+  Declare two private static fields in NetWorld: `private static readonly List<Actor> s_Visible = new List<Actor>(64);` and `private static readonly HashSet<uint> s_Keep = new HashSet<uint>(64);`.
+  In SendAi, replace `var visible = new List<Actor>();` with `s_Visible.Clear();` and use `s_Visible` for the visibility loop.
+  Replace `var keep = new HashSet<uint>();` with `s_Keep.Clear();` and use `s_Keep` for the keep set.
+  After sending updates for a client, leave the collections cleared for the next client (no extra Clear needed beyond the end of the loop).
+  The player’s visual experience stays identical; only GC pressure and frame‑time allocations are reduced.
+- [ ] Add a “Check comfort” extra action to beds (CivicRest) in Assets/Scripts/World/Fixtures/RaidCivicFixtures.cs
+  Add a private `Awake` method that sets a default extra action when none is supplied:
+  `private void Awake()`
+  `{`
+  `if (_extra == null)`
+  `_extra = (c, list) => list.Add(new InteractAction("Check comfort", ComfortInfo));`
+  `}`
+  Add a private helper that notifies the survivor about the bed’s comfort level using the existing `_comfort` field:
+  `private void ComfortInfo(InteractContext ctx)`
