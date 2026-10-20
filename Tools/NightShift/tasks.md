@@ -1767,9 +1767,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Write each entry as a single complete sentence ending with a period, e.g., `"Your thump reverberates, but the coils remain stubbornly still."`.
   Do not alter any other code, ordering, or formatting.
   - 06:34 landed by hts-llm in 2.5 min: **Changed file**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/HoseSpigot.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [~] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/HoseSpigot.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 06:35 1htsserver made no changes: No public method or property in **Assets/Scripts/World/Fixtures/HoseSpigot.cs** is missing a `/// <summary>` that isn’t already inherited (o
 - [ ] Add four tiny “rivet” decorations to the health panel background in Assets/Scripts/UI/HealthPanelController.cs, inside the `Build()` method right after the line `trimGo.AddComponent<Image>().color = new Color(0.04f, 0.03f, 0.05f, 0.9f);`
   Create a new private helper `Rivet(RectTransform parent, Vector2 anchoredPos)` that makes a `GameObject` with a `RectTransform` (size Δ = `new Vector2(6f, 6f)`) and an `Image` coloured `new Color(0.12f, 0.10f, 0.08f, 1f)` (dark metal); set its `anchorMin`, `anchorMax`, and `pivot` to `new Vector2(0.5f, 0.5f)` and its `anchoredPosition` to the supplied `anchoredPos`.
   Call this helper four times to place rivets at the panel corners:
