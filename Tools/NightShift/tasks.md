@@ -1676,9 +1676,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   a winter‑time countryside photograph,
   a retro advertisement for a local tractor dealership,
   - 06:04 landed by 1htsserver in 4.1 min: **Changed file**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/TimeOfDay.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/TimeOfDay.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 06:13 landed by hts-llm in 12.4 min: Added concise `/// <summary>` XML documentation comments to all public members in **Assets/Scripts/Core/TimeOfDay.cs** that previously lacke
 - [x] Add small metal buckles to the chest‑rig shoulder straps in Assets/Scripts/Player/PlayerGearVisuals.cs, method BuildChestRig(ItemDef def)
   Declare a hardware material like the backpack does: `Material hardware = CloneZUtil.Mat(Hardware, 0.4f);`
   Inside the existing shoulder‑strap loop (`for (int s = -1; s <= 1; s += 2) …`) after calling `StrapOverShoulder`, capture the strap end point with `Vector3 end = _path[_path.Count - 1];`

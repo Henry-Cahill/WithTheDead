@@ -11,9 +11,11 @@ namespace CloneZ
     /// </summary>
     public class TimeOfDay : MonoBehaviour
     {
+        /// <summary>Singleton instance of the TimeOfDay system.</summary>
         public static TimeOfDay Instance { get; private set; }
 
         [Header("Assigned by the bootstrapper")]
+        /// <summary>Reference to the sun directional light, set by the bootstrapper.</summary>
         public Light Sun;
 
         /// <summary>Current hour of the day, 0..24.</summary>
@@ -29,8 +31,10 @@ namespace CloneZ
 
         /// <summary>The calendar year (Knox County, 1993).</summary>
         public const int Year = 1993;
-        /// <summary>Calendar date of Day 1 (PZ's outbreak began on July 9th).</summary>
+
+        /// <summary>Start month for the calendar date (defaults to July).</summary>
         public int StartMonth { get; private set; } = 7;
+        /// <summary>Day of month for the start date (defaults to 9).</summary>
         public int StartDayOfMonth { get; private set; } = 9;
 
         /// <summary>Scales the ambient light, fog and sky colour (1 = normal). Static so the vision /
@@ -48,6 +52,7 @@ namespace CloneZ
 
         /// <summary>Perceived brightness 0..1 (sun elevation blended with the night floor and cloud cover).</summary>
         public float LightLevel { get; private set; } = 1f;
+        /// <summary>True when it's considered night (light level below threshold).</summary>
         public bool IsNight => LightLevel < 0.35f;
 
         // Palette (kept out of the config since these are pure presentation).
