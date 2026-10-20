@@ -1497,7 +1497,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace `ExtractionManager.Instance != null && ExtractionManager.Instance.RaidOver` with `(_em != null && _em.RaidOver)`.
   At the start of `Update()` add a quick refresh: `if (_gm == null) _gm = GameManager.Instance; if (_em == null) _em = ExtractionManager.Instance;` – this only runs when the cached reference is missing, eliminating the costly static property access every frame while the game is running.
   The player sees exactly the same pause‑menu behaviour; the only change is that the world‑state checks are now cached, reducing per‑frame overhead.
-- [ ] In Assets/Scripts/World/Fixtures/OutdoorHouseNumber.cs: Add a second interaction to OutdoorHouseNumber so the player can “Knock on the door” as an alternative action.
+- [x] In Assets/Scripts/World/Fixtures/OutdoorHouseNumber.cs: Add a second interaction to OutdoorHouseNumber so the player can “Knock on the door” as an alternative action.
+  - 04:43 landed by 0htsserver in 1.8 min: **Changes made**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Hub/Screens/HubTooltip.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
