@@ -135,6 +135,7 @@ namespace CloneZ
             into.Add(new InteractAction("Previous channel", PrevChannel).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Turn it up", c => Louder(c, 1)).DisabledIf(_volume >= MaxVolume, "It won't go any louder").DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Turn it down", c => Louder(c, -1)).DisabledIf(_volume <= 0, "It's down as low as it goes").DisabledIf(!near, TooFar));
+            into.Add(new InteractAction("Check radio status", CheckStatus).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Key the handset", KeyHandset).DisabledIf(!near, TooFar));
         }
 
@@ -143,6 +144,13 @@ namespace CloneZ
             Switch(true);
             Net n = Nets[_net];
             ctx.Notify("The set hums and its dial lights up amber. " + n.Name + " \u2014 " + n.Title + ".");
+        }
+
+        private void CheckStatus(InteractContext ctx)
+        {
+            Net n = Nets[_net];
+            string vol = _volume <= 0 ? "low" : _volume >= MaxVolume ? "loud" : "medium";
+            ctx.Notify($"Radio is on {n.Name} — {n.Title}. Volume: {vol}.");
         }
 
         private void Switch(bool on)

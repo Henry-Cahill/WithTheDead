@@ -2806,7 +2806,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   The player sees exactly the same water‑shut‑off and power‑cut notices; no visual or gameplay change occurs.
   This eliminates two singleton property look‑ups each frame, reducing GC pressure and CPU time.
   - 11:12 landed by 1htsserver in 2.1 min: **Changes Made**
-- [ ] Add a “Check radio status” action to `RaidTownFieldRadio.GetActions` and implement its handler in `Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs`
+- [x] Add a “Check radio status” action to `RaidTownFieldRadio.GetActions` and implement its handler in `Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs`
   Insert `into.Add(new InteractAction("Check radio status", CheckStatus).DisabledIf(!near, TooFar));` after the “Turn it down” line in `GetActions`.
   Add a private method `CheckStatus(InteractContext ctx)` that builds a short message with the current channel and volume and sends it via `ctx.Notify`.
   `private void CheckStatus(InteractContext ctx)`
@@ -2815,6 +2815,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `string vol = _volume <= 0 ? "low" : _volume >= MaxVolume ? "loud" : "medium";`
   `ctx.Notify($"Radio is on {n.Name} — {n.Title}. Volume: {vol}.");`
   `}`
+  - 11:13 landed by 0htsserver in 2.4 min: **Summary of changes**
 - [ ] Append four new exposure‑mark entries to the `static ZoneExposure()` constructor in Assets/Scripts/Zone/ZoneHazards.cs.
   Add calls to `M(id, name, description, apply)` after the existing “old_folklore” mark.
   Use the style of the existing entry `"Your pupils never quite close now. You see further in the dark; bright light leaves you exposed."` as a model.
