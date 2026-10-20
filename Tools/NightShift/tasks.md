@@ -4029,3 +4029,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   In the `if (seat.IsSittingOn(this))` block, after the existing stand action, insert
   `into.Add(new InteractAction("Stand up slowly", c => { c.Seat?.Stand(); c.Notify("You rise slowly, stretching out a bit before standing."); }));`
   The player will now see a second exit option when seated, giving a slightly different narrative cue while using only the existing `Seat`, `Stand()` and `Notify()` members.
+- [ ] Add a colour‑tint helper to `MapBuilding` in `Assets/Scripts/World/Map/MapData.cs` so each building can receive a subtle, period‑appropriate hue variation based on its ID.
+  Insert `using UnityEngine;` after the existing `using System;`.
+  Inside the `MapBuilding` class, add a public method:
+  `public Color GetTint()`
+  `{`
+  `// deterministic hash from id → hue offset in [0,0.1]`
+  `float hue = ((id * 0x9E3779B9) & 0xFFFF) / 65535f * 0.1f;`
+  `float sat = 0.6f + ((id >> 16) & 0xFF) / 255f * 0.2f;`
+  `float val = 0.7f + ((id >> 24) & 0xFF) / 255f * 0.2f;`
