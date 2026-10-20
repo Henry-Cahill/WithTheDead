@@ -2669,3 +2669,10 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Characters/HumanoidAnimator.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] In Assets/Scripts/Economy/Money.cs: Fix Money.TrySpend to reject negative spend amounts (currently treats any amount ≤ 0 as a successful spend).
+  Change the first line of `TrySpend` from `if (amount <= 0) return true;` to:
+  `if (amount == 0) return true;`
+  `if (amount < 0) return false;`
+  This prevents callers from passing a negative value and mistakenly “spending” money, which previously left the player's stash unchanged while reporting success.
+  With the fix, attempting to spend a negative amount will correctly fail, and the UI/message that reports “You don’t have enough money” will now appear only when the player truly lacks funds.
+  All other logic (checking `Available`, taking from stash and pack, returning `left <= 0`) remains unchanged.
