@@ -315,6 +315,16 @@ namespace CloneZ
             bracketRenderer.sharedMaterial.color = Rust;
             // Remove its default collider (visual only)
             Object.Destroy(bracket.GetComponent<Collider>());
+            // Add a tiny rust‑coloured cap on the bracket to suggest a screw/hinge
+            var cap = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            cap.name = "BeamBracketCap";
+            cap.transform.SetParent(bracket.transform, false);
+            // Position the cap on top of the bracket; Cylinder height is scaled on Y, so move half the bracket height + half cap height
+            cap.transform.localPosition = new Vector3(0f, 0.04f, 0f);
+            cap.transform.localScale = new Vector3(0.02f, 0.01f, 0.02f);
+            var capRenderer = cap.GetComponent<MeshRenderer>();
+            capRenderer.sharedMaterial.color = Rust;
+            Object.Destroy(cap.GetComponent<Collider>());
 
             NoBake(go);
             return mr;

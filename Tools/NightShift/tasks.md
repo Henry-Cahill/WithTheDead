@@ -2656,7 +2656,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   This keeps the full 32‑bit value (mod 2³²) as the seed, eliminating accidental seed collisions.
   Result: each actor gets a unique visual randomisation regardless of how many actors exist, so players will no longer see different zombies/humans sharing the exact same look due to seed overflow.
   - 10:41 landed by 1htsserver in 1.2 min: **Changed file**: `Assets/Scripts/Net/NetWorld.cs`
-- [ ] In Assets/Scripts/World/Zone/ZoneKit.cs: Add a tiny rust‑coloured metal cap to the beam’s bracket in `ZoneKit.Beam` to suggest a screw/hinge, improving period‑correct detail.
+- [x] In Assets/Scripts/World/Zone/ZoneKit.cs: Add a tiny rust‑coloured metal cap to the beam’s bracket in `ZoneKit.Beam` to suggest a screw/hinge, improving period‑correct detail.
+  - 10:44 landed by hts-llm in 2.9 min: **Summary**
 - [x] In Assets/Scripts/Characters/ZombieAvatar.cs: Cache the Transform used in ZombieAvatar.LateUpdate to avoid the per‑frame transform property lookup.
   Add a private field `private Transform _cachedTransform;` to the class.
   In Awake() or Start() assign `_cachedTransform = transform;`.
