@@ -2320,3 +2320,27 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Vector3 gaugePos = nozzlePos + nozzleRot * new Vector3(0f, 0f, nozzleLen * 0.5f + 0.02f);`
   `m.Ellipsoid(gaugePos, new Vector3(0.04f, 0.04f, 0.04f), Gs(new Color(0.20f, 0.60f, 0.80f)), 8, 4); // glass gauge`
   These 2 new primitives (one cylinder, one ellipsoid) use the existing `rng` for size/rotation variation, keep existing materials and colliders, and stay within the 12‑primitive limit.
+- [ ] Cache singleton lookups in Assets/Scripts/Player/Stealth.cs to avoid per‑frame property calls
+  Add three private fields (e.g. `_gear`, `_tod`, `_mods`) to store `PlayerGear.Instance`, `TimeOfDay.Instance` and `PlayerModifiers.Current` in `Start()` (or `Awake`).
+  Replace every per‑frame use of `PlayerGear.Instance`, `TimeOfDay.Instance` and `PlayerModifiers.Current` with the cached fields.
+  Update the ambient‑light block to use `_tod` instead of `TimeOfDay.Instance`.
+  Update the gear‑light block to use `_gear` instead of `PlayerGear.Instance`.
+  Update the final visibility/noise multipliers to use `_mods` instead of `PlayerModifiers.Current`.
+  This removal of three static singleton lookups each Update reduces allocation‑free overhead without changing any visual or gameplay outcome.
+- [ ] In Assets/Scripts/World/Fixtures/SeatFixture.cs: Add an “Inspect seat” action to SeatFixture.GetActions that tells the survivor the seat’s comfort level when they are not already sitting
+  Modify the `GetActions` method in Assets/Scripts/World/Fixtures/SeatFixture.cs
+  After the line `into.Add(new InteractAction(_sitLabel, SitDown));` insert:
+  `into.Add(new InteractAction("Inspect seat", c => c.Notify($"This seat feels {(int)(_comfort * 100)}% comfortable.")));`
+  The new action appears only when the player is standing, letting them read a short message about the seat’s comfort; no other behavior changes.
+- [ ] Append six new entries to the `CivicDialLines` array in Assets/Scripts/World/RaidBuilding.Civic.cs
+  Insert the following quoted strings after the last existing line (after `"You try a birthday, then 1-2-3-4. Nothing — not that it matters: the bolts are already drawn back."`):
+  `"The dial spins with a faint whir; a half‑written note beside it reads “Set to 12‑03‑87 for the generator.”"`
+  `"A scrawl in faded ballpoint ink says “Emergency: keep dial on 4‑7‑1 during storms.”"`
+  `"The metal clicks as you turn it, and a torn Post‑It clings: “Do not twist past 9— lock will jam.”"`
+  `"A cheap laminate sticker peels from the dial: “Backup code 6‑2‑5 for water pump.”"`
+  `"You hear a hollow thump; the dial bears a rust‑stained label: “Keep at 0 for night‑shift power‑down.”"`
+  `"A smear of oil covers the edge; the last scribble reads “Rotate clockwise to reset HVAC.”"`
+  These entries keep the terse, present‑tense, period‑appropriate tone of the existing lines and expand the variety of cryptic notes a survivor might find on the dial.
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Player/PlayerCombat.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
