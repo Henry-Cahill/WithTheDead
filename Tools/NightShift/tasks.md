@@ -2358,12 +2358,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   After the line `GameObject go = CloneZUtil.Box(name, position, size, color, parent);` insert a block that:
   Computes the floor Y with `BuildPiece.FloorTopAt(position)` like `var floor = position; floor.y = BuildPiece.FloorTopAt(floor);`
   Creates a deterministic‑random `System.Random` (e.g. `var rng = new System.Random(1994);`) and, if `rng.NextDouble() < 0.7`, adds a handle mesh:
-- [ ] In Assets/Scripts/World/Interaction/StorageFixture.cs: Cache the per‑frame lookup of the player interactor in `StorageFixture` to avoid a `PlayerInteractor.Current` call each Update frame
+- [x] In Assets/Scripts/World/Interaction/StorageFixture.cs: Cache the per‑frame lookup of the player interactor in `StorageFixture` to avoid a `PlayerInteractor.Current` call each Update frame
   Add a private field `private PlayerInteractor _player;` to the class.
   Create an `Awake()` method (or add to an existing initializer) that sets `_player = PlayerInteractor.Current;`.
   Replace the line `PlayerInteractor pi = PlayerInteractor.Current;` in `Update()` with `PlayerInteractor pi = _player;`.
   Optionally, guard against a null player after respawn by adding `if (_player == null) _player = PlayerInteractor.Current;` at the start of `Update()`.
   The player sees no visual change; the storage still opens when looked at from the inventory, but the per‑frame overhead of a singleton lookup is eliminated.
+  - 09:21 landed by hts-llm in 4.9 min: All changes compile.Implemented a cached `PlayerInteractor` reference in `StorageFixture` to eliminate per‑frame singleton lookups.
 - [ ] Make sure there are graphics for every item in the game.
 - [ ] Add a “Wipe the seat” interaction to the toilet fixture (Assets/Scripts/World/Fixtures/ToiletFixture.cs)
   In `GetActions` after the existing seat toggle line

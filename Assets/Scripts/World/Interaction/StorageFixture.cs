@@ -51,6 +51,7 @@ namespace CloneZ
     public class StorageFixture : Interactable
     {
         private string _name;
+        private PlayerInteractor _player;
         private string _key;
         private Vector3 _point;
         private Transform _occlusion;
@@ -111,11 +112,16 @@ namespace CloneZ
             return f;
         }
 
+        private void Awake()
+        {
+            _player = PlayerInteractor.Current;
+        }
         private void Update()
         {
             // Opened from the inventory's container column (or being searched): swing the doors open to match.
             if (_open || !HasParts) return;
-            PlayerInteractor pi = PlayerInteractor.Current;
+            if (_player == null) _player = PlayerInteractor.Current;
+            PlayerInteractor pi = _player;
             if (pi != null && Container != null && (pi.ViewedContainer == Container || pi.SearchTarget == Container))
                 SetOpen(true, false);
         }
