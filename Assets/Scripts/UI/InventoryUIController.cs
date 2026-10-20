@@ -31,6 +31,7 @@ namespace CloneZ
     /// </summary>
     public partial class InventoryUIController : MonoBehaviour
     {
+        /// <summary>Indicates whether the inventory UI window is currently open.</summary>
         public bool IsOpen { get; private set; }
         /// <summary>The container shown in the loot pane / window (null when it shows the floor).</summary>
         public LootContainer CurrentContainer => _openContainer;
@@ -85,6 +86,7 @@ namespace CloneZ
         // The right-click / "…" context menu (null while closed)
         private GameObject _menu;
 
+        /// <summary>Initialises the UI with the given player inventory and related components.</summary>
         public void Bind(PlayerInventory player)
         {
             _player = player;
@@ -137,6 +139,7 @@ namespace CloneZ
         }
 
         #region Tooltip
+        /// <summary>Shows an item's tooltip by the cursor using the default extra information.</summary>
         public void ShowTooltip(ItemDef def) => ShowTooltip(def, null);
 
         /// <summary>Shows an item's tooltip by the cursor; <paramref name="extra"/> appends lines about
@@ -171,6 +174,7 @@ namespace CloneZ
             PositionTooltip();
         }
 
+        /// <summary>Hides the currently displayed tooltip, optionally only if it matches the given item.</summary>
         public void HideTooltip(ItemDef def)
         {
             if (def != null && def != _tooltipDef) return;   // a newer row already took over
@@ -218,6 +222,7 @@ namespace CloneZ
             else OpenInternal();
         }
 
+        /// <summary>Opens the inventory UI without displaying any container, showing only the player's bag and the floor.</summary>
         public void OpenInventoryOnly()
         {
             DetachContainer();
@@ -256,6 +261,7 @@ namespace CloneZ
             Refresh();
         }
 
+        /// <summary>Closes the inventory UI, cancelling any active actions and restoring gameplay input.</summary>
         public void Close()
         {
             // Esc while an item is held (or a menu is up) only lets go of that: PlayerInteractor routes Esc here.
