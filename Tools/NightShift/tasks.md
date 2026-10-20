@@ -371,10 +371,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   In the method `public static bool LightFire(PlayerInventory inv)` insert `if (PlayerChannel.Local == null) return false;` right after the existing `if (inv == null) return false;`.
   The player will no longer see the game crash or freeze when trying to light a fire before the `PlayerChannel` component has been added (e.g., very early in a new run or after a scene reload). All other logic and return values stay unchanged.
   - 23:03 landed by 0htsserver in 3.7 min: **Changed**
-- [ ] Add a tiny hinge‑pin cylinder to the mailbox door for visual detail in the `Mailbox` method of Assets/Scripts/World/StarterHome.Grounds.cs
+- [!] Add a tiny hinge‑pin cylinder to the mailbox door for visual detail in the `Mailbox` method of Assets/Scripts/World/StarterHome.Grounds.cs
   Insert after the line creating `doorPart` (`FixturePart doorPart = FixturePart.Hinge(...);`) the call:
   `m.Cylinder(at + new Vector3(0f, 1.12f, -0.252f), 0.006f, 0.018f, 12, face);`
   The cylinder (radius 0.006 m, height 0.018 m) sits at the door hinge point (`at + new Vector3(0f, 1.12f, -0.252f)`) using the same metal material (`face`) as the door, adding a realistic pin without affecting colliders or interaction.
+  - 00:27 failed (spark, 87.4 min); see reports/2026-10-19-2257.md
 - [x] In Assets/Scripts/Camera/ViewCrosshair.cs: Cache the singleton lookup of `IsoCameraFollow.Instance` in `ViewCrosshair` to avoid a per‑frame search.
   Add a private field `private IsoCameraFollow _cam;` and assign it in `Awake()` after `Build()` (e.g. `_cam = IsoCameraFollow.Instance;`).
   Replace the two occurrences of `IsoCameraFollow.Instance` (in `LateUpdate` for the `show` calculation and in `Bind()` for the target lookup) with the cached `_cam`.
