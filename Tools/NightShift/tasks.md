@@ -3386,3 +3386,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   ` MakeNoise(CloneZConfig.FixtureNoiseMedium);`
   ` ctx.Notify("Your voice bounces off the enamel plate, echoing loudly.");`
   `}`
+- [ ] Add a subtle rust spot on the kitchen sink’s metal mixer tap in Assets/Scripts/World/FurnitureBuilder.Kitchen.cs, inside the SinkUnit method, using the existing `rng` and `chrome` material.
