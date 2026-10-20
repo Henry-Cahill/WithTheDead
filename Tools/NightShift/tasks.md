@@ -630,7 +630,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   *Create a tiny helper `Actor LocalPlayerCached => _localPlayer != null && _localPlayer.IsAlive ? _localPlayer : (_localPlayer = Actor.LocalPlayer);`.
   *Replace every direct call to `Actor.LocalPlayer` in this file (`Bark`, `TakeDamage`, `Release`, `Die`, `Alert`, etc.) with `LocalPlayerCached`.
   *The player’s presence and alive state rarely change; caching eliminates the hidden `FindObjectsOfType`/search that `Actor.LocalPlayer` performs each frame, while the game’s visual behaviour (dialogues, AI reactions, surrender handling) stays identical.
-- [ ] Add a simple “Inspect door” action to Assets/Scripts/World/Fixtures/RaidDoor.cs that lets the survivor read the door’s current health.
+- [x] Add a simple “Inspect door” action to Assets/Scripts/World/Fixtures/RaidDoor.cs that lets the survivor read the door’s current health.
+  - 00:23 landed by 0htsserver in 2.3 min: **Changed file**
 - [ ] Append five new period‑correct distress call strings to the `private static readonly string[] GuardCalls` array in `Assets/Scripts/World/Fixtures/RaidCivicRadio.cs` so the survivor can hear more varied radio pleas.
   Quote the existing entry `"You give the post's call sign and ask for anyone at all. A voice comes back in pieces — “...say again... cannot...” — then nothing."` as the style reference.
   Each new entry must be a single string literal, beginning with an opening quote (Unicode “\u201C”), containing a full sentence spoken by a caller, followed by a brief narration after the closing quote, and ending with a period inside the string.

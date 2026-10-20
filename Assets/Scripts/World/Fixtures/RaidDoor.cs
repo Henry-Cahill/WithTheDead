@@ -152,6 +152,14 @@ namespace CloneZ
                 kick.Tick = _kickTick;
                 into.Insert(Mathf.Min(start + 1, into.Count), kick);
             }
+
+            // New lightweight inspection action for raid doors
+            into.Add(new InteractAction("Inspect door", ctx => {
+                float health = _health;
+                float maxHealth = _maxHealth;
+                int percent = Mathf.RoundToInt(HealthNormalized * 100f);
+                ctx.Notify($"Door health: {health:0.##}/{maxHealth:0.##} ({percent}%){(_broken ? " (broken)" : string.Empty)}");
+            }));
         }
 
         // A burst door keeps its leaves where they fell and has nothing left to shut; otherwise as the home's.
