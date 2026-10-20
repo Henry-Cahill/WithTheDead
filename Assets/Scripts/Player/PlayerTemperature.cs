@@ -137,7 +137,9 @@ namespace CloneZ
             if ((rain > 0.01f || snow > 0.01f) && !sheltered)
             {
                 float resist = Clothing != null ? Clothing.WaterResistance() : 0f;
-                float gain = CloneZConfig.WetRainPerSec * w.WettingIntensity * (1f - CloneZConfig.WetWaterResistFactor * resist);
+                float intensity = rain > 0.01f ? rain : snow;
+                float perSec = rain > 0.01f ? CloneZConfig.WetRainPerSec : CloneZConfig.WetSnowPerSec;
+                float gain = perSec * intensity * w.WettingIntensity * (1f - CloneZConfig.WetWaterResistFactor * resist);
                 _stats.Wetness = Mathf.Clamp01(_stats.Wetness + gain * dt);
             }
             else

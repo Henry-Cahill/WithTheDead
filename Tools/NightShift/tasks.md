@@ -1505,7 +1505,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
   - 04:49 landed by 0htsserver in 5.9 min: Added concise XML‑style `/// <summary>` documentation to every public method in **Assets/Scripts/Hub/Screens/HubTooltip.cs** that previously
-- [ ] Fix the wetness‑increase logic in Assets/Scripts/Player/PlayerTemperature.cs so that snow soaks the survivor more slowly than rain, matching the comment “rain soaks you … snow only slowly”.
+- [x] Fix the wetness‑increase logic in Assets/Scripts/Player/PlayerTemperature.cs so that snow soaks the survivor more slowly than rain, matching the comment “rain soaks you … snow only slowly”.
   In `UpdateWetness(float dt)` the code treats any precipitation the same and always uses `CloneZConfig.WetRainPerSec`:
   `float gain = CloneZConfig.WetRainPerSec * w.WettingIntensity * (1f - CloneZConfig.WetWaterResistFactor * resist);`
   Change it to use a separate per‑second value for snow (`CloneZConfig.WetSnowPerSec`). Compute the wetting intensity based on the actual precipitation type and apply the appropriate constant:
@@ -1514,6 +1514,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `: CloneZConfig.WetSnowPerSec; // snow uses the snow constant`
   `float gain = perSec * intensity * (1f - CloneZConfig.WetWaterResistFactor * resist);`
   Leave the rest of the method unchanged. After this fix the player will gain wetness quickly in heavy rain but only gradually when it’s snowing, which is what the in‑game description promises. All other behaviours (drying, resistances, etc.) stay the same.
+  - 04:50 landed by hts-llm in 3.9 min: **Changes made**
 - [ ] Add a small, period‑appropriate driveway‑lamp post (with a faint orange‑yellow glow) beside the dead car that sometimes appears in front of houses, in `Assets/Scripts/World/RaidMapBuilder.Town.cs` → method `DressHouse`, after the existing `Wreck(town, car, …)` call inside the driveway‑car block.
 - [ ] Cache the per‑frame `ZoneCatalog.Current` lookup in `PlayerRadiation.Update` (Assets/Scripts/Zone/Radiation.cs).
   Add private fields `private ZoneDef _cachedZone; private bool _cachedExtraction;` to store the current zone and extraction flag.
