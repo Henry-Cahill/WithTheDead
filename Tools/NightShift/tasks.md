@@ -2146,3 +2146,21 @@ you want to see in game. Indent extra lines under a task to add detail.
   Rear bumper plate: `new Vector3(0f, 0.57f, -2.12f)` with size `new Vector3(0.4f, 0.02f, 0.02f)`.
   Insert the code after the headlight creation loop and before `Seat = new GameObject("Driver seat")`.
 - [ ] In Assets/Scripts/UI/HealthPanelController.cs, within the `Refresh()` method replace the six separate `Supply(...)` calls with a single inventory‑scan that fills local variables for all treatment counts, thus avoiding six full passes over `PlayerInventory.Inventory.Stacks` each frame.
+- [ ] Add a small “Inspect” instant action helper to Assets/Scripts/World/Interaction/Interactable.cs
+  Insert a protected method after `MakeNoise` that creates an `InteractAction` labeled “Inspect” and calls `InteractContext.Notify` with the fixture’s `DisplayName`.
+  `/// <summary>Adds a simple “Inspect” action that shows the fixture’s name in a HUD toast.</summary>`
+  `protected void AddInspectAction(InteractContext ctx, List<InteractAction> into)`
+  `{`
+  `into.Add(new InteractAction("Inspect", c => c.Notify($"You look at the {DisplayName}.")));`
+  `}`
+  This lets any subclass call `AddInspectAction(ctx, actions)` inside its `GetActions` to give the player an instant “Inspect” option, displaying a short message like “You look at the kitchen sink.” on screen. All existing code stays unchanged.
+- [ ] Append four new Kentucky‑winter themed profession entries to the `ProfessionCatalog.Professions` list in Assets/Scripts/Profile/ProfessionCatalog.cs
+  Use the existing entry `new ProfessionDef { Id = "drifter", Name = "Drifter", Points = 8, Blurb = "No trade, no ties. Plenty of room for quirks." }` as the style reference.
+  Add the following items after the current `carpenter` entry, each ending with a comma:
+  `new ProfessionDef { Id = "snowplow", Name = "Snowplow Operator", Points = 4, Blurb = "Keeps the back roads clear for anyone brave enough to travel." },`
+  `new ProfessionDef { Id = "railhand", Name = "Railway Hand", Points = 3, Blurb = "Maintains the old line; knows every hidden crossing and signal box." },`
+  `new ProfessionDef { Id = "herbalist", Name = "Herbalist", Points = 5, Blurb = "Gathers roots and winter greens from the woods to keep wounds clean." },`
+  `new ProfessionDef { Id = "storeclerk", Name = "General‑Store Clerk", Points = 6, Blurb = "Runs the dusty store on Main Street, hoarding canned goods and batteries." }`.
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Survival/FieldSurvival.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
