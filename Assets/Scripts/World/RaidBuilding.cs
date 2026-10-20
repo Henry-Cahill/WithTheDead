@@ -419,6 +419,17 @@ namespace CloneZ
                     if (!r.AlongX && Mathf.Abs(a - RunStart(r)) < 0.01f) a -= Half * 2f;
                     if (!r.AlongX && Mathf.Abs(b - RunEnd(r)) < 0.01f) b += Half * 2f;
                     p.Mesh.Upright(RunPoint(r, (a + b) * 0.5f, (y0 + y1) * 0.5f, side * (Half + 0.004f)), n, b - a, y1 - y0, DecorMaterials.WallExterior(Exterior, ExteriorColor));
+            // Add subtle weather‑worn paint‑chip detail (~10% chance per wall segment)
+            if (Rng.NextDouble() < 0.1)
+            {
+                float off = (float)(Rng.NextDouble() * (b - a) * 0.8 - (b - a) * 0.4f);
+                var chipSurf = DecorPalette.Matte(new Color(0.85f, 0.80f, 0.70f));
+                // Chip protrudes slightly outward beyond the exterior face
+                p.Mesh.Box(
+                    RunPoint(r, (a + b) * 0.5f + off, (y0 + y1) * 0.5f, side * (Half + 0.006f)),
+                    RunSize(r, 0.06f, 0.06f, 0.008f),
+                    chipSurf);
+            }
                 }
                 if (i < covered.Count) cursor = Mathf.Max(cursor, covered[i].y);
             }

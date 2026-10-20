@@ -1814,7 +1814,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 06:49 landed by hts-llm in 3.2 min: **Modified:** `Assets/Scripts/UI/UIKit.cs`
 - [x] In Assets/Scripts/Zone/ArtifactCatalog.cs: Add validation in `ArtifactCatalog.Learn(string artifact, string prop, bool announce = true)` to reject property IDs that are not defined for the given artifact, preventing impossible knowledge entries.
   - 06:51 landed by hts-llm in 2 min: **Changed**
-- [ ] Add a subtle weather‑worn paint‑chip detail to exterior wall faces built in `RaidBuilding.SkinBand` (Assets/Scripts/World/RaidBuilding.cs)
+- [x] Add a subtle weather‑worn paint‑chip detail to exterior wall faces built in `RaidBuilding.SkinBand` (Assets/Scripts/World/RaidBuilding.cs)
   In the block that creates the exterior face (`p.Mesh.Upright(..., DecorMaterials.WallExterior(...))`) insert a small box to represent a chipped paint spot.
   Use the building’s `Rng` for a ~10 % chance per wall segment: `if (Rng.NextDouble() < 0.1)`.
   Pick a random offset `float off = (float)(Rng.NextDouble() * (b - a) * 0.8 - (b - a) * 0.4f);` and place the chip at `RunPoint(r, (a + b) * 0.5f + off, (y0 + y1) * 0.5f, side * (Half + 0.006f))`.
@@ -1823,6 +1823,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Code sketch to insert (replace the comment “// Exterior faces …” line):
   `p.Mesh.Upright(RunPoint(r, (a + b) * 0.5f, (y0 + y1) * 0.5f, side * (Half + 0.004f)), n, b - a, y1 - y0, DecorMaterials.WallExterior(Exterior, ExteriorColor));`
   `if (Rng.NextDouble() < 0.1)`
+  - 06:54 landed by 1htsserver in 3.3 min: **Changed file**
 - [ ] Cache the per‑frame `Camera.main` lookup in `HudCompass` (Assets/Scripts/Survival/Navigation.cs)
   Add a private `Camera _cam;` field to `HudCompass`.
   Implement `Awake()` (or `Start()`) to set `_cam = Camera.main;`.
