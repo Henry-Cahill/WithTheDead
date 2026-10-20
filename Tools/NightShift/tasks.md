@@ -2901,7 +2901,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   This mirrors the X‑clamp logic and lets the menu stay fully visible.
   After this change right‑clicking a row or “…” button will correctly display the context menu within the inventory window. All other behavior remains unchanged.
   - 11:32 landed by 0htsserver in 1.3 min: **Change summary**
-- [ ] Add small screw decorations to the report panel in Assets/Scripts/Extraction/RaidSummaryUI.cs (method `Build`) to give the worn board a period‑appropriate hardware feel.
+- [x] Add small screw decorations to the report panel in Assets/Scripts/Extraction/RaidSummaryUI.cs (method `Build`) to give the worn board a period‑appropriate hardware feel.
   Insert a call after the existing rivet line: `AddRivets(prt, new Color(0.12f, 0.12f, 0.12f, 1f), 6f);` → `AddScrews(prt, new Color(0.20f, 0.20f, 0.20f, 1f), 4f);`
   Create a private static method `AddScrews(RectTransform panel, Color color, float size = 4f)` that:
   Instantiates four GameObjects named “ScrewTop”, “ScrewBottom”, “ScrewLeft”, “ScrewRight”.
@@ -2910,6 +2910,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   ‑ Bottom `anchorMin = anchorMax = new Vector2(0.5f, 0f); pivot = new Vector2(0.5f, 0f);`
   ‑ Left `anchorMin = anchorMax = new Vector2(0f, 0.5f); pivot = new Vector2(0f, 0.5f);`
   ‑ Right `anchorMin = anchorMax = new Vector2(1f, 0.5f); pivot = new Vector2(1f, 0.5f);`
+  - 11:37 landed by 1htsserver in 4.4 min: **Changes made**
 - [x] Cache the warning‑phase sky colour structs in EmissionDirector (Assets/Scripts/Zone/Emissions.cs) to avoid allocating a new `Color` each frame in `Update`.
   Add two private static readonly fields, e.g. `static readonly Color _psiStormColor = new Color(0.55f, 0.3f, 0.85f);` and `static readonly Color _standardColor = new Color(0.9f, 0.18f, 0.12f);`.
   Replace the two `new Color(...)` creations in the `Phase.Warning` branch with the cached fields.

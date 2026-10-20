@@ -165,6 +165,7 @@ namespace CloneZ
             // Add a subtle metal border on all four edges to give a worn wooden/metal board feel.
 
             AddRivets(prt, new Color(0.12f, 0.12f, 0.12f, 1f), 6f);
+            AddScrews(prt, new Color(0.20f, 0.20f, 0.20f, 1f), 4f);
 
             var top = new Vector2(0.5f, 1f);
             Label(prt, "Caption", top, new Vector2(0f, -22f), new Vector2(1000f, 24f), 17, TextAnchor.MiddleCenter, AmberText)
@@ -375,6 +376,59 @@ namespace CloneZ
             var imgBR = br.AddComponent<Image>();
             imgBR.color = color;
             imgBR.raycastTarget = false;
+        }
+
+        // Add small screw decorations to each edge for a period‑appropriate hardware look.
+        private static void AddScrews(RectTransform panel, Color color, float size = 4f)
+        {
+            if (panel == null) return;
+            // Top
+            var top = new GameObject("ScrewTop");
+            var rtTop = top.AddComponent<RectTransform>();
+            rtTop.SetParent(panel, false);
+            rtTop.anchorMin = rtTop.anchorMax = new Vector2(0.5f, 1f);
+            rtTop.pivot = new Vector2(0.5f, 1f);
+            rtTop.anchoredPosition = Vector2.zero;
+            rtTop.sizeDelta = new Vector2(size, size);
+            var imgTop = top.AddComponent<Image>();
+            imgTop.color = color;
+            imgTop.raycastTarget = false;
+
+            // Bottom
+            var bottom = new GameObject("ScrewBottom");
+            var rtBottom = bottom.AddComponent<RectTransform>();
+            rtBottom.SetParent(panel, false);
+            rtBottom.anchorMin = rtBottom.anchorMax = new Vector2(0.5f, 0f);
+            rtBottom.pivot = new Vector2(0.5f, 0f);
+            rtBottom.anchoredPosition = Vector2.zero;
+            rtBottom.sizeDelta = new Vector2(size, size);
+            var imgBottom = bottom.AddComponent<Image>();
+            imgBottom.color = color;
+            imgBottom.raycastTarget = false;
+
+            // Left
+            var left = new GameObject("ScrewLeft");
+            var rtLeft = left.AddComponent<RectTransform>();
+            rtLeft.SetParent(panel, false);
+            rtLeft.anchorMin = rtLeft.anchorMax = new Vector2(0f, 0.5f);
+            rtLeft.pivot = new Vector2(0f, 0.5f);
+            rtLeft.anchoredPosition = Vector2.zero;
+            rtLeft.sizeDelta = new Vector2(size, size);
+            var imgLeft = left.AddComponent<Image>();
+            imgLeft.color = color;
+            imgLeft.raycastTarget = false;
+
+            // Right
+            var right = new GameObject("ScrewRight");
+            var rtRight = right.AddComponent<RectTransform>();
+            rtRight.SetParent(panel, false);
+            rtRight.anchorMin = rtRight.anchorMax = new Vector2(1f, 0.5f);
+            rtRight.pivot = new Vector2(1f, 0.5f);
+            rtRight.anchoredPosition = Vector2.zero;
+            rtRight.sizeDelta = new Vector2(size, size);
+            var imgRight = right.AddComponent<Image>();
+            imgRight.color = color;
+            imgRight.raycastTarget = false;
         }        private Text Label(RectTransform parent, string name, Vector2 anchor, Vector2 pos, Vector2 size, int fontSize, TextAnchor align, Color color)
         {
             var go = new GameObject(name);
