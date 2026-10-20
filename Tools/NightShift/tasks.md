@@ -3237,3 +3237,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   Position the rivet on the front face (≈ z = +1.22 m) with a slight outward offset: `Vector3 rivPos = new Vector3(offsetX, offsetY, 1.22f + 0.01f);`;
   Create the rivet geometry with a small cylinder: `sb.Solid.Cylinder(rivPos, 0.01f, 0.015f, 8, ZoneKit.Mt(ZoneKit.RustDark));` (≈ 1 cm radius, 1.5 cm height);
   Leave colliders, interaction points and the rest of the container code untouched; the player will now see subtle rust‑stained rivet heads spaced irregularly across each container, adding period‑correct wear without adding new assets.
+- [ ] In Assets/Scripts/World/Fixtures/HomeDoor.cs: Add a “Force open the door” action to `HomeDoor.GetActions` (copy the pattern of the lock/unlock branch)
