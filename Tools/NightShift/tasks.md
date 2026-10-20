@@ -1029,3 +1029,24 @@ you want to see in game. Indent extra lines under a task to add detail.
   The resulting line should look like:
   ` .Add(CreaturePrim.Box, new Vector3(0f, bodyH * 0.5f, -length * 0.2f), Vector3.zero, new Vector3(bodyW * 0.1f, bodyH * 0.2f, 0.02f), c * 0.8f)`
   This adds only one primitive (the box) to the existing torso build, keeping colliders, interaction points and pivots unchanged, and gives each quadruped (Deer, Bear, Wolf, Thumper, default hound) a period‑appropriate visual detail of worn fur.
+- [ ] Add a contextual “Inspect door” action to the “Door to the Zone” hub station in Assets/Scripts/Hub/HubWorld.cs
+  In `HubStation.GetActions`, after the existing `for` loop that adds `Extra` actions, insert a conditional block:
+  `// Special inspection for the zone door`
+  `if (Title == "Door to the Zone")`
+  `{`
+  `into.Add(new InteractAction("Inspect door", c => GameEvents.RaiseToast(`
+  `"The door is locked tight, but you can hear the cold wind outside.")));`
+  `}`
+  This uses the already‑available `GameEvents.RaiseToast` method and does not require any new screens or items.
+- [ ] In Assets/Scripts/Hub/HubNpc.cs, extend the `"barkeep"` entry in the `Lines` dictionary by appending six new sentences that fit the 1993 rural‑Kentucky winter vibe (snow‑choked roads, dim‑lit lamps, local rumours, and the ever‑present Zone).
+  Use the existing line `"Rent's due on the seventh, same as always."` as the style reference – short, colloquial, present‑tense, and hinting at a wider story.
+  Add the following strings to the array (preserving the surrounding commas and quotes):
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Zombies/ZombieAI.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add four small brass corner brackets to the top of the dresser in `FurnitureBuilder.DresserBody` (Assets/Scripts/World/FurnitureBuilder.Living.cs)
+  Insert after the line `m.Box(new Vector3(0f, 0.81f, -0.01f), new Vector3(1.04f, 0.03f, 0.5f), G(c * 1.05f));`
+  For each corner (±0.5 m on X, ±0.24 m on Z) call
+  `if (rng.NextDouble() < 0.75) m.Box(new Vector3(x, 0.825f, z), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass));`
+  where `(x, z)` are `(-0.5f, -0.24f)`, `(0.5f, -0.24f)`, `(-0.5f, 0.24f)`, `(0.5f, 0.24f)`.
+  The brackets use the existing brass material (`Mt(Brass)`), add only four primitives, keep all colliders and interaction points unchanged, and give the dresser a period‑correct metallic accent that varies per run.
