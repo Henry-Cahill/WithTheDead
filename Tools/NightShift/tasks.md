@@ -2938,3 +2938,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// foreach (string n in new[] { "cz.session", "cz.hoststage", "cz.joinraid", "cz.leftraid", "cz.roster" })`
   `// {`
   `// Action<ulong, NetIn> h = s_Handlers[n];`
+- [ ] Add a “Set Guard Here” action to `HumanNpcInteract.GetActions` in Assets/Scripts/AI/Humans/HumanNpc.cs
+  Insert a new `InteractAction` after the existing `Talk` entry (copy the style of the “Talk” line).
+  The action should call `_npc.SetGuard(_npc.transform.position);`.
+  It must only be usable when the NPC is not already holding a post: add `.DisabledIf(_npc.HoldPost, "Already guarding here")`.
+  No other code changes are required; the player will now be able to tell any non‑hostile, non‑surrendered NPC to stay at its current spot as a guard, visible in the interaction menu.
