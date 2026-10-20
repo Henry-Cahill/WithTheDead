@@ -34,7 +34,7 @@ namespace CloneZ
         /// <summary>Takes <paramref name="amount"/> from the stash, then the pack. All or nothing.</summary>
         public static bool TrySpend(int amount, PlayerInventory carried = null)
         {
-            if (amount <= 0) return true;
+            if (amount == 0) return true; if (amount < 0) return false;
             if (Available(carried) < amount) return false;
             int left = Take(ProfileStore.StashInventory, amount);
             if (left > 0 && carried != null) left = Take(carried.Inventory, left);
