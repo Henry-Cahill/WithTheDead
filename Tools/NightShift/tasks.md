@@ -3172,3 +3172,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   – Uses `ctx.Notify` with the same messages as in `Flip` (e.g., “Nothing happens. Whatever it was wired to is gone.”, bulb‑gone messages, porch‑lantern wait message).
   – Skips any `LightCircuits.Set`, `Sync`, or `MakeNoise` calls.
   This lets the survivor check how many lamps on that circuit are functional or dead without toggling the switch.
+- [ ] Append five new flavor‑text entries to the sixth sub‑array of the `private static readonly string[][] Deliveries` field in Assets/Scripts/World/Fixtures/MailboxFixture.cs, so the mailbox will contain extra community notices after the existing “Missing pet notice…” lines.
+  Locate the inner array that starts with `"Missing pet notice: our cat Whiskers disappeared near the old mill road two nights ago."` (the sixth element of `Deliveries`).
+  After the line `"Owner will reward with a fresh fish and gratitude."` add the following five strings, each a complete sentence ending with a period:
+  `"Missing dog notice: our border collie Daisy vanished near the creek bend last afternoon; please look for a black‑and‑white coat."`
+  `"Cold‑weather alert: several hens were found frozen in the barn; anyone with spare warm blankets, please drop them off at the community shed."`
+  `"Fire‑wood request: we have a bundle of dry pine left; if you can spare a stack, leave it by the north fence."`
+  `"Thank‑you note: the Miller family rescued a stray calf from the icy creek and are grateful for the extra hay donations."`
+  `"Reminder: check the cellar for frozen canned goods before the power goes out again; share any surplus with neighbours."`
+  These entries match the style of the quoted example and remain within the same sub‑array; no other code changes are required.
