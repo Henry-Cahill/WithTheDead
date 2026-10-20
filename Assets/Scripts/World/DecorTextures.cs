@@ -520,11 +520,13 @@ namespace CloneZ
             for (int y = 0; y < S; y++)
                 for (int x = 0; x < S; x++)
                 {
-                    int row = y / Row;
-                    float u = (x + 0.5f) / S, v = (y + 0.5f) / S;
-                    float k = 0.82f + R01(row, 1, 111) * 0.25f + Mathf.Sin(u * Mathf.PI * 2f * 3f + Fbm(u, v, 4, 2, 112) * 6f) * 0.05f;
-                    Color c = Mul(color, k);
-                    if (y % Row == 0) c = Mul(color, 0.4f);
+int row = y / Row;
+float u = (x + 0.5f) / S, v = (y + 0.5f) / S;
+float k = 0.82f + R01(row, 1, 111) * 0.25f + Mathf.Sin(u * Mathf.PI * 2f * 3f + Fbm(u, v, 4, 2, 112) * 6f) * 0.05f;
+Color c = Mul(color, k);
+if (R01(x, y, 117) < 0.009f) c = Mul(c, 0.45f);
+else if (R01(x, y, 118) < 0.017f) c = Mul(c, 0.65f);
+if (y % Row == 0) c = Mul(color, 0.4f);
                     int nx = x % 32, ny = y % Row;
                     if ((nx == 3 || nx == 28) && ny == 8) c = new Color(0.2f, 0.2f, 0.2f);
                     px[y * S + x] = C32(c);

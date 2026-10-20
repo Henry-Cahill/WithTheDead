@@ -3070,12 +3070,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 12:13 landed by 1htsserver in 1.8 min: **Changes Made**
 - [x] In Assets/Scripts/Extraction/ExtractionManager.cs: Fix ExtractionManager.TickExtraction so the “closed exit here” correctly reflects the nearest closed exit the player is standing in, instead of just the first one found, preventing UI from showing the wrong blocked reason.
   - 12:16 landed by 1htsserver in 2.6 min: **Changed file**
-- [ ] Add subtle nail‑head details to the rough‑sawn plank texture (Assets/Scripts/World/DecorTextures.cs → `public static Texture2D Planks(Color color)`)
+- [x] Add subtle nail‑head details to the rough‑sawn plank texture (Assets/Scripts/World/DecorTextures.cs → `public static Texture2D Planks(Color color)`)
   In the double‑loop that builds `px`, after the line `Color c = Mul(color, k);` insert a deterministic‑random test that occasionally darkens a single pixel to simulate a nail head.
   `if (R01(x, y, 117) < 0.009f) c = Mul(c, 0.45f);` // ~1 % of pixels become a dark ~9 mm dot (≈0.009 m) – the “head”.
   `else if (R01(x, y, 118) < 0.017f) c = Mul(c, 0.65f);` // a lighter rim around ~1.5 % of pixels.
   Keep the existing row‑grain and seam logic untouched; the new dark spots blend with the plank colour using the same `Mul` helper, so no new materials or colours are introduced.
   This adds a period‑appropriate visual cue (hand‑driven nails) while staying within the 12‑primitive limit (only two simple colour tweaks per pixel).
+  - 12:19 landed by 0htsserver in 3.2 min: **Changes made**
 - [x] In Assets/Scripts/World/Fixtures/ShowerFixture.cs: Cache the costly `PlayerInteractor.Current` lookup in `ShowerFixture` so the per‑frame `Watch()` method does not call it every frame
   Add a private field `private PlayerInteractor _playerInteractor;`
   In `Update()` before calling `Watch()`, set `_playerInteractor = PlayerInteractor.Current;` (or only when it’s null to avoid unnecessary assignments)
