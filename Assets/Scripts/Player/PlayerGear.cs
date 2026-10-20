@@ -75,6 +75,7 @@ namespace CloneZ
         private PlayerClothing _clothing;
         private PlayerInventory _inventory;
         private bool _subscribed;
+        private Keyboard _keyboard;
 
         // Night vision (the Eyes slot): the precise charge in condition units, and the whole number last
         // written back to (or read from) the worn piece.
@@ -101,12 +102,13 @@ namespace CloneZ
         private PlayerInventory Pack => _inventory != null ? _inventory : (_inventory = GetComponent<PlayerInventory>());
         private Inventory PackInventory => Pack != null ? Pack.Inventory : null;
 
-        protected virtual void Awake()
-        {
-            Instance = this;
-            _stats = GetComponent<PlayerStats>();
-            if (GetComponent<PlayerGearVisuals>() == null) gameObject.AddComponent<PlayerGearVisuals>();
-        }
+    protected virtual void Awake()
+    {
+        Instance = this;
+        _stats = GetComponent<PlayerStats>();
+        if (GetComponent<PlayerGearVisuals>() == null) gameObject.AddComponent<PlayerGearVisuals>();
+        _keyboard = Keyboard.current;
+    }
 
         protected virtual void OnEnable() => Subscribe();
 
@@ -153,11 +155,11 @@ namespace CloneZ
 
             if (!UIState.GameplayBlocked)
             {
-                Keyboard kb = Keyboard.current;
-                if (kb != null)
-                {
-                    if (kb.nKey.wasPressedThisFrame) ToggleNightVision();
-                    if (kb.lKey.wasPressedThisFrame) ToggleFlashlight();
+            if (_keyboard == null) _keyboard = Keyboard.current;
+            if (_keyboard != null)
+            {
+                    if (_keyboard.nKey.wasPressedThisFrame) ToggleNightVision();
+                    if (_keyboard.lKey.wasPressedThisFrame) ToggleFlashlight();
                 }
             }
 

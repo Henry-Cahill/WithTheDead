@@ -2584,7 +2584,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Top hinge: same size at `new Vector3(0.02f, height - 0.20f, t*0.5f + 0.004f)` (front) and `new Vector3(0.02f, height - 0.20f, -t*0.5f - 0.004f)` (back).
   This adds only four primitives, reuses existing materials, and does not affect colliders or interaction points.
   - 10:26 landed by 1htsserver in 2.6 min: **Changes made**
-- [ ] Cache the per‑frame Keyboard lookup in Assets/Scripts/Player/PlayerGear.cs – replace `Keyboard kb = Keyboard.current;` in Update with a cached field that’s set once in Awake (and re‑acquired only if it becomes null).
+- [x] Cache the per‑frame Keyboard lookup in Assets/Scripts/Player/PlayerGear.cs – replace `Keyboard kb = Keyboard.current;` in Update with a cached field that’s set once in Awake (and re‑acquired only if it becomes null).
   Add a private `Keyboard _keyboard;` field.
   In Awake after setting Instance, assign `_keyboard = Keyboard.current;`.
   In Update, change the block to:
@@ -2593,6 +2593,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `if (_keyboard == null) _keyboard = Keyboard.current;`
   `if (_keyboard != null)`
   `{`
+  - 10:29 landed by 1htsserver in 2.4 min: Implemented per‑frame `Keyboard` caching in **PlayerGear.cs**:
 - [x] Add a small “Inspect car” interaction to `Vehicle.GetActions` (Assets/Scripts/World/Vehicles.cs) so players can see what parts are missing without entering the vehicle.
   Insert the new action right after the existing “Get in the driver’s seat” line:
   `into.Add(new InteractAction("Inspect car", c => {`
