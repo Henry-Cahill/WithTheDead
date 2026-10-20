@@ -1261,9 +1261,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   `into.Add(new InteractAction("Empty the sink", EmptySink));`
   This uses only fields and methods already present (`_level`, `_toldFull`, `RefreshWater`, `InteractContext`, `InteractAction`).
   - 03:38 landed by 0htsserver in 6.2 min: **Changes made**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Cover.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [~] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Cover.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 03:40 0htsserver made no changes: Added no code changes.
 - [ ] Add a small metal latch detail to dressed crates in `Assets/Scripts/Items/LootContainer.cs` by editing the `LootContainer.DressCrate` method.
   Create a deterministic‑random bool (using the existing `new System.Random(1993)`) to decide if the latch appears.
   If true, add a thin box primitive `m.Box(floor + new Vector3(0.45f, CrateSize.y * 0.30f, CrateSize.z * 0.5f + 0.006f), new Vector3(0.08f, 0.06f, 0.02f), DecorPalette.Matte(new Color(0.60f, 0.60f, 0.60f)))` representing a metal latch on the front of the crate.
