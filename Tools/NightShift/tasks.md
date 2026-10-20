@@ -3427,11 +3427,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add after those lines: `m.Cylinder(coupling + new Vector3(0f, 0f, 0.015f), 0.009f, 0.004f, 6, brass);`.
   The player will see a subtle metal nut on the pipe, adding realistic hardware detail without affecting colliders or interaction.
   - 14:08 landed by hts-llm in 1.7 min: **Summary**
-- [ ] In Assets/Scripts/Camera/ViewCrosshair.cs: Cache the per‑frame static lookups in ViewCrosshair so LateUpdate does not repeatedly resolve singletons.
+- [x] In Assets/Scripts/Camera/ViewCrosshair.cs: Cache the per‑frame static lookups in ViewCrosshair so LateUpdate does not repeatedly resolve singletons.
   Add a private `ViewState _viewState;` and `GameSettings _settings;` field.
   In Awake() after `Build();` assign them: `_viewState = ViewState.Instance;` and `_settings = GameSettings.Instance;`.
   Replace the line `bool show = IsoCameraFollow.MouseLookEngaged && ViewState.Current != CameraView.Bodycam && GameSettings.Current.ShowCrosshair;` with `bool show = _cam.MouseLookEngaged && _viewState.Current != CameraView.Bodycam && _settings.ShowCrosshair;`.
   This removes three static/property lookups each frame (the `IsoCameraFollow` singleton, `ViewState.Current`, and `GameSettings.Current`) while preserving the exact visual behavior of the crosshair.
+  - 14:22 landed by 0htsserver in 15.7 min: **Changed file**
 - [x] Add a “Relax” timed action for survivors sitting in the RaidStoreSwivelSeat (Assets/Scripts/World/Fixtures/RaidStoreSwivelSeat.cs)
   In `GetActions` inside the `if (seat.IsSittingOn(this))` block, after adding `SpinRound()` insert `into.Add(Relax());`
   Create a new private method `InteractAction Relax()` similar to `SpinRound()` that:
