@@ -2069,3 +2069,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   `int ix = Wrap(x + i, S);`
   `c = Mul(c, shade); // apply darker tint for the scratch`
 - [ ] Add a zone‑check to the fetch‑item gathering logic in Assets/Scripts/Quests/QuestBook.cs so that fetch objectives respect their `Zone` field.
+- [ ] In Assets/Scripts/Survival/Navigation.cs, class ZoneMapScreen, method Build(), add a subtle random “ink blot” on the paper to convey age‑and‑use.
+  After the line `Image paper = UIKit.Panel(Body, "Paper", new Color(0.86f, 0.83f, 0.74f));` create a new UI panel named “InkBlot”.
+  Use the existing `System.Random rng` (seeded with the zone layout) to pick an offset ± 250 px in X and ± 250 px in Y relative to the paper centre (`new Vector2(0.5f, 0.5f)`).
+  Size the blot 0.03 m × 0.03 m (≈ 30 px square) and colour it `new Color(0.2f, 0.15f, 0.1f, 0.85f)` (dark brown, semi‑transparent).
+  Place it with `UIKit.Place(ink.rectTransform, new Vector2(0.5f,0.5f), new Vector2(0.5f,0.5f), new Vector2(offsetX, offsetY), new Vector2(30f,30f));`.
+  Keep the blot as a child of `_paper` so colliders, interaction points and pivots remain unchanged, and add no more than one primitive (the blot) to stay within the ~12‑primitive limit.
