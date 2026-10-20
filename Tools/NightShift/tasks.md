@@ -1099,12 +1099,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `s_LastFrame = Time.frameCount;`
   `ZoneKit.TintByAmbient();`
   This makes only the first `ZoneSmokeTint` instance each frame actually invoke the tinting logic; all others early‑out, eliminating unnecessary method calls and `Time.time` checks while keeping the visual result identical.
-- [ ] Add a small “Inspect” action to `SnareTrap.GetActions` in Assets/Scripts/Survival/FieldSurvival.cs that lets the player see how long until the snare is ready.
+- [x] Add a small “Inspect” action to `SnareTrap.GetActions` in Assets/Scripts/Survival/FieldSurvival.cs that lets the player see how long until the snare is ready.
   In `SnareTrap.GetActions(InteractContext ctx, List<InteractAction> into)` insert after the existing `into.Add(new InteractAction(...))` call:
   `into.Add(new InteractAction("Inspect", c => { float secs = Mathf.Max(0f, _readyAt - Time.time); GameEvents.RaiseToast($"Snare will be ready in {Mathf.CeilToInt(secs)} s."); }));`
   Use only identifiers already present (`Mathf`, `GameEvents.RaiseToast`, `_readyAt`, `Time.time`).
   Do not add any `DisabledIf`; the action should be usable at any time, giving a toast like “Snare will be ready in 57 s.”.
   Preserve the current “Take the rabbit / Collect the empty snare / Leave it (not yet)” action unchanged.
+  - 02:37 landed by 0htsserver in 1.7 min: **Changes made**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/GridPointerRelay.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.

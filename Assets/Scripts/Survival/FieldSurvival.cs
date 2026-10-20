@@ -304,6 +304,10 @@ namespace CloneZ
                 if (snare != null) c.Inventory.Inventory.Add(snare, 1, false);
                 Destroy(gameObject);
             }).DisabledIf(!ready, "Give it time"));
+            into.Add(new InteractAction("Inspect", c => {
+                float secs = Mathf.Max(0f, _readyAt - Time.time);
+                GameEvents.RaiseToast($"Snare will be ready in {Mathf.CeilToInt(secs)} s.");
+            }));
         }
     }
 
