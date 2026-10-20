@@ -2545,7 +2545,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace every use of `PlayerModifiers.Current` in this file (currently in `Update()`, `RebuildSections()` – both the `strengthMult` line and the capacity calculation – and any other occurrence) with `_modifiers`.
   The player’s stats, capacity and move‑speed multiplier remain unchanged because the cached reference points to the same singleton; only the repeated lookup each frame is removed, reducing overhead and garbage.
   - 10:19 landed by hts-llm in 6.1 min: Implemented caching of `PlayerModifiers.Current` in `PlayerInventory`:
-- [ ] Add an “Inspect the roll‑up door” quick action to Assets/Scripts/World/Fixtures/RollUpShutter.cs that lets the survivor learn whether the door is raised or lowered without changing any state.
+- [x] Add an “Inspect the roll‑up door” quick action to Assets/Scripts/World/Fixtures/RollUpShutter.cs that lets the survivor learn whether the door is raised or lowered without changing any state.
   · Declare a new field `private Action<InteractContext> _inspectAct;` alongside the existing `_raiseAct`, `_lowerAct`, `_bangAct`.
   · In `Awake()` assign `_inspectAct = Inspect;` after the existing assignments.
   · Implement a private method `private void Inspect(InteractContext ctx) => ctx.Notify(_open ? "The steel curtain is raised – the doorway is clear." : "The steel curtain is down – the doorway is blocked.");`.
@@ -2553,6 +2553,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `into.Add(new InteractAction("Inspect the roll‑up door", _inspectAct).Timed(0f, "Inspecting the door", HumanoidActivity.Use));`
   · This mirrors the existing quick‑noise action (uses `ctx.Notify` like `Lower` does) and uses only members already present in the file.
   · Player will see a tooltip “Inspect the roll‑up door” (E/Q) and, when used, a short on‑screen message indicating the door’s current state.
+  - 10:22 landed by 1htsserver in 7 min: **Changes made**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Zone/Detectors.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.

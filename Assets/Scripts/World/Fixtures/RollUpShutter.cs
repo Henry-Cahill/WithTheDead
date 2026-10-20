@@ -40,7 +40,7 @@ namespace CloneZ
         private Bounds _block;
         private bool _open;
 
-        private Action<InteractContext> _raiseAct, _lowerAct, _bangAct;
+        private Action<InteractContext> _raiseAct, _lowerAct, _bangAct, _inspectAct;
 
         private static readonly Collider[] s_Hits = new Collider[16];
         private static readonly int BodyMask = (1 << 0) | (1 << CloneZConfig.IgnoreRaycastLayer);
@@ -58,6 +58,7 @@ namespace CloneZ
             _raiseAct = Raise;
             _lowerAct = Lower;
             _bangAct = Bang;
+            _inspectAct = Inspect;
         }
 
         /// <summary>Makes <paramref name="root"/> (holding the bands, at the doorway's middle on the wall line) a working
@@ -101,11 +102,12 @@ namespace CloneZ
                 into.Add(new InteractAction("Raise the roll-up door", _raiseAct)
                     .Timed(CloneZConfig.RollUpWorkSeconds, "Hauling the door up", HumanoidActivity.Use));
 
-            // Quick noise action without state change
             into.Add(new InteractAction("Bang the roll-up door", _bangAct)
                 .Timed(0f, "Banging the door", HumanoidActivity.Use));
+            into.Add(new InteractAction("Inspect the roll‑up door", _inspectAct).Timed(0f, "Inspecting the door", HumanoidActivity.Use));
         }
 
+        private void Inspect(InteractContext ctx) => ctx.Notify(_open ? "The steel curtain is raised – the doorway is clear." : "The steel curtain is down – the doorway is blocked.");
         private void Raise(InteractContext ctx)
         {
             if (_open) return;
