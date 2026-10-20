@@ -846,9 +846,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   `T("superstitious", "Superstitious", 1, "You’re less likely to panic.", m => m.PanicRate *= 0.9f),`
   These entries will appear as selectable trait options with the quoted sentences shown to the player during character creation.
   - 01:23 landed by hts-llm in 2 min: **Changed file**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/RaidTown.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/RaidTown.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 01:26 landed by 0htsserver in 3.9 min: **Changed files**
 - [x] In Assets/Scripts/Characters/HumanoidLook.cs: Modify HumanoidLook.Wear (the `case ClothingSlot.Head:` block) to give helmets a subtle worn‑metal detail by adding a deterministic colour‑shift and gloss boost based on the humanoid’s shape hash.
   After the line `HatGloss = GarmentStyles.Gloss(k, Shape.Headwear == HeadwearStyle.Helmet ? 0.5f : 0.12f);` insert:
   `if (Shape.Headwear == HeadwearStyle.Helmet)

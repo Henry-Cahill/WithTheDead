@@ -54,8 +54,10 @@ namespace CloneZ
             Far = new OutdoorBatches(Scenery, 60f, info.HalfSize + 60f);
         }
 
-        public void Warn(string message) => _warnings.Add(message);
-        public IReadOnlyList<string> Warnings => _warnings;
+        /// <summary>Records a warning message to be reported later.</summary>
+    public void Warn(string message) => _warnings.Add(message);
+        /// <summary>Read‑only list of warning messages recorded during town build.</summary>
+    public IReadOnlyList<string> Warnings => _warnings;
 
         /// <summary>A room / desk / street light (counted).</summary>
         public void Light(Transform parent, Vector3 pos, Color color, float range, float intensity, bool flicker, bool shadows)
@@ -150,6 +152,7 @@ namespace CloneZ
         private readonly RaidMesh[] _solid;
         private readonly RaidMesh[] _flat;
 
+        /// <summary>Creates a new outdoor batch manager for a given parent transform and chunk size.</summary>
         public OutdoorBatches(Transform parent, float chunk, float halfExtent)
         {
             _parent = parent;
@@ -181,6 +184,7 @@ namespace CloneZ
             return _flat[i] ??= new RaidMesh();
         }
 
+        /// <summary>Emits all generated meshes for this batch with the given name prefix.</summary>
         public void Emit(string name)
         {
             for (int i = 0; i < _solid.Length; i++)
