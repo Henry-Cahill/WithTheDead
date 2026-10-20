@@ -940,3 +940,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   `latchOpen = WindowBox(sash.transform, "LatchOpen", l.P(o.Pos + 0.03f, SashMeet + 0.032f, inner), l.Size(0.06f, 0.008f, 0.02f), brass);`
   insert a new mesh that creates a small box (representing a knob) of size `new Vector3(0.012f, 0.012f, 0.005f)` positioned at `l.P(o.Pos + 0.03f, SashMeet + 0.038f, inner + 0.011f)` using the same `brass` material, and attach it under `latchOpen.transform` via `WindowPart`.
   This adds a period‑correct brass detail to the latch, visible on every window, without altering colliders or interaction points.
+- [ ] In Assets/Scripts/AI/Humans/HumanNpc.cs: Add an “Intimidate” action to HumanNpcInteract.GetActions that lets the player force a non‑surrendered NPC to give up if the player is visibly armed.
+  In HumanNpcInteract.GetActions, after the existing `into.Add(new InteractAction("Talk", Talk));` line, insert:
+  `into.Add(new InteractAction("Intimidate", c => {`
+  `if (!c.Inventory.Has("pistol")) return;`
+  `if (Random.value < 0.5f) { _npc.Surrender(); GameEvents.RaiseSubtitle(_npc.Name, "I don't want any trouble… I give up!"); }`
+  `else { GameEvents.RaiseSubtitle(_npc.Name, "You think you can scare me?"); }`
+  `}).DisabledIf(!ctx.Inventory.Has("pistol"), "Need a weapon"));`
+  This uses the existing `pistol` item ID, the public `HumanNpc.Surrender()` method, and the existing `GameEvents.RaiseSubtitle` call, providing a new small interaction that fits the tense, winter‑bound setting.
