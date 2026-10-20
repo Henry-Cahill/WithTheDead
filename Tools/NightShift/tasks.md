@@ -1793,3 +1793,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Vector3 knobPos = new Vector3(left ? -0.04f : 0.04f, 0.11f, 0.07f);`
   `m.Cylinder(knobPos, 0.015f, 0.02f, 8, DecorPalette.Metal(new Color(0.20f, 0.20f, 0.20f)), Quaternion.identity, 1f, false);`
   The knob is ~0.015 m radius × 0.02 m height, placed on the front face slightly above centre, giving a period‑correct visual detail without affecting colliders or interaction.
+- [ ] Append six new jam‑description strings to the `Jams` array in Assets/Scripts/World/Fixtures/RaidStoreCopier.cs
+  Use the existing entry `"Halfway through, the rollers clunk and stop. A red lamp blinks: PAPER JAM — AREA B. Of course it does."` as the style reference.
+  Each new entry must be a single complete sentence in quotes, describing a different jam scenario that fits the 1993 rural Kentucky winter setting (e.g., frozen rollers, toner spill, paper torn, jam alarm chirp, jam caused by a loose sheet, jam with a faint burnt smell).
+  Do not modify any other code; keep the array name, ordering, and surrounding commas unchanged.
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/BasinFixture.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] In Assets/Scripts/UI/UIKit.cs, modify the `UIKit.Panel` method to add a subtle inner border to every panel it creates, giving menus a worn‑metal edge that fits the 1993 rural setting.
+  After the line `var img = rt.gameObject.AddComponent<Image>();` add a child `Image` named “Border” that is inset 2 units on all sides, anchored to stretch the parent, with a semi‑transparent dark colour (e.g. `new Color(0f,0f,0f,0.2f)`).
+  Create the border via `Rect("Border", img.rectTransform)`, set `anchorMin = Vector2.zero; anchorMax = Vector2.one; offsetMin = new Vector2(2f,2f); offsetMax = new Vector2(-2f,-2f);` then add the `Image` component and assign the colour.
+  Leave the original panel colour, colliders and interaction logic unchanged; this adds at most one extra primitive per panel, staying within the ~12‑primitive limit.
