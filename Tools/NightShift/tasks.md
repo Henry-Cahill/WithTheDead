@@ -726,3 +726,6 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 00:40 landed by hts-llm in 2.1 min: **Changed file**
 - [ ] Fix duplicate floor entries in Assets/Scripts/UI/InventoryUIController.Picker.cs by clearing the floor list before repopulating it in RefreshPicker so the UI reflects the actual ground items.
 - [ ] Add subtle decorative rivets to each button in Assets/Scripts/UI/UIKit.cs by modifying `UIKit.Button` – after the label is created, create four tiny `Image` children ("Rivet") at the button’s corners (size ≈ 4 × 4 px) using the existing `Accent` colour; this adds period‑appropriate hardware detail without altering layout, colliders, or interaction.
+- [ ] Cache the main camera once in Awake instead of checking Camera.main every frame in ApplyRain() for Assets/Scripts/Core/WeatherSystem.cs
+  In Awake() add `_cam = Camera.main;` so the reference is obtained at startup.
+  Remove the null‑check/lookup inside ApplyRain(): delete the lines
