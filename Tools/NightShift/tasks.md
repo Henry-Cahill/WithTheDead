@@ -1434,7 +1434,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Vector3 posJitter = new Vector3(ZoneKit.R(r, -0.02f, 0.02f), 0f, ZoneKit.R(r, -0.02f, 0.02f));`
   `Vector3 handlePos = new Vector3(4.5f, 1f, -1.25f) + posJitter;`
   `sb.Solid.CylinderX(handlePos, 0.015f, 0.07f, 8, ZoneKit.M(new Color(0.6f, 0.6f, 0.6f)), yawJitter);`
-- [ ] In Assets/Scripts/UI/HealthPanelController.cs: Fix off‑by‑one bug in HealthPanelController → Refresh that hides the last visible wound when there are more than MaxRows wounds.
+- [x] In Assets/Scripts/UI/HealthPanelController.cs: Fix off‑by‑one bug in HealthPanelController → Refresh that hides the last visible wound when there are more than MaxRows wounds.
+  - 04:30 landed by hts-llm in 2.9 min: **Changes made**
 - [ ] Add a small paper‑towel roll to the steel counter sink area in Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method SteelCounterBody.
   *After the existing call that draws the cold tap’s head* (`m.Box(new Vector3(sinkX - SteelColdTap.x, 0.98f, SteelColdTap.z), new Vector3(0.04f, 0.04f, 0.04f), chrome);`)
   *add a short cylinder to represent a rolled towel*:

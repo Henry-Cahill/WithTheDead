@@ -231,16 +231,33 @@ namespace CloneZ
             // Wound list.
             IReadOnlyList<Wound> list = _wounds.Wounds;
             _emptyText.enabled = list.Count == 0;
-            for (int i = 0; i < _rows.Length; i++)
-            {
-                bool used = i < list.Count;
-                _rows[i].enabled = used;
-                if (used) _rows[i].text = DescribeWound(list[i]);
-            }
+            // Determine how many rows should show actual wound descriptions.
+            // If there are more wounds than MaxRows, we reserve the last row for a "…and N more" summary.
+            int rowsToShow = list.Count;
+            bool showMore = false;
             if (list.Count > MaxRows)
             {
+                rowsToShow = MaxRows - 1; // leave space for the summary row
+                showMore = true;
+            }
+            // Populate rows with wound descriptions.
+            for (int i = 0; i < _rows.Length; i++)
+            {
+                if (i < rowsToShow)
+                {
+                    _rows[i].enabled = true;
+                    _rows[i].text = DescribeWound(list[i]);
+                }
+                else
+                {
+                    _rows[i].enabled = false;
+                }
+            }
+            // If there are extra wounds, show the summary in the last row.
+            if (showMore)
+            {
                 _rows[MaxRows - 1].enabled = true;
-                _rows[MaxRows - 1].text = "<i>\u2026and " + (list.Count - MaxRows + 1) + " more</i>";
+                _rows[MaxRows - 1].text = "<i>\u2026and " + (list.Count - rowsToShow) + " more</i>";
             }
 
             // Treatment buttons: show remaining supplies and enable each only when it would help.
