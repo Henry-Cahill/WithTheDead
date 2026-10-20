@@ -143,6 +143,17 @@ namespace CloneZ
                 var rend = handle.GetComponent<Renderer>();
                 if (rend != null) rend.sharedMaterial = go.GetComponent<Renderer>().sharedMaterial;
             }
+            // Add a small metal knob to fridges with 50% chance
+            if (type == ContainerType.Fridge && rng.NextDouble() < 0.5)
+            {
+                var knob = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                knob.name = "Knob";
+                knob.transform.SetParent(go.transform, false);
+                knob.transform.localPosition = new Vector3(0f, size.y * 0.32f, size.z * 0.5f + 0.018f);
+                knob.transform.localScale = new Vector3(0.06f, 0.02f, 0.06f);
+                var rendKnob = knob.GetComponent<Renderer>();
+                if (rendKnob != null) rendKnob.sharedMaterial = go.GetComponent<Renderer>().sharedMaterial;
+            }
             var c = go.AddComponent<LootContainer>();
             c.DisplayName = name;
             c.Type = type;

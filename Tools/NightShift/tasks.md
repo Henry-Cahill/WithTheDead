@@ -3317,11 +3317,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   a piece of graffiti inside the bar reading “Keep the fire burning, the night watches”;
   an old hunting handbook excerpt stating “Deer tracks are clearer after fresh snow”.
   - 13:32 landed by 0htsserver in 3 min: **Changes made**
-- [ ] Add a small metal door‑knob to Fridge containers built in `LootContainer.Spawn` (Assets/Scripts/Items/LootContainer.cs)
+- [x] Add a small metal door‑knob to Fridge containers built in `LootContainer.Spawn` (Assets/Scripts/Items/LootContainer.cs)
   In the `Spawn` method, after the existing front‑handle block, insert a new conditional that uses the same `rng` (seed 1994) to add a knob with 50 % chance `if (type == ContainerType.Fridge && rng.NextDouble() < 0.5)`
   Create a primitive cylinder, name it `"Knob"`, parent it to `go.transform` (the container box), and set:
   `handle.transform.localPosition = new Vector3(0f, size.y * 0.32f, size.z * 0.5f + 0.018f);`
   `handle.transform.localScale = new Vector3(0.06f, 0.02f, 0.06f);`
   Copy the container’s material to the knob the same way the front‑handle does (`rend.sharedMaterial = go.GetComponent<Renderer>().sharedMaterial;`).
   This adds a period‑appropriate metal knob to frozen‑food fridges, giving them a bit more visual detail while respecting the existing deterministic random source and staying within the ≤ 12‑primitive limit.
+  - 13:33 landed by hts-llm in 2.2 min: **Summary**
 - [ ] Fix the LOS‑light cookie never producing fully transparent pixels in Assets/Scripts/Rendering/VisionAssets.cs (method `VisionCookie`).
