@@ -3121,11 +3121,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Use the same brass material as the knobs: `Mt(Brass)`.
   This gives each drawer a period‑correct brass top rail, adding subtle visual interest without altering colliders or interaction points.
   - 12:30 landed by 0htsserver in 1.8 min: **Changed file**
-- [ ] Add a thin inner dark border to each button created by `HubUI.Btn` in Assets/Scripts/Hub/Screens/HubUI.cs
+- [x] Add a thin inner dark border to each button created by `HubUI.Btn` in Assets/Scripts/Hub/Screens/HubUI.cs
   Inside the `Btn` method, after `UIKit.Size(b.gameObject, width, height);` insert a new `RectTransform` named “Border” as a child of `b.gameObject.transform`.
   Set its offsets to `new Vector2(1f, 1f)` and `new Vector2(-1f, -1f)` (≈ 1 pixel inset on all sides) to create a 1‑unit inner frame.
   Add an `Image` component to the border and colour it `new Color(0f, 0f, 0f, 0.2f)` (a subtle dark tint).
   This gives every UI button a faint beveled edge that matches the existing colour palette while keeping colliders and interaction unchanged.
+  - 12:34 landed by 0htsserver in 1.6 min: **Changed file**
 - [ ] Add a “Check battery” action to Assets/Scripts/World/Fixtures/ClockFixture.cs that reports whether the clock’s battery is flat or still functional.
   Add `into.Add(new InteractAction("Check battery", CheckBattery));` next to the existing “Check the time” line in GetActions.
   Implement a private method `CheckBattery(InteractContext ctx)` that reads `_stoppedAt` and notifies:

@@ -408,6 +408,12 @@ namespace CloneZ
         {
             Button b = UIKit.Button(parent, text, onClick, color ?? UIKit.ButtonColor, fontSize);
             UIKit.Size(b.gameObject, width, height);
+            // Add thin inner dark border
+            RectTransform border = UIKit.Rect("Border", b.gameObject.transform);
+            border.offsetMin = new Vector2(1f, 1f);
+            border.offsetMax = new Vector2(-1f, -1f);
+            var borderImg = border.gameObject.AddComponent<Image>();
+            borderImg.color = new Color(0f, 0f, 0f, 0.2f);
             b.interactable = interactable;
             Text label = b.GetComponentInChildren<Text>();
             if (label != null)
