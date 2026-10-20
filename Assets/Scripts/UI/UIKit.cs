@@ -137,6 +137,19 @@ namespace CloneZ
             screwBR.pivot = new Vector2(1f, 0f);
             var imgBR = screwBR.gameObject.AddComponent<Image>();
             imgBR.color = new Color(0.18f, 0.18f, 0.20f);
+
+            // Subtle scratched‑metal wear overlay (≈12×12 px) at bottom‑left with slight random offset
+            int seed = name.GetHashCode();
+            int dx = (seed >> 1) & 3;
+            int dy = (seed >> 3) & 3;
+            var wearRt = Rect("Wear", img.rectTransform);
+            wearRt.sizeDelta = new Vector2(12f, 12f);
+            wearRt.anchorMin = wearRt.anchorMax = new Vector2(0f, 0f);
+            wearRt.pivot = new Vector2(0f, 0f);
+            wearRt.anchoredPosition = new Vector2(dx - 2f, dy - 2f);
+            var wearImg = wearRt.gameObject.AddComponent<Image>();
+            wearImg.color = new Color(0.22f, 0.15f, 0.10f, 0.35f);
+
             return img;
         }
         #endregion
