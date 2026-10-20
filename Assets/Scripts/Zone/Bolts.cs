@@ -18,9 +18,10 @@ namespace CloneZ
         /// <summary>True once an anomaly has reacted to this bolt (it won't trip another).</summary>
         public bool Spent { get; private set; }
 
-        private Rigidbody _rb;
-        private float _born, _restAt = -1f;
-        private bool _sounded, _sinking;
+private Rigidbody _rb;
+            private Collider _col;
+            private float _born, _restAt = -1f;
+            private bool _sounded, _sinking;
 
                 /// <summary>Creates and launches a new bolt from a point with given velocity, ignoring a specified collider.</summary>
                 /// <summary>Creates and launches a new bolt from a point with given velocity, ignoring a specified collider.</summary>
@@ -54,6 +55,7 @@ namespace CloneZ
 
             var b = go.AddComponent<Bolt>();
             b._rb = rb;
+            b._col = col;
             b._born = Time.time;
             Live.Add(b);
             return b;
@@ -84,8 +86,7 @@ namespace CloneZ
                 else if (Time.time - _restAt > 0.5f)
                 {
                     _rb.isKinematic = true;
-                    var col = GetComponent<Collider>();
-                    if (col != null) col.enabled = false;
+                    if (_col != null) _col.enabled = false;
                 }
             }
             else _restAt = -1f;
@@ -104,8 +105,7 @@ namespace CloneZ
             }
             if (_rb == null) return;
             _rb.isKinematic = false;
-            var col = GetComponent<Collider>();
-            if (col != null) col.enabled = true;
+            if (_col != null) _col.enabled = true;
             _rb.linearVelocity = velocity;
             _sounded = false;
         }
