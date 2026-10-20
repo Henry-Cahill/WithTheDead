@@ -16,6 +16,7 @@ namespace CloneZ
     {
         public enum Mode { Idle, Travel, Guard, Investigate, Combat, Flee, Surrendered, Follow, Dead }
 
+        /// <summary>All instantiated HumanNpc objects currently active in the world.</summary>
         public static readonly List<HumanNpc> All = new List<HumanNpc>();
 
         /// <summary>Human's display name used in UI.</summary>
@@ -28,28 +29,41 @@ namespace CloneZ
         public Mode State { get; private set; } = Mode.Idle;
         /// <summary>The current attack target, if any.</summary>
         public Actor Target => _target;
+        /// <summary>Whether the human currently has cover, used to decide crouching and peeking behavior.</summary>
         public bool InCover => _inCover;
+        /// <summary>Whether the human is currently crouching (lower stance).</summary>
         public bool Crouched { get; private set; }
+        /// <summary>True when the human is in combat mode and has a valid target, indicating aiming.</summary>
         public bool Aiming => State == Mode.Combat && _target != null;
+        /// <summary>The gun the human is currently wielding.</summary>
         public ItemDef Gun { get; private set; }
+        /// <summary>Inventory that holds the human's carried items and ammo.</summary>
         public Inventory Pack { get; private set; }
         public float Health01 => _maxHp > 0f ? _hp / _maxHp : 0f;
+        /// <summary>Whether the human is dead (health reached zero).</summary>
         public bool IsDead { get; private set; }
+        /// <summary>Convenient shortcut to this GameObject's Transform.</summary>
         public Transform Transform => transform;
 
         /// <summary>A squad this person belongs to (A-Life), or null.</summary>
+        /// <summary>Optional reference to the A‑Life squad this human belongs to.</summary>
         [System.NonSerialized] public object SquadTag;
         /// <summary>Guard post / travel goal / the actor to follow.</summary>
+        /// <summary>The current navigation goal (guard post, travel destination, or follow target).</summary>
         public Vector3 Goal;
+        /// <summary>Reference to an actor that this human is following (if any).</summary>
         public Actor FollowTarget;
         /// <summary>When true this person never leaves the guard post (cordon towers).</summary>
+        /// <summary>When true, the human never leaves its assigned guard post (used for cordon towers).</summary>
         public bool HoldPost;
 
+        /// <summary>Event fired when the human dies.</summary>
         public event System.Action<HumanNpc> Died;
 
         private NavMeshAgent _agent;
         private static Actor _localPlayer;
                 // removed unused init flag
+        /// <summary>Cached reference to the local player actor.</summary>
         public static Actor LocalPlayerCached => _localPlayer != null && _localPlayer.IsAlive ? _localPlayer : (_localPlayer = Actor.LocalPlayer);
         private HumanNpcAvatar _avatar;
         private float _hp, _maxHp;
@@ -752,8 +766,11 @@ namespace CloneZ
     /// <summary>The person's body: dressed from their loadout, carrying their gun, animated from the brain.</summary>
     public sealed class HumanNpcAvatar : MonoBehaviour
     {
+        /// <summary>Rig that builds and controls the human's skeletal mesh.</summary>
         public HumanoidRig Rig { get; private set; }
+        /// <summary>Animator that drives the human's animation state.</summary>
         public HumanoidAnimator Animator { get; private set; }
+        /// <summary>Head transform for the human's avatar (null if rig not built).</summary>
         public Transform Head => Rig != null ? Rig.Bone(HumanBone.Head) : null;
 
         private HumanNpc _npc;
@@ -762,6 +779,7 @@ namespace CloneZ
         private bool _deathShown;
         private float _reloadUntil;
 
+        /// <summary>Initialises the avatar with the given NPC and random generator.</summary>
         public void Build(HumanNpc npc, System.Random rng)
         {
             _npc = npc;
@@ -810,9 +828,13 @@ namespace CloneZ
             Animator.Snap();
         }
 
+        /// <summary>Called when the NPC fires a weapon – triggers the fire animation.</summary>
         public void OnFired() { if (Animator != null) Animator.Fire(); }
+        /// <summary>Called when the NPC reloads – sets the reload timer for animation.</summary>
         public void OnReload(float seconds) => _reloadUntil = Time.time + seconds;
+        /// <summary>Called when the NPC is hit – triggers a flinch animation.</summary>
         public void OnHit(Vector3 dir) { if (Animator != null) Animator.Flinch(transform.position - dir); }
+        /// <summary>Called when the NPC dies – triggers the death animation if not already shown.</summary>
         public void OnDied(Vector3 dir) { if (Animator != null && !_deathShown) { _deathShown = true; Animator.Die(dir); } }
 
         private void LateUpdate()

@@ -1926,9 +1926,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   a note that the local school is closed due to the storm,
   a brief morale boost (“keep warm, we’ll get through this”).
   - 07:22 landed by 1htsserver in 3.3 min: **Changed file**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/AI/Humans/HumanNpc.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/AI/Humans/HumanNpc.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 07:39 landed by 1htsserver in 16.7 min: **Changes made**
 - [x] Add four small metal bracket boxes to the `WeaponRack(RaidMesh m, System.Random r)` builder in Assets/Scripts/World/RaidLayouts.cs to suggest reinforced corners on the rack.
   Place them near the top of each vertical post, using the existing metal palette and a size of roughly 0.02 m × 0.1 m × 0.02 m.
   `var bracketMat = DecorPalette.Metal(new Color(0.30f, 0.30f, 0.28f));`
