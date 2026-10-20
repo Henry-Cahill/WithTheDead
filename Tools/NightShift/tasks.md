@@ -2354,10 +2354,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   When the fixture is instantiated but Init has not yet run, _host is null, so SaveKey returns null. The save system later uses this value as a dictionary key, causing a NullReferenceException or key‑collision errors.
   Change the getter to always return a valid key, falling back to the component’s own transform when the host is missing:
   - 09:15 landed by 0htsserver in 1.1 min: **Changed**
-- [ ] Add a small metal front‑handle to spawned locker containers in Assets/Scripts/Items/LootContainer.cs, editing the `LootContainer.Spawn` method
+- [x] Add a small metal front‑handle to spawned locker containers in Assets/Scripts/Items/LootContainer.cs, editing the `LootContainer.Spawn` method
   After the line `GameObject go = CloneZUtil.Box(name, position, size, color, parent);` insert a block that:
   Computes the floor Y with `BuildPiece.FloorTopAt(position)` like `var floor = position; floor.y = BuildPiece.FloorTopAt(floor);`
   Creates a deterministic‑random `System.Random` (e.g. `var rng = new System.Random(1994);`) and, if `rng.NextDouble() < 0.7`, adds a handle mesh:
+  - 09:23 landed by 0htsserver in 6.9 min: **Changed file**
 - [x] In Assets/Scripts/World/Interaction/StorageFixture.cs: Cache the per‑frame lookup of the player interactor in `StorageFixture` to avoid a `PlayerInteractor.Current` call each Update frame
   Add a private field `private PlayerInteractor _player;` to the class.
   Create an `Awake()` method (or add to an existing initializer) that sets `_player = PlayerInteractor.Current;`.
