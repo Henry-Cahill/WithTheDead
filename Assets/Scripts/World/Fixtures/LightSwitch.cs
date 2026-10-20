@@ -82,12 +82,14 @@ namespace CloneZ
             string toggleAllLabel = targetOn ? "Switch all lights on" : "Switch all lights off";
             into.Add(new InteractAction(toggleAllLabel, c => ToggleAll(c, targetOn)));
 
-            for (int i = 0; i < _circuits.Length; i++)
-            {
-                string circuit = _circuits[i];
-                bool on = LightCircuits.IsOn(circuit);
-                into.Add(new InteractAction((on ? "Switch off the " : "Switch on the ") + LightCircuits.Noun(circuit), c => Flip(c, circuit, !on)));
-            }
+        for (int i = 0; i < _circuits.Length; i++)
+        {
+            string circuit = _circuits[i];
+            bool on = LightCircuits.IsOn(circuit);
+            into.Add(new InteractAction((on ? "Switch off the " : "Switch on the ") + LightCircuits.Noun(circuit), c => Flip(c, circuit, !on)));
+            // Add inspect action without changing state
+            into.Add(new InteractAction("Inspect the " + LightCircuits.Noun(circuit), c => Inspect(c, circuit)));
+        }
         }
 
         // Handles toggling every circuit to the same state.
@@ -117,23 +119,33 @@ namespace CloneZ
             }
         }
 
-        private void Flip(InteractContext ctx, string circuit, bool on)
+    private void Flip(InteractContext ctx, string circuit, bool on)
+    {
+        LightCircuits.Set(circuit, on);
+        Sync(false);
+        MakeNoise(CloneZConfig.LightSwitchNoise);
+        if (!on) return;
+        if (!PowerGrid.HousePowered)
         {
-            LightCircuits.Set(circuit, on);
-            Sync(false);
-            MakeNoise(CloneZConfig.LightSwitchNoise);
-            if (!on) return;
-            if (!PowerGrid.HousePowered)
-            {
-                ctx.Notify(LightingFixtures.NothingHappens());
-                return;
-            }
-            HomeLamp.CountOnCircuit(circuit, out int lamps, out int lit, out int dead, out int waiting);
-            if (lamps == 0) ctx.Notify("Nothing happens. Whatever it was wired to is gone.");
-            else if (lit > 0) return;
-            else if (dead == lamps) ctx.Notify(lamps == 1 ? "Nothing happens. The bulb must have gone." : "Nothing happens. The bulbs must have gone.");
-            else if (waiting > 0) ctx.Notify("The porch lantern stays dark for now \u2014 its sensor waits for dusk.");
+            ctx.Notify(LightingFixtures.NothingHappens());
+            return;
         }
+        HomeLamp.CountOnCircuit(circuit, out int lamps, out int lit, out int dead, out int waiting);
+        if (lamps == 0) ctx.Notify("Nothing happens. Whatever it was wired to is gone.");
+        else if (lit > 0) return;
+        else if (dead == lamps) ctx.Notify(lamps == 1 ? "Nothing happens. The bulb must have gone." : "Nothing happens. The bulbs must have gone.");
+        else if (waiting > 0) ctx.Notify("The porch lantern stays dark for now \u2014 its sensor waits for dusk.");
+    }
+
+    // Inspect a circuit without changing state, showing lamp counts.
+    private void Inspect(InteractContext ctx, string circuit)
+    {
+        HomeLamp.CountOnCircuit(circuit, out int lamps, out int lit, out int dead, out int waiting);
+        if (lamps == 0) ctx.Notify("Nothing happens. Whatever it was wired to is gone.");
+        else if (lit > 0) return;
+        else if (dead == lamps) ctx.Notify(lamps == 1 ? "Nothing happens. The bulb must have gone." : "Nothing happens. The bulbs must have gone.");
+        else if (waiting > 0) ctx.Notify("The porch lantern stays dark for now \u2014 its sensor waits for dusk.");
+    }
 
         public override void CaptureState(FixtureSave save)
         {

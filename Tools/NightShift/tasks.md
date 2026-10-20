@@ -3165,7 +3165,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   No gameplay change: the radio still responds to “Switch on the radio” and “Switch off the radio” actions; the player still hears noise and captions exactly as before.
   This eliminates the per‑frame `_on` check and associated time queries, reducing Update overhead when the radio is off.
   - 12:46 landed by hts-llm in 2.7 min: Changed **RaidTownFieldRadio.cs** to cache the “radio‑off” check by using Unity’s component enable/disable system:
-- [ ] In Assets/Scripts/World/Fixtures/LightSwitch.cs: Add an “Inspect circuit” action for each circuit in `LightSwitch.GetActions`, mirroring the notification logic of `Flip` but without changing any state.
+- [x] In Assets/Scripts/World/Fixtures/LightSwitch.cs: Add an “Inspect circuit” action for each circuit in `LightSwitch.GetActions`, mirroring the notification logic of `Flip` but without changing any state.
   In `GetActions`, after the existing `Flip` action is added, insert:
   `into.Add(new InteractAction("Inspect the " + LightCircuits.Noun(circuit), c => Inspect(c, circuit)));`
   Implement a new private method `Inspect(InteractContext ctx, string circuit)` that:
@@ -3173,6 +3173,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   – Uses `ctx.Notify` with the same messages as in `Flip` (e.g., “Nothing happens. Whatever it was wired to is gone.”, bulb‑gone messages, porch‑lantern wait message).
   – Skips any `LightCircuits.Set`, `Sync`, or `MakeNoise` calls.
   This lets the survivor check how many lamps on that circuit are functional or dead without toggling the switch.
+  - 12:49 landed by 1htsserver in 5.3 min: **Changed files**
 - [x] Append five new flavor‑text entries to the sixth sub‑array of the `private static readonly string[][] Deliveries` field in Assets/Scripts/World/Fixtures/MailboxFixture.cs, so the mailbox will contain extra community notices after the existing “Missing pet notice…” lines.
   Locate the inner array that starts with `"Missing pet notice: our cat Whiskers disappeared near the old mill road two nights ago."` (the sixth element of `Deliveries`).
   After the line `"Owner will reward with a fresh fish and gratitude."` add the following five strings, each a complete sentence ending with a period:
