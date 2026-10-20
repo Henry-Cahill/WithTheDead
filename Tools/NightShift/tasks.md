@@ -1995,9 +1995,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   “Fire‑making tips” – gathering kindling, using flint, and why pine resin is valuable in winter.
   “Old maps” – describing hand‑drawn maps left in the bar, their markings for safe paths, water sources, and danger zones.
   Each new entry must be a tuple `(string title, string body)` inserted before the closing `}` of the `Pages` array, preserving the existing order.
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/HomeFurniture.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/HomeFurniture.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 07:48 landed by 0htsserver in 3.4 min: **Changes made**
 - [x] In Assets/Scripts/World/Fixtures/DoormatFixture.cs, modify the `Wipe` method to also dry the player’s boots by reducing the `Wetness` stat (if the stat object exists) after the notification.
   Change the line `private static void Wipe(InteractContext ctx)` to keep the existing logic and then add:
   `if (ctx.Stats != null && ctx.Stats.Wetness > 0f) ctx.Stats.Wetness = Mathf.Max(0f, ctx.Stats.Wetness - 0.15f);`

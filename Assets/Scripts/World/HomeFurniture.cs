@@ -32,6 +32,7 @@ namespace CloneZ
     {
         public static readonly List<HomeFurniture> All = new List<HomeFurniture>();
 
+        /// <summary>The kind of furniture this instance represents.</summary>
         public HomeFurnitureKind Kind { get; private set; }
         /// <summary>Facing in degrees (0 = front toward +Z). The root stays unrotated; the mesh is drawn turned.</summary>
         public float Yaw { get; private set; }
@@ -305,6 +306,7 @@ m.Cylinder(knobPos, 0.015f, 0.02f, 8, DecorPalette.Metal(new Color(0.20f, 0.20f,
         #endregion
 
         #region IDemolishable
+        /// <summary>Human‑readable name used when demolishing this piece of furniture.</summary>
         public string DemolishName => Kind switch
         {
             HomeFurnitureKind.Counter => "kitchen counter",
@@ -325,6 +327,7 @@ m.Cylinder(knobPos, 0.015f, 0.02f, 8, DecorPalette.Metal(new Color(0.20f, 0.20f,
             _ => "boxes",
         };
 
+        /// <summary>Returns whether the furniture can be safely demolished and, if not, why.</summary>
         public bool CanDemolish(out string reason)
         {
             // Whatever is kept in its drawers or cupboards would be lost with it.
@@ -337,6 +340,7 @@ m.Cylinder(knobPos, 0.015f, 0.02f, 8, DecorPalette.Metal(new Color(0.20f, 0.20f,
             return true;
         }
 
+        /// <summary>Outputs the amount of planks and nails that can be salvaged from this furniture.</summary>
         public void GetSalvage(out int planks, out int nails)
         {
             switch (Kind)
@@ -355,8 +359,10 @@ m.Cylinder(knobPos, 0.015f, 0.02f, 8, DecorPalette.Metal(new Color(0.20f, 0.20f,
             }
         }
 
+        /// <summary>Indicates whether this piece contributes to the navigation mesh.</summary>
         public bool CarvesNavMesh => BakesIntoNavMesh(Kind);   // baked into the navmesh -> removing it needs a rebuild
 
+        /// <summary>Removes the furniture from the world and cleans up its resources.</summary>
         public void Dismantle()
         {
             All.Remove(this);
