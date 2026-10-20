@@ -3265,12 +3265,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Change the call to use a silent opening: ` _parts[i].SetOpen(open, false);` (or the single‑argument overload if it exists).
   After the change, loading a save will restore the open/closed visual state without emitting any noise, and all other behaviour (opening/closing during play) remains unchanged.
   - 13:14 landed by hts-llm in 2 min: **Changed file**
-- [ ] In Assets/Scripts/World/Fixtures/KitchenSink.cs: Cache frequently‑read static config values in KitchenSink to avoid per‑frame static lookups
+- [x] In Assets/Scripts/World/Fixtures/KitchenSink.cs: Cache frequently‑read static config values in KitchenSink to avoid per‑frame static lookups
   Add private readonly float fields `_capacity`, `_fillRate`, `_drainRate`, `_statusInterval`, `_noiseInterval`, `_noiseRadius` to the class.
   In `Awake()` assign them from the corresponding `CloneZConfig` constants (`KitchenBasinCapacity`, `KitchenBasinFillSeconds`, `KitchenBasinDrainSeconds`, `KitchenStatusInterval`, `KitchenTapNoiseInterval`, `KitchenTapNoiseRadius`).
   Replace every use of those `CloneZConfig.*` constants inside `Update()` (and any other per‑frame method) with the cached fields, e.g. use `_capacity` instead of `CloneZConfig.KitchenBasinCapacity`, `_fillRate` for the fill‑per‑second divisor, etc.
   Keep the original constants for non‑frequent code paths; only the per‑frame calculations change.
   The visual and gameplay behaviour stays identical; the player will see the same water filling/draining speed, tap noise timing and hearing range, but the game avoids repeated static field dereferencing each frame.
+  - 13:23 landed by hts-llm in 7.7 min: All compilation errors resolved. The KitchenSink now caches its static configuration values in non‑readonly fields (`_capacity`, `_fillRate`
 - [x] Add a “Check water level” action to `RaidHomeBath.GetActions` (Assets/Scripts/World/Fixtures/RaidHomeBath.cs)
   In `GetActions`, after the block that adds “Feel the water” and “Check water temperature”, insert
   `into.Add(new InteractAction("Check water level", CheckLevel));` (copy the surrounding `if (_level > 0.05f) { … }` condition).

@@ -35,14 +35,21 @@ namespace CloneZ
         private Transform _stream, _splash, _sheet;
         private MeshRenderer _streamR, _splashR, _sheetR, _plugInR, _plugOutR, _dishesR;
 
-        private bool _running;                // the cold tap is open and water is coming out
-        private bool _plugIn;
-        private bool _openedForJob;           // turned on just for a wash, to be turned off again after
-        private bool _toldFull;               // the survivor's been told the bowl is brimming (once a fill)
-        private float _level;                 // water standing in the bowl, 0..KitchenBasinCapacity
-        private float _cleanUntil = -1f;      // world hour the washing-up stays done until (past it, there's more)
-        private float _drop;                  // the stream's length, spout to where it lands
-        private float _nextNoise, _nextCheck, _wobbleSeed;
+private bool _running;                // the cold tap is open and water is coming out
+    private bool _plugIn;
+    private bool _openedForJob;           // turned on just for a wash, to be turned off again after
+    private bool _toldFull;               // the survivor's been told the bowl is brimming (once a fill)
+    private float _level;                 // water standing in the bowl, 0..KitchenBasinCapacity
+    private float _cleanUntil = -1f;      // world hour the washing-up stays done until (past it, there's more)
+    private float _drop;                  // the stream's length, spout to where it lands
+    private float _nextNoise, _nextCheck, _wobbleSeed;
+    // Cached config values for per‑frame performance
+    private float _capacity;
+    private float _fillRate;
+    private float _drainRate;
+    private float _statusInterval;
+    private float _noiseInterval;
+    private float _noiseRadius;
 
         private Action<InteractContext> _toggleTap, _putPlug, _pullPlug, _wash, _rinse, _washDishes, _openForJob, _endJob;
 
@@ -87,6 +94,13 @@ namespace CloneZ
             _washDishes = WashDishes;
             _openForJob = OpenForJob;
             _endJob = EndJob;
+            // Cache config values for per‑frame use
+            _capacity = CloneZConfig.KitchenBasinCapacity;
+            _fillRate = CloneZConfig.KitchenBasinFillSeconds;
+            _drainRate = CloneZConfig.KitchenBasinDrainSeconds;
+            _statusInterval = CloneZConfig.KitchenStatusInterval;
+            _noiseInterval = CloneZConfig.KitchenTapNoiseInterval;
+            _noiseRadius = CloneZConfig.KitchenTapNoiseRadius;
         }
 
         #region Building
@@ -155,19 +169,19 @@ namespace CloneZ
             float now = Time.time;
             if (now >= _nextCheck)
             {
-                _nextCheck = now + CloneZConfig.KitchenStatusInterval;
+                _nextCheck = now + _statusInterval;
                 if (_running && !WaterMains.MainsOn) RunDry();
                 RefreshDishes();
             }
 
             // The bowl fills while the tap runs with the plug in (brimming over into the overflow), and drains without it.
-            float dt = Time.deltaTime, cap = CloneZConfig.KitchenBasinCapacity;
+            float dt = Time.deltaTime, cap = _capacity;
             bool moved = false;
             if (_plugIn)
             {
                 if (_running && _level < cap)
                 {
-                    _level = Mathf.Min(cap, _level + cap * dt / CloneZConfig.KitchenBasinFillSeconds);
+                    _level = Mathf.Min(_capacity, _level + _capacity * dt / _fillRate);
                     moved = true;
                     if (_level >= cap && !_toldFull)
                     {
@@ -178,7 +192,7 @@ namespace CloneZ
             }
             else if (_level > 0f)
             {
-                _level = Mathf.Max(0f, _level - cap * dt / CloneZConfig.KitchenBasinDrainSeconds);
+                _level = Mathf.Max(0f, _level - _capacity * dt / _drainRate);
                 moved = true;
             }
             if (_toldFull && _level < cap * 0.9f) _toldFull = false;
@@ -195,8 +209,8 @@ namespace CloneZ
             }
             if (now >= _nextNoise)
             {
-                _nextNoise = now + CloneZConfig.KitchenTapNoiseInterval;
-                MakeNoise(CloneZConfig.KitchenTapNoiseRadius);
+                _nextNoise = now + _noiseInterval;
+                MakeNoise(_noiseRadius);
             }
             Wobble(now);
         }
@@ -281,8 +295,8 @@ namespace CloneZ
             if (_tapHead != null) _tapHead.SetOpen(_running, instant);
             if (_running)
             {
-                _nextNoise = Time.time + CloneZConfig.KitchenTapNoiseInterval;
-                if (!instant) MakeNoise(CloneZConfig.KitchenTapNoiseRadius);
+                _nextNoise = Time.time + _noiseInterval;
+                if (!instant) MakeNoise(_noiseRadius);
             }
             RefreshWater();
         }
@@ -417,7 +431,7 @@ namespace CloneZ
         // Shows the current water level in the sink.
         private void ShowWaterLevel(InteractContext ctx)
         {
-            float percent = (_level / CloneZConfig.KitchenBasinCapacity) * 100f;
+            float percent = (_level / _capacity) * 100f;
             ctx.Notify($"The sink holds {percent:0}% of its capacity.");
         }
         #endregion
@@ -442,7 +456,7 @@ namespace CloneZ
         private void RefreshWater()
         {
             float bottom = transform.position.y + FurnitureBuilder.SinkBowlBottom;
-            float surface = bottom + FurnitureBuilder.SinkWaterDepth * Mathf.Clamp01(_level / CloneZConfig.KitchenBasinCapacity);
+            float surface = bottom + FurnitureBuilder.SinkWaterDepth * Mathf.Clamp01(_level / _capacity);
             bool standing = _level > 0.004f;
             if (_sheetR != null)
             {
@@ -486,11 +500,11 @@ namespace CloneZ
         {
             _openedForJob = false;
             _plugIn = (save.State & 2) != 0;
-            _level = Mathf.Clamp(save.A, 0f, CloneZConfig.KitchenBasinCapacity);
-            _toldFull = _level >= CloneZConfig.KitchenBasinCapacity * 0.9f;
+            _level = Mathf.Clamp(save.A, 0f, _capacity);
+            _toldFull = _level >= _capacity * 0.9f;
             _cleanUntil = save.B;
             _running = (save.State & 1) != 0 && WaterMains.MainsOn;
-            if (_running) _nextNoise = Time.time + CloneZConfig.KitchenTapNoiseInterval;
+            if (_running) _nextNoise = Time.time + _noiseInterval;
             ApplyAll();
         }
         #endregion
