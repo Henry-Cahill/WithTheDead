@@ -1002,3 +1002,12 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/RaidStoreWaterCooler.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add a subtle “worn‑edge” visual detail to the paper background that ZoneMapScreen builds (Assets/Scripts/Survival/Navigation.cs)
+  – Locate the line ` _paper = UIKit.Place(paper.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0f, 20f), new Vector2(760f, 760f));` and insert the new code immediately after it.
+  – Create a deterministic random generator: `int seed = ZoneCatalog.Current != null ? ZoneCatalog.Current.LayoutSeed : 0; System.Random rng = new System.Random(seed);`
+  – For each of the four sides (top, bottom, left, right) add two thin UI panels (total 8 primitives) to simulate ragged paper edges:
+  `// top edge – two short strips with random offset`
+  `for (int i = 0; i < 2; i++)`
+  `{`
+  `float offsetX = (float)rng.NextDouble() * 6f - 3f; // ±3 px random shift`
+  `float width = 760f - (float)rng.NextDouble() * 20f; // slight length variation`
