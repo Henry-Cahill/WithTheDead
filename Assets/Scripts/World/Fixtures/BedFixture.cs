@@ -104,6 +104,7 @@ PlayerInteractor pi = _playerInteractor;
                     .DisabledIf(seat == null, "You need to be sitting or lying to sing"));
 
             into.Add(new InteractAction("Look under the bed", LookUnder).Timed(1.6f, "Looking under the bed", HumanoidActivity.Search));
+            into.Add(new InteractAction("Inspect the bed", InspectBed));
         }
 
         private void Sleep(InteractContext ctx)
@@ -190,6 +191,11 @@ PlayerInteractor pi = _playerInteractor;
         }
 
         public override void CaptureState(FixtureSave save) => save.State = _isMade ? 0 : 1;
+
+        private void InspectBed(InteractContext ctx)
+        {
+            ctx.Notify(_isMade ? "The bedding is neatly made." : "The sheets are rumpled and the pillows look flat.");
+        }
 
         public override void RestoreState(FixtureSave save) => SetMade((save.State & 1) == 0);
     }

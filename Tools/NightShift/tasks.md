@@ -2875,12 +2875,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace the lines `Vector2 size = _root.rect.size;` and `Rect cr = _canvasRect.rect;` in `Follow()` with uses of the cached `_rootSize` and `_canvasBounds`.
   The tooltip will still follow the mouse and flip at screen edges exactly as before, but the per‑frame allocations and property reads are removed.
   - 11:28 landed by 1htsserver in 3.6 min: **Changed file**
-- [ ] Add an instant “Inspect the bed” action to Assets/Scripts/World/Fixtures/BedFixture.cs’s GetActions, placed after the existing “Look under the bed” entry.
+- [x] Add an instant “Inspect the bed” action to Assets/Scripts/World/Fixtures/BedFixture.cs’s GetActions, placed after the existing “Look under the bed” entry.
   Implement a private method `InspectBed(InteractContext ctx)` that runs `ctx.Notify(_isMade ? "The bedding is neatly made." : "The sheets are rumpled and the pillows look flat.");`.
   In GetActions, insert `into.Add(new InteractAction("Inspect the bed", InspectBed));` (no .Timed call, always enabled).
   The action should be available regardless of whether the bed is made or the player is seated.
   Do not modify any other actions or state‑changing logic.
   Keep the class, fields, and existing methods unchanged.
+  - 11:30 landed by 0htsserver in 4.9 min: **Changed file**
 - [x] Add five winter‑theme flavor notes to the `Hideout.Tick` method in Assets/Scripts/Economy/Hideout.cs; insert `notes.Add("…");` calls after the existing production/animal notes so the list now contains extra sentences such as the existing style `"The generator ran dry. Pour in a gas can."`.
   Insert the following lines (in any order) before `SetLastTick(c, now);`:
   `notes.Add("The wind whistles through the cracked window of the generator room.");`
