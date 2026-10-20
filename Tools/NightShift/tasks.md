@@ -1161,3 +1161,15 @@ you want to see in game. Indent extra lines under a task to add detail.
   In `GetActions` after the existing “Straighten the towel” line, add
   `into.Add(new InteractAction("Inspect towel", Inspect));`
   Create a new private method in the class:
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Interaction/StorageFixture.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add a small coin‑slot detail to each vending machine built in `VendingAt` in Assets/Scripts/World/RaidLayoutsOffice.cs
+  Locate the line `Transform t = b.FixtureBody(room, p, Sz(0.9f, 1.85f, 0.8f), true, (m, r) => FurnitureBuilder.OfficeVendingBody(m, r), "Vending machine");` and after it insert a primitive piece that represents a coin slot.
+  Create the slot with a dark metal colour, size 0.08 m × 0.02 m × 0.02 m, positioned on the front face of the machine at `new Vector3(0f, 0.6f, 0.41f)` (relative to the vending‑machine origin).
+  Vary the slot’s horizontal offset by ±0.01 m using the building’s deterministic random source (`float xOff = (float)(b.Rng.NextDouble() * 0.02 - 0.01);`) so each office has a slightly different placement.
+  Use the existing helper `KitchenParts.PieceAt` to add the mesh:
+- [ ] In Assets/Scripts/World/GroundItemRenderer.cs: Fix duplicate ground‑item rendering by clearing the temporary chunk list each frame in GroundItemRenderer.Gather.
+  Add `_chunks.Clear();` at the start of the `Gather(Vector3 eye)` method before calling `GroundItemStore.ChunksInRange`.
+  Current code begins with clearing groups but never clears `_chunks`, so chunks from previous frames remain and items are processed multiple times, causing items to appear duplicated or cause unnecessary draw‑calls.
+  The fix ensures only the chunks within range for the current frame are considered, keeping visual fidelity and performance unchanged apart from removing the duplication.
