@@ -1465,3 +1465,9 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Net/NetWorld.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add subtle chrome rivet details to the corner posts of the metal shelving unit in Assets/Scripts/World/FurnitureBuilder.Utility.cs – `FurnitureBuilder.MetalShelf`
+  Inside the post‑creation loop (`m.Box(new Vector3((i % 2 == 0 ? -1f : 1f) * (w * 0.5f - 0.02f), h * 0.5f, (i < 2 ? -1f : 1f) * (d * 0.5f - 0.02f)), new Vector3(0.04f, h, 0.04f), M(f));`) add two chrome rivet cylinders per post.
+  Compute a height fraction `0.2f + (float)rng.NextDouble() * 0.6f` and place each rivet at `postPos + new Vector3(0f, -h*0.5f + fraction * h, 0f)`.
+  Use `m.Cylinder(..., 0.005f, 0.004f, 6, Mt(Chrome));` (radius 0.005 m, height 0.004 m, 6 sides) so the rivets are tiny chrome caps.
+  This introduces at most eight new primitives (2 × 4 posts) and reuses the existing Chrome material; colliders and interaction points stay unchanged.
+  The deterministic random offset gives each shelf a slightly different wear pattern while keeping the look period‑correct.
