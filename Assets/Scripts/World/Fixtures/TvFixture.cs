@@ -138,6 +138,9 @@ namespace CloneZ
         private void ChangeChannel(InteractContext ctx)
         {
             BroadcastStation s = TuneNext();
+            // Immediately update channel state and picture tint
+            RefreshChannel();
+            if (IsOn) Paint();
             ctx.Notify(Describe(s) + (_onAir ? "" : " \u2014 nothing but snow"));
         }
 

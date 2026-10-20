@@ -2566,7 +2566,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `float iceSize = R(rng, 0.15f, 0.3f);`
   `float icePos = R(rng, a, b);`
   `Vector3 iceCenter = alongX`
-- [ ] In Assets/Scripts/World/Fixtures/TvFixture.cs: Fix TvFixture.ChangeChannel so the TV updates its signal state and picture tint immediately after the player switches channels.
+- [x] In Assets/Scripts/World/Fixtures/TvFixture.cs: Fix TvFixture.ChangeChannel so the TV updates its signal state and picture tint immediately after the player switches channels.
   In `TvFixture.ChangeChannel(InteractContext ctx)` the code only calls `TuneNext()` and notifies the player, leaving `_onAir` and `_tint` stale until the next periodic refresh in `Animate`.
   `BroadcastStation s = TuneNext();`
   `ctx.Notify(Describe(s) + (_onAir ? "" : " \u2014 nothing but snow"));`
@@ -2575,6 +2575,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `RefreshChannel();`
   `if (IsOn) Paint();`
   `ctx.Notify(Describe(s) + (_onAir ? "" : " \u2014 nothing but snow"));`
+  - 10:23 landed by 1htsserver in 1.4 min: **Changed file**
 - [ ] Add period‑correct brass hinges to the wooden door leaf in `Assets/Scripts/World/FurnitureBuilder.Fixtures.cs` `FurnitureBuilder.DoorLeaf` so the door looks realistic for a 1993 rural interior.
   After the main panel box call `m.Box(new Vector3(width * 0.5f, height * 0.5f, 0f), new Vector3(width, height, t), M(c));` insert four small boxes representing two hinges per side.
   Use the existing brass material: `Mt(Brass)`.
