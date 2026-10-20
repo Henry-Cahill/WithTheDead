@@ -197,7 +197,10 @@ namespace CloneZ
             wash.Begin = BorrowTaps;
             wash.Stopped = ReturnTaps;
             into.Add(wash);
-            if (_level > 0.05f) into.Add(new InteractAction("Feel the water", FeelWater));
+            if (_level > 0.05f) {
+                into.Add(new InteractAction("Feel the water", FeelWater));
+                into.Add(new InteractAction("Check water temperature", CheckTemp));
+            }
         }
 
         #region The taps and the plug
@@ -282,8 +285,14 @@ namespace CloneZ
         private void FeelWater(InteractContext ctx)
         {
             string depth = _level >= 0.9f ? "brimming" : _level >= CloneZConfig.BathSoakLevel ? "deep enough to get into" : "only a few inches deep";
-            string warm = _heat >= 0.75f ? "hot \u2014 properly hot" : _heat >= 0.45f ? "warm" : _heat >= 0.2f ? "lukewarm" : "stone cold";
+            string warm = _heat >= 0.75f ? "hot — properly hot" : _heat >= 0.45f ? "warm" : _heat >= 0.2f ? "lukewarm" : "stone cold";
             ctx.Notify("You trail a hand in the bath. It's " + depth + ", and " + warm + (_bathedIn ? ". Somebody's already been in it." : "."));
+        }
+
+        private void CheckTemp(InteractContext ctx)
+        {
+            string warm = _heat >= 0.75f ? "hot — properly hot" : _heat >= 0.45f ? "warm" : _heat >= 0.2f ? "lukewarm" : "stone cold";
+            ctx.Notify("The water feels " + warm + ".");
         }
         #endregion
 
