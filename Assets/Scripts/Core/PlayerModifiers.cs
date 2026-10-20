@@ -20,6 +20,7 @@ namespace CloneZ
 
         public StatMods() => Reset();
 
+        /// <summary>Resets all stat modifiers to their neutral defaults.</summary>
         public void Reset()
         {
             MoveSpeed = SprintSpeed = CarryCapacity = StaminaRegen = StaminaDrain = 1f;
@@ -51,6 +52,7 @@ namespace CloneZ
     /// <summary>Something that bends the survivor's stats (a trait, a worn artifact, a broken leg).</summary>
     public interface IStatModSource
     {
+                /// <summary>Applies this source's stat modifications to the given StatMods.</summary>
         void ApplyMods(StatMods mods);
     }
 
@@ -71,6 +73,7 @@ namespace CloneZ
         private readonly List<IStatModSource> _found = new List<IStatModSource>();
         private bool _dirty;
 
+                /// <summary>Gets the current accumulated stat modifiers for the local survivor.</summary>
         public StatMods Mods => _mods;
 
         private void Awake() { s_Instance = this; Recompute(); _dirty = true; }
@@ -78,6 +81,7 @@ namespace CloneZ
 
         /// <summary>Adds a source that doesn't live on the survivor's GameObject (a profile trait set).</summary>
         public void Register(IStatModSource src) { if (src != null && !_external.Contains(src)) _external.Add(src); _dirty = true; }
+                /// <summary>Removes a previously registered stat-mod source.</summary>
         public void Unregister(IStatModSource src)
     {
         _external.Remove(src);
