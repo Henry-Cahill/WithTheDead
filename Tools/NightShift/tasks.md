@@ -3731,3 +3731,20 @@ you want to see in game. Indent extra lines under a task to add detail.
   `if (IsBusy) { CancelSearch(); StopJob(); return; }`
   `if (!_ui.IsOpen && _focus == FocusKind.Fixture) OpenMenu(FixtureTarget);`
   This lets the player abort a rummage or a fixture job with Q, while preserving the existing menu‑open behaviour when not busy.
+- [ ] Append five new flavour‑text strings to the `UseLines` array in Assets/Scripts/World/Fixtures/ToiletFixture.cs, placing them after the current last entry.
+  Use the existing line `"Cold night fatigue drags you down, even as the seat offers brief relief."` as the style reference (short, present‑tense, atmospheric, period‑appropriate).
+  The new lines should cover the following themes:
+  the survivor’s breath frosting in the air,
+  a distant, mournful wind howling through the boarded‑up walls,
+  a fleeting memory of a family photograph tucked in a cracked frame,
+  the metallic clang of a loose pipe rattling in the cold,
+  a ghostly silhouette that briefly appears in the rising steam.
+- [ ] Add a faint “worn edge” strip to the raid report panel in `Assets/Scripts/Extraction/RaidSummaryUI.cs` (method `Build`) to suggest years of use on the wooden/metal board.
+  Insert a call `AddEdgeWear(prt, new Color(0.15f, 0.12f, 0.09f, 1f), 2f);` right after the existing `AddScrews(prt, …)` line.
+  Implement a new private static method `AddEdgeWear(RectTransform panel, Color color, float thickness = 2f)` that creates four thin `Image` objects (top, bottom, left, right) inset 1 metre from each edge:
+  Top strip: `anchorMin = new Vector2(0f, 1f); anchorMax = new Vector2(1f, 1f); pivot = new Vector2(0.5f, 1f); anchoredPosition = new Vector2(0f, -1f); sizeDelta = new Vector2(0f, thickness);`
+  Bottom strip: same anchors, `anchoredPosition = new Vector2(0f, 1f);`
+  Left strip: `anchorMin = new Vector2(0f, 0f); anchorMax = new Vector2(0f, 1f); pivot = new Vector2(0f, 0.5f); anchoredPosition = new Vector2(1f, 0f); sizeDelta = new Vector2(thickness, 0f);`
+  Right strip: same but `anchorMin = new Vector2(1f, 0f); anchorMax = new Vector2(1f, 1f); anchoredPosition = new Vector2(-1f, 0f);`
+  Set each Image’s `color` to the passed colour and `raycastTarget = false`.
+  Keep all existing colliders, interaction points and pivots untouched; the new strips are purely visual and add ≤ 12 primitives total.
