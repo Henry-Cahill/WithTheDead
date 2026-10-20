@@ -1741,11 +1741,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
   - 06:26 landed by 0htsserver in 4.7 min: Added concise XML‑summary comments to every public member in **Assets/Scripts/Content/ContentRegistry.cs** that lacked them:
-- [ ] Add a tiny chrome power button to the CRT monitor front in `Assets/Scripts/World/FurnitureBuilder.Office.cs` → `public static void CrtMonitor(RaidMesh m, System.Random rng, Vector3 at, float yaw, bool on)`
+- [x] Add a tiny chrome power button to the CRT monitor front in `Assets/Scripts/World/FurnitureBuilder.Office.cs` → `public static void CrtMonitor(RaidMesh m, System.Random rng, Vector3 at, float yaw, bool on)`
   After the line `m.Box(at + q * new Vector3(0f, 0.26f, 0.02f), new Vector3(0.4f, 0.36f, 0.1f), q, M(c));` insert a small button primitive.
   Use `m.Box(at + q * new Vector3(-0.15f, 0.30f, 0.07f), new Vector3(0.01f, 0.005f, 0.004f), q, Mt(Chrome));`
   The button is 1 cm × 0.5 cm × 0.4 cm, positioned 15 cm left of centre, 30 cm up, and 7 cm outward from the front face, following the monitor’s orientation `q`.
   No new materials are introduced; `Mt(Chrome)` already exists, and the added primitive inherits the existing collider handling.
+  - 06:26 landed by 1htsserver in 2.2 min: **Changed file**
 - [ ] Add a subtle rust‑stained metal cap on the rain barrel’s lip in Assets/Scripts/World/WaterSource.cs to give the barrel a makeshift handle feel and a bit of visual variety.
 - [ ] In Assets/Scripts/World/GroundItemRenderer.cs: Cache the expensive `Camera.main` lookup in `GroundItemRenderer` instead of calling it every LateUpdate.
   Add a private field `private Camera _cachedMain;` initialized in `OnEnable` (or `Awake`) with `Camera.main`.
