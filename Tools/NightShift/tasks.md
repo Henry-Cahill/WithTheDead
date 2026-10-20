@@ -650,7 +650,7 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a small chrome handle to each drawer front in `Assets/Scripts/World/FurnitureBuilder.Office.cs` → `public static void FilingCabinet(...)`
   Locate the line `m.Box(new Vector3(0f, y, 0.275f + pull), new Vector3(0.43f, 0.3f, 0.02f), M(c));` which builds the drawer front panel.
   After this line, insert a new primitive that represents a drawer pull:
-- [ ] Cache player component look‑ups in ExtractionManager (Assets/Scripts/Extraction/ExtractionManager.cs) to avoid per‑frame GetComponent calls in MeetsCondition.
+- [x] Cache player component look‑ups in ExtractionManager (Assets/Scripts/Extraction/ExtractionManager.cs) to avoid per‑frame GetComponent calls in MeetsCondition.
   Add two private fields `PlayerInventory _playerInv;` and `PlayerClothing _playerCloth;` to the class.
   In `BindPlayer(PlayerStats player)` after setting `_player = player;` also assign `_playerInv = player != null ? player.GetComponent<PlayerInventory>() : null;` and `_playerCloth = player != null ? player.GetComponent<PlayerClothing>() : null;`.
   When switching players (or unbinding) clear the caches (`_playerInv = null; _playerCloth = null;`).
@@ -659,6 +659,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `var clothing = _player != null ? _player.GetComponent<PlayerClothing>() : null;` → `var clothing = _playerCloth;`
   Leave the rest of the logic unchanged.
   Result: no allocations or component look‑ups each frame; the player experience (exit conditions, payment checks, backpack checks) stays exactly the same.
+  - 00:33 landed by 0htsserver in 4.5 min: **Changes made**
 - [x] In Assets/Scripts/World/Fixtures/RaidTownMailDrop.cs: Add a third interaction “Inspect the box” to `RaidTownMailDrop.GetActions` that lets the player read a short flavor note about the fixture itself.
   In `GetActions` insert after the existing actions:
   `into.Add(new InteractAction("Inspect the box", c => c.Notify("The blue paint is chipped and the metal groans with each gust of wind.")));`

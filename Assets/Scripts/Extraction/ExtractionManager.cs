@@ -70,6 +70,8 @@ namespace CloneZ
         private const float DeathSummaryDelay = 2.2f;   // real seconds: let the fall play out first
 
         private PlayerStats _player;
+        private PlayerInventory _playerInv;
+        private PlayerClothing _playerCloth;
         private readonly List<ExtractionBeacon> _beacons = new List<ExtractionBeacon>();
         private Camera _cam;
         private float _dawnTotalHours = -1f;   // the clock's TotalHours at which dawn ends the raid
@@ -171,6 +173,9 @@ namespace CloneZ
             if (player == _player) return;
             if (_player != null) _player.OnDied -= HandlePlayerDied;
             _player = player;
+            // Cache component look‑ups for this player
+            _playerInv = _player != null ? _player.GetComponent<PlayerInventory>() : null;
+            _playerCloth = _player != null ? _player.GetComponent<PlayerClothing>() : null;
             if (_player != null) _player.OnDied += HandlePlayerDied;
         }
 
@@ -272,11 +277,11 @@ namespace CloneZ
             switch (e.Condition)
             {
                 case ExitCondition.Pay:
-                    var inv = _player != null ? _player.GetComponent<PlayerInventory>() : null;
+                    var inv = _playerInv;
                     if (inv == null || Money.Count(inv.Inventory) < e.Cost) { reason = "The smuggler wants " + Money.Format(e.Cost) + " (carried)"; return false; }
                     return true;
                 case ExitCondition.NoBackpack:
-                    var clothing = _player != null ? _player.GetComponent<PlayerClothing>() : null;
+                    var clothing = _playerCloth;
                     if (clothing != null && clothing.IsWearing(ClothingSlot.Back)) { reason = "Too tight with a backpack on"; return false; }
                     return true;
                 case ExitCondition.Switch:
@@ -347,7 +352,7 @@ namespace CloneZ
             {
                 if (open.Condition == ExitCondition.Pay)
                 {
-                    var inv = _player != null ? _player.GetComponent<PlayerInventory>() : null;
+                    var inv = _playerInv;
                     if (inv == null || Money.Take(inv.Inventory, open.Cost) > 0) { BlockedReason = "Couldn't pay"; ExtractProgress01 = 0f; return; }
                 }
                 EndRaid(RaidState.Extracted, open);
