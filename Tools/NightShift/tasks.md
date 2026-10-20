@@ -3978,9 +3978,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   ` float x = -6.5f + i * 1.5f;`
   - 17:56 landed by 0htsserver in 1.7 min: **Summary**
 - [ ] Fix the flashlight‑beam detection bug in Assets/Scripts/Zombies/ZombieAI.cs (method `InFlashlightBeam`)
-- [ ] In Assets/Scripts/World/Zone/ZoneOverlays.cs, inside `ZoneIndustry.Build` → the *tank* branch, after the line
+- [x] In Assets/Scripts/World/Zone/ZoneOverlays.cs, inside `ZoneIndustry.Build` → the *tank* branch, after the line
   `sb.Solid.Cylinder(new Vector3(0f, h, 0f), r * 0.98f, 0.4f, 16, ZoneKit.Mt(ZoneKit.RustDark));`
   add a short loop that places 2‑4 rust‑stained bolt heads around the tank’s top rim.
+  - 18:01 landed by 0htsserver in 1.8 min: **Changed file**: `Assets/Scripts/World/Zone/ZoneOverlays.cs`
 - [ ] Cache `PlayerSkills` in `Awake` and simplify the `bleedMult` / `healMult` getters in `Assets/Scripts/Player/PlayerWounds.cs` to avoid a per‑frame `GetComponent` call (the getters currently do `if (_skills == null) _skills = GetComponent<PlayerSkills>();` each frame).
 - [ ] In Assets/Scripts/World/Fixtures/LampSwitch.cs: Add a “Check power” action to LampSwitch.GetActions that notifies the player whether the house has electricity, using the existing PowerGrid.HousePowered flag.
   In `GetActions` after the existing Inspect line, add:
