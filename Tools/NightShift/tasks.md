@@ -3647,3 +3647,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add an `Image` component, set its color to a dimmed, slightly desaturated version of the accent colour: `img.color = HudUI.WithAlpha(Dim, 0.4f);`.
   Ensure `img.raycastTarget = false;` so it does not block input.
   This adds only one primitive (the wear strip) and re‑uses the existing `Dim` colour, giving each row a faint “worn” look that varies by index because the strip width is based on the accent’s current width.
+- [ ] In Assets/Scripts/AI/Humans/HumanNpc.cs: Cache the frequently accessed `transform` reference in `HumanNpc` and `HumanNpcAvatar` to avoid the per‑frame property getter.
+- [ ] Add a small “Inspect the dial” action to Assets/Scripts/World/Fixtures/RaidStoreSafe.cs, in the `RaidStoreSafe.GetActions` method, inserting it after the existing `new InteractAction("Try the handle", …)` line.
+  Create the action with `new InteractAction("Inspect the dial", c => c.Notify("The dial is stiff and scratched; it looks like someone tried to force it."))` and add it to `into`.
+  This gives the survivor a brief visual hint without changing any timers, noises, or existing behavior.
+  All other code, including the two timed dial actions and the “Listen at the door” action, must remain unchanged.
