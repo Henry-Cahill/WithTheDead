@@ -2137,7 +2137,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   This preserves the “opened just for watering” flag across autosaves, preventing the tap from unexpectedly closing mid‑watering when the game reloads.
   All other behavior – instant‑open noise suppression on load and the existing logic for auto‑closing after watering – remains unchanged.
   - 08:24 landed by 1htsserver in 1.9 min: **Summary**
-- [ ] Add a front grille and a rear bumper plate to the car built in `Vehicle.Build(System.Random rng)` (Assets/Scripts/World/Vehicles.cs)
+- [x] Add a front grille and a rear bumper plate to the car built in `Vehicle.Build(System.Random rng)` (Assets/Scripts/World/Vehicles.cs)
   Add a set of thin vertical bars centered on the front bumper (just behind the headlights) to suggest a metal grille; vary the bar count between 3‑5 using the existing `rng` for deterministic randomness.
   Add a small flat metal plate on the rear bumper to give a subtle “tail‑gate” detail.
   Both parts should be created with the existing `Box` helper, be parented to `_bodyRoot`, use the same dark trim colour (`new Color(0.12f, 0.12f, 0.14f)`), and keep colliders removed as `Box` already does.
@@ -2145,6 +2145,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Front grille bar: `new Vector3(x, 0.68f, 2.12f)` with size `new Vector3(0.02f, 0.04f, 0.01f)` (x offsets calculated from bar count).
   Rear bumper plate: `new Vector3(0f, 0.57f, -2.12f)` with size `new Vector3(0.4f, 0.02f, 0.02f)`.
   Insert the code after the headlight creation loop and before `Seat = new GameObject("Driver seat")`.
+  - 08:28 landed by hts-llm in 4.3 min: Implemented front grille with 3‑5 thin vertical bars and rear bumper plate, both using the standard `Box` helper, dark trim colour, and dete
 - [ ] In Assets/Scripts/UI/HealthPanelController.cs, within the `Refresh()` method replace the six separate `Supply(...)` calls with a single inventory‑scan that fills local variables for all treatment counts, thus avoiding six full passes over `PlayerInventory.Inventory.Stacks` each frame.
 - [ ] Add a small “Inspect” instant action helper to Assets/Scripts/World/Interaction/Interactable.cs
   Insert a protected method after `MakeNoise` that creates an `InteractAction` labeled “Inspect” and calls `InteractContext.Notify` with the fixture’s `DisplayName`.
