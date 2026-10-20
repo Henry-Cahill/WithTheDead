@@ -4109,3 +4109,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace `bool lit = i < LitPoles && lean == 0f && rng.NextDouble() < 0.8;` with `bool lit = litCount < LitPoles && lean == 0f && rng.NextDouble() < 0.8;`.
   After the call to `site.Town.Light(...)` (or immediately after determining `lit`), add `if (lit) litCount++;`.
   Result: up to `LitPoles` (~10) illuminated poles appear at random distances along streets, better matching the hand‑crafted raid town’s uneven lighting while leaving all other geometry, colliders and colour handling unchanged.
+- [ ] Add a rusted‑metal door handle on the front face of the checkpoint booth built in `ZoneCordon.BuildCheckpoint` (Assets/Scripts/World/Zone/ZoneCordon.cs)
+  Insert after the line
+  `sb.Solid.Box(new Vector3(0f, 1.2f, 0f), new Vector3(2.4f, 2.4f, 2.4f), ZoneKit.M(ZoneKit.WardenOlive));`
+  add a 50 % chance block:
+  `if (ZoneKit.R(rng, 0f, 1f) < 0.5f) {`
+  ` // door handle on the front panel (front is –Z after the booth’s yaw)`
+  ` sb.Solid.Box(new Vector3(0f, 1.2f, -1.22f), new Vector3(0.02f, 0.12f, 0.04f), ZoneKit.Mt(ZoneKit.RustDark));`
+  `}`
+  Size 0.02 m × 0.12 m × 0.04 m, positioned 1.2 m above ground and 1.22 m forward from the booth centre (half the booth depth + 0.02 m) so it sits flush on the front surface.
