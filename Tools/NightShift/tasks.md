@@ -2412,3 +2412,10 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/AI/Creatures/PlayerMonster.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add small brass hinge caps to each sash in `Assets/Scripts/World/StarterHome.Windows.cs` → `WindowSash` method, after the line
+  `m.Box(f.P(f.Mid, gy, across), f.Size(w - 0.09f, glass, 0.006f), DecorPalette.Glass(SashGlass));`
+  Declare `Surf brass = DecorPalette.Metal(FurnitureBuilder.Brass);`.
+  Loop `for (int e = -1; e <= 1; e += 2)` and add
+  `m.Box(f.P(f.Mid + e * (w * 0.5f - 0.0225f), y1 - topRail * 0.5f, across), f.Size(0.015f, 0.015f, 0.01f), brass);`.
+  Each box is a 1.5 cm × 1.5 cm × 1 cm brass plate positioned at the inner edge of the top rail, giving period‑correct hinge detail.
+  No change to colliders, interaction points or pivots; only two new primitives per sash.
