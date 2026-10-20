@@ -2554,9 +2554,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   · This mirrors the existing quick‑noise action (uses `ctx.Notify` like `Lower` does) and uses only members already present in the file.
   · Player will see a tooltip “Inspect the roll‑up door” (E/Q) and, when used, a short on‑screen message indicating the door’s current state.
   - 10:22 landed by 1htsserver in 7 min: **Changes made**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Zone/Detectors.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Zone/Detectors.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 10:27 landed by hts-llm in 7.7 min: **Changes Made**
 - [ ] Add occasional icy patches on sidewalks in `Assets/Scripts/World/RaidMapBuilder.Streets.cs` → method `SidewalkRun`
   After the concrete sidewalk slab (`Slab(town, alongX, coord, a, b, s0, s1, 0.025f, concrete);`) insert a 20 % chance to place a small translucent ice square.
   Use the existing deterministic `rng` and helper `R` for size and position.
