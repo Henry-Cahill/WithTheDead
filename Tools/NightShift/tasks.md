@@ -3839,3 +3839,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   Place the latch near the top front of the can: `m.Box(at + q * new Vector3(lx, 0.22f, 0.075f), new Vector3(0.02f, 0.04f, 0.005f), q, Mt(Chrome));`.
   (Optional) Add a tiny rivet detail on the latch for extra realism: `m.Box(at + q * new Vector3(lx, 0.235f, 0.077f), new Vector3(0.003f, 0.003f, 0.001f), q, M(Black));`.
   - 16:10 landed by hts-llm in 1.5 min: Added a period‑correct metal latch‑handle (with optional rivet detail) to the ammo can model:
+- [ ] Fix the overflow‑detection logic in Assets/Scripts/Player/PlayerInventory.cs → RebuildSections() so a change in a section’s capacity (e.g. pockets shrinking when Strength drops) correctly marks the inventory as overflow‑pending.
