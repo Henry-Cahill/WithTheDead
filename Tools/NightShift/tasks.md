@@ -1971,3 +1971,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(new Vector3(hx, hy, 0.31f), new Vector3(0.02f, 0.07f, 0.005f), Mt(Chrome));`
   The handle sits slightly in front of the fridge (z ≈ 0.31 m), is 2 cm wide, 7 cm tall and 0.5 cm deep, and uses the same `Mt(Chrome)` surface as other metal parts.
   No other geometry, colliders or interaction points are altered; the addition stays within the existing primitive budget.
+- [ ] Add a subtle brass knob (and optional tiny screw) to the kitchen‑diner sconce in Assets/Scripts/World/StarterHome.Lighting.cs, inside the `Sconce` builder method, using the method’s existing `rng` for a small random colour/placement variation.
+  *After the line `m.Rod(wall + n * 0.02f, wall + n * 0.13f + Vector3.up * 0.03f, 0.018f, brass);` insert a brass cylinder `m.Cylinder(knobPos, 0.008f, 0.015f, 6, knobMat);` where `knobPos = wall + n * 0.13f + Vector3.up * 0.03f;` and `knobMat = rng.NextDouble() < 0.3f ? DecorPalette.Metal(new Color(0.75f,0.60f,0.45f)) : brass;`
+  Optionally add a tiny black screw `m.Box(screwPos, new Vector3(0.004f,0.004f,0.004f), DecorPalette.Matte(new Color(0.08f,0.08f,0.09f)))` with `screwPos = knobPos + n * 0.005f + Vector3.up * 0.005f;`
+  Result: players see a small brushed‑brass knob crowning the sconce’s rod, sometimes a darker‑brass variant, with a tiny screw detail, giving the fixture a lived‑in, period‑correct feel without altering colliders or interaction points.
