@@ -36,7 +36,12 @@ namespace CloneZ
             "A distant howl drifts in, reminding you of unseen dangers.",
             "Steam rises from the cistern, a fleeting veil against the cold.",
             "The porcelain glints faintly, a brief glimpse of civilization.",
-            "You hear the faint echo of your own breath, a solitary companion."
+            "You hear the faint echo of your own breath, a solitary companion.",
+                "Your breath freezes in the air, a fleeting cloud of frost.",
+                "A mournful wind sighs through the boarded walls, echoing distant sorrow.",
+                "A cracked frame catches a ghost of a family photograph, a memory flickering.",
+                "A loose pipe rattles, its metallic clang cutting the cold silence.",
+                "Steam swirls, and a ghostly silhouette briefly appears within its veil."
         };
 
         private HomeFurniture _host;
