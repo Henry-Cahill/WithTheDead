@@ -1223,3 +1223,6 @@ you want to see in game. Indent extra lines under a task to add detail.
   `var botPin = new Vector3(x1 + 0.005f, WardrobeDoorY0 + 0.06f, WardrobeFront + 0.01f);`
   · Draw each pin with `m.Cylinder(topPin, 0.005f, 0.02f, 8, Mt(Brass));` and `m.Cylinder(botPin, 0.005f, 0.02f, 8, Mt(Brass));`.
 - [ ] Add a “toggle all lights” action to LightSwitch so the survivor can switch every circuit on or off with one interaction, updating the script in Assets/Scripts/World/Fixtures/LightSwitch.cs
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/GameModules.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
