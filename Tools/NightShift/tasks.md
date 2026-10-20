@@ -1571,3 +1571,23 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// stronger spin than a normal shove`
   `_spinSpeed = CloneZConfig.RaidSwivelFreeSpin * Random.Range(1.2f, 1.6f);`
   `MakeNoise(CloneZConfig.FixtureNoiseSmall);`
+- [ ] Add five new “Blurb” entries to the existing `s_Defs` dictionary in Assets/Scripts/Core/Factions.cs so the game has extra pieces of in‑world written lore that the survivor can discover (e.g. notes, graffiti, radio transcripts).
+  Use the same format as the current entries – a `new Def { Id = ..., Name = "...", Color = new Color(r, g, b), Blurb = "…" }` – and keep the dictionary initializer intact.
+  Quote the Freehold entry as a style reference:
+  `Blurb = "Independent runners who share tips, routes and campfires. Friendly with most; nobody's soldiers."`
+  The new entries should cover these themes: a desperate survivor’s warning, a rusted radio broadcast, a graffiti warning about the Choir, a weather‑log note about the winter freeze, and a faded map fragment hinting at an old mine.
+  Example additions (insert after the existing `Zone` entry, before the closing `};`):
+  `{ "oldchurch", new Def { Id = "oldchurch", Name = "Abandoned Church", Color = new Color(0.70f, 0.60f, 0.45f), Blurb = "The stained‑glass is shattered, but a scribbled warning remains: ‘Stay out after dusk, the choir sings.’" } },`
+  `{ "rustyradio", new Def { Id = "rustyradio", Name = "Rusty Radio", Color = new Color(0.55f, 0.55f, 0.55f), Blurb = "Static crackles, then a faint voice: ‘Supplies moving through the south ridge, watch the cordon.’" } },`
+  `{ "graffitihint", new Def { Id = "graffitihint", Name = "Graffiti", Color = new Color(0.30f, 0.65f, 0.30f), Blurb = "Scrawled on a broken fence: ‘The choir’s sleep is broken; run while it’s dark.’" } },`
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Zone/ZoneHazards.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add a small rust‑coloured metal bracket at the base of each beam created in `ZoneKit.Beam` (Assets/Scripts/World/Zone/ZoneKit.cs) to suggest a period‑correct projector housing and give the beam a bit of wear.
+  Create a primitive cylinder named "BeamBracket" as a child of the beam’s root GameObject (`go.transform`).
+  Set its local position to `(0f, 0f, 0f)` (centered on the beam origin).
+  Scale it to `new Vector3(0.04f, 0.04f, 0.02f)` — ≈ 4 cm diameter, 2 cm thick, matching the metre‑scale used elsewhere.
+  Assign the rust colour `ZoneKit.Rust` to its renderer (e.g. `bracket.GetComponent<MeshRenderer>().sharedMaterial.color = ZoneKit.Rust;`).
+  Remove its default collider (`Object.Destroy(bracket.GetComponent<Collider>());`) so it stays purely visual.
+  The existing `ZoneKit.NoBake(go);` call already excludes the bracket from nav‑mesh baking.
+  Result: each beam now has a subtle, worn metal housing that fits the 1993 Kentucky setting without affecting gameplay.
