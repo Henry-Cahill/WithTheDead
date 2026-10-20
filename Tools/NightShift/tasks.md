@@ -3060,9 +3060,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Inside the action: pick the first available fuel type, `c.Inventory.Consume(fuel,1)`, increase `_until` by `240f` for a plank or `90f` for rag/paper (matching the durations used in `LightFire`), play the lighter SFX (`Sfx.Play(SfxIds.Lighter, transform.position,0.6f,1f,8f)`), and raise a toast like `"Added plank, the fire will burn longer."`.
   If the player lacks any fuel, the action is omitted (or added with `.DisabledIf(true, "No fuel")`).
   Result: players can extend an existing campfire’s burn time with extra wood or rag, reinforcing the survival loop without adding UI screens.
-- [ ] Add a small brass pressure‑relief valve to the gas water heater model in Assets/Scripts/World/FurnitureBuilder.RaidStore.cs, method OfficeWaterHeater
+- [x] Add a small brass pressure‑relief valve to the gas water heater model in Assets/Scripts/World/FurnitureBuilder.RaidStore.cs, method OfficeWaterHeater
   Insert after the line `m.Cylinder(new Vector3(0f, 1.55f, -0.1f), 0.05f, 1.2f, 8, Mt(new Color(0.46f, 0.47f, 0.48f)));`
   Add a cylinder representing the valve: `m.Cylinder(new Vector3(0.07f, 1.58f, 0.06f), 0.015f, 0.04f, 6, Mt(Brass));`
   Diameter ≈ 0.03 m, height ≈ 0.04 m, placed on the right side of the top gas pipe (0.07 m X, 1.58 m Y, 0.06 m Z).
   Uses the existing brass material `Mt(Brass)` for consistency with other heater fittings.
   Keeps colliders, interaction points and pivots unchanged; adds only one primitive.
+  - 12:13 landed by 1htsserver in 1.8 min: **Changes Made**

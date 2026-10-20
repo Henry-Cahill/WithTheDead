@@ -160,6 +160,7 @@ namespace CloneZ
             m.Cylinder(new Vector3(0.12f, 1.5f, 0.06f), 0.03f, 1.2f, 6, copper);
             m.Cylinder(new Vector3(-0.12f, 1.5f, 0.06f), 0.03f, 1.2f, 6, copper);
             m.Cylinder(new Vector3(0f, 1.55f, -0.1f), 0.05f, 1.2f, 8, Mt(new Color(0.46f, 0.47f, 0.48f)));
+            m.Cylinder(new Vector3(0.07f, 1.58f, 0.06f), 0.015f, 0.04f, 6, Mt(Brass));
             m.Box(new Vector3(0f, 0.42f, 0.3f), new Vector3(0.13f, 0.12f, 0.08f), M(new Color(0.12f, 0.12f, 0.13f)));
             m.Cylinder(new Vector3(0f, 0.44f, 0.34f), 0.03f, 0.03f, 8, M(new Color(0.62f, 0.12f, 0.1f)), Quaternion.Euler(90f, 0f, 0f));
             m.Box(new Vector3(0.08f, 0.38f, 0.3f), new Vector3(0.02f, 0.04f, 0.06f), M(Black));
