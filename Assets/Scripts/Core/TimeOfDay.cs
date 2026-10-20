@@ -61,6 +61,7 @@ namespace CloneZ
         private static readonly Color DuskSun = new Color(1f, 0.62f, 0.36f);
 
         private Camera _cam;
+        private WeatherSystem _weather;
 
         private void Awake()
         {
@@ -69,6 +70,9 @@ namespace CloneZ
             Hour = CloneZConfig.StartHour;
             AmbientScale = 1f;
             MoonlightScale = 1f;
+            // Cache frequently used references for per‑frame use.
+            _cam = Camera.main;
+            _weather = WeatherSystem.Instance;
         }
 
         /// <summary>Sets the clock up for a run: the starting hour, how many real seconds a day lasts
@@ -120,7 +124,7 @@ namespace CloneZ
             float daylight = Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(-0.18f, 0.28f, elevation));
 
             // Overcast/stormy skies dim the world further.
-            float weatherDim = WeatherSystem.Instance != null ? WeatherSystem.Instance.LightMultiplier : 1f;
+            float weatherDim = _weather != null ? _weather.LightMultiplier : 1f;
 
             LightLevel = Mathf.Clamp01(Mathf.Lerp(CloneZConfig.NightLightFloor, 1f, daylight) * weatherDim);
 
@@ -140,6 +144,7 @@ namespace CloneZ
             RenderSettings.ambientLight = Color.Lerp(NightAmbient, DayAmbient, daylight) * Mathf.Lerp(0.7f, 1f, weatherDim) * scale;
             RenderSettings.fogColor = Color.Lerp(NightFog, DayFog, daylight) * Mathf.Lerp(0.75f, 1f, weatherDim) * scale;
 
+            // Cached _cam is already set in Awake; keep lazy fallback for late creation.
             if (_cam == null) _cam = Camera.main;
             if (_cam != null)
                 _cam.backgroundColor = Color.Lerp(NightSky, DaySky, daylight) * Mathf.Lerp(0.6f, 1f, weatherDim) * scale;

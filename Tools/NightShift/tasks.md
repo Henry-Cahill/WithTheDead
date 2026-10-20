@@ -977,13 +977,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   Keep the existing rust overlay (`if (r > 0.55f) …`) unchanged; the new spots will blend with it because they use the same deterministic seed (`122`).
   No new colliders or interaction points are added; the texture generation remains tileable and uses at most a dozen extra per‑pixel condition checks.
   - 02:09 landed by hts-llm in 2.3 min: **Changes made**
-- [ ] Cache per‑frame lookups in `Assets/Scripts/Core/TimeOfDay.cs` by storing `Camera.main` and `WeatherSystem.Instance` in fields set once, then use those cached references in `Apply()` so the visual output (sky colour, fog, sun rotation, LightLevel, etc.) stays identical.
+- [x] Cache per‑frame lookups in `Assets/Scripts/Core/TimeOfDay.cs` by storing `Camera.main` and `WeatherSystem.Instance` in fields set once, then use those cached references in `Apply()` so the visual output (sky colour, fog, sun rotation, LightLevel, etc.) stays identical.
   Add a private field `private WeatherSystem _weather;`.
   In `Awake()` (after setting `Instance`) assign `_cam = Camera.main;` and `_weather = WeatherSystem.Instance;`.
   Replace the line `float weatherDim = WeatherSystem.Instance != null ? WeatherSystem.Instance.LightMultiplier : 1f;` with `float weatherDim = _weather != null ? _weather.LightMultiplier : 1f;`.
   Remove the null‑check `if (_cam == null) _cam = Camera.main;` from `Apply()` (the cached `_cam` is already set).
   Optionally guard against late creation by lazily setting `_weather = WeatherSystem.Instance` the first time `Apply()` runs if `_weather` is still null.
   No change to how the sky, fog, ambient light, sun colour/intensity or zombie vision are computed, so the player sees exactly the same lighting cycle.
+  - 02:15 landed by 0htsserver in 7.6 min: **Changed files**
 - [x] In Assets/Scripts/World/Interaction/StorageFixture.cs: Add a “Knock on the …” action to `StorageFixture.GetActions(InteractContext ctx, List<InteractAction> into)` that triggers the fixture’s noise.
   In `GetActions` after `string noun = Noun;` insert a line adding a new `InteractAction` with the label `"Knock on the " + noun`.
   The action’s callback should be `c => { MakeNoise(_opt.Noise); }` (the `InteractContext` parameter is unused).
