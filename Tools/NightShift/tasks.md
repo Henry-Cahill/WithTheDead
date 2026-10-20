@@ -3252,3 +3252,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   Create a new piece with `KitchenParts.PieceAt(t, "VendingLED", f, ledPos, m => { m.Box(Vector3.zero, new Vector3(0.04f, 0.02f, 0.001f), FurnitureBuilder.OfficeCopierJamGlow); });`
   Calculate `float ledX = (float)(b.Rng.NextDouble() * 0.02 - 0.01);` and set `Vector3 ledPos = new Vector3(ledX, 1.7f, 0.42f);` – the glow material already used for the copier jam lamp gives a faint amber light that fits a 1993 office aesthetic.
   Keep colliders, interaction points and existing parts unchanged; this adds only one primitive per machine (well under the 12‑primitive limit).
+- [ ] Cache the result of `Ballistics.Build` in `PlayerCombat` to stop a per‑frame allocation/lookup in `Update` (Assets/Scripts/Player/PlayerCombat.cs)
+  Add a private field `ItemStack _lastEquippedStack;` (or reuse an existing reference) and update the `Build` property only when the equipped stack changes.
+  In `Update`, before using `Build`, check `ItemStack cur = Inv != null ? Inv.EquippedStack : null;` and if `cur != _lastEquippedStack` set `Build = Ballistics.Build(cur); _lastEquippedStack = cur;`.
+  Call the same cache‑update logic after any code that mutates the stack’s dirt or ammo count (e.g., after `FoulBarrel();` in `FireFirearm()` and after a successful `TryReload()`).
+  Remove the existing per‑frame call `Build = Ballistics.Build(Inv != null ? Inv.EquippedStack : null);` from `Update`.
+  Result: no `Ballistics.Build` allocation each frame; weapon build data is recomputed only when the underlying stack changes, reducing GC pressure and CPU load while keeping all gameplay values identical.
+- [ ] Fix noisy door opening on game load in StorageFixture.RestoreState (Assets/Scripts/World/Interaction/StorageFixture.cs)
+  In `RestoreState` the loop `for (int i = 0; i < _parts.Length; i++) if (_parts[i] != null) _parts[i].SetOpen(open, true);` forces each `FixturePart` to open with the “noisy” flag set to `true`.
+  When a saved game is loaded and a storage fixture was previously open, this makes the doors/drawers play their opening sound automatically, which the player never caused and breaks the quiet atmosphere.
+  Change the call to use a silent opening: ` _parts[i].SetOpen(open, false);` (or the single‑argument overload if it exists).
+  After the change, loading a save will restore the open/closed visual state without emitting any noise, and all other behaviour (opening/closing during play) remains unchanged.
