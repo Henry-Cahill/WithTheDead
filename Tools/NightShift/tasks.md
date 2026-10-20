@@ -2491,3 +2491,17 @@ you want to see in game. Indent extra lines under a task to add detail.
   West edge board (`m.Box(new Vector3(r.xMin, 0.04f, r.center.y), new Vector3(0.06f, 0.08f, r.height), wood);`) – place screws at the board’s near and far Z ends:
   `m.Cylinder(new Vector3(r.xMin + 0.03f - 0.02f, 0.081f, r.center.y - r.height * 0.5f + 0.02f), 0.004f, 0.012f, 8, wood);`
   `m.Cylinder(new Vector3(r.xMin + 0.03f - 0.02f, 0.081f, r.center.y + r.height * 0.5f - 0.02f), 0.004f, 0.012f, 8, wood);`
+- [ ] In Assets/Scripts/Core/SqliteSaveStore.cs: Fix `SqliteSaveStore.ReadPlayer` to initialise the player’s wound and inventory lists before adding to them, preventing a NullReferenceException when a saved game contains any wounds or items.
+  In `ReadPlayer`, after constructing the `PlayerSave p = new PlayerSave { … }`, insert:
+  `p.Wounds = new List<WoundSave>();`
+  `p.Items = new List<StackSave>();`
+  This ensures the loops `p.Wounds.Add(...)` and `p.Items.Add(...)` operate on a valid list even when the DB has rows.
+  With the fix, loading a save that includes wounds or inventory will no longer crash; the player will correctly regain wounds and items instead of the game aborting during load.
+  No other code changes are required.
+- [ ] Add four small metal lanterns with faint flame lights to the roof of the drowned chapel landmark (Assets/Scripts/World/Zone/ZoneLandmarks.cs, method `DrownedChapel(SiteBuilder sb)`).
+  ‑ Place each lantern near a roof corner, e.g. relative to the existing call
+  `sb.Roof.Box(new Vector3(0f, 4.2f, 0f), new Vector3(9.6f, 0.3f, 11.4f), ZoneKit.M(ZoneKit.WetWood));`
+  ‑ Create a box `0.2 m × 0.1 m × 0.2 m` (`new Vector3(0.2f, 0.1f, 0.2f)`) at positions `new Vector3(±4.5f, 4.35f, ±5f)` plus a tiny jitter `ZoneKit.R(sb.Rng, -0.1f, 0.1f)` on X/Z.
+  ‑ Use a metal colour `new Color(0.45f, 0.41f, 0.38f)` via `ZoneKit.M(...)`.
+  ‑ Spawn a flame light at `pos + new Vector3(0f, 0.15f, 0f)` with colour `new Color(1f, 0.6f, 0.2f)`, range 2 m, intensity 0.4, size 0.05 m (`ZoneFlameLight.Spawn`).
+  ‑ Keep colliders, interaction points and pivots unchanged; only add the new primitives (max 4 boxes) and associated flame lights.
