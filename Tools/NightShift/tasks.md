@@ -1227,3 +1227,12 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/GameModules.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add two thin metal hinge plates to the propped‑open dumpster lid in Assets/Scripts/World/DecorProps.cs, method DecorProps.Dumpster.
+  After the existing lid box call
+  `m.Box(new Vector3(0.47f, 1.15f, -0.55f) + open * new Vector3(0f, 0f, 0.56f), new Vector3(0.92f, 0.04f, 1.12f), open, M(new Color(0.12f, 0.12f, 0.12f)));`
+  insert two additional boxes that act as hinge plates.
+  Compute the lid centre once (reuse the expression above) and offset ±0.30 m along the lid’s local X‑axis:
+  `Vector3 lidCentre = new Vector3(0.47f, 1.15f, -0.55f) + open * new Vector3(0f, 0f, 0.56f);`
+  Add the plates (size 0.04 × 0.02 × 0.01 m) using the same `open` rotation and a metal surface:
+  `m.Box(lidCentre + open * new Vector3( 0.30f, 0f, 0f), new Vector3(0.04f, 0.02f, 0.01f), open, Mt(new Color(0.5f, 0.5f, 0.5f)));`
+  `m.Box(lidCentre + open * new Vector3(-0.30f, 0f, 0f), new Vector3(0.04f, 0.02f, 0.01f), open, Mt(new Color(0.5f, 0.5f, 0.5f)));`
