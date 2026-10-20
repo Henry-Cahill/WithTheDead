@@ -178,7 +178,7 @@ namespace CloneZ
 
         private static float GroundY(Vector3 p)
         {
-            return Physics.Raycast(new Vector3(p.x, 20f, p.z), Vector3.down, out RaycastHit hit, 40f, 1, QueryTriggerInteraction.Ignore) && hit.point.y < 1.5f
+            return Physics.Raycast(new Vector3(p.x, 20f, p.z), Vector3.down, out RaycastHit hit, 40f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore) && hit.point.y < 1.5f
                 ? hit.point.y : 0f;
         }
     }

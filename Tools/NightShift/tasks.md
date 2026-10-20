@@ -966,9 +966,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Each knob is 0.005 m radius and 0.015 m tall, placed 0.01 m above and slightly forward of its tap to look like a realistic metal handle.
   Use the existing chrome material (`Mt(Chrome)`) so colour/shade stays consistent. No other code changes are required.
   - 02:06 landed by 0htsserver in 2.1 min: **Changes made**
-- [ ] Fix the ground‑height detection in Assets/Scripts/Zone/ZoneHazards.cs so anomalies are placed at the actual terrain height instead of constantly at y = 0.
+- [x] Fix the ground‑height detection in Assets/Scripts/Zone/ZoneHazards.cs so anomalies are placed at the actual terrain height instead of constantly at y = 0.
   In `AnomalyField.GroundY` the raycast uses a hard‑coded layer mask `1`, which only checks the Default layer and misses the terrain layer used in the game. This causes the method to return 0 for most positions, spawning anomalies floating in the air or buried underground.
   Change the layer‑mask argument to include all layers (e.g. `Physics.DefaultRaycastLayers` or `~0`) or simply omit it. The corrected method should be:
+  - 02:08 landed by 0htsserver in 1.5 min: **Changed**
 - [ ] Add subtle rivet‑like rust specks to the corrugated‑sheet‑metal texture (Assets/Scripts/World/DecorTextures.cs → `public static Texture2D Corrugated(Color color)`)
   After the line `Color c = Mul(color, 0.78f + 0.26f * Mathf.Sin(u * Mathf.PI * 2f * 8f));` insert a deterministic rust‑spot test using the existing `R01` function; e.g. `float spot = R01(x, y, 122);`
   If `spot < 0.018f` (≈ 2 % of pixels) treat the pixel as the centre of a tiny rivet and darken it: `c = Mul(c, 0.45f);` (roughly a 2 cm‑wide spot at the texture’s 64 px scale)
