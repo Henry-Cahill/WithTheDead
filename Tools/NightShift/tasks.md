@@ -1675,3 +1675,8 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/TimeOfDay.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add small metal buckles to the chest‑rig shoulder straps in Assets/Scripts/Player/PlayerGearVisuals.cs, method BuildChestRig(ItemDef def)
+  Declare a hardware material like the backpack does: `Material hardware = CloneZUtil.Mat(Hardware, 0.4f);`
+  Inside the existing shoulder‑strap loop (`for (int s = -1; s <= 1; s += 2) …`) after calling `StrapOverShoulder`, capture the strap end point with `Vector3 end = _path[_path.Count - 1];`
+  Add a buckle box at that point: `PlayerGearParts.Box(root, "StrapBuckle", end + new Vector3(0f, 0.014f, 0.007f), new Vector3(0.046f, 0.022f, 0.008f), hardware);`
+  This creates a 0.046 m × 0.022 m × 0.008 m metal plate, positioned just beyond the strap tip, giving the harness a worn‑metal detail consistent with the backpack’s rivet boxes.
