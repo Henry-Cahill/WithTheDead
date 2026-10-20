@@ -1174,3 +1174,16 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add `_chunks.Clear();` at the start of the `Gather(Vector3 eye)` method before calling `GroundItemStore.ChunksInRange`.
   Current code begins with clearing groups but never clears `_chunks`, so chunks from previous frames remain and items are processed multiple times, causing items to appear duplicated or cause unnecessary draw‑calls.
   The fix ensures only the chunks within range for the current frame are considered, keeping visual fidelity and performance unchanged apart from removing the duplication.
+- [ ] Add a small rust‑colored ellipsoid cap to each main tollgate rod in `Anomaly.BuildVisual` (Assets/Scripts/Zone/Anomalies.cs)
+- [ ] Cache WeatherSystem and TimeOfDay instances in Assets/Scripts/Player/PlayerTemperature.cs to avoid per‑frame lookups
+  Add private fields `private WeatherSystem _weather;` and `private TimeOfDay _timeOfDay;` to the class.
+  Initialise them in `Awake()` (after acquiring _stats) with `_weather = WeatherSystem.Instance;` and `_timeOfDay = TimeOfDay.Instance;`.
+  Replace every `WeatherSystem.Instance` call in `UpdateWetness`, `AmbientTemperature`, and any other method with `_weather`.
+  Replace the `TimeOfDay.Instance` lookup in `ApplyEffects` with `_timeOfDay`.
+  Preserve the existing null‑checks (`if (_weather != null) …`) so behaviour stays identical.
+  The survivor’s temperature, wetness, and health effects remain unchanged; only the per‑frame GetComponent‑like lookups are removed, improving performance.
+- [ ] Add a “Polish the clock” timed action to Assets/Scripts/World/Fixtures/ClockFixture.cs that calms the survivor like “Listen to it tick”, using the existing LightingFixtures.Calm method and CloneZConfig.ClockCalm values, and display a new polishing‑themed notification.
+  In GetActions after adding “Check the time”, add `into.Add(new InteractAction("Polish the clock", Polish).Timed(CloneZConfig.ClockListenSeconds, "Polishing the clock", HumanoidActivity.None));`
+  Implement a private `Polish(InteractContext ctx)` method that mirrors `Listen` but with a different message, e.g. `ctx.Notify("You gently polish the clock face; the steady motion steadies your thoughts.");` and calls `LightingFixtures.Calm(ctx, CloneZConfig.ClockCalm);` with the same cooldown logic as `Listen`.
+  Leave the existing “Listen to it tick” action unchanged; the new action should be available whether the clock is stopped or running.
+  Do not modify any other files or introduce new UI elements.
