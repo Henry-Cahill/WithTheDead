@@ -1328,10 +1328,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   Cylinder dimensions: radius = 0.008 m, height = 0.004 m, oriented vertically (default orientation matches other lever parts).
   Keep all colliders, interaction points, and pivots unchanged; the knob is purely visual and uses no more than one primitive.
   - 03:59 landed by 0htsserver in 1.9 min: **Changed file**
-- [ ] Fix null‑up vector bug in Assets/Scripts/Player/PlayerGearParts.cs → `Strap` method
+- [x] Fix null‑up vector bug in Assets/Scripts/Player/PlayerGearParts.cs → `Strap` method
   The method builds a rotation with `Quaternion.LookRotation(f, up)`.
   When the strap direction `f` is (almost) parallel to `Vector3.right`, the fallback `up = Vector3.Cross(f, Vector3.right)` yields a zero vector, causing Unity to throw *ArgumentException: up must be non‑zero* and the strap part is not created.
   Change the fallback to use an axis that cannot be parallel to `f` (e.g. `Vector3.up`) and keep a secondary fallback if that also fails.
+  - 04:01 landed by 0htsserver in 1.7 min: **Changed file**
 - [ ] Add a small weathered flag to the checkpoint built in `ZoneCordon.BuildCheckpoint` (Assets/Scripts/World/Zone/ZoneCordon.cs)
   In the `BuildCheckpoint` method, after the existing booth geometry (e.g., after `sb.Solid.Box(new Vector3(0f, 1.2f, 0f), …)`), insert a short wooden pole and an orange cloth flag to give the checkpoint a visual cue.
   Create the pole using the existing `sb.Solid.Rod` helper, from ground to a height of about 1 m:
