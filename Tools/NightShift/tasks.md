@@ -2729,3 +2729,17 @@ you want to see in game. Indent extra lines under a task to add detail.
   `}`
   Add a private helper that notifies the survivor about the bed’s comfort level using the existing `_comfort` field:
   `private void ComfortInfo(InteractContext ctx)`
+- [ ] Append five new sentences to the `Tidying` string array in Assets/Scripts/World/Fixtures/LivingReading.cs, each describing a small, period‑correct cleaning action the survivor can perform at the bookcase.
+  Add the entries after the existing lines, keeping the comma after the last original element and the final semicolon after the closing brace.
+  Use the same “You …” phrasing; each entry may contain two short sentences separated by a period, mirroring the style of `"You dust the shelves, wiping away a thin layer of time."`.
+  Themes to cover: polishing a brass knob on the shelf, clearing a thin film of snow‑dust from the top shelf, straightening a tilted family photo, tightening a loose shelf bracket, and sweeping away a faint cobweb in a corner.
+  All strings should start with “You” (capitalised) and otherwise be lower‑case, ending with a period.
+  Do not modify any other code or data.
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/GridDragHandle.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add a tiny carabiner‑style loop to the backpack’s top tube in Assets/Scripts/Player/PlayerGearVisuals.cs, method BuildBackpack(ItemDef def)
+  After the line `PlayerGearParts.Tube(root, "BagTop", new Vector3(0f, top - d * 0.5f, cz), Vector3.right, w, d * 0.5f, body, true);` insert a small metal “Carabiner” box to suggest a worn attachment point.
+  Create it with `PlayerGearParts.Box(root, "Carabiner", new Vector3(0f, top - d * 0.5f + 0.018f, cz + d * 0.5f + 0.006f), new Vector3(0.008f, 0.018f, 0.008f), hardware);`
+  Size ≈ 0.008 m × 0.018 m × 0.008 m (thin rectangular loop); placed 0.018 m above the top‑tube surface and 0.006 m outward from the tube’s outer face, using the existing `hardware` material.
+  No new colliders or interaction points are added; the primitive follows the same parent as the tube, so it moves with the backpack.
