@@ -3199,3 +3199,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `right = Goal(HasReachTarget ? _chest + _frame * ReachOffset(ReachTarget) : At(reach), HandRot(fingers, Dir(new Vector3(-0.45f, -1f, 0.15f)), true), w);`
   Keep the preceding `if (HasReachTarget) reach = ReachOffset(ReachTarget);` unchanged (or remove it, but the essential fix is the conditional world‑space conversion).
   After this change, when the survivor uses a tap, switch, knob, drawer, etc., the right hand reaches the correct spot on the object instead of overshooting, resulting in realistic interaction animations that match the 1993 rural setting.
+- [ ] Add period‑appropriate rivets to the helicopter’s side‑panel seams in Assets/Scripts/World/Zone/Helicopter.cs, inside HelicopterModel.Build right after the two `m.Box` calls that create the side‑panel strips.
