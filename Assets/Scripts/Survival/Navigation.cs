@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -35,6 +36,41 @@ namespace CloneZ
 
             Image paper = UIKit.Panel(Body, "Paper", new Color(0.86f, 0.83f, 0.74f));
             _paper = UIKit.Place(paper.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0f, 20f), new Vector2(760f, 760f));
+            // Add subtle worn‑edge detail
+            int seed = ZoneCatalog.Current != null ? ZoneCatalog.Current.LayoutSeed : 0;
+            System.Random rng = new System.Random(seed);
+            // top edge – two short strips with random offset
+            for (int i = 0; i < 2; i++)
+            {
+                float offsetX = (float)rng.NextDouble() * 6f - 3f; // ±3 px random shift
+                float width = 760f - (float)rng.NextDouble() * 20f; // slight length variation
+                var edge = UIKit.Panel(_paper, "EdgeTop" + i, new Color(0.78f, 0.75f, 0.72f));
+                UIKit.Place(edge.rectTransform, new Vector2(0.5f, 1f), new Vector2(0.5f, 1f), new Vector2(offsetX, 0f), new Vector2(width, 4f));
+            }
+            // bottom edge – two short strips
+            for (int i = 0; i < 2; i++)
+            {
+                float offsetX = (float)rng.NextDouble() * 6f - 3f;
+                float width = 760f - (float)rng.NextDouble() * 20f;
+                var edge = UIKit.Panel(_paper, "EdgeBottom" + i, new Color(0.78f, 0.75f, 0.72f));
+                UIKit.Place(edge.rectTransform, new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(offsetX, 0f), new Vector2(width, 4f));
+            }
+            // left edge – two short strips
+            for (int i = 0; i < 2; i++)
+            {
+                float offsetY = (float)rng.NextDouble() * 6f - 3f;
+                float height = 760f - (float)rng.NextDouble() * 20f;
+                var edge = UIKit.Panel(_paper, "EdgeLeft" + i, new Color(0.78f, 0.75f, 0.72f));
+                UIKit.Place(edge.rectTransform, new Vector2(0f, 0.5f), new Vector2(0f, 0.5f), new Vector2(0f, offsetY), new Vector2(4f, height));
+            }
+            // right edge – two short strips
+            for (int i = 0; i < 2; i++)
+            {
+                float offsetY = (float)rng.NextDouble() * 6f - 3f;
+                float height = 760f - (float)rng.NextDouble() * 20f;
+                var edge = UIKit.Panel(_paper, "EdgeRight" + i, new Color(0.78f, 0.75f, 0.72f));
+                UIKit.Place(edge.rectTransform, new Vector2(1f, 0.5f), new Vector2(1f, 0.5f), new Vector2(0f, offsetY), new Vector2(4f, height));
+            }
             if (hasMap)
             {
                 var raw = new GameObject("Streets").AddComponent<RawImage>();

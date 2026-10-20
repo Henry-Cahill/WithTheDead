@@ -1006,7 +1006,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
   - 02:18 hts-llm made no changes: No public methods or properties in **Assets/Scripts/World/Fixtures/RaidStoreWaterCooler.cs** lack a `/// <summary>` comment that isn’t alrea
-- [ ] Add a subtle “worn‑edge” visual detail to the paper background that ZoneMapScreen builds (Assets/Scripts/Survival/Navigation.cs)
+- [x] Add a subtle “worn‑edge” visual detail to the paper background that ZoneMapScreen builds (Assets/Scripts/Survival/Navigation.cs)
   – Locate the line ` _paper = UIKit.Place(paper.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0f, 20f), new Vector2(760f, 760f));` and insert the new code immediately after it.
   – Create a deterministic random generator: `int seed = ZoneCatalog.Current != null ? ZoneCatalog.Current.LayoutSeed : 0; System.Random rng = new System.Random(seed);`
   – For each of the four sides (top, bottom, left, right) add two thin UI panels (total 8 primitives) to simulate ragged paper edges:
@@ -1015,6 +1015,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `{`
   `float offsetX = (float)rng.NextDouble() * 6f - 3f; // ±3 px random shift`
   `float width = 760f - (float)rng.NextDouble() * 20f; // slight length variation`
+  - 02:23 landed by 0htsserver in 7.4 min: **Changed files**
 - [x] Fix the armor class upgrade check in Assets/Scripts/Weapons/WeaponUpgrades.cs so that the “Ceramic inserts” upgrade always raises armor class (up to 6) instead of being ignored when the base class is 0.
   In `Effective(ArmorStats a, ItemExtra extra)` the line
   `if (u.Contains("a_plate2") && e.Class > 0) e.Class = Mathf.Min(6, e.Class + 1);`
