@@ -2783,3 +2783,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add an Image component, set its color to `HudUI.WithAlpha(Dim, 0.6f)` (re‑using the Dim colour already defined).
   Vary the width slightly for visual variety using the deterministic index: `float w = 5f + (index % 3) * 0.5f; rrt.sizeDelta = new Vector2(w, 4f);`
   Result: each menu row now shows a small rectangular “cap” at the top of the coloured accent bar, giving a subtle worn‑metal look that fits the 1993‑rural aesthetic without affecting colliders, interaction points, or existing layout.
+- [ ] Fix excessive shotgun damage in Assets/Scripts/Player/PlayerCombat.cs by correcting the pellet damage multiplier in `FireFirearm()`.
+  In `FireFirearm` the line `float pelletMult = pellets > 1 ? 1f : 1f;` always yields 1, so each pellet deals full weapon damage, making shotguns unrealistically lethal.
+  Change it to `float pelletMult = pellets > 1 ? 1f / pellets : 1f;` so the weapon’s base damage is evenly split among all pellets.
+  After this fix, a shotgun will damage targets proportionally to the number of pellets, matching the intended gameplay balance while leaving all other combat logic unchanged.
