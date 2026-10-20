@@ -2248,7 +2248,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
   - 08:51 landed by 0htsserver in 2 min: Added concise one‑sentence `/// <summary>` XML docs to every public property in **Assets/Scripts/Player/PlayerFarming.cs** that was missing 
-- [ ] In Assets/Scripts/World/Zone/ZoneOverlays.cs, modify ZoneIndustry.Build inside the *pipe runs on trestles* loop to add a few rust‑stained bolt heads on each rectangular pipe‑support box.
+- [x] In Assets/Scripts/World/Zone/ZoneOverlays.cs, modify ZoneIndustry.Build inside the *pipe runs on trestles* loop to add a few rust‑stained bolt heads on each rectangular pipe‑support box.
+  - 08:54 landed by 0htsserver in 3.5 min: **Changed file**
 - [ ] Fix a compilation‑breaking typo in `FurnitureBuilder.ToolBench` (Assets/Scripts/World/FurnitureBuilder.Utility.cs)
   The `for`‑loop that adds random tool‑box decorations contains an extra closing parenthesis, breaking the `m.Box` call and preventing the script from compiling.
   Current line:

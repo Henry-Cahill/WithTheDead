@@ -168,11 +168,21 @@ namespace CloneZ
                 if (!site.TryFind(rng, new Vector2(len, 3f), yaw, 1f, ZoneSiteMap.Hard | SiteCell.Edge, 8f, null, 60, out Vector3 at)) continue;
                 var sb = new SiteBuilder(world, "PipeRun", at, yaw, rng, cutaway: false);
                 float h = ZoneKit.R(rng, 2.6f, 3.4f);
-                for (float x = -len * 0.5f; x <= len * 0.5f; x += 4f)
-                {
-                    sb.Solid.Box(new Vector3(x, h * 0.5f, 0f), new Vector3(0.25f, h, 0.25f), ZoneKit.Mt(ZoneKit.RustDark));
-                    sb.Collider(new Vector3(x, h * 0.5f, 0f), new Vector3(0.25f, h, 0.25f));
-                }
+for (float x = -len * 0.5f; x <= len * 0.5f; x += 4f)
+                    {
+                        sb.Solid.Box(new Vector3(x, h * 0.5f, 0f), new Vector3(0.25f, h, 0.25f), ZoneKit.Mt(ZoneKit.RustDark));
+                        sb.Collider(new Vector3(x, h * 0.5f, 0f), new Vector3(0.25f, h, 0.25f));
+                        // Add a few rust‑stained bolt heads on each support box (1‑3 bolts)
+                        int boltCount = rng.Next(1, 4);
+                        for (int b = 0; b < boltCount; b++)
+                        {
+                            // Random offset within the box footprint (≈ half‑size of the box)
+                            float offsetX = (float)rng.NextDouble() * 0.2f - 0.1f; // -0.1 .. 0.1
+                            float offsetZ = (float)rng.NextDouble() * 0.2f - 0.1f; // -0.1 .. 0.1
+                            Vector3 boltPos = new Vector3(x + offsetX, h + 0.01f, offsetZ);
+                            sb.Solid.Cylinder(boltPos, 0.015f, 0.02f, 8, ZoneKit.Mt(ZoneKit.RustDark));
+                        }
+                    }
                 sb.Upper.CylinderX(new Vector3(0f, h + 0.35f, -0.4f), 0.35f, len, 10, ZoneKit.Mt(ZoneKit.V(ZoneKit.Rust, rng)));
                 sb.Upper.CylinderX(new Vector3(0f, h + 0.25f, 0.45f), 0.25f, len, 8, ZoneKit.Mt(ZoneKit.Galvanised));
                 sb.Finish();
