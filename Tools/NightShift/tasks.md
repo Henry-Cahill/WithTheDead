@@ -1286,3 +1286,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// top‑left`
   `var rivetTL = new GameObject("RivetTL", typeof(RectTransform));`
   `var rtTL = (RectTransform)rivetTL.transform;`
+- [ ] In Assets/Scripts/World/Fixtures/HomeDoor.cs: Add a “Check the door” action to `HomeDoor.GetActions` that tells the survivor whether the door is locked or unlocked without attempting to open it.
+  In `GetActions` after the existing actions, insert:
+  `if (!_open) into.Add(new InteractAction("Check the door", ctx => ctx.Notify(_locked ? "The door is locked." : "The door is unlocked.")));`
+  This uses only the existing `_open`, `_locked` fields and the `ctx.Notify` method, requires no new UI, and gives the player immediate feedback on the door’s lock state.
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Zone/Bolts.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
