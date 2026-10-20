@@ -854,3 +854,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   float var = ((seed >> 5) & 0x7) / 100f; // 0.00‑0.07
   HatTrimColor = Shade(HatTrimColor, 0.9f + var); // slight darkening / rust tint
   HatGloss = Mathf.Clamp01(HatGloss + var); // a touch more shine on worn metal
+- [ ] Fix the malformed `TownDumpsterBody` ellipsoid call in Assets/Scripts/World/FurnitureBuilder.RaidStore.cs
+  The current line
+  `m.Ellipsoid(new Vector3(R(rng, 0.2f, 0.75f), 1.152f, R(rng, -0.35f, 0.35f)), new Vector3(R(rng, 0.25f, 0.4f), 0.012f, R(rng, 0.25f, 0.4f)), G(new Color(0.05f, 0.05f, 0.06f)), 8, 3);`
+  has an extra closing parenthesis after the first `Vector3`, so the compiler reads the call as `m.Ellipsoid(<Vector3>)` followed by stray arguments, causing a compile‑time error and resulting in the dumpster’s rubbish never being rendered.
+  Change it to a single, correctly‑parenthesised call:
+  `m.Ellipsoid(new Vector3(R(rng, 0.2f, 0.75f), 1.152f, R(rng, -0.35f, 0.35f)), new Vector3(R(rng, 0.25f, 0.4f), 0.012f, R(rng, 0.25f, 0.4f)), G(new Color(0.05f, 0.05f, 0.06f)), 8, 3);`
+  After this fix the ellipsoids are created correctly, and the dumpster will display the dark heap of bags under the right‑hand lid as intended.
