@@ -2106,3 +2106,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   The field `private PlayerCombat _combat;` already exists; no new members are needed.
   The player’s view and gameplay remain unchanged because the same component is used; only the per‑frame GetComponent lookup is eliminated, reducing allocations and CPU cost.
   All other logic (aim‑down‑sights FOV adjustments, etc.) continues to read `_combat` as before.
+- [ ] Add a “Buy a drink (5 MG)” action for the barkeep in Assets/Scripts/Hub/HubNpc.cs → `HubNpcTalk.GetActions`
+  In the `switch (Npc.Kind)` block, insert a new `case HubNpc.Role.Keeper:` before the `default:` case.
+  Inside this case add `into.Add(new InteractAction("Buy a drink (5 MG)", c =>` with the following lambda body:
+  `if (!Money.TrySpend(5, c.Inventory)) { c.Notify("You don't have 5 MG."); return; }`
+  `c.Notify("You feel a warm surge.");`
+  `GameEvents.RaiseSubtitle(Npc.Name, "Enjoy your drink.");`
+  `Sfx.PlayUI(SfxIds.Cash);`
+  `ProfileStore.Save();`
+  `});` and close the case with `break;`.
