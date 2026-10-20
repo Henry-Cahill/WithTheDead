@@ -3669,11 +3669,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   After this change, when the mains are off and the player has the plug in, the basin will stay filled during the timed “wash”, “brush”, or “shave” actions, letting the player actually use the stored water instead of instantly getting a “dry” message.
   All other code, including the `Begin = BorrowTap` and `Stopped = ReturnTap` assignments in `GetActions`, should remain unchanged.
   - 15:18 landed by 1htsserver in 2.3 min: **Changed**
-- [ ] In Assets/Scripts/World/WaterSource.cs: Add a ring of tiny brass rivet heads around the barrel’s mid‑section in `WaterSource.BuildBarrel` so the rain barrel looks weathered and metal‑fastened.
+- [x] In Assets/Scripts/World/WaterSource.cs: Add a ring of tiny brass rivet heads around the barrel’s mid‑section in `WaterSource.BuildBarrel` so the rain barrel looks weathered and metal‑fastened.
   Create a `System.Random` with the same seed (`1993`) already used for the tap and use it to place 4–6 rivets evenly spaced around the barrel at `y = 0.5f` (mid‑height).
   For each rivet call `m.Cylinder(new Vector3(Mathf.Sin(angle) * (r + 0.01f), 0.5f, Mathf.Cos(angle) * (r + 0.01f)), 0.008f, 0.004f, 8, DecorPalette.Metal(FurnitureBuilder.Brass));`
   `r` is the barrel radius (`const float r = 0.34f`).
   This adds ≤ 8 primitives, reuses the existing `Brass` metal material, keeps colliders unchanged, and gives the barrel a period‑appropriate, worn look.
+  - 15:25 landed by 0htsserver in 9.9 min: **Changes Made**
 - [x] In Assets/Scripts/Extraction/ExtractionManager.cs: Cache the GameManager singleton in ExtractionManager to avoid per‑frame look‑ups
   Add a private field `private GameManager _gm;` to the class.
   In `Setup(PlayerStats player)` assign `_gm = GameManager.Instance;` after `_killsAtStart` is set.
