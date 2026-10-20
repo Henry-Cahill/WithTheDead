@@ -2523,7 +2523,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   This uses the already‑defined _softer delegate, mirrors the “Turn it up” disabled conditions, and keeps all other logic unchanged.
   The player will now see a “[Q] Turn it down” option when near the knobs, and the volume will decrement with the same notification text as Turn provides.
   - 10:08 landed by hts-llm in 1.6 min: **Summary**
-- [ ] Append four new flavour‑text strings to the `UseLines` array in Assets/Scripts/World/Fixtures/ToiletFixture.cs, preserving the existing entries and placing the new sentences after the current last line; the player will see one of these lines when they “use” the toilet.
+- [x] Append four new flavour‑text strings to the `UseLines` array in Assets/Scripts/World/Fixtures/ToiletFixture.cs, preserving the existing entries and placing the new sentences after the current last line; the player will see one of these lines when they “use” the toilet.
+  - 10:11 landed by hts-llm in 3 min: **Changes made**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Gadgets/Gadgets.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
