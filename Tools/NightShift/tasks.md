@@ -679,7 +679,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
   - 00:35 landed by hts-llm in 2 min: Added concise one‑sentence `/// <summary>` XML docs to the three public properties in **Assets/Scripts/Player/PlayerSleep.cs**:
-- [ ] In Assets/Scripts/World/WaterSource.cs: Add a thin, slightly darker “weathered band” around the rain barrel in `WaterSource.BuildBarrel` so the barrel looks used and aged.
+- [x] In Assets/Scripts/World/WaterSource.cs: Add a thin, slightly darker “weathered band” around the rain barrel in `WaterSource.BuildBarrel` so the barrel looks used and aged.
   Insert a new mesh primitive just after the existing `Rim(m, r - wall, r + 0.012f, h, 16, DecorPalette.Gloss(plastic * 0.9f));` line.
   `// weathered band midway up the barrel – a thin matte ring`
   `m.Cylinder(new Vector3(0f, h * 0.5f, 0f), r + 0.005f, 0.01f, 16,`
@@ -688,6 +688,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   position: centered at `new Vector3(0f, h * 0.5f, 0f)` (mid‑height of barrel)
   material: reuse existing `plastic` colour with a darker matte tint (`plastic * 0.6f`) via `DecorPalette.Matte` – no new assets needed
   keeps existing colliders, interaction points, and pivots unchanged; adds only one primitive, staying under the ~12 limit.
+  - 00:35 landed by 1htsserver in 1.8 min: **Changed file**
 - [x] Fix a memory‑leak bug in Assets/Scripts/World/Zone/ZoneWorld.cs: `ZoneWorld.Reset()` clears the static references but never destroys the temporary GameObjects it creates (`ZoneUnbaked` and the `ZoneRuntime` host), so each raid leaves orphan objects in the scene, eventually causing performance drops and invisible “ghost” colliders.
   - 00:35 landed by 0htsserver in 1.4 min: **Changed file**
 - [ ] Add a thin dark trim around the health panel to give it a worn‑metal frame in Assets/Scripts/UI/HealthPanelController.cs, inside the `Build()` method right after the line `_panelRoot.AddComponent<Image>().color = new Color(0.06f, 0.05f, 0.06f, 0.95f);`

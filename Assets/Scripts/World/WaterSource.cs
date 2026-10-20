@@ -192,6 +192,9 @@ namespace CloneZ
                 m.Cylinder(new Vector3(0f, y, 0f), r + 0.008f, 0.04f, 16, DecorPalette.Gloss(plastic * 0.86f), Quaternion.identity, 1f, false);
             InnerWall(m, r - wall, h, 16, DecorPalette.Matte(plastic * 0.45f));
             Rim(m, r - wall, r + 0.012f, h, 16, DecorPalette.Gloss(plastic * 0.9f));
+            // weathered band midway up the barrel – a thin matte ring
+            m.Cylinder(new Vector3(0f, h * 0.5f, 0f), r + 0.005f, 0.01f, 16,
+                DecorPalette.Matte(plastic * 0.6f));
             m.Cylinder(new Vector3(0f, 0.02f, 0f), r - wall, 0.004f, 16, DecorPalette.Matte(plastic * 0.35f));
             // A brass spigot low on the side.
             m.CylinderX(new Vector3(0f, 0.16f, r + 0.03f), 0.022f, 0.08f, 8, DecorPalette.Metal(FurnitureBuilder.Brass), 90f);
