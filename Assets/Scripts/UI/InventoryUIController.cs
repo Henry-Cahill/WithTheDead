@@ -704,6 +704,16 @@ namespace CloneZ
             var imgBR = rtBR.gameObject.AddComponent<Image>();
             imgBR.color = rivetColor;
             UITheme.AddTopAccent(_window, new Color(0.5f, 0.68f, 0.9f, 0.6f));
+            // narrow "worn‑seam" decorative line at top of inventory window
+            var seam = new GameObject("SeamTop", typeof(RectTransform));
+            var seamRt = (RectTransform)seam.transform;
+            seamRt.SetParent(_window, false);
+            seamRt.anchorMin = seamRt.anchorMax = new Vector2(0f, 1f);
+            seamRt.pivot = new Vector2(0.5f, 1f);
+            seamRt.anchoredPosition = Vector2.zero;
+            seamRt.sizeDelta = new Vector2(WinW - 40f, 2f);
+            var seamImg = seam.AddComponent<Image>();
+            seamImg.color = new Color(0.07f, 0.08f, 0.09f, 0.8f);
 
             Text title = Label(_window, new Vector2(0.5f, 1f), new Vector2(0f, -14f), new Vector2(600f, 40f), 30, TextAnchor.UpperCenter, new Color(0.95f, 0.92f, 0.85f));
             title.text = "INVENTORY";

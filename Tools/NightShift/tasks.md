@@ -3327,11 +3327,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 13:33 landed by hts-llm in 2.2 min: **Summary**
 - [x] Fix the LOS‑light cookie never producing fully transparent pixels in Assets/Scripts/Rendering/VisionAssets.cs (method `VisionCookie`).
   - 13:35 landed by 0htsserver in 3.4 min: **Changed files**
-- [ ] Add a narrow “worn‑seam” line to the inventory window panel in Assets/Scripts/UI/InventoryUIController.cs, method Build()
+- [x] Add a narrow “worn‑seam” line to the inventory window panel in Assets/Scripts/UI/InventoryUIController.cs, method Build()
   After the call `UITheme.AddTopAccent(_window, new Color(0.5f, 0.68f, 0.9f, 0.6f));` create a child `RectTransform` named “SeamTop”.
   Set its parent to `_window`, anchor‑min/‑max = `(0f,1f)`, pivot = `(0.5f,1f)`, anchored‑position = `Vector2.zero`, sizeDelta = `new Vector2(WinW - 40f, 2f)`.
   Add an `Image` component and colour it a slightly darker shade of the window background, e.g. `new Color(0.07f, 0.08f, 0.09f, 0.8f)`.
   This gives the UI a period‑correct, lightly scuffed metal seam without affecting colliders or interaction points and stays within the 12‑primitive limit.
+  - 13:36 landed by hts-llm in 2.5 min: Implemented a subtle “worn‑seam” decorative line at the top of the inventory window:
 - [ ] Optimize the per‑frame distance check in `PlayerChannel.Update` (Assets/Scripts/Survival/FieldSurvival.cs) by caching the squared‑distance limit and using `sqrMagnitude` instead of `HumanUtil.FlatDistance`, eliminating a costly sqrt each frame.
   Add a private const float `_maxDistSq = 0.8f * 0.8f;` to the class (or compute once in `Begin`).
   Replace the line `if (HumanUtil.FlatDistance(transform.position, _start) > 0.8f)` with `if (((transform.position - _start).SetY(0f)).sqrMagnitude > _maxDistSq)`.
