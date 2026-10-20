@@ -2635,3 +2635,11 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Player/PlayerBuilder.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] In Assets/Scripts/UI/SkillsPanelController.cs, inside `SkillsPanelController.Build()` after the rivet‑loop and before the `_fader` assignment, add four tiny corner‑plate rectangles to the panel’s edges to suggest worn metal reinforcement.
+  Create a `GameObject` for each corner (e.g. `"CornerTL"`, `"CornerTR"`, `"CornerBL"`, `"CornerBR"`), add a `RectTransform` and `Image` component.
+  Set the parent to `_panelRoot.GetComponent<RectTransform>()` with `false` for world‑position stay.
+  Anchor each to the panel’s corners (`anchorMin`/`anchorMax` = (0,1), (1,1), (0,0), (1,0) respectively) and set `pivot` correspondingly.
+  Give each an `anchoredPosition` of `new Vector2(±3f, ∓3f)` (signs opposite per corner) so they sit just inside the panel border.
+  Size each plate `sizeDelta = new Vector2(6f, 6f)`.
+  Colour them with a dark‑grey tone, e.g. `new Color(0.25f, 0.25f, 0.27f, 0.9f)`.
+  No extra colliders or interaction code is required; this adds at most four primitives and stays within the existing visual style.
