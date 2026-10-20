@@ -1806,3 +1806,18 @@ you want to see in game. Indent extra lines under a task to add detail.
   After the line `var img = rt.gameObject.AddComponent<Image>();` add a child `Image` named “Border” that is inset 2 units on all sides, anchored to stretch the parent, with a semi‑transparent dark colour (e.g. `new Color(0f,0f,0f,0.2f)`).
   Create the border via `Rect("Border", img.rectTransform)`, set `anchorMin = Vector2.zero; anchorMax = Vector2.one; offsetMin = new Vector2(2f,2f); offsetMax = new Vector2(-2f,-2f);` then add the `Image` component and assign the colour.
   Leave the original panel colour, colliders and interaction logic unchanged; this adds at most one extra primitive per panel, staying within the ~12‑primitive limit.
+- [ ] In Assets/Scripts/Zone/ArtifactCatalog.cs: Add validation in `ArtifactCatalog.Learn(string artifact, string prop, bool announce = true)` to reject property IDs that are not defined for the given artifact, preventing impossible knowledge entries.
+- [ ] Add a subtle weather‑worn paint‑chip detail to exterior wall faces built in `RaidBuilding.SkinBand` (Assets/Scripts/World/RaidBuilding.cs)
+  In the block that creates the exterior face (`p.Mesh.Upright(..., DecorMaterials.WallExterior(...))`) insert a small box to represent a chipped paint spot.
+  Use the building’s `Rng` for a ~10 % chance per wall segment: `if (Rng.NextDouble() < 0.1)`.
+  Pick a random offset `float off = (float)(Rng.NextDouble() * (b - a) * 0.8 - (b - a) * 0.4f);` and place the chip at `RunPoint(r, (a + b) * 0.5f + off, (y0 + y1) * 0.5f, side * (Half + 0.006f))`.
+  Chip size ≈ 0.06 m × 0.06 m × 0.008 m (width × height × depth) and protrude outward by 0.008 m.
+  Render with a slightly lighter colour than the exterior tint, e.g. `new Color(0.85f, 0.80f, 0.70f)`, wrapped via `DecorPalette.Matte`.
+  Code sketch to insert (replace the comment “// Exterior faces …” line):
+  `p.Mesh.Upright(RunPoint(r, (a + b) * 0.5f, (y0 + y1) * 0.5f, side * (Half + 0.004f)), n, b - a, y1 - y0, DecorMaterials.WallExterior(Exterior, ExteriorColor));`
+  `if (Rng.NextDouble() < 0.1)`
+- [ ] Cache the per‑frame `Camera.main` lookup in `HudCompass` (Assets/Scripts/Survival/Navigation.cs)
+  Add a private `Camera _cam;` field to `HudCompass`.
+  Implement `Awake()` (or `Start()`) to set `_cam = Camera.main;`.
+  Replace the line `Camera cam = Camera.main;` in `LateUpdate()` with `Camera cam = _cam;`.
+  This removes the costly `Camera.main` FindObjectByType call each frame; the compass visibility and text behaviour remain unchanged for the player.
