@@ -303,6 +303,19 @@ namespace CloneZ
             var tipBlock = new MaterialPropertyBlock();
             tipBlock.SetColor("_Color", tint * 2f);
             tipRenderer.SetPropertyBlock(tipBlock);
+
+            // Add a rust‑coloured metal bracket at the base of the beam
+            var bracket = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            bracket.name = "BeamBracket";
+            bracket.transform.SetParent(go.transform, false);
+            bracket.transform.localPosition = Vector3.zero;
+            bracket.transform.localScale = new Vector3(0.04f, 0.04f, 0.02f);
+            // Assign rust colour
+            var bracketRenderer = bracket.GetComponent<MeshRenderer>();
+            bracketRenderer.sharedMaterial.color = Rust;
+            // Remove its default collider (visual only)
+            Object.Destroy(bracket.GetComponent<Collider>());
+
             NoBake(go);
             return mr;
         }

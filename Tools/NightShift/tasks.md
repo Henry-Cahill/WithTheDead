@@ -1585,7 +1585,7 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Zone/ZoneHazards.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
-- [ ] Add a small rust‑coloured metal bracket at the base of each beam created in `ZoneKit.Beam` (Assets/Scripts/World/Zone/ZoneKit.cs) to suggest a period‑correct projector housing and give the beam a bit of wear.
+- [x] Add a small rust‑coloured metal bracket at the base of each beam created in `ZoneKit.Beam` (Assets/Scripts/World/Zone/ZoneKit.cs) to suggest a period‑correct projector housing and give the beam a bit of wear.
   Create a primitive cylinder named "BeamBracket" as a child of the beam’s root GameObject (`go.transform`).
   Set its local position to `(0f, 0f, 0f)` (centered on the beam origin).
   Scale it to `new Vector3(0.04f, 0.04f, 0.02f)` — ≈ 4 cm diameter, 2 cm thick, matching the metre‑scale used elsewhere.
@@ -1593,6 +1593,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Remove its default collider (`Object.Destroy(bracket.GetComponent<Collider>());`) so it stays purely visual.
   The existing `ZoneKit.NoBake(go);` call already excludes the bracket from nav‑mesh baking.
   Result: each beam now has a subtle, worn metal housing that fits the 1993 Kentucky setting without affecting gameplay.
+  - 05:07 landed by hts-llm in 2.7 min: **Changed**
 - [ ] In Assets/Scripts/Player/PlayerSleep.cs, cache the nearest bed lookup instead of calling `SleepSpot.Nearest` every frame.
   Add a private field `private SleepSpot _cachedBed;` and a private `Vector3 _lastPos;`.
   Add a constant (e.g. `private const float BedCacheThresholdSqr = 1f * 1f;`) that defines how far the player must move before the cache is refreshed.
