@@ -3518,3 +3518,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   · Insert `into.Add(new InteractAction("Listen to the machine", Listen));` after `into.Add(new InteractAction("Press a button", PressButton));` while still inside the `if (!_broken)` block.
   · Add a new method `private void Listen(InteractContext ctx)` that executes `MakeNoise(CloneZConfig.RaidVendingThumpNoise);` then `ctx.Notify("You press your ear to the vending machine; faint whirring can be heard, but it offers no help.");`.
   · No other code changes are required; the new action is available only while the machine is intact, matching its existing behavior.
+- [ ] Add subtle bolt heads to the steel fence posts built in the `case 2:` block of `EdgeSegment` in Assets/Scripts/World/RaidMapBuilder.Edge.cs
+  In the loop `for (float x = -len * 0.5f; x <= len * 0.5f + 0.01f; x += 2.5f) m.Cylinder(new Vector3(x, 0f, 0f), 0.04f, 2.2f, 6, steel);` append a small metal cylinder at the top of each post to represent a bolt head.
+  Use a darker‑metal colour, e.g. `Surf bolt = DecorPalette.Metal(new Color(0.55f, 0.53f, 0.48f));` and create the bolt with `m.Cylinder(new Vector3(x, 2.2f, 0f), 0.015f, 0.06f, 6, bolt);`
+  Apply the deterministic random source so only ~40 % of the posts get a bolt: `if (rng.NextDouble() < 0.4) { … }` placed inside the same `for` loop.
+  This adds at most one extra primitive per post (max ≈ 8 total for a typical segment), stays within the 12‑primitive limit, reuses existing material definitions, and provides period‑appropriate visual detail without affecting colliders or interaction points.
