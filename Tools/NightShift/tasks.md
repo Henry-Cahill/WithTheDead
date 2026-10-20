@@ -1756,10 +1756,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   This eliminates the per‑frame tag‑based search while preserving the current behaviour – the same camera is used for frustum calculation and drawing, and the player sees no visual change.
   No other code or assets need to be modified.
   - 06:32 landed by 1htsserver in 5.7 min: **Changed file**
-- [ ] Add an “Abandon outpost” action for players who already own the outpost (Assets/Scripts/AI/Humans/Outposts.cs → Outpost.GetActions and a new private void Abandon method).
+- [x] Add an “Abandon outpost” action for players who already own the outpost (Assets/Scripts/AI/Humans/Outposts.cs → Outpost.GetActions and a new private void Abandon method).
   In GetActions, after the existing “Held by …” disabled action, append into.Add(new InteractAction("Abandon outpost", Abandon).Timed(3f, "Tearing down the flag…")); so owners can voluntarily give up the site.
   Implement private void Abandon(InteractContext ctx) to set _state.Owner to Factions.Vanguard, clear _state.LockedUntilUnix (0), call Recolour(), raise a toast "Outpost abandoned.", and call ProfileStore.Save().
   The flag colour will revert to the Vanguard colour, the outpost becomes neutral and can be captured by anyone again.
+  - 06:41 landed by 0htsserver in 11.4 min: Implemented missing `Capture` method for outpost flag‑raising and added the “Abandon outpost” action.
 - [x] Add four new miss notifications to the `Misses` array in Assets/Scripts/World/Fixtures/RaidStoreVending.cs
   Edit the private static readonly string[] Misses field to append four additional string literals after the existing three.
   Follow the style of the existing entry `"The machine booms like a drum. Something inside shifts, then settles. Nothing drops."`.
