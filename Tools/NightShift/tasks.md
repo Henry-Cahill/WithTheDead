@@ -2832,7 +2832,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Cylinder(new Vector3(0f, h - 0.006f, -0.045f), 0.008f, 0.004f, 8, DecorPalette.Metal(FurnitureBuilder.Brass));` (≈8 mm radius, 0.4 cm height, offset 4.5 cm forward/backward).
   These primitives use the existing `plastic` colour variable and the same metal material as the cap, keeping colliders and interaction points unchanged and staying within the ~12‑primitive limit.
   - 11:16 landed by 0htsserver in 2.3 min: **Changed**
-- [ ] Fix missing visibility spike when firing a weapon in Assets/Scripts/Player/Stealth.cs (method `Update`)
+- [x] Fix missing visibility spike when firing a weapon in Assets/Scripts/Player/Stealth.cs (method `Update`)
+  - 11:16 landed by hts-llm in 1.7 min: **Changed file**
 - [ ] Add a subtle “snow‑drift” strip along the bottom edge of the health panel in Assets/Scripts/UI/HealthPanelController.cs
   Inside `Build()`, immediately after the four `Rivet(prt, …)` calls, create a thin `Image` rectangle that represents a light layer of snow that has settled on the metal frame.
   Use the same parent `prt` (the panel’s RectTransform), the same anchor/pivot as the trim (center‑bottom), and size it to the full panel width with a modest height, re‑using the translucent off‑white colour used for the divider (≈ `new Color(1f, 1f, 1f, 0.15f)`).
