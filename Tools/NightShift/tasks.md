@@ -2844,8 +2844,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace `PlayerInteractor pi = PlayerInteractor.Current;` in `Update()` with `PlayerInteractor pi = _playerInteractor;`.
   If the field is null (e.g., player not yet instantiated), obtain it lazily the first time: `if (_playerInteractor == null) _playerInteractor = PlayerInteractor.Current;`.
   No other code changes are required; the bed’s appearance and behaviour remain identical, but the per‑frame lookup is now cached, reducing allocation and FindObject‑type overhead.
-- [ ] Add a “Knock on the window” action to Assets/Scripts/World/Fixtures/HomeWindow.cs
+- [x] Add a “Knock on the window” action to Assets/Scripts/World/Fixtures/HomeWindow.cs
   – Declare a new field `private Action<InteractContext> _knockAct;` alongside the other action fields.
   – In `Awake()` assign it: `_knockAct = c => { MakeNoise(CloneZConfig.WindowNoise); c.Notify("You rap a fist against the window."); };` (use the already‑existing `MakeNoise` method and `CloneZConfig.WindowNoise` value).
   – In the `if (inside)` block of `GetActions` (after the existing `Check window` action) add: `into.Add(new InteractAction("Knock on the window", _knockAct));` so the action appears whenever the survivor is inside the house.
   – No other code changes are needed; the new action reuses existing noise and notification helpers, requires no UI screens, and fits naturally alongside the other window actions.
+  - 11:19 landed by 0htsserver in 1.4 min: **Changed file**
