@@ -1713,7 +1713,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
   - 06:17 landed by hts-llm in 3.2 min: **Changes made**
-- [ ] In Assets/Scripts/World/RaidMapBuilder.Outdoor.cs: Add a thin, slightly rust‑stained metal grill to the top of the floodlight tower in `RaidMapBuilder.Outdoor.Checkpoint` (the `Prop` call for `tower`), so the tower looks like a battered but functional floodlight.
+- [x] In Assets/Scripts/World/RaidMapBuilder.Outdoor.cs: Add a thin, slightly rust‑stained metal grill to the top of the floodlight tower in `RaidMapBuilder.Outdoor.Checkpoint` (the `Prop` call for `tower`), so the tower looks like a battered but functional floodlight.
   Locate the lambda inside `Prop(town, tower, 0f, new Vector3(0.4f, 5f, 0.4f), true, (m, r) => { … })` and after the existing `m.Box` that creates the top plate (`m.Box(new Vector3(0f, 5.0f, 0f), new Vector3(0.9f, 0.1f, 0.2f), …)`) insert:
   `// Add a rust‑stained metal grill on the front of the floodlight`
   `float grillZ = 0.12f; // just in front of the top plate`
@@ -1722,6 +1722,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Color grillColor = new Color(0.45f, 0.38f, 0.33f); // dull rust tone`
   ℹ️ `m.Box(grillPos, grillSize, DecorPalette.Metal(grillColor));`
   ℹ️ Optionally add a random slight tilt using the method’s `rng` (e.g., `Quaternion.Euler(0f, 0f, (float)rng.NextDouble()*2f-1f)`) to vary each tower. This adds no new colliders or interaction points and stays within the existing 12‑primitive limit.
+  - 06:17 landed by 0htsserver in 3.7 min: **Changed file**: `Assets/Scripts/World/RaidMapBuilder.Outdoor.cs`
 - [ ] Fix the road‑gap logic in `Assets/Scripts/World/RaidMapBuilder.Streets.cs` → method `Road`
   The two `Slab` calls that run when `!ownsCrossing && b > -hw && a < hw` use `-hw` and `hw` as the end‑along‑road parameters (`b`) instead of as the across‑road limits (`c0`, `c1`). This cuts out a long segment of the street (about 8 m) at every crossing where the road does not own the intersection, leaving a visible hole that breaks navigation and looks wrong.
   Replace the two calls with slabs that keep the original `a` → `b` range and split only the across‑road side, e.g.:

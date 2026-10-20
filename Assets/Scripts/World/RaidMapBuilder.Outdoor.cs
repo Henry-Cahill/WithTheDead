@@ -134,6 +134,12 @@ namespace CloneZ
                 m.Box(new Vector3(0f, 0.1f, 0f), new Vector3(0.9f, 0.2f, 0.9f), DecorMaterials.Concrete);
                 m.Cylinder(new Vector3(0f, 0.2f, 0f), 0.08f, 4.8f, 8, DecorPalette.Metal(new Color(0.3f, 0.32f, 0.28f)));
                 m.Box(new Vector3(0f, 5.0f, 0f), new Vector3(0.9f, 0.1f, 0.2f), DecorPalette.Metal(new Color(0.3f, 0.32f, 0.28f)));
+                // Add a rust‑stained metal grill on the front of the floodlight
+                float grillZ = 0.12f; // just in front of the top plate
+                Vector3 grillPos = new Vector3(0f, 5.05f, grillZ);
+                Vector3 grillSize = new Vector3(0.38f, 0.02f, 0.02f);
+                Color grillColor = new Color(0.45f, 0.38f, 0.33f); // dull rust tone
+                m.Box(grillPos, grillSize, DecorPalette.Metal(grillColor));
                 for (int k = -1; k <= 1; k += 2)
                 {
                     m.Box(new Vector3(k * 0.32f, 5.15f, 0.05f), new Vector3(0.3f, 0.26f, 0.22f), Quaternion.Euler(25f, 0f, 0f), DecorPalette.Matte(new Color(0.2f, 0.22f, 0.18f)));
