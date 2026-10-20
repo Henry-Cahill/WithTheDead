@@ -505,11 +505,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add `_closed = false;` at the start of `Build()` (right after `EnsureChrome();`) to clear the closed state each time the screen is rebuilt.
   After this change, reopening a hub screen will correctly show live timers, money, and other UI updates, while all existing behavior remains unchanged.
   - 23:46 landed by hts-llm in 0.8 min: **Changed file**
-- [ ] Add a subtle row of rivet‑like accents to the top of the skills panel in Assets/Scripts/UI/SkillsPanelController.cs, inside the `Build()` method after the `UITheme.AddTopAccent` call.
+- [x] Add a subtle row of rivet‑like accents to the top of the skills panel in Assets/Scripts/UI/SkillsPanelController.cs, inside the `Build()` method after the `UITheme.AddTopAccent` call.
   Create 8 small circular `Image` objects (size ≈ 0.008 m × 0.008 m) named `"Rivet0"`…`"Rivet7"` as children of `_panelRoot`’s `RectTransform`.
   Anchor each at `(0.5, 1)` with pivot `(0.5, 1)`, set `anchoredPosition` to `new Vector2(-260f + i*60f, -4f)` (spacing ≈ 0.06 m across the 0.56 m panel width), and tint with `new Color(0.7f, 0.7f, 0.7f, 0.9f)`.
   Use the default UI sprite (no extra assets) and keep the existing colliders and interaction logic untouched.
   This gives the panel a period‑appropriate metal‑fastener detail without altering layout or functionality.
+  - 23:48 landed by hts-llm in 2 min: **Changed file**
 - [ ] Cache player actors for NearAnyone checks in Assets/Scripts/Economy/CentralEconomy.cs
   Add a private static readonly List<Actor> `s_PlayerCache = new List<Actor>();` to the class.
   In `CentralEconomy.Tick()` (just after `if (!Active || Config == null) return;`) clear and fill the cache:

@@ -164,6 +164,19 @@ namespace CloneZ
                 .text = "K  or  Esc  to close";
 
             UITheme.AddTopAccent(_panelRoot.GetComponent<RectTransform>(), new Color(0.5f, 0.68f, 0.9f, 0.6f));
+            // Add subtle rivet-like accents at the top of the panel
+            for (int i = 0; i < 8; i++)
+            {
+                var rivet = new GameObject($"Rivet{i}");
+                var rt = rivet.AddComponent<RectTransform>();
+                rt.SetParent(_panelRoot.GetComponent<RectTransform>(), false);
+                rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 1f);
+                rt.pivot = new Vector2(0.5f, 1f);
+                rt.anchoredPosition = new Vector2(-260f + i * 60f, -4f);
+                rt.sizeDelta = new Vector2(8f, 8f);
+                var img = rivet.AddComponent<Image>();
+                img.color = new Color(0.7f, 0.7f, 0.7f, 0.9f);
+            }
             _fader = _panelRoot.AddComponent<UIFader>();
         }
 
