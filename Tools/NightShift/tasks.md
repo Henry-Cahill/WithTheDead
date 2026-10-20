@@ -3387,4 +3387,5 @@ you want to see in game. Indent extra lines under a task to add detail.
   ` ctx.Notify("Your voice bounces off the enamel plate, echoing loudly.");`
   `}`
   - 13:56 landed by 0htsserver in 4.3 min: Implemented a third interaction for the house-number fixture.
-- [ ] Add a subtle rust spot on the kitchen sink’s metal mixer tap in Assets/Scripts/World/FurnitureBuilder.Kitchen.cs, inside the SinkUnit method, using the existing `rng` and `chrome` material.
+- [x] Add a subtle rust spot on the kitchen sink’s metal mixer tap in Assets/Scripts/World/FurnitureBuilder.Kitchen.cs, inside the SinkUnit method, using the existing `rng` and `chrome` material.
+  - 13:56 landed by hts-llm in 2.8 min: Implemented a subtle rust spot on the kitchen sink's metal mixer tap:
