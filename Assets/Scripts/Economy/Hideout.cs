@@ -230,7 +230,7 @@ namespace CloneZ
         }
 
         /// <summary>Starts a craft (inputs are consumed now; outputs arrive when it finishes).</summary>
-        /// <summary>Starts a craft, consuming inputs now and scheduling outputs.</summary>
+        
         public static bool StartCraft(CharacterProfile c, Recipe r, PlayerInventory carried, out string message)
         {
             if (!CanCraft(c, r, carried, out message)) return false;

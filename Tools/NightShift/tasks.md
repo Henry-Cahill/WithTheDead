@@ -1884,13 +1884,14 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/CookingStation.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
-- [ ] Remove the duplicated XML summary on `Hideout.StartCraft` in Assets/Scripts/Economy/Hideout.cs; keep only one `<summary>` tag.
+- [x] Remove the duplicated XML summary on `Hideout.StartCraft` in Assets/Scripts/Economy/Hideout.cs; keep only one `<summary>` tag.
   The method currently has two consecutive summary comments:
   `/// <summary>Starts a craft (inputs are consumed now; outputs arrive when it finishes).</summary>`
   `/// <summary>Starts a craft, consuming inputs now and scheduling outputs.</summary>`
   Having multiple `<summary>` tags on the same method triggers a compiler warning/error and prevents the script from compiling cleanly.
   Delete the second line (or merge the texts) so the method has a single valid summary.
   No runtime behaviour changes; the player’s crafting UI and functionality remain unchanged.
+  - 07:15 landed by 1htsserver in 1.5 min: **Change made**
 - [ ] Add a small metal handle primitive to the fridge built in `RaidLayouts.Ranch` (Assets/Scripts/World/RaidLayoutsHomes.cs)
   Quote the fridge creation call: `b.HomePiece(kitchen, b.S(kitchen, 0.78f, 0.70f), HomeFurnitureKind.Fridge);`
   After that line, insert a box primitive that represents a fridge door handle:
