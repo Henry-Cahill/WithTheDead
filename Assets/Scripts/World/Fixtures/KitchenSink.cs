@@ -491,7 +491,7 @@ private bool _running;                // the cold tap is open and water is comin
         #region Persistence
         public override void CaptureState(FixtureSave save)
         {
-            save.State = (_running && !_openedForJob ? 1 : 0) | (_plugIn ? 2 : 0);
+            save.State = (_running ? 1 : 0) | (_plugIn ? 2 : 0);
             save.A = _level;
             save.B = _cleanUntil;
         }
