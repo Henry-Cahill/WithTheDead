@@ -1420,9 +1420,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   The nearby creek freezing over, making water collection hazardous.
   An urgent call for extra firewood as the wind picks up.
   - 04:25 landed by 0htsserver in 2 min: **Changed**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [~] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 04:27 0htsserver made no changes: Added no changes – the file `Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs` contains only public members that are overrides or inter
 - [ ] Add a small metal handle to the Warden locker in the checkpoint landmark (Assets/Scripts/World/Zone/ZoneLandmarks.cs, method `Checkpoint`)
   Insert after the line `sb.Storage("Warden locker", "lm_cp_locker", new Vector3(4.5f, 1f, -1.3f), ContainerType.Locker, 4);`
   Create a local `System.Random r = sb.Rng;` and use it for a tiny yaw jitter (±5°) and a slight position jitter (±0.02 m) so each generated locker gets a unique‑looking handle.
