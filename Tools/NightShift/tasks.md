@@ -1198,3 +1198,10 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/SaveSystem.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add subtle metal hinge details to each doorway in `Assets/Scripts/World/StarterHome.Shell.cs` inside the `DrawDoorway` method
+  After the three lining `m.Box` calls, insert two small hinge boxes using the existing `rng` for variation.
+  Define `float hingeY = DoorTop * 0.5f + (float)(rng.NextDouble() - 0.5) * 0.02f;` for a slight random vertical offset.
+  *Create the left hinge:* `m.Box(f.P(o0 - 0.015f, hingeY, 0f), f.Size(0.03f, 0.08f, 0.02f), DecorPalette.Matte(TrimWhite * 0.7f));`
+  *Create the right hinge:* `m.Box(f.P(o1 + 0.015f, hingeY, 0f), f.Size(0.03f, 0.08f, 0.02f), DecorPalette.Matte(TrimWhite * 0.7f));`
+  Use the same `TrimWhite` colour (already defined) tinted darker for a metal look; no new materials or colliders are needed.
+  Leave the subsequent `DoorFittings` call and the rest of the method untouched.
