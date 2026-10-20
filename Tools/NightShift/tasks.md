@@ -3359,3 +3359,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   `else into.Add(new InteractAction("Inspect copier", c => c.Notify(Jams[_said % Jams.Length])));`
   This uses only the `Jams` array already defined and the `_jammed` flag, requires no new assets, and gives the player immediate feedback about the copier’s state without altering existing behaviour.
   - 13:46 landed by 1htsserver in 0.9 min: **Changed file**
+- [ ] Add a thin chrome frame around the mirror pane in `FurnitureBuilder.MirrorCabinetDoor` (Assets/Scripts/World/FurnitureBuilder.Bathroom.cs)
+  After the existing mirror box (`m.Box(front + normal * (t + 0.0015f), new Vector3(w - 0.024f, h - 0.024f, 0.003f), q, Mt(BathMirror));`), insert four chrome boxes to form a narrow rectangular border.
+  Use the same `chrome` material: `Surf chrome = Mt(Chrome);`.
+  Top frame: `m.Box(front + normal * (t + 0.0015f) + Vector3.up * ((h - 0.024f) * 0.5f - 0.001f), new Vector3(w - 0.024f, 0.002f, 0.003f), q, chrome);`
+  Bottom frame: `m.Box(front + normal * (t + 0.0015f) - Vector3.up * ((h - 0.024f) * 0.5f - 0.001f), new Vector3(w - 0.024f, 0.002f, 0.003f), q, chrome);`
+  Left frame: `m.Box(front + normal * (t + 0.0015f) - hingeSide * ((w - 0.024f) * 0.5f - 0.001f), new Vector3(0.002f, h - 0.028f, 0.003f), q, chrome);`
+  Right frame: `m.Box(front + normal * (t + 0.0015f) + hingeSide * ((w - 0.024f) * 0.5f - 0.001f), new Vector3(0.002f, h - 0.028f, 0.003f), q, chrome);`
+  The frame adds a period‑correct brushed‑metal trim (≈2 mm thick) to the mirror, enhancing visual detail without affecting colliders or interaction points.
