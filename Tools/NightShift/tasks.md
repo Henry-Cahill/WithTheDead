@@ -1626,7 +1626,7 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/SleepSpot.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
-- [ ] In Assets/Scripts/Gadgets/Gadgets.cs, inside `Drone.Build()` → the `if (Kind == DroneKind.Fpv)` block, add a tiny top‑antenna primitive so the FPV drone looks a bit more industrial.
+- [x] In Assets/Scripts/Gadgets/Gadgets.cs, inside `Drone.Build()` → the `if (Kind == DroneKind.Fpv)` block, add a tiny top‑antenna primitive so the FPV drone looks a bit more industrial.
   After the existing central‑body call
   `Part(new Vector3(0f, 0f, 0f), new Vector3(0.22f, 0.06f, 0.22f), dark);`
   add
@@ -1634,6 +1634,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Size 0.02 m × 0.04 m × 0.02 m, positioned 0.07 m above the centre of the body.
   Uses an existing colour (a muted metallic grey) and the `Part` helper, so no new colliders or interaction points are introduced.
   Keeps the total primitive count well under the ~12‑primitive limit.
+  - 05:52 landed by hts-llm in 1.9 min: **Changed file**
 - [ ] Remove Kestrel Flats, Mirelock woods, and Spillway as raid locations and retire them to being wave maps also as introduction map.
 - [ ] Add a small metal strike‑plate to each interior doorway built in `Assets/Scripts/World/StarterHome.cs` inside the `Raise` method’s `if (s.Type == BuildPieceType.Doorway)` block.
   Create a `GameObject` primitive cube named `"Plate"` as a child of the doorway piece, set its local scale to `new Vector3(0.06f, 0.02f, 0.01f)` (≈ 6 cm × 2 cm × 1 cm), and position it a few centimetres above the handle:
