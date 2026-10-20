@@ -1956,12 +1956,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   In `Update()` after moving the alpha, if `_group.alpha == _target` then set `enabled = false;` (instead of just returning).
   The player sees no visual change – panels still fade in/out exactly as before – but the `Update` method stops running each frame when the UI is fully shown or hidden, removing the constant null/target check.
   - 07:36 landed by hts-llm in 3.3 min: **Changed files**
-- [ ] Add an “Inspect the power switch” action to PowerSwitch.GetActions in Assets/Scripts/Extraction/RaidWorldRules.cs
+- [x] Add an “Inspect the power switch” action to PowerSwitch.GetActions in Assets/Scripts/Extraction/RaidWorldRules.cs
   In the method `PowerSwitch.GetActions` insert a new `InteractAction` before the existing one.
   Use the current line as a reference: `into.Add(new InteractAction(_thrown ? "The power is on" : "Throw the power switch", c =>`
   The new action should read `"Inspect the power switch"` and simply call `c.Notify("A rugged switch that powers freight‑gate exits.")`.
   This gives the survivor a non‑functional description action, appearing as an extra option next to the “Throw the power switch” action in the interaction UI.
   No other code, assets, or UI changes are required.
+  - 07:38 landed by hts-llm in 2 min: **Changed**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/HudViewKit.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
