@@ -15,6 +15,9 @@ namespace CloneZ
         public const int RentPerWeek = 1400, FamilyPerVisit = 600;
         public const float DebtInterest = 0.01f;
 
+        /// <summary>
+        /// Advances the in‑game day for the given character, applying rent, debt, heat and season logic.
+        /// </summary>
         public static void AdvanceDay(CharacterProfile c, string why)
         {
             if (c == null) return;
@@ -64,6 +67,9 @@ namespace CloneZ
             ProfileStore.Save();
         }
 
+        /// <summary>
+        /// Attempts to pay the weekly rent from the player's carried money.
+        /// </summary>
         public static bool PayRent(CharacterProfile c, PlayerInventory carried)
         {
             if (!Money.TrySpend(RentPerWeek, carried)) return false;
@@ -72,6 +78,9 @@ namespace CloneZ
             return true;
         }
 
+        /// <summary>
+        /// Sends money home to the family, extending the family support period.
+        /// </summary>
         public static bool SendHome(CharacterProfile c, PlayerInventory carried)
         {
             if (!Money.TrySpend(FamilyPerVisit, carried)) return false;
@@ -80,6 +89,9 @@ namespace CloneZ
             return true;
         }
 
+        /// <summary>
+        /// Pays down the player's debt by the specified amount, up to the debt total.
+        /// </summary>
         public static bool PayDebt(CharacterProfile c, PlayerInventory carried, int amount)
         {
             amount = Mathf.Min(amount, Mathf.CeilToInt(c.Debt));
