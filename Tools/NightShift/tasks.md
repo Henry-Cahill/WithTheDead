@@ -960,3 +960,6 @@ you want to see in game. Indent extra lines under a task to add detail.
   Create a cylinder for the red tap: `m.Cylinder(new Vector3(0.04f, 0.795f, 0.185f), 0.005f, 0.015f, 6, Mt(Chrome));`
   Each knob is 0.005 m radius and 0.015 m tall, placed 0.01 m above and slightly forward of its tap to look like a realistic metal handle.
   Use the existing chrome material (`Mt(Chrome)`) so colour/shade stays consistent. No other code changes are required.
+- [ ] Fix the ground‑height detection in Assets/Scripts/Zone/ZoneHazards.cs so anomalies are placed at the actual terrain height instead of constantly at y = 0.
+  In `AnomalyField.GroundY` the raycast uses a hard‑coded layer mask `1`, which only checks the Default layer and misses the terrain layer used in the game. This causes the method to return 0 for most positions, spawning anomalies floating in the air or buried underground.
+  Change the layer‑mask argument to include all layers (e.g. `Physics.DefaultRaycastLayers` or `~0`) or simply omit it. The corrected method should be:
