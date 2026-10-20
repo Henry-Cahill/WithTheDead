@@ -728,9 +728,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 00:41 landed by 1htsserver in 1.1 min: **Changed file**
 - [x] Add subtle decorative rivets to each button in Assets/Scripts/UI/UIKit.cs by modifying `UIKit.Button` – after the label is created, create four tiny `Image` children ("Rivet") at the button’s corners (size ≈ 4 × 4 px) using the existing `Accent` colour; this adds period‑appropriate hardware detail without altering layout, colliders, or interaction.
   - 00:42 landed by hts-llm in 2.3 min: **Summary of changes**
-- [ ] Cache the main camera once in Awake instead of checking Camera.main every frame in ApplyRain() for Assets/Scripts/Core/WeatherSystem.cs
+- [x] Cache the main camera once in Awake instead of checking Camera.main every frame in ApplyRain() for Assets/Scripts/Core/WeatherSystem.cs
   In Awake() add `_cam = Camera.main;` so the reference is obtained at startup.
   Remove the null‑check/lookup inside ApplyRain(): delete the lines
+  - 00:44 landed by 1htsserver in 3 min: **Changes made**
 - [ ] Add a simple “Inspect” extra action to CivicToggle in Assets/Scripts/World/Fixtures/RaidCivicFixtures.cs
   In class `CivicToggle` create a private method `void Inspect(InteractContext ctx)` that calls
   `ctx.Notify($"The {_name} is currently {(_on ? "on" : "off")}.");`

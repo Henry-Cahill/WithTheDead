@@ -59,6 +59,7 @@ namespace CloneZ
         {
             if (Instance != null && Instance != this) { Destroy(this); return; }
             Instance = this;
+            _cam = Camera.main;
         }
 
         private void OnDestroy()
@@ -266,14 +267,10 @@ namespace CloneZ
         private void ApplyRain()
         {
             if (_rain == null) return;
-            if (_cam == null) _cam = Camera.main;
-            if (_cam != null)
-            {
-                // Rain falls round the survivor: the isometric camera hangs far behind them, so there the box
-                // centres on the point the view looks at; in the close views, on the camera itself.
-                bool iso = ViewState.Current == CameraView.Isometric && IsoCameraFollow.Instance != null;
-                _rain.transform.position = iso ? IsoCameraFollow.FocusPoint : _cam.transform.position;
-            }
+            // Rain falls round the survivor: the isometric camera hangs far behind them, so there the box
+            // centres on the point the view looks at; in the close views, on the camera itself.
+            bool iso = ViewState.Current == CameraView.Isometric && IsoCameraFollow.Instance != null;
+            _rain.transform.position = iso ? IsoCameraFollow.FocusPoint : _cam.transform.position;
             // Only liquid rain draws streaks — falling snow is drawn by the vision effects instead.
             _rainEmission.rateOverTime = RainIntensity * 1500f;
         }
