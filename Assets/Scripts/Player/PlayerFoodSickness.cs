@@ -17,9 +17,7 @@ namespace CloneZ
     public class PlayerFoodSickness : MonoBehaviour
     {
         private PlayerStats _stats;
-        private PlayerSleep _sleep;
-
-        private PlayerSleep Sleep => _sleep != null ? _sleep : (_sleep = GetComponent<PlayerSleep>());
+        private PlayerSleep _sleepCache;
 
         /// <summary>Nausea moodle level 0..4 (Fine / Queasy / Nauseous / Sick / Ill).</summary>
         public int Level
@@ -51,7 +49,11 @@ namespace CloneZ
             }
         }
 
-        private void Awake() => _stats = GetComponent<PlayerStats>();
+        private void Awake()
+        {
+            _stats = GetComponent<PlayerStats>();
+            _sleepCache = GetComponent<PlayerSleep>();
+        }
 
         private void Update()
         {
@@ -60,7 +62,8 @@ namespace CloneZ
 
             // The illness runs its course over time; sleeping it off is quicker.
             float decay = CloneZConfig.SicknessDecayPerSec;
-            if (Sleep != null && Sleep.IsSleeping) decay *= CloneZConfig.SicknessSleepMult;
+if (_sleepCache == null) _sleepCache = GetComponent<PlayerSleep>();
+            if (_sleepCache != null && _sleepCache.IsSleeping) decay *= CloneZConfig.SicknessSleepMult;
             _stats.Sickness = Mathf.Max(0f, _stats.Sickness - decay * dt);
 
             // A stomach in real distress bleeds a little health while it lasts.

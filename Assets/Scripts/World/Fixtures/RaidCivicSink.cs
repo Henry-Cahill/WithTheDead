@@ -154,6 +154,10 @@ namespace CloneZ
             rinse.Begin = _openForJob;
             rinse.Stopped = _endJob;
             into.Add(rinse);
+
+            var temp = new InteractAction("Check water temperature", ctx => { ctx.Notify(PowerGrid.HousePowered ? "The water feels warm." : "The water is icy‑cold."); })
+                .DisabledIf(!WaterMains.MainsOn, Dry);
+            into.Add(temp);
         }
 
         #region The tap

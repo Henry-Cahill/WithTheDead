@@ -97,7 +97,11 @@ namespace CloneZ
 
             // Kitchen: along the front wall the fridge, a counter with the radio on it and the wall cupboards over it, the sink
             // under the window and the gas range; the dining table and three chairs in the middle of the floor.
-            b.HomePiece(kitchen, b.S(kitchen, 0.78f, 0.70f), HomeFurnitureKind.Fridge);
+            RaidBuilding.Place fridge = b.S(kitchen, 0.78f, 0.70f);
+            b.HomePiece(kitchen, fridge, HomeFurnitureKind.Fridge);
+            float offX = -0.30f + (float)rng.NextDouble() * 0.04f; // slight random left‑right variation
+            float offY = 0.45f + (float)rng.NextDouble() * 0.02f; // slight random height variation
+            b.Static.Box(b.W(fridge.X + offX, offY, fridge.Z + 0.34f), new Vector3(0.02f, 0.10f, 0.02f), DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f))); // metal handle
             RaidBuilding.Place counter = b.S(kitchen, 1.77f, 0.63f);
             b.HomePiece(kitchen, counter, HomeFurnitureKind.Counter);
             b.HomePiece(kitchen, b.OffsetPlace(counter, -0.25f, -0.075f), HomeFurnitureKind.Radio);

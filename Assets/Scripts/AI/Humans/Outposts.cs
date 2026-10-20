@@ -173,6 +173,8 @@ namespace CloneZ
             if (Owner == me.Faction)
             {
                 into.Add(new InteractAction("Held by " + Factions.NameOf(Owner), null).DisabledIf(true, "Your side holds it"));
+                // Owner can voluntarily abandon the outpost, reverting it to neutral (Vanguard) ownership.
+                into.Add(new InteractAction("Abandon outpost", Abandon).Timed(3f, "Tearing down the flag…"));
                 return;
             }
             CanBeTaken(out string reason);
@@ -191,13 +193,24 @@ namespace CloneZ
             return why == null;
         }
 
+        private void Abandon(InteractContext ctx)
+        {
+            // Reset ownership to neutral (Vanguard) and clear lock timer.
+            if (_state == null) _state = OutpostSystem.State(ProfileStore.Account, Id, GameSession.ZoneId, Owner);
+            _state.Owner = Factions.Vanguard;
+            _state.LockedUntilUnix = 0;
+            Recolour();
+            GameEvents.RaiseToast("Outpost abandoned.");
+            ProfileStore.Save();
+        }
+
         private void Capture(InteractContext ctx)
         {
             Actor me = Actor.LocalPlayer;
-            if (me == null || !CanBeTaken(out _)) return;
-            // Playing together the server decides (it has the garrison); it tells everyone, us included.
+if (me == null || !CanBeTaken(out _)) return;
+            // Multiplayer: request server to capture.
             if (GameSession.Networked && !NetAuthority.IsServer) { NetWorld.RequestOutpost(Id, me.Faction); return; }
-            Taken(me.Faction, ProfileStore.NowUnix + (long)OutpostSystem.LockSeconds, true, null);
+Taken(me.Faction, ProfileStore.NowUnix + (long)OutpostSystem.LockSeconds, true, null);
             if (GameSession.Networked) NetWorld.OutpostTaken(this, NetAuthority.LocalClientId);
         }
 

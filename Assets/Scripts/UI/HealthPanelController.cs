@@ -329,14 +329,20 @@ namespace CloneZ
             prt.sizeDelta = new Vector2(panelW, panelH);
             _panelRoot.AddComponent<Image>().color = new Color(0.06f, 0.05f, 0.06f, 0.95f);
 
-            // Add a thin dark trim around the panel for a worn‑metal frame effect
-            var trimGo = new GameObject("PanelTrim");
-            var trimRt = trimGo.AddComponent<RectTransform>();
-            trimRt.SetParent(prt, false);
-            trimRt.anchorMin = trimRt.anchorMax = new Vector2(0.5f, 0.5f);
-            trimRt.pivot = new Vector2(0.5f, 0.5f);
-            trimRt.sizeDelta = new Vector2(panelW + 4f, panelH + 4f);
-            trimGo.AddComponent<Image>().color = new Color(0.04f, 0.03f, 0.05f, 0.9f);
+// Add a thin dark trim around the panel for a worn‑metal frame effect
+var trimGo = new GameObject("PanelTrim");
+var trimRt = trimGo.AddComponent<RectTransform>();
+trimRt.SetParent(prt, false);
+trimRt.anchorMin = trimRt.anchorMax = new Vector2(0.5f, 0.5f);
+trimRt.pivot = new Vector2(0.5f, 0.5f);
+trimRt.sizeDelta = new Vector2(panelW + 4f, panelH + 4f);
+trimGo.AddComponent<Image>().color = new Color(0.04f, 0.03f, 0.05f, 0.9f);
+
+// Add rivet decorations at the panel corners
+Rivet(prt, new Vector2(-panelW / 2 + 8f, panelH / 2 - 8f)); // top‑left
+Rivet(prt, new Vector2( panelW / 2 - 8f, panelH / 2 - 8f)); // top‑right
+Rivet(prt, new Vector2(-panelW / 2 + 8f, -panelH / 2 + 8f)); // bottom‑left
+Rivet(prt, new Vector2( panelW / 2 - 8f, -panelH / 2 + 8f)); // bottom‑right
 
             Label(prt, "Title", new Vector2(0.5f, 1f), new Vector2(0f, -18f), new Vector2(panelW, 40f), 30, TextAnchor.UpperCenter, new Color(0.95f, 0.7f, 0.7f))
                 .text = "HEALTH";
@@ -483,6 +489,19 @@ namespace CloneZ
             txt.font = _font; txt.fontSize = 15; txt.alignment = TextAnchor.MiddleCenter; txt.color = Color.white; txt.text = text;
             txt.horizontalOverflow = HorizontalWrapMode.Overflow;
             return btn;
+        }
+
+        private void Rivet(RectTransform parent, Vector2 anchoredPos)
+        {
+            var go = new GameObject("Rivet");
+            var rt = go.AddComponent<RectTransform>();
+            rt.SetParent(parent, false);
+            rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.5f);
+            rt.pivot = new Vector2(0.5f, 0.5f);
+            rt.anchoredPosition = anchoredPos;
+            rt.sizeDelta = new Vector2(6f, 6f);
+            var img = go.AddComponent<Image>();
+            img.color = new Color(0.12f, 0.10f, 0.08f, 1f);
         }
         #endregion
     }

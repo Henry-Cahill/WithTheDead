@@ -14,6 +14,7 @@ namespace CloneZ
             m.Box(at + q * new Vector3(0f, 0.015f, -0.02f), new Vector3(0.24f, 0.03f, 0.22f), q, M(c * 0.9f));
             m.Box(at + q * new Vector3(0f, 0.05f, -0.02f), new Vector3(0.1f, 0.05f, 0.1f), q, M(c * 0.85f));
             m.Box(at + q * new Vector3(0f, 0.26f, 0.02f), new Vector3(0.4f, 0.36f, 0.1f), q, M(c));
+            m.Box(at + q * new Vector3(-0.15f, 0.30f, 0.07f), new Vector3(0.01f, 0.005f, 0.004f), q, Mt(Chrome));
             m.Box(at + q * new Vector3(0f, 0.25f, -0.13f), new Vector3(0.32f, 0.29f, 0.18f), q, M(c * 0.93f));
             m.Box(at + q * new Vector3(0f, 0.24f, -0.25f), new Vector3(0.2f, 0.18f, 0.08f), q, M(c * 0.88f));
             m.Box(at + q * new Vector3(0f, 0.27f, 0.072f), new Vector3(0.32f, 0.26f, 0.006f), q, on ? Gl(ScreenOn) : Gs(ScreenOff));

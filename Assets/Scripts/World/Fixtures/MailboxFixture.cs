@@ -46,7 +46,11 @@ namespace CloneZ
             {
                 "Community request: we need firewood for the coming freeze. If you have spare logs, please leave them at the shed.",
                 "Any contributions will be shared among families in the block. Thank you for your generosity.",
-                "Contact the neighborhood watch on the posted number for coordination."
+                "Contact the neighborhood watch on the posted number for coordination.",
+                "Neighborly aid: the Miller family ran low on potatoes after the frost; any spares can be left at the corner shed.",
+                "Winter weather update: another cold front rolls in tonight, expect sub‑zero temps and icy roads; keep heaters on low.",
+                "Farm equipment trouble: the old tractor's belt snapped in the field; if you have a replacement belt or tools, please leave them by the barn.",
+                "Church announcement: Sunday service will be followed by a pot‑luck; bring a home‑cooked casserole or jar of preserves, no store‑bought goods."
             },
             new[]
             {

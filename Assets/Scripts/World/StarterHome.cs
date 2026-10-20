@@ -208,23 +208,38 @@ foreach (Slot s in Slots)
                 {
                     int seed = StarterHome.SlotSeed(s.Type, s.X, s.Z);
                     UnityEngine.Random.InitState(seed);
-                    var handle = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-                    handle.name = "Handle";
-                    handle.transform.SetParent(piece.transform, false);
-                    Vector3 offset = s.Yaw switch
-                    {
-                        0f => new Vector3(0.35f, 0.9f, 0f),
-                        90f => new Vector3(0f, 0.9f, 0.35f),
-                        180f => new Vector3(-0.35f, 0.9f, 0f),
-                        270f => new Vector3(0f, 0.9f, -0.35f),
-                        _ => new Vector3(0.35f, 0.9f, 0f)
-                    };
-                    offset.x += (UnityEngine.Random.value - 0.5f) * 0.02f;
-                    offset.z += (UnityEngine.Random.value - 0.5f) * 0.02f;
-                    handle.transform.localPosition = offset;
-                    handle.transform.localScale = new Vector3(0.04f, 0.02f, 0.02f);
-                    var rend = piece.GetComponentInChildren<Renderer>();
-                    if (rend != null) handle.GetComponent<Renderer>().sharedMaterial = rend.sharedMaterial;
+var handle = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                      handle.name = "Handle";
+                      handle.transform.SetParent(piece.transform, false);
+                      Vector3 offset = s.Yaw switch
+                      {
+                          0f => new Vector3(0.35f, 0.9f, 0f),
+                          90f => new Vector3(0f, 0.9f, 0.35f),
+                          180f => new Vector3(-0.35f, 0.9f, 0f),
+                          270f => new Vector3(0f, 0.9f, -0.35f),
+                          _ => new Vector3(0.35f, 0.9f, 0f)
+                      };
+                      offset.x += (UnityEngine.Random.value - 0.5f) * 0.02f;
+                      offset.z += (UnityEngine.Random.value - 0.5f) * 0.02f;
+                      handle.transform.localPosition = offset;
+                      handle.transform.localScale = new Vector3(0.04f, 0.02f, 0.02f);
+                      var rend = piece.GetComponentInChildren<Renderer>();
+                      if (rend != null) handle.GetComponent<Renderer>().sharedMaterial = rend.sharedMaterial;
+                      // Add metal strike‑plate above the handle
+                      var plate = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                      plate.name = "Plate";
+                      plate.transform.SetParent(piece.transform, false);
+                      Vector3 plateOffset = s.Yaw switch
+                      {
+                          0f => new Vector3(0.35f, 0.95f, 0f),
+                          90f => new Vector3(0f, 0.95f, 0.35f),
+                          180f => new Vector3(-0.35f, 0.95f, 0f),
+                          270f => new Vector3(0f, 0.95f, -0.35f),
+                          _ => new Vector3(0.35f, 0.95f, 0f)
+                      };
+                      plate.transform.localPosition = plateOffset;
+                      plate.transform.localScale = new Vector3(0.06f, 0.02f, 0.01f);
+                      if (rend != null) plate.GetComponent<Renderer>().sharedMaterial = rend.sharedMaterial;
                 }
             }
             LootContainer.Spawn(world, ContainerType.Crate, CrateSpot, 7777);

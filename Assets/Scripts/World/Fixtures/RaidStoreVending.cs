@@ -21,6 +21,10 @@ namespace CloneZ
             "The machine booms like a drum. Something inside shifts, then settles. Nothing drops.",
             "You thump it again. A packet sways on its coil, thinks about it, and stays put.",
             "The glass rattles in its frame. Not a crumb comes loose.",
+            "Your thump reverberates, but nothing shifts; the machine stays stubbornly still.",
+            "The coils grin at your effort, yet they refuse to give up any treasure.",
+            "A hollow clang echoes, but no snack falls from the depths.",
+            "A faint promise of loot hangs in the air, though the machine yields nothing this time.",
         };
 
         private Transform _body;
@@ -83,6 +87,7 @@ namespace CloneZ
                 into.Add(new InteractAction("Smash the glass", Smash)
                     .Timed(CloneZConfig.RaidVendingSmashSeconds, "Smashing the glass", HumanoidActivity.Use));
                 into.Add(new InteractAction("Press a button", PressButton));
+            into.Add(new InteractAction("Check the machine", CheckStock));
             }
             else into.Add(new InteractAction(_stock != null && _stock.Searched ? "Look inside the machine" : "Search the machine", c => Open(c, _stock)));
         }
@@ -123,6 +128,12 @@ namespace CloneZ
             ctx.Notify(_lit
                 ? "You punch B4. The display flickers: EXACT CHANGE ONLY. Nobody carries change any more."
                 : "The buttons click under your thumb. Nothing lights up \u2014 somebody's pulled its plug.");
+        }
+
+                private void CheckStock(InteractContext ctx)
+        {
+            if (_stock != null && !_stock.IsEmpty) ctx.Notify("The vending machine seems to still hold something.");
+            else ctx.Notify("The vending machine looks empty.");
         }
 
         private void ShowBroken(bool broken)

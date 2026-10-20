@@ -118,6 +118,7 @@ namespace CloneZ
                 .DisabledIf(AtQuietest, "It's down as low as it goes")
                 .DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Adjust the rabbit ears", AdjustAerial).DisabledIf(!near, TooFar));
+            into.Add(new InteractAction("Check signal", CheckSignal).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Give the set a thump", Thump).DisabledIf(!near, TooFar));
         }
 
@@ -153,6 +154,8 @@ namespace CloneZ
                 ? "You walk the rabbit ears round until the ghosting clears. Mostly."
                 : "You point the rabbit ears every which way. There's nothing left out there to pick up.");
         }
+
+        private void CheckSignal(InteractContext ctx) { ctx.Notify(_onAir ? "The channel is clear." : "No signal – just snow."); }
 
         private void Thump(InteractContext ctx)
         {

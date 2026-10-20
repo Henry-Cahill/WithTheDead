@@ -375,6 +375,7 @@ namespace CloneZ
             Material body = CloneZUtil.Mat(def.Tint, 0.1f);
             Material shade = CloneZUtil.Mat(HumanoidLook.Shade(def.Tint, 0.7f), 0.1f);
             Material web = CloneZUtil.Mat(HumanoidLook.Shade(def.Tint, 0.45f), 0.12f);
+            Material hardware = CloneZUtil.Mat(Hardware, 0.4f);
 
             Transform root = Root(_chestRig, HumanBone.Chest, "Gear_ChestRig");
             const float y0 = 1.07f, y1 = 1.27f, panelD = 0.022f;
@@ -393,8 +394,12 @@ namespace CloneZ
             }
 
             // Harness straps from the top of the panel over the shoulders, and a strap round the waist.
-            for (int s = -1; s <= 1; s += 2)
-                StrapOverShoulder(_chestRig, root, s * HarnessX, 1.18f, y1 - 0.01f, 0.007f, HarnessWidth, 0.008f, web);
+for (int s = -1; s <= 1; s += 2)
+                {
+                    StrapOverShoulder(_chestRig, root, s * HarnessX, 1.18f, y1 - 0.01f, 0.007f, HarnessWidth, 0.008f, web);
+                    Vector3 end = _path[_path.Count - 1];
+                    PlayerGearParts.Box(root, "StrapBuckle", end + new Vector3(0f, 0.014f, 0.007f), new Vector3(0.046f, 0.022f, 0.008f), hardware);
+                }
 
             Transform spine = Root(_chestRig, HumanBone.Spine, "Gear_ChestRigStrap");
             const float waistY = 1.09f;

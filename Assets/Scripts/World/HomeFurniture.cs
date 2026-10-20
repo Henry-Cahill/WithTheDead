@@ -242,8 +242,8 @@ namespace CloneZ
                 case HomeFurnitureKind.Fridge:
                     FurnitureBuilder.Fridge(m, rng, new Color(0.88f, 0.87f, 0.83f));
                     // Add a small metal door handle with left/right variation
-                    bool left = rng.Next(2) == 0;
-                    Vector3 handlePos = new Vector3(left ? -0.33f : 0.33f, 0.5f, 0.05f);
+bool leftHandle = rng.Next(2) == 0;
+                    Vector3 handlePos = new Vector3(leftHandle ? -0.33f : 0.33f, 0.5f, 0.05f);
                     Vector3 handleSize = new Vector3(0.02f, 0.12f, 0.02f);
                     m.Box(handlePos, handleSize, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
                     break;
@@ -261,6 +261,9 @@ namespace CloneZ
                     break;
                 case HomeFurnitureKind.Radio:
                     m.Box(new Vector3(0f, 0.09f, 0f), new Vector3(0.32f, 0.18f, 0.14f), DecorPalette.Matte(new Color(0.30f, 0.20f, 0.12f)));
+bool leftKnob = rng.Next(2) == 0;
+Vector3 knobPos = new Vector3(leftKnob ? -0.04f : 0.04f, 0.11f, 0.07f);
+m.Cylinder(knobPos, 0.015f, 0.02f, 8, DecorPalette.Metal(new Color(0.20f, 0.20f, 0.20f)), Quaternion.Euler(90f, 0f, 0f), 1f, false);
                     break;
                 default:
                     FurnitureBuilder.BoxStack(m, rng, Vector3.zero, 0f, 2 + rng.Next(2));

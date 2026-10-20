@@ -29,6 +29,7 @@ namespace CloneZ
         public void Dismantle() { All.Remove(this); gameObject.SetActive(false); Destroy(gameObject); }   // out of the rebuild that follows
         #endregion
 
+        /// <summary>Finds the nearest SleepSpot to a point within a range, returning the distance.</summary>
         public static SleepSpot Nearest(Vector3 p, float range, out float distance)
         {
             SleepSpot best = null;

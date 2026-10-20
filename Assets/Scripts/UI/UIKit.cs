@@ -99,6 +99,14 @@ namespace CloneZ
             RectTransform rt = Rect(name, parent);
             var img = rt.gameObject.AddComponent<Image>();
             img.color = color;
+            // Add inner border inset 2 units with semi‑transparent dark colour
+            var borderRt = Rect("Border", img.rectTransform);
+            borderRt.anchorMin = Vector2.zero;
+            borderRt.anchorMax = Vector2.one;
+            borderRt.offsetMin = new Vector2(2f, 2f);
+            borderRt.offsetMax = new Vector2(-2f, -2f);
+            var borderImg = borderRt.gameObject.AddComponent<Image>();
+            borderImg.color = new Color(0f, 0f, 0f, 0.2f);
             return img;
         }
         #endregion

@@ -118,6 +118,20 @@ namespace CloneZ
                 /// <summary>Learns one property of an artifact, optionally announcing it.</summary>
         public static bool Learn(string artifact, string prop, bool announce = true)
         {
+            // Validate artifact and property definitions before learning.
+            Def d = Get(artifact);
+            if (d == null) return false; // unknown artifact
+            bool propDefined = false;
+            for (int i = 0; i < d.Properties.Length; i++)
+            {
+                if (d.Properties[i] == prop)
+                {
+                    propDefined = true;
+                    break;
+                }
+            }
+            if (!propDefined) return false; // property not defined for this artifact
+
             AccountProfile a = ProfileStore.Account;
             if (a == null || IsKnown(artifact, prop)) return false;
             a.ArtifactKnowledge.Add(Key(artifact, prop));

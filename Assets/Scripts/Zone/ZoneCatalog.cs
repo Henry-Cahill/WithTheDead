@@ -43,48 +43,28 @@ namespace CloneZ
     /// </summary>
     public static class ZoneCatalog
     {
-        public const string DefaultZone = "kestrel";
+        public const string DefaultZone = "intro";
 
         public static readonly List<ZoneDef> All = new List<ZoneDef>
         {
             new ZoneDef
             {
-                Id = "kestrel", Name = "Kestrel Flats", Depth = 1, MinLevel = 1, LayoutSeed = 1993,
-                Blurb = "The outer Zone: a snowbound, emptied town just inside the cordon. Most runners start here.",
-                Rule = "The dead are many; the anomalies are few and lie where the old maps say.",
-                LootMultiplier = 1f, AnomalyDensity = 0.7f, ArtifactRichness = 0.7f, ZombieDensity = 1f, MutantShare = 0.12f,
-                HumanSquads = 2f, Radiation = 0f, FogDensity = 0.25f, HasCordon = true, StartHour = 22f,
-                Anomalies = new[] { "sinkhole", "embermoss", "staticbloom", "greysyrup" },
-                Artifacts = new[] { "art_hollowstone", "art_coldspark", "art_mosscalm", "art_greywax", "art_saltlung" },
-                Landmarks = new[] { "crashed_helicopter", "quarantine_tent", "warden_checkpoint" },
-                Mutants = new[] { "hound" }, Wildlife = new[] { "deer", "wolf" },
-                Tint = new Color(0.78f, 0.84f, 0.92f),
-            },
-            new ZoneDef
-            {
-                Id = "mirelock", Name = "Mirelock Woods", Depth = 2, MinLevel = 5, LayoutSeed = 7741,
-                Blurb = "A drowned settlement swallowed by forest. Fog that never lifts, and things that move in it.",
-                Rule = "The fog never lifts and the woods hunt at night; artifacts grow thick in the hollows.",
-                LootMultiplier = 1.15f, AnomalyDensity = 1.1f, ArtifactRichness = 1.4f, ZombieDensity = 0.7f, MutantShare = 0.45f,
-                HumanSquads = 1.5f, Radiation = 0.002f, FogDensity = 0.75f, ForestDensity = 0.85f, StartHour = 20f,
-                Anomalies = new[] { "sinkhole", "embermoss", "staticbloom", "greysyrup", "tollgate" },
-                Artifacts = new[] { "art_needlebloom", "art_driftshell", "art_whisperglass", "art_mosscalm", "art_emberheart" },
-                Landmarks = new[] { "drowned_chapel", "hunters_hide", "returned_cemetery" },
-                Mutants = new[] { "hound", "shade", "puppeteer" }, Wildlife = new[] { "wolf", "bear", "deer" },
-                Tint = new Color(0.70f, 0.80f, 0.70f),
-            },
-            new ZoneDef
-            {
-                Id = "spillway", Name = "The Spillway", Depth = 3, MinLevel = 12, LayoutSeed = 31337,
-                Blurb = "The industrial heart below the old dam. Radiation, the Choir, and the rumour of the Lodestar.",
-                Rule = "Emissions come twice as often and the ground itself is hot; the richest artifacts are here.",
-                LootMultiplier = 1.35f, AnomalyDensity = 1.6f, ArtifactRichness = 1.9f, ZombieDensity = 0.8f, MutantShare = 0.55f,
-                HumanSquads = 2.5f, Radiation = 0.006f, FogDensity = 0.45f, EmissionMult = 2f, StartHour = 21f,
-                Anomalies = new[] { "sinkhole", "embermoss", "staticbloom", "greysyrup", "tollgate" },
-                Artifacts = new[] { "art_lodeknot", "art_whisperglass", "art_emberheart", "art_hollowstone", "art_coldspark", "art_needlebloom" },
-                Landmarks = new[] { "cooling_tower", "choir_sanctum", "lodestar_site" },
-                Mutants = new[] { "hound", "shade", "puppeteer", "thumper" }, Wildlife = new[] { "wolf" },
-                Tint = new Color(0.86f, 0.78f, 0.66f),
+                Id = "intro",
+                Name = "Introduction",
+                Depth = 0,
+                MinLevel = 1,
+                LayoutSeed = 0,
+                Blurb = "Wave‑survival tutorial map.",
+                Rule = "Guides the player through the basics.",
+                LootMultiplier = 1f,
+                AnomalyDensity = 0f,
+                ArtifactRichness = 0f,
+                ZombieDensity = 0f,
+                MutantShare = 0f,
+                HumanSquads = 0f,
+                Radiation = 0f,
+                FogDensity = 0.3f,
+                Tint = Color.white,
             },
             new ZoneDef
             {

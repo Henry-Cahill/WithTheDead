@@ -31,7 +31,13 @@ namespace CloneZ
         {
             "A slow, careful shave. You only nick yourself once.",
             "Lather, scrape, rinse. Steady hands. It's good to do something properly for a change.",
-            "You shave by the mirror's say-so. The face underneath looks almost like the old you.",
+"You shave by the mirror's say-so. The face underneath looks almost like the old you.",
+            "The tap coughs each time you lift the lever, a reminder the mains are a memory now.",
+            "Your reflection flickers in the cracked mirror, showing a face half‑lost to the frost.",
+            "Cold water runs over the razor, turning the shave into a bite of ice on your skin.",
+            "The scent of soot from the stove clings to the steam, mixing with the taste of metal.",
+            "Each shave feels like salvaging a small piece of normality from the relentless cold.",
+            
         };
 
         private HomeFurniture _host;
@@ -60,6 +66,7 @@ namespace CloneZ
         public bool IsTainted => false;
         public string DryMessage => _level > 0.02f ? "There's barely a puddle left in the basin" : "The tap is dry \u2014 the water's been shut off";
 
+        /// <summary>Drains water from the basin when the mains are off, reducing the stored level and updating the visual.</summary>
         public void DrawWater()
         {
             if (WaterMains.MainsOn) return;   // straight from the tap: as much as you like while it runs

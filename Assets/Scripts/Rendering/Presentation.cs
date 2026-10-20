@@ -391,6 +391,8 @@ namespace CloneZ
             w._canvas = UIKit.CreateCanvas("Watch Canvas", 45, go.transform);
             RectTransform face = UIKit.Place(UIKit.Rect("Face", w._canvas.transform), new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(30f, 30f), new Vector2(170f, 170f));
             Image strap = UIKit.Panel(face, "Strap", new Color(0.15f, 0.12f, 0.1f));
+Image buckle = UIKit.Panel(strap.rectTransform, "Buckle", new Color(0.6f, 0.6f, 0.6f));
+UIKit.Place(buckle.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(8f, 2f));
             UIKit.Place(strap.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(70f, 200f));
             Image stitch1 = UIKit.Panel(strap.rectTransform, "Stitch1", Color.white);
             UIKit.Place(stitch1.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(2f, 30f));

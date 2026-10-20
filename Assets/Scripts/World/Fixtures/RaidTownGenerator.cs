@@ -61,6 +61,7 @@ namespace CloneZ
                     .Timed(CloneZConfig.RaidGeneratorPullSeconds, "Pulling the cord", HumanoidActivity.Use)
                     .DisabledIf(_fuel <= 0f, "Its tank is dry"));
             into.Add(new InteractAction("Check the fuel", CheckFuel));
+            into.Add(new InteractAction("Inspect generator", Inspect));
         }
 
         private void Pull(InteractContext ctx)
@@ -94,6 +95,15 @@ namespace CloneZ
             ShowRunning(false);
         }
 
+        private void Inspect(InteractContext ctx)
+        {
+            float percent = _fuel / CloneZConfig.RaidGeneratorFuelMax;
+if (_running)
+                ctx.Notify($"The generator rumbles on. Fuel gauge reads about {(int)(percent * 100)}%.");
+            else
+                ctx.Notify($"The generator is off. Fuel gauge reads about {(int)(percent * 100)}%.");
+        }
+
         private void CheckFuel(InteractContext ctx)
         {
             float f = _fuel / CloneZConfig.RaidGeneratorFuelMax;
@@ -102,7 +112,6 @@ namespace CloneZ
                 f < 0.7f ? "The tank's about half full. Enough to make a racket for a while." :
                 "Most of a tank. Somebody filled it and never got to use it.");
         }
-
         private void ShowRunning(bool on)
         {
             if (_lamp != null) _lamp.enabled = on;

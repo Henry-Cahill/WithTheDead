@@ -177,6 +177,12 @@ namespace CloneZ
             into.Add(shower);
             into.Add(new InteractAction(_on ? "Turn off the shower" : "Turn on the shower", c => Turn(c, !_on)));
             into.Add(new InteractAction(_doorOpen ? "Close the shower door" : "Open the shower door", c => SetDoor(!_doorOpen, false)));
+            into.Add(new InteractAction("Inspect shower", ctx =>
+            {
+                if (!WaterMains.MainsOn) ctx.Notify("The water’s shut off.");
+                else if (!Running) ctx.Notify("The shower is off.");
+                else ctx.Notify(Hot ? "Hot water is flowing." : "Cold water is flowing.");
+            }));
         }
 
         private void Turn(InteractContext ctx, bool on)

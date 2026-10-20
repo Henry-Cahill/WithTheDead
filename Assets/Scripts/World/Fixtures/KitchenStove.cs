@@ -44,7 +44,7 @@ namespace CloneZ
         private bool _oven, _doorOpen;
 
         private readonly Action<InteractContext>[] _toggleBurner = new Action<InteractContext>[4];
-        private Action<InteractContext> _allOff, _toggleOven, _toggleDoor, _cook;
+        private Action<InteractContext> _allOn, _allOff, _toggleOven, _toggleDoor, _cook;
 
         public override string DisplayName => "Gas stove";
         public override Vector3 InteractPoint => transform.position + transform.rotation * new Vector3(0f, 0.95f, 0.2f);
@@ -94,6 +94,7 @@ namespace CloneZ
                 int burner = i;
                 _toggleBurner[i] = c => SetBurner(burner, (_lit & (1 << burner)) == 0, true);
             }
+            _allOn = c => { for (int i = 0; i < 4; i++) SetBurner(i, true, false); };
             _allOff = c => { for (int i = 0; i < 4; i++) SetBurner(i, false, false); };
             _toggleOven = ToggleOven;
             _toggleDoor = c => SetDoor(!_doorOpen, false);
@@ -179,6 +180,9 @@ namespace CloneZ
         {
             for (int i = 0; i < 4; i++)
                 into.Add(new InteractAction((_lit & (1 << i)) != 0 ? OffLabels[i] : LightLabels[i], _toggleBurner[i]));
+            // Light all burners if any are off
+            if ((_lit & 0xF) != 0xF) // not all burners lit
+                into.Add(new InteractAction("Light all burners", _allOn));
             if (_lit != 0) into.Add(new InteractAction("Turn off all the burners", _allOff));
             into.Add(new InteractAction(_oven ? "Turn off the oven" : "Turn on the oven", _toggleOven));
             into.Add(new InteractAction(_doorOpen ? "Close the oven door" : "Open the oven door", _toggleDoor));

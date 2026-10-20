@@ -71,6 +71,7 @@ public static Drone Create(DroneKind kind, Vector3 at, float yaw, bool grenade, 
             if (Kind == DroneKind.Fpv)
             {
                 Part(new Vector3(0f, 0f, 0f), new Vector3(0.22f, 0.06f, 0.22f), dark);
+                Part(new Vector3(0f, 0.07f, 0f), new Vector3(0.02f, 0.04f, 0.02f), new Color(0.30f, 0.30f, 0.30f)); // small antenna
                 for (int i = 0; i < 4; i++)
                 {
                     Vector3 arm = Quaternion.Euler(0f, 45f + i * 90f, 0f) * Vector3.forward * 0.2f;
