@@ -2776,13 +2776,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   `"Evacuation notice: snow‑blocked roads on Highway 7, expect delays. Seek shelter until cleared.",`
   `"All units, maintain firewatch; temperatures dropping below minus ten, frostbite risk high.",`
   - 11:08 landed by 0htsserver in 2.6 min: **Changed file**
-- [ ] Add a tiny “metal‑cap” visual to each pause‑menu item’s accent bar in Assets/Scripts/UI/PauseMenuController.cs, inside the `BuildItem(Item it, int index)` method right after the existing accent Image is created.
+- [x] Add a tiny “metal‑cap” visual to each pause‑menu item’s accent bar in Assets/Scripts/UI/PauseMenuController.cs, inside the `BuildItem(Item it, int index)` method right after the existing accent Image is created.
   Create a new GameObject `Cap{index}` with a RectTransform parented to `it.Accent.transform`.
   Set the anchor & pivot to the top‑center (`anchorMin = anchorMax = new Vector2(0.5f, 1f)`), pivot `new Vector2(0.5f, 1f)`.
   Position it at `anchoredPosition = new Vector2(0f, 0f)` and give it a size of `new Vector2(6f, 4f)` (metres are UI units; matches existing UI scale).
   Add an Image component, set its color to `HudUI.WithAlpha(Dim, 0.6f)` (re‑using the Dim colour already defined).
   Vary the width slightly for visual variety using the deterministic index: `float w = 5f + (index % 3) * 0.5f; rrt.sizeDelta = new Vector2(w, 4f);`
   Result: each menu row now shows a small rectangular “cap” at the top of the coloured accent bar, giving a subtle worn‑metal look that fits the 1993‑rural aesthetic without affecting colliders, interaction points, or existing layout.
+  - 11:08 landed by hts-llm in 1.6 min: **Changed file**
 - [ ] Fix excessive shotgun damage in Assets/Scripts/Player/PlayerCombat.cs by correcting the pellet damage multiplier in `FireFirearm()`.
   In `FireFirearm` the line `float pelletMult = pellets > 1 ? 1f : 1f;` always yields 1, so each pellet deals full weapon damage, making shotguns unrealistically lethal.
   Change it to `float pelletMult = pellets > 1 ? 1f / pellets : 1f;` so the weapon’s base damage is evenly split among all pellets.
