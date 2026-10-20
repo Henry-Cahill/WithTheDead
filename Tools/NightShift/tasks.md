@@ -2395,3 +2395,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   Local position = (4 px, 0) relative to the button’s RectTransform.
   Add an Image component coloured `new Color(0.4f, 0.3f, 0.2f, 1f)` (aged metal/twisted‑steel tone) – reuses Unity’s default UI material.
   No new colliders or interaction code; the lever is purely decorative and respects existing layout.
+- [ ] Add a tiny metal latch/handle to the glass‑door drinks cooler in Assets/Scripts/World/RaidLayoutsStore.cs, method `DrinksCoolerAt`.
+  Inside the fixture‑body lambda, after `FurnitureBuilder.MartCoolerBody(m, r, lit)`, insert a conditional box primitive that serves as a small door handle.
+  Use `if (b.Rng.NextDouble() < 0.5)` to make the handle appear on roughly half the coolers, keeping visual variation deterministic.
+  Create the handle with `m.Box(new Vector3(0f, 1.07f, 0.97f), new Vector3(0.03f, 0.02f, 0.02f), DecorPalette.Matte(new Color(0.20f, 0.23f, 0.21f)))` – a dark‑steel coloured box positioned just in front of the door near its mid‑height.
+  No new colliders or interaction points are added; the handle is purely decorative and respects the existing 12‑primitive limit.
+- [ ] Cache the nearest farm plot lookup in Assets/Scripts/Player/PlayerFarming.cs to avoid calling `FarmPlot.Nearest` every frame when the player hasn’t moved.
