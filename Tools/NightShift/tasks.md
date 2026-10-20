@@ -3850,7 +3850,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(screwPos, new Vector3(0.004f, 0.004f, 0.004f), DecorPalette.Matte(new Color(0.08f, 0.08f, 0.09f)));`
   This adds a subtle, period‑correct hardware detail without affecting colliders, interaction points or pivots, and stays within the 12‑primitive limit.
   - 16:13 landed by 1htsserver in 1.3 min: **Changed file**: `Assets/Scripts/World/StarterHome.Lighting.cs`
-- [ ] In Assets/Scripts/Hub/HubNpc.cs, modify `HubNpcTalk.GetActions` to give the beggar a second, cheaper donation option.
+- [x] In Assets/Scripts/Hub/HubNpc.cs, modify `HubNpcTalk.GetActions` to give the beggar a second, cheaper donation option.
+  - 16:15 landed by 0htsserver in 1.5 min: **Changed file**: `Assets/Scripts/Hub/HubNpc.cs`
 - [ ] In Assets/Scripts/World/Fixtures/RainBarrelFixture.cs, extend the `CheckLevel` method’s fill‑level message chain by inserting four new thresholds with fresh sentences, keeping the existing order and logic intact.
   Quote the current chain for reference:
   `fill <= 0.01f ? "Bone dry. It needs a good downpour." :`

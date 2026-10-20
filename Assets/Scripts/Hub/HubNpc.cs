@@ -176,6 +176,16 @@ namespace CloneZ
                     }).DisabledIf(_telling, "Already telling it"));
                     break;
                 case HubNpc.Role.Beggar:
+                    // Cheaper donation option
+                    into.Add(new InteractAction("Give 5 MG", c =>
+                    {
+                        if (!Money.TrySpend(5, c.Inventory)) { c.Notify("You don't have 5 MG."); return; }
+                        c.Notify("\"The Zone remembers.\"");
+                        MoralLedger.Record("gave to the beggar (5 MG)", MoralLedger.GaveToBeggar);
+                        Sfx.PlayUI(SfxIds.Cash);
+                        ProfileStore.Save();
+                    }));
+                    // Standard donation
                     into.Add(new InteractAction("Give 20 MG", c =>
                     {
                         if (!Money.TrySpend(20, c.Inventory)) { c.Notify("You don't have 20 MG."); return; }
