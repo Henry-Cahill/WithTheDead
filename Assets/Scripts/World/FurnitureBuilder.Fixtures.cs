@@ -24,6 +24,15 @@ namespace CloneZ
                 return;
             }
             m.Box(new Vector3(width * 0.5f, height * 0.5f, 0f), new Vector3(width, height, t), M(c));
+            // Brass hinges (period-correct for 1993 rural interior)
+            for (int face = -1; face <= 1; face += 2)
+            {
+                float z = face * (t * 0.5f + 0.004f);
+                // bottom hinge
+                m.Box(new Vector3(0.02f, 0.20f, z), new Vector3(0.04f, 0.03f, 0.008f), Mt(Brass));
+                // top hinge
+                m.Box(new Vector3(0.02f, height - 0.20f, z), new Vector3(0.04f, 0.03f, 0.008f), Mt(Brass));
+            }
             for (int face = -1; face <= 1; face += 2)
             {
                 float z = face * (t * 0.5f + 0.004f);

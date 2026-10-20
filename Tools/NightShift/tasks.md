@@ -2576,12 +2576,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `if (IsOn) Paint();`
   `ctx.Notify(Describe(s) + (_onAir ? "" : " \u2014 nothing but snow"));`
   - 10:23 landed by 1htsserver in 1.4 min: **Changed file**
-- [ ] Add period‑correct brass hinges to the wooden door leaf in `Assets/Scripts/World/FurnitureBuilder.Fixtures.cs` `FurnitureBuilder.DoorLeaf` so the door looks realistic for a 1993 rural interior.
+- [x] Add period‑correct brass hinges to the wooden door leaf in `Assets/Scripts/World/FurnitureBuilder.Fixtures.cs` `FurnitureBuilder.DoorLeaf` so the door looks realistic for a 1993 rural interior.
   After the main panel box call `m.Box(new Vector3(width * 0.5f, height * 0.5f, 0f), new Vector3(width, height, t), M(c));` insert four small boxes representing two hinges per side.
   Use the existing brass material: `Mt(Brass)`.
   Bottom hinge: size `new Vector3(0.04f, 0.03f, 0.008f)` at position `new Vector3(0.02f, 0.20f, t*0.5f + 0.004f)` for the front face and at `new Vector3(0.02f, 0.20f, -t*0.5f - 0.004f)` for the back face.
   Top hinge: same size at `new Vector3(0.02f, height - 0.20f, t*0.5f + 0.004f)` (front) and `new Vector3(0.02f, height - 0.20f, -t*0.5f - 0.004f)` (back).
   This adds only four primitives, reuses existing materials, and does not affect colliders or interaction points.
+  - 10:26 landed by 1htsserver in 2.6 min: **Changes made**
 - [ ] Cache the per‑frame Keyboard lookup in Assets/Scripts/Player/PlayerGear.cs – replace `Keyboard kb = Keyboard.current;` in Update with a cached field that’s set once in Awake (and re‑acquired only if it becomes null).
   Add a private `Keyboard _keyboard;` field.
   In Awake after setting Instance, assign `_keyboard = Keyboard.current;`.
