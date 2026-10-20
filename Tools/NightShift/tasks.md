@@ -3772,3 +3772,17 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add a new private static method `Inspect(InteractContext ctx)` that calls `ctx.Notify` with one of two messages depending on `ctx.Stats?.Wetness` (e.g., muddy boots make the mat look “smeared with mud”, otherwise “dry and frayed”).
   Keep all existing code unchanged; the new action should appear alongside “Wipe your feet” and “Look under the mat” in the interaction menu.
   - 15:54 0htsserver made no changes: **Changed**
+- [ ] Fix a potential IndexOutOfRange when indexing the `units` array by `ItemCategory` in Assets/Scripts/UI/InventoryUIController.GridActions.cs
+  The array `units` is created with length `s_CategoryCount`, which is currently defined as `System.Enum.GetValues(typeof(ItemCategory)).Length`. This assumes the `ItemCategory` enum values are contiguous from 0, but if the enum ever gets a custom value or a gap, indexing with `(int)category` can exceed the array bounds and crash the game during “Transfer only…” or “Transfer All”.
+  Change the definition of `s_CategoryCount` to size the array based on the highest enum value plus one, guaranteeing a valid index for any `ItemCategory`.
+  Add the needed `using System.Linq;` directive.
+  Code change:
+  `using System.Collections.Generic;`
+  `using System.Linq; // ← add this`
+  `using UnityEngine;`
+  `// …`
+- [ ] In Assets/Scripts/Rendering/ActorFog.cs cache the Transform instead of accessing the MonoBehaviour.transform property each LateUpdate (and in Cache) to avoid the per‑frame Transform lookup.
+  Add a private field `private Transform _transform;` and assign it in Start (`_transform = transform;`).
+  Replace `transform.position` with `_transform.position` in LateUpdate.
+  Replace `transform.hierarchyCount` with `_transform.hierarchyCount` in Cache.
+  All other logic stays unchanged; the visual fog behavior and timing remain identical.
