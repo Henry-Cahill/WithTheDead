@@ -695,12 +695,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Create a child GameObject “PanelTrim”, give it a `RectTransform` matching the panel’s anchor/pivot, set its size slightly larger than the panel (e.g. `new Vector2(panelW + 4f, panelH + 4f)` ≈ 0.01 m border on each side), add an `Image` component and colour it a slightly darker shade such as `new Color(0.04f, 0.03f, 0.05f, 0.9f)`.
   This adds a subtle frame without altering colliders, interaction points or existing UI layout, keeping the panel’s functionality unchanged while giving it a period‑appropriate brushed‑metal edge.
   - 00:37 landed by 0htsserver in 2.3 min: **Changes made**
-- [ ] Add a small “Lean against the cot” action to Assets/Scripts/World/Fixtures/RaidStoreCot.cs
+- [x] Add a small “Lean against the cot” action to Assets/Scripts/World/Fixtures/RaidStoreCot.cs
   In `RaidStoreCot.GetActions` after the existing “Look under the cot” line, insert:
   `into.Add(new InteractAction("Lean against the cot", LeanAgainst).DisabledIf(seat != null, "You are already seated"));`
   Add a private helper method at the end of the class:
   `private void LeanAgainst(InteractContext ctx) { ctx.Notify("You lean against the cot, feeling the cold canvas against your back."); }`
   The new action appears when the survivor is not already seated, letting the player choose “Lean against the cot” (shown as [E] Lean against the cot) and receive the above notification. All other code and behavior remain unchanged.
+  - 00:38 landed by hts-llm in 2.5 min: **Changed file**
 - [ ] In Assets/Scripts/AI/Humans/HumanNpc.cs extend the `ZoneTalk.s_Lines` entry for `Factions.Freehold` by appending five new dialogue strings that fit the 1993 rural Kentucky winter setting; each string must be a whole sentence in quotes and reflect themes of snow‑bound scarcity, period‑correct tech, outbreak rumors, and survivor morale – use the existing line `"Throw your bolts, brother. Every time."` as the style reference.
   Locate the dictionary initializer for `s_Lines` inside the `ZoneTalk` static class and add the new strings to the array keyed by `Factions.Freehold`.
   Append the following quoted sentences (each ending with a period):
