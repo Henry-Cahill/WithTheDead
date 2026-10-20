@@ -38,6 +38,12 @@ namespace CloneZ
             "Halfway through, the rollers clunk and stop. A red lamp blinks: PAPER JAM \u2014 AREA B. Of course it does.",
             "It chews the sheet, shudders and gives up. The red lamp comes on and stays on.",
             "There's a crunch from deep inside, then silence and a smell of hot toner. Jammed.",
+            "The rollers freeze and seize on a cold winter sheet, flashing the red lamp: PAPER JAM — FROZEN.",
+            "A torn page catches on the feed, ripping into ribbons as the lamp blazes red: PAPER JAM — TORN.",
+            "A loose sheet slips into the gears, the jam alarm chirps, and the lamp flashes: PAPER JAM — LOOSE SHEET.",
+            "Spilled toner clings to the rollers, forming a sticky patch that stops the feed; the red lamp glows: TONER JAM — STICKY.",
+            "A faint burnt smell rises as the heated drum overheats, halting the paper; the lamp shines red: PAPER JAM — BURNED.",
+            "A heavy envelope wedges the rollers with a thump, the red lamp flickers: PAPER JAM — ENVELOPE.",
             "The jam alarm chirps: PAPER JAM \u2014 TRAY FULL. Of course it does.",
             "A thud echoes as the rollers stall. Red lamp blinks: JAM DETECTED \u2014 CLEAR MANUALLY.",
         };

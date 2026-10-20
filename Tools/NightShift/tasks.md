@@ -1797,10 +1797,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Vector3 knobPos = new Vector3(left ? -0.04f : 0.04f, 0.11f, 0.07f);`
   `m.Cylinder(knobPos, 0.015f, 0.02f, 8, DecorPalette.Metal(new Color(0.20f, 0.20f, 0.20f)), Quaternion.identity, 1f, false);`
   The knob is ~0.015 m radius × 0.02 m height, placed on the front face slightly above centre, giving a period‑correct visual detail without affecting colliders or interaction.
-- [ ] Append six new jam‑description strings to the `Jams` array in Assets/Scripts/World/Fixtures/RaidStoreCopier.cs
+- [x] Append six new jam‑description strings to the `Jams` array in Assets/Scripts/World/Fixtures/RaidStoreCopier.cs
   Use the existing entry `"Halfway through, the rollers clunk and stop. A red lamp blinks: PAPER JAM — AREA B. Of course it does."` as the style reference.
   Each new entry must be a single complete sentence in quotes, describing a different jam scenario that fits the 1993 rural Kentucky winter setting (e.g., frozen rollers, toner spill, paper torn, jam alarm chirp, jam caused by a loose sheet, jam with a faint burnt smell).
   Do not modify any other code; keep the array name, ordering, and surrounding commas unchanged.
+  - 06:45 landed by hts-llm in 4.7 min: Changed **Assets/Scripts/World/Fixtures/RaidStoreCopier.cs** – expanded the `Jams` array with six new jam‑description strings that match the
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/BasinFixture.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
