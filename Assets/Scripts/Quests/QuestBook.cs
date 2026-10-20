@@ -448,6 +448,8 @@ namespace CloneZ
     {
         private Text _text;
         private float _next;
+        // Reused StringBuilder to avoid per‑second allocations.
+        private readonly StringBuilder _sb = new StringBuilder();
 
         public static HudQuestTracker Create()
         {
@@ -464,15 +466,18 @@ namespace CloneZ
             _next = Time.unscaledTime + 1f;
             CharacterProfile c = ProfileStore.ActiveCharacter;
             if (c == null) { _text.text = ""; return; }
-            var sb = new StringBuilder();
+            _sb.Clear();
             int n = 0;
-            foreach (QuestState q in c.Quests)
+            // Use a for‑loop to avoid per‑iteration allocation of the enumerator.
+            var quests = c.Quests;
+            for (int i = 0; i < quests.Count; i++)
             {
+                var q = quests[i];
                 if (q.Status != QuestState.Active || n >= 3) continue;
-                sb.Append(QuestBook.Summary(q)).Append('\n');
+                _sb.Append(QuestBook.Summary(q)).Append('\n');
                 n++;
             }
-            _text.text = sb.ToString();
+            _text.text = _sb.ToString();
         }
     }
 }

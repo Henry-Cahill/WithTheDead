@@ -2476,7 +2476,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 09:53 landed by hts-llm in 1.1 min: **Changed**
 - [x] Add a small “blood‑splotch” detail to each zombie in Assets/Scripts/Zombies/ZombieAI.cs inside the `Configure(ZombieType type)` method, using the same deterministic random source as the existing rust patches, to give the zombie’s face a gritty, period‑appropriate wound‑mark.
   - 09:56 landed by hts-llm in 2.8 min: **Changed**
-- [ ] Reduce per‑second allocations in `HudQuestTracker.Update` (Assets/Scripts/Quests/QuestBook.cs) by reusing a `StringBuilder` and iterating the quest list without a `foreach`.
+- [x] Reduce per‑second allocations in `HudQuestTracker.Update` (Assets/Scripts/Quests/QuestBook.cs) by reusing a `StringBuilder` and iterating the quest list without a `foreach`.
+  - 09:59 landed by hts-llm in 2.7 min: **Changed files**
 - [ ] In Assets/Scripts/World/Fixtures/RadioFixture.cs: Add a “Tune to the previous station” action to RadioFixture.GetActions and implement its handler.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/GroundItemRenderer.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
