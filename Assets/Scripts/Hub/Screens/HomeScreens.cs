@@ -383,6 +383,12 @@ namespace CloneZ
             ("Radio static lore", "Fragments crackle over static: “… stash at the old well …”, “… raid incoming east …”, “… supply drop near the power line …”. Those hints point to hidden loot or looming threats."),
             ("Fire‑making tips", "Gather dry twigs, pine bark and small branches; strike flint for sparks, then coax a flame with pine resin for a longer burn. In winter the resin fuels fire when wood is scarce."),
             ("Old maps", "Hand‑drawn maps in the bar show safe routes, fresh water sources, and marked danger zones; study them before venturing out to avoid ambushes."),
+            ("Thin ice warning", "Thin ice on the riverbank; tread carefully or you’ll plunge into icy water."),
+            ("Fuel shortage", "Fuel shortages hit the town; the pumps are sputtering and the lights flicker."),
+            ("Wardens near power line", "Wardens spotted near the south power line; stay clear until they move."),
+            ("Mold warning", "Mold kills faster than the cold; keep food sealed and dry."),
+            ("Bar graffiti fire", "Keep the fire burning, the night watches."),
+            ("Hunting handbook", "Deer tracks are clearer after fresh snow; follow the prints for a good hunt."),
         };
 
         protected override void BuildContent()

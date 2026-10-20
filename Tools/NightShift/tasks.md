@@ -3307,7 +3307,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   · Unsubscribe in `OnDestroy()` with `if (_limbs != null) _limbs.Changed -= RefreshBleedingCache;`.
   · The player’s HUD appearance stays identical; only the per‑frame call to `IsBleedingOn` is eliminated, reducing allocations and CPU work.
   - 13:30 landed by hts-llm in 4.4 min: **Changes made**
-- [ ] Append six new world‑text entries to the `Pages` array in `ManualScreen` (Assets/Scripts/Hub/Screens/HomeScreens.cs), adding them after the existing final entry `("Old maps", "Hand‑drawn maps in the bar show safe routes, fresh water sources, and marked danger zones; study them before venturing out to avoid ambushes.")`.
+- [x] Append six new world‑text entries to the `Pages` array in `ManualScreen` (Assets/Scripts/Hub/Screens/HomeScreens.cs), adding them after the existing final entry `("Old maps", "Hand‑drawn maps in the bar show safe routes, fresh water sources, and marked danger zones; study them before venturing out to avoid ambushes.")`.
   Use the existing entry `("Old maps", "Hand‑drawn maps …")` as the style reference – each new entry should be a single‑sentence `body` string written in the same terse, period‑correct voice, describing a piece of in‑world text the survivor might find (notes, graffiti, broadcast snippets, or item descriptions).
   The six new entries should cover:
   a warning scribbled on a fence about “thin ice on the riverbank”;
@@ -3316,6 +3316,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   a hastily‑drawn note left in a pantry warning “Mold kills faster than cold”;
   a piece of graffiti inside the bar reading “Keep the fire burning, the night watches”;
   an old hunting handbook excerpt stating “Deer tracks are clearer after fresh snow”.
+  - 13:32 landed by 0htsserver in 3 min: **Changes made**
 - [ ] Add a small metal door‑knob to Fridge containers built in `LootContainer.Spawn` (Assets/Scripts/Items/LootContainer.cs)
   In the `Spawn` method, after the existing front‑handle block, insert a new conditional that uses the same `rng` (seed 1994) to add a knob with 50 % chance `if (type == ContainerType.Fridge && rng.NextDouble() < 0.5)`
   Create a primitive cylinder, name it `"Knob"`, parent it to `go.transform` (the container box), and set:
