@@ -106,6 +106,10 @@ namespace CloneZ
             into.Add(_flagUp
                 ? new InteractAction("Lower the flag", c => SetFlag(c, false))
                 : new InteractAction("Raise the flag", c => SetFlag(c, true)));
+            // New lightweight inspection action
+            into.Add(new InteractAction("Inspect the mailbox", ctx => {
+                ctx.Notify($"Mailbox is {(_open ? "open" : "closed")}, flag is {(_flagUp ? "up" : "down")}, {(_read < Come ? $"{Come - _read} unread letters." : "no more mail.")}");
+            }));
         }
 
         // Reading the oldest unread delivery: the door drops open and the letter's lines come up one by one.

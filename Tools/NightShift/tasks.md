@@ -451,10 +451,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   If the asset can change at runtime (unlikely), add a cheap check at the start of LateUpdate: `if (_urpAsset != UniversalRenderPipeline.asset) _urpAsset = UniversalRenderPipeline.asset;`.
   No visual change: the rendering‑layer logic and shadow‑hiding behaviour remain identical.
   This removes the per‑frame native‑side lookup of UniversalRenderPipeline.asset, reducing allocations and CPU time.
-- [ ] Add a lightweight “Inspect the mailbox” action to Assets/Scripts/World/Fixtures/MailboxFixture.cs by editing the GetActions method; copy the existing flag‑toggle action line as a template, change its label and logic so it simply reports the mailbox’s current open state, flag state, and how many unread deliveries remain (or that there’s no more mail).
+- [x] Add a lightweight “Inspect the mailbox” action to Assets/Scripts/World/Fixtures/MailboxFixture.cs by editing the GetActions method; copy the existing flag‑toggle action line as a template, change its label and logic so it simply reports the mailbox’s current open state, flag state, and how many unread deliveries remain (or that there’s no more mail).
   In GetActions insert after the flag‑toggle block: `into.Add(new InteractAction("Inspect the mailbox", ctx => { ctx.Notify($"Mailbox is {(_open ? "open" : "closed")}, flag is {(_flagUp ? "up" : "down")}, {(_read < Come ? $"{Come - _read} unread letters." : "no more mail.")}"); }));`
   Keep the existing actions (“Check the mail”, “Close the mailbox”, raise/lower flag) untouched.
   No new fields, UI screens, or assets are required; the player will now see a descriptive message when selecting “Inspect the mailbox”.
+  - 23:35 landed by hts-llm in 1.5 min: **Changed**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/DecorMaterials.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
