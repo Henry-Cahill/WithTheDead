@@ -923,3 +923,12 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/TooltipTrigger.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Modify Assets/Scripts/UI/InventoryUIController.List.cs to add a subtle “bolt” trim on every inventory row for visual depth.
+  In the `NewRow` method, after the line `var img = go.AddComponent<Image>();` insert a new 4 × 4 pixel image as a decorative bolt on the right edge of the row background.
+  `// tiny bolt decoration, adds a bit of worn‑metal detail to each row`
+  `NewImage(rt, "Bolt",`
+  `new Vector2(1f, 0.5f), // anchored to the right‑center of the row`
+  `new Vector2(-6f, 0f), // inset 6 px from the right edge`
+  `new Vector2(4f, 4f), // size of the bolt`
+  `new Color(0.58f, 0.55f, 0.52f, 0.85f)); // muted metal tint, matches existing UI palette`
+  The bolt uses the same `NewImage` helper, keeps the existing layout (no change to anchors, pivots, or colliders), and adds only one primitive (well under the 12‑primitive limit). It gives each entry a period‑appropriate hardware hint without affecting functionality.
