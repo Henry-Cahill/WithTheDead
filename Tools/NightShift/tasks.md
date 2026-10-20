@@ -1722,3 +1722,14 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Fix the road‑gap logic in `Assets/Scripts/World/RaidMapBuilder.Streets.cs` → method `Road`
   The two `Slab` calls that run when `!ownsCrossing && b > -hw && a < hw` use `-hw` and `hw` as the end‑along‑road parameters (`b`) instead of as the across‑road limits (`c0`, `c1`). This cuts out a long segment of the street (about 8 m) at every crossing where the road does not own the intersection, leaving a visible hole that breaks navigation and looks wrong.
   Replace the two calls with slabs that keep the original `a` → `b` range and split only the across‑road side, e.g.:
+- [ ] Cache the Bolt’s Collider instead of calling `GetComponent<Collider>()` each frame in `Bolt.Update` and in `Bolt.Fling` (Assets/Scripts/Zone/Bolts.cs)
+  Add a private `Collider _col;` field to the class.
+  In `Bolt.Throw` after creating the sphere collider, assign it to the new field: `b._col = col;`.
+  Replace `GetComponent<Collider>()` in `Update` with the cached `_col`.
+  Replace the `GetComponent<Collider>()` call in `Fling` with `_col`.
+  The collider will still be disabled/enabled exactly as before, so the bolt’s visual and physical behaviour is unchanged.
+  This eliminates per‑frame `GetComponent` allocations, reducing garbage and CPU load without affecting what the player sees.
+- [ ] Modify Assets/Scripts/World/Fixtures/KitchenStove.cs to add a “Light all burners” action.
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Content/ContentRegistry.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
