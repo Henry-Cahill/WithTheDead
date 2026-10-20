@@ -162,7 +162,8 @@ namespace CloneZ
             panel.AddComponent<Image>().color = new Color(0.07f, 0.08f, 0.10f, 0.97f);
             UITheme.AddTopAccent(prt, accent, 4f);
             // Add a subtle metal border on all four edges to give a worn wooden/metal board feel.
-            AddBorder(prt, new Color(0.25f, 0.27f, 0.30f, 0.9f), 3f);
+
+            AddRivets(prt, new Color(0.12f, 0.12f, 0.12f, 1f), 6f);
 
             var top = new Vector2(0.5f, 1f);
             Label(prt, "Caption", top, new Vector2(0f, -22f), new Vector2(1000f, 24f), 17, TextAnchor.MiddleCenter, AmberText)
@@ -321,7 +322,59 @@ namespace CloneZ
             imgRight.color = color;
             imgRight.raycastTarget = false;
         }
-        private Text Label(RectTransform parent, string name, Vector2 anchor, Vector2 pos, Vector2 size, int fontSize, TextAnchor align, Color color)
+        // Add tiny dark rivet squares at each corner to suggest a worn metal‑framed board.
+
+        private static void AddRivets(RectTransform panel, Color color, float size = 6f)
+        {
+            if (panel == null) return;
+            // Top‑Left
+            var tl = new GameObject("RivetTL");
+            var rtTL = tl.AddComponent<RectTransform>();
+            rtTL.SetParent(panel, false);
+            rtTL.anchorMin = rtTL.anchorMax = new Vector2(0f, 1f);
+            rtTL.pivot = new Vector2(0f, 1f);
+            rtTL.anchoredPosition = Vector2.zero;
+            rtTL.sizeDelta = new Vector2(size, size);
+            var imgTL = tl.AddComponent<Image>();
+            imgTL.color = color;
+            imgTL.raycastTarget = false;
+
+            // Top‑Right
+            var tr = new GameObject("RivetTR");
+            var rtTR = tr.AddComponent<RectTransform>();
+            rtTR.SetParent(panel, false);
+            rtTR.anchorMin = rtTR.anchorMax = new Vector2(1f, 1f);
+            rtTR.pivot = new Vector2(1f, 1f);
+            rtTR.anchoredPosition = Vector2.zero;
+            rtTR.sizeDelta = new Vector2(size, size);
+            var imgTR = tr.AddComponent<Image>();
+            imgTR.color = color;
+            imgTR.raycastTarget = false;
+
+            // Bottom‑Left
+            var bl = new GameObject("RivetBL");
+            var rtBL = bl.AddComponent<RectTransform>();
+            rtBL.SetParent(panel, false);
+            rtBL.anchorMin = rtBL.anchorMax = new Vector2(0f, 0f);
+            rtBL.pivot = new Vector2(0f, 0f);
+            rtBL.anchoredPosition = Vector2.zero;
+            rtBL.sizeDelta = new Vector2(size, size);
+            var imgBL = bl.AddComponent<Image>();
+            imgBL.color = color;
+            imgBL.raycastTarget = false;
+
+            // Bottom‑Right
+            var br = new GameObject("RivetBR");
+            var rtBR = br.AddComponent<RectTransform>();
+            rtBR.SetParent(panel, false);
+            rtBR.anchorMin = rtBR.anchorMax = new Vector2(1f, 0f);
+            rtBR.pivot = new Vector2(1f, 0f);
+            rtBR.anchoredPosition = Vector2.zero;
+            rtBR.sizeDelta = new Vector2(size, size);
+            var imgBR = br.AddComponent<Image>();
+            imgBR.color = color;
+            imgBR.raycastTarget = false;
+        }        private Text Label(RectTransform parent, string name, Vector2 anchor, Vector2 pos, Vector2 size, int fontSize, TextAnchor align, Color color)
         {
             var go = new GameObject(name);
             var rt = go.AddComponent<RectTransform>();
