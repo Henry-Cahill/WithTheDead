@@ -163,7 +163,7 @@ namespace CloneZ
             if (h != null) sub = h.Loadout.Id + "|" + (h.Gun != null ? h.Gun.Id : "");
             using (var o = new NetOut(128))
             {
-                o.U(a.NetId).By(KindCode(a)).By((byte)a.Kind).S(sub).S(a.Faction).S(a.DisplayName).I((int)a.NetId * 7919);
+                o.U(a.NetId).By(KindCode(a)).By((byte)a.Kind).S(sub).S(a.Faction).S(a.DisplayName).I((int)(a.NetId * 7919u));
                 NetSession.SendTo(client, "cz.aispawn", o);
             }
         }
