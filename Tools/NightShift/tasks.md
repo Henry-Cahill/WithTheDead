@@ -824,7 +824,7 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a small metal knob to the kitchen upper cabinets built in `RaidLayouts.Ranch` (Assets/Scripts/World/RaidLayoutsHomes.cs)
   After the line `b.UpperCabinets(kitchen, 'S', 1.72f, 1.1f, FurnitureBuilder.HomeCabinetPaint);` insert a primitive box that represents a cabinet knob.
   Use the existing deterministic RNG (`rng`) to vary the knob’s horizontal offset and colour:
-- [ ] Add four small metal bolt cylinders to the `WeaponRack(RaidMesh m, System.Random r)` builder in Assets/Scripts/World/RaidLayouts.cs so the rack’s wooden frame shows mounting hardware.
+- [x] Add four small metal bolt cylinders to the `WeaponRack(RaidMesh m, System.Random r)` builder in Assets/Scripts/World/RaidLayouts.cs so the rack’s wooden frame shows mounting hardware.
   Insert after the line `m.Box(new Vector3(0f, 0.25f, 0f), Sz(1.9f, 0.08f, 0.3f), wood);` the following primitives:
   `// mounting bolts`
   `var boltMat = DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f));`
@@ -832,6 +832,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Vector3[] boltPos = { new Vector3(-0.95f, 0.41f, 0.05f), new Vector3(-0.95f, 0.41f, -0.05f), new Vector3(0.95f, 0.41f, 0.05f), new Vector3(0.95f, 0.41f, -0.05f) };`
   `foreach (var p in boltPos) m.Cylinder(p, boltRadius, boltHeight, 8, boltMat);`
   Each cylinder is 0.015 m radius, 0.02 m tall, placed on the lower‑side of the two vertical posts to suggest realistic mounting screws. No collider or interaction changes are needed; the added primitives use existing materials and the deterministic random source is unchanged.
+  - 01:16 landed by hts-llm in 2.5 min: **Changed file**
 - [ ] Add a “Check window” action to Assets/Scripts/World/Fixtures/HomeWindow.cs — in `Awake()` set `_checkAct = c => CheckWindow(c);`, add a private `void CheckWindow(InteractContext ctx)` that builds a short status string from `_open`, `_latched` and `_drawn` (e.g. “The window is open, latched, and the curtains are drawn.”) and calls `ctx.Notify` with it; then insert `into.Add(new InteractAction("Check window", _checkAct));` inside the `if (inside)` block of `GetActions` (after the curtain action). This gives the survivor a quick way to see the window’s current state without changing anything else.
 - [ ] Append four new Kentucky‑winter themed trait entries to the `ProfessionCatalog.Traits` list in Assets/Scripts/Profile/ProfessionCatalog.cs; add them inside the `new List<TraitDef> { … }` initializer after the existing entries.
   Use the style of the existing entry `T("strong", "Strong", 4, "Carry 20% more.", m => m.CarryCapacity *= 1.2f, "weak")`.

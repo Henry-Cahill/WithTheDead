@@ -238,6 +238,11 @@ namespace CloneZ
             m.Box(new Vector3(-0.95f, 0.8f, -0.1f), Sz(0.06f, 1.6f, 0.1f), wood);
             m.Box(new Vector3(0.95f, 0.8f, -0.1f), Sz(0.06f, 1.6f, 0.1f), wood);
             m.Box(new Vector3(0f, 0.25f, 0f), Sz(1.9f, 0.08f, 0.3f), wood);
+            // mounting bolts
+            var boltMat = DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f));
+            float boltRadius = 0.015f; float boltHeight = 0.02f;
+            Vector3[] boltPos = { new Vector3(-0.95f, 0.41f, 0.05f), new Vector3(-0.95f, 0.41f, -0.05f), new Vector3(0.95f, 0.41f, 0.05f), new Vector3(0.95f, 0.41f, -0.05f) };
+            foreach (var p in boltPos) m.Cylinder(p, boltRadius, boltHeight, 8, boltMat);
             m.Box(new Vector3(0f, 1.3f, -0.08f), Sz(1.9f, 0.06f, 0.12f), wood);
             int guns = r.Next(2, 6);
             for (int i = 0; i < guns; i++)
