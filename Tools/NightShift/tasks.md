@@ -3325,7 +3325,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Copy the container’s material to the knob the same way the front‑handle does (`rend.sharedMaterial = go.GetComponent<Renderer>().sharedMaterial;`).
   This adds a period‑appropriate metal knob to frozen‑food fridges, giving them a bit more visual detail while respecting the existing deterministic random source and staying within the ≤ 12‑primitive limit.
   - 13:33 landed by hts-llm in 2.2 min: **Summary**
-- [ ] Fix the LOS‑light cookie never producing fully transparent pixels in Assets/Scripts/Rendering/VisionAssets.cs (method `VisionCookie`).
+- [x] Fix the LOS‑light cookie never producing fully transparent pixels in Assets/Scripts/Rendering/VisionAssets.cs (method `VisionCookie`).
+  - 13:35 landed by 0htsserver in 3.4 min: **Changed files**
 - [ ] Add a narrow “worn‑seam” line to the inventory window panel in Assets/Scripts/UI/InventoryUIController.cs, method Build()
   After the call `UITheme.AddTopAccent(_window, new Color(0.5f, 0.68f, 0.9f, 0.6f));` create a child `RectTransform` named “SeamTop”.
   Set its parent to `_window`, anchor‑min/‑max = `(0f,1f)`, pivot = `(0.5f,1f)`, anchored‑position = `Vector2.zero`, sizeDelta = `new Vector2(WinW - 40f, 2f)`.
