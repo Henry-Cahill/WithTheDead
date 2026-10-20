@@ -2333,7 +2333,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `into.Add(new InteractAction("Inspect seat", c => c.Notify($"This seat feels {(int)(_comfort * 100)}% comfortable.")));`
   The new action appears only when the player is standing, letting them read a short message about the seat’s comfort; no other behavior changes.
   - 09:10 landed by hts-llm in 1.3 min: **Changed:** `Assets/Scripts/World/Fixtures/SeatFixture.cs` – added an “Inspect seat” action after the existing sit action. The new action d
-- [ ] Append six new entries to the `CivicDialLines` array in Assets/Scripts/World/RaidBuilding.Civic.cs
+- [x] Append six new entries to the `CivicDialLines` array in Assets/Scripts/World/RaidBuilding.Civic.cs
   Insert the following quoted strings after the last existing line (after `"You try a birthday, then 1-2-3-4. Nothing — not that it matters: the bolts are already drawn back."`):
   `"The dial spins with a faint whir; a half‑written note beside it reads “Set to 12‑03‑87 for the generator.”"`
   `"A scrawl in faded ballpoint ink says “Emergency: keep dial on 4‑7‑1 during storms.”"`
@@ -2342,6 +2342,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `"You hear a hollow thump; the dial bears a rust‑stained label: “Keep at 0 for night‑shift power‑down.”"`
   `"A smear of oil covers the edge; the last scribble reads “Rotate clockwise to reset HVAC.”"`
   These entries keep the terse, present‑tense, period‑appropriate tone of the existing lines and expand the variety of cryptic notes a survivor might find on the dial.
+  - 09:12 landed by hts-llm in 1.6 min: **Changed**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Player/PlayerCombat.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
