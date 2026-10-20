@@ -475,7 +475,7 @@ namespace CloneZ
             m.Box(new Vector3(-0.205f, ym, z), new Vector3(0.426f, h, 0.008f), glass);
             // Thin matte‑black rubber gasket strips on each side of the shower door
             m.Box(new Vector3(-0.210f, ym, z), new Vector3(0.002f, h, 0.01f), M(new Color(0.07f, 0.07f, 0.07f)));
-            m.Box(new Vector3(0.226f, ym, z), new Vector3(0.002f, h, 0.01f), M(new Color(0.07f, 0.07f, 0.07f)));
+            m.Box(new Vector3(0.013f, ym, z), new Vector3(0.002f, h, 0.01f), M(new Color(0.07f, 0.07f, 0.07f)));
 
             m.Box(new Vector3(-0.424f, ym, z), new Vector3(0.012f, h, 0.016f), chrome);
             m.Box(new Vector3(0.014f, ym, z), new Vector3(0.012f, h, 0.016f), chrome);

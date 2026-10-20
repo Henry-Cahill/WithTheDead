@@ -54,7 +54,7 @@ namespace CloneZ
                         // offset outward by half the post width (0.045 m) so it sits on the front surface
                         fence.Solid.Box(
                             post + Vector3.up * 0.9f + normal * 0.045f,
-                            new Vector3(0.08f, 0.02f, 0.001f),
+                            new Vector3(side % 2 == 0 ? 0.08f : 0.001f, 0.02f, side % 2 == 0 ? 0.001f : 0.08f),
                             ZoneKit.Mt(ZoneKit.RustDark));
                     }
                     fence.Upper.Box(c + Vector3.up * 1.2f, side % 2 == 0 ? new Vector3(SegLen, 2.2f, 0.02f) : new Vector3(0.02f, 2.2f, SegLen), ZoneKit.ChainLink);

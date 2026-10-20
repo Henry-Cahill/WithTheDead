@@ -62,6 +62,7 @@ namespace CloneZ
 
             // The illness runs its course over time; sleeping it off is quicker.
             float decay = CloneZConfig.SicknessDecayPerSec;
+if (_sleepCache == null) _sleepCache = GetComponent<PlayerSleep>();
             if (_sleepCache != null && _sleepCache.IsSleeping) decay *= CloneZConfig.SicknessSleepMult;
             _stats.Sickness = Mathf.Max(0f, _stats.Sickness - decay * dt);
 

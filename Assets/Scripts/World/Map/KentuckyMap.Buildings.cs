@@ -1,0 +1,338 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+namespace CloneZ
+{
+    // The real-world map's buildings, from their mapped footprints. Inside the playable square each is enterable: walls
+    // with colliders up to the ground floor's ceiling, a door in the wall facing the nearest street, windows, a floor,
+    // loot to suit what the building is, and shelter from the weather; the upper storeys, the ceiling and the snowy
+    // roof go on the overhead root, so the isometric view looks into the rooms as it does in the procedural town.
+    // Past the edge they are scenery: whole and roofed, without colliders.
+    public static partial class KentuckyMap
+    {
+        private const float GroundStorey = 3.0f;   // ground-floor walls (with colliders) stop here
+        private const float CeilingY = 2.85f;
+        private const float Storey = 3.0f;
+        private const float Thick = 0.22f;
+        private const float DoorWidth = 1.3f;
+        private const float DoorHeight = 2.15f;
+        private const int MaxContainers = 450;
+
+        private static readonly Color[] SidingColors =
+        {
+            new Color(0.86f, 0.84f, 0.76f), new Color(0.80f, 0.82f, 0.80f), new Color(0.70f, 0.76f, 0.80f),
+            new Color(0.74f, 0.76f, 0.66f), new Color(0.82f, 0.76f, 0.62f), new Color(0.92f, 0.92f, 0.90f),
+            new Color(0.62f, 0.66f, 0.62f),
+        };
+
+        private static readonly Color[] BrickColors =
+        {
+            new Color(0.56f, 0.30f, 0.24f), new Color(0.62f, 0.36f, 0.28f), new Color(0.48f, 0.28f, 0.24f),
+            new Color(0.66f, 0.50f, 0.40f),
+        };
+
+        private static Surf Glass => DecorPalette.Gloss(new Color(0.08f, 0.09f, 0.11f));
+
+        private static void BuildBuildings(Site site)
+        {
+            float half = site.Half;
+            var square = Rect.MinMaxRect(-half, -half, half, half);
+            foreach (Footprint f in site.Area.Buildings)
+            {
+                if (f.Pts.Count < 3 || f.Size < 6f) continue;
+                var rng = new System.Random(unchecked((int)f.Data.id) ^ 0x51ED);
+                if (f.Inside(half, 1f))
+                {
+                    Enterable(site, f, rng);
+                    site.Buildings++;
+                }
+                else if (!f.Bounds.Overlaps(square))
+                {
+                    Scenery(site, f, rng);
+                    site.SceneryBuildings++;
+                }
+                // A building the edge cuts through is left out: half a house at the edge would look broken.
+            }
+        }
+
+        private static void Enterable(Site site, Footprint f, System.Random rng)
+        {
+            MapBuilding b = f.Data;
+            float height = b.kind == "ruin" ? 1.6f : HeightOf(b);
+            Surf outside = ExteriorOf(b, rng);
+            if (b.kind == "canopy")
+            {
+                Canopy(site, f, outside);
+                return;
+            }
+            List<Vector2> p = f.Pts;
+            int door = DoorEdge(site, f);
+            Vector2 doorPoint = new Vector2(float.MaxValue, float.MaxValue);
+            float groundTop = Mathf.Min(height, GroundStorey);
+            for (int i = 0; i < p.Count; i++)
+            {
+                Vector2 a = p[i], c = p[(i + 1) % p.Count];
+                float len = Vector2.Distance(a, c);
+                if (len < 0.05f) continue;
+                Vector2 d = (c - a) / len, outward = new Vector2(d.y, -d.x);   // anticlockwise ring: outside is right
+                float yaw = -Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
+                Vector2 inset = -outward * (Thick * 0.5f);   // the wall stands just inside the mapped outline
+                if (i == door)
+                {
+                    float d0 = len * 0.5f - DoorWidth * 0.5f, d1 = len * 0.5f + DoorWidth * 0.5f;
+                    Wall(site, a, d, inset, -Thick * 0.5f, d0, 0f, groundTop, yaw, outside, true);
+                    Wall(site, a, d, inset, d1, len + Thick * 0.5f, 0f, groundTop, yaw, outside, true);
+                    Wall(site, a, d, inset, d0, d1, DoorHeight, groundTop, yaw, outside, true);
+                    doorPoint = a + d * (len * 0.5f);
+                    site.Take(doorPoint + outward * 1.2f, 1.1f);   // keep the doorstep clear of props
+                }
+                else Wall(site, a, d, inset, -Thick * 0.5f, len + Thick * 0.5f, 0f, groundTop, yaw, outside, true);
+                if (height > groundTop)
+                    Wall(site, a, d, inset, -Thick * 0.5f, len + Thick * 0.5f, groundTop, height, yaw, outside, false);
+                if (b.kind != "ruin" && b.kind != "silo") Windows(site, a, d, outward, len, height, i == door ? len * 0.5f : -1f);
+            }
+
+            List<int> tris = MapGeometry.Triangulate(p);
+            Vector3 middle = To3(f.Middle, 0f);
+            RaidMesh floor = site.Town.Out.Flat(middle);
+            RaidMesh over = site.Overhead.At(middle);
+            Surf floorSurf = FloorOf(b, rng);
+            float ceiling = Mathf.Min(CeilingY, height - 0.05f);
+            bool roofed = b.kind != "ruin";
+            for (int t = 0; t + 2 < tris.Count; t += 3)
+            {
+                Vector2 A = p[tris[t]], B = p[tris[t + 1]], C = p[tris[t + 2]];
+                floor.Tri(To3(A, 0.02f), To3(B, 0.02f), To3(C, 0.02f), floorSurf);   // face up; the navmesh covers it
+                if (!roofed) continue;
+                over.Tri(To3(A, height), To3(B, height), To3(C, height), DecorMaterials.Snow);   // the snowy roof
+                over.Tri(To3(A, ceiling), To3(C, ceiling), To3(B, ceiling), DecorMaterials.Ceiling);   // face down
+            }
+            if (roofed)
+                Shelter.Register(new Bounds(new Vector3(f.Bounds.center.x, GroundStorey * 0.5f, f.Bounds.center.y),
+                    new Vector3(Mathf.Max(0.5f, f.Bounds.width - 0.4f), GroundStorey, Mathf.Max(0.5f, f.Bounds.height - 0.4f))));
+            site.Take(f.Bounds);
+            if (door >= 0) Loot(site, f, rng, doorPoint);
+        }
+
+        private static void Wall(Site site, Vector2 a, Vector2 d, Vector2 inset, float s0, float s1, float y0, float y1,
+            float yaw, in Surf surf, bool solid)
+        {
+            float len = s1 - s0, h = y1 - y0;
+            if (len < 0.02f || h < 0.02f) return;
+            Vector2 c = a + d * ((s0 + s1) * 0.5f) + inset;
+            var center = new Vector3(c.x, (y0 + y1) * 0.5f, c.y);
+            var size = new Vector3(len, h, Thick);
+            if (solid)
+            {
+                site.Town.Out.Solid(center).Box(center, size, yaw, surf);
+                site.Town.PropCollider(center, size, yaw);
+            }
+            else site.Overhead.At(center).Box(center, size, yaw, surf);
+        }
+
+        // Dark panes about every 3.2 m along a wall, on every storey, clear of the door.
+        private static void Windows(Site site, Vector2 a, Vector2 d, Vector2 outward, float len, float height, float doorAt)
+        {
+            if (len < 2.4f) return;
+            int count = Mathf.Max(1, Mathf.FloorToInt(len / 3.2f));
+            float step = len / count;
+            Vector3 normal = To3(outward, 0f);
+            for (int k = 0; k < count; k++)
+            {
+                float s = step * (k + 0.5f);
+                if (doorAt >= 0f && Mathf.Abs(s - doorAt) < 1.5f) continue;
+                Vector2 at = a + d * s + outward * 0.012f;
+                for (float y = 1.55f; y + 0.7f < height; y += Storey)
+                {
+                    Vector3 c = To3(at, y);
+                    RaidMesh m = y < GroundStorey ? site.Town.Out.Solid(c) : site.Overhead.At(c);
+                    m.Upright(c, normal, 1.0f, 1.15f, Glass);
+                }
+            }
+        }
+
+        // A gas-station or drive-through canopy: posts with colliders, and the roof overhead.
+        private static void Canopy(Site site, Footprint f, in Surf posts)
+        {
+            const float top = 4.2f;
+            int step = Mathf.Max(1, f.Pts.Count / 4);
+            for (int i = 0; i < f.Pts.Count; i += step)
+            {
+                Vector2 at = Vector2.MoveTowards(f.Pts[i], f.Middle, 0.4f);
+                var center = To3(at, top * 0.5f);
+                var size = new Vector3(0.35f, top, 0.35f);
+                site.Town.Out.Solid(center).Box(center, size, posts);
+                site.Town.PropCollider(center, size, 0f);
+            }
+            List<int> tris = MapGeometry.Triangulate(f.Pts);
+            RaidMesh over = site.Overhead.At(To3(f.Middle, 0f));
+            for (int t = 0; t + 2 < tris.Count; t += 3)
+            {
+                Vector2 A = f.Pts[tris[t]], B = f.Pts[tris[t + 1]], C = f.Pts[tris[t + 2]];
+                over.Tri(To3(A, top), To3(B, top), To3(C, top), DecorMaterials.Snow);
+                over.Tri(To3(A, top - 0.25f), To3(C, top - 0.25f), To3(B, top - 0.25f), DecorPalette.Matte(new Color(0.82f, 0.82f, 0.80f)));
+            }
+        }
+
+        // Past the edge: whole walls and a snowy roof, no colliders, no floor.
+        private static void Scenery(Site site, Footprint f, System.Random rng)
+        {
+            float height = HeightOf(f.Data);
+            Surf outside = ExteriorOf(f.Data, rng);
+            RaidMesh m = site.Town.Far.Solid(To3(f.Middle, 0f));
+            List<Vector2> p = f.Pts;
+            for (int i = 0; i < p.Count; i++)
+            {
+                Vector2 a = p[i], c = p[(i + 1) % p.Count];
+                float len = Vector2.Distance(a, c);
+                if (len < 0.05f) continue;
+                Vector2 d = (c - a) / len, outward = new Vector2(d.y, -d.x);
+                Vector2 mid = (a + c) * 0.5f - outward * (Thick * 0.5f);
+                m.Box(To3(mid, height * 0.5f), new Vector3(len + Thick, height, Thick), -Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg, outside);
+            }
+            List<int> tris = MapGeometry.Triangulate(p);
+            for (int t = 0; t + 2 < tris.Count; t += 3)
+                m.Tri(To3(p[tris[t]], height), To3(p[tris[t + 1]], height), To3(p[tris[t + 2]], height), DecorMaterials.Snow);
+        }
+
+        // The door goes in the longest wall facing the nearest street (or the longest wall, when none faces one);
+        // -1 when no wall is long enough for a door.
+        private static int DoorEdge(Site site, Footprint f)
+        {
+            Vector2 toStreet = NearestStreetDirection(site, f.Middle, 60f);
+            int best = -1;
+            float bestScore = 0f;
+            for (int i = 0; i < f.Pts.Count; i++)
+            {
+                Vector2 a = f.Pts[i], c = f.Pts[(i + 1) % f.Pts.Count];
+                float len = Vector2.Distance(a, c);
+                if (len < DoorWidth + 1.0f) continue;
+                Vector2 d = (c - a) / len, outward = new Vector2(d.y, -d.x);
+                float facing = toStreet == Vector2.zero ? 0.5f : Vector2.Dot(outward, toStreet);
+                float score = len * (facing > 0.3f ? 1f + facing : 0.25f);
+                if (score > bestScore)
+                {
+                    bestScore = score;
+                    best = i;
+                }
+            }
+            return best;
+        }
+
+        /// <summary>The unit direction from <paramref name="from"/> to the nearest street within
+        /// <paramref name="within"/> metres, or zero.</summary>
+        private static Vector2 NearestStreetDirection(Site site, Vector2 from, float within)
+        {
+            float best = within;
+            Vector2 dir = Vector2.zero;
+            foreach (Street s in site.Area.Streets)
+            {
+                if (s.Data.tunnel) continue;
+                for (int i = 0; i + 1 < s.Pts.Count; i++)
+                {
+                    Vector2 a = s.Pts[i], ab = s.Pts[i + 1] - a;
+                    float t = ab.sqrMagnitude > 1e-6f ? Mathf.Clamp01(Vector2.Dot(from - a, ab) / ab.sqrMagnitude) : 0f;
+                    Vector2 to = a + ab * t - from;
+                    float dist = to.magnitude;
+                    if (dist >= best || dist < 1e-3f) continue;
+                    best = dist;
+                    dir = to / dist;
+                }
+            }
+            return dir;
+        }
+
+        // A few containers to suit the building, standing clear of the walls, of each other and of the door.
+        private static void Loot(Site site, Footprint f, System.Random rng, Vector2 doorPoint)
+        {
+            ContainerType[] kinds = ContainersFor(f.Data);
+            int count = Mathf.Clamp(Mathf.RoundToInt(f.Size / 45f), 1, 5);
+            var placed = new List<Vector2>(count);
+            for (int i = 0; i < count && site.Containers < MaxContainers; i++)
+            {
+                for (int attempt = 0; attempt < 14; attempt++)
+                {
+                    var at = new Vector2(Mathf.Lerp(f.Bounds.xMin, f.Bounds.xMax, (float)rng.NextDouble()),
+                        Mathf.Lerp(f.Bounds.yMin, f.Bounds.yMax, (float)rng.NextDouble()));
+                    if (!MapGeometry.Contains(f.Pts, at) || MapGeometry.DistanceToEdge(f.Pts, at) < 0.9f
+                        || Vector2.Distance(at, doorPoint) < 2f || placed.Exists(q => Vector2.Distance(q, at) < 1.3f)) continue;
+                    LootContainer.Spawn(site.Loot, kinds[rng.Next(kinds.Length)], To3(at, 0f), rng.Next());
+                    placed.Add(at);
+                    site.Containers++;
+                    break;
+                }
+            }
+        }
+
+        private static ContainerType[] ContainersFor(MapBuilding b)
+        {
+            string use = b.use ?? "";
+            if (use == "police") return new[] { ContainerType.GunLocker, ContainerType.Locker, ContainerType.Desk };
+            if (b.kind == "hospital" || use == "hospital" || use == "clinic" || use == "doctors" || use == "pharmacy" || use == "dentist")
+                return new[] { ContainerType.MedCabinet, ContainerType.Shelf, ContainerType.Desk };
+            if (use == "fire_station") return new[] { ContainerType.Locker, ContainerType.ToolBench };
+            if (use.StartsWith("shop:")) return new[] { ContainerType.Shelf, ContainerType.Shelf, ContainerType.Crate, ContainerType.Pantry };
+            switch (b.kind)
+            {
+                case "house": case "trailer": case "apartments": case "hotel":
+                    return new[] { ContainerType.Wardrobe, ContainerType.Pantry, ContainerType.Fridge, ContainerType.Desk };
+                case "retail": case "commercial":
+                    return new[] { ContainerType.Shelf, ContainerType.Crate, ContainerType.Pantry };
+                case "office": case "civic": case "school": case "church":
+                    return new[] { ContainerType.Desk, ContainerType.Locker, ContainerType.Shelf };
+                default:
+                    return new[] { ContainerType.Crate, ContainerType.ToolBench, ContainerType.Locker };
+            }
+        }
+
+        /// <summary>The building's height in metres: as mapped, or from its storeys and kind.</summary>
+        private static float HeightOf(MapBuilding b)
+        {
+            if (b.height > 0f) return Mathf.Clamp(b.height, 2.6f, 90f);
+            float storeys = Mathf.Max(1, b.levels) * Storey;
+            switch (b.kind)
+            {
+                case "shed": case "garage": case "canopy": return 2.7f;
+                case "trailer": return 2.9f;
+                case "barn": return 6.5f;
+                case "warehouse": case "industrial": return Mathf.Max(storeys, 6.5f);
+                case "church": return storeys + 3.5f;
+                case "silo": return 14f;
+                default: return storeys + 0.4f;   // a parapet above the top storey
+            }
+        }
+
+        private static Surf ExteriorOf(MapBuilding b, System.Random rng)
+        {
+            switch (b.kind)
+            {
+                case "house": case "trailer":
+                    return DecorMaterials.WallExterior(ExteriorStyle.Siding, SidingColors[rng.Next(SidingColors.Length)]);
+                case "barn":
+                    return DecorMaterials.Planks(new Color(0.46f, 0.18f, 0.14f));
+                case "industrial": case "warehouse": case "silo": case "greenhouse":
+                    return DecorMaterials.Corrugated(new Color(0.56f, 0.58f, 0.60f));
+                case "garage": case "shed": case "ruin": case "canopy":
+                    return DecorMaterials.WallExterior(ExteriorStyle.CinderBlock, new Color(0.66f, 0.66f, 0.64f));
+                default:
+                    return rng.NextDouble() < 0.25
+                        ? DecorMaterials.WallExterior(ExteriorStyle.Stucco, new Color(0.80f, 0.78f, 0.72f))
+                        : DecorMaterials.WallExterior(ExteriorStyle.Brick, BrickColors[rng.Next(BrickColors.Length)]);
+            }
+        }
+
+        private static Surf FloorOf(MapBuilding b, System.Random rng)
+        {
+            switch (b.kind)
+            {
+                case "house": case "trailer": case "apartments": case "hotel":
+                    return DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f));
+                case "industrial": case "warehouse": case "garage": case "shed": case "barn": case "silo": case "ruin":
+                case "greenhouse":
+                    return DecorMaterials.Concrete;
+                default:
+                    return DecorMaterials.Linoleum(new Color(0.78f, 0.76f, 0.70f), new Color(0.60f, 0.58f, 0.54f), rng.NextDouble() < 0.4);
+            }
+        }
+    }
+}

@@ -617,6 +617,7 @@ namespace CloneZ
             "A clipped newspaper article titled ‘1993 snowstorm leaves town buried’, the ink smudged and corners curled.",
             "A winter‑time countryside photograph: snow‑covered fields stretching to a lone barn under a pale sky.",
             "A retro advertisement for “Harper’s Tractor Co.” – a shiny green tractor with the slogan ‘Built to plow, built to last’.",
+            "An old postcard of a snow-capped hill, its stamp and cancellation nearly erased by the years."
         };
 
         private static readonly string[] OfficePrints =

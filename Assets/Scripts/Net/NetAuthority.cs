@@ -32,7 +32,7 @@ namespace CloneZ
             LocalClientId = localClientId;
         }
 
-        /// <summary>Resets the authority to single‑player defaults (not networked, host = true, client ID = 0).</summary>
+        /// <summary>Resets the authority to single‑player defaults (not networked, server = true, host = false, client ID = 0).</summary>
         public static void Reset() => Set(false, true, false, 0);
     }
 }
