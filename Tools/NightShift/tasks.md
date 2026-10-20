@@ -2648,3 +2648,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Colour them with a dark‑grey tone, e.g. `new Color(0.25f, 0.25f, 0.27f, 0.9f)`.
   No extra colliders or interaction code is required; this adds at most four primitives and stays within the existing visual style.
   - 10:38 landed by 1htsserver in 1.8 min: **Changed file**
+- [ ] Fix duplicate‑appearance bug in Assets/Scripts/Net/NetWorld.cs – the random‑seed for spawned network actors can overflow and repeat, causing different actors to look identical.
+  In `SendSpawn` the seed is written as `I((int)a.NetId * 7919)`. Because the cast to `int` happens before the multiplication, the signed multiplication overflows for NetIds > ≈ 271 000, producing identical seeds for many distinct IDs.
+  Replace the expression with an unchecked uint multiplication and cast the final 32‑bit result to int, e.g.:
+  `I((int)(a.NetId * 7919u));`
+  This keeps the full 32‑bit value (mod 2³²) as the seed, eliminating accidental seed collisions.
+  Result: each actor gets a unique visual randomisation regardless of how many actors exist, so players will no longer see different zombies/humans sharing the exact same look due to seed overflow.
+- [ ] In Assets/Scripts/World/Zone/ZoneKit.cs: Add a tiny rust‑coloured metal cap to the beam’s bracket in `ZoneKit.Beam` to suggest a screw/hinge, improving period‑correct detail.
