@@ -1593,3 +1593,20 @@ you want to see in game. Indent extra lines under a task to add detail.
   Remove its default collider (`Object.Destroy(bracket.GetComponent<Collider>());`) so it stays purely visual.
   The existing `ZoneKit.NoBake(go);` call already excludes the bracket from nav‑mesh baking.
   Result: each beam now has a subtle, worn metal housing that fits the 1993 Kentucky setting without affecting gameplay.
+- [ ] In Assets/Scripts/Player/PlayerSleep.cs, cache the nearest bed lookup instead of calling `SleepSpot.Nearest` every frame.
+  Add a private field `private SleepSpot _cachedBed;` and a private `Vector3 _lastPos;`.
+  Add a constant (e.g. `private const float BedCacheThresholdSqr = 1f * 1f;`) that defines how far the player must move before the cache is refreshed.
+  In `Awake()` (or `OnEnable`) initialise `_lastPos = transform.position;`.
+  Replace the two‑line block in `Update()` that currently reads:
+  `SleepSpot bed = SleepSpot.Nearest(transform.position, CloneZConfig.SleepRange, out _);`
+  `NearBed = bed != null;`
+  with logic that:
+  Checks `if ((transform.position - _lastPos).sqrMagnitude > BedCacheThresholdSqr)` → recompute `_cachedBed = SleepSpot.Nearest(transform.position, CloneZConfig.SleepRange, out _); _lastPos = transform.position;`.
+- [ ] In Assets/Scripts/World/Fixtures/ShowerFixture.cs: Add a small “Inspect shower” action to ShowerFixture.GetActions that tells the player the current water state.
+  In Assets/Scripts/World/Fixtures/ShowerFixture.cs modify GetActions to append:
+  `into.Add(new InteractAction("Inspect shower", ctx => {`
+  `if (!WaterMains.MainsOn) ctx.Notify("The water’s shut off.");`
+  `else if (!Running) ctx.Notify("The shower is off.");`
+  `else ctx.Notify(Hot ? "Hot water is flowing." : "Cold water is flowing.");`
+  `}));`
+  The new action appears alongside “Take a shower”, “Turn on/off the shower”, and “Open/Close the shower door”, and simply shows a notification – no UI changes or new assets required.
