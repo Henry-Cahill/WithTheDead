@@ -2939,11 +2939,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// {`
   `// Action<ulong, NetIn> h = s_Handlers[n];`
   - 11:40 landed by hts-llm in 2 min: **Changed file**
-- [ ] Add a “Set Guard Here” action to `HumanNpcInteract.GetActions` in Assets/Scripts/AI/Humans/HumanNpc.cs
+- [x] Add a “Set Guard Here” action to `HumanNpcInteract.GetActions` in Assets/Scripts/AI/Humans/HumanNpc.cs
   Insert a new `InteractAction` after the existing `Talk` entry (copy the style of the “Talk” line).
   The action should call `_npc.SetGuard(_npc.transform.position);`.
   It must only be usable when the NPC is not already holding a post: add `.DisabledIf(_npc.HoldPost, "Already guarding here")`.
   No other code changes are required; the player will now be able to tell any non‑hostile, non‑surrendered NPC to stay at its current spot as a guard, visible in the interaction menu.
+  - 11:41 landed by 1htsserver in 1.5 min: **Changes Made**
 - [ ] Append four new sentences to the `Plumping` array in Assets/Scripts/World/Fixtures/RaidHomeLiving.cs
   Add them after the existing two entries, keeping the array syntax unchanged.
   Style reference: `"You plump the cushions and set them square. It looks like somebody still lives here."` – short, present‑tense observation of the house’s lived‑in state.
