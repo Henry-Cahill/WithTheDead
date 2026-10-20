@@ -3872,5 +3872,6 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(l.P(mid + R(rng, -0.3f, 0.3f), 0.034f, side * R(rng, 0.3f, 0.7f)), new Vector3(0.12f, 0.004f, 0.03f), Quaternion.Euler(0f, R(rng, 0f, 180f), 0f), Mt(Brass));`
   (Only the stray `)` is removed; all other arguments remain unchanged.)
   After this fix the script compiles, the door splinter geometry is generated, and the brass strike plate shows up as intended.
-- [ ] In Assets/Scripts/UI/InventoryUIController.List.cs, enhance each item entry row with a subtle “wear‑edge” strip that hints at the item’s condition.
+- [x] In Assets/Scripts/UI/InventoryUIController.List.cs, enhance each item entry row with a subtle “wear‑edge” strip that hints at the item’s condition.
+  - 16:21 landed by hts-llm in 1.9 min: **Changes Made**
 - [ ] Add a generic “Shake” instant action helper to Assets/Scripts/World/Interaction/Interactable.cs that lets any fixture emit a short noise and give the player a toast, e.g. to lure zombies or alert the survivor.

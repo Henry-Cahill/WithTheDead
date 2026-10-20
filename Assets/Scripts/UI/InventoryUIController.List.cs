@@ -321,6 +321,19 @@ namespace CloneZ
             RowActions acts = EntryActions(e);
             System.Action menu = () => ShowMenu(def.DisplayName + (s.Count > 1 ? "  (" + s.Count + ")" : ""), acts.Menu);
             RectTransform row = NewRow(list, y, h, bg, def, EntryInfo(e), acts.Move, menu);
+            // Add a subtle wear‑edge strip on the left side of each row to hint at condition
+            if (def.IsDamageable)
+            {
+                // Map condition (0..1) to a gradient: good → warning → bad → rotten
+                Color edgeCol;
+                float c = s.Condition01;
+                if (c > 0.8f) edgeCol = GoodCol;
+                else if (c > 0.5f) edgeCol = WarnCol;
+                else if (c > 0.2f) edgeCol = BadCol;
+                else edgeCol = RottenCol;
+                // thin vertical bar, 3 px wide, inset 2 px from the left edge, full height minus a little margin
+                NewImage(row, "WearEdge", new Vector2(0f, 0.5f), new Vector2(2f, 0f), new Vector2(3f, h - 4f), edgeCol);
+            }
 
             if (!sub) AddIcon(row, def, badge: e.Kind == EntryKind.Worn || e.InHand);
             string count = s.Count <= 1 ? "" : sub ? "  \u00d7" + s.Count : " (" + s.Count + ")";
