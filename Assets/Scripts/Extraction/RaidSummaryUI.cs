@@ -163,6 +163,7 @@ namespace CloneZ
             UITheme.AddTopAccent(prt, accent, 4f);
             // Add a subtle metal border on all four edges to give a worn wooden/metal board feel.
 
+AddBorder(prt, new Color(0.25f, 0.27f, 0.30f, 0.9f), 3f);
             AddRivets(prt, new Color(0.12f, 0.12f, 0.12f, 1f), 6f);
 
             var top = new Vector2(0.5f, 1f);

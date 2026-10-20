@@ -98,6 +98,8 @@ class PlannerTest(unittest.TestCase):
         self.script("Assets/Scripts/Editor/Tool.cs", BUILDER)
         self.script("Assets/Scripts/World/Huge.cs", BUILDER + "// more\n" * 2000)
         self.script("Assets/Scripts/World/Tiny.cs", "namespace CloneZ { }\n")
+        # A UI script full of colours but no 3D shapes isn't object graphics.
+        self.script("Assets/Scripts/UI/Panel.cs", "\n".join(f"var c{i} = new Color(0.{i}f, 0.2f, 0.3f);" for i in range(40)))
         mapped = self.script("Assets/Scripts/World/Map/Streets.cs", BUILDER)
         tasks = ns.read_tasks()
         self.assertEqual([lamp, mapped], ns.plan_candidates("graphics", self.repo, tasks))
