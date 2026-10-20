@@ -4027,10 +4027,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   Only create the chip when `rng.NextDouble() < 0.5` so each side gets 0‑1 chips, keeping the total added primitives ≤ 12.
   This gives each window a weathered look appropriate to a 1993 Kentucky winter home without altering colliders or interaction points.
   - 18:17 landed by hts-llm in 3.2 min: **Changed file**
-- [ ] In Assets/Scripts/World/Fixtures/SeatFixture.cs: Add a “Stand up slowly” action to SeatFixture.GetActions for survivors already sitting on the seat
+- [x] In Assets/Scripts/World/Fixtures/SeatFixture.cs: Add a “Stand up slowly” action to SeatFixture.GetActions for survivors already sitting on the seat
   In the `if (seat.IsSittingOn(this))` block, after the existing stand action, insert
   `into.Add(new InteractAction("Stand up slowly", c => { c.Seat?.Stand(); c.Notify("You rise slowly, stretching out a bit before standing."); }));`
   The player will now see a second exit option when seated, giving a slightly different narrative cue while using only the existing `Seat`, `Stand()` and `Notify()` members.
+  - 18:18 landed by 0htsserver in 2 min: **Changed**
 - [ ] Add a colour‑tint helper to `MapBuilding` in `Assets/Scripts/World/Map/MapData.cs` so each building can receive a subtle, period‑appropriate hue variation based on its ID.
   Insert `using UnityEngine;` after the existing `using System;`.
   Inside the `MapBuilding` class, add a public method:
