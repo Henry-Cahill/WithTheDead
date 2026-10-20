@@ -3725,3 +3725,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   In `ApplyFog()` compute `float fog = Mathf.Max(FogIntensity, PrecipitationIntensity * 0.35f);` as before, then `if (Mathf.Approximately(_cachedFog, fog)) return;` before setting `RenderSettings.fog`, `RenderSettings.fogMode`, `fogStartDistance`, and `fogEndDistance`.
   After applying the settings, assign `_cachedFog = fog;`.
   This change removes per‑frame assignments when fog hasn’t changed, reducing unnecessary work without altering any visual outcome.
+- [ ] Add Q‑key handling to cancel an active search or timed fixture job in Assets/Scripts/Player/PlayerInteractor.cs so that pressing Q when the player is busy works like E does now.
+  Modify the `else if (kb.qKey.wasPressedThisFrame)` block in `Update()` to:
+  `if (IsBusy) { CancelSearch(); StopJob(); return; }`
+  `if (!_ui.IsOpen && _focus == FocusKind.Fixture) OpenMenu(FixtureTarget);`
+  This lets the player abort a rummage or a fixture job with Q, while preserving the existing menu‑open behaviour when not busy.
