@@ -925,9 +925,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Style reference: `"Now, the secret to a good pie crust is cold butter. Very cold butter."` – the new lines should match this straightforward, spoken‑word style.
   Themes for the new entries:
   A safety reminder about heavy snow on roofs: “Heavy snow has piled on low‑slope roofs; clear the edges before they give way.”
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/TooltipTrigger.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/TooltipTrigger.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 01:56 landed by hts-llm in 2.8 min: Added concise `/// <summary>` documentation to each public method in **Assets/Scripts/UI/TooltipTrigger.cs**:
 - [ ] Modify Assets/Scripts/UI/InventoryUIController.List.cs to add a subtle “bolt” trim on every inventory row for visual depth.
   In the `NewRow` method, after the line `var img = go.AddComponent<Image>();` insert a new 4 × 4 pixel image as a decorative bolt on the right edge of the row background.
   `// tiny bolt decoration, adds a bit of worn‑metal detail to each row`

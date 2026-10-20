@@ -27,6 +27,9 @@ namespace CloneZ
         /// <param name="extra">Rich-text lines about this particular item, appended to the tooltip.</param>
         /// <param name="onDoubleClick">Run on a left double-click (moves the item across, PZ-style).</param>
         /// <param name="onRightClick">Run on a right-click (opens the row's context menu).</param>
+        /// <summary>
+        /// Initializes the tooltip trigger with its owner, item definition, optional UI row image, extra tooltip text, and click callbacks.
+        /// </summary>
         public void Init(InventoryUIController owner, ItemDef def, Image row = null, string extra = null,
             System.Action onDoubleClick = null, System.Action onRightClick = null)
         {
@@ -43,18 +46,27 @@ namespace CloneZ
             }
         }
 
+        /// <summary>
+        /// Handles pointer entering the UI row, applying hover colour and showing the tooltip.
+        /// </summary>
         public void OnPointerEnter(PointerEventData eventData)
         {
             if (_row != null) _row.color = _hoverColor;
             if (_owner != null && _def != null) _owner.ShowTooltip(_def, _extra);
         }
 
+        /// <summary>
+        /// Handles pointer exiting the UI row, restoring the base colour and hiding the tooltip.
+        /// </summary>
         public void OnPointerExit(PointerEventData eventData)
         {
             if (_row != null) _row.color = _baseColor;
             if (_owner != null) _owner.HideTooltip(_def);
         }
 
+        /// <summary>
+        /// Handles pointer clicks, invoking the appropriate right‑click or double‑click callbacks.
+        /// </summary>
         public void OnPointerClick(PointerEventData eventData)
         {
             if (eventData.button == PointerEventData.InputButton.Right)
