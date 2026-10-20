@@ -119,7 +119,12 @@ private static readonly string[] NumberLines =
             "Number {0}. Somebody's chalked a cross beside it, and a date: 12/15.",
             "Number {0}, etched in faded paint above the porch, a lone pine silhouette beside it.",
             "Number {0}, stamped on a rusted metal plate, the letters half torn away.",
-            "Number {0}, scrawled in chalk on the sidewalk, washed away by a recent rain."
+            "Number {0}, scrawled in chalk on the sidewalk, washed away by a recent rain.",
+            "Number {0}, the frost‑bitten metal plate is dulled by snow and ice.",
+            "Number {0}, a handwritten note tacked to the side reads \"Home Sweet Home\".",
+            "Number {0}, cracked and leaning, vines creep over its edge, a sign of recent abandonment.",
+            "Number {0}, etched with a rabbit’s foot glyph, a local superstition for safe returns.",
+            "Number {0}, beside a rusted lantern that still flickers in the dusk."
         };
 
         private static int s_Magazine = -1, s_Plump;
