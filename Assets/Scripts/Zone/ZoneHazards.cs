@@ -36,6 +36,15 @@ namespace CloneZ
                 m => { m.VisibilityMult *= 0.92f; m.XpMult *= 0.95f; });
             M("still_hands", "Still Hands", "Your hands no longer shake. Your gut has never been right since.",
                 m => { m.AimSpread *= 0.9f; m.ThirstRate *= 1.12f; });
+            // New exposure marks added for cold endurance, snow‑blindness, static radio interference, and lingering farm folklore.
+            M("frostbite", "Frostbite", "Your fingertips tingle with an endless chill; you can feel the frost before you see it.",
+                m => { });
+            M("snow_blind", "Snow Blindness", "Your eyes ache from the relentless snow; darkness no longer hides anything.",
+                m => { });
+            M("static_harbor", "Static Harbor", "Static crackles in every cheap radio; the interference makes you uneasy.",
+                m => { });
+            M("old_folklore", "Old Folklore", "Whispers of the old farm linger, reminding you that the dead watch the fields.",
+                m => { });
             foreach (Mark k in Marks)
             {
                 ZoneMarkRegistry.Names[k.Id] = k.Name;

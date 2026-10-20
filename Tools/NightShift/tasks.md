@@ -1454,7 +1454,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `}));`
   The action should only appear while the lid is open and the sheet has not yet been taken, preventing repeats.
   - 04:34 landed by 0htsserver in 1.8 min: **Changed file**
-- [ ] Add four new Zone exposure marks to the static constructor of `ZoneExposure` in `Assets/Scripts/Zone/ZoneHazards.cs`; each call should follow the existing `M(id, name, description, ...)` pattern, with descriptions that match the style of `"Your pupils never quite close now. You see further in the dark; bright light leaves you exposed."` and address cold endurance, snow‑blindness, static radio interference, and lingering farm folklore.
+- [x] Add four new Zone exposure marks to the static constructor of `ZoneExposure` in `Assets/Scripts/Zone/ZoneHazards.cs`; each call should follow the existing `M(id, name, description, ...)` pattern, with descriptions that match the style of `"Your pupils never quite close now. You see further in the dark; bright light leaves you exposed."` and address cold endurance, snow‑blindness, static radio interference, and lingering farm folklore.
   Insert the new calls after the last existing `M(... )` (`"Still Hands"`).
   Use ids: `"frostbite"`, `"snow_blind"`, `"static_harbor"`, `"old_folklore"`.
   Choose names: `"Frostbite"`, `"Snow Blindness"`, `"Static Harbor"`, `"Old Folklore"`.
@@ -1463,6 +1463,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `"Your eyes ache from the relentless snow; darkness no longer hides anything."`
   `"Static crackles in every cheap radio; the interference makes you uneasy."`
   `"Whispers of the old farm linger, reminding you that the dead watch the fields."`
+  - 04:36 landed by 0htsserver in 2.9 min: **Changed file**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Net/NetWorld.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
