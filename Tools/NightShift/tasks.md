@@ -1024,7 +1024,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `if (u.Contains("a_plate2")) e.Class = Mathf.Min(6, e.Class + 1);`
   The player will now see the “Ceramic inserts” upgrade increase armor class for any applicable armor, including those with class 0, matching the intended game mechanic. All other behavior stays unchanged.
   - 02:19 landed by hts-llm in 0.9 min: **Changed**: `Assets/Scripts/Weapons/WeaponUpgrades.cs` – removed the `e.Class > 0` guard in the ceramic inserts upgrade logic.
-- [ ] Add a subtle torn‑fur strip to the torso of all quadruped creatures built in `CreatureBody.Build` (method `Quad` in *Assets/Scripts/AI/Creatures/Creatures.cs*).
+- [x] Add a subtle torn‑fur strip to the torso of all quadruped creatures built in `CreatureBody.Build` (method `Quad` in *Assets/Scripts/AI/Creatures/Creatures.cs*).
   In the `CreatureParts.Attach(_torso, …)` call, append an extra `Add` that creates a thin box representing a ragged strip of fur.
   Use a size of 0.1 m × 0.2 m × 0.02 m (`new Vector3(bodyW * 0.1f, bodyH * 0.2f, 0.02f)`).
   Position it at the lower back of the torso: `new Vector3(0f, bodyH * 0.5f, -length * 0.2f)` (relative to the torso pivot used in the current call).
@@ -1032,6 +1032,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   The resulting line should look like:
   ` .Add(CreaturePrim.Box, new Vector3(0f, bodyH * 0.5f, -length * 0.2f), Vector3.zero, new Vector3(bodyW * 0.1f, bodyH * 0.2f, 0.02f), c * 0.8f)`
   This adds only one primitive (the box) to the existing torso build, keeping colliders, interaction points and pivots unchanged, and gives each quadruped (Deer, Bear, Wolf, Thumper, default hound) a period‑appropriate visual detail of worn fur.
+  - 02:23 landed by hts-llm in 3.8 min: Added a thin “torn‑fur” box to each quadruped creature’s torso.
 - [ ] Add a contextual “Inspect door” action to the “Door to the Zone” hub station in Assets/Scripts/Hub/HubWorld.cs
   In `HubStation.GetActions`, after the existing `for` loop that adds `Extra` actions, insert a conditional block:
   `// Special inspection for the zone door`
