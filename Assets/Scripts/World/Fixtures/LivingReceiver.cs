@@ -59,7 +59,7 @@ namespace CloneZ
         protected virtual string DeathNotice => null;
 
         public override Vector3 InteractPoint => _point;
-        public override string SaveKey => _host != null ? KeyFor(SaveKind, _host.position) : null;
+        public override string SaveKey => KeyFor(SaveKind, (_host != null ? _host.position : transform.position));
 
         /// <summary>The set's own furniture, or the dresser / counter it stands on: neither blocks the reach.</summary>
         public override Transform OcclusionRoot
