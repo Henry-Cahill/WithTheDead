@@ -179,6 +179,9 @@ for (int i = 0; i < 4; i++)
             float h = 0.1f, w = h * aspect;
             m.Box(at + n * 0.008f, f.Size(w + 0.03f, h + 0.03f, 0.016f), DecorPalette.Matte(new Color(0.10f, 0.12f, 0.20f)));
             m.Upright(at + n * 0.0175f, n, w, h, s, new Rect(0f, 0f, 1f, 1f));
+            // tiny dark‑metal screw detail on the house‑number plate
+            Vector3 screwPos = at + n * 0.018f + Vector3.up * 0.02f;
+            m.Box(screwPos, new Vector3(0.004f, 0.004f, 0.004f), DecorPalette.Matte(new Color(0.08f, 0.08f, 0.09f)));
             OutdoorHouseNumber.Create(piece.transform, HouseNo, at + n * 0.04f, at, n);
         }
 

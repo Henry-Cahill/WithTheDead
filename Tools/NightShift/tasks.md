@@ -3842,10 +3842,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 16:10 landed by hts-llm in 1.5 min: Added a period‑correct metal latch‑handle (with optional rivet detail) to the ammo can model:
 - [x] Fix the overflow‑detection logic in Assets/Scripts/Player/PlayerInventory.cs → RebuildSections() so a change in a section’s capacity (e.g. pockets shrinking when Strength drops) correctly marks the inventory as overflow‑pending.
   - 16:11 landed by 1htsserver in 1.3 min: Implemented fix in **PlayerInventory.cs**:
-- [ ] Add a tiny dark‑metal screw detail to the enamelled house‑number plate in `Assets/Scripts/World/StarterHome.Lighting.cs` → method `HouseNumber`
+- [x] Add a tiny dark‑metal screw detail to the enamelled house‑number plate in `Assets/Scripts/World/StarterHome.Lighting.cs` → method `HouseNumber`
   Inside `HouseNumber`, after the call to `m.Upright(...)`, insert a 0.004 m cube to represent a fixing screw on the front face of the plate.
   Use the existing matte dark‑metal colour: `DecorPalette.Matte(new Color(0.08f, 0.08f, 0.09f))`.
   Position it relative to the plate centre `at` and its outward normal `n`, e.g.:
   `Vector3 screwPos = at + n * 0.018f + Vector3.up * 0.02f;`
   `m.Box(screwPos, new Vector3(0.004f, 0.004f, 0.004f), DecorPalette.Matte(new Color(0.08f, 0.08f, 0.09f)));`
   This adds a subtle, period‑correct hardware detail without affecting colliders, interaction points or pivots, and stays within the 12‑primitive limit.
+  - 16:13 landed by 1htsserver in 1.3 min: **Changed file**: `Assets/Scripts/World/StarterHome.Lighting.cs`
