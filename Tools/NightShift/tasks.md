@@ -535,3 +535,9 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Hub/Screens/HubKit.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add a subtle glowing tip to the beam cone created in `ZoneKit.Beam` (Assets/Scripts/World/Zone/ZoneKit.cs) so each beam has a small bright sphere at its far end, improving visual depth without affecting gameplay.
+  Create a primitive sphere child of the beam GameObject, positioned at `new Vector3(0f, 0f, length)` (the beam’s tip) with a scale of `0.05f` m (≈ 5 cm diameter).
+  Remove its collider (`DestroyImmediate(tip.GetComponent<Collider>())`).
+  Assign the same material used for the beam (`ZoneKit.BeamMaterial()`) and set a property block colour to `tint * 2f` for a brighter emissive look.
+  Place this code just after the existing `mr.SetPropertyBlock(block);` line in the `Beam` method.
+  Result: beams now show a tiny glowing sphere at the tip, adding a period‑correct, subtle light source while preserving all existing colliders, interaction points and the original beam geometry.
