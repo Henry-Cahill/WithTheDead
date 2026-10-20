@@ -3210,10 +3210,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   – Keep the existing `ShowRunning(bool)` logic unchanged; it still toggles the lamp visual.
   – The player will see exactly the same behaviour (generator starts, runs, stops, lamp lights) because the visual and audio logic remains identical; only the hidden `Update` calls are suppressed when the generator is idle, reducing unnecessary frame‑time work.
   - 12:51 landed by 1htsserver in 1.4 min: **Changed file**
-- [ ] Add a “Check water level” action to Assets/Scripts/World/Fixtures/KitchenSink.cs that lets the player see how much water is left in the sink.
+- [x] Add a “Check water level” action to Assets/Scripts/World/Fixtures/KitchenSink.cs that lets the player see how much water is left in the sink.
   In `GetActions` append `into.Add(new InteractAction("Check water level", ShowWaterLevel));` (place it after the existing “Empty the sink” action block).
   Implement a private method `ShowWaterLevel(InteractContext ctx)` that computes the fill percentage using `_level` and `CloneZConfig.KitchenBasinCapacity` and notifies the player, e.g. `ctx.Notify($"The sink holds {(_level/CloneZConfig.KitchenBasinCapacity*100f):0}% of its capacity.");`.
   No new UI screens, items, or external assets are required; the method uses only fields and constants already present in the class.
+  - 13:05 landed by 0htsserver in 13.4 min: **Changes Made**
 - [x] Append six new flavor‑text strings to the `BrushLines` array in Assets/Scripts/World/Fixtures/BasinFixture.cs; they will be displayed randomly when the player brushes their teeth.
   Quote the existing entry `"You brush until your gums tingle and rinse with a splash. Minty. Almost civilised."` as the style reference.
   The new lines should each be a single sentence, period‑ended, written in the same terse, reflective tone, and cover these themes: the bite of winter air, the sound of the tap echoing in an empty house, a fleeting memory of pre‑outbreak routines, the taste of metal water, the feel of a cracked mirror, and a quiet moment of personal resolve.

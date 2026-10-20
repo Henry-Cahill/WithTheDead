@@ -242,9 +242,11 @@ namespace CloneZ
             dishes.Begin = _openForJob;
             dishes.Stopped = _endJob;
             into.Add(dishes);
-            // When mains are off and water is standing, allow emptying the sink.
-            if (!WaterMains.MainsOn && _level > 0.05f)
-                into.Add(new InteractAction("Empty the sink", EmptySink));
+// When mains are off and water is standing, allow emptying the sink.
+        if (!WaterMains.MainsOn && _level > 0.05f)
+            into.Add(new InteractAction("Empty the sink", EmptySink));
+        // New action to let the player check how full the sink is.
+        into.Add(new InteractAction("Check water level", ShowWaterLevel));
         }
 
         private InteractAction PlugAction(bool mains)
@@ -404,12 +406,19 @@ namespace CloneZ
         }
 
         // Empties the sink when mains are off and there is standing water.
-private void EmptySink(InteractContext ctx)
+        private void EmptySink(InteractContext ctx)
         {
             _level = 0f;
             _toldFull = false;
             RefreshWater();
             ctx.Notify("You empty the sink; the water drains away.");
+        }
+
+        // Shows the current water level in the sink.
+        private void ShowWaterLevel(InteractContext ctx)
+        {
+            float percent = (_level / CloneZConfig.KitchenBasinCapacity) * 100f;
+            ctx.Notify($"The sink holds {percent:0}% of its capacity.");
         }
         #endregion
 
