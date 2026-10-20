@@ -444,7 +444,8 @@ private bool _isShade;
             CreatureParts.Attach(_torso, k + "_torso", b => b
                 .Add(CreaturePrim.Sphere, Vector3.zero, Vector3.zero, new Vector3(bodyW * 1.6f, bodyH, length), c)
                 .Add(CreaturePrim.Sphere, new Vector3(0f, bodyH * 0.1f, length * 0.3f), Vector3.zero, new Vector3(bodyW * 1.8f, bodyH * 1.1f, length * 0.5f), c * 0.92f)
-                .Add(CreaturePrim.Box, new Vector3(0f, bodyH * 0.5f, -length * 0.2f), Vector3.zero, new Vector3(bodyW * 0.1f, bodyH * 0.2f, 0.02f), c * 0.8f));
+                .Add(CreaturePrim.Box, new Vector3(0f, bodyH * 0.5f, -length * 0.2f), Vector3.zero, new Vector3(bodyW * 0.1f, bodyH * 0.2f, 0.02f), c * 0.8f)
+                .Add(CreaturePrim.Box, new Vector3(0f, bodyH * 0.55f, 0f), Vector3.zero, new Vector3(bodyW * 0.12f, bodyH * 0.02f, length * 0.4f), new Color(0.2f, 0.12f, 0.05f))) ;
             Head = CreatureParts.Pivot("Head", _torso, new Vector3(0f, bodyH * 0.35f, length * 0.55f));
             CreatureParts.Attach(Head, k + "_head", b => b
                 .Add(CreaturePrim.Sphere, Vector3.zero, Vector3.zero, Vector3.one * headSize, c * 0.95f)
