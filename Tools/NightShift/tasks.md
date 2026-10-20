@@ -2588,3 +2588,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   `if (_keyboard == null) _keyboard = Keyboard.current;`
   `if (_keyboard != null)`
   `{`
+- [ ] Add a small “Inspect car” interaction to `Vehicle.GetActions` (Assets/Scripts/World/Vehicles.cs) so players can see what parts are missing without entering the vehicle.
+  Insert the new action right after the existing “Get in the driver’s seat” line:
+  `into.Add(new InteractAction("Inspect car", c => {`
+  `var msg = Missing.Length > 0 ? "Car needs " + Missing : "Car looks fine";`
+  `GameEvents.RaiseToast(msg);`
+  `}));`
+  This uses the already‑available `Missing` property, `GameEvents.RaiseToast`, and `InteractAction`; no new UI or assets are required. The player will see a toast listing missing parts or confirming the car is fine.
