@@ -587,3 +587,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Apply a tiny deterministic jitter (±0.01 m) using `int seed = StarterHome.SlotSeed(s.Type, s.X, s.Z); UnityEngine.Random.InitState(seed);` and `offset += (UnityEngine.Random.value-0.5f)*0.02f` on the X/Z components.
   Reuse the doorway’s existing material for the handle (`handle.GetComponent<Renderer>().sharedMaterial = door.GetComponentInChildren<Renderer>().sharedMaterial`).
   Leave colliders, interaction points and existing pivots untouched; the added cylinder is purely visual and adds at most one primitive per doorway (well under the 12‑primitive limit).
+
+### Auto-planned 2026-10-20: written by the night shift when the queue ran low (delete any you don't want)
+
+- [ ] Add two small rivet boxes to the backpack’s top tube in Assets/Scripts/Player/PlayerGearVisuals.cs, method BuildBackpack(ItemDef def), to give the pack a worn‑metal look.
+- [ ] In Assets/Scripts/World/CeilingVisibility.cs: Optimize CeilingVisibility — remove the unused `s_Applied` flag and simplify the per‑frame check in `LateUpdate` so the script only compares the current view state to the cached `s_Shown` value.
