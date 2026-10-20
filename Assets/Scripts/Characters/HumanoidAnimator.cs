@@ -47,6 +47,7 @@ namespace CloneZ
         [System.NonSerialized] public bool ProbeGround = true;   // raycast for the floor under the feet
         [System.NonSerialized] public int GroundMask = 1;        // Default layer: floors and terrain
 
+        /// <summary>True when the character is dead.</summary>
         public bool IsDead => _dead;
         /// <summary>True while lying in bed asleep.</summary>
         public bool IsSleeping => _lying && !_lyingAwake;
@@ -136,6 +137,7 @@ namespace CloneZ
             _actTwoHanded = twoHanded && !bare;
         }
 
+        /// <summary>Pushes the character's shoulder into a shove (used by zombies).</summary>
         public void Shove() { if (!_dead) StartAct(Act.Shove, 0.38f, 0f); }
 
         /// <summary>The dead lunge for a bite: <paramref name="windup"/> seconds of reaching, then the snap.</summary>
@@ -144,8 +146,10 @@ namespace CloneZ
         /// <summary>The dead beat on a barricade: arms up through the windup, then down.</summary>
         public void Bash(float windup) { if (!_dead) StartAct(Act.Bash, windup + 0.35f, windup); }
 
+        /// <summary>Triggers a recoil effect for a fired weapon.</summary>
         public void Fire() { _recoil = 1f; }
 
+        /// <summary>Applies a brief flinch reaction away from the impact direction.</summary>
         public void Flinch(Vector3 fromWorld)
         {
             if (_dead) return;
@@ -154,6 +158,7 @@ namespace CloneZ
             _flinchDir = fromWorld.sqrMagnitude > 1e-6f ? fromWorld.normalized : -_root.forward;
         }
 
+        /// <summary>Applies a stagger push that briefly disrupts movement.</summary>
         public void Stagger(Vector3 pushWorld, float duration)
         {
             if (_dead) return;
@@ -193,6 +198,7 @@ namespace CloneZ
             _lieFromRot = _root.localRotation;
         }
 
+        /// <summary>Wakes the character up, ending the lying state.</summary>
         public void WakeUp()
         {
             _lying = false;
