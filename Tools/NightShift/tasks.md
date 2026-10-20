@@ -1654,7 +1654,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace the direct assignment `Prompt = ComposePrompt();` in `Evaluate()` with `if (_promptDirty) { _promptCache = ComposePrompt(); _promptDirty = false; } Prompt = _promptCache;`.
   Remove the existing `Prompt = "";` assignments that reset it each frame (e.g., in the early‑exit branch of `Update` when not in build mode) and instead set `_promptDirty = true` before returning, ensuring the empty prompt is cached once.
   The player’s UI text remains identical, but string concatenations now occur only when the underlying state changes, eliminating the per‑frame allocation of new prompt strings.
-- [ ] In Assets/Scripts/World/Fixtures/RaidTownGenerator.cs: Add a small “Inspect generator” action to RaidTownGenerator so the player can see if it’s running and roughly how much fuel remains.
+- [x] In Assets/Scripts/World/Fixtures/RaidTownGenerator.cs: Add a small “Inspect generator” action to RaidTownGenerator so the player can see if it’s running and roughly how much fuel remains.
   In `RaidTownGenerator.GetActions` after the existing `Check the fuel` line, insert:
   `into.Add(new InteractAction("Inspect generator", Inspect));`
   Create a new private method `Inspect(InteractContext ctx)` that uses the existing fields and config:
@@ -1663,6 +1663,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `float percent = _fuel / CloneZConfig.RaidGeneratorFuelMax;`
   `if (_running)`
   `ctx.Notify($"The generator rumbles on. Fuel gauge reads about {(int)(percent * 100)}%.");`
+  - 06:00 landed by 1htsserver in 3.4 min: Implemented **Inspect generator** action:
 - [ ] Append five new entries to the `HomePrints` string array in Assets/Scripts/World/RaidBuilding.Lighting.cs (class `RaidBuilding`, method/field `HomePrints`).
   Add the new strings after the last existing entry, keeping the current three untouched.
   These entries will appear on the framed pictures that hang in houses; the player will be able to read them as they inspect the wall art.
