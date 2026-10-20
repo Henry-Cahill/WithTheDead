@@ -76,6 +76,7 @@ namespace CloneZ
         private HumanoidActivity _shownActivity;
         private float _groundOffset;
         private bool _groundInit;
+        private bool _groundDirty = true;
 
         // One-shot actions.
         private enum Act : byte { None, Swing, Punch, Shove, Lunge, Bash }
@@ -217,7 +218,7 @@ namespace CloneZ
         }
 
         /// <summary>Skips smoothing on the next frame (after a spawn or teleport).</summary>
-        public void Snap() { _groundInit = false; _speed = 0f; _carryW = 0f; }
+        public void Snap() { _groundInit = false; _groundDirty = true; _speed = 0f; _carryW = 0f; }
 
         private void StartAct(Act act, float duration, float windup)
         {
@@ -267,6 +268,7 @@ namespace CloneZ
             Vector3 v = Velocity;
             v.y = 0f;
             float raw = _dead || _lying || Seated ? 0f : v.magnitude;
+            _groundDirty = _groundDirty || raw > 0.01f;
             _speed = Mathf.Lerp(_speed, raw, 1f - Mathf.Exp(-dt * 8f));
             if (raw > 0.05f)
             {
@@ -344,12 +346,12 @@ namespace CloneZ
             if (!_dead && !Seated)
             {
                 float target = 0f;
-                if (ProbeGround && parent != null)
-                {
+if (_groundDirty && !_dead && !Seated && parent != null) {
                     // The ray starts inside the character's own collider, which a ray never reports.
                     Vector3 origin = parent.position + Vector3.up * 0.9f;
                     if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, 1.5f, GroundMask, QueryTriggerInteraction.Ignore))
                         target = Mathf.Clamp(hit.point.y - parent.position.y, -0.35f, 0.3f);
+                    _groundDirty = false;
                 }
                 _groundOffset = _groundInit ? Mathf.Lerp(_groundOffset, target, 1f - Mathf.Exp(-dt * 14f)) : target;
                 _groundInit = true;
