@@ -261,19 +261,43 @@ namespace CloneZ
             }
 
             // Treatment buttons: show remaining supplies and enable each only when it would help.
-            int bandages = Supply("bandage", "rag");
+            int bandages = 0, disinfectant = 0, painkillers = 0, antibiotics = 0, kits = 0, betablockers = 0;
+            if (_inventory != null)
+            {
+                var stacks = _inventory.Inventory.Stacks;
+                for (int i = 0; i < stacks.Count; i++)
+                {
+                    var id = stacks[i].Def.Id;
+                    switch (id)
+                    {
+                        case "bandage":
+                        case "rag":
+                            bandages++;
+                            break;
+                        case "disinfectant":
+                            disinfectant++;
+                            break;
+                        case "pills":
+                            painkillers++;
+                            break;
+                        case "antibiotics":
+                            antibiotics++;
+                            break;
+                        case "firstaid":
+                            kits++;
+                            break;
+                        case "betablockers":
+                            betablockers++;
+                            break;
+                    }
+                }
+            }
             SetButton(_bandageBtn, _bandageLbl, "Bandage", bandages, bandages > 0 && _wounds.CanBandage);
-            int disinfectant = Supply("disinfectant");
             SetButton(_disinfectBtn, _disinfectLbl, "Disinfect", disinfectant, disinfectant > 0 && _wounds.CanDisinfect);
-            int painkillers = Supply("pills");
             SetButton(_painkillerBtn, _painkillerLbl, "Painkiller", painkillers, painkillers > 0 && _stats.Pain > 2f);
-            int antibiotics = Supply("antibiotics");
             SetButton(_antibioticBtn, _antibioticLbl, "Antibiotic", antibiotics, antibiotics > 0 && _wounds.HasInfectedWound);
-            int kits = Supply("firstaid");
             SetButton(_firstAidBtn, _firstAidLbl, "First Aid", kits, kits > 0 && _wounds.WoundCount > 0);
-            int betablockers = Supply("betablockers");
-            bool needCalm = _panic != null && _stats.Panic >= CloneZConfig.PanicLevel1;
-            SetButton(_calmBtn, _calmLbl, "Calm", betablockers, betablockers > 0 && needCalm);
+            SetButton(_calmBtn, _calmLbl, "Calm", betablockers, betablockers > 0 && (_panic != null && _stats.Panic >= CloneZConfig.PanicLevel1));
         }
 
         private static void SetButton(Button btn, Text label, string name, int count, bool usable)

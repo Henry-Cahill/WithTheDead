@@ -2146,7 +2146,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Rear bumper plate: `new Vector3(0f, 0.57f, -2.12f)` with size `new Vector3(0.4f, 0.02f, 0.02f)`.
   Insert the code after the headlight creation loop and before `Seat = new GameObject("Driver seat")`.
   - 08:28 landed by hts-llm in 4.3 min: Implemented front grille with 3‑5 thin vertical bars and rear bumper plate, both using the standard `Box` helper, dark trim colour, and dete
-- [ ] In Assets/Scripts/UI/HealthPanelController.cs, within the `Refresh()` method replace the six separate `Supply(...)` calls with a single inventory‑scan that fills local variables for all treatment counts, thus avoiding six full passes over `PlayerInventory.Inventory.Stacks` each frame.
+- [x] In Assets/Scripts/UI/HealthPanelController.cs, within the `Refresh()` method replace the six separate `Supply(...)` calls with a single inventory‑scan that fills local variables for all treatment counts, thus avoiding six full passes over `PlayerInventory.Inventory.Stacks` each frame.
+  - 08:29 landed by 1htsserver in 3.7 min: **Changed file**
 - [x] Add a small “Inspect” instant action helper to Assets/Scripts/World/Interaction/Interactable.cs
   Insert a protected method after `MakeNoise` that creates an `InteractAction` labeled “Inspect” and calls `InteractContext.Notify` with the fixture’s `DisplayName`.
   `/// <summary>Adds a simple “Inspect” action that shows the fixture’s name in a HUD toast.</summary>`
