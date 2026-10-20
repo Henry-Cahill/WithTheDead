@@ -1189,11 +1189,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Preserve the existing null‑checks (`if (_weather != null) …`) so behaviour stays identical.
   The survivor’s temperature, wetness, and health effects remain unchanged; only the per‑frame GetComponent‑like lookups are removed, improving performance.
   - 03:19 landed by 0htsserver in 9 min: **Changed file**
-- [ ] Add a “Polish the clock” timed action to Assets/Scripts/World/Fixtures/ClockFixture.cs that calms the survivor like “Listen to it tick”, using the existing LightingFixtures.Calm method and CloneZConfig.ClockCalm values, and display a new polishing‑themed notification.
+- [x] Add a “Polish the clock” timed action to Assets/Scripts/World/Fixtures/ClockFixture.cs that calms the survivor like “Listen to it tick”, using the existing LightingFixtures.Calm method and CloneZConfig.ClockCalm values, and display a new polishing‑themed notification.
   In GetActions after adding “Check the time”, add `into.Add(new InteractAction("Polish the clock", Polish).Timed(CloneZConfig.ClockListenSeconds, "Polishing the clock", HumanoidActivity.None));`
   Implement a private `Polish(InteractContext ctx)` method that mirrors `Listen` but with a different message, e.g. `ctx.Notify("You gently polish the clock face; the steady motion steadies your thoughts.");` and calls `LightingFixtures.Calm(ctx, CloneZConfig.ClockCalm);` with the same cooldown logic as `Listen`.
   Leave the existing “Listen to it tick” action unchanged; the new action should be available whether the clock is stopped or running.
   Do not modify any other files or introduce new UI elements.
+  - 03:19 landed by 1htsserver in 5.4 min: **Changed file**
 - [ ] Append 4‑8 new entries to the `UseLines` array in Assets/Scripts/World/Fixtures/ToiletFixture.cs, keeping the existing three lines unchanged and adding the new ones after them; the player will see these sentences when “using the toilet”.
   Use the existing entry `"Business seen to. Some things don't change, even now."` as the style reference – short, period‑correct, gritty, winter‑torn Kentucky tone.
   The new lines should each be a single full sentence in quotes and cover these themes: cold‑night fatigue, the echo of distant gunfire, a grim reminder of lost family, a wry comment on the stale air, a fleeting hope of warmth, and a dark‑humored observation about the water.
