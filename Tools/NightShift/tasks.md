@@ -1571,7 +1571,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// stronger spin than a normal shove`
   `_spinSpeed = CloneZConfig.RaidSwivelFreeSpin * Random.Range(1.2f, 1.6f);`
   `MakeNoise(CloneZConfig.FixtureNoiseSmall);`
-- [ ] Add five new “Blurb” entries to the existing `s_Defs` dictionary in Assets/Scripts/Core/Factions.cs so the game has extra pieces of in‑world written lore that the survivor can discover (e.g. notes, graffiti, radio transcripts).
+- [x] Add five new “Blurb” entries to the existing `s_Defs` dictionary in Assets/Scripts/Core/Factions.cs so the game has extra pieces of in‑world written lore that the survivor can discover (e.g. notes, graffiti, radio transcripts).
   Use the same format as the current entries – a `new Def { Id = ..., Name = "...", Color = new Color(r, g, b), Blurb = "…" }` – and keep the dictionary initializer intact.
   Quote the Freehold entry as a style reference:
   `Blurb = "Independent runners who share tips, routes and campfires. Friendly with most; nobody's soldiers."`
@@ -1580,6 +1580,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `{ "oldchurch", new Def { Id = "oldchurch", Name = "Abandoned Church", Color = new Color(0.70f, 0.60f, 0.45f), Blurb = "The stained‑glass is shattered, but a scribbled warning remains: ‘Stay out after dusk, the choir sings.’" } },`
   `{ "rustyradio", new Def { Id = "rustyradio", Name = "Rusty Radio", Color = new Color(0.55f, 0.55f, 0.55f), Blurb = "Static crackles, then a faint voice: ‘Supplies moving through the south ridge, watch the cordon.’" } },`
   `{ "graffitihint", new Def { Id = "graffitihint", Name = "Graffiti", Color = new Color(0.30f, 0.65f, 0.30f), Blurb = "Scrawled on a broken fence: ‘The choir’s sleep is broken; run while it’s dark.’" } },`
+  - 05:03 landed by 1htsserver in 1.9 min: Implemented the requested lore entries in **Assets/Scripts/Core/Factions.cs** by extending `s_Defs` with:
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Zone/ZoneHazards.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
