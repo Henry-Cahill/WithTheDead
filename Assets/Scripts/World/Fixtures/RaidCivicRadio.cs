@@ -52,6 +52,12 @@ namespace CloneZ
                     "*squelch*",
                     "Any station this net, any station, this is Juniper Base. Ironwood is not answering. Over.",
                     "*a carrier hum, and under it somebody breathing into a handset*",
+"Juniper, Ironwood. Farmer down in six feet of snow, tractor stalled, need a tow, over.",
+"Juniper, Ironwood. Town hall lost power, lights out, generators down, over.",
+"Juniper, Ironwood. Request bandages, wounded hand, need stitches, over.",
+"Juniper, Ironwood. Thin ice on the river, avoid crossing, over.",
+"Juniper, Ironwood. School closed due to storm, no classes today, over.",
+"Juniper, Ironwood. Keep warm, we'll get through this, over.",
                 },
             },
             new Channel

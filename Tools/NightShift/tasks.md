@@ -1914,7 +1914,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   This uses the already‑present `PowerGrid.HousePowered` flag (used in `Wash`) and the `Dry` constant, so no new code or assets are required.
   In‑game the player will now see an extra `[E] Check water temperature` option when standing at the sink; selecting it will tell them whether the running water is warm (powered) or cold, and it will be disabled with the “The tap is dry …” message when the mains are off.
   - 07:19 landed by 1htsserver in 1.4 min: **Changed file**
-- [ ] Append six new period‑correct transmission strings to the `Lines` array of the first `Channel` in `GuardNets` in Assets/Scripts/World/Fixtures/RaidCivicRadio.cs
+- [x] Append six new period‑correct transmission strings to the `Lines` array of the first `Channel` in `GuardNets` in Assets/Scripts/World/Fixtures/RaidCivicRadio.cs
   Quote style reference: `"Ironwood, Ironwood, this is Juniper Base. Radio check, over."` – the new entries should match this terse, radio‑call format and stay true to 1993 rural Kentucky winter.
   Themes to cover:
   a farmer stuck in deep snow with a broken tractor,
@@ -1923,6 +1923,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   a warning about thin ice on the river,
   a note that the local school is closed due to the storm,
   a brief morale boost (“keep warm, we’ll get through this”).
+  - 07:22 landed by 1htsserver in 3.3 min: **Changed file**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/AI/Humans/HumanNpc.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
