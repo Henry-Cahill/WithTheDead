@@ -675,9 +675,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   (`"Radio chatter"`, `"Static‑filled broadcasts drift through the zone. Occasionally you’ll catch a fragment: “...wardens moving east…”, “...flea market opens at dusk…”, “...supply drop scheduled…”. Listen for clues about safe routes or new quests."`),
   (`"Survivor myths"`, `"Stories circulate about “immune blood” that cures any disease or a “golden artifact” that grants endless ammo. Most are hoaxes that waste time, but a few turn out to be real—investigate before you spend resources chasing legends."`).
   - 00:33 landed by 1htsserver in 1.9 min: Implemented four new manual pages in **ManualScreen** (`Assets/Scripts/Hub/Screens/HomeScreens.cs`):
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Player/PlayerSleep.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Player/PlayerSleep.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 00:35 landed by hts-llm in 2 min: Added concise one‑sentence `/// <summary>` XML docs to the three public properties in **Assets/Scripts/Player/PlayerSleep.cs**:
 - [ ] In Assets/Scripts/World/WaterSource.cs: Add a thin, slightly darker “weathered band” around the rain barrel in `WaterSource.BuildBarrel` so the barrel looks used and aged.
   Insert a new mesh primitive just after the existing `Rim(m, r - wall, r + 0.012f, h, 16, DecorPalette.Gloss(plastic * 0.9f));` line.
   `// weathered band midway up the barrel – a thin matte ring`

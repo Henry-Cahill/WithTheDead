@@ -18,8 +18,11 @@ namespace CloneZ
         private PlayerPanic _panic;
         private PlayerSeat _seat;
 
+        /// <summary>True while the survivor is currently sleeping.</summary>
         public bool IsSleeping { get; private set; }
+        /// <summary>True when the survivor is close enough to a bed to consider sleeping.</summary>
         public bool NearBed { get; private set; }
+        /// <summary>The UI prompt shown to the player about sleeping state or actions.</summary>
         public string Prompt { get; private set; } = "";
 
         private bool _wakeRequested;
