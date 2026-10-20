@@ -2250,13 +2250,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 08:51 landed by 0htsserver in 2 min: Added concise one‑sentence `/// <summary>` XML docs to every public property in **Assets/Scripts/Player/PlayerFarming.cs** that was missing 
 - [x] In Assets/Scripts/World/Zone/ZoneOverlays.cs, modify ZoneIndustry.Build inside the *pipe runs on trestles* loop to add a few rust‑stained bolt heads on each rectangular pipe‑support box.
   - 08:54 landed by 0htsserver in 3.5 min: **Changed file**
-- [ ] Fix a compilation‑breaking typo in `FurnitureBuilder.ToolBench` (Assets/Scripts/World/FurnitureBuilder.Utility.cs)
+- [~] Fix a compilation‑breaking typo in `FurnitureBuilder.ToolBench` (Assets/Scripts/World/FurnitureBuilder.Utility.cs)
   The `for`‑loop that adds random tool‑box decorations contains an extra closing parenthesis, breaking the `m.Box` call and preventing the script from compiling.
   Current line:
   `m.Box(new Vector3(R(rng, -0.2f, 0.6f), 0.93f, R(rng, -0.2f, 0.25f)), new Vector3(R(rng, 0.04f, 0.2f), 0.025f, 0.04f), Yaw(R(rng, 0f, 180f)), Mt(new Color(0.4f, 0.4f, 0.42f)));`
   *Fix:* remove the stray `)` after the position `Vector3` so the call has the correct four arguments. The corrected line should be:
   `m.Box(new Vector3(R(rng, -0.2f, 0.6f), 0.93f, R(rng, -0.2f, 0.25f)), new Vector3(R(rng, 0.04f, 0.2f), 0.025f, 0.04f), Yaw(R(rng, 0f, 180f)), Mt(new Color(0.4f, 0.4f, 0.42f)));`
   *Result:* the script compiles, allowing the tool‑bench to appear with its randomly placed tool‑box decorations; the rest of the game’s visuals remain unchanged.
+  - 08:57 1htsserver made no changes: **Changed file**
 - [x] Add a small metal “logo plate” detail to each vending machine built in `VendingAt(RaidBuilding b, RaidRoom room, RaidBuilding.Place p, bool lit)` in Assets/Scripts/World/RaidLayoutsOffice.cs
   Add a thin rectangular box (≈0.10 m × 0.02 m × 0.001 m) on the front face, slightly above the coin slot, with a tiny random horizontal offset so every machine looks a bit different.
   Insert the following code right after the existing coin‑slot PieceAt call (preserving the existing comment):
