@@ -2738,9 +2738,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   All strings should start with “You” (capitalised) and otherwise be lower‑case, ending with a period.
   Do not modify any other code or data.
   - 11:01 landed by hts-llm in 2.2 min: **Changed file**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/GridDragHandle.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [~] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/GridDragHandle.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 11:02 hts-llm made no changes: Added no changes – all public members in **Assets/Scripts/UI/GridDragHandle.cs** already have appropriate `<summary>` documentation, and the
 - [ ] Add a tiny carabiner‑style loop to the backpack’s top tube in Assets/Scripts/Player/PlayerGearVisuals.cs, method BuildBackpack(ItemDef def)
   After the line `PlayerGearParts.Tube(root, "BagTop", new Vector3(0f, top - d * 0.5f, cz), Vector3.right, w, d * 0.5f, body, true);` insert a small metal “Carabiner” box to suggest a worn attachment point.
   Create it with `PlayerGearParts.Box(root, "Carabiner", new Vector3(0f, top - d * 0.5f + 0.018f, cz + d * 0.5f + 0.006f), new Vector3(0.008f, 0.018f, 0.008f), hardware);`
