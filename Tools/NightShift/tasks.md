@@ -1322,11 +1322,12 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/StarterHome.Shell.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
-- [ ] Add a small chrome knob to the flush lever for visual detail in Assets/Scripts/World/FurnitureBuilder.Bathroom.cs, method ToiletLever
+- [x] Add a small chrome knob to the flush lever for visual detail in Assets/Scripts/World/FurnitureBuilder.Bathroom.cs, method ToiletLever
   Insert a tiny cylinder at the lever’s pivot (`ToiletLeverPivot`) to represent a knob, using the existing chrome material (`chrome = Mt(Chrome)`).
   Add `m.Cylinder(ToiletLeverPivot, 0.008f, 0.004f, 12, chrome);` after the existing three `m.Box` calls (e.g., after `m.Box(new Vector3(0.209f, 0.70f, -0.148f), new Vector3(0.011f, 0.02f, 0.016f), chrome);`).
   Cylinder dimensions: radius = 0.008 m, height = 0.004 m, oriented vertically (default orientation matches other lever parts).
   Keep all colliders, interaction points, and pivots unchanged; the knob is purely visual and uses no more than one primitive.
+  - 03:59 landed by 0htsserver in 1.9 min: **Changed file**
 - [ ] Fix null‑up vector bug in Assets/Scripts/Player/PlayerGearParts.cs → `Strap` method
   The method builds a rotation with `Quaternion.LookRotation(f, up)`.
   When the strap direction `f` is (almost) parallel to `Vector3.right`, the fallback `up = Vector3.Cross(f, Vector3.right)` yields a zero vector, causing Unity to throw *ArgumentException: up must be non‑zero* and the strap part is not created.

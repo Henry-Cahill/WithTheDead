@@ -274,6 +274,7 @@ namespace CloneZ
             m.Box(new Vector3(0.204f, 0.70f, -0.225f), new Vector3(0.016f, 0.016f, 0.016f), chrome);
             m.Box(new Vector3(0.209f, 0.70f, -0.185f), new Vector3(0.008f, 0.012f, 0.07f), chrome);
             m.Box(new Vector3(0.209f, 0.70f, -0.148f), new Vector3(0.011f, 0.02f, 0.016f), chrome);
+            m.Cylinder(ToiletLeverPivot, 0.008f, 0.004f, 12, chrome);
         }
 
         /// <summary>A full cistern's water: a sheet round <see cref="ToiletCisternWater"/>.</summary>
