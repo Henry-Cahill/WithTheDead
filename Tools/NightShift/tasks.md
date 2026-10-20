@@ -672,3 +672,12 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Player/PlayerSleep.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] In Assets/Scripts/World/WaterSource.cs: Add a thin, slightly darker “weathered band” around the rain barrel in `WaterSource.BuildBarrel` so the barrel looks used and aged.
+  Insert a new mesh primitive just after the existing `Rim(m, r - wall, r + 0.012f, h, 16, DecorPalette.Gloss(plastic * 0.9f));` line.
+  `// weathered band midway up the barrel – a thin matte ring`
+  `m.Cylinder(new Vector3(0f, h * 0.5f, 0f), r + 0.005f, 0.01f, 16,`
+  `DecorPalette.Matte(plastic * 0.6f));`
+  size: radius ≈ `r + 0.005f` = 0.345 m, height = 0.01 m (1 cm)
+  position: centered at `new Vector3(0f, h * 0.5f, 0f)` (mid‑height of barrel)
+  material: reuse existing `plastic` colour with a darker matte tint (`plastic * 0.6f`) via `DecorPalette.Matte` – no new assets needed
+  keeps existing colliders, interaction points, and pivots unchanged; adds only one primitive, staying under the ~12 limit.
