@@ -123,6 +123,10 @@ namespace CloneZ
         {
             _roll = 0f;
             ctx.Notify("You nudge the frame level. Better.");
+            if (_calming && Time.time >= _calmAgainAt) {
+                LightingFixtures.Calm(ctx, CloneZConfig.PictureCalm);
+                _calmAgainAt = Time.time + CloneZConfig.PictureCalmCooldown;
+            }
         }
 
         public override void CaptureState(FixtureSave save)

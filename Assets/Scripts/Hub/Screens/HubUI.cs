@@ -274,6 +274,13 @@ namespace CloneZ
             UIKit.Stretch(handle);
             var hImg = handle.gameObject.AddComponent<Image>();
             hImg.color = new Color(UIKit.Accent.r, UIKit.Accent.g, UIKit.Accent.b, 0.55f);
+            // Add subtle worn‑edge accent: a thin darker overlay inside the handle
+            RectTransform edge = UIKit.Rect("Edge", handle);
+            // inset a few pixels to create an inner border effect
+            edge.offsetMin = new Vector2(2f, 2f);
+            edge.offsetMax = new Vector2(-2f, -2f);
+            var edgeImg = edge.gameObject.AddComponent<Image>();
+            edgeImg.color = new Color(0f, 0f, 0f, 0.2f);
             var bar = sb.gameObject.AddComponent<Scrollbar>();
             bar.handleRect = handle;
             bar.targetGraphic = hImg;
@@ -458,6 +465,13 @@ namespace CloneZ
         /// <summary>Creates a button that cycles through options, showing the current one.</summary>
         public static Button Cycle(Transform parent, string label, string[] options, int index, Action<int> onChanged, bool interactable = true)
         {
+            // Defensive: if no options, show a disabled placeholder button
+            if (options == null || options.Length == 0)
+            {
+                var btn = UIKit.Button(parent, "<none>", null, UIKit.ButtonColor, 16);
+                btn.interactable = false;
+                return btn;
+            }
             RectTransform row = UIKit.Row(parent, 32f, null, 10f, 2);
             Text name = UIKit.Label(row, label, 17);
             UIKit.Size(name.gameObject, 260f, 28f);

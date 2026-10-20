@@ -164,6 +164,14 @@ namespace CloneZ
                     HatColor = c;
                     HatTrimColor = Shape.Headwear == HeadwearStyle.Glasses ? DarkGlass : Shade(c, 0.7f);
                     HatGloss = GarmentStyles.Gloss(k, Shape.Headwear == HeadwearStyle.Helmet ? 0.5f : 0.12f);
+                    if (Shape.Headwear == HeadwearStyle.Helmet)
+                    {
+                        // deterministic “scuff” variation: 0‑0.07 (≈ 0‑7 %); uses shape hash for reproducibility
+                        int seed = Shape.GetHashCode();
+                        float var = ((seed >> 5) & 0x7) / 100f; // 0.00‑0.07
+                        HatTrimColor = Shade(HatTrimColor, 0.9f + var); // slight darkening / rust tint
+                        HatGloss = Mathf.Clamp01(HatGloss + var); // a touch more shine on worn metal
+                    }
                     break;
 
                 case ClothingSlot.Torso:

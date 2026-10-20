@@ -18,13 +18,20 @@ namespace CloneZ
         private PlayerPanic _panic;
         private PlayerSeat _seat;
 
+        /// <summary>True while the survivor is currently sleeping.</summary>
         public bool IsSleeping { get; private set; }
+        /// <summary>True when the survivor is close enough to a bed to consider sleeping.</summary>
         public bool NearBed { get; private set; }
+        /// <summary>The UI prompt shown to the player about sleeping state or actions.</summary>
         public string Prompt { get; private set; } = "";
 
         private bool _wakeRequested;
         private float _sleepElapsed;
         private readonly Collider[] _dangerBuf = new Collider[24];
+        // Cached nearest bed lookup to avoid per‑frame searches
+        private SleepSpot _cachedBed;
+        private Vector3 _lastPos;
+        private const float BedCacheThresholdSqr = 1f * 1f;
 
         private PlayerWounds Wounds => _wounds != null ? _wounds : (_wounds = GetComponent<PlayerWounds>());
         private PlayerPanic Panic => _panic != null ? _panic : (_panic = GetComponent<PlayerPanic>());
@@ -34,7 +41,12 @@ namespace CloneZ
         private const string PanickedReason = "Too panicked to sleep";
         private const string DangerReason = "Too dangerous to sleep \u2014 zombies near";
 
-        private void Awake() => _stats = GetComponent<PlayerStats>();
+        private void Awake()
+        {
+            _stats = GetComponent<PlayerStats>();
+            _lastPos = transform.position;
+        }
+
 
         private void OnEnable()
         {
@@ -62,8 +74,13 @@ namespace CloneZ
 
             if (IsSleeping) { TickSleep(); return; }
 
-            SleepSpot bed = SleepSpot.Nearest(transform.position, CloneZConfig.SleepRange, out _);
-            NearBed = bed != null;
+            // Refresh cached bed only if player moved beyond threshold
+            if ((transform.position - _lastPos).sqrMagnitude > BedCacheThresholdSqr)
+            {
+                _cachedBed = SleepSpot.Nearest(transform.position, CloneZConfig.SleepRange, out _);
+                _lastPos = transform.position;
+            }
+            NearBed = _cachedBed != null;
 
             if (NearBed && !UIState.GameplayBlocked)
             {
@@ -156,7 +173,7 @@ namespace CloneZ
         {
             int n = Physics.OverlapSphereNonAlloc(
                 transform.position, CloneZConfig.SleepDangerRadius, _dangerBuf,
-                1 << CloneZConfig.IgnoreRaycastLayer, QueryTriggerInteraction.Ignore);
+                ~(1 << CloneZConfig.IgnoreRaycastLayer), QueryTriggerInteraction.Ignore);
             for (int i = 0; i < n; i++)
                 if (_dangerBuf[i] != null && _dangerBuf[i].GetComponentInParent<ZombieAI>() != null)
                     return true;

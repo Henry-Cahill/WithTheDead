@@ -32,6 +32,9 @@ namespace CloneZ
             m.Box(new Vector3(0.22f, 0.47f, 0.16f), new Vector3(0.43f, 0.78f, 0.02f), G(c * 0.97f));
             m.Box(new Vector3(-0.04f, 0.6f, 0.175f), new Vector3(0.02f, 0.1f, 0.02f), Mt(Chrome));
             m.Box(new Vector3(0.04f, 0.6f, 0.175f), new Vector3(0.02f, 0.1f, 0.02f), Mt(Chrome));
+            // Chrome hinge pins on the side frames
+            m.Box(new Vector3(-0.45f, 0.6f, 0.175f), new Vector3(0.02f, 0.1f, 0.02f), Mt(Chrome));
+            m.Box(new Vector3(0.45f, 0.6f, 0.175f), new Vector3(0.02f, 0.1f, 0.02f), Mt(Chrome));
             Color red = new Color(0.72f, 0.12f, 0.10f);
             m.Box(new Vector3(-0.22f, 0.62f, 0.172f), new Vector3(0.14f, 0.04f, 0.004f), M(red));
             m.Box(new Vector3(-0.22f, 0.62f, 0.172f), new Vector3(0.04f, 0.14f, 0.004f), M(red));
@@ -120,8 +123,15 @@ namespace CloneZ
         public static void MetalShelf(RaidMesh m, System.Random rng, float w, float d, float h, int levels, int stockKind, Color frame)
         {
             Color f = V(frame, rng, 0.05f);
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++) {
                 m.Box(new Vector3((i % 2 == 0 ? -1f : 1f) * (w * 0.5f - 0.02f), h * 0.5f, (i < 2 ? -1f : 1f) * (d * 0.5f - 0.02f)), new Vector3(0.04f, h, 0.04f), M(f));
+                // Add subtle chrome rivets to each corner post
+                float rivFraction = 0.2f + (float)rng.NextDouble() * 0.6f;
+                Vector3 postPos = new Vector3((i % 2 == 0 ? -1f : 1f) * (w * 0.5f - 0.02f), h * 0.5f, (i < 2 ? -1f : 1f) * (d * 0.5f - 0.02f));
+                Vector3 rivPos = postPos + new Vector3(0f, -h * 0.5f + rivFraction * h, 0f);
+                m.Cylinder(rivPos, 0.005f, 0.004f, 6, Mt(Chrome));
+                m.Cylinder(rivPos, 0.005f, 0.004f, 6, Mt(Chrome));
+            }
             for (int l = 0; l < levels; l++)
             {
                 float y = 0.08f + l * (h - 0.12f) / Mathf.Max(1, levels - 1);

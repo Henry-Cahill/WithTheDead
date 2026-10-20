@@ -84,6 +84,22 @@ public static Vehicle Spawn(int spot, Vector3 at, float yaw, int seed)
             _bodyRoot = new GameObject("Body").transform;
             _bodyRoot.SetParent(transform, false);
             Box(_bodyRoot, new Vector3(0f, 0.62f, 0f), new Vector3(1.8f, 0.55f, 4.2f), paint);
+            // Left door handle trim with subtle random jitter and rotation
+            Box(_bodyRoot,
+                new Vector3(-0.68f + (float)(rng.NextDouble() - 0.5) * 0.04f,
+                            0.94f,
+                            (float)(rng.NextDouble() - 0.5) * 0.04f),
+                new Vector3(0.05f, 0.03f, 0.18f),
+                new Color(0.12f, 0.12f, 0.14f));
+            _bodyRoot.GetChild(_bodyRoot.childCount - 1).localRotation = Quaternion.Euler(0f, rng.Next(-5, 6), 0f);
+            // Right door handle trim
+            Box(_bodyRoot,
+                new Vector3(0.68f + (float)(rng.NextDouble() - 0.5) * 0.04f,
+                            0.94f,
+                            (float)(rng.NextDouble() - 0.5) * 0.04f),
+                new Vector3(0.05f, 0.03f, 0.18f),
+                new Color(0.12f, 0.12f, 0.14f));
+            _bodyRoot.GetChild(_bodyRoot.childCount - 1).localRotation = Quaternion.Euler(0f, rng.Next(-5, 6), 0f);
             Box(_bodyRoot, new Vector3(0f, 1.15f, -0.25f), new Vector3(1.62f, 0.55f, 2.1f), paint * 0.95f);
             Color glass = new Color(0.08f, 0.1f, 0.12f);
             Box(_bodyRoot, new Vector3(0f, 1.15f, 0.83f), new Vector3(1.5f, 0.45f, 0.06f), glass);

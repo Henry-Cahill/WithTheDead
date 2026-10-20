@@ -154,6 +154,10 @@ namespace CloneZ
             "the post's newsletter: a bake sale, a lost beagle, a list of birthdays for March.",
             "a field manual on vehicle maintenance, every page thumbed grey at the corners.",
             "a pocket diary from last year, the paydays circled and every weekend crossed off in red.",
+            "a safety notice: wear helmets in the workshop, and keep exits clear.",
+            "a volunteer flyer: join the weekend patrol, extra rations promised.",
+            "a lost‑pet poster: missing terrier, answer with a photo and a bag of kibble.",
+            "a weather alert: blizzard expected Thursday, stock warm blankets and fuel.",
         };
 
         private static readonly string[] ClinicLeaflets =

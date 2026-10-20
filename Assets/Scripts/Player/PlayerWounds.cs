@@ -162,6 +162,8 @@ namespace CloneZ
                 for (int i = 0; i < _wounds.Count; i++)
                 {
                     Wound w = _wounds[i];
+                    // Heavy bleeds cannot be treated with a simple bandage; they require a tourniquet or haemostatic gauze.
+                    if (w.IsHeavy) continue;
                     if (!w.Bandaged) return true;
                     if (w.Bandaged && !w.CleanBandage && !w.Infected) return true;
                 }
@@ -183,7 +185,10 @@ namespace CloneZ
             }
         }
 
-        private void Awake() => _stats = GetComponent<PlayerStats>();
+        private void Awake() {
+    _stats = GetComponent<PlayerStats>();
+    _sleep = GetComponent<PlayerSleep>();
+}
 
         /// <summary>Opens a fresh wound of the given kind (called when a zombie lands a hit).</summary>
         public void Inflict(WoundType type) => Inflict(type, BodyZones.RandomStrike());
@@ -365,7 +370,7 @@ namespace CloneZ
         private void Update()
         {
             if (_stats == null || _stats.IsDead) return;
-            if (_sleep == null) _sleep = GetComponent<PlayerSleep>();
+            
             // Wounds knit far faster while the survivor sleeps.
             float scale = _sleep != null && _sleep.IsSleeping ? CloneZConfig.WoundHealSleepMultiplier : 1f;
             Tick(Time.deltaTime, scale);

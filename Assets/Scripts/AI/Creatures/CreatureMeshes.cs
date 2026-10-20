@@ -23,6 +23,7 @@ namespace CloneZ
 
         /// <summary>Adds a primitive: centred on <paramref name="pos"/>, rotated by <paramref name="euler"/>, stretched to
         /// <paramref name="size"/> (diameter / length on each axis).</summary>
+        /// <summary>Adds a primitive shape to the builder's buffers, merging into a submesh.</summary>
         public CreaturePartBuilder Add(CreaturePrim prim, Vector3 pos, Vector3 euler, Vector3 size, Color color, float gloss = 0.15f)
         {
             UnitMesh u = UnitMesh.For(prim);
@@ -54,6 +55,7 @@ namespace CloneZ
             return _colors.Count - 1;
         }
 
+        /// <summary>Creates the mesh and corresponding materials for this part, caching submeshes by colour and gloss.</summary>
         public Mesh Build(string name, out Material[] materials)
         {
             var mesh = new Mesh { name = name };
@@ -76,7 +78,8 @@ namespace CloneZ
 
             private static UnitMesh s_Sphere, s_Box, s_Cyl, s_Taper, s_Cone;
 
-            public static UnitMesh For(CreaturePrim p)
+            /// <summary>Gets (or creates) the cached unit mesh for the given primitive type.</summary>
+        public static UnitMesh For(CreaturePrim p)
             {
                 switch (p)
                 {
@@ -195,6 +198,7 @@ namespace CloneZ
         private static readonly Dictionary<string, Entry> s_Cache = new Dictionary<string, Entry>(64);
 
         /// <summary>An empty transform (a joint) under <paramref name="parent"/>.</summary>
+        /// <summary>Creates a new GameObject, optionally attaching a MeshRenderer with a shared mesh and materials.</summary>
         public static Transform Pivot(string name, Transform parent, Vector3 localPos, Vector3 localEuler = default)
         {
             var go = new GameObject(name);
@@ -207,6 +211,7 @@ namespace CloneZ
         }
 
         /// <summary>Hangs the shared mesh for <paramref name="key"/> (built once by <paramref name="build"/>) on a joint.</summary>
+        /// <summary>Finds a mesh (or builds it once) for the given key and attaches it to a new GameObject under the joint.</summary>
         public static MeshRenderer Attach(Transform joint, string key, Action<CreaturePartBuilder> build)
         {
             if (!s_Cache.TryGetValue(key, out Entry e) || e.Mesh == null)
@@ -233,6 +238,7 @@ namespace CloneZ
     {
         private static Shader s_Lit, s_Unlit;
 
+        /// <summary>Creates a translucent lit material for effects, configuring smoothness and metallic.</summary>
         public static Material TransparentLit(Color color, float smoothness = 0.2f)
         {
             if (s_Lit == null) s_Lit = Shader.Find("Universal Render Pipeline/Lit");
@@ -245,6 +251,7 @@ namespace CloneZ
             return m;
         }
 
+        /// <summary>Creates a translucent unlit material for effects, setting its base colour.</summary>
         public static Material TransparentUnlit(Color color)
         {
             if (s_Unlit == null) s_Unlit = Shader.Find("Universal Render Pipeline/Unlit");
@@ -284,6 +291,7 @@ namespace CloneZ
             m.renderQueue = (int)RenderQueue.Transparent;
         }
 
+        /// <summary>Sets a float property on the material if it exists.</summary>
         private static void Set(Material m, string property, float value)
         {
             if (m.HasProperty(property)) m.SetFloat(property, value);
@@ -298,6 +306,7 @@ namespace CloneZ
         private Vector3 _from, _to;
         private float _t, _duration;
 
+        /// <summary>Spawns a short-lived expanding/fading ring effect at the given centre.</summary>
         public static void Spawn(Vector3 center, Color color, Vector3 fromScale, Vector3 toScale, float duration)
         {
             var go = new GameObject("CreatureRingFx");
@@ -320,6 +329,7 @@ namespace CloneZ
 
         private static Mesh s_Sphere;
 
+        /// <summary>Gets the shared sphere mesh, creating it if necessary.</summary>
         private static Mesh SphereMesh()
         {
             if (s_Sphere != null) return s_Sphere;
@@ -329,6 +339,7 @@ namespace CloneZ
             return s_Sphere;
         }
 
+        /// <summary>Creates the ring's material and initializes the expanding/fading properties.</summary>
         private void Update()
         {
             _t += Time.deltaTime;
@@ -341,6 +352,7 @@ namespace CloneZ
             if (k >= 1f) Destroy(gameObject);
         }
 
+        /// <summary>Cleans up the material when the ring is destroyed.</summary>
         private void OnDestroy()
         {
             if (_mat != null) Destroy(_mat);

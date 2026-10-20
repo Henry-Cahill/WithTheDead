@@ -25,7 +25,12 @@ namespace CloneZ
             "A flyer for the town meeting: \u201CAgenda – infrastructure, health, security.\u201D",
             "A draft of a permit application: \u201CConstruction of new community center – pending approval.\u201D",
             "A notice of street closure: \u201CMain St. closed for repairs – detour via 2nd Ave.\u201D",
-            "A form for reporting potholes: \u201CReport #: ____ – location – description.\u201D"
+            "A form for reporting potholes: \u201CReport #: ____ – location – description.\u201D",
+            "A winter road‑closure warning: \u201CIcy conditions on Hwy 7 – keep off unless you have chains.\u201D",
+            "A handwritten grocery list: \u201CMilk, beans, coffee, bacon, flour.\u201D",
+            "A church bulletin announcement: \u201CSunday service at 10 a.m.; potluck supper after.\u201D",
+            "A personal note about a missing family member: \u201CMissing: Elsie, age 7, last seen near the creek.\u201D",
+            "A county health‑department flyer about flu shots: \u201CFree flu vaccination this week at the clinic.\u201D"
         };
 
         private static readonly string[] Jams =
@@ -57,7 +62,7 @@ namespace CloneZ
         private FixturePart _lid;
         private Renderer _jamLamp;
         private bool _jammed;
-        private int _original, _said;
+        private int _original, _said; private bool _originalTaken;
         private float _noiseAt;
 
         public override string DisplayName => "Photocopier";
@@ -94,7 +99,13 @@ namespace CloneZ
             else into.Add(Copy().DisabledIf(dead != null, dead));
             bool open = _lid != null && _lid.IsOpen;
             into.Add(new InteractAction(open ? "Close the lid" : "Lift the lid", c => SetLid(!open)));
-            if (open) into.Add(new InteractAction("Read what's on the glass", c => c.Notify(Originals[_original])));
+            if (open) {
+                into.Add(new InteractAction("Read what's on the glass", c => c.Notify(Originals[_original])));
+                if (!_originalTaken) into.Add(new InteractAction("Take the original sheet", c => {
+                    _originalTaken = true;
+                    c.Notify(Originals[_original]);
+                }));
+            }
         }
 
         private InteractAction Copy()

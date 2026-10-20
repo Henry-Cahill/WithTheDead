@@ -224,7 +224,7 @@ INSERT INTO loot_entry (tableType,itemId,weight,minCount,maxCount) VALUES
             {
                 using (var db = new SqliteConnection(path))
                 {
-                    if (!TableExists(db, "content_meta") || !TableExists(db, "item")) return false;
+                    if (!TableExists(db, "content_meta") || !TableExists(db, "item") || !TableExists(db, "loot_table") || !TableExists(db, "loot_entry") || !TableExists(db, "crop")) return false;
 
                     using (var st = db.Prepare("SELECT schemaVersion FROM content_meta WHERE id=0;"))
                         if (!st.Step() || st.GetInt(0) != SchemaVersion) return false;

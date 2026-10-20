@@ -143,6 +143,17 @@ namespace CloneZ
                 Vector3 c = new Vector3(x, 0f, half - 3f);
                 if (site.Any(c, 3f, SiteCell.Reserved)) continue;
                 wall.At(wall.Solid, new Vector3(x, 0f, 0f), 0f, m => m.Box(new Vector3(0f, 6f, 0f), new Vector3(8.1f, 12f, 2.2f), ZoneKit.M(ZoneKit.V(ZoneKit.ConcreteDark, rng))));
+                // Add a few rust‑stained bolt heads on the concrete block (1‑4 bolts per segment).
+                int boltCount = rng.Next(1, 5);
+                for (int b = 0; b < boltCount; b++)
+                {
+                    // Random offset within the block footprint (≈ half‑size of the concrete segment).
+                    float offsetX = (float)rng.NextDouble() * 7f - 3.5f; // -3.5 .. 3.5
+                    float offsetZ = (float)rng.NextDouble() * 1.8f - 0.9f; // -0.9 .. 0.9 (depth half)
+                    Vector3 boltPos = new Vector3(x + offsetX, 0.065f, offsetZ);
+                    wall.At(wall.Solid, boltPos, 0f,
+                        m => m.Cylinder(Vector3.zero, 0.015f, 0.02f, 8, ZoneKit.Mt(ZoneKit.RustDark)));
+                }
                 wall.Collider(new Vector3(x, 6f, 0f), new Vector3(8f, 12f, 2.2f));
                 wall.At(wall.Flat, new Vector3(x, 0f, -1.2f), 0f, m => m.Box(new Vector3(0f, 2f, 0f), new Vector3(8f, 0.3f, 0.02f), DecorMaterials.Hazard));
             }

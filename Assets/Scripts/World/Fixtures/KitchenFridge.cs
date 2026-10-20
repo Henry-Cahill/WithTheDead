@@ -82,6 +82,7 @@ namespace CloneZ
             _lamp = RoomLight.Spawn(root, f.P(0f, 1.08f, 0f), LampColour, CloneZConfig.FridgeLampRange, CloneZConfig.FridgeLampIntensity, false, false);
             _lamp.ShowBulb = false;
             _lamp.On = false;
+            _lens.enabled = false;
 
             _freezer = StorageFixture.Create(root, "Freezer", Interactable.KeyFor("freezer", at), f.P(0.2f, 1.48f, front + 0.01f),
                 new[] { freezerDoor }, root, host.Seed * 13 + 3, new StorageOptions

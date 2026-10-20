@@ -53,6 +53,8 @@ namespace CloneZ
             into.Add(new InteractAction("Turn it down", c => Louder(c, -1))
                 .DisabledIf(AtQuietest, "It's down as low as it goes")
                 .DisabledIf(!near, TooFar));
+            into.Add(new InteractAction("Check station", c => c.Notify("Currently tuned to " + Describe(Station) + (Broadcasts.IsOnAir(Station) ? "." : " \u2014 just static.")))
+                .DisabledIf(!near, TooFar));
         }
 
         private void TurnOn(InteractContext ctx)

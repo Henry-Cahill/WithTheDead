@@ -322,6 +322,9 @@ namespace CloneZ
             float bodyH = h - d * 0.5f;
             PlayerGearParts.Box(root, "Bag", new Vector3(0f, bottom + bodyH * 0.5f, cz), new Vector3(w, bodyH, d), body, true);
             PlayerGearParts.Tube(root, "BagTop", new Vector3(0f, top - d * 0.5f, cz), Vector3.right, w, d * 0.5f, body, true);
+            // Small rivet boxes on the top tube for a worn‑metal look.
+            PlayerGearParts.Box(root, "RivetFront", new Vector3(0f, top - d * 0.5f, cz + d * 0.5f + 0.004f), new Vector3(0.02f, 0.02f, 0.008f), hardware);
+            PlayerGearParts.Box(root, "RivetBack", new Vector3(0f, top - d * 0.5f, cz - d * 0.5f - 0.004f), new Vector3(0.02f, 0.02f, 0.008f), hardware);
             PlayerGearParts.Box(root, "Lid", new Vector3(0f, top - d * 0.5f - 0.035f, outer - 0.004f), new Vector3(w * 0.92f, 0.10f, 0.012f), shade);
 
             float ph = h * 0.42f, py = bottom + 0.03f + ph * 0.5f;

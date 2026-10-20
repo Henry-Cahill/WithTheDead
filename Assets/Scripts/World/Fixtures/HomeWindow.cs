@@ -63,7 +63,7 @@ namespace CloneZ
         private int _climbSide;
         private bool _climbClear;
 
-        private Action<InteractContext> _openAct, _closeAct, _latchAct, _unlatchAct, _curtainAct, _lookAct, _climbAct;
+        private Action<InteractContext> _openAct, _closeAct, _latchAct, _unlatchAct, _curtainAct, _lookAct, _climbAct, _checkAct;
 
         private static readonly Collider[] s_Hits = new Collider[16];
         private static readonly int BodyMask = (1 << 0) | (1 << CloneZConfig.IgnoreRaycastLayer);
@@ -110,7 +110,7 @@ namespace CloneZ
             _unlatchAct = c => SetLatched(false, c);
             _curtainAct = c => SetDrawn(!_drawn);
             _lookAct = Look;
-            _climbAct = Climb;
+            _checkAct = c => CheckWindow(c);
         }
 
         /// <summary>Makes <paramref name="root"/> (already holding the sash and the curtains, under the window
@@ -171,7 +171,7 @@ namespace CloneZ
                 else into.Add(new InteractAction("Latch the window", _latchAct).DisabledIf(_open, "Close the window first"));
 
                 string draw = _blind ? (_drawn ? "Raise the blind" : "Lower the blind") : (_drawn ? "Open the curtains" : "Close the curtains");
-                into.Add(new InteractAction(draw, _curtainAct));
+                into.Add(new InteractAction("Check window", _checkAct));
 
                 into.Add(new InteractAction(_outSide == 0 ? "Look through the window" : "Look outside", _lookAct)
                     .Timed(CloneZConfig.WindowLookSeconds, "Looking outside", HumanoidActivity.Use));
@@ -256,6 +256,17 @@ namespace CloneZ
         {
             if (_occluder == null) _occluder = _piece != null ? _piece.GetComponent<CutawayOccluder>() : GetComponentInParent<CutawayOccluder>();
             if (_occluder != null) _occluder.PartsChanged();
+        }
+
+        // Peering out: the dead on the far side, as far as the light allows and where nothing hides them.
+        private void CheckWindow(InteractContext ctx)
+        {
+            var parts = new List<string>();
+            parts.Add(_open ? "open" : "closed");
+            if (_latched) parts.Add("latched");
+            if (_drawn) parts.Add(_blind ? "blind down" : "curtains drawn");
+            string status = "The window is " + string.Join(", ", parts) + ".";
+            ctx.Notify(status);
         }
 
         // Peering out: the dead on the far side, as far as the light allows and where nothing hides them.

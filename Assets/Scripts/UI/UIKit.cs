@@ -145,6 +145,37 @@ namespace CloneZ
             Text label = Label(rt, text, fontSize, Color.white, TextAnchor.MiddleCenter);
             Stretch(label.rectTransform, 6f, 2f, 6f, 2f);
             label.horizontalOverflow = HorizontalWrapMode.Overflow;
+
+            // Add subtle decorative rivets at the button corners (4×4 px) using Accent colour
+            // Top‑left
+            var rivetTL = Rect("RivetTL", rt);
+            rivetTL.sizeDelta = new Vector2(4f, 4f);
+            rivetTL.anchorMin = rivetTL.anchorMax = new Vector2(0f, 1f);
+            rivetTL.pivot = new Vector2(0f, 1f);
+            var imgTL = rivetTL.gameObject.AddComponent<Image>();
+            imgTL.color = Accent;
+            // Top‑right
+            var rivetTR = Rect("RivetTR", rt);
+            rivetTR.sizeDelta = new Vector2(4f, 4f);
+            rivetTR.anchorMin = rivetTR.anchorMax = new Vector2(1f, 1f);
+            rivetTR.pivot = new Vector2(1f, 1f);
+            var imgTR = rivetTR.gameObject.AddComponent<Image>();
+            imgTR.color = Accent;
+            // Bottom‑left
+            var rivetBL = Rect("RivetBL", rt);
+            rivetBL.sizeDelta = new Vector2(4f, 4f);
+            rivetBL.anchorMin = rivetBL.anchorMax = new Vector2(0f, 0f);
+            rivetBL.pivot = new Vector2(0f, 0f);
+            var imgBL = rivetBL.gameObject.AddComponent<Image>();
+            imgBL.color = Accent;
+            // Bottom‑right
+            var rivetBR = Rect("RivetBR", rt);
+            rivetBR.sizeDelta = new Vector2(4f, 4f);
+            rivetBR.anchorMin = rivetBR.anchorMax = new Vector2(1f, 0f);
+            rivetBR.pivot = new Vector2(1f, 0f);
+            var imgBR = rivetBR.gameObject.AddComponent<Image>();
+            imgBR.color = Accent;
+
             return btn;
         }
 

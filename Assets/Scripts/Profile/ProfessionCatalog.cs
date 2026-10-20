@@ -71,6 +71,10 @@ namespace CloneZ
             T("restless", "Restless Sleeper", -2, "Fatigue builds 25% faster.", m => m.FatigueRate *= 1.25f),
             T("conspicuous", "Conspicuous", -3, "Easier to spot (+25% visibility).", m => m.VisibilityMult *= 1.25f),
             T("weaklungs", "Weak Lungs", -2, "Stamina drains 10% faster; gas hurts more.", m => { m.StaminaDrain *= 1.1f; m.Resist.Chemical -= 0.1f; }),
+            T("frost_resist", "Frost Resistance", 3, "Stamina drains 15% slower in the cold.", m => m.StaminaDrain *= 0.85f),
+            T("firestarter", "Firestarter", 2, "Night vision improves by a small margin.", m => m.NightVision += 0.15f),
+            T("handy", "Handy", 2, "Carry capacity increases by 2 kg.", m => m.CarryBonusKg += 2f),
+            T("superstitious", "Superstitious", 1, "You’re less likely to panic.", m => m.PanicRate *= 0.9f),
         };
 
         private static TraitDef T(string id, string name, int cost, string blurb, System.Action<StatMods> apply, params string[] excludes)

@@ -16,7 +16,7 @@ sentence of its summary. Grep the code for details.
 ## Assets/Scripts/AI/Humans
 - ALife.cs (435) ALifeSquad, ALifeDirector, ZonePeopleModule: One squad of the Zone's people, alive whether or not anyone is watching.
 - Companions.cs (238) CompanionService, Order, Candidate: Hired guns.
-- HumanLoadouts.cs (353) GunPick, LootPick, HumanLoadout: One weighted gun choice of a loadout; the round defaults to the gun's own.
+- HumanLoadouts.cs (356) GunPick, LootPick, HumanLoadout: One weighted gun choice of a loadout; the round defaults to the gun's own.
 - HumanNpc.cs (958) HumanNpc, Mode, HumanNpcAvatar: A person in the Zone: a stalker, a soldier, a scavenger, a warden on a tower, a zealot of the Choir,
 - HumanUtil.cs (272) HumanUtil, HumanRunner: Small helpers shared by the Zone's people (stalkers, A-Life squads, outposts, wardens, companions): 
 - Outposts.cs (366) OutpostSystem, Outpost, PdaStashes: Warfare outposts (Gray Zone Warfare's PvEvP): sandbagged positions held by a faction's garrison.
@@ -33,7 +33,7 @@ sentence of its summary. Grep the code for details.
 - GameBootstrapper.cs (647) GameBootstrapper: Builds the entire playable world from code — ground, cover, lighting, the player, the isometric came
 
 ## Assets/Scripts/Camera
-- CinemachineViews.cs (124) CinemachineViews: The camera rig as Cinemachine sees it (the doc's Unity setup: one virtual camera per mode, blended o
+- CinemachineViews.cs (127) CinemachineViews: The camera rig as Cinemachine sees it (the doc's Unity setup: one virtual camera per mode, blended o
 - CutawayOccluder.cs (31) CutawayOccluder: Marks a wall (or any tall piece of building) that the isometric camera may cut away when it stands b
 - IsoCameraFollow.cs (727) IsoCameraFollow: The player camera.
 - IsoCutaway.cs (364) IsoCutaway, Piece, HiddenRenderer: Project Zomboid's wall cutaway for the isometric camera.
@@ -79,13 +79,13 @@ sentence of its summary. Grep the code for details.
 - CloneZUtil.cs (100) CloneZUtil: Small helpers shared across the bootstrapper and gameplay.
 - CombatFX.cs (73) CombatFX, FxFade: Throwaway visual feedback for gunfire: a fading tracer line and a brief muzzle flash.
 - CombatResolver.cs (208) Hitbox, ShotRequest, ShotResult: A collider that belongs to one body zone of an actor (heads take more, armour covers some).
-- DamageModel.cs (204) DamageKind, BodyZone, BodyZones: What kind of harm a blow does.
+- DamageModel.cs (209) DamageKind, BodyZone, BodyZones: What kind of harm a blow does.
 - Factions.cs (152) Factions, Def, CordonRules: The groups that live in (and around) the Zone, how they feel about each other, and how they feel abo
 - GameEvents.cs (80) RaidOutcome, KillInfo, GameEvents: How a raid ended for the local survivor.
 - GameInput.cs (124) GameAction, GameInput: Gameplay actions bound through GameInput (the original controls read the keyboard directly).
 - GameManager.cs (131) GameState, GameManager: Owns global game state: score, waves, and win/lose flow.
 - GameModules.cs (78) IGameModule, GameModules, WorldHooks: A gameplay feature that wires itself in at boot: registers item actions, subscribes to GameEvents an
-- GameSession.cs (91) GameMode, RaidKind, CameraView: The kind of run being played, picked on the title screen or in the hub.
+- GameSession.cs (97) GameMode, RaidKind, CameraView: The kind of run being played, picked on the title screen or in the hub.
 - IDemolishable.cs (28) IDemolishable: Anything the build tool's Demolish mode can tear down — player-built structures (barricades, house p
 - NoiseSystem.cs (67) NoiseSystem, Pulse: Lightweight world sound system.
 - PlayerModifiers.cs (99) StatMods, IStatModSource, PlayerModifiers: The survivor's combined stat modifiers for this frame — the sum of everything that bends the base ru
@@ -151,13 +151,13 @@ sentence of its summary. Grep the code for details.
 - Inventory.cs (275) Inventory: A weight-limited bag of ItemStacks, used both for the player's carried items and for world container
 - InventoryLayout.cs (483) GridSection, GridSortMode, InventoryLayout: One rectangular grid of cells inside an Inventory: the survivor's pockets, a worn backpack / chest r
 - ItemActions.cs (84) ItemMenuAction, ItemActions: One extra verb on an item's menu ("Attach to M9", "Strip mods", "Throw").
-- ItemDatabase.cs (514) ItemCategory, ClothingSlot, GearKind: Where a piece of clothing is worn.
-- ItemExtra.cs (174) ItemExtra, ItemStackExtras, ItemConditionTiers: Per-instance data an item can carry beyond its count, freshness and wear: whether it was FoundInRaid
+- ItemDatabase.cs (526) ItemCategory, ClothingSlot, GearKind: Where a piece of clothing is worn.
+- ItemExtra.cs (181) ItemExtra, ItemStackExtras, ItemConditionTiers: Per-instance data an item can carry beyond its count, freshness and wear: whether it was FoundInRaid
 - LootContainer.cs (356) ContainerType, LootContainer: A searchable world container.
 
 ## Assets/Scripts/Medical
 - MedicalItems.cs (139) MedicalItems, Body: What the field medicine does.
-- PlayerBlood.cs (195) PlayerBlood: DayZ's separate blood and shock pools.
+- PlayerBlood.cs (204) PlayerBlood: DayZ's separate blood and shock pools.
 - PlayerLimbs.cs (621) PlayerLimbs, HudLimbs: The survivor's seven hit zones (Tarkov): head, thorax, stomach, both arms, both legs, each with its 
 
 ## Assets/Scripts/Net
@@ -169,8 +169,8 @@ sentence of its summary. Grep the code for details.
 
 ## Assets/Scripts/Player
 - PlayerBuilder.cs (846) PlayerBuilder, BuildSelection: The survivor's construction tool.
-- PlayerClothing.cs (175) PlayerClothing, WornPiece: The clothing the survivor is wearing — one garment per body slot.
-- PlayerCombat.cs (600) PlayerCombat, FlareProjectile, NetClock: Melee and firearms.
+- PlayerClothing.cs (179) PlayerClothing, WornPiece: The clothing the survivor is wearing — one garment per body slot.
+- PlayerCombat.cs (603) PlayerCombat, FlareProjectile, NetClock: Melee and firearms.
 - PlayerController.cs (367) PlayerController: Survival movement: move relative to the camera, aim Project Zomboid style, sprint/sneak with stamina
 - PlayerFarming.cs (338) PlayerFarming, FarmAction: Lets the survivor work the land.
 - PlayerFoodSickness.cs (119) PlayerFoodSickness: Food poisoning — Project Zomboid's Sickness / Nausea moodle.
@@ -184,7 +184,7 @@ sentence of its summary. Grep the code for details.
 - PlayerSeat.cs (298) PlayerSeat: Sitting down — on a dining chair, the armchair, the edge of the bed, the toilet lid — and lying down
 - PlayerSkills.cs (221) PlayerSkills, Skill: The player's Project Zomboid–style skills (perks).
 - PlayerSleep.cs (177) PlayerSleep: Lets the player sleep at a bed to pass the night, shedding fatigue and slowly healing (Project Zombo
-- PlayerStats.cs (370) Exertion, PlayerStats: Survival stats for the player: health, endurance, hunger, thirst and the zombie infection.
+- PlayerStats.cs (384) Exertion, PlayerStats: Survival stats for the player: health, endurance, hunger, thirst and the zombie infection.
 - PlayerTemperature.cs (199) PlayerTemperature: The survivor's thermoregulation — Project Zomboid's body-temperature and wetness model.
 - PlayerWounds.cs (573) WoundType, Wound, PlayerWounds: Kinds of injury.
 - Stealth.cs (151) Stealth, HudStealth: How easily the survivor is seen and heard right now (Metro's wrist light, Gray Zone Warfare's visibi
@@ -192,7 +192,7 @@ sentence of its summary. Grep the code for details.
 ## Assets/Scripts/Profile
 - ProfessionCatalog.cs (129) ProfessionDef, TraitDef, ProfessionCatalog: A starting profession: skill head-starts, a little kit, and how many trait points it leaves.
 - ProfileData.cs (341) AccountProfile, CharacterProfile, HealthCarry: The account: its characters (up to three), the season, and what was learned that no wipe takes away.
-- ProfileStore.cs (367) ProfileStore: Loads, saves and edits the account profile (clonez_profile.json under the persistent data path): the
+- ProfileStore.cs (374) ProfileStore: Loads, saves and edits the account profile (clonez_profile.json under the persistent data path): the
 - Progression.cs (50) Progression: The character's level: experience from kills, extractions, found loot, quests and exploration.
 
 ## Assets/Scripts/Quests
@@ -222,31 +222,38 @@ sentence of its summary. Grep the code for details.
 - GridPointerRelay.cs (44) GridElement, GridPointerRelay: What kind of grid-inventory element a GridPointerRelay sits on.
 - GridScrollRect.cs (20) GridScrollRect: A ScrollRect that scrolls with the mouse wheel and its scrollbar but not by dragging its content: in
 - GridSprites.cs (118) GridSprites: Procedural sprites for the grid inventory, built once and cached: the tiling cell, a small gear, a h
-- HUDController.cs (472) HUDController: The code-built heads-up display, laid out like a Project Zomboid HUD mod: hand slots top-left, gas-m
+- HUDController.cs (630) HUDController: The code-built heads-up display, with its own layout for each camera view (HudViewLayout): Isometric
 - HealthPanelController.cs (464) HealthPanelController: A code-built health screen (toggled with H) inspired by Project Zomboid's health panel.
+- HudBodycamView.cs (222) HudBodycamView: The bodycam view's HUD: the on-screen display of a 1993 camcorder rather than a game HUD.
+- HudCombatFeedback.cs (224) HudCombatFeedback: Combat feedback for the views that look through the survivor's eyes or over their shoulder: a red ar
+- HudFirstPersonView.cs (219) HudFirstPersonView: The first-person view's HUD: as little as possible between the eyes and the world.
 - HudHands.cs (220) HudHands: Top-left hand slots, Project Zomboid HUD-mod style: a circle for the weapon in hand (line-art silhou
 - HudHints.cs (117) HudHints: The key-hint chips along the bottom-centre (two compact rows of key caps + actions).
 - HudIconArt.cs (408) HudIcon, HudIconSpec, HudIconArt: Every procedural sprite the HUD draws (see HudIconArt for the art).
 - HudIcons.cs (53) HudIcons: Bakes the HUD's procedural art (HudIconArt) into sprites on first use and caches them for the rest o
 - HudInteraction.cs (178) HudInteraction, Row: The interaction overlay: a small label hung over whatever the survivor has in focus (a fixture's nam
-- HudMoodles.cs (219) HudMoodles, Kind, Moodle: Project Zomboid-style moodles: a column of small square tiles down the right edge, one per active co
+- HudMoodles.cs (312) MoodleDock, HudMoodles, Kind: Where the moodles sit: down the right edge with labels (isometric, over the shoulder), or as a compa
 - HudRaidOverlay.cs (134) HudRaidOverlay: Raid feedback from ExtractionManager: the floating green "Spawn Protection: 40s" over the survivor's
 - HudRaster.cs (267) HudRaster: A tiny anti-aliased vector rasteriser for the HUD's procedural line art.
 - HudSevenSegment.cs (60) HudSevenSegment: One digit of the digital watch: seven hexagonal segments built from sliced images, with the unlit se
+- HudShoulderView.cs (312) HudShoulderView: The over-the-shoulder view's HUD, laid out like a modern third-person action game.
+- HudSprites.cs (119) HudSprites: Procedural sprites for the per-view HUDs and the pause menu that aren't line art (see HudIcons for t
 - HudStamina.cs (77) HudStamina: Bottom-left: a running-man pictogram that mirrors how the survivor is moving (standing, walking, spr
-- HudStatusRow.cs (412) HudStatusRow, StatusIcon, InfoRow: Bottom-right: the mode box (amber "EXTRACTION MODE", or the wave and kill count in wave survival) wi
+- HudStatusRow.cs (414) HudStatusRow, StatusIcon, InfoRow: Bottom-right: the mode box (amber "EXTRACTION MODE", or the wave and kill count in wave survival) wi
 - HudSubtitles.cs (69) HudSubtitles: Captions for what the survivor hears — a radio or TV broadcast (Subtitles): the latest two lines at 
 - HudToasts.cs (64) HudToasts: Short fading messages at the bottom-centre, above the interaction prompts — e.g.
-- HudUI.cs (211) HudContext, HudUI: Everything the HUD widgets read, gathered once by HUDController.Bind.
-- HudWatchRow.cs (232) HudWatchRow: The top-right row, right-aligned: the gas-mask "Filter 72%" panel (only with a mask on), a dim activ
+- HudUI.cs (224) HudContext, HudUI: Everything the HUD widgets read, gathered once by HUDController.Bind.
+- HudViewKit.cs (327) HudNeed, HudReadouts, HudGauge: The supplies the view HUDs show as small filling icons.
+- HudViewLayout.cs (159) HudTier, HudGroup, HudViewLayout: How much a HUD cluster matters, which decides which HUD styles keep it on screen.
+- HudWatchRow.cs (235) HudWatchRow: The top-right row, right-aligned: the gas-mask "Filter 72%" panel (only with a mask on), a dim activ
 - InventoryUIController.Grid.cs (1384) InventoryUIController, GridSide, GridWindow: Whose cells a section view draws.
 - InventoryUIController.GridActions.cs (249) InventoryUIController: Switches between the grid windows and the verbose list (remembered across runs).
 - InventoryUIController.GridDrag.cs (997) InventoryUIController, DragState, DropKind: The item being dragged, where it came from and how it's held.
 - InventoryUIController.List.cs (811) InventoryUIController, SortKey, EntryKind: One listed item: a stack in the bag or a container, a worn garment, or a floor pile.
 - InventoryUIController.Picker.cs (300) InventoryUIController: The CONTAINERS column down the right of the inventory: Project Zomboid's strip of container
 - InventoryUIController.cs (915) InventoryUIController, MenuOption: The code-built inventory / loot UI, in two interchangeable views (toggled from either; the choice pe
-- MainMenuController.cs (229) MainMenuController: The title screen: your runners (up to three per account), making a new one, hosting or joining a ser
-- PauseMenuController.cs (282) PauseMenuController: The in-game pause menu (Esc).
+- MainMenuController.cs (244) MainMenuController: The title screen: your runners (up to three per account), making a new one, hosting or joining a ser
+- PauseMenuController.cs (846) PauseMenuController, ItemKind, Item: The in-game pause menu (Esc).
 - SkillsPanelController.cs (215) SkillsPanelController: A code-built skills screen (toggled with K) listing every perk with its current level and progress t
 - TooltipTrigger.cs (78) TooltipTrigger: Attached to each inventory row; reports pointer enter/exit to the InventoryUIController so it can sh
 - UIFader.cs (54) UIFader: Fades a panel's CanvasGroup in and out so it opens and closes smoothly instead of popping.
@@ -366,7 +373,7 @@ sentence of its summary. Grep the code for details.
 - RaidCivicRadio.cs (318) CivicRadio, Channel, Band: A two-way set the survivor can listen in on — the National Guard post's olive field radio, the depot
 - RaidCivicSink.cs (277) CivicSink: The deep steel sink let into a workplace counter — the National Guard post's kitchenette, the clinic
 - RaidDoor.cs (400) RaidDoor, Raid: A door of the raid town: the starter home's door (HomeDoor) — a pair of leaves drawn shut across the
-- RaidHomeBath.cs (375) RaidHomeBath: A raid ranch's bath: a built-in tub with a hot and a cold tap over the drain and a plug on a chain.
+- RaidHomeBath.cs (381) RaidHomeBath: A raid ranch's bath: a built-in tub with a hot and a cold tap over the drain and a plug on a chain.
 - RaidHomeLiving.cs (194) RaidHomeLiving: The small pastimes and the paperwork of the raid town's houses: plumping the sofa's cushions, flicki
 - RaidHomeWasher.cs (178) RaidHomeWasher: The controls of a raid cottage's washing machine (its porthole door and the drum behind it are a Sto
 - RaidStoreCopier.cs (152) RaidStoreCopier: The county office's photocopier.

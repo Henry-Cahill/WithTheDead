@@ -278,6 +278,11 @@ namespace CloneZ
             Surf red = DecorPalette.Matte(new Color(0.66f, 0.12f, 0.09f));
             Vector3 hub = body + Vector3.up * 0.032f;
             wheel.Cylinder(hub, 0.032f, 0.01f, 12, red);
+            for (int i = 0; i < 6; i++)
+            {
+                float a = i * Mathf.PI * 2f / 6f;
+                wheel.Cylinder(hub + new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a)) * 0.029f, 0.003f, 0.008f, 6, red);
+            }
             wheel.Box(hub + Vector3.up * 0.012f, new Vector3(0.058f, 0.006f, 0.01f), DecorPalette.Matte(new Color(0.42f, 0.07f, 0.05f)));
             wheel.Ellipsoid(hub + new Vector3(0.024f, 0.017f, 0f), new Vector3(0.012f, 0.014f, 0.012f), red, 6, 4);
             FixturePart wheelPart = FixturePart.Hinge(tap.transform, "Wheel", wheel, hub, Vector3.down, 270f, ShadowCastingMode.Off).WithSpeed(0.6f);

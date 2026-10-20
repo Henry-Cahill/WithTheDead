@@ -69,6 +69,7 @@ namespace CloneZ
             if (onEdge) into.Add(new InteractAction("Get up off the cot", c => c.Seat.Stand()));
             else into.Add(new InteractAction("Sit on the cot", SitOnEdge).DisabledIf(seat == null, "You can't sit down now"));
             into.Add(new InteractAction("Look under the cot", LookUnder).Timed(1.6f, "Looking under the cot", HumanoidActivity.Search));
+            into.Add(new InteractAction("Lean against the cot", LeanAgainst).DisabledIf(seat != null, "You are already seated"));
         }
 
         private InteractAction RestAction()
@@ -105,10 +106,16 @@ namespace CloneZ
                 ctx.Notify(reason);
         }
 
+        private void LeanAgainst(InteractContext ctx)
+        {
+            ctx.Notify("You lean against the cot, feeling the cold canvas against your back.");
+        }
+
         private void LookUnder(InteractContext ctx)
         {
             ctx.Notify(Underneath[_looked % Underneath.Length]);
             _looked++;
         }
+
     }
 }

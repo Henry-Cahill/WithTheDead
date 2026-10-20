@@ -117,9 +117,12 @@ namespace CloneZ
         private ZombieType RollType()
         {
             float r = Random.value;
+            // Sprinter is the rarest, keep its original threshold.
             if (_wave >= CloneZConfig.SprinterUnlockWave && r < 0.12f) return ZombieType.Sprinter;
-            if (_wave >= CloneZConfig.ToughUnlockWave && r < 0.35f) return ZombieType.FastShambler;
+            // Crawler should be available in all waves, even after ToughUnlockWave.
             if (r < 0.08f) return ZombieType.Crawler;
+            // FastShambler appears from the tough unlock wave onward.
+            if (_wave >= CloneZConfig.ToughUnlockWave && r < 0.35f) return ZombieType.FastShambler;
             return ZombieType.Shambler;
         }
 

@@ -9,10 +9,13 @@ namespace CloneZ
     /// </summary>
     public static class Money
     {
+        /// <summary>The item ID for money (currency).</summary>
         public static string Id => ZoneContent.Currency;
 
+        /// <summary>Formats an amount of money with thousand separators and the MG suffix.</summary>
         public static string Format(int amount) => amount.ToString("N0") + " MG";
 
+        /// <summary>Counts the total amount of money stored in the given inventory.</summary>
         public static int Count(Inventory inv)
         {
             if (inv == null) return 0;
@@ -27,6 +30,8 @@ namespace CloneZ
             => Count(ProfileStore.StashInventory) + (carried != null ? Count(carried.Inventory) : 0);
 
         /// <summary>Takes <paramref name="amount"/> from the stash, then the pack. All or nothing.</summary>
+
+        /// <summary>Takes <paramref name="amount"/> from the stash, then the pack. All or nothing.</summary>
         public static bool TrySpend(int amount, PlayerInventory carried = null)
         {
             if (amount <= 0) return true;
@@ -36,7 +41,7 @@ namespace CloneZ
             return left <= 0;
         }
 
-        /// <summary>Takes up to <paramref name="amount"/> from one inventory; returns what's still owed.</summary>
+
         public static int Take(Inventory inv, int amount)
         {
             if (inv == null) return amount;
@@ -52,6 +57,8 @@ namespace CloneZ
         }
 
         /// <summary>Pays money into the stash (sales, quest rewards, insurance refunds).</summary>
+
+
         public static void Give(int amount)
         {
             if (amount <= 0) return;
@@ -62,6 +69,7 @@ namespace CloneZ
         }
 
         /// <summary>A rough market value for an item (traders and the flea market start from this).</summary>
+
         public static int BaseValue(ItemDef d)
         {
             if (d == null) return 0;

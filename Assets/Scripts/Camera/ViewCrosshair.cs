@@ -33,9 +33,12 @@ namespace CloneZ
         private float _laidOutGap = -1f;
         private Color _shownTint;
 
-        private Transform _boundTarget;
-        private PlayerController _controller;
-        private PlayerCombat _combat;
+    private Transform _boundTarget;
+    private PlayerController _controller;
+    private IsoCameraFollow _cam;
+    private PlayerCombat _combat;
+
+
 
         /// <summary>Builds the crosshair under <paramref name="parent"/> (the camera).</summary>
         public static ViewCrosshair Create(Transform parent)
@@ -45,7 +48,11 @@ namespace CloneZ
             return go.AddComponent<ViewCrosshair>();
         }
 
-        private void Awake() => Build();
+        private void Awake()
+    {
+        Build();
+        _cam = IsoCameraFollow.Instance;
+    }
 
         private void LateUpdate()
         {
@@ -70,7 +77,7 @@ namespace CloneZ
         // Follows the camera's survivor, to read their aim and hear their gun.
         private void Bind()
         {
-            IsoCameraFollow cam = IsoCameraFollow.Instance;
+            IsoCameraFollow cam = _cam;
             Transform target = cam != null ? cam.Target : null;
             if (ReferenceEquals(target, _boundTarget)) return;
             Unbind();

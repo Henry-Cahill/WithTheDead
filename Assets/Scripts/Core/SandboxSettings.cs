@@ -66,6 +66,7 @@ namespace CloneZ
         public const string FileName = "clonez_sandbox.json";
         /// <summary>The full path to the sandbox settings file in the persistent data folder.</summary>
 
+        /// <summary>The full path to the sandbox settings JSON file in persistent storage.</summary>
         public static string FilePath => Path.Combine(Application.persistentDataPath, FileName);
 
         private static SandboxSettings s_Current;
@@ -105,6 +106,8 @@ public static SandboxSettings LoadFromDisk()
             return s;
         }
 
+        /// <summary>Saves the current sandbox settings to disk as JSON.</summary>
+        /// <summary>Writes the current game settings to PlayerPrefs and updates audio volume.</summary>
         public void Save()
         {
             try { File.WriteAllText(FilePath, JsonUtility.ToJson(this, true)); }
@@ -112,7 +115,9 @@ public static SandboxSettings LoadFromDisk()
             ServerRules.FromSandbox(this);
         }
 
+        /// <summary>Serialises these sandbox settings to a JSON string.</summary>
         public string ToJson() => JsonUtility.ToJson(this);
+        /// <summary>Deserialises a sandbox settings instance from a JSON string.</summary>
         public static SandboxSettings FromJson(string json)
         {
             try { return JsonUtility.FromJson<SandboxSettings>(json); }
@@ -168,6 +173,7 @@ public static SandboxSettings LoadFromDisk()
         private const string PrefsKey = "clonez.settings";
         private static GameSettings s_Current;
 
+        /// <summary>The currently loaded game settings (from PlayerPrefs) for the local player.</summary>
         public static GameSettings Current
         {
             get
@@ -179,6 +185,7 @@ public static SandboxSettings LoadFromDisk()
 
         public static event Action Changed;
 
+        /// <summary>Loads the game settings from PlayerPrefs, falling back to defaults.</summary>
         public static void Load()
         {
             s_Current = null;
@@ -192,6 +199,7 @@ public static SandboxSettings LoadFromDisk()
             AudioListener.volume = s_Current.MasterVolume;
         }
 
+        /// <summary>Writes the current game settings to PlayerPrefs and updates audio volume.</summary>
         public void Save()
         {
             PlayerPrefs.SetString(PrefsKey, JsonUtility.ToJson(this));
@@ -202,6 +210,7 @@ public static SandboxSettings LoadFromDisk()
 
         /// <summary>True when the HUD should hide its widgets (diegetic and hardcore modes rely on the world instead).</summary>
         public bool HudHidden => Hud == HudMode.Diegetic || Hud == HudMode.Hardcore;
+        /// <summary>Indicates whether the crosshair should be displayed (hidden in hardcore modes).</summary>
         public bool ShowCrosshair => Crosshair && Hud != HudMode.Hardcore;
     }
 }

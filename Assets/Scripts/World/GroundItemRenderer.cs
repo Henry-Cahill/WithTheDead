@@ -73,6 +73,7 @@ namespace CloneZ
             for (int i = 0; i < _liveGroups.Count; i++) _groups[_liveGroups[i]].Clear();
             _liveGroups.Clear();
             DrawnLastFrame = 0;
+            _chunks.Clear();
 
             GroundItemStore.ChunksInRange(eye, DrawRadius, _chunks);
 

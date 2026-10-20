@@ -278,6 +278,10 @@ namespace CloneZ
             m.Box(f.P(o0 + 0.012f, DoorTop * 0.5f, 0f), f.Size(0.024f, DoorTop, thick), lining);
             m.Box(f.P(o1 - 0.012f, DoorTop * 0.5f, 0f), f.Size(0.024f, DoorTop, thick), lining);
             m.Box(f.P(f.Mid, DoorTop - 0.012f, 0f), f.Size(gap, 0.024f, thick), lining);
+            // Small metal hinges for the door
+            float hingeY = DoorTop * 0.5f + (float)(rng.NextDouble() - 0.5) * 0.02f;
+            m.Box(f.P(o0 - 0.015f, hingeY, 0f), f.Size(0.03f, 0.08f, 0.02f), DecorPalette.Matte(TrimWhite * 0.7f));
+            m.Box(f.P(o1 + 0.015f, hingeY, 0f), f.Size(0.03f, 0.08f, 0.02f), DecorPalette.Matte(TrimWhite * 0.7f));
             for (int side = -1; side <= 1; side += 2)
             {
                 HomeRoom room = rooms[(side + 1) / 2];

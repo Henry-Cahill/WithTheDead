@@ -12,6 +12,7 @@ namespace CloneZ
     /// </summary>
     public class LootContainer : MonoBehaviour, IDemolishable
     {
+        /// <summary>Global list of all active loot containers in the world.</summary>
         public static readonly List<LootContainer> All = new List<LootContainer>();
 
         public string DisplayName = "Container";
@@ -41,6 +42,7 @@ namespace CloneZ
         /// <summary>True for the storage of a fixture (see <see cref="Owner"/>).</summary>
         public bool IsFixture => FixtureKey != null || Owner != null;
 
+        /// <summary>Indicates whether the container has no items (null contents or empty stack list).</summary>
         public bool IsEmpty => Contents == null || Contents.Stacks.Count == 0;
 
         /// <summary>Arranges the contents on a growable grid (once) for the grid inventory view, sized to
@@ -87,6 +89,7 @@ namespace CloneZ
         private void OnDisable() { All.Remove(this); }
 
         #region IDemolishable
+        /// <summary>Name used when displaying this container as a demolishable object.</summary>
         public string DemolishName => "container";
         public bool CanDemolish(out string reason)
         {
@@ -199,8 +202,16 @@ namespace CloneZ
                 box.size = CrateSize;
             }
             var m = new RaidMesh();
+            // Base crate geometry
             FurnitureBuilder.Crate(m, new System.Random(1993), floor, CrateSize, 0f, false);
+            // Slatted front panel
             m.Box(floor + new Vector3(0.22f, CrateSize.y * 0.62f, CrateSize.z * 0.5f + 0.004f), new Vector3(0.26f, 0.16f, 0.004f), DecorPalette.Matte(FurnitureBuilder.Paper));
+            // Add a small metal latch on the front with deterministic randomness
+            var latchRng = new System.Random(1993);
+            if (latchRng.NextDouble() < 0.5)
+            {
+                m.Box(floor + new Vector3(0.45f, CrateSize.y * 0.30f, CrateSize.z * 0.5f + 0.006f), new Vector3(0.08f, 0.06f, 0.02f), DecorPalette.Matte(new Color(0.60f, 0.60f, 0.60f)));
+            }
             m.ApplyTo(go, go.transform.position);
             DecorPalette.Apply();
         }

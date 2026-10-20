@@ -120,9 +120,15 @@ public float SicknessMoveMultiplier =>
         private PlayerBlood _blood;
         private PlayerBlood BloodPool => _blood != null ? _blood : (_blood = GetComponent<PlayerBlood>());
 
+        private StatMods _cachedMods;
+        private SandboxSettings _cachedSandbox;
+
         private void Update()
         {
             if (IsDead) return;
+            // Cache static lookups for this frame
+            _cachedMods = PlayerModifiers.Current;
+            _cachedSandbox = SandboxSettings.Current;
             float dt = Time.deltaTime;
 
             UpdateEndurance(dt);
@@ -140,7 +146,7 @@ public float SicknessMoveMultiplier =>
 
         private void UpdateEndurance(float dt)
         {
-            StatMods mods = PlayerModifiers.Current;
+            StatMods mods = _cachedMods;
             float drainMult = mods.StaminaDrain * (Skills != null ? Mathf.Max(0.5f, Skills.EnduranceDrainMult) : 1f);
             switch (Exertion)
             {
@@ -167,14 +173,14 @@ public float SicknessMoveMultiplier =>
             else if (Exertion == Exertion.Running) rate += CloneZConfig.FatigueExertionBonus * 0.5f;
             if (TimeOfDay.Instance != null && TimeOfDay.Instance.IsNight) rate *= CloneZConfig.FatigueNightMultiplier;
             if (Skills != null) rate *= Skills.FatigueRateMult;   // Fitness tires you more slowly (PZ)
-            rate *= PlayerModifiers.Current.FatigueRate * SandboxSettings.Current.FatigueRate * SandboxSettings.Current.DrainScale("fatigue");
+            rate *= _cachedMods.FatigueRate * _cachedSandbox.FatigueRate * _cachedSandbox.DrainScale("fatigue");
             Fatigue = Mathf.Clamp01(Fatigue + rate * dt);
         }
 
         private void UpdateSurvival(float dt)
         {
-            SandboxSettings sb = SandboxSettings.Current;
-            StatMods mods = PlayerModifiers.Current;
+            SandboxSettings sb = _cachedSandbox;
+            StatMods mods = _cachedMods;
             float metabolism = Skills != null ? Mathf.Max(0.5f, Skills.MetabolismMult) : 1f;
             Hunger = Mathf.Clamp01(Hunger + CloneZConfig.HungerRatePerSec * mods.HungerRate * sb.HungerRate * sb.DrainScale("hunger") * metabolism * dt);
             Thirst = Mathf.Clamp01(Thirst + CloneZConfig.ThirstRatePerSec * mods.ThirstRate * sb.ThirstRate * sb.DrainScale("thirst") * metabolism * dt);
@@ -199,7 +205,7 @@ public float SicknessMoveMultiplier =>
             // A body fighting food poisoning can't spare anything for healing.
             bool wellFed = Hunger < 0.75f && Thirst < 0.75f && Sickness < CloneZConfig.SicknessRegenBlock;
             if (wellFed && !Infected && Health < CloneZConfig.HealthMax)
-                Health = Mathf.Min(CloneZConfig.HealthMax, Health + CloneZConfig.HealthRegenPerSec * PlayerModifiers.Current.HealRate * dt);
+                Health = Mathf.Min(CloneZConfig.HealthMax, Health + CloneZConfig.HealthRegenPerSec * _cachedMods.HealRate * dt);
         }
 
         /// <summary>Public method to apply damage to the survivor, handling death, armor, and stats.</summary>
@@ -249,7 +255,7 @@ public void TakeDamage(in DamageInfo info)
             if (IsDead || ExtractionManager.PlayerProtected || HubRules.SafeZone) return;
             float mult = Skills != null ? Skills.IncomingDamageMult : 1f;
             if (Skills != null) Skills.AddXp(PlayerSkills.Skill.Fitness, CloneZConfig.XpFitnessOnHurt);
-            InfectionMode infection = SandboxSettings.Current.Infection;
+            InfectionMode infection = _cachedSandbox.Infection;
             if (bite)
             {
                 // Sturdy clothing (leather especially) can stop the teeth reaching skin — the
@@ -271,7 +277,7 @@ public void TakeDamage(in DamageInfo info)
                 if (IsDead) return;
                 Wounds?.Inflict(WoundType.Bite, zone);
                 bool turns = infection == InfectionMode.BiteLethal || (infection == InfectionMode.BiteChance && UnityEngine.Random.value < 0.25f);
-                if (turns && !Infected && UnityEngine.Random.value >= PlayerModifiers.Current.InfectionResist * 0.5f)
+                if (turns && !Infected && UnityEngine.Random.value >= _cachedMods.InfectionResist * 0.5f)
                 {
                     Infected = true;      // In PZ a bite is effectively a death sentence.
                     OnBitten?.Invoke();
@@ -300,7 +306,7 @@ public void TakeDamage(in DamageInfo info)
                     ? WoundType.Laceration : WoundType.Scratch;
                 Wounds?.Inflict(wt, zone);
                 // A scratch also carries a small chance of the zombie virus.
-                if (infection != InfectionMode.Off && !Infected && UnityEngine.Random.value < 0.07f * (1f - PlayerModifiers.Current.InfectionResist))
+                if (infection != InfectionMode.Off && !Infected && UnityEngine.Random.value < 0.07f * (1f - _cachedMods.InfectionResist))
                 {
                     Infected = true;
                     OnBitten?.Invoke();

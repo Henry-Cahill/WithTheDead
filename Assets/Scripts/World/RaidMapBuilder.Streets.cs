@@ -73,6 +73,20 @@ namespace CloneZ
                     continue;
                 }
                 Slab(town, alongX, coord, a, b, -hw, hw, 0.012f, asphalt);
+                // Add subtle road‑crack details with a 20 % chance (1‑2 short dark strips)
+                if (rng.NextDouble() < 0.2)
+                {
+                    int crackCount = rng.Next(1, 3); // 1 or 2 cracks
+                    for (int ci = 0; ci < crackCount; ci++)
+                    {
+                        float cStart = R(rng, a, b - 0.5f);
+                        float cLen = R(rng, 0.4f, 1.2f);
+                        float off = R(rng, -hw + 0.2f, hw - 0.2f);
+                        float across = coord + off;
+                        Strip(town, alongX, across, cStart, Mathf.Min(b, cStart + cLen), 0.02f, 0.001f,
+                            DecorPalette.Matte(new Color(0.15f, 0.15f, 0.15f)));
+                    }
+                }
             }
 
             for (int side = -1; side <= 1; side += 2)

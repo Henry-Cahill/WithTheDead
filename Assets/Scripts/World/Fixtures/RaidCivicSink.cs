@@ -23,7 +23,14 @@ namespace CloneZ
         private static readonly string[] ScrubLines =
         {
             "Soap to the elbows, a full minute under the tap, nails and all. Whoever trained here would approve.",
-            "You scrub up the way the poster over the sink tells you to, step by step. Your hands come out pink and stinging-clean.",
+"You scrub up the way the poster over the sink tells you to, step by step. Your hands come out pink and stinging-clean.",
+            "You run icy water over your hands, the frosted metal of the tap biting your fingertips.",
+            "A rag of homemade lye soap scrapes across your knuckles, leaving a sharp, chemical scent.",
+            "The clank of the metal faucet echoes in the cramped clinic as water splashes into the basin.",
+            "A faint whiff of bleach drifts from the disinfectant bottle beside the sink, stinging your nose.",
+            "Your breath forms clouds in the cold air, and the water leaves a thin film you scrape off with a rough towel.",
+            "You recall the faded poster above warning of proper hand decontamination, its cracked letters guiding each motion.",
+
         };
 
         private string _name, _key;

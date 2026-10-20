@@ -61,8 +61,11 @@ namespace CloneZ
         /// <summary>The storage itself.</summary>
         public LootContainer Container { get; private set; }
 
+        /// <summary>True while the storage doors or drawers are open.</summary>
         public bool IsOpen => _open;
+        /// <summary>True if the storage has any door or drawer parts.</summary>
         public bool HasParts => _parts != null && _parts.Length > 0;
+        /// <summary>Read‑only list of the storage’s door or drawer parts.</summary>
         public IReadOnlyList<FixturePart> Parts => _parts;
 
         public override string DisplayName => _name;
@@ -120,6 +123,8 @@ namespace CloneZ
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             string noun = Noun;
+            // Knock action adds noise without opening the storage
+            into.Add(new InteractAction("Knock on the " + noun, c => { MakeNoise(_opt.Noise); }));
             bool searched = Container == null || Container.Searched || Container.SearchTime <= 0f;
             string look = _opt.LookLabel ?? (searched ? "Look inside the " + noun : "Search the " + noun);
             if (HasParts)

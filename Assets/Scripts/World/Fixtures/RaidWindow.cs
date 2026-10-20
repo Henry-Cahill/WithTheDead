@@ -311,7 +311,7 @@ namespace CloneZ
         {
             _pryClock += dt;
             if (_pryClock < _pryNext) return;
-            _pryNext += CloneZConfig.RaidWindowPryInterval;
+            _pryNext = _pryClock + CloneZConfig.RaidWindowPryInterval;
             MakeNoise(CloneZConfig.RaidWindowPryNoise);
         }
 

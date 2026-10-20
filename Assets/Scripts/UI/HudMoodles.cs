@@ -111,6 +111,8 @@ namespace CloneZ
             }
             if (!row) _caption.enabled = false;
             _layoutSig = -1;   // reflow along the new edge
+            _captionTimer = 0f;
+            _caption.text = string.Empty;
         }
 
         /// <summary>The active moodles at <paramref name="minLevel"/> or worse, worst first, as "BLEEDING  ·  COLD"

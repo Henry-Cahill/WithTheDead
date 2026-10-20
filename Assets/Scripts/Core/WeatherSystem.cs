@@ -19,11 +19,13 @@ namespace CloneZ
     /// </summary>
     public class WeatherSystem : MonoBehaviour
     {
+        /// <summary>Singleton instance of the WeatherSystem.</summary>
         public static WeatherSystem Instance { get; private set; }
 
         // Winter fronts linger: a raid's whole night lasts only half an hour of real time.
         private const float WinterDurationScale = 3f;
 
+        /// <summary>Current weather condition.</summary>
         public Weather Current { get; private set; } = Weather.Clear;
 
         /// <summary>How hard it is precipitating, 0..1 — rain, or on a cold winter night, snow.</summary>
@@ -43,7 +45,9 @@ namespace CloneZ
         /// <summary>True while the precipitation falls mostly as snow.</summary>
         public bool IsSnowing => PrecipitationIntensity > 0.01f && Climate.SnowFraction >= 0.5f;
 
+        /// <summary>Current fog intensity, 0..1.</summary>
         public float FogIntensity { get; private set; }    // 0..1
+        /// <summary>Current cloudiness level, 0..1.</summary>
         public float Cloudiness { get; private set; }      // 0..1
 
         private float _targetPrecip, _targetFog, _targetCloud;
@@ -59,6 +63,7 @@ namespace CloneZ
         {
             if (Instance != null && Instance != this) { Destroy(this); return; }
             Instance = this;
+            _cam = Camera.main;
         }
 
         private void OnDestroy()
@@ -191,6 +196,7 @@ namespace CloneZ
             (1f - CloneZConfig.ZombieRainVisionPenalty * PrecipitationIntensity) *
             (1f - CloneZConfig.ZombieFogVisionPenalty * FogIntensity);
 
+        /// <summary>Display label for the current weather state.</summary>
         public string Label
         {
             get
@@ -266,14 +272,10 @@ namespace CloneZ
         private void ApplyRain()
         {
             if (_rain == null) return;
-            if (_cam == null) _cam = Camera.main;
-            if (_cam != null)
-            {
-                // Rain falls round the survivor: the isometric camera hangs far behind them, so there the box
-                // centres on the point the view looks at; in the close views, on the camera itself.
-                bool iso = ViewState.Current == CameraView.Isometric && IsoCameraFollow.Instance != null;
-                _rain.transform.position = iso ? IsoCameraFollow.FocusPoint : _cam.transform.position;
-            }
+            // Rain falls round the survivor: the isometric camera hangs far behind them, so there the box
+            // centres on the point the view looks at; in the close views, on the camera itself.
+            bool iso = ViewState.Current == CameraView.Isometric && IsoCameraFollow.Instance != null;
+            _rain.transform.position = iso ? IsoCameraFollow.FocusPoint : _cam.transform.position;
             // Only liquid rain draws streaks — falling snow is drawn by the vision effects instead.
             _rainEmission.rateOverTime = RainIntensity * 1500f;
         }

@@ -36,6 +36,15 @@ namespace CloneZ
                 m => { m.VisibilityMult *= 0.92f; m.XpMult *= 0.95f; });
             M("still_hands", "Still Hands", "Your hands no longer shake. Your gut has never been right since.",
                 m => { m.AimSpread *= 0.9f; m.ThirstRate *= 1.12f; });
+            // New exposure marks added for cold endurance, snow‑blindness, static radio interference, and lingering farm folklore.
+            M("frostbite", "Frostbite", "Your fingertips tingle with an endless chill; you can feel the frost before you see it.",
+                m => { });
+            M("snow_blind", "Snow Blindness", "Your eyes ache from the relentless snow; darkness no longer hides anything.",
+                m => { });
+            M("static_harbor", "Static Harbor", "Static crackles in every cheap radio; the interference makes you uneasy.",
+                m => { });
+            M("old_folklore", "Old Folklore", "Whispers of the old farm linger, reminding you that the dead watch the fields.",
+                m => { });
             foreach (Mark k in Marks)
             {
                 ZoneMarkRegistry.Names[k.Id] = k.Name;
@@ -46,12 +55,14 @@ namespace CloneZ
         private static void M(string id, string name, string desc, System.Action<StatMods> apply)
             => Marks.Add(new Mark { Id = id, Name = name, Description = desc, Apply = apply });
 
+        /// <summary>Gets an exposure mark by its identifier.</summary>
         public static Mark Get(string id)
         {
             for (int i = 0; i < Marks.Count; i++) if (Marks[i].Id == id) return Marks[i];
             return null;
         }
 
+        /// <summary>Adds exposure to the active character; crossing a whole point leaves a new mark.</summary>
         /// <summary>Adds exposure to the active character; crossing a whole point leaves a new mark.</summary>
         public static void Add(float amount)
         {
@@ -64,6 +75,7 @@ namespace CloneZ
             for (int n = before + 1; n <= after; n++) GrantMark(c, n);
         }
 
+        /// <summary>Selects a random unawarded mark and grants it to the character.</summary>
         private static void GrantMark(CharacterProfile c, int n)
         {
             var pool = new List<Mark>();
@@ -80,6 +92,7 @@ namespace CloneZ
     /// <summary>Applies the active character's Zone marks.</summary>
     public sealed class ZoneMarkEffects : MonoBehaviour, IStatModSource
     {
+        /// <summary>Applies the active character's Zone marks to the provided StatMods.</summary>
         public void ApplyMods(StatMods mods)
         {
             CharacterProfile c = ProfileStore.ActiveCharacter;
@@ -95,6 +108,7 @@ namespace CloneZ
     /// </summary>
     internal static class AnomalyField
     {
+        /// <summary>Builds the Zone's hazards (anomalies and radiation spots) on the raid map.</summary>
         public static void Build(Transform world, RaidMapInfo map, ZoneDef zone, ZoneSiteMap site, System.Random rng)
         {
             if (zone == null || map == null || zone.Anomalies.Length == 0) return;
@@ -166,6 +180,7 @@ namespace CloneZ
             Debug.Log("[CloneZ] Zone hazards: " + placed + " anomalies in " + clusters + " fields, radiation spots " + RadiationSpot.All.Count);
         }
 
+        /// <summary>Checks whether a position is clear of keep‑clear points within a radius.</summary>
         private static bool Clear(Vector3 p, List<Vector3> keep, float radius)
         {
             for (int i = 0; i < keep.Count; i++)
@@ -176,9 +191,10 @@ namespace CloneZ
             return true;
         }
 
+        /// <summary>Finds the ground Y at a point using a raycast; returns 0 if not found.</summary>
         private static float GroundY(Vector3 p)
         {
-            return Physics.Raycast(new Vector3(p.x, 20f, p.z), Vector3.down, out RaycastHit hit, 40f, 1, QueryTriggerInteraction.Ignore) && hit.point.y < 1.5f
+            return Physics.Raycast(new Vector3(p.x, 20f, p.z), Vector3.down, out RaycastHit hit, 40f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore) && hit.point.y < 1.5f
                 ? hit.point.y : 0f;
         }
     }
@@ -186,9 +202,11 @@ namespace CloneZ
     /// <summary>Wires the Zone's hazards into the raid: anomalies, artifacts, radiation, detectors, bolts, emissions, marks.</summary>
     public sealed class ZoneHazardsModule : IGameModule
     {
+        /// <summary>Gets the order of this game module; used to control init sequence.</summary>
         public int Order => 45;
         private static int s_Seed;
 
+        /// <summary>Initialises the Zone hazards module: registers items and subscribes to world‑hook events.</summary>
         public void Init()
         {
             PlayerRadiation.RegisterItems();
@@ -230,6 +248,7 @@ namespace CloneZ
             GameEvents.RaidEnded += (o, e) => EndRaid();
         }
 
+        /// <summary>Ends the raid: stops emissions, clears artifact fields and resets sky overrides.</summary>
         private static void EndRaid()
         {
             if (EmissionDirector.Instance != null) Object.Destroy(EmissionDirector.Instance.gameObject);

@@ -116,6 +116,8 @@ namespace CloneZ
             {
                 latchShut = WindowBox(sash.transform, "LatchShut", l.P(o.Pos, SashMeet + 0.042f, 0f), l.Size(0.02f, 0.008f, 0.06f), brass);
                 latchOpen = WindowBox(sash.transform, "LatchOpen", l.P(o.Pos + 0.03f, SashMeet + 0.032f, inner), l.Size(0.06f, 0.008f, 0.02f), brass);
+            // tiny brass latch knob on the lever
+            WindowBox(latchOpen.transform, "LatchKnob", l.P(o.Pos + 0.03f, SashMeet + 0.038f, inner + 0.011f), new Vector3(0.012f, 0.012f, 0.005f), brass);
             }
 
             // Each sash's glazing: glass, or the shards left in the frame. The lower one rides on its sash.

@@ -13,12 +13,15 @@ namespace CloneZ
     /// </summary>
     public class Stealth : MonoBehaviour
     {
+        /// <summary>Gets the locally active Stealth instance for the player.</summary>
         public static Stealth Local { get; private set; }
 
         /// <summary>A hand-held flame (the lighter) is lit.</summary>
         public static bool LighterOn;
 
+        /// <summary>Current visibility level (0‑1) of the survivor, used for AI sight checks.</summary>
         public float Visibility01 { get; private set; }
+        /// <summary>Current noise level (0‑1) the survivor makes, affecting detection.</summary>
         public float Noise01 { get; private set; }
 
         private Actor _actor;
@@ -30,6 +33,7 @@ namespace CloneZ
         private float _lightScan;
         private static readonly List<Light> s_Lights = new List<Light>(64);
 
+        /// <summary>Initialises component references and registers for fire events.</summary>
         private void Start()
         {
             _actor = GetComponent<Actor>();
@@ -45,12 +49,14 @@ namespace CloneZ
             LighterOn = false;
         }
 
+        /// <summary>Cleans up event subscriptions and clears the static instance.</summary>
         private void OnDestroy()
         {
             if (_combat != null) _combat.OnFire -= OnFire;
             if (Local == this) Local = null;
         }
 
+        /// <summary>Sets a temporary visibility spike when the player fires a weapon.</summary>
         private void OnFire() => _shotSpike = 1f;
 
         private void Update()
@@ -111,6 +117,7 @@ namespace CloneZ
         private Stealth _s;
         private Image _eye, _ear;
 
+        /// <summary>Creates the HUD stealth widget for the given Stealth instance.</summary>
         public static void Create(Stealth s)
         {
             RectTransform root = HudLayer.Anchor("Stealth", new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(110f, 150f), new Vector2(120f, 46f));

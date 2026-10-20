@@ -34,6 +34,7 @@ namespace CloneZ
         private Transform _waterFill;               // the barrel's water disc (scales with the level)
 
         private static readonly Color BarrelWater = new Color(0.34f, 0.5f, 0.52f);
+        private static WeatherSystem _weather;
 
         private void OnEnable() { if (!All.Contains(this)) All.Add(this); }
         private void OnDisable() { All.Remove(this); }
@@ -192,6 +193,9 @@ namespace CloneZ
                 m.Cylinder(new Vector3(0f, y, 0f), r + 0.008f, 0.04f, 16, DecorPalette.Gloss(plastic * 0.86f), Quaternion.identity, 1f, false);
             InnerWall(m, r - wall, h, 16, DecorPalette.Matte(plastic * 0.45f));
             Rim(m, r - wall, r + 0.012f, h, 16, DecorPalette.Gloss(plastic * 0.9f));
+            // weathered band midway up the barrel – a thin matte ring
+            m.Cylinder(new Vector3(0f, h * 0.5f, 0f), r + 0.005f, 0.01f, 16,
+                DecorPalette.Matte(plastic * 0.6f));
             m.Cylinder(new Vector3(0f, 0.02f, 0f), r - wall, 0.004f, 16, DecorPalette.Matte(plastic * 0.35f));
             // A brass spigot low on the side.
             m.CylinderX(new Vector3(0f, 0.16f, r + 0.03f), 0.022f, 0.08f, 8, DecorPalette.Metal(FurnitureBuilder.Brass), 90f);
@@ -259,8 +263,9 @@ namespace CloneZ
             _lastHours = now;
             if (dH <= 0f) return;
 
-            float rain = WeatherSystem.Instance != null ? WeatherSystem.Instance.RainIntensity : 0f;
-            if (rain > 0f)
+            if (_weather == null) _weather = WeatherSystem.Instance;
+                float rain = (_weather != null) ? _weather.RainIntensity : 0f;
+                if (rain > 0f)
             {
                 Water = Mathf.Min(CloneZConfig.WaterBarrelMax, Water + CloneZConfig.WaterBarrelRainPerHour * rain * dH);
                 RefreshVisual();

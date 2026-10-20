@@ -81,6 +81,8 @@ namespace CloneZ
         private float _openedAt;
         private bool _open;
         private bool _prevBlocked;   // was some OTHER panel blocking gameplay last frame?
+private GameManager _gm;
+private ExtractionManager _em;
 
         private Item _abandon;
         private bool _abandonArmed;
@@ -94,9 +96,17 @@ namespace CloneZ
         private PlayerStats _cardFor;
         private PlayerWounds _wounds;
 
+        /// <summary>
+        /// Indicates whether the pause menu is currently open.
+        /// </summary>
         public bool IsOpen => _open;
 
-        private void Awake() => Build();
+        private void Awake()
+{
+    Build();
+    _gm = GameManager.Instance;
+    _em = ExtractionManager.Instance;
+}
 
         private void OnEnable() => UIScreen.Closed += OnScreenClosed;
 
@@ -122,14 +132,16 @@ namespace CloneZ
         #region Flow
         private void Update()
         {
-            bool esc = Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame;
+            if (_gm == null) _gm = GameManager.Instance;
+if (_em == null) _em = ExtractionManager.Instance;
+bool esc = Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame;
 
             if (_open) TickOpen(esc);
             else
             {
-                bool playing = GameManager.Instance != null && GameManager.Instance.State == GameState.Playing;
+                bool playing = _gm != null && _gm.State == GameState.Playing;
                 // A finished raid belongs to its report screen.
-                if (ExtractionManager.Instance != null && ExtractionManager.Instance.RaidOver) playing = false;
+                if (_em != null && _em.RaidOver) playing = false;
                 bool free = !UIState.GameplayBlocked && !UIState.BuildMode && !UIState.ActionMenuOpen
                             && UIState.EscapeConsumedFrame != Time.frameCount
                             && !(PlayerInteractor.Current != null && PlayerInteractor.Current.IsBusy);   // Esc stops the job instead
@@ -723,6 +735,16 @@ namespace CloneZ
             it.Accent.raycastTarget = false;
             it.Text = HudUI.Label(it.Content, "Label", 23, TextAnchor.MiddleLeft, Idle, new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
                 new Vector2(26f, 0f), new Vector2(320f, 30f), FontStyle.Bold);
+            // subtle rivet accent for the row
+            var rivet = new GameObject($"Rivet{index}");
+            var rrt = rivet.AddComponent<RectTransform>();
+            rrt.SetParent(it.Content, false);
+            rrt.anchorMin = rrt.anchorMax = new Vector2(0f, 1f);
+            rrt.pivot = new Vector2(0f, 1f);
+            rrt.anchoredPosition = new Vector2(2f, -4f);
+            rrt.sizeDelta = new Vector2(4f, 4f);
+            var rimg = rivet.AddComponent<Image>();
+            rimg.color = new Color(0.7f, 0.7f, 0.7f, 0.9f);
             it.Text.text = it.Label;
 
             if (it.Kind == ItemKind.Action)
@@ -831,11 +853,23 @@ namespace CloneZ
     /// <summary>Forwards pointer hover and clicks on a pause-menu row (or a cycler's arrow) to the menu.</summary>
     public sealed class PausePointer : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler
     {
+        /// <summary>
+        /// Event invoked when the pointer enters the UI element.
+        /// </summary>
         public Action Enter;
+        /// <summary>
+        /// Event invoked when the pointer clicks the UI element.
+        /// </summary>
         public Action Click;
 
+        /// <summary>
+        /// Called by Unity when the pointer enters the UI element; triggers the Enter action.
+        /// </summary>
         public void OnPointerEnter(PointerEventData eventData) => Enter?.Invoke();
 
+        /// <summary>
+        /// Called by Unity when the pointer clicks the UI element; triggers the Click action on left mouse button.
+        /// </summary>
         public void OnPointerClick(PointerEventData eventData)
         {
             if (eventData.button != PointerEventData.InputButton.Left) return;

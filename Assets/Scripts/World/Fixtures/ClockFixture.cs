@@ -107,6 +107,9 @@ namespace CloneZ
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             into.Add(new InteractAction("Check the time", CheckTime));
+            // Polishing the clock provides a calming action regardless of battery state.
+            into.Add(new InteractAction("Polish the clock", Polish)
+                .Timed(CloneZConfig.ClockListenSeconds, "Polishing the clock", HumanoidActivity.None));
             if (_stoppedAt >= 0f) return;
             into.Add(new InteractAction("Listen to it tick", Listen)
                 .Timed(CloneZConfig.ClockListenSeconds, "Listening to the clock", HumanoidActivity.None));
@@ -132,6 +135,18 @@ namespace CloneZ
             int h12 = h % 12 == 0 ? 12 : h % 12;
             string date = tod.Date.ToString("dddd, MMMM d", CultureInfo.InvariantCulture);
             ctx.Notify("It's " + h12 + ":" + m.ToString("00") + " " + tod.AmPm + " on day " + tod.Day + " \u2014 " + date + ".");
+        }
+
+        private void Polish(InteractContext ctx)
+        {
+            // Same cooldown logic as Listen, but with a polishing‑themed message.
+            if (Time.time >= _calmAgainAt)
+            {
+                LightingFixtures.Calm(ctx, CloneZConfig.ClockCalm);
+                _calmAgainAt = Time.time + CloneZConfig.ClockCalmCooldown;
+                ctx.Notify("You gently polish the clock face; the steady motion steadies your thoughts.");
+            }
+            else ctx.Notify("You polish the clock, but its rhythm offers no new calm right now.");
         }
 
         private void Listen(InteractContext ctx)

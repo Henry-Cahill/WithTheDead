@@ -9,9 +9,13 @@ namespace CloneZ
     /// </summary>
     public class ZombieHealth : MonoBehaviour, IDamageable
     {
+        /// <summary>Maximum health for this zombie.</summary>
         public float MaxHealth { get; private set; } = CloneZConfig.ZombieHealthNormal;
+        /// <summary>Current health of the zombie.</summary>
         public float Health { get; private set; } = CloneZConfig.ZombieHealthNormal;
+        /// <summary>Whether the zombie is dead.</summary>
         public bool IsDead { get; private set; }
+        /// <summary>Shortcut to the zombie's Transform component.</summary>
         public Transform Transform => transform;
 
         /// <summary>Raised once when this zombie dies (argument is self).</summary>
@@ -20,6 +24,7 @@ namespace CloneZ
         private ZombieAI _aiCache;
         private ZombieAI AI => _aiCache != null ? _aiCache : (_aiCache = GetComponent<ZombieAI>());
 
+        /// <summary>Sets the maximum health for this zombie and restores current health to that maximum.</summary>
         public void SetMaxHealth(float max)
         {
             MaxHealth = Mathf.Max(0.1f, max);

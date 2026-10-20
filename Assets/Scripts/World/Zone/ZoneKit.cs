@@ -289,6 +289,33 @@ namespace CloneZ
             var block = new MaterialPropertyBlock();
             block.SetColor("_Color", tint);
             mr.SetPropertyBlock(block);
+            // Add a subtle glowing tip at the far end of the beam
+            var tip = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            tip.name = "BeamTip";
+            tip.transform.SetParent(go.transform, false);
+            tip.transform.localPosition = new Vector3(0f, 0f, length);
+            tip.transform.localScale = Vector3.one * 0.05f;
+            // Remove the default collider
+            Object.Destroy(tip.GetComponent<Collider>());
+            // Use the same beam material but make it brighter
+            var tipRenderer = tip.GetComponent<MeshRenderer>();
+            tipRenderer.sharedMaterial = BeamMaterial();
+            var tipBlock = new MaterialPropertyBlock();
+            tipBlock.SetColor("_Color", tint * 2f);
+            tipRenderer.SetPropertyBlock(tipBlock);
+
+            // Add a rust‑coloured metal bracket at the base of the beam
+            var bracket = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            bracket.name = "BeamBracket";
+            bracket.transform.SetParent(go.transform, false);
+            bracket.transform.localPosition = Vector3.zero;
+            bracket.transform.localScale = new Vector3(0.04f, 0.04f, 0.02f);
+            // Assign rust colour
+            var bracketRenderer = bracket.GetComponent<MeshRenderer>();
+            bracketRenderer.sharedMaterial.color = Rust;
+            // Remove its default collider (visual only)
+            Object.Destroy(bracket.GetComponent<Collider>());
+
             NoBake(go);
             return mr;
         }
@@ -403,7 +430,14 @@ namespace CloneZ
     /// <summary>Keeps the zone's steam and smoke dimmed to the night (one shared material tint, refreshed twice a second).</summary>
     internal sealed class ZoneSmokeTint : MonoBehaviour
     {
-        private void Update() => ZoneKit.TintByAmbient();
+    private static int s_LastFrame = -1;
+
+    private void Update()
+    {
+        if (Time.frameCount == s_LastFrame) return;
+        s_LastFrame = Time.frameCount;
+        ZoneKit.TintByAmbient();
+    }
     }
 
     /// <summary>

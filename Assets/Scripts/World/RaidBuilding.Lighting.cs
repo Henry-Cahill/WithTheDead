@@ -638,6 +638,11 @@ namespace CloneZ
         {
             "The county's SAFETY FIRST notice: lift with your knees, report every spill, know where the first-aid kit is. Nobody ever knew where the first-aid kit was.",
             "SAFETY FIRST. Pinned beneath it, a memo about the fire exits, initialled by everyone on the floor.",
+            "WINTER SAFETY NOTICE: icy steps may appear; wear proper boots, clear snow, and report any slick patches.",
+            "FUEL STORAGE NOTICE: keep diesel containers sealed, clean spills, and never smoke near pumps.",
+            "MORALE NOTICE: payday's Friday – collect your bonus, enjoy a coffee break, and thank a colleague.",
+            "EMERGENCY PROCEDURE: fire alarm triggers lockdown; evacuate to the marked exits, then await the sweep.",
+            "DAMPNESS WARNING: the office ceiling leaks after rain; report water stains, mop spills, and keep vents clear."
         };
 
         private static readonly string[] DepotNotices =

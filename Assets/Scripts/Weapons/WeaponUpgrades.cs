@@ -112,7 +112,7 @@ namespace CloneZ
             List<string> u = extra.Upgrades;
             if (u.Contains("a_lite1")) e.MovePenalty *= 0.5f;
             if (u.Contains("a_rad2")) { e.Resist.Radiation += 0.2f; e.Resist.Chemical += 0.2f; }
-            if (u.Contains("a_plate2") && e.Class > 0) e.Class = Mathf.Min(6, e.Class + 1);
+            if (u.Contains("a_plate2")) e.Class = Mathf.Min(6, e.Class + 1);
             if (u.Contains("a_belt3")) e.ArtifactSlots += 1;
             if (u.Contains("a_carry3")) e.CarryBonusKg += 6f;
             return e;

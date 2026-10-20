@@ -242,6 +242,9 @@ namespace CloneZ
             dishes.Begin = _openForJob;
             dishes.Stopped = _endJob;
             into.Add(dishes);
+            // When mains are off and water is standing, allow emptying the sink.
+            if (!WaterMains.MainsOn && _level > 0.05f)
+                into.Add(new InteractAction("Empty the sink", EmptySink));
         }
 
         private InteractAction PlugAction(bool mains)
@@ -398,8 +401,15 @@ namespace CloneZ
             _cleanUntil = TimeOfDay.Now + CloneZConfig.KitchenDishesDirtyHours;
             RefreshDishes();
             if (ctx.Stats != null) ctx.Stats.Panic = Mathf.Max(0f, ctx.Stats.Panic - CloneZConfig.KitchenDishesCalm);
-            ctx.Notify("You scrub the plates and the mug, rinse them and stand them in the rack to drip. Such an ordinary job. It steadies you.");
-            EndJob(ctx);
+        }
+
+        // Empties the sink when mains are off and there is standing water.
+private void EmptySink(InteractContext ctx)
+        {
+            _level = 0f;
+            _toldFull = false;
+            RefreshWater();
+            ctx.Notify("You empty the sink; the water drains away.");
         }
         #endregion
 

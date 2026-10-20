@@ -88,6 +88,14 @@ namespace CloneZ
                         float sh = R(rng, 2.0f, 2.45f);
                         m.Box(new Vector3(x, sh * 0.5f, 0f), new Vector3(1.2f, sh, 0.03f), Quaternion.Euler(R(rng, -3f, 3f), 0f, R(rng, -2f, 2f)), sheet);
                     }
+                    // occasional rust spots on the corrugated sheet
+                    Surf rust = DecorPalette.Matte(new Color(0.55f, 0.30f, 0.20f));
+                    for (float x = -len * 0.5f + 0.3f; x < len * 0.5f; x += R(rng, 2f, 4f))
+                    {
+                        float w = R(rng, 0.2f, 0.4f);
+                        // small matte box placed flush on sheet surface to simulate rust stain
+                        m.Box(new Vector3(x, 0.01f, 0f), new Vector3(w, 0.02f, 0.02f), rust);
+                    }
                     break;
                 }
                 case 1:
@@ -244,7 +252,14 @@ namespace CloneZ
                 town.Info.PlayerSpawn = new Vector3(-6f, 0.6f, 20f);
                 return;
             }
-            int pick = valid.Count > 0 ? valid[town.Rng.Next(valid.Count)] : 0;
+            if (valid.Count == 0)
+            {
+                town.Warn("no valid spawn far enough from exits; using default");
+                town.Info.PlayerSpawn = new Vector3(-6f, 0.6f, 20f);
+                town.Info.PlayerSpawnYaw = 0f;
+                return;
+            }
+            int pick = valid[town.Rng.Next(valid.Count)];
             var c = town.SpawnCandidates[pick];
             foreach (Rect f in c.room.Furniture)
             {

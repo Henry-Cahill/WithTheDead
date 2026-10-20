@@ -86,7 +86,11 @@ namespace CloneZ
             if (len < 1e-4f) return null;
             Vector3 f = d / len;
             Vector3 up = outward - Vector3.Dot(outward, f) * f;
-            if (up.sqrMagnitude < 1e-8f) up = Vector3.Cross(f, Vector3.right);
+            if (up.sqrMagnitude < 1e-8f) {
+                // Try a stable up direction that is unlikely to be parallel to f.
+                up = Vector3.Cross(f, Vector3.up);
+                if (up.sqrMagnitude < 1e-8f) up = Vector3.Cross(f, Vector3.right);
+            }
             Quaternion q = Quaternion.LookRotation(f, up);
             return Part(parent, "Strap", PrimitiveType.Cube, (a + b) * 0.5f, q, new Vector3(width, thickness, len), material);
         }

@@ -121,6 +121,11 @@ namespace CloneZ
             sb.Solid.Box(new Vector3(4.5f, 1.2f, 0f), new Vector3(2.2f, 2.4f, 2.2f), ZoneKit.M(ZoneKit.WardenOlive));
             sb.Collider(new Vector3(4.5f, 1.2f, 0f), new Vector3(2.2f, 2.4f, 2.2f));
             sb.Storage("Warden locker", "lm_cp_locker", new Vector3(4.5f, 1f, -1.3f), ContainerType.Locker, 4);
+            System.Random r = sb.Rng;
+            float yawJitter = (float)r.NextDouble() * 10f - 5f; // -5° … +5°
+            Vector3 posJitter = new Vector3(ZoneKit.R(r, -0.02f, 0.02f), 0f, ZoneKit.R(r, -0.02f, 0.02f));
+            Vector3 handlePos = new Vector3(4.5f, 1f, -1.25f) + posJitter;
+            sb.Solid.CylinderX(handlePos, 0.015f, 0.07f, 8, ZoneKit.M(new Color(0.6f, 0.6f, 0.6f)), yawJitter);
             ZoneFlameLight.Spawn(sb.Root, sb.W(4.5f, 2.6f, -1.3f), new Color(1f, 0.85f, 0.6f), 9f, 1f, 0.03f);
         }
 
@@ -232,6 +237,19 @@ namespace CloneZ
                     sb.At(m, c, yaw, mm => mm.Box(Vector3.zero, new Vector3(rad * 2f * Mathf.PI / sides + 0.1f, 4f, 0.5f), ZoneKit.M(ZoneKit.V(conc, sb.Rng, 0.04f))));
                     if (ring == 0) sb.Collider(c, new Vector3(rad * 2f * Mathf.PI / sides + 0.1f, 4f, 0.5f), yaw);
                 }
+            }
+            // Small rusted maintenance plates on the outer concrete shell
+            for (int i = 0; i < 8; i++)
+            {
+                float angle = i * Mathf.PI * 0.25f; // 45° steps
+                // Base position on the outer radius of the lowest ring (≈9 m)
+                Vector3 basePos = new Vector3(Mathf.Cos(angle) * 9f, 2f, Mathf.Sin(angle) * 9f);
+                // Apply slight jitter using deterministic RNG
+                Vector3 jitter = new Vector3(ZoneKit.R(sb.Rng, -0.2f, 0.2f), 0f, ZoneKit.R(sb.Rng, -0.2f, 0.2f));
+                Vector3 pos = basePos + jitter;
+                // Rust color (tint of the concrete palette)
+                Color rust = new Color(0.5f, 0.3f, 0.1f);
+                sb.Solid.Box(pos, new Vector3(0.3f, 0.1f, 0.3f), ZoneKit.M(ZoneKit.V(rust, sb.Rng, 0.02f)));
             }
             ZoneKit.Plume(sb.Root, sb.W(0f, 23f, 0f), false, 5f, 4f, 3f, new Color(0.92f, 0.92f, 0.9f, 0.45f));
             sb.Storage("Maintenance locker", "lm_tower_locker", new Vector3(0f, 1f, 5.6f), ContainerType.ToolBench, 5);

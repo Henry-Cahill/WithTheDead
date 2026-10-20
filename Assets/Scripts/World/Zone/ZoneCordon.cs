@@ -132,6 +132,14 @@ namespace CloneZ
             Vector3 boothAt = at + Quaternion.Euler(0f, yaw, 0f) * new Vector3(4.5f, 0f, 1.5f);
             var sb = new SiteBuilder(world, "Checkpoint", boothAt, yaw, rng);
             sb.Solid.Box(new Vector3(0f, 1.2f, 0f), new Vector3(2.4f, 2.4f, 2.4f), ZoneKit.M(ZoneKit.WardenOlive));
+            // Occasionally add a weathered flag on a short pole for visual variety.
+            if (ZoneKit.R(rng, 0f, 1f) < 0.6f)
+            {
+                // Short wooden pole.
+                sb.Solid.Rod(new Vector3(0f, 0f, -0.6f), new Vector3(0f, 1f, -0.6f), 0.025f, ZoneKit.M(ZoneKit.WetWood), 4);
+                // Faded orange cloth flag.
+                sb.Solid.Box(new Vector3(0f, 1.02f, -0.6f), new Vector3(0.4f, 0.25f, 0.02f), ZoneKit.M(new Color(0.78f, 0.25f, 0.2f)));
+            }
             sb.Solid.Box(new Vector3(0f, 1.6f, -1.21f), new Vector3(1.6f, 0.7f, 0.02f), ZoneKit.Gs(new Color(0.6f, 0.7f, 0.75f)));
             sb.Roof.Box(new Vector3(0f, 2.5f, 0f), new Vector3(2.8f, 0.15f, 2.8f), ZoneKit.Mt(ZoneKit.RustDark));
             sb.Collider(new Vector3(0f, 1.2f, 0f), new Vector3(2.4f, 2.4f, 2.4f));
@@ -197,7 +205,7 @@ namespace CloneZ
             int carried = ctx.Inventory != null ? Money.Count(ctx.Inventory.Inventory) : 0;
             into.Add(new InteractAction("Bribe the Warden (" + Money.Format(Bribe) + ")", c =>
             {
-                if (Money.Take(c.Inventory.Inventory, Bribe) > 0) { c.Notify("Not enough money on you."); return; }
+                if (!Money.TrySpend(Bribe, c.Inventory)) { c.Notify("Not enough money on you."); return; }
                 Grant(c, "He pockets it without looking at you. \"Didn't see you.\"");
                 Factions.AdjustReputation(Factions.Wardens, 5f);
             }).DisabledIf(paid, "Already paid").DisabledIf(!paid && carried < Bribe, "You need " + Money.Format(Bribe) + " on you"));
@@ -206,6 +214,7 @@ namespace CloneZ
             {
                 if (c.Inventory.Consume("zone_permit", 1) <= 0) return;
                 Grant(c, "He stamps it and waves you through.");
+                Factions.AdjustReputation(Factions.Wardens, 2f);
             }).DisabledIf(paid, "Already paid").DisabledIf(!paid && !permit, "You have no permit"));
             into.Add(new InteractAction("Ask about the Zone", c =>
                 GameEvents.RaiseSubtitle("Warden", CordonRules.PassBought ? "Keep to the road. Stay off the belt after dark." : "No pass, no passage. Off the belt, or we shoot.")));

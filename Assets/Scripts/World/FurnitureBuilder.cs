@@ -132,11 +132,15 @@ namespace CloneZ
                     Quaternion open = Yaw(-65f);
                     Vector3 hinge = new Vector3(x - 0.23f, 0f, 0.22f);
                     m.Box(hinge + open * new Vector3(0.23f, 0.96f, 0.012f), new Vector3(0.46f, 1.68f, 0.022f), open, M(c));
+                    // handle on the open door (mirrors the closed‑door handle)
+                    m.Box(hinge + open * new Vector3(0.23f, 1.25f, 0.022f), new Vector3(0.02f, 0.12f, 0.005f), open, Mt(Chrome));
                     m.Box(new Vector3(x, 1.25f, -0.02f), new Vector3(0.42f, 0.015f, 0.4f), M(c * 0.7f));
                     if (Chance(rng, 0.5)) m.Box(new Vector3(x, 1.32f, -0.05f), new Vector3(0.3f, 0.12f, 0.25f), M(OliveDark));
                     continue;
                 }
                 m.Box(new Vector3(x, 0.96f, 0.215f), new Vector3(0.46f, 1.68f, 0.02f), M(c));
+                // Add a small metal pull-handle on the front of each locker door for visual grip.
+                m.Box(new Vector3(x, 1.25f, 0.235f), new Vector3(0.02f, 0.12f, 0.005f), Mt(Chrome));
                 for (int v = 0; v < 4; v++)
                 {
                     m.Box(new Vector3(x, 1.52f + v * 0.045f, 0.227f), new Vector3(0.26f, 0.014f, 0.006f), M(dark));

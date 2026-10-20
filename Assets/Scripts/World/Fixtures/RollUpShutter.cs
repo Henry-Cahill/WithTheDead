@@ -40,7 +40,7 @@ namespace CloneZ
         private Bounds _block;
         private bool _open;
 
-        private Action<InteractContext> _raiseAct, _lowerAct;
+        private Action<InteractContext> _raiseAct, _lowerAct, _bangAct;
 
         private static readonly Collider[] s_Hits = new Collider[16];
         private static readonly int BodyMask = (1 << 0) | (1 << CloneZConfig.IgnoreRaycastLayer);
@@ -57,6 +57,7 @@ namespace CloneZ
         {
             _raiseAct = Raise;
             _lowerAct = Lower;
+            _bangAct = Bang;
         }
 
         /// <summary>Makes <paramref name="root"/> (holding the bands, at the doorway's middle on the wall line) a working
@@ -99,6 +100,10 @@ namespace CloneZ
             else
                 into.Add(new InteractAction("Raise the roll-up door", _raiseAct)
                     .Timed(CloneZConfig.RollUpWorkSeconds, "Hauling the door up", HumanoidActivity.Use));
+
+            // Quick noise action without state change
+            into.Add(new InteractAction("Bang the roll-up door", _bangAct)
+                .Timed(0f, "Banging the door", HumanoidActivity.Use));
         }
 
         private void Raise(InteractContext ctx)
@@ -108,6 +113,8 @@ namespace CloneZ
             Apply(false);
             MakeNoise(CloneZConfig.RollUpNoise);
         }
+
+        private void Bang(InteractContext ctx) => MakeNoise(CloneZConfig.RollUpNoise);
 
         private void Lower(InteractContext ctx)
         {

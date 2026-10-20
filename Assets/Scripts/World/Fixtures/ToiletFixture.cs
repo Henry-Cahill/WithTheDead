@@ -27,6 +27,12 @@ namespace CloneZ
             "You take a minute to yourself. Small mercies.",
             "Business seen to. Some things don't change, even now.",
             "A quiet minute on the throne. For a moment you almost forget what's outside.",
+            "Cold night fatigue drags you down, even as the seat offers brief relief.",
+            "The distant crack of gunfire flickers through the bathroom walls.",
+            "A grim reminder of lost kin lingers in the stale, damp air.",
+            "The stale air tastes of rusted metal and forgotten promises.",
+            "A fleeting hope of warmth rises with the steam of the cistern.",
+            "Even the water seems to laugh, tasting of rust and regret."
         };
 
         private HomeFurniture _host;

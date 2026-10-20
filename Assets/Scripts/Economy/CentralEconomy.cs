@@ -49,6 +49,7 @@ namespace CloneZ
         public static string FilePath => Path.Combine(Application.persistentDataPath, "economy.json");
 
         private static readonly Dictionary<string, EconomyRule> s_Items = new Dictionary<string, EconomyRule>();
+        private static readonly List<Actor> s_PlayerCache = new List<Actor>();
         private static readonly Dictionary<string, EconomyRule> s_Categories = new Dictionary<string, EconomyRule>();
         private static readonly Dictionary<string, int> s_Counts = new Dictionary<string, int>();
         private static readonly Dictionary<string, float> s_RestockedAt = new Dictionary<string, float>();
@@ -194,6 +195,11 @@ namespace CloneZ
         internal static void Tick()
         {
             if (!Active || Config == null) return;
+            // Update cached player list for proximity checks
+            s_PlayerCache.Clear();
+            foreach (Actor a in Actor.All)
+                if (a != null && a.IsPlayerControlled)
+                    s_PlayerCache.Add(a);
             Recount();
             var shortOf = new List<string>();
             foreach (string id in ItemDatabase.AllIds)
@@ -253,7 +259,7 @@ namespace CloneZ
         private static bool NearAnyone(Vector3 p, float range)
         {
             float r2 = range * range;
-            foreach (Actor a in Actor.All)
+            foreach (Actor a in s_PlayerCache)
                 if (a != null && a.IsPlayerControlled && (a.transform.position - p).sqrMagnitude < r2) return true;
             return false;
         }

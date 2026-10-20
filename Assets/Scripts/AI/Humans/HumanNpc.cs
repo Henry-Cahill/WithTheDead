@@ -48,6 +48,9 @@ namespace CloneZ
         public event System.Action<HumanNpc> Died;
 
         private NavMeshAgent _agent;
+        private static Actor _localPlayer;
+                // removed unused init flag
+        public static Actor LocalPlayerCached => _localPlayer != null && _localPlayer.IsAlive ? _localPlayer : (_localPlayer = Actor.LocalPlayer);
         private HumanNpcAvatar _avatar;
         private float _hp, _maxHp;
         private string _ammoId;
@@ -187,7 +190,11 @@ namespace CloneZ
             => d.MaxCondition > 0 ? Mathf.RoundToInt(d.MaxCondition * Mathf.Lerp(0.4f, 1f, (float)rng.NextDouble())) : -1;
         #endregion
 
-        private void OnEnable() => All.Add(this);
+        private void OnEnable()
+        {
+            All.Add(this);
+            _localPlayer = Actor.LocalPlayer;
+        }
         private void OnDisable() => All.Remove(this);
 
         #region Brain
@@ -556,7 +563,7 @@ namespace CloneZ
             Bark("Falling back!");
         }
 
-        private void Surrender()
+        public void Surrender()
         {
             State = Mode.Surrendered;
             Actor.Surrendered = true;
@@ -574,7 +581,7 @@ namespace CloneZ
             Actor.Restrained = false;
             _grudges.Clear();
             State = Mode.Flee;
-            Vector3 away = Actor.LocalPlayer != null ? (transform.position - Actor.LocalPlayer.transform.position).normalized : transform.forward;
+            Vector3 away = LocalPlayerCached != null ? (transform.position - LocalPlayerCached.transform.position).normalized : transform.forward;
             MoveTo(HumanUtil.ClampToMap(transform.position + away * 40f, 6f), 3.5f);
             MoralLedger.Record("let a surrendered stalker go", MoralLedger.SparedSurrendered);
             GameEvents.RaiseQuestProgress("spare", 1f);
@@ -648,8 +655,8 @@ namespace CloneZ
         private float _barkAt;
         private void Bark(string line)
         {
-            if (Time.time < _barkAt || Actor.LocalPlayer == null) return;
-            if ((Actor.LocalPlayer.transform.position - transform.position).sqrMagnitude > 25f * 25f) return;
+            if (Time.time < _barkAt || LocalPlayerCached == null) return;
+            if ((LocalPlayerCached.transform.position - transform.position).sqrMagnitude > 25f * 25f) return;
             _barkAt = Time.time + 6f;
             GameEvents.RaiseSubtitle(Name, line);
         }
@@ -683,7 +690,7 @@ namespace CloneZ
                 if (attacker.IsPlayerControlled && !Actor.IsHostileTo(attacker))
                 {
                     _grudges.Add(attacker);
-                    if (attacker == Actor.LocalPlayer) Factions.AdjustReputation(Actor.Faction, -40f, "attacked one of theirs");
+                    if (attacker == LocalPlayerCached) Factions.AdjustReputation(Actor.Faction, -40f, "attacked one of theirs");
                 }
                 if (State == Mode.Surrendered && _hp > 0f) { State = Mode.Flee; Actor.Surrendered = false; }
                 Alert(attacker);
@@ -718,7 +725,7 @@ namespace CloneZ
             var col = GetComponent<CapsuleCollider>();
             if (col != null) col.enabled = false;
             if (_avatar != null) _avatar.OnDied(info.HitDirection);
-            if (killer == Actor.LocalPlayer && killer != null)
+            if (killer == LocalPlayerCached && killer != null)
             {
                 if (Actor.Faction != Factions.Choir && Actor.Faction != Factions.Scavs) Factions.AdjustReputation(Actor.Faction, -120f, "killed one of theirs");
                 CharacterProfile c = ProfileStore.ActiveCharacter;
@@ -851,7 +858,7 @@ namespace CloneZ
             {
                 if (_npc == null) _npc = GetComponent<HumanNpc>();
                 if (_npc == null || _npc.IsDead || !isActiveAndEnabled) return false;
-                Actor me = Actor.LocalPlayer;
+                Actor me = HumanNpc.LocalPlayerCached;
                 return me != null && (_npc.Actor.Surrendered || _npc.Actor.Restrained || !_npc.Actor.IsHostileTo(me));
             }
         }
@@ -889,6 +896,11 @@ namespace CloneZ
             }
 
             into.Add(new InteractAction("Talk", Talk));
+                into.Add(new InteractAction("Intimidate", c => {
+                    if (!c.Inventory.Has("pistol")) return;
+                    if (Random.value < 0.5f) { _npc.Surrender(); GameEvents.RaiseSubtitle(_npc.Name, "I don't want any trouble… I give up!"); }
+                    else { GameEvents.RaiseSubtitle(_npc.Name, "You think you can scare me?"); }
+                }).DisabledIf(!ctx.Inventory.Has("pistol"), "Need a weapon"));
             if (CompanionService.CanHire(_npc))
             {
                 int fee = CompanionService.FeeFor(_npc);
@@ -912,7 +924,7 @@ namespace CloneZ
         private static readonly Dictionary<string, string[]> s_Lines = new Dictionary<string, string[]>
         {
             [Factions.Freehold] = new[] { "Throw your bolts, brother. Every time.", "Saw the sky go red twice this week. Getting worse.",
-                "Don't sell to the Fence if the Institute will take it. Heat follows you.", "Share the fire if you like. Just keep the gun down." },
+                "Don't sell to the Fence if the Institute will take it. Heat follows you.", "Share the fire if you like. Just keep the gun down.", "The cold's gotten worse; keep your coil‑spring heater close.", "I heard the Institute buried a cache near the old mill, under the frozen creek.", "If you find any spare 2‑hour batteries, I'll trade you for fresh ammo.", "Snow's covering the road to the supply dump, but the dogs still howl.", "Don't trust the warden's radio—static's a sign they're listening." },
             [Factions.Vanguard] = new[] { "Keep moving, civilian.", "This sector is under Vanguard watch.", "Smugglers get one warning. You've had yours." },
             [Factions.Lantern] = new[] { "Got something shiny? I know people.", "The Wardens can't see what they're not paid to see.", "Prices are good this week. For you." },
             [Factions.Wardens] = new[] { "Papers. No? Then turn around.", "Belt's closed after dark.", "Anyone past the wire without a pass gets shot. Nothing personal." },

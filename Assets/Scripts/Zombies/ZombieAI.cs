@@ -75,6 +75,7 @@ namespace CloneZ
         private const float FlashlightVisionMultiplier = 1.6f;
         private static readonly float FlashlightBeamCos = Mathf.Cos(25f * Mathf.Deg2Rad);
 
+        /// <summary>Updates the internal NavMeshAgent reference and other components.</summary>
         private void Awake()
         {
             _agent = GetComponent<NavMeshAgent>();
@@ -84,6 +85,7 @@ namespace CloneZ
             _agent.stoppingDistance = CloneZConfig.ZombieAttackRange * 0.7f;
         }
 
+        /// <summary>Initialises the zombie's type, applying colour and speed tweaks.</summary>
         public void Configure(ZombieType type)
         {
             Type = type;
@@ -104,7 +106,30 @@ namespace CloneZ
                 if (type == ZombieType.Crawler) transform.localScale = new Vector3(1f, 0.5f, 1f);
             }
 
-            _agent.speed = _baseSpeed * 0.5f;
+    // Add up to two tiny rust patches on the forearm for visual detail
+        // Deterministic but random per zombie instance
+        for (int i = 0; i < 2; i++)
+        {
+            if (Random.value < 0.5f)
+            {
+                var rust = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                rust.transform.SetParent(transform, false);
+                rust.transform.localScale = new Vector3(0.04f, 0.02f, 0.01f);
+                rust.transform.localPosition = new Vector3(Random.Range(-0.05f, 0.05f), 1.15f, Random.Range(0.05f, 0.12f));
+                rust.transform.localRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
+                var rend = rust.GetComponent<Renderer>();
+                if (rend != null)
+                {
+                    var mat = rend.material;
+                    Color baseColor = new Color(0.4f, 0.25f, 0.1f);
+                    float v = Random.Range(-0.05f, 0.05f);
+                    Color col = new Color(baseColor.r + v, baseColor.g + v, baseColor.b + v);
+                    mat.color = col;
+                    if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", col);
+                }
+            }
+        }
+        _agent.speed = _baseSpeed * 0.5f;
             _agent.acceleration = 12f;
             _agent.angularSpeed = 999f;
             EnterIdle();
@@ -162,9 +187,11 @@ namespace CloneZ
         public Actor Prey => _prey;
 
         /// <summary>Where the hunted thing is (for the body's lean and gaze), or null.</summary>
+        /// <summary>The current chase target's position (or null if none).</summary>
         public Vector3? HuntTarget => _hasTarget && _prey != null ? _prey.transform.position : (Vector3?)null;
 
         /// <summary>Points this zombie at a target as if it had seen it (a Puppeteer's command, a lure).</summary>
+        /// <summary>Issues a command to directly set a target for this zombie (used by Puppeteer).</summary>
         public void Command(Actor target)
         {
             if (_state == State.Dead || target == null || !target.IsAlive || IsProtected(target)) return;
@@ -191,6 +218,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Finds the current prey, updates target data and reacts to visible or heard cues.</summary>
         private void Perceive()
         {
             if (_prey != null && (!_prey.IsAlive || _prey.Untargetable || IsProtected(_prey))) _prey = null;
@@ -603,6 +631,7 @@ namespace CloneZ
         #endregion
 
         #region Stagger & death
+        /// <summary>Applies a stagger effect, stopping movement and notifying listeners.</summary>
         public void Stagger(float duration, Vector3 direction, float force)
         {
             if (_state == State.Dead) return;
@@ -629,6 +658,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Ends the zombie's life, records death direction, stops physics and triggers fall animation.</summary>
         public void Kill(Vector3 hitDirection = default)
         {
             if (_state == State.Dead) return;

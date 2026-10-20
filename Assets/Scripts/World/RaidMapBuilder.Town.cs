@@ -264,8 +264,19 @@ namespace CloneZ
             Vector3 box = end - dir * 0.7f + side * 1.3f;
             if (!town.Blocked(Around(box, 0.3f, 0.3f)))
             {
-                b.YardMailbox(box, RaidHomeLiving.Post(town.Rng));
-                town.Keepout.Add(Around(box, 0.3f, 0.3f));
+            b.YardMailbox(box, RaidHomeLiving.Post(town.Rng));
+            // Add a small mailbox flag on ~40% of mailboxes
+            if (town.Rng.NextDouble() < 0.4)
+            {
+                var m = town.Out.Solid(box);
+                // metal pole at the top front of the mailbox
+                m.Cylinder(box + new Vector3(0f, 0.15f, 0f), 0.02f, 0.3f, 6,
+                    DecorPalette.Metal(new Color(0.5f, 0.5f, 0.5f)), Quaternion.identity, 1f);
+                // red‑brown cloth flag attached to the pole
+                m.Box(box + new Vector3(0f, 0.30f, 0f), new Vector3(0.15f, 0.1f, 0.02f),
+                    DecorPalette.Matte(new Color(0.6f, 0.1f, 0.1f)));
+            }
+            town.Keepout.Add(Around(box, 0.3f, 0.3f));
             }
             b.FrontDoormat(doorLx);
             b.HouseNumber(doorLx, (3 + town.Rng.Next(60)).ToString());
@@ -286,6 +297,16 @@ namespace CloneZ
                     Paved(town, drive, 0.016f, DecorMaterials.Asphalt);
                     Wreck(town, car, b.Yaw(R(town.Rng, -6f, 6f) + (town.Rng.NextDouble() < 0.5 ? 0f : 180f)),
                         town.Rng.NextDouble() < 0.5 ? DecorProps.CarKind.Sedan : DecorProps.CarKind.Wagon, Paint(town));
+                    // Add a small driveway lamp post with a faint orange‑yellow glow beside the car
+                    Vector3 lampPos = car + (alongX ? new Vector3(0f, 0f, 1.5f) : new Vector3(1.5f, 0f, 0f));
+                    Prop(town, lampPos, 0f, new Vector3(0.15f, 2.0f, 0.15f), true, (m, r) =>
+                    {
+                        // metal pole
+                        m.Box(lampPos + new Vector3(0f, 1.0f, 0f), new Vector3(0.07f, 2.0f, 0.07f), DecorPalette.Metal(new Color(0.35f, 0.33f, 0.30f)));
+                        // small glass shade
+                        m.Box(lampPos + new Vector3(0f, 2.1f, 0f), new Vector3(0.12f, 0.05f, 0.12f), DecorPalette.Matte(new Color(0.15f, 0.14f, 0.13f)));
+                    });
+                    town.Light(b.Root, lampPos + new Vector3(0f, 2.2f, 0f), new Color(1f, 0.55f, 0.2f), 5f, 1.2f, true, false);
                 }
             }
         }

@@ -55,6 +55,11 @@ namespace CloneZ
                     "Tent One, Mercy Six. Burn the linens. Double-glove. Keep your mask on, whatever happens. Over.",
                     "*somebody coughing, a long time, before the handset clicks off*",
                     "This is Tent One. Anyone listening: the spare filters are in the equipment locker. Take them. We won't need them.",
+"Tent One, Mercy Six. Supplies of warm clothing are dwindling; only a few threadbare jackets remain, conserve heat.",
+"Mercy Six, Tent One. The generator at the field clinic is broken, run on batteries only and limit power usage.",
+"Tent One, Mercy Six. Child in cot two broke his arm, need a splint from the med kit ASAP.",
+"Mercy Six, Tent One. The creek north has frozen solid, water collection is hazardous—use melt rigs.",
+"Tent One, Mercy Six. Wind is picking up, we need extra firewood for the heaters, anyone with logs, over.",
                 },
             },
             new Net
@@ -123,6 +128,7 @@ namespace CloneZ
             }
             into.Add(new InteractAction("Switch off the radio", c => Switch(false)).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Change channel", Retune).DisabledIf(!near, TooFar));
+            into.Add(new InteractAction("Previous channel", PrevChannel).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Turn it up", c => Louder(c, 1)).DisabledIf(_volume >= MaxVolume, "It won't go any louder").DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Turn it down", c => Louder(c, -1)).DisabledIf(_volume <= 0, "It's down as low as it goes").DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Key the handset", KeyHandset).DisabledIf(!near, TooFar));
@@ -156,6 +162,16 @@ namespace CloneZ
             Net n = Nets[_net];
             ctx.Notify("You click the channel selector round to " + n.Name + " \u2014 " + n.Title + ".");
         }
+
+        private void PrevChannel(InteractContext ctx)
+        {
+            _net = (_net + Nets.Length - 1) % Nets.Length;
+            MakeNoise(CloneZConfig.ReceiverKnobNoise);
+            _captionAt = Time.time + CloneZConfig.ReceiverFirstCaption * 0.5f;
+            Net n = Nets[_net];
+            ctx.Notify("You click the channel selector round to " + n.Name + " \u2014 " + n.Title + ".");
+        }
+
 
         private void Louder(InteractContext ctx, int step)
         {

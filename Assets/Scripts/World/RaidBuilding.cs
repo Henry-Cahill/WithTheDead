@@ -442,6 +442,26 @@ namespace CloneZ
                 p.Mesh.Box(RunPoint(r, o.B + 0.035f, (DoorHeight + 0.07f) * 0.5f, off), RunSize(r, 0.07f, DoorHeight + 0.07f, 0.024f), wood);
                 p.Mesh.Box(RunPoint(r, o.Pos, DoorHeight + 0.035f, off), RunSize(r, w + 0.14f, 0.07f, 0.024f), wood);
             }
+            // Add subtle door handle on interior side (random slight X offset) and occasional rust spot
+            for (int side = -1; side <= 1; side += 2)
+            {
+                // Determine handle position and apply small random X offset
+                float handleY = DoorHeight * 0.5f;
+                float offX = (float)(Rng.NextDouble() - 0.5) * 0.02f;
+                Vector3 handlePos = RunPoint(r, o.Pos, handleY, side * (Half + 0.025f));
+                handlePos.x += offX;
+                p.Mesh.Box(handlePos, RunSize(r, 0.04f, 0.015f, 0.015f), wood);
+
+                // Occasionally add a rust spot near the handle (≈15% chance)
+                if (Rng.NextDouble() < 0.15)
+                {
+                    Surf rust = DecorPalette.Matte(new Color(0.45f, 0.35f, 0.25f));
+                    // Rust spot slightly larger in X, thin in Y/Z
+                    Vector3 rustPos = RunPoint(r, o.Pos, handleY + 0.02f, side * (Half + 0.03f));
+                    rustPos.x += offX;
+                    p.Mesh.Box(rustPos, RunSize(r, 0.06f, 0.008f, 0.008f), rust);
+                }
+            }
         }
 
         private void DrawWindow(WallPiece p)

@@ -46,6 +46,8 @@ namespace CloneZ
             t._occlusion = occlusion;
             t._onLabel = onLabel;
             t._offLabel = offLabel;
+            // Add an extra Inspect action showing current on/off state.
+            t._extra = (c, list) => list.Add(new InteractAction("Inspect", t.Inspect));
             return t;
         }
 
@@ -104,6 +106,9 @@ namespace CloneZ
         }
 
         private void Awake() => _flip = c => Set(c, !_on);
+
+        // Inspect action shows the current on/off state without changing it.
+        private void Inspect(InteractContext ctx) => ctx.Notify("The " + _name + " is currently " + (_on ? "on" : "off") + ".");
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {

@@ -21,6 +21,11 @@ namespace CloneZ
             Color c = V(wood, rng, 0.06f);
             m.Box(new Vector3(0f, 0.41f, -0.03f), new Vector3(1.0f, 0.78f, 0.44f), M(c));
             m.Box(new Vector3(0f, 0.81f, -0.01f), new Vector3(1.04f, 0.03f, 0.5f), G(c * 1.05f));
+            // Small brass corner brackets on the top of the dresser
+            if (rng.NextDouble() < 0.75) m.Box(new Vector3(-0.5f, 0.825f, -0.24f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass));
+            if (rng.NextDouble() < 0.75) m.Box(new Vector3(0.5f, 0.825f, -0.24f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass));
+            if (rng.NextDouble() < 0.75) m.Box(new Vector3(-0.5f, 0.825f, 0.24f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass));
+            if (rng.NextDouble() < 0.75) m.Box(new Vector3(0.5f, 0.825f, 0.24f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass));
             m.Box(new Vector3(0f, 0.012f, 0.16f), new Vector3(0.98f, 0.024f, 0.06f), M(c * 0.8f));
             for (int row = 0; row < 3; row++)
                 m.Box(new Vector3(0f, DresserDrawerY(row), 0.1915f), new Vector3(0.92f, 0.19f, 0.003f), M(LivingBay));
@@ -271,7 +276,7 @@ namespace CloneZ
             float bl = l * 0.45f;
             float bz = l * 0.5f - 0.06f - bl * 0.5f;
             float yaw = R(rng, -6f, 6f);
-            m.Box(new Vector3(0.05f, 0.535f, bz), new Vector3(w + 0.02f, 0.05f, bl), Yaw(yaw), M(b));
+            m.Box(new Vector3(0f, 0.535f, bz), new Vector3(w + 0.02f, 0.05f, bl), Yaw(yaw), M(b));
             m.Box(new Vector3(-w * 0.5f - 0.01f, 0.39f, bz), new Vector3(0.03f, 0.3f, bl), M(b * 0.9f));
             m.Box(new Vector3(w * 0.5f + 0.01f, 0.39f, bz), new Vector3(0.03f, 0.3f, bl), M(b * 0.9f));
             m.CylinderX(new Vector3(0.03f, 0.6f, bz - bl * 0.5f + 0.06f), 0.08f, w * 0.95f, 8, M(b * 1.06f), yaw);

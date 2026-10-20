@@ -406,6 +406,7 @@ namespace CloneZ
 
         // ---- Wetness (rain soaks you; you dry off over time — wet clothes stop insulating) ----
         public const float WetRainPerSec = 1f / 45f;      // soaked after ~45s in heavy rain
+        public const float WetSnowPerSec = 1f / 90f;      // soaked slower in snow than rain
         public const float WetDryPerSec = 1f / 120f;      // dries over ~2 min (faster when warm)
         public const float WetWaterResistFactor = 0.9f;   // a raincoat keeps off up to 90% of the soaking
         public const float WetInsulationLoss = 0.7f;      // soaked clothes lose up to 70% of their warmth

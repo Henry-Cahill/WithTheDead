@@ -18,14 +18,18 @@ namespace CloneZ
     {
         /// <summary>The inventory window this element belongs to.</summary>
         public InventoryUIController Owner;
+        /// <summary>The UI element type this pointer relay represents (tile, equip slot, or tab).</summary>
         public GridElement Element;
         /// <summary>The element's slot in its pool (tiles) or its position in its strip (slots, tabs).</summary>
         public int Index;
 
+
         public void OnPointerEnter(PointerEventData eventData) { if (Owner != null) Owner.GridPointerEnter(this); }
 
+        /// <summary>Forwards pointer exit event to the owner controller.</summary>
         public void OnPointerExit(PointerEventData eventData) { if (Owner != null) Owner.GridPointerExit(this); }
 
+        /// <summary>Forwards pointer down event to the owner controller.</summary>
         public void OnPointerDown(PointerEventData eventData) { if (Owner != null) Owner.GridPointerDown(this, eventData); }
 
         public void OnPointerClick(PointerEventData eventData) { if (Owner != null) Owner.GridPointerClick(this, eventData); }

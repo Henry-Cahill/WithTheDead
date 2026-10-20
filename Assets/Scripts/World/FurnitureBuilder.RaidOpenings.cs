@@ -214,6 +214,8 @@ namespace CloneZ
             {
                 float c = mid + e * (w * 0.5f + 0.07f + sw * 0.5f);
                 m.Box(l.P(c, cy, side * (face + 0.02f)), l.Size(sw, sh, 0.03f), panel);
+                // Brass latch near lower‑outer edge of the panel
+                m.Box(l.P(c, sill + 0.12f, side * (face + 0.045f)), l.Size(0.032f, 0.064f, 0.008f), Mt(Brass));
                 for (float y = sill + 0.04f; y < head + 0.03f; y += 0.075f)
                     m.Box(l.P(c, y, side * (face + 0.038f)), l.Size(sw - 0.06f, 0.024f, 0.012f), slat);
             }

@@ -37,7 +37,7 @@ namespace CloneZ
         private bool _dark;
         private bool _switchedOn;
         private bool _deadBulb;
-        private bool _overhead, _ceilingsShown;
+        private bool _overhead, _ceilingsShown, _isFlickering;
         private bool _lit;
         private float _next;
 
@@ -69,12 +69,13 @@ namespace CloneZ
         public bool Flicker
         {
             get => _light != null && _light.Flicker;
-            internal set
-            {
-                if (_light == null) return;
-                _light.Flicker = value;
-                SyncGlow();
-            }
+internal set
+                    {
+                        if (_light == null) return;
+                        _light.Flicker = value;
+                        _isFlickering = value;
+            _isFlickering = _light?.Flicker ?? false;
+                    }
         }
 
         /// <summary>Hangs a lamp's light at <paramref name="bulb"/> (world) under <paramref name="parent"/>, with
@@ -181,7 +182,19 @@ namespace CloneZ
 
         private void Update()
         {
-            if (_overhead || (_glow != null && _light != null && _light.Flicker)) SyncGlow();
+            // Update view‑state dependent glow for ceiling fittings
+            if (_overhead)
+            {
+                if (ViewState.CeilingsVisible != _ceilingsShown) SyncGlow();
+            }
+            // Update flicker‑dependent glow if flicker state changed
+            bool flickerNow = _light?.Flicker ?? false;
+            if (flickerNow != _isFlickering)
+            {
+                _isFlickering = flickerNow;
+            SyncGlow();
+            _isFlickering = _light?.Flicker ?? false;
+            }
             if (Time.time < _next) return;
             _next = Time.time + CloneZConfig.LampCheckInterval;
             Refresh();

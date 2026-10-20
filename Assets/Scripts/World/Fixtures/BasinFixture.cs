@@ -19,6 +19,12 @@ namespace CloneZ
         {
             "Two minutes of brushing, counted in your head. A small, stubborn piece of normal.",
             "You brush until your gums tingle and rinse with a splash. Minty. Almost civilised.",
+            "The frigid air bites your cheeks as you scrub, reminding you the world outside is still frozen.",
+            "You watch the thin stream of water turn into a misty cloud, disappearing like breath in the room.",
+            "A thin film of soot clings to your toothbrush, a reminder of the burnt logs in the stove.",
+            "The metal of the tap feels icy, and you wonder how long the mains will stay silent.",
+            "You spit the frothy foam into the basin, hearing it echo in the tiny, empty space.",
+            "Each swipe feels like a small rebellion against the cold that seeps through the cracked walls.",
         };
 
         private static readonly string[] ShaveLines =
@@ -136,6 +142,8 @@ namespace CloneZ
         {
             into.Add(new InteractAction(_tapOpen ? "Turn off the tap" : "Turn on the tap", c => Turn(c, !_tapOpen)));
             into.Add(new InteractAction(_plugged ? "Pull the plug out" : "Put the plug in", c => SetPlug(c, !_plugged)));
+            // Tiny action to let player check current water level in the basin
+            into.Add(new InteractAction("Check water level", CheckLevel));
             WaterUse.AddDrinkAndFill(ctx, this, into);
 
             bool mains = WaterMains.MainsOn;
@@ -239,6 +247,20 @@ namespace CloneZ
             BathroomFixtures.Nerves(ctx, -CloneZConfig.BasinShaveCalm);
             ctx.Notify(ShaveLines[Random.Range(0, ShaveLines.Length)]);
         }
+
+        private void CheckLevel(InteractContext ctx)
+        {
+            float fill = _level;
+            string level =
+                fill <= 0.01f ? "Bone‑dry. No water in the basin." :
+                fill < 0.25f ? "Barely a puddle in the bottom." :
+                fill < 0.5f ? "About a quarter full." :
+                fill < 0.75f ? "Roughly half full." :
+                fill < 0.99f ? "Nearly full." :
+                "Brimming — it can't hold any other water.";
+            ctx.Notify(level);
+        }
+
 
         public override void CaptureState(FixtureSave save)
         {

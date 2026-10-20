@@ -355,6 +355,12 @@ namespace CloneZ
             rt.sizeDelta = new Vector2(ListW, h - 2f);
             var img = go.AddComponent<Image>();
             img.color = bg;
+            // tiny bolt decoration, adds a bit of worn‑metal detail to each row
+            NewImage(rt, "Bolt",
+                new Vector2(1f, 0.5f), // anchored to the right‑center of the row
+                new Vector2(-6f, 0f), // inset 6 px from the right edge
+                new Vector2(4f, 4f), // size of the bolt
+                new Color(0.58f, 0.55f, 0.52f, 0.85f));
             go.AddComponent<TooltipTrigger>().Init(this, def, img, info, onDoubleClick, onRightClick);
             return rt;
         }

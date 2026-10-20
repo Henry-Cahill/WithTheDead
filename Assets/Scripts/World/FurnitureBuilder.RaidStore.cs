@@ -74,6 +74,9 @@ namespace CloneZ
             m.Box(new Vector3(-0.04f, 0.785f, 0.175f), new Vector3(0.03f, 0.03f, 0.03f), G(new Color(0.18f, 0.32f, 0.70f)));
             m.Box(new Vector3(0.04f, 0.785f, 0.175f), new Vector3(0.03f, 0.03f, 0.03f), G(new Color(0.72f, 0.14f, 0.10f)));
             m.Box(new Vector3(0f, 0.706f, 0.18f), new Vector3(0.14f, 0.012f, 0.05f), Mt(new Color(0.45f, 0.45f, 0.46f)));
+            // Add chrome tap-knobs above the taps
+            m.Cylinder(new Vector3(-0.04f, 0.795f, 0.185f), 0.005f, 0.015f, 6, Mt(Chrome));
+            m.Cylinder(new Vector3(0.04f, 0.795f, 0.185f), 0.005f, 0.015f, 6, Mt(Chrome));
             m.Cylinder(new Vector3(0.195f, 0.48f, 0.02f), 0.035f, 0.24f, 8, M(new Color(0.9f, 0.9f, 0.88f)));
             m.Cylinder(new Vector3(0f, 0.93f, 0f), 0.08f, 0.02f, 10, M(c * 0.8f));
             m.Cylinder(new Vector3(0f, OfficeJugBase, 0f), 0.13f, OfficeJugHeight, 10, BathGlass, Quaternion.identity, 0.6f);
@@ -390,8 +393,7 @@ namespace CloneZ
             // The rubbish under the right-hand lid: a dark heap of bags just below the rim.
             m.Box(new Vector3(0.47f, 1.153f, 0f), new Vector3(0.86f, 0.004f, 1.04f), M(new Color(0.06f, 0.06f, 0.07f)));
             for (int i = 0; i < 3; i++)
-                m.Ellipsoid(new Vector3(R(rng, 0.2f, 0.75f), 1.152f, R(rng, -0.35f, 0.35f)), new Vector3(R(rng, 0.25f, 0.4f), 0.012f, R(rng, 0.25f, 0.4f)),
-                    G(new Color(0.05f, 0.05f, 0.06f)), 8, 3);
+                m.Ellipsoid(new Vector3(R(rng, 0.2f, 0.75f), 1.152f, R(rng, -0.35f, 0.35f)), new Vector3(R(rng, 0.25f, 0.4f), 0.012f, R(rng, 0.25f, 0.4f)), G(new Color(0.05f, 0.05f, 0.06f)), 8, 3);
         }
 
         /// <summary>The dumpster's right-hand lid (drawn shut), hinged along its back edge (<see cref="TownDumpsterHinge"/>).</summary>

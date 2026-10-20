@@ -76,6 +76,7 @@ namespace CloneZ
             }
             into.Add(new InteractAction("Sit down", SitDown).DisabledIf(_spinSpeed > 30f, "Let it stop spinning first"));
             into.Add(new InteractAction("Give the chair a spin", Shove));
+            into.Add(new InteractAction("Kick the chair", Kick));
         }
 
         private void SitDown(InteractContext ctx)
@@ -93,8 +94,16 @@ namespace CloneZ
                 : "You send the chair spinning. It squeaks to a stop facing nowhere in particular.");
         }
 
-        // One full turn on the chair: the seat (and the survivor in it) come round and settle back where they started.
-        private InteractAction SpinRound()
+        private void Kick(InteractContext ctx)
+        {
+            // stronger spin than a normal shove
+            _spinSpeed = CloneZConfig.RaidSwivelFreeSpin * Random.Range(1.2f, 1.6f);
+            MakeNoise(CloneZConfig.FixtureNoiseSmall);
+            ctx.Notify(Random.value < 0.5f
+                ? "You kick the chair hard, sending it into a rapid spin!"
+                : "The chair rockets around wildly after your kick.");
+        }
+private InteractAction SpinRound()
         {
             float from = 0f;
             var a = new InteractAction("Spin round").Timed(CloneZConfig.RaidSwivelSpinSeconds, "Spinning round", HumanoidActivity.None);

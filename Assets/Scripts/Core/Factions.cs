@@ -50,6 +50,16 @@ namespace CloneZ
                 Blurb = "Zealots who guard the deep Zone and the thing they believe sleeps there. Hostile to all." } },
             { Zone,      new Def { Id = Zone,      Name = "The Zone",            Color = new Color(0.45f, 0.55f, 0.30f),
                 Blurb = "The dead, the mutated and the wild." } },
+            { "survivorwarning", new Def { Id = "survivorwarning", Name = "Survivor's Warning", Color = new Color(0.80f, 0.20f, 0.20f),
+                Blurb = "A frayed note pinned to a wall: ‘Do not venture beyond the river at night; something watches.’" } },
+            { "rustyradio", new Def { Id = "rustyradio", Name = "Rusty Radio", Color = new Color(0.55f, 0.55f, 0.55f),
+                Blurb = "Static bursts into a cracked voice: ‘Supply convoy delayed, head east, avoid the choir’s chants.’" } },
+            { "graffitichor", new Def { Id = "graffitichor", Name = "Choir Graffiti", Color = new Color(0.30f, 0.65f, 0.30f),
+                Blurb = "Smeared paint on a broken fence: ‘The Choir sings at dusk – run while it’s dark.’" } },
+            { "weatherlog", new Def { Id = "weatherlog", Name = "Weather Log", Color = new Color(0.20f, 0.45f, 0.80f),
+                Blurb = "A soaked notebook details the bitter freeze of last winter, warning of sudden blizzards." } },
+            { "oldmine", new Def { Id = "oldmine", Name = "Old Mine Fragment", Color = new Color(0.70f, 0.60f, 0.45f),
+                Blurb = "A faded map corner shows a forgotten mine shaft, hinting at untapped resources deep underground." } },
         };
 
         // Base relations: -1 hostile, 0 neutral, +1 allied. Symmetric; anything unlisted is neutral.
@@ -79,19 +89,31 @@ namespace CloneZ
 
         private static void Set(string a, string b, int rel) => s_Rel[Key(a, b)] = rel;
 
+        /// <summary>
+        /// Gets the base relation between two factions: -1 hostile, 0 neutral, +1 allied.
+        /// </summary>
         public static int Relation(string a, string b)
         {
             if (string.IsNullOrEmpty(a) || string.IsNullOrEmpty(b)) return 0;
             return s_Rel.TryGetValue(Key(a, b), out int r) ? r : 0;
         }
 
+        /// <summary>
+        /// Returns the definition record for a faction id, falling back to the Zone definition if unknown.
+        /// </summary>
         public static Def Get(string id) => id != null && s_Defs.TryGetValue(id, out Def d) ? d : s_Defs[Zone];
+        /// <summary>
+        /// Retrieves the display name of a faction by id.
+        /// </summary>
         public static string NameOf(string id) => Get(id).Name;
 
         /// <summary>
         /// Whether <paramref name="self"/> attacks <paramref name="other"/>. When one side is a player-controlled
         /// survivor, that player's personal reputation with the other faction shifts the base relation: deeply
         /// disliked (&lt; -300) means hostile, well liked (&gt; 300) means friendly, whatever the factions think.
+        /// </summary>
+        /// <summary>
+        /// Indicates whether a player‑controlled survivor is hostile toward another actor based on faction relations and personal reputation.
         /// </summary>
         public static bool AreHostile(string a, string b, Actor self, Actor other)
         {
@@ -111,6 +133,9 @@ namespace CloneZ
         }
 
         /// <summary>The local survivor's personal reputation with a faction (-1000..1000), from the profile.</summary>
+        /// <summary>
+        /// Returns the local survivor's personal reputation with a faction, from the active profile.
+        /// </summary>
         public static float PlayerReputation(string faction)
         {
             CharacterProfile c = ProfileStore.ActiveCharacter;
@@ -118,6 +143,9 @@ namespace CloneZ
         }
 
         /// <summary>Shifts the local survivor's reputation with a faction (killing their people, finishing their jobs).</summary>
+        /// <summary>
+        /// Adjusts the local survivor's reputation with a faction, optionally showing a toast.
+        /// </summary>
         public static void AdjustReputation(string faction, float delta, string reason = null)
         {
             CharacterProfile c = ProfileStore.ActiveCharacter;
