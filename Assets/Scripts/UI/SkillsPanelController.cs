@@ -22,6 +22,8 @@ namespace CloneZ
         private Text[] _levelTexts;
         private Text[] _xpTexts;
         private Image[] _progressFills;
+        private struct SkillCache { public int level; public float progress; }
+        private SkillCache[] _skillCache;
 
         public bool IsOpen => _open;
 
@@ -32,6 +34,8 @@ namespace CloneZ
             _font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             _order = (PlayerSkills.Skill[])System.Enum.GetValues(typeof(PlayerSkills.Skill));
             Build();
+            // Initialise skill cache after UI arrays are allocated in Build()
+            _skillCache = new SkillCache[_order.Length];
         }
 
         private void Update()
@@ -73,11 +77,20 @@ namespace CloneZ
             {
                 PlayerSkills.Skill s = _order[i];
                 int lvl = _skills.GetLevel(s);
-                _levelTexts[i].text = "Lv " + lvl;
-                SetFill(_progressFills[i], _skills.LevelProgress(s));
-                _xpTexts[i].text = lvl >= CloneZConfig.SkillMaxLevel
-                    ? "MAX"
-                    : Mathf.RoundToInt(_skills.LevelProgress(s) * 100f) + "%";
+                float prog = _skills.LevelProgress(s);
+                if (lvl != _skillCache[i].level)
+                {
+                    _levelTexts[i].text = "Lv " + lvl;
+                    _skillCache[i].level = lvl;
+                }
+                if (!Mathf.Approximately(prog, _skillCache[i].progress))
+                {
+                    SetFill(_progressFills[i], prog);
+                    _xpTexts[i].text = lvl >= CloneZConfig.SkillMaxLevel
+                        ? "MAX"
+                        : Mathf.RoundToInt(prog * 100f) + "%";
+                    _skillCache[i].progress = prog;
+                }
             }
         }
 

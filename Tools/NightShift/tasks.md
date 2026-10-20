@@ -3103,7 +3103,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `new[] { new Key(0f, 0.003f, 0.003f), new Key(1f, 0.003f, 0.003f) }, seg: 6);`
   - 12:24 landed by hts-llm in 1.5 min: **Summary**
 - [ ] In Assets/Scripts/AI/Creatures/Creatures.cs add a subtle “leather strap” detail to the torso of all quadruped creatures built in `CreatureBody.Quad`.
-- [ ] In Assets/Scripts/UI/SkillsPanelController.cs: Optimize SkillsPanelController so the per‑frame Refresh() doesn’t rebuild UI elements when nothing changed, by caching each skill’s level and progress and only updating the Text/Image when the values differ.
+- [x] In Assets/Scripts/UI/SkillsPanelController.cs: Optimize SkillsPanelController so the per‑frame Refresh() doesn’t rebuild UI elements when nothing changed, by caching each skill’s level and progress and only updating the Text/Image when the values differ.
   Add a private struct `SkillCache { public int level; public float progress; }` and a field `private SkillCache[] _skillCache;`.
   In Build() after allocating `_levelTexts`, `_xpTexts` and `_progressFills`, initialize `_skillCache = new SkillCache[_order.Length];`.
   Rewrite Refresh() to:
@@ -3112,4 +3112,5 @@ you want to see in game. Indent extra lines under a task to add detail.
   ` int lvl = _skills.GetLevel(s);`
   ` float prog = _skills.LevelProgress(s);`
   ` if (lvl != _skillCache[i].level) { _levelTexts[i].text = "Lv " + lvl; _skillCache[i].level = lvl; }`
+  - 12:26 landed by 0htsserver in 2.1 min: **Changed file**
 - [ ] Add a “Let towel dry” action to Assets/Scripts/World/Fixtures/TowelRail.cs that lets the survivor speed‑up the towel’s drying when it is still damp.
