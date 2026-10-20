@@ -1638,7 +1638,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Keeps the total primitive count well under the ~12‑primitive limit.
   - 05:52 landed by hts-llm in 1.9 min: **Changed file**
 - [ ] Remove Kestrel Flats, Mirelock woods, and Spillway as raid locations and retire them to being wave maps also as introduction map.
-- [ ] Add a small metal strike‑plate to each interior doorway built in `Assets/Scripts/World/StarterHome.cs` inside the `Raise` method’s `if (s.Type == BuildPieceType.Doorway)` block.
+- [x] Add a small metal strike‑plate to each interior doorway built in `Assets/Scripts/World/StarterHome.cs` inside the `Raise` method’s `if (s.Type == BuildPieceType.Doorway)` block.
   Create a `GameObject` primitive cube named `"Plate"` as a child of the doorway piece, set its local scale to `new Vector3(0.06f, 0.02f, 0.01f)` (≈ 6 cm × 2 cm × 1 cm), and position it a few centimetres above the handle:
   `Vector3 plateOffset = s.Yaw switch`
   `{`
@@ -1647,6 +1647,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `180f => new Vector3(-0.35f, 0.95f, 0f),`
   `270f => new Vector3(0f, 0.95f, -0.35f),`
   `_ => new Vector3(0.35f, 0.95f, 0f)`
+  - 05:56 landed by 1htsserver in 3.3 min: **Changed files**
 - [ ] Optimize per‑frame UI string allocation in Assets/Scripts/Player/PlayerBuilder.cs by caching the composed prompt.
   Add a private field `string _promptCache` and a flag `bool _promptDirty` to store the last built prompt.
   Mark the prompt dirty whenever any data that influences it changes: in `HandleSelectionInput` after changing `Selection`; at the end of `EvaluateBarricade`, `EvaluateHouse`, and `EvaluateDemolish` after setting `_placeValid`, `_reinforceTarget`, or `_demolishTarget`; and in `EnterBuildMode`, `ExitBuildMode`, `StartBuild`, `CancelBuild`, and `CompleteBuild`.
