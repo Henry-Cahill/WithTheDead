@@ -3912,11 +3912,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Create a private method `CloseDoor(InteractContext ctx)` mirroring `OpenDoor`:
   - 17:27 landed by 1htsserver in 2.7 min: **Changed file**
 - [ ] Modify Assets/Scripts/World/Map/KentuckyMap.cs to give each building a deterministic colour tint so façades vary like the hand‑built raid town.
-- [ ] Add a thin, random‑thickness snow‑dust layer on the top of the copier cabinet in OfficeCopierBody (Assets/Scripts/World/FurnitureBuilder.RaidStore.cs)
+- [x] Add a thin, random‑thickness snow‑dust layer on the top of the copier cabinet in OfficeCopierBody (Assets/Scripts/World/FurnitureBuilder.RaidStore.cs)
   After the existing top box `m.Box(new Vector3(0f, 1.0405f, -0.02f), new Vector3(0.62f, 0.002f, 0.42f), …)` add a new box:
   `float snowThick = R(rng, 0.002f, 0.006f);`
   `m.Box(new Vector3(0f, 1.045f + snowThick/2f, 0f), new Vector3(0.86f, snowThick, 0.58f), DecorProps.SnowWhite);`
   This adds a subtle white “snow‑settled” veneer that varies per copier (thickness 2–6 mm), using the existing random source and the already‑available snow material, without affecting colliders or interaction points.
+  - 17:32 landed by hts-llm in 3.6 min: **Changed file**
 - [ ] In Assets/Scripts/Core/CombatResolver.cs: Fix CombatResolver.Cast so dead damageable actors no longer block bullets, but world geometry still does
   In `CombatResolver.Cast` the line `if (target == null || target.IsDead) break; // the world stops the round` treats both missing‑damageable colliders (world) and dead damageable actors as a hard stop for the ray.
   This makes corpses (dead zombies or players) incorrectly block subsequent shots, preventing players from shooting through them to hit targets behind.
