@@ -261,6 +261,8 @@ namespace CloneZ
                 m.Box(new Vector3(0f, 1.2f, 0f), new Vector3(0.08f, 2.4f, 0.08f), DecorPalette.Metal(new Color(0.3f, 0.32f, 0.28f)));
                 m.Box(new Vector3(0f, 2.42f, 0.12f), new Vector3(0.05f, 0.05f, 0.3f), DecorPalette.Metal(new Color(0.3f, 0.32f, 0.28f)));
                 m.Box(new Vector3(0f, 2.48f, 0.24f), new Vector3(0.2f, 0.06f, 0.2f), DecorPalette.Matte(new Color(0.15f, 0.15f, 0.14f)));
+                // Add subtle weathered metal cap atop the post
+                m.Cylinder(new Vector3(0f, 2.45f, 0f), 0.03f, 0.02f, 8, DecorPalette.Metal(new Color(0.45f, 0.45f, 0.44f)));
             });
             town.Light(tent.Root, lampPost + new Vector3(0f, 2.3f, 0.24f), new Color(1f, 0.45f, 0.25f), 6f, 1.4f, true, false);
         }
