@@ -51,6 +51,7 @@ namespace CloneZ
         public float Cloudiness { get; private set; }      // 0..1
 
         private float _targetPrecip, _targetFog, _targetCloud;
+        private float _cachedFog = -1f; // cache last fog intensity to avoid redundant RenderSettings updates
         private float _stateTimer;
         private float _flashTimer;
         private bool _restored;   // a saved game set the weather; Start must not clobber it
@@ -182,10 +183,12 @@ namespace CloneZ
         private void ApplyFog()
         {
             float fog = Mathf.Max(FogIntensity, PrecipitationIntensity * 0.35f);   // falling snow thickens the murk like rain
+            if (Mathf.Approximately(_cachedFog, fog)) return; // no change, skip updates
             RenderSettings.fog = true;
             RenderSettings.fogMode = FogMode.Linear;
             RenderSettings.fogStartDistance = Mathf.Lerp(35f, 6f, fog);
             RenderSettings.fogEndDistance = Mathf.Lerp(78f, 28f, fog);
+            _cachedFog = fog; // update cache
         }
 
         /// <summary>Extra dimming from cloud cover, fed into the day/night light level.</summary>

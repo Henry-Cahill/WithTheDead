@@ -33,10 +33,11 @@ namespace CloneZ
         private float _laidOutGap = -1f;
         private Color _shownTint;
 
-    private Transform _boundTarget;
+        private Transform _boundTarget;
     private PlayerController _controller;
     private IsoCameraFollow _cam;
     private PlayerCombat _combat;
+    private GameSettings _settings;
 
 
 
@@ -52,12 +53,13 @@ namespace CloneZ
     {
         Build();
         _cam = IsoCameraFollow.Instance;
+        _settings = GameSettings.Current;
     }
 
         private void LateUpdate()
         {
             // No crosshair through the bodycam, or in hardcore: aim with the weapon itself.
-            bool show = IsoCameraFollow.MouseLookEngaged && ViewState.Current != CameraView.Bodycam && GameSettings.Current.ShowCrosshair;
+            bool show = IsoCameraFollow.MouseLookEngaged && ViewState.Current != CameraView.Bodycam && _settings.ShowCrosshair;
             if (_canvas.enabled != show) _canvas.enabled = show;
             if (!show)
             {

@@ -76,6 +76,7 @@ namespace CloneZ
         private Camera _cam;
         private float _dawnTotalHours = -1f;   // the clock's TotalHours at which dawn ends the raid
         private int _killsAtStart;
+        private GameManager _gm;
         private string _arrivedClock = "";
 
         /// <summary>Starts the raid. Called by the bootstrapper once the map, player and HUD exist.</summary>
@@ -140,9 +141,9 @@ namespace CloneZ
 
         private void Setup(PlayerStats player)
         {
-            BindPlayer(player != null ? player : (GameManager.Instance != null ? GameManager.Instance.Player : null));
-            _killsAtStart = GameManager.Instance != null ? GameManager.Instance.ZombieKills : 0;
-
+            BindPlayer(player != null ? player : (_gm != null ? _gm.Player : null));
+            _killsAtStart = _gm != null ? _gm.ZombieKills : 0;
+            _gm = GameManager.Instance;
             // Dawn is fixed on the clock when the raid starts (the sandbox's raid length in in-game hours); the
             // countdown is read off the clock after that, so sleeping (which fast-forwards it) brings dawn closer too.
             TimeOfDay tod = TimeOfDay.Instance;
@@ -192,7 +193,7 @@ namespace CloneZ
             TickDawnClock(dt);
             TickHelicopters(dt);
 
-            if (_player == null && GameManager.Instance != null) BindPlayer(GameManager.Instance.Player);
+            if (_player == null && _gm != null) BindPlayer(_gm.Player);
             if (_player != null && _player.IsDead) { EndRaid(RaidState.Dead, null); return; }
             if (!NoDeadline && RaidSecondsRemaining <= 0f) { EndRaid(RaidState.MissingInAction, null); return; }
             TickExtraction(dt);
@@ -307,7 +308,7 @@ namespace CloneZ
             if (_player != null)
             {
                 Vector3 p = _player.transform.position;
-                float best = float.MaxValue;
+                float best = float.MaxValue; float bestClosedDist = float.MaxValue;
                 for (int i = 0; i < _exits.Count; i++)
                 {
                     RaidExit e = _exits[i];
@@ -319,7 +320,15 @@ namespace CloneZ
                     {
                         if (d2 < best) { best = d2; open = e; }
                     }
-                    else if (closed == null) closed = e;
+                    else
+                    {
+                        // Track the nearest closed exit the player is standing in
+                        if (closed == null || d2 < bestClosedDist)
+                        {
+                            bestClosedDist = d2;
+                            closed = e;
+                        }
+                    }
                 }
             }
 
@@ -396,14 +405,14 @@ namespace CloneZ
         private IEnumerator ShowSummaryAfter(RaidSummary summary, float delay)
         {
             yield return new WaitForSecondsRealtime(delay);
-            GameManager gm = GameManager.Instance;
+            GameManager gm = _gm;
             if (gm != null && !string.IsNullOrEmpty(gm.CauseOfDeath)) summary.Cause = gm.CauseOfDeath;
             RaidSummaryUI.Show(summary);
         }
 
         private RaidSummary BuildSummary(RaidState outcome, RaidExit exit, RaidKit kit)
         {
-            GameManager gm = GameManager.Instance;
+            GameManager gm = _gm;
             var summary = new RaidSummary
             {
                 Outcome = outcome,

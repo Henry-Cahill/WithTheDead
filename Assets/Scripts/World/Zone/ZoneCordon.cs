@@ -110,8 +110,15 @@ namespace CloneZ
             for (int i = 0; i < 4; i++)
             {
                 float x = (i % 2 == 0 ? -1f : 1f) * 1.4f, z = (i < 2 ? -1f : 1f) * 1.4f;
-                sb.Solid.Box(new Vector3(x, h * 0.5f, z), new Vector3(0.22f, h, 0.22f), ZoneKit.M(ZoneKit.WetWood));
-                sb.Collider(new Vector3(x, h * 0.5f, z), new Vector3(0.22f, h, 0.22f));
+                Vector3 post = new Vector3(x, h * 0.5f, z);
+                Vector3 normal = new Vector3(x, 0f, z).normalized;
+                sb.Solid.Box(post, new Vector3(0.22f, h, 0.22f), ZoneKit.M(ZoneKit.WetWood));
+                // 15% chance per post to show a rusted metal plate on its outer face
+                if (ZoneKit.R(rng, 0f, 1f) < 0.15f)
+                {
+                    sb.Solid.Box(post + Vector3.up * 1.0f + normal * 0.11f, new Vector3(0.08f, 0.02f, 0.001f), ZoneKit.Mt(ZoneKit.RustDark));
+                }
+                sb.Collider(post, new Vector3(0.22f, h, 0.22f));
             }
             sb.Upper.Box(new Vector3(0f, h, 0f), new Vector3(3.4f, 0.2f, 3.4f), ZoneKit.M(ZoneKit.WetWood));
             sb.Upper.Box(new Vector3(0f, h + 0.55f, 1.65f), new Vector3(3.4f, 0.9f, 0.1f), ZoneKit.M(ZoneKit.WardenOlive));

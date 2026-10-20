@@ -87,6 +87,7 @@ namespace CloneZ
                 m.Ellipsoid(dir * 0.3f + Vector3.up * 0.03f, new Vector3(0.05f, 0.05f, 0.05f), M(b), 6, 3);
             }
             m.Cylinder(new Vector3(0f, 0.07f, 0f), 0.025f, 0.36f, 6, Mt(Chrome));
+            m.Cylinder(new Vector3(0f, 0.43f, 0f), 0.012f, 0.008f, 6, Mt(Chrome));
             m.Box(new Vector3(0f, 0.46f, 0.02f), new Vector3(0.48f, 0.08f, 0.46f), M(f));
             m.Box(new Vector3(0f, 0.48f, -0.2f), new Vector3(0.06f, 0.18f, 0.04f), M(b));
             m.Box(new Vector3(0f, 0.78f, -0.25f), new Vector3(0.44f, 0.46f, 0.07f), Quaternion.Euler(-8f, 0f, 0f), M(f));
@@ -115,6 +116,14 @@ namespace CloneZ
             Color c = V(body, rng, 0.05f);
             float h = drawers * 0.33f + 0.05f;
             m.Box(new Vector3(0f, h * 0.5f, -0.02f), new Vector3(0.46f, h, 0.58f), M(c * 0.92f));
+            if (Chance(rng, 0.25f))
+            {
+                float rx = R(rng, -0.15f, 0.15f);
+                float ry = R(rng, 0.2f, h - 0.2f);
+                Vector3 rustPos = new Vector3(rx, ry, -0.04f);
+                Vector3 rustSize = new Vector3(0.08f, 0.04f, 0.004f);
+                m.Box(rustPos, rustSize, M(new Color(0.55f, 0.33f, 0.28f)));
+            }
             int open = Chance(rng, 0.4) ? rng.Next(drawers) : -1;
             for (int i = 0; i < drawers; i++)
             {
@@ -173,6 +182,9 @@ namespace CloneZ
                     m.Box(c + q * new Vector3(sx * (size.x * 0.5f - t * 0.4f), 0f, sz * (size.z * 0.5f - t * 0.4f)), new Vector3(t, size.y + 0.005f, t), q, M(bat));
             m.Box(c + q * new Vector3(0f, size.y * 0.5f - t * 0.4f, size.z * 0.5f - t * 0.4f), new Vector3(size.x, t, t), q, M(bat));
             m.Box(c + q * new Vector3(0f, size.y * 0.5f - t * 0.4f, -size.z * 0.5f + t * 0.4f), new Vector3(size.x, t, t), q, M(bat));
+            // Subtle metal strap on the front face of the crate
+            m.Box(c + q * new Vector3(0f, size.y * 0.5f, size.z * 0.5f - 0.015f), new Vector3(size.x * 0.8f, 0.02f, 0.018f), q, DecorPalette.Metal(new Color(0.45f, 0.44f, 0.43f)));
+
             if (military)
             {
                 m.Box(c + q * new Vector3(0f, size.y * 0.1f, size.z * 0.5f + 0.003f), new Vector3(size.x * 0.6f, size.y * 0.14f, 0.004f), q, M(new Color(0.80f, 0.74f, 0.50f)));

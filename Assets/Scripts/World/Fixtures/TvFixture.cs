@@ -118,6 +118,7 @@ namespace CloneZ
                 .DisabledIf(AtQuietest, "It's down as low as it goes")
                 .DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Adjust the rabbit ears", AdjustAerial).DisabledIf(!near, TooFar));
+            into.Add(new InteractAction("Check volume", ctx => ctx.Notify("Volume: " + VolumeWord)).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Check signal", CheckSignal).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Give the set a thump", Thump).DisabledIf(!near, TooFar));
         }
@@ -138,6 +139,9 @@ namespace CloneZ
         private void ChangeChannel(InteractContext ctx)
         {
             BroadcastStation s = TuneNext();
+            // Immediately update channel state and picture tint
+            RefreshChannel();
+            if (IsOn) Paint();
             ctx.Notify(Describe(s) + (_onAir ? "" : " \u2014 nothing but snow"));
         }
 

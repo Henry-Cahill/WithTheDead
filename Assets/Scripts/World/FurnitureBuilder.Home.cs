@@ -30,6 +30,7 @@ namespace CloneZ
                 m.Box(new Vector3(sx - 0.14f, 0.945f, 0.03f), new Vector3(0.26f, 0.004f, 0.34f), G(new Color(0.22f, 0.23f, 0.24f)));
                 m.Box(new Vector3(sx + 0.14f, 0.945f, 0.03f), new Vector3(0.26f, 0.004f, 0.34f), G(new Color(0.22f, 0.23f, 0.24f)));
                 m.Cylinder(new Vector3(sx, 0.94f, -0.25f), 0.016f, 0.22f, 6, Mt(Chrome));
+                m.Box(new Vector3(sx, 0.97f, -0.25f), new Vector3(0.02f, 0.01f, 0.02f), Yaw(R(rng, -15f, 15f)), Mt(Brass));
                 m.Box(new Vector3(sx, 1.16f, -0.17f), new Vector3(0.025f, 0.025f, 0.18f), Mt(Chrome));
             }
             // Clutter: a kettle, jars, a dish rack, a stack of plates.

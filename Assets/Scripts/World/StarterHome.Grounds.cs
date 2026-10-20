@@ -274,6 +274,7 @@ namespace CloneZ
             m.Rod(elbow, elbow - Vector3.up * 0.045f, 0.022f, brass, 8);
             Vector3 coupling = elbow - Vector3.up * 0.075f;
             m.Cylinder(coupling, 0.017f, 0.03f, 8, brass);
+            m.Cylinder(coupling + new Vector3(0f, 0f, 0.015f), 0.009f, 0.004f, 6, brass);
             m.Rod(coupling, at + new Vector3(0.12f, 0.52f, 0f), 0.03f, hose, 6);
             m.Cylinder(body + Vector3.up * 0.018f, 0.005f, 0.016f, 6, brass);
 

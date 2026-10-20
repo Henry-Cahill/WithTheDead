@@ -201,6 +201,7 @@ namespace CloneZ
             m.Box(new Vector3(rx, 1.08f, -0.05f), new Vector3(0.4f, 0.16f, 0.4f), M(new Color(0.18f, 0.18f, 0.2f)));
             m.Box(new Vector3(rx, 1.2f, 0.1f), new Vector3(0.36f, 0.12f, 0.12f), Quaternion.Euler(30f, 0f, 0f), M(new Color(0.24f, 0.24f, 0.26f)));
             m.Box(new Vector3(rx, 1.32f, -0.15f), new Vector3(0.2f, 0.1f, 0.04f), M(new Color(0.15f, 0.15f, 0.16f)));
+            m.Box(new Vector3(rx, 1.35f, -0.127f), new Vector3(0.02f, 0.04f, 0.005f), Mt(Chrome));
             m.Box(new Vector3(rx, 1.32f, -0.128f), new Vector3(0.16f, 0.05f, 0.004f), Gl(new Color(0.2f, 0.6f, 0.4f)));
             for (int i = 0; i < 3; i++)
                 m.Box(new Vector3(R(rng, 0f, len * 0.4f), 1.0f + i * 0.02f, R(rng, -0.2f, 0.2f)), new Vector3(0.2f, 0.015f, 0.28f), Yaw(R(rng, -30f, 30f)), M(V(new Color(0.7f, 0.5f, 0.3f), rng, 0.3f)));
@@ -322,6 +323,10 @@ namespace CloneZ
             Color w = new Color(0.86f, 0.86f, 0.84f);
             m.Box(new Vector3(0f, 0.6f, -0.24f), new Vector3(0.44f, 0.36f, 0.18f), G(w));
             m.Cylinder(new Vector3(0f, 0f, 0.02f), 0.15f, 0.3f, 10, G(w), Quaternion.identity, 1.25f);
+            Vector3 handlePos = new Vector3(0.12f, 0.45f, 0.04f) + new Vector3((float)rng.NextDouble() * 0.01f - 0.005f, (float)rng.NextDouble() * 0.02f - 0.01f, 0f);
+            Vector3 handleSize = new Vector3(0.02f, 0.04f, 0.01f);
+            Quaternion handleRot = Quaternion.Euler(0f, (float)rng.NextDouble() * 10f - 5f, 0f);
+            m.Box(handlePos, handleSize, handleRot, Mt(Chrome));
             m.Ellipsoid(new Vector3(0f, 0.38f, 0.06f), new Vector3(0.38f, 0.08f, 0.46f), G(w), 10, 4);
             m.Ellipsoid(new Vector3(0f, 0.41f, 0.06f), new Vector3(0.24f, 0.02f, 0.3f), M(new Color(0.3f, 0.32f, 0.3f)), 8, 3);
         }

@@ -918,6 +918,7 @@ namespace CloneZ
             }
 
             into.Add(new InteractAction("Talk", Talk));
+            into.Add(new InteractAction("Set Guard Here", c => _npc.SetGuard(_npc.transform.position)).DisabledIf(_npc.HoldPost, "Already guarding here"));
                 into.Add(new InteractAction("Intimidate", c => {
                     if (!c.Inventory.Has("pistol")) return;
                     if (Random.value < 0.5f) { _npc.Surrender(); GameEvents.RaiseSubtitle(_npc.Name, "I don't want any trouble… I give up!"); }

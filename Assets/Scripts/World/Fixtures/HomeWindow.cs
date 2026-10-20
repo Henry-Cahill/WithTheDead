@@ -63,7 +63,7 @@ namespace CloneZ
         private int _climbSide;
         private bool _climbClear;
 
-        private Action<InteractContext> _openAct, _closeAct, _latchAct, _unlatchAct, _curtainAct, _lookAct, _climbAct, _checkAct;
+        private Action<InteractContext> _openAct, _closeAct, _latchAct, _unlatchAct, _curtainAct, _lookAct, _climbAct, _checkAct, _knockAct;
 
         private static readonly Collider[] s_Hits = new Collider[16];
         private static readonly int BodyMask = (1 << 0) | (1 << CloneZConfig.IgnoreRaycastLayer);
@@ -111,6 +111,7 @@ namespace CloneZ
             _curtainAct = c => SetDrawn(!_drawn);
             _lookAct = Look;
             _checkAct = c => CheckWindow(c);
+            _knockAct = c => { MakeNoise(CloneZConfig.WindowNoise); c.Notify("You rap a fist against the window."); };
         }
 
         /// <summary>Makes <paramref name="root"/> (already holding the sash and the curtains, under the window
@@ -172,6 +173,7 @@ namespace CloneZ
 
                 string draw = _blind ? (_drawn ? "Raise the blind" : "Lower the blind") : (_drawn ? "Open the curtains" : "Close the curtains");
                 into.Add(new InteractAction("Check window", _checkAct));
+                into.Add(new InteractAction("Knock on the window", _knockAct));
 
                 into.Add(new InteractAction(_outSide == 0 ? "Look through the window" : "Look outside", _lookAct)
                     .Timed(CloneZConfig.WindowLookSeconds, "Looking outside", HumanoidActivity.Use));

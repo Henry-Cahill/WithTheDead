@@ -45,6 +45,15 @@ namespace CloneZ
                 m => { });
             M("old_folklore", "Old Folklore", "Whispers of the old farm linger, reminding you that the dead watch the fields.",
                 m => { });
+            // Additional new exposure marks as requested
+            M("severe_cold", "Severe Cold", "Your fingers feel like frozen stone, each touch saps a breath of warmth.",
+                m => { });
+            M("snow_hallucination", "Snow Hallucination", "Snowdrifts whirl in your mind, spawning disorienting hallucinations that blur reality.",
+                m => { });
+            M("radio_static", "Radio Static", "A persistent static hum on every cheap radio rattles your nerves, never letting you rest.",
+                m => { });
+            M("farm_legend", "Farm Legend", "Old farm legends whisper on the wind, a lingering reminder that the dead watch the fields.",
+                m => { });
             foreach (Mark k in Marks)
             {
                 ZoneMarkRegistry.Names[k.Id] = k.Name;

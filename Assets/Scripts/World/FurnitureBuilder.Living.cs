@@ -73,6 +73,7 @@ namespace CloneZ
             m.Box(new Vector3(0f, y, 0.205f), new Vector3(0.94f, 0.2f, 0.02f), M(wood * 1.1f));
             m.Box(new Vector3(-0.25f, y, 0.222f), new Vector3(0.04f, 0.04f, 0.016f), Mt(Brass));
             m.Box(new Vector3(0.25f, y, 0.222f), new Vector3(0.04f, 0.04f, 0.016f), Mt(Brass));
+            m.Box(new Vector3(0f, y + 0.1f, 0.215f), new Vector3(0.94f, 0.008f, 0.004f), Mt(Brass));
             LivingDrawerBox(m, new Vector3(0f, y - 0.085f, 0.195f), 0.9f, 0.15f, 0.36f, wood);
         }
 

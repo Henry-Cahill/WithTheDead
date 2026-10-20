@@ -136,10 +136,19 @@ namespace CloneZ
             if (HasParts)
             {
                 if (!_open)
+                {
+                    // Normal open (noisy)
                     into.Add(new InteractAction(_opt.OpenVerb + " the " + noun, c => { SetOpen(true, true); ShowContents(c); }));
+                    // Quiet open (no noise)
+                    into.Add(new InteractAction("Open the " + noun + " quietly", c => { SetOpen(true, false); ShowContents(c); }));
+                }
                 else
                 {
+                    // Normal close (noisy)
                     into.Add(new InteractAction(_opt.CloseVerb + " the " + noun, c => SetOpen(false, true)));
+                    // Quiet close (no noise)
+                    into.Add(new InteractAction("Close the " + noun + " quietly", c => { SetOpen(false, false); }));
+                    // Look/Search action
                     into.Add(new InteractAction(look, ShowContents));
                 }
             }
@@ -177,7 +186,7 @@ namespace CloneZ
             bool open = (save.State & 1) != 0;
             _open = open;
             for (int i = 0; i < _parts.Length; i++)
-                if (_parts[i] != null) _parts[i].SetOpen(open, true);
+                if (_parts[i] != null) _parts[i].SetOpen(open, false);
             _opt.OnOpenChanged?.Invoke(open);
         }
     }

@@ -1,5 +1,6 @@
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -29,7 +30,7 @@ namespace CloneZ
         private static readonly Color MenuButton = new Color(0.24f, 0.34f, 0.46f);
 
         private Font _font;
-        private float _shownAt;
+        private float _shownAt; private bool _frozen;
         private bool _leaving;
 
         /// <summary>Puts the report up for a finished raid (once; later calls return the open one).</summary>
@@ -87,11 +88,12 @@ namespace CloneZ
         private void LateUpdate()
         {
             if (_leaving) return;
-            Freeze();
+            if (!_frozen) Freeze();
         }
 
-        private static void Freeze()
+        private void Freeze()
         {
+            _frozen = true;
             Time.timeScale = 0f;
             UIState.GameplayBlocked = true;
             if (!Cursor.visible) Cursor.visible = true;
@@ -108,7 +110,7 @@ namespace CloneZ
         {
             if (_leaving) return;
             _leaving = true;
-            Time.timeScale = 1f;
+            _frozen = false;
             UIState.GameplayBlocked = false;
             if (nextRaid && ProfileStore.ActiveCharacter != null)
             {
@@ -165,6 +167,8 @@ namespace CloneZ
 
 AddBorder(prt, new Color(0.25f, 0.27f, 0.30f, 0.9f), 3f);
             AddRivets(prt, new Color(0.12f, 0.12f, 0.12f, 1f), 6f);
+            AddScrews(prt, new Color(0.20f, 0.20f, 0.20f, 1f), 4f);
+            AddEdgeWear(prt, new Color(0.15f, 0.12f, 0.09f, 1f), 2f);
 
             var top = new Vector2(0.5f, 1f);
             Label(prt, "Caption", top, new Vector2(0f, -22f), new Vector2(1000f, 24f), 17, TextAnchor.MiddleCenter, AmberText)
@@ -226,7 +230,7 @@ AddBorder(prt, new Color(0.25f, 0.27f, 0.30f, 0.9f), 3f);
             }
 
             int capacity = RowsPerColumn * 2;
-            int shown = lines.Count <= capacity ? lines.Count : capacity - 1;
+            int shown = Math.Min(lines.Count, capacity);
             for (int i = 0; i < shown; i++)
             {
                 RaidSummaryLine line = lines[i];
@@ -323,6 +327,63 @@ AddBorder(prt, new Color(0.25f, 0.27f, 0.30f, 0.9f), 3f);
             imgRight.color = color;
             imgRight.raycastTarget = false;
         }
+
+        // Add a faint worn edge strip to suggest years of use on the board.
+        private static void AddEdgeWear(RectTransform panel, Color color, float thickness = 2f)
+        {
+            if (panel == null) return;
+            // Top edge
+            var top = new GameObject("EdgeTop");
+            var rtTop = top.AddComponent<RectTransform>();
+            rtTop.SetParent(panel, false);
+            rtTop.anchorMin = new Vector2(0f, 1f);
+            rtTop.anchorMax = new Vector2(1f, 1f);
+            rtTop.pivot = new Vector2(0.5f, 1f);
+            rtTop.anchoredPosition = new Vector2(0f, -1f);
+            rtTop.sizeDelta = new Vector2(0f, thickness);
+            var imgTop = top.AddComponent<Image>();
+            imgTop.color = color;
+            imgTop.raycastTarget = false;
+
+            // Bottom edge
+            var bottom = new GameObject("EdgeBottom");
+            var rtBottom = bottom.AddComponent<RectTransform>();
+            rtBottom.SetParent(panel, false);
+            rtBottom.anchorMin = new Vector2(0f, 0f);
+            rtBottom.anchorMax = new Vector2(1f, 0f);
+            rtBottom.pivot = new Vector2(0.5f, 0f);
+            rtBottom.anchoredPosition = new Vector2(0f, 1f);
+            rtBottom.sizeDelta = new Vector2(0f, thickness);
+            var imgBottom = bottom.AddComponent<Image>();
+            imgBottom.color = color;
+            imgBottom.raycastTarget = false;
+
+            // Left edge
+            var left = new GameObject("EdgeLeft");
+            var rtLeft = left.AddComponent<RectTransform>();
+            rtLeft.SetParent(panel, false);
+            rtLeft.anchorMin = new Vector2(0f, 0f);
+            rtLeft.anchorMax = new Vector2(0f, 1f);
+            rtLeft.pivot = new Vector2(0f, 0.5f);
+            rtLeft.anchoredPosition = new Vector2(1f, 0f);
+            rtLeft.sizeDelta = new Vector2(thickness, 0f);
+            var imgLeft = left.AddComponent<Image>();
+            imgLeft.color = color;
+            imgLeft.raycastTarget = false;
+
+            // Right edge
+            var right = new GameObject("EdgeRight");
+            var rtRight = right.AddComponent<RectTransform>();
+            rtRight.SetParent(panel, false);
+            rtRight.anchorMin = new Vector2(1f, 0f);
+            rtRight.anchorMax = new Vector2(1f, 1f);
+            rtRight.pivot = new Vector2(1f, 0.5f);
+            rtRight.anchoredPosition = new Vector2(-1f, 0f);
+            rtRight.sizeDelta = new Vector2(thickness, 0f);
+            var imgRight = right.AddComponent<Image>();
+            imgRight.color = color;
+            imgRight.raycastTarget = false;
+        }
         // Add tiny dark rivet squares at each corner to suggest a worn metal‑framed board.
 
         private static void AddRivets(RectTransform panel, Color color, float size = 6f)
@@ -375,6 +436,59 @@ AddBorder(prt, new Color(0.25f, 0.27f, 0.30f, 0.9f), 3f);
             var imgBR = br.AddComponent<Image>();
             imgBR.color = color;
             imgBR.raycastTarget = false;
+        }
+
+        // Add small screw decorations to each edge for a period‑appropriate hardware look.
+        private static void AddScrews(RectTransform panel, Color color, float size = 4f)
+        {
+            if (panel == null) return;
+            // Top
+            var top = new GameObject("ScrewTop");
+            var rtTop = top.AddComponent<RectTransform>();
+            rtTop.SetParent(panel, false);
+            rtTop.anchorMin = rtTop.anchorMax = new Vector2(0.5f, 1f);
+            rtTop.pivot = new Vector2(0.5f, 1f);
+            rtTop.anchoredPosition = Vector2.zero;
+            rtTop.sizeDelta = new Vector2(size, size);
+            var imgTop = top.AddComponent<Image>();
+            imgTop.color = color;
+            imgTop.raycastTarget = false;
+
+            // Bottom
+            var bottom = new GameObject("ScrewBottom");
+            var rtBottom = bottom.AddComponent<RectTransform>();
+            rtBottom.SetParent(panel, false);
+            rtBottom.anchorMin = rtBottom.anchorMax = new Vector2(0.5f, 0f);
+            rtBottom.pivot = new Vector2(0.5f, 0f);
+            rtBottom.anchoredPosition = Vector2.zero;
+            rtBottom.sizeDelta = new Vector2(size, size);
+            var imgBottom = bottom.AddComponent<Image>();
+            imgBottom.color = color;
+            imgBottom.raycastTarget = false;
+
+            // Left
+            var left = new GameObject("ScrewLeft");
+            var rtLeft = left.AddComponent<RectTransform>();
+            rtLeft.SetParent(panel, false);
+            rtLeft.anchorMin = rtLeft.anchorMax = new Vector2(0f, 0.5f);
+            rtLeft.pivot = new Vector2(0f, 0.5f);
+            rtLeft.anchoredPosition = Vector2.zero;
+            rtLeft.sizeDelta = new Vector2(size, size);
+            var imgLeft = left.AddComponent<Image>();
+            imgLeft.color = color;
+            imgLeft.raycastTarget = false;
+
+            // Right
+            var right = new GameObject("ScrewRight");
+            var rtRight = right.AddComponent<RectTransform>();
+            rtRight.SetParent(panel, false);
+            rtRight.anchorMin = rtRight.anchorMax = new Vector2(1f, 0.5f);
+            rtRight.pivot = new Vector2(1f, 0.5f);
+            rtRight.anchoredPosition = Vector2.zero;
+            rtRight.sizeDelta = new Vector2(size, size);
+            var imgRight = right.AddComponent<Image>();
+            imgRight.color = color;
+            imgRight.raycastTarget = false;
         }        private Text Label(RectTransform parent, string name, Vector2 anchor, Vector2 pos, Vector2 size, int fontSize, TextAnchor align, Color color)
         {
             var go = new GameObject(name);

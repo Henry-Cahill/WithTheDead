@@ -233,6 +233,10 @@ namespace CloneZ
             var at = new Vector3(-0.1f, 1.1f, 0.37f);
             MeshRenderer glass = KitchenParts.PieceInFrame(t, "VendingGlass", f, at, m => FurnitureBuilder.OfficeVendingWindow(m, wr, lit, false));
             MeshRenderer smashed = KitchenParts.PieceInFrame(t, "VendingSmashed", f, at, m => FurnitureBuilder.OfficeVendingWindow(m, wr, lit, true));
+            // Subtle status LED near the top front of the vending machine
+            float ledX = (float)(b.Rng.NextDouble() * 0.02 - 0.01);
+            Vector3 ledPos = new Vector3(ledX, 1.7f, 0.42f);
+            KitchenParts.PieceAt(t, "VendingLED", f, ledPos, m => { m.Box(Vector3.zero, new Vector3(0.04f, 0.02f, 0.001f), DecorPalette.Glow(new Color(0.95f, 0.18f, 0.12f))); });
             RaidStoreVending.Create(t, f.P(FurnitureBuilder.OfficeVendingPanel), f.P(FurnitureBuilder.OfficeVendingTray), glass, smashed, lit, seed);
         }
 

@@ -238,7 +238,12 @@ namespace CloneZ
                 }
             }, Vector3.zero);
             for (int i = 0; i < 6; i++)
-                Solid(world, "BarStool", new Vector3(-6f + i * 1.6f, 0.38f, 5.3f), new Vector3(0.38f, 0.76f, 0.38f), st.Metal);
+                {
+                    var pos = new Vector3(-6f + i * 1.6f, 0.38f, 5.3f);
+                    Solid(world, "BarStool", pos, new Vector3(0.38f, 0.76f, 0.38f), st.Metal);
+                    var footPos = new Vector3(-6f + i * 1.6f, 0.01f, 5.3f);
+                    Deco(world, "BarStoolFoot", m => m.Cylinder(footPos, 0.04f, 0.02f, 12, st.Metal), Vector3.zero);
+                }
         }
 
         private static void BuildFurniture(Transform world, Style st)

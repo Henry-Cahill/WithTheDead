@@ -198,6 +198,15 @@ namespace CloneZ
                 DecorPalette.Matte(plastic * 0.6f));
             m.Cylinder(new Vector3(0f, 0.02f, 0f), r - wall, 0.004f, 16, DecorPalette.Matte(plastic * 0.35f));
             // A brass spigot low on the side.
+            // Brass rivet heads around the barrel mid‑section – period‑appropriate weathering
+            var rivetRand = new System.Random(1993);
+            int rivetCount = rivetRand.Next(4, 7); // 4–6 inclusive
+            for (int i = 0; i < rivetCount; i++)
+            {
+                float angle = (float)(i * Mathf.PI * 2.0 / rivetCount);
+                m.Cylinder(new Vector3(Mathf.Sin(angle) * (r + 0.01f), 0.5f, Mathf.Cos(angle) * (r + 0.01f)),
+                    0.008f, 0.004f, 8, DecorPalette.Metal(FurnitureBuilder.Brass));
+            }
             m.CylinderX(new Vector3(0f, 0.16f, r + 0.03f), 0.022f, 0.08f, 8, DecorPalette.Metal(FurnitureBuilder.Brass), 90f);
             m.Box(new Vector3(0f, 0.2f, r + 0.07f), new Vector3(0.03f, 0.05f, 0.03f), DecorPalette.Metal(FurnitureBuilder.Brass));
             // Subtle rust‑stained metal cap on the barrel's lip for a makeshift handle feel.

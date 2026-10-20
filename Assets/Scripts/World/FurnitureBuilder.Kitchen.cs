@@ -166,6 +166,13 @@ namespace CloneZ
             m.Box(new Vector3(SinkSpout.x, SinkSpout.y + 0.015f, SinkSpout.z), new Vector3(0.026f, 0.03f, 0.026f), chrome);
             Vector3 hot = new Vector3(SinkColdTap.x - 0.2f, SinkColdTap.y, SinkColdTap.z);
             m.Cylinder(new Vector3(hot.x, SinkDeckY, hot.z), 0.018f, 0.036f, 8, chrome);
+            // Subtle rust spot on the hot tap (occasional)
+            if (Chance(rng, 0.15f))
+            {
+                Color rust = new Color(0.55f, 0.30f, 0.10f);
+                // small rust patch on the side of the tap
+                m.Box(new Vector3(hot.x + 0.015f, SinkDeckY + 0.018f, hot.z), new Vector3(0.004f, 0.004f, 0.004f), M(rust));
+            }
             m.Cylinder(new Vector3(SinkColdTap.x, SinkDeckY, SinkColdTap.z), 0.018f, 0.036f, 8, chrome);
             KitchenTapHead(m, hot, TapHotRed);
 

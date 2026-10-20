@@ -87,6 +87,7 @@ namespace CloneZ
                 into.Add(new InteractAction("Smash the glass", Smash)
                     .Timed(CloneZConfig.RaidVendingSmashSeconds, "Smashing the glass", HumanoidActivity.Use));
                 into.Add(new InteractAction("Press a button", PressButton));
+                into.Add(new InteractAction("Listen to the machine", Listen));
             into.Add(new InteractAction("Check the machine", CheckStock));
             }
             else into.Add(new InteractAction(_stock != null && _stock.Searched ? "Look inside the machine" : "Search the machine", c => Open(c, _stock)));
@@ -128,6 +129,12 @@ namespace CloneZ
             ctx.Notify(_lit
                 ? "You punch B4. The display flickers: EXACT CHANGE ONLY. Nobody carries change any more."
                 : "The buttons click under your thumb. Nothing lights up \u2014 somebody's pulled its plug.");
+        }
+
+        private void Listen(InteractContext ctx)
+        {
+            MakeNoise(CloneZConfig.RaidVendingThumpNoise);
+            ctx.Notify("You press your ear to the vending machine; faint whirring can be heard, but it offers no help.");
         }
 
                 private void CheckStock(InteractContext ctx)

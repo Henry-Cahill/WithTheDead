@@ -155,11 +155,11 @@ namespace CloneZ
 
         private void Hit(bool kill, bool head)
         {
-            if (kill || _markerLife <= 0f)
-            {
-                _kill = kill;
-                _headshot = head;
-            }
+            // Always update the marker state to reflect the most recent hit.
+            // Previously, non‑kill hits would preserve a stale kill/headshot visual if the prior marker was still fading.
+            // By assigning the flags unconditionally we ensure a normal hit shows the correct hit visual.
+            _kill = kill;
+            _headshot = head;
             _markerSpan = _kill ? KillLife : HitLife;
             _markerLife = _markerSpan;
         }

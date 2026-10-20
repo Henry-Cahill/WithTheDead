@@ -160,6 +160,17 @@ namespace CloneZ
                 int percent = Mathf.RoundToInt(HealthNormalized * 100f);
                 ctx.Notify($"Door health: {health:0.##}/{maxHealth:0.##} ({percent}%){(_broken ? " (broken)" : string.Empty)}");
             }));
+
+            // New action to listen to the door's condition
+            into.Add(new InteractAction("Listen to door", ctx => {
+                if (_broken)
+                    ctx.Notify("The door lies in splintered wood, silent and useless.");
+                else {
+                    int percent = Mathf.RoundToInt(HealthNormalized * 100f);
+                    string state = percent < 35 ? "severely damaged" : "in decent shape";
+                    ctx.Notify($"You hear the door creak; it’s {state} ({percent} %).");
+                }
+            }));
         }
 
         // A burst door keeps its leaves where they fell and has nothing left to shut; otherwise as the home's.
@@ -270,6 +281,8 @@ namespace CloneZ
                 standAt = s_Stands[k];
             }
             Array.Clear(s_Doors, 0, MaxCandidates);
+            Array.Clear(s_Scores, 0, MaxCandidates);
+            Array.Clear(s_Stands, 0, MaxCandidates);
             return found;
         }
 

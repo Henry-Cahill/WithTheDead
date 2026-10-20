@@ -514,6 +514,11 @@ namespace CloneZ
             "A pair of boots, a sock with a hole in it and a paperback with the cover torn off.",
             "Dust, a gum wrapper and a letter from home, folded small. You put it back.",
             "A shoebox of cassette tapes and a Walkman with no batteries. Somebody's whole summer.",
+            "A dented metal badge, rusted and half‑lost, still bearing a faded rank.",
+            "A faded photograph of a family, edges curled, smiling under a winter sky.",
+            "A cracked pocket‑knife, its blade nicked, lying beside a torn scrap of paper.",
+            "A half‑eaten candy bar wrapped in crumpled foil, sticky and forgotten.",
+            "A handwritten note “Keep the fire low – J”, scrawled on a torn napkin.",
         };
 
         private static readonly string[] CivicCharts =

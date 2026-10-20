@@ -12,6 +12,8 @@ namespace CloneZ
     public sealed class EmissionDirector : MonoBehaviour
     {
         public enum Phase { Calm, Warning, Blast, Fading }
+        private static readonly Color _psiStormColor = new Color(0.55f, 0.3f, 0.85f);
+        private static readonly Color _standardColor = new Color(0.9f, 0.18f, 0.12f);
 
         /// <summary>Singleton instance of the EmissionDirector.</summary>
         public static EmissionDirector Instance { get; private set; }
@@ -97,7 +99,7 @@ namespace CloneZ
                     if (Time.time >= _nextAt) StartWarning();
                     break;
                 case Phase.Warning:
-                    ZoneAtmosphere.SkyOverride = PsiStorm ? new Color(0.55f, 0.3f, 0.85f) : new Color(0.9f, 0.18f, 0.12f);
+                    ZoneAtmosphere.SkyOverride = PsiStorm ? _psiStormColor : _standardColor;
                     ZoneAtmosphere.SkyOverrideStrength = Mathf.Lerp(0.05f, 0.45f, 1f - PhaseLeft / WarningSeconds);
                     Rumble(8f, 0.35f);
                     if (Time.time >= _phaseEnds) StartBlast();

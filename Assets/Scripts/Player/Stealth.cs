@@ -107,6 +107,8 @@ namespace CloneZ
             float fog = Mathf.Clamp01((75f - RenderSettings.fogEndDistance) / 60f);
             vis *= 1f - 0.35f * fog;
             vis *= _mods.VisibilityMult;
+            // Apply a temporary visibility spike when firing a weapon
+            vis = Mathf.Max(vis, _shotSpike);
             Visibility01 = Mathf.Clamp01(vis);
             if (_actor != null) _actor.Visibility01 = Mathf.Max(0.05f, Visibility01);
 

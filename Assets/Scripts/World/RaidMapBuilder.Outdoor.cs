@@ -124,7 +124,7 @@ namespace CloneZ
         private static void Checkpoint(RaidTown town)
         {
             for (int s = -1; s <= 1; s += 2)
-                Prop(town, new Vector3(s * 7.6f, 0f, -59.5f), 90f, new Vector3(4f, 0.8f, 0.5f), true, (m, r) => DecorProps.SandbagWall(m, r, 4f, 5));
+                Prop(town, new Vector3(s * 7.6f, 0f, -59.5f), 90f, new Vector3(4f, 0.8f, 0.5f), true, (m, r) => { DecorProps.SandbagWall(m, r, 4f, 5); m.Box(new Vector3(0f, 0.45f, 0.27f), new Vector3(3.8f, 0.02f, 0.04f), DecorPalette.Metal(new Color(0.38f, 0.36f, 0.34f))); });
             for (int i = -1; i <= 1; i++)
                 Prop(town, new Vector3(i * 3.2f, 0f, -69.6f), 0f, new Vector3(2.6f, 0.9f, 0.6f), true, (m, r) => DecorProps.JerseyBarrier(m, r, 2.6f, true));
             GuardBoothProp(town, new Vector3(9.8f, 0f, -63.5f), 270f);

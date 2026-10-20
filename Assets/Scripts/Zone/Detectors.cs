@@ -26,17 +26,23 @@ namespace CloneZ
             new Model { ItemId = "detector_lattice", Name = "Lattice", Tier = 3, Range = 36f, RevealRange = 6.5f },
         };
 
+        /// <summary>Whether the detector is currently on.</summary>
         public bool On { get; private set; }
+        /// <summary>The currently selected detector model, or null if none.</summary>
         public Model Active { get; private set; }
         /// <summary>The nearest sensed artifact, or null.</summary>
         public ArtifactNode Target { get; private set; }
+        /// <summary>Distance to the current target artifact, in metres.</summary>
         public float TargetDistance { get; private set; }
+        /// <summary>Nearest anomaly distance, or MaxValue if none.</summary>
         public float NearestAnomaly { get; private set; } = float.MaxValue;
+
 
         private PlayerInventory _inv;
         private float _beepAt, _alertAt, _scanAt;
         private HudDetector _hud;
 
+        /// <summary>Finds the best detector the player currently has in inventory.</summary>
         public static Model Best(PlayerInventory inv)
         {
             if (inv == null) return null;
@@ -51,6 +57,7 @@ namespace CloneZ
             if (_hud != null) Destroy(_hud.gameObject);
         }
 
+        /// <summary>Toggles the detector on/off, playing a click sound and showing a toast.</summary>
         public void Toggle()
         {
             Model m = Best(_inv);
@@ -162,6 +169,7 @@ namespace CloneZ
         private int _cachedDist;
         private bool _cachedHasTarget;
 
+        /// <summary>Creates a new HUD widget for the given detector device.</summary>
         public static HudDetector Create(DetectorDevice d)
         {
             RectTransform slot = HudLayer.Anchor("Detector", new Vector2(1f, 0f), new Vector2(1f, 0f), new Vector2(-24f, 150f), new Vector2(200f, 200f));

@@ -99,6 +99,11 @@ namespace CloneZ
                     "Breaker one-nine. There's folks walking the median by the truck stop. In this snow. Something ain't right with 'em.",
                     "*a long squelch, and a man saying 'no, no, no' until it cuts out*",
                     "Anybody on nineteen? Anybody at all? ...Come back.",
+                    "Tractor stuck six feet deep in the snow near the creek, need a tow, over.",
+                    "Thin ice forming on the east creek, avoid crossing until cleared, over.",
+                    "Makeshift clinic reporting a shortage of antibiotics, send supplies if possible, over.",
+                    "Keep transmissions short, battery's low and we need to save power, over.",
+                    "Farmer here, lost my border collie near the old barn, any help locating him, over.",
                 },
             },
             new Channel

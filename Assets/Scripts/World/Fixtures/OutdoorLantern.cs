@@ -36,6 +36,19 @@ namespace CloneZ
         {
             into.Add(new InteractAction("Tap the lantern", Tap));
             into.Add(new InteractAction("Check power", CheckPower));
+            into.Add(new InteractAction("Check lantern status", CheckStatus));
+        }
+
+        private void CheckStatus(InteractContext ctx)
+        {
+            if (_lamp == null)
+            {
+                ctx.Notify("No bulb – the lantern is dark.");
+            }
+            else
+            {
+                ctx.Notify(_lamp.IsOn ? "The lantern is lit." : "The lantern is not lit.");
+            }
         }
 
         private void CheckPower(InteractContext ctx)

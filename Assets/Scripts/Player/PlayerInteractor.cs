@@ -246,10 +246,11 @@ namespace CloneZ
                     ActOnFocus();
                 }
             }
-            else if (kb.qKey.wasPressedThisFrame)
-            {
-                if (!_ui.IsOpen && !IsBusy && _focus == FocusKind.Fixture) OpenMenu(FixtureTarget);
-            }
+else if (kb.qKey.wasPressedThisFrame)
+                {
+                    if (IsBusy) { CancelSearch(); StopJob(); return; }
+                    if (!_ui.IsOpen && _focus == FocusKind.Fixture) OpenMenu(FixtureTarget);
+                }
             else if (kb.iKey.wasPressedThisFrame || kb.tabKey.wasPressedThisFrame)
             {
                 CancelSearch();

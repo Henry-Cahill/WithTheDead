@@ -267,7 +267,9 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
     /// </summary>
     public sealed class DronePilot : MonoBehaviour
     {
+        /// <summary>Singleton reference to the currently active drone pilot.</summary>
         public static DronePilot Local { get; private set; }
+        /// <summary>Reference to the currently controlled drone instance.</summary>
         public Drone Drone { get; private set; }
 
         private PlayerController _ctrl;
@@ -343,6 +345,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             if (!blocked && Time.time - _since > 0.4f && (kb.eKey.wasPressedThisFrame || kb.escapeKey.wasPressedThisFrame)) End();
         }
 
+        /// <summary>Ends the drone piloting session and restores normal controls.</summary>
         public void End()
         {
             if (Drone != null) Drone.Piloted = false;
@@ -372,6 +375,14 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
                 private Text _text;
         private Image _frame;
         private string _cachedText = string.Empty;
+        // Cached HUD values to avoid per-frame allocations when unchanged
+        private float _lastBattery = -1f;
+        private float _lastAltitude = -1f;
+        private int _lastSpeedKmh = -1;
+        private float _lastDist = -1f;
+        private bool _lastHasGrenade = false;
+        private DroneKind _lastKind = (DroneKind)(-1);
+        private bool _firstUpdate = true;
 
         public static HudDrone Create()
         {
@@ -390,18 +401,52 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             DronePilot p = DronePilot.Local;
             bool on = p != null && p.Drone != null;
-            string newText;
+            string newText = "";
             if (!on)
             {
+                // Drone not active – clear OSD and reset first‑update flag
                 newText = "";
+                _firstUpdate = true;
             }
             else
             {
                 var d = p.Drone;
-                newText = (d.Kind == DroneKind.Fpv ? "FPV" : "UGV") + "  BAT " + Mathf.RoundToInt(d.Battery01 * 100f) + "%"
-                    + "   ALT " + d.transform.position.y.ToString("0.0") + " m   SPD " + Mathf.RoundToInt(d.Speed * 3.6f) + " km/h"
-                    + "\nDIST " + (Actor.LocalPlayer != null ? Mathf.RoundToInt(Vector3.Distance(Actor.LocalPlayer.transform.position, d.transform.position)) : 0) + " m"
-                    + (d.HasGrenade ? "   PAYLOAD ARMED [LMB]" : "") + "\n[E] land and hand back";
+                // Current values
+                float battery = d.Battery01;
+                float altitude = d.transform.position.y;
+                int speedKmh = Mathf.RoundToInt(d.Speed * 3.6f);
+                float dist = Actor.LocalPlayer != null ? Vector3.Distance(Actor.LocalPlayer.transform.position, d.transform.position) : 0f;
+                bool hasGrenade = d.HasGrenade;
+                DroneKind kind = d.Kind;
+
+                // Rebuild text only if something changed or first frame
+                if (_firstUpdate ||
+                    !Mathf.Approximately(battery, _lastBattery) ||
+                    !Mathf.Approximately(altitude, _lastAltitude) ||
+                    speedKmh != _lastSpeedKmh ||
+                    !Mathf.Approximately(dist, _lastDist) ||
+                    hasGrenade != _lastHasGrenade ||
+                    kind != _lastKind)
+                {
+                    newText = (kind == DroneKind.Fpv ? "FPV" : "UGV") + "  BAT " + Mathf.RoundToInt(battery * 100f) + "%"
+                        + "   ALT " + altitude.ToString("0.0") + " m   SPD " + speedKmh + " km/h"
+                        + "\nDIST " + Mathf.RoundToInt(dist) + " m"
+                        + (hasGrenade ? "   PAYLOAD ARMED [LMB]" : "") + "\n[E] land and hand back";
+
+                    // Cache values for next frame
+                    _lastBattery = battery;
+                    _lastAltitude = altitude;
+                    _lastSpeedKmh = speedKmh;
+                    _lastDist = dist;
+                    _lastHasGrenade = hasGrenade;
+                    _lastKind = kind;
+                    _firstUpdate = false;
+                }
+                else
+                {
+                    // No change – keep existing cached text
+                    newText = _cachedText;
+                }
             }
             if (newText != _cachedText)
             {

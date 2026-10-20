@@ -148,6 +148,22 @@ public static Vehicle Spawn(int spot, Vector3 at, float yaw, int seed)
                 l.intensity = 0f;
                 l.color = new Color(1f, 0.95f, 0.8f);
                 _lights[i] = l;
+            // Side‑mirror housings
+            Box(_bodyRoot,
+                new Vector3(-0.75f + (float)(rng.NextDouble() - 0.5) * 0.02f,
+                            1.0f,
+                            0.6f + (float)(rng.NextDouble() - 0.5) * 0.02f),
+                new Vector3(0.04f, 0.12f, 0.3f),
+                new Color(0.12f, 0.12f, 0.14f));
+            _bodyRoot.GetChild(_bodyRoot.childCount - 1).localRotation = Quaternion.Euler(0f, rng.Next(-5, 6), 0f);
+            // Right side mirror housing
+            Box(_bodyRoot,
+                new Vector3(0.75f + (float)(rng.NextDouble() - 0.5) * 0.02f,
+                            1.0f,
+                            0.6f + (float)(rng.NextDouble() - 0.5) * 0.02f),
+                new Vector3(0.04f, 0.12f, 0.3f),
+                new Color(0.12f, 0.12f, 0.14f));
+            _bodyRoot.GetChild(_bodyRoot.childCount - 1).localRotation = Quaternion.Euler(0f, rng.Next(-5, 6), 0f);
             }
             Seat = new GameObject("Driver seat").transform;
             Seat.SetParent(transform, false);
@@ -211,6 +227,11 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             PlayerInventory inv = ctx.Inventory;
             if (inv == null || GameSession.IsMonsterRun) return;
             into.Add(new InteractAction("Get in the driver's seat", c => Enter(c.Stats)).DisabledIf(Driver != null || RemoteDriver != ulong.MaxValue, "Someone's driving"));
+            // Show missing parts without entering
+            into.Add(new InteractAction("Inspect car", c => {
+                var msg = Missing.Length > 0 ? "Car needs " + Missing : "Car looks fine";
+                GameEvents.RaiseToast(msg);
+            }));
             float work = ctx.Skills != null ? 1f / ctx.Skills.MechanicsMult : 1f;
             Part(into, inv, "carwheel", Wheels < 4, "Fit a wheel", 8f * work, () => { Wheels++; });
             Part(into, inv, "carbattery", !Battery, "Fit the battery", 5f * work, () => { Battery = true; });

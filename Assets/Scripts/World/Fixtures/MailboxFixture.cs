@@ -56,7 +56,12 @@ namespace CloneZ
             {
                 "Missing pet notice: our cat Whiskers disappeared near the old mill road two nights ago.",
                 "She is grey with a white patch on her chest; please check your barns and call if found.",
-                "Owner will reward with a fresh fish and gratitude."
+                "Owner will reward with a fresh fish and gratitude.",
+                "Missing dog notice: our border collie Daisy vanished near the creek bend last afternoon; please look for a black‑and‑white coat.",
+                "Cold‑weather alert: several hens were found frozen in the barn; anyone with spare warm blankets, please drop them off at the community shed.",
+                "Fire‑wood request: we have a bundle of dry pine left; if you can spare a stack, leave it by the north fence.",
+                "Thank‑you note: the Miller family rescued a stray calf from the icy creek and are grateful for the extra hay donations.",
+                "Reminder: check the cellar for frozen canned goods before the power goes out again; share any surplus with neighbours."
             },
             new[]
             {

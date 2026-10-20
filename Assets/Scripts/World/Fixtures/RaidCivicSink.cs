@@ -176,6 +176,9 @@ namespace CloneZ
             var temp = new InteractAction("Check water temperature", ctx => { ctx.Notify(PowerGrid.HousePowered ? "The water feels warm." : "The water is icy‑cold."); })
                 .DisabledIf(!WaterMains.MainsOn, Dry);
             into.Add(temp);
+
+            var inspect = new InteractAction("Inspect the tap", ctx => { ctx.Notify(_running ? "The tap is still running, wasting water." : "The tap is off."); });
+            into.Add(inspect);
         }
 
         #region The tap

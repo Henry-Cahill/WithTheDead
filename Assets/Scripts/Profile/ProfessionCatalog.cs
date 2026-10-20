@@ -79,12 +79,19 @@ namespace CloneZ
             T("firestarter", "Firestarter", 2, "Night vision improves by a small margin.", m => m.NightVision += 0.15f),
             T("handy", "Handy", 2, "Carry capacity increases by 2 kg.", m => m.CarryBonusKg += 2f),
             T("superstitious", "Superstitious", 1, "You’re less likely to panic.", m => m.PanicRate *= 0.9f),
+            T("frostbite", "Frostbite", 1, "A bitter wind bites at your skin, a reminder of Kentucky’s icy hills.", m => { }),
+            T("snowdrift", "Snowdrift", 1, "You’ve learned to wade through deep drifts, forged in the harsh countryside.", m => { }),
+            T("icebound", "Icebound", 1, "Your boots crunch ice, steadying you in the bleak frost of the old world.", m => { }),
+            T("coldfront", "Cold Front", 1, "A sudden cold front sweeps over, and you cling to warmth with stubborn resolve.", m => { })
         };
 
         private static TraitDef T(string id, string name, int cost, string blurb, System.Action<StatMods> apply, params string[] excludes)
             => new TraitDef { Id = id, Name = name, Cost = cost, Blurb = blurb, Apply = apply, Excludes = excludes };
 
+        /// <summary>Gets the profession definition by id, falling back to the first entry if not found.</summary>
+        /// <summary>Gets the profession definition by id, falling back to the first entry if not found.</summary>
         public static ProfessionDef Get(string id) => Professions.Find(p => p.Id == id) ?? Professions[0];
+        /// <summary>Gets a trait definition by its id, or null if not found.</summary>
         public static TraitDef Trait(string id) => Traits.Find(t => t.Id == id);
 
         /// <summary>Points left after picking traits (must be ≥ 0 to create the character).</summary>
@@ -95,6 +102,7 @@ namespace CloneZ
             return p;
         }
 
+        /// <summary>Determines whether any selected traits conflict with the given trait.</summary>
         public static bool Conflicts(List<string> traits, TraitDef t)
         {
             if (traits == null || t == null) return false;

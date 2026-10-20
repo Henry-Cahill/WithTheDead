@@ -107,6 +107,7 @@ namespace CloneZ
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             into.Add(new InteractAction("Check the time", CheckTime));
+            into.Add(new InteractAction("Check battery", CheckBattery));
             // Polishing the clock provides a calming action regardless of battery state.
             into.Add(new InteractAction("Polish the clock", Polish)
                 .Timed(CloneZConfig.ClockListenSeconds, "Polishing the clock", HumanoidActivity.None));
@@ -135,6 +136,14 @@ namespace CloneZ
             int h12 = h % 12 == 0 ? 12 : h % 12;
             string date = tod.Date.ToString("dddd, MMMM d", CultureInfo.InvariantCulture);
             ctx.Notify("It's " + h12 + ":" + m.ToString("00") + " " + tod.AmPm + " on day " + tod.Day + " \u2014 " + date + ".");
+        }
+
+        private void CheckBattery(InteractContext ctx)
+        {
+            if (_stoppedAt >= 0f)
+                ctx.Notify("The battery is dead; the hands have stopped.");
+            else
+                ctx.Notify("The battery is fine; the clock is running.");
         }
 
         private void Polish(InteractContext ctx)

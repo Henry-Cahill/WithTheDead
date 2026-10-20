@@ -22,6 +22,7 @@ namespace CloneZ
         private float _faintRoll;
         private PlayerStats _stats;
         private Image _blackout;
+        private StatMods _modifiers;
         private Text _blackoutText;
 
         /// <summary>Gets the normalized blood amount (0‑1) based on current blood.</summary>
@@ -60,6 +61,7 @@ namespace CloneZ
         private void Awake()
         {
             _stats = GetComponent<PlayerStats>();
+            _modifiers = PlayerModifiers.Current;
             _scavType = BloodTypes.Roll();
         }
 
@@ -71,7 +73,7 @@ namespace CloneZ
         }
 
         /// <summary>Blood lost with health that bled away (called by <see cref="PlayerStats.Bleed"/>).</summary>
-        public void LoseBloodForHealth(float health) => Blood = Mathf.Max(0f, Blood - health * MlPerHealth * PlayerModifiers.Current.BleedRate);
+        public void LoseBloodForHealth(float health) => Blood = Mathf.Max(0f, Blood - health * MlPerHealth * _modifiers.BleedRate);
 
         /// <summary>Adds shock to the survivor, respecting dead state and clamping the total.</summary>
         public void AddShock(float amount)
@@ -141,7 +143,7 @@ namespace CloneZ
 
             // Blood comes back slowly, and only to a fed and watered body.
             if (_stats.Hunger < 0.6f && _stats.Thirst < 0.6f && Blood < MaxBlood)
-                Blood = Mathf.Min(MaxBlood, Blood + 1.6f * PlayerModifiers.Current.HealRate * dt);
+                Blood = Mathf.Min(MaxBlood, Blood + 1.6f * _modifiers.HealRate * dt);
 
             float shockFloor = Blood < 3500f ? (3500f - Blood) / 30f : 0f;
             Shock = Mathf.Max(shockFloor, Shock - (Blood > 4000f ? 4f : 2f) * dt);

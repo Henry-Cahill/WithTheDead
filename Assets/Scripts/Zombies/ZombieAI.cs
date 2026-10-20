@@ -37,6 +37,7 @@ namespace CloneZ
         private Renderer _renderer;
         private ZombieAvatar _avatar;
         private PlayerStats _player;
+        private PlayerGear _playerGear;
         private PlayerController _playerController;
         private PlayerSkills _playerSkills;
 
@@ -78,6 +79,7 @@ namespace CloneZ
         /// <summary>Updates the internal NavMeshAgent reference and other components.</summary>
         private void Awake()
         {
+            _playerGear = PlayerGear.Instance;
             _agent = GetComponent<NavMeshAgent>();
             _renderer = GetComponentInChildren<Renderer>();
             _avatar = GetComponent<ZombieAvatar>();
@@ -144,6 +146,28 @@ namespace CloneZ
                 Color col = new Color(0.5f, 0.05f, 0.05f);
                 mat.color = col;
                 if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", col);
+            }
+         }
+        // Add torn‑cloth strip visual detail
+        for (int i = 0; i < 2; i++)
+        {
+            if (Random.value < 0.5f)
+            {
+                var strip = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                strip.transform.SetParent(transform, false);
+                strip.transform.localScale = new Vector3(0.01f, 0.08f, 0.02f);
+                strip.transform.localPosition = new Vector3(Random.Range(-0.07f, 0.07f), 1.45f, Random.Range(-0.02f, 0.02f));
+                strip.transform.localRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), Random.Range(-15f, 15f));
+                var rend = strip.GetComponent<Renderer>();
+                if (rend != null)
+                {
+                    var mat = rend.material;
+                    Color baseCol = new Color(0.5f, 0.4f, 0.35f);
+                    float v = Random.Range(-0.04f, 0.04f);
+                    Color col = new Color(baseCol.r + v, baseCol.g + v, baseCol.b + v);
+                    mat.color = col;
+                    if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", col);
+                }
             }
         }
         _agent.speed = _baseSpeed * 0.5f;
@@ -343,8 +367,8 @@ namespace CloneZ
         /// from the survivor to this zombie.</summary>
         private bool InFlashlightBeam(Vector3 fromPlayer)
         {
-            PlayerGear gear = PlayerGear.Instance;
-            if (gear == null || !gear.FlashlightOn || _playerController == null) return false;
+
+            if (_playerGear == null || !_playerGear.FlashlightOn || _playerController == null) return false;
             fromPlayer.y = 0f;
             float sqr = fromPlayer.sqrMagnitude;
             if (sqr > FlashlightBeamRange * FlashlightBeamRange) return false;

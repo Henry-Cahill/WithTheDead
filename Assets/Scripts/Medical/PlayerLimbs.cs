@@ -565,6 +565,7 @@ namespace CloneZ
         private PlayerWounds _wounds;
         private readonly Image[] _parts = new Image[BodyZones.Count];
         private readonly Text[] _marks = new Text[BodyZones.Count];
+        private readonly bool[] _bleeding = new bool[BodyZones.Count];
         private float _flash;
 
         public static HudLimbs Create(PlayerLimbs limbs)
@@ -573,6 +574,8 @@ namespace CloneZ
             var h = root.gameObject.AddComponent<HudLimbs>();
             h._limbs = limbs;
             h._wounds = limbs.GetComponent<PlayerWounds>();
+            limbs.Changed += h.RefreshBleedingCache;
+            h.RefreshBleedingCache();
             // Head, thorax, stomach, arms, legs laid out as a little silhouette.
             h.Part(BodyZone.Head, new Vector2(32f, 124f), new Vector2(20f, 22f));
             h.Part(BodyZone.Thorax, new Vector2(26f, 88f), new Vector2(32f, 34f));
@@ -596,9 +599,18 @@ namespace CloneZ
             _marks[(int)z] = t;
         }
 
+        private void RefreshBleedingCache()
+        {
+            for (int i = 0; i < _bleeding.Length; i++)
+            {
+                var z = (BodyZone)i;
+                _bleeding[i] = _wounds != null && _wounds.IsBleedingOn(z);
+            }
+        }
+
         private void OnHit(BodyZone zone, float hp) { _flash = 0.35f; }
 
-        private void OnDestroy() { if (_limbs != null) _limbs.Hit -= OnHit; }
+        private void OnDestroy() { if (_limbs != null) { _limbs.Hit -= OnHit; _limbs.Changed -= RefreshBleedingCache; } }
 
         private void Update()
         {
@@ -613,7 +625,7 @@ namespace CloneZ
                     : f > 0.6f ? Color.Lerp(UIKit.Warn, UIKit.Good, (f - 0.6f) / 0.4f)
                     : Color.Lerp(UIKit.Bad, UIKit.Warn, f / 0.6f);
                 c.a = 0.85f;
-                bool bleeding = _wounds != null && _wounds.IsBleedingOn(z);
+                bool bleeding = _bleeding[i];
                 if (bleeding) c = Color.Lerp(c, new Color(0.9f, 0.05f, 0.05f, 0.95f), pulse * 0.6f);
                 if (_flash > 0f) c = Color.Lerp(c, Color.white, _flash);
                 _parts[i].color = c;

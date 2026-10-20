@@ -20,7 +20,12 @@ namespace CloneZ
         private bool _isMade = true;
         private PlayerSleep _sleeper;
         private float _plumpCalmAt;
+        private PlayerInteractor _playerInteractor;
         private float _lullabyCalmAt;
+        private void Awake()
+        {
+            _playerInteractor = PlayerInteractor.Current;
+        }
 
         /// <summary>True while the bed is made (fresh runs start with it made).</summary>
         public bool IsMade => _isMade;
@@ -37,7 +42,7 @@ namespace CloneZ
             {
                 float hz = SleepSpot.Length * 0.5f - 0.2f;
                 var local = new Vector3(0f, 0.58f, 0f);
-                PlayerInteractor pi = PlayerInteractor.Current;
+PlayerInteractor pi = _playerInteractor;
                 if (pi != null) local.z = Mathf.Clamp(transform.InverseTransformPoint(pi.transform.position).z, -hz, hz);
                 return transform.TransformPoint(local);
             }
@@ -56,7 +61,8 @@ namespace CloneZ
         {
             // However the survivor dropped off here — the bed's own action or the T key — it's been slept in.
             if (!_isMade) return;
-            PlayerInteractor pi = PlayerInteractor.Current;
+            if (_playerInteractor == null) _playerInteractor = PlayerInteractor.Current;
+            PlayerInteractor pi = _playerInteractor;
             if (pi == null) return;
             if (_sleeper == null) _sleeper = pi.GetComponent<PlayerSleep>();
             if (_sleeper != null && _sleeper.IsSleeping && SleepSpot.Nearest(pi.transform.position, CloneZConfig.SleepRange + 0.5f, out _) == _spot)
@@ -98,6 +104,7 @@ namespace CloneZ
                     .DisabledIf(seat == null, "You need to be sitting or lying to sing"));
 
             into.Add(new InteractAction("Look under the bed", LookUnder).Timed(1.6f, "Looking under the bed", HumanoidActivity.Search));
+            into.Add(new InteractAction("Inspect the bed", InspectBed));
         }
 
         private void Sleep(InteractContext ctx)
@@ -184,6 +191,11 @@ namespace CloneZ
         }
 
         public override void CaptureState(FixtureSave save) => save.State = _isMade ? 0 : 1;
+
+        private void InspectBed(InteractContext ctx)
+        {
+            ctx.Notify(_isMade ? "The bedding is neatly made." : "The sheets are rumpled and the pillows look flat.");
+        }
 
         public override void RestoreState(FixtureSave save) => SetMade((save.State & 1) == 0);
     }

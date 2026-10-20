@@ -15,6 +15,8 @@ namespace CloneZ
         private const float MaxWidth = 400f;
 
         private RectTransform _root;
+        private Vector2 _rootSize;
+        private Rect _canvasBounds;
         private RectTransform _canvasRect;
         private Text _text;
         private LayoutElement _textSize;
@@ -67,6 +69,9 @@ namespace CloneZ
             float w = Mathf.Min(MaxWidth, _text.preferredWidth + 2f);
             _textSize.preferredWidth = w;
             _textSize.minWidth = w;
+            // Cache layout sizes after updating text
+            _rootSize = _root.rect.size;
+            _canvasBounds = _canvasRect.rect;
             transform.SetAsLastSibling();
             _group.alpha = 1f;
             Follow();
@@ -100,8 +105,8 @@ namespace CloneZ
             Mouse m = Mouse.current;
             if (m == null) return;
             if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, m.position.ReadValue(), null, out Vector2 local)) return;
-            Vector2 size = _root.rect.size;
-            Rect cr = _canvasRect.rect;
+            Vector2 size = _rootSize;
+            Rect cr = _canvasBounds;
             float x = local.x + 20f, y = local.y - 22f;
             if (x + size.x > cr.xMax - 8f) x = local.x - 16f - size.x;
             if (x < cr.xMin + 8f) x = cr.xMin + 8f;

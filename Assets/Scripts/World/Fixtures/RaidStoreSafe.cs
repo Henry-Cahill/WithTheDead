@@ -67,6 +67,7 @@ namespace CloneZ
             force.Run = Crack;
             into.Add(force);
             into.Add(new InteractAction("Try the handle", c => c.Notify("Locked solid. The wheel turns a quarter and stops dead.")));
+            into.Add(new InteractAction("Inspect the dial", c => c.Notify("The dial is stiff and scratched; it looks like someone tried to force it.")));
             into.Add(new InteractAction("Listen at the door", c => c.Notify(Listening[_listened++ % Listening.Length])));
         }
 

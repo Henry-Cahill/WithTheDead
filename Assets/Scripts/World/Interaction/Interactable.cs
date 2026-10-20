@@ -265,12 +265,23 @@ namespace CloneZ
         {
             if (radius > 0f) NoiseSystem.Emit(InteractPoint, radius);
         }
-        /// <summary>Adds a simple "Inspect" action that shows the fixture’s name in a HUD toast.</summary>
-        protected void AddInspectAction(InteractContext ctx, List<InteractAction> into)
-        {
-            into.Add(new InteractAction("Inspect", c => c.Notify($"You look at the {DisplayName}.")));
-        }
-        
-        #endregion
+/// <summary>Adds a simple "Inspect" action that shows the fixture’s name in a HUD toast.</summary>
+         protected void AddInspectAction(InteractContext ctx, List<InteractAction> into)
+         {
+             into.Add(new InteractAction("Inspect", c => c.Notify($"You look at the {DisplayName}.")));
+         }
+
+         /// <summary>Adds a generic "Shake" instant action that emits noise and shows a HUD toast.
+         /// Useful for luring zombies or alerting the survivor.</summary>
+         protected void AddShakeAction(InteractContext ctx, List<InteractAction> into, float radius = 2f, string toast = null)
+         {
+             string message = toast ?? $"You shake the {DisplayName}.";
+             into.Add(new InteractAction("Shake", c => {
+                 MakeNoise(radius);
+                 c.Notify(message);
+             }));
+         }
+
+         #endregion
     }
 }

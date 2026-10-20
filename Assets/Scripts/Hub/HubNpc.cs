@@ -35,7 +35,7 @@ namespace CloneZ
             { "merc", new[] { "Two of us see twice as much.", "My rate's per day, not per corpse.", "I don't walk first. Not for any money.", "The roads are slick with ice; a slip can get you buried before you draw a weapon.", "I've heard the old well under the ice still whispers, and the dead listen.", "My fee climbs with the wind—extra for a night that drifts like a white shroud.", "I'll fight for the highest bidder, but I won’t turn my back on a comrade in a blizzard.", "Don't chase a shadow through the snowbank unless you’re ready to become one." } },
             { "patron", new[] { "Lost my cousin to a sinkhole. Didn't even see it.", "If you hear the siren, you've already waited too long.", "Don't shoot the ones walking home. They don't mean anything by it.", "The fog in Mirelock talks. Don't answer it.", "Saw a thing with no face near the cooling tower.", "Another round. For the ones who stayed out." } },
             { "beggar", new[] { "Spare a round for an old runner?", "I went in eleven times. The twelfth took my legs.", "Bless you. The Zone remembers." } },
-            { "guitar", new[] { "This one's for the ones who didn't come back.", "Request? Only if you're buying.", "Same three chords since the Passing." } },
+            { "guitar", new[] { "This one's for the ones who didn't come back.", "Request? Only if you're buying.", "Same three chords since the Passing.", "Snow‑capped pines hum a low dirge when the wind sighs.", "Pay a copper and I’ll sing the tale of the frozen well.", "My fingers are numb, but the strings still bleed the old hymns.", "Ask for a ballad of the Spillway and you’ll hear the ice crack.", "Even in the gloom, a tune can warm a throat that’s lost its fire." } },
             { "story_pell", new[] { "Listen, then. Third year after the Passing, we found a sinkhole in Kestrel that ate a whole truck.",
                                     "Ripple in the air, nothing more. Truck went in, came out the size of a suitcase.",
                                     "We learned that day: throw a bolt, watch it fall, step where it didn't twitch.",
@@ -176,6 +176,16 @@ namespace CloneZ
                     }).DisabledIf(_telling, "Already telling it"));
                     break;
                 case HubNpc.Role.Beggar:
+                    // Cheaper donation option
+                    into.Add(new InteractAction("Give 5 MG", c =>
+                    {
+                        if (!Money.TrySpend(5, c.Inventory)) { c.Notify("You don't have 5 MG."); return; }
+                        c.Notify("\"The Zone remembers.\"");
+                        MoralLedger.Record("gave to the beggar (5 MG)", MoralLedger.GaveToBeggar);
+                        Sfx.PlayUI(SfxIds.Cash);
+                        ProfileStore.Save();
+                    }));
+                    // Standard donation
                     into.Add(new InteractAction("Give 20 MG", c =>
                     {
                         if (!Money.TrySpend(20, c.Inventory)) { c.Notify("You don't have 20 MG."); return; }

@@ -29,12 +29,18 @@ namespace CloneZ
         private string _promptCache = "";
         private bool _promptDirty = true;
 
-        public string Prompt { get; private set; } = "";
-        public bool BuildMode { get; private set; }
-        public bool IsBuilding { get; private set; }
-        public float BuildProgress { get; private set; }
-        public string BuildLabel { get; private set; } = "";
-        public BuildSelection Selection { get; private set; } = BuildSelection.Barricade;
+        /// <summary>UI prompt shown to the player about the current builder state.</summary>
+public string Prompt { get; private set; } = "";
+        /// <summary>Whether the player is currently in build mode.</summary>
+public bool BuildMode { get; private set; }
+        /// <summary>Whether a build job is in progress.</summary>
+public bool IsBuilding { get; private set; }
+        /// <summary>Current build progress (0..1).</summary>
+public float BuildProgress { get; private set; }
+        /// <summary>Label shown while building (e.g., "Building barricade").</summary>
+public string BuildLabel { get; private set; } = "";
+        /// <summary>Current selection in the build palette.</summary>
+public BuildSelection Selection { get; private set; } = BuildSelection.Barricade;
 
         private PlayerStats _stats;
         private PlayerController _controller;

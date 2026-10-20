@@ -354,8 +354,17 @@ namespace CloneZ
             m.Box(new Vector3(0f, 1.18f, 0.05f), new Vector3(0.22f, 0.16f, 0.48f), Mt(box));
             m.CylinderX(new Vector3(0f, 1.26f, 0.05f), 0.11f, 0.48f, 8, Mt(box), 90f);
             m.Box(new Vector3(0.12f, 1.3f, -0.05f), new Vector3(0.02f, 0.18f, 0.04f), M(new Color(0.7f, 0.12f, 0.1f)));
-            m.Box(new Vector3(0f, 1.38f, 0.05f), new Vector3(0.12f, 0.03f, 0.4f), M(SnowWhite));
+        m.Box(new Vector3(0f, 1.38f, 0.05f), new Vector3(0.12f, 0.03f, 0.4f), M(SnowWhite));
+        // Optional mail‑flag – 60 % chance to appear, colour varies per instance
+        if (Chance(rng, 0.6f))
+        {
+            // thin pole attached to the right side of the mailbox
+            m.Box(new Vector3(0.09f, 1.25f, 0.05f), new Vector3(0.02f, 0.22f, 0.02f), Mt(new Color(0.25f, 0.25f, 0.26f)));
+            // flag rectangle – size 0.08 m × 0.015 m, positioned at pole top, colour varies with rng
+            Color flagCol = V(new Color(0.80f, 0.15f, 0.12f), rng, 0.07f);
         }
+    }
+
 
         /// <summary>A sign board on two posts, facing +Z, its lower edge at <paramref name="bottom"/>.</summary>
         public static void PostSign(RaidMesh m, System.Random rng, string text, Color bg, Color fg, float height, float bottom)

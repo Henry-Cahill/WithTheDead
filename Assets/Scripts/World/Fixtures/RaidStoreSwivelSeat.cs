@@ -72,6 +72,7 @@ namespace CloneZ
             {
                 into.Add(new InteractAction("Stand up", c => c.Seat.Stand()));
                 into.Add(SpinRound());
+                into.Add(Relax());
                 return;
             }
             into.Add(new InteractAction("Sit down", SitDown).DisabledIf(_spinSpeed > 30f, "Let it stop spinning first"));
@@ -103,7 +104,24 @@ namespace CloneZ
                 ? "You kick the chair hard, sending it into a rapid spin!"
                 : "The chair rockets around wildly after your kick.");
         }
-private InteractAction SpinRound()
+        private InteractAction Relax()
+        {
+            var a = new InteractAction("Relax").Timed(CloneZConfig.RaidSwivelSpinSeconds, "Relaxing", HumanoidActivity.None);
+            a.Begin = c =>
+            {
+                // Play the same small fixture noise as a spin
+                MakeNoise(CloneZConfig.FixtureNoiseSmall);
+            };
+            a.Run = c =>
+            {
+                LivingFixtures.Calm(c, CloneZConfig.RaidSwivelSpinCalm);
+                c.Notify("You sit back and relax, feeling a brief moment of calm.");
+            };
+            return a;
+        }
+
+
+        private InteractAction SpinRound()
         {
             float from = 0f;
             var a = new InteractAction("Spin round").Timed(CloneZConfig.RaidSwivelSpinSeconds, "Spinning round", HumanoidActivity.None);

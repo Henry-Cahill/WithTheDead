@@ -156,6 +156,9 @@ namespace CloneZ
             else into.Add(new InteractAction("Look inside", _lookInAct)
                 .Timed(CloneZConfig.WindowLookSeconds, "Peering inside", HumanoidActivity.Use)
                 .DisabledIf(CurtainsDrawn, DrawnReason));
+            // Knock on the window from outside
+            into.Add(new InteractAction("Knock on the window", KnockWindow)
+                .Timed(1f, "Knocking on the glass", HumanoidActivity.Use));
 
             // No way through yet (say why), or the climb out of an open window, further down the list.
             if (!climbFirst) AddClimb(ctx, side, inside, into);
@@ -370,6 +373,13 @@ namespace CloneZ
                 (_glass == Glazing.Smashed) ? "The glass is shattered; shards still bristle in the frame." :
                 "The window frame is empty.";
             ctx.Notify(msg);
+        }
+
+        // New action: knock on the window from outside
+        private void KnockWindow(InteractContext ctx)
+        {
+            MakeNoise(CloneZConfig.WindowNoise);
+            ctx.Notify("You rap on the glass; the sound echoes down the street.");
         }
 
         public override void CaptureState(FixtureSave save)

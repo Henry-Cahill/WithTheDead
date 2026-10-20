@@ -47,6 +47,7 @@ namespace CloneZ
         [System.NonSerialized] public bool ProbeGround = true;   // raycast for the floor under the feet
         [System.NonSerialized] public int GroundMask = 1;        // Default layer: floors and terrain
 
+        /// <summary>True when the character is dead.</summary>
         public bool IsDead => _dead;
         /// <summary>True while lying in bed asleep.</summary>
         public bool IsSleeping => _lying && !_lyingAwake;
@@ -75,6 +76,7 @@ namespace CloneZ
         private HumanoidActivity _shownActivity;
         private float _groundOffset;
         private bool _groundInit;
+        private bool _groundDirty = true;
 
         // One-shot actions.
         private enum Act : byte { None, Swing, Punch, Shove, Lunge, Bash }
@@ -136,6 +138,7 @@ namespace CloneZ
             _actTwoHanded = twoHanded && !bare;
         }
 
+        /// <summary>Pushes the character's shoulder into a shove (used by zombies).</summary>
         public void Shove() { if (!_dead) StartAct(Act.Shove, 0.38f, 0f); }
 
         /// <summary>The dead lunge for a bite: <paramref name="windup"/> seconds of reaching, then the snap.</summary>
@@ -144,8 +147,10 @@ namespace CloneZ
         /// <summary>The dead beat on a barricade: arms up through the windup, then down.</summary>
         public void Bash(float windup) { if (!_dead) StartAct(Act.Bash, windup + 0.35f, windup); }
 
+        /// <summary>Triggers a recoil effect for a fired weapon.</summary>
         public void Fire() { _recoil = 1f; }
 
+        /// <summary>Applies a brief flinch reaction away from the impact direction.</summary>
         public void Flinch(Vector3 fromWorld)
         {
             if (_dead) return;
@@ -154,6 +159,7 @@ namespace CloneZ
             _flinchDir = fromWorld.sqrMagnitude > 1e-6f ? fromWorld.normalized : -_root.forward;
         }
 
+        /// <summary>Applies a stagger push that briefly disrupts movement.</summary>
         public void Stagger(Vector3 pushWorld, float duration)
         {
             if (_dead) return;
@@ -193,6 +199,7 @@ namespace CloneZ
             _lieFromRot = _root.localRotation;
         }
 
+        /// <summary>Wakes the character up, ending the lying state.</summary>
         public void WakeUp()
         {
             _lying = false;
@@ -211,7 +218,7 @@ namespace CloneZ
         }
 
         /// <summary>Skips smoothing on the next frame (after a spawn or teleport).</summary>
-        public void Snap() { _groundInit = false; _speed = 0f; _carryW = 0f; }
+        public void Snap() { _groundInit = false; _groundDirty = true; _speed = 0f; _carryW = 0f; }
 
         private void StartAct(Act act, float duration, float windup)
         {
@@ -261,6 +268,7 @@ namespace CloneZ
             Vector3 v = Velocity;
             v.y = 0f;
             float raw = _dead || _lying || Seated ? 0f : v.magnitude;
+            _groundDirty = _groundDirty || raw > 0.01f;
             _speed = Mathf.Lerp(_speed, raw, 1f - Mathf.Exp(-dt * 8f));
             if (raw > 0.05f)
             {
@@ -338,12 +346,12 @@ namespace CloneZ
             if (!_dead && !Seated)
             {
                 float target = 0f;
-                if (ProbeGround && parent != null)
-                {
+if (_groundDirty && !_dead && !Seated && parent != null) {
                     // The ray starts inside the character's own collider, which a ray never reports.
                     Vector3 origin = parent.position + Vector3.up * 0.9f;
                     if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, 1.5f, GroundMask, QueryTriggerInteraction.Ignore))
                         target = Mathf.Clamp(hit.point.y - parent.position.y, -0.35f, 0.3f);
+                    _groundDirty = false;
                 }
                 _groundOffset = _groundInit ? Mathf.Lerp(_groundOffset, target, 1f - Mathf.Exp(-dt * 14f)) : target;
                 _groundInit = true;

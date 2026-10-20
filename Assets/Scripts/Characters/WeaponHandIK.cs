@@ -42,6 +42,8 @@ namespace CloneZ
         private Rig _ikRig;
         private TwoBoneIKConstraint _left;
         private Transform _target, _hint;
+        // Cached frequently accessed transforms to avoid per‑frame bone lookups
+        private Transform _handL, _chest, _gripR;
         private PlayableGraph _graph;
         private NativeArray<TransformStreamHandle> _stream;
         private NativeArray<TransformSceneHandle> _scene;
@@ -79,7 +81,10 @@ namespace CloneZ
 
                 _left.data.root = _rig.Bone(HumanBone.UpperArmL);
                 _left.data.mid = _rig.Bone(HumanBone.ForearmL);
-                _left.data.tip = _rig.Bone(HumanBone.HandL);
+                // Cache frequently used transforms for per‑frame use
+                _handL = _rig.Bone(HumanBone.HandL);
+                _chest = _rig.Bone(HumanBone.Chest);
+                _gripR = _rig.GripR;
                 _left.data.target = _target;
                 _left.data.hint = _hint;
                 _left.data.targetPositionWeight = 1f;
@@ -125,13 +130,13 @@ namespace CloneZ
             if (_ikRig.weight <= 0.001f) return;
 
             // Where the left wrist must be for its palm to close on the handguard.
-            Transform handL = _rig.Bone(HumanBone.HandL);
-            Vector3 support = _rig.GripR.TransformPoint(_rig.HeldSupport);
+            Transform handL = _handL;
+            Vector3 support = _gripR.TransformPoint(_rig.HeldSupport);
             Vector3 palm = new Vector3(-HumanoidRig.GripOffset.x, HumanoidRig.GripOffset.y, HumanoidRig.GripOffset.z) * _rig.Proportions.Hand;
             _target.SetPositionAndRotation(support - handL.rotation * palm, handL.rotation);
 
             // The elbow points down and out, under the gun.
-            Transform chest = _rig.Bone(HumanBone.Chest);
+            Transform chest = _chest;
             Transform root = transform;
             _hint.position = chest.position - root.right * 0.45f - Vector3.up * 0.35f + root.forward * 0.1f;
 

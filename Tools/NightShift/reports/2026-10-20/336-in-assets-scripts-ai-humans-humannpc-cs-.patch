@@ -1,0 +1,300 @@
+diff --git a/Assets/Scripts/AI/Humans/HumanNpc.cs b/Assets/Scripts/AI/Humans/HumanNpc.cs
+index 11d1a59b..0b5e433a 100644
+--- a/Assets/Scripts/AI/Humans/HumanNpc.cs
++++ b/Assets/Scripts/AI/Humans/HumanNpc.cs
+@@ -43,7 +43,7 @@ public enum Mode { Idle, Travel, Guard, Investigate, Combat, Flee, Surrendered,
+         /// <summary>Whether the human is dead (health reached zero).</summary>
+         public bool IsDead { get; private set; }
+         /// <summary>Convenient shortcut to this GameObject's Transform.</summary>
+-        public Transform Transform => transform;
++        public Transform Transform => _cachedTransform ??= this.transform;
+ 
+         /// <summary>A squad this person belongs to (A-Life), or null.</summary>
+         /// <summary>Optional reference to the A‑Life squad this human belongs to.</summary>
+@@ -82,6 +82,7 @@ public enum Mode { Idle, Travel, Guard, Investigate, Combat, Flee, Surrendered,
+         private Light _flash;
+         private float _flashOff;
+         private System.Random _rng;
++        private Transform _cachedTransform;
+ 
+         #region Spawning
+         /// <summary>Creates a person of <paramref name="faction"/> wearing <paramref name="loadout"/> (an id such as
+@@ -241,7 +242,7 @@ private void Perceive()
+             Actor best = null;
+             float bestScore = float.MaxValue;
+             Vector3 eye = Actor.EyePosition;
+-            Vector3 fwd = transform.forward;
++            Vector3 fwd = Transform.forward;
+             for (int i = 0; i < Actor.All.Count; i++)
+             {
+                 Actor a = Actor.All[i];
+@@ -270,7 +271,7 @@ private void Perceive()
+                 return;
+             }
+ 
+-            if (State != Mode.Combat && NoiseSystem.TryHear(transform.position, 10f, out Vector3 src, out float strength) && strength > 0.15f)
++            if (State != Mode.Combat && NoiseSystem.TryHear(Transform.position, 10f, out Vector3 src, out float strength) && strength > 0.15f)
+             {
+                 _lastSeen = src;
+                 _lastSeenTime = Time.time - 6f;
+@@ -288,7 +289,7 @@ private void Decide()
+             {
+                 if (Health01 < 0.3f && Loadout.Faction != Factions.Choir && State != Mode.Flee)
+                 {
+-                    if (_target.IsPlayerControlled && HumanUtil.FlatDistance(_target.transform.position, transform.position) < 14f
++                    if (_target.IsPlayerControlled && HumanUtil.FlatDistance(_target.transform.position, Transform.position) < 14f
+                         && _rng.NextDouble() < Loadout.SurrenderChance)
+                     {
+                         Surrender();
+@@ -317,18 +318,18 @@ private void Decide()
+             switch (State)
+             {
+                 case Mode.Investigate:
+-                    if (Time.time - _lastSeenTime > 25f || HumanUtil.FlatDistance(transform.position, _lastSeen) < 2f) State = HoldPost ? Mode.Guard : Mode.Idle;
++                    if (Time.time - _lastSeenTime > 25f || HumanUtil.FlatDistance(Transform.position, _lastSeen) < 2f) State = HoldPost ? Mode.Guard : Mode.Idle;
+                     else MoveTo(_lastSeen, 2.6f);
+                     break;
+                 case Mode.Flee:
+                     if (_agent.enabled && !_agent.pathPending && _agent.remainingDistance < 1.5f) State = Mode.Idle;
+                     break;
+                 case Mode.Guard:
+-                    if (HumanUtil.FlatDistance(transform.position, Goal) > 1.5f) MoveTo(Goal, 1.6f);
+-                    else { Stop(); transform.Rotate(0f, Mathf.Sin(Time.time * 0.3f) * 20f * 0.3f, 0f); }
++                    if (HumanUtil.FlatDistance(Transform.position, Goal) > 1.5f) MoveTo(Goal, 1.6f);
++                    else { Stop(); Transform.Rotate(0f, Mathf.Sin(Time.time * 0.3f) * 20f * 0.3f, 0f); }
+                     break;
+                 case Mode.Travel:
+-                    if (HumanUtil.FlatDistance(transform.position, Goal) < 2.5f) State = Mode.Idle;
++                    if (HumanUtil.FlatDistance(Transform.position, Goal) < 2.5f) State = Mode.Idle;
+                     else MoveTo(Goal, 1.6f);
+                     break;
+                 case Mode.Follow:
+@@ -380,7 +381,7 @@ private void AlertSquad(Actor threat)
+             {
+                 HumanNpc o = All[i];
+                 if (o == this || o.IsDead || o.SquadTag == null || o.SquadTag != SquadTag) continue;
+-                if ((o.transform.position - transform.position).sqrMagnitude < 40f * 40f) o.Alert(threat);
++                if ((o.transform.position - Transform.position).sqrMagnitude < 40f * 40f) o.Alert(threat);
+             }
+         }
+         #endregion
+@@ -389,7 +390,7 @@ private void AlertSquad(Actor threat)
+         private void Fight()
+         {
+             if (_target == null) return;
+-            Vector3 me = transform.position;
++            Vector3 me = Transform.position;
+             Vector3 aimAt = _target.Center;
+             bool visible = Time.time - _lastSeenTime < 0.5f;
+             float dist = Vector3.Distance(me, _target.transform.position);
+@@ -449,7 +450,7 @@ private void Fight()
+ 
+         private void Shoot(Vector3 aimAt, float dist)
+         {
+-            Vector3 muzzle = Actor.EyePosition - Vector3.up * 0.1f + transform.forward * 0.4f;
++            Vector3 muzzle = Actor.EyePosition - Vector3.up * 0.1f + Transform.forward * 0.4f;
+             if (Loadout.Skill > 0.65f && _rng.NextDouble() < 0.18 && _target.Head != null) aimAt = _target.EyePosition;
+             float spread = Mathf.Lerp(5.5f, 1.1f, Loadout.Skill);
+             if (_agent.enabled && _agent.velocity.sqrMagnitude > 0.5f) spread *= 1.6f;
+@@ -457,7 +458,7 @@ private void Shoot(Vector3 aimAt, float dist)
+             if (dist > 30f) spread *= 1.2f;
+             Vector3 dir = (aimAt - muzzle).normalized;
+             dir = Quaternion.AngleAxis((float)(_rng.NextDouble() * 2 - 1) * spread, Vector3.up)
+-                * Quaternion.AngleAxis((float)(_rng.NextDouble() * 2 - 1) * spread * 0.6f, transform.right) * dir;
++                * Quaternion.AngleAxis((float)(_rng.NextDouble() * 2 - 1) * spread * 0.6f, Transform.right) * dir;
+ 
+             AmmoStats ammo = Ballistics.Ammo(_ammoId);
+             int pellets = ammo != null ? Mathf.Max(1, ammo.Pellets) : 1;
+@@ -472,7 +473,7 @@ private void Shoot(Vector3 aimAt, float dist)
+             }
+             _mag--;
+             Sfx.Play(GunSound(Gun), muzzle, 1f, Random.Range(0.95f, 1.05f), 140f);
+-            NoiseSystem.Emit(transform.position, _noise);
++            NoiseSystem.Emit(Transform.position, _noise);
+             Flash(muzzle);
+             if (_avatar != null) _avatar.OnFired();
+ 
+@@ -512,7 +513,7 @@ private void Reload()
+             _reserve -= take;
+             _mag = take;
+             _reloadUntil = Time.time + Random.Range(2.2f, 3.2f);
+-            Sfx.Play(SfxIds.Reload, transform.position + Vector3.up * 1.2f, 0.6f, 1f, 14f);
++            Sfx.Play(SfxIds.Reload, Transform.position + Vector3.up * 1.2f, 0.6f, 1f, 14f);
+             if (_rng.NextDouble() < 0.5) Bark("Reloading!");
+             if (_avatar != null) _avatar.OnReload(_reloadUntil - Time.time);
+         }
+@@ -536,7 +537,7 @@ private bool ClearShot(Vector3 aimAt)
+         private bool TryFindCover(Actor threat, out Vector3 spot)
+         {
+             spot = default;
+-            Vector3 me = transform.position;
++            Vector3 me = Transform.position;
+             Vector3 t = threat.Center;
+             float best = float.MaxValue;
+             bool found = false;
+@@ -561,8 +562,8 @@ private bool TryFindCover(Actor threat, out Vector3 spot)
+ 
+         private void Strafe()
+         {
+-            Vector3 side = Vector3.Cross(Vector3.up, (_target.transform.position - transform.position).normalized) * (_rng.NextDouble() < 0.5 ? -1f : 1f);
+-            MoveTo(transform.position + side * Random.Range(2f, 4.5f), 3f);
++            Vector3 side = Vector3.Cross(Vector3.up, (_target.transform.position - Transform.position).normalized) * (_rng.NextDouble() < 0.5 ? -1f : 1f);
++            MoveTo(Transform.position + side * Random.Range(2f, 4.5f), 3f);
+         }
+ 
+         private void BeginFlee()
+@@ -571,8 +572,8 @@ private void BeginFlee()
+             _hasCover = false;
+             _inCover = false;
+             Crouched = false;
+-            Vector3 away = _target != null ? (transform.position - _target.transform.position).normalized : transform.forward;
+-            Vector3 dest = HumanUtil.ClampToMap(transform.position + away * 28f, 6f);
++            Vector3 away = _target != null ? (Transform.position - _target.transform.position).normalized : Transform.forward;
++            Vector3 dest = HumanUtil.ClampToMap(Transform.position + away * 28f, 6f);
+             MoveTo(dest, 4.6f);
+             Bark("Falling back!");
+         }
+@@ -595,8 +596,8 @@ public void Release()
+             Actor.Restrained = false;
+             _grudges.Clear();
+             State = Mode.Flee;
+-            Vector3 away = LocalPlayerCached != null ? (transform.position - LocalPlayerCached.transform.position).normalized : transform.forward;
+-            MoveTo(HumanUtil.ClampToMap(transform.position + away * 40f, 6f), 3.5f);
++            Vector3 away = LocalPlayerCached != null ? (Transform.position - LocalPlayerCached.transform.position).normalized : Transform.forward;
++            MoveTo(HumanUtil.ClampToMap(Transform.position + away * 40f, 6f), 3.5f);
+             MoralLedger.Record("let a surrendered stalker go", MoralLedger.SparedSurrendered);
+             GameEvents.RaiseQuestProgress("spare", 1f);
+         }
+@@ -604,7 +605,7 @@ public void Release()
+         private void FollowLeader()
+         {
+             if (FollowTarget == null || !FollowTarget.IsAlive) { State = Mode.Idle; return; }
+-            float d = HumanUtil.FlatDistance(transform.position, FollowTarget.transform.position);
++            float d = HumanUtil.FlatDistance(Transform.position, FollowTarget.transform.position);
+             if (d > 4f && Time.time >= _repathAt)
+             {
+                 _repathAt = Time.time + 0.5f;
+@@ -631,11 +632,11 @@ private void Stop()
+ 
+         private void Face(Vector3 p)
+         {
+-            Vector3 d = p - transform.position;
++            Vector3 d = p - Transform.position;
+             d.y = 0f;
+             if (d.sqrMagnitude < 0.01f) return;
+             if (_agent != null && _agent.enabled) _agent.updateRotation = false;
+-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(d), 10f * Time.deltaTime);
++            Transform.rotation = Quaternion.Slerp(Transform.rotation, Quaternion.LookRotation(d), 10f * Time.deltaTime);
+         }
+ 
+         private void LateUpdate()
+@@ -648,7 +649,7 @@ private void Flash(Vector3 at)
+             if (_flash == null)
+             {
+                 var go = new GameObject("MuzzleFlash");
+-                go.transform.SetParent(transform, false);
++                go.transform.SetParent(Transform, false);
+                 _flash = go.AddComponent<Light>();
+                 _flash.type = LightType.Point;
+                 _flash.range = 7f;
+@@ -670,7 +671,7 @@ private void UpdateFlash()
+         private void Bark(string line)
+         {
+             if (Time.time < _barkAt || LocalPlayerCached == null) return;
+-            if ((LocalPlayerCached.transform.position - transform.position).sqrMagnitude > 25f * 25f) return;
++            if ((LocalPlayerCached.transform.position - Transform.position).sqrMagnitude > 25f * 25f) return;
+             _barkAt = Time.time + 6f;
+             GameEvents.RaiseSubtitle(Name, line);
+         }
+@@ -681,7 +682,7 @@ public void TakeDamage(in DamageInfo info)
+         {
+             if (IsDead) return;
+             float hp = info.AmountHp;
+-            BodyZone zone = info.ZoneKnown ? info.Zone : BodyZones.FromHit(transform, info.HitPoint);
++            BodyZone zone = info.ZoneKnown ? info.Zone : BodyZones.FromHit(Transform, info.HitPoint);
+             if (!info.HpScale) hp *= CloneZConfig.NonPlayerReceivedDamageMultiplier;
+ 
+             switch (zone)
+@@ -725,7 +726,7 @@ private static float Armour(float hp, in DamageInfo info, ItemDef worn)
+ 
+         public void ReceiveZombieAttack(bool bite)
+         {
+-            var info = new DamageInfo(bite ? 45f : 22f, bite ? DamageKind.Bite : DamageKind.Melee, Actor.Center, transform.forward, null) { HpScale = true };
++            var info = new DamageInfo(bite ? 45f : 22f, bite ? DamageKind.Bite : DamageKind.Melee, Actor.Center, Transform.forward, null) { HpScale = true };
+             TakeDamage(info);
+         }
+ 
+@@ -770,7 +771,7 @@ public sealed class HumanNpcAvatar : MonoBehaviour
+         public HumanoidRig Rig { get; private set; }
+         /// <summary>Animator that drives the human's animation state.</summary>
+         public HumanoidAnimator Animator { get; private set; }
+-        /// <summary>Head transform for the human's avatar (null if rig not built).</summary>
++        /// <summary>Head Transform for the human's avatar (null if rig not built).</summary>
+         public Transform Head => Rig != null ? Rig.Bone(HumanBone.Head) : null;
+ 
+         private HumanNpc _npc;
+@@ -807,7 +808,7 @@ public void Build(HumanNpc npc, System.Random rng)
+                 look.HatColor = new Color(0.8f, 0.78f, 0.72f);
+             }
+             look.Scale = 0.96f + (float)rng.NextDouble() * 0.08f;
+-            Rig = HumanoidRig.Create(transform, look);
++            Rig = HumanoidRig.Create(Transform, look);
+             Animator = Rig.gameObject.AddComponent<HumanoidAnimator>();
+             Animator.AutoUpdate = false;
+             Animator.Gait = HumanoidGait.Survivor;
+@@ -824,7 +825,7 @@ private static void Dress(HumanoidLook look, ClothingSlot slot, string[] ids, fl
+         private void Start()
+         {
+             _agent = GetComponent<NavMeshAgent>();
+-            _lastPos = transform.position;
++            _lastPos = Transform.position;
+             Animator.Snap();
+         }
+ 
+@@ -833,7 +834,7 @@ private void Start()
+         /// <summary>Called when the NPC reloads – sets the reload timer for animation.</summary>
+         public void OnReload(float seconds) => _reloadUntil = Time.time + seconds;
+         /// <summary>Called when the NPC is hit – triggers a flinch animation.</summary>
+-        public void OnHit(Vector3 dir) { if (Animator != null) Animator.Flinch(transform.position - dir); }
++        public void OnHit(Vector3 dir) { if (Animator != null) Animator.Flinch(Transform.position - dir); }
+         /// <summary>Called when the NPC dies – triggers the death animation if not already shown.</summary>
+         public void OnDied(Vector3 dir) { if (Animator != null && !_deathShown) { _deathShown = true; Animator.Die(dir); } }
+ 
+@@ -841,8 +842,8 @@ private void LateUpdate()
+         {
+             float dt = Time.deltaTime;
+             if (dt <= 0f || Animator == null) return;
+-            Vector3 v = (transform.position - _lastPos) / dt;
+-            _lastPos = transform.position;
++            Vector3 v = (Transform.position - _lastPos) / dt;
++            _lastPos = Transform.position;
+             if (v.sqrMagnitude > 400f) v = Vector3.zero;
+             if (_npc == null || _npc.IsDead) { Animator.Velocity = Vector3.zero; Animator.Evaluate(dt); return; }
+ 
+@@ -852,7 +853,7 @@ private void LateUpdate()
+             Animator.Reloading = Time.time < _reloadUntil;
+             bool hands = _npc.State == HumanNpc.Mode.Surrendered || _npc.Actor.Restrained;
+             Animator.HasReachTarget = hands;
+-            if (hands) Animator.ReachTarget = transform.position + Vector3.up * 2.2f + transform.forward * 0.1f;
++            if (hands) Animator.ReachTarget = Transform.position + Vector3.up * 2.2f + Transform.forward * 0.1f;
+             Animator.Activity = hands ? HumanoidActivity.Use : HumanoidActivity.None;
+             Actor t = _npc.Target;
+             Animator.HasLookTarget = t != null;
+@@ -872,7 +873,7 @@ public sealed class HumanNpcInteract : Interactable
+ 
+         public override string DisplayName => _npc != null ? _npc.Name + " (" + Factions.NameOf(_npc.Actor.Faction) + ")" : "";
+         public override float Reach => 2.4f;
+-        public override Vector3 InteractPoint => transform.position + Vector3.up * 1.2f;
++        public override Vector3 InteractPoint => Transform.position + Vector3.up * 1.2f;
+ 
+         public override bool IsAvailable
+         {
+@@ -897,7 +898,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
+                     {
+                         if (tie == null || c.Inventory.Consume(tie, 1) <= 0) return;
+                         a.Restrained = true;
+-                        Sfx.Play(SfxIds.Handcuffs, transform.position + Vector3.up, 0.7f, 1f, 10f);
++                        Sfx.Play(SfxIds.Handcuffs, Transform.position + Vector3.up, 0.7f, 1f, 10f);
+                     }).Timed(2f, tie == "rope" ? "Tying..." : "Cuffing...").DisabledIf(tie == null, "Needs handcuffs or rope"));
+                 into.Add(new InteractAction("Search", c =>
+                 {

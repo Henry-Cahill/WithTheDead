@@ -365,10 +365,25 @@ trimRt.sizeDelta = new Vector2(panelW + 4f, panelH + 4f);
 trimGo.AddComponent<Image>().color = new Color(0.04f, 0.03f, 0.05f, 0.9f);
 
 // Add rivet decorations at the panel corners
-Rivet(prt, new Vector2(-panelW / 2 + 8f, panelH / 2 - 8f)); // top‑left
-Rivet(prt, new Vector2( panelW / 2 - 8f, panelH / 2 - 8f)); // top‑right
-Rivet(prt, new Vector2(-panelW / 2 + 8f, -panelH / 2 + 8f)); // bottom‑left
-Rivet(prt, new Vector2( panelW / 2 - 8f, -panelH / 2 + 8f)); // bottom‑right
+    Rivet(prt, new Vector2(-panelW / 2 + 8f, panelH / 2 - 8f)); // top‑left
+    Rivet(prt, new Vector2( panelW / 2 - 8f, panelH / 2 - 8f)); // top‑right
+    Rivet(prt, new Vector2(-panelW / 2 + 8f, -panelH / 2 + 8f)); // bottom‑left
+    Rivet(prt, new Vector2( panelW / 2 - 8f, -panelH / 2 + 8f)); // bottom‑right
+    // Add rust‑tinted hinge decorations at the same corners
+    Hinge(prt, new Vector2(-panelW / 2 + 8f, panelH / 2 - 8f)); // top‑left hinge
+    Hinge(prt, new Vector2( panelW / 2 - 8f, panelH / 2 - 8f)); // top‑right hinge
+    Hinge(prt, new Vector2(-panelW / 2 + 8f, -panelH / 2 + 8f)); // bottom‑left hinge
+    Hinge(prt, new Vector2( panelW / 2 - 8f, -panelH / 2 + 8f)); // bottom‑right hinge
+    // Subtle snow‑drift strip at the bottom edge of the panel
+    var snow = new GameObject("SnowDrift");
+    var snowRt = snow.AddComponent<RectTransform>();
+    snowRt.SetParent(prt, false);
+    snowRt.anchorMin = snowRt.anchorMax = new Vector2(0.5f, 0.5f);
+    snowRt.pivot = new Vector2(0.5f, 0.5f);
+    float snowHeight = 6f; // modest height for a light snow layer
+    snowRt.anchoredPosition = new Vector2(0f, -panelH / 2 + snowHeight / 2f);
+    snowRt.sizeDelta = new Vector2(panelW, snowHeight);
+    snow.AddComponent<Image>().color = new Color(1f, 1f, 1f, 0.15f);
 
             Label(prt, "Title", new Vector2(0.5f, 1f), new Vector2(0f, -18f), new Vector2(panelW, 40f), 30, TextAnchor.UpperCenter, new Color(0.95f, 0.7f, 0.7f))
                 .text = "HEALTH";
@@ -517,6 +532,19 @@ Rivet(prt, new Vector2( panelW / 2 - 8f, -panelH / 2 + 8f)); // bottom‑right
             return btn;
         }
 
+private void Hinge(RectTransform parent, Vector2 anchoredPos)
+        {
+            var go = new GameObject("Hinge");
+            var rt = go.AddComponent<RectTransform>();
+            rt.SetParent(parent, false);
+            rt.anchorMin = rt.anchorMax = new Vector2(0.5f, 0.5f);
+            rt.pivot = new Vector2(0.5f, 0.5f);
+            rt.anchoredPosition = anchoredPos;
+            rt.sizeDelta = new Vector2(6f, 6f);
+            var img = go.AddComponent<Image>();
+            // rust‑tinted color (brownish)
+            img.color = new Color(0.45f, 0.25f, 0.15f, 1f);
+        }
         private void Rivet(RectTransform parent, Vector2 anchoredPos)
         {
             var go = new GameObject("Rivet");

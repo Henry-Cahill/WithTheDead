@@ -52,7 +52,9 @@ namespace CloneZ
         private PlayerAvatar _avatar;
         private Camera _mutedCam;
 
+        /// <summary>Current world position of the ears attached to the player's head.</summary>
         public static Vector3 Position { get; private set; }
+        /// <summary>Whether the ListenerRig is currently active in the scene.</summary>
         public static bool Active { get; private set; }
 
         private void Start()
@@ -103,9 +105,10 @@ namespace CloneZ
     /// <summary>Footsteps that sound like what is underfoot: snow, boards, concrete and asphalt, grass and earth.</summary>
     public static class FootstepAudio
     {
+        /// <summary>Determines the surface type under the given foot position for appropriate footstep sounds.</summary>
         public static string SurfaceAt(Vector3 feet)
         {
-            if (Physics.Raycast(feet + Vector3.up * 0.4f, Vector3.down, out RaycastHit hit, 1.4f, 1, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(feet + Vector3.up * 0.4f, Vector3.down, out RaycastHit hit, 1.4f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
             {
                 string s = SurfaceName(hit.collider);
                 if (s != null)
@@ -161,7 +164,9 @@ namespace CloneZ
         private PlayerStats _localStats;
         private PlayerGear _localGear;
 
+        /// <summary>Ensures a single AudioDirector instance exists in the scene.</summary>
         public static void Ensure()
+
         {
             if (s_Instance != null) return;
             var go = new GameObject("[AudioDirector]");

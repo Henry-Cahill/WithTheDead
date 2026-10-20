@@ -34,6 +34,7 @@ namespace CloneZ
             var rng = new System.Random(seed);
             g._fuel = Mathf.Lerp(CloneZConfig.RaidGeneratorFuelMin, CloneZConfig.RaidGeneratorFuelMax, (float)rng.NextDouble());
             g.ShowRunning(false);
+            g.enabled = false;
             return g;
         }
 
@@ -61,6 +62,7 @@ namespace CloneZ
                     .Timed(CloneZConfig.RaidGeneratorPullSeconds, "Pulling the cord", HumanoidActivity.Use)
                     .DisabledIf(_fuel <= 0f, "Its tank is dry"));
             into.Add(new InteractAction("Check the fuel", CheckFuel));
+            into.Add(new InteractAction("Estimate runtime", EstimateRuntime));
             into.Add(new InteractAction("Inspect generator", Inspect));
         }
 
@@ -78,6 +80,7 @@ namespace CloneZ
             }
             _pulls = 0;
             _running = true;
+            enabled = true;
             _noiseAt = Time.time;
             ShowRunning(true);
             ctx.Notify("It catches with a bang and settles into a hammering roar. Everything for blocks around will hear that.");
@@ -92,6 +95,7 @@ namespace CloneZ
         private void Stop()
         {
             _running = false;
+            enabled = false;
             ShowRunning(false);
         }
 
@@ -112,6 +116,20 @@ if (_running)
                 f < 0.7f ? "The tank's about half full. Enough to make a racket for a while." :
                 "Most of a tank. Somebody filled it and never got to use it.");
         }
+
+        private void EstimateRuntime(InteractContext ctx)
+        {
+            if (_fuel <= 0f)
+            {
+                ctx.Notify("No fuel left – the generator can’t run any longer.");
+                return;
+            }
+            float secs = _fuel; // fuel drains at 1 unit per second
+            int mins = (int)(secs / 60f);
+            secs = secs % 60f;
+            ctx.Notify($"It will run for about {mins} min {(int)secs}s more.");
+        }
+
         private void ShowRunning(bool on)
         {
             if (_lamp != null) _lamp.enabled = on;

@@ -35,9 +35,10 @@ namespace CloneZ
         public bool Attacking => Time.time < _attackAnimUntil;
         public List<Creature> Pack;
 
-        private NavMeshAgent _agent;
-        private CreatureBody _body;
-        private float _hp, _think, _attackReady, _trickReady, _lastSeen = -99f, _attackAnimUntil, _revealUntil, _wanderAt;
+private NavMeshAgent _agent;
+private CreatureBody _body;
+private float _hp, _think, _attackReady, _trickReady, _lastSeen = -99f, _attackAnimUntil, _revealUntil, _wanderAt;
+private bool _isShade;
         private Actor _target, _lastAttacker;
         private Vector3 _home, _lastPos, _lure;
         private bool _hasLure;
@@ -69,6 +70,7 @@ namespace CloneZ
             var c = root.AddComponent<Creature>();
             c.Def = def;
             c.Actor = actor;
+            c._isShade = id == CreatureCatalog.Shade;
             c._hp = def.MaxHp;
             c._home = position;
             c.Pack = pack;
@@ -118,7 +120,7 @@ namespace CloneZ
         private void Update()
         {
             if (IsDead) return;
-            if (Def.Id == CreatureCatalog.Shade) Actor.Cloaked = Time.time > _revealUntil && (_target == null || HumanUtil.FlatDistance(transform.position, _target.transform.position) > 3.5f);
+            if (_isShade) Actor.Cloaked = Time.time > _revealUntil && (_target == null || HumanUtil.FlatDistance(transform.position, _target.transform.position) > 3.5f);
             _think -= Time.deltaTime;
             if (_think > 0f) return;
             _think = Random.Range(0.18f, 0.3f);
@@ -442,7 +444,8 @@ namespace CloneZ
             CreatureParts.Attach(_torso, k + "_torso", b => b
                 .Add(CreaturePrim.Sphere, Vector3.zero, Vector3.zero, new Vector3(bodyW * 1.6f, bodyH, length), c)
                 .Add(CreaturePrim.Sphere, new Vector3(0f, bodyH * 0.1f, length * 0.3f), Vector3.zero, new Vector3(bodyW * 1.8f, bodyH * 1.1f, length * 0.5f), c * 0.92f)
-                .Add(CreaturePrim.Box, new Vector3(0f, bodyH * 0.5f, -length * 0.2f), Vector3.zero, new Vector3(bodyW * 0.1f, bodyH * 0.2f, 0.02f), c * 0.8f));
+                .Add(CreaturePrim.Box, new Vector3(0f, bodyH * 0.5f, -length * 0.2f), Vector3.zero, new Vector3(bodyW * 0.1f, bodyH * 0.2f, 0.02f), c * 0.8f)
+                .Add(CreaturePrim.Box, new Vector3(0f, bodyH * 0.55f, 0f), Vector3.zero, new Vector3(bodyW * 0.12f, bodyH * 0.02f, length * 0.4f), new Color(0.2f, 0.12f, 0.05f))) ;
             Head = CreatureParts.Pivot("Head", _torso, new Vector3(0f, bodyH * 0.35f, length * 0.55f));
             CreatureParts.Attach(Head, k + "_head", b => b
                 .Add(CreaturePrim.Sphere, Vector3.zero, Vector3.zero, Vector3.one * headSize, c * 0.95f)

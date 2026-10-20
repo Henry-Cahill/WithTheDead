@@ -315,6 +315,16 @@ namespace CloneZ
             bracketRenderer.sharedMaterial.color = Rust;
             // Remove its default collider (visual only)
             Object.Destroy(bracket.GetComponent<Collider>());
+            // Add a tiny rust‑coloured cap on the bracket to suggest a screw/hinge
+            var cap = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            cap.name = "BeamBracketCap";
+            cap.transform.SetParent(bracket.transform, false);
+            // Position the cap on top of the bracket; Cylinder height is scaled on Y, so move half the bracket height + half cap height
+            cap.transform.localPosition = new Vector3(0f, 0.04f, 0f);
+            cap.transform.localScale = new Vector3(0.02f, 0.01f, 0.02f);
+            var capRenderer = cap.GetComponent<MeshRenderer>();
+            capRenderer.sharedMaterial.color = Rust;
+            Object.Destroy(cap.GetComponent<Collider>());
 
             NoBake(go);
             return mr;
@@ -420,6 +430,19 @@ namespace CloneZ
             r.shadowCastingMode = ShadowCastingMode.Off;
             r.receiveShadows = false;
             ps.Play();
+
+            // Add a subtle scorched‑ground decal beneath the fire
+            var scorch = GameObject.CreatePrimitive(PrimitiveType.Quad);
+            scorch.name = "Scorch";
+            scorch.transform.SetParent(go.transform, false);
+            scorch.transform.localPosition = new Vector3(0f, 0.01f, 0f);
+            scorch.transform.localScale = Vector3.one * 0.4f * scale;
+            // Remove the default collider
+            Object.Destroy(scorch.GetComponent<Collider>());
+            // Set the material colour to a concrete‑dark shade
+            var mr = scorch.GetComponent<MeshRenderer>();
+            mr.sharedMaterial = new Material(mr.sharedMaterial) { color = ConcreteDark };
+            ZoneKit.NoBake(scorch);
 
             Plume(parent, at + Vector3.up * 0.6f * scale, true, 0.9f * scale, 3f, 0.7f, new Color(0.35f, 0.33f, 0.31f, 0.45f));
             ZoneFlameLight.Spawn(parent, at + Vector3.up * 0.5f * scale, new Color(1f, 0.58f, 0.26f), 7f * scale, 2.4f, 0.35f);

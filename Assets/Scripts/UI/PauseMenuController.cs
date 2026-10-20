@@ -730,9 +730,33 @@ bool esc = Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThis
             it.Highlight.sprite = HudSprites.ScrimLeft;
             it.Highlight.color = Color.clear;
             it.Highlight.raycastTarget = false;
-            RectTransform accent = HudUI.Rect(it.Content, "Accent", new Vector2(0f, 0.5f), new Vector2(0f, 0.5f), Vector2.zero, new Vector2(3f, ItemHeight - 16f));
-            it.Accent = accent.gameObject.AddComponent<Image>();
-            it.Accent.raycastTarget = false;
+RectTransform accent = HudUI.Rect(it.Content, "Accent", new Vector2(0f, 0.5f), new Vector2(0f, 0.5f), Vector2.zero, new Vector2(3f, ItemHeight - 16f));
+it.Accent = accent.gameObject.AddComponent<Image>();
+it.Accent.raycastTarget = false;
+
+var wearObj = new GameObject($"Wear{index}");
+var wearRt = wearObj.AddComponent<RectTransform>();
+wearRt.SetParent(it.Accent.transform, false);
+wearRt.anchorMin = wearRt.anchorMax = new Vector2(0.5f, 0f);
+wearRt.pivot = new Vector2(0.5f, 0f);
+wearRt.anchoredPosition = new Vector2(0f, 0f);
+wearRt.sizeDelta = new Vector2(0.8f * it.Accent.rectTransform.sizeDelta.x, 2f);
+var wearImg = wearObj.AddComponent<Image>();
+wearImg.color = HudUI.WithAlpha(Dim, 0.4f);
+wearImg.raycastTarget = false;
+
+                     // metal‑cap visual on the accent bar
+                     var capObj = new GameObject($"Cap{index}");
+                     var capRt = capObj.AddComponent<RectTransform>();
+                     capRt.SetParent(it.Accent.transform, false);
+                     capRt.anchorMin = capRt.anchorMax = new Vector2(0.5f, 1f);
+                     capRt.pivot = new Vector2(0.5f, 1f);
+                     capRt.anchoredPosition = new Vector2(0f, 0f);
+                     float w = 5f + (index % 3) * 0.5f;
+                     capRt.sizeDelta = new Vector2(w, 4f);
+                     var capImg = capObj.AddComponent<Image>();
+                     capImg.color = HudUI.WithAlpha(Dim, 0.6f);
+                     capImg.raycastTarget = false;
             it.Text = HudUI.Label(it.Content, "Label", 23, TextAnchor.MiddleLeft, Idle, new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
                 new Vector2(26f, 0f), new Vector2(320f, 30f), FontStyle.Bold);
             // subtle rivet accent for the row

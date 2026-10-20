@@ -220,7 +220,7 @@ namespace CloneZ
                     {
                         Ellipsoid(hat, head, new Vector3(side * 0.031f, 1.705f, 0.092f), new Vector3(0.022f, 0.017f, 0.003f), I, 12, 4);
                         Ellipsoid(trim, head, new Vector3(side * 0.031f, 1.705f, 0.095f), new Vector3(0.019f, 0.014f, 0.003f), I, 12, 4);
-                        Limb(hat, head, new Vector3(side * 0.052f, 1.708f, 0.088f), new Vector3(side * 0.081f, 1.703f, -0.005f), Vector3.up,
+                        Limb(hat, head, new Vector3(side * 0.052f, 1.708f, 0.088f), new Vector3(side * 0.081f, 1.703f, -0.005f), Fwd,
                             new[] { new Key(0f, 0.003f, 0.003f), new Key(1f, 0.003f, 0.003f) }, seg: 6);
                     }
                     Ellipsoid(hat, head, new Vector3(0f, 1.708f, 0.096f), new Vector3(0.012f, 0.003f, 0.003f), I, 8, 4);

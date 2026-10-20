@@ -204,6 +204,30 @@ namespace CloneZ
 foreach (Slot s in Slots)
             {
                 var piece = BuildPiece.Spawn(world, s.Type, BuildPiece.CenterFor(s.Type, new Vector3(s.X, 0f, s.Z)), s.Yaw, 1f, prebuilt: true);
+                // Add subtle metal corner‑cap to exterior walls
+                if (s.Type == BuildPieceType.Wall)
+                {
+                    int seed = StarterHome.SlotSeed(s.Type, s.X, s.Z);
+                    UnityEngine.Random.InitState(seed);
+                    var cap = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    cap.name = "WallCap";
+                    cap.transform.SetParent(piece.transform, false);
+                    Vector3 capOffset = s.Yaw switch
+                    {
+                        0f => new Vector3(0f, WallH - 0.04f, 0.36f),
+                        180f => new Vector3(0f, WallH - 0.04f, -0.36f),
+                        90f => new Vector3(0.36f, WallH - 0.04f, 0f),
+                        270f => new Vector3(-0.36f, WallH - 0.04f, 0f),
+                        _ => new Vector3(0f, WallH - 0.04f, 0.36f)
+                    };
+                    // Apply tiny random jitter ±0.01 on X and Z
+                    capOffset.x += (UnityEngine.Random.value - 0.5f) * 0.02f;
+                    capOffset.z += (UnityEngine.Random.value - 0.5f) * 0.02f;
+                    cap.transform.localPosition = capOffset;
+                    cap.transform.localScale = new Vector3(0.04f, 0.02f, 0.02f);
+                    var rend = piece.GetComponentInChildren<Renderer>();
+                    if (rend != null) cap.GetComponent<Renderer>().sharedMaterial = rend.sharedMaterial;
+                }
                 if (s.Type == BuildPieceType.Doorway)
                 {
                     int seed = StarterHome.SlotSeed(s.Type, s.X, s.Z);
@@ -225,21 +249,42 @@ var handle = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
                       handle.transform.localScale = new Vector3(0.04f, 0.02f, 0.02f);
                       var rend = piece.GetComponentInChildren<Renderer>();
                       if (rend != null) handle.GetComponent<Renderer>().sharedMaterial = rend.sharedMaterial;
-                      // Add metal strike‑plate above the handle
-                      var plate = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                      plate.name = "Plate";
-                      plate.transform.SetParent(piece.transform, false);
-                      Vector3 plateOffset = s.Yaw switch
-                      {
-                          0f => new Vector3(0.35f, 0.95f, 0f),
-                          90f => new Vector3(0f, 0.95f, 0.35f),
-                          180f => new Vector3(-0.35f, 0.95f, 0f),
-                          270f => new Vector3(0f, 0.95f, -0.35f),
-                          _ => new Vector3(0.35f, 0.95f, 0f)
-                      };
-                      plate.transform.localPosition = plateOffset;
-                      plate.transform.localScale = new Vector3(0.06f, 0.02f, 0.01f);
-                      if (rend != null) plate.GetComponent<Renderer>().sharedMaterial = rend.sharedMaterial;
+// Add metal strike‑plate above the handle
+                     var plate = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                     plate.name = "Plate";
+                     plate.transform.SetParent(piece.transform, false);
+                     Vector3 plateOffset = s.Yaw switch
+                     {
+                         0f => new Vector3(0.35f, 0.95f, 0f),
+                         90f => new Vector3(0f, 0.95f, 0.35f),
+                         180f => new Vector3(-0.35f, 0.95f, 0f),
+                         270f => new Vector3(0f, 0.95f, -0.35f),
+                         _ => new Vector3(0.35f, 0.95f, 0f)
+                     };
+                     plate.transform.localPosition = plateOffset;
+                     plate.transform.localScale = new Vector3(0.06f, 0.02f, 0.01f);
+                     if (rend != null) plate.GetComponent<Renderer>().sharedMaterial = rend.sharedMaterial;
+
+                 // Add wooden latch to windows
+                 if (s.Type == BuildPieceType.Window)
+                 {
+                     UnityEngine.Random.InitState(StarterHome.SlotSeed(s.Type, s.X, s.Z));
+                     var latch = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                     latch.name = "Latch";
+                     latch.transform.SetParent(piece.transform, false);
+                     Vector3 latchOffset = s.Yaw switch
+                     {
+                         0f => new Vector3(0.35f, 0.9f, 0f),
+                         90f => new Vector3(0f, 0.9f, 0.35f),
+                         180f => new Vector3(-0.35f, 0.9f, 0f),
+                         270f => new Vector3(0f, 0.9f, -0.35f),
+                         _ => new Vector3(0.35f, 0.9f, 0f)
+                     };
+                     latch.transform.localPosition = latchOffset;
+                     latch.transform.localScale = new Vector3(0.04f, 0.02f, 0.01f);
+                     // Optional: copy material from door if available
+                     if (rend != null) latch.GetComponent<Renderer>().sharedMaterial = rend.sharedMaterial;
+                 }
                 }
             }
             LootContainer.Spawn(world, ContainerType.Crate, CrateSpot, 7777);

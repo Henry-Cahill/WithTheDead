@@ -22,6 +22,8 @@ namespace CloneZ
         private Text[] _levelTexts;
         private Text[] _xpTexts;
         private Image[] _progressFills;
+        private struct SkillCache { public int level; public float progress; }
+        private SkillCache[] _skillCache;
 
         public bool IsOpen => _open;
 
@@ -32,6 +34,8 @@ namespace CloneZ
             _font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
             _order = (PlayerSkills.Skill[])System.Enum.GetValues(typeof(PlayerSkills.Skill));
             Build();
+            // Initialise skill cache after UI arrays are allocated in Build()
+            _skillCache = new SkillCache[_order.Length];
         }
 
         private void Update()
@@ -73,11 +77,20 @@ namespace CloneZ
             {
                 PlayerSkills.Skill s = _order[i];
                 int lvl = _skills.GetLevel(s);
-                _levelTexts[i].text = "Lv " + lvl;
-                SetFill(_progressFills[i], _skills.LevelProgress(s));
-                _xpTexts[i].text = lvl >= CloneZConfig.SkillMaxLevel
-                    ? "MAX"
-                    : Mathf.RoundToInt(_skills.LevelProgress(s) * 100f) + "%";
+                float prog = _skills.LevelProgress(s);
+                if (lvl != _skillCache[i].level)
+                {
+                    _levelTexts[i].text = "Lv " + lvl;
+                    _skillCache[i].level = lvl;
+                }
+                if (!Mathf.Approximately(prog, _skillCache[i].progress))
+                {
+                    SetFill(_progressFills[i], prog);
+                    _xpTexts[i].text = lvl >= CloneZConfig.SkillMaxLevel
+                        ? "MAX"
+                        : Mathf.RoundToInt(prog * 100f) + "%";
+                    _skillCache[i].progress = prog;
+                }
             }
         }
 
@@ -157,15 +170,25 @@ namespace CloneZ
                 fillRt.sizeDelta = new Vector2(panelW - 154f, -2f);
                 fillRt.anchoredPosition = new Vector2(2f, 0f);
                 _progressFills[i] = fillGo.AddComponent<Image>();
-                // tiny cap rectangle on the left side of the progress bar
-                var cap = new GameObject("Cap"+i);
-                var capRt = cap.AddComponent<RectTransform>();
-                capRt.SetParent(bgRt, false);
-                capRt.anchorMin = capRt.anchorMax = new Vector2(0f, 0.5f);
-                capRt.pivot = new Vector2(0f, 0.5f);
-                capRt.anchoredPosition = new Vector2(-2f, 0f);
-                capRt.sizeDelta = new Vector2(4f, 14f);
-                _progressFills[i].color = accent;
+// tiny cap rectangle on the left side of the progress bar
+                 var cap = new GameObject("Cap"+i);
+                 var capRt = cap.AddComponent<RectTransform>();
+                 capRt.SetParent(bgRt, false);
+                 capRt.anchorMin = capRt.anchorMax = new Vector2(0f, 0.5f);
+                 capRt.pivot = new Vector2(0f, 0.5f);
+                 capRt.anchoredPosition = new Vector2(-2f, 0f);
+                 capRt.sizeDelta = new Vector2(4f, 14f);
+                 _progressFills[i].color = accent;
+                 // separator line under each skill row to suggest a worn metal seam
+                 var sep = new GameObject("Sep"+i);
+                 var sepRt = sep.AddComponent<RectTransform>();
+                 sepRt.SetParent(prt, false);
+                 sepRt.anchorMin = sepRt.anchorMax = new Vector2(0f, 1f);
+                 sepRt.pivot = new Vector2(0f, 1f);
+                 sepRt.anchoredPosition = new Vector2(30f, y - 38f);
+                 sepRt.sizeDelta = new Vector2(panelW - 150f, 2f);
+                 var sepImg = sep.AddComponent<Image>();
+                 sepImg.color = new Color(0.15f, 0.15f, 0.15f, 0.8f);
             }
 
             Label(prt, "Hint", new Vector2(0.5f, 0f), new Vector2(0f, 16f), new Vector2(panelW, 24f), 16, TextAnchor.LowerCenter, new Color(1f, 1f, 1f, 0.55f))
@@ -184,6 +207,24 @@ namespace CloneZ
                 rt.sizeDelta = new Vector2(8f, 8f);
                 var img = rivet.AddComponent<Image>();
                 img.color = new Color(0.7f, 0.7f, 0.7f, 0.9f);
+            }
+            // Add corner reinforcement plates to suggest worn metal edges
+            var corners = new (string name, Vector2 anchor, Vector2 pos)[] {
+                ("CornerTL", new Vector2(0f, 1f), new Vector2(3f, -3f)),
+                ("CornerTR", new Vector2(1f, 1f), new Vector2(-3f, -3f)),
+                ("CornerBL", new Vector2(0f, 0f), new Vector2(3f, 3f)),
+                ("CornerBR", new Vector2(1f, 0f), new Vector2(-3f, 3f))
+            };
+            foreach (var (name, anchor, pos) in corners) {
+                var go = new GameObject(name);
+                var rt = go.AddComponent<RectTransform>();
+                rt.SetParent(_panelRoot.GetComponent<RectTransform>(), false);
+                rt.anchorMin = rt.anchorMax = anchor;
+                rt.pivot = anchor;
+                rt.anchoredPosition = pos;
+                rt.sizeDelta = new Vector2(6f, 6f);
+                var img = go.AddComponent<Image>();
+                img.color = new Color(0.25f, 0.25f, 0.27f, 0.9f);
             }
             _fader = _panelRoot.AddComponent<UIFader>();
         }

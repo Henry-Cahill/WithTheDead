@@ -71,6 +71,10 @@ namespace CloneZ
                     null,   // the landing zones open tonight, read out live
                     "Civilians at the cordon will be screened before transport. Have identification ready. Do not run.",
                     "*three falling tones; the relay begins again*",
+                "Evacuation notice: snow‑blocked roads on Highway 7, expect delays. Seek shelter until cleared.",
+                "All units, maintain firewatch; temperatures dropping below minus ten, frostbite risk high.",
+                "Winter convoy routes updated: primary extraction point shifted to the north depot, proceed with caution.",
+                "Remember to keep your respirators on in sub‑zero winds; exposure can cause severe hypothermia.",
                 },
             },
         };
@@ -108,7 +112,7 @@ namespace CloneZ
 
         private void Update()
         {
-            if (!_on) return;
+            // This method runs only when the component is enabled, i.e., when the radio is on.
             float now = Time.time;
             if (now >= _noiseAt)
             {
@@ -131,6 +135,7 @@ namespace CloneZ
             into.Add(new InteractAction("Previous channel", PrevChannel).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Turn it up", c => Louder(c, 1)).DisabledIf(_volume >= MaxVolume, "It won't go any louder").DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Turn it down", c => Louder(c, -1)).DisabledIf(_volume <= 0, "It's down as low as it goes").DisabledIf(!near, TooFar));
+            into.Add(new InteractAction("Check radio status", CheckStatus).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Key the handset", KeyHandset).DisabledIf(!near, TooFar));
         }
 
@@ -141,10 +146,18 @@ namespace CloneZ
             ctx.Notify("The set hums and its dial lights up amber. " + n.Name + " \u2014 " + n.Title + ".");
         }
 
+        private void CheckStatus(InteractContext ctx)
+        {
+            Net n = Nets[_net];
+            string vol = _volume <= 0 ? "low" : _volume >= MaxVolume ? "loud" : "medium";
+            ctx.Notify($"Radio is on {n.Name} — {n.Title}. Volume: {vol}.");
+        }
+
         private void Switch(bool on)
         {
             if (_on == on) return;
             _on = on;
+            this.enabled = on;
             ShowOn(on);
             MakeNoise(CloneZConfig.ReceiverKnobNoise);
             if (on)

@@ -236,6 +236,16 @@ CacheBones();
             TimeOfDay.MoonlightScale = 1f;
         }
 
+        /// <summary>
+        /// Cache the main camera on awake if it hasn't been assigned yet.
+        /// This protects against the rare case where Bind hasn't set the camera.
+        /// </summary>
+        private void Awake()
+        {
+            if (Camera == null)
+                Camera = Camera.main;
+        }
+
         private void LateUpdate()
         {
             if (_urpAsset != UniversalRenderPipeline.asset) _urpAsset = UniversalRenderPipeline.asset;
@@ -248,7 +258,7 @@ CacheBones();
             }
 
             float dt = Time.deltaTime;
-            if (Camera == null) Camera = Camera.main;
+            // Cached camera set in Awake; no per-frame lookup needed.
             if (HeadBone == null) CacheBones();
             if (_gearVisuals == null)
             {

@@ -22,12 +22,18 @@ namespace CloneZ
             if (r == null) return;
             s_Renderers.Add(r);
             Apply(r, ViewState.CeilingsVisible);
+            // Ensure the component is enabled to process visibility changes
+            var comp = FindObjectOfType<CeilingVisibility>();
+            if (comp != null) comp.enabled = true;
         }
 
         /// <summary>Forgets every ceiling (called before a new map is built).</summary>
         public static void Clear()
         {
             s_Renderers.Clear();
+            // Disable the component when no renderers are present
+            var comp = FindObjectOfType<CeilingVisibility>();
+            if (comp != null) comp.enabled = false;
             // s_Applied removed - no need to reset
         }
 
@@ -48,6 +54,8 @@ namespace CloneZ
                 if (r == null) { s_Renderers.RemoveAt(i); continue; }
                 Apply(r, shown);
             }
+            // If no renderers remain, disable this component to avoid per‑frame work.
+            if (s_Renderers.Count == 0) enabled = false;
         }
 
         private void OnDestroy() => Clear();

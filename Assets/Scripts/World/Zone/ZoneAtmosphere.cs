@@ -21,6 +21,13 @@ namespace CloneZ
         private TimeOfDay _tod;
         private GameSettings _gs;
         private SandboxSettings _ss;
+        // Cached input values to detect changes
+        private float _lastFogDensity;
+        private float _lastFogReadability;
+        private float _lastNightDarkness;
+        private Color _lastTint;
+        private float _lastSkyOverrideStrength;
+        private bool _lastIsNight;
 
         public static ZoneAtmosphere Attach(GameObject host, ZoneDef zone)
         {
@@ -42,10 +49,33 @@ namespace CloneZ
                 _gs = GameSettings.Current;
                 _ss = SandboxSettings.Current;
             }
+            // Update base render settings when they change externally
             if (!Mathf.Approximately(RenderSettings.fogStartDistance, _lastStart)) _baseStart = RenderSettings.fogStartDistance;
             if (!Mathf.Approximately(RenderSettings.fogEndDistance, _lastEnd)) _baseEnd = RenderSettings.fogEndDistance;
             if (RenderSettings.ambientLight != _lastAmbient) _baseAmbient = RenderSettings.ambientLight;
             if (RenderSettings.fogColor != _lastFogColor) _baseFogColor = RenderSettings.fogColor;
+
+            // Determine if any inputs changed since last frame
+            float curFogDensity = _zone.FogDensity;
+            float curFogReadability = _gs.FogReadability;
+            float curNightDarkness = _ss.NightDarkness;
+            Color curTint = _zone.Tint;
+            float curSkyOverrideStrength = SkyOverrideStrength;
+            bool curIsNight = _tod != null && _tod.IsNight;
+
+            bool inputsUnchanged =
+                Mathf.Approximately(curFogDensity, _lastFogDensity) &&
+                Mathf.Approximately(curFogReadability, _lastFogReadability) &&
+                Mathf.Approximately(curNightDarkness, _lastNightDarkness) &&
+                curTint == _lastTint &&
+                Mathf.Approximately(curSkyOverrideStrength, _lastSkyOverrideStrength) &&
+                curIsNight == _lastIsNight &&
+                Mathf.Approximately(RenderSettings.fogStartDistance, _lastStart) &&
+                Mathf.Approximately(RenderSettings.fogEndDistance, _lastEnd) &&
+                RenderSettings.ambientLight == _lastAmbient &&
+                RenderSettings.fogColor == _lastFogColor;
+
+            if (inputsUnchanged) return; // early‑out, nothing changed
 
             float fog = Mathf.Clamp01(_zone.FogDensity * (1f - _gs.FogReadability * 0.75f));
             float end = Mathf.Lerp(_baseEnd, Mathf.Min(_baseEnd, 24f), fog);
@@ -68,6 +98,14 @@ namespace CloneZ
             RenderSettings.fogEndDistance = _lastEnd = end;
             RenderSettings.ambientLight = _lastAmbient = ambient;
             RenderSettings.fogColor = _lastFogColor = fogColor;
+
+            // Cache input values for next frame
+            _lastFogDensity = curFogDensity;
+            _lastFogReadability = curFogReadability;
+            _lastNightDarkness = curNightDarkness;
+            _lastTint = curTint;
+            _lastSkyOverrideStrength = curSkyOverrideStrength;
+            _lastIsNight = curIsNight;
         }
 
         private static Color Multiply(Color a, Color b) => new Color(a.r * b.r, a.g * b.g, a.b * b.b, a.a);

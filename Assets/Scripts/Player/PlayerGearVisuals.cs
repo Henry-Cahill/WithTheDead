@@ -307,7 +307,7 @@ namespace CloneZ
             bool big = k > 1.08f;
 
             // The pack's face rests just off the deepest point of the back over its height.
-            float backZ = 0f;
+            float backZ = float.MaxValue;
             for (float y = Mathf.Max(bottom, 0.95f); y <= top; y += 0.04f)
                 backZ = Mathf.Min(backZ, _torso.Surface(y, 0f, _inflate, false));
             float cz = backZ - 0.012f - d * 0.5f;
@@ -322,6 +322,8 @@ namespace CloneZ
             float bodyH = h - d * 0.5f;
             PlayerGearParts.Box(root, "Bag", new Vector3(0f, bottom + bodyH * 0.5f, cz), new Vector3(w, bodyH, d), body, true);
             PlayerGearParts.Tube(root, "BagTop", new Vector3(0f, top - d * 0.5f, cz), Vector3.right, w, d * 0.5f, body, true);
+            // Tiny carabiner loop indicating a worn attachment point.
+            PlayerGearParts.Box(root, "Carabiner", new Vector3(0f, top - d * 0.5f + 0.018f, cz + d * 0.5f + 0.006f), new Vector3(0.008f, 0.018f, 0.008f), hardware);
             // Small rivet boxes on the top tube for a worn‑metal look.
             PlayerGearParts.Box(root, "RivetFront", new Vector3(0f, top - d * 0.5f, cz + d * 0.5f + 0.004f), new Vector3(0.02f, 0.02f, 0.008f), hardware);
             PlayerGearParts.Box(root, "RivetBack", new Vector3(0f, top - d * 0.5f, cz - d * 0.5f - 0.004f), new Vector3(0.02f, 0.02f, 0.008f), hardware);

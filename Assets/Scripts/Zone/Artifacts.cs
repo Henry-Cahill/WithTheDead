@@ -108,6 +108,7 @@ namespace CloneZ
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             into.Add(new InteractAction("Take " + ArtifactCatalog.NameOf(ArtifactId), Take).Timed(1.2f, "Easing it free..."));
+            into.Add(new InteractAction("Inspect " + ArtifactCatalog.NameOf(ArtifactId), Inspect).Timed(0.5f, "Looking closely..."));
         }
 
         private void Take(InteractContext ctx)
@@ -135,6 +136,14 @@ namespace CloneZ
             else GameEvents.RaiseToast(ArtifactCatalog.NameOf(ArtifactId) + " — " + ArtifactCatalog.KnownCount(ArtifactId) + " properties known.");
             ZoneExposure.Add(0.01f);
             Destroy(gameObject);
+        }
+
+        private void Inspect(InteractContext ctx)
+        {
+            if (this == null) return;
+            string desc = ArtifactCatalog.Describe(ArtifactId);
+            if (string.IsNullOrEmpty(desc)) desc = "Nothing special.";
+            ctx.Notify(desc);
         }
     }
 

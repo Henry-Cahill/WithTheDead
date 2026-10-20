@@ -23,10 +23,12 @@ namespace CloneZ
         private float _dryAt = -1f;               // the in-game hour (TimeOfDay.Now) it's dry again; below 0 it is
         private float _roll, _shownRoll;
         private float _nextCheck;
+        private float _nextAvailCheck;
+        private bool _cachedAvailable = true;
 
         public override string DisplayName => "Towel rail";
         public override Vector3 InteractPoint => _point;
-        public override bool IsAvailable => base.IsAvailable && BathroomFixtures.SurvivorInFront(_face, _normal);
+        public override bool IsAvailable => base.IsAvailable && _cachedAvailable;
         public override string SaveKey => _key;
 
         /// <summary>True while the towel is still damp from the last use.</summary>
@@ -62,21 +64,30 @@ namespace CloneZ
             ApplyRoll();
         }
 
-        private void Update()
+private void Update()
+{
+    if (_shownRoll != _roll)
+    {
+        _shownRoll = Mathf.MoveTowards(_shownRoll, _roll, SwingSpeed * Time.deltaTime);
+        ApplyRoll();
+    }
+    // Dryness check (original behavior)
+    if (Time.time >= _nextCheck)
+    {
+        _nextCheck = Time.time + 1f;
+        if (_dryAt >= 0f && !IsDamp)
         {
-            if (_shownRoll != _roll)
-            {
-                _shownRoll = Mathf.MoveTowards(_shownRoll, _roll, SwingSpeed * Time.deltaTime);
-                ApplyRoll();
-            }
-            if (Time.time < _nextCheck) return;
-            _nextCheck = Time.time + 1f;
-            if (_dryAt >= 0f && !IsDamp)
-            {
-                _dryAt = -1f;
-                ShowLook();
-            }
+            _dryAt = -1f;
+            ShowLook();
         }
+    }
+    // Cache bathroom-side availability check
+    if (Time.time >= _nextAvailCheck)
+    {
+        _nextAvailCheck = Time.time + 1f;
+        _cachedAvailable = BathroomFixtures.SurvivorInFront(_face, _normal);
+    }
+}
 
         private void ApplyRoll()
         {
@@ -95,6 +106,7 @@ namespace CloneZ
             into.Add(new InteractAction("Dry yourself off", DryOff).Timed(CloneZConfig.TowelDrySeconds, "Drying off", HumanoidActivity.Use));
             into.Add(new InteractAction("Straighten the towel", Straighten));
             into.Add(new InteractAction("Inspect towel", Inspect));
+            into.Add(new InteractAction("Let towel dry", LetDry));
         }
 
         private void DryOff(InteractContext ctx)
@@ -125,6 +137,19 @@ namespace CloneZ
             }
             _roll = 0f;
             ctx.Notify("You square the towel up on the rail and smooth it flat. There.");
+        }
+
+        private void LetDry(InteractContext ctx)
+        {
+            if (!IsDamp)
+            {
+                ctx.Notify("The towel is already dry.");
+                return;
+            }
+            // Speed up drying by setting the dry time to now.
+            _dryAt = TimeOfDay.Now;
+            ShowLook();
+            ctx.Notify("You give the towel some extra air, and it dries instantly.");
         }
 
         // New inspection action

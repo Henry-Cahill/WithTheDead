@@ -211,6 +211,15 @@ for (float x = -len * 0.5f; x <= len * 0.5f; x += 4f)
                 {
                     Color c = ZoneKit.V(rng.NextDouble() < 0.5 ? new Color(0.35f, 0.17f, 0.12f) : new Color(0.20f, 0.30f, 0.38f), rng);
                     sb.Solid.Box(new Vector3(0f, 1.3f, 0f), new Vector3(6f, 2.6f, 2.44f), ZoneKit.Mt(c));
+                    // Add rust‑stained rivet heads on the container hull for visual wear
+                    int rivetCount = rng.Next(2, 6);
+                    for (int r = 0; r < rivetCount; r++)
+                    {
+                        float offsetX = (float)rng.NextDouble() * 5.5f - 2.75f; // –2.75 .. 2.75 m
+                        float offsetY = (float)rng.NextDouble() * 2.4f + 0.1f; // 0.1 .. 2.5 m
+                        Vector3 rivPos = new Vector3(offsetX, offsetY, 1.22f + 0.01f);
+                        sb.Solid.Cylinder(rivPos, 0.01f, 0.015f, 8, ZoneKit.Mt(ZoneKit.RustDark));
+                    }
                     sb.Collider(new Vector3(0f, 1.3f, 0f), new Vector3(6f, 2.6f, 2.44f));
                     if (rng.NextDouble() < 0.6) sb.Storage("Shipping container", "spill_container", new Vector3(3.2f, 1f, 0f), ContainerType.Crate, 5);
                 }

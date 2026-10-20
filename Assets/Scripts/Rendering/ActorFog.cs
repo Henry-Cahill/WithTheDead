@@ -17,6 +17,7 @@ namespace CloneZ
         private bool _shown = true;
         private float _next, _lastSeen = -99f;
         private Actor _actor;
+        private Transform _transform;
 
         /// <summary>True while this actor is drawn for the local survivor.</summary>
         public bool Shown => _shown;
@@ -24,6 +25,7 @@ namespace CloneZ
         private void Start()
         {
             _actor = GetComponent<Actor>();
+            _transform = transform;
             _next = Time.time + Random.value * 0.1f;
             Cache();
         }
@@ -37,7 +39,7 @@ namespace CloneZ
             if (ZombieVisibility.HasSight && Actor.LocalPlayer != null && _actor != Actor.LocalPlayer)
             {
                 float h = _actor != null ? _actor.Height : 1.6f;
-                Vector3 root = transform.position;
+                Vector3 root = _transform.position;
                 bool dead = _actor != null && !_actor.IsAlive;
                 Vector3 chest = root + Vector3.up * (dead ? 0.3f : h * 0.65f);
                 Vector3 head = root + Vector3.up * (dead ? 0.3f : h * 0.92f);
@@ -60,7 +62,7 @@ namespace CloneZ
         private void Cache()
         {
             _renderers = GetComponentsInChildren<Renderer>(true);
-            _count = transform.hierarchyCount;
+            _count = _transform.hierarchyCount;
             for (int i = 0; i < _renderers.Length; i++)
                 if (_renderers[i] != null) _renderers[i].forceRenderingOff = !_shown;
         }

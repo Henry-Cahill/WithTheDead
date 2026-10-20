@@ -321,6 +321,19 @@ namespace CloneZ
             RowActions acts = EntryActions(e);
             System.Action menu = () => ShowMenu(def.DisplayName + (s.Count > 1 ? "  (" + s.Count + ")" : ""), acts.Menu);
             RectTransform row = NewRow(list, y, h, bg, def, EntryInfo(e), acts.Move, menu);
+            // Add a subtle wear‑edge strip on the left side of each row to hint at condition
+            if (def.IsDamageable)
+            {
+                // Map condition (0..1) to a gradient: good → warning → bad → rotten
+                Color edgeCol;
+                float c = s.Condition01;
+                if (c > 0.8f) edgeCol = GoodCol;
+                else if (c > 0.5f) edgeCol = WarnCol;
+                else if (c > 0.2f) edgeCol = BadCol;
+                else edgeCol = RottenCol;
+                // thin vertical bar, 3 px wide, inset 2 px from the left edge, full height minus a little margin
+                NewImage(row, "WearEdge", new Vector2(0f, 0.5f), new Vector2(2f, 0f), new Vector2(3f, h - 4f), edgeCol);
+            }
 
             if (!sub) AddIcon(row, def, badge: e.Kind == EntryKind.Worn || e.InHand);
             string count = s.Count <= 1 ? "" : sub ? "  \u00d7" + s.Count : " (" + s.Count + ")";
@@ -366,20 +379,28 @@ namespace CloneZ
         }
 
         // The item's tint with a one-letter category glyph; worn / in-hand items get PZ's green tick.
-        private void AddIcon(RectTransform row, ItemDef def, bool badge)
+        private void AddIcon(RectTransform row, ItemDef def, bool badge, float condition01 = 1f)
         {
             RectTransform icon = NewImage(row, "Icon", new Vector2(0f, 0.5f), new Vector2(IconX, 0f), new Vector2(IconW, IconW), def.Tint);
             Text glyph = Label(icon, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(IconW, IconW), 14, TextAnchor.MiddleCenter, IconTextColor(def.Tint));
             glyph.text = CategoryGlyph(def.Category);
             glyph.fontStyle = FontStyle.Bold;
             glyph.raycastTarget = false;
-            if (!badge) return;
-
-            RectTransform tick = NewImage(icon, "Equipped", new Vector2(1f, 0f), new Vector2(4f, -4f), new Vector2(13f, 13f), new Color(0.24f, 0.62f, 0.32f));
-            Text t = Label(tick, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(13f, 13f), 11, TextAnchor.MiddleCenter, Color.white);
-            t.text = "\u221a";
-            t.fontStyle = FontStyle.Bold;
-            t.raycastTarget = false;
+            // Add badge (equipped tick) if requested
+            if (badge)
+            {
+                RectTransform tick = NewImage(icon, "Equipped", new Vector2(1f, 0f), new Vector2(4f, -4f), new Vector2(13f, 13f), new Color(0.24f, 0.62f, 0.32f));
+                Text t = Label(tick, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(13f, 13f), 11, TextAnchor.MiddleCenter, Color.white);
+                t.text = "\u221a";
+                t.fontStyle = FontStyle.Bold;
+                t.raycastTarget = false;
+            }
+            // Damage scar overlay for wear
+            if (def.IsDamageable && condition01 < 0.5f)
+            {
+                // semi‑transparent red overlay
+                NewImage(icon, "DamageScar", new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(IconW, IconW), new Color(1f, 0f, 0f, 0.3f));
+            }
         }
 
         private void AddName(RectTransform row, string name, string suffix, float h, int size, Color color, float indent)

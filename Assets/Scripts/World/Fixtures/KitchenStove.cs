@@ -33,6 +33,7 @@ namespace CloneZ
         private Color _enamel;
         private Transform _fittings;          // everything built onto the range (built again should it ever be moved)
         private Vector3 _builtAt;
+        private bool _needsRebuild; // set when stove moved and needs fittings rebuilt
         private readonly FixturePart[] _knobs = new FixturePart[4];
         private readonly MeshRenderer[] _flames = new MeshRenderer[4];
         private FixturePart _ovenKnob, _ovenDoor;
@@ -84,6 +85,7 @@ namespace CloneZ
             s._enamel = enamel;
             s._flickerSeed = UnityEngine.Random.value * 50f;
             s.BuildFittings();
+            s._needsRebuild = false; // ensure flag cleared after initial build
             return s;
         }
 
@@ -114,11 +116,16 @@ namespace CloneZ
         }
 
         #region Building
+        protected void MarkRebuildNeeded()
+        {
+            _needsRebuild = true;
+        }
         private void BuildFittings()
         {
             if (_fittings != null) Destroy(_fittings.gameObject);
             Vector3 o = transform.position;
             _builtAt = o;
+            _needsRebuild = false; // fittings are up‑to‑date after building
             // The range faces the way its root is turned (a raid kitchen's stove stands against any wall).
             var f = new KitchenFrame(o, transform.eulerAngles.y);
             _fittings = new GameObject("StoveFittings").transform;
@@ -163,7 +170,11 @@ namespace CloneZ
         private void Update()
         {
             // An old save's stove is carried to its place in the furnished home after it's built: fit it out again there.
-            if ((transform.position - _builtAt).sqrMagnitude > 1e-6f) BuildFittings();
+            if (_needsRebuild)
+            {
+                BuildFittings();
+                _needsRebuild = false;
+            }
             if (_lit == 0) return;
 
             // Gas flames never burn quite steady.
@@ -187,6 +198,7 @@ namespace CloneZ
             into.Add(new InteractAction(_oven ? "Turn off the oven" : "Turn on the oven", _toggleOven));
             into.Add(new InteractAction(_doorOpen ? "Close the oven door" : "Open the oven door", _toggleDoor));
             into.Add(new InteractAction("Cook something", _cook));
+            into.Add(new InteractAction("Feel the heat", ShowWarmth));
         }
 
         #region The controls
@@ -229,9 +241,11 @@ namespace CloneZ
             if (_lit == 0 && !_oven) SetBurner(0, true, true);
             if (ctx.Interactor != null) ctx.Interactor.OpenInventory();
         }
-        #endregion
 
-        #region Looks
+        private void ShowWarmth(InteractContext ctx)
+        {
+            ctx.Notify($"The stove radiates warmth ({Warmth:F1}).");
+        }
         private void ApplyAll()
         {
             for (int i = 0; i < 4; i++)
