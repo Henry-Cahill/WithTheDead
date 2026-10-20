@@ -3001,3 +3001,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(new Vector3(0f, 1.74f, 0.31f), new Vector3(0.08f, 0.02f, 0.005f), Mt(Chrome));`
   Place it just above the existing dial box (`m.Box(new Vector3(0f, 1.8f, 0.3f), …)`) so it sits on the safe’s face.
   Use the same deterministic random source `rng` only if you want occasional tint variation (e.g. `Mt(Chrome * V(Chrome, rng, 0.02f))`), but keep the plate size ≤ 0.12 m total and ≤ 1 primitive.
+- [ ] Cache the ground‑probe raycast in Assets/Scripts/Characters/HumanoidAnimator.cs by only performing it when the character’s height might have changed, rather than unconditionally each PlaceRoot call.
+  Add a private `bool _groundDirty` field initialized to true.
+  In Tick(float dt) after computing `raw = _dead || _lying || Seated ? 0f : v.magnitude;` set `_groundDirty = _groundDirty || raw > 0.01f;` (or when the character is teleported via Snap or CarryFrom).
+  In Snap() set `_groundDirty = true;`.
+  In PlaceRoot(float dt) replace the unconditional raycast block with `if (_groundDirty && !_dead && !Seated) { … existing raycast code … _groundDirty = false; }` and keep the existing `_groundOffset` smoothing logic unchanged.
+  The player’s view (character staying on the floor, stepping up/down slopes, sitting or falling) remains identical, but the expensive `Physics.Raycast` runs only when necessary, reducing per‑frame allocations and CPU work.
