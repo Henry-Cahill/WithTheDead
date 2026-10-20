@@ -3573,7 +3573,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   After this fix, taking vitamins will suppress cold symptoms for roughly two minutes of in‑game time, as described to the player, instead of an unintended twenty‑minute period.
   All other behavior (cold catching logic, toast messages, etc.) remains unchanged.
   - 14:55 landed by hts-llm in 1 min: **Change Summary**
-- [ ] Add a subtle metal “corner‑cap” to each exterior wall built by `StarterHome.Raise` in `Assets/Scripts/World/StarterHome.cs`
+- [x] Add a subtle metal “corner‑cap” to each exterior wall built by `StarterHome.Raise` in `Assets/Scripts/World/StarterHome.cs`
   In the `foreach (Slot s in Slots)` loop, after the line `var piece = BuildPiece.Spawn(...);` insert a new `if (s.Type == BuildPieceType.Wall)` block that creates a tiny metal trim piece.
   Create the trim with `GameObject.CreatePrimitive(PrimitiveType.Cube);` named `"WallCap"` and parent it to `piece.transform` (keep `false` for world‑position stay).
   Use the same deterministic seed as the wall piece: `int seed = StarterHome.SlotSeed(s.Type, s.X, s.Z); UnityEngine.Random.InitState(seed);`
@@ -3582,6 +3582,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `{`
   `0f => new Vector3(0f, WallH - 0.04f, 0.36f), // north‑facing wall`
   `180f => new Vector3(0f, WallH - 0.04f, -0.36f), // south‑facing wall`
+  - 14:58 landed by hts-llm in 2.3 min: **Changed file**
 - [ ] Cache the panic level and its descriptor in Assets/Scripts/Player/PlayerPanic.cs so they are only recalculated when the panic value actually changes, not on every Update or UI read.
 - [ ] Add an “Inspect” verb to ArtifactNode so revealed artifacts can be examined before taking them, by editing `Assets/Scripts/Zone/Artifacts.cs`
   In `public override void GetActions(InteractContext ctx, List<InteractAction> into)`, after the existing `Take` action, add:

@@ -204,6 +204,30 @@ namespace CloneZ
 foreach (Slot s in Slots)
             {
                 var piece = BuildPiece.Spawn(world, s.Type, BuildPiece.CenterFor(s.Type, new Vector3(s.X, 0f, s.Z)), s.Yaw, 1f, prebuilt: true);
+                // Add subtle metal corner‑cap to exterior walls
+                if (s.Type == BuildPieceType.Wall)
+                {
+                    int seed = StarterHome.SlotSeed(s.Type, s.X, s.Z);
+                    UnityEngine.Random.InitState(seed);
+                    var cap = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                    cap.name = "WallCap";
+                    cap.transform.SetParent(piece.transform, false);
+                    Vector3 capOffset = s.Yaw switch
+                    {
+                        0f => new Vector3(0f, WallH - 0.04f, 0.36f),
+                        180f => new Vector3(0f, WallH - 0.04f, -0.36f),
+                        90f => new Vector3(0.36f, WallH - 0.04f, 0f),
+                        270f => new Vector3(-0.36f, WallH - 0.04f, 0f),
+                        _ => new Vector3(0f, WallH - 0.04f, 0.36f)
+                    };
+                    // Apply tiny random jitter ±0.01 on X and Z
+                    capOffset.x += (UnityEngine.Random.value - 0.5f) * 0.02f;
+                    capOffset.z += (UnityEngine.Random.value - 0.5f) * 0.02f;
+                    cap.transform.localPosition = capOffset;
+                    cap.transform.localScale = new Vector3(0.04f, 0.02f, 0.02f);
+                    var rend = piece.GetComponentInChildren<Renderer>();
+                    if (rend != null) cap.GetComponent<Renderer>().sharedMaterial = rend.sharedMaterial;
+                }
                 if (s.Type == BuildPieceType.Doorway)
                 {
                     int seed = StarterHome.SlotSeed(s.Type, s.X, s.Z);
