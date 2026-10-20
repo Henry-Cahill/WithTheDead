@@ -759,3 +759,5 @@ you want to see in game. Indent extra lines under a task to add detail.
   – Apply a tiny random offset so handles are not perfectly symmetric: `float offX = (float)(Rng.NextDouble() - 0.5) * 0.02f;` and add it to the X component of the point (`RunPoint(...).x + offX`).
   – Add the primitive with `p.Mesh.Box(RunPoint(...), RunSize(r, 0.04f, 0.015f, 0.015f), wood);`.
   – Leave colliders untouched (the handle is visual only).
+- [ ] Fix HasUsableContent in Assets/Scripts/Items/ContentDatabase.cs so it verifies *all* required tables exist, not just `content_meta` and `item`.
+- [ ] Add a subtle four‑edge metal border to the main report panel in Assets/Scripts/Extraction/RaidSummaryUI.cs (method `Build`) so the UI feels like a worn wooden/metal board appropriate to a 1993 rural setting.
