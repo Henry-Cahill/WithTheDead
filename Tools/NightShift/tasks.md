@@ -3353,8 +3353,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add a horizontal strip: `m.Box(f.P(f.Mid, gy, across), f.Size(w - 0.09f, 0.003f, 0.006f), muntin);` (size ≈ 3 mm tall, spans the glass width)
   These two primitives add a modest cross‑grid reminiscent of 1990s rural windows, using existing wood material and keeping colliders and interaction unchanged.
   - 13:44 landed by hts-llm in 1.5 min: **Summary**
-- [ ] In Assets/Scripts/World/Fixtures/RaidStoreCopier.cs: Add a small “Inspect copier” action to `RaidStoreCopier.GetActions` that lets the survivor see whether the copier is jammed or running cleanly.
+- [x] In Assets/Scripts/World/Fixtures/RaidStoreCopier.cs: Add a small “Inspect copier” action to `RaidStoreCopier.GetActions` that lets the survivor see whether the copier is jammed or running cleanly.
   In `GetActions`, after the existing copy‑action block, insert:
   `if (!_jammed) into.Add(new InteractAction("Inspect copier", c => c.Notify("The copier hums smoothly – no jam in sight.")));`
   `else into.Add(new InteractAction("Inspect copier", c => c.Notify(Jams[_said % Jams.Length])));`
   This uses only the `Jams` array already defined and the `_jammed` flag, requires no new assets, and gives the player immediate feedback about the copier’s state without altering existing behaviour.
+  - 13:46 landed by 1htsserver in 0.9 min: **Changed file**

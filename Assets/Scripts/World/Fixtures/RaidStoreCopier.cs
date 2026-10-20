@@ -103,6 +103,11 @@ namespace CloneZ
                 into.Add(Copy().DisabledIf(true, "It's jammed \u2014 clear it first"));
             }
             else into.Add(Copy().DisabledIf(dead != null, dead));
+            // Added inspect action to report copier state
+            if (!_jammed)
+                into.Add(new InteractAction("Inspect copier", c => c.Notify("The copier hums smoothly – no jam in sight.")));
+            else
+                into.Add(new InteractAction("Inspect copier", c => c.Notify(Jams[_said % Jams.Length])));
             bool open = _lid != null && _lid.IsOpen;
             into.Add(new InteractAction(open ? "Close the lid" : "Lift the lid", c => SetLid(!open)));
             if (open) {
