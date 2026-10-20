@@ -75,6 +75,7 @@ namespace CloneZ
         private const float FlashlightVisionMultiplier = 1.6f;
         private static readonly float FlashlightBeamCos = Mathf.Cos(25f * Mathf.Deg2Rad);
 
+        /// <summary>Updates the internal NavMeshAgent reference and other components.</summary>
         private void Awake()
         {
             _agent = GetComponent<NavMeshAgent>();
@@ -84,6 +85,7 @@ namespace CloneZ
             _agent.stoppingDistance = CloneZConfig.ZombieAttackRange * 0.7f;
         }
 
+        /// <summary>Initialises the zombie's type, applying colour and speed tweaks.</summary>
         public void Configure(ZombieType type)
         {
             Type = type;
@@ -162,9 +164,11 @@ namespace CloneZ
         public Actor Prey => _prey;
 
         /// <summary>Where the hunted thing is (for the body's lean and gaze), or null.</summary>
+        /// <summary>The current chase target's position (or null if none).</summary>
         public Vector3? HuntTarget => _hasTarget && _prey != null ? _prey.transform.position : (Vector3?)null;
 
         /// <summary>Points this zombie at a target as if it had seen it (a Puppeteer's command, a lure).</summary>
+        /// <summary>Issues a command to directly set a target for this zombie (used by Puppeteer).</summary>
         public void Command(Actor target)
         {
             if (_state == State.Dead || target == null || !target.IsAlive || IsProtected(target)) return;
@@ -191,6 +195,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Finds the current prey, updates target data and reacts to visible or heard cues.</summary>
         private void Perceive()
         {
             if (_prey != null && (!_prey.IsAlive || _prey.Untargetable || IsProtected(_prey))) _prey = null;
@@ -603,6 +608,7 @@ namespace CloneZ
         #endregion
 
         #region Stagger & death
+        /// <summary>Applies a stagger effect, stopping movement and notifying listeners.</summary>
         public void Stagger(float duration, Vector3 direction, float force)
         {
             if (_state == State.Dead) return;
@@ -629,6 +635,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Ends the zombie's life, records death direction, stops physics and triggers fall animation.</summary>
         public void Kill(Vector3 hitDirection = default)
         {
             if (_state == State.Dead) return;

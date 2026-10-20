@@ -1048,9 +1048,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Use the existing line `"Rent's due on the seventh, same as always."` as the style reference – short, colloquial, present‑tense, and hinting at a wider story.
   Add the following strings to the array (preserving the surrounding commas and quotes):
   - 02:25 landed by hts-llm in 1.9 min: **Changed:** `Assets/Scripts/Hub/HubNpc.cs` – extended the `"barkeep"` dialog lines with six new, short, present‑tense sentences that evoke 
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Zombies/ZombieAI.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Zombies/ZombieAI.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 02:31 landed by 0htsserver in 5.8 min: Added concise `/// <summary>` documentation above each public method in **Assets/Scripts/Zombies/ZombieAI.cs** that previously lacked it:
 - [x] Add four small brass corner brackets to the top of the dresser in `FurnitureBuilder.DresserBody` (Assets/Scripts/World/FurnitureBuilder.Living.cs)
   Insert after the line `m.Box(new Vector3(0f, 0.81f, -0.01f), new Vector3(1.04f, 0.03f, 0.5f), G(c * 1.05f));`
   For each corner (±0.5 m on X, ±0.24 m on Z) call
