@@ -1254,12 +1254,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   This removes the repeated static‑property lookup (which internally performs a FindObjectByType) each frame for every rain barrel.
   The water‑fill simulation and visual refresh logic remain unchanged, so the player sees the same water level behavior and barrel appearance.
   No other code behavior is altered; the change is safe because WeatherSystem is a singleton that persists for the game session.
-- [ ] Add a “Empty the sink” action to Assets/Scripts/World/Fixtures/KitchenSink.cs that lets the player drain all standing water when the mains are off and there is water in the bowl, showing a message and updating the visual state.
+- [x] Add a “Empty the sink” action to Assets/Scripts/World/Fixtures/KitchenSink.cs that lets the player drain all standing water when the mains are off and there is water in the bowl, showing a message and updating the visual state.
   Add a private method `EmptySink(InteractContext ctx)` that sets `_level = 0f; _toldFull = false; RefreshWater(); ctx.Notify("You empty the sink; the water drains away.");`
   In `GetActions`, after the existing `wash`/`rinse`/`wash dishes` actions, insert:
   `if (!WaterMains.MainsOn && _level > 0.05f)`
   `into.Add(new InteractAction("Empty the sink", EmptySink));`
   This uses only fields and methods already present (`_level`, `_toldFull`, `RefreshWater`, `InteractContext`, `InteractAction`).
+  - 03:38 landed by 0htsserver in 6.2 min: **Changes made**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Cover.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
