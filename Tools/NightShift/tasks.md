@@ -730,3 +730,9 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Cache the main camera once in Awake instead of checking Camera.main every frame in ApplyRain() for Assets/Scripts/Core/WeatherSystem.cs
   In Awake() add `_cam = Camera.main;` so the reference is obtained at startup.
   Remove the null‑check/lookup inside ApplyRain(): delete the lines
+- [ ] Add a simple “Inspect” extra action to CivicToggle in Assets/Scripts/World/Fixtures/RaidCivicFixtures.cs
+  In class `CivicToggle` create a private method `void Inspect(InteractContext ctx)` that calls
+  `ctx.Notify($"The {_name} is currently {(_on ? "on" : "off")}.");`
+  In the static `Create` method, after the line `t._offLabel = offLabel;` add:
+  `t._extra = (c, list) => list.Add(new InteractAction("Inspect", Inspect));`
+  This adds a second action listed after the main toggle action; pressing [Q] will show the current on/off state without changing anything. All existing fields and behavior remain unchanged.
