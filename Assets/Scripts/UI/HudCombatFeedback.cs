@@ -150,7 +150,7 @@ namespace CloneZ
         private void OnMelee(IDamageable target, bool killed)
         {
             Transform t = target != null ? target.Transform : null;
-            if (t != null && t.GetComponent<Actor>() != null) Hit(killed, false);
+            if (!killed && t != null && t.GetComponent<Actor>() != null) Hit(false, false);
         }
 
         private void Hit(bool kill, bool head)

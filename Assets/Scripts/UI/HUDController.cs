@@ -226,7 +226,8 @@ namespace CloneZ
                 ShowViewBanner(_layout.View);
             }
             if (_viewBannerTimer > 0f && !blocked) _viewBannerTimer -= unscaledDt;
-            bool on = _viewBannerTimer > 0f && !blocked;
+            bool on = _viewBannerTimer > 0f && !blocked
+                && HudViewLayout.StyleShows(GameSettings.Current.Hud, HudTier.Secondary);
             if (_viewBanner.enabled != on) _viewBanner.enabled = on;
             if (on) _viewBanner.color = HudUI.WithAlpha(HudReadouts.Dim, Mathf.Clamp01(_viewBannerTimer / 0.6f) * Mathf.Clamp01((3.2f - _viewBannerTimer) / 0.2f));
         }

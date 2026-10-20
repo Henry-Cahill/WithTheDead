@@ -287,10 +287,13 @@ namespace CloneZ
             if (swapped || _reserveTimer <= 0f)
             {
                 _reserveTimer = 0.25f;
-                reserve = gun != null && inv != null ? inv.AmmoReserve(gun.AmmoId) : 0;
+                reserve = gun != null && inv != null && combat != null
+                    ? inv.AmmoReserve(combat.LoadedAmmo > 0 ? combat.LoadedAmmoId : combat.PickAmmo(gun))
+                    : 0;
             }
             int loaded = gun != null && combat != null ? combat.LoadedAmmo : 0;
-            int capacity = gun != null ? Mathf.Max(1, gun.MagazineSize) : 0;
+            int capacity = gun != null ? Mathf.Max(1,
+                inv != null ? Ballistics.Build(inv.EquippedStack).MagSize : gun.MagazineSize) : 0;
             bool reloading = gun != null && combat != null && combat.IsReloading;
             bool wears = weapon != null && weapon.IsDamageable && !weapon.UsesCharge && inv != null;
             float condition = wears ? Mathf.Round(Mathf.Clamp01(inv.EquippedCondition01) * 50f) / 50f : 1f;
