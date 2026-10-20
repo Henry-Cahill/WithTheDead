@@ -241,6 +241,11 @@ namespace CloneZ
                     break;
                 case HomeFurnitureKind.Fridge:
                     FurnitureBuilder.Fridge(m, rng, new Color(0.88f, 0.87f, 0.83f));
+                    // Add a small metal door handle with left/right variation
+                    bool left = rng.Next(2) == 0;
+                    Vector3 handlePos = new Vector3(left ? -0.33f : 0.33f, 0.5f, 0.05f);
+                    Vector3 handleSize = new Vector3(0.02f, 0.12f, 0.02f);
+                    m.Box(handlePos, handleSize, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
                     break;
                 case HomeFurnitureKind.Toilet:
                     FurnitureBuilder.Toilet(m, rng);
