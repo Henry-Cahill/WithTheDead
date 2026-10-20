@@ -132,6 +132,14 @@ namespace CloneZ
             Vector3 boothAt = at + Quaternion.Euler(0f, yaw, 0f) * new Vector3(4.5f, 0f, 1.5f);
             var sb = new SiteBuilder(world, "Checkpoint", boothAt, yaw, rng);
             sb.Solid.Box(new Vector3(0f, 1.2f, 0f), new Vector3(2.4f, 2.4f, 2.4f), ZoneKit.M(ZoneKit.WardenOlive));
+            // Occasionally add a weathered flag on a short pole for visual variety.
+            if (ZoneKit.R(rng, 0f, 1f) < 0.6f)
+            {
+                // Short wooden pole.
+                sb.Solid.Rod(new Vector3(0f, 0f, -0.6f), new Vector3(0f, 1f, -0.6f), 0.025f, ZoneKit.M(ZoneKit.WetWood), 4);
+                // Faded orange cloth flag.
+                sb.Solid.Box(new Vector3(0f, 1.02f, -0.6f), new Vector3(0.4f, 0.25f, 0.02f), ZoneKit.M(new Color(0.78f, 0.25f, 0.2f)));
+            }
             sb.Solid.Box(new Vector3(0f, 1.6f, -1.21f), new Vector3(1.6f, 0.7f, 0.02f), ZoneKit.Gs(new Color(0.6f, 0.7f, 0.75f)));
             sb.Roof.Box(new Vector3(0f, 2.5f, 0f), new Vector3(2.8f, 0.15f, 2.8f), ZoneKit.Mt(ZoneKit.RustDark));
             sb.Collider(new Vector3(0f, 1.2f, 0f), new Vector3(2.4f, 2.4f, 2.4f));
