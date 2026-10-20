@@ -2625,7 +2625,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Freeze();`
   `}`
   to
-- [ ] Add a “Listen to door” action to Assets/Scripts/World/Fixtures/RaidDoor.cs by extending GetActions so the survivor can get a textual cue about the door’s condition.
+- [x] Add a “Listen to door” action to Assets/Scripts/World/Fixtures/RaidDoor.cs by extending GetActions so the survivor can get a textual cue about the door’s condition.
   In GetActions after the existing “Inspect door” entry, insert:
   `into.Add(new InteractAction("Listen to door", ctx => {`
   `if (_broken) ctx.Notify("The door lies in splintered wood, silent and useless.");`
@@ -2634,6 +2634,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `string state = percent < 35 ? "severely damaged" : "in decent shape";`
   `ctx.Notify($"You hear the door creak; it’s {state} ({percent} %).");`
   }`
+  - 10:36 landed by 1htsserver in 1.7 min: **Changed**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Player/PlayerBuilder.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
