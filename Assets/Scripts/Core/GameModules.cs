@@ -20,6 +20,9 @@ namespace CloneZ
     {
         private static bool s_Init;
 
+        /// <summary>
+        /// Ensures all game modules are initialised once at startup.
+        /// </summary>
         public static void EnsureInit()
         {
             if (s_Init) return;
@@ -57,13 +60,31 @@ namespace CloneZ
         /// <summary>The wave-survival arena is built.</summary>
         public static event Action<Transform> ArenaBuilt;
 
+        /// <summary>
+        /// Raises the PlayerBuilt hook for the created player stats.
+        /// </summary>
         public static void RaisePlayerBuilt(PlayerStats p) => Each(PlayerBuilt, h => h(p));
+        /// <summary>
+        /// Raises the RaidMapBuilt hook after the raid map is constructed.
+        /// </summary>
         public static void RaiseRaidMapBuilt(Transform w, RaidMapInfo m, ZoneDef z, System.Random rng) => Each(RaidMapBuilt, h => h(w, m, z, rng));
+        /// <summary>
+        /// Raises the RaidStarted hook when the raid becomes live.
+        /// </summary>
         public static void RaiseRaidStarted(Transform w, RaidMapInfo m, ZoneDef z) => Each(RaidStarted, h => h(w, m, z));
+        /// <summary>
+        /// Raises the HubBuilt hook after the hub world is constructed.
+        /// </summary>
         public static void RaiseHubBuilt(Transform w) => Each(HubBuilt, h => h(w));
+        /// <summary>
+        /// Raises the ArenaBuilt hook after the arena is built.
+        /// </summary>
         public static void RaiseArenaBuilt(Transform w) => Each(ArenaBuilt, h => h(w));
 
         // Each subscriber runs in isolation: one broken feature must not stop the world being built.
+        /// <summary>
+        /// Iterates over each subscriber of a hook, calling them safely.
+        /// </summary>
         private static void Each<T>(T multicast, Action<T> call) where T : Delegate
         {
             if (multicast == null) return;

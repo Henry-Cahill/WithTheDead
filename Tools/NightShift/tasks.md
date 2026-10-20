@@ -1229,9 +1229,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 03:27 landed by 1htsserver in 3.1 min: **Changes made**
 - [x] Add a “toggle all lights” action to LightSwitch so the survivor can switch every circuit on or off with one interaction, updating the script in Assets/Scripts/World/Fixtures/LightSwitch.cs
   - 03:27 landed by 0htsserver in 2.8 min: **Changed file**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/GameModules.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/GameModules.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 03:31 landed by 1htsserver in 3.5 min: Added concise `/// <summary>` documentation to every public method and event in `Assets/Scripts/Core/GameModules.cs` that previously lacked 
 - [x] Add two thin metal hinge plates to the propped‑open dumpster lid in Assets/Scripts/World/DecorProps.cs, method DecorProps.Dumpster.
   After the existing lid box call
   `m.Box(new Vector3(0.47f, 1.15f, -0.55f) + open * new Vector3(0f, 0f, 0.56f), new Vector3(0.92f, 0.04f, 1.12f), open, M(new Color(0.12f, 0.12f, 0.12f)));`
