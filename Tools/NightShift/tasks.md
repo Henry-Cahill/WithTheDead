@@ -558,13 +558,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   – Uses a muted brown colour from the existing palette, rendered with `CloneZUtil.Mat` via the `Part` helper, keeping colliders and interaction points unchanged.
   – No more than one extra primitive is added, staying within the ≤12‑primitive limit.
   - 23:59 landed by 0htsserver in 4.8 min: **Changed file**: `Assets/Scripts/Gadgets/Gadgets.cs`
-- [ ] Cache per‑frame lookups in Assets/Scripts/Player/PlayerPanic.cs
+- [x] Cache per‑frame lookups in Assets/Scripts/Player/PlayerPanic.cs
   – Add a private field `private TimeOfDay _timeOfDay;` and assign it in Awake with `_timeOfDay = TimeOfDay.Instance;`.
   – Add a private readonly int `_ignoreRaycastMask = 1 << CloneZConfig.IgnoreRaycastLayer;` and a private readonly int `_defaultRaycastMask = 1 << 0;` (initialize these in Awake or as inline field initializers).
   – Replace the two occurrences of `1 << CloneZConfig.IgnoreRaycastLayer` in `AssessThreat` with `_ignoreRaycastMask`.
   – Replace the occurrence of `1 << 0` in the `Physics.Raycast` call with `_defaultRaycastMask`.
   – Replace `TimeOfDay.Instance` in `Update` with the cached `_timeOfDay` (use a null‑check on `_timeOfDay`).
   – The player’s visual behaviour stays identical; only the per‑frame cost of repeatedly constructing the layer‑mask ints and fetching the singleton is removed.
+  - 00:05 landed by 1htsserver in 6.8 min: **Changed files**
 - [ ] Add a quick “Bang the roll‑up door” action to Assets/Scripts/World/Fixtures/RollUpShutter.cs that lets the survivor slap the curtain for noise without changing its state.
   In `Awake()` add ` _bangAct = Bang;` alongside the existing assignments.
   Implement a private method `void Bang(InteractContext ctx) => MakeNoise(CloneZConfig.RollUpNoise);`.

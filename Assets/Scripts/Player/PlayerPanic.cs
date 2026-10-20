@@ -28,6 +28,9 @@ namespace CloneZ
         private int _lastVisible;
         private float _tickTimer;
         private float _betaTimer;   // seconds of beta-blocker cover remaining
+        private TimeOfDay _timeOfDay;
+        private readonly int _ignoreRaycastMask = 1 << CloneZConfig.IgnoreRaycastLayer;
+        private readonly int _defaultRaycastMask = 1 << 0;
 
         public bool BetaBlockersActive => _betaTimer > 0f;
         /// <summary>Beta-blocker cover remaining, in seconds (captured/restored by the save system).</summary>
@@ -69,7 +72,11 @@ namespace CloneZ
         /// <summary>Too rattled to lie down and sleep (PZ blocks sleep while heavily panicked).</summary>
         public bool TooPanickedToSleep => Level >= 3;
 
-        private void Awake() => _stats = GetComponent<PlayerStats>();
+        private void Awake()
+        {
+            _stats = GetComponent<PlayerStats>();
+            _timeOfDay = TimeOfDay.Instance;
+        }
 
         /// <summary>Swallows a dose of beta blockers: steadies the nerves and bleeds off panic for a while.
         /// Returns true if it did anything, so the pill is only spent when it actually helps.</summary>
@@ -107,8 +114,8 @@ namespace CloneZ
             int visible = AssessThreat(out float threat);
 
             // Fear bites harder in the dark; eases toward normal by daylight.
-            float darkMult = TimeOfDay.Instance != null
-                ? Mathf.Lerp(CloneZConfig.PanicNightMultiplier, 1f, TimeOfDay.Instance.LightLevel)
+            float darkMult = _timeOfDay != null
+                ? Mathf.Lerp(CloneZConfig.PanicNightMultiplier, 1f, _timeOfDay.LightLevel)
                 : 1f;
 
             float panic = _stats.Panic;
@@ -154,7 +161,7 @@ namespace CloneZ
 
             int n = Physics.OverlapSphereNonAlloc(
                 transform.position, CloneZConfig.PanicSightRadius, _zombieBuf,
-                1 << CloneZConfig.IgnoreRaycastLayer, QueryTriggerInteraction.Ignore);
+                _ignoreRaycastMask, QueryTriggerInteraction.Ignore);
 
             _seen.Clear();
             for (int i = 0; i < n; i++)
@@ -173,7 +180,7 @@ namespace CloneZ
                 Vector3 dir = (zp - transform.position) / dist;
                 Vector3 zeye = zp + Vector3.up * 1f;
                 if (Physics.Raycast(eye + dir * 0.6f, (zeye - (eye + dir * 0.6f)).normalized,
-                        Vector3.Distance(eye + dir * 0.6f, zeye), 1 << 0, QueryTriggerInteraction.Ignore))
+                        Vector3.Distance(eye + dir * 0.6f, zeye), _defaultRaycastMask, QueryTriggerInteraction.Ignore))
                     continue;
 
                 visible++;
