@@ -1998,3 +1998,20 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/HomeFurniture.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] In Assets/Scripts/World/Fixtures/DoormatFixture.cs, modify the `Wipe` method to also dry the player’s boots by reducing the `Wetness` stat (if the stat object exists) after the notification.
+  Change the line `private static void Wipe(InteractContext ctx)` to keep the existing logic and then add:
+  `if (ctx.Stats != null && ctx.Stats.Wetness > 0f) ctx.Stats.Wetness = Mathf.Max(0f, ctx.Stats.Wetness - 0.15f);`
+  This gives a tangible effect to the “Wipe your feet” action: muddy boots become drier, matching the description that the mat “wipes the worst of the mud and rain off your boots.”
+  All other code, including the action list and notifications, remains unchanged.
+- [ ] Append six new dialogue strings to the `ZoneTalk.s_Lines` entry for `Factions.Wardens` in Assets/Scripts/AI/Humans/HumanNpc.cs
+  Locate the line ` [Factions.Wardens] = new[] { "Papers. No? Then turn around.", "Belt's closed after dark.", "Anyone past the wire without a pass gets shot. Nothing personal." },`
+  Add the new strings inside the array, preserving the existing formatting and commas.
+  Use the existing style as reference – e.g., `"Papers. No? Then turn around."` – short, blunt sentences with a hint of local winter hardship.
+  Themes for the new lines: frozen roads, rationed fuel, a broken radio tower, an abandoned farmhouse, a creaking wind‑chime on the fence, and a makeshift heater.
+  Example additions (original wording, no real brands):
+  `"The main road's iced over; the snowplow broke last week."`
+  `"Fuel's scarce; the depot's only got a half‑full barrel left."`
+  `"The old radio tower's dead—just static and the wind."`
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/ShowerFixture.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
