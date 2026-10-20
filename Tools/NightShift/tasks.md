@@ -1432,3 +1432,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Vector3 posJitter = new Vector3(ZoneKit.R(r, -0.02f, 0.02f), 0f, ZoneKit.R(r, -0.02f, 0.02f));`
   `Vector3 handlePos = new Vector3(4.5f, 1f, -1.25f) + posJitter;`
   `sb.Solid.CylinderX(handlePos, 0.015f, 0.07f, 8, ZoneKit.M(new Color(0.6f, 0.6f, 0.6f)), yawJitter);`
+- [ ] In Assets/Scripts/UI/HealthPanelController.cs: Fix off‑by‑one bug in HealthPanelController → Refresh that hides the last visible wound when there are more than MaxRows wounds.
