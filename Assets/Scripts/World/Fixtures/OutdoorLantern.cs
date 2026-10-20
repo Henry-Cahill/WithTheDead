@@ -35,8 +35,13 @@ namespace CloneZ
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             into.Add(new InteractAction("Tap the lantern", Tap));
+            into.Add(new InteractAction("Check power", CheckPower));
         }
 
+        private void CheckPower(InteractContext ctx)
+        {
+            ctx.Notify(PowerGrid.HousePowered ? "The house is powered." : "No power: " + (PowerGrid.NoPowerReason ?? "unknown reason") + ".");
+        }
         private void Tap(InteractContext ctx)
         {
             MakeNoise(0.6f);
