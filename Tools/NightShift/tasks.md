@@ -1275,3 +1275,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Change the line
   `m.Box(new Vector3(0.05f, 0.535f, bz), new Vector3(w + 0.02f, 0.05f, bl), Yaw(yaw), M(b));`
   to use a centered X coordinate:
+- [ ] Add four subtle metal‑rivets to the inventory window panel in Assets/Scripts/UI/InventoryUIController.cs (Build method) to give the UI a period‑correct, worn‑metal look.
+  Insert the following after the line
+  `_window = Panel(modalRt, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(WinW, WinH), new Color(0.11f, 0.12f, 0.14f, 0.98f));`
+  `// four tiny rivets at the window corners – metal fasteners appropriate for a 1993 rural UI`
+  `// size: 8 × 8 pixels; colour: same as the top accent but fully opaque`
+  `Color rivetColor = new Color(0.5f, 0.68f, 0.9f, 1f);`
+  `// top‑left`
+  `var rivetTL = new GameObject("RivetTL", typeof(RectTransform));`
+  `var rtTL = (RectTransform)rivetTL.transform;`
