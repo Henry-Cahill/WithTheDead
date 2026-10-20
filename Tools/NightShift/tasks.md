@@ -1882,9 +1882,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add `"The scent of soot from the stove clings to the steam, mixing with the taste of metal."`
   Add `"Each shave feels like salvaging a small piece of normality from the relentless cold."`
   - 07:13 landed by 1htsserver in 4 min: **Changed files**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/CookingStation.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [~] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/CookingStation.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 08:54 hts-llm made no changes: I inspected **Assets/Scripts/World/CookingStation.cs** and verified every public method and property. All public methods (`Nearest`, `InRang
 - [x] Remove the duplicated XML summary on `Hideout.StartCraft` in Assets/Scripts/Economy/Hideout.cs; keep only one `<summary>` tag.
   The method currently has two consecutive summary comments:
   `/// <summary>Starts a craft (inputs are consumed now; outputs arrive when it finishes).</summary>`
