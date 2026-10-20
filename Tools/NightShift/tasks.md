@@ -1165,9 +1165,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   `into.Add(new InteractAction("Inspect towel", Inspect));`
   Create a new private method in the class:
   - 02:59 landed by hts-llm in 4.4 min: Added an “Inspect towel” action to **TowelRail**.
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Interaction/StorageFixture.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Interaction/StorageFixture.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 03:13 landed by 1htsserver in 14.7 min: **Result:** All public methods and properties in *Assets/Scripts/World/Interaction/StorageFixture.cs* already have appropriate `/// <summary
 - [ ] Add a small coin‑slot detail to each vending machine built in `VendingAt` in Assets/Scripts/World/RaidLayoutsOffice.cs
   Locate the line `Transform t = b.FixtureBody(room, p, Sz(0.9f, 1.85f, 0.8f), true, (m, r) => FurnitureBuilder.OfficeVendingBody(m, r), "Vending machine");` and after it insert a primitive piece that represents a coin slot.
   Create the slot with a dark metal colour, size 0.08 m × 0.02 m × 0.02 m, positioned on the front face of the machine at `new Vector3(0f, 0.6f, 0.41f)` (relative to the vending‑machine origin).
