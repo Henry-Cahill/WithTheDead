@@ -2473,3 +2473,5 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [x] Fix the focus‑label update in `Assets/Scripts/UI/HudInteraction.cs` so the label text isn’t refreshed every frame.
   - 09:53 landed by hts-llm in 1.1 min: **Changed**
 - [ ] Add a small “blood‑splotch” detail to each zombie in Assets/Scripts/Zombies/ZombieAI.cs inside the `Configure(ZombieType type)` method, using the same deterministic random source as the existing rust patches, to give the zombie’s face a gritty, period‑appropriate wound‑mark.
+- [ ] Reduce per‑second allocations in `HudQuestTracker.Update` (Assets/Scripts/Quests/QuestBook.cs) by reusing a `StringBuilder` and iterating the quest list without a `foreach`.
+- [ ] In Assets/Scripts/World/Fixtures/RadioFixture.cs: Add a “Tune to the previous station” action to RadioFixture.GetActions and implement its handler.
