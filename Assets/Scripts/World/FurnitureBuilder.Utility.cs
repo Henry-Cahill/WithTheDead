@@ -32,6 +32,9 @@ namespace CloneZ
             m.Box(new Vector3(0.22f, 0.47f, 0.16f), new Vector3(0.43f, 0.78f, 0.02f), G(c * 0.97f));
             m.Box(new Vector3(-0.04f, 0.6f, 0.175f), new Vector3(0.02f, 0.1f, 0.02f), Mt(Chrome));
             m.Box(new Vector3(0.04f, 0.6f, 0.175f), new Vector3(0.02f, 0.1f, 0.02f), Mt(Chrome));
+            // Chrome hinge pins on the side frames
+            m.Box(new Vector3(-0.45f, 0.6f, 0.175f), new Vector3(0.02f, 0.1f, 0.02f), Mt(Chrome));
+            m.Box(new Vector3(0.45f, 0.6f, 0.175f), new Vector3(0.02f, 0.1f, 0.02f), Mt(Chrome));
             Color red = new Color(0.72f, 0.12f, 0.10f);
             m.Box(new Vector3(-0.22f, 0.62f, 0.172f), new Vector3(0.14f, 0.04f, 0.004f), M(red));
             m.Box(new Vector3(-0.22f, 0.62f, 0.172f), new Vector3(0.04f, 0.14f, 0.004f), M(red));
