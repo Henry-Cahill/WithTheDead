@@ -862,3 +862,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Change it to a single, correctly‑parenthesised call:
   `m.Ellipsoid(new Vector3(R(rng, 0.2f, 0.75f), 1.152f, R(rng, -0.35f, 0.35f)), new Vector3(R(rng, 0.25f, 0.4f), 0.012f, R(rng, 0.25f, 0.4f)), G(new Color(0.05f, 0.05f, 0.06f)), 8, 3);`
   After this fix the ellipsoids are created correctly, and the dumpster will display the dark heap of bags under the right‑hand lid as intended.
+- [ ] In Assets/Scripts/World/FurnitureBuilder.cs: Add a small metal pull‑handle to each locker door in `FurnitureBuilder.LockerBank(RaidMesh m, System.Random rng, int count, Color body)` so the door has a visible grip.
+- [ ] Add a “Sing a lullaby” timed action to Assets/Scripts/World/Fixtures/BedFixture.cs that calms the survivor when used while seated or lying in the bed.
+  Declare a new private float field `_lullabyCalmAt` next to `_plumpCalmAt`.
+  In `GetActions`, after the “Plump the pillows” action, add:
+  `into.Add(new InteractAction("Sing a lullaby", SingLullaby)`
+  `.Timed(2f, "Singing lullaby", HumanoidActivity.None)`
+  `.DisabledIf(ctx.Seat == null, "You need to be sitting or lying to sing"));`
+  Implement a private method `SingLullaby(InteractContext ctx)` similar to `PlumpPillows`: check `Time.time >= _lullabyCalmAt`, set `_lullabyCalmAt = Time.time + CloneZConfig.TidyCooldown`, call `LivingFixtures.Calm(ctx, CloneZConfig.TidyPanicRelief)`, and `ctx.Notify("Your soft humming soothes the nerves.");` else `ctx.Notify("Your voice is already echoing.");`.
+  The player should see the new “Sing a lullaby” option when near the bed (if seated or lying), experience a brief 2‑second activity, and receive the same panic‑relief boost as plumping pillows. All existing behavior must remain unchanged.
