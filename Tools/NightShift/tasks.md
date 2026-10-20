@@ -3700,7 +3700,7 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [x] Add a subtle “scratched‑metal” wear overlay to each panel created by `UIKit.Panel` (Assets/Scripts/UI/UIKit.cs)
   In `UIKit.Panel`, after the four decorative screw images are added, insert code that creates a tiny `Image` named “Wear” (size ≈ 12 × 12 px) anchored to the bottom‑left corner of the panel (anchor = new Vector2(0f, 0f), pivot = new Vector2(0f, 0f)) with a slight random offset of ±2 px based on the panel’s name hash (using `int seed = name.GetHashCode(); int dx = (seed >> 1) & 3; int dy = (seed >> 3) & 3;`). Set its colour to a semi‑transparent dark‑brown to suggest old wear: `new Color(0.22f, 0.15f, 0.10f, 0.35f)`. Keep the panel’s existing colliders, interaction points and pivots unchanged, and add no more than the one new primitive (`Image`).
   - 15:40 landed by 0htsserver in 3 min: **Changed file**
-- [ ] Fix stray top‑trim colour when the survivor removes their shirt (Assets/Scripts/Characters/HumanoidLook.cs)
+- [x] Fix stray top‑trim colour when the survivor removes their shirt (Assets/Scripts/Characters/HumanoidLook.cs)
   In `HumanoidLook.Wear` the `case ClothingSlot.Torso:` block always assigns `TopTrimColor = Shade(c, 0.72f);` even when `def` is null (i.e. the torso is empty). This leaves a visible trim colour (a light‑grey shade of white) on the character’s bare torso, which looks like a glitch.
   Change the block so that `TopTrimColor` is only set when a garment is actually worn; when `def` is null reset the trim to match the torso colour (or leave it at the default).
   `case ClothingSlot.Torso:`
@@ -3709,6 +3709,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `- TopTrimColor = Shade(c, 0.72f);`
   `+ TopTrimColor = def == null ? TopColor : Shade(c, 0.72f);`
   `TopGloss = GarmentStyles.Gloss(k, 0.08f);`
+  - 15:41 landed by 0htsserver in 1.6 min: **Changed file**
 - [ ] Add a small icy‑icicle detail to the exterior side of each window in `RaidBuilding.DrawWindow` (Assets/Scripts/World/RaidBuilding.cs)
   Inside `DrawWindow`, after the existing interior‑side loop but before the call to `WindowFrame(p)`, insert code that:
   Calls `int side = OutsideSide(r, o.Pos);` and proceeds only if `side != 0`.

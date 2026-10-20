@@ -191,7 +191,7 @@ namespace CloneZ
                 case ClothingSlot.Torso:
                     Shape.Top = def == null ? TopStyle.None : GarmentStyles.Top(k);
                     TopColor = c;
-                    TopTrimColor = Shade(c, 0.72f);
+                    TopTrimColor = def == null ? TopColor : Shade(c, 0.72f);
                     TopGloss = GarmentStyles.Gloss(k, 0.08f);
                     break;
 
