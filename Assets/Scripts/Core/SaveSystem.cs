@@ -328,15 +328,16 @@ namespace CloneZ
 
         private static ContainerSave CaptureContainer(LootContainer c)
         {
-            var save = new ContainerSave
-            {
-                Kind = c.IsSack ? LootContainer.KindSack : (int)c.Type,
-                Position = c.transform.position,
-                Yaw = c.transform.eulerAngles.y,
-                Searched = c.Searched,
-                Lifetime = c.Lifetime,
-                FixtureKey = c.FixtureKey,
-            };
+var save = new ContainerSave
+                    {
+                        Kind = c.IsSack ? LootContainer.KindSack : (int)c.Type,
+                        Position = c.transform.position,
+                        Yaw = c.transform.eulerAngles.y,
+                        Searched = c.Searched,
+                        Lifetime = c.Lifetime,
+                        FixtureKey = c.FixtureKey,
+                        Items = new List<StackSave>(),
+                    };
             if (c.Contents != null)
             {
                 List<ItemStack> stacks = c.Contents.Stacks;

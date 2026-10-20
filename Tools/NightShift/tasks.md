@@ -2748,7 +2748,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Size ≈ 0.008 m × 0.018 m × 0.008 m (thin rectangular loop); placed 0.018 m above the top‑tube surface and 0.006 m outward from the tube’s outer face, using the existing `hardware` material.
   No new colliders or interaction points are added; the primitive follows the same parent as the tube, so it moves with the backpack.
   - 11:03 landed by 1htsserver in 2.5 min: **Changed file**
-- [ ] Fix null‑reference when capturing loot‑container contents in Assets/Scripts/Core/SaveSystem.cs → `CaptureContainer`
+- [x] Fix null‑reference when capturing loot‑container contents in Assets/Scripts/Core/SaveSystem.cs → `CaptureContainer`
   *Current code* creates a `ContainerSave` and then does `save.Items.Add(...)` without ever creating the list, so any container that holds items throws a `NullReferenceException` during save.
   *Change* the initializer to create the list:
   `var save = new ContainerSave`
@@ -2757,6 +2757,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Position = c.transform.position,`
   `Yaw = c.transform.eulerAngles.y,`
   `Searched = c.Searched,`
+  - 11:06 landed by 0htsserver in 3.3 min: **Changes made**
 - [ ] In Assets/Scripts/Hub/Screens/HubScreenBase.cs: Modify HubScreenBase.Update to skip the per‑second RefreshMoney call when the money label is hidden or there is no active character, reducing unnecessary allocations and string work each frame.
   In `protected override void Update()` replace the unconditional `RefreshMoney();` with a conditional call:
   `if (ShowMoney && Character != null) RefreshMoney();`
