@@ -3797,3 +3797,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   MakeNoise(CloneZConfig.WindowNoise);
   ctx.Notify("You rap on the glass; the sound echoes down the street.");
   }
+- [ ] Add small rivet cylinders to the `WeaponRack(RaidMesh m, System.Random r)` builder in Assets/Scripts/World/RaidLayouts.cs
+  Create three short metal cylinders on each vertical post to suggest worn rivets (period‑correct hardware).
+  Use the existing metal material `boltMat` (`DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f))`).
+  Add the code after the bracket boxes (after the line `m.Box(new Vector3( 0.95f, 1.33f, 0.08f), Sz(0.02f, 0.10f, 0.02f), bracketMat);`).
+  `// rivets on the vertical posts`
+  `for (int side = 0; side < 2; side++)`
+  `{`
+  `float x = side == 0 ? -0.95f : 0.95f;`
+  `for (int i = 0; i < 3; i++)`
