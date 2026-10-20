@@ -626,11 +626,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   ‑ The strap sits near the top of the sign (≈ 2.15 m above ground, centered on the sign’s Y‑axis) and spans the width of the board (0.3 m).
   ‑ This adds period‑appropriate wear without altering colliders or interaction points and uses only one additional primitive.
   - 00:21 landed by 1htsserver in 2.4 min: **Changed file**
-- [ ] In Assets/Scripts/AI/Humans/HumanNpc.cs: Cache the frequently‑queried `Actor.LocalPlayer` in `HumanNpc` to avoid repeated scene searches each frame.
+- [x] In Assets/Scripts/AI/Humans/HumanNpc.cs: Cache the frequently‑queried `Actor.LocalPlayer` in `HumanNpc` to avoid repeated scene searches each frame.
   *Add a private field `private Actor _localPlayer;` and set it in `Awake()` (or `OnEnable`) with ` _localPlayer = Actor.LocalPlayer;`.
   *Create a tiny helper `Actor LocalPlayerCached => _localPlayer != null && _localPlayer.IsAlive ? _localPlayer : (_localPlayer = Actor.LocalPlayer);`.
   *Replace every direct call to `Actor.LocalPlayer` in this file (`Bark`, `TakeDamage`, `Release`, `Die`, `Alert`, etc.) with `LocalPlayerCached`.
   *The player’s presence and alive state rarely change; caching eliminates the hidden `FindObjectsOfType`/search that `Actor.LocalPlayer` performs each frame, while the game’s visual behaviour (dialogues, AI reactions, surrender handling) stays identical.
+  - 00:33 landed by hts-llm in 13.5 min: Implemented caching of the player reference in **HumanNpc**:
 - [x] Add a simple “Inspect door” action to Assets/Scripts/World/Fixtures/RaidDoor.cs that lets the survivor read the door’s current health.
   - 00:23 landed by 0htsserver in 2.3 min: **Changed file**
 - [x] Append five new period‑correct distress call strings to the `private static readonly string[] GuardCalls` array in `Assets/Scripts/World/Fixtures/RaidCivicRadio.cs` so the survivor can hear more varied radio pleas.
