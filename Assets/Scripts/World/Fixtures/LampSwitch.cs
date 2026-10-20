@@ -47,7 +47,16 @@ namespace CloneZ
         {
             if (_lamp == null) return;
             bool on = _lamp.SwitchedOn;
+            // Primary toggle action
             into.Add(new InteractAction(on ? "Turn off the lamp" : "Turn on the lamp", c => Flip(c, !on)));
+            // Secondary inspect action
+            into.Add(new InteractAction("Inspect lamp", Inspect));
+        }
+
+        // Shows the lamp's name in a HUD toast.
+        private void Inspect(InteractContext ctx)
+        {
+            ctx.Notify($"You look at the {DisplayName}.");
         }
 
         private void Flip(InteractContext ctx, bool on)
