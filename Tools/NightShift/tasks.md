@@ -2303,3 +2303,9 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/RaidCivicSink.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Fix a potential out‑of‑range exception in `Dsp.CrossfadeLoop` (Assets/Scripts/Audio/Synth/SynthCore.cs)
+  · The method assumes `loopLen <= x.Length` and does `Array.Copy(x, o, loopLen);` which throws if a longer loop length is requested.
+  · Add a guard that caps `loopLen` to `x.Length` before allocating and copying, e.g. `if (loopLen > x.Length) loopLen = x.Length;`.
+  · Keep the existing cross‑fade logic unchanged; it will now safely handle oversize requests without crashing.
+  · After the fix, calling `CrossfadeLoop` with any `loopLen` will never raise an exception, so loops used for seamless audio playback will always succeed.
+  · No other code changes are required.
