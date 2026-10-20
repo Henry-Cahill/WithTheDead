@@ -3501,4 +3501,5 @@ you want to see in game. Indent extra lines under a task to add detail.
   `ctx.Notify(_fuel <= 0f ? "No fuel left – the generator can’t run any longer." : $"It will run for about {mins} min {(int)secs}s more.");`
   The generator’s existing behavior, fields, and other actions remain unchanged.
   - 14:30 landed by 1htsserver in 4.2 min: **Changed file**
-- [ ] Add period‑correct cast‑iron rivets to the radiator built in `Assets/Scripts/World/FurnitureBuilder.Fixtures.cs` `FurnitureBuilder.Radiator` so the metal heating unit shows small fasteners.
+- [~] Add period‑correct cast‑iron rivets to the radiator built in `Assets/Scripts/World/FurnitureBuilder.Fixtures.cs` `FurnitureBuilder.Radiator` so the metal heating unit shows small fasteners.
+  - 14:33 hts-llm made no changes: {"include":"FurnitureBuilder.Fixtures.cs","path":"","pattern":"Mt("}
