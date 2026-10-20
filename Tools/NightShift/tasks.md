@@ -3193,13 +3193,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   No new assets are required; only existing UI primitives are used and the total added primitives (4 Images) stays well under the 12‑primitive limit.
   Result: when the player dies, the Game‑Over screen shows a faint, period‑appropriate cracked‑glass overlay, adding visual depth without breaking the 1993 winter setting.
   - 12:50 landed by hts-llm in 3 min: **Changes made**
-- [ ] Fix the hand‑reach calculation in Assets/Scripts/Characters/HumanoidAnimator.Hands.cs case HumanoidActivity.Use: the code applies At(…) to a value that has already been converted to a chest‑relative offset by ReachOffset, causing the hand to be placed far beyond the target when interacting with a world object.
+- [x] Fix the hand‑reach calculation in Assets/Scripts/Characters/HumanoidAnimator.Hands.cs case HumanoidActivity.Use: the code applies At(…) to a value that has already been converted to a chest‑relative offset by ReachOffset, causing the hand to be placed far beyond the target when interacting with a world object.
   In the Use branch, replace the line
   `right = Goal(At(reach), HandRot(fingers, Dir(new Vector3(-0.45f, -1f, 0.15f)), true), w);`
   with
   `right = Goal(HasReachTarget ? _chest + _frame * ReachOffset(ReachTarget) : At(reach), HandRot(fingers, Dir(new Vector3(-0.45f, -1f, 0.15f)), true), w);`
   Keep the preceding `if (HasReachTarget) reach = ReachOffset(ReachTarget);` unchanged (or remove it, but the essential fix is the conditional world‑space conversion).
   After this change, when the survivor uses a tap, switch, knob, drawer, etc., the right hand reaches the correct spot on the object instead of overshooting, resulting in realistic interaction animations that match the 1993 rural setting.
+  - 12:50 landed by 0htsserver in 1.5 min: **Summary**
 - [ ] Add period‑appropriate rivets to the helicopter’s side‑panel seams in Assets/Scripts/World/Zone/Helicopter.cs, inside HelicopterModel.Build right after the two `m.Box` calls that create the side‑panel strips.
 - [ ] In Assets/Scripts/World/Fixtures/RaidTownGenerator.cs, modify the component so it disables its `Update` loop while the generator is off, eliminating a per‑frame call that does nothing.
   – In `Create(...)` add `g.enabled = false;` after `g.ShowRunning(false);` to start the MonoBehaviour disabled.
