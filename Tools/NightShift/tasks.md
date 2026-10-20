@@ -3146,7 +3146,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `_bodyRoot.GetChild(_bodyRoot.childCount‑1).localRotation = Quaternion.Euler(0f, rng.Next(-5, 6), 0f);`
   This adds only two primitives, stays inside the existing builder, keeps colliders removed (as `Box` already does), and gives the car a period‑correct visual cue (small metal mirrors) without any modern lighting.
   - 12:40 landed by hts-llm in 3.3 min: Implemented side‑mirror housings for the car:
-- [ ] Fix a missing unsubscription that can cause a hidden‑memory‑leak and potential null‑reference when the hub is re‑initialized, in Assets/Scripts/Hub/Screens/HomeScreens.cs → `HubScreensModule.Init()`
+- [x] Fix a missing unsubscription that can cause a hidden‑memory‑leak and potential null‑reference when the hub is re‑initialized, in Assets/Scripts/Hub/Screens/HomeScreens.cs → `HubScreensModule.Init()`
+  - 12:44 landed by 0htsserver in 4.3 min: **Changed file**
 - [x] Add four small chrome rivet heads to the front panel of each breaker box in `Assets/Scripts/World/FurnitureBuilder.Lighting.cs` `BreakerBox` method
   Add the rivets after the line `m.Box(front + normal * 0.001f, new Vector3(w - 0.04f, h - 0.04f, 0.002f), q, M(PanelGrey * 0.8f));`
   Compute the panel‑edge offsets: `float rivetX = w * 0.5f - 0.02f; float rivetY = h * 0.5f - 0.02f;`

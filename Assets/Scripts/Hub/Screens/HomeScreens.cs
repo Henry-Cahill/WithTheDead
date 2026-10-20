@@ -429,6 +429,9 @@ namespace CloneZ
     {
         public int Order => 70;
 
+        // Stored handler for RaidEnded to allow proper unsubscription on re‑initialisation.
+        private static readonly System.Action<RaidOutcome, string> s_RaidEnded = (o, e) => Upkeep.AdvanceDay(ProfileStore.ActiveCharacter, "raid");
+
         public void Init()
         {
             HubScreens.Register(HubScreens.Trader, arg => UIScreen.Show<TraderScreen>(s => s.Arg = arg));
@@ -447,7 +450,9 @@ namespace CloneZ
             HubScreens.Register(HubScreens.Manual, arg => UIScreen.Show<ManualScreen>());
             HubScreens.Register(HubScreens.Lodestar, arg => UIScreen.Show<LodestarScreen>());
             HubScreens.Register("rumours", arg => UIScreen.Show<RumoursScreen>());
-            GameEvents.RaidEnded += (o, e) => Upkeep.AdvanceDay(ProfileStore.ActiveCharacter, "raid");
+            // Ensure we don't accumulate multiple handlers across hub re‑initialisations.
+            GameEvents.RaidEnded -= s_RaidEnded;
+            GameEvents.RaidEnded += s_RaidEnded;
         }
     }
 }
