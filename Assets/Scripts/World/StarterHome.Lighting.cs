@@ -232,7 +232,6 @@ namespace CloneZ
             return go.transform;
         }
 
-
         #endregion
-        }
     }
+}

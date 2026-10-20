@@ -26,6 +26,12 @@ namespace CloneZ
             "...this is the Institute. Please remain where you are. Someone is coming...",
             "...we are all of us here, down at the bottom, singing...",
             "...Mama? Mama, the door won't open...",
+            "...the Passing drifts like a forgotten song...",
+            "...the Choir hums a hollow chant...",
+            "...the Institute's corridors echo without footfalls...",
+            "...the Spillway murmurs with distant water...",
+            "...the night feels wrong, a quiet ache...",
+            "...silence sits heavy, like a question unanswered..."
         };
 
         public static void BeginRaid(GameObject host, ZoneDef zone)

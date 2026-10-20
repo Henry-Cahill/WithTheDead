@@ -28,9 +28,11 @@ namespace CloneZ
         public static readonly Color ButtonAccent = new Color(0.55f, 0.40f, 0.14f);
 
         private static Font s_Font;
+        /// <summary>Provides the default UI font, loading it lazily from Unity resources.</summary>
         public static Font Font => s_Font != null ? s_Font : (s_Font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf"));
 
         #region Canvas and rects
+        /// <summary>Creates a new UI canvas with the given name and sorting order, optionally parented, for building UI screens.</summary>
         public static Canvas CreateCanvas(string name, int sortingOrder, Transform parent = null)
         {
             var go = new GameObject(name, typeof(RectTransform));
@@ -47,6 +49,7 @@ namespace CloneZ
             return canvas;
         }
 
+        /// <summary>Ensures an EventSystem exists in the scene, creating one if necessary, so UI input works.</summary>
         public static void EnsureEventSystem()
         {
             if (EventSystem.current != null || UnityEngine.Object.FindAnyObjectByType<EventSystem>() != null) return;
@@ -58,6 +61,7 @@ namespace CloneZ
             es.SetActive(true);
         }
 
+        /// <summary>Creates a RectTransform GameObject with the given name, parented under the supplied Transform.</summary>
         public static RectTransform Rect(string name, Transform parent)
         {
             var go = new GameObject(name, typeof(RectTransform));
@@ -67,6 +71,7 @@ namespace CloneZ
         }
 
         /// <summary>Stretches a rect over its parent with optional insets (left, bottom, right, top).</summary>
+        /// <summary>Creates a stretched rect covering its parent, optionally applying inset margins.</summary>
         public static RectTransform Stretch(RectTransform rt, float l = 0f, float b = 0f, float r = 0f, float t = 0f)
         {
             rt.anchorMin = Vector2.zero;
@@ -77,6 +82,7 @@ namespace CloneZ
         }
 
         /// <summary>Anchors a rect at a normalised point with a fixed size.</summary>
+        /// <summary>Places a RectTransform at a normalized anchor point with a fixed size and pivot.</summary>
         public static RectTransform Place(RectTransform rt, Vector2 anchor, Vector2 pivot, Vector2 pos, Vector2 size)
         {
             rt.anchorMin = anchor;
@@ -87,6 +93,7 @@ namespace CloneZ
             return rt;
         }
 
+        /// <summary>Creates an Image component on a new UI panel under the given parent.</summary>
         public static Image Panel(Transform parent, string name, Color color)
         {
             RectTransform rt = Rect(name, parent);
@@ -97,6 +104,7 @@ namespace CloneZ
         #endregion
 
         #region Widgets
+        /// <summary>Creates a Text UI element with the specified content and styling.</summary>
         public static Text Label(Transform parent, string text, int size = 18, Color? color = null, TextAnchor align = TextAnchor.MiddleLeft, FontStyle style = FontStyle.Normal)
         {
             RectTransform rt = Rect("Label", parent);
@@ -115,6 +123,7 @@ namespace CloneZ
             return t;
         }
 
+        /// <summary>Creates a Button UI element with a label and click callback, applying the default style.</summary>
         public static Button Button(Transform parent, string text, Action onClick, Color? color = null, int fontSize = 18)
         {
             Color c = color ?? ButtonColor;
@@ -139,6 +148,7 @@ namespace CloneZ
             return btn;
         }
 
+        /// <summary>Sets the displayed text of a Button's child Text component.</summary>
         public static void SetButtonText(Button b, string text)
         {
             Text t = b != null ? b.GetComponentInChildren<Text>() : null;
@@ -146,6 +156,7 @@ namespace CloneZ
         }
 
         /// <summary>A vertical scroll view; add rows to the returned content (it sizes itself to fit them).</summary>
+        /// <summary>Creates a vertical scroll list container; rows can be added to its content.</summary>
         public static RectTransform ScrollList(Transform parent, string name, float spacing = 4f, int padding = 6)
         {
             RectTransform view = Rect(name, parent);
@@ -178,6 +189,7 @@ namespace CloneZ
         }
 
         /// <summary>A horizontal row of a fixed height inside a layout (for list rows).</summary>
+        /// <summary>Creates a horizontal row container for list entries, with optional background.</summary>
         public static RectTransform Row(Transform parent, float height, Color? background = null, float spacing = 8f, int padding = 6)
         {
             RectTransform rt = Rect("Row", parent);
@@ -195,6 +207,7 @@ namespace CloneZ
         }
 
         /// <summary>A vertical stack (for sidebars and forms).</summary>
+        /// <summary>Creates a vertical column container for stacking UI elements.</summary>
         public static RectTransform Column(Transform parent, float spacing = 6f, int padding = 8)
         {
             RectTransform rt = Rect("Column", parent);
@@ -209,6 +222,7 @@ namespace CloneZ
         }
 
         /// <summary>Sets a layout element's preferred size (-1 leaves an axis alone) and flexible width.</summary>
+        /// <summary>Sets a LayoutElement's preferred size and flexible width on a GameObject.</summary>
         public static LayoutElement Size(GameObject go, float width, float height, float flexibleWidth = -1f)
         {
             var le = go.GetComponent<LayoutElement>();
@@ -219,6 +233,7 @@ namespace CloneZ
             return le;
         }
 
+        /// <summary>Creates a toggle with a label, handling value changes via the provided callback.</summary>
         public static Toggle Toggle(Transform parent, string label, bool value, Action<bool> onChanged)
         {
             RectTransform row = Row(parent, 30f, null, 10f, 2);
@@ -240,6 +255,7 @@ namespace CloneZ
             return toggle;
         }
 
+        /// <summary>Creates a slider with numeric range, displaying its value and invoking a callback on change.</summary>
         public static Slider Slider(Transform parent, string label, float min, float max, float value, Action<float> onChanged, string format = "0.00", bool whole = false)
         {
             RectTransform row = Row(parent, 32f, null, 10f, 2);
@@ -274,6 +290,7 @@ namespace CloneZ
             return s;
         }
 
+        /// <summary>Creates an input field with a default value and placeholder, invoking a callback when edited.</summary>
         public static InputField Input(Transform parent, string value, string placeholder, Action<string> onChanged, int fontSize = 18)
         {
             RectTransform rt = Rect("Input", parent);
@@ -295,6 +312,7 @@ namespace CloneZ
         }
 
         /// <summary>A thin bar that fills left-to-right (health, progress, durability).</summary>
+        /// <summary>Creates a thin bar UI element that fills proportionally based on a value (0-1).</summary>
         public static Image Bar(Transform parent, Color fillColor, float value01, float height = 8f)
         {
             RectTransform rt = Rect("Bar", parent);
@@ -310,6 +328,7 @@ namespace CloneZ
             return img;
         }
 
+        /// <summary>Updates the fill amount of a bar Image to a new proportion (0-1).</summary>
         public static void SetBar(Image fill, float value01)
         {
             if (fill == null) return;
@@ -317,6 +336,7 @@ namespace CloneZ
             f.anchorMax = new Vector2(Mathf.Clamp01(value01), 1f);
         }
 
+        /// <summary>Removes all child GameObjects under a Transform, cleaning up a UI container.</summary>
         public static void Clear(Transform t)
         {
             if (t == null) return;

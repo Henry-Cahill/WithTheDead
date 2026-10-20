@@ -187,8 +187,11 @@ namespace CloneZ
         private static readonly string[] BoothLog =
         {
             "The checkpoint log, in three different hands. 0600: \u201CRelieved Pvt. Hale. Nothing to report. Snow.\u201D",
+            "0830: \u201CTraffic backed up at the main road. Commander ordered us to hold position. No word from HQ.\u201D",
             "1140: \u201CTurned back six vehicles. One woman would not stop crying. Sent her to the clinic per orders.\u201D",
+            "1320: \u201COrders changed. No clear directive. Radio static, nothing but wind.\u201D",
             "1615: \u201CClinic not answering. Lt. says hold the line and keep the barrier down.\u201D",
+            "1840: \u201CRadio gone silent. No contact. Everyone uneasy.\u201D",
             "2050: \u201CMovement past the barrier. Challenged twice. They kept coming.\u201D Then just a line of ink trailing off the page.",
         };
 

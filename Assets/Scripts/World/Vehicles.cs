@@ -579,15 +579,30 @@ public static HudVehicle Create()
             return h;
         }
 
+        private string _lastHudText;
+
         private void LateUpdate()
         {
             VehicleDriver d = VehicleDriver.Local;
-            if (d == null || d.Car == null) { _text.text = ""; return; }
+            if (d == null || d.Car == null)
+            {
+                if (!string.IsNullOrEmpty(_text.text))
+                {
+                    _text.text = "";
+                    _lastHudText = null;
+                }
+                return;
+            }
             Vehicle c = d.Car;
-            _text.text = Mathf.RoundToInt(Mathf.Abs(c.Speed) * 3.6f) + " km/h   fuel " + c.Fuel.ToString("0.0") + " L   "
+            string newText = Mathf.RoundToInt(Mathf.Abs(c.Speed) * 3.6f) + " km/h   fuel " + c.Fuel.ToString("0.0") + " L   "
                 + (c.EngineOn ? (c.Radiator ? "running" : UIKit.Colored("heat " + Mathf.RoundToInt(c.Heat * 100f) + "%", UIKit.Warn)) : UIKit.Colored("engine off", UIKit.TextDim))
                 + "   engine " + Mathf.RoundToInt(c.Engine * 100f) + "%  tyres " + Mathf.RoundToInt(c.Tyres * 100f) + "%  battery " + Mathf.RoundToInt(c.Charge * 100f) + "%"
                 + "   [E] get out";
+            if (newText != _lastHudText)
+            {
+                _text.text = newText;
+                _lastHudText = newText;
+            }
         }
     }
 

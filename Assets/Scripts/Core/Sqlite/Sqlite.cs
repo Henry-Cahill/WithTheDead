@@ -131,6 +131,7 @@ namespace CloneZ.Db
     {
         private IntPtr _db;
 
+                /// <summary>Creates a new SQLite connection to the given file path, creating the file if necessary.</summary>
         public SqliteConnection(string path)
         {
             int rc = SqliteNative.Open(SqliteNative.Utf8(path), out _db,
@@ -145,9 +146,12 @@ namespace CloneZ.Db
             }
         }
 
+        /// <summary>Gets the native handle of the open SQLite connection.</summary>
         internal IntPtr Handle => _db;
+                /// <summary>Gets the last error text from the native SQLite connection.</summary>
         internal string LastError => SqliteNative.FromUtf8(SqliteNative.ErrMsg(_db));
 
+        /// <summary>Gets the row ID of the last INSERT operation.</summary>
         public long LastInsertRowId => SqliteNative.LastInsertRowId(_db);
 
         /// <summary>Runs one or more semicolon-separated statements with no result rows.</summary>
@@ -162,6 +166,7 @@ namespace CloneZ.Db
             }
         }
 
+                /// <summary>Creates a prepared statement for the given SQL query.</summary>
         public SqliteStatement Prepare(string sql)
         {
             int rc = SqliteNative.Prepare(_db, SqliteNative.Utf8(sql), -1, out IntPtr stmt, out _);
@@ -170,6 +175,7 @@ namespace CloneZ.Db
             return new SqliteStatement(this, stmt);
         }
 
+        /// <summary>Closes the SQLite connection and releases native resources.</summary>
         public void Dispose()
         {
             if (_db != IntPtr.Zero) { SqliteNative.Close(_db); _db = IntPtr.Zero; }

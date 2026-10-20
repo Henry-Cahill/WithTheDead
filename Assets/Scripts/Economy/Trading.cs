@@ -12,7 +12,7 @@ namespace CloneZ
     {
         /// <summary>The highest loyalty level the character currently qualifies for with a trader.</summary>
         /// <summary>Computes the highest loyalty tier a character currently reaches with a specific trader.</summary>
-public static int LoyaltyOf(CharacterProfile c, TraderDef t)
+    public static int LoyaltyOf(CharacterProfile c, TraderDef t)
         {
             if (c == null || t == null) return 1;
             TraderState s = c.Trader(t.Id);
@@ -28,7 +28,7 @@ public static int LoyaltyOf(CharacterProfile c, TraderDef t)
 
         /// <summary>What the next loyalty level needs, as a line of text (null at the top level).</summary>
         /// <summary>Generates a description of what the next loyalty level requires, or null if already at max.</summary>
-public static string NextLevelNeeds(CharacterProfile c, TraderDef t)
+            public static string NextLevelNeeds(CharacterProfile c, TraderDef t)
         {
             int cur = LoyaltyOf(c, t);
             LoyaltyLevel next = t.Levels.Find(l => l.Level == cur + 1);
@@ -40,7 +40,7 @@ public static string NextLevelNeeds(CharacterProfile c, TraderDef t)
 
         /// <summary>Determines whether a trader's offer is currently visible to the character.</summary>
 /// <summary>Returns true if the offer is currently visible to the character (loyalty, quest, item availability).</summary>
-public static bool Visible(CharacterProfile c, TraderDef t, TraderOffer o)
+    public static bool Visible(CharacterProfile c, TraderDef t, TraderOffer o)
         {
             if (o.Loyalty > LoyaltyOf(c, t)) return false;
             if (!string.IsNullOrEmpty(o.Quest))
