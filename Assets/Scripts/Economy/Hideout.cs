@@ -310,6 +310,12 @@ namespace CloneZ
             int waterLvl = LevelOf(c, "watercollector");
             if (waterLvl > 0) Produce(c, "watercollector", waterLvl >= 2 ? 2f : 4f, "waterbottle", stash, notes, hours);
             TickAnimals(c, stash, notes, hours);
+            // Winter‑theme flavor notes
+            notes.Add("The wind whistles through the cracked window of the generator room.");
+            notes.Add("Snow drifts accumulate against the workbench, muffling the clang of tools.");
+            notes.Add("A faint candle flickers in the rest space, casting trembling shadows.");
+            notes.Add("Distant howls echo across the frozen fields, reminding you of the night outside.");
+            notes.Add("The stale, icy air carries the scent of pine resin from the nearby woods.");
 
             SetLastTick(c, now);
             if (notes.Count > 0) ProfileStore.Save();

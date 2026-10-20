@@ -2881,11 +2881,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   The action should be available regardless of whether the bed is made or the player is seated.
   Do not modify any other actions or state‑changing logic.
   Keep the class, fields, and existing methods unchanged.
-- [ ] Add five winter‑theme flavor notes to the `Hideout.Tick` method in Assets/Scripts/Economy/Hideout.cs; insert `notes.Add("…");` calls after the existing production/animal notes so the list now contains extra sentences such as the existing style `"The generator ran dry. Pour in a gas can."`.
+- [x] Add five winter‑theme flavor notes to the `Hideout.Tick` method in Assets/Scripts/Economy/Hideout.cs; insert `notes.Add("…");` calls after the existing production/animal notes so the list now contains extra sentences such as the existing style `"The generator ran dry. Pour in a gas can."`.
   Insert the following lines (in any order) before `SetLastTick(c, now);`:
   `notes.Add("The wind whistles through the cracked window of the generator room.");`
   `notes.Add("Snow drifts accumulate against the workbench, muffling the clang of tools.");`
   `notes.Add("A faint candle flickers in the rest space, casting trembling shadows.");`
   `notes.Add("Distant howls echo across the frozen fields, reminding you of the night outside.");`
   `notes.Add("The stale, icy air carries the scent of pine resin from the nearby woods.");`
+  - 11:30 landed by hts-llm in 2.1 min: **Changes made**
 - [ ] Add a subtle frost‑patch detail to interior window frames in Assets/Scripts/World/RaidBuilding.cs – modify `RaidBuilding.DrawWindow` to create a thin pale‑blue rectangle on the inside of each window (≈30 % of its width, 0.03 m tall, 0.006 m thick) at roughly eye‑level, with a ~12 % random chance per window, using the existing `Rng` and materials.
