@@ -142,6 +142,8 @@ namespace CloneZ
         {
             into.Add(new InteractAction(_tapOpen ? "Turn off the tap" : "Turn on the tap", c => Turn(c, !_tapOpen)));
             into.Add(new InteractAction(_plugged ? "Pull the plug out" : "Put the plug in", c => SetPlug(c, !_plugged)));
+            // Tiny action to let player check current water level in the basin
+            into.Add(new InteractAction("Check water level", CheckLevel));
             WaterUse.AddDrinkAndFill(ctx, this, into);
 
             bool mains = WaterMains.MainsOn;
@@ -245,6 +247,20 @@ namespace CloneZ
             BathroomFixtures.Nerves(ctx, -CloneZConfig.BasinShaveCalm);
             ctx.Notify(ShaveLines[Random.Range(0, ShaveLines.Length)]);
         }
+
+        private void CheckLevel(InteractContext ctx)
+        {
+            float fill = _level;
+            string level =
+                fill <= 0.01f ? "Bone‑dry. No water in the basin." :
+                fill < 0.25f ? "Barely a puddle in the bottom." :
+                fill < 0.5f ? "About a quarter full." :
+                fill < 0.75f ? "Roughly half full." :
+                fill < 0.99f ? "Nearly full." :
+                "Brimming — it can't hold any other water.";
+            ctx.Notify(level);
+        }
+
 
         public override void CaptureState(FixtureSave save)
         {
