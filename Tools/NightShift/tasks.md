@@ -2757,3 +2757,18 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Position = c.transform.position,`
   `Yaw = c.transform.eulerAngles.y,`
   `Searched = c.Searched,`
+- [ ] In Assets/Scripts/Hub/Screens/HubScreenBase.cs: Modify HubScreenBase.Update to skip the per‑second RefreshMoney call when the money label is hidden or there is no active character, reducing unnecessary allocations and string work each frame.
+  In `protected override void Update()` replace the unconditional `RefreshMoney();` with a conditional call:
+  `if (ShowMoney && Character != null) RefreshMoney();`
+  This keeps the visual output unchanged because `RefreshMoney` already early‑returns when `ShowMoney` is false or `Character` is null, but the conditional prevents the method call and its string concatenation from running every second when it would do nothing.
+  No other code behavior is altered; the per‑second live‑label updates and `OnSecond()` continue as before.
+- [ ] In Assets/Scripts/World/Fixtures/OutdoorLantern.cs: Add a third interaction “Check lantern status” to `OutdoorLantern.GetActions` that lets the survivor see whether the porch lantern is currently lit.
+- [ ] Append four new transmission lines to the `Lines` array of the “Battalion relay” (`Channel 3`) in Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs; the new entries should be full‑sentence quoted strings that the survivor can hear, matching the style of the existing entry `"This is an automated relay. The county is under a federal quarantine order. Remain where you are."` and covering themes of winter evacuation updates, cold‑weather safety, and military coordination.
+  Keep the current four entries (including the `null` placeholder) unchanged.
+  Add the new lines after the last existing string (just before the closing brace) so the array reads, for example:
+  `"This is an automated relay. …",`
+  `null,`
+  `"Civilians …",`
+  `"*three falling tones; the relay begins again*",`
+  `"Evacuation notice: snow‑blocked roads on Highway 7, expect delays. Seek shelter until cleared.",`
+  `"All units, maintain firewatch; temperatures dropping below minus ten, frostbite risk high.",`
