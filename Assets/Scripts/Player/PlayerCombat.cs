@@ -52,6 +52,8 @@ namespace CloneZ
         private bool _shovePressOnUi;    // the held right button went down over the UI
         private readonly HashSet<IDamageable> _hitThisAction = new HashSet<IDamageable>();
         private readonly List<IDamageable> _targets = new List<IDamageable>();
+        // Cache for the last equipped item stack used to compute weapon build
+        private ItemStack _lastEquippedStack;
 
         /// <summary>The equipped firearm, or null when using melee / bare hands.</summary>
         public ItemDef EquippedFirearm { get; private set; }
@@ -116,7 +118,7 @@ namespace CloneZ
 
             if (EquippedFirearm != null)
             {
-                Build = Ballistics.Build(Inv != null ? Inv.EquippedStack : null);
+                UpdateBuildCache();
                 AimingDownSights = ViewState.MouseLook && rightHeld;
                 if (AimingDownSights && GameInput.Held(GameAction.HoldBreath)) _stats.TryConsumeEndurance(0.12f * Time.deltaTime);
                 Keyboard kb = Keyboard.current;
@@ -350,9 +352,10 @@ namespace CloneZ
         /// <summary>Pulls rounds from the pack into the magazine. Returns true if any were loaded.</summary>
         public bool TryReload()
         {
+            UpdateBuildCache();
             ItemDef gun = EquippedFirearm;
             if (gun == null || Inv == null) return false;
-            int mag = Mathf.Max(1, Ballistics.Build(Inv.EquippedStack).MagSize);
+            int mag = Mathf.Max(1, Build.MagSize);
             if (LoadedAmmo >= mag) return false;
             string ammo = LoadedAmmo > 0 ? LoadedAmmoId : PickAmmo(gun);
             if (string.IsNullOrEmpty(ammo)) return false;
@@ -360,29 +363,32 @@ namespace CloneZ
             if (got <= 0) return false;
             LoadedAmmo += got;
             LoadedAmmoId = ammo;
-            float reloadMult = (Skills != null ? Skills.ReloadTimeMult : 1f) * Ballistics.Build(Inv.EquippedStack).ReloadMult / Mathf.Max(0.3f, PlayerModifiers.Current.ReloadSpeed);
+            float reloadMult = (Skills != null ? Skills.ReloadTimeMult : 1f) * Build.ReloadMult / Mathf.Max(0.3f, PlayerModifiers.Current.ReloadSpeed);
             _reloadTimer = gun.ReloadTime * reloadMult;
             OnReload?.Invoke();
             Sfx.Play(SfxIds.Reload, transform.position + Vector3.up * 1.2f, 0.7f, 1f, 14f);
             if (Skills != null) Skills.AddXp(PlayerSkills.Skill.Reloading, CloneZConfig.XpReload);
+            UpdateBuildCache(); // ensure build reflects any dirt changes after reload
             return true;
         }
 
         private void FireFirearm()
         {
             ItemDef gun = EquippedFirearm;
-            WeaponBuild build = Build;
-            if (LoadedAmmo <= 0)
-            {
-                if (!TryReload())        // out of rounds — try to reload, else dry-fire
+                UpdateBuildCache();
+                WeaponBuild build = Build;
+                if (LoadedAmmo <= 0)
                 {
-                    NoiseSystem.Emit(transform.position, CloneZConfig.NoiseDryFire);
-                    _fireTimer = 0.3f;
-                    OnDryFire?.Invoke();
-                    Sfx.Play(SfxIds.DryFire, transform.position + Vector3.up * 1.2f, 0.6f, 1f, 8f);
+                    if (!TryReload())        // out of rounds — try to reload, else dry-fire
+                    {
+                        NoiseSystem.Emit(transform.position, CloneZConfig.NoiseDryFire);
+                        _fireTimer = 0.3f;
+                        OnDryFire?.Invoke();
+                        Sfx.Play(SfxIds.DryFire, transform.position + Vector3.up * 1.2f, 0.6f, 1f, 8f);
+                    }
+                    return;                  // a reload consumes this trigger pull
                 }
-                return;                  // a reload consumes this trigger pull
-            }
+
 
             // A worn or fouled firearm can jam: the round doesn't fire and the action must be worked before
             // trying again (the chambered round is kept, so the trigger pull is simply wasted).
@@ -403,7 +409,9 @@ namespace CloneZ
             _stats.TryConsumeEndurance(CloneZConfig.FirearmEnduranceCost);
             OnFire?.Invoke();
             if (Skills != null) Skills.AddXp(PlayerSkills.Skill.Aiming, CloneZConfig.XpFirearmShot);
-            FoulBarrel();
+                // After fouling the barrel, the build may have changed (dirt affects stats)
+                UpdateBuildCache();
+                FoulBarrel();
 
             Vector3 aim = _controller.AimDirection;
             Vector3 muzzle, shotAim;
@@ -508,11 +516,6 @@ namespace CloneZ
             if (!answered) GameEvents.RaiseToast("The flare burns red over the Zone. No landing zone in range — everyone saw it, though.");
         }
 
-        /// <summary>
-        /// Shoulder / first-person views: the round leaves the shouldered gun and flies at what the
-        /// crosshair is on — a living target under it, else the surface behind — so a shot can rise or dip
-        /// (over a counter, down at a crawler) instead of staying level like the isometric aim.
-        /// </summary>
         private void AimThroughCrosshair(Vector3 flatAim, out Vector3 muzzle, out Vector3 shotAim)
         {
             muzzle = transform.position + Vector3.up * ShoulderMuzzleHeight + flatAim * 0.55f;
@@ -520,9 +523,22 @@ namespace CloneZ
             ZombieHealth zombie = _controller.CrosshairZombie;
             Vector3 target = zombie != null && !zombie.IsDead ? _controller.CrosshairZombiePoint : _controller.AimPoint;
             Vector3 to = target - muzzle;
-            if (to.sqrMagnitude < 0.25f) return;                // pressed against it: keep the level aim
+            if (to.sqrMagnitude < 0.25f) return; // pressed against it: keep the level aim
             Vector3 dir = to.normalized;
-            if (Vector3.Dot(dir, flatAim) > 0.1f) shotAim = dir;   // never back over the shoulder
+            if (Vector3.Dot(dir, flatAim) > 0.1f) shotAim = dir; // never back over the shoulder
+        }
+
+        /// <summary>
+        /// Update cached weapon build if the equipped stack changed.
+        /// </summary>
+        private void UpdateBuildCache()
+        {
+            ItemStack cur = Inv != null ? Inv.EquippedStack : null;
+            if (cur != _lastEquippedStack)
+            {
+                Build = Ballistics.Build(cur);
+                _lastEquippedStack = cur;
+            }
         }
 
         /// <summary>Aim quality 0..1 from PZ's firearm to-hit model (worse while moving).</summary>
