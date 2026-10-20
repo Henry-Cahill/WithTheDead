@@ -30,6 +30,9 @@ namespace CloneZ
             for (int row = 0; row < 3; row++)
                 m.Box(new Vector3(0f, DresserDrawerY(row), 0.1915f), new Vector3(0.92f, 0.19f, 0.003f), M(LivingBay));
 
+            // Tiny brass name‑plate on the right‑hand side of the dresser top
+            if (rng.NextDouble() < 0.5) m.Box(new Vector3(0.45f, 0.825f, 0.18f), new Vector3(0.06f, 0.015f, 0.015f), Mt(Brass));
+
             int items = rng.Next(1, 3);
             for (int i = 0; i < items; i++)
             {

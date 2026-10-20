@@ -3923,11 +3923,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   This makes corpses (dead zombies or players) incorrectly block subsequent shots, preventing players from shooting through them to hit targets behind.
   Change the logic to break only on true world hits and simply skip dead actors: replace the line with
   - 17:32 landed by 0htsserver in 3.8 min: **Changed file**: `Assets/Scripts/Core/CombatResolver.cs`
-- [ ] Add a tiny brass name‑plate on the right‑hand side of the dresser top in `FurnitureBuilder.DresserBody` (Assets/Scripts/World/FurnitureBuilder.Living.cs)
+- [x] Add a tiny brass name‑plate on the right‑hand side of the dresser top in `FurnitureBuilder.DresserBody` (Assets/Scripts/World/FurnitureBuilder.Living.cs)
   Insert after the `for (int i = 0; i < items; i++) { … }` loop:
   `if (rng.NextDouble() < 0.5) m.Box(new Vector3(0.45f, 0.825f, 0.18f), new Vector3(0.06f, 0.015f, 0.015f), Mt(Brass));`
   This creates a small rectangular brass plate (≈6 cm × 1.5 cm × 1.5 cm) positioned near the right edge of the dresser top (x ≈ 0.45 m, y = 0.825 m, z ≈ 0.18 m).
   The plate uses the existing `Mt(Brass)` material, keeps all colliders and interaction points unchanged, and adds a period‑correct decorative detail that could hold a tiny photograph or label.
+  - 17:33 landed by hts-llm in 1.4 min: **Changes Made**
 - [ ] In Assets/Scripts/Core/TimeOfDay.cs: Cache the formatted clock and date strings in `TimeOfDay` so they are not rebuilt on every UI read each frame.
   · Add private fields `int _lastHourInt = -1; string _clockText; string _clock12Text; string _amPm; string _dateText;` to the class.
   · In `Apply()` (after the sky‑colour logic) insert a block that recomputes the caches only when the hour’s integer part changes:
