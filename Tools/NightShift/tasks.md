@@ -1266,11 +1266,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
   - 03:40 0htsserver made no changes: Added no code changes.
-- [ ] Add a small metal latch detail to dressed crates in `Assets/Scripts/Items/LootContainer.cs` by editing the `LootContainer.DressCrate` method.
+- [x] Add a small metal latch detail to dressed crates in `Assets/Scripts/Items/LootContainer.cs` by editing the `LootContainer.DressCrate` method.
   Create a deterministic‑random bool (using the existing `new System.Random(1993)`) to decide if the latch appears.
   If true, add a thin box primitive `m.Box(floor + new Vector3(0.45f, CrateSize.y * 0.30f, CrateSize.z * 0.5f + 0.006f), new Vector3(0.08f, 0.06f, 0.02f), DecorPalette.Matte(new Color(0.60f, 0.60f, 0.60f)))` representing a metal latch on the front of the crate.
   Keep the existing collider and mesh logic unchanged; the latch is a child primitive added to the same `RaidMesh` before `m.ApplyTo`.
   Result: dressed storage crates sometimes show a realistic metal latch, adding period‑appropriate visual variety without altering gameplay.
+  - 03:42 landed by 0htsserver in 2.6 min: **Changed**
 - [ ] Fix mis‑aligned rumpled quilt in `FurnitureBuilder.BedQuilt` (Assets/Scripts/World/FurnitureBuilder.Living.cs)
   In the rumpled branch the quilt box is created with a hard‑coded X offset of `0.05f`, shifting the whole quilt to the right of the mattress, so players see a visibly off‑center bed cover.
   Change the line
