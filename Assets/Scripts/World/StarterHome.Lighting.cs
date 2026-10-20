@@ -98,6 +98,13 @@ namespace CloneZ
             Surf brass = DecorPalette.Metal(FurnitureBuilder.Brass);
             m.Box(wall + n * 0.01f, f.Size(0.1f, 0.16f, 0.02f), brass);
             m.Rod(wall + n * 0.02f, wall + n * 0.13f + Vector3.up * 0.03f, 0.018f, brass);
+            // subtle brass knob and optional screw on the sconce rod
+            Vector3 knobPos = wall + n * 0.13f + Vector3.up * 0.03f;
+            Surf knobMat = UnityEngine.Random.value < 0.3f ? DecorPalette.Metal(new Color(0.75f,0.60f,0.45f)) : brass;
+            m.Cylinder(knobPos, 0.008f, 0.015f, 6, knobMat);
+            // tiny screw detail (adds realism)
+            Vector3 screwPos = knobPos + n * 0.005f + Vector3.up * 0.005f;
+            m.Box(screwPos, new Vector3(0.004f,0.004f,0.004f), DecorPalette.Matte(new Color(0.08f,0.08f,0.09f)));
             Vector3 globe = wall + n * 0.15f + Vector3.up * 0.07f;
             m.Ellipsoid(globe, new Vector3(0.13f, 0.15f, 0.13f), DecorPalette.Matte(new Color(0.86f, 0.82f, 0.70f)), 8, 5);
             var glow = new RaidMesh();
