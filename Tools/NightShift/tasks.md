@@ -1344,7 +1344,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Use `ZoneKit.R(rng, 0f, 1f) < 0.6f` (or similar) to randomise whether the flag appears, giving occasional variation while staying deterministic.
   This adds at most two new primitives (pole + flag) per checkpoint, uses existing materials, preserves colliders and interaction points, and provides a period‑appropriate visual detail that makes the cordon checkpoint feel lived‑in.
   - 04:05 landed by 0htsserver in 3.1 min: **Changes Made**
-- [ ] In Assets/Scripts/World/HomeLamp.cs: Optimize HomeLamp.Update to avoid calling SyncGlow every frame by caching the lamp’s flicker state and only syncing glow when the view‑state or flicker status actually changes.
+- [x] In Assets/Scripts/World/HomeLamp.cs: Optimize HomeLamp.Update to avoid calling SyncGlow every frame by caching the lamp’s flicker state and only syncing glow when the view‑state or flicker status actually changes.
   Add a private bool field `_isFlickering` initialized to false.
   In the `Flicker` setter, after setting `_light.Flicker = value;` also set `_isFlickering = value;` and call `SyncGlow();`.
   In `Refresh()` (or wherever the flicker flag might be cleared, e.g., when the lamp is turned off) ensure `_isFlickering` reflects `_light?.Flicker ?? false`.
@@ -1353,6 +1353,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `{`
   `// only when the ceiling‑visibility flag actually toggles`
   `if (ViewState.CeilingsVisible != _ceilingsShown) SyncGlow();`
+  - 04:14 landed by 0htsserver in 9.2 min: **Changes made**
 - [ ] Add a “Check water temperature” action to RaidHomeBath.GetActions in Assets/Scripts/World/Fixtures/RaidHomeBath.cs; copy the existing “Feel the water” condition (`if (_level > 0.05f) …`) and insert a new `InteractAction("Check water temperature", CheckTemp)` after the “Feel the water” entry; implement a private `void CheckTemp(InteractContext ctx)` that builds a temperature string using the same thresholds as in `FeelWater` (`_heat >= 0.75f ? "hot — properly hot" : _heat >= 0.45f ? "warm" : _heat >= 0.2f ? "lukewarm" : "stone cold"`), then calls `ctx.Notify("The water feels " + warm + ".");`. This lets the survivor query the bath’s temperature without the depth description.
 - [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Hub/Screens/HomeScreens.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
