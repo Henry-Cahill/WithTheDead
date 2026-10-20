@@ -1050,12 +1050,13 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Zombies/ZombieAI.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
-- [ ] Add four small brass corner brackets to the top of the dresser in `FurnitureBuilder.DresserBody` (Assets/Scripts/World/FurnitureBuilder.Living.cs)
+- [x] Add four small brass corner brackets to the top of the dresser in `FurnitureBuilder.DresserBody` (Assets/Scripts/World/FurnitureBuilder.Living.cs)
   Insert after the line `m.Box(new Vector3(0f, 0.81f, -0.01f), new Vector3(1.04f, 0.03f, 0.5f), G(c * 1.05f));`
   For each corner (±0.5 m on X, ±0.24 m on Z) call
   `if (rng.NextDouble() < 0.75) m.Box(new Vector3(x, 0.825f, z), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass));`
   where `(x, z)` are `(-0.5f, -0.24f)`, `(0.5f, -0.24f)`, `(-0.5f, 0.24f)`, `(0.5f, 0.24f)`.
   The brackets use the existing brass material (`Mt(Brass)`), add only four primitives, keep all colliders and interaction points unchanged, and give the dresser a period‑correct metallic accent that varies per run.
+  - 02:28 landed by hts-llm in 2.2 min: **Summary**
 - [ ] In Assets/Scripts/Player/PlayerSleep.cs: Fix the layer‑mask used in `PlayerSleep.ZombiesNearby` so that zombies on normal layers are detected and the player cannot sleep when they are close.
   In `ZombiesNearby()` the call
 - [ ] Add a subtle “worn‑edge” accent to each scrollbar handle built in `HubUI.Scroll` (Assets/Scripts/Hub/Screens/HubUI.cs)
