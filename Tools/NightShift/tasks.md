@@ -2234,7 +2234,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 08:47 landed by hts-llm in 5.4 min: Modified **Assets/Scripts/Survival/Diseases.cs**
 - [x] In Assets/Scripts/World/Fixtures/RaidStoreWaterCooler.cs: Add a “Listen for glug” action to RaidStoreWaterCooler.GetActions that tells the player whether the cooler still has water, re‑using the same messages shown when water is drawn.
   - 08:50 landed by hts-llm in 3.4 min: **Changed file**
-- [ ] In Assets/Scripts/Core/Broadcasts.cs, edit the `Schedule` entry for Channel 4 where `Days(1, 1, …)` is defined and append 5 new string sentences to its `Lines` array (the list of whole‑sentence quotes).
+- [x] In Assets/Scripts/Core/Broadcasts.cs, edit the `Schedule` entry for Channel 4 where `Days(1, 1, …)` is defined and append 5 new string sentences to its `Lines` array (the list of whole‑sentence quotes).
   Use the existing entry `"Police are asking residents to lock their doors and stay off the roads until morning."` as the style reference.
   The new sentences should cover these themes:
   Winter‑time safety (e.g., icy sidewalks, heating advice)
@@ -2242,6 +2242,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Community solidarity messages (e.g., checking on neighbours)
   Outbreak‑related caution (e.g., avoiding crowds, symptoms)
   A brief nod to regional folklore or a local landmark to reinforce setting authenticity.
+  - 08:52 landed by 1htsserver in 3.8 min: **Summary**
 - [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Player/PlayerFarming.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
