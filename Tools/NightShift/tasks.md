@@ -3663,11 +3663,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   The knob is 0.012 m radius, 0.008 m thick, placed at y = 0.07 + 0.36 = 0.43 m (the post’s top).
   Use the existing `Mt(Chrome)` material; no new colliders or interaction points are added. This gives each office chair a subtle, period‑appropriate adjustment detail.
   - 15:14 landed by 1htsserver in 1.7 min: Implemented the chrome adjustment knob on the office chair’s gas post:
-- [ ] Fix the premature tap closure in Assets/Scripts/World/Fixtures/BasinFixture.cs
+- [x] Fix the premature tap closure in Assets/Scripts/World/Fixtures/BasinFixture.cs
   Remove the call that turns the tap back off at the start of the timed actions, because the `BorrowTap` logic (set as `Begin` for the actions) is meant to keep the tap open for the whole duration.
   In the `Wash`, `Brush` and `Shave` methods, delete the line `ReturnTap(ctx);` that appears as the first statement.
   After this change, when the mains are off and the player has the plug in, the basin will stay filled during the timed “wash”, “brush”, or “shave” actions, letting the player actually use the stored water instead of instantly getting a “dry” message.
   All other code, including the `Begin = BorrowTap` and `Stopped = ReturnTap` assignments in `GetActions`, should remain unchanged.
+  - 15:18 landed by 1htsserver in 2.3 min: **Changed**
 - [ ] In Assets/Scripts/World/WaterSource.cs: Add a ring of tiny brass rivet heads around the barrel’s mid‑section in `WaterSource.BuildBarrel` so the rain barrel looks weathered and metal‑fastened.
   Create a `System.Random` with the same seed (`1993`) already used for the tap and use it to place 4–6 rivets evenly spaced around the barrel at `y = 0.5f` (mid‑height).
   For each rivet call `m.Cylinder(new Vector3(Mathf.Sin(angle) * (r + 0.01f), 0.5f, Mathf.Cos(angle) * (r + 0.01f)), 0.008f, 0.004f, 8, DecorPalette.Metal(FurnitureBuilder.Brass));`

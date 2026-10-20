@@ -236,7 +236,7 @@ namespace CloneZ
         private void Wash(InteractContext ctx)
         {
             bool mains = WaterMains.MainsOn;
-            ReturnTap(ctx);
+
             UseStored(CloneZConfig.BasinWashWater);
             WaterUse.Freshen(ctx, CloneZConfig.BasinWashFreshen);
             ctx.Notify(!mains ? "You wash in the water you saved in the basin. Every drop counts now."
@@ -246,7 +246,7 @@ namespace CloneZ
 
         private void Brush(InteractContext ctx)
         {
-            ReturnTap(ctx);
+
             bool wet = UseStored(CloneZConfig.BasinBrushWater);
             BathroomFixtures.Nerves(ctx, -CloneZConfig.BasinBrushCalm);
             ctx.Notify(wet ? BrushLines[Random.Range(0, BrushLines.Length)]
@@ -255,7 +255,7 @@ namespace CloneZ
 
         private void Shave(InteractContext ctx)
         {
-            ReturnTap(ctx);
+
             UseStored(CloneZConfig.BasinShaveWater);
             BathroomFixtures.Nerves(ctx, -CloneZConfig.BasinShaveCalm);
             ctx.Notify(ShaveLines[Random.Range(0, ShaveLines.Length)]);
