@@ -108,6 +108,12 @@ namespace CloneZ
             float glass = h - topRail - bottomRail, gy = y0 + bottomRail + glass * 0.5f;
             m.Box(f.P(f.Mid, gy, across), f.Size(0.03f, glass, 0.03f), frame);
             m.Box(f.P(f.Mid, gy, across), f.Size(w - 0.09f, glass, 0.006f), DecorPalette.Glass(SashGlass));
+            // Add period‑correct wooden muntin grid to the glazing
+            Surf muntin = DecorPalette.Matte(FurnitureBuilder.Pine);
+            // vertical muntin strip (≈3 mm wide, full glass height)
+            m.Box(f.P(f.Mid, gy, across), f.Size(0.003f, glass, 0.006f), muntin);
+            // horizontal muntin strip (≈3 mm tall, spans glass width)
+            m.Box(f.P(f.Mid, gy, across), f.Size(w - 0.09f, 0.003f, 0.006f), muntin);
             Surf brassCap = DecorPalette.Metal(FurnitureBuilder.Brass);
             for (int e = -1; e <= 1; e += 2)
                 m.Box(f.P(f.Mid + e * (w * 0.5f - 0.0225f), y1 - topRail * 0.5f, across), f.Size(0.015f, 0.015f, 0.01f), brassCap);

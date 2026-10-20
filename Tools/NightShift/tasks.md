@@ -3346,8 +3346,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   Result: when the player saves mid‑wash, loading the game will keep the tap running and the wash will continue correctly, instead of abruptly stopping.
   All other behaviour (plug state, level, cleaning timer) remains the same.
   - 13:42 landed by hts-llm in 1.1 min: **Changes made**
-- [ ] Add a period‑correct wooden muntin grid to the glazing in `Assets/Scripts/World/StarterHome.Windows.cs` → `WindowSash` method, after the line `m.Box(f.P(f.Mid, gy, across), f.Size(w - 0.09f, glass, 0.006f), DecorPalette.Glass(SashGlass));`
+- [x] Add a period‑correct wooden muntin grid to the glazing in `Assets/Scripts/World/StarterHome.Windows.cs` → `WindowSash` method, after the line `m.Box(f.P(f.Mid, gy, across), f.Size(w - 0.09f, glass, 0.006f), DecorPalette.Glass(SashGlass));`
   Create a small wood surface: `Surf muntin = DecorPalette.Matte(FurnitureBuilder.Pine);`
   Add a vertical strip: `m.Box(f.P(f.Mid, gy, across), f.Size(0.003f, glass, 0.006f), muntin);` (size ≈ 3 mm wide, runs full height of the glass)
   Add a horizontal strip: `m.Box(f.P(f.Mid, gy, across), f.Size(w - 0.09f, 0.003f, 0.006f), muntin);` (size ≈ 3 mm tall, spans the glass width)
   These two primitives add a modest cross‑grid reminiscent of 1990s rural windows, using existing wood material and keeping colliders and interaction unchanged.
+  - 13:44 landed by hts-llm in 1.5 min: **Summary**
