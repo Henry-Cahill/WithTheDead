@@ -257,9 +257,11 @@ bool leftHandle = rng.Next(2) == 0;
                 case HomeFurnitureKind.Shower:
                     m.Box(new Vector3(0f, 0.04f, 0f), new Vector3(0.9f, 0.08f, 0.9f), DecorPalette.Gloss(new Color(0.9f, 0.9f, 0.88f)));
                     break;
-                case HomeFurnitureKind.Tv:
-                    m.Box(new Vector3(0f, 0.2f, -0.02f), new Vector3(0.46f, 0.4f, 0.32f), DecorPalette.Matte(new Color(0.12f, 0.12f, 0.13f)));
-                    break;
+case HomeFurnitureKind.Tv:
+                     m.Box(new Vector3(0f, 0.2f, -0.02f), new Vector3(0.46f, 0.4f, 0.32f), DecorPalette.Matte(new Color(0.12f, 0.12f, 0.13f)));
+                     // short power‑cord hanging from the back
+                     m.Cylinder(new Vector3(0f, 0.05f, -0.18f), 0.01f, 0.12f, 6, DecorPalette.Matte(new Color(0.08f, 0.08f, 0.08f)));
+                     break;
                 case HomeFurnitureKind.Radio:
                     m.Box(new Vector3(0f, 0.09f, 0f), new Vector3(0.32f, 0.18f, 0.14f), DecorPalette.Matte(new Color(0.30f, 0.20f, 0.12f)));
 bool leftKnob = rng.Next(2) == 0;
