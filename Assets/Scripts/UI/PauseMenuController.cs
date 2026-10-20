@@ -723,6 +723,16 @@ namespace CloneZ
             it.Accent.raycastTarget = false;
             it.Text = HudUI.Label(it.Content, "Label", 23, TextAnchor.MiddleLeft, Idle, new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
                 new Vector2(26f, 0f), new Vector2(320f, 30f), FontStyle.Bold);
+            // subtle rivet accent for the row
+            var rivet = new GameObject($"Rivet{index}");
+            var rrt = rivet.AddComponent<RectTransform>();
+            rrt.SetParent(it.Content, false);
+            rrt.anchorMin = rrt.anchorMax = new Vector2(0f, 1f);
+            rrt.pivot = new Vector2(0f, 1f);
+            rrt.anchoredPosition = new Vector2(2f, -4f);
+            rrt.sizeDelta = new Vector2(4f, 4f);
+            var rimg = rivet.AddComponent<Image>();
+            rimg.color = new Color(0.7f, 0.7f, 0.7f, 0.9f);
             it.Text.text = it.Label;
 
             if (it.Kind == ItemKind.Action)
