@@ -3036,3 +3036,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `"Midnight Patrol Report",`
   `"Frostbite Prevention Memo"`
   These titles match the style of the existing entry `"Edible Plants of the Zone"` and expand the in‑world literature to cover winter survival, local folklore, improvised tools, and wartime communication.
+- [ ] Modify Assets/Scripts/UI/InventoryUIController.List.cs: in `InventoryUIController.AddIcon(RectTransform row, ItemDef def, bool badge)` add a small “damage scar” overlay on the item icon when the item is damageable and its condition is below 0.5 to convey wear.
