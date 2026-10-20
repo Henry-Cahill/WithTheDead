@@ -3684,7 +3684,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   – In `BuildSummary` replace `GameManager gm = GameManager.Instance;` with `GameManager gm = _gm;`.
   – In `RecordOutcome` replace `CharacterProfile c = ProfileStore.ActiveCharacter;` stays, but keep existing GameManager calls unchanged.
   - 15:22 landed by 1htsserver in 3.6 min: Implemented GameManager caching in **ExtractionManager.cs**:
-- [ ] Add a new “Inspect the tap” action in `Assets/Scripts/World/Fixtures/RaidCivicSink.cs` inside `CivicSink.GetActions`, placed after the existing temperature‑check action, that uses the private `_running` field to `ctx.Notify` either “The tap is still running, wasting water.” when the tap is on or “The tap is off.” when it is not, giving the survivor a quick way to notice a forgotten running tap.
+- [x] Add a new “Inspect the tap” action in `Assets/Scripts/World/Fixtures/RaidCivicSink.cs` inside `CivicSink.GetActions`, placed after the existing temperature‑check action, that uses the private `_running` field to `ctx.Notify` either “The tap is still running, wasting water.” when the tap is on or “The tap is off.” when it is not, giving the survivor a quick way to notice a forgotten running tap.
   Insert a line like `var inspect = new InteractAction("Inspect the tap", ctx => { ctx.Notify(_running ? "The tap is still running, wasting water." : "The tap is off."); });` and add `into.Add(inspect);` after the temperature action.
   No other code changes are required; the player will see this option when interacting with any sink.
+  - 15:24 landed by 1htsserver in 2.2 min: **Changes made**
 - [ ] Add four rust‑tinted “hinge” decorations to the health panel corners in Assets/Scripts/UI/HealthPanelController.cs, inside the `Build()` method — right after the existing `Rivet(prt, …)` calls.
