@@ -940,11 +940,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `new Color(0.58f, 0.55f, 0.52f, 0.85f)); // muted metal tint, matches existing UI palette`
   The bolt uses the same `NewImage` helper, keeps the existing layout (no change to anchors, pivots, or colliders), and adds only one primitive (well under the 12‑primitive limit). It gives each entry a period‑appropriate hardware hint without affecting functionality.
   - 01:58 landed by hts-llm in 2 min: **Changes Made**
-- [ ] Add a tiny brass latch knob to the lower‑sash lock lever in `RaidBuilding.FitWindow` (Assets/Scripts/World/RaidBuilding.Windows.cs)
+- [x] Add a tiny brass latch knob to the lower‑sash lock lever in `RaidBuilding.FitWindow` (Assets/Scripts/World/RaidBuilding.Windows.cs)
   After the line
   `latchOpen = WindowBox(sash.transform, "LatchOpen", l.P(o.Pos + 0.03f, SashMeet + 0.032f, inner), l.Size(0.06f, 0.008f, 0.02f), brass);`
   insert a new mesh that creates a small box (representing a knob) of size `new Vector3(0.012f, 0.012f, 0.005f)` positioned at `l.P(o.Pos + 0.03f, SashMeet + 0.038f, inner + 0.011f)` using the same `brass` material, and attach it under `latchOpen.transform` via `WindowPart`.
   This adds a period‑correct brass detail to the latch, visible on every window, without altering colliders or interaction points.
+  - 02:01 landed by hts-llm in 2.9 min: **Changed file**
 - [ ] In Assets/Scripts/AI/Humans/HumanNpc.cs: Add an “Intimidate” action to HumanNpcInteract.GetActions that lets the player force a non‑surrendered NPC to give up if the player is visibly armed.
   In HumanNpcInteract.GetActions, after the existing `into.Add(new InteractAction("Talk", Talk));` line, insert:
   `into.Add(new InteractAction("Intimidate", c => {`
