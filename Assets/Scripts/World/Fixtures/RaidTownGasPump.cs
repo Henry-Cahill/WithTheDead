@@ -54,6 +54,13 @@ namespace CloneZ
             if (_lifted) {
                 into.Add(new InteractAction("Tap the nozzle", TapNozzle));
                 into.Add(new InteractAction("Check for leak", CheckLeak));
+                into.Add(new InteractAction("Inspect the price tag", c => c.Notify("The rusted price tag reads $1.09 per gallon, a relic of harder times.")));
+                into.Add(new InteractAction("Listen to the pump's hum", c => c.Notify("The pump emits a low, mournful hum against the winter wind.")));
+                into.Add(new InteractAction("Feel the cold metal", c => c.Notify("The metal is bitterly cold, frosting your fingertips.")));
+                into.Add(new InteractAction("Observe the frost on the hose", c => c.Notify("A thin layer of frost clings to the hose, glinting in the pale light.")));
+                into.Add(new InteractAction("Check the fuel gauge", c => c.Notify("The analog gauge points to zero; the pump is out of fuel.")));
+                into.Add(new InteractAction("Read the warning sign", c => c.Notify("The warning sign warns of slippery ice—caution advised.")));
+
             }
         }
 
