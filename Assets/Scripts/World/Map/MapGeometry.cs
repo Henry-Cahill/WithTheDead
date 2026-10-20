@@ -145,14 +145,16 @@ namespace CloneZ
             return cur;
         }
 
+        private const float EPS = 1e-5f;
+
         private static bool Inside(Vector2 p, Rect r, int edge)
         {
             switch (edge)
             {
-                case 0: return p.x >= r.xMin;
-                case 1: return p.x <= r.xMax;
-                case 2: return p.y >= r.yMin;
-                default: return p.y <= r.yMax;
+                case 0: return p.x >= r.xMin - EPS;
+                case 1: return p.x <= r.xMax + EPS;
+                case 2: return p.y >= r.yMin - EPS;
+                default: return p.y <= r.yMax + EPS;
             }
         }
 

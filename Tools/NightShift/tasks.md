@@ -3938,7 +3938,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   The change is a simple extension of the existing initializer for `private static readonly Book[] Books`; keep every line that is already present unchanged and add the new lines after the last `new Book(...);` entry.
   When the survivor chooses “Read a book”, the new titles will appear in the rotation, showing the title, author and a single‑sentence “thought” that is displayed in the notification (e.g. `You read a few chapters of “...” by … . …`).
   Existing code, struct layout, and the surrounding comments must remain exactly as they are.
-- [ ] Modify `MapGeometry.Inside` in Assets/Scripts/World/Map/MapGeometry.cs to treat points on the clipping rectangle edges as inside, preventing lost vertices for buildings that sit on the map border.
+- [x] Modify `MapGeometry.Inside` in Assets/Scripts/World/Map/MapGeometry.cs to treat points on the clipping rectangle edges as inside, preventing lost vertices for buildings that sit on the map border.
   Add a small epsilon tolerance (`private const float EPS = 1e-5f;`) to the class.
   Change the four `case` returns to:
   `case 0: return p.x >= r.xMin - EPS;`
@@ -3947,3 +3947,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `default: return p.y <= r.yMax + EPS;`
   The rest of the code stays unchanged.
   Result: buildings whose footprints touch the map’s clipping rectangle now retain all border vertices, so their walls, roofs and props render correctly without gaps.
+  - 17:39 landed by hts-llm in 1.5 min: **Changed file**
