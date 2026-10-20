@@ -33,6 +33,9 @@ namespace CloneZ
         private float _scanTimer;
         private bool _hunted, _bellShown;
 
+        /// <summary>True while any zombie is hunting the survivor (rechecked twice a second).</summary>
+        public bool Hunted => _hunted;
+
         public HudWatchRow(HudContext ctx, RectTransform root)
         {
             _ctx = ctx;

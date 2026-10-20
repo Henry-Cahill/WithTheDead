@@ -42,10 +42,38 @@ Every change is compiled against Unity's own assemblies before it lands, and lan
 2. **Start it.** Switch on **night-shift** under *Applications* in AI Workbench, or choose **2**. It keeps
    going into the day until you stop it, picking up tasks you add in the meantime. (Set
    `NIGHTSHIFT_STOP_AT` in [nightshift.env](nightshift.env) for a fixed time to stop taking new tasks.)
-   When the queue runs dry, the log says `idle: nothing left to start` and the agents wait for new tasks.
+   With auto-planning on (the default, see below) the queue never runs dry. With it off, the log says
+   `idle: nothing left to start` when the queue is empty, and the agents wait for new tasks.
 3. **Watch it work** with **4** in the menu: a live, color-coded log of every agent's steps and messages
    (one color per machine, landings in green, failures in red). The same view is
    `bash /project/Tools/NightShift/nightshift.sh log` in a JupyterLab terminal. **3** shows a status summary.
+
+## A queue that never runs dry
+
+With `NIGHTSHIFT_AUTOPLAN=1` in [nightshift.env](nightshift.env), the night shift writes its own tasks whenever
+fewer are waiting than there are workers plus two. It takes the focus areas in `NIGHTSHIFT_AUTOPLAN_FOCUS` in turn:
+
+| Focus | What the planner looks for |
+|---|---|
+| `map` | the real-world raid map's code (`Assets/Scripts/World/Map/`): buildings, streets and props that look and play like the hand-built town |
+| `graphics` | small visual detail or variation on an object a script builds from primitives |
+| `fixes` | a bug it can prove from the code |
+| `perf` | work repeated every frame that could be cached |
+| `features` | a small addition next to an existing action or mechanic |
+| `flavour` | new lines for an existing list of written text |
+| `docs` | missing `/// <summary>` comments (a fixed task; no model needed) |
+
+For each task it picks the script that fits the focus and was shown least recently, shows it whole to the local model
+(`NIGHTSHIFT_AUTOPLAN_MODEL`, by default the helpers' model, which runs beside the agents) with
+[LESSONS.md](memory/LESSONS.md), and queues the task it writes under `### Auto-planned <date>` in tasks.md, but only
+if the task names that script, mentions no file that doesn't exist or that agents may not touch, calls no method
+that exists nowhere in the scripts, and doesn't repeat a task already in tasks.md. It skips scripts that already
+have a task waiting, so no two tasks collide. Tasks you write always start before the planner's, wherever you add
+them. Delete any planned task you don't want before it starts.
+
+`nightshift.sh plan --dry-run` (or `plan --focus graphics --target Assets/Scripts/World/DecorProps.cs`) shows what
+the planner would write, without queueing it. Since the queue never empties, the automatic pull request publishes
+every `NIGHTSHIFT_PUBLISH_EVERY` minutes (120 by default) instead of waiting for the agents to run out of work.
 
 ## Start and stop on command
 
@@ -72,6 +100,8 @@ shift's branch, the night shift stops so nothing lands on the other branch.
   patch), `[~]` nothing needed changing. `reports/<date>.md` has a summary of each task.
 - With the automatic pull request on, the pull request is waiting on GitHub. Choose **P** (or
   `.\NightShift.ps1 pr`) to open or update it right away, even while the agents are still working.
+  GitHub-side edits on the same branch are preserved: publishing merges them with the Spark's results in
+  a temporary checkout, without switching this PC's checkout or changing the running Spark. It never force-pushes.
 - Choose **7** (or `.\NightShift.ps1 fetch`) to fetch the branch into this repo, then
   `git switch -c nightshift/<date> spark/nightshift/<date>` and try it in Unity. The night shift can
   compile but not play the game, so play-test before merging.
@@ -104,18 +134,20 @@ under `.state/` or `.unityrefs/`, or anything that looks like a private key.
 ## Settings
 
 [nightshift.env](nightshift.env) sets the models, the stop time (empty: keep going until stopped), the time
-limit per task and the number of fix rounds. It's read at every start. The Spark's own agent uses `qwen3.8`, and the helpers use
+limit per task, the number of fix rounds and auto-planning. It's read at every start. The Spark's own agent uses `qwen3.8`, and the helpers use
 `gpt-oss:120b`: Ollama serves `qwen3.8` one request at a time, so helpers on it would only wait their turn,
 while `gpt-oss:120b` runs several at once (and is about twice as fast).
 
 Inside the container, `bash Tools/NightShift/nightshift.sh` also has `check` (compile the project as it is),
-`state` (one line of JSON that `NightShift.ps1 pr` reads) and `chat` (OpenCode in a terminal with the same
-local model, for interactive work in JupyterLab's terminal).
+`state` (one line of JSON that `NightShift.ps1 pr` reads), `plan` (write one task with the planner now) and `chat`
+(OpenCode in a terminal with the same local model, for interactive work in JupyterLab's terminal).
 
 ## Troubleshooting
 
 - **The log has gone quiet**: if its last line starts with `idle:`, every task is done and the agents are
-  waiting for new ones; add tasks and they start within a minute. **3** (status) shows the same.
+  waiting for new ones; add tasks and they start within a minute. **3** (status) shows the same. With
+  auto-planning on, `idle: waiting for the planner's next task` means the planner is writing one; lines starting
+  `planner:` say what it queued or why it skipped a script.
 - **"Unity's reference assemblies aren't on the Spark"**: run `.\NightShift.ps1 refs` on this PC.
 - **"the project doesn't compile before any changes"**: the branch the Workbench project is on doesn't
   compile; fix it (or switch branch) first. Errors that only appear on the Spark usually mean the
@@ -125,6 +157,19 @@ local model, for interactive work in JupyterLab's terminal).
   the project folder while it ran, so the landing was undone and the task stays queued. Adding tasks to
   `tasks.md` is fine at any time; leave the other files alone while it runs.
 - **No pull request appeared**: `.state\pr.log` on this PC says why (for example a failed push). The
-  automatic one waits until nothing is left to do; **P** makes it right away.
+  automatic one waits until nothing is left to do (or, with auto-planning on, for the next `NIGHTSHIFT_PUBLISH_EVERY`
+  minutes); **P** makes it right away.
+- **Publishing reports a merge conflict**: nothing was pushed or changed on the Spark. Stop the night shift,
+  fetch the GitHub and Spark versions of the branch, and reconcile them manually before retrying **P**.
+  If GitHub changed during publishing, retry **P** to fetch and reconcile the latest commits.
 - **Logs**: `Tools/NightShift/.state/nightshift.log` (coordinator), and each worker's
   `.state/runs/*.jsonl` (full agent transcripts).
+
+## Publication regression tests
+
+Run `pwsh -NoProfile -File Tools/NightShift/tests/Publish.Tests.ps1` from the repository root (or use
+`powershell -NoProfile -File ...` on Windows PowerShell 5). Tests use temporary local Git history only;
+they do not connect to the Spark or GitHub.
+
+The planner's tests need Linux (the coordinator locks files with `fcntl`), so run them on the Spark or a helper:
+`python3 -m unittest discover -s Tools/NightShift/tests -p "test_*.py"`. They use a fake model and temporary folders.

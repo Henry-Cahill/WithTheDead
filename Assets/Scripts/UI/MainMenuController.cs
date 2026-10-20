@@ -6,7 +6,8 @@ namespace CloneZ
 {
     /// <summary>
     /// The title screen: your runners (up to three per account), making a new one, hosting or joining a server, the
-    /// settings and the field manual — and the original wave-survival mode. Picking a runner takes you to their hub.
+    /// settings and the field manual — and the original wave-survival mode. Picking a runner takes you to their hub;
+    /// a dead runner's slot can take a new runner.
     /// </summary>
     public class MainMenuController : MonoBehaviour
     {
@@ -93,23 +94,29 @@ namespace CloneZ
             if (c == null)
             {
                 UIKit.Label(col, "Empty slot", 22, UIKit.TextDim, TextAnchor.MiddleCenter);
-                UIKit.Size(UIKit.Button(col, "New runner", () => ShowCreate(), UIKit.Accent, 20).gameObject, -1f, 54f);
+                UIKit.Size(UIKit.Button(col, "New runner", () => NewRunner(-1), UIKit.Accent, 20).gameObject, -1f, 54f);
                 return;
             }
             ProfessionDef p = ProfessionCatalog.Get(c.Profession);
             UIKit.Label(col, c.Name + (c.Ironman ? "  [IRONMAN]" : ""), 24, c.Dead ? UIKit.Bad : UIKit.TextColor, TextAnchor.MiddleLeft, FontStyle.Bold);
             UIKit.Label(col, "Level " + c.Level + " " + p.Name + " \u00b7 " + Factions.NameOf(c.Faction), 16, UIKit.TextDim);
-            UIKit.Label(col, c.Dead ? "Dead: " + (c.CauseOfDeath ?? "the Zone") : "Day " + c.Day + " \u00b7 raids " + c.Raids + " \u00b7 extracts " + c.Extracts + " \u00b7 " + HubCatalog.Get(c.Hub).Name, 15, UIKit.TextDim);
+            UIKit.Label(col, c.Dead ? "Dead: " + (string.IsNullOrEmpty(c.CauseOfDeath) ? "the Zone" : c.CauseOfDeath) : "Day " + c.Day + " \u00b7 raids " + c.Raids + " \u00b7 extracts " + c.Extracts + " \u00b7 " + HubCatalog.Get(c.Hub).Name, 15, UIKit.TextDim);
             RectTransform row = UIKit.Row(col, 46f, null, 8f, 0);
+            row.GetComponent<LayoutElement>().flexibleHeight = 0f;   // keep to its own height, not the card's spare room
             int idx = i;
-            UIKit.Button(row, c.Dead ? "Gone" : "Play", () =>
-            {
-                if (c.Dead) return;
-                ProfileStore.SelectCharacter(idx);
-                if (_boot != null) _boot.StartHub();
-                Destroy(gameObject);
-            }, c.Dead ? UIKit.ButtonColor : UIKit.Accent, 20).interactable = !c.Dead;
-            UIKit.Button(row, "Delete", () => ConfirmDelete(idx), UIKit.ButtonColor, 16);
+            // A dead runner can't be played, so their slot takes a new runner instead.
+            Button main = c.Dead
+                ? UIKit.Button(row, "New runner", () => NewRunner(idx), UIKit.Accent, 20)
+                : UIKit.Button(row, "Play", () =>
+                {
+                    ProfileStore.SelectCharacter(idx);
+                    if (_boot != null) _boot.StartHub();
+                    Destroy(gameObject);
+                }, UIKit.Accent, 20);
+            Button delete = UIKit.Button(row, "Delete", () => ConfirmDelete(idx), UIKit.ButtonColor, 16);
+            // The row hands out width by flexible share only; a bare button has none and would collapse to nothing.
+            UIKit.Size(main.gameObject, -1f, -1f, 2f);
+            UIKit.Size(delete.gameObject, -1f, -1f, 1f);
         }
 
         private void ConfirmDelete(int idx)
@@ -130,6 +137,14 @@ namespace CloneZ
         private readonly List<string> _traits = new List<string>();
         private string _blood;
         private bool _ironman;
+        private int _replaceSlot = -1;
+
+        // A new runner for an empty slot (-1), or to take the place of the dead runner in replaceSlot.
+        private void NewRunner(int replaceSlot)
+        {
+            _replaceSlot = replaceSlot;
+            ShowCreate();
+        }
 
         private void ShowCreate()
         {
@@ -201,7 +216,7 @@ namespace CloneZ
         {
             CharacterProfile c = ProfileStore.NewCharacter(_name, _prof, new List<string>(_traits), _faction, _blood, _ironman);
             ProfessionCatalog.ApplyKit(c);
-            ProfileStore.AddCharacter(c);
+            ProfileStore.AddCharacter(c, _replaceSlot);
             GameSession.SurvivorName = c.Name;
             if (_boot != null) _boot.StartHub();
             Destroy(gameObject);

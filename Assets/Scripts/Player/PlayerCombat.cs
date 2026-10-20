@@ -73,6 +73,8 @@ namespace CloneZ
         public event System.Action<float> OnRecoil;
         /// <summary>Raised when a shot jams.</summary>
         public event System.Action OnJam;
+        /// <summary>Raised for each melee blow that lands (the target, and whether it killed): the HUD's hit marker.</summary>
+        public event System.Action<IDamageable, bool> OnMeleeHit;
 
         private PlayerInventory Inv => _inventory != null ? _inventory : (_inventory = GetComponent<PlayerInventory>());
         private PlayerSkills Skills => _skills != null ? _skills : (_skills = GetComponent<PlayerSkills>());
@@ -196,6 +198,7 @@ namespace CloneZ
                 }.WithZone(crit ? BodyZone.Head : BodyZones.RandomStrike());
                 info.IsHeadshot = crit;
                 bool killed = CombatResolver.Apply(target, info, Me);
+                OnMeleeHit?.Invoke(target, killed);
                 Sfx.Play(SfxIds.MeleeHit, tt.position + Vector3.up * 1.2f, 0.8f, Random.Range(0.9f, 1.1f), 16f);
 
                 if (Skills != null)

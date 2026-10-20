@@ -21,7 +21,8 @@
     stop     Stop now; unfinished tasks are rolled back and stay queued.
     fetch    Fetch the night's branches from the Spark into this repo for review (no GitHub needed).
     pr       Push the night shift's branch to GitHub and open (or update) its pull request. With -WhenDone
-             it does so only once nothing is left to do (idle or stopped).
+             it does so only once nothing is left to do (idle or stopped), or, while the planner keeps the queue
+             full (NIGHTSHIFT_AUTOPLAN), once NIGHTSHIFT_PUBLISH_EVERY minutes have passed since the last time.
     autopr   Turn on the automatic pull request: a scheduled task on this PC runs "pr -WhenDone" every
              15 minutes (it needs this PC on and logged in; gh is already signed in here). -Off turns it off.
 
@@ -468,17 +469,60 @@ function Invoke-Tool([string]$What, [string]$Exe, [string[]]$Arguments, [int]$Tr
     }
 }
 
+# Preserve GitHub-side edits without switching this checkout or changing the running Spark's branch.
+function Get-PublishCommit([string]$Branch, [string]$Sha, [string]$Remote) {
+    if (-not $Remote -or $Remote -eq $Sha) { return $Sha }
+    Invoke-Tool "git fetch of $Branch from GitHub" git @('-C', $Root, 'fetch', '-q', 'origin', "refs/heads/$Branch") | Out-Null
+    $remoteSha = "$(Invoke-Tool 'read fetched GitHub commit' git @('-C', $Root, 'rev-parse', 'FETCH_HEAD') 1)".Trim()
+    & git -C $Root merge-base --is-ancestor $remoteSha $Sha
+    if ($LASTEXITCODE -eq 0) { return $Sha }
+    if ($LASTEXITCODE -ne 1) { throw "Couldn't compare $Branch with GitHub." }
+    & git -C $Root merge-base --is-ancestor $Sha $remoteSha
+    if ($LASTEXITCODE -eq 0) { return $remoteSha }
+    if ($LASTEXITCODE -ne 1) { throw "Couldn't compare $Branch with the Spark." }
+
+    $worktree = Join-Path ([IO.Path]::GetTempPath()) ("clonez-nightshift-" + [guid]::NewGuid().ToString('N'))
+    Invoke-Tool 'create isolated publication worktree' git @('-C', $Root, 'worktree', 'add', '--detach', $worktree, $Sha) 1 | Out-Null
+    try {
+        Write-Host "Merging GitHub's changes to $Branch with the Spark's results..."
+        try {
+            Invoke-Tool "merge GitHub's $Branch" git @('-C', $worktree, '-c', 'user.name=CLONE-Z Night Shift',
+                '-c', 'user.email=nightshift@localhost', 'merge', '--no-ff', '--no-edit', '--no-gpg-sign', $remoteSha) 1 | Out-Null
+        }
+        catch {
+            throw "Couldn't merge GitHub's $Branch with the Spark's results; nothing was pushed. Stop the night shift, reconcile the two branches manually, then retry P. $($_.Exception.Message)"
+        }
+        return "$(Invoke-Tool 'read publication commit' git @('-C', $worktree, 'rev-parse', 'HEAD') 1)".Trim()
+    }
+    finally {
+        Invoke-Tool 'remove publication worktree' git @('-C', $Root, 'worktree', 'remove', '--force', $worktree) 1 | Out-Null
+    }
+}
+
+# Whether "pr -WhenDone" should publish now: once nothing is left to do, or, while the planner keeps the queue from ever
+# running dry, when the last publication ($Stamp holds its time) is publish_every minutes old.
+function Test-PublishDue($State, [string]$Stamp, [datetime]$Now = (Get-Date)) {
+    # Coordinators from before "dispatchable" only say whether they've gone idle.
+    $left = if ($null -ne $State.dispatchable) { $State.dispatchable } elseif ($State.idle_since) { 0 } else { $State.queued }
+    if ((-not $State.running) -or ($State.working -eq 0 -and $left -eq 0)) { return $true }
+    $every = 0.0
+    if (-not $State.autoplan -or -not [double]::TryParse("$($State.publish_every)", [ref]$every) -or $every -le 0) { return $false }
+    $last = [datetime]::MinValue
+    $ticks = 0L
+    if ((Test-Path $Stamp) -and [long]::TryParse("$(Get-Content $Stamp -Raw)".Trim(), [ref]$ticks)) { $last = [datetime]$ticks }
+    return ($Now - $last).TotalMinutes -ge $every
+}
+
 # Pushes the Spark's night shift branch to GitHub and opens its pull request, or updates the open one.
 function Publish-NightShift {
     [Console]::OutputEncoding = [Text.Encoding]::UTF8  # the reports are UTF-8; PowerShell 5 would read git's output as OEM
     $state = Get-NightState
     $branch = "$($state.branch)"
     if ($branch -notlike 'nightshift/*') { Write-Host "The Spark's project is on '$branch', not a night shift branch, so there's nothing to publish."; return }
-    # Coordinators from before "dispatchable" only say whether they've gone idle.
-    $left = if ($null -ne $state.dispatchable) { $state.dispatchable } elseif ($state.idle_since) { 0 } else { $state.queued }
-    $done = (-not $state.running) -or ($state.working -eq 0 -and $left -eq 0)
-    if ($WhenDone -and -not $done) {
-        Write-Host "Still working on $branch ($($state.working) in progress, $($state.queued) queued); the pull request waits until it's done."
+    $stamp = Join-Path $Here '.state\last-publish.txt'
+    if ($WhenDone -and -not (Test-PublishDue $state $stamp)) {
+        $why = if ($state.autoplan) { "until it's done or the next update is due" } else { "until it's done" }
+        Write-Host "Still working on $branch ($($state.working) in progress, $($state.queued) queued); the pull request waits $why."
         return
     }
     $old = $env:GIT_SSH_COMMAND
@@ -488,6 +532,8 @@ function Publish-NightShift {
     $env:GIT_TERMINAL_PROMPT = '0'; $env:GCM_INTERACTIVE = 'never'  # fail rather than wait for a sign-in nobody sees
     Invoke-Tool 'git fetch of main from GitHub' git @('-C', $Root, 'fetch', '-q', 'origin', 'main') | Out-Null
     $sha = "$(& git -C $Root rev-parse "refs/remotes/spark/$branch")".Trim()
+    $remote = "$(Invoke-Tool 'git ls-remote on GitHub' git @('-C', $Root, 'ls-remote', 'origin', "refs/heads/$branch"))".Split("`t ")[0]
+    $sha = Get-PublishCommit $branch $sha $remote
     if ([int]"$(& git -C $Root rev-list --count "origin/main..$sha")" -eq 0) { Write-Host "$branch has nothing that isn't on main yet."; return }
     # Never publish what must stay on the Spark (its SSH key for the helpers, Unity's DLLs) or anything like a private key.
     $private = @(& git -C $Root log --format= --name-only "origin/main..$sha" | Where-Object {
@@ -495,14 +541,20 @@ function Publish-NightShift {
     $private += @(& git -C $Root log --format=%h -G 'BEGIN [A-Z ]*PRIVATE KEY' "origin/main..$sha" | ForEach-Object { "a private key in commit $_" })
     if ($private.Count -gt 0) { throw "$branch has files that must not leave the Spark ($(($private | Select-Object -First 3) -join ', ')), so it wasn't pushed" }
     $repo = Get-GitHubRepo
-    $remote = "$(Invoke-Tool 'git ls-remote on GitHub' git @('-C', $Root, 'ls-remote', 'origin', "refs/heads/$branch"))".Split("`t ")[0]
     $prs = Invoke-Tool 'gh pr list (check: gh auth status)' gh @('pr', 'list', '--repo', $repo, '--head', $branch, '--state', 'open', '--json', 'number,url')
     $open = @(if ("$prs".Trim()) { ($prs -join "`n") | ConvertFrom-Json | ForEach-Object { $_ } })
-    # The night's reports that aren't on main yet. Without them there's no new work: the branch's last pull request
-    # was merged and only tooling or merges came after, so don't open another one for that.
-    $reports = @(& git -C $Root diff --name-only --diff-filter=AM "origin/main...$sha" -- 'Tools/NightShift/reports/*.md' |
+    # The night's reports that aren't on main yet, by comparing the two trees: merges between main and the night's
+    # branch can leave several merge bases, and a three-dot diff from an older one shows merged reports as new.
+    # Without new reports there's no new work (the last night pull request was merged and only tooling or merges
+    # came after), so don't open another pull request for that.
+    $reports = @(& git -C $Root diff --name-only --diff-filter=AM origin/main $sha -- 'Tools/NightShift/reports/*.md' |
         Sort-Object { $_ -replace '\.md$', '' } -Descending)
-    if ($open.Count -eq 0 -and $reports.Count -eq 0) { Write-Host "Nothing new from the night shift on $branch since its last pull request."; return }
+    $newReports = @($reports | Where-Object {
+        & git -C $Root diff --quiet origin/main $sha -- $_
+        if ($LASTEXITCODE -gt 1) { throw "Couldn't compare report '$_' with main." }
+        $LASTEXITCODE -eq 1
+    })
+    if ($open.Count -eq 0 -and $newReports.Count -eq 0) { Write-Host "Nothing new from the night shift on $branch since its last pull request."; return }
     # Refresh PR metadata even when the branch is already pushed, so failed edits can be retried.
     if ($remote -ne $sha) {
         Invoke-Tool "git push of $branch to GitHub" git @('-C', $Root, 'push', '-q', 'origin', "${sha}:refs/heads/$branch") | Out-Null
@@ -544,6 +596,7 @@ Work by the CLONE-Z Night Shift: local AI agents (Ollama on the DGX Spark and th
                 Where-Object { $_ -match '^https://' } | Select-Object -Last 1
             Write-PrLog "Opened $url : $landed landed, $failed failed"
         }
+        Set-Content -Path $stamp -Value (Get-Date).Ticks -Encoding ASCII  # Write-PrLog made the folder
     }
     finally { Remove-Item $file -ErrorAction SilentlyContinue }
 }
