@@ -3015,13 +3015,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   The _scavType field is never assigned, so BloodType returns null for scav runs or unt­ested characters; Transfuse calls BloodTypes.Compatible(donorType, BloodType) which then receives a null argument and either throws or always returns false, preventing valid transfusions.
   Add initialization of _scavType in Awake so it always holds a valid blood‑type string.
   - 11:56 landed by hts-llm in 1.1 min: **Summary of changes**
-- [ ] Cache the Shade‑check in Assets/Scripts/AI/Creatures/Creatures.cs so the per‑frame `Update` doesn’t compare `Def.Id` to `CreatureCatalog.Shade` each tick
+- [x] Cache the Shade‑check in Assets/Scripts/AI/Creatures/Creatures.cs so the per‑frame `Update` doesn’t compare `Def.Id` to `CreatureCatalog.Shade` each tick
   Add a private bool `_isShade` field to `Creature` and set it once when the creature is spawned (after `c.Def = def;`).
   Replace the line
   `if (Def.Id == CreatureCatalog.Shade) Actor.Cloaked = Time.time > _revealUntil && (_target == null || HumanUtil.FlatDistance(transform.position, _target.transform.position) > 3.5f);`
   with
   `if (_isShade) Actor.Cloaked = Time.time > _revealUntil && (_target == null || HumanUtil.FlatDistance(transform.position, _target.transform.position) > 3.5f);`
   The player sees exactly the same Shade cloaking behaviour; the only change is that the costly string/equality check is done once per creature instead of every frame.
+  - 11:59 landed by hts-llm in 2 min: **Changes Made**
 - [ ] In Assets/Scripts/World/Fixtures/HoseSpigot.cs: Add a “Check water flow” action to `HoseSpigot.GetActions` right after the existing “Check tap” entry, using the same pattern of `InteractAction` construction and the `_open` and `WaterMains.MainsOn` fields to report the current flow state.
   Insert into `GetActions` after the line that adds the “Check tap” action:
   `into.Add(new InteractAction("Check water flow", c => { if (_open && WaterMains.MainsOn) c.Notify("Water is rushing out at normal pressure."); else if (_open) c.Notify("The tap is open but the mains are shut off – no flow."); else c.Notify("The tap is closed, so no water is flowing."); }));`
