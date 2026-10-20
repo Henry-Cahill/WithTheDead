@@ -79,19 +79,31 @@ namespace CloneZ
 
         private static void Set(string a, string b, int rel) => s_Rel[Key(a, b)] = rel;
 
+        /// <summary>
+        /// Gets the base relation between two factions: -1 hostile, 0 neutral, +1 allied.
+        /// </summary>
         public static int Relation(string a, string b)
         {
             if (string.IsNullOrEmpty(a) || string.IsNullOrEmpty(b)) return 0;
             return s_Rel.TryGetValue(Key(a, b), out int r) ? r : 0;
         }
 
+        /// <summary>
+        /// Returns the definition record for a faction id, falling back to the Zone definition if unknown.
+        /// </summary>
         public static Def Get(string id) => id != null && s_Defs.TryGetValue(id, out Def d) ? d : s_Defs[Zone];
+        /// <summary>
+        /// Retrieves the display name of a faction by id.
+        /// </summary>
         public static string NameOf(string id) => Get(id).Name;
 
         /// <summary>
         /// Whether <paramref name="self"/> attacks <paramref name="other"/>. When one side is a player-controlled
         /// survivor, that player's personal reputation with the other faction shifts the base relation: deeply
         /// disliked (&lt; -300) means hostile, well liked (&gt; 300) means friendly, whatever the factions think.
+        /// </summary>
+        /// <summary>
+        /// Indicates whether a player‑controlled survivor is hostile toward another actor based on faction relations and personal reputation.
         /// </summary>
         public static bool AreHostile(string a, string b, Actor self, Actor other)
         {
@@ -111,6 +123,9 @@ namespace CloneZ
         }
 
         /// <summary>The local survivor's personal reputation with a faction (-1000..1000), from the profile.</summary>
+        /// <summary>
+        /// Returns the local survivor's personal reputation with a faction, from the active profile.
+        /// </summary>
         public static float PlayerReputation(string faction)
         {
             CharacterProfile c = ProfileStore.ActiveCharacter;
@@ -118,6 +133,9 @@ namespace CloneZ
         }
 
         /// <summary>Shifts the local survivor's reputation with a faction (killing their people, finishing their jobs).</summary>
+        /// <summary>
+        /// Adjusts the local survivor's reputation with a faction, optionally showing a toast.
+        /// </summary>
         public static void AdjustReputation(string faction, float delta, string reason = null)
         {
             CharacterProfile c = ProfileStore.ActiveCharacter;
