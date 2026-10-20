@@ -2423,10 +2423,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   Each box is a 1.5 cm × 1.5 cm × 1 cm brass plate positioned at the inner edge of the top rail, giving period‑correct hinge detail.
   No change to colliders, interaction points or pivots; only two new primitives per sash.
   - 09:35 landed by 1htsserver in 4 min: **Changed Files**
-- [ ] Add a thin matte‑black rubber gasket strip to each side of the shower door in Assets/Scripts/World/FurnitureBuilder.Bathroom.cs, method ShowerDoor
+- [x] Add a thin matte‑black rubber gasket strip to each side of the shower door in Assets/Scripts/World/FurnitureBuilder.Bathroom.cs, method ShowerDoor
   Insert two `m.Box` calls after the glass panel `m.Box(new Vector3(-0.205f, ym, z), new Vector3(0.426f, h, 0.008f), glass);`.
   Use colour `M(new Color(0.07f,0.07f,0.07f))` for the strip material.
   Left strip: `m.Box(new Vector3(-0.205f - 0.005f, ym, z), new Vector3(0.002f, h, 0.01f), M(new Color(0.07f,0.07f,0.07f)));`.
   Right strip: `m.Box(new Vector3(-0.205f + 0.426f + 0.005f, ym, z), new Vector3(0.002f, h, 0.01f), M(new Color(0.07f,0.07f,0.07f)));`.
   These strips add a subtle seal line while leaving colliders and interaction points unchanged.
+  - 09:37 landed by 1htsserver in 1.5 min: **Changed file**
 - [ ] Add an “Inspect water level” action to Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs that tells the player the exact amount of water remaining in the heater’s tank.
