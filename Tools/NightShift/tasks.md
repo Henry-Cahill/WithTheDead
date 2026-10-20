@@ -2296,3 +2296,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   In Update, after the early‑exit checks, compute `float moved = Vector3.Distance(_lastPos, transform.position);`.
   If `moved < CheckDistance` skip `Evaluate()` and preserve the previous `_source`, `_fill` and `Prompt` values; otherwise call `Evaluate()` and set `_lastPos = transform.position;`.
   This reduces per‑frame work of `WaterPoints.Nearest`, which searches all IWaterPoint objects, while the displayed prompt and interaction behaviour remain unchanged for the player.
+- [ ] Add a second interaction “Inspect lamp” to Assets/Scripts/World/Fixtures/LampSwitch.cs by extending LampSwitch.GetActions and adding a small private method.
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/RaidCivicSink.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
