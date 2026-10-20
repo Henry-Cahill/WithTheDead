@@ -3782,11 +3782,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `using UnityEngine;`
   `// …`
   - 15:57 landed by 1htsserver in 1 min: **Changes made**
-- [ ] In Assets/Scripts/Rendering/ActorFog.cs cache the Transform instead of accessing the MonoBehaviour.transform property each LateUpdate (and in Cache) to avoid the per‑frame Transform lookup.
+- [x] In Assets/Scripts/Rendering/ActorFog.cs cache the Transform instead of accessing the MonoBehaviour.transform property each LateUpdate (and in Cache) to avoid the per‑frame Transform lookup.
   Add a private field `private Transform _transform;` and assign it in Start (`_transform = transform;`).
   Replace `transform.position` with `_transform.position` in LateUpdate.
   Replace `transform.hierarchyCount` with `_transform.hierarchyCount` in Cache.
   All other logic stays unchanged; the visual fog behavior and timing remain identical.
+  - 15:59 landed by hts-llm in 2.5 min: Implemented Transform caching in **ActorFog.cs**:
 - [ ] In Assets/Scripts/World/Fixtures/RaidWindow.cs: Add a “Knock on the window” action to RaidWindow.GetActions for outside players, calling a new private KnockWindow method that makes a noise and notifies the player
   In RaidWindow.GetActions, after the existing else branch that adds the “Look inside” action, insert:
   into.Add(new InteractAction("Knock on the window", KnockWindow)
