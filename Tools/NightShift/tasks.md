@@ -4052,9 +4052,10 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [x] Add a small exhaust pipe with a glowing tip to the portable generator in Assets/Scripts/World/DecorProps.cs, method `DecorProps.Generator`.
   - 18:25 landed by 0htsserver in 2.8 min: **Changes made**
 - [ ] Reduce per‑frame GrenadeKey updates by attaching a single GrenadeKey to the player instead of to every built piece (Assets/Scripts/World/Camps.cs, modify CampModule.Init)
-- [ ] Add a calming effect when the survivor uses the toilet (Assets/Scripts/World/Fixtures/ToiletFixture.cs)
+- [x] Add a calming effect when the survivor uses the toilet (Assets/Scripts/World/Fixtures/ToiletFixture.cs)
   In the `Used` method, after the existing line `ctx.Notify(line);` insert a call to the existing calm helper: `LightingFixtures.Calm(ctx, CloneZConfig.ToiletUseCalm);`.
   This gives the player a small stress‑reduction boost identical to the one from wiping the seat, without altering any other behaviour or UI.
+  - 18:30 landed by 1htsserver in 4.1 min: **Changed file**
 - [x] Append six new winter‑theme flavor notes to the `Hideout.Tick` method in Assets/Scripts/Economy/Hideout.cs
   Add after the existing `notes.Add("...");` calls that begin with `"The wind whistles..."`.
   Each new line should be `notes.Add("<sentence>");` where the sentence is a full period‑ended statement in present tense, e.g., “Frost gathers on the metal hinges of the workbench, making them stick.”
