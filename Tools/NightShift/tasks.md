@@ -2144,3 +2144,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   Front grille bar: `new Vector3(x, 0.68f, 2.12f)` with size `new Vector3(0.02f, 0.04f, 0.01f)` (x offsets calculated from bar count).
   Rear bumper plate: `new Vector3(0f, 0.57f, -2.12f)` with size `new Vector3(0.4f, 0.02f, 0.02f)`.
   Insert the code after the headlight creation loop and before `Seat = new GameObject("Driver seat")`.
+- [ ] In Assets/Scripts/UI/HealthPanelController.cs, within the `Refresh()` method replace the six separate `Supply(...)` calls with a single inventory‑scan that fills local variables for all treatment counts, thus avoiding six full passes over `PlayerInventory.Inventory.Stacks` each frame.
