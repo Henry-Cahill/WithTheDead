@@ -157,6 +157,14 @@ namespace CloneZ
                 fillRt.sizeDelta = new Vector2(panelW - 154f, -2f);
                 fillRt.anchoredPosition = new Vector2(2f, 0f);
                 _progressFills[i] = fillGo.AddComponent<Image>();
+                // tiny cap rectangle on the left side of the progress bar
+                var cap = new GameObject("Cap"+i);
+                var capRt = cap.AddComponent<RectTransform>();
+                capRt.SetParent(bgRt, false);
+                capRt.anchorMin = capRt.anchorMax = new Vector2(0f, 0.5f);
+                capRt.pivot = new Vector2(0f, 0.5f);
+                capRt.anchoredPosition = new Vector2(-2f, 0f);
+                capRt.sizeDelta = new Vector2(4f, 14f);
                 _progressFills[i].color = accent;
             }
 

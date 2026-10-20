@@ -1547,7 +1547,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(hinge + open * new Vector3(0.23f, 1.25f, 0.022f), new Vector3(0.02f, 0.12f, 0.005f), open, Mt(Chrome));`
   The handle now appears on the ajar door’s front edge, matching the visual style of closed lockers. All other code stays unchanged.
   - 04:56 landed by hts-llm in 1.8 min: **Changed file**
-- [ ] In Assets/Scripts/UI/SkillsPanelController.cs, inside `SkillsPanelController.Build()` add a tiny “cap” rectangle to the left side of every progress bar so the bars look like they have a worn metal clip.
+- [x] In Assets/Scripts/UI/SkillsPanelController.cs, inside `SkillsPanelController.Build()` add a tiny “cap” rectangle to the left side of every progress bar so the bars look like they have a worn metal clip.
   After the line `_progressFills[i] = fillGo.AddComponent<Image>();` insert the following:
   `var cap = new GameObject("Cap"+i);`
   `var capRt = cap.AddComponent<RectTransform>();`
@@ -1556,6 +1556,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `capRt.pivot = new Vector2(0f, 0.5f);`
   `capRt.anchoredPosition = new Vector2(-2f, 0f);`
   `capRt.sizeDelta = new Vector2(4f, 14f);`
+  - 04:58 landed by 1htsserver in 1.9 min: **Changed file**
 - [ ] Cache PostFx per‑frame settings in Assets/Scripts/Rendering/Presentation.cs, class PostFx, method LateUpdate
   Add private fields (e.g. `float _lastBrightness; bool _lastMotionBlur; float _lastLens; bool _lastBody; bool _lastEyes; Color _lastVignetteColor; float _lastVignetteIntensity;`) to store the last‑applied values.
   In LateUpdate, after getting `GameSettings g`, `bool body = ViewState.Current == CameraView.Bodycam;` and `bool eyes = ViewState.FirstPersonLike;`, compare each setting to its cached counterpart and only call the corresponding `Override`/`active` assignments when the value has changed.
