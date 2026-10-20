@@ -3559,11 +3559,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add a small protected method `MarkRebuildNeeded()` that sets `_needsRebuild = true`; call it only from places that might move the stove (currently none).
   In `Update`, after the early‑out `if (_lit == 0) return;`, insert `if (_needsRebuild) { BuildFittings(); _needsRebuild = false; }`.
   This keeps the existing behaviour when the stove is (unlikely) moved, but prevents the expensive vector subtraction and magnitude check every frame, reducing per‑frame CPU work without changing any visual aspect.
-- [ ] Append five new entries to the `CivicUnderBunk` array in Assets/Scripts/World/RaidBuilding.Civic.cs (class `RaidBuilding`)
+- [x] Append five new entries to the `CivicUnderBunk` array in Assets/Scripts/World/RaidBuilding.Civic.cs (class `RaidBuilding`)
   Add the lines after the existing three entries in the `private static readonly string[] CivicUnderBunk` initializer.
   Use the existing entry `"A pair of boots, a sock with a hole in it and a paperback with the cover torn off."` as the style reference.
   The new entries should convey personal remnants left by occupants of the bunk: a dented metal badge, a faded photograph of a family, a cracked pocket‑knife, a half‑eaten candy bar wrapped in crumpled foil, and a handwritten note “Keep the fire low – J”.
   Each entry must be a complete sentence in quotes, ending with a period, and fit the gritty, winter‑time, 1993 Kentucky setting.
+  - 14:55 landed by 1htsserver in 4.8 min: **Change Summary**
 - [x] Fix the vitamins timer duration in Assets/Scripts/Survival/Diseases.cs (class `PlayerDiseases`, method `TakeVitamins`).
   The method currently adds 1200 seconds (`_vitaminsUntil = Time.time + 1200f;`) while the XML comment says “two minutes of game time”.
   Change the added value to 120 seconds so the timer matches the intended two‑minute duration.
