@@ -2969,9 +2969,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   These plates are thin enough to be visually noticeable as label tags while keeping colliders unchanged.
   No other code, colliders, interaction points, or pivots are altered; the added primitives stay within the ~12‑primitive limit.
   - 11:46 landed by 0htsserver in 1.8 min: **Changed file**
-- [ ] In Assets/Scripts/World/Fixtures/TowelRail.cs: Cache the bathroom‑side availability check in TowelRail.Update to avoid calling `BathroomFixtures.SurvivorInFront` every frame
+- [x] In Assets/Scripts/World/Fixtures/TowelRail.cs: Cache the bathroom‑side availability check in TowelRail.Update to avoid calling `BathroomFixtures.SurvivorInFront` every frame
   Add a private field `float _nextAvailCheck;` and `bool _cachedAvailable;` initialized to 0f and true.
   In `Update()` after the existing `_nextCheck` logic, insert:
+  - 11:49 landed by 1htsserver in 4.8 min: **Changed file**: `Assets/Scripts/World/Fixtures/TowelRail.cs`
 - [x] Add a quiet‑open/quiet‑close option to `StorageFixture.GetActions(InteractContext ctx, List<InteractAction> into)` in Assets/Scripts/World/Interaction/StorageFixture.cs
   In the branch where `HasParts` is true, after the regular open/close actions, insert a new `InteractAction` that calls `SetOpen(true, false)` when the fixture is closed and another that calls `SetOpen(false, false)` when it is open.
   The action labels should read `"Open the " + noun + " quietly"` and `"Close the " + noun + " quietly"` respectively.

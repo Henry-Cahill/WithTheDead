@@ -23,10 +23,12 @@ namespace CloneZ
         private float _dryAt = -1f;               // the in-game hour (TimeOfDay.Now) it's dry again; below 0 it is
         private float _roll, _shownRoll;
         private float _nextCheck;
+        private float _nextAvailCheck;
+        private bool _cachedAvailable = true;
 
         public override string DisplayName => "Towel rail";
         public override Vector3 InteractPoint => _point;
-        public override bool IsAvailable => base.IsAvailable && BathroomFixtures.SurvivorInFront(_face, _normal);
+        public override bool IsAvailable => base.IsAvailable && _cachedAvailable;
         public override string SaveKey => _key;
 
         /// <summary>True while the towel is still damp from the last use.</summary>
@@ -62,21 +64,30 @@ namespace CloneZ
             ApplyRoll();
         }
 
-        private void Update()
+private void Update()
+{
+    if (_shownRoll != _roll)
+    {
+        _shownRoll = Mathf.MoveTowards(_shownRoll, _roll, SwingSpeed * Time.deltaTime);
+        ApplyRoll();
+    }
+    // Dryness check (original behavior)
+    if (Time.time >= _nextCheck)
+    {
+        _nextCheck = Time.time + 1f;
+        if (_dryAt >= 0f && !IsDamp)
         {
-            if (_shownRoll != _roll)
-            {
-                _shownRoll = Mathf.MoveTowards(_shownRoll, _roll, SwingSpeed * Time.deltaTime);
-                ApplyRoll();
-            }
-            if (Time.time < _nextCheck) return;
-            _nextCheck = Time.time + 1f;
-            if (_dryAt >= 0f && !IsDamp)
-            {
-                _dryAt = -1f;
-                ShowLook();
-            }
+            _dryAt = -1f;
+            ShowLook();
         }
+    }
+    // Cache bathroom-side availability check
+    if (Time.time >= _nextAvailCheck)
+    {
+        _nextAvailCheck = Time.time + 1f;
+        _cachedAvailable = BathroomFixtures.SurvivorInFront(_face, _normal);
+    }
+}
 
         private void ApplyRoll()
         {
