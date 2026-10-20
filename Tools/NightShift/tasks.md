@@ -641,3 +641,6 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
 - [ ] Add a subtle “rivet” visual to each pause‑menu item row in Assets/Scripts/UI/PauseMenuController.cs, inside the `BuildItem(Item it, int index)` method right after the existing accent rectangle is created.
+- [ ] Add a small chrome handle to each drawer front in `Assets/Scripts/World/FurnitureBuilder.Office.cs` → `public static void FilingCabinet(...)`
+  Locate the line `m.Box(new Vector3(0f, y, 0.275f + pull), new Vector3(0.43f, 0.3f, 0.02f), M(c));` which builds the drawer front panel.
+  After this line, insert a new primitive that represents a drawer pull:
