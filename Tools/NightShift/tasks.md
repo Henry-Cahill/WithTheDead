@@ -1517,7 +1517,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 04:50 landed by hts-llm in 3.9 min: **Changes made**
 - [x] Add a small, period‑appropriate driveway‑lamp post (with a faint orange‑yellow glow) beside the dead car that sometimes appears in front of houses, in `Assets/Scripts/World/RaidMapBuilder.Town.cs` → method `DressHouse`, after the existing `Wreck(town, car, …)` call inside the driveway‑car block.
   - 04:52 landed by 1htsserver in 3.4 min: Implemented a small driveway lamp post with a faint orange‑yellow glow next to the dead car in `DressHouse` (Assets/Scripts/World/RaidMapBui
-- [ ] Cache the per‑frame `ZoneCatalog.Current` lookup in `PlayerRadiation.Update` (Assets/Scripts/Zone/Radiation.cs).
+- [x] Cache the per‑frame `ZoneCatalog.Current` lookup in `PlayerRadiation.Update` (Assets/Scripts/Zone/Radiation.cs).
   Add private fields `private ZoneDef _cachedZone; private bool _cachedExtraction;` to store the current zone and extraction flag.
   Initialize them in `Awake()` with the same logic that is now in `Update` (`_cachedExtraction = GameSession.IsExtraction; _cachedZone = _cachedExtraction ? ZoneCatalog.Current : null;`).
   At the start of `Update()` check `if (GameSession.IsExtraction != _cachedExtraction) { _cachedExtraction = GameSession.IsExtraction; _cachedZone = _cachedExtraction ? ZoneCatalog.Current : null; }` and then replace the line
@@ -1525,6 +1525,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   with
   `ZoneDef zone = _cachedZone;`
   This removes a per‑frame `ZoneCatalog.Current` lookup (which internally uses `FindObjectByType`), keeping the visual radiation calculation identical because zone data only changes when extraction state changes, which is now reflected by the cache refresh.
+  - 04:57 landed by 0htsserver in 7.7 min: **Changed files**
 - [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/Factions.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.

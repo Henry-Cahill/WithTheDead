@@ -27,14 +27,16 @@ namespace CloneZ
 public bool Shielded => Time.time < _iodineUntil;
 
         private PlayerStats _stats;
-        private PlayerLimbs _limbs;
-        private float _iodineUntil, _drunk, _clickAt, _retchAt;
+private PlayerLimbs _limbs;
+                 private float _iodineUntil, _drunk, _clickAt, _retchAt;
+                 private ZoneDef _cachedZone;
+                 private bool _cachedExtraction;
 
         private void Awake()
         {
             Local = this;
-            _stats = GetComponent<PlayerStats>();
-            _limbs = GetComponent<PlayerLimbs>();
+            _cachedExtraction = GameSession.IsExtraction;
+            _cachedZone = _cachedExtraction ? ZoneCatalog.Current : null;
             CharacterProfile c = ProfileStore.ActiveCharacter;
             if (c != null && c.Health != null && !GameSession.IsBorrowedBody) Dose = Mathf.Clamp01(c.Health.Radiation);
             PlayerLimbs.RadiationReceived += OnRadiationHit;
@@ -92,19 +94,24 @@ public void SaveToProfile()
             Vector3 p = transform.position;
 
             float rate = 0f;
-            if (!HubRules.SafeZone)
-            {
-                ZoneDef zone = GameSession.IsExtraction ? ZoneCatalog.Current : null;
-                if (zone != null && zone.Radiation > 0f)
-                {
-                    bool indoors = Shelter.Count > 0 && Shelter.IsSheltered(p + Vector3.up);
-                    rate += zone.Radiation * Scale * (indoors ? 0.35f : 1f);
-                }
-                rate += RadiationSpot.IntakeAt(p);
-                rate += Mathf.Max(0f, mods.RadiationPerSec) * Scale;
-                rate *= 1f - Mathf.Clamp01(mods.Resist.Radiation);
-                if (Shielded) rate *= 0.4f;
-            }
+if (!HubRules.SafeZone)
+{
+    if (GameSession.IsExtraction != _cachedExtraction)
+    {
+        _cachedExtraction = GameSession.IsExtraction;
+        _cachedZone = _cachedExtraction ? ZoneCatalog.Current : null;
+    }
+    ZoneDef zone = _cachedZone;
+    if (zone != null && zone.Radiation > 0f)
+    {
+        bool indoors = Shelter.Count > 0 && Shelter.IsSheltered(p + Vector3.up);
+        rate += zone.Radiation * Scale * (indoors ? 0.35f : 1f);
+    }
+    rate += RadiationSpot.IntakeAt(p);
+    rate += Mathf.Max(0f, mods.RadiationPerSec) * Scale;
+    rate *= 1f - Mathf.Clamp01(mods.Resist.Radiation);
+    if (Shielded) rate *= 0.4f;
+}
             Intake = rate;
             float purge = 0.00004f + Mathf.Max(0f, mods.RadiationPurge) * Scale + (HubRules.SafeZone ? 0.0004f : 0f);
             Dose = Mathf.Clamp01(Dose + (rate - purge) * dt);
