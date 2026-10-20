@@ -2130,3 +2130,16 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// use a slightly darker version of the card colour for a subtle worn look`
   `float darken = 0.15f;`
   - 08:20 landed by 1htsserver in 2.2 min: **Changed**
+- [ ] In Assets/Scripts/World/Fixtures/HoseSpigot.cs: Fix HoseSpigot so that its CaptureState and RestoreState correctly persist both a permanent open tap and a tap that is temporarily open for watering.
+  In `CaptureState` replace the single‑bit encoding `save.State = _open && !_openedToWater ? 1 : 0;` with a two‑bit encoding that stores `_open` in bit 0 and `_openedToWater` in bit 1, e.g. `save.State = (_open ? 1 : 0) | (_openedToWater ? 2 : 0);`.
+  In `RestoreState` decode both bits: set `_openedToWater = (save.State & 2) != 0;` and then call `SetOpen((save.State & 1) != 0, true);`.
+  This preserves the “opened just for watering” flag across autosaves, preventing the tap from unexpectedly closing mid‑watering when the game reloads.
+  All other behavior – instant‑open noise suppression on load and the existing logic for auto‑closing after watering – remains unchanged.
+- [ ] Add a front grille and a rear bumper plate to the car built in `Vehicle.Build(System.Random rng)` (Assets/Scripts/World/Vehicles.cs)
+  Add a set of thin vertical bars centered on the front bumper (just behind the headlights) to suggest a metal grille; vary the bar count between 3‑5 using the existing `rng` for deterministic randomness.
+  Add a small flat metal plate on the rear bumper to give a subtle “tail‑gate” detail.
+  Both parts should be created with the existing `Box` helper, be parented to `_bodyRoot`, use the same dark trim colour (`new Color(0.12f, 0.12f, 0.14f)`), and keep colliders removed as `Box` already does.
+  Example positions and sizes (relative to `_bodyRoot`):
+  Front grille bar: `new Vector3(x, 0.68f, 2.12f)` with size `new Vector3(0.02f, 0.04f, 0.01f)` (x offsets calculated from bar count).
+  Rear bumper plate: `new Vector3(0f, 0.57f, -2.12f)` with size `new Vector3(0.4f, 0.02f, 0.02f)`.
+  Insert the code after the headlight creation loop and before `Seat = new GameObject("Driver seat")`.
