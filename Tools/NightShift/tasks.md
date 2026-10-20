@@ -3009,7 +3009,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   In PlaceRoot(float dt) replace the unconditional raycast block with `if (_groundDirty && !_dead && !Seated) { … existing raycast code … _groundDirty = false; }` and keep the existing `_groundOffset` smoothing logic unchanged.
   The player’s view (character staying on the floor, stepping up/down slopes, sitting or falling) remains identical, but the expensive `Physics.Raycast` runs only when necessary, reducing per‑frame allocations and CPU work.
   - 11:55 landed by 0htsserver in 3.3 min: **Changes made**
-- [ ] Add a tiny dark‑metal screw detail to each light‑switch toggle in `Assets/Scripts/World/StarterHome.Lighting.cs` → method `Switches`, so the switches look a bit more lived‑in and mechanical.
+- [x] Add a tiny dark‑metal screw detail to each light‑switch toggle in `Assets/Scripts/World/StarterHome.Lighting.cs` → method `Switches`, so the switches look a bit more lived‑in and mechanical.
+  - 11:57 landed by 1htsserver in 3.1 min: **Changes made**
 - [x] Fix null _scavType causing a NullReference/incorrect compatibility when the player’s blood type is unknown (Assets/Scripts/Medical/PlayerBlood.cs)
   The _scavType field is never assigned, so BloodType returns null for scav runs or unt­ested characters; Transfuse calls BloodTypes.Compatible(donorType, BloodType) which then receives a null argument and either throws or always returns false, preventing valid transfusions.
   Add initialization of _scavType in Awake so it always holds a valid blood‑type string.
