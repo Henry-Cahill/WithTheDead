@@ -1944,3 +1944,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   Use the same deterministic method as the helmet scuff code: `int seed = Shape.GetHashCode(); float var = ((seed >> 7) & 0xF) / 100f;` (range 0‑0.15).
   Blend with `Color.Lerp(HatTrimColor, new Color(0.78f, 0.63f, 0.45f, 1f), var);` and assign back to `HatTrimColor`.
   No new colliders or geometry are added; the visual change is purely colour‑based, keeping the existing caps’ size and position unchanged.
+- [ ] Cache the per‑frame fade work in Assets/Scripts/UI/UIFader.cs by disabling the `MonoBehaviour` when no fading is needed and re‑enabling it only while the panel is transitioning.
+  In `Awake()` add `enabled = false;` after initializing `_group`.
+  In `Show()` and `Hide()` set `enabled = true;` (right after setting `_target`).
+  In `Update()` after moving the alpha, if `_group.alpha == _target` then set `enabled = false;` (instead of just returning).
+  The player sees no visual change – panels still fade in/out exactly as before – but the `Update` method stops running each frame when the UI is fully shown or hidden, removing the constant null/target check.
+- [ ] Add an “Inspect the power switch” action to PowerSwitch.GetActions in Assets/Scripts/Extraction/RaidWorldRules.cs
+  In the method `PowerSwitch.GetActions` insert a new `InteractAction` before the existing one.
+  Use the current line as a reference: `into.Add(new InteractAction(_thrown ? "The power is on" : "Throw the power switch", c =>`
+  The new action should read `"Inspect the power switch"` and simply call `c.Notify("A rugged switch that powers freight‑gate exits.")`.
+  This gives the survivor a non‑functional description action, appearing as an extra option next to the “Throw the power switch” action in the interaction UI.
+  No other code, assets, or UI changes are required.
