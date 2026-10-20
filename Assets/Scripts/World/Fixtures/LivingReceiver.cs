@@ -136,6 +136,16 @@ namespace CloneZ
             return Station;
         }
 
+        /// <summary>Turns the dial on to the previous station; returns it.</summary>
+        protected BroadcastStation TunePrevious()
+        {
+            Tuned = (Tuned - 1 + Dial.Length) % Dial.Length;
+            MakeNoise(CloneZConfig.ReceiverKnobNoise);
+            Retuned();
+            if (IsOn) _captionAt = Time.time + CloneZConfig.ReceiverFirstCaption * 0.5f;
+            return Station;
+        }
+
         /// <summary>Turns it up (+1) or down (-1) a step: the next noise goes out at the new loudness at once.</summary>
         protected void Turn(int step)
         {
