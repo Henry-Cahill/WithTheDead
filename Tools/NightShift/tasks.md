@@ -3599,8 +3599,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   “Ask for a ballad of the Spillway and you’ll hear the ice crack.”
   “Even in the gloom, a tune can warm a throat that’s lost its fire.”
   - 15:00 landed by hts-llm in 1.3 min: **Summary**
-- [ ] Add a subtle metal frame around the gas‑mask visor UI in Assets/Scripts/Rendering/Presentation.cs, class `GasVisorOverlay`, method `Create`
+- [x] Add a subtle metal frame around the gas‑mask visor UI in Assets/Scripts/Rendering/Presentation.cs, class `GasVisorOverlay`, method `Create`
   after the line `v._cracks = Raw(v._canvas.transform, CrackTexture(), "Cracks");` insert a new panel that draws a thin rectangular rim a little larger than the fog texture, using the same canvas parent;
   use `UIKit.Panel(v._canvas.transform, "MaskRim", new Color(0.3f, 0.3f, 0.35f, 0.5f))` to create the rim image;
   position it with `UIKit.Place(rim.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(0.28f, 0.16f));` – i.e. a 0.28 m × 0.16 m rectangle centred on the canvas, giving a 2‑cm border around the existing fog (which is 0.128 m × 0.072 m);
   keep the existing colliders, interaction points and pivots untouched; the new rim is purely visual and adds a period‑accurate metal frame hint to the mask without affecting gameplay.
+  - 15:02 landed by hts-llm in 1.8 min: **Changed file**

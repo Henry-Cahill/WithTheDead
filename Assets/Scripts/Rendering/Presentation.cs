@@ -200,6 +200,8 @@ namespace CloneZ
             v._canvas = UIKit.CreateCanvas("GasVisor Canvas", 35, go.transform);
             v._fog = Raw(v._canvas.transform, FogTexture(), "Condensation");
             v._cracks = Raw(v._canvas.transform, CrackTexture(), "Cracks");
+            var rim = UIKit.Panel(v._canvas.transform, "MaskRim", new Color(0.3f, 0.3f, 0.35f, 0.5f));
+            UIKit.Place(rim.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(0.28f, 0.16f));
             v._filter = UIKit.Label(HudLayer.Root, "", 15, new Color(0.8f, 0.9f, 0.8f), TextAnchor.MiddleLeft);
             UIKit.Place(v._filter.rectTransform, new Vector2(0f, 0f), new Vector2(0f, 0f), new Vector2(24f, 230f), new Vector2(260f, 24f));
             return v;
