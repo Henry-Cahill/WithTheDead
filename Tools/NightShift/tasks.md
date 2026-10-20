@@ -2506,3 +2506,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   ‑ Use a metal colour `new Color(0.45f, 0.41f, 0.38f)` via `ZoneKit.M(...)`.
   ‑ Spawn a flame light at `pos + new Vector3(0f, 0.15f, 0f)` with colour `new Color(1f, 0.6f, 0.2f)`, range 2 m, intensity 0.4, size 0.05 m (`ZoneFlameLight.Spawn`).
   ‑ Keep colliders, interaction points and pivots unchanged; only add the new primitives (max 4 boxes) and associated flame lights.
+- [ ] In Assets/Scripts/Player/PlayerInteractor.cs: Cache the main camera in PlayerInteractor to avoid per‑frame `Camera.main` lookups
+  In `Awake()` add `_cam = Camera.main;` after the existing `GetComponent` calls.
+  In `Start()` (or after the existing context setup) also set `_cam = Camera.main` in case the camera isn’t yet present during Awake.
+  Remove the line `if (_cam == null) _cam = Camera.main;` from `UpdateFocus()` so the cached field is always used.
+  Keep the `_cam` field declaration unchanged; no other logic changes.
+  This eliminates a per‑frame search of the scene hierarchy for the main camera, improving performance with no visible effect for the player.
