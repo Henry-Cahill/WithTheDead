@@ -1093,13 +1093,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   – `m.Box(at + normal * 0.004f + Vector3.up * (0.114f * 0.5f - 0.001f), new Vector3(width, 0.002f, 0.001f), q, Mt(Chrome));`
   – This creates a ~2 mm tall, 1 mm deep chrome edge along the plate’s upper side, giving the period‑correct switch a subtle worn‑metal detail without altering any existing colliders or interaction logic.
   - 02:35 landed by 0htsserver in 1.3 min: **Summary**
-- [ ] In Assets/Scripts/World/Zone/ZoneKit.cs: Reduce redundant per‑frame calls to `ZoneKit.TintByAmbient()` in `ZoneSmokeTint.Update` by guarding with a static frame‑counter cache.
+- [x] In Assets/Scripts/World/Zone/ZoneKit.cs: Reduce redundant per‑frame calls to `ZoneKit.TintByAmbient()` in `ZoneSmokeTint.Update` by guarding with a static frame‑counter cache.
   Add a private static `int s_LastFrame = -1;` to `ZoneSmokeTint`.
   Replace the existing `Update` body `=> ZoneKit.TintByAmbient();` with:
   `if (Time.frameCount == s_LastFrame) return;`
   `s_LastFrame = Time.frameCount;`
   `ZoneKit.TintByAmbient();`
   This makes only the first `ZoneSmokeTint` instance each frame actually invoke the tinting logic; all others early‑out, eliminating unnecessary method calls and `Time.time` checks while keeping the visual result identical.
+  - 02:45 landed by hts-llm in 10.3 min: **Changes made**
 - [x] Add a small “Inspect” action to `SnareTrap.GetActions` in Assets/Scripts/Survival/FieldSurvival.cs that lets the player see how long until the snare is ready.
   In `SnareTrap.GetActions(InteractContext ctx, List<InteractAction> into)` insert after the existing `into.Add(new InteractAction(...))` call:
   `into.Add(new InteractAction("Inspect", c => { float secs = Mathf.Max(0f, _readyAt - Time.time); GameEvents.RaiseToast($"Snare will be ready in {Mathf.CeilToInt(secs)} s."); }));`

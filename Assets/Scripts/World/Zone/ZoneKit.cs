@@ -417,7 +417,14 @@ namespace CloneZ
     /// <summary>Keeps the zone's steam and smoke dimmed to the night (one shared material tint, refreshed twice a second).</summary>
     internal sealed class ZoneSmokeTint : MonoBehaviour
     {
-        private void Update() => ZoneKit.TintByAmbient();
+    private static int s_LastFrame = -1;
+
+    private void Update()
+    {
+        if (Time.frameCount == s_LastFrame) return;
+        s_LastFrame = Time.frameCount;
+        ZoneKit.TintByAmbient();
+    }
     }
 
     /// <summary>
