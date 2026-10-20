@@ -1823,3 +1823,18 @@ you want to see in game. Indent extra lines under a task to add detail.
   Implement `Awake()` (or `Start()`) to set `_cam = Camera.main;`.
   Replace the line `Camera cam = Camera.main;` in `LateUpdate()` with `Camera cam = _cam;`.
   This removes the costly `Camera.main` FindObjectByType call each frame; the compass visibility and text behaviour remain unchanged for the player.
+- [ ] Add a “Check signal” action to Assets/Scripts/World/Fixtures/TvFixture.cs that lets the player see whether the current channel is broadcasting or just static.
+  In `GetActions` after the line `into.Add(new InteractAction("Adjust the rabbit ears", AdjustAerial).DisabledIf(!near, TooFar));` insert:
+  `into.Add(new InteractAction("Check signal", CheckSignal).DisabledIf(!near, TooFar));`
+  Add a private method below `AdjustAerial` (or anywhere in the class):
+  `private void CheckSignal(InteractContext ctx) { ctx.Notify(_onAir ? "The channel is clear." : "No signal – just snow."); }`
+  The action uses the existing `_onAir` field, requires no new assets or UI, and only informs the player, rounding off the TV’s interaction set.
+- [ ] Append four period‑correct delivery sentences to the fifth sub‑array of the `private static readonly string[][] Deliveries` field in Assets/Scripts/World/Fixtures/MailboxFixture.cs.
+  Locate the sub‑array that currently contains “Community request: we need firewood for the coming freeze…”.
+  Leave the existing three strings unchanged and add the new entries after them, each as a quoted full sentence.
+  Use the existing entry “Community request: we need firewood for the coming freeze. If you have spare logs, please leave them at the shed.” as the style reference.
+  The new lines should cover the themes of neighborly aid, winter weather updates, farm equipment trouble, and a church announcement, all phrased in 1993 rural Kentucky language.
+  Example new lines (replace with any original wording you prefer):
+  “Winter storm warning: expect 6‑inch drifts by nightfall; keep generators running on low fuel.”
+  “Barn door hinges seized from the cold; any handy tools can be dropped off at the cooper’s shed.”
+  “Church bulletin: pot‑luck after Sunday service—bring a casserole or preserves; no store‑bought food.”
