@@ -1298,12 +1298,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
   - 03:51 landed by 1htsserver in 4.7 min: **Changed files**
-- [ ] Add a subtle “scratch” detail to the floor‑safe front in `Assets/Scripts/World/RaidLayoutsStore.cs` → method `SafeAt`
+- [x] Add a subtle “scratch” detail to the floor‑safe front in `Assets/Scripts/World/RaidLayoutsStore.cs` → method `SafeAt`
   In the `FixtureBody` lambda that builds the safe (`(m, r) => steel = FurnitureBuilder.MartSafeBody(m, r)`) insert a thin box to simulate a worn‑metal scratch.
   Create the box with `m.Box(new Vector3(0.25f, 0.9f, 0.31f), new Vector3(0.10f, 0.30f, 0.02f), steel);` – size ≈ 0.10 m × 0.30 m × 0.02 m, positioned slightly right of centre on the safe’s front face.
   Use the `steel` colour already obtained from `MartSafeBody` so the detail matches the safe’s metal finish.
   Guard the addition with `if (rng.NextDouble() < 0.5) { … }` to give a 50 % chance of the scratch, using the existing `rng` (from `b.Rng`).
   No new colliders, interaction points or pivots are changed; the safe’s functionality remains identical.
+  - 03:57 landed by 0htsserver in 9 min: **Changed file**
 - [x] Fix PickSpawn in Assets/Scripts/World/RaidMapBuilder.Edge.cs so it never selects a spawn point that is too close to an exit.
   The method currently falls back to the first candidate (`pick = 0`) when `valid.Count` is 0, which can place the survivor within 35 m of an exit, violating the design rule.
   Change the selection logic: if `valid.Count == 0` log a warning and set a safe default spawn (`new Vector3(-6f, 0.6f, 20f)`) and return early.

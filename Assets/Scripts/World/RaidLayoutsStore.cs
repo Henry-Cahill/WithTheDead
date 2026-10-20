@@ -247,7 +247,11 @@ namespace CloneZ
         private static void SafeAt(RaidBuilding b, RaidRoom room, RaidBuilding.Place p)
         {
             Color steel = new Color(0.20f, 0.23f, 0.21f);
-            Transform t = b.FixtureBody(room, p, Sz(0.8f, 1.9f, 0.6f), true, (m, r) => steel = FurnitureBuilder.MartSafeBody(m, r), "Safe");
+            Transform t = b.FixtureBody(room, p, Sz(0.8f, 1.9f, 0.6f), true, (m, r) => {
+                steel = FurnitureBuilder.MartSafeBody(m, r);
+                if (b.Rng.NextDouble() < 0.5)
+                    m.Box(new Vector3(0.25f, 0.9f, 0.31f), new Vector3(0.10f, 0.30f, 0.02f), DecorPalette.Matte(steel));
+            }, "Safe");
             KitchenFrame f = b.FrameOf(p);
             FixturePart door = KitchenParts.Door(t, "SafeDoor", f, m => FurnitureBuilder.MartSafeDoor(m, steel), FurnitureBuilder.MartSafeHinge,
                 Vector3.right, Vector3.forward, CloneZConfig.RaidSafeDoorAngle);
