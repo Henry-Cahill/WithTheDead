@@ -737,3 +737,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   In the static `Create` method, after the line `t._offLabel = offLabel;` add:
   `t._extra = (c, list) => list.Add(new InteractAction("Inspect", Inspect));`
   This adds a second action listed after the main toggle action; pressing [Q] will show the current on/off state without changing anything. All existing fields and behavior remain unchanged.
+- [ ] In Assets/Scripts/World/Fixtures/RaidTownMailDrop.cs append six new flavor letters to the `Letters` array, using the style of the first entry ("A drift of envelopes. The top one is addressed to the county tax office in a careful hand, stamped and sealed. Somebody still meant to pay.") and covering themes of eviction, church notice, family recipe, missing‑child flyer, ration‑card reminder, and a winter‑storm warning.
+  Add the following quoted strings after the current last element in the `Letters` initializer, preserving the existing commas and formatting:
+  "An eviction notice, type‑written on yellowed stock, stating the lease ends March 1st and the landlord will lock the doors at sunrise. No response."
+  "The Sunday church bulletin, folded thin, lists a prayer circle for “the ones lost in the woods” and a call for donations to repair the stained‑glass window."
+  "A handwritten recipe card, ink smudged: “Grandma’s turnip soup – 2 cups water, 1 cup diced turnips, pinch of salt, simmer till tender. Share with anyone who’s cold.”"
+  "A faded flyer, corners torn: “Missing: 8‑year‑old Ellie Harper, last seen near Miller’s Creek, wearing a red sweater and blue boots. Please call the sheriff.”"
+  "A ration‑card reminder, stamped “County Health Dept”: “Winter food rations will be distributed at the school gym, 9 AM–12 PM, bring your metal ID tag.”"
+  "A hand‑drawn weather warning, charcoal on cheap paper: “Heavy snow expected tonight. Stay indoors after dark; roads will be impassable.”
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Rendering/Presentation.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
