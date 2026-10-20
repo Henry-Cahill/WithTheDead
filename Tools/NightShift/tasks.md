@@ -3861,3 +3861,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `fill < 0.60f ? "Halfway full – the water is dark and still." :`
   `fill < 0.85f ? "Nearly full, the surface ripples with the faint glow of distant snow." :`
   These new strings are full sentences the player will read when checking the barrel level, preserving period‑correct, winter‑time tone and fitting the existing style.
+- [ ] Add a subtle metal strap on the front of crates created in the `Clutter` method of Assets/Scripts/World/RaidBuilding.Furnish.cs.
+- [ ] Fix a compilation error in `Assets/Scripts/World/FurnitureBuilder.RaidOpenings.cs` by correcting the stray parenthesis in the final `DoorSplinters` call, so the method compiles and the brass lock strike plate appears correctly.
+  In `DoorSplinters` the last box is built with
+  `m.Box(l.P(mid + R(rng, -0.3f, 0.3f), 0.034f, side * R(rng, 0.3f, 0.7f)), new Vector3(0.12f, 0.004f, 0.03f), Quaternion.Euler(0f, R(rng, 0f, 180f), 0f), Mt(Brass));`
+  The extra `)` after `l.P(...)` makes the argument list malformed, causing a compile‑time error and preventing the lock strike plate from being created.
+  Change the line to:
+  `m.Box(l.P(mid + R(rng, -0.3f, 0.3f), 0.034f, side * R(rng, 0.3f, 0.7f)), new Vector3(0.12f, 0.004f, 0.03f), Quaternion.Euler(0f, R(rng, 0f, 180f), 0f), Mt(Brass));`
+  (Only the stray `)` is removed; all other arguments remain unchanged.)
+  After this fix the script compiles, the door splinter geometry is generated, and the brass strike plate shows up as intended.
+- [ ] In Assets/Scripts/UI/InventoryUIController.List.cs, enhance each item entry row with a subtle “wear‑edge” strip that hints at the item’s condition.
