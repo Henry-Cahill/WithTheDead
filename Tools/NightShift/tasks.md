@@ -2837,3 +2837,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Inside `Build()`, immediately after the four `Rivet(prt, …)` calls, create a thin `Image` rectangle that represents a light layer of snow that has settled on the metal frame.
   Use the same parent `prt` (the panel’s RectTransform), the same anchor/pivot as the trim (center‑bottom), and size it to the full panel width with a modest height, re‑using the translucent off‑white colour used for the divider (≈ `new Color(1f, 1f, 1f, 0.15f)`).
   This adds a period‑appropriate visual cue of the winter setting without affecting any colliders or interaction logic and stays within the 12‑primitive limit.
+- [ ] Cache the per‑frame lookup of the player interactor in Assets/Scripts/World/Fixtures/BedFixture.cs to avoid repeated `PlayerInteractor.Current` calls.
+  Add a private field `private PlayerInteractor _playerInteractor;` and set it in `Awake()` (or `Start()`) with `_playerInteractor = PlayerInteractor.Current;`.
+  Replace `PlayerInteractor pi = PlayerInteractor.Current;` in `Update()` with `PlayerInteractor pi = _playerInteractor;`.
+  If the field is null (e.g., player not yet instantiated), obtain it lazily the first time: `if (_playerInteractor == null) _playerInteractor = PlayerInteractor.Current;`.
+  No other code changes are required; the bed’s appearance and behaviour remain identical, but the per‑frame lookup is now cached, reducing allocation and FindObject‑type overhead.
