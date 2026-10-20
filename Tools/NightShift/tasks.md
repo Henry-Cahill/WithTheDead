@@ -3878,7 +3878,7 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [x] Add a generic “Shake” instant action helper to Assets/Scripts/World/Interaction/Interactable.cs that lets any fixture emit a short noise and give the player a toast, e.g. to lure zombies or alert the survivor.
   - 16:23 landed by 1htsserver in 1.8 min: **Changed Files**
 - [ ] Work on everything
-- [ ] Add an Awake method to Assets/Scripts/Player/PlayerStats.cs that initializes the per‑frame cached fields `_cachedMods` and `_cachedSandbox` before any other method might use them.
+- [x] Add an Awake method to Assets/Scripts/Player/PlayerStats.cs that initializes the per‑frame cached fields `_cachedMods` and `_cachedSandbox` before any other method might use them.
   Insert the method in the class body (anywhere before Update).
   `private void Awake()`
   `{`
@@ -3887,3 +3887,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `}`
   This guarantees `ReceiveZombieAttack` (which reads `_cachedSandbox.Infection` and `_cachedMods.InfectionResist`) won’t throw a NullReferenceException if a zombie attacks the player before the first Update call.
   The rest of the script stays unchanged; the player's stats and death handling behave as before, but the game no longer crashes when early zombie damage occurs.
+  - 17:21 landed by 0htsserver in 1.3 min: Added an `Awake` method to **Assets/Scripts/Player/PlayerStats.cs** that initializes the cached fields `_cachedMods` and `_cachedSandbox` be

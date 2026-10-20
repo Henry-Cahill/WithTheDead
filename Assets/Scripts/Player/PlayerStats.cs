@@ -123,6 +123,12 @@ public float SicknessMoveMultiplier =>
         private StatMods _cachedMods;
         private SandboxSettings _cachedSandbox;
 
+        private void Awake()
+        {
+            _cachedMods = PlayerModifiers.Current;
+            _cachedSandbox = SandboxSettings.Current;
+        }
+
         private void Update()
         {
             if (IsDead) return;
