@@ -21,6 +21,10 @@ namespace CloneZ
             "The machine booms like a drum. Something inside shifts, then settles. Nothing drops.",
             "You thump it again. A packet sways on its coil, thinks about it, and stays put.",
             "The glass rattles in its frame. Not a crumb comes loose.",
+            "Your thump reverberates, but nothing shifts; the machine stays stubbornly still.",
+            "The coils grin at your effort, yet they refuse to give up any treasure.",
+            "A hollow clang echoes, but no snack falls from the depths.",
+            "A faint promise of loot hangs in the air, though the machine yields nothing this time.",
         };
 
         private Transform _body;
