@@ -2995,3 +2995,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   ` HatTrimColor = Color.Lerp(HatTrimColor, Shade(HatTrimColor, 0.6f), var);`
   `}`
   Result: wide‑brim hats get a subtle darker rim (≈0‑15 % darker) that varies per character, adding period‑appropriate wear without altering colliders or existing fields.
+- [ ] In Assets/Scripts/World/FurnitureBuilder.cs add a small metal number‑plate to the gun safe door in `FurnitureBuilder.GunSafe(RaidMesh m, System.Random rng)` so the safe has a period‑correct lock label.
+  Add a thin chrome rectangle near the top of the front panel:
+  `m.Box(new Vector3(0f, 1.74f, 0.31f), new Vector3(0.08f, 0.02f, 0.005f), Mt(Chrome));`
+  Place it just above the existing dial box (`m.Box(new Vector3(0f, 1.8f, 0.3f), …)`) so it sits on the safe’s face.
+  Use the same deterministic random source `rng` only if you want occasional tint variation (e.g. `Mt(Chrome * V(Chrome, rng, 0.02f))`), but keep the plate size ≤ 0.12 m total and ≤ 1 primitive.
