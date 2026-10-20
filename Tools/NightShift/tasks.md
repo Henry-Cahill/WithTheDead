@@ -1331,3 +1331,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   The method builds a rotation with `Quaternion.LookRotation(f, up)`.
   When the strap direction `f` is (almost) parallel to `Vector3.right`, the fallback `up = Vector3.Cross(f, Vector3.right)` yields a zero vector, causing Unity to throw *ArgumentException: up must be non‑zero* and the strap part is not created.
   Change the fallback to use an axis that cannot be parallel to `f` (e.g. `Vector3.up`) and keep a secondary fallback if that also fails.
+- [ ] Add a small weathered flag to the checkpoint built in `ZoneCordon.BuildCheckpoint` (Assets/Scripts/World/Zone/ZoneCordon.cs)
+  In the `BuildCheckpoint` method, after the existing booth geometry (e.g., after `sb.Solid.Box(new Vector3(0f, 1.2f, 0f), …)`), insert a short wooden pole and an orange cloth flag to give the checkpoint a visual cue.
+  Create the pole using the existing `sb.Solid.Rod` helper, from ground to a height of about 1 m:
+  `sb.Solid.Rod(at + new Vector3(0f, 0f, -0.6f), at + new Vector3(0f, 1f, -0.6f), 0.025f, ZoneKit.M(ZoneKit.WetWood), 4);`
+  Create the flag as a small rectangular box attached near the top of the pole, using a faded orange colour to match period‑appropriate fabric:
+  `sb.Solid.Box(at + new Vector3(0f, 1.02f, -0.6f), new Vector3(0.4f, 0.25f, 0.02f), ZoneKit.M(new Color(0.78f, 0.25f, 0.2f)));`
+  Use `ZoneKit.R(rng, 0f, 1f) < 0.6f` (or similar) to randomise whether the flag appears, giving occasional variation while staying deterministic.
+  This adds at most two new primitives (pole + flag) per checkpoint, uses existing materials, preserves colliders and interaction points, and provides a period‑appropriate visual detail that makes the cordon checkpoint feel lived‑in.
