@@ -1109,3 +1109,9 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/GridPointerRelay.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] In Assets/Scripts/UI/HUDController.cs: Add a thin, dark outline to the full‑screen sleep overlay in `HUDController.BuildSleepOverlay` to give the “sleep” UI a worn‑metal frame feel.
+  In `BuildSleepOverlay`, after the line `bg.color = new Color(0.02f, 0.02f, 0.05f, 0.92f);` insert an Outline component on `_sleepOverlay`.
+  `var outline = _sleepOverlay.AddComponent<Outline>();`
+  `outline.effectColor = new Color(0.08f, 0.08f, 0.12f, 0.8f); // matches the dim twilight palette`
+  `outline.effectDistance = new Vector2(3f, 3f); // ≈0.002 m screen‑space thickness`
+  This adds only one extra UI primitive (the Outline component) and re‑uses the existing Image, keeping all colliders, interaction points and pivots untouched. No new assets or prefabs are required.
