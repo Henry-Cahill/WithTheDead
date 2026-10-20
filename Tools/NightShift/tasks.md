@@ -2636,9 +2636,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   `ctx.Notify($"You hear the door creak; it’s {state} ({percent} %).");`
   }`
   - 10:36 landed by 1htsserver in 1.7 min: **Changed**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Player/PlayerBuilder.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Player/PlayerBuilder.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 10:43 landed by 0htsserver in 7.7 min: **Changes Made**
 - [x] In Assets/Scripts/UI/SkillsPanelController.cs, inside `SkillsPanelController.Build()` after the rivet‑loop and before the `_fader` assignment, add four tiny corner‑plate rectangles to the panel’s edges to suggest worn metal reinforcement.
   Create a `GameObject` for each corner (e.g. `"CornerTL"`, `"CornerTR"`, `"CornerBL"`, `"CornerBR"`), add a `RectTransform` and `Image` component.
   Set the parent to `_panelRoot.GetComponent<RectTransform>()` with `false` for world‑position stay.
