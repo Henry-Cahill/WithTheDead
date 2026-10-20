@@ -1258,3 +1258,6 @@ you want to see in game. Indent extra lines under a task to add detail.
   `if (!WaterMains.MainsOn && _level > 0.05f)`
   `into.Add(new InteractAction("Empty the sink", EmptySink));`
   This uses only fields and methods already present (`_level`, `_toldFull`, `RefreshWater`, `InteractContext`, `InteractAction`).
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Cover.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
