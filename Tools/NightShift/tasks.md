@@ -871,7 +871,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 01:28 landed by hts-llm in 3.4 min: **Changes made**
 - [x] In Assets/Scripts/World/FurnitureBuilder.cs: Add a small metal pull‑handle to each locker door in `FurnitureBuilder.LockerBank(RaidMesh m, System.Random rng, int count, Color body)` so the door has a visible grip.
   - 01:28 landed by 0htsserver in 2.4 min: **Changed file**
-- [ ] Add a “Sing a lullaby” timed action to Assets/Scripts/World/Fixtures/BedFixture.cs that calms the survivor when used while seated or lying in the bed.
+- [x] Add a “Sing a lullaby” timed action to Assets/Scripts/World/Fixtures/BedFixture.cs that calms the survivor when used while seated or lying in the bed.
   Declare a new private float field `_lullabyCalmAt` next to `_plumpCalmAt`.
   In `GetActions`, after the “Plump the pillows” action, add:
   `into.Add(new InteractAction("Sing a lullaby", SingLullaby)`
@@ -879,6 +879,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `.DisabledIf(ctx.Seat == null, "You need to be sitting or lying to sing"));`
   Implement a private method `SingLullaby(InteractContext ctx)` similar to `PlumpPillows`: check `Time.time >= _lullabyCalmAt`, set `_lullabyCalmAt = Time.time + CloneZConfig.TidyCooldown`, call `LivingFixtures.Calm(ctx, CloneZConfig.TidyPanicRelief)`, and `ctx.Notify("Your soft humming soothes the nerves.");` else `ctx.Notify("Your voice is already echoing.");`.
   The player should see the new “Sing a lullaby” option when near the bed (if seated or lying), experience a brief 2‑second activity, and receive the same panic‑relief boost as plumping pillows. All existing behavior must remain unchanged.
+  - 01:36 landed by 0htsserver in 7.1 min: **Implemented “Sing a lullaby” timed action**
 - [x] Append four new entries to the `ArmyLeaflets` array in Assets/Scripts/World/Fixtures/RaidCivicFridge.cs – the list of leaflets found on the Guard post’s bookcase.
   The existing entry `"a field manual on vehicle maintenance, every page thumbed grey at the corners."` shows the style: short, period‑correct descriptions of mundane, period‑appropriate papers.
   Add the following lines after the last existing string (before the closing `}`) to flesh out the leaflets with themes of safety reminders, volunteer calls, lost‑pet notices, and weather warnings:

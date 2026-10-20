@@ -20,6 +20,7 @@ namespace CloneZ
         private bool _isMade = true;
         private PlayerSleep _sleeper;
         private float _plumpCalmAt;
+        private float _lullabyCalmAt;
 
         /// <summary>True while the bed is made (fresh runs start with it made).</summary>
         public bool IsMade => _isMade;
@@ -90,6 +91,11 @@ namespace CloneZ
                     .Timed(CloneZConfig.MakeBedSeconds, "Making the bed", HumanoidActivity.Search)
                     .DisabledIf(onEdge, "Get up off the bed first"));
             else into.Add(new InteractAction("Plump the pillows", PlumpPillows));
+                
+                // Calm the survivor with a short lullaby while seated or lying in the bed.
+                into.Add(new InteractAction("Sing a lullaby", SingLullaby)
+                    .Timed(2f, "Singing lullaby", HumanoidActivity.None)
+                    .DisabledIf(seat == null, "You need to be sitting or lying to sing"));
 
             into.Add(new InteractAction("Look under the bed", LookUnder).Timed(1.6f, "Looking under the bed", HumanoidActivity.Search));
         }
@@ -157,6 +163,17 @@ namespace CloneZ
                 ctx.Notify("You plump the pillows. The room looks a little more like somebody's home.");
             }
             else ctx.Notify("The pillows are as plump as they're going to get.");
+        }
+
+        private void SingLullaby(InteractContext ctx)
+        {
+            if (Time.time >= _lullabyCalmAt)
+            {
+                _lullabyCalmAt = Time.time + CloneZConfig.TidyCooldown;
+                LivingFixtures.Calm(ctx, CloneZConfig.TidyPanicRelief);
+                ctx.Notify("Your soft humming soothes the nerves.");
+            }
+            else ctx.Notify("Your voice is already echoing.");
         }
 
         private void LookUnder(InteractContext ctx)
