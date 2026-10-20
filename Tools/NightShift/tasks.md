@@ -2455,12 +2455,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   *Result*: When external code sets speed, attack, or cloak flags, `CreatureBody.LateUpdate` will recognise the body as driven and apply the correct animation and cloak state, preventing the creature from appearing dead‑locked or invisible when it should be moving under external control. All other behaviour remains unchanged.
   - 09:46 landed by 0htsserver in 1.1 min: **Changed file**
 - [ ] Add a thin chrome edge strip to each kitchen cupboard door built in FurnitureBuilder.KitchenCupboardDoor (Assets/Scripts/World/FurnitureBuilder.Kitchen.cs) to give the painted panel a realistic metal border.
-- [ ] Cache the survivor lookup in Assets/Scripts/Rendering/RoomLight.cs to avoid per‑budget GameManager and Camera.main searches.
+- [x] Cache the survivor lookup in Assets/Scripts/Rendering/RoomLight.cs to avoid per‑budget GameManager and Camera.main searches.
   Add a private static Transform field `_survivorTransform` to store the last‑found survivor target.
   In `TryGetSurvivor` first check `if (_survivorTransform != null && _survivorTransform.gameObject != null)` and return its `.position`.
   If the cache is missing or the object was destroyed, resolve it exactly as before (try `GameManager.Instance?.Player?.transform` then `Camera.main?.transform`) and assign the result to `_survivorTransform` for future calls.
   Replace the existing body of `TryGetSurvivor` with this cached logic, keeping the same out‑parameter signature and return values.
   The player sees no visual change; the light‑budget calculation now reuses the cached Transform instead of performing a costly `GameManager.Instance` lookup and a `Camera.main` search each budget tick.
+  - 09:48 landed by 1htsserver in 2.4 min: **Changed files**
 - [ ] In Assets/Scripts/World/Fixtures/MailboxFixture.cs: Add a subtle “hope” notification after the last mail item is read in `MailboxFixture.ReadNext()` (modify the `Run` lambda).
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/KitchenSink.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
