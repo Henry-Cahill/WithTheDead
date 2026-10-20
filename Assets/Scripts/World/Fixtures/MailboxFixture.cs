@@ -160,7 +160,12 @@ namespace CloneZ
             a.Run = c =>
             {
                 _read = Mathf.Min(_read + 1, Post.Length);
-                if (_read < Come) c.Notify("There's more post underneath.");
+                if (_read < Come) {
+                    c.Notify("There's more post underneath.");
+                } else {
+                    // Subtle hope after the final piece of mail
+                    c.Notify("A faint glimmer of hope lingers in the last letter.");
+                }
             };
             return a;
         }

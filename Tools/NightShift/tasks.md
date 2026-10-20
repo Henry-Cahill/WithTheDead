@@ -2462,7 +2462,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace the existing body of `TryGetSurvivor` with this cached logic, keeping the same out‑parameter signature and return values.
   The player sees no visual change; the light‑budget calculation now reuses the cached Transform instead of performing a costly `GameManager.Instance` lookup and a `Camera.main` search each budget tick.
   - 09:48 landed by 1htsserver in 2.4 min: **Changed files**
-- [ ] In Assets/Scripts/World/Fixtures/MailboxFixture.cs: Add a subtle “hope” notification after the last mail item is read in `MailboxFixture.ReadNext()` (modify the `Run` lambda).
+- [x] In Assets/Scripts/World/Fixtures/MailboxFixture.cs: Add a subtle “hope” notification after the last mail item is read in `MailboxFixture.ReadNext()` (modify the `Run` lambda).
+  - 09:50 landed by 1htsserver in 1.2 min: **Changed**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/KitchenSink.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
