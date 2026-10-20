@@ -916,7 +916,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   The player will see the same "He stamps it and waves you through." subtitle, and the reputation system will reflect the extra boost.
   All other code, fields, and constants remain unchanged.
   - 01:50 landed by 0htsserver in 1.7 min: **Summary**
-- [ ] Append five new sentences to the `Lines` array of the `Days(1, 1)` programme for the “Public Television” station (Channel 12) in Assets/Scripts/Core/Broadcasts.cs
+- [x] Append five new sentences to the `Lines` array of the `Days(1, 1)` programme for the “Public Television” station (Channel 12) in Assets/Scripts/Core/Broadcasts.cs
   Locate the `Station` entry with `Name = "Channel 12"` and `Title = "Public Television"`.
   Within its `Schedule` array, find the `Days(1, 1, …)` call that currently contains the pie‑crust tutorial lines.
   Add the new quoted lines after the existing ones, preserving the comma‑separated syntax and surrounding braces.
@@ -925,6 +925,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Style reference: `"Now, the secret to a good pie crust is cold butter. Very cold butter."` – the new lines should match this straightforward, spoken‑word style.
   Themes for the new entries:
   A safety reminder about heavy snow on roofs: “Heavy snow has piled on low‑slope roofs; clear the edges before they give way.”
+  - 02:00 landed by 0htsserver in 9.3 min: **Changes made**
 - [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/TooltipTrigger.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
