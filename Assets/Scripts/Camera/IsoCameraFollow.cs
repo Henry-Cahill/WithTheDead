@@ -444,7 +444,7 @@ namespace CloneZ
             {
                 if (View != CameraView.Isometric)
                 {
-                    if (_combat == null && Target != null) _combat = Target.GetComponent<PlayerCombat>();
+        
                     if (View == CameraView.FirstPerson || View == CameraView.Bodycam)
                     {
                         if (View == CameraView.FirstPerson) fov = GameSettings.Current.FieldOfView;
@@ -626,6 +626,7 @@ namespace CloneZ
             _stats = Target != null ? Target.GetComponent<PlayerStats>() : null;
             _sleep = Target != null ? Target.GetComponent<PlayerSleep>() : null;
             _avatar = Target != null ? Target.GetComponent<PlayerAvatar>() : null;
+            _combat = Target != null ? Target.GetComponent<PlayerCombat>() : null;
             _head = null;
             ResolveHead(true);
         }
