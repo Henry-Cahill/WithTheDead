@@ -2429,3 +2429,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   Left strip: `m.Box(new Vector3(-0.205f - 0.005f, ym, z), new Vector3(0.002f, h, 0.01f), M(new Color(0.07f,0.07f,0.07f)));`.
   Right strip: `m.Box(new Vector3(-0.205f + 0.426f + 0.005f, ym, z), new Vector3(0.002f, h, 0.01f), M(new Color(0.07f,0.07f,0.07f)));`.
   These strips add a subtle seal line while leaving colliders and interaction points unchanged.
+- [ ] Add an “Inspect water level” action to Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs that tells the player the exact amount of water remaining in the heater’s tank.
