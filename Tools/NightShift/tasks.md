@@ -1490,13 +1490,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   This adds at most two `Strip` primitives per slab (well under the 12‑primitive limit) and reuses the deterministic `rng`, existing `Strip` helper, and the `DecorPalette.Matte` colour system.
   Visually the player will see faint, irregular dark cracks on the road surface, enhancing the worn‑out winter street look while keeping all colliders, interaction points and pivots unchanged.
   - 04:41 landed by 0htsserver in 2.2 min: **Changed file**
-- [ ] In Assets/Scripts/UI/PauseMenuController.cs: Cache the GameManager and ExtractionManager singletons in PauseMenuController to avoid per‑frame lookups in Update()
+- [x] In Assets/Scripts/UI/PauseMenuController.cs: Cache the GameManager and ExtractionManager singletons in PauseMenuController to avoid per‑frame lookups in Update()
   Add two private fields `private GameManager _gm;` and `private ExtractionManager _em;` to the class.
   In `Awake()` after `Build();` assign them: `_gm = GameManager.Instance; _em = ExtractionManager.Instance;`.
   In `Update()` replace `GameManager.Instance != null && GameManager.Instance.State == GameState.Playing` with `(_gm != null && _gm.State == GameState.Playing)`.
   Replace `ExtractionManager.Instance != null && ExtractionManager.Instance.RaidOver` with `(_em != null && _em.RaidOver)`.
   At the start of `Update()` add a quick refresh: `if (_gm == null) _gm = GameManager.Instance; if (_em == null) _em = ExtractionManager.Instance;` – this only runs when the cached reference is missing, eliminating the costly static property access every frame while the game is running.
   The player sees exactly the same pause‑menu behaviour; the only change is that the world‑state checks are now cached, reducing per‑frame overhead.
+  - 04:44 landed by hts-llm in 3.9 min: Implemented caching for `GameManager` and `ExtractionManager` in **PauseMenuController.cs**:
 - [x] In Assets/Scripts/World/Fixtures/OutdoorHouseNumber.cs: Add a second interaction to OutdoorHouseNumber so the player can “Knock on the door” as an alternative action.
   - 04:43 landed by 0htsserver in 1.8 min: **Changes made**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Hub/Screens/HubTooltip.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.

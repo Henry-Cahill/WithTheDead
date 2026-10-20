@@ -81,6 +81,8 @@ namespace CloneZ
         private float _openedAt;
         private bool _open;
         private bool _prevBlocked;   // was some OTHER panel blocking gameplay last frame?
+private GameManager _gm;
+private ExtractionManager _em;
 
         private Item _abandon;
         private bool _abandonArmed;
@@ -99,7 +101,12 @@ namespace CloneZ
         /// </summary>
         public bool IsOpen => _open;
 
-        private void Awake() => Build();
+        private void Awake()
+{
+    Build();
+    _gm = GameManager.Instance;
+    _em = ExtractionManager.Instance;
+}
 
         private void OnEnable() => UIScreen.Closed += OnScreenClosed;
 
@@ -125,14 +132,16 @@ namespace CloneZ
         #region Flow
         private void Update()
         {
-            bool esc = Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame;
+            if (_gm == null) _gm = GameManager.Instance;
+if (_em == null) _em = ExtractionManager.Instance;
+bool esc = Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame;
 
             if (_open) TickOpen(esc);
             else
             {
-                bool playing = GameManager.Instance != null && GameManager.Instance.State == GameState.Playing;
+                bool playing = _gm != null && _gm.State == GameState.Playing;
                 // A finished raid belongs to its report screen.
-                if (ExtractionManager.Instance != null && ExtractionManager.Instance.RaidOver) playing = false;
+                if (_em != null && _em.RaidOver) playing = false;
                 bool free = !UIState.GameplayBlocked && !UIState.BuildMode && !UIState.ActionMenuOpen
                             && UIState.EscapeConsumedFrame != Time.frameCount
                             && !(PlayerInteractor.Current != null && PlayerInteractor.Current.IsBusy);   // Esc stops the job instead
