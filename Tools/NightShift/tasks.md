@@ -1900,11 +1900,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `b.Box(b.S(kitchen, 0.78f + offX, 0.70f + offY), new Vector3(0.02f, 0.10f, 0.02f), new Color(0.55f, 0.55f, 0.55f)); // metal handle`
   The box is 0.02 m wide, 0.10 m tall, 0.02 m deep, placed on the right side of the fridge door (relative to the fridge’s centre) with a deterministic‑random offset for subtle variation.
   Keep all existing colliders, interaction points and pivots unchanged; the added primitive uses the same material palette and does not affect gameplay.
-- [ ] In Assets/Scripts/Player/PlayerFoodSickness.cs: Cache the PlayerSleep component in PlayerFoodSickness so Update() no longer calls the lazy Sleep property each frame
+- [x] In Assets/Scripts/Player/PlayerFoodSickness.cs: Cache the PlayerSleep component in PlayerFoodSickness so Update() no longer calls the lazy Sleep property each frame
   Add a private field `private PlayerSleep _sleepCache;` and assign it in Awake() (`_sleepCache = GetComponent<PlayerSleep>();`).
   Remove the `Sleep` property entirely (or make it return `_sleepCache` without a GetComponent call).
   In Update() replace `if (Sleep != null && Sleep.IsSleeping)` with `if (_sleepCache != null && _sleepCache.IsSleeping)`.
   All other logic stays unchanged; the player’s sickness decay and health drain behave exactly the same, but the per‑frame GetComponent lookup is eliminated.
+  - 07:17 landed by 1htsserver in 2.2 min: **Changes made**
 - [ ] Modify Assets/Scripts/World/Fixtures/RaidCivicSink.cs by adding a new “Check water temperature” action in `CivicSink.GetActions` right after the existing rinse action.
   In `GetActions`, after `into.Add(rinse);` insert:
   `var temp = new InteractAction("Check water temperature", ctx => { ctx.Notify(PowerGrid.HousePowered ? "The water feels warm." : "The water is icy‑cold."); })`
