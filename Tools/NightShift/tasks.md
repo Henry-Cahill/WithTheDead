@@ -4087,11 +4087,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Create the tip: `m.Ellipsoid(hookBase + (-right) * 0.045f, new Vector3(0.008f, 0.008f, 0.008f), chrome, 6, 4);` (a small 8 mm sphere at the end).
   This adds period‑correct hardware for hanging a towel or small cloth, improves visual interest, and stays under the ~12‑primitive limit.
   - 18:36 landed by 1htsserver in 2.6 min: **Changes made**
-- [ ] In Assets/Scripts/Player/PlayerStats.cs: Cache the `TimeOfDay.Instance` lookup in `PlayerStats.Update` and use the cached reference in `UpdateFatigue` to avoid repeated static property access each frame.
+- [x] In Assets/Scripts/Player/PlayerStats.cs: Cache the `TimeOfDay.Instance` lookup in `PlayerStats.Update` and use the cached reference in `UpdateFatigue` to avoid repeated static property access each frame.
   Add a private field `private TimeOfDay _cachedTOD;` to `PlayerStats`.
   At the start of `Update()` set `_cachedTOD = TimeOfDay.Instance;`.
   In `UpdateFatigue(float dt)` replace `if (TimeOfDay.Instance != null && TimeOfDay.Instance.IsNight) …` with `if (_cachedTOD != null && _cachedTOD.IsNight) …`.
   This removes two per‑frame lookups of `TimeOfDay.Instance`; the player’s night‑time fatigue multiplier remains unchanged.
+  - 18:39 landed by hts-llm in 3.6 min: **Changes made**
 - [x] Add a “Check for leak” action to Assets/Scripts/World/Fixtures/RaidTownGasPump.cs that only appears when the nozzle is lifted, plays the pump noise and notifies the player.
   - 18:39 landed by 1htsserver in 2.8 min: All changes successfully compiled.**Changed file**
 - [ ] In Assets/Scripts/Core/Factions.cs, append four new `Def` entries to the existing `s_Defs` dictionary (place them after the current last entry `"caverelative"`).
