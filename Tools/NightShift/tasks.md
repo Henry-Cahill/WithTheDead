@@ -1779,7 +1779,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Rivet(prt, new Vector2(-panelW / 2 + 8f, ‑panelH / 2 + 8f));` // bottom‑left
   `Rivet(prt, new Vector2( panelW / 2 - 8f, ‑panelH / 2 + 8f));` // bottom‑right
   These twelve primitives (four images) add subtle worn‑metal rivet detail without altering colliders, interaction points, or existing UI layout.
-- [ ] Fix the bolt‑sinking logic in Assets/Scripts/Zone/Bolts.cs so that a sinking bolt no longer blocks movement or gets hit by raycasts.
+- [x] Fix the bolt‑sinking logic in Assets/Scripts/Zone/Bolts.cs so that a sinking bolt no longer blocks movement or gets hit by raycasts.
   In `Bolt.Sink()` the collider remains enabled, so while the bolt is being lowered it still collides with the player, NPCs and anomaly raycasts, making the bolt feel “solid” even though it is marked spent.
   Add a null‑check and disable the collider when sinking starts, matching the behaviour when a bolt becomes kinematic after settling.
   Change `public void Sink()` to:
@@ -1788,6 +1788,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Spent = true;
   _sinking = true;
   if (_rb != null) _rb.isKinematic = true;
+  - 06:36 landed by 1htsserver in 1.2 min: Changed **Assets/Scripts/Zone/Bolts.cs**:
 - [ ] Add a small metal tuning knob to the radio in Assets/Scripts/World/HomeFurniture.cs → `case HomeFurnitureKind.Radio:`
   After the existing line `m.Box(new Vector3(0f, 0.09f, 0f), new Vector3(0.32f, 0.18f, 0.14f), DecorPalette.Matte(new Color(0.30f, 0.20f, 0.12f)))`, insert a cylindrical knob using the deterministic rng for left/right variation:
   `bool left = rng.Next(2) == 0;`

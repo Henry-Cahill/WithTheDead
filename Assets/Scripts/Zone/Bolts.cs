@@ -116,6 +116,7 @@ private Rigidbody _rb;
             Spent = true;
             _sinking = true;
             if (_rb != null) _rb.isKinematic = true;
+            if (_col != null) _col.enabled = false;
             _born = Time.time - Lifetime + 4f;
         }
 
