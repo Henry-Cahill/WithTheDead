@@ -1382,9 +1382,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add them after the last element of the current `Tidying` initializer, keeping the array `private static readonly string[] Tidying`.
   Do not modify any other code, order, or comments.
   - 04:16 landed by hts-llm in 2 min: **Changed**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Net/NetSession.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Net/NetSession.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 04:34 landed by 1htsserver in 18.5 min: **Changes made**
 - [x] Add a small deterministic “rust patch” visual detail to each zombie in Assets/Scripts/Zombies/ZombieAI.cs by extending the `Configure(ZombieType type)` method.
   After the existing `if (_avatar != null) … else { … }` block and before the line `_agent.speed = _baseSpeed * 0.5f;`, insert code that creates up to two tiny cube primitives as children of the zombie to simulate rusted metal on the forearm.
   Use Unity’s `Random.Range` (already used elsewhere) to decide whether to add each patch (`if (Random.value < 0.5f)`), its exact local position and orientation, and to vary its colour slightly.

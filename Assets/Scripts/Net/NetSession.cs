@@ -27,21 +27,29 @@ namespace CloneZ
         
     public  NetOut UL(ulong v) { W.WriteValueSafe(v); return this; }
         
-    public  NetOut F(float v) { W.WriteValueSafe(v); return this; }
+            /// <summary>Writes a float to the buffer and returns this for chaining.</summary>
+        public  NetOut F(float v) { W.WriteValueSafe(v); return this; }
         
-    public  NetOut D(double v) { W.WriteValueSafe(v); return this; }
+                            /// <summary>Writes a double to the buffer and returns this for chaining.</summary>
+        public  NetOut D(double v) { W.WriteValueSafe(v); return this; }
         
-    public  NetOut B(bool v) { W.WriteValueSafe(v); return this; }
+                    /// <summary>Writes a bool to the buffer and returns this for chaining.</summary>
+        public  NetOut B(bool v) { W.WriteValueSafe(v); return this; }
         
-    public  NetOut By(byte v) { W.WriteValueSafe(v); return this; }
+            /// <summary>Writes a byte to the buffer and returns this for chaining.</summary>
+        public  NetOut By(byte v) { W.WriteValueSafe(v); return this; }
         
-    public  NetOut S(string v) { W.WriteValueSafe(v ?? ""); return this; }
+            /// <summary>Writes a string to the buffer and returns this for chaining.</summary>
+        public  NetOut S(string v) { W.WriteValueSafe(v ?? ""); return this; }
         
-    public  NetOut V(Vector3 v) { W.WriteValueSafe(v); return this; }
+            /// <summary>Writes a Vector3 to the buffer and returns this for chaining.</summary>
+        public  NetOut V(Vector3 v) { W.WriteValueSafe(v); return this; }
         
-    public  NetOut Q(Quaternion v) { W.WriteValueSafe(v); return this; }
+            /// <summary>Writes a Quaternion to the buffer and returns this for chaining.</summary>
+        public  NetOut Q(Quaternion v) { W.WriteValueSafe(v); return this; }
         
-    public  NetOut Bytes(byte[] v) { W.WriteValueSafe(v ?? new byte[0]); return this; }
+            /// <summary>Writes a byte array to the buffer and returns this for chaining.</summary>
+        public  NetOut Bytes(byte[] v) { W.WriteValueSafe(v ?? new byte[0]); return this; }
         
     public  void Dispose() => W.Dispose();
     }
@@ -53,40 +61,52 @@ namespace CloneZ
         
     public  FastBufferReader R;
         
-    public  NetIn(FastBufferReader r) { R = r; }
+            /// <summary>Creates a NetIn wrapper around a FastBufferReader.</summary>
+        public  NetIn(FastBufferReader r) { R = r; }
         /// <summary>Reads an int from the buffer.</summary>
         
-    public  int I() { R.ReadValueSafe(out int v); return v; }
+            /// <summary>Reads an int from the buffer.</summary>
+        public  int I() { R.ReadValueSafe(out int v); return v; }
         /// <summary>Reads a uint from the buffer.</summary>
         
-    public  uint U() { R.ReadValueSafe(out uint v); return v; }
+            /// <summary>Reads a uint from the buffer.</summary>
+        public  uint U() { R.ReadValueSafe(out uint v); return v; }
         /// <summary>Reads an unsigned long from the buffer.</summary>
         
-    public  ulong UL() { R.ReadValueSafe(out ulong v); return v; }
+            /// <summary>Reads an unsigned long from the buffer.</summary>
+        public  ulong UL() { R.ReadValueSafe(out ulong v); return v; }
         /// <summary>Reads a float from the buffer.</summary>
         
-    public  float F() { R.ReadValueSafe(out float v); return v; }
+            /// <summary>Reads a float from the buffer.</summary>
+        public  float F() { R.ReadValueSafe(out float v); return v; }
         /// <summary>Reads a double from the buffer.</summary>
         
-    public  double D() { R.ReadValueSafe(out double v); return v; }
+            /// <summary>Reads a double from the buffer.</summary>
+        public  double D() { R.ReadValueSafe(out double v); return v; }
         /// <summary>Reads a bool from the buffer.</summary>
         
-    public  bool B() { R.ReadValueSafe(out bool v); return v; }
+            /// <summary>Reads a bool from the buffer.</summary>
+        public  bool B() { R.ReadValueSafe(out bool v); return v; }
         /// <summary>Reads a byte from the buffer.</summary>
         
-    public  byte By() { R.ReadValueSafe(out byte v); return v; }
+            /// <summary>Reads a byte from the buffer.</summary>
+        public  byte By() { R.ReadValueSafe(out byte v); return v; }
         /// <summary>Reads a string from the buffer.</summary>
         
-    public  string S() { R.ReadValueSafe(out string v); return v; }
+            /// <summary>Reads a string from the buffer.</summary>
+        public  string S() { R.ReadValueSafe(out string v); return v; }
         /// <summary>Reads a Vector3 from the buffer.</summary>
         
-    public  Vector3 V() { R.ReadValueSafe(out Vector3 v); return v; }
+            /// <summary>Reads a Vector3 from the buffer.</summary>
+        public  Vector3 V() { R.ReadValueSafe(out Vector3 v); return v; }
         /// <summary>Reads a Quaternion from the buffer.</summary>
         
-    public  Quaternion Q() { R.ReadValueSafe(out Quaternion v); return v; }
+            /// <summary>Reads a Quaternion from the buffer.</summary>
+        public  Quaternion Q() { R.ReadValueSafe(out Quaternion v); return v; }
         /// <summary>Reads a byte array from the buffer.</summary>
         
-    public  byte[] Bytes() { R.ReadValueSafe(out byte[] v); return v; }
+            /// <summary>Reads a byte array from the buffer.</summary>
+        public  byte[] Bytes() { R.ReadValueSafe(out byte[] v); return v; }
     }
 
     /// <summary>What the server knows about each connected runner.</summary>
