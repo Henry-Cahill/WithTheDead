@@ -581,7 +581,7 @@ namespace CloneZ
             h.Part(BodyZone.RightArm, new Vector2(60f, 62f), new Vector2(14f, 60f));
             h.Part(BodyZone.LeftLeg, new Vector2(26f, 2f), new Vector2(15f, 58f));
             h.Part(BodyZone.RightLeg, new Vector2(43f, 2f), new Vector2(15f, 58f));
-            limbs.Hit += (z, hp) => h._flash = 0.35f;
+            limbs.Hit += h.OnHit;
             return h;
         }
 
@@ -595,6 +595,10 @@ namespace CloneZ
             UIKit.Stretch(t.rectTransform);
             _marks[(int)z] = t;
         }
+
+        private void OnHit(BodyZone zone, float hp) { _flash = 0.35f; }
+
+        private void OnDestroy() { if (_limbs != null) _limbs.Hit -= OnHit; }
 
         private void Update()
         {
