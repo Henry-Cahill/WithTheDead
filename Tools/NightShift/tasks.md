@@ -1220,3 +1220,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `var topPin = new Vector3(x1 + 0.005f, WardrobeDoorY1 - 0.06f, WardrobeFront + 0.01f);`
   `var botPin = new Vector3(x1 + 0.005f, WardrobeDoorY0 + 0.06f, WardrobeFront + 0.01f);`
   · Draw each pin with `m.Cylinder(topPin, 0.005f, 0.02f, 8, Mt(Brass));` and `m.Cylinder(botPin, 0.005f, 0.02f, 8, Mt(Brass));`.
+- [ ] Add a “toggle all lights” action to LightSwitch so the survivor can switch every circuit on or off with one interaction, updating the script in Assets/Scripts/World/Fixtures/LightSwitch.cs
