@@ -57,6 +57,7 @@ namespace CloneZ
         {
             if (_pickerContent == null || _player == null) return;
             GatherNearby();
+            _pickerFloor.Clear();
             WorldItem.Near(_player.transform.position, CloneZConfig.InteractRange, _pickerFloor);
             int sig = PickerSignature();
             if (!force && sig == _pickerSignature) return;
