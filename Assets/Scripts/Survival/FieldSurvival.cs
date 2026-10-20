@@ -313,13 +313,39 @@ namespace CloneZ
     }
 
     /// <summary>A small fire: cook on it, warm yourself by it. It burns down and goes out (and everything sees it at night).</summary>
-    public sealed class Campfire : MonoBehaviour, IWarmthSource
+    public sealed class Campfire : Interactable, IWarmthSource
     {
         private float _until;
         private Light _light;
 
         /// <summary>Provides the world position of the campfire's warmth source.</summary>
+        public override string DisplayName => "Campfire";
         public Vector3 WarmthPosition => transform.position;
+
+        public override void GetActions(InteractContext ctx, List<InteractAction> into)
+        {
+            bool hasPlank = ctx.Inventory.Has("plank");
+            bool hasRag = ctx.Inventory.Has("rag");
+            bool hasPaper = ctx.Inventory.Has("paper");
+            bool anyFuel = hasPlank || hasRag || hasPaper;
+
+            into.Add(new InteractAction("Add fuel", c =>
+            {
+                string fuel = null;
+                float add = 0f;
+                if (c.Inventory.Has("plank")) { fuel = "plank"; add = 240f; }
+                else if (c.Inventory.Has("rag")) { fuel = "rag"; add = 90f; }
+                else if (c.Inventory.Has("paper")) { fuel = "paper"; add = 90f; }
+
+                if (fuel != null)
+                {
+                    c.Inventory.Consume(fuel, 1);
+                    _until = Mathf.Max(_until, Time.time) + add;
+                    Sfx.Play(SfxIds.Lighter, transform.position, 0.6f, 1f, 8f);
+                    GameEvents.RaiseToast($"Added {fuel}, the fire will burn longer.");
+                }
+            }).DisabledIf(!anyFuel, "No fuel"));
+        }
         /// <summary>Radius in metres within which the campfire provides warmth.</summary>
         public float WarmthRadius => 4f;
         /// <summary>Current warmth output, zero when the fire has burned out.</summary>

@@ -3054,13 +3054,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 12:11 landed by 1htsserver in 6.6 min: **Changes made**
 - [x] In Assets/Scripts/Zombies/ZombieAI.cs: Cache the PlayerGear singleton and player‑component lookups in ZombieAI to remove per‑frame FindObject/​GetComponent calls (Update → CanSee → InFlashlightBeam).
   - 12:09 landed by hts-llm in 4.8 min: **Changes made**
-- [ ] Add a “Add fuel” interaction to the campfire (Assets/Scripts/Survival/FieldSurvival.cs)
+- [x] Add a “Add fuel” interaction to the campfire (Assets/Scripts/Survival/FieldSurvival.cs)
   Change the class declaration from `public sealed class Campfire : MonoBehaviour, IWarmthSource` to `public sealed class Campfire : Interactable, IWarmthSource` so the fire can receive interaction actions.
   Add an override of `GetActions(InteractContext ctx, List<InteractAction> into)` that:
   Offers a new `InteractAction("Add fuel", c => { … })` only when the player’s inventory contains `plank`, `rag`, or `paper`.
   Inside the action: pick the first available fuel type, `c.Inventory.Consume(fuel,1)`, increase `_until` by `240f` for a plank or `90f` for rag/paper (matching the durations used in `LightFire`), play the lighter SFX (`Sfx.Play(SfxIds.Lighter, transform.position,0.6f,1f,8f)`), and raise a toast like `"Added plank, the fire will burn longer."`.
   If the player lacks any fuel, the action is omitted (or added with `.DisabledIf(true, "No fuel")`).
   Result: players can extend an existing campfire’s burn time with extra wood or rag, reinforcing the survival loop without adding UI screens.
+  - 12:20 landed by hts-llm in 10.5 min: Implemented full Interactable integration for the campfire:
 - [x] Add a small brass pressure‑relief valve to the gas water heater model in Assets/Scripts/World/FurnitureBuilder.RaidStore.cs, method OfficeWaterHeater
   Insert after the line `m.Cylinder(new Vector3(0f, 1.55f, -0.1f), 0.05f, 1.2f, 8, Mt(new Color(0.46f, 0.47f, 0.48f)));`
   Add a cylinder representing the valve: `m.Cylinder(new Vector3(0.07f, 1.58f, 0.06f), 0.015f, 0.04f, 6, Mt(Brass));`
