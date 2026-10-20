@@ -191,6 +191,10 @@ namespace CloneZ
                 else if (!Running) ctx.Notify("The shower is off.");
                 else ctx.Notify(Hot ? "Hot water is flowing." : "Cold water is flowing.");
             }));
+            if (_inside)
+            {
+                into.Add(new InteractAction("Turn off water", c => Turn(c, false)));
+            }
         }
 
         private void Turn(InteractContext ctx, bool on)

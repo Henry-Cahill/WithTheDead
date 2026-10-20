@@ -3462,9 +3462,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   In `LateUpdate()` replace `TimeOfDay.Instance` with `_timeOfDay`, and if `_timeOfDay` is null (e.g., after a scene reload) assign `_timeOfDay = TimeOfDay.Instance;` before using it.
   The shading appearance and fade behaviour stay exactly the same; only the per‑frame singleton lookup is eliminated, reducing GC and CPU load.
   - 14:21 landed by hts-llm in 2 min: **Changed file**
-- [ ] In Assets/Scripts/World/Fixtures/ShowerFixture.cs: Add a context‑only “Turn off water” action to ShowerFixture.GetActions so survivors can quickly stop the flow while they’re inside the stall
+- [x] In Assets/Scripts/World/Fixtures/ShowerFixture.cs: Add a context‑only “Turn off water” action to ShowerFixture.GetActions so survivors can quickly stop the flow while they’re inside the stall
   In Assets/Scripts/World/Fixtures/ShowerFixture.cs modify the GetActions method: after the existing into.Add calls, insert a conditional block that checks `_inside` and, if true, adds a new `InteractAction("Turn off water", c => Turn(c, false))` to `into`
   This uses the already‑implemented Turn method, requires no new UI, and lets players stop the shower without exiting the stall; all other behaviour (door handling, water state) stays unchanged.
+  - 14:23 landed by 1htsserver in 2.4 min: Modified **Assets/Scripts/World/Fixtures/ShowerFixture.cs**
 - [x] In Assets/Scripts/World/Fixtures/RaidCivicFridge.cs, append four new sentences to the `ClinicNotes` array, keeping the existing entries unchanged.
   Use the existing entry `"A temperature log on a clipboard, ticked off every four hours. The last tick is at eight o'clock tonight."` as a style reference; the new notes should cover themes of supply reminders, community health notices, weather warnings, and personal procurement lists.
   Add `"A handwritten reminder on a sticky pad: ‘Check the backup generator before night shift – power’s fickle.’"` to the array.
