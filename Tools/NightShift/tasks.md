@@ -2117,9 +2117,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   `ProfileStore.Save();`
   `});` and close the case with `break;`.
   - 08:18 landed by 0htsserver in 1.3 min: Added a new “Buy a drink (5 MG)” interaction for the barkeep:
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/RaidBuilding.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/RaidBuilding.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 08:25 landed by 0htsserver in 7.6 min: Added concise one‑sentence `/// <summary>` XML documentation to every public method and property in **Assets/Scripts/World/RaidBuilding.cs**
 - [x] Add a thin inner “worn‑edge” frame to every card built by `HubUI.Card(RectTransform area, Color? color = null)` in Assets/Scripts/Hub/Screens/HubUI.cs
   Create a child `RectTransform` named “Border” inside the card’s `area` and inset it a few pixels to form an inner border.
   `// after setting the card’s Image component`

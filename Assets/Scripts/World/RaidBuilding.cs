@@ -156,6 +156,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>World position from a local XZ point and a Y height.</summary>
         public Vector3 W(float lx, float y, float lz)
         {
             Vector2 p = P(lx, lz);
@@ -163,6 +164,7 @@ namespace CloneZ
         }
 
         /// <summary>A local yaw (degrees; 0 faces local +Z) in world terms.</summary>
+        /// <summary>Local yaw (degrees; 0 faces local +Z) converted to world space, accounting for mirroring and rotation.</summary>
         public float Yaw(float localYaw) => (Mirror ? -localYaw : localYaw) + Turns * 90f;
 
         /// <summary>A local horizontal direction in world terms.</summary>
@@ -172,6 +174,7 @@ namespace CloneZ
             return new Vector3(a.x, 0f, a.y);
         }
 
+        /// <summary>Convert local wall coordinates to a world-space rectangle.</summary>
         public Rect RectW(float x0, float z0, float x1, float z1)
         {
             Vector2 a = P(x0, z0), b = P(x1, z1);
@@ -184,6 +187,7 @@ namespace CloneZ
 
         #region Authoring
         /// <summary>Adds a room (local rect on wall centre lines).</summary>
+        /// <summary>Factory method for a RaidRoom with given parameters.</summary>
         public RaidRoom Room(string name, float x0, float z0, float x1, float z1, WallDesign design, FloorKind floor)
         {
             var r = new RaidRoom
@@ -200,12 +204,14 @@ namespace CloneZ
 
         /// <summary>A doorway centred on local (lx, lz), which must lie on a wall line. Doorways are at
         /// least 1.5 m wide so the navmesh stays connected through them.</summary>
+        /// <summary>Creates a door opening centered at the given local coordinates.</summary>
         public void Door(float lx, float lz, float width = 1.5f, bool leaf = true, bool glass = false)
         {
             AddOpening(lx, lz, OpeningKind.Door, Mathf.Max(1.5f, width), o => { o.Leaf = leaf; o.Glass = glass; });
         }
 
         /// <summary>A window centred on local (lx, lz) on a wall line.</summary>
+        /// <summary>Creates a window opening centered at the given local coordinates.</summary>
         public void Window(float lx, float lz, float width = 1.2f)
         {
             AddOpening(lx, lz, OpeningKind.Window, width, o =>
@@ -226,6 +232,7 @@ namespace CloneZ
         #region Shell
         /// <summary>Derives the walls from the rooms, cuts the openings and builds floors, ceilings
         /// and wall segments. Call once all rooms and openings are declared, before furnishing.</summary>
+        /// <summary>Derives walls, openings, floors, ceilings, and pieces after all rooms and openings are declared.</summary>
         public void BuildShell()
         {
             if (_shellBuilt) return;
@@ -560,6 +567,7 @@ namespace CloneZ
         }
 
         /// <summary>Keeps the floor in front of every doorway (both sides) clear of furniture.</summary>
+        /// <summary>Ensures all doorways have clear zones for furniture.</summary>
         private void ReserveDoorways()
         {
             foreach (Opening o in _openings)
@@ -661,6 +669,7 @@ namespace CloneZ
         }
 
         /// <summary>The room containing a world point, or null.</summary>
+        /// <summary>Returns the raid room containing the given world point, or null.</summary>
         public RaidRoom RoomAt(Vector3 p)
         {
             foreach (RaidRoom r in Rooms) if (r.World.Contains(new Vector2(p.x, p.z))) return r;
@@ -669,6 +678,7 @@ namespace CloneZ
 
         /// <summary>Adds the ground in front of each outside door (3 m out) to <paramref name="into"/>, so
         /// outdoor props never block a way in.</summary>
+        /// <summary>Adds zones outside each exterior door for props to avoid blocking entry.</summary>
         public void ExteriorDoorZones(List<Rect> into)
         {
             foreach (Opening o in _openings)
