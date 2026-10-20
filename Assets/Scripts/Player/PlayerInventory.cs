@@ -61,6 +61,7 @@ namespace CloneZ
         private PlayerSkills _skills;
         private PlayerWounds _wounds;
         private PlayerPanic _panic;
+        private StatMods _modifiers;
         private int _lastStrengthLevel = -1;
         private GridSection _pockets;
         private bool _overflowPending;
@@ -77,7 +78,7 @@ namespace CloneZ
 
         private void Awake()
         {
-            _stats = GetComponent<PlayerStats>();
+            _modifiers = PlayerModifiers.Current;
             _combat = GetComponent<PlayerCombat>();
             Inventory = new Inventory(CloneZConfig.PlayerCarryCapacity);
             _pockets = new GridSection(GameSession.SurvivorName + "'s Inventory", PocketsWidth, PocketsHeight, CloneZConfig.PlayerCarryCapacity);
@@ -110,7 +111,7 @@ namespace CloneZ
             if (_skills == null) _skills = GetComponent<PlayerSkills>();
             if (_skills == null) return;
             int strength = _skills.GetLevel(PlayerSkills.Skill.Strength);
-            StatMods mods = PlayerModifiers.Current;
+            StatMods mods = _modifiers;
             float key = strength * 1000f + mods.CarryCapacity * 100f + mods.CarryBonusKg;
             if (strength == _lastStrengthLevel && Mathf.Abs(key - _lastCapacityKey) < 0.01f) return;
             _lastStrengthLevel = strength;
@@ -136,7 +137,7 @@ namespace CloneZ
             if (layout == null) return;
 
             float strengthMult = _skills != null ? _skills.CarryCapacityMult : 1f;
-            StatMods mods = PlayerModifiers.Current;
+            StatMods mods = _modifiers;
             _pockets.Name = GameSession.SurvivorName + "'s Inventory";
             _pockets.Capacity = Mathf.Max(2f, CloneZConfig.PlayerCarryCapacity * strengthMult * mods.CarryCapacity + mods.CarryBonusKg);
 

@@ -2539,10 +2539,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(handlePos, handleSize, handleRot, Mt(Chrome));`
   Result: a modest chrome lever protruding from the front of the tank, with slight random offset and rotation for visual variation, using the existing `Mt(Chrome)` material and keeping colliders/pivots unchanged.
   - 10:15 landed by 1htsserver in 3.1 min: **Changes made**
-- [ ] In Assets/Scripts/Player/PlayerInventory.cs: Cache the singleton lookup of `PlayerModifiers.Current` in `PlayerInventory` to avoid a per‑frame `FindObjectByType`/allocation.
+- [x] In Assets/Scripts/Player/PlayerInventory.cs: Cache the singleton lookup of `PlayerModifiers.Current` in `PlayerInventory` to avoid a per‑frame `FindObjectByType`/allocation.
   Add a private field `private PlayerModifiers _modifiers;` initialized in `Awake()` (e.g. `_modifiers = PlayerModifiers.Current;`).
   Replace every use of `PlayerModifiers.Current` in this file (currently in `Update()`, `RebuildSections()` – both the `strengthMult` line and the capacity calculation – and any other occurrence) with `_modifiers`.
   The player’s stats, capacity and move‑speed multiplier remain unchanged because the cached reference points to the same singleton; only the repeated lookup each frame is removed, reducing overhead and garbage.
+  - 10:19 landed by hts-llm in 6.1 min: Implemented caching of `PlayerModifiers.Current` in `PlayerInventory`:
 - [ ] Add an “Inspect the roll‑up door” quick action to Assets/Scripts/World/Fixtures/RollUpShutter.cs that lets the survivor learn whether the door is raised or lowered without changing any state.
   · Declare a new field `private Action<InteractContext> _inspectAct;` alongside the existing `_raiseAct`, `_lowerAct`, `_bangAct`.
   · In `Awake()` assign `_inspectAct = Inspect;` after the existing assignments.
