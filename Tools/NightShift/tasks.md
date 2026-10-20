@@ -3910,3 +3910,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `into.Add(new InteractAction("Close washing machine", CloseDoor).DisabledIf(_drum == null || !_drum.IsOpen, "It's already closed"));`
   Create a private method `CloseDoor(InteractContext ctx)` mirroring `OpenDoor`:
   - 17:27 landed by 1htsserver in 2.7 min: **Changed file**
+- [ ] Modify Assets/Scripts/World/Map/KentuckyMap.cs to give each building a deterministic colour tint so façades vary like the hand‑built raid town.
