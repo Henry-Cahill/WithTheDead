@@ -3043,13 +3043,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   Change the mask to exclude the ignore‑raycast layer instead of only including it: replace `1 << CloneZConfig.IgnoreRaycastLayer` with `~(1 << CloneZConfig.IgnoreRaycastLayer)`.
   After this fix the player will see the red crosshair when aiming at a living zombie and the gun will auto‑target correctly.
   - 12:03 landed by 1htsserver in 0.8 min: **Changed:**
-- [ ] Add a small brass pull‑handle to the interior side of the lower sash in `RaidBuilding.FitWindow` (Assets/Scripts/World/RaidBuilding.Windows.cs)
+- [x] Add a small brass pull‑handle to the interior side of the lower sash in `RaidBuilding.FitWindow` (Assets/Scripts/World/RaidBuilding.Windows.cs)
   Add the handle right after the lower sash’s main box is created: after
   `lower.Box(l.P(o.Pos, SashMeet + 0.024f, inner), l.Size(0.05f, 0.008f, 0.032f), brass);`
   insert
   `WindowBox(sash.transform, "PullHandle", l.P(o.Pos + 0.025f, SashBottom + 0.12f, inner), new Vector3(0.018f, 0.018f, 0.006f), brass);`
   The handle is a 1.8 cm × 1.8 cm × 0.6 cm brass box, positioned 2.5 cm inward from the left edge of the sash and 12 cm above the sash bottom, on the room‑side face (the same `inner` offset used for the lower sash).
   No colliders or interaction points are altered; the new primitive reuses the existing brass material and stays within the existing `lower`/`sash` hierarchy.
+  - 12:11 landed by 1htsserver in 6.6 min: **Changes made**
 - [x] In Assets/Scripts/Zombies/ZombieAI.cs: Cache the PlayerGear singleton and player‑component lookups in ZombieAI to remove per‑frame FindObject/​GetComponent calls (Update → CanSee → InFlashlightBeam).
   - 12:09 landed by hts-llm in 4.8 min: **Changes made**
 - [ ] Add a “Add fuel” interaction to the campfire (Assets/Scripts/Survival/FieldSurvival.cs)
