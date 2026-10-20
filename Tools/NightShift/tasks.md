@@ -1949,11 +1949,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Blend with `Color.Lerp(HatTrimColor, new Color(0.78f, 0.63f, 0.45f, 1f), var);` and assign back to `HatTrimColor`.
   No new colliders or geometry are added; the visual change is purely colour‑based, keeping the existing caps’ size and position unchanged.
   - 07:32 landed by hts-llm in 2.1 min: **Changed file**
-- [ ] Cache the per‑frame fade work in Assets/Scripts/UI/UIFader.cs by disabling the `MonoBehaviour` when no fading is needed and re‑enabling it only while the panel is transitioning.
+- [x] Cache the per‑frame fade work in Assets/Scripts/UI/UIFader.cs by disabling the `MonoBehaviour` when no fading is needed and re‑enabling it only while the panel is transitioning.
   In `Awake()` add `enabled = false;` after initializing `_group`.
   In `Show()` and `Hide()` set `enabled = true;` (right after setting `_target`).
   In `Update()` after moving the alpha, if `_group.alpha == _target` then set `enabled = false;` (instead of just returning).
   The player sees no visual change – panels still fade in/out exactly as before – but the `Update` method stops running each frame when the UI is fully shown or hidden, removing the constant null/target check.
+  - 07:36 landed by hts-llm in 3.3 min: **Changed files**
 - [ ] Add an “Inspect the power switch” action to PowerSwitch.GetActions in Assets/Scripts/Extraction/RaidWorldRules.cs
   In the method `PowerSwitch.GetActions` insert a new `InteractAction` before the existing one.
   Use the current line as a reference: `into.Add(new InteractAction(_thrown ? "The power is on" : "Throw the power switch", c =>`

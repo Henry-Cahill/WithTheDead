@@ -19,24 +19,27 @@ namespace CloneZ
         private void Awake()
         {
             _group = GetComponent<CanvasGroup>();
+            enabled = false;
             _group.alpha = 0f;
             _group.interactable = false;
             _group.blocksRaycasts = false;
         }
 
-        public void Show()
-        {
-            _target = 1f;
-            if (_group != null)
+public void Show()
             {
-                _group.interactable = true;
-                _group.blocksRaycasts = true;
+                _target = 1f;
+                enabled = true;
+                if (_group != null)
+                {
+                    _group.interactable = true;
+                    _group.blocksRaycasts = true;
+                }
             }
-        }
 
         public void Hide()
         {
             _target = 0f;
+            enabled = true;
             if (_group != null)
             {
                 _group.interactable = false;
@@ -46,8 +49,19 @@ namespace CloneZ
 
         private void Update()
         {
-            if (_group == null || _group.alpha == _target) return;
+            if (_group == null) return;
+            if (_group.alpha == _target)
+            {
+                // Already at target, disable per‑frame updates.
+                enabled = false;
+                return;
+            }
             _group.alpha = Mathf.MoveTowards(_group.alpha, _target, _speed * Time.unscaledDeltaTime);
+            if (_group.alpha == _target)
+            {
+                // Reached target after moving, stop updating.
+                enabled = false;
+            }
         }
     }
 }

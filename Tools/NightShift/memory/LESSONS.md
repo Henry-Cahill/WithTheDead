@@ -29,3 +29,4 @@ appends one short bullet at the end. Keep each bullet to a line or two.
 - `CloneZConfig` partial files (CloneZConfig.Bathroom.cs etc.) carry a one-line `// ...` header above the `public static partial class` line describing what the file's settings tune (see HomeFurniture.Kitchen.cs); the settings themselves are grouped under `// ---- section ----` comments inside.
 - When adding random‑based UI elements, remember to include `using System;` for `System.Random`.
 - Cache singleton lookups like WeatherSystem.Instance in frequently‑called Update loops to avoid per‑frame FindObjectByType overhead.
+- UI fade logic now disables the MonoBehaviour when idle, reducing per‑frame overhead.
