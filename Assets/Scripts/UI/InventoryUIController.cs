@@ -714,7 +714,17 @@ namespace CloneZ
             MakeButton(_window, new Vector2(1f, 1f), new Vector2(-66f, -14f), new Vector2(110f, 34f), "Grid view", new Color(0.28f, 0.34f, 0.44f), () => SetViewMode(true));
 
             // Dump the whole pack onto the floor (top-left, above the bag pane).
-            MakeButton(_window, new Vector2(0f, 1f), new Vector2(18f, -14f), new Vector2(130f, 34f), "Drop All", new Color(0.42f, 0.26f, 0.18f), DropAllStacks);
+            var dropAllBtn = MakeButton(_window, new Vector2(0f, 1f), new Vector2(18f, -14f), new Vector2(130f, 34f), "Drop All", new Color(0.42f, 0.26f, 0.18f), DropAllStacks);
+            // Add decorative lever handle graphic as child
+            var lever = new GameObject("Lever", typeof(RectTransform));
+            var leverRt = (RectTransform)lever.transform;
+            leverRt.SetParent(dropAllBtn.GetComponent<RectTransform>(), false);
+            leverRt.anchorMin = leverRt.anchorMax = new Vector2(0f, 0.5f);
+            leverRt.pivot = new Vector2(0f, 0.5f);
+            leverRt.anchoredPosition = new Vector2(4f, 0f);
+            leverRt.sizeDelta = new Vector2(6f, 12f);
+            var leverImg = lever.AddComponent<Image>();
+            leverImg.color = new Color(0.4f, 0.3f, 0.2f, 1f);
 
             // Store the whole pack into the open container (shown only while one is open).
             _storeAllButton = MakeButton(_window, new Vector2(0f, 1f), new Vector2(156f, -14f), new Vector2(130f, 34f), "Store All", new Color(0.28f, 0.34f, 0.44f), StoreAll).gameObject;

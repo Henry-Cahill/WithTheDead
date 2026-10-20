@@ -2387,7 +2387,7 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Vehicles.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
-- [ ] Add a small lever‑handle graphic to the “Drop All” button in Assets/Scripts/UI/InventoryUIController.cs → `Build()`
+- [x] Add a small lever‑handle graphic to the “Drop All” button in Assets/Scripts/UI/InventoryUIController.cs → `Build()`
   Create a child RectTransform under the button returned by
   `MakeButton(_window, new Vector2(0f, 1f), new Vector2(18f, -14f), new Vector2(130f, 34f), "Drop All", new Color(0.42f, 0.26f, 0.18f), DropAllStacks);`
   Size ≈ 0.006 × 0.012 metres (6 × 12 px) – a thin metal lever.
@@ -2395,6 +2395,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Local position = (4 px, 0) relative to the button’s RectTransform.
   Add an Image component coloured `new Color(0.4f, 0.3f, 0.2f, 1f)` (aged metal/twisted‑steel tone) – reuses Unity’s default UI material.
   No new colliders or interaction code; the lever is purely decorative and respects existing layout.
+  - 09:26 landed by 1htsserver in 2.1 min: **Changed**
 - [ ] Add a tiny metal latch/handle to the glass‑door drinks cooler in Assets/Scripts/World/RaidLayoutsStore.cs, method `DrinksCoolerAt`.
   Inside the fixture‑body lambda, after `FurnitureBuilder.MartCoolerBody(m, r, lit)`, insert a conditional box primitive that serves as a small door handle.
   Use `if (b.Rng.NextDouble() < 0.5)` to make the handle appear on roughly half the coolers, keeping visual variation deterministic.
