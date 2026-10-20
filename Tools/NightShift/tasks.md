@@ -2037,7 +2037,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   If `_localActor` is ever null (e.g., during hot‑reload), guard with a null‑check or re‑assign lazily: `if (_localActor == null) _localActor = Actor.LocalPlayer;`.
   This change does not alter any visible behavior; the player’s surrender/restraint checks still run, but the lookup is now cached, reducing per‑frame allocations and Find‑by‑type overhead.
   - 08:01 landed by 1htsserver in 7.3 min: **Changed file**
-- [ ] In Assets/Scripts/World/Fixtures/RaidWindow.cs: Add an “Inspect the window” action to RaidWindow.GetActions that reports the current glass and board state.
+- [x] In Assets/Scripts/World/Fixtures/RaidWindow.cs: Add an “Inspect the window” action to RaidWindow.GetActions that reports the current glass and board state.
   In GetActions, after the block that adds the “Look inside” / “Look outside” actions (inside ? … : …), insert:
   `if (inside) into.Add(new InteractAction("Inspect the window", InspectWindow));`
   Add a private helper method to RaidWindow:
@@ -2046,6 +2046,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   ` (_glass == Glazing.Intact) ? "The glass is intact." :`
   ` (_glass == Glazing.Smashed) ? "The glass is shattered; shards still bristle in the frame." :`
   ` "The window frame is empty.";`
+  - 08:05 landed by hts-llm in 10.8 min: **Changes Made**
 - [x] Append four period‑accurate winter‑1993 letters to the `Letters` array in Assets/Scripts/World/Fixtures/RaidTownMailDrop.cs
   Locate the `private static readonly string[] Letters` initializer and add four new quoted strings after the last existing entry, each followed by a comma.
   Use the style of the first entry `"A drift of envelopes. The top one is addressed to the county tax office in a careful hand, stamped and sealed. Somebody still meant to pay."` and cover these themes: a newspaper clipping about road closures, a handwritten grocery list for canned beans, a church flyer announcing a cold‑weather shelter, and a telegram pleading for help to find a missing child.
