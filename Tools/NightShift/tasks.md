@@ -2869,11 +2869,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `var imgTL = screwTL.gameObject.AddComponent<Image>();`
   `imgTL.color = new Color(0.18f, 0.18f, 0.20f); // dark metal tint`
   - 11:27 landed by hts-llm in 4 min: **Changes Made**
-- [ ] In Assets/Scripts/Hub/Screens/HubTooltip.cs: Cache the tooltip’s root size and canvas rect in HubTooltip so LateUpdate’s Follow() doesn’t read RectTransform properties each frame, updating the cache in Show() after the text/layout is set.
+- [x] In Assets/Scripts/Hub/Screens/HubTooltip.cs: Cache the tooltip’s root size and canvas rect in HubTooltip so LateUpdate’s Follow() doesn’t read RectTransform properties each frame, updating the cache in Show() after the text/layout is set.
   Add private fields `private Vector2 _rootSize;` and `private Rect _canvasBounds;` to HubTooltip.
   In `Show(object owner, string richText)` after setting `_textSize` call `_rootSize = _root.rect.size;` and `_canvasBounds = _canvasRect.rect;`.
   Replace the lines `Vector2 size = _root.rect.size;` and `Rect cr = _canvasRect.rect;` in `Follow()` with uses of the cached `_rootSize` and `_canvasBounds`.
   The tooltip will still follow the mouse and flip at screen edges exactly as before, but the per‑frame allocations and property reads are removed.
+  - 11:28 landed by 1htsserver in 3.6 min: **Changed file**
 - [ ] Add an instant “Inspect the bed” action to Assets/Scripts/World/Fixtures/BedFixture.cs’s GetActions, placed after the existing “Look under the bed” entry.
   Implement a private method `InspectBed(InteractContext ctx)` that runs `ctx.Notify(_isMade ? "The bedding is neatly made." : "The sheets are rumpled and the pillows look flat.");`.
   In GetActions, insert `into.Add(new InteractAction("Inspect the bed", InspectBed));` (no .Timed call, always enabled).
