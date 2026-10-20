@@ -233,6 +233,19 @@ namespace CloneZ
                     if (ring == 0) sb.Collider(c, new Vector3(rad * 2f * Mathf.PI / sides + 0.1f, 4f, 0.5f), yaw);
                 }
             }
+            // Small rusted maintenance plates on the outer concrete shell
+            for (int i = 0; i < 8; i++)
+            {
+                float angle = i * Mathf.PI * 0.25f; // 45° steps
+                // Base position on the outer radius of the lowest ring (≈9 m)
+                Vector3 basePos = new Vector3(Mathf.Cos(angle) * 9f, 2f, Mathf.Sin(angle) * 9f);
+                // Apply slight jitter using deterministic RNG
+                Vector3 jitter = new Vector3(ZoneKit.R(sb.Rng, -0.2f, 0.2f), 0f, ZoneKit.R(sb.Rng, -0.2f, 0.2f));
+                Vector3 pos = basePos + jitter;
+                // Rust color (tint of the concrete palette)
+                Color rust = new Color(0.5f, 0.3f, 0.1f);
+                sb.Solid.Box(pos, new Vector3(0.3f, 0.1f, 0.3f), ZoneKit.M(ZoneKit.V(rust, sb.Rng, 0.02f)));
+            }
             ZoneKit.Plume(sb.Root, sb.W(0f, 23f, 0f), false, 5f, 4f, 3f, new Color(0.92f, 0.92f, 0.9f, 0.45f));
             sb.Storage("Maintenance locker", "lm_tower_locker", new Vector3(0f, 1f, 5.6f), ContainerType.ToolBench, 5);
             sb.Storage("Control cabinet", "lm_tower_cabinet", new Vector3(5.6f, 1f, 0f), ContainerType.Locker, 4);

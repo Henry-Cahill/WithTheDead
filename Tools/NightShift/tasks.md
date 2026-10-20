@@ -401,7 +401,7 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Items/LootContainer.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
-- [ ] Add eight small rust‑colored maintenance plates to the cooling‑tower landmark for visual wear, editing Assets/Scripts/World/Zone/ZoneLandmarks.cs, method CoolingTower(SiteBuilder sb)
+- [x] Add eight small rust‑colored maintenance plates to the cooling‑tower landmark for visual wear, editing Assets/Scripts/World/Zone/ZoneLandmarks.cs, method CoolingTower(SiteBuilder sb)
   Insert the new block after the closing brace of the outer `for (int ring = 0; ring < 6; ring++) { … }` loop and before the call to `ZoneKit.Plume(...)`.
   Use the existing deterministic RNG (`sb.Rng`) for tiny position jitter, and reuse the concrete‑dark material palette.
   `// Small rusted maintenance plates on the outer concrete shell`
@@ -410,6 +410,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `float angle = i * Mathf.PI * 0.25f; // 45° steps`
   `// Base position on the outer radius of the lowest ring (≈9 m)`
   `Vector3 basePos = new Vector3(Mathf.Cos(angle) * 9f, 2f, Mathf.Sin(angle) * 9f);`
+  - 23:10 landed by 0htsserver in 2.5 min: **Changed file**
 - [ ] Fix the zombie‑type roll in Assets/Scripts/Zombies/ZombieSpawner.cs (`RollType`) so that crawlers can still appear after the tough‑unlock wave; the current order makes the `FastShambler` check consume the whole `< 0.35` range before the crawler test, preventing crawlers from ever being chosen once `_wave >= CloneZConfig.ToughUnlockWave`.
 - [ ] Add a small stamped metal “SAFE” plate to the gun‑safe body in Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method GunSafeBody.
   Create a thin box about 0.18 m × 0.03 m × 0.004 m (width × height × depth) positioned just in front of the door’s centre:
