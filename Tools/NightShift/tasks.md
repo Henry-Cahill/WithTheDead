@@ -1062,7 +1062,8 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [x] In Assets/Scripts/Player/PlayerSleep.cs: Fix the layer‑mask used in `PlayerSleep.ZombiesNearby` so that zombies on normal layers are detected and the player cannot sleep when they are close.
   In `ZombiesNearby()` the call
   - 02:29 landed by hts-llm in 1.2 min: **Summary**
-- [ ] Add a subtle “worn‑edge” accent to each scrollbar handle built in `HubUI.Scroll` (Assets/Scripts/Hub/Screens/HubUI.cs)
+- [x] Add a subtle “worn‑edge” accent to each scrollbar handle built in `HubUI.Scroll` (Assets/Scripts/Hub/Screens/HubUI.cs)
+  - 02:32 landed by hts-llm in 2.6 min: **Changed Files**
 - [x] Cache the PlayerSleep component in Awake instead of looking it up each frame in Update in Assets/Scripts/Player/PlayerWounds.cs
   Add `_sleep = GetComponent<PlayerSleep>();` to the existing Awake method (alongside the existing `_stats` assignment).
   Remove the line `if (_sleep == null) _sleep = GetComponent<PlayerSleep>();` from Update.

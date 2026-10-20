@@ -274,6 +274,13 @@ namespace CloneZ
             UIKit.Stretch(handle);
             var hImg = handle.gameObject.AddComponent<Image>();
             hImg.color = new Color(UIKit.Accent.r, UIKit.Accent.g, UIKit.Accent.b, 0.55f);
+            // Add subtle worn‑edge accent: a thin darker overlay inside the handle
+            RectTransform edge = UIKit.Rect("Edge", handle);
+            // inset a few pixels to create an inner border effect
+            edge.offsetMin = new Vector2(2f, 2f);
+            edge.offsetMax = new Vector2(-2f, -2f);
+            var edgeImg = edge.gameObject.AddComponent<Image>();
+            edgeImg.color = new Color(0f, 0f, 0f, 0.2f);
             var bar = sb.gameObject.AddComponent<Scrollbar>();
             bar.handleRect = handle;
             bar.targetGraphic = hImg;
