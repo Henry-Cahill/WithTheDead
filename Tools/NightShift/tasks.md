@@ -3146,3 +3146,26 @@ you want to see in game. Indent extra lines under a task to add detail.
   This adds only two primitives, stays inside the existing builder, keeps colliders removed (as `Box` already does), and gives the car a period‑correct visual cue (small metal mirrors) without any modern lighting.
   - 12:40 landed by hts-llm in 3.3 min: Implemented side‑mirror housings for the car:
 - [ ] Fix a missing unsubscription that can cause a hidden‑memory‑leak and potential null‑reference when the hub is re‑initialized, in Assets/Scripts/Hub/Screens/HomeScreens.cs → `HubScreensModule.Init()`
+- [ ] Add four small chrome rivet heads to the front panel of each breaker box in `Assets/Scripts/World/FurnitureBuilder.Lighting.cs` `BreakerBox` method
+  Add the rivets after the line `m.Box(front + normal * 0.001f, new Vector3(w - 0.04f, h - 0.04f, 0.002f), q, M(PanelGrey * 0.8f));`
+  Compute the panel‑edge offsets: `float rivetX = w * 0.5f - 0.02f; float rivetY = h * 0.5f - 0.02f;`
+  Place four tiny boxes (0.008 m × 0.008 m × 0.001 m) slightly in front of the panel:
+  `m.Box(front + normal * 0.0015f + right * rivetX + Vector3.up * rivetY, new Vector3(0.008f, 0.008f, 0.001f), q, Mt(Chrome));`
+  `m.Box(front + normal * 0.0015f - right * rivetX + Vector3.up * rivetY, new Vector3(0.008f, 0.008f, 0.001f), q, Mt(Chrome));`
+  `m.Box(front + normal * 0.0015f + right * rivetX - Vector3.up * rivetY, new Vector3(0.008f, 0.008f, 0.001f), q, Mt(Chrome));`
+  `m.Box(front + normal * 0.0015f - right * rivetX - Vector3.up * rivetY, new Vector3(0.008f, 0.008f, 0.001f), q, Mt(Chrome));`
+  These rivets give the steel breaker box a period‑appropriate fastener detail without altering colliders or interaction points.
+- [ ] In Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs: cache the per‑frame “radio‑off” check by disabling the MonoBehaviour when the radio is off and re‑enabling it when turned on.
+  Change `Switch(bool on)` to set `this.enabled = on;` after updating `_on`.
+  In `Create(...)` set `r.enabled = false;` (the radio starts off).
+  Remove the early‑return in `Update()` (optional) – the method will no longer run when `enabled` is false.
+  No gameplay change: the radio still responds to “Switch on the radio” and “Switch off the radio” actions; the player still hears noise and captions exactly as before.
+  This eliminates the per‑frame `_on` check and associated time queries, reducing Update overhead when the radio is off.
+- [ ] In Assets/Scripts/World/Fixtures/LightSwitch.cs: Add an “Inspect circuit” action for each circuit in `LightSwitch.GetActions`, mirroring the notification logic of `Flip` but without changing any state.
+  In `GetActions`, after the existing `Flip` action is added, insert:
+  `into.Add(new InteractAction("Inspect the " + LightCircuits.Noun(circuit), c => Inspect(c, circuit)));`
+  Implement a new private method `Inspect(InteractContext ctx, string circuit)` that:
+  – Calls `HomeLamp.CountOnCircuit(circuit, out int lamps, out int lit, out int dead, out int waiting);`
+  – Uses `ctx.Notify` with the same messages as in `Flip` (e.g., “Nothing happens. Whatever it was wired to is gone.”, bulb‑gone messages, porch‑lantern wait message).
+  – Skips any `LightCircuits.Set`, `Sync`, or `MakeNoise` calls.
+  This lets the survivor check how many lamps on that circuit are functional or dead without toggling the switch.
