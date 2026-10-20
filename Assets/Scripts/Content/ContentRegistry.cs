@@ -13,7 +13,9 @@ namespace CloneZ
     /// </summary>
     public interface IContentProvider
     {
+        /// <summary>The order in which this content provider runs relative to others.</summary>
         int Order { get; }
+        /// <summary>Registers the content defined by this provider using the supplied builder.</summary>
         void Register(ContentBuilder b);
     }
 
@@ -59,8 +61,11 @@ namespace CloneZ
         private readonly Dictionary<ContainerType, List<ItemDatabase.LootEntry>> _pendingLoot = new Dictionary<ContainerType, List<ItemDatabase.LootEntry>>();
         private readonly HashSet<string> _fromDb;
 
+        /// <summary>Number of items added to the database by this builder.</summary>
         public int Added { get; private set; }
+        /// <summary>Number of existing items that were patched by this builder.</summary>
         public int Patched { get; private set; }
+        /// <summary>Number of loot entries added by this builder.</summary>
         public int LootAdded { get; private set; }
 
         internal ContentBuilder(Dictionary<string, ItemDef> items, Dictionary<ContainerType, ItemDatabase.LootTable> tables)
@@ -73,6 +78,7 @@ namespace CloneZ
         /// <summary>True when the database itself defines this id (code must then leave its values alone).</summary>
         public bool InDatabase(string id) => _fromDb.Contains(id);
 
+        /// <summary>Gets an item definition by id, or null if it does not exist.</summary>
         public ItemDef Get(string id) => id != null && _items.TryGetValue(id, out ItemDef d) ? d : null;
 
         /// <summary>Defines an item unless the database already has one with this id (then that one is returned).</summary>
