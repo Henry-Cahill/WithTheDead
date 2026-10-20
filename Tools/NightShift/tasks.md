@@ -3419,12 +3419,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Set its material colour to a faded, worn fabric tone based on the existing rust colour: `Color base = new Color(0.5f, 0.4f, 0.35f); float v = Random.Range(-0.04f, 0.04f); Color col = new Color(base.r+v, base.g+v, base.b+v);` then apply via `rend.material.color = col; if (rend.material.HasProperty("_BaseColor")) rend.material.SetColor("_BaseColor", col);`.
   This gives each zombie a subtle torn‑shirt strip, reinforcing the period‑correct, weather‑worn look without altering colliders, interaction points, or existing behaviour, and stays within the ~12‑primitive limit.
   - 14:06 landed by 0htsserver in 3.3 min: **Changes made**
-- [ ] Add a tiny hex‑nut detail to the hose‑reel standpipe coupling in `StarterHome.HoseReel` (Assets/Scripts/World/StarterHome.Grounds.cs)
+- [x] Add a tiny hex‑nut detail to the hose‑reel standpipe coupling in `StarterHome.HoseReel` (Assets/Scripts/World/StarterHome.Grounds.cs)
   Insert a small 6‑sided cylinder (approximating a hex nut) at the coupling joint to suggest a securing nut.
   Use the existing `brass` material, size ~0.009 m radius × 0.004 m depth, positioned a few millimetres outward from the coupling cylinder.
   Quote the anchor code: `Vector3 coupling = elbow - Vector3.up * 0.075f;` and `m.Cylinder(coupling, 0.017f, 0.03f, 8, brass);`.
   Add after those lines: `m.Cylinder(coupling + new Vector3(0f, 0f, 0.015f), 0.009f, 0.004f, 6, brass);`.
   The player will see a subtle metal nut on the pipe, adding realistic hardware detail without affecting colliders or interaction.
+  - 14:08 landed by hts-llm in 1.7 min: **Summary**
 - [ ] In Assets/Scripts/Camera/ViewCrosshair.cs: Cache the per‑frame static lookups in ViewCrosshair so LateUpdate does not repeatedly resolve singletons.
   Add a private `ViewState _viewState;` and `GameSettings _settings;` field.
   In Awake() after `Build();` assign them: `_viewState = ViewState.Instance;` and `_settings = GameSettings.Instance;`.
