@@ -19,6 +19,7 @@ namespace CloneZ
         private PlayerFoodSickness _food;
         private PlayerWounds _wounds;
         private float _coldExposure, _sneezeAt, _vitaminsUntil, _tick;
+        private SandboxSettings _sandboxSettings;
 
         /// <summary>
         /// Returns true if the specified disease is currently active on the player.
@@ -37,6 +38,7 @@ namespace CloneZ
             CharacterProfile c = ProfileStore.ActiveCharacter;
             if (c != null && c.Health != null && !GameSession.IsBorrowedBody)
                 foreach (string d in c.Health.Diseases) _active.Add(d);
+            _sandboxSettings = SandboxSettings.Current;
             PlayerFoodSickness.DrankTainted += OnDrankTainted;
             GameEvents.RaidEnded += OnRaidEnded;
         }
@@ -49,7 +51,7 @@ namespace CloneZ
 
         private void OnDrankTainted(PlayerFoodSickness who)
         {
-            if (who != _food || !SandboxSettings.Current.Diseases) return;
+            if (who != _food || !_sandboxSettings.Diseases) return;
             if (Random.value < 0.3f) Catch(Cholera, "Your gut cramps. Something in that water.");
         }
 
@@ -87,7 +89,7 @@ namespace CloneZ
             float dt = Time.deltaTime;
 
             // Catching a cold: wet and cold for a few minutes, unless vitamins are keeping it off.
-            if (SandboxSettings.Current.Diseases && !Has(Cold) && Time.time > _vitaminsUntil)
+            if (_sandboxSettings.Diseases && !Has(Cold) && Time.time > _vitaminsUntil)
             {
                 bool chilled = _stats.ColdStrength > 0.35f && _stats.Wetness > 0.3f;
                 _coldExposure = Mathf.Max(0f, _coldExposure + (chilled ? dt : -dt * 0.5f));
