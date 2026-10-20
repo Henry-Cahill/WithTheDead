@@ -312,6 +312,15 @@ namespace CloneZ
             prt.sizeDelta = new Vector2(panelW, panelH);
             _panelRoot.AddComponent<Image>().color = new Color(0.06f, 0.05f, 0.06f, 0.95f);
 
+            // Add a thin dark trim around the panel for a worn‑metal frame effect
+            var trimGo = new GameObject("PanelTrim");
+            var trimRt = trimGo.AddComponent<RectTransform>();
+            trimRt.SetParent(prt, false);
+            trimRt.anchorMin = trimRt.anchorMax = new Vector2(0.5f, 0.5f);
+            trimRt.pivot = new Vector2(0.5f, 0.5f);
+            trimRt.sizeDelta = new Vector2(panelW + 4f, panelH + 4f);
+            trimGo.AddComponent<Image>().color = new Color(0.04f, 0.03f, 0.05f, 0.9f);
+
             Label(prt, "Title", new Vector2(0.5f, 1f), new Vector2(0f, -18f), new Vector2(panelW, 40f), 30, TextAnchor.UpperCenter, new Color(0.95f, 0.7f, 0.7f))
                 .text = "HEALTH";
 
