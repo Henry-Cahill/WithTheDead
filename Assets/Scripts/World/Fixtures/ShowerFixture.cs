@@ -41,8 +41,11 @@ namespace CloneZ
         private static bool Hot => PowerGrid.HousePowered;
 
         #region IWarmthSource
+        /// <summary>The world position that provides warmth from the shower.</summary>
         public Vector3 WarmthPosition => _middle;
+        /// <summary>Radius around the shower that provides warmth.</summary>
         public float WarmthRadius => CloneZConfig.ShowerWarmthRadius;
+        /// <summary>The amount of warmth the shower provides when running and hot.</summary>
         public float Warmth => Running && Hot ? CloneZConfig.ShowerWarmth : 0f;
         #endregion
 

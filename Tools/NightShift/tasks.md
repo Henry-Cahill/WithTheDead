@@ -2016,9 +2016,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   `"Fuel's scarce; the depot's only got a half‑full barrel left."`
   `"The old radio tower's dead—just static and the wind."`
   - 07:49 landed by hts-llm in 2.1 min: **Changed**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/ShowerFixture.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/ShowerFixture.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 08:03 landed by 0htsserver in 14.3 min: Added three one‑sentence XML `<summary>` comments to the public members of **ShowerFixture.cs** that lacked documentation:
 - [x] Fix the blood‑transfusion logic in Assets/Scripts/Medical/MedicalItems.cs so that iv‑kits and used blood‑bags are only consumed on a successful transfusion.
   In `Transfuse` the code unconditionally calls `inv.Consume("ivkit", 1);` and `inv.Inventory.Remove(s, 1);` before checking whether `b.Blood.Transfuse(type, out string message)` actually succeeded, causing players to lose resources even when the transfusion fails (e.g., wrong blood type).
   Change the method to store the return value of `Transfuse`, and if it is `false` skip the consumption/removal and exit early after showing the message. Only on a `true` result should the iv‑kit be consumed, the empty bag removed, the sound played, XP added and the success toast shown.
