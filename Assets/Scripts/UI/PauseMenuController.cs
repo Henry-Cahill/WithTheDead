@@ -94,6 +94,9 @@ namespace CloneZ
         private PlayerStats _cardFor;
         private PlayerWounds _wounds;
 
+        /// <summary>
+        /// Indicates whether the pause menu is currently open.
+        /// </summary>
         public bool IsOpen => _open;
 
         private void Awake() => Build();
@@ -841,11 +844,23 @@ namespace CloneZ
     /// <summary>Forwards pointer hover and clicks on a pause-menu row (or a cycler's arrow) to the menu.</summary>
     public sealed class PausePointer : MonoBehaviour, IPointerEnterHandler, IPointerClickHandler
     {
+        /// <summary>
+        /// Event invoked when the pointer enters the UI element.
+        /// </summary>
         public Action Enter;
+        /// <summary>
+        /// Event invoked when the pointer clicks the UI element.
+        /// </summary>
         public Action Click;
 
+        /// <summary>
+        /// Called by Unity when the pointer enters the UI element; triggers the Enter action.
+        /// </summary>
         public void OnPointerEnter(PointerEventData eventData) => Enter?.Invoke();
 
+        /// <summary>
+        /// Called by Unity when the pointer clicks the UI element; triggers the Click action on left mouse button.
+        /// </summary>
         public void OnPointerClick(PointerEventData eventData)
         {
             if (eventData.button != PointerEventData.InputButton.Left) return;
