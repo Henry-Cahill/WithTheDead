@@ -201,8 +201,13 @@ namespace CloneZ
             m.CylinderX(new Vector3(0f, 0.16f, r + 0.03f), 0.022f, 0.08f, 8, DecorPalette.Metal(FurnitureBuilder.Brass), 90f);
             m.Box(new Vector3(0f, 0.2f, r + 0.07f), new Vector3(0.03f, 0.05f, 0.03f), DecorPalette.Metal(FurnitureBuilder.Brass));
             // Subtle rust‑stained metal cap on the barrel's lip for a makeshift handle feel.
-            m.Cylinder(new Vector3(0f, h - 0.005f, 0f), r + wall + 0.01f, 0.01f, 16,
-                DecorPalette.Metal(new Color(0.5f, 0.25f, 0.1f)));
+                m.Cylinder(new Vector3(0f, h - 0.005f, 0f), r + wall + 0.01f, 0.01f, 16,
+                    DecorPalette.Metal(new Color(0.5f, 0.25f, 0.1f)));
+                // Wooden plug sealed opening.
+                m.Cylinder(new Vector3(0f, h - 0.007f, 0f), 0.045f, 0.012f, 12, DecorPalette.Matte(plastic * 0.7f));
+                // Rust‑stained bolt heads on either side.
+                m.Cylinder(new Vector3(0f, h - 0.006f, 0.045f), 0.008f, 0.004f, 8, DecorPalette.Metal(FurnitureBuilder.Brass));
+                m.Cylinder(new Vector3(0f, h - 0.006f, -0.045f), 0.008f, 0.004f, 8, DecorPalette.Metal(FurnitureBuilder.Brass));
             m.ResetFrame();
             m.ApplyTo(gameObject, position);
             Solid(new Vector3(0f, h * 0.5f, 0f), new Vector3(r * 2f, h, r * 2f));

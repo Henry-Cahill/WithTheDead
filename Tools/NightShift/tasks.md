@@ -2822,7 +2822,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   The new marks should cover: (1) severe cold‑induced numbness, (2) disorienting snow‑driven hallucinations, (3) persistent radio static that rattles nerves, and (4) an old farm legend that haunts the wind.
   Each description must be a single full sentence in quotes, e.g., `"Your fingers feel like frozen stone, each touch saps a breath of warmth."`.
   Leave the existing marks and their logic unchanged; only add the four new `M(...)` lines.
-- [ ] Add a small wooden plug with two rust‑stained metal bolts to the rain barrel in Assets/Scripts/World/WaterSource.cs, inside the `BuildBarrel` method, positioned just below the existing rust‑stained cap so the barrel looks like it has a makeshift sealed opening.
+- [x] Add a small wooden plug with two rust‑stained metal bolts to the rain barrel in Assets/Scripts/World/WaterSource.cs, inside the `BuildBarrel` method, positioned just below the existing rust‑stained cap so the barrel looks like it has a makeshift sealed opening.
   Insert after the line
   `m.Cylinder(new Vector3(0f, h - 0.005f, 0f), r + wall + 0.01f, 0.01f, 16, DecorPalette.Metal(new Color(0.5f, 0.25f, 0.1f)));`
   Add a wooden plug: `m.Cylinder(new Vector3(0f, h - 0.007f, 0f), 0.045f, 0.012f, 12, DecorPalette.Matte(plastic * 0.7f));` (≈4.5 cm radius, 1.2 cm height, centered on barrel top).
@@ -2830,6 +2830,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Cylinder(new Vector3(0f, h - 0.006f, 0.045f), 0.008f, 0.004f, 8, DecorPalette.Metal(FurnitureBuilder.Brass));`
   `m.Cylinder(new Vector3(0f, h - 0.006f, -0.045f), 0.008f, 0.004f, 8, DecorPalette.Metal(FurnitureBuilder.Brass));` (≈8 mm radius, 0.4 cm height, offset 4.5 cm forward/backward).
   These primitives use the existing `plastic` colour variable and the same metal material as the cap, keeping colliders and interaction points unchanged and staying within the ~12‑primitive limit.
+  - 11:16 landed by 0htsserver in 2.3 min: **Changed**
 - [ ] Fix missing visibility spike when firing a weapon in Assets/Scripts/Player/Stealth.cs (method `Update`)
 - [ ] Add a subtle “snow‑drift” strip along the bottom edge of the health panel in Assets/Scripts/UI/HealthPanelController.cs
   Inside `Build()`, immediately after the four `Rivet(prt, …)` calls, create a thin `Image` rectangle that represents a light layer of snow that has settled on the metal frame.
