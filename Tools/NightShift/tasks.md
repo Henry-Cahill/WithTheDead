@@ -3648,7 +3648,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Ensure `img.raycastTarget = false;` so it does not block input.
   This adds only one primitive (the wear strip) and re‑uses the existing `Dim` colour, giving each row a faint “worn” look that varies by index because the strip width is based on the accent’s current width.
   - 15:10 landed by 1htsserver in 2.1 min: **Changed file**
-- [ ] In Assets/Scripts/AI/Humans/HumanNpc.cs: Cache the frequently accessed `transform` reference in `HumanNpc` and `HumanNpcAvatar` to avoid the per‑frame property getter.
+- [!] In Assets/Scripts/AI/Humans/HumanNpc.cs: Cache the frequently accessed `transform` reference in `HumanNpc` and `HumanNpcAvatar` to avoid the per‑frame property getter.
+  - 15:42 failed (hts-llm, 33.1 min); see reports/2026-10-20.md
 - [x] Add a small “Inspect the dial” action to Assets/Scripts/World/Fixtures/RaidStoreSafe.cs, in the `RaidStoreSafe.GetActions` method, inserting it after the existing `new InteractAction("Try the handle", …)` line.
   Create the action with `new InteractAction("Inspect the dial", c => c.Notify("The dial is stiff and scratched; it looks like someone tried to force it."))` and add it to `into`.
   This gives the survivor a brief visual hint without changing any timers, noises, or existing behavior.
