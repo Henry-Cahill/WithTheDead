@@ -1850,3 +1850,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
 - [ ] In Assets/Scripts/Extraction/RaidSummaryUI.cs, enhance the report Panel built in `Build` by adding four tiny dark “rivet” squares at its corners to suggest a worn metal‑framed board.
+- [ ] Add a subtle brass hinge near the top‑outer edge of each louvred shutter panel in `Assets/Scripts/World/FurnitureBuilder.RaidOpenings.cs` → method `OpeningShutters` so the shutters look properly hung.
+  After the line `m.Box(l.P(c, cy, side * (face + 0.02f)), l.Size(sw, sh, 0.03f), panel);` insert
+  `m.Box(l.P(c, cy + sh * 0.5f - 0.02f, side * (face + 0.04f)), l.Size(0.018f, 0.04f, 0.008f), Mt(Brass));`.
+  The hinge is 0.018 m × 0.04 m × 0.008 m (≈1.8 cm × 4 cm × 0.8 cm).
+  It sits just below the panel’s top edge (`cy + sh/2 - 0.02`) and a little forward of the panel surface (`face + 0.04`).
+  Uses the existing brass material via `Mt(Brass)`.
+  Adds only two new primitives total (one per panel) and does not affect colliders or interaction points.
