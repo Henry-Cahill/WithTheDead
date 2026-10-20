@@ -3520,9 +3520,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   · Add a new method `private void Listen(InteractContext ctx)` that executes `MakeNoise(CloneZConfig.RaidVendingThumpNoise);` then `ctx.Notify("You press your ear to the vending machine; faint whirring can be heard, but it offers no help.");`.
   · No other code changes are required; the new action is available only while the machine is intact, matching its existing behavior.
   - 14:39 landed by 1htsserver in 3.3 min: Implemented the **“Listen to the machine”** action:
-- [ ] Add subtle bolt heads to the steel fence posts built in the `case 2:` block of `EdgeSegment` in Assets/Scripts/World/RaidMapBuilder.Edge.cs
+- [x] Add subtle bolt heads to the steel fence posts built in the `case 2:` block of `EdgeSegment` in Assets/Scripts/World/RaidMapBuilder.Edge.cs
   In the loop `for (float x = -len * 0.5f; x <= len * 0.5f + 0.01f; x += 2.5f) m.Cylinder(new Vector3(x, 0f, 0f), 0.04f, 2.2f, 6, steel);` append a small metal cylinder at the top of each post to represent a bolt head.
   Use a darker‑metal colour, e.g. `Surf bolt = DecorPalette.Metal(new Color(0.55f, 0.53f, 0.48f));` and create the bolt with `m.Cylinder(new Vector3(x, 2.2f, 0f), 0.015f, 0.06f, 6, bolt);`
   Apply the deterministic random source so only ~40 % of the posts get a bolt: `if (rng.NextDouble() < 0.4) { … }` placed inside the same `for` loop.
   This adds at most one extra primitive per post (max ≈ 8 total for a typical segment), stays within the 12‑primitive limit, reuses existing material definitions, and provides period‑appropriate visual detail without affecting colliders or interaction points.
+  - 14:43 landed by hts-llm in 3.3 min: All changes compile successfully.**Changed file**
 - [ ] In Assets/Scripts/UI/SkillsPanelController.cs, inside `SkillsPanelController.Build()` within the `for (int i = 0; i < n; i++)` loop, add a thin “separator” rectangle under each skill row to suggest a worn metal seam between entries.

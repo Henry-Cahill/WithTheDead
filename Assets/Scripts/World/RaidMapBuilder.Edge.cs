@@ -123,7 +123,7 @@ namespace CloneZ
                     h = 2.2f;
                     Surf steel = DecorPalette.Metal(new Color(0.48f, 0.50f, 0.52f));
                     for (float x = -len * 0.5f; x <= len * 0.5f + 0.01f; x += 2.5f)
-                        m.Cylinder(new Vector3(x, 0f, 0f), 0.04f, 2.2f, 6, steel);
+                        { m.Cylinder(new Vector3(x, 0f, 0f), 0.04f, 2.2f, 6, steel); if (rng.NextDouble() < 0.4) { Surf bolt = DecorPalette.Metal(new Color(0.55f, 0.53f, 0.48f)); m.Cylinder(new Vector3(x, 2.2f, 0f), 0.015f, 0.06f, 6, bolt); } }
                     m.Box(new Vector3(0f, 2.15f, 0f), new Vector3(len, 0.05f, 0.05f), steel);
                     for (int w = 0; w < 8; w++)
                         m.Box(new Vector3(0f, 0.2f + w * 0.26f, 0f), new Vector3(len, 0.015f, 0.015f), steel);
