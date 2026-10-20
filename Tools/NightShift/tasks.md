@@ -2538,3 +2538,18 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Quaternion handleRot = Quaternion.Euler(0f, (float)rng.NextDouble() * 10f - 5f, 0f);`
   `m.Box(handlePos, handleSize, handleRot, Mt(Chrome));`
   Result: a modest chrome lever protruding from the front of the tank, with slight random offset and rotation for visual variation, using the existing `Mt(Chrome)` material and keeping colliders/pivots unchanged.
+- [ ] In Assets/Scripts/Player/PlayerInventory.cs: Cache the singleton lookup of `PlayerModifiers.Current` in `PlayerInventory` to avoid a per‑frame `FindObjectByType`/allocation.
+  Add a private field `private PlayerModifiers _modifiers;` initialized in `Awake()` (e.g. `_modifiers = PlayerModifiers.Current;`).
+  Replace every use of `PlayerModifiers.Current` in this file (currently in `Update()`, `RebuildSections()` – both the `strengthMult` line and the capacity calculation – and any other occurrence) with `_modifiers`.
+  The player’s stats, capacity and move‑speed multiplier remain unchanged because the cached reference points to the same singleton; only the repeated lookup each frame is removed, reducing overhead and garbage.
+- [ ] Add an “Inspect the roll‑up door” quick action to Assets/Scripts/World/Fixtures/RollUpShutter.cs that lets the survivor learn whether the door is raised or lowered without changing any state.
+  · Declare a new field `private Action<InteractContext> _inspectAct;` alongside the existing `_raiseAct`, `_lowerAct`, `_bangAct`.
+  · In `Awake()` assign `_inspectAct = Inspect;` after the existing assignments.
+  · Implement a private method `private void Inspect(InteractContext ctx) => ctx.Notify(_open ? "The steel curtain is raised – the doorway is clear." : "The steel curtain is down – the doorway is blocked.");`.
+  · In `GetActions` add a new `InteractAction` after the bang action:
+  `into.Add(new InteractAction("Inspect the roll‑up door", _inspectAct).Timed(0f, "Inspecting the door", HumanoidActivity.Use));`
+  · This mirrors the existing quick‑noise action (uses `ctx.Notify` like `Lower` does) and uses only members already present in the file.
+  · Player will see a tooltip “Inspect the roll‑up door” (E/Q) and, when used, a short on‑screen message indicating the door’s current state.
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Zone/Detectors.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
