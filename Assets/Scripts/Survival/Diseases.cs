@@ -20,7 +20,13 @@ namespace CloneZ
         private PlayerWounds _wounds;
         private float _coldExposure, _sneezeAt, _vitaminsUntil, _tick;
 
+        /// <summary>
+        /// Returns true if the specified disease is currently active on the player.
+        /// </summary>
         public bool Has(string d) => _active.Contains(d);
+        /// <summary>
+        /// Gets an enumerable of all active disease identifiers on the player.
+        /// </summary>
         public IEnumerable<string> Active => _active;
 
         private void Awake()
@@ -56,12 +62,18 @@ namespace CloneZ
             c.Health.Diseases.AddRange(_active);
         }
 
+        /// <summary>
+        /// Registers that the player has contracted the given disease and shows a toast message.
+        /// </summary>
         public void Catch(string disease, string message)
         {
             if (!_active.Add(disease)) return;
             GameEvents.RaiseToast(message);
         }
 
+        /// <summary>
+        /// Attempts to cure the given disease, removing it from active list and showing a toast message.
+        /// </summary>
         public bool Cure(string disease, string message)
         {
             if (!_active.Remove(disease)) return false;
@@ -103,12 +115,18 @@ namespace CloneZ
             }
         }
 
+        /// <summary>
+        /// Adjusts the given StatMods based on active diseases (e.g., cholera increases thirst rate).
+        /// </summary>
         public void ApplyMods(StatMods mods)
         {
             if (Has(Cholera)) { mods.ThirstRate *= 2.5f; mods.StaminaRegen *= 0.7f; }
             if (Has(Cold)) { mods.StaminaRegen *= 0.85f; mods.NoiseMult *= 1.05f; mods.ColdResist -= 0.1f; }
         }
 
+        /// <summary>
+        /// Starts a vitamins timer that suppresses cold symptoms for two minutes of game time.
+        /// </summary>
         public void TakeVitamins() => _vitaminsUntil = Time.time + 1200f;
 
         internal static void RegisterItems()
