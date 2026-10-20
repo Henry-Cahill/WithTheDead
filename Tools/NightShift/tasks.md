@@ -3290,7 +3290,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// flag rectangle – size 0.08 m × 0.015 m, positioned at pole top, colour varies with rng`
   `Color flagCol = V(new Color(0.80f, 0.15f, 0.12f), rng, 0.07f);`
   - 13:23 landed by 1htsserver in 2.9 min: All code changes completed and compile successfully.
-- [ ] Add a subtle metal handle to the medical fridge in the Pharmacy (Assets/Scripts/World/RaidLayoutsCivic.cs)
+- [~] Add a subtle metal handle to the medical fridge in the Pharmacy (Assets/Scripts/World/RaidLayoutsCivic.cs)
   In the Pharmacy section, replace the current `b.WorkFridge` call with a temporary `RaidBuilding.Place` variable, then invoke `b.WorkFridge` using that variable and immediately add a small box primitive as a handle.
   `// store the fridge placement`
   `var fridgePos = b.E(pharm, 1.0f, 0.72f);`
@@ -3299,6 +3299,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `b.Furnish(pharm,`
   `new RaidBuilding.Place(fridgePos.x + 0.45f, fridgePos.z, 0f),`
   `Sz(0.04f, 0.10f, 0.02f),`
+  - 13:45 1htsserver made no changes: 
 - [x] Reduce per‑frame wound‑bleeding checks in Assets/Scripts/Medical/PlayerLimbs.cs by caching them in HudLimbs
   · Add a private field `private readonly bool[] _bleeding = new bool[BodyZones.Count];` to the `HudLimbs` class.
   · Create a method `private void RefreshBleedingCache()` that loops `for (int i = 0; i < _bleeding.Length; i++) { var z = (BodyZone)i; _bleeding[i] = _wounds != null && _wounds.IsBleedingOn(z); }`.
