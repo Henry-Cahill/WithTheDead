@@ -82,6 +82,7 @@ namespace CloneZ
             bool mains = WaterMains.MainsOn;
             into.Add(new InteractAction(_open ? "Turn off the outside tap" : "Turn on the outside tap", c => Turn(c, !_open)));
             into.Add(new InteractAction("Check tap", c => { if (_open) { c.Notify(WaterMains.MainsOn ? "The tap is open and water is running." : "The tap is open but the mains are shut off."); } else { c.Notify("The tap is closed."); } }));
+            into.Add(new InteractAction("Check water flow", c => { if (_open && WaterMains.MainsOn) c.Notify("Water is rushing out at normal pressure."); else if (_open) c.Notify("The tap is open but the mains are shut off – no flow."); else c.Notify("The tap is closed, so no water is flowing."); }));
 
             int plots = PlotsInReach(out _);
             var water = new InteractAction("Water the garden", WaterGarden)
