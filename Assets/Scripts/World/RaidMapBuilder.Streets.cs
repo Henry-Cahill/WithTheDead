@@ -157,6 +157,12 @@ namespace CloneZ
             if (b - a < 0.2f) return;
             // Kerb, then 2.25 m of sidewalk with a dusting of snow.
             Slab(town, alongX, coord, a, b, side > 0 ? hw : -hw - 0.25f, side > 0 ? hw + 0.25f : -hw, 0.05f, DecorPalette.Matte(Kerb));
+            // Add subtle metal edging strip along the kerb (30 % chance)
+            if (rng.NextDouble() < 0.3)
+            {
+                float across = coord + (side > 0 ? hw + 0.125f : -hw - 0.125f);
+                Strip(town, alongX, across, a, b, 0.02f, 0.06f, DecorPalette.Matte(new Color(0.20f, 0.20f, 0.20f)));
+            }
             float s0 = side > 0 ? hw + 0.25f : -hw - 2.5f, s1 = side > 0 ? hw + 2.5f : -hw - 0.25f;
             Slab(town, alongX, coord, a, b, s0, s1, 0.025f, concrete);
             // Occasionally add a small translucent ice patch on the sidewalk (20% chance)
