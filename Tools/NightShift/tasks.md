@@ -2215,7 +2215,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   These panels are ≈ 2 cm thick, 1.2 m tall and 6 m long, positioned just inside the fuselage ellipsoid (`m.Ellipsoid(new Vector3(0f, 1.7f, 0f), new Vector3(2.5f, 2.3f, 7.6f), …)`).
   Use the existing `hull` colour multiplied by 0.6 to give a darker, weathered metal look; keep colliders and interaction points unchanged.
   - 08:39 landed by hts-llm in 1.9 min: **Changed file**
-- [ ] Fix the “water restarts automatically after the mains are restored while the player is still in the shower” bug in Assets/Scripts/World/Fixtures/ShowerFixture.cs
+- [x] Fix the “water restarts automatically after the mains are restored while the player is still in the shower” bug in Assets/Scripts/World/Fixtures/ShowerFixture.cs
   In `WhileShowering` the code only notifies the player and stops the job when the mains go off, but it leaves `_on` true. The next time `WaterMains.MainsOn` becomes true the shower will start spraying again even though the player never turned it back on, breaking immersion.
   Change the branch that handles `!WaterMains.MainsOn` to also turn the shower off via `SetOn(false, false)` (which also resets the lever and clears the spray).
   `private void WhileShowering(InteractContext ctx, float dt, float progress)`
@@ -2224,3 +2224,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `{`
   `ctx.Notify("The spray splutters and dies. The water's been shut off.");`
   `// Turn the shower off so it won't magically restart when the mains come back on`
+  - 08:40 landed by hts-llm in 1.1 min: **Changed file:** `Assets/Scripts/World/Fixtures/ShowerFixture.cs`
