@@ -1076,9 +1076,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   No new fields, assets, or UI screens are required; it reuses the existing `_open` field and `WaterMains.MainsOn` property.
   The player will now see a brief message when selecting “Check tap” in the interaction menu, giving immediate feedback without altering any other behaviour.
   - 02:33 landed by 0htsserver in 1.6 min: **Summary**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Player/Stealth.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Player/Stealth.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 02:39 landed by 1htsserver in 7.3 min: **Changed files**
 - [x] Add small door‐handle trims to each side of the car in `Vehicle.Build(System.Random rng)` (Assets/Scripts/World/Vehicles.cs)
   After the first body `Box` call (`Box(_bodyRoot, new Vector3(0f, 0.62f, 0f), new Vector3(1.8f, 0.55f, 4.2f), paint);`) insert two additional `Box` primitives representing door handles.
   Use the same deterministic `rng` to give each handle a tiny random rotation ± 5° around the Y‑axis and a slight position jitter ± 0.02 m on X/Z so cars look individually varied.
