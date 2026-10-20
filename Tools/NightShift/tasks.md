@@ -2745,3 +2745,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Create it with `PlayerGearParts.Box(root, "Carabiner", new Vector3(0f, top - d * 0.5f + 0.018f, cz + d * 0.5f + 0.006f), new Vector3(0.008f, 0.018f, 0.008f), hardware);`
   Size ≈ 0.008 m × 0.018 m × 0.008 m (thin rectangular loop); placed 0.018 m above the top‑tube surface and 0.006 m outward from the tube’s outer face, using the existing `hardware` material.
   No new colliders or interaction points are added; the primitive follows the same parent as the tube, so it moves with the backpack.
+- [ ] Fix null‑reference when capturing loot‑container contents in Assets/Scripts/Core/SaveSystem.cs → `CaptureContainer`
+  *Current code* creates a `ContainerSave` and then does `save.Items.Add(...)` without ever creating the list, so any container that holds items throws a `NullReferenceException` during save.
+  *Change* the initializer to create the list:
+  `var save = new ContainerSave`
+  `{`
+  `Kind = c.IsSack ? LootContainer.KindSack : (int)c.Type,`
+  `Position = c.transform.position,`
+  `Yaw = c.transform.eulerAngles.y,`
+  `Searched = c.Searched,`
