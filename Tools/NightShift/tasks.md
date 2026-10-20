@@ -763,3 +763,15 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 00:49 landed by hts-llm in 3.6 min: **Changed file**
 - [ ] Fix HasUsableContent in Assets/Scripts/Items/ContentDatabase.cs so it verifies *all* required tables exist, not just `content_meta` and `item`.
 - [ ] Add a subtle four‑edge metal border to the main report panel in Assets/Scripts/Extraction/RaidSummaryUI.cs (method `Build`) so the UI feels like a worn wooden/metal board appropriate to a 1993 rural setting.
+- [ ] In Assets/Scripts/World/Fixtures/OutdoorLantern.cs: Add a second interaction “Check power” to OutdoorLantern.GetActions by copying the existing Tap entry and inserting a new `InteractAction` that calls a private `CheckPower` method.
+  · In `GetActions` after `into.Add(new InteractAction("Tap the lantern", Tap));` add
+  `into.Add(new InteractAction("Check power", CheckPower));`
+  · Implement a new private method:
+  `private void CheckPower(InteractContext ctx) {`
+  ` ctx.Notify(PowerGrid.HousePowered ? "The house is powered." : "No power: " + (PowerGrid.NoPowerReason ?? "unknown reason") + ".");`
+  `}`
+  · The new action re‑uses only members already present (`PowerGrid.HousePowered`, `PowerGrid.NoPowerReason`, `InteractContext.Notify`).
+  · When the player selects “Check power” the game will display a short message telling whether the house has electricity and, if not, the stored `NoPowerReason`.
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/WeatherSystem.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
