@@ -4009,7 +4009,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   In `Enterable` change `over.Tri(..., DecorMaterials.Snow);` to `over.Tri(..., RoofSurf(b, rng));`
   In `Scenery` change `m.Tri(..., DecorMaterials.Snow);` to `m.Tri(..., RoofSurf(f.Data, rng));`
   - 18:13 landed by hts-llm in 4.5 min: **Summary of changes**
-- [ ] Fix the duplicate side‑mirror creation in Assets/Scripts/World/Vehicles.cs (Build method)
+- [x] Fix the duplicate side‑mirror creation in Assets/Scripts/World/Vehicles.cs (Build method)
   The code creates the left‑ and right‑hand mirror housings inside the `for (int i = 0; i < 2; i++)` loop that also builds the two headlights. This makes the mirrors be instantiated twice (four mirrors total) and ties their placement to the light‑creation loop, needlessly allocating extra GameObjects each frame the car is built.
   Move the two `Box(_bodyRoot, …)` calls that build the mirror housings out of the headlights loop so they run only once after the loop finishes.
   Change:
@@ -4018,6 +4018,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `{`
   `var l = new GameObject("Headlight").AddComponent<Light>();`
   `… // headlight setup`
+  - 18:16 landed by 0htsserver in 3.8 min: **Changes made**
 - [ ] Add subtle paint‑chip details to the exterior window casings in `Assets/Scripts/World/StarterHome.Shell.cs` inside the `DrawWindow` method
   After each exterior casing box (`m.Box(f.P(o0 - 0.035f, cy, off)…` and `m.Box(f.P(o1 + 0.035f, cy, off)…`) insert a small rectangular chip; size ≈ `0.04f × 0.02f × 0.005f` metres.
   Position the chip on the same face as the casing, centered horizontally on the panel (`o0`/`o1`), with a vertical offset `chipY = WindowSill + 0.1f + (float)(rng.NextDouble() * 0.2f)` and a slight random depth offset `chipZ = off + (float)(rng.NextDouble() * 0.01f - 0.005f)`.
