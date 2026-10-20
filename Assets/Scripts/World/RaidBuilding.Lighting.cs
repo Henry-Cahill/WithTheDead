@@ -613,6 +613,10 @@ namespace CloneZ
             "Hills at sundown in a frame from the dime store. It has hung there so long the wallpaper round it has faded.",
             "Blue ridges under an orange sky. A school photo is tucked into the corner of the frame \u2014 a gap-toothed kid, grinning.",
             "A mountain sunset, the kind sold with the frame already on. Whoever chose it must have liked looking at it over supper.",
+            "A faded family portrait in a cracked frame, the caption reads ‘The Johnsons, 1972 – happy holidays’.",
+            "A clipped newspaper article titled ‘1993 snowstorm leaves town buried’, the ink smudged and corners curled.",
+            "A winter‑time countryside photograph: snow‑covered fields stretching to a lone barn under a pale sky.",
+            "A retro advertisement for “Harper’s Tractor Co.” – a shiny green tractor with the slogan ‘Built to plow, built to last’.",
         };
 
         private static readonly string[] OfficePrints =
