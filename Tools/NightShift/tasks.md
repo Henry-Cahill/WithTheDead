@@ -4041,7 +4041,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `float hue = ((id * 0x9E3779B9) & 0xFFFF) / 65535f * 0.1f;`
   `float sat = 0.6f + ((id >> 16) & 0xFF) / 255f * 0.2f;`
   `float val = 0.7f + ((id >> 24) & 0xFF) / 255f * 0.2f;`
-- [ ] Add a tiny brass flange on the tap‑coupling in Assets/Scripts/World/FurnitureBuilder.RaidHome.cs, method `HoseTap(RaidMesh m, out Vector3 nozzle, out Vector3 nozzleDir)`: after the line
+- [x] Add a tiny brass flange on the tap‑coupling in Assets/Scripts/World/FurnitureBuilder.RaidHome.cs, method `HoseTap(RaidMesh m, out Vector3 nozzle, out Vector3 nozzleDir)`: after the line
   `m.Cylinder(coupling, 0.017f, 0.03f, 8, brass);` insert
   `m.Cylinder(coupling + Vector3.up * 0.018f, 0.018f, 0.004f, 12, brass);`
   – makes a 0.018 m radius, 0.004 m thick brass disc sitting 0.018 m above the coupling centre, giving the outdoor tap a subtle decorative flange without affecting colliders or interaction points. This small visual detail fits the 1993 rural aesthetic and stays within the existing deterministic‑random material palette.
+  - 18:20 landed by 0htsserver in 2 min: **Change Summary**
