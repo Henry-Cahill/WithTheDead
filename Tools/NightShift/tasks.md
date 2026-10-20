@@ -443,7 +443,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 23:33 landed by hts-llm in 14.9 min: Added concise one‑sentence `/// <summary>` documentation to every public method/property in **Assets/Scripts/Economy/Money.cs** that previou
 - [x] Add chrome hinge pins to the side frames of the medicine cabinet in Assets/Scripts/World/FurnitureBuilder.Utility.cs (`FurnitureBuilder.MedCabinet`).
   - 23:32 landed by 1htsserver in 11.7 min: **Summary**
-- [ ] Fix the bribe‑action logic in `CordonGate.GetActions` (Assets/Scripts/World/Zone/ZoneCordon.cs) – the current check treats a successful money deduction as a failure, preventing players who have enough cash from bribing the Warden.
+- [x] Fix the bribe‑action logic in `CordonGate.GetActions` (Assets/Scripts/World/Zone/ZoneCordon.cs) – the current check treats a successful money deduction as a failure, preventing players who have enough cash from bribing the Warden.
+  - 23:35 landed by 0htsserver in 8.9 min: **Changed**: `Assets/Scripts/World/Zone/ZoneCordon.cs` – Updated bribe logic in `CordonGate.GetActions`. Replaced the direct `Money.Take` ca
 - [ ] In Assets/Scripts/Rendering/VisionController.cs: Cache the URP asset used in UpdateSurvivorRenderers() to avoid a per‑frame static property lookup.
   Add a private field `private UniversalRenderPipelineAsset _urpAsset;` to VisionController.
   In Bind() after other initialisation set `_urpAsset = UniversalRenderPipeline.asset;`.
