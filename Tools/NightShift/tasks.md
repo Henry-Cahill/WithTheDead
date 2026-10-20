@@ -552,3 +552,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   – size ≈ 6 cm × 2 cm × 2 cm, positioned just above the front‑center of the chassis (`0f, 0.28f, 0.28f` relative to the drone’s origin, i.e. a bit forward of the main body `Part(new Vector3(0f, 0.12f, 0f), new Vector3(0.36f, 0.12f, 0.5f), dark);`).
   – Uses a muted brown colour from the existing palette, rendered with `CloneZUtil.Mat` via the `Part` helper, keeping colliders and interaction points unchanged.
   – No more than one extra primitive is added, staying within the ≤12‑primitive limit.
+- [ ] Cache per‑frame lookups in Assets/Scripts/Player/PlayerPanic.cs
+  – Add a private field `private TimeOfDay _timeOfDay;` and assign it in Awake with `_timeOfDay = TimeOfDay.Instance;`.
+  – Add a private readonly int `_ignoreRaycastMask = 1 << CloneZConfig.IgnoreRaycastLayer;` and a private readonly int `_defaultRaycastMask = 1 << 0;` (initialize these in Awake or as inline field initializers).
+  – Replace the two occurrences of `1 << CloneZConfig.IgnoreRaycastLayer` in `AssessThreat` with `_ignoreRaycastMask`.
+  – Replace the occurrence of `1 << 0` in the `Physics.Raycast` call with `_defaultRaycastMask`.
+  – Replace `TimeOfDay.Instance` in `Update` with the cached `_timeOfDay` (use a null‑check on `_timeOfDay`).
+  – The player’s visual behaviour stays identical; only the per‑frame cost of repeatedly constructing the layer‑mask ints and fetching the singleton is removed.
