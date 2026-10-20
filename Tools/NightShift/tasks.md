@@ -2023,3 +2023,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   In `Transfuse` the code unconditionally calls `inv.Consume("ivkit", 1);` and `inv.Inventory.Remove(s, 1);` before checking whether `b.Blood.Transfuse(type, out string message)` actually succeeded, causing players to lose resources even when the transfusion fails (e.g., wrong blood type).
   Change the method to store the return value of `Transfuse`, and if it is `false` skip the consumption/removal and exit early after showing the message. Only on a `true` result should the iv‑kit be consumed, the empty bag removed, the sound played, XP added and the success toast shown.
   After the fix the player will keep the iv‑kit and blood‑bag when transfusion fails, matching the intended gameplay. All other fields, messages and skill XP gains remain unchanged.
+- [ ] Add a small paper label to the front‑right copier panel in Assets/Scripts/World/FurnitureBuilder.RaidStore.cs, method OfficeCopierBody
+  Create a thin rectangular box that sits on the copier’s control panel (near `OfficeCopierPanel`) to look like a faded “COPY” sticker.
+  Generate a slightly varied paper colour with the existing random source and give the label a tiny random yaw for realism.
+  Insert the new primitive after the green ready‑lamp box (the line `m.Box(new Vector3(0.22f, 1.03f, 0.321f), … Gl(new Color(0.2f, 0.62f, 0.32f)));`
