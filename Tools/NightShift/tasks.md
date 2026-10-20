@@ -2850,3 +2850,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   – In the `if (inside)` block of `GetActions` (after the existing `Check window` action) add: `into.Add(new InteractAction("Knock on the window", _knockAct));` so the action appears whenever the survivor is inside the house.
   – No other code changes are needed; the new action reuses existing noise and notification helpers, requires no UI screens, and fits naturally alongside the other window actions.
   - 11:19 landed by 0htsserver in 1.4 min: **Changed file**
+- [ ] Add a short power‑cord detail to the TV in Assets/Scripts/World/HomeFurniture.cs → `DrawPlain` method, `case HomeFurnitureKind.Tv:` so the TV looks like a 1993 set with a visible cord hanging from its back.
