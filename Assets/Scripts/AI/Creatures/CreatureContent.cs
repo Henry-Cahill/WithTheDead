@@ -7,6 +7,7 @@ namespace CloneZ
     {
         public int Order => 30;
 
+        /// <summary>Registers creature-derived items and parts into the content builder, exposing carcass loot to the game.</summary>
         public void Register(ContentBuilder b)
         {
             Part(b, "hound_fang", "Hound Fang", 0.05f, 10, "A yellowed fang as long as a finger. The Institute buys them by the dozen.");
@@ -45,8 +46,11 @@ namespace CloneZ
     {
         private float _until;
 
+
+        /// <summary>Activates the psi shield for a given duration, extending protection against psi attacks.</summary>
         public void Take(float seconds) => _until = Mathf.Max(_until, Time.time + seconds);
 
+        /// <summary>Applies psi shield modifiers to the survivor's stats while active.</summary>
         public void ApplyMods(StatMods mods)
         {
             if (Time.time > _until) return;
