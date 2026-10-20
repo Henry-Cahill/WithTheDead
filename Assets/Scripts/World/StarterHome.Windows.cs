@@ -112,6 +112,9 @@ namespace CloneZ
             Surf brass = DecorPalette.Metal(FurnitureBuilder.Brass);
             for (int e = -1; e <= 1; e += 2)
                 m.Box(f.P(f.Mid + e * 0.3f, y0 + 0.03f, across + roomSide * (SashDepth * 0.5f + 0.008f)), f.Size(0.05f, 0.015f, 0.016f), brass);
+            // Add brass pull‑knobs at inner ends of the bottom rail
+            for (int e = -1; e <= 1; e += 2)
+                m.Box(f.P(f.Mid + e * 0.3f, y0 + 0.03f, across + roomSide * (SashDepth * 0.5f + 0.008f)), f.Size(0.02f, 0.005f, 0.016f), brass);
         }
 
         // A brass rod with finials above the casing (fixed, drawn into the wall), and the curtains in their two states:
