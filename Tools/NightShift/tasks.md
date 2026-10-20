@@ -3958,3 +3958,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   `if ((w.boneIndex0 == head && w.weight0 > 0f) || (w.boneIndex1 == head && w.weight1 > 0f)) _v[i] = pivot + (_v[i] - pivot) * HeadScale;`
   After this change the whole head (including blended vertices) enlarges uniformly, eliminating the neck‑pinch visual bug while keeping the existing scaling factor and pivot logic unchanged.
   - 17:44 landed by hts-llm in 3.8 min: **Changed file**
+- [ ] Add a silent door‑operation action to Assets/Scripts/World/Fixtures/BreakerPanel.cs in the `BreakerPanel.GetActions` method.
+  Copy the existing door‑toggle action (`new InteractAction(_open ? "Close the breaker panel" : "Open the breaker panel", …)`) and change its label to “Close the breaker panel (quietly)” when `_open` is true and to “Open the breaker panel (quietly)” when `_open` is false.
+  Make its callback `c => SetOpen(!_open, true)` so the door changes state instantly, bypassing the noise triggered by `SetOpen` when `instant` is false.
+  Leave the original door‑toggle action unchanged; the new action appears alongside it, giving the survivor a way to operate the panel without hearing the door slam.
+  Do not modify any other file, method, field, or constant; keep all existing logic, save‑key handling, and the “Inspect breaker panel” action intact.
+- [ ] Append five new transmission lines to the `Lines` array of the “Company net” (`Channel 1`) in Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs so the radio conveys period‑appropriate guard dialogue about winter hardships, supply shortages, and morale while preserving the existing terse radio‑call style (e.g. `"Juniper Base, this is Lantern at the tent site. Radio check, over."`).
+- [ ] In Assets/Scripts/World/Map/KentuckyMap.Ground.cs, edit the `BuildStreets` method: change the condition that draws the centre‑line dashes so that more road types get a line, making the map look like the hand‑built raid town.
