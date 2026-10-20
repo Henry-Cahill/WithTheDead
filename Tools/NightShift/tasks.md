@@ -3184,7 +3184,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `"Reminder: check the cellar for frozen canned goods before the power goes out again; share any surplus with neighbours."`
   These entries match the style of the quoted example and remain within the same sub‑array; no other code changes are required.
   - 12:48 landed by 0htsserver in 2.3 min: **Changes made**
-- [ ] Add subtle “cracked‑glass” detail to the full‑screen game‑over panel in Assets/Scripts/UI/HUDController.cs → method BuildGameOver
+- [x] Add subtle “cracked‑glass” detail to the full‑screen game‑over panel in Assets/Scripts/UI/HUDController.cs → method BuildGameOver
   After the line ` _gameOverText = HudUI.Label(rt, "GameOverText", 56, TextAnchor.MiddleCenter, new Color(0.85f, 0.1f, 0.1f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1200f, 400f));` add four thin UI Image rectangles that act as random‑looking cracks.
   – Create each crack with `HudUI.Rect(_gameOverPanel.transform as RectTransform, "CrackX", new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(px, py), new Vector2(length, 3f));` where `length` is ≈ 400 – 500 pixels, `px/py` are fixed offsets (e.g. (‑120, ‑30), (80, ‑60), (‑50, 120), (130, 80)).
   – Add an `Image` component to each returned `RectTransform` and set `color = new Color(1f,1f,1f,0.35f);` (a faint white).
@@ -3192,6 +3192,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   All four images become children of `_gameOverPanel`, so they inherit the panel’s active state and do not affect any colliders or interaction logic.
   No new assets are required; only existing UI primitives are used and the total added primitives (4 Images) stays well under the 12‑primitive limit.
   Result: when the player dies, the Game‑Over screen shows a faint, period‑appropriate cracked‑glass overlay, adding visual depth without breaking the 1993 winter setting.
+  - 12:50 landed by hts-llm in 3 min: **Changes made**
 - [ ] Fix the hand‑reach calculation in Assets/Scripts/Characters/HumanoidAnimator.Hands.cs case HumanoidActivity.Use: the code applies At(…) to a value that has already been converted to a chest‑relative offset by ReachOffset, causing the hand to be placed far beyond the target when interacting with a world object.
   In the Use branch, replace the line
   `right = Goal(At(reach), HandRot(fingers, Dir(new Vector3(-0.45f, -1f, 0.15f)), true), w);`

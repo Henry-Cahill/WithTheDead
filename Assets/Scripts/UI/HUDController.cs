@@ -612,6 +612,29 @@ namespace CloneZ
             bg.color = new Color(0.05f, 0f, 0f, 0.72f);
             _gameOverText = HudUI.Label(rt, "GameOverText", 56, TextAnchor.MiddleCenter, new Color(0.85f, 0.1f, 0.1f),
                 new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1200f, 400f));
+
+            // Add subtle cracked‑glass overlay: four thin white rectangles with low opacity and slight rotation.
+            const float crackLength = 450f;
+            // Crack 1
+            var crack1 = HudUI.Rect(_gameOverPanel.transform as RectTransform, "Crack1", new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(-120f, -30f), new Vector2(crackLength, 3f));
+            var img1 = crack1.gameObject.AddComponent<Image>();
+            img1.color = new Color(1f, 1f, 1f, 0.35f);
+            crack1.localEulerAngles = new Vector3(0f, 0f, -12f);
+            // Crack 2
+            var crack2 = HudUI.Rect(_gameOverPanel.transform as RectTransform, "Crack2", new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(80f, -60f), new Vector2(crackLength, 3f));
+            var img2 = crack2.gameObject.AddComponent<Image>();
+            img2.color = new Color(1f, 1f, 1f, 0.35f);
+            crack2.localEulerAngles = new Vector3(0f, 0f, 8f);
+            // Crack 3
+            var crack3 = HudUI.Rect(_gameOverPanel.transform as RectTransform, "Crack3", new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(-50f, 120f), new Vector2(crackLength, 3f));
+            var img3 = crack3.gameObject.AddComponent<Image>();
+            img3.color = new Color(1f, 1f, 1f, 0.35f);
+            crack3.localEulerAngles = new Vector3(0f, 0f, -5f);
+            // Crack 4
+            var crack4 = HudUI.Rect(_gameOverPanel.transform as RectTransform, "Crack4", new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(130f, 80f), new Vector2(crackLength, 3f));
+            var img4 = crack4.gameObject.AddComponent<Image>();
+            img4.color = new Color(1f, 1f, 1f, 0.35f);
+            crack4.localEulerAngles = new Vector3(0f, 0f, 15f);
             _gameOverPanel.SetActive(false);
         }
 
