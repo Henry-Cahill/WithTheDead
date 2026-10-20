@@ -1611,3 +1611,23 @@ you want to see in game. Indent extra lines under a task to add detail.
   `else ctx.Notify(Hot ? "Hot water is flowing." : "Cold water is flowing.");`
   `}));`
   The new action appears alongside “Take a shower”, “Turn on/off the shower”, and “Open/Close the shower door”, and simply shows a notification – no UI changes or new assets required.
+- [ ] Add five new house‑number‑plate lines to the `NumberLines` array in Assets/Scripts/World/Fixtures/RaidHomeLiving.cs.
+  Quote the existing entry `"Number {0}, says the enamel plate by the door. Somebody's home, once."` as the style reference.
+  The new entries should cover:
+  frost‑bitten metal signs showing winter wear,
+  personal touches left by former residents,
+  signs of recent abandonment or decay,
+  a hint of local superstition or folklore,
+  an unexpected but period‑appropriate detail (e.g., a rusted lantern).
+  Insert the following strings into the array (preserving the existing order):
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/SleepSpot.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] In Assets/Scripts/Gadgets/Gadgets.cs, inside `Drone.Build()` → the `if (Kind == DroneKind.Fpv)` block, add a tiny top‑antenna primitive so the FPV drone looks a bit more industrial.
+  After the existing central‑body call
+  `Part(new Vector3(0f, 0f, 0f), new Vector3(0.22f, 0.06f, 0.22f), dark);`
+  add
+  `Part(new Vector3(0f, 0.07f, 0f), new Vector3(0.02f, 0.04f, 0.02f), new Color(0.30f, 0.30f, 0.30f)); // small antenna`
+  Size 0.02 m × 0.04 m × 0.02 m, positioned 0.07 m above the centre of the body.
+  Uses an existing colour (a muted metallic grey) and the `Part` helper, so no new colliders or interaction points are introduced.
+  Keeps the total primitive count well under the ~12‑primitive limit.
