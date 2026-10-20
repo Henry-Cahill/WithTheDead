@@ -69,7 +69,7 @@ namespace CloneZ
                 {
                     Ribbon(site.Town.Out, piece, width, StreetY, surf);
                     site.TakeLine(piece, width * 0.5f + 0.3f);
-                    if (road && width >= 7f && Rank(s.Data.kind) >= 3) DashedLine(site.Town.Out, piece, StreetY + 0.003f);
+                    if (road && width >= 7f) DashedLine(site.Town.Out, piece, StreetY + 0.003f);
                 }
                 // The road out of town carries on past the edge, as scenery.
                 if (road)
