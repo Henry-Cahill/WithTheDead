@@ -1595,7 +1595,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   The existing `ZoneKit.NoBake(go);` call already excludes the bracket from nav‑mesh baking.
   Result: each beam now has a subtle, worn metal housing that fits the 1993 Kentucky setting without affecting gameplay.
   - 05:07 landed by hts-llm in 2.7 min: **Changed**
-- [ ] In Assets/Scripts/Player/PlayerSleep.cs, cache the nearest bed lookup instead of calling `SleepSpot.Nearest` every frame.
+- [x] In Assets/Scripts/Player/PlayerSleep.cs, cache the nearest bed lookup instead of calling `SleepSpot.Nearest` every frame.
   Add a private field `private SleepSpot _cachedBed;` and a private `Vector3 _lastPos;`.
   Add a constant (e.g. `private const float BedCacheThresholdSqr = 1f * 1f;`) that defines how far the player must move before the cache is refreshed.
   In `Awake()` (or `OnEnable`) initialise `_lastPos = transform.position;`.
@@ -1604,6 +1604,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `NearBed = bed != null;`
   with logic that:
   Checks `if ((transform.position - _lastPos).sqrMagnitude > BedCacheThresholdSqr)` → recompute `_cachedBed = SleepSpot.Nearest(transform.position, CloneZConfig.SleepRange, out _); _lastPos = transform.position;`.
+  - 05:11 landed by hts-llm in 4.3 min: **Changed file**: `Assets/Scripts/Player/PlayerSleep.cs`
 - [ ] In Assets/Scripts/World/Fixtures/ShowerFixture.cs: Add a small “Inspect shower” action to ShowerFixture.GetActions that tells the player the current water state.
   In Assets/Scripts/World/Fixtures/ShowerFixture.cs modify GetActions to append:
   `into.Add(new InteractAction("Inspect shower", ctx => {`

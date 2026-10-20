@@ -28,6 +28,10 @@ namespace CloneZ
         private bool _wakeRequested;
         private float _sleepElapsed;
         private readonly Collider[] _dangerBuf = new Collider[24];
+        // Cached nearest bed lookup to avoid per‑frame searches
+        private SleepSpot _cachedBed;
+        private Vector3 _lastPos;
+        private const float BedCacheThresholdSqr = 1f * 1f;
 
         private PlayerWounds Wounds => _wounds != null ? _wounds : (_wounds = GetComponent<PlayerWounds>());
         private PlayerPanic Panic => _panic != null ? _panic : (_panic = GetComponent<PlayerPanic>());
@@ -37,7 +41,12 @@ namespace CloneZ
         private const string PanickedReason = "Too panicked to sleep";
         private const string DangerReason = "Too dangerous to sleep \u2014 zombies near";
 
-        private void Awake() => _stats = GetComponent<PlayerStats>();
+        private void Awake()
+        {
+            _stats = GetComponent<PlayerStats>();
+            _lastPos = transform.position;
+        }
+
 
         private void OnEnable()
         {
@@ -65,8 +74,13 @@ namespace CloneZ
 
             if (IsSleeping) { TickSleep(); return; }
 
-            SleepSpot bed = SleepSpot.Nearest(transform.position, CloneZConfig.SleepRange, out _);
-            NearBed = bed != null;
+            // Refresh cached bed only if player moved beyond threshold
+            if ((transform.position - _lastPos).sqrMagnitude > BedCacheThresholdSqr)
+            {
+                _cachedBed = SleepSpot.Nearest(transform.position, CloneZConfig.SleepRange, out _);
+                _lastPos = transform.position;
+            }
+            NearBed = _cachedBed != null;
 
             if (NearBed && !UIState.GameplayBlocked)
             {
