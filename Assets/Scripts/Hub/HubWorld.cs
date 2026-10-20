@@ -35,6 +35,12 @@ namespace CloneZ
             {
                 (string label, string s, string a) = Extra[i];
                 into.Add(new InteractAction(label, c => Open(s, a)));
+                // Special inspection for the zone door
+                if (Title == "Door to the Zone")
+                {
+                    into.Add(new InteractAction("Inspect door", c => GameEvents.RaiseToast(
+                        "The door is locked tight, but you can hear the cold wind outside.")));
+                }
             }
         }
 
