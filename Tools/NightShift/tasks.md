@@ -1859,11 +1859,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Uses the existing brass material via `Mt(Brass)`.
   Adds only two new primitives total (one per panel) and does not affect colliders or interaction points.
   - 07:01 landed by hts-llm in 1.7 min: **Changed file**: `Assets/Scripts/World/FurnitureBuilder.RaidOpenings.cs`
-- [ ] Cache the per‑frame `Camera.main` lookup in `NetPlayers.Tick` (Assets/Scripts/Net/NetPlayers.cs)
+- [x] Cache the per‑frame `Camera.main` lookup in `NetPlayers.Tick` (Assets/Scripts/Net/NetPlayers.cs)
   Add a private static field `static Camera s_MainCamera;` inside the `NetPlayers` class.
   At the start of `Tick()` obtain the camera with `if (s_MainCamera == null || !s_MainCamera) s_MainCamera = Camera.main;` and then use `s_MainCamera` instead of `Camera.main`.
   Replace the line `Camera cam = Camera.main;` with `Camera cam = s_MainCamera;`.
   This removes the costly `FindObjectByType` call each frame; the visual result (player pitch when mouse‑looking) remains unchanged because the same camera is used, and the cache will refresh automatically if the scene creates a new main camera.
+  - 07:09 landed by hts-llm in 8.1 min: **Changes Made**
 - [ ] In Assets/Scripts/World/Fixtures/RaidStoreSafe.cs: Add a “Force the dial” timed action to RaidStoreSafe.GetActions that takes twice as long as the normal dial work but still opens the safe when finished.
   In `RaidStoreSafe.GetActions` create a new `InteractAction` named `"Force the dial"` using `CloneZConfig.RaidSafeDialSeconds * 2` for the duration and the same activity `HumanoidActivity.Use`.
   Assign `Begin` and `Tick` delegates identical to the existing “Work the dial” action (setting `_noiseAt` and calling `MakeNoise(CloneZConfig.RaidSafeDialNoise)`), then set `Run = Crack;`.

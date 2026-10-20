@@ -12,7 +12,9 @@ namespace CloneZ
     /// the body. A runner who dies leaves a body with everything they carried for anyone to loot.
     /// </summary>
     public static class NetPlayers
-    {
+        {
+            private static Camera s_MainCamera;
+            
         public const double InterpolationDelay = 0.1;
         private static readonly Dictionary<ulong, RemotePlayer> s_Proxies = new Dictionary<ulong, RemotePlayer>();
         private static float s_SendAt;
@@ -74,7 +76,8 @@ namespace CloneZ
             if (hunter != null && hunter.Attacking) flags |= 2;   // a hunter never aims: the bit means "striking"
             string held = hunter != null && hunter.Def != null ? "form:" + hunter.Def.Id : inv != null && inv.EquippedWeapon != null ? inv.EquippedWeapon.Id : "";
             if (held != s_LastHeld) s_LastHeld = held;
-            Camera cam = Camera.main;
+            if (s_MainCamera == null || !s_MainCamera) s_MainCamera = Camera.main;
+            Camera cam = s_MainCamera;
             float pitch = cam != null && ViewState.MouseLook ? -cam.transform.eulerAngles.x : 0f;
             using (var o = new NetOut(160))
             {
@@ -115,8 +118,8 @@ namespace CloneZ
                 {
                     if (id == owner || id == nm.LocalClientId) continue;
                     if (!Visible(owner, id, pos)) continue;
-                    using (var o = new NetOut(170))
-                    {
+                    using (var o = new NetOut(170)) {
+
                         o.UL(owner).U(seq).V(pos).F(yaw).F(pitch).By(flags).S(held).By(hp).B(inRaid);
                         NetSession.SendTo(id, "cz.psx", o, NetworkDelivery.UnreliableSequenced);
                     }
