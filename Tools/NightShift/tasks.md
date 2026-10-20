@@ -2678,12 +2678,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   With the fix, attempting to spend a negative amount will correctly fail, and the UI/message that reports “You don’t have enough money” will now appear only when the player truly lacks funds.
   All other logic (checking `Available`, taking from stash and pack, returning `left <= 0`) remains unchanged.
   - 10:46 landed by hts-llm in 0.9 min: **Changed**
-- [ ] In Assets/Scripts/Medical/PlayerBlood.cs: Cache `PlayerModifiers.Current` in `PlayerBlood` to avoid a per‑frame lookup in `Update` and other methods
+- [x] In Assets/Scripts/Medical/PlayerBlood.cs: Cache `PlayerModifiers.Current` in `PlayerBlood` to avoid a per‑frame lookup in `Update` and other methods
   Add a private field `private PlayerModifiers _modifiers;`
   Set `_modifiers = PlayerModifiers.Current;` in `Awake()` after obtaining `_stats`
   Replace all occurrences of `PlayerModifiers.Current` in this file (`LoseBloodForHealth`, `AddShock`, the blood‑heal line in `Update`) with `_modifiers`
   If `PlayerModifiers.Current` can change during gameplay, expose a public method `RefreshModifiers()` that reassigns `_modifiers = PlayerModifiers.Current;` and call it from any existing hook that updates modifiers (e.g., after consuming items) – otherwise no further change is needed
   The visual behaviour (blood regeneration rate, bleed rate, etc.) stays exactly the same because the same instance is used; only the costly singleton lookup each frame is eliminated.
+  - 10:51 landed by 0htsserver in 3.7 min: **Changes Made**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Profile/ProfessionCatalog.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
