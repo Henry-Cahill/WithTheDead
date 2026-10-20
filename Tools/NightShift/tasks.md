@@ -3649,8 +3649,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   This adds only one primitive (the wear strip) and re‑uses the existing `Dim` colour, giving each row a faint “worn” look that varies by index because the strip width is based on the accent’s current width.
   - 15:10 landed by 1htsserver in 2.1 min: **Changed file**
 - [ ] In Assets/Scripts/AI/Humans/HumanNpc.cs: Cache the frequently accessed `transform` reference in `HumanNpc` and `HumanNpcAvatar` to avoid the per‑frame property getter.
-- [ ] Add a small “Inspect the dial” action to Assets/Scripts/World/Fixtures/RaidStoreSafe.cs, in the `RaidStoreSafe.GetActions` method, inserting it after the existing `new InteractAction("Try the handle", …)` line.
+- [x] Add a small “Inspect the dial” action to Assets/Scripts/World/Fixtures/RaidStoreSafe.cs, in the `RaidStoreSafe.GetActions` method, inserting it after the existing `new InteractAction("Try the handle", …)` line.
   Create the action with `new InteractAction("Inspect the dial", c => c.Notify("The dial is stiff and scratched; it looks like someone tried to force it."))` and add it to `into`.
   This gives the survivor a brief visual hint without changing any timers, noises, or existing behavior.
   All other code, including the two timed dial actions and the “Listen at the door” action, must remain unchanged.
+  - 15:12 landed by 1htsserver in 1.2 min: **Changed file**
 - [ ] In Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs, extend the water‑knocking feedback in the `private void Knock(InteractContext ctx)` method by adding four more distinct sentences for intermediate water levels, keeping the existing ones.
