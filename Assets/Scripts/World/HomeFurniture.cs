@@ -218,6 +218,11 @@ namespace CloneZ
                     glow = new RaidMesh();
                     glow.SetFrame(p, Yaw);
                     glow.Cylinder(new Vector3(0f, 0.836f, -0.04f), 0.158f, 0.208f, 10, DecorPalette.Glow(LampGlow), Quaternion.identity, 0.65f, false);
+                    // Add a small metal drawer pull knob with left/right variation
+                    bool leftDrawerKnob = rng.Next(2) == 0;
+                    Vector3 knobPosDrawer = new Vector3(leftDrawerKnob ? -0.15f : 0.15f, 0.55f, 0.32f);
+                    Vector3 knobSizeDrawer = new Vector3(0.02f, 0.07f, 0.02f);
+                    m.Box(knobPosDrawer, knobSizeDrawer, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
                     break;
                 }
                 case HomeFurnitureKind.Dresser:

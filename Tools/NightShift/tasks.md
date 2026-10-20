@@ -3690,11 +3690,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   No other code changes are required; the player will see this option when interacting with any sink.
   - 15:24 landed by 1htsserver in 2.2 min: **Changes made**
 - [ ] Add four rust‑tinted “hinge” decorations to the health panel corners in Assets/Scripts/UI/HealthPanelController.cs, inside the `Build()` method — right after the existing `Rivet(prt, …)` calls.
-- [ ] Add a small metal drawer pull knob to the nightstand in Assets/Scripts/World/HomeFurniture.cs, case HomeFurnitureKind.Nightstand inside DrawPlain, using the existing rng for left/right variation.
+- [x] Add a small metal drawer pull knob to the nightstand in Assets/Scripts/World/HomeFurniture.cs, case HomeFurnitureKind.Nightstand inside DrawPlain, using the existing rng for left/right variation.
   Insert after the FurnitureBuilder.Nightstand call a box primitive for the knob: `bool leftKnob = rng.Next(2) == 0;`
   `Vector3 knobPos = new Vector3(leftKnob ? -0.15f : 0.15f, 0.55f, 0.32f);` – centred on the front face of the drawer.
   `Vector3 knobSize = new Vector3(0.02f, 0.07f, 0.02f);` – a modest metal pull.
   `m.Box(knobPos, knobSize, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));` – re‑uses the metal colour palette.
   The knob should appear in‑world as a tiny metallic handle on the nightstand’s drawer, adding period‑correct detail without affecting colliders or interaction points.
+  - 15:37 landed by 0htsserver in 4.9 min: Implemented a small metal drawer pull knob for the nightstand:
 - [ ] Add a subtle “scratched‑metal” wear overlay to each panel created by `UIKit.Panel` (Assets/Scripts/UI/UIKit.cs)
   In `UIKit.Panel`, after the four decorative screw images are added, insert code that creates a tiny `Image` named “Wear” (size ≈ 12 × 12 px) anchored to the bottom‑left corner of the panel (anchor = new Vector2(0f, 0f), pivot = new Vector2(0f, 0f)) with a slight random offset of ±2 px based on the panel’s name hash (using `int seed = name.GetHashCode(); int dx = (seed >> 1) & 3; int dy = (seed >> 3) & 3;`). Set its colour to a semi‑transparent dark‑brown to suggest old wear: `new Color(0.22f, 0.15f, 0.10f, 0.35f)`. Keep the panel’s existing colliders, interaction points and pivots unchanged, and add no more than the one new primitive (`Image`).
