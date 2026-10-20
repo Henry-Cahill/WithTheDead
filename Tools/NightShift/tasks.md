@@ -3503,3 +3503,16 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 14:30 landed by 1htsserver in 4.2 min: **Changed file**
 - [~] Add period‑correct cast‑iron rivets to the radiator built in `Assets/Scripts/World/FurnitureBuilder.Fixtures.cs` `FurnitureBuilder.Radiator` so the metal heating unit shows small fasteners.
   - 14:33 hts-llm made no changes: {"include":"FurnitureBuilder.Fixtures.cs","path":"","pattern":"Mt("}
+- [ ] Fix the planting‑action validation in Assets/Scripts/Player/PlayerFarming.cs
+  The prompt for an empty plot is shown as soon as a single seed is found, but the actual planting cost (`CloneZConfig.FarmSeedCost`) may be > 1. `FindSeed` only checks for *any* seed, so the player can start a planting job with insufficient seeds; the job is then cancelled in `StillValid` because `_inventory.Has(_busySeedId, CloneZConfig.FarmSeedCost)` returns false. This produces a confusing “F — plant” prompt that instantly aborts.
+- [ ] Add a weathered metal cap to the warning‑lamp post built in `Assets/Scripts/World/RaidMapBuilder.Town.cs` → method `DressClinic`, inside the `Prop` call that creates the post at `lampPost`.
+  Inside the lambda of `Prop(town, lampPost, 0f, new Vector3(0.2f, 2.4f, 0.2f), true, (m, r) => { … })` add a tiny cylinder — radius 0.03 m, height 0.02 m — centered at `lampPost + new Vector3(0f, 2.45f, 0f)` (just above the existing top box).
+  Use `DecorPalette.Metal(new Color(0.45f, 0.45f, 0.44f))` for the material, matching the post’s metal colour.
+  Code snippet to insert: `m.Cylinder(lampPos + new Vector3(0f, 2.45f, 0f), 0.03f, 0.02f, 8, DecorPalette.Metal(new Color(0.45f, 0.45f, 0.44f)));` where `lampPos` is the local variable already defined as `lampPost`.
+  This adds a subtle rust‑patina cap that conveys age without affecting colliders or interaction.
+  Keep the existing light registration unchanged; the cap is purely visual.
+- [ ] In Assets/Scripts/World/Zone/ZoneAtmosphere.cs: Add an early‑out in `ZoneAtmosphere.LateUpdate` that skips all fog/ambient calculations when none of the inputs that affect the atmosphere have changed since the previous frame.
+- [ ] Add a “Listen to the machine” action in `RaidStoreVending.GetActions` (Assets/Scripts/World/Fixtures/RaidStoreVending.cs) right after the existing “Press a button” entry, and implement a private `Listen` method that calls `MakeNoise(CloneZConfig.RaidVendingThumpNoise)` and notifies the player.
+  · Insert `into.Add(new InteractAction("Listen to the machine", Listen));` after `into.Add(new InteractAction("Press a button", PressButton));` while still inside the `if (!_broken)` block.
+  · Add a new method `private void Listen(InteractContext ctx)` that executes `MakeNoise(CloneZConfig.RaidVendingThumpNoise);` then `ctx.Notify("You press your ear to the vending machine; faint whirring can be heard, but it offers no help.");`.
+  · No other code changes are required; the new action is available only while the machine is intact, matching its existing behavior.
