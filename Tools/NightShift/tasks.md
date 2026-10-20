@@ -3223,3 +3223,15 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// … existing entries …`
   `"Each swipe feels like a small rebellion against the cold that sees through the cracked walls.",`
   `"The thin winter air steadies your breath as the water splashes, reminding you breath itself is a fire.",`
+- [ ] Add a small metal foot‑ring to each bar‑stool built in `HubWorld.BuildBar` (Assets/Scripts/Hub/HubWorld.cs)
+  In the `for (int i = 0; i < 6; i++)` loop after the existing `Solid(world, "BarStool", …)` call, create a decorative cylinder at the stool base:
+  `var pos = new Vector3(-6f + i * 1.6f, 0.01f, 5.3f);`
+  `Deco(world, "BarStoolFoot", m => m.Cylinder(pos, 0.04f, 0.02f, 12, st.Metal), Vector3.zero);`
+  The cylinder is 0.04 m radius, 0.02 m high, placed at the same X/Z as the stool and just above the floor (Y = 0.01 m). It reuses the existing `st.Metal` material, adds no colliders, and keeps the stool’s interaction points unchanged. This gives each stool a realistic riveted foot ring, enhancing period‑correct detail without affecting gameplay.
+- [ ] In Assets/Scripts/Extraction/RaidSummaryUI.cs: Fix off‑by‑one in `RaidSummaryUI.BuildItemRows` so the full capacity (32 items) is shown when exactly that many lines exist.
+- [ ] In Assets/Scripts/World/Zone/ZoneOverlays.cs, add a few rust‑stained rivet heads on each shipping container hull built in the “else” branch of the tank/container loop (right after the line `sb.Solid.Box(new Vector3(0f, 1.3f, 0f), new Vector3(6f, 2.6f, 2.44f), ZoneKit.Mt(c));`);
+  Generate `int rivetCount = rng.Next(2, 6);` and loop `for (int r = 0; r < rivetCount; r++)` to place individual rivets;
+  For each rivet compute a random offset within the container side: `float offsetX = (float)rng.NextDouble()*5.5f - 2.75f; // –2.75 .. 2.75 m` and `float offsetY = (float)rng.NextDouble()*2.4f + 0.1f; // 0.1 .. 2.5 m`;
+  Position the rivet on the front face (≈ z = +1.22 m) with a slight outward offset: `Vector3 rivPos = new Vector3(offsetX, offsetY, 1.22f + 0.01f);`;
+  Create the rivet geometry with a small cylinder: `sb.Solid.Cylinder(rivPos, 0.01f, 0.015f, 8, ZoneKit.Mt(ZoneKit.RustDark));` (≈ 1 cm radius, 1.5 cm height);
+  Leave colliders, interaction points and the rest of the container code untouched; the player will now see subtle rust‑stained rivet heads spaced irregularly across each container, adding period‑correct wear without adding new assets.
