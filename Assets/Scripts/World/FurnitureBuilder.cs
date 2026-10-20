@@ -137,6 +137,8 @@ namespace CloneZ
                     continue;
                 }
                 m.Box(new Vector3(x, 0.96f, 0.215f), new Vector3(0.46f, 1.68f, 0.02f), M(c));
+                // Add a small metal pull-handle on the front of each locker door for visual grip.
+                m.Box(new Vector3(x, 1.25f, 0.235f), new Vector3(0.02f, 0.12f, 0.005f), Mt(Chrome));
                 for (int v = 0; v < 4; v++)
                 {
                     m.Box(new Vector3(x, 1.52f + v * 0.045f, 0.227f), new Vector3(0.26f, 0.014f, 0.006f), M(dark));
