@@ -3455,11 +3455,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 14:19 landed by hts-llm in 2.4 min: **Changed file**
 - [x] In Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method LockerDoor, add a tiny metal “locker‑number” plate to each door’s lower front edge.
   - 14:21 landed by 1htsserver in 2.7 min: **Changed**
-- [ ] In Assets/Scripts/Rendering/IsoVisionShade.cs: Cache the TimeOfDay singleton in IsoVisionShade so LateUpdate doesn’t call a costly FindAnyObjectByType each frame
+- [x] In Assets/Scripts/Rendering/IsoVisionShade.cs: Cache the TimeOfDay singleton in IsoVisionShade so LateUpdate doesn’t call a costly FindAnyObjectByType each frame
   Add a private static `TimeOfDay _timeOfDay;` field to the class.
   In `Awake()` set `_timeOfDay = TimeOfDay.Instance;`.
   In `LateUpdate()` replace `TimeOfDay.Instance` with `_timeOfDay`, and if `_timeOfDay` is null (e.g., after a scene reload) assign `_timeOfDay = TimeOfDay.Instance;` before using it.
   The shading appearance and fade behaviour stay exactly the same; only the per‑frame singleton lookup is eliminated, reducing GC and CPU load.
+  - 14:21 landed by hts-llm in 2 min: **Changed file**
 - [ ] In Assets/Scripts/World/Fixtures/ShowerFixture.cs: Add a context‑only “Turn off water” action to ShowerFixture.GetActions so survivors can quickly stop the flow while they’re inside the stall
   In Assets/Scripts/World/Fixtures/ShowerFixture.cs modify the GetActions method: after the existing into.Add calls, insert a conditional block that checks `_inside` and, if true, adds a new `InteractAction("Turn off water", c => Turn(c, false))` to `into`
   This uses the already‑implemented Turn method, requires no new UI, and lets players stop the shower without exiting the stall; all other behaviour (door handling, water state) stays unchanged.
