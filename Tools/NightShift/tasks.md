@@ -884,9 +884,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   The existing entry `"a field manual on vehicle maintenance, every page thumbed grey at the corners."` shows the style: short, period‑correct descriptions of mundane, period‑appropriate papers.
   Add the following lines after the last existing string (before the closing `}`) to flesh out the leaflets with themes of safety reminders, volunteer calls, lost‑pet notices, and weather warnings:
   - 01:31 landed by hts-llm in 2.1 min: **Changed file**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Economy/Insurance.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Economy/Insurance.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 01:47 landed by hts-llm in 13.2 min: Added concise one‑sentence XML `<summary>` documentation to every public method/property in **Assets/Scripts/Economy/Insurance.cs** that pre
 - [x] Add subtle metal detailing to the porch lantern in Assets/Scripts/World/StarterHome.Lighting.cs by inserting a small brass knob atop the lantern pole and four tiny rivet caps on the black lantern housing, using existing materials and keeping colliders unchanged.
   In `PorchLantern`, after the existing box calls (e.g. `m.Box(lamp + Vector3.up * 0.125f, new Vector3(0.17f, 0.04f, 0.17f), black);` etc.), add:
   `// brass knob crowning the pole`

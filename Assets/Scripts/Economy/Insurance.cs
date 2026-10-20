@@ -13,9 +13,11 @@ namespace CloneZ
         public const float PremiumShare = 0.12f;
         public const string Insurer = TraderCatalog.Medic;
 
+        /// <summary>Check if an item stack is eligible for insurance (e.g., weapons, clothing, or damageable items).</summary>
         public static bool Insurable(ItemStack s) => s != null && s.Def != null && s.Def.Id != Money.Id
             && (s.Def.IsFirearm || s.Def.IsWeapon || s.Def.IsClothing || Ballistics.Mod(s.Def.Id) != null || s.Def.IsDamageable);
 
+        /// <summary>Calculate the insurance premium based on the item's value and its mods.</summary>
         public static int Premium(ItemStack s)
         {
             int v = Money.BaseValue(s.Def);
@@ -98,12 +100,15 @@ namespace CloneZ
 
         private static readonly List<KeyValuePair<CorpseRecord, LootContainer>> s_Live = new List<KeyValuePair<CorpseRecord, LootContainer>>();
 
+        /// <summary>Record a corpse for possible later recovery.</summary>
         public static void Record(CharacterProfile c, string zone, Vector3 position, List<StackSave> items)
         {
             if (c == null || items == null || items.Count == 0) return;
             c.Corpses.Add(new CorpseRecord { ZoneId = zone, Position = position, Items = new List<StackSave>(items), DiedOnDay = c.Day });
             if (c.Corpses.Count > 6) c.Corpses.RemoveAt(0);   // the oldest bodies are gone for good
         }
+
+
 
         public void Init()
         {
