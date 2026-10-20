@@ -2764,7 +2764,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   This keeps the visual output unchanged because `RefreshMoney` already early‑returns when `ShowMoney` is false or `Character` is null, but the conditional prevents the method call and its string concatenation from running every second when it would do nothing.
   No other code behavior is altered; the per‑second live‑label updates and `OnSecond()` continue as before.
   - 11:06 landed by hts-llm in 1.3 min: **Changed file**
-- [ ] In Assets/Scripts/World/Fixtures/OutdoorLantern.cs: Add a third interaction “Check lantern status” to `OutdoorLantern.GetActions` that lets the survivor see whether the porch lantern is currently lit.
+- [x] In Assets/Scripts/World/Fixtures/OutdoorLantern.cs: Add a third interaction “Check lantern status” to `OutdoorLantern.GetActions` that lets the survivor see whether the porch lantern is currently lit.
+  - 11:08 landed by 1htsserver in 3.4 min: **Changes Made**
 - [ ] Append four new transmission lines to the `Lines` array of the “Battalion relay” (`Channel 3`) in Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs; the new entries should be full‑sentence quoted strings that the survivor can hear, matching the style of the existing entry `"This is an automated relay. The county is under a federal quarantine order. Remain where you are."` and covering themes of winter evacuation updates, cold‑weather safety, and military coordination.
   Keep the current four entries (including the `null` placeholder) unchanged.
   Add the new lines after the last existing string (just before the closing brace) so the array reads, for example:
