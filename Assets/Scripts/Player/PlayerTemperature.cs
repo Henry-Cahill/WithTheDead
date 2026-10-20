@@ -36,6 +36,8 @@ namespace CloneZ
         public const float WinterResponseSeconds = 360f;
 
         private PlayerStats _stats;
+        private WeatherSystem _weather;
+        private TimeOfDay _timeOfDay;
         private PlayerClothing _clothing;
         private PlayerSleep _sleep;
 
@@ -105,7 +107,12 @@ namespace CloneZ
             }
         }
 
-        private void Awake() => _stats = GetComponent<PlayerStats>();
+        private void Awake()
+        {
+            _stats = GetComponent<PlayerStats>();
+            _weather = WeatherSystem.Instance;
+            _timeOfDay = TimeOfDay.Instance;
+        }
 
         private void Update()
         {
@@ -122,7 +129,7 @@ namespace CloneZ
         // building, or asleep in a bed — you dry off instead, faster when you're warm.
         private void UpdateWetness(float dt)
         {
-            WeatherSystem w = WeatherSystem.Instance;
+            WeatherSystem w = _weather;
             float rain = w != null ? w.RainIntensity : 0f;
             float snow = w != null ? w.SnowfallIntensity : 0f;
             bool sheltered = Indoors || (Sleep != null && Sleep.IsSleeping);
@@ -169,7 +176,7 @@ namespace CloneZ
             if (Indoors) air = Climate.IndoorAirC(air);
             float ambient = AmbientFor(air);
 
-            WeatherSystem w = WeatherSystem.Instance;
+            WeatherSystem w = _weather;
             if (w != null && !Indoors) ambient -= Climate.RainExposureChill * w.RainIntensity;
             return ambient;
         }
@@ -187,7 +194,7 @@ namespace CloneZ
             else if (_stats.Temperature > CloneZConfig.TempHyperthermiaThreshold)
                 _stats.EnvironmentDrain(CloneZConfig.TempHyperthermiaHealthDrain * hot * dt, "succumbed to the heat");
 
-            TimeOfDay clock = TimeOfDay.Instance;
+            TimeOfDay clock = _timeOfDay;
             float pace = clock != null ? Mathf.Min(1f, CloneZConfig.DayLengthSeconds / clock.DayLengthSeconds) : 1f;
             if (cold > 0f)
                 _stats.Fatigue = Mathf.Clamp01(_stats.Fatigue + CloneZConfig.TempColdFatiguePerSec * cold * pace * dt);
