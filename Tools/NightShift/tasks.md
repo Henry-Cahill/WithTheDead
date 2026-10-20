@@ -979,3 +979,18 @@ you want to see in game. Indent extra lines under a task to add detail.
   Remove the null‑check `if (_cam == null) _cam = Camera.main;` from `Apply()` (the cached `_cam` is already set).
   Optionally guard against late creation by lazily setting `_weather = WeatherSystem.Instance` the first time `Apply()` runs if `_weather` is still null.
   No change to how the sky, fog, ambient light, sun colour/intensity or zombie vision are computed, so the player sees exactly the same lighting cycle.
+- [ ] In Assets/Scripts/World/Interaction/StorageFixture.cs: Add a “Knock on the …” action to `StorageFixture.GetActions(InteractContext ctx, List<InteractAction> into)` that triggers the fixture’s noise.
+  In `GetActions` after `string noun = Noun;` insert a line adding a new `InteractAction` with the label `"Knock on the " + noun`.
+  The action’s callback should be `c => { MakeNoise(_opt.Noise); }` (the `InteractContext` parameter is unused).
+  Place this insertion before the existing logic that adds open/close/look actions so the knock option is always available.
+  No other code changes are required; existing open/close/search functionality stays unchanged.
+  This gives the survivor a way to make noise without opening the storage, affecting zombie attraction.
+- [ ] Append five new entries to the `CivicScreenLines` array in Assets/Scripts/World/RaidBuilding.Civic.cs (class `RaidBuilding`, field `CivicScreenLines`) to give the player more period‑appropriate screen text to read.
+  Use the existing entry `"Green letters on black: a memo about the coffee fund, half typed. The cursor blinks after “and furthermore”.` as the style reference – each new line should be a single‑sentence description of a 1993‑era office screen, covering themes such as an unfinished inventory list, a weather forecast, a personal note, a supply request, and a government notice.
+  Example new entries (replace the placeholder text with these exact strings):
+  `"A half‑filled spreadsheet shows fuel allocations, column C empty and the cursor waiting over a formula."`
+  `"A weather widget displays a bitter‑cold forecast for Kentucky, with snow‑depth predictions flickering."`
+  `"A personal e‑mail draft reads “Hey Mom, …” but stops before the signature, the cursor pulsing."`
+  `"An urgent supply request list titled “MEDICAL RESTOCK” lists bandages, IV bags and an unfinished line."`
+  `"A government bulletin scrolls: “County emergency shelter capacity at 78 %…”, the text pauses briefly before the next line."`
+  The new strings must be added after the existing entries, keeping the array syntax unchanged.
