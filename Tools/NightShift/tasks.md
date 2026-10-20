@@ -1718,3 +1718,6 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Color grillColor = new Color(0.45f, 0.38f, 0.33f); // dull rust tone`
   ℹ️ `m.Box(grillPos, grillSize, DecorPalette.Metal(grillColor));`
   ℹ️ Optionally add a random slight tilt using the method’s `rng` (e.g., `Quaternion.Euler(0f, 0f, (float)rng.NextDouble()*2f-1f)`) to vary each tower. This adds no new colliders or interaction points and stays within the existing 12‑primitive limit.
+- [ ] Fix the road‑gap logic in `Assets/Scripts/World/RaidMapBuilder.Streets.cs` → method `Road`
+  The two `Slab` calls that run when `!ownsCrossing && b > -hw && a < hw` use `-hw` and `hw` as the end‑along‑road parameters (`b`) instead of as the across‑road limits (`c0`, `c1`). This cuts out a long segment of the street (about 8 m) at every crossing where the road does not own the intersection, leaving a visible hole that breaks navigation and looks wrong.
+  Replace the two calls with slabs that keep the original `a` → `b` range and split only the across‑road side, e.g.:
