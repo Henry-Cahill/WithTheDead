@@ -45,6 +45,10 @@ namespace CloneZ
                 Skills = new[] { (PlayerSkills.Skill.Lightfooted, 2), (PlayerSkills.Skill.Nimble, 1), (PlayerSkills.Skill.Sneak, 1) }, Kit = new[] { ("bolt", 10) } },
             new ProfessionDef { Id = "carpenter", Name = "Carpenter", Points = 4, Blurb = "Builds walls and barricades that hold.",
                 Skills = new[] { (PlayerSkills.Skill.Carpentry, 3) }, Kit = new[] { ("hammer", 1), ("nails", 10), ("plank", 6) } },
+            new ProfessionDef { Id = "snowplow", Name = "Snowplow Operator", Points = 4, Blurb = "Keeps the back roads clear for anyone brave enough to travel." },
+            new ProfessionDef { Id = "railhand", Name = "Railway Hand", Points = 3, Blurb = "Maintains the old line; knows every hidden crossing and signal box." },
+            new ProfessionDef { Id = "herbalist", Name = "Herbalist", Points = 5, Blurb = "Gathers roots and winter greens from the woods to keep wounds clean." },
+            new ProfessionDef { Id = "storeclerk", Name = "General‑Store Clerk", Points = 6, Blurb = "Runs the dusty store on Main Street, hoarding canned goods and batteries." },
         };
 
         public static readonly List<TraitDef> Traits = new List<TraitDef>

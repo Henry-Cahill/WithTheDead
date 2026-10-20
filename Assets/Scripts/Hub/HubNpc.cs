@@ -32,7 +32,7 @@ namespace CloneZ
             { "gunsmith", new[] { "The round matters more than the rifle.", "Pick your branch carefully — I can't un-bore a barrel.", "Clean your gun. The Zone gets into everything.", "That vest won't stop what the Choir carries.", "The Vanguard's steel cuts deeper than any blade.", "Freehold's guns rarely miss, but they rust.", "Mirelock's damp keeps the powder soggy." } },
             { "medic", new[] { "Sit. Bleeding is not a conversation.", "Know your blood type. Out there nobody will ask.", "Splint first, run second.", "You came back. Most don't, the first winter.", "Freehold's medics never get a day off.", "Wardens' field kits run low quickly.", "Mirelock's chill slows every wound." } },
             { "guide", new[] { "The safe way is never the short way.", "Throw a bolt before every step you're not sure of.", "North Camp's further than it looks. Further than it is, sometimes.", "I've walked men to the edge of the Spillway. Fewer came back.", "Freehold's roads twist like the Zone's rivers.", "The Choir's songs guide you through fog.", "Vanguard's maps mark the safest paths." } },
-            { "merc", new[] { "Two of us see twice as much.", "My rate's per day, not per corpse.", "I don't walk first. Not for any money." } },
+            { "merc", new[] { "Two of us see twice as much.", "My rate's per day, not per corpse.", "I don't walk first. Not for any money.", "The roads are slick with ice; a slip can get you buried before you draw a weapon.", "I've heard the old well under the ice still whispers, and the dead listen.", "My fee climbs with the wind—extra for a night that drifts like a white shroud.", "I'll fight for the highest bidder, but I won’t turn my back on a comrade in a blizzard.", "Don't chase a shadow through the snowbank unless you’re ready to become one." } },
             { "patron", new[] { "Lost my cousin to a sinkhole. Didn't even see it.", "If you hear the siren, you've already waited too long.", "Don't shoot the ones walking home. They don't mean anything by it.", "The fog in Mirelock talks. Don't answer it.", "Saw a thing with no face near the cooling tower.", "Another round. For the ones who stayed out." } },
             { "beggar", new[] { "Spare a round for an old runner?", "I went in eleven times. The twelfth took my legs.", "Bless you. The Zone remembers." } },
             { "guitar", new[] { "This one's for the ones who didn't come back.", "Request? Only if you're buying.", "Same three chords since the Passing." } },
@@ -191,6 +191,16 @@ namespace CloneZ
                         if (!Money.TrySpend(10, c.Inventory)) { c.Notify("You don't have 10 MG."); return; }
                         GameEvents.RaiseSubtitle(Npc.Name, "For you, then. Something slow.");
                         GameEvents.RaiseWorldEvent(transform.position, 10f, "music");
+                    }));
+                    break;
+                case HubNpc.Role.Keeper:
+                    into.Add(new InteractAction("Buy a drink (5 MG)", c =>
+                    {
+                        if (!Money.TrySpend(5, c.Inventory)) { c.Notify("You don't have 5 MG."); return; }
+                        c.Notify("You feel a warm surge.");
+                        GameEvents.RaiseSubtitle(Npc.Name, "Enjoy your drink.");
+                        Sfx.PlayUI(SfxIds.Cash);
+                        ProfileStore.Save();
                     }));
                     break;
                 default:

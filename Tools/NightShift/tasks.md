@@ -1882,9 +1882,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add `"The scent of soot from the stove clings to the steam, mixing with the taste of metal."`
   Add `"Each shave feels like salvaging a small piece of normality from the relentless cold."`
   - 07:13 landed by 1htsserver in 4 min: **Changed files**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/CookingStation.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [~] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/CookingStation.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 08:54 hts-llm made no changes: I inspected **Assets/Scripts/World/CookingStation.cs** and verified every public method and property. All public methods (`Nearest`, `InRang
 - [x] Remove the duplicated XML summary on `Hideout.StartCraft` in Assets/Scripts/Economy/Hideout.cs; keep only one `<summary>` tag.
   The method currently has two consecutive summary comments:
   `/// <summary>Starts a craft (inputs are consumed now; outputs arrive when it finishes).</summary>`
@@ -1926,9 +1927,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   a note that the local school is closed due to the storm,
   a brief morale boost (“keep warm, we’ll get through this”).
   - 07:22 landed by 1htsserver in 3.3 min: **Changed file**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/AI/Humans/HumanNpc.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/AI/Humans/HumanNpc.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 07:39 landed by 1htsserver in 16.7 min: **Changes made**
 - [x] Add four small metal bracket boxes to the `WeaponRack(RaidMesh m, System.Random r)` builder in Assets/Scripts/World/RaidLayouts.cs to suggest reinforced corners on the rack.
   Place them near the top of each vertical post, using the existing metal palette and a size of roughly 0.02 m × 0.1 m × 0.02 m.
   `var bracketMat = DecorPalette.Metal(new Color(0.30f, 0.30f, 0.28f));`
@@ -1939,30 +1941,35 @@ you want to see in game. Indent extra lines under a task to add detail.
   The brackets attach to the top horizontal beam (already created by `m.Box(new Vector3(0f, 1.3f, -0.08f), Sz(1.9f, 0.06f, 0.12f), wood);`).
   No new colliders, interaction points, or pivots are introduced, and the random seed is not altered, keeping deterministic builds.
   - 07:29 landed by 0htsserver in 3.6 min: **Changed file**
-- [ ] Fix static error counters in Assets/Scripts/Dev/SmokeTest.cs so a new smoke‑test run starts with a clean slate
+- [x] Fix static error counters in Assets/Scripts/Dev/SmokeTest.cs so a new smoke‑test run starts with a clean slate
   · In `Boot()` after `s_Mode = args[i + 1].ToLowerInvariant();` add `s_Errors = 0; s_FirstErrors.Clear();`
   · This prevents error counts from previous runs (e.g. when the editor re‑enters play mode) from being carried over, which would make the test report failures even though the current run succeeded.
   · Player experience is unchanged – the fix only affects the reliability of the automated smoke test in the editor/command‑line runs.
-- [ ] Add a subtle faded‑logo tint variation to caps in Assets/Scripts/Characters/HumanoidLook.cs → `HumanoidLook.Wear` → `case ClothingSlot.Head:`
+  - 07:37 landed by 0htsserver in 7.5 min: **Changed file**
+- [x] Add a subtle faded‑logo tint variation to caps in Assets/Scripts/Characters/HumanoidLook.cs → `HumanoidLook.Wear` → `case ClothingSlot.Head:`
   After the existing line `HatTrimColor = Shade(c, 0.7f);` insert code that, when `Shape.Headwear` is `HeadwearStyle.Cap` or `HeadwearStyle.CapBackward`, computes a deterministic variation from the shape hash and blends a faint brown‑ish logo colour into `HatTrimColor`.
   Use the same deterministic method as the helmet scuff code: `int seed = Shape.GetHashCode(); float var = ((seed >> 7) & 0xF) / 100f;` (range 0‑0.15).
   Blend with `Color.Lerp(HatTrimColor, new Color(0.78f, 0.63f, 0.45f, 1f), var);` and assign back to `HatTrimColor`.
   No new colliders or geometry are added; the visual change is purely colour‑based, keeping the existing caps’ size and position unchanged.
-- [ ] Cache the per‑frame fade work in Assets/Scripts/UI/UIFader.cs by disabling the `MonoBehaviour` when no fading is needed and re‑enabling it only while the panel is transitioning.
+  - 07:32 landed by hts-llm in 2.1 min: **Changed file**
+- [x] Cache the per‑frame fade work in Assets/Scripts/UI/UIFader.cs by disabling the `MonoBehaviour` when no fading is needed and re‑enabling it only while the panel is transitioning.
   In `Awake()` add `enabled = false;` after initializing `_group`.
   In `Show()` and `Hide()` set `enabled = true;` (right after setting `_target`).
   In `Update()` after moving the alpha, if `_group.alpha == _target` then set `enabled = false;` (instead of just returning).
   The player sees no visual change – panels still fade in/out exactly as before – but the `Update` method stops running each frame when the UI is fully shown or hidden, removing the constant null/target check.
-- [ ] Add an “Inspect the power switch” action to PowerSwitch.GetActions in Assets/Scripts/Extraction/RaidWorldRules.cs
+  - 07:36 landed by hts-llm in 3.3 min: **Changed files**
+- [x] Add an “Inspect the power switch” action to PowerSwitch.GetActions in Assets/Scripts/Extraction/RaidWorldRules.cs
   In the method `PowerSwitch.GetActions` insert a new `InteractAction` before the existing one.
   Use the current line as a reference: `into.Add(new InteractAction(_thrown ? "The power is on" : "Throw the power switch", c =>`
   The new action should read `"Inspect the power switch"` and simply call `c.Notify("A rugged switch that powers freight‑gate exits.")`.
   This gives the survivor a non‑functional description action, appearing as an extra option next to the “Throw the power switch” action in the interaction UI.
   No other code, assets, or UI changes are required.
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/HudViewKit.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  - 07:38 landed by hts-llm in 2 min: **Changed**
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/HudViewKit.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
-- [ ] In Assets/Scripts/World/FurnitureBuilder.cs: Add a small metal pull‑handle to each fridge in `FurnitureBuilder.Fridge(RaidMesh m, System.Random rng, Color body)` so the appliance has a period‑correct grip.
+  - 07:45 landed by 0htsserver in 8 min: **Changed files**
+- [x] In Assets/Scripts/World/FurnitureBuilder.cs: Add a small metal pull‑handle to each fridge in `FurnitureBuilder.Fridge(RaidMesh m, System.Random rng, Color body)` so the appliance has a period‑correct grip.
   Inside the method, after the magnet/note loop, insert a box for the handle using the existing chrome material.
   Use a deterministic random offset for realism:
   `float hx = R(rng, -0.15f, 0.15f); // horizontal offset from centre`
@@ -1970,3 +1977,539 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(new Vector3(hx, hy, 0.31f), new Vector3(0.02f, 0.07f, 0.005f), Mt(Chrome));`
   The handle sits slightly in front of the fridge (z ≈ 0.31 m), is 2 cm wide, 7 cm tall and 0.5 cm deep, and uses the same `Mt(Chrome)` surface as other metal parts.
   No other geometry, colliders or interaction points are altered; the addition stays within the existing primitive budget.
+  - 07:40 landed by hts-llm in 2.2 min: **Changed**
+- [x] Add a subtle brass knob (and optional tiny screw) to the kitchen‑diner sconce in Assets/Scripts/World/StarterHome.Lighting.cs, inside the `Sconce` builder method, using the method’s existing `rng` for a small random colour/placement variation.
+  *After the line `m.Rod(wall + n * 0.02f, wall + n * 0.13f + Vector3.up * 0.03f, 0.018f, brass);` insert a brass cylinder `m.Cylinder(knobPos, 0.008f, 0.015f, 6, knobMat);` where `knobPos = wall + n * 0.13f + Vector3.up * 0.03f;` and `knobMat = rng.NextDouble() < 0.3f ? DecorPalette.Metal(new Color(0.75f,0.60f,0.45f)) : brass;`
+  Optionally add a tiny black screw `m.Box(screwPos, new Vector3(0.004f,0.004f,0.004f), DecorPalette.Matte(new Color(0.08f,0.08f,0.09f)))` with `screwPos = knobPos + n * 0.005f + Vector3.up * 0.005f;`
+  Result: players see a small brushed‑brass knob crowning the sconce’s rod, sometimes a darker‑brass variant, with a tiny screw detail, giving the fixture a lived‑in, period‑correct feel without altering colliders or interaction points.
+  - 07:42 landed by 1htsserver in 3.2 min: **Changes made**
+- [x] Add a fallback “inspect” action for fixtures that have no defined actions in Assets/Scripts/Player/PlayerInteractor.cs
+  In `ActOnFocus()`, before calling `RunPrimary(FixtureTarget)`, clear `_actions`, call `FixtureTarget.GetActions(_ctx, _actions)`, and if `_actions.Count == 0` invoke `Notify(FixtureTarget.DisplayName);` and skip `RunPrimary`.
+  In `FixturePrompt(Interactable f)`, after obtaining actions, if `_actions.Count == 0` return the string `"[E] Inspect"` instead of just `f.DisplayName`.
+  This gives the player a usable “[E] Inspect” prompt on objects like boarded‑up doors or broken furniture that currently have no actions, and pressing E will show a short HUD notice with the object’s display name. All existing behavior for fixtures with actions must remain unchanged.
+  - 07:45 landed by hts-llm in 4.4 min: Added a fallback “inspect” action for fixtures with no defined actions.
+- [x] Append four new manual pages to the `Pages` array in `ManualScreen` (Assets/Scripts/Hub/Screens/HomeScreens.cs) after the existing final entry `("Survivor myths", "Stories circulate …")`.
+  Use the entry `("Winter hazards", "Freezing wind bites …")` as a style reference – terse title, followed by one‑ or two‑sentence body written in the same dry, in‑world voice.
+  The new pages should cover:
+  “Snowdrift shelters” – how to build improvised shelter in deep snow and why staying low saves heat.
+  “Radio static lore” – snippets of broadcast fragments that hint at hidden stash locations or upcoming raids.
+  “Fire‑making tips” – gathering kindling, using flint, and why pine resin is valuable in winter.
+  “Old maps” – describing hand‑drawn maps left in the bar, their markings for safe paths, water sources, and danger zones.
+  Each new entry must be a tuple `(string title, string body)` inserted before the closing `}` of the `Pages` array, preserving the existing order.
+  - 07:51 landed by 1htsserver in 8.2 min: **Changes Made**
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/HomeFurniture.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 07:48 landed by 0htsserver in 3.4 min: **Changes made**
+- [x] In Assets/Scripts/World/Fixtures/DoormatFixture.cs, modify the `Wipe` method to also dry the player’s boots by reducing the `Wetness` stat (if the stat object exists) after the notification.
+  Change the line `private static void Wipe(InteractContext ctx)` to keep the existing logic and then add:
+  `if (ctx.Stats != null && ctx.Stats.Wetness > 0f) ctx.Stats.Wetness = Mathf.Max(0f, ctx.Stats.Wetness - 0.15f);`
+  This gives a tangible effect to the “Wipe your feet” action: muddy boots become drier, matching the description that the mat “wipes the worst of the mud and rain off your boots.”
+  All other code, including the action list and notifications, remains unchanged.
+  - 07:47 landed by hts-llm in 1.9 min: **Changed file**
+- [x] Append six new dialogue strings to the `ZoneTalk.s_Lines` entry for `Factions.Wardens` in Assets/Scripts/AI/Humans/HumanNpc.cs
+  Locate the line ` [Factions.Wardens] = new[] { "Papers. No? Then turn around.", "Belt's closed after dark.", "Anyone past the wire without a pass gets shot. Nothing personal." },`
+  Add the new strings inside the array, preserving the existing formatting and commas.
+  Use the existing style as reference – e.g., `"Papers. No? Then turn around."` – short, blunt sentences with a hint of local winter hardship.
+  Themes for the new lines: frozen roads, rationed fuel, a broken radio tower, an abandoned farmhouse, a creaking wind‑chime on the fence, and a makeshift heater.
+  Example additions (original wording, no real brands):
+  `"The main road's iced over; the snowplow broke last week."`
+  `"Fuel's scarce; the depot's only got a half‑full barrel left."`
+  `"The old radio tower's dead—just static and the wind."`
+  - 07:49 landed by hts-llm in 2.1 min: **Changed**
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/ShowerFixture.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 08:03 landed by 0htsserver in 14.3 min: Added three one‑sentence XML `<summary>` comments to the public members of **ShowerFixture.cs** that lacked documentation:
+- [x] Fix the blood‑transfusion logic in Assets/Scripts/Medical/MedicalItems.cs so that iv‑kits and used blood‑bags are only consumed on a successful transfusion.
+  In `Transfuse` the code unconditionally calls `inv.Consume("ivkit", 1);` and `inv.Inventory.Remove(s, 1);` before checking whether `b.Blood.Transfuse(type, out string message)` actually succeeded, causing players to lose resources even when the transfusion fails (e.g., wrong blood type).
+  Change the method to store the return value of `Transfuse`, and if it is `false` skip the consumption/removal and exit early after showing the message. Only on a `true` result should the iv‑kit be consumed, the empty bag removed, the sound played, XP added and the success toast shown.
+  After the fix the player will keep the iv‑kit and blood‑bag when transfusion fails, matching the intended gameplay. All other fields, messages and skill XP gains remain unchanged.
+  - 07:52 landed by 1htsserver in 1.5 min: **Changed file**
+- [x] Add a small paper label to the front‑right copier panel in Assets/Scripts/World/FurnitureBuilder.RaidStore.cs, method OfficeCopierBody
+  Create a thin rectangular box that sits on the copier’s control panel (near `OfficeCopierPanel`) to look like a faded “COPY” sticker.
+  Generate a slightly varied paper colour with the existing random source and give the label a tiny random yaw for realism.
+  Insert the new primitive after the green ready‑lamp box (the line `m.Box(new Vector3(0.22f, 1.03f, 0.321f), … Gl(new Color(0.2f, 0.62f, 0.32f)));`
+  - 07:54 landed by hts-llm in 1.9 min: **Changed file**
+- [x] In Assets/Scripts/Characters/PlayerAvatar.cs: Cache the costly `Actor.LocalPlayer` lookup in PlayerAvatar to avoid a per‑frame search.
+  Add a private `Actor _localActor;` field.
+  In `Awake()` (or after `Start()` when the player object exists) set `_localActor = Actor.LocalPlayer;`.
+  Replace the line `Actor self = Actor.LocalPlayer;` in `SetAttention` with `Actor self = _localActor;`.
+  If `_localActor` is ever null (e.g., during hot‑reload), guard with a null‑check or re‑assign lazily: `if (_localActor == null) _localActor = Actor.LocalPlayer;`.
+  This change does not alter any visible behavior; the player’s surrender/restraint checks still run, but the lookup is now cached, reducing per‑frame allocations and Find‑by‑type overhead.
+  - 08:01 landed by 1htsserver in 7.3 min: **Changed file**
+- [x] In Assets/Scripts/World/Fixtures/RaidWindow.cs: Add an “Inspect the window” action to RaidWindow.GetActions that reports the current glass and board state.
+  In GetActions, after the block that adds the “Look inside” / “Look outside” actions (inside ? … : …), insert:
+  `if (inside) into.Add(new InteractAction("Inspect the window", InspectWindow));`
+  Add a private helper method to RaidWindow:
+  `private void InspectWindow(InteractContext ctx) {`
+  ` string msg = _boarded ? "The window is boarded up." :`
+  ` (_glass == Glazing.Intact) ? "The glass is intact." :`
+  ` (_glass == Glazing.Smashed) ? "The glass is shattered; shards still bristle in the frame." :`
+  ` "The window frame is empty.";`
+  - 08:05 landed by hts-llm in 10.8 min: **Changes Made**
+- [x] Append four period‑accurate winter‑1993 letters to the `Letters` array in Assets/Scripts/World/Fixtures/RaidTownMailDrop.cs
+  Locate the `private static readonly string[] Letters` initializer and add four new quoted strings after the last existing entry, each followed by a comma.
+  Use the style of the first entry `"A drift of envelopes. The top one is addressed to the county tax office in a careful hand, stamped and sealed. Somebody still meant to pay."` and cover these themes: a newspaper clipping about road closures, a handwritten grocery list for canned beans, a church flyer announcing a cold‑weather shelter, and a telegram pleading for help to find a missing child.
+  Example strings:
+  `"A crinkled newspaper clipping reads: “Main Road to Miller’s Bridge shut after ice‑fall, detour via County Line expected until thaw.”",`
+  `"... a shaky grocery list scrawled in blue ink: “Canned beans, powdered milk, salt, fire‑starter – enough for three days.”",`
+  `"... a faded church flyer pinned to a post: “Winter shelter tonight at St. Luke’s, 7 PM. Bring blankets and warm drinks.”",`
+  `"... a desperate telegram, ink smeared: “Please, find my son Eli, last seen near the old mill. Return him safe.”",`
+  Do not modify any other code; keep the existing entries and ordering intact.
+  - 08:04 landed by 1htsserver in 3.2 min: **Changed file**
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/PlayerModifiers.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 08:11 landed by 0htsserver in 8 min: **Changed files**
+- [x] Enhance the “rusty corrugated sheet metal” texture (Assets/Scripts/World/DecorTextures.cs → `public static Texture2D Corrugated(Color color)`) by adding a few tiny, low‑gloss metal scratches that vary per‑tile using the existing deterministic random source.
+  Inside the nested `for (int y …) for (int x …)` loop, after the existing rivet‑like rust‑spot logic but before the line `px[y * S + x] = C32(c);`, insert a scratch test:
+  `float scr = R01(x, y, 124);`
+  `if (scr < 0.004f) { // ~0.4 % of pixels become a scratch`
+  `int len = 2 + (int)(R01(x, y, 125) * 3); // 2‑5 px long`
+  `float shade = 0.55f; // darker than base metal`
+  `for (int i = 0; i < len; i++) {`
+  `int ix = Wrap(x + i, S);`
+  `c = Mul(c, shade); // apply darker tint for the scratch`
+  - 08:07 landed by 1htsserver in 2.7 min: **Changes Made**
+- [x] Add a zone‑check to the fetch‑item gathering logic in Assets/Scripts/Quests/QuestBook.cs so that fetch objectives respect their `Zone` field.
+  - 08:07 landed by hts-llm in 1.7 min: **Changed file**
+- [x] In Assets/Scripts/Survival/Navigation.cs, class ZoneMapScreen, method Build(), add a subtle random “ink blot” on the paper to convey age‑and‑use.
+  After the line `Image paper = UIKit.Panel(Body, "Paper", new Color(0.86f, 0.83f, 0.74f));` create a new UI panel named “InkBlot”.
+  Use the existing `System.Random rng` (seeded with the zone layout) to pick an offset ± 250 px in X and ± 250 px in Y relative to the paper centre (`new Vector2(0.5f, 0.5f)`).
+  Size the blot 0.03 m × 0.03 m (≈ 30 px square) and colour it `new Color(0.2f, 0.15f, 0.1f, 0.85f)` (dark brown, semi‑transparent).
+  Place it with `UIKit.Place(ink.rectTransform, new Vector2(0.5f,0.5f), new Vector2(0.5f,0.5f), new Vector2(offsetX, offsetY), new Vector2(30f,30f));`.
+  Keep the blot as a child of `_paper` so colliders, interaction points and pivots remain unchanged, and add no more than one primitive (the blot) to stay within the ~12‑primitive limit.
+  - 08:12 landed by hts-llm in 5.3 min: **Changes made**
+- [x] In Assets/Scripts/World/Fixtures/RainBarrelFixture.cs: Add a “Wash your face in the barrel” timed action to `RainBarrelFixture.GetActions` (clone the existing Wash action but use a smaller Freshen factor and a different notification).
+  - 08:12 landed by 1htsserver in 4.9 min: **Summary**
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Zone/ZoneOverlays.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 08:14 landed by 0htsserver in 3.1 min: Added a concise XML summary for the public `TreeCount` property:
+- [x] In Assets/Scripts/Player/PlayerSeat.cs: Fix PlayerSeat.GetUpFromInput so the survivor actually stands up from a bed instead of just ending the lying‑down state, which currently leaves the player stuck on the mattress.
+  Change the method in Assets/Scripts/Player/PlayerSeat.cs:
+  `public void GetUpFromInput()`
+  `{`
+  `if (IsSeated) Stand();`
+  `if (!IsLyingDown) return;`
+  `if (Interactor != null && Interactor.IsWorking) Interactor.StopJob();`
+  `// move the survivor to a clear spot in front of the bed before clearing the lying‑down flags`
+  `if (RestBed != null)`
+  - 08:16 landed by 1htsserver in 3.6 min: **Changed** `Assets/Scripts/Player/PlayerSeat.cs`
+- [x] Add a tiny brass switch knob to the bedside lamp shade in `FurnitureBuilder.BedsideTable` (Assets/Scripts/World/FurnitureBuilder.Living.cs)
+  After the lamp shade box `m.Cylinder(new Vector3(0f, 0.84f, -0.04f), 0.15f, 0.2f, 10, M(new Color(0.78f, 0.70f, 0.55f)), Quaternion.identity, 0.65f, false);` add a small brass cylinder `m.Cylinder(new Vector3(0.07f, 0.84f, -0.04f), 0.01f, 0.03f, 6, Mt(Brass));`
+  The knob is 0.01 m radius, 0.03 m tall, positioned 0.07 m to the right of the shade centre (still at the same Z‑height), using the existing `Mt(Brass)` material so it inherits the deterministic colour. This gives the lamp a realistic manual switch without altering colliders or interaction points.
+  - 08:15 landed by hts-llm in 1.4 min: **Changed**
+- [x] Cache the survivor’s PlayerCombat component once instead of calling `Target.GetComponent<PlayerCombat>()` every LateUpdate in Assets/Scripts/Camera/IsoCameraFollow.cs
+  Add a line in `CacheTarget()` to set `_combat = Target != null ? Target.GetComponent<PlayerCombat>() : null;` after the existing component look‑ups.
+  Remove the `if (_combat == null && Target != null) _combat = Target.GetComponent<PlayerCombat>();` block from `LateUpdate()` (the cached field will already contain the component or be null).
+  The field `private PlayerCombat _combat;` already exists; no new members are needed.
+  The player’s view and gameplay remain unchanged because the same component is used; only the per‑frame GetComponent lookup is eliminated, reducing allocations and CPU cost.
+  All other logic (aim‑down‑sights FOV adjustments, etc.) continues to read `_combat` as before.
+  - 08:17 landed by hts-llm in 1.7 min: **Changed Files**
+- [x] Add a “Buy a drink (5 MG)” action for the barkeep in Assets/Scripts/Hub/HubNpc.cs → `HubNpcTalk.GetActions`
+  In the `switch (Npc.Kind)` block, insert a new `case HubNpc.Role.Keeper:` before the `default:` case.
+  Inside this case add `into.Add(new InteractAction("Buy a drink (5 MG)", c =>` with the following lambda body:
+  `if (!Money.TrySpend(5, c.Inventory)) { c.Notify("You don't have 5 MG."); return; }`
+  `c.Notify("You feel a warm surge.");`
+  `GameEvents.RaiseSubtitle(Npc.Name, "Enjoy your drink.");`
+  `Sfx.PlayUI(SfxIds.Cash);`
+  `ProfileStore.Save();`
+  `});` and close the case with `break;`.
+  - 08:18 landed by 0htsserver in 1.3 min: Added a new “Buy a drink (5 MG)” interaction for the barkeep:
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/RaidBuilding.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 08:25 landed by 0htsserver in 7.6 min: Added concise one‑sentence `/// <summary>` XML documentation to every public method and property in **Assets/Scripts/World/RaidBuilding.cs**
+- [x] Add a thin inner “worn‑edge” frame to every card built by `HubUI.Card(RectTransform area, Color? color = null)` in Assets/Scripts/Hub/Screens/HubUI.cs
+  Create a child `RectTransform` named “Border” inside the card’s `area` and inset it a few pixels to form an inner border.
+  `// after setting the card’s Image component`
+  `RectTransform border = UIKit.Rect("Border", area);`
+  `border.offsetMin = new Vector2(1f, 1f); // inset 1 m from left/bottom`
+  `border.offsetMax = new Vector2(-1f, -1f); // inset 1 m from right/top`
+  `var borderImg = border.gameObject.AddComponent<Image>();`
+  `// use a slightly darker version of the card colour for a subtle worn look`
+  `float darken = 0.15f;`
+  - 08:20 landed by 1htsserver in 2.2 min: **Changed**
+- [x] In Assets/Scripts/World/Fixtures/HoseSpigot.cs: Fix HoseSpigot so that its CaptureState and RestoreState correctly persist both a permanent open tap and a tap that is temporarily open for watering.
+  In `CaptureState` replace the single‑bit encoding `save.State = _open && !_openedToWater ? 1 : 0;` with a two‑bit encoding that stores `_open` in bit 0 and `_openedToWater` in bit 1, e.g. `save.State = (_open ? 1 : 0) | (_openedToWater ? 2 : 0);`.
+  In `RestoreState` decode both bits: set `_openedToWater = (save.State & 2) != 0;` and then call `SetOpen((save.State & 1) != 0, true);`.
+  This preserves the “opened just for watering” flag across autosaves, preventing the tap from unexpectedly closing mid‑watering when the game reloads.
+  All other behavior – instant‑open noise suppression on load and the existing logic for auto‑closing after watering – remains unchanged.
+  - 08:24 landed by 1htsserver in 1.9 min: **Summary**
+- [x] Add a front grille and a rear bumper plate to the car built in `Vehicle.Build(System.Random rng)` (Assets/Scripts/World/Vehicles.cs)
+  Add a set of thin vertical bars centered on the front bumper (just behind the headlights) to suggest a metal grille; vary the bar count between 3‑5 using the existing `rng` for deterministic randomness.
+  Add a small flat metal plate on the rear bumper to give a subtle “tail‑gate” detail.
+  Both parts should be created with the existing `Box` helper, be parented to `_bodyRoot`, use the same dark trim colour (`new Color(0.12f, 0.12f, 0.14f)`), and keep colliders removed as `Box` already does.
+  Example positions and sizes (relative to `_bodyRoot`):
+  Front grille bar: `new Vector3(x, 0.68f, 2.12f)` with size `new Vector3(0.02f, 0.04f, 0.01f)` (x offsets calculated from bar count).
+  Rear bumper plate: `new Vector3(0f, 0.57f, -2.12f)` with size `new Vector3(0.4f, 0.02f, 0.02f)`.
+  Insert the code after the headlight creation loop and before `Seat = new GameObject("Driver seat")`.
+  - 08:28 landed by hts-llm in 4.3 min: Implemented front grille with 3‑5 thin vertical bars and rear bumper plate, both using the standard `Box` helper, dark trim colour, and dete
+- [x] In Assets/Scripts/UI/HealthPanelController.cs, within the `Refresh()` method replace the six separate `Supply(...)` calls with a single inventory‑scan that fills local variables for all treatment counts, thus avoiding six full passes over `PlayerInventory.Inventory.Stacks` each frame.
+  - 08:29 landed by 1htsserver in 3.7 min: **Changed file**
+- [x] Add a small “Inspect” instant action helper to Assets/Scripts/World/Interaction/Interactable.cs
+  Insert a protected method after `MakeNoise` that creates an `InteractAction` labeled “Inspect” and calls `InteractContext.Notify` with the fixture’s `DisplayName`.
+  `/// <summary>Adds a simple “Inspect” action that shows the fixture’s name in a HUD toast.</summary>`
+  `protected void AddInspectAction(InteractContext ctx, List<InteractAction> into)`
+  `{`
+  `into.Add(new InteractAction("Inspect", c => c.Notify($"You look at the {DisplayName}.")));`
+  `}`
+  This lets any subclass call `AddInspectAction(ctx, actions)` inside its `GetActions` to give the player an instant “Inspect” option, displaying a short message like “You look at the kitchen sink.” on screen. All existing code stays unchanged.
+  - 08:28 landed by 0htsserver in 2 min: **Changed file**
+- [x] Append four new Kentucky‑winter themed profession entries to the `ProfessionCatalog.Professions` list in Assets/Scripts/Profile/ProfessionCatalog.cs
+  Use the existing entry `new ProfessionDef { Id = "drifter", Name = "Drifter", Points = 8, Blurb = "No trade, no ties. Plenty of room for quirks." }` as the style reference.
+  Add the following items after the current `carpenter` entry, each ending with a comma:
+  `new ProfessionDef { Id = "snowplow", Name = "Snowplow Operator", Points = 4, Blurb = "Keeps the back roads clear for anyone brave enough to travel." },`
+  `new ProfessionDef { Id = "railhand", Name = "Railway Hand", Points = 3, Blurb = "Maintains the old line; knows every hidden crossing and signal box." },`
+  `new ProfessionDef { Id = "herbalist", Name = "Herbalist", Points = 5, Blurb = "Gathers roots and winter greens from the woods to keep wounds clean." },`
+  `new ProfessionDef { Id = "storeclerk", Name = "General‑Store Clerk", Points = 6, Blurb = "Runs the dusty store on Main Street, hoarding canned goods and batteries." }`.
+  - 08:30 landed by hts-llm in 1.4 min: **Changed**
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Survival/FieldSurvival.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 08:35 landed by 0htsserver in 6.6 min: Added concise XML‑style summaries to all public methods and properties in **Assets/Scripts/Survival/FieldSurvival.cs** that previously lacke
+- [x] Add a small chrome handle plate to the front of the carriage lantern in `Assets/Scripts/World/FurnitureBuilder.Lighting.cs` `CarriageLantern` method
+  Insert a `m.Box` call after the four side‑support boxes (after the `for (int i = 0; i < 4; i++) …` loop).
+  Use position `lamp + normal * 0.07f + Vector3.up * 0.15f` (0.07 m protruding from the lantern front, centred vertically).
+  Size `new Vector3(0.022f, 0.018f, 0.004f)` (≈2 cm × 1.8 cm × 0.4 cm) to resemble a metal latch.
+  Apply the existing chrome material `Mt(Chrome)`.
+  Keep the current quaternion `q` for orientation so the plate stays flush with the lantern’s face.
+  No new colliders or interaction points are added; the plate is purely visual.
+  - 08:31 landed by hts-llm in 1.3 min: Added a chrome handle plate to the front of the carriage lantern:
+- [x] Fix the side‑probe cut‑away condition in Assets/Scripts/Camera/IsoCutaway.cs → method `Probe` so that side rays correctly ignore hits that are not sufficiently in front of the survivor.
+  Current line: `if (side && Vector3.Dot(_hits[i].point - _feet, _viewAhead) > -SideProbeMargin) continue;`
+  Change it to: `if (side && Vector3.Dot(_hits[i].point - _feet, _viewAhead) < SideProbeMargin) continue;`
+  Explanation: The comment states a side ray should only cut when the hit lies at least `SideProbeMargin` in front of the survivor. The original check uses the opposite inequality and a negative margin, causing almost all side hits to be discarded, so walls beside or behind the player remain visible when they should be hidden. After the fix, side probes will correctly hide walls only when the hit is sufficiently forward, eliminating visual clipping while preserving intended cut‑away behavior.
+  All other code remains unchanged.
+  - 08:32 landed by 1htsserver in 1.3 min: **Changed**
+- [x] Cache the `WeatherSystem` singleton in `FarmPlot` and use the cached reference in the per‑frame growth simulation (Assets/Scripts/World/FarmPlot.cs)
+  Add a private field `private WeatherSystem _weather;`
+  Set `_weather = WeatherSystem.Instance;` in `OnEnable` (or `Awake`) after the base call.
+  Replace the line `float rain = WeatherSystem.Instance != null ? WeatherSystem.Instance.RainIntensity : 0f;` in `Advance()` with `float rain = _weather != null ? _weather.RainIntensity : 0f;`.
+  This removes the per‑frame lookup of the singleton, eliminating unnecessary FindObject‑type work while keeping visual behavior unchanged.
+  - 08:35 landed by hts-llm in 2.2 min: **Changes made**
+- [x] Add an “Open washing machine” action to Assets/Scripts/World/Fixtures/RaidHomeWasher.cs that works when the washer isn’t running, opens the drum storage and gives the player a brief description.
+  modify `GetActions` (the `if (_running) { … } else { … }` block) to insert after the existing “Read the dial” line:
+  `into.Add(new InteractAction("Open washing machine", OpenDoor)`
+  `.DisabledIf(_drum != null && _drum.IsOpen, "It's already open"));`
+  add a new private method below `ReadDial`:
+  - 08:48 landed by 1htsserver in 13 min: **Changes made**
+- [x] Append five new comforting tidy‑up lines to the `CivicReading.Tidying` string array in Assets/Scripts/World/Fixtures/RaidCivicFridge.cs
+  The array currently ends with:
+  `"You stack the loose papers and tuck them in at the end of the shelf.",`
+  Add the following entries (each a whole sentence in quotes) after that line:
+  `"You dust the lower shelves; the quiet scrape feels like a sigh of relief."`
+  `"You align the bookmarks, their tiny tabs forming a neat row of colors."`
+  `"You straighten the scattered pens, their caps clicking into place."`
+  `"You slide the index cards back into their holder, the soft thud echoing in the quiet room."`
+  `"You smooth the worn carpet runner, feeling the fibers settle under your hand."`
+  - 08:37 landed by hts-llm in 2.3 min: Implemented the requested additions:
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Economy/MoralLedger.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 08:48 landed by 0htsserver in 13.1 min: Added concise one‑sentence XML summaries to every public method and property in **Assets/Scripts/Economy/MoralLedger.cs** that previously la
+- [x] Add thin worn‑metal side strips to the helicopter fuselage in Assets/Scripts/World/Zone/Helicopter.cs, inside `HelicopterModel.Build` after the main ellipsoid is created.
+  Insert two `m.Box` calls that place narrow metal panels on each side of the fuselage to suggest riveted seams and age‑wear.
+  `// side‑panel seams – thin worn metal strips`
+  `m.Box(new Vector3(2.48f, 1.7f, 0f), new Vector3(0.02f, 1.2f, 6.0f), DecorPalette.Metal(hull * 0.6f));`
+  `m.Box(new Vector3(-2.48f, 1.7f, 0f), new Vector3(0.02f, 1.2f, 6.0f), DecorPalette.Metal(hull * 0.6f));`
+  These panels are ≈ 2 cm thick, 1.2 m tall and 6 m long, positioned just inside the fuselage ellipsoid (`m.Ellipsoid(new Vector3(0f, 1.7f, 0f), new Vector3(2.5f, 2.3f, 7.6f), …)`).
+  Use the existing `hull` colour multiplied by 0.6 to give a darker, weathered metal look; keep colliders and interaction points unchanged.
+  - 08:39 landed by hts-llm in 1.9 min: **Changed file**
+- [x] Fix the “water restarts automatically after the mains are restored while the player is still in the shower” bug in Assets/Scripts/World/Fixtures/ShowerFixture.cs
+  In `WhileShowering` the code only notifies the player and stops the job when the mains go off, but it leaves `_on` true. The next time `WaterMains.MainsOn` becomes true the shower will start spraying again even though the player never turned it back on, breaking immersion.
+  Change the branch that handles `!WaterMains.MainsOn` to also turn the shower off via `SetOn(false, false)` (which also resets the lever and clears the spray).
+  `private void WhileShowering(InteractContext ctx, float dt, float progress)`
+  `{`
+  `if (!WaterMains.MainsOn)`
+  `{`
+  `ctx.Notify("The spray splutters and dies. The water's been shut off.");`
+  `// Turn the shower off so it won't magically restart when the mains come back on`
+  - 08:40 landed by hts-llm in 1.1 min: **Changed file:** `Assets/Scripts/World/Fixtures/ShowerFixture.cs`
+- [x] In Assets/Scripts/Survival/Diseases.cs: Cache the frequently accessed `SandboxSettings.Current` reference in `PlayerDiseases` to avoid per‑frame property lookups in `Update`
+  Add a private field `private SandboxSettings _sandboxSettings;` filled in `Awake()` (`_sandboxSettings = SandboxSettings.Current;`).
+  Replace each occurrence of `SandboxSettings.Current.Diseases` in `Update()` with `_sandboxSettings.Diseases`.
+  The player sees no change – disease‑catching logic still runs only when the setting is enabled, but the per‑frame cost of repeatedly fetching the static `Current` property is eliminated.
+  - 08:47 landed by hts-llm in 5.4 min: Modified **Assets/Scripts/Survival/Diseases.cs**
+- [x] In Assets/Scripts/World/Fixtures/RaidStoreWaterCooler.cs: Add a “Listen for glug” action to RaidStoreWaterCooler.GetActions that tells the player whether the cooler still has water, re‑using the same messages shown when water is drawn.
+  - 08:50 landed by hts-llm in 3.4 min: **Changed file**
+- [x] In Assets/Scripts/Core/Broadcasts.cs, edit the `Schedule` entry for Channel 4 where `Days(1, 1, …)` is defined and append 5 new string sentences to its `Lines` array (the list of whole‑sentence quotes).
+  Use the existing entry `"Police are asking residents to lock their doors and stay off the roads until morning."` as the style reference.
+  The new sentences should cover these themes:
+  Winter‑time safety (e.g., icy sidewalks, heating advice)
+  Local supply shortages (e.g., fuel, canned goods)
+  Community solidarity messages (e.g., checking on neighbours)
+  Outbreak‑related caution (e.g., avoiding crowds, symptoms)
+  A brief nod to regional folklore or a local landmark to reinforce setting authenticity.
+  - 08:52 landed by 1htsserver in 3.8 min: **Summary**
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Player/PlayerFarming.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 08:51 landed by 0htsserver in 2 min: Added concise one‑sentence `/// <summary>` XML docs to every public property in **Assets/Scripts/Player/PlayerFarming.cs** that was missing 
+- [x] In Assets/Scripts/World/Zone/ZoneOverlays.cs, modify ZoneIndustry.Build inside the *pipe runs on trestles* loop to add a few rust‑stained bolt heads on each rectangular pipe‑support box.
+  - 08:54 landed by 0htsserver in 3.5 min: **Changed file**
+- [~] Fix a compilation‑breaking typo in `FurnitureBuilder.ToolBench` (Assets/Scripts/World/FurnitureBuilder.Utility.cs)
+  The `for`‑loop that adds random tool‑box decorations contains an extra closing parenthesis, breaking the `m.Box` call and preventing the script from compiling.
+  Current line:
+  `m.Box(new Vector3(R(rng, -0.2f, 0.6f), 0.93f, R(rng, -0.2f, 0.25f)), new Vector3(R(rng, 0.04f, 0.2f), 0.025f, 0.04f), Yaw(R(rng, 0f, 180f)), Mt(new Color(0.4f, 0.4f, 0.42f)));`
+  *Fix:* remove the stray `)` after the position `Vector3` so the call has the correct four arguments. The corrected line should be:
+  `m.Box(new Vector3(R(rng, -0.2f, 0.6f), 0.93f, R(rng, -0.2f, 0.25f)), new Vector3(R(rng, 0.04f, 0.2f), 0.025f, 0.04f), Yaw(R(rng, 0f, 180f)), Mt(new Color(0.4f, 0.4f, 0.42f)));`
+  *Result:* the script compiles, allowing the tool‑bench to appear with its randomly placed tool‑box decorations; the rest of the game’s visuals remain unchanged.
+  - 08:57 1htsserver made no changes: **Changed file**
+- [x] Add a small metal “logo plate” detail to each vending machine built in `VendingAt(RaidBuilding b, RaidRoom room, RaidBuilding.Place p, bool lit)` in Assets/Scripts/World/RaidLayoutsOffice.cs
+  Add a thin rectangular box (≈0.10 m × 0.02 m × 0.001 m) on the front face, slightly above the coin slot, with a tiny random horizontal offset so every machine looks a bit different.
+  Insert the following code right after the existing coin‑slot PieceAt call (preserving the existing comment):
+  `// Small metal logo plate above the coin slot, random horizontal jitter`
+  `float logoX = (float)(b.Rng.NextDouble() * 0.04 - 0.02);`
+  `Vector3 logoPos = new Vector3(logoX, 1.4f, 0.41f);`
+  `KitchenParts.PieceAt(t, "VendingLogo", f, logoPos,`
+  `m => { m.Box(Vector3.zero, new Vector3(0.10f, 0.02f, 0.001f),`
+  `DecorPalette.Metal(FurnitureBuilder.Chrome)); });`
+  - 08:55 landed by hts-llm in 1.7 min: **Changed file**
+- [x] Cache the per‑frame GetComponent lookups in Assets/Scripts/Player/PlayerController.cs by assigning the PlayerSeat, PlayerSkills, PlayerCombat and PlayerInventory components once in Awake and removing the redundant null‑checks in HoldWhileSeated and Move.
+  In Awake after the existing component fetches, add:
+  `_seat = GetComponent<PlayerSeat>();`
+  `_skills = GetComponent<PlayerSkills>();`
+  `_combat = GetComponent<PlayerCombat>();`
+  `_inventory = GetComponent<PlayerInventory>();`
+  Delete the line `if (_seat == null) _seat = GetComponent<PlayerSeat>();` from HoldWhileSeated.
+  Delete the blocks `if (_skills == null) _skills = GetComponent<PlayerSkills>();` and `if (_combat == null) _combat = GetComponent<PlayerCombat>();` from Move.
+  Delete the block `if (_inventory == null) _inventory = GetComponent<PlayerInventory>();` from Move.
+  - 08:57 landed by 0htsserver in 2.7 min: **Changes made**
+- [x] In Assets/Scripts/World/Fixtures/BreakerPanel.cs: Add a tiny “Inspect breaker panel” action to BreakerPanel.GetActions so the survivor can see whether the panel’s door is open or closed.
+  In `BreakerPanel.cs` edit the `GetActions` method (currently ending with `into.Add(new InteractAction("Check the power", CheckPower));`).
+  Insert a new line after that call, before the method’s closing brace:
+  `into.Add(new InteractAction("Inspect breaker panel", c => c.Notify(_open ? "The panel's door is ajar." : "The panel's door is shut.")));`
+  The new action will appear alongside “Check the power” in the interaction menu and will simply display a notification about the door state.
+  No other code, UI screens, or assets need to change.
+  - 08:57 landed by hts-llm in 1 min: Changed **Assets/Scripts/World/Fixtures/BreakerPanel.cs**:
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/AI/Creatures/CreatureContent.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 09:04 landed by hts-llm in 7.7 min: Added concise one‑sentence `/// <summary>` XML docs to all public members in **CreatureContent.cs** that lacked them:
+- [x] In Assets/Scripts/World/ItemMeshBaker.cs: Fix ItemMeshBaker.Get to avoid caching a null Baked result, which currently prevents later model look‑ups for items that initially have no bespoke model.
+  - 08:59 landed by 1htsserver in 1.2 min: **Changed file**
+- [x] In Assets/Scripts/Player/PlayerHydration.cs: Optimize PlayerHydration.Update by caching the nearest water‑point lookup instead of calling WaterPoints.Nearest every frame.
+  Add a private field `Vector3 _lastPos;` and a constant `const float CheckDistance = 0.5f;` to PlayerHydration.
+  In Awake initialise `_lastPos = transform.position;`.
+  In Update, after the early‑exit checks, compute `float moved = Vector3.Distance(_lastPos, transform.position);`.
+  If `moved < CheckDistance` skip `Evaluate()` and preserve the previous `_source`, `_fill` and `Prompt` values; otherwise call `Evaluate()` and set `_lastPos = transform.position;`.
+  This reduces per‑frame work of `WaterPoints.Nearest`, which searches all IWaterPoint objects, while the displayed prompt and interaction behaviour remain unchanged for the player.
+  - 09:04 landed by 1htsserver in 5.1 min: **Changed file**
+- [x] Add a second interaction “Inspect lamp” to Assets/Scripts/World/Fixtures/LampSwitch.cs by extending LampSwitch.GetActions and adding a small private method.
+  - 09:02 landed by 0htsserver in 1.7 min: **Changed files**
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/RaidCivicSink.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 09:06 landed by 0htsserver in 4.3 min: Added concise one‑sentence XML‑summary comments for every public member of **Assets/Scripts/World/Fixtures/RaidCivicSink.cs** that lacked do
+- [x] Fix a potential out‑of‑range exception in `Dsp.CrossfadeLoop` (Assets/Scripts/Audio/Synth/SynthCore.cs)
+  · The method assumes `loopLen <= x.Length` and does `Array.Copy(x, o, loopLen);` which throws if a longer loop length is requested.
+  · Add a guard that caps `loopLen` to `x.Length` before allocating and copying, e.g. `if (loopLen > x.Length) loopLen = x.Length;`.
+  · Keep the existing cross‑fade logic unchanged; it will now safely handle oversize requests without crashing.
+  · After the fix, calling `CrossfadeLoop` with any `loopLen` will never raise an exception, so loops used for seamless audio playback will always succeed.
+  · No other code changes are required.
+  - 09:07 landed by 1htsserver in 1.4 min: **Changed file**
+- [x] Add a small metal nozzle and a glass‑like gauge to the 1990s gas pump in Assets/Scripts/World/DecorProps.cs to give the pump a lived‑in, functional look.
+  In `DecorProps.GasPump` after the `for (int s = -1; s <= 1; s += 2) { … }` loop and before the final snow‑capped top box, insert:
+  `float nozzleLen = R(rng, 0.20f, 0.28f); // length variation`
+  `Quaternion nozzleRot = Quaternion.Euler(0f, R(rng, -12f, 12f), 0f); // slight yaw`
+  `Vector3 nozzlePos = new Vector3(0f, 1.55f, 0.34f) + nozzleRot * new Vector3(0f, 0f, nozzleLen * 0.5f);`
+  `m.Cylinder(nozzlePos, 0.018f, nozzleLen, 6, Mt(new Color(0.15f, 0.15f, 0.15f)), nozzleRot, 0.8f); // metal nozzle`
+  `Vector3 gaugePos = nozzlePos + nozzleRot * new Vector3(0f, 0f, nozzleLen * 0.5f + 0.02f);`
+  `m.Ellipsoid(gaugePos, new Vector3(0.04f, 0.04f, 0.04f), Gs(new Color(0.20f, 0.60f, 0.80f)), 8, 4); // glass gauge`
+  These 2 new primitives (one cylinder, one ellipsoid) use the existing `rng` for size/rotation variation, keep existing materials and colliders, and stay within the 12‑primitive limit.
+  - 09:19 landed by 1htsserver in 11.7 min: Implemented a metal nozzle and glass‑like gauge on the 1990s gas pump:
+- [x] Cache singleton lookups in Assets/Scripts/Player/Stealth.cs to avoid per‑frame property calls
+  Add three private fields (e.g. `_gear`, `_tod`, `_mods`) to store `PlayerGear.Instance`, `TimeOfDay.Instance` and `PlayerModifiers.Current` in `Start()` (or `Awake`).
+  Replace every per‑frame use of `PlayerGear.Instance`, `TimeOfDay.Instance` and `PlayerModifiers.Current` with the cached fields.
+  Update the ambient‑light block to use `_tod` instead of `TimeOfDay.Instance`.
+  Update the gear‑light block to use `_gear` instead of `PlayerGear.Instance`.
+  Update the final visibility/noise multipliers to use `_mods` instead of `PlayerModifiers.Current`.
+  This removal of three static singleton lookups each Update reduces allocation‑free overhead without changing any visual or gameplay outcome.
+  - 09:13 landed by 0htsserver in 4.3 min: Implemented caching of frequently accessed singleton instances in **Stealth.cs**:
+- [x] In Assets/Scripts/World/Fixtures/SeatFixture.cs: Add an “Inspect seat” action to SeatFixture.GetActions that tells the survivor the seat’s comfort level when they are not already sitting
+  Modify the `GetActions` method in Assets/Scripts/World/Fixtures/SeatFixture.cs
+  After the line `into.Add(new InteractAction(_sitLabel, SitDown));` insert:
+  `into.Add(new InteractAction("Inspect seat", c => c.Notify($"This seat feels {(int)(_comfort * 100)}% comfortable.")));`
+  The new action appears only when the player is standing, letting them read a short message about the seat’s comfort; no other behavior changes.
+  - 09:10 landed by hts-llm in 1.3 min: **Changed:** `Assets/Scripts/World/Fixtures/SeatFixture.cs` – added an “Inspect seat” action after the existing sit action. The new action d
+- [x] Append six new entries to the `CivicDialLines` array in Assets/Scripts/World/RaidBuilding.Civic.cs
+  Insert the following quoted strings after the last existing line (after `"You try a birthday, then 1-2-3-4. Nothing — not that it matters: the bolts are already drawn back."`):
+  `"The dial spins with a faint whir; a half‑written note beside it reads “Set to 12‑03‑87 for the generator.”"`
+  `"A scrawl in faded ballpoint ink says “Emergency: keep dial on 4‑7‑1 during storms.”"`
+  `"The metal clicks as you turn it, and a torn Post‑It clings: “Do not twist past 9— lock will jam.”"`
+  `"A cheap laminate sticker peels from the dial: “Backup code 6‑2‑5 for water pump.”"`
+  `"You hear a hollow thump; the dial bears a rust‑stained label: “Keep at 0 for night‑shift power‑down.”"`
+  `"A smear of oil covers the edge; the last scribble reads “Rotate clockwise to reset HVAC.”"`
+  These entries keep the terse, present‑tense, period‑appropriate tone of the existing lines and expand the variety of cryptic notes a survivor might find on the dial.
+  - 09:12 landed by hts-llm in 1.6 min: **Changed**
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Player/PlayerCombat.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 09:15 landed by hts-llm in 3.3 min: Added concise one‑sentence XML summaries to the public members of **PlayerCombat.cs** that lacked them:
+- [x] Fix null SaveKey in Assets/Scripts/World/Fixtures/LivingReceiver.cs so saving/loading never throws a NullReferenceException
+  Current line: `public override string SaveKey => _host != null ? KeyFor(SaveKind, _host.position) : null;`
+  When the fixture is instantiated but Init has not yet run, _host is null, so SaveKey returns null. The save system later uses this value as a dictionary key, causing a NullReferenceException or key‑collision errors.
+  Change the getter to always return a valid key, falling back to the component’s own transform when the host is missing:
+  - 09:15 landed by 0htsserver in 1.1 min: **Changed**
+- [x] Add a small metal front‑handle to spawned locker containers in Assets/Scripts/Items/LootContainer.cs, editing the `LootContainer.Spawn` method
+  After the line `GameObject go = CloneZUtil.Box(name, position, size, color, parent);` insert a block that:
+  Computes the floor Y with `BuildPiece.FloorTopAt(position)` like `var floor = position; floor.y = BuildPiece.FloorTopAt(floor);`
+  Creates a deterministic‑random `System.Random` (e.g. `var rng = new System.Random(1994);`) and, if `rng.NextDouble() < 0.7`, adds a handle mesh:
+  - 09:23 landed by 0htsserver in 6.9 min: **Changed file**
+- [x] In Assets/Scripts/World/Interaction/StorageFixture.cs: Cache the per‑frame lookup of the player interactor in `StorageFixture` to avoid a `PlayerInteractor.Current` call each Update frame
+  Add a private field `private PlayerInteractor _player;` to the class.
+  Create an `Awake()` method (or add to an existing initializer) that sets `_player = PlayerInteractor.Current;`.
+  Replace the line `PlayerInteractor pi = PlayerInteractor.Current;` in `Update()` with `PlayerInteractor pi = _player;`.
+  Optionally, guard against a null player after respawn by adding `if (_player == null) _player = PlayerInteractor.Current;` at the start of `Update()`.
+  The player sees no visual change; the storage still opens when looked at from the inventory, but the per‑frame overhead of a singleton lookup is eliminated.
+  - 09:21 landed by hts-llm in 4.9 min: All changes compile.Implemented a cached `PlayerInteractor` reference in `StorageFixture` to eliminate per‑frame singleton lookups.
+- [~] Make sure there are graphics for every item in the game.
+  - 09:22 1htsserver made no changes: Implemented no code changes – the existing rendering pipeline already guarantees a visual representation for every item:
+- [x] Add a “Wipe the seat” interaction to the toilet fixture (Assets/Scripts/World/Fixtures/ToiletFixture.cs)
+  In `GetActions` after the existing seat toggle line
+  `into.Add(new InteractAction(_seatUp ? "Put the seat down" : "Lift the seat", c => SetSeat(!_seatUp)));`
+  insert
+  `into.Add(new InteractAction("Wipe the seat", WipeSeat));`
+  Add a private method at the end of the class:
+  `private void WipeSeat(InteractContext ctx) {`
+  ` ctx.Notify("You wipe away grime from the cold porcelain.");`
+  ` // a small calming effect, re‑using the existing toilet‑use calm value`
+  - 09:27 landed by hts-llm in 5.7 min: **Changes made**
+- [x] In Assets/Scripts/Hub/HubNpc.cs, extend the `"merc"` entry in the `Lines` dictionary by appending five new sentences that keep the terse, world‑weary tone (example style: “Two of us see twice as much.”) and cover themes of winter travel hazards, rumors about the Zone, the merc’s pricing quirks, loyalty to whoever pays, and a warning about over‑reaching into the snow‑bound ruins.
+  Add `"The roads are slick with ice; a slip can get you buried before you draw a weapon."`
+  Add `"I've heard the old well under the ice still whispers, and the dead listen."`
+  Add `"My fee climbs with the wind—extra for a night that drifts like a white shroud."`
+  Add `"I'll fight for the highest bidder, but I won’t turn my back on a comrade in a blizzard."`
+  Add `"Don't chase a shadow through the snowbank unless you’re ready to become one."`
+  - 09:24 landed by 1htsserver in 1.9 min: **Changed file**
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Vehicles.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 09:36 landed by 0htsserver in 12.7 min: **Summary of changes**
+- [x] Add a small lever‑handle graphic to the “Drop All” button in Assets/Scripts/UI/InventoryUIController.cs → `Build()`
+  Create a child RectTransform under the button returned by
+  `MakeButton(_window, new Vector2(0f, 1f), new Vector2(18f, -14f), new Vector2(130f, 34f), "Drop All", new Color(0.42f, 0.26f, 0.18f), DropAllStacks);`
+  Size ≈ 0.006 × 0.012 metres (6 × 12 px) – a thin metal lever.
+  Anchor = (0, 0.5) with pivot = (0, 0.5) so it sits at the left edge, centred vertically.
+  Local position = (4 px, 0) relative to the button’s RectTransform.
+  Add an Image component coloured `new Color(0.4f, 0.3f, 0.2f, 1f)` (aged metal/twisted‑steel tone) – reuses Unity’s default UI material.
+  No new colliders or interaction code; the lever is purely decorative and respects existing layout.
+  - 09:26 landed by 1htsserver in 2.1 min: **Changed**
+- [x] Add a tiny metal latch/handle to the glass‑door drinks cooler in Assets/Scripts/World/RaidLayoutsStore.cs, method `DrinksCoolerAt`.
+  Inside the fixture‑body lambda, after `FurnitureBuilder.MartCoolerBody(m, r, lit)`, insert a conditional box primitive that serves as a small door handle.
+  Use `if (b.Rng.NextDouble() < 0.5)` to make the handle appear on roughly half the coolers, keeping visual variation deterministic.
+  Create the handle with `m.Box(new Vector3(0f, 1.07f, 0.97f), new Vector3(0.03f, 0.02f, 0.02f), DecorPalette.Matte(new Color(0.20f, 0.23f, 0.21f)))` – a dark‑steel coloured box positioned just in front of the door near its mid‑height.
+  No new colliders or interaction points are added; the handle is purely decorative and respects the existing 12‑primitive limit.
+  - 09:30 landed by 1htsserver in 3.3 min: **Changed**
+- [x] Cache the nearest farm plot lookup in Assets/Scripts/Player/PlayerFarming.cs to avoid calling `FarmPlot.Nearest` every frame when the player hasn’t moved.
+  - 09:31 landed by hts-llm in 3.5 min: Implemented a cheap cache for the nearest farm plot:
+- [x] Update Assets/Scripts/World/Fixtures/RaidTownGasPump.cs · RaidTownGasPump.GetActions to only add the “Tap the nozzle” action when the nozzle is lifted, removing the dead‑end option while the nozzle is in its cradle.
+  Add a conditional around the existing line `into.Add(new InteractAction("Tap the nozzle", TapNozzle));` so it becomes `if (_lifted) into.Add(new InteractAction("Tap the nozzle", TapNozzle));`.
+  Leave the other three actions (“Lift/Hang the nozzle”, “Read the dials”, “Sniff the hose”) unchanged.
+  Result: when the player approaches the pump with the nozzle down, the UI will no longer show “Tap the nozzle”, preventing a useless prompt; once lifted, the action reappears as before.
+  All other code, fields, and messages remain exactly as they are.
+  - 09:31 landed by 1htsserver in 1.5 min: **Changed file**
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/AI/Creatures/PlayerMonster.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 09:38 landed by hts-llm in 7.8 min: Added `/// <summary>` one‑sentence documentation to every public method and property in **Assets/Scripts/AI/Creatures/PlayerMonster.cs** tha
+- [x] Add small brass hinge caps to each sash in `Assets/Scripts/World/StarterHome.Windows.cs` → `WindowSash` method, after the line
+  `m.Box(f.P(f.Mid, gy, across), f.Size(w - 0.09f, glass, 0.006f), DecorPalette.Glass(SashGlass));`
+  Declare `Surf brass = DecorPalette.Metal(FurnitureBuilder.Brass);`.
+  Loop `for (int e = -1; e <= 1; e += 2)` and add
+  `m.Box(f.P(f.Mid + e * (w * 0.5f - 0.0225f), y1 - topRail * 0.5f, across), f.Size(0.015f, 0.015f, 0.01f), brass);`.
+  Each box is a 1.5 cm × 1.5 cm × 1 cm brass plate positioned at the inner edge of the top rail, giving period‑correct hinge detail.
+  No change to colliders, interaction points or pivots; only two new primitives per sash.
+  - 09:35 landed by 1htsserver in 4 min: **Changed Files**
+- [x] Add a thin matte‑black rubber gasket strip to each side of the shower door in Assets/Scripts/World/FurnitureBuilder.Bathroom.cs, method ShowerDoor
+  Insert two `m.Box` calls after the glass panel `m.Box(new Vector3(-0.205f, ym, z), new Vector3(0.426f, h, 0.008f), glass);`.
+  Use colour `M(new Color(0.07f,0.07f,0.07f))` for the strip material.
+  Left strip: `m.Box(new Vector3(-0.205f - 0.005f, ym, z), new Vector3(0.002f, h, 0.01f), M(new Color(0.07f,0.07f,0.07f)));`.
+  Right strip: `m.Box(new Vector3(-0.205f + 0.426f + 0.005f, ym, z), new Vector3(0.002f, h, 0.01f), M(new Color(0.07f,0.07f,0.07f)));`.
+  These strips add a subtle seal line while leaving colliders and interaction points unchanged.
+  - 09:37 landed by 1htsserver in 1.5 min: **Changed file**
+- [x] Add an “Inspect water level” action to Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs that tells the player the exact amount of water remaining in the heater’s tank.
+  - 09:41 landed by 0htsserver in 4.4 min: **Changed files**
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Zone/Uncanny.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 09:50 landed by hts-llm in 11.6 min: Added concise `/// <summary>` documentation to every public method and property in **Assets/Scripts/World/Zone/Uncanny.cs** that previously 
+- [x] In Assets/Scripts/World/Zone/ZoneCordon.cs: Add a slight weathered‑metal plate on some fence posts in `ZoneCordon.Build` to give the cordon a more worn, period‑correct look.
+  In the loop that creates each post (`fence.Solid.Box(post + Vector3.up * 1.25f, new Vector3(0.09f, 2.5f, 0.09f), ZoneKit.Mt(ZoneKit.Galvanised))`) insert a conditional block that, with a small deterministic chance, places a thin rust‑coloured plate on the outward‑facing side of the post.
+  `// 12 % chance per post to show a rusted metal plate on its outer face`
+  `if (ZoneKit.R(rng, 0f, 1f) < 0.12f)`
+  `{`
+  `// size 0.08 m × 0.02 m × 0.001 m, positioned 0.9 m above ground,`
+  `// offset outward by half the post width (0.045 m) so it sits on the front surface`
+  `fence.Solid.Box(`
+  `post + Vector3.up * 0.9f + normal * 0.045f,`
+  - 09:42 landed by 1htsserver in 1.8 min: Added a conditional 12 % chance to attach a thin rust‑colored metal plate to each fence post in **ZoneCordon.Build**. The plate is positione
+- [x] Fix the `CreatureBody.Driven` property in Assets/Scripts/AI/Creatures/Creatures.cs so external speed/attack/cloak control works even when a `Creature` component is present on the same GameObject.
+  *Current code* (`Driven` getter):
+  `public bool Driven => _c == null && (ExternalSpeed01 > 0f || ExternalAttack || ExternalCloak || _driven);`
+  *Problem*: The `_c == null` guard prevents the body from entering “driven” mode if a `Creature` component exists, even when external scripts set `ExternalSpeed01`, `ExternalAttack` or `ExternalCloak`. This stops network‑proxy or AI‑override systems from animating the body, leaving the creature frozen despite receiving external inputs.
+  *Fix*: Remove the `_c == null` requirement so the property reflects any active external control regardless of the presence of a `Creature` component. Replace the getter with:
+  `public bool Driven => ExternalSpeed01 > 0f || ExternalAttack || ExternalCloak || _driven;`
+  *Result*: When external code sets speed, attack, or cloak flags, `CreatureBody.LateUpdate` will recognise the body as driven and apply the correct animation and cloak state, preventing the creature from appearing dead‑locked or invisible when it should be moving under external control. All other behaviour remains unchanged.
+  - 09:46 landed by 0htsserver in 1.1 min: **Changed file**
+- [x] Add a thin chrome edge strip to each kitchen cupboard door built in FurnitureBuilder.KitchenCupboardDoor (Assets/Scripts/World/FurnitureBuilder.Kitchen.cs) to give the painted panel a realistic metal border.
+  - 09:51 landed by 0htsserver in 5.1 min: Implemented a thin chrome edge strip around each kitchen cupboard door in `FurnitureBuilder.Kitchen.cs`. The compilation now succeeds (`COMP
+- [x] Cache the survivor lookup in Assets/Scripts/Rendering/RoomLight.cs to avoid per‑budget GameManager and Camera.main searches.
+  Add a private static Transform field `_survivorTransform` to store the last‑found survivor target.
+  In `TryGetSurvivor` first check `if (_survivorTransform != null && _survivorTransform.gameObject != null)` and return its `.position`.
+  If the cache is missing or the object was destroyed, resolve it exactly as before (try `GameManager.Instance?.Player?.transform` then `Camera.main?.transform`) and assign the result to `_survivorTransform` for future calls.
+  Replace the existing body of `TryGetSurvivor` with this cached logic, keeping the same out‑parameter signature and return values.
+  The player sees no visual change; the light‑budget calculation now reuses the cached Transform instead of performing a costly `GameManager.Instance` lookup and a `Camera.main` search each budget tick.
+  - 09:48 landed by 1htsserver in 2.4 min: **Changed files**
+- [x] In Assets/Scripts/World/Fixtures/MailboxFixture.cs: Add a subtle “hope” notification after the last mail item is read in `MailboxFixture.ReadNext()` (modify the `Run` lambda).
+  - 09:50 landed by 1htsserver in 1.2 min: **Changed**
+- [~] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/KitchenSink.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 09:57 1htsserver made no changes: The KitchenSink file only has public method DrawWater (already summarized) and internal static Attach (has summary), and GetActions override
+- [x] Make the current opensource map the most detailed!!!
+  - 09:57 landed by 0htsserver in 6.1 min: **What changed**
+- [x] Fix the focus‑label update in `Assets/Scripts/UI/HudInteraction.cs` so the label text isn’t refreshed every frame.
+  - 09:53 landed by hts-llm in 1.1 min: **Changed**
+- [x] Add a small “blood‑splotch” detail to each zombie in Assets/Scripts/Zombies/ZombieAI.cs inside the `Configure(ZombieType type)` method, using the same deterministic random source as the existing rust patches, to give the zombie’s face a gritty, period‑appropriate wound‑mark.
+  - 09:56 landed by hts-llm in 2.8 min: **Changed**
+- [x] Reduce per‑second allocations in `HudQuestTracker.Update` (Assets/Scripts/Quests/QuestBook.cs) by reusing a `StringBuilder` and iterating the quest list without a `foreach`.
+  - 09:59 landed by hts-llm in 2.7 min: **Changed files**
+- [ ] In Assets/Scripts/World/Fixtures/RadioFixture.cs: Add a “Tune to the previous station” action to RadioFixture.GetActions and implement its handler.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/GroundItemRenderer.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 10:02 landed by 0htsserver in 4.7 min: Added concise XML‑style summaries to every public member in `Assets/Scripts/World/GroundItemRenderer.cs` that previously lacked documentatio
+- [x] Add tiny metal‑screw cylinders to each yard‑edge timber board in `StarterHome.Edging(RaidMesh m, Rect r)` of Assets/Scripts/World/StarterHome.Grounds.cs
+  After each `m.Box(..., wood);` call, insert two `m.Cylinder` primitives (radius 0.004 m, height 0.012 m) using the existing `wood` surface to represent small screws.
+  North edge board (`m.Box(new Vector3(r.center.x, 0.04f, r.yMin), new Vector3(r.width + 0.1f, 0.08f, 0.06f), wood);`) – place screws at the board’s left‑most and right‑most ends:
+  `m.Cylinder(new Vector3(r.center.x - (r.width + 0.1f) * 0.5f + 0.02f, 0.081f, r.yMin + 0.03f - 0.02f), 0.004f, 0.012f, 8, wood);`
+  `m.Cylinder(new Vector3(r.center.x + (r.width + 0.1f) * 0.5f - 0.02f, 0.081f, r.yMin + 0.03f - 0.02f), 0.004f, 0.012f, 8, wood);`
+  South edge board (`m.Box(new Vector3(r.center.x, 0.04f, r.yMax), …)`) – same offsets, using `r.yMax` instead of `r.yMin`.
+  West edge board (`m.Box(new Vector3(r.xMin, 0.04f, r.center.y), new Vector3(0.06f, 0.08f, r.height), wood);`) – place screws at the board’s near and far Z ends:
+  `m.Cylinder(new Vector3(r.xMin + 0.03f - 0.02f, 0.081f, r.center.y - r.height * 0.5f + 0.02f), 0.004f, 0.012f, 8, wood);`
+  `m.Cylinder(new Vector3(r.xMin + 0.03f - 0.02f, 0.081f, r.center.y + r.height * 0.5f - 0.02f), 0.004f, 0.012f, 8, wood);`
+  - 10:03 landed by hts-llm in 3.8 min: **Changes Made**
+- [ ] In Assets/Scripts/Core/SqliteSaveStore.cs: Fix `SqliteSaveStore.ReadPlayer` to initialise the player’s wound and inventory lists before adding to them, preventing a NullReferenceException when a saved game contains any wounds or items.
+  In `ReadPlayer`, after constructing the `PlayerSave p = new PlayerSave { … }`, insert:
+  `p.Wounds = new List<WoundSave>();`
+  `p.Items = new List<StackSave>();`
+  This ensures the loops `p.Wounds.Add(...)` and `p.Items.Add(...)` operate on a valid list even when the DB has rows.
+  With the fix, loading a save that includes wounds or inventory will no longer crash; the player will correctly regain wounds and items instead of the game aborting during load.
+  No other code changes are required.
+- [ ] Add four small metal lanterns with faint flame lights to the roof of the drowned chapel landmark (Assets/Scripts/World/Zone/ZoneLandmarks.cs, method `DrownedChapel(SiteBuilder sb)`).
+  ‑ Place each lantern near a roof corner, e.g. relative to the existing call
+  `sb.Roof.Box(new Vector3(0f, 4.2f, 0f), new Vector3(9.6f, 0.3f, 11.4f), ZoneKit.M(ZoneKit.WetWood));`
+  ‑ Create a box `0.2 m × 0.1 m × 0.2 m` (`new Vector3(0.2f, 0.1f, 0.2f)`) at positions `new Vector3(±4.5f, 4.35f, ±5f)` plus a tiny jitter `ZoneKit.R(sb.Rng, -0.1f, 0.1f)` on X/Z.
+  ‑ Use a metal colour `new Color(0.45f, 0.41f, 0.38f)` via `ZoneKit.M(...)`.
+  ‑ Spawn a flame light at `pos + new Vector3(0f, 0.15f, 0f)` with colour `new Color(1f, 0.6f, 0.2f)`, range 2 m, intensity 0.4, size 0.05 m (`ZoneFlameLight.Spawn`).
+  ‑ Keep colliders, interaction points and pivots unchanged; only add the new primitives (max 4 boxes) and associated flame lights.
+- [ ] In Assets/Scripts/Player/PlayerInteractor.cs: Cache the main camera in PlayerInteractor to avoid per‑frame `Camera.main` lookups
+  In `Awake()` add `_cam = Camera.main;` after the existing `GetComponent` calls.
+  In `Start()` (or after the existing context setup) also set `_cam = Camera.main` in case the camera isn’t yet present during Awake.
+  Remove the line `if (_cam == null) _cam = Camera.main;` from `UpdateFocus()` so the cached field is always used.
+  Keep the `_cam` field declaration unchanged; no other logic changes.
+  This eliminates a per‑frame search of the scene hierarchy for the main camera, improving performance with no visible effect for the player.

@@ -33,13 +33,20 @@ namespace CloneZ
     public sealed class PlayerMonster : MonoBehaviour, IStatModSource
     {
         public const int PayPerRunner = 1500, PayPerStalker = 300;
+        /// <summary>Singleton reference to the current player monster instance.</summary>
         public static PlayerMonster Local { get; private set; }
 
+        /// <summary>Reference to the creature definition that determines this monster's abilities and stats.</summary>
         public CreatureDef Def { get; private set; }
+        /// <summary>How ready the strike action is, expressed as 0‑1 where 1 means ready.</summary>
         public float StrikeReady01 => Mathf.Clamp01(1f - (_strikeAt - Time.time) / Mathf.Max(0.1f, StrikeCooldown));
+        /// <summary>How ready the ability action is, expressed as 0‑1 where 1 means ready.</summary>
         public float AbilityReady01 => Mathf.Clamp01(1f - (_abilityAt - Time.time) / Mathf.Max(0.1f, AbilityCooldown));
+        /// <summary>Whether the monster is currently in an attack animation.</summary>
         public bool Attacking => Time.time < _attackUntil;
+        /// <summary>Total money earned from hunting runners and stalkers.</summary>
         public int Earned { get; private set; }
+        /// <summary>Current sense range based on the monster type.</summary>
         public float SenseRange => Def != null && Def.Id == CreatureCatalog.Hound ? 40f : 25f;
 
         private float StrikeCooldown => Def.AttackCooldown * 0.8f;
@@ -53,6 +60,7 @@ namespace CloneZ
         private Vector3 _pounceDir, _lastPos;
 
         /// <summary>Turns the freshly built survivor into a hunter of <paramref name="form"/>.</summary>
+        /// <summary>Creates and returns a PlayerMonster for the given player stats and selected form.</summary>
         public static PlayerMonster Become(PlayerStats p, string form)
         {
             var m = p.gameObject.AddComponent<PlayerMonster>();
@@ -60,6 +68,7 @@ namespace CloneZ
             return m;
         }
 
+        /// <summary>Initialises the monster, setting up its definition, body, and UI.</summary>
         private void Begin(string form)
         {
             Local = this;
@@ -95,12 +104,14 @@ namespace CloneZ
             if (UnityEngine.Object.FindAnyObjectByType<HudHunter>() == null) HudHunter.Create();
         }
 
+        /// <summary>Handles the monster's death cleanup and event unsubscription.</summary>
         private void OnDestroy()
         {
             GameEvents.ActorKilled -= OnKilled;
             if (Local == this) Local = null;
         }
 
+        /// <summary>Per‑frame update handling movement, sense, input, and actions.</summary>
         private void Update()
         {
             if (Def == null || _stats == null || _stats.IsDead) { if (_body != null && _stats != null && _stats.IsDead) _body.Die(-transform.forward); return; }
@@ -128,6 +139,7 @@ namespace CloneZ
             if (mouse.rightButton.wasPressedThisFrame && Time.time >= _abilityAt) Ability();
         }
 
+        /// <summary>Direction the monster is facing, flattened to the horizontal plane.</summary>
         private Vector3 Facing
         {
             get
@@ -139,6 +151,7 @@ namespace CloneZ
         }
 
         // Claws (or teeth): everything hostile in a short arc in front.
+        /// <summary>Performs a strike attack with optional damage multiplier.</summary>
         private void Strike(float mult)
         {
             _strikeAt = Time.time + StrikeCooldown;
@@ -163,6 +176,7 @@ namespace CloneZ
             NoiseSystem.Emit(transform.position, 10f);
         }
 
+        /// <summary>Activates the monster's special ability based on its form.</summary>
         private void Ability()
         {
             _abilityAt = Time.time + AbilityCooldown;
@@ -189,6 +203,7 @@ namespace CloneZ
         }
 
         // Every mind within 12 m (that the pulse can reach) is hurt and shaken.
+        /// <summary>Emits a psi pulse that hurts and shakes enemies within range.</summary>
         private void PsiPulse()
         {
             Sfx.Play(SfxIds.PsiWhisper, transform.position, 1f, 0.8f, 40f);
@@ -203,6 +218,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Handles the monster killing another actor, paying the player and showing a toast.</summary>
         private void OnKilled(KillInfo k)
         {
             if (k.Killer != _actor || k.Victim == null) return;
@@ -214,6 +230,7 @@ namespace CloneZ
             GameEvents.RaiseToast("+" + Money.Format(pay) + " for " + k.Victim.DisplayName + ".");
         }
 
+        /// <summary>Applies the monster's stat modifiers to the provided object.</summary>
         public void ApplyMods(StatMods m)
         {
             if (Def == null) return;

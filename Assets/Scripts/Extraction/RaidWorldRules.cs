@@ -149,6 +149,7 @@ namespace CloneZ
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
+            into.Add(new InteractAction("Inspect the power switch", c => c.Notify("A rugged switch that powers freight‑gate exits.")));
             into.Add(new InteractAction(_thrown ? "The power is on" : "Throw the power switch", c =>
             {
                 if (_thrown) return;

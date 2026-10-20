@@ -55,9 +55,12 @@ namespace CloneZ
 
         /// <summary>The equipped firearm, or null when using melee / bare hands.</summary>
         public ItemDef EquippedFirearm { get; private set; }
+        /// <summary>Current ammo count loaded in the equipped firearm.</summary>
         public int LoadedAmmo { get; private set; }
         /// <summary>The kind of round in the magazine (any of the gun's calibre).</summary>
+        /// <summary>Identifier of the ammunition type currently loaded, matching the firearm's calibre.</summary>
         public string LoadedAmmoId { get; private set; }
+                /// <summary>Indicates whether the player is currently reloading their firearm.</summary>
         public bool IsReloading => _reloadTimer > 0f;
         /// <summary>Aiming down the sights (shoulder / first-person views, right button held).</summary>
         public bool AimingDownSights { get; private set; }

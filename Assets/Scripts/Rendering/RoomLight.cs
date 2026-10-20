@@ -62,6 +62,8 @@ namespace CloneZ
         private static readonly float[] s_NearestSqr = new float[MaxShadowedLights];
         private static float s_NextBudget;
         private static int s_BudgetFrame = -1;
+        // Cached survivor transform to avoid per‑budget lookups.
+        private static Transform _survivorTransform;
 
         /// <summary>Every live fitting (iterate with a for loop to stay allocation free).</summary>
         public static IReadOnlyList<RoomLight> All => s_All;
@@ -369,16 +371,26 @@ namespace CloneZ
 
         private static bool TryGetSurvivor(out Vector3 position)
         {
+            // Use cached transform if still valid.
+            if (_survivorTransform != null && _survivorTransform.gameObject != null)
+            {
+                position = _survivorTransform.position;
+                return true;
+            }
+
+            // Resolve anew.
             GameManager gm = GameManager.Instance;
             if (gm != null && gm.Player != null)
             {
-                position = gm.Player.transform.position;
+                _survivorTransform = gm.Player.transform;
+                position = _survivorTransform.position;
                 return true;
             }
             Camera cam = Camera.main;
             if (cam != null)
             {
-                position = cam.transform.position;
+                _survivorTransform = cam.transform;
+                position = _survivorTransform.position;
                 return true;
             }
             position = default;

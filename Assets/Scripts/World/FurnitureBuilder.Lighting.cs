@@ -206,6 +206,8 @@ namespace CloneZ
             m.Box(lamp, new Vector3(0.12f, 0.2f, 0.12f), q, M(new Color(0.72f, 0.64f, 0.44f)));
             for (int i = 0; i < 4; i++)
                 m.Box(lamp + q * new Vector3(i % 2 == 0 ? -0.062f : 0.062f, 0f, i < 2 ? -0.062f : 0.062f), new Vector3(0.016f, 0.21f, 0.016f), q, black);
+            // Chrome handle plate on front of carriage lantern
+            m.Box(lamp + normal * 0.07f + Vector3.up * 0.15f, new Vector3(0.022f, 0.018f, 0.004f), q, Mt(Chrome));
             if (snow)
             {
                 m.Box(lamp + Vector3.up * 0.15f, new Vector3(0.16f, 0.012f, 0.16f), q, M(DecorProps.SnowWhite));

@@ -41,8 +41,11 @@ namespace CloneZ
         private static bool Hot => PowerGrid.HousePowered;
 
         #region IWarmthSource
+        /// <summary>The world position that provides warmth from the shower.</summary>
         public Vector3 WarmthPosition => _middle;
+        /// <summary>Radius around the shower that provides warmth.</summary>
         public float WarmthRadius => CloneZConfig.ShowerWarmthRadius;
+        /// <summary>The amount of warmth the shower provides when running and hot.</summary>
         public float Warmth => Running && Hot ? CloneZConfig.ShowerWarmth : 0f;
         #endregion
 
@@ -230,12 +233,14 @@ namespace CloneZ
 
         private void WhileShowering(InteractContext ctx, float dt, float progress)
         {
-            if (!WaterMains.MainsOn)
-            {
-                ctx.Notify("The spray splutters and dies. The water's been shut off.");
-                if (ctx.Interactor != null) ctx.Interactor.StopJob();
-                return;
-            }
+if (!WaterMains.MainsOn)
+        {
+            ctx.Notify("The spray splutters and dies. The water's been shut off.");
+            // Turn the shower off so it won't magically restart when the mains come back on
+            SetOn(false, false);
+            if (ctx.Interactor != null) ctx.Interactor.StopJob();
+            return;
+        }
             if (Running) _underWater += dt;
         }
 

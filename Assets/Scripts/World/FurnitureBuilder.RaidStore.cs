@@ -44,6 +44,10 @@ namespace CloneZ
                 m.Box(new Vector3(0.2f + i * 0.04f, 1.047f, 0.3f), new Vector3(0.025f, 0.008f, 0.02f), M(new Color(0.3f, 0.3f, 0.32f)));
             m.Box(new Vector3(0.36f, 1.035f, 0.32f), new Vector3(0.05f, 0.026f, 0.004f), M(Black));
             m.Box(new Vector3(0.22f, 1.03f, 0.321f), new Vector3(0.05f, 0.02f, 0.004f), Gl(new Color(0.2f, 0.62f, 0.32f)));
+            // Small "COPY" paper label on the control panel
+            Color labelCol = V(new Color(0.92f, 0.90f, 0.80f), rng, 0.03f);
+            float labelYaw = R(rng, -3f, 3f);
+            m.Box(new Vector3(0.28f, 1.035f, 0.33f), new Vector3(0.07f, 0.005f, 0.001f), Yaw(labelYaw), M(labelCol));
         }
 
         /// <summary>The copier's lid (drawn shut), hinged at its back edge (<see cref="OfficeCopierLidHinge"/>).</summary>

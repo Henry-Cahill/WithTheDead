@@ -71,11 +71,11 @@ namespace CloneZ
 
             if (focus && Place(_focus.rectTransform, pi.FocusPoint + Vector3.up * LabelLift, Vector2.zero, false))
             {
-                if (!ReferenceEquals(_shownFocus, pi.FocusName))
-                {
-                    _shownFocus = pi.FocusName;
-                    _focus.text = _shownFocus;
-                }
+if (!string.Equals(_shownFocus, pi.FocusName))
+                    {
+                        _shownFocus = pi.FocusName;
+                        _focus.text = _shownFocus;
+                    }
             }
             else focus = false;
             if (_focus.enabled != focus) _focus.enabled = focus;

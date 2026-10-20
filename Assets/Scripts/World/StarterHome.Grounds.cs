@@ -151,9 +151,16 @@ namespace CloneZ
         {
             Surf wood = DecorPalette.Matte(Timber);
             m.Box(new Vector3(r.center.x, 0.04f, r.yMin), new Vector3(r.width + 0.1f, 0.08f, 0.06f), wood);
+                m.Cylinder(new Vector3(r.center.x - (r.width + 0.1f) * 0.5f + 0.02f, 0.081f, r.yMin + 0.03f - 0.02f), 0.004f, 0.012f, 8, wood);
+                m.Cylinder(new Vector3(r.center.x + (r.width + 0.1f) * 0.5f - 0.02f, 0.081f, r.yMin + 0.03f - 0.02f), 0.004f, 0.012f, 8, wood);
             m.Box(new Vector3(r.center.x, 0.04f, r.yMax), new Vector3(r.width + 0.1f, 0.08f, 0.06f), wood);
+                m.Cylinder(new Vector3(r.center.x - (r.width + 0.1f) * 0.5f + 0.02f, 0.081f, r.yMax + 0.03f - 0.02f), 0.004f, 0.012f, 8, wood);
+                m.Cylinder(new Vector3(r.center.x + (r.width + 0.1f) * 0.5f - 0.02f, 0.081f, r.yMax + 0.03f - 0.02f), 0.004f, 0.012f, 8, wood);
             m.Box(new Vector3(r.xMin, 0.04f, r.center.y), new Vector3(0.06f, 0.08f, r.height), wood);
+                m.Cylinder(new Vector3(r.xMin + 0.03f - 0.02f, 0.081f, r.center.y - r.height * 0.5f + 0.02f), 0.004f, 0.012f, 8, wood);
+                m.Cylinder(new Vector3(r.xMin + 0.03f - 0.02f, 0.081f, r.center.y + r.height * 0.5f - 0.02f), 0.004f, 0.012f, 8, wood);
             m.Box(new Vector3(r.xMax, 0.04f, r.center.y), new Vector3(0.06f, 0.08f, r.height), wood);
+                // No screws on far edge board (optional symmetry could be added)
         }
 
         // A rounded shrub of a few overlapping leaf clumps, now and then in flower.

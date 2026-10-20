@@ -420,7 +420,20 @@ namespace CloneZ
             {
                 case FocusKind.Pickup: TryPickUp(); break;
                 case FocusKind.Container: BeginOrOpen(Target); break;
-                case FocusKind.Fixture: RunPrimary(FixtureTarget); break;
+                case FocusKind.Fixture:
+                    // If the fixture has no actions, provide a fallback inspect notification.
+                    _actions.Clear();
+                    FixtureTarget.GetActions(_ctx, _actions);
+                    if (_actions.Count == 0)
+                    {
+                        Notify(FixtureTarget.DisplayName);
+                        // Skip performing any primary action.
+                    }
+                    else
+                    {
+                        RunPrimary(FixtureTarget);
+                    }
+                    break;
             }
         }
         #endregion
@@ -741,11 +754,11 @@ namespace CloneZ
                 PromptText = "[I]  Inventory";
         }
 
-        private string FixturePrompt(Interactable f)
+private string FixturePrompt(Interactable f)
         {
             _actions.Clear();
             f.GetActions(_ctx, _actions);
-            if (_actions.Count == 0) return f.DisplayName;
+            if (_actions.Count == 0) return "[E] Inspect";
             InteractAction first = FirstEnabled(_actions);
             string more = _actions.Count > 1 ? "     [Q]  More (" + _actions.Count + ")" : "";
             if (first != null) return "[E]  " + first.Label + more;

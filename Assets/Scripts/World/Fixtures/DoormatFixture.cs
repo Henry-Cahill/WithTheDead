@@ -51,6 +51,8 @@ namespace CloneZ
             ctx.Notify(muddy
                 ? "You stamp the worst of the mud and rain off your boots. The mat's seen worse."
                 : "You scuff your boots back and forth across the bristles. Somebody raised you right.");
+            if (ctx.Stats != null && ctx.Stats.Wetness > 0f)
+                ctx.Stats.Wetness = Mathf.Max(0f, ctx.Stats.Wetness - 0.15f);
         }
 
         private void LookUnder(InteractContext ctx)

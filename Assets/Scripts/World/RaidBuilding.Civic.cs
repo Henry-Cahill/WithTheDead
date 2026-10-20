@@ -24,7 +24,14 @@ namespace CloneZ
         {
             "You spin the dial through a few numbers for luck. Click, click, click. The handle was never locked.",
             "The dial turns smooth and heavy. Somebody left this open in a hurry, and you're not complaining.",
-            "You try a birthday, then 1-2-3-4. Nothing \u2014 not that it matters: the bolts are already drawn back.",
+"You try a birthday, then 1-2-3-4. Nothing \u2014 not that it matters: the bolts are already drawn back.",
+            "The dial spins with a faint whir; a half‑written note beside it reads “Set to 12‑03‑87 for the generator.”",
+            "A scrawl in faded ballpoint ink says “Emergency: keep dial on 4‑7‑1 during storms.”",
+            "The metal clicks as you turn it, and a torn Post‑It clings: “Do not twist past 9— lock will jam.”",
+            "A cheap laminate sticker peels from the dial: “Backup code 6‑2‑5 for water pump.”",
+            "You hear a hollow thump; the dial bears a rust‑stained label: “Keep at 0 for night‑shift power‑down.”",
+            "A smear of oil covers the edge; the last scribble reads “Rotate clockwise to reset HVAC.”",
+            
         };
 
         private static readonly string[] CivicRackLines =

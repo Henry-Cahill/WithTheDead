@@ -150,6 +150,8 @@ namespace CloneZ
                 if (_dressing != Dressing.None) into.Add(new InteractAction(DressingLabel, CurtainAction));
                 into.Add(new InteractAction(OutSide == 0 ? "Look through the window" : "Look outside", LookAction)
                     .Timed(CloneZConfig.WindowLookSeconds, "Looking outside", HumanoidActivity.Use));
+                // New inspect action added per task
+                into.Add(new InteractAction("Inspect the window", InspectWindow));
             }
             else into.Add(new InteractAction("Look inside", _lookInAct)
                 .Timed(CloneZConfig.WindowLookSeconds, "Peering inside", HumanoidActivity.Use)
@@ -337,6 +339,7 @@ namespace CloneZ
         #endregion
 
         // Peering in from outside: the dead in there, as far as the light allows and where nothing hides them.
+        // Peering in from outside: the dead in there, as far as the light allows and where nothing hides them.
         private void LookIn(InteractContext ctx)
         {
             if (CurtainsDrawn)
@@ -356,6 +359,17 @@ namespace CloneZ
             if (dark && n > 0) seen += " There may be more in the shadows.";
             if (_boarded) seen = "You peer in between the boards. " + seen;
             ctx.Notify(seen);
+        }
+
+
+        // New helper to report window state
+        private void InspectWindow(InteractContext ctx)
+        {
+            string msg = _boarded ? "The window is boarded up." :
+                (_glass == Glazing.Intact) ? "The glass is intact." :
+                (_glass == Glazing.Smashed) ? "The glass is shattered; shards still bristle in the frame." :
+                "The window frame is empty.";
+            ctx.Notify(msg);
         }
 
         public override void CaptureState(FixtureSave save)

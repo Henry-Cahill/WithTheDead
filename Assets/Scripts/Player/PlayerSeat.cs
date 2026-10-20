@@ -117,6 +117,19 @@ namespace CloneZ
             if (IsSeated) Stand();
             if (!IsLyingDown) return;
             if (Interactor != null && Interactor.IsWorking) Interactor.StopJob();
+
+            // Move the survivor to a clear spot in front of the bed before clearing the lying‑down flags
+            if (RestBed != null)
+            {
+                // Try to find a spot a short distance in front of the bed (using the bed's forward direction).
+                Vector3 spot = RestBed.position + RestBed.forward * 0.8f;
+                // Ensure the spot is standable; fall back to the survivor's previous position if not.
+                if (!CanStandAt(spot, RestBed.position)) spot = transform.position;
+                transform.SetPositionAndRotation(spot, transform.rotation);
+                // Re‑enable the character controller if it was disabled while lying down.
+                if (Body != null && !Body.enabled) Body.enabled = true;
+            }
+
             GetUp();
         }
 

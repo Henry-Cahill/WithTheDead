@@ -39,6 +39,11 @@ namespace CloneZ
             // Add subtle worn‑edge detail
             int seed = ZoneCatalog.Current != null ? ZoneCatalog.Current.LayoutSeed : 0;
             System.Random rng = new System.Random(seed);
+            // random ink blot to suggest age‑and‑use
+            float inkOffsetX = (float)rng.NextDouble() * 500f - 250f;
+            float inkOffsetY = (float)rng.NextDouble() * 500f - 250f;
+            var ink = UIKit.Panel(_paper, "InkBlot", new Color(0.2f, 0.15f, 0.1f, 0.85f));
+            UIKit.Place(ink.rectTransform, new Vector2(0.5f,0.5f), new Vector2(0.5f,0.5f), new Vector2(inkOffsetX, inkOffsetY), new Vector2(30f,30f));
             // top edge – two short strips with random offset
             for (int i = 0; i < 2; i++)
             {

@@ -125,6 +125,24 @@ namespace CloneZ
             position.y = size.y * 0.5f;   // rest the box on the ground
 
             GameObject go = CloneZUtil.Box(name, position, size, color, parent);
+            // Compute floor Y for potential handle placement
+            var floor = position;
+            floor.y = BuildPiece.FloorTopAt(floor);
+
+            // Deterministic random to optionally add a small metal front‑handle
+            var rng = new System.Random(1994);
+            if (rng.NextDouble() < 0.7)
+            {
+                var handle = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                handle.name = "Handle";
+                handle.transform.SetParent(go.transform, false);
+                // Position at the front centre of the container
+                handle.transform.localPosition = new Vector3(0f, size.y * 0.5f, size.z * 0.5f + 0.02f);
+                handle.transform.localScale = new Vector3(0.04f, 0.02f, 0.04f);
+                // Use the same material as the container box
+                var rend = handle.GetComponent<Renderer>();
+                if (rend != null) rend.sharedMaterial = go.GetComponent<Renderer>().sharedMaterial;
+            }
             var c = go.AddComponent<LootContainer>();
             c.DisplayName = name;
             c.Type = type;

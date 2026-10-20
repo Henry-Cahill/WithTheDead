@@ -538,7 +538,7 @@ namespace CloneZ
         }
 
         /// <summary>Driven from outside (a network proxy, a runner playing the creature) instead of by a <see cref="Creature"/> brain.</summary>
-        public bool Driven => _c == null && (ExternalSpeed01 > 0f || ExternalAttack || ExternalCloak || _driven);
+        public bool Driven => ExternalSpeed01 > 0f || ExternalAttack || ExternalCloak || _driven;
         public float ExternalSpeed01 { get => _extSpeed; set { _extSpeed = value; _driven = true; } }
         public bool ExternalAttack;
         public bool ExternalCloak;

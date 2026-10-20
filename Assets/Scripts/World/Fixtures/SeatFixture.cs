@@ -91,6 +91,7 @@ namespace CloneZ
                 return;
             }
             into.Add(new InteractAction(_sitLabel, SitDown));
+            into.Add(new InteractAction("Inspect seat", c => c.Notify($"This seat feels {(int)(_comfort * 100)}% comfortable.")));
         }
 
         /// <summary>Sits the survivor down here (the dining table's "Sit at the table" comes here too).</summary>

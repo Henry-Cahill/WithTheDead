@@ -129,6 +129,23 @@ namespace CloneZ
                 }
             }
         }
+        // Add a tiny blood splotch on the face for visual detail
+        if (Random.value < 0.3f)
+        {
+            var blood = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            blood.transform.SetParent(transform, false);
+            blood.transform.localScale = new Vector3(0.07f, 0.02f, 0.02f);
+            blood.transform.localPosition = new Vector3(Random.Range(-0.04f, 0.04f), 1.78f, Random.Range(-0.02f, 0.02f));
+            blood.transform.localRotation = Quaternion.identity;
+            var rend = blood.GetComponent<Renderer>();
+            if (rend != null)
+            {
+                var mat = rend.material;
+                Color col = new Color(0.5f, 0.05f, 0.05f);
+                mat.color = col;
+                if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", col);
+            }
+        }
         _agent.speed = _baseSpeed * 0.5f;
             _agent.acceleration = 12f;
             _agent.angularSpeed = 999f;

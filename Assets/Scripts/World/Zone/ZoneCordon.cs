@@ -47,6 +47,16 @@ namespace CloneZ
                     runLen++;
                     Vector3 post = c - axis * (SegLen * 0.5f);
                     fence.Solid.Box(post + Vector3.up * 1.25f, new Vector3(0.09f, 2.5f, 0.09f), ZoneKit.Mt(ZoneKit.Galvanised));
+                    // 12% chance per post to show a rusted metal plate on its outer face
+                    if (ZoneKit.R(rng, 0f, 1f) < 0.12f)
+                    {
+                        // size 0.08 m × 0.02 m × 0.001 m, positioned 0.9 m above ground,
+                        // offset outward by half the post width (0.045 m) so it sits on the front surface
+                        fence.Solid.Box(
+                            post + Vector3.up * 0.9f + normal * 0.045f,
+                            new Vector3(side % 2 == 0 ? 0.08f : 0.001f, 0.02f, side % 2 == 0 ? 0.001f : 0.08f),
+                            ZoneKit.Mt(ZoneKit.RustDark));
+                    }
                     fence.Upper.Box(c + Vector3.up * 1.2f, side % 2 == 0 ? new Vector3(SegLen, 2.2f, 0.02f) : new Vector3(0.02f, 2.2f, SegLen), ZoneKit.ChainLink);
                     fence.Upper.Rod(post + Vector3.up * 2.45f, post + axis * SegLen + Vector3.up * 2.45f, 0.025f, ZoneKit.Mt(ZoneKit.Galvanised), 4);
                     fence.Upper.Rod(post + Vector3.up * 2.6f, post + axis * SegLen + Vector3.up * 2.6f, 0.015f, ZoneKit.Mt(ZoneKit.RustDark), 3);

@@ -42,7 +42,9 @@ public Transform Seat { get; private set; }
         private float _netYawFrom, _netYawTo, _netT = 1f;
 
         /// <summary>Whether the car can be driven (has all wheels and a functional engine).</summary>
-public bool Drivable => Wheels == 4 && Engine > 0f;
+        /// <summary>Whether the car can be driven (has four wheels and a functional engine).</summary>
+        public bool Drivable => Wheels == 4 && Engine > 0f;
+        /// <summary>Human‑readable list of missing required parts for the car to be drivable.</summary>
         public string Missing
         {
             get
@@ -108,6 +110,17 @@ public static Vehicle Spawn(int spot, Vector3 at, float yaw, int seed)
             Box(_bodyRoot, new Vector3(-0.82f, 1.15f, -0.25f), new Vector3(0.04f, 0.42f, 1.9f), glass);
             Box(_bodyRoot, new Vector3(0f, 0.52f, 2.12f), new Vector3(1.7f, 0.22f, 0.08f), new Color(0.15f, 0.15f, 0.15f));
             Box(_bodyRoot, new Vector3(0f, 0.52f, -2.12f), new Vector3(1.7f, 0.22f, 0.08f), new Color(0.15f, 0.15f, 0.15f));
+            // Front grille bars (thin vertical metallic trim)
+            int grilleCount = rng.Next(3, 6); // 3‑5 bars
+            float grilleSpacing = 0.04f;
+            float startX = -grilleSpacing * (grilleCount - 1) * 0.5f;
+            for (int i = 0; i < grilleCount; i++)
+            {
+                float x = startX + i * grilleSpacing;
+                Box(_bodyRoot, new Vector3(x, 0.68f, 2.12f), new Vector3(0.02f, 0.04f, 0.01f), new Color(0.12f, 0.12f, 0.14f));
+            }
+            // Rear bumper plate
+            Box(_bodyRoot, new Vector3(0f, 0.57f, -2.12f), new Vector3(0.4f, 0.02f, 0.02f), new Color(0.12f, 0.12f, 0.14f));
             float[] xs = { -0.86f, 0.86f, -0.86f, 0.86f };
             float[] zs = { 1.35f, 1.35f, -1.35f, -1.35f };
             for (int i = 0; i < 4; i++)
@@ -498,7 +511,9 @@ public void RemoteSeat(ulong who)
     /// </summary>
     public sealed class VehicleDriver : MonoBehaviour
     {
+        /// <summary>Singleton reference to the currently active vehicle driver (if any).</summary>
         public static VehicleDriver Local { get; private set; }
+        /// <summary>Reference to the car the driver is currently controlling.</summary>
         public Vehicle Car { get; private set; }
 
         private PlayerController _ctrl;
@@ -650,6 +665,7 @@ public static HudVehicle Create()
             return null;
         }
 
+        /// <summary>Broadcast the car's driving state (position, rotation, speed, engine) to other clients.</summary>
         public static void SendDrive(Vehicle v)
         {
             if (!NetSession.Active || Time.time < s_SendAt) return;
@@ -674,6 +690,7 @@ public static HudVehicle Create()
             if (v != null && v.Driver == null) v.PushRemote(pos, yaw, speed, engine);
         }
 
+        /// <summary>Tell the server which player is currently sitting in (or leaving) this car.</summary>
         public static void Claim(Vehicle v, bool sitting)
         {
             if (!NetSession.Active) return;

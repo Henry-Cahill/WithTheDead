@@ -52,11 +52,29 @@ namespace CloneZ
         public override string SaveKey => _key;
 
         #region IWaterPoint
+        /// <summary>
+        /// Position of the water spout, used by IWaterPoint consumers to know where water originates.
+        /// </summary>
         public Vector3 WaterPosition => _spout;
+                /// <summary>
+        /// UI label for this water source.
+        /// </summary>
         public string WaterLabel => "tap";
+                /// <summary>
+        /// Indicates if the water mains are currently on.
+        /// </summary>
         public bool HasWater => WaterMains.MainsOn;
+                /// <summary>
+        /// Whether this water source is contaminated.
+        /// </summary>
         public bool IsTainted => false;
+                /// <summary>
+        /// Message shown when the water mains are off.
+        /// </summary>
         public string DryMessage => Dry;
+                /// <summary>
+        /// No-op implementation required by IWaterPoint to indicate water can be drawn.
+        /// </summary>
         public void DrawWater() { }   // mains water, as much as you like while it runs
         #endregion
 

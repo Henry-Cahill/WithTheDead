@@ -473,6 +473,10 @@ namespace CloneZ
             const float y0 = 0.065f, y1 = 1.948f, z = 0.44f;
             float h = y1 - y0, ym = (y0 + y1) * 0.5f;
             m.Box(new Vector3(-0.205f, ym, z), new Vector3(0.426f, h, 0.008f), glass);
+            // Thin matte‑black rubber gasket strips on each side of the shower door
+            m.Box(new Vector3(-0.210f, ym, z), new Vector3(0.002f, h, 0.01f), M(new Color(0.07f, 0.07f, 0.07f)));
+            m.Box(new Vector3(0.013f, ym, z), new Vector3(0.002f, h, 0.01f), M(new Color(0.07f, 0.07f, 0.07f)));
+
             m.Box(new Vector3(-0.424f, ym, z), new Vector3(0.012f, h, 0.016f), chrome);
             m.Box(new Vector3(0.014f, ym, z), new Vector3(0.012f, h, 0.016f), chrome);
             m.Box(new Vector3(-0.205f, y0 + 0.006f, z), new Vector3(0.426f, 0.012f, 0.014f), chrome);

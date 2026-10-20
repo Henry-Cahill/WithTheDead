@@ -931,6 +931,8 @@ namespace CloneZ
         /// </summary>
         public static float[] CrossfadeLoop(float[] x, int loopLen)
         {
+            // Guard against loopLen exceeding the source buffer length to avoid out‑of‑range errors.
+            if (loopLen > x.Length) loopLen = x.Length;
             int fade = Math.Min(x.Length - loopLen, loopLen);
             var o = new float[loopLen];
             Array.Copy(x, o, loopLen);

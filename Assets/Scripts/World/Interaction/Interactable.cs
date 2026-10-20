@@ -265,6 +265,12 @@ namespace CloneZ
         {
             if (radius > 0f) NoiseSystem.Emit(InteractPoint, radius);
         }
+        /// <summary>Adds a simple "Inspect" action that shows the fixture’s name in a HUD toast.</summary>
+        protected void AddInspectAction(InteractContext ctx, List<InteractAction> into)
+        {
+            into.Add(new InteractAction("Inspect", c => c.Notify($"You look at the {DisplayName}.")));
+        }
+        
         #endregion
     }
 }

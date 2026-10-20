@@ -271,6 +271,7 @@ namespace CloneZ
         public override string DisplayName => _caught && Time.time >= _readyAt ? "Snare (something's in it!)" : "Snare";
         public override float Reach => 1.8f;
 
+        /// <summary>Creates a snare trap at the given position using the player's trapping skill.</summary>
         public static void Place(Vector3 at, PlayerSkills skills)
         {
             var go = new GameObject("Snare");
@@ -317,10 +318,14 @@ namespace CloneZ
         private float _until;
         private Light _light;
 
+        /// <summary>Provides the world position of the campfire's warmth source.</summary>
         public Vector3 WarmthPosition => transform.position;
+        /// <summary>Radius in metres within which the campfire provides warmth.</summary>
         public float WarmthRadius => 4f;
+        /// <summary>Current warmth output, zero when the fire has burned out.</summary>
         public float Warmth => Time.time < _until ? CloneZConfig.ComfortWarmthMax : 0f;
 
+        /// <summary>Creates a campfire at the given location that emits warmth for the specified duration.</summary>
         public static Campfire Light(Vector3 at, float seconds)
         {
             var go = new GameObject("Campfire");
@@ -429,8 +434,10 @@ namespace CloneZ
     /// <summary>Opens the field menu (C) and registers the gadget and book verbs.</summary>
     public sealed class FieldSurvivalModule : IGameModule
     {
+        /// <summary>Module load order; ensures field features initialise after core systems.</summary>
         public int Order => 60;
 
+        /// <summary>Registers field actions, UI and hotkeys with the game on module initialisation.</summary>
         public void Init()
         {
             ItemActions.RegisterUse("handcrank", (inv, s) => { FieldSurvival.Crank(inv); return true; });

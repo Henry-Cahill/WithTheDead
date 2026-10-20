@@ -65,6 +65,7 @@ namespace CloneZ
                 .DisabledIf(water && !WaterUse.HasEmptyBottle(ctx), "You have no empty bottle"));
             into.Add(new InteractAction("Drink from the drain valve", c => WaterUse.Drink(c, this)).DisabledIf(!water, DryMessage));
             into.Add(new InteractAction("Knock on the tank", Knock));
+            into.Add(new InteractAction("Inspect water level", InspectWaterLevel));
             into.Add(new InteractAction("Check the pilot light", CheckPilot));
             if (_pilot)
                 into.Add(new InteractAction("Turn off the pilot", Extinguish));
@@ -79,8 +80,16 @@ namespace CloneZ
             float fill = (float)_water / Mathf.Max(1, _capacity);
             ctx.Notify(_water <= 0 ? "It booms, hollow from top to bottom. Nothing left in it." :
                 fill < 0.35f ? "It rings hollow until you knock near the bottom. Not much left." :
-                fill < 0.7f ? "Dull from the middle down \u2014 about half a tank." :
+                fill < 0.7f ? "Dull from the middle down — about half a tank." :
                 "A dull thud all the way up. Plenty in there.");
+        }
+
+        private void InspectWaterLevel(InteractContext ctx)
+        {
+            if (_water <= 0)
+                ctx.Notify("The water heater's tank is empty.");
+            else
+                ctx.Notify($"The water heater's tank contains {_water} of {_capacity} units of water.");
         }
 
         private void CheckPilot(InteractContext ctx)

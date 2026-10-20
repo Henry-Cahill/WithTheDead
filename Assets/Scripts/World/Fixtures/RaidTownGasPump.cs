@@ -51,7 +51,7 @@ namespace CloneZ
                 "Regular, $1.09 9/10 a gallon. The last sale is frozen on the wheels: 11.4 gallons, $12.53. Then nothing.")));
             into.Add(new InteractAction("Sniff the hose", c => c.Notify(
                 "Gasoline, sharp and sweet. The tanks under the forecourt aren't dry \u2014 just out of reach without the cashier's switch.")));
-            into.Add(new InteractAction("Tap the nozzle", TapNozzle));
+            if (_lifted) into.Add(new InteractAction("Tap the nozzle", TapNozzle));
         }
 
         private void ToggleNozzle(InteractContext ctx)

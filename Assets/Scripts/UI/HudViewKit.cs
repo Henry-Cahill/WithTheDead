@@ -151,6 +151,7 @@ namespace CloneZ
             HudIconArt.FillRange(twoLayer ? outline : fill, out _min, out _max);
         }
 
+        /// <summary>Factory that creates a gauge for the requested need (water, food, warmth, battery).</summary>
         public static HudGauge For(HudNeed need, Transform parent, Vector2 anchor, Vector2 pos, float size)
         {
             switch (need)
@@ -162,6 +163,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Updates the gauge's fill level and colour based on the current supply value.</summary>
         public void Set(float level01, Color color)
         {
             // Quantised so a slowly draining stat doesn't rebuild the mesh every frame.
@@ -196,6 +198,7 @@ namespace CloneZ
         private readonly float _quant;
         private float _shown = -1f, _trailValue, _last, _hold;
 
+        /// <summary>Factory that creates a trail‑bar for a value that decays over time, optionally with segment ticks.</summary>
         public HudTrailBar(Transform parent, string name, Vector2 anchor, Vector2 pivot, Vector2 pos, Vector2 size, int segments, Color track, Color trail)
         {
             Root = HudUI.Rect(parent, name, anchor, pivot, pos, size);
@@ -232,6 +235,7 @@ namespace CloneZ
         }
 
         /// <summary>Shows <paramref name="value01"/> in <paramref name="color"/>, animating by <paramref name="dt"/>.</summary>
+        /// <summary>Updates the bar's main fill and trailing effect to show the current value with animation.</summary>
         public void Set(float value01, Color color, float dt)
         {
             value01 = Mathf.Clamp01(value01);
@@ -259,13 +263,21 @@ namespace CloneZ
     {
         /// <summary>The item in hand (a gun, a melee weapon or a tool); null for bare hands.</summary>
         public ItemDef Weapon { get; private set; }
+        /// <summary>The gun or tool currently held (null for bare hands).</summary>
         public ItemDef Gun { get; private set; }
+        /// <summary>How many rounds are currently loaded in the gun's magazine.</summary>
         public int Loaded { get; private set; }
+        /// <summary>How many spare rounds are in reserve for the currently held gun.</summary>
         public int Reserve { get; private set; }
+        /// <summary>Maximum magazine capacity for the current gun (or zero when none).</summary>
         public int Capacity { get; private set; }
+        /// <summary>Whether the current gun is in the process of reloading.</summary>
         public bool Reloading { get; private set; }
+        /// <summary>Whether the held weapon shows wear/condition (e.g., guns, tools).</summary>
         public bool ShowCondition { get; private set; }
+        /// <summary>Current condition (0‑1) of the held weapon, used for UI wear indicators.</summary>
         public float Condition01 { get; private set; } = 1f;
+        /// <summary>Monotonically increasing counter that signals any change to this state.</summary>
         public int Version { get; private set; }
         /// <summary>Seconds since anything here last changed (a shot, a reload, a swap, ammo picked up).</summary>
         public float Idle { get; private set; }
@@ -273,6 +285,7 @@ namespace CloneZ
         private bool _polled;
         private float _reserveTimer;
 
+        /// <summary>Refreshes this state from the game world each frame, tracking weapon, ammo and condition.</summary>
         public void Poll(HudContext ctx, float dt)
         {
             PlayerInventory inv = ctx.Inventory;

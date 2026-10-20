@@ -239,6 +239,14 @@ namespace CloneZ
             Image img = area.gameObject.GetComponent<Image>();
             if (img == null) img = area.gameObject.AddComponent<Image>();
             img.color = color ?? CardColor;
+            // Add a thin inner worn‑edge border for subtle visual depth
+            RectTransform border = UIKit.Rect("Border", area);
+            border.offsetMin = new Vector2(1f, 1f);
+            border.offsetMax = new Vector2(-1f, -1f);
+            var borderImg = border.gameObject.AddComponent<Image>();
+            float darken = 0.15f;
+            Color baseColor = color ?? CardColor;
+            borderImg.color = Color.Lerp(baseColor, Color.black, darken);
             return img;
         }
 

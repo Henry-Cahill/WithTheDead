@@ -24,6 +24,8 @@ namespace CloneZ
 
         private IWaterPoint _source;
         private bool _fill;
+        private Vector3 _lastPos;
+        private const float CheckDistance = 0.5f;
 
         private void Awake()
         {
@@ -31,20 +33,26 @@ namespace CloneZ
             _inventory = GetComponent<PlayerInventory>();
             _sickness = GetComponent<PlayerFoodSickness>();
             _interactor = GetComponent<PlayerInteractor>();
+            _lastPos = transform.position;
         }
 
         private void Update()
         {
-            Prompt = "";
-            _source = null;
-            _fill = false;
-
             if (_stats != null && _stats.IsDead) return;
             // A full-screen panel or build mode owns input; don't fight the container-search prompt.
             if (UIState.GameplayBlocked || UIState.BuildMode) return;
             if (_interactor != null && (_interactor.IsBusy || _interactor.MenuOpen)) return;
 
-            Evaluate();
+            // Check if the player moved enough to re‑evaluate water points.
+            float moved = Vector3.Distance(_lastPos, transform.position);
+            if (moved >= CheckDistance)
+            {
+                Prompt = "";
+                _source = null;
+                _fill = false;
+                Evaluate();
+                _lastPos = transform.position;
+            }
 
             if (_source != null)
             {

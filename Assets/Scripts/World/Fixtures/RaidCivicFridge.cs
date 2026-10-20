@@ -172,6 +172,11 @@ namespace CloneZ
             "You square the spines up along the shelf edge. It helps, a little.",
             "You put the books back in order, tallest to shortest.",
             "You stack the loose papers and tuck them in at the end of the shelf.",
+            "You dust the lower shelves; the quiet scrape feels like a sigh of relief.",
+            "You align the bookmarks, their tiny tabs forming a neat row of colors.",
+            "You straighten the scattered pens, their caps clicking into place.",
+            "You slide the index cards back into their holder, the soft thud echoing in the quiet room.",
+            "You smooth the worn carpet runner, feeling the fibers settle under your hand."
         };
 
         private static int s_Army = -1, s_Clinic = -1, s_Leaflet, s_Tidy;

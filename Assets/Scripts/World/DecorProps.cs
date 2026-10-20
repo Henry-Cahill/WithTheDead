@@ -324,6 +324,14 @@ namespace CloneZ
                 m.Box(new Vector3(s * 0.28f, 0.95f, -0.25f), new Vector3(0.06f, 0.18f, 0.08f), M(new Color(0.1f, 0.1f, 0.1f)));
                 m.Rod(new Vector3(s * 0.28f, 0.9f, -0.25f), new Vector3(s * 0.32f, 0.2f, -0.1f), 0.03f, M(new Color(0.08f, 0.08f, 0.08f)));
             }
+            // Added metal nozzle and glass gauge for a lived‑in look
+            float nozzleLen = R(rng, 0.20f, 0.28f);
+            Quaternion nozzleRot = Quaternion.Euler(0f, R(rng, -12f, 12f), 0f);
+            Vector3 nozzlePos = new Vector3(0f, 1.55f, 0.34f) + nozzleRot * new Vector3(0f, 0f, nozzleLen * 0.5f);
+            m.Cylinder(nozzlePos, 0.018f, nozzleLen, 6, Mt(new Color(0.15f, 0.15f, 0.15f)), nozzleRot, 0.8f);
+            Vector3 gaugePos = nozzlePos + nozzleRot * new Vector3(0f, 0f, nozzleLen * 0.5f + 0.02f);
+            m.Ellipsoid(gaugePos, new Vector3(0.04f, 0.04f, 0.04f), Gs(new Color(0.20f, 0.60f, 0.80f)), 8, 4);
+
             m.Box(new Vector3(0f, 1.67f, 0f), new Vector3(0.4f, 0.04f, 0.7f), M(SnowWhite));
         }
 
