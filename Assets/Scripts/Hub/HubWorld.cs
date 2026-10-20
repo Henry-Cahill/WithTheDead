@@ -224,7 +224,16 @@ namespace CloneZ
         private static void BuildBar(Transform world, Style st)
         {
             Solid(world, "BarCounter", new Vector3(-2f, 0.55f, 6.2f), new Vector3(10f, 1.1f, 0.8f), st.DarkWood);
-            Deco(world, "BarTop", m => m.Box(new Vector3(-2f, 1.12f, 6.2f), new Vector3(10.2f, 0.05f, 0.9f), st.Wood), Vector3.zero);
+            Deco(world, "BarTop", m =>
+{
+    m.Box(new Vector3(-2f, 1.12f, 6.2f), new Vector3(10.2f, 0.05f, 0.9f), st.Wood);
+    for (int i = 0; i < 8; i++)
+    {
+        float x = -6.5f + i * 1.5f;
+        // Place a small metal rivet along the bar edge
+        m.Cylinder(new Vector3(x, 1.13f, 6.2f), 0.02f, 0.02f, 12, st.Metal);
+    }
+}, Vector3.zero);
             Solid(world, "BackShelf", new Vector3(-2f, 1.2f, HalfZ - 0.35f), new Vector3(9f, 2.4f, 0.4f), st.Wood);
             var rng = new System.Random(7);
             Deco(world, "Bottles", m =>

@@ -3967,7 +3967,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 17:54 landed by 0htsserver in 4.3 min: **Changed file**
 - [x] In Assets/Scripts/World/Map/KentuckyMap.Ground.cs, edit the `BuildStreets` method: change the condition that draws the centre‑line dashes so that more road types get a line, making the map look like the hand‑built raid town.
   - 17:54 landed by hts-llm in 1.6 min: **Changed file**
-- [ ] In Assets/Scripts/Hub/HubWorld.cs, modify the `BuildBar` method’s `Deco` call for "BarTop" to add a row of small metal rivets along the bar’s edge, giving the wooden counter a worn‑industrial look.
+- [x] In Assets/Scripts/Hub/HubWorld.cs, modify the `BuildBar` method’s `Deco` call for "BarTop" to add a row of small metal rivets along the bar’s edge, giving the wooden counter a worn‑industrial look.
   Replace the line
   `Deco(world, "BarTop", m => m.Box(new Vector3(-2f, 1.12f, 6.2f), new Vector3(10.2f, 0.05f, 0.9f), st.Wood), Vector3.zero);`
   with a lambda that first draws the existing box and then iterates to place ≈ 8 cylindrical rivets:
@@ -3976,3 +3976,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   ` for (int i = 0; i < 8; i++)`
   ` {`
   ` float x = -6.5f + i * 1.5f;`
+  - 17:56 landed by 0htsserver in 1.7 min: **Summary**
