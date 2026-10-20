@@ -56,6 +56,11 @@ namespace CloneZ
             "You line the spines up neatly, tallest to shortest. It helps, a little.",
             "You put the books back in order \u2014 by author, this time.",
             "You square up the magazines and tuck in a loose dust jacket.",
+            "You dust the shelves, wiping away a thin layer of time.",
+            "You tighten a loose hinge on a battered wooden panel.",
+            "You flip through the pages, checking for any missing leaves.",
+            "You smooth a warped board, pressing it back flat with gentle pressure.",
+            "You adjust the lamp angle to cast a warm glow over the titles.",
         };
 
         private static int s_Book = -1, s_Magazine = -1, s_Tidy;

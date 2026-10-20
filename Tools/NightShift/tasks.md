@@ -1375,12 +1375,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `into.Add(new InteractAction("Inspect the metal", c => c.Notify("The hydrant’s iron is corroded and stained by years of winter ice.")));`
   This adds a new “[E] Inspect the metal” option visible alongside “Try the valve cap” and “Knock the snow off it”/“Read the tag”. No other code, fields, or UI need to be altered.
   - 04:16 landed by 0htsserver in 1.8 min: **Changed**
-- [ ] Append 4–8 new sentences to the `Tidying` string array in Assets/Scripts/World/Fixtures/LivingReading.cs
+- [x] Append 4–8 new sentences to the `Tidying` string array in Assets/Scripts/World/Fixtures/LivingReading.cs
   Use the existing entry `"You line the spines up neatly, tallest to shortest. It helps, a little."` as the style reference.
   The new entries should describe additional small comfort actions the survivor can perform while straightening the bookcase (e.g., dusting, adjusting a loose hinge, checking for missing pages, smoothing a warped board).
   Each sentence must start with “You …”, end with a period, and be a complete thought.
   Add them after the last element of the current `Tidying` initializer, keeping the array `private static readonly string[] Tidying`.
   Do not modify any other code, order, or comments.
+  - 04:16 landed by hts-llm in 2 min: **Changed**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Net/NetSession.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
