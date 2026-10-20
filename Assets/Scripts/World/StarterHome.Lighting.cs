@@ -138,8 +138,20 @@ namespace CloneZ
             m.Box(lamp + Vector3.up * 0.16f, new Vector3(0.08f, 0.04f, 0.08f), black);
             m.Box(lamp - Vector3.up * 0.115f, new Vector3(0.13f, 0.03f, 0.13f), black);
             m.Box(lamp, new Vector3(0.12f, 0.2f, 0.12f), DecorPalette.Matte(new Color(0.72f, 0.64f, 0.44f)));
-            for (int i = 0; i < 4; i++)
-                m.Box(lamp + new Vector3(i % 2 == 0 ? -0.062f : 0.062f, 0f, i < 2 ? -0.062f : 0.062f), new Vector3(0.016f, 0.21f, 0.016f), black);
+for (int i = 0; i < 4; i++)
+                    m.Box(lamp + new Vector3(i % 2 == 0 ? -0.062f : 0.062f, 0f, i < 2 ? -0.062f : 0.062f), new Vector3(0.016f, 0.21f, 0.016f), black);
+                // brass knob crowning the pole
+                Surf brass = DecorPalette.Metal(FurnitureBuilder.Brass);
+                m.Cylinder(lamp + Vector3.up * 0.225f, 0.015f, 0.02f, 6, brass);
+                // four rivet caps on the black housing
+                Vector3[] rivetPos = new[] {
+                    lamp + new Vector3(-0.055f, 0.115f, -0.055f),
+                    lamp + new Vector3( 0.055f, 0.115f, -0.055f),
+                    lamp + new Vector3(-0.055f, 0.115f,  0.055f),
+                    lamp + new Vector3( 0.055f, 0.115f,  0.055f),
+                };
+                foreach (var rp in rivetPos)
+                    m.Box(rp, new Vector3(0.014f, 0.008f, 0.014f), black);
             var glow = new RaidMesh();
             glow.Box(lamp, new Vector3(0.128f, 0.206f, 0.128f), DecorPalette.Glow(WarmGlow));
             HomeLamp porch = HomeLamp.Attach(piece.transform, lamp, 6f, 1.8f, true, glow, LightCircuits.Porch, duskSensor: true);
