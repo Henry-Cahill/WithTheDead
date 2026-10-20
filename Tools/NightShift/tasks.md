@@ -1805,10 +1805,11 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/BasinFixture.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
-- [ ] In Assets/Scripts/UI/UIKit.cs, modify the `UIKit.Panel` method to add a subtle inner border to every panel it creates, giving menus a worn‑metal edge that fits the 1993 rural setting.
+- [x] In Assets/Scripts/UI/UIKit.cs, modify the `UIKit.Panel` method to add a subtle inner border to every panel it creates, giving menus a worn‑metal edge that fits the 1993 rural setting.
   After the line `var img = rt.gameObject.AddComponent<Image>();` add a child `Image` named “Border” that is inset 2 units on all sides, anchored to stretch the parent, with a semi‑transparent dark colour (e.g. `new Color(0f,0f,0f,0.2f)`).
   Create the border via `Rect("Border", img.rectTransform)`, set `anchorMin = Vector2.zero; anchorMax = Vector2.one; offsetMin = new Vector2(2f,2f); offsetMax = new Vector2(-2f,-2f);` then add the `Image` component and assign the colour.
   Leave the original panel colour, colliders and interaction logic unchanged; this adds at most one extra primitive per panel, staying within the ~12‑primitive limit.
+  - 06:49 landed by hts-llm in 3.2 min: **Modified:** `Assets/Scripts/UI/UIKit.cs`
 - [ ] In Assets/Scripts/Zone/ArtifactCatalog.cs: Add validation in `ArtifactCatalog.Learn(string artifact, string prop, bool announce = true)` to reject property IDs that are not defined for the given artifact, preventing impossible knowledge entries.
 - [ ] Add a subtle weather‑worn paint‑chip detail to exterior wall faces built in `RaidBuilding.SkinBand` (Assets/Scripts/World/RaidBuilding.cs)
   In the block that creates the exterior face (`p.Mesh.Upright(..., DecorMaterials.WallExterior(...))`) insert a small box to represent a chipped paint spot.
