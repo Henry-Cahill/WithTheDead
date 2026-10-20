@@ -3628,3 +3628,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   When the player selects “Check volume”, the UI will show a notification such as “Volume: Low” or “Volume: High”, matching the existing wording.
   All other code, including existing actions and the TV’s functionality, stays unchanged.
   - 15:05 landed by 0htsserver in 1 min: **Changed:** `Assets/Scripts/World/Fixtures/TvFixture.cs`
+- [ ] In Assets/Scripts/World/RaidMapBuilder.Outdoor.cs: Add a thin, rust‑stained metal band across the top of each sandbag wall in `RaidMapBuilder.Outdoor.Checkpoint` (the `Prop` call for the sandbag walls).
+  Locate the lambda `(m, rr) => DecorProps.SandbagWall(m, rr, 4f, 5)` and extend it to also draw a small box:
+  `m.Box(new Vector3(0f, 0.45f, 0.27f), new Vector3(3.8f, 0.02f, 0.04f), DecorPalette.Metal(new Color(0.38f, 0.36f, 0.34f)))` // thin rust‑stained metal band near the top edge of the wall.
+  This adds a subtle wear detail appropriate to 1993 winter Kentucky, using existing material palette and keeps colliders and interaction unchanged.
