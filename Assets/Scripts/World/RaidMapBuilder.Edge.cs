@@ -244,7 +244,14 @@ namespace CloneZ
                 town.Info.PlayerSpawn = new Vector3(-6f, 0.6f, 20f);
                 return;
             }
-            int pick = valid.Count > 0 ? valid[town.Rng.Next(valid.Count)] : 0;
+            if (valid.Count == 0)
+            {
+                town.Warn("no valid spawn far enough from exits; using default");
+                town.Info.PlayerSpawn = new Vector3(-6f, 0.6f, 20f);
+                town.Info.PlayerSpawnYaw = 0f;
+                return;
+            }
+            int pick = valid[town.Rng.Next(valid.Count)];
             var c = town.SpawnCandidates[pick];
             foreach (Rect f in c.room.Furniture)
             {
