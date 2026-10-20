@@ -3,7 +3,7 @@ $scriptPath = Join-Path $PSScriptRoot '../NightShift.ps1'
 $tokens = $null; $errors = $null
 $ast = [Management.Automation.Language.Parser]::ParseFile($scriptPath, [ref]$tokens, [ref]$errors)
 if ($errors.Count) { throw ($errors -join "`n") }
-foreach ($name in @('Invoke-Tool', 'Get-PublishCommit')) {
+foreach ($name in @('Invoke-Tool', 'Get-PublishCommit', 'Test-PublishDue')) {
     $definition = $ast.Find({ param($node)
         $node -is [Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -eq $name
     }, $true)
@@ -83,6 +83,27 @@ try {
     Assert-Equal $right (Invoke-TestGit rev-parse HEAD) 'Conflict leaves checkout unchanged'
     Assert-Equal $right (Invoke-TestGit rev-parse "refs/heads/$branch") 'Conflict leaves branch unchanged'
     Assert-Equal 1 (@(Invoke-TestGit worktree list --porcelain | Select-String '^worktree ').Count) 'Conflicted worktree removed'
+
+    # pr -WhenDone: publish once the agents run out of work, or every publish_every minutes while the planner keeps
+    # the queue full.
+    $stamp = Join-Path $Root 'last-publish.txt'
+    $now = Get-Date
+    $busy = [pscustomobject]@{ running = $true; working = 2; queued = 5; dispatchable = 5; idle_since = $null }
+    Assert-Equal $true (Test-PublishDue ([pscustomobject]@{ running = $false; working = 0; queued = 3 }) $stamp $now) 'Stopped: publish'
+    Assert-Equal $true (Test-PublishDue ([pscustomobject]@{ running = $true; working = 0; queued = 1; dispatchable = 0 }) $stamp $now) 'Nothing left: publish'
+    Assert-Equal $true (Test-PublishDue ([pscustomobject]@{ running = $true; working = 0; queued = 0; idle_since = '20:56' }) $stamp $now) 'Old coordinator idle: publish'
+    Assert-Equal $false (Test-PublishDue $busy $stamp $now) 'Busy without the planner: wait'
+    $planning = [pscustomobject]@{ running = $true; working = 4; queued = 6; dispatchable = 6; autoplan = $true; publish_every = 120 }
+    Assert-Equal $true (Test-PublishDue $planning $stamp $now) 'Planner on, never published: publish'
+    Set-Content -Path $stamp -Value $now.AddMinutes(-30).Ticks -Encoding ASCII
+    Assert-Equal $false (Test-PublishDue $planning $stamp $now) 'Planner on, published 30 min ago: wait'
+    Set-Content -Path $stamp -Value $now.AddMinutes(-121).Ticks -Encoding ASCII
+    Assert-Equal $true (Test-PublishDue $planning $stamp $now) 'Planner on, published 121 min ago: publish'
+    $planning.publish_every = 0
+    Assert-Equal $false (Test-PublishDue $planning $stamp $now) 'Planner on, periodic publishing off: wait'
+    Set-Content -Path $stamp -Value 'garbage' -Encoding ASCII
+    $planning.publish_every = 120
+    Assert-Equal $true (Test-PublishDue $planning $stamp $now) 'Unreadable stamp counts as never published'
     Write-Host 'All publication regression tests passed.'
 }
 finally {
