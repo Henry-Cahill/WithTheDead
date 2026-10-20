@@ -2368,7 +2368,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 09:21 landed by hts-llm in 4.9 min: All changes compile.Implemented a cached `PlayerInteractor` reference in `StorageFixture` to eliminate per‑frame singleton lookups.
 - [~] Make sure there are graphics for every item in the game.
   - 09:22 1htsserver made no changes: Implemented no code changes – the existing rendering pipeline already guarantees a visual representation for every item:
-- [ ] Add a “Wipe the seat” interaction to the toilet fixture (Assets/Scripts/World/Fixtures/ToiletFixture.cs)
+- [x] Add a “Wipe the seat” interaction to the toilet fixture (Assets/Scripts/World/Fixtures/ToiletFixture.cs)
   In `GetActions` after the existing seat toggle line
   `into.Add(new InteractAction(_seatUp ? "Put the seat down" : "Lift the seat", c => SetSeat(!_seatUp)));`
   insert
@@ -2377,6 +2377,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `private void WipeSeat(InteractContext ctx) {`
   ` ctx.Notify("You wipe away grime from the cold porcelain.");`
   ` // a small calming effect, re‑using the existing toilet‑use calm value`
+  - 09:27 landed by hts-llm in 5.7 min: **Changes made**
 - [x] In Assets/Scripts/Hub/HubNpc.cs, extend the `"merc"` entry in the `Lines` dictionary by appending five new sentences that keep the terse, world‑weary tone (example style: “Two of us see twice as much.”) and cover themes of winter travel hazards, rumors about the Zone, the merc’s pricing quirks, loyalty to whoever pays, and a warning about over‑reaching into the snow‑bound ruins.
   Add `"The roads are slick with ice; a slip can get you buried before you draw a weapon."`
   Add `"I've heard the old well under the ice still whispers, and the dead listen."`
