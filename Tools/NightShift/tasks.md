@@ -3391,13 +3391,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 13:56 landed by hts-llm in 2.8 min: Implemented a subtle rust spot on the kitchen sink's metal mixer tap:
 - [x] Fix the collider orientation threshold in `RaidBuilding.AddCollider` (Assets/Scripts/World/RaidBuilding.Furnish.cs) so near‑axis‑aligned pieces use a simple, non‑rotated BoxCollider.
   - 13:59 landed by 0htsserver in 2.1 min: **Changed**
-- [ ] Add a tiny brass faucet handle to the sink built in `Assets/Scripts/World/FurnitureBuilder.Home.cs` → `KitchenCounter` when `sink` is true.
+- [x] Add a tiny brass faucet handle to the sink built in `Assets/Scripts/World/FurnitureBuilder.Home.cs` → `KitchenCounter` when `sink` is true.
   Insert a new primitive right after the line
   `m.Cylinder(new Vector3(sx, 0.94f, -0.25f), 0.016f, 0.22f, 6, Mt(Chrome));`
   Create a small brass box ≈ 0.02 m × 0.01 m × 0.02 m positioned just above the faucet:
   `m.Box(new Vector3(sx, 0.97f, -0.25f), new Vector3(0.02f, 0.01f, 0.02f), Mt(Brass), Yaw(R(rng, -15f, 15f)));`
   Use `Mt(Brass)` for the material (already defined) and apply a slight random yaw (‑15° to +15°) via the existing `rng` to give each sink a subtle variation.
   This adds a period‑correct brass handle that suggests a functional faucet without altering colliders or interaction points, enhancing visual detail for the kitchen sink.
+  - 14:00 landed by 1htsserver in 2.1 min: **Summary**
 - [ ] In Assets/Scripts/World/Fixtures/RaidHomeBath.cs: Cache frequently used CloneZConfig values in RaidHomeBath to avoid per‑frame property lookups and divisions.
   Add private readonly float fields (e.g. `_fillRate`, `_drainRate`, `_coolRate`, `_tapNoiseInterval`, `_tapNoiseRadius`) to `RaidHomeBath`.
   Initialize them in `OnEnable` (or `Awake`) with `_fillRate = 1f / CloneZConfig.BathFillSeconds;` and similarly for the others.
