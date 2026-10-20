@@ -129,7 +129,7 @@ namespace CloneZ
         /// <summary>
         /// Starts a vitamins timer that suppresses cold symptoms for two minutes of game time.
         /// </summary>
-        public void TakeVitamins() => _vitaminsUntil = Time.time + 1200f;
+        public void TakeVitamins() => _vitaminsUntil = Time.time + 120f;
 
         internal static void RegisterItems()
         {

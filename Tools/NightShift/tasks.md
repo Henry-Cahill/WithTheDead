@@ -3564,9 +3564,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Use the existing entry `"A pair of boots, a sock with a hole in it and a paperback with the cover torn off."` as the style reference.
   The new entries should convey personal remnants left by occupants of the bunk: a dented metal badge, a faded photograph of a family, a cracked pocket‑knife, a half‑eaten candy bar wrapped in crumpled foil, and a handwritten note “Keep the fire low – J”.
   Each entry must be a complete sentence in quotes, ending with a period, and fit the gritty, winter‑time, 1993 Kentucky setting.
-- [ ] Fix the vitamins timer duration in Assets/Scripts/Survival/Diseases.cs (class `PlayerDiseases`, method `TakeVitamins`).
+- [x] Fix the vitamins timer duration in Assets/Scripts/Survival/Diseases.cs (class `PlayerDiseases`, method `TakeVitamins`).
   The method currently adds 1200 seconds (`_vitaminsUntil = Time.time + 1200f;`) while the XML comment says “two minutes of game time”.
   Change the added value to 120 seconds so the timer matches the intended two‑minute duration.
   Update the line to: `_vitaminsUntil = Time.time + 120f;`
   After this fix, taking vitamins will suppress cold symptoms for roughly two minutes of in‑game time, as described to the player, instead of an unintended twenty‑minute period.
   All other behavior (cold catching logic, toast messages, etc.) remains unchanged.
+  - 14:55 landed by hts-llm in 1 min: **Change Summary**
