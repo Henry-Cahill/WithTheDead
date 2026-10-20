@@ -316,6 +316,12 @@ namespace CloneZ
             notes.Add("A faint candle flickers in the rest space, casting trembling shadows.");
             notes.Add("Distant howls echo across the frozen fields, reminding you of the night outside.");
             notes.Add("The stale, icy air carries the scent of pine resin from the nearby woods.");
+            notes.Add("Ice clings to the water pipes, slowing the flow of fresh water.");
+            notes.Add("The air is thick with soot, a reminder of the constant fire.");
+            notes.Add("Distant thunder rumbles, echoing through the icy night.");
+            notes.Add("Old wooden beams creak under the weight of the frost.");
+            notes.Add("Your breath hangs in the air, a fleeting cloud of vapor.");
+            notes.Add("A faint scent of woodsmoke lingers, drifting from the stove.");
 
             SetLastTick(c, now);
             if (notes.Count > 0) ProfileStore.Save();
