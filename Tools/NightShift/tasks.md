@@ -3726,11 +3726,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   After applying the settings, assign `_cachedFog = fog;`.
   This change removes per‑frame assignments when fog hasn’t changed, reducing unnecessary work without altering any visual outcome.
   - 15:44 landed by hts-llm in 1.6 min: **Changed files**
-- [ ] Add Q‑key handling to cancel an active search or timed fixture job in Assets/Scripts/Player/PlayerInteractor.cs so that pressing Q when the player is busy works like E does now.
+- [x] Add Q‑key handling to cancel an active search or timed fixture job in Assets/Scripts/Player/PlayerInteractor.cs so that pressing Q when the player is busy works like E does now.
   Modify the `else if (kb.qKey.wasPressedThisFrame)` block in `Update()` to:
   `if (IsBusy) { CancelSearch(); StopJob(); return; }`
   `if (!_ui.IsOpen && _focus == FocusKind.Fixture) OpenMenu(FixtureTarget);`
   This lets the player abort a rummage or a fixture job with Q, while preserving the existing menu‑open behaviour when not busy.
+  - 15:46 landed by hts-llm in 1.6 min: **Summary of changes**
 - [ ] Append five new flavour‑text strings to the `UseLines` array in Assets/Scripts/World/Fixtures/ToiletFixture.cs, placing them after the current last entry.
   Use the existing line `"Cold night fatigue drags you down, even as the seat offers brief relief."` as the style reference (short, present‑tense, atmospheric, period‑appropriate).
   The new lines should cover the following themes:
