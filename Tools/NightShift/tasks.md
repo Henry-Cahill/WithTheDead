@@ -426,7 +426,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace the line `Vector3 dir = Quaternion.Euler(0f, ang, 0f) * Vector3.forward;` in `Rebuild()` with `Vector3 dir = _rayDirs[i];`
   Optionally also cache the outer offset `Vector3 _rayOuter = dir * Outer;` in a second static array to avoid the multiplication inside the loop.
   The visual result (the shaded fog‑of‑war ring) stays identical, but the per‑frame work drops the 180 Quaternion/Euler constructions and two multiplications, reducing allocations and CPU time during the nightly updates.
-- [ ] In Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs: Add a “Turn off the pilot” action to `RaidStoreWaterHeater.GetActions` that lets the player extinguish the heater’s pilot flame when it is lit.
+- [x] In Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs: Add a “Turn off the pilot” action to `RaidStoreWaterHeater.GetActions` that lets the player extinguish the heater’s pilot flame when it is lit.
   In `GetActions`, after the existing “Check the pilot light” line, insert a counterpart conditional:
   `if (_pilot)`
   `into.Add(new InteractAction("Turn off the pilot", Extinguish));`
@@ -435,6 +435,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `.Timed(CloneZConfig.RaidHeaterRelightSeconds, "Relighting the pilot", HumanoidActivity.Use));`
   Add a new private method `Extinguish` matching the style of `Relight`:
   `private void Extinguish(InteractContext ctx)`
+  - 23:20 landed by 1htsserver in 3.7 min: **Changed files**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Economy/Money.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.

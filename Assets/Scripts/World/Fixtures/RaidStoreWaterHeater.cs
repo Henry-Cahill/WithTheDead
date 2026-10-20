@@ -66,7 +66,9 @@ namespace CloneZ
             into.Add(new InteractAction("Drink from the drain valve", c => WaterUse.Drink(c, this)).DisabledIf(!water, DryMessage));
             into.Add(new InteractAction("Knock on the tank", Knock));
             into.Add(new InteractAction("Check the pilot light", CheckPilot));
-            if (!_pilot)
+            if (_pilot)
+                into.Add(new InteractAction("Turn off the pilot", Extinguish));
+            else
                 into.Add(new InteractAction("Relight the pilot", Relight)
                     .Timed(CloneZConfig.RaidHeaterRelightSeconds, "Relighting the pilot", HumanoidActivity.Use));
         }
@@ -93,6 +95,13 @@ namespace CloneZ
             SetPilot(true);
             MakeNoise(CloneZConfig.FixtureNoiseSmall);
             ctx.Notify("You turn the knob to PILOT, hold it in and click the igniter. On the fourth click a little blue flame catches.");
+        }
+
+        private void Extinguish(InteractContext ctx)
+        {
+            SetPilot(false);
+            MakeNoise(CloneZConfig.FixtureNoiseSmall);
+            ctx.Notify("You turn the knob to OFF, and the pilot flame sputters out, leaving the heater dark.");
         }
 
         private void SetPilot(bool lit)
