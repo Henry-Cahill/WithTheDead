@@ -1709,9 +1709,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   · Add a private method `void CheckStock(InteractContext ctx)` that runs `if (_stock != null && !_stock.IsEmpty) ctx.Notify("The vending machine seems to still hold something."); else ctx.Notify("The vending machine looks empty.");`.
   · No other code changes; the existing actions, noise, and loot mechanics stay exactly as they are.
   - 06:13 landed by 0htsserver in 2.8 min: **Changed files**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Net/NetAuthority.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Net/NetAuthority.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 06:17 landed by hts-llm in 3.2 min: **Changes made**
 - [ ] In Assets/Scripts/World/RaidMapBuilder.Outdoor.cs: Add a thin, slightly rust‑stained metal grill to the top of the floodlight tower in `RaidMapBuilder.Outdoor.Checkpoint` (the `Prop` call for `tower`), so the tower looks like a battered but functional floodlight.
   Locate the lambda inside `Prop(town, tower, 0f, new Vector3(0.4f, 5f, 0.4f), true, (m, r) => { … })` and after the existing `m.Box` that creates the top plate (`m.Box(new Vector3(0f, 5.0f, 0f), new Vector3(0.9f, 0.1f, 0.2f), …)`) insert:
   `// Add a rust‑stained metal grill on the front of the floodlight`
