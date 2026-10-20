@@ -3480,3 +3480,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 14:24 landed by 0htsserver in 1.9 min: **Changed file**
 - [ ] Fix overlapping hit‑marker logic in Assets/Scripts/UI/HudCombatFeedback.cs so a normal hit never shows a stale kill/headshot visual while the previous kill marker is still fading.
   In `HudCombatFeedback.Hit(bool kill, bool head)` the code only updates `_kill` and `_headshot` when `kill` is true or the previous marker has expired:
+- [ ] Add subtle metal edging strips to the kerb in `Assets/Scripts/World/RaidMapBuilder.Streets.cs` → method `SidewalkRun`
+  After the kerb slab call `Slab(town, alongX, coord, a, b, side > 0 ? hw : -hw - 0.25f, side > 0 ? hw + 0.25f : -hw, 0.05f, DecorPalette.Matte(Kerb));` insert a random‑chance block.
+  With `if (rng.NextDouble() < 0.3)` create a thin dark metal strip (0.02 m wide, height y = 0.06 m) using `Strip`.
+  Compute the strip’s across position as `float across = coord + (side > 0 ? hw + 0.125f : -hw - 0.125f);` and call
+  `Strip(town, alongX, across, a, b, 0.02f, 0.06f, DecorPalette.Matte(new Color(0.20f, 0.20f, 0.20f)));`
+  This adds realistic metal edging or drainage caps along the kerb, giving visual variety while keeping colliders and interaction points unchanged and staying under the ~12‑primitive limit.
