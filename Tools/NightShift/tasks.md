@@ -1545,3 +1545,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// handle on the open door (mirrors the closed‑door handle)`
   `m.Box(hinge + open * new Vector3(0.23f, 1.25f, 0.022f), new Vector3(0.02f, 0.12f, 0.005f), open, Mt(Chrome));`
   The handle now appears on the ajar door’s front edge, matching the visual style of closed lockers. All other code stays unchanged.
+- [ ] In Assets/Scripts/UI/SkillsPanelController.cs, inside `SkillsPanelController.Build()` add a tiny “cap” rectangle to the left side of every progress bar so the bars look like they have a worn metal clip.
+  After the line `_progressFills[i] = fillGo.AddComponent<Image>();` insert the following:
+  `var cap = new GameObject("Cap"+i);`
+  `var capRt = cap.AddComponent<RectTransform>();`
+  `capRt.SetParent(bgRt, false);`
+  `capRt.anchorMin = capRt.anchorMax = new Vector2(0f, 0.5f);`
+  `capRt.pivot = new Vector2(0f, 0.5f);`
+  `capRt.anchoredPosition = new Vector2(-2f, 0f);`
+  `capRt.sizeDelta = new Vector2(4f, 14f);`
