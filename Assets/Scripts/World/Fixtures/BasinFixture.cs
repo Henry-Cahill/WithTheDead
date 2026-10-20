@@ -19,6 +19,12 @@ namespace CloneZ
         {
             "Two minutes of brushing, counted in your head. A small, stubborn piece of normal.",
             "You brush until your gums tingle and rinse with a splash. Minty. Almost civilised.",
+            "The frigid air bites your cheeks as you scrub, reminding you the world outside is still frozen.",
+            "You watch the thin stream of water turn into a misty cloud, disappearing like breath in the room.",
+            "A thin film of soot clings to your toothbrush, a reminder of the burnt logs in the stove.",
+            "The metal of the tap feels icy, and you wonder how long the mains will stay silent.",
+            "You spit the frothy foam into the basin, hearing it echo in the tiny, empty space.",
+            "Each swipe feels like a small rebellion against the cold that seeps through the cracked walls.",
         };
 
         private static readonly string[] ShaveLines =

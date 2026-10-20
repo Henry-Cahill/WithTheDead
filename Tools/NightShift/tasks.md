@@ -527,7 +527,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Result in‑game: when the radio is on and the survivor stands close enough, pressing Q (or the extra button) shows a notification like “Current channel: Battalion net”.
   No other code, assets, or UI screens are altered; all referenced members (`Tuned`, `TooFar`, `CloneZConfig.ReceiverKnobReach`) already exist.
   - 23:50 landed by hts-llm in 2.2 min: All changes compile successfully.Changed **Assets/Scripts/World/Fixtures/RaidCivicRadio.cs**
-- [ ] Append six new flavor‑text strings to the `BrushLines` array in Assets/Scripts/World/Fixtures/BasinFixture.cs so that brushing teeth can produce additional period‑correct commentary; use the existing entry `"You brush until your gums tingle and rinse with a splash. Minty. Almost civilised."` as the style reference and cover themes of cold mornings, lingering soot, quiet desperation, makeshift hygiene, and the ever‑present cold wind.
+- [x] Append six new flavor‑text strings to the `BrushLines` array in Assets/Scripts/World/Fixtures/BasinFixture.cs so that brushing teeth can produce additional period‑correct commentary; use the existing entry `"You brush until your gums tingle and rinse with a splash. Minty. Almost civilised."` as the style reference and cover themes of cold mornings, lingering soot, quiet desperation, makeshift hygiene, and the ever‑present cold wind.
   Locate the `private static readonly string[] BrushLines = { … };` declaration.
   After the second entry (the one quoted above), insert six new quoted sentences, each ending with a period, e.g.:
   `"The frigid air bites your cheeks as you scrub, reminding you the world outside is still frozen."`
@@ -536,6 +536,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `"The metal of the tap feels icy, and you wonder how long the mains will stay silent."`
   `"You spit the frothy foam into the basin, hearing it echo in the tiny, empty space."`
   `"Each swipe feels like a small rebellion against the cold that seeps through the cracked walls."`
+  - 23:52 landed by 1htsserver in 2.1 min: **Change summary**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Hub/Screens/HubKit.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
