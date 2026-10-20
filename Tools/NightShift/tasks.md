@@ -1340,3 +1340,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `sb.Solid.Box(at + new Vector3(0f, 1.02f, -0.6f), new Vector3(0.4f, 0.25f, 0.02f), ZoneKit.M(new Color(0.78f, 0.25f, 0.2f)));`
   Use `ZoneKit.R(rng, 0f, 1f) < 0.6f` (or similar) to randomise whether the flag appears, giving occasional variation while staying deterministic.
   This adds at most two new primitives (pole + flag) per checkpoint, uses existing materials, preserves colliders and interaction points, and provides a period‑appropriate visual detail that makes the cordon checkpoint feel lived‑in.
+- [ ] In Assets/Scripts/World/HomeLamp.cs: Optimize HomeLamp.Update to avoid calling SyncGlow every frame by caching the lamp’s flicker state and only syncing glow when the view‑state or flicker status actually changes.
+  Add a private bool field `_isFlickering` initialized to false.
+  In the `Flicker` setter, after setting `_light.Flicker = value;` also set `_isFlickering = value;` and call `SyncGlow();`.
+  In `Refresh()` (or wherever the flicker flag might be cleared, e.g., when the lamp is turned off) ensure `_isFlickering` reflects `_light?.Flicker ?? false`.
+  Rewrite `Update()` to:
+  `if (_overhead)`
+  `{`
+  `// only when the ceiling‑visibility flag actually toggles`
+  `if (ViewState.CeilingsVisible != _ceilingsShown) SyncGlow();`
