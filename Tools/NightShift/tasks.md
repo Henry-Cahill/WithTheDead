@@ -470,3 +470,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   Wrap the addition in `if (town.Rng.NextDouble() < 0.4) { … }` so the flag appears on roughly 40 % of mailboxes, using the deterministic `town.Rng`.
   Use `town.Out.Solid(box)` to obtain the mesh builder so the flag shares the mailbox’s collider and keep‑out area.
   No new colliders or interaction points are added; the flag is purely visual and stays within the existing mailbox footprint.
+- [ ] In Assets/Scripts/World/Zone/ZoneAtmosphere.cs: Cache the singleton lookups in ZoneAtmosphere so LateUpdate doesn’t call `TimeOfDay.Instance`, `GameSettings.Current` and `SandboxSettings.Current` every frame
+  Add three private fields: `private TimeOfDay _tod; private GameSettings _gs; private SandboxSettings _ss;`
+  Initialize them once in `Awake()` (or the first `LateUpdate` if they’re null) with ` _tod = TimeOfDay.Instance; _gs = GameSettings.Current; _ss = SandboxSettings.Current;`
+  Replace all uses of `TimeOfDay.Instance`, `GameSettings.Current` and `SandboxSettings.Current` in `LateUpdate` with the cached fields (`_tod`, `_gs`, `_ss`).
+  If any of those singletons can be recreated later (e.g., after a reload), check for null at the start of `LateUpdate` and re‑assign the cached fields.
+  The visual result – fog density, darkness at night, and readability tweaks – remains exactly the same; only the per‑frame property lookups are removed.
