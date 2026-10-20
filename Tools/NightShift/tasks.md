@@ -3476,3 +3476,5 @@ you want to see in game. Indent extra lines under a task to add detail.
   – After the line `m.Box(new Vector3(rx, 1.32f, -0.15f), new Vector3(0.2f, 0.1f, 0.04f), M(new Color(0.15f, 0.15f, 0.16f)));`
   – Insert a new primitive: `m.Box(new Vector3(rx, 1.35f, -0.127f), new Vector3(0.02f, 0.04f, 0.005f), Mt(Chrome));`
   – This adds a realistic chrome handle (≈2 cm × 4 cm × 0.5 cm) centered on the register’s front panel, using the existing `Chrome` material and keeping all colliders and interaction points unchanged.
+- [ ] Fix overlapping hit‑marker logic in Assets/Scripts/UI/HudCombatFeedback.cs so a normal hit never shows a stale kill/headshot visual while the previous kill marker is still fading.
+  In `HudCombatFeedback.Hit(bool kill, bool head)` the code only updates `_kill` and `_headshot` when `kill` is true or the previous marker has expired:
