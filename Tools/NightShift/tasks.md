@@ -3050,7 +3050,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `WindowBox(sash.transform, "PullHandle", l.P(o.Pos + 0.025f, SashBottom + 0.12f, inner), new Vector3(0.018f, 0.018f, 0.006f), brass);`
   The handle is a 1.8 cm × 1.8 cm × 0.6 cm brass box, positioned 2.5 cm inward from the left edge of the sash and 12 cm above the sash bottom, on the room‑side face (the same `inner` offset used for the lower sash).
   No colliders or interaction points are altered; the new primitive reuses the existing brass material and stays within the existing `lower`/`sash` hierarchy.
-- [ ] In Assets/Scripts/Zombies/ZombieAI.cs: Cache the PlayerGear singleton and player‑component lookups in ZombieAI to remove per‑frame FindObject/​GetComponent calls (Update → CanSee → InFlashlightBeam).
+- [x] In Assets/Scripts/Zombies/ZombieAI.cs: Cache the PlayerGear singleton and player‑component lookups in ZombieAI to remove per‑frame FindObject/​GetComponent calls (Update → CanSee → InFlashlightBeam).
+  - 12:09 landed by hts-llm in 4.8 min: **Changes made**
 - [ ] Add a “Add fuel” interaction to the campfire (Assets/Scripts/Survival/FieldSurvival.cs)
   Change the class declaration from `public sealed class Campfire : MonoBehaviour, IWarmthSource` to `public sealed class Campfire : Interactable, IWarmthSource` so the fire can receive interaction actions.
   Add an override of `GetActions(InteractContext ctx, List<InteractAction> into)` that:

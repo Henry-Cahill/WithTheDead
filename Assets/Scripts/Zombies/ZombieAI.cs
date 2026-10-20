@@ -37,6 +37,7 @@ namespace CloneZ
         private Renderer _renderer;
         private ZombieAvatar _avatar;
         private PlayerStats _player;
+        private PlayerGear _playerGear;
         private PlayerController _playerController;
         private PlayerSkills _playerSkills;
 
@@ -78,6 +79,7 @@ namespace CloneZ
         /// <summary>Updates the internal NavMeshAgent reference and other components.</summary>
         private void Awake()
         {
+            _playerGear = PlayerGear.Instance;
             _agent = GetComponent<NavMeshAgent>();
             _renderer = GetComponentInChildren<Renderer>();
             _avatar = GetComponent<ZombieAvatar>();
@@ -343,8 +345,8 @@ namespace CloneZ
         /// from the survivor to this zombie.</summary>
         private bool InFlashlightBeam(Vector3 fromPlayer)
         {
-            PlayerGear gear = PlayerGear.Instance;
-            if (gear == null || !gear.FlashlightOn || _playerController == null) return false;
+
+            if (_playerGear == null || !_playerGear.FlashlightOn || _playerController == null) return false;
             fromPlayer.y = 0f;
             float sqr = fromPlayer.sqrMagnitude;
             if (sqr > FlashlightBeamRange * FlashlightBeamRange) return false;
