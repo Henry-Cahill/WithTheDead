@@ -4092,7 +4092,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   At the start of `Update()` set `_cachedTOD = TimeOfDay.Instance;`.
   In `UpdateFatigue(float dt)` replace `if (TimeOfDay.Instance != null && TimeOfDay.Instance.IsNight) …` with `if (_cachedTOD != null && _cachedTOD.IsNight) …`.
   This removes two per‑frame lookups of `TimeOfDay.Instance`; the player’s night‑time fatigue multiplier remains unchanged.
-- [ ] Add a “Check for leak” action to Assets/Scripts/World/Fixtures/RaidTownGasPump.cs that only appears when the nozzle is lifted, plays the pump noise and notifies the player.
+- [x] Add a “Check for leak” action to Assets/Scripts/World/Fixtures/RaidTownGasPump.cs that only appears when the nozzle is lifted, plays the pump noise and notifies the player.
+  - 18:39 landed by 1htsserver in 2.8 min: All changes successfully compiled.**Changed file**
 - [ ] In Assets/Scripts/Core/Factions.cs, append four new `Def` entries to the existing `s_Defs` dictionary (place them after the current last entry `"caverelative"`).
   Use the same format as the existing entries, e.g. the `"survivorwarning"` entry:
   `Blurb = "A frayed note pinned to a wall: ‘Do not venture beyond the river at night; something watches.’"`
