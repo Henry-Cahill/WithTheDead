@@ -1069,12 +1069,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Remove the line `if (_sleep == null) _sleep = GetComponent<PlayerSleep>();` from Update.
   Result: the per‑frame `GetComponent<PlayerSleep>()` call is eliminated, reducing allocation‑free but costly reflection work each frame while keeping player behavior unchanged – the wound‑healing speed while sleeping remains identical because `_sleep` is set once at start.
   - 02:31 landed by 1htsserver in 1.5 min: **Changes made**
-- [ ] In Assets/Scripts/World/Fixtures/HoseSpigot.cs: Add a “Check tap” action to `HoseSpigot.GetActions` that simply reports the tap’s current state (open/closed and whether mains water is flowing).
+- [x] In Assets/Scripts/World/Fixtures/HoseSpigot.cs: Add a “Check tap” action to `HoseSpigot.GetActions` that simply reports the tap’s current state (open/closed and whether mains water is flowing).
   Locate the first `into.Add` in `GetActions` (the turn‑on/off action) and insert a new `InteractAction` right after it.
   Use:
   `into.Add(new InteractAction("Check tap", c => { if (_open) { c.Notify(WaterMains.MainsOn ? "The tap is open and water is running." : "The tap is open but the mains are shut off."); } else { c.Notify("The tap is closed."); } }));`
   No new fields, assets, or UI screens are required; it reuses the existing `_open` field and `WaterMains.MainsOn` property.
   The player will now see a brief message when selecting “Check tap” in the interaction menu, giving immediate feedback without altering any other behaviour.
+  - 02:33 landed by 0htsserver in 1.6 min: **Summary**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Player/Stealth.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
