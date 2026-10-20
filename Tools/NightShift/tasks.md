@@ -721,3 +721,5 @@ you want to see in game. Indent extra lines under a task to add detail.
   Size the handle `new Vector3(0.02f, 0.12f, 0.02f)`.
   Apply a dark‑metal material: `DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f))`.
   Result: each fridge now shows a realistic metal door handle, with left/right variation per seed, while keeping all colliders, interaction points and existing geometry unchanged.
+- [ ] Fix duplicate floor entries in Assets/Scripts/UI/InventoryUIController.Picker.cs by clearing the floor list before repopulating it in RefreshPicker so the UI reflects the actual ground items.
+- [ ] Add subtle decorative rivets to each button in Assets/Scripts/UI/UIKit.cs by modifying `UIKit.Button` – after the label is created, create four tiny `Image` children ("Rivet") at the button’s corners (size ≈ 4 × 4 px) using the existing `Accent` colour; this adds period‑appropriate hardware detail without altering layout, colliders, or interaction.
