@@ -3552,3 +3552,21 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Vector3 eye = ListenerRig.Active ? ListenerRig.Position : (Actor.LocalPlayer != null ? Actor.LocalPlayer.transform.position : Vector3.zero);`
   This prevents the distance `d` from being calculated as zero before the player exists, so anomalies stay invisible until the survivor actually approaches them, matching the intended “fade in only nearby” behavior. All other code remains unchanged.
   - 14:49 landed by 0htsserver in 0.9 min: Changed anomaly eye‑position fallback in **Assets/Scripts/Zone/Anomalies.cs**.
+- [ ] In Assets/Scripts/World/Fixtures/KitchenStove.cs: Optimize KitchenStove.Update by eliminating the per‑frame position‑change check that rebuilds fittings.
+  Add a private `bool _needsRebuild` field, default `false`.
+  In `Attach` (after `BuildFittings()`) set `_needsRebuild = false`.
+  Remove the line `if ((transform.position - _builtAt).sqrMagnitude > 1e-6f) BuildFittings();` from `Update`.
+  Add a small protected method `MarkRebuildNeeded()` that sets `_needsRebuild = true`; call it only from places that might move the stove (currently none).
+  In `Update`, after the early‑out `if (_lit == 0) return;`, insert `if (_needsRebuild) { BuildFittings(); _needsRebuild = false; }`.
+  This keeps the existing behaviour when the stove is (unlikely) moved, but prevents the expensive vector subtraction and magnitude check every frame, reducing per‑frame CPU work without changing any visual aspect.
+- [ ] Append five new entries to the `CivicUnderBunk` array in Assets/Scripts/World/RaidBuilding.Civic.cs (class `RaidBuilding`)
+  Add the lines after the existing three entries in the `private static readonly string[] CivicUnderBunk` initializer.
+  Use the existing entry `"A pair of boots, a sock with a hole in it and a paperback with the cover torn off."` as the style reference.
+  The new entries should convey personal remnants left by occupants of the bunk: a dented metal badge, a faded photograph of a family, a cracked pocket‑knife, a half‑eaten candy bar wrapped in crumpled foil, and a handwritten note “Keep the fire low – J”.
+  Each entry must be a complete sentence in quotes, ending with a period, and fit the gritty, winter‑time, 1993 Kentucky setting.
+- [ ] Fix the vitamins timer duration in Assets/Scripts/Survival/Diseases.cs (class `PlayerDiseases`, method `TakeVitamins`).
+  The method currently adds 1200 seconds (`_vitaminsUntil = Time.time + 1200f;`) while the XML comment says “two minutes of game time”.
+  Change the added value to 120 seconds so the timer matches the intended two‑minute duration.
+  Update the line to: `_vitaminsUntil = Time.time + 120f;`
+  After this fix, taking vitamins will suppress cold symptoms for roughly two minutes of in‑game time, as described to the player, instead of an unintended twenty‑minute period.
+  All other behavior (cold catching logic, toast messages, etc.) remains unchanged.
