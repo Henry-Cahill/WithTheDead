@@ -27,6 +27,7 @@ namespace CloneZ
         private Image _bar;
         private Text _text;
         private RectTransform _slot;
+        private const float _maxDistSq = 0.8f * 0.8f;
 
         private void Awake()
         {
@@ -69,7 +70,9 @@ namespace CloneZ
             if (!Busy) return;
             if (_stats.IsDead || _stats.Incapacitated) { Cancel(); return; }
             if (_stats.Health < _health - 0.5f) { Cancel("Interrupted."); return; }
-            if (HumanUtil.FlatDistance(transform.position, _start) > 0.8f) { Cancel("You stopped " + _label.ToLowerInvariant() + "."); return; }
+            Vector3 diff = transform.position - _start;
+                diff.y = 0f;
+                if (diff.sqrMagnitude > _maxDistSq) { Cancel("You stopped " + _label.ToLowerInvariant() + "."); return; }
             if (_avatar != null && _avatar.Animator != null) _avatar.Animator.Activity = _activity;
             _t += Time.deltaTime;
             UIKit.SetBar(_bar, _t / _len);

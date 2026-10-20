@@ -3333,8 +3333,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add an `Image` component and colour it a slightly darker shade of the window background, e.g. `new Color(0.07f, 0.08f, 0.09f, 0.8f)`.
   This gives the UI a period‑correct, lightly scuffed metal seam without affecting colliders or interaction points and stays within the 12‑primitive limit.
   - 13:36 landed by hts-llm in 2.5 min: Implemented a subtle “worn‑seam” decorative line at the top of the inventory window:
-- [ ] Optimize the per‑frame distance check in `PlayerChannel.Update` (Assets/Scripts/Survival/FieldSurvival.cs) by caching the squared‑distance limit and using `sqrMagnitude` instead of `HumanUtil.FlatDistance`, eliminating a costly sqrt each frame.
+- [x] Optimize the per‑frame distance check in `PlayerChannel.Update` (Assets/Scripts/Survival/FieldSurvival.cs) by caching the squared‑distance limit and using `sqrMagnitude` instead of `HumanUtil.FlatDistance`, eliminating a costly sqrt each frame.
   Add a private const float `_maxDistSq = 0.8f * 0.8f;` to the class (or compute once in `Begin`).
   Replace the line `if (HumanUtil.FlatDistance(transform.position, _start) > 0.8f)` with `if (((transform.position - _start).SetY(0f)).sqrMagnitude > _maxDistSq)`.
   Ensure the new `SetY` helper (or inline `Vector3 diff = transform.position - _start; diff.y = 0f;`) is used without allocating new vectors each call.
   The player’s experience remains identical – actions still cancel when they move beyond 0.8 metres – but the game no longer performs a square‑root each Update, reducing GC pressure and CPU load.
+  - 13:38 landed by 0htsserver in 2.5 min: Implemented distance check optimization in **PlayerChannel.Update**:
