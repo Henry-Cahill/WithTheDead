@@ -2972,11 +2972,12 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] In Assets/Scripts/World/Fixtures/TowelRail.cs: Cache the bathroom‑side availability check in TowelRail.Update to avoid calling `BathroomFixtures.SurvivorInFront` every frame
   Add a private field `float _nextAvailCheck;` and `bool _cachedAvailable;` initialized to 0f and true.
   In `Update()` after the existing `_nextCheck` logic, insert:
-- [ ] Add a quiet‑open/quiet‑close option to `StorageFixture.GetActions(InteractContext ctx, List<InteractAction> into)` in Assets/Scripts/World/Interaction/StorageFixture.cs
+- [x] Add a quiet‑open/quiet‑close option to `StorageFixture.GetActions(InteractContext ctx, List<InteractAction> into)` in Assets/Scripts/World/Interaction/StorageFixture.cs
   In the branch where `HasParts` is true, after the regular open/close actions, insert a new `InteractAction` that calls `SetOpen(true, false)` when the fixture is closed and another that calls `SetOpen(false, false)` when it is open.
   The action labels should read `"Open the " + noun + " quietly"` and `"Close the " + noun + " quietly"` respectively.
   This gives the survivor a way to open or shut doors/drawers without generating the fixture’s noise, letting players avoid attracting zombies.
   All existing logic (knocking, normal open/close, look/search, extra actions) must remain unchanged.
+  - 11:48 landed by 0htsserver in 2.5 min: **Changed file**
 - [ ] Append five new entries to the `OfficeNotices` string array in Assets/Scripts/World/RaidBuilding.Lighting.cs (class `RaidBuilding`, field `OfficeNotices`), using the style of the existing entry `"MORALE NOTICE: payday's Friday – collect your bonus, enjoy a coffee break, and thank a colleague."` – the new notices should cover morale‑boosting messages, winter‑weather safety tips, equipment‑check reminders, supply‑stock alerts, and a brief community‑news blurb, all phrased as period‑correct 1993 office memos.
   Add the following quoted sentences after the current last entry in `OfficeNotices`:
   `"WINTER MORAL BOOST: bring a hot cocoa to the break room – a warm mug beats the cold outside and keeps spirits bright."`
