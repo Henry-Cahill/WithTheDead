@@ -647,7 +647,12 @@ namespace CloneZ
             "FUEL STORAGE NOTICE: keep diesel containers sealed, clean spills, and never smoke near pumps.",
             "MORALE NOTICE: payday's Friday – collect your bonus, enjoy a coffee break, and thank a colleague.",
             "EMERGENCY PROCEDURE: fire alarm triggers lockdown; evacuate to the marked exits, then await the sweep.",
-            "DAMPNESS WARNING: the office ceiling leaks after rain; report water stains, mop spills, and keep vents clear."
+            "DAMPNESS WARNING: the office ceiling leaks after rain; report water stains, mop spills, and keep vents clear.",
+            "WINTER MORAL BOOST: bring a hot cocoa to the break room – a warm mug beats the cold outside and keeps spirits bright.",
+            "SAFETY REMINDER: check that fire extinguishers are mounted securely; the cold can cause seals to stiffen and hinder use.",
+            "EQUIPMENT CHECK: all flashlight batteries must be swapped for fresh alkaline cells this week; old ones lose charge in sub‑zero temps.",
+            "STOCK NOTICE: the pantry now has extra canned beans and powdered milk – take what you need, but keep some for neighbors.",
+            "COMMUNITY UPDATE: the town hall meeting is Thursday at 7 pm in the school gym – agenda includes road clearing contracts and winter heating assistance."
         };
 
         private static readonly string[] DepotNotices =
