@@ -437,9 +437,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add a new private method `Extinguish` matching the style of `Relight`:
   `private void Extinguish(InteractContext ctx)`
   - 23:20 landed by 1htsserver in 3.7 min: **Changed files**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Economy/Money.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Economy/Money.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 23:33 landed by hts-llm in 14.9 min: Added concise one‑sentence `/// <summary>` documentation to every public method/property in **Assets/Scripts/Economy/Money.cs** that previou
 - [x] Add chrome hinge pins to the side frames of the medicine cabinet in Assets/Scripts/World/FurnitureBuilder.Utility.cs (`FurnitureBuilder.MedCabinet`).
   - 23:32 landed by 1htsserver in 11.7 min: **Summary**
 - [ ] Fix the bribe‑action logic in `CordonGate.GetActions` (Assets/Scripts/World/Zone/ZoneCordon.cs) – the current check treats a successful money deduction as a failure, preventing players who have enough cash from bribing the Warden.
