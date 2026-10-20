@@ -364,3 +364,26 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
   - 22:54 landed by spark in 12.8 min: Done. Changed `Assets/Scripts/Core/GameSession.cs` only: added a one-sentence `/// <summary>` above each of the six undocumented public prop
+
+### Auto-planned 2026-10-19: written by the night shift when the queue ran low (delete any you don't want)
+
+- [ ] In Assets/Scripts/Survival/FieldSurvival.cs: Add a null‑check for `PlayerChannel.Local` in `FieldSurvival.LightFire` so the method returns `false` instead of throwing a `NullReferenceException` when the channel component isn’t present.
+  In the method `public static bool LightFire(PlayerInventory inv)` insert `if (PlayerChannel.Local == null) return false;` right after the existing `if (inv == null) return false;`.
+  The player will no longer see the game crash or freeze when trying to light a fire before the `PlayerChannel` component has been added (e.g., very early in a new run or after a scene reload). All other logic and return values stay unchanged.
+- [ ] Add a tiny hinge‑pin cylinder to the mailbox door for visual detail in the `Mailbox` method of Assets/Scripts/World/StarterHome.Grounds.cs
+  Insert after the line creating `doorPart` (`FixturePart doorPart = FixturePart.Hinge(...);`) the call:
+  `m.Cylinder(at + new Vector3(0f, 1.12f, -0.252f), 0.006f, 0.018f, 12, face);`
+  The cylinder (radius 0.006 m, height 0.018 m) sits at the door hinge point (`at + new Vector3(0f, 1.12f, -0.252f)`) using the same metal material (`face`) as the door, adding a realistic pin without affecting colliders or interaction.
+- [ ] In Assets/Scripts/Camera/ViewCrosshair.cs: Cache the singleton lookup of `IsoCameraFollow.Instance` in `ViewCrosshair` to avoid a per‑frame search.
+  Add a private field `private IsoCameraFollow _cam;` and assign it in `Awake()` after `Build()` (e.g. `_cam = IsoCameraFollow.Instance;`).
+  Replace the two occurrences of `IsoCameraFollow.Instance` (in `LateUpdate` for the `show` calculation and in `Bind()` for the target lookup) with the cached `_cam`.
+  If `_cam` becomes null (e.g. the camera is destroyed), keep the existing logic by checking `_cam != null` before using it; otherwise the behaviour is identical.
+  The crosshair’s visibility, tinting, and kick animation remain unchanged; the player sees no visual difference, but the per‑frame overhead of the singleton lookup is eliminated.
+- [ ] Add a “Tap the nozzle” action to Assets/Scripts/World/Fixtures/RaidTownGasPump.cs that only works when the nozzle is lifted, plays the pump’s noise and shows a short message.
+  In `GetActions` insert after the “Sniff the hose” line:
+  `into.Add(new InteractAction("Tap the nozzle", TapNozzle));`
+  Create a private method `TapNozzle(InteractContext ctx)` that:
+  `if (!_lifted) { ctx.Notify("The nozzle is still in its cradle."); return; }`
+  `MakeNoise(CloneZConfig.RaidPumpNoise);`
+  `ctx.Notify("You give the nozzle a quick tap; it squeaks faintly but nothing else happens.");`
+  The player will now see the new option when looking at the pump, hear the same pump noise as when lifting, and receive context‑sensitive text instead of nothing. All existing fields, methods, and constants remain unchanged.
