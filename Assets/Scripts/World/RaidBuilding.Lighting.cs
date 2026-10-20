@@ -169,6 +169,7 @@ namespace CloneZ
         // lantern, and the bulbs that have gone.
         private void PlanWallLighting()
         {
+            _wallFittings.Clear();
             Opening front = Kind == RaidBuildingKind.House ? PorchDoorway() : null;
             string porch = front != null ? PlanPorchLantern(front) : null;
             RaidRoom frontRoom = front != null ? RoomBehindDoor(front) : null;

@@ -2853,8 +2853,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 11:19 landed by 0htsserver in 1.4 min: **Changed file**
 - [x] Add a short power‑cord detail to the TV in Assets/Scripts/World/HomeFurniture.cs → `DrawPlain` method, `case HomeFurnitureKind.Tv:` so the TV looks like a 1993 set with a visible cord hanging from its back.
   - 11:22 landed by hts-llm in 2.4 min: Implemented a short power‑cord detail for the TV:
-- [ ] Fix accumulated wall‑fitting data that incorrectly blocks later switch placement in Assets/Scripts/World/RaidBuilding.Lighting.cs
+- [x] Fix accumulated wall‑fitting data that incorrectly blocks later switch placement in Assets/Scripts/World/RaidBuilding.Lighting.cs
   In `PlanWallLighting()` the method builds all wall‑mounted fixtures (switches, porch lantern, etc.) and finally calls `BlowSomeBulbs()`.
   Each call to `KeepWallClear()` adds a `WallFitting` to the private list `_wallFittings`. The list is never cleared, so when the building is (re)generated – e.g. on a new game load or when the world is rebuilt – old fittings remain in the list.
   `WallFittingAt()` later checks this list to decide whether a new switch spot is blocked. Stale entries cause false‑positive blocks, so the player may see a switch missing from a doorway or pushed far from the wall, breaking the intended “switch by the door” layout.
   Add a single line at the start of `PlanWallLighting()` to reset the list before new fittings are added:
+  - 11:23 landed by hts-llm in 0.9 min: **Changed file**
