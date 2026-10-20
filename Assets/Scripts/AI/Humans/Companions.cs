@@ -16,9 +16,12 @@ namespace CloneZ
         public const string HubScreenId = "companion";
         private const string HireFlag = "companion:";
 
+        /// <summary>The currently hired companion, if any.</summary>
         public static HumanNpc Current { get; private set; }
+        /// <summary>The current order assigned to the companion.</summary>
         public static Order CurrentOrder { get; private set; }
 
+        /// <summary>Determines whether the given NPC can be hired as a companion.</summary>
         public static bool CanHire(HumanNpc npc)
         {
             if (npc == null || npc.IsDead || Current != null || !GameSession.IsExtraction || GameSession.IsBorrowedBody) return false;
@@ -26,8 +29,12 @@ namespace CloneZ
             return npc.SquadTag == null || (npc.SquadTag is ALifeSquad s && s.Live.Count <= 1);
         }
 
+        /// <summary>Calculates the hiring fee for a given NPC based on their skill.
+        /// </summary>
         public static int FeeFor(HumanNpc npc) => npc == null ? 0 : 500 + Mathf.RoundToInt(npc.Loadout.Skill * 1500f);
 
+        /// <summary>Attempts to hire the given NPC as a companion, charging the fee and setting them up.
+        /// </summary>
         public static void Hire(HumanNpc npc, InteractContext ctx)
         {
             int fee = FeeFor(npc);
@@ -53,6 +60,7 @@ namespace CloneZ
             CurrentOrder = Order.Follow;
         }
 
+        /// <summary>Sets the current order for the hired companion.</summary>
         public static void SetOrder(Order o)
         {
             if (Current == null || Current.IsDead) return;
@@ -108,6 +116,7 @@ namespace CloneZ
         private static void ClearFlag(CharacterProfile c) => c.Flags.RemoveAll(f => f.StartsWith(HireFlag));
 
         /// <summary>A companion hired at the bar (or one who survived the last raid) joins at the insertion point.</summary>
+        /// <summary>Handles actions at the start of a raid, spawning any hired companion.</summary>
         public static void OnRaidStarted()
         {
             Current = null;
@@ -122,6 +131,7 @@ namespace CloneZ
             Recruit(npc);
         }
 
+        /// <summary>Handles actions at the end of a raid, clearing the hired companion if needed.</summary>
         public static void OnRaidEnded(RaidOutcome outcome)
         {
             CharacterProfile c = ProfileStore.ActiveCharacter;
@@ -133,6 +143,7 @@ namespace CloneZ
         #region The hiring board at the bar
         internal static void RegisterHubScreen() => HubScreens.Register(HubScreenId, arg => UIScreen.Show<CompanionScreen>());
 
+                /// <summary>Data for a hireable companion candidate.</summary>
         public sealed class Candidate { public string Name, Loadout; public float Skill; public int Fee; }
 
         /// <summary>Today's three runners for hire (they change with the hub day).</summary>
@@ -151,6 +162,7 @@ namespace CloneZ
             return list;
         }
 
+        /// <summary>Checks if a companion has been hired and returns their name.</summary>
         public static bool HasHired(out string name)
         {
             name = null;
@@ -161,6 +173,7 @@ namespace CloneZ
             return true;
         }
 
+        /// <summary>Attempts to hire the given candidate at the bar, spending money and recording the hire.</summary>
         public static bool HireAtBar(Candidate cand, PlayerInventory carried)
         {
             CharacterProfile c = ProfileStore.ActiveCharacter;
