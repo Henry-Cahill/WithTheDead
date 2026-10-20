@@ -1302,3 +1302,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   Use the `steel` colour already obtained from `MartSafeBody` so the detail matches the safe’s metal finish.
   Guard the addition with `if (rng.NextDouble() < 0.5) { … }` to give a 50 % chance of the scratch, using the existing `rng` (from `b.Rng`).
   No new colliders, interaction points or pivots are changed; the safe’s functionality remains identical.
+- [ ] Fix PickSpawn in Assets/Scripts/World/RaidMapBuilder.Edge.cs so it never selects a spawn point that is too close to an exit.
+  The method currently falls back to the first candidate (`pick = 0`) when `valid.Count` is 0, which can place the survivor within 35 m of an exit, violating the design rule.
+  Change the selection logic: if `valid.Count == 0` log a warning and set a safe default spawn (`new Vector3(-6f, 0.6f, 20f)`) and return early.
+  Otherwise pick a random index from the `valid` list and use that candidate.
+  `if (valid.Count == 0)`
+  `{`
+  `town.Warn("no valid spawn far enough from exits; using default");`
+  `town.Info.PlayerSpawn = new Vector3(-6f, 0.6f, 20f);`
+  `town.Info.PlayerSpawnYaw = 0f;`
+- [ ] Add two small brass pull‑knobs to the lower sash in `Assets/Scripts/World/StarterHome.Windows.cs` → `WindowSash` method, after the loop that creates the brass lifts, to give the window a more period‑correct tactile detail.
+  Create two new `Box` primitives using the existing `brass` surface, each 0.02 m × 0.005 m × 0.016 m, positioned at the inner ends of the bottom rail:
