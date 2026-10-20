@@ -20,10 +20,22 @@ namespace CloneZ
 
         private enum FarmAction { None, Till, Plant, Water, Harvest, Clear }
 
-        public string Prompt { get; private set; } = "";
-        public bool IsBusy { get; private set; }
-        public float WorkProgress { get; private set; }
-        public string WorkLabel { get; private set; } = "";
+        /// <summary>
+/// Current on‑screen prompt describing the farming action available.
+/// </summary>
+public string Prompt { get; private set; } = "";
+        /// <summary>
+/// True while a farming job is in progress.
+/// </summary>
+public bool IsBusy { get; private set; }
+        /// <summary>
+/// Fraction (0‑1) of the current job's timer that has elapsed.
+/// </summary>
+public float WorkProgress { get; private set; }
+        /// <summary>
+/// Short label shown while a farming job is being performed.
+/// </summary>
+public string WorkLabel { get; private set; } = "";
 
         private PlayerStats _stats;
         private PlayerController _controller;
