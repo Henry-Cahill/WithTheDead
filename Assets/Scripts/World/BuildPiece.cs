@@ -47,7 +47,6 @@ namespace CloneZ
         /// <summary>Whether the doorway's door is currently open.</summary>
         public bool DoorOpen { get; set; }
 
-        /// <summary>The world-space position of this piece.
         /// <summary>World-space position of this piece.</summary>
         public Vector3 Position => transform.position;
         /// <summary>Health normalized between 0 and 1.</summary>

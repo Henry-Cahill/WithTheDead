@@ -787,7 +787,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `sill` is the window sill height passed to the method, so the latch sits a few centimetres above it and slightly outward from the panel, mimicking period‑correct metal hardware.
   No new colliders or interaction points are added; the latch is purely visual and stays within the existing 12‑primitive limit (adds only 2 boxes, one per shutter).
   - 00:59 landed by 0htsserver in 1.6 min: **Changed file**
-- [ ] Fix the malformed XML comment on `BuildPiece.Position` in Assets/Scripts/World/BuildPiece.cs
+- [x] Fix the malformed XML comment on `BuildPiece.Position` in Assets/Scripts/World/BuildPiece.cs
   The property currently has two opening `<summary>` tags and only one closing tag, causing a compile‑time error and preventing the game from building.
   Change
   `/// <summary>The world‑space position of this piece.`
@@ -796,6 +796,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   to a single well‑formed comment, e.g.:
   `/// <summary>World‑space position of this piece.</summary>`
   `public Vector3 Position => transform.position;`
+  - 01:00 landed by hts-llm in 2.3 min: **Changed**
 - [ ] In Assets/Scripts/Rendering/ActorFog.cs, replace the per‑frame hierarchy‑count check with Unity’s hierarchy‑change callback to avoid the `transform.hierarchyCount` lookup each LateUpdate.
   Remove the line `if (transform.hierarchyCount != _count) Cache();` from `LateUpdate()`.
   Add a new method:
