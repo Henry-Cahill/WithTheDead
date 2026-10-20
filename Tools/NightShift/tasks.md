@@ -3999,7 +3999,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `M("radio_hum", "Radio Hum", "Every cheap transistor hums with a low, uneasy whine that never fully fades, making every silence feel uneasy.", m => { });`
   `M("farm_omen", "Farm Omen", "Old superstitions echo in the wind, warning that the dead still tend the fields and watch every step.", m => { });`
   - 18:08 landed by hts-llm in 2.3 min: **Summary of changes**
-- [ ] Add deterministic roof colour variation to buildings in Assets/Scripts/World/Map/KentuckyMap.Buildings.cs
+- [x] Add deterministic roof colour variation to buildings in Assets/Scripts/World/Map/KentuckyMap.Buildings.cs
   Create a private static `Surf RoofSurf(MapBuilding b, System.Random rng)` that returns a slightly tinted snow material based on the building’s `id` (using the same `deterministicIndex` hash logic as `ExteriorOf`). For example:
   `int idx = deterministicIndex(b.id, 5);`
   `float shade = 0.95f + 0.01f * idx; // 0.95–0.99 brightness`
@@ -4008,6 +4008,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace the two hard‑coded roof calls:
   In `Enterable` change `over.Tri(..., DecorMaterials.Snow);` to `over.Tri(..., RoofSurf(b, rng));`
   In `Scenery` change `m.Tri(..., DecorMaterials.Snow);` to `m.Tri(..., RoofSurf(f.Data, rng));`
+  - 18:13 landed by hts-llm in 4.5 min: **Summary of changes**
 - [ ] Fix the duplicate side‑mirror creation in Assets/Scripts/World/Vehicles.cs (Build method)
   The code creates the left‑ and right‑hand mirror housings inside the `for (int i = 0; i < 2; i++)` loop that also builds the two headlights. This makes the mirrors be instantiated twice (four mirrors total) and ties their placement to the light‑creation loop, needlessly allocating extra GameObjects each frame the car is built.
   Move the two `Box(_bodyRoot, …)` calls that build the mirror housings out of the headlights loop so they run only once after the loop finishes.

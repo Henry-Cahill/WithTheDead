@@ -104,7 +104,7 @@ namespace CloneZ
                 Vector2 A = p[tris[t]], B = p[tris[t + 1]], C = p[tris[t + 2]];
                 floor.Tri(To3(A, 0.02f), To3(B, 0.02f), To3(C, 0.02f), floorSurf);   // face up; the navmesh covers it
                 if (!roofed) continue;
-                over.Tri(To3(A, height), To3(B, height), To3(C, height), DecorMaterials.Snow);   // the snowy roof
+                over.Tri(To3(A, height), To3(B, height), To3(C, height), RoofSurf(b, rng));   // the snowy roof
                 over.Tri(To3(A, ceiling), To3(C, ceiling), To3(B, ceiling), DecorMaterials.Ceiling);   // face down
             }
             if (roofed)
@@ -197,7 +197,7 @@ site.Town.Out.Solid(sillCenter).Box(sillCenter, sillSize, outside);
             }
             List<int> tris = MapGeometry.Triangulate(p);
             for (int t = 0; t + 2 < tris.Count; t += 3)
-                m.Tri(To3(p[tris[t]], height), To3(p[tris[t + 1]], height), To3(p[tris[t + 2]], height), DecorMaterials.Snow);
+                m.Tri(To3(p[tris[t]], height), To3(p[tris[t + 1]], height), To3(p[tris[t + 2]], height), RoofSurf(f.Data, rng));
         }
 
         // The door goes in the longest wall facing the nearest street (or the longest wall, when none faces one);
@@ -305,6 +305,24 @@ site.Town.Out.Solid(sillCenter).Box(sillCenter, sillSize, outside);
                 case "silo": return 14f;
                 default: return storeys + 0.4f;   // a parapet above the top storey
             }
+        }
+
+        private static Surf RoofSurf(MapBuilding b, System.Random rng)
+        {
+            // Deterministic roof colour variation based on building id.
+            // Use the same hashing logic as ExteriorOf's deterministicIndex.
+            int deterministicIndex(long id, int count)
+            {
+                unchecked
+                {
+                    uint hash = (uint)id ^ 0x9e3779b9u;
+                    hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
+                    return (int)(hash % (uint)count);
+                }
+            }
+            int idx = deterministicIndex(b.id, 5);
+            float shade = 0.95f + 0.01f * idx; // 0.95–0.99 brightness
+            return DecorPalette.Matte(new Color(shade, shade, shade));
         }
 
         private static Surf ExteriorOf(MapBuilding b, System.Random rng)
