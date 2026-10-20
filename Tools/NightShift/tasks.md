@@ -2987,7 +2987,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `"STOCK NOTICE: the pantry now has extra canned beans and powdered milk – take what you need, but keep some for neighbors."`
   `"COMMUNITY UPDATE: the town hall meeting is Thursday at 7 pm in the school gym – agenda includes road clearing contracts and winter heating assistance."`
   - 11:49 landed by hts-llm in 3.2 min: **Changes made**
-- [ ] Modify `HumanoidLook.Wear` in `Assets/Scripts/Characters/HumanoidLook.cs`, inside the `case ClothingSlot.Head:` block, add a deterministic dark‑edge variation for wide‑brim hats after the existing `HatTrimColor = …` assignment.
+- [x] Modify `HumanoidLook.Wear` in `Assets/Scripts/Characters/HumanoidLook.cs`, inside the `case ClothingSlot.Head:` block, add a deterministic dark‑edge variation for wide‑brim hats after the existing `HatTrimColor = …` assignment.
   After the line `HatTrimColor = Shape.Headwear == HeadwearStyle.Glasses ? DarkGlass : Shade(c, 0.7f);` insert:
   `if (Shape.Headwear == HeadwearStyle.WideBrim) {`
   ` int seed = Shape.GetHashCode();`
@@ -2995,6 +2995,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   ` HatTrimColor = Color.Lerp(HatTrimColor, Shade(HatTrimColor, 0.6f), var);`
   `}`
   Result: wide‑brim hats get a subtle darker rim (≈0‑15 % darker) that varies per character, adding period‑appropriate wear without altering colliders or existing fields.
+  - 11:50 landed by 0htsserver in 1.8 min: **Changed files**
 - [ ] In Assets/Scripts/World/FurnitureBuilder.cs add a small metal number‑plate to the gun safe door in `FurnitureBuilder.GunSafe(RaidMesh m, System.Random rng)` so the safe has a period‑correct lock label.
   Add a thin chrome rectangle near the top of the front panel:
   `m.Box(new Vector3(0f, 1.74f, 0.31f), new Vector3(0.08f, 0.02f, 0.005f), Mt(Chrome));`
