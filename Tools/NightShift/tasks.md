@@ -849,7 +849,7 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/RaidTown.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
-- [ ] In Assets/Scripts/Characters/HumanoidLook.cs: Modify HumanoidLook.Wear (the `case ClothingSlot.Head:` block) to give helmets a subtle worn‑metal detail by adding a deterministic colour‑shift and gloss boost based on the humanoid’s shape hash.
+- [x] In Assets/Scripts/Characters/HumanoidLook.cs: Modify HumanoidLook.Wear (the `case ClothingSlot.Head:` block) to give helmets a subtle worn‑metal detail by adding a deterministic colour‑shift and gloss boost based on the humanoid’s shape hash.
   After the line `HatGloss = GarmentStyles.Gloss(k, Shape.Headwear == HeadwearStyle.Helmet ? 0.5f : 0.12f);` insert:
   `if (Shape.Headwear == HeadwearStyle.Helmet)
   {
@@ -858,6 +858,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   float var = ((seed >> 5) & 0x7) / 100f; // 0.00‑0.07
   HatTrimColor = Shade(HatTrimColor, 0.9f + var); // slight darkening / rust tint
   HatGloss = Mathf.Clamp01(HatGloss + var); // a touch more shine on worn metal
+  - 01:25 landed by hts-llm in 1.8 min: **Changes made**
 - [ ] Fix the malformed `TownDumpsterBody` ellipsoid call in Assets/Scripts/World/FurnitureBuilder.RaidStore.cs
   The current line
   `m.Ellipsoid(new Vector3(R(rng, 0.2f, 0.75f), 1.152f, R(rng, -0.35f, 0.35f)), new Vector3(R(rng, 0.25f, 0.4f), 0.012f, R(rng, 0.25f, 0.4f)), G(new Color(0.05f, 0.05f, 0.06f)), 8, 3);`
