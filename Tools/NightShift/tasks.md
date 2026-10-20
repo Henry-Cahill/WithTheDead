@@ -3911,7 +3911,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `into.Add(new InteractAction("Close washing machine", CloseDoor).DisabledIf(_drum == null || !_drum.IsOpen, "It's already closed"));`
   Create a private method `CloseDoor(InteractContext ctx)` mirroring `OpenDoor`:
   - 17:27 landed by 1htsserver in 2.7 min: **Changed file**
-- [ ] Modify Assets/Scripts/World/Map/KentuckyMap.cs to give each building a deterministic colour tint so façades vary like the hand‑built raid town.
+- [x] Modify Assets/Scripts/World/Map/KentuckyMap.cs to give each building a deterministic colour tint so façades vary like the hand‑built raid town.
+  - 17:34 landed by 1htsserver in 7.2 min: **Changes made**
 - [x] Add a thin, random‑thickness snow‑dust layer on the top of the copier cabinet in OfficeCopierBody (Assets/Scripts/World/FurnitureBuilder.RaidStore.cs)
   After the existing top box `m.Box(new Vector3(0f, 1.0405f, -0.02f), new Vector3(0.62f, 0.002f, 0.42f), …)` add a new box:
   `float snowThick = R(rng, 0.002f, 0.006f);`

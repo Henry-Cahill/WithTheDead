@@ -309,10 +309,26 @@ site.Town.Out.Solid(sillCenter).Box(sillCenter, sillSize, outside);
 
         private static Surf ExteriorOf(MapBuilding b, System.Random rng)
         {
+            // Deterministic colour selection based on building id to ensure repeatable façade tints.
+            // The colour choice is independent of other random draws for this building.
+            int deterministicIndex(long id, int count)
+            {
+                // Simple hash mixing using xor and multiplication, then modulo.
+                unchecked
+                {
+                    uint hash = (uint)id ^ 0x9e3779b9u;
+                    hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
+                    return (int)(hash % (uint)count);
+                }
+            }
+
             switch (b.kind)
             {
                 case "house": case "trailer":
-                    return DecorMaterials.WallExterior(ExteriorStyle.Siding, SidingColors[rng.Next(SidingColors.Length)]);
+                {
+                    int idx = deterministicIndex(b.id, SidingColors.Length);
+                    return DecorMaterials.WallExterior(ExteriorStyle.Siding, SidingColors[idx]);
+                }
                 case "barn":
                     return DecorMaterials.Planks(new Color(0.46f, 0.18f, 0.14f));
                 case "industrial": case "warehouse": case "silo": case "greenhouse":
@@ -320,9 +336,14 @@ site.Town.Out.Solid(sillCenter).Box(sillCenter, sillSize, outside);
                 case "garage": case "shed": case "ruin": case "canopy":
                     return DecorMaterials.WallExterior(ExteriorStyle.CinderBlock, new Color(0.66f, 0.66f, 0.64f));
                 default:
-                    return rng.NextDouble() < 0.25
-                        ? DecorMaterials.WallExterior(ExteriorStyle.Stucco, new Color(0.80f, 0.78f, 0.72f))
-                        : DecorMaterials.WallExterior(ExteriorStyle.Brick, BrickColors[rng.Next(BrickColors.Length)]);
+                {
+                    // For default styles we still want deterministic colour selection.
+                    bool useStucco = (deterministicIndex(b.id, 4) < 1); // 1 in 4 chance
+                    if (useStucco)
+                        return DecorMaterials.WallExterior(ExteriorStyle.Stucco, new Color(0.80f, 0.78f, 0.72f));
+                    int idx = deterministicIndex(b.id, BrickColors.Length);
+                    return DecorMaterials.WallExterior(ExteriorStyle.Brick, BrickColors[idx]);
+                }
             }
         }
 
