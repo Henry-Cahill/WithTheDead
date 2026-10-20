@@ -1637,7 +1637,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Uses an existing colour (a muted metallic grey) and the `Part` helper, so no new colliders or interaction points are introduced.
   Keeps the total primitive count well under the ~12‑primitive limit.
   - 05:52 landed by hts-llm in 1.9 min: **Changed file**
-- [ ] Remove Kestrel Flats, Mirelock woods, and Spillway as raid locations and retire them to being wave maps also as introduction map.
+- [x] Remove Kestrel Flats, Mirelock woods, and Spillway as raid locations and retire them to being wave maps also as introduction map.
+  - 06:01 landed by hts-llm in 8.7 min: **Changes made**
 - [x] Add a small metal strike‑plate to each interior doorway built in `Assets/Scripts/World/StarterHome.cs` inside the `Raise` method’s `if (s.Type == BuildPieceType.Doorway)` block.
   Create a `GameObject` primitive cube named `"Plate"` as a child of the doorway piece, set its local scale to `new Vector3(0.06f, 0.02f, 0.01f)` (≈ 6 cm × 2 cm × 1 cm), and position it a few centimetres above the handle:
   `Vector3 plateOffset = s.Yaw switch`
