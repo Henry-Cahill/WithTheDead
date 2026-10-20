@@ -1391,3 +1391,5 @@ you want to see in game. Indent extra lines under a task to add detail.
   `rust.transform.localScale = new Vector3(0.04f, 0.02f, 0.01f); // width × height × depth`
   `rust.transform.localPosition = new Vector3(Random.Range(-0.05f, 0.05f), 1.15f, Random.Range(0.05f, 0.12f));`
   `rust.transform.localRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);`
+- [ ] Fix compile error in Assets/Scripts/World/FurnitureBuilder.Kitchen.cs: the `FridgeDoor` method creates note objects with a non‑existent `RaidMesh.Box(Vector3,Vector3,Quaternion,Surf)` overload.
+  In `FridgeDoor`, replace the line
