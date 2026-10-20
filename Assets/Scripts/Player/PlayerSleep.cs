@@ -159,7 +159,7 @@ namespace CloneZ
         {
             int n = Physics.OverlapSphereNonAlloc(
                 transform.position, CloneZConfig.SleepDangerRadius, _dangerBuf,
-                1 << CloneZConfig.IgnoreRaycastLayer, QueryTriggerInteraction.Ignore);
+                ~(1 << CloneZConfig.IgnoreRaycastLayer), QueryTriggerInteraction.Ignore);
             for (int i = 0; i < n; i++)
                 if (_dangerBuf[i] != null && _dangerBuf[i].GetComponentInParent<ZombieAI>() != null)
                     return true;

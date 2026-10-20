@@ -1057,8 +1057,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   where `(x, z)` are `(-0.5f, -0.24f)`, `(0.5f, -0.24f)`, `(-0.5f, 0.24f)`, `(0.5f, 0.24f)`.
   The brackets use the existing brass material (`Mt(Brass)`), add only four primitives, keep all colliders and interaction points unchanged, and give the dresser a period‑correct metallic accent that varies per run.
   - 02:28 landed by hts-llm in 2.2 min: **Summary**
-- [ ] In Assets/Scripts/Player/PlayerSleep.cs: Fix the layer‑mask used in `PlayerSleep.ZombiesNearby` so that zombies on normal layers are detected and the player cannot sleep when they are close.
+- [x] In Assets/Scripts/Player/PlayerSleep.cs: Fix the layer‑mask used in `PlayerSleep.ZombiesNearby` so that zombies on normal layers are detected and the player cannot sleep when they are close.
   In `ZombiesNearby()` the call
+  - 02:29 landed by hts-llm in 1.2 min: **Summary**
 - [ ] Add a subtle “worn‑edge” accent to each scrollbar handle built in `HubUI.Scroll` (Assets/Scripts/Hub/Screens/HubUI.cs)
 - [ ] Cache the PlayerSleep component in Awake instead of looking it up each frame in Update in Assets/Scripts/Player/PlayerWounds.cs
   Add `_sleep = GetComponent<PlayerSleep>();` to the existing Awake method (alongside the existing `_stats` assignment).
