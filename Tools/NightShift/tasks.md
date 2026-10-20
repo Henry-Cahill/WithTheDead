@@ -3820,12 +3820,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   This gives each mask a subtle, deterministic “filter” rim that is slightly darker than the base mask colour, adding period‑appropriate visual depth without changing geometry.
   No new primitives, colliders, or interaction points are added; only the colour of the existing mask trim is varied.
   - 16:05 landed by 1htsserver in 1.7 min: **Changed file**
-- [ ] Cache per‑frame HUD values in Assets/Scripts/Gadgets/Gadgets.cs → HudDrone.LateUpdate to avoid rebuilding the OSD string and doing repeated calculations when nothing changed.
+- [x] Cache per‑frame HUD values in Assets/Scripts/Gadgets/Gadgets.cs → HudDrone.LateUpdate to avoid rebuilding the OSD string and doing repeated calculations when nothing changed.
   Add private fields to HudDrone to store the last shown battery percent, altitude, speed (km/h), distance to the player, grenade‑armed flag and the drone kind.
   In LateUpdate read DronePilot.Local once, then if the drone is active compare the current values (`d.Battery01`, `d.transform.position.y`, `d.Speed`, `Vector3.Distance(Actor.LocalPlayer.transform.position, d.transform.position)`, `d.HasGrenade`, `d.Kind`) to the cached fields.
   Only when any of those differ (or on the first frame) rebuild newText, assign it to _text.text and update _cachedText as before; otherwise skip all string concatenation and the distance/Battery/Speed calculations.
   Initialise the cache fields in Create() (or on first LateUpdate) so the first display works.
   This removes per‑frame allocations from string concatenation and the cheap Math/Distance calls when the drone’s state is unchanged, while the visual HUD remains identical.
+  - 16:09 landed by 1htsserver in 4.1 min: **Changed file**
 - [ ] In Assets/Scripts/World/Fixtures/RainBarrelFixture.cs: Add a quick “Shake the barrel” timed action to `RainBarrelFixture.GetActions` that gives a small freshen boost
   Add a new constant `private const float ShakeSeconds = 1.5f;` near the existing `WashSeconds` and `SkimSeconds`.
   In `GetActions`, after the existing “Skim the leaves off the top” line, insert:
