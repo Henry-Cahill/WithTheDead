@@ -2353,3 +2353,32 @@ you want to see in game. Indent extra lines under a task to add detail.
   When the fixture is instantiated but Init has not yet run, _host is null, so SaveKey returns null. The save system later uses this value as a dictionary key, causing a NullReferenceException or key‑collision errors.
   Change the getter to always return a valid key, falling back to the component’s own transform when the host is missing:
   - 09:15 landed by 0htsserver in 1.1 min: **Changed**
+- [ ] Add a small metal front‑handle to spawned locker containers in Assets/Scripts/Items/LootContainer.cs, editing the `LootContainer.Spawn` method
+  After the line `GameObject go = CloneZUtil.Box(name, position, size, color, parent);` insert a block that:
+  Computes the floor Y with `BuildPiece.FloorTopAt(position)` like `var floor = position; floor.y = BuildPiece.FloorTopAt(floor);`
+  Creates a deterministic‑random `System.Random` (e.g. `var rng = new System.Random(1994);`) and, if `rng.NextDouble() < 0.7`, adds a handle mesh:
+- [ ] In Assets/Scripts/World/Interaction/StorageFixture.cs: Cache the per‑frame lookup of the player interactor in `StorageFixture` to avoid a `PlayerInteractor.Current` call each Update frame
+  Add a private field `private PlayerInteractor _player;` to the class.
+  Create an `Awake()` method (or add to an existing initializer) that sets `_player = PlayerInteractor.Current;`.
+  Replace the line `PlayerInteractor pi = PlayerInteractor.Current;` in `Update()` with `PlayerInteractor pi = _player;`.
+  Optionally, guard against a null player after respawn by adding `if (_player == null) _player = PlayerInteractor.Current;` at the start of `Update()`.
+  The player sees no visual change; the storage still opens when looked at from the inventory, but the per‑frame overhead of a singleton lookup is eliminated.
+- [ ] Make sure there are graphics for every item in the game.
+- [ ] Add a “Wipe the seat” interaction to the toilet fixture (Assets/Scripts/World/Fixtures/ToiletFixture.cs)
+  In `GetActions` after the existing seat toggle line
+  `into.Add(new InteractAction(_seatUp ? "Put the seat down" : "Lift the seat", c => SetSeat(!_seatUp)));`
+  insert
+  `into.Add(new InteractAction("Wipe the seat", WipeSeat));`
+  Add a private method at the end of the class:
+  `private void WipeSeat(InteractContext ctx) {`
+  ` ctx.Notify("You wipe away grime from the cold porcelain.");`
+  ` // a small calming effect, re‑using the existing toilet‑use calm value`
+- [ ] In Assets/Scripts/Hub/HubNpc.cs, extend the `"merc"` entry in the `Lines` dictionary by appending five new sentences that keep the terse, world‑weary tone (example style: “Two of us see twice as much.”) and cover themes of winter travel hazards, rumors about the Zone, the merc’s pricing quirks, loyalty to whoever pays, and a warning about over‑reaching into the snow‑bound ruins.
+  Add `"The roads are slick with ice; a slip can get you buried before you draw a weapon."`
+  Add `"I've heard the old well under the ice still whispers, and the dead listen."`
+  Add `"My fee climbs with the wind—extra for a night that drifts like a white shroud."`
+  Add `"I'll fight for the highest bidder, but I won’t turn my back on a comrade in a blizzard."`
+  Add `"Don't chase a shadow through the snowbank unless you’re ready to become one."`
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Vehicles.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
