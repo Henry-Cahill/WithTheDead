@@ -3826,3 +3826,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   Only when any of those differ (or on the first frame) rebuild newText, assign it to _text.text and update _cachedText as before; otherwise skip all string concatenation and the distance/Battery/Speed calculations.
   Initialise the cache fields in Create() (or on first LateUpdate) so the first display works.
   This removes per‑frame allocations from string concatenation and the cheap Math/Distance calls when the drone’s state is unchanged, while the visual HUD remains identical.
+- [ ] In Assets/Scripts/World/Fixtures/RainBarrelFixture.cs: Add a quick “Shake the barrel” timed action to `RainBarrelFixture.GetActions` that gives a small freshen boost
+  Add a new constant `private const float ShakeSeconds = 1.5f;` near the existing `WashSeconds` and `SkimSeconds`.
+  In `GetActions`, after the existing “Skim the leaves off the top” line, insert:
+  `into.Add(new InteractAction("Shake the barrel", Shake).Timed(ShakeSeconds, "Shaking the barrel").DisabledIf(!Barrel.HasWater, Barrel.DryMessage));`
+  Create a new private static method `Shake(InteractContext ctx)` that calls `WaterUse.Freshen(ctx, 0.2f);` and then `ctx.Notify("You shake the barrel, splashing cold water over yourself.");`
+  Result: when the barrel still contains water the player can press [Q] to “Shake the barrel”, see a short progress bar (1.5 s) and receive a modest freshness gain, with an on‑screen message confirming the action. All existing code and UI remain unchanged.
+- [ ] In Assets/Scripts/World/FurnitureBuilder.cs: Add a small metal latch‑handle to the ammo can in `FurnitureBuilder.AmmoCan(RaidMesh m, System.Random rng, Vector3 at, float yaw)` so the can has a period‑correct front latch.
+  Use the existing metal surface material: `Mt(Chrome)`.
+  Compute a slight random x‑offset for visual variation: `float lx = R(rng, -0.01f, 0.01f);`.
+  Place the latch near the top front of the can: `m.Box(at + q * new Vector3(lx, 0.22f, 0.075f), new Vector3(0.02f, 0.04f, 0.005f), q, Mt(Chrome));`.
+  (Optional) Add a tiny rivet detail on the latch for extra realism: `m.Box(at + q * new Vector3(lx, 0.235f, 0.077f), new Vector3(0.003f, 0.003f, 0.001f), q, M(Black));`.
