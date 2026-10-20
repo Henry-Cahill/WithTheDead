@@ -1750,11 +1750,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 06:26 landed by 1htsserver in 2.2 min: **Changed file**
 - [x] Add a subtle rust‑stained metal cap on the rain barrel’s lip in Assets/Scripts/World/WaterSource.cs to give the barrel a makeshift handle feel and a bit of visual variety.
   - 06:30 landed by 0htsserver in 4 min: **Changed file**
-- [ ] In Assets/Scripts/World/GroundItemRenderer.cs: Cache the expensive `Camera.main` lookup in `GroundItemRenderer` instead of calling it every LateUpdate.
+- [x] In Assets/Scripts/World/GroundItemRenderer.cs: Cache the expensive `Camera.main` lookup in `GroundItemRenderer` instead of calling it every LateUpdate.
   Add a private field `private Camera _cachedMain;` initialized in `OnEnable` (or `Awake`) with `Camera.main`.
   In `LateUpdate` replace `Camera cam = Camera.main;` by `if (_cachedMain == null || _cachedMain != Camera.main) _cachedMain = Camera.main; Camera cam = _cachedMain;`.
   This eliminates the per‑frame tag‑based search while preserving the current behaviour – the same camera is used for frustum calculation and drawing, and the player sees no visual change.
   No other code or assets need to be modified.
+  - 06:32 landed by 1htsserver in 5.7 min: **Changed file**
 - [ ] Add an “Abandon outpost” action for players who already own the outpost (Assets/Scripts/AI/Humans/Outposts.cs → Outpost.GetActions and a new private void Abandon method).
   In GetActions, after the existing “Held by …” disabled action, append into.Add(new InteractAction("Abandon outpost", Abandon).Timed(3f, "Tearing down the flag…")); so owners can voluntarily give up the site.
   Implement private void Abandon(InteractContext ctx) to set _state.Owner to Factions.Vanguard, clear _state.LockedUntilUnix (0), call Recolour(), raise a toast "Outpost abandoned.", and call ProfileStore.Save().

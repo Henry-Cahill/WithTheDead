@@ -47,14 +47,19 @@ namespace CloneZ
         private readonly Plane[] _frustum = new Plane[6];
         private Matrix4x4[] _batch = new Matrix4x4[BatchLimit];
         private Vector3 _eye;
+        private Camera _cachedMain;
 
-        private void OnEnable() => Instance = this;
+        private void OnEnable()
+            {
+                Instance = this;
+                _cachedMain = Camera.main;
+            }
         private void OnDisable() { if (Instance == this) Instance = null; }
 
         private void LateUpdate()
         {
-            Camera cam = Camera.main;
-            if (cam == null) return;
+            if (_cachedMain == null || _cachedMain != Camera.main) _cachedMain = Camera.main;
+            Camera cam = _cachedMain;
 
             // The isometric camera hangs well back from the survivor, so detail and draw range are
             // measured from the point it looks at; the shoulder / first-person cameras are close enough.
