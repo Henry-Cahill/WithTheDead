@@ -1982,10 +1982,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   Optionally add a tiny black screw `m.Box(screwPos, new Vector3(0.004f,0.004f,0.004f), DecorPalette.Matte(new Color(0.08f,0.08f,0.09f)))` with `screwPos = knobPos + n * 0.005f + Vector3.up * 0.005f;`
   Result: players see a small brushed‑brass knob crowning the sconce’s rod, sometimes a darker‑brass variant, with a tiny screw detail, giving the fixture a lived‑in, period‑correct feel without altering colliders or interaction points.
   - 07:42 landed by 1htsserver in 3.2 min: **Changes made**
-- [ ] Add a fallback “inspect” action for fixtures that have no defined actions in Assets/Scripts/Player/PlayerInteractor.cs
+- [x] Add a fallback “inspect” action for fixtures that have no defined actions in Assets/Scripts/Player/PlayerInteractor.cs
   In `ActOnFocus()`, before calling `RunPrimary(FixtureTarget)`, clear `_actions`, call `FixtureTarget.GetActions(_ctx, _actions)`, and if `_actions.Count == 0` invoke `Notify(FixtureTarget.DisplayName);` and skip `RunPrimary`.
   In `FixturePrompt(Interactable f)`, after obtaining actions, if `_actions.Count == 0` return the string `"[E] Inspect"` instead of just `f.DisplayName`.
   This gives the player a usable “[E] Inspect” prompt on objects like boarded‑up doors or broken furniture that currently have no actions, and pressing E will show a short HUD notice with the object’s display name. All existing behavior for fixtures with actions must remain unchanged.
+  - 07:45 landed by hts-llm in 4.4 min: Added a fallback “inspect” action for fixtures with no defined actions.
 - [ ] Append four new manual pages to the `Pages` array in `ManualScreen` (Assets/Scripts/Hub/Screens/HomeScreens.cs) after the existing final entry `("Survivor myths", "Stories circulate …")`.
   Use the entry `("Winter hazards", "Freezing wind bites …")` as a style reference – terse title, followed by one‑ or two‑sentence body written in the same dry, in‑world voice.
   The new pages should cover:
