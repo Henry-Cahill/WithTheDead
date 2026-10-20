@@ -3488,11 +3488,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Strip(town, alongX, across, a, b, 0.02f, 0.06f, DecorPalette.Matte(new Color(0.20f, 0.20f, 0.20f)));`
   This adds realistic metal edging or drainage caps along the kerb, giving visual variety while keeping colliders and interaction points unchanged and staying under the ~12‑primitive limit.
   - 14:26 landed by 0htsserver in 1.3 min: **Changed file**
-- [ ] Cache the Camera.main lookup in Assets/Scripts/Rendering/VisionController.cs instead of doing it each LateUpdate.
+- [x] Cache the Camera.main lookup in Assets/Scripts/Rendering/VisionController.cs instead of doing it each LateUpdate.
   – Add a private void Awake() that sets Camera to Camera.main if it is still null when the component awakens (the Bind method already assigns the main camera, this just protects against the rare case of a missing assignment).
   – Remove the per‑frame line `if (Camera == null) Camera = Camera.main;` from LateUpdate(), eliminating the costly static property lookup on every frame.
   – No visual change: the same camera continues to drive all vision effects; the player sees exactly the same lighting and UI.
   – All other behaviour stays unchanged; the field Camera remains a public getter‑only property as before.
+  - 14:28 landed by hts-llm in 2.4 min: **Changed files**
 - [ ] In Assets/Scripts/World/Fixtures/RaidTownGenerator.cs: Add a “Estimate runtime” action to RaidTownGenerator so the player can see roughly how long the generator will keep running with the fuel that’s left.
   Modify `RaidTownGenerator.GetActions` to insert `into.Add(new InteractAction("Estimate runtime", EstimateRuntime));` after the existing “Check the fuel” line.
   Add a private method `EstimateRuntime(InteractContext ctx)` that computes remaining time from `_fuel` (fuel drains at 1 unit per second) and notifies the player, e.g.
