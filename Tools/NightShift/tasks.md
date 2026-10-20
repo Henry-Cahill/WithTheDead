@@ -3545,9 +3545,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Call `ZoneKit.NoBake(scorch)` so the decal is ignored by NavMesh baking.
   This gives each fire a period‑correct visual cue of burnt earth without affecting gameplay or physics.
   - 14:48 landed by 0htsserver in 1.7 min: **Changed file**
-- [ ] Fix a visibility bug in Assets/Scripts/Zone/Anomalies.cs: Anomalies become visible instantly during startup when no player or listener exists because the fallback eye position is the anomaly’s own position.
+- [x] Fix a visibility bug in Assets/Scripts/Zone/Anomalies.cs: Anomalies become visible instantly during startup when no player or listener exists because the fallback eye position is the anomaly’s own position.
   In `Anomaly.UpdateVisibility()` replace the line that selects `eye`
   `Vector3 eye = ListenerRig.Active ? ListenerRig.Position : (Actor.LocalPlayer != null ? Actor.LocalPlayer.transform.position : transform.position);`
   with a safe fallback that does not place the eye at the anomaly itself:
   `Vector3 eye = ListenerRig.Active ? ListenerRig.Position : (Actor.LocalPlayer != null ? Actor.LocalPlayer.transform.position : Vector3.zero);`
   This prevents the distance `d` from being calculated as zero before the player exists, so anomalies stay invisible until the survivor actually approaches them, matching the intended “fade in only nearby” behavior. All other code remains unchanged.
+  - 14:49 landed by 0htsserver in 0.9 min: Changed anomaly eye‑position fallback in **Assets/Scripts/Zone/Anomalies.cs**.

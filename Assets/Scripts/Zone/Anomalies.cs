@@ -224,7 +224,7 @@ namespace CloneZ
         // (the doc's "visible from too far: fade them in by distance").
         private void UpdateVisibility()
         {
-            Vector3 eye = ListenerRig.Active ? ListenerRig.Position : (Actor.LocalPlayer != null ? Actor.LocalPlayer.transform.position : transform.position);
+            Vector3 eye = ListenerRig.Active ? ListenerRig.Position : (Actor.LocalPlayer != null ? Actor.LocalPlayer.transform.position : Vector3.zero);
             float d = Vector3.Distance(new Vector3(eye.x, 0f, eye.z), new Vector3(transform.position.x, 0f, transform.position.z));
             float k = ViewState.Current == CameraView.Isometric ? Mathf.InverseLerp(9f, 5f, d) : Mathf.InverseLerp(26f, 18f, d);
             if (Def.Id == "tollgate" && Dormant) k *= 0.5f;
