@@ -3590,3 +3590,15 @@ you want to see in game. Indent extra lines under a task to add detail.
   Create a private method `Inspect(InteractContext ctx)` that obtains the artifact description via `ArtifactCatalog.Describe(ArtifactId)` and shows it with `ctx.Notify(...)` (fallback to “Nothing special.” if empty).
   The player will now see an extra “[Q] Inspect …” option when an artifact is revealed, receiving a short text tooltip of its known properties without removing it.
   All other code, fields, and existing actions must remain unchanged.
+- [ ] Append five new guitar‑related lines to the `"guitar"` entry in the `Lines` dictionary in Assets/Scripts/Hub/HubNpc.cs; use the existing style of short, period‑ended remarks like “Same three chords since the Passing.” and cover themes of winter gloom, local folklore, barter‑based requests, and the lingering memory of the outbreak.
+  Add the following sentences (in order) to the array after the current three items:
+  “Snow‑capped pines hum a low dirge when the wind sighs.”
+  “Pay a copper and I’ll sing the tale of the frozen well.”
+  “My fingers are numb, but the strings still bleed the old hymns.”
+  “Ask for a ballad of the Spillway and you’ll hear the ice crack.”
+  “Even in the gloom, a tune can warm a throat that’s lost its fire.”
+- [ ] Add a subtle metal frame around the gas‑mask visor UI in Assets/Scripts/Rendering/Presentation.cs, class `GasVisorOverlay`, method `Create`
+  after the line `v._cracks = Raw(v._canvas.transform, CrackTexture(), "Cracks");` insert a new panel that draws a thin rectangular rim a little larger than the fog texture, using the same canvas parent;
+  use `UIKit.Panel(v._canvas.transform, "MaskRim", new Color(0.3f, 0.3f, 0.35f, 0.5f))` to create the rim image;
+  position it with `UIKit.Place(rim.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(0.28f, 0.16f));` – i.e. a 0.28 m × 0.16 m rectangle centred on the canvas, giving a 2‑cm border around the existing fog (which is 0.128 m × 0.072 m);
+  keep the existing colliders, interaction points and pivots untouched; the new rim is purely visual and adds a period‑accurate metal frame hint to the mask without affecting gameplay.
