@@ -2766,7 +2766,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 11:06 landed by hts-llm in 1.3 min: **Changed file**
 - [x] In Assets/Scripts/World/Fixtures/OutdoorLantern.cs: Add a third interaction “Check lantern status” to `OutdoorLantern.GetActions` that lets the survivor see whether the porch lantern is currently lit.
   - 11:08 landed by 1htsserver in 3.4 min: **Changes Made**
-- [ ] Append four new transmission lines to the `Lines` array of the “Battalion relay” (`Channel 3`) in Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs; the new entries should be full‑sentence quoted strings that the survivor can hear, matching the style of the existing entry `"This is an automated relay. The county is under a federal quarantine order. Remain where you are."` and covering themes of winter evacuation updates, cold‑weather safety, and military coordination.
+- [x] Append four new transmission lines to the `Lines` array of the “Battalion relay” (`Channel 3`) in Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs; the new entries should be full‑sentence quoted strings that the survivor can hear, matching the style of the existing entry `"This is an automated relay. The county is under a federal quarantine order. Remain where you are."` and covering themes of winter evacuation updates, cold‑weather safety, and military coordination.
   Keep the current four entries (including the `null` placeholder) unchanged.
   Add the new lines after the last existing string (just before the closing brace) so the array reads, for example:
   `"This is an automated relay. …",`
@@ -2775,6 +2775,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `"*three falling tones; the relay begins again*",`
   `"Evacuation notice: snow‑blocked roads on Highway 7, expect delays. Seek shelter until cleared.",`
   `"All units, maintain firewatch; temperatures dropping below minus ten, frostbite risk high.",`
+  - 11:08 landed by 0htsserver in 2.6 min: **Changed file**
 - [ ] Add a tiny “metal‑cap” visual to each pause‑menu item’s accent bar in Assets/Scripts/UI/PauseMenuController.cs, inside the `BuildItem(Item it, int index)` method right after the existing accent Image is created.
   Create a new GameObject `Cap{index}` with a RectTransform parented to `it.Accent.transform`.
   Set the anchor & pivot to the top‑center (`anchorMin = anchorMax = new Vector2(0.5f, 1f)`), pivot `new Vector2(0.5f, 1f)`.

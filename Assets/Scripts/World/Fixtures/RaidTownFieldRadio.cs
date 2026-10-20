@@ -71,6 +71,10 @@ namespace CloneZ
                     null,   // the landing zones open tonight, read out live
                     "Civilians at the cordon will be screened before transport. Have identification ready. Do not run.",
                     "*three falling tones; the relay begins again*",
+                "Evacuation notice: snow‑blocked roads on Highway 7, expect delays. Seek shelter until cleared.",
+                "All units, maintain firewatch; temperatures dropping below minus ten, frostbite risk high.",
+                "Winter convoy routes updated: primary extraction point shifted to the north depot, proceed with caution.",
+                "Remember to keep your respirators on in sub‑zero winds; exposure can cause severe hypothermia.",
                 },
             },
         };
