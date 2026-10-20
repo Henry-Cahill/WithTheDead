@@ -1501,9 +1501,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 04:44 landed by hts-llm in 3.9 min: Implemented caching for `GameManager` and `ExtractionManager` in **PauseMenuController.cs**:
 - [x] In Assets/Scripts/World/Fixtures/OutdoorHouseNumber.cs: Add a second interaction to OutdoorHouseNumber so the player can “Knock on the door” as an alternative action.
   - 04:43 landed by 0htsserver in 1.8 min: **Changes made**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Hub/Screens/HubTooltip.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Hub/Screens/HubTooltip.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 04:49 landed by 0htsserver in 5.9 min: Added concise XML‑style `/// <summary>` documentation to every public method in **Assets/Scripts/Hub/Screens/HubTooltip.cs** that previously
 - [ ] Fix the wetness‑increase logic in Assets/Scripts/Player/PlayerTemperature.cs so that snow soaks the survivor more slowly than rain, matching the comment “rain soaks you … snow only slowly”.
   In `UpdateWetness(float dt)` the code treats any precipitation the same and always uses `CloneZConfig.WetRainPerSec`:
   `float gain = CloneZConfig.WetRainPerSec * w.WettingIntensity * (1f - CloneZConfig.WetWaterResistFactor * resist);`

@@ -21,6 +21,7 @@ namespace CloneZ
         private CanvasGroup _group;
         private object _owner;
 
+        /// <summary>Creates a new tooltip attached to the given canvas and returns the component.</summary>
         public static HubTooltip Create(Canvas canvas)
         {
             var canvasRect = (RectTransform)canvas.transform;
@@ -71,12 +72,18 @@ namespace CloneZ
             Follow();
         }
 
+                /// <summary>
+        /// Hides the tooltip for the specified owner unless another owner is currently showing it.
+        /// </summary>
         public void Hide(object owner)
         {
             if (owner != null && !ReferenceEquals(owner, _owner)) return;
             HideAll();
         }
 
+                /// <summary>
+        /// Hides the tooltip completely and clears any owner.
+        /// </summary>
         public void HideAll()
         {
             _owner = null;
@@ -135,12 +142,18 @@ namespace CloneZ
         private Color _base;
         private bool _hover;
 
+                /// <summary>
+        /// Sets the optional highlight image for this trigger and records its base colour.
+        /// </summary>
         public void SetHighlight(Image img)
         {
             _highlight = img;
             if (img != null) _base = img.color;
         }
 
+                /// <summary>
+        /// Called when the pointer enters the UI element; shows the tooltip and invokes any enter callbacks.
+        /// </summary>
         public void OnPointerEnter(PointerEventData eventData)
         {
             _hover = true;
@@ -155,13 +168,22 @@ namespace CloneZ
             }
         }
 
+                /// <summary>
+        /// Called when the pointer exits the UI element; hides the tooltip.
+        /// </summary>
         public void OnPointerExit(PointerEventData eventData) => Leave();
 
+                /// <summary>
+        /// Called when the trigger is disabled; ensures the tooltip is hidden if it was showing.
+        /// </summary>
         private void OnDisable()
         {
             if (_hover) Leave();
         }
 
+                /// <summary>
+        /// Clears hover state, resets highlight colour, invokes exit callbacks and hides the tooltip.
+        /// </summary>
         private void Leave()
         {
             _hover = false;
