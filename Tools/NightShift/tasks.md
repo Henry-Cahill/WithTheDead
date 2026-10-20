@@ -860,13 +860,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   HatTrimColor = Shade(HatTrimColor, 0.9f + var); // slight darkening / rust tint
   HatGloss = Mathf.Clamp01(HatGloss + var); // a touch more shine on worn metal
   - 01:25 landed by hts-llm in 1.8 min: **Changes made**
-- [ ] Fix the malformed `TownDumpsterBody` ellipsoid call in Assets/Scripts/World/FurnitureBuilder.RaidStore.cs
+- [x] Fix the malformed `TownDumpsterBody` ellipsoid call in Assets/Scripts/World/FurnitureBuilder.RaidStore.cs
   The current line
   `m.Ellipsoid(new Vector3(R(rng, 0.2f, 0.75f), 1.152f, R(rng, -0.35f, 0.35f)), new Vector3(R(rng, 0.25f, 0.4f), 0.012f, R(rng, 0.25f, 0.4f)), G(new Color(0.05f, 0.05f, 0.06f)), 8, 3);`
   has an extra closing parenthesis after the first `Vector3`, so the compiler reads the call as `m.Ellipsoid(<Vector3>)` followed by stray arguments, causing a compile‑time error and resulting in the dumpster’s rubbish never being rendered.
   Change it to a single, correctly‑parenthesised call:
   `m.Ellipsoid(new Vector3(R(rng, 0.2f, 0.75f), 1.152f, R(rng, -0.35f, 0.35f)), new Vector3(R(rng, 0.25f, 0.4f), 0.012f, R(rng, 0.25f, 0.4f)), G(new Color(0.05f, 0.05f, 0.06f)), 8, 3);`
   After this fix the ellipsoids are created correctly, and the dumpster will display the dark heap of bags under the right‑hand lid as intended.
+  - 01:28 landed by hts-llm in 3.4 min: **Changes made**
 - [x] In Assets/Scripts/World/FurnitureBuilder.cs: Add a small metal pull‑handle to each locker door in `FurnitureBuilder.LockerBank(RaidMesh m, System.Random rng, int count, Color body)` so the door has a visible grip.
   - 01:28 landed by 0htsserver in 2.4 min: **Changed file**
 - [ ] Add a “Sing a lullaby” timed action to Assets/Scripts/World/Fixtures/BedFixture.cs that calms the survivor when used while seated or lying in the bed.

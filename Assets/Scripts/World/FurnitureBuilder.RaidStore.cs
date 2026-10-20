@@ -390,8 +390,7 @@ namespace CloneZ
             // The rubbish under the right-hand lid: a dark heap of bags just below the rim.
             m.Box(new Vector3(0.47f, 1.153f, 0f), new Vector3(0.86f, 0.004f, 1.04f), M(new Color(0.06f, 0.06f, 0.07f)));
             for (int i = 0; i < 3; i++)
-                m.Ellipsoid(new Vector3(R(rng, 0.2f, 0.75f), 1.152f, R(rng, -0.35f, 0.35f)), new Vector3(R(rng, 0.25f, 0.4f), 0.012f, R(rng, 0.25f, 0.4f)),
-                    G(new Color(0.05f, 0.05f, 0.06f)), 8, 3);
+                m.Ellipsoid(new Vector3(R(rng, 0.2f, 0.75f), 1.152f, R(rng, -0.35f, 0.35f)), new Vector3(R(rng, 0.25f, 0.4f), 0.012f, R(rng, 0.25f, 0.4f)), G(new Color(0.05f, 0.05f, 0.06f)), 8, 3);
         }
 
         /// <summary>The dumpster's right-hand lid (drawn shut), hinged along its back edge (<see cref="TownDumpsterHinge"/>).</summary>
