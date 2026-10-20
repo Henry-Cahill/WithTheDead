@@ -1902,3 +1902,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Remove the `Sleep` property entirely (or make it return `_sleepCache` without a GetComponent call).
   In Update() replace `if (Sleep != null && Sleep.IsSleeping)` with `if (_sleepCache != null && _sleepCache.IsSleeping)`.
   All other logic stays unchanged; the player’s sickness decay and health drain behave exactly the same, but the per‑frame GetComponent lookup is eliminated.
+- [ ] Modify Assets/Scripts/World/Fixtures/RaidCivicSink.cs by adding a new “Check water temperature” action in `CivicSink.GetActions` right after the existing rinse action.
+  In `GetActions`, after `into.Add(rinse);` insert:
+  `var temp = new InteractAction("Check water temperature", ctx => { ctx.Notify(PowerGrid.HousePowered ? "The water feels warm." : "The water is icy‑cold."); })`
+  `.DisabledIf(!WaterMains.MainsOn, Dry);`
+  `into.Add(temp);`
+  This uses the already‑present `PowerGrid.HousePowered` flag (used in `Wash`) and the `Dry` constant, so no new code or assets are required.
+  In‑game the player will now see an extra `[E] Check water temperature` option when standing at the sink; selecting it will tell them whether the running water is warm (powered) or cold, and it will be disabled with the “The tap is dry …” message when the mains are off.
