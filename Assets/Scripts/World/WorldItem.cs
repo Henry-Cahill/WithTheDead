@@ -19,12 +19,19 @@ namespace CloneZ
     /// </summary>
     public sealed class WorldItem
     {
+        /// <summary>Gets the handle that identifies this ground item in the store.</summary>
         public GroundItemStore.Handle Handle { get; private set; }
+        /// <summary>Gets the item definition for this ground item.</summary>
         public ItemDef Def { get; private set; }
+        /// <summary>Number of items in this stack.</summary>
         public int Count { get; private set; }
+        /// <summary>Hours since the world started when this item spawned.</summary>
         public float SpawnHours { get; private set; }
+        /// <summary>Current durability of the item; zero means broken.</summary>
         public int Condition { get; private set; }
+        /// <summary>Number of times this item has been repaired.</summary>
         public int TimesRepaired { get; private set; }
+        /// <summary>World position of the item on the ground (Y forced to 0).</summary>
         public Vector3 Position { get; private set; }
         /// <summary>The item's extras (found-in-raid, gun mods…), or null.</summary>
         public ItemExtra Extra { get; private set; }
@@ -114,6 +121,7 @@ namespace CloneZ
             return emptied;
         }
 
+        /// <summary>Removes this item from the world, discarding it entirely.</summary>
         public void Consume() => GroundItemStore.Remove(Handle);
 
         /// <summary>True while the item is still on the ground and has not been picked up by something
