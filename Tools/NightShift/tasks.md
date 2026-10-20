@@ -619,11 +619,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `UIKit.Place(stitch2.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(2f, 30f));`
   `stitch2.rectTransform.anchoredPosition = new Vector2(0f, -15f);`
   - 00:19 landed by hts-llm in 1.9 min: **Changed**
-- [ ] Add a small metal strap detail to the checkpoint “CHECKPOINT” post sign in Assets/Scripts/World/RaidMapBuilder.Outdoor.cs
+- [x] Add a small metal strap detail to the checkpoint “CHECKPOINT” post sign in Assets/Scripts/World/RaidMapBuilder.Outdoor.cs
   Modify the `Prop` call at line `Prop(town, new Vector3(-7.0f, 0f, -52.4f), 0f, new Vector3(2.4f, 2.2f, 0.3f), true, (m, r) => DecorProps.PostSign(m, r, "CHECKPOINT", new Color(0.20f, 0.26f, 0.16f), new Color(0.88f, 0.86f, 0.74f), 0.42f, 1.3f));`
   ‑ Change the lambda to a block, call `DecorProps.PostSign` first, then add a thin box representing a rust‑stained metal strap: `m.Box(new Vector3(0f, 2.15f, 0f), new Vector3(0.05f, 0.02f, 0.3f), DecorPalette.Metal(new Color(0.40f, 0.40f, 0.35f)));`
   ‑ The strap sits near the top of the sign (≈ 2.15 m above ground, centered on the sign’s Y‑axis) and spans the width of the board (0.3 m).
   ‑ This adds period‑appropriate wear without altering colliders or interaction points and uses only one additional primitive.
+  - 00:21 landed by 1htsserver in 2.4 min: **Changed file**
 - [ ] In Assets/Scripts/AI/Humans/HumanNpc.cs: Cache the frequently‑queried `Actor.LocalPlayer` in `HumanNpc` to avoid repeated scene searches each frame.
   *Add a private field `private Actor _localPlayer;` and set it in `Awake()` (or `OnEnable`) with ` _localPlayer = Actor.LocalPlayer;`.
   *Create a tiny helper `Actor LocalPlayerCached => _localPlayer != null && _localPlayer.IsAlive ? _localPlayer : (_localPlayer = Actor.LocalPlayer);`.

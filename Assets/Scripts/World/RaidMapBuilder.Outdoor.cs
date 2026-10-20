@@ -141,7 +141,11 @@ namespace CloneZ
                 }
             });
             town.Light(town.World, tower + new Vector3(0f, 4.9f, 0.6f), new Color(0.88f, 0.92f, 1f), 16f, 2.4f, false, true);
-            Prop(town, new Vector3(-7.0f, 0f, -52.4f), 0f, new Vector3(2.4f, 2.2f, 0.3f), true, (m, r) => DecorProps.PostSign(m, r, "CHECKPOINT", new Color(0.20f, 0.26f, 0.16f), new Color(0.88f, 0.86f, 0.74f), 0.42f, 1.3f));
+            Prop(town, new Vector3(-7.0f, 0f, -52.4f), 0f, new Vector3(2.4f, 2.2f, 0.3f), true, (m, r) => {
+                DecorProps.PostSign(m, r, "CHECKPOINT", new Color(0.20f, 0.26f, 0.16f), new Color(0.88f, 0.86f, 0.74f), 0.42f, 1.3f);
+                // Add a thin rust‑stained metal strap near the top of the sign
+                m.Box(new Vector3(0f, 2.15f, 0f), new Vector3(0.05f, 0.02f, 0.3f), DecorPalette.Metal(new Color(0.40f, 0.40f, 0.35f)));
+            });
         }
 
         // North exit: a police road block with barriers across Main St and a cruiser on the shoulder.
