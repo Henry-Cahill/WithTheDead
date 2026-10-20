@@ -730,9 +730,20 @@ bool esc = Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThis
             it.Highlight.sprite = HudSprites.ScrimLeft;
             it.Highlight.color = Color.clear;
             it.Highlight.raycastTarget = false;
-            RectTransform accent = HudUI.Rect(it.Content, "Accent", new Vector2(0f, 0.5f), new Vector2(0f, 0.5f), Vector2.zero, new Vector2(3f, ItemHeight - 16f));
+RectTransform accent = HudUI.Rect(it.Content, "Accent", new Vector2(0f, 0.5f), new Vector2(0f, 0.5f), Vector2.zero, new Vector2(3f, ItemHeight - 16f));
 it.Accent = accent.gameObject.AddComponent<Image>();
-                     it.Accent.raycastTarget = false;
+it.Accent.raycastTarget = false;
+
+var wearObj = new GameObject($"Wear{index}");
+var wearRt = wearObj.AddComponent<RectTransform>();
+wearRt.SetParent(it.Accent.transform, false);
+wearRt.anchorMin = wearRt.anchorMax = new Vector2(0.5f, 0f);
+wearRt.pivot = new Vector2(0.5f, 0f);
+wearRt.anchoredPosition = new Vector2(0f, 0f);
+wearRt.sizeDelta = new Vector2(0.8f * it.Accent.rectTransform.sizeDelta.x, 2f);
+var wearImg = wearObj.AddComponent<Image>();
+wearImg.color = HudUI.WithAlpha(Dim, 0.4f);
+wearImg.raycastTarget = false;
 
                      // metal‑cap visual on the accent bar
                      var capObj = new GameObject($"Cap{index}");
