@@ -505,6 +505,15 @@ namespace CloneZ
             // The upper sash, fixed in the outer track (and, outside a house, its shutters and flower box). What moves or
             // changes — the lower sash, the glass, the lock's lever, the dressing, any boards — is fitted once the segment is
             // an object of its own (FitWindow, RaidBuilding.Windows.cs).
+            // Add subtle frost patch on interior window frame (≈12% chance per window).
+            if (Rng.NextDouble() < 0.12) {
+                var frost = DecorPalette.Matte(new Color(0.6f, 0.8f, 1f)); // pale‑blue frost
+                float frostWidth = w * 0.30f; // about 30% of window width
+                float frostHeight = 0.03f;   // 3 cm tall
+                float frostDepth = 0.006f;   // thin patch
+                // Position at eye‑level, centered, interior side (offset 0).
+                p.Mesh.Box(RunPoint(r, o.Pos, cy, 0f), RunSize(r, frostWidth, frostHeight, frostDepth), frost);
+            }
             WindowFrame(p);
             int sx = OutsideSide(r, o.Pos);
             if (sx != 0) p.Mesh.Box(RunPoint(r, o.Pos, SillHeight + 0.05f, sx * (Half + 0.04f)), RunSize(r, w + 0.1f, 0.03f, 0.06f), DecorPalette.Matte(DecorProps.SnowWhite));

@@ -2890,7 +2890,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `notes.Add("Distant howls echo across the frozen fields, reminding you of the night outside.");`
   `notes.Add("The stale, icy air carries the scent of pine resin from the nearby woods.");`
   - 11:30 landed by hts-llm in 2.1 min: **Changes made**
-- [ ] Add a subtle frost‑patch detail to interior window frames in Assets/Scripts/World/RaidBuilding.cs – modify `RaidBuilding.DrawWindow` to create a thin pale‑blue rectangle on the inside of each window (≈30 % of its width, 0.03 m tall, 0.006 m thick) at roughly eye‑level, with a ~12 % random chance per window, using the existing `Rng` and materials.
+- [x] Add a subtle frost‑patch detail to interior window frames in Assets/Scripts/World/RaidBuilding.cs – modify `RaidBuilding.DrawWindow` to create a thin pale‑blue rectangle on the inside of each window (≈30 % of its width, 0.03 m tall, 0.006 m thick) at roughly eye‑level, with a ~12 % random chance per window, using the existing `Rng` and materials.
+  - 11:32 landed by 1htsserver in 3.4 min: **Changed file**
 - [ ] In Assets/Scripts/UI/InventoryUIController.cs: Fix the Y‑position clamping in `InventoryUIController.ShowMenu` so the context menu can appear on screen instead of being forced off‑screen.
   In `ShowMenu` the line
   `float y = Mathf.Clamp(local.y + 2f, r.yMin + h + 4f, r.yMax - 4f);`
