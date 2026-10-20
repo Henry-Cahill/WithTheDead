@@ -2859,3 +2859,30 @@ you want to see in game. Indent extra lines under a task to add detail.
   `WallFittingAt()` later checks this list to decide whether a new switch spot is blocked. Stale entries cause false‑positive blocks, so the player may see a switch missing from a doorway or pushed far from the wall, breaking the intended “switch by the door” layout.
   Add a single line at the start of `PlanWallLighting()` to reset the list before new fittings are added:
   - 11:23 landed by hts-llm in 0.9 min: **Changed file**
+- [ ] Add four tiny decorative “screw” images to each panel created by `UIKit.Panel` (Assets/Scripts/UI/UIKit.cs) to give metal panels a period‑appropriate riveted look.
+  Create the screws after the existing inner‑border code, before `return img;`.
+  `// Top‑left screw`
+  `var screwTL = Rect("ScrewTL", img.rectTransform);`
+  `screwTL.sizeDelta = new Vector2(6f, 6f);`
+  `screwTL.anchorMin = screwTL.anchorMax = new Vector2(0f, 1f);`
+  `screwTL.pivot = new Vector2(0f, 1f);`
+  `var imgTL = screwTL.gameObject.AddComponent<Image>();`
+  `imgTL.color = new Color(0.18f, 0.18f, 0.20f); // dark metal tint`
+- [ ] In Assets/Scripts/Hub/Screens/HubTooltip.cs: Cache the tooltip’s root size and canvas rect in HubTooltip so LateUpdate’s Follow() doesn’t read RectTransform properties each frame, updating the cache in Show() after the text/layout is set.
+  Add private fields `private Vector2 _rootSize;` and `private Rect _canvasBounds;` to HubTooltip.
+  In `Show(object owner, string richText)` after setting `_textSize` call `_rootSize = _root.rect.size;` and `_canvasBounds = _canvasRect.rect;`.
+  Replace the lines `Vector2 size = _root.rect.size;` and `Rect cr = _canvasRect.rect;` in `Follow()` with uses of the cached `_rootSize` and `_canvasBounds`.
+  The tooltip will still follow the mouse and flip at screen edges exactly as before, but the per‑frame allocations and property reads are removed.
+- [ ] Add an instant “Inspect the bed” action to Assets/Scripts/World/Fixtures/BedFixture.cs’s GetActions, placed after the existing “Look under the bed” entry.
+  Implement a private method `InspectBed(InteractContext ctx)` that runs `ctx.Notify(_isMade ? "The bedding is neatly made." : "The sheets are rumpled and the pillows look flat.");`.
+  In GetActions, insert `into.Add(new InteractAction("Inspect the bed", InspectBed));` (no .Timed call, always enabled).
+  The action should be available regardless of whether the bed is made or the player is seated.
+  Do not modify any other actions or state‑changing logic.
+  Keep the class, fields, and existing methods unchanged.
+- [ ] Add five winter‑theme flavor notes to the `Hideout.Tick` method in Assets/Scripts/Economy/Hideout.cs; insert `notes.Add("…");` calls after the existing production/animal notes so the list now contains extra sentences such as the existing style `"The generator ran dry. Pour in a gas can."`.
+  Insert the following lines (in any order) before `SetLastTick(c, now);`:
+  `notes.Add("The wind whistles through the cracked window of the generator room.");`
+  `notes.Add("Snow drifts accumulate against the workbench, muffling the clang of tools.");`
+  `notes.Add("A faint candle flickers in the rest space, casting trembling shadows.");`
+  `notes.Add("Distant howls echo across the frozen fields, reminding you of the night outside.");`
+  `notes.Add("The stale, icy air carries the scent of pine resin from the nearby woods.");`
