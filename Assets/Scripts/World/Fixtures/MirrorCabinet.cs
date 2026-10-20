@@ -56,14 +56,15 @@ namespace CloneZ
             options ??= new StorageOptions { LootType = ContainerType.MedCabinet };
             options.Noun ??= "bathroom cabinet";
             options.ContainerName ??= "Bathroom cabinet";
-            StorageFixture cabinet = StorageFixture.Create(wall, "Bathroom cabinet", Interactable.KeyFor("mirrorcabinet", point), point,
-                new[] { door }, null, seed, options);
+            StorageFixture cabinet = null;
             // The mirror's on the door: an open cabinet is swung shut first.
             options.ExtraActions = (ctx, into) => into.Add(new InteractAction("Look in the mirror", c =>
             {
                 if (cabinet != null && cabinet.IsOpen) cabinet.SetOpen(false, true);
                 Look(c);
             }));
+            cabinet = StorageFixture.Create(wall, "Bathroom cabinet", Interactable.KeyFor("mirrorcabinet", point), point,
+                new[] { door }, null, seed, options);
             return cabinet;
         }
 

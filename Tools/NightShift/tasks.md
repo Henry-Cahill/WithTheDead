@@ -3752,12 +3752,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Set each Image’s `color` to the passed colour and `raycastTarget = false`.
   Keep all existing colliders, interaction points and pivots untouched; the new strips are purely visual and add ≤ 12 primitives total.
   - 15:50 landed by 0htsserver in 3.9 min: **Changes Made**
-- [ ] In Assets/Scripts/World/Fixtures/MirrorCabinet.cs: Fix the mirror‑cabinet “Look in the mirror” action never being added because `options.ExtraActions` is set *after* the `StorageFixture.Create` call in `MirrorCabinet.Create(Transform, Vector3, FixturePart, int, StorageOptions)`.
+- [x] In Assets/Scripts/World/Fixtures/MirrorCabinet.cs: Fix the mirror‑cabinet “Look in the mirror” action never being added because `options.ExtraActions` is set *after* the `StorageFixture.Create` call in `MirrorCabinet.Create(Transform, Vector3, FixturePart, int, StorageOptions)`.
   In the method, move the assignment of `options.ExtraActions` before calling `StorageFixture.Create`.
   Declare `StorageFixture cabinet = null;` first, set `options.ExtraActions` with a lambda that references `cabinet`, then assign `cabinet = StorageFixture.Create(...);`.
   This ensures the extra “Look in the mirror” action is registered and the cabinet can be closed when the player looks.
   Player will now see the “Look in the mirror” option on the bathroom cabinet and receive the intended descriptive feedback.
   All other fields, constants and logic remain unchanged.
+  - 15:52 landed by 0htsserver in 1.5 min: Changed **Assets/Scripts/World/Fixtures/MirrorCabinet.cs**
 - [ ] Add a pair of tiny brass pull‑knobs to each sash’s top rail in `Assets/Scripts/World/FurnitureBuilder.RaidOpenings.cs` → method `OpeningSash`
   Add two small brass boxes (size 0.012 × 0.025 × 0.008 m) at the outer ends of the top rail, using the existing `Mt(Brass)` material and the same `across + roomSide * (depth * 0.5f + 0.008f)` offset as the lifts.
   Compute the x‑position from the existing side‑stile calls – e.g. `s0 + 0.0225f` for the left side and `s1 - 0.0225f` for the right side – and place the knob a few centimetres below the rail (`y1 - top * 0.5f - 0.01f`).
