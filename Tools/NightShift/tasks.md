@@ -573,12 +573,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `into.Add(new InteractAction("Bang the roll‑up door", _bangAct).Timed(0f, "Banging the door", HumanoidActivity.Use));`
   This action is always available (no state check), plays the same roll‑up noise defined by `CloneZConfig.RollUpNoise`, and costs no time, giving the player a way to distract zombies or test the door.
   All other fields, methods and behaviours stay unchanged.
-- [ ] Append four new deliveries to the `Deliveries` array in `Assets/Scripts/World/Fixtures/MailboxFixture.cs`
+- [x] Append four new deliveries to the `Deliveries` array in `Assets/Scripts/World/Fixtures/MailboxFixture.cs`
   Locate the static readonly field `private static readonly string[][] Deliveries` and add four more elements after the existing ones, each defined as a `new[] { "...", "...", "..." }` block.
   Base the style on the entry `"A county public-health notice, photocopied slightly crooked. URGENT — READ AND KEEP."` – each line should be a full sentence, period‑correct, and convey a distinct theme.
   The new themes should cover (1) a winter weather advisory, (2) a community request for firewood, (3) a personal note about a missing pet, and (4) a hand‑written reminder about a church pot‑luck.
   Ensure each new delivery contains exactly three lines, uses 1993‑appropriate language, and contains no modern technology references.
   Do not modify any other code, fields, or logic in the file.
+  - 00:06 landed by hts-llm in 3 min: **Changed**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/AI/Creatures/CreatureMeshes.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.

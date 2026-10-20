@@ -33,8 +33,32 @@ namespace CloneZ
             new[]
             {
                 "No stamp: a folded note, pushed in by hand. The writing is shaky.",
-                "\"Saw your lights on. We're heading to my sister's in the city \u2014 they say there's a shelter.\"",
-                "\"If we're not back by Sunday, please let Biscuit out of the yard. Thank you! \u2014 June, no. 14\"",
+                "\"Saw your lights on. We're heading to my sister's in the city — they say there's a shelter.\"",
+                "\"If we're not back by Sunday, please let Biscuit out of the yard. Thank you! — June, no. 14\"",
+            },
+            new[]
+            {
+                "A winter weather advisory: heavy snow expected tomorrow. Keep warm and stay indoors unless necessary.",
+                "Roads may be icy; clear driveways and expect occasional power outages.",
+                "Stock up on firewood and blankets now to stay safe through the cold night."
+            },
+            new[]
+            {
+                "Community request: we need firewood for the coming freeze. If you have spare logs, please leave them at the shed.",
+                "Any contributions will be shared among families in the block. Thank you for your generosity.",
+                "Contact the neighborhood watch on the posted number for coordination."
+            },
+            new[]
+            {
+                "Missing pet notice: our cat Whiskers disappeared near the old mill road two nights ago.",
+                "She is grey with a white patch on her chest; please check your barns and call if found.",
+                "Owner will reward with a fresh fish and gratitude."
+            },
+            new[]
+            {
+                "Hand‑written reminder: church pot‑luck this Sunday after service. Bring a homemade dish to share.",
+                "Suggested dishes: casserole, pies, preserves. No store‑bought items please.",
+                "Sign up on the board in the foyer to avoid duplicates."
             },
         };
 
