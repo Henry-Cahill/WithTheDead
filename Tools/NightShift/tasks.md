@@ -2789,3 +2789,18 @@ you want to see in game. Indent extra lines under a task to add detail.
   Change it to `float pelletMult = pellets > 1 ? 1f / pellets : 1f;` so the weapon’s base damage is evenly split among all pellets.
   After this fix, a shotgun will damage targets proportionally to the number of pellets, matching the intended gameplay balance while leaving all other combat logic unchanged.
   - 11:09 landed by 0htsserver in 0.9 min: **Change Summary**
+- [ ] Add a small random rust patch to the exterior of each filing cabinet in `Assets/Scripts/World/FurnitureBuilder.Office.cs` → `public static void FilingCabinet(RaidMesh m, System.Random rng, int drawers, Color body)`
+  After the line `m.Box(new Vector3(0f, h * 0.5f, -0.02f), new Vector3(0.46f, h, 0.58f), M(c * 0.92f));` insert a thin box that simulates rust:
+  `if (Chance(rng, 0.25f)) {`
+  `float rx = R(rng, -0.15f, 0.15f);`
+  `float ry = R(rng, 0.2f, h - 0.2f);`
+  `Vector3 rustPos = new Vector3(rx, ry, -0.04f); // slightly in front of the cabinet skin`
+  `Vector3 rustSize = new Vector3(0.08f, 0.04f, 0.004f);`
+  `m.Box(rustPos, rustSize, M(new Color(0.55f, 0.33f, 0.28f))); // muted rust colour`
+  `}`
+- [ ] In Assets/Scripts/UI/HUDController.cs: Cache the singleton look‑ups used in `HUDController.UpdateNotices` by adding fields for `WaterMains` and `PowerGrid`, filling them once in `Awake`, and replacing the per‑frame `WaterMains.Instance` / `PowerGrid.Instance` calls with the cached fields.
+  Add private fields `private WaterMains _waterMains;` and `private PowerGrid _powerGrid;` to the class.
+  In `Awake()` (after `Build();`) assign `_waterMains = WaterMains.Instance;` and `_powerGrid = PowerGrid.Instance;`.
+  In `UpdateNotices(float dt)` replace `WaterMains water = WaterMains.Instance;` with `WaterMains water = _waterMains;` and replace `PowerGrid power = PowerGrid.Instance;` with `PowerGrid power = _powerGrid;`.
+  The player sees exactly the same water‑shut‑off and power‑cut notices; no visual or gameplay change occurs.
+  This eliminates two singleton property look‑ups each frame, reducing GC pressure and CPU time.
