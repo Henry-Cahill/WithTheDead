@@ -751,7 +751,7 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Rendering/Presentation.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
-- [ ] Add a subtle door‑handle and occasional rust spot to each door frame built in `RaidBuilding.DrawDoorFrame` (Assets/Scripts/World/RaidBuilding.cs)
+- [x] Add a subtle door‑handle and occasional rust spot to each door frame built in `RaidBuilding.DrawDoorFrame` (Assets/Scripts/World/RaidBuilding.cs)
   · In `DrawDoorFrame`, after the existing `for (int side = -1; side <= 1; side += 2)` block that creates the casings, insert a new small box representing a handle on the interior side of the door.
   – Determine the handle height as `float handleY = DoorHeight * 0.5f;` (≈ 1.1 m).
   – Give the handle a size of `new Vector3(0.04f, 0.015f, 0.015f)` (m).
@@ -760,5 +760,6 @@ you want to see in game. Indent extra lines under a task to add detail.
   – Apply a tiny random offset so handles are not perfectly symmetric: `float offX = (float)(Rng.NextDouble() - 0.5) * 0.02f;` and add it to the X component of the point (`RunPoint(...).x + offX`).
   – Add the primitive with `p.Mesh.Box(RunPoint(...), RunSize(r, 0.04f, 0.015f, 0.015f), wood);`.
   – Leave colliders untouched (the handle is visual only).
+  - 00:49 landed by hts-llm in 3.6 min: **Changed file**
 - [ ] Fix HasUsableContent in Assets/Scripts/Items/ContentDatabase.cs so it verifies *all* required tables exist, not just `content_meta` and `item`.
 - [ ] Add a subtle four‑edge metal border to the main report panel in Assets/Scripts/Extraction/RaidSummaryUI.cs (method `Build`) so the UI feels like a worn wooden/metal board appropriate to a 1993 rural setting.
