@@ -1126,3 +1126,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Cylinder(new Vector3(0f, 2.5f, 0f), 0.02f, 0.8f, 8, DecorPalette.Metal(hull), 0f);` – a 0.04 m‑diameter, 0.8 m‑tall rod placed at the hull’s highest point.
   `m.Box(new Vector3(0f, 2.9f, 0f), new Vector3(0.2f, 0.05f, 0.2f), DecorPalette.Metal(hull * 0.8f));` – a flat 0.2 m × 0.2 m × 0.05 m metal “dish” perched on the rod’s tip, slightly darker to suggest wear.
   The antenna uses the same `hull` colour (and a muted variation) so it blends with the existing metal palette, adds visual interest without affecting colliders or interaction points, and stays within the ~12‑primitive limit.
+- [ ] Add a calming effect to the Straighten action in Assets/Scripts/World/Fixtures/PictureFixture.cs
+  Modify the Straighten method to also call LightingFixtures.Calm with CloneZConfig.PictureCalm when the cooldown has elapsed, mirroring the logic in Look.
+  After setting _roll to 0f and notifying the player, insert:
+  if (_calming && Time.time >= _calmAgainAt) {
+  LightingFixtures.Calm(ctx, CloneZConfig.PictureCalm);
+  _calmAgainAt = Time.time + CloneZConfig.PictureCalmCooldown;
+  }
+  This gives the survivor a brief calming boost after they straighten a crooked picture, using only existing fields, config values, and methods.
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Zone/ZoneWorld.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
