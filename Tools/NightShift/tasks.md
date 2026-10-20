@@ -1529,7 +1529,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
   - 04:54 landed by hts-llm in 3.4 min: **Changed files**
-- [ ] Add subtle rust patches to the corrugated‑sheet barrier built in the `case 0:` block of `EdgeSegment` in Assets/Scripts/World/RaidMapBuilder.Edge.cs.
+- [x] Add subtle rust patches to the corrugated‑sheet barrier built in the `case 0:` block of `EdgeSegment` in Assets/Scripts/World/RaidMapBuilder.Edge.cs.
   Locate the line `Surf sheet = DecorMaterials.Corrugated(new Color(0.46f, 0.47f, 0.46f));` inside the `case 0:` switch.
   After the existing loop that creates the corrugated panels (`for (float x = -len * 0.5f + 0.6f; …)`), insert a new short loop that places a few small matte boxes on the sheet surface to look like rust stains.
   Example code to add (counts as ≤ 12 primitives):
@@ -1538,6 +1538,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `for (float x = -len * 0.5f + 0.3f; x < len * 0.5f; x += R(rng, 2f, 4f))`
   `{`
   `float w = R(rng, 0.2f, 0.4f);`
+  - 04:55 landed by 1htsserver in 2 min: Updated **Assets/Scripts/World/RaidMapBuilder.Edge.cs**:
 - [ ] Fix missing pull‑handle on an ajar locker door in `Assets/Scripts/World/FurnitureBuilder.cs` → `FurnitureBuilder.LockerBank(RaidMesh m, System.Random rng, int count, Color body)`
   In the `if (i == ajar)` branch the door geometry is created but the metal pull‑handle (`m.Box(... Mt(Chrome))`) that’s added for every closed locker is omitted, leaving the open locker visibly handle‑less.
   Add a handle box rotated with the door, e.g.:
