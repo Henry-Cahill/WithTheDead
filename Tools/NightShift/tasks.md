@@ -2327,11 +2327,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Update the gear‑light block to use `_gear` instead of `PlayerGear.Instance`.
   Update the final visibility/noise multipliers to use `_mods` instead of `PlayerModifiers.Current`.
   This removal of three static singleton lookups each Update reduces allocation‑free overhead without changing any visual or gameplay outcome.
-- [ ] In Assets/Scripts/World/Fixtures/SeatFixture.cs: Add an “Inspect seat” action to SeatFixture.GetActions that tells the survivor the seat’s comfort level when they are not already sitting
+- [x] In Assets/Scripts/World/Fixtures/SeatFixture.cs: Add an “Inspect seat” action to SeatFixture.GetActions that tells the survivor the seat’s comfort level when they are not already sitting
   Modify the `GetActions` method in Assets/Scripts/World/Fixtures/SeatFixture.cs
   After the line `into.Add(new InteractAction(_sitLabel, SitDown));` insert:
   `into.Add(new InteractAction("Inspect seat", c => c.Notify($"This seat feels {(int)(_comfort * 100)}% comfortable.")));`
   The new action appears only when the player is standing, letting them read a short message about the seat’s comfort; no other behavior changes.
+  - 09:10 landed by hts-llm in 1.3 min: **Changed:** `Assets/Scripts/World/Fixtures/SeatFixture.cs` – added an “Inspect seat” action after the existing sit action. The new action d
 - [ ] Append six new entries to the `CivicDialLines` array in Assets/Scripts/World/RaidBuilding.Civic.cs
   Insert the following quoted strings after the last existing line (after `"You try a birthday, then 1-2-3-4. Nothing — not that it matters: the bolts are already drawn back."`):
   `"The dial spins with a faint whir; a half‑written note beside it reads “Set to 12‑03‑87 for the generator.”"`
