@@ -3173,7 +3173,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   – Uses `ctx.Notify` with the same messages as in `Flip` (e.g., “Nothing happens. Whatever it was wired to is gone.”, bulb‑gone messages, porch‑lantern wait message).
   – Skips any `LightCircuits.Set`, `Sync`, or `MakeNoise` calls.
   This lets the survivor check how many lamps on that circuit are functional or dead without toggling the switch.
-- [ ] Append five new flavor‑text entries to the sixth sub‑array of the `private static readonly string[][] Deliveries` field in Assets/Scripts/World/Fixtures/MailboxFixture.cs, so the mailbox will contain extra community notices after the existing “Missing pet notice…” lines.
+- [x] Append five new flavor‑text entries to the sixth sub‑array of the `private static readonly string[][] Deliveries` field in Assets/Scripts/World/Fixtures/MailboxFixture.cs, so the mailbox will contain extra community notices after the existing “Missing pet notice…” lines.
   Locate the inner array that starts with `"Missing pet notice: our cat Whiskers disappeared near the old mill road two nights ago."` (the sixth element of `Deliveries`).
   After the line `"Owner will reward with a fresh fish and gratitude."` add the following five strings, each a complete sentence ending with a period:
   `"Missing dog notice: our border collie Daisy vanished near the creek bend last afternoon; please look for a black‑and‑white coat."`
@@ -3182,6 +3182,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `"Thank‑you note: the Miller family rescued a stray calf from the icy creek and are grateful for the extra hay donations."`
   `"Reminder: check the cellar for frozen canned goods before the power goes out again; share any surplus with neighbours."`
   These entries match the style of the quoted example and remain within the same sub‑array; no other code changes are required.
+  - 12:48 landed by 0htsserver in 2.3 min: **Changes made**
 - [ ] Add subtle “cracked‑glass” detail to the full‑screen game‑over panel in Assets/Scripts/UI/HUDController.cs → method BuildGameOver
   After the line ` _gameOverText = HudUI.Label(rt, "GameOverText", 56, TextAnchor.MiddleCenter, new Color(0.85f, 0.1f, 0.1f), new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1200f, 400f));` add four thin UI Image rectangles that act as random‑looking cracks.
   – Create each crack with `HudUI.Rect(_gameOverPanel.transform as RectTransform, "CrackX", new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(px, py), new Vector2(length, 3f));` where `length` is ≈ 400 – 500 pixels, `px/py` are fixed offsets (e.g. (‑120, ‑30), (80, ‑60), (‑50, 120), (130, 80)).
