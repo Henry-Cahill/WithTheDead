@@ -2365,7 +2365,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Optionally, guard against a null player after respawn by adding `if (_player == null) _player = PlayerInteractor.Current;` at the start of `Update()`.
   The player sees no visual change; the storage still opens when looked at from the inventory, but the per‑frame overhead of a singleton lookup is eliminated.
   - 09:21 landed by hts-llm in 4.9 min: All changes compile.Implemented a cached `PlayerInteractor` reference in `StorageFixture` to eliminate per‑frame singleton lookups.
-- [ ] Make sure there are graphics for every item in the game.
+- [~] Make sure there are graphics for every item in the game.
+  - 09:22 1htsserver made no changes: Implemented no code changes – the existing rendering pipeline already guarantees a visual representation for every item:
 - [ ] Add a “Wipe the seat” interaction to the toilet fixture (Assets/Scripts/World/Fixtures/ToiletFixture.cs)
   In `GetActions` after the existing seat toggle line
   `into.Add(new InteractAction(_seatUp ? "Put the seat down" : "Lift the seat", c => SetSeat(!_seatUp)));`
