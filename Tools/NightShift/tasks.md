@@ -1957,3 +1957,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   The new action should read `"Inspect the power switch"` and simply call `c.Notify("A rugged switch that powers freight‑gate exits.")`.
   This gives the survivor a non‑functional description action, appearing as an extra option next to the “Throw the power switch” action in the interaction UI.
   No other code, assets, or UI changes are required.
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/HudViewKit.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] In Assets/Scripts/World/FurnitureBuilder.cs: Add a small metal pull‑handle to each fridge in `FurnitureBuilder.Fridge(RaidMesh m, System.Random rng, Color body)` so the appliance has a period‑correct grip.
+  Inside the method, after the magnet/note loop, insert a box for the handle using the existing chrome material.
+  Use a deterministic random offset for realism:
+  `float hx = R(rng, -0.15f, 0.15f); // horizontal offset from centre`
+  `float hy = R(rng, 0.9f, 1.2f); // vertical position on the door`
+  `m.Box(new Vector3(hx, hy, 0.31f), new Vector3(0.02f, 0.07f, 0.005f), Mt(Chrome));`
+  The handle sits slightly in front of the fridge (z ≈ 0.31 m), is 2 cm wide, 7 cm tall and 0.5 cm deep, and uses the same `Mt(Chrome)` surface as other metal parts.
+  No other geometry, colliders or interaction points are altered; the addition stays within the existing primitive budget.
