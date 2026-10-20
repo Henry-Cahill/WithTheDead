@@ -1791,12 +1791,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   _sinking = true;
   if (_rb != null) _rb.isKinematic = true;
   - 06:36 landed by 1htsserver in 1.2 min: Changed **Assets/Scripts/Zone/Bolts.cs**:
-- [ ] Add a small metal tuning knob to the radio in Assets/Scripts/World/HomeFurniture.cs → `case HomeFurnitureKind.Radio:`
+- [x] Add a small metal tuning knob to the radio in Assets/Scripts/World/HomeFurniture.cs → `case HomeFurnitureKind.Radio:`
   After the existing line `m.Box(new Vector3(0f, 0.09f, 0f), new Vector3(0.32f, 0.18f, 0.14f), DecorPalette.Matte(new Color(0.30f, 0.20f, 0.12f)))`, insert a cylindrical knob using the deterministic rng for left/right variation:
   `bool left = rng.Next(2) == 0;`
   `Vector3 knobPos = new Vector3(left ? -0.04f : 0.04f, 0.11f, 0.07f);`
   `m.Cylinder(knobPos, 0.015f, 0.02f, 8, DecorPalette.Metal(new Color(0.20f, 0.20f, 0.20f)), Quaternion.identity, 1f, false);`
   The knob is ~0.015 m radius × 0.02 m height, placed on the front face slightly above centre, giving a period‑correct visual detail without affecting colliders or interaction.
+  - 06:50 landed by 1htsserver in 13.8 min: **Changes Made**
 - [x] Append six new jam‑description strings to the `Jams` array in Assets/Scripts/World/Fixtures/RaidStoreCopier.cs
   Use the existing entry `"Halfway through, the rollers clunk and stop. A red lamp blinks: PAPER JAM — AREA B. Of course it does."` as the style reference.
   Each new entry must be a single complete sentence in quotes, describing a different jam scenario that fits the 1993 rural Kentucky winter setting (e.g., frozen rollers, toner spill, paper torn, jam alarm chirp, jam caused by a loose sheet, jam with a faint burnt smell).
