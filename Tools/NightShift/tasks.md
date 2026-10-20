@@ -3248,10 +3248,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   Each string must be a full sentence enclosed in double quotes and end with a period inside the quotes.
   Do not alter any other code, ordering, or comments.
   - 13:05 landed by 1htsserver in 1.6 min: **Changed file**
-- [ ] Add a subtle emissive “status light” to each vending machine in Assets/Scripts/World/RaidLayoutsOffice.cs – in the `VendingAt` method, after the glass pieces are created, place a tiny glowing panel near the top front of the machine using a random slight horizontal offset.
+- [x] Add a subtle emissive “status light” to each vending machine in Assets/Scripts/World/RaidLayoutsOffice.cs – in the `VendingAt` method, after the glass pieces are created, place a tiny glowing panel near the top front of the machine using a random slight horizontal offset.
   Create a new piece with `KitchenParts.PieceAt(t, "VendingLED", f, ledPos, m => { m.Box(Vector3.zero, new Vector3(0.04f, 0.02f, 0.001f), FurnitureBuilder.OfficeCopierJamGlow); });`
   Calculate `float ledX = (float)(b.Rng.NextDouble() * 0.02 - 0.01);` and set `Vector3 ledPos = new Vector3(ledX, 1.7f, 0.42f);` – the glow material already used for the copier jam lamp gives a faint amber light that fits a 1993 office aesthetic.
   Keep colliders, interaction points and existing parts unchanged; this adds only one primitive per machine (well under the 12‑primitive limit).
+  - 13:29 landed by 0htsserver in 23.6 min: **Modified file**
 - [x] Cache the result of `Ballistics.Build` in `PlayerCombat` to stop a per‑frame allocation/lookup in `Update` (Assets/Scripts/Player/PlayerCombat.cs)
   Add a private field `ItemStack _lastEquippedStack;` (or reuse an existing reference) and update the `Build` property only when the equipped stack changes.
   In `Update`, before using `Build`, check `ItemStack cur = Inv != null ? Inv.EquippedStack : null;` and if `cur != _lastEquippedStack` set `Build = Ballistics.Build(cur); _lastEquippedStack = cur;`.
