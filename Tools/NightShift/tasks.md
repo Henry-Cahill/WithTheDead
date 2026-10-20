@@ -2859,7 +2859,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `WallFittingAt()` later checks this list to decide whether a new switch spot is blocked. Stale entries cause false‑positive blocks, so the player may see a switch missing from a doorway or pushed far from the wall, breaking the intended “switch by the door” layout.
   Add a single line at the start of `PlanWallLighting()` to reset the list before new fittings are added:
   - 11:23 landed by hts-llm in 0.9 min: **Changed file**
-- [ ] Add four tiny decorative “screw” images to each panel created by `UIKit.Panel` (Assets/Scripts/UI/UIKit.cs) to give metal panels a period‑appropriate riveted look.
+- [x] Add four tiny decorative “screw” images to each panel created by `UIKit.Panel` (Assets/Scripts/UI/UIKit.cs) to give metal panels a period‑appropriate riveted look.
   Create the screws after the existing inner‑border code, before `return img;`.
   `// Top‑left screw`
   `var screwTL = Rect("ScrewTL", img.rectTransform);`
@@ -2868,6 +2868,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `screwTL.pivot = new Vector2(0f, 1f);`
   `var imgTL = screwTL.gameObject.AddComponent<Image>();`
   `imgTL.color = new Color(0.18f, 0.18f, 0.20f); // dark metal tint`
+  - 11:27 landed by hts-llm in 4 min: **Changes Made**
 - [ ] In Assets/Scripts/Hub/Screens/HubTooltip.cs: Cache the tooltip’s root size and canvas rect in HubTooltip so LateUpdate’s Follow() doesn’t read RectTransform properties each frame, updating the cache in Show() after the text/layout is set.
   Add private fields `private Vector2 _rootSize;` and `private Rect _canvasBounds;` to HubTooltip.
   In `Show(object owner, string richText)` after setting `_textSize` call `_rootSize = _root.rect.size;` and `_canvasBounds = _canvasRect.rect;`.

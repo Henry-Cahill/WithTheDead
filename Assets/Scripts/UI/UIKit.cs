@@ -107,6 +107,36 @@ namespace CloneZ
             borderRt.offsetMax = new Vector2(-2f, -2f);
             var borderImg = borderRt.gameObject.AddComponent<Image>();
             borderImg.color = new Color(0f, 0f, 0f, 0.2f);
+
+            // Add decorative screws at panel corners (6×6 px) using dark metal tint
+            // Top‑left
+            var screwTL = Rect("ScrewTL", img.rectTransform);
+            screwTL.sizeDelta = new Vector2(6f, 6f);
+            screwTL.anchorMin = screwTL.anchorMax = new Vector2(0f, 1f);
+            screwTL.pivot = new Vector2(0f, 1f);
+            var imgTL = screwTL.gameObject.AddComponent<Image>();
+            imgTL.color = new Color(0.18f, 0.18f, 0.20f);
+            // Top‑right
+            var screwTR = Rect("ScrewTR", img.rectTransform);
+            screwTR.sizeDelta = new Vector2(6f, 6f);
+            screwTR.anchorMin = screwTR.anchorMax = new Vector2(1f, 1f);
+            screwTR.pivot = new Vector2(1f, 1f);
+            var imgTR = screwTR.gameObject.AddComponent<Image>();
+            imgTR.color = new Color(0.18f, 0.18f, 0.20f);
+            // Bottom‑left
+            var screwBL = Rect("ScrewBL", img.rectTransform);
+            screwBL.sizeDelta = new Vector2(6f, 6f);
+            screwBL.anchorMin = screwBL.anchorMax = new Vector2(0f, 0f);
+            screwBL.pivot = new Vector2(0f, 0f);
+            var imgBL = screwBL.gameObject.AddComponent<Image>();
+            imgBL.color = new Color(0.18f, 0.18f, 0.20f);
+            // Bottom‑right
+            var screwBR = Rect("ScrewBR", img.rectTransform);
+            screwBR.sizeDelta = new Vector2(6f, 6f);
+            screwBR.anchorMin = screwBR.anchorMax = new Vector2(1f, 0f);
+            screwBR.pivot = new Vector2(1f, 0f);
+            var imgBR = screwBR.gameObject.AddComponent<Image>();
+            imgBR.color = new Color(0.18f, 0.18f, 0.20f);
             return img;
         }
         #endregion
