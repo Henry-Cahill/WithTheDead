@@ -2446,3 +2446,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   `fence.Solid.Box(`
   `post + Vector3.up * 0.9f + normal * 0.045f,`
   - 09:42 landed by 1htsserver in 1.8 min: Added a conditional 12 % chance to attach a thin rust‑colored metal plate to each fence post in **ZoneCordon.Build**. The plate is positione
+- [ ] Fix the `CreatureBody.Driven` property in Assets/Scripts/AI/Creatures/Creatures.cs so external speed/attack/cloak control works even when a `Creature` component is present on the same GameObject.
+  *Current code* (`Driven` getter):
+  `public bool Driven => _c == null && (ExternalSpeed01 > 0f || ExternalAttack || ExternalCloak || _driven);`
+  *Problem*: The `_c == null` guard prevents the body from entering “driven” mode if a `Creature` component exists, even when external scripts set `ExternalSpeed01`, `ExternalAttack` or `ExternalCloak`. This stops network‑proxy or AI‑override systems from animating the body, leaving the creature frozen despite receiving external inputs.
+  *Fix*: Remove the `_c == null` requirement so the property reflects any active external control regardless of the presence of a `Creature` component. Replace the getter with:
+  `public bool Driven => ExternalSpeed01 > 0f || ExternalAttack || ExternalCloak || _driven;`
+  *Result*: When external code sets speed, attack, or cloak flags, `CreatureBody.LateUpdate` will recognise the body as driven and apply the correct animation and cloak state, preventing the creature from appearing dead‑locked or invisible when it should be moving under external control. All other behaviour remains unchanged.
+- [ ] Add a thin chrome edge strip to each kitchen cupboard door built in FurnitureBuilder.KitchenCupboardDoor (Assets/Scripts/World/FurnitureBuilder.Kitchen.cs) to give the painted panel a realistic metal border.
