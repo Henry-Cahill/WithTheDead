@@ -16,6 +16,9 @@ namespace CloneZ
             Color hull = new Color(0.24f, 0.28f, 0.21f);
             var m = new RaidMesh();
             m.Ellipsoid(new Vector3(0f, 1.7f, 0.5f), new Vector3(2.5f, 2.3f, 7.6f), DecorPalette.Metal(hull), 12, 7);
+            // Radio antenna: thin metal rod and dish perched on top of the fuselage
+            m.Cylinder(new Vector3(0f, 2.5f, 0f), 0.02f, 0.8f, 8, DecorPalette.Metal(hull));
+            m.Box(new Vector3(0f, 2.9f, 0f), new Vector3(0.2f, 0.05f, 0.2f), DecorPalette.Metal(hull * 0.8f));
             m.Ellipsoid(new Vector3(0f, 1.95f, 3.4f), new Vector3(1.9f, 1.4f, 2f), DecorPalette.Glass(new Color(0.25f, 0.32f, 0.36f)), 10, 6);
             m.CylinderX(new Vector3(0f, 2.1f, -5.2f), 0.42f, 6.4f, 10, DecorPalette.Metal(hull), 90f);
             m.Box(new Vector3(0f, 3f, -8.1f), new Vector3(0.12f, 1.9f, 1.1f), DecorPalette.Metal(hull));

@@ -1123,11 +1123,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Update the lambda to mirror the logic in `Clean`: after reducing the gun’s dirt level, if `kit.Def.MaxCondition > 0` decrement `kit.Condition` and remove the kit when it reaches 0; otherwise apply the 25 % chance removal.
   Result: cleaning a gun via the inventory menu consumes the kit correctly, preventing an exploit where cleaning kits never wear out.
   - 02:43 landed by 1htsserver in 2.7 min: **Changed file**: `Assets/Scripts/Weapons/WeaponItems.cs`
-- [ ] Add a small period‑appropriate radio antenna to the helicopter’s fuselage in Assets/Scripts/World/Zone/Helicopter.cs, inside `HelicopterModel.Build`.
+- [x] Add a small period‑appropriate radio antenna to the helicopter’s fuselage in Assets/Scripts/World/Zone/Helicopter.cs, inside `HelicopterModel.Build`.
   Insert two primitives after the first `m.Ellipsoid` (the main hull) to create a thin metal rod and a tiny dish at the top centre of the fuselage.
   `m.Cylinder(new Vector3(0f, 2.5f, 0f), 0.02f, 0.8f, 8, DecorPalette.Metal(hull), 0f);` – a 0.04 m‑diameter, 0.8 m‑tall rod placed at the hull’s highest point.
   `m.Box(new Vector3(0f, 2.9f, 0f), new Vector3(0.2f, 0.05f, 0.2f), DecorPalette.Metal(hull * 0.8f));` – a flat 0.2 m × 0.2 m × 0.05 m metal “dish” perched on the rod’s tip, slightly darker to suggest wear.
   The antenna uses the same `hull` colour (and a muted variation) so it blends with the existing metal palette, adds visual interest without affecting colliders or interaction points, and stays within the ~12‑primitive limit.
+  - 02:45 landed by 1htsserver in 1.8 min: **Summary**
 - [ ] Add a calming effect to the Straighten action in Assets/Scripts/World/Fixtures/PictureFixture.cs
   Modify the Straighten method to also call LightingFixtures.Calm with CloneZConfig.PictureCalm when the cooldown has elapsed, mirroring the logic in Look.
   After setting _roll to 0f and notifying the player, insert:
