@@ -881,3 +881,12 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Economy/Insurance.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add subtle metal detailing to the porch lantern in Assets/Scripts/World/StarterHome.Lighting.cs by inserting a small brass knob atop the lantern pole and four tiny rivet caps on the black lantern housing, using existing materials and keeping colliders unchanged.
+  In `PorchLantern`, after the existing box calls (e.g. `m.Box(lamp + Vector3.up * 0.125f, new Vector3(0.17f, 0.04f, 0.17f), black);` etc.), add:
+  `// brass knob crowning the pole`
+  `Surf brass = DecorPalette.Metal(FurnitureBuilder.Brass);`
+  `m.Cylinder(lamp + Vector3.up * 0.225f, 0.015f, 0.02f, brass);` – a cylinder 0.015 m radius, 0.02 m tall, centered 0.225 m above the base.
+  `// four rivet caps on the black housing`
+  `Vector3[] rivetPos = new[] {`
+  `lamp + new Vector3(-0.055f, 0.115f, -0.055f),`
+  `lamp + new Vector3( 0.055f, 0.115f, -0.055f),`
