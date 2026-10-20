@@ -3240,7 +3240,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Create the rivet geometry with a small cylinder: `sb.Solid.Cylinder(rivPos, 0.01f, 0.015f, 8, ZoneKit.Mt(ZoneKit.RustDark));` (≈ 1 cm radius, 1.5 cm height);
   Leave colliders, interaction points and the rest of the container code untouched; the player will now see subtle rust‑stained rivet heads spaced irregularly across each container, adding period‑correct wear without adding new assets.
   - 12:59 landed by hts-llm in 2 min: **Changed file**: `Assets/Scripts/World/Zone/ZoneOverlays.cs`
-- [ ] In Assets/Scripts/World/Fixtures/HomeDoor.cs: Add a “Force open the door” action to `HomeDoor.GetActions` (copy the pattern of the lock/unlock branch)
+- [x] In Assets/Scripts/World/Fixtures/HomeDoor.cs: Add a “Force open the door” action to `HomeDoor.GetActions` (copy the pattern of the lock/unlock branch)
+  - 13:06 landed by hts-llm in 6.2 min: **Summary**
 - [x] Append five period‑correct transmission strings to the `Lines` array of the `Channel` named "Channel 19" in Assets/Scripts/World/Fixtures/RaidCivicRadio.cs; after the existing last line (`"Anybody on nineteen? Anybody at all? ...Come back.",`) add new entries that fit the 1993 rural Kentucky winter setting.
   Use the existing entry `"Breaker one‑nine, anybody got their ears on out by the interstate?"` as the style reference.
   The new strings should cover: a report of a stranded tractor stuck in the snow, a warning about thin ice on the creek, a brief notice of a medicine shortage at the makeshift clinic, a reminder to keep transmissions brief to save battery, and a personal plea from a farmer asking for help locating a lost dog.
