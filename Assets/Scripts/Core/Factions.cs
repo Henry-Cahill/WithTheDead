@@ -60,6 +60,16 @@ namespace CloneZ
                 Blurb = "A soaked notebook details the bitter freeze of last winter, warning of sudden blizzards." } },
             { "oldmine", new Def { Id = "oldmine", Name = "Old Mine Fragment", Color = new Color(0.70f, 0.60f, 0.45f),
                 Blurb = "A faded map corner shows a forgotten mine shaft, hinting at untapped resources deep underground." } },
+            { "farmerjournal", new Def { Id = "farmerjournal", Name = "Farmer's Journal", Color = new Color(0.55f, 0.45f, 0.35f),
+                Blurb = "A weather‑worn journal details dwindling supplies as the harvest fails in the harsh Kentucky winter." } },
+            { "snowdiary", new Def { Id = "snowdiary", Name = "Snow‑Bound Diary", Color = new Color(0.70f, 0.80f, 0.85f),
+                Blurb = "A frost‑crusted diary warns travelers of a frozen river crossing that can shatter under weight." } },
+            { "hiddencachesign", new Def { Id = "hiddencachesign", Name = "Broken Cache Sign", Color = new Color(0.50f, 0.40f, 0.30f),
+                Blurb = "A splintered wooden sign points to a hidden cache, its directions half‑eaten by rot and time." } },
+            { "hunternote", new Def { Id = "hunternote", Name = "Hunter's Note", Color = new Color(0.65f, 0.55f, 0.45f),
+                Blurb = "A hurried note from a hunter describes a recent zombie herd stampeding across the ridge." } },
+            { "caverelative", new Def { Id = "caverelative", Name = "Cave Sketch", Color = new Color(0.45f, 0.55f, 0.65f),
+                Blurb = "A charcoal sketch marks a cave entrance rumored to hold ancient relics, its mouth yawning in the hillside." } }
         };
 
         // Base relations: -1 hostile, 0 neutral, +1 allied. Symmetric; anything unlisted is neutral.

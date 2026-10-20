@@ -2916,10 +2916,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace the two `new Color(...)` creations in the `Phase.Warning` branch with the cached fields.
   The visual result stays identical (the sky colour still switches based on `PsiStorm`), but the per‑frame allocation is removed.
   - 11:37 landed by 0htsserver in 3 min: **Changed**
-- [ ] Append five new “Blurb” entries to the `s_Defs` dictionary in Assets/Scripts/Core/Factions.cs, after the existing `"oldmine"` entry.
+- [x] Append five new “Blurb” entries to the `s_Defs` dictionary in Assets/Scripts/Core/Factions.cs, after the existing `"oldmine"` entry.
   Use the entry for `"weatherlog"` as the style reference – a single‑sentence description that tells what the player reads and fits the 1993‑rural‑Kentucky setting.
   The new entries should cover: (1) a farmer’s journal about dwindling supplies, (2) a snow‑bound diary warning of a frozen river crossing, (3) a broken wooden sign marking a hidden cache, (4) a hunter’s note about a recent zombie herd, (5) a sketch of a cave entrance rumored to hold relics.
   Add the following lines (including the trailing commas) inside the `new Dictionary<string, Def>() { … }` initializer, before the closing `};`:
+  - 11:38 landed by hts-llm in 2.1 min: **Changed**
 - [ ] Add two dark‑steel bracket details to each exterior board in `Assets/Scripts/World/FurnitureBuilder.RaidOpenings.cs` → method `OpeningBoards`
   After the line `m.Box(c, new Vector3(w + 0.3f, 0.16f, 0.03f), q, plank);` add two tiny boxes that sit near the lower corners of the board, using the existing `DarkSteel` material.
   Use a size of `new Vector3(0.012f, 0.012f, 0.006f)` for each bracket.
