@@ -4046,3 +4046,5 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Cylinder(coupling + Vector3.up * 0.018f, 0.018f, 0.004f, 12, brass);`
   – makes a 0.018 m radius, 0.004 m thick brass disc sitting 0.018 m above the coupling centre, giving the outdoor tap a subtle decorative flange without affecting colliders or interaction points. This small visual detail fits the 1993 rural aesthetic and stays within the existing deterministic‑random material palette.
   - 18:20 landed by 0htsserver in 2 min: **Change Summary**
+- [ ] In Assets/Scripts/Items/LootContainer.cs fix the saved‑sack bug: a sack loaded from a saved game is never marked as already searched, so the player is forced to “search” a pickup that should be instant.
+- [ ] Add a small exhaust pipe with a glowing tip to the portable generator in Assets/Scripts/World/DecorProps.cs, method `DecorProps.Generator`.
