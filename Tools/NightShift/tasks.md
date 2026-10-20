@@ -3339,3 +3339,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   Ensure the new `SetY` helper (or inline `Vector3 diff = transform.position - _start; diff.y = 0f;`) is used without allocating new vectors each call.
   The player’s experience remains identical – actions still cancel when they move beyond 0.8 metres – but the game no longer performs a square‑root each Update, reducing GC pressure and CPU load.
   - 13:38 landed by 0htsserver in 2.5 min: Implemented distance check optimization in **PlayerChannel.Update**:
+- [ ] Fix KitchenSink state‑saving so the tap’s running flag is preserved even while a wash job is active (Assets/Scripts/World/Fixtures/KitchenSink.cs)
+  In `CaptureState` the line `save.State = (_running && !_openedForJob ? 1 : 0) | (_plugIn ? 2 : 0);` deliberately clears the “running” bit when `_openedForJob` is true, so a wash that’s in progress is lost on save and the tap turns off after loading.
+  Change that line to always store the running flag: `save.State = (_running ? 1 : 0) | (_plugIn ? 2 : 0);` (remove the `_openedForJob` check).
+  Leave `RestoreState` unchanged – it already reads the bit with `(save.State & 1) != 0 && WaterMains.MainsOn`.
+  Result: when the player saves mid‑wash, loading the game will keep the tap running and the wash will continue correctly, instead of abruptly stopping.
+  All other behaviour (plug state, level, cleaning timer) remains the same.
+- [ ] Add a period‑correct wooden muntin grid to the glazing in `Assets/Scripts/World/StarterHome.Windows.cs` → `WindowSash` method, after the line `m.Box(f.P(f.Mid, gy, across), f.Size(w - 0.09f, glass, 0.006f), DecorPalette.Glass(SashGlass));`
+  Create a small wood surface: `Surf muntin = DecorPalette.Matte(FurnitureBuilder.Pine);`
+  Add a vertical strip: `m.Box(f.P(f.Mid, gy, across), f.Size(0.003f, glass, 0.006f), muntin);` (size ≈ 3 mm wide, runs full height of the glass)
+  Add a horizontal strip: `m.Box(f.P(f.Mid, gy, across), f.Size(w - 0.09f, 0.003f, 0.006f), muntin);` (size ≈ 3 mm tall, spans the glass width)
+  These two primitives add a modest cross‑grid reminiscent of 1990s rural windows, using existing wood material and keeping colliders and interaction unchanged.
