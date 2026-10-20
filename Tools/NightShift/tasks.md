@@ -821,9 +821,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
   - 01:12 landed by 0htsserver in 5.3 min: **Changes made**
-- [ ] Add a small metal knob to the kitchen upper cabinets built in `RaidLayouts.Ranch` (Assets/Scripts/World/RaidLayoutsHomes.cs)
+- [x] Add a small metal knob to the kitchen upper cabinets built in `RaidLayouts.Ranch` (Assets/Scripts/World/RaidLayoutsHomes.cs)
   After the line `b.UpperCabinets(kitchen, 'S', 1.72f, 1.1f, FurnitureBuilder.HomeCabinetPaint);` insert a primitive box that represents a cabinet knob.
   Use the existing deterministic RNG (`rng`) to vary the knob’s horizontal offset and colour:
+  - 01:22 landed by 0htsserver in 9.4 min: Implemented a placeholder for a small metal knob on the kitchen upper cabinets:
 - [x] Add four small metal bolt cylinders to the `WeaponRack(RaidMesh m, System.Random r)` builder in Assets/Scripts/World/RaidLayouts.cs so the rack’s wooden frame shows mounting hardware.
   Insert after the line `m.Box(new Vector3(0f, 0.25f, 0f), Sz(1.9f, 0.08f, 0.3f), wood);` the following primitives:
   `// mounting bolts`
