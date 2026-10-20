@@ -919,7 +919,7 @@ namespace CloneZ
         private static readonly Dictionary<string, string[]> s_Lines = new Dictionary<string, string[]>
         {
             [Factions.Freehold] = new[] { "Throw your bolts, brother. Every time.", "Saw the sky go red twice this week. Getting worse.",
-                "Don't sell to the Fence if the Institute will take it. Heat follows you.", "Share the fire if you like. Just keep the gun down." },
+                "Don't sell to the Fence if the Institute will take it. Heat follows you.", "Share the fire if you like. Just keep the gun down.", "The cold's gotten worse; keep your coil‑spring heater close.", "I heard the Institute buried a cache near the old mill, under the frozen creek.", "If you find any spare 2‑hour batteries, I'll trade you for fresh ammo.", "Snow's covering the road to the supply dump, but the dogs still howl.", "Don't trust the warden's radio—static's a sign they're listening." },
             [Factions.Vanguard] = new[] { "Keep moving, civilian.", "This sector is under Vanguard watch.", "Smugglers get one warning. You've had yours." },
             [Factions.Lantern] = new[] { "Got something shiny? I know people.", "The Wardens can't see what they're not paid to see.", "Prices are good this week. For you." },
             [Factions.Wardens] = new[] { "Papers. No? Then turn around.", "Belt's closed after dark.", "Anyone past the wire without a pass gets shot. Nothing personal." },

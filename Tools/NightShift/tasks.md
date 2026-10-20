@@ -702,7 +702,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `private void LeanAgainst(InteractContext ctx) { ctx.Notify("You lean against the cot, feeling the cold canvas against your back."); }`
   The new action appears when the survivor is not already seated, letting the player choose “Lean against the cot” (shown as [E] Lean against the cot) and receive the above notification. All other code and behavior remain unchanged.
   - 00:38 landed by hts-llm in 2.5 min: **Changed file**
-- [ ] In Assets/Scripts/AI/Humans/HumanNpc.cs extend the `ZoneTalk.s_Lines` entry for `Factions.Freehold` by appending five new dialogue strings that fit the 1993 rural Kentucky winter setting; each string must be a whole sentence in quotes and reflect themes of snow‑bound scarcity, period‑correct tech, outbreak rumors, and survivor morale – use the existing line `"Throw your bolts, brother. Every time."` as the style reference.
+- [x] In Assets/Scripts/AI/Humans/HumanNpc.cs extend the `ZoneTalk.s_Lines` entry for `Factions.Freehold` by appending five new dialogue strings that fit the 1993 rural Kentucky winter setting; each string must be a whole sentence in quotes and reflect themes of snow‑bound scarcity, period‑correct tech, outbreak rumors, and survivor morale – use the existing line `"Throw your bolts, brother. Every time."` as the style reference.
   Locate the dictionary initializer for `s_Lines` inside the `ZoneTalk` static class and add the new strings to the array keyed by `Factions.Freehold`.
   Append the following quoted sentences (each ending with a period):
   – "The cold's gotten worse; keep your coil‑spring heater close."
@@ -711,6 +711,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   – "Snow's covering the road to the supply dump, but the dogs still howl."
   – "Don't trust the warden's radio—static's a sign they're listening."
   Preserve all existing entries and the overall dictionary syntax; only the Freehold array should be modified.
+  - 00:39 landed by 1htsserver in 4.2 min: **Changed file**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/AI/Creatures/CreatureCatalog.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
