@@ -1824,11 +1824,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `p.Mesh.Upright(RunPoint(r, (a + b) * 0.5f, (y0 + y1) * 0.5f, side * (Half + 0.004f)), n, b - a, y1 - y0, DecorMaterials.WallExterior(Exterior, ExteriorColor));`
   `if (Rng.NextDouble() < 0.1)`
   - 06:54 landed by 1htsserver in 3.3 min: **Changed file**
-- [ ] Cache the per‑frame `Camera.main` lookup in `HudCompass` (Assets/Scripts/Survival/Navigation.cs)
+- [x] Cache the per‑frame `Camera.main` lookup in `HudCompass` (Assets/Scripts/Survival/Navigation.cs)
   Add a private `Camera _cam;` field to `HudCompass`.
   Implement `Awake()` (or `Start()`) to set `_cam = Camera.main;`.
   Replace the line `Camera cam = Camera.main;` in `LateUpdate()` with `Camera cam = _cam;`.
   This removes the costly `Camera.main` FindObjectByType call each frame; the compass visibility and text behaviour remain unchanged for the player.
+  - 06:59 landed by hts-llm in 7.9 min: **Changes made**
 - [x] Add a “Check signal” action to Assets/Scripts/World/Fixtures/TvFixture.cs that lets the player see whether the current channel is broadcasting or just static.
   In `GetActions` after the line `into.Add(new InteractAction("Adjust the rabbit ears", AdjustAerial).DisabledIf(!near, TooFar));` insert:
   `into.Add(new InteractAction("Check signal", CheckSignal).DisabledIf(!near, TooFar));`

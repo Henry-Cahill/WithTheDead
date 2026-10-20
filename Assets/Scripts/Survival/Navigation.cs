@@ -259,6 +259,7 @@ namespace CloneZ
         private PlayerInventory _inv;
         private float _check;
         private bool _has;
+        private Camera _cam;
 
         public static HudCompass Create(PlayerInventory inv)
         {
@@ -276,11 +277,15 @@ namespace CloneZ
         private float _lastYaw;
         private bool _lastVisible;
 
+        private void Awake()
+        {
+            _cam = Camera.main;
+        }
         private void LateUpdate()
         {
             // Update compass possession check once per second
             if (Time.time > _check) { _check = Time.time + 1f; _has = _inv != null && _inv.Has("compass"); }
-            Camera cam = Camera.main;
+            Camera cam = _cam;
             bool visible = _has && cam != null && GameSettings.Current.Hud != HudMode.Hardcore;
             // Clear text immediately when compass is not visible (lost, camera missing, or hardcore HUD)
             if (!visible) { _text.text = ""; _lastVisible = false; return; }
