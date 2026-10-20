@@ -39,7 +39,9 @@ namespace CloneZ
             }
         }
 
+        /// <summary>The survivor's carried inventory of items and containers.</summary>
         public Inventory Inventory { get; private set; }
+        /// <summary>The currently equipped melee or ranged weapon definition.</summary>
         public ItemDef EquippedWeapon { get; private set; }
 
         /// <summary>The grid the pack is arranged on.</summary>
@@ -48,6 +50,7 @@ namespace CloneZ
         /// <summary>The survivor's own pockets (always the first section).</summary>
         public GridSection Pockets => _pockets;
 
+        /// <summary>Raised when the inventory changes, so UI can update.</summary>
         public event System.Action Changed;
 
         /// <summary>A short message for the player ("No room for Hammer — dropped it").</summary>
@@ -203,7 +206,9 @@ namespace CloneZ
                 return Mathf.Max(0f, w);
             }
         }
+        /// <summary>The maximum weight the inventory can carry, based on capacity of sections.</summary>
         public float Capacity => Inventory.MaxWeight;
+        /// <summary>The current load factor (weight / capacity) of the pack.</summary>
         public float Load => Capacity > 0f ? Weight / Capacity : 0f;
 
         /// <summary>1.0 when lightly loaded, easing toward EncumbranceMinMultiplier as capacity fills.</summary>
