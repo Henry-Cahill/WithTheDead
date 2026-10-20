@@ -126,9 +126,17 @@ namespace CloneZ
             if (b.Blood == null) return true;
             if (!inv.Has("ivkit")) { GameEvents.RaiseToast("You need an IV kit to transfuse blood."); return true; }
             string type = BloodTypes.FromBagId(s.Def.Id);
+            // Attempt transfusion first; only consume resources on success
+            bool success = b.Blood.Transfuse(type, out string message);
+            if (!success)
+            {
+                // Show failure message; do not consume ivkit or blood bag
+                GameEvents.RaiseToast(message);
+                return true;
+            }
+            // Successful transfusion: consume IV kit and used blood bag
             inv.Consume("ivkit", 1);
             inv.Inventory.Remove(s, 1);
-            b.Blood.Transfuse(type, out string message);
             Sfx.PlayUI(SfxIds.Injector);
             if (b.Skills != null) b.Skills.AddXp(PlayerSkills.Skill.FirstAid, 6f);
             GameEvents.RaiseToast(message);
