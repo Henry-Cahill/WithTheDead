@@ -2290,12 +2290,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
 - [x] In Assets/Scripts/World/ItemMeshBaker.cs: Fix ItemMeshBaker.Get to avoid caching a null Baked result, which currently prevents later model look‑ups for items that initially have no bespoke model.
   - 08:59 landed by 1htsserver in 1.2 min: **Changed file**
-- [ ] In Assets/Scripts/Player/PlayerHydration.cs: Optimize PlayerHydration.Update by caching the nearest water‑point lookup instead of calling WaterPoints.Nearest every frame.
+- [x] In Assets/Scripts/Player/PlayerHydration.cs: Optimize PlayerHydration.Update by caching the nearest water‑point lookup instead of calling WaterPoints.Nearest every frame.
   Add a private field `Vector3 _lastPos;` and a constant `const float CheckDistance = 0.5f;` to PlayerHydration.
   In Awake initialise `_lastPos = transform.position;`.
   In Update, after the early‑exit checks, compute `float moved = Vector3.Distance(_lastPos, transform.position);`.
   If `moved < CheckDistance` skip `Evaluate()` and preserve the previous `_source`, `_fill` and `Prompt` values; otherwise call `Evaluate()` and set `_lastPos = transform.position;`.
   This reduces per‑frame work of `WaterPoints.Nearest`, which searches all IWaterPoint objects, while the displayed prompt and interaction behaviour remain unchanged for the player.
+  - 09:04 landed by 1htsserver in 5.1 min: **Changed file**
 - [x] Add a second interaction “Inspect lamp” to Assets/Scripts/World/Fixtures/LampSwitch.cs by extending LampSwitch.GetActions and adding a small private method.
   - 09:02 landed by 0htsserver in 1.7 min: **Changed files**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/RaidCivicSink.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
