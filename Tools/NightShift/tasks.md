@@ -3654,7 +3654,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   This gives the survivor a brief visual hint without changing any timers, noises, or existing behavior.
   All other code, including the two timed dial actions and the “Listen at the door” action, must remain unchanged.
   - 15:12 landed by 1htsserver in 1.2 min: **Changed file**
-- [ ] In Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs, extend the water‑knocking feedback in the `private void Knock(InteractContext ctx)` method by adding four more distinct sentences for intermediate water levels, keeping the existing ones.
+- [x] In Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs, extend the water‑knocking feedback in the `private void Knock(InteractContext ctx)` method by adding four more distinct sentences for intermediate water levels, keeping the existing ones.
+  - 15:15 landed by 0htsserver in 3.9 min: **Changed**
 - [x] Add a small chrome adjustment knob to the top of the OfficeChair’s gas post in `Assets/Scripts/World/FurnitureBuilder.Office.cs` → `public static void OfficeChair(RaidMesh m, System.Random rng, Color fabric)`
   Locate the cylinder that creates the gas post: `m.Cylinder(new Vector3(0f, 0.07f, 0f), 0.025f, 0.36f, 6, Mt(Chrome));`
   After this line, insert a tiny chrome disc to represent a height‑adjust knob:

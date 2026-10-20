@@ -79,8 +79,12 @@ namespace CloneZ
             MakeNoise(CloneZConfig.FixtureNoiseSmall);
             float fill = (float)_water / Mathf.Max(1, _capacity);
             ctx.Notify(_water <= 0 ? "It booms, hollow from top to bottom. Nothing left in it." :
+                fill < 0.1f ? "It barely rattles, the tank is almost dry." :
+                fill < 0.2f ? "A faint, high‑pitched tap, only a trickle left." :
                 fill < 0.35f ? "It rings hollow until you knock near the bottom. Not much left." :
+                fill < 0.5f ? "A dull thud from the lower half, water is low." :
                 fill < 0.7f ? "Dull from the middle down — about half a tank." :
+                fill < 0.85f ? "A solid thump, water fills most of the tank." :
                 "A dull thud all the way up. Plenty in there.");
         }
 

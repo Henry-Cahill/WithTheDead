@@ -31,3 +31,4 @@ appends one short bullet at the end. Keep each bullet to a line or two.
 - Cache singleton lookups like WeatherSystem.Instance in frequently‑called Update loops to avoid per‑frame FindObjectByType overhead.
 - UI fade logic now disables the MonoBehaviour when idle, reducing per‑frame overhead.
 - Cache per‑client temporary collections in `NetWorld.SendAi` (static `s_Visible` and `s_Keep`) to avoid allocating a new List and HashSet each tick, reducing GC pressure.
+- Added intermediate water‑level feedback to RaidStoreWaterHeater.Knock for richer player cues.
