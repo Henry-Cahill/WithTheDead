@@ -22,6 +22,9 @@ namespace CloneZ
         private static readonly Dictionary<uint, NetAgentProxy> s_Agents = new Dictionary<uint, NetAgentProxy>();
         private static readonly Dictionary<string, ulong> s_Locks = new Dictionary<string, ulong>();
         private static readonly List<Actor> s_Scratch = new List<Actor>(128);
+        // Cached collections to avoid per‑client allocations in SendAi
+        private static readonly List<Actor> s_Visible = new List<Actor>(64);
+        private static readonly HashSet<uint> s_Keep = new HashSet<uint>(64);
 
                 /// <summary>Register all network message handlers for the world and set up event hooks.</summary>
         internal static void Register()
@@ -115,7 +118,7 @@ namespace CloneZ
             {
                 if (client == nm.LocalClientId || !NetSession.Clients.TryGetValue(client, out NetClientInfo ci) || !ci.InRaid) continue;
                 if (!s_Known.TryGetValue(client, out HashSet<uint> known)) s_Known[client] = known = new HashSet<uint>();
-                var visible = new List<Actor>();
+                s_Visible.Clear();
                 foreach (Actor a in s_Scratch)
                 {
                     float d = Vector3.Distance(a.transform.position, ci.Position);
@@ -123,16 +126,16 @@ namespace CloneZ
                     // Close things always; further ones only when the client could see them (no tracking through walls).
                     if (d > 12f && Physics.Linecast(ci.Eye, a.Center, Actor.SightMask, QueryTriggerInteraction.Ignore)
                         && Physics.Linecast(ci.Eye, a.EyePosition, Actor.SightMask, QueryTriggerInteraction.Ignore) && !known.Contains(a.NetId)) continue;
-                    visible.Add(a);
+                    s_Visible.Add(a);
                 }
-                var keep = new HashSet<uint>();
-                using (var o = new NetOut(64 + visible.Count * 24, 1 << 15))
+                s_Keep.Clear();
+                using (var o = new NetOut(64 + s_Visible.Count * 24, 1 << 15))
                 {
-                    o.I(visible.Count);
-                    foreach (Actor a in visible)
+                    o.I(s_Visible.Count);
+                    foreach (Actor a in s_Visible)
                     {
                         if (!known.Contains(a.NetId)) SendSpawn(client, a);
-                        keep.Add(a.NetId);
+                        s_Keep.Add(a.NetId);
                         byte flags = 0;
                         if (!a.IsAlive) flags |= 1;
                         var z = a.GetComponent<ZombieAI>();
@@ -148,9 +151,9 @@ namespace CloneZ
                     NetSession.SendTo(client, "cz.ai", o, NetworkDelivery.UnreliableSequenced);
                 }
                 foreach (uint id in known)
-                    if (!keep.Contains(id)) using (var o = new NetOut(8)) { o.U(id); NetSession.SendTo(client, "cz.aigone", o); }
+                    if (!s_Keep.Contains(id)) using (var o = new NetOut(8)) { o.U(id); NetSession.SendTo(client, "cz.aigone", o); }
                 known.Clear();
-                foreach (uint id in keep) known.Add(id);
+                foreach (uint id in s_Keep) known.Add(id);
             }
         }
 
