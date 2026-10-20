@@ -3092,7 +3092,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `private void Inspect(InteractContext ctx) { Look(ctx); ctx.Notify("A brief memory of home flits through your mind."); }`
   The new action should always appear (no condition), reuse the existing `Look` logic, and then give the extra message, giving the player an additional way to interact with the picture without altering any other behavior.
   - 12:23 landed by 1htsserver in 3.6 min: **Changed files**
-- [ ] Fix the glasses geometry in Assets/Scripts/Characters/HumanoidBodyBuilder.Gear.cs so the lenses are oriented correctly
+- [x] Fix the glasses geometry in Assets/Scripts/Characters/HumanoidBodyBuilder.Gear.cs so the lenses are oriented correctly
   In `BuildHeadwear`, case `HeadwearStyle.Glasses`, the `Limb` call that creates the bridge uses `Vector3.up` as the forward direction, which orients the bridge vertically and can make the glasses appear twisted or invisible.
   Change the argument `Vector3.up` to the proper forward direction `Fwd` (the same vector used for other headwear limbs).
   `// before`
@@ -3101,6 +3101,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// after`
   `Limb(hat, head, new Vector3(side * 0.052f, 1.708f, 0.088f), new Vector3(side * 0.081f, 1.703f, -0.005f), Fwd,`
   `new[] { new Key(0f, 0.003f, 0.003f), new Key(1f, 0.003f, 0.003f) }, seg: 6);`
+  - 12:24 landed by hts-llm in 1.5 min: **Summary**
 - [ ] In Assets/Scripts/AI/Creatures/Creatures.cs add a subtle “leather strap” detail to the torso of all quadruped creatures built in `CreatureBody.Quad`.
 - [ ] In Assets/Scripts/UI/SkillsPanelController.cs: Optimize SkillsPanelController so the per‑frame Refresh() doesn’t rebuild UI elements when nothing changed, by caching each skill’s level and progress and only updating the Text/Image when the values differ.
   Add a private struct `SkillCache { public int level; public float progress; }` and a field `private SkillCache[] _skillCache;`.
