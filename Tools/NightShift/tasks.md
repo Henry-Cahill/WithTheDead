@@ -1649,12 +1649,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `270f => new Vector3(0f, 0.95f, -0.35f),`
   `_ => new Vector3(0.35f, 0.95f, 0f)`
   - 05:56 landed by 1htsserver in 3.3 min: **Changed files**
-- [ ] Optimize per‑frame UI string allocation in Assets/Scripts/Player/PlayerBuilder.cs by caching the composed prompt.
+- [x] Optimize per‑frame UI string allocation in Assets/Scripts/Player/PlayerBuilder.cs by caching the composed prompt.
   Add a private field `string _promptCache` and a flag `bool _promptDirty` to store the last built prompt.
   Mark the prompt dirty whenever any data that influences it changes: in `HandleSelectionInput` after changing `Selection`; at the end of `EvaluateBarricade`, `EvaluateHouse`, and `EvaluateDemolish` after setting `_placeValid`, `_reinforceTarget`, or `_demolishTarget`; and in `EnterBuildMode`, `ExitBuildMode`, `StartBuild`, `CancelBuild`, and `CompleteBuild`.
   Replace the direct assignment `Prompt = ComposePrompt();` in `Evaluate()` with `if (_promptDirty) { _promptCache = ComposePrompt(); _promptDirty = false; } Prompt = _promptCache;`.
   Remove the existing `Prompt = "";` assignments that reset it each frame (e.g., in the early‑exit branch of `Update` when not in build mode) and instead set `_promptDirty = true` before returning, ensuring the empty prompt is cached once.
   The player’s UI text remains identical, but string concatenations now occur only when the underlying state changes, eliminating the per‑frame allocation of new prompt strings.
+  - 06:04 landed by 0htsserver in 9.8 min: Implemented prompt caching in **PlayerBuilder.cs**:
 - [x] In Assets/Scripts/World/Fixtures/RaidTownGenerator.cs: Add a small “Inspect generator” action to RaidTownGenerator so the player can see if it’s running and roughly how much fuel remains.
   In `RaidTownGenerator.GetActions` after the existing `Check the fuel` line, insert:
   `into.Add(new InteractAction("Inspect generator", Inspect));`

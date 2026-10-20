@@ -25,6 +25,9 @@ namespace CloneZ
         /// <summary>The build palette: a barricade, the five house pieces, and a demolish tool.</summary>
         public enum BuildSelection { Barricade, Floor, Wall, Doorway, Roof, Window, Demolish }
         private const int SelectionCount = 7;
+        // Cached UI prompt to avoid per-frame string allocations.
+        private string _promptCache = "";
+        private bool _promptDirty = true;
 
         public string Prompt { get; private set; } = "";
         public bool BuildMode { get; private set; }
@@ -137,6 +140,7 @@ namespace CloneZ
                 else if (kb.digit5Key.wasPressedThisFrame) Selection = BuildSelection.Roof;
                 else if (kb.digit6Key.wasPressedThisFrame) Selection = BuildSelection.Window;
                 else if (kb.digit7Key.wasPressedThisFrame) Selection = BuildSelection.Demolish;
+                _promptDirty = true;
             }
 
             if (mouse != null)
@@ -144,6 +148,7 @@ namespace CloneZ
                 float scroll = mouse.scroll.ReadValue().y;
                 if (scroll > 0.5f) Selection = (BuildSelection)(((int)Selection + 1) % SelectionCount);
                 else if (scroll < -0.5f) Selection = (BuildSelection)(((int)Selection + SelectionCount - 1) % SelectionCount);
+                _promptDirty = true;
             }
         }
 
@@ -151,6 +156,7 @@ namespace CloneZ
         {
             BuildMode = true;
             UIState.BuildMode = true;
+            _promptDirty = true;
         }
 
         private void ExitBuildMode()
@@ -162,7 +168,7 @@ namespace CloneZ
                 UIState.BuildMode = false;
             }
             HideGhost();
-            Prompt = "";
+            _promptDirty = true;
         }
 
         #region Evaluation
@@ -171,7 +177,12 @@ namespace CloneZ
             if (Selection == BuildSelection.Barricade) EvaluateBarricade();
             else if (Selection == BuildSelection.Demolish) EvaluateDemolish();
             else EvaluateHouse();
-            Prompt = ComposePrompt();
+            if (_promptDirty)
+            {
+                _promptCache = ComposePrompt();
+                _promptDirty = false;
+            }
+            Prompt = _promptCache;
         }
 
         private void EvaluateBarricade()
@@ -204,6 +215,7 @@ namespace CloneZ
                 _placeValid = IsSpotClear(candidate, aim);
                 UpdateGhost();
             }
+            _promptDirty = true;
         }
 
         // House pieces snap to a 2 m tile grid under the cursor: floors/roofs to a cell centre,
@@ -217,6 +229,7 @@ namespace CloneZ
             _houseCenter = BuildPiece.CenterFor(type, ground);
             _placeValid = HousePlaceValid(type, _houseCenter, yaw);
             UpdateGhost();
+            _promptDirty = true;
         }
 
         // Demolish targets whatever demolishable thing the cursor is over: a ray takes the nearest
@@ -699,8 +712,8 @@ namespace CloneZ
             // Bigger pieces cost more planks, so they train Carpentry proportionally more.
             if (_skills != null) _skills.AddXp(PlayerSkills.Skill.Carpentry, CloneZConfig.XpCarpentryPerPlank * PlankCost(_buildSelection));
             NoiseSystem.Emit(_buildPos, CloneZConfig.NoiseHammering);
-            _inventory.WearTool(HammerId);   // hammering wears the hammer down
             Prompt = "";
+            _promptDirty = true;
         }
 
         // Tears the captured target down, hands back part of its materials, and re-bakes the navmesh
