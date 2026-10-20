@@ -658,12 +658,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `var clothing = _player != null ? _player.GetComponent<PlayerClothing>() : null;` → `var clothing = _playerCloth;`
   Leave the rest of the logic unchanged.
   Result: no allocations or component look‑ups each frame; the player experience (exit conditions, payment checks, backpack checks) stays exactly the same.
-- [ ] In Assets/Scripts/World/Fixtures/RaidTownMailDrop.cs: Add a third interaction “Inspect the box” to `RaidTownMailDrop.GetActions` that lets the player read a short flavor note about the fixture itself.
+- [x] In Assets/Scripts/World/Fixtures/RaidTownMailDrop.cs: Add a third interaction “Inspect the box” to `RaidTownMailDrop.GetActions` that lets the player read a short flavor note about the fixture itself.
   In `GetActions` insert after the existing actions:
   `into.Add(new InteractAction("Inspect the box", c => c.Notify("The blue paint is chipped and the metal groans with each gust of wind.")));`
   This uses only the `InteractAction` and `ctx.Notify` members already present.
   The new action appears alongside “Pull open the chute” and “Read the collection times”, giving the player an extra, period‑correct piece of atmosphere without altering any existing logic.
   No other files, UI screens, or data structures need to change.
+  - 00:31 landed by 1htsserver in 1.3 min: **Changed file**
 - [ ] Append four new manual pages to the `Pages` array in `ManualScreen` (Assets/Scripts/Hub/Screens/HomeScreens.cs), adding them after the existing final entry `("Accessibility", "Settings: brightness, motion blur, lens distortion, camera shake, field of view, fog readability, HUD style (full, minimal, diegetic, hardcore), crosshair, subtitles. Readability is a floor, not an option.")`; use the same tuple syntax and keep the array initializer format unchanged.
   The new entries should follow the same “title‑body” pattern as the existing pages (see the “Accessibility” entry for style) and cover these themes: local folklore about the Spillway, winter‑time dangers (ice, cold‑related illness, snow‑bound travel), radio‑broadcast snippets that hint at faction activity, and common survivor myths that turn out to be false.
   Add these four tuples in order:

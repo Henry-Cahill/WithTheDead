@@ -47,6 +47,7 @@ namespace CloneZ
             into.Add(new InteractAction("Pull open the chute", PeerIn).Timed(1.2f, "Peering into the chute", HumanoidActivity.Use));
             into.Add(new InteractAction("Read the collection times", c => c.Notify(
                 "LAST COLLECTION 5 PM WEEKDAYS, NOON SATURDAY. Taped under it in marker: NO PICK-UP UNTIL FURTHER NOTICE.")));
+            into.Add(new InteractAction("Inspect the box", c => c.Notify("The blue paint is chipped and the metal groans with each gust of wind.")));
         }
 
         private void PeerIn(InteractContext ctx)
