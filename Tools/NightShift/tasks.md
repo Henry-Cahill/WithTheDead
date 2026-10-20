@@ -749,9 +749,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   "A ration‑card reminder, stamped “County Health Dept”: “Winter food rations will be distributed at the school gym, 9 AM–12 PM, bring your metal ID tag.”"
   "A hand‑drawn weather warning, charcoal on cheap paper: “Heavy snow expected tonight. Stay indoors after dark; roads will be impassable.”
   - 00:46 landed by hts-llm in 2.2 min: **Summary**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Rendering/Presentation.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [!] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Rendering/Presentation.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 02:30 failed (1htsserver, 105.8 min); see reports/2026-10-19-2257.md
 - [x] Add a subtle door‑handle and occasional rust spot to each door frame built in `RaidBuilding.DrawDoorFrame` (Assets/Scripts/World/RaidBuilding.cs)
   · In `DrawDoorFrame`, after the existing `for (int side = -1; side <= 1; side += 2)` block that creates the casings, insert a new small box representing a handle on the interior side of the door.
   – Determine the handle height as `float handleY = DoorHeight * 0.5f;` (≈ 1.1 m).

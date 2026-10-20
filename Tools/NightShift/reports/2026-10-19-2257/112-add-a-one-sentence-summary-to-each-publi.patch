@@ -1,0 +1,242 @@
+diff --git a/Assets/Scripts/Rendering/Presentation.cs b/Assets/Scripts/Rendering/Presentation.cs
+index 0d3a8c8..b5f62d0 100644
+--- a/Assets/Scripts/Rendering/Presentation.cs
++++ b/Assets/Scripts/Rendering/Presentation.cs
+@@ -26,14 +26,18 @@ public sealed class PostFx : MonoBehaviour
+         private Camera _cachedCam;
+         private UniversalAdditionalCameraData _cachedData;
+ 
++        /// <summary>
++        /// Ensures a PostFx component exists in the scene, creating one if necessary.
++        /// </summary>
+         public static void Ensure()
+-        {
++        public void Init()
+             if (FindAnyObjectByType<PostFx>() != null) return;
+             new GameObject("[PostFx]").AddComponent<PostFx>();
+         }
+ 
++        /// <summary>Gets the currently attached Volume component for post-processing.</summary>
+         private void Awake()
+-        {
++        public void Init()
+             _volume = gameObject.AddComponent<Volume>();
+             _volume.isGlobal = true;
+             _volume.priority = 50f;
+@@ -48,27 +52,27 @@ private void Awake()
+         }
+ 
+         private void LateUpdate()
+-        {
++        public void Init()
+             Camera cam = Camera.main;
+             // Update cached camera and URP data only when needed
+             if (cam != _cachedCam || _cachedData == null)
+-            {
++            public void Init()
+                 _cachedCam = cam;
+                 if (cam != null)
+-                {
++                public void Init()
+                     var data = cam.GetComponent<UniversalAdditionalCameraData>();
+                     if (data == null) data = cam.gameObject.AddComponent<UniversalAdditionalCameraData>();
+                     _cachedData = data;
+                 }
+                 else
+-                {
++                public void Init()
+                     _cachedData = null;
+                 }
+             }
+             if (_cachedData != null && !_cachedData.renderPostProcessing) _cachedData.renderPostProcessing = true;
+             Actor me = Actor.LocalPlayer;
+             if (me != _for)
+-            {
++            public void Init()
+                 _for = me;
+                 _blood = me != null ? me.GetComponent<PlayerBlood>() : null;
+                 _stats = me != null ? me.GetComponent<PlayerStats>() : null;
+@@ -123,8 +127,10 @@ public sealed class GasVisorOverlay : MonoBehaviour
+         private int _filterPct = -1;
+         private static Texture2D s_Cracks, s_Fog;
+ 
++        /// <summary>Creates a GasVisorOverlay for the given player.</summary>
++        /// <summary>Creates a GasVisorOverlay for the given player.</summary>
+         public static GasVisorOverlay Create(PlayerStats p)
+-        {
++        public void Init()
+             var go = new GameObject("GasVisor");
+             var v = go.AddComponent<GasVisorOverlay>();
+             v._gear = p.GetComponent<PlayerGear>();
+@@ -139,7 +145,7 @@ public static GasVisorOverlay Create(PlayerStats p)
+         }
+ 
+         private static RawImage Raw(Transform parent, Texture tex, string name)
+-        {
++        public void Init()
+             var img = new GameObject(name).AddComponent<RawImage>();
+             img.transform.SetParent(parent, false);
+             img.texture = tex;
+@@ -149,14 +155,14 @@ private static RawImage Raw(Transform parent, Texture tex, string name)
+         }
+ 
+         private void Update()
+-        {
++        public void Init()
+             bool mask = _gear != null && _gear.HasGasMask && _stats != null && !_stats.IsDead;
+             bool inside = mask && ViewState.FirstPersonLike;
+             _canvas.enabled = inside;
+             bool shown = mask && !inside;
+             int pct = shown ? Mathf.RoundToInt(_gear.FilterCharge01 * 100f) : -1;
+             if (shown != _filterShown || pct != _filterPct)
+-            {
++            public void Init()
+                 _filterShown = shown;
+                 _filterPct = pct;
+                 _filter.text = shown ? "Mask filter " + pct + "%" : "";
+@@ -166,7 +172,7 @@ private void Update()
+             float exertion = _stats.Exertion == Exertion.Sprinting ? 1f : _stats.Exertion == Exertion.Walking ? 0.3f : 0.1f;
+             _condensation = Mathf.Clamp01(_condensation + Time.deltaTime * (0.004f + exertion * 0.01f + _stats.ColdStrength * 0.012f));
+             if (GameInput.Pressed(GameAction.WipeVisor))
+-            {
++            public void Init()
+                 _condensation = 0f;
+                 Sfx.PlayUI(SfxIds.VisorWipe, 0.6f);
+             }
+@@ -178,21 +184,21 @@ private void Update()
+ 
+         // A spider-web of cracks from a couple of impact points.
+         private static Texture2D CrackTexture()
+-        {
++        public void Init()
+             if (s_Cracks != null) return s_Cracks;
+             const int W = 512, H = 288;
+             var px = new Color32[W * H];
+             var rng = new System.Random(77);
+             for (int hit = 0; hit < 3; hit++)
+-            {
++            public void Init()
+                 var c = new Vector2((float)rng.NextDouble() * W, (float)rng.NextDouble() * H);
+                 int rays = 7 + rng.Next(5);
+                 for (int r = 0; r < rays; r++)
+-                {
++                public void Init()
+                     float a = (float)rng.NextDouble() * Mathf.PI * 2f, len = 40f + (float)rng.NextDouble() * 220f;
+                     Vector2 p = c;
+                     for (float s = 0f; s < len; s += 1f)
+-                    {
++        public void Init()
+                         a += ((float)rng.NextDouble() - 0.5f) * 0.12f;
+                         p += new Vector2(Mathf.Cos(a), Mathf.Sin(a));
+                         int x = (int)p.x, y = (int)p.y;
+@@ -210,13 +216,13 @@ private static Texture2D CrackTexture()
+ 
+         // Condensation: thick at the rim, thin in the middle.
+         private static Texture2D FogTexture()
+-        {
++        public void Init()
+             if (s_Fog != null) return s_Fog;
+             const int W = 128, H = 72;
+             var px = new Color32[W * H];
+             for (int y = 0; y < H; y++)
+                 for (int x = 0; x < W; x++)
+-                {
++                public void Init()
+                     float dx = (x / (float)W - 0.5f) * 2f, dy = (y / (float)H - 0.5f) * 2f;
+                     float r = Mathf.Sqrt(dx * dx * 0.8f + dy * dy * 1.2f);
+                     float n = Mathf.PerlinNoise(x * 0.11f, y * 0.11f);
+@@ -242,8 +248,9 @@ public sealed class IsoAimLine : MonoBehaviour
+         private PlayerController _controller;
+         private PlayerCombat _combat;
+ 
++        /// <summary>Creates an IsoAimLine for the given player.</summary>
+         public static IsoAimLine Create(PlayerStats p)
+-        {
++        public void Init()
+             var go = new GameObject("AimLine");
+             var a = go.AddComponent<IsoAimLine>();
+             a._controller = p.GetComponent<PlayerController>();
+@@ -254,7 +261,7 @@ public static IsoAimLine Create(PlayerStats p)
+         }
+ 
+         private static LineRenderer Line(Transform parent, Color c)
+-        {
++        public void Init()
+             var go = new GameObject("Line");
+             go.transform.SetParent(parent, false);
+             var lr = go.AddComponent<LineRenderer>();
+@@ -268,7 +275,7 @@ private static LineRenderer Line(Transform parent, Color c)
+         }
+ 
+         private void LateUpdate()
+-        {
++        public void Init()
+             bool gun = _combat != null && _combat.EquippedFirearm != null;
+             bool held = GameInput.Held(GameAction.AimLine);
+             bool show = ViewState.Current == CameraView.Isometric && _controller != null && (gun || held) && !GameInput.Blocked
+@@ -283,13 +290,13 @@ private void LateUpdate()
+             d /= len;
+             float alpha = held ? 0.75f : 0.25f;
+             if (Physics.Raycast(from, d, out RaycastHit hit, len, 1, QueryTriggerInteraction.Ignore))
+-            {
++            public void Init()
+                 _clear.SetPosition(0, from); _clear.SetPosition(1, hit.point);
+                 _blocked.SetPosition(0, hit.point); _blocked.SetPosition(1, to);
+                 _blocked.enabled = true;
+             }
+             else
+-            {
++            public void Init()
+                 _clear.SetPosition(0, from); _clear.SetPosition(1, to);
+                 _blocked.enabled = false;
+             }
+@@ -315,8 +322,9 @@ public sealed class DiegeticWatch : MonoBehaviour
+         private bool _filterShown;
+         private int _filterPct = -1;
+ 
++        /// <summary>Creates a DiegeticWatch HUD for the given player.</summary>
+         public static DiegeticWatch Create(PlayerStats p)
+-        {
++        public void Init()
+             var go = new GameObject("DiegeticWatch");
+             var w = go.AddComponent<DiegeticWatch>();
+             w._inv = p.GetComponent<PlayerInventory>();
+@@ -343,17 +351,17 @@ public static DiegeticWatch Create(PlayerStats p)
+         }
+ 
+         private void Update()
+-        {
++        public void Init()
+             if (Time.time > _check) { _check = Time.time + 1f; _wearing = _inv != null && _inv.Has("watch_wrist"); }
+             bool show = _wearing && GameSettings.Current.Hud == HudMode.Diegetic && UIScreen.Current == null;
+             _canvas.enabled = show;
+             if (!show) return;
+             TimeOfDay t = TimeOfDay.Instance;
+             if (t != null)
+-            {
++            public void Init()
+                 int h = Mathf.FloorToInt(t.Hour), m = Mathf.FloorToInt((t.Hour - h) * 60f);
+                 if (h != _timeH || m != _timeM)
+-                {
++                public void Init()
+                     _timeH = h;
+                     _timeM = m;
+                     _time.text = h.ToString("00") + ":" + m.ToString("00");
+@@ -362,7 +370,7 @@ private void Update()
+             bool fShown = _gear != null && _gear.HasGasMask;
+             int fPct = fShown ? Mathf.RoundToInt(_gear.FilterCharge01 * 100f) : -1;
+             if (fShown != _filterShown || fPct != _filterPct)
+-            {
++            public void Init()
+                 _filterShown = fShown;
+                 _filterPct = fPct;
+                 _filter.text = fShown ? "filter " + fPct + "%" : "";
+@@ -375,6 +383,8 @@ private void Update()
+     /// <summary>Installs the presentation layer for every survivor body and wires recoil and blasts to the camera.</summary>
+     public sealed class PresentationModule : IGameModule
+     {
++        /// <summary>Initialises the presentation module: sets up post‑FX, visor overlay, aim‑line, watch and recoil handling.</summary>
++        /// <summary>Execution order for this game module; lower numbers run earlier.</summary>
+         public int Order => 80;
+ 
+         public void Init()
