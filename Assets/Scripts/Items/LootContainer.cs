@@ -314,7 +314,7 @@ namespace CloneZ
                 c.DisplayName = "Sack";
                 c.IsSack = true;
                 c.Type = ContainerType.Corpse;
-                c.SearchTime = 0f;
+c.SearchTime = 0f; c.Searched = searched;
             }
             else if (kind == (int)ContainerType.Corpse)
             {
