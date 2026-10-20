@@ -2816,12 +2816,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `ctx.Notify($"Radio is on {n.Name} — {n.Title}. Volume: {vol}.");`
   `}`
   - 11:13 landed by 0htsserver in 2.4 min: **Summary of changes**
-- [ ] Append four new exposure‑mark entries to the `static ZoneExposure()` constructor in Assets/Scripts/Zone/ZoneHazards.cs.
+- [x] Append four new exposure‑mark entries to the `static ZoneExposure()` constructor in Assets/Scripts/Zone/ZoneHazards.cs.
   Add calls to `M(id, name, description, apply)` after the existing “old_folklore” mark.
   Use the style of the existing entry `"Your pupils never quite close now. You see further in the dark; bright light leaves you exposed."` as a model.
   The new marks should cover: (1) severe cold‑induced numbness, (2) disorienting snow‑driven hallucinations, (3) persistent radio static that rattles nerves, and (4) an old farm legend that haunts the wind.
   Each description must be a single full sentence in quotes, e.g., `"Your fingers feel like frozen stone, each touch saps a breath of warmth."`.
   Leave the existing marks and their logic unchanged; only add the four new `M(...)` lines.
+  - 11:16 landed by 1htsserver in 3.5 min: **Modified file**
 - [x] Add a small wooden plug with two rust‑stained metal bolts to the rain barrel in Assets/Scripts/World/WaterSource.cs, inside the `BuildBarrel` method, positioned just below the existing rust‑stained cap so the barrel looks like it has a makeshift sealed opening.
   Insert after the line
   `m.Cylinder(new Vector3(0f, h - 0.005f, 0f), r + wall + 0.01f, 0.01f, 16, DecorPalette.Metal(new Color(0.5f, 0.25f, 0.1f)));`
