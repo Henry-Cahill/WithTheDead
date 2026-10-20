@@ -1747,7 +1747,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   The button is 1 cm × 0.5 cm × 0.4 cm, positioned 15 cm left of centre, 30 cm up, and 7 cm outward from the front face, following the monitor’s orientation `q`.
   No new materials are introduced; `Mt(Chrome)` already exists, and the added primitive inherits the existing collider handling.
   - 06:26 landed by 1htsserver in 2.2 min: **Changed file**
-- [ ] Add a subtle rust‑stained metal cap on the rain barrel’s lip in Assets/Scripts/World/WaterSource.cs to give the barrel a makeshift handle feel and a bit of visual variety.
+- [x] Add a subtle rust‑stained metal cap on the rain barrel’s lip in Assets/Scripts/World/WaterSource.cs to give the barrel a makeshift handle feel and a bit of visual variety.
+  - 06:30 landed by 0htsserver in 4 min: **Changed file**
 - [ ] In Assets/Scripts/World/GroundItemRenderer.cs: Cache the expensive `Camera.main` lookup in `GroundItemRenderer` instead of calling it every LateUpdate.
   Add a private field `private Camera _cachedMain;` initialized in `OnEnable` (or `Awake`) with `Camera.main`.
   In `LateUpdate` replace `Camera cam = Camera.main;` by `if (_cachedMain == null || _cachedMain != Camera.main) _cachedMain = Camera.main; Camera cam = _cachedMain;`.
