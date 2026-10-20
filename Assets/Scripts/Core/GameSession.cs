@@ -36,11 +36,17 @@ namespace CloneZ
         public static GameMode Mode = GameMode.Extraction;
         public static RaidKind Raid = RaidKind.Operative;
 
+        /// <summary>True when this run is a raid into a Zone (as opposed to wave survival or time at the hub).</summary>
         public static bool IsExtraction => Mode == GameMode.Extraction;
+        /// <summary>True when this run is the endless-wave arena around the starter house.</summary>
         public static bool IsWaveSurvival => Mode == GameMode.WaveSurvival;
+        /// <summary>True when the session is the hub, between raids.</summary>
         public static bool IsHub => Mode == GameMode.Hub;
+        /// <summary>True when the raid is a free scav run in random gear; the character's stash stays safe.</summary>
         public static bool IsScavRun => IsExtraction && Raid == RaidKind.Scav;
+        /// <summary>True when the raid is the persistent open zone, with no dawn deadline.</summary>
         public static bool IsOpenZone => IsExtraction && Raid == RaidKind.OpenZone;
+        /// <summary>True when playing as one of the Zone's horrors, in someone else's raid.</summary>
         public static bool IsMonsterRun => IsExtraction && Raid == RaidKind.Monster;
         /// <summary>A body that isn't the character's own (a scav's, a hunter's): nothing it suffers or carries
         /// touches the character's health, kit, marks or diseases.</summary>
