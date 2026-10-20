@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace CloneZ
@@ -13,7 +14,7 @@ namespace CloneZ
         private const string KeepWeaponPrefKey = "clonez.inventoryKeepWeapon";
 
         private static readonly string[] s_GridSortNames = { "size", "category", "name", "weight" };
-        private static readonly int s_CategoryCount = System.Enum.GetValues(typeof(ItemCategory)).Length;
+        private static readonly int s_CategoryCount = System.Enum.GetValues(typeof(ItemCategory)).Cast<int>().Max() + 1;
 
         private GridSortMode _gridSort = GridSortMode.Size;
         private bool _keepWeapon = true;
