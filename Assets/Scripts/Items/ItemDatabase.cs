@@ -154,6 +154,7 @@ namespace CloneZ
         /// Each provider returns its lines for a def, or null.</summary>
         public static readonly List<System.Func<ItemDef, string>> TooltipProviders = new List<System.Func<ItemDef, string>>();
 
+        /// <summary>True if this item can be consumed (food, drink, or provides health benefits).</summary>
         public bool IsConsumable =>
             HungerRestore > 0f || ThirstRestore > 0f || HealthRestore > 0f || InfectionReduce > 0f;
         public bool IsMedical =>
@@ -367,6 +368,7 @@ namespace CloneZ
         private static Dictionary<ContainerType, LootTable> s_Tables;
         private static bool s_Init;
 
+        /// <summary>Retrieves the item definition for the given identifier, or null if not found.</summary>
         public static ItemDef Get(string id)
         {
             EnsureInit();
@@ -382,6 +384,7 @@ namespace CloneZ
         /// as-is and never overwritten, so edits made in the database persist and win over the scripts.
         /// If the database can't be opened at all, the catalogue is empty (SQLite is required for content).
         /// </summary>
+        /// <summary>Ensures the static content catalogue is loaded, reading from the database or seeding if needed.</summary>
         public static void EnsureInit()
         {
             if (s_Init) return;
@@ -419,6 +422,7 @@ namespace CloneZ
         }
 
         /// <summary>Every item id in the catalogue (code content included).</summary>
+        /// <summary>Gets every item identifier currently in the catalogue (including code-defined items).</summary>
         public static IEnumerable<string> AllIds
         {
             get { EnsureInit(); return s_Items.Keys; }
@@ -428,9 +432,11 @@ namespace CloneZ
         /// Optional gate on loot generation (the Central Economy): asked for each rolled item id; false skips the
         /// draw. Null lets everything through.
         /// </summary>
+        /// <summary>Optional filter for loot generation; returns false to skip an item, null to allow all.</summary>
         public static System.Func<string, bool> LootGate;
 
         /// <summary>Told about every stack loot generation creates (the Central Economy counts them).</summary>
+        /// <summary>Callback invoked whenever loot is rolled, reporting the item id and quantity.</summary>
         public static System.Action<string, int> LootRolled;
 
         // ---- Item catalogue -----------------------------------------------------------------------
@@ -438,9 +444,12 @@ namespace CloneZ
         // items (curated_items.txt) and the full PZ catalogue (pz_items.txt), generated from the decompiled
         // item scripts. Both are executed as-is by ContentDatabase while (re)seeding the content DB — no
         // per-launch parse once the DB exists. Curated items are seeded first so they win any id clash.
+        /// <summary>Loads the INSERT SQL for curated items from Resources.</summary>
         private static string LoadCuratedItemsSql() => LoadItemsResource("curated_items");
+        /// <summary>Loads the INSERT SQL for bulk items from Resources.</summary>
         private static string LoadBulkItemsSql() => LoadItemsResource("pz_items");
 
+        /// <summary>Loads a TextAsset resource by name, used for SQL scripts.</summary>
         private static string LoadItemsResource(string name)
         {
             TextAsset ta = Resources.Load<TextAsset>(name);
@@ -451,6 +460,7 @@ namespace CloneZ
         #region Loot tables
         /// <summary>One weighted entry in a loot table: an item id, its pick weight and the
         /// quantity range rolled when picked. Public so <see cref="ContentDatabase"/> can persist it.</summary>
+        /// <summary>A single entry in a loot table: item id, weight, and quantity range.</summary>
         public struct LootEntry
         {
             public string Id; public int Weight; public int Min; public int Max;
@@ -459,6 +469,7 @@ namespace CloneZ
 
         /// <summary>A container's loot table: how many draws to roll, the odds of an empty draw,
         /// and the weighted entries. Public so <see cref="ContentDatabase"/> can persist it.</summary>
+        /// <summary>Defines the loot table for a container: roll counts, empty weight, and entry list.</summary>
         public class LootTable
         {
             public int MinRolls; public int MaxRolls; public int EmptyWeight; public LootEntry[] Entries;
@@ -467,6 +478,7 @@ namespace CloneZ
         /// <summary>Fills <paramref name="dest"/> with a random draw from the container's loot table. In a raid every
         /// rolled stack is marked found-in-raid; the sandbox's loot abundance and the zone's loot multiplier scale
         /// the number of draws, and the Central Economy (<see cref="LootGate"/>) can veto items at their cap.</summary>
+        /// <summary>Draws random loot from a container's table into an inventory, respecting abundance and economy.</summary>
         public static void RollLoot(ContainerType type, System.Random rng, Inventory dest)
         {
             EnsureInit();
