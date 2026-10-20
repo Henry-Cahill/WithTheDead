@@ -1108,9 +1108,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Do not add any `DisabledIf`; the action should be usable at any time, giving a toast like “Snare will be ready in 57 s.”.
   Preserve the current “Take the rabbit / Collect the empty snare / Leave it (not yet)” action unchanged.
   - 02:37 landed by 0htsserver in 1.7 min: **Changes made**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/GridPointerRelay.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/GridPointerRelay.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 03:05 landed by 0htsserver in 27.9 min: 
 - [x] In Assets/Scripts/UI/HUDController.cs: Add a thin, dark outline to the full‑screen sleep overlay in `HUDController.BuildSleepOverlay` to give the “sleep” UI a worn‑metal frame feel.
   In `BuildSleepOverlay`, after the line `bg.color = new Color(0.02f, 0.02f, 0.05f, 0.92f);` insert an Outline component on `_sleepOverlay`.
   `var outline = _sleepOverlay.AddComponent<Outline>();`
