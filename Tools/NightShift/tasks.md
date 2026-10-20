@@ -1515,7 +1515,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `float gain = perSec * intensity * (1f - CloneZConfig.WetWaterResistFactor * resist);`
   Leave the rest of the method unchanged. After this fix the player will gain wetness quickly in heavy rain but only gradually when it’s snowing, which is what the in‑game description promises. All other behaviours (drying, resistances, etc.) stay the same.
   - 04:50 landed by hts-llm in 3.9 min: **Changes made**
-- [ ] Add a small, period‑appropriate driveway‑lamp post (with a faint orange‑yellow glow) beside the dead car that sometimes appears in front of houses, in `Assets/Scripts/World/RaidMapBuilder.Town.cs` → method `DressHouse`, after the existing `Wreck(town, car, …)` call inside the driveway‑car block.
+- [x] Add a small, period‑appropriate driveway‑lamp post (with a faint orange‑yellow glow) beside the dead car that sometimes appears in front of houses, in `Assets/Scripts/World/RaidMapBuilder.Town.cs` → method `DressHouse`, after the existing `Wreck(town, car, …)` call inside the driveway‑car block.
+  - 04:52 landed by 1htsserver in 3.4 min: Implemented a small driveway lamp post with a faint orange‑yellow glow next to the dead car in `DressHouse` (Assets/Scripts/World/RaidMapBui
 - [ ] Cache the per‑frame `ZoneCatalog.Current` lookup in `PlayerRadiation.Update` (Assets/Scripts/Zone/Radiation.cs).
   Add private fields `private ZoneDef _cachedZone; private bool _cachedExtraction;` to store the current zone and extraction flag.
   Initialize them in `Awake()` with the same logic that is now in `Update` (`_cachedExtraction = GameSession.IsExtraction; _cachedZone = _cachedExtraction ? ZoneCatalog.Current : null;`).
