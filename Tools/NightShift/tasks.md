@@ -2910,10 +2910,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   ‑ Bottom `anchorMin = anchorMax = new Vector2(0.5f, 0f); pivot = new Vector2(0.5f, 0f);`
   ‑ Left `anchorMin = anchorMax = new Vector2(0f, 0.5f); pivot = new Vector2(0f, 0.5f);`
   ‑ Right `anchorMin = anchorMax = new Vector2(1f, 0.5f); pivot = new Vector2(1f, 0.5f);`
-- [ ] Cache the warning‑phase sky colour structs in EmissionDirector (Assets/Scripts/Zone/Emissions.cs) to avoid allocating a new `Color` each frame in `Update`.
+- [x] Cache the warning‑phase sky colour structs in EmissionDirector (Assets/Scripts/Zone/Emissions.cs) to avoid allocating a new `Color` each frame in `Update`.
   Add two private static readonly fields, e.g. `static readonly Color _psiStormColor = new Color(0.55f, 0.3f, 0.85f);` and `static readonly Color _standardColor = new Color(0.9f, 0.18f, 0.12f);`.
   Replace the two `new Color(...)` creations in the `Phase.Warning` branch with the cached fields.
   The visual result stays identical (the sky colour still switches based on `PsiStorm`), but the per‑frame allocation is removed.
+  - 11:37 landed by 0htsserver in 3 min: **Changed**
 - [ ] Append five new “Blurb” entries to the `s_Defs` dictionary in Assets/Scripts/Core/Factions.cs, after the existing `"oldmine"` entry.
   Use the entry for `"weatherlog"` as the style reference – a single‑sentence description that tells what the player reads and fits the 1993‑rural‑Kentucky setting.
   The new entries should cover: (1) a farmer’s journal about dwindling supplies, (2) a snow‑bound diary warning of a frozen river crossing, (3) a broken wooden sign marking a hidden cache, (4) a hunter’s note about a recent zombie herd, (5) a sketch of a cave entrance rumored to hold relics.
