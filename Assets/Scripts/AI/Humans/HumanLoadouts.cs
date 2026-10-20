@@ -70,6 +70,7 @@ namespace CloneZ
         /// <summary>Abstract fighting weight of one member (A-Life fights between squads off-screen).</summary>
         public float Power = 1f;
 
+        /// <summary>Selects a gun for the loadout based on weighted probabilities of each GunPick.</summary>
         public GunPick PickGun(System.Random rng)
         {
             int total = 0;
@@ -260,8 +261,10 @@ namespace CloneZ
 
         private static void Add(HumanLoadout l) => s_Defs[l.Id] = l;
 
+        /// <summary>Retrieves a loadout definition by its identifier, or null if not found.</summary>
         public static HumanLoadout Get(string id) => id != null && s_Defs.TryGetValue(id, out HumanLoadout l) ? l : null;
 
+        /// <summary>Enumerates all defined loadouts.</summary>
         public static IEnumerable<HumanLoadout> All => s_Defs.Values;
 
         /// <summary>The usual kit for a faction's people (the scavengers mix in a few raiders).</summary>

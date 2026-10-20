@@ -1,0 +1,63 @@
+diff --git a/Assets/Scripts/World/Zone/Helicopter.cs b/Assets/Scripts/World/Zone/Helicopter.cs
+index b651839..07eb690 100644
+--- a/Assets/Scripts/World/Zone/Helicopter.cs
++++ b/Assets/Scripts/World/Zone/Helicopter.cs
+@@ -9,6 +9,7 @@ namespace CloneZ
+     /// searchlight and navigation lights. About fourteen metres nose to tail, all generated.</summary>
+     public static class HelicopterModel
+     {
++        /// <summary>Builds the whole helicopter — the hull and glass, the skid frame, two spinning rotors, and the searchlight and navigation lights — as a set of transforms a flight can then move and turn.</summary>
+         public static Transform Build(Transform parent)
+         {
+             var root = new GameObject("Helicopter").transform;
+@@ -94,9 +95,13 @@ private static void Emit(RaidMesh m, string name, Transform parent, Vector3 worl
+     /// </summary>
+     public sealed class HelicopterFlight : MonoBehaviour
+     {
++        /// <summary>True once the flight is settled on the ground (after a touchdown), so the extraction and the HUD know it's here and won't move on its own.</summary>
+         public bool Landed { get; private set; }
++        /// <summary>True while a leg of the flight is still running (a flyover, a landing, or the lift-off and departure) so callers don't start another leg on top of it.</summary>
+         public bool Busy { get; private set; }
++        /// <summary>Raised when the helicopter has finished descending and is settled on its pad, so a caller can let the survivor aboard or proceed.</summary>
+         public event Action OnLanded;
++        /// <summary>Raised when the helicopter has flown away and destroyed itself, so a caller can drop its reference and clean up.</summary>
+         public event Action OnDeparted;
+ 
+         private Transform _main, _tail;
+@@ -104,6 +109,7 @@ public sealed class HelicopterFlight : MonoBehaviour
+         private float _noise;
+         private float _spin = 1f;
+ 
++        /// <summary>Builds the helicopter at the given position and facing and puts the flight component on it, ready to fly a leg or sit landed.</summary>
+         public static HelicopterFlight Spawn(Vector3 position, float yaw)
+         {
+             Transform root = HelicopterModel.Build(null);
+@@ -138,10 +144,13 @@ private void Update()
+             }
+         }
+ 
++        /// <summary>Flies the helicopter in a straight, gently bobbing pass from <paramref name="from"/> to <paramref name="to"/> at <paramref name="altitude"/> — a flyover — and destroys itself when it's across the map.</summary>
+         public void FlyPath(Vector3 from, Vector3 to, float altitude, float seconds) => StartCoroutine(Path(from, to, altitude, seconds));
+ 
++        /// <summary>Sends the helicopter to <paramref name="landingPoint"/>, hovering first and then descending to it — the approach to a called extraction.</summary>
+         public void FlyToAndLand(Vector3 landingPoint, float approachSeconds) => StartCoroutine(Land(landingPoint, approachSeconds));
+ 
++        /// <summary>Has the helicopter climb out and fly away in <paramref name="exitDirection"/> — a called extraction that's leaving or an insertion that's lifting away — then destroys itself.</summary>
+         public void TakeOffAndLeave(Vector3 exitDirection) => StartCoroutine(Leave(exitDirection));
+ 
+         /// <summary>Puts the helicopter down at once, rotors idling (an insertion's touchdown).</summary>
+@@ -288,11 +297,14 @@ private static void OnLeft(RaidExit exit)
+     /// </summary>
+     public sealed class HeliFlyoverDirector : MonoBehaviour
+     {
++        /// <summary>The director live in the current world, held so the netcode and other systems can reach the one that's playing these flyovers.</summary>
+         public static HeliFlyoverDirector Instance { get; private set; }
++        /// <summary>Raised on the server when a flyover is scheduled to run, so the netcode can replay the same flight on every client.</summary>
+         public static event Action<Vector3, Vector3> Started;
+ 
+         private float _at = -1f;
+ 
++        /// <summary>Installs (or reuses) the director on <paramref name="host"/> and, on a server that the zone's odds allow, schedules one flyover randomly across the raid so <see cref="Instance"/> is ready.</summary>
+         public static void BeginRaid(GameObject host, ZoneDef zone)
+         {
+             var d = host.GetComponent<HeliFlyoverDirector>();

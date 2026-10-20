@@ -16,12 +16,19 @@ namespace CloneZ
     {
         public static readonly List<Barricade> All = new List<Barricade>();
 
+        /// <summary>Number of planks currently in the barricade.</summary>
         public int Planks { get; private set; }
+        /// <summary>Current total health of the barricade (sum of plank health).</summary>
         public float Health { get; private set; }
+        /// <summary>Maximum health the barricade can have at its current plank count.</summary>
         public float MaxHealth { get; private set; }
 
+        /// <summary>Whether more planks can be added before reaching the configured maximum.</summary>
         public bool CanReinforce => Planks < CloneZConfig.BarricadeMaxPlanks;
+        /// <summary>Health value normalized to the range [0,1].</summary>
         public float HealthNormalized => MaxHealth > 0f ? Mathf.Clamp01(Health / MaxHealth) : 0f;
+        /// <summary>World position of this barricade's transform.</summary>
+        /// <summary>World position of the barricade's transform.</summary>
         public Vector3 Position => transform.position;
         /// <summary>Per-plank health baked in at build time (captured/restored by the save system).</summary>
         public float PerPlankHealth => _perPlankHealth;
@@ -264,8 +271,10 @@ namespace CloneZ
         public string Owner;
         /// <summary>A barricade a runner raised, and one that broke or was torn down — camps and the netcode listen.</summary>
         public static event System.Action<Barricade> Raised, Removed;
+        /// <summary>Notify listeners that this barricade was raised (e.g., by a player).</summary>
         public static void RaiseRaised(Barricade b) { if (b != null) Raised?.Invoke(b); }
         /// <summary>Gone without a trace (mirroring another peer's loss).</summary>
+        /// <summary>Removes the barricade instantly without salvage, used when it vanishes from the world.</summary>
         public void Vanish()
         {
             Planks = 0;
@@ -277,13 +286,16 @@ namespace CloneZ
 
         #region IDemolishable
         public string DemolishName => "barricade";
+
         public bool CanDemolish(out string reason) { reason = null; return Planks > 0; }
+        /// <summary>Calculate how many planks and nails can be salvaged from this barricade.</summary>
         public void GetSalvage(out int planks, out int nails)
         {
             float f = CloneZConfig.HouseSalvageFraction;
             planks = Mathf.Max(0, Mathf.RoundToInt(Planks * CloneZConfig.BarricadePlankCost * f));
             nails = Mathf.Max(0, Mathf.RoundToInt(Planks * CloneZConfig.BarricadeNailCost * f));
         }
+        /// <summary>Indicates whether this barricade carves the NavMesh (always false; carving handled by NavMeshObstacle).</summary>
         public bool CarvesNavMesh => false;   // carves via a NavMeshObstacle (auto-freed on destroy), not a static bake
         #endregion
     }

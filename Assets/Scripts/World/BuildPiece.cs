@@ -30,8 +30,12 @@ namespace CloneZ
     {
         public static readonly List<BuildPiece> All = new List<BuildPiece>();
 
+        /// <summary>What kind of structural piece this instance represents.</summary>
         public BuildPieceType Type { get; private set; }
+        /// <summary>Current health of this piece.</summary>
         public float Health { get; private set; }
+        /// <summary>Maximum health this piece can have.</summary>
+        /// <summary>Maximum health this piece can have.</summary>
         public float MaxHealth { get; private set; }
         /// <summary>True for a piece the game raised for free (the starter home) rather than one the
         /// survivor paid planks and nails for. It dismantles like any other but gives nothing back.</summary>
@@ -40,9 +44,15 @@ namespace CloneZ
         /// <summary>True when a doorway has a door hung in it (the starter home's), and whether it stands open.
         /// The dead walk through an open door and have to bash their way past a closed one.</summary>
         public bool HasDoor { get; set; }
+        /// <summary>Whether the doorway's door is currently open.</summary>
         public bool DoorOpen { get; set; }
 
+        /// <summary>The world-space position of this piece.
+        /// <summary>World-space position of this piece.</summary>
         public Vector3 Position => transform.position;
+        /// <summary>Health normalized between 0 and 1.</summary>
+        /// <summary>Health normalized between 0 and 1.</summary>
+        /// <summary>Health normalized between 0 and 1.</summary>
         public float HealthNormalized => MaxHealth > 0f ? Mathf.Clamp01(Health / MaxHealth) : 0f;
         /// <summary>Walls, doorways and windows stand in a zombie's way and must be bashed down; floors/roofs don't.</summary>
         public bool Obstructs => Type == BuildPieceType.Wall || Type == BuildPieceType.Doorway || Type == BuildPieceType.Window;
@@ -352,6 +362,7 @@ namespace CloneZ
         #endregion
 
         #region Damage
+        /// <summary>Applies damage to this piece, possibly destroying it.</summary>
         public void TakeDamage(in DamageInfo info)
         {
             if (Health <= 0f) return;
@@ -421,6 +432,7 @@ namespace CloneZ
             return true;
         }
 
+        /// <summary>Gets the salvageable plank and nail counts for this piece.</summary>
         public void GetSalvage(out int planks, out int nails)
         {
             planks = 0; nails = 0;

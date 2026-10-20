@@ -51,6 +51,9 @@ namespace CloneZ
         public bool IsTainted => !WaterMains.MainsOn && _bathedIn;
         public string DryMessage => _level > 0.02f ? "There's barely a puddle left in the bath" : "The taps are dry \u2014 the water's been shut off";
 
+        /// <summary>
+        /// Updates the stored water level and visual when the taps are off.
+        /// </summary>
         public void DrawWater()
         {
             if (WaterMains.MainsOn) return;   // straight from the taps: as much as you like while they run
@@ -174,6 +177,9 @@ namespace CloneZ
             if (_plugOut != null && _plugOut.enabled == _plugged) _plugOut.enabled = !_plugged;
         }
 
+        /// <summary>
+        /// Returns the interactions available for the bath, depending on water, taps and plug state.
+        /// </summary>
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             bool mains = WaterMains.MainsOn;
@@ -359,7 +365,7 @@ namespace CloneZ
             save.B = _heat;
         }
 
-        public override void RestoreState(FixtureSave save)
+                public override void RestoreState(FixtureSave save)
         {
             if ((save.State & 8) == 0) return;
             _borrowed = false;

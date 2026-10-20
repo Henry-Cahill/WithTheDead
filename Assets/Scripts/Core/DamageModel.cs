@@ -26,6 +26,7 @@ namespace CloneZ
         public static readonly BodyZone[] All =
             { BodyZone.Head, BodyZone.Thorax, BodyZone.Stomach, BodyZone.LeftArm, BodyZone.RightArm, BodyZone.LeftLeg, BodyZone.RightLeg };
 
+                /// <summary>Returns the display name for a body zone.</summary>
         public static string Name(BodyZone z)
         {
             switch (z)
@@ -40,8 +41,11 @@ namespace CloneZ
             }
         }
 
+                /// <summary>True if the zone represents an arm (left or right).</summary>
         public static bool IsArm(BodyZone z) => z == BodyZone.LeftArm || z == BodyZone.RightArm;
+                /// <summary>True if the zone represents a leg (left or right).</summary>
         public static bool IsLeg(BodyZone z) => z == BodyZone.LeftLeg || z == BodyZone.RightLeg;
+                /// <summary>True if the zone is a vital part (head or thorax).</summary>
         public static bool IsVital(BodyZone z) => z == BodyZone.Head || z == BodyZone.Thorax;
 
         /// <summary>The zone a hit lands on, from where it struck relative to a standing body: height
@@ -83,6 +87,7 @@ namespace CloneZ
         public float Bullet, Radiation, Burn, Shock, Chemical, Psi, Explosion;
         public const float Cap = 0.85f;
 
+                /// <summary>Gets the resistance value for the specified damage kind.</summary>
         public float For(DamageKind kind)
         {
             switch (kind)
