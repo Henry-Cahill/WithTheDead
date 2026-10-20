@@ -289,6 +289,20 @@ namespace CloneZ
             var block = new MaterialPropertyBlock();
             block.SetColor("_Color", tint);
             mr.SetPropertyBlock(block);
+            // Add a subtle glowing tip at the far end of the beam
+            var tip = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            tip.name = "BeamTip";
+            tip.transform.SetParent(go.transform, false);
+            tip.transform.localPosition = new Vector3(0f, 0f, length);
+            tip.transform.localScale = Vector3.one * 0.05f;
+            // Remove the default collider
+            Object.Destroy(tip.GetComponent<Collider>());
+            // Use the same beam material but make it brighter
+            var tipRenderer = tip.GetComponent<MeshRenderer>();
+            tipRenderer.sharedMaterial = BeamMaterial();
+            var tipBlock = new MaterialPropertyBlock();
+            tipBlock.SetColor("_Color", tint * 2f);
+            tipRenderer.SetPropertyBlock(tipBlock);
             NoBake(go);
             return mr;
         }
