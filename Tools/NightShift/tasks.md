@@ -3788,7 +3788,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace `transform.hierarchyCount` with `_transform.hierarchyCount` in Cache.
   All other logic stays unchanged; the visual fog behavior and timing remain identical.
   - 15:59 landed by hts-llm in 2.5 min: Implemented Transform caching in **ActorFog.cs**:
-- [ ] In Assets/Scripts/World/Fixtures/RaidWindow.cs: Add a “Knock on the window” action to RaidWindow.GetActions for outside players, calling a new private KnockWindow method that makes a noise and notifies the player
+- [x] In Assets/Scripts/World/Fixtures/RaidWindow.cs: Add a “Knock on the window” action to RaidWindow.GetActions for outside players, calling a new private KnockWindow method that makes a noise and notifies the player
   In RaidWindow.GetActions, after the existing else branch that adds the “Look inside” action, insert:
   into.Add(new InteractAction("Knock on the window", KnockWindow)
   .Timed(1f, "Knocking on the glass", HumanoidActivity.Use));
@@ -3797,6 +3797,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   MakeNoise(CloneZConfig.WindowNoise);
   ctx.Notify("You rap on the glass; the sound echoes down the street.");
   }
+  - 16:01 landed by 0htsserver in 4 min: **Changes made**
 - [ ] Add small rivet cylinders to the `WeaponRack(RaidMesh m, System.Random r)` builder in Assets/Scripts/World/RaidLayouts.cs
   Create three short metal cylinders on each vertical post to suggest worn rivets (period‑correct hardware).
   Use the existing metal material `boltMat` (`DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f))`).
