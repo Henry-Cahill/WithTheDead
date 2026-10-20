@@ -3634,11 +3634,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(new Vector3(0f, 0.45f, 0.27f), new Vector3(3.8f, 0.02f, 0.04f), DecorPalette.Metal(new Color(0.38f, 0.36f, 0.34f)))` // thin rust‑stained metal band near the top edge of the wall.
   This adds a subtle wear detail appropriate to 1993 winter Kentucky, using existing material palette and keeps colliders and interaction unchanged.
   - 15:07 landed by 0htsserver in 1.3 min: **Summary**
-- [ ] Fix stale static candidate data in `RaidDoor.Detour` (Assets/Scripts/World/Fixtures/RaidDoor.cs)
+- [x] Fix stale static candidate data in `RaidDoor.Detour` (Assets/Scripts/World/Fixtures/RaidDoor.cs)
   The method reuses the static arrays `s_Doors`, `s_Scores` and `s_Stands` to avoid allocations, but only `s_Doors` is cleared at the end.
   `Array.Clear(s_Doors, 0, MaxCandidates);` leaves old scores and stand positions in `s_Scores` and `s_Stands`.
   On the next call those stale values are compared against new candidates (`if (n == MaxCandidates && score >= s_Scores[n - 1])`) and can incorrectly reject valid doors or select wrong stand points, causing zombies to take sub‑optimal detours or even fail to find a path.
   Clear all three arrays before returning so each invocation starts with a clean slate.
+  - 15:08 landed by hts-llm in 0.9 min: **Summary**
 - [ ] Add a subtle “wear” strip to each pause‑menu item’s accent bar in Assets/Scripts/UI/PauseMenuController.cs, inside the `BuildItem(Item it, int index)` method right after the line `it.Accent = accent.gameObject.AddComponent<Image>();`
   Create a new GameObject named `Wear{index}` and add a `RectTransform` as child of `it.Accent.transform` (set `SetParent(it.Accent.transform, false)`).
   Anchor the strip to the bottom centre: `anchorMin = anchorMax = new Vector2(0.5f, 0f); pivot = new Vector2(0.5f, 0f); anchoredPosition = new Vector2(0f, 0f);`.

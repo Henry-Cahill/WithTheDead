@@ -281,6 +281,8 @@ namespace CloneZ
                 standAt = s_Stands[k];
             }
             Array.Clear(s_Doors, 0, MaxCandidates);
+            Array.Clear(s_Scores, 0, MaxCandidates);
+            Array.Clear(s_Stands, 0, MaxCandidates);
             return found;
         }
 
