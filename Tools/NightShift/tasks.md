@@ -595,3 +595,20 @@ you want to see in game. Indent extra lines under a task to add detail.
 
 - [ ] Add two small rivet boxes to the backpack’s top tube in Assets/Scripts/Player/PlayerGearVisuals.cs, method BuildBackpack(ItemDef def), to give the pack a worn‑metal look.
 - [ ] In Assets/Scripts/World/CeilingVisibility.cs: Optimize CeilingVisibility — remove the unused `s_Applied` flag and simplify the per‑frame check in `LateUpdate` so the script only compares the current view state to the cached `s_Shown` value.
+- [ ] Modify Assets/Scripts/World/Fixtures/RaidCivicSink.cs by adding four to eight new sentences to the `ScrubLines` array in the `CivicSink` class.
+  Append the entries after the existing two lines, preserving the current order and content.
+  Use the style of the entry `"You scrub up the way the poster over the sink tells you to, step by step. Your hands come out pink and stinging‑clean."` as a reference.
+  The new lines should each be a single‑sentence description of a 1993‑rural‑Kentucky winter hygiene routine, conveying gritty, period‑correct detail (e.g., cold‑water hand‑washing, makeshift soap, the smell of disinfectant, the clatter of metal fixtures, the bite of frost on skin, or a brief memory of a clinic poster).
+  Do not alter any other code, constants, or logic in the file.
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Zone/Emissions.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add subtle stitching detail to the watch strap in Assets/Scripts/Rendering/Presentation.cs, class DiegeticWatch, method Create.
+  *After the line* `UIKit.Place(strap.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(70f, 200f));`
+  add four thin white panels to simulate hand‑stitched thread:
+  `Image stitch1 = UIKit.Panel(strap.rectTransform, "Stitch1", Color.white);`
+  `UIKit.Place(stitch1.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(2f, 30f));`
+  `stitch1.rectTransform.anchoredPosition = new Vector2(0f, -45f);`
+  `Image stitch2 = UIKit.Panel(strap.rectTransform, "Stitch2", Color.white);`
+  `UIKit.Place(stitch2.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(2f, 30f));`
+  `stitch2.rectTransform.anchoredPosition = new Vector2(0f, -15f);`
