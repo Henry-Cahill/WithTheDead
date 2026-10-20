@@ -120,6 +120,8 @@ namespace CloneZ
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             string noun = Noun;
+            // Knock action adds noise without opening the storage
+            into.Add(new InteractAction("Knock on the " + noun, c => { MakeNoise(_opt.Noise); }));
             bool searched = Container == null || Container.Searched || Container.SearchTime <= 0f;
             string look = _opt.LookLabel ?? (searched ? "Look inside the " + noun : "Search the " + noun);
             if (HasParts)

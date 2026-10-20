@@ -984,12 +984,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Remove the null‑check `if (_cam == null) _cam = Camera.main;` from `Apply()` (the cached `_cam` is already set).
   Optionally guard against late creation by lazily setting `_weather = WeatherSystem.Instance` the first time `Apply()` runs if `_weather` is still null.
   No change to how the sky, fog, ambient light, sun colour/intensity or zombie vision are computed, so the player sees exactly the same lighting cycle.
-- [ ] In Assets/Scripts/World/Interaction/StorageFixture.cs: Add a “Knock on the …” action to `StorageFixture.GetActions(InteractContext ctx, List<InteractAction> into)` that triggers the fixture’s noise.
+- [x] In Assets/Scripts/World/Interaction/StorageFixture.cs: Add a “Knock on the …” action to `StorageFixture.GetActions(InteractContext ctx, List<InteractAction> into)` that triggers the fixture’s noise.
   In `GetActions` after `string noun = Noun;` insert a line adding a new `InteractAction` with the label `"Knock on the " + noun`.
   The action’s callback should be `c => { MakeNoise(_opt.Noise); }` (the `InteractContext` parameter is unused).
   Place this insertion before the existing logic that adds open/close/look actions so the knock option is always available.
   No other code changes are required; existing open/close/search functionality stays unchanged.
   This gives the survivor a way to make noise without opening the storage, affecting zombie attraction.
+  - 02:10 landed by hts-llm in 1.3 min: **Changed:** `Assets/Scripts/World/Interaction/StorageFixture.cs`
 - [ ] Append five new entries to the `CivicScreenLines` array in Assets/Scripts/World/RaidBuilding.Civic.cs (class `RaidBuilding`, field `CivicScreenLines`) to give the player more period‑appropriate screen text to read.
   Use the existing entry `"Green letters on black: a memo about the coffee fund, half typed. The cursor blinks after “and furthermore”.` as the style reference – each new line should be a single‑sentence description of a 1993‑era office screen, covering themes such as an unfinished inventory list, a weather forecast, a personal note, a supply request, and a government notice.
   Example new entries (replace the placeholder text with these exact strings):
