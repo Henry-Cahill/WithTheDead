@@ -518,7 +518,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Change `NearAnyone(Vector3 p, float range)` to iterate over `s_PlayerCache` instead of `Actor.All`.
   This removes the per‑container per‑tick enumeration of the full `Actor.All` list, reducing allocations and CPU work while preserving the same player‑proximity logic; the player‑visible behavior (which containers are considered “near anyone”) stays identical.
   - 23:49 landed by 1htsserver in 1.8 min: **Changed files**
-- [ ] Add a “Check channel” action to Assets/Scripts/World/Fixtures/RaidCivicRadio.cs that lets the survivor see which channel the radio is currently tuned to.
+- [x] Add a “Check channel” action to Assets/Scripts/World/Fixtures/RaidCivicRadio.cs that lets the survivor see which channel the radio is currently tuned to.
   Declare a new field `private Action<InteractContext> _checkChannel;` alongside the other Action fields.
   In `Awake()` assign it: `_checkChannel = ctx => ctx.Notify("Current channel: " + Tuned.Name);`.
   In `GetActions` after the “Change channel” entry, add:
@@ -526,6 +526,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   The action should only be enabled when the player is within `CloneZConfig.ReceiverKnobReach` (same as other knob actions) and the radio is on (the existing `if (!_on) return;` guard already covers this).
   Result in‑game: when the radio is on and the survivor stands close enough, pressing Q (or the extra button) shows a notification like “Current channel: Battalion net”.
   No other code, assets, or UI screens are altered; all referenced members (`Tuned`, `TooFar`, `CloneZConfig.ReceiverKnobReach`) already exist.
+  - 23:50 landed by hts-llm in 2.2 min: All changes compile successfully.Changed **Assets/Scripts/World/Fixtures/RaidCivicRadio.cs**
 - [ ] Append six new flavor‑text strings to the `BrushLines` array in Assets/Scripts/World/Fixtures/BasinFixture.cs so that brushing teeth can produce additional period‑correct commentary; use the existing entry `"You brush until your gums tingle and rinse with a splash. Minty. Almost civilised."` as the style reference and cover themes of cold mornings, lingering soot, quiet desperation, makeshift hygiene, and the ever‑present cold wind.
   Locate the `private static readonly string[] BrushLines = { … };` declaration.
   After the second entry (the one quoted above), insert six new quoted sentences, each ending with a period, e.g.:
