@@ -2311,7 +2311,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   · After the fix, calling `CrossfadeLoop` with any `loopLen` will never raise an exception, so loops used for seamless audio playback will always succeed.
   · No other code changes are required.
   - 09:07 landed by 1htsserver in 1.4 min: **Changed file**
-- [ ] Add a small metal nozzle and a glass‑like gauge to the 1990s gas pump in Assets/Scripts/World/DecorProps.cs to give the pump a lived‑in, functional look.
+- [x] Add a small metal nozzle and a glass‑like gauge to the 1990s gas pump in Assets/Scripts/World/DecorProps.cs to give the pump a lived‑in, functional look.
   In `DecorProps.GasPump` after the `for (int s = -1; s <= 1; s += 2) { … }` loop and before the final snow‑capped top box, insert:
   `float nozzleLen = R(rng, 0.20f, 0.28f); // length variation`
   `Quaternion nozzleRot = Quaternion.Euler(0f, R(rng, -12f, 12f), 0f); // slight yaw`
@@ -2320,6 +2320,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Vector3 gaugePos = nozzlePos + nozzleRot * new Vector3(0f, 0f, nozzleLen * 0.5f + 0.02f);`
   `m.Ellipsoid(gaugePos, new Vector3(0.04f, 0.04f, 0.04f), Gs(new Color(0.20f, 0.60f, 0.80f)), 8, 4); // glass gauge`
   These 2 new primitives (one cylinder, one ellipsoid) use the existing `rng` for size/rotation variation, keep existing materials and colliders, and stay within the 12‑primitive limit.
+  - 09:19 landed by 1htsserver in 11.7 min: Implemented a metal nozzle and glass‑like gauge on the 1990s gas pump:
 - [x] Cache singleton lookups in Assets/Scripts/Player/Stealth.cs to avoid per‑frame property calls
   Add three private fields (e.g. `_gear`, `_tod`, `_mods`) to store `PlayerGear.Instance`, `TimeOfDay.Instance` and `PlayerModifiers.Current` in `Start()` (or `Awake`).
   Replace every per‑frame use of `PlayerGear.Instance`, `TimeOfDay.Instance` and `PlayerModifiers.Current` with the cached fields.
