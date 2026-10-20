@@ -379,6 +379,10 @@ namespace CloneZ
             ("Winter hazards", "Freezing wind bites through even thick coats. Ice patches on roofs can give you a nasty fall, and prolonged exposure causes hypothermia. Light a fire, stay dry, and keep your breath visible as a warning."),
             ("Radio chatter", "Static‑filled broadcasts drift through the zone. Occasionally you’ll catch a fragment: “...wardens moving east…”, “...flea market opens at dusk…”, “...supply drop scheduled…”. Listen for clues about safe routes or new quests."),
             ("Survivor myths", "Stories circulate about “immune blood” that cures any disease or a “golden artifact” that grants endless ammo. Most are hoaxes that waste time, but a few turn out to be real—investigate before you spend resources chasing legends."),
+            ("Snowdrift shelters", "Dig a shallow trench in deep snow, pile drifts over it and add a windbreak; staying low conserves body heat and shields you from the biting wind."),
+            ("Radio static lore", "Fragments crackle over static: “… stash at the old well …”, “… raid incoming east …”, “… supply drop near the power line …”. Those hints point to hidden loot or looming threats."),
+            ("Fire‑making tips", "Gather dry twigs, pine bark and small branches; strike flint for sparks, then coax a flame with pine resin for a longer burn. In winter the resin fuels fire when wood is scarce."),
+            ("Old maps", "Hand‑drawn maps in the bar show safe routes, fresh water sources, and marked danger zones; study them before venturing out to avoid ambushes."),
         };
 
         protected override void BuildContent()
