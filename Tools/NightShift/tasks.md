@@ -3258,8 +3258,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   Call the same cache‑update logic after any code that mutates the stack’s dirt or ammo count (e.g., after `FoulBarrel();` in `FireFirearm()` and after a successful `TryReload()`).
   Remove the existing per‑frame call `Build = Ballistics.Build(Inv != null ? Inv.EquippedStack : null);` from `Update`.
   Result: no `Ballistics.Build` allocation each frame; weapon build data is recomputed only when the underlying stack changes, reducing GC pressure and CPU load while keeping all gameplay values identical.
-- [ ] Fix noisy door opening on game load in StorageFixture.RestoreState (Assets/Scripts/World/Interaction/StorageFixture.cs)
+- [x] Fix noisy door opening on game load in StorageFixture.RestoreState (Assets/Scripts/World/Interaction/StorageFixture.cs)
   In `RestoreState` the loop `for (int i = 0; i < _parts.Length; i++) if (_parts[i] != null) _parts[i].SetOpen(open, true);` forces each `FixturePart` to open with the “noisy” flag set to `true`.
   When a saved game is loaded and a storage fixture was previously open, this makes the doors/drawers play their opening sound automatically, which the player never caused and breaks the quiet atmosphere.
   Change the call to use a silent opening: ` _parts[i].SetOpen(open, false);` (or the single‑argument overload if it exists).
   After the change, loading a save will restore the open/closed visual state without emitting any noise, and all other behaviour (opening/closing during play) remains unchanged.
+  - 13:14 landed by hts-llm in 2 min: **Changed file**

@@ -186,7 +186,7 @@ namespace CloneZ
             bool open = (save.State & 1) != 0;
             _open = open;
             for (int i = 0; i < _parts.Length; i++)
-                if (_parts[i] != null) _parts[i].SetOpen(open, true);
+                if (_parts[i] != null) _parts[i].SetOpen(open, false);
             _opt.OnOpenChanged?.Invoke(open);
         }
     }
