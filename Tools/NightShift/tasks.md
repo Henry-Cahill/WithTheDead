@@ -1924,3 +1924,16 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/AI/Humans/HumanNpc.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add four small metal bracket boxes to the `WeaponRack(RaidMesh m, System.Random r)` builder in Assets/Scripts/World/RaidLayouts.cs to suggest reinforced corners on the rack.
+  Place them near the top of each vertical post, using the existing metal palette and a size of roughly 0.02 m × 0.1 m × 0.02 m.
+  `var bracketMat = DecorPalette.Metal(new Color(0.30f, 0.30f, 0.28f));`
+  `m.Box(new Vector3(-0.95f, 1.33f, -0.08f), Sz(0.02f, 0.10f, 0.02f), bracketMat);`
+  `m.Box(new Vector3(-0.95f, 1.33f, 0.08f), Sz(0.02f, 0.10f, 0.02f), bracketMat);`
+  `m.Box(new Vector3( 0.95f, 1.33f, -0.08f), Sz(0.02f, 0.10f, 0.02f), bracketMat);`
+  `m.Box(new Vector3( 0.95f, 1.33f, 0.08f), Sz(0.02f, 0.10f, 0.02f), bracketMat);`
+  The brackets attach to the top horizontal beam (already created by `m.Box(new Vector3(0f, 1.3f, -0.08f), Sz(1.9f, 0.06f, 0.12f), wood);`).
+  No new colliders, interaction points, or pivots are introduced, and the random seed is not altered, keeping deterministic builds.
+- [ ] Fix static error counters in Assets/Scripts/Dev/SmokeTest.cs so a new smoke‑test run starts with a clean slate
+  · In `Boot()` after `s_Mode = args[i + 1].ToLowerInvariant();` add `s_Errors = 0; s_FirstErrors.Clear();`
+  · This prevents error counts from previous runs (e.g. when the editor re‑enters play mode) from being carried over, which would make the test report failures even though the current run succeeded.
+  · Player experience is unchanged – the fix only affects the reliability of the automated smoke test in the editor/command‑line runs.
