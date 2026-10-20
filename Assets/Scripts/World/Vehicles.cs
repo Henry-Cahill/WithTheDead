@@ -211,6 +211,11 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             PlayerInventory inv = ctx.Inventory;
             if (inv == null || GameSession.IsMonsterRun) return;
             into.Add(new InteractAction("Get in the driver's seat", c => Enter(c.Stats)).DisabledIf(Driver != null || RemoteDriver != ulong.MaxValue, "Someone's driving"));
+            // Show missing parts without entering
+            into.Add(new InteractAction("Inspect car", c => {
+                var msg = Missing.Length > 0 ? "Car needs " + Missing : "Car looks fine";
+                GameEvents.RaiseToast(msg);
+            }));
             float work = ctx.Skills != null ? 1f / ctx.Skills.MechanicsMult : 1f;
             Part(into, inv, "carwheel", Wheels < 4, "Fit a wheel", 8f * work, () => { Wheels++; });
             Part(into, inv, "carbattery", !Battery, "Fit the battery", 5f * work, () => { Battery = true; });
