@@ -185,6 +185,24 @@ namespace CloneZ
                 var img = rivet.AddComponent<Image>();
                 img.color = new Color(0.7f, 0.7f, 0.7f, 0.9f);
             }
+            // Add corner reinforcement plates to suggest worn metal edges
+            var corners = new (string name, Vector2 anchor, Vector2 pos)[] {
+                ("CornerTL", new Vector2(0f, 1f), new Vector2(3f, -3f)),
+                ("CornerTR", new Vector2(1f, 1f), new Vector2(-3f, -3f)),
+                ("CornerBL", new Vector2(0f, 0f), new Vector2(3f, 3f)),
+                ("CornerBR", new Vector2(1f, 0f), new Vector2(-3f, 3f))
+            };
+            foreach (var (name, anchor, pos) in corners) {
+                var go = new GameObject(name);
+                var rt = go.AddComponent<RectTransform>();
+                rt.SetParent(_panelRoot.GetComponent<RectTransform>(), false);
+                rt.anchorMin = rt.anchorMax = anchor;
+                rt.pivot = anchor;
+                rt.anchoredPosition = pos;
+                rt.sizeDelta = new Vector2(6f, 6f);
+                var img = go.AddComponent<Image>();
+                img.color = new Color(0.25f, 0.25f, 0.27f, 0.9f);
+            }
             _fader = _panelRoot.AddComponent<UIFader>();
         }
 
