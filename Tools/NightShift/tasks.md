@@ -2977,3 +2977,18 @@ you want to see in game. Indent extra lines under a task to add detail.
   The action labels should read `"Open the " + noun + " quietly"` and `"Close the " + noun + " quietly"` respectively.
   This gives the survivor a way to open or shut doors/drawers without generating the fixture’s noise, letting players avoid attracting zombies.
   All existing logic (knocking, normal open/close, look/search, extra actions) must remain unchanged.
+- [ ] Append five new entries to the `OfficeNotices` string array in Assets/Scripts/World/RaidBuilding.Lighting.cs (class `RaidBuilding`, field `OfficeNotices`), using the style of the existing entry `"MORALE NOTICE: payday's Friday – collect your bonus, enjoy a coffee break, and thank a colleague."` – the new notices should cover morale‑boosting messages, winter‑weather safety tips, equipment‑check reminders, supply‑stock alerts, and a brief community‑news blurb, all phrased as period‑correct 1993 office memos.
+  Add the following quoted sentences after the current last entry in `OfficeNotices`:
+  `"WINTER MORAL BOOST: bring a hot cocoa to the break room – a warm mug beats the cold outside and keeps spirits bright."`
+  `"SAFETY REMINDER: check that fire extinguishers are mounted securely; the cold can cause seals to stiffen and hinder use."`
+  `"EQUIPMENT CHECK: all flashlight batteries must be swapped for fresh alkaline cells this week; old ones lose charge in sub‑zero temps."`
+  `"STOCK NOTICE: the pantry now has extra canned beans and powdered milk – take what you need, but keep some for neighbors."`
+  `"COMMUNITY UPDATE: the town hall meeting is Thursday at 7 pm in the school gym – agenda includes road clearing contracts and winter heating assistance."`
+- [ ] Modify `HumanoidLook.Wear` in `Assets/Scripts/Characters/HumanoidLook.cs`, inside the `case ClothingSlot.Head:` block, add a deterministic dark‑edge variation for wide‑brim hats after the existing `HatTrimColor = …` assignment.
+  After the line `HatTrimColor = Shape.Headwear == HeadwearStyle.Glasses ? DarkGlass : Shade(c, 0.7f);` insert:
+  `if (Shape.Headwear == HeadwearStyle.WideBrim) {`
+  ` int seed = Shape.GetHashCode();`
+  ` float var = ((seed >> 9) & 0xF) / 100f; // 0‑0.15 deterministic dark‑edge variation`
+  ` HatTrimColor = Color.Lerp(HatTrimColor, Shade(HatTrimColor, 0.6f), var);`
+  `}`
+  Result: wide‑brim hats get a subtle darker rim (≈0‑15 % darker) that varies per character, adding period‑appropriate wear without altering colliders or existing fields.
