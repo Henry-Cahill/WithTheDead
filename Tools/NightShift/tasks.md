@@ -3101,3 +3101,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// after`
   `Limb(hat, head, new Vector3(side * 0.052f, 1.708f, 0.088f), new Vector3(side * 0.081f, 1.703f, -0.005f), Fwd,`
   `new[] { new Key(0f, 0.003f, 0.003f), new Key(1f, 0.003f, 0.003f) }, seg: 6);`
+- [ ] In Assets/Scripts/AI/Creatures/Creatures.cs add a subtle “leather strap” detail to the torso of all quadruped creatures built in `CreatureBody.Quad`.
+- [ ] In Assets/Scripts/UI/SkillsPanelController.cs: Optimize SkillsPanelController so the per‑frame Refresh() doesn’t rebuild UI elements when nothing changed, by caching each skill’s level and progress and only updating the Text/Image when the values differ.
+  Add a private struct `SkillCache { public int level; public float progress; }` and a field `private SkillCache[] _skillCache;`.
+  In Build() after allocating `_levelTexts`, `_xpTexts` and `_progressFills`, initialize `_skillCache = new SkillCache[_order.Length];`.
+  Rewrite Refresh() to:
+  `for (int i = 0; i < _order.Length; i++) {`
+  ` PlayerSkills.Skill s = _order[i];`
+  ` int lvl = _skills.GetLevel(s);`
+  ` float prog = _skills.LevelProgress(s);`
+  ` if (lvl != _skillCache[i].level) { _levelTexts[i].text = "Lv " + lvl; _skillCache[i].level = lvl; }`
