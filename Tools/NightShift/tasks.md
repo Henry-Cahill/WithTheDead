@@ -2554,3 +2554,36 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Zone/Detectors.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add occasional icy patches on sidewalks in `Assets/Scripts/World/RaidMapBuilder.Streets.cs` → method `SidewalkRun`
+  After the concrete sidewalk slab (`Slab(town, alongX, coord, a, b, s0, s1, 0.025f, concrete);`) insert a 20 % chance to place a small translucent ice square.
+  Use the existing deterministic `rng` and helper `R` for size and position.
+  Example implementation (replace the comment line):
+  `if (rng.NextDouble() < 0.2)`
+  `{`
+  `float iceSize = R(rng, 0.15f, 0.3f);`
+  `float icePos = R(rng, a, b);`
+  `Vector3 iceCenter = alongX`
+- [ ] In Assets/Scripts/World/Fixtures/TvFixture.cs: Fix TvFixture.ChangeChannel so the TV updates its signal state and picture tint immediately after the player switches channels.
+  In `TvFixture.ChangeChannel(InteractContext ctx)` the code only calls `TuneNext()` and notifies the player, leaving `_onAir` and `_tint` stale until the next periodic refresh in `Animate`.
+  `BroadcastStation s = TuneNext();`
+  `ctx.Notify(Describe(s) + (_onAir ? "" : " \u2014 nothing but snow"));`
+  → Insert a call to `RefreshChannel();` (and optionally `Paint();` if the TV is on) right after `TuneNext()` so the TV instantly reflects the new channel’s signal and colour.
+  `BroadcastStation s = TuneNext();`
+  `RefreshChannel();`
+  `if (IsOn) Paint();`
+  `ctx.Notify(Describe(s) + (_onAir ? "" : " \u2014 nothing but snow"));`
+- [ ] Add period‑correct brass hinges to the wooden door leaf in `Assets/Scripts/World/FurnitureBuilder.Fixtures.cs` `FurnitureBuilder.DoorLeaf` so the door looks realistic for a 1993 rural interior.
+  After the main panel box call `m.Box(new Vector3(width * 0.5f, height * 0.5f, 0f), new Vector3(width, height, t), M(c));` insert four small boxes representing two hinges per side.
+  Use the existing brass material: `Mt(Brass)`.
+  Bottom hinge: size `new Vector3(0.04f, 0.03f, 0.008f)` at position `new Vector3(0.02f, 0.20f, t*0.5f + 0.004f)` for the front face and at `new Vector3(0.02f, 0.20f, -t*0.5f - 0.004f)` for the back face.
+  Top hinge: same size at `new Vector3(0.02f, height - 0.20f, t*0.5f + 0.004f)` (front) and `new Vector3(0.02f, height - 0.20f, -t*0.5f - 0.004f)` (back).
+  This adds only four primitives, reuses existing materials, and does not affect colliders or interaction points.
+- [ ] Cache the per‑frame Keyboard lookup in Assets/Scripts/Player/PlayerGear.cs – replace `Keyboard kb = Keyboard.current;` in Update with a cached field that’s set once in Awake (and re‑acquired only if it becomes null).
+  Add a private `Keyboard _keyboard;` field.
+  In Awake after setting Instance, assign `_keyboard = Keyboard.current;`.
+  In Update, change the block to:
+  `if (!UIState.GameplayBlocked)`
+  `{`
+  `if (_keyboard == null) _keyboard = Keyboard.current;`
+  `if (_keyboard != null)`
+  `{`
