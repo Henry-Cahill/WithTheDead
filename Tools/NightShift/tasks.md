@@ -970,12 +970,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   In `AnomalyField.GroundY` the raycast uses a hard‑coded layer mask `1`, which only checks the Default layer and misses the terrain layer used in the game. This causes the method to return 0 for most positions, spawning anomalies floating in the air or buried underground.
   Change the layer‑mask argument to include all layers (e.g. `Physics.DefaultRaycastLayers` or `~0`) or simply omit it. The corrected method should be:
   - 02:08 landed by 0htsserver in 1.5 min: **Changed**
-- [ ] Add subtle rivet‑like rust specks to the corrugated‑sheet‑metal texture (Assets/Scripts/World/DecorTextures.cs → `public static Texture2D Corrugated(Color color)`)
+- [x] Add subtle rivet‑like rust specks to the corrugated‑sheet‑metal texture (Assets/Scripts/World/DecorTextures.cs → `public static Texture2D Corrugated(Color color)`)
   After the line `Color c = Mul(color, 0.78f + 0.26f * Mathf.Sin(u * Mathf.PI * 2f * 8f));` insert a deterministic rust‑spot test using the existing `R01` function; e.g. `float spot = R01(x, y, 122);`
   If `spot < 0.018f` (≈ 2 % of pixels) treat the pixel as the centre of a tiny rivet and darken it: `c = Mul(c, 0.45f);` (roughly a 2 cm‑wide spot at the texture’s 64 px scale)
   If `spot` is between `0.018f` and `0.030f` add a slight highlight to suggest a brushed‑metal edge: `c = Mul(c, 0.65f);`
   Keep the existing rust overlay (`if (r > 0.55f) …`) unchanged; the new spots will blend with it because they use the same deterministic seed (`122`).
   No new colliders or interaction points are added; the texture generation remains tileable and uses at most a dozen extra per‑pixel condition checks.
+  - 02:09 landed by hts-llm in 2.3 min: **Changes made**
 - [ ] Cache per‑frame lookups in `Assets/Scripts/Core/TimeOfDay.cs` by storing `Camera.main` and `WeatherSystem.Instance` in fields set once, then use those cached references in `Apply()` so the visual output (sky colour, fog, sun rotation, LightLevel, etc.) stays identical.
   Add a private field `private WeatherSystem _weather;`.
   In `Awake()` (after setting `Instance`) assign `_cam = Camera.main;` and `_weather = WeatherSystem.Instance;`.

@@ -545,6 +545,10 @@ namespace CloneZ
                 {
                     float u = (x + 0.5f) / S, v = (y + 0.5f) / S;
                     Color c = Mul(color, 0.78f + 0.26f * Mathf.Sin(u * Mathf.PI * 2f * 8f));
+                    // deterministic rust‑spot test for subtle rivet‑like specks
+                    float spot = R01(x, y, 122);
+                    if (spot < 0.018f) c = Mul(c, 0.45f); // dark centre of rivet (~2 % of pixels)
+                    else if (spot < 0.030f) c = Mul(c, 0.65f); // brushed‑metal edge highlight
                     float r = Fbm(u, v, 4, 3, 121);
                     if (r > 0.55f) c = Color.Lerp(c, rust, Mathf.Clamp01((r - 0.55f) / 0.2f) * 0.8f);
                     px[y * S + x] = C32(c);
