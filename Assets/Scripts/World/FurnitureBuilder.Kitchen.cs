@@ -684,8 +684,10 @@ namespace CloneZ
                 float x = R(rng, -0.25f, 0.15f), y = R(rng, 0.55f, 1.05f);
                 bool paper = Chance(rng, 0.6);
                 Color nc = paper ? Paper : new Color(R(rng, 0.2f, 0.8f), R(rng, 0.2f, 0.6f), R(rng, 0.1f, 0.5f));
-                m.Box(new Vector3(x, y, z1 + 0.003f), paper ? new Vector3(0.1f, 0.13f, 0.004f) : new Vector3(0.04f, 0.04f, 0.012f),
-                    Quaternion.Euler(0f, 0f, R(rng, -12f, 12f)), M(nc));
+                m.Box(new Vector3(x, y, z1 + 0.003f),
+        paper ? new Vector3(0.1f, 0.13f, 0.004f) : new Vector3(0.04f, 0.04f, 0.012f),
+        0f,
+        M(nc));
             }
         }
 

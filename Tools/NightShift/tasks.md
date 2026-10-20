@@ -1395,8 +1395,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   `rust.transform.localPosition = new Vector3(Random.Range(-0.05f, 0.05f), 1.15f, Random.Range(0.05f, 0.12f));`
   `rust.transform.localRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);`
   - 04:18 landed by 0htsserver in 2.5 min: **Changed file**
-- [ ] Fix compile error in Assets/Scripts/World/FurnitureBuilder.Kitchen.cs: the `FridgeDoor` method creates note objects with a non‑existent `RaidMesh.Box(Vector3,Vector3,Quaternion,Surf)` overload.
+- [x] Fix compile error in Assets/Scripts/World/FurnitureBuilder.Kitchen.cs: the `FridgeDoor` method creates note objects with a non‑existent `RaidMesh.Box(Vector3,Vector3,Quaternion,Surf)` overload.
   In `FridgeDoor`, replace the line
+  - 04:27 landed by hts-llm in 10.9 min: **Changes Made**
 - [x] Add six tiny red rivet cylinders around the hub of the hose‑reel wheel in the `HoseReel` method of Assets/Scripts/World/StarterHome.Grounds.cs
   Inside `HoseReel`, after the line `wheel.Cylinder(hub, 0.032f, 0.01f, 12, red);` insert a loop that creates six small cylinders to act as rivets.
   Each rivet should be `wheel.Cylinder(hub + new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a)) * 0.029f, 0.003f, 0.008f, 6, red);` where `a = i * Mathf.PI * 2f / 6` and `i` ranges 0‑5.
