@@ -2194,7 +2194,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `into.Add(new InteractAction("Open washing machine", OpenDoor)`
   `.DisabledIf(_drum != null && _drum.IsOpen, "It's already open"));`
   add a new private method below `ReadDial`:
-- [ ] Append five new comforting tidy‑up lines to the `CivicReading.Tidying` string array in Assets/Scripts/World/Fixtures/RaidCivicFridge.cs
+- [x] Append five new comforting tidy‑up lines to the `CivicReading.Tidying` string array in Assets/Scripts/World/Fixtures/RaidCivicFridge.cs
   The array currently ends with:
   `"You stack the loose papers and tuck them in at the end of the shelf.",`
   Add the following entries (each a whole sentence in quotes) after that line:
@@ -2203,6 +2203,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `"You straighten the scattered pens, their caps clicking into place."`
   `"You slide the index cards back into their holder, the soft thud echoing in the quiet room."`
   `"You smooth the worn carpet runner, feeling the fibers settle under your hand."`
+  - 08:37 landed by hts-llm in 2.3 min: Implemented the requested additions:
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Economy/MoralLedger.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
