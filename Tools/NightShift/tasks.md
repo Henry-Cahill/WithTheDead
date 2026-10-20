@@ -3606,7 +3606,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   position it with `UIKit.Place(rim.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(0.28f, 0.16f));` – i.e. a 0.28 m × 0.16 m rectangle centred on the canvas, giving a 2‑cm border around the existing fog (which is 0.128 m × 0.072 m);
   keep the existing colliders, interaction points and pivots untouched; the new rim is purely visual and adds a period‑accurate metal frame hint to the mask without affecting gameplay.
   - 15:02 landed by hts-llm in 1.8 min: **Changed file**
-- [ ] Fix the footstep surface detection raycast in Assets/Scripts/Audio/AudioDirector.cs so it checks all layers, not only layer 1.
+- [x] Fix the footstep surface detection raycast in Assets/Scripts/Audio/AudioDirector.cs so it checks all layers, not only layer 1.
   In FootstepAudio.SurfaceAt the raycast is written as:
   `if (Physics.Raycast(feet + Vector3.up * 0.4f, Vector3.down, out RaycastHit hit, 1.4f, 1, QueryTriggerInteraction.Ignore))`
   The fourth argument (`1`) is a layer mask that limits the ray to objects on layer 1 (the Default layer only). Many floor colliders are on other layers (e.g., “Ground”, “Road”), so the ray often misses and the game falls back to generic grass sounds, making footsteps sound wrong or disappear.
@@ -3614,3 +3614,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `if (Physics.Raycast(feet + Vector3.up * 0.4f, Vector3.down, out RaycastHit hit, 1.4f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))`
   (Alternatively use `~0`.)
   After this fix the footstep system will correctly detect the material under the player's feet on any layer, so the player hears snow, wood, concrete, etc., matching the actual terrain they walk on. All other code should remain unchanged.
+  - 15:03 landed by hts-llm in 1 min: **Changed file**

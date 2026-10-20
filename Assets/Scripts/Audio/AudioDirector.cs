@@ -108,7 +108,7 @@ namespace CloneZ
         /// <summary>Determines the surface type under the given foot position for appropriate footstep sounds.</summary>
         public static string SurfaceAt(Vector3 feet)
         {
-            if (Physics.Raycast(feet + Vector3.up * 0.4f, Vector3.down, out RaycastHit hit, 1.4f, 1, QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(feet + Vector3.up * 0.4f, Vector3.down, out RaycastHit hit, 1.4f, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
             {
                 string s = SurfaceName(hit.collider);
                 if (s != null)
