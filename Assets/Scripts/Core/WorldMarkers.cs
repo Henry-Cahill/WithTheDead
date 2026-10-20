@@ -16,8 +16,10 @@ namespace CloneZ
 
         private static readonly Dictionary<string, List<Vector3>> s_Points = new Dictionary<string, List<Vector3>>();
 
+        /// <summary>Clear all published world markers.</summary>
         public static void Clear() => s_Points.Clear();
 
+        /// <summary>Add a world marker of the given kind at the specified position.</summary>
         public static void Add(string kind, Vector3 position)
         {
             if (string.IsNullOrEmpty(kind)) return;
@@ -29,6 +31,7 @@ namespace CloneZ
         public static IReadOnlyList<Vector3> Get(string kind)
             => kind != null && s_Points.TryGetValue(kind, out List<Vector3> list) ? list : (IReadOnlyList<Vector3>)s_Empty;
 
+        /// <summary>Try to get the first point of a kind, returning true if any exist.</summary>
         public static bool TryGetFirst(string kind, out Vector3 position)
         {
             IReadOnlyList<Vector3> l = Get(kind);
@@ -39,6 +42,7 @@ namespace CloneZ
         /// <summary>Landmark positions are published as "landmark:&lt;id&gt;".</summary>
         public static string Landmark(string id) => "landmark:" + id;
 
+                /// <summary>Enumerate all marker kinds that have been added.</summary>
         public static IEnumerable<string> Kinds => s_Points.Keys;
 
         private static readonly List<Vector3> s_Empty = new List<Vector3>();
@@ -50,7 +54,9 @@ namespace CloneZ
         public static readonly Dictionary<string, string> Names = new Dictionary<string, string>();
         public static readonly Dictionary<string, string> Descriptions = new Dictionary<string, string>();
 
+                /// <summary>Get the display name for a zone mark id, or the id itself if none.</summary>
         public static string NameOf(string id) => id != null && Names.TryGetValue(id, out string n) ? n : id;
+                /// <summary>Get the description for a zone mark id, or empty string if none.</summary>
         public static string Describe(string id) => id != null && Descriptions.TryGetValue(id, out string d) ? d : "";
     }
 }

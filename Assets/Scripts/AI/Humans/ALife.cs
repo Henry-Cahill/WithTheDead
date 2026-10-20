@@ -16,6 +16,7 @@ namespace CloneZ
         public bool Online;
         public readonly List<HumanNpc> Live = new List<HumanNpc>();
 
+        /// <summary>Gets the loadout configuration for this squad, resolving it by ID and faction.</summary>
         public HumanLoadout Loadout => HumanLoadouts.Resolve(LoadoutId, Faction, null, out _);
         public float Power => Members * Loadout.Power * Strength;
     }

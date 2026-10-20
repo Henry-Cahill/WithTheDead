@@ -17,15 +17,22 @@ namespace CloneZ
     [DisallowMultipleComponent]
     public sealed class HumanoidRig : MonoBehaviour
     {
+        /// <summary>All bone transforms of the humanoid skeleton.</summary>
         public Transform[] Bones { get; private set; }
+        /// <summary>The mesh renderer that draws the character's body.</summary>
         public SkinnedMeshRenderer Body { get; private set; }
         /// <summary>The centre of the right fist; held items hang off it.</summary>
         public Transform GripR { get; private set; }
+        /// <summary>The visual look data defining shape and colours.</summary>
         public HumanoidLook Look { get; private set; }
+        /// <summary>The proportion data for the character's body shape.</summary>
         public HumanoidProportions Proportions { get; private set; }
 
+        /// <summary>Definition of the item currently held in the right hand.</summary>
         public ItemDef HeldDef { get; private set; }
+        /// <summary>How the held item is being used (none, melee, firearm, carry).</summary>
         public HoldStyle HeldStyle { get; private set; }
+        /// <summary>Transform of the instantiated held item.</summary>
         public Transform Held { get; private set; }
         /// <summary>Where the off hand takes hold of the held item, in <see cref="GripR"/> space.</summary>
         public Vector3 HeldSupport { get; private set; }
@@ -40,6 +47,7 @@ namespace CloneZ
         /// <summary>Grip centre relative to the wrist of a right hand (mirror X for the left).</summary>
         public static readonly Vector3 GripOffset = new Vector3(-0.022f, -0.085f, 0.012f);
 
+        /// <summary>Factory method that creates a new HumanoidRig under a parent.</summary>
         public static HumanoidRig Create(Transform parent, HumanoidLook look, string name = "Visual")
         {
             var go = new GameObject(name);
@@ -50,6 +58,7 @@ namespace CloneZ
             return rig;
         }
 
+        /// <summary>Gets the transform for a specific bone.</summary>
         public Transform Bone(HumanBone bone) => Bones[(int)bone];
 
         private void EnsureBuilt()

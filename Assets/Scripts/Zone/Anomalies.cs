@@ -54,6 +54,8 @@ namespace CloneZ
             },
         };
 
+                /// <summary>Retrieve an anomaly definition by id, returning null if not found.</summary>
+        /// <summary>Retrieve an anomaly definition by id, returning null if not found.</summary>
         public static AnomalyDef Get(string id) => id != null && All.TryGetValue(id, out AnomalyDef d) ? d : null;
     }
 
@@ -66,8 +68,11 @@ namespace CloneZ
     {
         public static readonly List<Anomaly> All = new List<Anomaly>();
 
+        /// <summary>The definition of this anomaly instance.</summary>
         public AnomalyDef Def { get; private set; }
+        /// <summary>Radius of the anomaly effect area.</summary>
         public float Radius { get; private set; }
+        /// <summary>Strength multiplier for damage and effects.</summary>
         public float Strength { get; private set; } = 1f;
         /// <summary>True while a tollgate sleeps (it has taken its toll).</summary>
         public bool Dormant => Time.time < _dormantUntil;
@@ -83,6 +88,7 @@ namespace CloneZ
         private Light _flash;
         private float _flashUntil;
 
+        /// <summary>Create a new anomaly instance under a parent transform.</summary>
         public static Anomaly Spawn(Transform parent, AnomalyDef def, Vector3 at, float strength, System.Random rng)
         {
             var go = new GameObject("Anomaly " + def.Id);
@@ -291,6 +297,7 @@ namespace CloneZ
 
         private static readonly List<Actor> s_Gone = new List<Actor>();
 
+        /// <summary>Check if a point lies inside the anomaly’s radius (with optional margin).</summary>
         public bool Inside(Vector3 p, float margin)
         {
             Vector3 c = transform.position;
@@ -493,6 +500,7 @@ namespace CloneZ
     {
         private static readonly Dictionary<PlayerClothing, float> s_Owed = new Dictionary<PlayerClothing, float>();
 
+        /// <summary>Apply corrosion to the given clothing piece by the specified amount.</summary>
         public static void Corrode(PlayerClothing clothing, float amount)
         {
             if (clothing == null || amount <= 0f) return;
