@@ -776,3 +776,19 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/WeatherSystem.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add a small brass latch to each louvred shutter panel in `Assets/Scripts/World/FurnitureBuilder.RaidOpenings.cs` → method `OpeningShutters`
+  After the line `m.Box(l.P(c, cy, side * (face + 0.02f)), l.Size(sw, sh, 0.03f), panel);` insert a new primitive for a latch.
+  Use the existing brass material `Mt(Brass)`.
+  Create the latch as a thin box `new Vector3(0.032f, 0.064f, 0.008f)` positioned near the lower‑outer edge of the panel:
+  `m.Box(l.P(c, sill + 0.12f, side * (face + 0.045f)), l.Size(0.032f, 0.064f, 0.008f), Mt(Brass));`
+  `sill` is the window sill height passed to the method, so the latch sits a few centimetres above it and slightly outward from the panel, mimicking period‑correct metal hardware.
+  No new colliders or interaction points are added; the latch is purely visual and stays within the existing 12‑primitive limit (adds only 2 boxes, one per shutter).
+- [ ] Fix the malformed XML comment on `BuildPiece.Position` in Assets/Scripts/World/BuildPiece.cs
+  The property currently has two opening `<summary>` tags and only one closing tag, causing a compile‑time error and preventing the game from building.
+  Change
+  `/// <summary>The world‑space position of this piece.`
+  `/// <summary>World‑space position of this piece.</summary>`
+  `public Vector3 Position => transform.position;`
+  to a single well‑formed comment, e.g.:
+  `/// <summary>World‑space position of this piece.</summary>`
+  `public Vector3 Position => transform.position;`
