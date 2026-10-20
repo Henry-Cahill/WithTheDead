@@ -18,6 +18,9 @@ namespace CloneZ
         private ZoneDef _zone;
         private float _baseStart, _baseEnd, _lastStart = -1f, _lastEnd = -1f;
         private Color _baseAmbient, _baseFogColor, _lastAmbient, _lastFogColor;
+        private TimeOfDay _tod;
+        private GameSettings _gs;
+        private SandboxSettings _ss;
 
         public static ZoneAtmosphere Attach(GameObject host, ZoneDef zone)
         {
@@ -32,19 +35,26 @@ namespace CloneZ
         {
             if (_zone == null) return;
             // Re-read whatever the clock and the weather wrote this frame (or keep the last base when they didn't).
+            // Initialize cached singleton references if needed
+            if (_tod == null || _gs == null || _ss == null)
+            {
+                _tod = TimeOfDay.Instance;
+                _gs = GameSettings.Current;
+                _ss = SandboxSettings.Current;
+            }
             if (!Mathf.Approximately(RenderSettings.fogStartDistance, _lastStart)) _baseStart = RenderSettings.fogStartDistance;
             if (!Mathf.Approximately(RenderSettings.fogEndDistance, _lastEnd)) _baseEnd = RenderSettings.fogEndDistance;
             if (RenderSettings.ambientLight != _lastAmbient) _baseAmbient = RenderSettings.ambientLight;
             if (RenderSettings.fogColor != _lastFogColor) _baseFogColor = RenderSettings.fogColor;
 
-            float fog = Mathf.Clamp01(_zone.FogDensity * (1f - GameSettings.Current.FogReadability * 0.75f));
+            float fog = Mathf.Clamp01(_zone.FogDensity * (1f - _gs.FogReadability * 0.75f));
             float end = Mathf.Lerp(_baseEnd, Mathf.Min(_baseEnd, 24f), fog);
             float start = Mathf.Lerp(_baseStart, 1.5f, fog);
-            if (GameSettings.Current.FogReadability > 0f) end = Mathf.Max(end, Mathf.Lerp(end, 70f, GameSettings.Current.FogReadability * 0.5f));
+            if (_gs.FogReadability > 0f) end = Mathf.Max(end, Mathf.Lerp(end, 70f, _gs.FogReadability * 0.5f));
 
             Color ambient = _baseAmbient;
-            TimeOfDay tod = TimeOfDay.Instance;
-            if (tod != null && tod.IsNight) ambient *= Mathf.Lerp(1.15f, 0.4f, SandboxSettings.Current.NightDarkness);
+            TimeOfDay tod = _tod;
+            if (tod != null && tod.IsNight) ambient *= Mathf.Lerp(1.15f, 0.4f, _ss.NightDarkness);
             ambient = Multiply(ambient, _zone.Tint);
             Color fogColor = Multiply(_baseFogColor, _zone.Tint);
             if (SkyOverrideStrength > 0f)

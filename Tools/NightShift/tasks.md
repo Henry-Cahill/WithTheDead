@@ -478,12 +478,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Use `town.Out.Solid(box)` to obtain the mesh builder so the flag shares the mailbox’s collider and keep‑out area.
   No new colliders or interaction points are added; the flag is purely visual and stays within the existing mailbox footprint.
   - 23:40 landed by 1htsserver in 3.8 min: **Summary**
-- [ ] In Assets/Scripts/World/Zone/ZoneAtmosphere.cs: Cache the singleton lookups in ZoneAtmosphere so LateUpdate doesn’t call `TimeOfDay.Instance`, `GameSettings.Current` and `SandboxSettings.Current` every frame
+- [x] In Assets/Scripts/World/Zone/ZoneAtmosphere.cs: Cache the singleton lookups in ZoneAtmosphere so LateUpdate doesn’t call `TimeOfDay.Instance`, `GameSettings.Current` and `SandboxSettings.Current` every frame
   Add three private fields: `private TimeOfDay _tod; private GameSettings _gs; private SandboxSettings _ss;`
   Initialize them once in `Awake()` (or the first `LateUpdate` if they’re null) with ` _tod = TimeOfDay.Instance; _gs = GameSettings.Current; _ss = SandboxSettings.Current;`
   Replace all uses of `TimeOfDay.Instance`, `GameSettings.Current` and `SandboxSettings.Current` in `LateUpdate` with the cached fields (`_tod`, `_gs`, `_ss`).
   If any of those singletons can be recreated later (e.g., after a reload), check for null at the start of `LateUpdate` and re‑assign the cached fields.
   The visual result – fog density, darkness at night, and readability tweaks – remains exactly the same; only the per‑frame property lookups are removed.
+  - 23:43 landed by 0htsserver in 5.5 min: 
 - [ ] In Assets/Scripts/World/Fixtures/RadioFixture.cs: Add a “Check station” action to RadioFixture.GetActions so the survivor can see what station is currently tuned without turning the radio on or off.
   In `Assets/Scripts/World/Fixtures/RadioFixture.cs`, inside `GetActions` after the “Turn it down” entry, insert:
   `into.Add(new InteractAction("Check station", c => c.Notify("Currently tuned to " + Describe(Station) + (Broadcasts.IsOnAir(Station) ? "." : " — just static.")) ).DisabledIf(!near, TooFar));`
