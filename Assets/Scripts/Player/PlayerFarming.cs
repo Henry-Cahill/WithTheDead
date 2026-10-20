@@ -42,6 +42,9 @@ public string WorkLabel { get; private set; } = "";
         private PlayerInventory _inventory;
         private PlayerSkills _skills;
         private PlayerInteractor _interactor;
+        // Cached nearest farm plot to avoid repeated heavy lookups when player is stationary.
+        private FarmPlot _cachedPlot;
+        private Vector3 _cachedPos;
 
         // Current frame's evaluation.
         private FarmAction _action;
@@ -61,13 +64,19 @@ public string WorkLabel { get; private set; } = "";
 
         private readonly Collider[] _overlapBuf = new Collider[16];
 
-        private void Awake()
+        private FarmPlot GetCachedNearestPlot(Vector3 pos)
         {
-            _stats = GetComponent<PlayerStats>();
-            _controller = GetComponent<PlayerController>();
-            _inventory = GetComponent<PlayerInventory>();
-            _skills = GetComponent<PlayerSkills>();
-            _interactor = GetComponent<PlayerInteractor>();
+            // If the player hasn't moved significantly since last lookup, reuse cached plot.
+            // Compare squared distance for performance.
+            const float moveThresholdSqr = 0.01f; // ~0.1 units movement tolerance.
+            if (_cachedPlot != null && (pos - _cachedPos).sqrMagnitude < moveThresholdSqr)
+            {
+                return _cachedPlot;
+            }
+            // Recompute and cache the result.
+            _cachedPos = pos;
+            _cachedPlot = FarmPlot.Nearest(pos, CloneZConfig.FarmActionRange);
+            return _cachedPlot;
         }
 
         private void Update()
@@ -97,7 +106,7 @@ public string WorkLabel { get; private set; } = "";
             if (_interactor != null && _interactor.IsBusy) return;
 
             Vector3 pos = transform.position; pos.y = 0f;
-            FarmPlot plot = FarmPlot.Nearest(pos, CloneZConfig.FarmActionRange);
+            FarmPlot plot = GetCachedNearestPlot(pos);
 
             if (plot != null)
             {

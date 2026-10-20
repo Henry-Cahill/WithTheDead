@@ -2403,7 +2403,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Create the handle with `m.Box(new Vector3(0f, 1.07f, 0.97f), new Vector3(0.03f, 0.02f, 0.02f), DecorPalette.Matte(new Color(0.20f, 0.23f, 0.21f)))` – a dark‑steel coloured box positioned just in front of the door near its mid‑height.
   No new colliders or interaction points are added; the handle is purely decorative and respects the existing 12‑primitive limit.
   - 09:30 landed by 1htsserver in 3.3 min: **Changed**
-- [ ] Cache the nearest farm plot lookup in Assets/Scripts/Player/PlayerFarming.cs to avoid calling `FarmPlot.Nearest` every frame when the player hasn’t moved.
+- [x] Cache the nearest farm plot lookup in Assets/Scripts/Player/PlayerFarming.cs to avoid calling `FarmPlot.Nearest` every frame when the player hasn’t moved.
+  - 09:31 landed by hts-llm in 3.5 min: Implemented a cheap cache for the nearest farm plot:
 - [ ] Update Assets/Scripts/World/Fixtures/RaidTownGasPump.cs · RaidTownGasPump.GetActions to only add the “Tap the nozzle” action when the nozzle is lifted, removing the dead‑end option while the nozzle is in its cradle.
   Add a conditional around the existing line `into.Add(new InteractAction("Tap the nozzle", TapNozzle));` so it becomes `if (_lifted) into.Add(new InteractAction("Tap the nozzle", TapNozzle));`.
   Leave the other three actions (“Lift/Hang the nozzle”, “Read the dials”, “Sniff the hose”) unchanged.
