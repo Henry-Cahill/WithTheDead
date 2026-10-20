@@ -4018,3 +4018,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `{`
   `var l = new GameObject("Headlight").AddComponent<Light>();`
   `… // headlight setup`
+- [ ] Add subtle paint‑chip details to the exterior window casings in `Assets/Scripts/World/StarterHome.Shell.cs` inside the `DrawWindow` method
+  After each exterior casing box (`m.Box(f.P(o0 - 0.035f, cy, off)…` and `m.Box(f.P(o1 + 0.035f, cy, off)…`) insert a small rectangular chip; size ≈ `0.04f × 0.02f × 0.005f` metres.
+  Position the chip on the same face as the casing, centered horizontally on the panel (`o0`/`o1`), with a vertical offset `chipY = WindowSill + 0.1f + (float)(rng.NextDouble() * 0.2f)` and a slight random depth offset `chipZ = off + (float)(rng.NextDouble() * 0.01f - 0.005f)`.
+  Use `DecorPalette.Matte(TrimWhite * 0.6f)` (a darker paint‑chip colour) for the material.
+  Only create the chip when `rng.NextDouble() < 0.5` so each side gets 0‑1 chips, keeping the total added primitives ≤ 12.
+  This gives each window a weathered look appropriate to a 1993 Kentucky winter home without altering colliders or interaction points.
+- [ ] In Assets/Scripts/World/Fixtures/SeatFixture.cs: Add a “Stand up slowly” action to SeatFixture.GetActions for survivors already sitting on the seat
+  In the `if (seat.IsSittingOn(this))` block, after the existing stand action, insert
+  `into.Add(new InteractAction("Stand up slowly", c => { c.Seat?.Stand(); c.Notify("You rise slowly, stretching out a bit before standing."); }));`
+  The player will now see a second exit option when seated, giving a slightly different narrative cue while using only the existing `Seat`, `Stand()` and `Notify()` members.
