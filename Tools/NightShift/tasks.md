@@ -1682,3 +1682,19 @@ you want to see in game. Indent extra lines under a task to add detail.
   Inside the existing shoulder‑strap loop (`for (int s = -1; s <= 1; s += 2) …`) after calling `StrapOverShoulder`, capture the strap end point with `Vector3 end = _path[_path.Count - 1];`
   Add a buckle box at that point: `PlayerGearParts.Box(root, "StrapBuckle", end + new Vector3(0f, 0.014f, 0.007f), new Vector3(0.046f, 0.022f, 0.008f), hardware);`
   This creates a 0.046 m × 0.022 m × 0.008 m metal plate, positioned just beyond the strap tip, giving the harness a worn‑metal detail consistent with the backpack’s rivet boxes.
+- [ ] Fix the lingering Hit‑event subscription in Assets/Scripts/Medical/PlayerLimbs.cs (and its HUD listener) so the HUD limb panel correctly unsubscribes when destroyed, preventing a memory leak and stray HUD flashes.
+  Replace the inline lambda `limbs.Hit += (z, hp) => h._flash = 0.35f;` with a named method `h.OnHit` that sets `_flash`.
+  Add a private `void OnHit(BodyZone zone, float hp) { _flash = 0.35f; }` method inside `HudLimbs`.
+  Implement `private void OnDestroy() { if (_limbs != null) _limbs.Hit -= OnHit; }` in `HudLimbs` to unsubscribe.
+  Result: when the HUD element is removed (e.g., after death or UI reset) it no longer receives hit events, eliminating hidden UI updates and allowing the object to be garbage‑collected. All other behaviour—including hit flashes while the HUD is active—remains unchanged.
+- [ ] Add a subtle metal buckle to the wristwatch strap in DiegeticWatch.Create (Assets/Scripts/Rendering/Presentation.cs) to give the watch a more period‑accurate, worn look.
+  After the line `Image strap = UIKit.Panel(face, "Strap", new Color(0.15f, 0.12f, 0.1f));` insert a new UI Image for the buckle:
+  `Image buckle = UIKit.Panel(strap.rectTransform, "Buckle", new Color(0.6f, 0.6f, 0.6f));`
+  Position it centered on the strap with `UIKit.Place(buckle.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(0.08f, 0.02f));` (size ≈ 0.08 m × 0.02 m).
+  No changes to colliders, interaction points, or existing layout; the buckle is a purely visual detail using the same UI material as other watch parts.
+- [ ] Modify Assets/Scripts/Core/PlayerModifiers.cs to cache modifier recomputation instead of doing it every frame.
+  Add a private `bool _dirty` field to `PlayerModifiers`.
+  Set `_dirty = true` in `Awake()` (after the initial `Recompute()`), in `Register(IStatModSource src)` and in `Unregister(IStatModSource src)` so that any change to the source list marks the data stale.
+  Change `Update()` to `if (_dirty) Recompute();`.
+  At the end of `Recompute()` set `_dirty = false;`.
+  Leave the rest of the class unchanged – the computed values in `StatMods` remain identical, so the player sees exactly the same speeds, resistances, etc., but the per‑frame overhead of `GetComponents(_found)` and the reset loop is eliminated when nothing has changed.
