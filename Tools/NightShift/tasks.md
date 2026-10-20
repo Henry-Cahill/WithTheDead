@@ -3528,13 +3528,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 14:43 landed by hts-llm in 3.3 min: All changes compile successfully.**Changed file**
 - [x] In Assets/Scripts/UI/SkillsPanelController.cs, inside `SkillsPanelController.Build()` within the `for (int i = 0; i < n; i++)` loop, add a thin “separator” rectangle under each skill row to suggest a worn metal seam between entries.
   - 14:43 landed by 0htsserver in 1.6 min: **Changed**
-- [ ] In Assets/Scripts/World/Fixtures/KitchenStove.cs: Add a “Feel the heat” action to KitchenStove so the player can see how much warmth the stove is currently providing.
+- [x] In Assets/Scripts/World/Fixtures/KitchenStove.cs: Add a “Feel the heat” action to KitchenStove so the player can see how much warmth the stove is currently providing.
   In `public override void GetActions(InteractContext ctx, List<InteractAction> into)` insert after the existing actions:
   `into.Add(new InteractAction("Feel the heat", ShowWarmth));`
   Add a new private method `void ShowWarmth(InteractContext ctx)` that calls `ctx.Notify($"The stove radiates warmth ({Warmth:F1}).");`
   No other code changes are required; the method uses the existing `Warmth` property and `InteractContext.Notify` already used elsewhere.
   The player will now see a tooltip like “The stove radiates warmth (3.5).” when selecting “Feel the heat”.
   This addition keeps all existing functionality untouched and does not introduce new UI screens or assets.
+  - 14:47 landed by hts-llm in 4.2 min: Added a “Feel the heat” action to the kitchen stove:
 - [ ] Add a subtle scorched‑ground decal to each fire created by `ZoneKit.Fire` (Assets/Scripts/World/Zone/ZoneKit.cs)
   In `Fire(Transform parent, Vector3 at, float scale)` after the ember particle system is created, instantiate a flat quad to act as a burnt‑ground mark.
   Use `GameObject.CreatePrimitive(PrimitiveType.Quad)` named `"Scorch"` and make it a child of the fire root (`go.transform`).

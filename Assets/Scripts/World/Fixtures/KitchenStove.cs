@@ -187,6 +187,7 @@ namespace CloneZ
             into.Add(new InteractAction(_oven ? "Turn off the oven" : "Turn on the oven", _toggleOven));
             into.Add(new InteractAction(_doorOpen ? "Close the oven door" : "Open the oven door", _toggleDoor));
             into.Add(new InteractAction("Cook something", _cook));
+            into.Add(new InteractAction("Feel the heat", ShowWarmth));
         }
 
         #region The controls
@@ -229,9 +230,11 @@ namespace CloneZ
             if (_lit == 0 && !_oven) SetBurner(0, true, true);
             if (ctx.Interactor != null) ctx.Interactor.OpenInventory();
         }
-        #endregion
 
-        #region Looks
+        private void ShowWarmth(InteractContext ctx)
+        {
+            ctx.Notify($"The stove radiates warmth ({Warmth:F1}).");
+        }
         private void ApplyAll()
         {
             for (int i = 0; i < 4; i++)
