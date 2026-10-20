@@ -3765,8 +3765,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   Compute the x‑position from the existing side‑stile calls – e.g. `s0 + 0.0225f` for the left side and `s1 - 0.0225f` for the right side – and place the knob a few centimetres below the rail (`y1 - top * 0.5f - 0.01f`).
   Insert the new boxes right after the four rail/stile `m.Box` calls that currently draw the sash frame, preserving the existing collider and interaction layout.
   Result: each sash (both upper and lower) shows period‑accurate brass pull‑knobs on its top rail, giving the window a worn‑but‑functional look without altering gameplay.
-- [ ] In Assets/Scripts/World/Fixtures/DoormatFixture.cs: Add a tiny “Inspect mat” action to DoormatFixture so the player can get a flavor description of the mat’s condition.
+- [~] In Assets/Scripts/World/Fixtures/DoormatFixture.cs: Add a tiny “Inspect mat” action to DoormatFixture so the player can get a flavor description of the mat’s condition.
   In `DoormatFixture.GetActions` insert after the wipe action:
   `into.Add(new InteractAction("Inspect mat", Inspect).Timed(0.8f, "Inspecting the mat", HumanoidActivity.None));`
   Add a new private static method `Inspect(InteractContext ctx)` that calls `ctx.Notify` with one of two messages depending on `ctx.Stats?.Wetness` (e.g., muddy boots make the mat look “smeared with mud”, otherwise “dry and frayed”).
   Keep all existing code unchanged; the new action should appear alongside “Wipe your feet” and “Look under the mat” in the interaction menu.
+  - 15:54 0htsserver made no changes: **Changed**
