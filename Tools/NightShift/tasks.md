@@ -793,3 +793,19 @@ you want to see in game. Indent extra lines under a task to add detail.
   to a single well‑formed comment, e.g.:
   `/// <summary>World‑space position of this piece.</summary>`
   `public Vector3 Position => transform.position;`
+- [ ] In Assets/Scripts/Rendering/ActorFog.cs, replace the per‑frame hierarchy‑count check with Unity’s hierarchy‑change callback to avoid the `transform.hierarchyCount` lookup each LateUpdate.
+  Remove the line `if (transform.hierarchyCount != _count) Cache();` from `LateUpdate()`.
+  Add a new method:
+  `private void OnTransformChildrenChanged() { Cache(); }`
+  (Unity calls this automatically whenever the actor’s child hierarchy is modified.)
+  Keep the existing `Cache()` call in `Start()` so the initial renderer list is built.
+  This change stops a per‑frame property access and conditional call, saving a tiny but unnecessary allocation‑free check while preserving visual behaviour – actors still update their renderers only when their hierarchy actually changes.
+- [ ] In Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs: Add a “Previous channel” action to `RaidTownFieldRadio.GetActions` and implement its handler
+  In `GetActions` add a line after the existing “Change channel” entry:
+  `into.Add(new InteractAction("Previous channel", PrevChannel).DisabledIf(!near, TooFar));`
+  Create a private method `PrevChannel(InteractContext ctx)` that mirrors `Retune` but steps the channel backwards:
+  `private void PrevChannel(InteractContext ctx)`
+  `{`
+  `_net = (_net + Nets.Length - 1) % Nets.Length;`
+  `MakeNoise(CloneZConfig.ReceiverKnobNoise);`
+  `_captionAt = Time.time + CloneZConfig.ReceiverFirstCaption * 0.5f;`
