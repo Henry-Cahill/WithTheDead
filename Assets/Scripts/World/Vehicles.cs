@@ -148,6 +148,22 @@ public static Vehicle Spawn(int spot, Vector3 at, float yaw, int seed)
                 l.intensity = 0f;
                 l.color = new Color(1f, 0.95f, 0.8f);
                 _lights[i] = l;
+            // Side‑mirror housings
+            Box(_bodyRoot,
+                new Vector3(-0.75f + (float)(rng.NextDouble() - 0.5) * 0.02f,
+                            1.0f,
+                            0.6f + (float)(rng.NextDouble() - 0.5) * 0.02f),
+                new Vector3(0.04f, 0.12f, 0.3f),
+                new Color(0.12f, 0.12f, 0.14f));
+            _bodyRoot.GetChild(_bodyRoot.childCount - 1).localRotation = Quaternion.Euler(0f, rng.Next(-5, 6), 0f);
+            // Right side mirror housing
+            Box(_bodyRoot,
+                new Vector3(0.75f + (float)(rng.NextDouble() - 0.5) * 0.02f,
+                            1.0f,
+                            0.6f + (float)(rng.NextDouble() - 0.5) * 0.02f),
+                new Vector3(0.04f, 0.12f, 0.3f),
+                new Color(0.12f, 0.12f, 0.14f));
+            _bodyRoot.GetChild(_bodyRoot.childCount - 1).localRotation = Quaternion.Euler(0f, rng.Next(-5, 6), 0f);
             }
             Seat = new GameObject("Driver seat").transform;
             Seat.SetParent(transform, false);
