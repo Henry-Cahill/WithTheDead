@@ -3653,3 +3653,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   Create the action with `new InteractAction("Inspect the dial", c => c.Notify("The dial is stiff and scratched; it looks like someone tried to force it."))` and add it to `into`.
   This gives the survivor a brief visual hint without changing any timers, noises, or existing behavior.
   All other code, including the two timed dial actions and the “Listen at the door” action, must remain unchanged.
+- [ ] In Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs, extend the water‑knocking feedback in the `private void Knock(InteractContext ctx)` method by adding four more distinct sentences for intermediate water levels, keeping the existing ones.
