@@ -3526,7 +3526,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Apply the deterministic random source so only ~40 % of the posts get a bolt: `if (rng.NextDouble() < 0.4) { … }` placed inside the same `for` loop.
   This adds at most one extra primitive per post (max ≈ 8 total for a typical segment), stays within the 12‑primitive limit, reuses existing material definitions, and provides period‑appropriate visual detail without affecting colliders or interaction points.
   - 14:43 landed by hts-llm in 3.3 min: All changes compile successfully.**Changed file**
-- [ ] In Assets/Scripts/UI/SkillsPanelController.cs, inside `SkillsPanelController.Build()` within the `for (int i = 0; i < n; i++)` loop, add a thin “separator” rectangle under each skill row to suggest a worn metal seam between entries.
+- [x] In Assets/Scripts/UI/SkillsPanelController.cs, inside `SkillsPanelController.Build()` within the `for (int i = 0; i < n; i++)` loop, add a thin “separator” rectangle under each skill row to suggest a worn metal seam between entries.
+  - 14:43 landed by 0htsserver in 1.6 min: **Changed**
 - [ ] In Assets/Scripts/World/Fixtures/KitchenStove.cs: Add a “Feel the heat” action to KitchenStove so the player can see how much warmth the stove is currently providing.
   In `public override void GetActions(InteractContext ctx, List<InteractAction> into)` insert after the existing actions:
   `into.Add(new InteractAction("Feel the heat", ShowWarmth));`
