@@ -1442,7 +1442,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   *add a short cylinder to represent a rolled towel*:
   `if (Chance(rng, 0.5)) m.Cylinder(new Vector3(sinkX - SteelColdTap.x - 0.07f, SteelDeckY + 0.01f, SteelColdTap.z - 0.05f), 0.03f, 0.12f, 8, M(Paper));`
   The cylinder (radius 0.03 m, length 0.12 m) sits just to the left and slightly forward of the cold tap, uses the existing Paper material, keeps colliders and interaction points unchanged, and adds only one new primitive.
-- [ ] Modify Assets/Scripts/World/Fixtures/RaidStoreCopier.cs to let the survivor take the original sheet from the copier glass as a one‑time action.
+- [x] Modify Assets/Scripts/World/Fixtures/RaidStoreCopier.cs to let the survivor take the original sheet from the copier glass as a one‑time action.
   Add a new private field `bool _originalTaken;` to store whether the sheet has already been taken.
   In `GetActions(InteractContext ctx, List<InteractAction> into)`, after the existing “Read what's on the glass” action (when the lid is open), insert a new action:
   `if (open && !_originalTaken)`
@@ -1451,6 +1451,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `c.Notify(Originals[_original]);`
   `}));`
   The action should only appear while the lid is open and the sheet has not yet been taken, preventing repeats.
+  - 04:34 landed by 0htsserver in 1.8 min: **Changed file**
 - [ ] Add four new Zone exposure marks to the static constructor of `ZoneExposure` in `Assets/Scripts/Zone/ZoneHazards.cs`; each call should follow the existing `M(id, name, description, ...)` pattern, with descriptions that match the style of `"Your pupils never quite close now. You see further in the dark; bright light leaves you exposed."` and address cold endurance, snow‑blindness, static radio interference, and lingering farm folklore.
   Insert the new calls after the last existing `M(... )` (`"Still Hands"`).
   Use ids: `"frostbite"`, `"snow_blind"`, `"static_harbor"`, `"old_folklore"`.

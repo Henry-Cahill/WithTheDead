@@ -62,7 +62,7 @@ namespace CloneZ
         private FixturePart _lid;
         private Renderer _jamLamp;
         private bool _jammed;
-        private int _original, _said;
+        private int _original, _said; private bool _originalTaken;
         private float _noiseAt;
 
         public override string DisplayName => "Photocopier";
@@ -99,7 +99,13 @@ namespace CloneZ
             else into.Add(Copy().DisabledIf(dead != null, dead));
             bool open = _lid != null && _lid.IsOpen;
             into.Add(new InteractAction(open ? "Close the lid" : "Lift the lid", c => SetLid(!open)));
-            if (open) into.Add(new InteractAction("Read what's on the glass", c => c.Notify(Originals[_original])));
+            if (open) {
+                into.Add(new InteractAction("Read what's on the glass", c => c.Notify(Originals[_original])));
+                if (!_originalTaken) into.Add(new InteractAction("Take the original sheet", c => {
+                    _originalTaken = true;
+                    c.Notify(Originals[_original]);
+                }));
+            }
         }
 
         private InteractAction Copy()
