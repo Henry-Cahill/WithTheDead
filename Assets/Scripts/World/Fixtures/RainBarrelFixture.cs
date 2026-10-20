@@ -35,6 +35,9 @@ namespace CloneZ
             into.Add(new InteractAction("Wash your hands in the barrel", Wash)
                 .Timed(WashSeconds, "Washing your hands")
                 .DisabledIf(!water, b.DryMessage));
+            into.Add(new InteractAction("Wash your face in the barrel", WashFace)
+                .Timed(WashSeconds, "Washing your face")
+                .DisabledIf(!water, b.DryMessage));
             into.Add(new InteractAction("Skim the leaves off the top", Skim).Timed(SkimSeconds, "Skimming the barrel"));
         }
 
@@ -57,6 +60,13 @@ namespace CloneZ
         {
             WaterUse.Freshen(ctx, 0.8f);
             ctx.Notify("You scrub your hands in the cold rainwater. Better than nothing.");
+        }
+
+        private static void WashFace(InteractContext ctx)
+        {
+            // Slightly less refreshing than washing hands
+            WaterUse.Freshen(ctx, 0.4f);
+            ctx.Notify("You splash water on your face. It's chilly, but it helps.");
         }
 
         private void Skim(InteractContext ctx)
