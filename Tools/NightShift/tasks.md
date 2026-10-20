@@ -1397,12 +1397,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 04:18 landed by 0htsserver in 2.5 min: **Changed file**
 - [ ] Fix compile error in Assets/Scripts/World/FurnitureBuilder.Kitchen.cs: the `FridgeDoor` method creates note objects with a non‑existent `RaidMesh.Box(Vector3,Vector3,Quaternion,Surf)` overload.
   In `FridgeDoor`, replace the line
-- [ ] Add six tiny red rivet cylinders around the hub of the hose‑reel wheel in the `HoseReel` method of Assets/Scripts/World/StarterHome.Grounds.cs
+- [x] Add six tiny red rivet cylinders around the hub of the hose‑reel wheel in the `HoseReel` method of Assets/Scripts/World/StarterHome.Grounds.cs
   Inside `HoseReel`, after the line `wheel.Cylinder(hub, 0.032f, 0.01f, 12, red);` insert a loop that creates six small cylinders to act as rivets.
   Each rivet should be `wheel.Cylinder(hub + new Vector3(Mathf.Cos(a), 0f, Mathf.Sin(a)) * 0.029f, 0.003f, 0.008f, 6, red);` where `a = i * Mathf.PI * 2f / 6` and `i` ranges 0‑5.
   The rivet radius (0.003 m) and height (0.008 m) keep the total added primitives under the 12‑primitive limit.
   Using the same `red` material ensures colour consistency; no new colliders or interaction points are introduced, preserving existing behaviour.
   Result: the wheel now shows a realistic pattern of tiny metal rivets around its centre, adding period‑appropriate visual detail to the garden‑hose reel.
+  - 04:20 landed by 0htsserver in 1.8 min: Added six tiny red rivet cylinders around the hose‑reel wheel for visual detail.
 - [ ] Add a quick‑inspect action to the drone pickup menu in Assets/Scripts/Gadgets/Gadgets.cs, inside `DronePickup.GetActions`.
   Insert a new `InteractAction` after the existing ones, e.g.:
   `into.Add(new InteractAction("Inspect", c => { var d = _d; if (d == null) return; string msg = "Battery " + Mathf.RoundToInt(d.Battery01 * 100f) + "%"; if (d.HasGrenade) msg += ", grenade armed"; GameEvents.RaiseToast(msg); }));`
