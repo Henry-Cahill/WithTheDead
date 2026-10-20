@@ -307,7 +307,7 @@ namespace CloneZ
             if (_player != null)
             {
                 Vector3 p = _player.transform.position;
-                float best = float.MaxValue;
+                float best = float.MaxValue; float bestClosedDist = float.MaxValue;
                 for (int i = 0; i < _exits.Count; i++)
                 {
                     RaidExit e = _exits[i];
@@ -319,7 +319,15 @@ namespace CloneZ
                     {
                         if (d2 < best) { best = d2; open = e; }
                     }
-                    else if (closed == null) closed = e;
+                    else
+                    {
+                        // Track the nearest closed exit the player is standing in
+                        if (closed == null || d2 < bestClosedDist)
+                        {
+                            bestClosedDist = d2;
+                            closed = e;
+                        }
+                    }
                 }
             }
 

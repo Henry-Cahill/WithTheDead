@@ -3068,7 +3068,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Uses the existing brass material `Mt(Brass)` for consistency with other heater fittings.
   Keeps colliders, interaction points and pivots unchanged; adds only one primitive.
   - 12:13 landed by 1htsserver in 1.8 min: **Changes Made**
-- [ ] In Assets/Scripts/Extraction/ExtractionManager.cs: Fix ExtractionManager.TickExtraction so the “closed exit here” correctly reflects the nearest closed exit the player is standing in, instead of just the first one found, preventing UI from showing the wrong blocked reason.
+- [x] In Assets/Scripts/Extraction/ExtractionManager.cs: Fix ExtractionManager.TickExtraction so the “closed exit here” correctly reflects the nearest closed exit the player is standing in, instead of just the first one found, preventing UI from showing the wrong blocked reason.
+  - 12:16 landed by 1htsserver in 2.6 min: **Changed file**
 - [ ] Add subtle nail‑head details to the rough‑sawn plank texture (Assets/Scripts/World/DecorTextures.cs → `public static Texture2D Planks(Color color)`)
   In the double‑loop that builds `px`, after the line `Color c = Mul(color, k);` insert a deterministic‑random test that occasionally darkens a single pixel to simulate a nail head.
   `if (R01(x, y, 117) < 0.009f) c = Mul(c, 0.45f);` // ~1 % of pixels become a dark ~9 mm dot (≈0.009 m) – the “head”.
