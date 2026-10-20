@@ -106,7 +106,30 @@ namespace CloneZ
                 if (type == ZombieType.Crawler) transform.localScale = new Vector3(1f, 0.5f, 1f);
             }
 
-            _agent.speed = _baseSpeed * 0.5f;
+    // Add up to two tiny rust patches on the forearm for visual detail
+        // Deterministic but random per zombie instance
+        for (int i = 0; i < 2; i++)
+        {
+            if (Random.value < 0.5f)
+            {
+                var rust = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                rust.transform.SetParent(transform, false);
+                rust.transform.localScale = new Vector3(0.04f, 0.02f, 0.01f);
+                rust.transform.localPosition = new Vector3(Random.Range(-0.05f, 0.05f), 1.15f, Random.Range(0.05f, 0.12f));
+                rust.transform.localRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), 0f);
+                var rend = rust.GetComponent<Renderer>();
+                if (rend != null)
+                {
+                    var mat = rend.material;
+                    Color baseColor = new Color(0.4f, 0.25f, 0.1f);
+                    float v = Random.Range(-0.05f, 0.05f);
+                    Color col = new Color(baseColor.r + v, baseColor.g + v, baseColor.b + v);
+                    mat.color = col;
+                    if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", col);
+                }
+            }
+        }
+        _agent.speed = _baseSpeed * 0.5f;
             _agent.acceleration = 12f;
             _agent.angularSpeed = 999f;
             EnterIdle();
