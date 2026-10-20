@@ -3075,3 +3075,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   `else if (R01(x, y, 118) < 0.017f) c = Mul(c, 0.65f);` // a lighter rim around ~1.5 % of pixels.
   Keep the existing row‑grain and seam logic untouched; the new dark spots blend with the plank colour using the same `Mul` helper, so no new materials or colours are introduced.
   This adds a period‑appropriate visual cue (hand‑driven nails) while staying within the 12‑primitive limit (only two simple colour tweaks per pixel).
+- [ ] In Assets/Scripts/World/Fixtures/ShowerFixture.cs: Cache the costly `PlayerInteractor.Current` lookup in `ShowerFixture` so the per‑frame `Watch()` method does not call it every frame
+  Add a private field `private PlayerInteractor _playerInteractor;`
+  In `Update()` before calling `Watch()`, set `_playerInteractor = PlayerInteractor.Current;` (or only when it’s null to avoid unnecessary assignments)
+  Change `Watch()` to use the cached `_playerInteractor` instead of `PlayerInteractor.Current`
+  When the component is disabled (`OnDisable`) clear the cache (`_playerInteractor = null;`) to handle player respawn
+  The player will see exactly the same behavior – entering, exiting, and auto‑teleporting from the stall remains unchanged, but the per‑frame overhead of repeatedly searching for the `PlayerInteractor` instance is eliminated.
