@@ -23,13 +23,17 @@ namespace CloneZ
         private static Inventory s_Stash;
         private static CharacterProfile s_StashOwner;
 
+                /// <summary>Full path to the currently used profile file (or override).
+        /// </summary>
         public static string FilePath => Path.Combine(Application.persistentDataPath, PathOverride ?? FileName);
 
         /// <summary>Test harnesses only (see <see cref="SmokeTest"/>): a different profile file, and no touching the
         /// player's legacy files. Set before anything loads the profile.</summary>
         public static string PathOverride;
+                /// <summary>True when a test profile override is active, isolating file I/O.</summary>
         public static bool Sandboxed => PathOverride != null;
 
+                /// <summary>Current Unix timestamp (seconds since epoch) used for time‑stamping profile events.</summary>
         public static long NowUnix => DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
         /// <summary>The account, loaded on first use (a fresh one when no file exists).</summary>
@@ -42,12 +46,15 @@ namespace CloneZ
             }
         }
 
+                /// <summary>The currently active character, or <c>null</c> if none is loaded.</summary>
         public static CharacterProfile ActiveCharacter => Account != null ? Account.Active : null;
+                /// <summary>Whether the active character is alive (has a profile and is not dead).</summary>
         public static bool HasLivingCharacter => ActiveCharacter != null && !ActiveCharacter.Dead;
 
         public static event Action Changed;
 
         #region I/O
+                /// <summary>Loads the profile from disk (or creates a fresh one) and sets up the static cache.</summary>
         public static void Load()
         {
             try
@@ -112,6 +119,7 @@ namespace CloneZ
             if (a.ActiveIndex >= a.Characters.Count) a.ActiveIndex = Mathf.Max(0, a.Characters.Count - 1);
         }
 
+                /// <summary>Normalises a newly loaded or created account to ensure all collections are non‑null.</summary>
         public static void NormalizeCharacter(CharacterProfile c)
         {
             if (c == null) return;
@@ -164,6 +172,7 @@ namespace CloneZ
 
         #region Characters
         /// <summary>A fresh character with starter money, standing and hideout (not yet added to the account).</summary>
+                /// <summary>Creates a new character with starter money, equipment and hideout (not yet added to the account).</summary>
         public static CharacterProfile NewCharacter(string name, string profession, List<string> traits, string faction, string bloodType, bool ironman)
         {
             var c = new CharacterProfile
@@ -183,6 +192,7 @@ namespace CloneZ
             return c;
         }
 
+                /// <summary>Adds a character to the account (replacing a dead one if the slot limit is reached).</summary>
         public static void AddCharacter(CharacterProfile c)
         {
             if (c == null) return;
@@ -203,6 +213,7 @@ namespace CloneZ
             Save();
         }
 
+                /// <summary>Selects the active character by index, committing any pending stash changes.</summary>
         public static void SelectCharacter(int index)
         {
             if (index < 0 || index >= Account.Characters.Count) return;
@@ -212,6 +223,7 @@ namespace CloneZ
             Save();
         }
 
+                /// <summary>Deletes the character at the given index, adjusting the active index as needed.</summary>
         public static void DeleteCharacter(int index)
         {
             if (index < 0 || index >= Account.Characters.Count) return;
@@ -225,6 +237,7 @@ namespace CloneZ
         /// Ends the season: every character starts over (level, stash, traders, hideout, quests) but keeps their
         /// name, profession, traits and faction — and the account keeps everything it has learned about the Zone.
         /// </summary>
+                /// <summary>Wipes the season, resetting all characters while preserving their core identities.</summary>
         public static void Wipe()
         {
             AccountProfile a = Account;
@@ -248,6 +261,7 @@ namespace CloneZ
         }
 
         /// <summary>True when the season has run its configured length and a wipe is due.</summary>
+                /// <summary>True when the season length has elapsed and a wipe is due.</summary>
         public static bool SeasonExpired
         {
             get
@@ -261,6 +275,7 @@ namespace CloneZ
 
         #region Stash (live inventory)
         /// <summary>The active character's stash as a gridded inventory (built on first use; written back on Save).</summary>
+                /// <summary>The live stash inventory for the active character (built on demand).</summary>
         public static Inventory StashInventory
         {
             get
@@ -293,6 +308,7 @@ namespace CloneZ
         }
 
         /// <summary>Grows the stash grid (a hideout stash upgrade).</summary>
+                /// <summary>Sets the stash grid size (rows) and rebuilds the live inventory.</summary>
         public static void SetStashRows(int rows)
         {
             CharacterProfile c = ActiveCharacter;
@@ -303,12 +319,14 @@ namespace CloneZ
         }
 
         /// <summary>Writes the live stash back into the profile's list.</summary>
+                /// <summary>Writes the live stash inventory back into the profile's stored list.</summary>
         public static void CommitStash()
         {
             if (s_Stash == null || s_StashOwner == null) return;
             s_StashOwner.Stash = ToSaves(s_Stash);
         }
 
+                /// <summary>Converts a live inventory into a list of saved stack records.</summary>
         public static List<StackSave> ToSaves(Inventory inv)
         {
             var list = new List<StackSave>();
@@ -322,6 +340,7 @@ namespace CloneZ
             return list;
         }
 
+        /// <summary>Creates a saved stack record from an inventory stack.</summary>
         public static StackSave ToSave(ItemStack s) => new StackSave
         {
             Id = s.Def.Id,
