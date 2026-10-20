@@ -2187,3 +2187,20 @@ you want to see in game. Indent extra lines under a task to add detail.
   Set `_weather = WeatherSystem.Instance;` in `OnEnable` (or `Awake`) after the base call.
   Replace the line `float rain = WeatherSystem.Instance != null ? WeatherSystem.Instance.RainIntensity : 0f;` in `Advance()` with `float rain = _weather != null ? _weather.RainIntensity : 0f;`.
   This removes the per‑frame lookup of the singleton, eliminating unnecessary FindObject‑type work while keeping visual behavior unchanged.
+- [ ] Add an “Open washing machine” action to Assets/Scripts/World/Fixtures/RaidHomeWasher.cs that works when the washer isn’t running, opens the drum storage and gives the player a brief description.
+  modify `GetActions` (the `if (_running) { … } else { … }` block) to insert after the existing “Read the dial” line:
+  `into.Add(new InteractAction("Open washing machine", OpenDoor)`
+  `.DisabledIf(_drum != null && _drum.IsOpen, "It's already open"));`
+  add a new private method below `ReadDial`:
+- [ ] Append five new comforting tidy‑up lines to the `CivicReading.Tidying` string array in Assets/Scripts/World/Fixtures/RaidCivicFridge.cs
+  The array currently ends with:
+  `"You stack the loose papers and tuck them in at the end of the shelf.",`
+  Add the following entries (each a whole sentence in quotes) after that line:
+  `"You dust the lower shelves; the quiet scrape feels like a sigh of relief."`
+  `"You align the bookmarks, their tiny tabs forming a neat row of colors."`
+  `"You straighten the scattered pens, their caps clicking into place."`
+  `"You slide the index cards back into their holder, the soft thud echoing in the quiet room."`
+  `"You smooth the worn carpet runner, feeling the fibers settle under your hand."`
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Economy/MoralLedger.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
