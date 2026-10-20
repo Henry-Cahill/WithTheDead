@@ -3760,11 +3760,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Player will now see the “Look in the mirror” option on the bathroom cabinet and receive the intended descriptive feedback.
   All other fields, constants and logic remain unchanged.
   - 15:52 landed by 0htsserver in 1.5 min: Changed **Assets/Scripts/World/Fixtures/MirrorCabinet.cs**
-- [ ] Add a pair of tiny brass pull‑knobs to each sash’s top rail in `Assets/Scripts/World/FurnitureBuilder.RaidOpenings.cs` → method `OpeningSash`
+- [x] Add a pair of tiny brass pull‑knobs to each sash’s top rail in `Assets/Scripts/World/FurnitureBuilder.RaidOpenings.cs` → method `OpeningSash`
   Add two small brass boxes (size 0.012 × 0.025 × 0.008 m) at the outer ends of the top rail, using the existing `Mt(Brass)` material and the same `across + roomSide * (depth * 0.5f + 0.008f)` offset as the lifts.
   Compute the x‑position from the existing side‑stile calls – e.g. `s0 + 0.0225f` for the left side and `s1 - 0.0225f` for the right side – and place the knob a few centimetres below the rail (`y1 - top * 0.5f - 0.01f`).
   Insert the new boxes right after the four rail/stile `m.Box` calls that currently draw the sash frame, preserving the existing collider and interaction layout.
   Result: each sash (both upper and lower) shows period‑accurate brass pull‑knobs on its top rail, giving the window a worn‑but‑functional look without altering gameplay.
+  - 15:55 landed by hts-llm in 4.5 min: **Changed file**
 - [~] In Assets/Scripts/World/Fixtures/DoormatFixture.cs: Add a tiny “Inspect mat” action to DoormatFixture so the player can get a flavor description of the mat’s condition.
   In `DoormatFixture.GetActions` insert after the wipe action:
   `into.Add(new InteractAction("Inspect mat", Inspect).Timed(0.8f, "Inspecting the mat", HumanoidActivity.None));`

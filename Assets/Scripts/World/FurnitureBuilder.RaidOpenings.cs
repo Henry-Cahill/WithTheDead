@@ -58,8 +58,16 @@ namespace CloneZ
             m.Box(l.P(mid, y0 + bottom * 0.5f, across), l.Size(w - 0.09f, bottom, lower ? depth : depth + 0.005f), frame);
             float glass = h - top - bottom;
             m.Box(l.P(mid, y0 + bottom + glass * 0.5f, across), l.Size(0.03f, glass, 0.03f), frame);
-            if (!lower) return;
+            // Add tiny brass pull‑knobs on the top rail of each sash (both left and right sides)
             Surf brass = Mt(Brass);
+            float knobY = y1 - top * 0.5f - 0.01f; // a few centimetres below the top rail
+            float knobDepth = across + roomSide * (depth * 0.5f + 0.008f);
+            // Left knob
+            m.Box(l.P(s0 + 0.0225f, knobY, knobDepth), new Vector3(0.012f, 0.025f, 0.008f), brass);
+            // Right knob
+            m.Box(l.P(s1 - 0.0225f, knobY, knobDepth), new Vector3(0.012f, 0.025f, 0.008f), brass);
+            if (!lower) return;
+            // Existing brass lifts on the lower sash's bottom rail
             for (int e = -1; e <= 1; e += 2)
                 m.Box(l.P(mid + e * w * 0.25f, y0 + 0.03f, across + roomSide * (depth * 0.5f + 0.008f)), l.Size(0.05f, 0.015f, 0.016f), brass);
         }
