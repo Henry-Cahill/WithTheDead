@@ -1086,3 +1086,20 @@ you want to see in game. Indent extra lines under a task to add detail.
   *Right handle:* same but X = +0.68f.
   Reuse the existing `CloneZUtil.Mat` material via the `Box` helper; no extra colliders or interaction points are added.
   Total added primitives: 2 (well under the 12‑primitive limit). The car will now show period‑appropriate metal door handles with subtle random variation, enhancing visual realism without altering gameplay.
+- [ ] Add a thin chrome trim to the top edge of each switch plate in `Assets/Scripts/World/FurnitureBuilder.Lighting.cs` `SwitchPlate` method
+  – After the existing line `m.Box(at + normal * 0.004f, new Vector3(width, 0.114f, 0.008f), q, G(SwitchCream));` add a second box that draws a raised metal strip:
+  – `m.Box(at + normal * 0.004f + Vector3.up * (0.114f * 0.5f - 0.001f), new Vector3(width, 0.002f, 0.001f), q, Mt(Chrome));`
+  – This creates a ~2 mm tall, 1 mm deep chrome edge along the plate’s upper side, giving the period‑correct switch a subtle worn‑metal detail without altering any existing colliders or interaction logic.
+- [ ] In Assets/Scripts/World/Zone/ZoneKit.cs: Reduce redundant per‑frame calls to `ZoneKit.TintByAmbient()` in `ZoneSmokeTint.Update` by guarding with a static frame‑counter cache.
+  Add a private static `int s_LastFrame = -1;` to `ZoneSmokeTint`.
+  Replace the existing `Update` body `=> ZoneKit.TintByAmbient();` with:
+  `if (Time.frameCount == s_LastFrame) return;`
+  `s_LastFrame = Time.frameCount;`
+  `ZoneKit.TintByAmbient();`
+  This makes only the first `ZoneSmokeTint` instance each frame actually invoke the tinting logic; all others early‑out, eliminating unnecessary method calls and `Time.time` checks while keeping the visual result identical.
+- [ ] Add a small “Inspect” action to `SnareTrap.GetActions` in Assets/Scripts/Survival/FieldSurvival.cs that lets the player see how long until the snare is ready.
+  In `SnareTrap.GetActions(InteractContext ctx, List<InteractAction> into)` insert after the existing `into.Add(new InteractAction(...))` call:
+  `into.Add(new InteractAction("Inspect", c => { float secs = Mathf.Max(0f, _readyAt - Time.time); GameEvents.RaiseToast($"Snare will be ready in {Mathf.CeilToInt(secs)} s."); }));`
+  Use only identifiers already present (`Mathf`, `GameEvents.RaiseToast`, `_readyAt`, `Time.time`).
+  Do not add any `DisabledIf`; the action should be usable at any time, giving a toast like “Snare will be ready in 57 s.”.
+  Preserve the current “Take the rabbit / Collect the empty snare / Leave it (not yet)” action unchanged.
