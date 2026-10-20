@@ -2433,9 +2433,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 09:37 landed by 1htsserver in 1.5 min: **Changed file**
 - [x] Add an “Inspect water level” action to Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs that tells the player the exact amount of water remaining in the heater’s tank.
   - 09:41 landed by 0htsserver in 4.4 min: **Changed files**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Zone/Uncanny.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Zone/Uncanny.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 09:50 landed by hts-llm in 11.6 min: Added concise `/// <summary>` documentation to every public method and property in **Assets/Scripts/World/Zone/Uncanny.cs** that previously 
 - [x] In Assets/Scripts/World/Zone/ZoneCordon.cs: Add a slight weathered‑metal plate on some fence posts in `ZoneCordon.Build` to give the cordon a more worn, period‑correct look.
   In the loop that creates each post (`fence.Solid.Box(post + Vector3.up * 1.25f, new Vector3(0.09f, 2.5f, 0.09f), ZoneKit.Mt(ZoneKit.Galvanised))`) insert a conditional block that, with a small deterministic chance, places a thin rust‑coloured plate on the outward‑facing side of the post.
   `// 12 % chance per post to show a rusted metal plate on its outer face`

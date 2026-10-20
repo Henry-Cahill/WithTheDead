@@ -34,6 +34,8 @@ namespace CloneZ
             "...silence sits heavy, like a question unanswered..."
         };
 
+        /// <summary>Starts the Uncanny events for a raid by attaching the director to the host and initializing timing.</summary>
+                /// <summary>Instantiates an UncannyDirector on the host for the raid and sets timing parameters.</summary>
         public static void BeginRaid(GameObject host, ZoneDef zone)
         {
             if (!SandboxSettings.Current.UncannyEvents) return;
@@ -113,6 +115,7 @@ namespace CloneZ
         private static readonly List<ReturnedFigure> s_All = new List<ReturnedFigure>();
         private static bool s_ShotOne;
 
+        /// <summary>Gets the current number of Returned figures active in the world.</summary>
         public static int Count => s_All.Count;
         public bool IsDead => false;
         public Transform Transform => transform;
@@ -124,6 +127,7 @@ namespace CloneZ
         private Vector3 _lastPos;
         private float _whisper;
 
+                /// <summary>Resets the static state for a new raid, clearing all Returned figures.</summary>
         public static void ResetForRaid()
         {
             s_All.Clear();
@@ -139,6 +143,7 @@ namespace CloneZ
             MoralLedger.Record("shot one of the Returned", MoralLedger.ShotTheReturned);
         }
 
+                /// <summary>Creates a new Returned figure at a suitable location and initializes its components.</summary>
         public static ReturnedFigure Spawn(System.Random rng)
         {
             Vector3 from;
@@ -243,6 +248,7 @@ namespace CloneZ
         private float _life = 15f;
         private float _stare;
 
+                /// <summary>Spawns a distant, fog‑edge figure visible to the given viewer under specific conditions.</summary>
         public static void Spawn(Actor viewer)
         {
             Camera cam = Camera.main;
