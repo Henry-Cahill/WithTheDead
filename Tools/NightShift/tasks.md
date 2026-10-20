@@ -3038,7 +3038,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   These titles match the style of the existing entry `"Edible Plants of the Zone"` and expand the in‑world literature to cover winter survival, local folklore, improvised tools, and wartime communication.
   - 12:01 landed by hts-llm in 1.6 min: **Changed file**
 - [ ] Modify Assets/Scripts/UI/InventoryUIController.List.cs: in `InventoryUIController.AddIcon(RectTransform row, ItemDef def, bool badge)` add a small “damage scar” overlay on the item icon when the item is damageable and its condition is below 0.5 to convey wear.
-- [ ] Fix the crosshair zombie detection in Assets/Scripts/Player/PlayerController.cs so that zombies under the crosshair are correctly identified.
+- [x] Fix the crosshair zombie detection in Assets/Scripts/Player/PlayerController.cs so that zombies under the crosshair are correctly identified.
   In `UpdateCrosshairAim()` the second `CastPastSelf` call uses the layer mask `1 << CloneZConfig.IgnoreRaycastLayer`, which only hits the “IgnoreRaycast” layer; zombies are on other layers, so the ray never finds them and the crosshair never turns red.
   Change the mask to exclude the ignore‑raycast layer instead of only including it: replace `1 << CloneZConfig.IgnoreRaycastLayer` with `~(1 << CloneZConfig.IgnoreRaycastLayer)`.
   After this fix the player will see the red crosshair when aiming at a living zombie and the gun will auto‑target correctly.
+  - 12:03 landed by 1htsserver in 0.8 min: **Changed:**

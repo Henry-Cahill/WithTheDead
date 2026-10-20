@@ -177,7 +177,7 @@ namespace CloneZ
             }
 
             CrosshairZombie = null;
-            if (CastPastSelf(origin, dir, solid, 1 << CloneZConfig.IgnoreRaycastLayer, out RaycastHit zombieHit, out _))
+            if (CastPastSelf(origin, dir, solid, ~(1 << CloneZConfig.IgnoreRaycastLayer), out RaycastHit zombieHit, out _))
             {
                 var zombie = zombieHit.collider.GetComponentInParent<ZombieHealth>();
                 if (zombie != null && !zombie.IsDead)
