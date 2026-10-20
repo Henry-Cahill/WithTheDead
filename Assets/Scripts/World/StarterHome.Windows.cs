@@ -105,6 +105,16 @@ namespace CloneZ
             m.Box(f.P(s1 - 0.0225f, cy, across), f.Size(0.045f, h, SashDepth), frame);
             m.Box(f.P(f.Mid, y1 - topRail * 0.5f, across), f.Size(w - 0.09f, topRail, lower ? SashDepth + 0.005f : SashDepth), frame);
             m.Box(f.P(f.Mid, y0 + bottomRail * 0.5f, across), f.Size(w - 0.09f, bottomRail, lower ? SashDepth : SashDepth + 0.005f), frame);
+            // Add wooden pegs at the four corners of the sash (period‑correct muntin detail)
+            float pegSize = 0.008f;
+            // top‑left
+            m.Box(f.P(s0 + 0.0225f, y1 - topRail * 0.5f, across), f.Size(pegSize, pegSize, SashDepth), frame);
+            // top‑right
+            m.Box(f.P(s1 - 0.0225f, y1 - topRail * 0.5f, across), f.Size(pegSize, pegSize, SashDepth), frame);
+            // bottom‑left
+            m.Box(f.P(s0 + 0.0225f, y0 + bottomRail * 0.5f, across), f.Size(pegSize, pegSize, SashDepth), frame);
+            // bottom‑right
+            m.Box(f.P(s1 - 0.0225f, y0 + bottomRail * 0.5f, across), f.Size(pegSize, pegSize, SashDepth), frame);
             float glass = h - topRail - bottomRail, gy = y0 + bottomRail + glass * 0.5f;
             m.Box(f.P(f.Mid, gy, across), f.Size(0.03f, glass, 0.03f), frame);
             m.Box(f.P(f.Mid, gy, across), f.Size(w - 0.09f, glass, 0.006f), DecorPalette.Glass(SashGlass));

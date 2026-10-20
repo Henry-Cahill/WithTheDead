@@ -4064,7 +4064,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Themes to cover: freezing water pipes, soot‑filled air, distant thunder, creaking wood, breath visible in the cold, and the lingering scent of woodsmoke.
   Do not modify or remove any other code; preserve the current notes unchanged.
   - 18:29 landed by 0htsserver in 3.2 min: **Changed** `Assets/Scripts/Economy/Hideout.cs` – appended six new winter‑flavor notes after the existing “The wind whistles …” line.
-- [ ] Add four small wooden pegs at the corners of each window sash in `Assets/Scripts/World/StarterHome.Windows.cs` → `WindowSash` method, after the line that creates the bottom rail box (`m.Box(f.P(f.Mid, y0 + bottomRail * 0.5f, across), f.Size(w - 0.09f, bottomRail, lower ? SashDepth : SashDepth + 0.005f), frame);`).
+- [x] Add four small wooden pegs at the corners of each window sash in `Assets/Scripts/World/StarterHome.Windows.cs` → `WindowSash` method, after the line that creates the bottom rail box (`m.Box(f.P(f.Mid, y0 + bottomRail * 0.5f, across), f.Size(w - 0.09f, bottomRail, lower ? SashDepth : SashDepth + 0.005f), frame);`).
   Define a peg size of 0.008 m and place a cube at each intersection of the vertical stiles and the top/bottom rails using the existing `frame` material (`Surf frame = DecorPalette.Matte(TrimWhite);`).
   Use the existing `s0` and `s1` values for the stiles positions:
   `float pegSize = 0.008f;`
@@ -4073,3 +4073,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `f.P(s0 + 0.0225f, y1 - topRail * 0.5f, across), // top‑left`
   `f.P(s1 - 0.0225f, y1 - topRail * 0.5f, across), // top‑right`
   `f.P(s0 + 0.0225f, y0 + bottomRail * 0.5f, across),// bottom‑left`
+  - 18:31 landed by 0htsserver in 1.6 min: **Changed files**
