@@ -126,8 +126,8 @@ namespace CloneZ
             gas.ConditionLossChance = 1;
 
             string[] skills = { "aiming", "firstaid", "mechanics", "carpentry", "foraging", "fishing", "cooking", "metabolism" };
-            string[] titles = { "Marksman's Notebook", "Field Medicine Vol. 1", "Engines for Idiots", "The Joinery Handbook",
-                                "Edible Plants of the Zone", "The Patient Angler", "Cooking on Nothing", "Ration Discipline" };
+string[] titles = { "Marksman's Notebook", "Field Medicine Vol. 1", "Engines for Idiots", "The Joinery Handbook",
+                                 "Edible Plants of the Zone", "The Patient Angler", "Cooking on Nothing", "Ration Discipline", "Winter Fire-making Guide", "Snowbound Radio Log", "Old Man Henderson's Journal", "Midnight Patrol Report", "Frostbite Prevention Memo" };
             for (int i = 0; i < skills.Length; i++)
                 Tool(b, "book_" + skills[i], titles[i], 0.4f, 1, "Reading it multiplies the experience you gain in one skill.", "Read", 1, 2);
         }

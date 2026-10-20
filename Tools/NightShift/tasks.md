@@ -3028,7 +3028,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `into.Add(new InteractAction("Check water flow", c => { if (_open && WaterMains.MainsOn) c.Notify("Water is rushing out at normal pressure."); else if (_open) c.Notify("The tap is open but the mains are shut off – no flow."); else c.Notify("The tap is closed, so no water is flowing."); }));`
   The player will now see an additional menu option “Check water flow” that gives a clear, context‑sensitive message about whether water is actually running, without altering any existing behavior.
   - 12:00 landed by 1htsserver in 2.1 min: **Summary**
-- [ ] Append five new book titles to the `titles` string array in Assets/Scripts/Content/ZoneContent.Gear.cs (inside `RegisterSurvival`), adding the entries after the existing last title.
+- [x] Append five new book titles to the `titles` string array in Assets/Scripts/Content/ZoneContent.Gear.cs (inside `RegisterSurvival`), adding the entries after the existing last title.
   Locate the line `string[] titles = { "Marksman's Notebook", "Field Medicine Vol. 1", "Engines for Idiots", "The Joinery Handbook", "Edible Plants of the Zone", "The Patient Angler", "Cooking on Nothing", "Ration Discipline" };` and insert the following titles before the closing brace, each followed by a comma:
   `"Winter Fire‑making Guide",`
   `"Snowbound Radio Log",`
@@ -3036,4 +3036,5 @@ you want to see in game. Indent extra lines under a task to add detail.
   `"Midnight Patrol Report",`
   `"Frostbite Prevention Memo"`
   These titles match the style of the existing entry `"Edible Plants of the Zone"` and expand the in‑world literature to cover winter survival, local folklore, improvised tools, and wartime communication.
+  - 12:01 landed by hts-llm in 1.6 min: **Changed file**
 - [ ] Modify Assets/Scripts/UI/InventoryUIController.List.cs: in `InventoryUIController.AddIcon(RectTransform row, ItemDef def, bool badge)` add a small “damage scar” overlay on the item icon when the item is damageable and its condition is below 0.5 to convey wear.
