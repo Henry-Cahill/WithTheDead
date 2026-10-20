@@ -3439,3 +3439,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Does not modify `_spin` or `_spinSpeed`
   Plays the same small fixture noise via `MakeNoise(CloneZConfig.FixtureNoiseSmall);` when the action begins
   The player should now see an extra “Relax” option when already seated, allowing a short timed rest that grants the same calm bonus as a spin round without turning the chair. All existing fields, constants and methods remain unchanged.
+- [ ] Append four Kentucky‑winter themed flavour‑text trait entries to the `ProfessionCatalog.Traits` list in Assets/Scripts/Profile/ProfessionCatalog.cs; each entry must use a full‑sentence blurb that could appear on a note, radio log, wall scribble or scrap of paper the survivor might find, and the `Apply` action can be a harmless no‑op (e.g. `m => {}`).
+- [ ] Add a small rust‑colored latch and two bolts to the front of the crypt niche in the cemetery landmark (Assets/Scripts/World/Zone/ZoneLandmarks.cs, method Cemetery(SiteBuilder sb))
+  Quote the existing crypt‑niche geometry: `sb.Solid.Box(new Vector3(0f, 1.4f, 5.4f), new Vector3(4f, 2.8f, 2.4f), ZoneKit.M(stone));`
+  After that line, insert a rust‑tint material: `Color rust = new Color(0.5f, 0.3f, 0.1f);`
+  Create a latch plate centered on the front face (≈ Z + 1.2 m) with slight RNG jitter:
+  `Vector3 latchPos = new Vector3(0f, 1.5f, 5.4f + 1.2f + 0.02f) + new Vector3(ZoneKit.R(sb.Rng, -0.05f, 0.05f), ZoneKit.R(sb.Rng, -0.02f, 0.02f), 0f);`
+  `sb.Solid.Box(latchPos, new Vector3(0.3f, 0.1f, 0.02f), ZoneKit.M(ZoneKit.V(rust, sb.Rng, 0.02f)));`
+  Add two bolt pins on either side of the latch (≈ ±0.12 m X offset) using the same rust material:
+  `Vector3 boltOffset = new Vector3(0.12f, 0f, 0f);`
+  `sb.Solid.Box(latchPos + boltOffset, new Vector3(0.02f, 0.05f, 0.02f), ZoneKit.M(ZoneKit.V(rust, sb.Rng, 0.02f)));`
