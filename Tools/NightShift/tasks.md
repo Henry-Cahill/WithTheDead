@@ -3585,12 +3585,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 14:58 landed by hts-llm in 2.3 min: **Changed file**
 - [x] Cache the panic level and its descriptor in Assets/Scripts/Player/PlayerPanic.cs so they are only recalculated when the panic value actually changes, not on every Update or UI read.
   - 15:01 landed by 1htsserver in 5 min: **Changed files**
-- [ ] Add an “Inspect” verb to ArtifactNode so revealed artifacts can be examined before taking them, by editing `Assets/Scripts/Zone/Artifacts.cs`
+- [x] Add an “Inspect” verb to ArtifactNode so revealed artifacts can be examined before taking them, by editing `Assets/Scripts/Zone/Artifacts.cs`
   In `public override void GetActions(InteractContext ctx, List<InteractAction> into)`, after the existing `Take` action, add:
   `into.Add(new InteractAction("Inspect " + ArtifactCatalog.NameOf(ArtifactId), Inspect).Timed(0.5f, "Looking closely..."));`
   Create a private method `Inspect(InteractContext ctx)` that obtains the artifact description via `ArtifactCatalog.Describe(ArtifactId)` and shows it with `ctx.Notify(...)` (fallback to “Nothing special.” if empty).
   The player will now see an extra “[Q] Inspect …” option when an artifact is revealed, receiving a short text tooltip of its known properties without removing it.
   All other code, fields, and existing actions must remain unchanged.
+  - 15:02 landed by 0htsserver in 4.3 min: Added an **Inspect** verb for artifacts.
 - [x] Append five new guitar‑related lines to the `"guitar"` entry in the `Lines` dictionary in Assets/Scripts/Hub/HubNpc.cs; use the existing style of short, period‑ended remarks like “Same three chords since the Passing.” and cover themes of winter gloom, local folklore, barter‑based requests, and the lingering memory of the outbreak.
   Add the following sentences (in order) to the array after the current three items:
   “Snow‑capped pines hum a low dirge when the wind sighs.”
