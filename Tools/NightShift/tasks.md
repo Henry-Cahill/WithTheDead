@@ -2929,7 +2929,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Loop `e` over `-1` and `1` to place one bracket on each side.
   These brackets give the nailed‑plank boards a weathered, hand‑crafted look without altering colliders, interaction points, or existing geometry.
   - 11:38 landed by 0htsserver in 1.8 min: **Changed file**
-- [ ] Fix double‑registration of built‑in named message handlers in Assets/Scripts/Net/NetSession.cs
+- [x] Fix double‑registration of built‑in named message handlers in Assets/Scripts/Net/NetSession.cs
   The method `RegisterAll()` first registers all handlers stored in `s_Handlers` (which already includes the built‑in handlers added a few lines earlier with `Register("cz.session", …)` etc.).
   Afterwards it loops over `new[] { "cz.session", "cz.hoststage", "cz.joinraid", "cz.leftraid", "cz.roster" }` and registers the same names again.
   This causes every incoming built‑in message to be processed twice (e.g., the roster is applied twice, the host‑stage toast appears twice), leading to duplicated side‑effects and occasional “already added” errors.
@@ -2938,6 +2938,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// foreach (string n in new[] { "cz.session", "cz.hoststage", "cz.joinraid", "cz.leftraid", "cz.roster" })`
   `// {`
   `// Action<ulong, NetIn> h = s_Handlers[n];`
+  - 11:40 landed by hts-llm in 2 min: **Changed file**
 - [ ] Add a “Set Guard Here” action to `HumanNpcInteract.GetActions` in Assets/Scripts/AI/Humans/HumanNpc.cs
   Insert a new `InteractAction` after the existing `Talk` entry (copy the style of the “Talk” line).
   The action should call `_npc.SetGuard(_npc.transform.position);`.
