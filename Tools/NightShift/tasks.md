@@ -1893,7 +1893,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Delete the second line (or merge the texts) so the method has a single valid summary.
   No runtime behaviour changes; the player’s crafting UI and functionality remain unchanged.
   - 07:15 landed by 1htsserver in 1.5 min: **Change made**
-- [ ] Add a small metal handle primitive to the fridge built in `RaidLayouts.Ranch` (Assets/Scripts/World/RaidLayoutsHomes.cs)
+- [x] Add a small metal handle primitive to the fridge built in `RaidLayouts.Ranch` (Assets/Scripts/World/RaidLayoutsHomes.cs)
   Quote the fridge creation call: `b.HomePiece(kitchen, b.S(kitchen, 0.78f, 0.70f), HomeFurnitureKind.Fridge);`
   After that line, insert a box primitive that represents a fridge door handle:
   `float offX = -0.30f + (float)rng.NextDouble() * 0.04f; // slight random left‑right variation`
@@ -1901,6 +1901,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `b.Box(b.S(kitchen, 0.78f + offX, 0.70f + offY), new Vector3(0.02f, 0.10f, 0.02f), new Color(0.55f, 0.55f, 0.55f)); // metal handle`
   The box is 0.02 m wide, 0.10 m tall, 0.02 m deep, placed on the right side of the fridge door (relative to the fridge’s centre) with a deterministic‑random offset for subtle variation.
   Keep all existing colliders, interaction points and pivots unchanged; the added primitive uses the same material palette and does not affect gameplay.
+  - 07:30 landed by hts-llm in 16.6 min: Implemented a small metal handle on the fridge in `RaidLayoutsHomes.cs`:
 - [x] In Assets/Scripts/Player/PlayerFoodSickness.cs: Cache the PlayerSleep component in PlayerFoodSickness so Update() no longer calls the lazy Sleep property each frame
   Add a private field `private PlayerSleep _sleepCache;` and assign it in Awake() (`_sleepCache = GetComponent<PlayerSleep>();`).
   Remove the `Sleep` property entirely (or make it return `_sleepCache` without a GetComponent call).
