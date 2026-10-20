@@ -253,6 +253,19 @@ namespace CloneZ
         private Action<InteractContext> _getUpFromBed, _sit, _stand;
         private Action<InteractContext, List<InteractAction>> _extra;
 
+        // Set default extra action to check comfort if none provided
+        private void Awake()
+        {
+            if (_extra == null)
+                _extra = (c, list) => list.Add(new InteractAction("Check comfort", ComfortInfo));
+        }
+
+        // Notify the survivor about the bed's comfort level
+        private void ComfortInfo(InteractContext ctx)
+        {
+            ctx.Notify($"The bed feels {(int)(_comfort * 100)}% comfortable.");
+        }
+
         public override string DisplayName => _name;
         public override float Reach => CloneZConfig.BedReach;
         public override Transform OcclusionRoot => _body != null ? _body : transform;

@@ -2720,7 +2720,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace `var keep = new HashSet<uint>();` with `s_Keep.Clear();` and use `s_Keep` for the keep set.
   After sending updates for a client, leave the collections cleared for the next client (no extra Clear needed beyond the end of the loop).
   The player’s visual experience stays identical; only GC pressure and frame‑time allocations are reduced.
-- [ ] Add a “Check comfort” extra action to beds (CivicRest) in Assets/Scripts/World/Fixtures/RaidCivicFixtures.cs
+- [x] Add a “Check comfort” extra action to beds (CivicRest) in Assets/Scripts/World/Fixtures/RaidCivicFixtures.cs
   Add a private `Awake` method that sets a default extra action when none is supplied:
   `private void Awake()`
   `{`
@@ -2729,6 +2729,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `}`
   Add a private helper that notifies the survivor about the bed’s comfort level using the existing `_comfort` field:
   `private void ComfortInfo(InteractContext ctx)`
+  - 11:01 landed by 1htsserver in 4.1 min: **Changed files**
 - [x] Append five new sentences to the `Tidying` string array in Assets/Scripts/World/Fixtures/LivingReading.cs, each describing a small, period‑correct cleaning action the survivor can perform at the bookcase.
   Add the entries after the existing lines, keeping the comma after the last original element and the final semicolon after the closing brace.
   Use the same “You …” phrasing; each entry may contain two short sentences separated by a period, mirroring the style of `"You dust the shelves, wiping away a thin layer of time."`.
