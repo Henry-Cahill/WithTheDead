@@ -2944,3 +2944,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   The action should call `_npc.SetGuard(_npc.transform.position);`.
   It must only be usable when the NPC is not already holding a post: add `.DisabledIf(_npc.HoldPost, "Already guarding here")`.
   No other code changes are required; the player will now be able to tell any non‑hostile, non‑surrendered NPC to stay at its current spot as a guard, visible in the interaction menu.
+- [ ] Append four new sentences to the `Plumping` array in Assets/Scripts/World/Fixtures/RaidHomeLiving.cs
+  Add them after the existing two entries, keeping the array syntax unchanged.
+  Style reference: `"You plump the cushions and set them square. It looks like somebody still lives here."` – short, present‑tense observation of the house’s lived‑in state.
+  Themes for the new lines: (1) winter dusting, (2) faint scent of pine or woodsmoke, (3) evidence of a missed family gathering, (4) a subtle hint of abandonment yet care.
+  New entries to insert:
+  `"You shake the cushions, sending a puff of old flour dust into the air; someone must've baked recently."`
+  `"You fluff the cushions, and a whisper of pine from the fireplace drifts over them."`
+  `"You straighten the cushions, noticing a crooked photo of a winter family portrait tucked behind a arm."`
+  `"You press the cushions firm, feeling the worn stitching that someone kept mending through the cold nights."`
