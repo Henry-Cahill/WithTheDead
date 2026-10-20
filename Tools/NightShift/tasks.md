@@ -683,3 +683,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   position: centered at `new Vector3(0f, h * 0.5f, 0f)` (mid‑height of barrel)
   material: reuse existing `plastic` colour with a darker matte tint (`plastic * 0.6f`) via `DecorPalette.Matte` – no new assets needed
   keeps existing colliders, interaction points, and pivots unchanged; adds only one primitive, staying under the ~12 limit.
+- [ ] Fix a memory‑leak bug in Assets/Scripts/World/Zone/ZoneWorld.cs: `ZoneWorld.Reset()` clears the static references but never destroys the temporary GameObjects it creates (`ZoneUnbaked` and the `ZoneRuntime` host), so each raid leaves orphan objects in the scene, eventually causing performance drops and invisible “ghost” colliders.
