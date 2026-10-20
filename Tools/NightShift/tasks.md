@@ -3621,9 +3621,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   At the end of `LateUpdate`, after the loop, add `if (s_Renderers.Count == 0) enabled = false;` so the script disables itself once all renderers are gone.
   The `LateUpdate` logic itself stays unchanged; only the enable/disable toggles are added.
   Result: when the ceiling system is not needed (e.g., during menus, loading screens, or maps without ceilings), the component is disabled and no per‑frame check runs, reducing unnecessary work while preserving the exact visual behavior.
-- [ ] Add a “Check volume” action to `Assets/Scripts/World/Fixtures/TvFixture.cs` that lets the survivor see the current TV volume level.
+- [x] Add a “Check volume” action to `Assets/Scripts/World/Fixtures/TvFixture.cs` that lets the survivor see the current TV volume level.
   In `GetActions(InteractContext ctx, List<InteractAction> into)`, after the line `into.Add(new InteractAction("Adjust the rabbit ears", AdjustAerial).DisabledIf(!near, TooFar));` insert:
   `into.Add(new InteractAction("Check volume", ctx => ctx.Notify("Volume: " + VolumeWord)).DisabledIf(!near, TooFar));`
   `VolumeWord` already exists in the base class and returns a human‑readable description of the current volume.
   When the player selects “Check volume”, the UI will show a notification such as “Volume: Low” or “Volume: High”, matching the existing wording.
   All other code, including existing actions and the TV’s functionality, stays unchanged.
+  - 15:05 landed by 0htsserver in 1 min: **Changed:** `Assets/Scripts/World/Fixtures/TvFixture.cs`
