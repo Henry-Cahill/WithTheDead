@@ -136,6 +136,7 @@ namespace CloneZ
         private float _gearLookup;
         private Light _sight;
         private Light _periphery;
+        private UniversalRenderPipelineAsset _urpAsset;
         private float _eyeHeight = EyeHeight;
         private bool _posed;
         private float _appliedRange = -1f;
@@ -165,7 +166,8 @@ namespace CloneZ
             Controller = player != null ? player.GetComponent<PlayerController>() : null;
             _avatar = player != null ? player.GetComponent<PlayerAvatar>() : null;
             _gearVisuals = player != null ? player.GetComponent<PlayerGearVisuals>() : null;
-            CacheBones();
+CacheBones();
+            _urpAsset = UniversalRenderPipeline.asset;
 
             _sight = NewLight("SightLight", LightType.Spot);
             _sight.color = SightColor;
@@ -236,6 +238,7 @@ namespace CloneZ
 
         private void LateUpdate()
         {
+            if (_urpAsset != UniversalRenderPipeline.asset) _urpAsset = UniversalRenderPipeline.asset;
             if (PlayerTransform == null || _sight == null)
             {
                 // The survivor is gone: everything shows and the night is left alone.
@@ -378,7 +381,7 @@ namespace CloneZ
         // switched off in the URP asset, fall back to turning the body's shadows off while either shines.
         private void UpdateSurvivorRenderers(float dt)
         {
-            UniversalRenderPipelineAsset urp = UniversalRenderPipeline.asset;
+            UniversalRenderPipelineAsset urp = _urpAsset;
             bool layers = urp != null && urp.useRenderingLayers;
             bool hideShadows = !layers && (_sight.enabled || (Flashlight != null && Flashlight.IsOn));
             _bodyRescan -= dt;

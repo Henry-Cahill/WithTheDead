@@ -445,13 +445,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 23:32 landed by 1htsserver in 11.7 min: **Summary**
 - [x] Fix the bribe‑action logic in `CordonGate.GetActions` (Assets/Scripts/World/Zone/ZoneCordon.cs) – the current check treats a successful money deduction as a failure, preventing players who have enough cash from bribing the Warden.
   - 23:35 landed by 0htsserver in 8.9 min: **Changed**: `Assets/Scripts/World/Zone/ZoneCordon.cs` – Updated bribe logic in `CordonGate.GetActions`. Replaced the direct `Money.Take` ca
-- [ ] In Assets/Scripts/Rendering/VisionController.cs: Cache the URP asset used in UpdateSurvivorRenderers() to avoid a per‑frame static property lookup.
+- [x] In Assets/Scripts/Rendering/VisionController.cs: Cache the URP asset used in UpdateSurvivorRenderers() to avoid a per‑frame static property lookup.
   Add a private field `private UniversalRenderPipelineAsset _urpAsset;` to VisionController.
   In Bind() after other initialisation set `_urpAsset = UniversalRenderPipeline.asset;`.
   Replace the line `UniversalRenderPipelineAsset urp = UniversalRenderPipeline.asset;` in UpdateSurvivorRenderers() with `UniversalRenderPipelineAsset urp = _urpAsset;`.
   If the asset can change at runtime (unlikely), add a cheap check at the start of LateUpdate: `if (_urpAsset != UniversalRenderPipeline.asset) _urpAsset = UniversalRenderPipeline.asset;`.
   No visual change: the rendering‑layer logic and shadow‑hiding behaviour remain identical.
   This removes the per‑frame native‑side lookup of UniversalRenderPipeline.asset, reducing allocations and CPU time.
+  - 23:36 landed by 1htsserver in 4.4 min: **Changes made**
 - [x] Add a lightweight “Inspect the mailbox” action to Assets/Scripts/World/Fixtures/MailboxFixture.cs by editing the GetActions method; copy the existing flag‑toggle action line as a template, change its label and logic so it simply reports the mailbox’s current open state, flag state, and how many unread deliveries remain (or that there’s no more mail).
   In GetActions insert after the flag‑toggle block: `into.Add(new InteractAction("Inspect the mailbox", ctx => { ctx.Notify($"Mailbox is {(_open ? "open" : "closed")}, flag is {(_flagUp ? "up" : "down")}, {(_read < Come ? $"{Come - _read} unread letters." : "no more mail.")}"); }));`
   Keep the existing actions (“Check the mail”, “Close the mailbox”, raise/lower flag) untouched.
