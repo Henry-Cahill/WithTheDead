@@ -929,7 +929,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
   - 01:56 landed by hts-llm in 2.8 min: Added concise `/// <summary>` documentation to each public method in **Assets/Scripts/UI/TooltipTrigger.cs**:
-- [ ] Modify Assets/Scripts/UI/InventoryUIController.List.cs to add a subtle “bolt” trim on every inventory row for visual depth.
+- [x] Modify Assets/Scripts/UI/InventoryUIController.List.cs to add a subtle “bolt” trim on every inventory row for visual depth.
   In the `NewRow` method, after the line `var img = go.AddComponent<Image>();` insert a new 4 × 4 pixel image as a decorative bolt on the right edge of the row background.
   `// tiny bolt decoration, adds a bit of worn‑metal detail to each row`
   `NewImage(rt, "Bolt",`
@@ -938,6 +938,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `new Vector2(4f, 4f), // size of the bolt`
   `new Color(0.58f, 0.55f, 0.52f, 0.85f)); // muted metal tint, matches existing UI palette`
   The bolt uses the same `NewImage` helper, keeps the existing layout (no change to anchors, pivots, or colliders), and adds only one primitive (well under the 12‑primitive limit). It gives each entry a period‑appropriate hardware hint without affecting functionality.
+  - 01:58 landed by hts-llm in 2 min: **Changes Made**
 - [ ] Add a tiny brass latch knob to the lower‑sash lock lever in `RaidBuilding.FitWindow` (Assets/Scripts/World/RaidBuilding.Windows.cs)
   After the line
   `latchOpen = WindowBox(sash.transform, "LatchOpen", l.P(o.Pos + 0.03f, SashMeet + 0.032f, inner), l.Size(0.06f, 0.008f, 0.02f), brass);`
