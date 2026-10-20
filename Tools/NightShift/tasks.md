@@ -538,9 +538,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   `"You spit the frothy foam into the basin, hearing it echo in the tiny, empty space."`
   `"Each swipe feels like a small rebellion against the cold that seeps through the cracked walls."`
   - 23:52 landed by 1htsserver in 2.1 min: **Change summary**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Hub/Screens/HubKit.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Hub/Screens/HubKit.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 00:02 landed by hts-llm in 12.2 min: **Changed files**
 - [x] Add a subtle glowing tip to the beam cone created in `ZoneKit.Beam` (Assets/Scripts/World/Zone/ZoneKit.cs) so each beam has a small bright sphere at its far end, improving visual depth without affecting gameplay.
   Create a primitive sphere child of the beam GameObject, positioned at `new Vector3(0f, 0f, length)` (the beam’s tip) with a scale of `0.05f` m (≈ 5 cm diameter).
   Remove its collider (`DestroyImmediate(tip.GetComponent<Collider>())`).

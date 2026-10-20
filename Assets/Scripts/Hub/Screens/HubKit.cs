@@ -12,18 +12,25 @@ namespace CloneZ
     /// survivor's body. Worn pieces aren't stacks, so they are worked on through a copy (<see cref="Stack"/>)
     /// that <see cref="Commit"/> dresses back onto the body.
     /// </summary>
+    /// <summary>Reference to an item in the hub, indicating its source and stack.</summary>
     public sealed class HubItemRef
     {
+        /// <summary>Gets the ItemSource enum value for this reference.</summary>
         public HubItemSource Source;
         public ItemStack Stack;
+        /// <summary>Reference to the owning inventory when the item comes from a stash or kit.</summary>
         public Inventory Owner;              // null for a worn piece
+        /// <summary>The clothing slot for a worn piece; unused for stash/kit items.</summary>
         public ClothingSlot Slot;            // worn pieces only
 
+        /// <summary>Gets the ItemDef of the stack, or null if none.</summary>
         public ItemDef Def => Stack != null ? Stack.Def : null;
 
+        /// <summary>Human‑readable label for the item's source (Stash, Carried or Worn).</summary>
         public string SourceLabel => Source == HubItemSource.Stash ? "Stash" : Source == HubItemSource.Kit ? "Carried" : "Worn";
 
         /// <summary>True while the item is still where it was found (it wasn't sold, dropped or taken off meanwhile).</summary>
+        /// <summary>True while the item is still where it was found (not sold, dropped, or removed).</summary>
         public bool StillValid
         {
             get
@@ -36,12 +43,14 @@ namespace CloneZ
         }
 
         /// <summary>Writes a worn piece's copy back onto the body (stash and pack stacks are edited in place).</summary>
+        /// <summary>Writes a worn piece's copy back onto the body (stash and pack edited in place).</summary>
         public void Commit()
         {
             if (Source == HubItemSource.Worn && Stack != null)
                 HubKit.ReplaceWorn(Slot, Stack.Def, Stack.Condition, Stack.TimesRepaired, Stack.Extra);
         }
 
+        /// <summary>Compares this reference to another for equality of source and item.</summary>
         public bool Same(HubItemRef other)
         {
             if (other == null || other.Source != Source) return false;
@@ -58,6 +67,7 @@ namespace CloneZ
     /// </summary>
     public static class HubKit
     {
+        /// <summary>Gets the locally‑controlled player’s inventory (or null if no player).</summary>
         public static PlayerInventory Carried
         {
             get
@@ -67,6 +77,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Gets the player’s clothing component (or null if no player).</summary>
         public static PlayerClothing Clothing
         {
             get
@@ -76,6 +87,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Gets the player’s stats component (or null if no player).</summary>
         public static PlayerStats Stats
         {
             get
@@ -86,6 +98,7 @@ namespace CloneZ
         }
 
         /// <summary>The carried pack's inventory, or null.</summary>
+        /// <summary>The carried pack’s inventory (or null if no player).</summary>
         public static Inventory Pack
         {
             get
@@ -96,12 +109,14 @@ namespace CloneZ
         }
 
         /// <summary>Money carried in the pack (not the stash).</summary>
+        /// <summary>Amount of money in the carried inventory (excluding stash).</summary>
         public static int MoneyCarried => Money.Count(Pack);
 
         /// <summary>
         /// Snapshots the live body's kit into the active character (hub only). Skipped when the body was clearly
         /// not dressed from the profile (no secure pouch worn), so a bare test body never wipes a saved kit.
         /// </summary>
+        /// <summary>Creates a snapshot of the player’s kit and stores it in the active character profile.</summary>
         public static void Commit()
         {
             if (!GameSession.IsHub) return;
@@ -116,6 +131,7 @@ namespace CloneZ
         }
 
         /// <summary>After any change to the kit: drop a weapon that's no longer carried, commit the kit, save.</summary>
+        /// <summary>Runs after any kit change: drops invalid weapons, commits the kit, and saves the profile.</summary>
         public static void AfterChange()
         {
             FixEquipped();
@@ -124,6 +140,7 @@ namespace CloneZ
         }
 
         /// <summary>Falls back to bare hands when the weapon in hand was sold or handed over.</summary>
+        /// <summary>If the equipped weapon is no longer present, equips bare hands instead.</summary>
         public static void FixEquipped()
         {
             PlayerInventory inv = Carried;
@@ -133,6 +150,7 @@ namespace CloneZ
 
         #region Worn pieces
         /// <summary>A stack-shaped copy of a worn piece (for APIs that take an <see cref="ItemStack"/>).</summary>
+        /// <summary>Creates a stack copy of a worn piece for APIs that require ItemStack.</summary>
         public static ItemStack ProxyOf(PlayerClothing.WornPiece p)
         {
             if (!p.Exists) return null;
@@ -149,6 +167,7 @@ namespace CloneZ
         /// replacement such as a bigger secure pouch). Whatever was stowed in the piece's own pockets is put back
         /// on the same cells, so the pack's arrangement survives the swap.
         /// </summary>
+        /// <summary>Re‑dresses a clothing slot with a new definition, preserving any stowed items.</summary>
         public static bool ReplaceWorn(ClothingSlot slot, ItemDef def, int condition, int timesRepaired, ItemExtra extra)
         {
             PlayerClothing clothing = Clothing;
@@ -192,6 +211,7 @@ namespace CloneZ
             return true;
         }
 
+        /// <summary>Finds the inventory grid section that matches a given def and slot.</summary>
         private static GridSection FindSection(InventoryLayout layout, ItemDef def, ClothingSlot slot)
         {
             if (layout == null || def == null) return null;
@@ -201,6 +221,7 @@ namespace CloneZ
         }
 
         /// <summary>Dresses the body in the secure pouch the character's vault level calls for (after a vault upgrade).</summary>
+        /// <summary>Ensures the player's secure pouch matches the vault level, swapping if needed.</summary>
         public static void SyncPouch(CharacterProfile c)
         {
             PlayerClothing clothing = Clothing;
@@ -212,6 +233,7 @@ namespace CloneZ
         }
 
         /// <summary>The secure pouch's grid section on the body, or null.</summary>
+        /// <summary>Gets the grid section for the secure pouch on the player’s body.</summary>
         public static GridSection PouchSection
         {
             get
@@ -221,6 +243,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Checks whether the given ItemStack lives in the secure pouch.</summary>
         public static bool InPouch(ItemStack s) => s != null && s.Section != null && s.Section.Source != null && s.Section.Slot == ClothingSlot.Pouch;
         #endregion
 
@@ -229,6 +252,7 @@ namespace CloneZ
         /// Collects items matching <paramref name="filter"/> from the worn slots, the carried pack and the stash
         /// (in that order), each group sorted by category and name. The secure pouch itself is never offered.
         /// </summary>
+        /// <summary>Collects items matching a filter from worn slots, the pack, and the stash.</summary>
         public static void Collect(List<HubItemRef> into, Func<ItemDef, bool> filter, bool worn, bool kit, bool stash)
         {
             into.Clear();
@@ -251,6 +275,7 @@ namespace CloneZ
             if (stash) AddFrom(into, ProfileStore.StashInventory, HubItemSource.Stash, filter);
         }
 
+        /// <summary>Adds items from a specific inventory into the collection, applying an optional filter.</summary>
         private static void AddFrom(List<HubItemRef> into, Inventory inv, HubItemSource source, Func<ItemDef, bool> filter)
         {
             if (inv == null) return;
