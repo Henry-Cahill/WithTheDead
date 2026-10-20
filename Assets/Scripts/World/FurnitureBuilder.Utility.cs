@@ -201,6 +201,7 @@ namespace CloneZ
             m.Box(new Vector3(rx, 1.08f, -0.05f), new Vector3(0.4f, 0.16f, 0.4f), M(new Color(0.18f, 0.18f, 0.2f)));
             m.Box(new Vector3(rx, 1.2f, 0.1f), new Vector3(0.36f, 0.12f, 0.12f), Quaternion.Euler(30f, 0f, 0f), M(new Color(0.24f, 0.24f, 0.26f)));
             m.Box(new Vector3(rx, 1.32f, -0.15f), new Vector3(0.2f, 0.1f, 0.04f), M(new Color(0.15f, 0.15f, 0.16f)));
+            m.Box(new Vector3(rx, 1.35f, -0.127f), new Vector3(0.02f, 0.04f, 0.005f), Mt(Chrome));
             m.Box(new Vector3(rx, 1.32f, -0.128f), new Vector3(0.16f, 0.05f, 0.004f), Gl(new Color(0.2f, 0.6f, 0.4f)));
             for (int i = 0; i < 3; i++)
                 m.Box(new Vector3(R(rng, 0f, len * 0.4f), 1.0f + i * 0.02f, R(rng, -0.2f, 0.2f)), new Vector3(0.2f, 0.015f, 0.28f), Yaw(R(rng, -30f, 30f)), M(V(new Color(0.7f, 0.5f, 0.3f), rng, 0.3f)));
