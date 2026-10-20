@@ -126,6 +126,8 @@ namespace CloneZ
                         m.Box(new Vector3(R(rng, -0.12f, 0.12f), y + 0.09f, 0.27f + f * pull / 5f), new Vector3(0.34f, R(rng, 0.03f, 0.08f), 0.01f), Quaternion.Euler(R(rng, -15f, 15f), 0f, 0f), M(f % 2 == 0 ? new Color(0.70f, 0.62f, 0.40f) : Paper));
                 }
                 m.Box(new Vector3(0f, y, 0.275f + pull), new Vector3(0.43f, 0.3f, 0.02f), M(c));
+                // Small chrome handle on the drawer front
+                m.Rod(new Vector3(-0.07f, y + 0.15f, 0.295f + pull), new Vector3(0.07f, y + 0.15f, 0.295f + pull), 0.004f, Mt(Chrome));
                 m.Box(new Vector3(0f, y + 0.02f, 0.29f + pull), new Vector3(0.14f, 0.03f, 0.025f), Mt(Chrome));
                 m.Box(new Vector3(0f, y + 0.09f, 0.287f + pull), new Vector3(0.09f, 0.04f, 0.004f), M(Paper));
             }

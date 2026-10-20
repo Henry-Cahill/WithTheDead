@@ -647,9 +647,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 00:29 landed by 0htsserver in 5.6 min: **Changes made**
 - [x] Add a subtle “rivet” visual to each pause‑menu item row in Assets/Scripts/UI/PauseMenuController.cs, inside the `BuildItem(Item it, int index)` method right after the existing accent rectangle is created.
   - 00:29 landed by 1htsserver in 5.6 min: **Changed file**
-- [ ] Add a small chrome handle to each drawer front in `Assets/Scripts/World/FurnitureBuilder.Office.cs` → `public static void FilingCabinet(...)`
+- [x] Add a small chrome handle to each drawer front in `Assets/Scripts/World/FurnitureBuilder.Office.cs` → `public static void FilingCabinet(...)`
   Locate the line `m.Box(new Vector3(0f, y, 0.275f + pull), new Vector3(0.43f, 0.3f, 0.02f), M(c));` which builds the drawer front panel.
   After this line, insert a new primitive that represents a drawer pull:
+  - 01:33 landed by hts-llm in 2.5 min: **Changed**
 - [x] Cache player component look‑ups in ExtractionManager (Assets/Scripts/Extraction/ExtractionManager.cs) to avoid per‑frame GetComponent calls in MeetsCondition.
   Add two private fields `PlayerInventory _playerInv;` and `PlayerClothing _playerCloth;` to the class.
   In `BindPlayer(PlayerStats player)` after setting `_player = player;` also assign `_playerInv = player != null ? player.GetComponent<PlayerInventory>() : null;` and `_playerCloth = player != null ? player.GetComponent<PlayerClothing>() : null;`.
