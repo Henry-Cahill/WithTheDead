@@ -3811,3 +3811,10 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] In Assets/Scripts/World/Fixtures/LightSwitch.cs: Fix LightSwitch.GetActions to skip the “Toggle all lights” action when the switch has no circuits, preventing a meaningless action that still makes noise.
   Add a guard at the start of GetActions: `if (_circuits == null || _circuits.Length == 0) return;` or wrap the toggle‑all block in `if (_circuits.Length > 0) { … }`.
   This ensures the player no longer sees a “Switch all lights on/off” option on an empty switch, so interacting with the switch will only show the per‑circuit actions that actually affect lighting. The rest of the script (state saving, Sync, Flip, Inspect, etc.) remains unchanged.
+- [ ] In Assets/Scripts/Characters/HumanoidLook.cs: Add a deterministic “mask‑filter” tint variation for headwear style Mask inside `HumanoidLook.Wear` (`case ClothingSlot.Head:`)
+  After the existing `HatColor = c;` line, insert a block that checks `if (Shape.Headwear == HeadwearStyle.Mask)` and computes a small darkening variation based on the shape hash:
+  `int seed = Shape.GetHashCode();`
+  `float var = ((seed >> 6) & 0xF) / 100f; // 0‑0.15`
+  `HatTrimColor = Color.Lerp(HatTrimColor, Shade(HatTrimColor, 0.55f), var);`
+  This gives each mask a subtle, deterministic “filter” rim that is slightly darker than the base mask colour, adding period‑appropriate visual depth without changing geometry.
+  No new primitives, colliders, or interaction points are added; only the colour of the existing mask trim is varied.
