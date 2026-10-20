@@ -2207,13 +2207,14 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Economy/MoralLedger.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
-- [ ] Add thin worn‑metal side strips to the helicopter fuselage in Assets/Scripts/World/Zone/Helicopter.cs, inside `HelicopterModel.Build` after the main ellipsoid is created.
+- [x] Add thin worn‑metal side strips to the helicopter fuselage in Assets/Scripts/World/Zone/Helicopter.cs, inside `HelicopterModel.Build` after the main ellipsoid is created.
   Insert two `m.Box` calls that place narrow metal panels on each side of the fuselage to suggest riveted seams and age‑wear.
   `// side‑panel seams – thin worn metal strips`
   `m.Box(new Vector3(2.48f, 1.7f, 0f), new Vector3(0.02f, 1.2f, 6.0f), DecorPalette.Metal(hull * 0.6f));`
   `m.Box(new Vector3(-2.48f, 1.7f, 0f), new Vector3(0.02f, 1.2f, 6.0f), DecorPalette.Metal(hull * 0.6f));`
   These panels are ≈ 2 cm thick, 1.2 m tall and 6 m long, positioned just inside the fuselage ellipsoid (`m.Ellipsoid(new Vector3(0f, 1.7f, 0f), new Vector3(2.5f, 2.3f, 7.6f), …)`).
   Use the existing `hull` colour multiplied by 0.6 to give a darker, weathered metal look; keep colliders and interaction points unchanged.
+  - 08:39 landed by hts-llm in 1.9 min: **Changed file**
 - [ ] Fix the “water restarts automatically after the mains are restored while the player is still in the shower” bug in Assets/Scripts/World/Fixtures/ShowerFixture.cs
   In `WhileShowering` the code only notifies the player and stops the job when the mains go off, but it leaves `_on` true. The next time `WaterMains.MainsOn` becomes true the shower will start spraying again even though the player never turned it back on, breaking immersion.
   Change the branch that handles `!WaterMains.MainsOn` to also turn the shower off via `SetOn(false, false)` (which also resets the lever and clears the spray).
