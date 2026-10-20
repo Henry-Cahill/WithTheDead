@@ -1870,3 +1870,32 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add this action to `into` (e.g., `into.Add(force);`) before the existing “Try the handle” action.
   Result: the player can now choose a slower, more deliberate method to open the safe, seeing the same “Working the dial” progress UI and hearing the same noises, and upon completion the safe opens just like the original action.
   All existing fields, methods, and config values remain unchanged.
+- [ ] Append five new flavor‑text strings to the `ShaveLines` array in Assets/Scripts/World/Fixtures/BasinFixture.cs; each should be a single sentence a survivor might think while shaving in a cold, winter‑1993 Kentucky bathroom after the outbreak. Use the existing entry `"A slow, careful shave. You only nick yourself once."` as style reference; the new lines should cover themes of scarcity of hot water, the mirror’s cracked glass reflecting loss, the tap’s coughing sound, lingering soot smell, and the feeling of the razor’s bite against frozen skin.
+  Add `"The tap coughs each time you lift the lever, a reminder the mains are a memory now."`
+  Add `"Your reflection flickers in the cracked mirror, showing a face half‑lost to the frost."`
+  Add `"Cold water runs over the razor, turning the shave into a bite of ice on your skin."`
+  Add `"The scent of soot from the stove clings to the steam, mixing with the taste of metal."`
+  Add `"Each shave feels like salvaging a small piece of normality from the relentless cold."`
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/CookingStation.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Remove the duplicated XML summary on `Hideout.StartCraft` in Assets/Scripts/Economy/Hideout.cs; keep only one `<summary>` tag.
+  The method currently has two consecutive summary comments:
+  `/// <summary>Starts a craft (inputs are consumed now; outputs arrive when it finishes).</summary>`
+  `/// <summary>Starts a craft, consuming inputs now and scheduling outputs.</summary>`
+  Having multiple `<summary>` tags on the same method triggers a compiler warning/error and prevents the script from compiling cleanly.
+  Delete the second line (or merge the texts) so the method has a single valid summary.
+  No runtime behaviour changes; the player’s crafting UI and functionality remain unchanged.
+- [ ] Add a small metal handle primitive to the fridge built in `RaidLayouts.Ranch` (Assets/Scripts/World/RaidLayoutsHomes.cs)
+  Quote the fridge creation call: `b.HomePiece(kitchen, b.S(kitchen, 0.78f, 0.70f), HomeFurnitureKind.Fridge);`
+  After that line, insert a box primitive that represents a fridge door handle:
+  `float offX = -0.30f + (float)rng.NextDouble() * 0.04f; // slight random left‑right variation`
+  `float offY = 0.45f + (float)rng.NextDouble() * 0.02f; // slight random height variation`
+  `b.Box(b.S(kitchen, 0.78f + offX, 0.70f + offY), new Vector3(0.02f, 0.10f, 0.02f), new Color(0.55f, 0.55f, 0.55f)); // metal handle`
+  The box is 0.02 m wide, 0.10 m tall, 0.02 m deep, placed on the right side of the fridge door (relative to the fridge’s centre) with a deterministic‑random offset for subtle variation.
+  Keep all existing colliders, interaction points and pivots unchanged; the added primitive uses the same material palette and does not affect gameplay.
+- [ ] In Assets/Scripts/Player/PlayerFoodSickness.cs: Cache the PlayerSleep component in PlayerFoodSickness so Update() no longer calls the lazy Sleep property each frame
+  Add a private field `private PlayerSleep _sleepCache;` and assign it in Awake() (`_sleepCache = GetComponent<PlayerSleep>();`).
+  Remove the `Sleep` property entirely (or make it return `_sleepCache` without a GetComponent call).
+  In Update() replace `if (Sleep != null && Sleep.IsSleeping)` with `if (_sleepCache != null && _sleepCache.IsSleeping)`.
+  All other logic stays unchanged; the player’s sickness decay and health drain behave exactly the same, but the per‑frame GetComponent lookup is eliminated.
