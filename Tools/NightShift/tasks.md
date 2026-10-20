@@ -1524,3 +1524,15 @@ you want to see in game. Indent extra lines under a task to add detail.
   with
   `ZoneDef zone = _cachedZone;`
   This removes a per‑frame `ZoneCatalog.Current` lookup (which internally uses `FindObjectByType`), keeping the visual radiation calculation identical because zone data only changes when extraction state changes, which is now reflected by the cache refresh.
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/Factions.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add subtle rust patches to the corrugated‑sheet barrier built in the `case 0:` block of `EdgeSegment` in Assets/Scripts/World/RaidMapBuilder.Edge.cs.
+  Locate the line `Surf sheet = DecorMaterials.Corrugated(new Color(0.46f, 0.47f, 0.46f));` inside the `case 0:` switch.
+  After the existing loop that creates the corrugated panels (`for (float x = -len * 0.5f + 0.6f; …)`), insert a new short loop that places a few small matte boxes on the sheet surface to look like rust stains.
+  Example code to add (counts as ≤ 12 primitives):
+  `// occasional rust spots on the corrugated sheet`
+  `Surf rust = DecorPalette.Matte(new Color(0.55f, 0.30f, 0.20f));`
+  `for (float x = -len * 0.5f + 0.3f; x < len * 0.5f; x += R(rng, 2f, 4f))`
+  `{`
+  `float w = R(rng, 0.2f, 0.4f);`
