@@ -4050,3 +4050,4 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [x] In Assets/Scripts/Items/LootContainer.cs fix the saved‑sack bug: a sack loaded from a saved game is never marked as already searched, so the player is forced to “search” a pickup that should be instant.
   - 18:24 landed by 1htsserver in 3.4 min: **Changes made**
 - [ ] Add a small exhaust pipe with a glowing tip to the portable generator in Assets/Scripts/World/DecorProps.cs, method `DecorProps.Generator`.
+- [ ] Reduce per‑frame GrenadeKey updates by attaching a single GrenadeKey to the player instead of to every built piece (Assets/Scripts/World/Camps.cs, modify CampModule.Init)
