@@ -3289,3 +3289,35 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// flag rectangle – size 0.08 m × 0.015 m, positioned at pole top, colour varies with rng`
   `Color flagCol = V(new Color(0.80f, 0.15f, 0.12f), rng, 0.07f);`
   - 13:23 landed by 1htsserver in 2.9 min: All code changes completed and compile successfully.
+- [ ] Add a subtle metal handle to the medical fridge in the Pharmacy (Assets/Scripts/World/RaidLayoutsCivic.cs)
+  In the Pharmacy section, replace the current `b.WorkFridge` call with a temporary `RaidBuilding.Place` variable, then invoke `b.WorkFridge` using that variable and immediately add a small box primitive as a handle.
+  `// store the fridge placement`
+  `var fridgePos = b.E(pharm, 1.0f, 0.72f);`
+  `b.WorkFridge(pharm, fridgePos, new Color(0.86f, 0.86f, 0.84f), ContainerType.Fridge, "Medical Fridge", true);`
+  `// add a tiny metal handle (≈0.04 m × 0.1 m × 0.02 m) on the right‑hand side of the door`
+  `b.Furnish(pharm,`
+  `new RaidBuilding.Place(fridgePos.x + 0.45f, fridgePos.z, 0f),`
+  `Sz(0.04f, 0.10f, 0.02f),`
+- [ ] Reduce per‑frame wound‑bleeding checks in Assets/Scripts/Medical/PlayerLimbs.cs by caching them in HudLimbs
+  · Add a private field `private readonly bool[] _bleeding = new bool[BodyZones.Count];` to the `HudLimbs` class.
+  · Create a method `private void RefreshBleedingCache()` that loops `for (int i = 0; i < _bleeding.Length; i++) { var z = (BodyZone)i; _bleeding[i] = _wounds != null && _wounds.IsBleedingOn(z); }`.
+  · Subscribe to the limb change event: after `h._wounds = limbs.GetComponent<PlayerWounds>();` add `limbs.Changed += h.RefreshBleedingCache;` and also call `h.RefreshBleedingCache();` once to initialise.
+  · In `HudLimbs.Update()` replace `bool bleeding = _wounds != null && _wounds.IsBleedingOn(z);` with `bool bleeding = _bleeding[i];`.
+  · Unsubscribe in `OnDestroy()` with `if (_limbs != null) _limbs.Changed -= RefreshBleedingCache;`.
+  · The player’s HUD appearance stays identical; only the per‑frame call to `IsBleedingOn` is eliminated, reducing allocations and CPU work.
+- [ ] Append six new world‑text entries to the `Pages` array in `ManualScreen` (Assets/Scripts/Hub/Screens/HomeScreens.cs), adding them after the existing final entry `("Old maps", "Hand‑drawn maps in the bar show safe routes, fresh water sources, and marked danger zones; study them before venturing out to avoid ambushes.")`.
+  Use the existing entry `("Old maps", "Hand‑drawn maps …")` as the style reference – each new entry should be a single‑sentence `body` string written in the same terse, period‑correct voice, describing a piece of in‑world text the survivor might find (notes, graffiti, broadcast snippets, or item descriptions).
+  The six new entries should cover:
+  a warning scribbled on a fence about “thin ice on the riverbank”;
+  a crumpled newspaper headline about “Fuel shortages hit the town”;
+  a radio transmission fragment reporting “Wardens spotted near the south power line”;
+  a hastily‑drawn note left in a pantry warning “Mold kills faster than cold”;
+  a piece of graffiti inside the bar reading “Keep the fire burning, the night watches”;
+  an old hunting handbook excerpt stating “Deer tracks are clearer after fresh snow”.
+- [ ] Add a small metal door‑knob to Fridge containers built in `LootContainer.Spawn` (Assets/Scripts/Items/LootContainer.cs)
+  In the `Spawn` method, after the existing front‑handle block, insert a new conditional that uses the same `rng` (seed 1994) to add a knob with 50 % chance `if (type == ContainerType.Fridge && rng.NextDouble() < 0.5)`
+  Create a primitive cylinder, name it `"Knob"`, parent it to `go.transform` (the container box), and set:
+  `handle.transform.localPosition = new Vector3(0f, size.y * 0.32f, size.z * 0.5f + 0.018f);`
+  `handle.transform.localScale = new Vector3(0.06f, 0.02f, 0.06f);`
+  Copy the container’s material to the knob the same way the front‑handle does (`rend.sharedMaterial = go.GetComponent<Renderer>().sharedMaterial;`).
+  This adds a period‑appropriate metal knob to frozen‑food fridges, giving them a bit more visual detail while respecting the existing deterministic random source and staying within the ≤ 12‑primitive limit.
