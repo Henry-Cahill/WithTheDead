@@ -3450,3 +3450,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add two bolt pins on either side of the latch (≈ ±0.12 m X offset) using the same rust material:
   `Vector3 boltOffset = new Vector3(0.12f, 0f, 0f);`
   `sb.Solid.Box(latchPos + boltOffset, new Vector3(0.02f, 0.05f, 0.02f), ZoneKit.M(ZoneKit.V(rust, sb.Rng, 0.02f)));`
+- [ ] In Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method LockerDoor, add a tiny metal “locker‑number” plate to each door’s lower front edge.
