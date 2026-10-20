@@ -64,6 +64,8 @@ namespace CloneZ
         public bool OfflineRaidProtection = true;  // bases can't be raided while their owner is offline / asleep
 
         public const string FileName = "clonez_sandbox.json";
+        /// <summary>The full path to the sandbox settings file in the persistent data folder.</summary>
+
         public static string FilePath => Path.Combine(Application.persistentDataPath, FileName);
 
         private static SandboxSettings s_Current;
@@ -86,7 +88,8 @@ namespace CloneZ
             ServerRules.FromSandbox(s);
         }
 
-        public static SandboxSettings LoadFromDisk()
+        /// <summary>Loads the sandbox settings from the JSON file on disk, or creates defaults if missing.</summary>
+public static SandboxSettings LoadFromDisk()
         {
             SandboxSettings s = null;
             try

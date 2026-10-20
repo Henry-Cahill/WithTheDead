@@ -184,7 +184,15 @@ namespace CloneZ
             if (_toldFull && _level < cap * 0.9f) _toldFull = false;
             if (moved) RefreshWater();
 
-            if (!_running) return;
+            // If the tap is not running and the water level cannot change this frame (plug is in or basin empty),
+            // skip further updates like noise and wobble to make idle sinks cheaper.
+            if (!_running)
+            {
+                if (_plugIn || _level <= 0f)
+                    return;
+                // No noise or wobble needed when not running.
+                return;
+            }
             if (now >= _nextNoise)
             {
                 _nextNoise = now + CloneZConfig.KitchenTapNoiseInterval;

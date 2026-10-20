@@ -16,11 +16,15 @@ namespace CloneZ
         /// <summary>Converts the per-second radiation figures of zones and stat mods into dose per second.</summary>
         public const float Scale = 0.05f;
 
-        public static PlayerRadiation Local { get; private set; }
+        /// <summary>Singleton instance of the player radiation component.</summary>
+    public static PlayerRadiation Local { get; private set; }
 
-        public float Dose { get; private set; }
-        public float Intake { get; private set; }
-        public bool Shielded => Time.time < _iodineUntil;
+        /// <summary>Current radiation dose (0..1) the survivor carries.</summary>
+    public float Dose { get; private set; }
+        /// <summary>Current radiation intake rate per second.</summary>
+    public float Intake { get; private set; }
+        /// <summary>Whether the survivor is currently protected by iodine (reduces intake).</summary>
+public bool Shielded => Time.time < _iodineUntil;
 
         private PlayerStats _stats;
         private PlayerLimbs _limbs;
@@ -51,7 +55,8 @@ namespace CloneZ
         }
 
         /// <summary>Adds dose directly (an emission, a burst), shielded by iodine and suit resistance.</summary>
-        public void Add(float dose)
+        /// <summary>Adds radiation dose (emission or burst), applying iodine and suit resistance.</summary>
+public void Add(float dose)
         {
             if (dose <= 0f || _stats == null || _stats.IsDead) return;
             dose *= 1f - Mathf.Clamp01(PlayerModifiers.Current.Resist.Radiation);
@@ -63,13 +68,15 @@ namespace CloneZ
         private void OnRaidEnded(RaidOutcome outcome, string exit) => SaveToProfile();
 
         /// <summary>Removes dose (the medic's flush).</summary>
-        public void Purge(float amount)
+        /// <summary>Removes a specified amount of radiation dose (medic's flush).</summary>
+public void Purge(float amount)
         {
             Dose = Mathf.Max(0f, Dose - amount);
             SaveToProfile();
         }
 
-        public void SaveToProfile()
+        /// <summary>Writes the current dose into the active character profile for persistence.</summary>
+public void SaveToProfile()
         {
             CharacterProfile c = ProfileStore.ActiveCharacter;
             if (c == null || GameSession.IsBorrowedBody) return;
@@ -134,7 +141,8 @@ namespace CloneZ
             if (Dose >= 0.999f) _stats.Kill("died of radiation sickness");
         }
 
-        public void ApplyMods(StatMods mods)
+        /// <summary>Applies radiation‑related stat modifiers based on current dose and drunkenness.</summary>
+public void ApplyMods(StatMods mods)
         {
             if (_drunk > 0f)
             {
@@ -151,20 +159,23 @@ namespace CloneZ
         }
 
         #region Medicine
-        public void TakeAntirad()
+        /// <summary>Consumes an anti‑rad item, reducing dose and increasing sickness resistance.</summary>
+public void TakeAntirad()
         {
             Dose = Mathf.Max(0f, Dose - 0.35f);
             if (_stats != null) _stats.Sickness = Mathf.Min(CloneZConfig.SicknessMax, _stats.Sickness + 22f);
             GameEvents.RaiseToast("The anti-rad burns going in. Your stomach turns.");
         }
 
-        public void TakeIodine()
+        /// <summary>Consumes iodine, granting temporary intake reduction.</summary>
+public void TakeIodine()
         {
             _iodineUntil = Time.time + 600f;
             GameEvents.RaiseToast("Iodine taken: radiation intake reduced for a while.");
         }
 
-        public void DrinkVodka()
+        /// <summary>Drinks vodka, slightly reducing dose and applying drunk effects.</summary>
+public void DrinkVodka()
         {
             Dose = Mathf.Max(0f, Dose - 0.04f);
             _drunk = Mathf.Clamp01(_drunk + 0.5f);
@@ -198,15 +209,19 @@ namespace CloneZ
     /// <summary>A radiation hot spot: invisible but for dead ground and the Geiger's chatter.</summary>
     public sealed class RadiationSpot : MonoBehaviour
     {
-        public static readonly List<RadiationSpot> All = new List<RadiationSpot>();
-        public float Radius = 8f;
+        /// <summary>List of all active radiation spots.</summary>
+public static readonly List<RadiationSpot> All = new List<RadiationSpot>();
+        /// <summary>Radius of the radiation spot in metres.</summary>
+public float Radius = 8f;
         /// <summary>Dose per second at the centre.</summary>
-        public float Peak = 0.002f;
+        /// <summary>Peak dose per second at the centre of the spot.</summary>
+public float Peak = 0.002f;
 
         private void OnEnable() => All.Add(this);
         private void OnDisable() => All.Remove(this);
 
-        public static float IntakeAt(Vector3 p)
+        /// <summary>Calculates total radiation intake at a world position from all spots.</summary>
+public static float IntakeAt(Vector3 p)
         {
             float sum = 0f;
             for (int i = 0; i < All.Count; i++)
@@ -221,7 +236,8 @@ namespace CloneZ
             return sum;
         }
 
-        public static RadiationSpot Spawn(Transform parent, Vector3 at, float radius, float peak, System.Random rng)
+        /// <summary>Spawns a new radiation spot at a given position.</summary>
+public static RadiationSpot Spawn(Transform parent, Vector3 at, float radius, float peak, System.Random rng)
         {
             var go = new GameObject("RadiationSpot");
             go.transform.SetParent(parent, false);
@@ -245,7 +261,8 @@ namespace CloneZ
         private Text _text;
         private Image _fill;
 
-        public static HudRadiation Create()
+        /// <summary>Factory method to create the HUD element showing radiation dose.</summary>
+    public static HudRadiation Create()
         {
             RectTransform slot = HudLayer.Anchor("Radiation", new Vector2(1f, 0f), new Vector2(1f, 0f), new Vector2(-24f, 360f), new Vector2(200f, 40f));
             var h = slot.gameObject.AddComponent<HudRadiation>();
@@ -258,15 +275,33 @@ namespace CloneZ
             return h;
         }
 
-        private void LateUpdate()
+    private bool _prevShow;
+    private string _prevDose = "";
+    private string _prevTrend = "";
+    private bool _prevShielded;
+
+    private void LateUpdate()
+    {
+        PlayerRadiation r = PlayerRadiation.Local;
+        bool show = r != null && (r.Dose > 0.01f || r.Intake > 0.00002f);
+        if (show != _prevShow)
         {
-            PlayerRadiation r = PlayerRadiation.Local;
-            bool show = r != null && (r.Dose > 0.01f || r.Intake > 0.00002f);
-            for (int i = 0; i < transform.childCount; i++) transform.GetChild(i).gameObject.SetActive(show);
-            if (!show) return;
-            string trend = r.Intake > 0.0002f ? "  \u25B2\u25B2" : r.Intake > 0.00002f ? "  \u25B2" : "";
-            _text.text = "\u2622 " + (r.Dose * 6f).ToString("0.00") + " Sv" + trend + (r.Shielded ? "  (iodine)" : "");
-            UIKit.SetBar(_fill, r.Dose);
+            for (int i = 0; i < transform.childCount; i++)
+                transform.GetChild(i).gameObject.SetActive(show);
+            _prevShow = show;
         }
+        if (!show) return;
+        string trend = r.Intake > 0.0002f ? "  \u25B2\u25B2" : r.Intake > 0.00002f ? "  \u25B2" : "";
+        string doseStr = (r.Dose * 6f).ToString("0.00");
+        bool shielded = r.Shielded;
+        if (doseStr != _prevDose || trend != _prevTrend || shielded != _prevShielded)
+        {
+            _text.text = "\u2622 " + doseStr + " Sv" + trend + (shielded ? "  (iodine)" : "");
+            UIKit.SetBar(_fill, r.Dose);
+            _prevDose = doseStr;
+            _prevTrend = trend;
+            _prevShielded = shielded;
+        }
+    }
     }
 }

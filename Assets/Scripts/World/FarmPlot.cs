@@ -22,10 +22,15 @@ namespace CloneZ
 
         public enum PlotState { Empty, Growing, Mature, Dead }
 
+        /// <summary>Current growth state of the plot.</summary>
         public PlotState State { get; private set; } = PlotState.Empty;
+        /// <summary>The crop currently planted in the plot, or null if empty.</summary>
         public FarmCrop Crop { get; private set; }
+        /// <summary>Current water amount in the plot (0..FarmWaterMax).</summary>
         public float Water { get; private set; }       // 0..FarmWaterMax
+        /// <summary>Growth progress of the crop as a 0‑1 value.</summary>
         public float Growth01 { get; private set; }     // 0..1 toward maturity
+        /// <summary>Health of the crop (0..1), zero means dead.</summary>
         public float Health { get; private set; } = 1f; // 0..1; hits 0 -> the crop dies
 
         private float _lastHours;                        // world hour the sim last advanced
@@ -82,13 +87,18 @@ namespace CloneZ
         #endregion
 
         #region Readouts (for the farming prompt)
+        /// <summary>Display name of the planted crop, or empty if none.</summary>
         public string CropName => Crop != null ? Crop.Name : "";
+        /// <summary>Water amount normalized to 0‑1 range based on FarmWaterMax.</summary>
         public float Water01 => CloneZConfig.FarmWaterMax > 0f ? Water / CloneZConfig.FarmWaterMax : 0f;
+        /// <summary>True when water is below the low‑threshold, indicating the plot is thirsty.</summary>
         public bool IsParched => Water < CloneZConfig.FarmWaterLowThreshold;
+        /// <summary>True when water is below the top‑up threshold, indicating watering is advisable.</summary>
         public bool NeedsWater => Water < CloneZConfig.FarmWaterMax * CloneZConfig.FarmWaterTopUpBelow;
         /// <summary>World hour the growth sim last advanced (captured/restored by the save system).</summary>
         public float LastHours => _lastHours;
 
+        /// <summary>Human‑readable word describing the plot's current state.</summary>
         public string StateWord
         {
             get

@@ -99,8 +99,10 @@ namespace CloneZ
         private static readonly Color LightSole = new Color(0.86f, 0.85f, 0.82f);
         private static readonly Color DarkGlass = new Color(0.07f, 0.08f, 0.09f);
 
+        /// <summary>Creates a shallow copy of this HumanoidLook.</summary>
         public HumanoidLook Clone() => (HumanoidLook)MemberwiseClone();
 
+        /// <summary>Gets the colour of the given humanoid slot, falling back to Gore for unknown slots.</summary>
         public Color ColorOf(HumanoidSlot slot)
         {
             switch (slot)
@@ -122,6 +124,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Gets the gloss value for the given humanoid slot, using defaults for body parts and custom values for clothing slots.</summary>
         public float GlossOf(HumanoidSlot slot)
         {
             switch (slot)
@@ -203,9 +206,8 @@ namespace CloneZ
             }
         }
 
-        /// <summary>Clone Z — the survivor the player controls: an athletic adult with warm tan skin
-        /// and short dark-brown hair. The outfit comes from whatever is worn (see <see cref="Wear"/>).</summary>
-        public static HumanoidLook Survivor()
+        /// <summary>Clone Z — the survivor the player controls: an athletic adult with warm tan skin and short dark-brown hair. The outfit comes from whatever is worn (see <see cref="Wear"/>). Creates the default survivor look with athletic build, short hair, and default colours. The look is then dressed with empty slots (no clothing).</summary>
+                public static HumanoidLook Survivor()
         {
             var look = new HumanoidLook();
             look.Shape.Build = BodyBuild.Athletic;

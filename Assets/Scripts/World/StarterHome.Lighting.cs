@@ -102,7 +102,8 @@ namespace CloneZ
             m.Ellipsoid(globe, new Vector3(0.13f, 0.15f, 0.13f), DecorPalette.Matte(new Color(0.86f, 0.82f, 0.70f)), 8, 5);
             var glow = new RaidMesh();
             glow.Ellipsoid(globe, new Vector3(0.14f, 0.16f, 0.14f), DecorPalette.Glow(WarmGlow), 8, 5);
-            HomeLamp.Attach(piece.transform, globe, 5f, 1.6f, true, glow, LightCircuits.Living);
+            float intensityFactor = LightVariation(globe);
+            HomeLamp.Attach(piece.transform, globe, 5f, 1.6f * intensityFactor, true, glow, LightCircuits.Living);
         }
 
         // The store room's oval bulkhead light, high over the back window, on the store room's circuit.
@@ -111,7 +112,8 @@ namespace CloneZ
             Vector3 n = f.N(side);
             var glow = new RaidMesh();
             Vector3 bulb = FurnitureBuilder.BulkheadLight(m, glow, Face(f, side, along, y), n);
-            HomeLamp.Attach(piece.transform, bulb, CloneZConfig.StoreLightRange, CloneZConfig.StoreLightIntensity, true, glow, LightCircuits.Store);
+            float intensityFactor = LightVariation(bulb);
+            HomeLamp.Attach(piece.transform, bulb, CloneZConfig.StoreLightRange, CloneZConfig.StoreLightIntensity * intensityFactor, true, glow, LightCircuits.Store);
         }
 
         // The bathroom's vanity light, above the mirror cabinet, on the bathroom's circuit.
@@ -120,7 +122,8 @@ namespace CloneZ
             Vector3 n = f.N(side);
             var glow = new RaidMesh();
             Vector3 bulb = FurnitureBuilder.VanityLight(m, glow, Face(f, side, along, y), n, f.Along);
-            HomeLamp.Attach(piece.transform, bulb, CloneZConfig.BathLightRange, CloneZConfig.BathLightIntensity, true, glow, LightCircuits.Bath);
+            float intensityFactor = LightVariation(bulb);
+            HomeLamp.Attach(piece.transform, bulb, CloneZConfig.BathLightRange, CloneZConfig.BathLightIntensity * intensityFactor, true, glow, LightCircuits.Bath);
         }
 
         // A black carriage lantern beside the front door, on the porch circuit with a dusk sensor.
@@ -190,15 +193,6 @@ namespace CloneZ
             clock.SetHands(hour, minute);
         }
 
-        private static Transform ClockHand(Transform parent, string name, Vector3 centre, Vector3 n, float length, float width, float lift)
-        {
-            var mesh = new RaidMesh();
-            FurnitureBuilder.ClockHand(mesh, centre, n, length, width, lift);
-            GameObject go = mesh.Emit(name, parent, centre, ShadowCastingMode.Off);
-            go.transform.rotation = Quaternion.identity;   // drawn in world axes, pointing at twelve
-            return go.transform;
-        }
-
         // A framed print, as crooked as the house came (the same tilt and frame the wall's stream always gave it).
         private static void Picture(BuildPiece piece, RaidMesh m, in Frame f, System.Random rng, int side, float along, float y,
             float w, float h, string description)
@@ -212,6 +206,32 @@ namespace CloneZ
             GameObject go = mesh.Emit("Picture", picture.transform, at, ShadowCastingMode.On);
             picture.SetFrame(go.transform);
         }
+
+        // Returns a subtle intensity variation (0.95‑1.05) derived from the world position of a lamp.
+        // The same position always yields the same factor, without using the map's random stream.
+        private static float LightVariation(Vector3 worldPos)
+        {
+            unchecked
+            {
+                long x = (long)Mathf.FloorToInt(worldPos.x * 73856093);
+                long y = (long)Mathf.FloorToInt(worldPos.y * 19349663);
+                long z = (long)Mathf.FloorToInt(worldPos.z * 83492791);
+                long hash = x ^ y ^ z;
+                // Map hash to [0,1]
+                float t = (hash & 0xFFFF) / (float)0xFFFF;
+                return 0.95f + t * 0.10f; // range 0.95‑1.05
+            }
+        }
+
+        private static Transform ClockHand(Transform parent, string name, Vector3 centre, Vector3 n, float length, float width, float lift)
+        {
+            var mesh = new RaidMesh();
+            FurnitureBuilder.ClockHand(mesh, centre, n, length, width, lift);
+            GameObject go = mesh.Emit(name, parent, centre, ShadowCastingMode.Off);
+            go.transform.rotation = Quaternion.identity;   // drawn in world axes, pointing at twelve
+            return go.transform;
+        }
+
         #endregion
     }
 }

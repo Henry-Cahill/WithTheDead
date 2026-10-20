@@ -313,6 +313,11 @@ namespace CloneZ
             "A blinking prompt and nothing else. Somebody shut everything down properly before they left.",
             "A box in the middle of the screen: PRINTER NOT RESPONDING. Nothing is responding.",
             "A game of patience, abandoned halfway. The red seven goes on the black eight. You move it.",
+            "A half‑filled spreadsheet: column A shows numbers, column B a sum formula left dangling, the cursor hovers.",
+            "A draft report in a text editor, the final paragraph reads “Conclusion …” and then stops, green ink blinking.",
+            "A calendar window stuck on March, days after the 12th are blank, the cursor awaiting a new appointment.",
+            "An email client listing inbox items, the last subject line reads “Re: …” with no message body displayed.",
+            "A command‑line console paused at line 42, the prompt flashing, waiting for a keystroke.",
         };
 
         private static System.Action<InteractContext> s_CivicReadScreen;

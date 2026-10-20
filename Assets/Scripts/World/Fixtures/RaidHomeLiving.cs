@@ -19,6 +19,10 @@ namespace CloneZ
             "a pickup buyer's guide, dog-eared at the four-by-fours. The prices make you laugh out loud.",
             "a church bulletin that's done duty as a coaster, a coffee ring over the hymn numbers.",
             "a kids' puzzle book with the word searches done in crayon and the hard ones left blank.",
+            "a backyard gardening guide, with tips for winter vegetables and a reminder to mulch.",
+            "a neighborhood watch bulletin, warnings about prowlers and a list of emergency numbers.",
+            "a local theater program, featuring a midnight screening of a classic and a bake sale.",
+            "a seasonal recipe pamphlet, \"Hearty Stew for Cold Nights\" with a handwritten note.",
         };
 
         private static readonly string[] Plumping =
@@ -88,14 +92,34 @@ namespace CloneZ
                 "The name's printed down the page in three different typefaces.",
                 "You're fairly sure nobody's won anything.",
             },
+            new[]
+            {
+                "A folded flyer from the community garden, announcing a seed swap on Saturday.",
+                "Hand-drawn map of the garden beds, with a doodle of a carrot.",
+                "A reminder: bring your own gloves.",
+            },
+            new[]
+            {
+                "A short poem scribbled on recycled paper, titled \"Winter's Whisper\".",
+                "It speaks of snow drifts and quiet streets, ending with a hopeful line.",
+            },
+            new[]
+            {
+                "An anonymous postcard with a picture of a sunrise over the hills.",
+                "The back reads: \"Stay safe, keep the fire alive.\"",
+                "No return address.",
+            },
         };
 
-        private static readonly string[] NumberLines =
+private static readonly string[] NumberLines =
         {
             "Number {0}, says the enamel plate by the door. Somebody's home, once.",
             "Number {0}. A dried-out Christmas wreath still hangs under it.",
             "Number {0}, in chipped enamel, with a horseshoe nailed up over it for luck.",
             "Number {0}. Somebody's chalked a cross beside it, and a date: 12/15.",
+            "Number {0}, etched in faded paint above the porch, a lone pine silhouette beside it.",
+            "Number {0}, stamped on a rusted metal plate, the letters half torn away.",
+            "Number {0}, scrawled in chalk on the sidewalk, washed away by a recent rain."
         };
 
         private static int s_Magazine = -1, s_Plump;

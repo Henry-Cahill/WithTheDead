@@ -29,7 +29,8 @@ Every change is compiled against Unity's own assemblies before it lands, and lan
    low CPU priority, so game servers on the same machines aren't affected.
 4. **Automatic pull request (optional).** Choose **A** in the menu, or run `.\NightShift.ps1 autopr`. Every
    15 minutes this PC checks the Spark, and once the agents have nothing left to do it pushes their branch to
-   GitHub and opens a pull request (or updates the open one) with the reports as its description. It uses
+   GitHub and opens a pull request (or updates the open one) with the reports as its description. Once that
+   pull request is merged, a new one opens only when more tasks finish on the branch. It uses
    this PC's `gh` sign-in, so no GitHub token goes near the agents. It runs only while this PC is on and
    you're logged in; `.\NightShift.ps1 autopr -Off` turns it off, and `.state\pr.log` records what it did.
 
@@ -71,6 +72,8 @@ shift's branch, the night shift stops so nothing lands on the other branch.
   patch), `[~]` nothing needed changing. `reports/<date>.md` has a summary of each task.
 - With the automatic pull request on, the pull request is waiting on GitHub. Choose **P** (or
   `.\NightShift.ps1 pr`) to open or update it right away, even while the agents are still working.
+  GitHub-side edits on the same branch are preserved: publishing merges them with the Spark's results in
+  a temporary checkout, without switching this PC's checkout or changing the running Spark. It never force-pushes.
 - Choose **7** (or `.\NightShift.ps1 fetch`) to fetch the branch into this repo, then
   `git switch -c nightshift/<date> spark/nightshift/<date>` and try it in Unity. The night shift can
   compile but not play the game, so play-test before merging.
@@ -120,7 +123,19 @@ local model, for interactive work in JupyterLab's terminal).
   compile; fix it (or switch branch) first. Errors that only appear on the Spark usually mean the
   references are stale; rerun `refs`.
 - **A helper is "not used"**: the log says why. Rerun `.\NightShift.ps1 helpers` for that machine.
+- **"couldn't bring the project folder up to date with the landing"**: a file that landing changed was edited in
+  the project folder while it ran, so the landing was undone and the task stays queued. Adding tasks to
+  `tasks.md` is fine at any time; leave the other files alone while it runs.
 - **No pull request appeared**: `.state\pr.log` on this PC says why (for example a failed push). The
   automatic one waits until nothing is left to do; **P** makes it right away.
+- **Publishing reports a merge conflict**: nothing was pushed or changed on the Spark. Stop the night shift,
+  fetch the GitHub and Spark versions of the branch, and reconcile them manually before retrying **P**.
+  If GitHub changed during publishing, retry **P** to fetch and reconcile the latest commits.
 - **Logs**: `Tools/NightShift/.state/nightshift.log` (coordinator), and each worker's
   `.state/runs/*.jsonl` (full agent transcripts).
+
+## Publication regression tests
+
+Run `pwsh -NoProfile -File Tools/NightShift/tests/Publish.Tests.ps1` from the repository root (or use
+`powershell -NoProfile -File ...` on Windows PowerShell 5). Tests use temporary local Git history only;
+they do not connect to the Spark or GitHub.

@@ -21,6 +21,10 @@ namespace CloneZ
             "A pizza menu from the place on Main, ringed in red pen: OPEN LATE!",
             "A photocopied sheet, COLD-WEATHER INJURIES: KNOW THE SIGNS. Somebody has drawn a moustache on the frostbitten foot.",
             "A child's drawing of a soldier under a big yellow sun. MY DAD, it says, in crayon.",
+            "A torn memo dated Dec 1993: \u201CSupply run overdue – send a squad.\u201D",
+            "A doodle of a snowflake with the words \u201CWinter patrol, 12/93\u201D in marker.",
+            "A grocery list scribbled on a napkin, dated Dec 1993, includes beans, jam, and extra rations.",
+            "A faded newspaper clipping from Dec 1993: \u201CLocal base reports morale dip.\u201D",
         };
 
         private static readonly string[] ClinicNotes =
@@ -29,6 +33,10 @@ namespace CloneZ
             "A printed sign: VACCINES AND INSULIN ONLY \u2014 NO FOOD. Under it, in biro: \u201CThis means your yogurt, Gary.\u201D",
             "A pharmacy order form, half filled in. MORE GLOVES, somebody's written in the margin, three times over.",
             "A sticky note: \u201CDoor seal's going. Maintenance called Tues. Nobody came.\u201D",
+            "A cracked emergency chart, dated Dec 1993: \u201CCold exposure risk – monitor vitals.\u201D",
+            "A handwritten note: \u201CStock low on bandages – order ASAP.\u201D",
+            "A marginal doodle: \u201CDecember 1993 – patient intake up 12%\u201D",
+            "A torn prescription pad entry, Dec 1993: \u201CIV antibiotics – keep refrigerated.\u201D",
         };
 
         private static readonly Color LampColour = new Color(0.86f, 0.93f, 1f);

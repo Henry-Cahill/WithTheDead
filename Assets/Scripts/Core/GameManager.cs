@@ -10,13 +10,20 @@ namespace CloneZ
     /// <summary>Owns global game state: score, waves, and win/lose flow.</summary>
     public class GameManager : MonoBehaviour
     {
+        /// <summary>Provides a globally accessible singleton for game-wide management.</summary>
         public static GameManager Instance { get; private set; }
 
+        /// <summary>Current overall game state (playing or game over).</summary>
         public GameState State { get; private set; } = GameState.Playing;
+        /// <summary>Total number of zombies killed in this run.</summary>
         public int ZombieKills { get; private set; }
+        /// <summary>Current wave number of the raid.</summary>
         public int Wave { get; private set; }
+        /// <summary>Total time survived in seconds for the current run.</summary>
         public float TimeSurvived { get; private set; }
+        /// <summary>Reason why the player died, if the game is over.</summary>
         public string CauseOfDeath { get; private set; } = "";
+        /// <summary>Reference to the player's stats component, set during bootstrap.</summary>
         public PlayerStats Player { get; internal set; }
 
         public event Action<int> OnZombieKilled;
@@ -57,12 +64,14 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Increment zombie kill count and notify listeners.</summary>
         public void ReportZombieKill()
         {
             ZombieKills++;
             OnZombieKilled?.Invoke(ZombieKills);
         }
 
+        /// <summary>Set the current wave number and broadcast the change.</summary>
         public void SetWave(int wave)
         {
             Wave = wave;
@@ -79,6 +88,7 @@ namespace CloneZ
             OnWaveChanged?.Invoke(Wave);
         }
 
+        /// <summary>Trigger game over state with a specific cause, clean up and notify.</summary>
         public void TriggerGameOver(string cause)
         {
             if (State == GameState.GameOver) return;
@@ -90,6 +100,7 @@ namespace CloneZ
             OnGameOver?.Invoke();
         }
 
+        /// <summary>Restart the current scene, resetting the world and state.</summary>
         public void Restart()
         {
             // Reloading the scene lets the bootstrapper rebuild the world from scratch.
@@ -101,6 +112,7 @@ namespace CloneZ
         /// <summary>Writes the current run to disk (F5, and automatically on quit/pause). No-op when
         /// the survivor is dead so a finished run can't be re-saved over its own deletion, and during an
         /// extraction raid (raids are never saved — the kit carried out is kept by <see cref="RaidLoadout"/>).</summary>
+        /// <summary>Save the current run to disk (F5 or auto on quit/pause). No-op if dead or in extraction raid.</summary>
         public void QuickSave()
         {
             if (GameSession.IsExtraction) return;

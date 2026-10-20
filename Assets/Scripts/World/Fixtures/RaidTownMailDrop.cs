@@ -18,6 +18,10 @@ namespace CloneZ
             "Red and green envelopes \u2014 Christmas cards, weeks early. Somebody wanted them out while there was still a post to send them.",
             "A postcard lying face up: a lake and a single pine. On the back, in pencil: \u201CWish you were here. Glad you're not.\u201D No name.",
             "A fat envelope marked PHOTOS \u2014 DO NOT BEND, bent in half to make it fit the slot.",
+            "A torn invitation, cream paper edged with glitter \u2014 a community pot‑luck scheduled for the evening before the storm. No RSVP.",
+            "A yellowed flyer, corners browned: \u201CFREE COLD‑CUT HAM – PICK‑UP TODAY\u201D. The address points to the shuttered town hall.",
+            "A handwritten note, ink smudged by frost: \u201CMeet me at the old oak, midnight. Bring the lockbox.\u201D No signature.",
+            "A glossy catalog, pages half‑frosted, advertising winter coats labeled \u201CLimited stock\u201D. The price tag reads \u201C$0 – sample\u201D.",
         };
 
         private Vector3 _point;

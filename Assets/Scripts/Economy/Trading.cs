@@ -11,7 +11,8 @@ namespace CloneZ
     public static class Trading
     {
         /// <summary>The highest loyalty level the character currently qualifies for with a trader.</summary>
-        public static int LoyaltyOf(CharacterProfile c, TraderDef t)
+        /// <summary>Computes the highest loyalty tier a character currently reaches with a specific trader.</summary>
+    public static int LoyaltyOf(CharacterProfile c, TraderDef t)
         {
             if (c == null || t == null) return 1;
             TraderState s = c.Trader(t.Id);
@@ -26,7 +27,8 @@ namespace CloneZ
         }
 
         /// <summary>What the next loyalty level needs, as a line of text (null at the top level).</summary>
-        public static string NextLevelNeeds(CharacterProfile c, TraderDef t)
+        /// <summary>Generates a description of what the next loyalty level requires, or null if already at max.</summary>
+            public static string NextLevelNeeds(CharacterProfile c, TraderDef t)
         {
             int cur = LoyaltyOf(c, t);
             LoyaltyLevel next = t.Levels.Find(l => l.Level == cur + 1);
@@ -36,7 +38,9 @@ namespace CloneZ
                 + " (" + s.Rep.ToString("0.00") + "), spent " + Money.Format(next.MinSpent) + " (" + Money.Format(s.Spent) + ")";
         }
 
-        public static bool Visible(CharacterProfile c, TraderDef t, TraderOffer o)
+        /// <summary>Determines whether a trader's offer is currently visible to the character.</summary>
+/// <summary>Returns true if the offer is currently visible to the character (loyalty, quest, item availability).</summary>
+    public static bool Visible(CharacterProfile c, TraderDef t, TraderOffer o)
         {
             if (o.Loyalty > LoyaltyOf(c, t)) return false;
             if (!string.IsNullOrEmpty(o.Quest))
@@ -48,7 +52,8 @@ namespace CloneZ
         }
 
         /// <summary>Units left of an offer, restocking on the trader's timer.</summary>
-        public static int StockLeft(CharacterProfile c, TraderDef t, TraderOffer o)
+        /// <summary>Returns the amount of stock left for a trader's offer, resetting on restock timer.</summary>
+public static int StockLeft(CharacterProfile c, TraderDef t, TraderOffer o)
         {
             TraderState s = c.Trader(t.Id);
             long now = ProfileStore.NowUnix;
@@ -62,7 +67,8 @@ namespace CloneZ
             return st.Left;
         }
 
-        public static string RestockIn(CharacterProfile c, TraderDef t)
+        /// <summary>Returns a human‑readable time until the trader's stock refreshes.</summary>
+public static string RestockIn(CharacterProfile c, TraderDef t)
         {
             long secs = c.Trader(t.Id).RestockUnix - ProfileStore.NowUnix;
             if (secs <= 0) return "now";
@@ -70,7 +76,8 @@ namespace CloneZ
         }
 
         /// <summary>Whether an offer can be taken right now (money, barter goods, stock), and why not.</summary>
-        public static bool CanBuy(CharacterProfile c, TraderDef t, TraderOffer o, PlayerInventory carried, out string reason)
+        /// <summary>Determines if the character can currently purchase the offer (stock, money, barter).</summary>
+public static bool CanBuy(CharacterProfile c, TraderDef t, TraderOffer o, PlayerInventory carried, out string reason)
         {
             reason = null;
             if (!Visible(c, t, o)) { reason = "Not available"; return false; }
@@ -82,7 +89,8 @@ namespace CloneZ
             return true;
         }
 
-        public static bool Buy(CharacterProfile c, TraderDef t, TraderOffer o, PlayerInventory carried, out string message)
+        /// <summary>Attempts to buy the given offer, updating inventory, stock and trader reputation. Returns success and a message.</summary>
+public static bool Buy(CharacterProfile c, TraderDef t, TraderOffer o, PlayerInventory carried, out string message)
         {
             if (!CanBuy(c, t, o, carried, out message)) return false;
             if (o.Price > 0 && !Money.TrySpend(o.Price, carried)) { message = "Not enough money"; return false; }
@@ -102,7 +110,9 @@ namespace CloneZ
             return true;
         }
 
-        public static bool WillBuy(TraderDef t, ItemDef d)
+        /// <summary>Determines whether the trader will buy a given item (based on level, category, artifact flag, etc.).</summary>
+/// <summary>Determines whether the trader will buy a given item (based on level, category, artifact flag, etc.).</summary>
+public static bool WillBuy(TraderDef t, ItemDef d)
         {
             if (t == null || d == null || d.Id == Money.Id) return false;
             if (ArtifactCatalog.IsArtifact(d)) return t.BuysArtifacts;
@@ -112,7 +122,9 @@ namespace CloneZ
         }
 
         /// <summary>What a trader pays for one unit of a stack (worn gear pays less; found-in-raid a little more).</summary>
-        public static int SellPrice(TraderDef t, ItemStack s)
+        /// <summary>Calculates how many currency units a trader will pay for one unit of the given stack.</summary>
+/// <summary>Calculates how many currency units a trader will pay for one unit of the given stack.</summary>
+public static int SellPrice(TraderDef t, ItemStack s)
         {
             if (s == null || s.Def == null || !WillBuy(t, s.Def)) return 0;
             float v = Money.BaseValue(s.Def);
@@ -123,7 +135,9 @@ namespace CloneZ
         }
 
         /// <summary>Sells <paramref name="count"/> of a stack from <paramref name="from"/>. Returns the money received.</summary>
-        public static int Sell(CharacterProfile c, TraderDef t, Inventory from, ItemStack s, int count, out string message)
+        /// <summary>Sells a number of items from an inventory to a trader, returning the total money earned.</summary>
+/// <summary>Sells a number of items from an inventory to a trader, returning the total money earned.</summary>
+public static int Sell(CharacterProfile c, TraderDef t, Inventory from, ItemStack s, int count, out string message)
         {
             message = null;
             int unit = SellPrice(t, s);
@@ -156,10 +170,14 @@ namespace CloneZ
         }
 
         #region Owned goods (stash, then pack)
-        public static int CountOwned(string id, PlayerInventory carried)
+        /// <summary>Counts how many of a given item id the player owns across stash and carried inventory.</summary>
+/// <summary>Counts how many of a given item id the player owns across stash and carried inventory.</summary>
+public static int CountOwned(string id, PlayerInventory carried)
             => Count(ProfileStore.StashInventory, id) + (carried != null ? Count(carried.Inventory, id) : 0);
 
-        public static int Count(Inventory inv, string id)
+        /// <summary>Counts how many of a given item id are present in the specified inventory.</summary>
+/// <summary>Counts how many of a given item id are present in the specified inventory.</summary>
+public static int Count(Inventory inv, string id)
         {
             if (inv == null) return 0;
             int n = 0;
@@ -167,14 +185,18 @@ namespace CloneZ
             return n;
         }
 
-        public static int TakeOwned(string id, int count, PlayerInventory carried)
+        /// <summary>Attempts to take a quantity of an item from the player's stash and carried inventory, returning the amount actually taken.</summary>
+/// <summary>Attempts to take a quantity of an item from the player's stash and carried inventory, returning the amount actually taken.</summary>
+public static int TakeOwned(string id, int count, PlayerInventory carried)
         {
             int left = Take(ProfileStore.StashInventory, id, count);
             if (left > 0 && carried != null) left = Take(carried.Inventory, id, left);
             return count - left;
         }
 
-        public static int Take(Inventory inv, string id, int count)
+        /// <summary>Removes up to a given count of the specified item id from the inventory, returning how many remain to take.</summary>
+/// <summary>Removes up to a given count of the specified item id from the inventory, returning how many remain to take.</summary>
+public static int Take(Inventory inv, string id, int count)
         {
             if (inv == null) return count;
             for (int i = inv.Stacks.Count - 1; i >= 0 && count > 0; i--)
@@ -188,7 +210,9 @@ namespace CloneZ
             return count;
         }
 
-        public static string NameOf(string id) { ItemDef d = ItemDatabase.Get(id); return d != null ? d.DisplayName : id; }
+        /// <summary>Gets the display name of an item id, falling back to the id if not found.</summary>
+/// <summary>Gets the display name of an item id, falling back to the id if not found.</summary>
+public static string NameOf(string id) { ItemDef d = ItemDatabase.Get(id); return d != null ? d.DisplayName : id; }
         #endregion
     }
 }

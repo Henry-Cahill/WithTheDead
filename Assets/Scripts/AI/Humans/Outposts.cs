@@ -15,6 +15,7 @@ namespace CloneZ
         public const float LockSeconds = 30f * 60f;
         private static readonly List<Outpost> s_Sites = new List<Outpost>();
 
+        /// <summary>Read‑only collection of all outpost sites.</summary>
         public static IReadOnlyList<Outpost> Sites => s_Sites;
 
         /// <summary>Builds the sandbag positions on the published outpost points (before the navmesh bake, so the
@@ -56,6 +57,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Initialises outpost garrisons for the given zone and random seed.</summary>
         public static void Begin(ZoneDef zone, int seed)
         {
             var rng = new System.Random(seed ^ 0x0B57A);
@@ -70,6 +72,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Creates or retrieves the persistent state for an outpost.</summary>
         public static OutpostState State(AccountProfile acct, string id, string zone, string defaultOwner)
         {
             if (acct == null) return new OutpostState { Id = id, ZoneId = zone, Owner = defaultOwner };
@@ -85,8 +88,11 @@ namespace CloneZ
 
     public sealed class Outpost : Interactable
     {
+        /// <summary>Unique identifier for this outpost instance.</summary>
         public string Id { get; private set; }
+        /// <summary>Current owning faction, or Vanguard if uninitialized.</summary>
         public string Owner => _state != null ? _state.Owner : Factions.Vanguard;
+        /// <summary>Whether the outpost is currently locked against capture.</summary>
         public bool Locked => _state != null && _state.LockedUntilUnix > ProfileStore.NowUnix;
 
         private OutpostState _state;
@@ -94,10 +100,14 @@ namespace CloneZ
         private Renderer _flag;
         private Vector3 _centre;
 
+        /// <summary>Display name shown to the player, indicating owner and lock status.</summary>
         public override string DisplayName => "Outpost — " + Factions.NameOf(Owner) + (Locked ? " (secured)" : "");
+        /// <summary>Interaction distance for the outpost.</summary>
         public override float Reach => 3f;
+        /// <summary>World position a player should stand at to interact with the outpost.</summary>
         public override Vector3 InteractPoint => _centre + Vector3.up * 1.2f;
 
+        /// <summary>Initialises the outpost's identifier and visual flag.</summary>
         public void Init(string id, Vector3 centre)
         {
             Id = id;
@@ -113,6 +123,7 @@ namespace CloneZ
             _flag.shadowCastingMode = ShadowCastingMode.Off;
         }
 
+        /// <summary>Loads persisted state into the outpost and updates its appearance.</summary>
         public void Load(OutpostState st)
         {
             _state = st;
@@ -129,6 +140,7 @@ namespace CloneZ
             _flag.SetPropertyBlock(block);
         }
 
+        /// <summary>Spawns a garrison of NPCs defending the outpost.</summary>
         public void SpawnGarrison(System.Random rng)
         {
             Actor me = Actor.LocalPlayer;
@@ -153,6 +165,7 @@ namespace CloneZ
             return false;
         }
 
+        /// <summary>Adds interaction actions for the player based on ownership and capture conditions.</summary>
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             Actor me = Actor.LocalPlayer;
@@ -167,6 +180,7 @@ namespace CloneZ
                 .Timed(8f, "Raising the flag...").DisabledIf(reason != null, reason));
         }
 
+        /// <summary>Unix timestamp until which the outpost remains locked.</summary>
         public long LockedUntil => _state != null ? _state.LockedUntilUnix : 0;
 
         /// <summary>False (with why) while the outpost is secured or its garrison still stands (the server's view).</summary>
@@ -320,6 +334,7 @@ namespace CloneZ
 
         public override bool IsAvailable => isActiveAndEnabled && !_dug;
 
+        /// <summary>Adds interaction actions for the player based on ownership and capture conditions.</summary>
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             bool trowel = ctx.Inventory != null && ctx.Inventory.Has("trowel");

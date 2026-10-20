@@ -25,8 +25,12 @@ namespace CloneZ
         public float Wetness;                               // 0..1 (1 = soaked) — owned by PlayerTemperature
         public float Sickness;                              // 0..100 (food poisoning / nausea; slows and stops healing) — owned by PlayerFoodSickness
 
+        /// <summary>Current exertion state of the survivor (idle, walking, running, sprinting).</summary>
         public Exertion Exertion = Exertion.Idle;
+        /// <summary>Whether the survivor is dead; once true no further actions are processed.</summary>
         public bool IsDead { get; private set; }
+        /// <summary>The Transform of this PlayerStats component (convenient alias for Unity's transform).
+/// </summary>
         public Transform Transform => transform;
 
         /// <summary>Knocked out (shock, blood loss): no movement, no actions, until it wears off.</summary>
@@ -35,44 +39,61 @@ namespace CloneZ
         /// <summary>This body is the survivor played on this machine (remote players are proxies, not PlayerStats).</summary>
         public bool IsLocal => true;
 
+        /// <summary>Normalized health (0..1) based on the configured maximum.</summary>
         public float HealthNormalized => Mathf.Clamp01(Health / CloneZConfig.HealthMax);
+        /// <summary>Normalized infection level (0..1) based on the configured maximum.</summary>
         public float InfectionNormalized => Mathf.Clamp01(Infection / CloneZConfig.InfectionMax);
-        public float PainNormalized => Mathf.Clamp01(Pain / CloneZConfig.PainMax);
+        /// <summary>Normalized Pain (0..1) based on the configured maximum.<//summary>
+        /// <summary>Normalized panic (0..1) based on the configured maximum.</summary>
         public float PanicNormalized => Mathf.Clamp01(Panic / CloneZConfig.PanicMax);
+        /// <summary>Normalized sickness (0..1) based on the configured maximum.</summary>
         public float SicknessNormalized => Mathf.Clamp01(Sickness / CloneZConfig.SicknessMax);
-        public bool CanSprint => Endurance > 0.05f && Fatigue < CloneZConfig.FatigueExhaustedThreshold && !IsDead && !Incapacitated
-                                 && (Limbs == null || Limbs.CanSprint);
+/// <summary>Whether the survivor can sprint (endurance, fatigue, not dead/incapacitated, limbs allow).</summary>
+        public bool CanSprint => Endurance > 0.05f && Fatigue < CloneZConfig.FatigueExhaustedThreshold && !IsDead && !Incapacitated && (Limbs == null || Limbs.CanSprint);
 
         /// <summary>How cold the survivor feels, 0 (comfortable) .. 1 (freezing).</summary>
+        /// <summary>Calculate the survivor's cold feeling strength (0 comfortable .. 1 freezing).</summary>
         public float ColdStrength =>
             Mathf.Clamp01((CloneZConfig.TempComfortLow - Temperature) / Mathf.Max(0.01f, CloneZConfig.TempComfortLow));
 
         /// <summary>How hot the survivor feels, 0 (comfortable) .. 1 (overheating).</summary>
-        public float HeatStrength =>
+        /// <summary>Calculate the survivor's heat feeling strength (0 comfortable .. 1 overheating).</summary>
+public float HeatStrength =>
             Mathf.Clamp01((Temperature - CloneZConfig.TempComfortHigh) / Mathf.Max(0.01f, 1f - CloneZConfig.TempComfortHigh));
 
         /// <summary>Move-speed scale: cold-stiffened muscles and heavy wet clothes drag you down.</summary>
-        public float ColdMoveMultiplier =>
+        /// <summary>Scale movement speed based on cold and wetness penalties.</summary>
+public float ColdMoveMultiplier =>
             Mathf.Clamp(1f - ColdStrength * CloneZConfig.TempColdMovePenalty
                         - Mathf.Clamp01(Wetness) * CloneZConfig.WetMovePenalty, 0.6f, 1f);
 
         /// <summary>Firearm aim penalty from shivering in the cold (0 when comfortable).</summary>
-        public float ColdAimPenalty => ColdStrength * CloneZConfig.TempColdAimPenalty;
+        /// <summary>Penalty to firearm aim caused by cold.</summary>
+public float ColdAimPenalty => ColdStrength * CloneZConfig.TempColdAimPenalty;
 
         /// <summary>Move-speed scale: an exhausted survivor drags their feet.</summary>
-        public float FatigueMoveMultiplier =>
+        /// <summary>Scale movement speed for fatigue.</summary>
+public float FatigueMoveMultiplier =>
             Mathf.Lerp(1f, 1f - CloneZConfig.FatigueMovePenalty, Mathf.InverseLerp(0.5f, 1f, Fatigue));
 
-        /// <summary>Move-speed scale from pain: badly hurt survivors move gingerly.</summary>
-        public float PainMoveMultiplier =>
-            Mathf.Lerp(1f, 1f - CloneZConfig.PainMovePenalty, Mathf.InverseLerp(CloneZConfig.PainMoveStart, CloneZConfig.PainMax, Pain));
+/// <summary>Move-speed scale from pain: badly hurt survivors move gingerly.</summary>
+/// <summary>Scale movement speed for pain.</summary>
+public float PainMoveMultiplier =>
+    Mathf.Lerp(1f, 1f - CloneZConfig.PainMovePenalty, Mathf.InverseLerp(CloneZConfig.PainMoveStart, CloneZConfig.PainMax, Pain));
 
-        /// <summary>Melee damage scale from pain (a shaking, hurting arm hits softer).</summary>
-        public float PainCombatMultiplier =>
-            Mathf.Lerp(1f, 1f - CloneZConfig.PainMeleePenalty, PainNormalized);
+/// <summary>Melee damage scale from pain (a shaking, hurting arm hits softer).</summary>
+/// <summary>Scale melee damage for pain.</summary>
+public float PainCombatMultiplier =>
+    Mathf.Lerp(1f, 1f - CloneZConfig.PainMeleePenalty, PainNormalized);
+
+/// <summary>Melee damage scale from pain (a shaking, hurting arm hits softer).</summary>
+/// <summary>Scale melee damage for pain.</summary>
+/// <summary>Normalized pain (0..1) based on the configured maximum.</summary>
+public float PainNormalized => Mathf.Clamp01(Pain / CloneZConfig.PainMax);
 
         /// <summary>Move-speed scale from food poisoning: a queasy survivor slows to a trudge.</summary>
-        public float SicknessMoveMultiplier =>
+        /// <summary>Scale movement speed for food poisoning sickness.</summary>
+public float SicknessMoveMultiplier =>
             Mathf.Lerp(1f, 1f - CloneZConfig.SicknessMovePenalty, Mathf.InverseLerp(CloneZConfig.SicknessMoveStart, CloneZConfig.SicknessMax, Sickness));
 
         public event Action OnDamaged;
@@ -181,7 +202,8 @@ namespace CloneZ
                 Health = Mathf.Min(CloneZConfig.HealthMax, Health + CloneZConfig.HealthRegenPerSec * PlayerModifiers.Current.HealRate * dt);
         }
 
-        public void TakeDamage(in DamageInfo info)
+        /// <summary>Public method to apply damage to the survivor, handling death, armor, and stats.</summary>
+public void TakeDamage(in DamageInfo info)
         {
             if (IsDead || HubRules.SafeZone) return;
             // Under a raid's spawn protection the dead can't hurt the survivor at all.
@@ -288,7 +310,8 @@ namespace CloneZ
             if (Health <= 0f) Die("was torn apart");
         }
 
-        public bool TryConsumeEndurance(float amount)
+        /// <summary>Attempts to consume endurance; returns false if none left.</summary>
+public bool TryConsumeEndurance(float amount)
         {
             if (Endurance <= 0f) return false;
             Endurance = Mathf.Clamp01(Endurance - amount);
@@ -315,8 +338,10 @@ namespace CloneZ
             if (Health <= 0f) Die(cause);
         }
 
-        public void Eat(float amount) => Hunger = Mathf.Clamp01(Hunger - amount);
-        public void Drink(float amount) => Thirst = Mathf.Clamp01(Thirst - amount);
+        /// <summary>Consume food to reduce hunger.</summary>
+public void Eat(float amount) => Hunger = Mathf.Clamp01(Hunger - amount);
+        /// <summary>Consume water to reduce thirst.</summary>
+public void Drink(float amount) => Thirst = Mathf.Clamp01(Thirst - amount);
 
         /// <summary>Called each frame while asleep: sheds fatigue and knits wounds (PZ sleeping regen).</summary>
         public void Sleep(float dt)
@@ -328,13 +353,15 @@ namespace CloneZ
                 Health = Mathf.Min(CloneZConfig.HealthMax, Health + CloneZConfig.SleepHealthRegenPerSec * dt);
         }
 
-        public void Heal(float amount)
+        /// <summary>Heal the survivor by the given amount, up to max health.</summary>
+public void Heal(float amount)
         {
             if (IsDead) return;
             Health = Mathf.Min(CloneZConfig.HealthMax, Health + amount);
         }
 
-        public void ReduceInfection(float amount)
+        /// <summary>Reduce infection level by the given amount; clears infection flag when zero.</summary>
+public void ReduceInfection(float amount)
         {
             if (amount <= 0f) return;
             Infection = Mathf.Max(0f, Infection - amount);

@@ -24,7 +24,10 @@ namespace CloneZ
     {
         public static readonly List<WaterSource> All = new List<WaterSource>();
 
+        /// <summary>The kind of source: tap or rain barrel.</summary>
         public WaterSourceKind Kind { get; private set; }
+        /// <summary>The current water amount, used for barrels; taps ignore this.
+        /// </summary>
         public float Water { get; private set; }   // rain-barrel level 0..WaterBarrelMax (taps ignore this)
 
         private float _lastHours;                   // world hour the fill sim last advanced
@@ -36,7 +39,6 @@ namespace CloneZ
         private void OnDisable() { All.Remove(this); }
 
         #region IDemolishable
-        public string DemolishName => DisplayName;   // "rain barrel" or "tap"
         public bool CanDemolish(out string reason)
         {
             // Whatever is kept in the cupboard under the sink would be lost with it.
@@ -52,6 +54,7 @@ namespace CloneZ
             nails = barrel ? CloneZConfig.SalvageBarrelNails : CloneZConfig.SalvageTapNails;
         }
         public bool CarvesNavMesh => true;
+        public string DemolishName => DisplayName;
         public void Dismantle() { All.Remove(this); gameObject.SetActive(false); Destroy(gameObject); }   // out of the rebuild that follows
         #endregion
 
@@ -78,11 +81,15 @@ namespace CloneZ
         #endregion
 
         #region IWaterPoint
+        /// <summary>The world position of this water source.</summary>
         public Vector3 WaterPosition => transform.position;
+        /// <summary>The short label used in UI prompts for this water source.</summary>
         public string WaterLabel => DisplayName;
+        /// <summary>Message shown when the source has no water.</summary>
         public string DryMessage => Kind == WaterSourceKind.Tap
             ? "The tap is dry \u2014 the water's been shut off"
             : "The rain barrel is empty";
+        /// <summary>Triggers drawing a unit of water from the source (delegates to Draw).</summary>
         public void DrawWater() => Draw();
         #endregion
 

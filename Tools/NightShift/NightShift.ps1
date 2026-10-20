@@ -379,11 +379,16 @@ function Add-Task {
     $b64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($text))
     Invoke-Remote @"
 python3 - <<'PY'
-import base64, pathlib
+import base64, fcntl, pathlib
 p = pathlib.Path.home() / '$SparkProject' / 'Tools' / 'NightShift' / 'tasks.md'
 text = base64.b64decode('$b64').decode('utf-8')
-body = p.read_text(encoding='utf-8')
-p.write_text(body + ('' if body.endswith('\n') else '\n') + '- [ ] ' + text + '\n', encoding='utf-8')
+lock_path = p.parent / '.state' / 'tasks.lock'
+lock_path.parent.mkdir(parents=True, exist_ok=True)
+with lock_path.open('a+b') as lock:
+    fcntl.flock(lock, fcntl.LOCK_EX)
+    body = p.read_text(encoding='utf-8')
+    p.write_text(body + ('' if body.endswith('\n') else '\n') + '- [ ] ' + text + '\n', encoding='utf-8')
+    fcntl.flock(lock, fcntl.LOCK_UN)
 print('Queued: ' + text)
 PY
 "@ | Out-Null
@@ -442,27 +447,79 @@ function Write-PrLog([string]$Message) {
     Add-Content -Path (Join-Path $dir 'pr.log') -Value "$(Get-Date -Format 'yyyy-MM-dd HH:mm') $Message" -Encoding UTF8
 }
 
+# Runs git or gh and returns its output lines. Network hiccups get retried; if it still fails, the error says why
+# (the scheduled task has no window, so pr.log is the only place anyone sees it).
+function Invoke-Tool([string]$What, [string]$Exe, [string[]]$Arguments, [int]$Tries = 3) {
+    for ($try = 1; ; $try++) {
+        $out = New-Object Collections.Generic.List[string]
+        $err = New-Object Collections.Generic.List[string]
+        $eap = $ErrorActionPreference; $ErrorActionPreference = 'Continue'  # stderr isn't failure; the exit code says
+        try {
+            & $Exe @Arguments 2>&1 | ForEach-Object { if ($_ -is [Management.Automation.ErrorRecord]) { $err.Add("$_") } else { $out.Add("$_") } }
+            $code = $LASTEXITCODE
+        }
+        finally { $ErrorActionPreference = $eap }
+        if ($code -eq 0) { return $out.ToArray() }
+        if ($try -ge $Tries) {
+            $why = (@($err) + @($out) | Where-Object { $_ -match '\S' } | Select-Object -Last 3) -join ' / '
+            throw "$What failed (exit $code): $why"
+        }
+        Start-Sleep -Seconds (15 * $try)
+    }
+}
+
+# Preserve GitHub-side edits without switching this checkout or changing the running Spark's branch.
+function Get-PublishCommit([string]$Branch, [string]$Sha, [string]$Remote) {
+    if (-not $Remote -or $Remote -eq $Sha) { return $Sha }
+    Invoke-Tool "git fetch of $Branch from GitHub" git @('-C', $Root, 'fetch', '-q', 'origin', "refs/heads/$Branch") | Out-Null
+    $remoteSha = "$(Invoke-Tool 'read fetched GitHub commit' git @('-C', $Root, 'rev-parse', 'FETCH_HEAD') 1)".Trim()
+    & git -C $Root merge-base --is-ancestor $remoteSha $Sha
+    if ($LASTEXITCODE -eq 0) { return $Sha }
+    if ($LASTEXITCODE -ne 1) { throw "Couldn't compare $Branch with GitHub." }
+    & git -C $Root merge-base --is-ancestor $Sha $remoteSha
+    if ($LASTEXITCODE -eq 0) { return $remoteSha }
+    if ($LASTEXITCODE -ne 1) { throw "Couldn't compare $Branch with the Spark." }
+
+    $worktree = Join-Path ([IO.Path]::GetTempPath()) ("clonez-nightshift-" + [guid]::NewGuid().ToString('N'))
+    Invoke-Tool 'create isolated publication worktree' git @('-C', $Root, 'worktree', 'add', '--detach', $worktree, $Sha) 1 | Out-Null
+    try {
+        Write-Host "Merging GitHub's changes to $Branch with the Spark's results..."
+        try {
+            Invoke-Tool "merge GitHub's $Branch" git @('-C', $worktree, '-c', 'user.name=CLONE-Z Night Shift',
+                '-c', 'user.email=nightshift@localhost', 'merge', '--no-ff', '--no-edit', '--no-gpg-sign', $remoteSha) 1 | Out-Null
+        }
+        catch {
+            throw "Couldn't merge GitHub's $Branch with the Spark's results; nothing was pushed. Stop the night shift, reconcile the two branches manually, then retry P. $($_.Exception.Message)"
+        }
+        return "$(Invoke-Tool 'read publication commit' git @('-C', $worktree, 'rev-parse', 'HEAD') 1)".Trim()
+    }
+    finally {
+        Invoke-Tool 'remove publication worktree' git @('-C', $Root, 'worktree', 'remove', '--force', $worktree) 1 | Out-Null
+    }
+}
+
 # Pushes the Spark's night shift branch to GitHub and opens its pull request, or updates the open one.
 function Publish-NightShift {
     [Console]::OutputEncoding = [Text.Encoding]::UTF8  # the reports are UTF-8; PowerShell 5 would read git's output as OEM
     $state = Get-NightState
     $branch = "$($state.branch)"
     if ($branch -notlike 'nightshift/*') { Write-Host "The Spark's project is on '$branch', not a night shift branch, so there's nothing to publish."; return }
-    $done = (-not $state.running) -or ($state.working -eq 0 -and $state.dispatchable -eq 0)
+    # Coordinators from before "dispatchable" only say whether they've gone idle.
+    $left = if ($null -ne $state.dispatchable) { $state.dispatchable } elseif ($state.idle_since) { 0 } else { $state.queued }
+    $done = (-not $state.running) -or ($state.working -eq 0 -and $left -eq 0)
     if ($WhenDone -and -not $done) {
         Write-Host "Still working on $branch ($($state.working) in progress, $($state.queued) queued); the pull request waits until it's done."
         return
     }
     $old = $env:GIT_SSH_COMMAND
     $env:GIT_SSH_COMMAND = 'C:/Windows/System32/OpenSSH/ssh.exe -o BatchMode=yes -o ConnectTimeout=10'
-    try {
-        & git -C $Root fetch -q "${SparkHost}:$SparkProject" "+refs/heads/${branch}:refs/remotes/spark/$branch"
-        if ($LASTEXITCODE -ne 0) { throw "git fetch of $branch from the Spark failed" }
-    }
+    try { Invoke-Tool "git fetch of $branch from the Spark" git @('-C', $Root, 'fetch', '-q', "${SparkHost}:$SparkProject", "+refs/heads/${branch}:refs/remotes/spark/$branch") | Out-Null }
     finally { $env:GIT_SSH_COMMAND = $old }
-    & git -C $Root fetch -q origin main
-    if ($LASTEXITCODE -ne 0) { throw 'git fetch of main from GitHub failed' }
+    $env:GIT_TERMINAL_PROMPT = '0'; $env:GCM_INTERACTIVE = 'never'  # fail rather than wait for a sign-in nobody sees
+    Invoke-Tool 'git fetch of main from GitHub' git @('-C', $Root, 'fetch', '-q', 'origin', 'main') | Out-Null
     $sha = "$(& git -C $Root rev-parse "refs/remotes/spark/$branch")".Trim()
+    $remote = "$(Invoke-Tool 'git ls-remote on GitHub' git @('-C', $Root, 'ls-remote', 'origin', "refs/heads/$branch"))".Split("`t ")[0]
+    $sha = Get-PublishCommit $branch $sha $remote
     if ([int]"$(& git -C $Root rev-list --count "origin/main..$sha")" -eq 0) { Write-Host "$branch has nothing that isn't on main yet."; return }
     # Never publish what must stay on the Spark (its SSH key for the helpers, Unity's DLLs) or anything like a private key.
     $private = @(& git -C $Root log --format= --name-only "origin/main..$sha" | Where-Object {
@@ -470,19 +527,26 @@ function Publish-NightShift {
     $private += @(& git -C $Root log --format=%h -G 'BEGIN [A-Z ]*PRIVATE KEY' "origin/main..$sha" | ForEach-Object { "a private key in commit $_" })
     if ($private.Count -gt 0) { throw "$branch has files that must not leave the Spark ($(($private | Select-Object -First 3) -join ', ')), so it wasn't pushed" }
     $repo = Get-GitHubRepo
-    $remote = "$(& git -C $Root ls-remote origin "refs/heads/$branch")".Split("`t ")[0]
-    $prs = & gh pr list --repo $repo --head $branch --state open --json 'number,url'
-    if ($LASTEXITCODE -ne 0) { throw 'gh pr list failed (check: gh auth status)' }
+    $prs = Invoke-Tool 'gh pr list (check: gh auth status)' gh @('pr', 'list', '--repo', $repo, '--head', $branch, '--state', 'open', '--json', 'number,url')
     $open = @(if ("$prs".Trim()) { ($prs -join "`n") | ConvertFrom-Json | ForEach-Object { $_ } })
+    # The night's reports that aren't on main yet, by comparing the two trees: merges between main and the night's
+    # branch can leave several merge bases, and a three-dot diff from an older one shows merged reports as new.
+    # Without new reports there's no new work (the last night pull request was merged and only tooling or merges
+    # came after), so don't open another pull request for that.
+    $reports = @(& git -C $Root diff --name-only --diff-filter=AM origin/main $sha -- 'Tools/NightShift/reports/*.md' |
+        Sort-Object { $_ -replace '\.md$', '' } -Descending)
+    $newReports = @($reports | Where-Object {
+        & git -C $Root diff --quiet origin/main $sha -- $_
+        if ($LASTEXITCODE -gt 1) { throw "Couldn't compare report '$_' with main." }
+        $LASTEXITCODE -eq 1
+    })
+    if ($open.Count -eq 0 -and $newReports.Count -eq 0) { Write-Host "Nothing new from the night shift on $branch since its last pull request."; return }
+    # Refresh PR metadata even when the branch is already pushed, so failed edits can be retried.
     if ($remote -ne $sha) {
-        $env:GIT_TERMINAL_PROMPT = '0'; $env:GCM_INTERACTIVE = 'never'  # fail rather than wait for a sign-in nobody sees
-        & git -C $Root push -q origin "${sha}:refs/heads/$branch"
-        if ($LASTEXITCODE -ne 0) { throw "git push of $branch to GitHub failed" }
+        Invoke-Tool "git push of $branch to GitHub" git @('-C', $Root, 'push', '-q', 'origin', "${sha}:refs/heads/$branch") | Out-Null
     }
 
     # Description: what to check before merging, then every run's report on the branch, newest first.
-    $reports = @(& git -C $Root diff --name-only --diff-filter=AM "origin/main...$sha" -- 'Tools/NightShift/reports/*.md' |
-        Sort-Object { $_ -replace '\.md$', '' } -Descending)
     $texts = foreach ($r in $reports) {
         $base = "https://github.com/$repo/blob/$branch/" + ($r -replace '[^/]+$', '')
         # Links in a report are relative to the reports folder; point them at the branch on GitHub.
@@ -509,13 +573,13 @@ Work by the CLONE-Z Night Shift: local AI agents (Ollama on the DGX Spark and th
     try {
         [IO.File]::WriteAllText($file, $body, (New-Object Text.UTF8Encoding $false))
         if ($open.Count -gt 0) {
-            & gh pr edit $open[0].number --repo $repo --title $title --body-file $file | Out-Null
-            if ($LASTEXITCODE -ne 0) { throw 'gh pr edit failed' }
+            # No retries for edits and creates: a retry after a reply that got lost could open a second pull request.
+            Invoke-Tool 'gh pr edit' gh @('pr', 'edit', "$($open[0].number)", '--repo', $repo, '--title', $title, '--body-file', $file) 1 | Out-Null
             Write-PrLog "Updated $($open[0].url): $landed landed, $failed failed"
         }
         else {
-            $url = & gh pr create --repo $repo --base main --head $branch --title $title --body-file $file
-            if ($LASTEXITCODE -ne 0) { throw 'gh pr create failed' }
+            $url = Invoke-Tool 'gh pr create' gh @('pr', 'create', '--repo', $repo, '--base', 'main', '--head', $branch, '--title', $title, '--body-file', $file) 1 |
+                Where-Object { $_ -match '^https://' } | Select-Object -Last 1
             Write-PrLog "Opened $url : $landed landed, $failed failed"
         }
     }

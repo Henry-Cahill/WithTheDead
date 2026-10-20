@@ -80,21 +80,31 @@ namespace CloneZ
         private static readonly Dictionary<string, ModStats> s_Mods = new Dictionary<string, ModStats>();
         private static readonly Dictionary<string, ArmorStats> s_Armor = new Dictionary<string, ArmorStats>();
 
+        /// <summary>Registers an ammo definition so it can be looked up by id.</summary>
         public static void Register(AmmoStats a) { if (a != null) s_Ammo[a.Id] = a; }
+        /// <summary>Registers a gun definition for later lookup by id.</summary>
         public static void Register(GunStats g) { if (g != null) s_Guns[g.Id] = g; }
+        /// <summary>Registers a mod definition for later lookup by id.</summary>
         public static void Register(ModStats m) { if (m != null) s_Mods[m.Id] = m; }
         public static void Register(ArmorStats a) { if (a != null) s_Armor[a.Id] = a; }
 
+        /// <summary>Looks up an ammo definition by its id.</summary>
         public static AmmoStats Ammo(string id) { ItemDatabase.EnsureInit(); return id != null && s_Ammo.TryGetValue(id, out AmmoStats a) ? a : null; }
+        /// <summary>Looks up a gun definition by its id.</summary>
         public static GunStats Gun(string id) { ItemDatabase.EnsureInit(); return id != null && s_Guns.TryGetValue(id, out GunStats g) ? g : null; }
+        /// <summary>Looks up a mod definition by its id.</summary>
         public static ModStats Mod(string id) { ItemDatabase.EnsureInit(); return id != null && s_Mods.TryGetValue(id, out ModStats m) ? m : null; }
+        /// <summary>Looks up an armor definition by its id.</summary>
         public static ArmorStats Armor(string id) { ItemDatabase.EnsureInit(); return id != null && s_Armor.TryGetValue(id, out ArmorStats a) ? a : null; }
 
+        /// <summary>All registered ammo definitions.</summary>
         public static IEnumerable<AmmoStats> AllAmmo => s_Ammo.Values;
+        /// <summary>All registered mod definitions.</summary>
         public static IEnumerable<ModStats> AllMods => s_Mods.Values;
 
-        public static string CaliberOfGun(ItemDef gun)
-        {
+/// <summary>Returns the caliber string for a gun or its ammo.</summary>
+public static string CaliberOfGun(ItemDef gun)
+{
             if (gun == null) return null;
             GunStats g = Gun(gun.Id);
             if (g != null) return g.Caliber;

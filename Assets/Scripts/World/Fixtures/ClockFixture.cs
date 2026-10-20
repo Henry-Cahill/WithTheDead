@@ -19,6 +19,9 @@ namespace CloneZ
         private Transform _hour, _minute;
         private float _calmAgainAt;
         private float _stoppedAt = -1f;   // the hour (0..12) a stopped clock's hands show; below 0 while it runs
+        // cache of last assigned hand angles; NaN forces first assignment
+        private float _lastHourAngle = float.NaN;
+        private float _lastMinuteAngle = float.NaN;
 
         public override string DisplayName => "Wall clock";
         public override Vector3 InteractPoint => _point;
@@ -88,8 +91,17 @@ namespace CloneZ
             // Turning about the outward normal sweeps twelve toward three, as a viewer facing the dial sees it.
             float hour = Mathf.Repeat(hours, 12f) * 30f;
             float minute = Mathf.Repeat(hours, 1f) * 360f;
-            if (_hour != null) _hour.rotation = Quaternion.AngleAxis(hour, _normal);
-            if (_minute != null) _minute.rotation = Quaternion.AngleAxis(minute, _normal);
+            // Only assign rotations if angle changed > 0.5 degrees since last assignment
+            if (_hour != null && (float.IsNaN(_lastHourAngle) || Mathf.Abs(Mathf.DeltaAngle(_lastHourAngle, hour)) > 0.5f))
+            {
+                _hour.rotation = Quaternion.AngleAxis(hour, _normal);
+                _lastHourAngle = hour;
+            }
+            if (_minute != null && (float.IsNaN(_lastMinuteAngle) || Mathf.Abs(Mathf.DeltaAngle(_lastMinuteAngle, minute)) > 0.5f))
+            {
+                _minute.rotation = Quaternion.AngleAxis(minute, _normal);
+                _lastMinuteAngle = minute;
+            }
         }
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)

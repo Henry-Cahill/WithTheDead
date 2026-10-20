@@ -47,7 +47,9 @@ namespace CloneZ
         private Vector3 _origin;
         private Quaternion _rot = Quaternion.identity;
 
+        /// <summary>Gets the number of vertices currently stored.</summary>
         public int VertexCount => _v.Count;
+        /// <summary>True when no vertices have been added.</summary>
         public bool IsEmpty => _v.Count == 0;
 
         #region Frame
@@ -65,19 +67,23 @@ namespace CloneZ
             _rot = rotation;
         }
 
+        /// <summary>Resets the local frame to the origin with no rotation.</summary>
         public void ResetFrame()
         {
             _origin = Vector3.zero;
             _rot = Quaternion.identity;
         }
 
+        /// <summary>Gets the current local frame origin.</summary>
         public Vector3 FrameOrigin => _origin;
+        /// <summary>Gets the current local frame rotation.</summary>
         public Quaternion FrameRotation => _rot;
 
         /// <summary>A local-frame point in mesh space.</summary>
         public Vector3 ToMeshSpace(Vector3 local) => _origin + _rot * local;
         #endregion
 
+        /// <summary>Removes all accumulated geometry and resets the local frame.</summary>
         public void Clear()
         {
             _v.Clear();
@@ -455,6 +461,7 @@ namespace CloneZ
             return mesh;
         }
 
+        /// <summary>The array of materials used by the generated mesh, in sub‑mesh order.</summary>
         public Material[] Materials => _mats.ToArray();
 
         /// <summary>Gives <paramref name="go"/> this geometry (mesh space = the object's local space,

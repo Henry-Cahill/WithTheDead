@@ -30,15 +30,21 @@ namespace CloneZ
         public WorldItem PickupTarget { get; private set; }
         /// <summary>The fixture in focus, or null.</summary>
         public Interactable FixtureTarget { get; private set; }
+        /// <summary>The HUD prompt text displayed to the player.</summary>
         public string PromptText { get; private set; } = "";
 
         /// <summary>True when something is in focus; <see cref="FocusPoint"/> / <see cref="FocusName"/> label it on screen.</summary>
-        public bool HasFocus => _focus != FocusKind.None;
+                public bool HasFocus => _focus != FocusKind.None;
+        /// <summary>The world position of the current focus point for HUD display.</summary>
         public Vector3 FocusPoint { get; private set; }
+        /// <summary>The name string for the currently focused interactable.</summary>
         public string FocusName { get; private set; } = "";
 
+        /// <summary>True while a container search is ongoing.</summary>
         public bool IsSearching { get; private set; }
+        /// <summary>Current progress (0‑1) of the ongoing container search.</summary>
         public float SearchProgress { get; private set; }
+        /// <summary>Name of the container currently being searched, shown in the HUD prompt.</summary>
         public string SearchTargetName { get; private set; } = "";
 
         /// <summary>The container being rummaged through, or null.</summary>
@@ -61,15 +67,21 @@ namespace CloneZ
 
         /// <summary>True while a fixture's action menu is open.</summary>
         public bool MenuOpen => _menuTarget != null;
+        /// <summary>The fixture whose action menu is currently open, or null.</summary>
+        /// <summary>The interactable whose action menu is currently open, or null.</summary>
         public Interactable MenuTarget => _menuTarget;
+        /// <summary>Read‑only list of actions currently shown in the fixture's menu.</summary>
         public IReadOnlyList<InteractAction> MenuActions => _menuActions;
         /// <summary>Moves on whenever the menu's entries change (the HUD rebuilds it then).</summary>
+        /// <summary>Incremented each time the menu list changes, forcing the HUD to refresh.</summary>
         public int MenuVersion { get; private set; }
 
         /// <summary>The container the inventory panel shows right now, or null.</summary>
+        /// <summary>The inventory UI controller currently showing a container, or null.</summary>
         public LootContainer ViewedContainer => _ui != null && _ui.IsOpen ? _ui.CurrentContainer : null;
 
         /// <summary>The survivor as fixtures see them.</summary>
+        /// <summary>Context object exposing the survivor to interactable fixtures.</summary>
         public InteractContext Context => _ctx;
 
         /// <summary>Short messages for the HUD's toasts ("The door is locked").</summary>
@@ -146,21 +158,26 @@ namespace CloneZ
             UIState.ActionMenuOpen = false;
         }
 
+        /// <summary>Binds the UI controller for inventory interactions.</summary>
+        /// <summary>Binds the provided UI controller for inventory interactions.</summary>
         public void Bind(InventoryUIController ui) => _ui = ui;
 
         /// <summary>Shows a short message on the HUD.</summary>
+        /// <summary>Shows a short HUD message (e.g., “The door is locked”).</summary>
         public void Notify(string message)
         {
             if (!string.IsNullOrEmpty(message)) Notice?.Invoke(message);
         }
 
         /// <summary>Puts the inventory panel away (a cupboard closed while its contents were on screen).</summary>
+        /// <summary>Closes the inventory panel (e.g., when a cupboard is hidden).</summary>
         public void CloseInventory()
         {
             if (_ui != null && _ui.IsOpen) _ui.Close();
         }
 
         /// <summary>Opens the survivor's own inventory panel (where cooking, boiling and crafting happen).</summary>
+        /// <summary>Opens the survivor’s personal inventory UI.</summary>
         public void OpenInventory()
         {
             if (_ui == null) return;
@@ -430,6 +447,7 @@ namespace CloneZ
         public static event System.Action<Interactable> ActionRan;
 
         /// <summary>Carries out <paramref name="a"/> at <paramref name="f"/>: at once, or as a timed job.</summary>
+        /// <summary>Performs the given action on a fixture, either instantly or as a timed job.</summary>
         public void Perform(Interactable f, InteractAction a)
         {
             if (f == null || a == null) return;
@@ -490,6 +508,7 @@ namespace CloneZ
         }
 
         /// <summary>Abandons (or, open-ended, finishes) the fixture job in progress.</summary>
+        /// <summary>Stops the current fixture job (or finishes an open‑ended one).</summary>
         public void StopJob()
         {
             if (_job == null) return;
@@ -510,6 +529,7 @@ namespace CloneZ
 
         #region Action menu
         /// <summary>Opens <paramref name="f"/>'s action menu.</summary>
+        /// <summary>Opens the action menu for the given fixture.</summary>
         public void OpenMenu(Interactable f)
         {
             if (f == null) return;
@@ -520,6 +540,7 @@ namespace CloneZ
         }
 
         /// <summary>Closes the action menu.</summary>
+        /// <summary>Closes any open fixture action menu.</summary>
         public void CloseMenu()
         {
             if (_menuTarget == null) return;
@@ -529,6 +550,7 @@ namespace CloneZ
         }
 
         /// <summary>Carries out entry <paramref name="index"/> of the open menu (and closes it).</summary>
+        /// <summary>Selects the menu entry at the given index and performs its action.</summary>
         public void ChooseMenu(int index)
         {
             if (_menuTarget == null || index < 0 || index >= _menuActions.Count) return;
@@ -640,6 +662,7 @@ namespace CloneZ
 
         /// <summary>Opens a container picked from the inventory's container column (or a fixture's storage): at
         /// once if it has been searched, otherwise after the usual timed rummage, which then opens it in the panel.</summary>
+        /// <summary>Starts a timed search of a container or opens it instantly if already searchable.</summary>
         public void SearchOrOpen(LootContainer container)
         {
             if (container == null || _ui == null) return;
@@ -671,6 +694,7 @@ namespace CloneZ
         }
 
         /// <summary>Abandons any search in progress.</summary>
+        /// <summary>Cancels any ongoing container search.</summary>
         public void CancelSearch()
         {
             IsSearching = false;

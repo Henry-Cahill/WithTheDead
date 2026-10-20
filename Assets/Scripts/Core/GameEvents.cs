@@ -40,19 +40,33 @@ namespace CloneZ
         public static event Action<string, float> QuestProgress;               // objective key, amount (squad sharing)
         public static event Action<Vector3, float, string> WorldEvent;         // position, radius, kind (flare, heli, shot)
 
+        /// <summary>Raises the LocalPlayerSpawned event for the given player stats.</summary>
         public static void RaiseLocalPlayerSpawned(PlayerStats p) => Safe(() => LocalPlayerSpawned?.Invoke(p));
+        /// <summary>Raises the RaidStarted event when a raid begins in the given zone with the specified kind.</summary>
         public static void RaiseRaidStarted(string zone, RaidKind kind) => Safe(() => RaidStarted?.Invoke(zone, kind));
+        /// <summary>Raises the RaidEnded event with the outcome and exit name (if extracted).</summary>
         public static void RaiseRaidEnded(RaidOutcome o, string exit) => Safe(() => RaidEnded?.Invoke(o, exit));
+        /// <summary>Raises the ActorKilled event for the supplied kill info.</summary>
         public static void RaiseActorKilled(KillInfo k) => Safe(() => ActorKilled?.Invoke(k));
+        /// <summary>Raises the ItemLooted event when an item stack is taken from a source label into the pack.</summary>
         public static void RaiseItemLooted(ItemStack s, string source) => Safe(() => ItemLooted?.Invoke(s, source));
+        /// <summary>Raises the LocationVisited event for the given landmark or quest location id.</summary>
         public static void RaiseLocationVisited(string id) => Safe(() => LocationVisited?.Invoke(id));
+        /// <summary>Raises the ItemCrafted event when an item id is crafted a number of times.</summary>
         public static void RaiseItemCrafted(string id, int n) => Safe(() => ItemCrafted?.Invoke(id, n));
+        /// <summary>Raises the EmissionStateChanged event to indicate whether a psi storm is active.</summary>
         public static void RaiseEmission(bool active) => Safe(() => EmissionStateChanged?.Invoke(active));
+        /// <summary>Raises the ArtifactPropertyLearned event when a player learns an artifact property.</summary>
         public static void RaiseArtifactLearned(string artifact, string prop) => Safe(() => ArtifactPropertyLearned?.Invoke(artifact, prop));
+        /// <summary>Raises the DayAdvanced event when the hub day counter increments.</summary>
         public static void RaiseDayAdvanced(int day) => Safe(() => DayAdvanced?.Invoke(day));
+        /// <summary>Raises the Toast event to display a short HUD message.</summary>
         public static void RaiseToast(string msg) => Safe(() => Toast?.Invoke(msg));
+        /// <summary>Raises the Subtitle event to show a line spoken by a speaker.</summary>
         public static void RaiseSubtitle(string speaker, string line) => Safe(() => Subtitle?.Invoke(speaker, line));
+        /// <summary>Raises the QuestProgress event for a specific quest objective key and amount.</summary>
         public static void RaiseQuestProgress(string key, float amount) => Safe(() => QuestProgress?.Invoke(key, amount));
+        /// <summary>Raises the WorldEvent event for a world occurrence at a position with radius and kind.</summary>
         public static void RaiseWorldEvent(Vector3 pos, float radius, string kind) => Safe(() => WorldEvent?.Invoke(pos, radius, kind));
 
         // One misbehaving listener must never break the raiser (a quest bug can't stop a kill registering).

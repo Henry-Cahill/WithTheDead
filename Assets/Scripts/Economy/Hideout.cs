@@ -129,21 +129,26 @@ namespace CloneZ
         private static void R(string id, string module, int level, float minutes, (string, int)[] inputs, (string, int)[] outputs, bool field = false)
             => Recipes.Add(new Recipe { Id = id, Module = module, ModuleLevel = level, Minutes = minutes, Inputs = inputs, Outputs = outputs, Field = field });
 
+        /// <summary>Returns the module definition with the given identifier.</summary>
         public static ModuleDef Get(string id) => Modules.Find(m => m.Id == id);
+        /// <summary>Returns the recipe definition with the given identifier.</summary>
         public static Recipe GetRecipe(string id) => Recipes.Find(r => r.Id == id);
 
+        /// <summary>Initialises all hideout modules for the given character profile.</summary>
         public static void InitModules(CharacterProfile c)
         {
             foreach (ModuleDef m in Modules) c.Module(m.Id);
             c.Module("stash").Level = Mathf.Max(1, c.Module("stash").Level);
         }
 
+        /// <summary>Returns the level of a module for a character, or 0 if none.</summary>
         public static int LevelOf(CharacterProfile c, string module) => c != null ? c.Module(module).Level : 0;
 
         /// <summary>True while the generator is built and fuelled (powered modules work only then).</summary>
         public static bool Powered(CharacterProfile c) => c != null && LevelOf(c, "generator") > 0 && c.Module("generator").Fuel > 0f;
 
         #region Building
+        /// <summary>Determines if a module can be upgraded, returning false with a reason if not.</summary>
         public static bool CanUpgrade(CharacterProfile c, ModuleDef m, PlayerInventory carried, out string reason)
         {
             reason = null;
@@ -159,6 +164,7 @@ namespace CloneZ
             return true;
         }
 
+        /// <summary>Attempts to upgrade a module, applying costs and effects; returns success and a message.</summary>
         public static bool Upgrade(CharacterProfile c, ModuleDef m, PlayerInventory carried, out string message)
         {
             if (!CanUpgrade(c, m, carried, out message)) return false;
@@ -172,6 +178,7 @@ namespace CloneZ
             return true;
         }
 
+        /// <summary>Applies the effects of a newly upgraded module level to the character.</summary>
         private static void ApplyLevelEffects(CharacterProfile c, string module, int level)
         {
             switch (module)
@@ -195,6 +202,7 @@ namespace CloneZ
         }
 
         // The worn pouch in the kit grows with the vault.
+        /// <summary>Ensures the player's kit has a pouch that matches the vault level.</summary>
         private static void UpgradeKitPouch(CharacterProfile c)
         {
             if (c.Kit == null) c.Kit = new RaidKit { Version = 1 };
@@ -205,6 +213,7 @@ namespace CloneZ
         #endregion
 
         #region Crafting and production
+        /// <summary>Checks if a recipe can be crafted given the character, inventory and module constraints.</summary>
         public static bool CanCraft(CharacterProfile c, Recipe r, PlayerInventory carried, out string reason)
         {
             reason = null;
@@ -221,6 +230,7 @@ namespace CloneZ
         }
 
         /// <summary>Starts a craft (inputs are consumed now; outputs arrive when it finishes).</summary>
+        /// <summary>Starts a craft, consuming inputs now and scheduling outputs.</summary>
         public static bool StartCraft(CharacterProfile c, Recipe r, PlayerInventory carried, out string message)
         {
             if (!CanCraft(c, r, carried, out message)) return false;
@@ -233,6 +243,7 @@ namespace CloneZ
         }
 
         /// <summary>A field craft from the pack (instant): inputs from the pack, outputs into it.</summary>
+        /// <summary>Executes an instant field craft from the pack.</summary>
         public static bool FieldCraft(Recipe r, PlayerInventory inv, out string message)
         {
             message = null;
@@ -246,6 +257,7 @@ namespace CloneZ
             return true;
         }
 
+        /// <summary>Creates a human‑readable description of a recipe’s outputs.</summary>
         public static string Describe(Recipe r)
         {
             var sb = new System.Text.StringBuilder();
@@ -262,6 +274,7 @@ namespace CloneZ
         /// fuel, the data farm and water collector produce, the animals eat and lay. Called whenever the hub
         /// opens (real time passes between sessions, as Tarkov's hideout does).
         /// </summary>
+        /// <summary>Advances all hideout processes: crafts, generator fuel, farms, water, animals; returns notes.</summary>
         public static List<string> Tick(CharacterProfile c)
         {
             var notes = new List<string>();
@@ -304,6 +317,7 @@ namespace CloneZ
         }
 
         // Production accumulates fractional hours in the module's Fuel field for modules that burn none.
+        /// <summary>Handles production for a module that generates an item on a timed interval.</summary>
         private static void Produce(CharacterProfile c, string module, float everyHours, string item, Inventory stash, List<string> notes, float hours)
         {
             HideoutModuleState m = c.Module(module);
@@ -315,6 +329,7 @@ namespace CloneZ
             notes.Add(Get(module).Name + ": +" + made + " " + Trading.NameOf(item));
         }
 
+        /// <summary>Updates animal hunger, production, and adds eggs/milk to stash.</summary>
         private static void TickAnimals(CharacterProfile c, Inventory stash, List<string> notes, float hours)
         {
             if (c.Animals.Count == 0 || hours <= 0f) return;
@@ -345,6 +360,7 @@ namespace CloneZ
             c.Flags.Add(TickFlag + now);
         }
 
+        /// <summary>Pours fuel into the generator (6 hours per can).</summary>
         /// <summary>Pours fuel into the generator (6 hours per can).</summary>
         public static bool Refuel(CharacterProfile c, PlayerInventory carried, out string message)
         {

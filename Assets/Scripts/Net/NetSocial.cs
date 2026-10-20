@@ -39,7 +39,7 @@ namespace CloneZ
     public static class NetSocial
     {
         /// <summary>Maximum distance for voice hearing, using the sandbox setting or at least 5 meters.</summary>
-public static float VoiceRange => Mathf.Max(5f, SandboxSettings.Current.VoiceRange);
+        public static float VoiceRange => Mathf.Max(5f, SandboxSettings.Current.VoiceRange);
         public const int Channels = 8;
         public const int MaxSquad = 4;
 

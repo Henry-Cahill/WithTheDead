@@ -48,6 +48,7 @@ namespace CloneZ
 
         private IDamageable _damageable;
 
+        /// <summary>Provides quick access to the <see cref="IDamageable"/> component on this actor.</summary>
         public IDamageable Damageable
         {
             get
@@ -58,11 +59,16 @@ namespace CloneZ
             set => _damageable = value;
         }
 
+        /// <summary>Indicates whether the actor is currently alive and active.</summary>
         public bool IsAlive => this != null && isActiveAndEnabled && Damageable != null && !Damageable.IsDead;
+        /// <summary>True if the actor is any type of player‑controlled character.</summary>
         public bool IsPlayerControlled => Kind == ActorKind.Player || Kind == ActorKind.RemotePlayer || Kind == ActorKind.PlayerMonster;
+        /// <summary>True if the actor is a humanoid (player, remote player, human, companion or zombie).</summary>
         public bool IsHumanoid => Kind == ActorKind.Player || Kind == ActorKind.RemotePlayer || Kind == ActorKind.Human || Kind == ActorKind.Companion || Kind == ActorKind.Zombie;
 
+        /// <summary>World‑space position of the actor's eyes (or head bone if present).</summary>
         public Vector3 EyePosition => Head != null ? Head.position : transform.position + Vector3.up * (Height * 0.92f);
+        /// <summary>World‑space centre of the actor's body used for various calculations.</summary>
         public Vector3 Center => transform.position + Vector3.up * (Height * 0.55f);
 
         protected virtual void OnEnable()
@@ -150,6 +156,7 @@ namespace CloneZ
             return n;
         }
 
+        /// <summary>Finds the actor that owns the given network identifier.</summary>
         public static Actor FindByNetId(uint id)
         {
             if (id == 0) return null;
@@ -171,6 +178,7 @@ namespace CloneZ
     /// </summary>
     public interface IZombieAttackable
     {
+        /// <summary>Called when a zombie bites or scratches this target.</summary>
         void ReceiveZombieAttack(bool bite);
     }
 
@@ -184,6 +192,7 @@ namespace CloneZ
         public static bool AllowPlayerMonsters = true;
         public static float VoiceRange = 30f;
 
+        /// <summary>Copies relevant rule settings from a sandbox configuration.</summary>
         public static void FromSandbox(SandboxSettings s)
         {
             if (s == null) return;

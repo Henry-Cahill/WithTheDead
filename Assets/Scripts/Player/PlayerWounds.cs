@@ -31,6 +31,7 @@ namespace CloneZ
         public bool Lodged;            // a glass shard or a fragment still in it
         public bool Tourniquet;        // a heavy limb bleed held by a tourniquet (the limb weakens while it's on)
 
+        /// <summary>Gets the bleed rate per second for this wound type.</summary>
         public float BleedRate
         {
             get
@@ -49,6 +50,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Gets the base pain value for this wound type.</summary>
         public float BasePain
         {
             get
@@ -67,6 +69,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Human‑readable name of the wound including body zone.</summary>
         public string Name
         {
             get
@@ -110,14 +113,21 @@ namespace CloneZ
         private float _painkillerTimer;   // seconds of pain relief remaining
         private float _painkillerRelief;  // 0..1 fraction of felt pain suppressed while active
 
+        /// <summary>Read‑only list of all current wounds.</summary>
         public IReadOnlyList<Wound> Wounds => _wounds;
+        /// <summary>Number of current wounds.</summary>
         public int WoundCount => _wounds.Count;
+        /// <summary>True while antibiotic coverage timer is positive.</summary>
         public bool AntibioticsActive => _antibioticTimer > 0f;
+        /// <summary>True while painkiller timer is positive.</summary>
         public bool PainkillersActive => _painkillerTimer > 0f;
 
         // Raw timer readouts, captured/restored by the save system.
+        /// <summary>Current antibiotic timer value (seconds of coverage).</summary>
         public float AntibioticTimer => _antibioticTimer;
+        /// <summary>Current painkiller timer value (seconds remaining).</summary>
         public float PainkillerTimer => _painkillerTimer;
+        /// <summary>Current painkiller relief fraction (0..1).</summary>
         public float PainkillerRelief => _painkillerRelief;
 
         public bool IsBleeding
@@ -130,8 +140,10 @@ namespace CloneZ
             }
         }
 
+        /// <summary>True when any wound is bleeding (used by UI to show bandage hint).</summary>
         public bool NeedsBandage => IsBleeding;
 
+        /// <summary>True when any wound is infected.</summary>
         public bool HasInfectedWound
         {
             get
@@ -235,6 +247,7 @@ namespace CloneZ
             return false;
         }
 
+        /// <summary>True when a heavy bleed exists on a limb that can be tourniquetted.</summary>
         public bool HasHeavyBleed
         {
             get
