@@ -4074,5 +4074,6 @@ you want to see in game. Indent extra lines under a task to add detail.
   `f.P(s1 - 0.0225f, y1 - topRail * 0.5f, across), // top‑right`
   `f.P(s0 + 0.0225f, y0 + bottomRail * 0.5f, across),// bottom‑left`
   - 18:31 landed by 0htsserver in 1.6 min: **Changed files**
-- [ ] Fix the visibility check in Assets/Scripts/Net/NetPlayers.cs so that missing client info correctly blocks forwarding of a remote player’s state.
+- [x] Fix the visibility check in Assets/Scripts/Net/NetPlayers.cs so that missing client info correctly blocks forwarding of a remote player’s state.
   The method `Visible(ulong owner, ulong viewer, Vector3 pos)` currently starts with
+  - 18:33 landed by 0htsserver in 1 min: **Summary**

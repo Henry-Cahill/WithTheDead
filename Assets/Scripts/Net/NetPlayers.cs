@@ -136,7 +136,7 @@ namespace CloneZ
         // Server-side culling: a viewer only receives a body it could see — or one right beside it, or a squadmate.
         private static bool Visible(ulong owner, ulong viewer, Vector3 pos)
         {
-            if (!NetSession.Clients.TryGetValue(viewer, out NetClientInfo v) || !NetSession.Clients.TryGetValue(owner, out NetClientInfo o)) return true;
+            if (!NetSession.Clients.TryGetValue(viewer, out NetClientInfo v) || !NetSession.Clients.TryGetValue(owner, out NetClientInfo o)) return false;
             if (!string.IsNullOrEmpty(o.Squad) && o.Squad == v.Squad) return true;
             if (v.InRaid != o.InRaid) return false;
             float d = Vector3.Distance(v.Position, pos);
