@@ -3690,7 +3690,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Insert a line like `var inspect = new InteractAction("Inspect the tap", ctx => { ctx.Notify(_running ? "The tap is still running, wasting water." : "The tap is off."); });` and add `into.Add(inspect);` after the temperature action.
   No other code changes are required; the player will see this option when interacting with any sink.
   - 15:24 landed by 1htsserver in 2.2 min: **Changes made**
-- [ ] Add four rust‑tinted “hinge” decorations to the health panel corners in Assets/Scripts/UI/HealthPanelController.cs, inside the `Build()` method — right after the existing `Rivet(prt, …)` calls.
+- [x] Add four rust‑tinted “hinge” decorations to the health panel corners in Assets/Scripts/UI/HealthPanelController.cs, inside the `Build()` method — right after the existing `Rivet(prt, …)` calls.
+  - 15:53 landed by 1htsserver in 28.7 min: Added rust‑tinted hinge decorations to the health panel UI:
 - [x] Add a small metal drawer pull knob to the nightstand in Assets/Scripts/World/HomeFurniture.cs, case HomeFurnitureKind.Nightstand inside DrawPlain, using the existing rng for left/right variation.
   Insert after the FurnitureBuilder.Nightstand call a box primitive for the knob: `bool leftKnob = rng.Next(2) == 0;`
   `Vector3 knobPos = new Vector3(leftKnob ? -0.15f : 0.15f, 0.55f, 0.32f);` – centred on the front face of the drawer.
