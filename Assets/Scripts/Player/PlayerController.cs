@@ -55,13 +55,18 @@ namespace CloneZ
             _controller = GetComponent<CharacterController>();
             _stats = GetComponent<PlayerStats>();
             AimDirection = transform.forward;
+        }
+
+        // Optional siblings are fetched in Start, not Awake: the bootstrapper adds PlayerCombat, PlayerInventory and
+        // PlayerSeat after this controller, and Awake runs inside AddComponent — before they exist.
+        private void Start()
+        {
+            _cam = Camera.main;
             _seat = GetComponent<PlayerSeat>();
             _skills = GetComponent<PlayerSkills>();
             _combat = GetComponent<PlayerCombat>();
             _inventory = GetComponent<PlayerInventory>();
         }
-
-        private void Start() => _cam = Camera.main;
 
         private void Update()
         {

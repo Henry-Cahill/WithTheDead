@@ -102,8 +102,10 @@ namespace CloneZ
         private void Inspect(InteractContext ctx)
         {
             float percent = _fuel / CloneZConfig.RaidGeneratorFuelMax;
-            if (_running)
+if (_running)
                 ctx.Notify($"The generator rumbles on. Fuel gauge reads about {(int)(percent * 100)}%.");
+            else
+                ctx.Notify($"The generator is off. Fuel gauge reads about {(int)(percent * 100)}%.");
         }
 
         private void CheckFuel(InteractContext ctx)

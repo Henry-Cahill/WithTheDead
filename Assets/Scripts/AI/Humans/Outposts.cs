@@ -207,10 +207,11 @@ namespace CloneZ
         private void Capture(InteractContext ctx)
         {
             Actor me = Actor.LocalPlayer;
-            if (me == null) return;
+if (me == null || !CanBeTaken(out _)) return;
             // Multiplayer: request server to capture.
             if (GameSession.Networked && !NetAuthority.IsServer) { NetWorld.RequestOutpost(Id, me.Faction); return; }
-            Taken(me.Faction, ProfileStore.NowUnix + (long)OutpostSystem.LockSeconds, true, null);
+Taken(me.Faction, ProfileStore.NowUnix + (long)OutpostSystem.LockSeconds, true, null);
+            if (GameSession.Networked) NetWorld.OutpostTaken(this, NetAuthority.LocalClientId);
         }
 
         /// <summary>The outpost changes hands (on every peer): the flag, the 30-minute lock, the supply crate; the taker

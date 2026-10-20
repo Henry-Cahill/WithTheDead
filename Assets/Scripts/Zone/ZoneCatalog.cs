@@ -30,6 +30,11 @@ namespace CloneZ
         public string[] Mutants = new string[0];
         public string[] Wildlife = new string[0];
         public Color Tint = Color.white;
+        /// <summary>A real place in Kentucky to build the map from instead of the procedural town (a name from the world
+        /// store's places, e.g. "Bardstown"; see <see cref="KentuckyMap"/>), or null for the procedural town.</summary>
+        public string RealPlace;
+        /// <summary>Half the side of the playable square around <see cref="RealPlace"/>, in metres.</summary>
+        public float RealHalfSize = 200f;
     }
 
     /// <summary>
@@ -60,6 +65,20 @@ namespace CloneZ
                 Radiation = 0f,
                 FogDensity = 0.3f,
                 Tint = Color.white,
+            },
+            new ZoneDef
+            {
+                Id = "bardstown", Name = "Bardstown, Kentucky", Depth = 1, MinLevel = 1, LayoutSeed = 1780,
+                RealPlace = "Bardstown", RealHalfSize = 200f,
+                Blurb = "The real streets of Bardstown, Kentucky, snowed in and emptied. The town is still being built. "
+                    + "Map data © OpenStreetMap contributors.",
+                Rule = "Every street is where it really is; learn the town like a local.",
+                LootMultiplier = 1f, AnomalyDensity = 0.7f, ArtifactRichness = 0.7f, ZombieDensity = 1f, MutantShare = 0.12f,
+                HumanSquads = 2f, Radiation = 0f, FogDensity = 0.25f, HasCordon = true, StartHour = 22f,
+                Anomalies = new[] { "sinkhole", "embermoss", "staticbloom", "greysyrup" },
+                Artifacts = new[] { "art_hollowstone", "art_coldspark", "art_mosscalm", "art_greywax", "art_saltlung" },
+                Mutants = new[] { "hound" }, Wildlife = new[] { "deer", "wolf" },
+                Tint = new Color(0.80f, 0.84f, 0.90f),
             },
         };
 

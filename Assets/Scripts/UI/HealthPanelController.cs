@@ -267,27 +267,29 @@ namespace CloneZ
                 var stacks = _inventory.Inventory.Stacks;
                 for (int i = 0; i < stacks.Count; i++)
                 {
-                    var id = stacks[i].Def.Id;
+var stack = stacks[i];
+                    var id = stack.Def.Id;
+                    int count = stack.Count;
                     switch (id)
                     {
                         case "bandage":
                         case "rag":
-                            bandages++;
+                            bandages += count;
                             break;
                         case "disinfectant":
-                            disinfectant++;
+                            disinfectant += count;
                             break;
                         case "pills":
-                            painkillers++;
+                            painkillers += count;
                             break;
                         case "antibiotics":
-                            antibiotics++;
+                            antibiotics += count;
                             break;
                         case "firstaid":
-                            kits++;
+                            kits += count;
                             break;
                         case "betablockers":
-                            betablockers++;
+                            betablockers += count;
                             break;
                     }
                 }

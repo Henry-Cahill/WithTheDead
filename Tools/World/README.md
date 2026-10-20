@@ -1,0 +1,91 @@
+# CLONE-Z world
+
+CLONE-Z's raid map is being rebuilt from a real place: the state of Kentucky, from OpenStreetMap's streets, buildings
+and land use, organised the way survival games like Project Zomboid organise a world (256 m cells, buildings with
+rooms on floors, zones). Only the structure is borrowed. The content comes from OpenStreetMap (© OpenStreetMap
+contributors, ODbL), and CLONE-Z's own art and rules turn it into the game. Data from other games, including the map
+scrape in `Tools/MapScraper`, is never used. The whole state shares one flat grid in metres: Kentucky's official
+statewide projection (Kentucky Single Zone, EPSG:3088), so streets and buildings keep their true shapes.
+
+A whole state is a lot for one machine, so the world is built by several (the Spark and the game servers). They
+share their work through the **world store** on the NAS.
+
+## The world store
+
+| | |
+|---|---|
+| Windows (this PC) | `\\192.168.1.170\CLONE-Z` |
+| Linux (the Spark, 0htsserver, 1htsserver, hts-llm) | `/mnt/clonez` |
+
+It's a shared folder of its own on the Synology NAS (`/volume2/CLONE-Z`). The Linux machines mount it over NFS 4.1;
+the NAS lets in only the machines named in the folder's NFS rules and maps every user on them to its admin, so
+files written by any machine can be changed by all the others and from Windows.
+
+| Folder | What's in it | Who writes it |
+|---|---|---|
+| `world/sources/osm/` | the OpenStreetMap extract for Kentucky | the world builder |
+| `world/builds/<id>/` | one build of the world: its `manifest.json` and its regions | the machines building it, each only its own regions |
+| `world/current.json` | which build the game and the servers load | whoever publishes a build |
+| `machines/<name>.json` | what each machine is doing right now | that machine |
+| `scratch/<name>/` | each machine's temporary files | that machine |
+
+Rules for anything that writes there: write under a temporary name and rename it when it's complete (so nobody reads
+half a file), and leave other machines' files alone.
+
+## Connecting a machine
+
+1. In DSM: Control Panel → Shared Folder → CLONE-Z → Edit → NFS Permissions → Create: the machine's IP, Read/Write,
+   squash "Map all users to admin", security sys, asynchronous on, non-privileged ports off, mounted subfolders on.
+2. On this PC: `.\World.ps1 connect -Machines user@ip`. It copies [connect-nas.sh](connect-nas.sh) over and runs it
+   with sudo (asking for the machine's password once). The script installs the NFS client if needed, mounts the
+   store at `/mnt/clonez` on first use and adds it to `/etc/fstab`, so it comes back after a reboot.
+
+`.\World.ps1 status` shows which machines have the store mounted, the builds in the store and what each machine is
+doing.
+
+## Building the world
+
+1. **The source.** `world/sources/osm/kentucky-latest.osm.pbf` is OpenStreetMap's extract of Kentucky from
+   [Geofabrik](https://download.geofabrik.de/north-america/us/kentucky.html), about 150 MB, with its `.md5` beside it.
+   To refresh it, download both again over the old ones.
+2. **Build.** `.\World.ps1 build` starts [worldbuild.py](worldbuild.py) on the game servers (`-Builders`), each writing
+   its own share of the regions (`extract --part K/N`) at low priority. Each machine reads the whole extract, so a build
+   takes about two minutes. It writes `world/builds/<id>/`; logs go to `scratch/<machine>/`. The servers run it with
+   [uv](https://docs.astral.sh/uv/), installed in the user's home if it's missing (no sudo), which fetches Python 3.12 and
+   pyosmium.
+3. **Publish.** When `.\World.ps1 status` lists all of the build's parts, `.\World.ps1 publish -Id <id>` checks that
+   every part is there and was made from the same extract and tool, writes the build's `manifest.json`, and points
+   `world/current.json` at it. The game and the servers load the build named there.
+
+Each build is a set of region files under Kentucky's official flat grid (EPSG:3088, Kentucky Single Zone: metres east
+and north, a Lambert conformal conic that keeps shapes true across the state). A region is 8,192 m square (32 × 32
+cells of 256 m); `regions/<rx>_<rz>.json.gz` holds its streets, lines (rivers, streams, railways), buildings, land-use
+areas and points of interest, in decimetres from its south-west corner. Streets, lines and areas are cut at the region's
+edge (overlapping their neighbours by 16 m); a building belongs to the region its middle is in. `places.json` lists the
+named places (cities, towns, villages, largest first) by grid position. Run the builder's tests with
+`python -m unittest discover -s Tools/World/tests` (no extract needed).
+
+The first build, `ky-20261019-2305`, holds 1,956 regions: about 932,000 buildings, 726,000 street pieces and 112,000
+areas.
+
+## In the game
+
+A zone with a `RealPlace` (in [ZoneCatalog.cs](../../Assets/Scripts/Zone/ZoneCatalog.cs)) is built by
+[KentuckyMap](../../Assets/Scripts/World/Map/KentuckyMap.cs) from the current build instead of the procedural town:
+the 400 m square around the place's centre, with the streets and buildings where they really are. The first is
+**Bardstown, Kentucky**. Buildings get a door on the side facing the street, windows, floors and loot to suit their use;
+past the edge, the town carries on as scenery. If the store can't be read, the raid falls back to the procedural town
+and the log says why.
+
+The game reads the store at `\\192.168.1.170\CLONE-Z` on Windows and `/mnt/clonez` elsewhere. Set the `CLONEZ_WORLD`
+environment variable to use a copy somewhere else (for a build to share outside the LAN, copy `world/current.json`,
+the current build's `manifest.json` and `places.json`, and the regions it needs).
+
+Places are only as complete as OpenStreetMap: a town where few buildings are mapped looks sparse. The night shift's
+`map` focus works on the builder's code (`Assets/Scripts/World/Map/`), not on the data.
+
+## Credit
+
+The map data is © OpenStreetMap contributors and available under the
+[Open Database License](https://opendatacommons.org/licenses/odbl/). The game credits it in the zone's description;
+keep that credit wherever the map is shown.

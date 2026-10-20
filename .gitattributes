@@ -174,3 +174,5 @@ LightingData.asset     binary
 /*.bash                 text eol=lf
 /Tools/NightShift/*.sh  text eol=lf
 /Tools/NightShift/*.py  text eol=lf
+/Tools/World/*.sh       text eol=lf
+/Tools/World/*.py       text eol=lf

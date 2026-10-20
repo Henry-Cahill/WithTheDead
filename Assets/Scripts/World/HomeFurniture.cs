@@ -271,7 +271,7 @@ case HomeFurnitureKind.Tv:
                     m.Box(new Vector3(0f, 0.09f, 0f), new Vector3(0.32f, 0.18f, 0.14f), DecorPalette.Matte(new Color(0.30f, 0.20f, 0.12f)));
 bool leftKnob = rng.Next(2) == 0;
 Vector3 knobPos = new Vector3(leftKnob ? -0.04f : 0.04f, 0.11f, 0.07f);
-m.Cylinder(knobPos, 0.015f, 0.02f, 8, DecorPalette.Metal(new Color(0.20f, 0.20f, 0.20f)), Quaternion.identity, 1f, false);
+m.Cylinder(knobPos, 0.015f, 0.02f, 8, DecorPalette.Metal(new Color(0.20f, 0.20f, 0.20f)), Quaternion.Euler(90f, 0f, 0f), 1f, false);
                     break;
                 default:
                     FurnitureBuilder.BoxStack(m, rng, Vector3.zero, 0f, 2 + rng.Next(2));
