@@ -2082,9 +2082,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 08:12 landed by hts-llm in 5.3 min: **Changes made**
 - [x] In Assets/Scripts/World/Fixtures/RainBarrelFixture.cs: Add a “Wash your face in the barrel” timed action to `RainBarrelFixture.GetActions` (clone the existing Wash action but use a smaller Freshen factor and a different notification).
   - 08:12 landed by 1htsserver in 4.9 min: **Summary**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Zone/ZoneOverlays.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Zone/ZoneOverlays.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 08:14 landed by 0htsserver in 3.1 min: Added a concise XML summary for the public `TreeCount` property:
 - [ ] In Assets/Scripts/Player/PlayerSeat.cs: Fix PlayerSeat.GetUpFromInput so the survivor actually stands up from a bed instead of just ending the lying‑down state, which currently leaves the player stuck on the mattress.
   Change the method in Assets/Scripts/Player/PlayerSeat.cs:
   `public void GetUpFromInput()`

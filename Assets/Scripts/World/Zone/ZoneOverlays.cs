@@ -12,6 +12,7 @@ namespace CloneZ
     /// </summary>
     internal static class ZoneForest
     {
+        /// <summary>Number of trees currently generated in the forest.</summary>
         public static int TreeCount { get; private set; }
         private static readonly List<Vector3> s_Trees = new List<Vector3>(512);
 
