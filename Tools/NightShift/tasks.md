@@ -2024,10 +2024,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   Change the method to store the return value of `Transfuse`, and if it is `false` skip the consumption/removal and exit early after showing the message. Only on a `true` result should the iv‑kit be consumed, the empty bag removed, the sound played, XP added and the success toast shown.
   After the fix the player will keep the iv‑kit and blood‑bag when transfusion fails, matching the intended gameplay. All other fields, messages and skill XP gains remain unchanged.
   - 07:52 landed by 1htsserver in 1.5 min: **Changed file**
-- [ ] Add a small paper label to the front‑right copier panel in Assets/Scripts/World/FurnitureBuilder.RaidStore.cs, method OfficeCopierBody
+- [x] Add a small paper label to the front‑right copier panel in Assets/Scripts/World/FurnitureBuilder.RaidStore.cs, method OfficeCopierBody
   Create a thin rectangular box that sits on the copier’s control panel (near `OfficeCopierPanel`) to look like a faded “COPY” sticker.
   Generate a slightly varied paper colour with the existing random source and give the label a tiny random yaw for realism.
   Insert the new primitive after the green ready‑lamp box (the line `m.Box(new Vector3(0.22f, 1.03f, 0.321f), … Gl(new Color(0.2f, 0.62f, 0.32f)));`
+  - 07:54 landed by hts-llm in 1.9 min: **Changed file**
 - [ ] In Assets/Scripts/Characters/PlayerAvatar.cs: Cache the costly `Actor.LocalPlayer` lookup in PlayerAvatar to avoid a per‑frame search.
   Add a private `Actor _localActor;` field.
   In `Awake()` (or after `Start()` when the player object exists) set `_localActor = Actor.LocalPlayer;`.
