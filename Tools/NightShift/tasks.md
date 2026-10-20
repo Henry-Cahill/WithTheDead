@@ -3487,3 +3487,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Compute the strip’s across position as `float across = coord + (side > 0 ? hw + 0.125f : -hw - 0.125f);` and call
   `Strip(town, alongX, across, a, b, 0.02f, 0.06f, DecorPalette.Matte(new Color(0.20f, 0.20f, 0.20f)));`
   This adds realistic metal edging or drainage caps along the kerb, giving visual variety while keeping colliders and interaction points unchanged and staying under the ~12‑primitive limit.
+- [ ] Cache the Camera.main lookup in Assets/Scripts/Rendering/VisionController.cs instead of doing it each LateUpdate.
+  – Add a private void Awake() that sets Camera to Camera.main if it is still null when the component awakens (the Bind method already assigns the main camera, this just protects against the rare case of a missing assignment).
+  – Remove the per‑frame line `if (Camera == null) Camera = Camera.main;` from LateUpdate(), eliminating the costly static property lookup on every frame.
+  – No visual change: the same camera continues to drive all vision effects; the player sees exactly the same lighting and UI.
+  – All other behaviour stays unchanged; the field Camera remains a public getter‑only property as before.
