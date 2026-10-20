@@ -3503,8 +3503,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 14:30 landed by 1htsserver in 4.2 min: **Changed file**
 - [~] Add period‑correct cast‑iron rivets to the radiator built in `Assets/Scripts/World/FurnitureBuilder.Fixtures.cs` `FurnitureBuilder.Radiator` so the metal heating unit shows small fasteners.
   - 14:33 hts-llm made no changes: {"include":"FurnitureBuilder.Fixtures.cs","path":"","pattern":"Mt("}
-- [ ] Fix the planting‑action validation in Assets/Scripts/Player/PlayerFarming.cs
+- [x] Fix the planting‑action validation in Assets/Scripts/Player/PlayerFarming.cs
   The prompt for an empty plot is shown as soon as a single seed is found, but the actual planting cost (`CloneZConfig.FarmSeedCost`) may be > 1. `FindSeed` only checks for *any* seed, so the player can start a planting job with insufficient seeds; the job is then cancelled in `StillValid` because `_inventory.Has(_busySeedId, CloneZConfig.FarmSeedCost)` returns false. This produces a confusing “F — plant” prompt that instantly aborts.
+  - 14:36 landed by 1htsserver in 2.8 min: **Changed**
 - [ ] Add a weathered metal cap to the warning‑lamp post built in `Assets/Scripts/World/RaidMapBuilder.Town.cs` → method `DressClinic`, inside the `Prop` call that creates the post at `lampPost`.
   Inside the lambda of `Prop(town, lampPost, 0f, new Vector3(0.2f, 2.4f, 0.2f), true, (m, r) => { … })` add a tiny cylinder — radius 0.03 m, height 0.02 m — centered at `lampPost + new Vector3(0f, 2.45f, 0f)` (just above the existing top box).
   Use `DecorPalette.Metal(new Color(0.45f, 0.45f, 0.44f))` for the material, matching the post’s metal colour.

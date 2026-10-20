@@ -136,8 +136,16 @@ public string WorkLabel { get; private set; } = "";
                 case FarmPlot.PlotState.Empty:
                     if (FindSeed(out _seedId, out _crop))
                     {
-                        _action = FarmAction.Plant;
-                        Prompt = "[F]  Plant " + _crop.Name;
+                        // Ensure enough seeds for the planting cost before offering the action.
+                        if (_inventory != null && _inventory.Has(_seedId, CloneZConfig.FarmSeedCost))
+                        {
+                            _action = FarmAction.Plant;
+                            Prompt = "[F]  Plant " + _crop.Name;
+                        }
+                        else
+                        {
+                            Prompt = "Tilled plot \u2014 need " + CloneZConfig.FarmSeedCost + " seeds to sow";
+                        }
                     }
                     else Prompt = "Tilled plot \u2014 need seeds to sow";
                     break;
