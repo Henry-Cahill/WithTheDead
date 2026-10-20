@@ -42,7 +42,7 @@ namespace CloneZ
                 HubUI.Card((RectTransform)col.parent);
                 HubUI.Heading(col, "No runner", 24);
                 HubUI.Para(col, "There is no active character. Create or pick one from the main menu first.", 17, UIKit.TextDim);
-                RefreshMoney();
+if (ShowMoney && Character != null) RefreshMoney();
                 return;
             }
             try { BuildContent(); }
