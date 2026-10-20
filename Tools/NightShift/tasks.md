@@ -3202,12 +3202,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   After this change, when the survivor uses a tap, switch, knob, drawer, etc., the right hand reaches the correct spot on the object instead of overshooting, resulting in realistic interaction animations that match the 1993 rural setting.
   - 12:50 landed by 0htsserver in 1.5 min: **Summary**
 - [ ] Add period‑appropriate rivets to the helicopter’s side‑panel seams in Assets/Scripts/World/Zone/Helicopter.cs, inside HelicopterModel.Build right after the two `m.Box` calls that create the side‑panel strips.
-- [ ] In Assets/Scripts/World/Fixtures/RaidTownGenerator.cs, modify the component so it disables its `Update` loop while the generator is off, eliminating a per‑frame call that does nothing.
+- [x] In Assets/Scripts/World/Fixtures/RaidTownGenerator.cs, modify the component so it disables its `Update` loop while the generator is off, eliminating a per‑frame call that does nothing.
   – In `Create(...)` add `g.enabled = false;` after `g.ShowRunning(false);` to start the MonoBehaviour disabled.
   – In `Pull(…)` after setting `_running = true;` add `enabled = true;` so the `Update` method starts receiving ticks again.
   – In `Stop()` after setting `_running = false;` add `enabled = false;` to suspend the per‑frame callback until the next successful pull.
   – Keep the existing `ShowRunning(bool)` logic unchanged; it still toggles the lamp visual.
   – The player will see exactly the same behaviour (generator starts, runs, stops, lamp lights) because the visual and audio logic remains identical; only the hidden `Update` calls are suppressed when the generator is idle, reducing unnecessary frame‑time work.
+  - 12:51 landed by 1htsserver in 1.4 min: **Changed file**
 - [ ] Add a “Check water level” action to Assets/Scripts/World/Fixtures/KitchenSink.cs that lets the player see how much water is left in the sink.
   In `GetActions` append `into.Add(new InteractAction("Check water level", ShowWaterLevel));` (place it after the existing “Empty the sink” action block).
   Implement a private method `ShowWaterLevel(InteractContext ctx)` that computes the fill percentage using `_level` and `CloneZConfig.KitchenBasinCapacity` and notifies the player, e.g. `ctx.Notify($"The sink holds {(_level/CloneZConfig.KitchenBasinCapacity*100f):0}% of its capacity.");`.
