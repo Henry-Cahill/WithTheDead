@@ -2385,9 +2385,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add `"I'll fight for the highest bidder, but I won’t turn my back on a comrade in a blizzard."`
   Add `"Don't chase a shadow through the snowbank unless you’re ready to become one."`
   - 09:24 landed by 1htsserver in 1.9 min: **Changed file**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Vehicles.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Vehicles.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 09:36 landed by 0htsserver in 12.7 min: **Summary of changes**
 - [x] Add a small lever‑handle graphic to the “Drop All” button in Assets/Scripts/UI/InventoryUIController.cs → `Build()`
   Create a child RectTransform under the button returned by
   `MakeButton(_window, new Vector2(0f, 1f), new Vector2(18f, -14f), new Vector2(130f, 34f), "Drop All", new Color(0.42f, 0.26f, 0.18f), DropAllStacks);`

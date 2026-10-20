@@ -42,7 +42,9 @@ public Transform Seat { get; private set; }
         private float _netYawFrom, _netYawTo, _netT = 1f;
 
         /// <summary>Whether the car can be driven (has all wheels and a functional engine).</summary>
-public bool Drivable => Wheels == 4 && Engine > 0f;
+        /// <summary>Whether the car can be driven (has four wheels and a functional engine).</summary>
+        public bool Drivable => Wheels == 4 && Engine > 0f;
+        /// <summary>Human‑readable list of missing required parts for the car to be drivable.</summary>
         public string Missing
         {
             get
@@ -509,7 +511,9 @@ public void RemoteSeat(ulong who)
     /// </summary>
     public sealed class VehicleDriver : MonoBehaviour
     {
+        /// <summary>Singleton reference to the currently active vehicle driver (if any).</summary>
         public static VehicleDriver Local { get; private set; }
+        /// <summary>Reference to the car the driver is currently controlling.</summary>
         public Vehicle Car { get; private set; }
 
         private PlayerController _ctrl;
@@ -661,6 +665,7 @@ public static HudVehicle Create()
             return null;
         }
 
+        /// <summary>Broadcast the car's driving state (position, rotation, speed, engine) to other clients.</summary>
         public static void SendDrive(Vehicle v)
         {
             if (!NetSession.Active || Time.time < s_SendAt) return;
@@ -685,6 +690,7 @@ public static HudVehicle Create()
             if (v != null && v.Driver == null) v.PushRemote(pos, yaw, speed, engine);
         }
 
+        /// <summary>Tell the server which player is currently sitting in (or leaving) this car.</summary>
         public static void Claim(Vehicle v, bool sitting)
         {
             if (!NetSession.Active) return;
