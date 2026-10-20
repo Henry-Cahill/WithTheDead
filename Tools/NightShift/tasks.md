@@ -4077,7 +4077,7 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [x] Fix the visibility check in Assets/Scripts/Net/NetPlayers.cs so that missing client info correctly blocks forwarding of a remote player’s state.
   The method `Visible(ulong owner, ulong viewer, Vector3 pos)` currently starts with
   - 18:33 landed by 0htsserver in 1 min: **Summary**
-- [ ] Add a small chrome towel‑hook to the mirror cabinet body in `FurnitureBuilder.MirrorCabinetBody` (Assets/Scripts/World/FurnitureBuilder.Bathroom.cs)
+- [x] Add a small chrome towel‑hook to the mirror cabinet body in `FurnitureBuilder.MirrorCabinetBody` (Assets/Scripts/World/FurnitureBuilder.Bathroom.cs)
   In the method, after the shelf‑creation loop (`for (int i = -1; i <= 1; i += 2) …`), insert a tiny hook made of two primitives: a thin cylinder for the shaft and a tiny ellipsoid for the hook tip.
   Use the existing `chrome = Mt(Chrome)` material.
   Position the shaft 0.04 m below the cabinet’s top edge (`up * (h * 0.4f)`), offset toward the outer side of the cabinet (`right * (w * 0.45f - 0.02f)`) and flush with the inner face (`normal * (d * 0.45f)`).
@@ -4086,6 +4086,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Create the shaft: `m.Cylinder(hookBase, 0.006f, 0.09f, 8, chrome, Quaternion.LookRotation(-right, up));` (radius 0.006 m, length 0.09 m, oriented toward the wall).
   Create the tip: `m.Ellipsoid(hookBase + (-right) * 0.045f, new Vector3(0.008f, 0.008f, 0.008f), chrome, 6, 4);` (a small 8 mm sphere at the end).
   This adds period‑correct hardware for hanging a towel or small cloth, improves visual interest, and stays under the ~12‑primitive limit.
+  - 18:36 landed by 1htsserver in 2.6 min: **Changes made**
 - [ ] In Assets/Scripts/Player/PlayerStats.cs: Cache the `TimeOfDay.Instance` lookup in `PlayerStats.Update` and use the cached reference in `UpdateFatigue` to avoid repeated static property access each frame.
   Add a private field `private TimeOfDay _cachedTOD;` to `PlayerStats`.
   At the start of `Update()` set `_cachedTOD = TimeOfDay.Instance;`.

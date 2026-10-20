@@ -538,8 +538,16 @@ namespace CloneZ
             m.Box(mid + right * (w * 0.5f - t * 0.5f), new Vector3(t, h - t * 2f, d), q, white);
             m.Box(mid - right * (w * 0.5f - t * 0.5f), new Vector3(t, h - t * 2f, d), q, white);
             Surf shelf = Gs(new Color(0.62f, 0.72f, 0.74f));
-            for (int i = -1; i <= 1; i += 2)
-                m.Box(back + normal * (d * 0.45f) + up * (i * h / 6f), new Vector3(w - t * 2f, 0.006f, d * 0.75f), q, shelf);
+for (int i = -1; i <= 1; i += 2)
+                     m.Box(back + normal * (d * 0.45f) + up * (i * h / 6f), new Vector3(w - t * 2f, 0.006f, d * 0.75f), q, shelf);
+
+                 // Small chrome towel hook on the cabinet body
+                 // Position the base of the shaft
+                 Vector3 hookBase = back + normal * (d * 0.45f) + up * (h * 0.4f) + right * (w * 0.45f - 0.02f);
+                 // Shaft: thin cylinder pointing toward the wall (negative right direction)
+                 m.Cylinder(hookBase, 0.006f, 0.09f, 8, Mt(Chrome), Quaternion.LookRotation(-right, up));
+                 // Tip: tiny ellipsoid at the end of the shaft
+                 m.Ellipsoid(hookBase + (-right) * 0.045f, new Vector3(0.008f, 0.008f, 0.008f), Mt(Chrome), 6, 4);
         }
 
         /// <summary>The mirror cabinet's door: a white board faced with a mirror, its back on <paramref name="front"/> (the
