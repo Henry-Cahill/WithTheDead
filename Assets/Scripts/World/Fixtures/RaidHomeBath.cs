@@ -197,10 +197,11 @@ namespace CloneZ
             wash.Begin = BorrowTaps;
             wash.Stopped = ReturnTaps;
             into.Add(wash);
-            if (_level > 0.05f) {
-                into.Add(new InteractAction("Feel the water", FeelWater));
-                into.Add(new InteractAction("Check water temperature", CheckTemp));
-            }
+                if (_level > 0.05f) {
+                    into.Add(new InteractAction("Feel the water", FeelWater));
+                    into.Add(new InteractAction("Check water temperature", CheckTemp));
+                    into.Add(new InteractAction("Check water level", CheckLevel));
+                }
         }
 
         #region The taps and the plug
@@ -293,6 +294,12 @@ namespace CloneZ
         {
             string warm = _heat >= 0.75f ? "hot — properly hot" : _heat >= 0.45f ? "warm" : _heat >= 0.2f ? "lukewarm" : "stone cold";
             ctx.Notify("The water feels " + warm + ".");
+        }
+
+        private void CheckLevel(InteractContext ctx)
+        {
+            int pct = Mathf.RoundToInt(_level * 100f);
+            ctx.Notify($"The bath is about {pct}% full.");
         }
         #endregion
 

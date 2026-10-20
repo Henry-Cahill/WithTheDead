@@ -3271,9 +3271,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace every use of those `CloneZConfig.*` constants inside `Update()` (and any other per‑frame method) with the cached fields, e.g. use `_capacity` instead of `CloneZConfig.KitchenBasinCapacity`, `_fillRate` for the fill‑per‑second divisor, etc.
   Keep the original constants for non‑frequent code paths; only the per‑frame calculations change.
   The visual and gameplay behaviour stays identical; the player will see the same water filling/draining speed, tap noise timing and hearing range, but the game avoids repeated static field dereferencing each frame.
-- [ ] Add a “Check water level” action to `RaidHomeBath.GetActions` (Assets/Scripts/World/Fixtures/RaidHomeBath.cs)
+- [x] Add a “Check water level” action to `RaidHomeBath.GetActions` (Assets/Scripts/World/Fixtures/RaidHomeBath.cs)
   In `GetActions`, after the block that adds “Feel the water” and “Check water temperature”, insert
   `into.Add(new InteractAction("Check water level", CheckLevel));` (copy the surrounding `if (_level > 0.05f) { … }` condition).
   Implement a private method `CheckLevel(InteractContext ctx)` that notifies the player of the exact fill percentage, e.g.
   `int pct = Mathf.RoundToInt(_level * 100f); ctx.Notify($"The bath is about {pct}% full.");`
   This gives survivors precise feedback on how much water is left, complementing the existing temperature check while keeping all existing behavior unchanged.
+  - 13:19 landed by 1htsserver in 3.2 min: **Changes made**
