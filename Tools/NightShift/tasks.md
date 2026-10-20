@@ -2069,7 +2069,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `for (int i = 0; i < len; i++) {`
   `int ix = Wrap(x + i, S);`
   `c = Mul(c, shade); // apply darker tint for the scratch`
-- [ ] Add a zone‑check to the fetch‑item gathering logic in Assets/Scripts/Quests/QuestBook.cs so that fetch objectives respect their `Zone` field.
+- [x] Add a zone‑check to the fetch‑item gathering logic in Assets/Scripts/Quests/QuestBook.cs so that fetch objectives respect their `Zone` field.
+  - 08:07 landed by hts-llm in 1.7 min: **Changed file**
 - [ ] In Assets/Scripts/Survival/Navigation.cs, class ZoneMapScreen, method Build(), add a subtle random “ink blot” on the paper to convey age‑and‑use.
   After the line `Image paper = UIKit.Panel(Body, "Paper", new Color(0.86f, 0.83f, 0.74f));` create a new UI panel named “InkBlot”.
   Use the existing `System.Random rng` (seeded with the zone layout) to pick an offset ± 250 px in X and ± 250 px in Y relative to the paper centre (`new Vector2(0.5f, 0.5f)`).

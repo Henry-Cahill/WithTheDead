@@ -229,6 +229,8 @@ namespace CloneZ
 
         private static void Gather(QuestObjective o, Inventory inv, ref int need, List<(ItemStack, Inventory, int)> take)
         {
+            // Skip if the objective is zone‑restricted and we are not in that zone.
+            if (o.Zone != null && GameSession.ZoneId != o.Zone) return;
             if (inv == null || need <= 0) return;
             foreach (ItemStack s in inv.Stacks)
             {
