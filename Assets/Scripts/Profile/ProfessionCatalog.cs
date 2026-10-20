@@ -79,6 +79,10 @@ namespace CloneZ
             T("firestarter", "Firestarter", 2, "Night vision improves by a small margin.", m => m.NightVision += 0.15f),
             T("handy", "Handy", 2, "Carry capacity increases by 2 kg.", m => m.CarryBonusKg += 2f),
             T("superstitious", "Superstitious", 1, "You’re less likely to panic.", m => m.PanicRate *= 0.9f),
+            T("frostbite", "Frostbite", 1, "A bitter wind bites at your skin, a reminder of Kentucky’s icy hills.", m => { }),
+            T("snowdrift", "Snowdrift", 1, "You’ve learned to wade through deep drifts, forged in the harsh countryside.", m => { }),
+            T("icebound", "Icebound", 1, "Your boots crunch ice, steadying you in the bleak frost of the old world.", m => { }),
+            T("coldfront", "Cold Front", 1, "A sudden cold front sweeps over, and you cling to warmth with stubborn resolve.", m => { })
         };
 
         private static TraitDef T(string id, string name, int cost, string blurb, System.Action<StatMods> apply, params string[] excludes)
