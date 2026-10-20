@@ -55,6 +55,10 @@ namespace CloneZ
             _controller = GetComponent<CharacterController>();
             _stats = GetComponent<PlayerStats>();
             AimDirection = transform.forward;
+            _seat = GetComponent<PlayerSeat>();
+            _skills = GetComponent<PlayerSkills>();
+            _combat = GetComponent<PlayerCombat>();
+            _inventory = GetComponent<PlayerInventory>();
         }
 
         private void Start() => _cam = Camera.main;
@@ -91,7 +95,6 @@ namespace CloneZ
         // up; the next frame they walk as normal.
         private bool HoldWhileSeated()
         {
-            if (_seat == null) _seat = GetComponent<PlayerSeat>();
             if (_seat == null || (!_seat.IsSeated && !_seat.IsLyingDown)) return false;
             _stats.Exertion = Exertion.Idle;
             CurrentSpeed = 0f;
@@ -257,8 +260,8 @@ namespace CloneZ
 
             // Skills: Sprinting quickens the sprint, Nimble speeds movement with a gun
             // out, and the matching perks train while you do it.
-            if (_skills == null) _skills = GetComponent<PlayerSkills>();
-            if (_combat == null) _combat = GetComponent<PlayerCombat>();
+            // if (_skills == null) _skills = GetComponent<PlayerSkills>();
+            // if (_combat == null) _combat = GetComponent<PlayerCombat>();
             if (_skills != null && moving)
             {
                 float sdt = Time.deltaTime;
@@ -281,7 +284,6 @@ namespace CloneZ
             }
 
             // Carrying a heavy load slows the player (encumbrance).
-            if (_inventory == null) _inventory = GetComponent<PlayerInventory>();
             if (_inventory != null) speed *= _inventory.MoveSpeedMultiplier;
             // An exhausted or badly-hurt survivor moves slower still.
             speed *= _stats.FatigueMoveMultiplier;

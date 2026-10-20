@@ -2268,7 +2268,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m => { m.Box(Vector3.zero, new Vector3(0.10f, 0.02f, 0.001f),`
   `DecorPalette.Metal(FurnitureBuilder.Chrome)); });`
   - 08:55 landed by hts-llm in 1.7 min: **Changed file**
-- [ ] Cache the per‑frame GetComponent lookups in Assets/Scripts/Player/PlayerController.cs by assigning the PlayerSeat, PlayerSkills, PlayerCombat and PlayerInventory components once in Awake and removing the redundant null‑checks in HoldWhileSeated and Move.
+- [x] Cache the per‑frame GetComponent lookups in Assets/Scripts/Player/PlayerController.cs by assigning the PlayerSeat, PlayerSkills, PlayerCombat and PlayerInventory components once in Awake and removing the redundant null‑checks in HoldWhileSeated and Move.
   In Awake after the existing component fetches, add:
   `_seat = GetComponent<PlayerSeat>();`
   `_skills = GetComponent<PlayerSkills>();`
@@ -2277,6 +2277,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Delete the line `if (_seat == null) _seat = GetComponent<PlayerSeat>();` from HoldWhileSeated.
   Delete the blocks `if (_skills == null) _skills = GetComponent<PlayerSkills>();` and `if (_combat == null) _combat = GetComponent<PlayerCombat>();` from Move.
   Delete the block `if (_inventory == null) _inventory = GetComponent<PlayerInventory>();` from Move.
+  - 08:57 landed by 0htsserver in 2.7 min: **Changes made**
 - [x] In Assets/Scripts/World/Fixtures/BreakerPanel.cs: Add a tiny “Inspect breaker panel” action to BreakerPanel.GetActions so the survivor can see whether the panel’s door is open or closed.
   In `BreakerPanel.cs` edit the `GetActions` method (currently ending with `into.Add(new InteractAction("Check the power", CheckPower));`).
   Insert a new line after that call, before the method’s closing brace:
