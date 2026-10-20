@@ -4121,12 +4121,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `}`
   Size 0.02 m × 0.12 m × 0.04 m, positioned 1.2 m above ground and 1.22 m forward from the booth centre (half the booth depth + 0.02 m) so it sits flush on the front surface.
   - 18:42 landed by hts-llm in 1.4 min: **Summary**
-- [ ] In Assets/Scripts/Player/PlayerTemperature.cs: Cache the temperature‑level and descriptor strings in PlayerTemperature so they aren’t recomputed each UI frame.
+- [x] In Assets/Scripts/Player/PlayerTemperature.cs: Cache the temperature‑level and descriptor strings in PlayerTemperature so they aren’t recomputed each UI frame.
   Add private fields `int _levelCache; string _descriptorCache;` initialized in Awake or OnEnable.
   Replace the `Level` getter with `get => _levelCache;` and the `Descriptor` getter with `get => _descriptorCache;`.
   Create a private method `void UpdateLevelCache()` that contains the current `Level` logic (the series of `if` checks on `Temperature`) and also sets `_descriptorCache` to the matching word (“Freezing”, “Cold”, “Comfortable”, “Warm”, “Hot”).
   Call `UpdateLevelCache()` at the end of UpdateTemperature (after `_stats.Temperature` is modified) and also once in Awake so the caches are valid before the first frame.
   The player’s visual HUD will show the same words as before; only the expensive per‑frame conditional logic is moved to run once per temperature change, which occurs only when the body temperature drifts (≈ once per second), dramatically reducing per‑frame work.
+  - 18:51 landed by 0htsserver in 5.8 min: **Summary of changes**
 - [ ] In Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs: Add a “Dump water from tank” action to `RaidStoreWaterHeater.GetActions` that empties the heater’s remaining water and notifies nearby survivors.
   In `GetActions`, after the existing `Knock` line, insert:
   `into.Add(new InteractAction("Dump water from tank", DumpWater).DisabledIf(!HasWater, DryMessage));`

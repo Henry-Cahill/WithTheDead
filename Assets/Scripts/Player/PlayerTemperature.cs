@@ -40,6 +40,9 @@ namespace CloneZ
         private TimeOfDay _timeOfDay;
         private PlayerClothing _clothing;
         private PlayerSleep _sleep;
+        // Cached temperature level and descriptor to avoid per-frame computation
+        private int _levelCache;
+        private string _descriptorCache;
 
         private PlayerClothing Clothing => _clothing != null ? _clothing : (_clothing = GetComponent<PlayerClothing>());
         private PlayerSleep Sleep => _sleep != null ? _sleep : (_sleep = GetComponent<PlayerSleep>());
@@ -67,31 +70,13 @@ namespace CloneZ
         /// <summary>Thermal comfort band as a level: -2 freezing, -1 cold, 0 comfortable, 1 warm, 2 hot.</summary>
         public int Level
         {
-            get
-            {
-                float t = Temperature;
-                if (t < CloneZConfig.TempHypothermiaThreshold + 0.02f) return -2;
-                if (t < CloneZConfig.TempComfortLow) return -1;
-                if (t > CloneZConfig.TempHyperthermiaThreshold - 0.01f) return 2;
-                if (t > CloneZConfig.TempComfortHigh) return 1;
-                return 0;
-            }
+            get => _levelCache;
         }
 
         /// <summary>A short word for the current warmth (for the HUD / health panel).</summary>
         public string Descriptor
         {
-            get
-            {
-                switch (Level)
-                {
-                    case -2: return "Freezing";
-                    case -1: return "Cold";
-                    case 1: return "Warm";
-                    case 2: return "Hot";
-                    default: return "Comfortable";
-                }
-            }
+            get => _descriptorCache;
         }
 
         /// <summary>A short word for how wet the survivor is.</summary>
@@ -112,6 +97,8 @@ namespace CloneZ
             _stats = GetComponent<PlayerStats>();
             _weather = WeatherSystem.Instance;
             _timeOfDay = TimeOfDay.Instance;
+            // Initialize cached level and descriptor based on initial temperature
+            UpdateLevelCache();
         }
 
         private void Update()
@@ -168,6 +155,9 @@ namespace CloneZ
                 _stats.Temperature = Mathf.Lerp(_stats.Temperature, target, 1f - Mathf.Exp(-dt / WinterResponseSeconds));
             else
                 _stats.Temperature = Mathf.MoveTowards(_stats.Temperature, target, CloneZConfig.TempAdjustPerSec * dt);
+
+            // Update cached level and descriptor after temperature may have changed
+            UpdateLevelCache();
         }
 
         // The naked, dry ambient a body would settle at: the air temperature on the warmth scale (the
@@ -183,9 +173,27 @@ namespace CloneZ
             return ambient;
         }
 
-        // The cold tires and eventually freezes you; the heat parches and eventually cooks you. Shivering
-        // and sweating play out over in-game hours, so they slow with the clock (a raid's night runs 12x
-        // slower than the wave arena's day); the killing extremes stay in real time.
+        // Computes and caches the temperature level and descriptor string based on current temperature
+        private void UpdateLevelCache()
+        {
+            float t = Temperature;
+            int level;
+            if (t < CloneZConfig.TempHypothermiaThreshold + 0.02f) level = -2;
+            else if (t < CloneZConfig.TempComfortLow) level = -1;
+            else if (t > CloneZConfig.TempHyperthermiaThreshold - 0.01f) level = 2;
+            else if (t > CloneZConfig.TempComfortHigh) level = 1;
+            else level = 0;
+
+            _levelCache = level;
+            switch (level)
+            {
+                case -2: _descriptorCache = "Freezing"; break;
+                case -1: _descriptorCache = "Cold"; break;
+                case 1: _descriptorCache = "Warm"; break;
+                case 2: _descriptorCache = "Hot"; break;
+                default: _descriptorCache = "Comfortable"; break;
+            }
+        }
         private void ApplyEffects(float dt)
         {
             float cold = _stats.ColdStrength;
