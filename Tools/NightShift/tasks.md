@@ -3513,7 +3513,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   This adds a subtle rust‑patina cap that conveys age without affecting colliders or interaction.
   Keep the existing light registration unchanged; the cap is purely visual.
   - 14:36 landed by hts-llm in 2.5 min: **Changes Made**
-- [ ] In Assets/Scripts/World/Zone/ZoneAtmosphere.cs: Add an early‑out in `ZoneAtmosphere.LateUpdate` that skips all fog/ambient calculations when none of the inputs that affect the atmosphere have changed since the previous frame.
+- [x] In Assets/Scripts/World/Zone/ZoneAtmosphere.cs: Add an early‑out in `ZoneAtmosphere.LateUpdate` that skips all fog/ambient calculations when none of the inputs that affect the atmosphere have changed since the previous frame.
+  - 14:40 landed by 0htsserver in 5.4 min: **Changed file**
 - [x] Add a “Listen to the machine” action in `RaidStoreVending.GetActions` (Assets/Scripts/World/Fixtures/RaidStoreVending.cs) right after the existing “Press a button” entry, and implement a private `Listen` method that calls `MakeNoise(CloneZConfig.RaidVendingThumpNoise)` and notifies the player.
   · Insert `into.Add(new InteractAction("Listen to the machine", Listen));` after `into.Add(new InteractAction("Press a button", PressButton));` while still inside the `if (!_broken)` block.
   · Add a new method `private void Listen(InteractContext ctx)` that executes `MakeNoise(CloneZConfig.RaidVendingThumpNoise);` then `ctx.Notify("You press your ear to the vending machine; faint whirring can be heard, but it offers no help.");`.
