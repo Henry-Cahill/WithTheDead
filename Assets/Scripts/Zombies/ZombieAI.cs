@@ -147,6 +147,28 @@ namespace CloneZ
                 mat.color = col;
                 if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", col);
             }
+         }
+        // Add torn‑cloth strip visual detail
+        for (int i = 0; i < 2; i++)
+        {
+            if (Random.value < 0.5f)
+            {
+                var strip = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                strip.transform.SetParent(transform, false);
+                strip.transform.localScale = new Vector3(0.01f, 0.08f, 0.02f);
+                strip.transform.localPosition = new Vector3(Random.Range(-0.07f, 0.07f), 1.45f, Random.Range(-0.02f, 0.02f));
+                strip.transform.localRotation = Quaternion.Euler(0f, Random.Range(0f, 360f), Random.Range(-15f, 15f));
+                var rend = strip.GetComponent<Renderer>();
+                if (rend != null)
+                {
+                    var mat = rend.material;
+                    Color baseCol = new Color(0.5f, 0.4f, 0.35f);
+                    float v = Random.Range(-0.04f, 0.04f);
+                    Color col = new Color(baseCol.r + v, baseCol.g + v, baseCol.b + v);
+                    mat.color = col;
+                    if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", col);
+                }
+            }
         }
         _agent.speed = _baseSpeed * 0.5f;
             _agent.acceleration = 12f;
