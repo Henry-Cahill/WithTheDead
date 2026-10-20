@@ -1480,7 +1480,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   adds the interval to the previous target time, which means every time a nail shrieks the next target moves farther ahead and the noise becomes progressively rarer.
   Replace it with a calculation based on the current clock:
   - 04:38 landed by 0htsserver in 1.1 min: **Changed**
-- [ ] Add subtle road‑crack details to the asphalt slabs built in `Assets/Scripts/World/RaidMapBuilder.Streets.cs` → method `Road`.
+- [x] Add subtle road‑crack details to the asphalt slabs built in `Assets/Scripts/World/RaidMapBuilder.Streets.cs` → method `Road`.
   In the loop that places each asphalt slab (`Slab(town, alongX, coord, a, b, -hw, hw, 0.012f, asphalt);`) insert code that, with a 20 % chance, creates 1‑2 short dark strips (“cracks”).
   Use the existing `rng` (`System.Random rng = town.Rng;`). For each crack:
   – Choose a random start `cStart = R(rng, a, b‑0.5f)` and a random length `cLen = R(rng, 0.4f, 1.2f)`.
@@ -1489,6 +1489,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   – Call `Strip(town, alongX, across, cStart, Mathf.Min(b, cStart + cLen), 0.02f, 0.001f, DecorPalette.Matte(new Color(0.15f, 0.15f, 0.15f)));`.
   This adds at most two `Strip` primitives per slab (well under the 12‑primitive limit) and reuses the deterministic `rng`, existing `Strip` helper, and the `DecorPalette.Matte` colour system.
   Visually the player will see faint, irregular dark cracks on the road surface, enhancing the worn‑out winter street look while keeping all colliders, interaction points and pivots unchanged.
+  - 04:41 landed by 0htsserver in 2.2 min: **Changed file**
 - [ ] In Assets/Scripts/UI/PauseMenuController.cs: Cache the GameManager and ExtractionManager singletons in PauseMenuController to avoid per‑frame lookups in Update()
   Add two private fields `private GameManager _gm;` and `private ExtractionManager _em;` to the class.
   In `Awake()` after `Build();` assign them: `_gm = GameManager.Instance; _em = ExtractionManager.Instance;`.
