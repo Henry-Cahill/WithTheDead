@@ -3949,3 +3949,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   The rest of the code stays unchanged.
   Result: buildings whose footprints touch the map’s clipping rectangle now retain all border vertices, so their walls, roofs and props render correctly without gaps.
   - 17:39 landed by hts-llm in 1.5 min: **Changed file**
+- [ ] In Assets/Scripts/Characters/HumanoidBodyBuilder.cs: Fix HumanoidBodyBuilder.ScaleHead so that all vertices influenced by the head bone are scaled, not only those with weight ≈ 1
+  The method currently checks `if (w.boneIndex0 == head && w.weight0 > 0.999f)` which skips vertices that are blended with the head bone (e.g., neck‑head blend), leaving the head partially un‑scaled and causing a visible “pinched” neck when `HeadScale` is applied.
+  Change the condition to test both possible bone slots and any positive weight, and apply the same scaling to those vertices.
+  Original line:
+  `if (w.boneIndex0 == head && w.weight0 > 0.999f) _v[i] = pivot + (_v[i] - pivot) * HeadScale;`
+  Replace with:
+  `if ((w.boneIndex0 == head && w.weight0 > 0f) || (w.boneIndex1 == head && w.weight1 > 0f)) _v[i] = pivot + (_v[i] - pivot) * HeadScale;`
+  After this change the whole head (including blended vertices) enlarges uniformly, eliminating the neck‑pinch visual bug while keeping the existing scaling factor and pivot logic unchanged.
