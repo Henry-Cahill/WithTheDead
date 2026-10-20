@@ -63,7 +63,12 @@ namespace CloneZ
         private void PeerIn(InteractContext ctx)
         {
             MakeNoise(CloneZConfig.FixtureNoiseSmall);
-            ctx.Notify(Letters[_read % Letters.Length]);
+            if (_read >= Letters.Length)
+            {
+                ctx.Notify("The chute is empty.");
+                return;
+            }
+            ctx.Notify(Letters[_read]);
             _read++;
         }
     }

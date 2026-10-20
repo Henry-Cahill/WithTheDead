@@ -2664,7 +2664,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace every `transform.position` in LateUpdate with `_cachedTransform.position`.
   No other code changes are required; the zombie’s movement, animation and death visuals remain identical.
   - 10:43 landed by 1htsserver in 2.4 min: **Changed file**
-- [ ] Modify `Assets/Scripts/World/Fixtures/RaidTownMailDrop.cs` – in the `PeerIn` method, replace the wrap‑around indexing with a check that stops after the final entry, notifying the player that the chute is empty.
+- [x] Modify `Assets/Scripts/World/Fixtures/RaidTownMailDrop.cs` – in the `PeerIn` method, replace the wrap‑around indexing with a check that stops after the final entry, notifying the player that the chute is empty.
+  - 10:44 landed by 0htsserver in 1.1 min: **Changed file**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Characters/HumanoidAnimator.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
