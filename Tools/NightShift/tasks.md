@@ -3008,3 +3008,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   In Snap() set `_groundDirty = true;`.
   In PlaceRoot(float dt) replace the unconditional raycast block with `if (_groundDirty && !_dead && !Seated) { … existing raycast code … _groundDirty = false; }` and keep the existing `_groundOffset` smoothing logic unchanged.
   The player’s view (character staying on the floor, stepping up/down slopes, sitting or falling) remains identical, but the expensive `Physics.Raycast` runs only when necessary, reducing per‑frame allocations and CPU work.
+- [ ] Add a tiny dark‑metal screw detail to each light‑switch toggle in `Assets/Scripts/World/StarterHome.Lighting.cs` → method `Switches`, so the switches look a bit more lived‑in and mechanical.
