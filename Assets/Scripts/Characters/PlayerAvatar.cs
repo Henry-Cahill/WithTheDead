@@ -38,6 +38,7 @@ namespace CloneZ
         private PlayerBuilder _builder;
         private PlayerFarming _farming;
         private PlayerSeat _seat;
+        private Actor _localActor;
 
         private HumanoidLook _look;
         private readonly ItemDef[] _shownWorn = new ItemDef[PlayerClothing.Slots.Length];
@@ -58,7 +59,9 @@ namespace CloneZ
             Rig = HumanoidRig.Create(transform, _look);
             Animator = Rig.gameObject.AddComponent<HumanoidAnimator>();
             Animator.AutoUpdate = false;   // evaluated below, after the inputs are set
+            _localActor = Actor.LocalPlayer;
         }
+
 
         // The gameplay components are added after this one is created, so they're looked up here.
         private void Start()
@@ -76,6 +79,7 @@ namespace CloneZ
             _seatVersion = _seat != null ? _seat.Version : 0;
             _started = true;
             Subscribe();
+            _localActor = Actor.LocalPlayer;
 
             RefreshOutfit();
             RefreshHeld(HumanoidActivity.None);
@@ -227,7 +231,8 @@ namespace CloneZ
             if (a.HasReachTarget) a.ReachTarget = f.InteractPoint;
 
             // Hands up (or cuffed): both hands over the head.
-            Actor self = Actor.LocalPlayer;
+            if (_localActor == null) _localActor = Actor.LocalPlayer;
+            Actor self = _localActor;
             if (self != null && self.gameObject == gameObject && (self.Surrendered || self.Restrained))
             {
                 a.Activity = HumanoidActivity.Use;
