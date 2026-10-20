@@ -1873,12 +1873,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add this action to `into` (e.g., `into.Add(force);`) before the existing “Try the handle” action.
   Result: the player can now choose a slower, more deliberate method to open the safe, seeing the same “Working the dial” progress UI and hearing the same noises, and upon completion the safe opens just like the original action.
   All existing fields, methods, and config values remain unchanged.
-- [ ] Append five new flavor‑text strings to the `ShaveLines` array in Assets/Scripts/World/Fixtures/BasinFixture.cs; each should be a single sentence a survivor might think while shaving in a cold, winter‑1993 Kentucky bathroom after the outbreak. Use the existing entry `"A slow, careful shave. You only nick yourself once."` as style reference; the new lines should cover themes of scarcity of hot water, the mirror’s cracked glass reflecting loss, the tap’s coughing sound, lingering soot smell, and the feeling of the razor’s bite against frozen skin.
+- [x] Append five new flavor‑text strings to the `ShaveLines` array in Assets/Scripts/World/Fixtures/BasinFixture.cs; each should be a single sentence a survivor might think while shaving in a cold, winter‑1993 Kentucky bathroom after the outbreak. Use the existing entry `"A slow, careful shave. You only nick yourself once."` as style reference; the new lines should cover themes of scarcity of hot water, the mirror’s cracked glass reflecting loss, the tap’s coughing sound, lingering soot smell, and the feeling of the razor’s bite against frozen skin.
   Add `"The tap coughs each time you lift the lever, a reminder the mains are a memory now."`
   Add `"Your reflection flickers in the cracked mirror, showing a face half‑lost to the frost."`
   Add `"Cold water runs over the razor, turning the shave into a bite of ice on your skin."`
   Add `"The scent of soot from the stove clings to the steam, mixing with the taste of metal."`
   Add `"Each shave feels like salvaging a small piece of normality from the relentless cold."`
+  - 07:13 landed by 1htsserver in 4 min: **Changed files**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/CookingStation.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
