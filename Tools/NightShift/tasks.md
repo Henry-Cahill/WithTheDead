@@ -1178,7 +1178,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Current code begins with clearing groups but never clears `_chunks`, so chunks from previous frames remain and items are processed multiple times, causing items to appear duplicated or cause unnecessary draw‑calls.
   The fix ensures only the chunks within range for the current frame are considered, keeping visual fidelity and performance unchanged apart from removing the duplication.
   - 03:07 landed by 0htsserver in 1.4 min: Implemented fix in **Assets/Scripts/World/GroundItemRenderer.cs**:
-- [ ] Add a small rust‑colored ellipsoid cap to each main tollgate rod in `Anomaly.BuildVisual` (Assets/Scripts/Zone/Anomalies.cs)
+- [x] Add a small rust‑colored ellipsoid cap to each main tollgate rod in `Anomaly.BuildVisual` (Assets/Scripts/Zone/Anomalies.cs)
+  - 03:10 landed by 0htsserver in 2.9 min: **Changed file**
 - [ ] Cache WeatherSystem and TimeOfDay instances in Assets/Scripts/Player/PlayerTemperature.cs to avoid per‑frame lookups
   Add private fields `private WeatherSystem _weather;` and `private TimeOfDay _timeOfDay;` to the class.
   Initialise them in `Awake()` (after acquiring _stats) with `_weather = WeatherSystem.Instance;` and `_timeOfDay = TimeOfDay.Instance;`.
