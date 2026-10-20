@@ -1314,3 +1314,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `town.Info.PlayerSpawnYaw = 0f;`
 - [ ] Add two small brass pull‑knobs to the lower sash in `Assets/Scripts/World/StarterHome.Windows.cs` → `WindowSash` method, after the loop that creates the brass lifts, to give the window a more period‑correct tactile detail.
   Create two new `Box` primitives using the existing `brass` surface, each 0.02 m × 0.005 m × 0.016 m, positioned at the inner ends of the bottom rail:
+- [ ] In Assets/Scripts/World/Fixtures/BasinFixture.cs, add a tiny “check water level” action next to the existing plug action in `GetActions` and implement its handler.
