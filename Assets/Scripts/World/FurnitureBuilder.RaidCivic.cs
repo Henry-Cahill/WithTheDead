@@ -135,11 +135,13 @@ namespace CloneZ
             float x = LockerX(i, count);
             Color dark = c * 0.45f;
             m.Box(new Vector3(x, LockerDoorY, 0.215f), new Vector3(0.46f, LockerDoorH, 0.02f), M(c));
-            for (int v = 0; v < 4; v++)
-            {
-                m.Box(new Vector3(x, 1.52f + v * 0.045f, 0.227f), new Vector3(0.26f, 0.014f, 0.006f), M(dark));
-                m.Box(new Vector3(x, 0.24f + v * 0.045f, 0.227f), new Vector3(0.26f, 0.014f, 0.006f), M(dark));
-            }
+for (int v = 0; v < 4; v++)
+        {
+            m.Box(new Vector3(x, 1.52f + v * 0.045f, 0.227f), new Vector3(0.26f, 0.014f, 0.006f), M(dark));
+            m.Box(new Vector3(x, 0.24f + v * 0.045f, 0.227f), new Vector3(0.26f, 0.014f, 0.006f), M(dark));
+        }
+        // Tiny metal locker-number plate at lower front edge
+        m.Box(new Vector3(x, LockerDoorY - LockerDoorH * 0.5f + 0.01f, 0.217f), new Vector3(0.05f, 0.02f, 0.002f), Mt(Chrome));
             m.Box(new Vector3(x + 0.16f, 1.0f, 0.235f), new Vector3(0.035f, 0.13f, 0.025f), Mt(Chrome));
             m.Box(new Vector3(x, 1.74f, 0.228f), new Vector3(0.07f, 0.035f, 0.006f), M(Paper));
             if (Chance(rng, 0.3))

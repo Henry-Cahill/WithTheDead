@@ -3453,7 +3453,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Vector3 boltOffset = new Vector3(0.12f, 0f, 0f);`
   `sb.Solid.Box(latchPos + boltOffset, new Vector3(0.02f, 0.05f, 0.02f), ZoneKit.M(ZoneKit.V(rust, sb.Rng, 0.02f)));`
   - 14:19 landed by hts-llm in 2.4 min: **Changed file**
-- [ ] In Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method LockerDoor, add a tiny metal “locker‑number” plate to each door’s lower front edge.
+- [x] In Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method LockerDoor, add a tiny metal “locker‑number” plate to each door’s lower front edge.
+  - 14:21 landed by 1htsserver in 2.7 min: **Changed**
 - [ ] In Assets/Scripts/Rendering/IsoVisionShade.cs: Cache the TimeOfDay singleton in IsoVisionShade so LateUpdate doesn’t call a costly FindAnyObjectByType each frame
   Add a private static `TimeOfDay _timeOfDay;` field to the class.
   In `Awake()` set `_timeOfDay = TimeOfDay.Instance;`.
