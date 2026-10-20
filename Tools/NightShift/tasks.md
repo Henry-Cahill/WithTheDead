@@ -1634,3 +1634,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   Size 0.02 m × 0.04 m × 0.02 m, positioned 0.07 m above the centre of the body.
   Uses an existing colour (a muted metallic grey) and the `Part` helper, so no new colliders or interaction points are introduced.
   Keeps the total primitive count well under the ~12‑primitive limit.
+- [ ] Remove Kestrel Flats, Mirelock woods, and Spillway as raid locations and retire them to being wave maps also as introduction map.
