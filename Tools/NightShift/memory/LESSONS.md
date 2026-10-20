@@ -28,3 +28,4 @@ appends one short bullet at the end. Keep each bullet to a line or two.
 - Partial-class header comments: when a `partial` file has no class-level doc, put a wrapped `//` block what it builds right after the `namespace {` and before the `partial class` line (see HomeFurniture.Kitchen.cs); the primary file keeps the `/// <summary>`. Reference the sibling partials (e.g. "the exit roads are in RaidMapBuilder.Town.cs") rather than restate them.
 - `CloneZConfig` partial files (CloneZConfig.Bathroom.cs etc.) carry a one-line `// ...` header above the `public static partial class` line describing what the file's settings tune (see HomeFurniture.Kitchen.cs); the settings themselves are grouped under `// ---- section ----` comments inside.
 - When adding random‑based UI elements, remember to include `using System;` for `System.Random`.
+- Cache singleton lookups like WeatherSystem.Instance in frequently‑called Update loops to avoid per‑frame FindObjectByType overhead.

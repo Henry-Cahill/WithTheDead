@@ -1247,13 +1247,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   In `HudMoodles.SetDock` the caption timer `_captionTimer` isn’t cleared, so after switching to `MoodleDock.Row` an old timer value can make the caption appear even though no moodle has newly appeared or worsened. The player may see a stale “Bleeding”, “Toxic gas!” etc. floating at the right edge of the row HUD.
   Add a line resetting the timer (and optionally the caption text) when the dock changes: after the layout‑sign reset (`_layoutSig = -1;`) insert `_captionTimer = 0f;` (and optionally `_caption.text = string.Empty;`). This guarantees the row caption only shows for moodles that change after the dock switch.
   - 03:31 landed by 0htsserver in 1.2 min: **Summary**
-- [ ] In Assets/Scripts/World/WaterSource.cs: Cache the WeatherSystem instance in WaterSource.Update to avoid a per‑frame lookup.
+- [x] In Assets/Scripts/World/WaterSource.cs: Cache the WeatherSystem instance in WaterSource.Update to avoid a per‑frame lookup.
   Add a private static field `private static WeatherSystem _weather;` to WaterSource.
   In Awake or the first Update call, set `_weather = WeatherSystem.Instance;` if it is null.
   Replace `WeatherSystem.Instance != null ? WeatherSystem.Instance.RainIntensity : 0f` with `(_weather != null) ? _weather.RainIntensity : 0f`.
   This removes the repeated static‑property lookup (which internally performs a FindObjectByType) each frame for every rain barrel.
   The water‑fill simulation and visual refresh logic remain unchanged, so the player sees the same water level behavior and barrel appearance.
   No other code behavior is altered; the change is safe because WeatherSystem is a singleton that persists for the game session.
+  - 03:41 landed by 1htsserver in 10.4 min: **Changed**
 - [x] Add a “Empty the sink” action to Assets/Scripts/World/Fixtures/KitchenSink.cs that lets the player drain all standing water when the mains are off and there is water in the bowl, showing a message and updating the visual state.
   Add a private method `EmptySink(InteractContext ctx)` that sets `_level = 0f; _toldFull = false; RefreshWater(); ctx.Notify("You empty the sink; the water drains away.");`
   In `GetActions`, after the existing `wash`/`rinse`/`wash dishes` actions, insert:

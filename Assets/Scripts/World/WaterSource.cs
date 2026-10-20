@@ -34,6 +34,7 @@ namespace CloneZ
         private Transform _waterFill;               // the barrel's water disc (scales with the level)
 
         private static readonly Color BarrelWater = new Color(0.34f, 0.5f, 0.52f);
+        private static WeatherSystem _weather;
 
         private void OnEnable() { if (!All.Contains(this)) All.Add(this); }
         private void OnDisable() { All.Remove(this); }
@@ -262,8 +263,9 @@ namespace CloneZ
             _lastHours = now;
             if (dH <= 0f) return;
 
-            float rain = WeatherSystem.Instance != null ? WeatherSystem.Instance.RainIntensity : 0f;
-            if (rain > 0f)
+            if (_weather == null) _weather = WeatherSystem.Instance;
+                float rain = (_weather != null) ? _weather.RainIntensity : 0f;
+                if (rain > 0f)
             {
                 Water = Mathf.Min(CloneZConfig.WaterBarrelMax, Water + CloneZConfig.WaterBarrelRainPerHour * rain * dH);
                 RefreshVisual();
