@@ -3535,3 +3535,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   No other code changes are required; the method uses the existing `Warmth` property and `InteractContext.Notify` already used elsewhere.
   The player will now see a tooltip like “The stove radiates warmth (3.5).” when selecting “Feel the heat”.
   This addition keeps all existing functionality untouched and does not introduce new UI screens or assets.
+- [ ] Add a subtle scorched‑ground decal to each fire created by `ZoneKit.Fire` (Assets/Scripts/World/Zone/ZoneKit.cs)
+  In `Fire(Transform parent, Vector3 at, float scale)` after the ember particle system is created, instantiate a flat quad to act as a burnt‑ground mark.
+  Use `GameObject.CreatePrimitive(PrimitiveType.Quad)` named `"Scorch"` and make it a child of the fire root (`go.transform`).
+  Position it at `new Vector3(0f, 0.01f, 0f)` (just above the ground to avoid z‑fighting) and scale it to `Vector3.one * 0.4f * scale` (≈ 0.4 m diameter, height negligible).
+  Remove its default collider with `Object.Destroy(scorch.GetComponent<Collider>())`.
+  Set its renderer colour to `ConcreteDark` (existing material colour) by `scorch.GetComponent<MeshRenderer>().sharedMaterial = new Material(scorch.GetComponent<MeshRenderer>().sharedMaterial) { color = ConcreteDark }`.
+  Call `ZoneKit.NoBake(scorch)` so the decal is ignored by NavMesh baking.
+  This gives each fire a period‑correct visual cue of burnt earth without affecting gameplay or physics.
