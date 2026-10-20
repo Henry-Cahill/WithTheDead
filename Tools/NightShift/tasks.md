@@ -1774,3 +1774,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Rivet(prt, new Vector2(-panelW / 2 + 8f, ‑panelH / 2 + 8f));` // bottom‑left
   `Rivet(prt, new Vector2( panelW / 2 - 8f, ‑panelH / 2 + 8f));` // bottom‑right
   These twelve primitives (four images) add subtle worn‑metal rivet detail without altering colliders, interaction points, or existing UI layout.
+- [ ] Fix the bolt‑sinking logic in Assets/Scripts/Zone/Bolts.cs so that a sinking bolt no longer blocks movement or gets hit by raycasts.
+  In `Bolt.Sink()` the collider remains enabled, so while the bolt is being lowered it still collides with the player, NPCs and anomaly raycasts, making the bolt feel “solid” even though it is marked spent.
+  Add a null‑check and disable the collider when sinking starts, matching the behaviour when a bolt becomes kinematic after settling.
+  Change `public void Sink()` to:
+  `public void Sink()
+  {
+  Spent = true;
+  _sinking = true;
+  if (_rb != null) _rb.isKinematic = true;
