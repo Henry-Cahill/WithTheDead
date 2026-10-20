@@ -389,7 +389,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `ctx.Notify("You give the nozzle a quick tap; it squeaks faintly but nothing else happens.");`
   The player will now see the new option when looking at the pump, hear the same pump noise as when lifting, and receive context‑sensitive text instead of nothing. All existing fields, methods, and constants remain unchanged.
   - 23:06 landed by 1htsserver in 4.7 min: **Summary**
-- [ ] Append five new office‑wall notices to the `OfficeNotices` array in Assets/Scripts/World/RaidBuilding.Lighting.cs, keeping the existing entries unchanged and adding the new strings after them; the player will read these on office walls during exploration.
+- [x] Append five new office‑wall notices to the `OfficeNotices` array in Assets/Scripts/World/RaidBuilding.Lighting.cs, keeping the existing entries unchanged and adding the new strings after them; the player will read these on office walls during exploration.
   Reference style: `"The county's SAFETY FIRST notice: lift with your knees, report every spill, know where the first‑aid kit is. Nobody ever knew where the first‑aid kit was."` – the new entries should match its terse, matter‑of‑fact tone.
   Themes for the new entries:
   winter‑time safety (e.g., icy‑step warnings),
@@ -397,6 +397,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   morale‑boosting reminder (payday or holiday note),
   emergency‑procedure checklist (fire, lockdown),
   a brief warning about mold or damp in the office.
+  - 23:07 landed by 0htsserver in 2.5 min: **Changed file**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Items/LootContainer.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
