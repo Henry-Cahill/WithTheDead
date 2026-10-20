@@ -1867,12 +1867,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace the line `Camera cam = Camera.main;` with `Camera cam = s_MainCamera;`.
   This removes the costly `FindObjectByType` call each frame; the visual result (player pitch when mouse‑looking) remains unchanged because the same camera is used, and the cache will refresh automatically if the scene creates a new main camera.
   - 07:09 landed by hts-llm in 8.1 min: **Changes Made**
-- [ ] In Assets/Scripts/World/Fixtures/RaidStoreSafe.cs: Add a “Force the dial” timed action to RaidStoreSafe.GetActions that takes twice as long as the normal dial work but still opens the safe when finished.
+- [x] In Assets/Scripts/World/Fixtures/RaidStoreSafe.cs: Add a “Force the dial” timed action to RaidStoreSafe.GetActions that takes twice as long as the normal dial work but still opens the safe when finished.
   In `RaidStoreSafe.GetActions` create a new `InteractAction` named `"Force the dial"` using `CloneZConfig.RaidSafeDialSeconds * 2` for the duration and the same activity `HumanoidActivity.Use`.
   Assign `Begin` and `Tick` delegates identical to the existing “Work the dial” action (setting `_noiseAt` and calling `MakeNoise(CloneZConfig.RaidSafeDialNoise)`), then set `Run = Crack;`.
   Add this action to `into` (e.g., `into.Add(force);`) before the existing “Try the handle” action.
   Result: the player can now choose a slower, more deliberate method to open the safe, seeing the same “Working the dial” progress UI and hearing the same noises, and upon completion the safe opens just like the original action.
   All existing fields, methods, and config values remain unchanged.
+  - 07:13 landed by hts-llm in 4.2 min: **Changed file**
 - [x] Append five new flavor‑text strings to the `ShaveLines` array in Assets/Scripts/World/Fixtures/BasinFixture.cs; each should be a single sentence a survivor might think while shaving in a cold, winter‑1993 Kentucky bathroom after the outbreak. Use the existing entry `"A slow, careful shave. You only nick yourself once."` as style reference; the new lines should cover themes of scarcity of hot water, the mirror’s cracked glass reflecting loss, the tap’s coughing sound, lingering soot smell, and the feeling of the razor’s bite against frozen skin.
   Add `"The tap coughs each time you lift the lever, a reminder the mains are a memory now."`
   Add `"Your reflection flickers in the cracked mirror, showing a face half‑lost to the frost."`

@@ -56,6 +56,16 @@ namespace CloneZ
             };
             dial.Run = Crack;
             into.Add(dial);
+            var force = new InteractAction("Force the dial").Timed(CloneZConfig.RaidSafeDialSeconds * 2, "Working the dial", HumanoidActivity.Use);
+            force.Begin = c => _noiseAt = Time.time + CloneZConfig.RaidSafeDialNoiseInterval * 0.5f;
+            force.Tick = (c, dt, progress) =>
+            {
+                if (Time.time < _noiseAt) return;
+                _noiseAt = Time.time + CloneZConfig.RaidSafeDialNoiseInterval;
+                MakeNoise(CloneZConfig.RaidSafeDialNoise);
+            };
+            force.Run = Crack;
+            into.Add(force);
             into.Add(new InteractAction("Try the handle", c => c.Notify("Locked solid. The wheel turns a quarter and stops dead.")));
             into.Add(new InteractAction("Listen at the door", c => c.Notify(Listening[_listened++ % Listening.Length])));
         }
