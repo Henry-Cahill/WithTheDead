@@ -2483,7 +2483,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
   - 10:02 landed by 0htsserver in 4.7 min: Added concise XML‑style summaries to every public member in `Assets/Scripts/World/GroundItemRenderer.cs` that previously lacked documentatio
-- [ ] Add tiny metal‑screw cylinders to each yard‑edge timber board in `StarterHome.Edging(RaidMesh m, Rect r)` of Assets/Scripts/World/StarterHome.Grounds.cs
+- [x] Add tiny metal‑screw cylinders to each yard‑edge timber board in `StarterHome.Edging(RaidMesh m, Rect r)` of Assets/Scripts/World/StarterHome.Grounds.cs
   After each `m.Box(..., wood);` call, insert two `m.Cylinder` primitives (radius 0.004 m, height 0.012 m) using the existing `wood` surface to represent small screws.
   North edge board (`m.Box(new Vector3(r.center.x, 0.04f, r.yMin), new Vector3(r.width + 0.1f, 0.08f, 0.06f), wood);`) – place screws at the board’s left‑most and right‑most ends:
   `m.Cylinder(new Vector3(r.center.x - (r.width + 0.1f) * 0.5f + 0.02f, 0.081f, r.yMin + 0.03f - 0.02f), 0.004f, 0.012f, 8, wood);`
@@ -2492,6 +2492,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   West edge board (`m.Box(new Vector3(r.xMin, 0.04f, r.center.y), new Vector3(0.06f, 0.08f, r.height), wood);`) – place screws at the board’s near and far Z ends:
   `m.Cylinder(new Vector3(r.xMin + 0.03f - 0.02f, 0.081f, r.center.y - r.height * 0.5f + 0.02f), 0.004f, 0.012f, 8, wood);`
   `m.Cylinder(new Vector3(r.xMin + 0.03f - 0.02f, 0.081f, r.center.y + r.height * 0.5f - 0.02f), 0.004f, 0.012f, 8, wood);`
+  - 10:03 landed by hts-llm in 3.8 min: **Changes Made**
 - [ ] In Assets/Scripts/Core/SqliteSaveStore.cs: Fix `SqliteSaveStore.ReadPlayer` to initialise the player’s wound and inventory lists before adding to them, preventing a NullReferenceException when a saved game contains any wounds or items.
   In `ReadPlayer`, after constructing the `PlayerSave p = new PlayerSave { … }`, insert:
   `p.Wounds = new List<WoundSave>();`
