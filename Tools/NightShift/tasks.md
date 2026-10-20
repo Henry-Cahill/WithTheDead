@@ -1278,7 +1278,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(new Vector3(0.05f, 0.535f, bz), new Vector3(w + 0.02f, 0.05f, bl), Yaw(yaw), M(b));`
   to use a centered X coordinate:
   - 03:44 landed by 1htsserver in 2 min: **Changed**
-- [ ] Add four subtle metal‑rivets to the inventory window panel in Assets/Scripts/UI/InventoryUIController.cs (Build method) to give the UI a period‑correct, worn‑metal look.
+- [x] Add four subtle metal‑rivets to the inventory window panel in Assets/Scripts/UI/InventoryUIController.cs (Build method) to give the UI a period‑correct, worn‑metal look.
   Insert the following after the line
   `_window = Panel(modalRt, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(WinW, WinH), new Color(0.11f, 0.12f, 0.14f, 0.98f));`
   `// four tiny rivets at the window corners – metal fasteners appropriate for a 1993 rural UI`
@@ -1287,6 +1287,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// top‑left`
   `var rivetTL = new GameObject("RivetTL", typeof(RectTransform));`
   `var rtTL = (RectTransform)rivetTL.transform;`
+  - 03:48 landed by 0htsserver in 5.9 min: Added four subtle metal rivets to the inventory window panel:
 - [x] In Assets/Scripts/World/Fixtures/HomeDoor.cs: Add a “Check the door” action to `HomeDoor.GetActions` that tells the survivor whether the door is locked or unlocked without attempting to open it.
   In `GetActions` after the existing actions, insert:
   `if (!_open) into.Add(new InteractAction("Check the door", ctx => ctx.Notify(_locked ? "The door is locked." : "The door is unlocked.")));`

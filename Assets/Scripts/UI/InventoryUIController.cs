@@ -660,6 +660,49 @@ namespace CloneZ
             _fader = _root.AddComponent<UIFader>();
 
             _window = Panel(modalRt, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(WinW, WinH), new Color(0.11f, 0.12f, 0.14f, 0.98f));
+            // four tiny rivets at the window corners – metal fasteners appropriate for a 1993 rural UI
+            // size: 8 × 8 pixels; colour: same as the top accent but fully opaque
+            Color rivetColor = new Color(0.5f, 0.68f, 0.9f, 1f);
+            // top‑left
+            var rivetTL = new GameObject("RivetTL", typeof(RectTransform));
+            var rtTL = (RectTransform)rivetTL.transform;
+            rtTL.SetParent(_window, false);
+            rtTL.anchorMin = rtTL.anchorMax = new Vector2(0f, 1f);
+            rtTL.pivot = new Vector2(0f, 1f);
+            rtTL.anchoredPosition = Vector2.zero;
+            rtTL.sizeDelta = new Vector2(8f, 8f);
+            var imgTL = rtTL.gameObject.AddComponent<Image>();
+            imgTL.color = rivetColor;
+            // top‑right
+            var rivetTR = new GameObject("RivetTR", typeof(RectTransform));
+            var rtTR = (RectTransform)rivetTR.transform;
+            rtTR.SetParent(_window, false);
+            rtTR.anchorMin = rtTR.anchorMax = new Vector2(1f, 1f);
+            rtTR.pivot = new Vector2(1f, 1f);
+            rtTR.anchoredPosition = Vector2.zero;
+            rtTR.sizeDelta = new Vector2(8f, 8f);
+            var imgTR = rtTR.gameObject.AddComponent<Image>();
+            imgTR.color = rivetColor;
+            // bottom‑left
+            var rivetBL = new GameObject("RivetBL", typeof(RectTransform));
+            var rtBL = (RectTransform)rivetBL.transform;
+            rtBL.SetParent(_window, false);
+            rtBL.anchorMin = rtBL.anchorMax = new Vector2(0f, 0f);
+            rtBL.pivot = new Vector2(0f, 0f);
+            rtBL.anchoredPosition = Vector2.zero;
+            rtBL.sizeDelta = new Vector2(8f, 8f);
+            var imgBL = rtBL.gameObject.AddComponent<Image>();
+            imgBL.color = rivetColor;
+            // bottom‑right
+            var rivetBR = new GameObject("RivetBR", typeof(RectTransform));
+            var rtBR = (RectTransform)rivetBR.transform;
+            rtBR.SetParent(_window, false);
+            rtBR.anchorMin = rtBR.anchorMax = new Vector2(1f, 0f);
+            rtBR.pivot = new Vector2(1f, 0f);
+            rtBR.anchoredPosition = Vector2.zero;
+            rtBR.sizeDelta = new Vector2(8f, 8f);
+            var imgBR = rtBR.gameObject.AddComponent<Image>();
+            imgBR.color = rivetColor;
             UITheme.AddTopAccent(_window, new Color(0.5f, 0.68f, 0.9f, 0.6f));
 
             Text title = Label(_window, new Vector2(0.5f, 1f), new Vector2(0f, -14f), new Vector2(600f, 40f), 30, TextAnchor.UpperCenter, new Color(0.95f, 0.92f, 0.85f));
