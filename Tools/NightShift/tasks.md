@@ -1606,7 +1606,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   with logic that:
   Checks `if ((transform.position - _lastPos).sqrMagnitude > BedCacheThresholdSqr)` → recompute `_cachedBed = SleepSpot.Nearest(transform.position, CloneZConfig.SleepRange, out _); _lastPos = transform.position;`.
   - 05:11 landed by hts-llm in 4.3 min: **Changed file**: `Assets/Scripts/Player/PlayerSleep.cs`
-- [ ] In Assets/Scripts/World/Fixtures/ShowerFixture.cs: Add a small “Inspect shower” action to ShowerFixture.GetActions that tells the player the current water state.
+- [x] In Assets/Scripts/World/Fixtures/ShowerFixture.cs: Add a small “Inspect shower” action to ShowerFixture.GetActions that tells the player the current water state.
   In Assets/Scripts/World/Fixtures/ShowerFixture.cs modify GetActions to append:
   `into.Add(new InteractAction("Inspect shower", ctx => {`
   `if (!WaterMains.MainsOn) ctx.Notify("The water’s shut off.");`
@@ -1614,6 +1614,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `else ctx.Notify(Hot ? "Hot water is flowing." : "Cold water is flowing.");`
   `}));`
   The new action appears alongside “Take a shower”, “Turn on/off the shower”, and “Open/Close the shower door”, and simply shows a notification – no UI changes or new assets required.
+  - 07:10 landed by spark in 79.9 min: COMPILE OK.
 - [x] Add five new house‑number‑plate lines to the `NumberLines` array in Assets/Scripts/World/Fixtures/RaidHomeLiving.cs.
   Quote the existing entry `"Number {0}, says the enamel plate by the door. Somebody's home, once."` as the style reference.
   The new entries should cover:
