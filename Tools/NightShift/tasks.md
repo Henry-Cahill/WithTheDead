@@ -1052,3 +1052,6 @@ you want to see in game. Indent extra lines under a task to add detail.
   `if (rng.NextDouble() < 0.75) m.Box(new Vector3(x, 0.825f, z), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass));`
   where `(x, z)` are `(-0.5f, -0.24f)`, `(0.5f, -0.24f)`, `(-0.5f, 0.24f)`, `(0.5f, 0.24f)`.
   The brackets use the existing brass material (`Mt(Brass)`), add only four primitives, keep all colliders and interaction points unchanged, and give the dresser a period‑correct metallic accent that varies per run.
+- [ ] In Assets/Scripts/Player/PlayerSleep.cs: Fix the layer‑mask used in `PlayerSleep.ZombiesNearby` so that zombies on normal layers are detected and the player cannot sleep when they are close.
+  In `ZombiesNearby()` the call
+- [ ] Add a subtle “worn‑edge” accent to each scrollbar handle built in `HubUI.Scroll` (Assets/Scripts/Hub/Screens/HubUI.cs)
