@@ -3525,3 +3525,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   Use a darker‑metal colour, e.g. `Surf bolt = DecorPalette.Metal(new Color(0.55f, 0.53f, 0.48f));` and create the bolt with `m.Cylinder(new Vector3(x, 2.2f, 0f), 0.015f, 0.06f, 6, bolt);`
   Apply the deterministic random source so only ~40 % of the posts get a bolt: `if (rng.NextDouble() < 0.4) { … }` placed inside the same `for` loop.
   This adds at most one extra primitive per post (max ≈ 8 total for a typical segment), stays within the 12‑primitive limit, reuses existing material definitions, and provides period‑appropriate visual detail without affecting colliders or interaction points.
+- [ ] In Assets/Scripts/UI/SkillsPanelController.cs, inside `SkillsPanelController.Build()` within the `for (int i = 0; i < n; i++)` loop, add a thin “separator” rectangle under each skill row to suggest a worn metal seam between entries.
