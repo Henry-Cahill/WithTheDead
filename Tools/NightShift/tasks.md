@@ -2494,13 +2494,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Cylinder(new Vector3(r.xMin + 0.03f - 0.02f, 0.081f, r.center.y - r.height * 0.5f + 0.02f), 0.004f, 0.012f, 8, wood);`
   `m.Cylinder(new Vector3(r.xMin + 0.03f - 0.02f, 0.081f, r.center.y + r.height * 0.5f - 0.02f), 0.004f, 0.012f, 8, wood);`
   - 10:03 landed by hts-llm in 3.8 min: **Changes Made**
-- [ ] In Assets/Scripts/Core/SqliteSaveStore.cs: Fix `SqliteSaveStore.ReadPlayer` to initialise the player’s wound and inventory lists before adding to them, preventing a NullReferenceException when a saved game contains any wounds or items.
+- [x] In Assets/Scripts/Core/SqliteSaveStore.cs: Fix `SqliteSaveStore.ReadPlayer` to initialise the player’s wound and inventory lists before adding to them, preventing a NullReferenceException when a saved game contains any wounds or items.
   In `ReadPlayer`, after constructing the `PlayerSave p = new PlayerSave { … }`, insert:
   `p.Wounds = new List<WoundSave>();`
   `p.Items = new List<StackSave>();`
   This ensures the loops `p.Wounds.Add(...)` and `p.Items.Add(...)` operate on a valid list even when the DB has rows.
   With the fix, loading a save that includes wounds or inventory will no longer crash; the player will correctly regain wounds and items instead of the game aborting during load.
   No other code changes are required.
+  - 10:08 landed by 0htsserver in 5.7 min: **Changed file**
 - [x] Add four small metal lanterns with faint flame lights to the roof of the drowned chapel landmark (Assets/Scripts/World/Zone/ZoneLandmarks.cs, method `DrownedChapel(SiteBuilder sb)`).
   ‑ Place each lantern near a roof corner, e.g. relative to the existing call
   `sb.Roof.Box(new Vector3(0f, 4.2f, 0f), new Vector3(9.6f, 0.3f, 11.4f), ZoneKit.M(ZoneKit.WetWood));`
