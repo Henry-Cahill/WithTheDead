@@ -94,6 +94,7 @@ namespace CloneZ
         {
             into.Add(new InteractAction("Dry yourself off", DryOff).Timed(CloneZConfig.TowelDrySeconds, "Drying off", HumanoidActivity.Use));
             into.Add(new InteractAction("Straighten the towel", Straighten));
+            into.Add(new InteractAction("Inspect towel", Inspect));
         }
 
         private void DryOff(InteractContext ctx)
@@ -115,7 +116,7 @@ namespace CloneZ
                 : "A quick rub with the towel and you're dry.");
         }
 
-        private void Straighten(InteractContext ctx)
+                private void Straighten(InteractContext ctx)
         {
             if (!IsCrooked)
             {
@@ -124,6 +125,15 @@ namespace CloneZ
             }
             _roll = 0f;
             ctx.Notify("You square the towel up on the rail and smooth it flat. There.");
+        }
+
+        // New inspection action
+        private void Inspect(InteractContext ctx)
+        {
+            // Report towel condition: dampness and crookedness.
+            string damp = IsDamp ? "damp" : "dry";
+            string crooked = IsCrooked ? "crooked" : "straight";
+            ctx.Notify($"The towel is {damp} and {crooked}.");
         }
 
         public override void CaptureState(FixtureSave save)

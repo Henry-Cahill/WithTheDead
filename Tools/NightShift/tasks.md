@@ -1159,10 +1159,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 02:54 landed by hts-llm in 3.5 min: **Changed**: `Assets/Scripts/World/Zone/ZoneOverlays.cs`
 - [x] In Assets/Scripts/Player/PlayerStats.cs: Cache PlayerModifiers.Current and SandboxSettings.Current once per frame in PlayerStats.Update to avoid repeated static/property lookups and dictionary string lookups in the survival‑updates.
   - 02:58 landed by 1htsserver in 8 min: **Changed files**
-- [ ] In Assets/Scripts/World/Fixtures/TowelRail.cs: Add a small “Inspect towel” action to `TowelRail.GetActions` that tells the player whether the towel is damp and/or crooked, using the existing `IsDamp` and `IsCrooked` properties and `ctx.Notify`.
+- [x] In Assets/Scripts/World/Fixtures/TowelRail.cs: Add a small “Inspect towel” action to `TowelRail.GetActions` that tells the player whether the towel is damp and/or crooked, using the existing `IsDamp` and `IsCrooked` properties and `ctx.Notify`.
   In `GetActions` after the existing “Straighten the towel” line, add
   `into.Add(new InteractAction("Inspect towel", Inspect));`
   Create a new private method in the class:
+  - 02:59 landed by hts-llm in 4.4 min: Added an “Inspect towel” action to **TowelRail**.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Interaction/StorageFixture.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
