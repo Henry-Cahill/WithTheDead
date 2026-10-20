@@ -3398,3 +3398,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(new Vector3(sx, 0.97f, -0.25f), new Vector3(0.02f, 0.01f, 0.02f), Mt(Brass), Yaw(R(rng, -15f, 15f)));`
   Use `Mt(Brass)` for the material (already defined) and apply a slight random yaw (‑15° to +15°) via the existing `rng` to give each sink a subtle variation.
   This adds a period‑correct brass handle that suggests a functional faucet without altering colliders or interaction points, enhancing visual detail for the kitchen sink.
+- [ ] In Assets/Scripts/World/Fixtures/RaidHomeBath.cs: Cache frequently used CloneZConfig values in RaidHomeBath to avoid per‑frame property lookups and divisions.
+  Add private readonly float fields (e.g. `_fillRate`, `_drainRate`, `_coolRate`, `_tapNoiseInterval`, `_tapNoiseRadius`) to `RaidHomeBath`.
+  Initialize them in `OnEnable` (or `Awake`) with `_fillRate = 1f / CloneZConfig.BathFillSeconds;` and similarly for the others.
+  Replace the per‑frame calculations in `Update`:
+  change `float inflow = dt / CloneZConfig.BathFillSeconds;` to `float inflow = dt * _fillRate;`
+  change `_level = Mathf.Max(0f, _level - dt / CloneZConfig.BathDrainSeconds);` to `_level = Mathf.Max(0f, _level - dt * _drainRate);`
+  change `if (!running && _heat > 0f) _heat = Mathf.Max(0f, _heat - dt / CloneZConfig.BathCoolSeconds);` to `if (!running && _heat > 0f) _heat = Mathf.Max(0f, _heat - dt * _coolRate);`
+  change the noise‑timing check `if (running && Time.time >= _nextNoise)` to use `_tapNoiseInterval` when setting `_nextNoise`.
+  change the `MakeNoise` call `MakeNoise(CloneZConfig.BathTapNoiseRadius);` to use `_tapNoiseRadius`.
