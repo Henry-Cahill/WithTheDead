@@ -1149,7 +1149,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   The knob is decorative only – it adds no collider or interaction, preserving the existing door collider.
   This adds only one primitive (well under the ~12‑primitive limit).
   - 02:49 landed by hts-llm in 1.6 min: **Changes Made**
-- [ ] Fix the bandage‑hint logic in Assets/Scripts/Player/PlayerWounds.cs – the `CanBandage` property currently returns true for a heavy bleed that isn’t bandaged, causing the UI to suggest a bandage even though a bandage can’t stop a heavy bleed.
+- [x] Fix the bandage‑hint logic in Assets/Scripts/Player/PlayerWounds.cs – the `CanBandage` property currently returns true for a heavy bleed that isn’t bandaged, causing the UI to suggest a bandage even though a bandage can’t stop a heavy bleed.
+  - 02:50 landed by hts-llm in 1.5 min: Implemented fix for bandage‑hint logic:
 - [ ] In Assets/Scripts/World/Zone/ZoneOverlays.cs, modify ZoneIndustry.Build inside the dam‑wall construction loop to add a few rust‑stained bolt heads on each concrete block.
   Locate the line
   `wall.At(wall.Solid, new Vector3(x, 0f, 0f), 0f, m => m.Box(new Vector3(0f, 6f, 0f), new Vector3(8.1f, 12f, 2.2f), ZoneKit.M(ZoneKit.V(ZoneKit.ConcreteDark, rng))));`

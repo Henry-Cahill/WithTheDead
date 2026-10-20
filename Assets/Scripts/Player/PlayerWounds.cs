@@ -162,6 +162,8 @@ namespace CloneZ
                 for (int i = 0; i < _wounds.Count; i++)
                 {
                     Wound w = _wounds[i];
+                    // Heavy bleeds cannot be treated with a simple bandage; they require a tourniquet or haemostatic gauze.
+                    if (w.IsHeavy) continue;
                     if (!w.Bandaged) return true;
                     if (w.Bandaged && !w.CleanBandage && !w.Infected) return true;
                 }
