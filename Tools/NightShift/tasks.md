@@ -478,3 +478,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace all uses of `TimeOfDay.Instance`, `GameSettings.Current` and `SandboxSettings.Current` in `LateUpdate` with the cached fields (`_tod`, `_gs`, `_ss`).
   If any of those singletons can be recreated later (e.g., after a reload), check for null at the start of `LateUpdate` and re‑assign the cached fields.
   The visual result – fog density, darkness at night, and readability tweaks – remains exactly the same; only the per‑frame property lookups are removed.
+- [ ] In Assets/Scripts/World/Fixtures/RadioFixture.cs: Add a “Check station” action to RadioFixture.GetActions so the survivor can see what station is currently tuned without turning the radio on or off.
+  In `Assets/Scripts/World/Fixtures/RadioFixture.cs`, inside `GetActions` after the “Turn it down” entry, insert:
+  `into.Add(new InteractAction("Check station", c => c.Notify("Currently tuned to " + Describe(Station) + (Broadcasts.IsOnAir(Station) ? "." : " — just static.")) ).DisabledIf(!near, TooFar));`
+  This uses the existing `Describe`, `Station`, and `Broadcasts.IsOnAir` members, requires no new assets, and gives the player immediate feedback about the current broadcast while keeping all existing functionality unchanged.
+- [ ] Append five new flavour‑text strings to the `Originals` array in Assets/Scripts/World/Fixtures/RaidStoreCopier.cs, after the current final entry, each a whole sentence in quotes that the player can read on the copier glass.
+  Use the existing entry `"A county memo stamped URGENT: “Non‑essential staff are dismissed until further notice. Do not discuss the clinic with members of the public.”"` as the style reference.
+  The new entries should cover: a winter road‑closure warning, a handwritten grocery list, a church bulletin announcement, a personal note about a missing family member, and a county health‑department flyer about flu shots.
+  Ensure each string ends with a period and uses period‑correct language (1993 rural Kentucky, no modern terms).
+  Insert the new strings before the closing `}` of the `Originals` initializer.
+  Do not modify any other code, ordering, or identifiers.
