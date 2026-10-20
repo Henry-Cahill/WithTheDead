@@ -2165,9 +2165,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   `new ProfessionDef { Id = "herbalist", Name = "Herbalist", Points = 5, Blurb = "Gathers roots and winter greens from the woods to keep wounds clean." },`
   `new ProfessionDef { Id = "storeclerk", Name = "General‑Store Clerk", Points = 6, Blurb = "Runs the dusty store on Main Street, hoarding canned goods and batteries." }`.
   - 08:30 landed by hts-llm in 1.4 min: **Changed**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Survival/FieldSurvival.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Survival/FieldSurvival.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 08:35 landed by 0htsserver in 6.6 min: Added concise XML‑style summaries to all public methods and properties in **Assets/Scripts/Survival/FieldSurvival.cs** that previously lacke
 - [x] Add a small chrome handle plate to the front of the carriage lantern in `Assets/Scripts/World/FurnitureBuilder.Lighting.cs` `CarriageLantern` method
   Insert a `m.Box` call after the four side‑support boxes (after the `for (int i = 0; i < 4; i++) …` loop).
   Use position `lamp + normal * 0.07f + Vector3.up * 0.15f` (0.07 m protruding from the lantern front, centred vertically).
