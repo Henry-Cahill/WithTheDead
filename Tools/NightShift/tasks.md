@@ -2805,3 +2805,18 @@ you want to see in game. Indent extra lines under a task to add detail.
   In `UpdateNotices(float dt)` replace `WaterMains water = WaterMains.Instance;` with `WaterMains water = _waterMains;` and replace `PowerGrid power = PowerGrid.Instance;` with `PowerGrid power = _powerGrid;`.
   The player sees exactly the same water‑shut‑off and power‑cut notices; no visual or gameplay change occurs.
   This eliminates two singleton property look‑ups each frame, reducing GC pressure and CPU time.
+- [ ] Add a “Check radio status” action to `RaidTownFieldRadio.GetActions` and implement its handler in `Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs`
+  Insert `into.Add(new InteractAction("Check radio status", CheckStatus).DisabledIf(!near, TooFar));` after the “Turn it down” line in `GetActions`.
+  Add a private method `CheckStatus(InteractContext ctx)` that builds a short message with the current channel and volume and sends it via `ctx.Notify`.
+  `private void CheckStatus(InteractContext ctx)`
+  `{`
+  `Net n = Nets[_net];`
+  `string vol = _volume <= 0 ? "low" : _volume >= MaxVolume ? "loud" : "medium";`
+  `ctx.Notify($"Radio is on {n.Name} — {n.Title}. Volume: {vol}.");`
+  `}`
+- [ ] Append four new exposure‑mark entries to the `static ZoneExposure()` constructor in Assets/Scripts/Zone/ZoneHazards.cs.
+  Add calls to `M(id, name, description, apply)` after the existing “old_folklore” mark.
+  Use the style of the existing entry `"Your pupils never quite close now. You see further in the dark; bright light leaves you exposed."` as a model.
+  The new marks should cover: (1) severe cold‑induced numbness, (2) disorienting snow‑driven hallucinations, (3) persistent radio static that rattles nerves, and (4) an old farm legend that haunts the wind.
+  Each description must be a single full sentence in quotes, e.g., `"Your fingers feel like frozen stone, each touch saps a breath of warmth."`.
+  Leave the existing marks and their logic unchanged; only add the four new `M(...)` lines.
