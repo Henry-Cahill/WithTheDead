@@ -2189,11 +2189,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace the line `float rain = WeatherSystem.Instance != null ? WeatherSystem.Instance.RainIntensity : 0f;` in `Advance()` with `float rain = _weather != null ? _weather.RainIntensity : 0f;`.
   This removes the per‑frame lookup of the singleton, eliminating unnecessary FindObject‑type work while keeping visual behavior unchanged.
   - 08:35 landed by hts-llm in 2.2 min: **Changes made**
-- [ ] Add an “Open washing machine” action to Assets/Scripts/World/Fixtures/RaidHomeWasher.cs that works when the washer isn’t running, opens the drum storage and gives the player a brief description.
+- [x] Add an “Open washing machine” action to Assets/Scripts/World/Fixtures/RaidHomeWasher.cs that works when the washer isn’t running, opens the drum storage and gives the player a brief description.
   modify `GetActions` (the `if (_running) { … } else { … }` block) to insert after the existing “Read the dial” line:
   `into.Add(new InteractAction("Open washing machine", OpenDoor)`
   `.DisabledIf(_drum != null && _drum.IsOpen, "It's already open"));`
   add a new private method below `ReadDial`:
+  - 08:48 landed by 1htsserver in 13 min: **Changes made**
 - [x] Append five new comforting tidy‑up lines to the `CivicReading.Tidying` string array in Assets/Scripts/World/Fixtures/RaidCivicFridge.cs
   The array currently ends with:
   `"You stack the loose papers and tuck them in at the end of the shelf.",`

@@ -101,6 +101,9 @@ namespace CloneZ
                 .DisabledIf(power && !water, "There's no water to wash with \u2014 the water's been shut off")
                 .DisabledIf(power && water && open, "Shut the door first"));
             into.Add(new InteractAction("Read the dial", ReadDial));
+            // Open the washing machine door to access the drum when not running
+            into.Add(new InteractAction("Open washing machine", OpenDoor)
+                .DisabledIf(_drum != null && _drum.IsOpen, "It's already open"));
         }
 
         private void StartWash(InteractContext ctx)
@@ -158,9 +161,22 @@ namespace CloneZ
                 : "The dial's round to RINSE. Not long now.");
         }
 
-        private static void ReadDial(InteractContext ctx)
-            => ctx.Notify("The dial runs from WASH through RINSE to SPIN, with REGULAR, PERMANENT PRESS and DELICATES in faded orange. "
-                + "Taped beside it, in marker: \u201CSMALL LOADS ONLY. IT WALKS.\u201D");
+                private void ReadDial(InteractContext ctx)
+        => ctx.Notify("The dial runs from WASH through RINSE to SPIN, with REGULAR, PERMANENT PRESS and DELICATES in faded orange. "
+            + "Taped beside it, in marker: \u201CSMALL LOADS ONLY. IT WALKS.\u201D");
+
+        private void OpenDoor(InteractContext ctx)
+        {
+            if (_drum != null)
+            {
+                _drum.SetOpen(true, false);
+                ctx.Notify("You open the washing machine door, revealing the drum inside.");
+            }
+            else
+            {
+                ctx.Notify("There's nothing inside the machine.");
+            }
+        }
 
         public override void CaptureState(FixtureSave save)
         {
