@@ -2955,10 +2955,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   `"You straighten the cushions, noticing a crooked photo of a winter family portrait tucked behind a arm."`
   `"You press the cushions firm, feeling the worn stitching that someone kept mending through the cold nights."`
   - 11:42 landed by 0htsserver in 1.3 min: **Summary**
-- [ ] Fix the `Harvest` method in Assets/Scripts/World/FarmPlot.cs so it only returns a produce ID when a crop is actually harvested, preventing the UI from showing a bogus item after a failed harvest.
+- [x] Fix the `Harvest` method in Assets/Scripts/World/FarmPlot.cs so it only returns a produce ID when a crop is actually harvested, preventing the UI from showing a bogus item after a failed harvest.
   Currently `produceId` is assigned before the maturity check, so it is non‑null even when `State != PlotState.Mature` and the method returns 0.
   Change the method to initialise `produceId` to `null`, perform the maturity and null‑crop check, and only assign `produceId = Crop.ProduceId` after those checks succeed.
   The player will now see no produce listed when harvesting an unripe or empty plot, matching the actual outcome, while all other behaviour stays unchanged.
+  - 11:45 landed by 1htsserver in 1 min: **Changed file**
 - [ ] Add thin metal label plates to the front of the WeaponRack in Assets/Scripts/World/RaidLayouts.cs to suggest period‑correct hardware tags on the rack’s vertical posts.
   In the `WeaponRack(RaidMesh m, System.Random r)` method, after the four bracket boxes (the calls with `bracketMat`) insert two new `m.Box` calls that create a 0.02 × 0.10 × 0.001 m metal plate on each side of the rack.
   Use the existing metal material: `var plateMat = DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f));`

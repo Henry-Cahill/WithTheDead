@@ -180,8 +180,9 @@ namespace CloneZ
         /// back to bare soil, ready to resow.</summary>
         public int Harvest(float yieldMult, out string produceId)
         {
-            produceId = Crop != null ? Crop.ProduceId : null;
+            produceId = null;
             if (State != PlotState.Mature || Crop == null) return 0;
+            produceId = Crop.ProduceId;
 
             int baseN = Random.Range(Crop.YieldMin, Crop.YieldMax + 1);
             int n = Mathf.Max(1, Mathf.RoundToInt(baseN * Mathf.Max(0.1f, yieldMult)));
