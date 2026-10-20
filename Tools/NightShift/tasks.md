@@ -3812,13 +3812,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add a guard at the start of GetActions: `if (_circuits == null || _circuits.Length == 0) return;` or wrap the toggle‑all block in `if (_circuits.Length > 0) { … }`.
   This ensures the player no longer sees a “Switch all lights on/off” option on an empty switch, so interacting with the switch will only show the per‑circuit actions that actually affect lighting. The rest of the script (state saving, Sync, Flip, Inspect, etc.) remains unchanged.
   - 16:04 landed by 0htsserver in 2.8 min: **Changed:** `Assets/Scripts/World/Fixtures/LightSwitch.cs`
-- [ ] In Assets/Scripts/Characters/HumanoidLook.cs: Add a deterministic “mask‑filter” tint variation for headwear style Mask inside `HumanoidLook.Wear` (`case ClothingSlot.Head:`)
+- [x] In Assets/Scripts/Characters/HumanoidLook.cs: Add a deterministic “mask‑filter” tint variation for headwear style Mask inside `HumanoidLook.Wear` (`case ClothingSlot.Head:`)
   After the existing `HatColor = c;` line, insert a block that checks `if (Shape.Headwear == HeadwearStyle.Mask)` and computes a small darkening variation based on the shape hash:
   `int seed = Shape.GetHashCode();`
   `float var = ((seed >> 6) & 0xF) / 100f; // 0‑0.15`
   `HatTrimColor = Color.Lerp(HatTrimColor, Shade(HatTrimColor, 0.55f), var);`
   This gives each mask a subtle, deterministic “filter” rim that is slightly darker than the base mask colour, adding period‑appropriate visual depth without changing geometry.
   No new primitives, colliders, or interaction points are added; only the colour of the existing mask trim is varied.
+  - 16:05 landed by 1htsserver in 1.7 min: **Changed file**
 - [ ] Cache per‑frame HUD values in Assets/Scripts/Gadgets/Gadgets.cs → HudDrone.LateUpdate to avoid rebuilding the OSD string and doing repeated calculations when nothing changed.
   Add private fields to HudDrone to store the last shown battery percent, altitude, speed (km/h), distance to the player, grenade‑armed flag and the drone kind.
   In LateUpdate read DronePilot.Local once, then if the drone is active compare the current values (`d.Battery01`, `d.transform.position.y`, `d.Speed`, `Vector3.Distance(Actor.LocalPlayer.transform.position, d.transform.position)`, `d.HasGrenade`, `d.Kind`) to the cached fields.
