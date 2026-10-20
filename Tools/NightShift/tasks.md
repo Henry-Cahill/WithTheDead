@@ -3112,3 +3112,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   ` int lvl = _skills.GetLevel(s);`
   ` float prog = _skills.LevelProgress(s);`
   ` if (lvl != _skillCache[i].level) { _levelTexts[i].text = "Lv " + lvl; _skillCache[i].level = lvl; }`
+- [ ] Add a “Let towel dry” action to Assets/Scripts/World/Fixtures/TowelRail.cs that lets the survivor speed‑up the towel’s drying when it is still damp.
