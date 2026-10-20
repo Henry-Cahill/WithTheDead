@@ -68,8 +68,18 @@ namespace CloneZ
                 float b = Mathf.Min(to, a + 10f);
                 if (!ownsCrossing && b > -hw && a < hw)
                 {
+                    // Draw full‑width asphalt up to the crossing start
                     if (a < -hw) Slab(town, alongX, coord, a, -hw, -hw, hw, 0.012f, asphalt);
+                    // Draw full‑width asphalt after the crossing end
                     if (b > hw) Slab(town, alongX, coord, hw, b, -hw, hw, 0.012f, asphalt);
+                    // Split the crossing segment across the road centre
+                    float crossA = Mathf.Max(a, -hw);
+                    float crossB = Mathf.Min(b, hw);
+                    if (crossB > crossA)
+                    {
+                        Slab(town, alongX, coord, crossA, crossB, -hw, 0f, 0.012f, asphalt);
+                        Slab(town, alongX, coord, crossA, crossB, 0f, hw, 0.012f, asphalt);
+                    }
                     continue;
                 }
                 Slab(town, alongX, coord, a, b, -hw, hw, 0.012f, asphalt);

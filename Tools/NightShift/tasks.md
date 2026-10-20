@@ -1724,9 +1724,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   ℹ️ `m.Box(grillPos, grillSize, DecorPalette.Metal(grillColor));`
   ℹ️ Optionally add a random slight tilt using the method’s `rng` (e.g., `Quaternion.Euler(0f, 0f, (float)rng.NextDouble()*2f-1f)`) to vary each tower. This adds no new colliders or interaction points and stays within the existing 12‑primitive limit.
   - 06:17 landed by 0htsserver in 3.7 min: **Changed file**: `Assets/Scripts/World/RaidMapBuilder.Outdoor.cs`
-- [ ] Fix the road‑gap logic in `Assets/Scripts/World/RaidMapBuilder.Streets.cs` → method `Road`
+- [x] Fix the road‑gap logic in `Assets/Scripts/World/RaidMapBuilder.Streets.cs` → method `Road`
   The two `Slab` calls that run when `!ownsCrossing && b > -hw && a < hw` use `-hw` and `hw` as the end‑along‑road parameters (`b`) instead of as the across‑road limits (`c0`, `c1`). This cuts out a long segment of the street (about 8 m) at every crossing where the road does not own the intersection, leaving a visible hole that breaks navigation and looks wrong.
   Replace the two calls with slabs that keep the original `a` → `b` range and split only the across‑road side, e.g.:
+  - 06:31 landed by hts-llm in 14.3 min: **Fixed road‑gap logic**
 - [x] Cache the Bolt’s Collider instead of calling `GetComponent<Collider>()` each frame in `Bolt.Update` and in `Bolt.Fling` (Assets/Scripts/Zone/Bolts.cs)
   Add a private `Collider _col;` field to the class.
   In `Bolt.Throw` after creating the sphere collider, assign it to the new field: `b._col = col;`.
