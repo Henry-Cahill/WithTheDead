@@ -2067,3 +2067,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `for (int i = 0; i < len; i++) {`
   `int ix = Wrap(x + i, S);`
   `c = Mul(c, shade); // apply darker tint for the scratch`
+- [ ] Add a zone‑check to the fetch‑item gathering logic in Assets/Scripts/Quests/QuestBook.cs so that fetch objectives respect their `Zone` field.
