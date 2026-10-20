@@ -3500,3 +3500,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `float secs = _fuel; int mins = (int)(secs / 60); secs = secs % 60;`
   `ctx.Notify(_fuel <= 0f ? "No fuel left – the generator can’t run any longer." : $"It will run for about {mins} min {(int)secs}s more.");`
   The generator’s existing behavior, fields, and other actions remain unchanged.
+- [ ] Add period‑correct cast‑iron rivets to the radiator built in `Assets/Scripts/World/FurnitureBuilder.Fixtures.cs` `FurnitureBuilder.Radiator` so the metal heating unit shows small fasteners.
