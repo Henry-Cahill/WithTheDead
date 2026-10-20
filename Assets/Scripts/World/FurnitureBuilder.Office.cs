@@ -142,6 +142,8 @@ namespace CloneZ
             m.Cylinder(at + new Vector3(0f, 0.28f, 0f), 0.298f, 0.035f, 12, G(c * 0.85f));
             m.Cylinder(at + new Vector3(0f, 0.58f, 0f), 0.298f, 0.035f, 12, G(c * 0.85f));
             m.Cylinder(at + new Vector3(0f, 0.86f, 0f), 0.296f, 0.03f, 12, G(c * 0.75f));
+            // Subtle worn metal band around the barrel
+            m.Cylinder(at + new Vector3(0f, 0.44f, 0f), 0.298f, 0.018f, 12, DecorPalette.Metal(new Color(0.45f, 0.44f, 0.43f)));
             m.Cylinder(at + new Vector3(0f, 0.88f, 0f), 0.26f, 0.006f, 12, M(c * 0.6f));
             m.Cylinder(at + new Vector3(0.14f, 0.88f, 0.05f), 0.03f, 0.015f, 6, M(c * 0.5f));
             if (hazard) m.Cylinder(at + new Vector3(0f, 0.36f, 0f), 0.297f, 0.2f, 12, DecorMaterials.Hazard, Quaternion.identity, 1f, false);

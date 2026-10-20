@@ -906,7 +906,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   This prevents a `IndexOutOfRangeException` when a cycle control is built with an empty options list (e.g., a mis‑configured setting), so the hub screen loads correctly and the player sees the rest of the UI instead of a crash.
   All other behaviour of the cycle button (cycling through the provided options, invoking `onChanged`, playing the click SFX) stays exactly the same.
   - 01:49 landed by 0htsserver in 6.4 min: **Changed**
-- [ ] Add a subtle metal band around the barrels created in `RaidBuilding.Clutter` (Assets/Scripts/World/RaidBuilding.Furnish.cs) to give them a worn‑out, period‑appropriate look.
+- [x] Add a subtle metal band around the barrels created in `RaidBuilding.Clutter` (Assets/Scripts/World/RaidBuilding.Furnish.cs) to give them a worn‑out, period‑appropriate look.
+  - 01:53 landed by hts-llm in 6.1 min: **Changed file**
 - [x] Add a small reputation boost when the player shows a zone permit in `CordonGate.GetActions` (Assets/Scripts/World/Zone/ZoneCordon.cs)
   Locate the `into.Add(new InteractAction("Show a Zone Permit", c =>` block.
   After the existing call to `Grant(c, "He stamps it and waves you through.");` insert
