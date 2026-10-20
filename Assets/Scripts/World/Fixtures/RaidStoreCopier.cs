@@ -25,7 +25,12 @@ namespace CloneZ
             "A flyer for the town meeting: \u201CAgenda – infrastructure, health, security.\u201D",
             "A draft of a permit application: \u201CConstruction of new community center – pending approval.\u201D",
             "A notice of street closure: \u201CMain St. closed for repairs – detour via 2nd Ave.\u201D",
-            "A form for reporting potholes: \u201CReport #: ____ – location – description.\u201D"
+            "A form for reporting potholes: \u201CReport #: ____ – location – description.\u201D",
+            "A winter road‑closure warning: \u201CIcy conditions on Hwy 7 – keep off unless you have chains.\u201D",
+            "A handwritten grocery list: \u201CMilk, beans, coffee, bacon, flour.\u201D",
+            "A church bulletin announcement: \u201CSunday service at 10 a.m.; potluck supper after.\u201D",
+            "A personal note about a missing family member: \u201CMissing: Elsie, age 7, last seen near the creek.\u201D",
+            "A county health‑department flyer about flu shots: \u201CFree flu vaccination this week at the clinic.\u201D"
         };
 
         private static readonly string[] Jams =
