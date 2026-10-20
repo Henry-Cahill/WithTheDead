@@ -898,13 +898,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   `lamp + new Vector3(-0.055f, 0.115f, -0.055f),`
   `lamp + new Vector3( 0.055f, 0.115f, -0.055f),`
   - 01:42 landed by 0htsserver in 6.2 min: **Changes made**
-- [ ] In Assets/Scripts/Hub/Screens/HubUI.cs: Add a defensive check to `HubUI.Cycle` to avoid an out‑of‑range access when the `options` array is empty or null, which currently throws an exception and prevents the whole hub UI from opening.
+- [x] In Assets/Scripts/Hub/Screens/HubUI.cs: Add a defensive check to `HubUI.Cycle` to avoid an out‑of‑range access when the `options` array is empty or null, which currently throws an exception and prevents the whole hub UI from opening.
   In `public static Button Cycle(Transform parent, string label, string[] options, int index, Action<int> onChanged, bool interactable = true)` add at the top:
   `if (options == null || options.Length == 0) return UIKit.Button(parent, "<none>", null, UIKit.ButtonColor, 16).SetInteractable(false);`
   (or create a disabled button using the existing `Btn` helper if preferred).
   Change the existing `int cur = Mathf.Clamp(index, 0, options.Length - 1);` line to remain unchanged – it will now only run when `options.Length > 0`.
   This prevents a `IndexOutOfRangeException` when a cycle control is built with an empty options list (e.g., a mis‑configured setting), so the hub screen loads correctly and the player sees the rest of the UI instead of a crash.
   All other behaviour of the cycle button (cycling through the provided options, invoking `onChanged`, playing the click SFX) stays exactly the same.
+  - 01:49 landed by 0htsserver in 6.4 min: **Changed**
 - [ ] Add a subtle metal band around the barrels created in `RaidBuilding.Clutter` (Assets/Scripts/World/RaidBuilding.Furnish.cs) to give them a worn‑out, period‑appropriate look.
 - [ ] Add a small reputation boost when the player shows a zone permit in `CordonGate.GetActions` (Assets/Scripts/World/Zone/ZoneCordon.cs)
   Locate the `into.Add(new InteractAction("Show a Zone Permit", c =>` block.

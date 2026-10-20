@@ -458,6 +458,13 @@ namespace CloneZ
         /// <summary>Creates a button that cycles through options, showing the current one.</summary>
         public static Button Cycle(Transform parent, string label, string[] options, int index, Action<int> onChanged, bool interactable = true)
         {
+            // Defensive: if no options, show a disabled placeholder button
+            if (options == null || options.Length == 0)
+            {
+                var btn = UIKit.Button(parent, "<none>", null, UIKit.ButtonColor, 16);
+                btn.interactable = false;
+                return btn;
+            }
             RectTransform row = UIKit.Row(parent, 32f, null, 10f, 2);
             Text name = UIKit.Label(row, label, 17);
             UIKit.Size(name.gameObject, 260f, 28f);
