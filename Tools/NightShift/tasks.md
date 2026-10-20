@@ -3989,3 +3989,18 @@ you want to see in game. Indent extra lines under a task to add detail.
   Create a private method `CheckPower(InteractContext ctx)` that does:
   `ctx.Notify(PowerGrid.HousePowered ? "The house has power." : "The house is without power.");`
   Keep the current toggle and inspect actions unchanged; the new action appears as a secondary option when the player interacts with the lamp.
+- [ ] Append four new exposure‑mark entries to the static constructor of `ZoneExposure` in `Assets/Scripts/Zone/ZoneHazards.cs`; each call must follow the existing `M(id, name, description, ...)` pattern and supply a description that consists of whole sentences, period‑terminated, evocative of a 1993 rural Kentucky winter (cold hardship, snow‑blindness, static radio interference, lingering farm superstition). Use the existing entry `"Your pupils never quite close now. You see further in the dark; bright light leaves you exposed."` as a style reference.
+  Add:
+  `M("ice_fingers", "Ice Fingers", "Your fingers are locked in a perpetual chill; even the warmest hand‑warmer feels like an ember.", m => { });`
+  `M("snow_graze", "Snow‑Grazed Eyes", "The relentless white veil scrapes your sight; shadows hide no longer, and every gust feels like a blade.", m => { });`
+  `M("radio_hum", "Radio Hum", "Every cheap transistor hums with a low, uneasy whine that never fully fades, making every silence feel uneasy.", m => { });`
+  `M("farm_omen", "Farm Omen", "Old superstitions echo in the wind, warning that the dead still tend the fields and watch every step.", m => { });`
+- [ ] Add deterministic roof colour variation to buildings in Assets/Scripts/World/Map/KentuckyMap.Buildings.cs
+  Create a private static `Surf RoofSurf(MapBuilding b, System.Random rng)` that returns a slightly tinted snow material based on the building’s `id` (using the same `deterministicIndex` hash logic as `ExteriorOf`). For example:
+  `int idx = deterministicIndex(b.id, 5);`
+  `float shade = 0.95f + 0.01f * idx; // 0.95–0.99 brightness`
+  `return DecorMaterials.Snow.Tint(new Color(shade, shade, shade));`
+  (Assume `DecorMaterials.Snow.Tint(Color)` exists; if not, use `DecorMaterials.Snow` with a colour parameter.)
+  Replace the two hard‑coded roof calls:
+  In `Enterable` change `over.Tri(..., DecorMaterials.Snow);` to `over.Tri(..., RoofSurf(b, rng));`
+  In `Scenery` change `m.Tri(..., DecorMaterials.Snow);` to `m.Tri(..., RoofSurf(f.Data, rng));`
