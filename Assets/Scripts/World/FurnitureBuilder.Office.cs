@@ -115,6 +115,14 @@ namespace CloneZ
             Color c = V(body, rng, 0.05f);
             float h = drawers * 0.33f + 0.05f;
             m.Box(new Vector3(0f, h * 0.5f, -0.02f), new Vector3(0.46f, h, 0.58f), M(c * 0.92f));
+            if (Chance(rng, 0.25f))
+            {
+                float rx = R(rng, -0.15f, 0.15f);
+                float ry = R(rng, 0.2f, h - 0.2f);
+                Vector3 rustPos = new Vector3(rx, ry, -0.04f);
+                Vector3 rustSize = new Vector3(0.08f, 0.04f, 0.004f);
+                m.Box(rustPos, rustSize, M(new Color(0.55f, 0.33f, 0.28f)));
+            }
             int open = Chance(rng, 0.4) ? rng.Next(drawers) : -1;
             for (int i = 0; i < drawers; i++)
             {
