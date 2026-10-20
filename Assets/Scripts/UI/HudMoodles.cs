@@ -1,17 +1,25 @@
+using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace CloneZ
 {
+    /// <summary>Where the moodles sit: down the right edge with labels (isometric, over the shoulder), or as a
+    /// compact row of small tiles at the bottom-left (first person).</summary>
+    public enum MoodleDock { Column, Row }
+
     /// <summary>
     /// Project Zomboid-style moodles: a column of small square tiles down the right edge, one per active
     /// condition (toxic gas, bleeding, infected, panic, cold / hot, sick, tired, hungry, thirsty, pain,
     /// wet, heavy load), each tinted by severity with a white glyph and a short label beside it. Only
-    /// active moodles show; the column reflows when the set changes and the worst level pulses.
+    /// active moodles show; the column reflows when the set changes and the worst level pulses. Docked as a
+    /// row (<see cref="SetDock"/>) the tiles shrink, lose their labels and a moodle that appears or worsens is
+    /// named above the row for a few seconds. <see cref="Summary"/> words the worst of them for the bodycam.
     /// </summary>
     public sealed class HudMoodles
     {
         private const float Margin = 20f, Top = 104f, Tile = 40f, Step = 46f;
+        private const float RowScale = 0.75f, RowStep = Tile * RowScale + 6f, CaptionSeconds = 3f;
 
         private enum Kind { Toxic, Bleeding, Infected, Panic, Thermal, Sick, Tired, Hungry, Thirsty, Pain, Wet, Heavy, Count }
 
@@ -45,13 +53,21 @@ namespace CloneZ
 
         private readonly HudContext _ctx;
         private readonly Moodle[] _moodles = new Moodle[(int)Kind.Count];
+        private readonly RectTransform _column;
+        private readonly Text _caption;
+        private MoodleDock _dock = MoodleDock.Column;
         private int _layoutSig = -1;
-        private float _evalTimer;
+        private float _evalTimer, _captionTimer;
+        private string _summary;
+        private int _summarySig = -1;
+        private readonly string[] _summaryTexts = new string[3];
+        private readonly StringBuilder _sb = new StringBuilder(64);
 
         public HudMoodles(HudContext ctx, RectTransform root)
         {
             _ctx = ctx;
             RectTransform column = HudUI.Rect(root, "Moodles", Vector2.one, Vector2.one, new Vector2(-Margin, -Top), new Vector2(Tile, Tile));
+            _column = column;
             for (int i = 0; i < _moodles.Length; i++)
             {
                 var m = new Moodle();
@@ -66,6 +82,70 @@ namespace CloneZ
                 m.Root.gameObject.SetActive(false);
                 _moodles[i] = m;
             }
+
+            // The row's caption, at its right end: names a moodle that just appeared or worsened.
+            _caption = HudUI.Label(column, "Caption", 15, TextAnchor.MiddleLeft, HudUI.Ink, Vector2.zero, Vector2.zero,
+                Vector2.zero, new Vector2(320f, Tile * RowScale), FontStyle.Bold);
+            _caption.enabled = false;
+        }
+
+        /// <summary>Moves the moodles to <paramref name="dock"/>; a row's bottom-left corner sits at
+        /// <paramref name="rowPosition"/> (reference pixels from the screen's bottom-left).</summary>
+        public void SetDock(MoodleDock dock, Vector2 rowPosition = default)
+        {
+            _dock = dock;
+            bool row = dock == MoodleDock.Row;
+            Vector2 corner = row ? Vector2.zero : Vector2.one;
+            _column.anchorMin = corner;
+            _column.anchorMax = corner;
+            _column.pivot = corner;
+            _column.anchoredPosition = row ? rowPosition : new Vector2(-Margin, -Top);
+            for (int i = 0; i < _moodles.Length; i++)
+            {
+                Moodle m = _moodles[i];
+                m.Root.anchorMin = corner;
+                m.Root.anchorMax = corner;
+                m.Root.pivot = corner;
+                m.Root.localScale = row ? new Vector3(RowScale, RowScale, 1f) : Vector3.one;
+                m.Label.enabled = !row;
+            }
+            if (!row) _caption.enabled = false;
+            _layoutSig = -1;   // reflow along the new edge
+        }
+
+        /// <summary>The active moodles at <paramref name="minLevel"/> or worse, worst first, as "BLEEDING  ·  COLD"
+        /// (at most three); null when there are none. Rebuilt only when the set or its wording changes.</summary>
+        public string Summary(int minLevel, int max)
+        {
+            max = Mathf.Clamp(max, 1, _summaryTexts.Length);
+            minLevel = Mathf.Max(1, minLevel);
+            int sig = 0, n = 0;
+            bool reworded = false;
+            for (int level = 4; level >= minLevel && n < max; level--)
+                for (int i = 0; i < _moodles.Length && n < max; i++)
+                {
+                    Moodle m = _moodles[i];
+                    if (m.Level != level) continue;
+                    sig = sig * 61 + i * 5 + level;
+                    if (!ReferenceEquals(_summaryTexts[n], m.Text)) reworded = true;
+                    n++;
+                }
+            if (sig == _summarySig && !reworded) return _summary;
+            _summarySig = sig;
+            _sb.Length = 0;
+            n = 0;
+            for (int level = 4; level >= minLevel && n < max; level--)
+                for (int i = 0; i < _moodles.Length && n < max; i++)
+                {
+                    Moodle m = _moodles[i];
+                    if (m.Level != level) continue;
+                    _summaryTexts[n++] = m.Text;
+                    if (_sb.Length > 0) _sb.Append("  \u00b7  ");
+                    _sb.Append(m.Text != null ? m.Text.ToUpperInvariant() : ((Kind)i).ToString().ToUpperInvariant());
+                }
+            for (int k = n; k < _summaryTexts.Length; k++) _summaryTexts[k] = null;
+            _summary = n == 0 ? null : _sb.ToString();
+            return _summary;
         }
 
         /// <summary>Re-evaluates every moodle; texts / colours / layout change only when a level does.</summary>
@@ -87,6 +167,12 @@ namespace CloneZ
                 if (m.Level > 0) sig |= 1 << i;
                 if (m.Level != m.ShownLevel || m.Cold != m.ShownCold)
                 {
+                    // Name a moodle that appears or worsens (not the ones already there when the HUD came up).
+                    if (m.ShownLevel >= 0 && m.Level > m.ShownLevel && m.Text != null)
+                    {
+                        _caption.text = m.Text;
+                        _captionTimer = CaptionSeconds;
+                    }
                     m.ShownLevel = m.Level;
                     m.ShownCold = m.Cold;
                     if (m.Level > 0) m.Background.color = (m.Cold ? Chill : Bad)[m.Level - 1];
@@ -102,18 +188,25 @@ namespace CloneZ
                 }
             }
 
+            bool row = _dock == MoodleDock.Row;
+            if (_captionTimer > 0f) _captionTimer -= Time.unscaledDeltaTime;
+            bool caption = row && _captionTimer > 0f;
+            if (_caption.enabled != caption) _caption.enabled = caption;
+            if (caption) _caption.color = HudUI.WithAlpha(HudUI.Ink, Mathf.Clamp01(_captionTimer / 0.6f));
+
             if (sig == _layoutSig) return;
             _layoutSig = sig;
-            float y = 0f;
+            float at = 0f;
             for (int i = 0; i < _moodles.Length; i++)
             {
                 Moodle m = _moodles[i];
                 bool on = m.Level > 0;
                 HudUI.Show(m.Root.gameObject, on);
                 if (!on) continue;
-                m.Root.anchoredPosition = new Vector2(0f, y);
-                y -= Step;
+                m.Root.anchoredPosition = row ? new Vector2(at, 0f) : new Vector2(0f, -at);
+                at += row ? RowStep : Step;
             }
+            if (row) _caption.rectTransform.anchoredPosition = new Vector2(at + 4f, 0f);
         }
 
         private void Evaluate(PlayerStats s)

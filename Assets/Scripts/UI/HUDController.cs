@@ -5,18 +5,27 @@ using UnityEngine.UI;
 namespace CloneZ
 {
     /// <summary>
-    /// The code-built heads-up display, laid out like a Project Zomboid HUD mod: hand slots top-left,
-    /// gas-mask filter / activity / digital watch / alarm bell top-right, moodle tiles down the right
-    /// edge, the mode box with the status icon row and exits panel bottom-right, the movement icon and
-    /// stamina bar bottom-left, plus raid feedback (spawn protection, extraction, dawn), interaction
-    /// prompts, the focus label and a fixture's action menu, progress bars, toasts, broadcast captions,
-    /// the water / power cut notices, key hints, the sleep overlay, the damage vignette and the wave
-    /// survival death screen. Everything is generated at runtime so no scene wiring is required; the
-    /// pieces live in the <c>Hud*</c> widget classes and this component just builds and ticks them.
+    /// The code-built heads-up display, with its own layout for each camera view (<see cref="HudViewLayout"/>):
+    /// <list type="bullet">
+    /// <item><description><b>Isometric</b>, the tactical HUD of a Project Zomboid HUD mod: hand slots top-left, gas-mask
+    /// filter / activity / digital watch / alarm bell top-right, moodle tiles down the right edge, the mode box with the
+    /// status icon row and exits panel bottom-right, the movement icon and stamina bar bottom-left.</description></item>
+    /// <item><description><b>Over the shoulder</b>, an action HUD (<see cref="HudShoulderView"/>): vitals and supplies
+    /// bottom-left, the weapon card bottom-right, hit markers and damage arcs (<see cref="HudCombatFeedback"/>).</description></item>
+    /// <item><description><b>First person</b>, an immersive HUD (<see cref="HudFirstPersonView"/>): hairline vitals and a
+    /// compact magazine count that fade back while all is well, the moodles as a row of small tiles.</description></item>
+    /// <item><description><b>Bodycam</b>, a 1993 camcorder's display (<see cref="HudBodycamView"/>).</description></item>
+    /// </list>
+    /// The HUD style setting (full / minimal / diegetic / hardcore) trims each view's HUD. Every view shares the raid
+    /// feedback (spawn protection, extraction, dawn), interaction prompts, the focus label and a fixture's action menu,
+    /// progress bars, toasts, broadcast captions, the water / power cut notices, key hints, the sleep overlay, the
+    /// damage vignette and the wave survival death screen. Everything is generated at runtime so no scene wiring is
+    /// required; the pieces live in the <c>Hud*</c> widget classes and this component just builds and ticks them.
     /// </summary>
     public class HUDController : MonoBehaviour
     {
         private readonly HudContext _ctx = new HudContext();
+        private readonly HudViewLayout _layout = new HudViewLayout();
 
         private HudHands _hands;
         private HudWatchRow _watch;
@@ -28,6 +37,13 @@ namespace CloneZ
         private HudHints _hints;
         private HudInteraction _interaction;
         private HudSubtitles _subtitles;
+        private HudShoulderView _shoulder;
+        private HudFirstPersonView _visor;
+        private HudBodycamView _bodycam;
+        private HudCombatFeedback _feedback;
+
+        private HudGroup _handsGroup, _watchGroup, _moodleGroup, _staminaGroup, _iconsGroup, _boxGroup, _hintsGroup;
+        private HudGroup _shoulderGroup, _visorGroup, _bodycamGroup, _feedbackGroup;
 
         private Image _damageVignette;
         private float _damageFlash;
@@ -51,6 +67,9 @@ namespace CloneZ
         private float _sleepTextTimer;
         private GameObject _gameOverPanel;
         private Text _gameOverText;
+        private Text _viewBanner;
+        private float _viewBannerTimer;
+        private bool _viewSeen, _bannerPending;
 
         /// <summary>Hooks the HUD up to the survivor. Anything not passed is fetched from the
         /// <paramref name="stats"/> object (gear, movement, temperature and clothing always are).</summary>
@@ -79,6 +98,7 @@ namespace CloneZ
             if (_ctx.Inventory != null) _ctx.Inventory.Notice += OnNotice;
             if (_ctx.GearComponent != null) _ctx.GearComponent.Notice += OnNotice;
             if (_ctx.Interactor != null) _ctx.Interactor.Notice += OnNotice;
+            if (_feedback != null) _feedback.BindCombat(_ctx.Combat);
             GameEvents.Toast += OnNotice;
             GameEvents.Subtitle += OnSubtitle;
         }
@@ -99,6 +119,7 @@ namespace CloneZ
             if (_ctx.Inventory != null) _ctx.Inventory.Notice -= OnNotice;
             if (_ctx.GearComponent != null) _ctx.GearComponent.Notice -= OnNotice;
             if (_ctx.Interactor != null) _ctx.Interactor.Notice -= OnNotice;
+            if (_feedback != null) _feedback.BindCombat(null);
             GameEvents.Toast -= OnNotice;
             GameEvents.Subtitle -= OnSubtitle;
         }
@@ -115,32 +136,99 @@ namespace CloneZ
             if (GameManager.Instance != null) GameManager.Instance.OnGameOver -= ShowGameOver;
             Unbind();
             _subtitles?.Dispose();
+            _feedback?.Dispose();
         }
 
         private void Update()
         {
             float dt = Time.deltaTime;
+            float unscaledDt = Time.unscaledDeltaTime;
             bool blocked = UIState.GameplayBlocked;
 
             Keyboard kb = Keyboard.current;
             if (!blocked && kb != null && kb.mKey.wasPressedThisFrame) _status.ToggleInfo();
 
+            // The exits / run panel stays up once asked for, whatever the HUD style.
+            _boxGroup.ForceVisible = _status.InfoOpen;
+            _layout.Tick(ViewState.Current, GameSettings.Current.Hud, unscaledDt);
+
             _hands.Tick(dt);
             _watch.Tick(dt);
             _moodles.Tick(dt);
             _stamina.Tick(dt);
-            _status.Tick(Time.unscaledDeltaTime);
+            _status.Tick(unscaledDt);
             _raid.Tick(dt);
-            _toasts.Tick(Time.unscaledDeltaTime);
+            _toasts.Tick(unscaledDt);
             _hints.Tick(dt, blocked);
             _interaction.Tick(blocked);
             _subtitles.Tick(dt, blocked);
+            if (_shoulderGroup.Live) _shoulder.Tick(dt);
+            if (_visorGroup.Live) _visor.Tick(dt, unscaledDt);
+            if (_bodycamGroup.Live) _bodycam.Tick(dt, unscaledDt, _moodles.Summary(2, 3), _watch.Hunted);
+            _feedback.Tick(unscaledDt);
 
             UpdatePrompts(blocked);
             UpdateProgressBars();
             UpdateNotices(dt);
             UpdateSleep(blocked);
             UpdateVignette();
+            UpdateViewBanner(unscaledDt, blocked);
+        }
+
+        // The HUD has just been laid out for a view: re-dock what moves and reset what restarts.
+        private void OnViewApplied(CameraView view)
+        {
+            _moodles.SetDock(view == CameraView.FirstPerson ? MoodleDock.Row : MoodleDock.Column, new Vector2(30f, 100f));
+            _feedback.Arcs = view != CameraView.Isometric;
+            _feedback.Markers = view == CameraView.ThirdPerson || view == CameraView.FirstPerson;
+            if (view == CameraView.FirstPerson) _visor.Wake();
+            if (view == CameraView.Bodycam) _bodycam.Wake();
+            if (_viewSeen) _bannerPending = true;   // not for the view a run opens in; shown once play resumes
+            _viewSeen = true;
+        }
+
+        // Names the view just switched to and its own controls, for a few seconds (full HUD style only).
+        private void ShowViewBanner(CameraView view)
+        {
+            if (!HudViewLayout.StyleShows(GameSettings.Current.Hud, HudTier.Secondary)) return;
+            string name, keys;
+            switch (view)
+            {
+                case CameraView.ThirdPerson:
+                    name = "Over the shoulder";
+                    keys = Key("RMB") + "  Aim     " + Key(GameInput.KeyName(GameAction.SwapShoulder)) + "  Swap shoulder";
+                    break;
+                case CameraView.FirstPerson:
+                    name = "First person";
+                    keys = Key("RMB") + "  Aim     " + Key(GameInput.KeyName(GameAction.HoldBreath)) + "  Hold breath";
+                    break;
+                case CameraView.Bodycam:
+                    name = "Bodycam";
+                    keys = Key("RMB") + "  Aim     " + Key(GameInput.KeyName(GameAction.HoldBreath)) + "  Hold breath     No crosshair";
+                    break;
+                default:
+                    name = "Isometric";
+                    keys = Key("Wheel") + "  Zoom     " + Key(GameInput.KeyName(GameAction.RotateView)) + "  Rotate     "
+                        + Key(GameInput.KeyName(GameAction.AimLine)) + "  Aim line";
+                    break;
+            }
+            _viewBanner.text = "<size=20><b><color=#F2B544>" + HudUI.Spaced(name) + "</color></b></size>\n" + keys + "     " + Key("V") + "  Next view";
+            _viewBannerTimer = 3.2f;
+        }
+
+        private static string Key(string k) => "<color=#F2EED8><b>" + k + "</b></color>";
+
+        private void UpdateViewBanner(float unscaledDt, bool blocked)
+        {
+            if (_bannerPending && !blocked)
+            {
+                _bannerPending = false;
+                ShowViewBanner(_layout.View);
+            }
+            if (_viewBannerTimer > 0f && !blocked) _viewBannerTimer -= unscaledDt;
+            bool on = _viewBannerTimer > 0f && !blocked;
+            if (_viewBanner.enabled != on) _viewBanner.enabled = on;
+            if (on) _viewBanner.color = HudUI.WithAlpha(HudReadouts.Dim, Mathf.Clamp01(_viewBannerTimer / 0.6f) * Mathf.Clamp01((3.2f - _viewBannerTimer) / 0.2f));
         }
 
         #region Per-frame
@@ -300,7 +388,11 @@ namespace CloneZ
             _levelUpTimer = 3f;
         }
 
-        private void OnPlayerDamaged() => _damageFlash = 1f;
+        private void OnPlayerDamaged()
+        {
+            _damageFlash = 1f;
+            _feedback?.OnDamaged();
+        }
 
         private void OnNotice(string message) => ShowToast(message);
 
@@ -356,18 +448,35 @@ namespace CloneZ
             // World-anchored labels sit under every panel.
             RectTransform worldLayer = HudUI.Stretch(root, "WorldLabels");
 
-            _hands = new HudHands(_ctx, root);
-            _watch = new HudWatchRow(_ctx, root);
-            _moodles = new HudMoodles(_ctx, root);
-            _stamina = new HudStamina(_ctx, root);
+            // The bodycam's display goes under the rest of the HUD (its scanlines cover the whole screen).
+            _bodycamGroup = _layout.Add(root, "BodycamHud", new Vector2(0.5f, 0.5f), HudTier.Essential);
+            _bodycam = new HudBodycamView(_ctx, _bodycamGroup.Rect);
+
+            _handsGroup = _layout.Add(root, "Hands", new Vector2(0f, 1f), HudTier.Essential);
+            _hands = new HudHands(_ctx, _handsGroup.Rect);
+            _watchGroup = _layout.Add(root, "Watch", new Vector2(1f, 1f), HudTier.Secondary);
+            _watch = new HudWatchRow(_ctx, _watchGroup.Rect);
+            _moodleGroup = _layout.Add(root, "Moodles", new Vector2(1f, 1f), HudTier.Essential);
+            _moodles = new HudMoodles(_ctx, _moodleGroup.Rect);
+            _staminaGroup = _layout.Add(root, "Stamina", Vector2.zero, HudTier.Essential);
+            _stamina = new HudStamina(_ctx, _staminaGroup.Rect);
+            _shoulderGroup = _layout.Add(root, "ShoulderHud", new Vector2(0.5f, 0f), HudTier.Essential);
+            _shoulder = new HudShoulderView(_ctx, _shoulderGroup.Rect);
+            _visorGroup = _layout.Add(root, "FirstPersonHud", new Vector2(0.5f, 0f), HudTier.Essential);
+            _visor = new HudFirstPersonView(_ctx, _visorGroup.Rect);
             _raid = new HudRaidOverlay(_ctx, root, worldLayer);
+            _feedbackGroup = _layout.Add(root, "CombatFeedback", new Vector2(0.5f, 0.5f), HudTier.Essential);
+            _feedback = new HudCombatFeedback(_ctx, _feedbackGroup.Rect);
 
             BuildPrompts(root);
             BuildProgressBar(root, "SearchRow", 132f, new Color(0.95f, 0.9f, 0.7f), new Color(0.95f, 0.85f, 0.35f), out _searchRow, out _searchLabel, out _searchFill);
             BuildProgressBar(root, "BuildRow", 176f, new Color(0.72f, 0.9f, 0.55f), new Color(0.55f, 0.85f, 0.4f), out _buildRow, out _buildLabel, out _buildFill);
             _toasts = new HudToasts(root);
-            _hints = new HudHints(root);
-            _status = new HudStatusRow(_ctx, root);
+            _hintsGroup = _layout.Add(root, "Hints", new Vector2(0.5f, 0f), HudTier.Secondary);
+            _hints = new HudHints(_hintsGroup.Rect);
+            _iconsGroup = _layout.Add(root, "StatusIcons", new Vector2(1f, 0f), HudTier.Essential);
+            _boxGroup = _layout.Add(root, "StatusBox", new Vector2(1f, 0f), HudTier.Secondary);
+            _status = new HudStatusRow(_ctx, _iconsGroup.Rect, _boxGroup.Rect);
 
             // Skill level-up toast (upper-centre, fades after a few seconds).
             _levelUpText = HudUI.Label(root, "LevelUp", 34, TextAnchor.MiddleCenter, new Color(0.5f, 0.95f, 0.55f),
@@ -386,12 +495,60 @@ namespace CloneZ
             _powerNoticeText.text = "THE POWER HAS GONE OUT";
             _powerNoticeText.enabled = false;
 
+            // The view banner (upper-centre, above the level-up toast): names a newly chosen view and its controls.
+            _viewBanner = HudUI.Label(root, "ViewBanner", 15, TextAnchor.MiddleCenter, HudReadouts.Dim,
+                new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0f, 300f), new Vector2(1100f, 60f));
+            _viewBanner.enabled = false;
+
             // The focus label and a fixture's action menu; captions for the radio and TV.
             _interaction = new HudInteraction(_ctx, root, worldLayer);
             _subtitles = new HudSubtitles(root);
 
             BuildSleepOverlay(root);
             BuildGameOver(root);
+            ConfigureViews();
+            _layout.ViewApplied += OnViewApplied;
+        }
+
+        // Which clusters each camera view shows, and where (offsets in reference pixels; scales about each cluster's corner).
+        private void ConfigureViews()
+        {
+            const CameraView iso = CameraView.Isometric, shoulder = CameraView.ThirdPerson, eyes = CameraView.FirstPerson, body = CameraView.Bodycam;
+
+            // Isometric: the tactical HUD — hand slots, the watch, moodles down the right, movement and stamina, the
+            // status icons and the mode box. Nothing points at the screen centre: there's no crosshair from above.
+            _handsGroup.In(iso);
+            _watchGroup.In(iso);
+            _moodleGroup.In(iso);
+            _staminaGroup.In(iso);
+            _iconsGroup.In(iso);
+            _boxGroup.In(iso);
+            _hintsGroup.In(iso);
+
+            // Over the shoulder: the action HUD — vitals and the weapon card in the bottom corners, moodles down the right,
+            // a smaller watch, the mode box lifted over the weapon card, hit markers and damage arcs.
+            _shoulderGroup.In(shoulder);
+            _watchGroup.In(shoulder, Vector2.zero, 0.9f);
+            _moodleGroup.In(shoulder);
+            _boxGroup.In(shoulder, new Vector2(0f, 122f));
+            _feedbackGroup.In(shoulder);
+            _hintsGroup.In(shoulder);
+
+            // First person: the immersive HUD — hairline vitals and a compact magazine that fade back while all is well,
+            // the moodles as a row of small tiles, a small watch.
+            _visorGroup.In(eyes);
+            _watchGroup.In(eyes, Vector2.zero, 0.8f);
+            _moodleGroup.In(eyes);
+            _boxGroup.In(eyes, new Vector2(0f, 96f), 0.9f);
+            _feedbackGroup.In(eyes);
+            _hintsGroup.In(eyes);
+
+            // Bodycam: the camcorder's on-screen display stands in for the HUD; damage arcs but no hit markers
+            // (no crosshair through a bodycam).
+            _bodycamGroup.In(body);
+            _boxGroup.In(body, new Vector2(0f, 108f), 0.9f);
+            _feedbackGroup.In(body);
+            _hintsGroup.In(body);
         }
 
         private void BuildPrompts(RectTransform root)

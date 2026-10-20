@@ -206,5 +206,18 @@ namespace CloneZ
             if (totalSeconds < 0) totalSeconds = 0;
             return Int(totalSeconds / 60) + ":" + Two(totalSeconds % 60);
         }
+
+        /// <summary>Letter-spaced capitals for small headings, "PAUSED" → "P A U S E D" (allocates — build once).</summary>
+        public static string Spaced(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return s;
+            var sb = new System.Text.StringBuilder(s.Length * 2);
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (i > 0) sb.Append(' ');
+                sb.Append(char.ToUpperInvariant(s[i]));
+            }
+            return sb.ToString();
+        }
     }
 }

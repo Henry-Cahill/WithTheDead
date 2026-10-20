@@ -55,13 +55,15 @@ namespace CloneZ
         /// <summary>True while the exits / run info panel is open.</summary>
         public bool InfoOpen { get; private set; }
 
-        public HudStatusRow(HudContext ctx, RectTransform root)
+        /// <summary>Builds the icon row into <paramref name="iconsRoot"/> and the mode box with its info panel into
+        /// <paramref name="boxRoot"/> (separate so a view can hide the icons yet keep the box); both are full-screen rects.</summary>
+        public HudStatusRow(HudContext ctx, RectTransform iconsRoot, RectTransform boxRoot)
         {
             _ctx = ctx;
             _raid = GameSession.IsExtraction;
-            BuildIcons(root);
-            BuildBox(root);
-            BuildPanel(root);
+            BuildIcons(iconsRoot);
+            BuildBox(boxRoot);
+            BuildPanel(boxRoot);
         }
 
         #region Build

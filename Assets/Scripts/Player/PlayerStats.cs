@@ -79,6 +79,11 @@ namespace CloneZ
         public event Action OnBitten;
         public event Action OnDied;
 
+        /// <summary>Where the last blow through <see cref="TakeDamage"/> came from (its source, else back along its
+        /// path) and the <c>Time.time</c> it landed (-1 = none yet). The HUD points its damage arc there.</summary>
+        public Vector3 LastHitFrom { get; private set; }
+        public float LastHitTime { get; private set; } = -1f;
+
         private PlayerSkills _skills;
         private PlayerSkills Skills => _skills != null ? _skills : (_skills = GetComponent<PlayerSkills>());
 
@@ -182,6 +187,7 @@ namespace CloneZ
             // Under a raid's spawn protection the dead can't hurt the survivor at all.
             if (ExtractionManager.PlayerProtected && info.Source != null && info.Source.GetComponentInParent<ZombieHealth>() != null) return;
             if (Skills != null) Skills.AddXp(PlayerSkills.Skill.Fitness, CloneZConfig.XpFitnessOnHurt);
+            RecordHit(info);
             if (Limbs != null)
             {
                 // The limb model handles armour, resistances, wounds and the health pool.
@@ -194,6 +200,14 @@ namespace CloneZ
             Health -= dmg;
             OnDamaged?.Invoke();
             if (Health <= 0f) Die("was torn apart");
+        }
+
+        private void RecordHit(in DamageInfo info)
+        {
+            if (info.Source != null && info.Source != gameObject) LastHitFrom = info.Source.transform.position;
+            else if (info.HitDirection.sqrMagnitude > 1e-4f) LastHitFrom = transform.position - info.HitDirection.normalized * 4f;
+            else return;
+            LastHitTime = Time.time;
         }
 
         /// <summary>Health lost to hit points taken off a body zone (driven by <see cref="PlayerLimbs"/>).</summary>
