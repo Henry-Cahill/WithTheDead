@@ -3135,3 +3135,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   No new fields, UI screens, or external methods are required; only the existing `_stoppedAt` field and `ctx.Notify` are used.
   In‑game the survivor now sees a “Check battery” option when interacting with the wall clock, giving clear feedback on the clock’s power state.
   - 12:36 landed by 0htsserver in 1.8 min: **Changed file**
+- [ ] Add a pair of side‑mirror housings to the car built in `Vehicle.Build(System.Random rng)` (Assets/Scripts/World/Vehicles.cs)
+  Insert two new `Box` calls after the headlight lights loop (the `for (int i = 0; i < 2; i++) { … }` block).
+  Use the same deterministic `rng` for a tiny random offset and a –5‑to‑5° yaw jitter so each mirror looks slightly different each spawn.
+  Size each mirror housing ≈ `new Vector3(0.04f, 0.12f, 0.3f)` metres (thin, rectangular).
+  Left mirror position ≈ `new Vector3(-0.75f + (float)(rng.NextDouble() - 0.5) * 0.02f, 1.0f, 0.6f + (float)(rng.NextDouble() - 0.5) * 0.02f)`; right mirror is the sign‑mirrored X (`0.75f …`).
+  Apply the same dull‑metal colour used for the door‑handle trim: `new Color(0.12f, 0.12f, 0.14f)`.
+  After each `Box` call set its local rotation:
+  `_bodyRoot.GetChild(_bodyRoot.childCount‑1).localRotation = Quaternion.Euler(0f, rng.Next(-5, 6), 0f);`
+  This adds only two primitives, stays inside the existing builder, keeps colliders removed (as `Box` already does), and gives the car a period‑correct visual cue (small metal mirrors) without any modern lighting.
+- [ ] Fix a missing unsubscription that can cause a hidden‑memory‑leak and potential null‑reference when the hub is re‑initialized, in Assets/Scripts/Hub/Screens/HomeScreens.cs → `HubScreensModule.Init()`
