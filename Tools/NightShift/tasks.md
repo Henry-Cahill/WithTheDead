@@ -2205,9 +2205,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   `"You slide the index cards back into their holder, the soft thud echoing in the quiet room."`
   `"You smooth the worn carpet runner, feeling the fibers settle under your hand."`
   - 08:37 landed by hts-llm in 2.3 min: Implemented the requested additions:
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Economy/MoralLedger.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Economy/MoralLedger.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 08:48 landed by 0htsserver in 13.1 min: Added concise one‑sentence XML summaries to every public method and property in **Assets/Scripts/Economy/MoralLedger.cs** that previously la
 - [x] Add thin worn‑metal side strips to the helicopter fuselage in Assets/Scripts/World/Zone/Helicopter.cs, inside `HelicopterModel.Build` after the main ellipsoid is created.
   Insert two `m.Box` calls that place narrow metal panels on each side of the fuselage to suggest riveted seams and age‑wear.
   `// side‑panel seams – thin worn metal strips`

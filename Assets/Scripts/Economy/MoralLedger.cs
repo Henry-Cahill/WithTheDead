@@ -21,7 +21,7 @@ namespace CloneZ
             GameEvents.ActorKilled += OnKill;
         }
 
-        /// <summary>Records a deed (nothing is ever displayed).</summary>
+                /// <summary>Records a deed (nothing is ever displayed).</summary>
         public static void Record(string deed, float amount)
         {
             CharacterProfile c = ProfileStore.ActiveCharacter;
@@ -30,6 +30,7 @@ namespace CloneZ
             if (Debug.isDebugBuild) Debug.Log("[CloneZ] (hidden) moral " + (amount >= 0 ? "+" : "") + amount + " for " + deed);
         }
 
+        /// <summary>Gets the current moral ledger value for the active character, or 0 if none.</summary>
         public static float Value => ProfileStore.ActiveCharacter != null ? ProfileStore.ActiveCharacter.Moral : 0f;
 
         /// <summary>Broadly good (true), broadly bad (false) — the ending reads it this way.</summary>
@@ -60,13 +61,16 @@ namespace CloneZ
             Tablet = "tablet", Upkeep = "upkeep", Manual = "manual", Settings = "settings", Sandbox = "sandbox",
             Technician = "technician", Lodestar = "lodestar", Squad = "squad", Trade = "trade";
 
+        /// <summary>Registers a hub screen opener under the given identifier.</summary>
         public static void Register(string id, Opener open)
         {
             if (!string.IsNullOrEmpty(id) && open != null) s_Screens[id] = open;
         }
 
+                /// <summary>Checks if a screen with the given identifier is registered.</summary>
         public static bool Has(string id) => id != null && s_Screens.ContainsKey(id);
 
+                /// <summary>Opens the hub screen with the given identifier, passing an optional argument.</summary>
         public static void Open(string id, string arg = null)
         {
             if (id != null && s_Screens.TryGetValue(id, out Opener o))
