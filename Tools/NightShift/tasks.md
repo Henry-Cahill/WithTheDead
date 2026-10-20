@@ -495,3 +495,12 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/SandboxSettings.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Fix HubScreenBase so a screen can be reopened after it has been closed (Assets/Scripts/Hub/Screens/HubScreenBase.cs)
+  In `Build()` the `_closed` flag is never reset, so after `OnClosed()` sets `_closed = true` the screen’s `Update()` method immediately returns, stopping live‑label updates and money refresh when the same screen instance is opened again.
+  Add `_closed = false;` at the start of `Build()` (right after `EnsureChrome();`) to clear the closed state each time the screen is rebuilt.
+  After this change, reopening a hub screen will correctly show live timers, money, and other UI updates, while all existing behavior remains unchanged.
+- [ ] Add a subtle row of rivet‑like accents to the top of the skills panel in Assets/Scripts/UI/SkillsPanelController.cs, inside the `Build()` method after the `UITheme.AddTopAccent` call.
+  Create 8 small circular `Image` objects (size ≈ 0.008 m × 0.008 m) named `"Rivet0"`…`"Rivet7"` as children of `_panelRoot`’s `RectTransform`.
+  Anchor each at `(0.5, 1)` with pivot `(0.5, 1)`, set `anchoredPosition` to `new Vector2(-260f + i*60f, -4f)` (spacing ≈ 0.06 m across the 0.56 m panel width), and tint with `new Color(0.7f, 0.7f, 0.7f, 0.9f)`.
+  Use the default UI sprite (no extra assets) and keep the existing colliders and interaction logic untouched.
+  This gives the panel a period‑appropriate metal‑fastener detail without altering layout or functionality.
