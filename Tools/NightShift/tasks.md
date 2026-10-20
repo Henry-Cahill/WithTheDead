@@ -1561,3 +1561,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   In LateUpdate, after getting `GameSettings g`, `bool body = ViewState.Current == CameraView.Bodycam;` and `bool eyes = ViewState.FirstPersonLike;`, compare each setting to its cached counterpart and only call the corresponding `Override`/`active` assignments when the value has changed.
   Also cache `_blood?.Blood01` and `_stats?.Health` thresholds so the saturation, vignette color/intensity/smoothness calculations run only on change.
   The visual result stays identical (brightness, motion blur, lens distortion, vignette appearance, saturation) because the same values are applied, but the numerous per‑frame `Override` calls and trivial math are skipped when nothing changed, reducing GC pressure and CPU load.
+- [ ] Add a “Kick the chair” action to Assets/Scripts/World/Fixtures/RaidStoreSwivelSeat.cs that lets the survivor give the chair a stronger spin when they are not sitting.
+  In `GetActions` after the existing “Give the chair a spin” line, add
+  `into.Add(new InteractAction("Kick the chair", Kick));`
+  Implement a private method `Kick(InteractContext ctx)` similar to `Shove` but with a higher spin speed:
+  `private void Kick(InteractContext ctx)`
+  `{`
+  `// stronger spin than a normal shove`
+  `_spinSpeed = CloneZConfig.RaidSwivelFreeSpin * Random.Range(1.2f, 1.6f);`
+  `MakeNoise(CloneZConfig.FixtureNoiseSmall);`
