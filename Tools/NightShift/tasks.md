@@ -505,3 +505,17 @@ you want to see in game. Indent extra lines under a task to add detail.
   Anchor each at `(0.5, 1)` with pivot `(0.5, 1)`, set `anchoredPosition` to `new Vector2(-260f + i*60f, -4f)` (spacing ≈ 0.06 m across the 0.56 m panel width), and tint with `new Color(0.7f, 0.7f, 0.7f, 0.9f)`.
   Use the default UI sprite (no extra assets) and keep the existing colliders and interaction logic untouched.
   This gives the panel a period‑appropriate metal‑fastener detail without altering layout or functionality.
+- [ ] Cache player actors for NearAnyone checks in Assets/Scripts/Economy/CentralEconomy.cs
+  Add a private static readonly List<Actor> `s_PlayerCache = new List<Actor>();` to the class.
+  In `CentralEconomy.Tick()` (just after `if (!Active || Config == null) return;`) clear and fill the cache:
+  `s_PlayerCache.Clear(); foreach (Actor a in Actor.All) if (a != null && a.IsPlayerControlled) s_PlayerCache.Add(a);`
+  Change `NearAnyone(Vector3 p, float range)` to iterate over `s_PlayerCache` instead of `Actor.All`.
+  This removes the per‑container per‑tick enumeration of the full `Actor.All` list, reducing allocations and CPU work while preserving the same player‑proximity logic; the player‑visible behavior (which containers are considered “near anyone”) stays identical.
+- [ ] Add a “Check channel” action to Assets/Scripts/World/Fixtures/RaidCivicRadio.cs that lets the survivor see which channel the radio is currently tuned to.
+  Declare a new field `private Action<InteractContext> _checkChannel;` alongside the other Action fields.
+  In `Awake()` assign it: `_checkChannel = ctx => ctx.Notify("Current channel: " + Tuned.Name);`.
+  In `GetActions` after the “Change channel” entry, add:
+  `into.Add(new InteractAction("Check channel", _checkChannel).DisabledIf(!near, TooFar));`
+  The action should only be enabled when the player is within `CloneZConfig.ReceiverKnobReach` (same as other knob actions) and the radio is on (the existing `if (!_on) return;` guard already covers this).
+  Result in‑game: when the radio is on and the survivor stands close enough, pressing Q (or the extra button) shows a notification like “Current channel: Battalion net”.
+  No other code, assets, or UI screens are altered; all referenced members (`Tuned`, `TooFar`, `CloneZConfig.ReceiverKnobReach`) already exist.
