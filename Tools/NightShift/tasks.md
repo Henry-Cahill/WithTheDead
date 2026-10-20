@@ -3662,3 +3662,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   The knob is 0.012 m radius, 0.008 m thick, placed at y = 0.07 + 0.36 = 0.43 m (the post’s top).
   Use the existing `Mt(Chrome)` material; no new colliders or interaction points are added. This gives each office chair a subtle, period‑appropriate adjustment detail.
   - 15:14 landed by 1htsserver in 1.7 min: Implemented the chrome adjustment knob on the office chair’s gas post:
+- [ ] Fix the premature tap closure in Assets/Scripts/World/Fixtures/BasinFixture.cs
+  Remove the call that turns the tap back off at the start of the timed actions, because the `BorrowTap` logic (set as `Begin` for the actions) is meant to keep the tap open for the whole duration.
+  In the `Wash`, `Brush` and `Shave` methods, delete the line `ReturnTap(ctx);` that appears as the first statement.
+  After this change, when the mains are off and the player has the plug in, the basin will stay filled during the timed “wash”, “brush”, or “shave” actions, letting the player actually use the stored water instead of instantly getting a “dry” message.
+  All other code, including the `Begin = BorrowTap` and `Stopped = ReturnTap` assignments in `GetActions`, should remain unchanged.
