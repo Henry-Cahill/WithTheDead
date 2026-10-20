@@ -1157,7 +1157,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `wall.At(wall.Solid, new Vector3(x, 0f, 0f), 0f, m => m.Box(new Vector3(0f, 6f, 0f), new Vector3(8.1f, 12f, 2.2f), ZoneKit.M(ZoneKit.V(ZoneKit.ConcreteDark, rng))));`
   After this call (or as a second `wall.At` on the same position) add up to four tiny cylinders representing bolts:
   - 02:54 landed by hts-llm in 3.5 min: **Changed**: `Assets/Scripts/World/Zone/ZoneOverlays.cs`
-- [ ] In Assets/Scripts/Player/PlayerStats.cs: Cache PlayerModifiers.Current and SandboxSettings.Current once per frame in PlayerStats.Update to avoid repeated static/property lookups and dictionary string lookups in the survival‑updates.
+- [x] In Assets/Scripts/Player/PlayerStats.cs: Cache PlayerModifiers.Current and SandboxSettings.Current once per frame in PlayerStats.Update to avoid repeated static/property lookups and dictionary string lookups in the survival‑updates.
+  - 02:58 landed by 1htsserver in 8 min: **Changed files**
 - [ ] In Assets/Scripts/World/Fixtures/TowelRail.cs: Add a small “Inspect towel” action to `TowelRail.GetActions` that tells the player whether the towel is damp and/or crooked, using the existing `IsDamp` and `IsCrooked` properties and `ctx.Notify`.
   In `GetActions` after the existing “Straighten the towel” line, add
   `into.Add(new InteractAction("Inspect towel", Inspect));`
