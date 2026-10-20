@@ -22,6 +22,8 @@ namespace CloneZ
         private float _born, _restAt = -1f;
         private bool _sounded, _sinking;
 
+                /// <summary>Creates and launches a new bolt from a point with given velocity, ignoring a specified collider.</summary>
+                /// <summary>Creates and launches a new bolt from a point with given velocity, ignoring a specified collider.</summary>
         public static Bolt Throw(Vector3 from, Vector3 velocity, Collider ignore)
         {
             while (Live.Count >= MaxLive)
@@ -117,6 +119,7 @@ namespace CloneZ
             _born = Time.time - Lifetime + 4f;
         }
 
+                /// <summary>Marks this bolt as spent, preventing further anomaly interactions.</summary>
         public void MarkSpent() => Spent = true;
     }
 
@@ -148,6 +151,7 @@ namespace CloneZ
             if (GameInput.Pressed(GameAction.ThrowBolt)) TryThrow();
         }
 
+                /// <summary>Attempts to throw a bolt if the player is ready, alive and has bolts available; consumes one from inventory.</summary>
         public bool TryThrow()
         {
             if (Time.time < _ready || _stats == null || _stats.IsDead || _stats.Incapacitated || _inv == null) return false;

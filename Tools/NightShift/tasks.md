@@ -1293,9 +1293,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   `if (!_open) into.Add(new InteractAction("Check the door", ctx => ctx.Notify(_locked ? "The door is locked." : "The door is unlocked.")));`
   This uses only the existing `_open`, `_locked` fields and the `ctx.Notify` method, requires no new UI, and gives the player immediate feedback on the door’s lock state.
   - 03:46 landed by 1htsserver in 2.7 min: **Changed file**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Zone/Bolts.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Zone/Bolts.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 03:51 landed by 1htsserver in 4.7 min: **Changed files**
 - [ ] Add a subtle “scratch” detail to the floor‑safe front in `Assets/Scripts/World/RaidLayoutsStore.cs` → method `SafeAt`
   In the `FixtureBody` lambda that builds the safe (`(m, r) => steel = FurnitureBuilder.MartSafeBody(m, r)`) insert a thin box to simulate a worn‑metal scratch.
   Create the box with `m.Box(new Vector3(0.25f, 0.9f, 0.31f), new Vector3(0.10f, 0.30f, 0.02f), steel);` – size ≈ 0.10 m × 0.30 m × 0.02 m, positioned slightly right of centre on the safe’s front face.
