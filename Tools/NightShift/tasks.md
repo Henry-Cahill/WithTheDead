@@ -3158,12 +3158,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(front + normal * 0.0015f - right * rivetX - Vector3.up * rivetY, new Vector3(0.008f, 0.008f, 0.001f), q, Mt(Chrome));`
   These rivets give the steel breaker box a period‑appropriate fastener detail without altering colliders or interaction points.
   - 12:43 landed by hts-llm in 1.9 min: **Summary**
-- [ ] In Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs: cache the per‑frame “radio‑off” check by disabling the MonoBehaviour when the radio is off and re‑enabling it when turned on.
+- [x] In Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs: cache the per‑frame “radio‑off” check by disabling the MonoBehaviour when the radio is off and re‑enabling it when turned on.
   Change `Switch(bool on)` to set `this.enabled = on;` after updating `_on`.
   In `Create(...)` set `r.enabled = false;` (the radio starts off).
   Remove the early‑return in `Update()` (optional) – the method will no longer run when `enabled` is false.
   No gameplay change: the radio still responds to “Switch on the radio” and “Switch off the radio” actions; the player still hears noise and captions exactly as before.
   This eliminates the per‑frame `_on` check and associated time queries, reducing Update overhead when the radio is off.
+  - 12:46 landed by hts-llm in 2.7 min: Changed **RaidTownFieldRadio.cs** to cache the “radio‑off” check by using Unity’s component enable/disable system:
 - [ ] In Assets/Scripts/World/Fixtures/LightSwitch.cs: Add an “Inspect circuit” action for each circuit in `LightSwitch.GetActions`, mirroring the notification logic of `Flip` but without changing any state.
   In `GetActions`, after the existing `Flip` action is added, insert:
   `into.Add(new InteractAction("Inspect the " + LightCircuits.Noun(circuit), c => Inspect(c, circuit)));`
