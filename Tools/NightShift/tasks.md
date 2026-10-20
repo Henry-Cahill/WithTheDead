@@ -1408,3 +1408,15 @@ you want to see in game. Indent extra lines under a task to add detail.
   `into.Add(new InteractAction("Inspect", c => { var d = _d; if (d == null) return; string msg = "Battery " + Mathf.RoundToInt(d.Battery01 * 100f) + "%"; if (d.HasGrenade) msg += ", grenade armed"; GameEvents.RaiseToast(msg); }));`
   This lets the player press Q (or the secondary action key) on a landed drone to see its current battery percentage and whether a grenade is attached, without changing any existing functionality.
   No new UI screens, assets, or method signatures are introduced; it reuses `Drone.Battery01`, `Drone.HasGrenade`, `Mathf`, and `GameEvents.RaiseToast` which already exist in the file.
+- [ ] Append five new transmission lines to the `Lines` array of the “Medical net” (`Channel 2`) in Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs so the radio conveys period‑appropriate, winter‑time survivor lore.
+  Add the entries after the existing line `"This is Tent One. Anyone listening: the spare filters are in the equipment locker. Take them. We won't need them."` inside the `new Net` block for `Channel 2`.
+  Quote the style reference: `"Mercy Six, this is Tent One. Two more in the cots with the fever and the shakes. Requesting antibiotics, over."` – the new lines should be full sentences in the same tone.
+  Themes to cover:
+  A dwindling supply of warm clothing in the freezing night.
+  A broken generator at the field clinic forcing power‑saving.
+  A child with a broken arm needing a splint.
+  The nearby creek freezing over, making water collection hazardous.
+  An urgent call for extra firewood as the wind picks up.
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
