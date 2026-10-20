@@ -388,3 +388,23 @@ you want to see in game. Indent extra lines under a task to add detail.
   `MakeNoise(CloneZConfig.RaidPumpNoise);`
   `ctx.Notify("You give the nozzle a quick tap; it squeaks faintly but nothing else happens.");`
   The player will now see the new option when looking at the pump, hear the same pump noise as when lifting, and receive context‑sensitive text instead of nothing. All existing fields, methods, and constants remain unchanged.
+- [ ] Append five new office‑wall notices to the `OfficeNotices` array in Assets/Scripts/World/RaidBuilding.Lighting.cs, keeping the existing entries unchanged and adding the new strings after them; the player will read these on office walls during exploration.
+  Reference style: `"The county's SAFETY FIRST notice: lift with your knees, report every spill, know where the first‑aid kit is. Nobody ever knew where the first‑aid kit was."` – the new entries should match its terse, matter‑of‑fact tone.
+  Themes for the new entries:
+  winter‑time safety (e.g., icy‑step warnings),
+  fuel‑pump or diesel‑storage hygiene,
+  morale‑boosting reminder (payday or holiday note),
+  emergency‑procedure checklist (fire, lockdown),
+  a brief warning about mold or damp in the office.
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Items/LootContainer.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add eight small rust‑colored maintenance plates to the cooling‑tower landmark for visual wear, editing Assets/Scripts/World/Zone/ZoneLandmarks.cs, method CoolingTower(SiteBuilder sb)
+  Insert the new block after the closing brace of the outer `for (int ring = 0; ring < 6; ring++) { … }` loop and before the call to `ZoneKit.Plume(...)`.
+  Use the existing deterministic RNG (`sb.Rng`) for tiny position jitter, and reuse the concrete‑dark material palette.
+  `// Small rusted maintenance plates on the outer concrete shell`
+  `for (int i = 0; i < 8; i++)`
+  `{`
+  `float angle = i * Mathf.PI * 0.25f; // 45° steps`
+  `// Base position on the outer radius of the lowest ring (≈9 m)`
+  `Vector3 basePos = new Vector3(Mathf.Cos(angle) * 9f, 2f, Mathf.Sin(angle) * 9f);`
