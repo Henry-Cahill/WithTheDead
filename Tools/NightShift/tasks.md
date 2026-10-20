@@ -2688,7 +2688,7 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Profile/ProfessionCatalog.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
-- [ ] Add a small wooden latch to every window built by `StarterHome.Raise` in `Assets/Scripts/World/StarterHome.cs`
+- [x] Add a small wooden latch to every window built by `StarterHome.Raise` in `Assets/Scripts/World/StarterHome.cs`
   Create the latch only when `s.Type == BuildPieceType.Window` inside the `foreach (Slot s in Slots)` loop, after the existing `if (s.Type == BuildPieceType.Doorway)` block.
   Use the same deterministic seed as the door details: `int seed = StarterHome.SlotSeed(s.Type, s.X, s.Z); UnityEngine.Random.InitState(seed);`
   Create a primitive cube named `"Latch"` and parent it to `piece.transform` with `false` for world‑position‑stays.
@@ -2697,3 +2697,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Vector3 latchOffset = s.Yaw switch`
   `{`
   `0f => new Vector3(0.35f, 0.9f, 0f),`
+  - 10:53 landed by hts-llm in 2.5 min: Implemented a wooden latch for each window in `StarterHome.Raise`. The latch uses deterministic seeding, aligns with the window’s yaw, and i
