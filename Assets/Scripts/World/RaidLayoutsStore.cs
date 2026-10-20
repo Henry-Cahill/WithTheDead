@@ -228,7 +228,7 @@ namespace CloneZ
         /// <paramref name="stocked"/>, else a few cans at most.</summary>
         private static void DrinksCoolerAt(RaidBuilding b, RaidRoom room, RaidBuilding.Place p, bool lit, bool stocked)
         {
-            Transform t = b.FixtureBody(room, p, Sz(0.9f, 2.0f, 0.75f), true, (m, r) => FurnitureBuilder.MartCoolerBody(m, r, lit), "Drinks cooler");
+            Transform t = b.FixtureBody(room, p, Sz(0.9f, 2.0f, 0.75f), true, (m, r) => { FurnitureBuilder.MartCoolerBody(m, r, lit); if (b.Rng.NextDouble() < 0.5) m.Box(new Vector3(0f, 1.07f, 0.97f), new Vector3(0.03f, 0.02f, 0.02f), DecorPalette.Matte(new Color(0.20f, 0.23f, 0.21f))); }, "Drinks cooler");
             KitchenFrame f = b.FrameOf(p);
             FixturePart door = KitchenParts.Door(t, "CoolerDoor", f, FurnitureBuilder.MartCoolerDoor, FurnitureBuilder.MartCoolerHinge,
                 Vector3.right, Vector3.forward, CloneZConfig.RaidMartCoolerDoorAngle);
