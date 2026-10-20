@@ -4095,7 +4095,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 18:39 landed by hts-llm in 3.6 min: **Changes made**
 - [x] Add a “Check for leak” action to Assets/Scripts/World/Fixtures/RaidTownGasPump.cs that only appears when the nozzle is lifted, plays the pump noise and notifies the player.
   - 18:39 landed by 1htsserver in 2.8 min: All changes successfully compiled.**Changed file**
-- [ ] In Assets/Scripts/Core/Factions.cs, append four new `Def` entries to the existing `s_Defs` dictionary (place them after the current last entry `"caverelative"`).
+- [x] In Assets/Scripts/Core/Factions.cs, append four new `Def` entries to the existing `s_Defs` dictionary (place them after the current last entry `"caverelative"`).
   Use the same format as the existing entries, e.g. the `"survivorwarning"` entry:
   `Blurb = "A frayed note pinned to a wall: ‘Do not venture beyond the river at night; something watches.’"`
   The new entries should cover these themes, all period‑correct and winter‑y Kentucky appropriate:
@@ -4104,6 +4104,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   A cracked wooden sign pointing toward a forgotten fire‑wood cache.
   A static‑filled radio transmission giving a last‑minute evacuation order.
   Add them as follows (replace `<…>` with the exact strings):
+  - 18:44 landed by 0htsserver in 6.5 min: Added four new faction definitions to **Assets/Scripts/Core/Factions.cs** after the existing `caverelative` entry:
 - [ ] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildStreetLights` to make lit street‑light poles scatter randomly instead of being limited to the closest `LitPoles` entries.
   Add an `int litCount = 0;` before the pole‑creation `for` loop.
   Replace `bool lit = i < LitPoles && lean == 0f && rng.NextDouble() < 0.8;` with `bool lit = litCount < LitPoles && lean == 0f && rng.NextDouble() < 0.8;`.
