@@ -3279,7 +3279,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `int pct = Mathf.RoundToInt(_level * 100f); ctx.Notify($"The bath is about {pct}% full.");`
   This gives survivors precise feedback on how much water is left, complementing the existing temperature check while keeping all existing behavior unchanged.
   - 13:19 landed by 1htsserver in 3.2 min: **Changes made**
-- [ ] Add a small, optional metal flag to the roadside mailbox (non‑public version) in Assets/Scripts/World/DecorProps.cs, method `DecorProps.Mailbox`.
+- [x] Add a small, optional metal flag to the roadside mailbox (non‑public version) in Assets/Scripts/World/DecorProps.cs, method `DecorProps.Mailbox`.
   Inside the `if (!publicBox)` block, after the existing box and post geometry, insert:
   `// Optional mail‑flag – 60 % chance to appear, colour varies per instance`
   `if (Chance(rng, 0.6f))`
@@ -3288,3 +3288,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(new Vector3(0.09f, 1.25f, 0.05f), new Vector3(0.02f, 0.22f, 0.02f), Mt(new Color(0.25f, 0.25f, 0.26f)));`
   `// flag rectangle – size 0.08 m × 0.015 m, positioned at pole top, colour varies with rng`
   `Color flagCol = V(new Color(0.80f, 0.15f, 0.12f), rng, 0.07f);`
+  - 13:23 landed by 1htsserver in 2.9 min: All code changes completed and compile successfully.
