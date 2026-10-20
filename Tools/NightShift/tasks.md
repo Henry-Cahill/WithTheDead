@@ -2046,7 +2046,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   ` (_glass == Glazing.Intact) ? "The glass is intact." :`
   ` (_glass == Glazing.Smashed) ? "The glass is shattered; shards still bristle in the frame." :`
   ` "The window frame is empty.";`
-- [ ] Append four period‑accurate winter‑1993 letters to the `Letters` array in Assets/Scripts/World/Fixtures/RaidTownMailDrop.cs
+- [x] Append four period‑accurate winter‑1993 letters to the `Letters` array in Assets/Scripts/World/Fixtures/RaidTownMailDrop.cs
   Locate the `private static readonly string[] Letters` initializer and add four new quoted strings after the last existing entry, each followed by a comma.
   Use the style of the first entry `"A drift of envelopes. The top one is addressed to the county tax office in a careful hand, stamped and sealed. Somebody still meant to pay."` and cover these themes: a newspaper clipping about road closures, a handwritten grocery list for canned beans, a church flyer announcing a cold‑weather shelter, and a telegram pleading for help to find a missing child.
   Example strings:
@@ -2055,6 +2055,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `"... a faded church flyer pinned to a post: “Winter shelter tonight at St. Luke’s, 7 PM. Bring blankets and warm drinks.”",`
   `"... a desperate telegram, ink smeared: “Please, find my son Eli, last seen near the old mill. Return him safe.”",`
   Do not modify any other code; keep the existing entries and ordering intact.
+  - 08:04 landed by 1htsserver in 3.2 min: **Changed file**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/PlayerModifiers.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.

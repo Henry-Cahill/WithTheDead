@@ -28,6 +28,10 @@ namespace CloneZ
             "A faded flyer, corners torn: “Missing: 8‑year‑old Ellie Harper, last seen near Miller’s Creek, wearing a red sweater and blue boots. Please call the sheriff.”",
             "A ration‑card reminder, stamped “County Health Dept”: “Winter food rations will be distributed at the school gym, 9 AM–12 PM, bring your metal ID tag.”",
             "A hand‑drawn weather warning, charcoal on cheap paper: “Heavy snow expected tonight. Stay indoors after dark; roads will be impassable.”",
+            "A crinkled newspaper clipping reads: “Main Road to Miller’s Bridge shut after ice‑fall, detour via County Line expected until thaw.”",
+            "A shaky grocery list scrawled in blue ink: “Canned beans, powdered milk, salt, fire‑starter – enough for three days.”",
+            "A faded church flyer pinned to a post: “Winter shelter tonight at St. Luke’s, 7 PM. Bring blankets and warm drinks.”",
+            "A desperate telegram, ink smeared: “Please, find my son Eli, last seen near the old mill. Return him safe.”",
         };
 
         private Vector3 _point;
