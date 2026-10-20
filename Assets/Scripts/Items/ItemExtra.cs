@@ -32,6 +32,7 @@ namespace CloneZ
         public bool IsEmpty => !FoundInRaid && !Insured && Mods.Count == 0 && Dirt <= 0f && !OnBelt
                                && Upgrades.Count == 0 && string.IsNullOrEmpty(AmmoChoice) && string.IsNullOrEmpty(Note);
 
+        /// <summary>A deep copy of these extras (lists duplicated) so the original stays untouched.</summary>
         public ItemExtra Clone()
         {
             var e = new ItemExtra
@@ -66,7 +67,9 @@ namespace CloneZ
                 && string.IsNullOrEmpty(a.Note) && string.IsNullOrEmpty(b.Note);
         }
 
+        /// <summary>Whether <paramref name="id"/> is among the attachments bolted onto this gun.</summary>
         public bool HasMod(string id) => Mods.Contains(id);
+        /// <summary>Whether <paramref name="id"/> is among the technician upgrades fitted to this item.</summary>
         public bool HasUpgrade(string id) => Upgrades.Contains(id);
 
         #region Compact text form (saves, kit files, network)
@@ -152,8 +155,11 @@ namespace CloneZ
             return s.Extra;
         }
 
+        /// <summary>Whether the stack was looted in a raid (containers, corpses, the ground).</summary>
         public static bool IsFoundInRaid(this ItemStack s) => s != null && s.Extra != null && s.Extra.FoundInRaid;
+        /// <summary>Whether the stack carries insurance against loss.</summary>
         public static bool IsInsured(this ItemStack s) => s != null && s.Extra != null && s.Extra.Insured;
+        /// <summary>The gun's fouling level (0 clean to 1 fouled); 0 when the stack has none recorded.</summary>
         public static float DirtLevel(this ItemStack s) => s != null && s.Extra != null ? s.Extra.Dirt : 0f;
 
         /// <summary>Marks the stack found-in-raid (raid loot: containers, corpses, the ground).</summary>
@@ -167,6 +173,7 @@ namespace CloneZ
     /// <summary>DayZ's condition words: pristine, worn, damaged, badly damaged, ruined.</summary>
     public static class ItemConditionTiers
     {
+        /// <summary>The condition word for a 0..1 condition value (shown wherever wear is read out).</summary>
         public static string Label(float c01) =>
             c01 <= 0f ? "Ruined" : c01 < 0.3f ? "Badly damaged" : c01 < 0.5f ? "Damaged" : c01 < 0.7f ? "Worn" : "Pristine";
     }

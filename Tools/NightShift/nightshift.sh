@@ -8,6 +8,7 @@
 #   state   one line of JSON (running, busy or idle, branch) for NightShift.ps1
 #   log     follow the live log
 #   check   compile check of the project as it is now
+#   plan    write one task with the local model now (plan --dry-run only shows it)
 #   chat    interactive OpenCode with the same local model and settings
 set -uo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -71,6 +72,7 @@ case "${1:-status}" in
     }'
     ;;
   check) exec bash "$HERE/check.sh" ;;
+  plan) shift; exec "$PY" "$HERE/nightshift.py" plan "$@" ;;
   chat) shift; exec "$PY" "$HERE/nightshift.py" chat "$@" ;;
-  *) echo "usage: $0 start|finish|stop|health|status|state|log|check|chat"; exit 2 ;;
+  *) echo "usage: $0 start|finish|stop|health|status|state|log|check|plan|chat"; exit 2 ;;
 esac

@@ -24,13 +24,18 @@ namespace CloneZ
         private Image _blackout;
         private Text _blackoutText;
 
+        /// <summary>Gets the normalized blood amount (0‑1) based on current blood.</summary>
         public float Blood01 => Mathf.Clamp01(Blood / MaxBlood);
+        /// <summary>Gets the normalized shock amount (0‑1) based on current shock.</summary>
         public float Shock01 => Mathf.Clamp01(Shock / 100f);
+        /// <summary>Indicates whether the survivor is currently unconscious.</summary>
         public bool IsUnconscious => _unconscious > 0f;
+        /// <summary>Gets the elapsed unconscious time in seconds.</summary>
         public float UnconsciousSeconds => _unconscious;
 
         public event System.Action<bool> UnconsciousChanged;
 
+        /// <summary>Gets the blood type of the survivor, falling back to a random scavenger type if unknown.</summary>
         public string BloodType
         {
             get
@@ -68,6 +73,7 @@ namespace CloneZ
         /// <summary>Blood lost with health that bled away (called by <see cref="PlayerStats.Bleed"/>).</summary>
         public void LoseBloodForHealth(float health) => Blood = Mathf.Max(0f, Blood - health * MlPerHealth * PlayerModifiers.Current.BleedRate);
 
+        /// <summary>Adds shock to the survivor, respecting dead state and clamping the total.</summary>
         public void AddShock(float amount)
         {
             if (amount <= 0f || _stats.IsDead) return;
@@ -75,6 +81,7 @@ namespace CloneZ
             if (Shock >= 100f && !IsUnconscious) KnockOut(Random.Range(10f, 22f));
         }
 
+        /// <summary>Knocks the survivor out for a duration, capping shock and marking them incapacitated.</summary>
         public void KnockOut(float seconds)
         {
             if (_stats.IsDead) return;
@@ -91,6 +98,7 @@ namespace CloneZ
         }
 
         /// <summary>Someone shakes the survivor awake (only when there's blood enough to stay up). True if it worked.</summary>
+        /// <summary>Attempts to wake the survivor; succeeds only if enough blood remains.</summary>
         public bool Rouse()
         {
             if (!IsUnconscious || Blood < 2900f) return false;
@@ -179,6 +187,7 @@ namespace CloneZ
             _blackout.gameObject.SetActive(a > 0.01f);
         }
 
+        /// <summary>Applies stat modifiers based on current blood and shock levels.</summary>
         public void ApplyMods(StatMods m)
         {
             if (Blood < 3500f)

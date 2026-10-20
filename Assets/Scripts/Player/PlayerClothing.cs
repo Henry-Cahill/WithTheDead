@@ -17,6 +17,7 @@ namespace CloneZ
     {
         private static readonly ClothingSlot[] s_Slots =
             (ClothingSlot[])System.Enum.GetValues(typeof(ClothingSlot));
+        /// <summary>All clothing slots defined in the game.</summary>
         public static ClothingSlot[] Slots => s_Slots;
 
         // Where a zombie strike is most likely to land — the torso and legs take the brunt.
@@ -47,7 +48,9 @@ namespace CloneZ
         /// <summary>Raised whenever the worn set changes (for UI refresh).</summary>
         public event System.Action Changed;
 
+        /// <summary>Returns the definition of the garment worn in the given slot, or <c>null</c> if none.</summary>
         public ItemDef GetWorn(ClothingSlot slot) => _worn.TryGetValue(slot, out WornPiece p) ? p.Def : null;
+        /// <summary>Whether any garment is currently worn in the specified slot.</summary>
         public bool IsWearing(ClothingSlot slot) => _worn.ContainsKey(slot);
 
         /// <summary>The full worn piece (def + wear) on a slot, or an empty <see cref="WornPiece"/>.</summary>
@@ -56,6 +59,7 @@ namespace CloneZ
         /// <summary>How intact the garment on a slot is, 0..1 (1 when the slot is bare).</summary>
         public float GetCondition01(ClothingSlot slot) => _worn.TryGetValue(slot, out WornPiece p) ? p.Condition01 : 1f;
 
+        /// <summary>Number of garment slots currently occupied.</summary>
         public int WornCount => _worn.Count;
 
         /// <summary>Wears a garment on its slot, carrying its condition and repair history. Returns
