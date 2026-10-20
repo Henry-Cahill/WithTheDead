@@ -3583,3 +3583,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   `0f => new Vector3(0f, WallH - 0.04f, 0.36f), // north‑facing wall`
   `180f => new Vector3(0f, WallH - 0.04f, -0.36f), // south‑facing wall`
 - [ ] Cache the panic level and its descriptor in Assets/Scripts/Player/PlayerPanic.cs so they are only recalculated when the panic value actually changes, not on every Update or UI read.
+- [ ] Add an “Inspect” verb to ArtifactNode so revealed artifacts can be examined before taking them, by editing `Assets/Scripts/Zone/Artifacts.cs`
+  In `public override void GetActions(InteractContext ctx, List<InteractAction> into)`, after the existing `Take` action, add:
+  `into.Add(new InteractAction("Inspect " + ArtifactCatalog.NameOf(ArtifactId), Inspect).Timed(0.5f, "Looking closely..."));`
+  Create a private method `Inspect(InteractContext ctx)` that obtains the artifact description via `ArtifactCatalog.Describe(ArtifactId)` and shows it with `ctx.Notify(...)` (fallback to “Nothing special.” if empty).
+  The player will now see an extra “[Q] Inspect …” option when an artifact is revealed, receiving a short text tooltip of its known properties without removing it.
+  All other code, fields, and existing actions must remain unchanged.
