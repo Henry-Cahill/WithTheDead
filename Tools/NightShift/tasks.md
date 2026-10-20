@@ -4128,11 +4128,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Call `UpdateLevelCache()` at the end of UpdateTemperature (after `_stats.Temperature` is modified) and also once in Awake so the caches are valid before the first frame.
   The player’s visual HUD will show the same words as before; only the expensive per‑frame conditional logic is moved to run once per temperature change, which occurs only when the body temperature drifts (≈ once per second), dramatically reducing per‑frame work.
   - 18:51 landed by 0htsserver in 5.8 min: **Summary of changes**
-- [ ] In Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs: Add a “Dump water from tank” action to `RaidStoreWaterHeater.GetActions` that empties the heater’s remaining water and notifies nearby survivors.
+- [x] In Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs: Add a “Dump water from tank” action to `RaidStoreWaterHeater.GetActions` that empties the heater’s remaining water and notifies nearby survivors.
   In `GetActions`, after the existing `Knock` line, insert:
   `into.Add(new InteractAction("Dump water from tank", DumpWater).DisabledIf(!HasWater, DryMessage));`
   Add a private method `DumpWater(InteractContext ctx)` that sets `_water = 0`, calls `MakeNoise(CloneZConfig.FixtureNoiseSmall)`, and notifies the player with `ctx.Notify("You dump the remaining water onto the floor. The tank is now empty.");`.
   Also call `KitchenParts.NotifyNear(_valve, 3f, "The water gushes out, splashing the floor as the tank empties.");` inside `DumpWater` to give a local feedback sentence.
   This action should only appear when there is water left, matching the existing “Drain the tank…” and “Drink from the drain valve” actions, and must leave all other code unchanged.
+  - 18:51 landed by 1htsserver in 5.2 min: **Changed file**
 - [ ] In Assets/Scripts/World/Fixtures/RaidTownGasPump.cs: Add six new InteractAction entries to `RaidTownGasPump.GetActions` that extend the existing `into` list with period‑correct written text the player can read; the new actions should appear only when the nozzle is lifted and each must consist of an action name (a full‑sentence phrase) and a `c.Notify` call containing a single‑sentence note that fits 1993 rural Kentucky winter.
 - [ ] In Assets/Scripts/World/Map/KentuckyMap.cs add a kerb height constant and a helper that builds a thin raised strip along every street, then call it from the existing `BuildStreets` method (in the same partial class file) so each road gets a period‑correct concrete sidewalk edge.

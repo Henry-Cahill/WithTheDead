@@ -65,6 +65,7 @@ namespace CloneZ
                 .DisabledIf(water && !WaterUse.HasEmptyBottle(ctx), "You have no empty bottle"));
             into.Add(new InteractAction("Drink from the drain valve", c => WaterUse.Drink(c, this)).DisabledIf(!water, DryMessage));
             into.Add(new InteractAction("Knock on the tank", Knock));
+            into.Add(new InteractAction("Dump water from tank", DumpWater).DisabledIf(!HasWater, DryMessage));
             into.Add(new InteractAction("Inspect water level", InspectWaterLevel));
             into.Add(new InteractAction("Check the pilot light", CheckPilot));
             if (_pilot)
@@ -74,6 +75,13 @@ namespace CloneZ
                     .Timed(CloneZConfig.RaidHeaterRelightSeconds, "Relighting the pilot", HumanoidActivity.Use));
         }
 
+        private void DumpWater(InteractContext ctx)
+        {
+            _water = 0;
+            MakeNoise(CloneZConfig.FixtureNoiseSmall);
+            KitchenParts.NotifyNear(_valve, 3f, "The water gushes out, splashing the floor as the tank empties.");
+            ctx.Notify("You dump the remaining water onto the floor. The tank is now empty.");
+        }
         private void Knock(InteractContext ctx)
         {
             MakeNoise(CloneZConfig.FixtureNoiseSmall);
