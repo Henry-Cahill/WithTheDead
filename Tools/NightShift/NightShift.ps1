@@ -21,7 +21,8 @@
     stop     Stop now; unfinished tasks are rolled back and stay queued.
     fetch    Fetch the night's branches from the Spark into this repo for review (no GitHub needed).
     pr       Push the night shift's branch to GitHub and open (or update) its pull request. With -WhenDone
-             it does so only once nothing is left to do (idle or stopped).
+             it does so only once nothing is left to do (idle or stopped), or, while the planner keeps the queue
+             full (NIGHTSHIFT_AUTOPLAN), once NIGHTSHIFT_PUBLISH_EVERY minutes have passed since the last time.
     autopr   Turn on the automatic pull request: a scheduled task on this PC runs "pr -WhenDone" every
              15 minutes (it needs this PC on and logged in; gh is already signed in here). -Off turns it off.
 
@@ -498,17 +499,30 @@ function Get-PublishCommit([string]$Branch, [string]$Sha, [string]$Remote) {
     }
 }
 
+# Whether "pr -WhenDone" should publish now: once nothing is left to do, or, while the planner keeps the queue from ever
+# running dry, when the last publication ($Stamp holds its time) is publish_every minutes old.
+function Test-PublishDue($State, [string]$Stamp, [datetime]$Now = (Get-Date)) {
+    # Coordinators from before "dispatchable" only say whether they've gone idle.
+    $left = if ($null -ne $State.dispatchable) { $State.dispatchable } elseif ($State.idle_since) { 0 } else { $State.queued }
+    if ((-not $State.running) -or ($State.working -eq 0 -and $left -eq 0)) { return $true }
+    $every = 0.0
+    if (-not $State.autoplan -or -not [double]::TryParse("$($State.publish_every)", [ref]$every) -or $every -le 0) { return $false }
+    $last = [datetime]::MinValue
+    $ticks = 0L
+    if ((Test-Path $Stamp) -and [long]::TryParse("$(Get-Content $Stamp -Raw)".Trim(), [ref]$ticks)) { $last = [datetime]$ticks }
+    return ($Now - $last).TotalMinutes -ge $every
+}
+
 # Pushes the Spark's night shift branch to GitHub and opens its pull request, or updates the open one.
 function Publish-NightShift {
     [Console]::OutputEncoding = [Text.Encoding]::UTF8  # the reports are UTF-8; PowerShell 5 would read git's output as OEM
     $state = Get-NightState
     $branch = "$($state.branch)"
     if ($branch -notlike 'nightshift/*') { Write-Host "The Spark's project is on '$branch', not a night shift branch, so there's nothing to publish."; return }
-    # Coordinators from before "dispatchable" only say whether they've gone idle.
-    $left = if ($null -ne $state.dispatchable) { $state.dispatchable } elseif ($state.idle_since) { 0 } else { $state.queued }
-    $done = (-not $state.running) -or ($state.working -eq 0 -and $left -eq 0)
-    if ($WhenDone -and -not $done) {
-        Write-Host "Still working on $branch ($($state.working) in progress, $($state.queued) queued); the pull request waits until it's done."
+    $stamp = Join-Path $Here '.state\last-publish.txt'
+    if ($WhenDone -and -not (Test-PublishDue $state $stamp)) {
+        $why = if ($state.autoplan) { "until it's done or the next update is due" } else { "until it's done" }
+        Write-Host "Still working on $branch ($($state.working) in progress, $($state.queued) queued); the pull request waits $why."
         return
     }
     $old = $env:GIT_SSH_COMMAND
@@ -582,6 +596,7 @@ Work by the CLONE-Z Night Shift: local AI agents (Ollama on the DGX Spark and th
                 Where-Object { $_ -match '^https://' } | Select-Object -Last 1
             Write-PrLog "Opened $url : $landed landed, $failed failed"
         }
+        Set-Content -Path $stamp -Value (Get-Date).Ticks -Encoding ASCII  # Write-PrLog made the folder
     }
     finally { Remove-Item $file -ErrorAction SilentlyContinue }
 }

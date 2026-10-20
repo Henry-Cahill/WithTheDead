@@ -10,6 +10,7 @@ night's branch (nightshift/<date>), compiles the whole project again and ticks t
   nightshift.py run           coordinator: work through the queue (nightshift.sh start runs it in the background)
   nightshift.py status        progress summary
   nightshift.py map           rebuild memory/PROJECT_MAP.md
+  nightshift.py plan [args]   write one task with the local model now (what NIGHTSHIFT_AUTOPLAN does when the queue runs low)
   nightshift.py chat [args]   interactive OpenCode with the same model and settings
   nightshift.py work ...      worker: do one task in a checkout and print the result (run by the coordinator)
 """
@@ -23,6 +24,7 @@ import difflib
 import fcntl
 import json
 import os
+import random
 import re
 import secrets
 import shlex
@@ -68,6 +70,10 @@ DEFAULTS = {
     "NIGHTSHIFT_LOCAL_WORKER": "1",
     "NIGHTSHIFT_HELPER_OLLAMA_URL": "http://192.168.1.252:11434",
     "NIGHTSHIFT_HELPER_DIR": "clonez-nightshift",
+    "NIGHTSHIFT_AUTOPLAN": "0",
+    "NIGHTSHIFT_AUTOPLAN_FOCUS": "graphics,fixes,perf,graphics,features,flavour,docs",
+    "NIGHTSHIFT_AUTOPLAN_MODEL": "",
+    "NIGHTSHIFT_PUBLISH_EVERY": "120",
     "OLLAMA_URL": "",
 }
 
@@ -779,6 +785,420 @@ class Night:
         self.file.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
+# --- Auto-planning: a queue that never runs dry -------------------------------------------------------------
+
+AUTOPLAN_STATE = STATE / "autoplan.json"  # the focus rotation and when each script was last shown to the planner
+PLAN_MAX_LINES = 1200  # longer scripts aren't shown to the planner (it reads them whole), nor is ItemModels.cs
+PLAN_PRIMITIVES = re.compile(r"\.(?:Box|BoxOn|Quad|QuadUV|Flat|FlatUV|Upright|Tri|Diamond|Blob|FlatBlob|Cylinder|CylinderX|"
+                             r"Ellipsoid|Rod)\s*\(|CreatePrimitive|\bnew Color(?:32)?\s*\(")
+PLAN_FRAME = re.compile(r"\bvoid\s+(?:Update|LateUpdate|FixedUpdate)\s*\(")
+PLAN_FRAME_WORK = re.compile(r"GetComponent|FindObjectsByType|FindAnyObjectByType|FindObjectOfType|Camera\.main|\.text\s*=|"
+                             r"string\.Format|\$\"|\.ToList\(\)|\.Where\(|\.Select\(|new List<")
+PLAN_PROSE = re.compile(r"\"[A-Z][^\"\n]{30,}[.!?…]\"")
+PLAN_BRANCHES = re.compile(r"\b(?:if|while|for|foreach|switch)\s*\(")
+PUBLIC_MEMBER = re.compile(  # a public method or property: a type, then the name (constructors and overrides don't count)
+    r"^\s*public\s+(?:(?:static|virtual|async|new|unsafe|extern|sealed)\s+)*"
+    r"(?!(?:class|struct|enum|interface|delegate|const|event|readonly|abstract|partial|record|override|operator|implicit|"
+    r"explicit)\b)[\w.]+(?:<[^>]*>)?(?:\[[,\s]*\])?\??\s+(\w+)\s*(?:<[^>]*>)?\s*(?:\(|\{|=>)")
+INHERITS_DOCS = {"DisplayName", "GetActions", "SaveKey", "CaptureState", "RestoreState", "CanDemolish", "TakeDamage", "Dispose",
+                 "Order", "Init", "ToString", "Equals", "GetHashCode"}
+TASK_LINE = re.compile(r"^\s*(?:[-*+]|\d+[.)])\s*\[ ?\]\s+(\S.*)$")
+PATH_MENTION = re.compile(r"\b(?:Assets|ProjectSettings|Packages|Tools)/[\w./-]*[\w/]")
+MENTION_OK = {f"{REL}/check.sh", LESSONS_REL}  # tasks may name these without touching them
+# The map scraper's data is Project Zomboid's map, kept on the PC for reference only; it must never reach the game.
+OFF_LIMITS = re.compile(r"(?i)mapscraper|zomboidmap|(?<![\w/])ref/")
+MAP_DIR = "Assets/Scripts/World/Map/"  # the real-world raid map (OpenStreetMap) and the code that builds it
+
+
+def undocumented(text: str) -> int:
+    """How many public methods and properties in a script have no /// comment above them (attributes skipped)."""
+    lines, count = text.splitlines(), 0
+    for i, line in enumerate(lines):
+        m = PUBLIC_MEMBER.match(line)
+        if not m or m.group(1) in INHERITS_DOCS:
+            continue
+        j = i - 1
+        while j >= 0 and lines[j].strip().startswith("["):
+            j -= 1
+        if j < 0 or not lines[j].strip().startswith("///"):
+            count += 1
+    return count
+
+
+@dataclass(frozen=True)
+class Focus:
+    label: str  # how the log and the prompt name it
+    fits: object  # (script path, script text) -> whether the script is worth showing the planner for this focus
+    help: str  # what the planner should look for
+
+
+FOCUS = {
+    "map": Focus(
+        "real-world map", lambda rel, text: rel.startswith(MAP_DIR),
+        "This script is part of the raid map built from a real place: OpenStreetMap streets, building footprints and land "
+        "use for the state of Kentucky, cut into 256 m cells (see the data classes in "
+        f"{MAP_DIR}). Make one kind of thing it builds look or play more like CLONE-Z's hand-built raid town: a building "
+        "kind's facade, windows, roof or porch, a road kind's kerbs, sidewalks or markings, props suited to one land-use "
+        "kind (trees in forest, cars in parking), or colour variation per building from its id. Reuse the helpers, "
+        "materials and Surf the script already uses (or those in FurnitureBuilder and DecorProps), keep colliders in step "
+        "with the geometry, and leave the map data format and the importer as they are."),
+    "graphics": Focus(
+        "object graphics", lambda rel, text: len(PLAN_PRIMITIVES.findall(text)) >= 12,
+        "Make one object this script builds look better by adding small visual detail or variation inside its existing "
+        "builder method: handles, knobs, hinges, trims, frames, seams, labels, caps, straps, wear or tint variation from the "
+        "deterministic random source it already uses, small emissive bits. Give each new part's size in metres and its "
+        "position relative to an existing part (quote that call), reuse the materials or colours already used there, keep "
+        "colliders, interaction points and pivots as they are, and add no more than about 12 primitives."),
+    "perf": Focus(
+        "frame-time", lambda rel, text: bool(PLAN_FRAME.search(text) and PLAN_FRAME_WORK.search(text)),
+        "Work repeated every frame in Update, LateUpdate or FixedUpdate that could be cached or skipped: GetComponent, Find "
+        "or Camera.main lookups, uGUI text rebuilt when nothing changed, LINQ or allocations per frame. Say which field "
+        "caches what, where it is filled and when it is refreshed. What the player sees must not change."),
+    "fixes": Focus(
+        "bug-fix", lambda rel, text: len(PLAN_BRANCHES.findall(text)) >= 15,
+        "A real bug you can prove from the code shown: a wrong condition, an event subscribed but never unsubscribed, a null "
+        "reference on a path that really happens, an off-by-one, a value that can never change. Name the method, explain "
+        "the wrong behaviour the player gets and give the exact fix. If you can't prove a bug, reply NONE."),
+    "features": Focus(
+        "small gameplay feature", lambda rel, text: "GetActions(" in text,
+        "A small addition that rounds off what this script already does: a new action next to an existing one in "
+        "GetActions (say which one to copy), a new use for an item it already handles, a small stat or moodle effect, an "
+        "extra reaction or message. Use only item ids, config values and methods that appear in the code shown, and no new "
+        "UI screens."),
+    "flavour": Focus(
+        "flavour-text", lambda rel, text: len(PLAN_PROSE.findall(text)) >= 8,
+        "Append 4 to 8 new entries to one existing list of written text in this script: a list whose entries are whole "
+        "sentences in quotes that the player reads or hears in the world (notes, letters, broadcasts, barks, graffiti, "
+        "book titles, item descriptions). Not menus, help or manual pages that explain how the game works, and never a "
+        "list or dictionary of ids, items, skills or numbers. Quote one existing entry as the style reference and name "
+        "the themes the new ones should cover. Original wording only: no lyrics, quotes or real brands. Existing "
+        "entries, ids, order-dependent logic and code must stay as they are."),
+    "docs": Focus("documentation", lambda rel, text: undocumented(text) >= 3, ""),  # a fixed task text; no model needed
+}
+
+DOC_TASK = ("Add a one-sentence `/// <summary>` to each public method and property in {path} that has none, saying what it "
+            "does and why, in the same voice as the existing summaries in that file. Don't change any code.")
+DOC_DETAILS = (
+    "Skip fields, constants, constructors, and members that override a base member or implement an interface (for example "
+    "DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's "
+    "Order and Init): they inherit their docs.",
+    "Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that "
+    "declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an "
+    "edit fails, re-read the file first.")
+
+PLAN_PROMPT = """You plan work for the CLONE-Z Night Shift: local AI coding agents that each take one task from a queue
+overnight, edit the code of CLONE-Z (a Unity 6 isometric zombie-survival game in C#, everything built from code at
+runtime), compile it against Unity's assemblies and land it if it compiles. The agents can't run or see the game and
+can't ask questions. They do well with one concrete, precisely located change and fail on vague or sprawling work.
+
+Write the single most useful {label} task for the script below, or reply NONE if there is nothing worth doing.
+
+SETTING
+CLONE-Z takes place in rural Kentucky in 1993, in winter, after the outbreak: snowbound, run down, lived in. Whatever
+the player sees has to belong there: period-correct, worn and plausible. Nothing modern (no LEDs, flat screens or
+smartphones) and nothing that glows without a reason.
+
+WHAT TO LOOK FOR
+{help}
+
+RULES
+- The task is about {path} (one other file at most, when it's essential). Name the class and the method or field to
+  change, say exactly what to change, what the player should see in game and what must stay as it is.
+- Ground everything in the code shown: every type, method, field, constant, item id and value you name must appear in
+  it exactly as written. Quote the current value of anything you want changed.
+- C# 9: no file-scoped namespaces, no global usings. No new asset files (textures, shaders, prefabs, scenes);
+  everything is built from code. No save-format or networking changes, no renamed public members. Nothing in Tools/,
+  ProjectSettings/ or Packages/, and no .meta or .unity files.
+- Don't repeat or overlap these tasks, already queued or done for this script:
+{existing}
+
+FORMAT
+Reply with exactly one task in this form and nothing else:
+- [ ] <the whole request in one or two sentences, naming {path}>
+  <detail lines in plain sentences, each indented by two spaces; six at most>
+Quote code inline with backticks, as in `m.Box(new Vector3(0f, 0.72f, 0f), new Vector3(0.52f, 0.02f, 0.02f), chrome)`.
+No code blocks, no bold text, no headings. Or reply with the single word NONE.
+
+HOW CLONE-Z IS BUILT
+{lessons}
+
+SCRIPT {path} ({lines} lines)
+{source}
+"""
+
+
+def plan_candidates(focus: str, repo: Path, tasks: list[tuple[str, Task]]) -> list[str]:
+    """Scripts worth showing the planner for `focus`: the right kind of code, short enough to read whole, and no
+    unchecked task queued for them yet (two tasks on one script at once would collide when they land)."""
+    queued = "\n".join(task.text for mark, task in tasks if mark == " ")
+    known = {task.key for _, task in tasks}
+    found = []
+    for f in sorted((repo / "Assets" / "Scripts").rglob("*.cs")):
+        rel = f.relative_to(repo).as_posix()
+        if "/Editor/" in rel or PROTECTED.search(rel) or rel in queued:
+            continue
+        try:
+            text = f.read_text(encoding="utf-8-sig", errors="replace")
+        except OSError:
+            continue
+        if not 30 <= text.count("\n") + 1 <= PLAN_MAX_LINES or not FOCUS[focus].fits(rel, text):
+            continue
+        if focus == "docs" and DOC_TASK.format(path=rel) in known:
+            continue  # documented already, or tried and failed: either way not again
+        found.append(rel)
+    return found
+
+
+def pick_target(focus: str, candidates: list[str], seen: dict, rng: random.Random | None = None) -> str | None:
+    """The candidate shown to the planner least recently for this focus (never-shown ones first, ties at random)."""
+    if not candidates:
+        return None
+    rng = rng or random.Random()
+    return min(candidates, key=lambda rel: (seen.get(f"{focus}:{rel}", ""), rng.random()))
+
+
+def plan_prompt(focus: str, path: str, source: str, existing: list[str], lessons: str) -> str:
+    kind = FOCUS[focus]
+    return PLAN_PROMPT.format(label=kind.label, help=kind.help, path=path,
+                              existing="\n".join("  " + e for e in existing) or "  (none yet)",
+                              lessons=lessons.strip() or "(no notes)", lines=source.count("\n") + 1,
+                              source="```csharp\n" + source.rstrip() + "\n```")
+
+
+def ask_model(base: str, model: str, prompt: str, timeout: float = 900) -> str:
+    """One answer from Ollama's OpenAI-compatible endpoint, the one OpenCode uses, so the model keeps being served exactly
+    as it is for the agents (other settings would make Ollama reload it). Any reasoning is left out."""
+    body = json.dumps({"model": model, "messages": [{"role": "user", "content": prompt}], "stream": False}).encode()
+    req = urllib.request.Request(base.rstrip("/") + "/v1/chat/completions", body, {"Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        reply = json.load(r)
+    content = ((reply.get("choices") or [{}])[0].get("message") or {}).get("content") or ""
+    return re.sub(r"<think>.*?</think>", "", content, flags=re.S).strip()
+
+
+LIST_MARK = re.compile(r"^(?:[-*+•]|\d+[.)])\s+")  # a leading bullet or number, not *emphasis*
+CALLED = re.compile(r"\b([A-Za-z_]\w{2,})\s*(?:<[^<>`]*>)?\s*\(")  # a method called (or declared) in quoted code
+
+
+def plain(line: str) -> str:
+    """A line of the planner's prose with bold markers, list marks, whole-line italics and runs of spaces taken out."""
+    line = LIST_MARK.sub("", line.strip()).replace("**", "")
+    if len(line) > 2 and line[0] == line[-1] == "*":
+        line = line[1:-1]
+    return " ".join(line.split())
+
+
+def script_words(repo: Path) -> set[str]:
+    """Every word that appears in the game's scripts, to tell real methods from made-up ones."""
+    words: set[str] = set()
+    for f in (repo / "Assets" / "Scripts").rglob("*.cs"):
+        try:
+            words.update(re.findall(r"[A-Za-z_]\w*", f.read_text(encoding="utf-8-sig", errors="replace")))
+        except OSError:
+            continue
+    return words
+
+
+def unknown_calls(text: str, words: set[str]) -> list[str]:
+    """Methods the task calls in its quoted code (`...`) that appear nowhere in the game's scripts."""
+    found = []
+    for span in re.findall(r"`([^`\n]+)`", text):
+        for name in CALLED.findall(span):
+            if name not in words and name not in found:
+                found.append(name)
+    return found
+
+
+def parse_plan(reply: str) -> Task | None:
+    """The first task in the planner's reply (a `- [ ]` line and the lines under it, up to a blank line or the next task;
+    code in a fenced block is kept line by line), or None, say for NONE."""
+    lines = re.sub(r"<think>.*?</think>", "", reply or "", flags=re.S).replace("\r", "").splitlines()
+    for i, line in enumerate(lines):
+        m = TASK_LINE.match(line)
+        if not m:
+            continue
+        # A reply wrapped whole in a fence: the next fence closes it rather than opening a code block.
+        wrapped = sum(1 for before in lines[:i] if before.strip().startswith("```")) % 2 == 1
+        details, code = [], False
+        for more in lines[i + 1:]:
+            s = more.strip()
+            if s.startswith("```"):
+                if wrapped and not code:
+                    break
+                code = not code
+                continue
+            if code:
+                if s:  # quoted, so it reads as code and the made-up-method check sees it
+                    details.append("`" + " ".join(s.split()).replace("`", "'") + "`")
+                continue
+            if not s or TASK_LINE.match(more) or s.startswith("#"):
+                break
+            details.append(plain(s))
+        key = plain(m.group(1))
+        return Task(key, "\n".join([key] + [d for d in details if d]))
+    return None
+
+
+def check_plan(task: Task, target: str, repo: Path, tasks: list[tuple[str, Task]],
+               words: set[str] | None = None) -> tuple[Task | None, str]:
+    """`task` made fit for the queue, or None and why not. It must name `target` (its file or class name will do; the
+    path is put in), mention only paths that exist and aren't protected, keep to a sensible size, call no method that
+    appears nowhere in the scripts (one new one is fine) and not repeat a task in tasks.md."""
+    key, *details = task.text.splitlines()
+    key = plain(key)
+    details = [d for d in (plain(d) for d in details) if d][:8]
+    if target not in key:
+        file_name = target.rsplit("/", 1)[-1]
+        name = r"(?<![\w./])" + re.escape(file_name)
+        if re.search(name, key):
+            key = re.sub(name, target, key, count=1)
+        elif re.search(r"\b" + re.escape(file_name[:-3]) + r"\b", "\n".join([key] + details)) or \
+                any(target in d for d in details):
+            key = f"In {target}: {key}"
+        else:
+            return None, f"it doesn't name {target}"
+    text = "\n".join([key] + details)
+    if not 40 <= len(key) <= 700 or len(text) > 3000:
+        return None, f"its length ({len(key)} characters on the first line) is out of range"
+    if OFF_LIMITS.search(text):
+        return None, "it refers to the map scraper's data, which must stay out of the game"
+    for mention in PATH_MENTION.findall(text):
+        mention = mention.rstrip("./")
+        if mention in MENTION_OK:
+            continue
+        if PROTECTED.search(mention + ("/" if (repo / mention).is_dir() else "")) or not (repo / mention).exists():
+            return None, f"it mentions {mention}"
+    if re.search(r"\.(?:unity|meta|asmdef|asmref)\b", text):
+        return None, "it touches scenes or .meta files"
+    unknown = unknown_calls(text, words) if words is not None else []
+    if len(unknown) > 1:  # one may be a helper the task asks for; more means it's making things up
+        return None, "it calls methods that exist nowhere in the scripts: " + ", ".join(unknown[:4])
+    for _, other in tasks:
+        if other.key == key or (target in other.key and difflib.SequenceMatcher(None, key, other.key).ratio() > 0.85):
+            return None, "it repeats a task in tasks.md"
+    return Task(key, text), ""
+
+
+def planned_heading(now: dt.datetime | None = None) -> str:
+    return (f"### Auto-planned {(now or dt.datetime.now()):%Y-%m-%d}: written by the night shift when the queue ran low "
+            f"(delete any you don't want)")
+
+
+def planned_keys(path: Path | None = None) -> set[str]:
+    """The keys of the tasks under an "### Auto-planned" heading in tasks.md, so tasks people write can go first."""
+    path = path or TASKS
+    keys, planned = set(), False
+    with tasks_lock():
+        lines = path.read_text(encoding="utf-8").splitlines() if path.exists() else []
+    for line in lines:
+        if line.startswith("#"):
+            planned = line.startswith("### Auto-planned")
+        elif planned:
+            m = BOX.match(line)
+            if m:
+                keys.add(m.group(3))
+    return keys
+
+
+def append_planned(task: Task, heading: str, path: Path | None = None) -> None:
+    """Adds `task` at the end of tasks.md, under `heading` (added first unless it's the last heading already)."""
+    path = path or TASKS
+    with tasks_lock():
+        body = path.read_text(encoding="utf-8") if path.exists() else ""
+        headings = re.findall(r"^#{1,6} .*$", body, re.M)
+        out = body.rstrip("\n")
+        if not headings or headings[-1].strip() != heading:
+            out += "\n\n" + heading + "\n"
+        key, *details = task.text.splitlines()
+        write_atomic(path, out + "\n- [ ] " + key + "".join("\n  " + d for d in details) + "\n")
+
+
+def load_plan_state(path: Path | None = None) -> dict:
+    try:
+        state = json.loads((path or AUTOPLAN_STATE).read_text(encoding="utf-8"))
+        return state if isinstance(state, dict) else {}
+    except (OSError, ValueError):
+        return {}
+
+
+def save_plan_state(state: dict, path: Path | None = None) -> None:
+    path = path or AUTOPLAN_STATE
+    path.parent.mkdir(parents=True, exist_ok=True)
+    write_atomic(path, json.dumps(state, indent=1, sort_keys=True))
+
+
+def plan_model(cfg: dict, ollama: str) -> str:
+    """The model that writes tasks: NIGHTSHIFT_AUTOPLAN_MODEL, else the helpers' model (it serves several requests at once,
+    so planning doesn't hold up an agent), else NIGHTSHIFT_MODEL."""
+    for model in (cfg.get("NIGHTSHIFT_AUTOPLAN_MODEL"), cfg.get("NIGHTSHIFT_HELPER_MODEL")):
+        if model and has_model(ollama, model):
+            return model
+    return cfg["NIGHTSHIFT_MODEL"]
+
+
+class Planner:
+    """Writes the next task into tasks.md when the queue runs low (NIGHTSHIFT_AUTOPLAN). It goes round the focus areas in
+    NIGHTSHIFT_AUTOPLAN_FOCUS, shows the local model one script at a time (the one that fits and was shown least
+    recently) and queues the task it writes once that checks out: it must name that script, mention only scripts that
+    exist and nothing protected, and not repeat a task already in tasks.md. Documentation tasks need no model."""
+
+    def __init__(self, ollama: str, model: str, focus: list[str], repo: Path | None = None, ask=None, on_duty=None,
+                 dry_run: bool = False):
+        self.ollama, self.model, self.repo = ollama, model, repo or ROOT
+        self.focus = [f for f in focus if f in FOCUS] or list(FOCUS)
+        self.ask = ask or ask_model
+        self.on_duty = on_duty or (lambda: not STOPPING.is_set())
+        self.dry_run = dry_run  # plan and show, but queue nothing and remember nothing (nightshift.py plan --dry-run)
+        self.state = load_plan_state()
+        self.planned = 0
+
+    def next_focus(self) -> str:
+        turn = int(self.state.get("turn", 0))
+        self.state["turn"] = turn + 1
+        return self.focus[turn % len(self.focus)]
+
+    def plan_one(self, tries: int = 3, focus: str | None = None, target: str | None = None) -> Task | None:
+        """Plans and queues one task, trying up to `tries` scripts along the focus rotation (or the given focus and
+        script); None if none of them gave one."""
+        for _ in range(tries):
+            if not self.on_duty():
+                return None
+            kind, tasks = focus or self.next_focus(), read_tasks()
+            script = target or pick_target(kind, plan_candidates(kind, self.repo, tasks), self.state.setdefault("seen", {}))
+            if not script:
+                continue
+            self.state.setdefault("seen", {})[f"{kind}:{script}"] = dt.datetime.now().isoformat(timespec="minutes")
+            if not self.dry_run:
+                save_plan_state(self.state)
+            started = time.time()
+            task, why = self.write_task(kind, script, tasks)
+            if task and self.on_duty():
+                if not self.dry_run:
+                    append_planned(task, planned_heading())
+                self.planned += 1
+                log(f"planner: {'would queue' if self.dry_run else 'queued'} for {script} ({FOCUS[kind].label}, "
+                    f"{(time.time() - started) / 60:.1f} min): {first_line(task.key, 100)}")
+                return task
+            if task:
+                return None  # went off duty while the model was thinking: queue nothing more
+            log(f"planner: nothing for {script} ({FOCUS[kind].label}): {why}")
+        return None
+
+    def write_task(self, focus: str, target: str, tasks: list[tuple[str, Task]]) -> tuple[Task | None, str]:
+        if focus == "docs":
+            key = DOC_TASK.format(path=target)
+            return Task(key, "\n".join((key,) + DOC_DETAILS)), ""
+        source = (self.repo / target).read_text(encoding="utf-8-sig", errors="replace")
+        existing = [f"[{mark}] {task.key[:220]}" for mark, task in tasks if target in task.text][-15:]
+        lessons_path = self.repo / LESSONS_REL
+        lessons = lessons_path.read_text(encoding="utf-8")[:6000] if lessons_path.exists() else ""
+        reply = self.ask(self.ollama, self.model, plan_prompt(focus, target, source, existing, lessons))
+        planned = parse_plan(reply)
+        if planned is None:
+            return None, "the model had nothing to suggest" if reply.strip().upper().startswith("NONE") else "no task in its reply"
+        return check_plan(planned, target, self.repo, tasks, script_words(self.repo))
+
+
 # --- Coordinator --------------------------------------------------------------------------------------------
 
 def first_line(text: str, width: int = 140) -> str:
@@ -939,6 +1359,8 @@ class Coordinator:
         self.idle_since: str | None = None  # HH:MM when the last task finished and nothing was left to start
         self.workers: list[Worker] = []
         self.night: Night | None = None
+        self.planner: Planner | None = None  # NIGHTSHIFT_AUTOPLAN: writes the next task when the queue runs low
+        self.planning = threading.Event()  # set while the planner may still add tasks
 
     def until(self) -> str:
         return f"no new tasks after {self.deadline:%a %H:%M}" if self.deadline else "on duty until stopped"
@@ -1027,14 +1449,20 @@ class Coordinator:
                   "branch": self.night.branch if self.night else "", "workers": [w.name for w in self.workers],
                   "working": {k: {"worker": v[0], "since": v[1]} for k, v in self.in_flight.items()},
                   "dispatches": self.dispatches,
-                  "idle_since": self.idle_since}
+                  "idle_since": self.idle_since,
+                  "autoplan": self.planner is not None,
+                  "planned": self.planner.planned if self.planner else 0}
         write_atomic(STATUS_FILE, json.dumps(status, indent=2))
 
     def claim(self, worker: Worker) -> Task | None:
         with self.queue_lock:
             if self.off_duty() or not self.on_branch():
                 return None
-            for mark, task in read_tasks():
+            tasks = read_tasks()
+            if self.planner:  # tasks people wrote go before the planner's (sorted() keeps the order otherwise)
+                planned = planned_keys()
+                tasks = sorted(tasks, key=lambda mark_task: mark_task[1].key in planned)
+            for mark, task in tasks:
                 if mark == " " and task.key not in self.in_flight and task.key not in self.completed \
                         and self.dispatches.get(task.key, 0) < MAX_DISPATCH:
                     self.in_flight[task.key] = (worker.name, dt.datetime.now().strftime("%H:%M"))
@@ -1053,8 +1481,53 @@ class Coordinator:
             self.idle_since = dt.datetime.now().strftime("%H:%M")
             self.write_status()
         landed = sum(1 for e in self.night.entries if e.outcome == "landed")
+        if self.planner:
+            log(f"idle: waiting for the planner's next task ({landed} of {len(self.night.entries)} landed so far) · "
+                f"{self.until()}")
+            return
         log(f"idle: nothing left to start in tasks.md ({landed} of {len(self.night.entries)} landed so far); "
             f"new tasks added there start within a minute · {self.until()}")
+
+    def low_water(self) -> int:
+        """How many tasks the planner keeps waiting: a couple more than there are workers."""
+        return len(self.workers) + 2
+
+    def start_planner(self, ollama: str) -> None:
+        """With NIGHTSHIFT_AUTOPLAN on, starts the thread that keeps the queue topped up (see Planner)."""
+        if self.cfg.get("NIGHTSHIFT_AUTOPLAN", "0").strip().lower() in ("", "0", "off", "no", "false"):
+            return
+        model = plan_model(self.cfg, ollama)
+        focus = [f.strip() for f in self.cfg.get("NIGHTSHIFT_AUTOPLAN_FOCUS", "").split(",") if f.strip()]
+        self.planner = Planner(ollama, model, focus, on_duty=lambda: self.planning.is_set() and not self.off_duty())
+        self.planning.set()
+        log(f"auto-planning on: {model} writes the next task whenever fewer than {self.low_water()} are waiting "
+            f"({', '.join(dict.fromkeys(self.planner.focus))})")
+        threading.Thread(target=self.plan_loop, daemon=True).start()
+
+    def plan_loop(self) -> None:
+        misses = 0
+        while self.planning.is_set() and not self.off_duty() and self.on_branch():
+            with self.queue_lock:
+                waiting = sum(1 for mark, task in read_tasks() if mark == " " and task.key not in self.in_flight
+                              and task.key not in self.completed and self.dispatches.get(task.key, 0) < MAX_DISPATCH)
+            if waiting >= self.low_water():
+                misses = 0
+                if STOPPING.wait(30):
+                    return
+                continue
+            try:
+                planned = self.planner.plan_one()
+            except Exception as e:  # Ollama busy or restarting, a script moved by a landing...
+                log(f"planner: {first_line(str(e), 200)}")
+                planned = None
+            if planned:
+                misses = 0
+                with self.queue_lock:
+                    self.write_status()
+            else:
+                misses += 1  # back off, so a planner with nothing to say doesn't keep the model busy
+                if STOPPING.wait(min(60 * misses, 900)):
+                    return
 
     def commit_pending(self, subject: str, paths: list[str] | None = None, repo: Path = ROOT) -> None:
         """Commits changes under `paths` (default: everything) if there are any."""
@@ -1262,6 +1735,7 @@ class Coordinator:
         self.night.model = ", ".join(sorted({w.model for w in self.workers}))
         self.write_status()
         log("workers: " + ", ".join(self.night.workers))
+        self.start_planner(ollama)
         threads = [threading.Thread(target=self.worker_loop, args=(w,), daemon=True) for w in self.workers]
         for t in threads:
             t.start()
@@ -1275,6 +1749,7 @@ class Coordinator:
                 for t in stoppers + threads:
                     t.join(timeout=max(0.0, end - time.time()))
                 break
+        self.planning.clear()  # nothing more gets queued once the night's report is written
         with self.land_lock:
             if self.on_branch():
                 self.night.unfinished = [t.key for m, t in read_tasks() if m == " " and self.dispatches.get(t.key)]
@@ -1345,6 +1820,8 @@ def cmd_status() -> int:
               f" · {until}")
         if pid and st.get("idle_since"):
             print(f"  idle since {st['idle_since']}: nothing left to start; tasks added to tasks.md start within a minute")
+        if pid and st.get("autoplan"):
+            print(f"  auto-planning on: {st.get('planned', 0)} tasks written by the planner since the start")
         for key, w in (st.get("working") or {}).items() if pid else []:
             print(f"  {w['worker']:>12} since {w['since']}: {key[:100]}")
     marks = [m for m, _ in read_tasks()]
@@ -1362,12 +1839,16 @@ def cmd_status() -> int:
 
 def cmd_state() -> int:
     """One line of JSON for NightShift.ps1: is the coordinator running, is anything left to do, and on which branch."""
-    load_config()
+    cfg = load_config()
     pid = coordinator_pid()
     st = json.loads(STATUS_FILE.read_text(encoding="utf-8")) if pid and STATUS_FILE.exists() else {}
     tasks = read_tasks()
     marks = [m for m, _ in tasks]
     dispatches = st.get("dispatches") or {}
+    try:
+        publish_every = float(cfg.get("NIGHTSHIFT_PUBLISH_EVERY") or 0)
+    except ValueError:
+        publish_every = 0.0
     print(json.dumps({
         "running": bool(pid),
         "branch": st.get("branch") or git(ROOT, "rev-parse", "--abbrev-ref", "HEAD", check=False).strip(),
@@ -1376,7 +1857,25 @@ def cmd_state() -> int:
         "dispatchable": sum(1 for mark, task in tasks
                             if mark == " " and dispatches.get(task.key, 0) < MAX_DISPATCH),
         "idle_since": st.get("idle_since"),
+        # The planner keeps the queue from running dry, so the pull request is published every publish_every minutes.
+        "autoplan": bool(st.get("autoplan")),
+        "publish_every": publish_every,
     }))
+    return 0
+
+
+def cmd_plan(args: argparse.Namespace) -> int:
+    """Writes one task with the local model now, the way the planner does when the queue runs low."""
+    cfg = load_config()
+    ollama = find_ollama(cfg)
+    model = args.model or plan_model(cfg, ollama)
+    focus = [args.focus] if args.focus else [f.strip() for f in cfg["NIGHTSHIFT_AUTOPLAN_FOCUS"].split(",") if f.strip()]
+    planner = Planner(ollama, model, focus, dry_run=args.dry_run)
+    task = planner.plan_one(tries=1 if args.target else 3, focus=args.focus, target=args.target)
+    if task is None:
+        print("No task planned (see the reason above).")
+        return 1
+    print(("Would queue" if args.dry_run else "Queued") + f" ({model}):\n- [ ] " + task.text.replace("\n", "\n  "))
     return 0
 
 
@@ -1423,6 +1922,11 @@ def main(argv: list[str] | None = None) -> int:
     sub.add_parser("status", help="progress summary")
     sub.add_parser("state", help="one line of JSON: running, busy or idle, and the branch (for NightShift.ps1)")
     sub.add_parser("map", help="rebuild memory/PROJECT_MAP.md")
+    plan = sub.add_parser("plan", help="write one task with the local model now, as the planner (NIGHTSHIFT_AUTOPLAN) does")
+    plan.add_argument("--focus", choices=sorted(FOCUS), help="the kind of task (default: the next in NIGHTSHIFT_AUTOPLAN_FOCUS)")
+    plan.add_argument("--target", help="the script to plan for, e.g. Assets/Scripts/World/DecorProps.cs")
+    plan.add_argument("--model", help="the Ollama model to ask (default: as the planner chooses)")
+    plan.add_argument("--dry-run", action="store_true", help="show the task without queueing it")
     chat = sub.add_parser("chat", help="interactive OpenCode with the night shift's model and settings")
     chat.add_argument("extra", nargs=argparse.REMAINDER)
     work = sub.add_parser("work", help="do one task in a checkout (run by the coordinator)")
@@ -1446,6 +1950,8 @@ def main(argv: list[str] | None = None) -> int:
         (ROOT / MAP_REL).write_text(build_project_map(ROOT), encoding="utf-8")
         print(f"wrote {MAP_REL}")
         return 0
+    if args.cmd == "plan":
+        return cmd_plan(args)
     if args.cmd == "chat":
         return cmd_chat(args.extra)
     return cmd_work(args)
