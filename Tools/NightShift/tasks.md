@@ -3399,7 +3399,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Use `Mt(Brass)` for the material (already defined) and apply a slight random yaw (‑15° to +15°) via the existing `rng` to give each sink a subtle variation.
   This adds a period‑correct brass handle that suggests a functional faucet without altering colliders or interaction points, enhancing visual detail for the kitchen sink.
   - 14:00 landed by 1htsserver in 2.1 min: **Summary**
-- [ ] In Assets/Scripts/World/Fixtures/RaidHomeBath.cs: Cache frequently used CloneZConfig values in RaidHomeBath to avoid per‑frame property lookups and divisions.
+- [x] In Assets/Scripts/World/Fixtures/RaidHomeBath.cs: Cache frequently used CloneZConfig values in RaidHomeBath to avoid per‑frame property lookups and divisions.
   Add private readonly float fields (e.g. `_fillRate`, `_drainRate`, `_coolRate`, `_tapNoiseInterval`, `_tapNoiseRadius`) to `RaidHomeBath`.
   Initialize them in `OnEnable` (or `Awake`) with `_fillRate = 1f / CloneZConfig.BathFillSeconds;` and similarly for the others.
   Replace the per‑frame calculations in `Update`:
@@ -3408,6 +3408,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   change `if (!running && _heat > 0f) _heat = Mathf.Max(0f, _heat - dt / CloneZConfig.BathCoolSeconds);` to `if (!running && _heat > 0f) _heat = Mathf.Max(0f, _heat - dt * _coolRate);`
   change the noise‑timing check `if (running && Time.time >= _nextNoise)` to use `_tapNoiseInterval` when setting `_nextNoise`.
   change the `MakeNoise` call `MakeNoise(CloneZConfig.BathTapNoiseRadius);` to use `_tapNoiseRadius`.
+  - 14:03 landed by hts-llm in 3.7 min: **Changes made**
 - [ ] Add a “Place breaching charge” action for trusted players to CampGate.GetActions(InteractContext ctx, List<InteractAction> into) in Assets/Scripts/World/Camps.cs.
   *After the existing lock‑off actions (the block that adds “Take the lock off …”), insert a new InteractAction that is offered only when the player’s inventory contains a “breachcharge” and the gate is trusted (owner is mine or a squadmate).
   *The action should read “Place breaching charge”, call `Explosives.Arm(c.Inventory);` in its callback, have a 5‑second timed progress with the message “Arming breaching charge…”, and be disabled with the tooltip “Needs a breaching charge” when the item is missing.

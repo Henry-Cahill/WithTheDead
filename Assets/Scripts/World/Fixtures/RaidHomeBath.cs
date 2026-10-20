@@ -32,6 +32,12 @@ namespace CloneZ
         private float _level;    // 0 empty .. 1 full
         private float _heat;     // the standing water's warmth: 0 stone cold .. 1 hot
         private float _nextNoise, _nextWatch;
+        // Cached configuration values to avoid per‑frame lookups/divisions
+        private readonly float _fillRate = 1f / CloneZConfig.BathFillSeconds;
+        private readonly float _drainRate = 1f / CloneZConfig.BathDrainSeconds;
+        private readonly float _coolRate = 1f / CloneZConfig.BathCoolSeconds;
+        private readonly float _tapNoiseInterval = CloneZConfig.BathTapNoiseInterval;
+        private readonly float _tapNoiseRadius = CloneZConfig.BathTapNoiseRadius;
 
         public override string DisplayName => "Bath";
         public override Vector3 InteractPoint => _point;
@@ -128,7 +134,7 @@ namespace CloneZ
             float before = _level;
             if (running && _plugged && _level < 1f)
             {
-                float inflow = dt / CloneZConfig.BathFillSeconds;
+                float inflow = dt * _fillRate;
                 float supply = HotSupply ? 1f : 0.05f;
                 _heat = _level < 0.01f ? supply : _heat + (supply - _heat) * (inflow / (_level + inflow));
                 _level = Mathf.Min(1f, _level + inflow);
@@ -138,15 +144,15 @@ namespace CloneZ
                     KitchenParts.NotifyNear(_middle, 4f, "The bath's full to the overflow \u2014 the taps are still running.");
                 }
             }
-            else if (!_plugged && _level > 0f) _level = Mathf.Max(0f, _level - dt / CloneZConfig.BathDrainSeconds);
-            if (!running && _heat > 0f) _heat = Mathf.Max(0f, _heat - dt / CloneZConfig.BathCoolSeconds);
+            else if (!_plugged && _level > 0f) _level = Mathf.Max(0f, _level - dt * _drainRate);
+            if (!running && _heat > 0f) _heat = Mathf.Max(0f, _heat - dt * _coolRate);
             if (_level != before) ShowWater();
             if (_level < 0.9f) _toldFull = false;
 
             if (running && Time.time >= _nextNoise)
             {
-                _nextNoise = Time.time + CloneZConfig.BathTapNoiseInterval;
-                MakeNoise(CloneZConfig.BathTapNoiseRadius);
+                _nextNoise = Time.time + _tapNoiseInterval;
+                MakeNoise(_tapNoiseRadius);
             }
             if (_soaking && Time.time >= _nextWatch) Watch();
         }
