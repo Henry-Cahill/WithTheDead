@@ -13,6 +13,7 @@ namespace CloneZ
     /// </summary>
     public static class NetWorld
     {
+                /// <summary>Current hour that should be used to restore the day-night cycle after loading a save.</summary>
         public static float PendingHour = -1f;
         private const float InterestRadius = 85f;
         private static float s_AiAt, s_WorldAt;
@@ -22,6 +23,7 @@ namespace CloneZ
         private static readonly Dictionary<string, ulong> s_Locks = new Dictionary<string, ulong>();
         private static readonly List<Actor> s_Scratch = new List<Actor>(128);
 
+                /// <summary>Register all network message handlers for the world and set up event hooks.</summary>
         internal static void Register()
         {
             NetSession.Register("cz.ai", OnAi);
@@ -64,6 +66,7 @@ namespace CloneZ
             };
         }
 
+                /// <summary>Server: tick the world, sending periodic updates of AI and world state to clients.</summary>
         internal static void Tick()
         {
             NetworkManager nm = NetSession.NM;
@@ -191,6 +194,7 @@ namespace CloneZ
         #endregion
 
         #region Containers, ground items, fixtures
+        /// <summary>Server: generate a deterministic key for a loot container based on its fixture key or position.</summary>
         public static string KeyOf(LootContainer c)
         {
             if (!string.IsNullOrEmpty(c.FixtureKey)) return c.FixtureKey;
@@ -205,6 +209,7 @@ namespace CloneZ
         }
 
         // One runner rummages at a time: the server hands out the lock.
+        /// <summary>Client: request the server to lock or unlock a container for exclusive access.</summary>
         private static void OnLock(ulong sender, NetIn m)
         {
             string key = m.S();
@@ -219,6 +224,7 @@ namespace CloneZ
             else if (s_Locks.TryGetValue(key, out ulong h) && h == sender) s_Locks.Remove(key);
         }
 
+        /// <summary>Client: inform the player that another player is already using the container.</summary>
         private static void OnLocked(ulong s, NetIn m)
         {
             m.S();
@@ -239,6 +245,7 @@ namespace CloneZ
         }
 
         /// <summary>Server: a container's contents changed without anyone opening it (the Central Economy restocked it).</summary>
+        /// <summary>Server: broadcast the contents of a container to all clients.</summary>
         public static void BroadcastContents(LootContainer c)
         {
             if (!NetSession.Active || c == null || !NetSession.NM.IsServer) return;
@@ -250,6 +257,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Server: propagate a container's content update to other clients.</summary>
         private static void OnContents(ulong sender, NetIn m)
         {
             string key = m.S();
@@ -267,6 +275,7 @@ namespace CloneZ
             if (c != null) c.RestoreContents(searched, items);
         }
 
+        /// <summary>Server: send a ground item pickup or drop event to the server.</summary>
         private static void SendGround(bool drop, ItemDef def, int n, Vector3 at, ItemExtra extra)
         {
             if (!NetSession.Active || def == null) return;
@@ -274,6 +283,7 @@ namespace CloneZ
         }
 
         /// <summary>Server: a ground item vanished on its own (the Central Economy's lifetime) — gone for everyone.</summary>
+        /// <summary>Server: notify all clients that a ground item has disappeared (e.g., due to economy cleanup).</summary>
         public static void GroundGone(ItemDef def, int n, Vector3 at) => SendGround(false, def, n, at, null);
 
         private static void OnGround(ulong sender, NetIn m)
@@ -316,12 +326,14 @@ namespace CloneZ
         }
 
         /// <summary>Client: ask the server to let us raise our flag over an outpost (it checks the garrison and the lock).</summary>
+        /// <summary>Client: request the server to broadcast outpost capture attempt.</summary>
         public static void RequestOutpost(string id, string faction)
         {
             using (var o = new NetOut(96)) { o.S(id).S(faction); NetSession.ToServer("cz.outcap", o); }
         }
 
         /// <summary>Server: an outpost changed hands — tell every client (the taker hears it as theirs).</summary>
+        /// <summary>Server: broadcast an outpost ownership change to all clients.</summary>
         public static void OutpostTaken(Outpost site, ulong taker)
         {
             if (!NetSession.Active || site == null) return;
@@ -379,8 +391,11 @@ namespace CloneZ
     /// </summary>
     public sealed class NetAgentProxy : MonoBehaviour, IDamageable
     {
+                /// <summary>Actor component attached to the proxy, representing the entity's logical state.</summary>
         public Actor Actor { get; private set; }
+                /// <summary>Flag indicating whether the proxy represents a dead entity.</summary>
         public bool IsDead { get; private set; }
+                /// <summary>Convenient accessor for the Unity Transform of this proxy.</summary>
         public Transform Transform => transform;
 
         private Vector3 _from, _to;
@@ -390,6 +405,7 @@ namespace CloneZ
         private Vector3 _prev;
         private byte _flags;
 
+                /// <summary>Spawn a proxy GameObject representing a networked entity and initialise its visual representation.</summary>
         public static NetAgentProxy Spawn(uint id, byte code, ActorKind kind, string sub, string faction, string name, int seed)
         {
             var go = new GameObject("Proxy " + name);
@@ -443,6 +459,7 @@ namespace CloneZ
             return p;
         }
 
+                /// <summary>Update the proxy's interpolation target position, rotation, and state flags received from the server.</summary>
         public void Push(Vector3 pos, float yaw, byte flags)
         {
             if (_last > 0f) _interval = Mathf.Clamp(Time.time - _last, 0.05f, 0.3f);
@@ -490,6 +507,7 @@ namespace CloneZ
         }
 
         // A client's melee on a proxy goes to the server, which decides.
+                /// <summary>Apply damage to this proxy; client-side calls request the server to handle hit logic.</summary>
         public void TakeDamage(in DamageInfo info)
         {
             if (IsDead) return;
