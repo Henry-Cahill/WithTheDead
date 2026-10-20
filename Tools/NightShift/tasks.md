@@ -1141,13 +1141,14 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Zone/ZoneWorld.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
-- [ ] In Assets/Scripts/Hub/HubWorld.cs: Add a small metal door knob to the “ZoneDoor” built in `HubWorld.BuildShell` so the wooden door looks like a realistic entryway.
+- [x] In Assets/Scripts/Hub/HubWorld.cs: Add a small metal door knob to the “ZoneDoor” built in `HubWorld.BuildShell` so the wooden door looks like a realistic entryway.
   After the line `Solid(world, "ZoneDoor", new Vector3(0f, 1.2f, -HalfZ - 0.05f), new Vector3(2.0f, 2.4f, 0.12f), st.DarkWood);` insert a decorative call:
   `Deco(world, "DoorKnob", m => m.Cylinder(new Vector3(0.7f, 1.2f, -HalfZ - 0.07f), 0.04f, 0.02f, 12, st.Metal), Vector3.zero);`
   The knob is a single cylinder (radius 0.04 m, height 0.02 m) placed 0.7 m right of the door centre, slightly outward from the door face.
   Use the already‑available `st.Metal` material defined in the `Style` struct; no new materials or textures are required.
   The knob is decorative only – it adds no collider or interaction, preserving the existing door collider.
   This adds only one primitive (well under the ~12‑primitive limit).
+  - 02:49 landed by hts-llm in 1.6 min: **Changes Made**
 - [ ] Fix the bandage‑hint logic in Assets/Scripts/Player/PlayerWounds.cs – the `CanBandage` property currently returns true for a heavy bleed that isn’t bandaged, causing the UI to suggest a bandage even though a bandage can’t stop a heavy bleed.
 - [ ] In Assets/Scripts/World/Zone/ZoneOverlays.cs, modify ZoneIndustry.Build inside the dam‑wall construction loop to add a few rust‑stained bolt heads on each concrete block.
   Locate the line

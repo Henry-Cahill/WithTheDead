@@ -205,6 +205,7 @@ namespace CloneZ
             Solid(world, "Lintel", new Vector3(0f, WallH - 0.4f, -HalfZ), new Vector3(2.2f, 0.8f, WallT), st.Wall);
             // The door to the Zone, shut against the cold (it's the deploy station).
             Solid(world, "ZoneDoor", new Vector3(0f, 1.2f, -HalfZ - 0.05f), new Vector3(2.0f, 2.4f, 0.12f), st.DarkWood);
+            Deco(world, "DoorKnob", m => m.Cylinder(new Vector3(0.7f, 1.2f, -HalfZ - 0.07f), 0.04f, 0.02f, 12, st.Metal), Vector3.zero);
             // Skirting and a sign over the bar.
             Deco(world, "Trim", m =>
             {
