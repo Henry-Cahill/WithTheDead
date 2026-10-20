@@ -4032,7 +4032,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `into.Add(new InteractAction("Stand up slowly", c => { c.Seat?.Stand(); c.Notify("You rise slowly, stretching out a bit before standing."); }));`
   The player will now see a second exit option when seated, giving a slightly different narrative cue while using only the existing `Seat`, `Stand()` and `Notify()` members.
   - 18:18 landed by 0htsserver in 2 min: **Changed**
-- [ ] Add a colour‑tint helper to `MapBuilding` in `Assets/Scripts/World/Map/MapData.cs` so each building can receive a subtle, period‑appropriate hue variation based on its ID.
+- [x] Add a colour‑tint helper to `MapBuilding` in `Assets/Scripts/World/Map/MapData.cs` so each building can receive a subtle, period‑appropriate hue variation based on its ID.
   Insert `using UnityEngine;` after the existing `using System;`.
   Inside the `MapBuilding` class, add a public method:
   `public Color GetTint()`
@@ -4041,6 +4041,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `float hue = ((id * 0x9E3779B9) & 0xFFFF) / 65535f * 0.1f;`
   `float sat = 0.6f + ((id >> 16) & 0xFF) / 255f * 0.2f;`
   `float val = 0.7f + ((id >> 24) & 0xFF) / 255f * 0.2f;`
+  - 18:23 landed by hts-llm in 5.8 min: **Changes made**
 - [x] Add a tiny brass flange on the tap‑coupling in Assets/Scripts/World/FurnitureBuilder.RaidHome.cs, method `HoseTap(RaidMesh m, out Vector3 nozzle, out Vector3 nozzleDir)`: after the line
   `m.Cylinder(coupling, 0.017f, 0.03f, 8, brass);` insert
   `m.Cylinder(coupling + Vector3.up * 0.018f, 0.018f, 0.004f, 12, brass);`

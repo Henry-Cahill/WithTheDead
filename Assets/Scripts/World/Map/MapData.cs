@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace CloneZ
 {
@@ -104,6 +105,14 @@ namespace CloneZ
         /// <summary>Height in metres when mapped, else 0.</summary>
         public float height;
         public int[] pts;
+        public Color GetTint()
+        {
+            // deterministic hash from id → hue offset in [0,0.1]
+            float hue = ((id * 0x9E3779B9) & 0xFFFF) / 65535f * 0.1f;
+            float sat = 0.6f + ((id >> 16) & 0xFF) / 255f * 0.2f;
+            float val = 0.7f + ((id >> 24) & 0xFF) / 255f * 0.2f;
+            return Color.HSVToRGB(hue, sat, val);
+        }
     }
 
     /// <summary>A land-use area (water, parking, forest, farmland, residential, park...), clipped to its region.</summary>
