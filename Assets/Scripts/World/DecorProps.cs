@@ -225,7 +225,13 @@ namespace CloneZ
             m.Box(new Vector3(-0.47f, 1.17f, 0f), new Vector3(0.92f, 0.04f, 1.12f), M(new Color(0.12f, 0.12f, 0.12f)));
             m.Box(new Vector3(-0.47f, 1.22f, 0f), new Vector3(0.8f, 0.06f, 1.0f), M(SnowWhite));
             Quaternion open = Quaternion.Euler(-70f, 0f, 0f);
-            m.Box(new Vector3(0.47f, 1.15f, -0.55f) + open * new Vector3(0f, 0f, 0.56f), new Vector3(0.92f, 0.04f, 1.12f), open, M(new Color(0.12f, 0.12f, 0.12f)));
+            // Compute lid centre once for reuse
+            Vector3 lidCentre = new Vector3(0.47f, 1.15f, -0.55f) + open * new Vector3(0f, 0f, 0.56f);
+            // Main lid panel
+            m.Box(lidCentre, new Vector3(0.92f, 0.04f, 1.12f), open, M(new Color(0.12f, 0.12f, 0.12f)));
+            // Thin metal hinge plates on each side of the lid
+            m.Box(lidCentre + open * new Vector3( 0.30f, 0f, 0f), new Vector3(0.04f, 0.02f, 0.01f), open, Mt(new Color(0.5f, 0.5f, 0.5f)));
+            m.Box(lidCentre + open * new Vector3(-0.30f, 0f, 0f), new Vector3(0.04f, 0.02f, 0.01f), open, Mt(new Color(0.5f, 0.5f, 0.5f)));
             m.Ellipsoid(new Vector3(0.45f, 1.12f, 0.1f), new Vector3(0.6f, 0.35f, 0.6f), G(new Color(0.06f, 0.06f, 0.07f)), 8, 4);
         }
 

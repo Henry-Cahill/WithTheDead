@@ -1232,7 +1232,7 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/GameModules.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
-- [ ] Add two thin metal hinge plates to the propped‑open dumpster lid in Assets/Scripts/World/DecorProps.cs, method DecorProps.Dumpster.
+- [x] Add two thin metal hinge plates to the propped‑open dumpster lid in Assets/Scripts/World/DecorProps.cs, method DecorProps.Dumpster.
   After the existing lid box call
   `m.Box(new Vector3(0.47f, 1.15f, -0.55f) + open * new Vector3(0f, 0f, 0.56f), new Vector3(0.92f, 0.04f, 1.12f), open, M(new Color(0.12f, 0.12f, 0.12f)));`
   insert two additional boxes that act as hinge plates.
@@ -1241,6 +1241,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add the plates (size 0.04 × 0.02 × 0.01 m) using the same `open` rotation and a metal surface:
   `m.Box(lidCentre + open * new Vector3( 0.30f, 0f, 0f), new Vector3(0.04f, 0.02f, 0.01f), open, Mt(new Color(0.5f, 0.5f, 0.5f)));`
   `m.Box(lidCentre + open * new Vector3(-0.30f, 0f, 0f), new Vector3(0.04f, 0.02f, 0.01f), open, Mt(new Color(0.5f, 0.5f, 0.5f)));`
+  - 03:30 landed by 0htsserver in 2.5 min: **Changed file**
 - [ ] Fix lingering row caption when the HUD is switched from column to row in Assets/Scripts/UI/HudMoodles.cs
   In `HudMoodles.SetDock` the caption timer `_captionTimer` isn’t cleared, so after switching to `MoodleDock.Row` an old timer value can make the caption appear even though no moodle has newly appeared or worsened. The player may see a stale “Bleeding”, “Toxic gas!” etc. floating at the right edge of the row HUD.
   Add a line resetting the timer (and optionally the caption text) when the dock changes: after the layout‑sign reset (`_layoutSig = -1;`) insert `_captionTimer = 0f;` (and optionally `_caption.text = string.Empty;`). This guarantees the row caption only shows for moodles that change after the dock switch.
