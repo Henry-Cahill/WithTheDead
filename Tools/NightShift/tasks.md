@@ -3741,7 +3741,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   a fleeting memory of a family photograph tucked in a cracked frame,
   the metallic clang of a loose pipe rattling in the cold,
   a ghostly silhouette that briefly appears in the rising steam.
-- [ ] Add a faint “worn edge” strip to the raid report panel in `Assets/Scripts/Extraction/RaidSummaryUI.cs` (method `Build`) to suggest years of use on the wooden/metal board.
+- [x] Add a faint “worn edge” strip to the raid report panel in `Assets/Scripts/Extraction/RaidSummaryUI.cs` (method `Build`) to suggest years of use on the wooden/metal board.
   Insert a call `AddEdgeWear(prt, new Color(0.15f, 0.12f, 0.09f, 1f), 2f);` right after the existing `AddScrews(prt, …)` line.
   Implement a new private static method `AddEdgeWear(RectTransform panel, Color color, float thickness = 2f)` that creates four thin `Image` objects (top, bottom, left, right) inset 1 metre from each edge:
   Top strip: `anchorMin = new Vector2(0f, 1f); anchorMax = new Vector2(1f, 1f); pivot = new Vector2(0.5f, 1f); anchoredPosition = new Vector2(0f, -1f); sizeDelta = new Vector2(0f, thickness);`
@@ -3750,6 +3750,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Right strip: same but `anchorMin = new Vector2(1f, 0f); anchorMax = new Vector2(1f, 1f); anchoredPosition = new Vector2(-1f, 0f);`
   Set each Image’s `color` to the passed colour and `raycastTarget = false`.
   Keep all existing colliders, interaction points and pivots untouched; the new strips are purely visual and add ≤ 12 primitives total.
+  - 15:50 landed by 0htsserver in 3.9 min: **Changes Made**
 - [ ] In Assets/Scripts/World/Fixtures/MirrorCabinet.cs: Fix the mirror‑cabinet “Look in the mirror” action never being added because `options.ExtraActions` is set *after* the `StorageFixture.Create` call in `MirrorCabinet.Create(Transform, Vector3, FixturePart, int, StorageOptions)`.
   In the method, move the assignment of `options.ExtraActions` before calling `StorageFixture.Create`.
   Declare `StorageFixture cabinet = null;` first, set `options.ExtraActions` with a lambda that references `cabinet`, then assign `cabinet = StorageFixture.Create(...);`.

@@ -167,6 +167,7 @@ namespace CloneZ
 
             AddRivets(prt, new Color(0.12f, 0.12f, 0.12f, 1f), 6f);
             AddScrews(prt, new Color(0.20f, 0.20f, 0.20f, 1f), 4f);
+            AddEdgeWear(prt, new Color(0.15f, 0.12f, 0.09f, 1f), 2f);
 
             var top = new Vector2(0.5f, 1f);
             Label(prt, "Caption", top, new Vector2(0f, -22f), new Vector2(1000f, 24f), 17, TextAnchor.MiddleCenter, AmberText)
@@ -272,54 +273,57 @@ namespace CloneZ
             rt.offsetMax = Vector2.zero;
         }
 
-        // Add a thin border on all four edges of a panel to give a subtle metal frame feel.
-        private static void AddBorder(RectTransform panel, Color color, float thickness = 3f)
+        // Add a faint worn edge strip to suggest years of use on the board.
+        private static void AddEdgeWear(RectTransform panel, Color color, float thickness = 2f)
         {
             if (panel == null) return;
-            // Top
-            var top = new GameObject("BorderTop");
+            // Top edge
+            var top = new GameObject("EdgeTop");
             var rtTop = top.AddComponent<RectTransform>();
             rtTop.SetParent(panel, false);
             rtTop.anchorMin = new Vector2(0f, 1f);
             rtTop.anchorMax = new Vector2(1f, 1f);
             rtTop.pivot = new Vector2(0.5f, 1f);
-            rtTop.anchoredPosition = Vector2.zero;
+            rtTop.anchoredPosition = new Vector2(0f, -1f);
             rtTop.sizeDelta = new Vector2(0f, thickness);
             var imgTop = top.AddComponent<Image>();
             imgTop.color = color;
             imgTop.raycastTarget = false;
-            // Bottom
-            var bottom = new GameObject("BorderBottom");
+
+            // Bottom edge
+            var bottom = new GameObject("EdgeBottom");
             var rtBottom = bottom.AddComponent<RectTransform>();
             rtBottom.SetParent(panel, false);
             rtBottom.anchorMin = new Vector2(0f, 0f);
             rtBottom.anchorMax = new Vector2(1f, 0f);
             rtBottom.pivot = new Vector2(0.5f, 0f);
-            rtBottom.anchoredPosition = Vector2.zero;
+            rtBottom.anchoredPosition = new Vector2(0f, 1f);
             rtBottom.sizeDelta = new Vector2(0f, thickness);
             var imgBottom = bottom.AddComponent<Image>();
             imgBottom.color = color;
             imgBottom.raycastTarget = false;
-            // Left
-            var left = new GameObject("BorderLeft");
+
+            // Left edge
+            var left = new GameObject("EdgeLeft");
             var rtLeft = left.AddComponent<RectTransform>();
             rtLeft.SetParent(panel, false);
             rtLeft.anchorMin = new Vector2(0f, 0f);
             rtLeft.anchorMax = new Vector2(0f, 1f);
             rtLeft.pivot = new Vector2(0f, 0.5f);
-            rtLeft.anchoredPosition = Vector2.zero;
+            rtLeft.anchoredPosition = new Vector2(1f, 0f);
             rtLeft.sizeDelta = new Vector2(thickness, 0f);
             var imgLeft = left.AddComponent<Image>();
             imgLeft.color = color;
             imgLeft.raycastTarget = false;
-            // Right
-            var right = new GameObject("BorderRight");
+
+            // Right edge
+            var right = new GameObject("EdgeRight");
             var rtRight = right.AddComponent<RectTransform>();
             rtRight.SetParent(panel, false);
             rtRight.anchorMin = new Vector2(1f, 0f);
             rtRight.anchorMax = new Vector2(1f, 1f);
             rtRight.pivot = new Vector2(1f, 0.5f);
-            rtRight.anchoredPosition = Vector2.zero;
+            rtRight.anchoredPosition = new Vector2(-1f, 0f);
             rtRight.sizeDelta = new Vector2(thickness, 0f);
             var imgRight = right.AddComponent<Image>();
             imgRight.color = color;
