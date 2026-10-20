@@ -836,7 +836,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 01:16 landed by hts-llm in 2.5 min: **Changed file**
 - [x] Add a “Check window” action to Assets/Scripts/World/Fixtures/HomeWindow.cs — in `Awake()` set `_checkAct = c => CheckWindow(c);`, add a private `void CheckWindow(InteractContext ctx)` that builds a short status string from `_open`, `_latched` and `_drawn` (e.g. “The window is open, latched, and the curtains are drawn.”) and calls `ctx.Notify` with it; then insert `into.Add(new InteractAction("Check window", _checkAct));` inside the `if (inside)` block of `GetActions` (after the curtain action). This gives the survivor a quick way to see the window’s current state without changing anything else.
   - 01:21 landed by hts-llm in 5.1 min: **Changes Made**
-- [ ] Append four new Kentucky‑winter themed trait entries to the `ProfessionCatalog.Traits` list in Assets/Scripts/Profile/ProfessionCatalog.cs; add them inside the `new List<TraitDef> { … }` initializer after the existing entries.
+- [x] Append four new Kentucky‑winter themed trait entries to the `ProfessionCatalog.Traits` list in Assets/Scripts/Profile/ProfessionCatalog.cs; add them inside the `new List<TraitDef> { … }` initializer after the existing entries.
   Use the style of the existing entry `T("strong", "Strong", 4, "Carry 20% more.", m => m.CarryCapacity *= 1.2f, "weak")`.
   The new traits should cover: frost‑bite resistance, fire‑starting ability, extra hauling strength, and a superstition that steadies nerves.
   Add:
@@ -845,6 +845,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `T("handy", "Handy", 2, "Carry capacity increases by 2 kg.", m => m.CarryBonusKg += 2f),`
   `T("superstitious", "Superstitious", 1, "You’re less likely to panic.", m => m.PanicRate *= 0.9f),`
   These entries will appear as selectable trait options with the quoted sentences shown to the player during character creation.
+  - 01:23 landed by hts-llm in 2 min: **Changed file**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/RaidTown.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
