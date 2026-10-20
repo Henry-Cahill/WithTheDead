@@ -415,10 +415,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 23:10 landed by 0htsserver in 2.5 min: **Changed file**
 - [x] Fix the zombie‑type roll in Assets/Scripts/Zombies/ZombieSpawner.cs (`RollType`) so that crawlers can still appear after the tough‑unlock wave; the current order makes the `FastShambler` check consume the whole `< 0.35` range before the crawler test, preventing crawlers from ever being chosen once `_wave >= CloneZConfig.ToughUnlockWave`.
   - 23:13 landed by 0htsserver in 3.1 min: **Changed file**: `Assets/Scripts/Zombies/ZombieSpawner.cs`
-- [ ] Add a small stamped metal “SAFE” plate to the gun‑safe body in Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method GunSafeBody.
+- [x] Add a small stamped metal “SAFE” plate to the gun‑safe body in Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method GunSafeBody.
   Create a thin box about 0.18 m × 0.03 m × 0.004 m (width × height × depth) positioned just in front of the door’s centre:
   `m.Box(new Vector3(0f, 1.62f, 0.285f), new Vector3(0.18f, 0.03f, 0.004f), Mt(Chrome));`
   Use the existing Chrome material (`Mt(Chrome)`) so the plate looks like a brushed‑metal emboss, giving the safe a period‑correct visual label without altering colliders, interaction points, or any other geometry.
+  - 23:18 landed by hts-llm in 6.1 min: **Changes made**
 - [ ] In Assets/Scripts/Rendering/IsoVisionShade.cs: Cache the per‑ray direction vectors in IsoVisionShade so they aren’t recomputed each Rebuild()
   Add a private static readonly Vector3[] `_rayDirs` field sized `Rays` and fill it in `Awake()` with
   `_rayDirs[i] = Quaternion.Euler(0f, i * (360f / Rays), 0f) * Vector3.forward;`

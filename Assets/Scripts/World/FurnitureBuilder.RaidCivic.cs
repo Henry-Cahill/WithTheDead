@@ -199,6 +199,7 @@ namespace CloneZ
             m.Box(new Vector3(0f, 1.5f, zc + t * 0.5f), new Vector3(0.7f, 0.02f, d - t), M(c * 0.8f));
             for (int i = 0; i < 2; i++)
                 if (Chance(rng, 0.75)) AmmoCan(m, rng, new Vector3(-0.17f + i * 0.34f, 1.51f, -0.04f), 90f + R(rng, -6f, 6f));
+            m.Box(new Vector3(0f, 1.62f, 0.285f), new Vector3(0.18f, 0.03f, 0.004f), Mt(Chrome));
             return c;
         }
 
