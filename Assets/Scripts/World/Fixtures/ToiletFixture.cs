@@ -32,7 +32,11 @@ namespace CloneZ
             "A grim reminder of lost kin lingers in the stale, damp air.",
             "The stale air tastes of rusted metal and forgotten promises.",
             "A fleeting hope of warmth rises with the steam of the cistern.",
-            "Even the water seems to laugh, tasting of rust and regret."
+            "Even the water seems to laugh, tasting of rust and regret.",
+            "A distant howl drifts in, reminding you of unseen dangers.",
+            "Steam rises from the cistern, a fleeting veil against the cold.",
+            "The porcelain glints faintly, a brief glimpse of civilization.",
+            "You hear the faint echo of your own breath, a solitary companion."
         };
 
         private HomeFurniture _host;

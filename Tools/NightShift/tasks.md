@@ -2478,7 +2478,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 09:56 landed by hts-llm in 2.8 min: **Changed**
 - [x] Reduce per‑second allocations in `HudQuestTracker.Update` (Assets/Scripts/Quests/QuestBook.cs) by reusing a `StringBuilder` and iterating the quest list without a `foreach`.
   - 09:59 landed by hts-llm in 2.7 min: **Changed files**
-- [ ] In Assets/Scripts/World/Fixtures/RadioFixture.cs: Add a “Tune to the previous station” action to RadioFixture.GetActions and implement its handler.
+- [x] In Assets/Scripts/World/Fixtures/RadioFixture.cs: Add a “Tune to the previous station” action to RadioFixture.GetActions and implement its handler.
+  - 10:05 landed by 1htsserver in 7.7 min: **Changes Made**
 - [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/GroundItemRenderer.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
@@ -2493,23 +2494,47 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Cylinder(new Vector3(r.xMin + 0.03f - 0.02f, 0.081f, r.center.y - r.height * 0.5f + 0.02f), 0.004f, 0.012f, 8, wood);`
   `m.Cylinder(new Vector3(r.xMin + 0.03f - 0.02f, 0.081f, r.center.y + r.height * 0.5f - 0.02f), 0.004f, 0.012f, 8, wood);`
   - 10:03 landed by hts-llm in 3.8 min: **Changes Made**
-- [ ] In Assets/Scripts/Core/SqliteSaveStore.cs: Fix `SqliteSaveStore.ReadPlayer` to initialise the player’s wound and inventory lists before adding to them, preventing a NullReferenceException when a saved game contains any wounds or items.
+- [x] In Assets/Scripts/Core/SqliteSaveStore.cs: Fix `SqliteSaveStore.ReadPlayer` to initialise the player’s wound and inventory lists before adding to them, preventing a NullReferenceException when a saved game contains any wounds or items.
   In `ReadPlayer`, after constructing the `PlayerSave p = new PlayerSave { … }`, insert:
   `p.Wounds = new List<WoundSave>();`
   `p.Items = new List<StackSave>();`
   This ensures the loops `p.Wounds.Add(...)` and `p.Items.Add(...)` operate on a valid list even when the DB has rows.
   With the fix, loading a save that includes wounds or inventory will no longer crash; the player will correctly regain wounds and items instead of the game aborting during load.
   No other code changes are required.
-- [ ] Add four small metal lanterns with faint flame lights to the roof of the drowned chapel landmark (Assets/Scripts/World/Zone/ZoneLandmarks.cs, method `DrownedChapel(SiteBuilder sb)`).
+  - 10:08 landed by 0htsserver in 5.7 min: **Changed file**
+- [x] Add four small metal lanterns with faint flame lights to the roof of the drowned chapel landmark (Assets/Scripts/World/Zone/ZoneLandmarks.cs, method `DrownedChapel(SiteBuilder sb)`).
   ‑ Place each lantern near a roof corner, e.g. relative to the existing call
   `sb.Roof.Box(new Vector3(0f, 4.2f, 0f), new Vector3(9.6f, 0.3f, 11.4f), ZoneKit.M(ZoneKit.WetWood));`
   ‑ Create a box `0.2 m × 0.1 m × 0.2 m` (`new Vector3(0.2f, 0.1f, 0.2f)`) at positions `new Vector3(±4.5f, 4.35f, ±5f)` plus a tiny jitter `ZoneKit.R(sb.Rng, -0.1f, 0.1f)` on X/Z.
   ‑ Use a metal colour `new Color(0.45f, 0.41f, 0.38f)` via `ZoneKit.M(...)`.
   ‑ Spawn a flame light at `pos + new Vector3(0f, 0.15f, 0f)` with colour `new Color(1f, 0.6f, 0.2f)`, range 2 m, intensity 0.4, size 0.05 m (`ZoneFlameLight.Spawn`).
   ‑ Keep colliders, interaction points and pivots unchanged; only add the new primitives (max 4 boxes) and associated flame lights.
-- [ ] In Assets/Scripts/Player/PlayerInteractor.cs: Cache the main camera in PlayerInteractor to avoid per‑frame `Camera.main` lookups
+  - 10:06 landed by hts-llm in 2.8 min: **Changes Made**
+- [x] In Assets/Scripts/Player/PlayerInteractor.cs: Cache the main camera in PlayerInteractor to avoid per‑frame `Camera.main` lookups
   In `Awake()` add `_cam = Camera.main;` after the existing `GetComponent` calls.
   In `Start()` (or after the existing context setup) also set `_cam = Camera.main` in case the camera isn’t yet present during Awake.
   Remove the line `if (_cam == null) _cam = Camera.main;` from `UpdateFocus()` so the cached field is always used.
   Keep the `_cam` field declaration unchanged; no other logic changes.
   This eliminates a per‑frame search of the scene hierarchy for the main camera, improving performance with no visible effect for the player.
+  - 10:10 landed by 1htsserver in 4.5 min: **Changes made**
+- [x] Add a “Turn it down” action to Assets/Scripts/World/Fixtures/RaidCivicRadio.cs so the survivor can lower the radio volume.
+  Insert a new InteractAction after the existing “Turn it up” line in GetActions :
+  `into.Add(new InteractAction("Turn it down", _softer).DisabledIf(_volume <= 0, "It won't go any quieter").DisabledIf(!near, TooFar));`
+  This uses the already‑defined _softer delegate, mirrors the “Turn it up” disabled conditions, and keeps all other logic unchanged.
+  The player will now see a “[Q] Turn it down” option when near the knobs, and the volume will decrement with the same notification text as Turn provides.
+  - 10:08 landed by hts-llm in 1.6 min: **Summary**
+- [x] Append four new flavour‑text strings to the `UseLines` array in Assets/Scripts/World/Fixtures/ToiletFixture.cs, preserving the existing entries and placing the new sentences after the current last line; the player will see one of these lines when they “use” the toilet.
+  - 10:11 landed by hts-llm in 3 min: **Changes made**
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Gadgets/Gadgets.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [~] Assets\Scripts\Player\PlayerController.cs(58,9): error CS0106: The modifier 'private' is not valid for this item. Multiple compilation errors
+  - 10:12 hts-llm made no changes: Compilation currently passes; error mentioned earlier must be outdated. No further errors.**Summary of changes**
+- [ ] Add a small chrome flush handle to the toilet tank in `FurnitureBuilder.Toilet` (Assets/Scripts/World/FurnitureBuilder.Utility.cs)
+  Quote the existing tank primitive: `m.Cylinder(new Vector3(0f, 0f, 0.02f), 0.15f, 0.3f, 10, G(w), Quaternion.identity, 1.25f);`
+  Insert a new box for the handle after that line:
+  `Vector3 handlePos = new Vector3(0.12f, 0.45f, 0.04f) + new Vector3((float)rng.NextDouble() * 0.01f - 0.005f, (float)rng.NextDouble() * 0.02f - 0.01f, 0f);`
+  `Vector3 handleSize = new Vector3(0.02f, 0.04f, 0.01f);`
+  `Quaternion handleRot = Quaternion.Euler(0f, (float)rng.NextDouble() * 10f - 5f, 0f);`
+  `m.Box(handlePos, handleSize, handleRot, Mt(Chrome));`
+  Result: a modest chrome lever protruding from the front of the tank, with slight random offset and rotation for visual variation, using the existing `Mt(Chrome)` material and keeping colliders/pivots unchanged.

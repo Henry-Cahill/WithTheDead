@@ -119,6 +119,7 @@ namespace CloneZ
             _controller = GetComponent<PlayerController>();
             _inventory = GetComponent<PlayerInventory>();
             Current = this;
+            _cam = Camera.main;
         }
 
         private void Start()
@@ -138,6 +139,7 @@ namespace CloneZ
             _ctx.Skills = GetComponent<PlayerSkills>();
             _ctx.Seat = GetComponent<PlayerSeat>();
             _ctx.Hydration = GetComponent<PlayerHydration>();
+            _cam = Camera.main;
         }
 
         private void OnEnable()
@@ -272,7 +274,7 @@ namespace CloneZ
         private void UpdateFocus()
         {
             Vector3 p = transform.position;
-            if (_cam == null) _cam = Camera.main;
+
             Vector2 cursor = CursorPoint();
             float pickRadius = Mathf.Max(40f, Screen.height * CloneZConfig.FixtureCursorPickFraction);
             Vector3 aim = _controller != null ? _controller.AimDirection : transform.forward;

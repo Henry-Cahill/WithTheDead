@@ -514,11 +514,14 @@ namespace CloneZ
                         Sickness = st.GetFloat(15),
                         AntibioticTimer = st.GetFloat(16),
                         PainkillerTimer = st.GetFloat(17),
-                        PainkillerRelief = st.GetFloat(18),
-                        BetaTimer = st.GetFloat(19),
-                        EquippedWeaponId = st.GetString(20),
-                        LoadedAmmo = st.GetInt(21),
-                    };
+                         PainkillerRelief = st.GetFloat(18),
+                         BetaTimer = st.GetFloat(19),
+                         EquippedWeaponId = st.GetString(20),
+                         LoadedAmmo = st.GetInt(21),
+                     };
+                // Ensure wound and item lists are initialised for older saves or when field initialisers are bypassed
+                p.Wounds = new List<WoundSave>();
+                p.Items = new List<StackSave>();
             }
             if (p == null) return null;
 

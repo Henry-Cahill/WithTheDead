@@ -146,6 +146,19 @@ namespace CloneZ
             sb.Collider(new Vector3(3f, 2f, -5.5f), new Vector3(3.5f, 4f, 0.5f));
             sb.Upper.Box(new Vector3(0f, 6f, -5.2f), new Vector3(1.6f, 4f, 1.6f), ZoneKit.M(stone));
             sb.Roof.Box(new Vector3(0f, 4.2f, 0f), new Vector3(9.6f, 0.3f, 11.4f), ZoneKit.M(ZoneKit.WetWood));
+            // Add four metal lanterns with flame lights on the roof corners
+            var metalColor = new Color(0.45f, 0.41f, 0.38f);
+            var flameColor = new Color(1f, 0.6f, 0.2f);
+            foreach (float xBase in new[] { -4.5f, 4.5f })
+            {
+                foreach (float zBase in new[] { -5f, 5f })
+                {
+                    var jitter = new Vector3(ZoneKit.R(sb.Rng, -0.1f, 0.1f), 0f, ZoneKit.R(sb.Rng, -0.1f, 0.1f));
+                    var pos = new Vector3(xBase, 4.35f, zBase) + jitter;
+                    sb.Solid.Box(pos, new Vector3(0.2f, 0.1f, 0.2f), ZoneKit.M(metalColor));
+                    ZoneFlameLight.Spawn(sb.Root, pos + new Vector3(0f, 0.15f, 0f), flameColor, 2f, 0.4f, 0.05f);
+                }
+            }
             for (int i = 0; i < 4; i++)
             {
                 sb.Solid.Box(new Vector3(-2f, 0.4f, -2.5f + i * 1.8f), new Vector3(2.2f, 0.8f, 0.5f), ZoneKit.M(ZoneKit.WetWood));
