@@ -632,12 +632,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   *The player’s presence and alive state rarely change; caching eliminates the hidden `FindObjectsOfType`/search that `Actor.LocalPlayer` performs each frame, while the game’s visual behaviour (dialogues, AI reactions, surrender handling) stays identical.
 - [x] Add a simple “Inspect door” action to Assets/Scripts/World/Fixtures/RaidDoor.cs that lets the survivor read the door’s current health.
   - 00:23 landed by 0htsserver in 2.3 min: **Changed file**
-- [ ] Append five new period‑correct distress call strings to the `private static readonly string[] GuardCalls` array in `Assets/Scripts/World/Fixtures/RaidCivicRadio.cs` so the survivor can hear more varied radio pleas.
+- [x] Append five new period‑correct distress call strings to the `private static readonly string[] GuardCalls` array in `Assets/Scripts/World/Fixtures/RaidCivicRadio.cs` so the survivor can hear more varied radio pleas.
   Quote the existing entry `"You give the post's call sign and ask for anyone at all. A voice comes back in pieces — “...say again... cannot...” — then nothing."` as the style reference.
   Each new entry must be a single string literal, beginning with an opening quote (Unicode “\u201C”), containing a full sentence spoken by a caller, followed by a brief narration after the closing quote, and ending with a period inside the string.
   Themes to cover: a wounded farmer trapped by a snowdrift, a desperate mother looking for her missing child, a mechanic reporting a broken generator, a volunteer warning of a spreading fire in a barn, and a lone trucker hearing eerie howls on the highway.
   Add the entries directly inside the `GuardCalls` initializer, preserving the trailing commas and line‑break formatting.
   Do not alter any other code, identifiers, or existing entries.
+  - 00:24 landed by 1htsserver in 3.1 min: **Summary**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/InventoryUIController.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.

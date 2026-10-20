@@ -115,6 +115,11 @@ namespace CloneZ
             "\u201CAny station, any station, this is Juniper Base\u2026\u201D You let go of the key. Only the hiss answers.",
             "You give the post's call sign and ask for anyone at all. A voice comes back in pieces \u2014 \u201C...say again... cannot...\u201D \u2014 then nothing.",
             "You key up and ask for help. Somebody keys back, breathes, and lets go without a word.",
+            "\u201CMy tractor's stuck, the snow's six feet deep, I'm freezing out here.\u201D You hear his ragged breath before the static devours the line.",
+            "\u201CPlease, my little boy ran into the woods and I can't find him.\u201D Your heart tightens as a sobbing whisper fades into the hiss.",
+            "\u201CGenerator #3 sputters and died, the lights are out across the block.\u201D A clank follows, then the channel goes silent.",
+            "\u201CThe barn's catching fire, the flames are leaping toward the grain store.\u201D Flames crackle faintly before the line bursts.",
+            "\u201CI’m on Highway 12, something's howling out there, I think I'm being followed.\u201D A low howl echoes, then the static swallows the transmission.",
         };
 
         private static readonly string[] CbCalls =
