@@ -167,7 +167,7 @@ namespace CloneZ
             for (int i = 0; i < next.Count; i++) total += next[i].Capacity;
             Inventory.MaxWeight = total;
 
-            if (!same && layout.Validate().Count > 0) _overflowPending = true;
+            if (layout.Validate().Count > 0) _overflowPending = true;
             Changed?.Invoke();
         }
 
