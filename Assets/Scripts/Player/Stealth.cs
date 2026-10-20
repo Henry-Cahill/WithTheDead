@@ -25,6 +25,9 @@ namespace CloneZ
         public float Noise01 { get; private set; }
 
         private Actor _actor;
+        private PlayerGear _gear;
+        private TimeOfDay _tod;
+        private StatMods _mods;
         private PlayerController _ctl;
         private PlayerStats _stats;
         private PlayerCombat _combat;
@@ -46,7 +49,9 @@ namespace CloneZ
                 Local = this;
                 HudStealth.Create(this);
             }
-            LighterOn = false;
+            _gear = PlayerGear.Instance;
+            _tod = TimeOfDay.Instance;
+            _mods = PlayerModifiers.Current;
         }
 
         /// <summary>Cleans up event subscriptions and clears the static instance.</summary>
@@ -67,7 +72,7 @@ namespace CloneZ
             Vector3 p = transform.position + Vector3.up * 1.2f;
 
             float ambient;
-            TimeOfDay tod = TimeOfDay.Instance;
+            TimeOfDay tod = _tod;
             if (tod != null && tod.IsNight) ambient = Mathf.Lerp(0.3f, 0.06f, SandboxSettings.Current.NightDarkness);
             else ambient = 0.85f;
             if (Shelter.IsSheltered(p)) ambient *= 0.45f;
@@ -89,7 +94,7 @@ namespace CloneZ
                 lamps += l.intensity * f * f * 0.35f;
             }
 
-            PlayerGear gear = PlayerGear.Instance;
+            PlayerGear gear = _gear;
             float own = 0f;
             if (gear != null && gear.FlashlightOn) own += 0.55f;
             if (LighterOn) own += 0.25f;
@@ -101,12 +106,12 @@ namespace CloneZ
             else if (_stats != null && _stats.Exertion == Exertion.Sprinting) vis = Mathf.Min(1f, vis + 0.15f);
             float fog = Mathf.Clamp01((75f - RenderSettings.fogEndDistance) / 60f);
             vis *= 1f - 0.35f * fog;
-            vis *= PlayerModifiers.Current.VisibilityMult;
+            vis *= _mods.VisibilityMult;
             Visibility01 = Mathf.Clamp01(vis);
             if (_actor != null) _actor.Visibility01 = Mathf.Max(0.05f, Visibility01);
 
             float noise = speed < 0.1f ? 0.03f : sneaking ? 0.15f : (_stats != null && _stats.Exertion == Exertion.Sprinting) ? 0.85f : 0.4f;
-            noise *= PlayerModifiers.Current.NoiseMult;
+            noise *= _mods.NoiseMult;
             Noise01 = Mathf.Clamp01(Mathf.Max(noise, _shotSpike));
         }
     }

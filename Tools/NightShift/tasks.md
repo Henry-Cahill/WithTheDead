@@ -2320,13 +2320,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Vector3 gaugePos = nozzlePos + nozzleRot * new Vector3(0f, 0f, nozzleLen * 0.5f + 0.02f);`
   `m.Ellipsoid(gaugePos, new Vector3(0.04f, 0.04f, 0.04f), Gs(new Color(0.20f, 0.60f, 0.80f)), 8, 4); // glass gauge`
   These 2 new primitives (one cylinder, one ellipsoid) use the existing `rng` for size/rotation variation, keep existing materials and colliders, and stay within the 12‑primitive limit.
-- [ ] Cache singleton lookups in Assets/Scripts/Player/Stealth.cs to avoid per‑frame property calls
+- [x] Cache singleton lookups in Assets/Scripts/Player/Stealth.cs to avoid per‑frame property calls
   Add three private fields (e.g. `_gear`, `_tod`, `_mods`) to store `PlayerGear.Instance`, `TimeOfDay.Instance` and `PlayerModifiers.Current` in `Start()` (or `Awake`).
   Replace every per‑frame use of `PlayerGear.Instance`, `TimeOfDay.Instance` and `PlayerModifiers.Current` with the cached fields.
   Update the ambient‑light block to use `_tod` instead of `TimeOfDay.Instance`.
   Update the gear‑light block to use `_gear` instead of `PlayerGear.Instance`.
   Update the final visibility/noise multipliers to use `_mods` instead of `PlayerModifiers.Current`.
   This removal of three static singleton lookups each Update reduces allocation‑free overhead without changing any visual or gameplay outcome.
+  - 09:13 landed by 0htsserver in 4.3 min: Implemented caching of frequently accessed singleton instances in **Stealth.cs**:
 - [x] In Assets/Scripts/World/Fixtures/SeatFixture.cs: Add an “Inspect seat” action to SeatFixture.GetActions that tells the survivor the seat’s comfort level when they are not already sitting
   Modify the `GetActions` method in Assets/Scripts/World/Fixtures/SeatFixture.cs
   After the line `into.Add(new InteractAction(_sitLabel, SitDown));` insert:
