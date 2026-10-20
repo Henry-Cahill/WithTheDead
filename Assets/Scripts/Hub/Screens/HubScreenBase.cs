@@ -33,6 +33,7 @@ namespace CloneZ
         protected sealed override void Build()
         {
             EnsureChrome();
+            _closed = false;
             _live.Clear();
             if (Tip != null) Tip.HideAll();
             if (NeedsCharacter && Character == null)
