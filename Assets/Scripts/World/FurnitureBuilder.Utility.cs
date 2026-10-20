@@ -322,6 +322,10 @@ namespace CloneZ
             Color w = new Color(0.86f, 0.86f, 0.84f);
             m.Box(new Vector3(0f, 0.6f, -0.24f), new Vector3(0.44f, 0.36f, 0.18f), G(w));
             m.Cylinder(new Vector3(0f, 0f, 0.02f), 0.15f, 0.3f, 10, G(w), Quaternion.identity, 1.25f);
+            Vector3 handlePos = new Vector3(0.12f, 0.45f, 0.04f) + new Vector3((float)rng.NextDouble() * 0.01f - 0.005f, (float)rng.NextDouble() * 0.02f - 0.01f, 0f);
+            Vector3 handleSize = new Vector3(0.02f, 0.04f, 0.01f);
+            Quaternion handleRot = Quaternion.Euler(0f, (float)rng.NextDouble() * 10f - 5f, 0f);
+            m.Box(handlePos, handleSize, handleRot, Mt(Chrome));
             m.Ellipsoid(new Vector3(0f, 0.38f, 0.06f), new Vector3(0.38f, 0.08f, 0.46f), G(w), 10, 4);
             m.Ellipsoid(new Vector3(0f, 0.41f, 0.06f), new Vector3(0.24f, 0.02f, 0.3f), M(new Color(0.3f, 0.32f, 0.3f)), 8, 3);
         }

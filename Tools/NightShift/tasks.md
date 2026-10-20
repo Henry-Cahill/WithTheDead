@@ -2530,7 +2530,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
 - [~] Assets\Scripts\Player\PlayerController.cs(58,9): error CS0106: The modifier 'private' is not valid for this item. Multiple compilation errors
   - 10:12 hts-llm made no changes: Compilation currently passes; error mentioned earlier must be outdated. No further errors.**Summary of changes**
-- [ ] Add a small chrome flush handle to the toilet tank in `FurnitureBuilder.Toilet` (Assets/Scripts/World/FurnitureBuilder.Utility.cs)
+- [x] Add a small chrome flush handle to the toilet tank in `FurnitureBuilder.Toilet` (Assets/Scripts/World/FurnitureBuilder.Utility.cs)
   Quote the existing tank primitive: `m.Cylinder(new Vector3(0f, 0f, 0.02f), 0.15f, 0.3f, 10, G(w), Quaternion.identity, 1.25f);`
   Insert a new box for the handle after that line:
   `Vector3 handlePos = new Vector3(0.12f, 0.45f, 0.04f) + new Vector3((float)rng.NextDouble() * 0.01f - 0.005f, (float)rng.NextDouble() * 0.02f - 0.01f, 0f);`
@@ -2538,6 +2538,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Quaternion handleRot = Quaternion.Euler(0f, (float)rng.NextDouble() * 10f - 5f, 0f);`
   `m.Box(handlePos, handleSize, handleRot, Mt(Chrome));`
   Result: a modest chrome lever protruding from the front of the tank, with slight random offset and rotation for visual variation, using the existing `Mt(Chrome)` material and keeping colliders/pivots unchanged.
+  - 10:15 landed by 1htsserver in 3.1 min: **Changes made**
 - [ ] In Assets/Scripts/Player/PlayerInventory.cs: Cache the singleton lookup of `PlayerModifiers.Current` in `PlayerInventory` to avoid a per‑frame `FindObjectByType`/allocation.
   Add a private field `private PlayerModifiers _modifiers;` initialized in `Awake()` (e.g. `_modifiers = PlayerModifiers.Current;`).
   Replace every use of `PlayerModifiers.Current` in this file (currently in `Update()`, `RebuildSections()` – both the `strengthMult` line and the capacity calculation – and any other occurrence) with `_modifiers`.
