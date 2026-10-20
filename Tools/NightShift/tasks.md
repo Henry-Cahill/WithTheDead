@@ -595,7 +595,8 @@ you want to see in game. Indent extra lines under a task to add detail.
 ### Auto-planned 2026-10-20: written by the night shift when the queue ran low (delete any you don't want)
 
 - [ ] Add two small rivet boxes to the backpack’s top tube in Assets/Scripts/Player/PlayerGearVisuals.cs, method BuildBackpack(ItemDef def), to give the pack a worn‑metal look.
-- [ ] In Assets/Scripts/World/CeilingVisibility.cs: Optimize CeilingVisibility — remove the unused `s_Applied` flag and simplify the per‑frame check in `LateUpdate` so the script only compares the current view state to the cached `s_Shown` value.
+- [x] In Assets/Scripts/World/CeilingVisibility.cs: Optimize CeilingVisibility — remove the unused `s_Applied` flag and simplify the per‑frame check in `LateUpdate` so the script only compares the current view state to the cached `s_Shown` value.
+  - 00:15 landed by 1htsserver in 3.3 min: **Changed file**
 - [ ] Modify Assets/Scripts/World/Fixtures/RaidCivicSink.cs by adding four to eight new sentences to the `ScrubLines` array in the `CivicSink` class.
   Append the entries after the existing two lines, preserving the current order and content.
   Use the style of the entry `"You scrub up the way the poster over the sink tells you to, step by step. Your hands come out pink and stinging‑clean."` as a reference.

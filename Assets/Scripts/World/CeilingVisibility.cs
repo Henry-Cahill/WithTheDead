@@ -15,7 +15,6 @@ namespace CloneZ
     {
         private static readonly List<Renderer> s_Renderers = new List<Renderer>(64);
         private static bool s_Shown;
-        private static bool s_Applied;
 
         /// <summary>Adds a ceiling renderer and puts it straight into the current view's state.</summary>
         public static void Register(Renderer r)
@@ -29,7 +28,7 @@ namespace CloneZ
         public static void Clear()
         {
             s_Renderers.Clear();
-            s_Applied = false;
+            // s_Applied removed - no need to reset
         }
 
         /// <summary>Number of registered ceiling renderers.</summary>
@@ -41,8 +40,7 @@ namespace CloneZ
         private void LateUpdate()
         {
             bool shown = ViewState.CeilingsVisible;
-            if (s_Applied && shown == s_Shown) return;
-            s_Applied = true;
+            if (shown == s_Shown) return;
             s_Shown = shown;
             for (int i = s_Renderers.Count - 1; i >= 0; i--)
             {
