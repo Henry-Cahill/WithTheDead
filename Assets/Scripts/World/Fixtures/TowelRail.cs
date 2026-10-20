@@ -106,6 +106,7 @@ private void Update()
             into.Add(new InteractAction("Dry yourself off", DryOff).Timed(CloneZConfig.TowelDrySeconds, "Drying off", HumanoidActivity.Use));
             into.Add(new InteractAction("Straighten the towel", Straighten));
             into.Add(new InteractAction("Inspect towel", Inspect));
+            into.Add(new InteractAction("Let towel dry", LetDry));
         }
 
         private void DryOff(InteractContext ctx)
@@ -136,6 +137,19 @@ private void Update()
             }
             _roll = 0f;
             ctx.Notify("You square the towel up on the rail and smooth it flat. There.");
+        }
+
+        private void LetDry(InteractContext ctx)
+        {
+            if (!IsDamp)
+            {
+                ctx.Notify("The towel is already dry.");
+                return;
+            }
+            // Speed up drying by setting the dry time to now.
+            _dryAt = TimeOfDay.Now;
+            ShowLook();
+            ctx.Notify("You give the towel some extra air, and it dries instantly.");
         }
 
         // New inspection action

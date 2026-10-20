@@ -3113,7 +3113,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   ` float prog = _skills.LevelProgress(s);`
   ` if (lvl != _skillCache[i].level) { _levelTexts[i].text = "Lv " + lvl; _skillCache[i].level = lvl; }`
   - 12:26 landed by 0htsserver in 2.1 min: **Changed file**
-- [ ] Add a “Let towel dry” action to Assets/Scripts/World/Fixtures/TowelRail.cs that lets the survivor speed‑up the towel’s drying when it is still damp.
+- [x] Add a “Let towel dry” action to Assets/Scripts/World/Fixtures/TowelRail.cs that lets the survivor speed‑up the towel’s drying when it is still damp.
+  - 12:32 landed by hts-llm in 7 min: **Changed files**
 - [x] Add a thin brass trim rail to the top edge of each drawer front in `FurnitureBuilder.DresserDrawer` (Assets/Scripts/World/FurnitureBuilder.Living.cs)
   Insert a new primitive after the two brass knob boxes:
   Create a box with size `new Vector3(0.94f, 0.008f, 0.004f)` (width matches the drawer front, thin rail) positioned at `new Vector3(0f, y + 0.1f, 0.215f)` (centered on the front, half‑height up from the front surface, slightly forward so it sits on the front face).
