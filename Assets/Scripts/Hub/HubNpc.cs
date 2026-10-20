@@ -193,6 +193,16 @@ namespace CloneZ
                         GameEvents.RaiseWorldEvent(transform.position, 10f, "music");
                     }));
                     break;
+                case HubNpc.Role.Keeper:
+                    into.Add(new InteractAction("Buy a drink (5 MG)", c =>
+                    {
+                        if (!Money.TrySpend(5, c.Inventory)) { c.Notify("You don't have 5 MG."); return; }
+                        c.Notify("You feel a warm surge.");
+                        GameEvents.RaiseSubtitle(Npc.Name, "Enjoy your drink.");
+                        Sfx.PlayUI(SfxIds.Cash);
+                        ProfileStore.Save();
+                    }));
+                    break;
                 default:
                     into.Add(new InteractAction("Chat", c => GameEvents.RaiseSubtitle(Npc.Name, "Mm.")));
                     break;

@@ -2107,7 +2107,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   The player’s view and gameplay remain unchanged because the same component is used; only the per‑frame GetComponent lookup is eliminated, reducing allocations and CPU cost.
   All other logic (aim‑down‑sights FOV adjustments, etc.) continues to read `_combat` as before.
   - 08:17 landed by hts-llm in 1.7 min: **Changed Files**
-- [ ] Add a “Buy a drink (5 MG)” action for the barkeep in Assets/Scripts/Hub/HubNpc.cs → `HubNpcTalk.GetActions`
+- [x] Add a “Buy a drink (5 MG)” action for the barkeep in Assets/Scripts/Hub/HubNpc.cs → `HubNpcTalk.GetActions`
   In the `switch (Npc.Kind)` block, insert a new `case HubNpc.Role.Keeper:` before the `default:` case.
   Inside this case add `into.Add(new InteractAction("Buy a drink (5 MG)", c =>` with the following lambda body:
   `if (!Money.TrySpend(5, c.Inventory)) { c.Notify("You don't have 5 MG."); return; }`
@@ -2116,6 +2116,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Sfx.PlayUI(SfxIds.Cash);`
   `ProfileStore.Save();`
   `});` and close the case with `break;`.
+  - 08:18 landed by 0htsserver in 1.3 min: Added a new “Buy a drink (5 MG)” interaction for the barkeep:
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/RaidBuilding.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
