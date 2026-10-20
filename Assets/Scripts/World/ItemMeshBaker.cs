@@ -62,8 +62,12 @@ namespace CloneZ
             ItemModelDesc desc = ItemModels.Describe(def)
                 ?? GeneratedItemModels.Describe(def)
                 ?? FallbackItemModel.Describe(def);
-            Baked baked = desc == null ? null : Bake(desc, def.Id, lod);
-            s_Cache[key] = baked;
+            Baked baked = null;
+            if (desc != null)
+                baked = Bake(desc, def.Id, lod);
+            // Only cache a result if we actually obtained a baked model.
+            if (baked != null)
+                s_Cache[key] = baked;
             return baked;
         }
 
