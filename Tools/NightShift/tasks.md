@@ -497,9 +497,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Insert the new strings before the closing `}` of the `Originals` initializer.
   Do not modify any other code, ordering, or identifiers.
   - 23:45 landed by hts-llm in 2.2 min: **Changed file**
-- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/SandboxSettings.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+- [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/SandboxSettings.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+  - 23:54 landed by 0htsserver in 11.5 min: **Summary of changes**
 - [x] Fix HubScreenBase so a screen can be reopened after it has been closed (Assets/Scripts/Hub/Screens/HubScreenBase.cs)
   In `Build()` the `_closed` flag is never reset, so after `OnClosed()` sets `_closed = true` the screen’s `Update()` method immediately returns, stopping live‑label updates and money refresh when the same screen instance is opened again.
   Add `_closed = false;` at the start of `Build()` (right after `EnsureChrome();`) to clear the closed state each time the screen is rebuilt.
