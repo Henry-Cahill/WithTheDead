@@ -29,7 +29,7 @@ namespace CloneZ
         private static readonly Color MenuButton = new Color(0.24f, 0.34f, 0.46f);
 
         private Font _font;
-        private float _shownAt;
+        private float _shownAt; private bool _frozen;
         private bool _leaving;
 
         /// <summary>Puts the report up for a finished raid (once; later calls return the open one).</summary>
@@ -87,11 +87,12 @@ namespace CloneZ
         private void LateUpdate()
         {
             if (_leaving) return;
-            Freeze();
+            if (!_frozen) Freeze();
         }
 
-        private static void Freeze()
+        private void Freeze()
         {
+            _frozen = true;
             Time.timeScale = 0f;
             UIState.GameplayBlocked = true;
             if (!Cursor.visible) Cursor.visible = true;
@@ -108,7 +109,7 @@ namespace CloneZ
         {
             if (_leaving) return;
             _leaving = true;
-            Time.timeScale = 1f;
+            _frozen = false;
             UIState.GameplayBlocked = false;
             if (nextRaid && ProfileStore.ActiveCharacter != null)
             {

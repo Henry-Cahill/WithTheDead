@@ -2616,7 +2616,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Each cap is a cylinder (≈ 0.04 m radius, 0.05 m height) positioned at the post’s top (y ≈ 2.6 m), matching the post’s X‑Z centre. The optional rust patch is a flat matte box (≈ 0.05‑0.08 m wide, 0.01 m high) placed at y ≈ 2.62 m.
   This adds up to 12 primitives total (one cylinder per post plus occasional rust box) and supplies period‑appropriate metal hardware and subtle wear, making the plank fence feel more lived‑in without altering colliders or interaction points.
   - 10:35 landed by 0htsserver in 2.3 min: **Summary of changes**
-- [ ] Optimize per‑frame freezing in `Assets/Scripts/Extraction/RaidSummaryUI.cs` by caching the freeze call.
+- [x] Optimize per‑frame freezing in `Assets/Scripts/Extraction/RaidSummaryUI.cs` by caching the freeze call.
   In `LateUpdate()` add a conditional so `Freeze()` runs only once (or only when needed) instead of every frame while the UI is open.
   Change the method from
   `private void LateUpdate()`
@@ -2625,6 +2625,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Freeze();`
   `}`
   to
+  - 10:38 landed by hts-llm in 3.6 min: Implemented a per‑frame freeze optimization in **RaidSummaryUI.cs**:
 - [x] Add a “Listen to door” action to Assets/Scripts/World/Fixtures/RaidDoor.cs by extending GetActions so the survivor can get a textual cue about the door’s condition.
   In GetActions after the existing “Inspect door” entry, insert:
   `into.Add(new InteractAction("Listen to door", ctx => {`
