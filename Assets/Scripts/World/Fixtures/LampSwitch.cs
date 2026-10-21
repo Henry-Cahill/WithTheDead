@@ -51,6 +51,8 @@ namespace CloneZ
             into.Add(new InteractAction(on ? "Turn off the lamp" : "Turn on the lamp", c => Flip(c, !on)));
             // Secondary inspect action
             into.Add(new InteractAction("Inspect lamp", Inspect));
+            // New secondary action to check bulb status
+            into.Add(new InteractAction("Check bulb", CheckBulb));
             // New secondary action to check power status
             into.Add(new InteractAction("Check power", CheckPower));
         }
@@ -65,6 +67,12 @@ namespace CloneZ
         private void CheckPower(InteractContext ctx)
         {
             ctx.Notify(PowerGrid.HousePowered ? "The house has power." : "The house is without power.");
+        }
+
+        // Notifies whether the lamp's bulb is burnt out.
+        private void CheckBulb(InteractContext ctx)
+        {
+            ctx.Notify(_lamp.DeadBulb ? "The bulb is burnt out." : "The bulb looks fine.");
         }
 
         private void Flip(InteractContext ctx, bool on)
