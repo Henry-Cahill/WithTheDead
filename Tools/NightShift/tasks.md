@@ -5213,3 +5213,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   The action should use the existing Turn and SetDoor methods, so no new methods or UI screens are needed.
   When selected the player hears the mixer and door noises (via MakeNoise inside those methods) and the door snaps shut, giving a quick way to secure the shower without leaving the stall.
   - 00:53 landed by 1htsserver in 2.8 min: **Summary**
+- [ ] Modify `Assets/Scripts/World/Map/KentuckyMap.cs` – in the `BuildBuildings(Site site)` method, add a small wooden mailbox prop for residential footprints by inserting the following code block inside the loop that processes each `Footprint f` (after the building walls are created):
+- [ ] Add a tiny brass control knob to each stove burner in `Assets/Scripts/World/FurnitureBuilder.Home.cs` → `Stove` method
+  Insert after the existing burner‑ring cylinders (the call `m.Cylinder(new Vector3(x, 0.93f, z), 0.1f, 0.012f, 10, M(Black));`).
+  For each `i` in the burner loop, add a knob primitive:
+  `m.Cylinder(new Vector3(x, 0.945f, z), 0.015f, 0.01f, 6, Mt(Brass), Yaw(R(rng, -10f, 10f)));`
+  The knob is a 1 cm‑high brass cylinder (radius 1.5 cm) placed 2 cm above the burner surface, with a slight random twist for visual variation.
+  Uses the existing `Brass` material via `Mt(Brass)` and the deterministic `rng` already passed to the method.
+  No new colliders or interaction points are added; the total added primitives (4 knobs) stay well under the ~12‑primitive limit.
