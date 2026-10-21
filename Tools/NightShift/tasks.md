@@ -5990,3 +5990,12 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Extend the “run‑type” description list in Assets/Scripts/Hub/Screens/ServiceScreens.cs so the player sees additional, period‑appropriate mission flavours when choosing a raid.
   Step 1: File `Assets/Scripts/Hub/Screens/ServiceScreens.cs`, class `DeployScreen`, method `BuildContent`. Locate the line `string[] kinds = { "Your runner (everything carried is at risk)", "Scavenger run (borrowed kit, nothing to lose)", "Open Zone (no clock: stay as long as you last)", "Hunter (play one of the things in the dark)", "Co‑op (join a host's raid)" };` Add the new entries after the last quoted string, keeping the same comma‑separated format.
   Step 2: Insert the following four new entries (each a whole sentence that fits the 1993‑rural‑Kentucky vibe): `"Supply courier — deliver food and firewood to the out‑post.",` `"Rescue mission — bring a trapped survivor back to safety.",` `"Artifact hunt — track down a priceless relic before the zone collapses.",` `"Medical aid run — ferry bandages and antibiotics to the field clinic."`
+- [ ] Add a deterministic road colour accessor to Assets/Scripts/World/Map/MapGeometry.cs so that road polygons can receive a period‑appropriate hue per OSM id, matching the existing building and sidewalk systems.
+  In class `MapGeometry`, after the existing `GetSidewalkColor(int osmId)` method, insert a new public static method `GetRoadColor(int osmId)` that mirrors the logic of `GetSidewalkColor` but uses the `kRoadPalette` array.
+  Implementation should be:
+  `public static Color GetRoadColor(int osmId)`
+  `{`
+  `int idx = (osmId.GetHashCode() & 0x7fffffff) % kRoadPalette.Length;`
+  `return kRoadPalette[idx];`
+  `}`
+  The player will now see road surfaces coloured with one of the four faded asphalt / gravel / dirt‑road / concrete shades, varying deterministically per road OSM id, giving the map a more hand‑crafted, period‑appropriate look.
