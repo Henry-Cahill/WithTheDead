@@ -4779,7 +4779,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `new Vector3(building.Middle.x, roofY, building.Middle.y),`
   `new Vector3(building.Size, SnowDepth, building.Size),`
   `Materials.Snow);` – using the already‑existing snow material (`Materials.Snow`).
-- [ ] Add a thin wooden “rope‑tie” between the fence posts built in the `case 1:` block of `EdgeSegment` in Assets/Scripts/World/RaidMapBuilder.Edge.cs
+- [x] Add a thin wooden “rope‑tie” between the fence posts built in the `case 1:` block of `EdgeSegment` in Assets/Scripts/World/RaidMapBuilder.Edge.cs
   In the post‑creation loop (`for (float x = -len * 0.5f; x <= len * 0.5f + 0.01f; x += 2.2f)`) insert a small matte box that hangs between each post, giving the wooden fence a period‑correct binding detail.
   Use a dark‑brown colour matching the fence wood, e.g. `new Color(0.28f, 0.22f, 0.18f)`.
   Add the primitive right after the cap is placed:
+  - 22:43 landed by 1htsserver in 2.1 min: **Summary**
