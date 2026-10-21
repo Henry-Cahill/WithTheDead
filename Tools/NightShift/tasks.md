@@ -4221,3 +4221,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   The action only reports the current `_volume`; it does not modify any other state.
   Keep all existing volume‑step actions (`Turn it up`, `Turn it down`) unchanged.
   No other files need to be edited.
+- [ ] Modify `KentuckyMap.Enterable` in Assets/Scripts/World/Map/KentuckyMap.Buildings.cs to add a simple front porch/stoop for residential buildings, using existing helpers and keeping colliders aligned.
+  Declare local variables `float doorYaw = 0f;` and `Vector2 doorOutward = Vector2.zero;` at the start of the method.
+  Inside the `if (i == door)` block, assign `doorYaw = yaw;` and `doorOutward = outward;` right after `doorPoint` is set.
+  After the wall‑building loop, add:
+  `if (door >= 0 && (b.kind == \"house\" || b.kind == \"trailer\"))`
+  `{`
+  `Vector3 porchCenter = To3(doorPoint + doorOutward * 0.4f, 0.1f);`
+  `Vector3 porchSize = new Vector3(1.5f, 0.2f, 0.8f);`
+  `site.Town.Out.Solid(porchCenter).Box(porchCenter, porchSize, doorYaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));`
