@@ -6074,11 +6074,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Step 5: File `Assets/Scripts/World/StarterHome.Windows.cs`, method `WindowFittings`. After creating the two latch renderers (`Renderer latchShut = …; Renderer latchOpen = …;`) add a tiny brass wear mark on each latch to emphasise age. Use the same `brassCap` material already defined earlier: `// subtle brass wear mark on latch levers` `float wearSize = 0.003f;` `m.Box(f.P(f.Mid + 0.01f, meet + 0.05f, 0f), f.Size(wearSize, wearSize, 0.002f), brassCap);` (Place the line after the two `WindowLever` calls and before the curtain loop.)
   Done when: The player sees each starter‑home window with a modest stone sill protruding below the opening, a light iron grille dividing the lower glass pane, a uniquely tinted pane of glass per window, a small brass knob at the tip of each latch lever, and a faint brass wear spot on each latch – all built from code‑generated primitives using existing materials, with no new assets or runtime logic introduced. The existing window functionality, colliders, and interaction points remain unchanged.
   - 09:20 landed by 1htsserver in 26.9 min: Implemented all requested visual enhancements for starter‑home windows:
-- [ ] Cache the weapon build only when it can change instead of every frame in `PlayerCombat.Update` (Assets/Scripts/Player/PlayerCombat.cs)
+- [x] Cache the weapon build only when it can change instead of every frame in `PlayerCombat.Update` (Assets/Scripts/Player/PlayerCombat.cs)
   Remove the call to `UpdateBuildCache();` that currently runs each frame inside the `if (EquippedFirearm != null)` block.
   The build is already refreshed in `EquipFirearm`, `TryReload`, `FireFirearm` (both at start and after firing) and `SwitchAmmo`, so eliminating the per‑frame call avoids a needless null‑check and possible `Ballistics.Build` call each tick.
   No gameplay‑visible change: the build still updates immediately after any action that can alter it (equip, reload, fire, ammo switch).
   This reduces per‑frame work and GC pressure without affecting any player‑visible behavior.
+  - 10:06 landed by 0htsserver in 9.5 min: Implemented the requested performance improvement by **removing the per‑frame `UpdateBuildCache()` call** inside `PlayerCombat.Update` (line
 - [x] In Assets/Scripts/World/Map/KentuckyMap.Ground.cs edit the `BuildWaterAndLots` method: for every parking‑lot polygon add a thin white border line a few centimetres above the asphalt to look like period‑correct painted lot markings.
   Create a local white matte surf: `var lineSurf = DecorPalette.Matte(new Color(0.9f, 0.9f, 0.9f));`
   Copy the inside‑polygon points, close the loop (`var border = new List<Vector2>(inside); border.Add(inside[0]);`)

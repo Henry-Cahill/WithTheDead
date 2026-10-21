@@ -118,7 +118,6 @@ namespace CloneZ
 
             if (EquippedFirearm != null)
             {
-                UpdateBuildCache();
                 AimingDownSights = ViewState.MouseLook && rightHeld;
                 if (AimingDownSights && GameInput.Held(GameAction.HoldBreath)) _stats.TryConsumeEndurance(0.12f * Time.deltaTime);
                 Keyboard kb = Keyboard.current;
