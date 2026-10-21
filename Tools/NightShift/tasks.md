@@ -4830,11 +4830,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   *Result in‑game:* When the world is clear, no fog is rendered; the sky and distant terrain become fully visible, matching the intended 1993 winter Kentucky setting. All other fog‑related transitions (overcast, rain, snow, etc.) continue to work unchanged.
   *What stays:* All other calculations, the cached‑fog optimisation, and the linear distance lerp logic remain exactly as written.
   - 23:01 landed by 1htsserver in 2.5 min: **Changed file**
-- [ ] In Assets/Scripts/Player/PlayerGearVisuals.cs: Cache the PlayerGear reference instead of calling GetComponent each frame in PlayerGearVisuals.LateUpdate, eliminating the per‑frame lookup.
+- [x] In Assets/Scripts/Player/PlayerGearVisuals.cs: Cache the PlayerGear reference instead of calling GetComponent each frame in PlayerGearVisuals.LateUpdate, eliminating the per‑frame lookup.
   In Awake the field _gear is already set; move the null‑check to OnEnable so the component is fetched only once when the object becomes active.
   Modify LateUpdate to remove the line `if (_gear == null) _gear = GetComponent<PlayerGear>();` and rely on the cached _gear value.
   Add a similar null‑check in OnEnable (e.g. `if (_gear == null) _gear = GetComponent<PlayerGear>();`) to handle the rare case the component appears after Awake.
   The player’s gear visuals continue to update correctly; the per‑frame GetComponent call (which allocates a temporary array internally) is eliminated, reducing GC pressure and improving frame‑time performance.
+  - 23:02 landed by hts-llm in 2.4 min: **Changes made**
 - [ ] In Assets/Scripts/World/Fixtures/LightSwitch.cs: Add a “Check power” action to `LightSwitch.GetActions` that tells the survivor whether the house’s electricity is currently on, using the existing `PowerGrid.HousePowered` flag and `LightingFixtures.NothingHappens()` for the off case.
   Insert `into.Add(new InteractAction("Check power", c => CheckPower(c)));` right after the “Toggle all lights …” entry.
   Add a private method `CheckPower(InteractContext ctx)` inside `LightSwitch` that does: `ctx.Notify(PowerGrid.HousePowered ? "The house still has power." : LightingFixtures.NothingHappens());`.

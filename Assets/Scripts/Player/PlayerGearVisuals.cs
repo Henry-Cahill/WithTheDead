@@ -107,6 +107,8 @@ namespace CloneZ
 
         private void OnEnable()
         {
+            // Ensure the PlayerGear component is cached; Awake may have run before this object became active.
+            if (_gear == null) _gear = GetComponent<PlayerGear>();
             Subscribe();
             _dirty = true;
         }
@@ -144,8 +146,7 @@ namespace CloneZ
 
         private void LateUpdate()
         {
-            if (!EnsureRig()) return;
-            if (_gear == null) _gear = GetComponent<PlayerGear>();
+            // _gear is cached in Awake/OnEnable; no per-frame lookup needed
 
             bool carried = _gear != null && _gear.HasFlashlight;
             if (carried != _torchShown) _dirty = true;
