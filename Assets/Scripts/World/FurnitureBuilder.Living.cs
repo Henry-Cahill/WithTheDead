@@ -151,6 +151,18 @@ namespace CloneZ
                 m.CylinderX(new Vector3(s * 0.375f, 0.62f, -0.02f), 0.1f, 0.82f, 8, M(c * 0.95f), 90f);
             }
             m.Box(new Vector3(0f, 0.925f, -0.355f), new Vector3(0.34f, 0.012f, 0.16f), Quaternion.Euler(-10f, 0f, 0f), M(new Color(0.92f, 0.90f, 0.84f)));
+            // Thin walnut trim rail around the seat perimeter
+            m.Box(new Vector3(0f, 0.245f, 0f), new Vector3(0.94f, 0.01f, 0.78f), M(Walnut));
+            // Brass button tuft at seat centre
+            m.Cylinder(new Vector3(0f, 0.255f, 0f), 0.015f, 0.018f, 8, Mt(Brass));
+            // Left arm rolled cap
+            m.Cylinder(new Vector3(-0.375f, 0.62f, 0f), 0.08f, 0.018f, 8, M(c * 0.95f));
+            // Right arm rolled cap
+            m.Cylinder(new Vector3(0.375f, 0.62f, 0f), 0.08f, 0.018f, 8, M(c * 0.95f));
+            // Leather‑tone strap on the back of the chair
+            m.Box(new Vector3(-0.22f, 0.62f, -0.31f), new Vector3(0.04f, 0.15f, 0.005f), M(new Color(0.52f, 0.34f, 0.26f)));
+            // Subtle wear notch on backrest
+            m.Box(new Vector3(0f, 0.71f, -0.31f), new Vector3(0.59f, 0.02f, 0.02f), M(new Color(0.10f, 0.10f, 0.10f)));
         }
 
         /// <summary>A small portable CRT television (0.44 wide, 0.4 deep, 0.4 high to its handle, rabbit ears above;
