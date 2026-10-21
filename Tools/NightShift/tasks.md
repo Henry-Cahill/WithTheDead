@@ -5193,3 +5193,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   Current code only does: `if (!lit && _bulb != null && !_bulb.forceRenderingOff) _bulb.forceRenderingOff = true;` which never restores the renderer.
   After the fix a lamp that is switched off (or waiting for dusk) will correctly show its bulb again once it turns on, matching player expectations.
   No other fields or behavior need to change.
+- [ ] Add a subtle oil‑stain patch on the stainless‑steel deck of the kitchen sink (Assets/Scripts/World/FurnitureBuilder.Kitchen.cs → `SinkUnit` method)
+  Inside the “stainless deck with its ribbed drainer” block, after the `for (int i = 0; i < 7; i++) …` loop, insert a conditional that creates a small darkened box on the top of the deck;
+  Use the existing steel material (`Mt(Steel)`) tinted 20 % darker (`Mt(Steel * 0.8f)`) for the stain;
+  Position the box at the deck centre, slightly above the deck surface: `new Vector3(0f, SinkDeckY + 0.001f, 0f)`;
+  Size the patch to roughly a spill: `new Vector3(0.08f, 0.004f, 0.02f)` (≈ 8 cm × 0.4 cm × 2 cm);
+  Guard it with `if (Chance(rng, 0.25f))` so it appears on about a quarter of generated kitchens, using the same deterministic `rng` already passed to the method.
