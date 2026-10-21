@@ -5035,12 +5035,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Re‑use the existing `hull` colour, darkened (`hull * 0.8f`) for a worn‑metal look; no extra colliders or interaction points are needed.
   This adds only one primitive and fits within the current builder method without altering other geometry.
   - 23:59 landed by 1htsserver in 1.4 min: **Summary**
-- [ ] Add a low‑battery warning toast to Drone.Fly in Assets/Scripts/Gadgets/Gadgets.cs
+- [x] Add a low‑battery warning toast to Drone.Fly in Assets/Scripts/Gadgets/Gadgets.cs
   Declare a new private float field `private float _lastBatteryWarn = -1f;` in the Drone class (near the other private fields).
   Inside `public void Fly(Vector2 move, float lift, float yawDelta, float dt)`, after the line `Battery01 = Mathf.Max(0f, Battery01 - dt / BatterySeconds);` insert:
   `if (Battery01 <= 0.1f && _lastBatteryWarn > 0.1f) GameEvents.RaiseToast("Drone battery low – land soon.");`
   `_lastBatteryWarn = Battery01;`
   This gives players a clear on‑screen cue when a drone’s charge drops below 10 %, improving situational awareness without altering any existing mechanics.
+  - 00:13 landed by 0htsserver in 13.6 min: **Changed files**
 
 ### Auto-planned 2026-10-21: written by the night shift when the queue ran low (delete any you don't want)
 
