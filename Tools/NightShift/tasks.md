@@ -4834,3 +4834,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Modify LateUpdate to remove the line `if (_gear == null) _gear = GetComponent<PlayerGear>();` and rely on the cached _gear value.
   Add a similar null‑check in OnEnable (e.g. `if (_gear == null) _gear = GetComponent<PlayerGear>();`) to handle the rare case the component appears after Awake.
   The player’s gear visuals continue to update correctly; the per‑frame GetComponent call (which allocates a temporary array internally) is eliminated, reducing GC pressure and improving frame‑time performance.
+- [ ] In Assets/Scripts/World/Fixtures/LightSwitch.cs: Add a “Check power” action to `LightSwitch.GetActions` that tells the survivor whether the house’s electricity is currently on, using the existing `PowerGrid.HousePowered` flag and `LightingFixtures.NothingHappens()` for the off case.
+  Insert `into.Add(new InteractAction("Check power", c => CheckPower(c)));` right after the “Toggle all lights …” entry.
+  Add a private method `CheckPower(InteractContext ctx)` inside `LightSwitch` that does: `ctx.Notify(PowerGrid.HousePowered ? "The house still has power." : LightingFixtures.NothingHappens());`.
+  No existing fields, constants, or UI screens are changed; the new action reuses `PowerGrid`, `LightingFixtures`, and `InteractContext`.
+  This provides immediate feedback when the grid is down without affecting toggle state.
+  Place the new method after `Inspect` (or before `CaptureState`) to keep class layout tidy.
+  All current behavior of flipping, toggling, and inspecting remains unchanged.
