@@ -5570,7 +5570,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Call `site.Overhead.At(snowPos).Box(snowPos, snowSize, rot, snowMat);` – no collider needed.
   This adds a realistic snow‑covered eave to each residential building, matching the 1993 winter setting while keeping existing geometry and colliders unchanged.
   - 02:51 landed by hts-llm in 2.1 min: **Changes made**
-- [ ] Add four tiny brass corner caps to the headboard in `FurnitureBuilder.BedFrame` (Assets/Scripts/World/FurnitureBuilder.Living.cs)
+- [x] Add four tiny brass corner caps to the headboard in `FurnitureBuilder.BedFrame` (Assets/Scripts/World/FurnitureBuilder.Living.cs)
   After the headboard box `m.Box(new Vector3(0f, 0.55f, -l * 0.5f + 0.03f), new Vector3(w + 0.06f, 1.1f, 0.06f), M(c * 1.05f));`
   Create four 0.02 m cubes (`new Vector3(0.02f, 0.02f, 0.02f)`) with material `Mt(Brass)` to sit at the top‑front‑left, top‑front‑right, top‑back‑left and top‑back‑right corners of the headboard.
   Positions (relative to the headboard centre):
@@ -5579,6 +5579,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `new Vector3( (w + 0.06f) * 0.5f - 0.01f, 0.55f + 0.55f - 0.01f, -l * 0.5f + 0.03f - 0.03f + 0.01f )` – back‑right
   `new Vector3(-(w + 0.06f) * 0.5f + 0.01f, 0.55f + 0.55f - 0.01f, -l * 0.5f + 0.03f - 0.03f + 0.01f )` – back‑left
   These caps give the wooden headboard a period‑correct brass‑nail finish without affecting colliders or interaction points.
+  - 02:53 landed by hts-llm in 2.3 min: **Changed file**
 - [ ] Fix HubNpc Spawn Y‑position handling in Assets/Scripts/Hub/HubNpc.cs
   In `HubNpc.Spawn` the line `go.transform.position = new Vector3(position.x, role == Role.Musician ? 0.24f : 0f, position.z);` forces every NPC (except musicians) to Y = 0, discarding the `position.y` that callers supply. This makes hub NPCs sink into the ground on raised terrain or hover above it on lower ground, breaking immersion.
   Change the line to keep the caller‑provided height:
