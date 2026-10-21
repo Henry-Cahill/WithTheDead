@@ -145,6 +145,8 @@ namespace CloneZ
                 m.Box(new Vector3(x, 0.96f, 0.215f), new Vector3(0.46f, 1.68f, 0.02f), M(c));
                 // Add a small metal pull-handle on the front of each locker door for visual grip.
                 m.Box(new Vector3(x, 1.25f, 0.235f), new Vector3(0.02f, 0.12f, 0.005f), Mt(Chrome));
+                // Add a thin metal hinge‑plate to the locker door for period‑correct detail.
+                m.Box(new Vector3(x - 0.025f, 1.25f, 0.235f), new Vector3(0.004f, 0.12f, 0.006f), Mt(Chrome));
                 // Add tiny black rivet details on the locker door front for industrial wear.
                 for (int r = 0; r < 3; r++)
                 {

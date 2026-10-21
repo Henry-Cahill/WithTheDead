@@ -5501,9 +5501,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   No other code changes; colliders, geometry and existing palettes stay unchanged.
   After this change, side‑walk meshes built from map data will render with subtle colour variety instead of a single flat tone, giving the raid town a more hand‑painted look.
   - 02:28 landed by 1htsserver in 2.2 min: All changes compile successfully.Implemented deterministic sidewalk colour support:
-- [ ] Add a thin metal hinge‑plate to each closed locker door in `Assets/Scripts/World/FurnitureBuilder.cs` → `FurnitureBuilder.LockerBank(RaidMesh m, System.Random rng, int count, Color body)` so the lockers show a period‑correct hinge detail.
+- [x] Add a thin metal hinge‑plate to each closed locker door in `Assets/Scripts/World/FurnitureBuilder.cs` → `FurnitureBuilder.LockerBank(RaidMesh m, System.Random rng, int count, Color body)` so the lockers show a period‑correct hinge detail.
   After the line that adds the pull‑handle (`m.Box(new Vector3(x, 1.25f, 0.235f), new Vector3(0.02f, 0.12f, 0.005f), Mt(Chrome));`) insert a new box representing a hinge plate.
   Position it 0.025 m left of the handle, same height, and flush with the door front: `new Vector3(x - 0.025f, 1.25f, 0.235f)`.
   Size it as a thin vertical strip: `new Vector3(0.004f, 0.12f, 0.006f)`.
   Use the same chrome metal surface: `Mt(Chrome)`.
   This adds up to one extra primitive per locker door and keeps colliders, interaction points and pivots unchanged.
+  - 02:30 landed by 0htsserver in 2 min: **Changed file**
