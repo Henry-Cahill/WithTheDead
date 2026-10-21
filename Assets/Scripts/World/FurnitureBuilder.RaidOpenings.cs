@@ -148,13 +148,31 @@ namespace CloneZ
             {
                 RaidMesh m = pass == 0 ? open : drawn;
                 m.Box(l.P((r0 + r1) * 0.5f, rodY, rodOff), l.Size(r1 - r0, 0.024f, 0.024f), brass);
-                m.Ellipsoid(l.P(r0, rodY, rodOff), new Vector3(0.045f, 0.045f, 0.045f), brass, 6, 4);
-                // Add short brass hook extending outward from left finial
+                // Central brass knob (adjustable height)
+                m.CylinderX(l.P((r0 + r1) * 0.5f, rodY + 0.015f, rodOff), 0.006f, 0.02f, 10, brass, 0f);
+                // Hook dimensions for finial hooks
                 float hookDepth = side * (face + 0.075f + 0.025f);
                 float hookLen = 0.04f;
                 float hookRad = 0.006f;
+                m.Ellipsoid(l.P(r0, rodY, rodOff), new Vector3(0.045f, 0.045f, 0.045f), brass, 6, 4);
+                // Left brass eyelet for tie‑back
+                float leftEyePos = r0 + 0.12f; // offset a little inward from finial
+                m.CylinderX(l.P(leftEyePos, rodY, rodOff), 0.004f, 0.008f, 10, brass, 0f);
+                // Left fabric tie‑back strip
+                Vector3 leftStripPos = l.P(leftEyePos, rodY - 0.02f, rodOff + side * (face + 0.045f));
+                m.Box(leftStripPos, new Vector3(0.04f, 0.008f, 0.004f), M(fabric * 0.75f));
+                // Left eyelet washer
+                m.Box(l.P(leftEyePos, rodY - 0.004f, rodOff), new Vector3(0.008f, 0.001f, 0.008f), brass);
+                // Right brass eyelet for tie‑back
+                float rightEyePos = r1 - 0.12f;
+                m.CylinderX(l.P(rightEyePos, rodY, rodOff), 0.004f, 0.008f, 10, brass, 0f);
+                // Right fabric tie‑back strip
+                Vector3 rightStripPos = l.P(rightEyePos, rodY - 0.02f, rodOff + side * (face + 0.045f));
+                m.Box(rightStripPos, new Vector3(0.04f, 0.008f, 0.004f), M(fabric * 0.75f));
+                // Right eyelet washer
+                m.Box(l.P(rightEyePos, rodY - 0.004f, rodOff), new Vector3(0.008f, 0.001f, 0.008f), brass);
+                // Add short brass hook extending outward from left finial
                 m.CylinderX(l.P(r0, rodY, hookDepth), hookRad, hookLen, 10, brass, 0f);
-                m.Ellipsoid(l.P(r1, rodY, rodOff), new Vector3(0.045f, 0.045f, 0.045f), brass, 6, 4);
                 // Add short brass hook extending outward from right finial
                 m.CylinderX(l.P(r1, rodY, hookDepth), hookRad, hookLen, 10, brass, 0f);
             }

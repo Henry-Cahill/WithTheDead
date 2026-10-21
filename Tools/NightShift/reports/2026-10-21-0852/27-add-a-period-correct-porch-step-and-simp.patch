@@ -1,0 +1,118 @@
+diff --git a/Assets/Scripts/World/Map/KentuckyMap.Buildings.cs b/Assets/Scripts/World/Map/KentuckyMap.Buildings.cs
+index 0c01926e..3f64e77d 100644
+--- a/Assets/Scripts/World/Map/KentuckyMap.Buildings.cs
++++ b/Assets/Scripts/World/Map/KentuckyMap.Buildings.cs
+@@ -122,6 +122,7 @@ private static void BuildBuildings(Site site)
+                     var mesh = site.Town.Out.Solid(pos);
+                     DecorProps.Mailbox(mesh, rng, false);
+                 }
++                BuildPorch(f, site);
+                 }
+ 
+         }
+diff --git a/Assets/Scripts/World/Map/KentuckyMap.cs b/Assets/Scripts/World/Map/KentuckyMap.cs
+index 4784dcfa..d58b73cc 100644
+--- a/Assets/Scripts/World/Map/KentuckyMap.cs
++++ b/Assets/Scripts/World/Map/KentuckyMap.cs
+@@ -23,6 +23,12 @@ public static partial class KentuckyMap
+         private const float SidewalkWidth = 1.5f; // modest concrete sidewalk width
+         private const float SignPostHeight = 2.5f; // height of wooden street sign post
+ 
++        /// <summary>Geometry for a period‑correct porch step and rail.</summary>
++        private const float PorchStepHeight = 0.18f; // height of a single step
++        private const float PorchTreadDepth = 0.30f; // depth of a single tread
++        private const float PorchRailHeight = 0.90f; // height of a simple wooden rail
++        private const float PorchRailWidth = 0.05f; // thickness of the rail
++
+         /// <summary>A one-line summary of the last map built.</summary>
+         public static string LastStats { get; private set; } = "";
+ 
+@@ -130,7 +136,8 @@ private static void BuildSidewalks(Site site)
+             }
+         }
+ 
+-private static void BuildSnow(Site site)
++
++                private static void BuildSnow(Site site)
+         {
+             foreach (Footprint f in site.Area.Buildings)
+             {
+@@ -148,8 +155,46 @@ private static void BuildSnow(Site site)
+                 roofY += SnowDepth * 0.5f;
+                 Vector3 center = new Vector3(f.Middle.x, roofY, f.Middle.y);
+                 Vector3 size = new Vector3(f.Size, SnowDepth, f.Size);
+-                site.Overhead.At(f.Middle).Box(center, size, DecorMaterials.Snow);
+-            }
++            site.Overhead.At(f.Middle).Box(center, size, DecorMaterials.Snow);
++        }
++        }
++
++        /// <summary>
++        /// Adds a simple wooden porch step and rail to residential buildings, aligned to the north side,
++        /// with a thin snow overlay. Mirrors the hand‑built raid‑town look.
++        /// </summary>
++        private static void BuildPorch(Footprint f, Site site)
++        {
++            // Only apply to residential footprints
++            string use = f.Data.use ?? "";
++            bool isResidential = use.Contains("residential") ||
++                                 f.Data.kind == "house" || f.Data.kind == "trailer" ||
++                                 f.Data.kind == "apartments" || f.Data.kind == "hotel";
++            if (!isResidential) return;
++
++            // North edge centre (max Y bound)
++            float north = f.Bounds.yMax;
++            float centreX = (f.Bounds.xMin + f.Bounds.xMax) * 0.5f;
++            float centreZ = north + PorchTreadDepth * 0.5f; // step sits just outside the wall
++
++            // Ground‑level step box (collidable) – spans full width of the footprint
++            Vector3 stepCenter = new Vector3(centreX, PorchStepHeight * 0.5f, centreZ);
++            Vector3 stepSize = new Vector3(f.Bounds.width, PorchStepHeight, PorchTreadDepth);
++            site.Town.Out.Box(stepCenter, stepSize, DecorMaterials.Wood);
++
++            // Simple rail on the front edge of the step
++            Vector3 railCenter = new Vector3(centreX, PorchStepHeight + PorchRailHeight * 0.5f, centreZ - PorchTreadDepth * 0.5f);
++            Vector3 railSize = new Vector3(f.Bounds.width, PorchRailHeight, PorchRailWidth);
++            site.Town.Out.Box(railCenter, railSize, DecorMaterials.Wood);
++
++            // Thin snow overlay so the porch looks correctly snow‑covered
++            site.Overhead.At(f.Middle).Box(
++                new Vector3(centreX, StreetY + 0.01f + SnowDepth * 0.5f, centreZ),
++                new Vector3(stepSize.x, SnowDepth, stepSize.z),
++                DecorMaterials.Snow);
++
++            // Mark the area as taken so other props stay clear
++            site.Take(new Rect(f.Bounds.xMin, north, f.Bounds.width, PorchTreadDepth));
+         }
+ 
+ 
+@@ -181,8 +226,7 @@ private static void DefineExits(Site site)
+                         best[side] = score;
+                         at[side] = p;
+                         names[side] = string.IsNullOrEmpty(s.Data.name) ? KindName(s.Data.kind) : s.Data.name;
+-                    }
+-                }
++        }
+             }
+             int found = 0;
+             for (int i = 0; i < 4; i++) if (best[i] > float.MinValue) found++;
+@@ -407,9 +451,9 @@ public Area(MapBuild build, MapPlace place, float half)
+                         {
+                             var at = new Vector2((float)(ox + p.x * 0.1), (float)(oz + p.z * 0.1));
+                             if (near.Contains(at)) Points.Add(new Spot(p, at));
+-                        }
+-                }
+-            }
++        }
++    }
++}
+ 
+             private static List<Vector2> ToLocal(int[] pts, double ox, double oz)
+             {
+@@ -517,5 +561,6 @@ public void Emit(string name, Transform parent, bool ceilings)
+             }
+         }
+         #endregion
++        }
+     }
+ }

@@ -68,6 +68,10 @@ namespace CloneZ
         private Action<InteractContext> _kickAct, _kickBegin;
         private Action<InteractContext, float, float> _kickTick;
 
+        private Action<InteractContext> _reinforceAct, _reinforceBegin;
+        private Action<InteractContext, float, float> _reinforceTick;
+        private float _reinforceClock, _reinforceNext;
+
         private static readonly Color BangCaption = new Color(0.88f, 0.62f, 0.46f);
 
         // The detour search's candidates, best first (no allocation per search).
@@ -98,6 +102,14 @@ namespace CloneZ
                 _kickNext = CloneZConfig.RaidDoorKickInterval * 0.4f;
             };
             _kickTick = KickTick;
+            // Initialise reinforcement action callbacks
+            _reinforceAct = ReinforceDoor;
+            _reinforceBegin = ctx =>
+            {
+                _reinforceClock = 0f;
+                _reinforceNext = CloneZConfig.RaidDoorKickInterval * 0.4f;
+            };
+            _reinforceTick = ReinforceTick;
         }
 
         protected override void OnEnable()
@@ -153,28 +165,15 @@ namespace CloneZ
                 into.Insert(Mathf.Min(start + 1, into.Count), kick);
             }
 
-// New lightweight inspection action for raid doors
-            into.Add(new InteractAction("Inspect door", ctx => {
-                float health = _health;
-                float maxHealth = _maxHealth;
-                int percent = Mathf.RoundToInt(HealthNormalized * 100f);
-                string lockStatus;
-                if (_lockBroken) lockStatus = "Lock broken";
-                else if (IsLocked) lockStatus = "Locked";
-                else lockStatus = "Unlocked";
-                ctx.Notify($"Door health: {health:0.##}/{maxHealth:0.##} ({percent}%){(_broken ? " (broken)" : string.Empty)} – {lockStatus}");
-            }));
-
-            // New action to listen to the door's condition
-            into.Add(new InteractAction("Listen to door", ctx => {
-                if (_broken)
-                    ctx.Notify("The door lies in splintered wood, silent and useless.");
-                else {
-                    int percent = Mathf.RoundToInt(HealthNormalized * 100f);
-                    string state = percent < 35 ? "severely damaged" : "in decent shape";
-                    ctx.Notify($"You hear the door creak; it’s {state} ({percent} %).");
-                }
-            }));
+            // New action to reinforce a damaged door
+            if (!_broken && _health < _maxHealth)
+            {
+                var reinforce = new InteractAction("Reinforce door", _reinforceAct)
+                    .Timed(CloneZConfig.RaidDoorKickSeconds, "Reinforcing the door", HumanoidActivity.Build);
+                reinforce.Begin = _reinforceBegin;
+                reinforce.Tick = _reinforceTick;
+                into.Add(reinforce);
+            }
         }
 
         // A burst door keeps its leaves where they fell and has nothing left to shut; otherwise as the home's.
@@ -377,7 +376,7 @@ namespace CloneZ
         }
         #endregion
 
-        #region Kicking it in
+        // Kicking it in
         private void KickTick(InteractContext ctx, float dt, float progress)
         {
             _kickClock += dt;
@@ -397,7 +396,30 @@ namespace CloneZ
             MakeNoise(CloneZConfig.RaidDoorKickNoise);
             ctx.Notify("The frame splits and the " + Noun + " flies open. That lock won't hold again.");
         }
-        #endregion
+
+        // Reinforcement timing and effect
+        private void ReinforceTick(InteractContext ctx, float dt, float progress)
+        {
+            _reinforceClock += dt;
+            if (_reinforceClock < _reinforceNext) return;
+            _reinforceNext += CloneZConfig.RaidDoorKickInterval;
+            // Play the same “working” noise used for kicking so the player gets feedback.
+            MakeNoise(CloneZConfig.RaidDoorKickNoise);
+        }
+
+        private void ReinforceDoor(InteractContext ctx)
+        {
+            // Cap the reinforcement so a door can’t become over‑tough.
+            const float healthBoost = 0.25f; // restore 25 % of max health
+            const float maxHealthBoost = 0.20f; // increase max health by 20 %
+            // Apply the boosts.
+            _maxHealth = Mathf.Max(_maxHealth, 1f) * (1f + maxHealthBoost);
+            _health = Mathf.Min(_health + _maxHealth * healthBoost, _maxHealth);
+            // Tell the player what happened.
+            ctx.Notify($"You reinforce the {Noun}. Its wood feels sturdier.");
+            // Show a short caption so nearby survivors hear it too.
+            Caption($"The {Noun} creaks as it’s reinforced.", false);
+        }
 
         public override void CaptureState(FixtureSave save)
         {
