@@ -4640,3 +4640,12 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a tiny brass hinge detail to each upper‑cabinet door in `Assets/Scripts/World/FurnitureBuilder.Home.cs` → `UpperCabinets`
 - [x] In Assets/Scripts/World/WaterSource.cs: Fix the rain‑barrel fill simulation to handle cases where WeatherSystem isn’t instantiated before WaterSource.Awake, preventing the barrel from ever filling.
   - 21:59 landed by 1htsserver in 1.7 min: **Changed file**
+- [ ] Cache the `GameSettings.Current` singleton lookup in `HudCompass.LateUpdate` (Assets/Scripts/Survival/Navigation.cs)
+  Add a private field `private GameSettings _gs;` to `HudCompass`.
+  In `Awake()` set `_gs = GameSettings.Current;`.
+  In `LateUpdate()` replace `GameSettings.Current.Hud` with a cached reference:
+  `GameSettings gs = _gs;`
+  `if (gs == null) _gs = gs = GameSettings.Current;`
+  `bool visible = _has && cam != null && gs.Hud != HudMode.Hardcore;`
+  This removes the per‑frame property lookup (which likely does a `FindObjectByType`), reducing allocations and GC pressure.
+  Player view and HUD mode remain unchanged; the compass continues to appear/disappear exactly as before.
