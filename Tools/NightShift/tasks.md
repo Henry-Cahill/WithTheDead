@@ -4917,11 +4917,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Limit the loop to `int patches = r.Next(1, 4);` and guard with `if (Chance(r, 0.4))` to keep the total added primitives ≤ 3.
   This adds subtle, period‑correct grime without affecting colliders or interaction points, giving the rack a lived‑in look.
   - 23:23 landed by 1htsserver in 2 min: **Changed file**
-- [ ] Add a faint warm‑glow indicator to the gun‑safe dial in `Assets/Scripts/World/FurnitureBuilder.cs` → `FurnitureBuilder.GunSafe(RaidMesh m, System.Random rng)` so the safe’s wheel shows a subtle period‑correct light.
+- [x] Add a faint warm‑glow indicator to the gun‑safe dial in `Assets/Scripts/World/FurnitureBuilder.cs` → `FurnitureBuilder.GunSafe(RaidMesh m, System.Random rng)` so the safe’s wheel shows a subtle period‑correct light.
   After the existing line `m.Cylinder(new Vector3(0.12f, 1.05f, 0.29f), 0.09f, 0.03f, 10, Mt(Chrome), Quaternion.Euler(90f, 0f, 0f));` insert a tiny glowing box.
   Use the same centre X/Z as the dial and lift it a little: `m.Box(new Vector3(0.12f, 1.07f, 0.29f), new Vector3(0.02f, 0.02f, 0.005f), Gl(WarmGlow));`.
   `Gl` is the existing helper that returns a glow surface; `WarmGlow` is already defined in the colour section.
   This adds only a visual primitive, leaves all colliders, interaction points and pivots unchanged, and uses no more than one additional primitive.
+  - 23:27 landed by 1htsserver in 3 min: **Changed file**
 - [ ] Cache the per‑frame allocation of the body‑camera offset vector in Assets/Scripts/Camera/IsoCameraFollow.cs
   Add a private static readonly field `private static readonly Vector3 BodycamPosOffset = new Vector3(0.04f, 0.05f, 0.2f);` to the `IsoCameraFollow` class.
   In `PoseBodycam`, replace the literal `new Vector3(0.04f, 0.05f, 0.2f)` with the cached `BodycamPosOffset`.
