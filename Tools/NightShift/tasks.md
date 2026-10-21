@@ -4530,8 +4530,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   The player should now see cars whose paint colours are slightly varied (faded or tinted) rather than exact repeats, matching the worn, 1993 rural aesthetic.
   All other logic, colliders, and placement rules must remain unchanged.
   - 21:18 landed by 1htsserver in 1.1 min: **Changed file**
-- [ ] In Assets/Scripts/World/Interaction/Interactable.cs: Fix duplicate‑key handling in `Interactable.RestoreAll` so that restoring fixtures with the same `SaveKey` warns instead of silently overwriting the earlier entry, preventing lost state.
+- [x] In Assets/Scripts/World/Interaction/Interactable.cs: Fix duplicate‑key handling in `Interactable.RestoreAll` so that restoring fixtures with the same `SaveKey` warns instead of silently overwriting the earlier entry, preventing lost state.
   In the fixture‑restoration block (`if (fixtures != null && fixtures.Count > 0)`), the code builds a dictionary with
   `byKey[fixtures[i].Key] = fixtures[i];` which replaces any existing entry when two `FixtureSave`s share a key.
   Because `CaptureAll` already warns about duplicate keys, restoring should do the same; otherwise the later entry silently overwrites the earlier one and the first fixture never gets its saved state.
   Change the loop to:
+  - 21:20 landed by 1htsserver in 1.1 min: **Changed file**
