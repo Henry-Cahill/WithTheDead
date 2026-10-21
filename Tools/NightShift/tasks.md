@@ -4461,7 +4461,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Keep the current volume‑clamp, noise trigger, and notification unchanged; only add the extra conditional message.
   The player will now see an additional subtitle when turning the knob up to “loud”, reinforcing the gameplay risk of drawing zombies.
   - 20:59 landed by 0htsserver in 1.9 min: **Changed file**: `Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs`
-- [ ] Append five period‑correct call strings to the `private static readonly string[] CbCalls` array in Assets/Scripts/World/Fixtures/RaidCivicRadio.cs (class `CivicRadio`)
+- [x] Append five period‑correct call strings to the `private static readonly string[] CbCalls` array in Assets/Scripts/World/Fixtures/RaidCivicRadio.cs (class `CivicRadio`)
   Add each new entry as a quoted whole sentence, preserving the existing Unicode quote marks (e.g. `\u201C…\u201D`).
   Example of current style to match: `"\u201CBreaker one-nine, anybody out there?\u201D A long pause. Somebody keys up, says \u201Cstay inside, friend,\u201D and is gone."`
   The new lines should cover the following themes, all set in winter‑time, 1993 rural Kentucky:
@@ -4470,6 +4470,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   A request for a spare can of gasoline for the generator at the school.
   A child’s voice asking if anyone has seen a lost orange tabby cat near the old mill.
   A brief note that the county road “B” is blocked by a fallen tree and asking for a chainsaw.
+  - 21:00 landed by hts-llm in 1.9 min: **Changed**
 - [ ] Add a deterministic tree‑spacing helper to `MapArea` in `Assets/Scripts/World/Map/MapData.cs` so forest land‑use areas can be populated with period‑appropriate trees.
   Add a public method `public float GetTreeSpacing()` inside the `MapArea` class.
   The method should return `0f` for any `kind` other than `"forest"`; for `"forest"` return a base spacing of `3f` metres plus a pseudo‑random offset in `[0,1]` derived from the area’s `id` (e.g. `float offset = ((id * 0x4F1BBCDC) & 0xFFFF) / 65535f; return 3f + offset;`).

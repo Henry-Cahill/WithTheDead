@@ -138,6 +138,11 @@ namespace CloneZ
             "\u201CBreaker one-nine, anybody out there?\u201D A long pause. Somebody keys up, says \u201Cstay inside, friend,\u201D and is gone.",
             "You ask for help on channel nine. The REACT base doesn't come back. Just the carrier, humming.",
             "You call and call. Somewhere a trucker laughs at something, a long way off, and the channel goes quiet.",
+            "\u201CThis is Farmer J. I need a rope, my mule slipped into a snow‑drift, over.\u201D",
+            "\u201CWatch out, downed power line near the creek, stay clear, over.\u201D",
+            "\u201CNeed a spare can of gasoline for the school generator, anyone got one?, over.\u201D",
+            "\u201CHey, have you seen my orange tabby cat near the old mill?, over.\u201D",
+            "\u201CCounty road B is blocked by a fallen tree, need a chainsaw, over.\u201D"
         };
 
         private Transform _host;
