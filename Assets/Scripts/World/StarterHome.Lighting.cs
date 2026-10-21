@@ -87,9 +87,9 @@ namespace CloneZ
                 FurnitureBuilder.SwitchToggle(toggle, pivot, n, ToggleTilt);
                 // tiny dark‑metal screw detail on the toggle for a lived‑in look
                 float a = ToggleTilt * Mathf.Deg2Rad;
-                Vector3 d = (n * Mathf.Cos(a) - Vector3.up * Mathf.Sin(a)).normalized;
+            Vector3 dir = (n * Mathf.Cos(a) - Vector3.up * Mathf.Sin(a)).normalized;
                 const float len = 0.026f; // same length as in SwitchToggle
-                Vector3 screwPos = pivot + d * (len * 0.5f) + n * 0.001f + Vector3.up * 0.001f;
+            Vector3 screwPos = pivot + dir * (len * 0.5f) + n * 0.001f + Vector3.up * 0.001f;
                 toggle.Box(screwPos, new Vector3(0.004f, 0.004f, 0.004f), DecorPalette.Matte(new Color(0.08f, 0.08f, 0.09f)));
                 toggles[i] = FixturePart.Hinge(sw.transform, "Toggle", toggle, pivot, Vector3.Cross(n, Vector3.up), ToggleTilt * 2f,
                     ShadowCastingMode.Off).WithSpeed(0.08f);
@@ -202,6 +202,11 @@ for (int i = 0; i < 4; i++)
 
             var handle = new RaidMesh();
             FurnitureBuilder.BreakerHandle(handle, pivot, n, BreakerTilt);
+            float a = BreakerTilt * Mathf.Deg2Rad;
+            Vector3 dir = (n * Mathf.Cos(a) - Vector3.up * Mathf.Sin(a)).normalized;
+            const float len = 0.026f; // same length as SwitchToggle
+            Vector3 screwPos = pivot + dir * (len * 0.5f) + n * 0.001f + Vector3.up * 0.001f;
+            handle.Box(screwPos, new Vector3(0.004f, 0.004f, 0.004f), DecorPalette.Matte(new Color(0.08f, 0.08f, 0.09f)));
             FixturePart handlePart = FixturePart.Hinge(panel.transform, "MainBreaker", handle, pivot, Vector3.Cross(n, Vector3.up), BreakerTilt * 2f,
                 ShadowCastingMode.Off).WithSpeed(0.12f);
             panel.SetParts(doorPart, handlePart);

@@ -4956,7 +4956,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   This adds a small random rotation (‑5° to +5°) per sign, making signboards look less mechanically aligned and more like hand‑installed, period‑correct signage.
   Keep the rest of the method unchanged; colliders and placement logic remain the same.
   - 23:34 landed by 1htsserver in 1.2 min: **Changed**
-- [ ] Add a tiny dark‑metal screw detail to the main breaker handle in `Assets/Scripts/World/StarterHome.Lighting.cs` → method `Breakers`, so the breaker panel’s toggle looks a bit more lived‑in and mechanical.
+- [x] Add a tiny dark‑metal screw detail to the main breaker handle in `Assets/Scripts/World/StarterHome.Lighting.cs` → method `Breakers`, so the breaker panel’s toggle looks a bit more lived‑in and mechanical.
   In `Breakers`, after `FurnitureBuilder.BreakerHandle(handle, pivot, n, BreakerTilt);` insert:
   `float a = BreakerTilt * Mathf.Deg2Rad;`
   `Vector3 d = (n * Mathf.Cos(a) - Vector3.up * Mathf.Sin(a)).normalized;`
@@ -4964,6 +4964,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Vector3 screwPos = pivot + d * (len * 0.5f) + n * 0.001f + Vector3.up * 0.001f;`
   `handle.Box(screwPos, new Vector3(0.004f, 0.004f, 0.004f), DecorPalette.Matte(new Color(0.08f, 0.08f, 0.09f)));`
   The screw sits halfway along the tilted handle, offset slightly outward and upward, matching the style of other toggle screws. No other code is changed.
+  - 23:39 landed by 1htsserver in 5.2 min: **Changes Made**
 - [x] Fix the redundant network broadcast that occurs when a player restores their own camp in Assets/Scripts/World/Camps.cs
   In `ZoneCamps.Restore(string zoneId)` the code spawns each saved `BuildPiece` and `Barricade` and then immediately calls `Announce(p)` or `Announce(b)`.
   `Announce` sends a “cz.build” message to the server (or to other clients), which then relays it back to everyone else.
