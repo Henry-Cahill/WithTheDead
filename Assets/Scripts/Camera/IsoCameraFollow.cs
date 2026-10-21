@@ -198,7 +198,7 @@ namespace CloneZ
             ViewState.Current = View;   // every run opens in the isometric view
             // Cinemachine owns the real camera: each view drives its own virtual camera, the brain blends them.
             _views = CinemachineViews.Attach(_cam);
-            ViewBlendSeconds = 0f;
+            // ViewBlendSeconds = 0f; // removed hardcoded instant blend, use serialized value
         }
 
         private CinemachineViews _views;
