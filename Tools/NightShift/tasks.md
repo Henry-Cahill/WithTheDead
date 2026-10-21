@@ -5799,10 +5799,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   Trim size: 0.88 m × 0.02 m × 0.32 m, placed at y = 0.9 + 1.8 = 2.7 m (top of the side posts).
   Plaque size: 0.12 m × 0.004 m × 0.04 m, positioned 0.01 m above the trim, centered on X/Z.
   - 03:52 landed by 1htsserver in 1.2 min: **Changes made**
-- [ ] Replace the per‑frame property lookup of the rig’s proportions with the cached field in Assets/Scripts/Characters/HumanoidAnimator.cs
+- [x] Replace the per‑frame property lookup of the rig’s proportions with the cached field in Assets/Scripts/Characters/HumanoidAnimator.cs
   In `Write()` change `HumanoidProportions p = _rig.Proportions;` to `HumanoidProportions p = _bound;` (the field already set in `Bind()` and refreshed in `Evaluate` if the rig changes).
   Remove the now‑redundant local variable `p` from any other method that still uses `_rig.Proportions` (e.g., none currently, but keep the pattern).
   This eliminates a property accessor call each frame, ensuring the same `HumanoidProportions` instance is reused without affecting the animation – the visual pose and all gameplay behaviour remain unchanged.
+  - 03:55 landed by hts-llm in 2.9 min: **Changed file**
 - [x] Add a new “Inspect main breaker” action to `BreakerPanel.GetActions` in Assets/Scripts/World/Fixtures/BreakerPanel.cs
   – In the `GetActions` method, after the existing `Inspect breaker panel` line, insert:
   `into.Add(new InteractAction("Inspect main breaker", c => c.Notify(BreakerOn ? "The main breaker is on." : "The main breaker is off.")));`
