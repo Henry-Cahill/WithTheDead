@@ -5889,3 +5889,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Place a tiny chrome box (the button) – size 0.02 m × 0.02 m × 0.004 m – using the existing chrome material:
   `m.Box(btnPos, new Vector3(0.02f, 0.02f, 0.004f), Mt(Chrome));`
   The button gives the copier a realistic control detail; it uses the deterministic random source for slight placement variation, reuses the `Mt(Chrome)` material, and does not affect colliders or interaction points.
+- [ ] In Assets/Scripts/UI/SkillsPanelController.cs, add a per‑frame “dirty‑refresh” guard so `Refresh()` only runs when the skill data has actually changed.
+  Add a private field `private bool _dirty;` after the `_open` field.
+  In `Open()` set `_dirty = true;` (the panel just opened needs a full refresh).
+  Add a public method `public void MarkDirty() => _dirty = true;` that other systems (e.g. `PlayerSkills`) can call after they modify a skill level or XP.
+  Change `Update()` so the refresh call reads `if (_open && _dirty && _skills != null) Refresh();`.
+  At the end of `Refresh()` reset the flag with `_dirty = false;`.
+  No other behaviour changes: the UI still updates instantly when the player opens the panel, and it continues to update instantly after any external code calls `MarkDirty()`. This removes the per‑frame loop over all skills when nothing has changed, reducing CPU/Garbage overhead.
