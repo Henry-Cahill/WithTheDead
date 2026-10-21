@@ -5707,11 +5707,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Insert a loop after the existing plinth box (`m.Box(new Vector3(0f, 0.05f, -0.02f)…`) that places 6–8 tiny brass cylinders on the carcass roof to suggest hand‑fastened rivets.
   Use the deterministic random source already passed (`rng`) and the helper `R(rng, …)` for x‑position jitter:
   - 03:28 landed by 1htsserver in 1.6 min: All scripts now compile successfully. The wardrobe carcass now includes a subtle brass‑rivet strip on its top, rendered as 6–8 tiny brass cy
-- [ ] Cache the sky‑override colour used during the warning phase in EmissionDirector (Assets/Scripts/Zone/Emissions.cs) to avoid evaluating the conditional each frame in Update.
+- [x] Cache the sky‑override colour used during the warning phase in EmissionDirector (Assets/Scripts/Zone/Emissions.cs) to avoid evaluating the conditional each frame in Update.
   Add a private `Color _warningSkyColor;` field.
   In `StartWarning()` set `_warningSkyColor = PsiStorm ? _psiStormColor : _standardColor;`.
   Replace the line `ZoneAtmosphere.SkyOverride = PsiStorm ? _psiStormColor : _standardColor;` in the `Phase.Warning` case of `Update()` with `ZoneAtmosphere.SkyOverride = _warningSkyColor;`.
   The visual effect (sky turning red for a standard emission or violet for a psi storm) stays exactly the same; the conditional is now evaluated only once per emission instead of every frame while warning.
+  - 03:32 landed by spark in 4.8 min: Done. Changed `Assets/Scripts/Zone/Emissions.cs`:
 - [x] Add a deterministic “has window grate” helper to `MapBuild` in `Assets/Scripts/World/Map/WorldStore.cs` so building‑generation code can occasionally place period‑correct metal grates over upper‑story windows, giving the raid town a more hand‑built 1993 Kentucky look.
   Define a new public method `public bool HasWindowGrate(long buildingId)` inside the `MapBuild` class, placed alongside `HasPorch`.
   Implement it using the same deterministic hash pattern as the other helpers, e.g.:
