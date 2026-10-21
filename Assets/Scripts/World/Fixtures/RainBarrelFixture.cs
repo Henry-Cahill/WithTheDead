@@ -16,6 +16,8 @@ namespace CloneZ
         private const float WashSeconds = 3f, SkimSeconds = 2.5f;
         private const float ShakeSeconds = 1.5f;
         private WaterSource _barrel;
+        private const float CoverSeconds = 1f;
+        private bool _capped;
 
         public override string DisplayName => "Rain barrel";
         public override Vector3 InteractPoint => transform.position + Vector3.up * 0.9f;   // the rim
@@ -29,6 +31,7 @@ namespace CloneZ
             bool water = b.HasWater;
             into.Add(new InteractAction("Fill a water bottle  (tainted)", c => WaterUse.FillBottle(c, b))
                 .DisabledIf(!water, b.DryMessage)
+                .DisabledIf(_capped, "The barrel is covered.")
                 .DisabledIf(water && !WaterUse.HasEmptyBottle(ctx), "You have no empty bottle"));
             into.Add(new InteractAction("Check the water level", CheckLevel));
             into.Add(new InteractAction("Drink from the barrel  (tainted)", c => WaterUse.Drink(c, b))
@@ -42,6 +45,9 @@ namespace CloneZ
             into.Add(new InteractAction("Skim the leaves off the top", Skim).Timed(SkimSeconds, "Skimming the barrel"));
             into.Add(new InteractAction("Shake the barrel", Shake).Timed(ShakeSeconds, "Shaking the barrel").DisabledIf(!Barrel.HasWater, Barrel.DryMessage));
             into.Add(new InteractAction("Shake the barrel vigorously", VigorousShake).Timed(ShakeSeconds * 2, "Shaking the barrel hard").DisabledIf(!Barrel.HasWater, Barrel.DryMessage));
+            // New toggle to cover/uncover the barrel
+            into.Add(new InteractAction(_capped ? "Uncover the barrel" : "Cover the barrel", ToggleCover)
+                .Timed(CoverSeconds, _capped ? "Uncovering the barrel" : "Covering the barrel"));
         }
 
         private void CheckLevel(InteractContext ctx)
@@ -52,7 +58,7 @@ namespace CloneZ
                 fill < 0.10f ? "A thin film of slush clings to the bottom." :
                 fill < 0.20f ? "Just a shallow pool, enough for a quick sip." :
                 fill < 0.25f ? "Barely a puddle in the bottom." :
-                fill < 0.5f ? "About a quarter full \u2014 a drink or two's worth." :
+                fill < 0.5f ? "About a quarter full — a drink or two's worth." :
                 fill < 0.60f ? "Halfway full – the water is dark and still." :
                 fill < 0.65f ? "Subtly fuller – a faint quality hint surfaces." :
                 fill < 0.70f ? "A quiet mood settles – the barrel swells with somber water." :
@@ -61,9 +67,10 @@ namespace CloneZ
                 fill < 0.85f ? "A faint scent drifts – the water hints at algae." :
                 fill < 0.90f ? "Most of the way to the brim." :
                 fill < 0.99f ? "Almost brimming – the barrel gives a quiet warning." :
-                "Brimming \u2014 it can't hold another drop.";
+                "Brimming — it can't hold another drop.";
             WeatherSystem w = WeatherSystem.Instance;
             if (w != null && w.RainIntensity > 0.05f) level += " Rain drums on the water.";
+            if (_capped) level += " The barrel is covered, preserving the water inside.";
             ctx.Notify(level);
         }
 
@@ -97,6 +104,24 @@ namespace CloneZ
             ctx.Notify(Barrel != null && Barrel.Water > 0.05f
                 ? "You fish out a few drowned leaves and a beetle doing the backstroke."
                 : "There's nothing to skim but a damp leaf stuck to the bottom.");
+        }
+
+        private void ToggleCover(InteractContext ctx)
+        {
+            _capped = !_capped;
+            ctx.Notify(_capped ? "You place a makeshift lid over the barrel, sealing the water inside." : "You remove the lid, exposing the barrel again.");
+        }
+
+        public override void CaptureState(FixtureSave save)
+        {
+            base.CaptureState(save);
+            save.State = _capped ? 1 : 0;
+        }
+
+        public override void RestoreState(FixtureSave save)
+        {
+            base.RestoreState(save);
+            _capped = (save.State & 1) != 0;
         }
     }
 }
