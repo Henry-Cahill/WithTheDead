@@ -17,6 +17,24 @@ namespace CloneZ
     {
         private const int MaxRows = 6;
 
+        // Cached colours to avoid per‑frame allocations
+        private static readonly Color PainHigh = new Color(0.9f, 0.3f, 0.25f);
+        private static readonly Color PainMid = new Color(0.95f, 0.7f, 0.25f);
+        private static readonly Color PainLow = new Color(0.72f, 0.85f, 0.72f);
+        private static readonly Color PanicHigh = new Color(0.9f, 0.35f, 0.4f);
+        private static readonly Color PanicMid = new Color(0.9f, 0.62f, 0.4f);
+        private static readonly Color PanicLow = new Color(0.74f, 0.76f, 0.9f);
+        private static readonly Color TempCold = new Color(0.5f, 0.72f, 0.95f);
+        private static readonly Color TempHot = new Color(0.95f, 0.5f, 0.4f);
+        private static readonly Color TempNormal = new Color(0.72f, 0.85f, 0.75f);
+        private static readonly Color SicknessHigh = new Color(0.85f, 0.85f, 0.3f);
+        private static readonly Color SicknessMid = new Color(0.8f, 0.82f, 0.5f);
+        private static readonly Color SicknessLow = new Color(0.72f, 0.85f, 0.72f);
+        private static readonly Color ClothingLabel = new Color(0.95f, 0.96f, 0.98f, 1f);
+        private static readonly Color ClothingLabelDisabled = new Color(0.8f, 0.82f, 0.86f, 0.5f);
+        private static readonly Color ButtonLabelEnabled = new Color(0.95f, 0.96f, 0.98f, 1f);
+        private static readonly Color ButtonLabelDisabled = new Color(0.95f, 0.96f, 0.98f, 0.4f);
+
         private PlayerWounds _wounds;
         private PlayerStats _stats;
         private PlayerInventory _inventory;
@@ -142,9 +160,9 @@ namespace CloneZ
             int painPct = Mathf.RoundToInt(_stats.PainNormalized * 100f);
             _painText.text = "PAIN  " + painPct + "%" +
                 (_wounds.PainkillersActive ? "   <size=16><color=#7fd0ff>(painkillers)</color></size>" : "");
-            _painText.color = _stats.PainNormalized > 0.6f ? new Color(0.9f, 0.3f, 0.25f)
-                : _stats.PainNormalized > 0.3f ? new Color(0.95f, 0.7f, 0.25f)
-                : new Color(0.72f, 0.85f, 0.72f);
+            _painText.color = _stats.PainNormalized > 0.6f ? PainHigh
+                : _stats.PainNormalized > 0.3f ? PainMid
+                : SicknessLow;
 
             // Panic.
             if (_panicText != null)
@@ -154,9 +172,9 @@ namespace CloneZ
                 _panicText.text = "PANIC  " + panicPct + "%   <size=15><color=#b0a6d6>(" + word + ")</color></size>" +
                     (_panic != null && _panic.BetaBlockersActive ? "  <size=15><color=#9fd0ff>(beta blockers)</color></size>" : "");
                 int lvl = _panic != null ? _panic.Level : 0;
-                _panicText.color = lvl >= 3 ? new Color(0.9f, 0.35f, 0.4f)
-                    : lvl >= 2 ? new Color(0.9f, 0.62f, 0.4f)
-                    : new Color(0.74f, 0.76f, 0.9f);
+                _panicText.color = lvl >= 3 ? PanicHigh
+                    : lvl >= 2 ? PanicMid
+                    : PanicLow;
             }
 
             // Body temperature & wetness.
@@ -168,9 +186,9 @@ namespace CloneZ
                 string wetDesc = _temperature != null ? _temperature.WetDescriptor : "";
                 _thermalText.text = "TEMP  " + Mathf.RoundToInt(t * 100f) + "%  <size=15><color=#b9c2cc>(" + desc + ")</color></size>" +
                     "     \u00b7     WET  " + Mathf.RoundToInt(wet * 100f) + "%  <size=15><color=#b9c2cc>(" + wetDesc + ")</color></size>";
-                _thermalText.color = t < 0.30f ? new Color(0.5f, 0.72f, 0.95f)
-                    : t > 0.80f ? new Color(0.95f, 0.5f, 0.4f)
-                    : new Color(0.72f, 0.85f, 0.75f);
+                _thermalText.color = t < 0.30f ? TempCold
+                    : t > 0.80f ? TempHot
+                    : TempNormal;
             }
 
             // Stomach / food poisoning.
@@ -180,9 +198,9 @@ namespace CloneZ
                 string word = _nutrition != null ? _nutrition.Descriptor : "Fine";
                 int lvl = _nutrition != null ? _nutrition.Level : 0;
                 _sicknessText.text = "STOMACH  " + sickPct + "%   <size=15><color=#b6c69a>(" + word + ")</color></size>";
-                _sicknessText.color = lvl >= 3 ? new Color(0.85f, 0.85f, 0.3f)
-                    : lvl >= 1 ? new Color(0.8f, 0.82f, 0.5f)
-                    : new Color(0.72f, 0.85f, 0.72f);
+                _sicknessText.color = lvl >= 3 ? SicknessHigh
+                    : lvl >= 1 ? SicknessMid
+                : SicknessLow;
             }
 
             // Worn clothing — a header plus one take-off button per body slot.
@@ -206,13 +224,13 @@ namespace CloneZ
                         string cc = c01 > 0.66f ? "#7fc98a" : c01 > 0.33f ? "#d9c14a" : "#d9694a";
                         _clothingLbls[i].text = "<size=12><color=#9aa6b2>" + slotName + "</color></size>\n" + worn.DisplayName
                             + "  <size=11><color=" + cc + ">" + Mathf.RoundToInt(c01 * 100f) + "%</color></size>";
-                        _clothingLbls[i].color = new Color(0.95f, 0.96f, 0.98f, 1f);
+                        _clothingLbls[i].color = ClothingLabel;
                         _clothingBtns[i].interactable = true;
                     }
                     else
                     {
                         _clothingLbls[i].text = "<size=12><color=#9aa6b2>" + slotName + "</color></size>\n<color=#6a7078>\u2014</color>";
-                        _clothingLbls[i].color = new Color(0.8f, 0.82f, 0.86f, 0.5f);
+                        _clothingLbls[i].color = ClothingLabelDisabled;
                         _clothingBtns[i].interactable = false;
                     }
                 }
@@ -307,7 +325,7 @@ var stack = stacks[i];
             if (btn == null) return;
             label.text = name + "  x" + count;
             btn.interactable = usable;
-            label.color = new Color(0.95f, 0.96f, 0.98f, usable ? 1f : 0.4f);
+            label.color = usable ? ButtonLabelEnabled : ButtonLabelDisabled;
         }
 
         private static string DescribeWound(Wound w)

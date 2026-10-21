@@ -4980,11 +4980,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Code to add: `m.Box(new Vector3(0.35f, 1.07f, -0.03f), new Vector3(0.02f, 0.02f, 0.005f), Mt(Chrome));`
   This gives the copier a realistic metal latch without affecting colliders or existing interaction points.
   - 23:38 landed by hts-llm in 2.1 min: Added a chrome latch knob to the copier lid:
-- [ ] In Assets/Scripts/UI/HealthPanelController.cs: Cache the per‑frame `new Color(...)` constructions in HealthPanelController → Refresh by introducing static readonly colour fields and using them instead of creating a new Color each call.
+- [x] In Assets/Scripts/UI/HealthPanelController.cs: Cache the per‑frame `new Color(...)` constructions in HealthPanelController → Refresh by introducing static readonly colour fields and using them instead of creating a new Color each call.
   Add private static readonly Color fields (e.g. PainHigh = new Color(0.9f, 0.3f, 0.25f), PainMid = new Color(0.95f, 0.7f, 0.25f), PainLow = new Color(0.72f, 0.85f, 0.72f), PanicHigh = new Color(0.9f, 0.35f, 0.4f), PanicMid = new Color(0.9f, 0.62f, 0.4f), PanicLow = new Color(0.74f, 0.76f, 0.9f), TempCold = new Color(0.5f, 0.72f, 0.95f), TempHot = new Color(0.95f, 0.5f, 0.4f), TempNormal = new Color(0.72f, 0.85f, 0.75f), etc.).
   Initialise these fields inline (static constructors are allowed) – no runtime work needed.
   Replace every inline `new Color(... )` in Refresh (pain colour, panic colour, temperature colour, sickness colour, clothing label colour, button label colour, etc.) with the corresponding cached field.
   The UI appearance stays identical because the colour values are unchanged; the per‑frame GC pressure is reduced, making the panel’s continuous Refresh cheaper.
+  - 23:45 landed by 0htsserver in 8.4 min: Implemented static cached colour fields in **HealthPanelController.cs** and replaced all per‑frame `new Color(...)` constructions with these
 - [x] Append five new sentences to the `"fence"` entry in the `Lines` dictionary in Assets/Scripts/Hub/HubNpc.cs
   Use the existing style (short, gritty statements) as shown by `"No receipts, no questions."` and cover themes of contraband, winter‑blocked routes, rumours about the Zone, bartering spare parts, and the ever‑watchful Wardens.
   Change the initializer for `"fence"` to:
