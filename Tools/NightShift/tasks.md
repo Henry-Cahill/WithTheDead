@@ -4157,3 +4157,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Buildings that sit on the map edge will no longer have inverted or missing walls because their clipped polygons will always be oriented anticlockwise.
   Keep the existing `Inside`/`Cross` logic unchanged; only insert the single call.
   Add a comment such as `// Ensure consistent winding for triangulation` preceding the new line.
+- [ ] Add a cluster of small rust‑tinted rivets to the crashed helicopter hull for subtle weathering detail, editing Assets/Scripts/World/Zone/ZoneLandmarks.cs, method CrashedHelicopter(SiteBuilder sb)
+  Insert the following code inside the `sb.At(sb.Solid, new Vector3(0f, 0f, 0f), 18f, m => { … })` block, after the existing shape calls:
+  `// Small rivets along the right side of the fuselage`
+  `int rivetCount = 6;`
+  `for (int i = 0; i < rivetCount; i++)`
+  `{`
+  `// Random y‑offset from deck to top of fuselage, z‑offset along length`
+  `float y = ZoneKit.R(r, 0.2f, 2.0f);`
+  `float z = ZoneKit.R(r, -3.5f, 3.5f);`
