@@ -5393,7 +5393,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Keep all other logic unchanged; colliders remain centered on the tree trunk and retain the same vertical offset.
   The player will now see trees whose collision boxes vary subtly in width and height, matching the hand‑crafted look of the raid town.
   - 02:04 landed by 1htsserver in 2.6 min: **Changed**
-- [ ] Add a small chrome foot‑ring to the shop stool in `Assets/Scripts/World/FurnitureBuilder.Office.cs` → `public static void Stool(RaidMesh m, System.Random rng, Color seat)`
+- [x] Add a small chrome foot‑ring to the shop stool in `Assets/Scripts/World/FurnitureBuilder.Office.cs` → `public static void Stool(RaidMesh m, System.Random rng, Color seat)`
   Insert a thin horizontal cylinder just below the padded seat to represent the metal foot‑ring described in the summary.
   Use the same random‑seeded height `h` already computed, and the seat radius `0.165f` (the same as the padded cylinder).
   Add the primitive after the leg‑rod loop (after `m.Rod(dir * 0.13f + Vector3.up * (h - 0.02f), dir * 0.21f, 0.022f, Mt(Chrome));`).
@@ -5402,3 +5402,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// radius = seat radius, height = thin band, rotate to lay flat`
   `m.Cylinder(ringPos, 0.165f, 0.004f, 12, Mt(Chrome), Quaternion.Euler(90f, 0f, 0f));`
   Result: each stool will show a subtle metal band encircling the legs just under the cushion, adding period‑correct detail without altering colliders or interaction points.
+  - 02:05 landed by 0htsserver in 2.1 min: Implemented a subtle chrome foot‑ring for the shop stool:

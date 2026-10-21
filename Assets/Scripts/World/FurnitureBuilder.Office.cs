@@ -66,6 +66,10 @@ namespace CloneZ
                 var dir = new Vector3(Mathf.Sin(a), 0f, Mathf.Cos(a));
                 m.Rod(dir * 0.13f + Vector3.up * (h - 0.02f), dir * 0.21f, 0.022f, Mt(Chrome));
             }
+            // Small chrome foot‑ring around the padded seat
+            // radius matches the stool seat, thin band placed just below it
+            Vector3 ringPos = new Vector3(0f, h - 0.025f, 0f);
+            m.Cylinder(ringPos, 0.165f, 0.004f, 12, Mt(Chrome), Quaternion.Euler(90f, 0f, 0f));
             float ry = h * 0.4f, rr = 0.165f;
             for (int i = 0; i < 4; i++)
             {
