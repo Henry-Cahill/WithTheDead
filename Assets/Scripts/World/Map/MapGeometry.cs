@@ -226,7 +226,14 @@ namespace CloneZ
         public static Color GetBuildingColor(int osmId)
         {
             int idx = (osmId.GetHashCode() & 0x7fffffff) % kBuildingPalette.Length;
-            return kBuildingPalette[idx];
+            Color baseColor = kBuildingPalette[idx];
+            // Deterministic brightness variation: 0.9‑1.1 range based on low 8 bits of hash.
+            float bright = 0.9f + 0.2f * ((osmId.GetHashCode() & 0xFF) / 255f);
+            // Multiply and clamp each channel to a maximum of 1.0f.
+            float r = Mathf.Min(baseColor.r * bright, 1f);
+            float g = Mathf.Min(baseColor.g * bright, 1f);
+            float b = Mathf.Min(baseColor.b * bright, 1f);
+            return new Color(r, g, b, baseColor.a);
         }
 
         /// <summary>

@@ -5284,7 +5284,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `else if (_lit)`
   - 01:16 landed by hts-llm in 3.5 min: **Changed files**
 - [ ] In Assets/Scripts/World/Fixtures/RainBarrelFixture.cs, extend the `RainBarrelFixture.CheckLevel` ternary string chain by inserting four new fill‑level messages, keeping the existing order and logic intact. Use the existing entry `"Halfway full – the water is dark and still."` as the style reference. The new messages should cover (1) a subtle quality hint around 0.65‑0.70 fill, (2) a mood‑reflective note near 0.70‑0.75, (3) a faint scent cue around 0.80‑0.85, and (4) a quiet warning as the barrel nears brim at 0.90‑0.99.
-- [ ] Update `MapGeometry.GetBuildingColor(int osmId)` in Assets/Scripts/World/Map/MapGeometry.cs to add a small deterministic brightness variation per building while keeping the existing palette selection.
+- [x] Update `MapGeometry.GetBuildingColor(int osmId)` in Assets/Scripts/World/Map/MapGeometry.cs to add a small deterministic brightness variation per building while keeping the existing palette selection.
   Change the method to compute a `float bright = 0.9f + 0.2f * ((osmId.GetHashCode() & 0xFF) / 255f);` and return `baseColor * bright` (clamping each channel to ≤ 1.0f).
   Keep the palette lookup (`int idx = (osmId.GetHashCode() & 0x7fffffff) % kBuildingPalette.Length;`) unchanged.
   Result: buildings of the same type now have slightly different hues, giving the raid town a more lived‑in, period‑correct look without requiring new assets.
+  - 01:18 landed by 1htsserver in 1.3 min: **Changed file**
