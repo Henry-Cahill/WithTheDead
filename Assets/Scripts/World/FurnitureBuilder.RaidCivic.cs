@@ -32,6 +32,8 @@ namespace CloneZ
             m.Box(new Vector3(0f, h - 0.01f, -0.02f), new Vector3(0.46f, 0.02f, 0.58f), shell);
             m.Box(new Vector3(0f, FilingPlinth * 0.5f, -0.02f), new Vector3(0.46f, FilingPlinth, 0.58f), M(c * 0.55f));
             m.Box(new Vector3(0f, (h + FilingPlinth) * 0.5f, -0.287f), new Vector3(0.42f, h - FilingPlinth - 0.02f, 0.006f), M(c * 0.3f));
+            // Small metal filing‑cabinet label plate
+            m.Box(new Vector3(0f, h - 0.015f, -0.025f), new Vector3(0.22f, 0.01f, 0.001f), Mt(Chrome));
             for (int i = 1; i < drawers; i++)
                 m.Box(new Vector3(0f, FilingPlinth + i * FilingPitch, 0.255f), new Vector3(0.42f, 0.016f, 0.03f), shell);
             if (Chance(rng, 0.35))
