@@ -147,6 +147,8 @@ namespace CloneZ
             Quaternion q = Quaternion.LookRotation(normal, Vector3.up);
             Quaternion disc = q * Quaternion.Euler(90f, 0f, 0f);
             m.Cylinder(at, 0.16f, 0.04f, 16, M(new Color(0.15f, 0.15f, 0.16f)), disc);
+            // Chrome bezel at the clock’s outer rim
+            m.Cylinder(at, 0.165f, 0.004f, 16, Mt(Chrome), disc);
             m.Cylinder(at + normal * 0.041f, 0.14f, 0.002f, 16, M(new Color(0.88f, 0.87f, 0.82f)), disc);
             Vector3 right = Vector3.Cross(normal, Vector3.up).normalized;   // three o'clock, as a viewer facing the dial sees it
             for (int i = 0; i < 12; i++)

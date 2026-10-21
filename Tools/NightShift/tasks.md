@@ -5587,11 +5587,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `go.transform.position = new Vector3(position.x, role == Role.Musician ? 0.24f : position.y, position.z);`
   After this change NPCs appear at the correct vertical spot while musicians still get their slight elevation offset. All other logic (seat height, look‑at vector, etc.) remains unchanged.
   - 02:55 landed by 0htsserver in 1.3 min: Changed **Assets/Scripts/Hub/HubNpc.cs**:
-- [ ] Add a thin chrome bezel around the outer edge of each wall clock in `Assets/Scripts/World/FurnitureBuilder.Lighting.cs` `ClockDial` method
+- [x] Add a thin chrome bezel around the outer edge of each wall clock in `Assets/Scripts/World/FurnitureBuilder.Lighting.cs` `ClockDial` method
   Insert a new cylinder draw call after the first `m.Cylinder(at, 0.16f, 0.04f, 16, M(new Color(0.15f, 0.15f, 0.16f)), disc);` line:
   `// Chrome bezel at the clock’s outer rim`
   `m.Cylinder(at, 0.165f, 0.004f, 16, Mt(Chrome), disc);`
   This adds a 0.165 m radius, 0.004 m thick chrome ring centered on the same `at` point as the clock case, using the existing `disc` orientation and the material `Mt(Chrome)`. No other code, colliders, or interaction points are altered.
+  - 02:58 landed by hts-llm in 3.2 min: Implemented a thin chrome bezel around each wall clock:
 - [ ] In Assets/Scripts/UI/HUDController.cs: Cache the TimeOfDay singleton in HUDController to avoid a per‑frame static lookup in UpdateSleep.
   Add a private field `private TimeOfDay _timeOfDay;` to the class.
   In Awake() assign it after the existing lookups: `_timeOfDay = TimeOfDay.Instance;`.
