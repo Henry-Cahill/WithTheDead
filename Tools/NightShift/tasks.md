@@ -5171,7 +5171,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   This removes the `if (_player == null) _player = PlayerInteractor.Current;` call that runs every Update, reducing static‑lookup overhead and GC pressure
   No visual or gameplay change: the doors still open automatically when the container is viewed or searched, and the player interaction remains identical.
   - 00:40 landed by 1htsserver in 1.5 min: **Changed file**
-- [ ] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildPoints` to give each sign’s foreground colour a tiny random hand‑painted variation (like the background does), making the text look less uniformly coloured and more period‑correct.
+- [x] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildPoints` to give each sign’s foreground colour a tiny random hand‑painted variation (like the background does), making the text look less uniformly coloured and more period‑correct.
   Locate the block that computes `bg` and `fg` after `SignColours(s.Data.kind, out Color bg, out Color fg)`.
   After the existing background jitter code (`bg.r = …; bg.g = …; bg.b = …;`) insert the same three lines for `fg`:
   `fg.r = Mathf.Clamp01(fg.r + (float)rng.NextDouble() * 0.04f - 0.02f);`
@@ -5179,6 +5179,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `fg.b = Mathf.Clamp01(fg.b + (float)rng.NextDouble() * 0.04f - 0.02f);`
   Keep the rest of the method unchanged (sign placement, yaw, collider, etc.).
   The player will now see street signs whose lettering has subtle colour variance, matching the hand‑painted look of the backgrounds while preserving all existing logic.
+  - 00:44 landed by 1htsserver in 2 min: **Summary**
 - [ ] In Assets/Scripts/World/Zone/ZoneCordon.cs: Add a small rusted‑metal hinge on each side of the checkpoint’s front door for occasional visual variety in `ZoneCordon.BuildCheckpoint` (the method that builds the checkpoint booth).
   After the existing door‑handle block (`if (ZoneKit.R(rng, 0f, 1f) < 0.5f) { … }`), insert a 30 % chance to place two hinge pieces:
   `if (ZoneKit.R(rng, 0f, 1f) < 0.3f) {`
