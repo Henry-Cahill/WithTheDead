@@ -37,12 +37,18 @@ public float WorkProgress { get; private set; }
 /// </summary>
 public string WorkLabel { get; private set; } = "";
 
+        private void Awake()
+        {
+            _keyboard = Keyboard.current;
+        }
         private PlayerStats _stats;
         private PlayerController _controller;
         private PlayerInventory _inventory;
         private PlayerSkills _skills;
         private PlayerInteractor _interactor;
         // Cached nearest farm plot to avoid repeated heavy lookups when player is stationary.
+        // Cached Keyboard reference to avoid per-frame static property lookup.
+        private Keyboard _keyboard;
         private FarmPlot _cachedPlot;
         private Vector3 _cachedPos;
 
@@ -90,7 +96,7 @@ public string WorkLabel { get; private set; } = "";
 
             Evaluate();
 
-            Keyboard kb = Keyboard.current;
+            Keyboard kb = _keyboard ?? Keyboard.current;
             if (kb != null && kb.fKey.wasPressedThisFrame && _action != FarmAction.None)
                 StartWork();
         }

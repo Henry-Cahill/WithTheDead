@@ -5201,11 +5201,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Size the patch to roughly a spill: `new Vector3(0.08f, 0.004f, 0.02f)` (≈ 8 cm × 0.4 cm × 2 cm);
   Guard it with `if (Chance(rng, 0.25f))` so it appears on about a quarter of generated kitchens, using the same deterministic `rng` already passed to the method.
   - 00:49 landed by 0htsserver in 3.8 min: **Changed file**
-- [ ] Cache the Keyboard lookup in Assets/Scripts/Player/PlayerFarming.cs to avoid the per‑frame static property access.
+- [x] Cache the Keyboard lookup in Assets/Scripts/Player/PlayerFarming.cs to avoid the per‑frame static property access.
   Add a private field `private Keyboard _keyboard;` that is assigned once in `Awake()` (or `OnEnable()`) with `Keyboard.current`.
   Replace `Keyboard kb = Keyboard.current;` in `Update()` with `Keyboard kb = _keyboard;`.
   If `_keyboard` is null (e.g., no keyboard attached), fall back to `Keyboard.current` once per frame to keep functionality, but only after the initial cache failed.
   This change eliminates the repeated `Keyboard.current` getter call each frame, reducing unnecessary native‑side lookup overhead while preserving the existing behavior (the F‑key press still triggers farming actions).
+  - 00:52 landed by hts-llm in 4.9 min: Implemented keyboard caching in **PlayerFarming.cs**:
 - [ ] In Assets/Scripts/World/Fixtures/ShowerFixture.cs: Add a context‑only “Shut off shower” action to ShowerFixture.GetActions that appears only when the water is on and the survivor is not inside the stall; it instantly turns the water off and closes the glass door.
   Insert after the existing “Turn on/off the shower” action:
   `if (_on && !_inside) into.Add(new InteractAction("Shut off shower", c => { Turn(c, false); SetDoor(false, true); }));`
