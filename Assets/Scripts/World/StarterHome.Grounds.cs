@@ -233,6 +233,8 @@ namespace CloneZ
             var door = new RaidMesh();
             Surf face = DecorPalette.Metal(new Color(0.24f, 0.26f, 0.30f));
             door.Box(at + new Vector3(0f, 1.2f, -0.252f), new Vector3(0.226f, 0.16f, 0.012f), face);
+            // Small rust speck on the door’s upper edge for weathered detail
+            door.Ellipsoid(at + new Vector3(0f, 1.33f, -0.263f), new Vector3(0.015f, 0.008f, 0.001f), DecorPalette.Matte(new Color(0.25f, 0.18f, 0.12f)), 4, 2);
             door.Cylinder(at + new Vector3(0f, 1.28f, -0.258f), 0.113f, 0.012f, 12, face, Quaternion.Euler(90f, 0f, 0f));
             door.Box(at + new Vector3(0f, 1.35f, -0.262f), new Vector3(0.04f, 0.018f, 0.01f), DecorPalette.Metal(new Color(0.55f, 0.55f, 0.52f)));
             FixturePart doorPart = FixturePart.Hinge(fixture.transform, "Door", door, at + new Vector3(0f, 1.12f, -0.252f), Vector3.left, 100f);

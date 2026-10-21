@@ -5227,13 +5227,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   The current `if (f.AlongX)` branch compares `f.Coord` to `Outline.yMin`/`yMax`, which are the north‑south bounds, so windows that run east‑west are incorrectly named “Front/Back”.
   Swap the axis checks so that when `f.AlongX` is true we compare against the *x* bounds, and when false we compare against the *y* bounds.
   Replace the existing block
-- [ ] Add a subtle rust‑spot ellipsoid on the mailbox door to break the flat metal surface in the `Mailbox` method of Assets/Scripts/World/StarterHome.Grounds.cs
+- [x] Add a subtle rust‑spot ellipsoid on the mailbox door to break the flat metal surface in the `Mailbox` method of Assets/Scripts/World/StarterHome.Grounds.cs
   Add the primitive after the line `door.Box(at + new Vector3(0f, 1.2f, -0.252f), new Vector3(0.226f, 0.16f, 0.012f), face);`
   `// Small rust speck on the door’s upper edge for weathered detail`
   `door.Ellipsoid(at + new Vector3(0f, 1.33f, -0.263f), new Vector3(0.015f, 0.008f, 0.001f),`
   `DecorPalette.Matte(new Color(0.25f, 0.18f, 0.12f)), 4, 2);`
   The ellipsoid is ~1.5 cm wide, 0.8 cm tall, 0.1 cm deep, placed 13 cm above the door base and 1 cm behind the door face, using a dark‑brown matte colour to look like rust.
   Keeps existing colliders, interaction points, and pivots unchanged; adds only one primitive well under the 12‑primitive limit.
+  - 01:02 landed by 0htsserver in 2.3 min: **Changed file**
 - [ ] In Assets/Scripts/World/Fixtures/RaidTownGenerator.cs: Add a “Check next noise” action to RaidTownGenerator so the player can see how long until the generator’s next rumble.
   Edit `RaidTownGenerator.GetActions` to insert `into.Add(new InteractAction("Check next noise", CheckNoise));` after the existing “Inspect generator” line.
   Add a private method `CheckNoise(InteractContext ctx)` that computes `float remaining = Mathf.Max(0f, _noiseAt - Time.time);` and calls `ctx.Notify($"The next roar will come in about {(int)remaining}s.");`.
