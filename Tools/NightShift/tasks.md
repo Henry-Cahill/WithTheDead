@@ -5072,3 +5072,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   In `Update()` delete the line `if (_cam == null) _cam = Camera.main;` because `_cam` is already assigned in `Start()` and never changes during gameplay.
   This eliminates a `Camera.main` lookup each frame, reducing GC pressure and CPU time without altering any visible behavior.
 - [ ] In Assets/Scripts/World/Fixtures/RaidStoreCopier.cs: Add a “Copy original sheet” action to `RaidStoreCopier.GetActions` (next to the existing “Run off a copy” action) that lets the survivor make a copy of the sheet left on the glass.
+- [ ] Edit Assets/Scripts/World/Map/KentuckyMap.Ground.cs – in the `BuildStreets` method, after the main `Ribbon(site.Town.Out, piece, width, StreetY, surf);` call add a thin frozen‑crust overlay for footways/paths so they look iced in winter.
+  Detect footway‑type surfaces by checking `surf.Mat == TroddenSnow.Mat` (the trodden‑snow material used for “footway”, “path”, “cycleway”, etc.).
+  When the check is true, call `Ribbon(site.Town.Out, piece, width * 0.96f, StreetY + 0.001f, Ice);` to draw a narrow Ice ribbon just above the trodden‑snow surface.
+  Leave the existing asphalt‑overlay and kerb code untouched; this addition only affects non‑asphalt road kinds.
+  Result: footways and similar paths appear with a subtle icy top layer, matching the 1993 Kentucky winter setting while keeping colliders aligned with the geometry.
