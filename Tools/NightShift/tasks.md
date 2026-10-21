@@ -4899,7 +4899,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   No new fields, methods, or assets are required; it reuses the existing `_deadbolt` field and the `ctx.Notify` method.
   The player will now see an extra “[E] Inspect the lock” option when standing on the lock side of a shut door, receiving a short textual description of the lock type.
   - 23:20 landed by 1htsserver in 2.8 min: **Changed file**
-- [ ] Add a small deterministic roof‑overhang helper to `MapBuilding` in `Assets/Scripts/World/Map/MapData.cs` so the map builder can give each building a period‑appropriate eave depth.
+- [x] Add a small deterministic roof‑overhang helper to `MapBuilding` in `Assets/Scripts/World/Map/MapData.cs` so the map builder can give each building a period‑appropriate eave depth.
   In the `MapBuilding` class, after the existing `EffectiveHeight()` method, insert a new method:
   `/// <summary>Returns a subtle roof overhang (metres) based on building kind.`
   `/// Residential buildings get deeper eaves; commercial/industrial get shallower ones.`
@@ -4908,6 +4908,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `{`
   `// Base overhang by kind (metres)`
   `float baseOverhang = kind switch`
+  - 23:26 landed by hts-llm in 7.8 min: **Changed file**
 - [x] Add thin weathered grime patches to the WeaponRack lower shelf in Assets/Scripts/World/RaidLayouts.cs
   After the call `m.Box(new Vector3(0f, 0.25f, 0f), Sz(1.9f, 0.08f, 0.3f), wood);` insert a small randomised block that, with a 40 % chance, creates 1‑3 thin boxes representing dust‑or‑grime accumulation on the shelf surface.
   Use `float patchWidth = R(r, 0.2f, 0.5f);` for the X size, `float patchDepth = 0.02f;` for Z, and `float patchHeight = 0.001f;` for Y.

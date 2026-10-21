@@ -151,6 +151,44 @@ public sealed class MapBuilding
             float storeys = Mathf.Max(1, levels) * 3.0f;
             return storeys + 0.4f;
         }
+
+        /// <summary>
+        /// Returns a subtle roof overhang (metres) based on building kind.
+        /// Residential buildings get deeper eaves; commercial/industrial get shallower ones.
+        /// The value is deterministic per-id to keep variation stable across runs.
+        /// </summary>
+        public float RoofOverhang()
+        {
+            float baseOverhang = kind switch
+            {
+                // Residential types – deeper eaves
+                "house" => 0.8f,
+                "trailer" => 0.8f,
+                "apartment" => 0.8f,
+                "apartments" => 0.8f,
+                // Commercial / industrial – shallower eaves
+                "commercial" => 0.4f,
+                "office" => 0.4f,
+                "retail" => 0.4f,
+                "industrial" => 0.4f,
+                "warehouse" => 0.4f,
+                "garage" => 0.4f,
+                "shed" => 0.4f,
+                "barn" => 0.4f,
+                "silo" => 0.4f,
+                "greenhouse" => 0.4f,
+                "canopy" => 0.4f,
+                "hotel" => 0.4f,
+                "civic" => 0.4f,
+                "school" => 0.4f,
+                "hospital" => 0.4f,
+                "church" => 0.4f,
+                _ => 0.5f // default moderate overhang
+            };
+            // deterministic small variation per id (0‑0.2 m)
+            float variation = ((id * 0x9E3779B9) & 0xFFFF) / 65535f * 0.2f;
+            return baseOverhang + variation;
+        }
     }
 
     /// <summary>A land-use area (water, parking, forest, farmland, residential, park...), clipped to its region.</summary>
