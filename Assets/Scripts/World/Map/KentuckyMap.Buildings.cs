@@ -38,12 +38,15 @@ namespace CloneZ
 
                 private static void BuildRoofEaves(Site site)
         {
-            // Add eave trim to residential buildings (house, trailer, etc.)
+            // Add eave trim and a simple chimney to residential buildings (house, trailer, apartments, hotel, or use containing "residential")
             foreach (Footprint f in site.Area.Buildings)
             {
-                // Consider residential kinds by use field containing "residential" or kind "house"/"trailer"
+                // Consider residential kinds by use field containing "residential" or kind "house"/"trailer"/"apartments"/"hotel"
                 string use = f.Data.use ?? "";
-                if (!use.Contains("residential") && f.Data.kind != "house" && f.Data.kind != "trailer")
+                bool isResidential = use.Contains("residential") ||
+                                      f.Data.kind == "house" || f.Data.kind == "trailer" ||
+                                      f.Data.kind == "apartments" || f.Data.kind == "hotel";
+                if (!isResidential)
                     continue;
 
                 // Determine roof height: use building height if known, else default 4.5f
@@ -68,6 +71,18 @@ namespace CloneZ
                     Surf roofMat = RoofSurf(f.Data, new System.Random(unchecked((int)f.Data.id) ^ 0x51ED));
                     site.Overhead.At(pos).Box(pos, size, rot, roofMat);
                 }
+
+                // Add a simple brick chimney on the roof
+                // Basic dimensions – can be tweaked later
+                const float chimneyBase = 0.3f;
+                const float chimneyHeight = 1.5f;
+                // Choose a deterministic random offset for variety
+                var rng = new System.Random(unchecked((int)f.Data.id) ^ 0x5A4F);
+                // Position near the centre of the footprint (could be refined to a corner)
+                Vector3 chimneyPos = To3(f.Middle, roofY + chimneyHeight * 0.5f);
+                // Choose a brick material (deterministic colour from BrickColors)
+                Surf brickMat = DecorMaterials.WallExterior(ExteriorStyle.Brick, BrickColors[rng.Next(BrickColors.Length)]);
+                site.Overhead.At(chimneyPos).Box(chimneyPos, new Vector3(chimneyBase, chimneyHeight, chimneyBase), Quaternion.identity, brickMat);
             }
         }
         private static void BuildBuildings(Site site)
