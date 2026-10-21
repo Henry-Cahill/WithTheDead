@@ -230,6 +230,15 @@ for (int i = 0; i < 4; i++)
             Vector3 n = f.N(side), at = Face(f, side, along, y);
             PictureFixture picture = PictureFixture.Create(piece, at + n * 0.04f, at, n, roll, description);
             var mesh = new RaidMesh();
+            // add tiny dark‑metal nail detail on a random corner of the frame
+            int corner = rng.Next(4);
+            Vector3 right = Vector3.Cross(n, Vector3.up).normalized;
+            float halfW = (w + 0.05f) * 0.5f;
+            float halfH = (h + 0.05f) * 0.5f;
+            float signX = (corner % 2 == 0) ? -1f : 1f;
+            float signY = (corner < 2) ? -1f : 1f;
+            Vector3 nailPos = at + n * 0.009f + right * signX * halfW + Vector3.up * signY * halfH;
+            mesh.Box(nailPos, new Vector3(0.004f, 0.006f, 0.002f), DecorPalette.Matte(new Color(0.08f, 0.08f, 0.09f)));
             FurnitureBuilder.PictureFrame(mesh, at, n, w, h, frame, 2);
             GameObject go = mesh.Emit("Picture", picture.transform, at, ShadowCastingMode.On);
             picture.SetFrame(go.transform);
