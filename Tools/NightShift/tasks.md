@@ -4810,3 +4810,18 @@ you want to see in game. Indent extra lines under a task to add detail.
   a reminder to check on neighbours and share firewood,
   a cue to conserve limited gasoline, and
   a subtle warning about the outbreak’s symptoms.
+- [ ] Add deterministic colour variation for buildings in Assets/Scripts/World/Map/MapGeometry.cs so each generated building gets a period‑appropriate hue based on its OSM id.
+  Add a private static readonly `Color[] kBuildingPalette = new[] { new Color(0.78f,0.73f,0.68f), new Color(0.72f,0.65f,0.60f), new Color(0.66f,0.58f,0.53f), new Color(0.60f,0.52f,0.47f) };` near the end of the class.
+  Add a public static method `public static Color GetBuildingColor(int osmId)` that computes `int idx = (osmId.GetHashCode() & 0x7fffffff) % kBuildingPalette.Length; return kBuildingPalette[idx];`.
+  Ensure the method is placed after the `private const float EPS = 1e-5f;` field and before the closing brace of the class.
+  The player should now see subtle colour differences between neighbouring buildings (e.g., slightly faded paint tones) making the procedurally‑generated raid town look hand‑crafted, while all existing geometry logic remains unchanged.
+- [ ] In Assets/Scripts/World/RaidMapBuilder.Outdoor.cs add two small rust‑stained metal rivet cylinders to each sandbag wall built in the `Checkpoint` method (the lambda that calls `DecorProps.SandbagWall`), so the metal band looks fastened.
+- [ ] Fix persistent fog in clear weather in Assets/Scripts/Core/WeatherSystem.cs
+  *Method to change:* `ApplyFog()`
+  *Current behaviour:* When the weather transitions to `Clear`, `FogIntensity` and `PrecipitationIntensity` are both 0, yet `ApplyFog()` still enables `RenderSettings.fog` (setting it to true) and updates the linear fog distances. This leaves fog rendering active even on a clear day, reducing visibility and giving the player an unintended “hazy” look.
+  Exact fix:
+  Compute `float fog = Mathf.Max(FogIntensity, PrecipitationIntensity * 0.35f);` as before.
+  After the cache‑check, add a conditional: if `fog <= 0f` (or `Mathf.Approximately(fog, 0f)`), set `RenderSettings.fog = false; _cachedFog = 0f; return;`.
+  Otherwise keep the existing block, but set `RenderSettings.fog = true;` before adjusting distances.
+  *Result in‑game:* When the world is clear, no fog is rendered; the sky and distant terrain become fully visible, matching the intended 1993 winter Kentucky setting. All other fog‑related transitions (overcast, rain, snow, etc.) continue to work unchanged.
+  *What stays:* All other calculations, the cached‑fog optimisation, and the linear distance lerp logic remain exactly as written.
