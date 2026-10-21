@@ -91,6 +91,15 @@ namespace CloneZ
                 m.Ellipsoid(new Vector3(0f, 1.3f, 0f), new Vector3(2.6f, 2.4f, 7.5f), Quaternion.Euler(0f, 0f, 24f), ZoneKit.Mt(Olive), 10, 6);
                 m.Ellipsoid(new Vector3(0f, 1.5f, 3f), new Vector3(1.8f, 1.5f, 1.8f), Quaternion.Euler(0f, 0f, 24f), ZoneKit.Gs(new Color(0.2f, 0.25f, 0.28f)), 8, 5);
                 m.CylinderX(new Vector3(0.6f, 0.9f, -5.6f), 0.35f, 4.5f, 8, ZoneKit.Mt(Olive), 90f);
+                // Small rivets along the right side of the fuselage
+                int rivetCount = 6;
+                for (int i = 0; i < rivetCount; i++)
+                {
+                    // Random y‑offset from deck to top of fuselage, z‑offset along length
+                    float y = ZoneKit.R(r, 0.2f, 2.0f);
+                    float z = ZoneKit.R(r, -3.5f, 3.5f);
+                    m.Box(new Vector3(0.35f, y, z), new Vector3(0.02f, 0.04f, 0.02f), ZoneKit.Mt(new Color(0.5f, 0.3f, 0.1f)));
+                }
             });
             sb.Collider(new Vector3(0f, 1.2f, 0f), new Vector3(2.8f, 2.4f, 8f), 18f);
             for (int i = 0; i < 3; i++)

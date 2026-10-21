@@ -4159,7 +4159,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Keep the existing `Inside`/`Cross` logic unchanged; only insert the single call.
   Add a comment such as `// Ensure consistent winding for triangulation` preceding the new line.
   - 19:03 landed by hts-llm in 1.2 min: **Changed file**
-- [ ] Add a cluster of small rust‑tinted rivets to the crashed helicopter hull for subtle weathering detail, editing Assets/Scripts/World/Zone/ZoneLandmarks.cs, method CrashedHelicopter(SiteBuilder sb)
+- [x] Add a cluster of small rust‑tinted rivets to the crashed helicopter hull for subtle weathering detail, editing Assets/Scripts/World/Zone/ZoneLandmarks.cs, method CrashedHelicopter(SiteBuilder sb)
   Insert the following code inside the `sb.At(sb.Solid, new Vector3(0f, 0f, 0f), 18f, m => { … })` block, after the existing shape calls:
   `// Small rivets along the right side of the fuselage`
   `int rivetCount = 6;`
@@ -4168,6 +4168,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// Random y‑offset from deck to top of fuselage, z‑offset along length`
   `float y = ZoneKit.R(r, 0.2f, 2.0f);`
   `float z = ZoneKit.R(r, -3.5f, 3.5f);`
+  - 19:08 landed by hts-llm in 4 min: **Changed**
 - [x] Fix the leg‑yaw rotation in Assets/Scripts/Characters/HumanoidAnimator.Body.cs → method Leg(int thigh, …) – the current code cancels the yaw it adds, so the character’s legs never turn when the player strafes or walks backward, giving a sliding‑feet animation.
   - 19:07 landed by 0htsserver in 1.3 min: **Changes Made**
 - [ ] Add a tiny chrome hinge‑pin detail to each locker door in Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method LockerDoor so players see a small realistic hinge on the top edge of the door.
