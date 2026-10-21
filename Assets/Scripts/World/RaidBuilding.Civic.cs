@@ -117,7 +117,7 @@ namespace CloneZ
             Transform t = FixtureBody(room, p, size, true, (m, r) => paint = FurnitureBuilder.LockerBankBody(m, r, count, body), name);
             KitchenFrame f = FrameOf(p);
             Vector3 at = t.position;
-            int ajar = count > 1 && Rng.NextDouble() < CloneZConfig.CivicAjarChance ? 1 + Rng.Next(count - 1) : -1;
+            int ajar = Rng.NextDouble() < CloneZConfig.CivicAjarChance ? Rng.Next(count) : -1;
             StorageFixture first = null;
             for (int i = 0; i < count; i++)
             {
@@ -625,6 +625,12 @@ namespace CloneZ
             "You lay out a game of patience with the dog-eared deck left on the table. It comes out on the very last card.",
             "Patience again. A black king stays buried under everything, so you cheat, a little. Nobody's counting.",
             "Somebody has marked the aces in biro. You play a hand anyway. It passes the time and steadies your hands.",
+            "Winter boredom settles around you as the cards whisper against the cold air.",
+            "A fleeting memory of home’s warm kitchen flits through your mind while you turn a card.",
+            "The low hum of the aging heater rattles, a muted lullaby to your patience.",
+            "A stray cat perches on the windowsill, watching each card with curious eyes.",
+            "The dying radio crackles a static tune, syncing with the shuffle of the deck.",
+            "The steady rhythm of snowfall outside taps the wall, each flake a soft beat to your game.",
         };
 
         private static System.Action<InteractContext> s_CivicPatience;

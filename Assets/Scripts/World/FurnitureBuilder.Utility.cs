@@ -340,6 +340,12 @@ namespace CloneZ
             m.Box(new Vector3(0f, 0.885f, -0.04f), new Vector3(0.4f, 0.004f, 0.28f), G(new Color(0.55f, 0.58f, 0.58f)));
             m.Box(new Vector3(0f, 0.95f, -0.22f), new Vector3(0.03f, 0.12f, 0.03f), Mt(Chrome));
             m.Box(new Vector3(0f, 1.45f, -0.25f), new Vector3(0.5f, 0.6f, 0.06f), Gs(new Color(0.42f, 0.46f, 0.48f)));
+            // Chrome faucet with tiny red (hot) and blue (cold) lever handles
+            Vector3 fp = new Vector3(-0.20f, 0.84f, -0.02f) + new Vector3((float)rng.NextDouble()*0.01f-0.005f, (float)rng.NextDouble()*0.02f-0.01f, 0f);
+            Vector3 fs = new Vector3(0.04f, 0.02f, 0.02f);
+            m.Box(fp, fs, Mt(Chrome));
+            m.Box(fp + new Vector3(0.02f, 0.02f, 0f), new Vector3(0.008f, 0.012f, 0.008f), M(new Color(0.80f, 0.10f, 0.10f)));
+            m.Box(fp + new Vector3(-0.02f, 0.02f, 0f), new Vector3(0.008f, 0.012f, 0.008f), M(new Color(0.10f, 0.30f, 0.80f)));
         }
 
         /// <summary>A white bath tub (0.75 × 1.6, length along X).</summary>

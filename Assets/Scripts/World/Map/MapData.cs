@@ -103,8 +103,9 @@ namespace CloneZ
                 default:
                     // Fallback based on carriageway width if kind is unknown
                     return Mathf.Max(1.0f, width * 0.3f);
-            }
-        }
+    }
+
+    }
     }
 
     /// <summary>A river, stream, canal, ditch or railway, clipped to its region.</summary>
@@ -119,14 +120,14 @@ namespace CloneZ
 
     /// <summary>A building's footprint (its outer wall, no repeated last point) and what it is.</summary>
     [Serializable]
-    public sealed class MapBuilding
+public sealed class MapBuilding
     {
         public long id;
         /// <summary>house, trailer, apartments, hotel, commercial, office, retail, industrial, warehouse, church,
         /// school, hospital, civic, garage, shed, barn, silo, greenhouse, canopy or ruin.</summary>
         public string kind;
         public string name, address;
-        /// <summary>What it's used for, when mapped: an amenity (fuel, police, pharmacy...) or "shop:&lt;kind&gt;".</summary>
+        /// <summary>What it's used for, when mapped: an amenity (fuel, police, pharmacy...) or "shop:<kind>".</summary>
         public string use;
         public int levels;
         /// <summary>Height in metres when mapped, else 0.</summary>
@@ -140,6 +141,54 @@ namespace CloneZ
             float val = 0.7f + ((id >> 24) & 0xFF) / 255f * 0.2f;
             return Color.HSVToRGB(hue, sat, val);
         }
+
+        /// <summary>Effective building height: returns the mapped height if set (>0), otherwise a deterministic default based on levels.</summary>
+        public float EffectiveHeight()
+        {
+            if (height > 0f)
+                return Mathf.Clamp(height, 2.6f, 90f);
+            // Default: each level ~3 meters plus a small roof offset.
+            float storeys = Mathf.Max(1, levels) * 3.0f;
+            return storeys + 0.4f;
+        }
+
+        /// <summary>
+        /// Returns a subtle roof overhang (metres) based on building kind.
+        /// Residential buildings get deeper eaves; commercial/industrial get shallower ones.
+        /// The value is deterministic per-id to keep variation stable across runs.
+        /// </summary>
+        public float RoofOverhang()
+        {
+            float baseOverhang = kind switch
+            {
+                // Residential types – deeper eaves
+                "house" => 0.8f,
+                "trailer" => 0.8f,
+                "apartment" => 0.8f,
+                "apartments" => 0.8f,
+                // Commercial / industrial – shallower eaves
+                "commercial" => 0.4f,
+                "office" => 0.4f,
+                "retail" => 0.4f,
+                "industrial" => 0.4f,
+                "warehouse" => 0.4f,
+                "garage" => 0.4f,
+                "shed" => 0.4f,
+                "barn" => 0.4f,
+                "silo" => 0.4f,
+                "greenhouse" => 0.4f,
+                "canopy" => 0.4f,
+                "hotel" => 0.4f,
+                "civic" => 0.4f,
+                "school" => 0.4f,
+                "hospital" => 0.4f,
+                "church" => 0.4f,
+                _ => 0.5f // default moderate overhang
+            };
+            // deterministic small variation per id (0‑0.2 m)
+            float variation = ((id * 0x9E3779B9) & 0xFFFF) / 65535f * 0.2f;
+            return baseOverhang + variation;
+        }
     }
 
     /// <summary>A land-use area (water, parking, forest, farmland, residential, park...), clipped to its region.</summary>
@@ -149,6 +198,16 @@ namespace CloneZ
         public long id;
         public string kind, name;
         public int[] pts;
+
+        /// <summary>Provides a deterministic tree‑placement interval for forest land‑use areas. Returns 0 m for non‑forest areas; for forests returns a base spacing of 3 m plus a pseudo‑random offset in [0, 1] derived from the area's id.</summary>
+        public float GetTreeSpacing()
+        {
+            if (kind != "forest")
+                return 0f;
+            // deterministic offset based on id, similar to other hashing patterns
+            float offset = ((id * 0x4F1BBCDC) & 0xFFFF) / 65535f;
+            return 3f + offset;
+        }
     }
 
     /// <summary>A point of interest: an amenity (fuel, police, hospital, school...) or "shop:&lt;kind&gt;".</summary>

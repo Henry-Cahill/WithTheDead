@@ -58,6 +58,11 @@ namespace CloneZ
             "A bleached page emerges, dry and crackling, a torn corner where a frantic hand ripped it.",
             "A damp‑looking copy lands, a faint frost line along its edge, hinting at the cold beyond the office walls.",
             "A faded copy appears, the watermark “County” barely visible, the toner leaving a ghostly shadow of the original.",
+            "A dull‑gray copy emerges, its corners frayed like old rope, the ink smeared by the cold draft seeping in.",
+            "A thin sheet pops out, its surface dusted with a pale frost line, as if the copier breathed winter air.",
+            "A pale, almost translucent copy slides free, the toner barely clinging, and a faint smell of stale coffee lingers.",
+            "A crisp copy lands, the paper speckled with tiny ice crystals that melt into the fibers as it cools.",
+            "A weary copy drops, the letters slightly blurred, the margin edged with a subtle white streak hinting at the office’s chill.",
         };
 
         private static readonly string[] Clears =
@@ -117,10 +122,16 @@ namespace CloneZ
             into.Add(new InteractAction(open ? "Close the lid" : "Lift the lid", c => SetLid(!open)));
             if (open) {
                 into.Add(new InteractAction("Read what's on the glass", c => c.Notify(Originals[_original])));
-                if (!_originalTaken) into.Add(new InteractAction("Take the original sheet", c => {
-                    _originalTaken = true;
-                    c.Notify(Originals[_original]);
-                }));
+                if (!_originalTaken) {
+                    into.Add(new InteractAction("Take the original sheet", c => {
+                        _originalTaken = true;
+                        c.Notify(Originals[_original]);
+                    }));
+                    // New action: copy the original sheet left on the glass
+                    into.Add(new InteractAction("Copy original sheet", c => {
+                        c.Notify($"You make a copy of the original sheet: {Originals[_original]}");
+                    }).DisabledIf(_jammed, "It's jammed — clear it first"));
+                }
             }
         }
 

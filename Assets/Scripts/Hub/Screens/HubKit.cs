@@ -110,7 +110,7 @@ namespace CloneZ
 
         /// <summary>Money carried in the pack (not the stash).</summary>
         /// <summary>Amount of money in the carried inventory (excluding stash).</summary>
-        public static int MoneyCarried => Money.Count(Pack);
+        public static int MoneyCarried => Pack != null ? Money.Count(Pack) : 0;
 
         /// <summary>
         /// Snapshots the live body's kit into the active character (hub only). Skipped when the body was clearly

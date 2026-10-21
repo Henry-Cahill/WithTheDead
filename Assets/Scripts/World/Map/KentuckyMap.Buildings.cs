@@ -18,6 +18,7 @@ namespace CloneZ
         private const float DoorHeight = 2.15f;
         private const int MaxContainers = 450;
 
+
         private static readonly Color[] SidingColors =
         {
             new Color(0.86f, 0.84f, 0.76f), new Color(0.80f, 0.82f, 0.80f), new Color(0.70f, 0.76f, 0.80f),
@@ -31,16 +32,21 @@ namespace CloneZ
             new Color(0.66f, 0.50f, 0.40f),
         };
 
+        private const float EaveHeight = 0.12f; // height of eave trim piece
+        private const float EaveDepth = 0.20f; // depth outward from roof edge
         private static Surf Glass => DecorPalette.Gloss(new Color(0.08f, 0.09f, 0.11f));
 
                 private static void BuildRoofEaves(Site site)
         {
-            // Add eave trim to residential buildings (house, trailer, etc.)
+            // Add eave trim and a simple chimney to residential buildings (house, trailer, apartments, hotel, or use containing "residential")
             foreach (Footprint f in site.Area.Buildings)
             {
-                // Consider residential kinds by use field containing "residential" or kind "house"/"trailer"
+                // Consider residential kinds by use field containing "residential" or kind "house"/"trailer"/"apartments"/"hotel"
                 string use = f.Data.use ?? "";
-                if (!use.Contains("residential") && f.Data.kind != "house" && f.Data.kind != "trailer")
+                bool isResidential = use.Contains("residential") ||
+                                      f.Data.kind == "house" || f.Data.kind == "trailer" ||
+                                      f.Data.kind == "apartments" || f.Data.kind == "hotel";
+                if (!isResidential)
                     continue;
 
                 // Determine roof height: use building height if known, else default 4.5f
@@ -64,7 +70,23 @@ namespace CloneZ
                     // Use same roof material as building's roof surface
                     Surf roofMat = RoofSurf(f.Data, new System.Random(unchecked((int)f.Data.id) ^ 0x51ED));
                     site.Overhead.At(pos).Box(pos, size, rot, roofMat);
+                    // Add a thin snow drift just above the eave for winter visual effect
+                    Vector3 snowSize = new Vector3(EaveDepth, 0.02f, edgeLen);
+                    Vector3 snowPos = pos + new Vector3(0f, EaveHeight * 0.5f + 0.01f, 0f);
+                    site.Overhead.At(snowPos).Box(snowPos, snowSize, rot, DecorMaterials.Snow);
                 }
+
+                // Add a simple brick chimney on the roof
+                // Basic dimensions – can be tweaked later
+                const float chimneyBase = 0.3f;
+                const float chimneyHeight = 1.5f;
+                // Choose a deterministic random offset for variety
+                var rng = new System.Random(unchecked((int)f.Data.id) ^ 0x5A4F);
+                // Position near the centre of the footprint (could be refined to a corner)
+                Vector3 chimneyPos = To3(f.Middle, roofY + chimneyHeight * 0.5f);
+                // Choose a brick material (deterministic colour from BrickColors)
+                Surf brickMat = DecorMaterials.WallExterior(ExteriorStyle.Brick, BrickColors[rng.Next(BrickColors.Length)]);
+                site.Overhead.At(chimneyPos).Box(chimneyPos, new Vector3(chimneyBase, chimneyHeight, chimneyBase), Quaternion.identity, brickMat);
             }
         }
         private static void BuildBuildings(Site site)
@@ -85,8 +107,23 @@ namespace CloneZ
                     Scenery(site, f, rng);
                     site.SceneryBuildings++;
                 }
-                // A building the edge cuts through is left out: half a house at the edge would look broken.
-            }
+BuildRoofEaves(site);
+                // Add a small wooden mailbox for residential footprints (house, trailer, apartments, hotel)
+                if (f.Data.kind == "house" || f.Data.kind == "trailer" || f.Data.kind == "apartments" || f.Data.kind == "hotel")
+                {
+                    // Choose a point near the first edge, offset outward from the wall
+                    Vector2 a = f.Pts[0];
+                    Vector2 b = f.Pts[1];
+                    Vector2 d = (b - a).normalized;
+                    Vector2 outward = new Vector2(d.y, -d.x); // outward normal (right side of anticlockwise ring)
+                    Vector2 pos2D = (a + b) * 0.5f + outward * (Thick * 0.5f + 0.5f);
+                    Vector3 pos = new Vector3(pos2D.x, 0f, pos2D.y);
+                    // Add mailbox geometry (small wooden mailbox, not a public box)
+                    var mesh = site.Town.Out.Solid(pos);
+                    DecorProps.Mailbox(mesh, rng, false);
+                }
+                }
+
         }
 
         private static void Enterable(Site site, Footprint f, System.Random rng)
@@ -128,6 +165,21 @@ namespace CloneZ
                 if (height > groundTop)
                     Wall(site, a, d, inset, -Thick * 0.5f, len + Thick * 0.5f, groundTop, height, yaw, outside, false);
                 if (b.kind != "ruin" && b.kind != "silo") Windows(site, a, d, outward, len, height, i == door ? len * 0.5f : -1f, rng, outside);
+
+                // Add low wooden rail fence for residential buildings (house, trailer, apartments, hotel)
+                if (b.kind == "house" || b.kind == "trailer" || b.kind == "apartments" || b.kind == "hotel")
+                {
+                    if (i == door) continue; // skip door segment to keep opening
+                    const float railHeight = 0.08f;
+                    const float railThickness = 0.04f;
+                    // Position rail just outside the wall edge
+                    Vector3 railCenter = To3(a + d * ((len) * 0.5f), railHeight * 0.5f) +
+                                         new Vector3(outward.x, 0f, outward.y) * (Thick * 0.5f + railThickness * 0.5f);
+                    Vector3 railSize = new Vector3(len, railHeight, railThickness);
+                    var railMat = DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f));
+                    site.Town.Out.Solid(railCenter).Box(railCenter, railSize, yaw, railMat);
+                    site.Town.PropCollider(railCenter, railSize, yaw);
+                }
             }
             // Add a simple door knob to every entrance
             if (door >= 0)
@@ -197,16 +249,33 @@ namespace CloneZ
                 float s = step * (k + 0.5f);
                 if (doorAt >= 0f && Mathf.Abs(s - doorAt) < 1.5f) continue;
                 Vector2 at = a + d * s + outward * 0.012f;
-                for (float y = 1.55f; y + 0.7f < height; y += Storey)
-                {
-                    Vector3 c = To3(at, y);
-                    RaidMesh m = y < GroundStorey ? site.Town.Out.Solid(c) : site.Overhead.At(c);
-                    m.Upright(c, normal, 1.0f, 1.15f, Glass);
-float sillHeight = 0.08f;
-float sillDepth = 0.02f + 0.02f * (float)rng.NextDouble(); // slight random variation
-var sillCenter = To3(at, y - sillHeight * 0.5f);
-var sillSize = new Vector3(1.0f, sillHeight, sillDepth);
-site.Town.Out.Solid(sillCenter).Box(sillCenter, sillSize, outside);
+            for (float y = 1.55f; y + 0.7f < height; y += Storey)
+            {
+                Vector3 c = To3(at, y);
+                RaidMesh m = y < GroundStorey ? site.Town.Out.Solid(c) : site.Overhead.At(c);
+                m.Upright(c, normal, 1.0f, 1.15f, Glass);
+                float sillHeight = 0.08f;
+                float sillDepth = 0.02f + 0.02f * (float)rng.NextDouble(); // slight random variation
+                var sillCenter = To3(at, y - sillHeight * 0.5f);
+                var sillSize = new Vector3(1.0f, sillHeight, sillDepth);
+                site.Town.Out.Solid(sillCenter).Box(sillCenter, sillSize, outside);
+
+                // Add simple wooden shutters on each side of the window (outside face)
+                const float shutterWidth = 0.26f;
+                const float shutterDepth = 0.03f;
+                float shutterHeight = Storey - 0.2f; // approximate window height
+                // offset from window centre to place shutters
+                float offset = 0.5f * 1.0f + 0.07f + shutterWidth * 0.5f;
+                // outward offset so shutters sit slightly in front of the wall
+                Vector3 outward3 = To3(outward, 0f);
+                Vector3 basePos = To3(at, y);
+                // first shutter on +d side
+                Vector3 center1 = basePos + new Vector3(d.x, 0f, d.y) * offset + outward3 * (Thick * 0.5f + shutterDepth * 0.5f);
+                // second shutter on -d side
+                Vector3 center2 = basePos - new Vector3(d.x, 0f, d.y) * offset + outward3 * (Thick * 0.5f + shutterDepth * 0.5f);
+                var shutterSize = new Vector3(shutterWidth, shutterHeight, shutterDepth);
+                site.Town.Out.Solid(center1).Box(center1, shutterSize, outside);
+                site.Town.Out.Solid(center2).Box(center2, shutterSize, outside);
                 }
             }
         }
@@ -348,18 +417,8 @@ site.Town.Out.Solid(sillCenter).Box(sillCenter, sillSize, outside);
         /// <summary>The building's height in metres: as mapped, or from its storeys and kind.</summary>
         private static float HeightOf(MapBuilding b)
         {
-            if (b.height > 0f) return Mathf.Clamp(b.height, 2.6f, 90f);
-            float storeys = Mathf.Max(1, b.levels) * Storey;
-            switch (b.kind)
-            {
-                case "shed": case "garage": case "canopy": return 2.7f;
-                case "trailer": return 2.9f;
-                case "barn": return 6.5f;
-                case "warehouse": case "industrial": return Mathf.Max(storeys, 6.5f);
-                case "church": return storeys + 3.5f;
-                case "silo": return 14f;
-                default: return storeys + 0.4f;   // a parapet above the top storey
-            }
+            // Use the deterministic effective height defined on MapBuilding.
+            return b.EffectiveHeight();
         }
 
         private static Surf RoofSurf(MapBuilding b, System.Random rng)

@@ -120,9 +120,8 @@ namespace CloneZ
         {
             // Opened from the inventory's container column (or being searched): swing the doors open to match.
             if (_open || !HasParts) return;
-            if (_player == null) _player = PlayerInteractor.Current;
-            PlayerInteractor pi = _player;
-            if (pi != null && Container != null && (pi.ViewedContainer == Container || pi.SearchTarget == Container))
+            if (_player == null) return; // No player reference cached, nothing to do.
+            if (Container != null && (_player.ViewedContainer == Container || _player.SearchTarget == Container))
                 SetOpen(true, false);
         }
 

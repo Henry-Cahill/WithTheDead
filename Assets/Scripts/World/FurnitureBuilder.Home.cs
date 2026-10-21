@@ -60,6 +60,9 @@ namespace CloneZ
                 float x = -len * 0.5f + dw * (i + 0.5f);
                 m.Box(new Vector3(x, 1.82f, 0.345f), new Vector3(dw - 0.04f, 0.64f, 0.02f), M(c * 1.08f));
                 m.Box(new Vector3(x + dw * 0.32f * (i % 2 == 0 ? 1f : -1f), 1.58f, 0.36f), new Vector3(0.02f, 0.08f, 0.02f), Mt(Brass));
+                // Tiny brass hinges on each side of the upper‑cabinet door
+                m.Box(new Vector3(x - dw * 0.5f + 0.02f, 1.78f, 0.345f), new Vector3(0.02f, 0.04f, 0.02f), Mt(Brass));
+                m.Box(new Vector3(x + dw * 0.5f - 0.02f, 1.78f, 0.345f), new Vector3(0.02f, 0.04f, 0.02f), Mt(Brass));
             }
         }
 
@@ -74,6 +77,8 @@ namespace CloneZ
                 float x = i % 2 == 0 ? -0.18f : 0.18f, z = i < 2 ? -0.13f : 0.13f;
                 m.Cylinder(new Vector3(x, 0.93f, z), 0.1f, 0.012f, 10, M(Black));
                 m.Cylinder(new Vector3(x, 0.94f, z), 0.06f, 0.01f, 8, M(new Color(0.3f, 0.3f, 0.3f)));
+                // Tiny brass control knob on each burner
+                m.Cylinder(new Vector3(x, 0.945f, z), 0.015f, 0.01f, 6, Mt(Brass), Yaw(R(rng, -10f, 10f)));
             }
             m.Box(new Vector3(0f, 1.0f, -0.3f), new Vector3(0.76f, 0.16f, 0.06f), G(c));
             for (int i = 0; i < 4; i++)
@@ -276,6 +281,11 @@ namespace CloneZ
             m.Box(new Vector3(-0.44f, 0.9f, 0f), new Vector3(0.02f, 1.8f, 0.32f), M(c));
             m.Box(new Vector3(0.44f, 0.9f, 0f), new Vector3(0.02f, 1.8f, 0.32f), M(c));
             m.Box(new Vector3(0f, 0.9f, -0.15f), new Vector3(0.88f, 1.8f, 0.02f), M(c * 0.7f));
+            // thin wooden strip capping the top edge (adds a worn‑look)
+            m.Box(new Vector3(0f, 0.9f + 1.8f, 0f), new Vector3(0.88f, 0.02f, 0.32f), M(c * 0.95f));
+            // occasional brass plaque centered on the trim
+            if (Chance(rng, 0.4))
+                m.Box(new Vector3(0f, 0.9f + 1.8f + 0.01f, 0f), new Vector3(0.12f, 0.004f, 0.04f), Mt(Brass));
             for (int s = 0; s < 5; s++)
             {
                 float y = 0.05f + s * 0.43f;

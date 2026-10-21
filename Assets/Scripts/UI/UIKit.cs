@@ -355,7 +355,7 @@ namespace CloneZ
             RectTransform handleArea = Rect("Handle Area", track);
             Stretch(handleArea, 6f, 0f, 6f, 0f);
             RectTransform handle = Rect("Handle", handleArea);
-            handle.sizeDelta = new Vector2(12f, 0f);
+            handle.sizeDelta = new Vector2(12f, 12f);
             var hImg = handle.gameObject.AddComponent<Image>();
             hImg.color = Accent;
             var s = track.gameObject.AddComponent<Slider>();

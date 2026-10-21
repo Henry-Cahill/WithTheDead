@@ -35,7 +35,7 @@ namespace CloneZ
         };
 
         /// <summary>Starts the Uncanny events for a raid by attaching the director to the host and initializing timing.</summary>
-                /// <summary>Instantiates an UncannyDirector on the host for the raid and sets timing parameters.</summary>
+
         public static void BeginRaid(GameObject host, ZoneDef zone)
         {
             if (!SandboxSettings.Current.UncannyEvents) return;

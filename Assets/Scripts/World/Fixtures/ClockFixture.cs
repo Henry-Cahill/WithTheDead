@@ -111,6 +111,9 @@ namespace CloneZ
             // Polishing the clock provides a calming action regardless of battery state.
             into.Add(new InteractAction("Polish the clock", Polish)
                 .Timed(CloneZConfig.ClockListenSeconds, "Polishing the clock", HumanoidActivity.None));
+            // Wipe dust off the clock, providing a calming effect similar to polishing.
+            into.Add(new InteractAction("Wipe dust off the clock", WipeDust)
+                .Timed(CloneZConfig.ClockListenSeconds, "Wiping dust off the clock", HumanoidActivity.None));
             if (_stoppedAt >= 0f) return;
             into.Add(new InteractAction("Listen to it tick", Listen)
                 .Timed(CloneZConfig.ClockListenSeconds, "Listening to the clock", HumanoidActivity.None));
@@ -156,6 +159,18 @@ namespace CloneZ
                 ctx.Notify("You gently polish the clock face; the steady motion steadies your thoughts.");
             }
             else ctx.Notify("You polish the clock, but its rhythm offers no new calm right now.");
+        }
+
+        // Wipe dust off the clock, providing calm similar to polishing.
+        private void WipeDust(InteractContext ctx)
+        {
+            if (Time.time >= _calmAgainAt)
+            {
+                LightingFixtures.Calm(ctx, CloneZConfig.ClockCalm);
+                _calmAgainAt = Time.time + CloneZConfig.ClockCalmCooldown;
+                ctx.Notify("You brush away the thin film of dust; the clean face steadies your thoughts.");
+            }
+            else ctx.Notify("You brush the clock, but its rhythm offers no new calm right now.");
         }
 
         private void Listen(InteractContext ctx)

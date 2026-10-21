@@ -137,6 +137,7 @@ namespace CloneZ
         public void Dispose()
         {
             if (_ringMesh != null) Object.Destroy(_ringMesh);
+            if (Root != null) Object.Destroy(Root);
         }
 
         // Re-tints the parts that don't animate every frame: the light colour and the smoke.

@@ -34,7 +34,7 @@ namespace CloneZ
             foreach (string id in zone.Landmarks)
             {
                 if (id == "lodestar_site" || id == "quarantine_tent") continue;
-                if (id == "warden_checkpoint" && ZoneCordon.HasGate) { built++; continue; }
+                if (id == "warden_checkpoint" && ZoneCordon.HasGate) { continue; }
                 Vector2 size = SizeOf(id);
                 float yaw = rng.Next(4) * 90f;
                 float edge = id == "cooling_tower" ? 18f : 10f;
@@ -192,6 +192,13 @@ namespace CloneZ
             }
             sb.Upper.Box(new Vector3(3f, 3.2f, 0f), new Vector3(2.8f, 0.15f, 2.8f), ZoneKit.M(ZoneKit.WetWood));
             sb.Roof.Box(new Vector3(3f, 4.8f, 0f), new Vector3(3f, 0.1f, 3f), ZoneKit.M(new Color(0.25f, 0.30f, 0.20f)));
+            // Add subtle snow‑drift detail on the roof edge
+            for (int i = 0; i < 4; i++)
+            {
+                float angle = i * Mathf.PI * 0.5f + ZoneKit.R(sb.Rng, -0.1f, 0.1f);
+                Vector3 pos = new Vector3(Mathf.Cos(angle) * 1.4f, 4.85f, Mathf.Sin(angle) * 1.4f);
+                sb.Solid.Box(pos, new Vector3(0.2f, 0.02f, 0.6f), ZoneKit.M(new Color(0.9f, 0.9f, 0.95f)));
+            }
             // A canvas tent and the fire.
             sb.At(sb.Solid, new Vector3(-3f, 0f, 0f), 0f, m =>
             {
@@ -300,6 +307,14 @@ namespace CloneZ
                 sb.Collider(c + Vector3.up * h * 0.5f, new Vector3(0.7f, h, 0.5f));
             }
             sb.Solid.Cylinder(Vector3.zero, 2f, 0.4f, 16, ZoneKit.M(stone));
+            // Add four weathered rune slabs around the central pillar for subtle visual detail
+            for (int i = 0; i < 4; i++)
+            {
+                float a = i * Mathf.PI * 0.5f + ZoneKit.R(sb.Rng, -0.1f, 0.1f);
+                Vector3 pos = new Vector3(Mathf.Cos(a) * 2.2f, 0.45f, Mathf.Sin(a) * 2.2f);
+                Color rune = new Color(0.18f, 0.17f, 0.15f);
+                sb.Solid.Box(pos, new Vector3(0.3f, 0.05f, 0.3f), ZoneKit.M(ZoneKit.V(rune, sb.Rng, 0.02f)));
+            }
             sb.Flat.FlatBlob(new Vector3(0f, 0.42f, 0f), 1.2f, 1.2f, 0f, 0.1f, sb.Rng, ZoneKit.Gl(new Color(0.55f, 0.25f, 0.8f)));
             for (int i = 0; i < 6; i++) ZoneFlameLight.Spawn(sb.Root, sb.W(Mathf.Cos(i) * 2.4f, 0.4f, Mathf.Sin(i) * 2.4f), new Color(0.7f, 0.4f, 1f), 5f, 0.7f, 0.6f);
             sb.Storage("Offerings", "lm_choir_offer", new Vector3(0f, 0.6f, 1.6f), ContainerType.Desk, 4);

@@ -32,6 +32,8 @@ namespace CloneZ
             m.Box(new Vector3(0f, h - 0.01f, -0.02f), new Vector3(0.46f, 0.02f, 0.58f), shell);
             m.Box(new Vector3(0f, FilingPlinth * 0.5f, -0.02f), new Vector3(0.46f, FilingPlinth, 0.58f), M(c * 0.55f));
             m.Box(new Vector3(0f, (h + FilingPlinth) * 0.5f, -0.287f), new Vector3(0.42f, h - FilingPlinth - 0.02f, 0.006f), M(c * 0.3f));
+            // Small metal filing‑cabinet label plate
+            m.Box(new Vector3(0f, h - 0.015f, -0.025f), new Vector3(0.22f, 0.01f, 0.001f), Mt(Chrome));
             for (int i = 1; i < drawers; i++)
                 m.Box(new Vector3(0f, FilingPlinth + i * FilingPitch, 0.255f), new Vector3(0.42f, 0.016f, 0.03f), shell);
             if (Chance(rng, 0.35))
@@ -825,11 +827,18 @@ for (int v = 0; v < 4; v++)
             // Bumpers and lights, and the plate on the tail.
             m.Box(new Vector3(0f, CarBodyY + 0.06f, hl - 0.04f), new Vector3(CarWid - 0.02f, 0.14f, 0.1f), Mt(chrome));
             m.Box(new Vector3(0f, CarBodyY + 0.06f, -hl + 0.04f), new Vector3(CarWid - 0.02f, 0.14f, 0.1f), Mt(chrome));
-            for (int s = -1; s <= 1; s += 2)
-            {
-                m.Box(new Vector3(s * (hw - 0.22f), CarBodyY + 0.34f, hl - 0.045f), new Vector3(0.32f, 0.14f, 0.02f), Gs(new Color(0.75f, 0.74f, 0.66f)));
-                m.Box(new Vector3(s * (hw - 0.2f), CarBodyY + 0.36f, -hl + 0.045f), new Vector3(0.3f, 0.12f, 0.02f), Gs(new Color(0.5f, 0.08f, 0.06f)));
-            }
+for (int s = -1; s <= 1; s += 2)
+        {
+            m.Box(new Vector3(s * (hw - 0.22f), CarBodyY + 0.34f, hl - 0.045f), new Vector3(0.32f, 0.14f, 0.02f), Gs(new Color(0.75f, 0.74f, 0.66f)));
+            m.Box(new Vector3(s * (hw - 0.2f), CarBodyY + 0.36f, -hl + 0.045f), new Vector3(0.3f, 0.12f, 0.02f), Gs(new Color(0.5f, 0.08f, 0.06f)));
+        }
+        // rear bumper license plate (metal base)
+        m.Box(new Vector3(0f, CarBodyY + 0.12f, -hl + 0.025f),
+            new Vector3(0.22f, 0.12f, 0.001f), Mt(Chrome));
+        // tiny "numbers" printed on the plate
+        Vector3 numPos = new Vector3(R(rng, -0.08f, 0.08f), CarBodyY + 0.13f,
+            -hl + 0.025f + R(rng, -0.001f, 0.001f));
+        m.Box(numPos, new Vector3(0.16f, 0.03f, 0.001f), M(Black));
             m.Box(new Vector3(0f, CarBodyY + 0.3f, -hl + 0.046f), new Vector3(0.3f, 0.15f, 0.01f), M(new Color(0.86f, 0.84f, 0.74f)));
             m.Box(new Vector3(0f, CarBeltY - 0.06f, -hl + 0.046f), new Vector3(0.1f, 0.04f, 0.012f), Mt(chrome));
 

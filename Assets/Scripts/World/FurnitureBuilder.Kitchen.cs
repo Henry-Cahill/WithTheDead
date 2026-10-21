@@ -145,9 +145,12 @@ namespace CloneZ
 
             // The stainless deck with its ribbed drainer, and the bowl let into it.
             KitchenSlabAround(m, -0.52f, 0.52f, -0.21f, 0.25f, bx0, bx1, bz0, bz1, 0.94f, SinkDeckY, Mt(Steel));
-            for (int i = 0; i < 7; i++)
-                m.Box(new Vector3(-0.47f + i * 0.068f, SinkDeckY + 0.0015f, 0.02f), new Vector3(0.012f, 0.003f, 0.36f), Mt(Steel * 1.06f));
-            Surf bowl = Mt(Steel * 0.82f);
+for (int i = 0; i < 7; i++)
+                 m.Box(new Vector3(-0.47f + i * 0.068f, SinkDeckY + 0.0015f, 0.02f), new Vector3(0.012f, 0.003f, 0.36f), Mt(Steel * 1.06f));
+             // Occasionally add a subtle oil stain on the stainless‑steel deck
+             if (Chance(rng, 0.25f))
+                 m.Box(new Vector3(0f, SinkDeckY + 0.001f, 0f), new Vector3(0.08f, 0.004f, 0.02f), Mt(Steel * 0.8f));
+             Surf bowl = Mt(Steel * 0.82f);
             float wallY = (SinkDeckY + SinkBowlBottom - 0.006f) * 0.5f, wallH = SinkDeckY - SinkBowlBottom + 0.006f;
             m.Box(new Vector3(bx0 + 0.003f, wallY, SinkBowlZ), new Vector3(0.006f, wallH, SinkBowlD), bowl);
             m.Box(new Vector3(bx1 - 0.003f, wallY, SinkBowlZ), new Vector3(0.006f, wallH, SinkBowlD), bowl);
@@ -310,6 +313,27 @@ namespace CloneZ
             m.Box(new Vector3(0f, 0.8075f, -0.02f), new Vector3(0.016f, 0.124f, 0.56f), inside);           // between the drawers
             m.Box(new Vector3(0f, 0.8075f, 0.262f), new Vector3(0.016f, 0.124f, 0.02f), cab);
             KitchenWorktop(m, t, len);
+
+            // Add a small wooden chalkboard sign on the worktop with a faint chalk scribble.
+            // The board uses the sign material with a dark wood background and light chalk text.
+            {
+                const float boardHeight = 0.04f; // thin board
+                const string boardText = "Today's specials";
+                // Dark wood colour for the board background
+                Color boardBg = new Color(0.22f, 0.18f, 0.15f);
+                // Chalk colour for the text (off‑white, slightly faded)
+                Color boardFg = new Color(0.9f, 0.9f, 0.85f);
+                Surf boardSurf = DecorMaterials.Sign(boardText, boardBg, boardFg, out float aspect);
+                // Width based on aspect ratio of the sign texture
+                float boardWidth = boardHeight * aspect;
+                // Position the board near the front of the counter, on the worktop surface.
+                // CounterFront constant defines the front face Z position.
+                var boardPos = new Vector3(-0.4f, 0.94f, CounterFront - 0.02f);
+                // Create the thin board box (back side) – colour matches the background.
+                m.Box(boardPos, new Vector3(boardWidth, boardHeight, 0.01f), M(boardBg));
+                // Upright the sign texture on the front face.
+                m.Upright(boardPos + new Vector3(0f, boardHeight * 0.5f, 0.005f), Vector3.forward, boardWidth, boardHeight, boardSurf, new Rect(0f, 0f, 1f, 1f));
+            }
 
             // A crock of wooden spoons at the far end, beyond the radio.
             Surf wood = M(new Color(0.55f, 0.38f, 0.20f));
@@ -538,6 +562,10 @@ namespace CloneZ
 
             // The back-guard with the burner knobs' bezels; the control strip with the oven's.
             m.Box(new Vector3(0f, 1.0f, -0.3f), new Vector3(0.76f, 0.16f, 0.06f), body);
+            if (Chance(rng, 0.8f)) m.Cylinder(new Vector3(-0.35f, 0.94f, -0.33f), 0.006f, 0.012f, 8, chrome);
+            if (Chance(rng, 0.8f)) m.Cylinder(new Vector3(0.35f, 0.94f, -0.33f), 0.006f, 0.012f, 8, chrome);
+            if (Chance(rng, 0.8f)) m.Cylinder(new Vector3(-0.35f, 0.94f, -0.27f), 0.006f, 0.012f, 8, chrome);
+            if (Chance(rng, 0.8f)) m.Cylinder(new Vector3(0.35f, 0.94f, -0.27f), 0.006f, 0.012f, 8, chrome);
             Quaternion outward = Quaternion.Euler(90f, 0f, 0f);
             for (int i = 0; i < 4; i++)
                 m.Cylinder(new Vector3(StoveKnobX[i], StoveKnobY, StoveKnobZ - 0.004f), 0.03f, 0.004f, 12, chrome, outward);

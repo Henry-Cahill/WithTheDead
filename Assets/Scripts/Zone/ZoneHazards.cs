@@ -59,6 +59,10 @@ namespace CloneZ
             M("snow_graze", "Snow‑Grazed Eyes", "The relentless white veil scrapes your sight; shadows hide no longer, and every gust feels like a blade.", m => { });
             M("radio_hum", "Radio Hum", "Every cheap transistor hums with a low, uneasy whine that never fully fades, making every silence feel uneasy.", m => { });
             M("farm_omen", "Farm Omen", "Old superstitions echo in the wind, warning that the dead still tend the fields and watch every step.", m => { });
+            M("blizzard_fear", "Blizzard Fear", "The howling blizzard chills your resolve, making you slower and less aware.", m => { m.MoveSpeed *= 0.9f; m.VisibilityMult *= 0.85f; });
+            M("frostbite_chill", "Frostbite Chill", "Your skin prickles with frost, reducing your stamina regeneration and increasing thirst.", m => { m.StaminaRegen *= 0.8f; m.ThirstRate *= 1.2f; });
+            M("radio_interference", "Radio Interference", "Static buzz overwhelms radios, lowering your detection of nearby sounds.", m => { m.NoiseMult *= 1.15f; });
+            M("farm_whispers", "Farm Whispers", "Ghostly whispers from the abandoned farm sap your morale, increasing panic.", m => { m.PanicRate *= 1.25f; });
             foreach (Mark k in Marks)
             {
                 ZoneMarkRegistry.Names[k.Id] = k.Name;

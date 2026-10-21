@@ -221,6 +221,9 @@ bool esc = Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThis
         private void OnQuitHub()
         {
             _open = false;
+            // Unfreeze the world and unblock gameplay before returning to the title screen.
+            Time.timeScale = 1f;
+            UIState.GameplayBlocked = false;
             HubKit.Commit();
             GameFlow.ToMainMenu();
         }

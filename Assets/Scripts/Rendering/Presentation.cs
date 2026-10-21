@@ -61,11 +61,13 @@ namespace CloneZ
 
         private void LateUpdate()
         {
-            Camera cam = Camera.main;
-            // Update cached camera and URP data only when needed
-            if (cam != _cachedCam || _cachedData == null)
+            // The main camera is cached once instead of re-running the FindObjectByTag search every frame;
+            // a destroyed camera reads as null, so a changed main camera is picked up again on the next frame.
+            if (_cachedCam == null) _cachedCam = Camera.main;
+            Camera cam = _cachedCam;
+            // Update the URP camera data only on the first run (or if the camera's data was destroyed)
+            if (_cachedData == null)
             {
-                _cachedCam = cam;
                 if (cam != null)
                 {
                     var data = cam.GetComponent<UniversalAdditionalCameraData>();

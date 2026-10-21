@@ -54,6 +54,12 @@ namespace CloneZ
             "a July 1993 Survivalist's Almanac. Tips on building a rain collector and warding off pests.",
             "a July 1993 Retro Tech Review — a two‑page look at busted radios and tin‑plate bikes.",
             "a July 1993 Wildlife Watch, issue 7. A photo essay of deer tracks in early summer snows.",
+            "a December 1993 Fire‑Making Handbook. Winter tips on gathering pine boughs and coaxing a spark in the snow.",
+            "a folklore pamphlet titled “Gray‑Mouth”. The legend of the hollow‑voiced specter haunting the nearby hills.",
+            "a farm‑yard recipe booklet: “Grandma’s Turnip Soup”. Hearty broth with root vegetables and a pinch of thyme.",
+            "a February 1993 town hall bulletin. Announcing the community meeting to discuss road repairs and winter supplies.",
+            "a hunting log: “First‑light Duck Hunt, 1993”. Notes on sunrise drives, mist over the pond, and a perfect spread.",
+            "a March 1993 Local Sports Digest. Highlights of the town’s winter baseball league and the upcoming snowshoe race.",
         };
 
         private static readonly string[] Tidying =

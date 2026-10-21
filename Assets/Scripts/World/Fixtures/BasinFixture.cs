@@ -178,6 +178,12 @@ namespace CloneZ
             brush.Stopped = ReturnTap;
             into.Add(brush);
 
+            var rinse = new InteractAction("Rinse your mouth", Rinse)
+                .Timed(CloneZConfig.BasinBrushSeconds / 2f, "Rinsing", HumanoidActivity.Use);
+            rinse.Begin = BorrowTap;
+            rinse.Stopped = ReturnTap;
+            into.Add(rinse);
+
             var shave = new InteractAction("Have a shave", Shave)
                 .Timed(CloneZConfig.BasinShaveSeconds, "Shaving", HumanoidActivity.Use)
                 .DisabledIf(!mains && _level < CloneZConfig.BasinShaveWater * 0.5f, "There's no water to shave with");
@@ -251,11 +257,17 @@ namespace CloneZ
 
         private void Brush(InteractContext ctx)
         {
-
             bool wet = UseStored(CloneZConfig.BasinBrushWater);
             BathroomFixtures.Nerves(ctx, -CloneZConfig.BasinBrushCalm);
             ctx.Notify(wet ? BrushLines[Random.Range(0, BrushLines.Length)]
                 : "No water to rinse with, so you brush dry and spit into the basin. Better than nothing.");
+        }
+
+        private void Rinse(InteractContext ctx)
+        {
+            bool wet = UseStored(CloneZConfig.BasinBrushWater);
+            // No extra calm effect; just a quick rinse.
+            ctx.Notify(wet ? "You rinse your mouth, feeling a brief freshness." : "No water left to rinse; you gargle dry.");
         }
 
         private void Shave(InteractContext ctx)

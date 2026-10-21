@@ -351,7 +351,7 @@ namespace CloneZ
 
             int heliCost = 400 + zone.Depth * 350;
             HubUI.Cycle(side, "Insertion", new[] { "On foot (through the cordon)", "Helicopter (" + Money.Format(heliCost) + ")" }, s_Heli ? 1 : 0, v => { s_Heli = v == 1; Refresh(); });
-            if (s_Heli) HubUI.Cycle(side, "Landing zone", new[] { "Random", "North", "East", "South", "West" }, s_Lz + 1, v => { s_Lz = v - 1; Refresh(); });
+            if (s_Heli) HubUI.Cycle(side, "Landing zone", new[] { "Random", "North", "East", "South", "West", "NorthEast", "SouthEast", "SouthWest", "NorthWest" }, s_Lz + 1, v => { s_Lz = v - 1; Refresh(); });
             else if (zone.HasCordon)
             {
                 HubUI.Para(side, CordonRules.PassBought ? "You have a pass for the gate." : "Without a pass, the Wardens shoot anyone in the restricted belt. A pass costs " + Money.Format(CordonGate.Bribe) + " at the gate (or a Zone Permit).", 14,

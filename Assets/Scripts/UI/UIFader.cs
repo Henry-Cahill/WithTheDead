@@ -49,15 +49,16 @@ public void Show()
 
         private void Update()
         {
-            if (_group == null) return;
-            if (_group.alpha == _target)
+            // Since _group is always assigned in Awake, we can skip null checks.
+            // Use approximate comparison to avoid issues with floating‑point precision.
+            if (Mathf.Approximately(_group.alpha, _target))
             {
-                // Already at target, disable per‑frame updates.
+                // Already at (or very close to) target, disable per‑frame updates.
                 enabled = false;
                 return;
             }
             _group.alpha = Mathf.MoveTowards(_group.alpha, _target, _speed * Time.unscaledDeltaTime);
-            if (_group.alpha == _target)
+            if (Mathf.Approximately(_group.alpha, _target))
             {
                 // Reached target after moving, stop updating.
                 enabled = false;

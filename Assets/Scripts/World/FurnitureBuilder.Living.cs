@@ -250,6 +250,11 @@ namespace CloneZ
             Color c = V(wood, rng, 0.06f);
             m.Box(new Vector3(0f, 0.2f, 0f), new Vector3(w, 0.22f, l), M(c));
             m.Box(new Vector3(0f, 0.55f, -l * 0.5f + 0.03f), new Vector3(w + 0.06f, 1.1f, 0.06f), M(c * 1.05f));
+            // Tiny brass corner caps on the headboard corners
+            m.Box(new Vector3((w + 0.06f) * 0.5f - 0.01f, 1.09f, -l * 0.5f + 0.05f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass)); // front‑right
+            m.Box(new Vector3(-(w + 0.06f) * 0.5f + 0.01f, 1.09f, -l * 0.5f + 0.05f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass)); // front‑left
+            m.Box(new Vector3((w + 0.06f) * 0.5f - 0.01f, 1.09f, -l * 0.5f + 0.01f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass)); // back‑right
+            m.Box(new Vector3(-(w + 0.06f) * 0.5f + 0.01f, 1.09f, -l * 0.5f + 0.01f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass)); // back‑left
             m.Box(new Vector3(0f, 1.08f, -l * 0.5f + 0.03f), new Vector3(w + 0.1f, 0.06f, 0.09f), M(c * 0.9f));
             m.Box(new Vector3(0f, 0.3f, l * 0.5f - 0.025f), new Vector3(w + 0.06f, 0.6f, 0.05f), M(c * 1.05f));
             m.Box(new Vector3(0f, 0.41f, -0.01f), new Vector3(w - 0.06f, 0.2f, l - 0.1f), M(BedSheet));

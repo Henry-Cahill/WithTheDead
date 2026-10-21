@@ -108,19 +108,23 @@ namespace CloneZ
         private float _jobT;
 
         private Interactable _menuTarget;
+        // Cached fixture prompt to avoid rebuilding each frame
+        private Interactable _cachedPromptFixture;
+        private string _cachedPrompt = "";
         private readonly List<InteractAction> _menuActions = new List<InteractAction>(12);
+        private int _cachedPromptSig;
         private int _menuSignature;
 
         private static readonly int SightMask = ~(1 << CloneZConfig.IgnoreRaycastLayer);
 
-        private void Awake()
-        {
-            _stats = GetComponent<PlayerStats>();
-            _controller = GetComponent<PlayerController>();
-            _inventory = GetComponent<PlayerInventory>();
-            Current = this;
-            _cam = Camera.main;
-        }
+private void Awake()
+    {
+        _stats = GetComponent<PlayerStats>();
+        _controller = GetComponent<PlayerController>();
+        _inventory = GetComponent<PlayerInventory>();
+        Current = this;
+        _cam = Camera.main;
+    }
 
         private void Start()
         {
@@ -719,11 +723,20 @@ else if (kb.qKey.wasPressedThisFrame)
         }
 
         /// <summary>Adds the focused ground item to the pack (as much as fits); any overflow stays put.</summary>
-        private void TryPickUp()
+private void TryPickUp()
+    {
+        if (PickupTarget == null || _inventory == null) return;
+        ItemDef def = PickupTarget.Def;
+        Inventory inv = _inventory.Inventory;
+        if (inv != null && def != null && !inv.WouldFit(def))
         {
-            if (PickupTarget == null || _inventory == null) return;
-            _inventory.PickUp(PickupTarget);
+            // Warn the player why the item can't be picked up.
+            string why = inv.CurrentWeight + def.Weight > inv.MaxWeight + 1e-4f ? "too heavy" : "no room";
+            Notify($"Can't pick up {PickupTarget.PickupLabel}: {why}");
+            return;
         }
+        _inventory.PickUp(PickupTarget);
+    }
         #endregion
 
         private void UpdatePrompt()
@@ -759,14 +772,55 @@ else if (kb.qKey.wasPressedThisFrame)
 
 private string FixturePrompt(Interactable f)
         {
+            // Return cached prompt if fixture unchanged and actions unchanged
+            if (f == _cachedPromptFixture)
+            {
+                // Recompute signature to detect action changes
+                int sig = ComputeActionsSignature(_actions);
+                if (sig == _cachedPromptSig)
+                {
+                    return _cachedPrompt;
+                }
+            }
+            // Need to (re)build actions and prompt
             _actions.Clear();
             f.GetActions(_ctx, _actions);
-            if (_actions.Count == 0) return "[E] Inspect";
-            InteractAction first = FirstEnabled(_actions);
-            string more = _actions.Count > 1 ? "     [Q]  More (" + _actions.Count + ")" : "";
-            if (first != null) return "[E]  " + first.Label + more;
-            InteractAction a = _actions[0];
-            return a.Label + "  \u2014 " + (a.DisabledReason ?? "not now") + more;
+            string prompt;
+            if (_actions.Count == 0)
+                prompt = "[E] Inspect";
+            else
+            {
+                InteractAction first = FirstEnabled(_actions);
+                string more = _actions.Count > 1 ? "     [Q]  More (" + _actions.Count + ")" : "";
+                if (first != null)
+                    prompt = "[E]  " + first.Label + more;
+                else
+                {
+                    InteractAction a = _actions[0];
+                    prompt = a.Label + "  \u2014 " + (a.DisabledReason ?? "not now") + more;
+                }
+            }
+            // Cache results
+            _cachedPromptFixture = f;
+            _cachedPrompt = prompt;
+            _cachedPromptSig = ComputeActionsSignature(_actions);
+            return prompt;
+        }
+
+        // Compute a simple hash signature of the current actions list (labels and enabled state).
+        private int ComputeActionsSignature(List<InteractAction> list)
+        {
+            int sig = 17;
+            unchecked
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    var a = list[i];
+                    sig = sig * 31 + (a.Label != null ? a.Label.GetHashCode() : 0);
+                    sig = sig * 31 + (a.Enabled ? 1 : 2);
+                }
+            }
+            return sig;
         }
     }
 }

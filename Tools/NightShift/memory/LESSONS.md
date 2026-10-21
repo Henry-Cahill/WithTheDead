@@ -34,3 +34,8 @@ appends one short bullet at the end. Keep each bullet to a line or two.
 - Cache per‑client temporary collections in `NetWorld.SendAi` (static `s_Visible` and `s_Keep`) to avoid allocating a new List and HashSet each tick, reducing GC pressure.
 - Added intermediate water‑level feedback to RaidStoreWaterHeater.Knock for richer player cues.
 - When extending a string array literal, ensure the closing brace and semicolon are moved after the new entries to keep syntax correct.
+- `PostFx.LateUpdate` (Presentation.cs) caches `Camera.main` in `_cachedCam` (lazy, re-resolves when it reads null after destruction); the `cam != _cachedCam` equality check was dropped — only `_cachedData == null` triggers the URP data setup now.
+- Tree colliders now vary per tree using a random scale factor (±10 %) for width, height and depth, giving a hand‑painted look to the forest.
+- Removed per‑actor NetAgentProxy lookup in NetWorld.SendAi to save CPU (unnecessary on server)
+- KentuckyMap: `Fill` (Ground.cs) now gives asphalt polygons per-vertex Perlin height jitter (±0.001 m) like `FillIce`; other surfaces stay flat.
+- EmissionDirector (Zone/Emissions.cs) now caches the warning-phase sky override in `_warningSkyColor` (set in `StartWarning`) instead of re-evaluating the `PsiStorm` conditional every frame in `Update`.

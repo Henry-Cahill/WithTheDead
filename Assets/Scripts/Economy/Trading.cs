@@ -139,9 +139,21 @@ public static int SellPrice(TraderDef t, ItemStack s)
 /// <summary>Sells a number of items from an inventory to a trader, returning the total money earned.</summary>
 public static int Sell(CharacterProfile c, TraderDef t, Inventory from, ItemStack s, int count, out string message)
         {
+            // Guard against null trader definition
+            if (t == null)
+            {
+                message = "Unknown trader";
+                return 0;
+            }
             message = null;
             int unit = SellPrice(t, s);
-            if (unit <= 0 || from == null || !from.Stacks.Contains(s)) { message = t.Name + " won't buy that."; return 0; }
+            if (unit <= 0 || from == null || !from.Stacks.Contains(s))
+            {
+                // Use trader name if available, otherwise fallback
+                string traderName = t != null ? t.Name : "Trader";
+                message = traderName + " won't buy that.";
+                return 0;
+            }
             count = Mathf.Clamp(count, 1, s.Count);
             ItemDef def = s.Def;
             int total = unit * count;

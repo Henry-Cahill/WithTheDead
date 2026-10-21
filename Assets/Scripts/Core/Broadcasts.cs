@@ -181,7 +181,12 @@ Days(1, 2,
                         "It's {weekday} on Easy 91.3, and the music doesn't stop.",
                         "*a crooner sings about a train that never came*",
                         "Stay alert, the night is growing uneasy.",
-                        "?water:Remember to boil water before drinking, stay safe."
+                        "?water:Remember to boil water before drinking, stay safe.",
+                        "Keep your doors and windows sealed; drafty gaps can let the cold bite deep.",
+                        "Legends whisper that the old Willow Creek lighthouse still glows on stormy nights, guiding lost souls.",
+                        "Check on your neighbours tonight; a shared bundle of firewood can keep everyone warm.",
+                        "Remember, gasoline is scarce—use your generator sparingly and turn it off when not needed.",
+                        "If you feel a sudden fever or strange chills, stay inside and call for help; the illness spreads fast."
                     ),
                     Days(3, 4,
                         "*the same easy-listening tape, looping*",

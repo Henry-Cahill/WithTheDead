@@ -184,6 +184,7 @@ namespace CloneZ
             shower.Stopped = AbandonShower;
             into.Add(shower);
             into.Add(new InteractAction(_on ? "Turn off the shower" : "Turn on the shower", c => Turn(c, !_on)));
+            if (_on && !_inside) into.Add(new InteractAction("Shut off shower", c => { Turn(c, false); SetDoor(false, true); }));
             into.Add(new InteractAction(_doorOpen ? "Close the shower door" : "Open the shower door", c => SetDoor(!_doorOpen, false)));
             into.Add(new InteractAction("Inspect shower", ctx =>
             {

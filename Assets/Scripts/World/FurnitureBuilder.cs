@@ -145,6 +145,8 @@ namespace CloneZ
                 m.Box(new Vector3(x, 0.96f, 0.215f), new Vector3(0.46f, 1.68f, 0.02f), M(c));
                 // Add a small metal pull-handle on the front of each locker door for visual grip.
                 m.Box(new Vector3(x, 1.25f, 0.235f), new Vector3(0.02f, 0.12f, 0.005f), Mt(Chrome));
+                // Add a thin metal hinge‑plate to the locker door for period‑correct detail.
+                m.Box(new Vector3(x - 0.025f, 1.25f, 0.235f), new Vector3(0.004f, 0.12f, 0.006f), Mt(Chrome));
                 // Add tiny black rivet details on the locker door front for industrial wear.
                 for (int r = 0; r < 3; r++)
                 {
@@ -181,6 +183,7 @@ namespace CloneZ
             // Period‑correct metal number‑plate label on the safe front
             m.Box(new Vector3(0f, 1.74f, 0.31f), new Vector3(0.08f, 0.02f, 0.005f), Mt(Chrome));
             m.Cylinder(new Vector3(0.12f, 1.05f, 0.29f), 0.09f, 0.03f, 10, Mt(Chrome), Quaternion.Euler(90f, 0f, 0f));
+            m.Box(new Vector3(0.12f, 1.07f, 0.29f), new Vector3(0.02f, 0.02f, 0.005f), Gl(WarmGlow));
             for (int i = 0; i < 3; i++)
                 m.Box(new Vector3(0.12f, 1.05f, 0.33f), new Vector3(0.24f, 0.02f, 0.02f), Quaternion.Euler(0f, 0f, i * 60f), Mt(Chrome));
             m.Cylinder(new Vector3(-0.12f, 1.25f, 0.29f), 0.05f, 0.03f, 10, M(Black), Quaternion.Euler(90f, 0f, 0f));

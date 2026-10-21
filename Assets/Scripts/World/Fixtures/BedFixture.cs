@@ -19,12 +19,16 @@ namespace CloneZ
         private Renderer _made, _rumpled;
         private bool _isMade = true;
         private PlayerSleep _sleeper;
-        private float _plumpCalmAt;
+        private float _plumpCalmAt; private float _blanketFluffCalmAt;
         private PlayerInteractor _playerInteractor;
         private float _lullabyCalmAt;
+        // Cached radius for sleep proximity checks to avoid per‑frame config lookup.
+        private float _sleepCheckRadius;
         private void Awake()
         {
             _playerInteractor = PlayerInteractor.Current;
+            // Initialize cached sleep check radius.
+            _sleepCheckRadius = CloneZConfig.SleepRange + 0.5f;
         }
 
         /// <summary>True while the bed is made (fresh runs start with it made).</summary>
@@ -65,7 +69,7 @@ PlayerInteractor pi = _playerInteractor;
             PlayerInteractor pi = _playerInteractor;
             if (pi == null) return;
             if (_sleeper == null) _sleeper = pi.GetComponent<PlayerSleep>();
-            if (_sleeper != null && _sleeper.IsSleeping && SleepSpot.Nearest(pi.transform.position, CloneZConfig.SleepRange + 0.5f, out _) == _spot)
+            if (_sleeper != null && _sleeper.IsSleeping && SleepSpot.Nearest(pi.transform.position, _sleepCheckRadius, out _) == _spot)
                 SetMade(false);
         }
 
@@ -96,7 +100,10 @@ PlayerInteractor pi = _playerInteractor;
                 into.Add(new InteractAction("Make the bed", MakeBed)
                     .Timed(CloneZConfig.MakeBedSeconds, "Making the bed", HumanoidActivity.Search)
                     .DisabledIf(onEdge, "Get up off the bed first"));
-            else into.Add(new InteractAction("Plump the pillows", PlumpPillows));
+            else {
+                into.Add(new InteractAction("Plump the pillows", PlumpPillows));
+                into.Add(new InteractAction("Fluff the blankets", FluffBlankets));
+            }
                 
                 // Calm the survivor with a short lullaby while seated or lying in the bed.
                 into.Add(new InteractAction("Sing a lullaby", SingLullaby)
@@ -170,6 +177,17 @@ PlayerInteractor pi = _playerInteractor;
                 ctx.Notify("You plump the pillows. The room looks a little more like somebody's home.");
             }
             else ctx.Notify("The pillows are as plump as they're going to get.");
+        }
+
+        private void FluffBlankets(InteractContext ctx)
+        {
+            if (Time.time >= _blanketFluffCalmAt)
+            {
+                _blanketFluffCalmAt = Time.time + CloneZConfig.TidyCooldown;
+                LivingFixtures.Calm(ctx, CloneZConfig.TidyPanicRelief);
+                ctx.Notify("You fluff the blankets. The bed looks tidier.");
+            }
+            else ctx.Notify("The blankets are as fluffed as they'll get now.");
         }
 
         private void SingLullaby(InteractContext ctx)

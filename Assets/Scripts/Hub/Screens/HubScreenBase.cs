@@ -129,7 +129,11 @@ if (ShowMoney && Character != null) RefreshMoney();
         protected override void Update()
         {
             base.Update();
-            if (_closed || Time.unscaledTime < _nextSecond) return;
+            if (_closed) return;
+            // Determine if we need to run the once‑per‑second logic.
+            bool needSecond = _live.Count > 0 || (ShowMoney && Character != null);
+            if (!needSecond) return;
+            if (Time.unscaledTime < _nextSecond) return;
             _nextSecond = Time.unscaledTime + 1f;
             for (int i = 0; i < _live.Count; i++)
             {
@@ -138,7 +142,7 @@ if (ShowMoney && Character != null) RefreshMoney();
                 try { t.text = _live[i].Value(); }
                 catch (Exception e) { Debug.LogException(e); _live[i] = new KeyValuePair<Text, Func<string>>(null, null); }
             }
-            RefreshMoney();
+            if (ShowMoney && Character != null) RefreshMoney();
             try { OnSecond(); }
             catch (Exception e) { Debug.LogException(e); }
         }

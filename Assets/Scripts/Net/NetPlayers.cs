@@ -20,6 +20,12 @@ namespace CloneZ
         private static float s_SendAt;
         private static uint s_Seq;
         private static string s_LastHeld = "";
+    // Cached per‑frame references to the local player and its components
+    private static Actor s_LocalPlayer;
+    private static PlayerStats s_Stats;
+    private static PlayerController s_Ctrl;
+    private static PlayerCombat s_Combat;
+    private static PlayerInventory s_Inv;
 
         /// <summary>Read‑only map of remote player IDs to their proxy objects.</summary>
         public static IReadOnlyDictionary<ulong, RemotePlayer> Proxies => s_Proxies;
@@ -59,10 +65,18 @@ namespace CloneZ
             Actor me = Actor.LocalPlayer;
             if (me == null || Time.time < s_SendAt) return;
             s_SendAt = Time.time + 1f / 15f;
-            var stats = me.GetComponent<PlayerStats>();
-            var ctrl = me.GetComponent<PlayerController>();
-            var combat = me.GetComponent<PlayerCombat>();
-            var inv = me.GetComponent<PlayerInventory>();
+            // Update cached references if the local player instance has changed (e.g., respawn)
+            if (me != s_LocalPlayer) {
+                s_LocalPlayer = me;
+                s_Stats = me != null ? me.GetComponent<PlayerStats>() : null;
+                s_Ctrl = me != null ? me.GetComponent<PlayerController>() : null;
+                s_Combat = me != null ? me.GetComponent<PlayerCombat>() : null;
+                s_Inv = me != null ? me.GetComponent<PlayerInventory>() : null;
+            }
+            var stats = s_Stats;
+            var ctrl = s_Ctrl;
+            var combat = s_Combat;
+            var inv = s_Inv;
             byte flags = 0;
             if (ctrl != null && ctrl.IsSneaking) flags |= 1;
             if (combat != null && combat.AimingDownSights) flags |= 2;

@@ -97,7 +97,37 @@ namespace CloneZ
                 }
             }
             if (cur != null && cur.Count > 1) pieces.Add(cur);
-            return pieces;
+            // Post‑process: merge consecutive pieces whose endpoints touch within EPS
+            var merged = new List<List<Vector2>>();
+            foreach (var piece in pieces)
+            {
+                if (piece == null || piece.Count < 2) continue; // skip degenerate
+                if (merged.Count == 0)
+                {
+                    merged.Add(new List<Vector2>(piece));
+                }
+                else
+                {
+                    var lastPiece = merged[merged.Count - 1];
+                    var lastPoint = lastPiece[lastPiece.Count - 1];
+                    var firstPoint = piece[0];
+                    if (Vector2.Distance(lastPoint, firstPoint) <= EPS)
+                    {
+                        // Append, skipping the duplicate start point
+                        for (int i = 1; i < piece.Count; i++)
+                            lastPiece.Add(piece[i]);
+                    }
+                    else
+                    {
+                        merged.Add(new List<Vector2>(piece));
+                    }
+                }
+            }
+            // Ensure each merged piece still has at least two points
+            var result = new List<List<Vector2>>();
+            foreach (var m in merged)
+                if (m.Count >= 2) result.Add(m);
+            return result;
         }
 
         private static bool ClipSegment(Vector2 a, Vector2 b, Rect r, out float t0, out float t1)
@@ -174,6 +204,55 @@ namespace CloneZ
         }
 
         private const float EPS = 1e-5f;
+        private static readonly Color[] kBuildingPalette = new[]
+        {
+            new Color(0.78f,0.73f,0.68f),
+            new Color(0.72f,0.65f,0.60f),
+            new Color(0.66f,0.58f,0.53f),
+            new Color(0.60f,0.52f,0.47f)
+        };
+
+// Road surface colour palette – deterministic variation based on OSM id.
+         private static readonly Color[] kRoadPalette = new[]
+         {
+             new Color(0.55f, 0.55f, 0.50f), // faded asphalt
+             new Color(0.45f, 0.40f, 0.35f), // weathered gravel
+             new Color(0.60f, 0.45f, 0.30f), // dirt‑road brown
+             new Color(0.70f, 0.65f, 0.55f)  // light‑gray concrete
+         };
+
+         // Sidewalk colour palette – deterministic variation based on OSM id.
+         private static readonly Color[] kSidewalkPalette = new[]
+         {
+             new Color(0.70f, 0.68f, 0.65f), // muted concrete gray 1
+             new Color(0.62f, 0.60f, 0.57f), // muted concrete gray 2
+             new Color(0.54f, 0.52f, 0.49f), // muted concrete gray 3
+             new Color(0.46f, 0.44f, 0.41f)  // muted concrete gray 4
+         };
+        /// <summary>
+        /// Deterministic colour for a building based on its OSM id.
+        /// </summary>
+        public static Color GetBuildingColor(int osmId)
+        {
+            int idx = (osmId.GetHashCode() & 0x7fffffff) % kBuildingPalette.Length;
+            Color baseColor = kBuildingPalette[idx];
+            // Deterministic brightness variation: 0.9‑1.1 range based on low 8 bits of hash.
+            float bright = 0.9f + 0.2f * ((osmId.GetHashCode() & 0xFF) / 255f);
+            // Multiply and clamp each channel to a maximum of 1.0f.
+            float r = Mathf.Min(baseColor.r * bright, 1f);
+            float g = Mathf.Min(baseColor.g * bright, 1f);
+            float b = Mathf.Min(baseColor.b * bright, 1f);
+            return new Color(r, g, b, baseColor.a);
+        }
+
+        /// <summary>
+        /// Deterministic colour for a sidewalk based on its OSM id.
+        /// </summary>
+        public static Color GetSidewalkColor(int osmId)
+        {
+            int idx = (osmId.GetHashCode() & 0x7fffffff) % kSidewalkPalette.Length;
+            return kSidewalkPalette[idx];
+        }
 
         private static bool Inside(Vector2 p, Rect r, int edge)
         {

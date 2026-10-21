@@ -160,9 +160,11 @@ namespace CloneZ
                     for (int side = -1; side <= 1; side += 2)
                     {
                         Vector3 b = new Vector3(side * 1.1f, 0f, 0f), top = new Vector3(side * 0.55f, 2.6f, ZoneKit.R(rng, -0.1f, 0.1f));
-                    m.Rod(b, top, 0.08f, ZoneKit.M(ZoneKit.Bark), 6);
-                    // Add a rusty ellipsoid cap at the top of each main rod
-                    m.Ellipsoid(top, Vector3.one * 0.05f, ZoneKit.Gl(new Color(0.55f, 0.30f, 0.10f)), 5, 3);
+m.Rod(b, top, 0.08f, ZoneKit.M(ZoneKit.Bark), 6);
+                     // Add a rusty bolt base ellipsoid at the rod's base
+                     m.Ellipsoid(new Vector3(b.x, 0.04f, b.z), Vector3.one * 0.02f, ZoneKit.Gl(new Color(0.55f, 0.30f, 0.10f)), 5, 3);
+                     // Add a rusty ellipsoid cap at the top of each main rod
+                     m.Ellipsoid(top, Vector3.one * 0.05f, ZoneKit.Gl(new Color(0.55f, 0.30f, 0.10f)), 5, 3);
                 }
                 m.FlatBlob(new Vector3(0f, 0.012f, 0f), Radius, Radius * 0.7f, 0f, 0.2f, rng, ZoneKit.M(new Color(0.18f, 0.16f, 0.14f)));
                 for (int i = 0; i < 6; i++)

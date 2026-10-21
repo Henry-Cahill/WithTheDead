@@ -81,6 +81,7 @@ namespace CloneZ
             bool targetOn = anyOff; // turn on if any are off, else turn off
             string toggleAllLabel = targetOn ? "Switch all lights on" : "Switch all lights off";
             into.Add(new InteractAction(toggleAllLabel, c => ToggleAll(c, targetOn)));
+            into.Add(new InteractAction("Check power", c => CheckPower(c)));
 
         for (int i = 0; i < _circuits.Length; i++)
         {
@@ -145,6 +146,12 @@ namespace CloneZ
         else if (lit > 0) return;
         else if (dead == lamps) ctx.Notify(lamps == 1 ? "Nothing happens. The bulb must have gone." : "Nothing happens. The bulbs must have gone.");
         else if (waiting > 0) ctx.Notify("The porch lantern stays dark for now \u2014 its sensor waits for dusk.");
+    }
+
+    // Checks if the house still has power and notifies the survivor.
+    private void CheckPower(InteractContext ctx)
+    {
+        ctx.Notify(PowerGrid.HousePowered ? "The house still has power." : LightingFixtures.NothingHappens());
     }
 
         public override void CaptureState(FixtureSave save)

@@ -79,8 +79,12 @@ namespace CloneZ
                 "Evacuation notice: snow‑blocked roads on Highway 7, expect delays. Seek shelter until cleared.",
                 "All units, maintain firewatch; temperatures dropping below minus ten, frostbite risk high.",
                 "Winter convoy routes updated: primary extraction point shifted to the north depot, proceed with caution.",
-                "Remember to keep your respirators on in sub‑zero winds; exposure can cause severe hypothermia.",
-                },
+                 "Remember to keep your respirators on in sub‑zero winds; exposure can cause severe hypothermia.",
+                 "Generators are low on fuel; conserve power and prioritize essential systems, over.",
+                 "Stay strong, soldiers; our resolve will see us through the darkness, over.",
+                 "Ice has formed on Main Road; vehicles risk sliding, proceed with extreme caution, over.",
+                 "Unit Bravo overrun at sector 4, request immediate assistance and reinforcement, over.",
+                 },
             },
         };
 
@@ -197,6 +201,7 @@ namespace CloneZ
             MakeNoise(CloneZConfig.ReceiverKnobNoise);
             _noiseAt = Time.time;
             ctx.Notify("Volume: " + (_volume <= 0 ? "low." : _volume >= MaxVolume ? "loud. It carries a long way." : "medium."));
+            if (_volume >= MaxVolume) ctx.Notify("The louder hum may attract nearby walkers.");
         }
 
         private void KeyHandset(InteractContext ctx)

@@ -41,6 +41,10 @@ namespace CloneZ
         private Actor _localActor;
 
         private HumanoidLook _look;
+        // Cached item definitions for tools to avoid per-frame lookups
+        private ItemDef _hammerDef;
+        private ItemDef _trowelDef;
+        private ItemDef _wateringCanDef;
         private readonly ItemDef[] _shownWorn = new ItemDef[PlayerClothing.Slots.Length];
         private bool _lookDirty = true;
         private bool _started;
@@ -76,7 +80,9 @@ namespace CloneZ
             _builder = GetComponent<PlayerBuilder>();
             _farming = GetComponent<PlayerFarming>();
             _seat = GetComponent<PlayerSeat>();
-            _seatVersion = _seat != null ? _seat.Version : 0;
+                        _hammerDef = ItemDatabase.Get(HammerId);
+            _trowelDef = ItemDatabase.Get(TrowelId);
+            _wateringCanDef = ItemDatabase.Get(WateringCanId);
             _started = true;
             Subscribe();
             _localActor = Actor.LocalPlayer;
@@ -264,9 +270,9 @@ namespace CloneZ
             HoldStyle style = HoldStyle.None;
             switch (activity)
             {
-                case HumanoidActivity.Build: def = ItemDatabase.Get(HammerId); style = HoldStyle.Melee; break;
-                case HumanoidActivity.Dig: def = ItemDatabase.Get(TrowelId); style = HoldStyle.Melee; break;
-                case HumanoidActivity.Water: def = ItemDatabase.Get(WateringCanId); style = HoldStyle.Carry; break;
+                            case HumanoidActivity.Build: def = _hammerDef; style = HoldStyle.Melee; break;
+                case HumanoidActivity.Dig: def = _trowelDef; style = HoldStyle.Melee; break;
+                case HumanoidActivity.Water: def = _wateringCanDef; style = HoldStyle.Carry; break;
                 case HumanoidActivity.Plant: break;   // seeds go in by hand
                 case HumanoidActivity.Use:
                 case HumanoidActivity.Read: break;    // the weapon's put by to work a fixture or hold a book

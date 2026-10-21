@@ -18,8 +18,10 @@ namespace CloneZ
     {
         /// <summary>How far past the playable square the surroundings are drawn, as scenery.</summary>
         private const float SceneryReach = 90f;
-        private const float EaveHeight = 0.12f; // thin horizontal strip
-        private const float EaveDepth = 0.25f; // how far it sticks out from the wall
+
+        private const float SnowDepth = 0.05f; // thin snow sheet applied to horizontal surfaces
+        private const float SidewalkWidth = 1.5f; // modest concrete sidewalk width
+        private const float SignPostHeight = 2.5f; // height of wooden street sign post
 
         /// <summary>A one-line summary of the last map built.</summary>
         public static string LastStats { get; private set; } = "";
@@ -57,9 +59,11 @@ namespace CloneZ
                 BuildGround(site);
                 BuildWaterAndLots(site);
                 BuildStreets(site);
+                BuildSidewalks(site);
                 BuildLines(site);
                 BuildBuildings(site);
-                BuildRoofEaves(site);
+
+
                 BuildStreetLights(site);
                 BuildParkedCars(site);
                 BuildTrees(site);
@@ -94,6 +98,57 @@ namespace CloneZ
         }
 
         private static Vector3 To3(Vector2 p, float y) => new Vector3(p.x, y, p.y);
+
+        // Added thin snow layer for roofs and streets
+        private static void BuildSidewalks(Site site)
+        {
+            foreach (Street s in site.Area.Streets)
+            {
+                for (int i = 0; i + 1 < s.Pts.Count; i++)
+                {
+                    Vector2 a = s.Pts[i];
+                    Vector2 b = s.Pts[i + 1];
+                    Vector2 dir = (b - a).normalized;
+                    Vector2 normal = new Vector2(-dir.y, dir.x);
+                    float halfRoad = s.Data.width * 0.5f;
+                    float length = Vector2.Distance(a, b);
+                    Vector2 mid = (a + b) * 0.5f;
+                    // left sidewalk box
+                    Vector2 leftMid = mid + normal * (halfRoad + SidewalkWidth * 0.5f);
+                    Vector3 leftCenter = new Vector3(leftMid.x, StreetY + 0.01f, leftMid.y);
+                    Vector3 size = new Vector3(length, 0.04f, SidewalkWidth);
+                    site.Overhead.At(leftMid).Box(leftCenter, size, DecorMaterials.Concrete);
+                    // right sidewalk box
+                    Vector2 rightMid = mid - normal * (halfRoad + SidewalkWidth * 0.5f);
+                    Vector3 rightCenter = new Vector3(rightMid.x, StreetY + 0.01f, rightMid.y);
+                    site.Overhead.At(rightMid).Box(rightCenter, size, DecorMaterials.Concrete);
+                }
+            }
+        }
+
+private static void BuildSnow(Site site)
+        {
+            foreach (Footprint f in site.Area.Buildings)
+            {
+                if (!f.Inside(site.Half, 2f)) continue;
+                // Deterministic snow presence based on building ID (approx 30% chance).
+                unchecked
+                {
+                    uint hash = (uint)f.Data.id ^ 0x9e3779b9u;
+                    hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
+                    bool hasSnow = (hash % 100) < 30;
+                    if (!hasSnow) continue;
+                }
+                // Use mapped height if present, else fallback to 0.
+                float roofY = f.Data.height > 0f ? f.Data.height : 0f;
+                roofY += SnowDepth * 0.5f;
+                Vector3 center = new Vector3(f.Middle.x, roofY, f.Middle.y);
+                Vector3 size = new Vector3(f.Size, SnowDepth, f.Size);
+                site.Overhead.At(f.Middle).Box(center, size, DecorMaterials.Snow);
+            }
+        }
+
+
 
         #region Exits and spawn
         // Where streets leave the playable square: the best-ranked street on each side becomes an exit (two at least;

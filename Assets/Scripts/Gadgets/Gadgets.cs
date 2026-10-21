@@ -44,6 +44,7 @@ public float Speed => _vel.magnitude;
         private readonly List<Transform> _rotors = new List<Transform>();
         private Vector3 _netTo;
         private float _netYaw;
+        private float _lastBatteryWarn = -1f; // track battery‑low warnings
 
         private float BatterySeconds => Kind == DroneKind.Fpv ? 150f : 420f;
 
@@ -124,6 +125,8 @@ public static Drone Create(DroneKind kind, Vector3 at, float yaw, bool grenade, 
         {
             if (IsDead) return;
             Battery01 = Mathf.Max(0f, Battery01 - dt / BatterySeconds);
+                        if (Battery01 <= 0.1f && _lastBatteryWarn > 0.1f) GameEvents.RaiseToast("Drone battery low – land soon.");
+            _lastBatteryWarn = Battery01;
             if (Battery01 <= 0f) { move = Vector2.zero; lift = Kind == DroneKind.Fpv ? -1f : 0f; }
             if (Kind == DroneKind.Fpv)
             {

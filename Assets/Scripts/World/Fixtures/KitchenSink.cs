@@ -220,7 +220,17 @@ private bool _running;                // the cold tap is open and water is comin
             bool mains = WaterMains.MainsOn;
             if (mains)
             {
+                // Existing tap toggle
                 into.Add(new InteractAction(_running ? "Turn off the tap" : "Turn on the tap", _toggleTap));
+                // New combined action: turn off tap and pull plug when both are active
+                if (_running && _plugIn)
+                {
+                    into.Add(new InteractAction("Turn off tap and pull plug", ctx => {
+                        SetRunning(false, false);
+                        SetPlug(false);
+                        ctx.Notify("You turn off the tap and pull the plug.");
+                    }));
+                }
                 into.Add(PlugAction(mains));
                 WaterUse.AddDrinkAndFill(ctx, this, into);
             }

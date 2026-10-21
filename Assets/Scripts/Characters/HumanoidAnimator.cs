@@ -431,7 +431,7 @@ if (_groundDirty && !_dead && !Seated && parent != null) {
 
         private void Write()
         {
-            HumanoidProportions p = _rig.Proportions;
+            HumanoidProportions p = _bound;
             for (int i = 0; i < BoneCount; i++)
             {
                 _b[i].localRotation = _q[i];

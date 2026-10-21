@@ -42,7 +42,17 @@ namespace CloneZ
                         "The door is locked tight, but you can hear the cold wind outside.")));
                 }
             }
+            // Toggle safe zone action for the zone door
+            if (Title == "Door to the Zone")
+            {
+                into.Add(new InteractAction("Toggle safe zone", c =>
+                {
+                    HubRules.SafeZone = !HubRules.SafeZone;
+                    GameEvents.RaiseToast($"Safe zone is now {(HubRules.SafeZone ? "ON" : "OFF")}." );
+                }));
+            }
         }
+
 
         private static void Open(string screen, string arg)
         {
@@ -205,6 +215,13 @@ namespace CloneZ
             Solid(world, "Lintel", new Vector3(0f, WallH - 0.4f, -HalfZ), new Vector3(2.2f, 0.8f, WallT), st.Wall);
             // The door to the Zone, shut against the cold (it's the deploy station).
             Solid(world, "ZoneDoor", new Vector3(0f, 1.2f, -HalfZ - 0.05f), new Vector3(2.0f, 2.4f, 0.12f), st.DarkWood);
+            // Subtle metal latch detail on the upper‑right edge of the door
+            Deco(world, "DoorLatch", m => {
+                // metal hinge plate
+                m.Box(new Vector3(0.9f, 1.78f, -HalfZ - 0.07f), new Vector3(0.02f, 0.1f, 0.005f), st.Metal);
+                // latch bar
+                m.Cylinder(new Vector3(0.85f, 1.74f, -HalfZ - 0.07f), 0.015f, 0.03f, 12, st.Metal);
+            }, Vector3.zero);
             Deco(world, "DoorKnob", m => m.Cylinder(new Vector3(0.7f, 1.2f, -HalfZ - 0.07f), 0.04f, 0.02f, 12, st.Metal), Vector3.zero);
             // Skirting and a sign over the bar.
             Deco(world, "Trim", m =>
@@ -212,6 +229,13 @@ namespace CloneZ
                 m.Box(new Vector3(0f, 0.06f, HalfZ - 0.17f), new Vector3(HalfX * 2f, 0.12f, 0.04f), st.Trim);
                 m.Box(new Vector3(HalfX - 0.17f, 0.06f, 0f), new Vector3(0.04f, 0.12f, HalfZ * 2f), st.Trim);
                 m.Box(new Vector3(-HalfX + 0.17f, 0.06f, 0f), new Vector3(0.04f, 0.12f, HalfZ * 2f), st.Trim);
+                // Add subtle metal nail heads (tiny rivets) along the bottom edge of the trim for a weathered look
+                for (int i = 0; i < 12; i++)
+                {
+                    float x = -HalfX + 0.2f + i * ((HalfX * 2f - 0.4f) / 11f);
+                    // place just above floor, centered on the trim edge
+                    m.Cylinder(new Vector3(x, 0.03f, HalfZ - 0.18f), 0.01f, 0.005f, 12, st.Metal);
+                }
             }, Vector3.zero);
             Surf sign = DecorMaterials.Sign(st.Sign, new Color(0.12f, 0.08f, 0.05f), new Color(0.95f, 0.75f, 0.35f), out float aspect);
             Deco(world, "Sign", m => m.Upright(new Vector3(0f, 2.75f, HalfZ - 0.18f), Vector3.back, 0.5f * aspect, 0.5f, sign), Vector3.zero);
@@ -252,8 +276,10 @@ namespace CloneZ
                     Solid(world, "BarStool", pos, new Vector3(0.38f, 0.76f, 0.38f), st.Metal);
                     var footPos = new Vector3(-6f + i * 1.6f, 0.01f, 5.3f);
                     Deco(world, "BarStoolFoot", m => m.Cylinder(footPos, 0.04f, 0.02f, 12, st.Metal), Vector3.zero);
-                }
         }
+
+    }
+
 
         private static void BuildFurniture(Transform world, Style st)
         {

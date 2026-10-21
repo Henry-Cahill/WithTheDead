@@ -188,9 +188,18 @@ namespace CloneZ
         {
             if (fixtures != null && fixtures.Count > 0)
             {
-                var byKey = new Dictionary<string, FixtureSave>(fixtures.Count);
-                for (int i = 0; i < fixtures.Count; i++)
-                    if (fixtures[i] != null && !string.IsNullOrEmpty(fixtures[i].Key)) byKey[fixtures[i].Key] = fixtures[i];
+var byKey = new Dictionary<string, FixtureSave>(fixtures.Count);
+                  for (int i = 0; i < fixtures.Count; i++)
+                  {
+                      var fs = fixtures[i];
+                      if (fs == null || string.IsNullOrEmpty(fs.Key)) continue;
+                      if (byKey.ContainsKey(fs.Key))
+                      {
+                          Debug.LogWarning("[CloneZ] Two fixtures share the save key " + fs.Key + "; only the first is restored.");
+                          continue;
+                      }
+                      byKey[fs.Key] = fs;
+                  }
                 // Restoring can add or remove fixtures (a lamp group, a part torn away), so walk a copy.
                 var live = new List<Interactable>(All);
                 for (int i = 0; i < live.Count; i++)

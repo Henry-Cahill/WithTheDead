@@ -46,6 +46,9 @@ namespace CloneZ
             m.Ellipsoid(at + normal * 0.006f, new Vector3(0.28f, 0.18f, 0.03f), q, M(new Color(0.80f, 0.79f, 0.75f)), 12, 4);
             Vector3 dome = at + normal * 0.02f;
             m.Ellipsoid(dome, new Vector3(0.22f, 0.125f, 0.11f), q, M(new Color(0.88f, 0.86f, 0.79f)), 12, 6);
+            // Chrome screw heads on the dome
+            m.Box(dome + Vector3.up * 0.032f, new Vector3(0.008f, 0.008f, 0.001f), q, Mt(Chrome));
+            m.Box(dome - Vector3.up * 0.032f, new Vector3(0.008f, 0.008f, 0.001f), q, Mt(Chrome));
             glow?.Ellipsoid(dome, new Vector3(0.226f, 0.13f, 0.116f), q, Gl(WarmGlow), 12, 6);
             // The bands hug the dome a little above and below its middle.
             Surf band = M(new Color(0.20f, 0.20f, 0.21f));
@@ -144,6 +147,8 @@ namespace CloneZ
             Quaternion q = Quaternion.LookRotation(normal, Vector3.up);
             Quaternion disc = q * Quaternion.Euler(90f, 0f, 0f);
             m.Cylinder(at, 0.16f, 0.04f, 16, M(new Color(0.15f, 0.15f, 0.16f)), disc);
+            // Chrome bezel at the clock’s outer rim
+            m.Cylinder(at, 0.165f, 0.004f, 16, Mt(Chrome), disc);
             m.Cylinder(at + normal * 0.041f, 0.14f, 0.002f, 16, M(new Color(0.88f, 0.87f, 0.82f)), disc);
             Vector3 right = Vector3.Cross(normal, Vector3.up).normalized;   // three o'clock, as a viewer facing the dial sees it
             for (int i = 0; i < 12; i++)
@@ -173,6 +178,16 @@ namespace CloneZ
         {
             Quaternion q = Quaternion.LookRotation(normal, Vector3.up);
             m.Box(at + normal * 0.008f, new Vector3(w + 0.05f, h + 0.05f, 0.016f), q, M(frame));
+            // Compute right vector for corner brackets
+            Vector3 right = Vector3.Cross(normal, Vector3.up).normalized;
+            // Add four chrome corner brackets at the outer corners of the frame
+            float halfW = (w + 0.05f) * 0.5f;
+            float halfH = (h + 0.05f) * 0.5f;
+            Vector3 frontOffset = normal * 0.0175f;
+            m.Box(at + frontOffset + right * halfW + Vector3.up * halfH, new Vector3(0.008f, 0.008f, 0.003f), q, Mt(Chrome));
+            m.Box(at + frontOffset - right * halfW + Vector3.up * halfH, new Vector3(0.008f, 0.008f, 0.003f), q, Mt(Chrome));
+            m.Box(at + frontOffset + right * halfW - Vector3.up * halfH, new Vector3(0.008f, 0.008f, 0.003f), q, Mt(Chrome));
+            m.Box(at + frontOffset - right * halfW - Vector3.up * halfH, new Vector3(0.008f, 0.008f, 0.003f), q, Mt(Chrome));
             m.Upright(at + normal * 0.0175f, normal, w, h, DecorMaterials.Poster(kind), new Rect(0f, 0f, 1f, 1f));
         }
         #endregion

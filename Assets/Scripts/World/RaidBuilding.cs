@@ -460,6 +460,14 @@ namespace CloneZ
                 p.Mesh.Box(RunPoint(r, o.B + 0.035f, (DoorHeight + 0.07f) * 0.5f, off), RunSize(r, 0.07f, DoorHeight + 0.07f, 0.024f), wood);
                 p.Mesh.Box(RunPoint(r, o.Pos, DoorHeight + 0.035f, off), RunSize(r, w + 0.14f, 0.07f, 0.024f), wood);
             }
+            // Possibly add a house‑number plaque on the exterior side of the door frame (≈20% of doors)
+            int extSide = OutsideSide(r, o.Pos);
+            if (extSide != 0 && Rng.NextDouble() < 0.2)
+            {
+                var plaqueSurf = DecorPalette.Matte(new Color(0.92f, 0.86f, 0.78f));
+                Vector3 plaquePos = RunPoint(r, o.Pos, DoorHeight * 0.68f, extSide * (Half + 0.022f));
+                p.Mesh.Box(plaquePos, RunSize(r, 0.12f, 0.018f, 0.008f), plaqueSurf);
+            }
             // Add subtle door handle on interior side (random slight X offset) and occasional rust spot
             for (int side = -1; side <= 1; side += 2)
             {
@@ -479,6 +487,15 @@ namespace CloneZ
                     rustPos.x += offX;
                     p.Mesh.Box(rustPos, RunSize(r, 0.06f, 0.008f, 0.008f), rust);
                 }
+            }
+            // Add subtle metal hinges on exterior side of door frame
+            if (extSide != 0)
+            {
+                var hingeSurf = DecorPalette.Matte(new Color(0.30f, 0.30f, 0.35f));
+                // top hinge
+                p.Mesh.Box(RunPoint(r, o.Pos, DoorHeight - 0.15f, extSide * (Half + 0.025f)), RunSize(r, 0.04f, 0.10f, 0.008f), hingeSurf);
+                // bottom hinge
+                p.Mesh.Box(RunPoint(r, o.Pos, 0.15f, extSide * (Half + 0.025f)), RunSize(r, 0.04f, 0.10f, 0.008f), hingeSurf);
             }
         }
 

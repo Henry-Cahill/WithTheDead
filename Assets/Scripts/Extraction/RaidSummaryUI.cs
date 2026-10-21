@@ -32,6 +32,7 @@ namespace CloneZ
         private Font _font;
         private float _shownAt; private bool _frozen;
         private bool _leaving;
+        private Keyboard _cachedKeyboard;
 
         /// <summary>Puts the report up for a finished raid (once; later calls return the open one).</summary>
         public static RaidSummaryUI Show(RaidSummary summary)
@@ -69,6 +70,7 @@ namespace CloneZ
         {
             Current = this;
             _font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            _cachedKeyboard = Keyboard.current;
         }
 
         private void OnDestroy()
@@ -79,7 +81,7 @@ namespace CloneZ
         private void Update()
         {
             if (_leaving) return;
-            Keyboard kb = Keyboard.current;
+            Keyboard kb = _cachedKeyboard;
             if (kb == null || Time.unscaledTime - _shownAt < KeyDelay) return;
             if (kb.enterKey.wasPressedThisFrame || kb.numpadEnterKey.wasPressedThisFrame) OnNextRaid();
         }

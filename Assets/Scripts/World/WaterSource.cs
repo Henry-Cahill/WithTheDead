@@ -204,6 +204,10 @@ namespace CloneZ
             Color strapColor = new Color(shade, shade * 0.85f, shade * 0.6f);
             m.Cylinder(new Vector3(0f, h * 0.5f, 0f), r + 0.015f, 0.008f, 16,
                 DecorPalette.Matte(strapColor));
+            // Faded hand-painted label: a thin rectangle on the barrel side, random angle
+            float labelAngle = (float)(strapRand.NextDouble() * Mathf.PI * 2.0);
+            Vector3 labelPos = new Vector3(Mathf.Sin(labelAngle) * (r + 0.012f), 0.6f, Mathf.Cos(labelAngle) * (r + 0.012f));
+            m.Box(labelPos, new Vector3(0.08f, 0.02f, 0.001f), DecorPalette.Matte(new Color(0.78f, 0.71f, 0.55f)));
             m.Cylinder(new Vector3(0f, 0.02f, 0f), r - wall, 0.004f, 16, DecorPalette.Matte(plastic * 0.35f));
             // A brass spigot low on the side.
             // Brass rivet heads around the barrel mid‑section – period‑appropriate weathering
@@ -214,6 +218,15 @@ namespace CloneZ
                 float angle = (float)(i * Mathf.PI * 2.0 / rivetCount);
                 m.Cylinder(new Vector3(Mathf.Sin(angle) * (r + 0.01f), 0.5f, Mathf.Cos(angle) * (r + 0.01f)),
                     0.008f, 0.004f, 8, DecorPalette.Metal(FurnitureBuilder.Brass));
+            }
+            // Add small rust‑stained matte patches for weathering
+            int patchCount = strapRand.Next(2, 5);
+            for (int i = 0; i < patchCount; i++)
+            {
+                float angle = (float)(strapRand.NextDouble() * Mathf.PI * 2.0);
+                float y = 0.3f + (float)(strapRand.NextDouble() * 0.5f); // 0.3–0.8 m height
+                Vector3 pos = new Vector3(Mathf.Sin(angle) * (r + 0.015f), y, Mathf.Cos(angle) * (r + 0.015f));
+                m.Box(pos, new Vector3(0.02f, 0.02f, 0.02f), DecorPalette.Matte(new Color(0.4f, 0.2f, 0.1f)));
             }
             m.CylinderX(new Vector3(0f, 0.16f, r + 0.03f), 0.022f, 0.08f, 8, DecorPalette.Metal(FurnitureBuilder.Brass), 90f);
             m.Box(new Vector3(0f, 0.2f, r + 0.07f), new Vector3(0.03f, 0.05f, 0.03f), DecorPalette.Metal(FurnitureBuilder.Brass));
@@ -278,14 +291,16 @@ namespace CloneZ
         {
             if (Kind != WaterSourceKind.RainBarrel) return;
 
+            // Ensure we have a reference to WeatherSystem even if it was instantiated after Awake.
+            if (_weather == null) _weather = WeatherSystem.Instance;
+
             float now = TimeOfDay.Now;
             float dH = now - _lastHours;
             _lastHours = now;
             if (dH <= 0f) return;
 
-
-                float rain = _weather != null ? _weather.RainIntensity : 0f;
-                if (rain > 0f)
+            float rain = _weather != null ? _weather.RainIntensity : 0f;
+            if (rain > 0f)
             {
                 Water = Mathf.Min(CloneZConfig.WaterBarrelMax, Water + CloneZConfig.WaterBarrelRainPerHour * rain * dH);
                 RefreshVisual();

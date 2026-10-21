@@ -89,8 +89,8 @@ namespace CloneZ
             HomeRoom room = rooms[0] ?? rooms[1];
             if (room == Store) return "Store room window";
             if (room == Bath) return "Bathroom window";
-            if (f.AlongX) return Mathf.Abs(f.Coord - Outline.yMin) < 0.05f ? "Front window" : Mathf.Abs(f.Coord - Outline.yMax) < 0.05f ? "Back window" : "Window";
-            return Mathf.Abs(f.Coord - Outline.xMin) < 0.05f ? "West window" : Mathf.Abs(f.Coord - Outline.xMax) < 0.05f ? "East window" : "Window";
+            if (f.AlongX) return Mathf.Abs(f.Mid - Outline.xMin) < 0.05f ? "West window" : Mathf.Abs(f.Mid - Outline.xMax) < 0.05f ? "East window" : "Window";
+            return Mathf.Abs(f.Mid - Outline.yMin) < 0.05f ? "Front window" : Mathf.Abs(f.Mid - Outline.yMax) < 0.05f ? "Back window" : "Window";
         }
 
         // One sash between `y0` and `y1`, `across` from the wall line: stiles, rails (the meeting rail deeper), a glazing
@@ -124,9 +124,30 @@ namespace CloneZ
             m.Box(f.P(f.Mid, gy, across), f.Size(0.003f, glass, 0.006f), muntin);
             // horizontal muntin strip (≈3 mm tall, spans glass width)
             m.Box(f.P(f.Mid, gy, across), f.Size(w - 0.09f, 0.003f, 0.006f), muntin);
+            // Add wooden bead trim along top and bottom rails
+            Surf bead = DecorPalette.Matte(FurnitureBuilder.Pine);
+            float beadThickness = 0.003f;
+            // top rail bead
+            m.Box(f.P(f.Mid, y1 - topRail * 0.5f, across), f.Size(w - 0.09f, beadThickness, lower ? SashDepth + 0.005f : SashDepth), bead);
+            // bottom rail bead
+            m.Box(f.P(f.Mid, y0 + bottomRail * 0.5f, across), f.Size(w - 0.09f, beadThickness, lower ? SashDepth : SashDepth + 0.005f), bead);
+            // thin inner‑face wooden trim strip (period‑correct finish)
+            float trimThickness = 0.002f;
+            // position on inner face of sash
+            float innerOffset = across + roomSide * (SashDepth * 0.5f + trimThickness * 0.5f);
+            m.Box(f.P(f.Mid, (y0 + y1) * 0.5f, innerOffset), f.Size(w - 0.09f, h, trimThickness), bead);
             Surf brassCap = DecorPalette.Metal(FurnitureBuilder.Brass);
             for (int e = -1; e <= 1; e += 2)
                 m.Box(f.P(f.Mid + e * (w * 0.5f - 0.0225f), y1 - topRail * 0.5f, across), f.Size(0.015f, 0.015f, 0.01f), brassCap);
+            // top‑rail brass rivets – subtle hardware detail
+            float rivetSize = 0.006f;
+            float rivetDepth = 0.004f;
+            // left rivet
+            m.Box(f.P(s0 + 0.03f, y1 - topRail * 0.5f, across), f.Size(rivetSize, rivetSize, rivetDepth), brassCap);
+            // center rivet
+            m.Box(f.P(f.Mid, y1 - topRail * 0.5f, across), f.Size(rivetSize, rivetSize, rivetDepth), brassCap);
+            // right rivet
+            m.Box(f.P(s1 - 0.03f, y1 - topRail * 0.5f, across), f.Size(rivetSize, rivetSize, rivetDepth), brassCap);
             if (!lower) return;
             Surf brass = DecorPalette.Metal(FurnitureBuilder.Brass);
             for (int e = -1; e <= 1; e += 2)

@@ -16,6 +16,8 @@ namespace CloneZ
             Color hull = new Color(0.24f, 0.28f, 0.21f);
             var m = new RaidMesh();
             m.Ellipsoid(new Vector3(0f, 1.7f, 0.5f), new Vector3(2.5f, 2.3f, 7.6f), DecorPalette.Metal(hull), 12, 7);
+            // thin worn‑metal strip along the bottom of the fuselage
+            m.Box(new Vector3(0f, 0.45f, 0f), new Vector3(2.5f, 0.05f, 7.6f), DecorPalette.Metal(hull * 0.5f));
             // side‑panel seams – thin worn metal strips
             m.Box(new Vector3(2.48f, 1.7f, 0f), new Vector3(0.02f, 1.2f, 6.0f), DecorPalette.Metal(hull * 0.6f));
             m.Box(new Vector3(-2.48f, 1.7f, 0f), new Vector3(0.02f, 1.2f, 6.0f), DecorPalette.Metal(hull * 0.6f));
@@ -46,6 +48,8 @@ namespace CloneZ
             m.Ellipsoid(new Vector3(0f, 1.95f, 3.4f), new Vector3(1.9f, 1.4f, 2f), DecorPalette.Glass(new Color(0.25f, 0.32f, 0.36f)), 10, 6);
             m.CylinderX(new Vector3(0f, 2.1f, -5.2f), 0.42f, 6.4f, 10, DecorPalette.Metal(hull), 90f);
             m.Box(new Vector3(0f, 3f, -8.1f), new Vector3(0.12f, 1.9f, 1.1f), DecorPalette.Metal(hull));
+            // Small worn‑metal exhaust pipe on the tail boom for period‑appropriate grit
+            m.Cylinder(new Vector3(0f, 2.45f, -8.55f), 0.06f, 0.06f, 6, DecorPalette.Metal(hull * 0.8f));
             m.Box(new Vector3(0f, 2.9f, 0.3f), new Vector3(1.2f, 0.5f, 2.4f), DecorPalette.Metal(hull * 0.85f));
             for (int s = -1; s <= 1; s += 2)
             {
@@ -53,6 +57,11 @@ namespace CloneZ
                 m.Rod(new Vector3(s * 1.1f, 0.05f, 1.6f), new Vector3(s * 0.7f, 0.9f, 1.4f), 0.05f, DecorPalette.Metal(new Color(0.15f, 0.15f, 0.15f)), 5);
                 m.Rod(new Vector3(s * 1.1f, 0.05f, -1.6f), new Vector3(s * 0.7f, 0.9f, -1.4f), 0.05f, DecorPalette.Metal(new Color(0.15f, 0.15f, 0.15f)), 5);
             }
+            // Small worn‑metal caps on skid rod ends
+            m.Cylinder(new Vector3( 1.1f, 0.07f,  2.4f), 0.10f, 0.04f, 6, DecorPalette.Metal(hull * 0.7f));
+            m.Cylinder(new Vector3( 1.1f, 0.07f, -2.4f), 0.10f, 0.04f, 6, DecorPalette.Metal(hull * 0.7f));
+            m.Cylinder(new Vector3(-1.1f, 0.07f,  2.4f), 0.10f, 0.04f, 6, DecorPalette.Metal(hull * 0.7f));
+            m.Cylinder(new Vector3(-1.1f, 0.07f, -2.4f), 0.10f, 0.04f, 6, DecorPalette.Metal(hull * 0.7f));
             Emit(m, "Body", root, Vector3.zero);
 
             var main = new GameObject("MainRotor").transform;

@@ -27,7 +27,7 @@ namespace CloneZ
         private static readonly Dictionary<string, string[]> Lines = new Dictionary<string, string[]>
         {
             { "barkeep", new[] { "Rent's due on the seventh, same as always.", "You want a drink or you want to stand there?", "Heard the Spillway coughed up something big last week.", "Wipe your boots. Some of that mud glows.", "Freehold's taxes never sleep.", "The Wardens patrol after dark.", "The Choir's hymns echo near the ruins.", "Snow drifts block the road to Kestrel, but the lamp still flickers.", "The wind whistles through the broken panes, carrying whispers of the Zone.", "Rumor has it the old well still runs under the ice, feeding the dead.", "Lights on the porch are dim, but the barkeep keeps the fire alive.", "I saw a shape move past the snowbank, silent as a dead rat.", "When the night falls, the Zone sings louder than the choir." } },
-            { "fence", new[] { "No receipts, no questions.", "The Institute pays in pennies and paperwork. I pay in rounds.", "Wardens were sniffing round yesterday. Keep your head down.", "Anything that hums, I'll take.", "Freehold's borders shift at night.", "Mirelock's mist hides contraband.", "Vanguard's guards demand loyalty." } },
+            { "fence", new[] { "No receipts, no questions.", "The Institute pays in pennies and paperwork. I pay in rounds.", "Wardens were sniffing round yesterday. Keep your head down.", "Anything that hums, I'll take.", "Freehold's borders shift at night.", "Mirelock's mist hides contraband.", "Vanguard's guards demand loyalty.", "Winter snows seal the northern road, but the market finds a breach.", "Spare parts trade for whispers; a busted transmitter buys safety.", "The Wardens watch the docks; a stray lantern draws their gaze.", "Rumour says a hidden cache lies beneath the old well, guarded by frozen wires.", "Contraband moves in hushed tones, wrapped in stolen coats." } },
             { "institute", new[] { "Every artifact is a sentence in a language we can't read.", "Bring me samples, not stories.", "Legal work, legal pay. You'll sleep at night.", "Please don't lick anything you find.", "Vanguard's labs whisper of ghosts.", "The Passing's echo lingers here.", "Kestrel's winds bring news." } },
             { "gunsmith", new[] { "The round matters more than the rifle.", "Pick your branch carefully — I can't un-bore a barrel.", "Clean your gun. The Zone gets into everything.", "That vest won't stop what the Choir carries.", "The Vanguard's steel cuts deeper than any blade.", "Freehold's guns rarely miss, but they rust.", "Mirelock's damp keeps the powder soggy." } },
             { "medic", new[] { "Sit. Bleeding is not a conversation.", "Know your blood type. Out there nobody will ask.", "Splint first, run second.", "You came back. Most don't, the first winter.", "Freehold's medics never get a day off.", "Wardens' field kits run low quickly.", "Mirelock's chill slows every wound." } },
@@ -51,7 +51,7 @@ namespace CloneZ
             var go = new GameObject("HubNpc " + name);
             go.transform.SetParent(parent, false);
             float seatHeight = position.y > 0.1f ? position.y : 0.46f;
-            go.transform.position = new Vector3(position.x, role == Role.Musician ? 0.24f : 0f, position.z);
+            go.transform.position = new Vector3(position.x, role == Role.Musician ? 0.24f : position.y, position.z);
             Vector3 face = lookAt - go.transform.position;
             face.y = 0f;
             if (face.sqrMagnitude > 0.01f) go.transform.rotation = Quaternion.LookRotation(face.normalized, Vector3.up);
@@ -201,6 +201,14 @@ namespace CloneZ
                         if (!Money.TrySpend(10, c.Inventory)) { c.Notify("You don't have 10 MG."); return; }
                         GameEvents.RaiseSubtitle(Npc.Name, "For you, then. Something slow.");
                         GameEvents.RaiseWorldEvent(transform.position, 10f, "music");
+                    }));
+                    // Added cheaper short tune option
+                    into.Add(new InteractAction("Request a short tune (5 MG)", c =>
+                    {
+                        if (!Money.TrySpend(5, c.Inventory)) { c.Notify("You don't have 5 MG."); return; }
+                        GameEvents.RaiseSubtitle(Npc.Name, "A quick melody for you.");
+                        GameEvents.RaiseWorldEvent(transform.position, 5f, "music");
+                        Sfx.PlayUI(SfxIds.Cash);
                     }));
                     break;
                 case HubNpc.Role.Keeper:

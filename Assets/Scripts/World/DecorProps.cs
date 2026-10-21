@@ -72,6 +72,11 @@ namespace CloneZ
 
             // Lower body, hood and trunk.
             m.Box(new Vector3(0f, bodyY + 0.3f, 0f), new Vector3(wid, 0.56f, len - 0.1f), G(c));
+            // Small random rust/dent strip on hood or trunk
+            Vector3 rustPos = new Vector3((rng.Next(0, 2) == 0 ? -1f : 1f) * (wid * 0.45f), bodyY + 0.34f, R(rng, -len * 0.3f, len * 0.3f));
+            Vector3 rustSize = new Vector3(0.02f, 0.02f, R(rng, 0.2f, 0.5f));
+            Color rustCol = V(c * 0.6f, rng, 0.04f);
+            m.Box(rustPos, rustSize, M(rustCol));
             m.Box(new Vector3(0f, bodyY + 0.06f, len * 0.5f - 0.04f), new Vector3(wid - 0.02f, 0.14f, 0.1f), Mt(chrome));
             m.Box(new Vector3(0f, bodyY + 0.06f, -len * 0.5f + 0.04f), new Vector3(wid - 0.02f, 0.14f, 0.1f), Mt(chrome));
             for (int s = -1; s <= 1; s += 2)
@@ -361,8 +366,10 @@ namespace CloneZ
             // thin pole attached to the right side of the mailbox
             m.Box(new Vector3(0.09f, 1.25f, 0.05f), new Vector3(0.02f, 0.22f, 0.02f), Mt(new Color(0.25f, 0.25f, 0.26f)));
             // flag rectangle – size 0.08 m × 0.015 m, positioned at pole top, colour varies with rng
-            Color flagCol = V(new Color(0.80f, 0.15f, 0.12f), rng, 0.07f);
-        }
+Color flagCol = V(new Color(0.80f, 0.15f, 0.12f), rng, 0.07f);
+                    // flag rectangle – attach to pole top, thin rectangle
+                    m.Box(new Vector3(0.09f + 0.04f, 1.36f, 0.05f), new Vector3(0.08f, 0.015f, 0.01f), M(flagCol));
+                }
     }
 
 
@@ -405,6 +412,8 @@ namespace CloneZ
             m.Box(new Vector3(0f, 0.35f, 0f), new Vector3(1.0f, 0.55f, 0.6f), M(c));
             m.Box(new Vector3(0f, 0.05f, 0f), new Vector3(1.1f, 0.1f, 0.7f), M(c * 0.6f));
             m.Box(new Vector3(0.35f, 0.4f, 0.31f), new Vector3(0.2f, 0.25f, 0.02f), M(new Color(0.15f, 0.15f, 0.15f)));
+            // Small worn metal toggle switch on the generator front panel
+            m.Box(new Vector3(0.35f, 0.45f, 0.33f), new Vector3(0.02f, 0.04f, 0.005f), Yaw(R(rng, -5f, 5f)), Mt(V(new Color(0.2f, 0.2f, 0.2f), rng, 0.05f)));
             m.Cylinder(new Vector3(-0.35f, 0.62f, -0.15f), 0.04f, 0.4f, 6, Mt(new Color(0.3f, 0.28f, 0.25f)));
             m.Box(new Vector3(0f, 0.65f, 0f), new Vector3(0.9f, 0.04f, 0.5f), M(SnowWhite));
             // Exhaust pipe with a glowing tip

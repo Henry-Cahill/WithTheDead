@@ -322,6 +322,11 @@ namespace CloneZ
             notes.Add("Old wooden beams creak under the weight of the frost.");
             notes.Add("Your breath hangs in the air, a fleeting cloud of vapor.");
             notes.Add("A faint scent of woodsmoke lingers, drifting from the stove.");
+            notes.Add("Frost coats the hammer and wrench on the workbench, making each swing a shiver.");
+            notes.Add("An old battery‑radio crackles on the shelf, its static whispering tales of distant survivors.");
+            notes.Add("Your breath forms fleeting clouds that drift toward the cold ceiling before vanishing.");
+            notes.Add("The roof’s pine beams creak under the weight of ice, sighing with each gust.");
+            notes.Add("A thin ribbon of coal‑smoke curls from the stove, mingling with the crisp winter air.");
 
             SetLastTick(c, now);
             if (notes.Count > 0) ProfileStore.Save();

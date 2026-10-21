@@ -14,6 +14,7 @@ namespace CloneZ
     public class PlayerSleep : MonoBehaviour
     {
         private PlayerStats _stats;
+        private static TimeOfDay _timeOfDay;
         private PlayerWounds _wounds;
         private PlayerPanic _panic;
         private PlayerSeat _seat;
@@ -41,11 +42,12 @@ namespace CloneZ
         private const string PanickedReason = "Too panicked to sleep";
         private const string DangerReason = "Too dangerous to sleep \u2014 zombies near";
 
-        private void Awake()
-        {
-            _stats = GetComponent<PlayerStats>();
-            _lastPos = transform.position;
-        }
+    private void Awake()
+    {
+        _stats = GetComponent<PlayerStats>();
+        _timeOfDay = TimeOfDay.Instance;
+        _lastPos = transform.position;
+    }
 
 
         private void OnEnable()
@@ -132,14 +134,14 @@ namespace CloneZ
             _wakeRequested = false;
             _sleepElapsed = 0f;
             UIState.GameplayBlocked = true;   // freezes movement & combat while asleep
-            if (TimeOfDay.Instance != null) TimeOfDay.Instance.TimeScale = CloneZConfig.SleepTimeScale;
+            if (_timeOfDay != null) _timeOfDay.TimeScale = CloneZConfig.SleepTimeScale;
         }
 
         private void StopSleep()
         {
             IsSleeping = false;
             UIState.GameplayBlocked = false;
-            if (TimeOfDay.Instance != null) TimeOfDay.Instance.TimeScale = 1f;
+            if (_timeOfDay != null) _timeOfDay.TimeScale = 1f;
             Prompt = "";
         }
 
@@ -165,7 +167,7 @@ namespace CloneZ
 
         private static bool ReachedDawn()
         {
-            var t = TimeOfDay.Instance;
+            var t = _timeOfDay;
             return t != null && t.Hour >= CloneZConfig.SleepWakeHour && t.Hour < 11f && !t.IsNight;
         }
 

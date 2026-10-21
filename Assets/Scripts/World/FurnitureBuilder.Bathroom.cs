@@ -316,6 +316,8 @@ namespace CloneZ
             // The mixer: a chrome pillar on the back deck, its spout reaching out over the bowl.
             var tap = new Vector3(0f, 0.86f, -0.165f);
             m.Cylinder(tap, 0.026f, 0.008f, 14, chrome);
+            // Chrome escutcheon disc for period‑correct detail
+            m.Cylinder(tap + new Vector3(0f, -0.004f, 0f), 0.03f, 0.002f, 12, chrome);
             m.Cylinder(tap, 0.019f, 0.10f, 14, chrome);
             m.Rod(new Vector3(0f, 0.935f, -0.158f), new Vector3(0f, 0.935f, -0.05f), 0.02f, chrome, 10);
             m.Cylinder(BasinSpout, 0.012f, 0.022f, 10, chrome);
@@ -323,6 +325,14 @@ namespace CloneZ
             // A bar of soap on one side of the tap, a tumbler of toothbrushes on the other.
             Color[] soaps = { new Color(0.90f, 0.72f, 0.70f), new Color(0.74f, 0.86f, 0.70f), new Color(0.92f, 0.88f, 0.70f) };
             m.Ellipsoid(new Vector3(-0.175f, 0.872f, -0.165f), new Vector3(0.075f, 0.026f, 0.048f), G(soaps[rng.Next(soaps.Length)]), 10, 4);
+            // Small chrome‑rimmed soap dish on the left side of the tap
+            var dishPos = new Vector3(-0.19f, 0.86f, -0.155f);
+            // Body: shallow rectangular box in china colour
+            m.Box(dishPos, new Vector3(0.03f, 0.005f, 0.02f), G(BathChina));
+            // Rim: thin chrome cylinder around the box
+            m.Cylinder(dishPos, 0.017f, 0.005f, 12, Mt(Chrome));
+            // Optional tiny ellipsoid soap bar inside the dish, same china colour, slightly above the top
+            m.Ellipsoid(new Vector3(dishPos.x, dishPos.y + 0.0025f + 0.002f, dishPos.z), new Vector3(0.008f, 0.008f, 0.008f), G(BathChina), 10, 4);
             var cup = new Vector3(0.175f, 0.86f, -0.165f);
             m.Cylinder(cup, 0.027f, 0.085f, 12, G(V(new Color(0.56f, 0.74f, 0.80f), rng, 0.1f)), Quaternion.identity, 1.12f);
             Color[] brushes = { new Color(0.80f, 0.20f, 0.18f), new Color(0.20f, 0.42f, 0.78f), new Color(0.24f, 0.62f, 0.34f) };
@@ -455,6 +465,12 @@ namespace CloneZ
 
             // The mixer's chrome plate beside the riser.
             m.Cylinder(new Vector3(ShowerLeverPivot.x, ShowerLeverPivot.y, -0.42f), 0.06f, 0.008f, 16, chrome, Quaternion.Euler(90f, 0f, 0f));
+            float rivetR = 0.004f; float rivetH = 0.006f; float plateR = 0.06f - 0.005f;
+            Vector3 pc = new Vector3(ShowerLeverPivot.x, ShowerLeverPivot.y, -0.42f);
+            m.Cylinder(pc + new Vector3( plateR, 0f, 0f), rivetR, rivetH, 8, chrome); // right
+            m.Cylinder(pc + new Vector3(-plateR, 0f, 0f), rivetR, rivetH, 8, chrome); // left
+            m.Cylinder(pc + new Vector3(0f, plateR, 0f), rivetR, rivetH, 8, chrome); // top
+            m.Cylinder(pc + new Vector3(0f, -plateR, 0f), rivetR, rivetH, 8, chrome); // bottom
 
             // A wire corner shelf of bottles, by the back wall.
             var shelf = new Vector3(0.36f, 1.28f, -0.36f);

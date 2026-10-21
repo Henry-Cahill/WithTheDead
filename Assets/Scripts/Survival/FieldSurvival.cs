@@ -348,6 +348,12 @@ namespace CloneZ
                     GameEvents.RaiseToast($"Added {fuel}, the fire will burn longer.");
                 }
             }).DisabledIf(!anyFuel, "No fuel"));
+            // Inspect action to show remaining burn time
+            into.Add(new InteractAction("Inspect", c =>
+            {
+                float secs = Mathf.Max(0f, _until - Time.time);
+                GameEvents.RaiseToast($"Campfire will burn for {Mathf.CeilToInt(secs)} s.");
+            }));
         }
         /// <summary>Radius in metres within which the campfire provides warmth.</summary>
         public float WarmthRadius => 4f;

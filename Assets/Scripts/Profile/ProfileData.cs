@@ -40,10 +40,10 @@ namespace CloneZ
 
         /// <summary>Returns true if the object has the given flag.</summary>
         /// <summary>Returns true if the character has the given flag.</summary>
-        public bool HasFlag(string f) => Flags.Contains(f);
+        public bool HasFlag(string f) => Flags != null && Flags.Contains(f);
         /// <summary>Adds the flag if not already present.</summary>
         /// <summary>Adds the flag to the character if not present.</summary>
-        public void SetFlag(string f) { if (!Flags.Contains(f)) Flags.Add(f); }
+        public void SetFlag(string f) { if (Flags == null) Flags = new List<string>(); if (!Flags.Contains(f)) Flags.Add(f); }
 
         /// <summary>Checks if the account knows the given knowledge key.</summary>
         public bool Knows(string k) => Knowledge.Contains(k);
@@ -138,10 +138,10 @@ namespace CloneZ
 
         /// <summary>Returns true if the object has the given flag.</summary>
         /// <summary>Returns true if the character has the given flag.</summary>
-        public bool HasFlag(string f) => Flags.Contains(f);
+        public bool HasFlag(string f) => Flags != null && Flags.Contains(f);
         /// <summary>Adds the flag if not already present.</summary>
         /// <summary>Adds the flag to the character if not present.</summary>
-        public void SetFlag(string f) { if (!Flags.Contains(f)) Flags.Add(f); }
+        public void SetFlag(string f) { if (Flags == null) Flags = new List<string>(); if (!Flags.Contains(f)) Flags.Add(f); }
 
         /// <summary>Retrieves the reputation value for a faction, defaulting to 0 or 400 for own faction.</summary>
         public float GetFactionRep(string faction)

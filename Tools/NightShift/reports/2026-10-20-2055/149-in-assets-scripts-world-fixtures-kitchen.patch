@@ -1,0 +1,12 @@
+diff --git a/Assets/Scripts/World/Fixtures/KitchenStove.cs b/Assets/Scripts/World/Fixtures/KitchenStove.cs
+index 5e4ef85e..5a82cd5d 100644
+--- a/Assets/Scripts/World/Fixtures/KitchenStove.cs
++++ b/Assets/Scripts/World/Fixtures/KitchenStove.cs
+@@ -46,6 +46,7 @@ public class KitchenStove : Interactable, IWarmthSource
+ 
+         private readonly Action<InteractContext>[] _toggleBurner = new Action<InteractContext>[4];
+         private Action<InteractContext> _allOn, _allOff, _toggleOven, _toggleDoor, _cook;
++        private readonly Action<InteractContext> _toggleAll;
+ 
+         public override string DisplayName => "Gas stove";
+         public override Vector3 InteractPoint => transform.position + transform.rotation * new Vector3(0f, 0.95f, 0.2f);

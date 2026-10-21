@@ -120,6 +120,7 @@ namespace CloneZ
             into.Add(new InteractAction("Adjust the rabbit ears", AdjustAerial).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Check volume", ctx => ctx.Notify("Volume: " + VolumeWord)).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Check signal", CheckSignal).DisabledIf(!near, TooFar));
+            into.Add(new InteractAction("Check channel", ctx => ctx.Notify("Channel: " + (Station != null ? Station.ToString() : "none"))).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Give the set a thump", Thump).DisabledIf(!near, TooFar));
         }
 

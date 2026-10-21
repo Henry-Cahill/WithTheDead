@@ -47,16 +47,23 @@ namespace CloneZ
                     runLen++;
                     Vector3 post = c - axis * (SegLen * 0.5f);
                     fence.Solid.Box(post + Vector3.up * 1.25f, new Vector3(0.09f, 2.5f, 0.09f), ZoneKit.Mt(ZoneKit.Galvanised));
-                    // 12% chance per post to show a rusted metal plate on its outer face
-                    if (ZoneKit.R(rng, 0f, 1f) < 0.12f)
-                    {
-                        // size 0.08 m × 0.02 m × 0.001 m, positioned 0.9 m above ground,
-                        // offset outward by half the post width (0.045 m) so it sits on the front surface
-                        fence.Solid.Box(
-                            post + Vector3.up * 0.9f + normal * 0.045f,
-                            new Vector3(side % 2 == 0 ? 0.08f : 0.001f, 0.02f, side % 2 == 0 ? 0.001f : 0.08f),
-                            ZoneKit.Mt(ZoneKit.RustDark));
-                    }
+// 12% chance per post to show a rusted metal plate on its outer face
+                     if (ZoneKit.R(rng, 0f, 1f) < 0.12f)
+                     {
+                         // size 0.08 m × 0.02 m × 0.001 m, positioned 0.9 m above ground,
+                         // offset outward by half the post width (0.045 m) so it sits on the front surface
+                         fence.Solid.Box(
+                             post + Vector3.up * 0.9f + normal * 0.045f,
+                             new Vector3(side % 2 == 0 ? 0.08f : 0.001f, 0.02f, side % 2 == 0 ? 0.001f : 0.08f),
+                             ZoneKit.Mt(ZoneKit.RustDark));
+                         // 20% chance to add a small rusted bolt on the outer face, near the top of the post
+                         if (ZoneKit.R(rng, 0f, 1f) < 0.20f)
+                         {
+                             // bolt radius 0.015 m, length 0.05 m, positioned 80% up the 2.5m post
+                             Vector3 boltPos = post + Vector3.up * (2.5f * 0.8f) + normal * 0.045f;
+                             fence.Solid.Rod(boltPos, boltPos + Vector3.up * 0.05f, 0.015f, ZoneKit.Mt(ZoneKit.RustDark), 4);
+                         }
+                     }
                     fence.Upper.Box(c + Vector3.up * 1.2f, side % 2 == 0 ? new Vector3(SegLen, 2.2f, 0.02f) : new Vector3(0.02f, 2.2f, SegLen), ZoneKit.ChainLink);
                     fence.Upper.Rod(post + Vector3.up * 2.45f, post + axis * SegLen + Vector3.up * 2.45f, 0.025f, ZoneKit.Mt(ZoneKit.Galvanised), 4);
                     fence.Upper.Rod(post + Vector3.up * 2.6f, post + axis * SegLen + Vector3.up * 2.6f, 0.015f, ZoneKit.Mt(ZoneKit.RustDark), 3);
@@ -117,6 +124,13 @@ namespace CloneZ
                 if (ZoneKit.R(rng, 0f, 1f) < 0.15f)
                 {
                     sb.Solid.Box(post + Vector3.up * 1.0f + normal * 0.11f, new Vector3(0.08f, 0.02f, 0.001f), ZoneKit.Mt(ZoneKit.RustDark));
+                    // 20% chance to add a rusted bolt on the outer face
+                    if (ZoneKit.R(rng, 0f, 1f) < 0.20f)
+                    {
+                        // small bolt: radius 0.015 m, length 0.05 m, positioned near the top of the post
+                        Vector3 boltPos = post + Vector3.up * (h * 0.8f) + normal * 0.12f;
+                        sb.Solid.Rod(boltPos, boltPos + Vector3.up * 0.05f, 0.015f, ZoneKit.Mt(ZoneKit.RustDark), 4);
+                    }
                 }
                 sb.Collider(post, new Vector3(0.22f, h, 0.22f));
             }
@@ -153,6 +167,12 @@ namespace CloneZ
             if (ZoneKit.R(rng, 0f, 1f) < 0.5f)
             {
                 sb.Solid.Box(new Vector3(0f, 1.2f, -1.22f), new Vector3(0.02f, 0.12f, 0.04f), ZoneKit.Mt(ZoneKit.RustDark));
+            }
+            // 30% chance of a rusted hinge on each side of the door, for a little visual variety.
+            if (ZoneKit.R(rng, 0f, 1f) < 0.3f)
+            {
+                sb.Solid.Box(new Vector3(-0.78f, 0.80f, -1.22f), new Vector3(0.02f, 0.04f, 0.01f), ZoneKit.Mt(ZoneKit.RustDark));
+                sb.Solid.Box(new Vector3(0.78f, 0.80f, -1.22f), new Vector3(0.02f, 0.04f, 0.01f), ZoneKit.Mt(ZoneKit.RustDark));
             }
             // Occasionally add a weathered flag on a short pole for visual variety.
             if (ZoneKit.R(rng, 0f, 1f) < 0.6f)
@@ -240,6 +260,11 @@ namespace CloneZ
             }).DisabledIf(paid, "Already paid").DisabledIf(!paid && !permit, "You have no permit"));
             into.Add(new InteractAction("Ask about the Zone", c =>
                 GameEvents.RaiseSubtitle("Warden", CordonRules.PassBought ? "Keep to the road. Stay off the belt after dark." : "No pass, no passage. Off the belt, or we shoot.")));
+                into.Add(new InteractAction("Check checkpoint status", c =>
+                    GameEvents.RaiseSubtitle("Warden", CordonRules.PassBought
+                        ? "You already have a pass for this raid."
+                        : "No pass yet – you need to bribe or show a permit.")));
+
         }
 
         private static void Grant(InteractContext c, string line)

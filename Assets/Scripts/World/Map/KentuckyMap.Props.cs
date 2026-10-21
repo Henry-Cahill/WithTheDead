@@ -61,10 +61,11 @@ namespace CloneZ
                 bool lit = litCount < LitPoles && lean == 0f && rng.NextDouble() < 0.8;
                 Vector3 at = To3(poles[i].at, 0f);
                 RaidMesh m = site.Town.Out.Solid(at);
-                m.SetFrame(at, poles[i].yaw);
+                float poleYaw = poles[i].yaw + R(rng, -5f, 5f);
+                m.SetFrame(at, poleYaw);
                 Vector3 lamp = m.ToMeshSpace(DecorProps.StreetLight(m, rng, lit, lean));
                 m.ResetFrame();
-                site.Town.PropCollider(at + Vector3.up * 2.75f, new Vector3(0.3f, 5.5f, 0.3f), poles[i].yaw);
+                site.Town.PropCollider(at + Vector3.up * 2.75f, new Vector3(0.3f, 5.5f, 0.3f), poleYaw);
                 if (lit) site.Town.Light(site.Town.World, lamp, new Color(1f, 0.72f, 0.42f), 13f, 2.2f, rng.NextDouble() < 0.25, i < 3);
                 if (lit) litCount++;
             }
@@ -102,7 +103,11 @@ namespace CloneZ
                         Vector3 at3 = To3(at, 0f);
                         RaidMesh m = site.Town.Out.Solid(at3);
                         m.SetFrame(at3, yaw);
-                        DecorProps.Car(m, rng, kind, CarPaints[rng.Next(CarPaints.Length)], out Vector3 size);
+                        Color paint = CarPaints[rng.Next(CarPaints.Length)];
+                paint.r = Mathf.Clamp01(paint.r + (float)rng.NextDouble() * 0.06f - 0.03f);
+                paint.g = Mathf.Clamp01(paint.g + (float)rng.NextDouble() * 0.06f - 0.03f);
+                paint.b = Mathf.Clamp01(paint.b + (float)rng.NextDouble() * 0.06f - 0.03f);
+                DecorProps.Car(m, rng, kind, paint, out Vector3 size);
                         m.ResetFrame();
                         site.Town.PropCollider(at3 + Vector3.up * (size.y * 0.5f), size, yaw);
                         site.Take(at, 2.4f);
@@ -157,7 +162,8 @@ namespace CloneZ
                     if (pine) DecorProps.Pine(m, rng, h);
                     else DecorProps.BareTree(m, rng, h);
                     m.ResetFrame();
-                    site.Town.PropCollider(at3 + Vector3.up * 1.5f, new Vector3(0.45f, 3f, 0.45f), 0f);
+                    float s = 0.9f + (float)rng.NextDouble() * 0.2f;
+                site.Town.PropCollider(at3 + Vector3.up * 1.5f, new Vector3(0.45f, 3f, 0.45f) * s, 0f);
                     site.Take(at, 1.3f);
                     site.Trees++;
                     planted++;
@@ -181,10 +187,11 @@ namespace CloneZ
                         if (!NearestFree(site, s.At + new Vector2(k * 2.2f, 0f), 1.2f, out Vector2 at)) continue;
                         Vector3 at3 = To3(at, 0f);
                         RaidMesh m = site.Town.Out.Solid(at3);
-                        m.SetFrame(at3, 0f);
-                        DecorProps.GasPump(m, rng);
-                        m.ResetFrame();
-                        site.Town.PropCollider(at3 + Vector3.up * 0.9f, new Vector3(1.0f, 1.8f, 1.6f), 0f);
+                         float pumpYaw = (float)(rng.NextDouble() * 10.0 - 5.0);
+                         m.SetFrame(at3, pumpYaw);
+                         DecorProps.GasPump(m, rng);
+                         m.ResetFrame();
+                         site.Town.PropCollider(at3 + Vector3.up * 0.9f, new Vector3(1.0f, 1.8f, 1.6f), pumpYaw);
                         site.Take(at, 1.2f);
                     }
                     continue;
@@ -194,11 +201,14 @@ namespace CloneZ
                 bg.r = Mathf.Clamp01(bg.r + (float)rng.NextDouble() * 0.04f - 0.02f);
                 bg.g = Mathf.Clamp01(bg.g + (float)rng.NextDouble() * 0.04f - 0.02f);
                 bg.b = Mathf.Clamp01(bg.b + (float)rng.NextDouble() * 0.04f - 0.02f);
+                fg.r = Mathf.Clamp01(fg.r + (float)rng.NextDouble() * 0.04f - 0.02f);
+                fg.g = Mathf.Clamp01(fg.g + (float)rng.NextDouble() * 0.04f - 0.02f);
+                fg.b = Mathf.Clamp01(fg.b + (float)rng.NextDouble() * 0.04f - 0.02f);
                 if (!NearestFree(site, s.At, 1.4f, out Vector2 spot)) continue;
                 string text = s.Data.name.ToUpperInvariant();
                 if (text.Length > 24) text = text.Substring(0, 24).TrimEnd();
                 Vector2 toStreet = NearestStreetDirection(site, spot, 40f);
-                float yaw = toStreet == Vector2.zero ? 0f : Mathf.Atan2(toStreet.x, toStreet.y) * Mathf.Rad2Deg;
+                float yaw = toStreet == Vector2.zero ? 0f : Mathf.Atan2(toStreet.x, toStreet.y) * Mathf.Rad2Deg + R(rng, -5f, 5f);
                 Vector3 spot3 = To3(spot, 0f);
                 RaidMesh sm = site.Town.Out.Solid(spot3);
                 sm.SetFrame(spot3, yaw);   // the board faces +Z: towards the street

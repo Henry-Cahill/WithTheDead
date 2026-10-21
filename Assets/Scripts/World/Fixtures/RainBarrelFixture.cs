@@ -41,6 +41,7 @@ namespace CloneZ
                 .DisabledIf(!water, b.DryMessage));
             into.Add(new InteractAction("Skim the leaves off the top", Skim).Timed(SkimSeconds, "Skimming the barrel"));
             into.Add(new InteractAction("Shake the barrel", Shake).Timed(ShakeSeconds, "Shaking the barrel").DisabledIf(!Barrel.HasWater, Barrel.DryMessage));
+            into.Add(new InteractAction("Shake the barrel vigorously", VigorousShake).Timed(ShakeSeconds * 2, "Shaking the barrel hard").DisabledIf(!Barrel.HasWater, Barrel.DryMessage));
         }
 
         private void CheckLevel(InteractContext ctx)
@@ -53,9 +54,13 @@ namespace CloneZ
                 fill < 0.25f ? "Barely a puddle in the bottom." :
                 fill < 0.5f ? "About a quarter full \u2014 a drink or two's worth." :
                 fill < 0.60f ? "Halfway full – the water is dark and still." :
+                fill < 0.65f ? "Subtly fuller – a faint quality hint surfaces." :
+                fill < 0.70f ? "A quiet mood settles – the barrel swells with somber water." :
                 fill < 0.75f ? "Roughly half full." :
-                fill < 0.85f ? "Nearly full, the surface ripples with the faint glow of distant snow." :
-                fill < 0.99f ? "Most of the way to the brim." :
+                fill < 0.80f ? "Nearly full, the surface ripples with the faint glow of distant snow." :
+                fill < 0.85f ? "A faint scent drifts – the water hints at algae." :
+                fill < 0.90f ? "Most of the way to the brim." :
+                fill < 0.99f ? "Almost brimming – the barrel gives a quiet warning." :
                 "Brimming \u2014 it can't hold another drop.";
             WeatherSystem w = WeatherSystem.Instance;
             if (w != null && w.RainIntensity > 0.05f) level += " Rain drums on the water.";
@@ -73,6 +78,12 @@ namespace CloneZ
             // Slightly less refreshing than washing hands
             WaterUse.Freshen(ctx, 0.4f);
             ctx.Notify("You splash water on your face. It's chilly, but it helps.");
+        }
+
+        private static void VigorousShake(InteractContext ctx)
+        {
+            WaterUse.Freshen(ctx, 0.5f); // stronger freshen than normal shake
+            ctx.Notify("You shake the barrel hard, splashing cold water over yourself.");
         }
 
         private static void Shake(InteractContext ctx)

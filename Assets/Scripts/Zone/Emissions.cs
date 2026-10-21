@@ -72,6 +72,7 @@ namespace CloneZ
         }
 
         private bool _follower;
+        private Color _warningSkyColor;
 
         private void OnDestroy()
         {
@@ -99,7 +100,7 @@ namespace CloneZ
                     if (Time.time >= _nextAt) StartWarning();
                     break;
                 case Phase.Warning:
-                    ZoneAtmosphere.SkyOverride = PsiStorm ? _psiStormColor : _standardColor;
+                    ZoneAtmosphere.SkyOverride = _warningSkyColor;
                     ZoneAtmosphere.SkyOverrideStrength = Mathf.Lerp(0.05f, 0.45f, 1f - PhaseLeft / WarningSeconds);
                     Rumble(8f, 0.35f);
                     if (Time.time >= _phaseEnds) StartBlast();
@@ -121,6 +122,7 @@ namespace CloneZ
         private void StartWarning()
         {
             Current = Phase.Warning;
+            _warningSkyColor = PsiStorm ? _psiStormColor : _standardColor;
             _phaseEnds = Time.time + WarningSeconds;
             if (!_follower) Started?.Invoke(PsiStorm);
             _siren = Sfx.Loop(SfxIds.EmissionSiren, transform, 0.55f, 10f);

@@ -33,16 +33,10 @@ namespace CloneZ
         private static Texture2D s_Texture;
         private static int s_ColorId;
         private static int s_TintFrame = -1;
-        private static int s_GlowCacheFrame = -1;
-        private static float s_GlowFactor;
-        private static float GetGlowFactor(float phase)
+        private float GetGlowFactor(float phase)
         {
-            if (s_GlowCacheFrame != Time.frameCount)
-            {
-                s_GlowFactor = 0.8f + 0.2f * Mathf.Sin(Time.time * 0.7f + phase);
-                s_GlowCacheFrame = Time.frameCount;
-            }
-            return s_GlowFactor;
+            // Compute glow factor per instance each frame for independent pulsation.
+            return 0.8f + 0.2f * Mathf.Sin(Time.time * 0.7f + phase);
         }
 
         private ParticleSystem _particles;

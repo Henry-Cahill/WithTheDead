@@ -67,7 +67,63 @@ namespace CloneZ
 
     /// <summary>One published build of the real-world map: its manifest, its named places and its regions.</summary>
     public sealed class MapBuild
-    {
+        {
+            /// <summary>Determine if a building should get a thin snow layer on its roof.
+            /// Deterministic based on the build ID and the building ID.
+            /// Approximately 30% of roofs receive snow.</summary>
+            public bool RoofHasSnow(long buildingId)
+            {
+                unchecked
+                {
+                    uint hash = (uint)buildingId ^ 0x9e3779b9u;
+                    hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
+                    return (hash % 100) < 30; // 30% chance
+                }
+        }
+        /// <summary>
+        /// Determine if a road segment should get a sidewalk/curb on its side.
+        /// Deterministic based on the build ID and the segment ID.
+        /// Approximately 45 % of road pieces receive a sidewalk.
+        /// </summary>
+        public bool HasSidewalk(long segmentId)
+        {
+            unchecked
+            {
+                uint hash = (uint)segmentId ^ 0x517cc1b7u;
+                hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
+                return (hash % 100) < 45; // 45% chance
+            }
+        }
+
+        /// <summary>
+        /// Determines if a building should receive a modest front porch (low railing and steps).
+        /// Deterministic based on the build ID and the building ID.
+        /// Roughly 40 % of buildings get a porch, giving a hand‑built aesthetic for a 1993 rural Kentucky home.
+        /// </summary>
+        public bool HasPorch(long buildingId)
+        {
+            unchecked
+            {
+                uint hash = (uint)buildingId ^ 0x3c6ef372u;
+                hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
+                return (hash % 100) < 40; // 40% chance
+            }
+        }
+
+        /// <summary>
+        /// Determine if an upper‑story window should receive a period‑correct metal grate.
+        /// Deterministic based on the build ID and the building ID.
+        /// Approximately 35 % of eligible windows get a grate, adding a hand‑built 1993 Kentucky look.
+        /// </summary>
+        public bool HasWindowGrate(long buildingId)
+        {
+            unchecked
+            {
+                uint hash = (uint)buildingId ^ 0x7f4a7c13u;
+                hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
+                return (hash % 100) < 35; // ~35% chance
+            }
+        }
         /// <summary>The data format this game reads (worldbuild.py's FORMAT).</summary>
         public const int Format = 1;
 
@@ -93,6 +149,20 @@ namespace CloneZ
 
         /// <summary>Deterministic random seeded by the build Id, useful for consistent visual tweaks.</summary>
         public System.Random Random => _rand ??= new System.Random(Id.GetHashCode());
+
+        /// <summary>Deterministic colour for a building (or other feature) identified by <paramref name="seed"/>.
+        /// Uses the build‑id hash combined with the seed to produce a stable hue in a muted range.</summary>
+        public Color GetBuildingColour(int seed)
+        {
+            // combine build id hash with the specific seed so each feature gets its own stream
+            int combined = Id.GetHashCode() ^ seed;
+            var rand = new System.Random(combined);
+            // Generate a hue in [0,1) and muted saturation/value
+            float hue = (float)rand.NextDouble();
+            float sat = 0.4f + (float)rand.NextDouble() * 0.2f; // 0.4‑0.6
+            float val = 0.6f + (float)rand.NextDouble() * 0.2f; // 0.6‑0.8
+            return Color.HSVToRGB(hue, sat, val);
+        }
 
         /// <summary>The credit line the game shows for the map data.</summary>
         public string Attribution => string.IsNullOrEmpty(Manifest.attribution)

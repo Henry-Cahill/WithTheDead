@@ -26,6 +26,7 @@ namespace CloneZ
         private bool _fill;
         private Vector3 _lastPos;
         private const float CheckDistance = 0.5f;
+        private Keyboard _keyboard; // cached keyboard instance
 
         private void Awake()
         {
@@ -51,12 +52,12 @@ namespace CloneZ
                 _source = null;
                 _fill = false;
                 Evaluate();
-                _lastPos = transform.position;
+_keyboard = Keyboard.current;
             }
 
             if (_source != null)
             {
-                Keyboard kb = Keyboard.current;
+                Keyboard kb = _keyboard;
                 if (kb != null && kb.gKey.wasPressedThisFrame) Act();
             }
         }

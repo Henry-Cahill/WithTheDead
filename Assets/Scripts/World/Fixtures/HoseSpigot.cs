@@ -99,8 +99,10 @@ namespace CloneZ
             into.Add(water);
 
             WaterUse.AddDrinkAndFill(ctx, this, into);
-            into.Add(new InteractAction("Coil the hose", c => c.Notify("You wind the hose back onto its reel, neat as anything. Habit."))
-                .Timed(CloneZConfig.HoseCoilSeconds, "Coiling the hose"));
+            var coil = new InteractAction("Coil the hose", c => c.Notify("You wind the hose back onto its reel, neat as anything. Habit."))
+                .Timed(CloneZConfig.HoseCoilSeconds, "Coiling the hose");
+            coil.Stopped = c => { if (_open) { SetOpen(false, false); c.Notify("You remember to shut the tap."); } };
+            into.Add(coil);
         }
 
         private void Turn(InteractContext ctx, bool open)

@@ -221,6 +221,8 @@ internal set
             SyncGlow();
             // A dark lamp's bulb never shows (the camera's cutaway can leave one drawing when it lets go of it).
             if (!lit && _bulb != null && !_bulb.forceRenderingOff) _bulb.forceRenderingOff = true;
+            // Re‑enable the bulb renderer when the lamp becomes lit again.
+            if (lit && _bulb != null && _bulb.forceRenderingOff) _bulb.forceRenderingOff = false;
         }
 
         // Shows the glowing shade while the lamp is lit — a ceiling fitting's only while the ceilings show, a flickering

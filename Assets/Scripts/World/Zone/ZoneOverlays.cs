@@ -63,6 +63,7 @@ namespace CloneZ
                 float r = conifer ? ZoneKit.R(rng, 0.18f, 0.3f) : ZoneKit.R(rng, 0.12f, 0.18f);
                 RaidMesh tm = trunks.At(p);
                 tm.Cylinder(p + Vector3.down * 0.1f, r, h * (conifer ? 0.45f : 0.9f), 7, ZoneKit.M(conifer ? ZoneKit.V(ZoneKit.Bark, rng) : ZoneKit.V(birch, rng, 0.05f)));
+                if (conifer) tm.Cylinder(p + Vector3.up * (h * 0.44f), r * 1.02f, 0.02f, 7, ZoneKit.Mt(ZoneKit.V(new Color(0.78f, 0.85f, 0.80f), rng, 0.04f)));
                 RaidMesh cm = canopies.At(p);
                 if (conifer)
                 {
@@ -144,6 +145,8 @@ namespace CloneZ
                 Vector3 c = new Vector3(x, 0f, half - 3f);
                 if (site.Any(c, 3f, SiteCell.Reserved)) continue;
                 wall.At(wall.Solid, new Vector3(x, 0f, 0f), 0f, m => m.Box(new Vector3(0f, 6f, 0f), new Vector3(8.1f, 12f, 2.2f), ZoneKit.M(ZoneKit.V(ZoneKit.ConcreteDark, rng))));
+                // Shallow crack detail: a thin horizontal box on the wall face to suggest a crack
+                wall.At(wall.Solid, new Vector3(x, 6f, 0f), 0f, m => m.Box(new Vector3(0f, 0.2f, 0f), new Vector3(8f, 0.2f, 0.1f), ZoneKit.M(ZoneKit.V(ZoneKit.ConcreteDark, rng))));
                 // Add a few rust‑stained bolt heads on the concrete block (1‑4 bolts per segment).
                 int boltCount = rng.Next(1, 5);
                 for (int b = 0; b < boltCount; b++)
@@ -229,7 +232,16 @@ for (float x = -len * 0.5f; x <= len * 0.5f; x += 4f)
                         Vector3 rivPos = new Vector3(offsetX, offsetY, 1.22f + 0.01f);
                         sb.Solid.Cylinder(rivPos, 0.01f, 0.015f, 8, ZoneKit.Mt(ZoneKit.RustDark));
                     }
-                    sb.Collider(new Vector3(0f, 1.3f, 0f), new Vector3(6f, 2.6f, 2.44f));
+                    // Add a small rust‑stained latch on the container hull for visual wear
+            Color rust = new Color(0.5f, 0.3f, 0.1f);
+            // Latch positioned near middle height, slightly outward on front face
+            Vector3 latchPos = new Vector3(0f, 1.0f, 1.22f + 0.01f) + new Vector3(ZoneKit.R(rng, -0.1f, 0.1f), 0f, 0f);
+            sb.Solid.Box(latchPos, new Vector3(0.3f, 0.08f, 0.02f), ZoneKit.M(ZoneKit.V(rust, rng, 0.02f)));
+            // Bolts on the latch
+            Vector3 boltOffset = new Vector3(0.12f, 0f, 0f);
+            sb.Solid.Box(latchPos + boltOffset, new Vector3(0.02f, 0.05f, 0.02f), ZoneKit.M(ZoneKit.V(rust, rng, 0.02f)));
+            sb.Solid.Box(latchPos - boltOffset, new Vector3(0.02f, 0.05f, 0.02f), ZoneKit.M(ZoneKit.V(rust, rng, 0.02f)));
+            sb.Collider(new Vector3(0f, 1.3f, 0f), new Vector3(6f, 2.6f, 2.44f));
                     if (rng.NextDouble() < 0.6) sb.Storage("Shipping container", "spill_container", new Vector3(3.2f, 1f, 0f), ContainerType.Crate, 5);
                 }
                 sb.Finish();

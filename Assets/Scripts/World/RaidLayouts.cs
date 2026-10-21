@@ -236,8 +236,27 @@ namespace CloneZ
         {
             Surf wood = DecorPalette.Matte(new Color(0.32f, 0.22f, 0.12f));
             m.Box(new Vector3(-0.95f, 0.8f, -0.1f), Sz(0.06f, 1.6f, 0.1f), wood);
+                Vector3 chipPosLeft = new Vector3(-0.95f + (float)r.NextDouble()*0.02f - 0.01f, R(r, 0.4f, 1.2f), R(r, -0.05f, 0.05f));
+                m.Box(chipPosLeft, Sz(0.02f, 0.01f, 0.005f), wood);
             m.Box(new Vector3(0.95f, 0.8f, -0.1f), Sz(0.06f, 1.6f, 0.1f), wood);
+                Vector3 chipPosRight = new Vector3(0.95f + (float)r.NextDouble()*0.02f - 0.01f, R(r, 0.4f, 1.2f), R(r, -0.05f, 0.05f));
+                m.Box(chipPosRight, Sz(0.02f, 0.01f, 0.005f), wood);
             m.Box(new Vector3(0f, 0.25f, 0f), Sz(1.9f, 0.08f, 0.3f), wood);
+            // thin weathered grime patches on the lower shelf
+            if (Chance(r, 0.4f))
+            {
+                int patches = r.Next(1, 4);
+                for (int i = 0; i < patches; i++)
+                {
+                    float patchWidth = R(r, 0.2f, 0.5f);
+                    float patchDepth = 0.02f;
+                    float patchHeight = 0.001f;
+                    m.Box(
+                        new Vector3(R(r, -0.9f, 0.9f), 0.27f, R(r, -0.13f, 0.13f)),
+                        Sz(patchWidth, patchHeight, patchDepth),
+                        DecorPalette.Matte(new Color(0.20f, 0.18f, 0.14f)));
+                }
+            }
             // mounting bolts
             var boltMat = DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f));
             float boltRadius = 0.015f; float boltHeight = 0.02f;
@@ -248,6 +267,7 @@ namespace CloneZ
             Vector3[] nailPos = { new Vector3(-0.95f, 0.02f, -0.1f), new Vector3(-0.95f, 0.02f, 0.1f), new Vector3(0.95f, 0.02f, -0.1f), new Vector3(0.95f, 0.02f, 0.1f) };
             foreach (var p in nailPos) m.Cylinder(p, nailRadius, nailHeight, 8, boltMat);
             m.Box(new Vector3(0f, 1.3f, -0.08f), Sz(1.9f, 0.06f, 0.12f), wood);
+            m.Box(new Vector3(0f, 1.31f, -0.08f), Sz(1.9f, 0.002f, 0.3f), DecorPalette.Matte(new Color(0.90f, 0.90f, 0.95f)));
             var bracketMat = DecorPalette.Metal(new Color(0.30f, 0.30f, 0.28f));
             m.Box(new Vector3(-0.95f, 1.33f, -0.08f), Sz(0.02f, 0.10f, 0.02f), bracketMat);
             m.Box(new Vector3(-0.95f, 1.33f, 0.08f), Sz(0.02f, 0.10f, 0.02f), bracketMat);

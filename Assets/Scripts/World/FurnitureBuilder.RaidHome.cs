@@ -88,6 +88,14 @@ namespace CloneZ
             m.Box(new Vector3(-0.1f, 0.125f, 0.232f), new Vector3(0.14f, 0.02f, 0.004f), Gl(new Color(0.2f, 0.6f, 0.3f)));
             // The remote, left on the end of the stand beside the set.
             m.Box(new Vector3(0.42f, 0.506f, 0.08f), new Vector3(0.05f, 0.012f, 0.16f), Yaw(R(rng, -25f, 25f)), M(new Color(0.12f, 0.12f, 0.13f)));
+            // tiny chrome buttons on the remote surface (random slight offset for wear)
+            for (int i = 0; i < 3; i++)
+            {
+                float offX = R(rng, -0.015f, 0.015f);
+                float offZ = R(rng, -0.06f, 0.06f);
+                // place a small chrome button cylinder slightly above the remote top
+                m.Cylinder(new Vector3(0.42f + offX, 0.512f, 0.08f + offZ), 0.003f, 0.006f, 6, M(Chrome));
+            }
         }
 
         /// <summary>A 1993 console TV (0.68 × 0.56 × 0.5, front +Z) with rabbit ears, standing on a TV stand's top (0.5 up):
@@ -125,6 +133,15 @@ namespace CloneZ
             Color c = V(wood, rng, 0.06f);
             Surf body = M(c), inside = M(c * 0.45f);
             m.Box(new Vector3(0f, 0.05f, -0.02f), new Vector3(0.98f, 0.1f, 0.54f), M(c * 0.7f));
+            // subtle brass rivet strip on the top of the wardrobe carcass
+            int rivetCount = 6 + rng.Next(3); // 6–8 rivets
+            for (int i = 0; i < rivetCount; i++)
+            {
+                float x = R(rng, -0.45f, 0.45f);
+                float z = R(rng, -0.02f, 0.02f);
+                // small brass cylinder representing a rivet
+                m.Cylinder(new Vector3(x, 1.95f, z), 0.004f, 0.008f, 8, Mt(Brass));
+            }
             m.Box(new Vector3(-0.49f, 1.0f, -0.03f), new Vector3(0.02f, 1.8f, 0.54f), body);
             m.Box(new Vector3(0.49f, 1.0f, -0.03f), new Vector3(0.02f, 1.8f, 0.54f), body);
             m.Box(new Vector3(0f, 1.0f, -0.29f), new Vector3(0.96f, 1.8f, 0.02f), inside);

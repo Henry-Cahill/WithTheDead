@@ -143,6 +143,18 @@ namespace CloneZ
         /// <summary>Spawns a garrison of NPCs defending the outpost.</summary>
         public void SpawnGarrison(System.Random rng)
         {
+            // Clean up any existing garrison to avoid duplicate spawns across raids.
+            foreach (var existing in _garrison)
+            {
+                if (existing != null)
+                {
+                    // Destroy the NPC GameObject if it still exists.
+                    if (existing.gameObject != null)
+                        UnityEngine.Object.Destroy(existing.gameObject);
+                }
+            }
+            _garrison.Clear();
+
             Actor me = Actor.LocalPlayer;
             bool ours = me != null && Owner == me.Faction;
             int n = ours ? 2 : 3;

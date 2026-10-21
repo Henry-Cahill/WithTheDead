@@ -59,15 +59,22 @@ namespace CloneZ
                 if (!water && !lot) continue;
                 List<Vector2> inside = MapGeometry.ClipPolygon(p.Pts, square);
                 if (inside.Count < 3) continue;
-                Fill(site.Town.Out, inside, water ? IceY : LotY, water ? Ice : DecorMaterials.Asphalt);
-                if (water) site.Take(Rect.MinMaxRect(Min(inside, true), Min(inside, false), Max(inside, true), Max(inside, false)));
-                // Add thin snow‑bank edge around parking lots for a plowed look
-                if (lot)
-                {
-                    var edge = new List<Vector2>(inside);
-                    edge.Add(inside[0]); // close loop
-                    Ribbon(site.Town.Out, edge, SnowBankWidth, LotY + 0.001f, Ice);
-                }
+if (water) {
+                     FillIce(site.Town.Out, inside);
+                 } else {
+                     // Base asphalt surface for parking lots
+                     Fill(site.Town.Out, inside, LotY, DecorMaterials.Asphalt);
+                     // Thin gravel overlay to give a dusty, period‑correct look
+                     Fill(site.Town.Out, inside, LotY + 0.001f, DecorMaterials.Gravel);
+                 }
+                 if (water) site.Take(Rect.MinMaxRect(Min(inside, true), Min(inside, false), Max(inside, true), Max(inside, false)));
+                 // Add thin snow‑bank edge around parking lots for a plowed look
+                 if (lot)
+                 {
+                     var edge = new List<Vector2>(inside);
+                     edge.Add(inside[0]); // close loop
+                     Ribbon(site.Town.Out, edge, SnowBankWidth, LotY + 0.001f, Ice);
+                 }
         }
         }
 
@@ -83,12 +90,25 @@ namespace CloneZ
                 bool road = Rank(s.Data.kind) >= 2;
                 foreach (List<Vector2> piece in MapGeometry.ClipLine(s.Pts, square))
                 {
-                    // Main road surface
-                    Ribbon(site.Town.Out, piece, width, StreetY, surf);
+// Main road surface
+                     Ribbon(site.Town.Out, piece, width, StreetY, surf);
+                     // Add thin icy crust overlay for footways/paths (trodden snow surfaces)
+                     if (surf.Mat == TroddenSnow.Mat)
+                     {
+                         Ribbon(site.Town.Out, piece, width * 0.96f, StreetY + 0.001f, Ice);
+                     }
+                     // Add subtle brighter overlay for asphalt roads
+                     if (surf.Mat == DecorMaterials.Asphalt.Mat)
+                     {
+                         var varSurf = RandomAsphaltOverlay(piece[0]);
+                         Ribbon(site.Town.Out, piece, width * 0.96f, StreetY + 0.001f, varSurf);
+                     }
                     // Raised kerb strip along the road edge
                     if (road)
                     {
                         Ribbon(site.Town.Out, piece, KerbWidth, StreetY + KerbHeight, KerbSurf);
+                        // thin wear strip just inside the kerb – gives the road a lived‑in look
+                        Ribbon(site.Town.Out, piece, 0.04f, StreetY + 0.001f, RandomGravelOverlay(piece[0]));
                     Ribbon(site.Town.Out, piece, KerbWidth, StreetY + KerbHeight + 0.001f, Ice);
                     }
                     site.TakeLine(piece, width * 0.5f + 0.3f);
@@ -226,13 +246,52 @@ namespace CloneZ
         }
 
         /// <summary>A flat polygon at height <paramref name="y"/>, face up, into the chunk of its middle.</summary>
+        // Fill ice polygon with subtle per‑vertex height variation for a more natural look
+        private static void FillIce(OutdoorBatches into, List<Vector2> poly)
+        {
+            List<int> tris = MapGeometry.Triangulate(poly);
+            if (tris.Count == 0) return;
+            // Compute a random height offset per vertex using deterministic Perlin noise
+            int vCount = poly.Count;
+            float[] heights = new float[vCount];
+            for (int i = 0; i < vCount; i++)
+            {
+                // Scale coordinates to get gentle variation; clamp to small range
+                float noise = Mathf.PerlinNoise(poly[i].x * 0.13f, poly[i].y * 0.13f);
+                heights[i] = IceY + (noise - 0.5f) * 0.002f; // +-0.001f variation
+            }
+            RaidMesh m = into.Flat(To3(MapGeometry.Middle(poly), 0f));
+            for (int i = 0; i + 2 < tris.Count; i += 3)
+            {
+                Vector3 a = To3(poly[tris[i]], heights[tris[i]]);
+                Vector3 b = To3(poly[tris[i + 1]], heights[tris[i + 1]]);
+                Vector3 c = To3(poly[tris[i + 2]], heights[tris[i + 2]]);
+                m.Tri(a, b, c, Ice);
+            }
+        }
+
+        // Generic polygon fill used for asphalt parking lots and other surfaces
         private static void Fill(OutdoorBatches into, List<Vector2> poly, float y, in Surf surf)
         {
             List<int> tris = MapGeometry.Triangulate(poly);
             if (tris.Count == 0) return;
             RaidMesh m = into.Flat(To3(MapGeometry.Middle(poly), 0f));
+            bool asphalt = surf.Mat == DecorMaterials.Asphalt.Mat;
+            float[] heights = null;
+            if (asphalt)
+            {
+                int vCount = poly.Count;
+                heights = new float[vCount];
+                for (int i = 0; i < vCount; i++)
+                    heights[i] = y + (Mathf.PerlinNoise(poly[i].x * 0.13f, poly[i].y * 0.13f) - 0.5f) * 0.002f;
+            }
             for (int i = 0; i + 2 < tris.Count; i += 3)
-                m.Tri(To3(poly[tris[i]], y), To3(poly[tris[i + 1]], y), To3(poly[tris[i + 2]], y), surf);
+            {
+                if (asphalt)
+                    m.Tri(To3(poly[tris[i]], heights[tris[i]]), To3(poly[tris[i + 1]], heights[tris[i + 1]]), To3(poly[tris[i + 2]], heights[tris[i + 2]]), surf);
+                else
+                    m.Tri(To3(poly[tris[i]], y), To3(poly[tris[i + 1]], y), To3(poly[tris[i + 2]], y), surf);
+            }
         }
 
         private static float Min(List<Vector2> pts, bool x)
@@ -248,5 +307,24 @@ namespace CloneZ
             foreach (Vector2 p in pts) v = Mathf.Max(v, x ? p.x : p.y);
             return v;
         }
-    }
+
+        private static Surf RandomAsphaltOverlay(Vector2 seed)
+        {
+            // small deterministic jitter using Perlin noise; keeps values in a plausible range
+            float r = Mathf.PerlinNoise(seed.x * 0.13f, seed.y * 0.13f) * 0.04f;
+            // base colour is a mild grey, adjust slightly by r on each channel
+            Color baseCol = new Color(0.68f, 0.68f, 0.66f);
+            Color varied = new Color(baseCol.r + r, baseCol.g + r, baseCol.b + r);
+            return DecorPalette.Matte(varied);
+        }
+
+        private static Surf RandomGravelOverlay(Vector2 seed)
+        {
+            // small deterministic colour jitter for gravel using Perlin noise; keeps values in a plausible range
+            float r = Mathf.PerlinNoise(seed.x * 0.13f, seed.y * 0.13f) * 0.03f;
+            // base colour approximates typical gravel grey; adjust slightly by r on each channel
+            Color baseCol = new Color(0.55f, 0.55f, 0.55f);
+            Color varied = new Color(baseCol.r + r, baseCol.g + r, baseCol.b + r);
+            return DecorPalette.Matte(varied);
+        }    }
 }

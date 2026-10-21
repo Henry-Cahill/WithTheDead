@@ -123,6 +123,8 @@ namespace CloneZ
     {
         private Stealth _s;
         private Image _eye, _ear;
+        private float _lastVis = -1f;
+        private float _lastNoise = -1f;
 
         /// <summary>Creates the HUD stealth widget for the given Stealth instance.</summary>
         public static void Create(Stealth s)
@@ -151,8 +153,17 @@ namespace CloneZ
         private void Update()
         {
             if (_s == null) return;
-            Set(_eye, _s.Visibility01);
-            Set(_ear, _s.Noise01);
+            // Only update HUD if values have changed beyond a small epsilon
+            if (!Mathf.Approximately(_s.Visibility01, _lastVis))
+            {
+                Set(_eye, _s.Visibility01);
+                _lastVis = _s.Visibility01;
+            }
+            if (!Mathf.Approximately(_s.Noise01, _lastNoise))
+            {
+                Set(_ear, _s.Noise01);
+                _lastNoise = _s.Noise01;
+            }
         }
 
         private static void Set(Image fill, float v)

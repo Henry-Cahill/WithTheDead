@@ -75,6 +75,7 @@ namespace CloneZ
             into.Add(breaker);
             into.Add(new InteractAction("Check the power", CheckPower));
             into.Add(new InteractAction("Inspect breaker panel", c => c.Notify(_open ? "The panel's door is ajar." : "The panel's door is shut.")));
+            into.Add(new InteractAction("Inspect main breaker", c => c.Notify(BreakerOn ? "The main breaker is on." : "The main breaker is off.")));
         }
 
         private void SetOpen(bool open, bool instant)
