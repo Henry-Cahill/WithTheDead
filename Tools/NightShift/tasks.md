@@ -5461,3 +5461,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   No other code changes are required; map‑building code can now call `build.HasPorch(building.Id)` and, when true, add a modest porch mesh using existing `FurnitureBuilder` helpers and attach a `PropCollider` that matches the added geometry.
   Keep all existing fields, constructors, and other helpers untouched.
   - 02:21 landed by hts-llm in 1.5 min: Added a deterministic “has porch” helper to `MapBuild`:
+- [ ] Add a hinge‑speed to the mailbox door in Assets/Scripts/World/StarterHome.Grounds.cs
+  The `Mailbox` method creates the door mesh and a `FixturePart` with `FixturePart.Hinge(...)` but never calls `.WithSpeed(...)`, so the door’s hinge defaults to a speed of 0 and the mailbox door never opens when the player interacts.
+  Change the line
+  `FixturePart doorPart = FixturePart.Hinge(fixture.transform, "Door", door, at + new Vector3(0f, 1.12f, -0.252f), Vector3.left, 100f);`
+  to
+  `FixturePart doorPart = FixturePart.Hinge(fixture.transform, "Door", door, at + new Vector3(0f, 1.12f, -0.252f), Vector3.left, 100f).WithSpeed(0.3f);`
+  so the mailbox door swings open at a reasonable speed, matching other fixtures (e.g., the doormat’s 0.25f). The rest of the script stays unchanged.
