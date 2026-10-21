@@ -77,6 +77,8 @@ namespace CloneZ
                 float x = i % 2 == 0 ? -0.18f : 0.18f, z = i < 2 ? -0.13f : 0.13f;
                 m.Cylinder(new Vector3(x, 0.93f, z), 0.1f, 0.012f, 10, M(Black));
                 m.Cylinder(new Vector3(x, 0.94f, z), 0.06f, 0.01f, 8, M(new Color(0.3f, 0.3f, 0.3f)));
+                // Tiny brass control knob on each burner
+                m.Cylinder(new Vector3(x, 0.945f, z), 0.015f, 0.01f, 6, Mt(Brass), Yaw(R(rng, -10f, 10f)));
             }
             m.Box(new Vector3(0f, 1.0f, -0.3f), new Vector3(0.76f, 0.16f, 0.06f), G(c));
             for (int i = 0; i < 4; i++)
