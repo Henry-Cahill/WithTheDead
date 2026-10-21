@@ -4963,12 +4963,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Vector3 screwPos = pivot + d * (len * 0.5f) + n * 0.001f + Vector3.up * 0.001f;`
   `handle.Box(screwPos, new Vector3(0.004f, 0.004f, 0.004f), DecorPalette.Matte(new Color(0.08f, 0.08f, 0.09f)));`
   The screw sits halfway along the tilted handle, offset slightly outward and upward, matching the style of other toggle screws. No other code is changed.
-- [ ] Fix the redundant network broadcast that occurs when a player restores their own camp in Assets/Scripts/World/Camps.cs
+- [x] Fix the redundant network broadcast that occurs when a player restores their own camp in Assets/Scripts/World/Camps.cs
   In `ZoneCamps.Restore(string zoneId)` the code spawns each saved `BuildPiece` and `Barricade` and then immediately calls `Announce(p)` or `Announce(b)`.
   `Announce` sends a “cz.build” message to the server (or to other clients), which then relays it back to everyone else.
   During a client’s own restore this results in the client re‑sending its freshly‑spawned structures, causing unnecessary network traffic and a potential feedback loop where the server rebroadcasts the same data back to the originating client.
   The player should simply see their camp appear locally without any network round‑trip; the server already has the authoritative state from the saved `ZoneWorldState`.
   Change: remove the two `Announce` calls inside `Restore`.
+  - 23:36 landed by hts-llm in 1.3 min: **Changed**
 - [ ] Add a small chrome latch knob to the copier lid in Assets/Scripts/World/FurnitureBuilder.RaidStore.cs, method OfficeCopierLid
   Insert a new primitive after the first box call (the main lid slab) to represent a metal latch on the front edge of the lid.
   Use a chrome material: `Mt(Chrome)`.
