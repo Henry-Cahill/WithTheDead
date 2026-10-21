@@ -316,6 +316,8 @@ namespace CloneZ
             // The mixer: a chrome pillar on the back deck, its spout reaching out over the bowl.
             var tap = new Vector3(0f, 0.86f, -0.165f);
             m.Cylinder(tap, 0.026f, 0.008f, 14, chrome);
+            // Chrome escutcheon disc for period‑correct detail
+            m.Cylinder(tap + new Vector3(0f, -0.004f, 0f), 0.03f, 0.002f, 12, chrome);
             m.Cylinder(tap, 0.019f, 0.10f, 14, chrome);
             m.Rod(new Vector3(0f, 0.935f, -0.158f), new Vector3(0f, 0.935f, -0.05f), 0.02f, chrome, 10);
             m.Cylinder(BasinSpout, 0.012f, 0.022f, 10, chrome);
