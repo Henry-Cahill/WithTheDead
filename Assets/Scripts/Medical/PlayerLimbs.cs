@@ -190,13 +190,15 @@ namespace CloneZ
             }
 
             DamageZone(zone, hp, CauseFor(info.Kind, zone));
+            // If the hit killed the survivor, stop further processing – no wounds, no gear damage, no extra HUD flash.
             if (_stats.IsDead) return;
             OpenWounds(info, zone, hp, penetrated);
             if (info.Kind == DamageKind.Bullet || info.Kind == DamageKind.Explosion || info.Kind == DamageKind.Melee) GearCollateral(zone, hp, info.Kind);
             if (_blood != null && (info.Kind == DamageKind.Bullet || info.Kind == DamageKind.Explosion || info.Kind == DamageKind.Shock))
                 _blood.AddShock(hp * (penetrated ? 0.45f : 0.25f));
             _stats.Pain = Mathf.Min(CloneZConfig.PainMax, _stats.Pain + hp * (penetrated ? 0.35f : 0.5f));
-            Hit?.Invoke(zone, hp);
+            // Only fire the hit‑event if the survivor is still alive.
+            if (!_stats.IsDead) Hit?.Invoke(zone, hp);
         }
 
         /// <summary>Radiation dose arriving as damage (the radiation system turns it into a dose).</summary>
@@ -629,7 +631,7 @@ namespace CloneZ
 
         private void OnHit(BodyZone zone, float hp) { _flash = 0.35f; }
 
-        private void OnDestroy() { if (_limbs != null) { _limbs.Hit -= OnHit; _limbs.Changed -= RefreshBleedingCache; } }
+        private void OnDestroy() { if (_limbs != null) { _limbs.Hit -= OnHit; _limbs.Changed -= RefreshBleedingCache; _limbs.Changed -= RefreshCache; } }
 
         private void Update()
         {
