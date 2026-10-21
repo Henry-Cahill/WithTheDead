@@ -5811,11 +5811,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   – When the survivor selects this action, they receive a text cue indicating whether the breaker is currently on or off, complementing the door‑inspection action.
   – All other code, fields, and behavior remain unchanged.
   - 03:55 landed by 1htsserver in 2.6 min: **Changed**
-- [ ] Append 5 new copy‑description strings to the `Copies` array in Assets/Scripts/World/Fixtures/RaidStoreCopier.cs; the new entries should be whole sentences in quotes that the survivor reads when a copy finishes, matching the style of the existing entry `"A warm copy slides into the tray: the sheet on the glass, a shade greyer and a touch crooked."` and covering the themes of winter‑stained paper, faint toner, a hint of frost on the edges, and the weary, makes‑hift feel of county office documents.
+- [x] Append 5 new copy‑description strings to the `Copies` array in Assets/Scripts/World/Fixtures/RaidStoreCopier.cs; the new entries should be whole sentences in quotes that the survivor reads when a copy finishes, matching the style of the existing entry `"A warm copy slides into the tray: the sheet on the glass, a shade greyer and a touch crooked."` and covering the themes of winter‑stained paper, faint toner, a hint of frost on the edges, and the weary, makes‑hift feel of county office documents.
   Add the following lines after the current last entry (`"A faded copy appears, the watermark “County” barely visible, the toner leaving a ghostly shadow of the original.",`):
   `"A dull‑gray copy emerges, its corners frayed like old rope, the ink smeared by the cold draft seeping in."`
   `"A thin sheet pops out, its surface dusted with a pale frost line, as if the copier breathed winter air."`
   `"A pale, almost translucent copy slides free, the toner barely clinging, and a faint smell of stale coffee lingers."`
   `"A crisp copy lands, the paper speckled with tiny ice crystals that melt into the fibers as it cools."`
   `"A weary copy drops, the letters slightly blurred, the margin edged with a subtle white streak hinting at the office’s chill."`
+  - 03:56 landed by 0htsserver in 1.4 min: **Changed file**
 - [ ] In `Assets/Scripts/World/Map/KentuckyMap.Buildings.cs` modify the `Windows` method to add a pair of simple wooden shutters to each residential window (kinds “house”, “trailer”, “apartments”, “hotel”).
