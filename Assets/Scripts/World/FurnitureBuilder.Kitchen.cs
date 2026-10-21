@@ -311,6 +311,27 @@ namespace CloneZ
             m.Box(new Vector3(0f, 0.8075f, 0.262f), new Vector3(0.016f, 0.124f, 0.02f), cab);
             KitchenWorktop(m, t, len);
 
+            // Add a small wooden chalkboard sign on the worktop with a faint chalk scribble.
+            // The board uses the sign material with a dark wood background and light chalk text.
+            {
+                const float boardHeight = 0.04f; // thin board
+                const string boardText = "Today's specials";
+                // Dark wood colour for the board background
+                Color boardBg = new Color(0.22f, 0.18f, 0.15f);
+                // Chalk colour for the text (off‑white, slightly faded)
+                Color boardFg = new Color(0.9f, 0.9f, 0.85f);
+                Surf boardSurf = DecorMaterials.Sign(boardText, boardBg, boardFg, out float aspect);
+                // Width based on aspect ratio of the sign texture
+                float boardWidth = boardHeight * aspect;
+                // Position the board near the front of the counter, on the worktop surface.
+                // CounterFront constant defines the front face Z position.
+                var boardPos = new Vector3(-0.4f, 0.94f, CounterFront - 0.02f);
+                // Create the thin board box (back side) – colour matches the background.
+                m.Box(boardPos, new Vector3(boardWidth, boardHeight, 0.01f), M(boardBg));
+                // Upright the sign texture on the front face.
+                m.Upright(boardPos + new Vector3(0f, boardHeight * 0.5f, 0.005f), Vector3.forward, boardWidth, boardHeight, boardSurf, new Rect(0f, 0f, 1f, 1f));
+            }
+
             // A crock of wooden spoons at the far end, beyond the radio.
             Surf wood = M(new Color(0.55f, 0.38f, 0.20f));
             m.Cylinder(new Vector3(-0.53f, 0.94f, -0.2f), 0.05f, 0.13f, 10, G(V(new Color(0.82f, 0.80f, 0.70f), rng)));
