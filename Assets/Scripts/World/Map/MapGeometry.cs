@@ -97,7 +97,37 @@ namespace CloneZ
                 }
             }
             if (cur != null && cur.Count > 1) pieces.Add(cur);
-            return pieces;
+            // Post‑process: merge consecutive pieces whose endpoints touch within EPS
+            var merged = new List<List<Vector2>>();
+            foreach (var piece in pieces)
+            {
+                if (piece == null || piece.Count < 2) continue; // skip degenerate
+                if (merged.Count == 0)
+                {
+                    merged.Add(new List<Vector2>(piece));
+                }
+                else
+                {
+                    var lastPiece = merged[merged.Count - 1];
+                    var lastPoint = lastPiece[lastPiece.Count - 1];
+                    var firstPoint = piece[0];
+                    if (Vector2.Distance(lastPoint, firstPoint) <= EPS)
+                    {
+                        // Append, skipping the duplicate start point
+                        for (int i = 1; i < piece.Count; i++)
+                            lastPiece.Add(piece[i]);
+                    }
+                    else
+                    {
+                        merged.Add(new List<Vector2>(piece));
+                    }
+                }
+            }
+            // Ensure each merged piece still has at least two points
+            var result = new List<List<Vector2>>();
+            foreach (var m in merged)
+                if (m.Count >= 2) result.Add(m);
+            return result;
         }
 
         private static bool ClipSegment(Vector2 a, Vector2 b, Rect r, out float t0, out float t1)

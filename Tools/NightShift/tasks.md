@@ -4580,10 +4580,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   `("Zombie mutation", "Early 1993 reports mention a strange strain that leaves the dead slower but harder to kill. Their gait is lumbering, and they seem less affected by light. Keep your flare ready; a burst can blind them momentarily.")`
   `("Snow‑bound roads", "Heavy snow blocks the main highway near the old mill. Vehicles get stuck, and foot travel is the only safe path. Mark your steps to avoid walking circles.")`
   `("Radio tower repair", "The old TV tower still broadcasts on a cracked frequency. Repairing it gives a reliable channel for supply drops, but the Wardens monitor any signal spikes.")`.
-- [ ] In Assets/Scripts/World/Map/MapGeometry.cs modify the `ClipLine` method to merge successive line pieces that are contiguous (their end‑point matches the next piece’s start‑point within `EPS`) into a single list, so clipped road centrelines stay continuous across map‑cell borders and appear without tiny gaps.
+- [x] In Assets/Scripts/World/Map/MapGeometry.cs modify the `ClipLine` method to merge successive line pieces that are contiguous (their end‑point matches the next piece’s start‑point within `EPS`) into a single list, so clipped road centrelines stay continuous across map‑cell borders and appear without tiny gaps.
   After the existing loop, add a post‑process that iterates `pieces` and combines `pieces[i]` with `pieces[i+1]` whenever `Vector2.Distance(pieces[i].Last(), pieces[i+1][0]) <= EPS`.
   Replace the final `return pieces;` with code that returns the merged list.
   Keep the original clipping logic unchanged; only the merging step is new.
   Ensure the merged list still contains at least two points per piece (skip degenerate pieces).
   This change makes road meshes generated from clipped centrelines seamless at cell edges, improving the hand‑built look of CLONE‑Z’s raid town.
+  - 21:36 landed by hts-llm in 2.2 min: **Changed file**: `Assets/Scripts/World/Map/MapGeometry.cs`
 - [ ] Add a subtle wooden bead trim along the top and bottom rails of each sash in `Assets/Scripts/World/StarterHome.Windows.cs` → `WindowSash` method, after the rail boxes, to give the window a period‑correct decorative edge.
