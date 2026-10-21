@@ -5082,3 +5082,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Leave the existing asphalt‑overlay and kerb code untouched; this addition only affects non‑asphalt road kinds.
   Result: footways and similar paths appear with a subtle icy top layer, matching the 1993 Kentucky winter setting while keeping colliders aligned with the geometry.
   - 00:14 landed by 1htsserver in 1.6 min: **Changed file**
+- [ ] Fix the `Delivered` property in Assets/Scripts/World/Fixtures/MailboxFixture.cs so that it returns 0 when `TimeOfDay.Instance` is not yet available, preventing a delivery from appearing before the first day starts.
+  · In the `private static int Delivered` getter, change the line `if (tod == null) return 1;` to `if (tod == null) return 0;`.
+  · This stops the mailbox from showing a delivery at game launch (when the time system hasn’t been created yet). The rest of the logic – clamping the day count and using `CloneZConfig.MailDeliveryHour` – remains unchanged.
+  · Players will now see no mail until the first delivery hour of day 1, matching the intended “first deliveries arrive in the morning” design.
+  · No other fields, methods, or behaviours need to be altered.
