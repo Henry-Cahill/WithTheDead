@@ -301,10 +301,9 @@ namespace CloneZ
         {
             Mesh mesh = mf.sharedMesh;
             if (!mesh.isReadable) return;
-            Vector3[] v = mesh.vertices;
-            int[] t = mesh.triangles;
             Transform tr = mf.transform;
-            for (int i = 0; i < v.Length; i++) v[i] = tr.TransformPoint(v[i]);
+            Vector3[] v = TransformVertices(tr, mesh.vertices);
+            int[] t = mesh.triangles;
             for (int i = 0; i + 2 < t.Length; i += 3)
             {
                 Vector3 a = v[t[i]], b = v[t[i + 1]], c = v[t[i + 2]];
@@ -321,6 +320,14 @@ namespace CloneZ
         }
 
         private const float PaveBottom = 0.008f, PaveTop = 0.3f, PaveMinSpan = 1f;
+
+        // Returns a new array with each vertex transformed to world space; the original mesh stays untouched.
+        private static Vector3[] TransformVertices(Transform tr, Vector3[] src)
+        {
+            var dst = new Vector3[src.Length];
+            for (int i = 0; i < src.Length; i++) dst[i] = tr.TransformPoint(src[i]);
+            return dst;
+        }
         #endregion
     }
 }
