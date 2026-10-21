@@ -372,7 +372,7 @@ namespace CloneZ
             fromPlayer.y = 0f;
             float sqr = fromPlayer.sqrMagnitude;
             if (sqr > FlashlightBeamRange * FlashlightBeamRange) return false;
-            if (sqr < 0.01f) return true;
+            if (sqr < 0.01f) return false;
             Vector3 aim = _playerController.AimDirection;
             aim.y = 0f;
             float aimSqr = aim.sqrMagnitude;

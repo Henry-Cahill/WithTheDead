@@ -283,32 +283,34 @@ public static RadiationSpot Spawn(Transform parent, Vector3 at, float radius, fl
         }
 
     private bool _prevShow;
-    private string _prevDose = "";
+    private string _prevDose = ""; // retained for compatibility, not used
     private string _prevTrend = "";
     private bool _prevShielded;
+    private float _prevDoseValue;
 
-    private void LateUpdate()
-    {
-        PlayerRadiation r = PlayerRadiation.Local;
-        bool show = r != null && (r.Dose > 0.01f || r.Intake > 0.00002f);
-        if (show != _prevShow)
+        private void LateUpdate()
         {
-            for (int i = 0; i < transform.childCount; i++)
-                transform.GetChild(i).gameObject.SetActive(show);
-            _prevShow = show;
+            PlayerRadiation r = PlayerRadiation.Local;
+            bool show = r != null && (r.Dose > 0.01f || r.Intake > 0.00002f);
+            if (show != _prevShow)
+            {
+                for (int i = 0; i < transform.childCount; i++)
+                    transform.GetChild(i).gameObject.SetActive(show);
+                _prevShow = show;
+            }
+            if (!show) return;
+            float curDose = r.Dose;
+            bool shielded = r.Shielded;
+            string trend = r.Intake > 0.0002f ? "  \u25B2\u25B2" : r.Intake > 0.00002f ? "  \u25B2" : "";
+            if (!Mathf.Approximately(curDose, _prevDoseValue) || trend != _prevTrend || shielded != _prevShielded)
+            {
+                string doseStr = (curDose * 6f).ToString("0.00");
+                _text.text = "\u2622 " + doseStr + " Sv" + trend + (shielded ? "  (iodine)" : "");
+                UIKit.SetBar(_fill, curDose);
+                _prevDoseValue = curDose;
+                _prevTrend = trend;
+                _prevShielded = shielded;
+            }
         }
-        if (!show) return;
-        string trend = r.Intake > 0.0002f ? "  \u25B2\u25B2" : r.Intake > 0.00002f ? "  \u25B2" : "";
-        string doseStr = (r.Dose * 6f).ToString("0.00");
-        bool shielded = r.Shielded;
-        if (doseStr != _prevDose || trend != _prevTrend || shielded != _prevShielded)
-        {
-            _text.text = "\u2622 " + doseStr + " Sv" + trend + (shielded ? "  (iodine)" : "");
-            UIKit.SetBar(_fill, r.Dose);
-            _prevDose = doseStr;
-            _prevTrend = trend;
-            _prevShielded = shielded;
-        }
-    }
     }
 }

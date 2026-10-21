@@ -68,8 +68,20 @@ namespace CloneZ
                 Blurb = "A splintered wooden sign points to a hidden cache, its directions half‑eaten by rot and time." } },
             { "hunternote", new Def { Id = "hunternote", Name = "Hunter's Note", Color = new Color(0.65f, 0.55f, 0.45f),
                 Blurb = "A hurried note from a hunter describes a recent zombie herd stampeding across the ridge." } },
-            { "caverelative", new Def { Id = "caverelative", Name = "Cave Sketch", Color = new Color(0.45f, 0.55f, 0.65f),
-                Blurb = "A charcoal sketch marks a cave entrance rumored to hold ancient relics, its mouth yawning in the hillside." } }
+{ "caverelative", new Def { Id = "caverelative", Name = "Cave Sketch", Color = new Color(0.45f, 0.55f, 0.65f),
+    Blurb = "A charcoal sketch marks a cave entrance rumored to hold ancient relics, its mouth yawning in the hillside." } },
+
+{ "coalminerwarning", new Def { Id = "coalminerwarning", Name = "Miner's Warning", Color = new Color(0.55f, 0.45f, 0.30f),
+    Blurb = "A warning scrawled by a coal miner: ‘Avoid the unsafe shafts; the tunnels collapse without warning.’" } },
+
+{ "schoolnotebook", new Def { Id = "schoolnotebook", Name = "Dented School Notebook", Color = new Color(0.80f, 0.70f, 0.50f),
+    Blurb = "A dented notebook from a school‑yard, its pages describing a lost supply drop hidden under the old oak." } },
+
+{ "firewoodsign", new Def { Id = "firewoodsign", Name = "Cracked Cache Sign", Color = new Color(0.50f, 0.40f, 0.30f),
+    Blurb = "A cracked wooden sign points toward a forgotten fire‑wood cache, the arrows faded by snow and time." } },
+
+{ "evacradio", new Def { Id = "evacradio", Name = "Evacuation Radio", Color = new Color(0.60f, 0.60f, 0.70f),
+    Blurb = "Static‑filled transmission: ‘All units evacuate immediately! Head to the north ridge, safe zone established.’" } }
         };
 
         // Base relations: -1 hostile, 0 neutral, +1 allied. Symmetric; anything unlisted is neutral.

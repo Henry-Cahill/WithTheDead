@@ -122,6 +122,13 @@ public float SicknessMoveMultiplier =>
 
         private StatMods _cachedMods;
         private SandboxSettings _cachedSandbox;
+        private TimeOfDay _cachedTOD;
+
+        private void Awake()
+        {
+            _cachedMods = PlayerModifiers.Current;
+            _cachedSandbox = SandboxSettings.Current;
+        }
 
         private void Update()
         {
@@ -129,6 +136,7 @@ public float SicknessMoveMultiplier =>
             // Cache static lookups for this frame
             _cachedMods = PlayerModifiers.Current;
             _cachedSandbox = SandboxSettings.Current;
+            _cachedTOD = TimeOfDay.Instance;
             float dt = Time.deltaTime;
 
             UpdateEndurance(dt);
@@ -171,7 +179,7 @@ public float SicknessMoveMultiplier =>
             float rate = CloneZConfig.FatigueRatePerSec;
             if (Exertion == Exertion.Sprinting) rate += CloneZConfig.FatigueExertionBonus;
             else if (Exertion == Exertion.Running) rate += CloneZConfig.FatigueExertionBonus * 0.5f;
-            if (TimeOfDay.Instance != null && TimeOfDay.Instance.IsNight) rate *= CloneZConfig.FatigueNightMultiplier;
+            if (_cachedTOD != null && _cachedTOD.IsNight) rate *= CloneZConfig.FatigueNightMultiplier;
             if (Skills != null) rate *= Skills.FatigueRateMult;   // Fitness tires you more slowly (PZ)
             rate *= _cachedMods.FatigueRate * _cachedSandbox.FatigueRate * _cachedSandbox.DrainScale("fatigue");
             Fatigue = Mathf.Clamp01(Fatigue + rate * dt);

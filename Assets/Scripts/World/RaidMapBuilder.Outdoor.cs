@@ -111,6 +111,12 @@ namespace CloneZ
                 RaidMesh m = town.Out.Solid(p);
                 m.SetFrame(p, yaw);
                 Vector3 lamp = DecorProps.StreetLight(m, rng, on, lean);
+                // Add a subtle rust‑stained metal bracket near the top of the pole
+                // Positioned slightly forward on the pole for visual detail
+                Vector3 bracketPos = new Vector3(0f, 5.0f, 0.08f);
+                Vector3 bracketSize = new Vector3(0.12f, 0.02f, 0.02f);
+                Color rustColor = new Color(0.45f, 0.38f, 0.33f);
+                m.Box(bracketPos, bracketSize, DecorPalette.Metal(rustColor));
                 Vector3 world = m.ToMeshSpace(lamp);
                 m.ResetFrame();
                 town.PropCollider(p + Vector3.up * 2.75f, new Vector3(0.3f, 5.5f, 0.3f), yaw);

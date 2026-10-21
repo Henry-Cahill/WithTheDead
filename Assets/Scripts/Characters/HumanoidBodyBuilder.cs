@@ -108,7 +108,7 @@ namespace CloneZ
             for (int i = 0; i < _v.Count; i++)
             {
                 BoneWeight w = _w[i];
-                if (w.boneIndex0 == head && w.weight0 > 0.999f) _v[i] = pivot + (_v[i] - pivot) * HeadScale;
+                if ((w.boneIndex0 == head && w.weight0 > 0f) || (w.boneIndex1 == head && w.weight1 > 0f)) _v[i] = pivot + (_v[i] - pivot) * HeadScale;
             }
         }
 

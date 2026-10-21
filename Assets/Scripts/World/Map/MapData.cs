@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace CloneZ
 {
@@ -77,6 +78,33 @@ namespace CloneZ
         public int lanes, layer;
         public bool oneway, bridge, tunnel;
         public int[] pts;
+        /// <summary>
+        /// Approximate sidewalk width (metres) for this street.
+        /// Uses the highway kind to choose a period‑appropriate value.
+        /// </summary>
+        public float SidewalkWidth()
+        {
+            // Common OSM highway classifications.
+            // Wider sidewalks for major roads, narrower for residential streets.
+            switch (kind)
+            {
+                case "motorway":
+                case "trunk":
+                case "primary":
+                case "secondary":
+                    return 2.5f; // broad sidewalks for main thoroughfares
+                case "tertiary":
+                case "residential":
+                case "living_street":
+                    return 1.5f; // typical residential sidewalk
+                case "service":
+                case "unclassified":
+                    return 1.0f; // minimal sidewalk
+                default:
+                    // Fallback based on carriageway width if kind is unknown
+                    return Mathf.Max(1.0f, width * 0.3f);
+            }
+        }
     }
 
     /// <summary>A river, stream, canal, ditch or railway, clipped to its region.</summary>
@@ -104,6 +132,14 @@ namespace CloneZ
         /// <summary>Height in metres when mapped, else 0.</summary>
         public float height;
         public int[] pts;
+        public Color GetTint()
+        {
+            // deterministic hash from id → hue offset in [0,0.1]
+            float hue = ((id * 0x9E3779B9) & 0xFFFF) / 65535f * 0.1f;
+            float sat = 0.6f + ((id >> 16) & 0xFF) / 255f * 0.2f;
+            float val = 0.7f + ((id >> 24) & 0xFF) / 255f * 0.2f;
+            return Color.HSVToRGB(hue, sat, val);
+        }
     }
 
     /// <summary>A land-use area (water, parking, forest, farmland, residential, park...), clipped to its region.</summary>

@@ -149,7 +149,14 @@ namespace CloneZ
                 RaidMesh m = pass == 0 ? open : drawn;
                 m.Box(l.P((r0 + r1) * 0.5f, rodY, rodOff), l.Size(r1 - r0, 0.024f, 0.024f), brass);
                 m.Ellipsoid(l.P(r0, rodY, rodOff), new Vector3(0.045f, 0.045f, 0.045f), brass, 6, 4);
+                // Add short brass hook extending outward from left finial
+                float hookDepth = side * (face + 0.075f + 0.025f);
+                float hookLen = 0.04f;
+                float hookRad = 0.006f;
+                m.CylinderX(l.P(r0, rodY, hookDepth), hookRad, hookLen, 10, brass, 0f);
                 m.Ellipsoid(l.P(r1, rodY, rodOff), new Vector3(0.045f, 0.045f, 0.045f), brass, 6, 4);
+                // Add short brass hook extending outward from right finial
+                m.CylinderX(l.P(r1, rodY, hookDepth), hookRad, hookLen, 10, brass, 0f);
             }
 
             float top = rodY - 0.015f, bottom = sill + 0.06f, h = top - bottom;

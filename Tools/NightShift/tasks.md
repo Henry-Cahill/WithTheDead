@@ -3877,3 +3877,575 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 16:21 landed by hts-llm in 1.9 min: **Changes Made**
 - [x] Add a generic “Shake” instant action helper to Assets/Scripts/World/Interaction/Interactable.cs that lets any fixture emit a short noise and give the player a toast, e.g. to lure zombies or alert the survivor.
   - 16:23 landed by 1htsserver in 1.8 min: **Changed Files**
+- [x] Work on everything
+  - 20:08 landed by 0htsserver in 9.5 min: Implemented the missing metal knob for upper kitchen cabinets:
+- [x] Add an Awake method to Assets/Scripts/Player/PlayerStats.cs that initializes the per‑frame cached fields `_cachedMods` and `_cachedSandbox` before any other method might use them.
+  Insert the method in the class body (anywhere before Update).
+  `private void Awake()`
+  `{`
+  `_cachedMods = PlayerModifiers.Current;`
+  `_cachedSandbox = SandboxSettings.Current;`
+  `}`
+  This guarantees `ReceiveZombieAttack` (which reads `_cachedSandbox.Infection` and `_cachedMods.InfectionResist`) won’t throw a NullReferenceException if a zombie attacks the player before the first Update call.
+  The rest of the script stays unchanged; the player's stats and death handling behave as before, but the game no longer crashes when early zombie damage occurs.
+  - 17:21 landed by 0htsserver in 1.3 min: Added an `Awake` method to **Assets/Scripts/Player/PlayerStats.cs** that initializes the cached fields `_cachedMods` and `_cachedSandbox` be
+- [x] Add a thin wooden window sill under each window in the `Windows` method of Assets/Scripts/World/Map/KentuckyMap.Buildings.cs
+  Locate the line `m.Upright(c, normal, 1.0f, 1.15f, Glass);` and insert the following code directly after it:
+  `float sillHeight = 0.08f;`
+  `float sillDepth = 0.02f + 0.02f * (float)rng.NextDouble(); // slight random variation`
+  `var sillCenter = To3(at, y - sillHeight * 0.5f);`
+  `var sillSize = new Vector3(1.0f, sillHeight, sillDepth);`
+  `site.Town.Out.Solid(sillCenter).Box(sillCenter, sillSize, outside);`
+  This adds a ~8 cm high wooden sill (width 1 m, depth 2‑4 cm) beneath each glass pane, using the same exterior surface material as the wall, with a tiny deterministic size variation from `rng`. No colliders or interaction points are changed, and the total added primitives stay well under the 12‑primitive limit.
+  - 17:27 landed by 0htsserver in 5.9 min: **Changed files**
+- [x] Cache the per‑frame sinusoid used for each ToxicZone’s glow intensity in Assets/Scripts/World/ToxicZone.cs
+  Add two static fields `static int s_GlowCacheFrame = -1;` and `static float s_GlowFactor;` near the other static members.
+  Create a private static helper `static float GetGlowFactor(float phase)` that checks `if (s_GlowCacheFrame != Time.frameCount)` and, when dirty, computes `s_GlowFactor = 0.8f + 0.2f * Mathf.Sin(Time.time * 0.7f + phase);` stores `s_GlowCacheFrame = Time.frameCount;` otherwise returns the cached `s_GlowFactor`.
+  In `Update()` replace the line
+  `if (_glow != null) _glow.intensity = GlowIntensity * (0.8f + 0.2f * Mathf.Sin(Time.time * 0.7f + _phase));`
+  with
+  `if (_glow != null) _glow.intensity = GlowIntensity * GetGlowFactor(_phase);`
+  This removes a separate `Mathf.Sin` call for every ToxicZone each frame, reducing per‑frame CPU work while keeping the visual flicker unchanged.
+  - 17:26 landed by hts-llm in 2 min: **Changed file**
+- [x] Add a “Close washing machine” action to Assets/Scripts/World/Fixtures/RaidHomeWasher.cs that lets the player shut the door after opening it.
+  In `GetActions`, after the existing “Open washing machine” line, add:
+  `into.Add(new InteractAction("Close washing machine", CloseDoor).DisabledIf(_drum == null || !_drum.IsOpen, "It's already closed"));`
+  Create a private method `CloseDoor(InteractContext ctx)` mirroring `OpenDoor`:
+  - 17:27 landed by 1htsserver in 2.7 min: **Changed file**
+- [x] Modify Assets/Scripts/World/Map/KentuckyMap.cs to give each building a deterministic colour tint so façades vary like the hand‑built raid town.
+  - 17:34 landed by 1htsserver in 7.2 min: **Changes made**
+- [x] Add a thin, random‑thickness snow‑dust layer on the top of the copier cabinet in OfficeCopierBody (Assets/Scripts/World/FurnitureBuilder.RaidStore.cs)
+  After the existing top box `m.Box(new Vector3(0f, 1.0405f, -0.02f), new Vector3(0.62f, 0.002f, 0.42f), …)` add a new box:
+  `float snowThick = R(rng, 0.002f, 0.006f);`
+  `m.Box(new Vector3(0f, 1.045f + snowThick/2f, 0f), new Vector3(0.86f, snowThick, 0.58f), DecorProps.SnowWhite);`
+  This adds a subtle white “snow‑settled” veneer that varies per copier (thickness 2–6 mm), using the existing random source and the already‑available snow material, without affecting colliders or interaction points.
+  - 17:32 landed by hts-llm in 3.6 min: **Changed file**
+- [x] In Assets/Scripts/Core/CombatResolver.cs: Fix CombatResolver.Cast so dead damageable actors no longer block bullets, but world geometry still does
+  In `CombatResolver.Cast` the line `if (target == null || target.IsDead) break; // the world stops the round` treats both missing‑damageable colliders (world) and dead damageable actors as a hard stop for the ray.
+  This makes corpses (dead zombies or players) incorrectly block subsequent shots, preventing players from shooting through them to hit targets behind.
+  Change the logic to break only on true world hits and simply skip dead actors: replace the line with
+  - 17:32 landed by 0htsserver in 3.8 min: **Changed file**: `Assets/Scripts/Core/CombatResolver.cs`
+- [x] Add a tiny brass name‑plate on the right‑hand side of the dresser top in `FurnitureBuilder.DresserBody` (Assets/Scripts/World/FurnitureBuilder.Living.cs)
+  Insert after the `for (int i = 0; i < items; i++) { … }` loop:
+  `if (rng.NextDouble() < 0.5) m.Box(new Vector3(0.45f, 0.825f, 0.18f), new Vector3(0.06f, 0.015f, 0.015f), Mt(Brass));`
+  This creates a small rectangular brass plate (≈6 cm × 1.5 cm × 1.5 cm) positioned near the right edge of the dresser top (x ≈ 0.45 m, y = 0.825 m, z ≈ 0.18 m).
+  The plate uses the existing `Mt(Brass)` material, keeps all colliders and interaction points unchanged, and adds a period‑correct decorative detail that could hold a tiny photograph or label.
+  - 17:33 landed by hts-llm in 1.4 min: **Changes Made**
+- [x] In Assets/Scripts/Core/TimeOfDay.cs: Cache the formatted clock and date strings in `TimeOfDay` so they are not rebuilt on every UI read each frame.
+  · Add private fields `int _lastHourInt = -1; string _clockText; string _clock12Text; string _amPm; string _dateText;` to the class.
+  · In `Apply()` (after the sky‑colour logic) insert a block that recomputes the caches only when the hour’s integer part changes:
+  - 17:39 landed by 0htsserver in 6.4 min: **Changed file**
+- [x] Append five new `Book` entries to the `Books` array in Assets/Scripts/World/Fixtures/LivingReading.cs.
+  The change is a simple extension of the existing initializer for `private static readonly Book[] Books`; keep every line that is already present unchanged and add the new lines after the last `new Book(...);` entry.
+  When the survivor chooses “Read a book”, the new titles will appear in the rotation, showing the title, author and a single‑sentence “thought” that is displayed in the notification (e.g. `You read a few chapters of “...” by … . …`).
+  Existing code, struct layout, and the surrounding comments must remain exactly as they are.
+  - 17:39 landed by 1htsserver in 4.1 min: **Changed file**
+- [x] Modify `MapGeometry.Inside` in Assets/Scripts/World/Map/MapGeometry.cs to treat points on the clipping rectangle edges as inside, preventing lost vertices for buildings that sit on the map border.
+  Add a small epsilon tolerance (`private const float EPS = 1e-5f;`) to the class.
+  Change the four `case` returns to:
+  `case 0: return p.x >= r.xMin - EPS;`
+  `case 1: return p.x <= r.xMax + EPS;`
+  `case 2: return p.y >= r.yMin - EPS;`
+  `default: return p.y <= r.yMax + EPS;`
+  The rest of the code stays unchanged.
+  Result: buildings whose footprints touch the map’s clipping rectangle now retain all border vertices, so their walls, roofs and props render correctly without gaps.
+  - 17:39 landed by hts-llm in 1.5 min: **Changed file**
+- [x] In Assets/Scripts/Characters/HumanoidBodyBuilder.cs: Fix HumanoidBodyBuilder.ScaleHead so that all vertices influenced by the head bone are scaled, not only those with weight ≈ 1
+  The method currently checks `if (w.boneIndex0 == head && w.weight0 > 0.999f)` which skips vertices that are blended with the head bone (e.g., neck‑head blend), leaving the head partially un‑scaled and causing a visible “pinched” neck when `HeadScale` is applied.
+  Change the condition to test both possible bone slots and any positive weight, and apply the same scaling to those vertices.
+  Original line:
+  `if (w.boneIndex0 == head && w.weight0 > 0.999f) _v[i] = pivot + (_v[i] - pivot) * HeadScale;`
+  Replace with:
+  `if ((w.boneIndex0 == head && w.weight0 > 0f) || (w.boneIndex1 == head && w.weight1 > 0f)) _v[i] = pivot + (_v[i] - pivot) * HeadScale;`
+  After this change the whole head (including blended vertices) enlarges uniformly, eliminating the neck‑pinch visual bug while keeping the existing scaling factor and pivot logic unchanged.
+  - 17:44 landed by hts-llm in 3.8 min: **Changed file**
+- [!] Add a silent door‑operation action to Assets/Scripts/World/Fixtures/BreakerPanel.cs in the `BreakerPanel.GetActions` method.
+  Copy the existing door‑toggle action (`new InteractAction(_open ? "Close the breaker panel" : "Open the breaker panel", …)`) and change its label to “Close the breaker panel (quietly)” when `_open` is true and to “Open the breaker panel (quietly)” when `_open` is false.
+  Make its callback `c => SetOpen(!_open, true)` so the door changes state instantly, bypassing the noise triggered by `SetOpen` when `instant` is false.
+  Leave the original door‑toggle action unchanged; the new action appears alongside it, giving the survivor a way to operate the panel without hearing the door slam.
+  Do not modify any other file, method, field, or constant; keep all existing logic, save‑key handling, and the “Inspect breaker panel” action intact.
+  - 18:18 failed (1htsserver, 31.3 min); see reports/2026-10-20-1718.md
+- [x] Append five new transmission lines to the `Lines` array of the “Company net” (`Channel 1`) in Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs so the radio conveys period‑appropriate guard dialogue about winter hardships, supply shortages, and morale while preserving the existing terse radio‑call style (e.g. `"Juniper Base, this is Lantern at the tent site. Radio check, over."`).
+  - 17:54 landed by 0htsserver in 4.3 min: **Changed file**
+- [x] In Assets/Scripts/World/Map/KentuckyMap.Ground.cs, edit the `BuildStreets` method: change the condition that draws the centre‑line dashes so that more road types get a line, making the map look like the hand‑built raid town.
+  - 17:54 landed by hts-llm in 1.6 min: **Changed file**
+- [x] In Assets/Scripts/Hub/HubWorld.cs, modify the `BuildBar` method’s `Deco` call for "BarTop" to add a row of small metal rivets along the bar’s edge, giving the wooden counter a worn‑industrial look.
+  Replace the line
+  `Deco(world, "BarTop", m => m.Box(new Vector3(-2f, 1.12f, 6.2f), new Vector3(10.2f, 0.05f, 0.9f), st.Wood), Vector3.zero);`
+  with a lambda that first draws the existing box and then iterates to place ≈ 8 cylindrical rivets:
+  `Deco(world, "BarTop", m => {`
+  ` m.Box(new Vector3(-2f, 1.12f, 6.2f), new Vector3(10.2f, 0.05f, 0.9f), st.Wood);`
+  ` for (int i = 0; i < 8; i++)`
+  ` {`
+  ` float x = -6.5f + i * 1.5f;`
+  - 17:56 landed by 0htsserver in 1.7 min: **Summary**
+- [x] Fix the flashlight‑beam detection bug in Assets/Scripts/Zombies/ZombieAI.cs (method `InFlashlightBeam`)
+  - 18:04 landed by hts-llm in 6.1 min: **Changed**
+- [x] In Assets/Scripts/World/Zone/ZoneOverlays.cs, inside `ZoneIndustry.Build` → the *tank* branch, after the line
+  `sb.Solid.Cylinder(new Vector3(0f, h, 0f), r * 0.98f, 0.4f, 16, ZoneKit.Mt(ZoneKit.RustDark));`
+  add a short loop that places 2‑4 rust‑stained bolt heads around the tank’s top rim.
+  - 18:01 landed by 0htsserver in 1.8 min: **Changed file**: `Assets/Scripts/World/Zone/ZoneOverlays.cs`
+- [x] Cache `PlayerSkills` in `Awake` and simplify the `bleedMult` / `healMult` getters in `Assets/Scripts/Player/PlayerWounds.cs` to avoid a per‑frame `GetComponent` call (the getters currently do `if (_skills == null) _skills = GetComponent<PlayerSkills>();` each frame).
+  - 18:12 landed by 0htsserver in 11 min: **Changed files**
+- [x] In Assets/Scripts/World/Fixtures/LampSwitch.cs: Add a “Check power” action to LampSwitch.GetActions that notifies the player whether the house has electricity, using the existing PowerGrid.HousePowered flag.
+  In `GetActions` after the existing Inspect line, add:
+  `into.Add(new InteractAction("Check power", CheckPower));`
+  Create a private method `CheckPower(InteractContext ctx)` that does:
+  `ctx.Notify(PowerGrid.HousePowered ? "The house has power." : "The house is without power.");`
+  Keep the current toggle and inspect actions unchanged; the new action appears as a secondary option when the player interacts with the lamp.
+  - 18:06 landed by hts-llm in 2.2 min: **Changed**
+- [x] Append four new exposure‑mark entries to the static constructor of `ZoneExposure` in `Assets/Scripts/Zone/ZoneHazards.cs`; each call must follow the existing `M(id, name, description, ...)` pattern and supply a description that consists of whole sentences, period‑terminated, evocative of a 1993 rural Kentucky winter (cold hardship, snow‑blindness, static radio interference, lingering farm superstition). Use the existing entry `"Your pupils never quite close now. You see further in the dark; bright light leaves you exposed."` as a style reference.
+  Add:
+  `M("ice_fingers", "Ice Fingers", "Your fingers are locked in a perpetual chill; even the warmest hand‑warmer feels like an ember.", m => { });`
+  `M("snow_graze", "Snow‑Grazed Eyes", "The relentless white veil scrapes your sight; shadows hide no longer, and every gust feels like a blade.", m => { });`
+  `M("radio_hum", "Radio Hum", "Every cheap transistor hums with a low, uneasy whine that never fully fades, making every silence feel uneasy.", m => { });`
+  `M("farm_omen", "Farm Omen", "Old superstitions echo in the wind, warning that the dead still tend the fields and watch every step.", m => { });`
+  - 18:08 landed by hts-llm in 2.3 min: **Summary of changes**
+- [x] Add deterministic roof colour variation to buildings in Assets/Scripts/World/Map/KentuckyMap.Buildings.cs
+  Create a private static `Surf RoofSurf(MapBuilding b, System.Random rng)` that returns a slightly tinted snow material based on the building’s `id` (using the same `deterministicIndex` hash logic as `ExteriorOf`). For example:
+  `int idx = deterministicIndex(b.id, 5);`
+  `float shade = 0.95f + 0.01f * idx; // 0.95–0.99 brightness`
+  `return DecorMaterials.Snow.Tint(new Color(shade, shade, shade));`
+  (Assume `DecorMaterials.Snow.Tint(Color)` exists; if not, use `DecorMaterials.Snow` with a colour parameter.)
+  Replace the two hard‑coded roof calls:
+  In `Enterable` change `over.Tri(..., DecorMaterials.Snow);` to `over.Tri(..., RoofSurf(b, rng));`
+  In `Scenery` change `m.Tri(..., DecorMaterials.Snow);` to `m.Tri(..., RoofSurf(f.Data, rng));`
+  - 18:13 landed by hts-llm in 4.5 min: **Summary of changes**
+- [x] Fix the duplicate side‑mirror creation in Assets/Scripts/World/Vehicles.cs (Build method)
+  The code creates the left‑ and right‑hand mirror housings inside the `for (int i = 0; i < 2; i++)` loop that also builds the two headlights. This makes the mirrors be instantiated twice (four mirrors total) and ties their placement to the light‑creation loop, needlessly allocating extra GameObjects each frame the car is built.
+  Move the two `Box(_bodyRoot, …)` calls that build the mirror housings out of the headlights loop so they run only once after the loop finishes.
+  Change:
+  `_lights = new Light[2];`
+  `for (int i = 0; i < 2; i++)`
+  `{`
+  `var l = new GameObject("Headlight").AddComponent<Light>();`
+  `… // headlight setup`
+  - 18:16 landed by 0htsserver in 3.8 min: **Changes made**
+- [x] Add subtle paint‑chip details to the exterior window casings in `Assets/Scripts/World/StarterHome.Shell.cs` inside the `DrawWindow` method
+  After each exterior casing box (`m.Box(f.P(o0 - 0.035f, cy, off)…` and `m.Box(f.P(o1 + 0.035f, cy, off)…`) insert a small rectangular chip; size ≈ `0.04f × 0.02f × 0.005f` metres.
+  Position the chip on the same face as the casing, centered horizontally on the panel (`o0`/`o1`), with a vertical offset `chipY = WindowSill + 0.1f + (float)(rng.NextDouble() * 0.2f)` and a slight random depth offset `chipZ = off + (float)(rng.NextDouble() * 0.01f - 0.005f)`.
+  Use `DecorPalette.Matte(TrimWhite * 0.6f)` (a darker paint‑chip colour) for the material.
+  Only create the chip when `rng.NextDouble() < 0.5` so each side gets 0‑1 chips, keeping the total added primitives ≤ 12.
+  This gives each window a weathered look appropriate to a 1993 Kentucky winter home without altering colliders or interaction points.
+  - 18:17 landed by hts-llm in 3.2 min: **Changed file**
+- [x] In Assets/Scripts/World/Fixtures/SeatFixture.cs: Add a “Stand up slowly” action to SeatFixture.GetActions for survivors already sitting on the seat
+  In the `if (seat.IsSittingOn(this))` block, after the existing stand action, insert
+  `into.Add(new InteractAction("Stand up slowly", c => { c.Seat?.Stand(); c.Notify("You rise slowly, stretching out a bit before standing."); }));`
+  The player will now see a second exit option when seated, giving a slightly different narrative cue while using only the existing `Seat`, `Stand()` and `Notify()` members.
+  - 18:18 landed by 0htsserver in 2 min: **Changed**
+- [x] Add a colour‑tint helper to `MapBuilding` in `Assets/Scripts/World/Map/MapData.cs` so each building can receive a subtle, period‑appropriate hue variation based on its ID.
+  Insert `using UnityEngine;` after the existing `using System;`.
+  Inside the `MapBuilding` class, add a public method:
+  `public Color GetTint()`
+  `{`
+  `// deterministic hash from id → hue offset in [0,0.1]`
+  `float hue = ((id * 0x9E3779B9) & 0xFFFF) / 65535f * 0.1f;`
+  `float sat = 0.6f + ((id >> 16) & 0xFF) / 255f * 0.2f;`
+  `float val = 0.7f + ((id >> 24) & 0xFF) / 255f * 0.2f;`
+  - 18:23 landed by hts-llm in 5.8 min: **Changes made**
+- [x] Add a tiny brass flange on the tap‑coupling in Assets/Scripts/World/FurnitureBuilder.RaidHome.cs, method `HoseTap(RaidMesh m, out Vector3 nozzle, out Vector3 nozzleDir)`: after the line
+  `m.Cylinder(coupling, 0.017f, 0.03f, 8, brass);` insert
+  `m.Cylinder(coupling + Vector3.up * 0.018f, 0.018f, 0.004f, 12, brass);`
+  – makes a 0.018 m radius, 0.004 m thick brass disc sitting 0.018 m above the coupling centre, giving the outdoor tap a subtle decorative flange without affecting colliders or interaction points. This small visual detail fits the 1993 rural aesthetic and stays within the existing deterministic‑random material palette.
+  - 18:20 landed by 0htsserver in 2 min: **Change Summary**
+- [x] In Assets/Scripts/Items/LootContainer.cs fix the saved‑sack bug: a sack loaded from a saved game is never marked as already searched, so the player is forced to “search” a pickup that should be instant.
+  - 18:24 landed by 1htsserver in 3.4 min: **Changes made**
+- [x] Add a small exhaust pipe with a glowing tip to the portable generator in Assets/Scripts/World/DecorProps.cs, method `DecorProps.Generator`.
+  - 18:25 landed by 0htsserver in 2.8 min: **Changes made**
+- [~] Reduce per‑frame GrenadeKey updates by attaching a single GrenadeKey to the player instead of to every built piece (Assets/Scripts/World/Camps.cs, modify CampModule.Init)
+  - 18:31 hts-llm made no changes: I examined the codebase to locate the GrenadeKey handling. The only registration is in **Assets/Scripts/World/Camps.cs** where a `WorldHooks
+- [x] Add a calming effect when the survivor uses the toilet (Assets/Scripts/World/Fixtures/ToiletFixture.cs)
+  In the `Used` method, after the existing line `ctx.Notify(line);` insert a call to the existing calm helper: `LightingFixtures.Calm(ctx, CloneZConfig.ToiletUseCalm);`.
+  This gives the player a small stress‑reduction boost identical to the one from wiping the seat, without altering any other behaviour or UI.
+  - 18:30 landed by 1htsserver in 4.1 min: **Changed file**
+- [x] Append six new winter‑theme flavor notes to the `Hideout.Tick` method in Assets/Scripts/Economy/Hideout.cs
+  Add after the existing `notes.Add("...");` calls that begin with `"The wind whistles..."`.
+  Each new line should be `notes.Add("<sentence>");` where the sentence is a full period‑ended statement in present tense, e.g., “Frost gathers on the metal hinges of the workbench, making them stick.”
+  Use the existing note `"The wind whistles through the cracked window of the generator room."` as the style reference – short, vivid, no character names.
+  Themes to cover: freezing water pipes, soot‑filled air, distant thunder, creaking wood, breath visible in the cold, and the lingering scent of woodsmoke.
+  Do not modify or remove any other code; preserve the current notes unchanged.
+  - 18:29 landed by 0htsserver in 3.2 min: **Changed** `Assets/Scripts/Economy/Hideout.cs` – appended six new winter‑flavor notes after the existing “The wind whistles …” line.
+- [x] Add four small wooden pegs at the corners of each window sash in `Assets/Scripts/World/StarterHome.Windows.cs` → `WindowSash` method, after the line that creates the bottom rail box (`m.Box(f.P(f.Mid, y0 + bottomRail * 0.5f, across), f.Size(w - 0.09f, bottomRail, lower ? SashDepth : SashDepth + 0.005f), frame);`).
+  Define a peg size of 0.008 m and place a cube at each intersection of the vertical stiles and the top/bottom rails using the existing `frame` material (`Surf frame = DecorPalette.Matte(TrimWhite);`).
+  Use the existing `s0` and `s1` values for the stiles positions:
+  `float pegSize = 0.008f;`
+  `Vector3[] pegPos = new[]`
+  `{`
+  `f.P(s0 + 0.0225f, y1 - topRail * 0.5f, across), // top‑left`
+  `f.P(s1 - 0.0225f, y1 - topRail * 0.5f, across), // top‑right`
+  `f.P(s0 + 0.0225f, y0 + bottomRail * 0.5f, across),// bottom‑left`
+  - 18:31 landed by 0htsserver in 1.6 min: **Changed files**
+- [x] Fix the visibility check in Assets/Scripts/Net/NetPlayers.cs so that missing client info correctly blocks forwarding of a remote player’s state.
+  The method `Visible(ulong owner, ulong viewer, Vector3 pos)` currently starts with
+  - 18:33 landed by 0htsserver in 1 min: **Summary**
+- [x] Add a small chrome towel‑hook to the mirror cabinet body in `FurnitureBuilder.MirrorCabinetBody` (Assets/Scripts/World/FurnitureBuilder.Bathroom.cs)
+  In the method, after the shelf‑creation loop (`for (int i = -1; i <= 1; i += 2) …`), insert a tiny hook made of two primitives: a thin cylinder for the shaft and a tiny ellipsoid for the hook tip.
+  Use the existing `chrome = Mt(Chrome)` material.
+  Position the shaft 0.04 m below the cabinet’s top edge (`up * (h * 0.4f)`), offset toward the outer side of the cabinet (`right * (w * 0.45f - 0.02f)`) and flush with the inner face (`normal * (d * 0.45f)`).
+  Example position for the cylinder centre:
+  `Vector3 hookBase = back + normal * (d * 0.45f) + up * (h * 0.4f) + right * (w * 0.45f - 0.02f);`
+  Create the shaft: `m.Cylinder(hookBase, 0.006f, 0.09f, 8, chrome, Quaternion.LookRotation(-right, up));` (radius 0.006 m, length 0.09 m, oriented toward the wall).
+  Create the tip: `m.Ellipsoid(hookBase + (-right) * 0.045f, new Vector3(0.008f, 0.008f, 0.008f), chrome, 6, 4);` (a small 8 mm sphere at the end).
+  This adds period‑correct hardware for hanging a towel or small cloth, improves visual interest, and stays under the ~12‑primitive limit.
+  - 18:36 landed by 1htsserver in 2.6 min: **Changes made**
+- [x] In Assets/Scripts/Player/PlayerStats.cs: Cache the `TimeOfDay.Instance` lookup in `PlayerStats.Update` and use the cached reference in `UpdateFatigue` to avoid repeated static property access each frame.
+  Add a private field `private TimeOfDay _cachedTOD;` to `PlayerStats`.
+  At the start of `Update()` set `_cachedTOD = TimeOfDay.Instance;`.
+  In `UpdateFatigue(float dt)` replace `if (TimeOfDay.Instance != null && TimeOfDay.Instance.IsNight) …` with `if (_cachedTOD != null && _cachedTOD.IsNight) …`.
+  This removes two per‑frame lookups of `TimeOfDay.Instance`; the player’s night‑time fatigue multiplier remains unchanged.
+  - 18:39 landed by hts-llm in 3.6 min: **Changes made**
+- [x] Add a “Check for leak” action to Assets/Scripts/World/Fixtures/RaidTownGasPump.cs that only appears when the nozzle is lifted, plays the pump noise and notifies the player.
+  - 18:39 landed by 1htsserver in 2.8 min: All changes successfully compiled.**Changed file**
+- [x] In Assets/Scripts/Core/Factions.cs, append four new `Def` entries to the existing `s_Defs` dictionary (place them after the current last entry `"caverelative"`).
+  Use the same format as the existing entries, e.g. the `"survivorwarning"` entry:
+  `Blurb = "A frayed note pinned to a wall: ‘Do not venture beyond the river at night; something watches.’"`
+  The new entries should cover these themes, all period‑correct and winter‑y Kentucky appropriate:
+  A warning from a coal miner about unsafe shafts.
+  A dented school‑yard notebook describing a lost supply drop.
+  A cracked wooden sign pointing toward a forgotten fire‑wood cache.
+  A static‑filled radio transmission giving a last‑minute evacuation order.
+  Add them as follows (replace `<…>` with the exact strings):
+  - 18:44 landed by 0htsserver in 6.5 min: Added four new faction definitions to **Assets/Scripts/Core/Factions.cs** after the existing `caverelative` entry:
+- [x] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildStreetLights` to make lit street‑light poles scatter randomly instead of being limited to the closest `LitPoles` entries.
+  Add an `int litCount = 0;` before the pole‑creation `for` loop.
+  Replace `bool lit = i < LitPoles && lean == 0f && rng.NextDouble() < 0.8;` with `bool lit = litCount < LitPoles && lean == 0f && rng.NextDouble() < 0.8;`.
+  After the call to `site.Town.Light(...)` (or immediately after determining `lit`), add `if (lit) litCount++;`.
+  Result: up to `LitPoles` (~10) illuminated poles appear at random distances along streets, better matching the hand‑crafted raid town’s uneven lighting while leaving all other geometry, colliders and colour handling unchanged.
+  - 18:46 landed by 1htsserver in 6.5 min: **Changes made**
+- [x] Add a rusted‑metal door handle on the front face of the checkpoint booth built in `ZoneCordon.BuildCheckpoint` (Assets/Scripts/World/Zone/ZoneCordon.cs)
+  Insert after the line
+  `sb.Solid.Box(new Vector3(0f, 1.2f, 0f), new Vector3(2.4f, 2.4f, 2.4f), ZoneKit.M(ZoneKit.WardenOlive));`
+  add a 50 % chance block:
+  `if (ZoneKit.R(rng, 0f, 1f) < 0.5f) {`
+  ` // door handle on the front panel (front is –Z after the booth’s yaw)`
+  ` sb.Solid.Box(new Vector3(0f, 1.2f, -1.22f), new Vector3(0.02f, 0.12f, 0.04f), ZoneKit.Mt(ZoneKit.RustDark));`
+  `}`
+  Size 0.02 m × 0.12 m × 0.04 m, positioned 1.2 m above ground and 1.22 m forward from the booth centre (half the booth depth + 0.02 m) so it sits flush on the front surface.
+  - 18:42 landed by hts-llm in 1.4 min: **Summary**
+- [x] In Assets/Scripts/Player/PlayerTemperature.cs: Cache the temperature‑level and descriptor strings in PlayerTemperature so they aren’t recomputed each UI frame.
+  Add private fields `int _levelCache; string _descriptorCache;` initialized in Awake or OnEnable.
+  Replace the `Level` getter with `get => _levelCache;` and the `Descriptor` getter with `get => _descriptorCache;`.
+  Create a private method `void UpdateLevelCache()` that contains the current `Level` logic (the series of `if` checks on `Temperature`) and also sets `_descriptorCache` to the matching word (“Freezing”, “Cold”, “Comfortable”, “Warm”, “Hot”).
+  Call `UpdateLevelCache()` at the end of UpdateTemperature (after `_stats.Temperature` is modified) and also once in Awake so the caches are valid before the first frame.
+  The player’s visual HUD will show the same words as before; only the expensive per‑frame conditional logic is moved to run once per temperature change, which occurs only when the body temperature drifts (≈ once per second), dramatically reducing per‑frame work.
+  - 18:51 landed by 0htsserver in 5.8 min: **Summary of changes**
+- [x] In Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs: Add a “Dump water from tank” action to `RaidStoreWaterHeater.GetActions` that empties the heater’s remaining water and notifies nearby survivors.
+  In `GetActions`, after the existing `Knock` line, insert:
+  `into.Add(new InteractAction("Dump water from tank", DumpWater).DisabledIf(!HasWater, DryMessage));`
+  Add a private method `DumpWater(InteractContext ctx)` that sets `_water = 0`, calls `MakeNoise(CloneZConfig.FixtureNoiseSmall)`, and notifies the player with `ctx.Notify("You dump the remaining water onto the floor. The tank is now empty.");`.
+  Also call `KitchenParts.NotifyNear(_valve, 3f, "The water gushes out, splashing the floor as the tank empties.");` inside `DumpWater` to give a local feedback sentence.
+  This action should only appear when there is water left, matching the existing “Drain the tank…” and “Drink from the drain valve” actions, and must leave all other code unchanged.
+  - 18:51 landed by 1htsserver in 5.2 min: **Changed file**
+- [x] In Assets/Scripts/World/Fixtures/RaidTownGasPump.cs: Add six new InteractAction entries to `RaidTownGasPump.GetActions` that extend the existing `into` list with period‑correct written text the player can read; the new actions should appear only when the nozzle is lifted and each must consist of an action name (a full‑sentence phrase) and a `c.Notify` call containing a single‑sentence note that fits 1993 rural Kentucky winter.
+  - 18:52 landed by hts-llm in 4.2 min: **Changed file**
+- [x] In Assets/Scripts/World/Map/KentuckyMap.cs add a kerb height constant and a helper that builds a thin raised strip along every street, then call it from the existing `BuildStreets` method (in the same partial class file) so each road gets a period‑correct concrete sidewalk edge.
+  - 19:05 landed by 0htsserver in 13.9 min: **Changes Made**
+- [x] Fix a cover‑state bug in Assets/Scripts/AI/Humans/HumanNpc.cs so NPCs don’t remain “in cover” after they finish reloading while far from any cover spot.
+  *Method:* `HumanNpc.Fight()` – the early‑exit block that handles reloading:
+  `if (Time.time < _reloadUntil) { Croupped = _inCover; return; }`
+  *Problem:* When a human reloads, the method returns without resetting the cover flags (`_hasCover` and `_inCover`). If the NPC was not actually standing behind cover when reloading (e.g., while retreating), the flags stay true. Subsequent combat logic assumes the NPC still has cover, causing it to stay crouched, skip movement, and behave as if protected by a wall that isn’t there. This produces visible “stuck in cover” behaviour and can prevent the NPC from chasing or fleeing correctly.
+  *Fix:* Reset the cover state when reloading, matching the logic used elsewhere when the NPC leaves cover. Change the block to:
+  `if (Time.time < _reloadUntil)`
+  `{`
+  `// The NPC is reloading – clear any assumed cover because we may be elsewhere.`
+  `_hasCover = false;`
+  - 18:56 landed by 1htsserver in 1.3 min: **Changed:** `Assets/Scripts/AI/Humans/HumanNpc.cs`
+- [x] Add a “Search the mailbox” action to Assets/Scripts/World/Fixtures/MailboxFixture.cs that appears once all deliveries have been read, using the existing `InteractAction` pattern.
+  - 19:02 landed by hts-llm in 3.6 min: **Changed file**
+- [x] Append five new letter entries to the `Letters` array in Assets/Scripts/World/Fixtures/RaidHomeLiving.cs.
+  Use the existing entry
+  - 19:13 landed by 1htsserver in 13.7 min: Added five new letter entries to `RaidHomeLiving.Letters` array:
+- [x] In Assets/Scripts/World/Map/MapGeometry.cs, modify the `ClipPolygon` method to guarantee the returned polygon is anticlockwise: after the clipping loop and before `return cur;`, add `MakeAnticlockwise(cur);` (leaving the existing logic untouched).
+  This ensures any footprint that has been cut by the map rectangle retains the correct winding order for later triangulation.
+  Buildings that sit on the map edge will no longer have inverted or missing walls because their clipped polygons will always be oriented anticlockwise.
+  Keep the existing `Inside`/`Cross` logic unchanged; only insert the single call.
+  Add a comment such as `// Ensure consistent winding for triangulation` preceding the new line.
+  - 19:03 landed by hts-llm in 1.2 min: **Changed file**
+- [x] Add a cluster of small rust‑tinted rivets to the crashed helicopter hull for subtle weathering detail, editing Assets/Scripts/World/Zone/ZoneLandmarks.cs, method CrashedHelicopter(SiteBuilder sb)
+  Insert the following code inside the `sb.At(sb.Solid, new Vector3(0f, 0f, 0f), 18f, m => { … })` block, after the existing shape calls:
+  `// Small rivets along the right side of the fuselage`
+  `int rivetCount = 6;`
+  `for (int i = 0; i < rivetCount; i++)`
+  `{`
+  `// Random y‑offset from deck to top of fuselage, z‑offset along length`
+  `float y = ZoneKit.R(r, 0.2f, 2.0f);`
+  `float z = ZoneKit.R(r, -3.5f, 3.5f);`
+  - 19:08 landed by hts-llm in 4 min: **Changed**
+- [x] Fix the leg‑yaw rotation in Assets/Scripts/Characters/HumanoidAnimator.Body.cs → method Leg(int thigh, …) – the current code cancels the yaw it adds, so the character’s legs never turn when the player strafes or walks backward, giving a sliding‑feet animation.
+  - 19:07 landed by 0htsserver in 1.3 min: **Changes Made**
+- [x] Add a tiny chrome hinge‑pin detail to each locker door in Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method LockerDoor so players see a small realistic hinge on the top edge of the door.
+  Insert after the existing metal number‑plate box:
+  `m.Cylinder(new Vector3(x + R(rng, -0.005f, 0.005f), LockerDoorY + LockerDoorH * 0.5f - 0.07f, 0.22f), 0.004f, 0.02f, 8, Mt(Chrome));`
+  This creates a 4 mm radius, 2 cm long chrome cylinder (the pin) positioned near the top hinge line, with a tiny random X offset for variation. All other colliders, interaction points and pivots remain unchanged.
+  - 19:09 landed by 0htsserver in 1.6 min: **Changed file**
+- [x] Cache the WeatherSystem reference once in Awake instead of checking for null each frame in WaterSource.Update (Assets/Scripts/World/WaterSource.cs)
+  Add a private `void Awake()` method that sets `_weather = WeatherSystem.Instance;`.
+  Remove the `if (_weather == null) _weather = WeatherSystem.Instance;` block from the Update method, leaving the rain‑intensity read as `float rain = _weather != null ? _weather.RainIntensity : 0f;`.
+  This eliminates a per‑frame null‑check and potential property lookup, reducing cheap but unnecessary work on every barrel each frame. The visual behavior and water‑fill simulation remain unchanged.
+  - 19:11 landed by 0htsserver in 2.3 min: **Changed**
+- [x] In Assets/Scripts/World/Fixtures/RadioFixture.cs: Add a “Check battery” action to RadioFixture.GetActions so the survivor can see if the radio still has power without turning it on.
+  · In `public override void GetActions(InteractContext ctx, List<InteractAction> into)` add a new line after the “Turn off the radio” action:
+  `into.Add(new InteractAction("Check battery", c => c.Notify("The battery still hums – enough juice for a few more hours.")) .DisabledIf(!near, TooFar));`
+  This uses the existing `InteractAction` constructor and the `ctx.Notify` method.
+  The player will see a “Check battery” option when near the radio, and selecting it will display the message above.
+  All other behavior and fields (`IsOn`, `_dialLight`, etc.) remain unchanged.
+  - 19:13 landed by hts-llm in 2.5 min: **Summary**
+- [x] In Assets/Scripts/World/Map/KentuckyMap.Ground.cs edit the `BuildStreets` method: after each kerb `Ribbon(..., KerbSurf)` call add a second `Ribbon` that uses the existing `Ice` surf and a y‑position just above the kerb (e.g. `StreetY + KerbHeight + 0.001f`). Do this for both the inner road section (`site.Town.Out`) and the outer road extension (`site.Town.Far`).
+  - 19:18 landed by hts-llm in 4 min: **Summary of changes**
+- [x] Add a chrome faucet with red “hot” and blue “cold” lever handles to the bathtub in Assets/Scripts/World/FurnitureBuilder.Utility.cs – `FurnitureBuilder.Bathtub`
+  Add a small chrome base for the faucet: `m.Box(new Vector3(-0.6f, 0.66f, 0.35f), new Vector3(0.06f, 0.02f, 0.03f), Mt(Chrome));`
+  Add a short red hot‑water lever: `m.Box(new Vector3(-0.58f, 0.68f, 0.352f), new Vector3(0.008f, 0.012f, 0.008f), M(new Color(0.80f, 0.10f, 0.10f)));`
+  Add a short blue cold‑water lever: `m.Box(new Vector3(-0.62f, 0.68f, 0.352f), new Vector3(0.008f, 0.012f, 0.008f), M(new Color(0.10f, 0.30f, 0.80f)));`
+  Position the faucet relative to the existing tub box call `m.Box(new Vector3(0f, 0.27f, 0f), …)` so it appears on the side wall at typical height.
+  All new parts use the existing `Mt(Chrome)` and `M(...)` material helpers; colliders and interaction points remain unchanged.
+  - 19:19 landed by 0htsserver in 2.7 min: Implemented a chrome faucet with red “hot” and blue “cold” lever handles for the bathtub in **FurnitureBuilder.Utility.cs**. The new parts i
+- [x] In Assets/Scripts/Items/ItemDatabase.cs: Fix ItemDatabase.Get to safely handle null or empty identifiers, preventing ArgumentNullException crashes when tooltip code queries undefined CookedId, AmmoId, or similar fields in ItemDef
+  Add a guard at the start of the method: `if (string.IsNullOrEmpty(id)) return null;`
+  Keep the existing `EnsureInit();` call and dictionary lookup for valid ids.
+  This stops `Dictionary<string, ItemDef>.TryGetValue` from being called with a null key, which currently throws.
+  Result: hovering over items whose definition mistakenly leaves a related ID blank (e.g., a cookable item without a CookedId) no longer crashes the UI; the tooltip simply omits that line.
+  - 19:22 landed by hts-llm in 2.4 min: **Changed**
+- [x] Add subtle rust‑stain patches on the concrete kerb in `Assets/Scripts/World/RaidMapBuilder.Streets.cs` → method `SidewalkRun`
+  After the existing kerb slab call `Slab(town, alongX, coord, a, b, …, 0.05f, DecorPalette.Matte(Kerb));` insert a new block.
+  With a 20 % random chance (`if (rng.NextDouble() < 0.2)`) pick a start position `float rustStart = R(rng, a, b - R(rng, 0.2f, 0.4f));` and length `float rustLen = R(rng, 0.2f, 0.4f);`.
+  Compute the across coordinate of the kerb edge: `float across = coord + (side > 0 ? hw + 0.125f : -hw - 0.125f);`.
+  Use `Slab` to lay a thin elevated rectangle on the kerb surface:
+  `Slab(town, alongX, coord, rustStart, rustStart + rustLen,
+  side > 0 ? hw + 0.02f : -hw - 0.27f,
+  side > 0 ? hw + 0.07f : -hw - 0.22f,
+  0.051f,
+  - 19:26 landed by 0htsserver in 3.5 min: **Changes made**
+- [x] Add a “Check volume” action to Assets/Scripts/World/Fixtures/RaidCivicRadio.cs that lets the survivor see the current radio volume level.
+  Add a new field `private Action<InteractContext> _checkVolume;` alongside the other action delegates.
+  In `Awake()` assign `_checkVolume = ctx => ctx.Notify("Current volume: " + (_volume <= 0 ? "low." : _volume >= MaxVolume ? "loud. It carries a long way." : "medium."));`.
+  In `GetActions` (inside the `_on` block) add `into.Add(new InteractAction("Check volume", _checkVolume).DisabledIf(!near, TooFar));` after the existing “Check channel” action.
+  The action only reports the current `_volume`; it does not modify any other state.
+  Keep all existing volume‑step actions (`Turn it up`, `Turn it down`) unchanged.
+  No other files need to be edited.
+  - 19:31 landed by 0htsserver in 5.1 min: **Changed files**
+- [x] Modify `KentuckyMap.Enterable` in Assets/Scripts/World/Map/KentuckyMap.Buildings.cs to add a simple front porch/stoop for residential buildings, using existing helpers and keeping colliders aligned.
+  Declare local variables `float doorYaw = 0f;` and `Vector2 doorOutward = Vector2.zero;` at the start of the method.
+  Inside the `if (i == door)` block, assign `doorYaw = yaw;` and `doorOutward = outward;` right after `doorPoint` is set.
+  After the wall‑building loop, add:
+  `if (door >= 0 && (b.kind == \"house\" || b.kind == \"trailer\"))`
+  `{`
+  `Vector3 porchCenter = To3(doorPoint + doorOutward * 0.4f, 0.1f);`
+  `Vector3 porchSize = new Vector3(1.5f, 0.2f, 0.8f);`
+  `site.Town.Out.Solid(porchCenter).Box(porchCenter, porchSize, doorYaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));`
+  - 19:41 landed by 1htsserver in 11.8 min: **Changes Made**
+- [x] Fix the runaway water‑level drain caused by `RaidHomeBath.DrawWater` in Assets/Scripts/World/Fixtures/RaidHomeBath.cs
+  *Method:* `public void DrawWater()` currently does ` _level = Mathf.Max(0f, _level - CloneZConfig.BathDrinkShare);` every time it is called, which is each frame the water point is queried. This instantly subtracts a full “drink‑share” amount regardless of time or player action, so the bath empties far faster than intended, leaving the player with an empty tub even when the taps are off.
+  *Fix:* Remove the unconditional subtraction. Replace the line with `// keep current level; visual update only` (or, if a slow evaporation is desired, scale by `Time.deltaTime`). The method should only update the visual:
+  - 19:37 landed by hts-llm in 1.9 min: **Changed**
+- [x] Add a rusted metal band around each quarantine‑area barrel in `Assets/Scripts/World/RaidMapBuilder.Town.cs` → method `DressClinic`, inside the barrel `Prop` lambda.
+  - 19:39 landed by 0htsserver in 3.3 min: **Changes made**
+- [x] In Assets/Scripts/UI/InventoryUIController.cs: Cache the input device look‑ups in `InventoryUIController` to avoid per‑frame `Mouse.current` / `Keyboard.current` property calls
+  Add two private fields `private Mouse _mouse;` and `private Keyboard _keyboard;` to store the current devices.
+  Assign them once in `Bind(PlayerInventory player)` just after `_font` is set: `_mouse = Mouse.current; _keyboard = Keyboard.current;`.
+  Replace every `Mouse.current` accessed in `Update` → `PositionTooltip` with `_mouse` (e.g. `if (_mouse != null && ...)` and `Vector2 screen = _mouse.position.ReadValue();`).
+  Replace every `Keyboard.current` accessed in `ConsumeEscape` with `_keyboard` (e.g. `if (_keyboard == null || !_keyboard.escapeKey.wasPressedThisFrame) return false;`).
+  Guard the cached fields against null (they will stay null when no device is present, matching existing behaviour).
+  No change to game visuals; the UI continues to respond to mouse movement and Escape key exactly as before, but the per‑frame static property look‑ups are eliminated, reducing GC pressure and tiny CPU overhead.
+  - 19:41 landed by hts-llm in 3.2 min: **Changes made**
+- [x] Add a “Check for obstruction” quick action to Assets/Scripts/World/Fixtures/RollUpShutter.cs that lets the survivor see whether anything is standing where the curtain would come down, without changing any state.
+  Declare a new field `_obstructAct` of type `Action<InteractContext>` and assign it in `Awake()` (e.g., `_obstructAct = CheckObstruction;`).
+  Add an entry in `GetActions` inside the `if (!_open)` block:
+  `into.Add(new InteractAction("Check for obstruction", _obstructAct).Timed(0f, "Checking obstruction", HumanoidActivity.Use));`
+  Implement a private method `CheckObstruction(InteractContext ctx)` that calls the existing `Obstructed()` method and notifies the player:
+  `private void CheckObstruction(InteractContext ctx) => ctx.Notify(Obstructed() ? "Something's in the way of the curtain." : "No obstruction.");`
+  The player should see a text message indicating whether an entity (character, zombie, or the survivor) is under the door when they use this action; all other behaviour and state remain unchanged.
+  - 19:51 landed by 0htsserver in 11.2 min: **Summary**
+- [x] Add a sidewalk‑width helper to `MapStreet` in `Assets/Scripts/World/Map/MapData.cs` so the map builder can place period‑appropriate sidewalks beside roads.
+  In the `MapStreet` class, after the existing fields, insert a public method
+  - 19:54 landed by hts-llm in 12 min: All needed changes made.Added a **SidewalkWidth** helper to `MapStreet` in **Assets/Scripts/World/Map/MapData.cs**.
+- [x] Add occasional snow drifts on the corrugated‑sheet barrier in the `case 0:` block of `EdgeSegment` in *Assets/Scripts/World/RaidMapBuilder.Edge.cs*
+  Insert a new loop after the existing “occasional rust spots” loop that creates a small snow box on top of the sheet:
+  `for (float x = -len * 0.5f + 0.8f; x < len * 0.5f; x += R(rng, 3f, 5f))`
+  `{`
+  `float w = R(rng, 0.3f, 0.6f);`
+  `// snow drift sitting on the sheet surface`
+  `m.Box(new Vector3(x, 2.45f, 0f), new Vector3(w, 0.05f, 0.3f), DecorMaterials.Snow);`
+  `}`
+  The box is ~0.05 m tall, up to 0.6 m wide, and 0.3 m deep, placed at y ≈ 2.45 m (just above the 2.4 m tall sheet) so it looks like a thin snow drift accumulating on the barrier. It re‑uses the existing `DecorMaterials.Snow` material, adds no new colliders, and stays within the ~12‑primitive limit. This gives the rusted corrugated sheet a wintery, period‑correct visual cue.
+  - 19:45 landed by 1htsserver in 2 min: **Summary**
+- [x] Add a thin “seam” strip to the front edge of the backpack in Assets/Scripts/Player/PlayerGearVisuals.cs, method BuildBackpack(ItemDef def) to suggest worn fabric stitching.
+  Create a new box primitive using the existing `web` material, sized about 0.002 m tall and 0.001 m deep, spanning the same width as the lid.
+  Place it just below the lid’s front face, i.e. at `new Vector3(0f, top - d * 0.5f - 0.039f, outer - 0.010f)` with size `new Vector3(w * 0.92f, 0.002f, 0.001f)`.
+  Quote the lid call to anchor the position: `PlayerGearParts.Box(root, "Lid", new Vector3(0f, top - d * 0.5f - 0.035f, outer - 0.004f), new Vector3(w * 0.92f, 0.10f, 0.012f), shade);`.
+  Add the line: `PlayerGearParts.Box(root, "Seam", new Vector3(0f, top - d * 0.5f - 0.039f, outer - 0.010f), new Vector3(w * 0.92f, 0.002f, 0.001f), web);`.
+  This uses no new assets, keeps colliders and interaction points unchanged, and adds only one extra primitive.
+  - 19:48 landed by 1htsserver in 1.7 min: **Changed**
+- [x] In Assets/Scripts/World/HomeLamp.cs: Optimize HomeLamp.Update and SyncGlow to avoid per‑frame lookups of the singleton ViewState by caching its reference
+  Add a private field `private ViewState _viewState;` to HomeLamp.
+  In `OnEnable()` (or `Awake()`) set `_viewState = FindObjectByType<ViewState>();` – this is safe because the ViewState object exists for the whole game session.
+  Replace every occurrence of `ViewState.CeilingsVisible` in `Update()` and `SyncGlow()` with `_viewState.CeilingsVisible`.
+  Keep the existing logic unchanged; the player will still see the glow appear/disappear exactly when the ceilings become visible or hidden, and flickering behavior is unaffected.
+  No other code changes are required.
+  - 20:05 landed by 1htsserver in 16.4 min: **Summary of changes**
+- [x] Add a deterministic, cached `System.Random` to `MapBuild` in Assets/Scripts/World/Map/WorldStore.cs so map‑building code can use a stable seed for visual variation (e.g., building colours).
+  · Declare a new private field `private System.Random _rand;` inside the `MapBuild` class.
+  · Add a public read‑only property `public System.Random Random => _rand ??= new System.Random(Id.GetHashCode());` after the existing `RegionSize` property.
+  · Include a short XML comment for the property, e.g. `/// <summary>Deterministic random seeded by the build Id, useful for consistent visual tweaks.</summary>`.
+  · No other members, file paths or logic should be altered; the rest of the class stays unchanged.
+  · This enables other map‑generation scripts to call `mapBuild.Random` for per‑build colour or prop variation while guaranteeing the same results each run.
+  - 19:55 landed by 0htsserver in 2.9 min: Added a deterministic cached random generator to map builds.
+- [x] In Assets/Scripts/World/RaidMapBuilder.Outdoor.cs, add a small rust‑stained metal bracket to each streetlight pole in the `StreetLights` method so the poles have a subtle weathered detail.
+  - 19:56 landed by hts-llm in 2.3 min: **Changed file**
+- [x] Add a tiny chrome screw to the base of each desk lamp in `Assets/Scripts/World/FurnitureBuilder.Office.cs` → `public static Vector3 DeskLamp(RaidMesh m, System.Random rng, Vector3 at, float yaw, Color shade, bool lit)`
+  After the existing base cylinder `m.Cylinder(at, 0.075f, 0.03f, 10, M(shade * 0.7f));` insert a small chrome screw:
+  `Vector3 screwPos = at + new Vector3(R(rng, -0.002f, 0.002f), 0.03f, R(rng, -0.002f, 0.002f));`
+  `m.Cylinder(screwPos, 0.008f, 0.004f, 6, Mt(Chrome));` // radius 0.008 m, height 0.004 m, random slight offset for visual variation.
+  - 20:00 landed by hts-llm in 1.3 min: **Changed**
+- [x] In Assets/Scripts/World/Zone/Helicopter.cs, replace the per‑frame noise timer in `HelicopterFlight.Update` with a coroutine that runs every 1.5 seconds, eliminating the `_noise` field and its decrement each frame.
+  Add a private `IEnumerator NoiseLoop()` method that `while (true)` yields `new WaitForSeconds(1.5f)` and, if `transform.position.y < 70f && _spin > 0.5f`, emits the noise (`Vector3 ground = new Vector3(transform.position.x, 0f, transform.position.z); NoiseSystem.Emit(ground, 55f); GameEvents.RaiseWorldEvent(ground, 55f, "heli");`).
+  Start this coroutine in `Start()` after creating `_rotor` (`StartCoroutine(NoiseLoop());`).
+  Remove the `_noise` field declaration and the `_noise -= Time.deltaTime; …` block from `Update`.
+  Keep all existing behavior (noise still repeats every 1.5 s only when the helicopter is low and spinning fast) while reducing per‑frame work.
+  - 20:21 landed by hts-llm in 21 min: **Changes Made**
+- [x] Add lock‑status output to the existing “Inspect door” action in Assets/Scripts/World/Fixtures/RaidDoor.cs
+  Modify the lambda passed to the InteractAction named “Inspect door” inside GetActions so it also reports the door’s lock condition.
+  Use the existing properties IsLocked and the private field _lockBroken to build a string such as “Locked”, “Lock broken”, or “Unlocked”.
+  Append this status to the current notification, e.g. `ctx.Notify($"Door health: {health:0.##}/{maxHealth:0.##} ({percent}%){(_broken ? " (broken)" : "")} – {lockStatus}");`
+  Keep the rest of the action unchanged; no new UI, items, or methods are introduced.
+  - 20:07 landed by 1htsserver in 1.9 min: **Changed file**
+- [x] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildPoints` to give hand‑painted colour variation to sign backgrounds, making them look less uniform and more period‑correct.
+  After the line `if (signs >= MaxSigns || string.IsNullOrEmpty(s.Data.name) || !SignColours(s.Data.kind, out Color bg, out Color fg)) continue;` add code that perturbs `bg` slightly using the method’s existing `rng`.
+  Example change:
+  `bg.r = Mathf.Clamp01(bg.r + (float)rng.NextDouble() * 0.04f - 0.02f);`
+  `bg.g = Mathf.Clamp01(bg.g + (float)rng.NextDouble() * 0.04f - 0.02f);`
+  `bg.b = Mathf.Clamp01(bg.b + (float)rng.NextDouble() * 0.04f - 0.02f);`
+  This keeps the sign‑type colour logic intact, preserves the existing collider and placement code, and adds subtle random hue offsets so each sign appears a bit different, matching the hand‑built look of CLONE‑Z’s raid town.
+  - 20:09 landed by 1htsserver in 1.7 min: **Changed file**
+- [x] In Assets/Scripts/World/WaterSource.cs, inside `WaterSource.BuildBarrel` add a small worn canvas/rope strap around the barrel’s mid‑section to suggest a makeshift handle/branding.
+  Create a new `System.Random` (e.g. `var strapRand = new System.Random(1993)`) and use it to pick a subtle brown tint: `float shade = 0.4f + 0.1f * strapRand.NextFloat(); Color strapColor = new Color(shade, shade * 0.85f, shade * 0.6f);`
+  Insert the following after the existing weathered band cylinder (the call `m.Cylinder(new Vector3(0f, h * 0.5f, 0f), r + 0.005f, 0.01f, …)`):
+  `m.Cylinder(new Vector3(0f, h * 0.5f, 0f), r + 0.015f, 0.008f, 16, DecorPalette.Matte(strapColor));`
+  The strap is a thin matte ring, 0.008 m thick, positioned at `y = h * 0.5f` (mid‑height), radius `r + 0.015f` (just outside the barrel wall). It uses only one extra primitive, stays within the existing collider bounds, and adds visual variety without altering interaction points.
+  - 20:10 landed by 0htsserver in 1.7 min: **Changed file**
+- [x] Add a small metal faucet with left/right variation to the bathroom basin in Assets/Scripts/World/HomeFurniture.cs → `DrawPlain` method, `case HomeFurnitureKind.Basin:`
+  After the existing line `FurnitureBuilder.WashBasin(m, rng);` insert code that uses the same `rng` to pick left‑ or right‑handed faucet (`bool left = rng.Next(2) == 0;`).
+  Create a short vertical pipe using `m.Cylinder` at `(left ? -0.08f : 0.08f, 0.95f, 0.22f)` with radius 0.01 m, height 0.12 m, metal colour `DecorPalette.Metal(new Color(0.18f,0.18f,0.20f))`.
+  Add a tiny rectangular faucet knob using `m.Box` at the pipe top: position `(left ? -0.08f : 0.08f, 1.07f, 0.22f)`, size `(0.02f, 0.03f, 0.01f)`, same metal material.
+  Both primitives keep the existing mesh frame (`m`), colliders and interaction points unchanged, and stay within the 12‑primitive limit.
+  - 20:13 landed by 1htsserver in 3.9 min: **Summary**
+- [x] Add a preview action to the mail drop box in Assets/Scripts/World/Fixtures/RaidTownMailDrop.cs that lets the player read the next letter without consuming it.
+  Create a private method `void PeekNext(InteractContext ctx)` that calls `MakeNoise(CloneZConfig.FixtureNoiseSmall)`, checks `if (_read >= Letters.Length) ctx.Notify("The chute is empty."); else ctx.Notify(Letters[_read]);` (no `_read++`).
+  In `GetActions` add `into.Add(new InteractAction("Read next letter (preview)", PeekNext).Timed(0.8f, "Peeking into the chute", HumanoidActivity.Use));` after the existing actions.
+  Use only members already present in the file (`MakeNoise`, `CloneZConfig.FixtureNoiseSmall`, `ctx.Notify`, `Letters`, `_read`).
+  The player will see a short notification of the upcoming letter while the chute’s content remains unchanged, providing a small tactical option.
+  - 20:21 landed by 0htsserver in 8.8 min: **Changes Made**
+- [x] Append 5 new copy‑description strings to the `Copies` array in Assets/Scripts/World/Fixtures/RaidStoreCopier.cs, after the current last entry, each a whole sentence in quotes that the survivor sees when a copy finishes; use the existing entry `"A warm copy slides into the tray: the sheet on the glass, a shade greyer and a touch crooked."` as the style reference.
+  Add entries that convey the cheap‑paper, winter‑dry feel of 1993 county office documents.
+  Include subtle outbreak hints (e.g., a faint frost line on the edge, a torn corner from a frantic hand).
+  Mention period‑correct office details such as carbon‑copy slips, type‑writer smudges, or a faded “County” watermark.
+  Keep the `Copies` field declaration and existing strings unchanged; only extend the array literal.
+  - 20:16 landed by 1htsserver in 2.8 min: **Changed**
+- [x] Add a simple roof‑eave trim to residential buildings in Assets/Scripts/World/Map/KentuckyMap.cs
+  Define two new constants in the class (near the existing `SceneryReach` constant):
+  `private const float EaveHeight = 0.12f; // thin horizontal strip`
+  `private const float EaveDepth = 0.25f; // how far it sticks out from the wall`
+  Add a private static method `BuildRoofEaves(Site site)` that iterates `site.Area.Buildings`. For each `Footprint fp` where `fp.Data.use` is `"residential"` or `"house"` (or contains “residential”), loop over its `fp.Pts` edge‑by‑edge. For each edge compute the outward normal (`Vector2 n = new Vector2(d.y, -d.x).normalized;` where `d = fp.Pts[(i+1)%fp.Pts.Count] - fp.Pts[i];`). Place a thin box with `site.Overhead.At(pos).Box(size, roofMat);` where `pos` is the midpoint of the edge lifted to roof height (`float roofY = fp.Data.height + EaveHeight/2f;` – use `fp.Data.height` if present, otherwise a default of `4.5f`). `size` is `new Vector3(EaveDepth, EaveHeight, edgeLength)` rotated to follow the edge (`Quaternion.LookRotation(new Vector3(d.x,0f,d.y))`). Use the same roof material the building already uses (e.g. `Materials.Roof`).
+  Call this new method from `BuildBuildings(site)` (add the line `BuildRoofEaves(site);` after the existing building‑generation calls).
+  What the player sees: most houses now have a modest overhanging strip around the roof edge, matching the hand‑built raid town’s eave detail, while streets, interiors and colliders remain unchanged. All existing code structure, data formats and other map‑building steps stay intact.
+  - 20:24 landed by 1htsserver in 8.2 min: **Changes made**
+- [x] In Assets/Scripts/Extraction/RaidWorldRules.cs: Fix RaidWorldRules.PickInsertion so it only closes exits near the spawn point when the raid uses a helicopter insertion (heli == true).
+  *Current behaviour:* When the raid is on‑foot (lz == OnFoot) the method still runs the loop that sets `e.Open = false` for any exit within 45 units of `spawn` (which defaults to Vector3.zero). This can close all exits, leaving the player with no usable exits or forcing the fallback “open farthest exit”, which is unintended for on‑foot raids.
+  *Fix:* Wrap the distance‑based closing logic in a check for `heli`. Only execute the loop that may close exits when a helicopter insertion was chosen.
+  Code change:
+  - 20:24 landed by 0htsserver in 2.3 min: **Changed file:** `Assets/Scripts/Extraction/RaidWorldRules.cs`
+- [x] Add a short brass decorative hook to each curtain finial in `Assets/Scripts/World/FurnitureBuilder.RaidOpenings.cs` → method `OpeningCurtains`
+  After the existing finial ellipsoids
+  `m.Ellipsoid(l.P(r0, rodY, rodOff), new Vector3(0.045f, 0.045f, 0.045f), brass, 6, 4);`
+  `m.Ellipsoid(l.P(r1, rodY, rodOff), new Vector3(0.045f, 0.045f, 0.045f), brass, 6, 4);`
+  add two small cylinders that extend outward from each ellipsoid, using the same `brass` material:
+  `float hookDepth = side * (face + 0.075f + 0.025f); // a bit beyond the finial`
+  `float hookLen = 0.04f; // 4 cm long hook`
+  `float hookRad = 0.006f; // 6 mm radius`
+  `// left finial hook`
+  - 20:25 landed by hts-llm in 3 min: **Changed**
+- [x] In Assets/Scripts/World/Map/MapGeometry.cs, change the ClipPolygon method to remove vertices that are essentially duplicate after the anticlockwise fix, preventing zero‑area edges that corrupt building facades.
+  After the line `MakeAnticlockwise(cur);` add a call to a new helper that filters out points whose distance to the previous kept point is less than `EPS` (the constant already defined below).
+  Implement a private static method `static List<Vector2> RemoveNearDuplicates(List<Vector2> src)` that creates a new list, copies the first point, then for each subsequent point adds it only if `Vector2.Distance(point, lastKept) > EPS`. If the resulting list has fewer than 3 points, return an empty list.
+  Replace the final `return cur;` with `return RemoveNearDuplicates(cur);`.
+  The player will see buildings with clean, non‑overlapping walls and roofs; tiny slivers that previously caused missing or flickering geometry disappear, while all existing functionality (clipping, winding) stays unchanged.
+  - 20:26 landed by 0htsserver in 2.2 min: **Changed Files**
+- [x] Add four small metal nail‑head cylinders to the `WeaponRack(RaidMesh m, System.Random r)` builder in Assets/Scripts/World/RaidLayouts.cs to suggest period‑correct mounting nails on the bottom of the wooden frame.
+  Use the existing `boltMat` (`DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f))`).
+  Define `float nailRadius = 0.006f; float nailHeight = 0.012f;`.
+  Create the positions: `Vector3[] nailPos = { new Vector3(-0.95f, 0.02f, -0.1f), new Vector3(-0.95f, 0.02f, 0.1f), new Vector3(0.95f, 0.02f, -0.1f), new Vector3(0.95f, 0.02f, 0.1f) };`.
+  Loop: `foreach (var p in nailPos) m.Cylinder(p, nailRadius, nailHeight, 8, boltMat);`.
+  Insert this code right after the two vertical post boxes (`m.Box(new Vector3(-0.95f, 0.8f, -0.1f)…` and its counterpart) and before the top horizontal beam (`m.Box(new Vector3(0f, 1.3f, -0.08f)…`).
+  No other code changes are required; colliders and interaction points remain unchanged.
+  - 20:27 landed by hts-llm in 2.1 min: **Changed file**
+- [x] In Assets/Scripts/Camera/IsoCameraFollow.cs: Fix IsoCameraFollow Awake method: remove the hard‑coded `ViewBlendSeconds = 0f;` which overwrites the serialized blend time and forces instant view cuts.
+  Open `Assets/Scripts/Camera/IsoCameraFollow.cs` and locate the `Awake()` method.
+  Delete or comment out the line `ViewBlendSeconds = 0f;` (currently set after `_views = CinemachineViews.Attach(_cam);`).
+  The field `ViewBlendSeconds` already has a default value (‑ the tooltip says “Seconds the camera glides … (0 cuts)”). By clearing the assignment, the value set in the inspector (or its serialized default of 0.3 seconds) is used, restoring the intended smooth blend between shoulder and first‑person views.
+  Result: when the player cycles views, the camera now interpolates over the configured blend time instead of snapping instantly, matching the design description and improving visual feedback.
+  - 20:28 landed by 1htsserver in 1.4 min: **Changed**
+- [x] In Assets/Scripts/World/FurnitureBuilder.cs add a few tiny black rivet details to the front of every locker door in `FurnitureBuilder.LockerBank(RaidMesh m, System.Random rng, int count, Color body)` so the lockers look a bit more industrial and worn.
+  After the line that creates the pull‑handle — `m.Box(new Vector3(x, 1.25f, 0.235f), new Vector3(0.02f, 0.12f, 0.005f), Mt(Chrome));` — insert up to three rivet boxes per door.
+  Use `Chance(rng, 0.6)` to decide whether a rivet is placed, giving each door a random‑but‑deterministic pattern.
+  For each rivet, add `m.Box(new Vector3(x + R(rng, -0.015f, 0.015f), 1.26f + R(rng, -0.01f, 0.01f), 0.245f), new Vector3(0.004f, 0.004f, 0.001f), M(Black));` – a 4 mm × 4 mm × 1 mm black cube positioned just above and near the handle.
+  Keep the existing colliders and interaction points unchanged; the rivets are purely visual.
+  No more than 12 new primitive calls are added in total (max 3 rivets × door × count ≤ 12 for typical counts).
+  - 20:30 landed by hts-llm in 2.5 min: **Changed file**
+- [x] Cache GameManager and ExtractionManager lookups in Update of Assets/Scripts/UI/PauseMenuController.cs to eliminate per‑frame null‑checks
+  In Awake() the fields `_gm` and `_em` are already set (`_gm = GameManager.Instance; _em = ExtractionManager.Instance;`).
+  Remove the two lines in Update(): `if (_gm == null) _gm = GameManager.Instance;` and `if (_em == null) _em = ExtractionManager.Instance;`.
+  The rest of Update() can keep using the cached `_gm` and `_em` without change; they will stay valid for the menu’s lifetime.
+  Player‑visible behavior is unchanged – the pause menu still opens only when the game is playing and not blocked.
+  This eliminates a tiny allocation‑free singleton lookup each frame, reducing GC pressure and CPU time.
+  - 20:29 landed by 1htsserver in 1.7 min: **Changed Files**
+- [x] Add a “Power status” extra action to the CivicToggle fixture in Assets/Scripts/World/Fixtures/RaidCivicFixtures.cs
+  Add a private method `PowerInfo(InteractContext ctx)` that calls `ctx.Notify(PowerGrid.HousePowered ? "The building has power." : "The building has no power.");` inside the `CivicToggle` class.
+  In the static `Create` method, replace the current `_extra` assignment (`t._extra = (c, list) => list.Add(new InteractAction("Inspect", t.Inspect));`) with a lambda that adds both actions: first the existing “Inspect” action and then a new `new InteractAction("Power status", t.PowerInfo)`.
+  No other code changes are required. The player will now see a second extra action “[Q] Power status” when interacting with toggles, receiving a message about whether the house currently has power.
+  - 20:31 landed by 0htsserver in 1.4 min: **Changed files**
+- [x] Edit Assets/Scripts/World/Map/KentuckyMap.Ground.cs – in the `BuildWaterAndLots` method, add a thin “snow‑bank” edge to every parking‑lot polygon so the lot looks plowed and has a raised ice rim, making the raid map look hand‑crafted.
+  - 20:39 landed by hts-llm in 8 min: **Changes Made**
+- [x] Add a tiny dark‑metal nail detail to each picture frame in `Assets/Scripts/World/StarterHome.Lighting.cs` → method `Picture`, using the method’s existing `rng` to pick a corner; size 0.004 m × 0.006 m × 0.002 m, positioned just in front of the frame surface at the chosen corner, re‑using the matte dark‑metal colour.
+  - 20:36 landed by 1htsserver in 3.5 min: **Changes Made**
+- [x] Fix under‑counting of rolled loot in Assets/Scripts/Economy/CentralEconomy.cs (method CentralEconomy.Install)
+  In the Install method the lambda assigned to ItemDatabase.LootRolled currently does `s_Counts[id] = Count(id) + 1;` which adds only 1 to the tracked count regardless of how many items were actually rolled.
+  Replace that line with `s_Counts[id] = Count(id) + n;` so the count is increased by the exact number `n` of items rolled.
+  After the change the economy correctly enforces the Nominal limit: when a loot roll yields multiple stacks of an item, the central count reflects all of them, preventing the player from receiving more of that item than the zone is allowed.
+  No other code needs to change; the rest of the system already uses Count(id) and NominalOf(id) to gate further loot.
+  - 20:35 landed by 0htsserver in 1.1 min: **Summary**
+- [x] Add a simple door knob to every entrance in `KentuckyMap.Enterable` (Assets/Scripts/World/Map/KentuckyMap.Buildings.cs)
+  Insert a small box primitive after the door walls are built, using the existing `doorPoint`, `doorYaw` and `doorOutward` values.
+  `float knobDepth = 0.02f;` // front‑to‑back thickness of the knob
+  `float knobRadius = 0.07f;` // radius of the knob (half width/height)
+  `Vector3 knobCenter = To3(doorPoint + doorOutward * (Thick * 0.5f + knobDepth * 0.5f), DoorHeight * 0.5f);` // centered on door height, slightly offset outward from the wall
+  `Vector3 knobSize = new Vector3(knobDepth, knobRadius * 2f, knobRadius * 2f);` // depth, height, width of the box
+  `Surf knobMat = DecorPalette.Gloss(new Color(0.8f, 0.8f, 0.8f));` // subtle metallic gloss, re‑using the existing palette helper
+  `site.Town.Out.Solid(knobCenter).Box(knobCenter, knobSize, doorYaw, knobMat);` // adds the knob aligned with the door
+  - 20:38 landed by 0htsserver in 1.8 min: Implemented a simple door knob for every entrance in `KentuckyMap.Buildings.cs`. The knob is a small glossy box positioned on the door using
+- [x] Reduce per‑frame string allocation in HudRadiation.LateUpdate (Assets/Scripts/Zone/Radiation.cs)
+  Add a private field `float _prevDoseValue;` alongside the existing cache fields.
+  In LateUpdate, after confirming `show`, compute `float curDose = r.Dose;` and `bool shielded = r.Shielded;` and `string trend = r.Intake > 0.0002f ? " \u25B2\u25B2" : r.Intake > 0.00002f ? " \u25B2" : "";`.
+  Replace the current `if (doseStr != _prevDose || trend != _prevTrend || shielded != _prevShielded)` with a check that uses the cached float: `if (!Mathf.Approximately(curDose, _prevDoseValue) || trend != _prevTrend || shielded != _prevShielded)`.
+  Inside that block, create the formatted string once: `string doseStr = (curDose * 6f).ToString("0.00");`.
+  Update the UI: `_text.text = "\u2622 " + doseStr + " Sv" + trend + (shielded ? " (iodine)" : ""); UIKit.SetBar(_fill, curDose);`.
+  Store the new cache values: `_prevDoseValue = curDose; _prevTrend = trend; _prevShielded = shielded;`.
+  Remove the now‑unused string field `_prevDose` (or keep it for compatibility but stop updating it).
+  The player sees exactly the same radiation readout, with no visual change, but the HUD no longer allocates a new string each frame when the dose has not changed, reducing GC pressure.
+  - 20:40 landed by 1htsserver in 2.5 min: **Changes made**
+- [x] Add a “Toggle lantern switch” action to Assets/Scripts/World/Fixtures/OutdoorLantern.cs
+  In `OutdoorLantern.GetActions` insert
+  `into.Add(new InteractAction("Toggle lantern switch", ToggleLantern));` (e.g., after the “Check lantern status” line).
+  Add a new private method `ToggleLantern(InteractContext ctx)` that:
+  – Calls `MakeNoise(0.2f);`
+  – If `_lamp == null` → `ctx.Notify("There's no bulb to switch.");` and return.
+  – If `!PowerGrid.HousePowered` → `ctx.Notify("Can't switch – no power.");` and return.
+  – Flips the switch with `_lamp.SwitchedOn = !_lamp.SwitchedOn;`
+  – Sends a notification:
+  - 20:52 landed by hts-llm in 12.8 min: **Changes made**
+- [x] Append five new flavor‑text strings to the `BrushLines` array in Assets/Scripts/World/Fixtures/BasinFixture.cs so that brushing teeth can also convey the harsh winter, lingering memory of the old world and the survivor’s quiet resolve.
+  Use the existing entry `"The metal of the tap feels icy, and you wonder how long the mains will stay silent."` as the style reference.
+  The new lines should each be a single sentence, period‑correct, and fit the 1993 Kentucky winter setting.
+  Do not modify any other code, ordering, or formatting.
+  - 20:41 landed by 0htsserver in 2.3 min: Implemented five new flavor‑text lines for brushing teeth in **Assets/Scripts/World/Fixtures/BasinFixture.cs**.
+- [x] Fix `MapGeometry.Contains` in Assets/Scripts/World/Map/MapGeometry.cs so points that lie exactly on the polygon edge are considered inside, preventing the player from being treated as outside when standing on a building’s border.
+  Change the line
+  - 20:47 landed by 0htsserver in 1.4 min: **Changed**

@@ -33,3 +33,4 @@ appends one short bullet at the end. Keep each bullet to a line or two.
 - UI fade logic now disables the MonoBehaviour when idle, reducing per‑frame overhead.
 - Cache per‑client temporary collections in `NetWorld.SendAi` (static `s_Visible` and `s_Keep`) to avoid allocating a new List and HashSet each tick, reducing GC pressure.
 - Added intermediate water‑level feedback to RaidStoreWaterHeater.Knock for richer player cues.
+- When extending a string array literal, ensure the closing brace and semicolon are moved after the new entries to keep syntax correct.

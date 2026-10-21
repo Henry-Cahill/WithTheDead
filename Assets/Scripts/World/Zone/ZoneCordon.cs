@@ -149,6 +149,11 @@ namespace CloneZ
             Vector3 boothAt = at + Quaternion.Euler(0f, yaw, 0f) * new Vector3(4.5f, 0f, 1.5f);
             var sb = new SiteBuilder(world, "Checkpoint", boothAt, yaw, rng);
             sb.Solid.Box(new Vector3(0f, 1.2f, 0f), new Vector3(2.4f, 2.4f, 2.4f), ZoneKit.M(ZoneKit.WardenOlive));
+            // 50% chance door handle on the front panel (front is –Z after the booth’s yaw)
+            if (ZoneKit.R(rng, 0f, 1f) < 0.5f)
+            {
+                sb.Solid.Box(new Vector3(0f, 1.2f, -1.22f), new Vector3(0.02f, 0.12f, 0.04f), ZoneKit.Mt(ZoneKit.RustDark));
+            }
             // Occasionally add a weathered flag on a short pole for visual variety.
             if (ZoneKit.R(rng, 0f, 1f) < 0.6f)
             {

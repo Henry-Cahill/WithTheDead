@@ -37,6 +37,7 @@ namespace CloneZ
             into.Add(new InteractAction("Tap the lantern", Tap));
             into.Add(new InteractAction("Check power", CheckPower));
             into.Add(new InteractAction("Check lantern status", CheckStatus));
+            into.Add(new InteractAction("Toggle lantern switch", ToggleLantern));
         }
 
         private void CheckStatus(InteractContext ctx)
@@ -55,6 +56,7 @@ namespace CloneZ
         {
             ctx.Notify(PowerGrid.HousePowered ? "The house is powered." : "No power: " + (PowerGrid.NoPowerReason ?? "unknown reason") + ".");
         }
+
         private void Tap(InteractContext ctx)
         {
             MakeNoise(0.6f);
@@ -63,6 +65,21 @@ namespace CloneZ
             else if (!_lamp.SwitchedOn) ctx.Notify("Cold glass. It's switched off inside, by the door.");
             else if (!PowerGrid.HousePowered) ctx.Notify("Cold glass. " + (PowerGrid.NoPowerReason ?? "There's no power") + ".");
             else ctx.Notify("Cold glass. Its little sensor is waiting for dusk.");
+        }
+        private void ToggleLantern(InteractContext ctx)
+        {
+            MakeNoise(0.2f);
+            if (_lamp == null)
+            {
+                ctx.Notify("There's no bulb to switch.");
+                return;
+            }
+            if (!PowerGrid.HousePowered)
+            {
+                ctx.Notify("Can't switch – no power.");
+                return;
+            }
+            _lamp.SetSwitchedOn(!_lamp.SwitchedOn);
         }
     }
 }

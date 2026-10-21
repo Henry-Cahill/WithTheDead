@@ -150,7 +150,7 @@ namespace CloneZ
         private int _tuned, _volume = CloneZConfig.ReceiverDefaultVolume, _call;
         private bool _on;
         private float _noiseAt, _captionAt;
-        private Action<InteractContext> _turnOn, _turnOff, _retune, _louder, _softer, _callIn, _checkChannel;
+        private Action<InteractContext> _turnOn, _turnOff, _retune, _louder, _softer, _callIn, _checkChannel, _checkVolume;
         private Action<InteractContext, float, float> _listen;
 
         public override string DisplayName => _name;
@@ -183,7 +183,7 @@ namespace CloneZ
 
         private void Awake()
         {
-            _turnOn = TurnOn;
+            _checkVolume = ctx => ctx.Notify("Current volume: " + (_volume <= 0 ? "low." : _volume >= MaxVolume ? "loud. It carries a long way." : "medium."));
             _turnOff = c => Switch(false);
             _retune = Retune;
             _louder = c => Turn(c, 1);
@@ -219,7 +219,8 @@ namespace CloneZ
             into.Add(new InteractAction("Change channel", _retune).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Turn it up", _louder).DisabledIf(_volume >= MaxVolume, "It won't go any louder").DisabledIf(!near, TooFar));
                 into.Add(new InteractAction("Turn it down", _softer).DisabledIf(_volume <= 0, "It won't go any quieter").DisabledIf(!near, TooFar));
-            into.Add(new InteractAction("Check channel", _checkChannel).DisabledIf(!near, TooFar));
+                into.Add(new InteractAction("Check channel", _checkChannel).DisabledIf(!near, TooFar));
+                into.Add(new InteractAction("Check volume", _checkVolume).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Key the handset and call for help", _callIn)
                 .Timed(2.5f, "Calling in", HumanoidActivity.Use)
                 .DisabledIf(!near, "Get closer to reach the handset"));

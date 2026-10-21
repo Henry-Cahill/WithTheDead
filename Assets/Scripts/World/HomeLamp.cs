@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.AI.Navigation;
 using UnityEngine;
@@ -38,6 +39,7 @@ namespace CloneZ
         private bool _switchedOn;
         private bool _deadBulb;
         private bool _overhead, _ceilingsShown, _isFlickering;
+        private System.Func<bool> _ceilingsVisible;
         private bool _lit;
         private float _next;
 
@@ -106,7 +108,7 @@ internal set
             }
             Transform b = light.transform.Find("Bulb");
             if (b != null) lamp._bulb = b.GetComponent<Renderer>();
-            lamp._next = Time.time + Random.value * CloneZConfig.LampCheckInterval;   // spread the lamps' checks over the frames
+            lamp._next = Time.time + UnityEngine.Random.value * CloneZConfig.LampCheckInterval;   // spread the lamps' checks over the frames
             lamp.Refresh();
             if (lamp._circuit == null)
             {
@@ -122,7 +124,7 @@ internal set
         internal void HangFromCeiling()
         {
             _overhead = true;
-            _ceilingsShown = ViewState.CeilingsVisible;
+            _ceilingsShown = _ceilingsVisible();
             if (_light != null) _light.ShowBulb = !_ceilingsShown;
             SyncGlow();
         }
@@ -170,6 +172,11 @@ internal set
             }
         }
 
+        private void Awake()
+        {
+            _ceilingsVisible = () => ViewState.CeilingsVisible;
+        }
+
         private void OnEnable()
         {
             if (!s_All.Contains(this)) s_All.Add(this);
@@ -185,7 +192,7 @@ internal set
             // Update view‑state dependent glow for ceiling fittings
             if (_overhead)
             {
-                if (ViewState.CeilingsVisible != _ceilingsShown) SyncGlow();
+                if (_ceilingsVisible() != _ceilingsShown) SyncGlow();
             }
             // Update flicker‑dependent glow if flicker state changed
             bool flickerNow = _light?.Flicker ?? false;
@@ -222,7 +229,7 @@ internal set
         {
             if (_overhead)
             {
-                bool ceilings = ViewState.CeilingsVisible;
+                bool ceilings = _ceilingsVisible();
                 if (ceilings != _ceilingsShown)
                 {
                     _ceilingsShown = ceilings;

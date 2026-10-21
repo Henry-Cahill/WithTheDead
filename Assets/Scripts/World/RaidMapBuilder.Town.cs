@@ -230,7 +230,7 @@ namespace CloneZ
                 new Vector3(-13.6f, 0f, -36f), new Vector3(-34.2f, 0f, -40f), new Vector3(-34.6f, 0f, -40.7f),
             };
             foreach (Vector3 p in barrels)
-                Prop(town, p, 0f, new Vector3(0.6f, 0.9f, 0.6f), true, (m, r) => FurnitureBuilder.Barrel(m, r, Vector3.zero, new Color(0.66f, 0.54f, 0.12f), true));
+                Prop(town, p, 0f, new Vector3(0.6f, 0.9f, 0.6f), true, (m, r) => { FurnitureBuilder.Barrel(m, r, Vector3.zero, new Color(0.66f, 0.54f, 0.12f), true); m.Cylinder(Vector3.zero + new Vector3(0f, 0.44f, 0f), 0.298f, 0.018f, 12, DecorPalette.Metal(new Color(0.55f, 0.45f, 0.20f))); });
             // Caution tape strung between stakes across the approach.
             Surf tape = DecorMaterials.Hazard;
             float[] stakes = { -31f, -27f, -21f, -17f };

@@ -1,0 +1,13 @@
+diff --git a/Assets/Scripts/World/Fixtures/BreakerPanel.cs b/Assets/Scripts/World/Fixtures/BreakerPanel.cs
+index 97946fc..dfe9f87 100644
+--- a/Assets/Scripts/World/Fixtures/BreakerPanel.cs
++++ b/Assets/Scripts/World/Fixtures/BreakerPanel.cs
+@@ -71,7 +71,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
+             var breaker = new InteractAction(on ? "Switch off the main breaker" : "Switch on the main breaker", c => Throw(c, !on))
+                 .DisabledIf(!_open, "The panel's door is shut")
+                 .DisabledIf(_open && PowerGrid.Instance == null, "There's no supply to switch");
+-            into.Add(new InteractAction(_open ? "Close the breaker panel" : "Open the breaker panel", c => SetOpen(!_open, false)));
++            into.Add(new InteractAction(_open ? "Close the breaker panel" : "Open the breaker panel", c => SetOpen(!_open, false)));\n            into.Add(new InteractAction(_open ? "Close the breaker panel (quietly)" : "Open the breaker panel (quietly)", c => SetOpen(!_open, true)));
+             into.Add(breaker);
+             into.Add(new InteractAction("Check the power", CheckPower));
+             into.Add(new InteractAction("Inspect breaker panel", c => c.Notify(_open ? "The panel's door is ajar." : "The panel's door is shut.")));

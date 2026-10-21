@@ -243,6 +243,10 @@ namespace CloneZ
             float boltRadius = 0.015f; float boltHeight = 0.02f;
             Vector3[] boltPos = { new Vector3(-0.95f, 0.41f, 0.05f), new Vector3(-0.95f, 0.41f, -0.05f), new Vector3(0.95f, 0.41f, 0.05f), new Vector3(0.95f, 0.41f, -0.05f) };
             foreach (var p in boltPos) m.Cylinder(p, boltRadius, boltHeight, 8, boltMat);
+            // period‑correct mounting nails on the bottom of the wooden frame
+            float nailRadius = 0.006f; float nailHeight = 0.012f;
+            Vector3[] nailPos = { new Vector3(-0.95f, 0.02f, -0.1f), new Vector3(-0.95f, 0.02f, 0.1f), new Vector3(0.95f, 0.02f, -0.1f), new Vector3(0.95f, 0.02f, 0.1f) };
+            foreach (var p in nailPos) m.Cylinder(p, nailRadius, nailHeight, 8, boltMat);
             m.Box(new Vector3(0f, 1.3f, -0.08f), Sz(1.9f, 0.06f, 0.12f), wood);
             var bracketMat = DecorPalette.Metal(new Color(0.30f, 0.30f, 0.28f));
             m.Box(new Vector3(-0.95f, 1.33f, -0.08f), Sz(0.02f, 0.10f, 0.02f), bracketMat);

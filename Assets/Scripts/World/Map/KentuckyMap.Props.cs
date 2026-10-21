@@ -54,10 +54,11 @@ namespace CloneZ
             }
             poles.Sort((p, q) => p.at.sqrMagnitude.CompareTo(q.at.sqrMagnitude));
             var rng = new System.Random(site.Town.Rng.Next());
+            int litCount = 0;
             for (int i = 0; i < poles.Count && i < MaxPoles; i++)
             {
                 float lean = rng.NextDouble() < 0.05 ? R(rng, 8f, 14f) : 0f;
-                bool lit = i < LitPoles && lean == 0f && rng.NextDouble() < 0.8;
+                bool lit = litCount < LitPoles && lean == 0f && rng.NextDouble() < 0.8;
                 Vector3 at = To3(poles[i].at, 0f);
                 RaidMesh m = site.Town.Out.Solid(at);
                 m.SetFrame(at, poles[i].yaw);
@@ -65,6 +66,7 @@ namespace CloneZ
                 m.ResetFrame();
                 site.Town.PropCollider(at + Vector3.up * 2.75f, new Vector3(0.3f, 5.5f, 0.3f), poles[i].yaw);
                 if (lit) site.Town.Light(site.Town.World, lamp, new Color(1f, 0.72f, 0.42f), 13f, 2.2f, rng.NextDouble() < 0.25, i < 3);
+                if (lit) litCount++;
             }
         }
 
@@ -188,6 +190,10 @@ namespace CloneZ
                     continue;
                 }
                 if (signs >= MaxSigns || string.IsNullOrEmpty(s.Data.name) || !SignColours(s.Data.kind, out Color bg, out Color fg)) continue;
+                // Slight random perturbation of sign background colour for hand‑painted variation
+                bg.r = Mathf.Clamp01(bg.r + (float)rng.NextDouble() * 0.04f - 0.02f);
+                bg.g = Mathf.Clamp01(bg.g + (float)rng.NextDouble() * 0.04f - 0.02f);
+                bg.b = Mathf.Clamp01(bg.b + (float)rng.NextDouble() * 0.04f - 0.02f);
                 if (!NearestFree(site, s.At, 1.4f, out Vector2 spot)) continue;
                 string text = s.Data.name.ToUpperInvariant();
                 if (text.Length > 24) text = text.Substring(0, 24).TrimEnd();

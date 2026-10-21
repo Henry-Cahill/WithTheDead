@@ -157,6 +157,19 @@ namespace CloneZ
             if (b - a < 0.2f) return;
             // Kerb, then 2.25 m of sidewalk with a dusting of snow.
             Slab(town, alongX, coord, a, b, side > 0 ? hw : -hw - 0.25f, side > 0 ? hw + 0.25f : -hw, 0.05f, DecorPalette.Matte(Kerb));
+            // Add subtle rust‑stain patches on the concrete kerb (20 % chance)
+            if (rng.NextDouble() < 0.2)
+            {
+                float rustStart = R(rng, a, b - R(rng, 0.2f, 0.4f));
+                float rustLen = R(rng, 0.2f, 0.4f);
+                float across = coord + (side > 0 ? hw + 0.125f : -hw - 0.125f);
+                // Slightly elevated, thin rectangle to simulate rust stain
+                Slab(town, alongX, coord, rustStart, rustStart + rustLen,
+                    side > 0 ? hw + 0.02f : -hw - 0.27f,
+                    side > 0 ? hw + 0.07f : -hw - 0.22f,
+                    0.051f,
+                    DecorPalette.Matte(new Color(0.55f, 0.35f, 0.20f)));
+            }
             // Add subtle metal edging strip along the kerb (30 % chance)
             if (rng.NextDouble() < 0.3)
             {

@@ -113,7 +113,37 @@ namespace CloneZ
                 "The back reads: \"Stay safe, keep the fire alive.\"",
                 "No return address.",
             },
-        };
+            new[]
+            {
+                "A folded flyer announcing a community potluck at the town hall, featuring a stew and live music.",
+                "\"All are welcome. Bring a dish to share.\"",
+                "A doodle of a ladle appears in the margin."
+            },
+            new[]
+            {
+                "A torn newspaper clipping about a recent power outage, dated Dec 5.",
+                "\"The lights went out at 3pm. No restoration timeline provided.\"",
+                "A coffee stain drips down the page."
+            },
+            new[]
+            {
+                "A handwritten invitation to a secret meet-up at the old mill, signed only with initials \"J.\"",
+                "\"Meet me at dusk, bring the old map.\"",
+                "The paper is creased and smells of tobacco."
+            },
+            new[]
+            {
+                "A weather warning posted on a bulletin board: \"Heavy snowfall expected tomorrow. Stay indoors.\"",
+                "The paper flutters in the wind.",
+                "Someone crossed out \"tomorrow\" and wrote \"tonight\"."
+            },
+            new[]
+            {
+                "A recipe card for \"Spiced Apple Cider\", inked with a doodle of a mug.",
+                "\"Boil water, add apples, cinnamon, and sugar. Serve warm.\"",
+                "A small cider stain darkens the corner."
+            },
+            };
 
 private static readonly string[] NumberLines =
         {

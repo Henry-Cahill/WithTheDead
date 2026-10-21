@@ -90,12 +90,18 @@ namespace CloneZ
                     }
                     // occasional rust spots on the corrugated sheet
                     Surf rust = DecorPalette.Matte(new Color(0.55f, 0.30f, 0.20f));
-                    for (float x = -len * 0.5f + 0.3f; x < len * 0.5f; x += R(rng, 2f, 4f))
-                    {
-                        float w = R(rng, 0.2f, 0.4f);
-                        // small matte box placed flush on sheet surface to simulate rust stain
-                        m.Box(new Vector3(x, 0.01f, 0f), new Vector3(w, 0.02f, 0.02f), rust);
-                    }
+for (float x = -len * 0.5f + 0.3f; x < len * 0.5f; x += R(rng, 2f, 4f))
+{
+    float w = R(rng, 0.2f, 0.4f);
+    // small matte box placed flush on sheet surface to simulate rust stain
+    m.Box(new Vector3(x, 0.01f, 0f), new Vector3(w, 0.02f, 0.02f), rust);
+}
+// occasional snow drifts sitting on the corrugated sheet surface
+for (float x = -len * 0.5f + 0.8f; x < len * 0.5f; x += R(rng, 3f, 5f))
+{
+    float w = R(rng, 0.3f, 0.6f);
+    m.Box(new Vector3(x, 2.45f, 0f), new Vector3(w, 0.05f, 0.3f), DecorMaterials.Snow);
+}
                     break;
                 }
                 case 1:

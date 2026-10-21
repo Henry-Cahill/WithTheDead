@@ -203,6 +203,15 @@ for (float x = -len * 0.5f; x <= len * 0.5f; x += 4f)
                     float r = ZoneKit.R(rng, 2.6f, 3.3f), h = ZoneKit.R(rng, 5f, 8f);
                     sb.Solid.Cylinder(Vector3.zero, r, h, 16, ZoneKit.Mt(ZoneKit.V(new Color(0.55f, 0.55f, 0.50f), rng)));
                     sb.Solid.Cylinder(new Vector3(0f, h, 0f), r * 0.98f, 0.4f, 16, ZoneKit.Mt(ZoneKit.RustDark));
+                    // Add 2‑4 rust‑stained bolt heads around the tank's top rim for visual wear
+                    int boltCount = rng.Next(2, 5);
+                    for (int b = 0; b < boltCount; b++)
+                    {
+                        float angle = (float)rng.NextDouble() * Mathf.PI * 2f;
+                        float boltRadius = r * 0.94f; // slightly inset from the rim
+                        Vector3 boltPos = new Vector3(Mathf.Cos(angle) * boltRadius, h + 0.02f, Mathf.Sin(angle) * boltRadius);
+                        sb.Solid.Cylinder(boltPos, 0.015f, 0.02f, 8, ZoneKit.Mt(ZoneKit.RustDark));
+                    }
                     sb.Flat.Box(new Vector3(0f, h * 0.4f, -r - 0.01f), new Vector3(r * 1.2f, 0.5f, 0.02f), DecorMaterials.Hazard);
                     sb.Collider(new Vector3(0f, h * 0.5f, 0f), new Vector3(r * 1.7f, h, r * 1.7f));
                     if (rng.NextDouble() < 0.5) sb.Storage("Valve house locker", "spill_locker", new Vector3(r + 0.6f, 1f, 0f), ContainerType.ToolBench, 4);

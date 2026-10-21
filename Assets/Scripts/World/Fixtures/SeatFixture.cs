@@ -83,6 +83,7 @@ namespace CloneZ
             if (seat.IsSittingOn(this))
             {
                 into.Add(new InteractAction(_standLabel, c => c.Seat.Stand()));
+                into.Add(new InteractAction("Stand up slowly", c => { c.Seat?.Stand(); c.Notify("You rise slowly, stretching out a bit before standing."); }));
                 if (_lounge)
                 {
                     bool sunk = seat.Comfort > _comfort + 0.01f;

@@ -35,9 +35,16 @@ namespace CloneZ
         /// <summary>True when <paramref name="q"/> is inside the polygon (even-odd rule).</summary>
         public static bool Contains(List<Vector2> p, Vector2 q)
         {
+            // Points on the edge are considered inside. First check if q lies within EPS of any edge.
+            for (int i = 0, j = p.Count - 1; i < p.Count; j = i++)
+            {
+                if (DistanceToSegment(q, p[j], p[i]) <= EPS)
+                    return true;
+            }
             bool inside = false;
             for (int i = 0, j = p.Count - 1; i < p.Count; j = i++)
             {
+                // Ray‑casting algorithm (even‑odd rule). Use strict < for crossing to keep consistency.
                 if ((p[i].y > q.y) != (p[j].y > q.y)
                     && q.x < (p[j].x - p[i].x) * (q.y - p[i].y) / (p[j].y - p[i].y) + p[i].x)
                     inside = !inside;
@@ -142,17 +149,40 @@ namespace CloneZ
                 }
                 cur = next;
             }
-            return cur;
+            // Ensure consistent winding for triangulation
+        MakeAnticlockwise(cur);
+        // Remove near‑duplicate vertices introduced by clipping
+        return RemoveNearDuplicates(cur);
         }
+
+        private static List<Vector2> RemoveNearDuplicates(List<Vector2> src)
+        {
+            if (src == null || src.Count == 0) return new List<Vector2>();
+            var result = new List<Vector2>(src.Count);
+            // Add first point
+            result.Add(src[0]);
+            for (int i = 1; i < src.Count; i++)
+            {
+                var pt = src[i];
+                var last = result[result.Count - 1];
+                if (Vector2.Distance(pt, last) > EPS)
+                    result.Add(pt);
+            }
+            // If less than 3 points, return empty list as polygon invalid
+            if (result.Count < 3) return new List<Vector2>();
+            return result;
+        }
+
+        private const float EPS = 1e-5f;
 
         private static bool Inside(Vector2 p, Rect r, int edge)
         {
             switch (edge)
             {
-                case 0: return p.x >= r.xMin;
-                case 1: return p.x <= r.xMax;
-                case 2: return p.y >= r.yMin;
-                default: return p.y <= r.yMax;
+                case 0: return p.x >= r.xMin - EPS;
+                case 1: return p.x <= r.xMax + EPS;
+                case 2: return p.y >= r.yMin - EPS;
+                default: return p.y <= r.yMax + EPS;
             }
         }
 

@@ -46,8 +46,11 @@ namespace CloneZ
             t._occlusion = occlusion;
             t._onLabel = onLabel;
             t._offLabel = offLabel;
-            // Add an extra Inspect action showing current on/off state.
-            t._extra = (c, list) => list.Add(new InteractAction("Inspect", t.Inspect));
+            // Add extra actions: Inspect and Power status.
+            t._extra = (c, list) => {
+                list.Add(new InteractAction("Inspect", t.Inspect));
+                list.Add(new InteractAction("Power status", t.PowerInfo));
+            };
             return t;
         }
 
@@ -109,6 +112,8 @@ namespace CloneZ
 
         // Inspect action shows the current on/off state without changing it.
         private void Inspect(InteractContext ctx) => ctx.Notify("The " + _name + " is currently " + (_on ? "on" : "off") + ".");
+        // Power status action shows house power state.
+        private void PowerInfo(InteractContext ctx) => ctx.Notify(PowerGrid.HousePowered ? "The building has power." : "The building has no power.");
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {

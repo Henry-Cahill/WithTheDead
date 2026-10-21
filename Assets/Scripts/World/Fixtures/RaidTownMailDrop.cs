@@ -58,6 +58,19 @@ namespace CloneZ
             into.Add(new InteractAction("Read the collection times", c => c.Notify(
                 "LAST COLLECTION 5 PM WEEKDAYS, NOON SATURDAY. Taped under it in marker: NO PICK-UP UNTIL FURTHER NOTICE.")));
             into.Add(new InteractAction("Inspect the box", c => c.Notify("The blue paint is chipped and the metal groans with each gust of wind.")));
+            // Preview the next letter without consuming it
+            into.Add(new InteractAction("Read next letter (preview)", PeekNext).Timed(0.8f, "Peeking into the chute", HumanoidActivity.Use));
+        }
+
+        private void PeekNext(InteractContext ctx)
+        {
+            MakeNoise(CloneZConfig.FixtureNoiseSmall);
+            if (_read >= Letters.Length)
+            {
+                ctx.Notify("The chute is empty.");
+                return;
+            }
+            ctx.Notify(Letters[_read]);
         }
 
         private void PeerIn(InteractContext ctx)

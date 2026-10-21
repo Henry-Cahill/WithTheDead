@@ -222,7 +222,21 @@ namespace CloneZ
                 Surf casing = DecorPalette.Matte(room != null ? room.Design.Trim : TrimWhite);
                 float off = side * (Half + 0.012f);
                 m.Box(f.P(o0 - 0.035f, cy, off), f.Size(0.07f, hh + 0.14f, 0.024f), casing);
+                    // Add subtle paint‑chip detail on the exterior casing
+                    if (rng.NextDouble() < 0.5)
+                    {
+                        float chipY = WindowSill + 0.1f + (float)(rng.NextDouble() * 0.2f);
+                        float chipZ = off + (float)(rng.NextDouble() * 0.01f - 0.005f);
+                        m.Box(f.P(o0 - 0.035f, chipY, chipZ), f.Size(0.04f, 0.02f, 0.005f), DecorPalette.Matte(TrimWhite * 0.6f));
+                    }
                 m.Box(f.P(o1 + 0.035f, cy, off), f.Size(0.07f, hh + 0.14f, 0.024f), casing);
+                    // Add subtle paint‑chip detail on the exterior casing
+                    if (rng.NextDouble() < 0.5)
+                    {
+                        float chipY = WindowSill + 0.1f + (float)(rng.NextDouble() * 0.2f);
+                        float chipZ = off + (float)(rng.NextDouble() * 0.01f - 0.005f);
+                        m.Box(f.P(o1 + 0.035f, chipY, chipZ), f.Size(0.04f, 0.02f, 0.005f), DecorPalette.Matte(TrimWhite * 0.6f));
+                    }
                 m.Box(f.P(f.Mid, WindowHead + 0.035f, off), f.Size(w + 0.14f, 0.07f, 0.024f), casing);
                 m.Box(f.P(f.Mid, WindowSill + 0.02f, side * (Half + 0.035f)), f.Size(w + 0.18f, 0.04f, 0.07f), casing);
                 if (room != null) continue;

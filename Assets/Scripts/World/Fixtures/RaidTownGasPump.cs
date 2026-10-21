@@ -51,7 +51,17 @@ namespace CloneZ
                 "Regular, $1.09 9/10 a gallon. The last sale is frozen on the wheels: 11.4 gallons, $12.53. Then nothing.")));
             into.Add(new InteractAction("Sniff the hose", c => c.Notify(
                 "Gasoline, sharp and sweet. The tanks under the forecourt aren't dry \u2014 just out of reach without the cashier's switch.")));
-            if (_lifted) into.Add(new InteractAction("Tap the nozzle", TapNozzle));
+            if (_lifted) {
+                into.Add(new InteractAction("Tap the nozzle", TapNozzle));
+                into.Add(new InteractAction("Check for leak", CheckLeak));
+                into.Add(new InteractAction("Inspect the price tag", c => c.Notify("The rusted price tag reads $1.09 per gallon, a relic of harder times.")));
+                into.Add(new InteractAction("Listen to the pump's hum", c => c.Notify("The pump emits a low, mournful hum against the winter wind.")));
+                into.Add(new InteractAction("Feel the cold metal", c => c.Notify("The metal is bitterly cold, frosting your fingertips.")));
+                into.Add(new InteractAction("Observe the frost on the hose", c => c.Notify("A thin layer of frost clings to the hose, glinting in the pale light.")));
+                into.Add(new InteractAction("Check the fuel gauge", c => c.Notify("The analog gauge points to zero; the pump is out of fuel.")));
+                into.Add(new InteractAction("Read the warning sign", c => c.Notify("The warning sign warns of slippery ice—caution advised.")));
+
+            }
         }
 
         private void ToggleNozzle(InteractContext ctx)
@@ -63,16 +73,28 @@ namespace CloneZ
                 : "You hang the nozzle back in its cradle with a clunk.");
         }
 
-        private void TapNozzle(InteractContext ctx)
+private void TapNozzle(InteractContext ctx)
+    {
+        if (!_lifted)
         {
-            if (!_lifted)
-            {
-                ctx.Notify("The nozzle is still in its cradle.");
-                return;
-            }
-            MakeNoise(CloneZConfig.RaidPumpNoise);
-            ctx.Notify("You give the nozzle a quick tap; it squeaks faintly but nothing else happens.");
+            ctx.Notify("The nozzle is still in its cradle.");
+            return;
         }
+        MakeNoise(CloneZConfig.RaidPumpNoise);
+        ctx.Notify("You give the nozzle a quick tap; it squeaks faintly but nothing else happens.");
+    }
+
+    private void CheckLeak(InteractContext ctx)
+    {
+        if (!_lifted)
+        {
+            ctx.Notify("You must lift the nozzle before checking for a leak.");
+            return;
+        }
+        // Play the pump noise for feedback.
+        MakeNoise(CloneZConfig.RaidPumpNoise);
+        ctx.Notify("You inspect the nozzle for a leak. The pump hums but shows no obvious leak.");
+    }
 
     }
 }

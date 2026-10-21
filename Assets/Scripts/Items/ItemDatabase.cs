@@ -369,11 +369,12 @@ namespace CloneZ
         private static bool s_Init;
 
         /// <summary>Retrieves the item definition for the given identifier, or null if not found.</summary>
-        public static ItemDef Get(string id)
-        {
-            EnsureInit();
-            return s_Items.TryGetValue(id, out ItemDef def) ? def : null;
-        }
+public static ItemDef Get(string id)
+{
+    if (string.IsNullOrEmpty(id)) return null;
+    EnsureInit();
+    return s_Items.TryGetValue(id, out ItemDef def) ? def : null;
+}
 
         /// <summary>
         /// Loads the static content catalogue, with the content database as the source of truth.

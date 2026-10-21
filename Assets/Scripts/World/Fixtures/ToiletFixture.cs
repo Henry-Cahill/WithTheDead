@@ -265,6 +265,7 @@ namespace CloneZ
             string line = UseLines[Random.Range(0, UseLines.Length)];
             if (!CanFlush && !WaterMains.MainsOn) line += " Not that there's the water left to flush it.";
             ctx.Notify(line);
+            LightingFixtures.Calm(ctx, CloneZConfig.ToiletUseCalm);
         }
 
         /// <summary>Flushes the cistern, plays sound, and notifies the player of the result.</summary>

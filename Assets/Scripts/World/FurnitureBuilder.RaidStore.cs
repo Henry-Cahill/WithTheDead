@@ -34,6 +34,9 @@ namespace CloneZ
             }
             m.Box(new Vector3(0f, 0.97f, 0f), new Vector3(0.86f, 0.14f, 0.58f), M(c));
             m.Box(new Vector3(0f, 1.0405f, -0.02f), new Vector3(0.62f, 0.002f, 0.42f), Gs(new Color(0.14f, 0.18f, 0.2f)));
+            // Thin random‑thickness snow‑dust layer on top of the copier cabinet
+            float snowThick = R(rng, 0.002f, 0.006f);
+            m.Box(new Vector3(0f, 1.045f + snowThick/2f, 0f), new Vector3(0.86f, snowThick, 0.58f), M(DecorProps.SnowWhite));
             m.FlatUV(new Vector3(-0.1f, 1.0435f, -0.04f), 0.21f, 0.28f, 90f + R(rng, -6f, 6f), DecorMaterials.Paper(rng.Next(3)), new Rect(0f, 0f, 1f, 1f));
             // The output tray on the left, a sheet or two in it.
             m.Box(new Vector3(-0.49f, 0.73f, 0f), new Vector3(0.08f, 0.02f, 0.4f), M(c * 0.8f));

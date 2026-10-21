@@ -77,6 +77,7 @@ namespace CloneZ
         public readonly MapManifest Manifest;
         private readonly HashSet<long> _regions = new HashSet<long>();
         private MapPlace[] _places;
+        private System.Random _rand;
 
         public MapBuild(string id, string folder, MapManifest manifest)
         {
@@ -89,6 +90,9 @@ namespace CloneZ
 
         /// <summary>The side of a region in metres (8,192).</summary>
         public int RegionSize => Manifest.region > 0 ? Manifest.region : 8192;
+
+        /// <summary>Deterministic random seeded by the build Id, useful for consistent visual tweaks.</summary>
+        public System.Random Random => _rand ??= new System.Random(Id.GetHashCode());
 
         /// <summary>The credit line the game shows for the map data.</summary>
         public string Attribution => string.IsNullOrEmpty(Manifest.attribution)

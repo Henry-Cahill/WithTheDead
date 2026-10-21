@@ -407,6 +407,9 @@ namespace CloneZ
             m.Box(new Vector3(0.35f, 0.4f, 0.31f), new Vector3(0.2f, 0.25f, 0.02f), M(new Color(0.15f, 0.15f, 0.15f)));
             m.Cylinder(new Vector3(-0.35f, 0.62f, -0.15f), 0.04f, 0.4f, 6, Mt(new Color(0.3f, 0.28f, 0.25f)));
             m.Box(new Vector3(0f, 0.65f, 0f), new Vector3(0.9f, 0.04f, 0.5f), M(SnowWhite));
+            // Exhaust pipe with a glowing tip
+            m.Cylinder(new Vector3(-0.2f, 0.55f, -0.25f), 0.03f, 0.25f, 6, Mt(new Color(0.12f, 0.12f, 0.12f)));
+            m.Ellipsoid(new Vector3(-0.2f, 0.55f + 0.25f, -0.25f), new Vector3(0.04f, 0.06f, 0.04f), Gl(new Color(1f, 0.75f, 0.3f)), 8, 4);
         }
 
         /// <summary>A black trash bag slumped on the ground.</summary>

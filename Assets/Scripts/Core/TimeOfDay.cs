@@ -68,6 +68,13 @@ namespace CloneZ
         private Camera _cam;
         private WeatherSystem _weather;
 
+        // Cached formatted strings updated only when hour changes.
+        private int _lastHourInt = -1;
+        private string _clockText;
+        private string _clock12Text;
+        private string _amPm;
+        private string _dateText;
+
         private void Awake()
         {
             if (Instance != null && Instance != this) { Destroy(this); return; }
@@ -120,7 +127,7 @@ namespace CloneZ
             Apply();
         }
 
-        private void Apply()
+                private void Apply()
         {
             // Sun elevation: -1 at midnight, 0 at sunrise/sunset, +1 at noon.
             float elevation = Mathf.Sin((Hour / 24f) * Mathf.PI * 2f - Mathf.PI * 0.5f);
@@ -153,6 +160,21 @@ namespace CloneZ
             if (_cam == null) _cam = Camera.main;
             if (_cam != null)
                 _cam.backgroundColor = Color.Lerp(NightSky, DaySky, daylight) * Mathf.Lerp(0.6f, 1f, weatherDim) * scale;
+
+            // Update cached formatted strings only when the hour integer changes.
+            int currentHourInt = Mathf.FloorToInt(Hour);
+            if (currentHourInt != _lastHourInt)
+            {
+                _lastHourInt = currentHourInt;
+                int h = currentHourInt % 24;
+                int m = Mathf.FloorToInt((Hour - Mathf.Floor(Hour)) * 60f);
+                _clockText = string.Format("{0:00}:{1:00}", h, m);
+                int h12 = h % 12 == 0 ? 12 : h % 12;
+                _clock12Text = string.Format("{0:00}:{1:00}", h12, m);
+                _amPm = Hour < 12f ? "AM" : "PM";
+                System.DateTime d = new System.DateTime(Year, StartMonth, StartDayOfMonth).AddDays(Mathf.Max(0, Day - 1));
+                _dateText = d.Month + "/" + d.Day;
+            }
         }
 
         /// <summary>Sight radius scale for zombies: full by day, reduced in darkness.</summary>
@@ -160,42 +182,18 @@ namespace CloneZ
             Mathf.Lerp(CloneZConfig.ZombieNightVisionMultiplier, 1f, LightLevel);
 
         /// <summary>Formatted 24-hour clock, e.g. "07:05".</summary>
-        public string ClockText
-        {
-            get
-            {
-                int h = Mathf.FloorToInt(Hour) % 24;
-                int m = Mathf.FloorToInt((Hour - Mathf.Floor(Hour)) * 60f);
-                return string.Format("{0:00}:{1:00}", h, m);
-            }
-        }
+        public string ClockText => _clockText ?? "";
 
         /// <summary>12-hour digital-watch clock without the suffix, e.g. "12:40" (see <see cref="AmPm"/>).</summary>
-        public string Clock12Text
-        {
-            get
-            {
-                int h = Mathf.FloorToInt(Hour) % 24;
-                int m = Mathf.FloorToInt((Hour - Mathf.Floor(Hour)) * 60f);
-                int h12 = h % 12 == 0 ? 12 : h % 12;
-                return string.Format("{0:00}:{1:00}", h12, m);
-            }
-        }
+        public string Clock12Text => _clock12Text ?? "";
 
         /// <summary>"AM" before noon, "PM" after.</summary>
-        public string AmPm => Hour < 12f ? "AM" : "PM";
+        public string AmPm => _amPm ?? (Hour < 12f ? "AM" : "PM");
 
         /// <summary>Today's calendar date (Day 1 is the configured start date).</summary>
         public System.DateTime Date => new System.DateTime(Year, StartMonth, StartDayOfMonth).AddDays(Mathf.Max(0, Day - 1));
 
         /// <summary>Month/day as a digital watch shows it, e.g. "12/17".</summary>
-        public string DateText
-        {
-            get
-            {
-                System.DateTime d = Date;
-                return d.Month + "/" + d.Day;
-            }
-        }
+        public string DateText => _dateText ?? "";
     }
 }

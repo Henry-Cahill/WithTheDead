@@ -54,6 +54,11 @@ namespace CloneZ
                 m => { });
             M("farm_legend", "Farm Legend", "Old farm legends whisper on the wind, a lingering reminder that the dead watch the fields.",
                 m => { });
+            // New exposure marks as requested
+            M("ice_fingers", "Ice Fingers", "Your fingers are locked in a perpetual chill; even the warmest hand‑warmer feels like an ember.", m => { });
+            M("snow_graze", "Snow‑Grazed Eyes", "The relentless white veil scrapes your sight; shadows hide no longer, and every gust feels like a blade.", m => { });
+            M("radio_hum", "Radio Hum", "Every cheap transistor hums with a low, uneasy whine that never fully fades, making every silence feel uneasy.", m => { });
+            M("farm_omen", "Farm Omen", "Old superstitions echo in the wind, warning that the dead still tend the fields and watch every step.", m => { });
             foreach (Mark k in Marks)
             {
                 ZoneMarkRegistry.Names[k.Id] = k.Name;

@@ -35,6 +35,11 @@ namespace CloneZ
             new Book("Steam West: How the Railroads Crossed the Plains", "Howard Penn", "Pages of timetables. The world used to run on schedules."),
             new Book("Patience, Rummy and Ninety Other Card Games", "Edna Pike", "You learn a patience game called the Clock. You'll lay it out later."),
             new Book("The Mapmaker of Saltmarsh", "Sofia Marlow", "She charts a coast that keeps changing under her. You lose an hour and don't mind."),
+            new Book("The Whispering Pines", "Eleanor Gray", "A haunting tale of a forest that never sleeps."),
+            new Book("Mechanics of the Mind", "Dr. Felix Hsu", "Thoughts about cognition ripple like gears."),
+            new Book("Forgotten Recipes of the Old World", "Marta Delgado", "You wonder if the stew could actually work."),
+            new Book("Chronicles of the Riverfolk", "Liam O'Connor", "A saga of river merchants and hidden coves."),
+            new Book("The Last Lightkeeper", "Samuel Reed", "A solitary watchman's story makes you appreciate the night sky."),
         };
 
         private static readonly string[] Magazines =

@@ -257,7 +257,14 @@ bool leftHandle = rng.Next(2) == 0;
                     FurnitureBuilder.Toilet(m, rng);
                     break;
                 case HomeFurnitureKind.Basin:
-                    FurnitureBuilder.WashBasin(m, rng);
+                     FurnitureBuilder.WashBasin(m, rng);
+                     bool left = rng.Next(2) == 0;
+                     Vector3 faucetPos = new Vector3(left ? -0.08f : 0.08f, 0.95f, 0.22f);
+                     m.Cylinder(faucetPos, 0.01f, 0.12f, 8, DecorPalette.Metal(new Color(0.18f,0.18f,0.20f)));
+                      Vector3 basinKnobPos = new Vector3(left ? -0.08f : 0.08f, 1.07f, 0.22f);
+                      Vector3 knobSize = new Vector3(0.02f, 0.03f, 0.01f);
+                      m.Box(basinKnobPos, knobSize, DecorPalette.Metal(new Color(0.18f,0.18f,0.20f)));
+
                     break;
                 case HomeFurnitureKind.Shower:
                     m.Box(new Vector3(0f, 0.04f, 0f), new Vector3(0.9f, 0.08f, 0.9f), DecorPalette.Gloss(new Color(0.9f, 0.9f, 0.88f)));

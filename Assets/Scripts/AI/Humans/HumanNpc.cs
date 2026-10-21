@@ -395,7 +395,13 @@ namespace CloneZ
             float dist = Vector3.Distance(me, _target.transform.position);
 
             Face(_target.transform.position);
-            if (Time.time < _reloadUntil) { Crouched = _inCover; return; }
+            if (Time.time < _reloadUntil) {
+                // Reloading – clear any cover state because the NPC may be away from cover.
+                _hasCover = false;
+                _inCover = false;
+                Crouched = false;
+                return;
+            }
             if (_mag <= 0)
             {
                 Reload();

@@ -109,22 +109,24 @@ namespace CloneZ
                 if (toCentre.sqrMagnitude > 0.01f) yaw = Quaternion.LookRotation(toCentre).eulerAngles.y;
                 heli = true;
             }
-            int open = 0;
-            foreach (RaidExit e in map.Exits)
-            {
-                if (ExtractionManager.FlatDistance(e.Position, spawn) < 45f) e.Open = false;
-                if (e.Open) open++;
-            }
-            if (open == 0)
-            {
-                RaidExit far = null;
-                float best = 0f;
+            if (heli) {
+                int open = 0;
                 foreach (RaidExit e in map.Exits)
                 {
-                    float d = ExtractionManager.FlatDistance(e.Position, spawn);
-                    if (d > best) { best = d; far = e; }
+                    if (ExtractionManager.FlatDistance(e.Position, spawn) < 45f) e.Open = false;
+                    if (e.Open) open++;
                 }
-                if (far != null) far.Open = true;
+                if (open == 0)
+                {
+                    RaidExit far = null;
+                    float best = 0f;
+                    foreach (RaidExit e in map.Exits)
+                    {
+                        float d = ExtractionManager.FlatDistance(e.Position, spawn);
+                        if (d > best) { best = d; far = e; }
+                    }
+                    if (far != null) far.Open = true;
+                }
             }
             return heli;
         }

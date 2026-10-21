@@ -33,6 +33,40 @@ namespace CloneZ
 
         private static Surf Glass => DecorPalette.Gloss(new Color(0.08f, 0.09f, 0.11f));
 
+                private static void BuildRoofEaves(Site site)
+        {
+            // Add eave trim to residential buildings (house, trailer, etc.)
+            foreach (Footprint f in site.Area.Buildings)
+            {
+                // Consider residential kinds by use field containing "residential" or kind "house"/"trailer"
+                string use = f.Data.use ?? "";
+                if (!use.Contains("residential") && f.Data.kind != "house" && f.Data.kind != "trailer")
+                    continue;
+
+                // Determine roof height: use building height if known, else default 4.5f
+                float roofY = f.Data.height > 0f ? f.Data.height : 4.5f;
+                // Place eave at mid-height of the eave thickness
+                float eaveY = roofY + EaveHeight * 0.5f;
+
+                List<Vector2> pts = f.Pts;
+                for (int i = 0; i < pts.Count; i++)
+                {
+                    Vector2 a = pts[i];
+                    Vector2 b = pts[(i + 1) % pts.Count];
+                    Vector2 d = b - a;
+                    float edgeLen = d.magnitude;
+                    if (edgeLen < 0.05f) continue;
+                    Vector2 n = new Vector2(d.y, -d.x).normalized; // outward normal (right side of anticlockwise)
+                    Vector3 pos = To3((a + b) * 0.5f, eaveY);
+                    // size: depth outward, height thin, length along edge
+                    Vector3 size = new Vector3(EaveDepth, EaveHeight, edgeLen);
+                    Quaternion rot = Quaternion.LookRotation(new Vector3(d.x, 0f, d.y));
+                    // Use same roof material as building's roof surface
+                    Surf roofMat = RoofSurf(f.Data, new System.Random(unchecked((int)f.Data.id) ^ 0x51ED));
+                    site.Overhead.At(pos).Box(pos, size, rot, roofMat);
+                }
+            }
+        }
         private static void BuildBuildings(Site site)
         {
             float half = site.Half;
@@ -68,6 +102,8 @@ namespace CloneZ
             List<Vector2> p = f.Pts;
             int door = DoorEdge(site, f);
             Vector2 doorPoint = new Vector2(float.MaxValue, float.MaxValue);
+            float doorYaw = 0f;
+            Vector2 doorOutward = Vector2.zero;
             float groundTop = Mathf.Min(height, GroundStorey);
             for (int i = 0; i < p.Count; i++)
             {
@@ -84,12 +120,31 @@ namespace CloneZ
                     Wall(site, a, d, inset, d1, len + Thick * 0.5f, 0f, groundTop, yaw, outside, true);
                     Wall(site, a, d, inset, d0, d1, DoorHeight, groundTop, yaw, outside, true);
                     doorPoint = a + d * (len * 0.5f);
+                    doorYaw = yaw;
+                    doorOutward = outward;
                     site.Take(doorPoint + outward * 1.2f, 1.1f);   // keep the doorstep clear of props
                 }
                 else Wall(site, a, d, inset, -Thick * 0.5f, len + Thick * 0.5f, 0f, groundTop, yaw, outside, true);
                 if (height > groundTop)
                     Wall(site, a, d, inset, -Thick * 0.5f, len + Thick * 0.5f, groundTop, height, yaw, outside, false);
-                if (b.kind != "ruin" && b.kind != "silo") Windows(site, a, d, outward, len, height, i == door ? len * 0.5f : -1f);
+                if (b.kind != "ruin" && b.kind != "silo") Windows(site, a, d, outward, len, height, i == door ? len * 0.5f : -1f, rng, outside);
+            }
+            // Add a simple door knob to every entrance
+            if (door >= 0)
+            {
+                float knobDepth = 0.02f; // front‑to‑back thickness of the knob
+                float knobRadius = 0.07f; // radius of the knob (half width/height)
+                Vector3 knobCenter = To3(doorPoint + doorOutward * (Thick * 0.5f + knobDepth * 0.5f), DoorHeight * 0.5f);
+                Vector3 knobSize = new Vector3(knobDepth, knobRadius * 2f, knobRadius * 2f);
+                Surf knobMat = DecorPalette.Gloss(new Color(0.8f, 0.8f, 0.8f));
+                site.Town.Out.Solid(knobCenter).Box(knobCenter, knobSize, doorYaw, knobMat);
+            }
+            // Add simple front porch/stoop for residential buildings
+            if (door >= 0 && (b.kind == "house" || b.kind == "trailer"))
+            {
+                Vector3 porchCenter = To3(doorPoint + doorOutward * 0.4f, 0.1f);
+                Vector3 porchSize = new Vector3(1.5f, 0.2f, 0.8f);
+                site.Town.Out.Solid(porchCenter).Box(porchCenter, porchSize, doorYaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
             }
 
             List<int> tris = MapGeometry.Triangulate(p);
@@ -104,7 +159,7 @@ namespace CloneZ
                 Vector2 A = p[tris[t]], B = p[tris[t + 1]], C = p[tris[t + 2]];
                 floor.Tri(To3(A, 0.02f), To3(B, 0.02f), To3(C, 0.02f), floorSurf);   // face up; the navmesh covers it
                 if (!roofed) continue;
-                over.Tri(To3(A, height), To3(B, height), To3(C, height), DecorMaterials.Snow);   // the snowy roof
+                over.Tri(To3(A, height), To3(B, height), To3(C, height), RoofSurf(b, rng));   // the snowy roof
                 over.Tri(To3(A, ceiling), To3(C, ceiling), To3(B, ceiling), DecorMaterials.Ceiling);   // face down
             }
             if (roofed)
@@ -131,7 +186,7 @@ namespace CloneZ
         }
 
         // Dark panes about every 3.2 m along a wall, on every storey, clear of the door.
-        private static void Windows(Site site, Vector2 a, Vector2 d, Vector2 outward, float len, float height, float doorAt)
+        private static void Windows(Site site, Vector2 a, Vector2 d, Vector2 outward, float len, float height, float doorAt, System.Random rng, Surf outside)
         {
             if (len < 2.4f) return;
             int count = Mathf.Max(1, Mathf.FloorToInt(len / 3.2f));
@@ -147,6 +202,11 @@ namespace CloneZ
                     Vector3 c = To3(at, y);
                     RaidMesh m = y < GroundStorey ? site.Town.Out.Solid(c) : site.Overhead.At(c);
                     m.Upright(c, normal, 1.0f, 1.15f, Glass);
+float sillHeight = 0.08f;
+float sillDepth = 0.02f + 0.02f * (float)rng.NextDouble(); // slight random variation
+var sillCenter = To3(at, y - sillHeight * 0.5f);
+var sillSize = new Vector3(1.0f, sillHeight, sillDepth);
+site.Town.Out.Solid(sillCenter).Box(sillCenter, sillSize, outside);
                 }
             }
         }
@@ -192,7 +252,7 @@ namespace CloneZ
             }
             List<int> tris = MapGeometry.Triangulate(p);
             for (int t = 0; t + 2 < tris.Count; t += 3)
-                m.Tri(To3(p[tris[t]], height), To3(p[tris[t + 1]], height), To3(p[tris[t + 2]], height), DecorMaterials.Snow);
+                m.Tri(To3(p[tris[t]], height), To3(p[tris[t + 1]], height), To3(p[tris[t + 2]], height), RoofSurf(f.Data, rng));
         }
 
         // The door goes in the longest wall facing the nearest street (or the longest wall, when none faces one);
@@ -302,12 +362,46 @@ namespace CloneZ
             }
         }
 
+        private static Surf RoofSurf(MapBuilding b, System.Random rng)
+        {
+            // Deterministic roof colour variation based on building id.
+            // Use the same hashing logic as ExteriorOf's deterministicIndex.
+            int deterministicIndex(long id, int count)
+            {
+                unchecked
+                {
+                    uint hash = (uint)id ^ 0x9e3779b9u;
+                    hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
+                    return (int)(hash % (uint)count);
+                }
+            }
+            int idx = deterministicIndex(b.id, 5);
+            float shade = 0.95f + 0.01f * idx; // 0.95–0.99 brightness
+            return DecorPalette.Matte(new Color(shade, shade, shade));
+        }
+
         private static Surf ExteriorOf(MapBuilding b, System.Random rng)
         {
+            // Deterministic colour selection based on building id to ensure repeatable façade tints.
+            // The colour choice is independent of other random draws for this building.
+            int deterministicIndex(long id, int count)
+            {
+                // Simple hash mixing using xor and multiplication, then modulo.
+                unchecked
+                {
+                    uint hash = (uint)id ^ 0x9e3779b9u;
+                    hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
+                    return (int)(hash % (uint)count);
+                }
+            }
+
             switch (b.kind)
             {
                 case "house": case "trailer":
-                    return DecorMaterials.WallExterior(ExteriorStyle.Siding, SidingColors[rng.Next(SidingColors.Length)]);
+                {
+                    int idx = deterministicIndex(b.id, SidingColors.Length);
+                    return DecorMaterials.WallExterior(ExteriorStyle.Siding, SidingColors[idx]);
+                }
                 case "barn":
                     return DecorMaterials.Planks(new Color(0.46f, 0.18f, 0.14f));
                 case "industrial": case "warehouse": case "silo": case "greenhouse":
@@ -315,9 +409,14 @@ namespace CloneZ
                 case "garage": case "shed": case "ruin": case "canopy":
                     return DecorMaterials.WallExterior(ExteriorStyle.CinderBlock, new Color(0.66f, 0.66f, 0.64f));
                 default:
-                    return rng.NextDouble() < 0.25
-                        ? DecorMaterials.WallExterior(ExteriorStyle.Stucco, new Color(0.80f, 0.78f, 0.72f))
-                        : DecorMaterials.WallExterior(ExteriorStyle.Brick, BrickColors[rng.Next(BrickColors.Length)]);
+                {
+                    // For default styles we still want deterministic colour selection.
+                    bool useStucco = (deterministicIndex(b.id, 4) < 1); // 1 in 4 chance
+                    if (useStucco)
+                        return DecorMaterials.WallExterior(ExteriorStyle.Stucco, new Color(0.80f, 0.78f, 0.72f));
+                    int idx = deterministicIndex(b.id, BrickColors.Length);
+                    return DecorMaterials.WallExterior(ExteriorStyle.Brick, BrickColors[idx]);
+                }
             }
         }
 
