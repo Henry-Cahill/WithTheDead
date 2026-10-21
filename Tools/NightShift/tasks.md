@@ -4235,7 +4235,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   *Method:* `public void DrawWater()` currently does ` _level = Mathf.Max(0f, _level - CloneZConfig.BathDrinkShare);` every time it is called, which is each frame the water point is queried. This instantly subtracts a full “drink‑share” amount regardless of time or player action, so the bath empties far faster than intended, leaving the player with an empty tub even when the taps are off.
   *Fix:* Remove the unconditional subtraction. Replace the line with `// keep current level; visual update only` (or, if a slow evaporation is desired, scale by `Time.deltaTime`). The method should only update the visual:
   - 19:37 landed by hts-llm in 1.9 min: **Changed**
-- [ ] Add a rusted metal band around each quarantine‑area barrel in `Assets/Scripts/World/RaidMapBuilder.Town.cs` → method `DressClinic`, inside the barrel `Prop` lambda.
+- [x] Add a rusted metal band around each quarantine‑area barrel in `Assets/Scripts/World/RaidMapBuilder.Town.cs` → method `DressClinic`, inside the barrel `Prop` lambda.
+  - 19:39 landed by 0htsserver in 3.3 min: **Changes made**
 - [ ] In Assets/Scripts/UI/InventoryUIController.cs: Cache the input device look‑ups in `InventoryUIController` to avoid per‑frame `Mouse.current` / `Keyboard.current` property calls
   Add two private fields `private Mouse _mouse;` and `private Keyboard _keyboard;` to store the current devices.
   Assign them once in `Bind(PlayerInventory player)` just after `_font` is set: `_mouse = Mouse.current; _keyboard = Keyboard.current;`.
