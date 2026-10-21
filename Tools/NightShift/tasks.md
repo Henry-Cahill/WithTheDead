@@ -5315,4 +5315,5 @@ you want to see in game. Indent extra lines under a task to add detail.
   In `GetActions(InteractContext ctx, List<InteractAction> into)` add a new line (e.g., after the “Light all burners” block):
   `into.Add(new InteractAction("Toggle all burners", _toggleAll));`
   Result: when the player opens the stove UI they see a “Toggle all burners” option that lights every burner if any are off, or extinguishes them all if they’re already all lit. No other behavior changes.
-- [ ] In Assets/Scripts/World/Map/KentuckyMap.Ground.cs, edit the `BuildWaterAndLots` method to give frozen water a subtle per‑polygon height variation so the ice looks uneven and more natural.
+- [x] In Assets/Scripts/World/Map/KentuckyMap.Ground.cs, edit the `BuildWaterAndLots` method to give frozen water a subtle per‑polygon height variation so the ice looks uneven and more natural.
+  - 01:30 landed by 1htsserver in 5 min: Implemented subtle per‑polygon height variation for frozen water:

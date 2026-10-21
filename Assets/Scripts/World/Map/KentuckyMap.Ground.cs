@@ -59,7 +59,11 @@ namespace CloneZ
                 if (!water && !lot) continue;
                 List<Vector2> inside = MapGeometry.ClipPolygon(p.Pts, square);
                 if (inside.Count < 3) continue;
-                Fill(site.Town.Out, inside, water ? IceY : LotY, water ? Ice : DecorMaterials.Asphalt);
+                if (water) {
+                    FillIce(site.Town.Out, inside);
+                } else {
+                    Fill(site.Town.Out, inside, LotY, DecorMaterials.Asphalt);
+                }
                 if (water) site.Take(Rect.MinMaxRect(Min(inside, true), Min(inside, false), Max(inside, true), Max(inside, false)));
                 // Add thin snow‑bank edge around parking lots for a plowed look
                 if (lot)
@@ -237,6 +241,31 @@ namespace CloneZ
         }
 
         /// <summary>A flat polygon at height <paramref name="y"/>, face up, into the chunk of its middle.</summary>
+        // Fill ice polygon with subtle per‑vertex height variation for a more natural look
+        private static void FillIce(OutdoorBatches into, List<Vector2> poly)
+        {
+            List<int> tris = MapGeometry.Triangulate(poly);
+            if (tris.Count == 0) return;
+            // Compute a random height offset per vertex using deterministic Perlin noise
+            int vCount = poly.Count;
+            float[] heights = new float[vCount];
+            for (int i = 0; i < vCount; i++)
+            {
+                // Scale coordinates to get gentle variation; clamp to small range
+                float noise = Mathf.PerlinNoise(poly[i].x * 0.13f, poly[i].y * 0.13f);
+                heights[i] = IceY + (noise - 0.5f) * 0.002f; // +-0.001f variation
+            }
+            RaidMesh m = into.Flat(To3(MapGeometry.Middle(poly), 0f));
+            for (int i = 0; i + 2 < tris.Count; i += 3)
+            {
+                Vector3 a = To3(poly[tris[i]], heights[tris[i]]);
+                Vector3 b = To3(poly[tris[i + 1]], heights[tris[i + 1]]);
+                Vector3 c = To3(poly[tris[i + 2]], heights[tris[i + 2]]);
+                m.Tri(a, b, c, Ice);
+            }
+        }
+
+        // Generic polygon fill used for asphalt parking lots and other surfaces
         private static void Fill(OutdoorBatches into, List<Vector2> poly, float y, in Surf surf)
         {
             List<int> tris = MapGeometry.Triangulate(poly);
