@@ -5034,3 +5034,33 @@ you want to see in game. Indent extra lines under a task to add detail.
   Re‑use the existing `hull` colour, darkened (`hull * 0.8f`) for a worn‑metal look; no extra colliders or interaction points are needed.
   This adds only one primitive and fits within the current builder method without altering other geometry.
   - 23:59 landed by 1htsserver in 1.4 min: **Summary**
+- [ ] Add a low‑battery warning toast to Drone.Fly in Assets/Scripts/Gadgets/Gadgets.cs
+  Declare a new private float field `private float _lastBatteryWarn = -1f;` in the Drone class (near the other private fields).
+  Inside `public void Fly(Vector2 move, float lift, float yawDelta, float dt)`, after the line `Battery01 = Mathf.Max(0f, Battery01 - dt / BatterySeconds);` insert:
+  `if (Battery01 <= 0.1f && _lastBatteryWarn > 0.1f) GameEvents.RaiseToast("Drone battery low – land soon.");`
+  `_lastBatteryWarn = Battery01;`
+  This gives players a clear on‑screen cue when a drone’s charge drops below 10 %, improving situational awareness without altering any existing mechanics.
+
+### Auto-planned 2026-10-21: written by the night shift when the queue ran low (delete any you don't want)
+
+- [ ] Add deterministic road‑surface colour variation to Assets/Scripts/World/Map/MapGeometry.cs
+  Define a new palette of period‑appropriate road colours and a helper method that returns a colour based on a road’s OSM id, analogous to the existing building colour logic.
+  `private static readonly Color[] kRoadPalette = new[]`
+  `{`
+  `new Color(0.55f, 0.55f, 0.50f), // faded asphalt`
+  `new Color(0.45f, 0.40f, 0.35f), // weathered gravel`
+  `new Color(0.60f, 0.45f, 0.30f), // dirt‑road brown`
+  `new Color(0.70f, 0.65f, 0.55f) // light‑gray concrete`
+  `};`
+- [ ] Add a subtle line of tiny metal nail heads along the bottom edge of the hub’s interior trim in Assets/Scripts/Hub/HubWorld.cs – edit the `BuildShell` method’s `Deco` call for `"Trim"` so the skirting has a period‑correct, weathered look.
+- [ ] Fix the landmark‑counting bug in Assets/Scripts/World/Zone/ZoneLandmarks.cs so the “landmarks” summary only counts actually‑placed landmarks.
+  In `ZoneLandmarks.Build` replace the line
+  `if (id == "warden_checkpoint" && ZoneCordon.HasGate) { built++; continue; }`
+  with
+  `if (id == "warden_checkpoint" && ZoneCordon.HasGate) { continue; }`
+  This stops incrementing `built` when the warden checkpoint is intentionally skipped (because a gate exists). The player will now see an accurate “X landmarks” count in `ZoneLandmarks.LastSummary`, matching the number of landmarks actually generated in the world. All other logic and fields remain unchanged.
+- [ ] In *Assets/Scripts/World/Zone/ZoneOverlays.cs*, modify the `ZoneForest.Build` method inside the trunk‑creation loop (the call `tm.Cylinder(p + Vector3.down * 0.1f, r, h * (conifer ? 0.45f : 0.9f), 7, ZoneKit.M(conifer ? ZoneKit.V(ZoneKit.Bark, rng) : ZoneKit.V(birch, rng, 0.05f)))`) to add a thin “frost ring” cylinder on top of every conifer trunk;
+  *place* the new cylinder at `p + Vector3.up * (h * 0.44f)` (just below the trunk’s top),
+  *size* `new Vector3(r * 1.02f, 0.02f, r * 1.02f)` (slightly larger radius, 2 cm height),
+  *material* `ZoneKit.Mt(ZoneKit.V(new Color(0.78f, 0.85f, 0.80f), rng, 0.04f))` (a faint frosty tint with small random variation).
+  *use* `tm.Cylinder` again to create this primitive; keep all colliders, interaction points and pivots unchanged and add no more than this single extra primitive per trunk.
