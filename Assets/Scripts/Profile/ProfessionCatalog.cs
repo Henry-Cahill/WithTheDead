@@ -82,7 +82,12 @@ namespace CloneZ
             T("frostbite", "Frostbite", 1, "A bitter wind bites at your skin, a reminder of Kentucky’s icy hills.", m => { }),
             T("snowdrift", "Snowdrift", 1, "You’ve learned to wade through deep drifts, forged in the harsh countryside.", m => { }),
             T("icebound", "Icebound", 1, "Your boots crunch ice, steadying you in the bleak frost of the old world.", m => { }),
-            T("coldfront", "Cold Front", 1, "A sudden cold front sweeps over, and you cling to warmth with stubborn resolve.", m => { })
+            T("coldfront", "Cold Front", 1, "A sudden cold front sweeps over, and you cling to warmth with stubborn resolve.", m => { }),
+            // Kentucky‑winter themed traits
+            T("icecave_explorer", "Ice‑Cave Explorer", 2, "You’ve learned to navigate the frozen caverns, moving through deep drifts with confidence.", m => m.NoiseMult *= 0.9f),
+            T("snowblind", "Snowblind", -2, "The fresh‑fallen snow blurs your sight, making distant shapes harder to discern.", m => m.NightVision -= 0.1f),
+            T("firewood_hoarder", "Fire‑Wood Hoarder", 1, "Your stash of seasoned firewood keeps the hearth alive through the longest nights.", m => { }),
+            T("frostburn", "Frostburn", -1, "Your skin flinches at the slightest chill, turning brief exposure into a shiver.", m => { }),
         };
 
         private static TraitDef T(string id, string name, int cost, string blurb, System.Action<StatMods> apply, params string[] excludes)

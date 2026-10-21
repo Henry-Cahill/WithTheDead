@@ -4733,12 +4733,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `ctx.Notify("You tilt the picture.");`
   If `_calming && Time.time >= _calmAgainAt` then call `LightingFixtures.Calm(ctx, CloneZConfig.PictureCalm);` and set `_calmAgainAt = Time.time + CloneZConfig.PictureCalmCooldown;`.
   The player now sees a new “Tilt the picture” option, the picture’s angle changes by ±15°, and a calming effect is applied just like looking or straightening.
-- [ ] Append four new Kentucky‑winter themed trait entries to the `ProfessionCatalog.Traits` list in Assets/Scripts/Profile/ProfessionCatalog.cs, inserting them after the existing `T("coldfront", …)` line; use the style of `T("frostbite", "Frostbite", 1, "A bitter wind bites at your skin, a reminder of Kentucky’s icy hills.", m => { })` and cover themes of icy caverns, snow‑blindness, fire‑wood hoarding, and chilling sensitivity.
+- [x] Append four new Kentucky‑winter themed trait entries to the `ProfessionCatalog.Traits` list in Assets/Scripts/Profile/ProfessionCatalog.cs, inserting them after the existing `T("coldfront", …)` line; use the style of `T("frostbite", "Frostbite", 1, "A bitter wind bites at your skin, a reminder of Kentucky’s icy hills.", m => { })` and cover themes of icy caverns, snow‑blindness, fire‑wood hoarding, and chilling sensitivity.
   Add:
   `T("icecave_explorer", "Ice‑Cave Explorer", 2, "You’ve learned to navigate the frozen caverns, moving through deep drifts with confidence.", m => m.NoiseMult *= 0.9f),`
   `T("snowblind", "Snowblind", -2, "The fresh‑fallen snow blurs your sight, making distant shapes harder to discern.", m => m.NightVision -= 0.1f),`
   `T("firewood_hoarder", "Fire‑Wood Hoarder", 1, "Your stash of seasoned firewood keeps the hearth alive through the longest nights.", m => { }),`
   `T("frostburn", "Frostburn", -1, "Your skin flinches at the slightest chill, turning brief exposure into a shiver.", m => { }),`
+  - 22:30 landed by 0htsserver in 2.5 min: **Changes made**
 - [ ] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildPoints` so that each gas‑pump pole is given a tiny random yaw instead of being perfectly aligned (replace the hard‑coded `0f` yaw with a random `±5°` value and use the same yaw for the collider).
   Locate the block inside `if (s.Data.kind == "fuel")` where `DecorProps.GasPump(m, rng);` is called.
   Add `float yaw = (float)(rng.NextDouble() * 10.0 - 5.0);` before `m.SetFrame(at3, 0f);`.
