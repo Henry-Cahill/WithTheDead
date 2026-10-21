@@ -4685,3 +4685,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace the existing `var stats = me.GetComponent<PlayerStats>(); var ctrl = me.GetComponent<PlayerController>(); var combat = me.GetComponent<PlayerCombat>(); var inv = me.GetComponent<PlayerInventory>();` with uses of the cached fields.
   This removes four `GetComponent` calls each tick, avoiding per‑frame reflection overhead while keeping the same behavior when the local player changes (e.g., respawn).
 - [ ] Add an “Inspect” action to `Campfire.GetActions` (Assets/Scripts/Survival/FieldSurvival.cs) that tells the player how many seconds the fire will keep burning.
+- [ ] In Assets/Scripts/Hub/Screens/ServiceScreens.cs, class DeployScreen, method BuildContent, extend the landing‑zone options array passed to `HubUI.Cycle` by appending four more entries after the existing `"West"` entry.
+  Replace the literal `new[] { "Random", "North", "East", "South", "West" }` with
+- [ ] Add a deterministic‑random helper to `MapBuild` in `Assets/Scripts/World/Map/WorldStore.cs` so map‑building code can obtain a stable `System.Random` stream for any feature without recreating randoms manually.
+  In `public sealed class MapBuild` after the existing `Random` property, insert:
+  `/// <summary>Returns a new deterministic System.Random seeded with the build Id combined with <paramref name="seed"/>. Use it for per‑feature visual variation (e.g., tree placement, porch chance) so the result is stable across runs.</summary>`
+  `public System.Random DeterministicRandom(int seed) => new System.Random(Id.GetHashCode() ^ seed);`
+  This does not alter existing behaviour; the new method is callable from any map‑builder (e.g., `MapBuild.DeterministicRandom(buildingId.GetHashCode())`) to generate repeat‑able prop selections while keeping colliders and geometry unchanged.
