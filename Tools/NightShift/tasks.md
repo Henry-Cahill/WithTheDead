@@ -4923,11 +4923,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Gl` is the existing helper that returns a glow surface; `WarmGlow` is already defined in the colour section.
   This adds only a visual primitive, leaves all colliders, interaction points and pivots unchanged, and uses no more than one additional primitive.
   - 23:27 landed by 1htsserver in 3 min: **Changed file**
-- [ ] Cache the per‑frame allocation of the body‑camera offset vector in Assets/Scripts/Camera/IsoCameraFollow.cs
+- [x] Cache the per‑frame allocation of the body‑camera offset vector in Assets/Scripts/Camera/IsoCameraFollow.cs
   Add a private static readonly field `private static readonly Vector3 BodycamPosOffset = new Vector3(0.04f, 0.05f, 0.2f);` to the `IsoCameraFollow` class.
   In `PoseBodycam`, replace the literal `new Vector3(0.04f, 0.05f, 0.2f)` with the cached `BodycamPosOffset`.
   Leave the calculation `pos = chest.position + look * BodycamPosOffset;` otherwise unchanged.
   The visual result is identical – the bodycam stays at the same relative chest position – but the allocation of a new `Vector3` each frame is eliminated, reducing GC pressure during shoulder and body‑cam view updates.
+  - 23:29 landed by 1htsserver in 2.1 min: **Changed files**
 - [ ] In Assets/Scripts/World/Fixtures/BasinFixture.cs: Add a “Rinse your mouth” timed action next to the existing “Brush your teeth” entry in `BasinFixture.GetActions`, copy the brush‑action setup and point it to a new `Rinse` handler; then implement `private void Rinse(InteractContext ctx)` that consumes the same water amount as brushing (`CloneZConfig.BasinBrushWater`) and notifies the player with a short line that varies on whether water was available.
   In `GetActions`, after the `brush` block add:
   `var rinse = new InteractAction("Rinse your mouth", Rinse)`

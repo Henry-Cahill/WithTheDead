@@ -585,6 +585,7 @@ namespace CloneZ
         public float BodycamFov = 100f;
         [Tooltip("How much of the chest's own sway (breathing, the walk, recoil) the strapped-on camera takes.")]
         public float BodycamSway = 0.65f;
+        private static readonly Vector3 BodycamPosOffset = new Vector3(0.04f, 0.05f, 0.2f);
 
         // Bodycam: strapped to the chest, not the eyes. It turns with the body, takes only part of the look's pitch,
         // and carries every lurch of the torso — the heavy camera motion that sells the view.
@@ -596,7 +597,7 @@ namespace CloneZ
             {
                 Quaternion bodyLocal = Quaternion.Inverse(Target.rotation) * chest.rotation;
                 rot = look * Quaternion.Slerp(Quaternion.identity, bodyLocal, BodycamSway);
-                pos = chest.position + look * new Vector3(0.04f, 0.05f, 0.2f);
+                pos = chest.position + look * BodycamPosOffset;
             }
             else
             {
