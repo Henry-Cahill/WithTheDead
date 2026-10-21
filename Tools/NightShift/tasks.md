@@ -4669,10 +4669,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add a thin slab `sb.Solid.Box(pos, new Vector3(0.3f, 0.05f, 0.3f), ZoneKit.M(ZoneKit.V(rune, sb.Rng, 0.02f)));`
   These slabs act as subtle weathered rune stones, giving the stone circle more period‑correct visual interest without altering colliders or interaction points; total added primitives are four.
   - 22:07 landed by 0htsserver in 1.8 min: Implemented four weathered stone rune slabs around the central stone pillar in the ChoirSanctum landmark (Assets/Scripts/World/Zone/ZoneLand
-- [ ] Fix stale character‑creation state persisting after cancelling in Assets/Scripts/UI/MainMenuController.cs
+- [x] Fix stale character‑creation state persisting after cancelling in Assets/Scripts/UI/MainMenuController.cs
   In `ShowTitle()` the method clears the UI but does not reset the fields used by the character‑creation flow (`_replaceSlot`, `_name`, `_prof`, `_faction`, `_traits`, `_blood`, `_ironman`).
   If a player opens “New runner”, changes profession, toggles Ironman, etc., then presses Back (which calls `ShowTitle`), those values remain set. Opening “New runner” again will start with the previous selections instead of a fresh default, leading to confusing UI and unintended runner data.
   Add a reset of these fields at the start of `ShowTitle()` (or in a new `ResetCreateState()` called by the Back button). Example change:
+  - 22:20 landed by 0htsserver in 11.4 min: **Changes made**
 - [x] Add a small metal “Filing‑Cabinet” label plate to the front‑top edge of the cabinet built in Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method FilingCabinetBody
   In `FilingCabinetBody` after the last `m.Box` call (the one that draws the inner back panel) insert a new primitive:
   `m.Box(new Vector3(0f, h - 0.015f, -0.025f), new Vector3(0.22f, 0.01f, 0.001f), Mt(Chrome));`
