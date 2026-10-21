@@ -5126,13 +5126,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   The static glow cache makes every ToxicZone use the same intensity, so clouds that should pulse out‑of‑phase all glow synchronously, breaking visual variety.
   Change the glow helper to compute the factor per instance instead of caching it globally.
   - 00:30 landed by 0htsserver in 4.8 min: **Changed file**: `Assets/Scripts/World/ToxicZone.cs`
-- [ ] Reduce per‑frame UI work in Assets/Scripts/Player/Stealth.cs (class HudStealth, method Update)
+- [x] Reduce per‑frame UI work in Assets/Scripts/Player/Stealth.cs (class HudStealth, method Update)
   Add two private float fields `_lastVis` and `_lastNoise` to cache the last values written to the HUD.
   Initialize them to `-1f` (e.g. in `Create`).
   In `Update` compare `_s.Visibility01` and `_s.Noise01` to the cached fields using `Mathf.Approximately`.
   Only call `Set(_eye, …)` or `Set(_ear, …)` when the new value differs (or exceeds a small epsilon).
   After a successful update, store the new value back into the corresponding cache field.
   This leaves the visual HUD unchanged – the eye and ear meters still reflect visibility and noise – but eliminates unnecessary per‑frame rect‑transform and colour assignments when the values haven’t changed.
+  - 00:33 landed by hts-llm in 3.4 min: **Changed file**
 - [x] Add a noise emission when a gate is opened or closed in `Assets/Scripts/World/Camps.cs` → `CampGate.GetActions(InteractContext ctx, List<InteractAction> into)`.
   Modify the existing `InteractAction` that toggles the gate (the one added with `into.Add(new InteractAction(Open ? "Close the gate" : "Open the gate", …)`) so its execution lambda also calls `NoiseSystem.Emit(transform.position, 22f);` after `Apply` and `Broadcast`.
   Result: opening or closing a gate now makes a audible “creak” that can attract zombies, giving players feedback and a small tactical risk. All other code and existing actions remain unchanged.
