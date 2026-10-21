@@ -4595,3 +4595,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add a thin box for the dish’s body (≈ 0.03 m × 0.005 m × 0.02 m) centred at new Vector3(-0.19f, 0.86f, -0.155f) (relative to the tap position new Vector3(0f, 0.86f, -0.165f) used in the method).
   Add a chrome cylinder around the box to act as a decorative rim (radius 0.017 m, height 0.005 m, aligned with the box’s top, centred at the same position).
   Optionally add a tiny ellipsoid of the same “chinа” colour to suggest a soap bar inside the dish (radius 0.008 m, centred 0.002 m above the dish top).
+- [ ] In Assets/Scripts/World/GroundItemRenderer.cs: Cache the per‑frame world‑bounds struct in GroundItemRenderer to avoid recreating it for every material batch in Draw.
+  Add a private field `private Bounds _worldBounds;` to store the bounds.
+  In LateUpdate, after `_eye` is set, compute it once: `_worldBounds = new Bounds(_eye, Vector3.one * (DrawRadius * 2f + 10f));`.
+  In Draw replace `worldBounds = new Bounds(_eye, Vector3.one * (DrawRadius * 2f + 10f)),` with `worldBounds = _worldBounds,`.
+  The player sees exactly the same drawn items and culling behavior; the visual result is unchanged.
+  Only the per‑frame allocation of a Bounds struct per material sub‑mesh is eliminated, reducing GC pressure.
