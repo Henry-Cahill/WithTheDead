@@ -4402,7 +4402,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   In the static `Create` method, replace the current `_extra` assignment (`t._extra = (c, list) => list.Add(new InteractAction("Inspect", t.Inspect));`) with a lambda that adds both actions: first the existing “Inspect” action and then a new `new InteractAction("Power status", t.PowerInfo)`.
   No other code changes are required. The player will now see a second extra action “[Q] Power status” when interacting with toggles, receiving a message about whether the house currently has power.
   - 20:31 landed by 0htsserver in 1.4 min: **Changed files**
-- [ ] Edit Assets/Scripts/World/Map/KentuckyMap.Ground.cs – in the `BuildWaterAndLots` method, add a thin “snow‑bank” edge to every parking‑lot polygon so the lot looks plowed and has a raised ice rim, making the raid map look hand‑crafted.
+- [x] Edit Assets/Scripts/World/Map/KentuckyMap.Ground.cs – in the `BuildWaterAndLots` method, add a thin “snow‑bank” edge to every parking‑lot polygon so the lot looks plowed and has a raised ice rim, making the raid map look hand‑crafted.
+  - 20:39 landed by hts-llm in 8 min: **Changes Made**
 - [x] Add a tiny dark‑metal nail detail to each picture frame in `Assets/Scripts/World/StarterHome.Lighting.cs` → method `Picture`, using the method’s existing `rng` to pick a corner; size 0.004 m × 0.006 m × 0.002 m, positioned just in front of the frame surface at the chosen corner, re‑using the matte dark‑metal colour.
   - 20:36 landed by 1htsserver in 3.5 min: **Changes Made**
 - [x] Fix under‑counting of rolled loot in Assets/Scripts/Economy/CentralEconomy.cs (method CentralEconomy.Install)

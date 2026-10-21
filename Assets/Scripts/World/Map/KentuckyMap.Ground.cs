@@ -17,6 +17,7 @@ namespace CloneZ
         private static readonly Color KerbColor = new Color(0.62f, 0.62f, 0.60f);
         // Height of the raised kerb strip (above the road surface).
         private const float LotY = 0.008f;
+        private const float SnowBankWidth = 0.2f; // thin snow‑bank edge width for parking lots
         private const float IceY = 0.006f;
 
                 private static Surf Ice => DecorPalette.Gloss(new Color(0.60f, 0.68f, 0.76f));
@@ -60,7 +61,14 @@ namespace CloneZ
                 if (inside.Count < 3) continue;
                 Fill(site.Town.Out, inside, water ? IceY : LotY, water ? Ice : DecorMaterials.Asphalt);
                 if (water) site.Take(Rect.MinMaxRect(Min(inside, true), Min(inside, false), Max(inside, true), Max(inside, false)));
-            }
+                // Add thin snow‑bank edge around parking lots for a plowed look
+                if (lot)
+                {
+                    var edge = new List<Vector2>(inside);
+                    edge.Add(inside[0]); // close loop
+                    Ribbon(site.Town.Out, edge, SnowBankWidth, LotY + 0.001f, Ice);
+                }
+        }
         }
 
         private static void BuildStreets(Site site)
