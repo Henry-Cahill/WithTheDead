@@ -38,7 +38,9 @@ Every change is compiled against Unity's own assemblies before it lands, and lan
 
 1. **Queue tasks** in [tasks.md](tasks.md), one `- [ ]` line each. Edit it in JupyterLab (*Open
    JupyterLab* in AI Workbench, then `Tools/NightShift/tasks.md`), or choose **1** in the menu. Small,
-   concrete tasks work best: name the place and say what you want to see in game.
+   concrete tasks work best: name the place and say what you want to see in game. For a bigger job, write
+   it as steps under the task (`Step 1: ...`, `Step 2: ...`); it then goes to the helpers' stronger model
+   (see [Big tasks for the stronger model](#big-tasks-for-the-stronger-model)).
 2. **Start it.** Switch on **night-shift** under *Applications* in AI Workbench, or choose **2**. It keeps
    going into the day until you stop it, picking up tasks you add in the meantime. (Set
    `NIGHTSHIFT_STOP_AT` in [nightshift.env](nightshift.env) for a fixed time to stop taking new tasks.)
@@ -74,6 +76,27 @@ them. Delete any planned task you don't want before it starts.
 `nightshift.sh plan --dry-run` (or `plan --focus graphics --target Assets/Scripts/World/DecorProps.cs`) shows what
 the planner would write, without queueing it. Since the queue never empties, the automatic pull request publishes
 every `NIGHTSHIFT_PUBLISH_EVERY` minutes (120 by default) instead of waiting for the agents to run out of work.
+
+### Big tasks for the stronger model
+
+The helpers' `gpt-oss:120b` lands nearly every task in a few minutes of its two hours, while the Spark's `qwen3.8`
+lands about three in four and takes half an hour over each. So the planner writes big tasks for the first and small
+ones for the second:
+
+- **A focus with a trailing `+`** (`map+`, `graphics+`, `fixes+`, `perf+`, `features+`, `flavour+`) asks for one
+  big task: three to six located steps (`Step 1:`, `Step 2:`, ... then `Done when:`) that together give the player one
+  visible result. The planner also shows the model the scripts most tied to the target, in outline, and the task may
+  change up to two of them and add one new script. It must still name only methods that exist (a few new helpers
+  are fine) and leave alone every script a queued task names. `docs` has no big variant.
+- **Workers on a model in `NIGHTSHIFT_SMALL_TASK_MODELS`** (`qwen3.8` by default) take only small tasks. Any task
+  written in steps (two `Step N:` lines or more), or longer than eight detail lines or 3,000 characters, is big and
+  goes to the other workers, which take the planner's big tasks before its small ones. Tasks you write keep their
+  order either way.
+- **The planner keeps a small task waiting for each of those workers**: when none is left, it writes the next focus
+  in turn at its small size (`graphics+` as `graphics`, say). If no worker that takes big tasks is left on duty,
+  every worker takes any task and the planner writes only small ones.
+
+`plan --focus graphics+ --dry-run` shows a big task the planner would write.
 
 ## Start and stop on command
 
@@ -134,7 +157,7 @@ under `.state/` or `.unityrefs/`, or anything that looks like a private key.
 ## Settings
 
 [nightshift.env](nightshift.env) sets the models, the stop time (empty: keep going until stopped), the time
-limit per task, the number of fix rounds and auto-planning. It's read at every start. The Spark's own agent uses `qwen3.8`, and the helpers use
+limit per task, the number of fix rounds, auto-planning and which models take only small tasks. It's read at every start. The Spark's own agent uses `qwen3.8`, and the helpers use
 `gpt-oss:120b`: Ollama serves `qwen3.8` one request at a time, so helpers on it would only wait their turn,
 while `gpt-oss:120b` runs several at once (and is about twice as fast).
 

@@ -49,6 +49,30 @@ DOCS = """namespace CloneZ
         public void GetActions(object ctx, object into) { }
 """ + "        // padding\n" * 14 + "    }\n}\n"
 
+# A lamp that uses a bulb; the bulb's script, for the related-scripts outline.
+LAMP = "\n".join(["using UnityEngine;", "namespace CloneZ", "{", "    public static partial class Lamp", "    {",
+                  "        public static void Build(RaidMesh m, in Surf s, Common c)", "        {",
+                  "            Bulb.Make(m, s);", "            Bulb.Make(m, s);"]
+                 + [f"            m.Box(new Vector3(0f, {i}f, 0f), new Vector3(0.1f, 0.1f, 0.1f), s);" for i in range(14)]
+                 + ["        }"] + ["        // padding"] * 12 + ["    }", "}", ""])
+
+BULB = """namespace CloneZ
+{
+    /// <summary>A bulb.</summary>
+    public sealed class Bulb
+    {
+        public float Watts = 60f;
+        private int _secret;
+        public static void Make(RaidMesh m, in Surf s, float watts = 40f) { }
+        public bool Lit => Watts > 0f;
+        internal void Flicker(Common c)
+        {
+        }
+        public int Size { get; set; }
+    }
+}
+"""
+
 
 class PlannerTest(unittest.TestCase):
     def setUp(self):
@@ -282,6 +306,230 @@ class PlannerTest(unittest.TestCase):
         self.assertIsNone(planner.plan_one())
         self.assertEqual([], self.unchecked())
 
+    # --- big tasks ---------------------------------------------------------------------------------------
+
+    def related_fixture(self) -> tuple:
+        """A lamp that uses a bulb, a street that uses the lamp, and two scripts that share only a name every script
+        uses (so nothing ties them to the lamp)."""
+        lamp = self.script("Assets/Scripts/World/Lamp.cs", LAMP)
+        bulb = self.script("Assets/Scripts/World/Bulb.cs", BULB)
+        street = self.script("Assets/Scripts/World/Street.cs", "namespace CloneZ\n{\n    public static class Street\n    {\n"
+                             "        public static void Draw(Common c) { Lamp.Build(null, default, c); }\n    }\n}\n")
+        self.script("Assets/Scripts/Core/Common.cs", "namespace CloneZ\n{\n    public sealed class Common { }\n}\n")
+        self.script("Assets/Scripts/World/Unrelated.cs", "namespace CloneZ\n{\n    public sealed class Unrelated { public Common C; }\n}\n")
+        return lamp, bulb, street
+
+    def test_focus_names_and_big_variants(self):
+        self.assertEqual(("graphics", True), ns.split_focus("graphics+"))
+        self.assertEqual(("map", False), ns.split_focus(" map "))
+        self.assertEqual(("docs", False), ns.split_focus("docs+"))  # documentation is fixed text: no big variant
+        self.assertIn("fixes+", ns.focus_names())
+        self.assertNotIn("docs+", ns.focus_names())
+        self.assertEqual("bug-fix (big)", ns.focus_label("fixes+"))
+        planner, _ = self.planner([], ["graphics+", "bogus", "docs+", "fixes"])
+        self.assertEqual(["graphics+", "docs", "fixes"], planner.focus)
+
+    def test_related_scripts_rank_siblings_then_types_used_then_users(self):
+        lamp, bulb, street = self.related_fixture()
+        self.assertEqual([bulb, street], ns.related_scripts(lamp, self.repo))
+        parts = self.script("Assets/Scripts/World/LampParts.cs", "namespace CloneZ\n{\n    public static partial class Lamp\n"
+                            "    {\n        private static void Collar(Common c) { }\n    }\n}\n")
+        self.assertEqual([parts, bulb, street], ns.related_scripts(lamp, self.repo))
+        self.assertEqual([parts, street], ns.related_scripts(lamp, self.repo, busy={bulb}))
+        self.assertEqual([parts], ns.related_scripts(lamp, self.repo, limit=1))
+        self.assertEqual([], ns.related_scripts("Assets/Scripts/World/Missing.cs", self.repo))
+
+    def test_outline_keeps_types_and_public_members_without_bodies(self):
+        self.assertEqual(["public sealed class Bulb", "public float Watts",
+                          "public static void Make(RaidMesh m, in Surf s, float watts = 40f)", "public bool Lit",
+                          "internal void Flicker(Common c)", "public int Size"], ns.outline(BULB))
+        self.assertEqual(["public sealed class Bulb", "public float Watts", "..."], ns.outline(BULB, max_lines=2))
+
+    def test_planner_queues_a_big_task_with_the_related_scripts_shown(self):
+        lamp, bulb, street = self.related_fixture()
+        reply = ("- [ ] Give the street lamp in Lamp.cs a full detailing pass.\n"
+                 "  Step 1: add a brass collar under the bulb in Lamp.Build with `m.Box(a, b, s)`.\n"
+                 "  Step 2: add a drip cap over the bulb.\n  Step 3: tint the collar a little darker than the cap.\n"
+                 "  Done when: the lamp reads as one fitting and its collider is unchanged.")
+        planner, asked = self.planner([reply], ["graphics+"])
+        task = planner.plan_one()
+        self.assertEqual(f"Give the street lamp in {lamp} a full detailing pass.", task.key)
+        self.assertEqual(4, len(task.text.split("\n")) - 1)
+        for text in ("RELATED SCRIPTS", f"{bulb} (", "public sealed class Bulb", f"{street} (", "Step 1:", "Done when:",
+                     ns.BIG_HELP["graphics"][:40], f"SCRIPT {lamp}", "m.Box(new Vector3(0f, 13f, 0f)"):
+            self.assertIn(text, asked[0])
+        self.assertIn(f"graphics+:{lamp}", ns.load_plan_state()["seen"])
+        self.assertNotIn("RELATED SCRIPTS", ns.plan_prompt("graphics", lamp, "// code", [], ""))
+
+    def test_check_plan_gives_big_tasks_room_but_keeps_them_grounded(self):
+        lamp, bulb, street = self.related_fixture()
+        tasks, words = ns.read_tasks(), ns.script_words(self.repo)
+
+        def check(lines: list, big: bool = True):
+            text = "\n".join(lines)
+            return ns.check_plan(ns.Task(lines[0], text), lamp, self.repo, tasks, words, big=big)
+
+        head = f"Give the street lamp in {lamp} a full detailing pass, part by part."
+        steps = [f"Step {i}: add part {i} beside the bulb with `m.Box(a, b, s)`." for i in range(1, 18)]
+        task, why = check([head] + steps)
+        self.assertEqual("", why)
+        self.assertEqual(16, len(task.text.split("\n")) - 1)  # sixteen detail lines kept
+        self.assertEqual(8, len(check([head] + steps, big=False)[0].text.split("\n")) - 1)  # a small task keeps eight
+        self.assertIn("steps", check([head, "Step 1: just this."])[1])  # a big task spells out its steps
+        # One new script, in a folder that exists, for a big task only.
+        new = "Assets/Scripts/World/LampTrim.cs"
+        three = [f"Step 1: create {new} with a static class LampTrim.", "Step 2: call `LampTrim.Add(m, s)` from Lamp.Build.",
+                 f"Done when: {new} draws the trim and the lamp looks the same otherwise."]
+        self.assertEqual("", check([head] + three)[1])
+        self.assertIsNone(check([head] + three + ["Step 4: and create Assets/Scripts/World/LampCap.cs too."])[0])
+        self.assertIsNone(check([head, "Step 1: create Assets/Scripts/Nowhere/LampTrim.cs.", "Step 2: use it.",
+                                 "Done when: it is used."])[0])
+        self.assertIsNone(check([head] + three, big=False)[0])
+        # A few new helpers are fine; more means it's making things up.
+        made_up = [f"Step {i}: call `Helper{i}(m)` after the boxes." for i in range(1, 5)] + ["Done when: all four run."]
+        self.assertIn("Helper1", check([head] + made_up)[1])
+        self.assertEqual("", check([head] + made_up[1:])[1])
+
+    def test_check_plan_leaves_scripts_a_queued_task_is_changing_alone(self):
+        lamp, bulb, street = self.related_fixture()
+        queued = f"Make the bulb in {bulb} burn warmer, please, a lot warmer"
+        key = f"In {lamp}, match the colour the bulb in {bulb} burns with, everywhere it shows."
+        task = ns.Task(key, key)
+        ns.TASKS.write_text(QUEUE + f"- [ ] {queued}\n", encoding="utf-8")
+        tasks = ns.read_tasks()
+        checked, why = ns.check_plan(task, lamp, self.repo, tasks)
+        self.assertIsNone(checked)
+        self.assertIn(bulb, why)
+        self.assertNotIn(bulb, ns.related_scripts(lamp, self.repo, ns.busy_scripts(tasks)))
+        ns.TASKS.write_text(QUEUE + f"- [x] {queued}\n", encoding="utf-8")  # once it has landed the script is free
+        self.assertEqual("", ns.check_plan(task, lamp, self.repo, ns.read_tasks())[1])
+
+    def test_planner_reads_all_the_lessons(self):
+        self.script("Assets/Scripts/World/Lamp.cs", BUILDER)
+        (self.repo / "Tools/NightShift/memory/LESSONS.md").write_text("# Lessons\n" + "- filler\n" * 1200 + "- the last one\n")
+        planner, asked = self.planner(["NONE"], ["graphics"])
+        planner.plan_one(tries=1)
+        self.assertIn("- the last one", asked[0])
+
+    # --- big tasks for some workers, small ones for the rest -----------------------------------------------
+
+    def test_is_big_when_written_in_steps_or_long(self):
+        self.assertTrue(ns.is_big(ns.Task("k", "k\nStep 1: a\nstep 2. b")))
+        self.assertFalse(ns.is_big(ns.Task("k", "k\nStep 1: just one")))
+        self.assertFalse(ns.is_big(ns.Task("k", "k\n" + "\n".join(["detail"] * 8))))
+        self.assertTrue(ns.is_big(ns.Task("k", "k\n" + "\n".join(["detail"] * 9))))
+        self.assertTrue(ns.is_big(ns.Task("k", "k\n" + "x" * 3000)))
+
+    def test_check_plan_keeps_small_tasks_small_and_big_ones_in_steps(self):
+        lamp = self.script("Assets/Scripts/World/Lamp.cs", BUILDER)
+        tasks = ns.read_tasks()
+        text = f"In {lamp}, add a brass ring around the bulb in Lamp.Build.\nStep 1: add the ring.\nStep 2: tint it."
+        small, why = ns.check_plan(ns.Task(text.split("\n")[0], text), lamp, self.repo, tasks)
+        self.assertEqual("", why)
+        self.assertEqual(["add the ring.", "tint it."], small.text.split("\n")[1:])
+        self.assertFalse(ns.is_big(small))
+        big, why = ns.check_plan(ns.Task(text.split("\n")[0], text), lamp, self.repo, tasks, big=True)
+        self.assertEqual("", why)
+        self.assertTrue(ns.is_big(big))
+        unnumbered = text.replace("Step 1: ", "").replace("Step 2: ", "")
+        self.assertIn("steps", ns.check_plan(ns.Task(text.split("\n")[0], unnumbered), lamp, self.repo, tasks,
+                                             big=True)[1])
+
+    def test_planner_writes_a_big_focus_small_when_asked(self):
+        lamp, _, _ = self.related_fixture()
+        reply = "- [ ] In Lamp.cs, add a brass ring around the bulb in Lamp.Build.\n  Step 1: add it.\n  Step 2: tint it."
+        planner, asked = self.planner([reply], ["graphics+"])
+        task = planner.plan_one(small=True)
+        self.assertFalse(ns.is_big(task))
+        self.assertNotIn("RELATED SCRIPTS", asked[0])
+        self.assertIn("one concrete, precisely located change", asked[0])  # the small task's prompt
+        state = ns.load_plan_state()
+        self.assertEqual(1, state["turn"])  # the rotation moves on as usual
+        self.assertIn(f"graphics:{lamp}", state["seen"])
+
+    def routed(self):
+        """A coordinator with a helper that takes big tasks and the Spark, which takes only small ones."""
+        coord = ns.Coordinator(dict(ns.DEFAULTS, NIGHTSHIFT_SMALL_TASK_MODELS="qwen3.8"))
+        coord.on_branch = lambda: True
+        coord.planner = types.SimpleNamespace(planned=0)  # planning is on
+        helper = types.SimpleNamespace(name="helper", big=True, retired=False)
+        spark = types.SimpleNamespace(name="spark", big=False, retired=False)
+        coord.workers = [helper, spark]
+        return coord, helper, spark
+
+    @staticmethod
+    def big_task(name: str) -> ns.Task:
+        key = f"A big task about Assets/Scripts/World/{name}.cs"
+        return ns.Task(key, key + "\nStep 1: one thing.\nStep 2: another.\nDone when: both show.")
+
+    def test_coordinator_reads_the_small_task_models(self):
+        coord = ns.Coordinator(dict(ns.DEFAULTS, NIGHTSHIFT_SMALL_TASK_MODELS=" qwen3.8:latest, other "))
+        self.assertEqual({"qwen3.8", "other"}, coord.small_models)
+        self.assertEqual(set(), ns.Coordinator(dict(ns.DEFAULTS)).small_models)
+
+    def test_claim_routes_big_tasks_to_the_workers_that_take_them(self):
+        coord, helper, spark = self.routed()
+        heading = "### Auto-planned test"
+        ns.append_planned(ns.Task("Small planned task about Assets/Scripts/World/S1.cs",
+                                  "Small planned task about Assets/Scripts/World/S1.cs"), heading)
+        ns.append_planned(self.big_task("B1"), heading)
+        ns.append_planned(ns.Task("Small planned task about Assets/Scripts/World/S2.cs",
+                                  "Small planned task about Assets/Scripts/World/S2.cs"), heading)
+        with ns.TASKS.open("a", encoding="utf-8") as f:
+            f.write("\n## Mine\n\n- [ ] A task I wrote about Assets/Scripts/World/Mine.cs\n")
+        self.assertEqual("A task I wrote about Assets/Scripts/World/Mine.cs", coord.claim(helper).key)  # mine first
+        self.assertEqual(self.big_task("B1").key, coord.claim(helper).key)  # then the planner's big ones
+        self.assertEqual("Small planned task about Assets/Scripts/World/S1.cs", coord.claim(spark).key)
+        self.assertEqual("Small planned task about Assets/Scripts/World/S2.cs", coord.claim(helper).key)
+        ns.append_planned(self.big_task("B2"), heading)
+        self.assertIsNone(coord.claim(spark))  # the Spark never takes a big one...
+        helper.retired = True
+        self.assertEqual(self.big_task("B2").key, coord.claim(spark).key)  # ...unless nobody else is left to
+
+    def test_wanted_keeps_a_small_task_waiting_for_each_small_only_worker(self):
+        coord, helper, spark = self.routed()  # two workers, so four should wait
+        small = ns.Task("small", "small")
+        big = self.big_task("B")
+        self.assertEqual("small", coord.wanted([]))
+        self.assertEqual("any", coord.wanted([small]))
+        self.assertIsNone(coord.wanted([small, big, big, big]))
+        self.assertEqual("small", coord.wanted([big] * 5))  # plenty waiting, but none the Spark may take
+        helper.retired = True
+        self.assertEqual("small", coord.wanted([small]))  # nobody left for big tasks: write small ones only
+        spark.big = True  # nobody takes only small tasks: whatever comes next in turn
+        helper.retired = False
+        self.assertEqual("any", coord.wanted([]))
+
+    def test_plan_loop_writes_a_small_task_first_for_the_small_only_worker(self):
+        coord, helper, spark = self.routed()
+        asked = []
+
+        class FakePlanner:
+            planned = 0
+
+            def plan_one(self, small=False):
+                asked.append(small)
+                self.planned += 1
+                key = f"Planned task {self.planned} for Assets/Scripts/World/A{self.planned}.cs"
+                ns.append_planned(ns.Task(key, key), "### Auto-planned test")
+                if self.planned > 10:
+                    coord.planning.clear()  # runaway: fail below rather than hang
+                return ns.Task(key, key)
+
+        coord.planner = FakePlanner()
+        coord.planning.set()
+        loop = threading.Thread(target=coord.plan_loop, daemon=True)
+        loop.start()
+        deadline = time.time() + 10
+        while time.time() < deadline and len(self.unchecked()) < coord.low_water():
+            time.sleep(0.05)
+        time.sleep(0.3)
+        coord.planning.clear()
+        ns.STOPPING.set()
+        loop.join(5)
+        self.assertFalse(loop.is_alive())
+        self.assertEqual([True, False, False, False], asked)
+
     # --- the coordinator -----------------------------------------------------------------------------------
 
     def test_claim_takes_tasks_people_wrote_first(self):
@@ -305,7 +553,7 @@ class PlannerTest(unittest.TestCase):
         class FakePlanner:
             planned = 0
 
-            def plan_one(self):
+            def plan_one(self, small=False):
                 self.planned += 1
                 key = f"Planned task {self.planned} for Assets/Scripts/World/A{self.planned}.cs"
                 ns.append_planned(ns.Task(key, key), "### Auto-planned test")
