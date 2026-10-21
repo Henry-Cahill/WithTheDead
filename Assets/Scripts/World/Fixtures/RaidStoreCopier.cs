@@ -53,6 +53,11 @@ namespace CloneZ
             "It spits out a copy with a black stripe down one side. Good enough for county work.",
             "A pale copy drifts out, the ink faint, the paper curling at the edges.",
             "A crisp, bright copy lands with a thin line of toner, almost perfect.",
+            "A thin sheet slides out, its grain rough and the edges frosted like a night‑time breath.",
+            "A half‑yellow copy drops, a carbon‑copy slip tucked in the corner and a faint type‑writer smudge staining the margin.",
+            "A bleached page emerges, dry and crackling, a torn corner where a frantic hand ripped it.",
+            "A damp‑looking copy lands, a faint frost line along its edge, hinting at the cold beyond the office walls.",
+            "A faded copy appears, the watermark “County” barely visible, the toner leaving a ghostly shadow of the original.",
         };
 
         private static readonly string[] Clears =

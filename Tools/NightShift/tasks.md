@@ -4332,11 +4332,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   In `GetActions` add `into.Add(new InteractAction("Read next letter (preview)", PeekNext).Timed(0.8f, "Peeking into the chute", HumanoidActivity.Use));` after the existing actions.
   Use only members already present in the file (`MakeNoise`, `CloneZConfig.FixtureNoiseSmall`, `ctx.Notify`, `Letters`, `_read`).
   The player will see a short notification of the upcoming letter while the chute’s content remains unchanged, providing a small tactical option.
-- [ ] Append 5 new copy‑description strings to the `Copies` array in Assets/Scripts/World/Fixtures/RaidStoreCopier.cs, after the current last entry, each a whole sentence in quotes that the survivor sees when a copy finishes; use the existing entry `"A warm copy slides into the tray: the sheet on the glass, a shade greyer and a touch crooked."` as the style reference.
+- [x] Append 5 new copy‑description strings to the `Copies` array in Assets/Scripts/World/Fixtures/RaidStoreCopier.cs, after the current last entry, each a whole sentence in quotes that the survivor sees when a copy finishes; use the existing entry `"A warm copy slides into the tray: the sheet on the glass, a shade greyer and a touch crooked."` as the style reference.
   Add entries that convey the cheap‑paper, winter‑dry feel of 1993 county office documents.
   Include subtle outbreak hints (e.g., a faint frost line on the edge, a torn corner from a frantic hand).
   Mention period‑correct office details such as carbon‑copy slips, type‑writer smudges, or a faded “County” watermark.
   Keep the `Copies` field declaration and existing strings unchanged; only extend the array literal.
+  - 20:16 landed by 1htsserver in 2.8 min: **Changed**
 - [ ] Add a simple roof‑eave trim to residential buildings in Assets/Scripts/World/Map/KentuckyMap.cs
   Define two new constants in the class (near the existing `SceneryReach` constant):
   `private const float EaveHeight = 0.12f; // thin horizontal strip`
