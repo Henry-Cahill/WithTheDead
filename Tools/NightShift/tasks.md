@@ -5100,3 +5100,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   Assign it once in Awake() (e.g. `_keyboard = Keyboard.current;`).
   Replace the line `Keyboard kb = Keyboard.current;` in Update() with `Keyboard kb = _keyboard;`.
   The player’s ability to press G remains identical; only the internal lookup is cached, reducing a per‑frame static property access.
+- [ ] Add a fourth interaction “Tap the plate” to Assets/Scripts/World/Fixtures/OutdoorHouseNumber.cs
+  Insert `into.Add(new InteractAction("Tap the plate", Tap));` after the existing `Knock` line in `GetActions`.
+  Create a new private method `Tap(InteractContext ctx)` that mirrors `Knock` but uses a distinct notification:
+  `// Light tap sound, like a gentle clang on the enamel`
+  `MakeNoise(CloneZConfig.FixtureNoiseSmall);`
+  `ctx.Notify("You tap the house‑number plate; it gives a faint clang.");`
+  The player will now see a fourth option when interacting, providing a quieter alternative to “Knock on the door”.
+  All other code, fields, and existing actions remain unchanged.
