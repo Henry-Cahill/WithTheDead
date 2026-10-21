@@ -4440,7 +4440,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   – If `!PowerGrid.HousePowered` → `ctx.Notify("Can't switch – no power.");` and return.
   – Flips the switch with `_lamp.SwitchedOn = !_lamp.SwitchedOn;`
   – Sends a notification:
-- [ ] Append five new flavor‑text strings to the `BrushLines` array in Assets/Scripts/World/Fixtures/BasinFixture.cs so that brushing teeth can also convey the harsh winter, lingering memory of the old world and the survivor’s quiet resolve.
+- [x] Append five new flavor‑text strings to the `BrushLines` array in Assets/Scripts/World/Fixtures/BasinFixture.cs so that brushing teeth can also convey the harsh winter, lingering memory of the old world and the survivor’s quiet resolve.
   Use the existing entry `"The metal of the tap feels icy, and you wonder how long the mains will stay silent."` as the style reference.
   The new lines should each be a single sentence, period‑correct, and fit the 1993 Kentucky winter setting.
   Do not modify any other code, ordering, or formatting.
+  - 20:41 landed by 0htsserver in 2.3 min: Implemented five new flavor‑text lines for brushing teeth in **Assets/Scripts/World/Fixtures/BasinFixture.cs**.

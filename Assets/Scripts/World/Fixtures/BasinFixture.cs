@@ -31,6 +31,11 @@ namespace CloneZ
             "The water tastes of metal, a thin grit that clings to the mint and to memory.",
             "Your reflection shivers in the cracked mirror, the fractured glass framing a resolve that steadies your hand.",
             "In that brief pause you find a quiet resolve, each brushstroke a small claim against the silence.",
+            "The cold wind rattles the cracked window as you brush, a reminder that winter still claws at the walls.",
+            "Each minty swipe feels like a promise to survive the desolate snow outside.",
+            "The frosty breath you exhale mixes with the water, echoing the lingering ghost of pre‑outbreak mornings.",
+            "Your toothbrush scratches the porcelain, a quiet defiance against the world that fell silent.",
+            "The metal basin shivers under the tap, mirroring the resolve you feel to endure the endless winter."
         };
 
         private static readonly string[] ShaveLines =
