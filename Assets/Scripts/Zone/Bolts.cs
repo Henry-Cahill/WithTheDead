@@ -137,6 +137,7 @@ private Rigidbody _rb;
         private PlayerStats _stats;
         private PlayerAvatar _avatar;
         private CharacterController _cc;
+        private Camera _mainCam;
 
         private void Awake()
         {
@@ -145,6 +146,7 @@ private Rigidbody _rb;
             _stats = GetComponent<PlayerStats>();
             _avatar = GetComponent<PlayerAvatar>();
             _cc = GetComponent<CharacterController>();
+            _mainCam = Camera.main;
         }
 
         private void Update()
@@ -187,7 +189,8 @@ private Rigidbody _rb;
         {
             if (ViewState.MouseLook)
             {
-                Camera cam = Camera.main;
+                Camera cam = _mainCam;
+                if (cam == null) cam = Camera.main;
                 if (cam != null)
                 {
                     Ray ray = new Ray(cam.transform.position, cam.transform.forward);

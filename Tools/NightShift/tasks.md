@@ -4564,9 +4564,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(rustPos, rustSize, M(rustCol));`
   *Result:* each car shows a subtle, randomly placed dark strip (rust or dent) on its surface, adding lived‑in visual detail without altering colliders, interaction points, or the overall shape.
   - 21:32 landed by 0htsserver in 2.6 min: **Summary of changes**
-- [ ] Cache the main camera in `BoltThrower` to avoid a per‑throw `Camera.main` lookup (Assets/Scripts/Zone/Bolts.cs)
+- [x] Cache the main camera in `BoltThrower` to avoid a per‑throw `Camera.main` lookup (Assets/Scripts/Zone/Bolts.cs)
   Add a private `Camera _mainCam;` field.
   In `Awake()` set `_mainCam = Camera.main;`.
   In `AimTarget` replace `Camera cam = Camera.main;` with `Camera cam = _mainCam;`.
   Add a tiny guard: if `_mainCam == null` re‑assign `_mainCam = Camera.main;` before use (covers camera recreation).
   The player’s aiming behaviour stays identical; the only change is that the costly `Camera.main` tag search is done once instead of every throw attempt.
+  - 21:32 landed by hts-llm in 2.2 min: **Changed files**
