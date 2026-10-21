@@ -5540,3 +5540,24 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Cylinder(pos, 0.01f, 0.02f, 6, Mt(Chrome));`
   Do this in a `for (int i = 0; i < 4; i++)` loop; adds subtle rivet detail, uses existing materials, keeps colliders and interaction points unchanged, and adds no more than 12 primitives.
   - 02:43 landed by hts-llm in 2.4 min: **Summary of changes**
+- [ ] In Assets/Scripts/Hub/Screens/HubScreenBase.cs: Cache per‑second work in HubScreenBase.Update to skip the entire second‑tick when no live labels exist and the money display is disabled or there is no active character.
+  Modify the `Update` method to compute a `bool needSecond = _live.Count > 0 || (ShowMoney && Character != null);` and return early if `needSecond` is false before checking `_nextSecond`.
+  Only call `RefreshMoney()` when `ShowMoney && Character != null` (the existing `RefreshMoney` already guards, but the extra condition avoids the method call altogether).
+  The player sees exactly the same UI; money and live labels still update when they should, and no visible behavior changes.
+  All other logic and fields remain unchanged.
+- [ ] In Assets/Scripts/World/Fixtures/DoormatFixture.cs: Add a “Kick the mat” action to DoormatFixture so the player can interact with the mat in a new, quick way
+  In `DoormatFixture.GetActions` add a second `InteractAction` after the existing wipe action:
+  `into.Add(new InteractAction("Kick the mat", Kick).Timed(0.6f, "Kicking the mat", HumanoidActivity.None));`
+  Create a new private static method `Kick` in the class:
+  `private static void Kick(InteractContext ctx) { ctx.Notify("You give the mat a hard kick, scattering a puff of dust."); }`
+  The action appears alongside “Wipe your feet” in the interaction UI; when selected it shows the “Kicking the mat” progress bar for 0.6 s and then displays the notification.
+  No existing behavior is altered; the mat’s lift mechanics, look‑under state, and wetness handling stay unchanged.
+- [ ] In Assets/Scripts/World/Fixtures/RaidTownGasPump.cs, modify RaidTownGasPump.GetActions to append five new period‑correct flavour‑text actions inside the `if (_lifted) { … }` block, after the last existing `into.Add` call; each new entry should use the same `new InteractAction(string, ctx => ctx.Notify("…"))` pattern and keep the current list order unchanged.
+  Use the existing entry `"Read the dials"` as the style reference – a short, present‑tense description followed by a single‑sentence quoted message.
+  The new actions should cover these themes: (1) a weather‑related reminder, (2) a local‑rumor note, (3) a safety warning specific to the winter‑time fuel station, (4) a faded advertisement for a 1990s product, and (5) a personal scribble left by a former employee.
+  Add the following lines (preserving indentation and commas) exactly as shown:
+  `into.Add(new InteractAction("Read the weathered warning", c => c.Notify("A battered sign cautions: ‘Beware icy patches – the ground is slick after a night’s freeze.’")));`
+  `into.Add(new InteractAction("Read the rust‑ed rumor note", c => c.Notify("Scrawled on a metal strip: ‘Heard the old Miller’s farm got overrun after the blizzard. Stay off the back road.’")));`
+  `into.Add(new InteractAction("Read the safety notice", c => c.Notify("A yellowed placard reads: ‘Do not attempt to pump fuel when temperature drops below –10 °C – risk of valve seize.’")));`
+  `into.Add(new InteractAction("Read the faded ad", c => c.Notify("The peeling poster advertises: ‘Coke‑Zero – the perfect cold companion for a winter night.’")));`
+  `into.Add(new InteractAction("Read the employee’s scribble", c => c.Notify("In shaky handwriting: ‘My dad said the pump’s heart still beats – maybe the cash‑register will open one day.’")));`
