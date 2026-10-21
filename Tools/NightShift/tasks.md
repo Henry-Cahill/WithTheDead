@@ -4641,7 +4641,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 22:00 landed by 0htsserver in 4.6 min: **Changed file**
 - [x] In Assets/Scripts/World/WaterSource.cs: Fix the rain‑barrel fill simulation to handle cases where WeatherSystem isn’t instantiated before WaterSource.Awake, preventing the barrel from ever filling.
   - 21:59 landed by 1htsserver in 1.7 min: **Changed file**
-- [ ] Cache the `GameSettings.Current` singleton lookup in `HudCompass.LateUpdate` (Assets/Scripts/Survival/Navigation.cs)
+- [x] Cache the `GameSettings.Current` singleton lookup in `HudCompass.LateUpdate` (Assets/Scripts/Survival/Navigation.cs)
   Add a private field `private GameSettings _gs;` to `HudCompass`.
   In `Awake()` set `_gs = GameSettings.Current;`.
   In `LateUpdate()` replace `GameSettings.Current.Hud` with a cached reference:
@@ -4650,6 +4650,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `bool visible = _has && cam != null && gs.Hud != HudMode.Hardcore;`
   This removes the per‑frame property lookup (which likely does a `FindObjectByType`), reducing allocations and GC pressure.
   Player view and HUD mode remain unchanged; the compass continues to appear/disappear exactly as before.
+  - 22:04 landed by 1htsserver in 3.6 min: **Summary**
 - [ ] In Assets/Scripts/World/Fixtures/HoseSpigot.cs modify the “Coil the hose” InteractAction added in `GetActions` so that it automatically closes the tap when the coiling action finishes.
   Locate the line `into.Add(new InteractAction("Coil the hose", c => c.Notify("You wind the hose back onto its reel, neat as anything. Habit."))` and chain a `.Stopped` handler after the existing `.Timed(...)`.
   The handler should read: `c => { if (_open) { SetOpen(false, false); c.Notify("You remember to shut the tap."); } }`.
