@@ -4151,8 +4151,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 18:56 landed by 1htsserver in 1.3 min: **Changed:** `Assets/Scripts/AI/Humans/HumanNpc.cs`
 - [x] Add a “Search the mailbox” action to Assets/Scripts/World/Fixtures/MailboxFixture.cs that appears once all deliveries have been read, using the existing `InteractAction` pattern.
   - 19:02 landed by hts-llm in 3.6 min: **Changed file**
-- [ ] Append five new letter entries to the `Letters` array in Assets/Scripts/World/Fixtures/RaidHomeLiving.cs.
+- [x] Append five new letter entries to the `Letters` array in Assets/Scripts/World/Fixtures/RaidHomeLiving.cs.
   Use the existing entry
+  - 19:13 landed by 1htsserver in 13.7 min: Added five new letter entries to `RaidHomeLiving.Letters` array:
 - [x] In Assets/Scripts/World/Map/MapGeometry.cs, modify the `ClipPolygon` method to guarantee the returned polygon is anticlockwise: after the clipping loop and before `return cur;`, add `MakeAnticlockwise(cur);` (leaving the existing logic untouched).
   This ensures any footprint that has been cut by the map rectangle retains the correct winding order for later triangulation.
   Buildings that sit on the map edge will no longer have inverted or missing walls because their clipped polygons will always be oriented anticlockwise.
