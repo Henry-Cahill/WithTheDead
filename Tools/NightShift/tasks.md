@@ -6077,3 +6077,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   The build is already refreshed in `EquipFirearm`, `TryReload`, `FireFirearm` (both at start and after firing) and `SwitchAmmo`, so eliminating the per‑frame call avoids a needless null‑check and possible `Ballistics.Build` call each tick.
   No gameplay‑visible change: the build still updates immediately after any action that can alter it (equip, reload, fire, ammo switch).
   This reduces per‑frame work and GC pressure without affecting any player‑visible behavior.
+- [ ] In Assets/Scripts/World/Map/KentuckyMap.Ground.cs edit the `BuildWaterAndLots` method: for every parking‑lot polygon add a thin white border line a few centimetres above the asphalt to look like period‑correct painted lot markings.
+  Create a local white matte surf: `var lineSurf = DecorPalette.Matte(new Color(0.9f, 0.9f, 0.9f));`
+  Copy the inside‑polygon points, close the loop (`var border = new List<Vector2>(inside); border.Add(inside[0]);`)
+  Immediately after the existing gravel overlay call (`Fill(site.Town.Out, inside, LotY + 0.001f, DecorMaterials.Gravel);`) insert `Ribbon(site.Town.Out, border, 0.07f, LotY + 0.002f, lineSurf);`
+  Leave all other code (snow‑bank edge, ice fill, colliders, etc.) unchanged.
