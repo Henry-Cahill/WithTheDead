@@ -4326,3 +4326,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Create a short vertical pipe using `m.Cylinder` at `(left ? -0.08f : 0.08f, 0.95f, 0.22f)` with radius 0.01 m, height 0.12 m, metal colour `DecorPalette.Metal(new Color(0.18f,0.18f,0.20f))`.
   Add a tiny rectangular faucet knob using `m.Box` at the pipe top: position `(left ? -0.08f : 0.08f, 1.07f, 0.22f)`, size `(0.02f, 0.03f, 0.01f)`, same metal material.
   Both primitives keep the existing mesh frame (`m`), colliders and interaction points unchanged, and stay within the 12‑primitive limit.
+- [ ] Add a preview action to the mail drop box in Assets/Scripts/World/Fixtures/RaidTownMailDrop.cs that lets the player read the next letter without consuming it.
+  Create a private method `void PeekNext(InteractContext ctx)` that calls `MakeNoise(CloneZConfig.FixtureNoiseSmall)`, checks `if (_read >= Letters.Length) ctx.Notify("The chute is empty."); else ctx.Notify(Letters[_read]);` (no `_read++`).
+  In `GetActions` add `into.Add(new InteractAction("Read next letter (preview)", PeekNext).Timed(0.8f, "Peeking into the chute", HumanoidActivity.Use));` after the existing actions.
+  Use only members already present in the file (`MakeNoise`, `CloneZConfig.FixtureNoiseSmall`, `ctx.Notify`, `Letters`, `_read`).
+  The player will see a short notification of the upcoming letter while the chute’s content remains unchanged, providing a small tactical option.
+- [ ] Append 5 new copy‑description strings to the `Copies` array in Assets/Scripts/World/Fixtures/RaidStoreCopier.cs, after the current last entry, each a whole sentence in quotes that the survivor sees when a copy finishes; use the existing entry `"A warm copy slides into the tray: the sheet on the glass, a shade greyer and a touch crooked."` as the style reference.
+  Add entries that convey the cheap‑paper, winter‑dry feel of 1993 county office documents.
+  Include subtle outbreak hints (e.g., a faint frost line on the edge, a torn corner from a frantic hand).
+  Mention period‑correct office details such as carbon‑copy slips, type‑writer smudges, or a faded “County” watermark.
+  Keep the `Copies` field declaration and existing strings unchanged; only extend the array literal.
