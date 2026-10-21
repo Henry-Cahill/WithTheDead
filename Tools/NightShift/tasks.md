@@ -5636,7 +5636,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   The player’s visual experience is unchanged – the bed still becomes un‑made when the sleeper sleeps nearby;
   The per‑frame cost drops by eliminating a constant addition and config lookup each tick.
   - 03:12 landed by hts-llm in 3.8 min: **Changed files**
-- [ ] In Assets/Scripts/World/Fixtures/RainBarrelFixture.cs: Add a “Shake the barrel vigorously” timed action to `RainBarrelFixture.GetActions` (copy the existing “Shake the barrel” entry, change the name, increase the freshen amount, and add a matching method).
+- [x] In Assets/Scripts/World/Fixtures/RainBarrelFixture.cs: Add a “Shake the barrel vigorously” timed action to `RainBarrelFixture.GetActions` (copy the existing “Shake the barrel” entry, change the name, increase the freshen amount, and add a matching method).
   Insert after the current “Shake the barrel” line:
   `into.Add(new InteractAction("Shake the barrel vigorously", VigorousShake).Timed(ShakeSeconds * 2, "Shaking the barrel hard").DisabledIf(!Barrel.HasWater, Barrel.DryMessage));`
   Add a new private method below `Shake`:
@@ -5645,6 +5645,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   WaterUse.Freshen(ctx, 0.5f); // stronger freshen than normal shake
   ctx.Notify("You shake the barrel hard, splashing cold water over yourself.");
   }`
+  - 03:12 landed by 0htsserver in 3.5 min: **Changed Files**
 - [ ] Append six new entries to the `OfficeCalendars` string array in Assets/Scripts/World/RaidBuilding.Lighting.cs (class `RaidBuilding`, field `OfficeCalendars`).
   Keep the current two lines unchanged and add the six new strings after them, preserving the array’s syntax and terminating semicolon.
   Follow the voice of the existing entry `"The county's free calendar, December 1993. Somebody has pencilled PAYDAY across a Friday and drawn a small smiling face beside it."`.

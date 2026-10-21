@@ -41,6 +41,7 @@ namespace CloneZ
                 .DisabledIf(!water, b.DryMessage));
             into.Add(new InteractAction("Skim the leaves off the top", Skim).Timed(SkimSeconds, "Skimming the barrel"));
             into.Add(new InteractAction("Shake the barrel", Shake).Timed(ShakeSeconds, "Shaking the barrel").DisabledIf(!Barrel.HasWater, Barrel.DryMessage));
+            into.Add(new InteractAction("Shake the barrel vigorously", VigorousShake).Timed(ShakeSeconds * 2, "Shaking the barrel hard").DisabledIf(!Barrel.HasWater, Barrel.DryMessage));
         }
 
         private void CheckLevel(InteractContext ctx)
@@ -77,6 +78,12 @@ namespace CloneZ
             // Slightly less refreshing than washing hands
             WaterUse.Freshen(ctx, 0.4f);
             ctx.Notify("You splash water on your face. It's chilly, but it helps.");
+        }
+
+        private static void VigorousShake(InteractContext ctx)
+        {
+            WaterUse.Freshen(ctx, 0.5f); // stronger freshen than normal shake
+            ctx.Notify("You shake the barrel hard, splashing cold water over yourself.");
         }
 
         private static void Shake(InteractContext ctx)
