@@ -5599,8 +5599,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace the line `TimeOfDay tod = TimeOfDay.Instance;` in UpdateSleep(bool blocked) with `TimeOfDay tod = _timeOfDay;`.
   Ensure no other code relies on a null _timeOfDay; the field is only read after Awake, matching the current script’s lifecycle.
   The player’s HUD appearance and sleep‑clock updates remain unchanged; the only effect is removing the repeated singleton lookup each frame.
-- [ ] Add a timed delay to the “Inspect the window” action in Assets/Scripts/World/Fixtures/RaidWindow.cs so it uses the existing look‑action timing and gives the player feedback while they wait.
+- [x] Add a timed delay to the “Inspect the window” action in Assets/Scripts/World/Fixtures/RaidWindow.cs so it uses the existing look‑action timing and gives the player feedback while they wait.
   In the `GetActions` method, locate the line `into.Add(new InteractAction("Inspect the window", InspectWindow));` (inside the `if (inside)` block).
   Replace it with `into.Add(new InteractAction("Inspect the window", InspectWindow).Timed(CloneZConfig.WindowLookSeconds, "Inspecting the window", HumanoidActivity.Use));`
   This reuses the already‑defined `CloneZConfig.WindowLookSeconds` and the `HumanoidActivity.Use` enum, so no new config or UI is needed.
   Result: when the survivor chooses “Inspect the window”, a short timed action plays (showing a progress bar like other look actions) and then the inspection message appears, matching the feel of other window interactions.
+  - 03:01 landed by 1htsserver in 1.9 min: **Changed:** `Assets/Scripts/World/Fixtures/RaidWindow.cs`

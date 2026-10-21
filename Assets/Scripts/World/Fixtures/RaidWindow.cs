@@ -151,7 +151,7 @@ namespace CloneZ
                 into.Add(new InteractAction(OutSide == 0 ? "Look through the window" : "Look outside", LookAction)
                     .Timed(CloneZConfig.WindowLookSeconds, "Looking outside", HumanoidActivity.Use));
                 // New inspect action added per task
-                into.Add(new InteractAction("Inspect the window", InspectWindow));
+                into.Add(new InteractAction("Inspect the window", InspectWindow).Timed(CloneZConfig.WindowLookSeconds, "Inspecting the window", HumanoidActivity.Use));
             }
             else into.Add(new InteractAction("Look inside", _lookInAct)
                 .Timed(CloneZConfig.WindowLookSeconds, "Peering inside", HumanoidActivity.Use)
