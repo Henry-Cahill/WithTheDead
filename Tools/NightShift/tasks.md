@@ -5263,7 +5263,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   The method currently writes the base colour to `px[y * S + x]` after the scratch loop, so when a scratch is generated the first pixel (`i = 0`) is immediately overwritten, making the scratch start one pixel away and leaving a visible “hole” at its origin.
   Change the inner scratch loop to start at `i = 1` so the original pixel stays as the base colour and only the neighbour pixels are coloured as the scratch.
   - 01:10 landed by hts-llm in 1.8 min: **Changes made**
-- [ ] Add a small metal license‑plate detail to the rear bumper of the garage car built in Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method GarageCarBody
+- [x] Add a small metal license‑plate detail to the rear bumper of the garage car built in Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method GarageCarBody
   Insert the new geometry right after the existing bumper‑and‑light block (the `for (int s = -1; s <= 1; s += 2) { … }` loop that creates the tail lights).
   `// rear bumper license plate (metal base)`
   `m.Box(new Vector3(0f, CarBodyY + 0.12f, -hl + 0.025f),`
@@ -5272,6 +5272,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Vector3 numPos = new Vector3(R(rng, -0.08f, 0.08f), CarBodyY + 0.13f,`
   `-hl + 0.025f + R(rng, -0.001f, 0.001f));`
   `m.Box(numPos, new Vector3(0.16f, 0.03f, 0.001f), M(Black));`
+  - 01:13 landed by 1htsserver in 3 min: **Changed file**
 - [ ] Add an “Inspect the machine” action to `RaidStoreVending.GetActions` (Assets/Scripts/World/Fixtures/RaidStoreVending.cs) and implement a private `Inspect` method that gives a contextual description based on the machine’s lit and broken state.
   Insert a new line after `into.Add(new InteractAction("Press a button", PressButton));` in `GetActions`:
   `into.Add(new InteractAction("Inspect the machine", Inspect));`
