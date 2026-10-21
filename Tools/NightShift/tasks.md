@@ -5101,7 +5101,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace the line `Keyboard kb = Keyboard.current;` in Update() with `Keyboard kb = _keyboard;`.
   The player’s ability to press G remains identical; only the internal lookup is cached, reducing a per‑frame static property access.
   - 00:20 landed by 0htsserver in 1.8 min: Implemented keyboard caching in **PlayerHydration**:
-- [ ] Add a fourth interaction “Tap the plate” to Assets/Scripts/World/Fixtures/OutdoorHouseNumber.cs
+- [!] Add a fourth interaction “Tap the plate” to Assets/Scripts/World/Fixtures/OutdoorHouseNumber.cs
   Insert `into.Add(new InteractAction("Tap the plate", Tap));` after the existing `Knock` line in `GetActions`.
   Create a new private method `Tap(InteractContext ctx)` that mirrors `Knock` but uses a distinct notification:
   `// Light tap sound, like a gentle clang on the enamel`
@@ -5109,6 +5109,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `ctx.Notify("You tap the house‑number plate; it gives a faint clang.");`
   The player will now see a fourth option when interacting, providing a quieter alternative to “Knock on the door”.
   All other code, fields, and existing actions remain unchanged.
+  - 00:27 failed (hts-llm, 8 min); see reports/2026-10-20-2055.md
 - [x] Add a low wooden rail fence around the exterior perimeter of residential buildings (house, trailer, apartments, hotel) in `Assets/Scripts/World/Map/KentuckyMap.Buildings.cs` → modify the `Enterable` method to generate a thin wooden rail (≈0.08 m high, 0.04 m thick) just outside each wall segment, using the existing wood colour (`DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f))`) and the same `Thick` offset logic, with a collider for each rail segment so the player can’t walk through it. This gives the raid town a period‑correct porch‑rail look without changing any other map data or import logic.
   - 00:26 landed by 1htsserver in 4.5 min: **Changes made**
 - [x] Add three tiny chrome buttons to the TV remote in `FurnitureBuilder.TvStandBody` (Assets/Scripts/World/FurnitureBuilder.RaidHome.cs) so the remote looks like a worn, battery‑powered device.
