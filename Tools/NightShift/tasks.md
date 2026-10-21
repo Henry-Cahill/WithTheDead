@@ -4176,10 +4176,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Cylinder(new Vector3(x + R(rng, -0.005f, 0.005f), LockerDoorY + LockerDoorH * 0.5f - 0.07f, 0.22f), 0.004f, 0.02f, 8, Mt(Chrome));`
   This creates a 4 mm radius, 2 cm long chrome cylinder (the pin) positioned near the top hinge line, with a tiny random X offset for variation. All other colliders, interaction points and pivots remain unchanged.
   - 19:09 landed by 0htsserver in 1.6 min: **Changed file**
-- [ ] Cache the WeatherSystem reference once in Awake instead of checking for null each frame in WaterSource.Update (Assets/Scripts/World/WaterSource.cs)
+- [x] Cache the WeatherSystem reference once in Awake instead of checking for null each frame in WaterSource.Update (Assets/Scripts/World/WaterSource.cs)
   Add a private `void Awake()` method that sets `_weather = WeatherSystem.Instance;`.
   Remove the `if (_weather == null) _weather = WeatherSystem.Instance;` block from the Update method, leaving the rain‑intensity read as `float rain = _weather != null ? _weather.RainIntensity : 0f;`.
   This eliminates a per‑frame null‑check and potential property lookup, reducing cheap but unnecessary work on every barrel each frame. The visual behavior and water‑fill simulation remain unchanged.
+  - 19:11 landed by 0htsserver in 2.3 min: **Changed**
 - [ ] In Assets/Scripts/World/Fixtures/RadioFixture.cs: Add a “Check battery” action to RadioFixture.GetActions so the survivor can see if the radio still has power without turning it on.
   · In `public override void GetActions(InteractContext ctx, List<InteractAction> into)` add a new line after the “Turn off the radio” action:
   `into.Add(new InteractAction("Check battery", c => c.Notify("The battery still hums – enough juice for a few more hours.")) .DisabledIf(!near, TooFar));`

@@ -36,6 +36,8 @@ namespace CloneZ
         private static readonly Color BarrelWater = new Color(0.34f, 0.5f, 0.52f);
         private static WeatherSystem _weather;
 
+        private void Awake() { _weather = WeatherSystem.Instance; }
+
         private void OnEnable() { if (!All.Contains(this)) All.Add(this); }
         private void OnDisable() { All.Remove(this); }
 
@@ -275,8 +277,8 @@ namespace CloneZ
             _lastHours = now;
             if (dH <= 0f) return;
 
-            if (_weather == null) _weather = WeatherSystem.Instance;
-                float rain = (_weather != null) ? _weather.RainIntensity : 0f;
+
+                float rain = _weather != null ? _weather.RainIntensity : 0f;
                 if (rain > 0f)
             {
                 Water = Mathf.Min(CloneZConfig.WaterBarrelMax, Water + CloneZConfig.WaterBarrelRainPerHour * rain * dH);
