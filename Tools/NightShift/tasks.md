@@ -4449,11 +4449,12 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [x] Fix `MapGeometry.Contains` in Assets/Scripts/World/Map/MapGeometry.cs so points that lie exactly on the polygon edge are considered inside, preventing the player from being treated as outside when standing on a building’s border.
   Change the line
   - 20:47 landed by 0htsserver in 1.4 min: **Changed**
-- [ ] Reduce per‑frame main‑camera lookup in `PostFx.LateUpdate` (Assets/Scripts/Rendering/Presentation.cs)
+- [x] Reduce per‑frame main‑camera lookup in `PostFx.LateUpdate` (Assets/Scripts/Rendering/Presentation.cs)
   Replace `Camera cam = Camera.main;` with a lazy cache: `if (_cachedCam == null) _cachedCam = Camera.main; Camera cam = _cachedCam;`
   Remove the equality check `if (cam != _cachedCam || _cachedData == null)` and instead only compare `_cachedData` to handle the first‑run case.
   Keep the existing logic that updates `_cachedData` when the cached camera exists; the player will see exactly the same post‑processing effects because the same camera component is used.
   This eliminates the expensive `Camera.main` `FindObjectByTag` search each frame while preserving correct behaviour when the main camera changes (it will be re‑cached on the next frame when `_cachedCam` becomes null).
+  - 21:27 landed by spark in 30.5 min: Done.
 - [x] In Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs modify the `Louder` method to also warn the player when the radio is set to the maximum volume, indicating the loud hum may attract walkers.
   Locate the method `private void Louder(InteractContext ctx, int step)` near line 151.
   After the existing `ctx.Notify("Volume: " + (...));` line, insert:
