@@ -303,6 +303,31 @@ namespace CloneZ
             town.Keepout.Add(Around(box, 0.3f, 0.3f));
             }
             b.FrontDoormat(doorLx);
+// ---- front‑door hardware detail ----
+{
+    // the door centre is already stored in the local variable 'door'
+    var m = town.Out.Solid(door);
+    // 1. brass‑coloured knob – cylinder 0.02 m radius, 0.01 m height, centred 0.9 m up, 0.1 m right of centre
+    m.Cylinder(door + new Vector3(0.10f, 0.90f, 0f), 0.02f, 0.01f, 12,
+        DecorPalette.Metal(new Color(0.70f, 0.55f, 0.35f)), Quaternion.Euler(0f, 0f, 90f), 1f);
+    // 2. small latch plate – box 0.03 m × 0.02 m × 0.01 m, left of knob, a little lower
+    m.Box(door + new Vector3(-0.08f, 0.85f, 0f), new Vector3(0.03f, 0.02f, 0.01f),
+        DecorPalette.Matte(new Color(0.80f, 0.60f, 0.30f)));
+    // 3. wooden door edge trim – thin box 0.02 m thick, runs the full height (1.9 m) and width (0.8 m)
+    m.Box(door + new Vector3(0f, 0.95f, -0.02f), new Vector3(0.80f, 1.90f, 0.02f),
+        DecorPalette.Matte(new Color(0.55f, 0.38f, 0.22f)));
+    // 4. peephole – tiny cylinder 0.015 m radius, 0.005 m depth, centred 1.1 m up, centred horizontally
+    m.Cylinder(door + new Vector3(0f, 1.10f, 0.015f), 0.015f, 0.005f, 8,
+        DecorPalette.Metal(new Color(0.30f, 0.30f, 0.30f)), Quaternion.identity, 1f);
+    // 5. rust spot – very small cylinder 0.01 m radius, 0.004 m height, bottom‑right of knob
+    m.Cylinder(door + new Vector3(0.07f, 0.78f, 0f), 0.01f, 0.004f, 6,
+        DecorPalette.Metal(new Color(0.55f, 0.35f, 0.20f)), Quaternion.identity, 1f);
+    // 6. subtle wear – two thin, dark quads (very flat boxes) to suggest paint chips
+    m.Box(door + new Vector3(-0.12f, 0.62f, 0.001f), new Vector3(0.05f, 0.01f, 0.001f),
+        DecorPalette.Matte(new Color(0.30f, 0.25f, 0.22f)));
+    m.Box(door + new Vector3(0.12f, 0.55f, 0.001f), new Vector3(0.04f, 0.008f, 0.001f),
+        DecorPalette.Matte(new Color(0.30f, 0.25f, 0.22f)));
+}
             b.HouseNumber(doorLx, (3 + town.Rng.Next(60)).ToString());
             b.OutsideTap(b.HalfD > 4.75f ? 0.6f : 0.3f);   // on the side wall, between its two windows
 
