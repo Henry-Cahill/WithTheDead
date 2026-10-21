@@ -35,9 +35,16 @@ namespace CloneZ
         /// <summary>True when <paramref name="q"/> is inside the polygon (even-odd rule).</summary>
         public static bool Contains(List<Vector2> p, Vector2 q)
         {
+            // Points on the edge are considered inside. First check if q lies within EPS of any edge.
+            for (int i = 0, j = p.Count - 1; i < p.Count; j = i++)
+            {
+                if (DistanceToSegment(q, p[j], p[i]) <= EPS)
+                    return true;
+            }
             bool inside = false;
             for (int i = 0, j = p.Count - 1; i < p.Count; j = i++)
             {
+                // Ray‑casting algorithm (even‑odd rule). Use strict < for crossing to keep consistency.
                 if ((p[i].y > q.y) != (p[j].y > q.y)
                     && q.x < (p[j].x - p[i].x) * (q.y - p[i].y) / (p[j].y - p[i].y) + p[i].x)
                     inside = !inside;
