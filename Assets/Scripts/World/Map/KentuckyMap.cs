@@ -19,6 +19,7 @@ namespace CloneZ
         /// <summary>How far past the playable square the surroundings are drawn, as scenery.</summary>
         private const float SceneryReach = 90f;
         private const float EaveHeight = 0.12f; // thin horizontal strip
+        private const float SnowDepth = 0.05f; // thin snow sheet applied to horizontal surfaces
         private const float EaveDepth = 0.25f; // how far it sticks out from the wall
 
         /// <summary>A one-line summary of the last map built.</summary>
@@ -59,7 +60,8 @@ namespace CloneZ
                 BuildStreets(site);
                 BuildLines(site);
                 BuildBuildings(site);
-                BuildRoofEaves(site);
+
+
                 BuildStreetLights(site);
                 BuildParkedCars(site);
                 BuildTrees(site);
@@ -94,6 +96,23 @@ namespace CloneZ
         }
 
         private static Vector3 To3(Vector2 p, float y) => new Vector3(p.x, y, p.y);
+
+        // Added thin snow layer for roofs and streets
+        private static void BuildSnow(Site site)
+        {
+            foreach (Footprint f in site.Area.Buildings)
+            {
+                if (!f.Inside(site.Half, 2f)) continue;
+                // Use mapped height if present, else fallback to 0.
+                float roofY = f.Data.height > 0f ? f.Data.height : 0f;
+                roofY += SnowDepth * 0.5f;
+                Vector3 center = new Vector3(f.Middle.x, roofY, f.Middle.y);
+                Vector3 size = new Vector3(f.Size, SnowDepth, f.Size);
+                site.Overhead.At(f.Middle).Box(center, size, DecorMaterials.Snow);
+            }
+        }
+
+
 
         #region Exits and spawn
         // Where streets leave the playable square: the best-ranked street on each side becomes an exit (two at least;
