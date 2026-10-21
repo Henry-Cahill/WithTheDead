@@ -4274,12 +4274,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add the line: `PlayerGearParts.Box(root, "Seam", new Vector3(0f, top - d * 0.5f - 0.039f, outer - 0.010f), new Vector3(w * 0.92f, 0.002f, 0.001f), web);`.
   This uses no new assets, keeps colliders and interaction points unchanged, and adds only one extra primitive.
   - 19:48 landed by 1htsserver in 1.7 min: **Changed**
-- [ ] In Assets/Scripts/World/HomeLamp.cs: Optimize HomeLamp.Update and SyncGlow to avoid per‑frame lookups of the singleton ViewState by caching its reference
+- [x] In Assets/Scripts/World/HomeLamp.cs: Optimize HomeLamp.Update and SyncGlow to avoid per‑frame lookups of the singleton ViewState by caching its reference
   Add a private field `private ViewState _viewState;` to HomeLamp.
   In `OnEnable()` (or `Awake()`) set `_viewState = FindObjectByType<ViewState>();` – this is safe because the ViewState object exists for the whole game session.
   Replace every occurrence of `ViewState.CeilingsVisible` in `Update()` and `SyncGlow()` with `_viewState.CeilingsVisible`.
   Keep the existing logic unchanged; the player will still see the glow appear/disappear exactly when the ceilings become visible or hidden, and flickering behavior is unaffected.
   No other code changes are required.
+  - 20:05 landed by 1htsserver in 16.4 min: **Summary of changes**
 - [x] Add a deterministic, cached `System.Random` to `MapBuild` in Assets/Scripts/World/Map/WorldStore.cs so map‑building code can use a stable seed for visual variation (e.g., building colours).
   · Declare a new private field `private System.Random _rand;` inside the `MapBuild` class.
   · Add a public read‑only property `public System.Random Random => _rand ??= new System.Random(Id.GetHashCode());` after the existing `RegionSize` property.
