@@ -11,7 +11,7 @@ namespace CloneZ
     /// </summary>
     public class HubNpc : MonoBehaviour
     {
-        public enum Role { Keeper, Patron, Musician, Storyteller, Beggar }
+        public enum Role { Keeper, Patron, Musician, Storyteller, Beggar, Guide }
 
         public Role Kind;
         public string Name;
@@ -45,6 +45,7 @@ namespace CloneZ
                                     "The Choir sings to it. The ones who reach it get what they ask for... or what they deserve.",
                                     "My brother went looking. He left a journal page in Mirelock. Find it, if you're mad enough." } },
         };
+        public static readonly string[] GuideHints = new[] { "Take the left fork near the old mill.", "Avoid the frozen river – the ice cracks under weight.", "The road by the burnt barn saves you an hour.", "Keep to the high ground when the fog rolls in.", "Follow the charcoal markers; they’re the only reliable trail." };
 
         public static HubNpc Spawn(Transform parent, Vector3 position, Vector3 lookAt, string name, string faction, Role role, string script, bool seated = false)
         {
@@ -211,16 +212,19 @@ namespace CloneZ
                         Sfx.PlayUI(SfxIds.Cash);
                     }));
                     break;
-                case HubNpc.Role.Keeper:
-                    into.Add(new InteractAction("Buy a drink (5 MG)", c =>
-                    {
-                        if (!Money.TrySpend(5, c.Inventory)) { c.Notify("You don't have 5 MG."); return; }
-                        c.Notify("You feel a warm surge.");
-                        GameEvents.RaiseSubtitle(Npc.Name, "Enjoy your drink.");
-                        Sfx.PlayUI(SfxIds.Cash);
-                        ProfileStore.Save();
-                    }));
-                    break;
+                        case HubNpc.Role.Guide:
+                            // Ask for a route hint
+                            into.Add(new InteractAction("Ask for a route hint (5 MG)", c =>
+                            {
+                                if (!Money.TrySpend(5, c.Inventory)) { c.Notify("You don't have 5 MG."); return; }
+                                // pick a random hint
+                                string hint = HubNpc.GuideHints[UnityEngine.Random.Range(0, HubNpc.GuideHints.Length)];
+                                GameEvents.RaiseSubtitle(Npc.Name, hint);
+                                MoralLedger.Record("asked guide for hint", MoralLedger.HintFromGuide);
+                                Sfx.PlayUI(SfxIds.Cash);
+                                ProfileStore.Save();
+                            }));
+                            break;
                 default:
                     into.Add(new InteractAction("Chat", c => GameEvents.RaiseSubtitle(Npc.Name, "Mm.")));
                     break;
