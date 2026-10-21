@@ -4481,11 +4481,12 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add four small chrome corner brackets to the picture frame built in `Assets/Scripts/World/FurnitureBuilder.Lighting.cs` `PictureFrame` method
   In `PictureFrame`, after the line `m.Box(at + normal * 0.008f, new Vector3(w + 0.05f, h + 0.05f, 0.016f), q, M(frame));` compute the wall‑right vector `Vector3 right = Vector3.Cross(normal, Vector3.up).normalized;`
   Add four `m.Box` calls, each with size `new Vector3(0.008f, 0.008f, 0.003f)` and material `Mt(Chrome)`, positioned at the four outer corners of the frame:
-- [ ] Fix the null‑reference bug in `HubKit.MoneyCarried` (Assets/Scripts/Hub/Screens/HubKit.cs)
+- [x] Fix the null‑reference bug in `HubKit.MoneyCarried` (Assets/Scripts/Hub/Screens/HubKit.cs)
   The property currently reads `public static int MoneyCarried => Money.Count(Pack);` – if no player is loaded (e.g., in the main‑menu or test screens) `Pack` is `null`, and `Money.Count(null)` throws a `NullReferenceException`, crashing the hub UI.
   Change the getter to safely handle a missing pack:
   `public static int MoneyCarried => Pack != null ? Money.Count(Pack) : 0;`
   Now the hub shows “$0” (or whatever UI displays) when no player exists instead of crashing, while preserving the original behaviour when a player is present. All other code stays unchanged.
+  - 21:02 landed by 0htsserver in 0.9 min: **Changed**
 - [ ] Add small worn‑metal caps to the ends of each skid rod in Assets/Scripts/World/Zone/Helicopter.cs, inside `HelicopterModel.Build` right after the `for (int s = -1; s <= 1; s += 2)` loop that creates the rods.
   Use the same `hull` colour variable and apply a slight darkening (`hull * 0.7f`) with `DecorPalette.Metal`.
   Create a tiny cylinder for each cap: radius 0.10 m, height 0.04 m.
