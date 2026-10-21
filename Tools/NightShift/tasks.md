@@ -5579,3 +5579,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `new Vector3( (w + 0.06f) * 0.5f - 0.01f, 0.55f + 0.55f - 0.01f, -l * 0.5f + 0.03f - 0.03f + 0.01f )` – back‑right
   `new Vector3(-(w + 0.06f) * 0.5f + 0.01f, 0.55f + 0.55f - 0.01f, -l * 0.5f + 0.03f - 0.03f + 0.01f )` – back‑left
   These caps give the wooden headboard a period‑correct brass‑nail finish without affecting colliders or interaction points.
+- [ ] Fix HubNpc Spawn Y‑position handling in Assets/Scripts/Hub/HubNpc.cs
+  In `HubNpc.Spawn` the line `go.transform.position = new Vector3(position.x, role == Role.Musician ? 0.24f : 0f, position.z);` forces every NPC (except musicians) to Y = 0, discarding the `position.y` that callers supply. This makes hub NPCs sink into the ground on raised terrain or hover above it on lower ground, breaking immersion.
+  Change the line to keep the caller‑provided height:
+  `go.transform.position = new Vector3(position.x, role == Role.Musician ? 0.24f : position.y, position.z);`
+  After this change NPCs appear at the correct vertical spot while musicians still get their slight elevation offset. All other logic (seat height, look‑at vector, etc.) remains unchanged.
