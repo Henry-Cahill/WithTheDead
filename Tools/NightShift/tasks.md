@@ -4618,8 +4618,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   `sb.Solid.Rod(boltPos, boltPos + Vector3.up * 0.05f, 0.015f, ZoneKit.Mt(ZoneKit.RustDark), 4);`
   `}`
   - 21:47 landed by 1htsserver in 2 min: **Changed**
-- [ ] Fix the returned position of the desk lamp so that the light source is attached to the bulb, not to the shade – Assets/Scripts/World/FurnitureBuilder.Office.cs → `public static Vector3 DeskLamp(...)`
+- [x] Fix the returned position of the desk lamp so that the light source is attached to the bulb, not to the shade – Assets/Scripts/World/FurnitureBuilder.Office.cs → `public static Vector3 DeskLamp(...)`
   The method currently ends with `return mouth;` where `mouth` is the tip of the shade cone, so any light or effect placed at the returned point appears floating in front of the shade instead of at the bulb.
   Change the final line to return the actual bulb location, e.g.:
   `return j2;` // or `return j2 - axis * 0.01f;` if the bulb centre is offset; this puts the light at the end of the arm where the bulb is drawn.
   The player will then see the desk lamp emit light from the correct spot, matching the visual model, while all other geometry and parameters remain unchanged.
+  - 21:47 landed by 0htsserver in 1 min: **Changed**
