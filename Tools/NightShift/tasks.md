@@ -4636,3 +4636,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   ` {`
   ` HubRules.SafeZone = !HubRules.SafeZone;`
   ` GameEvents.RaiseToast($"Safe zone is now {(HubRules.SafeZone ? "ON" : "OFF")}.");`
+- [ ] Add a tiny brass hinge detail to each upper‑cabinet door in `Assets/Scripts/World/FurnitureBuilder.Home.cs` → `UpperCabinets`
