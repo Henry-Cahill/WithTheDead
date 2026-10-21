@@ -5721,3 +5721,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   No changes to other fields, formats, or data structures; colliders and geometry will still be handled by existing building‑generation code that now can query this flag.
   - 03:31 landed by 0htsserver in 1.8 min: **Changed file**
 - [ ] Add a small metal toggle switch to the generator’s front control panel in Assets/Scripts/World/DecorProps.cs, method DecorProps.Generator – after the line `m.Box(new Vector3(0.35f, 0.4f, 0.31f), new Vector3(0.2f, 0.25f, 0.02f), M(new Color(0.15f, 0.15f, 0.15f)))` add a thin box representing a worn switch, sized 0.02 m × 0.04 m × 0.005 m, positioned at new Vector3(0.35f, 0.45f, 0.33f), rotated by a small random yaw `Yaw(R(rng, -5f, 5f))`, and rendered with a slightly varied metal surface: `Mt(V(new Color(0.2f, 0.2f, 0.2f), rng, 0.05f))`. This gives each generator a lived‑in look without altering colliders or interaction points.
+- [ ] In Assets/Scripts/Items/ItemExtra.cs: Fix ItemExtra.CanStack to correctly reject stacking when AmmoChoice or Dirt differ, preventing loss of per‑item data.
+  In `ItemExtra.CanStack(ItemExtra a, ItemExtra b)` the final return line only checks raid/insured flags, belt state, empty mod/upgrade lists and empty notes. It ignores `AmmoChoice` and `Dirt`, so two stacks with different ammo preferences or fouling levels can merge, overwriting one’s data.
+  Change the return statement to also compare these fields, e.g.:
+  `return a.FoundInRaid == b.FoundInRaid`
+  `&& a.Insured == b.Insured`
+  `&& !a.OnBelt && !b.OnBelt`
+  `&& a.Mods.Count == 0 && b.Mods.Count == 0`
+  `&& a.Upgrades.Count == 0 && b.Upgrades.Count == 0`
+  `&& string.IsNullOrEmpty(a.Note) && string.IsNullOrEmpty(b.Note)`
+- [ ] Add a thin inner‑face wooden trim strip to each sash in `Assets/Scripts/World/StarterHome.Windows.cs` → `WindowSash` method, after the bead‑trim boxes (`// bottom rail bead` line), to give the sash a subtle period‑correct finish.
