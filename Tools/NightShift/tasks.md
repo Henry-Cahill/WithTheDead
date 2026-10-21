@@ -5976,9 +5976,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   ` // dark matte surface to look like a thin oil film on the road`
   ` town.Out.Flat(center).FlatBlob(center, spillSize, spillSize, R(rng, 0f, 360f), 0.015f, rng, DecorPalette.Matte(new Color(0.05f, 0.05f, 0.07f)));`
   - 07:44 landed by 1htsserver in 2.3 min: **Changed file**
-- [ ] Add a cohesive set of visual details to the main‑rotor hub in Assets/Scripts/World/Zone/Helicopter.cs so the helicopter’s rotors look worn, period‑appropriate and three‑dimensional.
+- [x] Add a cohesive set of visual details to the main‑rotor hub in Assets/Scripts/World/Zone/Helicopter.cs so the helicopter’s rotors look worn, period‑appropriate and three‑dimensional.
   Step 1: Open `HelicopterModel.Build`. Locate the “Main rotor” section – the code lines that create `main`, set its `localPosition`, instantiate `rm`, add the four blade boxes and the central cylinder: `var main = new GameObject("MainRotor").transform;` `main.SetParent(root, false);` `main.localPosition = new Vector3(0f, 3.25f, 0.3f);` `var rm = new RaidMesh();` `for (int b = 0; b < 4; b++)` `{` `Quaternion q = Quaternion.Euler(0f, b * 90f, 0f);` `rm.Box(q * new Vector3(0f, 0f, 3.6f), q * new Vector3(0.3f, 0.04f, 7.2f), DecorPalette.Metal(new Color(0.1f, 0.1f, 0.1f)));` `}` `rm.Cylinder(new Vector3(0f, -0.1f, 0f), 0.25f, 0.25f, 8, DecorPalette.Metal(new Color(0.2f, 0.2f, 0.2f)));`
   Step 2: Add a slightly larger hub “rim” disc directly under the existing cylinder to give the hub depth. Insert the line after the `rm.Cylinder` call (still before `Emit`): `// hub rim – thin steel disc giving the hub a worn‑metal look` `rm.Cylinder(new Vector3(0f, -0.12f, 0f), 0.33f, 0.02f, 8, DecorPalette.Metal(new Color(0.15f, 0.15f, 0.15f)));`
+  - 07:48 landed by 1htsserver in 1.4 min: **Changed file**
 - [ ] In Assets/Scripts/World/Fixtures/LampSwitch.cs: Add a “Check bulb” action to `LampSwitch.GetActions` that informs the player whether the lamp’s bulb is burnt out, using the existing `_lamp.DeadBulb` field.
   Add the line `into.Add(new InteractAction("Check bulb", CheckBulb));` right after the existing `Inspect` action line (`into.Add(new InteractAction("Inspect lamp", Inspect));`).
   Implement a private method:
