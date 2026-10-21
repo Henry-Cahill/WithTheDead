@@ -412,6 +412,8 @@ Color flagCol = V(new Color(0.80f, 0.15f, 0.12f), rng, 0.07f);
             m.Box(new Vector3(0f, 0.35f, 0f), new Vector3(1.0f, 0.55f, 0.6f), M(c));
             m.Box(new Vector3(0f, 0.05f, 0f), new Vector3(1.1f, 0.1f, 0.7f), M(c * 0.6f));
             m.Box(new Vector3(0.35f, 0.4f, 0.31f), new Vector3(0.2f, 0.25f, 0.02f), M(new Color(0.15f, 0.15f, 0.15f)));
+            // Small worn metal toggle switch on the generator front panel
+            m.Box(new Vector3(0.35f, 0.45f, 0.33f), new Vector3(0.02f, 0.04f, 0.005f), Yaw(R(rng, -5f, 5f)), Mt(V(new Color(0.2f, 0.2f, 0.2f), rng, 0.05f)));
             m.Cylinder(new Vector3(-0.35f, 0.62f, -0.15f), 0.04f, 0.4f, 6, Mt(new Color(0.3f, 0.28f, 0.25f)));
             m.Box(new Vector3(0f, 0.65f, 0f), new Vector3(0.9f, 0.04f, 0.5f), M(SnowWhite));
             // Exhaust pipe with a glowing tip
