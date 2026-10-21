@@ -51,7 +51,7 @@ namespace CloneZ
             var go = new GameObject("HubNpc " + name);
             go.transform.SetParent(parent, false);
             float seatHeight = position.y > 0.1f ? position.y : 0.46f;
-            go.transform.position = new Vector3(position.x, role == Role.Musician ? 0.24f : 0f, position.z);
+            go.transform.position = new Vector3(position.x, role == Role.Musician ? 0.24f : position.y, position.z);
             Vector3 face = lookAt - go.transform.position;
             face.y = 0f;
             if (face.sqrMagnitude > 0.01f) go.transform.rotation = Quaternion.LookRotation(face.normalized, Vector3.up);

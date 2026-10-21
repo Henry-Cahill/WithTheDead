@@ -5580,11 +5580,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `new Vector3(-(w + 0.06f) * 0.5f + 0.01f, 0.55f + 0.55f - 0.01f, -l * 0.5f + 0.03f - 0.03f + 0.01f )` – back‑left
   These caps give the wooden headboard a period‑correct brass‑nail finish without affecting colliders or interaction points.
   - 02:53 landed by hts-llm in 2.3 min: **Changed file**
-- [ ] Fix HubNpc Spawn Y‑position handling in Assets/Scripts/Hub/HubNpc.cs
+- [x] Fix HubNpc Spawn Y‑position handling in Assets/Scripts/Hub/HubNpc.cs
   In `HubNpc.Spawn` the line `go.transform.position = new Vector3(position.x, role == Role.Musician ? 0.24f : 0f, position.z);` forces every NPC (except musicians) to Y = 0, discarding the `position.y` that callers supply. This makes hub NPCs sink into the ground on raised terrain or hover above it on lower ground, breaking immersion.
   Change the line to keep the caller‑provided height:
   `go.transform.position = new Vector3(position.x, role == Role.Musician ? 0.24f : position.y, position.z);`
   After this change NPCs appear at the correct vertical spot while musicians still get their slight elevation offset. All other logic (seat height, look‑at vector, etc.) remains unchanged.
+  - 02:55 landed by 0htsserver in 1.3 min: Changed **Assets/Scripts/Hub/HubNpc.cs**:
 - [ ] Add a thin chrome bezel around the outer edge of each wall clock in `Assets/Scripts/World/FurnitureBuilder.Lighting.cs` `ClockDial` method
   Insert a new cylinder draw call after the first `m.Cylinder(at, 0.16f, 0.04f, 16, M(new Color(0.15f, 0.15f, 0.16f)), disc);` line:
   `// Chrome bezel at the clock’s outer rim`
