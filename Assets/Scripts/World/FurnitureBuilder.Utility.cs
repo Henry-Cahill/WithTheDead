@@ -348,7 +348,10 @@ namespace CloneZ
             Color w = new Color(0.86f, 0.86f, 0.84f);
             m.Box(new Vector3(0f, 0.27f, 0f), new Vector3(1.6f, 0.54f, 0.75f), G(w));
             m.Box(new Vector3(0f, 0.545f, 0f), new Vector3(1.44f, 0.004f, 0.58f), G(new Color(0.6f, 0.62f, 0.6f)));
-            m.Box(new Vector3(-0.7f, 0.66f, 0f), new Vector3(0.04f, 0.12f, 0.04f), Mt(Chrome));
+            // Chrome faucet with hot (red) and cold (blue) levers
+            m.Box(new Vector3(-0.6f, 0.66f, 0.35f), new Vector3(0.06f, 0.02f, 0.03f), Mt(Chrome));
+            m.Box(new Vector3(-0.58f, 0.68f, 0.352f), new Vector3(0.008f, 0.012f, 0.008f), M(new Color(0.80f, 0.10f, 0.10f)));
+            m.Box(new Vector3(-0.62f, 0.68f, 0.352f), new Vector3(0.008f, 0.012f, 0.008f), M(new Color(0.10f, 0.30f, 0.80f)));
         }
         #endregion
     }

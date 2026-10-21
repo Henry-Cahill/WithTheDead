@@ -4191,9 +4191,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 19:13 landed by hts-llm in 2.5 min: **Summary**
 - [x] In Assets/Scripts/World/Map/KentuckyMap.Ground.cs edit the `BuildStreets` method: after each kerb `Ribbon(..., KerbSurf)` call add a second `Ribbon` that uses the existing `Ice` surf and a y‑position just above the kerb (e.g. `StreetY + KerbHeight + 0.001f`). Do this for both the inner road section (`site.Town.Out`) and the outer road extension (`site.Town.Far`).
   - 19:18 landed by hts-llm in 4 min: **Summary of changes**
-- [ ] Add a chrome faucet with red “hot” and blue “cold” lever handles to the bathtub in Assets/Scripts/World/FurnitureBuilder.Utility.cs – `FurnitureBuilder.Bathtub`
+- [x] Add a chrome faucet with red “hot” and blue “cold” lever handles to the bathtub in Assets/Scripts/World/FurnitureBuilder.Utility.cs – `FurnitureBuilder.Bathtub`
   Add a small chrome base for the faucet: `m.Box(new Vector3(-0.6f, 0.66f, 0.35f), new Vector3(0.06f, 0.02f, 0.03f), Mt(Chrome));`
   Add a short red hot‑water lever: `m.Box(new Vector3(-0.58f, 0.68f, 0.352f), new Vector3(0.008f, 0.012f, 0.008f), M(new Color(0.80f, 0.10f, 0.10f)));`
   Add a short blue cold‑water lever: `m.Box(new Vector3(-0.62f, 0.68f, 0.352f), new Vector3(0.008f, 0.012f, 0.008f), M(new Color(0.10f, 0.30f, 0.80f)));`
   Position the faucet relative to the existing tub box call `m.Box(new Vector3(0f, 0.27f, 0f), …)` so it appears on the side wall at typical height.
   All new parts use the existing `Mt(Chrome)` and `M(...)` material helpers; colliders and interaction points remain unchanged.
+  - 19:19 landed by 0htsserver in 2.7 min: Implemented a chrome faucet with red “hot” and blue “cold” lever handles for the bathtub in **FurnitureBuilder.Utility.cs**. The new parts i
