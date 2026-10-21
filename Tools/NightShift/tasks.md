@@ -5151,12 +5151,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// left rivet`
   `m.Box(f.P(s0 + 0.03f, y1 - topRail * 0.5f, across), f.Size(rivetSize, rivetSize, rivetDepth), brassCap);`
   - 00:35 landed by hts-llm in 1.6 min: **Changed file**
-- [ ] In Assets/Scripts/Extraction/ExtractionBeacon.cs: Fix ExtractionBeacon.Dispose to clean up the beacon’s GameObject hierarchy, preventing orphaned objects after extraction.
+- [x] In Assets/Scripts/Extraction/ExtractionBeacon.cs: Fix ExtractionBeacon.Dispose to clean up the beacon’s GameObject hierarchy, preventing orphaned objects after extraction.
   In `ExtractionBeacon.Dispose()` add a destroy call for the root object so the beacon’s meshes and particle system are removed when the beacon is no longer needed.
   Replace the method body with:
   `if (_ringMesh != null) Object.Destroy(_ringMesh);`
   `if (Root != null) Object.Destroy(Root);`
   This removes the beacon’s GameObject (and its children) from the scene, fixing the hidden memory‑leak where completed beacons linger invisible but still consume CPU/GPU time. All other fields and static caches remain unchanged.
+  - 00:38 landed by hts-llm in 1.8 min: **Summary**
 - [ ] Add a small chrome escutcheon disc to the pedestal basin tap for period‑correct detail in Assets/Scripts/World/FurnitureBuilder.Bathroom.cs, method PedestalBasin
   After the line `m.Cylinder(tap, 0.026f, 0.008f, 14, chrome);` insert a thin chrome cylinder representing a wash‑basin escutcheon.
   Use the same `tap` position, offset down by 0.004 m: `new Vector3(0f, -0.004f, 0f)`.
