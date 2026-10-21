@@ -185,10 +185,11 @@ namespace CloneZ
                         if (!NearestFree(site, s.At + new Vector2(k * 2.2f, 0f), 1.2f, out Vector2 at)) continue;
                         Vector3 at3 = To3(at, 0f);
                         RaidMesh m = site.Town.Out.Solid(at3);
-                        m.SetFrame(at3, 0f);
-                        DecorProps.GasPump(m, rng);
-                        m.ResetFrame();
-                        site.Town.PropCollider(at3 + Vector3.up * 0.9f, new Vector3(1.0f, 1.8f, 1.6f), 0f);
+                         float pumpYaw = (float)(rng.NextDouble() * 10.0 - 5.0);
+                         m.SetFrame(at3, pumpYaw);
+                         DecorProps.GasPump(m, rng);
+                         m.ResetFrame();
+                         site.Town.PropCollider(at3 + Vector3.up * 0.9f, new Vector3(1.0f, 1.8f, 1.6f), pumpYaw);
                         site.Take(at, 1.2f);
                     }
                     continue;

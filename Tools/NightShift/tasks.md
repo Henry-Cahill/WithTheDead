@@ -4741,11 +4741,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `T("firewood_hoarder", "Fire‑Wood Hoarder", 1, "Your stash of seasoned firewood keeps the hearth alive through the longest nights.", m => { }),`
   `T("frostburn", "Frostburn", -1, "Your skin flinches at the slightest chill, turning brief exposure into a shiver.", m => { }),`
   - 22:30 landed by 0htsserver in 2.5 min: **Changes made**
-- [ ] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildPoints` so that each gas‑pump pole is given a tiny random yaw instead of being perfectly aligned (replace the hard‑coded `0f` yaw with a random `±5°` value and use the same yaw for the collider).
+- [x] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildPoints` so that each gas‑pump pole is given a tiny random yaw instead of being perfectly aligned (replace the hard‑coded `0f` yaw with a random `±5°` value and use the same yaw for the collider).
   Locate the block inside `if (s.Data.kind == "fuel")` where `DecorProps.GasPump(m, rng);` is called.
   Add `float yaw = (float)(rng.NextDouble() * 10.0 - 5.0);` before `m.SetFrame(at3, 0f);`.
   Change `m.SetFrame(at3, 0f);` to `m.SetFrame(at3, yaw);`.
   Change the collider call `site.Town.PropCollider(at3 + Vector3.up * 0.9f, new Vector3(1.0f, 1.8f, 1.6f), 0f);` to use `yaw` instead of `0f`.
   Keep the rest of the method unchanged.
   Result: gas‑pump posts will appear slightly off‑axis (±5°), giving the street‑level props a more hand‑painted, lived‑in feel while still fitting the 1993 rural Kentucky setting.
+  - 22:32 landed by 0htsserver in 2.6 min: **Changed file**
 - [ ] Add a tiny brass screw head to each raised panel of the wooden door leaf in `Assets/Scripts/World/FurnitureBuilder.Fixtures.cs` `FurnitureBuilder.DoorLeaf` so the panels look nailed into the door.
