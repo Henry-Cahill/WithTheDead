@@ -108,7 +108,7 @@ if (water) {
                     {
                         Ribbon(site.Town.Out, piece, KerbWidth, StreetY + KerbHeight, KerbSurf);
                         // thin wear strip just inside the kerb – gives the road a lived‑in look
-                        Ribbon(site.Town.Out, piece, 0.04f, StreetY + 0.001f, DecorMaterials.Gravel);
+                        Ribbon(site.Town.Out, piece, 0.04f, StreetY + 0.001f, RandomGravelOverlay(piece[0]));
                     Ribbon(site.Town.Out, piece, KerbWidth, StreetY + KerbHeight + 0.001f, Ice);
                     }
                     site.TakeLine(piece, width * 0.5f + 0.3f);
@@ -317,5 +317,14 @@ if (water) {
             Color varied = new Color(baseCol.r + r, baseCol.g + r, baseCol.b + r);
             return DecorPalette.Matte(varied);
         }
-    }
+
+        private static Surf RandomGravelOverlay(Vector2 seed)
+        {
+            // small deterministic colour jitter for gravel using Perlin noise; keeps values in a plausible range
+            float r = Mathf.PerlinNoise(seed.x * 0.13f, seed.y * 0.13f) * 0.03f;
+            // base colour approximates typical gravel grey; adjust slightly by r on each channel
+            Color baseCol = new Color(0.55f, 0.55f, 0.55f);
+            Color varied = new Color(baseCol.r + r, baseCol.g + r, baseCol.b + r);
+            return DecorPalette.Matte(varied);
+        }    }
 }

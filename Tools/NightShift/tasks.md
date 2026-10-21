@@ -5772,7 +5772,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 03:50 landed by 1htsserver in 6.3 min: **Changes made**
 - [x] Append five new miss‑notification strings to the `Misses` array in `Assets/Scripts/World/Fixtures/RaidStoreVending.cs` so the player hears additional bleak, period‑correct feedback when thumping the vending machine.
   - 03:47 landed by hts-llm in 3.7 min: **Changed file**
-- [ ] Edit `Assets/Scripts/World/Map/KentuckyMap.Ground.cs` – in the `BuildStreets` method replace the static gravel kerb‑wear ribbon with a per‑segment colour‑varying one, and add a tiny helper that creates the varied gravel surface.
+- [x] Edit `Assets/Scripts/World/Map/KentuckyMap.Ground.cs` – in the `BuildStreets` method replace the static gravel kerb‑wear ribbon with a per‑segment colour‑varying one, and add a tiny helper that creates the varied gravel surface.
+  - 03:50 landed by 0htsserver in 4.1 min: **Changes made**
 - [ ] Add four tiny chrome screws to the gas‑range’s back‑guard for a realistic industrial detail (Assets/Scripts/World/FurnitureBuilder.Kitchen.cs → `GasRange` method).
   After the line `m.Box(new Vector3(0f, 1.0f, -0.3f), new Vector3(0.76f, 0.16f, 0.06f), body);` insert up to four cylinders:
   `if (Chance(rng, 0.8f)) m.Cylinder(new Vector3(-0.35f, 0.94f, -0.33f), 0.006f, 0.012f, 8, chrome, Quaternion.Euler(90f,0f,0f));`
