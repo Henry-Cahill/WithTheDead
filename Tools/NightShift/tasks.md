@@ -5945,7 +5945,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Step 5: Assets/Scripts/World/Fixtures/RainBarrelFixture.cs – extend CheckLevel to mention the covered state. After the existing `level` string construction, insert: `if (_capped) level += " The barrel is covered, preserving the water inside.";`
   Step 6: Assets/Scripts/World/Fixtures/RainBarrelFixture.cs – override CaptureState and RestoreState to persist the covered flag. Add the two methods: `public override void CaptureState(FixtureSave save)` `{` `base.CaptureState(save);` `save.SetBool("capped", _capped);` `}` `public override void RestoreState(FixtureSave save)` `{` `base.RestoreState(save);` `_capped = save.GetBool("capped", false);` `}`
   Done when: The player can press E to “Cover the barrel” (or “Uncover the barrel”), sees a toast message confirming the action, cannot fill a bottle while it is covered (the option is greyed out with “The barrel is covered.”), and the water‑level check displays the extra sentence about the barrel being covered. The covered state remains after reloading the game because it is saved and restored. All other existing functionality stays unchanged.
-- [ ] Append five new flavor‑text strings to the `BrushLines` array in Assets/Scripts/World/Fixtures/BasinFixture.cs
+- [x] Append five new flavor‑text strings to the `BrushLines` array in Assets/Scripts/World/Fixtures/BasinFixture.cs
   Add the entries after the existing last element (`"The metal basin shivers under the tap, mirroring the resolve you feel to endure the endless winter."`) and before the closing `};`.
   Each new line must be a single‑sentence, period‑correct survivor thought while brushing teeth in a 1993 Kentucky winter.
   Use the existing entry `"The bite of winter air sharpens the mint as you brush your teeth."` as style reference – terse, sensory, and evocative.
@@ -5954,6 +5954,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `"You taste the faint grit of soot that clings to the water from the stove's lingering ash."`
   `"A distant howl of wind slides through the cracked window, syncing with the rhythm of your brush strokes."`
   `"The mirror's warped glass catches a flash of the old family portrait, urging you to keep on living."`
+  - 07:42 landed by 1htsserver in 5.6 min: **Changed file**
 - [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/UI/SkillsPanelController.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
