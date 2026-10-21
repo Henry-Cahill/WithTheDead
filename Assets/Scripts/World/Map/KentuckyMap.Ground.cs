@@ -9,10 +9,18 @@ namespace CloneZ
     public static partial class KentuckyMap
     {
         private const float StreetY = 0.012f;
+        // Height of the raised kerb strip (above the road surface).
+        private const float KerbHeight = 0.04f;
+        // Width of the kerb strip.
+        private const float KerbWidth = 0.22f;
+        // Kerb colour.
+        private static readonly Color KerbColor = new Color(0.62f, 0.62f, 0.60f);
+        // Height of the raised kerb strip (above the road surface).
         private const float LotY = 0.008f;
         private const float IceY = 0.006f;
 
-        private static Surf Ice => DecorPalette.Gloss(new Color(0.60f, 0.68f, 0.76f));
+                private static Surf Ice => DecorPalette.Gloss(new Color(0.60f, 0.68f, 0.76f));
+        private static Surf KerbSurf => DecorPalette.Matte(KerbColor);
         private static Surf TroddenSnow => DecorPalette.Matte(new Color(0.74f, 0.77f, 0.82f));
         private static Surf CentreLine => DecorPalette.Matte(new Color(0.78f, 0.66f, 0.22f));
         private static Surf RailSteel => DecorPalette.Matte(new Color(0.30f, 0.27f, 0.25f));
@@ -67,14 +75,26 @@ namespace CloneZ
                 bool road = Rank(s.Data.kind) >= 2;
                 foreach (List<Vector2> piece in MapGeometry.ClipLine(s.Pts, square))
                 {
+                    // Main road surface
                     Ribbon(site.Town.Out, piece, width, StreetY, surf);
+                    // Raised kerb strip along the road edge
+                    if (road)
+                    {
+                        Ribbon(site.Town.Out, piece, KerbWidth, StreetY + KerbHeight, KerbSurf);
+                    }
                     site.TakeLine(piece, width * 0.5f + 0.3f);
                     if (road && width >= 7f) DashedLine(site.Town.Out, piece, StreetY + 0.003f);
                 }
                 // The road out of town carries on past the edge, as scenery.
                 if (road)
+                {
                     foreach (List<Vector2> piece in OutsidePieces(s.Pts, half))
+                    {
                         Ribbon(site.Town.Far, piece, width, StreetY, surf);
+                        // Kerb on the outer road extension
+                        Ribbon(site.Town.Far, piece, KerbWidth, StreetY + KerbHeight, KerbSurf);
+                    }
+                }
             }
         }
 

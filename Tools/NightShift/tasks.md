@@ -4137,7 +4137,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 18:51 landed by 1htsserver in 5.2 min: **Changed file**
 - [x] In Assets/Scripts/World/Fixtures/RaidTownGasPump.cs: Add six new InteractAction entries to `RaidTownGasPump.GetActions` that extend the existing `into` list with period‑correct written text the player can read; the new actions should appear only when the nozzle is lifted and each must consist of an action name (a full‑sentence phrase) and a `c.Notify` call containing a single‑sentence note that fits 1993 rural Kentucky winter.
   - 18:52 landed by hts-llm in 4.2 min: **Changed file**
-- [ ] In Assets/Scripts/World/Map/KentuckyMap.cs add a kerb height constant and a helper that builds a thin raised strip along every street, then call it from the existing `BuildStreets` method (in the same partial class file) so each road gets a period‑correct concrete sidewalk edge.
+- [x] In Assets/Scripts/World/Map/KentuckyMap.cs add a kerb height constant and a helper that builds a thin raised strip along every street, then call it from the existing `BuildStreets` method (in the same partial class file) so each road gets a period‑correct concrete sidewalk edge.
+  - 19:05 landed by 0htsserver in 13.9 min: **Changes Made**
 - [x] Fix a cover‑state bug in Assets/Scripts/AI/Humans/HumanNpc.cs so NPCs don’t remain “in cover” after they finish reloading while far from any cover spot.
   *Method:* `HumanNpc.Fight()` – the early‑exit block that handles reloading:
   `if (Time.time < _reloadUntil) { Croupped = _inCover; return; }`
