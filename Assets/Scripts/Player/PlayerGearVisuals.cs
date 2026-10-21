@@ -398,18 +398,30 @@ namespace CloneZ
                 PlayerGearParts.Box(root, "Flap", new Vector3(x, 1.197f, pz + 0.001f), new Vector3(0.064f, 0.032f, 0.047f), shade);
             }
 
-            // Harness straps from the top of the panel over the shoulders, and a strap round the waist.
-for (int s = -1; s <= 1; s += 2)
-                {
-                    StrapOverShoulder(_chestRig, root, s * HarnessX, 1.18f, y1 - 0.01f, 0.007f, HarnessWidth, 0.008f, web);
-                    Vector3 end = _path[_path.Count - 1];
-                    PlayerGearParts.Box(root, "StrapBuckle", end + new Vector3(0f, 0.014f, 0.007f), new Vector3(0.046f, 0.022f, 0.008f), hardware);
-                }
+// Harness straps from the top of the panel over the shoulders, and a strap round the waist.
+        for (int s = -1; s <= 1; s += 2)
+        {
+            StrapOverShoulder(_chestRig, root, s * HarnessX, 1.18f, y1 - 0.01f, 0.007f, HarnessWidth, 0.008f, web);
+            Vector3 end = _path[_path.Count - 1];
+            PlayerGearParts.Box(root, "StrapBuckle", end + new Vector3(0f, 0.014f, 0.007f), new Vector3(0.046f, 0.022f, 0.008f), hardware);
+        }
 
-            Transform spine = Root(_chestRig, HumanBone.Spine, "Gear_ChestRigStrap");
-            const float waistY = 1.09f;
-            _torso.Sample(waistY, out float ww, out float wd, out float wz, out _);
-            PlayerGearParts.Band(spine, "WaistStrap", new Vector3(0f, waistY, wz), ww + _inflate + 0.008f, wd + _inflate + 0.008f, 0.03f, Quaternion.identity, web);
+        // Add four tiny rivet boxes to suggest worn‑metal fastening on the front panel.
+        float rivetZ = front + panelD * 0.5f + 0.004f;
+        float rivetSizeX = 0.02f, rivetSizeY = 0.02f, rivetSizeZ = 0.008f;
+        // Top left
+        PlayerGearParts.Box(root, "RivetTL", new Vector3(-0.12f, y0 + 0.07f, rivetZ), new Vector3(rivetSizeX, rivetSizeY, rivetSizeZ), hardware);
+        // Top right
+        PlayerGearParts.Box(root, "RivetTR", new Vector3(0.12f, y0 + 0.07f, rivetZ), new Vector3(rivetSizeX, rivetSizeY, rivetSizeZ), hardware);
+        // Bottom left
+        PlayerGearParts.Box(root, "RivetBL", new Vector3(-0.12f, y1 - 0.07f, rivetZ), new Vector3(rivetSizeX, rivetSizeY, rivetSizeZ), hardware);
+        // Bottom right
+        PlayerGearParts.Box(root, "RivetBR", new Vector3(0.12f, y1 - 0.07f, rivetZ), new Vector3(rivetSizeX, rivetSizeY, rivetSizeZ), hardware);
+
+        Transform spine = Root(_chestRig, HumanBone.Spine, "Gear_ChestRigStrap");
+        const float waistY = 1.09f;
+        _torso.Sample(waistY, out float ww, out float wd, out float wz, out _);
+        PlayerGearParts.Band(spine, "WaistStrap", new Vector3(0f, waistY, wz), ww + _inflate + 0.008f, wd + _inflate + 0.008f, 0.03f, Quaternion.identity, web);
         }
         #endregion
 
