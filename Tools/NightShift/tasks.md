@@ -5438,10 +5438,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   *Attach a rectangular sign board a short distance from the pole (e.g. `Vector2 signPos = mid + normal * 0.3f;`) with a thin box: `site.Town.Out.At(signPos).Box(new Vector3(signPos.x, StreetY + SignPostHeight - 0.2f, signPos.y), new Vector3(0.8f, 0.4f, 0.02f), DecorMaterials.Metal);`.
   *Mark the occupied space with `site.Take(signPos, 0.5f);` (or a small radius) so other props avoid it.
   *Call `BuildStreetSigns(site);` from `BuildStreets` (after the existing sidewalk/kerb code) so the signs appear alongside the roads.
-- [ ] Fix the sleep‑overlay clock not updating each minute in Assets/Scripts/UI/HUDController.cs
+- [~] Fix the sleep‑overlay clock not updating each minute in Assets/Scripts/UI/HUDController.cs
   UpdateSleep computes the current “minute” as `tod.Day * 1440 + Mathf.FloorToInt(tod.Hour * 60f)`.
   `TimeOfDay` also exposes the current minute (e.g. `tod.Minute`), so the value never changes while the hour is unchanged. As a result the sleep overlay only refreshes once per hour instead of every minute, leaving the displayed clock stale for up to 59 seconds.
   Change the calculation to include the minute field so the overlay refreshes correctly.
+  - 02:17 1htsserver made no changes: **Changed file**
 - [ ] Add subtle metal door hinges to each exterior door frame built in `RaidBuilding.DrawDoorFrame` (Assets/Scripts/World/RaidBuilding.cs)
   Inside `DrawDoorFrame`, after the existing plaque/handle/rust code, obtain `int extSide = OutsideSide(r, o.Pos);` (already used for the plaque).
   Define a hinge material: `var hingeSurf = DecorPalette.Matte(new Color(0.30f, 0.30f, 0.35f));` (reuse `DecorPalette.Matte`).
