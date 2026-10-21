@@ -5188,11 +5188,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `}`
   Each hinge is 2 cm × 4 cm × 1 cm, positioned 0.80 m above the ground and offset 0.78 m left/right from centre, flush with the front panel (Z = ‑1.22 m).
   Uses the existing `ZoneKit.RustDark` material, keeps all colliders and interaction points unchanged, and adds visual wear that fits the 1993 rural‑winter setting.
-- [ ] In Assets/Scripts/World/HomeLamp.cs: Fix HomeLamp.Refresh to re‑enable the bulb renderer after a lamp that was previously dark becomes lit, preventing the bulb mesh from staying permanently hidden.
+- [x] In Assets/Scripts/World/HomeLamp.cs: Fix HomeLamp.Refresh to re‑enable the bulb renderer after a lamp that was previously dark becomes lit, preventing the bulb mesh from staying permanently hidden.
   In `Refresh()` add logic that, when `lit` is true and `_bulb` is not null, sets `_bulb.forceRenderingOff = false` (clearing the flag set when the lamp was dark).
   Current code only does: `if (!lit && _bulb != null && !_bulb.forceRenderingOff) _bulb.forceRenderingOff = true;` which never restores the renderer.
   After the fix a lamp that is switched off (or waiting for dusk) will correctly show its bulb again once it turns on, matching player expectations.
   No other fields or behavior need to change.
+  - 00:45 landed by 0htsserver in 1.1 min: **Changed:** `Assets/Scripts/World/HomeLamp.cs`
 - [ ] Add a subtle oil‑stain patch on the stainless‑steel deck of the kitchen sink (Assets/Scripts/World/FurnitureBuilder.Kitchen.cs → `SinkUnit` method)
   Inside the “stainless deck with its ribbed drainer” block, after the `for (int i = 0; i < 7; i++) …` loop, insert a conditional that creates a small darkened box on the top of the deck;
   Use the existing steel material (`Mt(Steel)`) tinted 20 % darker (`Mt(Steel * 0.8f)`) for the stain;
