@@ -4419,3 +4419,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Vector3 knobSize = new Vector3(knobDepth, knobRadius * 2f, knobRadius * 2f);` // depth, height, width of the box
   `Surf knobMat = DecorPalette.Gloss(new Color(0.8f, 0.8f, 0.8f));` // subtle metallic gloss, re‑using the existing palette helper
   `site.Town.Out.Solid(knobCenter).Box(knobCenter, knobSize, doorYaw, knobMat);` // adds the knob aligned with the door
+- [ ] Reduce per‑frame string allocation in HudRadiation.LateUpdate (Assets/Scripts/Zone/Radiation.cs)
+  Add a private field `float _prevDoseValue;` alongside the existing cache fields.
+  In LateUpdate, after confirming `show`, compute `float curDose = r.Dose;` and `bool shielded = r.Shielded;` and `string trend = r.Intake > 0.0002f ? " \u25B2\u25B2" : r.Intake > 0.00002f ? " \u25B2" : "";`.
+  Replace the current `if (doseStr != _prevDose || trend != _prevTrend || shielded != _prevShielded)` with a check that uses the cached float: `if (!Mathf.Approximately(curDose, _prevDoseValue) || trend != _prevTrend || shielded != _prevShielded)`.
+  Inside that block, create the formatted string once: `string doseStr = (curDose * 6f).ToString("0.00");`.
+  Update the UI: `_text.text = "\u2622 " + doseStr + " Sv" + trend + (shielded ? " (iodine)" : ""); UIKit.SetBar(_fill, curDose);`.
+  Store the new cache values: `_prevDoseValue = curDose; _prevTrend = trend; _prevShielded = shielded;`.
+  Remove the now‑unused string field `_prevDose` (or keep it for compatibility but stop updating it).
+  The player sees exactly the same radiation readout, with no visual change, but the HUD no longer allocates a new string each frame when the dose has not changed, reducing GC pressure.
