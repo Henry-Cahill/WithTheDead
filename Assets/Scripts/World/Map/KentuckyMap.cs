@@ -118,10 +118,14 @@ namespace CloneZ
                     Vector3 leftCenter = new Vector3(leftMid.x, StreetY + 0.01f, leftMid.y);
                     Vector3 size = new Vector3(length, 0.04f, SidewalkWidth);
                     site.Overhead.At(leftMid).Box(leftCenter, size, DecorMaterials.Concrete);
+                    // thin snow overlay on left sidewalk
+                    site.Overhead.At(leftMid).Box(new Vector3(leftMid.x, StreetY + 0.01f + 0.02f + SnowDepth * 0.5f, leftMid.y), new Vector3(length, SnowDepth, SidewalkWidth), DecorMaterials.Snow);
                     // right sidewalk box
                     Vector2 rightMid = mid - normal * (halfRoad + SidewalkWidth * 0.5f);
                     Vector3 rightCenter = new Vector3(rightMid.x, StreetY + 0.01f, rightMid.y);
                     site.Overhead.At(rightMid).Box(rightCenter, size, DecorMaterials.Concrete);
+                    // thin snow overlay on right sidewalk
+                    site.Overhead.At(rightMid).Box(new Vector3(rightMid.x, StreetY + 0.01f + 0.02f + SnowDepth * 0.5f, rightMid.y), new Vector3(length, SnowDepth, SidewalkWidth), DecorMaterials.Snow);
                 }
             }
         }
