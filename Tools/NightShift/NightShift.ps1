@@ -82,11 +82,24 @@ docker exec $Container bash /project/Tools/NightShift/nightshift.sh $Command
 }
 
 # Starts the night shift through AI Workbench's CLI, like switching on the night-shift toggle, so the toggle shows the
-# truth. That also starts the project container when it isn't running.
+# truth. That also starts the project container when it isn't running, and AI Workbench itself on the Spark when it's
+# down (as when nobody has opened the Spark in the AI Workbench app since it last stopped).
 function Start-NightShift {
     return Invoke-Remote @"
 NVWB="`$HOME/.nvwb/bin/nvwb-cli"
+wb_status() {  # "running" while AI Workbench is up on the Spark
+  "`$NVWB" list contexts -o json 2>/dev/null | python3 -c 'import json, sys; print(next((c.get("status") or "" for c in json.load(sys.stdin).get("result") or [] if c.get("name") == "local"), ""))' 2>/dev/null
+}
 if [ -x "`$NVWB" ]; then
+  if [ "`$(wb_status)" != running ]; then
+    echo 'AI Workbench is not running on the Spark; starting it...'
+    # 'nvwb activate' is a shell function that sets up the shell it runs in, so it needs Workbench's wrapper loaded.
+    ( source "`$HOME/.local/share/nvwb/nvwb-wrapper.sh" && nvwb activate local ) </dev/null 2>&1 | grep -v '^tput:'
+    if [ "`$(wb_status)" != running ]; then
+      echo "AI Workbench didn't start on the Spark. Open spark-f146 in the AI Workbench app, then start the night shift again."
+      exit 1
+    fi
+  fi
   "`$NVWB" start night-shift -c local -p "`$HOME/$SparkProject" --no-browser || exit `$?
 elif docker ps --format '{{.Names}}' | grep -qx '$Container'; then
   docker exec $Container bash /project/Tools/NightShift/nightshift.sh start || exit `$?

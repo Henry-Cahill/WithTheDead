@@ -106,7 +106,8 @@ ones for the second:
 | This PC (menu: double-click [NightShift.bat](NightShift.bat)) | **2**, or `NightShift.bat start` | **5**, or `NightShift.bat finish` | **6**, or `NightShift.bat stop` |
 | JupyterLab terminal | `bash /project/Tools/NightShift/nightshift.sh start` | `... nightshift.sh finish` | `... nightshift.sh stop` |
 
-Starting from this PC goes through AI Workbench's CLI, so it also starts the project container when it's down,
+Starting from this PC goes through AI Workbench's CLI, so it also starts the project container when it's down (and
+AI Workbench itself on the Spark, if nobody has opened the Spark in the AI Workbench app since it last stopped),
 and the toggle in Workbench shows the right state either way. Stopping now rolls back the unfinished tasks; they
 stay queued and start over next time. Starting again carries on with the same `nightshift/` branch (and pull
 request) as long as the Workbench project is still on it. To begin a fresh branch, switch the Workbench project
