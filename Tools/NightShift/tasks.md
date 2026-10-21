@@ -4369,13 +4369,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace the final `return cur;` with `return RemoveNearDuplicates(cur);`.
   The player will see buildings with clean, non‑overlapping walls and roofs; tiny slivers that previously caused missing or flickering geometry disappear, while all existing functionality (clipping, winding) stays unchanged.
   - 20:26 landed by 0htsserver in 2.2 min: **Changed Files**
-- [ ] Add four small metal nail‑head cylinders to the `WeaponRack(RaidMesh m, System.Random r)` builder in Assets/Scripts/World/RaidLayouts.cs to suggest period‑correct mounting nails on the bottom of the wooden frame.
+- [x] Add four small metal nail‑head cylinders to the `WeaponRack(RaidMesh m, System.Random r)` builder in Assets/Scripts/World/RaidLayouts.cs to suggest period‑correct mounting nails on the bottom of the wooden frame.
   Use the existing `boltMat` (`DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f))`).
   Define `float nailRadius = 0.006f; float nailHeight = 0.012f;`.
   Create the positions: `Vector3[] nailPos = { new Vector3(-0.95f, 0.02f, -0.1f), new Vector3(-0.95f, 0.02f, 0.1f), new Vector3(0.95f, 0.02f, -0.1f), new Vector3(0.95f, 0.02f, 0.1f) };`.
   Loop: `foreach (var p in nailPos) m.Cylinder(p, nailRadius, nailHeight, 8, boltMat);`.
   Insert this code right after the two vertical post boxes (`m.Box(new Vector3(-0.95f, 0.8f, -0.1f)…` and its counterpart) and before the top horizontal beam (`m.Box(new Vector3(0f, 1.3f, -0.08f)…`).
   No other code changes are required; colliders and interaction points remain unchanged.
+  - 20:27 landed by hts-llm in 2.1 min: **Changed file**
 - [ ] In Assets/Scripts/Camera/IsoCameraFollow.cs: Fix IsoCameraFollow Awake method: remove the hard‑coded `ViewBlendSeconds = 0f;` which overwrites the serialized blend time and forces instant view cuts.
   Open `Assets/Scripts/Camera/IsoCameraFollow.cs` and locate the `Awake()` method.
   Delete or comment out the line `ViewBlendSeconds = 0f;` (currently set after `_views = CinemachineViews.Attach(_cam);`).
