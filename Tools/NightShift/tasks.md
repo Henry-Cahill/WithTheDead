@@ -5540,11 +5540,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Cylinder(pos, 0.01f, 0.02f, 6, Mt(Chrome));`
   Do this in a `for (int i = 0; i < 4; i++)` loop; adds subtle rivet detail, uses existing materials, keeps colliders and interaction points unchanged, and adds no more than 12 primitives.
   - 02:43 landed by hts-llm in 2.4 min: **Summary of changes**
-- [ ] In Assets/Scripts/Hub/Screens/HubScreenBase.cs: Cache per‑second work in HubScreenBase.Update to skip the entire second‑tick when no live labels exist and the money display is disabled or there is no active character.
+- [x] In Assets/Scripts/Hub/Screens/HubScreenBase.cs: Cache per‑second work in HubScreenBase.Update to skip the entire second‑tick when no live labels exist and the money display is disabled or there is no active character.
   Modify the `Update` method to compute a `bool needSecond = _live.Count > 0 || (ShowMoney && Character != null);` and return early if `needSecond` is false before checking `_nextSecond`.
   Only call `RefreshMoney()` when `ShowMoney && Character != null` (the existing `RefreshMoney` already guards, but the extra condition avoids the method call altogether).
   The player sees exactly the same UI; money and live labels still update when they should, and no visible behavior changes.
   All other logic and fields remain unchanged.
+  - 02:48 landed by 0htsserver in 2.2 min: **Changed**
 - [ ] In Assets/Scripts/World/Fixtures/DoormatFixture.cs: Add a “Kick the mat” action to DoormatFixture so the player can interact with the mat in a new, quick way
   In `DoormatFixture.GetActions` add a second `InteractAction` after the existing wipe action:
   `into.Add(new InteractAction("Kick the mat", Kick).Timed(0.6f, "Kicking the mat", HumanoidActivity.None));`
