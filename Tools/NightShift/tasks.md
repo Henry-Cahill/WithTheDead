@@ -4498,11 +4498,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Rear right → `new Vector3(-1.1f, 0.07f, -2.4f)`
   Call `m.Cylinder` for each cap, e.g. `m.Cylinder(new Vector3(1.1f, 0.07f, 2.4f), 0.10f, 0.04f, 6, DecorPalette.Metal(hull * 0.7f));`
   - 21:04 landed by 1htsserver in 2.4 min: **Summary**
-- [ ] In Assets/Scripts/Player/PlayerSleep.cs: Cache the TimeOfDay singleton in PlayerSleep to avoid repeated look‑ups each frame
+- [x] In Assets/Scripts/Player/PlayerSleep.cs: Cache the TimeOfDay singleton in PlayerSleep to avoid repeated look‑ups each frame
   Add a private field `private TimeOfDay _timeOfDay;` and initialise it in `Awake()` (or `OnEnable()`) with `_timeOfDay = TimeOfDay.Instance;`.
   Replace every occurrence of `TimeOfDay.Instance` in this class (`StartSleep`, `StopSleep`, and the static `ReachedDawn` method) with the cached `_timeOfDay` reference, keeping the existing null‑checks (`if (_timeOfDay != null) …`).
   The player will see exactly the same sleep‑time speed‑up and dawn‑waking behaviour; only the internal lookup cost is reduced.
   No other code, assets, or public members are altered.
+  - 21:08 landed by hts-llm in 5.3 min: Implemented a cached `TimeOfDay` reference in **PlayerSleep.cs**:
 - [ ] Add a deterministic colour helper to `Assets/Scripts/World/Map/WorldStore.cs` so the raid map can give each building a subtle, period‑appropriate colour variation.
   In the `MapBuild` class, after the `Random` property, insert a new public method:
   `/// <summary>Deterministic colour for a building (or other feature) identified by <paramref name="seed"/>.`
