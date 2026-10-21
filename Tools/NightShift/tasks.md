@@ -4659,10 +4659,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 22:05 landed by 0htsserver in 3.1 min: Implemented a `.Stopped` handler for the “Coil the hose” action in **HoseSpigot.cs**.
 - [ ] Add a deterministic default‑height helper to `MapBuilding` in `Assets/Scripts/World/Map/MapData.cs` so buildings without an explicit `height` field still get a plausible roof height based on their `levels`.
   In `MapBuilding` insert the method
-- [ ] Add four small weathered stone rune slabs around the central stone pillar in the ChoirSanctum landmark, editing Assets/Scripts/World/Zone/ZoneLandmarks.cs method ChoirSanctum(SiteBuilder sb)
+- [x] Add four small weathered stone rune slabs around the central stone pillar in the ChoirSanctum landmark, editing Assets/Scripts/World/Zone/ZoneLandmarks.cs method ChoirSanctum(SiteBuilder sb)
   Insert after the line `sb.Solid.Cylinder(Vector3.zero, 2f, 0.4f, 16, ZoneKit.M(stone));`
   Create a loop `for (int i = 0; i < 4; i++)` that uses the deterministic RNG `sb.Rng` to pick an angle offset `float a = i * Mathf.PI * 0.5f + ZoneKit.R(sb.Rng, -0.1f, 0.1f);`
   Compute a position `Vector3 pos = new Vector3(Mathf.Cos(a) * 2.2f, 0.45f, Mathf.Sin(a) * 2.2f);`
   Define a muted stone colour `Color rune = new Color(0.18f, 0.17f, 0.15f);`
   Add a thin slab `sb.Solid.Box(pos, new Vector3(0.3f, 0.05f, 0.3f), ZoneKit.M(ZoneKit.V(rune, sb.Rng, 0.02f)));`
   These slabs act as subtle weathered rune stones, giving the stone circle more period‑correct visual interest without altering colliders or interaction points; total added primitives are four.
+  - 22:07 landed by 0htsserver in 1.8 min: Implemented four weathered stone rune slabs around the central stone pillar in the ChoirSanctum landmark (Assets/Scripts/World/Zone/ZoneLand

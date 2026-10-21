@@ -300,6 +300,14 @@ namespace CloneZ
                 sb.Collider(c + Vector3.up * h * 0.5f, new Vector3(0.7f, h, 0.5f));
             }
             sb.Solid.Cylinder(Vector3.zero, 2f, 0.4f, 16, ZoneKit.M(stone));
+            // Add four weathered rune slabs around the central pillar for subtle visual detail
+            for (int i = 0; i < 4; i++)
+            {
+                float a = i * Mathf.PI * 0.5f + ZoneKit.R(sb.Rng, -0.1f, 0.1f);
+                Vector3 pos = new Vector3(Mathf.Cos(a) * 2.2f, 0.45f, Mathf.Sin(a) * 2.2f);
+                Color rune = new Color(0.18f, 0.17f, 0.15f);
+                sb.Solid.Box(pos, new Vector3(0.3f, 0.05f, 0.3f), ZoneKit.M(ZoneKit.V(rune, sb.Rng, 0.02f)));
+            }
             sb.Flat.FlatBlob(new Vector3(0f, 0.42f, 0f), 1.2f, 1.2f, 0f, 0.1f, sb.Rng, ZoneKit.Gl(new Color(0.55f, 0.25f, 0.8f)));
             for (int i = 0; i < 6; i++) ZoneFlameLight.Spawn(sb.Root, sb.W(Mathf.Cos(i) * 2.4f, 0.4f, Mathf.Sin(i) * 2.4f), new Color(0.7f, 0.4f, 1f), 5f, 0.7f, 0.6f);
             sb.Storage("Offerings", "lm_choir_offer", new Vector3(0f, 0.6f, 1.6f), ContainerType.Desk, 4);
