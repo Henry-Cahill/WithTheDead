@@ -5136,3 +5136,4 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Add a noise emission when a gate is opened or closed in `Assets/Scripts/World/Camps.cs` → `CampGate.GetActions(InteractContext ctx, List<InteractAction> into)`.
   Modify the existing `InteractAction` that toggles the gate (the one added with `into.Add(new InteractAction(Open ? "Close the gate" : "Open the gate", …)`) so its execution lambda also calls `NoiseSystem.Emit(transform.position, 22f);` after `Apply` and `Broadcast`.
   Result: opening or closing a gate now makes a audible “creak” that can attract zombies, giving players feedback and a small tactical risk. All other code and existing actions remain unchanged.
+- [ ] Append six new flavour‑text strings to the `UseLines` array in Assets/Scripts/World/Fixtures/ToiletFixture.cs, placing them after the current last entry; the player will see one of these lines when using the toilet.
