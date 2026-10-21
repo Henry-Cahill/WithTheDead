@@ -5620,7 +5620,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `level01 = Mathf.Clamp01(norm);`
   This preserves the existing severity colour logic (which already uses the raw `t` thresholds) while giving the gauge a meaningful fill amount that reflects how close the survivor’s temperature is to the comfortable window. The rest of the method remains unchanged.
   - 03:07 landed by 1htsserver in 2 min: **Changed**
-- [ ] In Assets/Scripts/Hub/HubWorld.cs, add a subtle metal latch to the “ZoneDoor” built in `HubWorld.BuildShell` so the wooden door has a period‑correct fastening detail.
+- [x] In Assets/Scripts/Hub/HubWorld.cs, add a subtle metal latch to the “ZoneDoor” built in `HubWorld.BuildShell` so the wooden door has a period‑correct fastening detail.
   In `BuildShell`, after the line `Solid(world, "ZoneDoor", new Vector3(0f, 1.2f, -HalfZ - 0.05f), new Vector3(2.0f, 2.4f, 0.12f), st.DarkWood);` insert a `Deco` call that draws the latch.
   Use two primitives (a thin metal plate and a small metal bar) positioned on the upper‑right edge of the door:
   `Deco(world, "DoorLatch", m => {`
@@ -5629,6 +5629,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// latch bar`
   `m.Cylinder(new Vector3(0.85f, 1.74f, -HalfZ - 0.07f), 0.015f, 0.03f, 12, st.Metal);`
   `}, Vector3.zero);`
+  - 03:08 landed by 1htsserver in 1.8 min: **Changed file**
 - [ ] In Assets/Scripts/World/Fixtures/BedFixture.cs: Cache the sleep‑range check value in BedFixture.Update to avoid recomputing `CloneZConfig.SleepRange + 0.5f` each frame
   Add a private readonly float field (e.g. `_sleepCheckRadius`) initialized in Awake with `CloneZConfig.SleepRange + 0.5f`;
   Replace the expression `CloneZConfig.SleepRange + 0.5f` inside the Update method’s `SleepSpot.Nearest` call with `_sleepCheckRadius`;
