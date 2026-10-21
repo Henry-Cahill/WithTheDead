@@ -4818,7 +4818,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Ensure the method is placed after the `private const float EPS = 1e-5f;` field and before the closing brace of the class.
   The player should now see subtle colour differences between neighbouring buildings (e.g., slightly faded paint tones) making the procedurally‑generated raid town look hand‑crafted, while all existing geometry logic remains unchanged.
   - 22:58 landed by 1htsserver in 2.4 min: **Changed file**
-- [ ] In Assets/Scripts/World/RaidMapBuilder.Outdoor.cs add two small rust‑stained metal rivet cylinders to each sandbag wall built in the `Checkpoint` method (the lambda that calls `DecorProps.SandbagWall`), so the metal band looks fastened.
+- [x] In Assets/Scripts/World/RaidMapBuilder.Outdoor.cs add two small rust‑stained metal rivet cylinders to each sandbag wall built in the `Checkpoint` method (the lambda that calls `DecorProps.SandbagWall`), so the metal band looks fastened.
+  - 22:59 landed by hts-llm in 3.6 min: **Changed file**
 - [ ] Fix persistent fog in clear weather in Assets/Scripts/Core/WeatherSystem.cs
   *Method to change:* `ApplyFog()`
   *Current behaviour:* When the weather transitions to `Clear`, `FogIntensity` and `PrecipitationIntensity` are both 0, yet `ApplyFog()` still enables `RenderSettings.fog` (setting it to true) and updates the linear fog distances. This leaves fog rendering active even on a clear day, reducing visibility and giving the player an unintended “hazy” look.
