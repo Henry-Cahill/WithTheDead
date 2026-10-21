@@ -4984,3 +4984,6 @@ you want to see in game. Indent extra lines under a task to add detail.
   Initialise these fields inline (static constructors are allowed) – no runtime work needed.
   Replace every inline `new Color(... )` in Refresh (pain colour, panic colour, temperature colour, sickness colour, clothing label colour, button label colour, etc.) with the corresponding cached field.
   The UI appearance stays identical because the colour values are unchanged; the per‑frame GC pressure is reduced, making the panel’s continuous Refresh cheaper.
+- [ ] Append five new sentences to the `"fence"` entry in the `Lines` dictionary in Assets/Scripts/Hub/HubNpc.cs
+  Use the existing style (short, gritty statements) as shown by `"No receipts, no questions."` and cover themes of contraband, winter‑blocked routes, rumours about the Zone, bartering spare parts, and the ever‑watchful Wardens.
+  Change the initializer for `"fence"` to:
