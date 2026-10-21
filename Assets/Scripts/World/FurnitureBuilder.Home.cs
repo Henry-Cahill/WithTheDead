@@ -281,6 +281,11 @@ namespace CloneZ
             m.Box(new Vector3(-0.44f, 0.9f, 0f), new Vector3(0.02f, 1.8f, 0.32f), M(c));
             m.Box(new Vector3(0.44f, 0.9f, 0f), new Vector3(0.02f, 1.8f, 0.32f), M(c));
             m.Box(new Vector3(0f, 0.9f, -0.15f), new Vector3(0.88f, 1.8f, 0.02f), M(c * 0.7f));
+            // thin wooden strip capping the top edge (adds a worn‑look)
+            m.Box(new Vector3(0f, 0.9f + 1.8f, 0f), new Vector3(0.88f, 0.02f, 0.32f), M(c * 0.95f));
+            // occasional brass plaque centered on the trim
+            if (Chance(rng, 0.4))
+                m.Box(new Vector3(0f, 0.9f + 1.8f + 0.01f, 0f), new Vector3(0.12f, 0.004f, 0.04f), Mt(Brass));
             for (int s = 0; s < 5; s++)
             {
                 float y = 0.05f + s * 0.43f;

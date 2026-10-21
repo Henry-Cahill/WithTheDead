@@ -5789,7 +5789,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `handle.sizeDelta = new Vector2(12f, 12f);`
   Now the slider’s handle is visible and draggable, letting the player adjust settings as intended while preserving all other UI styling.
   - 03:51 landed by 1htsserver in 1.1 min: **Summary**
-- [ ] Add a thin wooden top‑trim and, with 40 % chance, a small brass plaque to the bookshelf built in `Assets/Scripts/World/FurnitureBuilder.Home.cs` → `Bookshelf` method
+- [x] Add a thin wooden top‑trim and, with 40 % chance, a small brass plaque to the bookshelf built in `Assets/Scripts/World/FurnitureBuilder.Home.cs` → `Bookshelf` method
   Insert after the back‑panel line
   `// thin wooden strip capping the top edge (adds a worn‑look)`
   `m.Box(new Vector3(0f, 0.9f + 1.8f, 0f), new Vector3(0.88f, 0.02f, 0.32f), M(c * 0.95f));`
@@ -5798,6 +5798,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(new Vector3(0f, 0.9f + 1.8f + 0.01f, 0f), new Vector3(0.12f, 0.004f, 0.04f), Mt(Brass));`
   Trim size: 0.88 m × 0.02 m × 0.32 m, placed at y = 0.9 + 1.8 = 2.7 m (top of the side posts).
   Plaque size: 0.12 m × 0.004 m × 0.04 m, positioned 0.01 m above the trim, centered on X/Z.
+  - 03:52 landed by 1htsserver in 1.2 min: **Changes made**
 - [ ] Replace the per‑frame property lookup of the rig’s proportions with the cached field in Assets/Scripts/Characters/HumanoidAnimator.cs
   In `Write()` change `HumanoidProportions p = _rig.Proportions;` to `HumanoidProportions p = _bound;` (the field already set in `Bind()` and refreshed in `Evaluate` if the rig changes).
   Remove the now‑redundant local variable `p` from any other method that still uses `_rig.Proportions` (e.g., none currently, but keep the pattern).
