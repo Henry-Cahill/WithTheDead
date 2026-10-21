@@ -142,6 +142,7 @@ for (int v = 0; v < 4; v++)
         }
         // Tiny metal locker-number plate at lower front edge
         m.Box(new Vector3(x, LockerDoorY - LockerDoorH * 0.5f + 0.01f, 0.217f), new Vector3(0.05f, 0.02f, 0.002f), Mt(Chrome));
+            m.Cylinder(new Vector3(x + R(rng, -0.005f, 0.005f), LockerDoorY + LockerDoorH * 0.5f - 0.07f, 0.22f), 0.004f, 0.02f, 8, Mt(Chrome));
             m.Box(new Vector3(x + 0.16f, 1.0f, 0.235f), new Vector3(0.035f, 0.13f, 0.025f), Mt(Chrome));
             m.Box(new Vector3(x, 1.74f, 0.228f), new Vector3(0.07f, 0.035f, 0.006f), M(Paper));
             if (Chance(rng, 0.3))

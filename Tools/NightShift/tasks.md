@@ -4171,10 +4171,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 19:08 landed by hts-llm in 4 min: **Changed**
 - [x] Fix the leg‑yaw rotation in Assets/Scripts/Characters/HumanoidAnimator.Body.cs → method Leg(int thigh, …) – the current code cancels the yaw it adds, so the character’s legs never turn when the player strafes or walks backward, giving a sliding‑feet animation.
   - 19:07 landed by 0htsserver in 1.3 min: **Changes Made**
-- [ ] Add a tiny chrome hinge‑pin detail to each locker door in Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method LockerDoor so players see a small realistic hinge on the top edge of the door.
+- [x] Add a tiny chrome hinge‑pin detail to each locker door in Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method LockerDoor so players see a small realistic hinge on the top edge of the door.
   Insert after the existing metal number‑plate box:
   `m.Cylinder(new Vector3(x + R(rng, -0.005f, 0.005f), LockerDoorY + LockerDoorH * 0.5f - 0.07f, 0.22f), 0.004f, 0.02f, 8, Mt(Chrome));`
   This creates a 4 mm radius, 2 cm long chrome cylinder (the pin) positioned near the top hinge line, with a tiny random X offset for variation. All other colliders, interaction points and pivots remain unchanged.
+  - 19:09 landed by 0htsserver in 1.6 min: **Changed file**
 - [ ] Cache the WeatherSystem reference once in Awake instead of checking for null each frame in WaterSource.Update (Assets/Scripts/World/WaterSource.cs)
   Add a private `void Awake()` method that sets `_weather = WeatherSystem.Instance;`.
   Remove the `if (_weather == null) _weather = WeatherSystem.Instance;` block from the Update method, leaving the rain‑intensity read as `float rain = _weather != null ? _weather.RainIntensity : 0f;`.
