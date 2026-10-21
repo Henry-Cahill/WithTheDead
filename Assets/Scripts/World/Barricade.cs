@@ -280,6 +280,7 @@ namespace CloneZ
             Planks = 0;
             Health = 0f;
             All.Remove(this);
+            Removed?.Invoke(this);
             Destroy(gameObject);
         }
         #endregion

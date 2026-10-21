@@ -5023,9 +5023,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(dome - Vector3.up * 0.032f, new Vector3(0.008f, 0.008f, 0.001f), q, Mt(Chrome));`
   Each head is 8 mm × 8 mm × 1 mm, placed 32 mm above and below the dome’s centre, using the same `Chrome` material already referenced.
   No new colliders or interaction points are added; only visual geometry is introduced.
-- [ ] In Assets/Scripts/World/Barricade.cs: Fix Barricade.Vanish so it notifies listeners that the barricade disappeared
+- [x] In Assets/Scripts/World/Barricade.cs: Fix Barricade.Vanish so it notifies listeners that the barricade disappeared
   The method currently removes the instance from Barricade.All and destroys the GameObject, but it never raises the static Removed event that other systems (AI queries, UI, netcode) rely on to drop references. As a result, when a barricade is removed via Vanish (e.g., when a peer’s world sync deletes it), those listeners still think the barricade exists and may try to interact with a destroyed object, leading to null‑reference errors or zombies targeting a non‑existent barrier.
   Change the method to invoke Removed?.Invoke(this) after updating All, matching the behavior of Break and Dismantle.
+  - 23:58 landed by 0htsserver in 1.5 min: **Changed** `Assets/Scripts/World/Barricade.cs`
 - [ ] In Assets/Scripts/World/Zone/Helicopter.cs → `HelicopterModel.Build`, add a small worn‑metal exhaust pipe on the tail boom to give the helicopter period‑appropriate visual grit.
   Add the cylinder after the tail‑fin box creation `m.Box(new Vector3(0f, 3f, -8.1f), new Vector3(0.12f, 1.9f, 1.1f), DecorPalette.Metal(hull));`.
   Use `m.Cylinder(new Vector3(0f, 2.45f, -8.55f), 0.06f, 0.06f, 6, DecorPalette.Metal(hull * 0.8f));` – radius 0.06 m, height 0.12 m (diameter 0.12 m), oriented along the Y‑axis.
