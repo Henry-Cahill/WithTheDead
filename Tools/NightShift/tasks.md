@@ -4928,3 +4928,21 @@ you want to see in game. Indent extra lines under a task to add detail.
   In `PoseBodycam`, replace the literal `new Vector3(0.04f, 0.05f, 0.2f)` with the cached `BodycamPosOffset`.
   Leave the calculation `pos = chest.position + look * BodycamPosOffset;` otherwise unchanged.
   The visual result is identical – the bodycam stays at the same relative chest position – but the allocation of a new `Vector3` each frame is eliminated, reducing GC pressure during shoulder and body‑cam view updates.
+- [ ] In Assets/Scripts/World/Fixtures/BasinFixture.cs: Add a “Rinse your mouth” timed action next to the existing “Brush your teeth” entry in `BasinFixture.GetActions`, copy the brush‑action setup and point it to a new `Rinse` handler; then implement `private void Rinse(InteractContext ctx)` that consumes the same water amount as brushing (`CloneZConfig.BasinBrushWater`) and notifies the player with a short line that varies on whether water was available.
+  In `GetActions`, after the `brush` block add:
+  `var rinse = new InteractAction("Rinse your mouth", Rinse)`
+  `.Timed(CloneZConfig.BasinBrushSeconds / 2f, "Rinsing", HumanoidActivity.Use)`
+  `.Begin = BorrowTap;`
+  `.Stopped = ReturnTap;`
+  `into.Add(rinse);`
+  Below the existing `Brush` method, add:
+  `private void Rinse(InteractContext ctx)`
+- [ ] Append six new entries to the `CivicPatienceLines` array in Assets/Scripts/World/RaidBuilding.Civic.cs (class `RaidBuilding`, field `CivicPatienceLines`) so the player has more varied text while playing patience; copy the tone of the existing line `"You lay out a game of patience with the dog‑eared deck left on the table. It comes out on the very last card."` and cover the themes of winter boredom, fleeting memories of home, the low hum of an aging heater, a stray cat perched on the windowsill, the crackle of a dying radio, and the steady rhythm of snowfall outside.
+  Use the current array syntax and insert the new strings before the closing brace and semicolon.
+  Ensure each new entry is a single full sentence in quotes, ending with a period.
+  Example theme sentences:
+  “You shuffle the cards slowly, listening to the heater’s rattling as the night grows colder.”
+  “A shiver runs through you while a stray cat watches from the sill, its eyes reflecting the flickering desk lamp.”
+  “The deck slides across the table, each click echoing the soft hiss of the snow outside.”
+  “You pause, remembering a warm kitchen back home where butter melted on fresh biscuits.”
+  “The radio sputters a static lullaby, and you turn the next card in time with its dying pulse.”
