@@ -5803,3 +5803,16 @@ you want to see in game. Indent extra lines under a task to add detail.
   In `Write()` change `HumanoidProportions p = _rig.Proportions;` to `HumanoidProportions p = _bound;` (the field already set in `Bind()` and refreshed in `Evaluate` if the rig changes).
   Remove the now‑redundant local variable `p` from any other method that still uses `_rig.Proportions` (e.g., none currently, but keep the pattern).
   This eliminates a property accessor call each frame, ensuring the same `HumanoidProportions` instance is reused without affecting the animation – the visual pose and all gameplay behaviour remain unchanged.
+- [ ] Add a new “Inspect main breaker” action to `BreakerPanel.GetActions` in Assets/Scripts/World/Fixtures/BreakerPanel.cs
+  – In the `GetActions` method, after the existing `Inspect breaker panel` line, insert:
+  `into.Add(new InteractAction("Inspect main breaker", c => c.Notify(BreakerOn ? "The main breaker is on." : "The main breaker is off.")));`
+  – This uses the private static `BreakerOn` property already present, so no new members are needed.
+  – When the survivor selects this action, they receive a text cue indicating whether the breaker is currently on or off, complementing the door‑inspection action.
+  – All other code, fields, and behavior remain unchanged.
+- [ ] Append 5 new copy‑description strings to the `Copies` array in Assets/Scripts/World/Fixtures/RaidStoreCopier.cs; the new entries should be whole sentences in quotes that the survivor reads when a copy finishes, matching the style of the existing entry `"A warm copy slides into the tray: the sheet on the glass, a shade greyer and a touch crooked."` and covering the themes of winter‑stained paper, faint toner, a hint of frost on the edges, and the weary, makes‑hift feel of county office documents.
+  Add the following lines after the current last entry (`"A faded copy appears, the watermark “County” barely visible, the toner leaving a ghostly shadow of the original.",`):
+  `"A dull‑gray copy emerges, its corners frayed like old rope, the ink smeared by the cold draft seeping in."`
+  `"A thin sheet pops out, its surface dusted with a pale frost line, as if the copier breathed winter air."`
+  `"A pale, almost translucent copy slides free, the toner barely clinging, and a faint smell of stale coffee lingers."`
+  `"A crisp copy lands, the paper speckled with tiny ice crystals that melt into the fibers as it cools."`
+  `"A weary copy drops, the letters slightly blurred, the margin edged with a subtle white streak hinting at the office’s chill."`
