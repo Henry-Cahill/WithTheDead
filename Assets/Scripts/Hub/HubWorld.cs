@@ -222,6 +222,13 @@ namespace CloneZ
                 m.Box(new Vector3(0f, 0.06f, HalfZ - 0.17f), new Vector3(HalfX * 2f, 0.12f, 0.04f), st.Trim);
                 m.Box(new Vector3(HalfX - 0.17f, 0.06f, 0f), new Vector3(0.04f, 0.12f, HalfZ * 2f), st.Trim);
                 m.Box(new Vector3(-HalfX + 0.17f, 0.06f, 0f), new Vector3(0.04f, 0.12f, HalfZ * 2f), st.Trim);
+                // Add subtle metal nail heads (tiny rivets) along the bottom edge of the trim for a weathered look
+                for (int i = 0; i < 12; i++)
+                {
+                    float x = -HalfX + 0.2f + i * ((HalfX * 2f - 0.4f) / 11f);
+                    // place just above floor, centered on the trim edge
+                    m.Cylinder(new Vector3(x, 0.03f, HalfZ - 0.18f), 0.01f, 0.005f, 12, st.Metal);
+                }
             }, Vector3.zero);
             Surf sign = DecorMaterials.Sign(st.Sign, new Color(0.12f, 0.08f, 0.05f), new Color(0.95f, 0.75f, 0.35f), out float aspect);
             Deco(world, "Sign", m => m.Upright(new Vector3(0f, 2.75f, HalfZ - 0.18f), Vector3.back, 0.5f * aspect, 0.5f, sign), Vector3.zero);

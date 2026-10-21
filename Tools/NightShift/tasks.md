@@ -5054,7 +5054,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `new Color(0.70f, 0.65f, 0.55f) // light‑gray concrete`
   `};`
   - 00:07 landed by 1htsserver in 5.3 min: **Changes Made**
-- [ ] Add a subtle line of tiny metal nail heads along the bottom edge of the hub’s interior trim in Assets/Scripts/Hub/HubWorld.cs – edit the `BuildShell` method’s `Deco` call for `"Trim"` so the skirting has a period‑correct, weathered look.
+- [x] Add a subtle line of tiny metal nail heads along the bottom edge of the hub’s interior trim in Assets/Scripts/Hub/HubWorld.cs – edit the `BuildShell` method’s `Deco` call for `"Trim"` so the skirting has a period‑correct, weathered look.
+  - 00:10 landed by 1htsserver in 2.6 min: **Changed file**
 - [ ] Fix the landmark‑counting bug in Assets/Scripts/World/Zone/ZoneLandmarks.cs so the “landmarks” summary only counts actually‑placed landmarks.
   In `ZoneLandmarks.Build` replace the line
   `if (id == "warden_checkpoint" && ZoneCordon.HasGate) { built++; continue; }`
