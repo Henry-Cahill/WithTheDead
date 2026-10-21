@@ -117,7 +117,7 @@ namespace CloneZ
             Transform t = FixtureBody(room, p, size, true, (m, r) => paint = FurnitureBuilder.LockerBankBody(m, r, count, body), name);
             KitchenFrame f = FrameOf(p);
             Vector3 at = t.position;
-            int ajar = count > 1 && Rng.NextDouble() < CloneZConfig.CivicAjarChance ? 1 + Rng.Next(count - 1) : -1;
+            int ajar = Rng.NextDouble() < CloneZConfig.CivicAjarChance ? Rng.Next(count) : -1;
             StorageFixture first = null;
             for (int i = 0; i < count; i++)
             {
