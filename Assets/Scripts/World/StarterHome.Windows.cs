@@ -134,6 +134,15 @@ namespace CloneZ
             Surf brassCap = DecorPalette.Metal(FurnitureBuilder.Brass);
             for (int e = -1; e <= 1; e += 2)
                 m.Box(f.P(f.Mid + e * (w * 0.5f - 0.0225f), y1 - topRail * 0.5f, across), f.Size(0.015f, 0.015f, 0.01f), brassCap);
+            // top‑rail brass rivets – subtle hardware detail
+            float rivetSize = 0.006f;
+            float rivetDepth = 0.004f;
+            // left rivet
+            m.Box(f.P(s0 + 0.03f, y1 - topRail * 0.5f, across), f.Size(rivetSize, rivetSize, rivetDepth), brassCap);
+            // center rivet
+            m.Box(f.P(f.Mid, y1 - topRail * 0.5f, across), f.Size(rivetSize, rivetSize, rivetDepth), brassCap);
+            // right rivet
+            m.Box(f.P(s1 - 0.03f, y1 - topRail * 0.5f, across), f.Size(rivetSize, rivetSize, rivetDepth), brassCap);
             if (!lower) return;
             Surf brass = DecorPalette.Metal(FurnitureBuilder.Brass);
             for (int e = -1; e <= 1; e += 2)
