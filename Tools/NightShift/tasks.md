@@ -4786,12 +4786,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 22:43 landed by 1htsserver in 2.1 min: **Summary**
 - [x] Fix the “ajar locker” selection in Assets/Scripts/World/RaidBuilding.Civic.cs (class `RaidBuilding`, method `Lockers`)
   - 22:46 landed by hts-llm in 1.4 min: Implemented the correct “ajar locker” selection by adjusting the random‑chance logic in **RaidBuilding.Civic.cs**. Added executable permissi
-- [ ] Add a small metal label/tag on the front of the gas‑mask filter canister in Assets/Scripts/Player/PlayerGearVisuals.cs, method BuildGasMask(ItemDef def)
+- [x] Add a small metal label/tag on the front of the gas‑mask filter canister in Assets/Scripts/Player/PlayerGearVisuals.cs, method BuildGasMask(ItemDef def)
   After the existing call `PlayerGearParts.Tube(root, "Filter", port + filterDir * 0.045f, filterDir, 0.044f, 0.037f, canister, true);`
   Create a thin rectangular box to suggest a worn metal label
   `PlayerGearParts.Box(root, "FilterLabel", port + filterDir * 0.067f, new Vector3(0.01f, 0.006f, 0.001f), hardware);`
   Size = 0.01 m × 0.006 m × 0.001 m; positioned ≈ 0.022 m ahead of the filter’s front (along the same `filterDir`)
   Uses the already‑defined `hardware` material (metal look), keeps colliders/pivots unchanged, and adds only one primitive.
+  - 22:55 landed by 1htsserver in 9.9 min: **Changes Made**
 - [x] Add a “Wipe dust off the clock” timed action to Assets/Scripts/World/Fixtures/ClockFixture.cs
   In ClockFixture.GetActions insert `into.Add(new InteractAction("Wipe dust off the clock", WipeDust).Timed(CloneZConfig.ClockListenSeconds, "Wiping dust off the clock", HumanoidActivity.None));` after the Polish action.
   Create a private method `private void WipeDust(InteractContext ctx)` that mirrors Polish but uses a different message, e.g.:

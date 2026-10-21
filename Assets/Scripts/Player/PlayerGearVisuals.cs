@@ -560,6 +560,7 @@ for (int s = -1; s <= 1; s += 2)
             Material glass = CloneZUtil.Mat(new Color(0.10f, 0.12f, 0.13f), 0.92f);
             Material canister = CloneZUtil.Mat(FilterColor, 0.3f, 0.2f);
             Material web = CloneZUtil.Mat(Webbing, 0.15f);
+            Material hardware = CloneZUtil.Mat(Hardware, 0.4f);
 
             Transform root = Root(_mask, HumanBone.Head, "Gear_GasMask");
             PlayerGearParts.Part(root, "FacePiece", PrimitiveType.Sphere, new Vector3(0f, 1.662f, 0.058f), Quaternion.identity,
@@ -578,7 +579,7 @@ for (int s = -1; s <= 1; s += 2)
             var port = new Vector3(-0.055f, 1.625f, 0.09f);
             PlayerGearParts.Tube(root, "FilterPort", port + filterDir * 0.012f, filterDir, 0.024f, 0.022f, trim);
             PlayerGearParts.Tube(root, "Filter", port + filterDir * 0.045f, filterDir, 0.044f, 0.037f, canister, true);
-            PlayerGearParts.Tube(root, "FilterCap", port + filterDir * 0.069f, filterDir, 0.006f, 0.032f, trim);
+            PlayerGearParts.Box(root, "FilterLabel", port + filterDir * 0.067f, new Vector3(0.01f, 0.006f, 0.001f), hardware);
 
             PlayerGearParts.Band(root, "Harness", new Vector3(0f, 1.695f, -0.024f), 0.101f, 0.118f, 0.014f, Quaternion.Euler(16f, 0f, 0f), web);
         }
