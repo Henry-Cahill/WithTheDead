@@ -4504,7 +4504,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   The player will see exactly the same sleep‑time speed‑up and dawn‑waking behaviour; only the internal lookup cost is reduced.
   No other code, assets, or public members are altered.
   - 21:08 landed by hts-llm in 5.3 min: Implemented a cached `TimeOfDay` reference in **PlayerSleep.cs**:
-- [ ] Add a deterministic colour helper to `Assets/Scripts/World/Map/WorldStore.cs` so the raid map can give each building a subtle, period‑appropriate colour variation.
+- [x] Add a deterministic colour helper to `Assets/Scripts/World/Map/WorldStore.cs` so the raid map can give each building a subtle, period‑appropriate colour variation.
   In the `MapBuild` class, after the `Random` property, insert a new public method:
   `/// <summary>Deterministic colour for a building (or other feature) identified by <paramref name="seed"/>.`
   `/// Uses the build‑id hash combined with the seed to produce a stable hue in a muted range.</summary>`
@@ -4513,3 +4513,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// combine build id hash with the specific seed so each feature gets its own stream`
   `int combined = Id.GetHashCode() ^ seed;`
   `var rand = new System.Random(combined);`
+  - 21:10 landed by 1htsserver in 3.7 min: **Changed file**

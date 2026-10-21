@@ -94,6 +94,20 @@ namespace CloneZ
         /// <summary>Deterministic random seeded by the build Id, useful for consistent visual tweaks.</summary>
         public System.Random Random => _rand ??= new System.Random(Id.GetHashCode());
 
+        /// <summary>Deterministic colour for a building (or other feature) identified by <paramref name="seed"/>.
+        /// Uses the build‑id hash combined with the seed to produce a stable hue in a muted range.</summary>
+        public Color GetBuildingColour(int seed)
+        {
+            // combine build id hash with the specific seed so each feature gets its own stream
+            int combined = Id.GetHashCode() ^ seed;
+            var rand = new System.Random(combined);
+            // Generate a hue in [0,1) and muted saturation/value
+            float hue = (float)rand.NextDouble();
+            float sat = 0.4f + (float)rand.NextDouble() * 0.2f; // 0.4‑0.6
+            float val = 0.6f + (float)rand.NextDouble() * 0.2f; // 0.6‑0.8
+            return Color.HSVToRGB(hue, sat, val);
+        }
+
         /// <summary>The credit line the game shows for the map data.</summary>
         public string Attribution => string.IsNullOrEmpty(Manifest.attribution)
             ? "Map data © OpenStreetMap contributors (ODbL)" : Manifest.attribution;
