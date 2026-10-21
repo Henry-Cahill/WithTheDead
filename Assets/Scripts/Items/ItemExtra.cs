@@ -64,6 +64,7 @@ namespace CloneZ
             }
             return a.FoundInRaid == b.FoundInRaid && a.Insured == b.Insured && !a.OnBelt && !b.OnBelt
                 && a.Mods.Count == 0 && b.Mods.Count == 0 && a.Upgrades.Count == 0 && b.Upgrades.Count == 0
+                && a.Dirt == b.Dirt && string.Equals(a.AmmoChoice, b.AmmoChoice)
                 && string.IsNullOrEmpty(a.Note) && string.IsNullOrEmpty(b.Note);
         }
 
