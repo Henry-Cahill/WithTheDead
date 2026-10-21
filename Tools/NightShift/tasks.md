@@ -4792,7 +4792,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `PlayerGearParts.Box(root, "FilterLabel", port + filterDir * 0.067f, new Vector3(0.01f, 0.006f, 0.001f), hardware);`
   Size = 0.01 m × 0.006 m × 0.001 m; positioned ≈ 0.022 m ahead of the filter’s front (along the same `filterDir`)
   Uses the already‑defined `hardware` material (metal look), keeps colliders/pivots unchanged, and adds only one primitive.
-- [ ] Add a “Wipe dust off the clock” timed action to Assets/Scripts/World/Fixtures/ClockFixture.cs
+- [x] Add a “Wipe dust off the clock” timed action to Assets/Scripts/World/Fixtures/ClockFixture.cs
   In ClockFixture.GetActions insert `into.Add(new InteractAction("Wipe dust off the clock", WipeDust).Timed(CloneZConfig.ClockListenSeconds, "Wiping dust off the clock", HumanoidActivity.None));` after the Polish action.
   Create a private method `private void WipeDust(InteractContext ctx)` that mirrors Polish but uses a different message, e.g.:
   `if (Time.time >= _calmAgainAt)`
@@ -4801,6 +4801,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `_calmAgainAt = Time.time + CloneZConfig.ClockCalmCooldown;`
   `ctx.Notify("You brush away the thin film of dust; the clean face steadies your thoughts.");`
   `}`
+  - 22:52 landed by hts-llm in 4.1 min: **Changes Made**
 - [ ] In Assets/Scripts/Core/Broadcasts.cs, edit the `Days(1, 2, …)` programme for the station "91.3 FM" (the `Easy 91.3` entry in `s_Stations`) and append five new whole‑sentence strings to its `Lines` array.
   The existing first line to use as a style reference is `"You're listening to Easy 91.3, the soft sound of the valley, all night long."`
   The new sentences should fit the winter‑1993 Kentucky setting and cover:
