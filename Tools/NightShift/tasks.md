@@ -4747,3 +4747,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   Change the collider call `site.Town.PropCollider(at3 + Vector3.up * 0.9f, new Vector3(1.0f, 1.8f, 1.6f), 0f);` to use `yaw` instead of `0f`.
   Keep the rest of the method unchanged.
   Result: gas‑pump posts will appear slightly off‑axis (±5°), giving the street‑level props a more hand‑painted, lived‑in feel while still fitting the 1993 rural Kentucky setting.
+- [ ] Add a tiny brass screw head to each raised panel of the wooden door leaf in `Assets/Scripts/World/FurnitureBuilder.Fixtures.cs` `FurnitureBuilder.DoorLeaf` so the panels look nailed into the door.
