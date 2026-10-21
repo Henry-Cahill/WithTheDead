@@ -80,6 +80,20 @@ namespace CloneZ
                     return (hash % 100) < 30; // 30% chance
                 }
         }
+        /// <summary>
+        /// Determine if a road segment should get a sidewalk/curb on its side.
+        /// Deterministic based on the build ID and the segment ID.
+        /// Approximately 45 % of road pieces receive a sidewalk.
+        /// </summary>
+        public bool HasSidewalk(long segmentId)
+        {
+            unchecked
+            {
+                uint hash = (uint)segmentId ^ 0x517cc1b7u;
+                hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
+                return (hash % 100) < 45; // 45% chance
+            }
+        }
         /// <summary>The data format this game reads (worldbuild.py's FORMAT).</summary>
         public const int Format = 1;
 
