@@ -4706,7 +4706,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(fp + new Vector3(-0.02f, 0.02f, 0f), new Vector3(0.008f, 0.012f, 0.008f), M(new Color(0.10f, 0.30f, 0.80f)));` // cold (blue) handle
   Result: the sink now has a period‑correct chrome faucet with tiny red and blue lever handles, adding visual realism without altering colliders, interaction points, or existing geometry.
   - 22:22 landed by hts-llm in 1.7 min: **Changes made**
-- [ ] Fix duplicate garrison spawns in Assets/Scripts/AI/Humans/Outposts.cs (method `Outpost.SpawnGarrison`)
+- [x] Fix duplicate garrison spawns in Assets/Scripts/AI/Humans/Outposts.cs (method `Outpost.SpawnGarrison`)
+  - 22:23 landed by 0htsserver in 1.7 min: Implemented a cleanup step in **Outposts.cs** to prevent duplicate garrison spawns:
 - [ ] Add faint edge‑line markings to each road segment in `Assets/Scripts/World/RaidMapBuilder.Streets.cs` → method `Road`
   After the call `Slab(town, alongX, coord, a, b, -hw, hw, 0.012f, asphalt);` insert a small randomised strip on each side of the lane:
   `if (rng.NextDouble() < 0.25) {`
