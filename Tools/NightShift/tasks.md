@@ -4231,3 +4231,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Vector3 porchCenter = To3(doorPoint + doorOutward * 0.4f, 0.1f);`
   `Vector3 porchSize = new Vector3(1.5f, 0.2f, 0.8f);`
   `site.Town.Out.Solid(porchCenter).Box(porchCenter, porchSize, doorYaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));`
+- [ ] Fix the runaway water‑level drain caused by `RaidHomeBath.DrawWater` in Assets/Scripts/World/Fixtures/RaidHomeBath.cs
+  *Method:* `public void DrawWater()` currently does ` _level = Mathf.Max(0f, _level - CloneZConfig.BathDrinkShare);` every time it is called, which is each frame the water point is queried. This instantly subtracts a full “drink‑share” amount regardless of time or player action, so the bath empties far faster than intended, leaving the player with an empty tub even when the taps are off.
+  *Fix:* Remove the unconditional subtraction. Replace the line with `// keep current level; visual update only` (or, if a slow evaporation is desired, scale by `Time.deltaTime`). The method should only update the visual:
+- [ ] Add a rusted metal band around each quarantine‑area barrel in `Assets/Scripts/World/RaidMapBuilder.Town.cs` → method `DressClinic`, inside the barrel `Prop` lambda.
