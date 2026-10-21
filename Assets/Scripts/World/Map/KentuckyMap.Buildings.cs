@@ -68,6 +68,8 @@ namespace CloneZ
             List<Vector2> p = f.Pts;
             int door = DoorEdge(site, f);
             Vector2 doorPoint = new Vector2(float.MaxValue, float.MaxValue);
+            float doorYaw = 0f;
+            Vector2 doorOutward = Vector2.zero;
             float groundTop = Mathf.Min(height, GroundStorey);
             for (int i = 0; i < p.Count; i++)
             {
@@ -84,12 +86,21 @@ namespace CloneZ
                     Wall(site, a, d, inset, d1, len + Thick * 0.5f, 0f, groundTop, yaw, outside, true);
                     Wall(site, a, d, inset, d0, d1, DoorHeight, groundTop, yaw, outside, true);
                     doorPoint = a + d * (len * 0.5f);
+                    doorYaw = yaw;
+                    doorOutward = outward;
                     site.Take(doorPoint + outward * 1.2f, 1.1f);   // keep the doorstep clear of props
                 }
                 else Wall(site, a, d, inset, -Thick * 0.5f, len + Thick * 0.5f, 0f, groundTop, yaw, outside, true);
                 if (height > groundTop)
                     Wall(site, a, d, inset, -Thick * 0.5f, len + Thick * 0.5f, groundTop, height, yaw, outside, false);
                 if (b.kind != "ruin" && b.kind != "silo") Windows(site, a, d, outward, len, height, i == door ? len * 0.5f : -1f, rng, outside);
+            }
+            // Add simple front porch/stoop for residential buildings
+            if (door >= 0 && (b.kind == "house" || b.kind == "trailer"))
+            {
+                Vector3 porchCenter = To3(doorPoint + doorOutward * 0.4f, 0.1f);
+                Vector3 porchSize = new Vector3(1.5f, 0.2f, 0.8f);
+                site.Town.Out.Solid(porchCenter).Box(porchCenter, porchSize, doorYaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
             }
 
             List<int> tris = MapGeometry.Triangulate(p);
