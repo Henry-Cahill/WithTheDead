@@ -5017,13 +5017,14 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [x] Add a deterministic “snow on roof” helper to `MapBuild` in Assets/Scripts/World/Map/WorldStore.cs and use it when roofs are generated so that winter‑time buildings sometimes carry a thin snow layer, matching CLONE‑Z’s 1993 Kentucky setting.
   In `MapBuild` add a new public method
   - 00:09 landed by hts-llm in 15.5 min: Implemented deterministic snow on roofs:
-- [ ] Add two small chrome screw heads to the bulkhead light dome in `Assets/Scripts/World/FurnitureBuilder.Lighting.cs` `BulkheadLight` method to suggest period‑accurate mounting hardware.
+- [x] Add two small chrome screw heads to the bulkhead light dome in `Assets/Scripts/World/FurnitureBuilder.Lighting.cs` `BulkheadLight` method to suggest period‑accurate mounting hardware.
   Insert two `m.Box` calls after the dome ellipsoid (before the glow call) using the existing chrome material.
   `// Chrome screw heads on the dome`
   `m.Box(dome + Vector3.up * 0.032f, new Vector3(0.008f, 0.008f, 0.001f), q, Mt(Chrome));`
   `m.Box(dome - Vector3.up * 0.032f, new Vector3(0.008f, 0.008f, 0.001f), q, Mt(Chrome));`
   Each head is 8 mm × 8 mm × 1 mm, placed 32 mm above and below the dome’s centre, using the same `Chrome` material already referenced.
   No new colliders or interaction points are added; only visual geometry is introduced.
+  - 00:37 landed by spark in 41.9 min: Added two chrome screw heads (8×8×1 mm, 32 mm above/below the dome centre, `Mt(Chrome)`) to `BulkheadLight` in Assets/Scripts/World/Furnitur
 - [x] In Assets/Scripts/World/Barricade.cs: Fix Barricade.Vanish so it notifies listeners that the barricade disappeared
   The method currently removes the instance from Barricade.All and destroys the GameObject, but it never raises the static Removed event that other systems (AI queries, UI, netcode) rely on to drop references. As a result, when a barricade is removed via Vanish (e.g., when a peer’s world sync deletes it), those listeners still think the barricade exists and may try to interact with a destroyed object, leading to null‑reference errors or zombies targeting a non‑existent barrier.
   Change the method to invoke Removed?.Invoke(this) after updating All, matching the behavior of Break and Dismantle.

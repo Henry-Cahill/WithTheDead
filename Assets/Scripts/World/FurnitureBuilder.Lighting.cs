@@ -46,6 +46,9 @@ namespace CloneZ
             m.Ellipsoid(at + normal * 0.006f, new Vector3(0.28f, 0.18f, 0.03f), q, M(new Color(0.80f, 0.79f, 0.75f)), 12, 4);
             Vector3 dome = at + normal * 0.02f;
             m.Ellipsoid(dome, new Vector3(0.22f, 0.125f, 0.11f), q, M(new Color(0.88f, 0.86f, 0.79f)), 12, 6);
+            // Chrome screw heads on the dome
+            m.Box(dome + Vector3.up * 0.032f, new Vector3(0.008f, 0.008f, 0.001f), q, Mt(Chrome));
+            m.Box(dome - Vector3.up * 0.032f, new Vector3(0.008f, 0.008f, 0.001f), q, Mt(Chrome));
             glow?.Ellipsoid(dome, new Vector3(0.226f, 0.13f, 0.116f), q, Gl(WarmGlow), 12, 6);
             // The bands hug the dome a little above and below its middle.
             Surf band = M(new Color(0.20f, 0.20f, 0.21f));
