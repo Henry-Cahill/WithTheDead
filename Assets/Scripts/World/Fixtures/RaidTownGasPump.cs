@@ -60,6 +60,12 @@ namespace CloneZ
                 into.Add(new InteractAction("Observe the frost on the hose", c => c.Notify("A thin layer of frost clings to the hose, glinting in the pale light.")));
                 into.Add(new InteractAction("Check the fuel gauge", c => c.Notify("The analog gauge points to zero; the pump is out of fuel.")));
                 into.Add(new InteractAction("Read the warning sign", c => c.Notify("The warning sign warns of slippery ice—caution advised.")));
+                into.Add(new InteractAction("Read the weathered warning", c => c.Notify("A battered sign cautions: ‘Beware icy patches – the ground is slick after a night’s freeze.’")));
+                into.Add(new InteractAction("Read the rust‑ed rumor note", c => c.Notify("Scrawled on a metal strip: ‘Heard the old Miller’s farm got overrun after the blizzard. Stay off the back road.’")));
+                into.Add(new InteractAction("Read the safety notice", c => c.Notify("A yellowed placard reads: ‘Do not attempt to pump fuel when temperature drops below –10 °C – risk of valve seize.’")));
+                into.Add(new InteractAction("Read the faded ad", c => c.Notify("The peeling poster advertises: ‘Coke‑Zero – the perfect cold companion for a winter night.’")));
+                into.Add(new InteractAction("Read the employee’s scribble", c => c.Notify("In shaky handwriting: ‘My dad said the pump’s heart still beats – maybe the cash‑register will open one day.’")));
+
 
             }
         }

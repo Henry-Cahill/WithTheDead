@@ -5553,7 +5553,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `private static void Kick(InteractContext ctx) { ctx.Notify("You give the mat a hard kick, scattering a puff of dust."); }`
   The action appears alongside “Wipe your feet” in the interaction UI; when selected it shows the “Kicking the mat” progress bar for 0.6 s and then displays the notification.
   No existing behavior is altered; the mat’s lift mechanics, look‑under state, and wetness handling stay unchanged.
-- [ ] In Assets/Scripts/World/Fixtures/RaidTownGasPump.cs, modify RaidTownGasPump.GetActions to append five new period‑correct flavour‑text actions inside the `if (_lifted) { … }` block, after the last existing `into.Add` call; each new entry should use the same `new InteractAction(string, ctx => ctx.Notify("…"))` pattern and keep the current list order unchanged.
+- [x] In Assets/Scripts/World/Fixtures/RaidTownGasPump.cs, modify RaidTownGasPump.GetActions to append five new period‑correct flavour‑text actions inside the `if (_lifted) { … }` block, after the last existing `into.Add` call; each new entry should use the same `new InteractAction(string, ctx => ctx.Notify("…"))` pattern and keep the current list order unchanged.
   Use the existing entry `"Read the dials"` as the style reference – a short, present‑tense description followed by a single‑sentence quoted message.
   The new actions should cover these themes: (1) a weather‑related reminder, (2) a local‑rumor note, (3) a safety warning specific to the winter‑time fuel station, (4) a faded advertisement for a 1990s product, and (5) a personal scribble left by a former employee.
   Add the following lines (preserving indentation and commas) exactly as shown:
@@ -5562,6 +5562,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `into.Add(new InteractAction("Read the safety notice", c => c.Notify("A yellowed placard reads: ‘Do not attempt to pump fuel when temperature drops below –10 °C – risk of valve seize.’")));`
   `into.Add(new InteractAction("Read the faded ad", c => c.Notify("The peeling poster advertises: ‘Coke‑Zero – the perfect cold companion for a winter night.’")));`
   `into.Add(new InteractAction("Read the employee’s scribble", c => c.Notify("In shaky handwriting: ‘My dad said the pump’s heart still beats – maybe the cash‑register will open one day.’")));`
+  - 02:51 landed by 0htsserver in 3.5 min: **Changed**
 - [x] Modify `Assets/Scripts/World/Map/KentuckyMap.Buildings.cs` → in the `BuildRoofEaves(Site site)` method, after the line that creates the eave box (`site.Overhead.At(pos).Box(pos, size, rot, roofMat);`), add a thin “snow drift” box that sits just above the eave using the snow material, so residential roofs visibly collect snow in winter.
   Compute a snow box size of `new Vector3(EaveDepth, 0.02f, edgeLen)` (depth outward, thin height, same length as the eave).
   Position it at the same centre `pos` but raise its Y by `EaveHeight * 0.5f + 0.01f` (just above the eave).
