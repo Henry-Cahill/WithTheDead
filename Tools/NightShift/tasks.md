@@ -4404,8 +4404,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 20:31 landed by 0htsserver in 1.4 min: **Changed files**
 - [ ] Edit Assets/Scripts/World/Map/KentuckyMap.Ground.cs – in the `BuildWaterAndLots` method, add a thin “snow‑bank” edge to every parking‑lot polygon so the lot looks plowed and has a raised ice rim, making the raid map look hand‑crafted.
 - [ ] Add a tiny dark‑metal nail detail to each picture frame in `Assets/Scripts/World/StarterHome.Lighting.cs` → method `Picture`, using the method’s existing `rng` to pick a corner; size 0.004 m × 0.006 m × 0.002 m, positioned just in front of the frame surface at the chosen corner, re‑using the matte dark‑metal colour.
-- [ ] Fix under‑counting of rolled loot in Assets/Scripts/Economy/CentralEconomy.cs (method CentralEconomy.Install)
+- [x] Fix under‑counting of rolled loot in Assets/Scripts/Economy/CentralEconomy.cs (method CentralEconomy.Install)
   In the Install method the lambda assigned to ItemDatabase.LootRolled currently does `s_Counts[id] = Count(id) + 1;` which adds only 1 to the tracked count regardless of how many items were actually rolled.
   Replace that line with `s_Counts[id] = Count(id) + n;` so the count is increased by the exact number `n` of items rolled.
   After the change the economy correctly enforces the Nominal limit: when a loot roll yields multiple stacks of an item, the central count reflects all of them, preventing the player from receiving more of that item than the zone is allowed.
   No other code needs to change; the rest of the system already uses Count(id) and NominalOf(id) to gate further loot.
+  - 20:35 landed by 0htsserver in 1.1 min: **Summary**
