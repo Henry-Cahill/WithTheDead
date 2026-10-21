@@ -408,7 +408,7 @@ sentence of its summary. Grep the code for details.
 - KentuckyMap.Ground.cs (253) KentuckyMap: The pieces of a line outside the playable square: cut to the four bands around it, which together co
 - KentuckyMap.Props.cs (261) KentuckyMap: Trees per square metre for a kind of land, or 0 for none.
 - KentuckyMap.cs (463) KentuckyMap, Street, Line: Builds a raid map from a real place in Kentucky: the streets, buildings, water and land use around t
-- MapData.cs (163) MapCurrent, MapManifest, MapRegionEntry: world/current.json: the build the game and the servers load.
+- MapData.cs (172) MapCurrent, MapManifest, MapRegionEntry: world/current.json: the build the game and the servers load.
 - MapGeometry.cs (254) MapGeometry: Plane geometry for the real-world map, in the raid map's ground plane: a Vector2 is (x, z), metres e
 - WorldStore.cs (141) WorldStore, MapBuild: The world store, where the build machines put the real-world map (Tools/World): \\192.168.1.170\CLON
 
