@@ -5427,7 +5427,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   In‑game the player will see a new "[E] Knock on the safe" option; selecting it will produce a metallic knock sound and display the notification “Your knuckles rattle the steel. Nothing else happens.”
   No other code, fields, or UI elements are changed.
   - 02:10 landed by 1htsserver in 1.6 min: **Summary**
-- [ ] Extend the `static ZoneExposure()` constructor in Assets/Scripts/Zone/ZoneHazards.cs by inserting four new exposure‑mark entries, each following the existing `M(id, name, description, apply)` pattern, so the player can discover additional winter‑theme lore and penalties.
+- [x] Extend the `static ZoneExposure()` constructor in Assets/Scripts/Zone/ZoneHazards.cs by inserting four new exposure‑mark entries, each following the existing `M(id, name, description, apply)` pattern, so the player can discover additional winter‑theme lore and penalties.
+  - 02:12 landed by hts-llm in 3.3 min: **Changes made**
 - [ ] Modify Assets/Scripts/World/Map/KentuckyMap.cs – add a simple wooden street‑sign for every named street to give the map a period‑correct roadside feel
   *Add a new constant `private const float SignPostHeight = 2.5f;` (currently absent).
   *Create a private method `BuildStreetSigns(Site site)` that iterates `site.Area.Streets`.
