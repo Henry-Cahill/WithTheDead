@@ -195,8 +195,11 @@ namespace CloneZ
                     .Timed(CloneZConfig.DoorPeepSeconds, "Peering through the peephole", HumanoidActivity.Use));
 
             into.Add(new InteractAction("Knock on the door", _knockAct));
-            // Check lock state without trying to open
-            if (!_open) into.Add(new InteractAction("Check the door", ctx => ctx.Notify(_locked ? "The door is locked." : "The door is unlocked.")));
+        // Check lock state without trying to open
+        if (!_open) into.Add(new InteractAction("Check the door", ctx => ctx.Notify(_locked ? "The door is locked." : "The door is unlocked.")));
+        // Inspect the lock type when on the lock side of a shut door
+        if (!_open && _lockSide != 0 && lockSide)
+            into.Add(new InteractAction("Inspect the lock", ctx => ctx.Notify(_deadbolt ? "A heavy deadbolt secures the door." : "A small bolt secures the door.")));
         }
 
         /// <summary>Opens or shuts the door — with the creak and thud the dead can hear when <paramref name="noisy"/>.
