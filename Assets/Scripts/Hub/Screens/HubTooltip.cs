@@ -22,6 +22,7 @@ namespace CloneZ
         private LayoutElement _textSize;
         private CanvasGroup _group;
         private object _owner;
+        private Camera _uiCam;
 
         /// <summary>Creates a new tooltip attached to the given canvas and returns the component.</summary>
         public static HubTooltip Create(Canvas canvas)
@@ -54,6 +55,7 @@ namespace CloneZ
             tip._text = t;
             tip._textSize = UIKit.Size(t.gameObject, MaxWidth, -1f);
             tip._group = bg.gameObject.AddComponent<CanvasGroup>();
+            tip._uiCam = null;
             tip._group.blocksRaycasts = false;
             tip._group.interactable = false;
             tip._group.alpha = 0f;
@@ -104,7 +106,8 @@ namespace CloneZ
         {
             Mouse m = Mouse.current;
             if (m == null) return;
-            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, m.position.ReadValue(), null, out Vector2 local)) return;
+            if (_uiCam == null) _uiCam = Camera.main;
+            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, m.position.ReadValue(), _uiCam, out Vector2 local)) return;
             Vector2 size = _rootSize;
             Rect cr = _canvasBounds;
             float x = local.x + 20f, y = local.y - 22f;
