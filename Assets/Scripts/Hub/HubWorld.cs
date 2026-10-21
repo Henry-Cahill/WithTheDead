@@ -330,6 +330,12 @@ namespace CloneZ
                 m.Box(new Vector3(-1.5f, 0.005f, -1.5f), new Vector3(5f, 0.01f, 3.4f), DecorMaterials.Rug(1));
                 m.Box(new Vector3(9f, 0.25f, -2f), new Vector3(2.4f, 0.01f, 2.4f), DecorMaterials.Rug(2));
             }, Vector3.zero);
+            // Fireplace near the western wall, provides warmth when lit
+            var fireGo = new GameObject("Fireplace");
+            fireGo.transform.SetParent(world, false);
+            fireGo.transform.position = new Vector3(-HalfX + 0.8f, 0f, -2f);
+            fireGo.AddComponent<BoxCollider>();
+            fireGo.AddComponent<Fireplace>();
         }
 
         private static void BuildLights(Transform world, Style st)
