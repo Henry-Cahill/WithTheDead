@@ -4265,12 +4265,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `}`
   The box is ~0.05 m tall, up to 0.6 m wide, and 0.3 m deep, placed at y ≈ 2.45 m (just above the 2.4 m tall sheet) so it looks like a thin snow drift accumulating on the barrier. It re‑uses the existing `DecorMaterials.Snow` material, adds no new colliders, and stays within the ~12‑primitive limit. This gives the rusted corrugated sheet a wintery, period‑correct visual cue.
   - 19:45 landed by 1htsserver in 2 min: **Summary**
-- [ ] Add a thin “seam” strip to the front edge of the backpack in Assets/Scripts/Player/PlayerGearVisuals.cs, method BuildBackpack(ItemDef def) to suggest worn fabric stitching.
+- [x] Add a thin “seam” strip to the front edge of the backpack in Assets/Scripts/Player/PlayerGearVisuals.cs, method BuildBackpack(ItemDef def) to suggest worn fabric stitching.
   Create a new box primitive using the existing `web` material, sized about 0.002 m tall and 0.001 m deep, spanning the same width as the lid.
   Place it just below the lid’s front face, i.e. at `new Vector3(0f, top - d * 0.5f - 0.039f, outer - 0.010f)` with size `new Vector3(w * 0.92f, 0.002f, 0.001f)`.
   Quote the lid call to anchor the position: `PlayerGearParts.Box(root, "Lid", new Vector3(0f, top - d * 0.5f - 0.035f, outer - 0.004f), new Vector3(w * 0.92f, 0.10f, 0.012f), shade);`.
   Add the line: `PlayerGearParts.Box(root, "Seam", new Vector3(0f, top - d * 0.5f - 0.039f, outer - 0.010f), new Vector3(w * 0.92f, 0.002f, 0.001f), web);`.
   This uses no new assets, keeps colliders and interaction points unchanged, and adds only one extra primitive.
+  - 19:48 landed by 1htsserver in 1.7 min: **Changed**
 - [ ] In Assets/Scripts/World/HomeLamp.cs: Optimize HomeLamp.Update and SyncGlow to avoid per‑frame lookups of the singleton ViewState by caching its reference
   Add a private field `private ViewState _viewState;` to HomeLamp.
   In `OnEnable()` (or `Awake()`) set `_viewState = FindObjectByType<ViewState>();` – this is safe because the ViewState object exists for the whole game session.
