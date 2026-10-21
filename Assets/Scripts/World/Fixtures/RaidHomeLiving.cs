@@ -171,7 +171,7 @@ private static readonly string[] NumberLines =
             "Number {0}, a painted barn owl perched above, believed to shield the home from wandering spirits.",
             "Number {0}, a tattered dog collar lies tangled in the doorway, forgotten but still warm from recent use.",
             "Number {0}, a tiny scrap of paper reads \"One day the snow will melt and light return,\" tucked beneath the plate.",
-"Number {0}, a faded grocery list is pin‑ned to the post, the ink smeared by winter rain.",
+"Number {0}, a faded grocery list is pinned to the post, the ink smeared by winter rain.",
 "Number {0}, a child’s drawing of a snowman hangs from a nail, charcoal lines softened by frost.",
 "Number {0}, an old wind‑chime clatters on a gust, its metal rods dented from years of neglect.",
         };
