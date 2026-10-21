@@ -60,6 +60,9 @@ namespace CloneZ
                 float x = -len * 0.5f + dw * (i + 0.5f);
                 m.Box(new Vector3(x, 1.82f, 0.345f), new Vector3(dw - 0.04f, 0.64f, 0.02f), M(c * 1.08f));
                 m.Box(new Vector3(x + dw * 0.32f * (i % 2 == 0 ? 1f : -1f), 1.58f, 0.36f), new Vector3(0.02f, 0.08f, 0.02f), Mt(Brass));
+                // Tiny brass hinges on each side of the upper‑cabinet door
+                m.Box(new Vector3(x - dw * 0.5f + 0.02f, 1.78f, 0.345f), new Vector3(0.02f, 0.04f, 0.02f), Mt(Brass));
+                m.Box(new Vector3(x + dw * 0.5f - 0.02f, 1.78f, 0.345f), new Vector3(0.02f, 0.04f, 0.02f), Mt(Brass));
             }
         }
 

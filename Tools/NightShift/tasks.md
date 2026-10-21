@@ -4637,7 +4637,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   ` {`
   ` HubRules.SafeZone = !HubRules.SafeZone;`
   ` GameEvents.RaiseToast($"Safe zone is now {(HubRules.SafeZone ? "ON" : "OFF")}.");`
-- [ ] Add a tiny brass hinge detail to each upper‑cabinet door in `Assets/Scripts/World/FurnitureBuilder.Home.cs` → `UpperCabinets`
+- [x] Add a tiny brass hinge detail to each upper‑cabinet door in `Assets/Scripts/World/FurnitureBuilder.Home.cs` → `UpperCabinets`
+  - 22:00 landed by 0htsserver in 4.6 min: **Changed file**
 - [x] In Assets/Scripts/World/WaterSource.cs: Fix the rain‑barrel fill simulation to handle cases where WeatherSystem isn’t instantiated before WaterSource.Awake, preventing the barrel from ever filling.
   - 21:59 landed by 1htsserver in 1.7 min: **Changed file**
 - [ ] Cache the `GameSettings.Current` singleton lookup in `HudCompass.LateUpdate` (Assets/Scripts/Survival/Navigation.cs)
