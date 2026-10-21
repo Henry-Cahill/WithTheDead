@@ -109,6 +109,21 @@ namespace CloneZ
                 return (hash % 100) < 40; // 40% chance
             }
         }
+
+        /// <summary>
+        /// Determine if an upper‑story window should receive a period‑correct metal grate.
+        /// Deterministic based on the build ID and the building ID.
+        /// Approximately 35 % of eligible windows get a grate, adding a hand‑built 1993 Kentucky look.
+        /// </summary>
+        public bool HasWindowGrate(long buildingId)
+        {
+            unchecked
+            {
+                uint hash = (uint)buildingId ^ 0x7f4a7c13u;
+                hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
+                return (hash % 100) < 35; // ~35% chance
+            }
+        }
         /// <summary>The data format this game reads (worldbuild.py's FORMAT).</summary>
         public const int Format = 1;
 
