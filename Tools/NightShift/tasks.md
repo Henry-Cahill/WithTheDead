@@ -4679,11 +4679,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   It uses the existing `Chrome` material, so no new assets are needed.
   Colliders and interaction points remain unchanged; the plate is purely visual.
   - 22:13 landed by hts-llm in 2.3 min: **Changes made**
-- [ ] Cache the per‑frame `GetComponent` lookups for the local player in `NetPlayers.Tick` (Assets/Scripts/Net/NetPlayers.cs)
+- [x] Cache the per‑frame `GetComponent` lookups for the local player in `NetPlayers.Tick` (Assets/Scripts/Net/NetPlayers.cs)
   Add private static fields `s_LocalPlayer`, `s_Stats`, `s_Ctrl`, `s_Combat`, `s_Inv` to hold the current `Actor` and its components.
   In `Tick` first check `Actor me = Actor.LocalPlayer;` and if `me != s_LocalPlayer` then assign `s_LocalPlayer = me` and update the caches with `s_Stats = me.GetComponent<PlayerStats>();` etc.; otherwise reuse the cached references.
   Replace the existing `var stats = me.GetComponent<PlayerStats>(); var ctrl = me.GetComponent<PlayerController>(); var combat = me.GetComponent<PlayerCombat>(); var inv = me.GetComponent<PlayerInventory>();` with uses of the cached fields.
   This removes four `GetComponent` calls each tick, avoiding per‑frame reflection overhead while keeping the same behavior when the local player changes (e.g., respawn).
+  - 22:16 landed by hts-llm in 3 min: All changes compile successfully.**Changed file:** `Assets/Scripts/Net/NetPlayers.cs`
 - [ ] Add an “Inspect” action to `Campfire.GetActions` (Assets/Scripts/Survival/FieldSurvival.cs) that tells the player how many seconds the fire will keep burning.
 - [ ] In Assets/Scripts/Hub/Screens/ServiceScreens.cs, class DeployScreen, method BuildContent, extend the landing‑zone options array passed to `HubUI.Cycle` by appending four more entries after the existing `"West"` entry.
   Replace the literal `new[] { "Random", "North", "East", "South", "West" }` with
