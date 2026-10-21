@@ -4514,7 +4514,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `int combined = Id.GetHashCode() ^ seed;`
   `var rand = new System.Random(combined);`
   - 21:10 landed by 1htsserver in 3.7 min: **Changed file**
-- [ ] Fix possible NullReferenceException in flag handling of AccountProfile and CharacterProfile in Assets/Scripts/Profile/ProfileData.cs
+- [x] Fix possible NullReferenceException in flag handling of AccountProfile and CharacterProfile in Assets/Scripts/Profile/ProfileData.cs
   The `Flags` list is serialized and may be missing or null when loading older profiles; the current `HasFlag` and `SetFlag` methods assume it’s always instantiated, causing a crash the first time the game checks a flag (e.g., tutorial completion).
+  - 21:14 landed by 0htsserver in 4 min: Implemented robust flag handling for both `AccountProfile` and `CharacterProfile`:
 - [ ] In Assets/Scripts/World/Zone/ZoneOverlays.cs, add a small rust‑stained latch on each shipping container hull (the “else” branch of the tank/container loop) to give the containers a worn‑out door detail.
 - [ ] In Assets/Scripts/Player/PlayerBuilder.cs: Reduce per‑frame allocations in `PlayerBuilder` by reusing a temporary `List<MeshRenderer>` for mesh‑bounds checks in `ConsiderMeshes<T>` (used during demolition evaluation)
