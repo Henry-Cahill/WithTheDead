@@ -5149,3 +5149,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// left rivet`
   `m.Box(f.P(s0 + 0.03f, y1 - topRail * 0.5f, across), f.Size(rivetSize, rivetSize, rivetDepth), brassCap);`
   - 00:35 landed by hts-llm in 1.6 min: **Changed file**
+- [ ] In Assets/Scripts/Extraction/ExtractionBeacon.cs: Fix ExtractionBeacon.Dispose to clean up the beacon’s GameObject hierarchy, preventing orphaned objects after extraction.
+  In `ExtractionBeacon.Dispose()` add a destroy call for the root object so the beacon’s meshes and particle system are removed when the beacon is no longer needed.
+  Replace the method body with:
+  `if (_ringMesh != null) Object.Destroy(_ringMesh);`
+  `if (Root != null) Object.Destroy(Root);`
+  This removes the beacon’s GameObject (and its children) from the scene, fixing the hidden memory‑leak where completed beacons linger invisible but still consume CPU/GPU time. All other fields and static caches remain unchanged.
