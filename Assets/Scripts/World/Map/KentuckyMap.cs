@@ -18,9 +18,8 @@ namespace CloneZ
     {
         /// <summary>How far past the playable square the surroundings are drawn, as scenery.</summary>
         private const float SceneryReach = 90f;
-        private const float EaveHeight = 0.12f; // thin horizontal strip
+
         private const float SnowDepth = 0.05f; // thin snow sheet applied to horizontal surfaces
-        private const float EaveDepth = 0.25f; // how far it sticks out from the wall
 
         /// <summary>A one-line summary of the last map built.</summary>
         public static string LastStats { get; private set; } = "";

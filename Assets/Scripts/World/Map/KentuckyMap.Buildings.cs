@@ -18,6 +18,7 @@ namespace CloneZ
         private const float DoorHeight = 2.15f;
         private const int MaxContainers = 450;
 
+
         private static readonly Color[] SidingColors =
         {
             new Color(0.86f, 0.84f, 0.76f), new Color(0.80f, 0.82f, 0.80f), new Color(0.70f, 0.76f, 0.80f),
@@ -31,6 +32,8 @@ namespace CloneZ
             new Color(0.66f, 0.50f, 0.40f),
         };
 
+        private const float EaveHeight = 0.12f; // height of eave trim piece
+        private const float EaveDepth = 0.20f; // depth outward from roof edge
         private static Surf Glass => DecorPalette.Gloss(new Color(0.08f, 0.09f, 0.11f));
 
                 private static void BuildRoofEaves(Site site)
@@ -85,7 +88,7 @@ namespace CloneZ
                     Scenery(site, f, rng);
                     site.SceneryBuildings++;
                 }
-                // A building the edge cuts through is left out: half a house at the edge would look broken.
+                BuildRoofEaves(site);
             }
         }
 
