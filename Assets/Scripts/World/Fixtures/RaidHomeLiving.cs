@@ -158,7 +158,13 @@ private static readonly string[] NumberLines =
             "Number {0}, a handwritten note tacked to the side reads \"Home Sweet Home\".",
             "Number {0}, cracked and leaning, vines creep over its edge, a sign of recent abandonment.",
             "Number {0}, etched with a rabbit’s foot glyph, a local superstition for safe returns.",
-            "Number {0}, beside a rusted lantern that still flickers in the dusk."
+            "Number {0}, beside a rusted lantern that still flickers in the dusk.",
+            "Number {0}, a weather‑worn wooden post leans against the porch, its paint peeled by relentless wind.",
+            "Number {0}, a faded photograph of a smiling family clings to the back of the door, edges curled with age.",
+            "Number {0}, a rusted nail holds together a cracked plank, a hurried fix after a storm.",
+            "Number {0}, a painted barn owl perched above, believed to shield the home from wandering spirits.",
+            "Number {0}, a tattered dog collar lies tangled in the doorway, forgotten but still warm from recent use.",
+            "Number {0}, a tiny scrap of paper reads \"One day the snow will melt and light return,\" tucked beneath the plate."
         };
 
         private static int s_Magazine = -1, s_Plump;
