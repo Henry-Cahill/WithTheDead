@@ -306,6 +306,7 @@ for (int v = 0; v < 4; v++)
             Color top = V(new Color(0.48f, 0.34f, 0.20f), rng, 0.06f);
             Color legs = new Color(0.20f, 0.24f, 0.30f);
             m.Box(new Vector3(0f, 0.88f, 0f), new Vector3(1.8f, 0.07f, 0.75f), M(top));
+            m.Box(new Vector3(R(rng, -0.8f, 0.8f), 0.88f + 0.01f, R(rng, -0.25f, 0.25f)), new Vector3(0.4f, 0.02f, 0.3f), M(V(new Color(0.10f, 0.10f, 0.10f), rng, 0.04f)));
             for (int i = 0; i < 4; i++)
                 m.Box(new Vector3(i % 2 == 0 ? -0.85f : 0.85f, 0.43f, i < 2 ? -0.32f : 0.32f), new Vector3(0.05f, 0.86f, 0.05f), M(legs));
             m.Box(new Vector3(0f, 0.18f, 0f), new Vector3(1.7f, 0.03f, 0.66f), M(top * 0.8f));

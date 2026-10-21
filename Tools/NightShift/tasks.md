@@ -5861,11 +5861,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `at += jitter;`
   Replace the subsequent use of `at` with this jittered value (the `Vector3 at3 = To3(at, 0f);` line and the later `site.Take(at, 1.2f);`).
   This adds a hand‑painted variation of up to ±0.2 m in both X and Z for each pump, keeping colliders aligned with the new position, and makes the gas‑station area feel more lived‑in.
-- [ ] Add a small rubber anti‑slip mat on the tool‑bench worktop in Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method ToolBenchBody
+- [x] Add a small rubber anti‑slip mat on the tool‑bench worktop in Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method ToolBenchBody
   Insert after the line `m.Box(new Vector3(0f, 0.88f, 0f), new Vector3(1.8f, 0.07f, 0.75f), M(top));` the call:
   `m.Box(new Vector3(R(rng, -0.8f, 0.8f), 0.88f + 0.01f, R(rng, -0.25f, 0.25f)), new Vector3(0.4f, 0.02f, 0.3f), M(V(new Color(0.10f, 0.10f, 0.10f), rng, 0.04f));`
   The player will see a dark, slightly textured rubber mat (≈0.4 m × 0.02 m × 0.3 m) placed at a random offset on the bench top, giving the work surface a lived‑in, safety‑conscious feel.
   No colliders, interaction points or pivots are altered; only one primitive is added.
+  - 07:18 landed by 0htsserver in 16.5 min: Implemented a small rubber anti‑slip mat on the tool‑bench worktop:
 - [x] Add a “Kick seat” action to Assets/Scripts/World/Fixtures/SeatFixture.cs that creates a noise cue and reduces comfort while the survivor is seated, giving a visible result when nearby zombies investigate the sound.
   Step 1: In SeatFixture.cs, inside the class body, declare two new constants for the action label and noise radius: `private const string KickActionLabel = "Kick seat";` `private const float KickNoiseRadius = 3f;`
   Step 2: In SeatFixture.cs, inside `public override void GetActions(InteractContext ctx, List<InteractAction> into)`, after the existing actions for a seated survivor (i.e. after the “Stand up slowly” and lounge actions), add the new kick action: `if (seat.IsSittingOn(this))` `{` `into.Add(new InteractAction(_standLabel, c => c.Seat.Stand()));` `into.Add(new InteractAction("Stand up slowly", c => { c.Seat?.Stand(); c.Notify("You rise slowly, stretching out a bit before standing."); }));` `if (_lounge)` `{` `bool sunk = seat.Comfort > _comfort + 0.01f;` `into.Add(new InteractAction(sunk ? "Sit up straight" : _loungeLabel, c => Settle(c, !sunk)));` `}` `// NEW: kick the seat while seated` `into.Add(new InteractAction(KickActionLabel, KickSeat));` `return;` `}`
