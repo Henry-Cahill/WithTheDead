@@ -4857,3 +4857,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   → Create `int patchCount = strapRand.Next(2,5);` and loop `for (int i=0;i<patchCount;i++)` to compute `angle` and `y`.
   → Keep colliders untouched (the patches are visual only).
   → Do not exceed ~12 total new primitives in the method.
+- [ ] Fix the pause‑menu “Quit to Title” path in Assets/Scripts/UI/PauseMenuController.cs – the hub‑quit action leaves the game frozen.
