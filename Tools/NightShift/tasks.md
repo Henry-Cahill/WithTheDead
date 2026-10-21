@@ -4198,8 +4198,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   Position the faucet relative to the existing tub box call `m.Box(new Vector3(0f, 0.27f, 0f), …)` so it appears on the side wall at typical height.
   All new parts use the existing `Mt(Chrome)` and `M(...)` material helpers; colliders and interaction points remain unchanged.
   - 19:19 landed by 0htsserver in 2.7 min: Implemented a chrome faucet with red “hot” and blue “cold” lever handles for the bathtub in **FurnitureBuilder.Utility.cs**. The new parts i
-- [ ] In Assets/Scripts/Items/ItemDatabase.cs: Fix ItemDatabase.Get to safely handle null or empty identifiers, preventing ArgumentNullException crashes when tooltip code queries undefined CookedId, AmmoId, or similar fields in ItemDef
+- [x] In Assets/Scripts/Items/ItemDatabase.cs: Fix ItemDatabase.Get to safely handle null or empty identifiers, preventing ArgumentNullException crashes when tooltip code queries undefined CookedId, AmmoId, or similar fields in ItemDef
   Add a guard at the start of the method: `if (string.IsNullOrEmpty(id)) return null;`
   Keep the existing `EnsureInit();` call and dictionary lookup for valid ids.
   This stops `Dictionary<string, ItemDef>.TryGetValue` from being called with a null key, which currently throws.
   Result: hovering over items whose definition mistakenly leaves a related ID blank (e.g., a cookable item without a CookedId) no longer crashes the UI; the tooltip simply omits that line.
+  - 19:22 landed by hts-llm in 2.4 min: **Changed**
