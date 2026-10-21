@@ -23,12 +23,17 @@ namespace CloneZ
                 Vector2 b = pts[i + 1];
                 var dir = (b - a).normalized;
                 float len = Vector2.Distance(a, b);
-                float yaw = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
-                // place kerb on the outer side of the sidewalk (right side when travelling a→b)
-                var offset = new Vector2(dir.y, -dir.x) * (RoadMarkingsBuilder.SideLineOffset + 0.15f);
-                var centre = (a + b) * 0.5f + offset;
-                var box = site.Overhead.At(new Vector3(centre.x, 0f, centre.y));
-                box.Box(Vector3.zero, new Vector3(0.20f, RoadSideElementBuilder.KerbHeight, len), yaw, surf);
+                float yaw = Mathf.Atan2(dir.x, dir.y) * Mathf.Rad2Deg;
+                const float sidewalkWidth = 1.5f; // Match KentuckyMap's sidewalk builder.
+                var normal = new Vector2(-dir.y, dir.x);
+                float edgeOffset = street.Data.width * 0.5f + sidewalkWidth;
+                for (int side = -1; side <= 1; side += 2)
+                {
+                    var centre = (a + b) * 0.5f + normal * (side * edgeOffset);
+                    var position = new Vector3(centre.x, 0f, centre.y);
+                    var box = site.Overhead.At(position);
+                    box.Box(position, new Vector3(0.20f, RoadSideElementBuilder.KerbHeight, len), yaw, surf);
+                }
             }
         }
 
