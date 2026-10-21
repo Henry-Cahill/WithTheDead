@@ -110,7 +110,8 @@ namespace CloneZ
             for (int i = 0; i < Actor.All.Count; i++)
             {
                 Actor a = Actor.All[i];
-                if (a == null || a.IsPlayerControlled || a.GetComponent<NetAgentProxy>() != null) continue;
+                // Removed per‑actor NetAgentProxy lookup (unnecessary on server AI tick, saves CPU)
+                if (a == null || a.IsPlayerControlled) continue;
                 if (a.NetId == 0) a.NetId = Actor.AllocateNetId();
                 s_Scratch.Add(a);
             }
