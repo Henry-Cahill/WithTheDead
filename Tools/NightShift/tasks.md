@@ -5818,3 +5818,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `"A pale, almost translucent copy slides free, the toner barely clinging, and a faint smell of stale coffee lingers."`
   `"A crisp copy lands, the paper speckled with tiny ice crystals that melt into the fibers as it cools."`
   `"A weary copy drops, the letters slightly blurred, the margin edged with a subtle white streak hinting at the office’s chill."`
+- [ ] In `Assets/Scripts/World/Map/KentuckyMap.Buildings.cs` modify the `Windows` method to add a pair of simple wooden shutters to each residential window (kinds “house”, “trailer”, “apartments”, “hotel”).
