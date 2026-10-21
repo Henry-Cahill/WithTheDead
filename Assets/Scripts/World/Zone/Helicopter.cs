@@ -128,8 +128,9 @@ namespace CloneZ
 
         private Transform _main, _tail;
         private AudioSource _rotor;
-        private float _noise;
         private float _spin = 1f;
+
+
 
         public static HelicopterFlight Spawn(Vector3 position, float yaw)
         {
@@ -144,7 +145,25 @@ namespace CloneZ
             _tail = transform.Find("TailRotor");
         }
 
-        private void Start() => _rotor = Sfx.Loop(SfxIds.HeliRotor, transform, 1f, 160f);
+        private void Start()
+        {
+            _rotor = Sfx.Loop(SfxIds.HeliRotor, transform, 1f, 160f);
+            StartCoroutine(NoiseLoop());
+        }
+
+        private IEnumerator NoiseLoop()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(1.5f);
+                if (transform.position.y < 70f && _spin > 0.5f)
+                {
+                    Vector3 ground = new Vector3(transform.position.x, 0f, transform.position.z);
+                    NoiseSystem.Emit(ground, 55f);
+                    GameEvents.RaiseWorldEvent(ground, 55f, "heli");
+                }
+            }
+        }
 
         private void OnDestroy() { if (_rotor != null) Sfx.Stop(_rotor); }
 
@@ -155,14 +174,8 @@ namespace CloneZ
             if (_tail != null) _tail.Rotate(rate * 1.7f * Time.deltaTime, 0f, 0f, Space.Self);
             if (_rotor != null) _rotor.pitch = Mathf.Lerp(0.6f, 1f, _spin);
 
-            _noise -= Time.deltaTime;
-            if (_noise <= 0f && transform.position.y < 70f && _spin > 0.5f)
-            {
-                _noise = 1.5f;
-                Vector3 ground = new Vector3(transform.position.x, 0f, transform.position.z);
-                NoiseSystem.Emit(ground, 55f);
-                GameEvents.RaiseWorldEvent(ground, 55f, "heli");
-            }
+
+
         }
 
         public void FlyPath(Vector3 from, Vector3 to, float altitude, float seconds) => StartCoroutine(Path(from, to, altitude, seconds));

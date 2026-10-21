@@ -4296,11 +4296,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Vector3 screwPos = at + new Vector3(R(rng, -0.002f, 0.002f), 0.03f, R(rng, -0.002f, 0.002f));`
   `m.Cylinder(screwPos, 0.008f, 0.004f, 6, Mt(Chrome));` // radius 0.008 m, height 0.004 m, random slight offset for visual variation.
   - 20:00 landed by hts-llm in 1.3 min: **Changed**
-- [ ] In Assets/Scripts/World/Zone/Helicopter.cs, replace the per‑frame noise timer in `HelicopterFlight.Update` with a coroutine that runs every 1.5 seconds, eliminating the `_noise` field and its decrement each frame.
+- [x] In Assets/Scripts/World/Zone/Helicopter.cs, replace the per‑frame noise timer in `HelicopterFlight.Update` with a coroutine that runs every 1.5 seconds, eliminating the `_noise` field and its decrement each frame.
   Add a private `IEnumerator NoiseLoop()` method that `while (true)` yields `new WaitForSeconds(1.5f)` and, if `transform.position.y < 70f && _spin > 0.5f`, emits the noise (`Vector3 ground = new Vector3(transform.position.x, 0f, transform.position.z); NoiseSystem.Emit(ground, 55f); GameEvents.RaiseWorldEvent(ground, 55f, "heli");`).
   Start this coroutine in `Start()` after creating `_rotor` (`StartCoroutine(NoiseLoop());`).
   Remove the `_noise` field declaration and the `_noise -= Time.deltaTime; …` block from `Update`.
   Keep all existing behavior (noise still repeats every 1.5 s only when the helicopter is low and spinning fast) while reducing per‑frame work.
+  - 20:21 landed by hts-llm in 21 min: **Changes Made**
 - [x] Add lock‑status output to the existing “Inspect door” action in Assets/Scripts/World/Fixtures/RaidDoor.cs
   Modify the lambda passed to the InteractAction named “Inspect door” inside GetActions so it also reports the door’s lock condition.
   Use the existing properties IsLocked and the private field _lockBroken to build a string such as “Locked”, “Lock broken”, or “Unlocked”.
