@@ -4751,3 +4751,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   Result: gas‑pump posts will appear slightly off‑axis (±5°), giving the street‑level props a more hand‑painted, lived‑in feel while still fitting the 1993 rural Kentucky setting.
   - 22:32 landed by 0htsserver in 2.6 min: **Changed file**
 - [ ] Add a tiny brass screw head to each raised panel of the wooden door leaf in `Assets/Scripts/World/FurnitureBuilder.Fixtures.cs` `FurnitureBuilder.DoorLeaf` so the panels look nailed into the door.
+- [ ] In Assets/Scripts/World/Fixtures/HomeDoor.cs: Fix HomeDoor.SetOpen to update the cut‑away occluder after the door state changes, so the door’s visual parts correctly appear/disappear when opened or closed.
