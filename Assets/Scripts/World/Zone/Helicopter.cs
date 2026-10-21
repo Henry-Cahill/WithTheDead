@@ -16,6 +16,8 @@ namespace CloneZ
             Color hull = new Color(0.24f, 0.28f, 0.21f);
             var m = new RaidMesh();
             m.Ellipsoid(new Vector3(0f, 1.7f, 0.5f), new Vector3(2.5f, 2.3f, 7.6f), DecorPalette.Metal(hull), 12, 7);
+            // thin worn‑metal strip along the bottom of the fuselage
+            m.Box(new Vector3(0f, 0.45f, 0f), new Vector3(2.5f, 0.05f, 7.6f), DecorPalette.Metal(hull * 0.5f));
             // side‑panel seams – thin worn metal strips
             m.Box(new Vector3(2.48f, 1.7f, 0f), new Vector3(0.02f, 1.2f, 6.0f), DecorPalette.Metal(hull * 0.6f));
             m.Box(new Vector3(-2.48f, 1.7f, 0f), new Vector3(0.02f, 1.2f, 6.0f), DecorPalette.Metal(hull * 0.6f));

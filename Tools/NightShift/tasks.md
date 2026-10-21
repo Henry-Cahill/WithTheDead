@@ -5607,7 +5607,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Result: when the survivor chooses “Inspect the window”, a short timed action plays (showing a progress bar like other look actions) and then the inspection message appears, matching the feel of other window interactions.
   - 03:01 landed by 1htsserver in 1.9 min: **Changed:** `Assets/Scripts/World/Fixtures/RaidWindow.cs`
 - [ ] Append six new entries to the `NumberLines` array in Assets/Scripts/World/Fixtures/RaidHomeLiving.cs, using the existing style of e.g. `"Number {0}, the frost‑bitten metal plate is dulled by snow and ice."` – the new sentences should each convey a small, period‑correct detail about the house: a weathered element, a family memory, a makeshift repair, a local superstition, an abandoned pet hint, and a whispered hope.
-- [ ] Add a thin worn‑metal strip along the bottom of the helicopter fuselage in Assets/Scripts/World/Zone/Helicopter.cs, inside `HelicopterModel.Build`
+- [x] Add a thin worn‑metal strip along the bottom of the helicopter fuselage in Assets/Scripts/World/Zone/Helicopter.cs, inside `HelicopterModel.Build`
   After the line `m.Ellipsoid(new Vector3(0f, 1.7f, 0.5f), new Vector3(2.5f, 2.3f, 7.6f), DecorPalette.Metal(hull), 12, 7);`
   *Insert:* `m.Box(new Vector3(0f, 0.45f, 0f), new Vector3(2.5f, 0.05f, 7.6f), DecorPalette.Metal(hull * 0.5f));`
   This adds a 5 m wide × 0.1 m tall × 15.2 m long metal strip (half‑extents given) positioned at y = 0.45 m, using the existing `hull` colour darkened to suggest grime and wear, while preserving all colliders and interaction points.
+  - 03:04 landed by 0htsserver in 1.2 min: **Changed file**
