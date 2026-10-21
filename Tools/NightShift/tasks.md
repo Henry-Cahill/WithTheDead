@@ -4892,3 +4892,18 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [x] Remove the duplicate XML‑summary on `UncannyDirector.BeginRaid` in Assets/Scripts/World/Zone/Uncanny.cs
   The method currently has two `<summary>` tags stacked:
   - 23:16 landed by hts-llm in 1.6 min: **Changed file**: `Assets/Scripts/World/Zone/Uncanny.cs` – removed the extra `<summary>` XML comment on `UncannyDirector.BeginRaid`, leaving
+- [ ] In Assets/Scripts/World/Fixtures/HomeDoor.cs: Add an “Inspect the lock” action to `HomeDoor.GetActions` that, when the player is on the lock side of a closed door, tells whether it uses a deadbolt or a simple bolt.
+  In `GetActions`, after the existing “Check the door” addition, insert a new conditional block:
+  `if (!_open && _lockSide != 0 && lockSide)` – this matches the lock‑side check already used for the peephole.
+  Inside the block, add `into.Add(new InteractAction("Inspect the lock", ctx => ctx.Notify(_deadbolt ? "A heavy deadbolt secures the door." : "A small bolt secures the door.")));`
+  No new fields, methods, or assets are required; it reuses the existing `_deadbolt` field and the `ctx.Notify` method.
+  The player will now see an extra “[E] Inspect the lock” option when standing on the lock side of a shut door, receiving a short textual description of the lock type.
+- [ ] Add a small deterministic roof‑overhang helper to `MapBuilding` in `Assets/Scripts/World/Map/MapData.cs` so the map builder can give each building a period‑appropriate eave depth.
+  In the `MapBuilding` class, after the existing `EffectiveHeight()` method, insert a new method:
+  `/// <summary>Returns a subtle roof overhang (metres) based on building kind.`
+  `/// Residential buildings get deeper eaves; commercial/industrial get shallower ones.`
+  `/// The value is deterministic per‑id to keep variation stable across runs.</summary>`
+  `public float RoofOverhang()`
+  `{`
+  `// Base overhang by kind (metres)`
+  `float baseOverhang = kind switch`
