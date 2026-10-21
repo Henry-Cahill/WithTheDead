@@ -22,6 +22,10 @@ namespace CloneZ
                 "An electric bill from Tri-County Power & Light: $46.12, due July 23rd. Late fees apply.",
                 "A pink flyer from Grace Methodist: BAKE SALE this Saturday! Pies, brownies, lemon bars.",
                 "Someone's added in blue pen: \"Bring a dish if you can! All proceeds to the roof fund.\"",
+                "County water department notice: scheduled main repair on March 5th, 2‑4 am. Expect brief pressure loss.",
+                "Neighborhood watch call: meeting at the Miller barn on Thursday, 7 pm. Bring flashlights.",
+                "Flyer from the local co‑op: FALL HARVEST FESTIVAL – live music, homemade preserves, kids' games.",
+                "Hand‑written note from Mrs. Caldwell: \"If you see any stray cats, please bring them to my porch. I’ll feed them.\"",
             },
             new[]
             {
