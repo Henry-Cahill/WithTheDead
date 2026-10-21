@@ -4922,3 +4922,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Use the same centre X/Z as the dial and lift it a little: `m.Box(new Vector3(0.12f, 1.07f, 0.29f), new Vector3(0.02f, 0.02f, 0.005f), Gl(WarmGlow));`.
   `Gl` is the existing helper that returns a glow surface; `WarmGlow` is already defined in the colour section.
   This adds only a visual primitive, leaves all colliders, interaction points and pivots unchanged, and uses no more than one additional primitive.
+- [ ] Cache the per‑frame allocation of the body‑camera offset vector in Assets/Scripts/Camera/IsoCameraFollow.cs
+  Add a private static readonly field `private static readonly Vector3 BodycamPosOffset = new Vector3(0.04f, 0.05f, 0.2f);` to the `IsoCameraFollow` class.
+  In `PoseBodycam`, replace the literal `new Vector3(0.04f, 0.05f, 0.2f)` with the cached `BodycamPosOffset`.
+  Leave the calculation `pos = chest.position + look * BodycamPosOffset;` otherwise unchanged.
+  The visual result is identical – the bodycam stays at the same relative chest position – but the allocation of a new `Vector3` each frame is eliminated, reducing GC pressure during shoulder and body‑cam view updates.
