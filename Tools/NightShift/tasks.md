@@ -4707,3 +4707,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Result: the sink now has a period‑correct chrome faucet with tiny red and blue lever handles, adding visual realism without altering colliders, interaction points, or existing geometry.
   - 22:22 landed by hts-llm in 1.7 min: **Changes made**
 - [ ] Fix duplicate garrison spawns in Assets/Scripts/AI/Humans/Outposts.cs (method `Outpost.SpawnGarrison`)
+- [ ] Add faint edge‑line markings to each road segment in `Assets/Scripts/World/RaidMapBuilder.Streets.cs` → method `Road`
+  After the call `Slab(town, alongX, coord, a, b, -hw, hw, 0.012f, asphalt);` insert a small randomised strip on each side of the lane:
+  `if (rng.NextDouble() < 0.25) {`
+  `float edge = hw - 0.06f; // 6 cm inset from the kerb`
+  `Strip(town, alongX, coord - edge, a, b, 0.04f, 0.006f,`
+  `DecorPalette.Matte(LineWhite * 0.7f));`
+  `Strip(town, alongX, coord + edge, a, b, 0.04f, 0.006f,`
+  `DecorPalette.Matte(LineWhite * 0.7f));`
+  `}`
