@@ -5207,8 +5207,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   If `_keyboard` is null (e.g., no keyboard attached), fall back to `Keyboard.current` once per frame to keep functionality, but only after the initial cache failed.
   This change eliminates the repeated `Keyboard.current` getter call each frame, reducing unnecessary native‑side lookup overhead while preserving the existing behavior (the F‑key press still triggers farming actions).
   - 00:52 landed by hts-llm in 4.9 min: Implemented keyboard caching in **PlayerFarming.cs**:
-- [ ] In Assets/Scripts/World/Fixtures/ShowerFixture.cs: Add a context‑only “Shut off shower” action to ShowerFixture.GetActions that appears only when the water is on and the survivor is not inside the stall; it instantly turns the water off and closes the glass door.
+- [x] In Assets/Scripts/World/Fixtures/ShowerFixture.cs: Add a context‑only “Shut off shower” action to ShowerFixture.GetActions that appears only when the water is on and the survivor is not inside the stall; it instantly turns the water off and closes the glass door.
   Insert after the existing “Turn on/off the shower” action:
   `if (_on && !_inside) into.Add(new InteractAction("Shut off shower", c => { Turn(c, false); SetDoor(false, true); }));`
   The action should use the existing Turn and SetDoor methods, so no new methods or UI screens are needed.
   When selected the player hears the mixer and door noises (via MakeNoise inside those methods) and the door snaps shut, giving a quick way to secure the shower without leaving the stall.
+  - 00:53 landed by 1htsserver in 2.8 min: **Summary**
