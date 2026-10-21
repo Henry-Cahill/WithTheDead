@@ -4768,7 +4768,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 22:37 landed by 1htsserver in 1.5 min: **Changed**: `Assets/Scripts/UI/UIFader.cs` – Updated `UIFader.Update()` to:
 - [x] In Assets/Scripts/World/Fixtures/TowelRail.cs: Add a “Check towel dryness” action to `TowelRail.GetActions` that tells the survivor how long until the towel is fully dry, using the existing `_dryAt` field and `TimeOfDay.Now`.
   - 22:39 landed by 0htsserver in 2 min: **Changed**: `Assets/Scripts/World/Fixtures/TowelRail.cs`
-- [ ] In Assets/Scripts/World/Fixtures/RaidCivicFridge.cs, append five new sentences to the `ClinicLeaflets` array (class `CivicReading`), keeping the existing entries unchanged; the player will find these extra leaflets on the clinic’s bookcase and read them when leaf‑throughing.
+- [x] In Assets/Scripts/World/Fixtures/RaidCivicFridge.cs, append five new sentences to the `ClinicLeaflets` array (class `CivicReading`), keeping the existing entries unchanged; the player will find these extra leaflets on the clinic’s bookcase and read them when leaf‑throughing.
+  - 22:41 landed by hts-llm in 3.1 min: **Changes Made**
 - [ ] Modify Assets/Scripts/World/Map/KentuckyMap.cs to add a thin white snow layer on roofs and streets, giving the raid town a convincing winter look.
   In the class body, after the existing `private const float EaveHeight = 0.12f;` line, add
   `private const float SnowDepth = 0.05f; // thin snow sheet applied to horizontal surfaces`

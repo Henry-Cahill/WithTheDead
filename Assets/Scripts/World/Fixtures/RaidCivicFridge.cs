@@ -169,6 +169,12 @@ namespace CloneZ
             "the county medical bulletin. A flu-shot schedule for next month, a retirement, a recipe for bran muffins.",
             "a drug company brochure, all smiling grandparents and a free pen offer.",
             "a nursing journal with the crossword done in a neat hand and one answer left blank.",
+            "a handwritten reminder about stockpiling bandages for the upcoming flu season.",
+            "a torn flyer announcing a free health checkup at the local clinic, dated June 1994.",
+            "a faded poster for a community wellness workshop: \"Stretch and Stay Healthy\".",
+            "a crumpled list of patients' allergies, with notes on alternative medications.",
+            "a glossy pamphlet on the benefits of early vaccination, featuring a cartoon doctor.",
+"a sticky note: \"Remember to disinfect the examination tables every night.\"",
         };
 
         private static readonly string[] Tidying =
