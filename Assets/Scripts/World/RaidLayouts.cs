@@ -238,6 +238,21 @@ namespace CloneZ
             m.Box(new Vector3(-0.95f, 0.8f, -0.1f), Sz(0.06f, 1.6f, 0.1f), wood);
             m.Box(new Vector3(0.95f, 0.8f, -0.1f), Sz(0.06f, 1.6f, 0.1f), wood);
             m.Box(new Vector3(0f, 0.25f, 0f), Sz(1.9f, 0.08f, 0.3f), wood);
+            // thin weathered grime patches on the lower shelf
+            if (Chance(r, 0.4f))
+            {
+                int patches = r.Next(1, 4);
+                for (int i = 0; i < patches; i++)
+                {
+                    float patchWidth = R(r, 0.2f, 0.5f);
+                    float patchDepth = 0.02f;
+                    float patchHeight = 0.001f;
+                    m.Box(
+                        new Vector3(R(r, -0.9f, 0.9f), 0.27f, R(r, -0.13f, 0.13f)),
+                        Sz(patchWidth, patchHeight, patchDepth),
+                        DecorPalette.Matte(new Color(0.20f, 0.18f, 0.14f)));
+                }
+            }
             // mounting bolts
             var boltMat = DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f));
             float boltRadius = 0.015f; float boltHeight = 0.02f;

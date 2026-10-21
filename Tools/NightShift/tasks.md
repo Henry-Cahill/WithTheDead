@@ -4908,10 +4908,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   `{`
   `// Base overhang by kind (metres)`
   `float baseOverhang = kind switch`
-- [ ] Add thin weathered grime patches to the WeaponRack lower shelf in Assets/Scripts/World/RaidLayouts.cs
+- [x] Add thin weathered grime patches to the WeaponRack lower shelf in Assets/Scripts/World/RaidLayouts.cs
   After the call `m.Box(new Vector3(0f, 0.25f, 0f), Sz(1.9f, 0.08f, 0.3f), wood);` insert a small randomised block that, with a 40 % chance, creates 1‑3 thin boxes representing dust‑or‑grime accumulation on the shelf surface.
   Use `float patchWidth = R(r, 0.2f, 0.5f);` for the X size, `float patchDepth = 0.02f;` for Z, and `float patchHeight = 0.001f;` for Y.
   For each patch, call `m.Box(new Vector3(R(r, -0.9f, 0.9f), 0.27f, R(r, -0.13f, 0.13f)), Sz(patchWidth, patchHeight, patchDepth), DecorPalette.Matte(new Color(0.20f, 0.18f, 0.14f)))`.
   The Y‑position 0.27 places the patch just above the shelf plane (the shelf box is at y 0.25 with height 0.08).
   Limit the loop to `int patches = r.Next(1, 4);` and guard with `if (Chance(r, 0.4))` to keep the total added primitives ≤ 3.
   This adds subtle, period‑correct grime without affecting colliders or interaction points, giving the rack a lived‑in look.
+  - 23:23 landed by 1htsserver in 2 min: **Changed file**
