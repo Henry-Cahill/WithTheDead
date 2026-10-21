@@ -5854,3 +5854,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   `"There's a cracked mailbox on Route 9 where a scavenger left a stash of fresh canned beans.",`
   `"When the moon hangs low, the pine trees cast shadows that look like ghosts walking the ridge."`
   `};`
+- [ ] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildPoints` to give each gas‑pump a tiny random position jitter so they don’t line up perfectly on the mapped spot.
+  In the `if (s.Data.kind == "fuel")` block, after `if (!NearestFree(site, s.At + new Vector2(k * 2.2f, 0f), 1.2f, out Vector2 at)) continue;` insert a jitter:
+  `Vector2 jitter = new Vector2(R(rng, -0.2f, 0.2f), R(rng, -0.2f, 0.2f));`
+  `at += jitter;`
+  Replace the subsequent use of `at` with this jittered value (the `Vector3 at3 = To3(at, 0f);` line and the later `site.Take(at, 1.2f);`).
+  This adds a hand‑painted variation of up to ±0.2 m in both X and Z for each pump, keeping colliders aligned with the new position, and makes the gas‑station area feel more lived‑in.
