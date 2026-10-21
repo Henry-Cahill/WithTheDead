@@ -5876,11 +5876,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Use the same `length` and `SidewalkWidth` dimensions as the concrete box.
   This adds visual snow on sidewalks without affecting colliders or existing geometry.
   - 07:11 landed by hts-llm in 3.4 min: **Modified file**
-- [ ] Fix the hiring logic in Assets/Scripts/AI/Humans/Companions.cs so players can actually hire companions in the zone and avoid creating duplicate companions after a raid.
+- [x] Fix the hiring logic in Assets/Scripts/AI/Humans/Companions.cs so players can actually hire companions in the zone and avoid creating duplicate companions after a raid.
   Step 1: CompanionService.CanHire – change the extraction guard. Current code: `if (npc == null || npc.IsDead || Current != null || !GameSession.IsExtraction || GameSession.IsBorrowedBody) return false;` Replace `!GameSession.IsExtraction` with `GameSession.IsExtraction` so hiring is blocked *only* while extracting, not allowed only then.
   Step 2: CompanionService.Hire – remove the persistent‑flag side‑effects that belong only to bar hires. Current code (excerpt): `CharacterProfile c = ProfileStore.ActiveCharacter;` `if (c != null) { ClearFlag(c); c.SetFlag(HireFlag + npc.Name + "|" + npc.Loadout.Id); }` Delete those three lines entirely. The method should end after `GameEvents.RaiseSubtitle(...)`.
   Step 3: Add a short comment above the removed lines indicating the rationale (kept for future reference). `// NOTE: Zone hires should not set the persistent “companion:” flag – that flag is only used for` `// bar hires and survivors so that a companion is spawned at the insertion point on the next raid.`
   Done when: Players can approach a freehold NPC in the zone, press the hire interaction, pay the fee, and see the companion appear immediately without any error. The hire button is now disabled while the player is at the extraction point. After a successful raid, only one companion appears at the insertion point (no duplicate from a previous zone hire). All existing bar‑hire behavior remains unchanged.
+  - 07:14 landed by hts-llm in 1.8 min: **Changes Made**
 - [ ] Add a small chrome push‑button to the front of the copier in Assets/Scripts/World/FurnitureBuilder.Utility.cs – `FurnitureBuilder.Copier`.
   Add the button after the existing Gl‑panel line `m.Box(new Vector3(0.3f, 1.0f, 0.3f), new Vector3(0.2f, 0.05f, 0.03f), Gl(new Color(0.2f, 0.5f, 0.3f)));`.
   Create a jittered position using the method’s `rng`:
