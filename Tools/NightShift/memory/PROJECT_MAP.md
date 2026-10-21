@@ -51,7 +51,7 @@ sentence of its summary. Grep the code for details.
 - HumanoidProportions.cs (142) HumanBone, HumanoidProportions: The bones of the humanoid rig, in hierarchy order (a parent always precedes its children).
 - HumanoidRig.cs (240) HoldStyle, HumanoidRig: How an item sits in the right hand.
 - PlayerAvatar.cs (341) PlayerAvatar: Clone Z's body.
-- WeaponHandIK.cs (159) WeaponHandIK, SceneToStreamJob: Hand IK on the weapon with the Animation Rigging package (the doc's "one full-body rig for every vie
+- WeaponHandIK.cs (161) WeaponHandIK, SceneToStreamJob: Hand IK on the weapon with the Animation Rigging package (the doc's "one full-body rig for every vie
 - ZombieAvatar.cs (133) ZombieAvatar: A zombie's body: the same humanoid as the survivor, dressed as a random dead survivor (grimy clothes
 
 ## Assets/Scripts/Content
@@ -130,12 +130,13 @@ sentence of its summary. Grep the code for details.
 - GameFlow.cs (63) GameFlow: The combined core loop's transitions: title → hub → (deploy) raid → summary → hub.
 
 ## Assets/Scripts/Gadgets
-- Gadgets.cs (770) DroneKind, Drone, DronePickup: Bodycam's drones: a flying FPV drone (fast, loud, can carry a grenade to drop) and a tracked ground 
+- Gadgets.cs (785) DroneKind, Drone, DronePickup: Bodycam's drones: a flying FPV drone (fast, loud, can carry a grenade to drop) and a tracked ground 
 
 ## Assets/Scripts/Hub
+- Fireplace.cs (63) Fireplace: Simple fireplace that can be lit or extinguished; provides a warm point‑light when lit.
 - HubCatalog.cs (33) HubDef, HubCatalog: One of the places runners live between raids.
-- HubNpc.cs (237) HubNpc, Role, HubNpcTalk: Someone in the hub: a station keeper, a patron nursing a drink, a guitarist on the stage, an old-tim
-- HubWorld.cs (431) HubRules, HubStation, HubStashLocker: Rules that hold in the hub: a safe place.
+- HubNpc.cs (241) HubNpc, Role, HubNpcTalk: Someone in the hub: a station keeper, a patron nursing a drink, a guitarist on the stage, an old-tim
+- HubWorld.cs (437) HubRules, HubStation, HubStashLocker: Rules that hold in the hub: a safe place.
 
 ## Assets/Scripts/Hub/Screens
 - HomeScreens.cs (472) Upkeep, UpkeepScreen, HideoutScreen: The pressure behind every run (Roadside Picnic's desperation): rent on the room above the bar, a deb
@@ -158,7 +159,7 @@ sentence of its summary. Grep the code for details.
 ## Assets/Scripts/Medical
 - MedicalItems.cs (147) MedicalItems, Body: What the field medicine does.
 - PlayerBlood.cs (206) PlayerBlood: DayZ's separate blood and shock pools.
-- PlayerLimbs.cs (637) PlayerLimbs, HudLimbs: The survivor's seven hit zones (Tarkov): head, thorax, stomach, both arms, both legs, each with its 
+- PlayerLimbs.cs (652) PlayerLimbs, HudLimbs: The survivor's seven hit zones (Tarkov): head, thorax, stomach, both arms, both legs, each with its 
 
 ## Assets/Scripts/Net
 - NetAuthority.cs (39) NetAuthority: Who decides what happens.
@@ -168,15 +169,15 @@ sentence of its summary. Grep the code for details.
 - NetWorld.cs (522) NetWorld, NetAgentProxy: The shared world.
 
 ## Assets/Scripts/Player
-- PlayerBuilder.cs (868) PlayerBuilder, BuildSelection: The survivor's construction tool.
+- PlayerBuilder.cs (880) PlayerBuilder, BuildSelection: The survivor's construction tool.
 - PlayerClothing.cs (181) PlayerClothing, WornPiece: The clothing the survivor is wearing — one garment per body slot.
-- PlayerCombat.cs (622) PlayerCombat, FlareProjectile, NetClock: Melee and firearms.
+- PlayerCombat.cs (621) PlayerCombat, FlareProjectile, NetClock: Melee and firearms.
 - PlayerController.cs (374) PlayerController: Survival movement: move relative to the camera, aim Project Zomboid style, sprint/sneak with stamina
 - PlayerFarming.cs (373) PlayerFarming, FarmAction: Lets the survivor work the land.
 - PlayerFoodSickness.cs (122) PlayerFoodSickness: Food poisoning — Project Zomboid's Sickness / Nausea moodle.
 - PlayerGear.cs (554) PlayerGear: The survivor's powered and protective gear: night-vision goggles worn in the Eyes slot (toggled with
 - PlayerGearParts.cs (295) PlayerGearParts, PlayerGearTorso: Building blocks for PlayerGearVisuals: collider-free primitive parts, flat straps (single boxes, or 
-- PlayerGearVisuals.cs (648) PlayerGearVisuals, Piece: Draws the survivor's gear on the body: a backpack on the back (sized by how much it holds, in the ba
+- PlayerGearVisuals.cs (665) PlayerGearVisuals, Piece: Draws the survivor's gear on the body: a backpack on the back (sized by how much it holds, in the ba
 - PlayerHydration.cs (116) PlayerHydration: Lets the survivor get water.
 - PlayerInteractor.cs (827) PlayerInteractor, FocusKind: Everything the survivor reaches out and uses.
 - PlayerInventory.cs (871) PlayerInventory: The player's carried items plus the currently-equipped melee weapon.
@@ -214,7 +215,7 @@ sentence of its summary. Grep the code for details.
 
 ## Assets/Scripts/Survival
 - Diseases.cs (184) PlayerDiseases, DiseaseModule: DayZ's illnesses, each with its own cause and its own cure — survival needs that interact rather tha
-- FieldSurvival.cs (578) PlayerChannel, FieldSurvival, SnareTrap: A timed action the survivor performs in the field (foraging, fishing, reading, cranking a charger): 
+- FieldSurvival.cs (583) PlayerChannel, FieldSurvival, SnareTrap: A timed action the survivor performs in the field (foraging, fishing, reading, cranking a charger): 
 - Navigation.cs (322) ZoneMapScreen, Mark, JournalScreen: The Zone map (P), on a clipboard: streets and buildings, the landmarks, the exits — and no dot sayin
 
 ## Assets/Scripts/UI
@@ -285,11 +286,11 @@ sentence of its summary. Grep the code for details.
 - FurnitureBuilder.Home.cs (301) FurnitureBuilder: A run of wooden base cabinets with a laminate top (0.62 deep, 0.92 high), optionally with a stainles
 - FurnitureBuilder.Kitchen.cs (754) FurnitureBuilder, KitchenTone: The colours of one run of kitchen units, picked once so the carcass and the doors drawn apart from i
 - FurnitureBuilder.Lighting.cs (262) FurnitureBuilder: A cream switch plate width wide centred on at (on the wall face).
-- FurnitureBuilder.Living.cs (300) FurnitureBuilder: Height of the middle of a DresserBody drawer (row 0 the top one).
+- FurnitureBuilder.Living.cs (312) FurnitureBuilder: Height of the middle of a DresserBody drawer (row 0 the top one).
 - FurnitureBuilder.Office.cs (284) FurnitureBuilder: A beige 1990s CRT monitor (deep tapered housing, dark glass) on a swivel foot, standing at at.
 - FurnitureBuilder.RaidCivic.cs (902) FurnitureBuilder, CrateLoad: The middle of filing drawer i (0 = the bottom one).
 - FurnitureBuilder.RaidHome.cs (526) FurnitureBuilder: How many two-door bays a run of wall cupboards len long is split into (each about the starter home's
-- FurnitureBuilder.RaidOpenings.cs (320) OpeningLine, FurnitureBuilder: A straight wall line in world axes, as the raid town's door and window builders draw on it: a point 
+- FurnitureBuilder.RaidOpenings.cs (338) OpeningLine, FurnitureBuilder: A straight wall line in world axes, as the raid town's door and window builders draw on it: a point 
 - FurnitureBuilder.RaidStore.cs (488) FurnitureBuilder: The copier's lid hinge (its back edge, under the lid).
 - FurnitureBuilder.Utility.cs (377) FurnitureBuilder: A white steel medicine cabinet (0.9 × 0.42 × 1.8): glazed upper doors over shelves of boxes and bott
 - FurnitureBuilder.cs (251) FurnitureBuilder: The raid map's furniture, built from boxes, prisms and quads into a RaidMesh.
@@ -299,7 +300,7 @@ sentence of its summary. Grep the code for details.
 - HomeFurniture.Bathroom.cs (101) HomeFurniture: The bathroom's loose furniture (see the per-area hooks in HomeFurniture.cs): the toilet, the pedesta
 - HomeFurniture.Kitchen.cs (89) HomeFurniture: The kitchen's loose furniture (see the per-area hooks in HomeFurniture.cs): the counter along the we
 - HomeFurniture.Living.cs (271) HomeFurniture: The living room's, bedroom's and store room's furniture (see HomeFurniture): the dining table (a sur
-- HomeFurniture.cs (389) HomeFurnitureKind, HomeFurniture: The loose furniture that dresses the starter home.
+- HomeFurniture.cs (410) HomeFurnitureKind, HomeFurniture: The loose furniture that dresses the starter home.
 - HomeLamp.cs (247) HomeLamp: A lamp of the wave-survival starter home — the bedside lamp, the standard lamp, the kitchen-diner's 
 - ItemMeshBaker.cs (257) ItemMeshBaker, Lod, Baked: Turns an ItemModelDesc into a single combined mesh that can be drawn instanced.
 - ItemModelDesc.cs (230) PartShape, PartMat, Part: Which primitive mesh a part is cut from.
@@ -314,31 +315,31 @@ sentence of its summary. Grep the code for details.
 - RaidBuilding.Openings.cs (81) RaidBuilding: A roll-up door in the (leafless) doorway at local (x, z): the drum over the inside of the doorway wi
 - RaidBuilding.Windows.cs (294) RaidBuilding: The raid town's windows: the starter home's double-hung window — a fixed upper sash over a lower one
 - RaidBuilding.cs (730) FloorKind, LightStyle, RaidRoom: Floor finishes for raid-map rooms.
-- RaidLayouts.cs (302) RaidLayouts: The raid map's authored buildings.
+- RaidLayouts.cs (333) RaidLayouts: The raid map's authored buildings.
 - RaidLayoutsCivic.cs (244) RaidLayouts: The town clinic: waiting room with reception, an exam room, the doctor's office, a three-bed ward an
 - RaidLayoutsHomes.cs (254) RaidLayouts: A family house: the 12 × 10 ranch (living room, kitchen, bedroom, bathroom with a bath, den) or the 
 - RaidLayoutsOffice.cs (267) RaidLayouts: The county office: an open-plan floor of desks with CRTs and lamps (photo 3), a lobby with reception
 - RaidLayoutsStore.cs (273) RaidLayouts: The gas station's food mart: the checkout counter with its till, gondolas of shelves to browse from 
-- RaidMapBuilder.Edge.cs (295) RaidMapBuilder: The map edge and what lies past it (the exit roads it opens onto are defined in RaidMapBuilder.Town.
-- RaidMapBuilder.Outdoor.cs (234) RaidMapBuilder: The outdoor fill of the streets and verges (the same props made usable and their interactive pieces 
+- RaidMapBuilder.Edge.cs (321) RaidMapBuilder: The map edge and what lies past it (the exit roads it opens onto are defined in RaidMapBuilder.Town.
+- RaidMapBuilder.Outdoor.cs (268) RaidMapBuilder: The outdoor fill of the streets and verges (the same props made usable and their interactive pieces 
 - RaidMapBuilder.Props.cs (230) RaidMapBuilder: The object every interactive outdoor prop hangs under (made on first use).
 - RaidMapBuilder.Streets.cs (274) RaidMapBuilder, RoadSpec: An axis-aligned street: asphalt, a faded double centre line, kerbs, sidewalks, banks of plowed snow 
-- RaidMapBuilder.Town.cs (340) RaidMapBuilder: Draws a prop into the outdoor mesh at a world placement, with an optional collider (size.y = 0 for n
+- RaidMapBuilder.Town.cs (365) RaidMapBuilder: Draws a prop into the outdoor mesh at a world placement, with an optional collider (size.y = 0 for n
 - RaidMapBuilder.cs (94) RaidMapBuilder: Builds the extraction raid map under world: a snowbound, run-down 1993 Kentucky town at night (140 ×
 - RaidMesh.cs (497) Surf, RaidMesh: How a piece of raid-map geometry is skinned: a material plus the way its UVs are generated.
 - RaidTown.cs (199) RaidTown, OutdoorBatches: Shared state while one raid map is being built: the seeded random stream, the three roots (the baked
 - SleepSpot.cs (98) SleepSpot: A bed the player can sleep in to pass the night and shed fatigue.
 - StarterHome.Bathroom.cs (66) StarterHome: The bathroom's wall fittings: the mirror cabinet over the basin on the back wall and the towel rail 
 - StarterHome.Doors.cs (131) StarterHome: The home's doors in their finished doorways: a pair of panelled leaves in the wide gaps (the front d
-- StarterHome.Grounds.cs (317) StarterHome: The street past the front of the home: sun-faded asphalt with a dashed yellow centre line and white 
+- StarterHome.Grounds.cs (329) StarterHome: The street past the front of the home: sun-faded asphalt with a dashed yellow centre line and white 
 - StarterHome.Kitchen.cs (52) StarterHome: The kitchen's wall cupboards over the worktop on the west wall: the carcass, shelf and crockery draw
-- StarterHome.Lighting.cs (280) StarterHome: The starter home's lighting and wall decor.
+- StarterHome.Lighting.cs (325) StarterHome: The starter home's lighting and wall decor.
 - StarterHome.Shell.cs (391) StarterHome, Frame, Band: Builds the finished look onto a house piece standing in one of the home's slots — its visible geomet
-- StarterHome.Windows.cs (249) StarterHome: The starter home builds window fittings (sashes, curtains, blinds, etc.).
+- StarterHome.Windows.cs (282) StarterHome: The starter home builds window fittings (sashes, curtains, blinds, etc.).
 - StarterHome.cs (532) StarterHome, HomeRoom, Slot: The wave-survival starter home, finished to the extraction town's standard.
 - ToxicZone.cs (298) ToxicZone: A cloud of toxic gas: breathing it without a gas mask (or with a spent filter) sickens and hurts the
 - Vehicles.cs (863) Vehicle, VehicleDriver, HudVehicle: A car (DayZ's vehicle assembly, Zomboid's hotwiring): they're found broken at the Zone's parking spo
-- WaterSource.cs (325) WaterSourceKind, WaterSource: Where the survivor can get water — a plumbed tap or a rain barrel.
+- WaterSource.cs (347) WaterSourceKind, WaterSource: Where the survivor can get water — a plumbed tap or a rain barrel.
 - WorldItem.cs (132) WorldItem: A handle to one item lying on the ground.
 
 ## Assets/Scripts/World/Fixtures
@@ -359,10 +360,10 @@ sentence of its summary. Grep the code for details.
 - LightCircuits.cs (97) LightCircuits, Wiring: The starter home's lighting circuits — the living room's, the porch's, the store room's and the bath
 - LightSwitch.cs (173) LightSwitch: A wall light switch by a door: a cream plate of one or more toggles (in a tent, a switch box's lever
 - LightingFixtures.cs (34) LightingFixtures: Small shared helpers for the home's lights, switches, wall decor and yard fixtures.
-- LivingFixtures.cs (39) LivingFixtures: Small shared helpers for the living room's and bedroom's fixtures.
-- LivingReading.cs (137) LivingReading, Book: The bookcase's pastimes, offered after browsing its shelves: reading a few chapters of one of the bo
+- LivingFixtures.cs (46) LivingFixtures: Small shared helpers for the living room's and bedroom's fixtures.
+- LivingReading.cs (152) LivingReading, Book: The bookcase's pastimes, offered after browsing its shelves: reading a few chapters of one of the bo
 - LivingReceiver.cs (268) LivingReceiver: A set that plays the broadcasts (Broadcasts) — the portable TV and the kitchen radio.
-- MailboxFixture.cs (231) MailboxFixture: The rural mailbox at the kerb.
+- MailboxFixture.cs (235) MailboxFixture: The rural mailbox at the kerb.
 - MirrorCabinet.cs (185) MirrorCabinet, Sign: The mirror cabinet over the bathroom basin: a white wall cabinet with a mirrored door, kept as a Sto
 - OutdoorHouseNumber.cs (56) OutdoorHouseNumber: The enamelled house-number plate beside the front door: "Read the house number".
 - OutdoorLantern.cs (86) OutdoorLantern: The black carriage lantern beside the front door.
@@ -371,7 +372,7 @@ sentence of its summary. Grep the code for details.
 - RaidCivicFixtures.cs (385) CivicToggle, CivicLook, CivicRest: A workplace fitting with two states, flipped with [E]: a bench vice wound open or shut, a ward's pri
 - RaidCivicFridge.cs (260) CivicFridge, CivicReading, Shelf: The workings of a workplace fridge-freezer — the National Guard post's kitchenette fridge, the clini
 - RaidCivicRadio.cs (341) CivicRadio, Channel, Band: A two-way set the survivor can listen in on — the National Guard post's olive field radio, the depot
-- RaidCivicSink.cs (309) CivicSink: The deep steel sink let into a workplace counter — the National Guard post's kitchenette, the clinic
+- RaidCivicSink.cs (314) CivicSink: The deep steel sink let into a workplace counter — the National Guard post's kitchenette, the clinic
 - RaidDoor.cs (425) RaidDoor, Raid: A door of the raid town: the starter home's door (HomeDoor) — a pair of leaves drawn shut across the
 - RaidHomeBath.cs (403) RaidHomeBath: A raid ranch's bath: a built-in tub with a hot and a cold tap over the drain and a plug on a chain.
 - RaidHomeLiving.cs (239) RaidHomeLiving: The small pastimes and the paperwork of the raid town's houses: plumping the sofa's cushions, flicki
@@ -379,7 +380,7 @@ sentence of its summary. Grep the code for details.
 - RaidStoreCopier.cs (190) RaidStoreCopier: The county office's photocopier.
 - RaidStoreCot.cs (122) RaidStoreCot: The quarantine tent's folding camp cot: "Lie down and rest" stretches out on the canvas, awake (an o
 - RaidStoreSafe.cs (103) RaidStoreSafe: The food mart's floor safe in the stock room, locked.
-- RaidStoreSwivelSeat.cs (158) RaidStoreSwivelSeat: A swivel office chair in the raid town's county office.
+- RaidStoreSwivelSeat.cs (200) RaidStoreSwivelSeat: A swivel office chair in the raid town's county office.
 - RaidStoreVending.cs (169) RaidStoreVending: The break room's snack and soda machine.
 - RaidStoreWaterCooler.cs (108) RaidStoreWaterCooler: The county office's bottled-water cooler: a water point (IWaterPoint) the survivor can drink from or
 - RaidStoreWaterHeater.cs (135) RaidStoreWaterHeater: The county office's gas water heater in the utility room, as a water point (IWaterPoint): its cold i
@@ -389,7 +390,7 @@ sentence of its summary. Grep the code for details.
 - RaidTownHydrant.cs (45) RaidTownHydrant: A fire hydrant on a street corner, frozen up for the winter: nothing to be had from it without a hyd
 - RaidTownMailDrop.cs (89) RaidTownMailDrop: A blue public mail drop box on a Main Street sidewalk.
 - RaidWindow.cs (409) RaidWindow, Glazing, Dressing: A window of the raid town: the starter home's double-hung window (HomeWindow) — a lower sash that sl
-- RainBarrelFixture.cs (128) RainBarrelFixture: The rain barrel by the west wall, as a fixture: fill a bottle from it or drink (the water's tainted 
+- RainBarrelFixture.cs (135) RainBarrelFixture: The rain barrel by the west wall, as a fixture: fill a bottle from it or drink (the water's tainted 
 - RollUpShutter.cs (174) RollUpShutter, Setup: A depot's roll-up door: a steel curtain of slatted bands that rolls up into the drum over the inside
 - SeatFixture.cs (152) SeatFixture: Somewhere to sit: a dining chair or the armchair.
 - ShowerFixture.cs (325) ShowerFixture: The bathroom's shower stall: a glass door that swings out and a mixer that sets the rose spraying — 
@@ -405,13 +406,14 @@ sentence of its summary. Grep the code for details.
 
 ## Assets/Scripts/World/Map
 - KentuckyMap.Buildings.cs (510) KentuckyMap: The unit direction from from to the nearest street within within metres, or zero.
-- KentuckyMap.Ground.cs (377) KentuckyMap: The pieces of a line outside the playable square: cut to the four bands around it, which together co
-- KentuckyMap.Props.cs (271) KentuckyMap: Trees per square metre for a kind of land, or 0 for none.
+- KentuckyMap.Ground.cs (378) KentuckyMap: The pieces of a line outside the playable square: cut to the four bands around it, which together co
+- KentuckyMap.Props.cs (330) KentuckyMap: Trees per square metre for a kind of land, or 0 for none.
 - KentuckyMap.cs (522) KentuckyMap, Street, Line: Builds a raid map from a real place in Kentucky: the streets, buildings, water and land use around t
 - MapData.cs (276) MapCurrent, MapManifest, MapRegionEntry: world/current.json: the build the game and the servers load.
 - MapGeometry.cs (342) MapGeometry: Plane geometry for the real-world map, in the raid map's ground plane: a Vector2 is (x, z), metres e
+- RoadMarkingsBuilder.cs (44) RoadMarkingsBuilder: Builds thin white lane markings on road centre lines.
 - StreetLampHelper.cs (39) StreetLampHelper
-- WorldStore.cs (228) WorldStore, MapBuild: The world store, where the build machines put the real-world map (Tools/World): \\192.168.1.170\CLON
+- WorldStore.cs (246) WorldStore, MapBuild: The world store, where the build machines put the real-world map (Tools/World): \\192.168.1.170\CLON
 
 ## Assets/Scripts/World/Zone
 - Helicopter.cs (387) HelicopterModel, HelicopterFlight, HelicopterService: Builds the helicopter: fuselage, cockpit glass, tail boom and fin, skids, two spinning rotors, a sea
@@ -419,7 +421,7 @@ sentence of its summary. Grep the code for details.
 - ZoneAtmosphere.cs (114) ZoneAtmosphere: The air of a zone, layered over the clock and the weather each frame: Mirelock's fog that never lift
 - ZoneCordon.cs (296) ZoneCordon, CordonGate, SearchlightSweep: The cordon (Roadside Picnic's illegal entry): an inner fence just inside the restricted belt along t
 - ZoneKit.cs (703) ZoneKit, ZoneSmokeTint, ZoneChunks: Shared pieces for the zone overlays: the extra materials they need (chain-link, light beams, steam a
-- ZoneLandmarks.cs (412) ZoneLandmarks, LocationVisitTrigger: The handcrafted anchors of each zone (Metro's set pieces, used sparingly): a crashed helicopter, a d
+- ZoneLandmarks.cs (459) ZoneLandmarks, LocationVisitTrigger: The handcrafted anchors of each zone (Metro's set pieces, used sparingly): a crashed helicopter, a d
 - ZoneOverlays.cs (262) ZoneForest, ZoneIndustry: Mirelock's woods: hundreds of snow-dusted conifers and bare birches crowding every open patch of gro
 - ZoneSiteMap.cs (334) SiteCell, ZoneSiteMap: What lies on one metre of a raid map, as far as the zone overlays care.
 - ZoneWorld.cs (198) ZoneWorld, ZoneWorldModule, ZoneRuntime: What the zone overlays know about the raid map being built: the roots they build under, the occupanc
