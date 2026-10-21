@@ -5787,3 +5787,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Change it to a square size, e.g.:
   `handle.sizeDelta = new Vector2(12f, 12f);`
   Now the slider’s handle is visible and draggable, letting the player adjust settings as intended while preserving all other UI styling.
+- [ ] Add a thin wooden top‑trim and, with 40 % chance, a small brass plaque to the bookshelf built in `Assets/Scripts/World/FurnitureBuilder.Home.cs` → `Bookshelf` method
+  Insert after the back‑panel line
+  `// thin wooden strip capping the top edge (adds a worn‑look)`
+  `m.Box(new Vector3(0f, 0.9f + 1.8f, 0f), new Vector3(0.88f, 0.02f, 0.32f), M(c * 0.95f));`
+  `// occasional brass plaque centered on the trim`
+  `if (Chance(rng, 0.4))`
+  `m.Box(new Vector3(0f, 0.9f + 1.8f + 0.01f, 0f), new Vector3(0.12f, 0.004f, 0.04f), Mt(Brass));`
+  Trim size: 0.88 m × 0.02 m × 0.32 m, placed at y = 0.9 + 1.8 = 2.7 m (top of the side posts).
+  Plaque size: 0.12 m × 0.004 m × 0.04 m, positioned 0.01 m above the trim, centered on X/Z.
