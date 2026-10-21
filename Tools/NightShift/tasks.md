@@ -4383,12 +4383,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   The field `ViewBlendSeconds` already has a default value (‑ the tooltip says “Seconds the camera glides … (0 cuts)”). By clearing the assignment, the value set in the inspector (or its serialized default of 0.3 seconds) is used, restoring the intended smooth blend between shoulder and first‑person views.
   Result: when the player cycles views, the camera now interpolates over the configured blend time instead of snapping instantly, matching the design description and improving visual feedback.
   - 20:28 landed by 1htsserver in 1.4 min: **Changed**
-- [ ] In Assets/Scripts/World/FurnitureBuilder.cs add a few tiny black rivet details to the front of every locker door in `FurnitureBuilder.LockerBank(RaidMesh m, System.Random rng, int count, Color body)` so the lockers look a bit more industrial and worn.
+- [x] In Assets/Scripts/World/FurnitureBuilder.cs add a few tiny black rivet details to the front of every locker door in `FurnitureBuilder.LockerBank(RaidMesh m, System.Random rng, int count, Color body)` so the lockers look a bit more industrial and worn.
   After the line that creates the pull‑handle — `m.Box(new Vector3(x, 1.25f, 0.235f), new Vector3(0.02f, 0.12f, 0.005f), Mt(Chrome));` — insert up to three rivet boxes per door.
   Use `Chance(rng, 0.6)` to decide whether a rivet is placed, giving each door a random‑but‑deterministic pattern.
   For each rivet, add `m.Box(new Vector3(x + R(rng, -0.015f, 0.015f), 1.26f + R(rng, -0.01f, 0.01f), 0.245f), new Vector3(0.004f, 0.004f, 0.001f), M(Black));` – a 4 mm × 4 mm × 1 mm black cube positioned just above and near the handle.
   Keep the existing colliders and interaction points unchanged; the rivets are purely visual.
   No more than 12 new primitive calls are added in total (max 3 rivets × door × count ≤ 12 for typical counts).
+  - 20:30 landed by hts-llm in 2.5 min: **Changed file**
 - [x] Cache GameManager and ExtractionManager lookups in Update of Assets/Scripts/UI/PauseMenuController.cs to eliminate per‑frame null‑checks
   In Awake() the fields `_gm` and `_em` are already set (`_gm = GameManager.Instance; _em = ExtractionManager.Instance;`).
   Remove the two lines in Update(): `if (_gm == null) _gm = GameManager.Instance;` and `if (_em == null) _em = ExtractionManager.Instance;`.
