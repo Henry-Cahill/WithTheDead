@@ -5605,3 +5605,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   This reuses the already‑defined `CloneZConfig.WindowLookSeconds` and the `HumanoidActivity.Use` enum, so no new config or UI is needed.
   Result: when the survivor chooses “Inspect the window”, a short timed action plays (showing a progress bar like other look actions) and then the inspection message appears, matching the feel of other window interactions.
   - 03:01 landed by 1htsserver in 1.9 min: **Changed:** `Assets/Scripts/World/Fixtures/RaidWindow.cs`
+- [ ] Append six new entries to the `NumberLines` array in Assets/Scripts/World/Fixtures/RaidHomeLiving.cs, using the existing style of e.g. `"Number {0}, the frost‑bitten metal plate is dulled by snow and ice."` – the new sentences should each convey a small, period‑correct detail about the house: a weathered element, a family memory, a makeshift repair, a local superstition, an abandoned pet hint, and a whispered hope.
