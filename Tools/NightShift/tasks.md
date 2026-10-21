@@ -5478,12 +5478,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(chipPos, Sz(0.02f, 0.01f, 0.005f), wood);` (repeat for the right post with x = 0.95f)
   These three new primitives (one frost slab, two paint‑chip boxes) keep colliders and interaction points unchanged, reuse the existing `wood` material for chips, and add only period‑correct visual variation.
   - 02:26 landed by 1htsserver in 3.7 min: **Changes made**
-- [ ] In Assets/Scripts/Medical/PlayerBlood.cs: Cache the active character profile in PlayerBlood to avoid repeated `ProfileStore.ActiveCharacter` look‑ups each frame (used by BloodType and TypeKnown).
+- [x] In Assets/Scripts/Medical/PlayerBlood.cs: Cache the active character profile in PlayerBlood to avoid repeated `ProfileStore.ActiveCharacter` look‑ups each frame (used by BloodType and TypeKnown).
   Add a private field `private CharacterProfile _cachedProfile;` initialized to null.
   In `Update()` (or at the start of the method) set `_cachedProfile = ProfileStore.ActiveCharacter;`.
   Change the `BloodType` getter to return `_cachedProfile != null && !GameSession.IsScavRun && !string.IsNullOrEmpty(_cachedProfile.BloodType) ? _cachedProfile.BloodType : _scavType;`.
   Change the `TypeKnown` getter to use `_cachedProfile` instead of calling `ProfileStore.ActiveCharacter` again: `return _cachedProfile != null && _cachedProfile.HasFlag("bloodknown");`.
   Leave all other logic unchanged; the player will see the same blood type and known‑state information, but the per‑frame profile lookup is removed, reducing overhead.
+  - 02:28 landed by hts-llm in 4.2 min: **Summary of changes**
 - [x] Append five new winter‑theme flavor notes to the `Hideout.Tick` method in Assets/Scripts/Economy/Hideout.cs, adding `notes.Add("…");` calls after the existing winter notes; use the existing entry `notes.Add("The wind whistles through the cracked window of the generator room.");` as the style reference and cover the themes of frost‑bitten tools, a distant crackling radio, visible breath in the cold air, the groaning of ice‑laden roof beams, and the lingering scent of burning coal.
   Insert the new calls immediately after the last current winter note (`notes.Add("A faint scent of woodsmoke lingers, drifting from the stove.");`).
   Add the following lines:
