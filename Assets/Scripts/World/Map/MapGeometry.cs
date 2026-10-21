@@ -144,7 +144,26 @@ namespace CloneZ
             }
             // Ensure consistent winding for triangulation
         MakeAnticlockwise(cur);
-        return cur;
+        // Remove near‑duplicate vertices introduced by clipping
+        return RemoveNearDuplicates(cur);
+        }
+
+        private static List<Vector2> RemoveNearDuplicates(List<Vector2> src)
+        {
+            if (src == null || src.Count == 0) return new List<Vector2>();
+            var result = new List<Vector2>(src.Count);
+            // Add first point
+            result.Add(src[0]);
+            for (int i = 1; i < src.Count; i++)
+            {
+                var pt = src[i];
+                var last = result[result.Count - 1];
+                if (Vector2.Distance(pt, last) > EPS)
+                    result.Add(pt);
+            }
+            // If less than 3 points, return empty list as polygon invalid
+            if (result.Count < 3) return new List<Vector2>();
+            return result;
         }
 
         private const float EPS = 1e-5f;

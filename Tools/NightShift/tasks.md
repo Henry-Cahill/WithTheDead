@@ -4363,11 +4363,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `float hookRad = 0.006f; // 6 mm radius`
   `// left finial hook`
   - 20:25 landed by hts-llm in 3 min: **Changed**
-- [ ] In Assets/Scripts/World/Map/MapGeometry.cs, change the ClipPolygon method to remove vertices that are essentially duplicate after the anticlockwise fix, preventing zero‑area edges that corrupt building facades.
+- [x] In Assets/Scripts/World/Map/MapGeometry.cs, change the ClipPolygon method to remove vertices that are essentially duplicate after the anticlockwise fix, preventing zero‑area edges that corrupt building facades.
   After the line `MakeAnticlockwise(cur);` add a call to a new helper that filters out points whose distance to the previous kept point is less than `EPS` (the constant already defined below).
   Implement a private static method `static List<Vector2> RemoveNearDuplicates(List<Vector2> src)` that creates a new list, copies the first point, then for each subsequent point adds it only if `Vector2.Distance(point, lastKept) > EPS`. If the resulting list has fewer than 3 points, return an empty list.
   Replace the final `return cur;` with `return RemoveNearDuplicates(cur);`.
   The player will see buildings with clean, non‑overlapping walls and roofs; tiny slivers that previously caused missing or flickering geometry disappear, while all existing functionality (clipping, winding) stays unchanged.
+  - 20:26 landed by 0htsserver in 2.2 min: **Changed Files**
 - [ ] Add four small metal nail‑head cylinders to the `WeaponRack(RaidMesh m, System.Random r)` builder in Assets/Scripts/World/RaidLayouts.cs to suggest period‑correct mounting nails on the bottom of the wooden frame.
   Use the existing `boltMat` (`DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f))`).
   Define `float nailRadius = 0.006f; float nailHeight = 0.012f;`.
