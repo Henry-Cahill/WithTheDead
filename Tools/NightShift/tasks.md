@@ -5403,7 +5403,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Cylinder(ringPos, 0.165f, 0.004f, 12, Mt(Chrome), Quaternion.Euler(90f, 0f, 0f));`
   Result: each stool will show a subtle metal band encircling the legs just under the cushion, adding period‑correct detail without altering colliders or interaction points.
   - 02:05 landed by 0htsserver in 2.1 min: Implemented a subtle chrome foot‑ring for the shop stool:
-- [ ] Add a faded “hand‑painted label” to the rain barrel in Assets/Scripts/World/WaterSource.cs → `WaterSource.BuildBarrel`.
+- [x] Add a faded “hand‑painted label” to the rain barrel in Assets/Scripts/World/WaterSource.cs → `WaterSource.BuildBarrel`.
   Use the existing `strapRand` (`new System.Random(1993)`) to pick a random angle.
   Insert the new code right after the line
   `m.Cylinder(new Vector3(0f, h * 0.5f, 0f), r + 0.015f, 0.008f, 16, DecorPalette.Matte(strapColor));`
@@ -5412,6 +5412,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Vector3 labelPos = new Vector3(Mathf.Sin(labelAngle) * (r + 0.012f), 0.6f, Mathf.Cos(labelAngle) * (r + 0.012f));`
   `m.Box(labelPos, new Vector3(0.08f, 0.02f, 0.001f), DecorPalette.Matte(new Color(0.78f, 0.71f, 0.55f)));`
   The box is ~0.08 m × 0.02 m × 0.001 m, placed at mid‑height (≈0.6 m) on the barrel side, coloured a faded brownish‑off‑white to resemble an old hand‑painted label, adding period‑appropriate visual detail with only one extra primitive.
+  - 02:38 landed by spark in 32 min: COMPILE OK.
 - [x] Cache the Keyboard lookup in `RaidSummaryUI.Update` to avoid a per‑frame `Keyboard.current` search (Assets/Scripts/Extraction/RaidSummaryUI.cs)
   Add a private field `private Keyboard _cachedKeyboard;` to the class.
   In `Awake()` set `_cachedKeyboard = Keyboard.current;`.

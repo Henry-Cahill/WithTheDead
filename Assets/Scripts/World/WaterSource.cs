@@ -204,6 +204,10 @@ namespace CloneZ
             Color strapColor = new Color(shade, shade * 0.85f, shade * 0.6f);
             m.Cylinder(new Vector3(0f, h * 0.5f, 0f), r + 0.015f, 0.008f, 16,
                 DecorPalette.Matte(strapColor));
+            // Faded hand-painted label: a thin rectangle on the barrel side, random angle
+            float labelAngle = (float)(strapRand.NextDouble() * Mathf.PI * 2.0);
+            Vector3 labelPos = new Vector3(Mathf.Sin(labelAngle) * (r + 0.012f), 0.6f, Mathf.Cos(labelAngle) * (r + 0.012f));
+            m.Box(labelPos, new Vector3(0.08f, 0.02f, 0.001f), DecorPalette.Matte(new Color(0.78f, 0.71f, 0.55f)));
             m.Cylinder(new Vector3(0f, 0.02f, 0f), r - wall, 0.004f, 16, DecorPalette.Matte(plastic * 0.35f));
             // A brass spigot low on the side.
             // Brass rivet heads around the barrel mid‑section – period‑appropriate weathering
