@@ -4769,3 +4769,16 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [x] In Assets/Scripts/World/Fixtures/TowelRail.cs: Add a “Check towel dryness” action to `TowelRail.GetActions` that tells the survivor how long until the towel is fully dry, using the existing `_dryAt` field and `TimeOfDay.Now`.
   - 22:39 landed by 0htsserver in 2 min: **Changed**: `Assets/Scripts/World/Fixtures/TowelRail.cs`
 - [ ] In Assets/Scripts/World/Fixtures/RaidCivicFridge.cs, append five new sentences to the `ClinicLeaflets` array (class `CivicReading`), keeping the existing entries unchanged; the player will find these extra leaflets on the clinic’s bookcase and read them when leaf‑throughing.
+- [ ] Modify Assets/Scripts/World/Map/KentuckyMap.cs to add a thin white snow layer on roofs and streets, giving the raid town a convincing winter look.
+  In the class body, after the existing `private const float EaveHeight = 0.12f;` line, add
+  `private const float SnowDepth = 0.05f; // thin snow sheet applied to horizontal surfaces`
+  Add a new private static method BuildSnow(Site site) that:
+  Loops through `site.Area.Buildings`. For each building whose footprint is inside the playable square (`building.Inside(site.Half, 2f)`), compute the roof Y position as `building.Data.roofHeight + SnowDepth * 0.5f` (if `roofHeight` is not present, fall back to `0.0f`).
+  Calls `site.Overhead.At(building.Middle).Box(`
+  `new Vector3(building.Middle.x, roofY, building.Middle.y),`
+  `new Vector3(building.Size, SnowDepth, building.Size),`
+  `Materials.Snow);` – using the already‑existing snow material (`Materials.Snow`).
+- [ ] Add a thin wooden “rope‑tie” between the fence posts built in the `case 1:` block of `EdgeSegment` in Assets/Scripts/World/RaidMapBuilder.Edge.cs
+  In the post‑creation loop (`for (float x = -len * 0.5f; x <= len * 0.5f + 0.01f; x += 2.2f)`) insert a small matte box that hangs between each post, giving the wooden fence a period‑correct binding detail.
+  Use a dark‑brown colour matching the fence wood, e.g. `new Color(0.28f, 0.22f, 0.18f)`.
+  Add the primitive right after the cap is placed:
