@@ -5171,3 +5171,24 @@ you want to see in game. Indent extra lines under a task to add detail.
   This removes the `if (_player == null) _player = PlayerInteractor.Current;` call that runs every Update, reducing static‑lookup overhead and GC pressure
   No visual or gameplay change: the doors still open automatically when the container is viewed or searched, and the player interaction remains identical.
   - 00:40 landed by 1htsserver in 1.5 min: **Changed file**
+- [ ] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildPoints` to give each sign’s foreground colour a tiny random hand‑painted variation (like the background does), making the text look less uniformly coloured and more period‑correct.
+  Locate the block that computes `bg` and `fg` after `SignColours(s.Data.kind, out Color bg, out Color fg)`.
+  After the existing background jitter code (`bg.r = …; bg.g = …; bg.b = …;`) insert the same three lines for `fg`:
+  `fg.r = Mathf.Clamp01(fg.r + (float)rng.NextDouble() * 0.04f - 0.02f);`
+  `fg.g = Mathf.Clamp01(fg.g + (float)rng.NextDouble() * 0.04f - 0.02f);`
+  `fg.b = Mathf.Clamp01(fg.b + (float)rng.NextDouble() * 0.04f - 0.02f);`
+  Keep the rest of the method unchanged (sign placement, yaw, collider, etc.).
+  The player will now see street signs whose lettering has subtle colour variance, matching the hand‑painted look of the backgrounds while preserving all existing logic.
+- [ ] In Assets/Scripts/World/Zone/ZoneCordon.cs: Add a small rusted‑metal hinge on each side of the checkpoint’s front door for occasional visual variety in `ZoneCordon.BuildCheckpoint` (the method that builds the checkpoint booth).
+  After the existing door‑handle block (`if (ZoneKit.R(rng, 0f, 1f) < 0.5f) { … }`), insert a 30 % chance to place two hinge pieces:
+  `if (ZoneKit.R(rng, 0f, 1f) < 0.3f) {`
+  *left hinge:* `sb.Solid.Box(new Vector3(-0.78f, 0.80f, -1.22f), new Vector3(0.02f, 0.04f, 0.01f), ZoneKit.Mt(ZoneKit.RustDark));`
+  *right hinge:* `sb.Solid.Box(new Vector3(0.78f, 0.80f, -1.22f), new Vector3(0.02f, 0.04f, 0.01f), ZoneKit.Mt(ZoneKit.RustDark));`
+  `}`
+  Each hinge is 2 cm × 4 cm × 1 cm, positioned 0.80 m above the ground and offset 0.78 m left/right from centre, flush with the front panel (Z = ‑1.22 m).
+  Uses the existing `ZoneKit.RustDark` material, keeps all colliders and interaction points unchanged, and adds visual wear that fits the 1993 rural‑winter setting.
+- [ ] In Assets/Scripts/World/HomeLamp.cs: Fix HomeLamp.Refresh to re‑enable the bulb renderer after a lamp that was previously dark becomes lit, preventing the bulb mesh from staying permanently hidden.
+  In `Refresh()` add logic that, when `lit` is true and `_bulb` is not null, sets `_bulb.forceRenderingOff = false` (clearing the flag set when the lamp was dark).
+  Current code only does: `if (!lit && _bulb != null && !_bulb.forceRenderingOff) _bulb.forceRenderingOff = true;` which never restores the renderer.
+  After the fix a lamp that is switched off (or waiting for dusk) will correctly show its bulb again once it turns on, matching player expectations.
+  No other fields or behavior need to change.
