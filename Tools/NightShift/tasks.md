@@ -5712,3 +5712,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   In `StartWarning()` set `_warningSkyColor = PsiStorm ? _psiStormColor : _standardColor;`.
   Replace the line `ZoneAtmosphere.SkyOverride = PsiStorm ? _psiStormColor : _standardColor;` in the `Phase.Warning` case of `Update()` with `ZoneAtmosphere.SkyOverride = _warningSkyColor;`.
   The visual effect (sky turning red for a standard emission or violet for a psi storm) stays exactly the same; the conditional is now evaluated only once per emission instead of every frame while warning.
+- [ ] Add a deterministic “has window grate” helper to `MapBuild` in `Assets/Scripts/World/Map/WorldStore.cs` so building‑generation code can occasionally place period‑correct metal grates over upper‑story windows, giving the raid town a more hand‑built 1993 Kentucky look.
+  Define a new public method `public bool HasWindowGrate(long buildingId)` inside the `MapBuild` class, placed alongside `HasPorch`.
+  Implement it using the same deterministic hash pattern as the other helpers, e.g.:
+  `unchecked { uint hash = (uint)buildingId ^ 0x7f4a7c13u; hash = (hash * 0x85ebca6bu) ^ (hash >> 13); return (hash % 100) < 35; } // ~35 % chance`
+  Keep the XML comment style consistent, describing the purpose and deterministic nature.
+  No changes to other fields, formats, or data structures; colliders and geometry will still be handled by existing building‑generation code that now can query this flag.
+- [ ] Add a small metal toggle switch to the generator’s front control panel in Assets/Scripts/World/DecorProps.cs, method DecorProps.Generator – after the line `m.Box(new Vector3(0.35f, 0.4f, 0.31f), new Vector3(0.2f, 0.25f, 0.02f), M(new Color(0.15f, 0.15f, 0.15f)))` add a thin box representing a worn switch, sized 0.02 m × 0.04 m × 0.005 m, positioned at new Vector3(0.35f, 0.45f, 0.33f), rotated by a small random yaw `Yaw(R(rng, -5f, 5f))`, and rendered with a slightly varied metal surface: `Mt(V(new Color(0.2f, 0.2f, 0.2f), rng, 0.05f))`. This gives each generator a lived‑in look without altering colliders or interaction points.
