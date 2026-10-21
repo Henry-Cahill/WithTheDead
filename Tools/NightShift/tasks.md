@@ -4251,3 +4251,5 @@ you want to see in game. Indent extra lines under a task to add detail.
   Implement a private method `CheckObstruction(InteractContext ctx)` that calls the existing `Obstructed()` method and notifies the player:
   `private void CheckObstruction(InteractContext ctx) => ctx.Notify(Obstructed() ? "Something's in the way of the curtain." : "No obstruction.");`
   The player should see a text message indicating whether an entity (character, zombie, or the survivor) is under the door when they use this action; all other behaviour and state remain unchanged.
+- [ ] Add a sidewalk‑width helper to `MapStreet` in `Assets/Scripts/World/Map/MapData.cs` so the map builder can place period‑appropriate sidewalks beside roads.
+  In the `MapStreet` class, after the existing fields, insert a public method
