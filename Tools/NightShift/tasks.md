@@ -4969,3 +4969,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   During a client’s own restore this results in the client re‑sending its freshly‑spawned structures, causing unnecessary network traffic and a potential feedback loop where the server rebroadcasts the same data back to the originating client.
   The player should simply see their camp appear locally without any network round‑trip; the server already has the authoritative state from the saved `ZoneWorldState`.
   Change: remove the two `Announce` calls inside `Restore`.
+- [ ] Add a small chrome latch knob to the copier lid in Assets/Scripts/World/FurnitureBuilder.RaidStore.cs, method OfficeCopierLid
+  Insert a new primitive after the first box call (the main lid slab) to represent a metal latch on the front edge of the lid.
+  Use a chrome material: `Mt(Chrome)`.
+  Size: `new Vector3(0.02f, 0.02f, 0.005f)` metres.
+  Position relative to the lid origin: `new Vector3(0.35f, 1.07f, -0.03f)` (front‑right of the lid, just above its front face).
+  Code to add: `m.Box(new Vector3(0.35f, 1.07f, -0.03f), new Vector3(0.02f, 0.02f, 0.005f), Mt(Chrome));`
+  This gives the copier a realistic metal latch without affecting colliders or existing interaction points.
