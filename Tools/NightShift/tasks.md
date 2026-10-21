@@ -4236,3 +4236,17 @@ you want to see in game. Indent extra lines under a task to add detail.
   *Fix:* Remove the unconditional subtraction. Replace the line with `// keep current level; visual update only` (or, if a slow evaporation is desired, scale by `Time.deltaTime`). The method should only update the visual:
   - 19:37 landed by hts-llm in 1.9 min: **Changed**
 - [ ] Add a rusted metal band around each quarantine‑area barrel in `Assets/Scripts/World/RaidMapBuilder.Town.cs` → method `DressClinic`, inside the barrel `Prop` lambda.
+- [ ] In Assets/Scripts/UI/InventoryUIController.cs: Cache the input device look‑ups in `InventoryUIController` to avoid per‑frame `Mouse.current` / `Keyboard.current` property calls
+  Add two private fields `private Mouse _mouse;` and `private Keyboard _keyboard;` to store the current devices.
+  Assign them once in `Bind(PlayerInventory player)` just after `_font` is set: `_mouse = Mouse.current; _keyboard = Keyboard.current;`.
+  Replace every `Mouse.current` accessed in `Update` → `PositionTooltip` with `_mouse` (e.g. `if (_mouse != null && ...)` and `Vector2 screen = _mouse.position.ReadValue();`).
+  Replace every `Keyboard.current` accessed in `ConsumeEscape` with `_keyboard` (e.g. `if (_keyboard == null || !_keyboard.escapeKey.wasPressedThisFrame) return false;`).
+  Guard the cached fields against null (they will stay null when no device is present, matching existing behaviour).
+  No change to game visuals; the UI continues to respond to mouse movement and Escape key exactly as before, but the per‑frame static property look‑ups are eliminated, reducing GC pressure and tiny CPU overhead.
+- [ ] Add a “Check for obstruction” quick action to Assets/Scripts/World/Fixtures/RollUpShutter.cs that lets the survivor see whether anything is standing where the curtain would come down, without changing any state.
+  Declare a new field `_obstructAct` of type `Action<InteractContext>` and assign it in `Awake()` (e.g., `_obstructAct = CheckObstruction;`).
+  Add an entry in `GetActions` inside the `if (!_open)` block:
+  `into.Add(new InteractAction("Check for obstruction", _obstructAct).Timed(0f, "Checking obstruction", HumanoidActivity.Use));`
+  Implement a private method `CheckObstruction(InteractContext ctx)` that calls the existing `Obstructed()` method and notifies the player:
+  `private void CheckObstruction(InteractContext ctx) => ctx.Notify(Obstructed() ? "Something's in the way of the curtain." : "No obstruction.");`
+  The player should see a text message indicating whether an entity (character, zombie, or the survivor) is under the door when they use this action; all other behaviour and state remain unchanged.
