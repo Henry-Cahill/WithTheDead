@@ -192,6 +192,13 @@ namespace CloneZ
             }
             sb.Upper.Box(new Vector3(3f, 3.2f, 0f), new Vector3(2.8f, 0.15f, 2.8f), ZoneKit.M(ZoneKit.WetWood));
             sb.Roof.Box(new Vector3(3f, 4.8f, 0f), new Vector3(3f, 0.1f, 3f), ZoneKit.M(new Color(0.25f, 0.30f, 0.20f)));
+            // Add subtle snow‑drift detail on the roof edge
+            for (int i = 0; i < 4; i++)
+            {
+                float angle = i * Mathf.PI * 0.5f + ZoneKit.R(sb.Rng, -0.1f, 0.1f);
+                Vector3 pos = new Vector3(Mathf.Cos(angle) * 1.4f, 4.85f, Mathf.Sin(angle) * 1.4f);
+                sb.Solid.Box(pos, new Vector3(0.2f, 0.02f, 0.6f), ZoneKit.M(new Color(0.9f, 0.9f, 0.95f)));
+            }
             // A canvas tent and the fire.
             sb.At(sb.Solid, new Vector3(-3f, 0f, 0f), 0f, m =>
             {

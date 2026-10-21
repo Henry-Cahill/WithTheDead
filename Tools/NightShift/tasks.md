@@ -5253,8 +5253,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   `/// Approximately 45 % of road pieces receive a sidewalk.`
   `/// </summary>`
   `public bool HasSidewalk(long segmentId)`
-- [ ] Add subtle snow‑drift detail to the hunters’ hide roof in Assets/Scripts/World/Zone/ZoneLandmarks.cs, method `HuntersHide(SiteBuilder sb)`
+- [x] Add subtle snow‑drift detail to the hunters’ hide roof in Assets/Scripts/World/Zone/ZoneLandmarks.cs, method `HuntersHide(SiteBuilder sb)`
   After the existing roof box line `sb.Roof.Box(new Vector3(3f, 4.8f, 0f), new Vector3(3f, 0.1f, 3f), ZoneKit.M(new Color(0.25f, 0.30f, 0.20f)));` insert a loop that creates four small flat boxes to look like compact snow piles on the roof edge.
   Use the deterministic RNG already available (`sb.Rng`) for a slight angular jitter, e.g.:
   `for (int i = 0; i < 4; i++) { float angle = i * Mathf.PI * 0.5f + ZoneKit.R(sb.Rng, -0.1f, 0.1f); Vector3 pos = new Vector3(Mathf.Cos(angle) * 1.4f, 4.85f, Mathf.Sin(angle) * 1.4f); sb.Solid.Box(pos, new Vector3(0.2f, 0.02f, 0.6f), ZoneKit.M(new Color(0.9f, 0.9f, 0.95f))); }`
   Each box is ~0.2 m wide, 0.02 m tall, 0.6 m deep and uses a very light off‑white colour to suggest fresh snow. This adds period‑appropriate visual wear without altering colliders or interaction points and stays under the 12‑primitive limit.
+  - 01:07 landed by 0htsserver in 2.2 min: **Changed file**
