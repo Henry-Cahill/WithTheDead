@@ -240,6 +240,11 @@ namespace CloneZ
             }).DisabledIf(paid, "Already paid").DisabledIf(!paid && !permit, "You have no permit"));
             into.Add(new InteractAction("Ask about the Zone", c =>
                 GameEvents.RaiseSubtitle("Warden", CordonRules.PassBought ? "Keep to the road. Stay off the belt after dark." : "No pass, no passage. Off the belt, or we shoot.")));
+                into.Add(new InteractAction("Check checkpoint status", c =>
+                    GameEvents.RaiseSubtitle("Warden", CordonRules.PassBought
+                        ? "You already have a pass for this raid."
+                        : "No pass yet – you need to bribe or show a permit.")));
+
         }
 
         private static void Grant(InteractContext c, string line)

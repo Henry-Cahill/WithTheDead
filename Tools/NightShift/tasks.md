@@ -4544,7 +4544,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Keep the existing `_dirty` logic so external sources still trigger a recompute.
   This eliminates a per‑frame component lookup (and any hidden list allocations), while the player’s visible stats remain unchanged because the set of attached `IStatModSource` components never changes after initialization.
   - 21:25 landed by hts-llm in 3.5 min: Modified **PlayerModifiers.cs**:
-- [ ] Add a “Check checkpoint status” action to `CordonGate.GetActions` (Assets/Scripts/World/Zone/ZoneCordon.cs)
+- [x] Add a “Check checkpoint status” action to `CordonGate.GetActions` (Assets/Scripts/World/Zone/ZoneCordon.cs)
   Insert a new `InteractAction` after the existing “Ask about the Zone” entry.
   The action text should be `"Check checkpoint status"` and its callback should call `GameEvents.RaiseSubtitle("Warden", …)` with a message that depends on `CordonRules.PassBought`.
   Example implementation:
@@ -4553,3 +4553,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `? "You already have a pass for this raid."`
   `: "No pass yet – you need to bribe or show a permit.")));`
   No new UI screens or assets are required; it uses only existing `GameEvents`, `CordonRules`, and `InteractAction`.
+  - 21:27 landed by 1htsserver in 4.3 min: **Changes made**
