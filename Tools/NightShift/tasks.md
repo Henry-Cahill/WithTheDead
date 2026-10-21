@@ -4367,3 +4367,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Implement a private static method `static List<Vector2> RemoveNearDuplicates(List<Vector2> src)` that creates a new list, copies the first point, then for each subsequent point adds it only if `Vector2.Distance(point, lastKept) > EPS`. If the resulting list has fewer than 3 points, return an empty list.
   Replace the final `return cur;` with `return RemoveNearDuplicates(cur);`.
   The player will see buildings with clean, non‑overlapping walls and roofs; tiny slivers that previously caused missing or flickering geometry disappear, while all existing functionality (clipping, winding) stays unchanged.
+- [ ] Add four small metal nail‑head cylinders to the `WeaponRack(RaidMesh m, System.Random r)` builder in Assets/Scripts/World/RaidLayouts.cs to suggest period‑correct mounting nails on the bottom of the wooden frame.
+  Use the existing `boltMat` (`DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f))`).
+  Define `float nailRadius = 0.006f; float nailHeight = 0.012f;`.
+  Create the positions: `Vector3[] nailPos = { new Vector3(-0.95f, 0.02f, -0.1f), new Vector3(-0.95f, 0.02f, 0.1f), new Vector3(0.95f, 0.02f, -0.1f), new Vector3(0.95f, 0.02f, 0.1f) };`.
+  Loop: `foreach (var p in nailPos) m.Cylinder(p, nailRadius, nailHeight, 8, boltMat);`.
+  Insert this code right after the two vertical post boxes (`m.Box(new Vector3(-0.95f, 0.8f, -0.1f)…` and its counterpart) and before the top horizontal beam (`m.Box(new Vector3(0f, 1.3f, -0.08f)…`).
+  No other code changes are required; colliders and interaction points remain unchanged.
