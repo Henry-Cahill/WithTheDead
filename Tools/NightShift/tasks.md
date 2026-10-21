@@ -5798,3 +5798,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(new Vector3(0f, 0.9f + 1.8f + 0.01f, 0f), new Vector3(0.12f, 0.004f, 0.04f), Mt(Brass));`
   Trim size: 0.88 m × 0.02 m × 0.32 m, placed at y = 0.9 + 1.8 = 2.7 m (top of the side posts).
   Plaque size: 0.12 m × 0.004 m × 0.04 m, positioned 0.01 m above the trim, centered on X/Z.
+- [ ] Replace the per‑frame property lookup of the rig’s proportions with the cached field in Assets/Scripts/Characters/HumanoidAnimator.cs
+  In `Write()` change `HumanoidProportions p = _rig.Proportions;` to `HumanoidProportions p = _bound;` (the field already set in `Bind()` and refreshed in `Evaluate` if the rig changes).
+  Remove the now‑redundant local variable `p` from any other method that still uses `_rig.Proportions` (e.g., none currently, but keep the pattern).
+  This eliminates a property accessor call each frame, ensuring the same `HumanoidProportions` instance is reused without affecting the animation – the visual pose and all gameplay behaviour remain unchanged.
