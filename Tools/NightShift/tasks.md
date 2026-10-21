@@ -4988,3 +4988,12 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] Append five new sentences to the `"fence"` entry in the `Lines` dictionary in Assets/Scripts/Hub/HubNpc.cs
   Use the existing style (short, gritty statements) as shown by `"No receipts, no questions."` and cover themes of contraband, winter‑blocked routes, rumours about the Zone, bartering spare parts, and the ever‑watchful Wardens.
   Change the initializer for `"fence"` to:
+- [ ] Add modest concrete sidewalks beside every street in Assets/Scripts/World/Map/KentuckyMap.cs
+  Introduce a new constant* `private const float SidewalkWidth = 1.5f;` *in the KentuckyMap class.
+  Add a private static method* `private static void BuildSidewalks(Site site)` *that iterates* `foreach (Street s in site.Area.Streets)` *and for each line segment builds two thin boxes (one on each side of the road) using the existing overhead mesh helper:
+  `Vector2 a = s.Pts[i]; Vector2 b = s.Pts[i+1];`
+  `Vector2 dir = (b - a).normalized;`
+  `Vector2 normal = new Vector2(-dir.y, dir.x);`
+  `float halfRoad = s.Data.width * 0.5f;`
+  `// left sidewalk`
+  `Vector2 leftMid = (a + b) * 0.5f + normal * (halfRoad + SidewalkWidth * 0.5f);`
