@@ -94,6 +94,21 @@ namespace CloneZ
                 return (hash % 100) < 45; // 45% chance
             }
         }
+
+        /// <summary>
+        /// Determines if a building should receive a modest front porch (low railing and steps).
+        /// Deterministic based on the build ID and the building ID.
+        /// Roughly 40 % of buildings get a porch, giving a hand‑built aesthetic for a 1993 rural Kentucky home.
+        /// </summary>
+        public bool HasPorch(long buildingId)
+        {
+            unchecked
+            {
+                uint hash = (uint)buildingId ^ 0x3c6ef372u;
+                hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
+                return (hash % 100) < 40; // 40% chance
+            }
+        }
         /// <summary>The data format this game reads (worldbuild.py's FORMAT).</summary>
         public const int Format = 1;
 
