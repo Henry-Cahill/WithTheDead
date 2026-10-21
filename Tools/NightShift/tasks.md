@@ -4929,7 +4929,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Leave the calculation `pos = chest.position + look * BodycamPosOffset;` otherwise unchanged.
   The visual result is identical – the bodycam stays at the same relative chest position – but the allocation of a new `Vector3` each frame is eliminated, reducing GC pressure during shoulder and body‑cam view updates.
   - 23:29 landed by 1htsserver in 2.1 min: **Changed files**
-- [ ] In Assets/Scripts/World/Fixtures/BasinFixture.cs: Add a “Rinse your mouth” timed action next to the existing “Brush your teeth” entry in `BasinFixture.GetActions`, copy the brush‑action setup and point it to a new `Rinse` handler; then implement `private void Rinse(InteractContext ctx)` that consumes the same water amount as brushing (`CloneZConfig.BasinBrushWater`) and notifies the player with a short line that varies on whether water was available.
+- [x] In Assets/Scripts/World/Fixtures/BasinFixture.cs: Add a “Rinse your mouth” timed action next to the existing “Brush your teeth” entry in `BasinFixture.GetActions`, copy the brush‑action setup and point it to a new `Rinse` handler; then implement `private void Rinse(InteractContext ctx)` that consumes the same water amount as brushing (`CloneZConfig.BasinBrushWater`) and notifies the player with a short line that varies on whether water was available.
   In `GetActions`, after the `brush` block add:
   `var rinse = new InteractAction("Rinse your mouth", Rinse)`
   `.Timed(CloneZConfig.BasinBrushSeconds / 2f, "Rinsing", HumanoidActivity.Use)`
@@ -4938,6 +4938,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `into.Add(rinse);`
   Below the existing `Brush` method, add:
   `private void Rinse(InteractContext ctx)`
+  - 23:34 landed by hts-llm in 6.7 min: **Changes Made**
 - [x] Append six new entries to the `CivicPatienceLines` array in Assets/Scripts/World/RaidBuilding.Civic.cs (class `RaidBuilding`, field `CivicPatienceLines`) so the player has more varied text while playing patience; copy the tone of the existing line `"You lay out a game of patience with the dog‑eared deck left on the table. It comes out on the very last card."` and cover the themes of winter boredom, fleeting memories of home, the low hum of an aging heater, a stray cat perched on the windowsill, the crackle of a dying radio, and the steady rhythm of snowfall outside.
   Use the current array syntax and insert the new strings before the closing brace and semicolon.
   Ensure each new entry is a single full sentence in quotes, ending with a period.
