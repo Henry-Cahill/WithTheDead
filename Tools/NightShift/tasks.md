@@ -5732,7 +5732,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `&& a.Upgrades.Count == 0 && b.Upgrades.Count == 0`
   `&& string.IsNullOrEmpty(a.Note) && string.IsNullOrEmpty(b.Note)`
   - 03:35 landed by 1htsserver in 1.2 min: Changed **ItemExtra.CanStack** in `Assets/Scripts/Items/ItemExtra.cs` to also compare `Dirt` and `AmmoChoice` when determining if two item e
-- [ ] Add a thin inner‑face wooden trim strip to each sash in `Assets/Scripts/World/StarterHome.Windows.cs` → `WindowSash` method, after the bead‑trim boxes (`// bottom rail bead` line), to give the sash a subtle period‑correct finish.
+- [x] Add a thin inner‑face wooden trim strip to each sash in `Assets/Scripts/World/StarterHome.Windows.cs` → `WindowSash` method, after the bead‑trim boxes (`// bottom rail bead` line), to give the sash a subtle period‑correct finish.
+  - 03:37 landed by 0htsserver in 1.7 min: **Changed**
 - [ ] Add a “Listen to the machine” action to Assets/Scripts/World/Fixtures/RaidHomeWasher.cs that reports the washer’s current state (running/spinning or idle) via a notification.
   In `RaidHomeWasher.GetActions` insert `into.Add(new InteractAction("Listen to the machine", Listen));` (e.g., after the “Read the dial” action).
   Create a private method `Listen(InteractContext ctx)` that does:

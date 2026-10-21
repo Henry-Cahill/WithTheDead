@@ -131,6 +131,11 @@ namespace CloneZ
             m.Box(f.P(f.Mid, y1 - topRail * 0.5f, across), f.Size(w - 0.09f, beadThickness, lower ? SashDepth + 0.005f : SashDepth), bead);
             // bottom rail bead
             m.Box(f.P(f.Mid, y0 + bottomRail * 0.5f, across), f.Size(w - 0.09f, beadThickness, lower ? SashDepth : SashDepth + 0.005f), bead);
+            // thin inner‑face wooden trim strip (period‑correct finish)
+            float trimThickness = 0.002f;
+            // position on inner face of sash
+            float innerOffset = across + roomSide * (SashDepth * 0.5f + trimThickness * 0.5f);
+            m.Box(f.P(f.Mid, (y0 + y1) * 0.5f, innerOffset), f.Size(w - 0.09f, h, trimThickness), bead);
             Surf brassCap = DecorPalette.Metal(FurnitureBuilder.Brass);
             for (int e = -1; e <= 1; e += 2)
                 m.Box(f.P(f.Mid + e * (w * 0.5f - 0.0225f), y1 - topRail * 0.5f, across), f.Size(0.015f, 0.015f, 0.01f), brassCap);
