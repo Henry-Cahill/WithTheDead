@@ -65,29 +65,32 @@ namespace CloneZ
         }
 
 private void Update()
-{
-    if (_shownRoll != _roll)
     {
-        _shownRoll = Mathf.MoveTowards(_shownRoll, _roll, SwingSpeed * Time.deltaTime);
-        ApplyRoll();
-    }
-    // Dryness check (original behavior)
-    if (Time.time >= _nextCheck)
-    {
-        _nextCheck = Time.time + 1f;
-        if (_dryAt >= 0f && !IsDamp)
+        // Update visual roll interpolation
+        if (_shownRoll != _roll)
         {
-            _dryAt = -1f;
-            ShowLook();
+            _shownRoll = Mathf.MoveTowards(_shownRoll, _roll, SwingSpeed * Time.deltaTime);
+            ApplyRoll();
+        }
+        // Cache Time.time to avoid multiple property lookups per frame
+        float now = Time.time;
+        // Dryness check (original behavior)
+        if (now >= _nextCheck)
+        {
+            _nextCheck = now + 1f;
+            if (_dryAt >= 0f && !IsDamp)
+            {
+                _dryAt = -1f;
+                ShowLook();
+            }
+        }
+        // Bathroom‑side availability check (cached)
+        if (now >= _nextAvailCheck)
+        {
+            _nextAvailCheck = now + 1f;
+            _cachedAvailable = BathroomFixtures.SurvivorInFront(_face, _normal);
         }
     }
-    // Cache bathroom-side availability check
-    if (Time.time >= _nextAvailCheck)
-    {
-        _nextAvailCheck = Time.time + 1f;
-        _cachedAvailable = BathroomFixtures.SurvivorInFront(_face, _normal);
-    }
-}
 
         private void ApplyRoll()
         {
