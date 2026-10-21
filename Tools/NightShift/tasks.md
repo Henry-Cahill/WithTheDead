@@ -4836,13 +4836,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add a similar null‑check in OnEnable (e.g. `if (_gear == null) _gear = GetComponent<PlayerGear>();`) to handle the rare case the component appears after Awake.
   The player’s gear visuals continue to update correctly; the per‑frame GetComponent call (which allocates a temporary array internally) is eliminated, reducing GC pressure and improving frame‑time performance.
   - 23:02 landed by hts-llm in 2.4 min: **Changes made**
-- [ ] In Assets/Scripts/World/Fixtures/LightSwitch.cs: Add a “Check power” action to `LightSwitch.GetActions` that tells the survivor whether the house’s electricity is currently on, using the existing `PowerGrid.HousePowered` flag and `LightingFixtures.NothingHappens()` for the off case.
+- [x] In Assets/Scripts/World/Fixtures/LightSwitch.cs: Add a “Check power” action to `LightSwitch.GetActions` that tells the survivor whether the house’s electricity is currently on, using the existing `PowerGrid.HousePowered` flag and `LightingFixtures.NothingHappens()` for the off case.
   Insert `into.Add(new InteractAction("Check power", c => CheckPower(c)));` right after the “Toggle all lights …” entry.
   Add a private method `CheckPower(InteractContext ctx)` inside `LightSwitch` that does: `ctx.Notify(PowerGrid.HousePowered ? "The house still has power." : LightingFixtures.NothingHappens());`.
   No existing fields, constants, or UI screens are changed; the new action reuses `PowerGrid`, `LightingFixtures`, and `InteractContext`.
   This provides immediate feedback when the grid is down without affecting toggle state.
   Place the new method after `Inspect` (or before `CaptureState`) to keep class layout tidy.
   All current behavior of flipping, toggling, and inspecting remains unchanged.
+  - 23:05 landed by 1htsserver in 4 min: **Changed file**
 - [ ] Edit Assets/Scripts/World/Map/KentuckyMap.Ground.cs, method BuildStreets, to give asphalt‑road overlays a subtle per‑segment colour variation instead of the same flat colour everywhere.
   In the `if (surf.Mat == DecorMaterials.Asphalt.Mat)` block, replace the line
   `var varSurf = DecorPalette.Matte(new Color(0.68f, 0.68f, 0.66f));`
