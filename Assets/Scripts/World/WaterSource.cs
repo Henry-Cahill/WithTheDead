@@ -221,7 +221,20 @@ namespace CloneZ
             Vector3 labelPos = new Vector3(Mathf.Sin(labelAngle) * (r + 0.012f), 0.6f, Mathf.Cos(labelAngle) * (r + 0.012f));
             m.Box(labelPos, new Vector3(0.08f, 0.02f, 0.001f), DecorPalette.Matte(new Color(0.78f, 0.71f, 0.55f)));
             m.Cylinder(new Vector3(0f, 0.02f, 0f), r - wall, 0.004f, 16, DecorPalette.Matte(plastic * 0.35f));
-            // A brass spigot low on the side.
+            // wooden barrel stand – two short legs and a cross‑beam
+            // left leg
+            m.Cylinder(new Vector3(-0.15f, -0.02f, -0.15f), 0.015f, 0.07f, 8, DecorPalette.Matte(new Color(0.45f, 0.35f, 0.25f)));
+            // right leg
+            m.Cylinder(new Vector3( 0.15f, -0.02f, -0.15f), 0.015f, 0.07f, 8, DecorPalette.Matte(new Color(0.45f, 0.35f, 0.25f)));
+            // cross‑beam connecting legs
+            m.Box(new Vector3(0f, 0.03f, -0.15f), new Vector3(0.34f, 0.012f, 0.024f), DecorPalette.Matte(new Color(0.45f, 0.35f, 0.25f)));
+
+            // spigot base (short cylinder protruding from barrel side)
+            m.Cylinder(new Vector3(0f, 0.12f, r + 0.03f), 0.010f, 0.04f, 8, DecorPalette.Metal(FurnitureBuilder.Brass));
+            // valve knob (small box on front of spigot)
+            m.Box(new Vector3(0f, 0.13f, r + 0.045f), new Vector3(0.014f, 0.008f, 0.004f), DecorPalette.Metal(FurnitureBuilder.Brass));
+            // hinge pin (small cylinder)
+            m.Cylinder(new Vector3(0f, 0.135f, r + 0.038f), 0.004f, 0.006f, 6, DecorPalette.Metal(FurnitureBuilder.Brass));
             // Brass rivet heads around the barrel mid‑section – period‑appropriate weathering
             var rivetRand = new System.Random(1993);
             int rivetCount = rivetRand.Next(4, 7); // 4–6 inclusive
@@ -232,6 +245,10 @@ namespace CloneZ
                     0.008f, 0.004f, 8, DecorPalette.Metal(FurnitureBuilder.Brass));
             }
             // Add small rust‑stained matte patches for weathering
+            // gauge stick (thin wood)
+            m.Cylinder(new Vector3(0f, h * 0.65f, r - 0.02f), 0.006f, 0.12f, 8, DecorPalette.Matte(new Color(0.48f, 0.38f, 0.28f)));
+            // metal clip near top of stick
+            m.Box(new Vector3(0f, h * 0.71f, r - 0.02f), new Vector3(0.018f, 0.006f, 0.004f), DecorPalette.Metal(FurnitureBuilder.Brass));
             int patchCount = strapRand.Next(2, 5);
             for (int i = 0; i < patchCount; i++)
             {
@@ -242,12 +259,23 @@ namespace CloneZ
             }
             m.CylinderX(new Vector3(0f, 0.16f, r + 0.03f), 0.022f, 0.08f, 8, DecorPalette.Metal(FurnitureBuilder.Brass), 90f);
             m.Box(new Vector3(0f, 0.2f, r + 0.07f), new Vector3(0.03f, 0.05f, 0.03f), DecorPalette.Metal(FurnitureBuilder.Brass));
+            // rusted chain loop (torus approximated by thin box)
+            m.Box(new Vector3(0f, h - 0.02f, 0f), new Vector3(r * 0.6f, 0.008f, 0.008f), DecorPalette.Matte(new Color(0.4f, 0.18f, 0.12f)));
             // Subtle rust‑stained metal cap on the barrel's lip for a makeshift handle feel.
+
             Rim(m, r - wall, r + wall + 0.01f, h, 16,
                 DecorPalette.Metal(new Color(0.5f, 0.25f, 0.1f)));
             m.ResetFrame();
             m.ApplyTo(gameObject, position);
             Solid(new Vector3(0f, h * 0.5f, 0f), new Vector3(r * 2f, h, r * 2f));
+            // wooden barrel stand – two short legs and a cross‑beam
+            // left leg
+            m.Cylinder(new Vector3(-0.15f, -0.02f, -0.15f), 0.015f, 0.07f, 8, DecorPalette.Matte(new Color(0.45f, 0.35f, 0.25f)));
+            // right leg
+            m.Cylinder(new Vector3( 0.15f, -0.02f, -0.15f), 0.015f, 0.07f, 8, DecorPalette.Matte(new Color(0.45f, 0.35f, 0.25f)));
+            // cross‑beam connecting legs
+            m.Box(new Vector3(0f, 0.03f, -0.15f), new Vector3(0.34f, 0.012f, 0.024f), DecorPalette.Matte(new Color(0.45f, 0.35f, 0.25f)));
+
 
             var water = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             water.name = "Water";
@@ -333,12 +361,12 @@ namespace CloneZ
             float h = Mathf.Lerp(0.04f, 0.88f, level);           // depth of water standing in the barrel
             _waterFill.localScale = new Vector3(0.62f, h * 0.5f, 0.62f);
             _waterFill.position = transform.position + new Vector3(0f, 0.025f + h * 0.5f, 0f);
-            // When the barrel is essentially full, brighten the water colour to signal the player.
+            // Highlight gauge stick when barrel is essentially full
             if (level >= 0.99f)
             {
                 var rend = _waterFill.GetComponent<Renderer>();
                 if (rend != null)
-                    rend.sharedMaterial = CloneZUtil.Mat(new Color(0.45f, 0.7f, 0.75f), smoothness: 0.8f);
+                    rend.sharedMaterial = CloneZUtil.Mat(new Color(0.55f, 0.75f, 0.65f), smoothness: 0.8f);
             }
         }
         #endregion
