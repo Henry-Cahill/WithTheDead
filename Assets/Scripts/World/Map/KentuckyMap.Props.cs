@@ -61,10 +61,11 @@ namespace CloneZ
                 bool lit = litCount < LitPoles && lean == 0f && rng.NextDouble() < 0.8;
                 Vector3 at = To3(poles[i].at, 0f);
                 RaidMesh m = site.Town.Out.Solid(at);
-                m.SetFrame(at, poles[i].yaw);
+                float poleYaw = poles[i].yaw + R(rng, -5f, 5f);
+                m.SetFrame(at, poleYaw);
                 Vector3 lamp = m.ToMeshSpace(DecorProps.StreetLight(m, rng, lit, lean));
                 m.ResetFrame();
-                site.Town.PropCollider(at + Vector3.up * 2.75f, new Vector3(0.3f, 5.5f, 0.3f), poles[i].yaw);
+                site.Town.PropCollider(at + Vector3.up * 2.75f, new Vector3(0.3f, 5.5f, 0.3f), poleYaw);
                 if (lit) site.Town.Light(site.Town.World, lamp, new Color(1f, 0.72f, 0.42f), 13f, 2.2f, rng.NextDouble() < 0.25, i < 3);
                 if (lit) litCount++;
             }
