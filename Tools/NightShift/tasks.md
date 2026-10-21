@@ -5781,12 +5781,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `if (Chance(rng, 0.8f)) m.Cylinder(new Vector3(-0.35f, 0.94f, -0.27f), 0.006f, 0.012f, 8, chrome, Quaternion.Euler(90f,0f,0f));`
   `if (Chance(rng, 0.8f)) m.Cylinder(new Vector3(0.35f, 0.94f, -0.27f), 0.006f, 0.012f, 8, chrome, Quaternion.Euler(90f,0f,0f));`
   Each cylinder is 0.006 m radius, 0.012 m tall, using the existing `chrome` surface; the `Chance` calls give per‑screw variation while keeping the total primitive count ≤ 12.
-- [ ] Fix invisible slider handles in `Assets/Scripts/UI/UIKit.cs` by giving the handle a non‑zero height.
+- [x] Fix invisible slider handles in `Assets/Scripts/UI/UIKit.cs` by giving the handle a non‑zero height.
   In `UIKit.Slider` the line
   `handle.sizeDelta = new Vector2(12f, 0f);` creates a rect with zero height, so the handle image never renders and the player cannot see or drag the slider.
   Change it to a square size, e.g.:
   `handle.sizeDelta = new Vector2(12f, 12f);`
   Now the slider’s handle is visible and draggable, letting the player adjust settings as intended while preserving all other UI styling.
+  - 03:51 landed by 1htsserver in 1.1 min: **Summary**
 - [ ] Add a thin wooden top‑trim and, with 40 % chance, a small brass plaque to the bookshelf built in `Assets/Scripts/World/FurnitureBuilder.Home.cs` → `Bookshelf` method
   Insert after the back‑panel line
   `// thin wooden strip capping the top edge (adds a worn‑look)`
