@@ -85,6 +85,11 @@ namespace CloneZ
                 {
 // Main road surface
                      Ribbon(site.Town.Out, piece, width, StreetY, surf);
+                     // Add thin icy crust overlay for footways/paths (trodden snow surfaces)
+                     if (surf.Mat == TroddenSnow.Mat)
+                     {
+                         Ribbon(site.Town.Out, piece, width * 0.96f, StreetY + 0.001f, Ice);
+                     }
                      // Add subtle brighter overlay for asphalt roads
                      if (surf.Mat == DecorMaterials.Asphalt.Mat)
                      {
