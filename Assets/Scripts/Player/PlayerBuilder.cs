@@ -265,7 +265,8 @@ private readonly Collider[] _overlapBuf = new Collider[16];
                 // pieces often sit right next to you).
                 Vector2 sp = ViewState.MouseLook ? new Vector2(Screen.width * 0.5f, Screen.height * 0.5f) : mouse.position.ReadValue();
                 Ray ray = cam.ScreenPointToRay(sp);
-                int n = Physics.RaycastNonAlloc(ray, _rayBuf, 200f, 1 << 0, QueryTriggerInteraction.Ignore);
+                int mask = Physics.DefaultRaycastLayers & ~(1 << CloneZConfig.IgnoreRaycastLayer);
+int n = Physics.RaycastNonAlloc(ray, _rayBuf, 200f, mask, QueryTriggerInteraction.Ignore);
                 float reachSqr = reach * reach;
                 float nearest = float.MaxValue, nearestHidden = float.MaxValue;
                 for (int i = 0; i < n; i++)
@@ -758,7 +759,13 @@ private readonly Collider[] _overlapBuf = new Collider[16];
         }
 
         // True once the target being dismantled is gone (e.g. a zombie smashed the wall mid-swing).
-        private bool DemolishTargetLost() => (_buildDemolishTarget as MonoBehaviour) == null;
+        private bool DemolishTargetLost()
+        {
+            // Target gone if the reference is null or the underlying UnityEngine.Object has been destroyed.
+            if (_buildDemolishTarget == null) return true;
+            if (_buildDemolishTarget is UnityEngine.Object u && u == null) return true;
+            return false;
+        }
 
         private void CancelBuild()
         {
@@ -766,6 +773,10 @@ private readonly Collider[] _overlapBuf = new Collider[16];
             BuildProgress = 0f;
             _buildReinforce = null;
             _buildDemolishTarget = null;
+            HideGhost(); // remove lingering ghost preview
+            Prompt = ""; // clear UI prompt
+            _promptDirty = true; // force prompt recompute
+            BuildLabel = ""; // clear label
         }
         #endregion
 
@@ -861,6 +872,7 @@ private readonly Collider[] _overlapBuf = new Collider[16];
         {
             if (BuildMode) { BuildMode = false; UIState.BuildMode = false; }
             HideGhost();
+            _promptDirty = true; // force prompt recompute on next enable
         }
         #endregion
     }

@@ -44,6 +44,7 @@ namespace CloneZ
         private Transform _target, _hint;
         // Cached frequently accessed transforms to avoid per‑frame bone lookups
         private Transform _handL, _chest, _gripR;
+        private Vector3 _palmOffset;
         private PlayableGraph _graph;
         private NativeArray<TransformStreamHandle> _stream;
         private NativeArray<TransformSceneHandle> _scene;
@@ -85,6 +86,7 @@ namespace CloneZ
                 _handL = _rig.Bone(HumanBone.HandL);
                 _chest = _rig.Bone(HumanBone.Chest);
                 _gripR = _rig.GripR;
+                _palmOffset = new Vector3(-HumanoidRig.GripOffset.x, HumanoidRig.GripOffset.y, HumanoidRig.GripOffset.z) * _rig.Proportions.Hand;
                 _left.data.target = _target;
                 _left.data.hint = _hint;
                 _left.data.targetPositionWeight = 1f;
@@ -132,7 +134,7 @@ namespace CloneZ
             // Where the left wrist must be for its palm to close on the handguard.
             Transform handL = _handL;
             Vector3 support = _gripR.TransformPoint(_rig.HeldSupport);
-            Vector3 palm = new Vector3(-HumanoidRig.GripOffset.x, HumanoidRig.GripOffset.y, HumanoidRig.GripOffset.z) * _rig.Proportions.Hand;
+            Vector3 palm = _palmOffset;
             _target.SetPositionAndRotation(support - handL.rotation * palm, handL.rotation);
 
             // The elbow points down and out, under the gun.

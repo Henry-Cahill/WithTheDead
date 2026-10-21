@@ -58,7 +58,7 @@ namespace CloneZ
             {
                 BuildGround(site);
                 BuildWaterAndLots(site);
-                BuildStreets(site);
+                BuildStreets(site, build);
                 BuildSidewalks(site);
                 BuildLines(site);
                 BuildBuildings(site);

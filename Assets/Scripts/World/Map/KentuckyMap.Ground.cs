@@ -103,7 +103,7 @@ if (water) {
         }
         }
 
-        private static void BuildStreets(Site site)
+        private static void BuildStreets(Site site, MapBuild build)
         {
             float half = site.Half;
             var square = Rect.MinMaxRect(-half, -half, half, half);
@@ -158,7 +158,8 @@ if (water) {
                             StreetLampHelper.PlaceLamp(site.Town.Out, site, lampPos, yaw);
                         }
                     }
-                    site.TakeLine(piece, width * 0.5f + 0.3f);
+                    RoadMarkingsBuilder.BuildForStreet(site, s, build);
+                site.TakeLine(piece, width * 0.5f + 0.3f);
                 }
                 // The road out of town carries on past the edge, as scenery.
                 if (road)

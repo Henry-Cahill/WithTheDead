@@ -13,6 +13,8 @@ namespace CloneZ
         private const int MaxCars = 70;
         private const int MaxTrees = 1200;
         private const int MaxSigns = 30;
+        // Upper bound for litter/ trash‑bag props placed in park areas.
+        private const int MaxParkProps = 200;
 
         private static readonly Color[] CarPaints =
         {
@@ -26,8 +28,55 @@ namespace CloneZ
         private static bool TownStreet(string kind) => kind == "primary" || kind == "secondary" || kind == "tertiary"
             || kind == "residential" || kind == "unclassified" || kind == "living_street";
 
-        // A pole every 34 m on alternate sides of the town's streets, its arm over the road. The ones nearest the
-        // centre still burn sodium-orange; the rest went dark with the grid.
+        // Place trash‑bags and litter in every park patch, using free‑space checks and random yaw.
+        private static void BuildParkProps(Site site)
+        {
+            var rng = new System.Random(site.Town.Rng.Next());
+            int placed = 0;
+            foreach (Patch p in site.Area.Areas)
+            {
+                if (p.Data.kind != "park") continue;
+                // Clip the park polygon to the playable square.
+                var half = site.Half;
+                var square = Rect.MinMaxRect(-half, -half, half, half);
+                List<Vector2> inside = MapGeometry.ClipPolygon(p.Pts, square);
+                if (inside.Count < 3) continue;
+                // Bounding box of the clipped polygon.
+                float x0 = Min(inside, true), x1 = Max(inside, true);
+                float z0 = Min(inside, false), z1 = Max(inside, false);
+                // Try to plant up to a few props per park, bounded by the global limit.
+                int want = Mathf.Min(5, MaxParkProps - placed);
+                for (int i = 0, tries = 0; i < want && tries < want * 6; ++tries)
+                {
+                    var at = new Vector2(R(rng, x0, x1), R(rng, z0, z1));
+                    if (!MapGeometry.Contains(inside, at) || !site.Free(at, 0.7f)) continue;
+                    float yaw = (float)rng.NextDouble() * 360f;
+                    Vector3 at3 = To3(at, 0f);
+                    RaidMesh m = site.Town.Out.Solid(at3);
+                    m.SetFrame(at3, yaw);
+                    // Randomly pick trash bag or litter.
+                    if (rng.NextDouble() < 0.5)
+                    {
+                        // Trash bag – uses the bag’s own geometry; offset is zero because the frame is already at the spot.
+                        DecorProps.TrashBag(m, rng, Vector3.zero);
+                    }
+                    else
+                    {
+                        // Litter – small bits of trash scattered on the ground.
+                        DecorProps.Litter(m, rng, Vector3.zero, true);
+                    }
+                    m.ResetFrame();
+                    // Small collider for the prop so the player can bump into it.
+                    site.Town.PropCollider(at3 + Vector3.up * 0.25f,
+                        new Vector3(0.4f, 0.4f, 0.4f), yaw);
+                    site.Take(at, 0.7f);
+                    placed++;
+                    i++;
+                }
+                if (placed >= MaxParkProps) break;
+            }
+        }
+
         private static void BuildStreetLights(Site site)
         {
             var poles = new List<(Vector2 at, float yaw)>();
@@ -71,7 +120,15 @@ namespace CloneZ
             }
         }
 
-        // Cars left along the kerb of residential and service streets; now and then one stopped askew in the road.
+        // Build all map props after points (lights, cars, trees, etc.).
+        private static void BuildAllProps(Site site)
+        {
+            BuildStreetLights(site);
+            BuildParkedCars(site);
+            BuildTrees(site);
+            BuildPoints(site);
+            // park props added by BuildParkProps inside BuildPoints
+        }
         private static void BuildParkedCars(Site site)
         {
             var rng = new System.Random(site.Town.Rng.Next());
@@ -217,6 +274,8 @@ namespace CloneZ
                 site.Town.PropCollider(spot3 + Vector3.up * 1.1f, new Vector3(2.4f, 2.2f, 0.3f), yaw);
                 site.Take(spot, 1.4f);
                 signs++;
+                // Add scattered park litter (trash bags and litter) after processing all points.
+                BuildParkProps(site);
             }
         }
 

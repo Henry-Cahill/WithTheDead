@@ -34,5 +34,12 @@ namespace CloneZ
 
         /// <summary>"The power's out" → "the power's out" (for the middle of a sentence).</summary>
         public static string Lower(string s) => string.IsNullOrEmpty(s) ? s : char.ToLowerInvariant(s[0]) + s.Substring(1);
+
+        /// <summary>Returns a random household‑tidy flavor line defined in LivingReading.</summary>
+        public static string RandomTidyingMessage()
+        {
+            // Forward to LivingReading’s helper; this keeps the source of truth in one place.
+            return LivingReading.NextTidyingLine();
+        }
     }
 }

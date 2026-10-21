@@ -170,6 +170,17 @@ public static Drone Create(DroneKind kind, Vector3 at, float yaw, bool grenade, 
             return true;
         }
 
+        /// <summary>Recover a mounted grenade from this drone and return it to the player’s inventory.</summary>
+        public void RecoverGrenade(Inventory inv)
+        {
+            if (!HasGrenade) return;
+            HasGrenade = false;
+            if (_payload != null) Destroy(_payload.gameObject);
+            ItemDef g = ItemDatabase.Get("grenade");
+            if (g != null) inv.Add(g, 1, enforceWeight: false);
+            GameEvents.RaiseToast("Grenade recovered from the drone.");
+        }
+
         /// <summary>Handle incoming damage, delegating to network or local processing.</summary>
 public void TakeDamage(in DamageInfo info)
         {
@@ -260,6 +271,10 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
                 if (d.HasGrenade) msg += ", grenade armed";
                 GameEvents.RaiseToast(msg);
             }));
+            into.Add(new InteractAction("Detach grenade", c => {
+                var d = _d;
+                if (d != null) d.RecoverGrenade(c.Inventory.Inventory);
+            }).DisabledIf(_d == null || !_d.HasGrenade, "No grenade aboard"));
         }
     }
 

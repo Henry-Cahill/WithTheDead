@@ -257,6 +257,8 @@ namespace CloneZ
         private static void CoolingTower(SiteBuilder sb)
         {
             const int sides = 20;
+            // Rust‑tinted metal colour for hinges and door handle
+            Color rustMetal = new Color(0.5f, 0.3f, 0.1f);
             Color conc = new Color(0.58f, 0.57f, 0.54f);
             for (int ring = 0; ring < 6; ring++)
             {
@@ -274,19 +276,64 @@ namespace CloneZ
                     if (ring == 0) sb.Collider(c, new Vector3(rad * 2f * Mathf.PI / sides + 0.1f, 4f, 0.5f), yaw);
                 }
             }
+                        // Record the centre points of the two doorways (ring 0, sides 0 and 10)
+            Vector3[] doorCenters = new Vector3[2];
+            int doorIdx = 0;
+            for (int s = 0; s < sides; s++)
+            {
+                if (s == 0 || s == 10)
+                {
+                    float a = (s + 0.5f) / sides * Mathf.PI * 2f;
+                    // ring 0 ⇒ rad≈9 m (same as outer‑ring calculation)
+                    float rad = Mathf.Lerp(9f, 6.2f, Mathf.Sin(0f * Mathf.PI * 0.75f));
+                    Vector3 c = new Vector3(Mathf.Cos(a) * rad, 2f, Mathf.Sin(a) * rad);
+                    doorCenters[doorIdx++] = c;
+                }
+            }
+            // Left and right vertical studs for each doorway
+            foreach (Vector3 dc in doorCenters)
+            {
+                // left stud
+                sb.Solid.Box(dc + new Vector3(-0.25f, 1.8f, 0f), new Vector3(0.12f, 3.6f, 0.12f), ZoneKit.M(ZoneKit.V(conc, sb.Rng, 0.04f)));
+                // right stud
+                sb.Solid.Box(dc + new Vector3( 0.25f, 1.8f, 0f), new Vector3(0.12f, 3.6f, 0.12f), ZoneKit.M(ZoneKit.V(conc, sb.Rng, 0.04f)));
+            }
+            // Top lintel for each doorway
+            foreach (Vector3 dc in doorCenters)
+            {
+                sb.Solid.Box(dc + new Vector3(0f, 3.6f, 0f), new Vector3(0.6f, 0.2f, 0.8f), ZoneKit.M(ZoneKit.V(conc, sb.Rng, 0.04f)));
+            }
+                // Thin steel door panel (rust‑tinted metal)
+            foreach (Vector3 dc in doorCenters)
+            {
+                sb.Solid.Box(dc + new Vector3(0f, 1.8f, 0f), new Vector3(0.4f, 2.8f, 0.02f), ZoneKit.M(ZoneKit.V(rustMetal, sb.Rng, 0.02f)));
+            }
+            // Hinges on left side of each door
+            foreach (Vector3 dc in doorCenters)
+            {
+                Vector3 hingePos = dc + new Vector3(-0.25f + 0.015f, 0.15f, 0f);
+                sb.Solid.CylinderX(hingePos, 0.015f, 0.05f, 8, ZoneKit.M(new Color(0.6f, 0.6f, 0.6f)), 0f);
+                hingePos.y += 0.8f;
+                sb.Solid.CylinderX(hingePos, 0.015f, 0.05f, 8, ZoneKit.M(new Color(0.6f, 0.6f, 0.6f)), 0f);
+            }
+            // Rusted handle on right side of each door
+            foreach (Vector3 dc in doorCenters)
+            {
+                float yawJitter = (float)sb.Rng.NextDouble() * 10f - 5f;
+                Vector3 handlePos = dc + new Vector3(0.22f, 1.8f, 0f);
+                sb.Solid.CylinderX(handlePos, 0.02f, 0.07f, 8, ZoneKit.M(rustMetal), yawJitter);
+            }
             // Small rusted maintenance plates on the outer concrete shell
             for (int i = 0; i < 8; i++)
             {
                 float angle = i * Mathf.PI * 0.25f; // 45° steps
-                // Base position on the outer radius of the lowest ring (≈9 m)
                 Vector3 basePos = new Vector3(Mathf.Cos(angle) * 9f, 2f, Mathf.Sin(angle) * 9f);
-                // Apply slight jitter using deterministic RNG
                 Vector3 jitter = new Vector3(ZoneKit.R(sb.Rng, -0.2f, 0.2f), 0f, ZoneKit.R(sb.Rng, -0.2f, 0.2f));
                 Vector3 pos = basePos + jitter;
-                // Rust color (tint of the concrete palette)
                 Color rust = new Color(0.5f, 0.3f, 0.1f);
                 sb.Solid.Box(pos, new Vector3(0.3f, 0.1f, 0.3f), ZoneKit.M(ZoneKit.V(rust, sb.Rng, 0.02f)));
             }
+
             ZoneKit.Plume(sb.Root, sb.W(0f, 23f, 0f), false, 5f, 4f, 3f, new Color(0.92f, 0.92f, 0.9f, 0.45f));
             sb.Storage("Maintenance locker", "lm_tower_locker", new Vector3(0f, 1f, 5.6f), ContainerType.ToolBench, 5);
             sb.Storage("Control cabinet", "lm_tower_cabinet", new Vector3(5.6f, 1f, 0f), ContainerType.Locker, 4);

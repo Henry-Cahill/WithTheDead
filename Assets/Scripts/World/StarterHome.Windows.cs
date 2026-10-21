@@ -40,6 +40,12 @@ namespace CloneZ
             var lower = new RaidMesh();
             WindowSash(lower, f, bottom, meet + 0.02f, inner, true, roomSide);
             lower.Box(f.P(f.Mid, meet + 0.024f, inner), f.Size(0.05f, 0.008f, 0.032f), brass);
+            // exterior stone sill – period‑correct overhang below the window opening
+            float sillDepth = 0.06f;
+            float sillHeight = 0.020f;
+            float sillY = WindowSill - sillHeight * 0.5f;
+            // outer (wall‑side) track already stored in variable 'outer'
+            m.Box(f.P(f.Mid, sillY, outer - sillDepth * 0.5f), f.Size(WindowWidth, sillHeight, sillDepth), DecorMaterials.Concrete);
             FixturePart sash = FixturePart.Slide(root.transform, "LowerSash", lower, f.P(f.Mid, bottom, inner), Vector3.up * SashLift)
                 .WithSpeed(CloneZConfig.WindowSashSeconds);
             Renderer latchShut = WindowLever(sash.transform, "LatchShut", f.P(f.Mid, meet + 0.042f, 0f), f.Size(0.02f, 0.008f, 0.06f), brass);
@@ -116,8 +122,31 @@ namespace CloneZ
             // bottom‑right
             m.Box(f.P(s1 - 0.0225f, y0 + bottomRail * 0.5f, across), f.Size(pegSize, pegSize, SashDepth), frame);
             float glass = h - topRail - bottomRail, gy = y0 + bottomRail + glass * 0.5f;
+            // slight random variation in glass tint for each window
+            float tintFactor = 0.9f + 0.2f * Random.value; // 0.9 – 1.1 range
+            Color glassTint = new Color(SashGlass.r * tintFactor, SashGlass.g * tintFactor, SashGlass.b * tintFactor, SashGlass.a);
             m.Box(f.P(f.Mid, gy, across), f.Size(0.03f, glass, 0.03f), frame);
-            m.Box(f.P(f.Mid, gy, across), f.Size(w - 0.09f, glass, 0.006f), DecorPalette.Glass(SashGlass));
+            m.Box(f.P(f.Mid, gy, across), f.Size(w - 0.09f, glass, 0.006f), DecorPalette.Glass(glassTint));
+            // Add decorative iron grille on the lower sash (period‑correct hardware)
+            if (lower)
+            {
+                Surf iron = DecorPalette.Metal(FurnitureBuilder.Brass);
+                int verticalBars = 3;
+                int horizontalBars = 2;
+                float barThickness = 0.004f;
+                // vertical bars
+                for (int i = 0; i < verticalBars; i++)
+                {
+                    float x = s0 + 0.0225f + (i + 1) * (w - 0.045f) / (verticalBars + 1);
+                    m.Box(f.P(x, gy, across), f.Size(barThickness, glass, 0.006f), iron);
+                }
+                // horizontal bars
+                for (int j = 0; j < horizontalBars; j++)
+                {
+                    float y = y0 + bottomRail + (j + 1) * (glass) / (horizontalBars + 1);
+                    m.Box(f.P(f.Mid, y, across), f.Size(w - 0.09f, barThickness, 0.006f), iron);
+                }
+            }
             // Add period‑correct wooden muntin grid to the glazing
             Surf muntin = DecorPalette.Matte(FurnitureBuilder.Pine);
             // vertical muntin strip (≈3 mm wide, full glass height)
@@ -232,6 +261,10 @@ namespace CloneZ
         {
             var m = new RaidMesh();
             m.Box(centre, size, s);
+            // small brass knob at the end of the lever for tactile detail
+            float knobRadius = 0.008f;
+            Vector3 knobPos = centre + new Vector3(size.x * 0.5f + knobRadius, 0f, 0f);
+            m.CylinderX(knobPos, knobRadius, 0.005f, 8, DecorPalette.Metal(FurnitureBuilder.Brass));
             return EmitWindowPart(m, name, parent, centre);
         }
 

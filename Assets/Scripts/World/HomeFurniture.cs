@@ -226,8 +226,29 @@ namespace CloneZ
                     break;
                 }
                 case HomeFurnitureKind.Dresser:
+                {
                     FurnitureBuilder.Dresser(m, rng, FurnitureBuilder.Walnut);
+                    // three drawer pulls – left/right variation per drawer
+                    for (int i = 0; i < 3; i++)
+                    {
+bool leftSide = rng.Next(2) == 0;
+                        float y = 0.27f + i * 0.22f; // drawer centre heights
+                        float x = leftSide ? -0.18f : 0.18f;
+                        Vector3 pullPos = new Vector3(x, y, 0.45f);
+                        Vector3 pullSize = new Vector3(0.02f, 0.07f, 0.02f);
+                        m.Box(pullPos, pullSize, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
+                    }
+                    // thin metal trim along the top front edge
+                    m.Cylinder(new Vector3(0f, 0.88f, 0.45f), 0.02f, 0.30f, 8,
+                        DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)), Quaternion.identity, 1f, false);
+                    // faint wear scuff – darkened wood patch
+                    bool scuffLeft = rng.Next(2) == 0;
+                    float scuffX = scuffLeft ? -0.10f : 0.10f;
+                    Vector3 scuffPos = new Vector3(scuffX, 0.15f, 0.42f);
+                    Vector3 scuffSize = new Vector3(0.05f, 0.02f, 0.02f);
+                    m.Box(scuffPos, scuffSize, DecorPalette.Matte(new Color(0.55f, 0.48f, 0.38f)));
                     break;
+                }
                 case HomeFurnitureKind.Bookshelf:
                     FurnitureBuilder.Bookshelf(m, rng, FurnitureBuilder.Oak, 1);
                     break;

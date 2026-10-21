@@ -190,13 +190,15 @@ namespace CloneZ
             }
 
             DamageZone(zone, hp, CauseFor(info.Kind, zone));
+            // If the hit killed the survivor, stop further processing – no wounds, no gear damage, no extra HUD flash.
             if (_stats.IsDead) return;
             OpenWounds(info, zone, hp, penetrated);
             if (info.Kind == DamageKind.Bullet || info.Kind == DamageKind.Explosion || info.Kind == DamageKind.Melee) GearCollateral(zone, hp, info.Kind);
             if (_blood != null && (info.Kind == DamageKind.Bullet || info.Kind == DamageKind.Explosion || info.Kind == DamageKind.Shock))
                 _blood.AddShock(hp * (penetrated ? 0.45f : 0.25f));
             _stats.Pain = Mathf.Min(CloneZConfig.PainMax, _stats.Pain + hp * (penetrated ? 0.35f : 0.5f));
-            Hit?.Invoke(zone, hp);
+            // Only fire the hit‑event if the survivor is still alive.
+            if (!_stats.IsDead) Hit?.Invoke(zone, hp);
         }
 
         /// <summary>Radiation dose arriving as damage (the radiation system turns it into a dose).</summary>
@@ -567,6 +569,8 @@ namespace CloneZ
         private readonly Text[] _marks = new Text[BodyZones.Count];
         private readonly bool[] _bleeding = new bool[BodyZones.Count];
         private float _flash;
+        private readonly float[] _hpCache = new float[BodyZones.Count];
+        private readonly Color[] _baseColour = new Color[BodyZones.Count];
 
         public static HudLimbs Create(PlayerLimbs limbs)
         {
@@ -575,7 +579,9 @@ namespace CloneZ
             h._limbs = limbs;
             h._wounds = limbs.GetComponent<PlayerWounds>();
             limbs.Changed += h.RefreshBleedingCache;
+            limbs.Changed += h.RefreshCache;
             h.RefreshBleedingCache();
+            h.RefreshCache();
             // Head, thorax, stomach, arms, legs laid out as a little silhouette.
             h.Part(BodyZone.Head, new Vector2(32f, 124f), new Vector2(20f, 22f));
             h.Part(BodyZone.Thorax, new Vector2(26f, 88f), new Vector2(32f, 34f));
@@ -599,7 +605,22 @@ namespace CloneZ
             _marks[(int)z] = t;
         }
 
-        private void RefreshBleedingCache()
+        private void RefreshCache()
+        {
+            for (int i = 0; i < _parts.Length; i++)
+            {
+                float f = _limbs.Hp01((BodyZone)i);
+                _hpCache[i] = f;
+                Color c = f <= 0f ? new Color(0.08f, 0.08f, 0.08f, 0.9f)
+                    : f > 0.6f ? Color.Lerp(UIKit.Warn, UIKit.Good, (f - 0.6f) / 0.4f)
+                    : Color.Lerp(UIKit.Bad, UIKit.Warn, f / 0.6f);
+                c.a = 0.85f;
+                _baseColour[i] = c;
+                _marks[i].text = _limbs.IsFractured((BodyZone)i) ? "F" : f <= 0f ? "X" : "";
+                // We keep _bleeding unchanged; it is refreshed elsewhere.
+            }
+        }
+                private void RefreshBleedingCache()
         {
             for (int i = 0; i < _bleeding.Length; i++)
             {
@@ -610,7 +631,7 @@ namespace CloneZ
 
         private void OnHit(BodyZone zone, float hp) { _flash = 0.35f; }
 
-        private void OnDestroy() { if (_limbs != null) { _limbs.Hit -= OnHit; _limbs.Changed -= RefreshBleedingCache; } }
+        private void OnDestroy() { if (_limbs != null) { _limbs.Hit -= OnHit; _limbs.Changed -= RefreshBleedingCache; _limbs.Changed -= RefreshCache; } }
 
         private void Update()
         {
@@ -619,17 +640,11 @@ namespace CloneZ
             float pulse = 0.5f + 0.5f * Mathf.Sin(Time.time * 8f);
             for (int i = 0; i < _parts.Length; i++)
             {
-                var z = (BodyZone)i;
-                float f = _limbs.Hp01(z);
-                Color c = f <= 0f ? new Color(0.08f, 0.08f, 0.08f, 0.9f)
-                    : f > 0.6f ? Color.Lerp(UIKit.Warn, UIKit.Good, (f - 0.6f) / 0.4f)
-                    : Color.Lerp(UIKit.Bad, UIKit.Warn, f / 0.6f);
-                c.a = 0.85f;
-                bool bleeding = _bleeding[i];
-                if (bleeding) c = Color.Lerp(c, new Color(0.9f, 0.05f, 0.05f, 0.95f), pulse * 0.6f);
+                Color c = _baseColour[i];
+                if (_bleeding[i]) c = Color.Lerp(c, new Color(0.9f, 0.05f, 0.05f, 0.95f), pulse * 0.6f);
                 if (_flash > 0f) c = Color.Lerp(c, Color.white, _flash);
                 _parts[i].color = c;
-                _marks[i].text = _limbs.IsFractured(z) ? "F" : f <= 0f ? "X" : "";
+                // _marks already set in RefreshCache
             }
         }
     }

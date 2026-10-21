@@ -53,19 +53,26 @@ namespace CloneZ
         private void CheckLevel(InteractContext ctx)
         {
             float fill = Barrel != null ? Barrel.Fill01 : 0f;
+// Added 7 new fill‑level messages (0.65–0.98) to give richer, period‑appropriate feedback.
             string level =
                 fill <= 0.01f ? "Bone dry. It needs a good downpour." :
                 fill < 0.10f ? "A thin film of slush clings to the bottom." :
                 fill < 0.20f ? "Just a shallow pool, enough for a quick sip." :
                 fill < 0.25f ? "Barely a puddle in the bottom." :
-                fill < 0.5f ? "About a quarter full — a drink or two's worth." :
+                fill < 0.50f ? "About a quarter full — a drink or two's worth." :
                 fill < 0.60f ? "Halfway full – the water is dark and still." :
-                fill < 0.65f ? "Subtly fuller – a faint quality hint surfaces." :
+                // ---- new entries start here ----
+                fill < 0.65f ? "The surface shivers, a faint green tinge hinting at algae." :
                 fill < 0.70f ? "A quiet mood settles – the barrel swells with somber water." :
-                fill < 0.75f ? "Roughly half full." :
+                fill < 0.75f ? "Roughly half full, the water feels colder now." :
                 fill < 0.80f ? "Nearly full, the surface ripples with the faint glow of distant snow." :
                 fill < 0.85f ? "A faint scent drifts – the water hints at algae." :
                 fill < 0.90f ? "Most of the way to the brim." :
+                // ---- original tail unchanged ----
+                fill < 0.92f ? "The water shudders, a cold breath stirring the surface." :
+                fill < 0.94f ? "Almost full, the surface glints like frozen glass." :
+                fill < 0.96f ? "The barrel is brimming; a single drop threatens an overflow." :
+                fill < 0.98f ? "The water swells, dark and heavy, ready to spill over." :
                 fill < 0.99f ? "Almost brimming – the barrel gives a quiet warning." :
                 "Brimming — it can't hold another drop.";
             WeatherSystem w = WeatherSystem.Instance;

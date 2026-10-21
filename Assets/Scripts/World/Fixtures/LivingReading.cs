@@ -77,6 +77,12 @@ namespace CloneZ
             "You straighten a tilted family photo, aligning it with the rows of books.",
             "You tighten a loose shelf bracket, preventing a future wobble.",
             "You sweep away a faint cobweb in a corner, the dust scattering in the light.",
+            "You clear the soot‑stained ashtray, a thin layer of charcoal drifting away.",
+            "You straighten a crooked candle holder, setting the wick straight for the next fire.",
+            "You brush the snow‑dust off an old wooden coat rack, exposing the brass hooks.",
+            "You wipe the frost from the windowsill, letting a sliver of daylight slip in.",
+            "You tamp down loose pine needles on the floor, keeping the walk clear for boots.",
+            "You untangle a knot in the kitchen rope, giving the pantry door a smoother swing.",
         };
 
         private static int s_Book = -1, s_Magazine = -1, s_Tidy;
@@ -131,6 +137,15 @@ namespace CloneZ
                 ctx.Notify(Tidying[s_Tidy++ % Tidying.Length]);
             }
             else ctx.Notify("You straighten the books again. They were already straight.");
+        }
+
+        // Return the next tidy line without advancing the cooldown (used by other fixtures).
+        internal static string NextTidyingLine()
+        {
+            // Cycle through Tidying safely using the shared s_Tidy counter.
+            string line = Tidying[s_Tidy % Tidying.Length];
+            s_Tidy = (s_Tidy + 1) % Tidying.Length;
+            return line;
         }
     }
 }
