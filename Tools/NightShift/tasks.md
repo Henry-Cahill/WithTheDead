@@ -5095,11 +5095,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Colour with a slightly darker trim: `DecorPalette.Matte(TrimWhite * 0.8f)`.
   Keep colliders, interaction points, and pivots unchanged; the extra primitive is purely visual and stays within the ≤12‑primitive limit.
   - 00:19 landed by 1htsserver in 1.9 min: **Changed**
-- [ ] Cache the Keyboard lookup in PlayerHydration.Update to avoid per‑frame Keyboard.current calls in Assets/Scripts/Player/PlayerHydration.cs
+- [x] Cache the Keyboard lookup in PlayerHydration.Update to avoid per‑frame Keyboard.current calls in Assets/Scripts/Player/PlayerHydration.cs
   Add a private field `private Keyboard _keyboard;` to the class.
   Assign it once in Awake() (e.g. `_keyboard = Keyboard.current;`).
   Replace the line `Keyboard kb = Keyboard.current;` in Update() with `Keyboard kb = _keyboard;`.
   The player’s ability to press G remains identical; only the internal lookup is cached, reducing a per‑frame static property access.
+  - 00:20 landed by 0htsserver in 1.8 min: Implemented keyboard caching in **PlayerHydration**:
 - [ ] Add a fourth interaction “Tap the plate” to Assets/Scripts/World/Fixtures/OutdoorHouseNumber.cs
   Insert `into.Add(new InteractAction("Tap the plate", Tap));` after the existing `Knock` line in `GetActions`.
   Create a new private method `Tap(InteractContext ctx)` that mirrors `Knock` but uses a distinct notification:
