@@ -5366,7 +5366,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 01:56 landed by 0htsserver in 3.4 min: Added four tiny rivet boxes to the front panel of the chest‑rig in **PlayerGearVisuals.cs** to suggest a worn‑metal fastening. The rivets ar
 - [x] In Assets/Scripts/Rendering/VisionController.cs: Fix VisionController.CanSee so it passes the survivor’s eye position instead of the target point twice, preventing false‑positive visibility checks at night.
   - 02:00 landed by hts-llm in 5.3 min: **Changed file**
-- [ ] In Assets/Scripts/World/RaidMapBuilder.Outdoor.cs: Add tiny rust‑stained metal rivet cylinders to each jersey barrier built in `RaidMapBuilder.Outdoor.Checkpoint` and `RaidMapBuilder.Outdoor.RoadBlock` so the barriers show subtle wear.
+- [x] In Assets/Scripts/World/RaidMapBuilder.Outdoor.cs: Add tiny rust‑stained metal rivet cylinders to each jersey barrier built in `RaidMapBuilder.Outdoor.Checkpoint` and `RaidMapBuilder.Outdoor.RoadBlock` so the barriers show subtle wear.
+  - 02:02 landed by 0htsserver in 5.3 min: **Changes made**
 - [x] Add a “Check channel” action to `Assets/Scripts/World/Fixtures/TvFixture.cs` in the `GetActions(InteractContext ctx, List<InteractAction> into)` method, copying the pattern of the existing “Check volume” entry.
   Insert the line
   `into.Add(new InteractAction("Check channel", ctx => ctx.Notify("Channel: " + (Station != null ? Station.ToString() : "none"))).DisabledIf(!near, TooFar));`

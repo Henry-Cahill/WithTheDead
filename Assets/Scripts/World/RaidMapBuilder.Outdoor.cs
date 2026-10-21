@@ -132,7 +132,16 @@ namespace CloneZ
             for (int s = -1; s <= 1; s += 2)
                 Prop(town, new Vector3(s * 7.6f, 0f, -59.5f), 90f, new Vector3(4f, 0.8f, 0.5f), true, (m, r) => { DecorProps.SandbagWall(m, r, 4f, 5); m.Box(new Vector3(0f, 0.45f, 0.27f), new Vector3(3.8f, 0.02f, 0.04f), DecorPalette.Metal(new Color(0.38f, 0.36f, 0.34f))); float rivetRadius = 0.015f; float rivetHeight = 0.025f; Color rust = new Color(0.45f, 0.38f, 0.33f); m.Cylinder(new Vector3(-1.9f, 0.45f, 0.27f), rivetRadius, rivetHeight, 6, DecorPalette.Metal(rust)); m.Cylinder(new Vector3(1.9f, 0.45f, 0.27f), rivetRadius, rivetHeight, 6, DecorPalette.Metal(rust)); });
             for (int i = -1; i <= 1; i++)
-                Prop(town, new Vector3(i * 3.2f, 0f, -69.6f), 0f, new Vector3(2.6f, 0.9f, 0.6f), true, (m, r) => DecorProps.JerseyBarrier(m, r, 2.6f, true));
+                Prop(town, new Vector3(i * 3.2f, 0f, -69.6f), 0f, new Vector3(2.6f, 0.9f, 0.6f), true, (m, r) => {
+                DecorProps.JerseyBarrier(m, r, 2.6f, true);
+                // Add tiny rust‑stained rivets on the barrier top surface for subtle wear
+                float rivetRadius = 0.015f;
+                float rivetHeight = 0.025f;
+                Color rust = new Color(0.45f, 0.38f, 0.33f);
+                // Position near each end of the barrier, centered on Z
+                m.Cylinder(new Vector3(-1.25f, 0.45f, 0f), rivetRadius, rivetHeight, 6, DecorPalette.Metal(rust));
+                m.Cylinder(new Vector3(1.25f, 0.45f, 0f), rivetRadius, rivetHeight, 6, DecorPalette.Metal(rust));
+            });
             GuardBoothProp(town, new Vector3(9.8f, 0f, -63.5f), 270f);
             Wreck(town, new Vector3(-10.5f, 0f, -57f), 0f, DecorProps.CarKind.ArmyTruck, Color.white);
             Vector3 tower = new Vector3(8.6f, 0f, -54f);
@@ -165,7 +174,16 @@ namespace CloneZ
         private static void RoadBlock(RaidTown town)
         {
             for (int i = -1; i <= 1; i++)
-                Prop(town, new Vector3(i * 3.2f, 0f, 69.6f), 0f, new Vector3(2.6f, 0.9f, 0.6f), true, (m, r) => DecorProps.JerseyBarrier(m, r, 2.6f, false));
+                Prop(town, new Vector3(i * 3.2f, 0f, 69.6f), 0f, new Vector3(2.6f, 0.9f, 0.6f), true, (m, r) => {
+                DecorProps.JerseyBarrier(m, r, 2.6f, false);
+                // Add tiny rust‑stained rivets on the barrier top surface for subtle wear
+                float rivetRadius = 0.015f;
+                float rivetHeight = 0.025f;
+                Color rust = new Color(0.45f, 0.38f, 0.33f);
+                // Position near each end of the barrier, centered on Z
+                m.Cylinder(new Vector3(-1.25f, 0.45f, 0f), rivetRadius, rivetHeight, 6, DecorPalette.Metal(rust));
+                m.Cylinder(new Vector3(1.25f, 0.45f, 0f), rivetRadius, rivetHeight, 6, DecorPalette.Metal(rust));
+            });
             Prop(town, new Vector3(-5.8f, 0f, 68.4f), 15f, new Vector3(1.6f, 1.05f, 0.5f), true, (m, r) => DecorProps.Sawhorse(m, r, 1.6f));
             Prop(town, new Vector3(5.6f, 0f, 68.6f), -10f, new Vector3(1.6f, 1.05f, 0.5f), true, (m, r) => DecorProps.Sawhorse(m, r, 1.6f));
             Wreck(town, new Vector3(9.2f, 0f, 66.5f), 120f, DecorProps.CarKind.Police, new Color(0.10f, 0.12f, 0.16f));
