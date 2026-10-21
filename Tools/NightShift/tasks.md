@@ -5546,13 +5546,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   The player sees exactly the same UI; money and live labels still update when they should, and no visible behavior changes.
   All other logic and fields remain unchanged.
   - 02:48 landed by 0htsserver in 2.2 min: **Changed**
-- [ ] In Assets/Scripts/World/Fixtures/DoormatFixture.cs: Add a “Kick the mat” action to DoormatFixture so the player can interact with the mat in a new, quick way
+- [x] In Assets/Scripts/World/Fixtures/DoormatFixture.cs: Add a “Kick the mat” action to DoormatFixture so the player can interact with the mat in a new, quick way
   In `DoormatFixture.GetActions` add a second `InteractAction` after the existing wipe action:
   `into.Add(new InteractAction("Kick the mat", Kick).Timed(0.6f, "Kicking the mat", HumanoidActivity.None));`
   Create a new private static method `Kick` in the class:
   `private static void Kick(InteractContext ctx) { ctx.Notify("You give the mat a hard kick, scattering a puff of dust."); }`
   The action appears alongside “Wipe your feet” in the interaction UI; when selected it shows the “Kicking the mat” progress bar for 0.6 s and then displays the notification.
   No existing behavior is altered; the mat’s lift mechanics, look‑under state, and wetness handling stay unchanged.
+  - 02:58 landed by 1htsserver in 10 min: Added a new “Kick the mat” interaction:
 - [x] In Assets/Scripts/World/Fixtures/RaidTownGasPump.cs, modify RaidTownGasPump.GetActions to append five new period‑correct flavour‑text actions inside the `if (_lifted) { … }` block, after the last existing `into.Add` call; each new entry should use the same `new InteractAction(string, ctx => ctx.Notify("…"))` pattern and keep the current list order unchanged.
   Use the existing entry `"Read the dials"` as the style reference – a short, present‑tense description followed by a single‑sentence quoted message.
   The new actions should cover these themes: (1) a weather‑related reminder, (2) a local‑rumor note, (3) a safety warning specific to the winter‑time fuel station, (4) a faded advertisement for a 1990s product, and (5) a personal scribble left by a former employee.

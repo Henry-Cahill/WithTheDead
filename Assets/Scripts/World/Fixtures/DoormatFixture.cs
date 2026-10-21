@@ -39,11 +39,22 @@ namespace CloneZ
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             into.Add(new InteractAction("Wipe your feet", Wipe).Timed(1.2f, "Wiping your feet", HumanoidActivity.None));
+            into.Add(new InteractAction("Kick the mat", Kick).Timed(0.6f, "Kicking the mat", HumanoidActivity.None));
             var look = new InteractAction("Look under the mat", LookUnder).Timed(1.4f, "Lifting the mat", HumanoidActivity.Search);
             look.Begin = c => Lift(true);
             look.Stopped = c => Lift(false);
             into.Add(look);
         }
+
+        private static void Kick(InteractContext ctx)
+        {
+            ctx.Notify("You give the mat a hard kick, scattering a puff of dust.");
+        }
+
+
+
+
+
 
         private static void Wipe(InteractContext ctx)
         {
