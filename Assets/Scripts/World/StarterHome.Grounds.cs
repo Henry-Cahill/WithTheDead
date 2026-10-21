@@ -238,13 +238,13 @@ namespace CloneZ
             // Thin metal latch plate
             door.Box(at + new Vector3(0f, 1.34f, -0.263f), new Vector3(0.07f, 0.015f, 0.002f), face); // latch plate
             // Bolt protruding from plate
-            door.Cylinder(at + new Vector3(0f, 1.34f, -0.269f), 0.003f, 0.02f, 12, face, Quaternion.identity);
+            door.Cylinder(at + new Vector3(0f, 1.34f, -0.269f), 0.003f, 0.02f, 12, face, Quaternion.Euler(-90f, 0f, 0f));
             // Tiny rivet on the plate
-            door.Cylinder(at + new Vector3(0f, 1.345f, -0.263f), 0.002f, 0.004f, 8, face, Quaternion.identity);
+            door.Cylinder(at + new Vector3(0f, 1.345f, -0.263f), 0.002f, 0.004f, 8, face, Quaternion.Euler(-90f, 0f, 0f));
             // Subtle rust streak on the door edge for weathering
             door.Ellipsoid(at + new Vector3(0f, 1.33f, -0.265f), new Vector3(0.02f, 0.003f, 0.001f), DecorPalette.Matte(new Color(0.25f, 0.18f, 0.12f)), 4, 2);
             // Brass pull knob on the latch plate’s right side
-            door.Cylinder(at + new Vector3(0.02f, 1.34f, -0.263f), 0.004f, 0.002f, 8, brass, Quaternion.identity);
+            door.Cylinder(at + new Vector3(0.02f, 1.34f, -0.263f), 0.004f, 0.002f, 8, brass, Quaternion.Euler(-90f, 0f, 0f));
             // Small rust speck on the door’s upper edge for weathered detail
             door.Ellipsoid(at + new Vector3(0f, 1.33f, -0.263f), new Vector3(0.015f, 0.008f, 0.001f), DecorPalette.Matte(new Color(0.25f, 0.18f, 0.12f)), 4, 2);
             door.Cylinder(at + new Vector3(0f, 1.28f, -0.258f), 0.113f, 0.012f, 12, face, Quaternion.Euler(90f, 0f, 0f));
