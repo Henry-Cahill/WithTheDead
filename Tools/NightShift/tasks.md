@@ -4668,3 +4668,19 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add a thin slab `sb.Solid.Box(pos, new Vector3(0.3f, 0.05f, 0.3f), ZoneKit.M(ZoneKit.V(rune, sb.Rng, 0.02f)));`
   These slabs act as subtle weathered rune stones, giving the stone circle more period‑correct visual interest without altering colliders or interaction points; total added primitives are four.
   - 22:07 landed by 0htsserver in 1.8 min: Implemented four weathered stone rune slabs around the central stone pillar in the ChoirSanctum landmark (Assets/Scripts/World/Zone/ZoneLand
+- [ ] Fix stale character‑creation state persisting after cancelling in Assets/Scripts/UI/MainMenuController.cs
+  In `ShowTitle()` the method clears the UI but does not reset the fields used by the character‑creation flow (`_replaceSlot`, `_name`, `_prof`, `_faction`, `_traits`, `_blood`, `_ironman`).
+  If a player opens “New runner”, changes profession, toggles Ironman, etc., then presses Back (which calls `ShowTitle`), those values remain set. Opening “New runner” again will start with the previous selections instead of a fresh default, leading to confusing UI and unintended runner data.
+  Add a reset of these fields at the start of `ShowTitle()` (or in a new `ResetCreateState()` called by the Back button). Example change:
+- [ ] Add a small metal “Filing‑Cabinet” label plate to the front‑top edge of the cabinet built in Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method FilingCabinetBody
+  In `FilingCabinetBody` after the last `m.Box` call (the one that draws the inner back panel) insert a new primitive:
+  `m.Box(new Vector3(0f, h - 0.015f, -0.025f), new Vector3(0.22f, 0.01f, 0.001f), Mt(Chrome));`
+  The plate is 0.22 m wide, 0.01 m tall, 1 mm thick, positioned 0.015 m below the cabinet’s top surface (`h` is the total cabinet height) and 0.025 m in front of the cabinet front (`-0.025f` on Z).
+  It uses the existing `Chrome` material, so no new assets are needed.
+  Colliders and interaction points remain unchanged; the plate is purely visual.
+- [ ] Cache the per‑frame `GetComponent` lookups for the local player in `NetPlayers.Tick` (Assets/Scripts/Net/NetPlayers.cs)
+  Add private static fields `s_LocalPlayer`, `s_Stats`, `s_Ctrl`, `s_Combat`, `s_Inv` to hold the current `Actor` and its components.
+  In `Tick` first check `Actor me = Actor.LocalPlayer;` and if `me != s_LocalPlayer` then assign `s_LocalPlayer = me` and update the caches with `s_Stats = me.GetComponent<PlayerStats>();` etc.; otherwise reuse the cached references.
+  Replace the existing `var stats = me.GetComponent<PlayerStats>(); var ctrl = me.GetComponent<PlayerController>(); var combat = me.GetComponent<PlayerCombat>(); var inv = me.GetComponent<PlayerInventory>();` with uses of the cached fields.
+  This removes four `GetComponent` calls each tick, avoiding per‑frame reflection overhead while keeping the same behavior when the local player changes (e.g., respawn).
+- [ ] Add an “Inspect” action to `Campfire.GetActions` (Assets/Scripts/Survival/FieldSurvival.cs) that tells the player how many seconds the fire will keep burning.
