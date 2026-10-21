@@ -40,6 +40,7 @@ namespace CloneZ
     public static class QuestBook
     {
         private static readonly Dictionary<string, QuestDef> s_Defs = new Dictionary<string, QuestDef>();
+        private static readonly System.Text.StringBuilder _summarySb = new System.Text.StringBuilder();
         public static IEnumerable<QuestDef> All => s_Defs.Values;
 
         static QuestBook()
@@ -290,17 +291,18 @@ namespace CloneZ
         {
             QuestDef d = Get(q.Id);
             if (d == null) return q.Id;
-            var sb = new StringBuilder();
-            sb.Append("<b>").Append(d.Title).Append("</b>");
+            // using static StringBuilder _summarySb
+            _summarySb.Clear();
+            _summarySb.Append("<b>").Append(d.Title).Append("</b>");
             for (int i = 0; i < d.Objectives.Count; i++)
             {
                 QuestObjective o = d.Objectives[i];
                 float p = i < q.Progress.Count ? q.Progress[i] : 0f;
                 bool done = o.Kind != ObjectiveKind.Fetch && p >= o.Count;
-                sb.Append("\n  ").Append(done ? "\u2714 " : "\u2022 ").Append(o.Text);
-                if (o.Kind != ObjectiveKind.Fetch && o.Count > 1) sb.Append(" (").Append(Mathf.Min(o.Count, (int)p)).Append('/').Append(o.Count).Append(')');
+                _summarySb.Append("\n  ").Append(done ? "\u2714 " : "\u2022 ").Append(o.Text);
+                if (o.Kind != ObjectiveKind.Fetch && o.Count > 1) _summarySb.Append(" (").Append(Mathf.Min(o.Count, (int)p)).Append('/').Append(o.Count).Append(')');
             }
-            return sb.ToString();
+            return _summarySb.ToString();
         }
         #endregion
 

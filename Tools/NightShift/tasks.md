@@ -5301,12 +5301,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `if (t == null)`
   `{`
   - 01:20 landed by hts-llm in 2 min: **Changed file**
-- [ ] Reduce per‑call allocations in `QuestBook.Summary` (Assets/Scripts/Quests/QuestBook.cs) by reusing a static `StringBuilder` instead of allocating a new one each call
+- [x] Reduce per‑call allocations in `QuestBook.Summary` (Assets/Scripts/Quests/QuestBook.cs) by reusing a static `StringBuilder` instead of allocating a new one each call
   · Add a private static readonly field `private static readonly StringBuilder _summarySb = new StringBuilder();` to the `QuestBook` class.
   · In `public static string Summary(QuestState q)`, replace `var sb = new StringBuilder();` with `_summarySb.Clear();` and rename uses of `sb` to `_summarySb`.
   · The method now builds the string with the cached builder and returns `_summarySb.ToString();`.
   · No change to the visible summary text; the player sees the same quest description in HUD and UI.
   · All other code and public members remain unchanged.
+  - 01:28 landed by hts-llm in 5.1 min: Added a private static readonly `StringBuilder _summarySb` to `QuestBook` and now reuse it in `Summary` instead of allocating a new builder 
 - [ ] In Assets/Scripts/World/Fixtures/KitchenStove.cs: Add a “Toggle all burners” action to KitchenStove so the player can switch every burner on or off with one command.
   In `KitchenStove` declare a new field: `private readonly Action<InteractContext> _toggleAll;` (place it with the other Action fields).
   In `Awake()` after the existing `_allOff = …` line, assign the delegate:
