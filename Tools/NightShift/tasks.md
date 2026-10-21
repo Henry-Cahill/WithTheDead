@@ -5654,3 +5654,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   Do not alter any other code, fields, or comments; only extend the literal.
   Verify the closing brace and semicolon follow the added entries so the file compiles unchanged.
 - [ ] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildStreetLights` to add a tiny random yaw offset (±5°) to each pole so street‑light poles are not perfectly parallel to the road.
+- [ ] In Assets/Scripts/World/Zone/ZoneOverlays.cs, inside `ZoneIndustry.Build` add a few shallow “crack” boxes to each concrete dam‑wall segment (after the call `wall.At(wall.Solid, new Vector3(x, 0f, 0f), 0f, m => m.Box(...))`).
