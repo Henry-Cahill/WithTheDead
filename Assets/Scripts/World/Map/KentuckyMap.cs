@@ -21,6 +21,7 @@ namespace CloneZ
 
         private const float SnowDepth = 0.05f; // thin snow sheet applied to horizontal surfaces
         private const float SidewalkWidth = 1.5f; // modest concrete sidewalk width
+        private const float SignPostHeight = 2.5f; // height of wooden street sign post
 
         /// <summary>A one-line summary of the last map built.</summary>
         public static string LastStats { get; private set; } = "";
