@@ -58,6 +58,7 @@ namespace CloneZ
         private Renderer _sheetRenderer;
         private Vector3 _sheetFull;
         private bool _seatUp, _lidUp, _cisternOff, _wantsFlush, _flushed, _satToUse;
+        private bool _seatClean = true; // true = seat is clean, false = dirty after use
         private float _level = 1f;           // the cistern: 0 empty .. 1 full
         private float _leverBackAt = -1f;
 
@@ -154,6 +155,11 @@ namespace CloneZ
         private void ShowParts(bool instant)
         {
             if (_seat != null) _seat.SetOpen(_seatUp, instant);
+            if (_seat != null && _seat.Renderer != null)
+            {
+                var mat = _seat.Renderer.material;
+                mat.color = _seatClean ? Color.white : new Color(0.8f, 0.8f, 0.8f);
+            }
             if (_lid != null) _lid.SetOpen(_lidUp, instant);
             if (_cisternLid != null) _cisternLid.SetOpen(_cisternOff, instant);
         }
@@ -176,6 +182,7 @@ namespace CloneZ
             if (first != Step.Lid) AddStep(into, Step.Lid);
             into.Add(new InteractAction(_seatUp ? "Put the seat down" : "Lift the seat", c => SetSeat(!_seatUp)));
             into.Add(new InteractAction("Wipe the seat", WipeSeat));
+            into.Add(new InteractAction("Scrub the seat", ScrubSeat));
             if (first != Step.Use) AddStep(into, Step.Use);
             if (first != Step.Flush) AddStep(into, Step.Flush);
             PlayerSeat seat = ctx.Seat;
@@ -266,6 +273,7 @@ namespace CloneZ
         {
             StandFromUse(ctx);
             _wantsFlush = true;
+            _seatClean = false; // using the toilet makes the seat dirty
             _flushed = false;
             BathroomFixtures.Nerves(ctx, -CloneZConfig.ToiletUseCalm);
             string line = UseLines[Random.Range(0, UseLines.Length)];
@@ -320,6 +328,7 @@ namespace CloneZ
         }
 
         /// <summary>Wipes the toilet seat, providing a small calming effect.</summary>
+        /// <summary>Wipes the toilet seat, providing a small calming effect.</summary>
         private void WipeSeat(InteractContext ctx)
         {
             ctx.Notify("You wipe away grime from the cold porcelain.");
@@ -327,21 +336,37 @@ namespace CloneZ
             LightingFixtures.Calm(ctx, CloneZConfig.ToiletUseCalm);
         }
 
+        /// <summary>Scrubs the toilet seat clean, restoring its pristine state and calming the survivor.</summary>
+        private void ScrubSeat(InteractContext ctx)
+        {
+            if (_seatClean)
+            {
+                ctx.Notify("The seat is already clean.");
+                return;
+            }
+            _seatClean = true;
+            ctx.Notify("You scrub the seat until the grime is gone.");
+            // a bigger calming effect than a simple wipe
+            LightingFixtures.Calm(ctx, CloneZConfig.ToiletUseCalm * 1.5f);
+        }
+
         /// <summary>Saves the toilet's state (seat, lid, cistern, flush flag, level).</summary>
         public override void CaptureState(FixtureSave save)
         {
-            save.State = (_seatUp ? 1 : 0) | (_lidUp ? 2 : 0) | (_cisternOff ? 4 : 0) | (_wantsFlush ? 8 : 0) | 16;
+            save.State = (_seatUp ? 1 : 0) | (_lidUp ? 2 : 0) | (_cisternOff ? 4 : 0) | (_wantsFlush ? 8 : 0)
+                | (_seatClean ? 16 : 0) | 32; // 32 marks that the save block is valid
             save.A = _level;
         }
 
         /// <summary>Restores the toilet's saved state, resetting visual parts accordingly.</summary>
         public override void RestoreState(FixtureSave save)
         {
-            if ((save.State & 16) == 0) return;
+            if ((save.State & 32) == 0) return;
             _seatUp = (save.State & 1) != 0;
             _lidUp = (save.State & 2) != 0 || _seatUp;
             _cisternOff = (save.State & 4) != 0;
             _wantsFlush = (save.State & 8) != 0;
+            _seatClean = (save.State & 16) != 0;
             _flushed = false;
             _level = Mathf.Clamp01(save.A);
             _leverBackAt = -1f;
