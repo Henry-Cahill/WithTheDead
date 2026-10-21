@@ -5421,9 +5421,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   This caches the InputSystem singleton lookup, eliminating the per‑frame reflection‑style search.
   The UI behavior (responding to Enter/NumpadEnter after `KeyDelay`) stays identical, and the visual report is unchanged.
   - 02:09 landed by hts-llm in 2.4 min: Implemented keyboard caching in **RaidSummaryUI.cs**:
-- [ ] Add a “Knock on the safe” action to `Assets/Scripts/World/Fixtures/RaidStoreSafe.cs` in the `RaidStoreSafe.GetActions` method, inserting it after the existing `into.Add(new InteractAction("Listen at the door", c => c.Notify(Listening[_listened++ % Listening.Length])));` line.
+- [x] Add a “Knock on the safe” action to `Assets/Scripts/World/Fixtures/RaidStoreSafe.cs` in the `RaidStoreSafe.GetActions` method, inserting it after the existing `into.Add(new InteractAction("Listen at the door", c => c.Notify(Listening[_listened++ % Listening.Length])));` line.
   Add the line: `into.Add(new InteractAction("Knock on the safe", c => { MakeNoise(CloneZConfig.RaidSafeDialNoise); c.Notify("Your knuckles rattle the steel. Nothing else happens."); }));`
   This uses the already‑available `MakeNoise` method and the `CloneZConfig.RaidSafeDialNoise` constant.
   In‑game the player will see a new "[E] Knock on the safe" option; selecting it will produce a metallic knock sound and display the notification “Your knuckles rattle the steel. Nothing else happens.”
   No other code, fields, or UI elements are changed.
+  - 02:10 landed by 1htsserver in 1.6 min: **Summary**
 - [ ] Extend the `static ZoneExposure()` constructor in Assets/Scripts/Zone/ZoneHazards.cs by inserting four new exposure‑mark entries, each following the existing `M(id, name, description, apply)` pattern, so the player can discover additional winter‑theme lore and penalties.

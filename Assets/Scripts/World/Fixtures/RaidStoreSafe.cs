@@ -69,6 +69,7 @@ namespace CloneZ
             into.Add(new InteractAction("Try the handle", c => c.Notify("Locked solid. The wheel turns a quarter and stops dead.")));
             into.Add(new InteractAction("Inspect the dial", c => c.Notify("The dial is stiff and scratched; it looks like someone tried to force it.")));
             into.Add(new InteractAction("Listen at the door", c => c.Notify(Listening[_listened++ % Listening.Length])));
+            into.Add(new InteractAction("Knock on the safe", c => { MakeNoise(CloneZConfig.RaidSafeDialNoise); c.Notify("Your knuckles rattle the steel. Nothing else happens."); }));
         }
 
         // The last number falls into place: the bolts draw back, the door swings open and the safe becomes plain storage.
