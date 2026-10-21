@@ -4688,8 +4688,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 22:16 landed by hts-llm in 3 min: All changes compile successfully.**Changed file:** `Assets/Scripts/Net/NetPlayers.cs`
 - [x] Add an “Inspect” action to `Campfire.GetActions` (Assets/Scripts/Survival/FieldSurvival.cs) that tells the player how many seconds the fire will keep burning.
   - 22:18 landed by hts-llm in 2 min: **Changed file**
-- [ ] In Assets/Scripts/Hub/Screens/ServiceScreens.cs, class DeployScreen, method BuildContent, extend the landing‑zone options array passed to `HubUI.Cycle` by appending four more entries after the existing `"West"` entry.
+- [x] In Assets/Scripts/Hub/Screens/ServiceScreens.cs, class DeployScreen, method BuildContent, extend the landing‑zone options array passed to `HubUI.Cycle` by appending four more entries after the existing `"West"` entry.
   Replace the literal `new[] { "Random", "North", "East", "South", "West" }` with
+  - 22:20 landed by hts-llm in 1.3 min: **Changed**
 - [ ] Add a deterministic‑random helper to `MapBuild` in `Assets/Scripts/World/Map/WorldStore.cs` so map‑building code can obtain a stable `System.Random` stream for any feature without recreating randoms manually.
   In `public sealed class MapBuild` after the existing `Random` property, insert:
   `/// <summary>Returns a new deterministic System.Random seeded with the build Id combined with <paramref name="seed"/>. Use it for per‑feature visual variation (e.g., tree placement, porch chance) so the result is stable across runs.</summary>`
