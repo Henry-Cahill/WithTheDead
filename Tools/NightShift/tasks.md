@@ -4449,3 +4449,29 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [x] Fix `MapGeometry.Contains` in Assets/Scripts/World/Map/MapGeometry.cs so points that lie exactly on the polygon edge are considered inside, preventing the player from being treated as outside when standing on a building’s border.
   Change the line
   - 20:47 landed by 0htsserver in 1.4 min: **Changed**
+- [ ] Reduce per‑frame main‑camera lookup in `PostFx.LateUpdate` (Assets/Scripts/Rendering/Presentation.cs)
+  Replace `Camera cam = Camera.main;` with a lazy cache: `if (_cachedCam == null) _cachedCam = Camera.main; Camera cam = _cachedCam;`
+  Remove the equality check `if (cam != _cachedCam || _cachedData == null)` and instead only compare `_cachedData` to handle the first‑run case.
+  Keep the existing logic that updates `_cachedData` when the cached camera exists; the player will see exactly the same post‑processing effects because the same camera component is used.
+  This eliminates the expensive `Camera.main` `FindObjectByTag` search each frame while preserving correct behaviour when the main camera changes (it will be re‑cached on the next frame when `_cachedCam` becomes null).
+- [ ] In Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs modify the `Louder` method to also warn the player when the radio is set to the maximum volume, indicating the loud hum may attract walkers.
+  Locate the method `private void Louder(InteractContext ctx, int step)` near line 151.
+  After the existing `ctx.Notify("Volume: " + (...));` line, insert:
+  `if (_volume >= MaxVolume) ctx.Notify("The louder hum may attract nearby walkers.");`
+  Keep the current volume‑clamp, noise trigger, and notification unchanged; only add the extra conditional message.
+  The player will now see an additional subtitle when turning the knob up to “loud”, reinforcing the gameplay risk of drawing zombies.
+- [ ] Append five period‑correct call strings to the `private static readonly string[] CbCalls` array in Assets/Scripts/World/Fixtures/RaidCivicRadio.cs (class `CivicRadio`)
+  Add each new entry as a quoted whole sentence, preserving the existing Unicode quote marks (e.g. `\u201C…\u201D`).
+  Example of current style to match: `"\u201CBreaker one-nine, anybody out there?\u201D A long pause. Somebody keys up, says \u201Cstay inside, friend,\u201D and is gone."`
+  The new lines should cover the following themes, all set in winter‑time, 1993 rural Kentucky:
+  A farmer whose mule slipped into a snow‑drift and needs a rope.
+  A townsperson warning of a downed power line near the creek.
+  A request for a spare can of gasoline for the generator at the school.
+  A child’s voice asking if anyone has seen a lost orange tabby cat near the old mill.
+  A brief note that the county road “B” is blocked by a fallen tree and asking for a chainsaw.
+- [ ] Add a deterministic tree‑spacing helper to `MapArea` in `Assets/Scripts/World/Map/MapData.cs` so forest land‑use areas can be populated with period‑appropriate trees.
+  Add a public method `public float GetTreeSpacing()` inside the `MapArea` class.
+  The method should return `0f` for any `kind` other than `"forest"`; for `"forest"` return a base spacing of `3f` metres plus a pseudo‑random offset in `[0,1]` derived from the area’s `id` (e.g. `float offset = ((id * 0x4F1BBCDC) & 0xFFFF) / 65535f; return 3f + offset;`).
+  Document the method with a `/// <summary>` explaining that it provides a deterministic tree‑placement interval to keep forests looking natural and varied.
+  No other fields or classes are altered; this addition only supplies data for the existing world‑builder code (e.g., `FurnitureBuilder` or `DecorProps`) to use when scattering trees in forest areas.
+  The player will see forests filled with trees spaced roughly 3–4 m apart, matching the hand‑crafted raid town’s look while preserving the original map data format.
