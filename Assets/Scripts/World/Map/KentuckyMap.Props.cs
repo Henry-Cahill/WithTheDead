@@ -190,6 +190,10 @@ namespace CloneZ
                     continue;
                 }
                 if (signs >= MaxSigns || string.IsNullOrEmpty(s.Data.name) || !SignColours(s.Data.kind, out Color bg, out Color fg)) continue;
+                // Slight random perturbation of sign background colour for hand‑painted variation
+                bg.r = Mathf.Clamp01(bg.r + (float)rng.NextDouble() * 0.04f - 0.02f);
+                bg.g = Mathf.Clamp01(bg.g + (float)rng.NextDouble() * 0.04f - 0.02f);
+                bg.b = Mathf.Clamp01(bg.b + (float)rng.NextDouble() * 0.04f - 0.02f);
                 if (!NearestFree(site, s.At, 1.4f, out Vector2 spot)) continue;
                 string text = s.Data.name.ToUpperInvariant();
                 if (text.Length > 24) text = text.Substring(0, 24).TrimEnd();

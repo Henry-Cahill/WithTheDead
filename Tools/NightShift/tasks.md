@@ -4307,13 +4307,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   Append this status to the current notification, e.g. `ctx.Notify($"Door health: {health:0.##}/{maxHealth:0.##} ({percent}%){(_broken ? " (broken)" : "")} – {lockStatus}");`
   Keep the rest of the action unchanged; no new UI, items, or methods are introduced.
   - 20:07 landed by 1htsserver in 1.9 min: **Changed file**
-- [ ] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildPoints` to give hand‑painted colour variation to sign backgrounds, making them look less uniform and more period‑correct.
+- [x] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildPoints` to give hand‑painted colour variation to sign backgrounds, making them look less uniform and more period‑correct.
   After the line `if (signs >= MaxSigns || string.IsNullOrEmpty(s.Data.name) || !SignColours(s.Data.kind, out Color bg, out Color fg)) continue;` add code that perturbs `bg` slightly using the method’s existing `rng`.
   Example change:
   `bg.r = Mathf.Clamp01(bg.r + (float)rng.NextDouble() * 0.04f - 0.02f);`
   `bg.g = Mathf.Clamp01(bg.g + (float)rng.NextDouble() * 0.04f - 0.02f);`
   `bg.b = Mathf.Clamp01(bg.b + (float)rng.NextDouble() * 0.04f - 0.02f);`
   This keeps the sign‑type colour logic intact, preserves the existing collider and placement code, and adds subtle random hue offsets so each sign appears a bit different, matching the hand‑built look of CLONE‑Z’s raid town.
+  - 20:09 landed by 1htsserver in 1.7 min: **Changed file**
 - [ ] In Assets/Scripts/World/WaterSource.cs, inside `WaterSource.BuildBarrel` add a small worn canvas/rope strap around the barrel’s mid‑section to suggest a makeshift handle/branding.
   Create a new `System.Random` (e.g. `var strapRand = new System.Random(1993)`) and use it to pick a subtle brown tint: `float shade = 0.4f + 0.1f * strapRand.NextFloat(); Color strapColor = new Color(shade, shade * 0.85f, shade * 0.6f);`
   Insert the following after the existing weathered band cylinder (the call `m.Cylinder(new Vector3(0f, h * 0.5f, 0f), r + 0.005f, 0.01f, …)`):
