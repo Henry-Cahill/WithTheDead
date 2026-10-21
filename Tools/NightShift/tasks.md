@@ -4812,11 +4812,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   a cue to conserve limited gasoline, and
   a subtle warning about the outbreak’s symptoms.
   - 22:56 landed by hts-llm in 3.6 min: **Changed file**
-- [ ] Add deterministic colour variation for buildings in Assets/Scripts/World/Map/MapGeometry.cs so each generated building gets a period‑appropriate hue based on its OSM id.
+- [x] Add deterministic colour variation for buildings in Assets/Scripts/World/Map/MapGeometry.cs so each generated building gets a period‑appropriate hue based on its OSM id.
   Add a private static readonly `Color[] kBuildingPalette = new[] { new Color(0.78f,0.73f,0.68f), new Color(0.72f,0.65f,0.60f), new Color(0.66f,0.58f,0.53f), new Color(0.60f,0.52f,0.47f) };` near the end of the class.
   Add a public static method `public static Color GetBuildingColor(int osmId)` that computes `int idx = (osmId.GetHashCode() & 0x7fffffff) % kBuildingPalette.Length; return kBuildingPalette[idx];`.
   Ensure the method is placed after the `private const float EPS = 1e-5f;` field and before the closing brace of the class.
   The player should now see subtle colour differences between neighbouring buildings (e.g., slightly faded paint tones) making the procedurally‑generated raid town look hand‑crafted, while all existing geometry logic remains unchanged.
+  - 22:58 landed by 1htsserver in 2.4 min: **Changed file**
 - [ ] In Assets/Scripts/World/RaidMapBuilder.Outdoor.cs add two small rust‑stained metal rivet cylinders to each sandbag wall built in the `Checkpoint` method (the lambda that calls `DecorProps.SandbagWall`), so the metal band looks fastened.
 - [ ] Fix persistent fog in clear weather in Assets/Scripts/Core/WeatherSystem.cs
   *Method to change:* `ApplyFog()`

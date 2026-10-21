@@ -204,6 +204,21 @@ namespace CloneZ
         }
 
         private const float EPS = 1e-5f;
+        private static readonly Color[] kBuildingPalette = new[]
+        {
+            new Color(0.78f,0.73f,0.68f),
+            new Color(0.72f,0.65f,0.60f),
+            new Color(0.66f,0.58f,0.53f),
+            new Color(0.60f,0.52f,0.47f)
+        };
+        /// <summary>
+        /// Deterministic colour for a building based on its OSM id.
+        /// </summary>
+        public static Color GetBuildingColor(int osmId)
+        {
+            int idx = (osmId.GetHashCode() & 0x7fffffff) % kBuildingPalette.Length;
+            return kBuildingPalette[idx];
+        }
 
         private static bool Inside(Vector2 p, Rect r, int edge)
         {
