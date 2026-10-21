@@ -129,6 +129,16 @@ namespace CloneZ
                     Wall(site, a, d, inset, -Thick * 0.5f, len + Thick * 0.5f, groundTop, height, yaw, outside, false);
                 if (b.kind != "ruin" && b.kind != "silo") Windows(site, a, d, outward, len, height, i == door ? len * 0.5f : -1f, rng, outside);
             }
+            // Add a simple door knob to every entrance
+            if (door >= 0)
+            {
+                float knobDepth = 0.02f; // front‑to‑back thickness of the knob
+                float knobRadius = 0.07f; // radius of the knob (half width/height)
+                Vector3 knobCenter = To3(doorPoint + doorOutward * (Thick * 0.5f + knobDepth * 0.5f), DoorHeight * 0.5f);
+                Vector3 knobSize = new Vector3(knobDepth, knobRadius * 2f, knobRadius * 2f);
+                Surf knobMat = DecorPalette.Gloss(new Color(0.8f, 0.8f, 0.8f));
+                site.Town.Out.Solid(knobCenter).Box(knobCenter, knobSize, doorYaw, knobMat);
+            }
             // Add simple front porch/stoop for residential buildings
             if (door >= 0 && (b.kind == "house" || b.kind == "trailer"))
             {
