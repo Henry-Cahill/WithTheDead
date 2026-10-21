@@ -4803,7 +4803,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `ctx.Notify("You brush away the thin film of dust; the clean face steadies your thoughts.");`
   `}`
   - 22:52 landed by hts-llm in 4.1 min: **Changes Made**
-- [ ] In Assets/Scripts/Core/Broadcasts.cs, edit the `Days(1, 2, …)` programme for the station "91.3 FM" (the `Easy 91.3` entry in `s_Stations`) and append five new whole‑sentence strings to its `Lines` array.
+- [x] In Assets/Scripts/Core/Broadcasts.cs, edit the `Days(1, 2, …)` programme for the station "91.3 FM" (the `Easy 91.3` entry in `s_Stations`) and append five new whole‑sentence strings to its `Lines` array.
   The existing first line to use as a style reference is `"You're listening to Easy 91.3, the soft sound of the valley, all night long."`
   The new sentences should fit the winter‑1993 Kentucky setting and cover:
   advice on staying warm and preventing drafts,
@@ -4811,6 +4811,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   a reminder to check on neighbours and share firewood,
   a cue to conserve limited gasoline, and
   a subtle warning about the outbreak’s symptoms.
+  - 22:56 landed by hts-llm in 3.6 min: **Changed file**
 - [ ] Add deterministic colour variation for buildings in Assets/Scripts/World/Map/MapGeometry.cs so each generated building gets a period‑appropriate hue based on its OSM id.
   Add a private static readonly `Color[] kBuildingPalette = new[] { new Color(0.78f,0.73f,0.68f), new Color(0.72f,0.65f,0.60f), new Color(0.66f,0.58f,0.53f), new Color(0.60f,0.52f,0.47f) };` near the end of the class.
   Add a public static method `public static Color GetBuildingColor(int osmId)` that computes `int idx = (osmId.GetHashCode() & 0x7fffffff) % kBuildingPalette.Length; return kBuildingPalette[idx];`.
