@@ -12,8 +12,9 @@ namespace CloneZ
             if (!build.HasSidewalk(street.Data.id)) return; // no sidewalk → no kerb
 
             var paintMat = Resources.Load<Material>(WorldStore.KerbMaterialPath);
-            if (paintMat == null) paintMat = Resources.Load<Material>("Materials/DefaultGray");
-            var surf = new Surf(paintMat, Vector2.zero, 0f);
+            var surf = paintMat != null
+                ? new Surf(paintMat, Vector2.zero, 0f)
+                : DecorMaterials.Concrete;
 
             var pts = street.Pts;
             for (int i = 0; i < pts.Count - 1; i++)
