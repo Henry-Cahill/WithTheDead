@@ -1,4 +1,5 @@
 using UnityEngine;
+using Surf = CloneZ.Surf;
 
 namespace CloneZ
 {
@@ -130,7 +131,8 @@ namespace CloneZ
                 Vector3 rustSize = new Vector3(0.08f, 0.04f, 0.004f);
                 m.Box(rustPos, rustSize, M(new Color(0.55f, 0.33f, 0.28f)));
             }
-            int open = Chance(rng, 0.4) ? rng.Next(drawers) : -1;
+            // Guard against zero‑drawer cabinets – rng.Next(0) would throw.
+            int open = (drawers > 0 && Chance(rng, 0.4)) ? rng.Next(drawers) : -1;
             for (int i = 0; i < drawers; i++)
             {
                 float y = 0.05f + i * 0.33f + 0.165f;
@@ -138,8 +140,14 @@ namespace CloneZ
                 if (pull > 0f)
                 {
                     m.Box(new Vector3(0f, y - 0.02f, 0.27f + pull * 0.5f - 0.02f), new Vector3(0.4f, 0.26f, pull + 0.04f), M(c * 0.8f));
-                    for (int f = 0; f < 5; f++)
-                        m.Box(new Vector3(R(rng, -0.12f, 0.12f), y + 0.09f, 0.27f + f * pull / 5f), new Vector3(0.34f, R(rng, 0.03f, 0.08f), 0.01f), Quaternion.Euler(R(rng, -15f, 15f), 0f, 0f), M(f % 2 == 0 ? new Color(0.70f, 0.62f, 0.40f) : Paper));
+                     for (int f = 0; f < 5; f++)
+                     {
+                          Surf folderMat = (f % 2 == 0) ? M(new Color(0.70f, 0.62f, 0.40f)) : M(Paper);
+                         m.Box(new Vector3(R(rng, -0.12f, 0.12f), y + 0.09f, 0.27f + f * pull / 5f),
+                               new Vector3(0.34f, R(rng, 0.03f, 0.08f), 0.01f),
+                               Quaternion.Euler(R(rng, -15f, 15f), 0f, 0f),
+                               folderMat);
+                     }
                 }
                 m.Box(new Vector3(0f, y, 0.275f + pull), new Vector3(0.43f, 0.3f, 0.02f), M(c));
                 // Small chrome handle on the drawer front
