@@ -4869,3 +4869,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `_wateringCanDef = ItemDatabase.Get(WateringCanId);`
   Replace the `ItemDatabase.Get` calls in `RefreshHeld` with the cached fields (`_hammerDef`, `_trowelDef`, `_wateringCanDef`).
   The player’s avatar will still show the same hammer, trowel and watering‑can models when building, digging or watering, but the per‑frame dictionary look‑ups are eliminated, reducing CPU time and GC pressure.
+- [ ] Add a “Turn off tap and pull plug” action to Assets/Scripts/World/Fixtures/KitchenSink.cs that lets the player stop the running tap and immediately pull the plug in one step, showing a notification and updating water flow.
