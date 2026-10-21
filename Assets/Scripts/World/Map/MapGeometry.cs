@@ -254,6 +254,15 @@ namespace CloneZ
             return kSidewalkPalette[idx];
         }
 
+        /// <summary>
+        /// Deterministic colour for a road based on its OSM id.
+        /// </summary>
+        public static Color GetRoadColor(int osmId)
+        {
+            int idx = (osmId.GetHashCode() & 0x7fffffff) % kRoadPalette.Length;
+            return kRoadPalette[idx];
+        }
+
         private static bool Inside(Vector2 p, Rect r, int edge)
         {
             switch (edge)
