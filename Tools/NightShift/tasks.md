@@ -4488,7 +4488,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `public static int MoneyCarried => Pack != null ? Money.Count(Pack) : 0;`
   Now the hub shows “$0” (or whatever UI displays) when no player exists instead of crashing, while preserving the original behaviour when a player is present. All other code stays unchanged.
   - 21:02 landed by 0htsserver in 0.9 min: **Changed**
-- [ ] Add small worn‑metal caps to the ends of each skid rod in Assets/Scripts/World/Zone/Helicopter.cs, inside `HelicopterModel.Build` right after the `for (int s = -1; s <= 1; s += 2)` loop that creates the rods.
+- [x] Add small worn‑metal caps to the ends of each skid rod in Assets/Scripts/World/Zone/Helicopter.cs, inside `HelicopterModel.Build` right after the `for (int s = -1; s <= 1; s += 2)` loop that creates the rods.
   Use the same `hull` colour variable and apply a slight darkening (`hull * 0.7f`) with `DecorPalette.Metal`.
   Create a tiny cylinder for each cap: radius 0.10 m, height 0.04 m.
   Position the caps at the forward and rear ends of each skid:
@@ -4497,6 +4497,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Front right → `new Vector3(-1.1f, 0.07f, 2.4f)`
   Rear right → `new Vector3(-1.1f, 0.07f, -2.4f)`
   Call `m.Cylinder` for each cap, e.g. `m.Cylinder(new Vector3(1.1f, 0.07f, 2.4f), 0.10f, 0.04f, 6, DecorPalette.Metal(hull * 0.7f));`
+  - 21:04 landed by 1htsserver in 2.4 min: **Summary**
 - [ ] In Assets/Scripts/Player/PlayerSleep.cs: Cache the TimeOfDay singleton in PlayerSleep to avoid repeated look‑ups each frame
   Add a private field `private TimeOfDay _timeOfDay;` and initialise it in `Awake()` (or `OnEnable()`) with `_timeOfDay = TimeOfDay.Instance;`.
   Replace every occurrence of `TimeOfDay.Instance` in this class (`StartSleep`, `StopSleep`, and the static `ReachedDawn` method) with the cached `_timeOfDay` reference, keeping the existing null‑checks (`if (_timeOfDay != null) …`).

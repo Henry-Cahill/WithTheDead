@@ -53,6 +53,11 @@ namespace CloneZ
                 m.Rod(new Vector3(s * 1.1f, 0.05f, 1.6f), new Vector3(s * 0.7f, 0.9f, 1.4f), 0.05f, DecorPalette.Metal(new Color(0.15f, 0.15f, 0.15f)), 5);
                 m.Rod(new Vector3(s * 1.1f, 0.05f, -1.6f), new Vector3(s * 0.7f, 0.9f, -1.4f), 0.05f, DecorPalette.Metal(new Color(0.15f, 0.15f, 0.15f)), 5);
             }
+            // Small worn‑metal caps on skid rod ends
+            m.Cylinder(new Vector3( 1.1f, 0.07f,  2.4f), 0.10f, 0.04f, 6, DecorPalette.Metal(hull * 0.7f));
+            m.Cylinder(new Vector3( 1.1f, 0.07f, -2.4f), 0.10f, 0.04f, 6, DecorPalette.Metal(hull * 0.7f));
+            m.Cylinder(new Vector3(-1.1f, 0.07f,  2.4f), 0.10f, 0.04f, 6, DecorPalette.Metal(hull * 0.7f));
+            m.Cylinder(new Vector3(-1.1f, 0.07f, -2.4f), 0.10f, 0.04f, 6, DecorPalette.Metal(hull * 0.7f));
             Emit(m, "Body", root, Vector3.zero);
 
             var main = new GameObject("MainRotor").transform;
