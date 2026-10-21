@@ -4454,12 +4454,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Remove the equality check `if (cam != _cachedCam || _cachedData == null)` and instead only compare `_cachedData` to handle the first‑run case.
   Keep the existing logic that updates `_cachedData` when the cached camera exists; the player will see exactly the same post‑processing effects because the same camera component is used.
   This eliminates the expensive `Camera.main` `FindObjectByTag` search each frame while preserving correct behaviour when the main camera changes (it will be re‑cached on the next frame when `_cachedCam` becomes null).
-- [ ] In Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs modify the `Louder` method to also warn the player when the radio is set to the maximum volume, indicating the loud hum may attract walkers.
+- [x] In Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs modify the `Louder` method to also warn the player when the radio is set to the maximum volume, indicating the loud hum may attract walkers.
   Locate the method `private void Louder(InteractContext ctx, int step)` near line 151.
   After the existing `ctx.Notify("Volume: " + (...));` line, insert:
   `if (_volume >= MaxVolume) ctx.Notify("The louder hum may attract nearby walkers.");`
   Keep the current volume‑clamp, noise trigger, and notification unchanged; only add the extra conditional message.
   The player will now see an additional subtitle when turning the knob up to “loud”, reinforcing the gameplay risk of drawing zombies.
+  - 20:59 landed by 0htsserver in 1.9 min: **Changed file**: `Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs`
 - [ ] Append five period‑correct call strings to the `private static readonly string[] CbCalls` array in Assets/Scripts/World/Fixtures/RaidCivicRadio.cs (class `CivicRadio`)
   Add each new entry as a quoted whole sentence, preserving the existing Unicode quote marks (e.g. `\u201C…\u201D`).
   Example of current style to match: `"\u201CBreaker one-nine, anybody out there?\u201D A long pause. Somebody keys up, says \u201Cstay inside, friend,\u201D and is gone."`

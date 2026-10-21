@@ -197,6 +197,7 @@ namespace CloneZ
             MakeNoise(CloneZConfig.ReceiverKnobNoise);
             _noiseAt = Time.time;
             ctx.Notify("Volume: " + (_volume <= 0 ? "low." : _volume >= MaxVolume ? "loud. It carries a long way." : "medium."));
+            if (_volume >= MaxVolume) ctx.Notify("The louder hum may attract nearby walkers.");
         }
 
         private void KeyHandset(InteractContext ctx)
