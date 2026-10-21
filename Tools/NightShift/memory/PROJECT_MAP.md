@@ -17,7 +17,7 @@ sentence of its summary. Grep the code for details.
 - ALife.cs (435) ALifeSquad, ALifeDirector, ZonePeopleModule: One squad of the Zone's people, alive whether or not anyone is watching.
 - Companions.cs (238) CompanionService, Order, Candidate: Hired guns.
 - HumanLoadouts.cs (356) GunPick, LootPick, HumanLoadout: One weighted gun choice of a loadout; the round defaults to the gun's own.
-- HumanNpc.cs (999) HumanNpc, Mode, HumanNpcAvatar: A person in the Zone: a stalker, a soldier, a scavenger, a warden on a tower, a zealot of the Choir,
+- HumanNpc.cs (1004) HumanNpc, Mode, HumanNpcAvatar: A person in the Zone: a stalker, a soldier, a scavenger, a warden on a tower, a zealot of the Choir,
 - HumanUtil.cs (272) HumanUtil, HumanRunner: Small helpers shared by the Zone's people (stalkers, A-Life squads, outposts, wardens, companions): 
 - Outposts.cs (391) OutpostSystem, Outpost, PdaStashes: Warfare outposts (Gray Zone Warfare's PvEvP): sandbagged positions held by a faction's garrison.
 
@@ -408,7 +408,7 @@ sentence of its summary. Grep the code for details.
 - KentuckyMap.Ground.cs (331) KentuckyMap: The pieces of a line outside the playable square: cut to the four bands around it, which together co
 - KentuckyMap.Props.cs (271) KentuckyMap: Trees per square metre for a kind of land, or 0 for none.
 - KentuckyMap.cs (518) KentuckyMap, Street, Line: Builds a raid map from a real place in Kentucky: the streets, buildings, water and land use around t
-- MapData.cs (222) MapCurrent, MapManifest, MapRegionEntry: world/current.json: the build the game and the servers load.
+- MapData.cs (276) MapCurrent, MapManifest, MapRegionEntry: world/current.json: the build the game and the servers load.
 - MapGeometry.cs (333) MapGeometry: Plane geometry for the real-world map, in the raid map's ground plane: a Vector2 is (x, z), metres e
 - WorldStore.cs (211) WorldStore, MapBuild: The world store, where the build machines put the real-world map (Tools/World): \\192.168.1.170\CLON
 
@@ -418,13 +418,13 @@ sentence of its summary. Grep the code for details.
 - ZoneAtmosphere.cs (114) ZoneAtmosphere: The air of a zone, layered over the clock and the weather each frame: Mirelock's fog that never lift
 - ZoneCordon.cs (296) ZoneCordon, CordonGate, SearchlightSweep: The cordon (Roadside Picnic's illegal entry): an inner fence just inside the restricted belt along t
 - ZoneKit.cs (703) ZoneKit, ZoneSmokeTint, ZoneChunks: Shared pieces for the zone overlays: the extra materials they need (chain-link, light beams, steam a
-- ZoneLandmarks.cs (406) ZoneLandmarks, LocationVisitTrigger: The handcrafted anchors of each zone (Metro's set pieces, used sparingly): a crashed helicopter, a d
+- ZoneLandmarks.cs (412) ZoneLandmarks, LocationVisitTrigger: The handcrafted anchors of each zone (Metro's set pieces, used sparingly): a crashed helicopter, a d
 - ZoneOverlays.cs (262) ZoneForest, ZoneIndustry: Mirelock's woods: hundreds of snow-dusted conifers and bare birches crowding every open patch of gro
 - ZoneSiteMap.cs (327) SiteCell, ZoneSiteMap: What lies on one metre of a raid map, as far as the zone overlays care.
 - ZoneWorld.cs (187) ZoneWorld, ZoneWorldModule, ZoneRuntime: What the zone overlays know about the raid map being built: the roots they build under, the occupanc
 
 ## Assets/Scripts/Zombies
-- ZombieAI.cs (806) ZombieType, ZombieAI, State: NavMesh-driven zombie brain.
+- ZombieAI.cs (814) ZombieType, ZombieAI, State: NavMesh-driven zombie brain.
 - ZombieHealth.cs (101) ZombieHealth: Zombie hit points.
 - ZombieSpawner.cs (285) SpawnerMode, ZombieSpawner: How the spawner fills the map: escalating waves (wave survival) or a standing population of wanderer
 
