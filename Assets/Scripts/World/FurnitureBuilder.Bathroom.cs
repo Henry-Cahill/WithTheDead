@@ -465,6 +465,12 @@ namespace CloneZ
 
             // The mixer's chrome plate beside the riser.
             m.Cylinder(new Vector3(ShowerLeverPivot.x, ShowerLeverPivot.y, -0.42f), 0.06f, 0.008f, 16, chrome, Quaternion.Euler(90f, 0f, 0f));
+            float rivetR = 0.004f; float rivetH = 0.006f; float plateR = 0.06f - 0.005f;
+            Vector3 pc = new Vector3(ShowerLeverPivot.x, ShowerLeverPivot.y, -0.42f);
+            m.Cylinder(pc + new Vector3( plateR, 0f, 0f), rivetR, rivetH, 8, chrome); // right
+            m.Cylinder(pc + new Vector3(-plateR, 0f, 0f), rivetR, rivetH, 8, chrome); // left
+            m.Cylinder(pc + new Vector3(0f, plateR, 0f), rivetR, rivetH, 8, chrome); // top
+            m.Cylinder(pc + new Vector3(0f, -plateR, 0f), rivetR, rivetH, 8, chrome); // bottom
 
             // A wire corner shelf of bottles, by the back wall.
             var shelf = new Vector3(0.36f, 1.28f, -0.36f);
