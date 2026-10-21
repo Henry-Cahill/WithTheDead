@@ -36,7 +36,19 @@ namespace CloneZ
         private static readonly Color BarrelWater = new Color(0.34f, 0.5f, 0.52f);
         private static WeatherSystem _weather;
 
-        private void Awake() { _weather = WeatherSystem.Instance; }
+        // Length of a full day in hours; used to correct rain‑fill timing when the clock wraps.
+        /// <summary>Number of hours that constitute a full day in the game's time system.</summary>
+        private const float DayHours = 24f;
+
+        private void Awake()
+        {
+            // Cache the singleton; it may be created after this Awake, so we keep the fallback in Update.
+            _weather = WeatherSystem.Instance;
+            // Initialise the fill‑simulation timer for rain barrels; this avoids a first‑frame delta of zero
+            // when the barrel is spawned before the first Update call.
+            if (Kind == WaterSourceKind.RainBarrel)
+                _lastHours = TimeOfDay.Now;
+        }
 
         private void OnEnable() { if (!All.Contains(this)) All.Add(this); }
         private void OnDisable() { All.Remove(this); }
@@ -296,8 +308,11 @@ namespace CloneZ
 
             float now = TimeOfDay.Now;
             float dH = now - _lastHours;
+            // If the clock wrapped past midnight, add a full day to the delta.
+            if (dH < 0f)
+                dH += DayHours;
             _lastHours = now;
-            if (dH <= 0f) return;
+            if (dH <= 0f) return; // safety – should never happen after wrap correction
 
             float rain = _weather != null ? _weather.RainIntensity : 0f;
             if (rain > 0f)
@@ -318,6 +333,13 @@ namespace CloneZ
             float h = Mathf.Lerp(0.04f, 0.88f, level);           // depth of water standing in the barrel
             _waterFill.localScale = new Vector3(0.62f, h * 0.5f, 0.62f);
             _waterFill.position = transform.position + new Vector3(0f, 0.025f + h * 0.5f, 0f);
+            // When the barrel is essentially full, brighten the water colour to signal the player.
+            if (level >= 0.99f)
+            {
+                var rend = _waterFill.GetComponent<Renderer>();
+                if (rend != null)
+                    rend.sharedMaterial = CloneZUtil.Mat(new Color(0.45f, 0.7f, 0.75f), smoothness: 0.8f);
+            }
         }
         #endregion
     }
