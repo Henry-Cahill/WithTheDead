@@ -5243,3 +5243,17 @@ you want to see in game. Indent extra lines under a task to add detail.
   The new action uses only fields already present (`_noiseAt`) and Unity’s `Time.time`.
   In‑game the player sees a tooltip “[E] Check next noise” and receives a notification with the seconds until the next noise when used.
   All other code, including existing actions and the generator’s fuel logic, must remain unchanged.
+- [ ] Add a deterministic “has sidewalk” helper to `MapBuild` in Assets/Scripts/World/Map/WorldStore.cs so road‑building code can decide per‑road‑segment whether to generate a curb/sidewalk geometry, matching the hand‑built raid town’s uneven sidewalks.
+  Add the method inside the `MapBuild` class, after `RoofHasSnow`.
+  Implement it as a deterministic hash of the supplied `long roadSegmentId` (the same style as `RoofHasSnow`) and return `true` for roughly 45 % of cases:
+  `/// <summary>`
+  `/// Determine if a road segment should get a sidewalk/curb on its side.`
+  `/// Deterministic based on the build ID and the segment ID.`
+  `/// Approximately 45 % of road pieces receive a sidewalk.`
+  `/// </summary>`
+  `public bool HasSidewalk(long segmentId)`
+- [ ] Add subtle snow‑drift detail to the hunters’ hide roof in Assets/Scripts/World/Zone/ZoneLandmarks.cs, method `HuntersHide(SiteBuilder sb)`
+  After the existing roof box line `sb.Roof.Box(new Vector3(3f, 4.8f, 0f), new Vector3(3f, 0.1f, 3f), ZoneKit.M(new Color(0.25f, 0.30f, 0.20f)));` insert a loop that creates four small flat boxes to look like compact snow piles on the roof edge.
+  Use the deterministic RNG already available (`sb.Rng`) for a slight angular jitter, e.g.:
+  `for (int i = 0; i < 4; i++) { float angle = i * Mathf.PI * 0.5f + ZoneKit.R(sb.Rng, -0.1f, 0.1f); Vector3 pos = new Vector3(Mathf.Cos(angle) * 1.4f, 4.85f, Mathf.Sin(angle) * 1.4f); sb.Solid.Box(pos, new Vector3(0.2f, 0.02f, 0.6f), ZoneKit.M(new Color(0.9f, 0.9f, 0.95f))); }`
+  Each box is ~0.2 m wide, 0.02 m tall, 0.6 m deep and uses a very light off‑white colour to suggest fresh snow. This adds period‑appropriate visual wear without altering colliders or interaction points and stays under the 12‑primitive limit.
