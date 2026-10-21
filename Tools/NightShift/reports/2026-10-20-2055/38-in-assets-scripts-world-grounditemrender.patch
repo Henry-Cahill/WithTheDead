@@ -1,0 +1,20 @@
+diff --git a/Assets/Scripts/World/GroundItemRenderer.cs b/Assets/Scripts/World/GroundItemRenderer.cs
+index ba3ad548..83688036 100644
+--- a/Assets/Scripts/World/GroundItemRenderer.cs
++++ b/Assets/Scripts/World/GroundItemRenderer.cs
+@@ -54,6 +54,7 @@ public sealed class GroundItemRenderer : MonoBehaviour
+         private readonly Plane[] _frustum = new Plane[6];
+         private Matrix4x4[] _batch = new Matrix4x4[BatchLimit];
+         private Vector3 _eye;
++        private Bounds _worldBounds;
+         private Camera _cachedMain;
+ 
+         private void OnEnable()
+@@ -74,6 +75,7 @@ private void LateUpdate()
+                 ? IsoCameraFollow.FocusPoint
+                 : cam.transform.position;
+             GeometryUtility.CalculateFrustumPlanes(cam, _frustum);
++            _worldBounds = new Bounds(_eye, Vector3.one * (DrawRadius * 2f + 10f));
+ 
+             Gather(_eye);
+             Draw(cam);

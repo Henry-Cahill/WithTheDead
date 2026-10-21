@@ -4596,12 +4596,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add a chrome cylinder around the box to act as a decorative rim (radius 0.017 m, height 0.005 m, aligned with the box’s top, centred at the same position).
   Optionally add a tiny ellipsoid of the same “chinа” colour to suggest a soap bar inside the dish (radius 0.008 m, centred 0.002 m above the dish top).
   - 21:42 landed by 0htsserver in 3.7 min: **Changed file:** `Assets/Scripts/World/FurnitureBuilder.Bathroom.cs`
-- [ ] In Assets/Scripts/World/GroundItemRenderer.cs: Cache the per‑frame world‑bounds struct in GroundItemRenderer to avoid recreating it for every material batch in Draw.
+- [!] In Assets/Scripts/World/GroundItemRenderer.cs: Cache the per‑frame world‑bounds struct in GroundItemRenderer to avoid recreating it for every material batch in Draw.
   Add a private field `private Bounds _worldBounds;` to store the bounds.
   In LateUpdate, after `_eye` is set, compute it once: `_worldBounds = new Bounds(_eye, Vector3.one * (DrawRadius * 2f + 10f));`.
   In Draw replace `worldBounds = new Bounds(_eye, Vector3.one * (DrawRadius * 2f + 10f)),` with `worldBounds = _worldBounds,`.
   The player sees exactly the same drawn items and culling behavior; the visual result is unchanged.
   Only the per‑frame allocation of a Bounds struct per material sub‑mesh is eliminated, reducing GC pressure.
+  - 22:19 failed (spark, 39.5 min); see reports/2026-10-20-2055.md
 - [x] Edit Assets/Scripts/World/Map/KentuckyMap.Ground.cs, in the `BuildStreets` method, add a thin overlay‑ribbon for plain asphalt roads so the pavement looks a bit worn and not perfectly uniform.
   Locate the line `Ribbon(site.Town.Out, piece, width, StreetY, surf);`.
   Directly after it, insert a conditional that checks `if (surf == DecorMaterials.Asphalt)` and, when true, creates a new matte surface with a slightly lighter colour (e.g. `new Color(0.68f, 0.68f, 0.66f)`) via `DecorPalette.Matte`.
