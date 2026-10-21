@@ -4880,7 +4880,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   In the `BuildBuildings` method, after the `foreach` loop (and before the final `}`), insert a call to the helper that builds the eaves:
   `BuildRoofEaves(site);`
   This keeps all existing logic intact, provides the missing constants used by `BuildRoofEaves`, and ensures that every residential building (kind “house” or “trailer”) receives a thin wooden eave trim along its roof perimeter, matching the hand‑built raid town’s style.
-- [ ] Add a small “house‑number” plaque to the exterior side of each door frame built in `RaidBuilding.DrawDoorFrame` (Assets/Scripts/World/RaidBuilding.cs)
+- [x] Add a small “house‑number” plaque to the exterior side of each door frame built in `RaidBuilding.DrawDoorFrame` (Assets/Scripts/World/RaidBuilding.cs)
   In `DrawDoorFrame`, after the `for (int side = -1; side <= 1; side += 2)` casings loop, call `OutsideSide(r, o.Pos)` to find which side of the wall is outward.
   If the result (`extSide`) is non‑zero and `Rng.NextDouble() < 0.2` (≈20 % of doors), create a thin rectangular plaque:
   `Vector3 plaquePos = RunPoint(r, o.Pos, DoorHeight * 0.68f, extSide * (Half + 0.022f));`
@@ -4888,3 +4888,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   Plaque size is 0.12 m wide × 0.018 m tall × 0.008 m deep, placed just outside the door jamb at about 68 % of door height.
   The colour is a light worn‑paint tone distinct from the wood casing but re‑uses `DecorPalette.Matte`, so no new assets are required.
   Because the plaque is added via `p.Mesh.Box` it inherits the piece’s mesh and has no collider, preserving existing interaction zones.
+  - 23:14 landed by 1htsserver in 2 min: **Changed file**

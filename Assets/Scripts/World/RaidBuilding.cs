@@ -460,6 +460,14 @@ namespace CloneZ
                 p.Mesh.Box(RunPoint(r, o.B + 0.035f, (DoorHeight + 0.07f) * 0.5f, off), RunSize(r, 0.07f, DoorHeight + 0.07f, 0.024f), wood);
                 p.Mesh.Box(RunPoint(r, o.Pos, DoorHeight + 0.035f, off), RunSize(r, w + 0.14f, 0.07f, 0.024f), wood);
             }
+            // Possibly add a house‑number plaque on the exterior side of the door frame (≈20% of doors)
+            int extSide = OutsideSide(r, o.Pos);
+            if (extSide != 0 && Rng.NextDouble() < 0.2)
+            {
+                var plaqueSurf = DecorPalette.Matte(new Color(0.92f, 0.86f, 0.78f));
+                Vector3 plaquePos = RunPoint(r, o.Pos, DoorHeight * 0.68f, extSide * (Half + 0.022f));
+                p.Mesh.Box(plaquePos, RunSize(r, 0.12f, 0.018f, 0.008f), plaqueSurf);
+            }
             // Add subtle door handle on interior side (random slight X offset) and occasional rust spot
             for (int side = -1; side <= 1; side += 2)
             {
