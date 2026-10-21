@@ -124,6 +124,13 @@ namespace CloneZ
             m.Box(f.P(f.Mid, gy, across), f.Size(0.003f, glass, 0.006f), muntin);
             // horizontal muntin strip (≈3 mm tall, spans glass width)
             m.Box(f.P(f.Mid, gy, across), f.Size(w - 0.09f, 0.003f, 0.006f), muntin);
+            // Add wooden bead trim along top and bottom rails
+            Surf bead = DecorPalette.Matte(FurnitureBuilder.Pine);
+            float beadThickness = 0.003f;
+            // top rail bead
+            m.Box(f.P(f.Mid, y1 - topRail * 0.5f, across), f.Size(w - 0.09f, beadThickness, lower ? SashDepth + 0.005f : SashDepth), bead);
+            // bottom rail bead
+            m.Box(f.P(f.Mid, y0 + bottomRail * 0.5f, across), f.Size(w - 0.09f, beadThickness, lower ? SashDepth : SashDepth + 0.005f), bead);
             Surf brassCap = DecorPalette.Metal(FurnitureBuilder.Brass);
             for (int e = -1; e <= 1; e += 2)
                 m.Box(f.P(f.Mid + e * (w * 0.5f - 0.0225f), y1 - topRail * 0.5f, across), f.Size(0.015f, 0.015f, 0.01f), brassCap);
