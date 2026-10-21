@@ -4519,7 +4519,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 21:14 landed by 0htsserver in 4 min: Implemented robust flag handling for both `AccountProfile` and `CharacterProfile`:
 - [x] In Assets/Scripts/World/Zone/ZoneOverlays.cs, add a small rust‑stained latch on each shipping container hull (the “else” branch of the tank/container loop) to give the containers a worn‑out door detail.
   - 21:16 landed by 1htsserver in 2.8 min: **Summary**
-- [ ] In Assets/Scripts/Player/PlayerBuilder.cs: Reduce per‑frame allocations in `PlayerBuilder` by reusing a temporary `List<MeshRenderer>` for mesh‑bounds checks in `ConsiderMeshes<T>` (used during demolition evaluation)
+- [x] In Assets/Scripts/Player/PlayerBuilder.cs: Reduce per‑frame allocations in `PlayerBuilder` by reusing a temporary `List<MeshRenderer>` for mesh‑bounds checks in `ConsiderMeshes<T>` (used during demolition evaluation)
+  - 21:17 landed by hts-llm in 3.2 min: **Changes made**
 - [ ] Add a “Fluff the blankets” timed‑action to Assets/Scripts/World/Fixtures/BedFixture.cs that works like “Plump the pillows”.
 - [ ] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildParkedCars` to give each placed car a subtle, hand‑painted colour variation so the vehicle fleet looks less uniform and more period‑correct.
   Locate the line `DecorProps.Car(m, rng, kind, CarPaints[rng.Next(CarPaints.Length)], out Vector3 size);`.

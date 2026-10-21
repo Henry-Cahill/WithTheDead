@@ -75,8 +75,10 @@ public BuildSelection Selection { get; private set; } = BuildSelection.Barricade
 
         private GameObject _ghost;
         private Renderer _ghostRenderer;
-        private readonly Collider[] _overlapBuf = new Collider[16];
-        private readonly RaycastHit[] _rayBuf = new RaycastHit[32];
+private readonly Collider[] _overlapBuf = new Collider[16];
+    private readonly RaycastHit[] _rayBuf = new RaycastHit[32];
+    // Temporary list for mesh renderer components to avoid per‑frame allocations in ConsiderMeshes.
+    private readonly List<MeshRenderer> _meshRendererTmp = new List<MeshRenderer>(8);
 
         private static readonly Color GhostReady = new Color(0.35f, 0.9f, 0.4f, 1f);
         private static readonly Color GhostShort = new Color(0.9f, 0.7f, 0.25f, 1f);
@@ -325,10 +327,11 @@ public BuildSelection Selection { get; private set; } = BuildSelection.Barricade
                 if (c == null) continue;
                 Vector3 p = c.transform.position; p.y = 0f;
                 if ((p - me).sqrMagnitude > near * near) continue;
-                MeshRenderer[] rs = c.GetComponentsInChildren<MeshRenderer>();
-                if (rs.Length == 0) continue;
-                Bounds b = rs[0].bounds;
-                for (int r = 1; r < rs.Length; r++) b.Encapsulate(rs[r].bounds);
+                _meshRendererTmp.Clear();
+                c.GetComponentsInChildren<MeshRenderer>(_meshRendererTmp);
+                if (_meshRendererTmp.Count == 0) continue;
+                Bounds b = _meshRendererTmp[0].bounds;
+                for (int r = 1; r < _meshRendererTmp.Count; r++) b.Encapsulate(_meshRendererTmp[r].bounds);
                 if (!b.IntersectRay(ray, out float dist) || dist >= nearest) continue;
                 if (!WithinReach(ray.GetPoint(Mathf.Max(0f, dist)), me, reachSqr)) continue;
                 nearest = dist;
