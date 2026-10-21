@@ -6035,7 +6035,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Ensure the added path does not interfere with existing colliders (it sits just in front of the porch) and only appears for the listed residential building kinds.
   No other code, data formats, or files are changed. This gives each house a period‑correct, snowy‑season front step that matches CLONE‑Z’s hand‑built look.
   - 08:06 landed by hts-llm in 2.8 min: **Changed file**
-- [ ] Refactor the per‑frame polling in Assets/Scripts/World/Zone/ZoneWorld.cs → class ZoneRuntime, method Update, to a one‑time delayed start that eliminates the per‑frame `Update` overhead.
+- [x] Refactor the per‑frame polling in Assets/Scripts/World/Zone/ZoneWorld.cs → class ZoneRuntime, method Update, to a one‑time delayed start that eliminates the per‑frame `Update` overhead.
+  - 08:16 landed by 0htsserver in 2.6 min: **Changed files**
 - [ ] Add a “Read broadcast” action to Assets/Scripts/World/Fixtures/TvFixture.cs that lets the survivor listen to the next line of the current TV programme, persisting its cursor and resetting it when the channel changes.
   Step 1: Assets/Scripts/World/Fixtures/TvFixture.cs – add a field Locate the private fields near the top of the class. Insert: `private int _broadcastCursor; // position in the current programme’s script` (Quote of existing code: `private float _bright = 1f, _brightTarget = 1f, _flickerAt, _airCheckAt;` – the new line goes after it.)
   Step 2: Assets/Scripts/World/Fixtures/TvFixture.cs – initialise the cursor In `Create(...)` after `tv._name = displayName;` add: `tv._broadcastCursor = 0;`
