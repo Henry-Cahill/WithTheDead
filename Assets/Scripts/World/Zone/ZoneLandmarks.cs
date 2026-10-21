@@ -308,7 +308,7 @@ namespace CloneZ
                 // Subtle moss clump on the top edge of the stone column
                 float mossYaw = ZoneKit.R(sb.Rng, -5f, 5f);
                 float off = ZoneKit.R(sb.Rng, 0.02f, 0.06f);
-                sb.Solid.Box(c + Vector3.up * (h - 0.05f) + new Vector3(off * Mathf.Cos(mossYaw * Mathf.Deg2Rad), 0f, off * Mathf.Sin(mossYaw * Mathf.Deg2Rad)),
+                sb.Solid.Box(c + Vector3.up * (h + 0.01f) + new Vector3(off * Mathf.Cos(mossYaw * Mathf.Deg2Rad), 0f, off * Mathf.Sin(mossYaw * Mathf.Deg2Rad)),
                     new Vector3(0.12f, 0.02f, 0.12f),
                     ZoneKit.M(ZoneKit.V(new Color(0.15f, 0.25f, 0.12f), sb.Rng, 0.01f)));
             }
