@@ -4872,3 +4872,18 @@ you want to see in game. Indent extra lines under a task to add detail.
   The player’s avatar will still show the same hammer, trowel and watering‑can models when building, digging or watering, but the per‑frame dictionary look‑ups are eliminated, reducing CPU time and GC pressure.
   - 23:11 landed by 0htsserver in 1.7 min: **Changed files**
 - [ ] Add a “Turn off tap and pull plug” action to Assets/Scripts/World/Fixtures/KitchenSink.cs that lets the player stop the running tap and immediately pull the plug in one step, showing a notification and updating water flow.
+- [ ] Modify Assets/Scripts/World/Map/KentuckyMap.Buildings.cs to add eave trim generation for residential roofs.
+  Add two new constant fields after the existing `MaxContainers` declaration:
+  `private const float EaveHeight = 0.12f;` // height of the eave trim piece
+  `private const float EaveDepth = 0.20f;` // depth outward from the roof edge
+  In the `BuildBuildings` method, after the `foreach` loop (and before the final `}`), insert a call to the helper that builds the eaves:
+  `BuildRoofEaves(site);`
+  This keeps all existing logic intact, provides the missing constants used by `BuildRoofEaves`, and ensures that every residential building (kind “house” or “trailer”) receives a thin wooden eave trim along its roof perimeter, matching the hand‑built raid town’s style.
+- [ ] Add a small “house‑number” plaque to the exterior side of each door frame built in `RaidBuilding.DrawDoorFrame` (Assets/Scripts/World/RaidBuilding.cs)
+  In `DrawDoorFrame`, after the `for (int side = -1; side <= 1; side += 2)` casings loop, call `OutsideSide(r, o.Pos)` to find which side of the wall is outward.
+  If the result (`extSide`) is non‑zero and `Rng.NextDouble() < 0.2` (≈20 % of doors), create a thin rectangular plaque:
+  `Vector3 plaquePos = RunPoint(r, o.Pos, DoorHeight * 0.68f, extSide * (Half + 0.022f));`
+  `p.Mesh.Box(plaquePos, RunSize(r, 0.12f, 0.018f, 0.008f), DecorPalette.Matte(new Color(0.92f, 0.86f, 0.78f)));`
+  Plaque size is 0.12 m wide × 0.018 m tall × 0.008 m deep, placed just outside the door jamb at about 68 % of door height.
+  The colour is a light worn‑paint tone distinct from the wood casing but re‑uses `DecorPalette.Matte`, so no new assets are required.
+  Because the plaque is added via `p.Mesh.Box` it inherits the piece’s mesh and has no collider, preserving existing interaction zones.
