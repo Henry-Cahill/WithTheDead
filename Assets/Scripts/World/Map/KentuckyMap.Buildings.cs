@@ -249,16 +249,33 @@ BuildRoofEaves(site);
                 float s = step * (k + 0.5f);
                 if (doorAt >= 0f && Mathf.Abs(s - doorAt) < 1.5f) continue;
                 Vector2 at = a + d * s + outward * 0.012f;
-                for (float y = 1.55f; y + 0.7f < height; y += Storey)
-                {
-                    Vector3 c = To3(at, y);
-                    RaidMesh m = y < GroundStorey ? site.Town.Out.Solid(c) : site.Overhead.At(c);
-                    m.Upright(c, normal, 1.0f, 1.15f, Glass);
-float sillHeight = 0.08f;
-float sillDepth = 0.02f + 0.02f * (float)rng.NextDouble(); // slight random variation
-var sillCenter = To3(at, y - sillHeight * 0.5f);
-var sillSize = new Vector3(1.0f, sillHeight, sillDepth);
-site.Town.Out.Solid(sillCenter).Box(sillCenter, sillSize, outside);
+            for (float y = 1.55f; y + 0.7f < height; y += Storey)
+            {
+                Vector3 c = To3(at, y);
+                RaidMesh m = y < GroundStorey ? site.Town.Out.Solid(c) : site.Overhead.At(c);
+                m.Upright(c, normal, 1.0f, 1.15f, Glass);
+                float sillHeight = 0.08f;
+                float sillDepth = 0.02f + 0.02f * (float)rng.NextDouble(); // slight random variation
+                var sillCenter = To3(at, y - sillHeight * 0.5f);
+                var sillSize = new Vector3(1.0f, sillHeight, sillDepth);
+                site.Town.Out.Solid(sillCenter).Box(sillCenter, sillSize, outside);
+
+                // Add simple wooden shutters on each side of the window (outside face)
+                const float shutterWidth = 0.26f;
+                const float shutterDepth = 0.03f;
+                float shutterHeight = Storey - 0.2f; // approximate window height
+                // offset from window centre to place shutters
+                float offset = 0.5f * 1.0f + 0.07f + shutterWidth * 0.5f;
+                // outward offset so shutters sit slightly in front of the wall
+                Vector3 outward3 = To3(outward, 0f);
+                Vector3 basePos = To3(at, y);
+                // first shutter on +d side
+                Vector3 center1 = basePos + new Vector3(d.x, 0f, d.y) * offset + outward3 * (Thick * 0.5f + shutterDepth * 0.5f);
+                // second shutter on -d side
+                Vector3 center2 = basePos - new Vector3(d.x, 0f, d.y) * offset + outward3 * (Thick * 0.5f + shutterDepth * 0.5f);
+                var shutterSize = new Vector3(shutterWidth, shutterHeight, shutterDepth);
+                site.Town.Out.Solid(center1).Box(center1, shutterSize, outside);
+                site.Town.Out.Solid(center2).Box(center2, shutterSize, outside);
                 }
             }
         }
