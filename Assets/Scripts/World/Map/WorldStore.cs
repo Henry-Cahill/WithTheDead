@@ -68,6 +68,24 @@ namespace CloneZ
     /// <summary>One published build of the real-world map: its manifest, its named places and its regions.</summary>
     public sealed class MapBuild
         {
+            /// <summary>
+            /// Determine if a road segment should get painted lane markings.
+            /// Deterministic based on the build ID and the segment ID.
+            /// Approximately 50 % of road pieces receive markings.
+            /// </summary>
+            public bool HasRoadMarkings(long segmentId)
+            {
+                unchecked
+                {
+                    uint hash = (uint)segmentId ^ 0xA1B2C3D4u;
+                    hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
+                    return (hash % 100) < 50; // 50% chance
+                }
+            }
+
+            private const float RoadMarkingThickness = 0.03f; // 3 cm thick painted strip
+
+            internal float GetRoadMarkingThickness() => RoadMarkingThickness;
             /// <summary>Determine if a building should get a thin snow layer on its roof.
             /// Deterministic based on the build ID and the building ID.
             /// Approximately 30% of roofs receive snow.</summary>
