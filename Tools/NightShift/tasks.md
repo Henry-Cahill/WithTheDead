@@ -5751,7 +5751,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Cylinder(pc + new Vector3(0f, plateR, 0f), rivetR, rivetH, 8, chrome); // top`
   `m.Cylinder(pc + new Vector3(0f, -plateR, 0f), rivetR, rivetH, 8, chrome); // bottom`
   - 03:41 landed by 1htsserver in 1.9 min: Added four tiny chrome rivets around the mixer’s chrome plate in **FurnitureBuilder.Bathroom.cs**. After the existing plate cylinder, the ne
-- [ ] Fix missing damage‑scar overlay on item icons in Assets/Scripts/UI/InventoryUIController.List.cs
+- [x] Fix missing damage‑scar overlay on item icons in Assets/Scripts/UI/InventoryUIController.List.cs
   Update the `AddEntryRow` method to pass the item’s condition to `AddIcon` so the “damage scar” overlay can appear.
   Change the line
   `if (!sub) AddIcon(row, def, badge: e.Kind == EntryKind.Worn || e.InHand);`
@@ -5760,6 +5760,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   This supplies the current condition (`s.Condition01`) to `AddIcon`, which already creates a red overlay when `condition01 < 0.5f`.
   After this fix, items with low durability (below 50 %) will display the intended damage‑scar visual on their icon, matching the design used elsewhere.
   No other code changes are required; all other behavior and visuals remain unchanged.
+  - 04:03 landed by spark in 23.7 min: Done. COMPILE OK.
 - [x] In Assets/Scripts/World/Zone/ZoneCordon.cs: Add a small rusted bolt on the outer face of each fence post in `ZoneCordon.Build` for extra visual wear.
   - 03:43 landed by hts-llm in 1.9 min: **Changed files**
 - [x] In Assets/Scripts/World/Fixtures/TowelRail.cs, replace the two separate `Time.time` checks in `Update()` with a single cached value and combine the one‑second timers, removing the second property lookup per frame.
