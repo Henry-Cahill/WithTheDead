@@ -5763,3 +5763,8 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [x] In Assets/Scripts/World/Zone/ZoneCordon.cs: Add a small rusted bolt on the outer face of each fence post in `ZoneCordon.Build` for extra visual wear.
   - 03:43 landed by hts-llm in 1.9 min: **Changed files**
 - [ ] In Assets/Scripts/World/Fixtures/TowelRail.cs, replace the two separate `Time.time` checks in `Update()` with a single cached value and combine the one‑second timers, removing the second property lookup per frame.
+- [ ] Add an “Inspect cooler” action to Assets/Scripts/World/Fixtures/RaidStoreWaterCooler.cs that gives a short period‑correct description of the cooler.
+  In `RaidStoreWaterCooler.GetActions` insert `into.Add(new InteractAction("Inspect cooler", InspectCooler));` after the existing actions.
+  Create a private method `InspectCooler(InteractContext ctx)` that calls
+  `ctx.Notify("A dented plastic water cooler with a faded label; the jug looks like it survived the blackout.");`
+  Do not modify any other logic; keep the existing actions and fields unchanged.
