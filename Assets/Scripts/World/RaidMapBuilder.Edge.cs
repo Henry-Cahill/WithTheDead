@@ -48,7 +48,33 @@ namespace CloneZ
             Prop(town, new Vector3(-EdgeLine + 0.3f, 0f, 0f), 90f, new Vector3(8f, 1.1f, 0.3f), true, (m, r) =>
             {
                 Surf wood = DecorPalette.Matte(new Color(0.40f, 0.32f, 0.22f));
-                for (int i = -4; i <= 4; i++) m.Box(new Vector3(i * 1.0f, 0.55f, 0f), new Vector3(0.12f, 1.1f, 0.12f), wood);
+                for (int i = -4; i <= 4; i++)
+{
+    m.Box(new Vector3(i * 1.0f, 0.55f, 0f), new Vector3(0.12f, 1.1f, 0.12f), wood);
+    // Detailed visual upgrade for the centre post of the wooden low‑barrier – metal cap, rust, rope loop,
+    // paint streaks, and a faded sign to give a lived‑in, winter‑weathered look.
+    if (i == 0)
+    {
+        // 1️⃣ Metal cap on top of the centre post (0.14 m × 0.02 m × 0.14 m)
+        Surf metalCap = DecorPalette.Metal(new Color(0.50f, 0.45f, 0.40f));
+        m.Box(new Vector3(0f, 1.11f, 0f), new Vector3(0.14f, 0.02f, 0.14f), metalCap);
+        // 2️⃣ Small rust patch at the base of the centre post (0.20 m × 0.02 m × 0.02 m)
+        Surf rust = DecorPalette.Matte(new Color(0.55f, 0.30f, 0.20f));
+        m.Box(new Vector3(0f, 0.01f, 0f), new Vector3(0.20f, 0.02f, 0.02f), rust);
+        // 3️⃣ Thin rope‑loop around the post at mid‑height (cylinder, radius 0.04 m, height 0.04 m)
+        Surf rope = DecorPalette.Matte(new Color(0.28f, 0.22f, 0.18f));
+        m.Cylinder(new Vector3(0f, 0.70f, 0f), 0.04f, 0.04f, 6, rope);
+        // 4️⃣ Two weathered paint streaks on the lower horizontal beam (each 0.02 m × 0.005 m × 0.08 m)
+        Surf streak = DecorPalette.Matte(new Color(0.35f, 0.28f, 0.20f));
+        // left streak
+        m.Box(new Vector3(-0.30f, 0.96f, 0f), new Vector3(0.02f, 0.005f, 0.08f), streak);
+        // right streak
+        m.Box(new Vector3(0.30f, 0.96f, 0f), new Vector3(0.02f, 0.005f, 0.08f), streak);
+        // 5️⃣ A faded wooden “hand‑sign” hanging from the centre post (0.60 m × 0.80 m × 0.02 m)
+        Surf signWood = DecorPalette.Matte(new Color(0.38f, 0.32f, 0.24f));
+        m.Box(new Vector3(0.35f, 1.25f, 0f), new Vector3(0.60f, 0.80f, 0.02f), signWood);
+    }
+}
                 m.Box(new Vector3(0f, 0.95f, 0f), new Vector3(8.2f, 0.1f, 0.08f), wood);
                 m.Box(new Vector3(0f, 0.55f, 0f), new Vector3(8.2f, 0.1f, 0.08f), wood);
                 m.Box(new Vector3(0f, 1.03f, 0f), new Vector3(8.0f, 0.05f, 0.1f), DecorPalette.Matte(DecorProps.SnowWhite));
