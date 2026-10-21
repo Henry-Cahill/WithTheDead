@@ -30,6 +30,11 @@ namespace CloneZ
             "A faint whiff of bleach drifts from the disinfectant bottle beside the sink, stinging your nose.",
             "Your breath forms clouds in the cold air, and the water leaves a thin film you scrape off with a rough towel.",
             "You recall the faded poster above warning of proper hand decontamination, its cracked letters guiding each motion.",
+            "The yellowed 1993 health‑poster lists nine steps, each a reminder that an infection waits for a single missed scrub.",
+            "A bitter winter draft seeps through the cracked glass, chilling your skin as you scrub and making the water sting like ice.",
+            "You crush ash and pine resin into a gritty paste, a makeshift soap that foams and burns your palms.",
+            "The ticking timer on the wall urges you to finish before infection spreads.",
+            "The basin’s steel walls reverberate each scrub, a hollow clang that seems to echo the dying breaths of discarded patients.",
 
         };
 
