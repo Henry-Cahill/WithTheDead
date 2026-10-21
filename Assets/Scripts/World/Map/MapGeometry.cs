@@ -212,14 +212,23 @@ namespace CloneZ
             new Color(0.60f,0.52f,0.47f)
         };
 
-        // Road surface colour palette – deterministic variation based on OSM id.
-        private static readonly Color[] kRoadPalette = new[]
-        {
-            new Color(0.55f, 0.55f, 0.50f), // faded asphalt
-            new Color(0.45f, 0.40f, 0.35f), // weathered gravel
-            new Color(0.60f, 0.45f, 0.30f), // dirt‑road brown
-            new Color(0.70f, 0.65f, 0.55f)  // light‑gray concrete
-        };
+// Road surface colour palette – deterministic variation based on OSM id.
+         private static readonly Color[] kRoadPalette = new[]
+         {
+             new Color(0.55f, 0.55f, 0.50f), // faded asphalt
+             new Color(0.45f, 0.40f, 0.35f), // weathered gravel
+             new Color(0.60f, 0.45f, 0.30f), // dirt‑road brown
+             new Color(0.70f, 0.65f, 0.55f)  // light‑gray concrete
+         };
+
+         // Sidewalk colour palette – deterministic variation based on OSM id.
+         private static readonly Color[] kSidewalkPalette = new[]
+         {
+             new Color(0.70f, 0.68f, 0.65f), // muted concrete gray 1
+             new Color(0.62f, 0.60f, 0.57f), // muted concrete gray 2
+             new Color(0.54f, 0.52f, 0.49f), // muted concrete gray 3
+             new Color(0.46f, 0.44f, 0.41f)  // muted concrete gray 4
+         };
         /// <summary>
         /// Deterministic colour for a building based on its OSM id.
         /// </summary>
@@ -237,12 +246,12 @@ namespace CloneZ
         }
 
         /// <summary>
-        /// Deterministic colour for a road based on its OSM id.
+        /// Deterministic colour for a sidewalk based on its OSM id.
         /// </summary>
-        public static Color GetRoadColor(int osmId)
+        public static Color GetSidewalkColor(int osmId)
         {
-            int idx = (osmId.GetHashCode() & 0x7fffffff) % kRoadPalette.Length;
-            return kRoadPalette[idx];
+            int idx = (osmId.GetHashCode() & 0x7fffffff) % kSidewalkPalette.Length;
+            return kSidewalkPalette[idx];
         }
 
         private static bool Inside(Vector2 p, Rect r, int edge)

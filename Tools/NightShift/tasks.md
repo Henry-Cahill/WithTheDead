@@ -5494,12 +5494,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `notes.Add("The roof’s pine beams creak under the weight of ice, sighing with each gust.");`
   `notes.Add("A thin ribbon of coal‑smoke curls from the stove, mingling with the crisp winter air.");`
   - 02:28 landed by 0htsserver in 2 min: Implemented five new winter‑theme flavor notes in **Assets/Scripts/Economy/Hideout.cs**. The notes are added directly after the existing win
-- [ ] In Assets/Scripts/World/Map/MapGeometry.cs add a deterministic sidewalk colour palette and accessor so side‑walk polygons can get a period‑appropriate hue per OSM id, matching the existing road‑colour system.
+- [x] In Assets/Scripts/World/Map/MapGeometry.cs add a deterministic sidewalk colour palette and accessor so side‑walk polygons can get a period‑appropriate hue per OSM id, matching the existing road‑colour system.
   After the existing `kRoadPalette` field, insert a new private static readonly array `kSidewalkPalette` with four muted concrete‑gray colours (e.g. `new Color(0.70f,0.68f,0.65f)`, `new Color(0.62f,0.60f,0.57f)`, `new Color(0.54f,0.52f,0.49f)`, `new Color(0.46f,0.44f,0.41f)`).
   Add a public static method `GetSidewalkColor(int osmId)` that selects an index by `osmId.GetHashCode() & 0x7fffffff` modulo the palette length and returns the colour at that index, mirroring `GetRoadColor`.
   Ensure the method is placed after `GetRoadColor` and follows the same XML‑summary comment style: “Deterministic colour for a sidewalk based on its OSM id.”
   No other code changes; colliders, geometry and existing palettes stay unchanged.
   After this change, side‑walk meshes built from map data will render with subtle colour variety instead of a single flat tone, giving the raid town a more hand‑painted look.
+  - 02:28 landed by 1htsserver in 2.2 min: All changes compile successfully.Implemented deterministic sidewalk colour support:
 - [ ] Add a thin metal hinge‑plate to each closed locker door in `Assets/Scripts/World/FurnitureBuilder.cs` → `FurnitureBuilder.LockerBank(RaidMesh m, System.Random rng, int count, Color body)` so the lockers show a period‑correct hinge detail.
   After the line that adds the pull‑handle (`m.Box(new Vector3(x, 1.25f, 0.235f), new Vector3(0.02f, 0.12f, 0.005f), Mt(Chrome));`) insert a new box representing a hinge plate.
   Position it 0.025 m left of the handle, same height, and flush with the door front: `new Vector3(x - 0.025f, 1.25f, 0.235f)`.
