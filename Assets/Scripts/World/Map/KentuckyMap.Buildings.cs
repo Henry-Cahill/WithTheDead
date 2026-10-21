@@ -131,6 +131,21 @@ namespace CloneZ
                 if (height > groundTop)
                     Wall(site, a, d, inset, -Thick * 0.5f, len + Thick * 0.5f, groundTop, height, yaw, outside, false);
                 if (b.kind != "ruin" && b.kind != "silo") Windows(site, a, d, outward, len, height, i == door ? len * 0.5f : -1f, rng, outside);
+
+                // Add low wooden rail fence for residential buildings (house, trailer, apartments, hotel)
+                if (b.kind == "house" || b.kind == "trailer" || b.kind == "apartments" || b.kind == "hotel")
+                {
+                    if (i == door) continue; // skip door segment to keep opening
+                    const float railHeight = 0.08f;
+                    const float railThickness = 0.04f;
+                    // Position rail just outside the wall edge
+                    Vector3 railCenter = To3(a + d * ((len) * 0.5f), railHeight * 0.5f) +
+                                         new Vector3(outward.x, 0f, outward.y) * (Thick * 0.5f + railThickness * 0.5f);
+                    Vector3 railSize = new Vector3(len, railHeight, railThickness);
+                    var railMat = DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f));
+                    site.Town.Out.Solid(railCenter).Box(railCenter, railSize, yaw, railMat);
+                    site.Town.PropCollider(railCenter, railSize, yaw);
+                }
             }
             // Add a simple door knob to every entrance
             if (door >= 0)
