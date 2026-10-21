@@ -265,28 +265,29 @@ var handle = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
                      plate.transform.localScale = new Vector3(0.06f, 0.02f, 0.01f);
                      if (rend != null) plate.GetComponent<Renderer>().sharedMaterial = rend.sharedMaterial;
 
-                 // Add wooden latch to windows
-                 if (s.Type == BuildPieceType.Window)
-                 {
-                     UnityEngine.Random.InitState(StarterHome.SlotSeed(s.Type, s.X, s.Z));
-                     var latch = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                     latch.name = "Latch";
-                     latch.transform.SetParent(piece.transform, false);
-                     Vector3 latchOffset = s.Yaw switch
-                     {
-                         0f => new Vector3(0.35f, 0.9f, 0f),
-                         90f => new Vector3(0f, 0.9f, 0.35f),
-                         180f => new Vector3(-0.35f, 0.9f, 0f),
-                         270f => new Vector3(0f, 0.9f, -0.35f),
-                         _ => new Vector3(0.35f, 0.9f, 0f)
-                     };
-                     latch.transform.localPosition = latchOffset;
-                     latch.transform.localScale = new Vector3(0.04f, 0.02f, 0.01f);
-                     // Optional: copy material from door if available
-                     if (rend != null) latch.GetComponent<Renderer>().sharedMaterial = rend.sharedMaterial;
-                 }
+}
+                    
+                    // Add wooden latch to windows
+                    if (s.Type == BuildPieceType.Window)
+                    {
+                        UnityEngine.Random.InitState(StarterHome.SlotSeed(s.Type, s.X, s.Z));
+                        var latch = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                        latch.name = "Latch";
+                        latch.transform.SetParent(piece.transform, false);
+                        Vector3 latchOffset = s.Yaw switch
+                        {
+                            0f => new Vector3(0.35f, 0.9f, 0f),
+                            90f => new Vector3(0f, 0.9f, 0.35f),
+                            180f => new Vector3(-0.35f, 0.9f, 0f),
+                            270f => new Vector3(0f, 0.9f, -0.35f),
+                            _ => new Vector3(0.35f, 0.9f, 0f)
+                        };
+                        latch.transform.localPosition = latchOffset;
+                        latch.transform.localScale = new Vector3(0.04f, 0.02f, 0.01f);
+                        var rend = piece.GetComponentInChildren<Renderer>();
+                        if (rend != null) latch.GetComponent<Renderer>().sharedMaterial = rend.sharedMaterial;
+                    }
                 }
-            }
             LootContainer.Spawn(world, ContainerType.Crate, CrateSpot, 7777);
         }
 
