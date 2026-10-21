@@ -4767,3 +4767,4 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [x] In Assets/Scripts/UI/UIFader.cs: Update `UIFader.Update()` to stop the per‑frame check using exact float equality and the unnecessary null guard; use `Mathf.Approximately` with a small tolerance and assume `_group` is never null after `Awake`.
   - 22:37 landed by 1htsserver in 1.5 min: **Changed**: `Assets/Scripts/UI/UIFader.cs` – Updated `UIFader.Update()` to:
 - [ ] In Assets/Scripts/World/Fixtures/TowelRail.cs: Add a “Check towel dryness” action to `TowelRail.GetActions` that tells the survivor how long until the towel is fully dry, using the existing `_dryAt` field and `TimeOfDay.Now`.
+- [ ] In Assets/Scripts/World/Fixtures/RaidCivicFridge.cs, append five new sentences to the `ClinicLeaflets` array (class `CivicReading`), keeping the existing entries unchanged; the player will find these extra leaflets on the clinic’s bookcase and read them when leaf‑throughing.
