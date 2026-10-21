@@ -4705,3 +4705,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(fp + new Vector3(0.02f, 0.02f, 0f), new Vector3(0.008f, 0.012f, 0.008f), M(new Color(0.80f, 0.10f, 0.10f)));` // hot (red) handle
   `m.Box(fp + new Vector3(-0.02f, 0.02f, 0f), new Vector3(0.008f, 0.012f, 0.008f), M(new Color(0.10f, 0.30f, 0.80f)));` // cold (blue) handle
   Result: the sink now has a period‑correct chrome faucet with tiny red and blue lever handles, adding visual realism without altering colliders, interaction points, or existing geometry.
+- [ ] Fix duplicate garrison spawns in Assets/Scripts/AI/Humans/Outposts.cs (method `Outpost.SpawnGarrison`)
