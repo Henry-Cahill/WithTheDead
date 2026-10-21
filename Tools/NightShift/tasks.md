@@ -5741,3 +5741,22 @@ you want to see in game. Indent extra lines under a task to add detail.
   `else ctx.Notify("The washing machine is silent, only the faint creak of the door remains.");`
   Use the existing fields `_running` and the property `Spinning`; no new UI screens or assets are required.
   - 03:38 landed by 1htsserver in 1.9 min: **Changes made**
+- [ ] Add four tiny chrome rivets around the mixer’s chrome plate in Assets/Scripts/World/FurnitureBuilder.Bathroom.cs, method `ShowerStall`
+  *Locate the plate creation:* `m.Cylinder(new Vector3(ShowerLeverPivot.x, ShowerLeverPivot.y, -0.42f), 0.06f, 0.008f, 16, chrome, Quaternion.Euler(90f, 0f, 0f));`
+  After that line, place four rivets using the same `chrome` material:
+  `float rivetR = 0.004f; float rivetH = 0.006f; float plateR = 0.06f - 0.005f;`
+  `Vector3 pc = new Vector3(ShowerLeverPivot.x, ShowerLeverPivot.y, -0.42f);`
+  `m.Cylinder(pc + new Vector3( plateR, 0f, 0f), rivetR, rivetH, 8, chrome); // right`
+  `m.Cylinder(pc + new Vector3(-plateR, 0f, 0f), rivetR, rivetH, 8, chrome); // left`
+  `m.Cylinder(pc + new Vector3(0f, plateR, 0f), rivetR, rivetH, 8, chrome); // top`
+  `m.Cylinder(pc + new Vector3(0f, -plateR, 0f), rivetR, rivetH, 8, chrome); // bottom`
+- [ ] Fix missing damage‑scar overlay on item icons in Assets/Scripts/UI/InventoryUIController.List.cs
+  Update the `AddEntryRow` method to pass the item’s condition to `AddIcon` so the “damage scar” overlay can appear.
+  Change the line
+  `if (!sub) AddIcon(row, def, badge: e.Kind == EntryKind.Worn || e.InHand);`
+  to
+  `if (!sub) AddIcon(row, def, badge: e.Kind == EntryKind.Worn || e.InHand, s.Condition01);`
+  This supplies the current condition (`s.Condition01`) to `AddIcon`, which already creates a red overlay when `condition01 < 0.5f`.
+  After this fix, items with low durability (below 50 %) will display the intended damage‑scar visual on their icon, matching the design used elsewhere.
+  No other code changes are required; all other behavior and visuals remain unchanged.
+- [ ] In Assets/Scripts/World/Zone/ZoneCordon.cs: Add a small rusted bolt on the outer face of each fence post in `ZoneCordon.Build` for extra visual wear.
