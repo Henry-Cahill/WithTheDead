@@ -5403,3 +5403,25 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Cylinder(ringPos, 0.165f, 0.004f, 12, Mt(Chrome), Quaternion.Euler(90f, 0f, 0f));`
   Result: each stool will show a subtle metal band encircling the legs just under the cushion, adding period‑correct detail without altering colliders or interaction points.
   - 02:05 landed by 0htsserver in 2.1 min: Implemented a subtle chrome foot‑ring for the shop stool:
+- [ ] Add a faded “hand‑painted label” to the rain barrel in Assets/Scripts/World/WaterSource.cs → `WaterSource.BuildBarrel`.
+  Use the existing `strapRand` (`new System.Random(1993)`) to pick a random angle.
+  Insert the new code right after the line
+  `m.Cylinder(new Vector3(0f, h * 0.5f, 0f), r + 0.015f, 0.008f, 16, DecorPalette.Matte(strapColor));`
+  Add:
+  `float labelAngle = (float)(strapRand.NextDouble() * Mathf.PI * 2.0);`
+  `Vector3 labelPos = new Vector3(Mathf.Sin(labelAngle) * (r + 0.012f), 0.6f, Mathf.Cos(labelAngle) * (r + 0.012f));`
+  `m.Box(labelPos, new Vector3(0.08f, 0.02f, 0.001f), DecorPalette.Matte(new Color(0.78f, 0.71f, 0.55f)));`
+  The box is ~0.08 m × 0.02 m × 0.001 m, placed at mid‑height (≈0.6 m) on the barrel side, coloured a faded brownish‑off‑white to resemble an old hand‑painted label, adding period‑appropriate visual detail with only one extra primitive.
+- [ ] Cache the Keyboard lookup in `RaidSummaryUI.Update` to avoid a per‑frame `Keyboard.current` search (Assets/Scripts/Extraction/RaidSummaryUI.cs)
+  Add a private field `private Keyboard _cachedKeyboard;` to the class.
+  In `Awake()` set `_cachedKeyboard = Keyboard.current;`.
+  In `Update()` replace `Keyboard kb = Keyboard.current;` with:
+  `if (_cachedKeyboard == null) _cachedKeyboard = Keyboard.current;`
+  `Keyboard kb = _cachedKeyboard;`.
+  This caches the InputSystem singleton lookup, eliminating the per‑frame reflection‑style search.
+  The UI behavior (responding to Enter/NumpadEnter after `KeyDelay`) stays identical, and the visual report is unchanged.
+- [ ] Add a “Knock on the safe” action to `Assets/Scripts/World/Fixtures/RaidStoreSafe.cs` in the `RaidStoreSafe.GetActions` method, inserting it after the existing `into.Add(new InteractAction("Listen at the door", c => c.Notify(Listening[_listened++ % Listening.Length])));` line.
+  Add the line: `into.Add(new InteractAction("Knock on the safe", c => { MakeNoise(CloneZConfig.RaidSafeDialNoise); c.Notify("Your knuckles rattle the steel. Nothing else happens."); }));`
+  This uses the already‑available `MakeNoise` method and the `CloneZConfig.RaidSafeDialNoise` constant.
+  In‑game the player will see a new "[E] Knock on the safe" option; selecting it will produce a metallic knock sound and display the notification “Your knuckles rattle the steel. Nothing else happens.”
+  No other code, fields, or UI elements are changed.
