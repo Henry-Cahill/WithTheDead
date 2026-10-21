@@ -4871,7 +4871,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace the `ItemDatabase.Get` calls in `RefreshHeld` with the cached fields (`_hammerDef`, `_trowelDef`, `_wateringCanDef`).
   The player’s avatar will still show the same hammer, trowel and watering‑can models when building, digging or watering, but the per‑frame dictionary look‑ups are eliminated, reducing CPU time and GC pressure.
   - 23:11 landed by 0htsserver in 1.7 min: **Changed files**
-- [ ] Add a “Turn off tap and pull plug” action to Assets/Scripts/World/Fixtures/KitchenSink.cs that lets the player stop the running tap and immediately pull the plug in one step, showing a notification and updating water flow.
+- [x] Add a “Turn off tap and pull plug” action to Assets/Scripts/World/Fixtures/KitchenSink.cs that lets the player stop the running tap and immediately pull the plug in one step, showing a notification and updating water flow.
+  - 23:12 landed by hts-llm in 2.3 min: **Changes Made**
 - [ ] Modify Assets/Scripts/World/Map/KentuckyMap.Buildings.cs to add eave trim generation for residential roofs.
   Add two new constant fields after the existing `MaxContainers` declaration:
   `private const float EaveHeight = 0.12f;` // height of the eave trim piece
