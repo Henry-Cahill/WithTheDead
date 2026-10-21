@@ -224,8 +224,48 @@ for (float x = -len * 0.5f; x <= len * 0.5f; x += 4f)
                     Color c = ZoneKit.V(rng.NextDouble() < 0.5 ? new Color(0.35f, 0.17f, 0.12f) : new Color(0.20f, 0.30f, 0.38f), rng);
                     sb.Solid.Box(new Vector3(0f, 1.3f, 0f), new Vector3(6f, 2.6f, 2.44f), ZoneKit.Mt(c));
                     // Add rust‑stained rivet heads on the container hull for visual wear
-                    int rivetCount = rng.Next(2, 6);
-                    for (int r = 0; r < rivetCount; r++)
+int rivetCount = rng.Next(2, 6);
+for (int r = 0; r < rivetCount; r++)
+{
+    float offsetX = (float)rng.NextDouble() * 5.5f - 2.75f; // –2.75 .. 2.75 m
+    float offsetY = (float)rng.NextDouble() * 2.4f + 0.1f; // 0.1 .. 2.5 m
+    Vector3 rivPos = new Vector3(offsetX, offsetY, 1.22f + 0.01f);
+    sb.Solid.Cylinder(rivPos, 0.01f, 0.015f, 8, ZoneKit.Mt(ZoneKit.RustDark));
+}
+
+// Door panel – thin box flush with front face, slightly offset outward
+Vector3 doorPos = new Vector3(0f, 1.3f, 1.22f + 0.02f);
+Vector3 doorSize = new Vector3(5.8f, 2.5f, 0.04f); // width slightly inset, full height, thin depth
+sb.Solid.Box(doorPos, doorSize, ZoneKit.Mt(ZoneKit.RustDark));
+
+// Left hinge (bottom)
+Vector3 leftHingePos = doorPos + new Vector3(-doorSize.x * 0.5f + 0.08f, -doorSize.y * 0.5f + 0.06f, 0f);
+sb.Solid.Cylinder(leftHingePos, 0.02f, 0.04f, 8, ZoneKit.Mt(ZoneKit.RustDark));
+
+// Left hinge (top)
+Vector3 leftHingeTopPos = doorPos + new Vector3(-doorSize.x * 0.5f + 0.08f, doorSize.y * 0.5f - 0.06f, 0f);
+sb.Solid.Cylinder(leftHingeTopPos, 0.02f, 0.04f, 8, ZoneKit.Mt(ZoneKit.RustDark));
+
+// Right hinge (bottom)
+Vector3 rightHingePos = doorPos + new Vector3(doorSize.x * 0.5f - 0.08f, -doorSize.y * 0.5f + 0.06f, 0f);
+sb.Solid.Cylinder(rightHingePos, 0.02f, 0.04f, 8, ZoneKit.Mt(ZoneKit.RustDark));
+
+// Right hinge (top)
+Vector3 rightHingeTopPos = doorPos + new Vector3(doorSize.x * 0.5f - 0.08f, doorSize.y * 0.5f - 0.06f, 0f);
+sb.Solid.Cylinder(rightHingeTopPos, 0.02f, 0.04f, 8, ZoneKit.Mt(ZoneKit.RustDark));
+
+// Handle – small vertical box
+Vector3 handlePos = doorPos + new Vector3(doorSize.x * 0.5f - 0.12f, 0f, 0f);
+Vector3 handleSize = new Vector3(0.06f, 0.2f, 0.04f);
+sb.Solid.Box(handlePos, handleSize, ZoneKit.Mt(ZoneKit.RustDark));
+
+// Weathered label – thin rectangle, dark brown tint
+Vector3 labelPos = doorPos + new Vector3(0f, doorSize.y * 0.4f, 0.001f);
+Vector3 labelSize = new Vector3(3.2f, 0.08f, 0.02f);
+Color labelCol = ZoneKit.V(new Color(0.35f, 0.22f, 0.12f), rng, 0.04f); // muted brown
+sb.Solid.Box(labelPos, labelSize, ZoneKit.M(labelCol));
+int rCount = rng.Next(2, 6);
+for (int r = 0; r < rCount; r++)
                     {
                         float offsetX = (float)rng.NextDouble() * 5.5f - 2.75f; // –2.75 .. 2.75 m
                         float offsetY = (float)rng.NextDouble() * 2.4f + 0.1f; // 0.1 .. 2.5 m
