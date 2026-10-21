@@ -4214,13 +4214,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   side > 0 ? hw + 0.07f : -hw - 0.22f,
   0.051f,
   - 19:26 landed by 0htsserver in 3.5 min: **Changes made**
-- [ ] Add a “Check volume” action to Assets/Scripts/World/Fixtures/RaidCivicRadio.cs that lets the survivor see the current radio volume level.
+- [x] Add a “Check volume” action to Assets/Scripts/World/Fixtures/RaidCivicRadio.cs that lets the survivor see the current radio volume level.
   Add a new field `private Action<InteractContext> _checkVolume;` alongside the other action delegates.
   In `Awake()` assign `_checkVolume = ctx => ctx.Notify("Current volume: " + (_volume <= 0 ? "low." : _volume >= MaxVolume ? "loud. It carries a long way." : "medium."));`.
   In `GetActions` (inside the `_on` block) add `into.Add(new InteractAction("Check volume", _checkVolume).DisabledIf(!near, TooFar));` after the existing “Check channel” action.
   The action only reports the current `_volume`; it does not modify any other state.
   Keep all existing volume‑step actions (`Turn it up`, `Turn it down`) unchanged.
   No other files need to be edited.
+  - 19:31 landed by 0htsserver in 5.1 min: **Changed files**
 - [ ] Modify `KentuckyMap.Enterable` in Assets/Scripts/World/Map/KentuckyMap.Buildings.cs to add a simple front porch/stoop for residential buildings, using existing helpers and keeping colliders aligned.
   Declare local variables `float doorYaw = 0f;` and `Vector2 doorOutward = Vector2.zero;` at the start of the method.
   Inside the `if (i == door)` block, assign `doorYaw = yaw;` and `doorOutward = outward;` right after `doorPoint` is set.
