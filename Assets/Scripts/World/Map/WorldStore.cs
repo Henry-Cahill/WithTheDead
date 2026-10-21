@@ -16,6 +16,8 @@ namespace CloneZ
     {
         /// <summary>The environment variable that points the game at another copy of the store.</summary>
         public const string RootVariable = "CLONEZ_WORLD";
+        public const string KerbMaterialPath = "Materials/KerbConcrete";
+
 
         /// <summary>Where the store is on this machine.</summary>
         public static string Root
