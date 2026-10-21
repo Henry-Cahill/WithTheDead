@@ -5828,3 +5828,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   Create the moss with `sb.Solid.Box(c + Vector3.up * (h - 0.05f) + new Vector3(off * Mathf.Cos(mossYaw * Mathf.Deg2Rad), 0f, off * Mathf.Sin(mossYaw * Mathf.Deg2Rad)), new Vector3(0.12f, 0.02f, 0.12f), ZoneKit.M(ZoneKit.V(new Color(0.15f, 0.25f, 0.12f), sb.Rng, 0.01f)));` – size 0.12 m × 0.02 m × 0.12 m.
   This adds up to nine tiny moss patches, staying under the 12‑primitive limit, and uses the existing stone material palette with a green tint for period‑correct weathering.*
   - 06:44 landed by 0htsserver in 1.8 min: **Changed file**
+- [ ] Add a deterministic façade‑material helper to `MapBuilding` in `Assets/Scripts/World/Map/MapData.cs` so the map builder can choose a period‑appropriate wall finish (brick, wood‑siding, metal) per building.
