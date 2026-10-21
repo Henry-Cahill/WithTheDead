@@ -83,6 +83,16 @@ namespace CloneZ
             _agent = GetComponent<NavMeshAgent>();
             _renderer = GetComponentInChildren<Renderer>();
             _avatar = GetComponent<ZombieAvatar>();
+            // Cache self actor reference
+            _self = GetComponent<Actor>();
+            // Cache player and its components if present at startup
+            var gm = GameManager.Instance;
+            if (gm != null && gm.Player != null)
+            {
+                _player = gm.Player;
+                _playerController = _player.GetComponent<PlayerController>();
+                _playerSkills = _player.GetComponent<PlayerSkills>();
+            }
             _agent.updateRotation = false;
             _agent.stoppingDistance = CloneZConfig.ZombieAttackRange * 0.7f;
         }
@@ -188,9 +198,8 @@ namespace CloneZ
         {
             if (_state == State.Dead) return;
 
-            if (_player == null || _player.IsDead)
-                _player = GameManager.Instance != null ? GameManager.Instance.Player : null;
-            if (_self == null) _self = GetComponent<Actor>();
+            if (_player != null && _player.IsDead) _player = null;
+
 
             if (_state == State.Stagger) { TickStagger(); return; }
 
@@ -322,8 +331,7 @@ namespace CloneZ
             float radius = EffectiveVisionRadius() * Mathf.Lerp(0.55f, 1.15f, target.Visibility01);
             if (_player != null && target.transform == _player.transform)
             {
-                if (_playerController == null) _playerController = _player.GetComponent<PlayerController>();
-                if (_playerSkills == null) _playerSkills = _player.GetComponent<PlayerSkills>();
+
                 // A crouched survivor with Sneak skill is harder to notice (PZ getSneakSpotMod).
                 if (_playerSkills != null && _playerController != null && _playerController.IsSneaking)
                     radius = Mathf.Max(CloneZConfig.ZombieAttackRange + 0.5f, radius * _playerSkills.StealthVisionMult(true));

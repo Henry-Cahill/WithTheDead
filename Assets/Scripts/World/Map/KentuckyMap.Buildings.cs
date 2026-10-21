@@ -199,6 +199,19 @@ BuildRoofEaves(site);
                 site.Town.Out.Solid(porchCenter).Box(porchCenter, porchSize, doorYaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
             }
 
+            // Add short concrete stepping‑stone path for residential buildings (house, trailer, apartments, hotel)
+            if (door >= 0 && (b.kind == "house" || b.kind == "trailer" || b.kind == "apartments" || b.kind == "hotel"))
+            {
+                const float pathLength = 1.0f;
+                const float pathWidth = 0.3f;
+                const float pathHeight = 0.02f;
+                // Center positioned outward from door, after porch offset (0.4) plus half the path length
+                Vector3 pathCenter = To3(doorPoint + doorOutward * (0.4f + pathLength * 0.5f), 0.01f);
+                Vector3 pathSize = new Vector3(pathWidth, pathHeight, pathLength);
+                site.Town.Out.Solid(pathCenter).Box(pathCenter, pathSize, doorYaw, DecorMaterials.Concrete);
+                site.Town.PropCollider(pathCenter, pathSize, doorYaw);
+            }
+
             List<int> tris = MapGeometry.Triangulate(p);
             Vector3 middle = To3(f.Middle, 0f);
             RaidMesh floor = site.Town.Out.Flat(middle);

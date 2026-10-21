@@ -258,7 +258,12 @@ namespace CloneZ
         {
             get
             {
-                if (s_Instance == null) s_Instance = new GameObject("[ZonePeople]").AddComponent<HumanRunner>();
+                if (s_Instance == null)
+                {
+                    s_Instance = UnityEngine.Object.FindObjectOfType<HumanRunner>();
+                    if (s_Instance == null)
+                        s_Instance = new GameObject("[ZonePeople]").AddComponent<HumanRunner>();
+                }
                 return s_Instance;
             }
         }

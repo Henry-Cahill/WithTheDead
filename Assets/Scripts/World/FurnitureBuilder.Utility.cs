@@ -65,6 +65,16 @@ namespace CloneZ
                 m.Box(new Vector3(s * 0.46f, y, -0.1f), new Vector3(0.025f, 0.025f, 1.1f), Mt(white));
                 m.Box(new Vector3(s * 0.46f, y - 0.12f, -0.1f), new Vector3(0.025f, 0.025f, 1.1f), Mt(white));
             }
+            // metal end‑caps on the side‑rails (tiny chrome squares)
+            float railHalfLength = 0.55f; // half of the rail length (1.1 m)
+            foreach (float side in new[] { -1f, 1f })
+            {
+                float y = side < 0 || Chance(rng, 0.5f) ? 0.8f : 0.6f;
+                // front end (positive Z)
+                m.Box(new Vector3(side * 0.46f, y, -0.1f + railHalfLength), new Vector3(0.03f, 0.03f, 0.02f), Mt(Chrome));
+                // rear end (negative Z)
+                m.Box(new Vector3(side * 0.46f, y, -0.1f - railHalfLength), new Vector3(0.03f, 0.03f, 0.02f), Mt(Chrome));
+            }
             if (Chance(rng, 0.5))
                 m.Box(new Vector3(0.1f, 0.69f, 0.55f), new Vector3(0.7f, 0.05f, 0.8f), Yaw(R(rng, -10f, 10f)), M(V(new Color(0.55f, 0.62f, 0.66f), rng)));
         }
@@ -297,8 +307,10 @@ namespace CloneZ
             m.Box(new Vector3(0f, 0.97f, 0f), new Vector3(0.86f, 0.14f, 0.58f), M(c));
             m.Box(new Vector3(0f, 1.05f, -0.02f), new Vector3(0.8f, 0.03f, 0.52f), M(new Color(0.25f, 0.25f, 0.27f)));
             m.Box(new Vector3(-0.5f, 0.75f, 0f), new Vector3(0.14f, 0.02f, 0.36f), M(Paper));
-            m.Box(new Vector3(0.3f, 1.0f, 0.3f), new Vector3(0.2f, 0.05f, 0.03f), Gl(new Color(0.2f, 0.5f, 0.3f)));
-        }
+    m.Box(new Vector3(0.3f, 1.0f, 0.3f), new Vector3(0.2f, 0.05f, 0.03f), Gl(new Color(0.2f, 0.5f, 0.3f)));
+    Vector3 btnPos = new Vector3(0f, 1.0f, 0.31f) + new Vector3((float)rng.NextDouble()*0.01f-0.005f, (float)rng.NextDouble()*0.01f-0.005f, 0f);
+    m.Box(btnPos, new Vector3(0.02f, 0.02f, 0.004f), Mt(Chrome));
+}
 
         /// <summary>A dead pot plant: clay pot, dry soil and drooping brown stalks.</summary>
         public static void DeadPlant(RaidMesh m, System.Random rng, Vector3 at)

@@ -240,6 +240,7 @@ namespace CloneZ
         public static void ToiletSeat(RaidMesh m)
         {
             Surf seat = G(BathSeatWhite);
+            Surf chrome = Mt(Chrome);
             var outTop = new BathRing(0.415f, 0.18f, 0.235f, 0.10f);
             var inTop = new BathRing(0.415f, 0.115f, 0.155f, 0.11f);
             var outBottom = new BathRing(0.393f, 0.176f, 0.231f, 0.10f);
@@ -248,8 +249,38 @@ namespace CloneZ
             BathBand(m, outBottom, inBottom, 24, seat, BathFacing.Down);
             BathBand(m, outBottom, outTop, 24, seat, BathFacing.Out);
             BathBand(m, inBottom, inTop, 24, seat, BathFacing.In);
+
+            // Chrome hinge pins
+            float pinR = 0.006f;
+            float pinH = 0.03f;
+            Vector3 leftPin = ToiletSeatHinge + new Vector3(-0.025f, 0f, 0f);
+            Vector3 rightPin = ToiletSeatHinge + new Vector3(0.025f, 0f, 0f);
+            m.Cylinder(leftPin, pinR, pinH, 8, chrome, Quaternion.identity);
+            m.Cylinder(rightPin, pinR, pinH, 8, chrome, Quaternion.identity);
+
+            // Toilet paper roll with chrome end‑cap
+            Vector3 tpPos = new Vector3(-0.13f, 0.45f, 0.22f);
+            m.Cylinder(tpPos, 0.018f, 0.07f, 10, M(new Color(0.93f, 0.92f, 0.88f)));
+            m.Cylinder(tpPos + new Vector3(0f, 0.07f, 0f), 0.02f, 0.004f, 8, chrome, Quaternion.identity);
+
+            // Front‑edge wear rib
+            Vector3 wearPos = new Vector3(0f, 0.415f - 0.001f, 0.2f);
+            m.Box(wearPos, new Vector3(0.28f, 0.002f, 0.01f), M(new Color(0.50f, 0.50f, 0.48f)));
+
+            // Rubber cover over hinge line
+            float coverR = 0.022f;
+            float coverH = 0.004f;
+            m.Cylinder(ToiletSeatHinge, coverR, coverH, 8, M(new Color(0.07f, 0.07f, 0.07f)));
+
+            // Side buffers and decorative seam lines
             for (int s = -1; s <= 1; s += 2)
+            {
+                // Existing buffer box
                 m.Box(new Vector3(s * 0.12f, 0.3915f, 0.2f), new Vector3(0.025f, 0.003f, 0.035f), M(new Color(0.75f, 0.75f, 0.73f)));
+                // New seam line (thin dark box) 0.015 m in front of the buffer.
+                Vector3 seamPos = new Vector3(s * 0.12f, 0.393f, 0.215f);
+                m.Box(seamPos, new Vector3(0.015f, 0.002f, 0.004f), M(new Color(0.45f, 0.45f, 0.44f)));
+            }
         }
 
         /// <summary>The toilet lid: a shallow oval cover over the seat, hinged on the same line.</summary>

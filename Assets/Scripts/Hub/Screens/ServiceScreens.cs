@@ -329,7 +329,7 @@ namespace CloneZ
             RectTransform side = HubUI.Stack(cols[1], 8f, 14);
             ZoneDef zone = ZoneCatalog.Get(s_Zone);
             HubUI.Heading(side, "How you go in", 20);
-            string[] kinds = { "Your runner (everything carried is at risk)", "Scavenger run (borrowed kit, nothing to lose)", "Open Zone (no clock: stay as long as you last)", "Hunter (play one of the things in the dark)", "Co‑op (join a host's raid)" };
+            string[] kinds = { "Your runner (everything carried is at risk)", "Scavenger run (borrowed kit, nothing to lose)", "Open Zone (no clock: stay as long as you last)", "Hunter (play one of the things in the dark)", "Co‑op (join a host's raid)", "Supply courier — deliver food and firewood to the out‑post.", "Rescue mission — bring a trapped survivor back to safety.", "Artifact hunt — track down a priceless relic before the zone collapses.", "Medical aid run — ferry bandages and antibiotics to the field clinic." };
             HubUI.Cycle(side, "Run", kinds, (int)s_Kind, v => { s_Kind = (RaidKind)v; Refresh(); });
             if (s_Kind == RaidKind.Monster && !ServerRules.AllowPlayerMonsters) HubUI.Note(side, "This server doesn't allow hunters.", UIKit.Bad);
             if (s_Kind == RaidKind.Monster)

@@ -305,6 +305,12 @@ namespace CloneZ
                 float h = ZoneKit.R(sb.Rng, 2.4f, 3.6f);
                 sb.Solid.Box(c + Vector3.up * h * 0.5f, new Vector3(0.7f, h, 0.5f), ZoneKit.M(ZoneKit.V(stone, sb.Rng)));
                 sb.Collider(c + Vector3.up * h * 0.5f, new Vector3(0.7f, h, 0.5f));
+                // Subtle moss clump on the top edge of the stone column
+                float mossYaw = ZoneKit.R(sb.Rng, -5f, 5f);
+                float off = ZoneKit.R(sb.Rng, 0.02f, 0.06f);
+                sb.Solid.Box(c + Vector3.up * (h + 0.01f) + new Vector3(off * Mathf.Cos(mossYaw * Mathf.Deg2Rad), 0f, off * Mathf.Sin(mossYaw * Mathf.Deg2Rad)),
+                    new Vector3(0.12f, 0.02f, 0.12f),
+                    ZoneKit.M(ZoneKit.V(new Color(0.15f, 0.25f, 0.12f), sb.Rng, 0.01f)));
             }
             sb.Solid.Cylinder(Vector3.zero, 2f, 0.4f, 16, ZoneKit.M(stone));
             // Add four weathered rune slabs around the central pillar for subtle visual detail

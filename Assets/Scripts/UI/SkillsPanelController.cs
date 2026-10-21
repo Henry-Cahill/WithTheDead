@@ -17,6 +17,7 @@ namespace CloneZ
         private GameObject _panelRoot;
         private UIFader _fader;
         private bool _open;
+        private bool _dirty;
 
         private PlayerSkills.Skill[] _order;
         private Text[] _levelTexts;
@@ -25,10 +26,23 @@ namespace CloneZ
         private struct SkillCache { public int level; public float progress; }
         private SkillCache[] _skillCache;
 
+        /// <summary>
+        /// Gets whether the skills panel is currently open.
+        /// </summary>
         public bool IsOpen => _open;
+        /// <summary>
+        /// Marks the panel as needing a refresh of skill values.
+        /// </summary>
+        public void MarkDirty() => _dirty = true;
 
+        /// <summary>
+        /// Binds the controller to the given PlayerSkills instance.
+        /// </summary>
         public void Bind(PlayerSkills skills) => _skills = skills;
 
+        /// <summary>
+        /// Initialises UI elements and caches the skill list.
+        /// </summary>
         private void Awake()
         {
             _font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
@@ -38,6 +52,9 @@ namespace CloneZ
             _skillCache = new SkillCache[_order.Length];
         }
 
+        /// <summary>
+        /// Handles input for toggling and closing the panel each frame.
+        /// </summary>
         private void Update()
         {
             Keyboard kb = Keyboard.current;
@@ -46,24 +63,34 @@ namespace CloneZ
                 if (kb.kKey.wasPressedThisFrame) Toggle();
                 else if (_open && kb.escapeKey.wasPressedThisFrame) Close();
             }
-            if (_open && _skills != null) Refresh();
+            if (_open && _dirty && _skills != null) Refresh();
         }
 
+        /// <summary>
+        /// Toggles the panel open or closed.
+        /// </summary>
         private void Toggle()
         {
             if (_open) Close();
             else Open();
         }
 
+        /// <summary>
+        /// Opens the skills panel, marking it dirty and blocking gameplay input.
+        /// </summary>
         private void Open()
         {
             if (UIState.GameplayBlocked) return;   // inventory or sleep already owns the screen
             _open = true;
+            _dirty = true;
             UIState.GameplayBlocked = true;
             _fader.Show();
             Refresh();
         }
 
+        /// <summary>
+        /// Closes the panel and restores normal gameplay input.
+        /// </summary>
         private void Close()
         {
             _open = false;
@@ -71,8 +98,12 @@ namespace CloneZ
             _fader.Hide();
         }
 
+        /// <summary>
+        /// Refreshes displayed skill levels and progress bars based on current PlayerSkills.
+        /// </summary>
         private void Refresh()
         {
+            _dirty = false;
             for (int i = 0; i < _order.Length; i++)
             {
                 PlayerSkills.Skill s = _order[i];

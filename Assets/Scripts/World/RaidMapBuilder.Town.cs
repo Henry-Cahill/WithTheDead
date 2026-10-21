@@ -159,6 +159,8 @@ namespace CloneZ
                         m.Box(new Vector3(0f, 2.1f, 0f), new Vector3(0.32f, 4.2f, 0.32f), pillar);
                         m.Box(new Vector3(0f, 0.3f, 0f), new Vector3(0.4f, 0.6f, 0.4f), DecorMaterials.Hazard);
                         m.Cylinder(new Vector3(0f, 1.5f, 0.18f), 0.015f, 0.25f, 12, DecorPalette.Metal(new Color(0.40f, 0.35f, 0.33f)), Quaternion.Euler(0f, (float)(r.NextDouble()*10.0 - 5.0), 0f), 1f);
+                        // Tiny rust‑stained bolt detail on the pillar
+                        m.Cylinder(new Vector3(0.12f, 2.0f, 0f), 0.01f, 0.015f, 6, DecorPalette.Metal(new Color(0.5f, 0.4f, 0.3f)), Quaternion.identity, 1f);
                     });
                 }
             // Canopy roof: under the overhead root with a thin collider so the shoulder camera stays below.

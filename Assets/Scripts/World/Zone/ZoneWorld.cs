@@ -164,7 +164,7 @@ namespace CloneZ
     {
         /// <summary>Whether the zone runtime has started its events.</summary>
         public bool EventsStarted { get; private set; }
-        private float _fallbackAt = -1f;
+
 
         internal void StartEvents(ZoneDef zone)
         {
@@ -175,12 +175,23 @@ namespace CloneZ
             UncannyDirector.BeginRaid(gameObject, zone);
         }
 
-        private void Update()
+        private void Awake()
         {
-            if (EventsStarted) return;
-            if (Actor.LocalPlayer == null) return;
-            if (_fallbackAt < 0f) _fallbackAt = Time.time + 4f;
-            if (Time.time >= _fallbackAt) StartEvents(ZoneWorld.Zone);
+            // Start a coroutine to delay event start until the local player exists and a short grace period has passed.
+            StartCoroutine(FallbackStart());
+        }
+
+        private System.Collections.IEnumerator FallbackStart()
+        {
+            // Wait until the local player object is present.
+            while (Actor.LocalPlayer == null)
+                yield return null;
+
+            // Then wait an additional 4 seconds before starting events.
+            yield return new UnityEngine.WaitForSeconds(4f);
+
+            if (!EventsStarted)
+                StartEvents(ZoneWorld.Zone);
         }
     }
 }

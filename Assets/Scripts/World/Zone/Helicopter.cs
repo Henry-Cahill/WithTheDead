@@ -74,6 +74,8 @@ namespace CloneZ
                 rm.Box(q * new Vector3(0f, 0f, 3.6f), q * new Vector3(0.3f, 0.04f, 7.2f), DecorPalette.Metal(new Color(0.1f, 0.1f, 0.1f)));
             }
             rm.Cylinder(new Vector3(0f, -0.1f, 0f), 0.25f, 0.25f, 8, DecorPalette.Metal(new Color(0.2f, 0.2f, 0.2f)));
+            // hub rim – thin steel disc giving the hub a worn‑metal look
+            rm.Cylinder(new Vector3(0f, -0.12f, 0f), 0.33f, 0.02f, 8, DecorPalette.Metal(new Color(0.15f, 0.15f, 0.15f)));
             Emit(rm, "Blades", main, Vector3.zero);
 
             var tail = new GameObject("TailRotor").transform;

@@ -35,7 +35,12 @@ namespace CloneZ
             "Each minty swipe feels like a promise to survive the desolate snow outside.",
             "The frosty breath you exhale mixes with the water, echoing the lingering ghost of pre‑outbreak mornings.",
             "Your toothbrush scratches the porcelain, a quiet defiance against the world that fell silent.",
-            "The metal basin shivers under the tap, mirroring the resolve you feel to endure the endless winter."
+            "The metal basin shivers under the tap, mirroring the resolve you feel to endure the endless winter.",
+            "The faucet rattles like an old diesel engine, a reminder the house is just a shell now.",
+            "You taste the faint grit of soot that clings to the water from the stove's lingering ash.",
+            "A distant howl of wind slides through the cracked window, syncing with the rhythm of your brush strokes.",
+            "The mirror's warped glass catches a flash of the old family portrait, urging you to keep on living.",
+            "The cold water bites your tongue, a reminder that even the smallest things can sting in this frozen world."
         };
 
         private static readonly string[] ShaveLines =

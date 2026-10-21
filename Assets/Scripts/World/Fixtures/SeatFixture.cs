@@ -16,6 +16,8 @@ namespace CloneZ
         private static readonly List<SeatFixture> s_Seats = new List<SeatFixture>();
 
         private Transform _furniture;
+        private const string KickActionLabel = "Kick seat";
+        private const float KickNoiseRadius = 3f;
         private string _name, _sitLabel, _standLabel, _loungeLabel;
         private Vector3 _seatLocal;   // on the furniture, in its own frame (front +Z)
         private float _yaw, _comfort;
@@ -89,6 +91,8 @@ namespace CloneZ
                     bool sunk = seat.Comfort > _comfort + 0.01f;
                     into.Add(new InteractAction(sunk ? "Sit up straight" : _loungeLabel, c => Settle(c, !sunk)));
                 }
+                // NEW: kick the seat while seated
+                into.Add(new InteractAction(KickActionLabel, KickSeat));
                 return;
             }
             into.Add(new InteractAction(_sitLabel, SitDown));
@@ -101,6 +105,17 @@ namespace CloneZ
             if (ctx.Seat == null) return;
             if (!ctx.Seat.TrySit(this, SeatPoint, _yaw, _comfort, out string reason)) ctx.Notify(reason);
         }
+
+        private void KickSeat(InteractContext ctx)
+        {
+            // Create a loud noise that will attract zombies
+            MakeNoise(KickNoiseRadius);
+            // Show a toast / notification to the player
+            ctx.Notify("You kick the seat, making a loud clatter.");
+            // Slightly reduce the comfort of the seat while seated
+            // Slightly reduce the comfort of the seat while seated (cannot modify directly; omitted for compile)
+        }
+
 
         private void Settle(InteractContext ctx, bool sinkBack)
         {

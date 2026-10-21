@@ -19,13 +19,15 @@ namespace CloneZ
             "The handle won't budge. Somebody has scratched three numbers into the paint beside it, then scratched them out.",
         };
 
+        private const float LockpickDialSeconds = CloneZConfig.RaidSafeDialSeconds * 0.5f;
+        private bool _opened;
         private Transform _body;
         private Vector3 _point;
         private StorageFixture _storage;
         private float _noiseAt;
         private int _listened;
 
-        public override string DisplayName => "Safe";
+        public override string DisplayName => _opened ? "Opened safe" : "Safe";
         public override Vector3 InteractPoint => _point;
         public override Transform OcclusionRoot => _body != null ? _body : transform;
 
@@ -68,6 +70,16 @@ namespace CloneZ
             into.Add(force);
             into.Add(new InteractAction("Try the handle", c => c.Notify("Locked solid. The wheel turns a quarter and stops dead.")));
             into.Add(new InteractAction("Inspect the dial", c => c.Notify("The dial is stiff and scratched; it looks like someone tried to force it.")));
+            var lockpick = new InteractAction("Use lockpick (quick)").Timed(LockpickDialSeconds, "Working the dial", HumanoidActivity.Use);
+            lockpick.Begin = c => _noiseAt = Time.time + CloneZConfig.RaidSafeDialNoiseInterval * 0.5f;
+            lockpick.Tick = (c, dt, progress) =>
+            {
+                if (Time.time < _noiseAt) return;
+                _noiseAt = Time.time + CloneZConfig.RaidSafeDialNoiseInterval;
+                MakeNoise(CloneZConfig.RaidSafeDialNoise);
+            };
+            lockpick.Run = Crack;
+            into.Add(lockpick);
             into.Add(new InteractAction("Listen at the door", c => c.Notify(Listening[_listened++ % Listening.Length])));
             into.Add(new InteractAction("Knock on the safe", c => { MakeNoise(CloneZConfig.RaidSafeDialNoise); c.Notify("Your knuckles rattle the steel. Nothing else happens."); }));
         }
@@ -76,6 +88,7 @@ namespace CloneZ
         private void Crack(InteractContext ctx)
         {
             MakeNoise(CloneZConfig.RaidSafeDialNoise);
+            _opened = true;
             if (_storage != null)
             {
                 _storage.gameObject.SetActive(true);

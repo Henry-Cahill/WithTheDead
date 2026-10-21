@@ -189,6 +189,60 @@ public sealed class MapBuilding
             float variation = ((id * 0x9E3779B9) & 0xFFFF) / 65535f * 0.2f;
             return baseOverhang + variation;
         }
+
+        /// <summary>
+        /// Returns a deterministic exterior façade style (material) appropriate for the building kind.
+        /// Uses the building kind to pick a plausible style, then hashes the id to vary between two options.
+        /// </summary>
+        internal ExteriorStyle GetExteriorStyle()
+        {
+            // deterministic hash from id to distribute between two plausible styles per kind
+            uint h = (uint)((id * 0x9E3779B9) & 0xFFFFFFFF);
+            // Choose base style set per kind
+            ExteriorStyle baseStyle = kind switch
+            {
+                // Residential – typically wood siding or brick
+                "house" => ExteriorStyle.Siding,
+                "trailer" => ExteriorStyle.Siding,
+                "apartment" => ExteriorStyle.Siding,
+                "apartments" => ExteriorStyle.Siding,
+                // Commercial – brick or stucco
+                "commercial" => ExteriorStyle.Brick,
+                "office" => ExteriorStyle.Brick,
+                "retail" => ExteriorStyle.Brick,
+                "hotel" => ExteriorStyle.Brick,
+                // Industrial / utilitarian – cinder block or metal canvas
+                "industrial" => ExteriorStyle.CinderBlock,
+                "warehouse" => ExteriorStyle.CinderBlock,
+                "garage" => ExteriorStyle.CinderBlock,
+                "shed" => ExteriorStyle.CinderBlock,
+                "barn" => ExteriorStyle.CinderBlock,
+                "silo" => ExteriorStyle.CinderBlock,
+                "greenhouse" => ExteriorStyle.CinderBlock,
+                "canopy" => ExteriorStyle.Canvas,
+                // Civic / public – stucco or brick
+                "civic" => ExteriorStyle.Stucco,
+                "school" => ExteriorStyle.Stucco,
+                "hospital" => ExteriorStyle.Stucco,
+                "church" => ExteriorStyle.Stucco,
+                // Default fallback
+                _ => ExteriorStyle.Siding,
+            };
+
+            // Alternate between two styles for variation using the low bit of hash
+            bool flip = (h & 1u) == 1u;
+            return baseStyle switch
+            {
+                ExteriorStyle.Siding => flip ? ExteriorStyle.Brick : ExteriorStyle.Siding,
+                ExteriorStyle.Brick => flip ? ExteriorStyle.Stucco : ExteriorStyle.Brick,
+                ExteriorStyle.CinderBlock => flip ? ExteriorStyle.Canvas : ExteriorStyle.CinderBlock,
+                ExteriorStyle.Stucco => flip ? ExteriorStyle.Brick : ExteriorStyle.Stucco,
+                ExteriorStyle.Canvas => flip ? ExteriorStyle.CinderBlock : ExteriorStyle.Canvas,
+                _ => baseStyle,
+            };
+        }
+
+        
     }
 
     /// <summary>A land-use area (water, parking, forest, farmland, residential, park...), clipped to its region.</summary>

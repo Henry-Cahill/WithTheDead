@@ -111,6 +111,23 @@ namespace CloneZ
         }
 
         /// <summary>
+        /// Determine if a building should get a low wooden fence around its perimeter.
+        /// Deterministic based on the build ID and the building ID.
+        /// Roughly 25 % of buildings receive a fence, adding a hand‑painted rural feel.
+        /// </summary>
+        public bool HasFence(long buildingId)
+        {
+            unchecked
+            {
+                uint hash = (uint)buildingId ^ 0xA5B357F9u;
+                hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
+                return (hash % 100) < 25; // 25% chance
+            }
+        }
+
+
+
+        /// <summary>
         /// Determine if an upper‑story window should receive a period‑correct metal grate.
         /// Deterministic based on the build ID and the building ID.
         /// Approximately 35 % of eligible windows get a grate, adding a hand‑built 1993 Kentucky look.

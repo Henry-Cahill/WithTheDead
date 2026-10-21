@@ -143,8 +143,33 @@ namespace CloneZ
                 }
                 m.Box(new Vector3(0f, y, 0.275f + pull), new Vector3(0.43f, 0.3f, 0.02f), M(c));
                 // Small chrome handle on the drawer front
-                m.Rod(new Vector3(-0.07f, y + 0.15f, 0.295f + pull), new Vector3(0.07f, y + 0.15f, 0.295f + pull), 0.004f, Mt(Chrome));
-                m.Box(new Vector3(0f, y + 0.02f, 0.29f + pull), new Vector3(0.14f, 0.03f, 0.025f), Mt(Chrome));
+                // Adjusted length to make room for lock bar
+                m.Rod(new Vector3(-0.06f, y + 0.15f, 0.295f + pull), new Vector3(0.06f, y + 0.15f, 0.295f + pull), 0.004f, Mt(Chrome));
+                m.Box(new Vector3(0f, y + 0.02f, 0.29f + pull), new Vector3(0.12f, 0.03f, 0.025f), Mt(Chrome));
+                // ----- metal lock bar ----- (only top drawer)
+                if (i == drawers - 1) {
+                    Vector3 lockPos = new Vector3(-0.12f, y + 0.15f, 0.295f + pull);
+                    m.Box(lockPos, new Vector3(0.035f, 0.015f, 0.004f), Mt(Chrome));
+                    Vector3 knobPos = lockPos + new Vector3(0f, 0.008f, 0.002f);
+                    m.Cylinder(knobPos, 0.004f, 0.008f, 6, Mt(Chrome), Quaternion.Euler(90f,0f,0f));
+                    // occasional rust streak near lock (10% chance)
+                    if (Chance(rng, 0.1f)) {
+                        Vector3 rustPos = lockPos + new Vector3(0.01f, 0.005f, 0f);
+                        Vector3 rustSize = new Vector3(0.02f, 0.003f, 0.001f);
+                        m.Box(rustPos, rustSize, M(new Color(0.55f, 0.33f, 0.28f)));
+                }
+                }
+                // ----- subtle dent / wear patch on the top edge -----
+                if (i == drawers - 1) {
+                    float dentX = R(rng, -0.01f, 0.01f);
+                    float dentZ = R(rng, -0.01f, 0.01f);
+                    Vector3 dentPos = new Vector3(dentX, h - 0.01f, dentZ);
+                    Color dentCol = DecorPalette.Vary(c, 0.05f, rng); // 5% brighter
+                    m.Box(dentPos, new Vector3(0.06f, 0.01f, 0.008f), M(dentCol));
+                }
+                // ----- metal label plate (paper‑tinted) -----
+                Vector3 platePos = new Vector3(0f, y + 0.20f, 0.295f + pull);
+                m.Box(platePos, new Vector3(0.18f, 0.02f, 0.001f), M(Paper));
                 m.Box(new Vector3(0f, y + 0.09f, 0.287f + pull), new Vector3(0.09f, 0.04f, 0.004f), M(Paper));
             }
         }

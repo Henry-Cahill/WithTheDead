@@ -118,10 +118,14 @@ namespace CloneZ
                     Vector3 leftCenter = new Vector3(leftMid.x, StreetY + 0.01f, leftMid.y);
                     Vector3 size = new Vector3(length, 0.04f, SidewalkWidth);
                     site.Overhead.At(leftMid).Box(leftCenter, size, DecorMaterials.Concrete);
+                    // thin snow overlay on left sidewalk
+                    site.Overhead.At(leftMid).Box(new Vector3(leftMid.x, StreetY + 0.01f + 0.02f + SnowDepth * 0.5f, leftMid.y), new Vector3(length, SnowDepth, SidewalkWidth), DecorMaterials.Snow);
                     // right sidewalk box
                     Vector2 rightMid = mid - normal * (halfRoad + SidewalkWidth * 0.5f);
                     Vector3 rightCenter = new Vector3(rightMid.x, StreetY + 0.01f, rightMid.y);
                     site.Overhead.At(rightMid).Box(rightCenter, size, DecorMaterials.Concrete);
+                    // thin snow overlay on right sidewalk
+                    site.Overhead.At(rightMid).Box(new Vector3(rightMid.x, StreetY + 0.01f + 0.02f + SnowDepth * 0.5f, rightMid.y), new Vector3(length, SnowDepth, SidewalkWidth), DecorMaterials.Snow);
                 }
             }
         }
@@ -287,7 +291,7 @@ private static void BuildSnow(Site site)
 
         #region The place's data, in raid-map coordinates
         /// <summary>A street piece: its data and its points.</summary>
-        private sealed class Street
+        internal sealed class Street
         {
             public readonly MapStreet Data;
             public readonly List<Vector2> Pts;
@@ -295,7 +299,7 @@ private static void BuildSnow(Site site)
         }
 
         /// <summary>A river, stream or railway piece.</summary>
-        private sealed class Line
+        internal sealed class Line
         {
             public readonly MapLine Data;
             public readonly List<Vector2> Pts;
@@ -303,7 +307,7 @@ private static void BuildSnow(Site site)
         }
 
         /// <summary>A building's footprint, wound anticlockwise seen from above.</summary>
-        private sealed class Footprint
+        internal sealed class Footprint
         {
             public readonly MapBuilding Data;
             public readonly List<Vector2> Pts;
@@ -333,7 +337,7 @@ private static void BuildSnow(Site site)
         }
 
         /// <summary>A land-use area (water, parking, forest...).</summary>
-        private sealed class Patch
+        internal sealed class Patch
         {
             public readonly MapArea Data;
             public readonly List<Vector2> Pts;
@@ -341,7 +345,7 @@ private static void BuildSnow(Site site)
         }
 
         /// <summary>A point of interest.</summary>
-        private sealed class Spot
+        internal sealed class Spot
         {
             public readonly MapPoi Data;
             public readonly Vector2 At;
@@ -351,15 +355,15 @@ private static void BuildSnow(Site site)
         /// <summary>Everything within reach of the place's centre, read from the build's regions and moved to raid-map
         /// coordinates. Streets, lines and areas are cut to their own region (the builder overlaps neighbours a little)
         /// and to the reach, so nothing is drawn twice.</summary>
-        private sealed class Area
+        internal sealed class Area
         {
             public readonly string Place, BuildId, Attribution;
             public readonly float Half;
-            public readonly List<Street> Streets = new List<Street>();
-            public readonly List<Line> Lines = new List<Line>();
-            public readonly List<Footprint> Buildings = new List<Footprint>();
-            public readonly List<Patch> Areas = new List<Patch>();
-            public readonly List<Spot> Points = new List<Spot>();
+            internal readonly List<Street> Streets = new List<Street>();
+            internal readonly List<Line> Lines = new List<Line>();
+            internal readonly List<Footprint> Buildings = new List<Footprint>();
+            internal readonly List<Patch> Areas = new List<Patch>();
+            internal readonly List<Spot> Points = new List<Spot>();
 
             public Area(MapBuild build, MapPlace place, float half)
             {
@@ -418,12 +422,12 @@ private static void BuildSnow(Site site)
 
         /// <summary>What the build shares while it runs: the town, the place, a coarse map of where things already
         /// stand (so props keep clear of walls, roads and each other), the overhead batches and the tallies.</summary>
-        private sealed class Site
+        internal sealed class Site
         {
             public readonly RaidTown Town;
-            public readonly Area Area;
+            internal readonly Area Area;
             public readonly float Half;
-            public readonly ChunkedMesh Overhead = new ChunkedMesh(40f);
+            internal readonly ChunkedMesh Overhead = new ChunkedMesh(40f);
             public readonly Transform Loot;
             public int Buildings, SceneryBuildings, Containers, Trees;
 
@@ -488,7 +492,7 @@ private static void BuildSnow(Site site)
 
         /// <summary>Overhead geometry (upper storeys, ceilings, roofs) gathered in square chunks, so the camera culls
         /// what it can't see; each chunk's renderer is handed to <see cref="CeilingVisibility"/>.</summary>
-        private sealed class ChunkedMesh
+        internal sealed class ChunkedMesh
         {
             private readonly float _chunk;
             private readonly Dictionary<long, RaidMesh> _meshes = new Dictionary<long, RaidMesh>();
