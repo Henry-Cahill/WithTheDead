@@ -4537,11 +4537,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Because `CaptureAll` already warns about duplicate keys, restoring should do the same; otherwise the later entry silently overwrites the earlier one and the first fixture never gets its saved state.
   Change the loop to:
   - 21:20 landed by 1htsserver in 1.1 min: **Changed file**
-- [ ] In Assets/Scripts/Core/PlayerModifiers.cs, cache the survivor’s `IStatModSource` components once in `Awake` and stop calling `GetComponents` on every recompute.
+- [x] In Assets/Scripts/Core/PlayerModifiers.cs, cache the survivor’s `IStatModSource` components once in `Awake` and stop calling `GetComponents` on every recompute.
   Change `Awake()` to populate `_found` with `GetComponents(_found)` before the first `Recompute()`.
   Remove the `GetComponents(_found);` line from `Recompute()`.
   Keep the existing `_dirty` logic so external sources still trigger a recompute.
   This eliminates a per‑frame component lookup (and any hidden list allocations), while the player’s visible stats remain unchanged because the set of attached `IStatModSource` components never changes after initialization.
+  - 21:25 landed by hts-llm in 3.5 min: Modified **PlayerModifiers.cs**:
 - [ ] Add a “Check checkpoint status” action to `CordonGate.GetActions` (Assets/Scripts/World/Zone/ZoneCordon.cs)
   Insert a new `InteractAction` after the existing “Ask about the Zone” entry.
   The action text should be `"Check checkpoint status"` and its callback should call `GameEvents.RaiseSubtitle("Warden", …)` with a message that depends on `CordonRules.PassBought`.
