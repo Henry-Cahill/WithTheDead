@@ -23,6 +23,10 @@ namespace CloneZ
             "a neighborhood watch bulletin, warnings about prowlers and a list of emergency numbers.",
             "a local theater program, featuring a midnight screening of a classic and a bake sale.",
             "a seasonal recipe pamphlet, \"Hearty Stew for Cold Nights\" with a handwritten note.",
+"a local farming almanac, pages curled, listing winter wheat yields and a reminder to check the barn doors.",
+"a church hymn sheet, the verses smudged, with a margin note: “Sing louder on Sunday.”",
+"a school bulletin board notice: “Parent‑Teacher meetings postponed – snow day.”",
+"a handwritten newspaper clipping titled “Winter Storm Outlook”, the ink blotched where rain ran.",
         };
 
         private static readonly string[] Plumping =
@@ -33,6 +37,8 @@ namespace CloneZ
             "You fluff the cushions, and a whisper of pine from the fireplace drifts over them.",
             "You straighten the cushions, noticing a crooked photo of a winter family portrait tucked behind an arm.",
             "You press the cushions firm, feeling the worn stitching that someone kept mending through the cold nights.",
+"You smooth the cushions, noticing a faint lavender scent from a long‑forgotten sachet tucked inside.",
+"You pat the cushions, hearing the faint creak of the sofa frame as the house settles in the cold.",
         };
 
         // The post that came to the town's houses in its last days, a delivery at a time (all original).
@@ -164,7 +170,10 @@ private static readonly string[] NumberLines =
             "Number {0}, a rusted nail holds together a cracked plank, a hurried fix after a storm.",
             "Number {0}, a painted barn owl perched above, believed to shield the home from wandering spirits.",
             "Number {0}, a tattered dog collar lies tangled in the doorway, forgotten but still warm from recent use.",
-            "Number {0}, a tiny scrap of paper reads \"One day the snow will melt and light return,\" tucked beneath the plate."
+            "Number {0}, a tiny scrap of paper reads \"One day the snow will melt and light return,\" tucked beneath the plate.",
+"Number {0}, a faded grocery list is pin‑ned to the post, the ink smeared by winter rain.",
+"Number {0}, a child’s drawing of a snowman hangs from a nail, charcoal lines softened by frost.",
+"Number {0}, an old wind‑chime clatters on a gust, its metal rods dented from years of neglect.",
         };
 
         private static int s_Magazine = -1, s_Plump;
