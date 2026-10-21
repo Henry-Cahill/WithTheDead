@@ -5761,3 +5761,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   After this fix, items with low durability (below 50 %) will display the intended damage‑scar visual on their icon, matching the design used elsewhere.
   No other code changes are required; all other behavior and visuals remain unchanged.
 - [ ] In Assets/Scripts/World/Zone/ZoneCordon.cs: Add a small rusted bolt on the outer face of each fence post in `ZoneCordon.Build` for extra visual wear.
+- [ ] In Assets/Scripts/World/Fixtures/TowelRail.cs, replace the two separate `Time.time` checks in `Update()` with a single cached value and combine the one‑second timers, removing the second property lookup per frame.
