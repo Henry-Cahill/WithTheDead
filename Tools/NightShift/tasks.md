@@ -5591,3 +5591,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// Chrome bezel at the clock’s outer rim`
   `m.Cylinder(at, 0.165f, 0.004f, 16, Mt(Chrome), disc);`
   This adds a 0.165 m radius, 0.004 m thick chrome ring centered on the same `at` point as the clock case, using the existing `disc` orientation and the material `Mt(Chrome)`. No other code, colliders, or interaction points are altered.
+- [ ] In Assets/Scripts/UI/HUDController.cs: Cache the TimeOfDay singleton in HUDController to avoid a per‑frame static lookup in UpdateSleep.
+  Add a private field `private TimeOfDay _timeOfDay;` to the class.
+  In Awake() assign it after the existing lookups: `_timeOfDay = TimeOfDay.Instance;`.
+  Replace the line `TimeOfDay tod = TimeOfDay.Instance;` in UpdateSleep(bool blocked) with `TimeOfDay tod = _timeOfDay;`.
+  Ensure no other code relies on a null _timeOfDay; the field is only read after Awake, matching the current script’s lifecycle.
+  The player’s HUD appearance and sleep‑clock updates remain unchanged; the only effect is removing the repeated singleton lookup each frame.
