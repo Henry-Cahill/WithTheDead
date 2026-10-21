@@ -4971,13 +4971,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   The player should simply see their camp appear locally without any network round‑trip; the server already has the authoritative state from the saved `ZoneWorldState`.
   Change: remove the two `Announce` calls inside `Restore`.
   - 23:36 landed by hts-llm in 1.3 min: **Changed**
-- [ ] Add a small chrome latch knob to the copier lid in Assets/Scripts/World/FurnitureBuilder.RaidStore.cs, method OfficeCopierLid
+- [x] Add a small chrome latch knob to the copier lid in Assets/Scripts/World/FurnitureBuilder.RaidStore.cs, method OfficeCopierLid
   Insert a new primitive after the first box call (the main lid slab) to represent a metal latch on the front edge of the lid.
   Use a chrome material: `Mt(Chrome)`.
   Size: `new Vector3(0.02f, 0.02f, 0.005f)` metres.
   Position relative to the lid origin: `new Vector3(0.35f, 1.07f, -0.03f)` (front‑right of the lid, just above its front face).
   Code to add: `m.Box(new Vector3(0.35f, 1.07f, -0.03f), new Vector3(0.02f, 0.02f, 0.005f), Mt(Chrome));`
   This gives the copier a realistic metal latch without affecting colliders or existing interaction points.
+  - 23:38 landed by hts-llm in 2.1 min: Added a chrome latch knob to the copier lid:
 - [ ] In Assets/Scripts/UI/HealthPanelController.cs: Cache the per‑frame `new Color(...)` constructions in HealthPanelController → Refresh by introducing static readonly colour fields and using them instead of creating a new Color each call.
   Add private static readonly Color fields (e.g. PainHigh = new Color(0.9f, 0.3f, 0.25f), PainMid = new Color(0.95f, 0.7f, 0.25f), PainLow = new Color(0.72f, 0.85f, 0.72f), PanicHigh = new Color(0.9f, 0.35f, 0.4f), PanicMid = new Color(0.9f, 0.62f, 0.4f), PanicLow = new Color(0.74f, 0.76f, 0.9f), TempCold = new Color(0.5f, 0.72f, 0.95f), TempHot = new Color(0.95f, 0.5f, 0.4f), TempNormal = new Color(0.72f, 0.85f, 0.75f), etc.).
   Initialise these fields inline (static constructors are allowed) – no runtime work needed.

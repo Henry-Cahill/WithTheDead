@@ -57,6 +57,8 @@ namespace CloneZ
         public static void OfficeCopierLid(RaidMesh m)
         {
             m.Box(new Vector3(0f, 1.056f, -0.02f), new Vector3(0.8f, 0.03f, 0.52f), M(new Color(0.25f, 0.25f, 0.27f)));
+            // Chrome latch knob on the front edge of the lid
+            m.Box(new Vector3(0.35f, 1.07f, -0.03f), new Vector3(0.02f, 0.02f, 0.005f), Mt(Chrome));
             m.Box(new Vector3(0f, 1.075f, 0.22f), new Vector3(0.24f, 0.012f, 0.03f), M(new Color(0.16f, 0.16f, 0.17f)));
         }
 
