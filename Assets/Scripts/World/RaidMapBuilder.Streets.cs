@@ -83,6 +83,15 @@ namespace CloneZ
                     continue;
                 }
                 Slab(town, alongX, coord, a, b, -hw, hw, 0.012f, asphalt);
+                // Occasionally draw faint edge‑line markings on each side of the lane (25 % chance)
+                if (rng.NextDouble() < 0.25)
+                {
+                    float edge = hw - 0.06f; // 6 cm inset from the kerb
+                    Strip(town, alongX, coord - edge, a, b, 0.04f, 0.006f,
+                        DecorPalette.Matte(LineWhite * 0.7f));
+                    Strip(town, alongX, coord + edge, a, b, 0.04f, 0.006f,
+                        DecorPalette.Matte(LineWhite * 0.7f));
+                }
 // Add subtle road‑crack details with a 30 % chance (1‑3 short dark strips)
                     if (rng.NextDouble() < 0.3)
                     {

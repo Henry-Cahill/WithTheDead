@@ -4708,7 +4708,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 22:22 landed by hts-llm in 1.7 min: **Changes made**
 - [x] Fix duplicate garrison spawns in Assets/Scripts/AI/Humans/Outposts.cs (method `Outpost.SpawnGarrison`)
   - 22:23 landed by 0htsserver in 1.7 min: Implemented a cleanup step in **Outposts.cs** to prevent duplicate garrison spawns:
-- [ ] Add faint edge‑line markings to each road segment in `Assets/Scripts/World/RaidMapBuilder.Streets.cs` → method `Road`
+- [x] Add faint edge‑line markings to each road segment in `Assets/Scripts/World/RaidMapBuilder.Streets.cs` → method `Road`
   After the call `Slab(town, alongX, coord, a, b, -hw, hw, 0.012f, asphalt);` insert a small randomised strip on each side of the lane:
   `if (rng.NextDouble() < 0.25) {`
   `float edge = hw - 0.06f; // 6 cm inset from the kerb`
@@ -4717,6 +4717,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Strip(town, alongX, coord + edge, a, b, 0.04f, 0.006f,`
   `DecorPalette.Matte(LineWhite * 0.7f));`
   `}`
+  - 22:25 landed by hts-llm in 2 min: **Changed file**
 - [ ] In Assets/Scripts/Player/PlayerFoodSickness.cs: Remove the per‑frame GetComponent lookup in `PlayerFoodSickness.Update` – delete the line `if (_sleepCache == null) _sleepCache = GetComponent<PlayerSleep>();` because `_sleepCache` is already obtained in `Awake()`.
   This eliminates a cheap but unnecessary component search each frame, reducing GC pressure.
   No other code changes; the cached `_sleepCache` continues to be used for the sleeping‑multiplier check.
