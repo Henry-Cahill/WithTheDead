@@ -78,6 +78,33 @@ namespace CloneZ
         public int lanes, layer;
         public bool oneway, bridge, tunnel;
         public int[] pts;
+        /// <summary>
+        /// Approximate sidewalk width (metres) for this street.
+        /// Uses the highway kind to choose a period‑appropriate value.
+        /// </summary>
+        public float SidewalkWidth()
+        {
+            // Common OSM highway classifications.
+            // Wider sidewalks for major roads, narrower for residential streets.
+            switch (kind)
+            {
+                case "motorway":
+                case "trunk":
+                case "primary":
+                case "secondary":
+                    return 2.5f; // broad sidewalks for main thoroughfares
+                case "tertiary":
+                case "residential":
+                case "living_street":
+                    return 1.5f; // typical residential sidewalk
+                case "service":
+                case "unclassified":
+                    return 1.0f; // minimal sidewalk
+                default:
+                    // Fallback based on carriageway width if kind is unknown
+                    return Mathf.Max(1.0f, width * 0.3f);
+            }
+        }
     }
 
     /// <summary>A river, stream, canal, ditch or railway, clipped to its region.</summary>

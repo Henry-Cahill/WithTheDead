@@ -4254,8 +4254,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   `private void CheckObstruction(InteractContext ctx) => ctx.Notify(Obstructed() ? "Something's in the way of the curtain." : "No obstruction.");`
   The player should see a text message indicating whether an entity (character, zombie, or the survivor) is under the door when they use this action; all other behaviour and state remain unchanged.
   - 19:51 landed by 0htsserver in 11.2 min: **Summary**
-- [ ] Add a sidewalk‑width helper to `MapStreet` in `Assets/Scripts/World/Map/MapData.cs` so the map builder can place period‑appropriate sidewalks beside roads.
+- [x] Add a sidewalk‑width helper to `MapStreet` in `Assets/Scripts/World/Map/MapData.cs` so the map builder can place period‑appropriate sidewalks beside roads.
   In the `MapStreet` class, after the existing fields, insert a public method
+  - 19:54 landed by hts-llm in 12 min: All needed changes made.Added a **SidewalkWidth** helper to `MapStreet` in **Assets/Scripts/World/Map/MapData.cs**.
 - [x] Add occasional snow drifts on the corrugated‑sheet barrier in the `case 0:` block of `EdgeSegment` in *Assets/Scripts/World/RaidMapBuilder.Edge.cs*
   Insert a new loop after the existing “occasional rust spots” loop that creates a small snow box on top of the sheet:
   `for (float x = -len * 0.5f + 0.8f; x < len * 0.5f; x += R(rng, 3f, 5f))`
