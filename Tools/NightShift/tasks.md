@@ -5837,7 +5837,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   In `CanSee()` delete the repeated null‑checks that acquire `_playerController` and `_playerSkills`; they are now always set (or remain null) from Awake, so the method can directly use the cached fields.
   This eliminates one `GetComponent<Actor>()` call and two `GetComponent<Player…>()` calls per zombie each frame, reducing allocation‑free per‑frame work while preserving the existing behaviour (the player reference is still refreshed when the player dies).
   - 06:56 landed by 1htsserver in 2.2 min: **Changes Made**
-- [ ] Append five new, period‑correct winter‑Kentucky flavor lines to the `ZoneTalk.s_Lines` entry for `Factions.Wardens` in Assets/Scripts/AI/Humans/HumanNpc.cs so that NPCs of the Wardens faction can say them during conversation.
+- [x] Append five new, period‑correct winter‑Kentucky flavor lines to the `ZoneTalk.s_Lines` entry for `Factions.Wardens` in Assets/Scripts/AI/Humans/HumanNpc.cs so that NPCs of the Wardens faction can say them during conversation.
   Step 1: Open Assets/Scripts/AI/Humans/HumanNpc.cs and locate the `s_Lines` dictionary initializer.
   Step 2: Find the entry ` [Factions.Wardens] = new[] { … }`.
   Step 3: After the last existing string (currently `"I've rigged a makeshift heater from scrap; it barely keeps the cold at bay."`) insert the following five new strings, each a complete sentence and terminated with a comma:
@@ -5854,6 +5854,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `"There's a cracked mailbox on Route 9 where a scavenger left a stash of fresh canned beans.",`
   `"When the moon hangs low, the pine trees cast shadows that look like ghosts walking the ridge."`
   `};`
+  - 06:58 landed by 1htsserver in 2.2 min: **Changes Made**
 - [ ] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildPoints` to give each gas‑pump a tiny random position jitter so they don’t line up perfectly on the mapped spot.
   In the `if (s.Data.kind == "fuel")` block, after `if (!NearestFree(site, s.At + new Vector2(k * 2.2f, 0f), 1.2f, out Vector2 at)) continue;` insert a jitter:
   `Vector2 jitter = new Vector2(R(rng, -0.2f, 0.2f), R(rng, -0.2f, 0.2f));`
