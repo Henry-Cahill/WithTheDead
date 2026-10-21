@@ -4938,7 +4938,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `into.Add(rinse);`
   Below the existing `Brush` method, add:
   `private void Rinse(InteractContext ctx)`
-- [ ] Append six new entries to the `CivicPatienceLines` array in Assets/Scripts/World/RaidBuilding.Civic.cs (class `RaidBuilding`, field `CivicPatienceLines`) so the player has more varied text while playing patience; copy the tone of the existing line `"You lay out a game of patience with the dog‑eared deck left on the table. It comes out on the very last card."` and cover the themes of winter boredom, fleeting memories of home, the low hum of an aging heater, a stray cat perched on the windowsill, the crackle of a dying radio, and the steady rhythm of snowfall outside.
+- [x] Append six new entries to the `CivicPatienceLines` array in Assets/Scripts/World/RaidBuilding.Civic.cs (class `RaidBuilding`, field `CivicPatienceLines`) so the player has more varied text while playing patience; copy the tone of the existing line `"You lay out a game of patience with the dog‑eared deck left on the table. It comes out on the very last card."` and cover the themes of winter boredom, fleeting memories of home, the low hum of an aging heater, a stray cat perched on the windowsill, the crackle of a dying radio, and the steady rhythm of snowfall outside.
   Use the current array syntax and insert the new strings before the closing brace and semicolon.
   Ensure each new entry is a single full sentence in quotes, ending with a period.
   Example theme sentences:
@@ -4947,6 +4947,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   “The deck slides across the table, each click echoing the soft hiss of the snow outside.”
   “You pause, remembering a warm kitchen back home where butter melted on fresh biscuits.”
   “The radio sputters a static lullaby, and you turn the next card in time with its dying pulse.”
+  - 23:32 landed by 1htsserver in 2.9 min: **Changed file**: `Assets/Scripts/World/RaidBuilding.Civic.cs`
 - [ ] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildPoints` to give each sign a tiny random yaw offset (±5°) instead of always facing exactly toward the nearest street direction.
   Locate the line `float yaw = toStreet == Vector2.zero ? 0f : Mathf.Atan2(toStreet.x, toStreet.y) * Mathf.Rad2Deg;` inside `BuildPoints`.
   Change it to `float yaw = toStreet == Vector2.zero ? 0f : Mathf.Atan2(toStreet.x, toStreet.y) * Mathf.Rad2Deg + R(rng, -5f, 5f);`.
