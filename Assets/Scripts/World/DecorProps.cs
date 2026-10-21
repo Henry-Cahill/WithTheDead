@@ -366,8 +366,10 @@ namespace CloneZ
             // thin pole attached to the right side of the mailbox
             m.Box(new Vector3(0.09f, 1.25f, 0.05f), new Vector3(0.02f, 0.22f, 0.02f), Mt(new Color(0.25f, 0.25f, 0.26f)));
             // flag rectangle – size 0.08 m × 0.015 m, positioned at pole top, colour varies with rng
-            Color flagCol = V(new Color(0.80f, 0.15f, 0.12f), rng, 0.07f);
-        }
+Color flagCol = V(new Color(0.80f, 0.15f, 0.12f), rng, 0.07f);
+                    // flag rectangle – attach to pole top, thin rectangle
+                    m.Box(new Vector3(0.09f + 0.04f, 1.36f, 0.05f), new Vector3(0.08f, 0.015f, 0.01f), M(flagCol));
+                }
     }
 
 

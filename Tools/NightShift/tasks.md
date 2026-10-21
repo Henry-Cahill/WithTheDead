@@ -4999,6 +4999,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `float halfRoad = s.Data.width * 0.5f;`
   `// left sidewalk`
   `Vector2 leftMid = (a + b) * 0.5f + normal * (halfRoad + SidewalkWidth * 0.5f);`
-- [ ] Fix the missing flag geometry in `DecorProps.Mailbox` (Assets/Scripts/World/DecorProps.cs)
+- [x] Fix the missing flag geometry in `DecorProps.Mailbox` (Assets/Scripts/World/DecorProps.cs)
   The method creates a colour for a mail‑flag but never adds any mesh, so the flag never appears even when the 60 % chance succeeds, leaving the mailbox looking incomplete.
   Add a thin rectangular box for the flag using the generated colour.
+  - 23:48 landed by 0htsserver in 2.4 min: **Changed file**
