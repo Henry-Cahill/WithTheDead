@@ -202,6 +202,14 @@ namespace CloneZ
                         GameEvents.RaiseSubtitle(Npc.Name, "For you, then. Something slow.");
                         GameEvents.RaiseWorldEvent(transform.position, 10f, "music");
                     }));
+                    // Added cheaper short tune option
+                    into.Add(new InteractAction("Request a short tune (5 MG)", c =>
+                    {
+                        if (!Money.TrySpend(5, c.Inventory)) { c.Notify("You don't have 5 MG."); return; }
+                        GameEvents.RaiseSubtitle(Npc.Name, "A quick melody for you.");
+                        GameEvents.RaiseWorldEvent(transform.position, 5f, "music");
+                        Sfx.PlayUI(SfxIds.Cash);
+                    }));
                     break;
                 case HubNpc.Role.Keeper:
                     into.Add(new InteractAction("Buy a drink (5 MG)", c =>
