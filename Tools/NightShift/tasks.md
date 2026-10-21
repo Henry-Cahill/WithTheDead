@@ -4287,4 +4287,5 @@ you want to see in game. Indent extra lines under a task to add detail.
   · No other members, file paths or logic should be altered; the rest of the class stays unchanged.
   · This enables other map‑generation scripts to call `mapBuild.Random` for per‑build colour or prop variation while guaranteeing the same results each run.
   - 19:55 landed by 0htsserver in 2.9 min: Added a deterministic cached random generator to map builds.
-- [ ] In Assets/Scripts/World/RaidMapBuilder.Outdoor.cs, add a small rust‑stained metal bracket to each streetlight pole in the `StreetLights` method so the poles have a subtle weathered detail.
+- [x] In Assets/Scripts/World/RaidMapBuilder.Outdoor.cs, add a small rust‑stained metal bracket to each streetlight pole in the `StreetLights` method so the poles have a subtle weathered detail.
+  - 19:56 landed by hts-llm in 2.3 min: **Changed file**
