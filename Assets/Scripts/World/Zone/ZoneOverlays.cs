@@ -63,6 +63,7 @@ namespace CloneZ
                 float r = conifer ? ZoneKit.R(rng, 0.18f, 0.3f) : ZoneKit.R(rng, 0.12f, 0.18f);
                 RaidMesh tm = trunks.At(p);
                 tm.Cylinder(p + Vector3.down * 0.1f, r, h * (conifer ? 0.45f : 0.9f), 7, ZoneKit.M(conifer ? ZoneKit.V(ZoneKit.Bark, rng) : ZoneKit.V(birch, rng, 0.05f)));
+                if (conifer) tm.Cylinder(p + Vector3.up * (h * 0.44f), r * 1.02f, 0.02f, 7, ZoneKit.Mt(ZoneKit.V(new Color(0.78f, 0.85f, 0.80f), rng, 0.04f)));
                 RaidMesh cm = canopies.At(p);
                 if (conifer)
                 {

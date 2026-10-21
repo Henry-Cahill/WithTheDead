@@ -5063,11 +5063,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `if (id == "warden_checkpoint" && ZoneCordon.HasGate) { continue; }`
   This stops incrementing `built` when the warden checkpoint is intentionally skipped (because a gate exists). The player will now see an accurate “X landmarks” count in `ZoneLandmarks.LastSummary`, matching the number of landmarks actually generated in the world. All other logic and fields remain unchanged.
   - 00:10 landed by hts-llm in 1.1 min: **Changed file**
-- [ ] In *Assets/Scripts/World/Zone/ZoneOverlays.cs*, modify the `ZoneForest.Build` method inside the trunk‑creation loop (the call `tm.Cylinder(p + Vector3.down * 0.1f, r, h * (conifer ? 0.45f : 0.9f), 7, ZoneKit.M(conifer ? ZoneKit.V(ZoneKit.Bark, rng) : ZoneKit.V(birch, rng, 0.05f)))`) to add a thin “frost ring” cylinder on top of every conifer trunk;
+- [x] In *Assets/Scripts/World/Zone/ZoneOverlays.cs*, modify the `ZoneForest.Build` method inside the trunk‑creation loop (the call `tm.Cylinder(p + Vector3.down * 0.1f, r, h * (conifer ? 0.45f : 0.9f), 7, ZoneKit.M(conifer ? ZoneKit.V(ZoneKit.Bark, rng) : ZoneKit.V(birch, rng, 0.05f)))`) to add a thin “frost ring” cylinder on top of every conifer trunk;
   *place* the new cylinder at `p + Vector3.up * (h * 0.44f)` (just below the trunk’s top),
   *size* `new Vector3(r * 1.02f, 0.02f, r * 1.02f)` (slightly larger radius, 2 cm height),
   *material* `ZoneKit.Mt(ZoneKit.V(new Color(0.78f, 0.85f, 0.80f), rng, 0.04f))` (a faint frosty tint with small random variation).
   *use* `tm.Cylinder` again to create this primitive; keep all colliders, interaction points and pivots unchanged and add no more than this single extra primitive per trunk.
+  - 00:12 landed by 1htsserver in 2.3 min: **Changed file**
 - [x] In Assets/Scripts/Player/PlayerController.cs: Cache the per‑frame Camera.main lookup in PlayerController.Update by removing the redundant null‑check and relying on the Start‑initialized _cam field
   In `Update()` delete the line `if (_cam == null) _cam = Camera.main;` because `_cam` is already assigned in `Start()` and never changes during gameplay.
   This eliminates a `Camera.main` lookup each frame, reducing GC pressure and CPU time without altering any visible behavior.
