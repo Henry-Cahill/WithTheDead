@@ -601,6 +601,12 @@ namespace CloneZ
         {
             "The county's free calendar, December 1993. Somebody has pencilled PAYDAY across a Friday and drawn a small smiling face beside it.",
             "December 1993. Every day up to the middle of the month is crossed off in neat blue ink. Then nothing.",
+            "December 1993. The road‑clearing schedule for the county is pencilled in red for the first week, a tiny shovel doodle sits beside each day.",
+            "December 1993. A heating‑assistance day is marked on the 12th, with a little furnace sketch and a note to check the oil.",
+            "December 1993. The school’s snow‑day notice is handwritten on the 18th, a simple snowflake drawn in the margin.",
+            "December 1993. A tractor‑maintenance reminder for the 22nd is scrawled in brown ink, a tiny gear symbol beside it.",
+            "December 1993. The county fair has been postponed to March, a crossed‑out picture of a ride and “postponed” written underneath.",
+            "December 1993. The town‑hall meeting agenda for the 27th is listed: road clearing contracts, winter heating assistance, and a postponed fair."
         };
 
         private static readonly string[] DepotCalendars =

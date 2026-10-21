@@ -5646,12 +5646,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   ctx.Notify("You shake the barrel hard, splashing cold water over yourself.");
   }`
   - 03:12 landed by 0htsserver in 3.5 min: **Changed Files**
-- [ ] Append six new entries to the `OfficeCalendars` string array in Assets/Scripts/World/RaidBuilding.Lighting.cs (class `RaidBuilding`, field `OfficeCalendars`).
+- [x] Append six new entries to the `OfficeCalendars` string array in Assets/Scripts/World/RaidBuilding.Lighting.cs (class `RaidBuilding`, field `OfficeCalendars`).
   Keep the current two lines unchanged and add the six new strings after them, preserving the array’s syntax and terminating semicolon.
   Follow the voice of the existing entry `"The county's free calendar, December 1993. Somebody has pencilled PAYDAY across a Friday and drawn a small smiling face beside it."`.
   Each new entry must be a single sentence describing a December 1993 calendar page, anchored in rural Kentucky winter: road‑clearing schedule, heating‑assistance day, school snow‑day notice, tractor‑maintenance reminder, postponed county fair, town‑hall meeting agenda.
   Use period‑correct wording, no modern terms, and keep the tone of a handwritten wall calendar.
   Do not alter any other code, fields, or comments; only extend the literal.
   Verify the closing brace and semicolon follow the added entries so the file compiles unchanged.
+  - 03:13 landed by 1htsserver in 2.4 min: **Changed file**
 - [ ] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildStreetLights` to add a tiny random yaw offset (±5°) to each pole so street‑light poles are not perfectly parallel to the road.
 - [ ] In Assets/Scripts/World/Zone/ZoneOverlays.cs, inside `ZoneIndustry.Build` add a few shallow “crack” boxes to each concrete dam‑wall segment (after the call `wall.At(wall.Solid, new Vector3(x, 0f, 0f), 0f, m => m.Box(...))`).
