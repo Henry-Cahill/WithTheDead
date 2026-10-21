@@ -4754,7 +4754,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 22:33 landed by 1htsserver in 1.6 min: **Summary**
 - [x] In Assets/Scripts/World/Fixtures/HomeDoor.cs: Fix HomeDoor.SetOpen to update the cut‑away occluder after the door state changes, so the door’s visual parts correctly appear/disappear when opened or closed.
   - 22:34 landed by 0htsserver in 1 min: Implemented visual update for doors:
-- [ ] Add a tiny metal “pump‑hose” detail to each fuel‑pump pillar in `Assets/Scripts/World/RaidMapBuilder.Town.cs` → method `DressGasStation`, inside the `Prop(..., (m, r) => { … })` lambda that builds the pump pillar.
+- [x] Add a tiny metal “pump‑hose” detail to each fuel‑pump pillar in `Assets/Scripts/World/RaidMapBuilder.Town.cs` → method `DressGasStation`, inside the `Prop(..., (m, r) => { … })` lambda that builds the pump pillar.
   After the existing hazard‑sign box (`m.Box(new Vector3(0f, 0.3f, 0f), new Vector3(0.4f, 0.6f, 0.4f), DecorMaterials.Hazard);`), insert a thin cylinder representing a hose or metal pipe.
   Position it relative to the pillar centre at `new Vector3(0f, 1.5f, 0.18f)` (about half the pillar height, slightly forward).
   Size: radius `0.015f`, height `0.25f` (so the cylinder extends ~0.25 m outward).
@@ -4763,6 +4763,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add the primitive with:
   `m.Cylinder(new Vector3(0f, 1.5f, 0.18f), 0.015f, 0.25f, 12, DecorPalette.Metal(new Color(0.40f, 0.35f, 0.33f)), Quaternion.Euler(0f, (float)(r.NextDouble()*10.0 - 5.0), 0f), 1f);`
   This adds only one extra primitive per pump (well under the 12‑primitive limit) and uses the deterministic `r` already supplied, preserving colliders and interaction zones.
+  - 22:38 landed by hts-llm in 3.3 min: **Summary**
 - [x] In Assets/Scripts/UI/UIFader.cs: Update `UIFader.Update()` to stop the per‑frame check using exact float equality and the unnecessary null guard; use `Mathf.Approximately` with a small tolerance and assume `_group` is never null after `Awake`.
   - 22:37 landed by 1htsserver in 1.5 min: **Changed**: `Assets/Scripts/UI/UIFader.cs` – Updated `UIFader.Update()` to:
 - [ ] In Assets/Scripts/World/Fixtures/TowelRail.cs: Add a “Check towel dryness” action to `TowelRail.GetActions` that tells the survivor how long until the towel is fully dry, using the existing `_dryAt` field and `TimeOfDay.Now`.
