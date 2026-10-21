@@ -5668,3 +5668,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   add a call like:
   `m.Ellipsoid(new Vector3(b.x, 0.04f, b.z), Vector3.one * 0.02f, ZoneKit.Gl(new Color(0.55f, 0.30f, 0.10f)), 5, 3);`
   The ellipsoid is 2 cm across, placed 4 cm above the ground at the same X‑Z as the rod’s base (`b`). It uses the same rusty colour material as the existing cap, keeping the visual palette. No colliders or interaction points are altered, and the total added primitives stay under the limit.
+- [ ] Cache the UI camera used by `HubTooltip.Follow()` to avoid a per‑frame `Camera.main` lookup in `Assets/Scripts/Hub/Screens/HubTooltip.cs`
+  Add a private field `private Camera _uiCam;` to `HubTooltip`.
+  In `Create(Canvas canvas)` after `tip._group = …` set `tip._uiCam = null;` (the first use will resolve it).
+  In `Follow()` replace `if (m == null) return;` with:
+  `if (m == null) return;`
+  `if (_uiCam == null) _uiCam = Camera.main;`
+  and change the `ScreenPointToLocalPointInRectangle` call to pass the cached camera:
+  `if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, m.position.ReadValue(), _uiCam, out Vector2 local)) return;`
+  The tooltip’s visual behavior (positioning and edge‑flipping) remains identical, but the costly `Camera.main` search is performed only once instead of every `LateUpdate`.
