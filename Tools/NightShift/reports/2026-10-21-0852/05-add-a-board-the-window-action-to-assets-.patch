@@ -1,0 +1,33 @@
+diff --git a/Assets/Scripts/World/Fixtures/RaidWindow.cs b/Assets/Scripts/World/Fixtures/RaidWindow.cs
+index c163bb67..81855491 100644
+--- a/Assets/Scripts/World/Fixtures/RaidWindow.cs
++++ b/Assets/Scripts/World/Fixtures/RaidWindow.cs
+@@ -147,6 +147,8 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
+ 
+             if (inside)
+             {
++                if (!_boarded) into.Add(new InteractAction("Board the window", BoardWindow)
++                    .Timed(CloneZConfig.WindowNoise * 0.8f, "Nailing boards", HumanoidActivity.Build));
+                 if (_dressing != Dressing.None) into.Add(new InteractAction(DressingLabel, CurtainAction));
+                 into.Add(new InteractAction(OutSide == 0 ? "Look through the window" : "Look outside", LookAction)
+                     .Timed(CloneZConfig.WindowLookSeconds, "Looking outside", HumanoidActivity.Use));
+@@ -382,10 +384,18 @@ private void KnockWindow(InteractContext ctx)
+             ctx.Notify("You rap on the glass; the sound echoes down the street.");
+         }
+ 
++
++
++
++
++
++
++
+         public override void CaptureState(FixtureSave save)
+         {
+             base.CaptureState(save);
+-            save.State |= ((int)_glass << 3) | (_boarded ? 32 : 0);
++            // Save window state, including board status for nailed up boards
++            save.State = ((int)_glass << 3) | (_boarded ? 32 : 0);
+         }
+ 
+         public override void RestoreState(FixtureSave save)
