@@ -46,6 +46,8 @@ namespace CloneZ
             m.Ellipsoid(new Vector3(0f, 1.95f, 3.4f), new Vector3(1.9f, 1.4f, 2f), DecorPalette.Glass(new Color(0.25f, 0.32f, 0.36f)), 10, 6);
             m.CylinderX(new Vector3(0f, 2.1f, -5.2f), 0.42f, 6.4f, 10, DecorPalette.Metal(hull), 90f);
             m.Box(new Vector3(0f, 3f, -8.1f), new Vector3(0.12f, 1.9f, 1.1f), DecorPalette.Metal(hull));
+            // Small worn‑metal exhaust pipe on the tail boom for period‑appropriate grit
+            m.Cylinder(new Vector3(0f, 2.45f, -8.55f), 0.06f, 0.06f, 6, DecorPalette.Metal(hull * 0.8f));
             m.Box(new Vector3(0f, 2.9f, 0.3f), new Vector3(1.2f, 0.5f, 2.4f), DecorPalette.Metal(hull * 0.85f));
             for (int s = -1; s <= 1; s += 2)
             {
