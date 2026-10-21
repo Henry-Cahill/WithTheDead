@@ -5333,7 +5333,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Ribbon(site.Town.Out, piece, 0.04f, StreetY + 0.001f, DecorMaterials.Gravel);`
   The added ribbon reuses the existing `DecorMaterials.Gravel` surf, respects the deterministic random seed (no new randomness), adds no colliders or interaction points, and introduces only a single primitive per road piece (well under the ~12‑primitive limit).
   - 01:38 landed by 0htsserver in 5.5 min: All changes compile successfully.**Summary of changes**
-- [ ] In Assets/Scripts/Player/PlayerInteractor.cs: Cache the fixture prompt string in `PlayerInteractor` to avoid rebuilding the action list each frame (the prompt currently calls `FixturePrompt(FixtureTarget)` which clears `_actions`, calls `GetActions`, and builds a new string on every Update).
+- [x] In Assets/Scripts/Player/PlayerInteractor.cs: Cache the fixture prompt string in `PlayerInteractor` to avoid rebuilding the action list each frame (the prompt currently calls `FixturePrompt(FixtureTarget)` which clears `_actions`, calls `GetActions`, and builds a new string on every Update).
+  - 01:59 landed by 1htsserver in 24.1 min: Implemented caching for fixture prompts:
 - [x] Add a simple brick chimney to residential roofs in `Assets/Scripts/World/Map/KentuckyMap.Buildings.cs` → modify the `BuildRoofEaves(Site site)` method to generate one chimney per residential building (kinds “house”, “trailer”, “apartments”, “hotel” or `use` containing “residential”).
   - 01:44 landed by 0htsserver in 3.9 min: **Changed file**
 - [x] Cache `PlayerSkills` in `Awake` and remove the per‑frame `GetComponent` lookup in `Update` of Assets/Scripts/Player/PlayerInventory.cs
