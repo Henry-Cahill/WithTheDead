@@ -5412,7 +5412,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Vector3 labelPos = new Vector3(Mathf.Sin(labelAngle) * (r + 0.012f), 0.6f, Mathf.Cos(labelAngle) * (r + 0.012f));`
   `m.Box(labelPos, new Vector3(0.08f, 0.02f, 0.001f), DecorPalette.Matte(new Color(0.78f, 0.71f, 0.55f)));`
   The box is ~0.08 m × 0.02 m × 0.001 m, placed at mid‑height (≈0.6 m) on the barrel side, coloured a faded brownish‑off‑white to resemble an old hand‑painted label, adding period‑appropriate visual detail with only one extra primitive.
-- [ ] Cache the Keyboard lookup in `RaidSummaryUI.Update` to avoid a per‑frame `Keyboard.current` search (Assets/Scripts/Extraction/RaidSummaryUI.cs)
+- [x] Cache the Keyboard lookup in `RaidSummaryUI.Update` to avoid a per‑frame `Keyboard.current` search (Assets/Scripts/Extraction/RaidSummaryUI.cs)
   Add a private field `private Keyboard _cachedKeyboard;` to the class.
   In `Awake()` set `_cachedKeyboard = Keyboard.current;`.
   In `Update()` replace `Keyboard kb = Keyboard.current;` with:
@@ -5420,6 +5420,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Keyboard kb = _cachedKeyboard;`.
   This caches the InputSystem singleton lookup, eliminating the per‑frame reflection‑style search.
   The UI behavior (responding to Enter/NumpadEnter after `KeyDelay`) stays identical, and the visual report is unchanged.
+  - 02:09 landed by hts-llm in 2.4 min: Implemented keyboard caching in **RaidSummaryUI.cs**:
 - [ ] Add a “Knock on the safe” action to `Assets/Scripts/World/Fixtures/RaidStoreSafe.cs` in the `RaidStoreSafe.GetActions` method, inserting it after the existing `into.Add(new InteractAction("Listen at the door", c => c.Notify(Listening[_listened++ % Listening.Length])));` line.
   Add the line: `into.Add(new InteractAction("Knock on the safe", c => { MakeNoise(CloneZConfig.RaidSafeDialNoise); c.Notify("Your knuckles rattle the steel. Nothing else happens."); }));`
   This uses the already‑available `MakeNoise` method and the `CloneZConfig.RaidSafeDialNoise` constant.
