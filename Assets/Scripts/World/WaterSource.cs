@@ -278,14 +278,16 @@ namespace CloneZ
         {
             if (Kind != WaterSourceKind.RainBarrel) return;
 
+            // Ensure we have a reference to WeatherSystem even if it was instantiated after Awake.
+            if (_weather == null) _weather = WeatherSystem.Instance;
+
             float now = TimeOfDay.Now;
             float dH = now - _lastHours;
             _lastHours = now;
             if (dH <= 0f) return;
 
-
-                float rain = _weather != null ? _weather.RainIntensity : 0f;
-                if (rain > 0f)
+            float rain = _weather != null ? _weather.RainIntensity : 0f;
+            if (rain > 0f)
             {
                 Water = Mathf.Min(CloneZConfig.WaterBarrelMax, Water + CloneZConfig.WaterBarrelRainPerHour * rain * dH);
                 RefreshVisual();

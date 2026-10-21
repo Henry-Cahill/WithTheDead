@@ -4638,4 +4638,5 @@ you want to see in game. Indent extra lines under a task to add detail.
   ` HubRules.SafeZone = !HubRules.SafeZone;`
   ` GameEvents.RaiseToast($"Safe zone is now {(HubRules.SafeZone ? "ON" : "OFF")}.");`
 - [ ] Add a tiny brass hinge detail to each upper‑cabinet door in `Assets/Scripts/World/FurnitureBuilder.Home.cs` → `UpperCabinets`
-- [ ] In Assets/Scripts/World/WaterSource.cs: Fix the rain‑barrel fill simulation to handle cases where WeatherSystem isn’t instantiated before WaterSource.Awake, preventing the barrel from ever filling.
+- [x] In Assets/Scripts/World/WaterSource.cs: Fix the rain‑barrel fill simulation to handle cases where WeatherSystem isn’t instantiated before WaterSource.Awake, preventing the barrel from ever filling.
+  - 21:59 landed by 1htsserver in 1.7 min: **Changed file**
