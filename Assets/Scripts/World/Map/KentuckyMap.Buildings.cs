@@ -33,6 +33,40 @@ namespace CloneZ
 
         private static Surf Glass => DecorPalette.Gloss(new Color(0.08f, 0.09f, 0.11f));
 
+                private static void BuildRoofEaves(Site site)
+        {
+            // Add eave trim to residential buildings (house, trailer, etc.)
+            foreach (Footprint f in site.Area.Buildings)
+            {
+                // Consider residential kinds by use field containing "residential" or kind "house"/"trailer"
+                string use = f.Data.use ?? "";
+                if (!use.Contains("residential") && f.Data.kind != "house" && f.Data.kind != "trailer")
+                    continue;
+
+                // Determine roof height: use building height if known, else default 4.5f
+                float roofY = f.Data.height > 0f ? f.Data.height : 4.5f;
+                // Place eave at mid-height of the eave thickness
+                float eaveY = roofY + EaveHeight * 0.5f;
+
+                List<Vector2> pts = f.Pts;
+                for (int i = 0; i < pts.Count; i++)
+                {
+                    Vector2 a = pts[i];
+                    Vector2 b = pts[(i + 1) % pts.Count];
+                    Vector2 d = b - a;
+                    float edgeLen = d.magnitude;
+                    if (edgeLen < 0.05f) continue;
+                    Vector2 n = new Vector2(d.y, -d.x).normalized; // outward normal (right side of anticlockwise)
+                    Vector3 pos = To3((a + b) * 0.5f, eaveY);
+                    // size: depth outward, height thin, length along edge
+                    Vector3 size = new Vector3(EaveDepth, EaveHeight, edgeLen);
+                    Quaternion rot = Quaternion.LookRotation(new Vector3(d.x, 0f, d.y));
+                    // Use same roof material as building's roof surface
+                    Surf roofMat = RoofSurf(f.Data, new System.Random(unchecked((int)f.Data.id) ^ 0x51ED));
+                    site.Overhead.At(pos).Box(pos, size, rot, roofMat);
+                }
+            }
+        }
         private static void BuildBuildings(Site site)
         {
             float half = site.Half;
