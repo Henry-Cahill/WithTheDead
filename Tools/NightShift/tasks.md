@@ -5656,7 +5656,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 03:13 landed by 1htsserver in 2.4 min: **Changed file**
 - [x] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildStreetLights` to add a tiny random yaw offset (±5°) to each pole so street‑light poles are not perfectly parallel to the road.
   - 03:14 landed by hts-llm in 2.1 min: **Summary**
-- [ ] In Assets/Scripts/World/Zone/ZoneOverlays.cs, inside `ZoneIndustry.Build` add a few shallow “crack” boxes to each concrete dam‑wall segment (after the call `wall.At(wall.Solid, new Vector3(x, 0f, 0f), 0f, m => m.Box(...))`).
+- [x] In Assets/Scripts/World/Zone/ZoneOverlays.cs, inside `ZoneIndustry.Build` add a few shallow “crack” boxes to each concrete dam‑wall segment (after the call `wall.At(wall.Solid, new Vector3(x, 0f, 0f), 0f, m => m.Box(...))`).
+  - 03:17 landed by 1htsserver in 3.5 min: **Changed file**
 - [ ] Fix the world‑build guard in Assets/Scripts/Bootstrap/GameBootstrapper.cs so the hub, raid and wave‑survival worlds can be rebuilt after a previous play session ends.
   In the methods StartRaid(), StartHub(), StartNewGame() and ContinueGame() remove the line `if (_worldBuilt) return;` (currently the first statement in each method).
   This prevents the bootstrapper from silently aborting world creation when the same `GameBootstrapper` instance persists between mode switches (e.g., returning to the hub after a raid). With the guard removed, the requested world is always built, and the player will see the correct hub or raid environment instead of an empty scene.

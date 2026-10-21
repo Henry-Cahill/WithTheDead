@@ -145,6 +145,8 @@ namespace CloneZ
                 Vector3 c = new Vector3(x, 0f, half - 3f);
                 if (site.Any(c, 3f, SiteCell.Reserved)) continue;
                 wall.At(wall.Solid, new Vector3(x, 0f, 0f), 0f, m => m.Box(new Vector3(0f, 6f, 0f), new Vector3(8.1f, 12f, 2.2f), ZoneKit.M(ZoneKit.V(ZoneKit.ConcreteDark, rng))));
+                // Shallow crack detail: a thin horizontal box on the wall face to suggest a crack
+                wall.At(wall.Solid, new Vector3(x, 6f, 0f), 0f, m => m.Box(new Vector3(0f, 0.2f, 0f), new Vector3(8f, 0.2f, 0.1f), ZoneKit.M(ZoneKit.V(ZoneKit.ConcreteDark, rng))));
                 // Add a few rust‑stained bolt heads on the concrete block (1‑4 bolts per segment).
                 int boltCount = rng.Next(1, 5);
                 for (int b = 0; b < boltCount; b++)
