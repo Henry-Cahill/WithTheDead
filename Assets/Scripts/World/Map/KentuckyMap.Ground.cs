@@ -273,8 +273,22 @@ namespace CloneZ
             List<int> tris = MapGeometry.Triangulate(poly);
             if (tris.Count == 0) return;
             RaidMesh m = into.Flat(To3(MapGeometry.Middle(poly), 0f));
+            bool asphalt = surf.Mat == DecorMaterials.Asphalt.Mat;
+            float[] heights = null;
+            if (asphalt)
+            {
+                int vCount = poly.Count;
+                heights = new float[vCount];
+                for (int i = 0; i < vCount; i++)
+                    heights[i] = y + (Mathf.PerlinNoise(poly[i].x * 0.13f, poly[i].y * 0.13f) - 0.5f) * 0.002f;
+            }
             for (int i = 0; i + 2 < tris.Count; i += 3)
-                m.Tri(To3(poly[tris[i]], y), To3(poly[tris[i + 1]], y), To3(poly[tris[i + 2]], y), surf);
+            {
+                if (asphalt)
+                    m.Tri(To3(poly[tris[i]], heights[tris[i]]), To3(poly[tris[i + 1]], heights[tris[i + 1]]), To3(poly[tris[i + 2]], heights[tris[i + 2]]), surf);
+                else
+                    m.Tri(To3(poly[tris[i]], y), To3(poly[tris[i + 1]], y), To3(poly[tris[i + 2]], y), surf);
+            }
         }
 
         private static float Min(List<Vector2> pts, bool x)
