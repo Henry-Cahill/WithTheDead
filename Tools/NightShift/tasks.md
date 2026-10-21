@@ -4389,12 +4389,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   For each rivet, add `m.Box(new Vector3(x + R(rng, -0.015f, 0.015f), 1.26f + R(rng, -0.01f, 0.01f), 0.245f), new Vector3(0.004f, 0.004f, 0.001f), M(Black));` – a 4 mm × 4 mm × 1 mm black cube positioned just above and near the handle.
   Keep the existing colliders and interaction points unchanged; the rivets are purely visual.
   No more than 12 new primitive calls are added in total (max 3 rivets × door × count ≤ 12 for typical counts).
-- [ ] Cache GameManager and ExtractionManager lookups in Update of Assets/Scripts/UI/PauseMenuController.cs to eliminate per‑frame null‑checks
+- [x] Cache GameManager and ExtractionManager lookups in Update of Assets/Scripts/UI/PauseMenuController.cs to eliminate per‑frame null‑checks
   In Awake() the fields `_gm` and `_em` are already set (`_gm = GameManager.Instance; _em = ExtractionManager.Instance;`).
   Remove the two lines in Update(): `if (_gm == null) _gm = GameManager.Instance;` and `if (_em == null) _em = ExtractionManager.Instance;`.
   The rest of Update() can keep using the cached `_gm` and `_em` without change; they will stay valid for the menu’s lifetime.
   Player‑visible behavior is unchanged – the pause menu still opens only when the game is playing and not blocked.
   This eliminates a tiny allocation‑free singleton lookup each frame, reducing GC pressure and CPU time.
+  - 20:29 landed by 1htsserver in 1.7 min: **Changed Files**
 - [ ] Add a “Power status” extra action to the CivicToggle fixture in Assets/Scripts/World/Fixtures/RaidCivicFixtures.cs
   Add a private method `PowerInfo(InteractContext ctx)` that calls `ctx.Notify(PowerGrid.HousePowered ? "The building has power." : "The building has no power.");` inside the `CivicToggle` class.
   In the static `Create` method, replace the current `_extra` assignment (`t._extra = (c, list) => list.Add(new InteractAction("Inspect", t.Inspect));`) with a lambda that adds both actions: first the existing “Inspect” action and then a new `new InteractAction("Power status", t.PowerInfo)`.

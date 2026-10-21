@@ -132,8 +132,8 @@ private ExtractionManager _em;
         #region Flow
         private void Update()
         {
-            if (_gm == null) _gm = GameManager.Instance;
-if (_em == null) _em = ExtractionManager.Instance;
+            // _gm cached in Awake
+            // _em cached in Awake
 bool esc = Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame;
 
             if (_open) TickOpen(esc);
