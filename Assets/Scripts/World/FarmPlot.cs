@@ -38,6 +38,10 @@ namespace CloneZ
         private GameObject _plant;
         private Renderer _plantRenderer;
         private Renderer _soilRenderer;
+        // Cached visual state to avoid unnecessary per‑frame updates
+        private float _lastWater01;
+        private float _lastGrowth01;
+        private PlotState _lastState;
 
         private static readonly Color SoilDry = new Color(0.34f, 0.25f, 0.17f);
         private static readonly Color SoilWet = new Color(0.20f, 0.14f, 0.09f);
@@ -45,7 +49,15 @@ namespace CloneZ
         private static readonly Color Wilt = new Color(0.58f, 0.52f, 0.24f);
         private static readonly Color Dead = new Color(0.32f, 0.27f, 0.20f);
 
-        private void OnEnable() { if (!All.Contains(this)) All.Add(this); _weather = WeatherSystem.Instance; }
+        private void OnEnable()
+        {
+            if (!All.Contains(this)) All.Add(this);
+            _weather = WeatherSystem.Instance;
+            // Initialise visual cache to sentinel values so first RefreshVisual always updates
+            _lastWater01 = -1f;
+            _lastGrowth01 = -1f;
+            _lastState = (PlotState)(-1);
+        }
         private void OnDisable() { All.Remove(this); }
 
         #region IDemolishable
@@ -255,6 +267,12 @@ namespace CloneZ
         // Redraws the soil (darker when wet) and the shoot (taller and riper as it grows).
         private void RefreshVisual()
         {
+            // Skip visual update if nothing that influences appearance has changed
+            if (Mathf.Approximately(_lastWater01, Water01) &&
+                Mathf.Approximately(_lastGrowth01, Growth01) &&
+                _lastState == State)
+                return;
+
             if (_soilRenderer != null)
                 Tint(_soilRenderer, Color.Lerp(SoilDry, SoilWet, Water01));
 
@@ -287,6 +305,11 @@ namespace CloneZ
             _plant.transform.localScale = new Vector3(w, height, w);
             _plant.transform.localPosition = new Vector3(0f, 0.1f + height * 0.5f, 0f);
             if (_plantRenderer != null) Tint(_plantRenderer, color);
+
+            // Update cache after applying visuals
+            _lastWater01 = Water01;
+            _lastGrowth01 = Growth01;
+            _lastState = State;
         }
 
         private void BuildPlant()

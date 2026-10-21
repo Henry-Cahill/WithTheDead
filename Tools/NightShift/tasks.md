@@ -5005,7 +5005,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   The method creates a colour for a mail‑flag but never adds any mesh, so the flag never appears even when the 60 % chance succeeds, leaving the mailbox looking incomplete.
   Add a thin rectangular box for the flag using the generated colour.
   - 23:48 landed by 0htsserver in 2.4 min: **Changed file**
-- [ ] Optimize per‑frame visual updates in Assets/Scripts/World/FarmPlot.cs by skipping `RefreshVisual()` when nothing that affects the appearance has changed.
+- [x] Optimize per‑frame visual updates in Assets/Scripts/World/FarmPlot.cs by skipping `RefreshVisual()` when nothing that affects the appearance has changed.
   Add three private fields to `FarmPlot`: `float _lastWater01; float _lastGrowth01; PlotState _lastState;`.
   Initialise them to sentinel values (e.g. `-1f`) in `OnEnable()`.
   In `RefreshVisual()` insert at the top:
@@ -5013,3 +5013,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   After the visual work (tinting soil, scaling/colouring plant) update the cache: `_lastWater01 = Water01; _lastGrowth01 = Growth01; _lastState = State;`.
   Keep the existing calls to `RefreshVisual()` in `Plant`, `AddWater`, `Advance`, `ResetToEmpty`, etc.; the method will now early‑out on frames where water, growth or state hasn’t changed, eliminating unnecessary `Color.Lerp`, `Mathf.Lerp`, material color assignments and transform scaling each frame.
   This change does not alter any gameplay or what the player sees; visuals only update when their underlying data changes.
+  - 23:53 landed by hts-llm in 4.2 min: **Changes Made**
