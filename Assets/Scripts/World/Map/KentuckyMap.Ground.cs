@@ -8,7 +8,7 @@ namespace CloneZ
     // for roads, gravel for tracks, trodden snow for paths), the rivers and streams as ice, and the railways.
     public static partial class KentuckyMap
     {
-        private const float StreetY = 0.012f;
+        internal const float StreetY = 0.012f;
         // Height of the raised kerb strip (above the road surface).
         private const float KerbHeight = 0.04f;
         // Width of the kerb strip.
@@ -22,6 +22,9 @@ namespace CloneZ
 
                 private static Surf Ice => DecorPalette.Gloss(new Color(0.60f, 0.68f, 0.76f));
         private static Surf KerbSurf => DecorPalette.Matte(KerbColor);
+        private static readonly Color StreetLampMetalColor = new Color(0.55f, 0.55f, 0.55f);
+        internal static Surf StreetLampMetal => DecorPalette.Matte(StreetLampMetalColor);
+        internal static readonly Color StreetLampLightColor = new Color(1f, 0.93f, 0.70f); // warm yellow
         private static Surf TroddenSnow => DecorPalette.Matte(new Color(0.74f, 0.77f, 0.82f));
         private static Surf CentreLine => DecorPalette.Matte(new Color(0.78f, 0.66f, 0.22f));
         private static Surf RailSteel => DecorPalette.Matte(new Color(0.30f, 0.27f, 0.25f));
@@ -29,6 +32,23 @@ namespace CloneZ
 
         // Walkable snow with one collider over the playable square (like the procedural town's), and a snowfield
         // without a collider under the scenery beyond, so the horizon isn't empty.
+        private static IEnumerable<Vector2> SampleAlong(List<Vector2> pts, float interval)
+        {
+            if (pts.Count < 2) yield break;
+            float accumulated = 0f;
+            for (int i = 0; i + 1 < pts.Count; i++)
+            {
+                Vector2 a = pts[i], b = pts[i + 1];
+                float segLen = Vector2.Distance(a, b);
+                Vector2 dir = (b - a) / segLen;
+                while (accumulated + interval <= segLen)
+                {
+                    accumulated += interval;
+                    yield return a + dir * accumulated;
+                }
+                accumulated = (accumulated + segLen) - Mathf.Floor((accumulated + segLen) / interval) * interval;
+            }
+        }
         private static void BuildGround(Site site)
         {
             float half = site.Half + 0.8f;
@@ -111,8 +131,29 @@ if (water) {
                         Ribbon(site.Town.Out, piece, 0.04f, StreetY + 0.001f, RandomGravelOverlay(piece[0]));
                     Ribbon(site.Town.Out, piece, KerbWidth, StreetY + KerbHeight + 0.001f, Ice);
                     }
+                    // Place street‑lamp poles along main roads (road rank >= 2) every 30 m.
+                    if (road && surf.Mat == DecorMaterials.Asphalt.Mat)
+                    {
+                        const float lampInterval = 30f;
+                        foreach (Vector2 lampPos in SampleAlong(piece, lampInterval))
+                        {
+                            // Determine lamp yaw: align with road direction at the sampled point.
+                            // Find the segment that contains the point.
+                            float yaw = 0f;
+                            for (int i = 0; i + 1 < piece.Count; i++)
+                            {
+                                Vector2 a = piece[i], b = piece[i + 1];
+                                if (Vector2.Distance(a, lampPos) + Vector2.Distance(lampPos, b) - Vector2.Distance(a, b) < 0.01f)
+                                {
+                                    Vector2 d = (b - a).normalized;
+                                    yaw = -Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
+                                    break;
+                                }
+                            }
+                            StreetLampHelper.PlaceLamp(site.Town.Out, site, lampPos, yaw);
+                        }
+                    }
                     site.TakeLine(piece, width * 0.5f + 0.3f);
-                    if (road && width >= 7f) DashedLine(site.Town.Out, piece, StreetY + 0.003f);
                 }
                 // The road out of town carries on past the edge, as scenery.
                 if (road)
