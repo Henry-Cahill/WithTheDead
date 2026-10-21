@@ -52,6 +52,8 @@ namespace CloneZ
         private PlayerClothing _clothing;
         private PlayerInteractor _interactor;
         private Font _font;
+        private Mouse _mouse; // cached input devices
+        private Keyboard _keyboard; // cached input devices
 
         private GameObject _root;              // dim backdrop + window (toggled on/off)
         private UIFader _fader;
@@ -93,6 +95,9 @@ namespace CloneZ
             _clothing = player != null ? player.GetComponent<PlayerClothing>() : null;
             _interactor = player != null ? player.GetComponent<PlayerInteractor>() : null;
             _font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+            // Cache input devices for per‑frame use to avoid static look‑ups.
+            _mouse = Mouse.current;
+            _keyboard = Keyboard.current;
             _markDirty = MarkDirty;
             LoadGridPrefs();
             Build();
@@ -184,8 +189,8 @@ namespace CloneZ
 
         private void PositionTooltip()
         {
-            if (_uiCanvasRect == null || _tooltipBg == null || Mouse.current == null) return;
-            Vector2 screen = Mouse.current.position.ReadValue();
+            if (_uiCanvasRect == null || _tooltipBg == null || _mouse == null) return;
+            Vector2 screen = _mouse.position.ReadValue();
             if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(_uiCanvasRect, screen, null, out Vector2 local))
                 return;
 
@@ -315,7 +320,7 @@ namespace CloneZ
         // no fixed order, so whichever asks first decides for that frame. The list view is unchanged.
         private bool ConsumeEscape()
         {
-            Keyboard kb = Keyboard.current;
+            Keyboard kb = _keyboard;
             if (!_gridMode || kb == null || !kb.escapeKey.wasPressedThisFrame) return false;
             if (_escFrame == Time.frameCount) return _escConsumed;
             _escFrame = Time.frameCount;
@@ -490,8 +495,8 @@ namespace CloneZ
             float h = titleH + options.Count * itemH + pad * 2f;
 
             Vector2 local = Vector2.zero;
-            if (Mouse.current != null)
-                RectTransformUtility.ScreenPointToLocalPointInRectangle(layerRt, Mouse.current.position.ReadValue(), null, out local);
+            if (_mouse != null)
+                RectTransformUtility.ScreenPointToLocalPointInRectangle(layerRt, _mouse.position.ReadValue(), null, out local);
             Rect r = layerRt.rect;
             float x = Mathf.Clamp(local.x + 2f, r.xMin + 4f, r.xMax - w - 4f);
             float y = Mathf.Clamp(local.y + 2f, r.yMin + 4f, r.yMax - h - 4f);
