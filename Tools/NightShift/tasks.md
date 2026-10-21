@@ -5383,7 +5383,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   a brief morale‑boosting broadcast encouraging perseverance;
   a weather‑related hazard alert about ice on the main road;
   a casualty report stating a unit was overrun and requesting assistance.
-- [ ] Modify Assets/Scripts/World/Map/KentuckyMap.Props.cs → `BuildTrees` to give each tree a slightly different collider size, adding hand‑painted variation so the forest feels less uniformly perfect.
+- [x] Modify Assets/Scripts/World/Map/KentuckyMap.Props.cs → `BuildTrees` to give each tree a slightly different collider size, adding hand‑painted variation so the forest feels less uniformly perfect.
   Replace the fixed `new Vector3(0.45f, 3f, 0.45f)` passed to `site.Town.PropCollider` with a size that is randomly scaled per axis by ±10 % using the existing `rng`.
   Compute the random scale factor once per tree, e.g.:
   `float s = 0.9f + (float)rng.NextDouble() * 0.2f;`
@@ -5391,6 +5391,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Call `site.Town.PropCollider(at3 + Vector3.up * 1.5f, colSize, 0f);` instead of the constant size.
   Keep all other logic unchanged; colliders remain centered on the tree trunk and retain the same vertical offset.
   The player will now see trees whose collision boxes vary subtly in width and height, matching the hand‑crafted look of the raid town.
+  - 02:04 landed by 1htsserver in 2.6 min: **Changed**
 - [ ] Add a small chrome foot‑ring to the shop stool in `Assets/Scripts/World/FurnitureBuilder.Office.cs` → `public static void Stool(RaidMesh m, System.Random rng, Color seat)`
   Insert a thin horizontal cylinder just below the padded seat to represent the metal foot‑ring described in the summary.
   Use the same random‑seeded height `h` already computed, and the seat radius `0.165f` (the same as the padded cylinder).

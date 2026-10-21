@@ -161,7 +161,8 @@ namespace CloneZ
                     if (pine) DecorProps.Pine(m, rng, h);
                     else DecorProps.BareTree(m, rng, h);
                     m.ResetFrame();
-                    site.Town.PropCollider(at3 + Vector3.up * 1.5f, new Vector3(0.45f, 3f, 0.45f), 0f);
+                    float s = 0.9f + (float)rng.NextDouble() * 0.2f;
+                site.Town.PropCollider(at3 + Vector3.up * 1.5f, new Vector3(0.45f, 3f, 0.45f) * s, 0f);
                     site.Take(at, 1.3f);
                     site.Trees++;
                     planted++;
