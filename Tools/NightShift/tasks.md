@@ -4204,3 +4204,19 @@ you want to see in game. Indent extra lines under a task to add detail.
   This stops `Dictionary<string, ItemDef>.TryGetValue` from being called with a null key, which currently throws.
   Result: hovering over items whose definition mistakenly leaves a related ID blank (e.g., a cookable item without a CookedId) no longer crashes the UI; the tooltip simply omits that line.
   - 19:22 landed by hts-llm in 2.4 min: **Changed**
+- [ ] Add subtle rust‑stain patches on the concrete kerb in `Assets/Scripts/World/RaidMapBuilder.Streets.cs` → method `SidewalkRun`
+  After the existing kerb slab call `Slab(town, alongX, coord, a, b, …, 0.05f, DecorPalette.Matte(Kerb));` insert a new block.
+  With a 20 % random chance (`if (rng.NextDouble() < 0.2)`) pick a start position `float rustStart = R(rng, a, b - R(rng, 0.2f, 0.4f));` and length `float rustLen = R(rng, 0.2f, 0.4f);`.
+  Compute the across coordinate of the kerb edge: `float across = coord + (side > 0 ? hw + 0.125f : -hw - 0.125f);`.
+  Use `Slab` to lay a thin elevated rectangle on the kerb surface:
+  `Slab(town, alongX, coord, rustStart, rustStart + rustLen,
+  side > 0 ? hw + 0.02f : -hw - 0.27f,
+  side > 0 ? hw + 0.07f : -hw - 0.22f,
+  0.051f,
+- [ ] Add a “Check volume” action to Assets/Scripts/World/Fixtures/RaidCivicRadio.cs that lets the survivor see the current radio volume level.
+  Add a new field `private Action<InteractContext> _checkVolume;` alongside the other action delegates.
+  In `Awake()` assign `_checkVolume = ctx => ctx.Notify("Current volume: " + (_volume <= 0 ? "low." : _volume >= MaxVolume ? "loud. It carries a long way." : "medium."));`.
+  In `GetActions` (inside the `_on` block) add `into.Add(new InteractAction("Check volume", _checkVolume).DisabledIf(!near, TooFar));` after the existing “Check channel” action.
+  The action only reports the current `_volume`; it does not modify any other state.
+  Keep all existing volume‑step actions (`Turn it up`, `Turn it down`) unchanged.
+  No other files need to be edited.
