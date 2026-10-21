@@ -5822,8 +5822,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 03:56 landed by 0htsserver in 1.4 min: **Changed file**
 - [x] In `Assets/Scripts/World/Map/KentuckyMap.Buildings.cs` modify the `Windows` method to add a pair of simple wooden shutters to each residential window (kinds “house”, “trailer”, “apartments”, “hotel”).
   - 04:06 landed by 0htsserver in 9.7 min: **Changes made**
-- [ ] Add subtle moss clumps to each stone column of the choir sanctum, editing Assets/Scripts/World/Zone/ZoneLandmarks.cs, method `ChoirSanctum(SiteBuilder sb)`
+- [x] Add subtle moss clumps to each stone column of the choir sanctum, editing Assets/Scripts/World/Zone/ZoneLandmarks.cs, method `ChoirSanctum(SiteBuilder sb)`
   After the loop that builds the nine stone columns (`for (int i = 0; i < 9; i++)`), add a small moss primitive on the top edge of each column.*
   Use the same deterministic RNG (`sb.Rng`) to jitter the placement: `float mossYaw = ZoneKit.R(sb.Rng, -5f, 5f);` and a slight radial offset `float off = ZoneKit.R(sb.Rng, 0.02f, 0.06f);`.*
   Create the moss with `sb.Solid.Box(c + Vector3.up * (h - 0.05f) + new Vector3(off * Mathf.Cos(mossYaw * Mathf.Deg2Rad), 0f, off * Mathf.Sin(mossYaw * Mathf.Deg2Rad)), new Vector3(0.12f, 0.02f, 0.12f), ZoneKit.M(ZoneKit.V(new Color(0.15f, 0.25f, 0.12f), sb.Rng, 0.01f)));` – size 0.12 m × 0.02 m × 0.12 m.
   This adds up to nine tiny moss patches, staying under the 12‑primitive limit, and uses the existing stone material palette with a green tint for period‑correct weathering.*
+  - 06:44 landed by 0htsserver in 1.8 min: **Changed file**
