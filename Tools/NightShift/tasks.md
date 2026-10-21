@@ -4726,7 +4726,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Keeps the existing null‑check `if (_sleepCache != null && _sleepCache.IsSleeping)` intact.
   No other fields or methods need modification.
   - 22:25 landed by 0htsserver in 0.9 min: **Changed file**
-- [ ] In Assets/Scripts/World/Fixtures/PictureFixture.cs: Add a small “Tilt the picture” action to PictureFixture so the survivor can deliberately tilt a picture a little for flavor and a calming effect
+- [x] In Assets/Scripts/World/Fixtures/PictureFixture.cs: Add a small “Tilt the picture” action to PictureFixture so the survivor can deliberately tilt a picture a little for flavor and a calming effect
   In `PictureFixture` add a new `const float SmallTilt = 15f;` near the other constants.
   In `GetActions` after the existing `Look` line add `into.Add(new InteractAction("Tilt the picture", Tilt));`.
   Implement a private method `Tilt(InteractContext ctx)` that does:
@@ -4734,6 +4734,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `ctx.Notify("You tilt the picture.");`
   If `_calming && Time.time >= _calmAgainAt` then call `LightingFixtures.Calm(ctx, CloneZConfig.PictureCalm);` and set `_calmAgainAt = Time.time + CloneZConfig.PictureCalmCooldown;`.
   The player now sees a new “Tilt the picture” option, the picture’s angle changes by ±15°, and a calming effect is applied just like looking or straightening.
+  - 22:32 landed by hts-llm in 6.3 min: **Changes made**
 - [x] Append four new Kentucky‑winter themed trait entries to the `ProfessionCatalog.Traits` list in Assets/Scripts/Profile/ProfessionCatalog.cs, inserting them after the existing `T("coldfront", …)` line; use the style of `T("frostbite", "Frostbite", 1, "A bitter wind bites at your skin, a reminder of Kentucky’s icy hills.", m => { })` and cover themes of icy caverns, snow‑blindness, fire‑wood hoarding, and chilling sensitivity.
   Add:
   `T("icecave_explorer", "Ice‑Cave Explorer", 2, "You’ve learned to navigate the frozen caverns, moving through deep drifts with confidence.", m => m.NoiseMult *= 0.9f),`

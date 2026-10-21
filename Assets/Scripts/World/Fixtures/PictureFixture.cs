@@ -13,6 +13,7 @@ namespace CloneZ
     public class PictureFixture : Interactable
     {
         private const float CrookedAbove = 0.75f;   // degrees of tilt the eye notices
+        private const float SmallTilt = 15f; // small tilt amount for player action
         private const float SwingSpeed = 45f;       // degrees a second the frame swings to its new tilt
 
         private string _key;
@@ -107,6 +108,7 @@ namespace CloneZ
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             into.Add(new InteractAction(_lookLabel, Look));
+            into.Add(new InteractAction("Tilt the picture", Tilt));
             into.Add(new InteractAction("Inspect the picture", Inspect));
             if (IsCrooked) into.Add(new InteractAction(_straightenLabel, Straighten));
         }
@@ -125,6 +127,17 @@ namespace CloneZ
             _calmAgainAt = Time.time + CloneZConfig.PictureCalmCooldown;
         }
 
+        private void Tilt(InteractContext ctx)
+        {
+            _roll = Mathf.Clamp(_roll + (Random.value < 0.5f ? SmallTilt : -SmallTilt), -CloneZConfig.PictureMaxRoll, CloneZConfig.PictureMaxRoll);
+            ctx.Notify("You tilt the picture.");
+            if (_calming && Time.time >= _calmAgainAt)
+            {
+                LightingFixtures.Calm(ctx, CloneZConfig.PictureCalm);
+                _calmAgainAt = Time.time + CloneZConfig.PictureCalmCooldown;
+            }
+        }
+
         private void Straighten(InteractContext ctx)
         {
             _roll = 0f;
@@ -134,8 +147,7 @@ namespace CloneZ
                 _calmAgainAt = Time.time + CloneZConfig.PictureCalmCooldown;
             }
         }
-
-        public override void CaptureState(FixtureSave save)
+public override void CaptureState(FixtureSave save)
         {
             save.State = 1;
             save.A = _roll;
