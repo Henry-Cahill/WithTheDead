@@ -102,7 +102,11 @@ namespace CloneZ
                         Vector3 at3 = To3(at, 0f);
                         RaidMesh m = site.Town.Out.Solid(at3);
                         m.SetFrame(at3, yaw);
-                        DecorProps.Car(m, rng, kind, CarPaints[rng.Next(CarPaints.Length)], out Vector3 size);
+                        Color paint = CarPaints[rng.Next(CarPaints.Length)];
+                paint.r = Mathf.Clamp01(paint.r + (float)rng.NextDouble() * 0.06f - 0.03f);
+                paint.g = Mathf.Clamp01(paint.g + (float)rng.NextDouble() * 0.06f - 0.03f);
+                paint.b = Mathf.Clamp01(paint.b + (float)rng.NextDouble() * 0.06f - 0.03f);
+                DecorProps.Car(m, rng, kind, paint, out Vector3 size);
                         m.ResetFrame();
                         site.Town.PropCollider(at3 + Vector3.up * (size.y * 0.5f), size, yaw);
                         site.Take(at, 2.4f);
