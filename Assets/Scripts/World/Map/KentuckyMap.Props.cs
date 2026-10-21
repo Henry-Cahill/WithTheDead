@@ -203,7 +203,7 @@ namespace CloneZ
                 string text = s.Data.name.ToUpperInvariant();
                 if (text.Length > 24) text = text.Substring(0, 24).TrimEnd();
                 Vector2 toStreet = NearestStreetDirection(site, spot, 40f);
-                float yaw = toStreet == Vector2.zero ? 0f : Mathf.Atan2(toStreet.x, toStreet.y) * Mathf.Rad2Deg;
+                float yaw = toStreet == Vector2.zero ? 0f : Mathf.Atan2(toStreet.x, toStreet.y) * Mathf.Rad2Deg + R(rng, -5f, 5f);
                 Vector3 spot3 = To3(spot, 0f);
                 RaidMesh sm = site.Town.Out.Solid(spot3);
                 sm.SetFrame(spot3, yaw);   // the board faces +Z: towards the street

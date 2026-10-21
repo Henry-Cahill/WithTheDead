@@ -4948,11 +4948,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   “You pause, remembering a warm kitchen back home where butter melted on fresh biscuits.”
   “The radio sputters a static lullaby, and you turn the next card in time with its dying pulse.”
   - 23:32 landed by 1htsserver in 2.9 min: **Changed file**: `Assets/Scripts/World/RaidBuilding.Civic.cs`
-- [ ] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildPoints` to give each sign a tiny random yaw offset (±5°) instead of always facing exactly toward the nearest street direction.
+- [x] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildPoints` to give each sign a tiny random yaw offset (±5°) instead of always facing exactly toward the nearest street direction.
   Locate the line `float yaw = toStreet == Vector2.zero ? 0f : Mathf.Atan2(toStreet.x, toStreet.y) * Mathf.Rad2Deg;` inside `BuildPoints`.
   Change it to `float yaw = toStreet == Vector2.zero ? 0f : Mathf.Atan2(toStreet.x, toStreet.y) * Mathf.Rad2Deg + R(rng, -5f, 5f);`.
   This adds a small random rotation (‑5° to +5°) per sign, making signboards look less mechanically aligned and more like hand‑installed, period‑correct signage.
   Keep the rest of the method unchanged; colliders and placement logic remain the same.
+  - 23:34 landed by 1htsserver in 1.2 min: **Changed**
 - [ ] Add a tiny dark‑metal screw detail to the main breaker handle in `Assets/Scripts/World/StarterHome.Lighting.cs` → method `Breakers`, so the breaker panel’s toggle looks a bit more lived‑in and mechanical.
   In `Breakers`, after `FurnitureBuilder.BreakerHandle(handle, pivot, n, BreakerTilt);` insert:
   `float a = BreakerTilt * Mathf.Deg2Rad;`
