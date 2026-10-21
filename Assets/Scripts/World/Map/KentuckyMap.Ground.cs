@@ -83,8 +83,14 @@ namespace CloneZ
                 bool road = Rank(s.Data.kind) >= 2;
                 foreach (List<Vector2> piece in MapGeometry.ClipLine(s.Pts, square))
                 {
-                    // Main road surface
-                    Ribbon(site.Town.Out, piece, width, StreetY, surf);
+// Main road surface
+                     Ribbon(site.Town.Out, piece, width, StreetY, surf);
+                     // Add subtle brighter overlay for asphalt roads
+                     if (surf.Mat == DecorMaterials.Asphalt.Mat)
+                     {
+                         var varSurf = DecorPalette.Matte(new Color(0.68f, 0.68f, 0.66f));
+                         Ribbon(site.Town.Out, piece, width * 0.96f, StreetY + 0.001f, varSurf);
+                     }
                     // Raised kerb strip along the road edge
                     if (road)
                     {
