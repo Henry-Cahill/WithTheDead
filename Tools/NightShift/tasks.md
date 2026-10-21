@@ -4650,3 +4650,17 @@ you want to see in game. Indent extra lines under a task to add detail.
   `bool visible = _has && cam != null && gs.Hud != HudMode.Hardcore;`
   This removes the per‑frame property lookup (which likely does a `FindObjectByType`), reducing allocations and GC pressure.
   Player view and HUD mode remain unchanged; the compass continues to appear/disappear exactly as before.
+- [ ] In Assets/Scripts/World/Fixtures/HoseSpigot.cs modify the “Coil the hose” InteractAction added in `GetActions` so that it automatically closes the tap when the coiling action finishes.
+  Locate the line `into.Add(new InteractAction("Coil the hose", c => c.Notify("You wind the hose back onto its reel, neat as anything. Habit."))` and chain a `.Stopped` handler after the existing `.Timed(...)`.
+  The handler should read: `c => { if (_open) { SetOpen(false, false); c.Notify("You remember to shut the tap."); } }`.
+  This uses the existing private field `_open` and the method `SetOpen(bool open, bool instant)`, preserving the current timed duration (`CloneZConfig.HoseCoilSeconds`) and the original “You wind the hose…” notification.
+  No other code changes are required; the action will now both coil the hose and ensure the tap isn’t left open, giving the player a confirming message.
+- [ ] Add a deterministic default‑height helper to `MapBuilding` in `Assets/Scripts/World/Map/MapData.cs` so buildings without an explicit `height` field still get a plausible roof height based on their `levels`.
+  In `MapBuilding` insert the method
+- [ ] Add four small weathered stone rune slabs around the central stone pillar in the ChoirSanctum landmark, editing Assets/Scripts/World/Zone/ZoneLandmarks.cs method ChoirSanctum(SiteBuilder sb)
+  Insert after the line `sb.Solid.Cylinder(Vector3.zero, 2f, 0.4f, 16, ZoneKit.M(stone));`
+  Create a loop `for (int i = 0; i < 4; i++)` that uses the deterministic RNG `sb.Rng` to pick an angle offset `float a = i * Mathf.PI * 0.5f + ZoneKit.R(sb.Rng, -0.1f, 0.1f);`
+  Compute a position `Vector3 pos = new Vector3(Mathf.Cos(a) * 2.2f, 0.45f, Mathf.Sin(a) * 2.2f);`
+  Define a muted stone colour `Color rune = new Color(0.18f, 0.17f, 0.15f);`
+  Add a thin slab `sb.Solid.Box(pos, new Vector3(0.3f, 0.05f, 0.3f), ZoneKit.M(ZoneKit.V(rune, sb.Rng, 0.02f)));`
+  These slabs act as subtle weathered rune stones, giving the stone circle more period‑correct visual interest without altering colliders or interaction points; total added primitives are four.
