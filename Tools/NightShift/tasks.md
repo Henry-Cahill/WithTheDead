@@ -4152,11 +4152,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 19:02 landed by hts-llm in 3.6 min: **Changed file**
 - [ ] Append five new letter entries to the `Letters` array in Assets/Scripts/World/Fixtures/RaidHomeLiving.cs.
   Use the existing entry
-- [ ] In Assets/Scripts/World/Map/MapGeometry.cs, modify the `ClipPolygon` method to guarantee the returned polygon is anticlockwise: after the clipping loop and before `return cur;`, add `MakeAnticlockwise(cur);` (leaving the existing logic untouched).
+- [x] In Assets/Scripts/World/Map/MapGeometry.cs, modify the `ClipPolygon` method to guarantee the returned polygon is anticlockwise: after the clipping loop and before `return cur;`, add `MakeAnticlockwise(cur);` (leaving the existing logic untouched).
   This ensures any footprint that has been cut by the map rectangle retains the correct winding order for later triangulation.
   Buildings that sit on the map edge will no longer have inverted or missing walls because their clipped polygons will always be oriented anticlockwise.
   Keep the existing `Inside`/`Cross` logic unchanged; only insert the single call.
   Add a comment such as `// Ensure consistent winding for triangulation` preceding the new line.
+  - 19:03 landed by hts-llm in 1.2 min: **Changed file**
 - [ ] Add a cluster of small rust‑tinted rivets to the crashed helicopter hull for subtle weathering detail, editing Assets/Scripts/World/Zone/ZoneLandmarks.cs, method CrashedHelicopter(SiteBuilder sb)
   Insert the following code inside the `sb.At(sb.Solid, new Vector3(0f, 0f, 0f), 18f, m => { … })` block, after the existing shape calls:
   `// Small rivets along the right side of the fuselage`

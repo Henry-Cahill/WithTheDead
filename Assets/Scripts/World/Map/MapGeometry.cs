@@ -142,7 +142,9 @@ namespace CloneZ
                 }
                 cur = next;
             }
-            return cur;
+            // Ensure consistent winding for triangulation
+        MakeAnticlockwise(cur);
+        return cur;
         }
 
         private const float EPS = 1e-5f;
