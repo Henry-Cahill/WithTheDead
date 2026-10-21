@@ -4300,11 +4300,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   Start this coroutine in `Start()` after creating `_rotor` (`StartCoroutine(NoiseLoop());`).
   Remove the `_noise` field declaration and the `_noise -= Time.deltaTime; …` block from `Update`.
   Keep all existing behavior (noise still repeats every 1.5 s only when the helicopter is low and spinning fast) while reducing per‑frame work.
-- [ ] Add lock‑status output to the existing “Inspect door” action in Assets/Scripts/World/Fixtures/RaidDoor.cs
+- [x] Add lock‑status output to the existing “Inspect door” action in Assets/Scripts/World/Fixtures/RaidDoor.cs
   Modify the lambda passed to the InteractAction named “Inspect door” inside GetActions so it also reports the door’s lock condition.
   Use the existing properties IsLocked and the private field _lockBroken to build a string such as “Locked”, “Lock broken”, or “Unlocked”.
   Append this status to the current notification, e.g. `ctx.Notify($"Door health: {health:0.##}/{maxHealth:0.##} ({percent}%){(_broken ? " (broken)" : "")} – {lockStatus}");`
   Keep the rest of the action unchanged; no new UI, items, or methods are introduced.
+  - 20:07 landed by 1htsserver in 1.9 min: **Changed file**
 - [ ] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildPoints` to give hand‑painted colour variation to sign backgrounds, making them look less uniform and more period‑correct.
   After the line `if (signs >= MaxSigns || string.IsNullOrEmpty(s.Data.name) || !SignColours(s.Data.kind, out Color bg, out Color fg)) continue;` add code that perturbs `bg` slightly using the method’s existing `rng`.
   Example change:

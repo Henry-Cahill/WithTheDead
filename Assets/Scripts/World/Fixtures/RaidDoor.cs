@@ -153,12 +153,16 @@ namespace CloneZ
                 into.Insert(Mathf.Min(start + 1, into.Count), kick);
             }
 
-            // New lightweight inspection action for raid doors
+// New lightweight inspection action for raid doors
             into.Add(new InteractAction("Inspect door", ctx => {
                 float health = _health;
                 float maxHealth = _maxHealth;
                 int percent = Mathf.RoundToInt(HealthNormalized * 100f);
-                ctx.Notify($"Door health: {health:0.##}/{maxHealth:0.##} ({percent}%){(_broken ? " (broken)" : string.Empty)}");
+                string lockStatus;
+                if (_lockBroken) lockStatus = "Lock broken";
+                else if (IsLocked) lockStatus = "Locked";
+                else lockStatus = "Unlocked";
+                ctx.Notify($"Door health: {health:0.##}/{maxHealth:0.##} ({percent}%){(_broken ? " (broken)" : string.Empty)} – {lockStatus}");
             }));
 
             // New action to listen to the door's condition
