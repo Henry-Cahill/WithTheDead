@@ -5290,7 +5290,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Keep the palette lookup (`int idx = (osmId.GetHashCode() & 0x7fffffff) % kBuildingPalette.Length;`) unchanged.
   Result: buildings of the same type now have slightly different hues, giving the raid town a more lived‑in, period‑correct look without requiring new assets.
   - 01:18 landed by 1htsserver in 1.3 min: **Changed file**
-- [ ] In Assets/Scripts/Economy/Trading.cs: Fix a possible NullReference in `Trading.Sell` when the supplied `TraderDef t` is null.
+- [x] In Assets/Scripts/Economy/Trading.cs: Fix a possible NullReference in `Trading.Sell` when the supplied `TraderDef t` is null.
   In `Sell` the early‑exit test `if (unit <= 0 || from == null || !from.Stacks.Contains(s)) { message = t.Name + " won't buy that."; … }` dereferences `t` even when `t` is null (e.g. if a caller passes a missing trader). This throws an exception and the player cannot sell anything, showing no error message.
   Add a null‑check for `t` before the message is built, and use a fallback string when it is null.
   `public static int Sell(CharacterProfile c, TraderDef t, Inventory from, ItemStack s, int count, out string message)`
@@ -5299,3 +5299,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// NEW: guard against a null trader definition`
   `if (t == null)`
   `{`
+  - 01:20 landed by hts-llm in 2 min: **Changed file**
