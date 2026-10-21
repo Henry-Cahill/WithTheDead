@@ -64,6 +64,7 @@ namespace CloneZ
             into.Add(new InteractAction("Check the fuel", CheckFuel));
             into.Add(new InteractAction("Estimate runtime", EstimateRuntime));
             into.Add(new InteractAction("Inspect generator", Inspect));
+            into.Add(new InteractAction("Check next noise", CheckNoise));
         }
 
         private void Pull(InteractContext ctx)
@@ -85,6 +86,13 @@ namespace CloneZ
             ShowRunning(true);
             ctx.Notify("It catches with a bang and settles into a hammering roar. Everything for blocks around will hear that.");
         }
+
+        private void CheckNoise(InteractContext ctx)
+        {
+            float remaining = Mathf.Max(0f, _noiseAt - Time.time);
+            ctx.Notify($"The next roar will come in about {(int)remaining}s.");
+        }
+
 
         private void SwitchOff(InteractContext ctx)
         {

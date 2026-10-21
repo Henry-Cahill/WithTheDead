@@ -5237,12 +5237,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   The ellipsoid is ~1.5 cm wide, 0.8 cm tall, 0.1 cm deep, placed 13 cm above the door base and 1 cm behind the door face, using a dark‑brown matte colour to look like rust.
   Keeps existing colliders, interaction points, and pivots unchanged; adds only one primitive well under the 12‑primitive limit.
   - 01:02 landed by 0htsserver in 2.3 min: **Changed file**
-- [ ] In Assets/Scripts/World/Fixtures/RaidTownGenerator.cs: Add a “Check next noise” action to RaidTownGenerator so the player can see how long until the generator’s next rumble.
+- [x] In Assets/Scripts/World/Fixtures/RaidTownGenerator.cs: Add a “Check next noise” action to RaidTownGenerator so the player can see how long until the generator’s next rumble.
   Edit `RaidTownGenerator.GetActions` to insert `into.Add(new InteractAction("Check next noise", CheckNoise));` after the existing “Inspect generator” line.
   Add a private method `CheckNoise(InteractContext ctx)` that computes `float remaining = Mathf.Max(0f, _noiseAt - Time.time);` and calls `ctx.Notify($"The next roar will come in about {(int)remaining}s.");`.
   The new action uses only fields already present (`_noiseAt`) and Unity’s `Time.time`.
   In‑game the player sees a tooltip “[E] Check next noise” and receives a notification with the seconds until the next noise when used.
   All other code, including existing actions and the generator’s fuel logic, must remain unchanged.
+  - 01:07 landed by 1htsserver in 5.4 min: Implemented a new “Check next noise” action for the generator:
 - [ ] Add a deterministic “has sidewalk” helper to `MapBuild` in Assets/Scripts/World/Map/WorldStore.cs so road‑building code can decide per‑road‑segment whether to generate a curb/sidewalk geometry, matching the hand‑built raid town’s uneven sidewalks.
   Add the method inside the `MapBuild` class, after `RoofHasSnow`.
   Implement it as a deterministic hash of the supplied `long roadSegmentId` (the same style as `RoofHasSnow`) and return `true` for roughly 45 % of cases:
