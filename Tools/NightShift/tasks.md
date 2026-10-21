@@ -4820,7 +4820,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 22:58 landed by 1htsserver in 2.4 min: **Changed file**
 - [x] In Assets/Scripts/World/RaidMapBuilder.Outdoor.cs add two small rust‑stained metal rivet cylinders to each sandbag wall built in the `Checkpoint` method (the lambda that calls `DecorProps.SandbagWall`), so the metal band looks fastened.
   - 22:59 landed by hts-llm in 3.6 min: **Changed file**
-- [ ] Fix persistent fog in clear weather in Assets/Scripts/Core/WeatherSystem.cs
+- [x] Fix persistent fog in clear weather in Assets/Scripts/Core/WeatherSystem.cs
   *Method to change:* `ApplyFog()`
   *Current behaviour:* When the weather transitions to `Clear`, `FogIntensity` and `PrecipitationIntensity` are both 0, yet `ApplyFog()` still enables `RenderSettings.fog` (setting it to true) and updates the linear fog distances. This leaves fog rendering active even on a clear day, reducing visibility and giving the player an unintended “hazy” look.
   Exact fix:
@@ -4829,6 +4829,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Otherwise keep the existing block, but set `RenderSettings.fog = true;` before adjusting distances.
   *Result in‑game:* When the world is clear, no fog is rendered; the sky and distant terrain become fully visible, matching the intended 1993 winter Kentucky setting. All other fog‑related transitions (overcast, rain, snow, etc.) continue to work unchanged.
   *What stays:* All other calculations, the cached‑fog optimisation, and the linear distance lerp logic remain exactly as written.
+  - 23:01 landed by 1htsserver in 2.5 min: **Changed file**
 - [ ] In Assets/Scripts/Player/PlayerGearVisuals.cs: Cache the PlayerGear reference instead of calling GetComponent each frame in PlayerGearVisuals.LateUpdate, eliminating the per‑frame lookup.
   In Awake the field _gear is already set; move the null‑check to OnEnable so the component is fetched only once when the object becomes active.
   Modify LateUpdate to remove the line `if (_gear == null) _gear = GetComponent<PlayerGear>();` and rely on the cached _gear value.
