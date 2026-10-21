@@ -5223,10 +5223,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   Uses the existing `Brass` material via `Mt(Brass)` and the deterministic `rng` already passed to the method.
   No new colliders or interaction points are added; the total added primitives (4 knobs) stay well under the ~12‑primitive limit.
   - 00:56 landed by 0htsserver in 1.7 min: Implemented brass knobs on stove burners in `FurnitureBuilder.Home.cs`. The new cylinders are placed slightly above each burner with a small
-- [ ] Fix mis‑labelled window names in `Assets/Scripts/World/StarterHome.Windows.cs` → `WindowName` method
+- [x] Fix mis‑labelled window names in `Assets/Scripts/World/StarterHome.Windows.cs` → `WindowName` method
   The current `if (f.AlongX)` branch compares `f.Coord` to `Outline.yMin`/`yMax`, which are the north‑south bounds, so windows that run east‑west are incorrectly named “Front/Back”.
   Swap the axis checks so that when `f.AlongX` is true we compare against the *x* bounds, and when false we compare against the *y* bounds.
   Replace the existing block
+  - 01:02 landed by hts-llm in 4.3 min: Implemented corrected window naming logic in **StarterHome.Windows.cs**:
 - [x] Add a subtle rust‑spot ellipsoid on the mailbox door to break the flat metal surface in the `Mailbox` method of Assets/Scripts/World/StarterHome.Grounds.cs
   Add the primitive after the line `door.Box(at + new Vector3(0f, 1.2f, -0.252f), new Vector3(0.226f, 0.16f, 0.012f), face);`
   `// Small rust speck on the door’s upper edge for weathered detail`

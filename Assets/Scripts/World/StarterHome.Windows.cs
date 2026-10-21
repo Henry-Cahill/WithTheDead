@@ -89,8 +89,8 @@ namespace CloneZ
             HomeRoom room = rooms[0] ?? rooms[1];
             if (room == Store) return "Store room window";
             if (room == Bath) return "Bathroom window";
-            if (f.AlongX) return Mathf.Abs(f.Coord - Outline.yMin) < 0.05f ? "Front window" : Mathf.Abs(f.Coord - Outline.yMax) < 0.05f ? "Back window" : "Window";
-            return Mathf.Abs(f.Coord - Outline.xMin) < 0.05f ? "West window" : Mathf.Abs(f.Coord - Outline.xMax) < 0.05f ? "East window" : "Window";
+            if (f.AlongX) return Mathf.Abs(f.Mid - Outline.xMin) < 0.05f ? "West window" : Mathf.Abs(f.Mid - Outline.xMax) < 0.05f ? "East window" : "Window";
+            return Mathf.Abs(f.Mid - Outline.yMin) < 0.05f ? "Front window" : Mathf.Abs(f.Mid - Outline.yMax) < 0.05f ? "Back window" : "Window";
         }
 
         // One sash between `y0` and `y1`, `across` from the wall line: stiles, rails (the meeting rail deeper), a glazing
