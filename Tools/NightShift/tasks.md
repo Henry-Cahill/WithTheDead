@@ -5375,7 +5375,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   directly after the existing `into.Add(new InteractAction("Check signal", CheckSignal).DisabledIf(!near, TooFar));`.
   This gives the survivor a quick way to see which broadcast station the TV is tuned to, using the already‑available `Station` property and the same reach‑check logic as other actions. The rest of the script remains unchanged.
   - 02:01 landed by 1htsserver in 1.8 min: **Changed file**
-- [ ] Append four new transmission lines to the “Battalion relay” (`Channel 3`) `Lines` array in Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs
+- [x] Append four new transmission lines to the “Battalion relay” (`Channel 3`) `Lines` array in Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs
   Insert the new strings just before the closing brace of the `Lines` initializer for the third `Net` (the one with `Name = "Channel 3"`).
   Current entry style example to follow: `"All units, maintain firewatch; temperatures dropping below minus ten, frostbite risk high."`
   The new lines should each be a full‑sentence quoted string and cover the following themes:
@@ -5383,6 +5383,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   a brief morale‑boosting broadcast encouraging perseverance;
   a weather‑related hazard alert about ice on the main road;
   a casualty report stating a unit was overrun and requesting assistance.
+  - 02:05 landed by hts-llm in 4.8 min: **Changes made**
 - [x] Modify Assets/Scripts/World/Map/KentuckyMap.Props.cs → `BuildTrees` to give each tree a slightly different collider size, adding hand‑painted variation so the forest feels less uniformly perfect.
   Replace the fixed `new Vector3(0.45f, 3f, 0.45f)` passed to `site.Town.PropCollider` with a size that is randomly scaled per axis by ±10 % using the existing `rng`.
   Compute the random scale factor once per tree, e.g.:
