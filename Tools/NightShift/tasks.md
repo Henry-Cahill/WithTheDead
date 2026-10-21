@@ -4337,3 +4337,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Include subtle outbreak hints (e.g., a faint frost line on the edge, a torn corner from a frantic hand).
   Mention period‑correct office details such as carbon‑copy slips, type‑writer smudges, or a faded “County” watermark.
   Keep the `Copies` field declaration and existing strings unchanged; only extend the array literal.
+- [ ] Add a simple roof‑eave trim to residential buildings in Assets/Scripts/World/Map/KentuckyMap.cs
+  Define two new constants in the class (near the existing `SceneryReach` constant):
+  `private const float EaveHeight = 0.12f; // thin horizontal strip`
+  `private const float EaveDepth = 0.25f; // how far it sticks out from the wall`
+  Add a private static method `BuildRoofEaves(Site site)` that iterates `site.Area.Buildings`. For each `Footprint fp` where `fp.Data.use` is `"residential"` or `"house"` (or contains “residential”), loop over its `fp.Pts` edge‑by‑edge. For each edge compute the outward normal (`Vector2 n = new Vector2(d.y, -d.x).normalized;` where `d = fp.Pts[(i+1)%fp.Pts.Count] - fp.Pts[i];`). Place a thin box with `site.Overhead.At(pos).Box(size, roofMat);` where `pos` is the midpoint of the edge lifted to roof height (`float roofY = fp.Data.height + EaveHeight/2f;` – use `fp.Data.height` if present, otherwise a default of `4.5f`). `size` is `new Vector3(EaveDepth, EaveHeight, edgeLength)` rotated to follow the edge (`Quaternion.LookRotation(new Vector3(d.x,0f,d.y))`). Use the same roof material the building already uses (e.g. `Materials.Roof`).
+  Call this new method from `BuildBuildings(site)` (add the line `BuildRoofEaves(site);` after the existing building‑generation calls).
+  What the player sees: most houses now have a modest overhanging strip around the roof edge, matching the hand‑built raid town’s eave detail, while streets, interiors and colliders remain unchanged. All existing code structure, data formats and other map‑building steps stay intact.
