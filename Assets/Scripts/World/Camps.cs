@@ -361,12 +361,13 @@ namespace CloneZ
                 };
                 return;
             }
-            into.Add(new InteractAction(Open ? "Close the gate" : "Open the gate", c =>
-            {
-                Apply(true, !Open, Locked, Code);
-                Broadcast();
-                Sfx.Play(Open ? SfxIds.DoorOpen : SfxIds.DoorClose, transform.position, 0.8f, 0.85f, 18f);
-            }));
+into.Add(new InteractAction(Open ? "Close the gate" : "Open the gate", c =>
+{
+    Apply(true, !Open, Locked, Code);
+    Broadcast();
+    NoiseSystem.Emit(transform.position, 22f);
+    Sfx.Play(Open ? SfxIds.DoorOpen : SfxIds.DoorClose, transform.position, 0.8f, 0.85f, 18f);
+}));
             if (!Trusted) return;
             if (!Locked)
                 into.Add(new InteractAction("Fit a combination lock", c =>
