@@ -5200,3 +5200,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Position the box at the deck centre, slightly above the deck surface: `new Vector3(0f, SinkDeckY + 0.001f, 0f)`;
   Size the patch to roughly a spill: `new Vector3(0.08f, 0.004f, 0.02f)` (≈ 8 cm × 0.4 cm × 2 cm);
   Guard it with `if (Chance(rng, 0.25f))` so it appears on about a quarter of generated kitchens, using the same deterministic `rng` already passed to the method.
+- [ ] Cache the Keyboard lookup in Assets/Scripts/Player/PlayerFarming.cs to avoid the per‑frame static property access.
+  Add a private field `private Keyboard _keyboard;` that is assigned once in `Awake()` (or `OnEnable()`) with `Keyboard.current`.
+  Replace `Keyboard kb = Keyboard.current;` in `Update()` with `Keyboard kb = _keyboard;`.
+  If `_keyboard` is null (e.g., no keyboard attached), fall back to `Keyboard.current` once per frame to keep functionality, but only after the initial cache failed.
+  This change eliminates the repeated `Keyboard.current` getter call each frame, reducing unnecessary native‑side lookup overhead while preserving the existing behavior (the F‑key press still triggers farming actions).
