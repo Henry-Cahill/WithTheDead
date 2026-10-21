@@ -156,6 +156,51 @@ for (int i = 0; i < 4; i++)
                 // brass knob crowning the pole
                 Surf brass = DecorPalette.Metal(FurnitureBuilder.Brass);
                 m.Cylinder(lamp + Vector3.up * 0.225f, 0.015f, 0.02f, 6, brass);
+
+            // hanging iron chain from the pole to the lantern top
+            Vector3 chainTop = wall + n * 0.13f + Vector3.up * 0.23f;
+            Vector3 chainBottom = lamp + Vector3.up * 0.215f;
+            m.Cylinder((chainTop + chainBottom) * 0.5f, 0.005f, 0.05f, 6,
+                DecorPalette.Metal(new Color(0.10f, 0.10f, 0.10f))); // dark iron
+
+            // frosted glass envelope (non‑emissive, slightly translucent)
+            Vector3 glassCenter = lamp + Vector3.up * 0.13f;
+            Vector3 glassSize = new Vector3(0.14f, 0.12f, 0.14f);
+            m.Box(glassCenter, glassSize,
+                DecorPalette.Matte(new Color(0.90f, 0.95f, 1.00f, 0.18f))); // very light bluish tint
+
+            // four cage bars – dark iron
+            float barRadius = 0.004f;
+            float barHeight = 0.12f;
+            Vector3[] barOffsets = new[]
+            {
+                new Vector3(-0.06f, 0f, -0.06f),
+                new Vector3( 0.06f, 0f, -0.06f),
+                new Vector3(-0.06f, 0f,  0.06f),
+                new Vector3( 0.06f, 0f,  0.06f)
+            };
+            foreach (var off in barOffsets)
+            {
+                Vector3 barPos = glassCenter + off;
+                m.Cylinder(barPos, barRadius, barHeight, 6,
+                    DecorPalette.Metal(new Color(0.12f, 0.12f, 0.12f)));
+            }
+
+            // brass finial at the very top of the pole
+            Vector3 finialPos = wall + n * 0.13f + Vector3.up * 0.295f;
+            m.Box(finialPos, new Vector3(0.015f, 0.015f, 0.015f), brass);
+
+            // rust patches – small irregular boxes on the housing bottom
+            Surf rustMat = DecorPalette.Matte(new Color(0.45f, 0.30f, 0.20f));
+            Vector3[] rustPos = new[]
+            {
+                lamp + new Vector3(-0.04f, 0.05f, -0.07f),
+                lamp + new Vector3( 0.04f, 0.05f, -0.07f),
+                lamp + new Vector3(-0.04f, 0.05f,  0.07f),
+                lamp + new Vector3( 0.04f, 0.05f,  0.07f)
+            };
+            foreach (var rp in rustPos)
+                m.Box(rp, new Vector3(0.025f, 0.008f, 0.015f), rustMat);
                 // four rivet caps on the black housing
                 Vector3[] rivetPos = new[] {
                     lamp + new Vector3(-0.055f, 0.115f, -0.055f),
