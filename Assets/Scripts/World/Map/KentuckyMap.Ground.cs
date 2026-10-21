@@ -104,6 +104,8 @@ namespace CloneZ
                     if (road)
                     {
                         Ribbon(site.Town.Out, piece, KerbWidth, StreetY + KerbHeight, KerbSurf);
+                        // thin wear strip just inside the kerb – gives the road a lived‑in look
+                        Ribbon(site.Town.Out, piece, 0.04f, StreetY + 0.001f, DecorMaterials.Gravel);
                     Ribbon(site.Town.Out, piece, KerbWidth, StreetY + KerbHeight + 0.001f, Ice);
                     }
                     site.TakeLine(piece, width * 0.5f + 0.3f);
