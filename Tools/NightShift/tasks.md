@@ -4784,3 +4784,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Use a dark‑brown colour matching the fence wood, e.g. `new Color(0.28f, 0.22f, 0.18f)`.
   Add the primitive right after the cap is placed:
   - 22:43 landed by 1htsserver in 2.1 min: **Summary**
+- [ ] Fix the “ajar locker” selection in Assets/Scripts/World/RaidBuilding.Civic.cs (class `RaidBuilding`, method `Lockers`)
+- [ ] Add a small metal label/tag on the front of the gas‑mask filter canister in Assets/Scripts/Player/PlayerGearVisuals.cs, method BuildGasMask(ItemDef def)
+  After the existing call `PlayerGearParts.Tube(root, "Filter", port + filterDir * 0.045f, filterDir, 0.044f, 0.037f, canister, true);`
+  Create a thin rectangular box to suggest a worn metal label
+  `PlayerGearParts.Box(root, "FilterLabel", port + filterDir * 0.067f, new Vector3(0.01f, 0.006f, 0.001f), hardware);`
+  Size = 0.01 m × 0.006 m × 0.001 m; positioned ≈ 0.022 m ahead of the filter’s front (along the same `filterDir`)
+  Uses the already‑defined `hardware` material (metal look), keeps colliders/pivots unchanged, and adds only one primitive.
