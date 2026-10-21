@@ -558,7 +558,7 @@ if (y % Row == 0) c = Mul(color, 0.4f);
                     if (scr < 0.004f) {
                         int len = 2 + (int)(R01(x, y, 125) * 3);
                         float shade = 0.55f;
-                        for (int i = 0; i < len; i++) {
+                        for (int i = 1; i < len; i++) {
                             int ix = Wrap(x + i, S);
                             px[y * S + ix] = C32(Mul(c, shade));
                         }

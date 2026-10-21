@@ -5259,6 +5259,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `for (int i = 0; i < 4; i++) { float angle = i * Mathf.PI * 0.5f + ZoneKit.R(sb.Rng, -0.1f, 0.1f); Vector3 pos = new Vector3(Mathf.Cos(angle) * 1.4f, 4.85f, Mathf.Sin(angle) * 1.4f); sb.Solid.Box(pos, new Vector3(0.2f, 0.02f, 0.6f), ZoneKit.M(new Color(0.9f, 0.9f, 0.95f))); }`
   Each box is ~0.2 m wide, 0.02 m tall, 0.6 m deep and uses a very light off‑white colour to suggest fresh snow. This adds period‑appropriate visual wear without altering colliders or interaction points and stays under the 12‑primitive limit.
   - 01:07 landed by 0htsserver in 2.2 min: **Changed file**
-- [ ] In Assets/Scripts/World/DecorTextures.cs: Fix the off‑by‑one that erases the first pixel of each metal‑scratch in `DecorTextures.Corrugated(Color)`
+- [x] In Assets/Scripts/World/DecorTextures.cs: Fix the off‑by‑one that erases the first pixel of each metal‑scratch in `DecorTextures.Corrugated(Color)`
   The method currently writes the base colour to `px[y * S + x]` after the scratch loop, so when a scratch is generated the first pixel (`i = 0`) is immediately overwritten, making the scratch start one pixel away and leaving a visible “hole” at its origin.
   Change the inner scratch loop to start at `i = 1` so the original pixel stays as the base colour and only the neighbour pixels are coloured as the scratch.
+  - 01:10 landed by hts-llm in 1.8 min: **Changes made**
