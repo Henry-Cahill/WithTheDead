@@ -120,7 +120,7 @@ namespace CloneZ
             get
             {
                 TimeOfDay tod = TimeOfDay.Instance;
-                if (tod == null) return 1;
+                if (tod == null) return 0;
                 int day = tod.Hour < CloneZConfig.MailDeliveryHour ? tod.Day - 1 : tod.Day;
                 return Mathf.Clamp(day, 0, Deliveries.Length);
             }
