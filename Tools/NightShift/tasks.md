@@ -5301,3 +5301,17 @@ you want to see in game. Indent extra lines under a task to add detail.
   `if (t == null)`
   `{`
   - 01:20 landed by hts-llm in 2 min: **Changed file**
+- [ ] Reduce per‑call allocations in `QuestBook.Summary` (Assets/Scripts/Quests/QuestBook.cs) by reusing a static `StringBuilder` instead of allocating a new one each call
+  · Add a private static readonly field `private static readonly StringBuilder _summarySb = new StringBuilder();` to the `QuestBook` class.
+  · In `public static string Summary(QuestState q)`, replace `var sb = new StringBuilder();` with `_summarySb.Clear();` and rename uses of `sb` to `_summarySb`.
+  · The method now builds the string with the cached builder and returns `_summarySb.ToString();`.
+  · No change to the visible summary text; the player sees the same quest description in HUD and UI.
+  · All other code and public members remain unchanged.
+- [ ] In Assets/Scripts/World/Fixtures/KitchenStove.cs: Add a “Toggle all burners” action to KitchenStove so the player can switch every burner on or off with one command.
+  In `KitchenStove` declare a new field: `private readonly Action<InteractContext> _toggleAll;` (place it with the other Action fields).
+  In `Awake()` after the existing `_allOff = …` line, assign the delegate:
+  `_toggleAll = c => { if ((_lit & 0xF) == 0xF) _allOff(c); else _allOn(c); };`
+  In `GetActions(InteractContext ctx, List<InteractAction> into)` add a new line (e.g., after the “Light all burners” block):
+  `into.Add(new InteractAction("Toggle all burners", _toggleAll));`
+  Result: when the player opens the stove UI they see a “Toggle all burners” option that lights every burner if any are off, or extinguishes them all if they’re already all lit. No other behavior changes.
+- [ ] In Assets/Scripts/World/Map/KentuckyMap.Ground.cs, edit the `BuildWaterAndLots` method to give frozen water a subtle per‑polygon height variation so the ice looks uneven and more natural.
