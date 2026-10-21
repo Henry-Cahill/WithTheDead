@@ -117,10 +117,16 @@ namespace CloneZ
             into.Add(new InteractAction(open ? "Close the lid" : "Lift the lid", c => SetLid(!open)));
             if (open) {
                 into.Add(new InteractAction("Read what's on the glass", c => c.Notify(Originals[_original])));
-                if (!_originalTaken) into.Add(new InteractAction("Take the original sheet", c => {
-                    _originalTaken = true;
-                    c.Notify(Originals[_original]);
-                }));
+                if (!_originalTaken) {
+                    into.Add(new InteractAction("Take the original sheet", c => {
+                        _originalTaken = true;
+                        c.Notify(Originals[_original]);
+                    }));
+                    // New action: copy the original sheet left on the glass
+                    into.Add(new InteractAction("Copy original sheet", c => {
+                        c.Notify($"You make a copy of the original sheet: {Originals[_original]}");
+                    }).DisabledIf(_jammed, "It's jammed — clear it first"));
+                }
             }
         }
 
