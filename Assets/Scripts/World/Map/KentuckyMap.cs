@@ -20,6 +20,7 @@ namespace CloneZ
         private const float SceneryReach = 90f;
 
         private const float SnowDepth = 0.05f; // thin snow sheet applied to horizontal surfaces
+        private const float SidewalkWidth = 1.5f; // modest concrete sidewalk width
 
         /// <summary>A one-line summary of the last map built.</summary>
         public static string LastStats { get; private set; } = "";
@@ -57,6 +58,7 @@ namespace CloneZ
                 BuildGround(site);
                 BuildWaterAndLots(site);
                 BuildStreets(site);
+                BuildSidewalks(site);
                 BuildLines(site);
                 BuildBuildings(site);
 
@@ -97,7 +99,33 @@ namespace CloneZ
         private static Vector3 To3(Vector2 p, float y) => new Vector3(p.x, y, p.y);
 
         // Added thin snow layer for roofs and streets
-        private static void BuildSnow(Site site)
+        private static void BuildSidewalks(Site site)
+        {
+            foreach (Street s in site.Area.Streets)
+            {
+                for (int i = 0; i + 1 < s.Pts.Count; i++)
+                {
+                    Vector2 a = s.Pts[i];
+                    Vector2 b = s.Pts[i + 1];
+                    Vector2 dir = (b - a).normalized;
+                    Vector2 normal = new Vector2(-dir.y, dir.x);
+                    float halfRoad = s.Data.width * 0.5f;
+                    float length = Vector2.Distance(a, b);
+                    Vector2 mid = (a + b) * 0.5f;
+                    // left sidewalk box
+                    Vector2 leftMid = mid + normal * (halfRoad + SidewalkWidth * 0.5f);
+                    Vector3 leftCenter = new Vector3(leftMid.x, StreetY + 0.01f, leftMid.y);
+                    Vector3 size = new Vector3(length, 0.04f, SidewalkWidth);
+                    site.Overhead.At(leftMid).Box(leftCenter, size, DecorMaterials.Concrete);
+                    // right sidewalk box
+                    Vector2 rightMid = mid - normal * (halfRoad + SidewalkWidth * 0.5f);
+                    Vector3 rightCenter = new Vector3(rightMid.x, StreetY + 0.01f, rightMid.y);
+                    site.Overhead.At(rightMid).Box(rightCenter, size, DecorMaterials.Concrete);
+                }
+            }
+        }
+
+private static void BuildSnow(Site site)
         {
             foreach (Footprint f in site.Area.Buildings)
             {

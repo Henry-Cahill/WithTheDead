@@ -4991,7 +4991,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Use the existing style (short, gritty statements) as shown by `"No receipts, no questions."` and cover themes of contraband, winter‑blocked routes, rumours about the Zone, bartering spare parts, and the ever‑watchful Wardens.
   Change the initializer for `"fence"` to:
   - 23:42 landed by hts-llm in 2.7 min: **Changed file**: `Assets/Scripts/Hub/HubNpc.cs`
-- [ ] Add modest concrete sidewalks beside every street in Assets/Scripts/World/Map/KentuckyMap.cs
+- [x] Add modest concrete sidewalks beside every street in Assets/Scripts/World/Map/KentuckyMap.cs
   Introduce a new constant* `private const float SidewalkWidth = 1.5f;` *in the KentuckyMap class.
   Add a private static method* `private static void BuildSidewalks(Site site)` *that iterates* `foreach (Street s in site.Area.Streets)` *and for each line segment builds two thin boxes (one on each side of the road) using the existing overhead mesh helper:
   `Vector2 a = s.Pts[i]; Vector2 b = s.Pts[i+1];`
@@ -5000,6 +5000,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `float halfRoad = s.Data.width * 0.5f;`
   `// left sidewalk`
   `Vector2 leftMid = (a + b) * 0.5f + normal * (halfRoad + SidewalkWidth * 0.5f);`
+  - 23:52 landed by 1htsserver in 11 min: **Changes made**
 - [x] Fix the missing flag geometry in `DecorProps.Mailbox` (Assets/Scripts/World/DecorProps.cs)
   The method creates a colour for a mail‑flag but never adds any mesh, so the flag never appears even when the 60 % chance succeeds, leaving the mailbox looking incomplete.
   Add a thin rectangular box for the flag using the generated colour.
