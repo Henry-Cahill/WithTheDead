@@ -5562,12 +5562,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `into.Add(new InteractAction("Read the safety notice", c => c.Notify("A yellowed placard reads: ‘Do not attempt to pump fuel when temperature drops below –10 °C – risk of valve seize.’")));`
   `into.Add(new InteractAction("Read the faded ad", c => c.Notify("The peeling poster advertises: ‘Coke‑Zero – the perfect cold companion for a winter night.’")));`
   `into.Add(new InteractAction("Read the employee’s scribble", c => c.Notify("In shaky handwriting: ‘My dad said the pump’s heart still beats – maybe the cash‑register will open one day.’")));`
-- [ ] Modify `Assets/Scripts/World/Map/KentuckyMap.Buildings.cs` → in the `BuildRoofEaves(Site site)` method, after the line that creates the eave box (`site.Overhead.At(pos).Box(pos, size, rot, roofMat);`), add a thin “snow drift” box that sits just above the eave using the snow material, so residential roofs visibly collect snow in winter.
+- [x] Modify `Assets/Scripts/World/Map/KentuckyMap.Buildings.cs` → in the `BuildRoofEaves(Site site)` method, after the line that creates the eave box (`site.Overhead.At(pos).Box(pos, size, rot, roofMat);`), add a thin “snow drift” box that sits just above the eave using the snow material, so residential roofs visibly collect snow in winter.
   Compute a snow box size of `new Vector3(EaveDepth, 0.02f, edgeLen)` (depth outward, thin height, same length as the eave).
   Position it at the same centre `pos` but raise its Y by `EaveHeight * 0.5f + 0.01f` (just above the eave).
   Use `DecorMaterials.Snow` (or `DecorPalette.Matte(new Color(0.92f,0.92f,0.94f))` if a snow material is defined) as the surface.
   Call `site.Overhead.At(snowPos).Box(snowPos, snowSize, rot, snowMat);` – no collider needed.
   This adds a realistic snow‑covered eave to each residential building, matching the 1993 winter setting while keeping existing geometry and colliders unchanged.
+  - 02:51 landed by hts-llm in 2.1 min: **Changes made**
 - [ ] Add four tiny brass corner caps to the headboard in `FurnitureBuilder.BedFrame` (Assets/Scripts/World/FurnitureBuilder.Living.cs)
   After the headboard box `m.Box(new Vector3(0f, 0.55f, -l * 0.5f + 0.03f), new Vector3(w + 0.06f, 1.1f, 0.06f), M(c * 1.05f));`
   Create four 0.02 m cubes (`new Vector3(0.02f, 0.02f, 0.02f)`) with material `Mt(Brass)` to sit at the top‑front‑left, top‑front‑right, top‑back‑left and top‑back‑right corners of the headboard.

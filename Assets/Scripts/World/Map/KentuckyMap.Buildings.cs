@@ -70,6 +70,10 @@ namespace CloneZ
                     // Use same roof material as building's roof surface
                     Surf roofMat = RoofSurf(f.Data, new System.Random(unchecked((int)f.Data.id) ^ 0x51ED));
                     site.Overhead.At(pos).Box(pos, size, rot, roofMat);
+                    // Add a thin snow drift just above the eave for winter visual effect
+                    Vector3 snowSize = new Vector3(EaveDepth, 0.02f, edgeLen);
+                    Vector3 snowPos = pos + new Vector3(0f, EaveHeight * 0.5f + 0.01f, 0f);
+                    site.Overhead.At(snowPos).Box(snowPos, snowSize, rot, DecorMaterials.Snow);
                 }
 
                 // Add a simple brick chimney on the roof
