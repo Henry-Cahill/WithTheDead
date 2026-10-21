@@ -5157,3 +5157,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   `if (_ringMesh != null) Object.Destroy(_ringMesh);`
   `if (Root != null) Object.Destroy(Root);`
   This removes the beacon’s GameObject (and its children) from the scene, fixing the hidden memory‑leak where completed beacons linger invisible but still consume CPU/GPU time. All other fields and static caches remain unchanged.
+- [ ] Add a small chrome escutcheon disc to the pedestal basin tap for period‑correct detail in Assets/Scripts/World/FurnitureBuilder.Bathroom.cs, method PedestalBasin
+  After the line `m.Cylinder(tap, 0.026f, 0.008f, 14, chrome);` insert a thin chrome cylinder representing a wash‑basin escutcheon.
+  Use the same `tap` position, offset down by 0.004 m: `new Vector3(0f, -0.004f, 0f)`.
+  Set radius 0.03 m and height 0.002 m (a flat disc).
+  Code: `m.Cylinder(tap + new Vector3(0f, -0.004f, 0f), 0.03f, 0.002f, 12, chrome);`
+  Keeps existing material (`chrome`), colliders and interaction points unchanged, and adds only one primitive.
