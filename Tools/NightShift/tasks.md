@@ -4860,7 +4860,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   → Keep colliders untouched (the patches are visual only).
   → Do not exceed ~12 total new primitives in the method.
   - 23:09 landed by 1htsserver in 3.7 min: Added **rust‑stained matte patches** to the rain barrel mesh:
-- [ ] Fix the pause‑menu “Quit to Title” path in Assets/Scripts/UI/PauseMenuController.cs – the hub‑quit action leaves the game frozen.
+- [x] Fix the pause‑menu “Quit to Title” path in Assets/Scripts/UI/PauseMenuController.cs – the hub‑quit action leaves the game frozen.
+  - 23:09 landed by hts-llm in 1.5 min: **Changed file**
 - [ ] In Assets/Scripts/Characters/PlayerAvatar.cs: Cache the three tool look‑ups in `RefreshHeld` for `hammer`, `trowel` and `wateringcan` in `PlayerAvatar` to avoid a per‑frame `ItemDatabase.Get` call.
   Add three private `ItemDef` fields (e.g. `_hammerDef`, `_trowelDef`, `_wateringCanDef`).
   Assign them once in `Start()` after the other components are fetched:
