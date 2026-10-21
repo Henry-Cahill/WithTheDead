@@ -22,9 +22,13 @@ namespace CloneZ
         private float _plumpCalmAt; private float _blanketFluffCalmAt;
         private PlayerInteractor _playerInteractor;
         private float _lullabyCalmAt;
+        // Cached radius for sleep proximity checks to avoid per‑frame config lookup.
+        private float _sleepCheckRadius;
         private void Awake()
         {
             _playerInteractor = PlayerInteractor.Current;
+            // Initialize cached sleep check radius.
+            _sleepCheckRadius = CloneZConfig.SleepRange + 0.5f;
         }
 
         /// <summary>True while the bed is made (fresh runs start with it made).</summary>
@@ -65,7 +69,7 @@ PlayerInteractor pi = _playerInteractor;
             PlayerInteractor pi = _playerInteractor;
             if (pi == null) return;
             if (_sleeper == null) _sleeper = pi.GetComponent<PlayerSleep>();
-            if (_sleeper != null && _sleeper.IsSleeping && SleepSpot.Nearest(pi.transform.position, CloneZConfig.SleepRange + 0.5f, out _) == _spot)
+            if (_sleeper != null && _sleeper.IsSleeping && SleepSpot.Nearest(pi.transform.position, _sleepCheckRadius, out _) == _spot)
                 SetMade(false);
         }
 

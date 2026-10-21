@@ -5630,11 +5630,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Cylinder(new Vector3(0.85f, 1.74f, -HalfZ - 0.07f), 0.015f, 0.03f, 12, st.Metal);`
   `}, Vector3.zero);`
   - 03:08 landed by 1htsserver in 1.8 min: **Changed file**
-- [ ] In Assets/Scripts/World/Fixtures/BedFixture.cs: Cache the sleep‑range check value in BedFixture.Update to avoid recomputing `CloneZConfig.SleepRange + 0.5f` each frame
+- [x] In Assets/Scripts/World/Fixtures/BedFixture.cs: Cache the sleep‑range check value in BedFixture.Update to avoid recomputing `CloneZConfig.SleepRange + 0.5f` each frame
   Add a private readonly float field (e.g. `_sleepCheckRadius`) initialized in Awake with `CloneZConfig.SleepRange + 0.5f`;
   Replace the expression `CloneZConfig.SleepRange + 0.5f` inside the Update method’s `SleepSpot.Nearest` call with `_sleepCheckRadius`;
   The player’s visual experience is unchanged – the bed still becomes un‑made when the sleeper sleeps nearby;
   The per‑frame cost drops by eliminating a constant addition and config lookup each tick.
+  - 03:12 landed by hts-llm in 3.8 min: **Changed files**
 - [ ] In Assets/Scripts/World/Fixtures/RainBarrelFixture.cs: Add a “Shake the barrel vigorously” timed action to `RainBarrelFixture.GetActions` (copy the existing “Shake the barrel” entry, change the name, increase the freshen amount, and add a matching method).
   Insert after the current “Shake the barrel” line:
   `into.Add(new InteractAction("Shake the barrel vigorously", VigorousShake).Timed(ShakeSeconds * 2, "Shaking the barrel hard").DisabledIf(!Barrel.HasWater, Barrel.DryMessage));`
