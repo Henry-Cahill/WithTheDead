@@ -723,11 +723,20 @@ else if (kb.qKey.wasPressedThisFrame)
         }
 
         /// <summary>Adds the focused ground item to the pack (as much as fits); any overflow stays put.</summary>
-        private void TryPickUp()
+private void TryPickUp()
+    {
+        if (PickupTarget == null || _inventory == null) return;
+        ItemDef def = PickupTarget.Def;
+        Inventory inv = _inventory.Inventory;
+        if (inv != null && def != null && !inv.WouldFit(def))
         {
-            if (PickupTarget == null || _inventory == null) return;
-            _inventory.PickUp(PickupTarget);
+            // Warn the player why the item can't be picked up.
+            string why = inv.CurrentWeight + def.Weight > inv.MaxWeight + 1e-4f ? "too heavy" : "no room";
+            Notify($"Can't pick up {PickupTarget.PickupLabel}: {why}");
+            return;
         }
+        _inventory.PickUp(PickupTarget);
+    }
         #endregion
 
         private void UpdatePrompt()
