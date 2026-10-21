@@ -59,19 +59,22 @@ namespace CloneZ
                 if (!water && !lot) continue;
                 List<Vector2> inside = MapGeometry.ClipPolygon(p.Pts, square);
                 if (inside.Count < 3) continue;
-                if (water) {
-                    FillIce(site.Town.Out, inside);
-                } else {
-                    Fill(site.Town.Out, inside, LotY, DecorMaterials.Asphalt);
-                }
-                if (water) site.Take(Rect.MinMaxRect(Min(inside, true), Min(inside, false), Max(inside, true), Max(inside, false)));
-                // Add thin snow‑bank edge around parking lots for a plowed look
-                if (lot)
-                {
-                    var edge = new List<Vector2>(inside);
-                    edge.Add(inside[0]); // close loop
-                    Ribbon(site.Town.Out, edge, SnowBankWidth, LotY + 0.001f, Ice);
-                }
+if (water) {
+                     FillIce(site.Town.Out, inside);
+                 } else {
+                     // Base asphalt surface for parking lots
+                     Fill(site.Town.Out, inside, LotY, DecorMaterials.Asphalt);
+                     // Thin gravel overlay to give a dusty, period‑correct look
+                     Fill(site.Town.Out, inside, LotY + 0.001f, DecorMaterials.Gravel);
+                 }
+                 if (water) site.Take(Rect.MinMaxRect(Min(inside, true), Min(inside, false), Max(inside, true), Max(inside, false)));
+                 // Add thin snow‑bank edge around parking lots for a plowed look
+                 if (lot)
+                 {
+                     var edge = new List<Vector2>(inside);
+                     edge.Add(inside[0]); // close loop
+                     Ribbon(site.Town.Out, edge, SnowBankWidth, LotY + 0.001f, Ice);
+                 }
         }
         }
 

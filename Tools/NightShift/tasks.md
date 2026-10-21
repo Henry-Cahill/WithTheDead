@@ -5691,7 +5691,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `GameEvents.RaiseWorldEvent(transform.position, 5f, "music");`
   `Sfx.PlayUI(SfxIds.Cash);`
   - 03:21 landed by hts-llm in 1.7 min: **Changed file:** `Assets/Scripts/Hub/HubNpc.cs`
-- [ ] Modify Assets/Scripts/World/Map/KentuckyMap.cs to add a thin gravel layer on parking‑lot land‑use patches so they look like period‑correct, dusty lots instead of bare concrete.
+- [x] Modify Assets/Scripts/World/Map/KentuckyMap.cs to add a thin gravel layer on parking‑lot land‑use patches so they look like period‑correct, dusty lots instead of bare concrete.
+  - 03:25 landed by hts-llm in 3.6 min: **Summary of changes**
 - [ ] Add a thin “snow‑lip” trim to the top edge of exterior walls in `Assets/Scripts/World/StarterHome.Shell.cs` inside the `DrawBand` method
   Locate the `else` block that draws exterior siding (the `m.Upright(... DecorMaterials.WallExterior... )` call).
   After the existing base‑board box (`if (b.Y1 > WallH - 0.01f) …`) insert a new primitive that draws a 0.02 m high, 0.004 m thick white strip across the full exterior width, simulating a subtle snow accumulation line.
