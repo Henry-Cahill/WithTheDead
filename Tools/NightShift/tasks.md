@@ -5426,3 +5426,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   This uses the already‑available `MakeNoise` method and the `CloneZConfig.RaidSafeDialNoise` constant.
   In‑game the player will see a new "[E] Knock on the safe" option; selecting it will produce a metallic knock sound and display the notification “Your knuckles rattle the steel. Nothing else happens.”
   No other code, fields, or UI elements are changed.
+- [ ] Extend the `static ZoneExposure()` constructor in Assets/Scripts/Zone/ZoneHazards.cs by inserting four new exposure‑mark entries, each following the existing `M(id, name, description, apply)` pattern, so the player can discover additional winter‑theme lore and penalties.
