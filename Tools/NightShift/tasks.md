@@ -4985,9 +4985,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Initialise these fields inline (static constructors are allowed) – no runtime work needed.
   Replace every inline `new Color(... )` in Refresh (pain colour, panic colour, temperature colour, sickness colour, clothing label colour, button label colour, etc.) with the corresponding cached field.
   The UI appearance stays identical because the colour values are unchanged; the per‑frame GC pressure is reduced, making the panel’s continuous Refresh cheaper.
-- [ ] Append five new sentences to the `"fence"` entry in the `Lines` dictionary in Assets/Scripts/Hub/HubNpc.cs
+- [x] Append five new sentences to the `"fence"` entry in the `Lines` dictionary in Assets/Scripts/Hub/HubNpc.cs
   Use the existing style (short, gritty statements) as shown by `"No receipts, no questions."` and cover themes of contraband, winter‑blocked routes, rumours about the Zone, bartering spare parts, and the ever‑watchful Wardens.
   Change the initializer for `"fence"` to:
+  - 23:42 landed by hts-llm in 2.7 min: **Changed file**: `Assets/Scripts/Hub/HubNpc.cs`
 - [ ] Add modest concrete sidewalks beside every street in Assets/Scripts/World/Map/KentuckyMap.cs
   Introduce a new constant* `private const float SidewalkWidth = 1.5f;` *in the KentuckyMap class.
   Add a private static method* `private static void BuildSidewalks(Site site)` *that iterates* `foreach (Street s in site.Area.Streets)` *and for each line segment builds two thin boxes (one on each side of the road) using the existing overhead mesh helper:
