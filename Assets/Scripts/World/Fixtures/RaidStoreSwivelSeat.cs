@@ -19,6 +19,12 @@ namespace CloneZ
         private float _yaw;          // its facing as it was set down
         private float _spin;         // how far it has turned since (degrees)
         private float _spinSpeed;    // turning by itself after a shove (deg/s)
+        private bool _rocking; // true while the Rock timed action is active
+        private float _rockTimer; // elapsed time inside the rock action
+        private float _rockOffset; // current rocking offset in degrees
+        private const float RockDuration = 5f; // seconds, fits existing UI timing
+        private const float RockAmplitude = 8f; // max swing angle
+        private const float RockSpeed = 2f; // swings per second
         private float _calmAt;
 
         public override string DisplayName => Label;
@@ -51,17 +57,24 @@ namespace CloneZ
 
         private void Update()
         {
-            if (_spinSpeed <= 0f) return;
-            float dt = Time.deltaTime;
-            _spin = Mathf.Repeat(_spin + _spinSpeed * dt, 360f);
-            _spinSpeed = Mathf.Max(0f, _spinSpeed - CloneZConfig.RaidSwivelSpinDrag * dt);
+            if (_spinSpeed > 0f)
+            {
+                float dt = Time.deltaTime;
+                _spin = Mathf.Repeat(_spin + _spinSpeed * dt, 360f);
+                _spinSpeed = Mathf.Max(0f, _spinSpeed - CloneZConfig.RaidSwivelSpinDrag * dt);
+            }
+            // Turn always uses current _spin + possible _rockOffset
             Turn();
         }
 
         // The body (and the seat's own object, riding on it) turned by the spin so far.
         private void Turn()
         {
-            if (_chair != null) _chair.rotation = Quaternion.Euler(0f, _spin, 0f);
+            if (_chair != null)
+            {
+                // Apply spin plus any active rocking offset
+                _chair.rotation = Quaternion.Euler(0f, _spin + _rockOffset, 0f);
+            }
         }
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
@@ -73,6 +86,7 @@ namespace CloneZ
                 into.Add(new InteractAction("Stand up", c => c.Seat.Stand()));
                 into.Add(SpinRound());
                 into.Add(Relax());
+                into.Add(Rock());
                 return;
             }
             into.Add(new InteractAction("Sit down", SitDown).DisabledIf(_spinSpeed > 30f, "Let it stop spinning first"));
@@ -120,6 +134,34 @@ namespace CloneZ
             return a;
         }
 
+        private InteractAction Rock()
+        {
+            var a = new InteractAction("Rock chair")
+                .Timed(RockDuration, "Rocking", HumanoidActivity.None);
+            a.Begin = c =>
+            {
+                _rocking = true;
+                _rockTimer = 0f;
+                MakeNoise(CloneZConfig.FixtureNoiseSmall);
+            };
+            a.Tick = (c, dt, progress) =>
+            {
+                _rockTimer += dt;
+                // sinusoidal swing
+                _rockOffset = Mathf.Sin(_rockTimer * RockSpeed * Mathf.PI * 2f) * RockAmplitude;
+                Turn(); // apply new offset this frame
+                // small calm boost while rocking
+                LivingFixtures.Calm(c, CloneZConfig.RaidSwivelSpinCalm * 0.5f);
+            };
+            a.Stopped = c =>
+            {
+                _rocking = false;
+                _rockOffset = 0f;
+                Turn(); // reset rotation
+                c.Notify("You stop rocking the chair, feeling a little steadier.");
+            };
+            return a;
+        }
 
         private InteractAction SpinRound()
         {
