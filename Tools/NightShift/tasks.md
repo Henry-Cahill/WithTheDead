@@ -4521,7 +4521,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 21:16 landed by 1htsserver in 2.8 min: **Summary**
 - [x] In Assets/Scripts/Player/PlayerBuilder.cs: Reduce per‑frame allocations in `PlayerBuilder` by reusing a temporary `List<MeshRenderer>` for mesh‑bounds checks in `ConsiderMeshes<T>` (used during demolition evaluation)
   - 21:17 landed by hts-llm in 3.2 min: **Changes made**
-- [ ] Add a “Fluff the blankets” timed‑action to Assets/Scripts/World/Fixtures/BedFixture.cs that works like “Plump the pillows”.
+- [x] Add a “Fluff the blankets” timed‑action to Assets/Scripts/World/Fixtures/BedFixture.cs that works like “Plump the pillows”.
+  - 21:21 landed by 0htsserver in 5.9 min: Added a **Fluff the blankets** timed‑action to `BedFixture.cs`:
 - [x] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildParkedCars` to give each placed car a subtle, hand‑painted colour variation so the vehicle fleet looks less uniform and more period‑correct.
   Locate the line `DecorProps.Car(m, rng, kind, CarPaints[rng.Next(CarPaints.Length)], out Vector3 size);`.
   Insert a temporary `Color paint = CarPaints[rng.Next(CarPaints.Length)];` before the call.
