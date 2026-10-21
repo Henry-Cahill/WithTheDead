@@ -4360,3 +4360,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `float hookLen = 0.04f; // 4 cm long hook`
   `float hookRad = 0.006f; // 6 mm radius`
   `// left finial hook`
+- [ ] In Assets/Scripts/World/Map/MapGeometry.cs, change the ClipPolygon method to remove vertices that are essentially duplicate after the anticlockwise fix, preventing zero‑area edges that corrupt building facades.
+  After the line `MakeAnticlockwise(cur);` add a call to a new helper that filters out points whose distance to the previous kept point is less than `EPS` (the constant already defined below).
+  Implement a private static method `static List<Vector2> RemoveNearDuplicates(List<Vector2> src)` that creates a new list, copies the first point, then for each subsequent point adds it only if `Vector2.Distance(point, lastKept) > EPS`. If the resulting list has fewer than 3 points, return an empty list.
+  Replace the final `return cur;` with `return RemoveNearDuplicates(cur);`.
+  The player will see buildings with clean, non‑overlapping walls and roofs; tiny slivers that previously caused missing or flickering geometry disappear, while all existing functionality (clipping, winding) stays unchanged.
