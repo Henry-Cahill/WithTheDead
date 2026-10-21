@@ -4289,10 +4289,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 19:55 landed by 0htsserver in 2.9 min: Added a deterministic cached random generator to map builds.
 - [x] In Assets/Scripts/World/RaidMapBuilder.Outdoor.cs, add a small rust‑stained metal bracket to each streetlight pole in the `StreetLights` method so the poles have a subtle weathered detail.
   - 19:56 landed by hts-llm in 2.3 min: **Changed file**
-- [ ] Add a tiny chrome screw to the base of each desk lamp in `Assets/Scripts/World/FurnitureBuilder.Office.cs` → `public static Vector3 DeskLamp(RaidMesh m, System.Random rng, Vector3 at, float yaw, Color shade, bool lit)`
+- [x] Add a tiny chrome screw to the base of each desk lamp in `Assets/Scripts/World/FurnitureBuilder.Office.cs` → `public static Vector3 DeskLamp(RaidMesh m, System.Random rng, Vector3 at, float yaw, Color shade, bool lit)`
   After the existing base cylinder `m.Cylinder(at, 0.075f, 0.03f, 10, M(shade * 0.7f));` insert a small chrome screw:
   `Vector3 screwPos = at + new Vector3(R(rng, -0.002f, 0.002f), 0.03f, R(rng, -0.002f, 0.002f));`
   `m.Cylinder(screwPos, 0.008f, 0.004f, 6, Mt(Chrome));` // radius 0.008 m, height 0.004 m, random slight offset for visual variation.
+  - 20:00 landed by hts-llm in 1.3 min: **Changed**
 - [ ] In Assets/Scripts/World/Zone/Helicopter.cs, replace the per‑frame noise timer in `HelicopterFlight.Update` with a coroutine that runs every 1.5 seconds, eliminating the `_noise` field and its decrement each frame.
   Add a private `IEnumerator NoiseLoop()` method that `while (true)` yields `new WaitForSeconds(1.5f)` and, if `transform.position.y < 70f && _spin > 0.5f`, emits the noise (`Vector3 ground = new Vector3(transform.position.x, 0f, transform.position.z); NoiseSystem.Emit(ground, 55f); GameEvents.RaiseWorldEvent(ground, 55f, "heli");`).
   Start this coroutine in `Start()` after creating `_rotor` (`StartCoroutine(NoiseLoop());`).

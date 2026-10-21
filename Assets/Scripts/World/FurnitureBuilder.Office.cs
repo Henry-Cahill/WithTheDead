@@ -36,6 +36,8 @@ namespace CloneZ
             Quaternion q = Yaw(yaw);
             Color arm = new Color(0.16f, 0.16f, 0.17f);
             m.Cylinder(at, 0.075f, 0.03f, 10, M(shade * 0.7f));
+            Vector3 screwPos = at + new Vector3(R(rng, -0.002f, 0.002f), 0.03f, R(rng, -0.002f, 0.002f));
+            m.Cylinder(screwPos, 0.008f, 0.004f, 6, Mt(Chrome));
             Vector3 j0 = at + new Vector3(0f, 0.03f, 0f);
             Vector3 j1 = at + q * new Vector3(0f, 0.36f, -0.1f);
             Vector3 j2 = at + q * new Vector3(0f, 0.44f, 0.22f);
