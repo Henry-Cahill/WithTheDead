@@ -37,7 +37,9 @@ namespace CloneZ
             Vector3[] hydrants = { new Vector3(5.2f, 0f, -9.5f), new Vector3(-5.2f, 0f, 22f), new Vector3(-19f, 0f, -5.3f), new Vector3(31f, 0f, 5.3f) };
             foreach (Vector3 h in hydrants) HydrantProp(town, h, R(rng, 0f, 360f));
             MailDropProp(town, new Vector3(5.3f, 0f, 19.5f), 270f);
+            AddMailDropDetails(town, new Vector3(5.3f, 0f, 19.5f), 270f);
             MailDropProp(town, new Vector3(-5.3f, 0f, -21f), 90f);
+            AddMailDropDetails(town, new Vector3(-5.3f, 0f, -21f), 90f);
 
             // Bare trees in the yards and verges.
             int trees = 0;
@@ -215,6 +217,38 @@ namespace CloneZ
             RaidMesh d = town.Out.Solid(new Vector3(-68f, 0f, 0f));
             for (float x = -70.6f; x < -65f; x += 0.35f)
                 d.Box(new Vector3(x, 0.05f, 0f), new Vector3(0.3f, 0.06f, 3.0f), DecorMaterials.Planks(new Color(0.42f, 0.34f, 0.24f)));
+        }
+
+        private static void AddMailDropDetails(RaidTown town, Vector3 pos, float yaw)
+        {
+            System.Random rng = town.Rng;
+            // pick a rust colour that varies slightly per box
+            float r = 0.40f + (float)rng.NextDouble() * 0.10f;
+            float g = 0.35f + (float)rng.NextDouble() * 0.08f;
+            float b = 0.30f + (float)rng.NextDouble() * 0.07f;
+            Color rust = new Color(r, g, b);
+            // base mesh for the extra geometry – use the same batch as the mailbox so it inherits its transform
+            RaidMesh m = town.Out.Solid(pos);
+            m.SetFrame(pos, yaw);
+            // 1️⃣ metal latch – thin bar across the front lower edge of the box
+            // size: 0.60 m × 0.02 m × 0.02 m, positioned 0.20 m above ground, 0.25 m forward from centre
+            Vector3 latchPos = new Vector3(0f, 0.20f, 0.25f);
+            Vector3 latchSize = new Vector3(0.60f, 0.02f, 0.02f);
+            m.Box(latchPos, latchSize, DecorPalette.Metal(rust));
+            // 2️⃣ rivet at left end of latch
+            float rivetRadius = 0.01f;
+            float rivetHeight = 0.025f;
+            Vector3 rivetLeft = latchPos + new Vector3(-0.28f, 0.015f, 0f);
+            m.Cylinder(rivetLeft, rivetRadius, rivetHeight, 6, DecorPalette.Metal(rust));
+            // 3️⃣ rivet at right end of latch
+            Vector3 rivetRight = latchPos + new Vector3(0.28f, 0.015f, 0f);
+            m.Cylinder(rivetRight, rivetRadius, rivetHeight, 6, DecorPalette.Metal(rust));
+            // 4️⃣ top cap – a small rust‑stained plate covering the mailbox lid edge
+            // size: 0.30 m × 0.02 m × 0.30 m, positioned 0.78 m above ground (just below the lid)
+            Vector3 capPos = new Vector3(0f, 0.78f, 0f);
+            Vector3 capSize = new Vector3(0.30f, 0.02f, 0.30f);
+            m.Box(capPos, capSize, DecorPalette.Metal(rust));
+            m.ResetFrame();
         }
 
         private static void Crossbuck(RaidMesh m)
