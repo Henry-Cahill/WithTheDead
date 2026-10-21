@@ -4189,7 +4189,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   The player will see a “Check battery” option when near the radio, and selecting it will display the message above.
   All other behavior and fields (`IsOn`, `_dialLight`, etc.) remain unchanged.
   - 19:13 landed by hts-llm in 2.5 min: **Summary**
-- [ ] In Assets/Scripts/World/Map/KentuckyMap.Ground.cs edit the `BuildStreets` method: after each kerb `Ribbon(..., KerbSurf)` call add a second `Ribbon` that uses the existing `Ice` surf and a y‑position just above the kerb (e.g. `StreetY + KerbHeight + 0.001f`). Do this for both the inner road section (`site.Town.Out`) and the outer road extension (`site.Town.Far`).
+- [x] In Assets/Scripts/World/Map/KentuckyMap.Ground.cs edit the `BuildStreets` method: after each kerb `Ribbon(..., KerbSurf)` call add a second `Ribbon` that uses the existing `Ice` surf and a y‑position just above the kerb (e.g. `StreetY + KerbHeight + 0.001f`). Do this for both the inner road section (`site.Town.Out`) and the outer road extension (`site.Town.Far`).
+  - 19:18 landed by hts-llm in 4 min: **Summary of changes**
 - [ ] Add a chrome faucet with red “hot” and blue “cold” lever handles to the bathtub in Assets/Scripts/World/FurnitureBuilder.Utility.cs – `FurnitureBuilder.Bathtub`
   Add a small chrome base for the faucet: `m.Box(new Vector3(-0.6f, 0.66f, 0.35f), new Vector3(0.06f, 0.02f, 0.03f), Mt(Chrome));`
   Add a short red hot‑water lever: `m.Box(new Vector3(-0.58f, 0.68f, 0.352f), new Vector3(0.008f, 0.012f, 0.008f), M(new Color(0.80f, 0.10f, 0.10f)));`

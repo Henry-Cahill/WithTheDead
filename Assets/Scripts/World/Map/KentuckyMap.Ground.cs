@@ -81,6 +81,7 @@ namespace CloneZ
                     if (road)
                     {
                         Ribbon(site.Town.Out, piece, KerbWidth, StreetY + KerbHeight, KerbSurf);
+                    Ribbon(site.Town.Out, piece, KerbWidth, StreetY + KerbHeight + 0.001f, Ice);
                     }
                     site.TakeLine(piece, width * 0.5f + 0.3f);
                     if (road && width >= 7f) DashedLine(site.Town.Out, piece, StreetY + 0.003f);
@@ -93,6 +94,7 @@ namespace CloneZ
                         Ribbon(site.Town.Far, piece, width, StreetY, surf);
                         // Kerb on the outer road extension
                         Ribbon(site.Town.Far, piece, KerbWidth, StreetY + KerbHeight, KerbSurf);
+                        Ribbon(site.Town.Far, piece, KerbWidth, StreetY + KerbHeight + 0.001f, Ice);
                     }
                 }
             }
