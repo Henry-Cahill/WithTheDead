@@ -4315,11 +4315,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `bg.b = Mathf.Clamp01(bg.b + (float)rng.NextDouble() * 0.04f - 0.02f);`
   This keeps the sign‑type colour logic intact, preserves the existing collider and placement code, and adds subtle random hue offsets so each sign appears a bit different, matching the hand‑built look of CLONE‑Z’s raid town.
   - 20:09 landed by 1htsserver in 1.7 min: **Changed file**
-- [ ] In Assets/Scripts/World/WaterSource.cs, inside `WaterSource.BuildBarrel` add a small worn canvas/rope strap around the barrel’s mid‑section to suggest a makeshift handle/branding.
+- [x] In Assets/Scripts/World/WaterSource.cs, inside `WaterSource.BuildBarrel` add a small worn canvas/rope strap around the barrel’s mid‑section to suggest a makeshift handle/branding.
   Create a new `System.Random` (e.g. `var strapRand = new System.Random(1993)`) and use it to pick a subtle brown tint: `float shade = 0.4f + 0.1f * strapRand.NextFloat(); Color strapColor = new Color(shade, shade * 0.85f, shade * 0.6f);`
   Insert the following after the existing weathered band cylinder (the call `m.Cylinder(new Vector3(0f, h * 0.5f, 0f), r + 0.005f, 0.01f, …)`):
   `m.Cylinder(new Vector3(0f, h * 0.5f, 0f), r + 0.015f, 0.008f, 16, DecorPalette.Matte(strapColor));`
   The strap is a thin matte ring, 0.008 m thick, positioned at `y = h * 0.5f` (mid‑height), radius `r + 0.015f` (just outside the barrel wall). It uses only one extra primitive, stays within the existing collider bounds, and adds visual variety without altering interaction points.
+  - 20:10 landed by 0htsserver in 1.7 min: **Changed file**
 - [ ] Add a small metal faucet with left/right variation to the bathroom basin in Assets/Scripts/World/HomeFurniture.cs → `DrawPlain` method, `case HomeFurnitureKind.Basin:`
   After the existing line `FurnitureBuilder.WashBasin(m, rng);` insert code that uses the same `rng` to pick left‑ or right‑handed faucet (`bool left = rng.Next(2) == 0;`).
   Create a short vertical pipe using `m.Cylinder` at `(left ? -0.08f : 0.08f, 0.95f, 0.22f)` with radius 0.01 m, height 0.12 m, metal colour `DecorPalette.Metal(new Color(0.18f,0.18f,0.20f))`.

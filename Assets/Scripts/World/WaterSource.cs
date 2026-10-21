@@ -198,6 +198,12 @@ namespace CloneZ
             // weathered band midway up the barrel – a thin matte ring
             m.Cylinder(new Vector3(0f, h * 0.5f, 0f), r + 0.005f, 0.01f, 16,
                 DecorPalette.Matte(plastic * 0.6f));
+            // makeshift strap: a thin worn canvas/rope around the barrel mid‑section
+            var strapRand = new System.Random(1993);
+            float shade = 0.4f + 0.1f * (float)strapRand.NextDouble();
+            Color strapColor = new Color(shade, shade * 0.85f, shade * 0.6f);
+            m.Cylinder(new Vector3(0f, h * 0.5f, 0f), r + 0.015f, 0.008f, 16,
+                DecorPalette.Matte(strapColor));
             m.Cylinder(new Vector3(0f, 0.02f, 0f), r - wall, 0.004f, 16, DecorPalette.Matte(plastic * 0.35f));
             // A brass spigot low on the side.
             // Brass rivet heads around the barrel mid‑section – period‑appropriate weathering
