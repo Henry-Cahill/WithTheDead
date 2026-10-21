@@ -5657,3 +5657,13 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [x] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildStreetLights` to add a tiny random yaw offset (±5°) to each pole so street‑light poles are not perfectly parallel to the road.
   - 03:14 landed by hts-llm in 2.1 min: **Summary**
 - [ ] In Assets/Scripts/World/Zone/ZoneOverlays.cs, inside `ZoneIndustry.Build` add a few shallow “crack” boxes to each concrete dam‑wall segment (after the call `wall.At(wall.Solid, new Vector3(x, 0f, 0f), 0f, m => m.Box(...))`).
+- [ ] Fix the world‑build guard in Assets/Scripts/Bootstrap/GameBootstrapper.cs so the hub, raid and wave‑survival worlds can be rebuilt after a previous play session ends.
+  In the methods StartRaid(), StartHub(), StartNewGame() and ContinueGame() remove the line `if (_worldBuilt) return;` (currently the first statement in each method).
+  This prevents the bootstrapper from silently aborting world creation when the same `GameBootstrapper` instance persists between mode switches (e.g., returning to the hub after a raid). With the guard removed, the requested world is always built, and the player will see the correct hub or raid environment instead of an empty scene.
+  All other logic and fields (`_built`, `_worldBuilt`) remain unchanged.
+- [ ] Add a small rusted ellipsoid “bolt” at the base of each main tollgate rod in `Anomaly.BuildVisual` (Assets/Scripts/Zone/Anomalies.cs) to give the gate a worn, hardware feel.
+  In the `case "tollgate":` block, after the line
+  `m.Rod(b, top, 0.08f, ZoneKit.M(ZoneKit.Bark), 6);`
+  add a call like:
+  `m.Ellipsoid(new Vector3(b.x, 0.04f, b.z), Vector3.one * 0.02f, ZoneKit.Gl(new Color(0.55f, 0.30f, 0.10f)), 5, 3);`
+  The ellipsoid is 2 cm across, placed 4 cm above the ground at the same X‑Z as the rod’s base (`b`). It uses the same rusty colour material as the existing cap, keeping the visual palette. No colliders or interaction points are altered, and the total added primitives stay under the limit.
