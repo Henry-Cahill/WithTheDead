@@ -5585,3 +5585,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Change the line to keep the caller‑provided height:
   `go.transform.position = new Vector3(position.x, role == Role.Musician ? 0.24f : position.y, position.z);`
   After this change NPCs appear at the correct vertical spot while musicians still get their slight elevation offset. All other logic (seat height, look‑at vector, etc.) remains unchanged.
+- [ ] Add a thin chrome bezel around the outer edge of each wall clock in `Assets/Scripts/World/FurnitureBuilder.Lighting.cs` `ClockDial` method
+  Insert a new cylinder draw call after the first `m.Cylinder(at, 0.16f, 0.04f, 16, M(new Color(0.15f, 0.15f, 0.16f)), disc);` line:
+  `// Chrome bezel at the clock’s outer rim`
+  `m.Cylinder(at, 0.165f, 0.004f, 16, Mt(Chrome), disc);`
+  This adds a 0.165 m radius, 0.004 m thick chrome ring centered on the same `at` point as the clock case, using the existing `disc` orientation and the material `Mt(Chrome)`. No other code, colliders, or interaction points are altered.
