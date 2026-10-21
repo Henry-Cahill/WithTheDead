@@ -5362,3 +5362,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   a hunting log noting the “First‑light Duck Hunt” of 1993;
   - 01:52 landed by 0htsserver in 2.8 min: **Changes made**
 - [ ] Add four tiny rivet boxes to the chest‑rig’s front panel in Assets/Scripts/Player/PlayerGearVisuals.cs, method BuildChestRig(ItemDef def) to suggest worn‑metal fastening.
+- [ ] In Assets/Scripts/Rendering/VisionController.cs: Fix VisionController.CanSee so it passes the survivor’s eye position instead of the target point twice, preventing false‑positive visibility checks at night.
