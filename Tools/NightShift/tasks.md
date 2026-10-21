@@ -5635,3 +5635,20 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace the expression `CloneZConfig.SleepRange + 0.5f` inside the Update method’s `SleepSpot.Nearest` call with `_sleepCheckRadius`;
   The player’s visual experience is unchanged – the bed still becomes un‑made when the sleeper sleeps nearby;
   The per‑frame cost drops by eliminating a constant addition and config lookup each tick.
+- [ ] In Assets/Scripts/World/Fixtures/RainBarrelFixture.cs: Add a “Shake the barrel vigorously” timed action to `RainBarrelFixture.GetActions` (copy the existing “Shake the barrel” entry, change the name, increase the freshen amount, and add a matching method).
+  Insert after the current “Shake the barrel” line:
+  `into.Add(new InteractAction("Shake the barrel vigorously", VigorousShake).Timed(ShakeSeconds * 2, "Shaking the barrel hard").DisabledIf(!Barrel.HasWater, Barrel.DryMessage));`
+  Add a new private method below `Shake`:
+  `private static void VigorousShake(InteractContext ctx)
+  {
+  WaterUse.Freshen(ctx, 0.5f); // stronger freshen than normal shake
+  ctx.Notify("You shake the barrel hard, splashing cold water over yourself.");
+  }`
+- [ ] Append six new entries to the `OfficeCalendars` string array in Assets/Scripts/World/RaidBuilding.Lighting.cs (class `RaidBuilding`, field `OfficeCalendars`).
+  Keep the current two lines unchanged and add the six new strings after them, preserving the array’s syntax and terminating semicolon.
+  Follow the voice of the existing entry `"The county's free calendar, December 1993. Somebody has pencilled PAYDAY across a Friday and drawn a small smiling face beside it."`.
+  Each new entry must be a single sentence describing a December 1993 calendar page, anchored in rural Kentucky winter: road‑clearing schedule, heating‑assistance day, school snow‑day notice, tractor‑maintenance reminder, postponed county fair, town‑hall meeting agenda.
+  Use period‑correct wording, no modern terms, and keep the tone of a handwritten wall calendar.
+  Do not alter any other code, fields, or comments; only extend the literal.
+  Verify the closing brace and semicolon follow the added entries so the file compiles unchanged.
+- [ ] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildStreetLights` to add a tiny random yaw offset (±5°) to each pole so street‑light poles are not perfectly parallel to the road.
