@@ -4693,11 +4693,12 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [x] In Assets/Scripts/Hub/Screens/ServiceScreens.cs, class DeployScreen, method BuildContent, extend the landing‑zone options array passed to `HubUI.Cycle` by appending four more entries after the existing `"West"` entry.
   Replace the literal `new[] { "Random", "North", "East", "South", "West" }` with
   - 22:20 landed by hts-llm in 1.3 min: **Changed**
-- [ ] Add a deterministic‑random helper to `MapBuild` in `Assets/Scripts/World/Map/WorldStore.cs` so map‑building code can obtain a stable `System.Random` stream for any feature without recreating randoms manually.
+- [!] Add a deterministic‑random helper to `MapBuild` in `Assets/Scripts/World/Map/WorldStore.cs` so map‑building code can obtain a stable `System.Random` stream for any feature without recreating randoms manually.
   In `public sealed class MapBuild` after the existing `Random` property, insert:
   `/// <summary>Returns a new deterministic System.Random seeded with the build Id combined with <paramref name="seed"/>. Use it for per‑feature visual variation (e.g., tree placement, porch chance) so the result is stable across runs.</summary>`
   `public System.Random DeterministicRandom(int seed) => new System.Random(Id.GetHashCode() ^ seed);`
   This does not alter existing behaviour; the new method is callable from any map‑builder (e.g., `MapBuild.DeterministicRandom(buildingId.GetHashCode())`) to generate repeat‑able prop selections while keeping colliders and geometry unchanged.
+  - 23:50 failed (spark, 90.6 min); see reports/2026-10-20-2055.md
 - [x] Add a tiny chrome faucet with red “hot” and blue “cold” lever handles to the wash‑basin built in `FurnitureBuilder.WashBasin` (Assets/Scripts/World/FurnitureBuilder.Utility.cs)
   Insert the following three primitive calls near the end of the method, after the mirror cabinet box:*
   `Vector3 fp = new Vector3(-0.20f, 0.84f, -0.02f) + new Vector3((float)rng.NextDouble()*0.01f-0.005f, (float)rng.NextDouble()*0.02f-0.01f, 0f);`
