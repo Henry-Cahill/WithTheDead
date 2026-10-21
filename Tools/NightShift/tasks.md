@@ -4626,7 +4626,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 21:47 landed by 0htsserver in 1 min: **Changed**
 - [x] Add a small wooden “chalkboard” sign with a faint chalk scribble to the kitchen counter built in `FurnitureBuilder.KitchenCounterBody` (Assets/Scripts/World/FurnitureBuilder.Kitchen.cs) to give the counter a lived‑in look.
   - 21:55 landed by 0htsserver in 7.2 min: **Changed file**
-- [ ] Cache the driver’s PlayerStats component in VehicleDriver and stop calling GetComponent each LateUpdate frame (Assets/Scripts/World/Vehicles.cs → class VehicleDriver)
+- [x] Cache the driver’s PlayerStats component in VehicleDriver and stop calling GetComponent each LateUpdate frame (Assets/Scripts/World/Vehicles.cs → class VehicleDriver)
+  - 21:56 landed by 1htsserver in 6.4 min: **Changes made**
 - [ ] In Assets/Scripts/Hub/HubWorld.cs add a “Toggle safe zone” action to the “Door to the Zone” station by editing HubStation.GetActions to insert a new InteractAction when Title == "Door to the Zone".
   Locate the block inside GetActions that adds the “Inspect door” action (`if (Title == "Door to the Zone")`).
   After that block, add:

@@ -543,6 +543,7 @@ public void RemoteSeat(ulong who)
         private PlayerCombat _combat;
         private PlayerInteractor _interactor;
         private PlayerAvatar _avatar;
+        private PlayerStats _stats; // cached driver stats
         private float _startAt, _enteredAt;
 
         /// <summary>Begin control of this vehicle for the given player (sets driver state and disables input).</summary>
@@ -588,7 +589,8 @@ private void FixedUpdate()
             if (Car == null) return;
             transform.SetPositionAndRotation(Car.Seat.position - Vector3.up * 0.45f, Car.transform.rotation);
             Keyboard kb = Keyboard.current;
-            PlayerStats st = GetComponent<PlayerStats>();
+            // Cache driver stats for later checks
+            PlayerStats st = _stats ??= GetComponent<PlayerStats>();
             bool exitKey = kb != null && kb.eKey.wasPressedThisFrame && !GameInput.Blocked && Time.time - _enteredAt > 0.4f;
             if (exitKey || (st != null && (st.IsDead || st.Incapacitated))) Leave();
         }
