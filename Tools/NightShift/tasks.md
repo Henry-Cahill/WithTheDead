@@ -5769,5 +5769,6 @@ you want to see in game. Indent extra lines under a task to add detail.
   Create a private method `InspectCooler(InteractContext ctx)` that calls
   `ctx.Notify("A dented plastic water cooler with a faded label; the jug looks like it survived the blackout.");`
   Do not modify any other logic; keep the existing actions and fields unchanged.
-- [ ] Append five new miss‑notification strings to the `Misses` array in `Assets/Scripts/World/Fixtures/RaidStoreVending.cs` so the player hears additional bleak, period‑correct feedback when thumping the vending machine.
+- [x] Append five new miss‑notification strings to the `Misses` array in `Assets/Scripts/World/Fixtures/RaidStoreVending.cs` so the player hears additional bleak, period‑correct feedback when thumping the vending machine.
+  - 03:47 landed by hts-llm in 3.7 min: **Changed file**
 - [ ] Edit `Assets/Scripts/World/Map/KentuckyMap.Ground.cs` – in the `BuildStreets` method replace the static gravel kerb‑wear ribbon with a per‑segment colour‑varying one, and add a tiny helper that creates the varied gravel surface.

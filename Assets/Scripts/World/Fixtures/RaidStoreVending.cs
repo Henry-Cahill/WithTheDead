@@ -25,6 +25,11 @@ namespace CloneZ
             "The coils grin at your effort, yet they refuse to give up any treasure.",
             "A hollow clang echoes, but no snack falls from the depths.",
             "A faint promise of loot hangs in the air, though the machine yields nothing this time.",
+            "Your thump echoes futilely, the coils remain unmoved.",
+            "A hollow thud reverberates, but the machine holds its secrets.",
+            "The metal shudders, yet no snack is dislodged.",
+            "A distant clang rolls, the vending's belly stays sealed.",
+            "Even your forceful hit finds only stubborn silence.",
         };
 
         private Transform _body;
