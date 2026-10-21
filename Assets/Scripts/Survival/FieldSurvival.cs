@@ -26,6 +26,8 @@ namespace CloneZ
         private Vector3 _start;
         private Image _bar;
         private Text _text;
+        private string _labelText;
+        private HumanoidAnimator _animator;
         private RectTransform _slot;
         private const float _maxDistSq = 0.8f * 0.8f;
 
@@ -35,6 +37,8 @@ namespace CloneZ
             _stats = GetComponent<PlayerStats>();
             _avatar = GetComponent<PlayerAvatar>();
             _controller = GetComponent<PlayerController>();
+            // Cache the animator reference to avoid per‑frame lookups
+            _animator = _avatar != null ? _avatar.Animator : null;
         }
 
         private void OnDestroy() { if (Local == this) Local = null; if (_slot != null) Destroy(_slot.gameObject); }
@@ -44,6 +48,7 @@ namespace CloneZ
         {
             if (Busy || _stats == null || _stats.IsDead || _stats.Incapacitated) return false;
             _label = label;
+            _labelText = _label + "...";
             _len = Mathf.Max(0.1f, seconds);
             _t = 0f;
             _onDone = onDone;
@@ -61,7 +66,7 @@ namespace CloneZ
             if (!Busy) return;
             _onDone = null;
             if (_slot != null) _slot.gameObject.SetActive(false);
-            if (_avatar != null && _avatar.Animator != null) _avatar.Animator.Activity = HumanoidActivity.None;
+            if (_animator != null) _animator.Activity = HumanoidActivity.None;
             if (why != null) GameEvents.RaiseToast(why);
         }
 
@@ -73,15 +78,15 @@ namespace CloneZ
             Vector3 diff = transform.position - _start;
                 diff.y = 0f;
                 if (diff.sqrMagnitude > _maxDistSq) { Cancel("You stopped " + _label.ToLowerInvariant() + "."); return; }
-            if (_avatar != null && _avatar.Animator != null) _avatar.Animator.Activity = _activity;
+            if (_animator != null) _animator.Activity = _activity;
             _t += Time.deltaTime;
             UIKit.SetBar(_bar, _t / _len);
-            _text.text = _label + "...";
+            _text.text = _labelText;
             if (_t < _len) return;
             Action done = _onDone;
             _onDone = null;
             _slot.gameObject.SetActive(false);
-            if (_avatar != null && _avatar.Animator != null) _avatar.Animator.Activity = HumanoidActivity.None;
+            if (_animator != null) _animator.Activity = HumanoidActivity.None;
             try { done(); }
             catch (Exception e) { Debug.LogException(e); }
         }
