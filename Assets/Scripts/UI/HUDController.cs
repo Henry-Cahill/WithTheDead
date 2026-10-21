@@ -63,6 +63,7 @@ namespace CloneZ
         private bool _powerSeen;
         private WaterMains _waterMains;
         private PowerGrid _powerGrid;
+        private TimeOfDay _timeOfDay;
         private GameObject _sleepOverlay;
         private Text _sleepText;
         private int _sleepMinute = -1;
@@ -131,6 +132,7 @@ namespace CloneZ
             Build();
             _waterMains = WaterMains.Instance;
             _powerGrid = PowerGrid.Instance;
+        _timeOfDay = TimeOfDay.Instance;
         }
 
         private void Start()
@@ -365,7 +367,7 @@ namespace CloneZ
             if (!asleep) { _sleepMinute = -1; return; }
             // The clock races while asleep, so refresh the readout at most ten times a second.
             _sleepTextTimer -= Time.unscaledDeltaTime;
-            TimeOfDay tod = TimeOfDay.Instance;
+            TimeOfDay tod = _timeOfDay;
             int minute = tod != null ? tod.Day * 1440 + Mathf.FloorToInt(tod.Hour * 60f) : 0;
             if (minute == _sleepMinute || (_sleepMinute >= 0 && _sleepTextTimer > 0f)) return;
             _sleepMinute = minute;

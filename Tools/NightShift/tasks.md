@@ -5593,12 +5593,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Cylinder(at, 0.165f, 0.004f, 16, Mt(Chrome), disc);`
   This adds a 0.165 m radius, 0.004 m thick chrome ring centered on the same `at` point as the clock case, using the existing `disc` orientation and the material `Mt(Chrome)`. No other code, colliders, or interaction points are altered.
   - 02:58 landed by hts-llm in 3.2 min: Implemented a thin chrome bezel around each wall clock:
-- [ ] In Assets/Scripts/UI/HUDController.cs: Cache the TimeOfDay singleton in HUDController to avoid a per‑frame static lookup in UpdateSleep.
+- [x] In Assets/Scripts/UI/HUDController.cs: Cache the TimeOfDay singleton in HUDController to avoid a per‑frame static lookup in UpdateSleep.
   Add a private field `private TimeOfDay _timeOfDay;` to the class.
   In Awake() assign it after the existing lookups: `_timeOfDay = TimeOfDay.Instance;`.
   Replace the line `TimeOfDay tod = TimeOfDay.Instance;` in UpdateSleep(bool blocked) with `TimeOfDay tod = _timeOfDay;`.
   Ensure no other code relies on a null _timeOfDay; the field is only read after Awake, matching the current script’s lifecycle.
   The player’s HUD appearance and sleep‑clock updates remain unchanged; the only effect is removing the repeated singleton lookup each frame.
+  - 03:02 landed by 0htsserver in 5.5 min: Implemented caching of the `TimeOfDay` singleton in **HUDController.cs**:
 - [x] Add a timed delay to the “Inspect the window” action in Assets/Scripts/World/Fixtures/RaidWindow.cs so it uses the existing look‑action timing and gives the player feedback while they wait.
   In the `GetActions` method, locate the line `into.Add(new InteractAction("Inspect the window", InspectWindow));` (inside the `if (inside)` block).
   Replace it with `into.Add(new InteractAction("Inspect the window", InspectWindow).Timed(CloneZConfig.WindowLookSeconds, "Inspecting the window", HumanoidActivity.Use));`
