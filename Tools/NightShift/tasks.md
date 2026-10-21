@@ -5349,3 +5349,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   In `ArtifactNode.Reveal(float seconds = 45f)` after the line `Sfx.Play(SfxIds.DetectorAlert, transform.position, 0.4f, 1.3f, 8f);` insert:
   `GameEvents.RaiseToast("Detected " + ArtifactCatalog.NameOf(ArtifactId) + ".");`
   This keeps the existing reveal logic (timer, visual activation, sound) unchanged, but now the player sees a brief on‑screen message naming the artifact the moment a detector switches it on. The rest of the method and class remain unchanged.
+- [ ] Append six new period‑correct magazine descriptions to the `Magazines` string array in Assets/Scripts/World/Fixtures/LivingReading.cs
+  Add the entries after the current last element (`"a July 1993 Wildlife Watch, issue 7. A photo essay of deer tracks in early summer snows."`).
+  Each entry must be a whole sentence (or two) ending with a period, matching the style of the existing entry `"a July 1993 Survivalist's Almanac. Tips on building a rain collector and warding off pests."`.
+  Themes to cover:
+  a winter fire‑making guide with tips on using pine boughs;
+  a folklore pamphlet recounting the “Gray‑Mouth” legend of the nearby hills;
+  a farm‑yard recipe booklet featuring “Grandma’s Turnip Soup”;
+  a community bulletin announcing the February 1993 town hall meeting;
+  a hunting log noting the “First‑light Duck Hunt” of 1993;
