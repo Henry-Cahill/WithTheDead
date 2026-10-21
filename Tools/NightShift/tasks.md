@@ -5892,13 +5892,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Box(btnPos, new Vector3(0.02f, 0.02f, 0.004f), Mt(Chrome));`
   The button gives the copier a realistic control detail; it uses the deterministic random source for slight placement variation, reuses the `Mt(Chrome)` material, and does not affect colliders or interaction points.
   - 07:18 landed by hts-llm in 3.5 min: Added a tiny chrome push‑button detail to the copier model.
-- [ ] In Assets/Scripts/UI/SkillsPanelController.cs, add a per‑frame “dirty‑refresh” guard so `Refresh()` only runs when the skill data has actually changed.
+- [x] In Assets/Scripts/UI/SkillsPanelController.cs, add a per‑frame “dirty‑refresh” guard so `Refresh()` only runs when the skill data has actually changed.
   Add a private field `private bool _dirty;` after the `_open` field.
   In `Open()` set `_dirty = true;` (the panel just opened needs a full refresh).
   Add a public method `public void MarkDirty() => _dirty = true;` that other systems (e.g. `PlayerSkills`) can call after they modify a skill level or XP.
   Change `Update()` so the refresh call reads `if (_open && _dirty && _skills != null) Refresh();`.
   At the end of `Refresh()` reset the flag with `_dirty = false;`.
   No other behaviour changes: the UI still updates instantly when the player opens the panel, and it continues to update instantly after any external code calls `MarkDirty()`. This removes the per‑frame loop over all skills when nothing has changed, reducing CPU/Garbage overhead.
+  - 07:21 landed by 1htsserver in 5.5 min: Implemented a dirty‑refresh guard for **SkillsPanelController**:
 - [ ] Add a quick “Use lockpick” action to Assets/Scripts/World/Fixtures/RaidStoreSafe.cs that lets the survivor open the safe in half the normal dial time, giving a visible new option and a faster outcome.
   Step 1: Assets/Scripts/World/Fixtures/RaidStoreSafe.cs – RaidStoreSafe class – add a private constant for the lock‑pick action duration. `private const float LockpickDialSeconds = CloneZConfig.RaidSafeDialSeconds * 0.5f;` (placed just after the existing `private readonly string[] Listening` field.)
   Step 2: Assets/Scripts/World/Fixtures/RaidStoreSafe.cs – RaidStoreSafe class – add a new `bool _opened` field to track whether the safe has been cracked. `private bool _opened;` (placed with the other private fields.)

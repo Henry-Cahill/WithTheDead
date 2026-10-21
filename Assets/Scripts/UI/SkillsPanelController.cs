@@ -17,6 +17,7 @@ namespace CloneZ
         private GameObject _panelRoot;
         private UIFader _fader;
         private bool _open;
+        private bool _dirty;
 
         private PlayerSkills.Skill[] _order;
         private Text[] _levelTexts;
@@ -26,6 +27,7 @@ namespace CloneZ
         private SkillCache[] _skillCache;
 
         public bool IsOpen => _open;
+        public void MarkDirty() => _dirty = true;
 
         public void Bind(PlayerSkills skills) => _skills = skills;
 
@@ -46,7 +48,7 @@ namespace CloneZ
                 if (kb.kKey.wasPressedThisFrame) Toggle();
                 else if (_open && kb.escapeKey.wasPressedThisFrame) Close();
             }
-            if (_open && _skills != null) Refresh();
+            if (_open && _dirty && _skills != null) Refresh();
         }
 
         private void Toggle()
@@ -59,6 +61,7 @@ namespace CloneZ
         {
             if (UIState.GameplayBlocked) return;   // inventory or sleep already owns the screen
             _open = true;
+            _dirty = true;
             UIState.GameplayBlocked = true;
             _fader.Show();
             Refresh();
@@ -73,6 +76,7 @@ namespace CloneZ
 
         private void Refresh()
         {
+            _dirty = false;
             for (int i = 0; i < _order.Length; i++)
             {
                 PlayerSkills.Skill s = _order[i];
