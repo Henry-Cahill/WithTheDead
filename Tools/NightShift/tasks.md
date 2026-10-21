@@ -4279,3 +4279,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace every occurrence of `ViewState.CeilingsVisible` in `Update()` and `SyncGlow()` with `_viewState.CeilingsVisible`.
   Keep the existing logic unchanged; the player will still see the glow appear/disappear exactly when the ceilings become visible or hidden, and flickering behavior is unaffected.
   No other code changes are required.
+- [ ] Add a deterministic, cached `System.Random` to `MapBuild` in Assets/Scripts/World/Map/WorldStore.cs so map‑building code can use a stable seed for visual variation (e.g., building colours).
+  · Declare a new private field `private System.Random _rand;` inside the `MapBuild` class.
+  · Add a public read‑only property `public System.Random Random => _rand ??= new System.Random(Id.GetHashCode());` after the existing `RegionSize` property.
+  · Include a short XML comment for the property, e.g. `/// <summary>Deterministic random seeded by the build Id, useful for consistent visual tweaks.</summary>`.
+  · No other members, file paths or logic should be altered; the rest of the class stays unchanged.
+  · This enables other map‑generation scripts to call `mapBuild.Random` for per‑build colour or prop variation while guaranteeing the same results each run.
+- [ ] In Assets/Scripts/World/RaidMapBuilder.Outdoor.cs, add a small rust‑stained metal bracket to each streetlight pole in the `StreetLights` method so the poles have a subtle weathered detail.
