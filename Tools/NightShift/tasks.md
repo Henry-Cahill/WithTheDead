@@ -4320,3 +4320,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Insert the following after the existing weathered band cylinder (the call `m.Cylinder(new Vector3(0f, h * 0.5f, 0f), r + 0.005f, 0.01f, …)`):
   `m.Cylinder(new Vector3(0f, h * 0.5f, 0f), r + 0.015f, 0.008f, 16, DecorPalette.Matte(strapColor));`
   The strap is a thin matte ring, 0.008 m thick, positioned at `y = h * 0.5f` (mid‑height), radius `r + 0.015f` (just outside the barrel wall). It uses only one extra primitive, stays within the existing collider bounds, and adds visual variety without altering interaction points.
+- [ ] Add a small metal faucet with left/right variation to the bathroom basin in Assets/Scripts/World/HomeFurniture.cs → `DrawPlain` method, `case HomeFurnitureKind.Basin:`
+  After the existing line `FurnitureBuilder.WashBasin(m, rng);` insert code that uses the same `rng` to pick left‑ or right‑handed faucet (`bool left = rng.Next(2) == 0;`).
+  Create a short vertical pipe using `m.Cylinder` at `(left ? -0.08f : 0.08f, 0.95f, 0.22f)` with radius 0.01 m, height 0.12 m, metal colour `DecorPalette.Metal(new Color(0.18f,0.18f,0.20f))`.
+  Add a tiny rectangular faucet knob using `m.Box` at the pipe top: position `(left ? -0.08f : 0.08f, 1.07f, 0.22f)`, size `(0.02f, 0.03f, 0.01f)`, same metal material.
+  Both primitives keep the existing mesh frame (`m`), colliders and interaction points unchanged, and stay within the 12‑primitive limit.
