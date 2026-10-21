@@ -4168,7 +4168,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// Random y‑offset from deck to top of fuselage, z‑offset along length`
   `float y = ZoneKit.R(r, 0.2f, 2.0f);`
   `float z = ZoneKit.R(r, -3.5f, 3.5f);`
-- [ ] Fix the leg‑yaw rotation in Assets/Scripts/Characters/HumanoidAnimator.Body.cs → method Leg(int thigh, …) – the current code cancels the yaw it adds, so the character’s legs never turn when the player strafes or walks backward, giving a sliding‑feet animation.
+- [x] Fix the leg‑yaw rotation in Assets/Scripts/Characters/HumanoidAnimator.Body.cs → method Leg(int thigh, …) – the current code cancels the yaw it adds, so the character’s legs never turn when the player strafes or walks backward, giving a sliding‑feet animation.
+  - 19:07 landed by 0htsserver in 1.3 min: **Changes Made**
 - [ ] Add a tiny chrome hinge‑pin detail to each locker door in Assets/Scripts/World/FurnitureBuilder.RaidCivic.cs, method LockerDoor so players see a small realistic hinge on the top edge of the door.
   Insert after the existing metal number‑plate box:
   `m.Cylinder(new Vector3(x + R(rng, -0.005f, 0.005f), LockerDoorY + LockerDoorH * 0.5f - 0.07f, 0.22f), 0.004f, 0.02f, 8, Mt(Chrome));`

@@ -93,7 +93,7 @@ namespace CloneZ
 
             Quaternion q = E(pitch, 0f, sx * 1f);
             if (Mathf.Abs(legYaw) > 0.1f)
-                q = Quaternion.AngleAxis(legYaw, Vector3.up) * q * Quaternion.AngleAxis(-legYaw, Vector3.up);
+                q = Quaternion.AngleAxis(legYaw, Vector3.up) * q;
             _q[thigh] = q;
             _q[thigh + 1] = E(knee, 0f, 0f);
             _q[thigh + 2] = E(foot, sx * 4f, 0f);
