@@ -4299,3 +4299,20 @@ you want to see in game. Indent extra lines under a task to add detail.
   Start this coroutine in `Start()` after creating `_rotor` (`StartCoroutine(NoiseLoop());`).
   Remove the `_noise` field declaration and the `_noise -= Time.deltaTime; …` block from `Update`.
   Keep all existing behavior (noise still repeats every 1.5 s only when the helicopter is low and spinning fast) while reducing per‑frame work.
+- [ ] Add lock‑status output to the existing “Inspect door” action in Assets/Scripts/World/Fixtures/RaidDoor.cs
+  Modify the lambda passed to the InteractAction named “Inspect door” inside GetActions so it also reports the door’s lock condition.
+  Use the existing properties IsLocked and the private field _lockBroken to build a string such as “Locked”, “Lock broken”, or “Unlocked”.
+  Append this status to the current notification, e.g. `ctx.Notify($"Door health: {health:0.##}/{maxHealth:0.##} ({percent}%){(_broken ? " (broken)" : "")} – {lockStatus}");`
+  Keep the rest of the action unchanged; no new UI, items, or methods are introduced.
+- [ ] Modify `Assets/Scripts/World/Map/KentuckyMap.Props.cs` → `BuildPoints` to give hand‑painted colour variation to sign backgrounds, making them look less uniform and more period‑correct.
+  After the line `if (signs >= MaxSigns || string.IsNullOrEmpty(s.Data.name) || !SignColours(s.Data.kind, out Color bg, out Color fg)) continue;` add code that perturbs `bg` slightly using the method’s existing `rng`.
+  Example change:
+  `bg.r = Mathf.Clamp01(bg.r + (float)rng.NextDouble() * 0.04f - 0.02f);`
+  `bg.g = Mathf.Clamp01(bg.g + (float)rng.NextDouble() * 0.04f - 0.02f);`
+  `bg.b = Mathf.Clamp01(bg.b + (float)rng.NextDouble() * 0.04f - 0.02f);`
+  This keeps the sign‑type colour logic intact, preserves the existing collider and placement code, and adds subtle random hue offsets so each sign appears a bit different, matching the hand‑built look of CLONE‑Z’s raid town.
+- [ ] In Assets/Scripts/World/WaterSource.cs, inside `WaterSource.BuildBarrel` add a small worn canvas/rope strap around the barrel’s mid‑section to suggest a makeshift handle/branding.
+  Create a new `System.Random` (e.g. `var strapRand = new System.Random(1993)`) and use it to pick a subtle brown tint: `float shade = 0.4f + 0.1f * strapRand.NextFloat(); Color strapColor = new Color(shade, shade * 0.85f, shade * 0.6f);`
+  Insert the following after the existing weathered band cylinder (the call `m.Cylinder(new Vector3(0f, h * 0.5f, 0f), r + 0.005f, 0.01f, …)`):
+  `m.Cylinder(new Vector3(0f, h * 0.5f, 0f), r + 0.015f, 0.008f, 16, DecorPalette.Matte(strapColor));`
+  The strap is a thin matte ring, 0.008 m thick, positioned at `y = h * 0.5f` (mid‑height), radius `r + 0.015f` (just outside the barrel wall). It uses only one extra primitive, stays within the existing collider bounds, and adds visual variety without altering interaction points.
