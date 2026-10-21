@@ -4889,5 +4889,6 @@ you want to see in game. Indent extra lines under a task to add detail.
   The colour is a light worn‑paint tone distinct from the wood casing but re‑uses `DecorPalette.Matte`, so no new assets are required.
   Because the plaque is added via `p.Mesh.Box` it inherits the piece’s mesh and has no collider, preserving existing interaction zones.
   - 23:14 landed by 1htsserver in 2 min: **Changed file**
-- [ ] Remove the duplicate XML‑summary on `UncannyDirector.BeginRaid` in Assets/Scripts/World/Zone/Uncanny.cs
+- [x] Remove the duplicate XML‑summary on `UncannyDirector.BeginRaid` in Assets/Scripts/World/Zone/Uncanny.cs
   The method currently has two `<summary>` tags stacked:
+  - 23:16 landed by hts-llm in 1.6 min: **Changed file**: `Assets/Scripts/World/Zone/Uncanny.cs` – removed the extra `<summary>` XML comment on `UncannyDirector.BeginRaid`, leaving
