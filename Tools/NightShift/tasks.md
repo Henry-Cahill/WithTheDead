@@ -4175,3 +4175,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Insert after the existing metal number‑plate box:
   `m.Cylinder(new Vector3(x + R(rng, -0.005f, 0.005f), LockerDoorY + LockerDoorH * 0.5f - 0.07f, 0.22f), 0.004f, 0.02f, 8, Mt(Chrome));`
   This creates a 4 mm radius, 2 cm long chrome cylinder (the pin) positioned near the top hinge line, with a tiny random X offset for variation. All other colliders, interaction points and pivots remain unchanged.
+- [ ] Cache the WeatherSystem reference once in Awake instead of checking for null each frame in WaterSource.Update (Assets/Scripts/World/WaterSource.cs)
+  Add a private `void Awake()` method that sets `_weather = WeatherSystem.Instance;`.
+  Remove the `if (_weather == null) _weather = WeatherSystem.Instance;` block from the Update method, leaving the rain‑intensity read as `float rain = _weather != null ? _weather.RainIntensity : 0f;`.
+  This eliminates a per‑frame null‑check and potential property lookup, reducing cheap but unnecessary work on every barrel each frame. The visual behavior and water‑fill simulation remain unchanged.
