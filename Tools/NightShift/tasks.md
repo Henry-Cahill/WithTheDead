@@ -4421,7 +4421,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Surf knobMat = DecorPalette.Gloss(new Color(0.8f, 0.8f, 0.8f));` // subtle metallic gloss, re‑using the existing palette helper
   `site.Town.Out.Solid(knobCenter).Box(knobCenter, knobSize, doorYaw, knobMat);` // adds the knob aligned with the door
   - 20:38 landed by 0htsserver in 1.8 min: Implemented a simple door knob for every entrance in `KentuckyMap.Buildings.cs`. The knob is a small glossy box positioned on the door using
-- [ ] Reduce per‑frame string allocation in HudRadiation.LateUpdate (Assets/Scripts/Zone/Radiation.cs)
+- [x] Reduce per‑frame string allocation in HudRadiation.LateUpdate (Assets/Scripts/Zone/Radiation.cs)
   Add a private field `float _prevDoseValue;` alongside the existing cache fields.
   In LateUpdate, after confirming `show`, compute `float curDose = r.Dose;` and `bool shielded = r.Shielded;` and `string trend = r.Intake > 0.0002f ? " \u25B2\u25B2" : r.Intake > 0.00002f ? " \u25B2" : "";`.
   Replace the current `if (doseStr != _prevDose || trend != _prevTrend || shielded != _prevShielded)` with a check that uses the cached float: `if (!Mathf.Approximately(curDose, _prevDoseValue) || trend != _prevTrend || shielded != _prevShielded)`.
@@ -4430,6 +4430,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Store the new cache values: `_prevDoseValue = curDose; _prevTrend = trend; _prevShielded = shielded;`.
   Remove the now‑unused string field `_prevDose` (or keep it for compatibility but stop updating it).
   The player sees exactly the same radiation readout, with no visual change, but the HUD no longer allocates a new string each frame when the dose has not changed, reducing GC pressure.
+  - 20:40 landed by 1htsserver in 2.5 min: **Changes made**
 - [ ] Add a “Toggle lantern switch” action to Assets/Scripts/World/Fixtures/OutdoorLantern.cs
   In `OutdoorLantern.GetActions` insert
   `into.Add(new InteractAction("Toggle lantern switch", ToggleLantern));` (e.g., after the “Check lantern status” line).
