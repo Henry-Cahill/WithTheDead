@@ -5122,9 +5122,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   ` float offX = R(rng, -0.015f, 0.015f);`
   ` float offZ = R(rng, -0.06f, 0.06f);`
   - 00:25 landed by 0htsserver in 2.1 min: **Changes made**
-- [ ] Fix per‑zone glow pulsation in Assets/Scripts/World/ToxicZone.cs
+- [x] Fix per‑zone glow pulsation in Assets/Scripts/World/ToxicZone.cs
   The static glow cache makes every ToxicZone use the same intensity, so clouds that should pulse out‑of‑phase all glow synchronously, breaking visual variety.
   Change the glow helper to compute the factor per instance instead of caching it globally.
+  - 00:30 landed by 0htsserver in 4.8 min: **Changed file**: `Assets/Scripts/World/ToxicZone.cs`
 - [ ] Reduce per‑frame UI work in Assets/Scripts/Player/Stealth.cs (class HudStealth, method Update)
   Add two private float fields `_lastVis` and `_lastNoise` to cache the last values written to the HUD.
   Initialize them to `-1f` (e.g. in `Create`).
