@@ -167,6 +167,19 @@ class PlannerTest(unittest.TestCase):
         unindented = ns.parse_plan("- [ ] A task about Assets/Scripts/World/A.cs\nA detail without indent.\n## Why\nno")
         self.assertEqual("A task about Assets/Scripts/World/A.cs\nA detail without indent.", unindented.text)
 
+    def test_parse_plan_joins_each_step_of_a_big_task_into_one_line(self):
+        # How gpt-oss writes a big task: blank lines around the steps, and each step's code fenced under it.
+        reply = ("- [ ] Frame the copier's panel in **Assets/Scripts/World/A.cs**.\n\n"
+                 "Step 1: **Body**, after the line  \n`m.Box(a, b, s);`  \nadd a top trim:  \n"
+                 "```csharp\n// top trim\nm.Box(c, d, chrome);\n```\n\n"
+                 "### Step 2: add a label:\n```csharp\nm.Box(e, f, label);\n```\n\n"
+                 "Done when: the panel is framed.\n\nHope this helps!")
+        task = ns.parse_plan(reply)
+        self.assertEqual(["Step 1: Body, after the line `m.Box(a, b, s);` add a top trim: `// top trim` "
+                          "`m.Box(c, d, chrome);`", "Step 2: add a label: `m.Box(e, f, label);`",
+                          "Done when: the panel is framed."], task.text.split("\n")[1:])
+        self.assertTrue(ns.is_big(task))
+
     def test_check_plan(self):
         lamp = self.script("Assets/Scripts/World/Lamp.cs", BUILDER)
         tasks = ns.read_tasks()

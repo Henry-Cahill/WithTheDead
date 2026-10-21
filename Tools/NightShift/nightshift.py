@@ -1192,6 +1192,7 @@ def ask_model(base: str, model: str, prompt: str, timeout: float = 900) -> str:
 
 LIST_MARK = re.compile(r"^(?:[-*+•]|\d+[.)])\s+")  # a leading bullet or number, not *emphasis*
 CALLED = re.compile(r"\b([A-Za-z_]\w{2,})\s*(?:<[^<>`]*>)?\s*\(")  # a method called (or declared) in quoted code
+STEP_START = re.compile(r"^(?:step[ \t]*\d+|done when\b)", re.I)  # a big task's step, or its last line
 
 
 def plain(line: str) -> str:
@@ -1200,6 +1201,11 @@ def plain(line: str) -> str:
     if len(line) > 2 and line[0] == line[-1] == "*":
         line = line[1:-1]
     return " ".join(line.split())
+
+
+def step_start(line: str) -> bool:
+    """Whether a line of the planner's reply starts a step ("Step 1:") or the "Done when:" line, however it's marked up."""
+    return bool(STEP_START.match(plain(line.strip().lstrip("#"))))
 
 
 def script_words(repo: Path) -> set[str]:
@@ -1225,7 +1231,9 @@ def unknown_calls(text: str, words: set[str]) -> list[str]:
 
 def parse_plan(reply: str) -> Task | None:
     """The first task in the planner's reply (a `- [ ]` line and the lines under it, up to a blank line or the next task;
-    code in a fenced block is kept line by line), or None, say for NONE."""
+    code in a fenced block is kept line by line), or None, say for NONE. In a task written in steps ("Step 1:" ...
+    "Done when:"), blank lines before and between the steps don't end it, and the lines and code under each step are
+    joined to that step, so each step is one detail line."""
     lines = re.sub(r"<think>.*?</think>", "", reply or "", flags=re.S).replace("\r", "").splitlines()
     for i, line in enumerate(lines):
         m = TASK_LINE.match(line)
@@ -1233,9 +1241,16 @@ def parse_plan(reply: str) -> Task | None:
             continue
         # A reply wrapped whole in a fence: the next fence closes it rather than opening a code block.
         wrapped = sum(1 for before in lines[:i] if before.strip().startswith("```")) % 2 == 1
-        details, code = [], False
-        for more in lines[i + 1:]:
-            s = more.strip()
+        details, code, stepped = [], False, False
+
+        def add(text: str) -> None:
+            if stepped and details and not step_start(text):
+                details[-1] += " " + text
+            else:
+                details.append(text)
+
+        for j in range(i + 1, len(lines)):
+            more, s = lines[j], lines[j].strip()
             if s.startswith("```"):
                 if wrapped and not code:
                     break
@@ -1243,11 +1258,18 @@ def parse_plan(reply: str) -> Task | None:
                 continue
             if code:
                 if s:  # quoted, so it reads as code and the made-up-method check sees it
-                    details.append("`" + " ".join(s.split()).replace("`", "'") + "`")
+                    add("`" + " ".join(s.split()).replace("`", "'") + "`")
                 continue
-            if not s or TASK_LINE.match(more) or s.startswith("#"):
+            if not s:
+                after = next((l.strip() for l in lines[j + 1:] if l.strip()), "")
+                if step_start(after) or (stepped and (after.startswith("```") or LIST_MARK.match(after))):
+                    continue
                 break
-            details.append(plain(s))
+            if TASK_LINE.match(more) or (s.startswith("#") and not step_start(s)):
+                break
+            text = plain(s.lstrip("#"))
+            stepped = stepped or step_start(text)
+            add(text)
         key = plain(m.group(1))
         return Task(key, "\n".join([key] + [d for d in details if d]))
     return None
