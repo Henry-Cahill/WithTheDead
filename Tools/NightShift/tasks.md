@@ -4844,7 +4844,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Place the new method after `Inspect` (or before `CaptureState`) to keep class layout tidy.
   All current behavior of flipping, toggling, and inspecting remains unchanged.
   - 23:05 landed by 1htsserver in 4 min: **Changed file**
-- [ ] Edit Assets/Scripts/World/Map/KentuckyMap.Ground.cs, method BuildStreets, to give asphalt‑road overlays a subtle per‑segment colour variation instead of the same flat colour everywhere.
+- [x] Edit Assets/Scripts/World/Map/KentuckyMap.Ground.cs, method BuildStreets, to give asphalt‑road overlays a subtle per‑segment colour variation instead of the same flat colour everywhere.
   In the `if (surf.Mat == DecorMaterials.Asphalt.Mat)` block, replace the line
   `var varSurf = DecorPalette.Matte(new Color(0.68f, 0.68f, 0.66f));`
   with a call to a new helper that returns a slightly different matte colour based on the first point of the piece.
@@ -4853,6 +4853,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `{`
   `// small deterministic jitter using Perlin noise; keeps values in a plausible range`
   `float r = Mathf.PerlinNoise(seed.x * 0.13f, seed.y * 0.13f) * 0.04f;`
+  - 23:08 landed by hts-llm in 4.8 min: **Changed file**
 - [ ] Add a handful of small rust‑stained matte patches on the rain barrel’s outer wall in `Assets/Scripts/World/WaterSource.cs` → `WaterSource.BuildBarrel` to convey weathering; use the existing `strapRand` (seed 1993) to place 2‑4 patches of size ~0.02 m × 0.02 m × 0.02 m at random heights (≈0.3–0.8 m) and angles around the barrel, e.g. `m.Box(new Vector3(Mathf.Sin(angle)*(r+0.015f), y, Mathf.Cos(angle)*(r+0.015f)), new Vector3(0.02f,0.02f,0.02f), DecorPalette.Matte(new Color(0.4f,0.2f,0.1f)))` added just after the rivet‑head loop.
   → Create `int patchCount = strapRand.Next(2,5);` and loop `for (int i=0;i<patchCount;i++)` to compute `angle` and `y`.
   → Keep colliders untouched (the patches are visual only).

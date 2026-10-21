@@ -88,7 +88,7 @@ namespace CloneZ
                      // Add subtle brighter overlay for asphalt roads
                      if (surf.Mat == DecorMaterials.Asphalt.Mat)
                      {
-                         var varSurf = DecorPalette.Matte(new Color(0.68f, 0.68f, 0.66f));
+                         var varSurf = RandomAsphaltOverlay(piece[0]);
                          Ribbon(site.Town.Out, piece, width * 0.96f, StreetY + 0.001f, varSurf);
                      }
                     // Raised kerb strip along the road edge
@@ -253,6 +253,16 @@ namespace CloneZ
             float v = float.MinValue;
             foreach (Vector2 p in pts) v = Mathf.Max(v, x ? p.x : p.y);
             return v;
+        }
+
+        private static Surf RandomAsphaltOverlay(Vector2 seed)
+        {
+            // small deterministic jitter using Perlin noise; keeps values in a plausible range
+            float r = Mathf.PerlinNoise(seed.x * 0.13f, seed.y * 0.13f) * 0.04f;
+            // base colour is a mild grey, adjust slightly by r on each channel
+            Color baseCol = new Color(0.68f, 0.68f, 0.66f);
+            Color varied = new Color(baseCol.r + r, baseCol.g + r, baseCol.b + r);
+            return DecorPalette.Matte(varied);
         }
     }
 }
