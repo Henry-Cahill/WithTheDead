@@ -5883,13 +5883,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   Step 3: Add a short comment above the removed lines indicating the rationale (kept for future reference). `// NOTE: Zone hires should not set the persistent “companion:” flag – that flag is only used for` `// bar hires and survivors so that a companion is spawned at the insertion point on the next raid.`
   Done when: Players can approach a freehold NPC in the zone, press the hire interaction, pay the fee, and see the companion appear immediately without any error. The hire button is now disabled while the player is at the extraction point. After a successful raid, only one companion appears at the insertion point (no duplicate from a previous zone hire). All existing bar‑hire behavior remains unchanged.
   - 07:14 landed by hts-llm in 1.8 min: **Changes Made**
-- [ ] Add a small chrome push‑button to the front of the copier in Assets/Scripts/World/FurnitureBuilder.Utility.cs – `FurnitureBuilder.Copier`.
+- [x] Add a small chrome push‑button to the front of the copier in Assets/Scripts/World/FurnitureBuilder.Utility.cs – `FurnitureBuilder.Copier`.
   Add the button after the existing Gl‑panel line `m.Box(new Vector3(0.3f, 1.0f, 0.3f), new Vector3(0.2f, 0.05f, 0.03f), Gl(new Color(0.2f, 0.5f, 0.3f)));`.
   Create a jittered position using the method’s `rng`:
   `Vector3 btnPos = new Vector3(0f, 1.0f, 0.31f) + new Vector3((float)rng.NextDouble()*0.01f-0.005f, (float)rng.NextDouble()*0.01f-0.005f, 0f);`
   Place a tiny chrome box (the button) – size 0.02 m × 0.02 m × 0.004 m – using the existing chrome material:
   `m.Box(btnPos, new Vector3(0.02f, 0.02f, 0.004f), Mt(Chrome));`
   The button gives the copier a realistic control detail; it uses the deterministic random source for slight placement variation, reuses the `Mt(Chrome)` material, and does not affect colliders or interaction points.
+  - 07:18 landed by hts-llm in 3.5 min: Added a tiny chrome push‑button detail to the copier model.
 - [ ] In Assets/Scripts/UI/SkillsPanelController.cs, add a per‑frame “dirty‑refresh” guard so `Refresh()` only runs when the skill data has actually changed.
   Add a private field `private bool _dirty;` after the `_open` field.
   In `Open()` set `_dirty = true;` (the panel just opened needs a full refresh).

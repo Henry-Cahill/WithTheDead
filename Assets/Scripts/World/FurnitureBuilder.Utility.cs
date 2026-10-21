@@ -297,8 +297,10 @@ namespace CloneZ
             m.Box(new Vector3(0f, 0.97f, 0f), new Vector3(0.86f, 0.14f, 0.58f), M(c));
             m.Box(new Vector3(0f, 1.05f, -0.02f), new Vector3(0.8f, 0.03f, 0.52f), M(new Color(0.25f, 0.25f, 0.27f)));
             m.Box(new Vector3(-0.5f, 0.75f, 0f), new Vector3(0.14f, 0.02f, 0.36f), M(Paper));
-            m.Box(new Vector3(0.3f, 1.0f, 0.3f), new Vector3(0.2f, 0.05f, 0.03f), Gl(new Color(0.2f, 0.5f, 0.3f)));
-        }
+    m.Box(new Vector3(0.3f, 1.0f, 0.3f), new Vector3(0.2f, 0.05f, 0.03f), Gl(new Color(0.2f, 0.5f, 0.3f)));
+    Vector3 btnPos = new Vector3(0f, 1.0f, 0.31f) + new Vector3((float)rng.NextDouble()*0.01f-0.005f, (float)rng.NextDouble()*0.01f-0.005f, 0f);
+    m.Box(btnPos, new Vector3(0.02f, 0.02f, 0.004f), Mt(Chrome));
+}
 
         /// <summary>A dead pot plant: clay pot, dry soil and drooping brown stalks.</summary>
         public static void DeadPlant(RaidMesh m, System.Random rng, Vector3 at)
