@@ -5678,3 +5678,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   and change the `ScreenPointToLocalPointInRectangle` call to pass the cached camera:
   `if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, m.position.ReadValue(), _uiCam, out Vector2 local)) return;`
   The tooltip’s visual behavior (positioning and edge‑flipping) remains identical, but the costly `Camera.main` search is performed only once instead of every `LateUpdate`.
+- [ ] Add a cheaper song request for musicians in Assets/Scripts/Hub/HubNpc.cs
+  Modify `HubNpcTalk.GetActions` inside the `case HubNpc.Role.Musician:` block.
+  After the existing `InteractAction("Request a song (10 MG)", …)` add a second action:
+  `into.Add(new InteractAction("Request a short tune (5 MG)", c =>`
+  `{`
+  `if (!Money.TrySpend(5, c.Inventory)) { c.Notify("You don't have 5 MG."); return; }`
+  `GameEvents.RaiseSubtitle(Npc.Name, "A quick melody for you.");`
+  `GameEvents.RaiseWorldEvent(transform.position, 5f, "music");`
+  `Sfx.PlayUI(SfxIds.Cash);`
