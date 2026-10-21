@@ -4693,3 +4693,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   `/// <summary>Returns a new deterministic System.Random seeded with the build Id combined with <paramref name="seed"/>. Use it for per‑feature visual variation (e.g., tree placement, porch chance) so the result is stable across runs.</summary>`
   `public System.Random DeterministicRandom(int seed) => new System.Random(Id.GetHashCode() ^ seed);`
   This does not alter existing behaviour; the new method is callable from any map‑builder (e.g., `MapBuild.DeterministicRandom(buildingId.GetHashCode())`) to generate repeat‑able prop selections while keeping colliders and geometry unchanged.
+- [ ] Add a tiny chrome faucet with red “hot” and blue “cold” lever handles to the wash‑basin built in `FurnitureBuilder.WashBasin` (Assets/Scripts/World/FurnitureBuilder.Utility.cs)
+  Insert the following three primitive calls near the end of the method, after the mirror cabinet box:*
+  `Vector3 fp = new Vector3(-0.20f, 0.84f, -0.02f) + new Vector3((float)rng.NextDouble()*0.01f-0.005f, (float)rng.NextDouble()*0.02f-0.01f, 0f);`
+  `Vector3 fs = new Vector3(0.04f, 0.02f, 0.02f);`
+  `m.Box(fp, fs, Mt(Chrome));`
+  `m.Box(fp + new Vector3(0.02f, 0.02f, 0f), new Vector3(0.008f, 0.012f, 0.008f), M(new Color(0.80f, 0.10f, 0.10f)));` // hot (red) handle
+  `m.Box(fp + new Vector3(-0.02f, 0.02f, 0f), new Vector3(0.008f, 0.012f, 0.008f), M(new Color(0.10f, 0.30f, 0.80f)));` // cold (blue) handle
+  Result: the sink now has a period‑correct chrome faucet with tiny red and blue lever handles, adding visual realism without altering colliders, interaction points, or existing geometry.
