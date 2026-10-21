@@ -83,6 +83,7 @@ namespace CloneZ
             Revealed = true;
             _visual.gameObject.SetActive(true);
             Sfx.Play(SfxIds.DetectorAlert, transform.position, 0.4f, 1.3f, 8f);
+            GameEvents.RaiseToast("Detected " + ArtifactCatalog.NameOf(ArtifactId) + ".");
         }
 
         private void Update()
