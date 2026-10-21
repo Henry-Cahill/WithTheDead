@@ -5484,7 +5484,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Change the `BloodType` getter to return `_cachedProfile != null && !GameSession.IsScavRun && !string.IsNullOrEmpty(_cachedProfile.BloodType) ? _cachedProfile.BloodType : _scavType;`.
   Change the `TypeKnown` getter to use `_cachedProfile` instead of calling `ProfileStore.ActiveCharacter` again: `return _cachedProfile != null && _cachedProfile.HasFlag("bloodknown");`.
   Leave all other logic unchanged; the player will see the same blood type and known‑state information, but the per‑frame profile lookup is removed, reducing overhead.
-- [ ] Append five new winter‑theme flavor notes to the `Hideout.Tick` method in Assets/Scripts/Economy/Hideout.cs, adding `notes.Add("…");` calls after the existing winter notes; use the existing entry `notes.Add("The wind whistles through the cracked window of the generator room.");` as the style reference and cover the themes of frost‑bitten tools, a distant crackling radio, visible breath in the cold air, the groaning of ice‑laden roof beams, and the lingering scent of burning coal.
+- [x] Append five new winter‑theme flavor notes to the `Hideout.Tick` method in Assets/Scripts/Economy/Hideout.cs, adding `notes.Add("…");` calls after the existing winter notes; use the existing entry `notes.Add("The wind whistles through the cracked window of the generator room.");` as the style reference and cover the themes of frost‑bitten tools, a distant crackling radio, visible breath in the cold air, the groaning of ice‑laden roof beams, and the lingering scent of burning coal.
   Insert the new calls immediately after the last current winter note (`notes.Add("A faint scent of woodsmoke lingers, drifting from the stove.");`).
   Add the following lines:
   `notes.Add("Frost coats the hammer and wrench on the workbench, making each swing a shiver.");`
@@ -5492,6 +5492,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `notes.Add("Your breath forms fleeting clouds that drift toward the cold ceiling before vanishing.");`
   `notes.Add("The roof’s pine beams creak under the weight of ice, sighing with each gust.");`
   `notes.Add("A thin ribbon of coal‑smoke curls from the stove, mingling with the crisp winter air.");`
+  - 02:28 landed by 0htsserver in 2 min: Implemented five new winter‑theme flavor notes in **Assets/Scripts/Economy/Hideout.cs**. The notes are added directly after the existing win
 - [ ] In Assets/Scripts/World/Map/MapGeometry.cs add a deterministic sidewalk colour palette and accessor so side‑walk polygons can get a period‑appropriate hue per OSM id, matching the existing road‑colour system.
   After the existing `kRoadPalette` field, insert a new private static readonly array `kSidewalkPalette` with four muted concrete‑gray colours (e.g. `new Color(0.70f,0.68f,0.65f)`, `new Color(0.62f,0.60f,0.57f)`, `new Color(0.54f,0.52f,0.49f)`, `new Color(0.46f,0.44f,0.41f)`).
   Add a public static method `GetSidewalkColor(int osmId)` that selects an index by `osmId.GetHashCode() & 0x7fffffff` modulo the palette length and returns the colour at that index, mirroring `GetRoadColor`.
