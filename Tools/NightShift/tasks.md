@@ -4717,3 +4717,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Strip(town, alongX, coord + edge, a, b, 0.04f, 0.006f,`
   `DecorPalette.Matte(LineWhite * 0.7f));`
   `}`
+- [ ] In Assets/Scripts/Player/PlayerFoodSickness.cs: Remove the per‑frame GetComponent lookup in `PlayerFoodSickness.Update` – delete the line `if (_sleepCache == null) _sleepCache = GetComponent<PlayerSleep>();` because `_sleepCache` is already obtained in `Awake()`.
+  This eliminates a cheap but unnecessary component search each frame, reducing GC pressure.
+  No other code changes; the cached `_sleepCache` continues to be used for the sleeping‑multiplier check.
+  The sickness decay rate and health‑drain logic remain identical, so the player sees no visual or gameplay difference.
+  Keeps the existing null‑check `if (_sleepCache != null && _sleepCache.IsSleeping)` intact.
+  No other fields or methods need modification.
