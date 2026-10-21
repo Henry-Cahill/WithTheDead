@@ -133,6 +133,15 @@ namespace CloneZ
             Color c = V(wood, rng, 0.06f);
             Surf body = M(c), inside = M(c * 0.45f);
             m.Box(new Vector3(0f, 0.05f, -0.02f), new Vector3(0.98f, 0.1f, 0.54f), M(c * 0.7f));
+            // subtle brass rivet strip on the top of the wardrobe carcass
+            int rivetCount = 6 + rng.Next(3); // 6–8 rivets
+            for (int i = 0; i < rivetCount; i++)
+            {
+                float x = R(rng, -0.45f, 0.45f);
+                float z = R(rng, -0.02f, 0.02f);
+                // small brass cylinder representing a rivet
+                m.Cylinder(new Vector3(x, 1.95f, z), 0.004f, 0.008f, 8, Mt(Brass));
+            }
             m.Box(new Vector3(-0.49f, 1.0f, -0.03f), new Vector3(0.02f, 1.8f, 0.54f), body);
             m.Box(new Vector3(0.49f, 1.0f, -0.03f), new Vector3(0.02f, 1.8f, 0.54f), body);
             m.Box(new Vector3(0f, 1.0f, -0.29f), new Vector3(0.96f, 1.8f, 0.02f), inside);

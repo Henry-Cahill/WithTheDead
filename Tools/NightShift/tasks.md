@@ -5703,9 +5703,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   `f.P(xmid, WallH - 0.01f, side * (Half + 0.016f)), // just below the roof line`
   `new Vector3(xlen, 0.02f, 0.004f), // width, height, depth`
   - 03:25 landed by 0htsserver in 4 min: **Summary**
-- [ ] Add a subtle brass‑rivet strip to the top of each wardrobe carcass in `FurnitureBuilder.WardrobeBody` (Assets/Scripts/World/FurnitureBuilder.RaidHome.cs)
+- [x] Add a subtle brass‑rivet strip to the top of each wardrobe carcass in `FurnitureBuilder.WardrobeBody` (Assets/Scripts/World/FurnitureBuilder.RaidHome.cs)
   Insert a loop after the existing plinth box (`m.Box(new Vector3(0f, 0.05f, -0.02f)…`) that places 6–8 tiny brass cylinders on the carcass roof to suggest hand‑fastened rivets.
   Use the deterministic random source already passed (`rng`) and the helper `R(rng, …)` for x‑position jitter:
+  - 03:28 landed by 1htsserver in 1.6 min: All scripts now compile successfully. The wardrobe carcass now includes a subtle brass‑rivet strip on its top, rendered as 6–8 tiny brass cy
 - [ ] Cache the sky‑override colour used during the warning phase in EmissionDirector (Assets/Scripts/Zone/Emissions.cs) to avoid evaluating the conditional each frame in Update.
   Add a private `Color _warningSkyColor;` field.
   In `StartWarning()` set `_warningSkyColor = PsiStorm ? _psiStormColor : _standardColor;`.
