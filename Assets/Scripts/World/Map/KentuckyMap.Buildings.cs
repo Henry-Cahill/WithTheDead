@@ -348,18 +348,8 @@ site.Town.Out.Solid(sillCenter).Box(sillCenter, sillSize, outside);
         /// <summary>The building's height in metres: as mapped, or from its storeys and kind.</summary>
         private static float HeightOf(MapBuilding b)
         {
-            if (b.height > 0f) return Mathf.Clamp(b.height, 2.6f, 90f);
-            float storeys = Mathf.Max(1, b.levels) * Storey;
-            switch (b.kind)
-            {
-                case "shed": case "garage": case "canopy": return 2.7f;
-                case "trailer": return 2.9f;
-                case "barn": return 6.5f;
-                case "warehouse": case "industrial": return Mathf.Max(storeys, 6.5f);
-                case "church": return storeys + 3.5f;
-                case "silo": return 14f;
-                default: return storeys + 0.4f;   // a parapet above the top storey
-            }
+            // Use the deterministic effective height defined on MapBuilding.
+            return b.EffectiveHeight();
         }
 
         private static Surf RoofSurf(MapBuilding b, System.Random rng)

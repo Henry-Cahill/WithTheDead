@@ -4659,8 +4659,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   This uses the existing private field `_open` and the method `SetOpen(bool open, bool instant)`, preserving the current timed duration (`CloneZConfig.HoseCoilSeconds`) and the original “You wind the hose…” notification.
   No other code changes are required; the action will now both coil the hose and ensure the tap isn’t left open, giving the player a confirming message.
   - 22:05 landed by 0htsserver in 3.1 min: Implemented a `.Stopped` handler for the “Coil the hose” action in **HoseSpigot.cs**.
-- [ ] Add a deterministic default‑height helper to `MapBuilding` in `Assets/Scripts/World/Map/MapData.cs` so buildings without an explicit `height` field still get a plausible roof height based on their `levels`.
+- [x] Add a deterministic default‑height helper to `MapBuilding` in `Assets/Scripts/World/Map/MapData.cs` so buildings without an explicit `height` field still get a plausible roof height based on their `levels`.
   In `MapBuilding` insert the method
+  - 22:32 landed by 1htsserver in 27.7 min: Implemented a deterministic default‑height helper and fixed brace mismatches:
 - [x] Add four small weathered stone rune slabs around the central stone pillar in the ChoirSanctum landmark, editing Assets/Scripts/World/Zone/ZoneLandmarks.cs method ChoirSanctum(SiteBuilder sb)
   Insert after the line `sb.Solid.Cylinder(Vector3.zero, 2f, 0.4f, 16, ZoneKit.M(stone));`
   Create a loop `for (int i = 0; i < 4; i++)` that uses the deterministic RNG `sb.Rng` to pick an angle offset `float a = i * Mathf.PI * 0.5f + ZoneKit.R(sb.Rng, -0.1f, 0.1f);`

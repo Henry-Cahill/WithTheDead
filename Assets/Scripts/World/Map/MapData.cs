@@ -103,8 +103,9 @@ namespace CloneZ
                 default:
                     // Fallback based on carriageway width if kind is unknown
                     return Mathf.Max(1.0f, width * 0.3f);
-            }
-        }
+    }
+
+    }
     }
 
     /// <summary>A river, stream, canal, ditch or railway, clipped to its region.</summary>
@@ -119,14 +120,14 @@ namespace CloneZ
 
     /// <summary>A building's footprint (its outer wall, no repeated last point) and what it is.</summary>
     [Serializable]
-    public sealed class MapBuilding
+public sealed class MapBuilding
     {
         public long id;
         /// <summary>house, trailer, apartments, hotel, commercial, office, retail, industrial, warehouse, church,
         /// school, hospital, civic, garage, shed, barn, silo, greenhouse, canopy or ruin.</summary>
         public string kind;
         public string name, address;
-        /// <summary>What it's used for, when mapped: an amenity (fuel, police, pharmacy...) or "shop:&lt;kind&gt;".</summary>
+        /// <summary>What it's used for, when mapped: an amenity (fuel, police, pharmacy...) or "shop:<kind>".</summary>
         public string use;
         public int levels;
         /// <summary>Height in metres when mapped, else 0.</summary>
@@ -139,6 +140,16 @@ namespace CloneZ
             float sat = 0.6f + ((id >> 16) & 0xFF) / 255f * 0.2f;
             float val = 0.7f + ((id >> 24) & 0xFF) / 255f * 0.2f;
             return Color.HSVToRGB(hue, sat, val);
+        }
+
+        /// <summary>Effective building height: returns the mapped height if set (>0), otherwise a deterministic default based on levels.</summary>
+        public float EffectiveHeight()
+        {
+            if (height > 0f)
+                return Mathf.Clamp(height, 2.6f, 90f);
+            // Default: each level ~3 meters plus a small roof offset.
+            float storeys = Mathf.Max(1, levels) * 3.0f;
+            return storeys + 0.4f;
         }
     }
 
