@@ -4471,12 +4471,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   A child’s voice asking if anyone has seen a lost orange tabby cat near the old mill.
   A brief note that the county road “B” is blocked by a fallen tree and asking for a chainsaw.
   - 21:00 landed by hts-llm in 1.9 min: **Changed**
-- [ ] Add a deterministic tree‑spacing helper to `MapArea` in `Assets/Scripts/World/Map/MapData.cs` so forest land‑use areas can be populated with period‑appropriate trees.
+- [x] Add a deterministic tree‑spacing helper to `MapArea` in `Assets/Scripts/World/Map/MapData.cs` so forest land‑use areas can be populated with period‑appropriate trees.
   Add a public method `public float GetTreeSpacing()` inside the `MapArea` class.
   The method should return `0f` for any `kind` other than `"forest"`; for `"forest"` return a base spacing of `3f` metres plus a pseudo‑random offset in `[0,1]` derived from the area’s `id` (e.g. `float offset = ((id * 0x4F1BBCDC) & 0xFFFF) / 65535f; return 3f + offset;`).
   Document the method with a `/// <summary>` explaining that it provides a deterministic tree‑placement interval to keep forests looking natural and varied.
   No other fields or classes are altered; this addition only supplies data for the existing world‑builder code (e.g., `FurnitureBuilder` or `DecorProps`) to use when scattering trees in forest areas.
   The player will see forests filled with trees spaced roughly 3–4 m apart, matching the hand‑crafted raid town’s look while preserving the original map data format.
+  - 21:00 landed by 1htsserver in 1.1 min: **Changed**
 - [ ] Add four small chrome corner brackets to the picture frame built in `Assets/Scripts/World/FurnitureBuilder.Lighting.cs` `PictureFrame` method
   In `PictureFrame`, after the line `m.Box(at + normal * 0.008f, new Vector3(w + 0.05f, h + 0.05f, 0.016f), q, M(frame));` compute the wall‑right vector `Vector3 right = Vector3.Cross(normal, Vector3.up).normalized;`
   Add four `m.Box` calls, each with size `new Vector3(0.008f, 0.008f, 0.003f)` and material `Mt(Chrome)`, positioned at the four outer corners of the frame:

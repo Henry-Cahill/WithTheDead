@@ -149,6 +149,16 @@ namespace CloneZ
         public long id;
         public string kind, name;
         public int[] pts;
+
+        /// <summary>Provides a deterministic tree‑placement interval for forest land‑use areas. Returns 0 m for non‑forest areas; for forests returns a base spacing of 3 m plus a pseudo‑random offset in [0, 1] derived from the area's id.</summary>
+        public float GetTreeSpacing()
+        {
+            if (kind != "forest")
+                return 0f;
+            // deterministic offset based on id, similar to other hashing patterns
+            float offset = ((id * 0x4F1BBCDC) & 0xFFFF) / 65535f;
+            return 3f + offset;
+        }
     }
 
     /// <summary>A point of interest: an amenity (fuel, police, hospital, school...) or "shop:&lt;kind&gt;".</summary>
