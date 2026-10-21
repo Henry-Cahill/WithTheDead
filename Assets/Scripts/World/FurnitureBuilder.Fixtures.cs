@@ -71,6 +71,9 @@ namespace CloneZ
             Quaternion q = Quaternion.LookRotation(normal, Vector3.up);
             m.Cylinder(at, 0.16f, 0.04f, 14, M(new Color(0.15f, 0.15f, 0.16f)), q * Quaternion.Euler(90f, 0f, 0f));
             m.Cylinder(at + normal * 0.041f, 0.14f, 0.002f, 14, M(new Color(0.88f, 0.87f, 0.82f)), q * Quaternion.Euler(90f, 0f, 0f));
+            // tiny brass hub and knob for realistic pivot
+            m.Cylinder(at + normal * 0.045f, 0.012f, 0.003f, 12, Mt(Brass), Quaternion.identity);
+            m.Cylinder(at + normal * 0.0475f, 0.006f, 0.0015f, 12, Mt(Brass), Quaternion.identity);
             float a1 = R(rng, 0f, 360f), a2 = R(rng, 0f, 360f);
             m.Box(at + normal * 0.046f + q * (Quaternion.Euler(0f, 0f, a1) * new Vector3(0f, 0.045f, 0f)), new Vector3(0.012f, 0.09f, 0.004f), q * Quaternion.Euler(0f, 0f, a1), M(Black));
             m.Box(at + normal * 0.047f + q * (Quaternion.Euler(0f, 0f, a2) * new Vector3(0f, 0.06f, 0f)), new Vector3(0.008f, 0.12f, 0.004f), q * Quaternion.Euler(0f, 0f, a2), M(Black));
