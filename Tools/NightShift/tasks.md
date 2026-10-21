@@ -5508,3 +5508,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   Use the same chrome metal surface: `Mt(Chrome)`.
   This adds up to one extra primitive per locker door and keeps colliders, interaction points and pivots unchanged.
   - 02:30 landed by 0htsserver in 2 min: **Changed file**
+- [ ] In Assets/Scripts/Net/NetWorld.cs: Remove the unnecessary `GetComponent<NetAgentProxy>()` lookup in `NetWorld.SendAi` (the method runs only on the server, so proxies never exist here).
+  Replace the actor‑filter line
+  `if (a == null || a.IsPlayerControlled || a.GetComponent<NetAgentProxy>() != null) continue;`
+  with
+  `if (a == null || a.IsPlayerControlled) continue;`
+  Add a brief comment explaining that the lookup was per‑actor each AI‑tick (≈10 Hz) and caused a component search that never succeeded, so removing it saves CPU without altering any visible game state.
