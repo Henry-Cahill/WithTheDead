@@ -5830,12 +5830,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 06:44 landed by 0htsserver in 1.8 min: **Changed file**
 - [x] Add a deterministic façade‑material helper to `MapBuilding` in `Assets/Scripts/World/Map/MapData.cs` so the map builder can choose a period‑appropriate wall finish (brick, wood‑siding, metal) per building.
   - 06:51 landed by 1htsserver in 5.5 min: **Changes made**
-- [ ] Cache per‑frame component lookups in Assets/Scripts/Zombies/ZombieAI.cs
+- [x] Cache per‑frame component lookups in Assets/Scripts/Zombies/ZombieAI.cs
   In `Awake()` assign `_self = GetComponent<Actor>();` and, if `GameManager.Instance?.Player` exists, assign `_player = GameManager.Instance.Player;` then also cache `_playerController = _player?.GetComponent<PlayerController>();` and `_playerSkills = _player?.GetComponent<PlayerSkills>();` (these may be null).
   Remove the `if (_self == null) _self = GetComponent<Actor>();` line from `Update()`.
   Replace the player‑lookup block in `Update()` with a simpler dead‑check: `if (_player != null && _player.IsDead) _player = null;` – the initial assignment now happens only in Awake.
   In `CanSee()` delete the repeated null‑checks that acquire `_playerController` and `_playerSkills`; they are now always set (or remain null) from Awake, so the method can directly use the cached fields.
   This eliminates one `GetComponent<Actor>()` call and two `GetComponent<Player…>()` calls per zombie each frame, reducing allocation‑free per‑frame work while preserving the existing behaviour (the player reference is still refreshed when the player dies).
+  - 06:56 landed by 1htsserver in 2.2 min: **Changes Made**
 - [ ] Append five new, period‑correct winter‑Kentucky flavor lines to the `ZoneTalk.s_Lines` entry for `Factions.Wardens` in Assets/Scripts/AI/Humans/HumanNpc.cs so that NPCs of the Wardens faction can say them during conversation.
   Step 1: Open Assets/Scripts/AI/Humans/HumanNpc.cs and locate the `s_Lines` dictionary initializer.
   Step 2: Find the entry ` [Factions.Wardens] = new[] { … }`.
