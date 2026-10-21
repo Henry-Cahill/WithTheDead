@@ -4431,7 +4431,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Remove the now‑unused string field `_prevDose` (or keep it for compatibility but stop updating it).
   The player sees exactly the same radiation readout, with no visual change, but the HUD no longer allocates a new string each frame when the dose has not changed, reducing GC pressure.
   - 20:40 landed by 1htsserver in 2.5 min: **Changes made**
-- [ ] Add a “Toggle lantern switch” action to Assets/Scripts/World/Fixtures/OutdoorLantern.cs
+- [x] Add a “Toggle lantern switch” action to Assets/Scripts/World/Fixtures/OutdoorLantern.cs
   In `OutdoorLantern.GetActions` insert
   `into.Add(new InteractAction("Toggle lantern switch", ToggleLantern));` (e.g., after the “Check lantern status” line).
   Add a new private method `ToggleLantern(InteractContext ctx)` that:
@@ -4440,6 +4440,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   – If `!PowerGrid.HousePowered` → `ctx.Notify("Can't switch – no power.");` and return.
   – Flips the switch with `_lamp.SwitchedOn = !_lamp.SwitchedOn;`
   – Sends a notification:
+  - 20:52 landed by hts-llm in 12.8 min: **Changes made**
 - [x] Append five new flavor‑text strings to the `BrushLines` array in Assets/Scripts/World/Fixtures/BasinFixture.cs so that brushing teeth can also convey the harsh winter, lingering memory of the old world and the survivor’s quiet resolve.
   Use the existing entry `"The metal of the tap feels icy, and you wonder how long the mains will stay silent."` as the style reference.
   The new lines should each be a single sentence, period‑correct, and fit the 1993 Kentucky winter setting.
