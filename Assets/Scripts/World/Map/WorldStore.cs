@@ -67,7 +67,19 @@ namespace CloneZ
 
     /// <summary>One published build of the real-world map: its manifest, its named places and its regions.</summary>
     public sealed class MapBuild
-    {
+        {
+            /// <summary>Determine if a building should get a thin snow layer on its roof.
+            /// Deterministic based on the build ID and the building ID.
+            /// Approximately 30% of roofs receive snow.</summary>
+            public bool RoofHasSnow(long buildingId)
+            {
+                unchecked
+                {
+                    uint hash = (uint)buildingId ^ 0x9e3779b9u;
+                    hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
+                    return (hash % 100) < 30; // 30% chance
+                }
+        }
         /// <summary>The data format this game reads (worldbuild.py's FORMAT).</summary>
         public const int Format = 1;
 

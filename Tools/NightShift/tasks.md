@@ -5014,8 +5014,9 @@ you want to see in game. Indent extra lines under a task to add detail.
   Keep the existing calls to `RefreshVisual()` in `Plant`, `AddWater`, `Advance`, `ResetToEmpty`, etc.; the method will now early‑out on frames where water, growth or state hasn’t changed, eliminating unnecessary `Color.Lerp`, `Mathf.Lerp`, material color assignments and transform scaling each frame.
   This change does not alter any gameplay or what the player sees; visuals only update when their underlying data changes.
   - 23:53 landed by hts-llm in 4.2 min: **Changes Made**
-- [ ] Add a deterministic “snow on roof” helper to `MapBuild` in Assets/Scripts/World/Map/WorldStore.cs and use it when roofs are generated so that winter‑time buildings sometimes carry a thin snow layer, matching CLONE‑Z’s 1993 Kentucky setting.
+- [x] Add a deterministic “snow on roof” helper to `MapBuild` in Assets/Scripts/World/Map/WorldStore.cs and use it when roofs are generated so that winter‑time buildings sometimes carry a thin snow layer, matching CLONE‑Z’s 1993 Kentucky setting.
   In `MapBuild` add a new public method
+  - 00:09 landed by hts-llm in 15.5 min: Implemented deterministic snow on roofs:
 - [ ] Add two small chrome screw heads to the bulkhead light dome in `Assets/Scripts/World/FurnitureBuilder.Lighting.cs` `BulkheadLight` method to suggest period‑accurate mounting hardware.
   Insert two `m.Box` calls after the dome ellipsoid (before the glow call) using the existing chrome material.
   `// Chrome screw heads on the dome`

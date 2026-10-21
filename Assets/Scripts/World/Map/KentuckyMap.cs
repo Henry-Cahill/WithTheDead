@@ -130,6 +130,14 @@ private static void BuildSnow(Site site)
             foreach (Footprint f in site.Area.Buildings)
             {
                 if (!f.Inside(site.Half, 2f)) continue;
+                // Deterministic snow presence based on building ID (approx 30% chance).
+                unchecked
+                {
+                    uint hash = (uint)f.Data.id ^ 0x9e3779b9u;
+                    hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
+                    bool hasSnow = (hash % 100) < 30;
+                    if (!hasSnow) continue;
+                }
                 // Use mapped height if present, else fallback to 0.
                 float roofY = f.Data.height > 0f ? f.Data.height : 0f;
                 roofY += SnowDepth * 0.5f;
