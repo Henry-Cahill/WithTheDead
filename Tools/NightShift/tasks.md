@@ -4859,3 +4859,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   → Keep colliders untouched (the patches are visual only).
   → Do not exceed ~12 total new primitives in the method.
 - [ ] Fix the pause‑menu “Quit to Title” path in Assets/Scripts/UI/PauseMenuController.cs – the hub‑quit action leaves the game frozen.
+- [ ] In Assets/Scripts/Characters/PlayerAvatar.cs: Cache the three tool look‑ups in `RefreshHeld` for `hammer`, `trowel` and `wateringcan` in `PlayerAvatar` to avoid a per‑frame `ItemDatabase.Get` call.
+  Add three private `ItemDef` fields (e.g. `_hammerDef`, `_trowelDef`, `_wateringCanDef`).
+  Assign them once in `Start()` after the other components are fetched:
+  `_hammerDef = ItemDatabase.Get(HammerId);`
+  `_trowelDef = ItemDatabase.Get(TrowelId);`
+  `_wateringCanDef = ItemDatabase.Get(WateringCanId);`
+  Replace the `ItemDatabase.Get` calls in `RefreshHeld` with the cached fields (`_hammerDef`, `_trowelDef`, `_wateringCanDef`).
+  The player’s avatar will still show the same hammer, trowel and watering‑can models when building, digging or watering, but the per‑frame dictionary look‑ups are eliminated, reducing CPU time and GC pressure.
