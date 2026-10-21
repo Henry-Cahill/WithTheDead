@@ -5689,3 +5689,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   `GameEvents.RaiseSubtitle(Npc.Name, "A quick melody for you.");`
   `GameEvents.RaiseWorldEvent(transform.position, 5f, "music");`
   `Sfx.PlayUI(SfxIds.Cash);`
+- [ ] Modify Assets/Scripts/World/Map/KentuckyMap.cs to add a thin gravel layer on parking‑lot land‑use patches so they look like period‑correct, dusty lots instead of bare concrete.
