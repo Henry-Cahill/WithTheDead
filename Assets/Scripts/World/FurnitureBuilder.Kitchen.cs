@@ -145,9 +145,12 @@ namespace CloneZ
 
             // The stainless deck with its ribbed drainer, and the bowl let into it.
             KitchenSlabAround(m, -0.52f, 0.52f, -0.21f, 0.25f, bx0, bx1, bz0, bz1, 0.94f, SinkDeckY, Mt(Steel));
-            for (int i = 0; i < 7; i++)
-                m.Box(new Vector3(-0.47f + i * 0.068f, SinkDeckY + 0.0015f, 0.02f), new Vector3(0.012f, 0.003f, 0.36f), Mt(Steel * 1.06f));
-            Surf bowl = Mt(Steel * 0.82f);
+for (int i = 0; i < 7; i++)
+                 m.Box(new Vector3(-0.47f + i * 0.068f, SinkDeckY + 0.0015f, 0.02f), new Vector3(0.012f, 0.003f, 0.36f), Mt(Steel * 1.06f));
+             // Occasionally add a subtle oil stain on the stainless‑steel deck
+             if (Chance(rng, 0.25f))
+                 m.Box(new Vector3(0f, SinkDeckY + 0.001f, 0f), new Vector3(0.08f, 0.004f, 0.02f), Mt(Steel * 0.8f));
+             Surf bowl = Mt(Steel * 0.82f);
             float wallY = (SinkDeckY + SinkBowlBottom - 0.006f) * 0.5f, wallH = SinkDeckY - SinkBowlBottom + 0.006f;
             m.Box(new Vector3(bx0 + 0.003f, wallY, SinkBowlZ), new Vector3(0.006f, wallH, SinkBowlD), bowl);
             m.Box(new Vector3(bx1 - 0.003f, wallY, SinkBowlZ), new Vector3(0.006f, wallH, SinkBowlD), bowl);
