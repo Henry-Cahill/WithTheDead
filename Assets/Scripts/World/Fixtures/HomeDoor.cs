@@ -207,6 +207,8 @@ namespace CloneZ
             _open = open;
             if (open) _locked = false;
             Apply(false);
+            // Notify cut‑away occluder that the door's visual parts have changed so they render correctly when the door opens or closes.
+            PartsChanged();
             if (noisy)
             {
                 MakeNoise(CloneZConfig.FixtureNoiseDoor);

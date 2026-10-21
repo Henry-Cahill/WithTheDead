@@ -4752,7 +4752,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 22:32 landed by 0htsserver in 2.6 min: **Changed file**
 - [x] Add a tiny brass screw head to each raised panel of the wooden door leaf in `Assets/Scripts/World/FurnitureBuilder.Fixtures.cs` `FurnitureBuilder.DoorLeaf` so the panels look nailed into the door.
   - 22:33 landed by 1htsserver in 1.6 min: **Summary**
-- [ ] In Assets/Scripts/World/Fixtures/HomeDoor.cs: Fix HomeDoor.SetOpen to update the cut‑away occluder after the door state changes, so the door’s visual parts correctly appear/disappear when opened or closed.
+- [x] In Assets/Scripts/World/Fixtures/HomeDoor.cs: Fix HomeDoor.SetOpen to update the cut‑away occluder after the door state changes, so the door’s visual parts correctly appear/disappear when opened or closed.
+  - 22:34 landed by 0htsserver in 1 min: Implemented visual update for doors:
 - [ ] Add a tiny metal “pump‑hose” detail to each fuel‑pump pillar in `Assets/Scripts/World/RaidMapBuilder.Town.cs` → method `DressGasStation`, inside the `Prop(..., (m, r) => { … })` lambda that builds the pump pillar.
   After the existing hazard‑sign box (`m.Box(new Vector3(0f, 0.3f, 0f), new Vector3(0.4f, 0.6f, 0.4f), DecorMaterials.Hazard);`), insert a thin cylinder representing a hose or metal pipe.
   Position it relative to the pillar centre at `new Vector3(0f, 1.5f, 0.18f)` (about half the pillar height, slightly forward).
