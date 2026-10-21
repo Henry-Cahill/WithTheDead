@@ -5109,3 +5109,16 @@ you want to see in game. Indent extra lines under a task to add detail.
   `ctx.Notify("You tap the house‑number plate; it gives a faint clang.");`
   The player will now see a fourth option when interacting, providing a quieter alternative to “Knock on the door”.
   All other code, fields, and existing actions remain unchanged.
+- [ ] Add a low wooden rail fence around the exterior perimeter of residential buildings (house, trailer, apartments, hotel) in `Assets/Scripts/World/Map/KentuckyMap.Buildings.cs` → modify the `Enterable` method to generate a thin wooden rail (≈0.08 m high, 0.04 m thick) just outside each wall segment, using the existing wood colour (`DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f))`) and the same `Thick` offset logic, with a collider for each rail segment so the player can’t walk through it. This gives the raid town a period‑correct porch‑rail look without changing any other map data or import logic.
+- [ ] Add three tiny chrome buttons to the TV remote in `FurnitureBuilder.TvStandBody` (Assets/Scripts/World/FurnitureBuilder.RaidHome.cs) so the remote looks like a worn, battery‑powered device.
+  After the line
+  `m.Box(new Vector3(0.42f, 0.506f, 0.08f), new Vector3(0.05f, 0.012f, 0.16f), Yaw(R(rng, -25f, 25f)), M(new Color(0.12f, 0.12f, 0.13f)));`
+  *insert three button cylinders*:
+  `// tiny chrome buttons on the remote surface (random slight offset for wear)`
+  `for (int i = 0; i < 3; i++)`
+  `{`
+  ` float offX = R(rng, -0.015f, 0.015f);`
+  ` float offZ = R(rng, -0.06f, 0.06f);`
+- [ ] Fix per‑zone glow pulsation in Assets/Scripts/World/ToxicZone.cs
+  The static glow cache makes every ToxicZone use the same intensity, so clouds that should pulse out‑of‑phase all glow synchronously, breaking visual variety.
+  Change the glow helper to compute the factor per instance instead of caching it globally.
