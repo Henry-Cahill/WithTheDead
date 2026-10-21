@@ -5350,7 +5350,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `GameEvents.RaiseToast("Detected " + ArtifactCatalog.NameOf(ArtifactId) + ".");`
   This keeps the existing reveal logic (timer, visual activation, sound) unchanged, but now the player sees a brief on‑screen message naming the artifact the moment a detector switches it on. The rest of the method and class remain unchanged.
   - 01:49 landed by 0htsserver in 1.3 min: **Changes Made**
-- [ ] Append six new period‑correct magazine descriptions to the `Magazines` string array in Assets/Scripts/World/Fixtures/LivingReading.cs
+- [x] Append six new period‑correct magazine descriptions to the `Magazines` string array in Assets/Scripts/World/Fixtures/LivingReading.cs
   Add the entries after the current last element (`"a July 1993 Wildlife Watch, issue 7. A photo essay of deer tracks in early summer snows."`).
   Each entry must be a whole sentence (or two) ending with a period, matching the style of the existing entry `"a July 1993 Survivalist's Almanac. Tips on building a rain collector and warding off pests."`.
   Themes to cover:
@@ -5359,4 +5359,5 @@ you want to see in game. Indent extra lines under a task to add detail.
   a farm‑yard recipe booklet featuring “Grandma’s Turnip Soup”;
   a community bulletin announcing the February 1993 town hall meeting;
   a hunting log noting the “First‑light Duck Hunt” of 1993;
+  - 01:52 landed by 0htsserver in 2.8 min: **Changes made**
 - [ ] Add four tiny rivet boxes to the chest‑rig’s front panel in Assets/Scripts/Player/PlayerGearVisuals.cs, method BuildChestRig(ItemDef def) to suggest worn‑metal fastening.
