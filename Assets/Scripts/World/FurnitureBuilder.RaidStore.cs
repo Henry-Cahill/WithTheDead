@@ -161,6 +161,13 @@ namespace CloneZ
             Color shell = V(new Color(0.78f, 0.76f, 0.70f), rng, 0.03f);
             m.Cylinder(Vector3.zero, 0.28f, 1.5f, 12, G(shell));
             m.Cylinder(new Vector3(0f, 1.5f, 0f), 0.22f, 0.05f, 12, G(shell * 0.9f));
+            // Add four small chrome bolt heads around the top rim for detail
+            for (int i = 0; i < 4; i++)
+            {
+                float a = R(rng, 0f, Mathf.PI * 2f);
+                Vector3 pos = new Vector3(Mathf.Cos(a) * 0.24f, 1.5f, Mathf.Sin(a) * 0.24f);
+                m.Cylinder(pos, 0.01f, 0.02f, 6, Mt(Chrome));
+            }
             Surf copper = Mt(new Color(0.5f, 0.35f, 0.2f));
             m.Cylinder(new Vector3(0.12f, 1.5f, 0.06f), 0.03f, 1.2f, 6, copper);
             m.Cylinder(new Vector3(-0.12f, 1.5f, 0.06f), 0.03f, 1.2f, 6, copper);
