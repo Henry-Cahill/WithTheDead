@@ -4763,5 +4763,6 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add the primitive with:
   `m.Cylinder(new Vector3(0f, 1.5f, 0.18f), 0.015f, 0.25f, 12, DecorPalette.Metal(new Color(0.40f, 0.35f, 0.33f)), Quaternion.Euler(0f, (float)(r.NextDouble()*10.0 - 5.0), 0f), 1f);`
   This adds only one extra primitive per pump (well under the 12‑primitive limit) and uses the deterministic `r` already supplied, preserving colliders and interaction zones.
-- [ ] In Assets/Scripts/UI/UIFader.cs: Update `UIFader.Update()` to stop the per‑frame check using exact float equality and the unnecessary null guard; use `Mathf.Approximately` with a small tolerance and assume `_group` is never null after `Awake`.
+- [x] In Assets/Scripts/UI/UIFader.cs: Update `UIFader.Update()` to stop the per‑frame check using exact float equality and the unnecessary null guard; use `Mathf.Approximately` with a small tolerance and assume `_group` is never null after `Awake`.
+  - 22:37 landed by 1htsserver in 1.5 min: **Changed**: `Assets/Scripts/UI/UIFader.cs` – Updated `UIFader.Update()` to:
 - [ ] In Assets/Scripts/World/Fixtures/TowelRail.cs: Add a “Check towel dryness” action to `TowelRail.GetActions` that tells the survivor how long until the towel is fully dry, using the existing `_dryAt` field and `TimeOfDay.Now`.
