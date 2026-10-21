@@ -88,8 +88,23 @@ namespace CloneZ
                     Scenery(site, f, rng);
                     site.SceneryBuildings++;
                 }
-                BuildRoofEaves(site);
-            }
+BuildRoofEaves(site);
+                // Add a small wooden mailbox for residential footprints (house, trailer, apartments, hotel)
+                if (f.Data.kind == "house" || f.Data.kind == "trailer" || f.Data.kind == "apartments" || f.Data.kind == "hotel")
+                {
+                    // Choose a point near the first edge, offset outward from the wall
+                    Vector2 a = f.Pts[0];
+                    Vector2 b = f.Pts[1];
+                    Vector2 d = (b - a).normalized;
+                    Vector2 outward = new Vector2(d.y, -d.x); // outward normal (right side of anticlockwise ring)
+                    Vector2 pos2D = (a + b) * 0.5f + outward * (Thick * 0.5f + 0.5f);
+                    Vector3 pos = new Vector3(pos2D.x, 0f, pos2D.y);
+                    // Add mailbox geometry (small wooden mailbox, not a public box)
+                    var mesh = site.Town.Out.Solid(pos);
+                    DecorProps.Mailbox(mesh, rng, false);
+                }
+                }
+
         }
 
         private static void Enterable(Site site, Footprint f, System.Random rng)
