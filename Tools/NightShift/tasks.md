@@ -5364,3 +5364,17 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [x] Add four tiny rivet boxes to the chest‑rig’s front panel in Assets/Scripts/Player/PlayerGearVisuals.cs, method BuildChestRig(ItemDef def) to suggest worn‑metal fastening.
   - 01:56 landed by 0htsserver in 3.4 min: Added four tiny rivet boxes to the front panel of the chest‑rig in **PlayerGearVisuals.cs** to suggest a worn‑metal fastening. The rivets ar
 - [ ] In Assets/Scripts/Rendering/VisionController.cs: Fix VisionController.CanSee so it passes the survivor’s eye position instead of the target point twice, preventing false‑positive visibility checks at night.
+- [ ] In Assets/Scripts/World/RaidMapBuilder.Outdoor.cs: Add tiny rust‑stained metal rivet cylinders to each jersey barrier built in `RaidMapBuilder.Outdoor.Checkpoint` and `RaidMapBuilder.Outdoor.RoadBlock` so the barriers show subtle wear.
+- [ ] Add a “Check channel” action to `Assets/Scripts/World/Fixtures/TvFixture.cs` in the `GetActions(InteractContext ctx, List<InteractAction> into)` method, copying the pattern of the existing “Check volume” entry.
+  Insert the line
+  `into.Add(new InteractAction("Check channel", ctx => ctx.Notify("Channel: " + (Station != null ? Station.ToString() : "none"))).DisabledIf(!near, TooFar));`
+  directly after the existing `into.Add(new InteractAction("Check signal", CheckSignal).DisabledIf(!near, TooFar));`.
+  This gives the survivor a quick way to see which broadcast station the TV is tuned to, using the already‑available `Station` property and the same reach‑check logic as other actions. The rest of the script remains unchanged.
+- [ ] Append four new transmission lines to the “Battalion relay” (`Channel 3`) `Lines` array in Assets/Scripts/World/Fixtures/RaidTownFieldRadio.cs
+  Insert the new strings just before the closing brace of the `Lines` initializer for the third `Net` (the one with `Name = "Channel 3"`).
+  Current entry style example to follow: `"All units, maintain firewatch; temperatures dropping below minus ten, frostbite risk high."`
+  The new lines should each be a full‑sentence quoted string and cover the following themes:
+  an urgent equipment‑shortage warning (e.g., low fuel for generators);
+  a brief morale‑boosting broadcast encouraging perseverance;
+  a weather‑related hazard alert about ice on the main road;
+  a casualty report stating a unit was overrun and requesting assistance.
