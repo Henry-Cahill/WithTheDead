@@ -4345,3 +4345,16 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add a private static method `BuildRoofEaves(Site site)` that iterates `site.Area.Buildings`. For each `Footprint fp` where `fp.Data.use` is `"residential"` or `"house"` (or contains “residential”), loop over its `fp.Pts` edge‑by‑edge. For each edge compute the outward normal (`Vector2 n = new Vector2(d.y, -d.x).normalized;` where `d = fp.Pts[(i+1)%fp.Pts.Count] - fp.Pts[i];`). Place a thin box with `site.Overhead.At(pos).Box(size, roofMat);` where `pos` is the midpoint of the edge lifted to roof height (`float roofY = fp.Data.height + EaveHeight/2f;` – use `fp.Data.height` if present, otherwise a default of `4.5f`). `size` is `new Vector3(EaveDepth, EaveHeight, edgeLength)` rotated to follow the edge (`Quaternion.LookRotation(new Vector3(d.x,0f,d.y))`). Use the same roof material the building already uses (e.g. `Materials.Roof`).
   Call this new method from `BuildBuildings(site)` (add the line `BuildRoofEaves(site);` after the existing building‑generation calls).
   What the player sees: most houses now have a modest overhanging strip around the roof edge, matching the hand‑built raid town’s eave detail, while streets, interiors and colliders remain unchanged. All existing code structure, data formats and other map‑building steps stay intact.
+- [ ] In Assets/Scripts/Extraction/RaidWorldRules.cs: Fix RaidWorldRules.PickInsertion so it only closes exits near the spawn point when the raid uses a helicopter insertion (heli == true).
+  *Current behaviour:* When the raid is on‑foot (lz == OnFoot) the method still runs the loop that sets `e.Open = false` for any exit within 45 units of `spawn` (which defaults to Vector3.zero). This can close all exits, leaving the player with no usable exits or forcing the fallback “open farthest exit”, which is unintended for on‑foot raids.
+  *Fix:* Wrap the distance‑based closing logic in a check for `heli`. Only execute the loop that may close exits when a helicopter insertion was chosen.
+  Code change:
+- [ ] Add a short brass decorative hook to each curtain finial in `Assets/Scripts/World/FurnitureBuilder.RaidOpenings.cs` → method `OpeningCurtains`
+  After the existing finial ellipsoids
+  `m.Ellipsoid(l.P(r0, rodY, rodOff), new Vector3(0.045f, 0.045f, 0.045f), brass, 6, 4);`
+  `m.Ellipsoid(l.P(r1, rodY, rodOff), new Vector3(0.045f, 0.045f, 0.045f), brass, 6, 4);`
+  add two small cylinders that extend outward from each ellipsoid, using the same `brass` material:
+  `float hookDepth = side * (face + 0.075f + 0.025f); // a bit beyond the finial`
+  `float hookLen = 0.04f; // 4 cm long hook`
+  `float hookRad = 0.006f; // 6 mm radius`
+  `// left finial hook`
