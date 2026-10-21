@@ -229,7 +229,16 @@ for (float x = -len * 0.5f; x <= len * 0.5f; x += 4f)
                         Vector3 rivPos = new Vector3(offsetX, offsetY, 1.22f + 0.01f);
                         sb.Solid.Cylinder(rivPos, 0.01f, 0.015f, 8, ZoneKit.Mt(ZoneKit.RustDark));
                     }
-                    sb.Collider(new Vector3(0f, 1.3f, 0f), new Vector3(6f, 2.6f, 2.44f));
+                    // Add a small rust‑stained latch on the container hull for visual wear
+            Color rust = new Color(0.5f, 0.3f, 0.1f);
+            // Latch positioned near middle height, slightly outward on front face
+            Vector3 latchPos = new Vector3(0f, 1.0f, 1.22f + 0.01f) + new Vector3(ZoneKit.R(rng, -0.1f, 0.1f), 0f, 0f);
+            sb.Solid.Box(latchPos, new Vector3(0.3f, 0.08f, 0.02f), ZoneKit.M(ZoneKit.V(rust, rng, 0.02f)));
+            // Bolts on the latch
+            Vector3 boltOffset = new Vector3(0.12f, 0f, 0f);
+            sb.Solid.Box(latchPos + boltOffset, new Vector3(0.02f, 0.05f, 0.02f), ZoneKit.M(ZoneKit.V(rust, rng, 0.02f)));
+            sb.Solid.Box(latchPos - boltOffset, new Vector3(0.02f, 0.05f, 0.02f), ZoneKit.M(ZoneKit.V(rust, rng, 0.02f)));
+            sb.Collider(new Vector3(0f, 1.3f, 0f), new Vector3(6f, 2.6f, 2.44f));
                     if (rng.NextDouble() < 0.6) sb.Storage("Shipping container", "spill_container", new Vector3(3.2f, 1f, 0f), ContainerType.Crate, 5);
                 }
                 sb.Finish();
