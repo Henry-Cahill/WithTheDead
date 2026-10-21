@@ -5043,7 +5043,7 @@ you want to see in game. Indent extra lines under a task to add detail.
 
 ### Auto-planned 2026-10-21: written by the night shift when the queue ran low (delete any you don't want)
 
-- [ ] Add deterministic road‑surface colour variation to Assets/Scripts/World/Map/MapGeometry.cs
+- [x] Add deterministic road‑surface colour variation to Assets/Scripts/World/Map/MapGeometry.cs
   Define a new palette of period‑appropriate road colours and a helper method that returns a colour based on a road’s OSM id, analogous to the existing building colour logic.
   `private static readonly Color[] kRoadPalette = new[]`
   `{`
@@ -5052,6 +5052,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `new Color(0.60f, 0.45f, 0.30f), // dirt‑road brown`
   `new Color(0.70f, 0.65f, 0.55f) // light‑gray concrete`
   `};`
+  - 00:07 landed by 1htsserver in 5.3 min: **Changes Made**
 - [ ] Add a subtle line of tiny metal nail heads along the bottom edge of the hub’s interior trim in Assets/Scripts/Hub/HubWorld.cs – edit the `BuildShell` method’s `Deco` call for `"Trim"` so the skirting has a period‑correct, weathered look.
 - [ ] Fix the landmark‑counting bug in Assets/Scripts/World/Zone/ZoneLandmarks.cs so the “landmarks” summary only counts actually‑placed landmarks.
   In `ZoneLandmarks.Build` replace the line
