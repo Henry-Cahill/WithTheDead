@@ -5470,13 +5470,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   `FixturePart doorPart = FixturePart.Hinge(fixture.transform, "Door", door, at + new Vector3(0f, 1.12f, -0.252f), Vector3.left, 100f).WithSpeed(0.3f);`
   so the mailbox door swings open at a reasonable speed, matching other fixtures (e.g., the doormat’s 0.25f). The rest of the script stays unchanged.
   - 02:22 landed by 1htsserver in 1 min: **Changed**
-- [ ] Add subtle winter‑frost and random paint‑chip details to the WeaponRack in Assets/Scripts/World/RaidLayouts.cs
+- [x] Add subtle winter‑frost and random paint‑chip details to the WeaponRack in Assets/Scripts/World/RaidLayouts.cs
   After the top beam `m.Box(new Vector3(0f, 1.3f, -0.08f), Sz(1.9f, 0.06f, 0.12f), wood);` insert a thin frost overlay:
   `m.Box(new Vector3(0f, 1.31f, -0.08f), Sz(1.9f, 0.002f, 0.3f), DecorPalette.Matte(new Color(0.90f, 0.90f, 0.95f)));`
   After each vertical post definition (`m.Box(new Vector3(-0.95f, 0.8f, -0.1f), …)` and its mirror) add a small weathered‑paint chip using the deterministic random source:
   `Vector3 chipPos = new Vector3(-0.95f + (float)r.NextDouble()*0.02f - 0.01f, R(r, 0.4f, 1.2f), R(r, -0.05f, 0.05f));`
   `m.Box(chipPos, Sz(0.02f, 0.01f, 0.005f), wood);` (repeat for the right post with x = 0.95f)
   These three new primitives (one frost slab, two paint‑chip boxes) keep colliders and interaction points unchanged, reuse the existing `wood` material for chips, and add only period‑correct visual variation.
+  - 02:26 landed by 1htsserver in 3.7 min: **Changes made**
 - [ ] In Assets/Scripts/Medical/PlayerBlood.cs: Cache the active character profile in PlayerBlood to avoid repeated `ProfileStore.ActiveCharacter` look‑ups each frame (used by BloodType and TypeKnown).
   Add a private field `private CharacterProfile _cachedProfile;` initialized to null.
   In `Update()` (or at the start of the method) set `_cachedProfile = ProfileStore.ActiveCharacter;`.
