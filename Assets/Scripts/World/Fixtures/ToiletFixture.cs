@@ -41,7 +41,13 @@ namespace CloneZ
                 "A mournful wind sighs through the boarded walls, echoing distant sorrow.",
                 "A cracked frame catches a ghost of a family photograph, a memory flickering.",
                 "A loose pipe rattles, its metallic clang cutting the cold silence.",
-                "Steam swirls, and a ghostly silhouette briefly appears within its veil."
+                "Steam swirls, and a ghostly silhouette briefly appears within its veil.",
+                "A cold draft whistles through the tiles, reminding you of the world beyond.",
+                "The flickering light above casts uneasy shadows on the porcelain.",
+                "You feel a lingering scent of rust and old soap.",
+                "A distant siren wails, echoing through the cracked window.",
+                "The water drips slowly, a metronome of solitude.",
+                "A spider's web glistens in the dim light, unnoticed."
         };
 
         private HomeFurniture _host;

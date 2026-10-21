@@ -5139,7 +5139,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Modify the existing `InteractAction` that toggles the gate (the one added with `into.Add(new InteractAction(Open ? "Close the gate" : "Open the gate", …)`) so its execution lambda also calls `NoiseSystem.Emit(transform.position, 22f);` after `Apply` and `Broadcast`.
   Result: opening or closing a gate now makes a audible “creak” that can attract zombies, giving players feedback and a small tactical risk. All other code and existing actions remain unchanged.
   - 00:32 landed by 0htsserver in 2 min: **Changed file**
-- [ ] Append six new flavour‑text strings to the `UseLines` array in Assets/Scripts/World/Fixtures/ToiletFixture.cs, placing them after the current last entry; the player will see one of these lines when using the toilet.
+- [x] Append six new flavour‑text strings to the `UseLines` array in Assets/Scripts/World/Fixtures/ToiletFixture.cs, placing them after the current last entry; the player will see one of these lines when using the toilet.
+  - 00:38 landed by 1htsserver in 6 min: **Summary**
 - [x] Add three small brass rivets on the top rail of each window sash in `Assets/Scripts/World/StarterHome.Windows.cs` → `WindowSash` method, after the loop that creates the brass caps
   `for (int e = -1; e <= 1; e += 2)
   m.Box(f.P(f.Mid + e * (w * 0.5f - 0.0225f), y1 - topRail * 0.5f, across), f.Size(0.015f, 0.015f, 0.01f), brassCap);`
