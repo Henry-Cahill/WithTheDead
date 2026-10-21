@@ -106,7 +106,22 @@ private void Update()
             into.Add(new InteractAction("Dry yourself off", DryOff).Timed(CloneZConfig.TowelDrySeconds, "Drying off", HumanoidActivity.Use));
             into.Add(new InteractAction("Straighten the towel", Straighten));
             into.Add(new InteractAction("Inspect towel", Inspect));
+            into.Add(new InteractAction("Check towel dryness", CheckDryness));
             into.Add(new InteractAction("Let towel dry", LetDry));
+        }
+
+        private void CheckDryness(InteractContext ctx)
+        {
+            if (IsDamp)
+            {
+                float remaining = _dryAt - TimeOfDay.Now;
+                if (remaining < 0f) remaining = 0f;
+                ctx.Notify($"The towel will be dry in {remaining:0.0} hours.");
+            }
+            else
+            {
+                ctx.Notify("The towel is already dry.");
+            }
         }
 
         private void DryOff(InteractContext ctx)
