@@ -323,6 +323,14 @@ namespace CloneZ
             // A bar of soap on one side of the tap, a tumbler of toothbrushes on the other.
             Color[] soaps = { new Color(0.90f, 0.72f, 0.70f), new Color(0.74f, 0.86f, 0.70f), new Color(0.92f, 0.88f, 0.70f) };
             m.Ellipsoid(new Vector3(-0.175f, 0.872f, -0.165f), new Vector3(0.075f, 0.026f, 0.048f), G(soaps[rng.Next(soaps.Length)]), 10, 4);
+            // Small chrome‑rimmed soap dish on the left side of the tap
+            var dishPos = new Vector3(-0.19f, 0.86f, -0.155f);
+            // Body: shallow rectangular box in china colour
+            m.Box(dishPos, new Vector3(0.03f, 0.005f, 0.02f), G(BathChina));
+            // Rim: thin chrome cylinder around the box
+            m.Cylinder(dishPos, 0.017f, 0.005f, 12, Mt(Chrome));
+            // Optional tiny ellipsoid soap bar inside the dish, same china colour, slightly above the top
+            m.Ellipsoid(new Vector3(dishPos.x, dishPos.y + 0.0025f + 0.002f, dishPos.z), new Vector3(0.008f, 0.008f, 0.008f), G(BathChina), 10, 4);
             var cup = new Vector3(0.175f, 0.86f, -0.165f);
             m.Cylinder(cup, 0.027f, 0.085f, 12, G(V(new Color(0.56f, 0.74f, 0.80f), rng, 0.1f)), Quaternion.identity, 1.12f);
             Color[] brushes = { new Color(0.80f, 0.20f, 0.18f), new Color(0.20f, 0.42f, 0.78f), new Color(0.24f, 0.62f, 0.34f) };

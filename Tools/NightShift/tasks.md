@@ -4590,11 +4590,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 21:36 landed by hts-llm in 2.2 min: **Changed file**: `Assets/Scripts/World/Map/MapGeometry.cs`
 - [x] Add a subtle wooden bead trim along the top and bottom rails of each sash in `Assets/Scripts/World/StarterHome.Windows.cs` → `WindowSash` method, after the rail boxes, to give the window a period‑correct decorative edge.
   - 21:38 landed by 0htsserver in 3.2 min: **Summary of changes**
-- [ ] Add a small chrome‑rimmed soap dish to the pedestal basin in Assets/Scripts/World/FurnitureBuilder.Bathroom.cs, method PedestalBasin
+- [x] Add a small chrome‑rimmed soap dish to the pedestal basin in Assets/Scripts/World/FurnitureBuilder.Bathroom.cs, method PedestalBasin
   Place a shallow rectangular dish on the left side of the tap, using the existing “chinа” colour for the dish and the existing chrome material for the rim.
   Add a thin box for the dish’s body (≈ 0.03 m × 0.005 m × 0.02 m) centred at new Vector3(-0.19f, 0.86f, -0.155f) (relative to the tap position new Vector3(0f, 0.86f, -0.165f) used in the method).
   Add a chrome cylinder around the box to act as a decorative rim (radius 0.017 m, height 0.005 m, aligned with the box’s top, centred at the same position).
   Optionally add a tiny ellipsoid of the same “chinа” colour to suggest a soap bar inside the dish (radius 0.008 m, centred 0.002 m above the dish top).
+  - 21:42 landed by 0htsserver in 3.7 min: **Changed file:** `Assets/Scripts/World/FurnitureBuilder.Bathroom.cs`
 - [ ] In Assets/Scripts/World/GroundItemRenderer.cs: Cache the per‑frame world‑bounds struct in GroundItemRenderer to avoid recreating it for every material batch in Draw.
   Add a private field `private Bounds _worldBounds;` to store the bounds.
   In LateUpdate, after `_eye` is set, compute it once: `_worldBounds = new Bounds(_eye, Vector3.one * (DrawRadius * 2f + 10f));`.
