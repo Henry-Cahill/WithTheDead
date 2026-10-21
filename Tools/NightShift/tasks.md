@@ -5515,3 +5515,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `if (a == null || a.IsPlayerControlled) continue;`
   Add a brief comment explaining that the lookup was per‑actor each AI‑tick (≈10 Hz) and caused a component search that never succeeded, so removing it saves CPU without altering any visible game state.
   - 02:37 landed by hts-llm in 2.4 min: Implemented a CPU‑saving change in **Assets/Scripts/Net/NetWorld.cs**:
+- [ ] Modify `PlayerInteractor.TryPickUp` in Assets/Scripts/Player/PlayerInteractor.cs to warn the player when an item can’t be added because it’s too heavy or the inventory is full.
+  Locate the method `private void TryPickUp()` which currently reads:
+  `if (PickupTarget == null || _inventory == null) return;`
+  `_inventory.PickUp(PickupTarget);`
+  Replace its body with:
+  `if (PickupTarget == null || _inventory == null) return;`
+  `ItemDef def = PickupTarget.Def;`
+  `Inventory inv = _inventory.Inventory;`
+  `if (inv != null && def != null && !inv.WouldFit(def))`
