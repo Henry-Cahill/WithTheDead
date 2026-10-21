@@ -5526,3 +5526,16 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Inventory inv = _inventory.Inventory;`
   `if (inv != null && def != null && !inv.WouldFit(def))`
   - 02:39 landed by hts-llm in 2.4 min: **Changed**
+- [ ] Edit `Assets/Scripts/World/Map/KentuckyMap.Ground.cs` – modify the `Fill` method to give asphalt parking‑lot polygons a subtle per‑vertex height variation (±0.001 m) using deterministic Perlin noise, mirroring the approach in `FillIce`; preserve the existing flat‐polygon behaviour for all other surface types.
+  Change the method signature comment is unchanged; replace the body’s triangle loop with logic that:
+  · Detect `if (surf.Mat == DecorMaterials.Asphalt.Mat)`; when true, compute a `float[] heights` array sized to `poly.Count` where each entry is `y + (Mathf.PerlinNoise(poly[i].x * 0.13f, poly[i].y * 0.13f) - 0.5f) * 0.002f`;
+  · Use these per‑vertex heights when calling `m.Tri(To3(poly[tris[i]], heights[tris[i]]), …)` for each triangle;
+  · When the surface is not asphalt, fall back to the original `m.Tri(To3(poly[tris[i]], y), …)` calls.
+  This adds a realistic, slightly uneven look to plowed asphalt lots without affecting other ground features.
+- [ ] Add four small chrome bolt heads to the gas water heater body in Assets/Scripts/World/FurnitureBuilder.RaidStore.cs, method OfficeWaterHeater
+  Place them around the top rim of the main tank cylinder (`m.Cylinder(Vector3.zero, 0.28f, 1.5f, 12, G(shell));`).
+  Each bolt is a cylinder of radius 0.01 m and height 0.02 m, using the existing random helper `R(rng, …)` for a random angle:
+  `float a = R(rng, 0f, Mathf.PI*2f);`
+  `Vector3 pos = new Vector3(Mathf.Cos(a)*0.24f, 1.5f, Mathf.Sin(a)*0.24f);`
+  `m.Cylinder(pos, 0.01f, 0.02f, 6, Mt(Chrome));`
+  Do this in a `for (int i = 0; i < 4; i++)` loop; adds subtle rivet detail, uses existing materials, keeps colliders and interaction points unchanged, and adds no more than 12 primitives.
