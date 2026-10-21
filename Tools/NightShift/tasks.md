@@ -5428,3 +5428,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   No other code, fields, or UI elements are changed.
   - 02:10 landed by 1htsserver in 1.6 min: **Summary**
 - [ ] Extend the `static ZoneExposure()` constructor in Assets/Scripts/Zone/ZoneHazards.cs by inserting four new exposure‑mark entries, each following the existing `M(id, name, description, apply)` pattern, so the player can discover additional winter‑theme lore and penalties.
+- [ ] Modify Assets/Scripts/World/Map/KentuckyMap.cs – add a simple wooden street‑sign for every named street to give the map a period‑correct roadside feel
+  *Add a new constant `private const float SignPostHeight = 2.5f;` (currently absent).
+  *Create a private method `BuildStreetSigns(Site site)` that iterates `site.Area.Streets`.
+  *For each street where `!string.IsNullOrEmpty(s.Data.name)` and `Rank(s.Data.kind) >= 2` (i.e. not motorways), compute the midpoint of the first segment (`Vector2 a = s.Pts[0]; Vector2 b = s.Pts[1]; Vector2 mid = (a + b) * 0.5f`).
+  *Determine the street’s outward normal (`Vector2 dir = (b - a).normalized; Vector2 normal = new Vector2(-dir.y, dir.x);`).
+  *Place a thin vertical pole using `site.Town.Out.At(mid).Box(new Vector3(mid.x, StreetY + SignPostHeight * 0.5f, mid.y), new Vector3(0.1f, SignPostHeight, 0.1f), DecorMaterials.Wood);`.
+  *Attach a rectangular sign board a short distance from the pole (e.g. `Vector2 signPos = mid + normal * 0.3f;`) with a thin box: `site.Town.Out.At(signPos).Box(new Vector3(signPos.x, StreetY + SignPostHeight - 0.2f, signPos.y), new Vector3(0.8f, 0.4f, 0.02f), DecorMaterials.Metal);`.
+  *Mark the occupied space with `site.Take(signPos, 0.5f);` (or a small radius) so other props avoid it.
+  *Call `BuildStreetSigns(site);` from `BuildStreets` (after the existing sidewalk/kerb code) so the signs appear alongside the roads.
