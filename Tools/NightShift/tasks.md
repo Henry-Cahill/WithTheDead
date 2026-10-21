@@ -5663,12 +5663,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   This prevents the bootstrapper from silently aborting world creation when the same `GameBootstrapper` instance persists between mode switches (e.g., returning to the hub after a raid). With the guard removed, the requested world is always built, and the player will see the correct hub or raid environment instead of an empty scene.
   All other logic and fields (`_built`, `_worldBuilt`) remain unchanged.
   - 03:18 landed by 0htsserver in 2.1 min: **Changed file**
-- [ ] Add a small rusted ellipsoid “bolt” at the base of each main tollgate rod in `Anomaly.BuildVisual` (Assets/Scripts/Zone/Anomalies.cs) to give the gate a worn, hardware feel.
+- [x] Add a small rusted ellipsoid “bolt” at the base of each main tollgate rod in `Anomaly.BuildVisual` (Assets/Scripts/Zone/Anomalies.cs) to give the gate a worn, hardware feel.
   In the `case "tollgate":` block, after the line
   `m.Rod(b, top, 0.08f, ZoneKit.M(ZoneKit.Bark), 6);`
   add a call like:
   `m.Ellipsoid(new Vector3(b.x, 0.04f, b.z), Vector3.one * 0.02f, ZoneKit.Gl(new Color(0.55f, 0.30f, 0.10f)), 5, 3);`
   The ellipsoid is 2 cm across, placed 4 cm above the ground at the same X‑Z as the rod’s base (`b`). It uses the same rusty colour material as the existing cap, keeping the visual palette. No colliders or interaction points are altered, and the total added primitives stay under the limit.
+  - 03:19 landed by 1htsserver in 2.1 min: **Changed file**
 - [ ] Cache the UI camera used by `HubTooltip.Follow()` to avoid a per‑frame `Camera.main` lookup in `Assets/Scripts/Hub/Screens/HubTooltip.cs`
   Add a private field `private Camera _uiCam;` to `HubTooltip`.
   In `Create(Canvas canvas)` after `tip._group = …` set `tip._uiCam = null;` (the first use will resolve it).
