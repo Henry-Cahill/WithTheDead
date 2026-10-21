@@ -215,6 +215,15 @@ namespace CloneZ
                 m.Cylinder(new Vector3(Mathf.Sin(angle) * (r + 0.01f), 0.5f, Mathf.Cos(angle) * (r + 0.01f)),
                     0.008f, 0.004f, 8, DecorPalette.Metal(FurnitureBuilder.Brass));
             }
+            // Add small rust‑stained matte patches for weathering
+            int patchCount = strapRand.Next(2, 5);
+            for (int i = 0; i < patchCount; i++)
+            {
+                float angle = (float)(strapRand.NextDouble() * Mathf.PI * 2.0);
+                float y = 0.3f + (float)(strapRand.NextDouble() * 0.5f); // 0.3–0.8 m height
+                Vector3 pos = new Vector3(Mathf.Sin(angle) * (r + 0.015f), y, Mathf.Cos(angle) * (r + 0.015f));
+                m.Box(pos, new Vector3(0.02f, 0.02f, 0.02f), DecorPalette.Matte(new Color(0.4f, 0.2f, 0.1f)));
+            }
             m.CylinderX(new Vector3(0f, 0.16f, r + 0.03f), 0.022f, 0.08f, 8, DecorPalette.Metal(FurnitureBuilder.Brass), 90f);
             m.Box(new Vector3(0f, 0.2f, r + 0.07f), new Vector3(0.03f, 0.05f, 0.03f), DecorPalette.Metal(FurnitureBuilder.Brass));
             // Subtle rust‑stained metal cap on the barrel's lip for a makeshift handle feel.

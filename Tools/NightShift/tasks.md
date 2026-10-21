@@ -4855,10 +4855,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// small deterministic jitter using Perlin noise; keeps values in a plausible range`
   `float r = Mathf.PerlinNoise(seed.x * 0.13f, seed.y * 0.13f) * 0.04f;`
   - 23:08 landed by hts-llm in 4.8 min: **Changed file**
-- [ ] Add a handful of small rust‑stained matte patches on the rain barrel’s outer wall in `Assets/Scripts/World/WaterSource.cs` → `WaterSource.BuildBarrel` to convey weathering; use the existing `strapRand` (seed 1993) to place 2‑4 patches of size ~0.02 m × 0.02 m × 0.02 m at random heights (≈0.3–0.8 m) and angles around the barrel, e.g. `m.Box(new Vector3(Mathf.Sin(angle)*(r+0.015f), y, Mathf.Cos(angle)*(r+0.015f)), new Vector3(0.02f,0.02f,0.02f), DecorPalette.Matte(new Color(0.4f,0.2f,0.1f)))` added just after the rivet‑head loop.
+- [x] Add a handful of small rust‑stained matte patches on the rain barrel’s outer wall in `Assets/Scripts/World/WaterSource.cs` → `WaterSource.BuildBarrel` to convey weathering; use the existing `strapRand` (seed 1993) to place 2‑4 patches of size ~0.02 m × 0.02 m × 0.02 m at random heights (≈0.3–0.8 m) and angles around the barrel, e.g. `m.Box(new Vector3(Mathf.Sin(angle)*(r+0.015f), y, Mathf.Cos(angle)*(r+0.015f)), new Vector3(0.02f,0.02f,0.02f), DecorPalette.Matte(new Color(0.4f,0.2f,0.1f)))` added just after the rivet‑head loop.
   → Create `int patchCount = strapRand.Next(2,5);` and loop `for (int i=0;i<patchCount;i++)` to compute `angle` and `y`.
   → Keep colliders untouched (the patches are visual only).
   → Do not exceed ~12 total new primitives in the method.
+  - 23:09 landed by 1htsserver in 3.7 min: Added **rust‑stained matte patches** to the rain barrel mesh:
 - [ ] Fix the pause‑menu “Quit to Title” path in Assets/Scripts/UI/PauseMenuController.cs – the hub‑quit action leaves the game frozen.
 - [ ] In Assets/Scripts/Characters/PlayerAvatar.cs: Cache the three tool look‑ups in `RefreshHeld` for `hammer`, `trowel` and `wateringcan` in `PlayerAvatar` to avoid a per‑frame `ItemDatabase.Get` call.
   Add three private `ItemDef` fields (e.g. `_hammerDef`, `_trowelDef`, `_wateringCanDef`).
