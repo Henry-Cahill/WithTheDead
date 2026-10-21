@@ -4828,3 +4828,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Otherwise keep the existing block, but set `RenderSettings.fog = true;` before adjusting distances.
   *Result in‑game:* When the world is clear, no fog is rendered; the sky and distant terrain become fully visible, matching the intended 1993 winter Kentucky setting. All other fog‑related transitions (overcast, rain, snow, etc.) continue to work unchanged.
   *What stays:* All other calculations, the cached‑fog optimisation, and the linear distance lerp logic remain exactly as written.
+- [ ] In Assets/Scripts/Player/PlayerGearVisuals.cs: Cache the PlayerGear reference instead of calling GetComponent each frame in PlayerGearVisuals.LateUpdate, eliminating the per‑frame lookup.
+  In Awake the field _gear is already set; move the null‑check to OnEnable so the component is fetched only once when the object becomes active.
+  Modify LateUpdate to remove the line `if (_gear == null) _gear = GetComponent<PlayerGear>();` and rely on the cached _gear value.
+  Add a similar null‑check in OnEnable (e.g. `if (_gear == null) _gear = GetComponent<PlayerGear>();`) to handle the rare case the component appears after Awake.
+  The player’s gear visuals continue to update correctly; the per‑frame GetComponent call (which allocates a temporary array internally) is eliminated, reducing GC pressure and improving frame‑time performance.
