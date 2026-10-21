@@ -70,7 +70,7 @@ namespace CloneZ
 
         private void Update()
         {
-            if (_cam == null) _cam = Camera.main;
+            // Cached camera reference initialized in Start() – no per‑frame lookup needed
             UpdateAim();
 
             if (_stats.IsDead || _stats.Incapacitated)

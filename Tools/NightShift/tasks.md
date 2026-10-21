@@ -5068,9 +5068,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   *size* `new Vector3(r * 1.02f, 0.02f, r * 1.02f)` (slightly larger radius, 2 cm height),
   *material* `ZoneKit.Mt(ZoneKit.V(new Color(0.78f, 0.85f, 0.80f), rng, 0.04f))` (a faint frosty tint with small random variation).
   *use* `tm.Cylinder` again to create this primitive; keep all colliders, interaction points and pivots unchanged and add no more than this single extra primitive per trunk.
-- [ ] In Assets/Scripts/Player/PlayerController.cs: Cache the per‑frame Camera.main lookup in PlayerController.Update by removing the redundant null‑check and relying on the Start‑initialized _cam field
+- [x] In Assets/Scripts/Player/PlayerController.cs: Cache the per‑frame Camera.main lookup in PlayerController.Update by removing the redundant null‑check and relying on the Start‑initialized _cam field
   In `Update()` delete the line `if (_cam == null) _cam = Camera.main;` because `_cam` is already assigned in `Start()` and never changes during gameplay.
   This eliminates a `Camera.main` lookup each frame, reducing GC pressure and CPU time without altering any visible behavior.
+  - 00:11 landed by hts-llm in 1.1 min: **Changed file**
 - [ ] In Assets/Scripts/World/Fixtures/RaidStoreCopier.cs: Add a “Copy original sheet” action to `RaidStoreCopier.GetActions` (next to the existing “Run off a copy” action) that lets the survivor make a copy of the sheet left on the glass.
 - [ ] Edit Assets/Scripts/World/Map/KentuckyMap.Ground.cs – in the `BuildStreets` method, after the main `Ribbon(site.Town.Out, piece, width, StreetY, surf);` call add a thin frozen‑crust overlay for footways/paths so they look iced in winter.
   Detect footway‑type surfaces by checking `surf.Mat == TroddenSnow.Mat` (the trodden‑snow material used for “footway”, “path”, “cycleway”, etc.).
