@@ -161,6 +161,12 @@ namespace CloneZ
             {
                 sb.Solid.Box(new Vector3(0f, 1.2f, -1.22f), new Vector3(0.02f, 0.12f, 0.04f), ZoneKit.Mt(ZoneKit.RustDark));
             }
+            // 30% chance of a rusted hinge on each side of the door, for a little visual variety.
+            if (ZoneKit.R(rng, 0f, 1f) < 0.3f)
+            {
+                sb.Solid.Box(new Vector3(-0.78f, 0.80f, -1.22f), new Vector3(0.02f, 0.04f, 0.01f), ZoneKit.Mt(ZoneKit.RustDark));
+                sb.Solid.Box(new Vector3(0.78f, 0.80f, -1.22f), new Vector3(0.02f, 0.04f, 0.01f), ZoneKit.Mt(ZoneKit.RustDark));
+            }
             // Occasionally add a weathered flag on a short pole for visual variety.
             if (ZoneKit.R(rng, 0f, 1f) < 0.6f)
             {

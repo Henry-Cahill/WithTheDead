@@ -5180,7 +5180,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Keep the rest of the method unchanged (sign placement, yaw, collider, etc.).
   The player will now see street signs whose lettering has subtle colour variance, matching the hand‑painted look of the backgrounds while preserving all existing logic.
   - 00:44 landed by 1htsserver in 2 min: **Summary**
-- [ ] In Assets/Scripts/World/Zone/ZoneCordon.cs: Add a small rusted‑metal hinge on each side of the checkpoint’s front door for occasional visual variety in `ZoneCordon.BuildCheckpoint` (the method that builds the checkpoint booth).
+- [x] In Assets/Scripts/World/Zone/ZoneCordon.cs: Add a small rusted‑metal hinge on each side of the checkpoint’s front door for occasional visual variety in `ZoneCordon.BuildCheckpoint` (the method that builds the checkpoint booth).
   After the existing door‑handle block (`if (ZoneKit.R(rng, 0f, 1f) < 0.5f) { … }`), insert a 30 % chance to place two hinge pieces:
   `if (ZoneKit.R(rng, 0f, 1f) < 0.3f) {`
   *left hinge:* `sb.Solid.Box(new Vector3(-0.78f, 0.80f, -1.22f), new Vector3(0.02f, 0.04f, 0.01f), ZoneKit.Mt(ZoneKit.RustDark));`
@@ -5188,6 +5188,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `}`
   Each hinge is 2 cm × 4 cm × 1 cm, positioned 0.80 m above the ground and offset 0.78 m left/right from centre, flush with the front panel (Z = ‑1.22 m).
   Uses the existing `ZoneKit.RustDark` material, keeps all colliders and interaction points unchanged, and adds visual wear that fits the 1993 rural‑winter setting.
+  - 01:03 landed by spark in 20 min: Done.
 - [x] In Assets/Scripts/World/HomeLamp.cs: Fix HomeLamp.Refresh to re‑enable the bulb renderer after a lamp that was previously dark becomes lit, preventing the bulb mesh from staying permanently hidden.
   In `Refresh()` add logic that, when `lit` is true and `_bulb` is not null, sets `_bulb.forceRenderingOff = false` (clearing the flag set when the lamp was dark).
   Current code only does: `if (!lit && _bulb != null && !_bulb.forceRenderingOff) _bulb.forceRenderingOff = true;` which never restores the renderer.
