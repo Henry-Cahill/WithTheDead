@@ -157,6 +157,8 @@ namespace CloneZ
         private static AudioDirector s_Instance;
 
         private AudioSource _wind, _forest, _bar, _mask;
+        private WeatherSystem _weather;
+        private TimeOfDay _timeOfDay;
         private float _groanTimer, _animalTimer = 40f;
         private readonly Dictionary<Actor, float> _nextGroan = new Dictionary<Actor, float>();
         private readonly List<Actor> _near = new List<Actor>();
@@ -181,12 +183,14 @@ namespace CloneZ
             return s;
         }
 
-        private void Start()
+                private void Awake()
         {
             _wind = Bed(SfxIds.WindAmbience);
             _forest = Bed(SfxIds.ForestAmbience);
             _bar = Bed(SfxIds.BarAmbience);
             _mask = Bed(SfxIds.BreathMask);
+            _weather = WeatherSystem.Instance;
+            _timeOfDay = TimeOfDay.Instance;
         }
 
         private void Update()
@@ -211,7 +215,7 @@ namespace CloneZ
             }
             else if (me != null)
             {
-                WeatherSystem w = WeatherSystem.Instance;
+                WeatherSystem w = _weather; if (w == null) _weather = WeatherSystem.Instance;
                 if (w != null)
                 {
                     switch (w.Current)
@@ -223,7 +227,7 @@ namespace CloneZ
                         case Weather.Storm: wind = 0.55f; break;
                     }
                 }
-                bool night = TimeOfDay.Instance != null && TimeOfDay.Instance.IsNight;
+                bool night = _timeOfDay != null && _timeOfDay.IsNight;
                 float trees = ZoneForest.Density(ears);
                 forest = night ? 0f : Mathf.Clamp01(trees * 1.4f) * 0.4f + (GameSession.IsExtraction ? 0.05f : 0f);
                 bool indoors = Shelter.Count > 0 && Shelter.IsSheltered(ears);
@@ -285,7 +289,7 @@ namespace CloneZ
             _animalTimer -= dt;
             if (_animalTimer > 0f) return;
             _animalTimer = Random.Range(45f, 120f);
-            bool night = TimeOfDay.Instance != null && TimeOfDay.Instance.IsNight;
+                bool night = _timeOfDay != null && _timeOfDay.IsNight;
             Vector2 o = Random.insideUnitCircle.normalized * Random.Range(35f, 60f);
             Vector3 at = ears + new Vector3(o.x, 2f, o.y);
             if (night) Sfx.Play(SfxIds.WolfHowl, at, 0.45f, Random.Range(0.9f, 1.08f), 90f);
