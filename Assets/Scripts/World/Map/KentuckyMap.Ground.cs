@@ -83,9 +83,14 @@ if (water) {
                      FillIce(site.Town.Out, inside);
                  } else {
                      // Base asphalt surface for parking lots
-                     Fill(site.Town.Out, inside, LotY, DecorMaterials.Asphalt);
-                     // Thin gravel overlay to give a dusty, period‑correct look
-                     Fill(site.Town.Out, inside, LotY + 0.001f, DecorMaterials.Gravel);
+                      Fill(site.Town.Out, inside, LotY, DecorMaterials.Asphalt);
+                      // Thin gravel overlay to give a dusty, period‑correct look
+                      Fill(site.Town.Out, inside, LotY + 0.001f, DecorMaterials.Gravel);
+                      // Parking lot white line markings
+                      var lineSurf = DecorPalette.Matte(new Color(0.9f, 0.9f, 0.9f));
+                      var border = new List<Vector2>(inside);
+                      border.Add(inside[0]);
+                      Ribbon(site.Town.Out, border, 0.07f, LotY + 0.002f, lineSurf);
                  }
                  if (water) site.Take(Rect.MinMaxRect(Min(inside, true), Min(inside, false), Max(inside, true), Max(inside, false)));
                  // Add thin snow‑bank edge around parking lots for a plowed look
