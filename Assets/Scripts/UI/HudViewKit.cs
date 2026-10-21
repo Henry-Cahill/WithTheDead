@@ -51,7 +51,8 @@ namespace CloneZ
                 case HudNeed.Warmth:
                     if (s == null) return false;
                     float t = s.Temperature;
-                    level01 = t;
+                    float norm = Mathf.InverseLerp(CloneZConfig.TempComfortLow, CloneZConfig.TempComfortHigh, t);
+                    level01 = Mathf.Clamp01(norm);
                     if (t < CloneZConfig.TempComfortLow)
                     {
                         bool critical = t < CloneZConfig.TempHypothermiaThreshold + 0.02f;

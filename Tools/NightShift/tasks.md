@@ -5613,12 +5613,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   *Insert:* `m.Box(new Vector3(0f, 0.45f, 0f), new Vector3(2.5f, 0.05f, 7.6f), DecorPalette.Metal(hull * 0.5f));`
   This adds a 5 m wide × 0.1 m tall × 15.2 m long metal strip (half‑extents given) positioned at y = 0.45 m, using the existing `hull` colour darkened to suggest grime and wear, while preserving all colliders and interaction points.
   - 03:04 landed by 0htsserver in 1.2 min: **Changed file**
-- [ ] Fix the Warmth level calculation in `HudReadouts.Need` (Assets/Scripts/UI/HudViewKit.cs)
+- [x] Fix the Warmth level calculation in `HudReadouts.Need` (Assets/Scripts/UI/HudViewKit.cs)
   The method currently sets `level01 = t;` where `t` is the raw temperature value, which is later clamped to 0‑1 in `HudGauge.Set`, causing the warmth gauge to appear full almost all the time.
   Replace that line with a normalized temperature based on the comfort range, e.g.:
   `float norm = Mathf.InverseLerp(CloneZConfig.TempComfortLow, CloneZConfig.TempComfortHigh, t);`
   `level01 = Mathf.Clamp01(norm);`
   This preserves the existing severity colour logic (which already uses the raw `t` thresholds) while giving the gauge a meaningful fill amount that reflects how close the survivor’s temperature is to the comfortable window. The rest of the method remains unchanged.
+  - 03:07 landed by 1htsserver in 2 min: **Changed**
 - [ ] In Assets/Scripts/Hub/HubWorld.cs, add a subtle metal latch to the “ZoneDoor” built in `HubWorld.BuildShell` so the wooden door has a period‑correct fastening detail.
   In `BuildShell`, after the line `Solid(world, "ZoneDoor", new Vector3(0f, 1.2f, -HalfZ - 0.05f), new Vector3(2.0f, 2.4f, 0.12f), st.DarkWood);` insert a `Deco` call that draws the latch.
   Use two primitives (a thin metal plate and a small metal bar) positioned on the upper‑right edge of the door:
