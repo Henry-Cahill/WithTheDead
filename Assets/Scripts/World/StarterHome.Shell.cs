@@ -197,6 +197,12 @@ namespace CloneZ
             float sx = corner.x < Outline.center.x ? -1f : 1f, sz = corner.z < Outline.center.y ? -1f : 1f;
             var o = new Vector3(corner.x + sx * (Half - 0.045f), 0f, corner.z + sz * (Half - 0.045f));
             m.Box(new Vector3(o.x, (0.3f + WallH - 0.01f) * 0.5f, o.z), new Vector3(0.13f, WallH - 0.31f, 0.13f), DecorPalette.Matte(TrimWhite));
+            // Subtle weathered nail detail near top‑inner edge of the board
+            m.Box(new Vector3(o.x + sx * 0.04f,
+                               (0.3f + WallH - 0.01f) * 0.5f + (WallH - 0.31f) * 0.45f,
+                               o.z + sz * 0.04f),
+                  new Vector3(0.02f, 0.02f, 0.01f),
+                  DecorPalette.Matte(TrimWhite * 0.8f));
         }
         #endregion
 

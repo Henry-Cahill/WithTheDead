@@ -5088,12 +5088,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   · Players will now see no mail until the first delivery hour of day 1, matching the intended “first deliveries arrive in the morning” design.
   · No other fields, methods, or behaviours need to be altered.
   - 00:16 landed by 0htsserver in 1.8 min: **Summary**
-- [ ] Add subtle weathered‑nail detail to each exterior corner board in `Assets/Scripts/World/StarterHome.Shell.cs` inside the `CornerBoard` method
+- [x] Add subtle weathered‑nail detail to each exterior corner board in `Assets/Scripts/World/StarterHome.Shell.cs` inside the `CornerBoard` method
   In `CornerBoard` after the existing box call `m.Box(new Vector3(o.x, (0.3f + WallH - 0.01f) * 0.5f, o.z), new Vector3(0.13f, WallH - 0.31f, 0.13f), DecorPalette.Matte(TrimWhite));` insert a small rectangular “nail head”.
   Use size `new Vector3(0.02f, 0.02f, 0.01f)` (≈2 cm × 2 cm × 1 cm).
   Position it near the top‑inner edge of the board: `new Vector3(o.x + sx * 0.04f, (0.3f + WallH - 0.01f) * 0.5f + (WallH - 0.31f) * 0.45f, o.z + sz * 0.04f)`.
   Colour with a slightly darker trim: `DecorPalette.Matte(TrimWhite * 0.8f)`.
   Keep colliders, interaction points, and pivots unchanged; the extra primitive is purely visual and stays within the ≤12‑primitive limit.
+  - 00:19 landed by 1htsserver in 1.9 min: **Changed**
 - [ ] Cache the Keyboard lookup in PlayerHydration.Update to avoid per‑frame Keyboard.current calls in Assets/Scripts/Player/PlayerHydration.cs
   Add a private field `private Keyboard _keyboard;` to the class.
   Assign it once in Awake() (e.g. `_keyboard = Keyboard.current;`).
