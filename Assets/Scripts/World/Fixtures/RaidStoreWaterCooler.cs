@@ -65,6 +65,7 @@ namespace CloneZ
             into.Add(new InteractAction("Check the jug", CheckJug));
             into.Add(new InteractAction("Try the red tap", TryHot));
             into.Add(new InteractAction("Listen for glug", ListenGlug));
+            into.Add(new InteractAction("Inspect cooler", InspectCooler));
         }
 
         private void CheckJug(InteractContext ctx)
@@ -88,6 +89,12 @@ namespace CloneZ
         {
             ctx.Notify(_drinks > 0 ? "The jug glugs, a fat bubble wobbling up through what's left." : "The jug gives a last hollow glug. That's the end of it.");
         }
+
+        private void InspectCooler(InteractContext ctx)
+        {
+            ctx.Notify("A dented plastic water cooler with a faded label; the jug looks like it survived the blackout.");
+        }
+
 
         // The water in the jug, from its neck up to the level.
         private void Refresh()

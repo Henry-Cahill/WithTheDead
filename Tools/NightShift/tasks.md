@@ -5764,11 +5764,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 03:43 landed by hts-llm in 1.9 min: **Changed files**
 - [x] In Assets/Scripts/World/Fixtures/TowelRail.cs, replace the two separate `Time.time` checks in `Update()` with a single cached value and combine the one‑second timers, removing the second property lookup per frame.
   - 03:43 landed by 0htsserver in 1.4 min: **Summary**
-- [ ] Add an “Inspect cooler” action to Assets/Scripts/World/Fixtures/RaidStoreWaterCooler.cs that gives a short period‑correct description of the cooler.
+- [x] Add an “Inspect cooler” action to Assets/Scripts/World/Fixtures/RaidStoreWaterCooler.cs that gives a short period‑correct description of the cooler.
   In `RaidStoreWaterCooler.GetActions` insert `into.Add(new InteractAction("Inspect cooler", InspectCooler));` after the existing actions.
   Create a private method `InspectCooler(InteractContext ctx)` that calls
   `ctx.Notify("A dented plastic water cooler with a faded label; the jug looks like it survived the blackout.");`
   Do not modify any other logic; keep the existing actions and fields unchanged.
+  - 03:50 landed by 1htsserver in 6.3 min: **Changes made**
 - [x] Append five new miss‑notification strings to the `Misses` array in `Assets/Scripts/World/Fixtures/RaidStoreVending.cs` so the player hears additional bleak, period‑correct feedback when thumping the vending machine.
   - 03:47 landed by hts-llm in 3.7 min: **Changed file**
 - [ ] Edit `Assets/Scripts/World/Map/KentuckyMap.Ground.cs` – in the `BuildStreets` method replace the static gravel kerb‑wear ribbon with a per‑segment colour‑varying one, and add a tiny helper that creates the varied gravel surface.
