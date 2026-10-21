@@ -188,6 +188,8 @@ namespace CloneZ
                     m.Box(f.P(xmid, 0.31f, side * (Half + 0.014f)), f.Size(xlen, 0.04f, 0.028f), white);
                 if (b.Y1 > WallH - 0.01f)
                     m.Box(f.P(xmid, WallH - 0.075f, side * (Half + 0.012f)), f.Size(xlen, 0.14f, 0.024f), white);
+                // Snow‑lip trim at the very top of the exterior wall
+                m.Box(f.P(xmid, WallH - 0.015f, side * (Half + 0.012f)), f.Size(xlen, 0.02f, 0.004f), DecorPalette.Matte(TrimWhite * 1.07f));
             }
         }
 
