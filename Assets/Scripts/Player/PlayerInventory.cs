@@ -80,6 +80,7 @@ namespace CloneZ
         {
             _modifiers = PlayerModifiers.Current;
             _combat = GetComponent<PlayerCombat>();
+            _skills = GetComponent<PlayerSkills>();
             Inventory = new Inventory(CloneZConfig.PlayerCarryCapacity);
             _pockets = new GridSection(GameSession.SurvivorName + "'s Inventory", PocketsWidth, PocketsHeight, CloneZConfig.PlayerCarryCapacity);
             Inventory.SetLayout(new InventoryLayout(_pockets));
@@ -108,7 +109,6 @@ namespace CloneZ
         private float _lastCapacityKey = -1f;
         private void Update()
         {
-            if (_skills == null) _skills = GetComponent<PlayerSkills>();
             if (_skills == null) return;
             int strength = _skills.GetLevel(PlayerSkills.Skill.Strength);
             StatMods mods = _modifiers;

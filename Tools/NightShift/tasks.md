@@ -5335,7 +5335,7 @@ you want to see in game. Indent extra lines under a task to add detail.
 - [ ] In Assets/Scripts/Player/PlayerInteractor.cs: Cache the fixture prompt string in `PlayerInteractor` to avoid rebuilding the action list each frame (the prompt currently calls `FixturePrompt(FixtureTarget)` which clears `_actions`, calls `GetActions`, and builds a new string on every Update).
 - [x] Add a simple brick chimney to residential roofs in `Assets/Scripts/World/Map/KentuckyMap.Buildings.cs` → modify the `BuildRoofEaves(Site site)` method to generate one chimney per residential building (kinds “house”, “trailer”, “apartments”, “hotel” or `use` containing “residential”).
   - 01:44 landed by 0htsserver in 3.9 min: **Changed file**
-- [ ] Cache `PlayerSkills` in `Awake` and remove the per‑frame `GetComponent` lookup in `Update` of Assets/Scripts/Player/PlayerInventory.cs
+- [x] Cache `PlayerSkills` in `Awake` and remove the per‑frame `GetComponent` lookup in `Update` of Assets/Scripts/Player/PlayerInventory.cs
   Update `Awake` to obtain the component once, just like the other cached fields:
   `_skills = GetComponent<PlayerSkills>();`
   Delete the first two lines of `Update` that re‑assign `_skills` each frame:
@@ -5344,6 +5344,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Replace the now‑unnecessary null‑check with a simple early‑out that only runs when the component truly isn’t present (which should never happen):
   `if (_skills == null) return;`
   Result: the inventory no longer performs a `GetComponent` allocation every frame, reducing GC pressure and CPU work while preserving all existing behaviour—the strength‑capacity key recomputation still runs only when strength or modifiers change, and the UI sees the same inventory updates.
+  - 01:48 landed by 0htsserver in 2 min: **Changed files**
 - [ ] Add a toast notification when an artifact is first revealed in Assets/Scripts/Zone/Artifacts.cs
   In `ArtifactNode.Reveal(float seconds = 45f)` after the line `Sfx.Play(SfxIds.DetectorAlert, transform.position, 0.4f, 1.3f, 8f);` insert:
   `GameEvents.RaiseToast("Detected " + ArtifactCatalog.NameOf(ArtifactId) + ".");`
