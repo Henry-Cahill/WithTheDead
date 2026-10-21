@@ -34,7 +34,7 @@ namespace CloneZ
             foreach (string id in zone.Landmarks)
             {
                 if (id == "lodestar_site" || id == "quarantine_tent") continue;
-                if (id == "warden_checkpoint" && ZoneCordon.HasGate) { built++; continue; }
+                if (id == "warden_checkpoint" && ZoneCordon.HasGate) { continue; }
                 Vector2 size = SizeOf(id);
                 float yaw = rng.Next(4) * 90f;
                 float edge = id == "cooling_tower" ? 18f : 10f;

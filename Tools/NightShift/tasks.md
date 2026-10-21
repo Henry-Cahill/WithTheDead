@@ -5056,12 +5056,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 00:07 landed by 1htsserver in 5.3 min: **Changes Made**
 - [x] Add a subtle line of tiny metal nail heads along the bottom edge of the hub’s interior trim in Assets/Scripts/Hub/HubWorld.cs – edit the `BuildShell` method’s `Deco` call for `"Trim"` so the skirting has a period‑correct, weathered look.
   - 00:10 landed by 1htsserver in 2.6 min: **Changed file**
-- [ ] Fix the landmark‑counting bug in Assets/Scripts/World/Zone/ZoneLandmarks.cs so the “landmarks” summary only counts actually‑placed landmarks.
+- [x] Fix the landmark‑counting bug in Assets/Scripts/World/Zone/ZoneLandmarks.cs so the “landmarks” summary only counts actually‑placed landmarks.
   In `ZoneLandmarks.Build` replace the line
   `if (id == "warden_checkpoint" && ZoneCordon.HasGate) { built++; continue; }`
   with
   `if (id == "warden_checkpoint" && ZoneCordon.HasGate) { continue; }`
   This stops incrementing `built` when the warden checkpoint is intentionally skipped (because a gate exists). The player will now see an accurate “X landmarks” count in `ZoneLandmarks.LastSummary`, matching the number of landmarks actually generated in the world. All other logic and fields remain unchanged.
+  - 00:10 landed by hts-llm in 1.1 min: **Changed file**
 - [ ] In *Assets/Scripts/World/Zone/ZoneOverlays.cs*, modify the `ZoneForest.Build` method inside the trunk‑creation loop (the call `tm.Cylinder(p + Vector3.down * 0.1f, r, h * (conifer ? 0.45f : 0.9f), 7, ZoneKit.M(conifer ? ZoneKit.V(ZoneKit.Bark, rng) : ZoneKit.V(birch, rng, 0.05f)))`) to add a thin “frost ring” cylinder on top of every conifer trunk;
   *place* the new cylinder at `p + Vector3.up * (h * 0.44f)` (just below the trunk’s top),
   *size* `new Vector3(r * 1.02f, 0.02f, r * 1.02f)` (slightly larger radius, 2 cm height),
