@@ -4353,7 +4353,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   *Fix:* Wrap the distance‑based closing logic in a check for `heli`. Only execute the loop that may close exits when a helicopter insertion was chosen.
   Code change:
   - 20:24 landed by 0htsserver in 2.3 min: **Changed file:** `Assets/Scripts/Extraction/RaidWorldRules.cs`
-- [ ] Add a short brass decorative hook to each curtain finial in `Assets/Scripts/World/FurnitureBuilder.RaidOpenings.cs` → method `OpeningCurtains`
+- [x] Add a short brass decorative hook to each curtain finial in `Assets/Scripts/World/FurnitureBuilder.RaidOpenings.cs` → method `OpeningCurtains`
   After the existing finial ellipsoids
   `m.Ellipsoid(l.P(r0, rodY, rodOff), new Vector3(0.045f, 0.045f, 0.045f), brass, 6, 4);`
   `m.Ellipsoid(l.P(r1, rodY, rodOff), new Vector3(0.045f, 0.045f, 0.045f), brass, 6, 4);`
@@ -4362,6 +4362,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `float hookLen = 0.04f; // 4 cm long hook`
   `float hookRad = 0.006f; // 6 mm radius`
   `// left finial hook`
+  - 20:25 landed by hts-llm in 3 min: **Changed**
 - [ ] In Assets/Scripts/World/Map/MapGeometry.cs, change the ClipPolygon method to remove vertices that are essentially duplicate after the anticlockwise fix, preventing zero‑area edges that corrupt building facades.
   After the line `MakeAnticlockwise(cur);` add a call to a new helper that filters out points whose distance to the previous kept point is less than `EPS` (the constant already defined below).
   Implement a private static method `static List<Vector2> RemoveNearDuplicates(List<Vector2> src)` that creates a new list, copies the first point, then for each subsequent point adds it only if `Vector2.Distance(point, lastKept) > EPS`. If the resulting list has fewer than 3 points, return an empty list.
