@@ -117,6 +117,13 @@ namespace CloneZ
                 if (ZoneKit.R(rng, 0f, 1f) < 0.15f)
                 {
                     sb.Solid.Box(post + Vector3.up * 1.0f + normal * 0.11f, new Vector3(0.08f, 0.02f, 0.001f), ZoneKit.Mt(ZoneKit.RustDark));
+                    // 20% chance to add a rusted bolt on the outer face
+                    if (ZoneKit.R(rng, 0f, 1f) < 0.20f)
+                    {
+                        // small bolt: radius 0.015 m, length 0.05 m, positioned near the top of the post
+                        Vector3 boltPos = post + Vector3.up * (h * 0.8f) + normal * 0.12f;
+                        sb.Solid.Rod(boltPos, boltPos + Vector3.up * 0.05f, 0.015f, ZoneKit.Mt(ZoneKit.RustDark), 4);
+                    }
                 }
                 sb.Collider(post, new Vector3(0.22f, h, 0.22f));
             }
