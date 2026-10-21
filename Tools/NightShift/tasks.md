@@ -5164,3 +5164,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Set radius 0.03 m and height 0.002 m (a flat disc).
   Code: `m.Cylinder(tap + new Vector3(0f, -0.004f, 0f), 0.03f, 0.002f, 12, chrome);`
   Keeps existing material (`chrome`), colliders and interaction points unchanged, and adds only one primitive.
+- [ ] In Assets/Scripts/World/Interaction/StorageFixture.cs: Refactor `StorageFixture.Update()` to eliminate the per‑frame `PlayerInteractor.Current` lookup and use the cached `_player` set in `Awake`
+  Replace the existing body with a version that early‑outs if `_player` is null instead of re‑assigning it each frame
+  Keep the original open‑door‑when‑viewed logic, but reference `_player` directly (`_player.ViewedContainer`, `_player.SearchTarget`)
+  This removes the `if (_player == null) _player = PlayerInteractor.Current;` call that runs every Update, reducing static‑lookup overhead and GC pressure
+  No visual or gameplay change: the doors still open automatically when the container is viewed or searched, and the player interaction remains identical.
