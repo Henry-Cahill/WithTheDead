@@ -42,7 +42,17 @@ namespace CloneZ
                         "The door is locked tight, but you can hear the cold wind outside.")));
                 }
             }
+            // Toggle safe zone action for the zone door
+            if (Title == "Door to the Zone")
+            {
+                into.Add(new InteractAction("Toggle safe zone", c =>
+                {
+                    HubRules.SafeZone = !HubRules.SafeZone;
+                    GameEvents.RaiseToast($"Safe zone is now {(HubRules.SafeZone ? "ON" : "OFF")}." );
+                }));
+            }
         }
+
 
         private static void Open(string screen, string arg)
         {
@@ -252,8 +262,10 @@ namespace CloneZ
                     Solid(world, "BarStool", pos, new Vector3(0.38f, 0.76f, 0.38f), st.Metal);
                     var footPos = new Vector3(-6f + i * 1.6f, 0.01f, 5.3f);
                     Deco(world, "BarStoolFoot", m => m.Cylinder(footPos, 0.04f, 0.02f, 12, st.Metal), Vector3.zero);
-                }
         }
+
+    }
+
 
         private static void BuildFurniture(Transform world, Style st)
         {

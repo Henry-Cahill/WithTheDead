@@ -4628,7 +4628,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 21:55 landed by 0htsserver in 7.2 min: **Changed file**
 - [x] Cache the driver’s PlayerStats component in VehicleDriver and stop calling GetComponent each LateUpdate frame (Assets/Scripts/World/Vehicles.cs → class VehicleDriver)
   - 21:56 landed by 1htsserver in 6.4 min: **Changes made**
-- [ ] In Assets/Scripts/Hub/HubWorld.cs add a “Toggle safe zone” action to the “Door to the Zone” station by editing HubStation.GetActions to insert a new InteractAction when Title == "Door to the Zone".
+- [x] In Assets/Scripts/Hub/HubWorld.cs add a “Toggle safe zone” action to the “Door to the Zone” station by editing HubStation.GetActions to insert a new InteractAction when Title == "Door to the Zone".
   Locate the block inside GetActions that adds the “Inspect door” action (`if (Title == "Door to the Zone")`).
   After that block, add:
   `if (Title == "Door to the Zone")`
@@ -4637,6 +4637,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   ` {`
   ` HubRules.SafeZone = !HubRules.SafeZone;`
   ` GameEvents.RaiseToast($"Safe zone is now {(HubRules.SafeZone ? "ON" : "OFF")}.");`
+  - 22:08 landed by hts-llm in 17.6 min: **Changed file**
 - [x] Add a tiny brass hinge detail to each upper‑cabinet door in `Assets/Scripts/World/FurnitureBuilder.Home.cs` → `UpperCabinets`
   - 22:00 landed by 0htsserver in 4.6 min: **Changed file**
 - [x] In Assets/Scripts/World/WaterSource.cs: Fix the rain‑barrel fill simulation to handle cases where WeatherSystem isn’t instantiated before WaterSource.Awake, preventing the barrel from ever filling.
