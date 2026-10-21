@@ -4554,7 +4554,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `: "No pass yet – you need to bribe or show a permit.")));`
   No new UI screens or assets are required; it uses only existing `GameEvents`, `CordonRules`, and `InteractAction`.
   - 21:27 landed by 1htsserver in 4.3 min: **Changes made**
-- [ ] Add a small random rust/dent strip to each wrecked car in Assets/Scripts/World/DecorProps.cs → DecorProps.Car
+- [x] Add a small random rust/dent strip to each wrecked car in Assets/Scripts/World/DecorProps.cs → DecorProps.Car
   After the line* `m.Box(new Vector3(0f, bodyY + 0.3f, 0f), new Vector3(wid, 0.56f, len - 0.1f), G(c));` *insert a thin rectangular box that mimics a weathered line on the hood or trunk.
   Use the method’s `rng` to decide left/right side, offset along Z, and length (0.2–0.5 m).
   Example primitive (size in metres):
@@ -4563,6 +4563,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `Color rustCol = V(c * 0.6f, rng, 0.04f); // darker, slightly varied paint colour`
   `m.Box(rustPos, rustSize, M(rustCol));`
   *Result:* each car shows a subtle, randomly placed dark strip (rust or dent) on its surface, adding lived‑in visual detail without altering colliders, interaction points, or the overall shape.
+  - 21:32 landed by 0htsserver in 2.6 min: **Summary of changes**
 - [ ] Cache the main camera in `BoltThrower` to avoid a per‑throw `Camera.main` lookup (Assets/Scripts/Zone/Bolts.cs)
   Add a private `Camera _mainCam;` field.
   In `Awake()` set `_mainCam = Camera.main;`.

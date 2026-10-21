@@ -72,6 +72,11 @@ namespace CloneZ
 
             // Lower body, hood and trunk.
             m.Box(new Vector3(0f, bodyY + 0.3f, 0f), new Vector3(wid, 0.56f, len - 0.1f), G(c));
+            // Small random rust/dent strip on hood or trunk
+            Vector3 rustPos = new Vector3((rng.Next(0, 2) == 0 ? -1f : 1f) * (wid * 0.45f), bodyY + 0.34f, R(rng, -len * 0.3f, len * 0.3f));
+            Vector3 rustSize = new Vector3(0.02f, 0.02f, R(rng, 0.2f, 0.5f));
+            Color rustCol = V(c * 0.6f, rng, 0.04f);
+            m.Box(rustPos, rustSize, M(rustCol));
             m.Box(new Vector3(0f, bodyY + 0.06f, len * 0.5f - 0.04f), new Vector3(wid - 0.02f, 0.14f, 0.1f), Mt(chrome));
             m.Box(new Vector3(0f, bodyY + 0.06f, -len * 0.5f + 0.04f), new Vector3(wid - 0.02f, 0.14f, 0.1f), Mt(chrome));
             for (int s = -1; s <= 1; s += 2)
