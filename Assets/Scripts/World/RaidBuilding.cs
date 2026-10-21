@@ -488,6 +488,15 @@ namespace CloneZ
                     p.Mesh.Box(rustPos, RunSize(r, 0.06f, 0.008f, 0.008f), rust);
                 }
             }
+            // Add subtle metal hinges on exterior side of door frame
+            if (extSide != 0)
+            {
+                var hingeSurf = DecorPalette.Matte(new Color(0.30f, 0.30f, 0.35f));
+                // top hinge
+                p.Mesh.Box(RunPoint(r, o.Pos, DoorHeight - 0.15f, extSide * (Half + 0.025f)), RunSize(r, 0.04f, 0.10f, 0.008f), hingeSurf);
+                // bottom hinge
+                p.Mesh.Box(RunPoint(r, o.Pos, 0.15f, extSide * (Half + 0.025f)), RunSize(r, 0.04f, 0.10f, 0.008f), hingeSurf);
+            }
         }
 
         private void DrawWindow(WallPiece p)
