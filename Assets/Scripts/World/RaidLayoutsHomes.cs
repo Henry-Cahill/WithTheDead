@@ -106,7 +106,10 @@ namespace CloneZ
             b.HomePiece(kitchen, counter, HomeFurnitureKind.Counter);
             b.HomePiece(kitchen, b.OffsetPlace(counter, -0.25f, -0.075f), HomeFurnitureKind.Radio);
             b.UpperCabinets(kitchen, 'S', 1.72f, 1.1f, FurnitureBuilder.HomeCabinetPaint);
-            // TODO: add small metal knob primitive box here (rng varies offset and colour)
+            // Added small metal knob primitive box on upper cabinets
+            float knobX = -1.1f * 0.5f + (float)rng.NextDouble() * 1.1f;
+            // Place knob on front face of cabinets (south wall), at same height as existing knobs
+            b.Static.Box(b.W(knobX, 1.58f, 0.36f), new Vector3(0.02f, 0.08f, 0.02f), DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
             b.HouseSink(kitchen, b.S(kitchen, 3.0f, 0.63f));
             b.HouseStove(kitchen, b.S(kitchen, 4.05f, 0.62f));
             b.HomePiece(kitchen, new RaidBuilding.Place(2.7f, -2.6f, 0f), HomeFurnitureKind.Table);
