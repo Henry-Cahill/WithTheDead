@@ -4571,7 +4571,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Add a tiny guard: if `_mainCam == null` re‑assign `_mainCam = Camera.main;` before use (covers camera recreation).
   The player’s aiming behaviour stays identical; the only change is that the costly `Camera.main` tag search is done once instead of every throw attempt.
   - 21:32 landed by hts-llm in 2.2 min: **Changed files**
-- [ ] Append six new world‑text entries to the `Pages` array in `ManualScreen` (Assets/Scripts/Hub/Screens/HomeScreens.cs) after the existing final entry `("Hunting handbook", "Deer tracks are clearer after fresh snow; follow the prints for a good hunt.")`
+- [x] Append six new world‑text entries to the `Pages` array in `ManualScreen` (Assets/Scripts/Hub/Screens/HomeScreens.cs) after the existing final entry `("Hunting handbook", "Deer tracks are clearer after fresh snow; follow the prints for a good hunt.")`
   Use the style of the existing entry `("Radio chatter", "Static‑filled broadcasts drift through the zone. Occasionally you’ll catch a fragment: “...wardens moving east…”, “...flea market opens at dusk…”, “...supply drop scheduled…”. Listen for clues about safe routes or new quests.")` as a guide.
   Add the following title‑body pairs (each as a tuple of two quoted strings) to the end of the `Pages` initializer:
   `("Power grid woes", "The town's generator sputters on cold nights. Unstable power means the lights flicker and the Wardens patrol the substation more often. Keep a spare battery and a flashlight handy; a dark hub saves on heat but draws attention.")`
@@ -4580,6 +4580,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   `("Zombie mutation", "Early 1993 reports mention a strange strain that leaves the dead slower but harder to kill. Their gait is lumbering, and they seem less affected by light. Keep your flare ready; a burst can blind them momentarily.")`
   `("Snow‑bound roads", "Heavy snow blocks the main highway near the old mill. Vehicles get stuck, and foot travel is the only safe path. Mark your steps to avoid walking circles.")`
   `("Radio tower repair", "The old TV tower still broadcasts on a cracked frequency. Repairing it gives a reliable channel for supply drops, but the Wardens monitor any signal spikes.")`.
+  - 21:37 landed by 1htsserver in 4.1 min: Implemented the six new world‑text entries in **HomeScreens.cs** by extending the `Pages` array after the existing “Hunting handbook” entry.
 - [x] In Assets/Scripts/World/Map/MapGeometry.cs modify the `ClipLine` method to merge successive line pieces that are contiguous (their end‑point matches the next piece’s start‑point within `EPS`) into a single list, so clipped road centrelines stay continuous across map‑cell borders and appear without tiny gaps.
   After the existing loop, add a post‑process that iterates `pieces` and combines `pieces[i]` with `pieces[i+1]` whenever `Vector2.Distance(pieces[i].Last(), pieces[i+1][0]) <= EPS`.
   Replace the final `return pieces;` with code that returns the merged list.

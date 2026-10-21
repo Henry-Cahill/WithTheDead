@@ -389,6 +389,13 @@ namespace CloneZ
             ("Mold warning", "Mold kills faster than the cold; keep food sealed and dry."),
             ("Bar graffiti fire", "Keep the fire burning, the night watches."),
             ("Hunting handbook", "Deer tracks are clearer after fresh snow; follow the prints for a good hunt."),
+
+            ("Power grid woes", "The town's generator sputters on cold nights. Unstable power means the lights flicker and the Wardens patrol the substation more often. Keep a spare battery and a flashlight handy; a dark hub saves on heat but draws attention."),
+            ("Cold storage", "Root cellars stay below freezing even in winter, perfect for keeping meat from the hunt. Seal containers tightly, or the thaw will attract flies and rot the food faster than the cold does."),
+            ("Bandit whispers", "Rumors drift from the south road about a group of scavengers using a rusted pickup to raid the bar after dark. They favor the old silo as a hideout; avoid it unless you’re armed and ready."),
+            ("Zombie mutation", "Early 1993 reports mention a strange strain that leaves the dead slower but harder to kill. Their gait is lumbering, and they seem less affected by light. Keep your flare ready; a burst can blind them momentarily."),
+            ("Snow‑bound roads", "Heavy snow blocks the main highway near the old mill. Vehicles get stuck, and foot travel is the only safe path. Mark your steps to avoid walking circles."),
+            ("Radio tower repair", "The old TV tower still broadcasts on a cracked frequency. Repairing it gives a reliable channel for supply drops, but the Wardens monitor any signal spikes."),
         };
 
         protected override void BuildContent()
