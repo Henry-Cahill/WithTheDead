@@ -95,8 +95,10 @@ namespace CloneZ
         private float _nvgAngle;
         private readonly Renderer[] _nvgLenses = new Renderer[2];
         private bool _nvgLit;
-        private Renderer _torchLens;
-        private bool _torchLit;
+        private Renderer _torchLens; // renderer for the flashlight lens
+        private Renderer _torchSwitch; // renderer for the new on‑off switch
+    private bool _torchLit; // whether flashlight is on
+        private Material _torchSwitchMat; // material for the switch (glow when on)
 
         private void Awake()
         {
@@ -615,10 +617,23 @@ namespace CloneZ
             const float x = -PackStrapX, y = 1.335f;
             float lift = _back.Def != null ? 0.013f : 0.002f;   // on the outer face of the pack strap, or the jacket
             float z = _torso.Surface(y, x, _inflate, true) + lift;
-            PlayerGearParts.Box(root, "Clip", new Vector3(x, y, z + 0.004f), new Vector3(0.024f, 0.05f, 0.008f), dark);
+            // faint wear scar on the clip
+            var wearMat = CloneZUtil.Mat(HumanoidLook.Shade(TorchColor, 0.55f), 0.2f);
+            PlayerGearParts.Box(root, "ClipWear",
+                new Vector3(x, y, z + 0.006f),
+                new Vector3(0.018f, 0.004f, 0.001f), wearMat);
             PlayerGearParts.Tube(root, "Body", new Vector3(x, y - 0.005f, z + 0.025f), Vector3.up, 0.1f, 0.016f, metal, true);
             Vector3 head = new Vector3(x, y + 0.05f, z + 0.036f);
             PlayerGearParts.Tube(root, "Head", head, Vector3.forward, 0.05f, 0.021f, metal, true);
+            // tactile on‑off switch on the flashlight body
+            var switchObj = PlayerGearParts.Box(root, "Switch",
+                new Vector3(x - 0.006f, y - 0.002f, z + 0.03f),
+                new Vector3(0.006f, 0.008f, 0.004f), dark);
+            _torchSwitch = switchObj.GetComponent<Renderer>();
+            // thin reinforcement ring around the head
+            PlayerGearParts.Box(root, "HeadRing",
+                new Vector3(x, y + 0.07f, z + 0.045f),
+                new Vector3(0.022f, 0.001f, 0.004f), dark);
             Transform lens = PlayerGearParts.Tube(root, "Lens", head + new Vector3(0f, 0f, 0.0255f), Vector3.forward, 0.003f, 0.0175f, TorchGlass);
             _torchLens = lens.GetComponent<Renderer>();
 
@@ -628,7 +643,7 @@ namespace CloneZ
             beam.localPosition = head + new Vector3(0f, 0f, 0.028f);
             FlashlightLens = beam;
 
-            _torchLit = false;
+            _torchSwitchMat = dark;
             UpdateTorchLens();
         }
 
@@ -636,9 +651,11 @@ namespace CloneZ
         {
             if (_torchLens == null) return;
             bool lit = _gear != null && _gear.FlashlightOn;
-            if (lit == _torchLit && _torchLens.sharedMaterial != null) return;
+            if (lit == _torchLit && _torchLens.sharedMaterial != null && (_torchSwitch == null || _torchSwitch.sharedMaterial != null)) return;
             _torchLit = lit;
             _torchLens.sharedMaterial = lit ? PlayerGearParts.Glow(TorchGlowColor) : TorchGlass;
+            if (_torchSwitch != null)
+                _torchSwitch.sharedMaterial = lit ? PlayerGearParts.Glow(TorchGlowColor) : _torchSwitchMat;
         }
 
         private static Material TorchGlass => CloneZUtil.Mat(new Color(0.62f, 0.66f, 0.64f), 0.92f);
