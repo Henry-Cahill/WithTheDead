@@ -4478,9 +4478,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   No other fields or classes are altered; this addition only supplies data for the existing world‑builder code (e.g., `FurnitureBuilder` or `DecorProps`) to use when scattering trees in forest areas.
   The player will see forests filled with trees spaced roughly 3–4 m apart, matching the hand‑crafted raid town’s look while preserving the original map data format.
   - 21:00 landed by 1htsserver in 1.1 min: **Changed**
-- [ ] Add four small chrome corner brackets to the picture frame built in `Assets/Scripts/World/FurnitureBuilder.Lighting.cs` `PictureFrame` method
+- [x] Add four small chrome corner brackets to the picture frame built in `Assets/Scripts/World/FurnitureBuilder.Lighting.cs` `PictureFrame` method
   In `PictureFrame`, after the line `m.Box(at + normal * 0.008f, new Vector3(w + 0.05f, h + 0.05f, 0.016f), q, M(frame));` compute the wall‑right vector `Vector3 right = Vector3.Cross(normal, Vector3.up).normalized;`
   Add four `m.Box` calls, each with size `new Vector3(0.008f, 0.008f, 0.003f)` and material `Mt(Chrome)`, positioned at the four outer corners of the frame:
+  - 21:02 landed by hts-llm in 2.3 min: **Changed file**
 - [x] Fix the null‑reference bug in `HubKit.MoneyCarried` (Assets/Scripts/Hub/Screens/HubKit.cs)
   The property currently reads `public static int MoneyCarried => Money.Count(Pack);` – if no player is loaded (e.g., in the main‑menu or test screens) `Pack` is `null`, and `Money.Count(null)` throws a `NullReferenceException`, crashing the hub UI.
   Change the getter to safely handle a missing pack:

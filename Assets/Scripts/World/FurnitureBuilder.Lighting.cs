@@ -173,6 +173,16 @@ namespace CloneZ
         {
             Quaternion q = Quaternion.LookRotation(normal, Vector3.up);
             m.Box(at + normal * 0.008f, new Vector3(w + 0.05f, h + 0.05f, 0.016f), q, M(frame));
+            // Compute right vector for corner brackets
+            Vector3 right = Vector3.Cross(normal, Vector3.up).normalized;
+            // Add four chrome corner brackets at the outer corners of the frame
+            float halfW = (w + 0.05f) * 0.5f;
+            float halfH = (h + 0.05f) * 0.5f;
+            Vector3 frontOffset = normal * 0.0175f;
+            m.Box(at + frontOffset + right * halfW + Vector3.up * halfH, new Vector3(0.008f, 0.008f, 0.003f), q, Mt(Chrome));
+            m.Box(at + frontOffset - right * halfW + Vector3.up * halfH, new Vector3(0.008f, 0.008f, 0.003f), q, Mt(Chrome));
+            m.Box(at + frontOffset + right * halfW - Vector3.up * halfH, new Vector3(0.008f, 0.008f, 0.003f), q, Mt(Chrome));
+            m.Box(at + frontOffset - right * halfW - Vector3.up * halfH, new Vector3(0.008f, 0.008f, 0.003f), q, Mt(Chrome));
             m.Upright(at + normal * 0.0175f, normal, w, h, DecorMaterials.Poster(kind), new Rect(0f, 0f, 1f, 1f));
         }
         #endregion
