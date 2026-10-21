@@ -4602,3 +4602,22 @@ you want to see in game. Indent extra lines under a task to add detail.
   In Draw replace `worldBounds = new Bounds(_eye, Vector3.one * (DrawRadius * 2f + 10f)),` with `worldBounds = _worldBounds,`.
   The player sees exactly the same drawn items and culling behavior; the visual result is unchanged.
   Only the per‑frame allocation of a Bounds struct per material sub‑mesh is eliminated, reducing GC pressure.
+- [ ] Edit Assets/Scripts/World/Map/KentuckyMap.Ground.cs, in the `BuildStreets` method, add a thin overlay‑ribbon for plain asphalt roads so the pavement looks a bit worn and not perfectly uniform.
+  Locate the line `Ribbon(site.Town.Out, piece, width, StreetY, surf);`.
+  Directly after it, insert a conditional that checks `if (surf == DecorMaterials.Asphalt)` and, when true, creates a new matte surface with a slightly lighter colour (e.g. `new Color(0.68f, 0.68f, 0.66f)`) via `DecorPalette.Matte`.
+  Then call `Ribbon(site.Town.Out, piece, width * 0.96f, StreetY + 0.001f, varSurf);` (where `varSurf` is the colour‑adjusted surface).
+  This adds a subtle brighter strip on top of asphalt roads, giving them a hand‑built, weather‑worn appearance while keeping colliders and existing geometry untouched.
+- [ ] In Assets/Scripts/World/Zone/ZoneCordon.cs: Add a small rusted‑metal bolt on the outer face of each guard‑tower post in `ZoneCordon.BuildTower` to give the towers a more worn, period‑correct look.
+  In the loop that creates each post (`Vector3 post = new Vector3(x, h * 0.5f, z); … sb.Solid.Box(post, new Vector3(0.22f, h, 0.22f), ZoneKit.M(ZoneKit.WetWood));`), after the existing rust‑plate block insert:
+  `// 20% chance to add a rusted bolt on the outer face`
+  `if (ZoneKit.R(rng, 0f, 1f) < 0.20f)`
+  `{`
+  `// small bolt: radius 0.015 m, length 0.05 m, positioned near the top of the post`
+  `Vector3 boltPos = post + Vector3.up * (h * 0.8f) + normal * 0.12f;`
+  `sb.Solid.Rod(boltPos, boltPos + Vector3.up * 0.05f, 0.015f, ZoneKit.Mt(ZoneKit.RustDark), 4);`
+  `}`
+- [ ] Fix the returned position of the desk lamp so that the light source is attached to the bulb, not to the shade – Assets/Scripts/World/FurnitureBuilder.Office.cs → `public static Vector3 DeskLamp(...)`
+  The method currently ends with `return mouth;` where `mouth` is the tip of the shade cone, so any light or effect placed at the returned point appears floating in front of the shade instead of at the bulb.
+  Change the final line to return the actual bulb location, e.g.:
+  `return j2;` // or `return j2 - axis * 0.01f;` if the bulb centre is offset; this puts the light at the end of the arm where the bulb is drawn.
+  The player will then see the desk lamp emit light from the correct spot, matching the visual model, while all other geometry and parameters remain unchanged.
