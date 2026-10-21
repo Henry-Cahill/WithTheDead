@@ -46,6 +46,7 @@ namespace CloneZ
             }
             into.Add(PassTime("Listen to the radio", "Listening to the radio", "The radio is off"));
             into.Add(new InteractAction("Turn off the radio", c => Switch(false)).DisabledIf(!near, TooFar));
+            into.Add(new InteractAction("Check battery", c => c.Notify("The battery still hums – enough juice for a few more hours.")).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Tune to the previous station", RetunePrev).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Turn it up", c => Louder(c, 1))
                 .DisabledIf(AtLoudest, "It won't go any louder")

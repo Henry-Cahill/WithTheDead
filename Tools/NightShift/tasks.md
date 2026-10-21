@@ -4181,9 +4181,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Remove the `if (_weather == null) _weather = WeatherSystem.Instance;` block from the Update method, leaving the rain‑intensity read as `float rain = _weather != null ? _weather.RainIntensity : 0f;`.
   This eliminates a per‑frame null‑check and potential property lookup, reducing cheap but unnecessary work on every barrel each frame. The visual behavior and water‑fill simulation remain unchanged.
   - 19:11 landed by 0htsserver in 2.3 min: **Changed**
-- [ ] In Assets/Scripts/World/Fixtures/RadioFixture.cs: Add a “Check battery” action to RadioFixture.GetActions so the survivor can see if the radio still has power without turning it on.
+- [x] In Assets/Scripts/World/Fixtures/RadioFixture.cs: Add a “Check battery” action to RadioFixture.GetActions so the survivor can see if the radio still has power without turning it on.
   · In `public override void GetActions(InteractContext ctx, List<InteractAction> into)` add a new line after the “Turn off the radio” action:
   `into.Add(new InteractAction("Check battery", c => c.Notify("The battery still hums – enough juice for a few more hours.")) .DisabledIf(!near, TooFar));`
   This uses the existing `InteractAction` constructor and the `ctx.Notify` method.
   The player will see a “Check battery” option when near the radio, and selecting it will display the message above.
   All other behavior and fields (`IsOn`, `_dialLight`, etc.) remain unchanged.
+  - 19:13 landed by hts-llm in 2.5 min: **Summary**
