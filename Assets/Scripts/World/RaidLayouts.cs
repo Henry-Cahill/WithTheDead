@@ -235,7 +235,32 @@ namespace CloneZ
         private static void WeaponRack(RaidMesh m, System.Random r)
         {
             Surf wood = DecorPalette.Matte(new Color(0.32f, 0.22f, 0.12f));
+var boltMat = DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f));
             m.Box(new Vector3(-0.95f, 0.8f, -0.1f), Sz(0.06f, 1.6f, 0.1f), wood);
+        // backboard – thin plywood behind the rack (adds depth and a surface for grime)
+        var boardMat = DecorPalette.Matte(new Color(0.34f, 0.24f, 0.14f));
+        m.Box(new Vector3(0f, 0.8f, -0.15f), Sz(1.92f, 1.62f, 0.02f), boardMat);
+        // front strap – reinforces the rack, anchored to the posts
+        var strapMat = DecorPalette.Metal(new Color(0.28f, 0.28f, 0.26f));
+        m.Box(new Vector3(0f, 0.95f, -0.045f), Sz(1.84f, 0.03f, 0.01f), strapMat);
+        // latch hinge pin
+        m.Cylinder(new Vector3(-0.85f, 0.71f, -0.045f), 0.006f, 0.024f, 8, boltMat);
+        // latch body (metal plate)
+        m.Box(new Vector3(-0.84f, 0.71f, -0.06f), Sz(0.04f, 0.02f, 0.004f), boltMat);
+        // latch hook (a thin cylinder protruding)
+        m.Cylinder(new Vector3(-0.80f, 0.71f, -0.06f), 0.003f, 0.015f, 8, boltMat);
+        // paint chip – random brownish patch on front face
+        if (Chance(r, 0.35f))
+        {
+            float chipW = R(r, 0.04f, 0.09f);
+            float chipH = 0.001f;
+            float chipD = 0.015f;
+            var chipMat = DecorPalette.Matte(new Color(0.28f, 0.20f, 0.12f));
+            m.Box(
+                new Vector3(R(r, -0.9f, 0.9f), 0.92f, R(r, -0.07f, 0.07f)),
+                Sz(chipW, chipH, chipD),
+                chipMat);
+        }
                 Vector3 chipPosLeft = new Vector3(-0.95f + (float)r.NextDouble()*0.02f - 0.01f, R(r, 0.4f, 1.2f), R(r, -0.05f, 0.05f));
                 m.Box(chipPosLeft, Sz(0.02f, 0.01f, 0.005f), wood);
             m.Box(new Vector3(0.95f, 0.8f, -0.1f), Sz(0.06f, 1.6f, 0.1f), wood);
@@ -257,8 +282,8 @@ namespace CloneZ
                         DecorPalette.Matte(new Color(0.20f, 0.18f, 0.14f)));
                 }
             }
-            // mounting bolts
-            var boltMat = DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f));
+            // mounting bolts (reuse existing boltMat)
+
             float boltRadius = 0.015f; float boltHeight = 0.02f;
             Vector3[] boltPos = { new Vector3(-0.95f, 0.41f, 0.05f), new Vector3(-0.95f, 0.41f, -0.05f), new Vector3(0.95f, 0.41f, 0.05f), new Vector3(0.95f, 0.41f, -0.05f) };
             foreach (var p in boltPos) m.Cylinder(p, boltRadius, boltHeight, 8, boltMat);
@@ -286,7 +311,13 @@ namespace CloneZ
             var plateMat = DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f));
             m.Box(new Vector3(-0.95f, 0.8f, 0.06f), Sz(0.02f, 0.1f, 0.001f), plateMat);
             m.Box(new Vector3( 0.95f, 0.8f, 0.06f), Sz(0.02f, 0.1f, 0.001f), plateMat);
-            int guns = r.Next(2, 6);
+                    // front label plate (rust‑tinted metal)
+        var labelMat = DecorPalette.Metal(new Color(0.30f, 0.35f, 0.25f));
+        m.Box(new Vector3(0f, 0.77f, 0.07f), Sz(0.25f, 0.015f, 0.002f), labelMat);
+        // dust puff – flat gray cylinder on the top shelf
+        var dustMat = DecorPalette.Matte(new Color(0.45f, 0.44f, 0.40f));
+        m.Cylinder(new Vector3(0f, 1.31f, -0.02f), 0.1f, 0.002f, 8, dustMat);
+        int guns = r.Next(2, 6);
             for (int i = 0; i < guns; i++)
             {
                 float x = -0.75f + i * 0.37f;
