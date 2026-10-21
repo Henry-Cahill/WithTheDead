@@ -4148,7 +4148,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// The NPC is reloading – clear any assumed cover because we may be elsewhere.`
   `_hasCover = false;`
   - 18:56 landed by 1htsserver in 1.3 min: **Changed:** `Assets/Scripts/AI/Humans/HumanNpc.cs`
-- [ ] Add a “Search the mailbox” action to Assets/Scripts/World/Fixtures/MailboxFixture.cs that appears once all deliveries have been read, using the existing `InteractAction` pattern.
+- [x] Add a “Search the mailbox” action to Assets/Scripts/World/Fixtures/MailboxFixture.cs that appears once all deliveries have been read, using the existing `InteractAction` pattern.
+  - 19:02 landed by hts-llm in 3.6 min: **Changed file**
 - [ ] Append five new letter entries to the `Letters` array in Assets/Scripts/World/Fixtures/RaidHomeLiving.cs.
   Use the existing entry
 - [ ] In Assets/Scripts/World/Map/MapGeometry.cs, modify the `ClipPolygon` method to guarantee the returned polygon is anticlockwise: after the clipping loop and before `return cur;`, add `MakeAnticlockwise(cur);` (leaving the existing logic untouched).

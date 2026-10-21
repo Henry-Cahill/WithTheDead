@@ -143,6 +143,12 @@ namespace CloneZ
             into.Add(new InteractAction("Inspect the mailbox", ctx => {
                 ctx.Notify($"Mailbox is {(_open ? "open" : "closed")}, flag is {(_flagUp ? "up" : "down")}, {(_read < Come ? $"{Come - _read} unread letters." : "no more mail.")}");
             }));
+            // New action after all mail read
+            if (_read >= Come) {
+                into.Add(new InteractAction("Search the mailbox", ctx => {
+                    ctx.Notify("You search the mailbox but find nothing else.");
+                }));
+            }
         }
 
         // Reading the oldest unread delivery: the door drops open and the letter's lines come up one by one.
