@@ -4255,3 +4255,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   The player should see a text message indicating whether an entity (character, zombie, or the survivor) is under the door when they use this action; all other behaviour and state remain unchanged.
 - [ ] Add a sidewalk‑width helper to `MapStreet` in `Assets/Scripts/World/Map/MapData.cs` so the map builder can place period‑appropriate sidewalks beside roads.
   In the `MapStreet` class, after the existing fields, insert a public method
+- [ ] Add occasional snow drifts on the corrugated‑sheet barrier in the `case 0:` block of `EdgeSegment` in *Assets/Scripts/World/RaidMapBuilder.Edge.cs*
+  Insert a new loop after the existing “occasional rust spots” loop that creates a small snow box on top of the sheet:
+  `for (float x = -len * 0.5f + 0.8f; x < len * 0.5f; x += R(rng, 3f, 5f))`
+  `{`
+  `float w = R(rng, 0.3f, 0.6f);`
+  `// snow drift sitting on the sheet surface`
+  `m.Box(new Vector3(x, 2.45f, 0f), new Vector3(w, 0.05f, 0.3f), DecorMaterials.Snow);`
+  `}`
+  The box is ~0.05 m tall, up to 0.6 m wide, and 0.3 m deep, placed at y ≈ 2.45 m (just above the 2.4 m tall sheet) so it looks like a thin snow drift accumulating on the barrier. It re‑uses the existing `DecorMaterials.Snow` material, adds no new colliders, and stays within the ~12‑primitive limit. This gives the rusted corrugated sheet a wintery, period‑correct visual cue.
