@@ -4410,3 +4410,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   After the change the economy correctly enforces the Nominal limit: when a loot roll yields multiple stacks of an item, the central count reflects all of them, preventing the player from receiving more of that item than the zone is allowed.
   No other code needs to change; the rest of the system already uses Count(id) and NominalOf(id) to gate further loot.
   - 20:35 landed by 0htsserver in 1.1 min: **Summary**
+- [ ] Add a simple door knob to every entrance in `KentuckyMap.Enterable` (Assets/Scripts/World/Map/KentuckyMap.Buildings.cs)
+  Insert a small box primitive after the door walls are built, using the existing `doorPoint`, `doorYaw` and `doorOutward` values.
+  `float knobDepth = 0.02f;` // front‑to‑back thickness of the knob
+  `float knobRadius = 0.07f;` // radius of the knob (half width/height)
+  `Vector3 knobCenter = To3(doorPoint + doorOutward * (Thick * 0.5f + knobDepth * 0.5f), DoorHeight * 0.5f);` // centered on door height, slightly offset outward from the wall
+  `Vector3 knobSize = new Vector3(knobDepth, knobRadius * 2f, knobRadius * 2f);` // depth, height, width of the box
+  `Surf knobMat = DecorPalette.Gloss(new Color(0.8f, 0.8f, 0.8f));` // subtle metallic gloss, re‑using the existing palette helper
+  `site.Town.Out.Solid(knobCenter).Box(knobCenter, knobSize, doorYaw, knobMat);` // adds the knob aligned with the door
