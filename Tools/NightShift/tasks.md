@@ -4651,11 +4651,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   This removes the per‑frame property lookup (which likely does a `FindObjectByType`), reducing allocations and GC pressure.
   Player view and HUD mode remain unchanged; the compass continues to appear/disappear exactly as before.
   - 22:04 landed by 1htsserver in 3.6 min: **Summary**
-- [ ] In Assets/Scripts/World/Fixtures/HoseSpigot.cs modify the “Coil the hose” InteractAction added in `GetActions` so that it automatically closes the tap when the coiling action finishes.
+- [x] In Assets/Scripts/World/Fixtures/HoseSpigot.cs modify the “Coil the hose” InteractAction added in `GetActions` so that it automatically closes the tap when the coiling action finishes.
   Locate the line `into.Add(new InteractAction("Coil the hose", c => c.Notify("You wind the hose back onto its reel, neat as anything. Habit."))` and chain a `.Stopped` handler after the existing `.Timed(...)`.
   The handler should read: `c => { if (_open) { SetOpen(false, false); c.Notify("You remember to shut the tap."); } }`.
   This uses the existing private field `_open` and the method `SetOpen(bool open, bool instant)`, preserving the current timed duration (`CloneZConfig.HoseCoilSeconds`) and the original “You wind the hose…” notification.
   No other code changes are required; the action will now both coil the hose and ensure the tap isn’t left open, giving the player a confirming message.
+  - 22:05 landed by 0htsserver in 3.1 min: Implemented a `.Stopped` handler for the “Coil the hose” action in **HoseSpigot.cs**.
 - [ ] Add a deterministic default‑height helper to `MapBuilding` in `Assets/Scripts/World/Map/MapData.cs` so buildings without an explicit `height` field still get a plausible roof height based on their `levels`.
   In `MapBuilding` insert the method
 - [ ] Add four small weathered stone rune slabs around the central stone pillar in the ChoirSanctum landmark, editing Assets/Scripts/World/Zone/ZoneLandmarks.cs method ChoirSanctum(SiteBuilder sb)
