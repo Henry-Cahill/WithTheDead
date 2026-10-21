@@ -5452,3 +5452,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   `// bottom hinge`
   `p.Mesh.Box(RunPoint(r, o.Pos, 0.15f, extSide * (Half + 0.025f)), RunSize(r, 0.04f, 0.10f, 0.008f), hingeSurf);`
   Sizes are in metres (width ≈ 0.04 m, height ≈ 0.10 m, thickness ≈ 0.008 m) and positioned on the same side offset as the plaque (`Half + 0.025f`).
+- [ ] Add a deterministic “has porch” helper to `MapBuild` in Assets/Scripts/World/Map/WorldStore.cs so raid‑town buildings can sometimes get a modest front porch/step matching the hand‑built aesthetic.
+  Insert a new public method `public bool HasPorch(long buildingId)` inside the `MapBuild` class, after the existing `HasSidewalk` method.
+  Use the same deterministic‑hash pattern as the other helpers, e.g.:
+  `unchecked { uint hash = (uint)buildingId ^ 0x3c6ef372u; hash = (hash * 0x85ebca6bu) ^ (hash >> 13); return (hash % 100) < 40; }` – giving roughly 40 % of buildings a porch.
+  Document the method with a summary explaining it decides if a building should receive a simple porch (a low railing and a few steps) appropriate for a 1993 rural Kentucky home.
+  No other code changes are required; map‑building code can now call `build.HasPorch(building.Id)` and, when true, add a modest porch mesh using existing `FurnitureBuilder` helpers and attach a `PropCollider` that matches the added geometry.
+  Keep all existing fields, constructors, and other helpers untouched.
