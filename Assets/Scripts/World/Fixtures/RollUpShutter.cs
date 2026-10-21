@@ -40,7 +40,7 @@ namespace CloneZ
         private Bounds _block;
         private bool _open;
 
-        private Action<InteractContext> _raiseAct, _lowerAct, _bangAct, _inspectAct;
+        private Action<InteractContext> _raiseAct, _lowerAct, _bangAct, _inspectAct, _obstructAct;
 
         private static readonly Collider[] s_Hits = new Collider[16];
         private static readonly int BodyMask = (1 << 0) | (1 << CloneZConfig.IgnoreRaycastLayer);
@@ -59,6 +59,7 @@ namespace CloneZ
             _lowerAct = Lower;
             _bangAct = Bang;
             _inspectAct = Inspect;
+            _obstructAct = CheckObstruction;
         }
 
         /// <summary>Makes <paramref name="root"/> (holding the bands, at the doorway's middle on the wall line) a working
@@ -99,8 +100,10 @@ namespace CloneZ
                 into.Add(new InteractAction("Lower the roll-up door", _lowerAct)
                     .Timed(CloneZConfig.RollUpWorkSeconds, "Pulling the door down", HumanoidActivity.Use));
             else
-                into.Add(new InteractAction("Raise the roll-up door", _raiseAct)
-                    .Timed(CloneZConfig.RollUpWorkSeconds, "Hauling the door up", HumanoidActivity.Use));
+                {
+                    into.Add(new InteractAction("Raise the roll-up door", _raiseAct).Timed(CloneZConfig.RollUpWorkSeconds, "Hauling the door up", HumanoidActivity.Use));
+                    into.Add(new InteractAction("Check for obstruction", _obstructAct).Timed(0f, "Checking obstruction", HumanoidActivity.Use));
+                }
 
             into.Add(new InteractAction("Bang the roll-up door", _bangAct)
                 .Timed(0f, "Banging the door", HumanoidActivity.Use));
@@ -108,6 +111,7 @@ namespace CloneZ
         }
 
         private void Inspect(InteractContext ctx) => ctx.Notify(_open ? "The steel curtain is raised – the doorway is clear." : "The steel curtain is down – the doorway is blocked.");
+        private void CheckObstruction(InteractContext ctx) => ctx.Notify(Obstructed() ? "Something's in the way of the curtain." : "No obstruction.");
         private void Raise(InteractContext ctx)
         {
             if (_open) return;

@@ -4246,13 +4246,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   Guard the cached fields against null (they will stay null when no device is present, matching existing behaviour).
   No change to game visuals; the UI continues to respond to mouse movement and Escape key exactly as before, but the per‑frame static property look‑ups are eliminated, reducing GC pressure and tiny CPU overhead.
   - 19:41 landed by hts-llm in 3.2 min: **Changes made**
-- [ ] Add a “Check for obstruction” quick action to Assets/Scripts/World/Fixtures/RollUpShutter.cs that lets the survivor see whether anything is standing where the curtain would come down, without changing any state.
+- [x] Add a “Check for obstruction” quick action to Assets/Scripts/World/Fixtures/RollUpShutter.cs that lets the survivor see whether anything is standing where the curtain would come down, without changing any state.
   Declare a new field `_obstructAct` of type `Action<InteractContext>` and assign it in `Awake()` (e.g., `_obstructAct = CheckObstruction;`).
   Add an entry in `GetActions` inside the `if (!_open)` block:
   `into.Add(new InteractAction("Check for obstruction", _obstructAct).Timed(0f, "Checking obstruction", HumanoidActivity.Use));`
   Implement a private method `CheckObstruction(InteractContext ctx)` that calls the existing `Obstructed()` method and notifies the player:
   `private void CheckObstruction(InteractContext ctx) => ctx.Notify(Obstructed() ? "Something's in the way of the curtain." : "No obstruction.");`
   The player should see a text message indicating whether an entity (character, zombie, or the survivor) is under the door when they use this action; all other behaviour and state remain unchanged.
+  - 19:51 landed by 0htsserver in 11.2 min: **Summary**
 - [ ] Add a sidewalk‑width helper to `MapStreet` in `Assets/Scripts/World/Map/MapData.cs` so the map builder can place period‑appropriate sidewalks beside roads.
   In the `MapStreet` class, after the existing fields, insert a public method
 - [x] Add occasional snow drifts on the corrugated‑sheet barrier in the `case 0:` block of `EdgeSegment` in *Assets/Scripts/World/RaidMapBuilder.Edge.cs*
