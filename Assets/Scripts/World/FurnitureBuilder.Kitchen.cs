@@ -562,6 +562,10 @@ for (int i = 0; i < 7; i++)
 
             // The back-guard with the burner knobs' bezels; the control strip with the oven's.
             m.Box(new Vector3(0f, 1.0f, -0.3f), new Vector3(0.76f, 0.16f, 0.06f), body);
+            if (Chance(rng, 0.8f)) m.Cylinder(new Vector3(-0.35f, 0.94f, -0.33f), 0.006f, 0.012f, 8, chrome);
+            if (Chance(rng, 0.8f)) m.Cylinder(new Vector3(0.35f, 0.94f, -0.33f), 0.006f, 0.012f, 8, chrome);
+            if (Chance(rng, 0.8f)) m.Cylinder(new Vector3(-0.35f, 0.94f, -0.27f), 0.006f, 0.012f, 8, chrome);
+            if (Chance(rng, 0.8f)) m.Cylinder(new Vector3(0.35f, 0.94f, -0.27f), 0.006f, 0.012f, 8, chrome);
             Quaternion outward = Quaternion.Euler(90f, 0f, 0f);
             for (int i = 0; i < 4; i++)
                 m.Cylinder(new Vector3(StoveKnobX[i], StoveKnobY, StoveKnobZ - 0.004f), 0.03f, 0.004f, 12, chrome, outward);

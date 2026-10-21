@@ -5774,13 +5774,14 @@ you want to see in game. Indent extra lines under a task to add detail.
   - 03:47 landed by hts-llm in 3.7 min: **Changed file**
 - [x] Edit `Assets/Scripts/World/Map/KentuckyMap.Ground.cs` – in the `BuildStreets` method replace the static gravel kerb‑wear ribbon with a per‑segment colour‑varying one, and add a tiny helper that creates the varied gravel surface.
   - 03:50 landed by 0htsserver in 4.1 min: **Changes made**
-- [ ] Add four tiny chrome screws to the gas‑range’s back‑guard for a realistic industrial detail (Assets/Scripts/World/FurnitureBuilder.Kitchen.cs → `GasRange` method).
+- [x] Add four tiny chrome screws to the gas‑range’s back‑guard for a realistic industrial detail (Assets/Scripts/World/FurnitureBuilder.Kitchen.cs → `GasRange` method).
   After the line `m.Box(new Vector3(0f, 1.0f, -0.3f), new Vector3(0.76f, 0.16f, 0.06f), body);` insert up to four cylinders:
   `if (Chance(rng, 0.8f)) m.Cylinder(new Vector3(-0.35f, 0.94f, -0.33f), 0.006f, 0.012f, 8, chrome, Quaternion.Euler(90f,0f,0f));`
   `if (Chance(rng, 0.8f)) m.Cylinder(new Vector3(0.35f, 0.94f, -0.33f), 0.006f, 0.012f, 8, chrome, Quaternion.Euler(90f,0f,0f));`
   `if (Chance(rng, 0.8f)) m.Cylinder(new Vector3(-0.35f, 0.94f, -0.27f), 0.006f, 0.012f, 8, chrome, Quaternion.Euler(90f,0f,0f));`
   `if (Chance(rng, 0.8f)) m.Cylinder(new Vector3(0.35f, 0.94f, -0.27f), 0.006f, 0.012f, 8, chrome, Quaternion.Euler(90f,0f,0f));`
   Each cylinder is 0.006 m radius, 0.012 m tall, using the existing `chrome` surface; the `Chance` calls give per‑screw variation while keeping the total primitive count ≤ 12.
+  - 03:51 landed by hts-llm in 2.7 min: **Changed file**
 - [x] Fix invisible slider handles in `Assets/Scripts/UI/UIKit.cs` by giving the handle a non‑zero height.
   In `UIKit.Slider` the line
   `handle.sizeDelta = new Vector2(12f, 0f);` creates a rect with zero height, so the handle image never renders and the player cannot see or drag the slider.
