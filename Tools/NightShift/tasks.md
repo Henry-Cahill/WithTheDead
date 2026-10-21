@@ -4395,3 +4395,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   The rest of Update() can keep using the cached `_gm` and `_em` without change; they will stay valid for the menu’s lifetime.
   Player‑visible behavior is unchanged – the pause menu still opens only when the game is playing and not blocked.
   This eliminates a tiny allocation‑free singleton lookup each frame, reducing GC pressure and CPU time.
+- [ ] Add a “Power status” extra action to the CivicToggle fixture in Assets/Scripts/World/Fixtures/RaidCivicFixtures.cs
+  Add a private method `PowerInfo(InteractContext ctx)` that calls `ctx.Notify(PowerGrid.HousePowered ? "The building has power." : "The building has no power.");` inside the `CivicToggle` class.
+  In the static `Create` method, replace the current `_extra` assignment (`t._extra = (c, list) => list.Add(new InteractAction("Inspect", t.Inspect));`) with a lambda that adds both actions: first the existing “Inspect” action and then a new `new InteractAction("Power status", t.PowerInfo)`.
+  No other code changes are required. The player will now see a second extra action “[Q] Power status” when interacting with toggles, receiving a message about whether the house currently has power.
