@@ -83,6 +83,15 @@ namespace CloneZ
                     continue;
                 }
                 Slab(town, alongX, coord, a, b, -hw, hw, 0.012f, asphalt);
+                // Occasionally add a dark oil‑spill patch (~5 % chance per segment)
+                if (rng.NextDouble() < 0.05)
+                {
+                    float spillSize = R(rng, 0.2f, 0.4f); // radius ≈ 0.2–0.4 m
+                    float spillPos = R(rng, a, b);
+                    Vector3 center = alongX ? new Vector3(spillPos, 0.015f, coord) : new Vector3(coord, 0.015f, spillPos);
+                    // dark matte surface to look like a thin oil film on the road
+                    town.Out.Flat(center).FlatBlob(center, spillSize, spillSize, R(rng, 0f, 360f), 0.015f, rng, DecorPalette.Matte(new Color(0.05f, 0.05f, 0.07f)));
+                }
                 // Occasionally draw faint edge‑line markings on each side of the lane (25 % chance)
                 if (rng.NextDouble() < 0.25)
                 {
