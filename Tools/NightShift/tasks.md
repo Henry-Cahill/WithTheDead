@@ -5359,3 +5359,4 @@ you want to see in game. Indent extra lines under a task to add detail.
   a farm‑yard recipe booklet featuring “Grandma’s Turnip Soup”;
   a community bulletin announcing the February 1993 town hall meeting;
   a hunting log noting the “First‑light Duck Hunt” of 1993;
+- [ ] Add four tiny rivet boxes to the chest‑rig’s front panel in Assets/Scripts/Player/PlayerGearVisuals.cs, method BuildChestRig(ItemDef def) to suggest worn‑metal fastening.
