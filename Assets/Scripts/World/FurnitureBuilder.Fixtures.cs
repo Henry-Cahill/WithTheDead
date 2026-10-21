@@ -44,6 +44,11 @@ namespace CloneZ
                         float py = r == 0 ? 0.15f + ph * 0.5f : height - 0.15f - ph * 0.5f;
                         float px = 0.12f + pw * 0.5f + col * (pw + 0.06f);
                         m.Box(new Vector3(px, py, z), new Vector3(pw, ph, 0.008f), M(c * 0.88f));
+                    // tiny brass screw head on panel surface
+                    float screwDepth = 0.002f;
+                    float screwSize = 0.008f;
+                    float screwZ = z + (face * 0.004f) + (face * screwDepth * 0.5f);
+                    m.Box(new Vector3(px, py, screwZ), new Vector3(screwSize, screwSize, screwDepth), Mt(Brass));
                     }
                 m.Ellipsoid(new Vector3(width - 0.08f, 0.98f, face * (t * 0.5f + 0.035f)), new Vector3(0.055f, 0.055f, 0.05f), Mt(Brass), 6, 4);
             }
