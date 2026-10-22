@@ -148,6 +148,17 @@ namespace CloneZ
             InteractAction close = _open ? new InteractAction("Close the mailbox", c => SetOpen(false, false)) : null;
             if (close != null && _read >= Come) into.Add(close);
             into.Add(check);
+            // Offer to read all remaining mail at once when more than one unread delivery remains
+            if (_read < Come - 1)
+                into.Add(new InteractAction("Read all mail", c =>
+                {
+                    SetOpen(true, false);
+                    for (int i = _read; i < Come; i++)
+                        foreach (var line in Post[i])
+                            c.Notify(line);
+                    _read = Come;
+                    c.Notify("All mail has been read.");
+                }));
             if (close != null && _read < Come) into.Add(close);
             into.Add(_flagUp
                 ? new InteractAction("Lower the flag", c => SetFlag(c, false))
