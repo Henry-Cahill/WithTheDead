@@ -130,6 +130,8 @@ namespace CloneZ
         /// shoebox on the floor. Returns the wood colour for the doors.</summary>
         public static Color WardrobeBody(RaidMesh m, System.Random rng, Color wood)
         {
+            if (WardrobeCloths == null || WardrobeCloths.Length == 0)
+                return wood; // early-out – nothing to draw, but no crash
             Color c = V(wood, rng, 0.06f);
             Surf body = M(c), inside = M(c * 0.45f);
             m.Box(new Vector3(0f, 0.05f, -0.02f), new Vector3(0.98f, 0.1f, 0.54f), M(c * 0.7f));
