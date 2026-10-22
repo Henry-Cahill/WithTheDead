@@ -141,6 +141,43 @@ namespace CloneZ
             Vector3 bulb = FurnitureBuilder.VanityLight(m, glow, Face(f, side, along, y), n, f.Along);
             float intensityFactor = LightVariation(bulb);
             HomeLamp.Attach(piece.transform, bulb, CloneZConfig.BathLightRange, CloneZConfig.BathLightIntensity * intensityFactor, true, glow, LightCircuits.Bath);
+
+            // Detailed vanity light geometry
+            // metal housing (thin box) – 0.045 m tall, 0.10 m wide, 0.02 m deep
+            Surf brass = DecorPalette.Metal(FurnitureBuilder.Brass);
+            m.Box(bulb + n * 0.005f, new Vector3(0.10f, 0.045f, 0.02f), brass);
+
+            // frosted glass diffuser – slightly translucent, non‑emissive
+            Vector3 glassCenter = bulb + n * 0.006f + Vector3.up * 0.015f;
+            Vector3 glassSize = new Vector3(0.08f, 0.035f, 0.015f);
+            m.Box(glassCenter, glassSize,
+                DecorPalette.Matte(new Color(0.92f, 0.93f, 1.00f, 0.18f)));
+
+            // brass knob for tilt/aim – cylinder 0.008 m radius, 0.012 m tall
+            Vector3 knobPos = bulb + n * 0.011f + Vector3.right * 0.04f + Vector3.up * 0.022f;
+            m.Cylinder(knobPos, 0.008f, 0.012f, 6, brass);
+
+            // tiny screw on knob
+            Vector3 screwPos = knobPos + Vector3.up * 0.003f;
+            m.Box(screwPos, new Vector3(0.004f, 0.004f, 0.004f),
+                DecorPalette.Matte(new Color(0.08f, 0.08f, 0.09f)));
+
+            // rust patches – random 2–3 patches
+            Surf rust = DecorPalette.Matte(new Color(0.45f, 0.30f, 0.20f));
+            int rustCount = 2 + UnityEngine.Random.Range(0, 2); // 2–3 patches
+            for (int i = 0; i < rustCount; i++)
+            {
+                float angle = UnityEngine.Random.Range(0f, 360f);
+                Vector3 offset = Quaternion.Euler(0f, angle, 0f) * (Vector3.right * 0.03f + Vector3.up * 0.01f);
+                Vector3 rp = bulb + n * 0.006f + offset;
+                m.Box(rp, new Vector3(0.022f, 0.006f, 0.008f), rust);
+            }
+
+            // wear line – thin strip along top edge of housing
+            Vector3 linePos = bulb + n * 0.011f + Vector3.up * 0.044f;
+            m.Box(linePos, new Vector3(0.10f, 0.002f, 0.002f),
+                DecorPalette.Matte(new Color(0.10f, 0.09f, 0.08f)));
+
         }
 
         // A black carriage lantern beside the front door, on the porch circuit with a dusk sensor.
