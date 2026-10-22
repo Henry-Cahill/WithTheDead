@@ -6577,3 +6577,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   When disabling the component (e.g., `if (comp != null) comp.enabled = false;`) use the cached instance.
   The player sees no visual change; ceilings still appear/disappear correctly based on `ViewState.CeilingsVisible`.
   All other behaviour and fields remain unchanged.
+- [ ] Add a “Flick towel” action to `Assets/Scripts/World/Fixtures/TowelRail.cs` that makes the towel swing visibly when used.
+  Step 1: `Assets/Scripts/World/Fixtures/TowelRail.cs` – inside `public override void GetActions(InteractContext ctx, List<InteractAction> into)` add the new action after the existing “Let towel dry” line: `into.Add(new InteractAction("Flick towel", Flick));`
+  Step 2: `Assets/Scripts/World/Fixtures/TowelRail.cs` – add a new private method right after the existing `Inspect` method: `// New playful action – gives the towel a quick flick causing it to swing.` `private void Flick(InteractContext ctx)` `{` `// Pick a random roll within the allowed crooked range.` `float max = CloneZConfig.TowelCrookedRoll;` `_roll = Random.Range(-max, max);` `ctx.Notify("You give the towel a quick flick; it ripples back and forth.");` `}`
+  Step 3: `Assets/Scripts/World/Fixtures/TowelRail.cs` – ensure the `CaptureState` and `RestoreState` already persist `_roll`, so the flick’s angle is saved automatically (no change needed).
+  Step 4: `Assets/Scripts/World/Fixtures/TowelRail.cs` – optionally, to give audio feedback, add a one‑liner at the end of `Flick` (only if the project has a generic SFX backend): `SfxBackend.Instance?.PlayOneShot("towel_flick");`
