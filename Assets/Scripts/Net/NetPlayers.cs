@@ -27,6 +27,8 @@ namespace CloneZ
     private static PlayerController s_Ctrl;
     private static PlayerCombat s_Combat;
     private static PlayerInventory s_Inv;
+        private static PlayerInventory s_LastInv;
+        private static PlayerMonster s_LastHunter;
 
         /// <summary>Read‑only map of remote player IDs to their proxy objects.</summary>
         public static IReadOnlyDictionary<ulong, RemotePlayer> Proxies => s_Proxies;
@@ -89,7 +91,18 @@ namespace CloneZ
             if (me.Cloaked) flags |= 128;
             PlayerMonster hunter = PlayerMonster.Local;
             if (hunter != null && hunter.Attacking) flags |= 2;   // a hunter never aims: the bit means "striking"
-            string held = hunter != null && hunter.Def != null ? "form:" + hunter.Def.Id : inv != null && inv.EquippedWeapon != null ? inv.EquippedWeapon.Id : "";
+            // Cache held‑item string only when inventory or hunter changes
+        string held;
+        if (s_Inv != s_LastInv || hunter != s_LastHunter)
+        {
+            held = hunter != null && hunter.Def != null ? "form:" + hunter.Def.Id : inv != null && inv.EquippedWeapon != null ? inv.EquippedWeapon.Id : "";
+            s_LastInv = s_Inv;
+            s_LastHunter = hunter;
+        }
+        else
+        {
+            held = s_LastHeld;
+        }
             if (held != s_LastHeld) s_LastHeld = held;
             if (s_MainCamera == null || !s_MainCamera) s_MainCamera = Camera.main;
             Camera cam = s_MainCamera;
