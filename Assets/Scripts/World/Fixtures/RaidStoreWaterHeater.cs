@@ -68,6 +68,7 @@ namespace CloneZ
             into.Add(new InteractAction("Dump water from tank", DumpWater).DisabledIf(!HasWater, DryMessage));
             into.Add(new InteractAction("Inspect water level", InspectWaterLevel));
             into.Add(new InteractAction("Check the pilot light", CheckPilot));
+            into.Add(new InteractAction("Check water temperature", CheckTemperature));
             if (_pilot)
                 into.Add(new InteractAction("Turn off the pilot", Extinguish));
             else
@@ -110,6 +111,8 @@ namespace CloneZ
                 ? "Through the little sight glass a blue pilot flame stands steady. The tank's warm to the touch."
                 : "The sight glass is dark: the pilot's gone out. The tank is stone cold.");
         }
+
+        private void CheckTemperature(InteractContext ctx) { ctx.Notify(_pilot ? "The water feels warm." : "The water is cold."); }
 
         private void Relight(InteractContext ctx)
         {
