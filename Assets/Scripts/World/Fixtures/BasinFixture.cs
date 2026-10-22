@@ -56,6 +56,17 @@ namespace CloneZ
             
         };
 
+        /// <summary>Random lines spoken when the player washes, echoing 1993 winter‑Kentucky life.</summary>
+        // Style reference: "The metal of the tap feels icy, and you wonder how long the mains will stay silent."
+        private static readonly string[] WashLines =
+        {
+            "The cold water slaps your palms, a sharp reminder that winter never left.",
+            "Steam rises from the basin like the ghost of a forgotten stove, fleeting and warm.",
+            "You scrub your hands until the suds turn gray with soot, a small battle against the dust.",
+            "The faucet gurgles, echoing the wind outside as you wash away yesterday’s grime.",
+            "Your fingers tremble under the icy stream, but the clean feeling steadies them."
+        };
+
         private HomeFurniture _host;
         private string _key;
         private Vector3 _point, _spout;
@@ -252,12 +263,24 @@ namespace CloneZ
         private void Wash(InteractContext ctx)
         {
             bool mains = WaterMains.MainsOn;
+            
             ReturnTap(ctx);
             UseStored(CloneZConfig.BasinWashWater);
             WaterUse.Freshen(ctx, CloneZConfig.BasinWashFreshen);
-            ctx.Notify(!mains ? "You wash in the water you saved in the basin. Every drop counts now."
-                : PowerGrid.HousePowered ? "Warm water and soap. You scrub your hands, splash your face and feel more like yourself."
-                : "The water's cold \u2014 no power for the heater \u2014 but it wakes you up.");
+            if (wet)
+            {
+                // Choose a random wash flavour line.
+                ctx.Notify(WashLines[Random.Range(0, WashLines.Length)]);
+            }
+            else
+            {
+                // No water left – keep the existing fallback.
+                ctx.Notify(!mains
+                    ? "You wash in the water you saved in the basin. Every drop counts now."
+                    : PowerGrid.HousePowered
+                        ? "Warm water and soap. You scrub your hands, splash your face and feel more like yourself."
+                        : "The water's cold — no power for the heater — but it wakes you up.");
+            }
         }
 
         private void Brush(InteractContext ctx)

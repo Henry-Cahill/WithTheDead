@@ -181,16 +181,16 @@ namespace CloneZ
             if (HealthRestore > 0f) StatLine(sb, "Heals", HealthRestore.ToString("0") + " HP");
             if (InfectionReduce > 0f) StatLine(sb, "Cures", InfectionReduce.ToString("0") + " infection");
             if (Perishable) StatLine(sb, "Keeps", "~" + Mathf.RoundToInt(ShelfLifeHours) + "h before spoiling");
-            if (Cookable)
+if (Cookable && HasId(CookedId))
             {
                 ItemDef cooked = ItemDatabase.Get(CookedId);
-                StatLine(sb, "Cook", "at a stove \u2192 " + (cooked != null ? cooked.DisplayName : CookedId));
+                StatLine(sb, "Cook", "at a stove → " + (cooked != null ? cooked.DisplayName : CookedId));
             }
             if (RawHazard) StatLine(sb, "<color=#e0a53c>Raw</color>", "cook it first \u2014 eating it raw risks illness");
-            if (IsSeed)
+if (IsSeed && HasId(CropId))
             {
                 ItemDef crop = ItemDatabase.Get(CropId);
-                StatLine(sb, "Plant", "sow at a tilled plot \u2192 " + (crop != null ? crop.DisplayName : CropId));
+                StatLine(sb, "Plant", "sow at a tilled plot → " + (crop != null ? crop.DisplayName : CropId));
             }
             if (IsWaterContainer && !HoldsWater) StatLine(sb, "Empty", "fill at a tap or rain barrel");
             if (WaterTainted) StatLine(sb, "<color=#e0a53c>Tainted</color>", "boil at a stove before drinking");
@@ -214,8 +214,11 @@ namespace CloneZ
                 StatLine(sb, "Damage", dmg);
                 StatLine(sb, "Range", FirearmRange.ToString("0") + " m");
                 StatLine(sb, "Magazine", MagazineSize.ToString());
-                ItemDef ammo = ItemDatabase.Get(AmmoId);
-                StatLine(sb, "Ammo", ammo != null ? ammo.DisplayName : AmmoId);
+                if (HasId(AmmoId))
+                {
+                    ItemDef ammo = ItemDatabase.Get(AmmoId);
+                    StatLine(sb, "Ammo", ammo != null ? ammo.DisplayName : AmmoId);
+                }
             }
             if (Category == ItemCategory.Ammo) StatLine(sb, "Type", "Ammunition");
 
@@ -271,6 +274,7 @@ namespace CloneZ
             => ConditionLossChance >= 24 ? "rugged" : ConditionLossChance >= 12 ? "sturdy" : "fragile";
         private static void StatLine(System.Text.StringBuilder sb, string key, string value)
             => sb.Append("\n<color=#c8ccd2>").Append(key).Append(":</color> <b>").Append(value).Append("</b>");
+        private static bool HasId(string id) => !string.IsNullOrEmpty(id);
     }
 
     /// <summary>A quantity of a given item held within an <see cref="Inventory"/>.</summary>
@@ -497,7 +501,7 @@ public static ItemDef Get(string id)
             {
                 int total = table.EmptyWeight;
                 for (int i = 0; i < table.Entries.Length; i++) total += table.Entries[i].Weight;
-                if (total <= 0) return;
+                if (total <= 0) continue; // no selectable entry this roll – skip to next roll
 
                 int pick = rng.Next(total);
                 if (pick < table.EmptyWeight) continue;   // an empty draw — containers are often sparse

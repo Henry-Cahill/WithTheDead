@@ -50,10 +50,16 @@ namespace CloneZ
                 _ss = SandboxSettings.Current;
             }
             // Update base render settings when they change externally
-            if (!Mathf.Approximately(RenderSettings.fogStartDistance, _lastStart)) _baseStart = RenderSettings.fogStartDistance;
-            if (!Mathf.Approximately(RenderSettings.fogEndDistance, _lastEnd)) _baseEnd = RenderSettings.fogEndDistance;
-            if (RenderSettings.ambientLight != _lastAmbient) _baseAmbient = RenderSettings.ambientLight;
-            if (RenderSettings.fogColor != _lastFogColor) _baseFogColor = RenderSettings.fogColor;
+            // Capture current render settings
+            float curStart = RenderSettings.fogStartDistance;
+            float curEnd = RenderSettings.fogEndDistance;
+            Color curAmbient = RenderSettings.ambientLight;
+            Color curFogColor = RenderSettings.fogColor;
+            // Update base values if they have changed since last frame
+            if (!Mathf.Approximately(curStart, _lastStart)) _baseStart = curStart;
+            if (!Mathf.Approximately(curEnd, _lastEnd)) _baseEnd = curEnd;
+            if (curAmbient != _lastAmbient) _baseAmbient = curAmbient;
+            if (curFogColor != _lastFogColor) _baseFogColor = curFogColor;
 
             // Determine if any inputs changed since last frame
             float curFogDensity = _zone.FogDensity;
@@ -70,10 +76,10 @@ namespace CloneZ
                 curTint == _lastTint &&
                 Mathf.Approximately(curSkyOverrideStrength, _lastSkyOverrideStrength) &&
                 curIsNight == _lastIsNight &&
-                Mathf.Approximately(RenderSettings.fogStartDistance, _lastStart) &&
-                Mathf.Approximately(RenderSettings.fogEndDistance, _lastEnd) &&
-                RenderSettings.ambientLight == _lastAmbient &&
-                RenderSettings.fogColor == _lastFogColor;
+                Mathf.Approximately(curStart, _lastStart) &&
+                Mathf.Approximately(curEnd, _lastEnd) &&
+                curAmbient == _lastAmbient &&
+                curFogColor == _lastFogColor;
 
             if (inputsUnchanged) return; // early‑out, nothing changed
 

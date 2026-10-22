@@ -16,6 +16,8 @@ namespace CloneZ
         private const float Thick = 0.22f;
         private const float DoorWidth = 1.3f;
         private const float DoorHeight = 2.15f;
+        private const float DoorFrameThickness = 0.08f; // thickness of side‑studs and lintel
+        private const float DoorLintelHeight = 0.12f; // height of the top lintel piece
         private const int MaxContainers = 450;
 
 
@@ -132,6 +134,31 @@ namespace CloneZ
             BuildRoofEaves(site);
         }
 
+        private static void BuildDoorFrame(Site site, Vector2 a, Vector2 d, float doorPos, float doorYaw, Vector2 outward, Surf exterior)
+        {
+            // a = start of wall edge, d = unit direction along edge, doorPos = centre of door from a
+            // side studs
+            float halfWidth = DoorWidth * 0.5f;
+            Vector2 left = a + d * (doorPos - halfWidth);
+            Vector2 right = a + d * (doorPos + halfWidth);
+            Vector3 offset = new Vector3(outward.x, 0f, outward.y) * (Thick * 0.5f + DoorFrameThickness * 0.5f);
+            // left stud
+            Vector3 leftCenter = To3(left, DoorHeight * 0.5f) + offset;
+            Vector3 leftSize = new Vector3(DoorFrameThickness, DoorHeight, DoorFrameThickness);
+            site.Town.Out.Solid(leftCenter).Box(leftCenter, leftSize, doorYaw, exterior);
+            site.Town.PropCollider(leftCenter, leftSize, doorYaw);
+            // right stud
+            Vector3 rightCenter = To3(right, DoorHeight * 0.5f) + offset;
+            Vector3 rightSize = leftSize;
+            site.Town.Out.Solid(rightCenter).Box(rightCenter, rightSize, doorYaw, exterior);
+            site.Town.PropCollider(rightCenter, rightSize, doorYaw);
+            // top lintel
+            Vector3 lintelCenter = To3(a + d * doorPos, DoorHeight + DoorLintelHeight * 0.5f) + offset;
+            Vector3 lintelSize = new Vector3(DoorWidth + 2f * DoorFrameThickness, DoorLintelHeight, DoorFrameThickness);
+            site.Town.Out.Solid(lintelCenter).Box(lintelCenter, lintelSize, doorYaw, exterior);
+            site.Town.PropCollider(lintelCenter, lintelSize, doorYaw);
+        }
+
         private static void Enterable(Site site, Footprint f, System.Random rng)
         {
             MapBuilding b = f.Data;
@@ -162,10 +189,12 @@ namespace CloneZ
                     Wall(site, a, d, inset, -Thick * 0.5f, d0, 0f, groundTop, yaw, outside, true);
                     Wall(site, a, d, inset, d1, len + Thick * 0.5f, 0f, groundTop, yaw, outside, true);
                     Wall(site, a, d, inset, d0, d1, DoorHeight, groundTop, yaw, outside, true);
-                    doorPoint = a + d * (len * 0.5f);
-                    doorYaw = yaw;
-                    doorOutward = outward;
-                    site.Take(doorPoint + outward * 1.2f, 1.1f);   // keep the doorstep clear of props
+                        doorPoint = a + d * (len * 0.5f);
+                        doorYaw = yaw;
+                        doorOutward = outward;
+                        site.Take(doorPoint + outward * 1.2f, 1.1f);   // keep the doorstep clear of props
+                        // Build deterministic wooden door frame around the entrance
+                        BuildDoorFrame(site, a, d, len * 0.5f, yaw, outward, outside);
                 }
                 else Wall(site, a, d, inset, -Thick * 0.5f, len + Thick * 0.5f, 0f, groundTop, yaw, outside, true);
                 if (height > groundTop)

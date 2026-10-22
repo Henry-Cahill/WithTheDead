@@ -204,8 +204,8 @@ private bool _running;                // the cold tap is open and water is comin
             {
                 if (_plugIn || _level <= 0f)
                     return;
+
                 // No noise or wobble needed when not running.
-                return;
             }
             if (now >= _nextNoise)
             {
@@ -231,7 +231,8 @@ private bool _running;                // the cold tap is open and water is comin
                         ctx.Notify("You turn off the tap and pull the plug.");
                     }));
                 }
-                into.Add(PlugAction(mains));
+                var plug = PlugAction(mains);
+                if (plug != null) into.Add(plug);
                 WaterUse.AddDrinkAndFill(ctx, this, into);
             }
             else
@@ -239,7 +240,8 @@ private bool _running;                // the cold tap is open and water is comin
                 // Once the mains are off, what's standing in the sink comes first.
                 WaterUse.AddDrinkAndFill(ctx, this, into);
                 into.Add(new InteractAction("Turn on the tap", _toggleTap));
-                into.Add(PlugAction(mains));
+                var plug = PlugAction(mains);
+                if (plug != null) into.Add(plug);
             }
 
             var wash = new InteractAction("Wash your hands and face", _wash)
@@ -275,6 +277,9 @@ private bool _running;                // the cold tap is open and water is comin
 
         private InteractAction PlugAction(bool mains)
         {
+            // If the tap is running and the plug is in, the combined action already pulls the plug
+            // and turns the tap off, so we must not offer a second “Pull the plug out” action.
+            if (_running && _plugIn) return null;
             if (!_plugIn) return new InteractAction("Put the plug in", _putPlug);
             return new InteractAction(!mains && _level > 0.05f ? "Pull the plug out and let the water go" : "Pull the plug out", _pullPlug);
         }

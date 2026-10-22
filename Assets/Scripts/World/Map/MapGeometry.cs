@@ -222,13 +222,22 @@ namespace CloneZ
          };
 
          // Sidewalk colour palette – deterministic variation based on OSM id.
-         private static readonly Color[] kSidewalkPalette = new[]
-         {
-             new Color(0.70f, 0.68f, 0.65f), // muted concrete gray 1
-             new Color(0.62f, 0.60f, 0.57f), // muted concrete gray 2
-             new Color(0.54f, 0.52f, 0.49f), // muted concrete gray 3
-             new Color(0.46f, 0.44f, 0.41f)  // muted concrete gray 4
-         };
+private static readonly Color[] kSidewalkPalette = new[]
+                      {
+                          new Color(0.70f, 0.68f, 0.65f), // muted concrete gray 1
+                          new Color(0.62f, 0.60f, 0.57f), // muted concrete gray 2
+                          new Color(0.54f, 0.52f, 0.49f), // muted concrete gray 3
+                          new Color(0.46f, 0.44f, 0.41f)  // muted concrete gray 4
+                      };
+
+        // Kerb colour palette – deterministic variation based on OSM id.
+        private static readonly Color[] kKerbPalette = new[]
+        {
+            new Color(0.55f, 0.55f, 0.55f), // concrete‑gray
+            new Color(0.48f, 0.48f, 0.48f), // darker concrete
+            new Color(0.62f, 0.62f, 0.58f), // slight weathered tone
+            new Color(0.50f, 0.50f, 0.46f) // muted stone
+        };
         /// <summary>
         /// Deterministic colour for a building based on its OSM id.
         /// </summary>
@@ -261,6 +270,46 @@ namespace CloneZ
         {
             int idx = (osmId.GetHashCode() & 0x7fffffff) % kRoadPalette.Length;
             return kRoadPalette[idx];
+        }
+
+        // NOTE: Call GenerateKerbQuads(roadPolygon, width) and then site.Take(...) with GetKerbColor(osmId)
+        // to render period‑appropriate road kerbs.
+
+        /// <summary>
+        /// Deterministic colour for a road kerb based on its OSM id.
+        /// </summary>
+        public static Color GetKerbColor(int osmId)
+        {
+            int idx = (osmId.GetHashCode() & 0x7fffffff) % kKerbPalette.Length;
+            return kKerbPalette[idx];
+        }
+
+        /// <summary>
+        /// Generates a list of thin quad‑polygons that represent a kerb running along the outer edge of
+        /// a road polygon. <paramref name="roadPoly"/> must be anticlockwise (the interior is on the left side).
+        /// <paramref name="width"/> is the kerb thickness in metres.
+        /// Each quad is ordered anticlockwise so that later triangulation works correctly.
+        /// </summary>
+        public static List<List<Vector2>> GenerateKerbQuads(List<Vector2> roadPoly, float width = 0.2f)
+        {
+            var result = new List<List<Vector2>>();
+            if (roadPoly == null || roadPoly.Count < 2) return result;
+            for (int i = 0; i < roadPoly.Count; i++)
+            {
+                Vector2 a = roadPoly[i];
+                Vector2 b = roadPoly[(i + 1) % roadPoly.Count];
+                // Edge direction
+                Vector2 edge = b - a;
+                if (edge.sqrMagnitude < EPS) continue;
+                // For an anticlockwise polygon the interior lies to the left of the edge,
+                // so outward (kerb) is to the right: rotate edge clockwise.
+                Vector2 outward = new Vector2(edge.y, -edge.x).normalized * width;
+                Vector2 aOut = a + outward;
+                Vector2 bOut = b + outward;
+var quad = new List<Vector2> { a, aOut, bOut, b };
+                result.Add(quad);
+            }
+            return result;
         }
 
         private static bool Inside(Vector2 p, Rect r, int edge)

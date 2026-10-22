@@ -270,10 +270,11 @@ namespace CloneZ
     public sealed class EconomyTicker : MonoBehaviour
     {
         private float _checkAt, _expireAt;
+private bool _destroyed;
 
         private void Update()
         {
-            if (!GameSession.IsExtraction) { Destroy(gameObject); return; }
+            if (!GameSession.IsExtraction) { if (!_destroyed) { _destroyed = true; Destroy(gameObject); } return; }
             if (Time.time >= _expireAt)
             {
                 _expireAt = Time.time + 15f;

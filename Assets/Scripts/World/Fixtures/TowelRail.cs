@@ -108,9 +108,10 @@ private void Update()
         {
             into.Add(new InteractAction("Dry yourself off", DryOff).Timed(CloneZConfig.TowelDrySeconds, "Drying off", HumanoidActivity.Use));
             into.Add(new InteractAction("Straighten the towel", Straighten));
-            into.Add(new InteractAction("Inspect towel", Inspect));
+            // into.Add(new InteractAction("Inspect towel", Inspect));
             into.Add(new InteractAction("Check towel dryness", CheckDryness));
             into.Add(new InteractAction("Let towel dry", LetDry));
+            into.Add(new InteractAction("Flick towel", Flick));
         }
 
         private void CheckDryness(InteractContext ctx)
@@ -170,13 +171,14 @@ private void Update()
             ctx.Notify("You give the towel some extra air, and it dries instantly.");
         }
 
-        // New inspection action
-        private void Inspect(InteractContext ctx)
+        // New playful action – gives the towel a quick flick causing it to swing.
+        private void Flick(InteractContext ctx)
         {
-            // Report towel condition: dampness and crookedness.
-            string damp = IsDamp ? "damp" : "dry";
-            string crooked = IsCrooked ? "crooked" : "straight";
-            ctx.Notify($"The towel is {damp} and {crooked}.");
+            float max = CloneZConfig.TowelCrookedRoll;
+            _roll = Random.Range(-max, max);
+            ctx.Notify("You give the towel a quick flick; it ripples back and forth.");
+            // Optional audio feedback – add a SFX id if available
+            // Sfx.Play(SfxIds.SomeId, transform.position);
         }
 
         public override void CaptureState(FixtureSave save)
