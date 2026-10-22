@@ -111,6 +111,7 @@ namespace CloneZ
 
         private void OnEnable()
     {
+if (!All.Contains(this)) All.Add(this);
         StartLifetimeIfNeeded();
     }
 
