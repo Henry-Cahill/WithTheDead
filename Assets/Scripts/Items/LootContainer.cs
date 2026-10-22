@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 namespace CloneZ
@@ -85,10 +86,38 @@ namespace CloneZ
             }
         }
 
-        private void OnEnable() { if (!All.Contains(this)) All.Add(this); }
-        private void OnDisable() { All.Remove(this); }
+    private Coroutine _lifetimeCoroutine;
 
-        #region IDemolishable
+    private IEnumerator LifetimeRoutine()
+    {
+        while (Lifetime > 0f)
+        {
+            Lifetime -= Time.deltaTime;
+            if (Lifetime <= 0f)
+            {
+                Destroy(gameObject);
+                yield break;
+            }
+            yield return null;
+        }
+    }
+
+        private void OnEnable()
+    {
+        if (!All.Contains(this)) All.Add(this);
+        if (Lifetime > 0f && _lifetimeCoroutine == null)
+            _lifetimeCoroutine = StartCoroutine(LifetimeRoutine());
+    }
+
+    private void OnDisable()
+    {
+        All.Remove(this);
+        if (_lifetimeCoroutine != null)
+        {
+            StopCoroutine(_lifetimeCoroutine);
+            _lifetimeCoroutine = null;
+        }
+    }
         /// <summary>Name used when displaying this container as a demolishable object.</summary>
         public string DemolishName => "container";
         public bool CanDemolish(out string reason)
@@ -107,16 +136,11 @@ namespace CloneZ
             gameObject.SetActive(false);   // drop out of the navmesh bake before the rebuild runs
             Destroy(gameObject);
         }
-        #endregion
+            // #endregion removed – region not needed
 
-        private void Update()
-        {
-            if (Lifetime > 0f)
-            {
-                Lifetime -= Time.deltaTime;
-                if (Lifetime <= 0f) Destroy(gameObject);
-            }
-        }
+    // Removed per‑frame Update that checked Lifetime.
+    // Instead we start a coroutine when the container is enabled if it has a positive Lifetime.
+    // This avoids unnecessary work for containers that never expire (the common case).
 
         /// <summary>Builds a container box in the world and fills it from its loot table.</summary>
         public static LootContainer Spawn(Transform parent, ContainerType type, Vector3 position, int seed)
