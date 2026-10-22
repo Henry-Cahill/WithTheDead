@@ -120,7 +120,8 @@ namespace CloneZ
         {
             // Opened from the inventory's container column (or being searched): swing the doors open to match.
             if (_open || !HasParts) return;
-            if (_player == null) return; // No player reference cached, nothing to do.
+            if (_player == null) _player = PlayerInteractor.Current;   // fixtures can be built before the player exists
+            if (_player == null) return;
             if (Container != null && (_player.ViewedContainer == Container || _player.SearchTarget == Container))
                 SetOpen(true, false);
         }
@@ -128,8 +129,6 @@ namespace CloneZ
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             string noun = Noun;
-            // Knock action adds noise without opening the storage
-            into.Add(new InteractAction("Knock on the " + noun, c => { MakeNoise(_opt.Noise); }));
             bool searched = Container == null || Container.Searched || Container.SearchTime <= 0f;
             string look = _opt.LookLabel ?? (searched ? "Look inside the " + noun : "Search the " + noun);
             if (HasParts)
@@ -153,6 +152,8 @@ namespace CloneZ
             }
             else into.Add(new InteractAction(look, ShowContents));
             _opt.ExtraActions?.Invoke(ctx, into);
+            // Knock action adds noise without opening the storage (last: the first enabled action is the [E] default)
+            into.Add(new InteractAction("Knock on the " + noun, c => { MakeNoise(_opt.Noise); }));
         }
 
         private void ShowContents(InteractContext ctx)
@@ -185,7 +186,7 @@ namespace CloneZ
             bool open = (save.State & 1) != 0;
             _open = open;
             for (int i = 0; i < _parts.Length; i++)
-                if (_parts[i] != null) _parts[i].SetOpen(open, false);
+                if (_parts[i] != null) _parts[i].SetOpen(open, true);   // FixturePart's flag is "instant" (no noise either way)
             _opt.OnOpenChanged?.Invoke(open);
         }
     }

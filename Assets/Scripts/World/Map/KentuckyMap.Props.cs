@@ -274,9 +274,9 @@ namespace CloneZ
                 site.Town.PropCollider(spot3 + Vector3.up * 1.1f, new Vector3(2.4f, 2.2f, 0.3f), yaw);
                 site.Take(spot, 1.4f);
                 signs++;
-                // Add scattered park litter (trash bags and litter) after processing all points.
-                BuildParkProps(site);
             }
+            // Add scattered park litter (trash bags and litter) after processing all points.
+            BuildParkProps(site);
         }
 
         /// <summary>The free spot nearest <paramref name="near"/>, within 12 m, for something of radius

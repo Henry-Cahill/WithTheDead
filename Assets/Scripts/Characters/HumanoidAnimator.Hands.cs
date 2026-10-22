@@ -295,7 +295,7 @@ namespace CloneZ
                     if (HasReachTarget) reach = ReachOffset(ReachTarget);
                     reach += new Vector3(0.008f * Mathf.Sin(t * 4.1f), 0.012f * Mathf.Sin(t * 5.3f), 0.01f * Mathf.Sin(t * 3.7f + 1f));
                     Vector3 fingers = Dir(new Vector3(reach.x * 0.6f - 0.06f, reach.y * 0.5f, 1f));
-                    right = Goal(HasReachTarget ? _chest + _frame * ReachOffset(ReachTarget) : At(reach), HandRot(fingers, Dir(new Vector3(-0.45f, -1f, 0.15f)), true), w);
+                    right = Goal(At(reach), HandRot(fingers, Dir(new Vector3(-0.45f, -1f, 0.15f)), true), w);
                     break;
                 }
 

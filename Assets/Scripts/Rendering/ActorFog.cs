@@ -34,6 +34,9 @@ namespace CloneZ
         {
             if (Time.time < _next) return;
             _next = Time.time + 0.1f;
+            // Gear and weapons join deeper than the direct children (hand and spine bones), which
+            // OnTransformChildrenChanged never reports.
+            if (_transform.hierarchyCount != _count) Cache();
 
             bool show = true;
             if (ZombieVisibility.HasSight && Actor.LocalPlayer != null && _actor != Actor.LocalPlayer)
@@ -61,6 +64,7 @@ namespace CloneZ
 
         private void Cache()
         {
+            if (_transform == null) _transform = transform;   // the children can change before Start
             _renderers = GetComponentsInChildren<Renderer>(true);
             _count = _transform.hierarchyCount;
             for (int i = 0; i < _renderers.Length; i++)

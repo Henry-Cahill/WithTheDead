@@ -519,9 +519,6 @@ namespace CloneZ
                          EquippedWeaponId = st.GetString(20),
                          LoadedAmmo = st.GetInt(21),
                      };
-                // Ensure wound and item lists are initialised for older saves or when field initialisers are bypassed
-                p.Wounds = new List<WoundSave>();
-                p.Items = new List<StackSave>();
             }
             if (p == null) return null;
 

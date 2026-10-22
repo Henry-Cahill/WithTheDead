@@ -90,7 +90,7 @@ namespace CloneZ
         private void LateUpdate()
         {
             if (_leaving) return;
-            if (!_frozen) Freeze();
+            if (!_frozen || Time.timeScale != 0f || !UIState.GameplayBlocked || !Cursor.visible || Cursor.lockState != CursorLockMode.None) Freeze();
         }
 
         private void Freeze()
@@ -113,6 +113,7 @@ namespace CloneZ
             if (_leaving) return;
             _leaving = true;
             _frozen = false;
+            Time.timeScale = 1f;
             UIState.GameplayBlocked = false;
             if (nextRaid && ProfileStore.ActiveCharacter != null)
             {
@@ -232,7 +233,7 @@ AddBorder(prt, new Color(0.25f, 0.27f, 0.30f, 0.9f), 3f);
             }
 
             int capacity = RowsPerColumn * 2;
-            int shown = Math.Min(lines.Count, capacity);
+            int shown = lines.Count <= capacity ? lines.Count : capacity - 1;   // the last slot says "… and N more"
             for (int i = 0; i < shown; i++)
             {
                 RaidSummaryLine line = lines[i];

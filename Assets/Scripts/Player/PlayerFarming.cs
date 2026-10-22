@@ -39,6 +39,11 @@ public string WorkLabel { get; private set; } = "";
 
         private void Awake()
         {
+            _stats = GetComponent<PlayerStats>();
+            _controller = GetComponent<PlayerController>();
+            _inventory = GetComponent<PlayerInventory>();
+            _skills = GetComponent<PlayerSkills>();
+            _interactor = GetComponent<PlayerInteractor>();
             _keyboard = Keyboard.current;
         }
         private PlayerStats _stats;

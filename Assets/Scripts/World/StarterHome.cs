@@ -201,6 +201,9 @@ namespace CloneZ
         public static void Raise(Transform world)
         {
             if (BuildPiece.All.Count > 0) return;
+            // The details below seed Unity's shared random stream per slot for their jitter; hand the game its own
+            // stream back afterwards rather than leaving every run on the same seed.
+            UnityEngine.Random.State randomState = UnityEngine.Random.state;
 foreach (Slot s in Slots)
             {
                 var piece = BuildPiece.Spawn(world, s.Type, BuildPiece.CenterFor(s.Type, new Vector3(s.X, 0f, s.Z)), s.Yaw, 1f, prebuilt: true);
@@ -225,6 +228,7 @@ foreach (Slot s in Slots)
                     capOffset.z += (UnityEngine.Random.value - 0.5f) * 0.02f;
                     cap.transform.localPosition = capOffset;
                     cap.transform.localScale = new Vector3(0.04f, 0.02f, 0.02f);
+                    UnityEngine.Object.Destroy(cap.GetComponent<Collider>());   // visual only, like the rest of the finish
                     var rend = piece.GetComponentInChildren<Renderer>();
                     if (rend != null) cap.GetComponent<Renderer>().sharedMaterial = rend.sharedMaterial;
                 }
@@ -247,6 +251,7 @@ var handle = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
                       offset.z += (UnityEngine.Random.value - 0.5f) * 0.02f;
                       handle.transform.localPosition = offset;
                       handle.transform.localScale = new Vector3(0.04f, 0.02f, 0.02f);
+                      UnityEngine.Object.Destroy(handle.GetComponent<Collider>());   // nothing to snag on in the doorway
                       var rend = piece.GetComponentInChildren<Renderer>();
                       if (rend != null) handle.GetComponent<Renderer>().sharedMaterial = rend.sharedMaterial;
 // Add metal strike‑plate above the handle
@@ -263,6 +268,7 @@ var handle = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
                      };
                      plate.transform.localPosition = plateOffset;
                      plate.transform.localScale = new Vector3(0.06f, 0.02f, 0.01f);
+                     UnityEngine.Object.Destroy(plate.GetComponent<Collider>());
                      if (rend != null) plate.GetComponent<Renderer>().sharedMaterial = rend.sharedMaterial;
 
 }
@@ -284,10 +290,12 @@ var handle = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
                         };
                         latch.transform.localPosition = latchOffset;
                         latch.transform.localScale = new Vector3(0.04f, 0.02f, 0.01f);
+                        UnityEngine.Object.Destroy(latch.GetComponent<Collider>());
                         var rend = piece.GetComponentInChildren<Renderer>();
                         if (rend != null) latch.GetComponent<Renderer>().sharedMaterial = rend.sharedMaterial;
                     }
                 }
+            UnityEngine.Random.state = randomState;
             LootContainer.Spawn(world, ContainerType.Crate, CrateSpot, 7777);
         }
 

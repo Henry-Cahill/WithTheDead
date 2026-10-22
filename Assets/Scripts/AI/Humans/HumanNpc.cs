@@ -396,10 +396,13 @@ namespace CloneZ
 
             Face(_target.transform.position);
             if (Time.time < _reloadUntil) {
-                // Reloading – clear any cover state because the NPC may be away from cover.
-                _hasCover = false;
-                _inCover = false;
-                Crouched = false;
+                // Reload crouched behind cover; only drop a stale cover state when the NPC is away from its cover spot.
+                if (_inCover && HumanUtil.FlatDistance(me, _cover) > 1.5f)
+                {
+                    _hasCover = false;
+                    _inCover = false;
+                }
+                Crouched = _inCover;
                 return;
             }
             if (_mag <= 0)

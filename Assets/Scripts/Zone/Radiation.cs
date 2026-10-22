@@ -35,6 +35,8 @@ private PlayerLimbs _limbs;
         private void Awake()
         {
             Local = this;
+            _stats = GetComponent<PlayerStats>();
+            _limbs = GetComponent<PlayerLimbs>();
             _cachedExtraction = GameSession.IsExtraction;
             _cachedZone = _cachedExtraction ? ZoneCatalog.Current : null;
             CharacterProfile c = ProfileStore.ActiveCharacter;
@@ -283,6 +285,7 @@ public static RadiationSpot Spawn(Transform parent, Vector3 at, float radius, fl
         }
 
     private bool _prevShow;
+    private bool _showApplied;   // false until the children's active state has been set once (forces the first update)
     private string _prevDose = ""; // retained for compatibility, not used
     private string _prevTrend = "";
     private bool _prevShielded;
@@ -292,11 +295,12 @@ public static RadiationSpot Spawn(Transform parent, Vector3 at, float radius, fl
         {
             PlayerRadiation r = PlayerRadiation.Local;
             bool show = r != null && (r.Dose > 0.01f || r.Intake > 0.00002f);
-            if (show != _prevShow)
+            if (!_showApplied || show != _prevShow)
             {
                 for (int i = 0; i < transform.childCount; i++)
                     transform.GetChild(i).gameObject.SetActive(show);
                 _prevShow = show;
+                _showApplied = true;
             }
             if (!show) return;
             float curDose = r.Dose;

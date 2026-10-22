@@ -54,7 +54,7 @@ namespace CloneZ
             m.Cylinder(mouth, 0.08f, 0.15f, 10, G(shade), tilt * Quaternion.Euler(180f, 0f, 0f), 0.4f, false);
             m.Cylinder(j2 - axis * 0.01f, 0.034f, 0.012f, 8, G(shade * 0.8f), tilt);
             m.Ellipsoid(mouth - axis * 0.045f, new Vector3(0.06f, 0.06f, 0.06f), lit ? Gl(WarmGlow) : M(new Color(0.55f, 0.55f, 0.5f)), 6, 4);
-            return j2;
+            return mouth;
         }
 
         /// <summary>A shop stool: round padded seat on four splayed chrome legs with a foot ring.</summary>
@@ -153,7 +153,7 @@ namespace CloneZ
                 // Small chrome handle on the drawer front
                 // Adjusted length to make room for lock bar
                 m.Rod(new Vector3(-0.06f, y + 0.15f, 0.295f + pull), new Vector3(0.06f, y + 0.15f, 0.295f + pull), 0.004f, Mt(Chrome));
-                m.Box(new Vector3(0f, y + 0.02f, 0.29f + pull), new Vector3(0.12f, 0.03f, 0.025f), Mt(Chrome));
+                m.Box(new Vector3(0f, y + 0.02f, 0.29f + pull), new Vector3(0.14f, 0.03f, 0.025f), Mt(Chrome));
                 // ----- metal lock bar ----- (only top drawer)
                 if (i == drawers - 1) {
                     Vector3 lockPos = new Vector3(-0.12f, y + 0.15f, 0.295f + pull);

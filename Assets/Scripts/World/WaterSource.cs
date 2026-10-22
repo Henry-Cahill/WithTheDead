@@ -361,13 +361,12 @@ namespace CloneZ
             float h = Mathf.Lerp(0.04f, 0.88f, level);           // depth of water standing in the barrel
             _waterFill.localScale = new Vector3(0.62f, h * 0.5f, 0.62f);
             _waterFill.position = transform.position + new Vector3(0f, 0.025f + h * 0.5f, 0f);
-            // Highlight gauge stick when barrel is essentially full
-            if (level >= 0.99f)
-            {
-                var rend = _waterFill.GetComponent<Renderer>();
-                if (rend != null)
-                    rend.sharedMaterial = CloneZUtil.Mat(new Color(0.55f, 0.75f, 0.65f), smoothness: 0.8f);
-            }
+            // Highlight the water while the barrel is essentially full; back to plain water once drawn from.
+            var rend = _waterFill.GetComponent<Renderer>();
+            if (rend != null)
+                rend.sharedMaterial = level >= 0.99f
+                    ? CloneZUtil.Mat(new Color(0.55f, 0.75f, 0.65f), smoothness: 0.8f)
+                    : CloneZUtil.Mat(BarrelWater, smoothness: 0.7f);
         }
         #endregion
     }

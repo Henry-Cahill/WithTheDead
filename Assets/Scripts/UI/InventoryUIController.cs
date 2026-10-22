@@ -499,7 +499,7 @@ namespace CloneZ
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(layerRt, _mouse.position.ReadValue(), null, out local);
             Rect r = layerRt.rect;
             float x = Mathf.Clamp(local.x + 2f, r.xMin + 4f, r.xMax - w - 4f);
-            float y = Mathf.Clamp(local.y + 2f, r.yMin + 4f, r.yMax - h - 4f);
+            float y = Mathf.Clamp(local.y + 2f, r.yMin + h + 4f, r.yMax - 4f);
 
             RectTransform panel = Panel(layerRt, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(w, h), new Color(0.07f, 0.08f, 0.1f, 0.98f));
             panel.pivot = new Vector2(0f, 1f);

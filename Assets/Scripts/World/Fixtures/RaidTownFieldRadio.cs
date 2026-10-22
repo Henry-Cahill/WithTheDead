@@ -121,7 +121,7 @@ namespace CloneZ
 
         private void Update()
         {
-            // This method runs only when the component is enabled, i.e., when the radio is on.
+            if (!_on) return;
             float now = Time.time;
             if (now >= _noiseAt)
             {
@@ -166,7 +166,6 @@ namespace CloneZ
         {
             if (_on == on) return;
             _on = on;
-            this.enabled = on;
             ShowOn(on);
             MakeNoise(CloneZConfig.ReceiverKnobNoise);
             if (on)

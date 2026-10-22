@@ -347,8 +347,17 @@ namespace CloneZ
             Register("cz.joinraid", (s, m) => { if (Clients.TryGetValue(s, out NetClientInfo c)) c.InRaid = true; });
             Register("cz.leftraid", (s, m) => { if (Clients.TryGetValue(s, out NetClientInfo c)) c.InRaid = false; });
             Register("cz.roster", OnRoster);
-            // Removed duplicate registration of built‑in named message handlers.
-
+            // The built-ins above are added after the loop, so they need their own netcode registration.
+            foreach (string n in new[] { "cz.session", "cz.hoststage", "cz.joinraid", "cz.leftraid", "cz.roster" })
+            {
+                Action<ulong, NetIn> h = s_Handlers[n];
+                string name = n;
+                cmm.RegisterNamedMessageHandler(name, (sender, reader) =>
+                {
+                    try { h(sender, new NetIn(reader)); }
+                    catch (Exception e) { Debug.LogWarning("[CloneZ] Bad '" + name + "' message: " + e.Message); }
+                });
+            }
             GameFlow.NetworkTransition = Transition;
             NetClock.ViewTimeSource = () => _nm != null ? _nm.ServerTime.Time - (_nm.IsServer ? 0d : NetPlayers.InterpolationDelay) : 0d;
         }

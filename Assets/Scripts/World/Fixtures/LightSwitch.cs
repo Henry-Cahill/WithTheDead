@@ -72,7 +72,18 @@ namespace CloneZ
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
-            if (_circuits == null || _circuits.Length == 0) return;            // Toggle all circuits at once: if any are off, turn all on; otherwise turn all off.
+            if (_circuits == null || _circuits.Length == 0) return;
+            // A toggle for each circuit first, in the plate's order: [E] flips the first, as it always has.
+            for (int i = 0; i < _circuits.Length; i++)
+            {
+                string circuit = _circuits[i];
+                bool on = LightCircuits.IsOn(circuit);
+                into.Add(new InteractAction((on ? "Switch off the " : "Switch on the ") + LightCircuits.Noun(circuit), c => Flip(c, circuit, !on)));
+                // Add inspect action without changing state
+                into.Add(new InteractAction("Inspect the " + LightCircuits.Noun(circuit), c => Inspect(c, circuit)));
+            }
+
+            // Toggle all circuits at once: if any are off, turn all on; otherwise turn all off.
             bool anyOff = false;
             for (int i = 0; i < _circuits.Length; i++)
             {
@@ -82,15 +93,6 @@ namespace CloneZ
             string toggleAllLabel = targetOn ? "Switch all lights on" : "Switch all lights off";
             into.Add(new InteractAction(toggleAllLabel, c => ToggleAll(c, targetOn)));
             into.Add(new InteractAction("Check power", c => CheckPower(c)));
-
-        for (int i = 0; i < _circuits.Length; i++)
-        {
-            string circuit = _circuits[i];
-            bool on = LightCircuits.IsOn(circuit);
-            into.Add(new InteractAction((on ? "Switch off the " : "Switch on the ") + LightCircuits.Noun(circuit), c => Flip(c, circuit, !on)));
-            // Add inspect action without changing state
-            into.Add(new InteractAction("Inspect the " + LightCircuits.Noun(circuit), c => Inspect(c, circuit)));
-        }
         }
 
         // Handles toggling every circuit to the same state.

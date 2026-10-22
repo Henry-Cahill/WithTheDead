@@ -141,9 +141,9 @@ namespace CloneZ
 
         private void Setup(PlayerStats player)
         {
+            _gm = GameManager.Instance;
             BindPlayer(player != null ? player : (_gm != null ? _gm.Player : null));
             _killsAtStart = _gm != null ? _gm.ZombieKills : 0;
-            _gm = GameManager.Instance;
             // Dawn is fixed on the clock when the raid starts (the sandbox's raid length in in-game hours); the
             // countdown is read off the clock after that, so sleeping (which fast-forwards it) brings dawn closer too.
             TimeOfDay tod = TimeOfDay.Instance;

@@ -148,7 +148,8 @@ namespace CloneZ
 
         private void LateUpdate()
         {
-            // _gear is cached in Awake/OnEnable; no per-frame lookup needed
+            if (!EnsureRig()) return;
+            if (_gear == null) _gear = GetComponent<PlayerGear>();
 
             bool carried = _gear != null && _gear.HasFlashlight;
             if (carried != _torchShown) _dirty = true;
@@ -594,7 +595,8 @@ namespace CloneZ
             var port = new Vector3(-0.055f, 1.625f, 0.09f);
             PlayerGearParts.Tube(root, "FilterPort", port + filterDir * 0.012f, filterDir, 0.024f, 0.022f, trim);
             PlayerGearParts.Tube(root, "Filter", port + filterDir * 0.045f, filterDir, 0.044f, 0.037f, canister, true);
-            PlayerGearParts.Box(root, "FilterLabel", port + filterDir * 0.067f, new Vector3(0.01f, 0.006f, 0.001f), hardware);
+            PlayerGearParts.Tube(root, "FilterCap", port + filterDir * 0.069f, filterDir, 0.006f, 0.032f, trim);
+            PlayerGearParts.Box(root, "FilterLabel", port + filterDir * 0.073f, new Vector3(0.01f, 0.006f, 0.001f), hardware);
 
             PlayerGearParts.Band(root, "Harness", new Vector3(0f, 1.695f, -0.024f), 0.101f, 0.118f, 0.014f, Quaternion.Euler(16f, 0f, 0f), web);
         }
@@ -617,6 +619,7 @@ namespace CloneZ
             const float x = -PackStrapX, y = 1.335f;
             float lift = _back.Def != null ? 0.013f : 0.002f;   // on the outer face of the pack strap, or the jacket
             float z = _torso.Surface(y, x, _inflate, true) + lift;
+            PlayerGearParts.Box(root, "Clip", new Vector3(x, y, z + 0.004f), new Vector3(0.024f, 0.05f, 0.008f), dark);
             // faint wear scar on the clip
             var wearMat = CloneZUtil.Mat(HumanoidLook.Shade(TorchColor, 0.55f), 0.2f);
             PlayerGearParts.Box(root, "ClipWear",
@@ -644,6 +647,7 @@ namespace CloneZ
             FlashlightLens = beam;
 
             _torchSwitchMat = dark;
+            _torchLit = false;
             UpdateTorchLens();
         }
 

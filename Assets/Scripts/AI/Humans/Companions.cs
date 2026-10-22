@@ -24,7 +24,7 @@ namespace CloneZ
         /// <summary>Determines whether the given NPC can be hired as a companion.</summary>
         public static bool CanHire(HumanNpc npc)
         {
-            if (npc == null || npc.IsDead || Current != null || GameSession.IsExtraction || GameSession.IsBorrowedBody) return false;
+            if (npc == null || npc.IsDead || Current != null || !GameSession.IsExtraction || GameSession.IsBorrowedBody) return false;
             if (npc.Actor.Faction != Factions.Freehold || npc.Actor.Kind == ActorKind.Companion) return false;
             return npc.SquadTag == null || (npc.SquadTag is ALifeSquad s && s.Live.Count <= 1);
         }
@@ -42,9 +42,9 @@ namespace CloneZ
             if (npc.SquadTag is ALifeSquad s) { s.Live.Remove(npc); s.Members = Mathf.Max(0, s.Members - 1); }
             Recruit(npc);
             GameEvents.RaiseSubtitle(npc.Name, "Paid is paid. Lead on — I'll watch your back.");
-            // NOTE: Zone hires should not set the persistent “companion:” flag – that flag is only used for
-            // bar hires and survivors so that a companion is spawned at the insertion point on the next raid.
-            // (Removed persistent flag handling from zone hiring logic.)
+            // Recorded so a companion who survives the raid stays on for the next one (see OnRaidStarted/OnRaidEnded).
+            CharacterProfile c = ProfileStore.ActiveCharacter;
+            if (c != null) { ClearFlag(c); c.SetFlag(HireFlag + npc.Name + "|" + npc.Loadout.Id); }
         }
 
         private static void Recruit(HumanNpc npc)

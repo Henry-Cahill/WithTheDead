@@ -76,12 +76,10 @@ namespace CloneZ
 
             if (IsSleeping) { TickSleep(); return; }
 
-            // Refresh cached bed only if player moved beyond threshold
-            if ((transform.position - _lastPos).sqrMagnitude > BedCacheThresholdSqr)
-            {
-                _cachedBed = SleepSpot.Nearest(transform.position, CloneZConfig.SleepRange, out _);
-                _lastPos = transform.position;
-            }
+            // Looked up every frame: the bed's 2.6 m reach is too short for a 1 m movement threshold, and beds
+            // can be built or torn down while the survivor stands still.
+            _cachedBed = SleepSpot.Nearest(transform.position, CloneZConfig.SleepRange, out _);
+            _lastPos = transform.position;
             NearBed = _cachedBed != null;
 
             if (NearBed && !UIState.GameplayBlocked)
@@ -175,7 +173,7 @@ namespace CloneZ
         {
             int n = Physics.OverlapSphereNonAlloc(
                 transform.position, CloneZConfig.SleepDangerRadius, _dangerBuf,
-                ~(1 << CloneZConfig.IgnoreRaycastLayer), QueryTriggerInteraction.Ignore);
+                1 << CloneZConfig.IgnoreRaycastLayer, QueryTriggerInteraction.Ignore);   // zombies live on Ignore Raycast
             for (int i = 0; i < n; i++)
                 if (_dangerBuf[i] != null && _dangerBuf[i].GetComponentInParent<ZombieAI>() != null)
                     return true;
