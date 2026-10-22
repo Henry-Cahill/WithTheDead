@@ -11,6 +11,7 @@ namespace CloneZ
     [DisallowMultipleComponent]
     public class RaidTownMailDrop : Interactable
     {
+
         // What can be made out through the chute, in turn. All original flavour.
         private static readonly string[] Letters =
         {
@@ -46,6 +47,9 @@ namespace CloneZ
 
         private Vector3 _point;
         private int _read;
+        private bool _isEmpty;
+        private Color _originalColor;
+        private MeshRenderer _renderer;
 
         public override string DisplayName => "Mail drop box";
         public override Vector3 InteractPoint => _point;
@@ -59,12 +63,16 @@ namespace CloneZ
             var m = go.AddComponent<RaidTownMailDrop>();
             m._point = point;
             m._read = (seed & 0x7fff) % Letters.Length;
+                        m._renderer = m.GetComponent<MeshRenderer>();
+            if (m._renderer != null) m._originalColor = m._renderer.sharedMaterial.color;
             return m;
         }
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
-            into.Add(new InteractAction("Pull open the chute", PeerIn).Timed(1.2f, "Peering into the chute", HumanoidActivity.Use));
+                        var pull = new InteractAction("Pull open the chute", PeerIn).Timed(1.2f, "Peering into the chute", HumanoidActivity.Use);
+            pull = pull.DisabledIf(IsEmpty(), "The chute is empty.");
+            into.Add(pull);
             into.Add(new InteractAction("Read the collection times", c => c.Notify(
                 "LAST COLLECTION 5 PM WEEKDAYS, NOON SATURDAY. Taped under it in marker: NO PICK-UP UNTIL FURTHER NOTICE.")));
             into.Add(new InteractAction("Inspect the box", c => c.Notify("The blue paint is chipped and the metal groans with each gust of wind.")));
@@ -72,10 +80,12 @@ namespace CloneZ
             into.Add(new InteractAction("Read next letter (preview)", PeekNext).Timed(0.8f, "Peeking into the chute", HumanoidActivity.Use));
         }
 
+        private bool IsEmpty() => _read >= Letters.Length;
+
         private void PeekNext(InteractContext ctx)
         {
             MakeNoise(CloneZConfig.FixtureNoiseSmall);
-            if (_read >= Letters.Length)
+            if (IsEmpty())
             {
                 ctx.Notify("The chute is empty.");
                 return;
@@ -93,6 +103,13 @@ namespace CloneZ
             }
             ctx.Notify(Letters[_read]);
             _read++;
+            if (IsEmpty())
+            {
+                _isEmpty = true;
+                // Dim the box to indicate it’s empty
+                if (_renderer != null)
+                    _renderer.sharedMaterial.color = Color.Lerp(_originalColor, Color.gray, 0.6f);
+            }
         }
     }
 }
