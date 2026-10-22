@@ -227,8 +227,9 @@ namespace CloneZ
         public static bool TryCrank(PlayerInventory inv)
         {
             // Crank itself schedules the action; we only need to report whether it could be scheduled.
+if (PlayerChannel.Local == null || PlayerChannel.Local.Busy) return false;
             Crank(inv);
-            return PlayerChannel.Local != null && !PlayerChannel.Local.Busy;
+            return PlayerChannel.Local.Busy;
         }
 
         #region Disassembly
