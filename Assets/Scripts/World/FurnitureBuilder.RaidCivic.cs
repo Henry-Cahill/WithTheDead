@@ -732,6 +732,41 @@ for (int v = 0; v < 4; v++)
             m.Box(new Vector3(0.18f, 0.84f, 1.017f), new Vector3(0.2f, 0.28f, 0.01f), M(new Color(0.55f, 0.40f, 0.22f)));
             m.Box(new Vector3(0.18f, 0.83f, 1.023f), new Vector3(0.18f, 0.24f, 0.003f), M(Paper));
             m.Box(new Vector3(0.18f, 0.97f, 1.024f), new Vector3(0.07f, 0.03f, 0.008f), Mt(Chrome));
+
+            // --- bedside night‑stand (right side of the bed) ---------------------------------
+            if (Chance(rng, 0.7)) // ~70 % of beds get a night‑stand
+            {
+                // tabletop
+                float nsX = 0.45f; // metres from centre, right side
+                float nsZ = -0.6f; // front‑half of bed
+                m.Box(new Vector3(nsX, 0.35f, nsZ), new Vector3(0.28f, 0.02f, 0.22f), Mt(new Color(0.22f, 0.18f, 0.15f)));
+                // four legs
+                float legH = 0.30f;
+                float legW = 0.02f;
+                foreach (float lx in new[] { -0.13f, 0.13f })
+                    foreach (float lz in new[] { -0.09f, 0.09f })
+                        m.Box(new Vector3(nsX + lx, legH * 0.5f, nsZ + lz), new Vector3(legW, legH, legW), Mt(new Color(0.15f, 0.14f, 0.13f)));
+            }
+            // --- bedside lamp (mounted on the night‑stand) ----------------------------------
+            if (Chance(rng, 0.6)) // only some stands carry the lamp
+            {
+                // lamp base – chrome cylinder
+                Vector3 basePos = new Vector3(0.45f, 0.36f, -0.55f);
+                m.Cylinder(basePos, 0.04f, 0.02f, 12, Mt(Chrome));
+                // pole – thin steel cylinder
+                float poleHeight = 0.55f + R(rng, -0.02f, 0.02f);
+                m.Cylinder(new Vector3(basePos.x, basePos.y + 0.01f, basePos.z), 0.01f, poleHeight, 12, Mt(new Color(0.55f, 0.55f, 0.55f)));
+                // shade – a shallow ellipsoid, slightly tilted for realism
+                Vector3 shadeC = new Vector3(basePos.x, basePos.y + 0.01f + poleHeight + 0.07f, basePos.z);
+                Quaternion shadeRot = Quaternion.Euler(R(rng, -5f, 5f), 0f, 0f);
+                m.Ellipsoid(shadeC, new Vector3(0.09f, 0.06f, 0.09f), Mt(new Color(0.25f, 0.23f, 0.20f)), 8, 4);
+                // bulb – small emissive sphere inside the shade
+                Vector3 bulbPos = shadeC + new Vector3(0f, 0.015f, 0f);
+                m.Sphere(bulbPos, 0.015f, Gl(new Color(1f, 0.95f, 0.80f)));
+                // switch – tiny chrome box on the base side
+                Vector3 swPos = basePos + new Vector3(0.045f, 0.015f, 0f);
+                m.Box(swPos, new Vector3(0.015f, 0.025f, 0.005f), Mt(Chrome));
+            }
         }
 
         /// <summary>The clinic's examination couch (0.7 × 1.9 on a 0.95 × 2.0 footprint, head at -Z): a padded vinyl top on a
