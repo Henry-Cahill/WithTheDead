@@ -96,7 +96,7 @@ Surf woodMat = DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f));
 site.Overhead.At(chimneyPos).Box(chimneyPos, new Vector3(chimneyBase, chimneyHeight, chimneyBase), Quaternion.identity, woodMat);
             }
         }
-        private static void BuildBuildings(Site site)
+        private static void BuildBuildings(Site site, MapBuild build)
         {
             float half = site.Half;
             var square = Rect.MinMaxRect(-half, -half, half, half);
@@ -128,7 +128,8 @@ site.Overhead.At(chimneyPos).Box(chimneyPos, new Vector3(chimneyBase, chimneyHei
                     var mesh = site.Town.Out.Solid(pos);
                     mesh.SetFrame(pos, Mathf.Atan2(outward.x, outward.y) * Mathf.Rad2Deg);   // DecorProps draws at the frame's origin
                     DecorProps.Mailbox(mesh, rng, false);
-                    mesh.ResetFrame();
+                    // Add porch if applicable
+                    PorchBuilder.Build(site, f, build);
                 }
                 }
             // Once, after the loop: called per footprint it redrew every residential roof's trim for every building.

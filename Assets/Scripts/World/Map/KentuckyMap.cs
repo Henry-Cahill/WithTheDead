@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using CloneZ;
 
 namespace CloneZ
 {
@@ -61,7 +62,7 @@ namespace CloneZ
                 BuildStreets(site, build);
                 BuildSidewalks(site);
                 BuildLines(site);
-                BuildBuildings(site);
+                BuildBuildings(site, build);
                 BuildingFacadeBuilder.BuildAll(site, build);
 
 

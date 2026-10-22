@@ -19,14 +19,23 @@ namespace CloneZ
         public const string StreetLampMaterialPath = "Materials/Metal";
         public const string KerbMaterialPath = "Materials/KerbConcrete";
         public const string StreetLampGlassMaterialPath = "Materials/StreetLampGlass";
+        public const string PorchMaterialPath = "Materials/WoodPlank";
         /// <summary>Returns the translucent glass material for lamp heads.</summary>
         private static Material s_StreetLampGlassMaterial;
+        private static Material s_PorchMaterial;
         public static Material GetStreetLampGlassMaterial()
         {
             if (s_StreetLampGlassMaterial != null) return s_StreetLampGlassMaterial;
             var path = System.IO.Path.Combine(Root, StreetLampGlassMaterialPath);
             s_StreetLampGlassMaterial = UnityEngine.Resources.Load<Material>(path);
             return s_StreetLampGlassMaterial;
+        }
+        public static Material GetPorchMaterial()
+        {
+            if (s_PorchMaterial != null) return s_PorchMaterial;
+            var path = System.IO.Path.Combine(Root, PorchMaterialPath);
+            s_PorchMaterial = UnityEngine.Resources.Load<Material>(path);
+            return s_PorchMaterial;
         }
 
 
