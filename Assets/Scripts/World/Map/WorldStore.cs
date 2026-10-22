@@ -16,8 +16,18 @@ namespace CloneZ
     {
         /// <summary>The environment variable that points the game at another copy of the store.</summary>
         public const string RootVariable = "CLONEZ_WORLD";
-        public const string KerbMaterialPath = "Materials/KerbConcrete";
         public const string StreetLampMaterialPath = "Materials/Metal";
+        public const string KerbMaterialPath = "Materials/KerbConcrete";
+        public const string StreetLampGlassMaterialPath = "Materials/StreetLampGlass";
+        /// <summary>Returns the translucent glass material for lamp heads.</summary>
+        private static Material s_StreetLampGlassMaterial;
+        public static Material GetStreetLampGlassMaterial()
+        {
+            if (s_StreetLampGlassMaterial != null) return s_StreetLampGlassMaterial;
+            var path = System.IO.Path.Combine(Root, StreetLampGlassMaterialPath);
+            s_StreetLampGlassMaterial = UnityEngine.Resources.Load<Material>(path);
+            return s_StreetLampGlassMaterial;
+        }
 
 
         /// <summary>Where the store is on this machine.</summary>

@@ -7,18 +7,22 @@ namespace CloneZ
     {
         // Builds a single lamp post on the given street segment.
         // The lamp sits on the sidewalk side, near the road edge.
-        internal static void BuildLamp(KentuckyMap.Site site, KentuckyMap.Street street, MapBuild build)
+internal static void BuildLamp(KentuckyMap.Site site, KentuckyMap.Street street, MapBuild build)
         {
-            // choose the midpoint of the street polyline
-            var pts = street.Pts;
-            if (pts.Count < 2) return;
-            Vector2 a = pts[0];
-            Vector2 b = pts[pts.Count - 1];
-            Vector2 mid = (a + b) * 0.5f;
+            // only place a lamp if the OSM data marks this segment as having one
+            if (!build.HasStreetLamp(street.Data.id)) return;
+
+            // choose the deterministic middle‑segment midpoint and yaw
+            var sum = Vector2.zero;
+            foreach (var p in street.Pts) sum += p;
+            Vector2 mid = sum / street.Pts.Count; // deterministic average of all points
+            // deterministic yaw: -5° … +5° based on street id hash
+            int hash = street.Data.id.GetHashCode();
+            float yaw = ((hash & 0xFF) / 255f) * 10f - 5f;
             // offset outward by half the sidewalk width + small gap
             float offset = street.Data.SidewalkWidth() * 0.5f + 0.2f;
             // street direction vector (ignore vertical y)
-            Vector2 dir = (b - a).normalized;
+            Vector2 dir = (street.Pts[street.Pts.Count - 1] - street.Pts[0]).normalized;
             // perpendicular to the right (assuming road runs forward)
             Vector2 perp = new Vector2(-dir.y, dir.x);
             Vector3 pos = new Vector3(mid.x + perp.x * offset, 0f, mid.y + perp.y * offset);
@@ -28,33 +32,39 @@ namespace CloneZ
             // create a parent GameObject under the outside town layer
             GameObject lampRoot = new GameObject("StreetLamp");
             lampRoot.transform.position = pos;
+            // apply yaw to lamp root
+            lampRoot.transform.rotation = Quaternion.Euler(0f, yaw, 0f);
             lampRoot.transform.SetParent(site.Town.World, false);
             // ---- pole ----
-            var pole = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            var pole = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             pole.name = "Pole";
             pole.transform.SetParent(lampRoot.transform, false);
-            pole.transform.localScale = new Vector3(0.1f, 2.5f, 0.1f);
+            pole.transform.localScale = new Vector3(0.08f, 1.25f, 0.08f); // radius, height/2, radius
             pole.transform.localPosition = new Vector3(0f, 1.25f, 0f);
             var mat = build.GetStreetLampMaterial();
             if (mat != null) pole.GetComponent<Renderer>().material = mat;
-            // add a simple prop collider
-            var col = pole.AddComponent<BoxCollider>();
-            col.size = pole.transform.localScale;
-            site.Town.PropCollider(col.center, col.size, 0f);
+            // ---- root collider (sphere covering head)
+            var rootCol = lampRoot.AddComponent<SphereCollider>();
+            rootCol.radius = 0.3f;
+            rootCol.center = new Vector3(0f, 2.5f, 0f);
+            site.Town.PropCollider(rootCol.center, new Vector3(rootCol.radius*2, 2.5f, rootCol.radius*2), 0f);
             // ---- lamp head ----
+            var glassMat = WorldStore.GetStreetLampGlassMaterial();
             var head = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             head.name = "Head";
             head.transform.SetParent(lampRoot.transform, false);
-            head.transform.localScale = new Vector3(0.3f, 0.2f, 0.3f);
+            head.transform.localScale = new Vector3(0.28f, 0.18f, 0.28f);
             head.transform.localPosition = new Vector3(0f, 2.55f, 0f);
-            if (mat != null) head.GetComponent<Renderer>().material = mat;
+            if (glassMat != null) head.GetComponent<Renderer>().material = glassMat;
             // ---- point light ----
             var light = lampRoot.AddComponent<Light>();
             light.type = LightType.Point;
             light.range = 5f;
             light.intensity = 2f;
-            light.color = new Color(1f, 0.9f, 0.7f); // warm amber
+            light.color = new Color(1f, 0.9f, 0.7f);
             light.transform.localPosition = new Vector3(0f, 2.55f, 0f);
+            // attach flicker behaviour
+            lampRoot.AddComponent<StreetLampFlicker>();
         }
     }
 }
