@@ -157,9 +157,12 @@ namespace CloneZ
         /// <summary>True if this item can be consumed (food, drink, or provides health benefits).</summary>
         public bool IsConsumable =>
             HungerRestore > 0f || ThirstRestore > 0f || HealthRestore > 0f || InfectionReduce > 0f;
+/// <summary>True if this item provides any medical benefit (stops bleeding, disinfects, cures infection, relieves pain, or calms panic).</summary>
         public bool IsMedical =>
-            StopsBleeding || Disinfects || CuresWoundInfection || PainRelief > 0f || CalmsPanic;
+        StopsBleeding || Disinfects || CuresWoundInfection || PainRelief > 0f || CalmsPanic;
+        /// <summary>True if the item can be equipped (as a weapon, firearm, or clothing).</summary>
         public bool IsEquippable => IsWeapon || IsFirearm || IsClothing;
+                /// <summary>True if the item can be used (consumed, equipped, refilled, toggled, or has a custom action).</summary>
         public bool IsUsable => IsConsumable || IsMedical || IsEquippable || IsRefill || Gear == GearKind.Flashlight || CustomUse;
 
         /// <summary>Gear that wears out with use and can break (weapons, firearms, tools).</summary>
@@ -305,6 +308,7 @@ if (IsSeed && HasId(CropId))
         public int GridX, GridY;
         public bool Rotated;
 
+                /// <summary>True if this stack has been assigned to a grid section.</summary>
         public bool IsPlaced => Section != null;
 
         /// <summary>Per-instance extras (found-in-raid, insurance, gun mods and dirt, upgrades, a note), or
