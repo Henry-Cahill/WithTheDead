@@ -396,6 +396,7 @@ namespace CloneZ
         public string Owner;
         /// <summary>A piece a runner raised (the builder), and one that broke or was torn down — camps and the netcode listen.</summary>
         public static event System.Action<BuildPiece> Raised, Removed;
+        /// <summary>Raises the Raised event for a newly created piece if non-null.</summary>
         public static void RaiseRaised(BuildPiece p) { if (p != null) Raised?.Invoke(p); }
         /// <summary>Gone without a trace (the netcode mirroring another peer's loss): no spill, no events.</summary>
         public void Vanish()
@@ -408,6 +409,7 @@ namespace CloneZ
         #endregion
 
         #region IDemolishable
+        /// <summary>Human‑readable name of this piece type for demolition UI.</summary>
         public string DemolishName => Type switch
         {
             BuildPieceType.Floor => "floor",
@@ -417,6 +419,7 @@ namespace CloneZ
             _ => "roof",
         };
 
+        /// <summary>Determines if this piece can be safely demolished, providing a reason if not.</summary>
         public bool CanDemolish(out string reason)
         {
             reason = null;
@@ -453,6 +456,7 @@ namespace CloneZ
         // Only the starter home's floors are baked into the navmesh (see Build), so pulling one out needs a rebuild.
         // No other piece is baked in: a wall only carves, and the carve lifts with it; the survivor's own floors
         // and roofs never shaped the navmesh at all.
+        /// <summary>Whether this piece carves the NavMesh (only for free starter‑home floors).</summary>
         public bool CarvesNavMesh => BakesIn && WorldNavMesh.Collects(transform);
         #endregion
 
