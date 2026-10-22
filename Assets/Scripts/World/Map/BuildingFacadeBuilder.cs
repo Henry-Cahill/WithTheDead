@@ -48,6 +48,8 @@ var size = new Vector3(fp.Bounds.width, 0.02f, fp.Bounds.height);
                     // Approximate door point at middle of first edge.
 var doorPoint = (a + b) * 0.5f;
                     var porchSize = new Vector3(1.5f, 0.2f, 0.8f);
+                    // Half a porch-depth out from the wall's midpoint, sitting on the ground.
+                    var porchCenter = new Vector3(doorPoint.x + outward.x * 0.4f, 0.1f, doorPoint.y + outward.y * 0.4f);
                     site.Town.Out.Solid(porchCenter).Box(porchCenter, porchSize, 0f, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
                 }
             }
