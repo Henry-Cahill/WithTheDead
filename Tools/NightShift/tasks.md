@@ -7382,3 +7382,12 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 5: Add a key‑hole – a tiny black cylinder near the upper‑right quadrant of the door (for a period‑correct look). `// key‑hole (black metal)` `m.Cylinder(new Vector3(cx + w * 0.22f, WardrobeDoorY0 + 0.25f, WardrobeFront - 0.015f),` `0.003f, 0.01f, 6, M(Black));`
   Step 6: Add a wear scar – a dark, slightly bent quad simulating a scratched line, positioned low on the door’s front face. Use a thin quad (0.001 m thick) made from a darkened wood colour. `// wear scar (thin dark quad)` `var scarSurf = M(wood * 0.5f);` `m.Quad(new Vector3(cx - w * 0.3f, WardrobeDoorY0 + 0.12f, WardrobeFront - 0.008f),` `new Vector3(0.35f, 0f, 0f), // half‑right vector (length 70 cm)` `new Vector3(0f, 0f, 0.001f), // half‑up vector (thin)` `scarSurf);`
   Done when: The wardrobe door now shows a cohesive “finished‑look” – wood trim on top and bottom, a milled side edge, a brass pull handle, a realistic key‑hole, and a faint scratch scar – all rendered with the existing wood, brass and black materials. The door’s geometry, colliders and interaction points remain unchanged, and the total added primitives (6) stay well under the 12‑primitive per‑object limit.
+- [ ] Cache the canvas rect used for UI layout calculations in Assets/Scripts/UI/InventoryUIController.cs
+  Add a private field `private Rect _canvasRectCache;` to store `_uiCanvasRect.rect`.
+  Fill it once in `Build()` right after `_uiCanvasRect = root;` by setting `_canvasRectCache = _uiCanvasRect.rect;`.
+  Implement `void OnRectTransformDimensionsChange()` (MonoBehaviour callback) to refresh the cache when the canvas size changes: `if (_uiCanvasRect != null) _canvasRectCache = _uiCanvasRect.rect;`.
+  Replace every per‑frame read of `_uiCanvasRect.rect` with the cached `_canvasRectCache`:
+  In `FitWindow()` change `Rect r = _uiCanvasRect.rect;` to `Rect r = _canvasRectCache;`.
+  In `PositionTooltip()` replace `Rect r = _uiCanvasRect.rect;` with the cached value.
+  Any other method that uses `_uiCanvasRect.rect` each frame should similarly use `_canvasRectCache`.
+  This removes the per‑frame property lookup and struct copy of the rect, reducing GC pressure and CPU time while preserving exact visual behaviour (the cache is refreshed automatically on any canvas resize).
