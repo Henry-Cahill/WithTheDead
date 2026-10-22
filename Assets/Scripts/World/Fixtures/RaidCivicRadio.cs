@@ -153,9 +153,11 @@ namespace CloneZ
         private string[] _calls;
         private int[] _cursors;
         private int _tuned, _volume = CloneZConfig.ReceiverDefaultVolume, _call;
+        private string _lastLine;
         private bool _on;
         private float _noiseAt, _captionAt;
         private Action<InteractContext> _turnOn, _turnOff, _retune, _louder, _softer, _callIn, _checkChannel, _checkVolume;
+        private Action<InteractContext> _recall;
         private Action<InteractContext, float, float> _listen;
 
         public override string DisplayName => _name;
@@ -197,6 +199,7 @@ namespace CloneZ
             _callIn = CallIn;
             _listen = Listen;
             _checkChannel = ctx => ctx.Notify("Current channel: " + Tuned.Name);
+            _recall = Recall;
         }
 
         private void Update()
@@ -227,17 +230,39 @@ namespace CloneZ
             into.Add(new InteractAction("Turn it up", _louder).DisabledIf(_volume >= MaxVolume, "It won't go any louder").DisabledIf(!near, TooFar));
                 into.Add(new InteractAction("Turn it down", _softer).DisabledIf(_volume <= 0, "It won't go any quieter").DisabledIf(!near, TooFar));
                 into.Add(new InteractAction("Check channel", _checkChannel).DisabledIf(!near, TooFar));
-                into.Add(new InteractAction("Check volume", _checkVolume).DisabledIf(!near, TooFar));
+                into.Add(new InteractAction("Recall last transmission", _recall).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Key the handset and call for help", _callIn)
                 .Timed(2.5f, "Calling in", HumanoidActivity.Use)
                 .DisabledIf(!near, "Get closer to reach the handset"));
         }
 
         #region Knobs
+        private void Recall(InteractContext ctx)
+        {
+            if (string.IsNullOrEmpty(_lastLine))
+                ctx.Notify("No transmission has been heard yet.");
+            else
+                ctx.Notify("Last transmission: \"" + _lastLine + "\"");
+        }
+
         private void TurnOn(InteractContext ctx)
         {
             Switch(true);
             ctx.Notify("The dial glows amber and the speaker hisses. " + Tuned.Name + ".");
+        }
+
+        private void Retune(InteractContext ctx)
+        {
+            _tuned = (_tuned + 1) % _channels.Length;
+            MakeNoise(CloneZConfig.ReceiverKnobNoise);
+            _captionAt = Time.time + CloneZConfig.ReceiverFirstCaption * 0.5f;
+            ctx.Notify("You click the selector round, through a squeal of static, to " + Tuned.Name + ".");
+        }
+
+        private void CallIn(InteractContext ctx)
+        {
+            MakeNoise(CloneZConfig.CivicRadioCallNoise);
+            ctx.Notify(_calls[_call++ % _calls.Length]);
         }
 
         private void Switch(bool on)
@@ -249,14 +274,6 @@ namespace CloneZ
             if (on) Freshen();
         }
 
-        private void Retune(InteractContext ctx)
-        {
-            _tuned = (_tuned + 1) % _channels.Length;
-            MakeNoise(CloneZConfig.ReceiverKnobNoise);
-            _captionAt = Time.time + CloneZConfig.ReceiverFirstCaption * 0.5f;
-            ctx.Notify("You click the selector round, through a squeal of static, to " + Tuned.Name + ".");
-        }
-
         private void Turn(InteractContext ctx, int step)
         {
             _volume = Mathf.Clamp(_volume + step, 0, MaxVolume);
@@ -264,18 +281,12 @@ namespace CloneZ
             _noiseAt = Time.time;
             ctx.Notify("Volume: " + (_volume <= 0 ? "low." : _volume >= MaxVolume ? "loud. It carries a long way." : "medium."));
         }
-
-        private void CallIn(InteractContext ctx)
-        {
-            MakeNoise(CloneZConfig.CivicRadioCallNoise);
-            ctx.Notify(_calls[_call++ % _calls.Length]);
-        }
+        #endregion
 
         private void ShowOn(bool on)
         {
             if (_dialLight != null && _dialLight.enabled != on) _dialLight.enabled = on;
         }
-        #endregion
 
         #region Playing
         private void Listen(InteractContext ctx, float dt, float elapsed)
@@ -300,6 +311,7 @@ namespace CloneZ
             Channel ch = Tuned;
             int k = Mathf.Clamp(_tuned, 0, _cursors.Length - 1);
             string line = ch.Lines[_cursors[k] % ch.Lines.Length];
+                _lastLine = line; // remember the most recent caption
             _cursors[k] = (_cursors[k] + 1) % ch.Lines.Length;
             Subtitles.Show(_source + " \u2014 " + ch.Name, line, ch.Caption, CloneZConfig.ReceiverCaptionSeconds);
             _captionAt = now + UnityEngine.Random.Range(CloneZConfig.ReceiverCaptionMin, CloneZConfig.ReceiverCaptionMax + 2f);
