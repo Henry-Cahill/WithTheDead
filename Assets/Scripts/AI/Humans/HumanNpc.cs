@@ -39,6 +39,7 @@ namespace CloneZ
         public ItemDef Gun { get; private set; }
         /// <summary>Inventory that holds the human's carried items and ammo.</summary>
         public Inventory Pack { get; private set; }
+        /// <summary>Current health as a normalized 0‑1 value.</summary>
         public float Health01 => _maxHp > 0f ? _hp / _maxHp : 0f;
         /// <summary>Whether the human is dead (health reached zero).</summary>
         public bool IsDead { get; private set; }
@@ -58,6 +59,7 @@ namespace CloneZ
         public bool HoldPost;
 
         /// <summary>Event fired when the human dies.</summary>
+        /// <summary>Event fired when this human dies.</summary>
         public event System.Action<HumanNpc> Died;
 
         private NavMeshAgent _agent;
@@ -346,6 +348,7 @@ namespace CloneZ
             if (State == Mode.Idle || State == Mode.Travel || State == Mode.Guard) State = HoldPost ? Mode.Guard : Mode.Travel;
         }
 
+        /// <summary>Sets this NPC as a guard at the given position.</summary>
         public void SetGuard(Vector3 post)
         {
             Goal = post;
@@ -353,6 +356,7 @@ namespace CloneZ
             State = Mode.Guard;
         }
 
+        /// <summary>Makes the NPC follow the specified leader actor.</summary>
         public void SetFollow(Actor leader)
         {
             FollowTarget = leader;
@@ -499,6 +503,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Utility method that returns the appropriate sound ID for a gun type.</summary>
         public static string GunSound(ItemDef gun)
         {
             if (gun == null) return SfxIds.GunPistol;
@@ -509,6 +514,7 @@ namespace CloneZ
             return SfxIds.GunRifle;
         }
 
+        /// <summary>Stops any ongoing reload; resets the gun's magazine from reserve ammo.</summary>
         private void Reload()
         {
             if (_reserve <= 0)
@@ -526,6 +532,7 @@ namespace CloneZ
             if (_avatar != null) _avatar.OnReload(_reloadUntil - Time.time);
         }
 
+        /// <summary>Determines if a shot at the given point would hit an obstacle or friendly actor.</summary>
         private bool ClearShot(Vector3 aimAt)
         {
             Vector3 from = Actor.EyePosition;
@@ -542,6 +549,7 @@ namespace CloneZ
         }
 
         // Cover: a spot nearby with something solid between it and the threat at crouch height.
+        /// <summary>Finds a nearby cover spot that blocks line‑of‑sight to the threat.</summary>
         private bool TryFindCover(Actor threat, out Vector3 spot)
         {
             spot = default;
@@ -568,12 +576,14 @@ namespace CloneZ
             return found;
         }
 
+        /// <summary>Performs a strafing movement around the target to make it harder to hit.</summary>
         private void Strafe()
         {
             Vector3 side = Vector3.Cross(Vector3.up, (_target.transform.position - transform.position).normalized) * (_rng.NextDouble() < 0.5 ? -1f : 1f);
             MoveTo(transform.position + side * Random.Range(2f, 4.5f), 3f);
         }
 
+        /// <summary>Initiates a fleeing behaviour away from the current target.</summary>
         private void BeginFlee()
         {
             State = Mode.Flee;
@@ -586,6 +596,7 @@ namespace CloneZ
             Bark("Falling back!");
         }
 
+        /// <summary>Makes a surrendered NPC drop their weapon and become non‑hostile.</summary>
         public void Surrender()
         {
             State = Mode.Surrendered;
@@ -598,6 +609,7 @@ namespace CloneZ
         }
 
         /// <summary>Let a surrendered person go (they walk off; mercy is remembered).</summary>
+        /// <summary>Releases a surrendered NPC back to the world, resetting its state.</summary>
         public void Release()
         {
             Actor.Surrendered = false;
@@ -686,6 +698,7 @@ namespace CloneZ
         #endregion
 
         #region Damage
+        /// <summary>Processes incoming damage, applying armor and health reductions.</summary>
         public void TakeDamage(in DamageInfo info)
         {
             if (IsDead) return;
@@ -732,6 +745,7 @@ namespace CloneZ
             return Random.value < chance ? hp * 0.85f : hp * a.BluntThrough;
         }
 
+        /// <summary>Handles a zombie bite or melee attack by creating a DamageInfo and delegating to TakeDamage.</summary>
         public void ReceiveZombieAttack(bool bite)
         {
             var info = new DamageInfo(bite ? 45f : 22f, bite ? DamageKind.Bite : DamageKind.Melee, Actor.Center, transform.forward, null) { HpScale = true };
