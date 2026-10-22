@@ -14,8 +14,10 @@ namespace CloneZ
     public class RaidStoreVending : Interactable
     {
         // What it was stocked with: crisps, soda, crackers, juice boxes and bottled water.
-        private static readonly string[] Snacks = { "chips", "soda", "crackers", "juicebox", "waterbottle", "chips", "soda" };
+        /// <summary>Possible scrap items that can be salvaged from a broken vending machine.</summary>
+        private static readonly string[] Scraps = { "metal_scrap", "wire", "duct_tape" };
 
+        private static readonly string[] Snacks = { "chips", "soda", "crackers", "juicebox", "waterbottle", "chips", "soda" };
         private static readonly string[] Misses =
         {
             "The machine booms like a drum. Something inside shifts, then settles. Nothing drops.",
@@ -25,7 +27,7 @@ namespace CloneZ
             "The coils grin at your effort, yet they refuse to give up any treasure.",
             "A hollow clang echoes, but no snack falls from the depths.",
             "A faint promise of loot hangs in the air, though the machine yields nothing this time.",
-            "Your thump echoes futilely, the coils remain unmoved.",
+            "You thump echoes futilely, the coils remain unmoved.",
             "A hollow thud reverberates, but the machine holds its secrets.",
             "The metal shudders, yet no snack is dislodged.",
             "A distant clang rolls, the vending's belly stays sealed.",
@@ -38,6 +40,7 @@ namespace CloneZ
         private LootContainer _stock, _tray;
         private bool _lit, _broken;
         private int _missed;
+        private bool _scavenged;
 
         public override string DisplayName => "Vending machine";
         public override Vector3 InteractPoint => _panel;
@@ -94,9 +97,15 @@ namespace CloneZ
                 into.Add(new InteractAction("Press a button", PressButton));
                 into.Add(new InteractAction("Inspect the machine", Inspect));
                 into.Add(new InteractAction("Listen to the machine", Listen));
-            into.Add(new InteractAction("Check the machine", CheckStock));
+                into.Add(new InteractAction("Check the machine", CheckStock));
             }
-            else into.Add(new InteractAction(_stock != null && _stock.Searched ? "Look inside the machine" : "Search the machine", c => Open(c, _stock)));
+            else
+            {
+                into.Add(new InteractAction(_stock != null && _stock.Searched ? "Look inside the machine" : "Search the machine", c => Open(c, _stock)));
+                if (!_scavenged)
+                    into.Add(new InteractAction("Scavenge the wreckage", Scavenge)
+                        .Timed(2f, "Scavenging the wreckage", HumanoidActivity.Use));
+            }
         }
 
         private void Open(InteractContext ctx, LootContainer c)
@@ -124,7 +133,7 @@ namespace CloneZ
         private void Smash(InteractContext ctx)
         {
             _broken = true;
-            ShowBroken(true);
+            _scavenged = false;
             MakeNoise(CloneZConfig.RaidVendingSmashNoise);
             if (_stock != null) _stock.gameObject.SetActive(true);
             ctx.Notify("The front glass caves in with a crash that must carry halfway down the street. The coils are yours.");
@@ -149,6 +158,23 @@ namespace CloneZ
             else ctx.Notify("The vending machine looks empty.");
         }
 
+        private void Scavenge(InteractContext ctx)
+        {
+            // pick a random scrap definition
+            var rng = new System.Random();
+            string id = Scraps[rng.Next(Scraps.Length)];
+            var def = ItemDatabase.Get(id);
+            if (def != null && _stock != null)
+            {
+                _stock.Contents.Add(def, 1, enforceWeight: false);
+                ctx.Notify($"You pry out a {def.DisplayName ?? id} from the smashed machine.");
+            }
+            else
+            {
+                ctx.Notify("You find nothing useful among the wreckage.");
+            }
+            _scavenged = true;
+        }
         private void Inspect(InteractContext ctx)
         {
             if (_broken)
