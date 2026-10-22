@@ -8044,7 +8044,7 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 1: In `Assets/Scripts/Hub/HubWorld.cs` add the missing `using System;` directive at the top (just after the existing usings). `using System.Collections.Generic;` `using UnityEngine;` `+using System;`
   Step 2: Locate the existing locker construction in `BuildFurniture` (quoted below) and insert a decorative detail call immediately after it. `// Existing line to quote` `Solid(world, "Lockers", new Vector3(-12.55f, 1f, 2.5f), new Vector3(0.6f, 2f, 2.4f), st.Metal);`
   - 14:42 landed by 1htsserver in 4.5 min: **Changes made**
-- [ ] In Assets/Scripts/Player/PlayerFoodSickness.cs: Cache the static `CloneZConfig` values accessed each frame in `PlayerFoodSickness.Update` to avoid repeated static field lookups.
+- [x] In Assets/Scripts/Player/PlayerFoodSickness.cs: Cache the static `CloneZConfig` values accessed each frame in `PlayerFoodSickness.Update` to avoid repeated static field lookups.
   In `PlayerFoodSickness` add private readonly fields:
   `private float _decayPerSec;`
   `private float _sleepMult;`
@@ -8053,6 +8053,7 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   `private float _healthDrainPerSec;`
   Populate them once in `Awake()` (after `_stats` is cached):
   `_decayPerSec = CloneZConfig.SicknessDecayPerSec;`
+  - 14:43 landed by 0htsserver in 6.1 min: **Changed files**
 - [ ] Add a “Toggle flicker” action to Assets/Scripts/World/Map/StreetLampInteraction.cs so the player can switch the lamp’s flicker effect on and off while the lamp is powered, persisting the setting and giving a distinct on‑screen message and a noise cue.
   Step 1: StreetLampInteraction.cs – field Add a private bool to store the flicker‑on flag. `private bool _flickerOn;` Place it with the other private fields, after `_key`.
   Step 2: StreetLampInteraction.cs – Awake() Initialize `_flickerOn` from the component’s current state and keep the flicker component enabled (so we can call its API later). `_flickerOn = _flicker != null && _flicker.enabled;` `if (_flicker != null) _flicker.enabled = true; // always keep component alive`
