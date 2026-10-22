@@ -6349,7 +6349,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Done when: In‑game the shipping containers (the “else” branch objects) visibly feature a thin rust‑stained door flush with the front face, complete with two pairs of small rusted hinges, a vertical rusted handle, and a muted brown weathered label near the top. All new parts use the existing rust materials (`ZoneKit.RustDark`) or tinted rust (`ZoneKit.V`) and stay within the container’s existing collider; no other objects or gameplay behavior are altered.
   - 11:38 landed by 0htsserver in 10.2 min: Implemented detailed visual enhancements for shipping containers:
 - [ ] Fix software bug (Priority)
-- [ ] In Assets/Scripts/Rendering/IsoVisionShade.cs modify `LateUpdate()` to avoid setting the renderer and material every frame when the visible alpha hasn’t actually changed.
+- [x] In Assets/Scripts/Rendering/IsoVisionShade.cs modify `LateUpdate()` to avoid setting the renderer and material every frame when the visible alpha hasn’t actually changed.
   Add a private field `float _prevAlpha;` to store the last‑applied alpha.
   After calculating `_alpha = Mathf.MoveTowards(_alpha, want, Time.deltaTime * 1.5f);` compare it to `_prevAlpha`.
   Only when `Mathf.Abs(_alpha - _prevAlpha) > 0.001f` should the code:
@@ -6358,6 +6358,7 @@ you want to see in game. Indent extra lines under a task to add detail.
   Otherwise skip these two lines.
   Finally set `_prevAlpha = _alpha;` at the end of the block.
   The visual result stays identical (fading still works), but the per‑frame material property write and renderer enable/disable toggle are eliminated unless the alpha actually changes, reducing GC pressure and GPU state changes.
+  - 20:10 landed by hts-llm in 3.3 min: **Changed file**
 - [x] Add a period‑correct brass door knob and latch to the wooden door leaf built in `Assets/Scripts/World/FurnitureBuilder.Fixtures.cs` `FurnitureBuilder.DoorLeaf`, giving the player a visible handle that matches 1993 rural interiors.
   Step 1: In `FurnitureBuilder.Fixtures.cs`, inside `public static void DoorLeaf(...)` after the panel‑creation loop (just before the final `m.Ellipsoid` that adds the brass corner), insert a new block that creates the knob assembly.
   Step 2: Add the main knob cylinder: `m.Cylinder(new Vector3(width - 0.10f, height * 0.5f, t * 0.5f + 0.001f), 0.015f, 0.03f, 12, Mt(Brass), Quaternion.identity);` – size ≈ 3 cm diam × 1.5 cm radius, positioned ≈ 10 cm from the right edge, centred vertically, just flush with the door face.
