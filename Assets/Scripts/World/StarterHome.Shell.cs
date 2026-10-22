@@ -303,13 +303,44 @@ namespace CloneZ
             // Small metal hinges for the door
             float hingeY = DoorTop * 0.5f + (float)(rng.NextDouble() - 0.5) * 0.02f;
             m.Box(f.P(o0 - 0.015f, hingeY, 0f), f.Size(0.03f, 0.08f, 0.02f), DecorPalette.Matte(TrimWhite * 0.7f));
+            // exterior lock plate (metal, darkened)
+            float lockY = DoorTop * 0.5f + 0.30f; // around knob height
+            float lockX = o0 - 0.04f;
+            float lockZ = 0f;
+            m.Box(f.P(lockX, lockY, lockZ), new Vector3(0.015f, 0.05f, 0.02f), DecorPalette.Matte(TrimWhite * 0.55f));
+            // rubber door‑stop (soft, dark brown)
+            float stopY = 0.08f; // centre just above floor
+            float stopX = o0 - 0.02f;
+            float stopZ = 0f;
+            m.Box(f.P(stopX, stopY, stopZ), new Vector3(0.015f, 0.04f, 0.015f), DecorPalette.Matte(new Color(0.18f, 0.12f, 0.08f)));
             m.Box(f.P(o1 + 0.015f, hingeY, 0f), f.Size(0.03f, 0.08f, 0.02f), DecorPalette.Matte(TrimWhite * 0.7f));
+            // interior lever‑handle (metal, slight variation)
+            float handleY = DoorTop * 0.5f + 0.12f; // height ~0.4 m above floor
+            float handleX = o1 + 0.03f; // a few centimetres out from the right jamb
+            float handleZ = 0f; // centred on the doorway plane
+            m.Box(f.P(handleX, handleY, handleZ), new Vector3(0.02f, 0.12f, 0.025f), DecorPalette.Matte(TrimWhite * 0.65f));
             for (int side = -1; side <= 1; side += 2)
             {
                 HomeRoom room = rooms[(side + 1) / 2];
                 Surf casing = DecorPalette.Matte(room != null ? room.Design.Trim : TrimWhite);
                 float off = side * (Half + 0.012f);
                 m.Box(f.P(o0 - 0.035f, (DoorTop + 0.07f) * 0.5f, off), f.Size(0.07f, DoorTop + 0.07f, 0.024f), casing);
+                // occasional low paint‑chip on exterior casing
+                if (rng.NextDouble() < 0.4)
+                {
+                    float chipY = 0.15f; // just above floor level
+                    float chipX = o0 - 0.08f + (float)rng.NextDouble() * 0.06f;
+                    float chipZ = (float)rng.NextDouble() * 0.02f - 0.01f;
+                    m.Box(f.P(chipX, chipY, chipZ), new Vector3(0.04f, 0.02f, 0.004f), DecorPalette.Matte(TrimWhite * 0.5f));
+                }
+                // occasional low paint‑chip on exterior casing
+                if (rng.NextDouble() < 0.4)
+                {
+                    float chipY = 0.15f; // just above floor level
+                    float chipX = o0 - 0.08f + (float)rng.NextDouble() * 0.06f;
+                    float chipZ = (float)rng.NextDouble() * 0.02f - 0.01f;
+                    m.Box(f.P(chipX, chipY, chipZ), new Vector3(0.04f, 0.02f, 0.004f), DecorPalette.Matte(TrimWhite * 0.5f));
+                }
                 m.Box(f.P(o1 + 0.035f, (DoorTop + 0.07f) * 0.5f, off), f.Size(0.07f, DoorTop + 0.07f, 0.024f), casing);
                 m.Box(f.P(f.Mid, DoorTop + 0.035f, off), f.Size(gap + 0.14f, 0.07f, 0.024f), casing);
             }
