@@ -505,6 +505,7 @@ namespace CloneZ
         private static HudLayer s_Instance;
         private Canvas _canvas;
         private CanvasGroup _group;
+        private bool _lastHidden;
 
         public static RectTransform Root
         {
@@ -531,7 +532,11 @@ namespace CloneZ
         {
             if (_group == null) return;
             bool hidden = GameSettings.Current.HudHidden || UIScreen.Current != null;
-            _group.alpha = hidden ? 0f : 1f;
+            if (hidden != _lastHidden)
+            {
+                _group.alpha = hidden ? 0f : 1f;
+                _lastHidden = hidden;
+            }
         }
 
         private void OnDestroy() { if (s_Instance == this) s_Instance = null; }
