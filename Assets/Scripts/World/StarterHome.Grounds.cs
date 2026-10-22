@@ -216,10 +216,22 @@ namespace CloneZ
         {
             Surf cedar = DecorPalette.Matte(new Color(0.40f, 0.28f, 0.17f));
             m.Box(at + new Vector3(0f, 0.55f, 0f), new Vector3(0.09f, 1.1f, 0.09f), cedar);
+            var postRng = new System.Random(8712);
+            // Wood grain strips on the cedar post
+            m.Ellipsoid(at + new Vector3(-0.02f, 0.55f, 0f), new Vector3(0.015f, 0.9f, 0.015f), DecorPalette.Matte(new Color(0.38f, 0.28f, 0.20f)), 4, 2);
+            m.Ellipsoid(at + new Vector3(0f, 0.55f, 0f), new Vector3(0.015f, 0.9f, 0.015f), DecorPalette.Matte(new Color(0.38f, 0.28f, 0.20f)), 4, 2);
+            m.Ellipsoid(at + new Vector3(0.02f, 0.55f, 0f), new Vector3(0.015f, 0.9f, 0.015f), DecorPalette.Matte(new Color(0.38f, 0.28f, 0.20f)), 4, 2);
             m.Box(at + new Vector3(0f, 1.11f, 0f), new Vector3(0.18f, 0.03f, 0.34f), cedar);
             Surf box = DecorPalette.Metal(new Color(0.18f, 0.20f, 0.24f));
             m.Box(at + new Vector3(0f, 1.2f, 0f), new Vector3(0.22f, 0.16f, 0.48f), box);
             m.CylinderX(at + new Vector3(0f, 1.28f, 0f), 0.11f, 0.48f, 10, box, 90f);
+            // Tiny metal nails on the post
+            m.Cylinder(at + new Vector3(0f, 0.25f, 0.045f), 0.0015f, 0.008f, 8, DecorPalette.Metal(new Color(0.6f, 0.6f, 0.55f)), Quaternion.Euler(90f, 0f, 0f));
+            m.Cylinder(at + new Vector3(0f, 0.55f, 0.045f), 0.0015f, 0.008f, 8, DecorPalette.Metal(new Color(0.6f, 0.6f, 0.55f)), Quaternion.Euler(90f, 0f, 0f));
+            m.Cylinder(at + new Vector3(0f, 0.85f, 0.045f), 0.0015f, 0.008f, 8, DecorPalette.Metal(new Color(0.6f, 0.6f, 0.55f)), Quaternion.Euler(90f, 0f, 0f));
+            m.Cylinder(at + new Vector3(0f, 0.25f, -0.045f), 0.0015f, 0.008f, 8, DecorPalette.Metal(new Color(0.6f, 0.6f, 0.55f)), Quaternion.Euler(90f, 0f, 0f));
+            // Small chipped paint spot on lower front
+            m.Ellipsoid(at + new Vector3(0f, 0.15f, 0.045f), new Vector3(0.02f, 0.03f, 0.001f), DecorPalette.Matte(new Color(0.50f, 0.38f, 0.32f)), 4, 2);
             // The dark mouth behind the door, and the boss the flag turns on.
             Surf dark = DecorPalette.Matte(new Color(0.04f, 0.04f, 0.05f));
             m.Box(at + new Vector3(0f, 1.205f, -0.241f), new Vector3(0.19f, 0.15f, 0.002f), dark);
@@ -257,6 +269,8 @@ namespace CloneZ
             Vector3 pivot = at + new Vector3(0.126f, 1.18f, 0.2f);
             flag.Box(pivot + new Vector3(0f, 0f, -0.12f), new Vector3(0.008f, 0.016f, 0.26f), red);
             flag.Box(pivot + new Vector3(0f, 0.022f, -0.215f), new Vector3(0.008f, 0.06f, 0.07f), red);
+            // Tiny metal bracket at flag hinge pivot
+            m.Box(pivot + new Vector3(-0.006f, 0.006f, 0f), new Vector3(0.012f, 0.012f, 0.02f), box);
             FixturePart flagPart = FixturePart.Hinge(fixture.transform, "Flag", flag, pivot, Vector3.right, 90f).WithSpeed(0.3f);
 
             fixture.SetParts(doorPart, flagPart);
