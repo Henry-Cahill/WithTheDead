@@ -7968,8 +7968,9 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 4: No new assets are required; the helper reuses existing colours (`FenceWood` for wood, a metal colour for latch/flag‑pole, a faded cloth colour for the flag) and existing primitive builders (`Box`, `Cylinder`). All geometry is added to `town.Out`, so it inherits the same collider‑free, outdoor batch handling as other sidewalk details.
   Step 5: Ensure the random helper `R` used throughout the file is still in scope (it already exists). No other script files are modified.
   Done when: When the player walks along any sidewalk, occasional wooden mailboxes appear spaced roughly every 3–6 m, each consisting of a vertical post, a rectangular mailbox body, a metal latch, and a small flag pole with a faded cloth flag. The mailboxes use the same wood and metal materials as the surrounding snow‑fence, blend naturally with the existing geometry, and do not alter any existing colliders, interaction points, or other visual details. The rest of the map remains exactly as before.
-- [ ] Cache the per‑frame `GameSettings.Current` null‑fallback in `HudCompass` (Assets/Scripts/Survival/Navigation.cs)
+- [x] Cache the per‑frame `GameSettings.Current` null‑fallback in `HudCompass` (Assets/Scripts/Survival/Navigation.cs)
   · In `Awake` set `_gs = GameSettings.Current;` (already done) and add a guard to re‑resolve only when it becomes null, not each `LateUpdate`.
   ‑ Replace the line `GameSettings gs = _gs; if (gs == null) _gs = gs = GameSettings.Current;` with `GameSettings gs = _gs; if (gs == null) { gs = GameSettings.Current; _gs = gs; }`.
   ‑ Move this null‑check out of the per‑frame path: add a private method `void EnsureSettings()` that performs the check and call it at the start of `LateUpdate` once, then use the cached `gs` variable thereafter.
   ‑ Result: the per‑frame `LateUpdate` no longer performs a redundant null‑coalescing lookup; the compass continues to show the same text, visibility logic and yaw‑based rebuild remain unchanged.
+  - 13:52 landed by hts-llm in 1.5 min: **Changes made**
