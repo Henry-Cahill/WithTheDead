@@ -145,6 +145,27 @@ namespace CloneZ
                     continue;
                 }
                 m.Box(new Vector3(x, 0.96f, 0.215f), new Vector3(0.46f, 1.68f, 0.02f), M(c));
+                // Chrome frame strips around door
+                m.Box(new Vector3(x, 0.96f + 1.68f - 0.008f, 0.215f), new Vector3(0.46f + 0.012f, 0.016f, 0.004f), Mt(Chrome)); // top
+                m.Box(new Vector3(x, 0.96f + 0.008f, 0.215f), new Vector3(0.46f + 0.012f, 0.016f, 0.004f), Mt(Chrome)); // bottom
+                m.Box(new Vector3(x - 0.23f - 0.008f, 0.96f + 0.84f, 0.215f), new Vector3(0.016f, 1.68f + 0.012f, 0.004f), Mt(Chrome)); // left
+                m.Box(new Vector3(x + 0.23f + 0.008f, 0.96f + 0.84f, 0.215f), new Vector3(0.016f, 1.68f + 0.012f, 0.004f), Mt(Chrome)); // right
+
+                // Low‑profile kick‑plate at base of door
+                m.Box(new Vector3(x, 0.96f + 0.008f, 0.225f), new Vector3(0.46f, 0.016f, 0.006f), M(dark));
+
+                // Subtle seal line along top edge
+                m.Box(new Vector3(x, 0.96f + 1.68f - 0.004f, 0.225f), new Vector3(0.46f, 0.002f, 0.006f), M(dark));
+
+                // Small paper label near top‑right
+                m.Box(new Vector3(x + 0.15f, 0.96f + 1.5f, 0.225f), new Vector3(0.12f, 0.02f, 0.002f), M(Paper));
+
+                // Wear‑scratch line near bottom‑center
+                Color wear = V(c, rng, 0.07f);
+                m.Box(new Vector3(x, 0.96f + 0.1f, 0.225f), new Vector3(0.18f, 0.001f, 0.006f), M(wear));
+
+                // Add a small metal pull‑handle on the front of each locker door for visual grip.
+                m.Box(new Vector3(x, 1.25f, 0.235f), new Vector3(0.02f, 0.12f, 0.005f), Mt(Chrome));
                 // Add a small metal pull-handle on the front of each locker door for visual grip.
                 m.Box(new Vector3(x, 1.25f, 0.235f), new Vector3(0.02f, 0.12f, 0.005f), Mt(Chrome));
                 // Add a thin metal hinge‑plate to the locker door for period‑correct detail.
