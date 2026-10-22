@@ -55,6 +55,8 @@ namespace CloneZ
             into.Add(new InteractAction("Check bulb", CheckBulb));
             // New secondary action to check power status
             into.Add(new InteractAction("Check power", CheckPower));
+            // add flicker toggle action
+            into.Add(new InteractAction(_lamp.Flicker ? "Disable flicker" : "Enable flicker", ToggleFlicker));
         }
 
         // Shows the lamp's name in a HUD toast.
@@ -63,10 +65,19 @@ namespace CloneZ
             ctx.Notify($"You look at the {DisplayName}.");
         }
 
-        // Notifies whether the house currently has electricity.
+        // Checks whether the house currently has electricity.
         private void CheckPower(InteractContext ctx)
         {
             ctx.Notify(PowerGrid.HousePowered ? "The house has power." : "The house is without power.");
+        }
+
+        // Toggles the lamp's flicker effect.
+        private void ToggleFlicker(InteractContext ctx)
+        {
+            if (_lamp == null) return;
+            _lamp.Flicker = !_lamp.Flicker;
+            ctx.Notify(_lamp.Flicker ? "The lamp now flickers." : "The lamp stops flickering.");
+            MakeNoise(CloneZConfig.LightSwitchNoise);
         }
 
         // Notifies whether the lamp's bulb is burnt out.
@@ -84,11 +95,24 @@ namespace CloneZ
             else if (on && _lamp.DeadBulb) ctx.Notify("Nothing happens. The bulb must have gone.");
         }
 
-        public override void CaptureState(FixtureSave save) => save.State = _lamp != null && _lamp.SwitchedOn ? 1 : 0;
+        public override void CaptureState(FixtureSave save)
+        {
+            int state = 0;
+            if (_lamp != null)
+            {
+                if (_lamp.SwitchedOn) state |= 1; // bit 0 = on/off
+                if (_lamp.Flicker) state |= 2; // bit 1 = flicker
+            }
+            save.State = state;
+        }
 
         public override void RestoreState(FixtureSave save)
         {
-            if (_lamp != null) _lamp.SetSwitchedOn((save.State & 1) != 0);
+            if (_lamp != null)
+            {
+                _lamp.SetSwitchedOn((save.State & 1) != 0);
+                _lamp.Flicker = (save.State & 2) != 0;
+            }
         }
     }
 }
