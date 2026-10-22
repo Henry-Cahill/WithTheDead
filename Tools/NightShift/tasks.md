@@ -7703,10 +7703,11 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 6: FurnitureBuilder.Kitchen.cs → KitchenCounterBody – ensure the added primitives are included in the mesh generation by leaving the existing `site.Take` / collider logic untouched (the method already adds the counter body to the world, and adding primitives inside the same `RaidMesh` instance automatically includes them).
   Done when: In‑game the kitchen counter’s worktop shows a set of three glass spice jars with subtly varied tints on the left, a copper pot on the right, a folded kitchen rag nearby, and a small vintage kitchen timer centred on the surface. All items use the same materials as the rest of the kitchen, keep the existing colliders and interaction points, and no more than ~30 new primitives are added.
   - 12:10 landed by 0htsserver in 4.4 min: Implemented the countertop detail pass:
-- [ ] In Assets/Scripts/Player/PlayerBuilder.cs: Reduce per‑frame allocation in `PlayerBuilder.UpdateDemolishHighlight` by caching a `List<Renderer>` instead of allocating a `Renderer[]` each call
+- [x] In Assets/Scripts/Player/PlayerBuilder.cs: Reduce per‑frame allocation in `PlayerBuilder.UpdateDemolishHighlight` by caching a `List<Renderer>` instead of allocating a `Renderer[]` each call
   · Add a new readonly field `private readonly List<Renderer> _rendererTmp = new List<Renderer>(8);` near the other temporary collections.
   · Replace `var rends = mb.GetComponentsInChildren<Renderer>();` with `mb.GetComponentsInChildren(_rendererTmp);` and use `_rendererTmp` for the bounds loop.
   · Adjust the “no renderers” check to `if (_rendererTmp.Count == 0)`.
   · When computing the bounds, start with `_rendererTmp[0]` and iterate from index 1 to `_rendererTmp.Count‑1`.
   · Clear `_rendererTmp` at the start of the method (`_rendererTmp.Clear();`) to avoid stale entries.
   · The visual result (ghost box size/color for demolish preview) stays identical, but the per‑frame garbage‑collection pressure is lowered because the temporary array allocation is eliminated.
+  - 12:10 landed by 1htsserver in 2.4 min: **Changed files**
