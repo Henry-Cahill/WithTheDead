@@ -238,15 +238,32 @@ namespace CloneZ
             Quaternion q = Yaw(yaw);
             Color c = V(new Color(0.26f, 0.32f, 0.18f), rng, 0.05f);
             m.Box(at + q * new Vector3(0f, 0.11f, 0f), new Vector3(0.38f, 0.22f, 0.24f), q, M(c));
-            m.Box(at + q * new Vector3(0f, 0.12f, 0.121f), new Vector3(0.32f, 0.16f, 0.004f), q, M(new Color(0.12f, 0.13f, 0.12f)));
+            // rubber foot – subtle anti‑slip pad
+            m.Box(at + q * new Vector3(0f, 0.005f, 0f), new Vector3(0.34f, 0.01f, 0.02f), q, M(Black));
+                        // three‑bar chrome speaker grille on the front panel
+            float grilleZ = 0.121f; // same Z as front panel
+            float grilleY = 0.18f; // roughly mid‑height of panel
+            float barHeight = 0.12f;
+            float barWidth = 0.004f;
+            float barDepth = 0.006f;
+            float barSpacing = 0.08f;
+            for (int i = -1; i <= 1; i++)
+            {
+                float offsetX = i * barSpacing;
+                m.Box(at + q * new Vector3(offsetX, grilleY, grilleZ), new Vector3(barWidth, barHeight, barDepth), q, Mt(Chrome));
+            }
             m.Box(at + q * new Vector3(-0.07f, 0.16f, 0.125f), new Vector3(0.12f, 0.04f, 0.004f), q, Gl(new Color(0.55f, 0.45f, 0.20f)));
             for (int i = 0; i < 3; i++)
                 m.Cylinder(at + q * new Vector3(0.04f + i * 0.045f, 0.09f, 0.123f), 0.015f, 0.025f, 6, M(Black), q * Quaternion.Euler(90f, 0f, 0f));
-            m.Box(at + q * new Vector3(-0.12f, 0.25f, 0f), new Vector3(0.02f, 0.06f, 0.02f), q, M(c * 0.7f));
+                        // power‑switch lever (metal)
+            m.Box(at + q * new Vector3(-0.13f, 0.22f, 0f), new Vector3(0.008f, 0.04f, 0.012f), q, Mt(Chrome));
             m.Box(at + q * new Vector3(0.12f, 0.25f, 0f), new Vector3(0.02f, 0.06f, 0.02f), q, M(c * 0.7f));
-            m.Box(at + q * new Vector3(0f, 0.28f, 0f), new Vector3(0.26f, 0.02f, 0.025f), q, M(c * 0.7f));
-            m.Rod(at + q * new Vector3(0.15f, 0.22f, -0.08f), at + q * new Vector3(0.2f, 0.85f, -0.16f), 0.008f, M(Black));
-            m.Box(at + q * new Vector3(-0.3f, 0.06f, 0.02f), new Vector3(0.12f, 0.04f, 0.2f), q, M(new Color(0.1f, 0.1f, 0.1f)));
+                        // red LED – subtle warm glow
+            m.Box(at + q * new Vector3(0f, 0.265f, 0.123f), new Vector3(0.008f, 0.008f, 0.002f), q, Gl(WarmGlow));
+                        // antenna base (metal)
+            m.Cylinder(at + q * new Vector3(0.15f, 0.22f, -0.08f), 0.01f, 0.015f, 6, Mt(Chrome), q * Quaternion.Euler(90f, 0f, 0f));
+                        // decorative wear line (darkened strip)
+            m.Box(at + q * new Vector3(-0.15f, 0.07f, 0.025f), new Vector3(0.24f, 0.002f, 0.001f), q, M(new Color(0.05f, 0.04f, 0.03f)));
         }
 
         /// <summary>An olive ammo can with a stencilled band and latch handle, on y = at.y.</summary>
