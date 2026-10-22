@@ -46,7 +46,7 @@ namespace CloneZ
             t._occlusion = occlusion;
             t._onLabel = onLabel;
             t._offLabel = offLabel;
-            // Add extra actions: Inspect and Power status.
+            // Default extra actions; Extra() will merge rather than replace.
             t._extra = (c, list) => {
                 list.Add(new InteractAction("Inspect", t.Inspect));
                 list.Add(new InteractAction("Power status", t.PowerInfo));
@@ -96,7 +96,11 @@ namespace CloneZ
         /// <summary>Actions listed after the main one.</summary>
         internal CivicToggle Extra(Action<InteractContext, List<InteractAction>> extra)
         {
-            _extra = extra;
+            var previous = _extra;
+            _extra = (c, list) => {
+                previous?.Invoke(c, list);
+                extra?.Invoke(c, list);
+            };
             return this;
         }
 
@@ -261,8 +265,12 @@ namespace CloneZ
         // Set default extra action to check comfort if none provided
         private void Awake()
         {
-            if (_extra == null)
-                _extra = (c, list) => list.Add(new InteractAction("Check comfort", ComfortInfo));
+            var previous = _extra;
+            _extra = (c, list) =>
+            {
+                previous?.Invoke(c, list);
+                list.Add(new InteractAction("Check comfort", ComfortInfo));
+            };
         }
 
         // Notify the survivor about the bed's comfort level
@@ -296,6 +304,11 @@ namespace CloneZ
         internal static CivicRest Create(Transform body, string name, string noun, Vector3 centre, float yaw, float length, float width,
             float[] mattressTops, string[] lieLabels, float edgeHeight, float comfort)
         {
+            if (mattressTops == null || mattressTops.Length == 0)
+            {
+                Debug.LogWarning($"CivicRest.Create called with empty mattressTops for {name}; using default height 0.5m.");
+                mattressTops = new[] { 0.5f };
+            }
             var go = new GameObject("Rest_" + name);
             go.transform.SetParent(body, false);
             go.transform.SetPositionAndRotation(centre, Quaternion.Euler(0f, yaw, 0f));
