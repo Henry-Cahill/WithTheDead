@@ -33,15 +33,17 @@ namespace CloneZ
         /// <summary>Health of the crop (0..1), zero means dead.</summary>
         public float Health { get; private set; } = 1f; // 0..1; hits 0 -> the crop dies
 
-        private float _lastHours;                        // world hour the sim last advanced
-        private WeatherSystem _weather;
-        private GameObject _plant;
-        private Renderer _plantRenderer;
-        private Renderer _soilRenderer;
-        // Cached visual state to avoid unnecessary per‑frame updates
-        private float _lastWater01;
-        private float _lastGrowth01;
-        private PlotState _lastState;
+private float _lastHours;                        // world hour the sim last advanced
+            private WeatherSystem _weather;
+            private GameObject _plant;
+            private Renderer _plantRenderer;
+            private Renderer _soilRenderer;
+            // Cached visual state to avoid unnecessary per‑frame updates
+            private float _lastWater01;
+            private float _lastGrowth01;
+            private PlotState _lastState;
+            // Cached half plot size for visual scaling
+            private float _halfPlotSize;
 
         private static readonly Color SoilDry = new Color(0.34f, 0.25f, 0.17f);
         private static readonly Color SoilWet = new Color(0.20f, 0.14f, 0.09f);
@@ -57,6 +59,8 @@ namespace CloneZ
             _lastWater01 = -1f;
             _lastGrowth01 = -1f;
             _lastState = (PlotState)(-1);
+            // Cache half plot size for visual scaling (avoid recomputing each frame)
+            _halfPlotSize = CloneZConfig.FarmPlotSize * 0.5f;
         }
         private void OnDisable() { All.Remove(this); }
 
@@ -301,7 +305,7 @@ namespace CloneZ
             }
 
             _plant.SetActive(true);
-            float w = CloneZConfig.FarmPlotSize * 0.5f;
+            float w = _halfPlotSize;
             _plant.transform.localScale = new Vector3(w, height, w);
             _plant.transform.localPosition = new Vector3(0f, 0.1f + height * 0.5f, 0f);
             if (_plantRenderer != null) Tint(_plantRenderer, color);
