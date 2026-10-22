@@ -18,6 +18,7 @@ namespace CloneZ
         private Renderer _pilotGlow;
         private int _water, _capacity;
         private bool _pilot;
+        private bool _valveOpen; // true = valve open, water can be drawn; false = closed
 
         public override string DisplayName => "Water heater";
         public override Vector3 InteractPoint => _point;
@@ -50,6 +51,7 @@ namespace CloneZ
             h._valve = valve;
             h._point = point;
             h._pilotGlow = pilotGlow;
+            h._valveOpen = true; // the drain valve starts opened
             var rng = new System.Random(seed);
             h._capacity = CloneZConfig.RaidHeaterWaterMax;
             h._water = CloneZConfig.RaidHeaterWaterMin + rng.Next(CloneZConfig.RaidHeaterWaterMax - CloneZConfig.RaidHeaterWaterMin + 1);
@@ -62,8 +64,10 @@ namespace CloneZ
             bool water = HasWater;
             into.Add(new InteractAction("Drain the tank into a bottle", c => WaterUse.FillBottle(c, this))
                 .DisabledIf(!water, DryMessage)
-                .DisabledIf(water && !WaterUse.HasEmptyBottle(ctx), "You have no empty bottle"));
-            into.Add(new InteractAction("Drink from the drain valve", c => WaterUse.Drink(c, this)).DisabledIf(!water, DryMessage));
+                .DisabledIf(water && !WaterUse.HasEmptyBottle(ctx), "You have no empty bottle")
+                .DisabledIf(!_valveOpen, "The drain valve is closed."));
+            into.Add(new InteractAction("Drink from the drain valve", c => WaterUse.Drink(c, this)).DisabledIf(!water, DryMessage)
+                .DisabledIf(!_valveOpen, "The drain valve is closed."));
             into.Add(new InteractAction("Knock on the tank", Knock));
             into.Add(new InteractAction("Dump water from tank", DumpWater).DisabledIf(!HasWater, DryMessage));
             into.Add(new InteractAction("Inspect water level", InspectWaterLevel));
@@ -74,6 +78,12 @@ namespace CloneZ
             else
                 into.Add(new InteractAction("Relight the pilot", Relight)
                     .Timed(CloneZConfig.RaidHeaterRelightSeconds, "Relighting the pilot", HumanoidActivity.Use));
+
+            // Valve toggle actions
+            if (_valveOpen)
+                into.Add(new InteractAction("Close the drain valve", CloseValve));
+            else
+                into.Add(new InteractAction("Open the drain valve", OpenValve));
         }
 
         private void DumpWater(InteractContext ctx)
@@ -132,6 +142,20 @@ namespace CloneZ
         {
             _pilot = lit;
             if (_pilotGlow != null) _pilotGlow.enabled = lit;
+        }
+
+        private void CloseValve(InteractContext ctx)
+        {
+            _valveOpen = false;
+            MakeNoise(CloneZConfig.FixtureNoiseSmall);
+            ctx.Notify("You twist the valve shut; water will no longer flow from the tank.");
+        }
+
+        private void OpenValve(InteractContext ctx)
+        {
+            _valveOpen = true;
+            MakeNoise(CloneZConfig.FixtureNoiseSmall);
+            ctx.Notify("You turn the valve back on; water will flow again from the tank.");
         }
     }
 }
