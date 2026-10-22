@@ -47,6 +47,13 @@ namespace CloneZ
                     "Lantern, Juniper. Fuel for heaters is half, conserve what you can, over.",
                     "Juniper Base, this is Lantern. Snow drifts blocking the supply road, expect delays, over.",
                     "*the carrier clicks on and off, on and off, and nobody speaks*",
+"Lantern, Juniper. The generator’s fuel gauge is at one‑quarter; we must ration power.",
+"Juniper, Lantern. Winter storm warning: wind chill approaching minus twenty; exposure will be fatal in minutes.",
+"Lantern, Juniper. The firewood stockpile is half‑empty; anyone with dry timber, report immediately.",
+"Juniper, Lantern. Our field kitchen’s water line froze solid; melt rigs are in the supply sack.",
+"Lantern, Juniper. Morale check: men are muttering about the endless night—keep the radios on for hope.",
+"Juniper, Lantern. Snow‑covered roads are impassable beyond the north fence—anyone with a tractor, move supplies.",
+// --- New winter‑hardship transmissions (night‑shift addition) ---
                 },
             },
             new Net
