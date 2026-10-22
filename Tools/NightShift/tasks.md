@@ -7161,3 +7161,10 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/Zone/Uncanny.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code. (Pass 2 over this file: most of it has summaries already.)
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Fix the footway/track ice‑crust overlay never appearing in Assets/Scripts/World/Map/KentuckyMap.Ground.cs
+  The method `BuildStreets` checks `if (surf.Mat == TroddenSnow.Mat)` to decide whether to add a thin icy crust over trodden‑snow paths. `TroddenSnow` is currently a property that creates a new `Surf` each time it’s accessed, so `surf.Mat` (from the `Surf` returned by `StreetSurface`) never equals the freshly‑created `TroddenSnow.Mat`. Consequently footways and paths never receive the ice overlay, leaving them visually wrong.
+  Change the definition of `TroddenSnow` from a property to a static readonly field:
+  `private static readonly Surf TroddenSnow = DecorPalette.Matte(new Color(0.74f, 0.77f, 0.82f));`
+  This makes `StreetSurface` return the same `Surf` instance for all trodden‑snow surfaces, so the comparison `surf.Mat == TroddenSnow.Mat` becomes true and the icy crust ribbon is added as intended.
+  No other code changes are required; the rest of the file (including the `if (surf.Mat == TroddenSnow.Mat)` check) stays unchanged.
+  After this fix, footways, paths, cycleways, etc., will correctly display a thin ice overlay, matching the period‑correct winter look.
