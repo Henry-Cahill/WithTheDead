@@ -15,12 +15,14 @@ namespace CloneZ
         private const float SegLen = 3f;
         private static Vector3 s_GatePos;
         private static bool s_HasGate;
+        internal static bool s_SearchlightsDisabled = false;
 
         public static bool HasGate => s_HasGate;
 
         public static void Build(Transform world, RaidMapInfo map, ZoneDef zone, ZoneSiteMap site, System.Random rng)
         {
             s_HasGate = false;
+            s_SearchlightsDisabled = false;
             float d = site.Half - CordonRules.BeltWidth;
             var fence = new SiteBuilder(world, "CordonFence", Vector3.zero, 0f, rng, cutaway: false);
             var gaps = new List<Vector3>();
@@ -270,10 +272,32 @@ namespace CloneZ
             }).DisabledIf(paid, "Already paid").DisabledIf(!paid && !permit, "You have no permit"));
             into.Add(new InteractAction("Ask about the Zone", c =>
                 GameEvents.RaiseSubtitle("Warden", CordonRules.PassBought ? "Keep to the road. Stay off the belt after dark." : "No pass, no passage. Off the belt, or we shoot.")));
+                // New action: disable the tower searchlights if the player has a crowbar
+                bool hasCrowbar = ctx.Inventory != null && ctx.Inventory.Has("crowbar");
+                into.Add(new InteractAction("Disable searchlights (requires crowbar)", c =>
+                {
+                    foreach (var sweep in UnityEngine.Object.FindObjectsOfType<SearchlightSweep>())
+                    {
+                        sweep.enabled = false;
+                        var light = sweep.GetComponent<Light>();
+                        if (light != null) light.enabled = false;
+                    }
+                    ZoneCordon.s_SearchlightsDisabled = true;
+                    GameEvents.RaiseSubtitle("Warden", "You jam the searchlights. The towers fall dark.");
+                    Factions.AdjustReputation(Factions.Wardens, -2f, "Disabled searchlights");
+                    Sfx.PlayUI(SfxIds.Cash);
+                    c.Notify("Searchlights disabled.");
+                })
+                .DisabledIf(ZoneCordon.s_SearchlightsDisabled, "Searchlights already disabled")
+                .DisabledIf(!hasCrowbar, "You need a crowbar to do that"));
                 into.Add(new InteractAction("Check checkpoint status", c =>
-                    GameEvents.RaiseSubtitle("Warden", CordonRules.PassBought
+                {
+                    string msg = CordonRules.PassBought
                         ? "You already have a pass for this raid."
-                        : "No pass yet – you need to bribe or show a permit.")));
+                        : "No pass yet – you need to bribe or show a permit.";
+                    if (ZoneCordon.s_SearchlightsDisabled) msg += " The searchlights are offline.";
+                    GameEvents.RaiseSubtitle("Warden", msg);
+                }));
 
         }
 
