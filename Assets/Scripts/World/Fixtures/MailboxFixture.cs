@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 namespace CloneZ
@@ -80,7 +81,15 @@ namespace CloneZ
         private FixturePart _door, _flag;
         private bool _open, _flagUp;
         private int _read;   // deliveries read so far
+        private List<bool> _important; // one entry per delivery, true = player marked it important
         private string[][] _post;   // a raid house's own post, all of it come already (null: the starter home's days of post)
+
+        private void Awake()
+        {
+            // Ensure the importance list matches the number of deliveries for this mailbox
+            var length = Post.Length;
+            _important = new List<bool>(new bool[length]);
+        }
 
         public override string DisplayName => "Mailbox";
         public override Vector3 InteractPoint => _point;
@@ -143,11 +152,41 @@ namespace CloneZ
             into.Add(_flagUp
                 ? new InteractAction("Lower the flag", c => SetFlag(c, false))
                 : new InteractAction("Raise the flag", c => SetFlag(c, true)));
-            // New lightweight inspection action
+            // Offer to toggle importance on the most‑recently read delivery
+                if (_read > 0 && _read <= Post.Length)
+                {
+                    bool currently = _important[_read - 1];
+                    string label = currently ? "Unmark last letter as important" : "Mark last letter as important";
+                    into.Add(new InteractAction(label, c =>
+                    {
+                        _important[_read - 1] = !currently;
+                        c.Notify(_important[_read - 1]
+                            ? "You fold a small paper bookmark into the letter – it will stay with you."
+                            : "You remove the bookmark; the letter is no longer marked.");
+                    }));
+                }
             into.Add(new InteractAction("Inspect the mailbox", ctx => {
                 ctx.Notify($"Mailbox is {(_open ? "open" : "closed")}, flag is {(_flagUp ? "up" : "down")}, {(_read < Come ? $"{Come - _read} unread letters." : "no more mail.")}");
             }));
-            // New action after all mail read
+            // If any letters have been marked, let the player review them
+                if (_important.Exists(b => b))
+                {
+                    into.Add(new InteractAction("Recall important letters", c =>
+                    {
+                        var sb = new StringBuilder();
+                        sb.AppendLine("Important letters you kept:");
+                        for (int i = 0; i < _important.Count; i++)
+                        {
+                            if (_important[i])
+                            {
+                                sb.AppendLine($"- Day {i + 1}:");
+                                foreach (var line in Post[i])
+                                    sb.AppendLine($" \"{line}\"");
+                            }
+                        }
+                        c.Notify(sb.ToString());
+                    }));
+                }
             if (_read >= Come) {
                 into.Add(new InteractAction("Search the mailbox", ctx => {
                     ctx.Notify("You search the mailbox but find nothing else.");
@@ -221,6 +260,8 @@ namespace CloneZ
         {
             save.State = (_open ? 1 : 0) | (_flagUp ? 2 : 0);
             save.A = _read;
+            // Serialize importance list as a comma‑separated "0/1" string
+            save.Text = string.Join(",", _important.ConvertAll(b => b ? "1" : "0"));
         }
 
         public override void RestoreState(FixtureSave save)
@@ -229,6 +270,14 @@ namespace CloneZ
             SetOpen((save.State & 1) != 0, true);
             _flagUp = (save.State & 2) != 0;
             if (_flag != null) _flag.SetOpen(_flagUp, true);
+            // Deserialize importance list; if the saved string is malformed, fall back to all false
+            _important = new List<bool>(new bool[Post.Length]);
+            if (!string.IsNullOrEmpty(save.Text))
+            {
+                var parts = save.Text.Split(',');
+                for (int i = 0; i < Mathf.Min(parts.Length, _important.Count); i++)
+                    _important[i] = parts[i] == "1";
+            }
         }
     }
 }
