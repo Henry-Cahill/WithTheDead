@@ -190,6 +190,43 @@ namespace CloneZ
             for (int i = 0; i < 4; i++)
                 m.Box(new Vector3((i % 2 == 0 ? -1f : 1f) * 0.17f, 0.008f, (i < 2 ? -0.02f : 0.12f)), new Vector3(0.04f, 0.016f, 0.04f), M(black));
             m.Box(new Vector3(0f, 0.19f, 0.06f), new Vector3(0.44f, 0.34f, 0.22f), wood ? M(cab) : G(cab));
+            // Brass rivets on the top edge of the cabinet
+            float topY = 0.19f + 0.34f * 0.5f; // Y of top surface
+            float rivetZ = 0.06f; // centered on front/back
+            for (int i = -1; i <= 1; i++) {
+                if (rng.NextDouble() < 0.9) {
+                    m.Box(new Vector3(i * 0.14f, topY + 0.004f, rivetZ), new Vector3(0.008f, 0.008f, 0.008f), Mt(Brass));
+                }
+            }
+            // Brass volume knob (left side)
+            if (rng.NextDouble() < 0.8) {
+                Vector3 knobPos = new Vector3(-0.22f + 0.03f, 0.19f + 0.08f, 0.06f);
+                m.Cylinder(knobPos, 0.012f, 0.025f, 8, Mt(Brass));
+            }
+            // Brass power button (right‑lower front)
+            if (rng.NextDouble() < 0.7) {
+                Vector3 btnPos = new Vector3(0.22f - 0.025f, 0.19f - 0.12f, 0.06f + 0.11f);
+                m.Box(btnPos, new Vector3(0.015f, 0.008f, 0.004f), Mt(Brass));
+            }
+            // Speaker grille (right side)
+            if (rng.NextDouble() < 0.75) {
+                float grilleX = 0.22f - 0.008f;
+                float grilleYBase = 0.19f;
+                float grilleZBase = 0.06f;
+                for (int col = -1; col <= 1; col++) {
+                    for (int row = -1; row <= 2; row++) {
+                        if (rng.NextDouble() < 0.9) {
+                            Vector3 cell = new Vector3(grilleX, grilleYBase + row * 0.04f, grilleZBase + col * 0.03f);
+                            m.Box(cell, new Vector3(0.002f, 0.03f, 0.004f), M(new Color(0.05f, 0.05f, 0.06f)));
+                        }
+                    }
+                }
+            }
+            // Chrome label plate (top front)
+            if (rng.NextDouble() < 0.6) {
+                Vector3 labelPos = new Vector3(0f, 0.19f + 0.14f, 0.06f + 0.11f);
+                m.Box(labelPos, new Vector3(0.08f, 0.012f, 0.004f), Mt(Chrome));
+            }
             m.Box(new Vector3(0f, 0.18f, -0.10f), new Vector3(0.36f, 0.27f, 0.10f), G(cab * 0.92f));
             m.Box(new Vector3(0f, 0.17f, -0.18f), new Vector3(0.22f, 0.17f, 0.06f), G(cab * 0.85f));
             m.Box(new Vector3(0f, 0.19f, 0.171f), new Vector3(0.42f, 0.32f, 0.004f), M(face));
