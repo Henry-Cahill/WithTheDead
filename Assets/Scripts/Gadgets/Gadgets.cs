@@ -40,6 +40,8 @@ public float Speed => _vel.magnitude;
         private float _hp = 60f, _yaw, _lift;
         private Vector3 _vel;
         private AudioSource _buzz;
+        private Light _headlight; // spot‑light attached to the drone
+        private bool _lightOn; // current on/off state
         private Transform _payload;
         private readonly List<Transform> _rotors = new List<Transform>();
         private Vector3 _netTo;
