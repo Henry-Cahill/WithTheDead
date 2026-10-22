@@ -35,7 +35,14 @@ namespace CloneZ
             "A desperate note from a farmer, ink trembling: “Mary, the crops are ruined, please bring the seedbags before sunset.” No name.",
             "A warning scribbled on parchment, frost‑etched: “The well’s ice may burst at any moment. Keep away.” No signature.",
             "A hand‑drawn map, charcoal smudged: “Shortcut through the woods to the old mill – follow the bent pine.” No legend.",
-            "A solemn obituary, printed in ink: “Constable Harris, 45 years of service, died in the night. Rest in peace.” No signature.",        };
+            "A solemn obituary, printed in ink: “Constable Harris, 45 years of service, died in the night. Rest in peace.” No signature.",
+            "A hand‑written postcard, faded ink: “Thinking of home’s fire‑pit, wish you could hear the creek again.” No return address.",
+            "A torn grocery receipt, ink smudged: “J. L. Grocers – 5 lbs. flour, 2 cans beans, 1‑lb. bacon. Paid $3.45.”",
+            "A small flyer, creased: “Volunteer fire‑watch, meet at the old school gym, 6 PM nightly. Bring lanterns.”",
+            "A folded note, penciled hurriedly: “Do not trust the man in the blue coat. He’s feeding the dead.”",
+            "A weather‑alert handout, stamped “County Emergency”: “Blizzard warning – winds 45 mph, zero visibility after midnight. Stay sheltered.”",
+            "A brief obituary clipping, printed in stark type: “Mrs. Eleanor Whitaker, beloved baker, 78. Services at St. Luke’s, 2 PM Saturday.”",
+            	};
 
         private Vector3 _point;
         private int _read;
