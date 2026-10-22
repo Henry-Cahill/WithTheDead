@@ -156,6 +156,12 @@ namespace CloneZ
     {
         private static AudioDirector s_Instance;
 
+        // Ensure static reference is cleared when this instance is destroyed to avoid stale singleton.
+        private void OnDestroy()
+        {
+            if (s_Instance == this) s_Instance = null;
+        }
+
         private AudioSource _wind, _forest, _bar, _mask;
         private WeatherSystem _weather;
         private TimeOfDay _timeOfDay;
@@ -168,12 +174,14 @@ namespace CloneZ
 
         /// <summary>Ensures a single AudioDirector instance exists in the scene.</summary>
         public static void Ensure()
-
         {
-            if (s_Instance != null) return;
-            var go = new GameObject("[AudioDirector]");
-            DontDestroyOnLoad(go);
-            s_Instance = go.AddComponent<AudioDirector>();
+            // If the stored instance is null or has been destroyed, create a fresh one.
+            if (s_Instance == null || s_Instance.gameObject == null)
+            {
+                var go = new GameObject("[AudioDirector]");
+                DontDestroyOnLoad(go);
+                s_Instance = go.AddComponent<AudioDirector>();
+            }
         }
 
         private AudioSource Bed(string id)
@@ -189,6 +197,8 @@ namespace CloneZ
             _forest = Bed(SfxIds.ForestAmbience);
             _bar = Bed(SfxIds.BarAmbience);
             _mask = Bed(SfxIds.BreathMask);
+            // The Bed helper already returns null‑safe AudioSource objects, but we keep the references
+            // for the Fade calls; null checks are performed inside Fade().
             _weather = WeatherSystem.Instance;
             _timeOfDay = TimeOfDay.Instance;
         }
