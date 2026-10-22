@@ -15,7 +15,9 @@ namespace CloneZ
     {
         private static readonly List<Renderer> s_Renderers = new List<Renderer>(64);
         private static bool s_Shown;
-        private static CeilingVisibility s_Instance;
+private static CeilingVisibility s_Instance;
+
+        private void Awake() => s_Instance = this;
 
         /// <summary>Adds a ceiling renderer and puts it straight into the current view's state.</summary>
         public static void Register(Renderer r)
