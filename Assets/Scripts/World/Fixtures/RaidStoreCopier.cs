@@ -33,20 +33,26 @@ namespace CloneZ
             "A county health‑department flyer about flu shots: \u201CFree flu vaccination this week at the clinic.\u201D"
         };
 
-        private static readonly string[] Jams =
-        {
-            "Halfway through, the rollers clunk and stop. A red lamp blinks: PAPER JAM \u2014 AREA B. Of course it does.",
-            "It chews the sheet, shudders and gives up. The red lamp comes on and stays on.",
-            "There's a crunch from deep inside, then silence and a smell of hot toner. Jammed.",
-            "The rollers freeze and seize on a cold winter sheet, flashing the red lamp: PAPER JAM — FROZEN.",
-            "A torn page catches on the feed, ripping into ribbons as the lamp blazes red: PAPER JAM — TORN.",
-            "A loose sheet slips into the gears, the jam alarm chirps, and the lamp flashes: PAPER JAM — LOOSE SHEET.",
-            "Spilled toner clings to the rollers, forming a sticky patch that stops the feed; the red lamp glows: TONER JAM — STICKY.",
-            "A faint burnt smell rises as the heated drum overheats, halting the paper; the lamp shines red: PAPER JAM — BURNED.",
-            "A heavy envelope wedges the rollers with a thump, the red lamp flickers: PAPER JAM — ENVELOPE.",
-            "The jam alarm chirps: PAPER JAM \u2014 TRAY FULL. Of course it does.",
-            "A thud echoes as the rollers stall. Red lamp blinks: JAM DETECTED \u2014 CLEAR MANUALLY.",
-        };
+private static readonly string[] Jams =
+{
+    "Halfway through, the rollers clunk and stop. A red lamp blinks: PAPER JAM \u2014 AREA B. Of course it does.",
+    "It chews the sheet, shudders and gives up. The red lamp comes on and stays on.",
+    "There's a crunch from deep inside, then silence and a smell of hot toner. Jammed.",
+    "The rollers freeze and seize on a cold winter sheet, flashing the red lamp: PAPER JAM — FROZEN.",
+    "A torn page catches on the feed, ripping into ribbons as the lamp blazes red: PAPER JAM — TORN.",
+    "A loose sheet slips into the gears, the jam alarm chirps, and the lamp flashes: PAPER JAM — LOOSE SHEET.",
+    "Spilled toner clings to the rollers, forming a sticky patch that stops the feed; the red lamp glows: TONER JAM — STICKY.",
+    "A faint burnt smell rises as the heated drum overheats, halting the paper; the lamp shines red: PAPER JAM — BURNED.",
+    "A heavy envelope wedges the rollers with a thump, the red lamp flickers: PAPER JAM — ENVELOPE.",
+    "The jam alarm chirps: PAPER JAM \u2014 TRAY FULL. Of course it does.",
+    "A thud echoes as the rollers stall. Red lamp blinks: JAM DETECTED \u2014 CLEAR MANUALLY.",
+    // New jam variants – static, label, torn receipt, moisture, staple
+    "A sudden puff of static charges the rollers, making them seize – the red lamp flashes: ELECTRIC JAM.",
+    "A sticky label peels onto the feed, the paper sticks and the machine grinds to a halt – red lamp flares.",
+    "A torn receipt fragments across the rollers, the shards jam the gears – red lamp blinks: PAPER JAM — TORN RECEIPT.",
+    "A damp coffee spill drips onto the belt, the moisture makes the rollers stick – red lamp glows: PAPER JAM — MOISTURE.",
+    "A forgotten stapled stack feeds whole, the staples jam the feed – the red lamp screams: STAPLE JAM."
+};
         private static readonly string[] Copies =
         {
             "A warm copy slides into the tray: the sheet on the glass, a shade greyer and a touch crooked.",
@@ -117,7 +123,7 @@ namespace CloneZ
             if (!_jammed)
                 into.Add(new InteractAction("Inspect copier", c => c.Notify("The copier hums smoothly – no jam in sight.")));
             else
-                into.Add(new InteractAction("Inspect copier", c => c.Notify(Jams[_said % Jams.Length])));
+                into.Add(new InteractAction("Inspect copier", c => c.Notify(GetJamMessage(_said))));
             bool open = _lid != null && _lid.IsOpen;
             into.Add(new InteractAction(open ? "Close the lid" : "Lift the lid", c => SetLid(!open)));
             if (open) {
@@ -156,7 +162,7 @@ namespace CloneZ
                 {
                     _jammed = true;
                     ShowJam(true);
-                    c.Notify(Jams[_said++ % Jams.Length]);
+                    c.Notify(GetJamMessage(_said++));
                     return;
                 }
                 c.Notify(_lid != null && _lid.IsOpen
@@ -185,5 +191,8 @@ namespace CloneZ
         {
             if (_jamLamp != null) _jamLamp.enabled = on;
         }
+
+        /// <summary>Returns a jam description, cycling safely through the Jams array.</summary>
+private string GetJamMessage(int index) => Jams[index % Jams.Length];
     }
 }
