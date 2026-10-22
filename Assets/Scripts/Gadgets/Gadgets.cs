@@ -415,6 +415,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
         private DroneKind _lastKind = (DroneKind)(-1);
         private bool _firstUpdate = true;
 
+        /// <summary>Creates and registers the on-screen display for the drone, initializing its UI elements.</summary>
         public static HudDrone Create()
         {
             RectTransform root = UIKit.Rect("Drone OSD", HudLayer.Root);
@@ -508,6 +509,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             });
         }
 
+        /// <summary>Sends the local drone state to other clients (or server) at 15 Hz.</summary>
         public static void Send(Drone d)
         {
             if (!NetSession.Active || Time.time < s_SendAt) return;
@@ -542,6 +544,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             d.Push(pos, yaw);
         }
 
+        /// <summary>Notifies other peers that this drone has been removed.</summary>
         public static void Gone()
         {
             if (!NetSession.Active) return;
