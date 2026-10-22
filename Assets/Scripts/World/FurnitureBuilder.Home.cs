@@ -293,6 +293,30 @@ namespace CloneZ
             m.Box(new Vector3(0f, 0.9f, -0.15f), new Vector3(0.88f, 1.8f, 0.02f), M(c * 0.7f));
             // thin wooden strip capping the top edge (adds a worn‑look)
             m.Box(new Vector3(0f, 0.9f + 1.8f, 0f), new Vector3(0.88f, 0.02f, 0.32f), M(c * 0.95f));
+            // top‑left corner cap
+            m.Box(new Vector3(-0.44f + 0.01f, 0.9f + 1.8f + 0.01f, -0.16f + 0.01f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass));
+            // top‑right corner cap
+            m.Box(new Vector3( 0.44f - 0.01f, 0.9f + 1.8f + 0.01f, -0.16f + 0.01f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass));
+            // bottom‑left corner cap
+            m.Box(new Vector3(-0.44f + 0.01f, 0.9f + 0.02f + 0.01f, -0.16f + 0.01f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass));
+            // bottom‑right corner cap
+            m.Box(new Vector3( 0.44f - 0.01f, 0.9f + 0.02f + 0.01f, -0.16f + 0.01f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass));
+            // occasional side brass plaque centered on the right side board
+            if (Chance(rng, 0.3))
+            {
+                m.Box(new Vector3(0.44f + 0.011f, 0.9f + 0.9f, 0f), new Vector3(0.12f, 0.004f, 0.04f), Mt(Brass));
+            }
+            // hanging leather cords on each side of the top trim
+            // left‑hand cord
+            m.Cylinder(new Vector3(-0.34f, 0.9f + 1.8f + 0.03f, -0.12f), 0.005f, 0.06f, 6, G(new Color(0.42f, 0.37f, 0.33f)), Yaw(R(rng, -8f, 8f)));
+            // right‑hand cord
+            m.Cylinder(new Vector3( 0.34f, 0.9f + 1.8f + 0.03f, -0.12f), 0.005f, 0.06f, 6, G(new Color(0.42f, 0.37f, 0.33f)), Yaw(R(rng, -8f, 8f)));
+            // subtle wear scratches near bottom edge
+            // left‑side scratch
+            m.Box(new Vector3(-0.2f + R(rng, -0.02f, 0.02f), 0.9f + 0.02f + 0.005f, -0.14f + R(rng, -0.01f, 0.01f)), new Vector3(0.15f, 0.002f, 0.004f), G(new Color(0.15f, 0.13f, 0.11f)));
+            // right‑side scratch
+            m.Box(new Vector3( 0.2f + R(rng, -0.02f, 0.02f), 0.9f + 0.02f + 0.005f, -0.14f + R(rng, -0.01f, 0.01f)), new Vector3(0.15f, 0.002f, 0.004f), G(new Color(0.15f, 0.13f, 0.11f)));
+
             // occasional brass plaque centered on the trim
             if (Chance(rng, 0.4))
                 m.Box(new Vector3(0f, 0.9f + 1.8f + 0.01f, 0f), new Vector3(0.12f, 0.004f, 0.04f), Mt(Brass));
