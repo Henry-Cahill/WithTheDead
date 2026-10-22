@@ -274,6 +274,7 @@ namespace CloneZ
             StandFromUse(ctx);
             _wantsFlush = true;
             _seatClean = false; // using the toilet makes the seat dirty
+            ShowParts(false); // update seat colour to show it’s dirty
             _flushed = false;
             BathroomFixtures.Nerves(ctx, -CloneZConfig.ToiletUseCalm);
             string line = UseLines[Random.Range(0, UseLines.Length)];
@@ -327,8 +328,6 @@ namespace CloneZ
             }
         }
 
-        /// <summary>Wipes the toilet seat, providing a small calming effect.</summary>
-        /// <summary>Wipes the toilet seat, providing a small calming effect.</summary>
         private void WipeSeat(InteractContext ctx)
         {
             ctx.Notify("You wipe away grime from the cold porcelain.");
@@ -346,6 +345,7 @@ namespace CloneZ
             }
             _seatClean = true;
             ctx.Notify("You scrub the seat until the grime is gone.");
+            ShowParts(false); // update seat colour to show it’s clean
             // a bigger calming effect than a simple wipe
             LightingFixtures.Calm(ctx, CloneZConfig.ToiletUseCalm * 1.5f);
         }
