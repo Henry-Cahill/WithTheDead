@@ -198,7 +198,7 @@ namespace CloneZ
             ViewState.Current = View;   // every run opens in the isometric view
             // Cinemachine owns the real camera: each view drives its own virtual camera, the brain blends them.
             _views = CinemachineViews.Attach(_cam);
-            ViewBlendSeconds = 0f;   // the brain's blends glide the views; a second, script-side blend would stack on them
+            // ViewBlendSeconds overridden removed to respect inspector setting
         }
 
         private CinemachineViews _views;
@@ -535,7 +535,12 @@ namespace CloneZ
         {
             rot = Quaternion.Euler(_pitch, _yaw, 0f);
             Vector3 pivot = Target.position + Vector3.up * PivotHeight;
-            Vector3 offset = rot * ShoulderOffset;
+            // NOTE: The shoulder offset must ignore pitch. Pitching the camera should only rotate the view
+// around the pivot, not reposition the offset vector. Using a yaw‑only quaternion prevents
+// the camera from drifting vertically when the player looks up or down and ensures the
+// collision sphere‑cast distance is computed correctly.
+Quaternion yawOnly = Quaternion.Euler(0f, _yaw, 0f);
+Vector3 offset = yawOnly * ShoulderOffset;
             float full = offset.magnitude;
             Vector3 dir = full > 1e-4f ? offset / full : rot * Vector3.back;
             float allowed = ClearDistance(pivot, dir, full);
