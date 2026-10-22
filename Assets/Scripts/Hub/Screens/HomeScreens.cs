@@ -396,6 +396,13 @@ namespace CloneZ
             ("Zombie mutation", "Early 1993 reports mention a strange strain that leaves the dead slower but harder to kill. Their gait is lumbering, and they seem less affected by light. Keep your flare ready; a burst can blind them momentarily."),
             ("Snow‑bound roads", "Heavy snow blocks the main highway near the old mill. Vehicles get stuck, and foot travel is the only safe path. Mark your steps to avoid walking circles."),
             ("Radio tower repair", "The old TV tower still broadcasts on a cracked frequency. Repairing it gives a reliable channel for supply drops, but the Wardens monitor any signal spikes."),
+
+            ("Cold night whispers", "When the wind howls past the broken shutters, you can hear faint voices warning of hidden caches—follow the sound, but beware of thin ice."),
+            ("Frostbite tips", "Exposed skin turns white within minutes. Rub soot on your hands, wrap spare rags around your feet, and keep a fire going; a simple scarf can mean the difference between life and death."),
+            ("Snowbound supply lines", "The county road to the east is blocked by drifts. Travelers mark safe passes with charcoal‑black stones; a well‑placed marker can guide you to the abandoned fuel depot."),
+            ("Old church bell", "The rusted bell in the town’s derelict church still rings on windy nights. Legend says ringing it summons a wandering trader; the sound also draws the Wardens, so use it wisely."),
+            ("Broken tractor", "A rusted John Deere sits half‑buried in snow near the silo. If you scavenge its battery and engine parts, you can jury‑rig a makeshift snow‑mobile for faster travel across the frozen fields."),
+            ("Mysterious footprints", "Deep, irregular tracks lead away from the bar toward the riverbank. They’re too large for any known animal—some say they belong to a mutated zombie variant that stalks the ice."),
         };
 
         protected override void BuildContent()
