@@ -6615,3 +6615,12 @@ you want to see in game. Indent extra lines under a task to add detail.
   `m.Cylinder(new Vector3(x0 + k * 0.72f, 0.15f, (z + z1) * 0.5f - (z1 - z) * 0.25f), boltRadius, boltHeight, 6, DecorPalette.Metal(rust));`
   `// bolt near the rear end of the rail`
   `m.Cylinder(new Vector3(x0 + k * 0.72f, 0.15f, (z + z1) * 0.5f + (z1 - z) * 0.25f), boltRadius, boltHeight, 6, DecorPalette.Metal(rust));`
+- [ ] Cache the TimeOfDay singleton in ExtractionManager to avoid a per‑frame lookup in TickDawnClock (Assets/Scripts/Extraction/ExtractionManager.cs)
+  Add a private field `private TimeOfDay _tod;` and assign it in `Setup` after the existing `TimeOfDay tod = TimeOfDay.Instance;` line (`_tod = tod;`).
+  Modify `TickDawnClock` to use the cached `_tod` instead of calling `TimeOfDay.Instance` each frame:
+  `if (NoDeadline) { RaidSecondsRemaining = 99999f; return; }`
+  `if (_tod == null) _tod = TimeOfDay.Instance;`
+  `if (_tod != null && _dawnTotalHours >= 0f)`
+  `RaidSecondsRemaining = Mathf.Max(0f, (_dawnTotalHours - _tod.TotalHours) * _tod.DayLengthSeconds / 24f);`
+  `else`
+  `RaidSecondsRemaining = Mathf.Max(0f, RaidSecondsRemaining - dt);`
