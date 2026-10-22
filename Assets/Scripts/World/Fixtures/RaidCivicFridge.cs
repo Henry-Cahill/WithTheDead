@@ -141,8 +141,12 @@ namespace CloneZ
             new Book("Six Riders to Sundown", "Clay Merriman", "A western with a cracked spine. The sheriff saves the town. Of course he does."),
             new Book("Map Reading and Land Navigation", "the Training Command", "Declination, back bearings, pace counts. You could walk out of this county with this."),
             new Book("The Cold Front", "Mitchell Garr", "A submarine thriller somebody left half read. You finish it for them. The captain gets everyone home."),
-            new Book("The Sergeant's Book of Drill", "the Training Command", "Dress right, dress. There's comfort in a world where everyone knows where to stand."),
-        };
+new Book("The Sergeant's Book of Drill", "the Training Command", "Dress right, dress. There's comfort in a world where everyone knows where to stand."),
+            new Book("Field Manual: Survival in Cold Weather", "the Training Command", "Stay warm, ration fuel, keep your breath steady."),
+            new Book("Kentucky Rangers: A History", "Col. J. D. Harper", "Stories of mountain men and local militia, grit in the snow."),
+            new Book("War Stories from the Gulf, 1991", "Various Authors", "Firsthand accounts, reminding why vigilance matters."),
+            new Book("The Art of Trench Cooking", "Sgt. L. Moore", "Simple meals over a fire, keep morale high even in the cold."),
+            };
 
         private static readonly Book[] ClinicBooks =
         {
