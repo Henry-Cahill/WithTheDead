@@ -52,15 +52,15 @@ namespace CloneZ
                     }
                     // Added period‑correct brass knob assembly (1993 rural interior)
                     // Main knob cylinder
-                    m.Cylinder(new Vector3(width - 0.10f, height * 0.5f, t * 0.5f + 0.001f), 0.015f, 0.03f, 12, Mt(Brass), Quaternion.identity);
+                    m.Cylinder(new Vector3(width - 0.10f, height * 0.5f, face * (t * 0.5f + 0.001f)), 0.015f, 0.03f, 12, Mt(Brass), Quaternion.identity);
                     // Smaller knob cap (worn‑metal look)
-                    m.Cylinder(new Vector3(width - 0.10f, height * 0.5f, t * 0.5f + 0.0025f), 0.008f, 0.018f, 12, M(new Color(0.9f, 0.85f, 0.75f)), Quaternion.identity);
+                    m.Cylinder(new Vector3(width - 0.10f, height * 0.5f, face * (t * 0.5f + 0.0025f)), 0.008f, 0.018f, 12, M(new Color(0.9f, 0.85f, 0.75f)), Quaternion.identity);
                     // Knob base plate (thin wood box for decorative mounting)
-                    m.Box(new Vector3(width - 0.12f, height * 0.5f, t * 0.5f + 0.003f), new Vector3(0.02f, 0.04f, 0.004f), Mt(Brass));
+                    m.Box(new Vector3(width - 0.12f, height * 0.5f, face * (t * 0.5f + 0.003f)), new Vector3(0.02f, 0.04f, 0.004f), Mt(Brass));
                     // Latch plate left of the knob
-                    m.Box(new Vector3(width - 0.18f, height * 0.5f, t * 0.5f + 0.001f), new Vector3(0.03f, 0.06f, 0.006f), Mt(Brass));
+                    m.Box(new Vector3(width - 0.18f, height * 0.5f, face * (t * 0.5f + 0.001f)), new Vector3(0.03f, 0.06f, 0.006f), Mt(Brass));
                     // Tiny brass screw fixing the latch plate
-                    m.Box(new Vector3(width - 0.18f, height * 0.5f - 0.02f, t * 0.5f + 0.002f), new Vector3(0.004f, 0.004f, 0.002f), Mt(Brass));
+                    m.Box(new Vector3(width - 0.18f, height * 0.5f - 0.02f, face * (t * 0.5f + 0.002f)), new Vector3(0.004f, 0.004f, 0.002f), Mt(Brass));
                 m.Ellipsoid(new Vector3(width - 0.08f, 0.98f, face * (t * 0.5f + 0.035f)), new Vector3(0.055f, 0.055f, 0.05f), Mt(Brass), 6, 4);
             }
         }
