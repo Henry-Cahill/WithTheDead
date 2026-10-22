@@ -381,6 +381,9 @@ namespace CloneZ
         public void Tick(float dt, float healScale)
         {
             if (_antibioticTimer > 0f) _antibioticTimer -= dt;
+            // Compute cached multipliers for this Tick
+            _cachedBleedMult = PlayerModifiers.Current.BleedRate * Mathf.Max(0.4f, (_skills != null ? _skills.VitalityBleedMult : 1f));
+            _cachedHealMult = PlayerModifiers.Current.HealRate * (_skills != null ? _skills.VitalityHealMult : 1f);
             if (_painkillerTimer > 0f)
             {
                 _painkillerTimer -= dt;
@@ -425,7 +428,7 @@ namespace CloneZ
                 // still needs stitches or a shard is still lodged in it.
                 if (w.Bandaged && !w.Infected && !w.NeedsStitches && !w.Lodged)
                 {
-                    w.Healing += dt * healScale * healMult / Mathf.Max(1f, w.HealSeconds);
+                                    w.Healing += dt * healScale * _cachedHealMult / Mathf.Max(1f, w.HealSeconds);
                     if (w.Healing >= 1f) { _wounds.RemoveAt(i); continue; }
                 }
 
@@ -436,7 +439,7 @@ namespace CloneZ
                 painTarget += p;
             }
 
-            if (healthDrain > 0f) _stats.Bleed(healthDrain * bleedMult * dt);
+                        if (healthDrain > 0f) _stats.Bleed(healthDrain * _cachedBleedMult * dt);
 
             // Pain spikes quickly but ebbs slowly; painkillers blunt what you feel.
             painTarget = Mathf.Min(CloneZConfig.PainMax, painTarget) * (1f - _painkillerRelief) * (1f - Mathf.Clamp01(PlayerModifiers.Current.PainResist));
@@ -444,8 +447,10 @@ namespace CloneZ
             _stats.Pain = Mathf.MoveTowards(_stats.Pain, painTarget, rate * dt);
         }
 
-        // Bleeding and healing bent by traits, artifacts, Zone marks and the Vitality skill.
-        private PlayerSkills _skills;
+
+                private PlayerSkills _skills;
+        private float _cachedBleedMult;
+        private float _cachedHealMult;
 private float bleedMult => PlayerModifiers.Current.BleedRate * Mathf.Max(0.4f, (_skills != null ? _skills.VitalityBleedMult : 1f));
 
 private float healMult => PlayerModifiers.Current.HealRate * (_skills != null ? _skills.VitalityHealMult : 1f);
