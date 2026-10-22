@@ -263,6 +263,12 @@ else if (kb.qKey.wasPressedThisFrame)
                 if (_ui.IsOpen) _ui.Close();
                 else _ui.OpenInventoryOnly();
             }
+            else if (kb.rKey.wasPressedThisFrame)
+            {
+                // "R" = rummage nearest container when not busy and not already focused on a container.
+                if (!IsBusy && _focus != FocusKind.Container)
+                    AutoSearchNearestContainer();
+            }
             else if (kb.escapeKey.wasPressedThisFrame)
             {
                 if (IsSearching) CancelSearch();
@@ -713,6 +719,30 @@ else if (kb.qKey.wasPressedThisFrame)
             }
         }
 
+        /// <summary>Starts a timed search of the closest unopened container within reach.</summary>
+        private void AutoSearchNearestContainer()
+        {
+            // Find the nearest container within interact range that is not a fixture and not already searched.
+            float range = CloneZConfig.InteractRange;
+            Vector3 p = transform.position;
+            LootContainer best = null;
+            float bestDistSqr = float.MaxValue;
+            foreach (var c in LootContainer.All)
+            {
+                if (c == null || c.IsFixture || c.Searched) continue;
+                float dSqr = (c.transform.position - p).sqrMagnitude;
+                if (dSqr < range * range && dSqr < bestDistSqr)
+                {
+                    bestDistSqr = dSqr;
+                    best = c;
+                }
+            }
+            if (best != null)
+                BeginOrOpen(best); // reuse the existing search/open logic
+            else
+                Notify("No searchable container nearby");
+        }
+
         /// <summary>Abandons any search in progress.</summary>
         /// <summary>Cancels any ongoing container search.</summary>
         public void CancelSearch()
@@ -767,7 +797,7 @@ private void TryPickUp()
             else if (_focus == FocusKind.Fixture)
                 PromptText = FixturePrompt(FixtureTarget);
             else
-                PromptText = "[I]  Inventory";
+                PromptText = "[R] Search nearest container";
         }
 
 private string FixturePrompt(Interactable f)
