@@ -335,6 +335,22 @@ namespace CloneZ
                 // Thin fabric stitching seam at the front edge of the backpack
                 PlayerGearParts.Box(root, "Seam", new Vector3(0f, top - d * 0.5f - 0.039f, outer - 0.010f), new Vector3(w * 0.92f, 0.002f, 0.001f), web);
 
+            // Rugged lid detailing calculations
+            float lidY = top - d * 0.5f - 0.035f; // centre Y of the existing lid box
+            float lidZ = outer - 0.004f; // centre Z of the lid surface
+            var lidWearMat = CloneZUtil.Mat(HumanoidLook.Shade(TorchColor, 0.55f), 0.2f); // subtle wear colour
+
+            // Fabric strap across the lid front edge
+            PlayerGearParts.Box(root, "LidStrap", new Vector3(0f, lidY + 0.03f, lidZ + 0.006f), new Vector3(w * 0.78f, 0.008f, 0.004f), web);
+            // Small metal latch on the left side of that strap
+            PlayerGearParts.Box(root, "LidLatch", new Vector3(-w * 0.30f, lidY + 0.042f, lidZ + 0.008f), new Vector3(0.02f, 0.012f, 0.004f), hardware);
+            // Tiny knob on the latch
+            PlayerGearParts.Tube(root, "LatchKnob", new Vector3(-w * 0.30f, lidY + 0.048f, lidZ + 0.012f), Vector3.forward, 0.008f, 0.003f, hardware);
+            // Rivet centered on the strap front edge
+            PlayerGearParts.Box(root, "LidRivet", new Vector3(0f, lidY + 0.032f, lidZ + 0.008f), new Vector3(0.014f, 0.014f, 0.004f), hardware);
+            // Subtle wear scar on the lid's top surface
+            PlayerGearParts.Box(root, "LidWear", new Vector3(0f, lidY + 0.045f, lidZ - 0.002f), new Vector3(w * 0.70f, 0.002f, 0.001f), lidWearMat);
+
             float ph = h * 0.42f, py = bottom + 0.03f + ph * 0.5f;
             PlayerGearParts.Box(root, "Pocket", new Vector3(0f, py, outer - 0.024f), new Vector3(w * 0.72f, ph, 0.048f), shade, true);
             PlayerGearParts.Box(root, "Zip", new Vector3(0f, py + ph * 0.5f - 0.012f, outer - 0.0485f), new Vector3(w * 0.64f, 0.006f, 0.003f), web);
