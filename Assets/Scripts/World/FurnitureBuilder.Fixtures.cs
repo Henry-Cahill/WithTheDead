@@ -73,6 +73,38 @@ namespace CloneZ
             Color frame = Chance(rng, 0.5) ? new Color(0.16f, 0.12f, 0.08f) : new Color(0.55f, 0.55f, 0.52f);
             Quaternion q = Quaternion.LookRotation(normal, Vector3.up) * Quaternion.Euler(0f, 0f, roll);
             m.Box(at + normal * 0.008f, new Vector3(w + 0.05f, h + 0.05f, 0.016f), q, M(frame));
+            // half‑size helpers for further decorations
+            float halfW = (w + 0.05f) * 0.5f;
+            float halfH = (h + 0.05f) * 0.5f;
+            // brass nail‑head corners on the frame front face
+            Vector3[] nailOffsets = {
+                new Vector3(-halfW + 0.015f, -halfH + 0.015f, 0f), // bottom‑left
+                new Vector3( halfW - 0.015f, -halfH + 0.015f, 0f), // bottom‑right
+                new Vector3(-halfW + 0.015f,  halfH - 0.015f, 0f), // top‑left
+                new Vector3( halfW - 0.015f,  halfH - 0.015f, 0f)  // top‑right
+            };
+            foreach (var off in nailOffsets)
+                m.Box(at + normal * 0.009f + q * off,
+                    new Vector3(0.008f, 0.008f, 0.004f), q, Mt(Brass));
+            // thin hanging wire across the top of the frame
+            float wireLen = w + 0.05f - 0.012f;
+            Vector3 wireCenter = at + normal * 0.009f + q * new Vector3(0f, halfH + 0.008f, 0f);
+            m.Cylinder(wireCenter, 0.004f, wireLen, 12,
+                M(new Color(0.45f, 0.35f, 0.28f)),
+                q * Quaternion.Euler(0f, 0f, 90f));
+            // cloth tag at bottom centre of the frame
+            Vector3 tagPos = at + normal * 0.009f + q * new Vector3(0f, -halfH - 0.008f, 0f);
+            m.Box(tagPos, new Vector3(0.12f, 0.02f, 0.004f), q,
+                M(new Color(0.70f, 0.60f, 0.50f)));
+            // subtle weather‑stain on the frame surface
+            Vector3 stainPos = at + normal * 0.0095f + q *
+                new Vector3(R(rng, -halfW * 0.6f, halfW * 0.6f),
+                            R(rng, -halfH * 0.6f, halfH * 0.6f), 0f);
+            float stainRad = R(rng, 0.02f, 0.04f);
+            m.Blob(stainPos, q * Vector3.right, q * Vector3.up,
+                stainRad, stainRad * 0.6f, 8, 0.0f, rng,
+                M(frame * 0.7f));
+            // poster image
             m.Upright(at + normal * 0.0175f, normal, w, h, DecorMaterials.Poster(kind), new Rect(0f, 0f, 1f, 1f), roll);
         }
 
