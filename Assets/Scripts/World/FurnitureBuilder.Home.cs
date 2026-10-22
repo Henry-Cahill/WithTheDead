@@ -337,7 +337,7 @@ namespace CloneZ
                 m.Box(new Vector3(0f, 0.9f + 1.8f + 0.01f, 0f), new Vector3(0.12f, 0.004f, 0.04f), Mt(Brass));
             for (int s = 0; s < 5; s++)
             {
-                float y = 0.05f + s * 0.43f;
+                float y = 0.9f + 0.05f + s * 0.43f;
                 m.Box(new Vector3(0f, y, 0f), new Vector3(0.88f, 0.025f, 0.3f), M(c));
                 if (s == 4) break;
                 float u0 = (float)rng.NextDouble() * 0.5f;
