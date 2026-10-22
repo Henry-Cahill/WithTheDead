@@ -334,6 +334,7 @@ if (Shape.Headwear == HeadwearStyle.Mask)
             return look;
         }
 
+        /// <summary>Scales a colour by a factor for shading purposes.</summary>
         public static Color Shade(Color c, float f) => new Color(c.r * f, c.g * f, c.b * f, c.a);
 
         private static Color Dirty(Color c) => Color.Lerp(c, Grime, 0.3f);
@@ -346,6 +347,7 @@ if (Shape.Headwear == HeadwearStyle.Mask)
     /// </summary>
     public static class GarmentStyles
     {
+        /// <summary>Generates a searchable lower‑cased key from an item's definition for garment style lookup.</summary>
         public static string Key(ItemDef def) =>
             def == null ? string.Empty : ((def.Id ?? string.Empty) + " " + (def.DisplayName ?? string.Empty)).ToLowerInvariant();
 
@@ -356,6 +358,9 @@ if (Shape.Headwear == HeadwearStyle.Mask)
             return false;
         }
 
+        /// <summary>Determines headwear style from a lower‑cased garment key.
+        /// Returns a <see cref="HeadwearStyle"/> enum value.
+        /// </summary>
         public static HeadwearStyle Headwear(string k)
         {
             if (Any(k, "glasses", "goggles", "monocle", "shades", "spectacles", "aviator")) return HeadwearStyle.Glasses;
@@ -372,6 +377,9 @@ if (Shape.Headwear == HeadwearStyle.Mask)
             return HeadwearStyle.Beanie;
         }
 
+        /// <summary>Determines top garment style from a lower‑cased garment key.
+        /// Returns a <see cref="TopStyle"/> enum value.
+        /// </summary>
         public static TopStyle Top(string k)
         {
             if (Any(k, "dress", "gown")) return TopStyle.Dress;
@@ -384,6 +392,9 @@ if (Shape.Headwear == HeadwearStyle.Mask)
             return TopStyle.LongSleeve;
         }
 
+        /// <summary>Determines bottom garment style from a lower‑cased garment key.
+        /// Returns a <see cref="BottomStyle"/> enum value.
+        /// </summary>
         public static BottomStyle Bottom(string k)
         {
             if (Any(k, "skirt"))
@@ -397,6 +408,9 @@ if (Shape.Headwear == HeadwearStyle.Mask)
             return BottomStyle.Pants;
         }
 
+        /// <summary>Determines footwear style from a lower‑cased garment key.
+        /// Returns a <see cref="FootwearStyle"/> enum value.
+        /// </summary>
         public static FootwearStyle Feet(string k)
         {
             if (Any(k, "sock")) return FootwearStyle.Socks;
@@ -406,8 +420,14 @@ if (Shape.Headwear == HeadwearStyle.Mask)
             return FootwearStyle.Shoes;
         }
 
+        /// <summary>Determines handwear style from a lower‑cased garment key.
+        /// Returns a <see cref="HandwearStyle"/> enum value.
+        /// </summary>
         public static HandwearStyle Hands(string k) => Any(k, "fingerless") ? HandwearStyle.Fingerless : HandwearStyle.Gloves;
 
+        /// <summary>Returns true if a footwear key indicates a light‑soled shoe (e.g., sneaker).
+        /// Used to decide sole colour.
+        /// </summary>
         public static bool LightSoled(string k) => Any(k, "sneaker", "trainer", "tennis", "running", "sport");
 
         /// <summary>Surface gloss from the material named in the garment, or the given default.</summary>
