@@ -278,9 +278,24 @@ namespace CloneZ
             m.Box(new Vector3(0f, 0.3f, -0.02f), new Vector3(0.45f, 0.6f, 0.4f), M(c));
             m.Box(new Vector3(0f, 0.4f, 0.185f), new Vector3(0.39f, 0.16f, 0.02f), M(c * 1.1f));
             m.Box(new Vector3(0f, 0.4f, 0.2f), new Vector3(0.04f, 0.03f, 0.02f), Mt(Brass));
+            // side‑mounted metal switch
+            m.Box(new Vector3(0.18f, 0.34f, -0.03f), new Vector3(0.02f, 0.04f, 0.006f), Mt(Brass));
+            // fabric rib at the front edge of the shade
+            m.Box(new Vector3(0f, 0.47f, -0.06f), new Vector3(0.38f, 0.004f, 0.004f), G(new Color(0.6f, 0.5f, 0.35f)));
+            // brass rivet centred on the shade top
+            m.Box(new Vector3(0f, 0.48f, -0.04f), new Vector3(0.008f, 0.008f, 0.001f), Mt(Brass));
+            // worn line on the wood surface
+            m.Box(new Vector3(0f, 0.31f, -0.05f), new Vector3(0.36f, 0.001f, 0.01f), G(new Color(0.12f, 0.10f, 0.09f)));
             m.Cylinder(new Vector3(0f, 0.6f, -0.04f), 0.07f, 0.04f, 8, G(new Color(0.6f, 0.5f, 0.35f)));
             m.Cylinder(new Vector3(0f, 0.64f, -0.04f), 0.02f, 0.22f, 6, Mt(Brass));
+            // main bulb body (unchanged)
             m.Cylinder(new Vector3(0f, 0.84f, -0.04f), 0.15f, 0.2f, 10, lit ? Gl(new Color(0.95f, 0.78f, 0.52f)) : M(new Color(0.78f, 0.70f, 0.55f)), Quaternion.identity, 0.65f, false);
+            // tiny emissive spot at the centre of the bulb (visible only when lit)
+            if (lit)
+                m.Box(new Vector3(0f, 0.84f, -0.04f), new Vector3(0.03f, 0.03f, 0.03f), Gl(new Color(1f, 0.93f, 0.65f)));
+            // occasional carved label on the wooden side
+            if (Chance(rng, 0.3f))
+                m.Box(new Vector3(-0.22f, 0.38f, -0.02f), new Vector3(0.04f, 0.008f, 0.001f), G(new Color(0.25f, 0.22f, 0.18f)));
             return new Vector3(0f, 0.9f, -0.04f);
         }
 
