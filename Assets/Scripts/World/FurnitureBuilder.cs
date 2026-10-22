@@ -291,6 +291,9 @@ namespace CloneZ
             Color c = V(Olive, rng, 0.06f);
             m.Box(at + q * new Vector3(0f, 0.09f, 0f), new Vector3(0.3f, 0.18f, 0.15f), q, M(c));
             m.Box(at + q * new Vector3(0f, 0.185f, 0f), new Vector3(0.31f, 0.012f, 0.16f), q, M(c * 0.8f));
+            // Thin stencilled metal band around middle of ammo can.
+            float bandY = 0.14f; // middle height relative to base
+            m.Box(at + q * new Vector3(0f, bandY, 0f), new Vector3(0.31f, 0.004f, 0.16f), q, Mt(Chrome));
             m.Box(at + q * new Vector3(0f, 0.2f, 0f), new Vector3(0.12f, 0.015f, 0.02f), q, M(c * 0.6f));
             m.Box(at + q * new Vector3(0f, 0.1f, 0.077f), new Vector3(0.2f, 0.03f, 0.004f), q, M(new Color(0.75f, 0.66f, 0.30f)));
             // Add a small period‑correct metal latch‑handle on the front of the ammo can.
