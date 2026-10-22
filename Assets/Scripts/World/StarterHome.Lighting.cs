@@ -129,6 +129,13 @@ namespace CloneZ
             Vector3 n = f.N(side);
             var glow = new RaidMesh();
             Vector3 bulb = FurnitureBuilder.BulkheadLight(m, glow, Face(f, side, along, y), n);
+            // small rust‑patch details on the bulkhead housing
+            Surf rust = DecorPalette.Matte(new Color(0.45f, 0.30f, 0.20f));
+            Vector3 right = Vector3.Cross(n, Vector3.up).normalized;
+            Vector3 rustPos1 = bulb + n * 0.005f + right * 0.02f + Vector3.up * 0.03f;
+            Vector3 rustPos2 = bulb + n * 0.005f - right * 0.02f + Vector3.up * 0.03f;
+            m.Box(rustPos1, new Vector3(0.015f, 0.006f, 0.008f), rust);
+            m.Box(rustPos2, new Vector3(0.015f, 0.006f, 0.008f), rust);
             float intensityFactor = LightVariation(bulb);
             HomeLamp.Attach(piece.transform, bulb, CloneZConfig.StoreLightRange, CloneZConfig.StoreLightIntensity * intensityFactor, true, glow, LightCircuits.Store);
         }
