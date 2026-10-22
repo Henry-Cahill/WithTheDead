@@ -62,7 +62,17 @@ internal static void BuildLamp(KentuckyMap.Site site, KentuckyMap.Street street,
                 pole.transform.localPosition = new Vector3(0f, 1.5f, 0f);
             }
             var mat = build.GetStreetLampMaterial();
-            if (mat != null) pole.GetComponent<Renderer>().material = mat;
+            if (mat != null) {
+                // create a fresh material instance and apply a deterministic hue shift per street
+                var poleMat = new Material(mat);
+                float hueShift = (float)(rng.NextDouble() * 0.1 - 0.05);
+                // Convert to HSV, shift hue, wrap around [0,1]
+                Color.RGBToHSV(poleMat.color, out float h, out float s, out float v);
+                h = (h + hueShift) % 1f;
+                if (h < 0f) h += 1f;
+                poleMat.color = Color.HSVToRGB(h, s, v);
+                pole.GetComponent<Renderer>().material = poleMat;
+            }
             // ---- root collider (sphere covering head)
             var rootCol = lampRoot.AddComponent<SphereCollider>();
             rootCol.radius = 0.3f;
