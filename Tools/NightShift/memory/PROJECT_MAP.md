@@ -364,7 +364,7 @@ sentence of its summary. Grep the code for details.
 - LivingFixtures.cs (46) LivingFixtures: Small shared helpers for the living room's and bedroom's fixtures.
 - LivingReading.cs (152) LivingReading, Book: The bookcase's pastimes, offered after browsing its shelves: reading a few chapters of one of the bo
 - LivingReceiver.cs (268) LivingReceiver: A set that plays the broadcasts (Broadcasts) — the portable TV and the kitchen radio.
-- MailboxFixture.cs (284) MailboxFixture: The rural mailbox at the kerb.
+- MailboxFixture.cs (289) MailboxFixture: The rural mailbox at the kerb.
 - MirrorCabinet.cs (185) MirrorCabinet, Sign: The mirror cabinet over the bathroom basin: a white wall cabinet with a mirrored door, kept as a Sto
 - OutdoorHouseNumber.cs (56) OutdoorHouseNumber: The enamelled house-number plate beside the front door: "Read the house number".
 - OutdoorLantern.cs (86) OutdoorLantern: The black carriage lantern beside the front door.
@@ -406,7 +406,7 @@ sentence of its summary. Grep the code for details.
 - WaterPoints.cs (162) IWaterPoint, WaterPoints, WaterUse: Anything the survivor can drink from or fill a bottle at: a WaterSource (the kitchen tap, the rain b
 
 ## Assets/Scripts/World/Map
-- BuildingFacadeBuilder.cs (69) BuildingFacadeBuilder: Loop over all buildings in the site and add façade features.
+- BuildingFacadeBuilder.cs (71) BuildingFacadeBuilder: Loop over all buildings in the site and add façade features.
 - KentuckyMap.Buildings.cs (557) KentuckyMap: The unit direction from from to the nearest street within within metres, or zero.
 - KentuckyMap.Ground.cs (411) KentuckyMap: The pieces of a line outside the playable square: cut to the four bands around it, which together co
 - KentuckyMap.Props.cs (330) KentuckyMap: Trees per square metre for a kind of land, or 0 for none.
