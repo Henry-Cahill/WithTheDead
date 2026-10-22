@@ -320,6 +320,10 @@ function Get-SparkHelpers {
     return @(foreach ($l in $lines) { $p = "$l".Trim() -split '\s+'; if ($p.Count -eq 2) { [pscustomobject]@{ Name = $p[0]; Target = $p[1] } } })
 }
 
+# Whether a night shift can drive Windows helpers, from its nightshift.py: it can since it gained the WINDOWS constant. An
+# older one runs a Windows helper's worker as on Linux, and that fails on its first task.
+function Test-DrivesWindowsHelpers([string[]]$NightShiftPy) { return [bool]($NightShiftPy -cmatch '^WINDOWS = ') }
+
 function Install-Helpers {
     if (-not $Helpers -or $Helpers.Count -eq 0) { throw 'No helper machines given (-Helpers user@host, ...).' }
     # The coordinator's own key: kept in the project's ignored .state folder on the Spark and accepted by the
@@ -397,7 +401,7 @@ else
 fi
 curl -fs --max-time 5 http://${SparkIp}:11434/api/version >/dev/null || { echo "can't reach Ollama on the Spark"; exit 1; }
 name="`$(hostname)"; [ -z "`$win" ] || name="`$(echo "`$name" | tr '[:upper:]' '[:lower:]')"
-echo "READY `$name opencode `$("`$HOME/.local/bin/opencode" --version) dotnet `$("`$HOME/.dotnet/dotnet" --version)"
+echo "READY `$name opencode `$("`$HOME/.local/bin/opencode" --version) dotnet `$("`$HOME/.dotnet/dotnet" --version)`${win:+ (Windows)}"
 "@ $target
             $out | Where-Object { $_ -notmatch '^READY' } | ForEach-Object { Write-Host "  $_" }
             $readyLine = $out | Where-Object { $_ -match '^READY' } | Select-Object -Last 1
@@ -406,7 +410,7 @@ echo "READY `$name opencode `$("`$HOME/.local/bin/opencode" --version) dotnet `$
             $keys = @(& ssh-keygen -F $ip -f $knownHosts | Where-Object { $_ -and $_ -notmatch '^#' })
             if ($keys.Count -eq 0) { throw "$ip isn't in this PC's known_hosts; connect to it once with ssh first" }
             $hostKeys += $keys
-            $ready += [pscustomobject]@{ Name = $name; Target = $target }
+            $ready += [pscustomobject]@{ Name = $name; Target = $target; Windows = ($readyLine -match '\(Windows\)\s*$') }
             Write-Host "  ready: $readyLine" -ForegroundColor Green
         }
         catch {
@@ -424,6 +428,12 @@ echo "READY `$name opencode `$("`$HOME/.local/bin/opencode" --version) dotnet `$
     $tgz = New-RefsArchive
     foreach ($h in $ready) { Send-RefsArchive $tgz $h.Target "$HelperDir/unityrefs" }
     Remove-Item $tgz
+
+    $windows = @($ready | Where-Object Windows)
+    if ($windows.Count -and -not (Test-DrivesWindowsHelpers (Get-RemoteOutput "cat $RemoteDir/nightshift.py 2>/dev/null || true"))) {
+        Write-Host "`nThe Spark won't use $(($windows | ForEach-Object Name) -join ', ') yet: its night shift predates Windows helpers and would fail there at once (No module named 'fcntl'). Put this version on the Spark (see `"Windows helpers`" in README.md), then run helpers again." -ForegroundColor Yellow
+        $ready = @($ready | Where-Object { -not $_.Windows })
+    }
 
     $helpersB64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes((($ready | ForEach-Object { "$($_.Name) $($_.Target)" }) -join "`n") + "`n"))
     $hostsB64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes(($hostKeys -join "`n") + "`n"))

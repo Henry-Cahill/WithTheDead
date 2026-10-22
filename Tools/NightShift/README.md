@@ -136,7 +136,10 @@ agent's shell commands and [check.sh](check.sh) run in Git Bash too. To set one 
 3. Choose **9** in the menu, or run `.\NightShift.ps1 helpers`. It finishes the PC like a Linux helper: OpenCode and
    .NET in the account's home, the Spark's key (accepted only from the Spark's address; an administrator's keys live
    in `C:\ProgramData\ssh\administrators_authorized_keys`) and the Unity references. The helper is named after the
-   computer, in lower case.
+   computer, in lower case. The Spark only gets the PC once its night shift can drive Windows helpers: one from
+   before them would run the worker as on Linux, which fails at once. Until then `helpers` says so and leaves the PC
+   out; with the night shift stopped, switch the Workbench project to a branch that has this version (`main`, once
+   it's merged there) and pull, then run `helpers` again.
 
 Keep the PC awake through the night (WindowsHelper.ps1 warns if it sleeps on mains power). Its worker runs at
 below-normal CPU priority, and everything it starts (the agent, Git Bash, dotnet) ends with it.
@@ -225,6 +228,11 @@ Inside the container, `bash Tools/NightShift/nightshift.sh` also has `check` (co
   `Connection timed out`, is just above). A Windows PC answers like that until [WindowsHelper.ps1](WindowsHelper.ps1)
   has run on it; then connect once with `ssh user@host exit` and run `helpers` again (see
   [Windows helpers](#windows-helpers)).
+- **A Windows helper fails at once with `ModuleNotFoundError: No module named 'fcntl'`** (then "two errors in a row;
+  this worker is done for the night"): the Spark's night shift is from before Windows helpers, so it runs the worker
+  there as on Linux (and ignores `NIGHTSHIFT_DOCS_WORKERS`). Bring the Workbench project on the Spark up to this
+  version (see [Windows helpers](#windows-helpers)); until then, running `helpers` again takes the PC off the
+  Spark's list.
 - **"couldn't bring the project folder up to date with the landing"**: a file that landing changed was edited in
   the project folder while it ran, so the landing was undone and the task stays queued. Adding tasks to
   `tasks.md` is fine at any time; leave the other files alone while it runs.
@@ -246,7 +254,8 @@ Inside the container, `bash Tools/NightShift/nightshift.sh` also has `check` (co
 
 Run `pwsh -NoProfile -File Tools/NightShift/tests/Publish.Tests.ps1` from the repository root (or use
 `powershell -NoProfile -File ...` on Windows PowerShell 5). Tests use temporary local Git history only;
-they do not connect to the Spark or GitHub.
+they do not connect to the Spark or GitHub. `Tools/NightShift/tests/Helpers.Tests.ps1`, run the same way, checks that
+`helpers` can tell whether the Spark's night shift drives Windows helpers.
 
 The coordinator's tests (the planner, task routing and the helpers' commands) run on Linux or Windows:
 `python3 -m unittest discover -s Tools/NightShift/tests -p "test_*.py"` (`python` on Windows). They use a fake model,
