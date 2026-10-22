@@ -51,6 +51,15 @@ namespace CloneZ
                 for (int i = -4; i <= 4; i++)
 {
     m.Box(new Vector3(i * 1.0f, 0.55f, 0f), new Vector3(0.12f, 1.1f, 0.12f), wood);
+            // subtle paint‑chip detail on each wooden post
+            if (r.NextDouble() < 0.4)
+            {
+                Surf chip = DecorPalette.Matte(new Color(0.34f, 0.28f, 0.22f));
+                float chipX = i * 1.0f + R(r, -0.15f, 0.15f);
+                float chipY = 0.4f + R(r, -0.1f, 0.1f);
+                // small paint chip box on post surface
+                m.Box(new Vector3(chipX, chipY, 0f), new Vector3(0.02f, 0.005f, 0.08f), chip);
+            }
     // Detailed visual upgrade for the centre post of the wooden low‑barrier – metal cap, rust, rope loop,
     // paint streaks, and a faded sign to give a lived‑in, winter‑weathered look.
     if (i == 0)

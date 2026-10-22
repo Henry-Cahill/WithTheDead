@@ -6559,5 +6559,6 @@ you want to see in game. Indent extra lines under a task to add detail.
   Step 6: Assets/Scripts/World/Zone/ZoneCordon.cs – add using for UnityEngine.Object if not already present (the file already has `using UnityEngine;` which covers `Object`).
   Done when: When the player approaches the checkpoint, the interaction menu now includes “Disable searchlights (requires crowbar)”. If the player has a `crowbar` in inventory, selecting it turns off every tower’s rotating light beam and spot light, a subtitle appears (“You jam the searchlights…”) and the player receives a small reputation hit with the Wardens. The “Check checkpoint status” subtitle now mentions whether the searchlights are offline. All existing actions and visuals remain unchanged except for the new disabled‑searchlight state.
   - 20:38 landed by 1htsserver in 9.1 min: Implemented a new “Disable searchlights (requires crowbar)” action for the checkpoint warden.
-- [ ] Add subtle paint‑chip details to each wooden post of the low‑barrier built in the `Prop(..., (m, r) => { … })` lambda of `RaidMapBuilder.BuildEdge` in Assets/Scripts/World/RaidMapBuilder.Edge.cs
+- [x] Add subtle paint‑chip details to each wooden post of the low‑barrier built in the `Prop(..., (m, r) => { … })` lambda of `RaidMapBuilder.BuildEdge` in Assets/Scripts/World/RaidMapBuilder.Edge.cs
   Inside the `for (int i = -4; i <= 4; i++)` loop, after the existing line
+  - 20:41 landed by 1htsserver in 1.9 min: **Changed file**
