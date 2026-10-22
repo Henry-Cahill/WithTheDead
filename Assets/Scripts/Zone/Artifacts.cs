@@ -25,6 +25,8 @@ namespace CloneZ
         private Transform _visual;
         private Light _glow;
         private float _revealedUntil, _songAt;
+        // Tracks the last time the artifact was studied to enforce a cooldown.
+        private float _lastStudyTime;
 
         public override string DisplayName => Revealed ? ArtifactCatalog.NameOf(ArtifactId) : "";
         public override bool IsAvailable => isActiveAndEnabled && Revealed;
@@ -106,10 +108,12 @@ namespace CloneZ
             }
         }
 
+/// <summary>Collect the actions the player can perform on this artifact (take, inspect, study).</summary>
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             into.Add(new InteractAction("Take " + ArtifactCatalog.NameOf(ArtifactId), Take).Timed(1.2f, "Easing it free..."));
             into.Add(new InteractAction("Inspect " + ArtifactCatalog.NameOf(ArtifactId), Inspect).Timed(0.5f, "Looking closely..."));
+            into.Add(new InteractAction("Study " + ArtifactCatalog.NameOf(ArtifactId), Study).Timed(3f, "Examining closely…"));
         }
 
         private void Take(InteractContext ctx)
@@ -139,6 +143,21 @@ namespace CloneZ
             Destroy(gameObject);
         }
 
+        private void Study(InteractContext ctx)
+        {
+            // Prevent spamming – require a short cooldown.
+            if (Time.time - _lastStudyTime < 30f)
+            {
+                ctx.Notify("You need a short break before studying another artifact.");
+                return;
+            }
+            int newlyLearned = ArtifactCatalog.LearnAll(ArtifactId);
+            _lastStudyTime = Time.time;
+            // Give feedback.
+            GameEvents.RaiseToast($"{ArtifactCatalog.NameOf(ArtifactId)} – learned {newlyLearned} properties.");
+            Sfx.PlayUI(SfxIds.GearRustle, 0.6f);
+        }
+
         private void Inspect(InteractContext ctx)
         {
             if (this == null) return;
@@ -146,6 +165,7 @@ namespace CloneZ
             if (string.IsNullOrEmpty(desc)) desc = "Nothing special.";
             ctx.Notify(desc);
         }
+
     }
 
     /// <summary>
