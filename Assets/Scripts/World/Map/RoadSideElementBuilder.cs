@@ -31,7 +31,8 @@ namespace CloneZ
                 var offset = new Vector2(dir.y, -dir.x) * (RoadMarkingsBuilder.SideLineOffset + 0.15f);
                 var centre = (a + b) * 0.5f + offset;
                 var box = site.Overhead.At(new Vector3(centre.x, 0f, centre.y));
-                box.Box(Vector3.zero, new Vector3(0.20f, RoadSideElementBuilder.KerbHeight, len), yaw, surf);
+                float segmentHeight = KerbHeight + (float)(build.Random.NextDouble() * CapHeightJitter);
+                box.Box(Vector3.zero, new Vector3(0.20f, segmentHeight, len), yaw, surf);
                 // add end‑caps at both segment ends
                 BuildKerbCap(site, a, dir, build, paintMat);
                 BuildKerbCap(site, b, dir, build, paintMat);
