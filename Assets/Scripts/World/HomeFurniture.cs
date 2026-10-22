@@ -300,6 +300,29 @@ bool leftHandle = rng.Next(2) == 0;
                     break;
                 case HomeFurnitureKind.Toilet:
                     FurnitureBuilder.Toilet(m, rng);
+                    // seat slab – thin white box centred on the front of the bowl
+                    Vector3 seatPos = new Vector3(0f, 0.07f, 0.15f);
+                    Vector3 seatSize = new Vector3(0.35f, 0.02f, 0.25f);
+                    m.Box(seatPos, seatSize, DecorPalette.Matte(new Color(0.93f, 0.93f, 0.95f)));
+                    // lid – possibly opened
+                    bool lidOpen = rng.Next(2) == 0;
+                    float lidY = lidOpen ? 0.12f : 0.07f;
+                    Vector3 lidPos = new Vector3(0f, lidY, 0.15f);
+                    Vector3 lidSize = new Vector3(0.36f, 0.02f, 0.26f);
+                    m.Box(lidPos, lidSize, DecorPalette.Matte(new Color(0.95f, 0.95f, 0.97f)));
+                    // metal flush lever on back‑right of tank
+                    Vector3 leverPos = new Vector3(-0.08f, 0.45f, -0.28f);
+                    m.Cylinder(leverPos, 0.01f, 0.12f, 6, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
+                    // wall‑mounted toilet‑paper holder
+                    Vector3 holderPos = new Vector3(-0.18f, 0.70f, -0.30f);
+                    Vector3 holderSize = new Vector3(0.04f, 0.12f, 0.02f);
+                    m.Box(holderPos, holderSize, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
+                    // random water‑stain on floor near front
+                    bool stainLeft = rng.Next(2) == 0;
+                    float stainX = stainLeft ? -0.12f : 0.12f;
+                    Vector3 stainPos = new Vector3(stainX, 0.001f, 0.20f);
+                    Vector3 stainSize = new Vector3(0.06f, 0.001f, 0.06f);
+                    m.Box(stainPos, stainSize, DecorPalette.Matte(new Color(0.60f, 0.60f, 0.60f)));
                     break;
                 case HomeFurnitureKind.Basin:
                      FurnitureBuilder.WashBasin(m, rng);
