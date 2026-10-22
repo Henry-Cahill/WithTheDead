@@ -347,9 +347,30 @@ namespace CloneZ
 
             // On the back rim: a bottle of bubble bath and a scrubbing brush; on the floor in front, the bath mat.
             Color bottle = V(Chance(rng, 0.5) ? new Color(0.30f, 0.52f, 0.74f) : new Color(0.82f, 0.44f, 0.58f), rng, 0.1f);
-            var b = new Vector3(-end * 0.55f, h, -hz + wallZ * 0.5f);
-            m.Cylinder(b, 0.03f, 0.15f, 10, G(bottle));
-            m.Cylinder(b + new Vector3(0f, 0.15f, 0f), 0.012f, 0.025f, 8, G(new Color(0.92f, 0.92f, 0.90f)));
+var b = new Vector3(-end * 0.55f, h, -hz + wallZ * 0.5f);
+                     m.Cylinder(b, 0.03f, 0.15f, 10, G(bottle));
+                     m.Cylinder(b + new Vector3(0f, 0.15f, 0f), 0.012f, 0.025f, 8, G(new Color(0.92f, 0.92f, 0.90f)));
+
+                     // chrome towel‑bar (horizontal rod) along back wall
+                     m.CylinderX(new Vector3(-end * 0.45f, h - 0.15f, -hz + wallZ * 0.5f), 0.01f, 0.48f, 12, chrome);
+                     // tiny hooks at each end of the bar
+                     m.Cylinder(new Vector3(-end * 0.70f, h - 0.15f, -hz + wallZ * 0.5f), 0.003f, 0.02f, 6, chrome);
+                     m.Cylinder(new Vector3(-end * 0.20f, h - 0.15f, -hz + wallZ * 0.5f), 0.003f, 0.02f, 6, chrome);
+
+                     // ceramic soap dish (box base + chrome lip)
+                     m.Box(new Vector3(-end * 0.55f, h - 0.12f, -hz + wallZ * 0.30f), new Vector3(0.09f, 0.018f, 0.045f), M(new Color(0.86f, 0.84f, 0.80f)));
+                     m.Cylinder(new Vector3(-end * 0.55f, h - 0.10f, -hz + wallZ * 0.30f), 0.006f, 0.008f, 6, chrome);
+
+                     // rust spot on the front edge
+                     var rustSurf = M(new Color(0.45f, 0.35f, 0.30f));
+                     m.Quad(new Vector3(0f, BathFloorY + 0.015f, -hz + wallZ * 0.5f), new Vector3(0.20f, 0f, 0f), new Vector3(0f, 0.02f, 0f), rustSurf);
+
+                     // pipe stub and tiny water droplet
+                     m.Cylinder(new Vector3(0f, BathFloorY + 0.08f, -hz + wallZ * 0.5f), 0.015f, 0.10f, 8, chrome);
+                     m.Ellipsoid(new Vector3(0f, BathFloorY + 0.14f, -hz + wallZ * 0.5f), new Vector3(0.01f, 0.02f, 0.01f), G(new Color(0.78f, 0.86f, 0.94f)), 6, 3);
+
+                     // worn edge‑tile strip
+                     m.Box(new Vector3(0f, BathFloorY + 0.02f, -hz + wallZ * 0.5f), new Vector3(BathLength - 0.02f, 0.005f, 0.01f), M(new Color(0.70f, 0.66f, 0.62f)));
             if (Chance(rng, 0.7))
             {
                 var brush = new Vector3(-end * 0.3f, h + 0.012f, -hz + wallZ * 0.5f);
