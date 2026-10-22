@@ -28,31 +28,31 @@ namespace CloneZ
         public override Vector3 InteractPoint => Point;
         public override float Reach => 2.6f;
 
-        public override void GetActions(InteractContext ctx, List<InteractAction> into)
+public override void GetActions(InteractContext ctx, List<InteractAction> into)
+{
+    string screen = Screen, arg = Arg;
+    into.Add(new InteractAction(Verb, c => Open(screen, arg)));
+    for (int i = 0; i < Extra.Count; i++)
+    {
+        (string label, string s, string a) = Extra[i];
+        into.Add(new InteractAction(label, c => Open(s, a)));
+    }
+    // Special inspection for the zone door – always present, even when Extra is empty
+    if (Title == "Door to the Zone")
+    {
+        into.Add(new InteractAction("Inspect door", c => GameEvents.RaiseToast(
+            "The door is locked tight, but you can hear the cold wind outside.")));
+    }
+    // Toggle safe zone action for the zone door
+    if (Title == "Door to the Zone")
+    {
+        into.Add(new InteractAction("Toggle safe zone", c =>
         {
-            string screen = Screen, arg = Arg;
-            into.Add(new InteractAction(Verb, c => Open(screen, arg)));
-            for (int i = 0; i < Extra.Count; i++)
-            {
-                (string label, string s, string a) = Extra[i];
-                into.Add(new InteractAction(label, c => Open(s, a)));
-                // Special inspection for the zone door
-                if (Title == "Door to the Zone")
-                {
-                    into.Add(new InteractAction("Inspect door", c => GameEvents.RaiseToast(
-                        "The door is locked tight, but you can hear the cold wind outside.")));
-                }
-            }
-            // Toggle safe zone action for the zone door
-            if (Title == "Door to the Zone")
-            {
-                into.Add(new InteractAction("Toggle safe zone", c =>
-                {
-                    HubRules.SafeZone = !HubRules.SafeZone;
-                    GameEvents.RaiseToast($"Safe zone is now {(HubRules.SafeZone ? "ON" : "OFF")}." );
-                }));
-            }
-        }
+            HubRules.SafeZone = !HubRules.SafeZone;
+            GameEvents.RaiseToast($"Safe zone is now {(HubRules.SafeZone ? "ON" : "OFF")}." );
+        }));
+    }
+}
 
 
         private static void Open(string screen, string arg)
@@ -403,8 +403,8 @@ namespace CloneZ
                 l.intensity = i == 7 ? st.LightIntensity * 0.5f : st.LightIntensity;
                 l.range = 7.5f;
                 l.shadows = i < 4 ? LightShadows.Soft : LightShadows.None;
-                Vector3 lampAt = spots[i] + Vector3.up * 0.15f;
-                Deco(world, "Lamp", m => m.Ellipsoid(lampAt, new Vector3(0.28f, 0.2f, 0.28f), DecorPalette.Glow(st.Light)), lampAt);
+            Vector3 lampAt = spots[i] + Vector3.up * 0.15f;
+            Deco(world, "Lamp", m => m.Ellipsoid(Vector3.zero, new Vector3(0.28f, 0.2f, 0.28f), DecorPalette.Glow(st.Light)), lampAt);
             }
         }
 
