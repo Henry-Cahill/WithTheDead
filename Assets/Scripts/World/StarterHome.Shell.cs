@@ -118,7 +118,7 @@ namespace CloneZ
             SlotFixtures(piece, m, f, rng);
 
             Emit(piece, m, ShadowCastingMode.On);
-            piece.gameObject.AddComponent<CutawayOccluder>();
+            if (piece.gameObject.GetComponent<CutawayOccluder>() == null) piece.gameObject.AddComponent<CutawayOccluder>();
             return true;
         }
 
@@ -350,7 +350,7 @@ namespace CloneZ
                          m.Box(f.P(chipX, chipY, bellZ + 0.001f), new Vector3(0.012f, 0.006f, 0.001f), DecorPalette.Matte(brass * 0.6f));
                      }
             // rubber door‑stop (soft, dark brown)
-            float stopY = 0.08f; // centre just above floor
+            float stopY = FloorTop * 0.5f + 0.02f; // centre just above floor; 2 cm clearance
             float stopX = o0 - 0.02f;
             float stopZ = 0f;
             m.Box(f.P(stopX, stopY, stopZ), new Vector3(0.015f, 0.04f, 0.015f), DecorPalette.Matte(new Color(0.18f, 0.12f, 0.08f)));
