@@ -119,13 +119,15 @@ namespace CloneZ
         /// and number plates; one door may hang ajar.</summary>
         public static void LockerBank(RaidMesh m, System.Random rng, int count, Color body)
         {
+// If count is zero we bail out early; otherwise w is the total width of the locker row.
             float w = count * 0.5f;
+            if (count <= 0) return;
             Color c = V(body, rng, 0.05f);
             Color dark = c * 0.45f;
             m.Box(new Vector3(0f, 0.04f, -0.02f), new Vector3(w, 0.08f, 0.44f), M(new Color(0.1f, 0.1f, 0.1f)));
             m.Box(new Vector3(0f, 0.96f, -0.02f), new Vector3(w, 1.76f, 0.46f), M(c * 0.9f));
             m.Box(new Vector3(0f, 1.855f, -0.02f), new Vector3(w + 0.02f, 0.03f, 0.48f), M(c * 0.8f));
-            int ajar = Chance(rng, 0.45) ? rng.Next(count) : -1;
+            int ajar = (count > 0 && Chance(rng, 0.45)) ? rng.Next(count) : -1;
             for (int i = 0; i < count; i++)
             {
                 float x = -w * 0.5f + 0.25f + i * 0.5f;
