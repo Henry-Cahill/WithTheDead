@@ -62,6 +62,8 @@ namespace CloneZ
                 BuildSidewalks(site);
                 BuildLines(site);
                 BuildBuildings(site);
+                BuildingFacadeBuilder.BuildAll(site, build);
+
 
 
                 BuildStreetLights(site);
