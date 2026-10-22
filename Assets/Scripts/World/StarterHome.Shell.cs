@@ -307,7 +307,48 @@ namespace CloneZ
             float lockY = DoorTop * 0.5f + 0.30f; // around knob height
             float lockX = o0 - 0.04f;
             float lockZ = 0f;
-            m.Box(f.P(lockX, lockY, lockZ), new Vector3(0.015f, 0.05f, 0.02f), DecorPalette.Matte(TrimWhite * 0.55f));
+                     m.Box(f.P(lockX, lockY, lockZ), new Vector3(0.015f, 0.05f, 0.02f), DecorPalette.Matte(TrimWhite * 0.55f));
+                     // Door‑bell button (brass‑tinted metal)
+                     float bellY = lockY + 0.12f; // sit above the lock plate
+                     float bellX = lockX; // same X as the lock plate
+                     float bellZ = lockZ;
+                     Vector3 bellSize = new Vector3(0.03f, 0.02f, 0.015f);
+                     Color brass = new Color(0.78f, 0.61f, 0.43f);
+                     m.Box(f.P(bellX, bellY, bellZ), bellSize, DecorPalette.Matte(brass));
+                     // Back‑plate for the door‑bell button
+                     float plateY = bellY - 0.01f;
+                     Vector3 plateSize = new Vector3(0.05f, 0.005f, 0.01f);
+                     m.Box(f.P(bellX, plateY, bellZ), plateSize, DecorPalette.Matte(TrimWhite * 0.7f));
+                     // Simple brass knocker (two short boxes forming a U‑shape)
+                     float knockerX = o0 - 0.06f; // left of the lock plate
+                     float knockerBaseY = DoorTop * 0.5f + 0.05f; // near eye level
+                     float knockerZ = 0f;
+                     Vector3 knockerBar = new Vector3(0.005f, 0.04f, 0.015f);
+                     m.Box(f.P(knockerX, knockerBaseY, knockerZ), knockerBar, DecorPalette.Matte(brass));
+                     m.Box(f.P(knockerX, knockerBaseY - 0.025f, knockerZ), knockerBar, DecorPalette.Matte(brass));
+                     // Optional house‑number plaque (white with dark “numbers”)
+                     if (rng.NextDouble() < 0.5)
+                     {
+                         float plaqueX = o1 + 0.06f; // right of the right jamb
+                         float plaqueY = DoorTop * 0.5f; // centred vertically
+                         float plaqueZ = 0f;
+                         Vector3 plaqueSize = new Vector3(0.12f, 0.02f, 0.005f);
+                         m.Box(f.P(plaqueX, plaqueY, plaqueZ), plaqueSize, DecorPalette.Matte(TrimWhite));
+                         // Simulated dark numerals as small paint‑chip rectangles
+                         for (int i = 0; i < 3; i++)
+                         {
+                             float numY = plaqueY + (float)(rng.NextDouble() - 0.5) * 0.01f;
+                             float numX = plaqueX - 0.04f + i * 0.03f;
+                             m.Box(f.P(numX, numY, plaqueZ + 0.001f), new Vector3(0.018f, 0.012f, 0.001f), DecorPalette.Matte(TrimWhite * 0.25f));
+                         }
+                     }
+                     // Occasional paint‑chip wear on the door‑bell button
+                     if (rng.NextDouble() < 0.4)
+                     {
+                         float chipY = bellY + (float)(rng.NextDouble() - 0.5) * 0.005f;
+                         float chipX = bellX + (float)(rng.NextDouble() - 0.5) * 0.01f;
+                         m.Box(f.P(chipX, chipY, bellZ + 0.001f), new Vector3(0.012f, 0.006f, 0.001f), DecorPalette.Matte(brass * 0.6f));
+                     }
             // rubber door‑stop (soft, dark brown)
             float stopY = 0.08f; // centre just above floor
             float stopX = o0 - 0.02f;
