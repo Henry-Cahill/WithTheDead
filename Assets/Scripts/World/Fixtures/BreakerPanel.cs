@@ -18,6 +18,7 @@ namespace CloneZ
         private FixturePart _door, _handle;
         private bool _open;
         private float _nextSync;
+        private const string RepairActionLabel = "Repair breaker panel";
 
         public override string DisplayName => "Breaker panel";
         public override Vector3 InteractPoint => _point;
@@ -73,6 +74,14 @@ namespace CloneZ
                 .DisabledIf(_open && PowerGrid.Instance == null, "There's no supply to switch");
             into.Add(new InteractAction(_open ? "Close the breaker panel" : "Open the breaker panel", c => SetOpen(!_open, false)));
             into.Add(breaker);
+            // Offer repair when the grid is down and the panel door is open.
+            var grid = PowerGrid.Instance;
+            if (grid != null && !grid.IsOn && _open)
+            {
+                var repair = new InteractAction(RepairActionLabel, RepairPanel)
+                    .DisabledIf(!_open, "Open the panel first");
+                into.Add(repair);
+            }
             into.Add(new InteractAction("Check the power", CheckPower));
             into.Add(new InteractAction("Inspect breaker panel", c => c.Notify(_open ? "The panel's door is ajar." : "The panel's door is shut.")));
             into.Add(new InteractAction("Inspect main breaker", c => c.Notify(BreakerOn ? "The main breaker is on." : "The main breaker is off.")));
@@ -96,6 +105,24 @@ namespace CloneZ
             if (!on) ctx.Notify("Clunk. The house goes quiet \u2014 every light and appliance is dead.");
             else if (grid.IsOn) ctx.Notify("Clunk. Somewhere in the house, something hums back to life.");
             else ctx.Notify("Clunk. Nothing \u2014 the grid is down anyway.");
+        }
+
+        private void RepairPanel(InteractContext ctx)
+        {
+            var grid = PowerGrid.Instance;
+            if (grid == null)
+            {
+                ctx.Notify("There is no power grid to repair.");
+                return;
+            }
+            // Restore the grid and the main breaker.
+            grid.Restore(true, grid.ShutoffDay, true);
+            // Update the handle visual and refresh household lighting.
+            SyncHandle(false);
+            HomeLamp.RefreshAll();
+            // Give the survivor feedback.
+            MakeNoise(CloneZConfig.BreakerNoise);
+            ctx.Notify("You tighten the panel’s fuse – the house hums back to life.");
         }
 
         private static void CheckPower(InteractContext ctx)
