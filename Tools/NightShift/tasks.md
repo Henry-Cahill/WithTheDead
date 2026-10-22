@@ -6615,7 +6615,7 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   `m.Cylinder(new Vector3(x0 + k * 0.72f, 0.15f, (z + z1) * 0.5f - (z1 - z) * 0.25f), boltRadius, boltHeight, 6, DecorPalette.Metal(rust));`
   `// bolt near the rear end of the rail`
   `m.Cylinder(new Vector3(x0 + k * 0.72f, 0.15f, (z + z1) * 0.5f + (z1 - z) * 0.25f), boltRadius, boltHeight, 6, DecorPalette.Metal(rust));`
-- [ ] Cache the TimeOfDay singleton in ExtractionManager to avoid a per‑frame lookup in TickDawnClock (Assets/Scripts/Extraction/ExtractionManager.cs)
+- [x] Cache the TimeOfDay singleton in ExtractionManager to avoid a per‑frame lookup in TickDawnClock (Assets/Scripts/Extraction/ExtractionManager.cs)
   Add a private field `private TimeOfDay _tod;` and assign it in `Setup` after the existing `TimeOfDay tod = TimeOfDay.Instance;` line (`_tod = tod;`).
   Modify `TickDawnClock` to use the cached `_tod` instead of calling `TimeOfDay.Instance` each frame:
   `if (NoDeadline) { RaidSecondsRemaining = 99999f; return; }`
@@ -6624,6 +6624,7 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   `RaidSecondsRemaining = Mathf.Max(0f, (_dawnTotalHours - _tod.TotalHours) * _tod.DayLengthSeconds / 24f);`
   `else`
   `RaidSecondsRemaining = Mathf.Max(0f, RaidSecondsRemaining - dt);`
+  - 23:55 landed by 1htsserver in 6.2 min: **Changes made**
 - [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/World/RaidMesh.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code. (Pass 2 over this file: most of it has summaries already.)
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.

@@ -75,6 +75,7 @@ namespace CloneZ
         private readonly List<ExtractionBeacon> _beacons = new List<ExtractionBeacon>();
         private Camera _cam;
         private float _dawnTotalHours = -1f;   // the clock's TotalHours at which dawn ends the raid
+        private TimeOfDay _tod;
         private int _killsAtStart;
         private GameManager _gm;
         private string _arrivedClock = "";
@@ -147,6 +148,7 @@ namespace CloneZ
             // Dawn is fixed on the clock when the raid starts (the sandbox's raid length in in-game hours); the
             // countdown is read off the clock after that, so sleeping (which fast-forwards it) brings dawn closer too.
             TimeOfDay tod = TimeOfDay.Instance;
+            _tod = tod;
             float raidHours = Mathf.Clamp(SandboxSettings.Current.RaidHours, 1f, 23f);
             if (tod != null)
             {
@@ -208,9 +210,9 @@ namespace CloneZ
         private void TickDawnClock(float dt)
         {
             if (NoDeadline) { RaidSecondsRemaining = 99999f; return; }
-            TimeOfDay tod = TimeOfDay.Instance;
-            if (tod != null && _dawnTotalHours >= 0f)
-                RaidSecondsRemaining = Mathf.Max(0f, (_dawnTotalHours - tod.TotalHours) * tod.DayLengthSeconds / 24f);
+            if (_tod == null) _tod = TimeOfDay.Instance;
+            if (_tod != null && _dawnTotalHours >= 0f)
+                RaidSecondsRemaining = Mathf.Max(0f, (_dawnTotalHours - _tod.TotalHours) * _tod.DayLengthSeconds / 24f);
             else
                 RaidSecondsRemaining = Mathf.Max(0f, RaidSecondsRemaining - dt);
         }
