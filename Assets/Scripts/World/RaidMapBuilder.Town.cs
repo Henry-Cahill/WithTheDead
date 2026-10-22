@@ -369,6 +369,44 @@ namespace CloneZ
         DecorPalette.Matte(new Color(0.30f, 0.25f, 0.22f)));
     m.Box(b.W(doorLx + 0.12f, 0.55f, doorZ + 0.001f), new Vector3(0.04f, 0.008f, 0.001f), rotation,
         DecorPalette.Matte(new Color(0.30f, 0.25f, 0.22f)));
+
+    // 7. left hinge – thin metal cylinder, 0.015 m radius, 0.08 m height, 0.03 m from door centre, 1.0 m up
+    float hingeOffsetX = -0.38f; // offset from door centre (approx. left edge)
+    float hingeHeight = 1.00f;
+    m.Cylinder(b.W(doorLx + hingeOffsetX, hingeHeight, doorZ),
+        0.015f, 0.08f, 12,
+        DecorPalette.Metal(new Color(0.65f, 0.60f, 0.55f)),
+        rotation * Quaternion.Euler(0f, 0f, b.Mirror ? -90f : 90f), 1f);
+
+    // 8. right hinge – same as left but mirrored to the opposite side
+    float hingeOffsetX_R = 0.38f;
+    m.Cylinder(b.W(doorLx + hingeOffsetX_R, hingeHeight, doorZ),
+        0.015f, 0.08f, 12,
+        DecorPalette.Metal(new Color(0.65f, 0.60f, 0.55f)),
+        rotation * Quaternion.Euler(0f, 0f, b.Mirror ? 90f : -90f), 1f);
+
+    // 9. strike‑plate – thin metal rectangle framing the knob, 0.06 m tall, 0.04 m deep, 0.12 m wide
+    Vector3 platePos = b.W(doorLx + 0.10f, 0.90f, doorZ);
+    m.Box(platePos + new Vector3(0f, 0f, 0.025f),
+        new Vector3(0.12f, 0.06f, 0.04f),
+        rotation,
+        DecorPalette.Metal(new Color(0.68f, 0.58f, 0.45f)));
+
+    // 10. door‑bell – small square button, 0.04 m side, 0.006 m thick, 0.20 m right of knob, 1.12 m up
+    Vector3 bellPos = b.W(doorLx + 0.25f, 1.12f, doorZ);
+    m.Box(bellPos + new Vector3(0f, 0f, 0.02f),
+        new Vector3(0.04f, 0.006f, 0.04f),
+        rotation,
+        DecorPalette.Matte(new Color(0.30f, 0.30f, 0.28f)));
+
+    // 11. optional tiny rust spot on right hinge (≈30 % chance)
+    if (town.Rng.NextDouble() < 0.30)
+    {
+        m.Cylinder(b.W(doorLx + hingeOffsetX_R, hingeHeight + 0.04f, doorZ),
+            0.008f, 0.015f, 6,
+            DecorPalette.Metal(new Color(0.55f, 0.30f, 0.15f)),
+            rotation, 1f);
+    }
 }
             b.HouseNumber(doorLx, (3 + town.Rng.Next(60)).ToString());
             b.OutsideTap(b.HalfD > 4.75f ? 0.6f : 0.3f);   // on the side wall, between its two windows
