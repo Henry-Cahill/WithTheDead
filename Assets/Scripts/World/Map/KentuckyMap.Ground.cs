@@ -98,7 +98,8 @@ if (water) {
                       border.Add(inside[0]);
                       Ribbon(site.Town.Out, border, 0.07f, LotY + 0.002f, lineSurf);
                  }
-                 if (water) site.Take(Rect.MinMaxRect(Min(inside, true), Min(inside, false), Max(inside, true), Max(inside, false)));
+                 // Reserve the parking‑lot footprint so later building placement can’t overlap it
+                    site.Take(Rect.MinMaxRect(Min(inside, true), Min(inside, false), Max(inside, true), Max(inside, false)));
                  // Add thin snow‑bank edge around parking lots for a plowed look
                  if (lot)
                  {
@@ -329,7 +330,7 @@ if (water) {
                 float len = Vector2.Distance(a, b);
                 if (len < 0.05f) continue;
                 Vector2 d = (b - a) / len;
-                float yaw = Mathf.Atan2(d.x, d.y) * Mathf.Rad2Deg;
+                float yaw = Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
                 for (float s = carried; s + 3f <= len; s += 9f)
                 {
                     Vector3 at = To3(a + d * (s + 1.5f), y);
@@ -413,6 +414,23 @@ if (water) {
         }
 
         /// <summary>Place a few small snow‑drift ellipsoids alongside a road piece.</summary>
+        // Returns the normalized road direction for the segment that contains 'point'.
+        // If the point falls exactly on a vertex, the direction of the next segment is used.
+        private static Vector2 RoadDirectionAt(List<Vector2> piece, Vector2 point)
+        {
+            for (int i = 0; i + 1 < piece.Count; i++)
+            {
+                Vector2 a = piece[i], b = piece[i + 1];
+                float segLen = Vector2.Distance(a, b);
+                if (segLen < 1e-6f) continue;
+                // Check if point lies on this segment (within a tiny tolerance).
+                if (Mathf.Abs(Vector2.Distance(a, point) + Vector2.Distance(point, b) - segLen) < 0.01f)
+                    return (b - a).normalized;
+            }
+            // Fallback: use the direction of the first segment.
+            return (piece[1] - piece[0]).normalized;
+        }
+
         private static void AddSnowDrifts(OutdoorBatches into, List<Vector2> piece, float roadWidth, int side, System.Random rng)
         {
             // side = -1 for left, +1 for right of the centre line.
@@ -421,8 +439,10 @@ if (water) {
             {
                 // Randomly skip some positions for natural spacing.
                 if (rng.NextDouble() < 0.4) continue;
-                // Lateral offset from centre line.
-                Vector2 lateral = new Vector2(-pos.y, pos.x).normalized * offset * side;
+                // Use road direction for snow drift placement
+                Vector2 dir = RoadDirectionAt(piece, pos);
+                Vector2 perp = new Vector2(-dir.y, dir.x); // perpendicular to the road
+                Vector2 lateral = perp.normalized * offset * side;
                 Vector2 driftPos = pos + lateral;
                 // Random size within the defined range.
                 float halfWidth = SnowDriftMinSize + (float)rng.NextDouble() * (SnowDriftMaxSize - SnowDriftMinSize);
