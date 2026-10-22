@@ -32,6 +32,12 @@ namespace CloneZ
             "The metal shudders, yet no snack is dislodged.",
             "A distant clang rolls, the vending's belly stays sealed.",
             "Even your forceful hit finds only stubborn silence.",
+            "The frosted metal shivers under the blow, but the coils keep their secret cargo.",
+            "A thin wind whistles through the cracked glass, carrying no crumbs of snack.",
+            "Your thump rattles the rusted frame; only a cold echo returns.",
+            "The vending box sighs with a metallic wheeze, yet nothing falls into the tray.",
+            "A faint smell of stale soda hangs in the air, but no bottle is freed.",
+            "The machine’s heart beats a silent rhythm, refusing to spill its winter‑stewed loot.",
         };
 
         private Transform _body;
