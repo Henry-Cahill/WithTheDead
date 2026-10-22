@@ -15,6 +15,20 @@ namespace CloneZ
             m.Box(at + q * new Vector3(0f, 0.015f, -0.02f), new Vector3(0.24f, 0.03f, 0.22f), q, M(c * 0.9f));
             m.Box(at + q * new Vector3(0f, 0.05f, -0.02f), new Vector3(0.1f, 0.05f, 0.1f), q, M(c * 0.85f));
             m.Box(at + q * new Vector3(0f, 0.26f, 0.02f), new Vector3(0.4f, 0.36f, 0.1f), q, M(c));
+            // metal grill frame (chrome)
+            m.Box(at + q * new Vector3(0f, 0.32f, 0.07f), new Vector3(0.34f, 0.02f, 0.002f), q, Mt(Chrome));
+            // vertical grill slats (chrome)
+            float[] slatX = { -0.12f, -0.06f, 0f, 0.06f, 0.12f };
+            foreach (float sx in slatX)
+                m.Box(at + q * new Vector3(sx, 0.32f, 0.07f), new Vector3(0.004f, 0.018f, 0.001f), q, Mt(Chrome));
+            // rubber foot pad (dark grey, non‑reflective)
+            m.Cylinder(at + q * new Vector3(0f, 0.00f, -0.02f), 0.04f, 0.005f, 12, M(new Color(0.12f,0.12f,0.13f)));
+            // power cord (black PVC)
+            Vector3 cordBase = at + q * new Vector3(0f, 0.015f, -0.15f);
+            m.Cylinder(cordBase, 0.005f, 0.30f, 8, M(Black));
+            // plug at cord end
+            Vector3 plugPos = cordBase + new Vector3(0f, -0.30f, 0f);
+            m.Box(plugPos, new Vector3(0.02f, 0.01f, 0.015f), M(Black));
             m.Box(at + q * new Vector3(-0.15f, 0.30f, 0.07f), new Vector3(0.01f, 0.005f, 0.004f), q, Mt(Chrome));
             m.Box(at + q * new Vector3(0f, 0.25f, -0.13f), new Vector3(0.32f, 0.29f, 0.18f), q, M(c * 0.93f));
             m.Box(at + q * new Vector3(0f, 0.24f, -0.25f), new Vector3(0.2f, 0.18f, 0.08f), q, M(c * 0.88f));
