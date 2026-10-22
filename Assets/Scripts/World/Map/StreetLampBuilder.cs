@@ -64,7 +64,20 @@ internal static void BuildLamp(KentuckyMap.Site site, KentuckyMap.Street street,
             light.color = new Color(1f, 0.9f, 0.7f);
             light.transform.localPosition = new Vector3(0f, 2.55f, 0f);
             // attach flicker behaviour
-            lampRoot.AddComponent<StreetLampFlicker>();
+            var flicker = lampRoot.AddComponent<StreetLampFlicker>();
+            // configure variation based on street kind
+            if (street.Data.kind == "residential")
+            {
+                flicker._maxSinusoid = 0.08f;
+                flicker._wobbleSpeed = 0.4f;
+                flicker._dipStrength = 0.15f;
+            }
+            else
+            {
+                flicker._maxSinusoid = 0.18f;
+                flicker._wobbleSpeed = 0.8f;
+                flicker._dipStrength = 0.35f;
+            }
         }
     }
 }
