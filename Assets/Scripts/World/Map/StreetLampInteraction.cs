@@ -50,6 +50,7 @@ namespace CloneZ
                 _flicker.enabled = on; // keep component alive only when lamp on
                 _flicker.SetFlickerEnabled(on && _flickerOn);
             }
+            MakeNoise(2f);
             ctx.Notify(on ? "The street lamp clicks on." : "The street lamp clicks off.");
         }
 
