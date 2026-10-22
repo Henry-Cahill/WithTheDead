@@ -82,17 +82,17 @@ namespace CloneZ
                     site.Overhead.At(snowPos).Box(snowPos, snowSize, rot, DecorMaterials.Snow);
                 }
 
-                // Add a simple brick chimney on the roof
-                // Basic dimensions – can be tweaked later
-                const float chimneyBase = 0.3f;
-                const float chimneyHeight = 1.5f;
-                // Choose a deterministic random offset for variety
-                var rng = new System.Random(unchecked((int)f.Data.id) ^ 0x5A4F);
-                // Position near the centre of the footprint (could be refined to a corner)
-                Vector3 chimneyPos = To3(f.Middle, roofY + chimneyHeight * 0.5f);
-                // Choose a brick material (deterministic colour from BrickColors)
-                Surf brickMat = DecorMaterials.WallExterior(ExteriorStyle.Brick, BrickColors[rng.Next(BrickColors.Length)]);
-                site.Overhead.At(chimneyPos).Box(chimneyPos, new Vector3(chimneyBase, chimneyHeight, chimneyBase), Quaternion.identity, brickMat);
+// Add a simple wooden chimney on the roof
+// Basic dimensions – can be tweaked later
+const float chimneyBase = 0.3f;
+const float chimneyHeight = 1.5f;
+// Choose a deterministic random offset for variety
+var rng = new System.Random(unchecked((int)f.Data.id) ^ 0x5A4F);
+// Position near the centre of the footprint (could be refined to a corner)
+Vector3 chimneyPos = To3(f.Middle, roofY + chimneyHeight * 0.5f);
+// Choose a wood material (using wood floor colour)
+Surf woodMat = DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f));
+site.Overhead.At(chimneyPos).Box(chimneyPos, new Vector3(chimneyBase, chimneyHeight, chimneyBase), Quaternion.identity, woodMat);
             }
         }
         private static void BuildBuildings(Site site)
