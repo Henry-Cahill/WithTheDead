@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace CloneZ
 {
@@ -194,7 +195,10 @@ site.Overhead.At(chimneyPos).Box(chimneyPos, new Vector3(chimneyBase, chimneyHei
                         doorOutward = outward;
                         site.Take(doorPoint + outward * 1.2f, 1.1f);   // keep the doorstep clear of props
                         // Build deterministic wooden door frame around the entrance
-                        BuildDoorFrame(site, a, d, len * 0.5f, yaw, outward, outside);
+                        // Add awning and sign for retail‑type façades
+                        bool isRetail = b.kind == "retail" || (b.use != null && b.use.StartsWith("shop:"));
+                        if (isRetail && door >= 0)
+                            BuildAwningAndSign(site, doorPoint, doorOutward, doorYaw, b, rng);
                 }
                 else Wall(site, a, d, inset, -Thick * 0.5f, len + Thick * 0.5f, 0f, groundTop, yaw, outside, true);
                 if (height > groundTop)
