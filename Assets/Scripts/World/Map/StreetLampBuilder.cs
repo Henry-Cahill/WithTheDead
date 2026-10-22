@@ -58,8 +58,8 @@ internal static void BuildLamp(KentuckyMap.Site site, KentuckyMap.Street street,
             }
             else
             {
-                pole.transform.localScale = new Vector3(0.09f, 1.5f, 0.09f);
-                pole.transform.localPosition = new Vector3(0f, 1.5f, 0f);
+                pole.transform.localScale = new Vector3(0.09f, 1.3f, 0.09f);
+                pole.transform.localPosition = new Vector3(0f, 1.3f, 0f);
             }
             var mat = build.GetStreetLampMaterial();
             if (mat != null) pole.GetComponent<Renderer>().material = mat;
