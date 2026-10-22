@@ -229,6 +229,28 @@ namespace CloneZ
                 m.Box(pos, new Vector3(0.006f, 0.002f, 0.006f),
                     DecorPalette.Matte(new Color(0.4f, 0.2f, 0.1f)));
             }
+            // deterministic detail random for tap upgrades
+            var tapDetailRand = new System.Random(1993);
+            // aerator – fine mesh at spout tip
+            m.CylinderX(new Vector3(0f, 0.94f, 0.35f), 0.003f, 0.02f, 8,
+                DecorPalette.Metal(FurnitureBuilder.Brass), 0f);
+            // drip catcher cup under spout
+            m.Cylinder(new Vector3(0f, 0.92f, 0.35f), 0.005f, 0.01f, 6,
+                DecorPalette.Metal(FurnitureBuilder.Brass));
+            // thin brass ring around spout
+            m.CylinderX(new Vector3(0f, 0.94f, 0.35f), 0.015f, 0.002f, 8,
+                DecorPalette.Metal(FurnitureBuilder.Brass), 0f);
+            // drain plug in sink bowl
+            m.Cylinder(new Vector3(0f, 0.53f, 0.05f), 0.02f, 0.04f, 8,
+                DecorPalette.Metal(FurnitureBuilder.Steel));
+            // backsplash strip
+            m.Box(new Vector3(0f, 0.9f, -0.31f),
+                new Vector3(0.8f, 0.2f, 0.01f),
+                DecorPalette.Matte(new Color(0.55f, 0.55f, 0.55f)));
+            // one rivet on backsplash
+            float rivetSide = tapDetailRand.Next(0, 2) == 0 ? -0.004f : 0.004f;
+            m.Cylinder(new Vector3(rivetSide, 0.95f, -0.31f), 0.003f, 0.002f, 6,
+                DecorPalette.Metal(FurnitureBuilder.Brass));
             m.ResetFrame();
             m.ApplyTo(gameObject, position);
             Solid(new Vector3(0f, 0.5f, 0f), new Vector3(1.22f, 1.0f, 0.63f));
