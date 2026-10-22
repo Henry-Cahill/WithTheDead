@@ -21,6 +21,18 @@ namespace CloneZ
         private PlayerSleep _sleeper;
         private float _plumpCalmAt; private float _blanketFluffCalmAt;
         private PlayerInteractor _playerInteractor;
+        // Existing style reference:
+        // "Dust, a single odd sock and a shoebox of old birthday cards. Nothing you can use."
+        private static readonly string[] _underBedDiscoveries = new[]
+        {
+            "Dust, a single odd sock and a shoebox of old birthday cards. Nothing you can use.",
+            "Dust bunnies and a lost hairpin. Nothing hiding under there — you checked.",
+            "A cracked thermos of tea, long gone cold, still faintly scented of peppermint.",
+            "A faded newspaper clipping about a local high‑school basketball win, dated January 1993.",
+            "A rusted pair of garden shears, the blades dulled by winter frost.",
+            "An empty tin of marshmallows, its label peeled away, reminding you of campfire nights.",
+            "A small wooden figurine of a horse, its paint chipped, a childhood souvenir."
+        };
         private float _lullabyCalmAt;
         // Cached radius for sleep proximity checks to avoid per‑frame config lookup.
         private float _sleepCheckRadius;
@@ -203,9 +215,8 @@ namespace CloneZ
 
         private void LookUnder(InteractContext ctx)
         {
-            ctx.Notify(Random.value < 0.5f
-                ? "Dust, a single odd sock and a shoebox of old birthday cards. Nothing you can use."
-                : "Dust bunnies and a lost hairpin. Nothing hiding under there \u2014 you checked.");
+            var msg = _underBedDiscoveries[Random.Range(0, _underBedDiscoveries.Length)];
+            ctx.Notify(msg);
         }
 
         public override void CaptureState(FixtureSave save) => save.State = _isMade ? 0 : 1;
