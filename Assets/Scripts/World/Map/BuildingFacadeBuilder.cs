@@ -29,7 +29,7 @@ namespace CloneZ
                 float roofY = fp.Data.height > 0f ? fp.Data.height : 0f;
                 roofY += 0.02f * 0.5f; // Snow depth half‑height offset
                 var center = new Vector3(fp.Middle.x, roofY, fp.Middle.y);
-                var size = new Vector3(fp.Size, 0.02f, fp.Size);
+var size = new Vector3(fp.Bounds.width, 0.02f, fp.Bounds.height);
                 site.Overhead.At(fp.Middle).Box(center, size, DecorMaterials.Snow);
             }
 
