@@ -317,6 +317,32 @@ namespace CloneZ
                 }
             }
             b.FrontDoormat(doorLx);
+
+        // Colour palette for flower heads on potted plants.
+        Color[] flowerCols = {
+            new Color(0.90f, 0.20f, 0.20f), // red
+            new Color(0.20f, 0.70f, 0.20f), // green
+            new Color(0.90f, 0.80f, 0.20f), // yellow
+            new Color(0.20f, 0.20f, 0.90f)  // blue
+        };
+
+        // Small potted‑plant on the front walk, a bit forward of the door.
+        Vector3 plantPos = door + dir * 0.45f;
+        town.Keepout.Add(Around(plantPos, 0.18f, 0.18f));
+        var potMesh = town.Out.Solid(plantPos);
+        // Rust‑tinted metal pot
+        potMesh.Cylinder(plantPos + new Vector3(0f, 0.06f, 0f), 0.07f, 0.10f, 8,
+            DecorPalette.Metal(new Color(0.55f, 0.45f, 0.38f)), Quaternion.identity, 1f);
+        // Dark brown soil inside the pot
+        potMesh.Cylinder(plantPos + new Vector3(0f, 0.13f, 0f), 0.065f, 0.02f, 6,
+            DecorPalette.Matte(new Color(0.30f, 0.22f, 0.12f)), Quaternion.identity, 1f);
+        // Stem
+        potMesh.Cylinder(plantPos + new Vector3(0f, 0.16f, 0f), 0.01f, 0.15f, 6,
+            DecorPalette.Matte(new Color(0.10f, 0.40f, 0.10f)), Quaternion.identity, 1f);
+        // Flower head with random colour
+        Color flowerCol = flowerCols[town.Rng.Next(flowerCols.Length)];
+        potMesh.Cylinder(plantPos + new Vector3(0f, 0.31f, 0f), 0.03f, 0.02f, 6,
+            DecorPalette.Matte(flowerCol), Quaternion.identity, 1f);
 // ---- front‑door hardware detail ----
 {
     // the door centre is already stored in the local variable 'door'
