@@ -30,6 +30,8 @@ namespace CloneZ
             Cache();
         }
 
+        private static Actor _cachedLocalPlayer;
+
         private void LateUpdate()
         {
             if (Time.time < _next) return;
@@ -38,8 +40,12 @@ namespace CloneZ
             // OnTransformChildrenChanged never reports.
             if (_transform.hierarchyCount != _count) Cache();
 
+            // Ensure we have a cached reference to the local player.
+            if (_cachedLocalPlayer == null)
+                _cachedLocalPlayer = Actor.LocalPlayer;
+
             bool show = true;
-            if (ZombieVisibility.HasSight && Actor.LocalPlayer != null && _actor != Actor.LocalPlayer)
+            if (ZombieVisibility.HasSight && _cachedLocalPlayer != null && _actor != _cachedLocalPlayer)
             {
                 float h = _actor != null ? _actor.Height : 1.6f;
                 Vector3 root = _transform.position;
