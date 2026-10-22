@@ -200,14 +200,14 @@ namespace CloneZ
             string fuel = inv.Has("plank") ? "plank" : inv.Has("rag") ? "rag" : inv.Has("paper") ? "paper" : null;
             if (fuel == null) { GameEvents.RaiseToast("You need something to burn: a plank, rags or paper."); return false; }
             Vector3 p = inv.transform.position + inv.transform.forward * 1.2f;
-            PlayerChannel.Local.Begin("Building a fire", 5f, () =>
+            bool started = PlayerChannel.Local.Begin("Building a fire", 5f, () =>
             {
                 inv.Consume(fuel, 1);
                 if (!inv.Has("lighter")) inv.Consume("matches", 1);
                 Sfx.Play(SfxIds.Lighter, p, 0.6f, 1f, 8f);
                 Campfire.Light(p, fuel == "plank" ? 240f : 90f);
             }, HumanoidActivity.Build);
-            return true;
+            return started;
         }
 
         /// <summary>Starts a cranking action to charge a battery if the player has a crank.</summary>
@@ -223,9 +223,16 @@ namespace CloneZ
             }, HumanoidActivity.Use);
         }
 
+        /// <summary>Starts a cranking action to charge a battery if the player has a crank.</summary>
+        public static bool TryCrank(PlayerInventory inv)
+        {
+            // Crank itself schedules the action; we only need to report whether it could be scheduled.
+            Crank(inv);
+            return PlayerChannel.Local != null && !PlayerChannel.Local.Busy;
+        }
+
         #region Disassembly
-        /// <summary>What an item breaks down into (scrap, wires, rags, chemicals), or null when it can't be taken apart.</summary>
-        /// <summary>Returns the parts an item can be salvaged into, or null if not salvageable.</summary>
+/// <summary>Returns the parts an item can be salvaged into, or null if it cannot be taken apart.</summary>
         public static (string id, int n)[] SalvageOf(ItemDef d)
         {
             if (d == null) return null;
@@ -460,7 +467,7 @@ namespace CloneZ
             Action(land, "Fish", "Rod and bait, at the river on the west edge.", () => FieldSurvival.Fish(inv), inv.Has("fishingrod"));
             Action(land, "Set a snare", "Come back later for a rabbit.", () => FieldSurvival.SetSnare(inv), inv.Has("snare"));
             Action(land, "Light a fire", "Cook and get warm. Seen from far off at night.", () => FieldSurvival.LightFire(inv), inv.Has("lighter") || inv.Has("matches"));
-            Action(land, "Crank a charger", "Bring a flat battery back. Noisy.", () => FieldSurvival.Crank(inv), inv.Has("handcrank"));
+            Action(land, "Crank a charger", "Bring a flat battery back. Noisy.", () => FieldSurvival.TryCrank(inv), inv.Has("handcrank"));
         }
 
         private void Action(Transform list, string label, string help, System.Action run, bool enabled = true)
@@ -480,8 +487,8 @@ namespace CloneZ
         /// <summary>Registers field actions, UI and hotkeys with the game on module initialisation.</summary>
         public void Init()
         {
-            ItemActions.RegisterUse("handcrank", (inv, s) => { FieldSurvival.Crank(inv); return true; });
-            ItemActions.RegisterUse("lighter", (inv, s) => { FieldSurvival.LightFire(inv); return true; });
+            ItemActions.RegisterUse("handcrank", (inv, s) => { return FieldSurvival.TryCrank(inv); });
+            ItemActions.RegisterUse("lighter", (inv, s) => { return FieldSurvival.LightFire(inv); });
             ItemActions.RegisterUse("fishingrod", (inv, s) => { FieldSurvival.Fish(inv); return true; });
             ItemActions.RegisterUse("snare", (inv, s) => { FieldSurvival.SetSnare(inv); return true; });
             ItemActions.RegisterUse("purifytabs", PurifyWater);
