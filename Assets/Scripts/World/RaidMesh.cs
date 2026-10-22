@@ -61,6 +61,7 @@ namespace CloneZ
             _rot = Quaternion.Euler(0f, yaw, 0f);
         }
 
+        /// <summary>Sets the local frame with explicit rotation quaternion.</summary>
         public void SetFrame(Vector3 origin, Quaternion rotation)
         {
             _origin = origin;
@@ -76,6 +77,7 @@ namespace CloneZ
 
         /// <summary>Gets the current local frame origin.</summary>
         public Vector3 FrameOrigin => _origin;
+        /// <summary>Gets the current local frame rotation.</summary>
         /// <summary>Gets the current local frame rotation.</summary>
         public Quaternion FrameRotation => _rot;
 
@@ -421,6 +423,7 @@ namespace CloneZ
             }
         }
 
+        /// <summary>Creates an ellipsoid with default orientation (no rotation).</summary>
         public void Ellipsoid(Vector3 center, Vector3 size, in Surf s, int segments = 8, int rings = 5)
             => Ellipsoid(center, size, Quaternion.identity, s, segments, rings);
 
