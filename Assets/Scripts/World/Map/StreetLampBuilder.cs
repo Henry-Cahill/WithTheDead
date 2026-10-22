@@ -83,6 +83,7 @@ internal static void BuildLamp(KentuckyMap.Site site, KentuckyMap.Street street,
             light.intensity = 2f;
             light.color = new Color(1f, 0.9f, 0.7f);
             light.transform.localPosition = new Vector3(0f, 2.55f, 0f);
+            lampRoot.AddComponent<StreetLampInteraction>();
             var flicker = lampRoot.AddComponent<StreetLampFlicker>();
             // configure variation based on street kind
             if (street.Data.kind == "residential")
