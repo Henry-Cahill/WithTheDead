@@ -15,6 +15,7 @@ namespace CloneZ
     {
         private static readonly List<Renderer> s_Renderers = new List<Renderer>(64);
         private static bool s_Shown;
+        private static CeilingVisibility s_Instance;
 
         /// <summary>Adds a ceiling renderer and puts it straight into the current view's state.</summary>
         public static void Register(Renderer r)
@@ -23,7 +24,7 @@ namespace CloneZ
             s_Renderers.Add(r);
             Apply(r, ViewState.CeilingsVisible);
             // Ensure the component is enabled to process visibility changes
-            var comp = FindObjectOfType<CeilingVisibility>();
+            var comp = s_Instance;
             if (comp != null) comp.enabled = true;
         }
 
@@ -32,7 +33,7 @@ namespace CloneZ
         {
             s_Renderers.Clear();
             // Disable the component when no renderers are present
-            var comp = FindObjectOfType<CeilingVisibility>();
+            var comp = s_Instance;
             if (comp != null) comp.enabled = false;
             // s_Applied removed - no need to reset
         }

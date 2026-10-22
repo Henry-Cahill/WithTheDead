@@ -6571,12 +6571,13 @@ you want to see in game. Indent extra lines under a task to add detail.
   Step 6: Door bottom seal – a thin rubber‑like strip along the bottom edge to suggest weather‑stripping. `// Bottom seal (dark matte strip)` `m.Box(` `new Vector3(hw - CarSkin * 0.5f, CarBeltY - 0.29f, zc), // just under the lock plate` `new Vector3(CarSkin, 0.01f, len), // same width as door skin, 1 cm high` `M(new Color(0.20f, 0.20f, 0.20f)));`
   Done when: In‑game the garage car’s front passenger door shows a realistic chrome pull handle, a tiny lock plate on the lower front edge, an interior pull latch, a full chrome window frame around the glass, and a matte rubber seal along the bottom edge. All other geometry, colliders, interaction points and pivots remain unchanged, and the total added primitives are eight (well under the 12‑primitive limit).
   - 20:49 landed by 1htsserver in 3.3 min: Implemented a detailed door‑hardware set for the garage car’s front passenger door:
-- [ ] Cache the CeilingVisibility MonoBehaviour instance instead of calling `FindObjectOfType<CeilingVisibility>()` in `Register` and `Clear` (Assets/Scripts/World/CeilingVisibility.cs)
+- [x] Cache the CeilingVisibility MonoBehaviour instance instead of calling `FindObjectOfType<CeilingVisibility>()` in `Register` and `Clear` (Assets/Scripts/World/CeilingVisibility.cs)
   Add a private static field `static CeilingVisibility s_Instance;` and set it in `Awake()` (or `OnEnable`) – `s_Instance = this;`.
   Replace `var comp = FindObjectOfType<CeilingVisibility>();` with `var comp = s_Instance;` in both `Register` and `Clear`.
   When disabling the component (e.g., `if (comp != null) comp.enabled = false;`) use the cached instance.
   The player sees no visual change; ceilings still appear/disappear correctly based on `ViewState.CeilingsVisible`.
   All other behaviour and fields remain unchanged.
+  - 20:50 landed by hts-llm in 2 min: **Changed file**
 - [ ] Add a “Flick towel” action to `Assets/Scripts/World/Fixtures/TowelRail.cs` that makes the towel swing visibly when used.
   Step 1: `Assets/Scripts/World/Fixtures/TowelRail.cs` – inside `public override void GetActions(InteractContext ctx, List<InteractAction> into)` add the new action after the existing “Let towel dry” line: `into.Add(new InteractAction("Flick towel", Flick));`
   Step 2: `Assets/Scripts/World/Fixtures/TowelRail.cs` – add a new private method right after the existing `Inspect` method: `// New playful action – gives the towel a quick flick causing it to swing.` `private void Flick(InteractContext ctx)` `{` `// Pick a random roll within the allowed crooked range.` `float max = CloneZConfig.TowelCrookedRoll;` `_roll = Random.Range(-max, max);` `ctx.Notify("You give the towel a quick flick; it ripples back and forth.");` `}`
