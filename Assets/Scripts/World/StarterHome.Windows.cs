@@ -47,6 +47,13 @@ namespace CloneZ
             // outer (wall‑side) track already stored in variable 'outer'
             m.Box(f.P(f.Mid, sillY, outer - sillDepth * 0.5f), f.Size(WindowWidth, sillHeight, sillDepth), DecorMaterials.Concrete);
             Surf wood = DecorPalette.Matte(FurnitureBuilder.Pine); // wood for the strip below
+            // wooden apron strip below the stone sill (period‑correct exterior trim)
+            float apronHeight = 0.008f;
+            float apronDepth = 0.015f;
+            float apronY = sillY - sillHeight*0.5f - apronHeight*0.5f;
+            m.Box(f.P(f.Mid, apronY, outer - sillDepth*0.5f - apronDepth*0.5f), f.Size(WindowWidth, apronHeight, apronDepth), wood);
+            // rust‑tinted metal surface for brackets
+            Surf rustMetal = DecorPalette.Matte(new Color(0.55f, 0.35f, 0.30f)); // weathered iron look
             // stone coping cap
             float capHeight = 0.005f;
             float capDepth = sillDepth + 0.01f;
@@ -66,10 +73,33 @@ namespace CloneZ
             float plateW = 0.04f, plateH = 0.02f, plateD = 0.005f;
             Vector3 latchCenter = f.P(f.Mid, meet + 0.042f, 0f);
             m.Box(f.P(latchCenter.x, latchCenter.y, -0.01f), f.Size(plateW, plateH, plateD), brass);
-            // thin wood strip under sill
-            float stripHeight = 0.006f;
-            float stripDepth = 0.01f;
-            m.Box(f.P(f.Mid, sillY - sillHeight * 0.5f - stripHeight * 0.5f, outer - sillDepth * 0.5f), f.Size(WindowWidth, stripHeight, stripDepth), wood);
+
+            float w = SashWidth;
+            float s0 = f.Mid - w * 0.5f;
+            float s1 = f.Mid + w * 0.5f;
+            // left bracket
+            float bracketW = 0.02f, bracketH = 0.015f, bracketD = 0.005f;
+            float bracketZ = outer - sillDepth*0.5f - apronDepth*0.5f; // same depth as apron front
+            m.Box(f.P(s0 + 0.0225f, apronY, bracketZ), f.Size(bracketW, bracketH, bracketD), rustMetal);
+            // right bracket
+            m.Box(f.P(s1 - 0.0225f, apronY, bracketZ), f.Size(bracketW, bracketH, bracketD), rustMetal);
+
+            // nail‑head grid on the wooden apron (3 × 2)
+            float nailRadius = 0.0015f, nailHeight = 0.001f;
+            int nailCols = 3, nailRows = 2;
+            float nailSpacingX = (WindowWidth - 0.04f) / (nailCols - 1);
+            float nailSpacingZ = apronDepth * 0.6f;
+            for (int ix = 0; ix < nailCols; ix++)
+            {
+                for (int iz = 0; iz < nailRows; iz++)
+                {
+                    float nx = f.Mid - (WindowWidth * 0.5f) + 0.02f + ix * nailSpacingX;
+                    float nz = bracketZ - apronDepth * 0.5f + nailSpacingZ / 2f + iz * nailSpacingZ;
+                    m.CylinderX(f.P(nx, apronY + apronHeight * 0.5f + nailHeight * 0.5f, nz),
+                        nailRadius, nailHeight, 6, brass);
+                }
+            }
+
             FixturePart sash = FixturePart.Slide(root.transform, "LowerSash", lower, f.P(f.Mid, bottom, inner), Vector3.up * SashLift)
                 .WithSpeed(CloneZConfig.WindowSashSeconds);
             Renderer latchShut = WindowLever(sash.transform, "LatchShut", f.P(f.Mid, meet + 0.042f, 0f), f.Size(0.02f, 0.008f, 0.06f), brass);
@@ -189,7 +219,23 @@ namespace CloneZ
             // position on inner face of sash
             float innerOffset = across + roomSide * (SashDepth * 0.5f + trimThickness * 0.5f);
             m.Box(f.P(f.Mid, (y0 + y1) * 0.5f, innerOffset), f.Size(w - 0.09f, h, trimThickness), bead);
+            // material for cap rivets
             Surf brassCap = DecorPalette.Metal(FurnitureBuilder.Brass);
+            // three subtle rivets on the coping cap (evenly spaced)
+            float capRivetSize = 0.004f;
+            float capRivetDepth = 0.003f;
+            // use local copies to ensure variables are in scope
+            float capHeight_local = 0.005f; // duplicated for scope
+            float sillDepth_local = 0.06f; // duplicated for scope
+            float capY = WindowSill + capHeight_local * 0.5f; // centre of coping cap
+            float capZ = -roomSide * SashTrack - sillDepth_local * 0.5f; // centre of cap depth
+            for (int i = -1; i <= 1; i += 2)
+            {
+                float rx = f.Mid + i * (WindowWidth * 0.33f);
+                m.Box(f.P(rx, capY, capZ), f.Size(capRivetSize, capRivetSize, capRivetDepth), brassCap);
+            }
+
+            // brackets using rustMetal
             for (int e = -1; e <= 1; e += 2)
                 m.Box(f.P(f.Mid + e * (w * 0.5f - 0.0225f), y1 - topRail * 0.5f, across), f.Size(0.015f, 0.015f, 0.01f), brassCap);
             // top‑rail brass rivets – subtle hardware detail
