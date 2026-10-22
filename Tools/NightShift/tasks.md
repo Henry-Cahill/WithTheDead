@@ -6637,7 +6637,8 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
 
 ### Auto-planned 2026-10-22: written by the night shift when the queue ran low (delete any you don't want)
 
-- [ ] Fix the mailbox‑keepout logic in Assets/Scripts/World/RaidMapBuilder.Town.cs – `DressHouse` adds the mailbox‑area to `town.Keepout` only when the mailbox itself is placed, so when the spot is blocked the keep‑out is never registered and later props (e.g., driveways or other houses) can intersect the would‑be mailbox space.
+- [x] Fix the mailbox‑keepout logic in Assets/Scripts/World/RaidMapBuilder.Town.cs – `DressHouse` adds the mailbox‑area to `town.Keepout` only when the mailbox itself is placed, so when the spot is blocked the keep‑out is never registered and later props (e.g., driveways or other houses) can intersect the would‑be mailbox space.
+  - 00:06 landed by hts-llm in 3.7 min: **Changed file**
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Player/PlayerInventory.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code. (Pass 2 over this file: most of it has summaries already.)
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
