@@ -15,6 +15,8 @@ namespace CloneZ
         private Vector3 _point;
         private FixturePart _mat;
         private bool _lookedUnder;
+        /// <summary>True while a spare key is hidden under the mat; persists via SaveState.</summary>
+        private bool _hasKeyHidden;
 
         public override string DisplayName => "Doormat";
         public override Vector3 InteractPoint => _point;
@@ -44,11 +46,52 @@ namespace CloneZ
             look.Begin = c => Lift(true);
             look.Stopped = c => Lift(false);
             into.Add(look);
+            // New: hide key – only show if player carries a spare key and key isn’t already hidden
+            if (!_hasKeyHidden && ctx.Inventory != null && ctx.Inventory.Has("spare_key"))
+            {
+                into.Add(new InteractAction("Hide spare key under mat", HideKey).Timed(1.0f, "Hiding key", HumanoidActivity.None));
+            }
+            // New: retrieve key – only show after the mat has been looked under and a key is hidden
+            if (_lookedUnder && _hasKeyHidden)
+            {
+                into.Add(new InteractAction("Retrieve spare key", RetrieveKey).Timed(1.0f, "Retrieving key", HumanoidActivity.Search));
+            }
         }
 
         private static void Kick(InteractContext ctx)
         {
             ctx.Notify("You give the mat a hard kick, scattering a puff of dust.");
+        }
+
+        private static void HideKey(InteractContext ctx)
+        {
+            const string keyId = "spare_key"; // item id must exist in the catalogue
+            if (ctx.Inventory != null && ctx.Inventory.Consume(keyId, 1) > 0)
+            {
+                var fixture = ctx.Interactor.FixtureTarget as DoormatFixture;
+                if (fixture != null) fixture._hasKeyHidden = true;
+                ctx.Notify("You slip the spare key under the mat. It will be safe for later.");
+            }
+            else
+            {
+                ctx.Notify("You don't have a spare key to hide.");
+            }
+        }
+        private static void RetrieveKey(InteractContext ctx)
+        {
+            const string keyId = "spare_key";
+            var fixture = ctx.Interactor.FixtureTarget as DoormatFixture;
+            if (fixture != null && fixture._hasKeyHidden)
+            {
+                ItemDef def = ItemDatabase.Get(keyId);
+                if (def != null) ctx.Inventory?.Inventory.Add(def, 1, enforceWeight: false);
+                fixture._hasKeyHidden = false;
+                ctx.Notify("You pull the spare key out from under the mat.");
+            }
+            else
+            {
+                ctx.Notify("There is no key hidden here.");
+            }
         }
 
 
@@ -80,8 +123,13 @@ namespace CloneZ
             if (_mat != null) _mat.SetOpen(up);
         }
 
-        public override void CaptureState(FixtureSave save) => save.State = _lookedUnder ? 1 : 0;
+        public override void CaptureState(FixtureSave save) => save.State = (_lookedUnder ? 1 : 0) | (_hasKeyHidden ? 2 : 0);
 
-        public override void RestoreState(FixtureSave save) => _lookedUnder = (save.State & 1) != 0;
+        public override void RestoreState(FixtureSave save)
+        {
+            int state = save.State;
+            _lookedUnder = (state & 1) != 0;
+            _hasKeyHidden = (state & 2) != 0;
+        }
     }
 }
