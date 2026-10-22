@@ -156,6 +156,7 @@ namespace CloneZ
             }
         }
 
+        // Updated: ShowWater updates the visual sheet after water is taken by CollectWater.
         private void ShowWater()
         {
             if (_sheet == null) return;
@@ -179,6 +180,18 @@ namespace CloneZ
             // Tiny action to let player check current water level in the basin
             into.Add(new InteractAction("Check water level", CheckLevel));
             WaterUse.AddDrinkAndFill(ctx, this, into);
+
+            // New action: fill an empty bottle from the basin’s stored water
+            if (WaterUse.HasEmptyBottle(ctx))
+            {
+                into.Add(new InteractAction("Collect water in a bottle", CollectWater)
+                    .DisabledIf(!HasWater, "There's no water to collect"));
+            }
+            else
+            {
+                into.Add(new InteractAction("Collect water in a bottle", CollectWater)
+                    .DisabledIf(true, "You have no empty container"));
+            }
 
             bool mains = WaterMains.MainsOn;
             var wash = new InteractAction("Wash your hands and face", Wash)
@@ -208,6 +221,22 @@ namespace CloneZ
             into.Add(shave);
         }
 
+        private void CollectWater(InteractContext ctx)
+        {
+            // Try to fill an empty bottle from this basin.
+            bool filled = WaterUse.FillBottle(ctx, this);
+            if (filled)
+            {
+                ctx.Notify("You scoop water into your bottle, the basin level dropping just a bit.");
+                // Visual update – ShowWater reads the new _level after FillBottle adjusts it.
+                ShowWater();
+            }
+            else
+            {
+                ctx.Notify("You can't fill the bottle right now.");
+            }
+        }
+
         private void Turn(InteractContext ctx, bool open)
         {
             _borrowedTap = false;
@@ -215,14 +244,14 @@ namespace CloneZ
             if (open && !WaterMains.MainsOn) ctx.Notify("The tap coughs and shudders, and nothing comes. The water's off.");
         }
 
-        private void SetTap(bool open, bool instant)
-        {
-            _tapOpen = open;
-            if (_lever != null) _lever.SetOpen(open, instant);
-            if (!instant) MakeNoise(CloneZConfig.BasinTapTurnNoise);
-            bool running = Running;
-            if (_stream != null && _stream.enabled != running) _stream.enabled = running;
-        }
+    private void SetTap(bool open, bool instant)
+    {
+        _tapOpen = open;
+        if (_lever != null) _lever.SetOpen(open, instant);
+        if (!instant) MakeNoise(CloneZConfig.BasinTapTurnNoise);
+        bool running = Running;
+        if (_stream != null && _stream.enabled != running) _stream.enabled = running;
+    }
 
         private void SetPlug(InteractContext ctx, bool plugged)
         {
