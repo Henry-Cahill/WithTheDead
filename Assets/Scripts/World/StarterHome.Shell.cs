@@ -333,14 +333,6 @@ namespace CloneZ
                     float chipZ = (float)rng.NextDouble() * 0.02f - 0.01f;
                     m.Box(f.P(chipX, chipY, chipZ), new Vector3(0.04f, 0.02f, 0.004f), DecorPalette.Matte(TrimWhite * 0.5f));
                 }
-                // occasional low paint‑chip on exterior casing
-                if (rng.NextDouble() < 0.4)
-                {
-                    float chipY = 0.15f; // just above floor level
-                    float chipX = o0 - 0.08f + (float)rng.NextDouble() * 0.06f;
-                    float chipZ = (float)rng.NextDouble() * 0.02f - 0.01f;
-                    m.Box(f.P(chipX, chipY, chipZ), new Vector3(0.04f, 0.02f, 0.004f), DecorPalette.Matte(TrimWhite * 0.5f));
-                }
                 m.Box(f.P(o1 + 0.035f, (DoorTop + 0.07f) * 0.5f, off), f.Size(0.07f, DoorTop + 0.07f, 0.024f), casing);
                 m.Box(f.P(f.Mid, DoorTop + 0.035f, off), f.Size(gap + 0.14f, 0.07f, 0.024f), casing);
             }
