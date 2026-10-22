@@ -179,7 +179,8 @@ namespace CloneZ
                 }
                 cur = next;
             }
-            // Ensure consistent winding for triangulation
+            // The polygon returned is now safe from NaN vertices (Cross guard) and from an accidental
+// zero‑length edge caused by a duplicated start/end point (RemoveNearDuplicates fix).
         MakeAnticlockwise(cur);
         // Remove near‑duplicate vertices introduced by clipping
         return RemoveNearDuplicates(cur);
@@ -198,6 +199,9 @@ namespace CloneZ
                 if (Vector2.Distance(pt, last) > EPS)
                     result.Add(pt);
             }
+            // If the first and last points are essentially the same, drop the last one.
+            if (result.Count >= 2 && Vector2.Distance(result[0], result[result.Count - 1]) <= EPS)
+                result.RemoveAt(result.Count - 1);
             // If less than 3 points, return empty list as polygon invalid
             if (result.Count < 3) return new List<Vector2>();
             return result;
@@ -325,12 +329,18 @@ var quad = new List<Vector2> { a, aOut, bOut, b };
 
         private static Vector2 Cross(Vector2 a, Vector2 b, Rect r, int edge)
         {
-            if (edge < 2)
+            if (edge < 2) // left or right edge – vertical line x = const
             {
                 float x = edge == 0 ? r.xMin : r.xMax;
+                // Guard against a perfectly vertical segment (b.x‑a.x ≈ 0) which would divide by zero.
+                if (Mathf.Approximately(b.x, a.x))
+                    return new Vector2(x, a.y); // take the start point projected onto the edge
                 return new Vector2(x, a.y + (b.y - a.y) * (x - a.x) / (b.x - a.x));
             }
+            // top or bottom edge – horizontal line y = const
             float y = edge == 2 ? r.yMin : r.yMax;
+            if (Mathf.Approximately(b.y, a.y))
+                return new Vector2(a.x, y); // project the start point onto the edge
             return new Vector2(a.x + (b.x - a.x) * (y - a.y) / (b.y - a.y), y);
         }
 
