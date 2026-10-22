@@ -7631,11 +7631,12 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 7: (Optionally) If you wish the label to have a faint engraved text colour, you can reuse the same `hardware` material – no extra texture is required; the tiny box itself is visible as a metal‑toned plate.
   Done when: In‑game the survivor’s right thigh shows a drop‑leg bag that now has a distinct side pocket with a visible zip, a tiny metal clasp, a subtle wear‑scar across the front of the main bag, and a small metal label on the pocket edge. All new parts use only the existing materials (`shade`, `web`, `hardware`, and a derived wear colour), keep the original colliders and interaction points unchanged, and add no more than ~12 new primitive calls. The rest of the player gear remains visually and functionally identical.
   - 11:34 landed by 1htsserver in 2.5 min: **Changes made**
-- [ ] Cache repeated singleton lookups in Assets/Scripts/Rendering/Presentation.cs to stop per‑frame FindObjectByType / property calls
+- [x] Cache repeated singleton lookups in Assets/Scripts/Rendering/Presentation.cs to stop per‑frame FindObjectByType / property calls
   Add a private `GameSettings _settingsCache` field to `PostFx`, `GasVisorOverlay` and `DiegeticWatch`; in each class’s Update/LateUpdate set it once when null (`_settingsCache ??= GameSettings.Current`) and replace all `GameSettings.Current` uses with `_settingsCache`.
   Add a private `Actor _playerCache` field to the same classes; refresh it when null (`_playerCache ??= Actor.LocalPlayer`) and replace every `Actor.LocalPlayer` occurrence with `_playerCache`.
   In `DiegeticWatch.Update` also add a private `TimeOfDay _todCache` field, assign it once when null (`_todCache ??= TimeOfDay.Instance`) and use `_todCache` for hour/minute calculations.
   These cached references are refreshed only if they become null (e.g., after a scene reload), so the player sees exactly the same visual behavior while eliminating the hidden per‑frame lookups.
+  - 11:41 landed by 1htsserver in 7 min: **Changed files**
 - [ ] Add a “Recall last transmission” action to Assets/Scripts/World/Fixtures/RaidCivicRadio.cs that lets the survivor re‑read the most recent radio caption even when out of earshot.
   Step 1: Assets/Scripts/World/Fixtures/RaidCivicRadio.cs – CivicRadio class – add a new private field. `private string _lastLine;` (Insert after the existing `private int _tuned, _volume = …, _call;` line.)
   Step 2: Assets/Scripts/World/Fixtures/RaidCivicRadio.cs – CivicRadio class – add a new delegate field for the action. `private Action<InteractContext> _recall;` (Insert with the other delegate fields.)
