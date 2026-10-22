@@ -14,6 +14,7 @@ namespace CloneZ
     public class RadioFixture : LivingReceiver
     {
         private Renderer _dialLight;
+        private int _broadcastCursor;
 
         public override string DisplayName => "Kitchen radio";
         public override float Reach => CloneZConfig.RadioReach;
@@ -57,6 +58,13 @@ namespace CloneZ
                 .DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Check station", c => c.Notify("Currently tuned to " + Describe(Station) + (Broadcasts.IsOnAir(Station) ? "." : " \u2014 just static.")))
                 .DisabledIf(!near, TooFar));
+            // New action: read next broadcast line
+            into.Add(new InteractAction("Read broadcast line", ctx => {
+                string line = Broadcasts.NextLine(Station, ref _broadcastCursor);
+                ctx.Notify(line ?? "Static hisses, no broadcast.");
+            })
+                .DisabledIf(!IsOn, "The radio is off")
+                .DisabledIf(!near, TooFar));
         }
 
         private void TurnOn(InteractContext ctx)
@@ -68,12 +76,14 @@ namespace CloneZ
         private void Retune(InteractContext ctx)
         {
             BroadcastStation s = TuneNext();
+            _broadcastCursor = 0; // reset cursor on station change
             ctx.Notify("You turn the dial through the hiss to " + Describe(s) + (Broadcasts.IsOnAir(s) ? "." : " \u2014 nothing there but static."));
         }
 
         private void RetunePrev(InteractContext ctx)
         {
             BroadcastStation s = TunePrevious();
+            _broadcastCursor = 0; // reset cursor on station change
             ctx.Notify("You turn the dial back to " + Describe(s) + (Broadcasts.IsOnAir(s) ? "." : " \u2014 nothing there but static."));
         }
 
@@ -86,6 +96,20 @@ namespace CloneZ
         protected override void ShowOn(bool on)
         {
             if (_dialLight != null) _dialLight.enabled = on;
+        }
+
+        // Persist broadcast cursor across saves
+        public override void CaptureState(FixtureSave save)
+        {
+            base.CaptureState(save);
+            save.Text = _broadcastCursor.ToString();
+        }
+
+        public override void RestoreState(FixtureSave save)
+        {
+            base.RestoreState(save);
+            if (!string.IsNullOrEmpty(save.Text) && int.TryParse(save.Text, out var val))
+                _broadcastCursor = val;
         }
     }
 }
