@@ -210,6 +210,7 @@ namespace CloneZ
         {
             float a = side * across, rollY = head - 0.05f, roll = cloth ? 0.028f : 0.022f;
             Surf stuff = M(fabric), bar = M(cloth ? fabric * 0.7f : Pine), cord = M(cloth ? new Color(0.55f, 0.50f, 0.38f) : fabric * 0.6f);
+Surf brass = Mt(Brass);
             for (int pass = 0; pass < 2; pass++)
                 (pass == 0 ? up : down).CylinderX(l.P(mid, rollY, a), roll, w, 10, stuff, l.Yaw);
 
@@ -232,6 +233,15 @@ namespace CloneZ
             float upBar = rollY - roll - 0.016f;
             up.Box(l.P(mid, upBar, a), l.Size(w, 0.018f, 0.014f), bar);
             up.Box(l.P(mid, upBar - 0.07f, a), l.Size(0.005f, 0.13f, 0.005f), cord);
+            // Small brass knob on the cord attachment point
+            up.Box(l.P(mid, upBar - 0.07f, a), new Vector3(0.018f, 0.004f, 0.018f), brass);
+            // Short brass pull‑hook at the bottom of the cord
+            float upBottomY = upBar - 0.07f - 0.13f;
+            up.Cylinder(l.P(mid, upBottomY, a), 0.004f, 0.02f, 10, brass, Quaternion.identity);
+            // Decorative brass cap on top of the up‑bar
+            up.Box(l.P(mid, upBar, a), new Vector3(0.02f, 0.008f, 0.02f), brass);
+            // Subtle dark‑steel wear strip above the cap
+            up.Box(l.P(mid, upBar + 0.009f, a), new Vector3(0.04f, 0.002f, 0.004f), Mt(DarkSteel));
             up.Ellipsoid(l.P(mid, upBar - 0.145f, a), new Vector3(0.02f, 0.028f, 0.02f), bar, 6, 4);
 
             // Pulled down: the cloth over the glazing, the bar at its foot, the cord and knob just clear of the sill.
@@ -239,6 +249,15 @@ namespace CloneZ
             down.Box(l.P(mid, (rollY + downBar) * 0.5f, a), l.Size(w, rollY - downBar, 0.005f), stuff);
             down.Box(l.P(mid, downBar, a), l.Size(w, 0.018f, 0.014f), bar);
             down.Box(l.P(mid, downBar - 0.045f, a), l.Size(0.005f, 0.07f, 0.005f), cord);
+            // Small brass knob on the down‑bar cord attachment point
+            down.Box(l.P(mid, downBar - 0.045f, a), new Vector3(0.018f, 0.004f, 0.018f), brass);
+            // Short brass pull‑hook at the bottom of the down‑bar cord
+            float downBottomY = downBar - 0.045f - 0.13f;
+            down.Cylinder(l.P(mid, downBottomY, a), 0.004f, 0.02f, 10, brass, Quaternion.identity);
+            // Decorative brass cap on top of the down‑bar
+            down.Box(l.P(mid, downBar, a), new Vector3(0.02f, 0.008f, 0.02f), brass);
+            // Subtle dark‑steel wear strip above the cap
+            down.Box(l.P(mid, downBar + 0.009f, a), new Vector3(0.04f, 0.002f, 0.004f), Mt(DarkSteel));
             down.Ellipsoid(l.P(mid, downBar - 0.085f, a), new Vector3(0.02f, 0.028f, 0.02f), bar, 6, 4);
         }
 
