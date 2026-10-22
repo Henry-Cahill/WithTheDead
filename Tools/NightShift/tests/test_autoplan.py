@@ -3,8 +3,12 @@
 """
 from __future__ import annotations
 
+import base64
 import importlib.util
+import json
+import re
 import shutil
+import subprocess
 import sys
 import tempfile
 import threading
@@ -12,6 +16,7 @@ import time
 import types
 import unittest
 from pathlib import Path
+from unittest import mock
 
 HERE = Path(__file__).resolve().parent
 _spec = importlib.util.spec_from_file_location("nightshift", HERE.parent / "nightshift.py")
@@ -588,6 +593,212 @@ class PlannerTest(unittest.TestCase):
         self.assertFalse(loop.is_alive())
         self.assertEqual(4, len(self.unchecked()))
         self.assertEqual(4, coord.planner.planned)
+
+    # --- documentation workers (NIGHTSHIFT_DOCS_WORKERS) ---------------------------------------------------
+
+    def docs_team(self):
+        """routed(), plus a helper that takes only documentation tasks."""
+        coord, helper, spark = self.routed()
+        docs = types.SimpleNamespace(name="laserengraver", big=True, docs=True, retired=False)
+        coord.workers.append(docs)
+        return coord, helper, spark, docs
+
+    @staticmethod
+    def docs_task(name: str) -> ns.Task:
+        key = ns.DOC_TASK.format(path=f"Assets/Scripts/World/{name}.cs")
+        return ns.Task(key, "\n".join((key,) + ns.DOC_DETAILS))
+
+    def test_coordinator_reads_the_docs_workers(self):
+        coord = ns.Coordinator(dict(ns.DEFAULTS, NIGHTSHIFT_DOCS_WORKERS=" LaserEngraver, other "))
+        self.assertEqual({"laserengraver", "other"}, coord.docs_names)
+        worker = lambda name, target: types.SimpleNamespace(name=name, target=target)
+        self.assertTrue(coord.docs_only(worker("laserengraver", "htsadmin@laserengraver")))
+        self.assertTrue(coord.docs_only(worker("laserengraver-2", "htsadmin@LASERENGRAVER")))  # by its host
+        self.assertFalse(coord.docs_only(worker("hts-llm", "htsadmin@192.168.1.202")))
+        self.assertFalse(coord.docs_only(worker("spark", None)))
+        self.assertFalse(ns.Coordinator(dict(ns.DEFAULTS)).docs_only(worker("laserengraver", "htsadmin@laserengraver")))
+
+    def test_claim_routes_docs_tasks_to_the_docs_workers(self):
+        coord, helper, spark, docs = self.docs_team()
+        heading = "### Auto-planned test"
+        small = lambda name: ns.Task(f"Small planned task about Assets/Scripts/World/{name}.cs",
+                                     f"Small planned task about Assets/Scripts/World/{name}.cs")
+        ns.append_planned(self.docs_task("D1"), heading)
+        ns.append_planned(small("S1"), heading)
+        ns.append_planned(self.docs_task("D2"), heading)
+        self.assertEqual(self.docs_task("D1").key, coord.claim(docs).key)
+        self.assertEqual(small("S1").key, coord.claim(helper).key)
+        self.assertIsNone(coord.claim(spark))  # only documentation is left, and that waits for the documentation worker
+        self.assertEqual(self.docs_task("D2").key, coord.claim(docs).key)
+        ns.append_planned(small("S2"), heading)
+        self.assertIsNone(coord.claim(docs))  # it takes documentation only
+        self.assertEqual(small("S2").key, coord.claim(spark).key)
+        ns.append_planned(self.docs_task("D3"), heading)
+        docs.retired = True
+        self.assertEqual(self.docs_task("D3").key, coord.claim(helper).key)  # nobody's left for documentation
+
+    def test_wanted_keeps_a_docs_task_waiting_for_each_docs_worker(self):
+        coord, helper, spark, docs = self.docs_team()
+        self.assertEqual(4, coord.low_water())  # the documentation worker's tasks are kept waiting apart
+        small, big, doc = ns.Task("small", "small"), self.big_task("B"), self.docs_task("D")
+        self.assertEqual("docs", coord.wanted([]))
+        self.assertEqual("small", coord.wanted([doc]))  # documentation doesn't feed the Spark
+        self.assertEqual("any", coord.wanted([doc, small]))
+        self.assertIsNone(coord.wanted([doc, doc, small, big, big, big]))
+        self.assertEqual("small", coord.wanted([], docs=False))  # nothing was left to document a moment ago
+        helper.retired = spark.retired = True
+        self.assertIsNone(coord.wanted([doc]))  # only the documentation worker is left
+        self.assertEqual("docs", coord.wanted([]))
+        docs.retired, helper.retired = True, False
+        self.assertEqual("any", coord.wanted([doc]))  # with no documentation worker it counts like any other task
+
+    def test_plan_loop_asks_for_docs_first_and_moves_on_when_none_is_needed(self):
+        coord, helper, spark, docs = self.docs_team()
+        asked = []
+
+        class FakePlanner:
+            planned = 0
+
+            def plan_one(self, small=False, focus=None):
+                asked.append(focus or ("small" if small else "any"))
+                if focus == "docs":
+                    return None  # every script is documented: the loop looks again later, without holding up the rest
+                self.planned += 1
+                key = f"Planned task {self.planned} for Assets/Scripts/World/A{self.planned}.cs"
+                ns.append_planned(ns.Task(key, key), "### Auto-planned test")
+                if self.planned > 10:
+                    coord.planning.clear()  # runaway: fail below rather than hang
+                return ns.Task(key, key)
+
+        coord.planner = FakePlanner()
+        coord.planning.set()
+        loop = threading.Thread(target=coord.plan_loop, daemon=True)
+        loop.start()
+        deadline = time.time() + 10
+        while time.time() < deadline and len(self.unchecked()) < coord.low_water():
+            time.sleep(0.05)
+        time.sleep(0.3)
+        coord.planning.clear()
+        ns.STOPPING.set()
+        loop.join(5)
+        self.assertFalse(loop.is_alive())
+        self.assertEqual(["docs", "small", "any", "any", "any"], asked)
+
+    def test_the_rotation_skips_what_is_left_out(self):
+        self.script("Assets/Scripts/Core/Foo.cs", DOCS)
+        left_out = {"docs"}
+        planner, _ = self.planner([], ["docs", "graphics+", "docs"], leave_out=lambda: left_out)
+        self.assertEqual(["graphics+", "graphics+"], [planner.next_focus(), planner.next_focus()])
+        left_out.add("graphics")
+        self.assertIsNone(planner.next_focus())
+        self.assertIsNone(planner.plan_one())  # nothing in the rotation to plan for
+        left_out.clear()
+        self.assertTrue(ns.is_docs(planner.plan_one()))
+
+    def test_a_script_gets_another_docs_pass_only_after_landed_ones(self):
+        foo = self.script("Assets/Scripts/Core/Foo.cs", DOCS)
+        first = ns.DOC_TASK.format(path=foo)
+        self.assertTrue(ns.is_docs(ns.Task(first, first)))
+        self.assertFalse(ns.is_docs(ns.Task(f"Fix a bug in {foo}", f"Fix a bug in {foo}")))
+        landed = [("x", ns.Task(first, first))]
+        self.assertEqual([foo], ns.plan_candidates("docs", self.repo, landed))  # later work left it undocumented again
+        planner, asked = self.planner([], ["docs"])
+        second, _ = planner.write_task("docs", foo, landed)
+        self.assertEqual(first + ns.DOC_AGAIN.format(n=2), second.key)
+        self.assertTrue(ns.is_docs(second))
+        self.assertFalse(ns.is_big(second))
+        self.assertEqual([], asked)
+        self.assertEqual([foo], ns.plan_candidates("docs", self.repo, landed + [("x", second)]))
+        for mark in "~!":  # a pass that found nothing to do, or failed, isn't repeated
+            self.assertEqual([], ns.plan_candidates("docs", self.repo, landed + [(mark, second)]))
+        third = ns.Task(first + ns.DOC_AGAIN.format(n=3), "")
+        self.assertEqual([], ns.plan_candidates("docs", self.repo, landed + [("x", second), ("x", third)]))  # 3 at most
+
+
+class WindowsWorkerTest(unittest.TestCase):
+    """A Windows helper's commands, as the coordinator sends them over SSH. Nothing runs: ssh and git are faked."""
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp(prefix="nightshift-worker-"))
+        self.saved_key = ns.SSH_KEY
+        ns.SSH_KEY = self.tmp / "id_ed25519"
+        ns.SSH_KEY.write_text("key")
+        ns.STOPPING.clear()
+        self.sent = []
+
+    def tearDown(self):
+        ns.SSH_KEY = self.saved_key
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    @staticmethod
+    def worker() -> ns.Worker:
+        return ns.Worker("laserengraver", "htsadmin@laserengraver", dict(ns.DEFAULTS), "http://ollama")
+
+    @staticmethod
+    def script(cmd: list) -> str:
+        """The script an ssh command line runs, decoded when it travels base64-encoded."""
+        m = re.fullmatch(r"echo (\S+) \| base64 -d \| bash", cmd[-1])
+        return base64.b64decode(m.group(1)).decode() if m else cmd[-1]
+
+    def fake_run(self, stdout: str):
+        def run(cmd, **kwargs):
+            self.sent.append(cmd)
+            return subprocess.CompletedProcess(cmd, 0, stdout, "")
+        return run
+
+    def test_prepare_finds_out_a_helper_runs_windows(self):
+        w = self.worker()
+        with mock.patch.object(ns.subprocess, "run", self.fake_run("WINDOWS py -3\nREADY\n")):
+            self.assertIsNone(w.prepare())
+        self.assertEqual((True, "py -3", ""), (w.windows, w.python, w.nice))
+        self.assertEqual("htsadmin@laserengraver", self.sent[0][-2])
+        self.assertIn('case "$(uname -s)" in MINGW*', self.script(self.sent[0]))  # it travelled base64-encoded
+        linux = self.worker()
+        with mock.patch.object(ns.subprocess, "run", self.fake_run("READY\n")):
+            self.assertIsNone(linux.prepare())
+        self.assertEqual((False, "python3", "nice -n 15 "), (linux.windows, linux.python, linux.nice))
+
+    def run_task(self, w: ns.Worker) -> list:
+        """Runs a task on `w` with ssh and git faked; returns the command lines it started."""
+        started = []
+
+        class FakeProc:
+            pid, returncode = 4242, 0
+
+            def __init__(self, cmd, **kwargs):
+                started.append(cmd)
+                self.stdout = iter([ns.RESULT_MARK + json.dumps({"status": "nochange", "summary": "nothing"}) + "\n"])
+
+            def wait(self, timeout=None):
+                return 0
+
+            def poll(self):
+                return 0
+
+        with mock.patch.object(ns.subprocess, "run", self.fake_run("")), \
+                mock.patch.object(ns.subprocess, "Popen", FakeProc), mock.patch.object(ns, "git", lambda *a, **k: ""):
+            res = w.run(ns.Task("A task", "A task"), "abc123", 30, "gpt-oss:120b", 2, 131072)
+        self.assertEqual("nochange", res.status)
+        return started
+
+    def test_a_windows_helper_runs_python_without_nice_and_reaps_with_taskkill(self):
+        w = self.worker()
+        w.windows, w.python, w.nice = True, "py -3", ""
+        script = self.script(self.run_task(w)[0])
+        self.assertIn("PYTHONUTF8=1", script)
+        self.assertIn("exec py -3 Tools/NightShift/nightshift.py work --repo . --base abc123", script)
+        self.assertNotIn("nice", script)
+        reap = self.script(self.sent[0])  # a work process left over from an earlier task goes first
+        self.assertIn("taskkill /PID $p /T /F", reap)
+        self.assertIn("nightshift.py*work", reap)  # only while that pid still is the worker
+        self.assertNotIn("kill -TERM", reap)
+
+    def test_a_linux_helper_runs_as_before(self):
+        cmd = self.run_task(self.worker())[0]
+        self.assertNotRegex(cmd[-1], r"base64 -d \| bash$")
+        self.assertIn("exec nice -n 15 python3 Tools/NightShift/nightshift.py work", cmd[-1])
+        self.assertNotIn("PYTHONUTF8", cmd[-1])
+        self.assertIn("kill -TERM", self.sent[0][-1])
 
 
 if __name__ == "__main__":

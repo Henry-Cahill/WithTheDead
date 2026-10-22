@@ -3,8 +3,8 @@
 
 The model runs in Ollama on the DGX Spark and OpenCode (`opencode run`) is the agent, so no cloud AI tokens
 are spent. The coordinator runs in the AI Workbench project container on the Spark. It hands tasks to
-workers (the Spark itself plus any helper machines), each of which does its task in its own checkout,
-compile-checks it against Unity's assemblies and commits. The coordinator then lands each result on the
+workers (the Spark itself plus any helper machines, Linux or Windows), each of which does its task in its own
+checkout, compile-checks it against Unity's assemblies and commits. The coordinator then lands each result on the
 night's branch (nightshift/<date>), compiles the whole project again and ticks the task off in tasks.md.
 
   nightshift.py run           coordinator: work through the queue (nightshift.sh start runs it in the background)
@@ -21,7 +21,7 @@ import base64
 import contextlib
 import datetime as dt
 import difflib
-import fcntl
+import functools
 import json
 import math
 import os
@@ -43,6 +43,12 @@ from collections import Counter
 from dataclasses import asdict, dataclass, field
 from pathlib import Path
 
+try:
+    import fcntl
+except ImportError:  # Windows: only a helper's worker runs there, and it never touches tasks.md
+    fcntl = None
+
+WINDOWS = os.name == "nt"  # a worker on a Windows helper, run through Git Bash; the coordinator always runs on Linux
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parent.parent
 REL = "Tools/NightShift"  # this folder, relative to the repo root
@@ -76,6 +82,7 @@ DEFAULTS = {
     "NIGHTSHIFT_AUTOPLAN_FOCUS": "graphics,fixes,perf,graphics,features,flavour,docs",
     "NIGHTSHIFT_AUTOPLAN_MODEL": "",
     "NIGHTSHIFT_SMALL_TASK_MODELS": "",
+    "NIGHTSHIFT_DOCS_WORKERS": "",
     "NIGHTSHIFT_PUBLISH_EVERY": "120",
     "OLLAMA_URL": "",
 }
@@ -228,13 +235,34 @@ def warm_model(base: str, model: str) -> None:
 
 def opencode_bin() -> str:
     found = shutil.which("opencode")
-    if found:
+    if found and not found.lower().endswith((".cmd", ".bat")):  # npm's Windows shim loses a multi-line prompt
         return found
-    for candidate in ("/usr/local/bin/opencode", "~/.local/bin/opencode", "~/.opencode/bin/opencode"):
+    for candidate in ("/usr/local/bin/opencode", "~/.local/bin/opencode", "~/.opencode/bin/opencode",
+                      "~/.local/bin/opencode.exe"):
         path = Path(candidate).expanduser()
         if path.exists():
             return str(path)
     raise RuntimeError("OpenCode is not installed (the Workbench container build installs it; helpers get it from NightShift.ps1 helpers)")
+
+
+@functools.lru_cache(maxsize=None)
+def bash_exe() -> str:
+    """The bash that runs check.sh and the agent's shell commands. On Windows that's Git for Windows' bash: a bare "bash"
+    there finds WSL's in System32 first, and OpenCode would use PowerShell."""
+    if not WINDOWS:
+        return "bash"
+    roots = []
+    try:  # <Git>/ucrt64/libexec/git-core, or mingw64 in older releases
+        exec_path = subprocess.run(["git", "--exec-path"], capture_output=True, text=True, stdin=subprocess.DEVNULL).stdout
+        if exec_path.strip():
+            roots.append(Path(exec_path.strip()).parents[2])
+    except OSError:
+        pass
+    roots.append(Path(os.environ.get("ProgramFiles", r"C:\Program Files")) / "Git")
+    for root in roots:
+        if (root / "bin" / "bash.exe").is_file():
+            return str(root / "bin" / "bash.exe")
+    raise RuntimeError("Git for Windows' bash isn't installed (WindowsHelper.ps1 installs Git)")
 
 
 def opencode_config(base_url: str, model: str, context: int, repo: Path) -> dict:
@@ -286,6 +314,9 @@ class AgentRun:
 
 
 def kill_group(proc: subprocess.Popen, sig: int = signal.SIGTERM) -> None:
+    if WINDOWS:  # no process groups: end the process and everything it started (console programs ignore a polite stop)
+        subprocess.run(["taskkill", "/PID", str(proc.pid), "/T", "/F"], capture_output=True, stdin=subprocess.DEVNULL)
+        return
     try:
         os.killpg(proc.pid, sig)
     except (ProcessLookupError, PermissionError):
@@ -300,7 +331,7 @@ def terminate(proc: subprocess.Popen, grace: float = 20) -> None:
     try:
         proc.wait(timeout=grace)
     except subprocess.TimeoutExpired:
-        kill_group(proc, signal.SIGKILL)
+        kill_group(proc, getattr(signal, "SIGKILL", signal.SIGTERM))
         proc.wait()
 
 
@@ -311,6 +342,47 @@ def die_with_parent() -> None:
         ctypes.CDLL("libc.so.6", use_errno=True).prctl(1, signal.SIGKILL)  # PR_SET_PDEATHSIG
     except Exception:
         pass
+
+
+WINDOWS_JOB = None  # the worker's job object on Windows; held open for as long as the worker runs
+
+
+def windows_job() -> None:
+    """Windows has no process groups, and no PR_SET_PDEATHSIG for die_with_parent(). Instead the worker puts itself in a
+    job object that ends every process it starts (the agent, its shell, dotnet) when the worker ends, however it ends.
+    The job also runs them all at below-normal CPU priority, as nice does on the Linux helpers."""
+    global WINDOWS_JOB
+    import ctypes
+    from ctypes import wintypes
+
+    class Basic(ctypes.Structure):
+        _fields_ = [("PerProcessUserTimeLimit", ctypes.c_int64), ("PerJobUserTimeLimit", ctypes.c_int64),
+                    ("LimitFlags", wintypes.DWORD), ("MinimumWorkingSetSize", ctypes.c_size_t),
+                    ("MaximumWorkingSetSize", ctypes.c_size_t), ("ActiveProcessLimit", wintypes.DWORD),
+                    ("Affinity", ctypes.c_size_t), ("PriorityClass", wintypes.DWORD), ("SchedulingClass", wintypes.DWORD)]
+
+    class Extended(ctypes.Structure):
+        _fields_ = [("BasicLimitInformation", Basic), ("IoInfo", ctypes.c_uint64 * 6), ("ProcessMemoryLimit", ctypes.c_size_t),
+                    ("JobMemoryLimit", ctypes.c_size_t), ("PeakProcessMemoryUsed", ctypes.c_size_t),
+                    ("PeakJobMemoryUsed", ctypes.c_size_t)]
+
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    kernel32.CreateJobObjectW.restype = wintypes.HANDLE
+    kernel32.CreateJobObjectW.argtypes = (ctypes.c_void_p, wintypes.LPCWSTR)
+    kernel32.SetInformationJobObject.argtypes = (wintypes.HANDLE, ctypes.c_int, ctypes.c_void_p, wintypes.DWORD)
+    kernel32.AssignProcessToJobObject.argtypes = (wintypes.HANDLE, wintypes.HANDLE)
+    kernel32.GetCurrentProcess.restype = wintypes.HANDLE
+    job = kernel32.CreateJobObjectW(None, None)
+    info = Extended()
+    # KILL_ON_JOB_CLOSE | PRIORITY_CLASS | BREAKAWAY_OK (a program that asks to leave the job may, rather than fail to start)
+    info.BasicLimitInformation.LimitFlags = 0x2000 | 0x20 | 0x800
+    info.BasicLimitInformation.PriorityClass = 0x4000  # BELOW_NORMAL_PRIORITY_CLASS
+    if not job or not kernel32.SetInformationJobObject(job, 9, ctypes.byref(info), ctypes.sizeof(info)) \
+            or not kernel32.AssignProcessToJobObject(job, kernel32.GetCurrentProcess()):
+        log(f"  couldn't set up the worker's job object (Windows error {ctypes.get_last_error()}); "
+            "an agent may outlive a stopped task")
+        return
+    WINDOWS_JOB = job
 
 
 def run_in_group(cmd: list[str], timeout: float, **kwargs) -> tuple[int, str]:
@@ -331,7 +403,7 @@ def describe_tool(part: dict, repo: Path) -> str:
     args = state.get("input") or {}
     target = (args.get("command") or args.get("filePath") or args.get("pattern") or args.get("path")
               or args.get("url") or args.get("description") or "")
-    text = f"{part.get('tool', '?')} {target}".replace(str(repo) + "/", "").replace("\n", " ")
+    text = f"{part.get('tool', '?')} {target}".replace(str(repo) + os.sep, "").replace(str(repo) + "/", "").replace("\n", " ")
     if state.get("status") == "error":
         text += "  (failed)"
     return text[:180]
@@ -346,12 +418,14 @@ def run_opencode(repo: Path, prompt: str, cfg_path: Path, model: str, timeout_s:
         cmd += ["--title", title[:80]]
     cmd.append(prompt)
     env = dict(env, OPENCODE_CONFIG=str(cfg_path), OPENCODE_DISABLE_AUTOUPDATE="true", OPENCODE_DISABLE_LSP_DOWNLOAD="true")
+    if WINDOWS:  # OpenCode on Windows runs shell commands in PowerShell unless pointed at Git Bash
+        env.update(SHELL=bash_exe(), OPENCODE_GIT_BASH_PATH=bash_exe())
     res = AgentRun()
     texts: dict[str, list[str]] = {}
     last_msg = ""
     proc = subprocess.Popen(cmd, cwd=repo, env=env, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
                             stderr=subprocess.STDOUT, text=True, bufsize=1, start_new_session=True,
-                            preexec_fn=die_with_parent)
+                            preexec_fn=None if WINDOWS else die_with_parent)
 
     def stop_agent(timed_out: bool) -> None:
         if timed_out:
@@ -401,7 +475,7 @@ def run_opencode(repo: Path, prompt: str, cfg_path: Path, model: str, timeout_s:
 # --- Checks and clean-up in a worker checkout ---------------------------------------------------------------
 
 def compile_check(repo: Path, env: dict) -> tuple[bool, str]:
-    rc, out = run_in_group(["bash", str(repo / REL / "check.sh")], timeout=1200, cwd=repo, env=env)
+    rc, out = run_in_group([bash_exe(), str(repo / REL / "check.sh")], timeout=1200, cwd=repo, env=env)
     out = out.strip()
     if rc == 2:
         raise RuntimeError(out)
@@ -599,7 +673,10 @@ def cmd_work(args: argparse.Namespace) -> int:
     pid_file = repo.parent / "work.pid"
     pid_file.write_text(str(os.getpid()))
     signal.signal(signal.SIGTERM, lambda *_: STOPPING.set())
-    signal.signal(signal.SIGHUP, lambda *_: STOPPING.set())
+    if hasattr(signal, "SIGHUP"):
+        signal.signal(signal.SIGHUP, lambda *_: STOPPING.set())
+    if WINDOWS:
+        windows_job()
     task = base64.b64decode(args.task_b64).decode("utf-8")
     try:
         res = do_task(repo, args.base, task, args.model, args.ollama, args.minutes, args.fix_rounds, args.context, args.unityrefs)
@@ -624,11 +701,13 @@ def tasks_lock():
     with TASKS_THREAD_LOCK:
         STATE.mkdir(parents=True, exist_ok=True)
         with TASKS_LOCK_PATH.open("a+b") as lock:
-            fcntl.flock(lock, fcntl.LOCK_EX)
+            if fcntl:
+                fcntl.flock(lock, fcntl.LOCK_EX)
             try:
                 yield
             finally:
-                fcntl.flock(lock, fcntl.LOCK_UN)
+                if fcntl:
+                    fcntl.flock(lock, fcntl.LOCK_UN)
 
 
 @dataclass
@@ -988,6 +1067,15 @@ DOC_DETAILS = (
     "Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that "
     "declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an "
     "edit fails, re-read the file first.")
+DOC_TASK_START = DOC_TASK.split("{path}")[0]
+DOC_AGAIN = " (Pass {n} over this file: most of it has summaries already.)"  # ends a follow-up pass's task, so keys differ
+DOC_PASSES = 3  # documentation passes one script gets at most (see plan_candidates)
+
+
+def is_docs(task: Task) -> bool:
+    """Whether `task` is a documentation task: the docs focus's fixed one (DOC_TASK), whoever queued it. Workers in
+    NIGHTSHIFT_DOCS_WORKERS take only these, and the others leave them to those workers while one is on duty."""
+    return task.key.startswith(DOC_TASK_START)
 
 PLAN_PROMPT = """You plan work for the CLONE-Z Night Shift: local AI coding agents that each take one task from a queue
 overnight, edit the code of CLONE-Z (a Unity 6 isometric zombie-survival game in C#, everything built from code at
@@ -1092,7 +1180,6 @@ def plan_candidates(focus: str, repo: Path, tasks: list[tuple[str, Task]]) -> li
     unchecked task queued for them yet (two tasks on one script at once would collide when they land)."""
     kind, _ = split_focus(focus)
     queued = "\n".join(task.text for mark, task in tasks if mark == " ")
-    known = {task.key for _, task in tasks}
     found = []
     for f in sorted((repo / "Assets" / "Scripts").rglob("*.cs")):
         rel = f.relative_to(repo).as_posix()
@@ -1104,8 +1191,12 @@ def plan_candidates(focus: str, repo: Path, tasks: list[tuple[str, Task]]) -> li
             continue
         if not 30 <= text.count("\n") + 1 <= PLAN_MAX_LINES or not FOCUS[kind].fits(rel, text):
             continue
-        if kind == "docs" and DOC_TASK.format(path=rel) in known:
-            continue  # documented already, or tried and failed: either way not again
+        if kind == "docs":
+            # Later work adds public members without summaries, so a script gets another pass once every earlier one
+            # landed. Not after one that found nothing to document (what's left inherits its docs) or failed.
+            passes = [mark for mark, task in tasks if task.key.startswith(DOC_TASK.format(path=rel))]
+            if passes and (len(passes) >= DOC_PASSES or any(mark not in "xX" for mark in passes)):
+                continue
         found.append(rel)
     return found
 
@@ -1418,23 +1509,32 @@ class Planner:
     exist and nothing protected, and not repeat a task already in tasks.md. Documentation tasks need no model. A focus
     written with a trailing "+" asks for a big task: several located steps, with the scripts tied to the target shown in
     outline so the steps can reach into them (see BIG_PLAN_PROMPT). Only the workers that take big tasks get those; the
-    coordinator asks for a small one whenever a worker that takes only small tasks would have none waiting."""
+    coordinator asks for a small one whenever a worker that takes only small tasks would have none waiting, and for a
+    documentation task whenever a documentation worker (NIGHTSHIFT_DOCS_WORKERS) would have none."""
 
     def __init__(self, ollama: str, model: str, focus: list[str], repo: Path | None = None, ask=None, on_duty=None,
-                 dry_run: bool = False):
+                 dry_run: bool = False, leave_out=None):
         self.ollama, self.model, self.repo = ollama, model, repo or ROOT
         named = [split_focus(f) for f in focus]
         self.focus = [kind + (BIG if big else "") for kind, big in named if kind in FOCUS] or list(FOCUS)
         self.ask = ask or ask_model
         self.on_duty = on_duty or (lambda: not STOPPING.is_set())
+        self.leave_out = leave_out or (lambda: ())  # focus kinds the rotation passes over for now
         self.dry_run = dry_run  # plan and show, but queue nothing and remember nothing (nightshift.py plan --dry-run)
         self.state = load_plan_state()
         self.planned = 0
 
-    def next_focus(self) -> str:
-        turn = int(self.state.get("turn", 0))
-        self.state["turn"] = turn + 1
-        return self.focus[turn % len(self.focus)]
+    def next_focus(self) -> str | None:
+        """The next focus in turn, passing over the kinds left out (documentation while documentation workers are on duty:
+        the coordinator asks for theirs separately); None when every focus is left out."""
+        skip = set(self.leave_out())
+        for _ in range(len(self.focus)):
+            turn = int(self.state.get("turn", 0))
+            self.state["turn"] = turn + 1
+            name = self.focus[turn % len(self.focus)]
+            if split_focus(name)[0] not in skip:
+                return name
+        return None
 
     def plan_one(self, tries: int = 3, focus: str | None = None, target: str | None = None,
                  small: bool = False) -> Task | None:
@@ -1445,6 +1545,8 @@ class Planner:
             if not self.on_duty():
                 return None
             kind, tasks = focus or self.next_focus(), read_tasks()
+            if kind is None:
+                return None  # every focus in the rotation is left out for now
             if small:
                 kind = split_focus(kind)[0]
             script = target or pick_target(kind, plan_candidates(kind, self.repo, tasks), self.state.setdefault("seen", {}))
@@ -1470,7 +1572,9 @@ class Planner:
     def write_task(self, focus: str, target: str, tasks: list[tuple[str, Task]]) -> tuple[Task | None, str]:
         kind, big = split_focus(focus)
         if kind == "docs":
-            key = DOC_TASK.format(path=target)
+            first = DOC_TASK.format(path=target)
+            n = 1 + sum(1 for _, task in tasks if task.key.startswith(first))
+            key = first + (DOC_AGAIN.format(n=n) if n > 1 else "")
             return Task(key, "\n".join((key,) + DOC_DETAILS)), ""
         source = (self.repo / target).read_text(encoding="utf-8-sig", errors="replace")
         existing = [f"[{mark}] {task.key[:220]}" for mark, task in tasks if target in task.text][-15:]
@@ -1535,16 +1639,25 @@ class Worker:
         self.lock = threading.Lock()
         self.errors = 0
         self.big = True  # takes big tasks; False on NIGHTSHIFT_SMALL_TASK_MODELS (see Coordinator.team)
+        self.docs = False  # takes only documentation tasks: NIGHTSHIFT_DOCS_WORKERS (see Coordinator.claim)
+        self.windows = False  # a Windows helper, where OpenSSH runs commands in Git Bash (found out by prepare)
         self.retired = False  # done for the night: its loop has ended
 
-    def _cmd(self, script: str) -> list[str]:
-        return ssh_command() + [self.target, script] if self.target else ["bash", "-c", script]
+    def _cmd(self, script: str, wrap: bool = False) -> list[str]:
+        if not self.target:
+            return ["bash", "-c", script]
+        if wrap or self.windows:
+            # Base64 leaves nothing for a shell to mangle on the way: Windows' OpenSSH passes the command to Git Bash on a
+            # Windows command line, which quotes differently.
+            script = f"echo {base64.b64encode(script.encode()).decode()} | base64 -d | bash"
+        return ssh_command() + [self.target, script]
 
     def _git_env(self) -> dict | None:
         return git_env() if self.target else None
 
     def prepare(self) -> str | None:
-        """Returns why this worker can't be used, or None when it is ready."""
+        """Returns why this worker can't be used, or None when it is ready. It also finds out whether a helper runs Windows
+        (through Git Bash, see WindowsHelper.ps1) and, if so, which command runs Python 3 there."""
         if self.target and not SSH_KEY.exists():
             return "no SSH key for helpers yet (run NightShift.ps1 helpers on the PC)"
         repo = shlex.quote(self.repo)
@@ -1555,22 +1668,40 @@ command -v opencode >/dev/null || {{ echo "OpenCode is not installed"; exit 1; }
 command -v dotnet >/dev/null || {{ echo ".NET SDK is not installed"; exit 1; }}
 [ -f "{self.unityrefs}/Runtime.csproj" ] || {{ echo "Unity reference assemblies are missing"; exit 1; }}
 curl -s --max-time 5 {shlex.quote(self.ollama)}/api/version >/dev/null || {{ echo "can't reach Ollama at {self.ollama}"; exit 1; }}
+case "$(uname -s)" in MINGW*|MSYS*|CYGWIN*)
+  git config core.autocrlf false && git config core.eol lf && git config core.longpaths true  # files as on Linux
+  for py in python "py -3" ""; do  # python3 there is often the Microsoft Store's stand-in, not Python
+    [ -n "$py" ] || {{ echo "Python 3 is not installed"; exit 1; }}
+    if $py -c 'import sys; sys.exit(sys.version_info < (3, 9))' >/dev/null 2>&1; then echo "WINDOWS $py"; break; fi
+  done ;;
+esac
 echo READY"""
         try:
-            r = subprocess.run(self._cmd(script), capture_output=True, text=True, timeout=60, stdin=subprocess.DEVNULL)
+            r = subprocess.run(self._cmd(script, wrap=True), capture_output=True, text=True, timeout=60,
+                               stdin=subprocess.DEVNULL)
         except subprocess.TimeoutExpired:
             return "timed out"
-        return None if "READY" in r.stdout else (r.stdout + r.stderr).strip()[-300:] or f"exit {r.returncode}"
+        if "READY" not in r.stdout:
+            return (r.stdout + r.stderr).strip()[-300:] or f"exit {r.returncode}"
+        windows = re.search(r"^WINDOWS (.+?)\s*$", r.stdout, re.M)
+        if windows:  # its job object lowers the priority there (see windows_job), so no nice
+            self.windows, self.python, self.nice = True, windows.group(1), ""
+        return None
 
     def run(self, task: Task, base: str, minutes: float, model: str, fix_rounds: int, context: int) -> Result:
         self.reap()  # a work process left over from an earlier task must be gone before its checkout is reused
         git(ROOT, "push", "-q", "--no-verify", "--force", self.dest, f"{base}:refs/heads/nightshift-base", env=self._git_env())
         b64 = base64.b64encode(task.text.encode("utf-8")).decode()
         safe_git = "git " + " ".join(shlex.quote(a) for a in GIT_SAFE)
+        exports = 'PATH="$HOME/.local/bin:$HOME/.opencode/bin:$HOME/.dotnet:/opt/dotnet:$PATH"'
+        if self.windows:  # UTF-8 whatever the code page: OpenCode's events, git's output and the result line
+            exports += " PYTHONUTF8=1"
+        # On Windows the probed command may be "py -3", so it isn't quoted.
+        python = self.python if self.windows else shlex.quote(self.python)
         # exec makes the worker's Python the session leader, so its pid is the process group that reap() kills.
-        script = (f'export PATH="$HOME/.local/bin:$HOME/.opencode/bin:$HOME/.dotnet:/opt/dotnet:$PATH" && '
+        script = (f"export {exports} && "
                   f"cd {shlex.quote(self.repo)} && {safe_git} checkout -q --detach --force nightshift-base && "
-                  f"exec {self.nice}{shlex.quote(self.python)} {REL}/nightshift.py work --repo . --base {base} --task-b64 {b64} "
+                  f"exec {self.nice}{python} {REL}/nightshift.py work --repo . --base {base} --task-b64 {b64} "
                   f"--model {shlex.quote(model)} --ollama {shlex.quote(self.ollama)} --minutes {minutes:.0f} "
                   f'--fix-rounds {fix_rounds} --context {context} --unityrefs "{self.unityrefs}"')
         with self.lock:
@@ -1613,12 +1744,19 @@ echo READY"""
             'kill -TERM -- "-$p" 2>/dev/null || kill -TERM "$p" 2>/dev/null; '
             'for i in $(seq 1 {grace}); do kill -0 "$p" 2>/dev/null || break; sleep 1; done; '
             'kill -KILL -- "-$p" 2>/dev/null; kill -KILL "$p" 2>/dev/null; fi; rm -f {pid}; true')
+    # Windows has no signals to ask first, and reuses PIDs quickly: the process is ended (with everything it started)
+    # only while it still is the worker. Its job object ends whatever is left (see windows_job).
+    REAP_WINDOWS = ('p=$(cat {pid} 2>/dev/null); if [ -n "$p" ]; then '
+                    'MSYS2_ARG_CONV_EXCL="*" powershell.exe -NoProfile -NonInteractive -Command '
+                    r""""\$w = Get-CimInstance Win32_Process -Filter 'ProcessId = $p'; """
+                    r"""if (\$w.CommandLine -like '*nightshift.py*work*') {{ taskkill /PID $p /T /F }}" >/dev/null 2>&1; """
+                    'fi; rm -f {pid}; true')
 
     def reap(self, grace: int = 15) -> None:
         """Ends this worker's work process, if one is running (TERM, then KILL after `grace` seconds)."""
+        script = (self.REAP_WINDOWS if self.windows else self.REAP).format(pid=shlex.quote(self.pid_file), grace=grace)
         try:
-            subprocess.run(self._cmd(self.REAP.format(pid=shlex.quote(self.pid_file), grace=grace)), capture_output=True,
-                           timeout=grace + 30, stdin=subprocess.DEVNULL)
+            subprocess.run(self._cmd(script), capture_output=True, timeout=grace + 30, stdin=subprocess.DEVNULL)
         except Exception:
             pass
 
@@ -1641,6 +1779,8 @@ class Coordinator:
         # Workers on these models take only small tasks (see is_big); the others get the big ones.
         self.small_models = {m.strip().removesuffix(":latest")
                              for m in cfg.get("NIGHTSHIFT_SMALL_TASK_MODELS", "").split(",") if m.strip()}
+        # Workers named here (or their host) take only documentation tasks (see is_docs); the others leave those to them.
+        self.docs_names = {n.strip().lower() for n in cfg.get("NIGHTSHIFT_DOCS_WORKERS", "").split(",") if n.strip()}
         self.queue_lock, self.land_lock = threading.Lock(), threading.Lock()
         self.in_flight: dict[str, tuple[str, str]] = {}  # task key -> (worker, since)
         self.dispatches: dict[str, int] = {}  # task key -> times handed to a worker tonight (never decreases)
@@ -1746,9 +1886,19 @@ class Coordinator:
         write_atomic(STATUS_FILE, json.dumps(status, indent=2))
 
     def team(self) -> tuple[list, list]:
-        """The workers still on duty that take big tasks, and those that take only small ones."""
-        active = [w for w in self.workers if not getattr(w, "retired", False)]
+        """The workers still on duty that take big tasks, and those that take only small ones. Documentation workers are
+        in neither (see docs_team)."""
+        active = [w for w in self.workers if not getattr(w, "retired", False) and not getattr(w, "docs", False)]
         return [w for w in active if getattr(w, "big", True)], [w for w in active if not getattr(w, "big", True)]
+
+    def docs_team(self) -> list:
+        """The workers still on duty that take only documentation tasks (NIGHTSHIFT_DOCS_WORKERS)."""
+        return [w for w in self.workers if not getattr(w, "retired", False) and getattr(w, "docs", False)]
+
+    def docs_only(self, worker: Worker) -> bool:
+        """Whether NIGHTSHIFT_DOCS_WORKERS names `worker`, by its name, its host or its user@host."""
+        target = (worker.target or "").lower()
+        return bool(self.docs_names & {worker.name.lower(), target, target.split("@")[-1]})
 
     def claim(self, worker: Worker) -> Task | None:
         with self.queue_lock:
@@ -1758,6 +1908,10 @@ class Coordinator:
             big_takers, small_only = self.team()
             # Big tasks go only to the workers that take them, unless none of those is left on duty.
             takes_big = getattr(worker, "big", True) or not big_takers
+            # Documentation tasks go only to the documentation workers while one of them is on duty, and those take
+            # nothing else.
+            docs_only = getattr(worker, "docs", False)
+            leaves_docs = not docs_only and bool(self.docs_team())
             if self.planner:
                 # Tasks people wrote go before the planner's. Of the planner's, a worker that takes big tasks takes those
                 # first, leaving the small ones to the workers that take only small tasks. sorted() keeps the order
@@ -1767,7 +1921,8 @@ class Coordinator:
                                                              mark_task[1].key in planned and not is_big(mark_task[1])))
             for mark, task in tasks:
                 if mark == " " and task.key not in self.in_flight and task.key not in self.completed \
-                        and self.dispatches.get(task.key, 0) < MAX_DISPATCH and (takes_big or not is_big(task)):
+                        and self.dispatches.get(task.key, 0) < MAX_DISPATCH and (takes_big or not is_big(task)) \
+                        and (is_docs(task) if docs_only else not (leaves_docs and is_docs(task))):
                     self.in_flight[task.key] = (worker.name, dt.datetime.now().strftime("%H:%M"))
                     self.dispatches[task.key] = self.dispatches.get(task.key, 0) + 1
                     self.idle_since = None
@@ -1792,14 +1947,24 @@ class Coordinator:
             f"new tasks added there start within a minute · {self.until()}")
 
     def low_water(self) -> int:
-        """How many tasks the planner keeps waiting: a couple more than there are workers."""
-        return len(self.workers) + 2
+        """How many tasks the planner keeps waiting: a couple more than there are workers (documentation workers aside:
+        theirs are kept waiting separately, see wanted)."""
+        return sum(1 for w in self.workers if not getattr(w, "docs", False)) + 2
 
-    def wanted(self, waiting: list[Task]) -> str | None:
-        """What the planner should write next: "small" when a worker that takes only small tasks would find none
-        waiting (one is kept waiting for each), "any" (the next focus in turn) when fewer than low_water() tasks are
-        waiting, None when enough are. With no worker left that takes big tasks, everything it writes is small."""
+    def wanted(self, waiting: list[Task], docs: bool = True) -> str | None:
+        """What the planner should write next: "docs" when a documentation worker would find no documentation task
+        waiting (one is kept waiting for each, unless `docs` is False: nothing was left to document a moment ago),
+        "small" when a worker that takes only small tasks would find none waiting (one is kept waiting for each), "any"
+        (the next focus in turn) when fewer than low_water() tasks are waiting, None when enough are. With no worker left
+        that takes big tasks, everything it writes is small."""
         big_takers, small_only = self.team()
+        docs_team = self.docs_team()
+        if docs_team:
+            if docs and sum(1 for task in waiting if is_docs(task)) < len(docs_team):
+                return "docs"
+            waiting = [task for task in waiting if not is_docs(task)]  # those wait for the documentation workers
+            if not (big_takers or small_only):
+                return None  # only documentation workers are left on duty
         if small_only and sum(1 for task in waiting if not is_big(task)) < len(small_only):
             return "small"
         if len(waiting) < self.low_water():
@@ -1812,34 +1977,46 @@ class Coordinator:
             return
         model = plan_model(self.cfg, ollama)
         focus = [f.strip() for f in self.cfg.get("NIGHTSHIFT_AUTOPLAN_FOCUS", "").split(",") if f.strip()]
-        self.planner = Planner(ollama, model, focus, on_duty=lambda: self.planning.is_set() and not self.off_duty())
+        # While documentation workers are on duty the rotation skips documentation: they get theirs on demand (wanted).
+        self.planner = Planner(ollama, model, focus, on_duty=lambda: self.planning.is_set() and not self.off_duty(),
+                               leave_out=lambda: {"docs"} if self.docs_team() else ())
         self.planning.set()
+        docs_team = self.docs_team()
+        docs = f"; a documentation task is kept waiting for {', '.join(w.name for w in docs_team)}" if docs_team else ""
         log(f"auto-planning on: {model} writes the next task whenever fewer than {self.low_water()} are waiting "
-            f"({', '.join(dict.fromkeys(self.planner.focus))})")
+            f"({', '.join(dict.fromkeys(self.planner.focus))}){docs}")
         threading.Thread(target=self.plan_loop, daemon=True).start()
 
     def plan_loop(self) -> None:
         misses = 0
+        docs_misses, docs_after = 0, 0.0  # when nothing is left to document, when to look again
         while self.planning.is_set() and not self.off_duty() and self.on_branch():
             with self.queue_lock:
                 waiting = [task for mark, task in read_tasks() if mark == " " and task.key not in self.in_flight
                            and task.key not in self.completed and self.dispatches.get(task.key, 0) < MAX_DISPATCH]
-            want = self.wanted(waiting)
+            want = self.wanted(waiting, docs=time.time() >= docs_after)
             if not want:
                 misses = 0
                 if STOPPING.wait(30):
                     return
                 continue
             try:
-                planned = self.planner.plan_one(small=want == "small")
+                if want == "docs":
+                    planned = self.planner.plan_one(focus="docs")
+                else:
+                    planned = self.planner.plan_one(small=want == "small")
             except Exception as e:  # Ollama busy or restarting, a script moved by a landing...
                 log(f"planner: {first_line(str(e), 200)}")
                 planned = None
+            if want == "docs":
+                # Without a script left to document, look again later; the other workers' tasks are planned meanwhile.
+                docs_misses = 0 if planned else docs_misses + 1
+                docs_after = time.time() + min(60 * docs_misses, 900) if docs_misses else 0.0
             if planned:
                 misses = 0
                 with self.queue_lock:
                     self.write_status()
-            else:
+            elif want != "docs":
                 misses += 1  # back off, so a planner with nothing to say doesn't keep the model busy
                 if STOPPING.wait(min(60 * misses, 900)):
                     return
@@ -1968,7 +2145,10 @@ class Coordinator:
         finally:
             worker.retired = True
             big_takers, small_only = self.team()
-            if getattr(worker, "big", True) and small_only and not big_takers and not self.off_duty():
+            if getattr(worker, "docs", False):
+                if not self.docs_team() and not self.off_duty():
+                    log("no documentation worker is left, so the others take documentation tasks now", worker.name)
+            elif getattr(worker, "big", True) and small_only and not big_takers and not self.off_duty():
                 log("no worker that takes big tasks is left, so the others take any task now", worker.name)
 
     def take_tasks(self, worker: Worker) -> None:
@@ -2040,6 +2220,12 @@ class Coordinator:
                 log(f"{w.model} isn't in Ollama on the Spark; {w.name} uses {self.model} instead")
                 w.model = self.model
             w.big = w.model.removesuffix(":latest") not in self.small_models
+            w.docs = self.docs_only(w)
+        unknown = self.docs_names - {n for w in candidates for n in (w.name.lower(), (w.target or "").lower(),
+                                                                         (w.target or "").split("@")[-1].lower())}
+        if unknown:
+            log(f"NIGHTSHIFT_DOCS_WORKERS names {', '.join(sorted(unknown))}, which isn't a worker here "
+                f"(set a helper up with NightShift.ps1 helpers)")
         for extra in sorted({w.model for w in candidates} - {self.model}):
             log(f"loading {extra} into memory...")
             warm_model(ollama, extra)
@@ -2056,7 +2242,9 @@ class Coordinator:
                 self.workers.append(w)
         if not self.workers:
             raise RuntimeError("no workers are ready")
-        self.night.workers = [f"{w.name} ({w.model}{'' if w.big else ', small tasks only'})" for w in self.workers]
+        self.night.workers = [f"{w.name} ({w.model}{', Windows' if w.windows else ''}"
+                              f"{', documentation only' if w.docs else '' if w.big else ', small tasks only'})"
+                              for w in self.workers]
         self.night.model = ", ".join(sorted({w.model for w in self.workers}))
         self.write_status()
         log("workers: " + ", ".join(self.night.workers))
@@ -2067,6 +2255,9 @@ class Coordinator:
         elif small_only:
             log("every worker's model is in NIGHTSHIFT_SMALL_TASK_MODELS, so they take any task and the planner writes "
                 "only small ones")
+        if self.docs_team():
+            log(f"documentation tasks (/// <summary> comments) go to {', '.join(w.name for w in self.docs_team())}, "
+                f"which take{'s' if len(self.docs_team()) == 1 else ''} nothing else")
         self.start_planner(ollama)
         threads = [threading.Thread(target=self.worker_loop, args=(w,), daemon=True) for w in self.workers]
         for t in threads:
