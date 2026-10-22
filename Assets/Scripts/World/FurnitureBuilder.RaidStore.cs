@@ -33,6 +33,27 @@ namespace CloneZ
                 m.Box(new Vector3(0f, y + 0.08f, 0.307f), new Vector3(0.2f, 0.03f, 0.006f), M(c * 0.6f));
             }
             m.Box(new Vector3(0f, 0.97f, 0f), new Vector3(0.86f, 0.14f, 0.58f), M(c));
+            // Copier lid hinge pins – two tiny chrome cylinders on the back edge of the lid
+            for (int i = 0; i < 2; i++)
+            {
+                float x = (i == 0 ? -0.02f : 0.02f);
+                m.Cylinder(new Vector3(x, 1.045f, -0.28f), 0.01f, 0.05f, 6, Mt(Chrome));
+            }
+
+            // Front kick‑plate – thin black strip protecting the bottom front edge
+            m.Box(new Vector3(0f, 0.09f, 0.31f), new Vector3(0.86f, 0.015f, 0.02f), M(Black));
+
+            // Wear scuff – a narrow darkened strip on the top, random X offset for variety
+            float scuffX = R(rng, -0.1f, 0.1f);
+            m.Box(new Vector3(scuffX, 1.045f, 0f), new Vector3(0.6f, 0.006f, 0.58f), M(new Color(0.18f, 0.18f, 0.20f)));
+
+            // CLONE‑Z sticker – thin paper label on the lid front
+            Color stickerCol = V(new Color(0.92f, 0.90f, 0.80f), rng, 0.03f);
+            float stickerYaw = R(rng, -2f, 2f);
+            m.Box(new Vector3(0f, 1.07f, 0.33f), new Vector3(0.12f, 0.004f, 0.001f), Yaw(stickerYaw), M(stickerCol));
+
+            // Small foot brace – tiny chrome cylinder under the left‑front corner
+            m.Cylinder(new Vector3(-0.38f, 0.025f, 0.28f), 0.008f, 0.04f, 6, Mt(Chrome));
             m.Box(new Vector3(0f, 1.0405f, -0.02f), new Vector3(0.62f, 0.002f, 0.42f), Gs(new Color(0.14f, 0.18f, 0.2f)));
             // Thin random‑thickness snow‑dust layer on top of the copier cabinet
             float snowThick = R(rng, 0.002f, 0.006f);
