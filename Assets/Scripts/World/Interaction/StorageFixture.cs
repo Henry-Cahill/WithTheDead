@@ -173,7 +173,8 @@ namespace CloneZ
             if (noisy) MakeNoise(_opt.Noise);
             if (!open)
             {
-                PlayerInteractor pi = PlayerInteractor.Current;
+                PlayerInteractor pi = _player;
+            if (pi == null) pi = PlayerInteractor.Current;
                 if (pi != null && Container != null && pi.ViewedContainer == Container) pi.CloseInventory();
             }
             _opt.OnOpenChanged?.Invoke(open);
