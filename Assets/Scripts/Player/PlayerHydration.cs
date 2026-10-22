@@ -24,6 +24,8 @@ namespace CloneZ
 
         private IWaterPoint _source;
         private bool _fill;
+        private IWaterPoint _lastSource;
+        private bool _lastFill;
         private Vector3 _lastPos;
         private const float CheckDistance = 0.5f;
         private Keyboard _keyboard; // cached keyboard instance
@@ -66,28 +68,49 @@ namespace CloneZ
             IWaterPoint src = WaterPoints.Nearest(pos, CloneZConfig.WaterSourceRange, _interactor);
             if (src == null) return;
 
+            // If source has no water, always update Prompt (dry message) and cache
             if (!src.HasWater)
             {
-                // Show the status but offer no action (leave _source null so G does nothing).
                 Prompt = src.DryMessage;
+                // Cache the source and fill state (fill false) for comparison next frame
+                _source = null;
+                _fill = false;
+                _lastSource = src;
+                _lastFill = false;
                 return;
             }
 
-            _source = src;
             bool hasEmpty = _inventory != null && _inventory.HasEmptyBottle();
 
-            if (hasEmpty)
+            // Determine if we need to update Prompt based on changes
+            bool sourceChanged = src != _lastSource;
+            bool fillChanged = hasEmpty != _lastFill;
+            bool dryNow = !src.HasWater; // always false here, but kept per spec for completeness
+            if (sourceChanged || fillChanged || dryNow)
             {
-                _fill = true;
-                Prompt = src.IsTainted
-                    ? "[G]  Fill bottle   (tainted \u2014 boil before drinking)"
-                    : "[G]  Fill bottle";
+                _source = src;
+                _fill = hasEmpty;
+                if (hasEmpty)
+                {
+                    Prompt = src.IsTainted
+                        ? "[G]  Fill bottle   (tainted \u2014 boil before drinking)"
+                        : "[G]  Fill bottle";
+                }
+                else
+                {
+                    Prompt = src.IsTainted
+                        ? "[G]  Drink from the " + src.WaterLabel + "   (tainted)"
+                        : "[G]  Drink from the " + src.WaterLabel;
+                }
+                // Update cache after changing Prompt
+                _lastSource = src;
+                _lastFill = hasEmpty;
             }
             else
             {
-                Prompt = src.IsTainted
-                    ? "[G]  Drink from the " + src.WaterLabel + "   (tainted)"
-                    : "[G]  Drink from the " + src.WaterLabel;
+                // No change, keep Prompt unchanged; still set _source and _fill for Act usage
+                _source = src;
+                _fill = hasEmpty;
             }
         }
 
