@@ -114,7 +114,8 @@ namespace CloneZ
                             float across = coord + off;
                             Strip(town, alongX, across, cStart, Mathf.Min(b, cStart + cLen), 0.02f, 0.001f,
                                 DecorPalette.Matte(new Color(0.15f, 0.15f, 0.15f)));
-                        }
+            }
+
                     }
                     // Add occasional potholes with a 15 % chance per segment
                     if (rng.NextDouble() < 0.15)
@@ -173,8 +174,6 @@ namespace CloneZ
 
         private static void SidewalkRun(RaidTown town, bool alongX, float coord, int side, float hw, float a, float b, in Surf concrete, System.Random rng)
         {
-            if (b - a < 0.2f) return;
-            // Kerb, then 2.25 m of sidewalk with a dusting of snow.
             Slab(town, alongX, coord, a, b, side > 0 ? hw : -hw - 0.25f, side > 0 ? hw + 0.25f : -hw, 0.05f, DecorPalette.Matte(Kerb));
             // ----- Snow‑fence along the road‑side of the sidewalk -----
             float fenceAcross = coord + (side > 0 ? hw + 0.12f : -hw - 0.12f);
@@ -246,7 +245,13 @@ namespace CloneZ
 
                 }
             }
-            // Add subtle rust‑stain patches on the concrete kerb (20 % chance)
+            // NEW: occasional mailbox (≈15 % chance per sidewalk segment)
+            if (rng.NextDouble() < 0.15)
+            {
+                float mbPos = R(rng, a + 0.3f, b - 0.3f);
+                // reuse fenceAcross defined above
+                CreateMailbox(town, alongX, mbPos, fenceAcross);
+            }
             if (rng.NextDouble() < 0.2)
             {
                 float rustStart = R(rng, a, b - R(rng, 0.2f, 0.4f));
@@ -282,18 +287,45 @@ namespace CloneZ
                 Vector3 p = alongX ? new Vector3(t, 0.03f, coord + (s0 + s1) * 0.5f) : new Vector3(coord + (s0 + s1) * 0.5f, 0.03f, t);
                 town.Out.Flat(p).FlatBlob(p, R(rng, 0.6f, 1.6f), R(rng, 0.5f, 1.1f), R(rng, 0f, 360f), 0.4f, rng, DecorPalette.Matte(DecorProps.SnowShade));
             }
-            // Plowed snow banked along the kerb on the road side.
-            for (float t = a + 0.4f; t < b - 0.4f; t += R(rng, 0.9f, 1.8f))
-            {
-                if (rng.NextDouble() < 0.35) continue;
-                float off = side * (hw - R(rng, 0.25f, 0.45f));
-                Vector3 p = alongX ? new Vector3(t, 0f, coord + off) : new Vector3(coord + off, 0f, t);
-                float w = R(rng, 0.8f, 1.6f), d = R(rng, 0.5f, 0.8f), h = R(rng, 0.12f, 0.2f);
-                RaidMesh m = town.Out.Solid(p);
-                if (alongX) DecorProps.SnowPile(m, rng, p, w, d, h, R(rng, -10f, 10f));
-                else DecorProps.SnowPile(m, rng, p, d, w, h, R(rng, -10f, 10f));
-            }
         }
+
+        /// <summary>Creates a period‑correct wooden mailbox (post, box, metal latch, tiny flag) on a sidewalk.</summary>
+        private static void CreateMailbox(RaidTown town, bool alongX, float posAlong, float across)
+        {
+            // post – 0.05 m × 0.75 m × 0.05 m
+            Vector3 postCenter = alongX
+                ? new Vector3(posAlong, 0.38f, across) // y = half height
+                : new Vector3(across, 0.38f, posAlong);
+            town.Out.Solid(postCenter).Box(postCenter,
+                new Vector3(0.05f, 0.75f, 0.05f),
+                DecorPalette.Matte(FenceWood));
+
+            // mailbox body – 0.30 m × 0.20 m × 0.15 m, placed 0.05 m in front of post
+            Vector3 bodyOffset = alongX ? new Vector3(0f, 0.20f, 0.08f) : new Vector3(0.08f, 0.20f, 0f);
+            Vector3 bodyCenter = postCenter + bodyOffset;
+            town.Out.Solid(bodyCenter).Box(bodyCenter,
+                new Vector3(0.30f, 0.20f, 0.15f),
+                DecorPalette.Matte(FenceWood));
+
+            // metal latch – thin cylinder on front edge of box
+            Vector3 latchPos = bodyCenter + (alongX ? new Vector3(0f, 0.10f, 0.08f) : new Vector3(0.08f, 0.10f, 0f));
+            town.Out.Solid(latchPos).Cylinder(latchPos, 0.015f, 0.02f, 12,
+                DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
+
+            // small flag pole – thin cylinder on top right of box
+            Vector3 flagPoleBase = bodyCenter + (alongX ? new Vector3(0.15f, 0.20f, 0f) : new Vector3(0f, 0.20f, 0.15f));
+            town.Out.Solid(flagPoleBase).Cylinder(flagPoleBase, 0.008f, 0.30f, 8,
+                DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
+
+            // flag – tiny box at pole top (faded red‑brown cloth)
+            Vector3 flagCenter = flagPoleBase + (alongX ? new Vector3(0f, 0.30f, 0f) : new Vector3(0f, 0.30f, 0f));
+            town.Out.Solid(flagCenter).Box(flagCenter,
+                new Vector3(0.12f, 0.02f, 0.02f),
+                DecorPalette.Matte(new Color(0.68f, 0.48f, 0.30f)));
+        }
+
+
+
 
         /// <summary>A flat rectangle laid along a road: <paramref name="a"/>..<paramref name="b"/> along it,
         /// <paramref name="c0"/>..<paramref name="c1"/> across (relative to the road's centre line).</summary>
