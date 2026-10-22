@@ -39,6 +39,8 @@ namespace CloneZ
         private Vector3 _point;
         private Bounds _block;
         private bool _open;
+        private bool _locked; // true while the raised door is secured
+        private Action<InteractContext> _secureAct, _unsecureAct;
 
         private Action<InteractContext> _raiseAct, _lowerAct, _bangAct, _inspectAct, _obstructAct;
 
@@ -59,7 +61,8 @@ namespace CloneZ
             _lowerAct = Lower;
             _bangAct = Bang;
             _inspectAct = Inspect;
-            _obstructAct = CheckObstruction;
+            _secureAct = Secure;
+            _unsecureAct = Unsecure;
         }
 
         /// <summary>Makes <paramref name="root"/> (holding the bands, at the doorway's middle on the wall line) a working
@@ -97,12 +100,23 @@ namespace CloneZ
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             if (_open)
-                into.Add(new InteractAction("Lower the roll-up door", _lowerAct)
-                    .Timed(CloneZConfig.RollUpWorkSeconds, "Pulling the door down", HumanoidActivity.Use));
-            else
                 {
-                    into.Add(new InteractAction("Raise the roll-up door", _raiseAct).Timed(CloneZConfig.RollUpWorkSeconds, "Hauling the door up", HumanoidActivity.Use));
-                    into.Add(new InteractAction("Check for obstruction", _obstructAct).Timed(0f, "Checking obstruction", HumanoidActivity.Use));
+                    // Lowering is only possible when the door is not secured
+                    into.Add(new InteractAction("Lower the roll-up door", _lowerAct)
+                        .Timed(CloneZConfig.RollUpWorkSeconds, "Pulling the door down", HumanoidActivity.Use)
+                        .DisabledIf(_locked, "Door is secured"));
+                    // Lock‑/unlock actions appear only when the door is raised
+                    if (_locked)
+                        into.Add(new InteractAction("Unsecure the roll-up door", _unsecureAct));
+                    else
+                        into.Add(new InteractAction("Secure the roll-up door", _secureAct));
+                }
+                else
+                {
+                    into.Add(new InteractAction("Raise the roll-up door", _raiseAct)
+                        .Timed(CloneZConfig.RollUpWorkSeconds, "Hauling the door up", HumanoidActivity.Use));
+                    into.Add(new InteractAction("Check for obstruction", _obstructAct)
+                        .Timed(0f, "Checking obstruction", HumanoidActivity.Use));
                 }
 
             into.Add(new InteractAction("Bang the roll-up door", _bangAct)
@@ -110,8 +124,22 @@ namespace CloneZ
             into.Add(new InteractAction("Inspect the roll‑up door", _inspectAct).Timed(0f, "Inspecting the door", HumanoidActivity.Use));
         }
 
-        private void Inspect(InteractContext ctx) => ctx.Notify(_open ? "The steel curtain is raised – the doorway is clear." : "The steel curtain is down – the doorway is blocked.");
+        private void Secure(InteractContext ctx)
+        {
+            if (!_open || _locked) return;
+            _locked = true;
+            ctx.Notify("You jam the door shut with a makeshift latch.");
+            MakeNoise(CloneZConfig.RollUpNoise);
+        }
         private void CheckObstruction(InteractContext ctx) => ctx.Notify(Obstructed() ? "Something's in the way of the curtain." : "No obstruction.");
+        private void Inspect(InteractContext ctx) => ctx.Notify(_open ? "The steel curtain is raised – the doorway is clear." : "The steel curtain is down – the doorway is blocked.");
+        private void Unsecure(InteractContext ctx)
+        {
+            if (!_open || !_locked) return;
+            _locked = false;
+            ctx.Notify("You release the latch – the door can be lowered now.");
+            MakeNoise(CloneZConfig.RollUpNoise);
+        }
         private void Raise(InteractContext ctx)
         {
             if (_open) return;
@@ -162,11 +190,12 @@ namespace CloneZ
             return blocked;
         }
 
-        public override void CaptureState(FixtureSave save) => save.State = _open ? 1 : 0;
+        public override void CaptureState(FixtureSave save) => save.State = (_open ? 1 : 0) | (_locked ? 2 : 0);
 
         public override void RestoreState(FixtureSave save)
         {
             _open = (save.State & 1) != 0;
+            _locked = (save.State & 2) != 0;
             Apply(true);
         }
     }
