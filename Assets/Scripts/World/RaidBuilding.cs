@@ -562,7 +562,41 @@ namespace CloneZ
                     new Vector3(0.005f, 0.01f, len), // thickness, height, depth (along wall)
                     scratchSurf);
             }
-            /* ---------- NEW DETAILS END ---------- */        }
+            /* ---------- NEW DETAILS END ---------- */
+            // ---- Door entry set (step, chain, pull‑cord, mat) ----
+            // Exterior step/threshold (≈5 cm high, 12 cm deep, spans door + 20 cm)
+            if (extSide != 0) {
+                var stepSurf = DecorPalette.Matte(new Color(0.45f, 0.38f, 0.30f)); // weather‑worn wood
+                Vector3 stepPos = RunPoint(r, o.Pos, 0.025f, extSide * (Half + 0.22f));
+                p.Mesh.Box(stepPos, new Vector3(o.Width + 0.20f, 0.05f, 0.12f), stepSurf);
+            }
+            // Exterior metal chain + hasp (≈15 % of doors)
+            if (extSide != 0 && Rng.NextDouble() < 0.15) {
+                var metalSurf = DecorPalette.Matte(new Color(0.32f, 0.32f, 0.35f)); // dark metal
+                // Hasp plate, centered on handle height, offset outward
+                Vector3 haspPos = RunPoint(r, o.Pos, DoorHeight * 0.55f, extSide * (Half + 0.036f));
+                p.Mesh.Box(haspPos, RunSize(r, 0.06f, 0.015f, 0.008f), metalSurf);
+                // Two thin chain‑link boxes crossing each other
+                float chainY = DoorHeight * 0.55f;
+                Vector3 link1Pos = RunPoint(r, o.Pos, chainY, extSide * (Half + 0.046f));
+                p.Mesh.Box(link1Pos, new Vector3(0.04f, 0.004f, 0.004f), metalSurf);
+                Vector3 link2Pos = RunPoint(r, o.Pos, chainY, extSide * (Half + 0.046f));
+                p.Mesh.Box(link2Pos, new Vector3(0.004f, 0.004f, 0.04f), metalSurf);
+            }
+            // Interior pull‑cord (≈20 % of doors)
+            if (Rng.NextDouble() < 0.20) {
+                var cordSurf = DecorPalette.Matte(new Color(0.55f, 0.45f, 0.35f)); // aged twine colour
+                // Hang from interior top edge, slightly left of handle
+                Vector3 cordPos = RunPoint(r, o.A + 0.08f, DoorHeight - 0.08f, -Half - 0.025f);
+                p.Mesh.Box(cordPos, new Vector3(0.006f, 0.12f, 0.006f), cordSurf);
+            }
+            // Interior door‑mat (≈30 % of doors)
+            if (Rng.NextDouble() < 0.30) {
+                var matSurf = DecorPalette.Matte(new Color(0.70f, 0.62f, 0.55f)); // faded linoleum‑style mat
+                Vector3 matPos = RunPoint(r, o.Pos, 0.01f, -Half - 0.025f);
+                p.Mesh.Box(matPos, new Vector3(o.Width * 0.85f, 0.02f, 0.12f), matSurf);
+            }
+        }
 
         private void DrawWindow(WallPiece p)
         {
