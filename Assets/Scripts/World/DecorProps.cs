@@ -415,6 +415,21 @@ Color flagCol = V(new Color(0.80f, 0.15f, 0.12f), rng, 0.07f);
             // Small worn metal toggle switch on the generator front panel
             m.Box(new Vector3(0.35f, 0.45f, 0.33f), new Vector3(0.02f, 0.04f, 0.005f), Yaw(R(rng, -5f, 5f)), Mt(V(new Color(0.2f, 0.2f, 0.2f), rng, 0.05f)));
             m.Cylinder(new Vector3(-0.35f, 0.62f, -0.15f), 0.04f, 0.4f, 6, Mt(new Color(0.3f, 0.28f, 0.25f)));
+            // Rust‑streak on the left side (variation per instance)
+            Color rustCol = V(new Color(0.55f, 0.30f, 0.20f), rng, 0.07f);
+            m.Box(new Vector3(-0.48f, 0.45f, 0f), new Vector3(0.01f, 0.15f, 0.4f), Mt(rustCol));
+            // Thin metal vent grill (simple flat plate)
+            m.Box(new Vector3(-0.5f, 0.55f, 0f), new Vector3(0.02f, 0.2f, 0.4f), Mt(new Color(0.45f, 0.45f, 0.45f)));
+            // Small fuel tank ( matte metal, colour varies with the main body )
+            Color tankCol = V(new Color(0.30f, 0.33f, 0.22f), rng, 0.05f);
+            m.Box(new Vector3(0f, 0.35f, -0.32f), new Vector3(0.30f, 0.12f, 0.20f), M(tankCol));
+            // Fuel‑tank handle (small cylinder)
+            m.Cylinder(new Vector3(0.15f, 0.41f, -0.32f), 0.01f, 0.07f, 6, Mt(new Color(0.30f, 0.28f, 0.25f)));
+            // Front‑panel LED indicator (emissive amber)
+            m.Ellipsoid(new Vector3(0.35f, 0.48f, 0.31f), new Vector3(0.015f, 0.015f, 0.015f), Gl(new Color(1f, 0.75f, 0.2f)), 8, 4);
+            // Weathered warning sticker (flat matte rectangle)
+            Color stickerCol = V(new Color(0.78f, 0.15f, 0.10f), rng, 0.06f);
+            m.Box(new Vector3(0.35f, 0.43f, 0.32f), new Vector3(0.07f, 0.005f, 0.02f), M(stickerCol));
             m.Box(new Vector3(0f, 0.65f, 0f), new Vector3(0.9f, 0.04f, 0.5f), M(SnowWhite));
             // Exhaust pipe with a glowing tip
             m.Cylinder(new Vector3(-0.2f, 0.55f, -0.25f), 0.03f, 0.25f, 6, Mt(new Color(0.12f, 0.12f, 0.12f)));
