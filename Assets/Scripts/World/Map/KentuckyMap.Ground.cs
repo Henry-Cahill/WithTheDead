@@ -31,7 +31,7 @@ namespace CloneZ
         private static readonly Color StreetLampMetalColor = new Color(0.55f, 0.55f, 0.55f);
         internal static Surf StreetLampMetal => DecorPalette.Matte(StreetLampMetalColor);
         internal static readonly Color StreetLampLightColor = new Color(1f, 0.93f, 0.70f); // warm yellow
-        private static Surf TroddenSnow => DecorPalette.Matte(new Color(0.74f, 0.77f, 0.82f));
+        private static readonly Surf TroddenSnow = DecorPalette.Matte(new Color(0.74f, 0.77f, 0.82f));
         private static Surf CentreLine => DecorPalette.Matte(new Color(0.78f, 0.66f, 0.22f));
         private static Surf RailSteel => DecorPalette.Matte(new Color(0.30f, 0.27f, 0.25f));
         private static Surf Sleeper => DecorPalette.Matte(new Color(0.26f, 0.20f, 0.15f));
