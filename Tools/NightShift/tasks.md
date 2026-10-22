@@ -7225,3 +7225,12 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
 - [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Gadgets/Gadgets.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code. (Pass 3 over this file: most of it has summaries already.)
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
+- [ ] Add a “Read all mail” action to Assets/Scripts/World/Fixtures/MailboxFixture.cs by extending `GetActions` so the player can dump every remaining delivery at once; copy the existing `ReadNext()` block as a template, change its label to `"Read all mail"` and replace the lambda with one that opens the door, notifies every line of each unread delivery, sets `_read` to `Come`, and then notifies the player that all mail has been read.
+  Insert the new `InteractAction` right after the `check` action creation, guarded by `if (_read < Come - 1)` so it only appears when more than one delivery is still unread.
+  Example change inside `GetActions`:
+  `if (_read < Come - 1)`
+  `{`
+  `into.Add(new InteractAction("Read all mail", c =>`
+  `{`
+  `SetOpen(true, false);`
+  `for (int i = _read; i < Come; i++)`
