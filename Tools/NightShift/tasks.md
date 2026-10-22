@@ -8266,3 +8266,10 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 5: Add a wall‑mounted toilet‑paper holder. `Vector3 holderPos = new Vector3(-0.18f, 0.70f, -0.30f);` `Vector3 holderSize = new Vector3(0.04f, 0.12f, 0.02f);` `m.Box(holderPos, holderSize,` `DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));`
   Step 6: Add a small random water‑stain on the floor near the front of the toilet. `bool stainLeft = rng.Next(2) == 0;` `float stainX = stainLeft ? -0.12f : 0.12f;` `Vector3 stainPos = new Vector3(stainX, 0.001f, 0.20f);` `Vector3 stainSize = new Vector3(0.06f, 0.001f, 0.06f);` `m.Box(stainPos, stainSize,` `DecorPalette.Matte(new Color(0.60f, 0.60f, 0.60f)));`
   Done when: The bathroom toilet in‑game shows a thin white seat, a slightly raised lid (randomly open or closed), a small metal flush lever, a wall‑mounted paper holder, and a random faint water‑stain on the floor. All new geometry uses the existing `DecorPalette` colours, respects the current `rng` for variation, adds no more than six new primitives, and leaves all colliders, interaction points and existing functionality unchanged.
+- [ ] Fix the bookshelf shelf‑board height in Assets/Scripts/World/FurnitureBuilder.Home.cs → `Bookshelf` method
+  The variable `y` is calculated from the world origin (`0.05f + s * 0.43f`) instead of from the bookshelf’s base height (`0.9f`). This makes all five interior shelf boards (and their upright book rows) appear far below the case, intersecting the floor or floating underground, which looks wrong for a 1993 rural interior.
+  Change the line
+  `float y = 0.05f + s * 0.43f;`
+  to
+  `float y = 0.9f + 0.05f + s * 0.43f;`
+  This adds the correct base offset (`0.9f`) so the shelf boards are placed at the proper height inside the bookshelf, and the subsequent `m.Upright` call (which uses `y + 0.17f`) automatically aligns with the corrected board height. No other code changes are required.
