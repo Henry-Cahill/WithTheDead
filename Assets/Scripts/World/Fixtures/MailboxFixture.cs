@@ -152,44 +152,49 @@ namespace CloneZ
             into.Add(_flagUp
                 ? new InteractAction("Lower the flag", c => SetFlag(c, false))
                 : new InteractAction("Raise the flag", c => SetFlag(c, true)));
-            // Offer to toggle importance on the most‑recently read delivery
-if (_important == null || _important.Count != Post.Length)
+            // Offer to toggle importance on the most-recently read delivery (once one has been read)
+            if (_read > 0)
+            {
+                if (_important == null || _important.Count != Post.Length)
                     _important = new List<bool>(new bool[Post.Length]);
                 bool currently = _important[_read - 1];
-                    string label = currently ? "Unmark last letter as important" : "Mark last letter as important";
-                    into.Add(new InteractAction(label, c =>
-                    {
-                        _important[_read - 1] = !currently;
-                        c.Notify(_important[_read - 1]
-                            ? "You fold a small paper bookmark into the letter – it will stay with you."
-                            : "You remove the bookmark; the letter is no longer marked.");
-                    }));
-                }
-            into.Add(new InteractAction("Inspect the mailbox", ctx => {
-                ctx.Notify($"Mailbox is {(_open ? "open" : "closed")}, flag is {(_flagUp ? "up" : "down")}, {(_read < Come ? $"{Come - _read} unread letters." : "no more mail.")}");
+                string label = currently ? "Unmark last letter as important" : "Mark last letter as important";
+                into.Add(new InteractAction(label, c =>
+                {
+                    _important[_read - 1] = !currently;
+                    c.Notify(_important[_read - 1]
+                        ? "You fold a small paper bookmark into the letter – it will stay with you."
+                        : "You remove the bookmark; the letter is no longer marked.");
+                }));
+            }
+            into.Add(new InteractAction("Inspect the mailbox", c =>
+            {
+                c.Notify($"Mailbox is {(_open ? "open" : "closed")}, flag is {(_flagUp ? "up" : "down")}, {(_read < Come ? $"{Come - _read} unread letters." : "no more mail.")}");
             }));
             // If any letters have been marked, let the player review them
-                if (_important.Exists(b => b))
+            if (_important != null && _important.Exists(b => b))
+            {
+                into.Add(new InteractAction("Recall important letters", c =>
                 {
-                    into.Add(new InteractAction("Recall important letters", c =>
+                    var sb = new StringBuilder();
+                    sb.AppendLine("Important letters you kept:");
+                    for (int i = 0; i < _important.Count; i++)
                     {
-                        var sb = new StringBuilder();
-                        sb.AppendLine("Important letters you kept:");
-                        for (int i = 0; i < _important.Count; i++)
+                        if (_important[i])
                         {
-                            if (_important[i])
-                            {
-                                sb.AppendLine($"- Day {i + 1}:");
-                                foreach (var line in Post[i])
-                                    sb.AppendLine($" \"{line}\"");
-                            }
+                            sb.AppendLine($"- Day {i + 1}:");
+                            foreach (var line in Post[i])
+                                sb.AppendLine($" \"{line}\"");
                         }
-                        c.Notify(sb.ToString());
-                    }));
-                }
-            if (_read >= Come) {
-                into.Add(new InteractAction("Search the mailbox", ctx => {
-                    ctx.Notify("You search the mailbox but find nothing else.");
+                    }
+                    c.Notify(sb.ToString());
+                }));
+            }
+            if (_read >= Come)
+            {
+                into.Add(new InteractAction("Search the mailbox", c =>
+                {
+                    c.Notify("You search the mailbox but find nothing else.");
                 }));
             }
         }
