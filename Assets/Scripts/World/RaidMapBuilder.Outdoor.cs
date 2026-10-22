@@ -166,9 +166,35 @@ namespace CloneZ
             });
             town.Light(town.World, tower + new Vector3(0f, 4.9f, 0.6f), new Color(0.88f, 0.92f, 1f), 16f, 2.4f, false, true);
             Prop(town, new Vector3(-7.0f, 0f, -52.4f), 0f, new Vector3(2.4f, 2.2f, 0.3f), true, (m, r) => {
-                DecorProps.PostSign(m, r, "CHECKPOINT", new Color(0.20f, 0.26f, 0.16f), new Color(0.88f, 0.86f, 0.74f), 0.42f, 1.3f);
-                // Add a thin rust‑stained metal strap near the top of the sign
-                m.Box(new Vector3(0f, 2.15f, 0f), new Vector3(0.05f, 0.02f, 0.3f), DecorPalette.Metal(new Color(0.40f, 0.40f, 0.35f)));
+DecorProps.PostSign(m, r, "CHECKPOINT", new Color(0.20f, 0.26f, 0.16f), new Color(0.88f, 0.86f, 0.74f), 0.42f, 1.3f);
+                 // thin wooden back‑board, slightly behind the paint
+                 Vector3 boardPos = new Vector3(0f, 0.6f, -0.01f);
+                 Vector3 boardSize = new Vector3(0.45f, 0.02f, 0.28f);
+                 m.Box(boardPos, boardSize, DecorPalette.Matte(new Color(0.32f, 0.24f, 0.18f)));
+                 // rust‑stained brackets at top left/right
+                 Color rust = new Color(0.45f, 0.38f, 0.33f);
+                 Vector3 leftBracketPos = new Vector3(-0.22f, 0.72f, 0f);
+                 Vector3 rightBracketPos = new Vector3(0.22f, 0.72f, 0f);
+                 Vector3 bracketSize = new Vector3(0.04f, 0.02f, 0.02f);
+                 m.Box(leftBracketPos, bracketSize, DecorPalette.Metal(rust));
+                 m.Box(rightBracketPos, bracketSize, DecorPalette.Metal(rust));
+                 // screw heads on brackets
+                 float screwR = 0.005f, screwH = 0.01f;
+                 m.Cylinder(leftBracketPos + new Vector3(-0.015f, 0.01f, 0f), screwR, screwH, 6, DecorPalette.Metal(rust));
+                 m.Cylinder(leftBracketPos + new Vector3( 0.015f, 0.01f, 0f), screwR, screwH, 6, DecorPalette.Metal(rust));
+                 m.Cylinder(rightBracketPos + new Vector3(-0.015f, 0.01f, 0f), screwR, screwH, 6, DecorPalette.Metal(rust));
+                 m.Cylinder(rightBracketPos + new Vector3( 0.015f, 0.01f, 0f), screwR, screwH, 6, DecorPalette.Metal(rust));
+                 // hinged latch with slight random offset
+                 System.Random rng = town.Rng;
+                 float offsetX = (float)(rng.NextDouble() * 0.04 - 0.02);
+                 float offsetZ = (float)(rng.NextDouble() * 0.04 - 0.02);
+                 Vector3 latchPos = new Vector3(offsetX, 0.20f, 0.25f + offsetZ);
+                 Vector3 latchSize = new Vector3(0.60f, 0.02f, 0.02f);
+                 m.Box(latchPos, latchSize, DecorPalette.Metal(rust));
+                 // tiny glow‑lamp on latch
+                 Vector3 lampPos = latchPos + new Vector3(0f, 0.03f, 0f);
+                 Vector3 lampSize = new Vector3(0.02f, 0.02f, 0.01f);
+                 m.Box(lampPos, lampSize, DecorPalette.Glow(new Color(1f, 0.9f, 0.6f)));
             });
         }
 
