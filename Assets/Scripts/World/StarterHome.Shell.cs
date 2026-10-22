@@ -218,11 +218,20 @@ namespace CloneZ
             float o0 = f.Mid - WindowWidth * 0.5f, o1 = f.Mid + WindowWidth * 0.5f;
             float w = WindowWidth, hh = WindowHead - WindowSill, cy = (WindowSill + WindowHead) * 0.5f;
             float thick = Half * 2f + 0.01f;
+            // ----- window‑hardware details -----
             Surf lining = DecorPalette.Matte(TrimWhite * 0.95f);
             m.Box(f.P(o0 + 0.012f, cy, 0f), f.Size(0.024f, hh, thick), lining);
             m.Box(f.P(o1 - 0.012f, cy, 0f), f.Size(0.024f, hh, thick), lining);
             m.Box(f.P(f.Mid, WindowHead - 0.012f, 0f), f.Size(w, 0.024f, thick), lining);
-            m.Box(f.P(f.Mid, WindowSill + 0.015f, 0f), f.Size(w, 0.03f, thick), lining);
+            // small nail heads along the sill – darkened trim colour
+            for (int i = 0; i < 4; i++)
+            {
+                float nailX = f.Mid - WindowWidth * 0.5f + 0.12f + i * 0.35f; // spread across the opening
+                m.Box(f.P(nailX, WindowSill + 0.02f, 0f),
+                    new Vector3(0.02f, 0.02f, 0.005f),
+                    DecorPalette.Matte(TrimWhite * 0.8f));
+            }
+
 
             for (int side = -1; side <= 1; side += 2)
             {
@@ -247,6 +256,23 @@ namespace CloneZ
                     }
                 m.Box(f.P(f.Mid, WindowHead + 0.035f, off), f.Size(w + 0.14f, 0.07f, 0.024f), casing);
                 m.Box(f.P(f.Mid, WindowSill + 0.02f, side * (Half + 0.035f)), f.Size(w + 0.18f, 0.04f, 0.07f), casing);
+                // interior latch plate – brass‑tinted metal
+                float latchY = WindowSill + 0.32f; // about a foot above the sill
+                float latchZ = side * (Half + 0.004f); // flush with the interior face
+                Vector3 plateSize = new Vector3(0.06f, 0.008f, 0.015f);
+                Color brass = new Color(0.78f, 0.61f, 0.43f);
+                m.Box(f.P(f.Mid, latchY, latchZ), plateSize, DecorPalette.Matte(brass));
+                // latch lever – same brass tone, hinged on the right edge of the plate
+                Vector3 leverSize = new Vector3(0.008f, 0.04f, 0.015f);
+                float leverX = f.Mid + 0.028f; // right edge of the plate (half width + small gap)
+                m.Box(f.P(leverX, latchY, latchZ), leverSize, DecorPalette.Matte(brass));
+                // occasional wear chip on the latch plate
+                if (rng.NextDouble() < 0.35)
+                {
+                    float chipY = latchY + (float)(rng.NextDouble() - 0.5) * 0.004f;
+                    float chipX = f.Mid + (float)(rng.NextDouble() - 0.5) * 0.02f;
+                    m.Box(f.P(chipX, chipY, latchZ + 0.001f), new Vector3(0.012f, 0.006f, 0.001f), DecorPalette.Matte(brass * 0.6f));
+                }
                 if (room != null) continue;
                 Shutters(m, f, side);
                 if (f.AlongX && side < 0) FlowerBox(m, f, side, rng);   // the street front

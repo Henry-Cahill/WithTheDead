@@ -25,7 +25,7 @@ namespace CloneZ
 
         private readonly Dictionary<string, Recipe> _recipes = new Dictionary<string, Recipe>();
         private readonly Dictionary<string, AudioClip[]> _cache = new Dictionary<string, AudioClip[]>();
-        private readonly System.Random _pick = new System.Random();
+        private readonly System.Threading.ThreadLocal<System.Random> _pick = new System.Threading.ThreadLocal<System.Random>(() => new System.Random());
 
         public SfxSynth() => Register();
 
@@ -39,7 +39,7 @@ namespace CloneZ
                 clips = new AudioClip[r.Variations];
                 _cache[id] = clips;
             }
-            int v = r.Variations > 1 ? _pick.Next(r.Variations) : 0;
+            int v = r.Variations > 1 ? _pick.Value.Next(r.Variations) : 0;
             if (clips[v] == null) clips[v] = Make(id, r, v);
             return clips[v];
         }
@@ -58,7 +58,7 @@ namespace CloneZ
                 Dsp.FadeIn(x, Math.Min(32, x.Length / 4));
                 Dsp.FadeOut(x, Math.Min(Rate / 50, x.Length / 3));
             }
-            var clip = AudioClip.Create(id + "_" + variation, Math.Max(1, x.Length), 1, Rate, false);
+            var clip = AudioClip.Create(id + "_" + variation, Math.Clamp(x.Length, 1, 13_200_000), 1, Rate, false);
             clip.SetData(x, 0);
             return clip;
         }
@@ -522,6 +522,7 @@ namespace CloneZ
 
         private static void AddClick(float[] x, SynthGen g, float at, float hz, float tau, float gain)
         {
+            at = Mathf.Clamp01(at);
             Dsp.Ring(x, Rate, at, gain * 0.6f, g.Vary(hz, 0.05f), new[] { 1f, 2.7f, 5.4f }, tau);
             Dsp.AddBurst(x, g, at, gain * 0.5f, 0.0003f, 0.002f, 0f, 1500f);
         }
@@ -533,29 +534,40 @@ namespace CloneZ
             return x;
         }
 
-        private static void MixTone(float[] x, float at, float hz, float attack, float tau, float gain)
+private static void MixTone(float[] x, float at, float hz, float attack, float tau, float gain)
+    {
+        int start = (int)(at * Rate);
+        if (start < 0) start = 0;
+        if (start >= x.Length) return;
+        for (int i = start; i < x.Length; i++)
         {
-            int start = (int)(at * Rate);
-            for (int i = start; i < x.Length; i++)
-            {
-                float t = (i - start) / (float)Rate;
-                x[i] += gain * MathF.Sin(Dsp.TwoPi * hz * t) * Dsp.AD(t, attack, tau);
-            }
+            float t = (i - start) / (float)Rate;
+            x[i] += gain * MathF.Sin(Dsp.TwoPi * hz * t) * Dsp.AD(t, attack, tau);
         }
+    }
 
-        private static float[] Whisper(SynthGen g, float len)
+private static float[] Whisper(SynthGen g, float len)
+    {
+        float[] x = Dsp.Voice(g, len, new VoiceParams
         {
-            float[] x = Dsp.Voice(g, len, new VoiceParams
-            {
-                Whisper = true,
-                Formants = u => Vowel.Speech[(int)(u * 9f) % Vowel.Speech.Length],
-                Amp = u => Dsp.Bell(u, 1f, 0.5f) * (0.6f + 0.4f * MathF.Sin(u * 40f)),
-            });
-            var tail = new float[x.Length + g.N(0.8f)];
-            Array.Copy(x, tail, x.Length);
-            Dsp.Reverb(tail, Rate, 0.85f, 0.4f, 0.5f);
-            return tail;
+            Whisper = true,
+            Formants = u => Vowel.Speech[(int)(u * 9f) % Vowel.Speech.Length],
+            Amp = u => Dsp.Bell(u, 1f, 0.5f) * (0.6f + 0.4f * MathF.Sin(u * 40f)),
+        });
+        // Apply reverb directly, then blend a short faded tail without extra silence.
+        var rev = new float[x.Length];
+        Array.Copy(x, rev, x.Length);
+        Dsp.Reverb(rev, Rate, 0.85f, 0.4f, 0.5f);
+        // Mix a short 0.2 s tail (if buffer long enough) with linear fade‑out.
+        int tailSamples = Math.Min(g.N(0.2f), rev.Length);
+        for (int i = 0; i < tailSamples; i++)
+        {
+            float fade = 1f - (i / (float)tailSamples);
+            int idx = rev.Length - tailSamples + i;
+            rev[idx] = rev[idx] * (1f - fade) + rev[i] * fade;
         }
+        return rev;
+    }
 
         // Karplus-Strong: a plucked string from a noise burst in a damped delay line.
         private static float[] Pluck(SynthGen g, float hz, float len)

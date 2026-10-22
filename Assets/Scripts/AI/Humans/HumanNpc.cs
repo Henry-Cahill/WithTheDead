@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
+using static CloneZ.HumanNpc;
 namespace CloneZ
 {
     /// <summary>
@@ -84,6 +84,23 @@ namespace CloneZ
         private Light _flash;
         private float _flashOff;
         private System.Random _rng;
+        // New constant for food item id
+        public const string FoodItemId = "cannedfood";
+        /// <summary>Feeds the NPC a small amount of food, restoring health and possibly ending surrender.</summary>
+        public void FeedFood(float healthFraction)
+        {
+            if (IsDead) return;
+            // healthFraction is a fraction of max health (e.g. 0.2 = 20% of max)
+            _hp = Mathf.Min(_maxHp, _hp + _maxHp * Mathf.Clamp01(healthFraction));
+            // If the NPC was surrendered and now feels safe, they may stand up.
+            if (State == Mode.Surrendered && Health01 > 0.5f)
+            {
+                State = Mode.Idle;
+                Actor.Surrendered = false;
+            }
+            Bark("Much appreciated, thanks!");
+        }
+
 
         #region Spawning
         /// <summary>Creates a person of <paramref name="faction"/> wearing <paramref name="loadout"/> (an id such as
@@ -937,7 +954,16 @@ namespace CloneZ
                     if (c.Interactor != null) c.Interactor.SearchOrOpen(box);
                 }).Timed(1.5f, "Searching..."));
                 into.Add(new InteractAction("Let them go", c => _npc.Release()));
-                return;
+            // New “Give Food” action
+            if (ctx.Inventory != null && ctx.Inventory.Has(FoodItemId))
+            {
+                into.Add(new InteractAction("Give Food", c =>
+                {
+                    if (c.Inventory.Consume(FoodItemId, 1) <= 0) return;
+                    _npc.FeedFood(0.2f); // restores ~20% of max health
+                }).Timed(1f, "Feeding...").DisabledIf(!_npc.Actor.Surrendered && !_npc.Actor.Restrained, "They don't need food"));
+            }
+            return;
             }
 
             into.Add(new InteractAction("Talk", Talk));
@@ -976,6 +1002,11 @@ namespace CloneZ
             [Factions.Wardens] = new[] { "Papers. No? Then turn around.", "Belt's closed after dark.", "Anyone past the wire without a pass gets shot. Nothing personal.", "The main road's iced over; the snowplow broke last week.", "Fuel's scarce; the depot's only got a half‑full barrel left.", "The old radio tower's dead—just static and the wind.", "An abandoned farmhouse looms on the ridge; its windows stare empty.", "The fence's wind‑chime rattles nonstop, a reminder of storms that never end.", "I've rigged a makeshift heater from scrap; it barely keeps the cold at bay.",
 "The well's frozen solid; the bucket drips ice instead of water.",
 "A cracked water pipe rattles under the snow, leaking a thin veil of frost.",
+                "The old barn’s roof collapsed under the weight of the snow; we’ve been sleeping in the loft.",
+                "The wind whistles through the broken windows of the depot, sounding like a lonely train.",
+                "We’ve rigged an old woodstove with pine knots; it sputters, but at least the frost retreats a bit.",
+                "The river froze solid last night, making the crossing a sheet of ice that cracks beneath every step.",
+                "Someone left a bundle of pine‑cone kindling by the fire – a small mercy in this endless cold.",
 "We've cobbled a heater from old radiators and scrap metal; it squeals but gives a bit of warmth.",
 "Folks say a whistle at midnight scares the cold spirits away, so we hum while we work.",
 "Fuel's rationed strict; each night we share a single can of diesel among the watch.",

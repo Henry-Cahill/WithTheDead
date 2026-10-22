@@ -18,6 +18,12 @@ namespace CloneZ
     {
         private PlayerStats _stats;
         private PlayerSleep _sleepCache;
+        // Cached config values to avoid static lookups each frame
+        private float _decayPerSec;
+        private float _sleepMult;
+        private float _drainThreshold;
+        private float _maxSickness;
+        private float _healthDrainPerSec;
 
         /// <summary>Nausea moodle level 0..4 (Fine / Queasy / Nauseous / Sick / Ill).</summary>
         public int Level
@@ -53,6 +59,12 @@ namespace CloneZ
         {
             _stats = GetComponent<PlayerStats>();
             _sleepCache = GetComponent<PlayerSleep>();
+            // Populate cached static config values once
+            _decayPerSec = CloneZConfig.SicknessDecayPerSec;
+            _sleepMult = CloneZConfig.SicknessSleepMult;
+            _drainThreshold = CloneZConfig.SicknessDrainThreshold;
+            _maxSickness = CloneZConfig.SicknessMax;
+            _healthDrainPerSec = CloneZConfig.SicknessHealthDrainPerSec;
         }
 
         private void Update()
@@ -61,16 +73,16 @@ namespace CloneZ
             float dt = Time.deltaTime;
 
             // The illness runs its course over time; sleeping it off is quicker.
-            float decay = CloneZConfig.SicknessDecayPerSec;
+            float decay = _decayPerSec;
             if (_sleepCache == null) _sleepCache = GetComponent<PlayerSleep>();   // PlayerSleep is added after this component
-            if (_sleepCache != null && _sleepCache.IsSleeping) decay *= CloneZConfig.SicknessSleepMult;
+            if (_sleepCache != null && _sleepCache.IsSleeping) decay *= _sleepMult;
             _stats.Sickness = Mathf.Max(0f, _stats.Sickness - decay * dt);
 
             // A stomach in real distress bleeds a little health while it lasts.
-            if (_stats.Sickness >= CloneZConfig.SicknessDrainThreshold)
+            if (_stats.Sickness >= _drainThreshold)
             {
-                float severity = Mathf.InverseLerp(CloneZConfig.SicknessDrainThreshold, CloneZConfig.SicknessMax, _stats.Sickness);
-                _stats.EnvironmentDrain(CloneZConfig.SicknessHealthDrainPerSec * severity * dt, "died of food poisoning");
+                float severity = Mathf.InverseLerp(_drainThreshold, _maxSickness, _stats.Sickness);
+                _stats.EnvironmentDrain(_healthDrainPerSec * severity * dt, "died of food poisoning");
             }
         }
 

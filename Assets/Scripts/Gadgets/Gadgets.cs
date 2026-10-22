@@ -584,7 +584,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
     public sealed class TabletScreen : UIScreen
     {
         private static int s_Tab;
-        private static readonly string[] Tabs = { "Kit", "Gun", "Loadouts", "Map", "Drones" };
+        private static readonly string[] Tabs = { "Kit", "Gun", "Loadouts", "Map", "Drones", "\"The fire was at the old barn last night.\"", "\"Radio static whispers: stay inside.\"", "\"Graffiti: 'Don’t trust the lights.'\"", "\"Diary entry: day 12 – supplies low.\"", "\"Letter to Mom: I miss the hills.\"" };
 
         protected override string Title => "Field tablet";
         protected override Vector2 WindowSize => new Vector2(1280f, 800f);
@@ -610,10 +610,11 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             RectTransform page = HubUI.Area(Body, 0f, 0f, 1f, 0.92f);
             switch (s_Tab)
             {
+                case 0: KitPage(page); break;
                 case 1: GunPage(page); break;
                 case 2: LoadoutPage(page); break;
                 case 4: DronePage(page); break;
-                default: KitPage(page); break;
+                default: FlavourTextPage(page, s_Tab); break;
             }
         }
 
@@ -764,6 +765,14 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             ProfileStore.CommitStash();
             HubKit.AfterChange();
             return moved + " item(s) from the stash" + (short_ > 0 ? "; " + short_ + " missing" : "") + ".";
+        }
+
+        private void FlavourTextPage(RectTransform page, int tabIndex)
+        {
+            // Pull the sentence from Tabs – it already includes surrounding quotes.
+            string text = Tabs[tabIndex];
+            RectTransform col = HubUI.Scroll(page);
+            HubUI.Para(col, text, 18, UIKit.TextDim);
         }
 
         private void DronePage(RectTransform page)

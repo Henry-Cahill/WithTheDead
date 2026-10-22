@@ -88,6 +88,13 @@ namespace CloneZ
 
     private Coroutine _lifetimeCoroutine;
 
+    /// <summary>Starts the lifetime coroutine if needed.</summary>
+    private void StartLifetimeIfNeeded()
+    {
+        if (Lifetime > 0f && _lifetimeCoroutine == null)
+            _lifetimeCoroutine = StartCoroutine(LifetimeRoutine());
+    }
+
     private IEnumerator LifetimeRoutine()
     {
         while (Lifetime > 0f)
@@ -104,9 +111,8 @@ namespace CloneZ
 
         private void OnEnable()
     {
-        if (!All.Contains(this)) All.Add(this);
-        if (Lifetime > 0f && _lifetimeCoroutine == null)
-            _lifetimeCoroutine = StartCoroutine(LifetimeRoutine());
+if (!All.Contains(this)) All.Add(this);
+        StartLifetimeIfNeeded();
     }
 
     private void OnDisable()
@@ -159,7 +165,7 @@ namespace CloneZ
             floor.y = BuildPiece.FloorTopAt(floor);
 
             // Deterministic random to optionally add a small metal front‑handle
-            var rng = new System.Random(1994);
+                var rng = new System.Random(seed);
             if (rng.NextDouble() < 0.7)
             {
                 var handle = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
@@ -348,7 +354,6 @@ namespace CloneZ
                 c = go.AddComponent<LootContainer>();
                 c.DisplayName = "Sack";
                 c.IsSack = true;
-                c.Type = ContainerType.Corpse;
 c.SearchTime = 0f; c.Searched = searched;
             }
             else if (kind == (int)ContainerType.Corpse)
@@ -362,6 +367,7 @@ c.SearchTime = 0f; c.Searched = searched;
                 c.Type = ContainerType.Corpse;
                 c.SearchTime = CloneZConfig.SearchTimeCorpse;
                 c.Lifetime = lifetime > 0f ? lifetime : CloneZConfig.CorpseLifetime;
+                c.StartLifetimeIfNeeded();
             }
             else
             {

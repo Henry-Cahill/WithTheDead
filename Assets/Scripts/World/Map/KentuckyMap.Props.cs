@@ -18,6 +18,7 @@ namespace CloneZ
         private const int MaxSigns = 30; // existing limit for signage
         // Upper bound for litter/ trash‑bag props placed in park areas.
         private const int MaxParkProps = 200;
+        private const int MaxSnowPiles = 80; // upper bound of snow‑pile props placed per map
 
         private static readonly Color[] CarPaints =
         {
@@ -80,6 +81,53 @@ namespace CloneZ
             }
         }
 
+        private static void BuildSnowPiles(Site site)
+        {
+            var rng = new System.Random(site.Town.Rng.Next());
+            int placed = 0;
+            foreach (Street s in site.Area.Streets)
+            {
+                if (!TownStreet(s.Data.kind) || s.Data.tunnel || s.Data.bridge) continue;
+                // walk each segment and sprinkle a few piles
+                for (int i = 0; i + 1 < s.Pts.Count && placed < MaxSnowPiles; i++)
+                {
+                    Vector2 a = s.Pts[i], b = s.Pts[i + 1];
+                    float segLen = Vector2.Distance(a, b);
+                    if (segLen < 0.1f) continue;
+                    Vector2 dir = (b - a) / segLen;
+                    Vector2 normal = new Vector2(-dir.y, dir.x); // left‑hand normal (road side)
+                    // decide how many piles this segment may hold (0‑2)
+                    int tries = rng.Next(1, 3);
+                    for (int t = 0; t < tries && placed < MaxSnowPiles; t++)
+                    {
+                        // random distance along the segment
+                        float dAlong = R(rng, 0f, segLen);
+                        // random offset a bit off the curb (0.3‑0.8 m)
+                        float offset = R(rng, 0.3f, 0.8f);
+                        Vector2 at2 = a + dir * dAlong + normal * offset;
+                        if (!site.Free(at2, 0.5f)) continue;
+                        // snow‑pile size and yaw
+                        float w = R(rng, 0.5f, 1.0f);
+                        float d = R(rng, 0.5f, 1.0f);
+                        float h = R(rng, 0.12f, 0.28f);
+                        float yaw = R(rng, -15f, 15f);
+                        Vector3 at3 = To3(at2, 0f);
+                        RaidMesh m = site.Town.Out.Solid(at3);
+                        m.SetFrame(at3, yaw);
+                        DecorProps.SnowPile(m, rng, Vector3.zero, w, d, h, yaw);
+                        m.ResetFrame();
+                        // a tiny collider so the player can bump the pile
+                        site.Town.PropCollider(at3 + Vector3.up * (h * 0.5f),
+                            new Vector3(w, h, d), yaw);
+                        site.Take(at2, 0.5f);
+                        placed++;
+                    }
+                }
+            }
+        }
+
+
+
         private static void BuildHydrants(Site site)
         {
             var rng = new System.Random(site.Town.Rng.Next());
@@ -100,26 +148,27 @@ namespace CloneZ
                     {
                         float offsetFromRoad = R(rng, 0.6f, 1.2f);
                         Vector2 at = a + dir * walked + normal * (s.Data.width * 0.5f + offsetFromRoad) * side;
-if (site.Free(at, 0.6f))
-{
-    float yaw = side * 90f + R(rng, -10f, 10f); // hydrant faces the curb, jittered
-    Vector3 at3 = To3(at, 0f);
-    RaidMesh m = site.Town.Out.Solid(at3);
-    m.SetFrame(at3, yaw);
-    DecorProps.Hydrant(m, rng);
-    m.ResetFrame();
-    site.Town.PropCollider(at3 + Vector3.up * 0.9f,
-        new Vector3(0.4f, 1.8f, 0.4f), yaw);
-    site.Take(at, 0.6f);
-    placed++;
-    side = -side; // alternate side for next hydrant on this segment
-}
-walked += HydrantSpacing;
+                        if (site.Free(at, 0.6f))
+                        {
+                            float yaw = side * 90f + R(rng, -10f, 10f); // hydrant faces the curb, jittered
+                            Vector3 at3 = To3(at, 0f);
+                            RaidMesh m = site.Town.Out.Solid(at3);
+                            m.SetFrame(at3, yaw);
+                            DecorProps.Hydrant(m, rng);
+                            m.ResetFrame();
+                            site.Town.PropCollider(at3 + Vector3.up * 0.9f,
+                                new Vector3(0.4f, 1.8f, 0.4f), yaw);
+                            site.Take(at, 0.6f);
+                            placed++;
+                            side = -side; // alternate side for next hydrant on this segment
+                        }
+                        walked += HydrantSpacing;
                     }
                     walked -= segLen;
                 }
             }
         }
+
         private static void BuildStreetLights(Site site)
         {
             var poles = new List<(Vector2 at, float yaw)>();
@@ -167,7 +216,8 @@ walked += HydrantSpacing;
         private static void BuildAllProps(Site site)
         {
             BuildStreetLights(site);
-            BuildHydrants(site); // <-- new line
+            BuildHydrants(site);
+            BuildSnowPiles(site);
             BuildParkedCars(site);
             BuildTrees(site);
             BuildPoints(site);

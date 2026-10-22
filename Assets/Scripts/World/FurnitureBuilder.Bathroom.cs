@@ -460,7 +460,20 @@ namespace CloneZ
             m.Box(new Vector3(-half + lip * 0.5f, rimH * 0.5f, 0f), new Vector3(lip, rimH, half * 2f - lip * 2f), tray);
             m.Box(new Vector3(half - lip * 0.5f, rimH * 0.5f, 0f), new Vector3(lip, rimH, half * 2f - lip * 2f), tray);
             m.Flat(new Vector3(0f, 0.015f, 0f), half * 2f - lip * 2f, half * 2f - lip * 2f, 0f, mosaic);
-            m.Cylinder(new Vector3(0f, 0.015f, 0f), 0.045f, 0.003f, 14, chrome);
+            // Floor drain body (chrome)
+            m.Cylinder(new Vector3(0f, 0.023f, 0f), 0.042f, 0.008f, 12, chrome);
+            // Rubber seal around drain
+            m.Cylinder(new Vector3(0f, 0.021f, 0f), 0.045f, 0.002f, 8, M(new Color(0.07f,0.07f,0.07f)));
+            // Drain rivets (chrome)
+            for (int i = 0; i < 4; i++)
+            {
+                float ang = i * Mathf.PI * 0.5f;
+                Vector3 pos = new Vector3(Mathf.Cos(ang) * 0.045f, 0.027f, Mathf.Sin(ang) * 0.045f);
+                m.Cylinder(pos, 0.004f, 0.003f, 8, chrome);
+            }
+            // Subtle wear ring around drain
+            m.Cylinder(new Vector3(0f, 0.025f, 0f), 0.15f, 0.001f, 12, M(new Color(0.30f,0.30f,0.32f)));
+            // Small decorative strip (existing detail)
             for (int i = -1; i <= 1; i++)
                 m.Box(new Vector3(i * 0.014f, 0.0185f, 0f), new Vector3(0.006f, 0.001f, 0.05f), M(new Color(0.15f, 0.15f, 0.16f)));
 
@@ -503,9 +516,16 @@ namespace CloneZ
             m.Cylinder(pc + new Vector3(0f, plateR, 0f), rivetR, rivetH, 8, chrome); // top
             m.Cylinder(pc + new Vector3(0f, -plateR, 0f), rivetR, rivetH, 8, chrome); // bottom
 
-            // A wire corner shelf of bottles, by the back wall.
+            // Wall‑mounted soap dish (left of shower mixer)
+            Vector3 dishPos = new Vector3(ShowerLeverPivot.x - 0.12f, 0.02f, ShowerLeverPivot.z + 0.03f);
+            // Dish body: shallow rectangular box in china colour
+            m.Box(dishPos, new Vector3(0.03f, 0.005f, 0.02f), G(BathChina));
+            // Chrome rim: thin cylinder around the box
+            m.Cylinder(dishPos, 0.017f, 0.005f, 12, chrome);
+            // Tiny soap bar placeholder
+            m.Ellipsoid(dishPos + new Vector3(0f, 0.0025f + 0.002f, 0f), new Vector3(0.008f, 0.008f, 0.008f), chrome, 6, 4);
+
             var shelf = new Vector3(0.36f, 1.28f, -0.36f);
-            m.Box(shelf, new Vector3(0.11f, 0.008f, 0.11f), chrome);
             Color[] bottles = { new Color(0.20f, 0.50f, 0.66f), new Color(0.84f, 0.52f, 0.20f), new Color(0.56f, 0.30f, 0.56f), new Color(0.30f, 0.60f, 0.36f) };
             m.Cylinder(shelf + new Vector3(0.02f, 0.004f, -0.02f), 0.024f, 0.17f, 10, G(bottles[rng.Next(bottles.Length)]));
             m.Cylinder(shelf + new Vector3(0.02f, 0.174f, -0.02f), 0.011f, 0.022f, 8, G(new Color(0.92f, 0.92f, 0.90f)));

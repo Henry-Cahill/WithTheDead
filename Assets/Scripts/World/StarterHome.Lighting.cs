@@ -67,6 +67,10 @@ namespace CloneZ
         // A light switch plate by a door: a toggle for each circuit (listed in menu order) at its own spot along the wall.
         private static void Switches(BuildPiece piece, RaidMesh m, in Frame f, int side, string name, string[] circuits, float[] alongs)
         {
+            // Guard against missing circuit data – some door definitions may omit switches.
+            if (circuits == null || alongs == null || circuits.Length == 0 || alongs.Length == 0)
+                return; // nothing to build
+
             Vector3 n = f.N(side);
             float lo = alongs[0], hi = alongs[0];
             for (int i = 1; i < alongs.Length; i++)
@@ -91,8 +95,8 @@ namespace CloneZ
                 const float len = 0.026f; // same length as in SwitchToggle
             Vector3 screwPos = pivot + dir * (len * 0.5f) + n * 0.001f + Vector3.up * 0.001f;
                 toggle.Box(screwPos, new Vector3(0.004f, 0.004f, 0.004f), DecorPalette.Matte(new Color(0.08f, 0.08f, 0.09f)));
-                toggles[i] = FixturePart.Hinge(sw.transform, "Toggle", toggle, pivot, Vector3.Cross(n, Vector3.up), ToggleTilt * 2f,
-                    ShadowCastingMode.Off).WithSpeed(0.08f);
+                toggles[i] = FixturePart.Hinge(sw.transform, "Toggle", toggle, pivot, Vector3.Cross(Vector3.up, n), ToggleTilt * 2f,
+                    ShadowCastingMode.Off).WithSpeed(0.08f); // Fixed hinge axis: use up × normal so toggles rotate correctly (was normal × up).
             }
             sw.SetToggles(toggles);
         }
@@ -252,8 +256,8 @@ for (int i = 0; i < 4; i++)
             const float len = 0.026f; // same length as SwitchToggle
             Vector3 screwPos = pivot + dir * (len * 0.5f) + n * 0.001f + Vector3.up * 0.001f;
             handle.Box(screwPos, new Vector3(0.004f, 0.004f, 0.004f), DecorPalette.Matte(new Color(0.08f, 0.08f, 0.09f)));
-            FixturePart handlePart = FixturePart.Hinge(panel.transform, "MainBreaker", handle, pivot, Vector3.Cross(n, Vector3.up), BreakerTilt * 2f,
-                ShadowCastingMode.Off).WithSpeed(0.12f);
+                FixturePart handlePart = FixturePart.Hinge(panel.transform, "MainBreaker", handle, pivot, Vector3.Cross(Vector3.up, n), BreakerTilt * 2f,
+                    ShadowCastingMode.Off).WithSpeed(0.12f); // Fixed hinge axis: use up × normal so breaker handle rotates correctly (was normal × up).
             panel.SetParts(doorPart, handlePart);
         }
 

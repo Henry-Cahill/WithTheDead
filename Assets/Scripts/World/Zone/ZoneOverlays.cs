@@ -144,7 +144,33 @@ namespace CloneZ
                 if (Mathf.Abs(x) < 6f) continue;
                 Vector3 c = new Vector3(x, 0f, half - 3f);
                 if (site.Any(c, 3f, SiteCell.Reserved)) continue;
-                wall.At(wall.Solid, new Vector3(x, 0f, 0f), 0f, m => m.Box(new Vector3(0f, 6f, 0f), new Vector3(8.1f, 12f, 2.2f), ZoneKit.M(ZoneKit.V(ZoneKit.ConcreteDark, rng))));
+                wall.At(wall.Solid, new Vector3(x, 0f, 0f), 0f, m => m.Box(new Vector3(0f, 6f, 0f), new Vector3(8.1f, 12f, 2.2f), ZoneKit.M(ZoneKit.V(ZoneKit.ConcreteDark, rng, 0.04f))));
+                // Frost edge – a thin white strip along the top of the concrete face
+                wall.At(wall.Solid, new Vector3(x, 11.9f, 0f), 0f,
+                    m => m.Box(new Vector3(0f, 0.05f, 0f), new Vector3(8f, 0.05f, 0.12f),
+                        ZoneKit.M(ZoneKit.V(Color.white, rng, 0.07f))));
+                // Snow piles – up to 2 small ellipsoids per segment
+                int snowCount = rng.Next(0, 3); // 0‑2 piles
+                for (int s = 0; s < snowCount; s++)
+                {
+                    float offsetX = (float)rng.NextDouble() * 6f - 3f; // -3 .. 3 m across the segment
+                    float offsetZ = (float)rng.NextDouble() * 1.5f - 0.75f; // -0.75 .. 0.75 m depth
+Vector3 pileLocal = new Vector3(offsetX, 12.0f, offsetZ);
+                    wall.At(wall.Solid, pileLocal, 0f,
+                        m => m.Ellipsoid(Vector3.zero, new Vector3(0.3f, 0.15f, 0.3f),
+                            ZoneKit.M(ZoneKit.V(Color.white, rng, 0.06f)), 4, 2));
+                }
+                // Icicle drips – occasional hanging cylinders
+                if (rng.NextDouble() < 0.25) // 25 % chance per segment
+                {
+                    float dripX = (float)rng.NextDouble() * 6f - 3f; // -3 .. 3 m
+                    float dripZ = (float)rng.NextDouble() * 0.6f - 0.3f; // -0.3 .. 0.3 m
+                    Vector3 dripPos = new Vector3(x + dripX, 6f, dripZ);
+                    float dripLen = 0.2f + (float)rng.NextDouble() * 0.1f; // 0.2‑0.3 m
+                    wall.At(wall.Solid, dripPos, 0f,
+                        m => m.Cylinder(Vector3.zero, 0.02f, dripLen, 8,
+                            ZoneKit.Mt(ZoneKit.V(Color.white, rng, 0.08f))));
+                }
                 // Shallow crack detail: a thin horizontal box on the wall face to suggest a crack
                 wall.At(wall.Solid, new Vector3(x, 6f, 0f), 0f, m => m.Box(new Vector3(0f, 0.2f, 0f), new Vector3(8f, 0.2f, 0.1f), ZoneKit.M(ZoneKit.V(ZoneKit.ConcreteDark, rng))));
                 // Add a few rust‑stained bolt heads on the concrete block (1‑4 bolts per segment).

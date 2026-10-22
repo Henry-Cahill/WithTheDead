@@ -1,5 +1,6 @@
 using UnityEngine;
 using CloneZ;
+using System.Collections.Generic;
 
 namespace CloneZ
 {
@@ -12,6 +13,8 @@ namespace CloneZ
         private float _baseIntensity;
         private float _phase;
         private float _dipTimer;
+        private static readonly float CullDistance = 64f; // metres from player before flicker is disabled
+        internal static readonly HashSet<StreetLampFlicker> s_registered = new();
         /// <summary>Maximum sinusoidal intensity swing as a fraction of the base intensity (e.g. 0.15 = ±15 %).</summary>
         [SerializeField, Range(0f, 0.5f)] public float _maxSinusoid = 0.15f;
         /// <summary>Low‑frequency wobble speed in Hz.</summary>
@@ -23,6 +26,18 @@ namespace CloneZ
             _light = GetComponent<Light>();
             if (_light == null) enabled = false;
             else _baseIntensity = _light.intensity;
+            UpdateCulling(); // initial enable/disable based on player distance
+        }
+
+        private void OnEnable()
+        {
+            s_registered.Add(this);
+            UpdateCulling(); // set correct enabled state on spawn
+        }
+
+        private void OnDisable()
+        {
+            s_registered.Remove(this);
         }
         private void Start()
         {
@@ -34,8 +49,20 @@ namespace CloneZ
             _wobbleSpeed *= freqJitter;
             // seed for dip timing (0–1)
             _dipTimer = (hash & 0xFFFF) / (float)0xFFFF;
+            // per‑lamp random variation (±10 %)
+            float sinVar = UnityEngine.Random.Range(0.9f, 1.1f);
+            float dipVar = UnityEngine.Random.Range(0.9f, 1.1f);
+            _maxSinusoid *= sinVar;
+            _dipStrength *= dipVar;
         }
 
+        private void UpdateCulling()
+        {
+            var player = UnityEngine.Object.FindObjectOfType<PlayerController>();
+            if (player == null) return;
+            bool shouldEnable = Vector3.Distance(transform.position, player.transform.position) <= CullDistance;
+            SetFlickerEnabled(shouldEnable);
+        }
         private void Update()
         {
             // sinusoidal wobble
@@ -47,8 +74,7 @@ namespace CloneZ
             float intensityFactor = 1f + sinWobble - dip;
             _light.intensity = _baseIntensity * intensityFactor;
         }
-/// <summary>
-    /// Enables or disables the flicker effect without destroying the component.
+        /// Enables or disables the flicker effect without destroying the component.
     /// </summary>
     public void SetFlickerEnabled(bool enabled)
     {

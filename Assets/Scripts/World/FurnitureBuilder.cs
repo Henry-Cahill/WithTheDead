@@ -119,13 +119,15 @@ namespace CloneZ
         /// and number plates; one door may hang ajar.</summary>
         public static void LockerBank(RaidMesh m, System.Random rng, int count, Color body)
         {
+// If count is zero we bail out early; otherwise w is the total width of the locker row.
             float w = count * 0.5f;
+            if (count <= 0) return;
             Color c = V(body, rng, 0.05f);
             Color dark = c * 0.45f;
             m.Box(new Vector3(0f, 0.04f, -0.02f), new Vector3(w, 0.08f, 0.44f), M(new Color(0.1f, 0.1f, 0.1f)));
             m.Box(new Vector3(0f, 0.96f, -0.02f), new Vector3(w, 1.76f, 0.46f), M(c * 0.9f));
             m.Box(new Vector3(0f, 1.855f, -0.02f), new Vector3(w + 0.02f, 0.03f, 0.48f), M(c * 0.8f));
-            int ajar = Chance(rng, 0.45) ? rng.Next(count) : -1;
+            int ajar = (count > 0 && Chance(rng, 0.45)) ? rng.Next(count) : -1;
             for (int i = 0; i < count; i++)
             {
                 float x = -w * 0.5f + 0.25f + i * 0.5f;
@@ -179,15 +181,31 @@ namespace CloneZ
             Color c = V(new Color(0.20f, 0.23f, 0.21f), rng, 0.05f);
             m.Box(new Vector3(0f, 0.95f, -0.02f), new Vector3(0.8f, 1.9f, 0.56f), M(c));
             m.Box(new Vector3(0f, 0.95f, 0.27f), new Vector3(0.72f, 1.8f, 0.04f), G(c * 1.15f));
+            // thin chrome hinge‑plate on left side of safe front
+            m.Box(new Vector3(-0.36f, 1.2f, 0.285f), new Vector3(0.004f, 0.5f, 0.008f), Mt(Chrome));
             m.Box(new Vector3(0f, 1.8f, 0.3f), new Vector3(0.5f, 0.05f, 0.01f), M(Brass));
             // Period‑correct metal number‑plate label on the safe front
             m.Box(new Vector3(0f, 1.74f, 0.31f), new Vector3(0.08f, 0.02f, 0.005f), Mt(Chrome));
             m.Cylinder(new Vector3(0.12f, 1.05f, 0.29f), 0.09f, 0.03f, 10, Mt(Chrome), Quaternion.Euler(90f, 0f, 0f));
+            // chrome ring encircling the dial
+            m.Cylinder(new Vector3(0.12f, 1.05f, 0.29f), 0.095f, 0.005f, 12, Mt(Chrome), Quaternion.Euler(90f, 0f, 0f));
             m.Box(new Vector3(0.12f, 1.07f, 0.29f), new Vector3(0.02f, 0.02f, 0.005f), Gl(WarmGlow));
+            // subtle wear line on safe front panel
+            m.Box(new Vector3(0f, 0.96f, 0.285f), new Vector3(0.68f, 0.002f, 0.001f), M(new Color(0.05f, 0.04f, 0.03f)));
             for (int i = 0; i < 3; i++)
                 m.Box(new Vector3(0.12f, 1.05f, 0.33f), new Vector3(0.24f, 0.02f, 0.02f), Quaternion.Euler(0f, 0f, i * 60f), Mt(Chrome));
+            // embossed number plates around dial (matte black)
+            float[] angles = { -60f, 0f, 60f };
+            foreach (float a in angles)
+            {
+                Quaternion rot = Quaternion.Euler(0f, 0f, a);
+                Vector3 offset = rot * new Vector3(0.09f, 0f, 0f);
+                m.Box(new Vector3(0.12f, 1.07f, 0.29f) + offset, new Vector3(0.012f, 0.004f, 0.001f), Mt(Chrome));
+            }
             m.Cylinder(new Vector3(-0.12f, 1.25f, 0.29f), 0.05f, 0.03f, 10, M(Black), Quaternion.Euler(90f, 0f, 0f));
             m.Box(new Vector3(-0.33f, 0.95f, 0.3f), new Vector3(0.04f, 1.6f, 0.03f), M(c * 0.7f));
+            // lock hasp on right side of safe front
+            m.Box(new Vector3(0.34f, 1.2f, 0.285f), new Vector3(0.01f, 0.22f, 0.005f), Mt(Chrome));
         }
 
         /// <summary>A wooden office desk (width along X, 0.76 high) with a drawer pedestal on one side,

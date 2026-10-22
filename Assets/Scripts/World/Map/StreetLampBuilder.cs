@@ -11,6 +11,8 @@ internal static void BuildLamp(KentuckyMap.Site site, KentuckyMap.Street street,
         {
             // only place a lamp if the OSM data marks this segment as having one
             if (!build.HasStreetLamp(street.Data.id)) return;
+            // deterministic RNG seeded by street id for visual variance
+            var rng = new System.Random(street.Data.id.GetHashCode());
 
             // choose the deterministic middle‑segment midpoint and yaw
             var sum = Vector2.zero;
@@ -19,6 +21,8 @@ internal static void BuildLamp(KentuckyMap.Site site, KentuckyMap.Street street,
             // deterministic yaw: -5° … +5° based on street id hash
             int hash = street.Data.id.GetHashCode();
             float yaw = ((hash & 0xFF) / 255f) * 10f - 5f;
+            // add ±2° jitter per segment
+            yaw += (float)(rng.NextDouble() * 4.0 - 2.0);
             // offset outward by half the sidewalk width + small gap
             float offset = street.Data.SidewalkWidth() * 0.5f + 0.2f;
             // street direction vector (ignore vertical y)
@@ -35,12 +39,28 @@ internal static void BuildLamp(KentuckyMap.Site site, KentuckyMap.Street street,
             // apply yaw to lamp root
             lampRoot.transform.rotation = Quaternion.Euler(0f, yaw, 0f);
             lampRoot.transform.SetParent(site.Town.World, false);
-            // ---- pole ----
+            // ---- concrete base ----
+            var baseCube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            baseCube.name = "Base";
+            baseCube.transform.SetParent(lampRoot.transform, false);
+            baseCube.transform.localScale = new Vector3(0.30f, 0.05f, 0.30f);
+            baseCube.transform.localPosition = new Vector3(0f, 0.025f, 0f);
+            var porchMat = WorldStore.GetPorchMaterial();
+            if (porchMat != null) baseCube.GetComponent<Renderer>().material = porchMat;
             var pole = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             pole.name = "Pole";
             pole.transform.SetParent(lampRoot.transform, false);
-            pole.transform.localScale = new Vector3(0.08f, 1.25f, 0.08f); // radius, height/2, radius
-            pole.transform.localPosition = new Vector3(0f, 1.25f, 0f);
+            // vary pole dimensions by street kind
+            if (street.Data.kind == "residential")
+            {
+                pole.transform.localScale = new Vector3(0.07f, 1.2f, 0.07f);
+                pole.transform.localPosition = new Vector3(0f, 1.2f, 0f);
+            }
+            else
+            {
+                pole.transform.localScale = new Vector3(0.09f, 1.3f, 0.09f);
+                pole.transform.localPosition = new Vector3(0f, 1.3f, 0f);
+            }
             var mat = build.GetStreetLampMaterial();
             if (mat != null) pole.GetComponent<Renderer>().material = mat;
             // ---- root collider (sphere covering head)
@@ -63,7 +83,7 @@ internal static void BuildLamp(KentuckyMap.Site site, KentuckyMap.Street street,
             light.intensity = 2f;
             light.color = new Color(1f, 0.9f, 0.7f);
             light.transform.localPosition = new Vector3(0f, 2.55f, 0f);
-            // attach flicker behaviour
+            lampRoot.AddComponent<StreetLampInteraction>();
             var flicker = lampRoot.AddComponent<StreetLampFlicker>();
             // configure variation based on street kind
             if (street.Data.kind == "residential")

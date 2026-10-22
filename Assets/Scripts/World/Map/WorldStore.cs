@@ -30,6 +30,13 @@ namespace CloneZ
             s_StreetLampGlassMaterial = UnityEngine.Resources.Load<Material>(path);
             return s_StreetLampGlassMaterial;
         }
+
+        /// <summary>Loads the concrete kerb material defined by <see cref="KerbMaterialPath"/>.</summary>
+        public static Material GetKerbMaterial()
+        {
+            var mat = Resources.Load<Material>(KerbMaterialPath);
+            return mat ?? Resources.Load<Material>("Materials/DefaultConcrete");
+        }
         public static Material GetPorchMaterial()
         {
             if (s_PorchMaterial != null) return s_PorchMaterial;

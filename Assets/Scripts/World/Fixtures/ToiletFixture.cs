@@ -24,6 +24,7 @@ namespace CloneZ
 
         private static readonly string[] UseLines =
         {
+            // New lines – frost‑bitten solitude, remnants of home, warning of danger
             "You take a minute to yourself. Small mercies.",
             "Business seen to. Some things don't change, even now.",
             "A quiet minute on the throne. For a moment you almost forget what's outside.",
@@ -47,8 +48,17 @@ namespace CloneZ
                 "You feel a lingering scent of rust and old soap.",
                 "A distant siren wails, echoing through the cracked window.",
                 "The water drips slowly, a metronome of solitude.",
-                "A spider's web glistens in the dim light, unnoticed."
+                "The frosted window panes echo the world’s cold breath.",
+            "Your breath hangs like smoke, a brief banner of life in the icy air.",
+            "A faded family portrait leans against the wall, its faces ghost‑white with snow.",
+            "The chipped ceramic bears a crack shaped like a lightning strike, a reminder of the storm outside.",
+            "A rusted pipe shudders, sending a thin drip that taps a morse of dread.",
+            "The dim bulb flickers once, then steadies, as if warning of an unseen presence.",
+            "A thin layer of snow tracks across the floor, leading to the cracked door.",
+            "The distant howl of wolves drifts through the walls, a reminder that the night is far from over.",
+            "A spider's web glistens in the dim light, unnoticed."
         };
+
 
         private HomeFurniture _host;
         private string _key;
@@ -274,6 +284,7 @@ namespace CloneZ
             StandFromUse(ctx);
             _wantsFlush = true;
             _seatClean = false; // using the toilet makes the seat dirty
+            ShowParts(false); // update seat colour to show it’s dirty
             _flushed = false;
             BathroomFixtures.Nerves(ctx, -CloneZConfig.ToiletUseCalm);
             string line = UseLines[Random.Range(0, UseLines.Length)];
@@ -327,8 +338,6 @@ namespace CloneZ
             }
         }
 
-        /// <summary>Wipes the toilet seat, providing a small calming effect.</summary>
-        /// <summary>Wipes the toilet seat, providing a small calming effect.</summary>
         private void WipeSeat(InteractContext ctx)
         {
             ctx.Notify("You wipe away grime from the cold porcelain.");
@@ -346,6 +355,7 @@ namespace CloneZ
             }
             _seatClean = true;
             ctx.Notify("You scrub the seat until the grime is gone.");
+            ShowParts(false); // update seat colour to show it’s clean
             // a bigger calming effect than a simple wipe
             LightingFixtures.Calm(ctx, CloneZConfig.ToiletUseCalm * 1.5f);
         }

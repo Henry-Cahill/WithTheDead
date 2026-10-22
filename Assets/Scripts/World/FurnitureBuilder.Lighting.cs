@@ -64,6 +64,8 @@ namespace CloneZ
         public static Vector3 VanityLight(RaidMesh m, RaidMesh glow, Vector3 at, Vector3 normal, Vector3 along)
         {
             Quaternion q = Quaternion.LookRotation(normal, Vector3.up);
+            // side direction for later brackets & knob
+            Vector3 right = Vector3.Cross(normal, Vector3.up).normalized;
             float yaw = Mathf.Abs(along.z) > 0.5f ? 90f : 0f;
             m.Box(at + normal * 0.01f, new Vector3(0.42f, 0.06f, 0.02f), q, Mt(Chrome));
             Vector3 tube = at + normal * 0.07f;
@@ -74,6 +76,16 @@ namespace CloneZ
                 m.CylinderX(end, 0.042f, 0.03f, 10, Mt(Chrome), yaw);
             }
             m.CylinderX(tube, 0.033f, 0.34f, 10, M(new Color(0.90f, 0.89f, 0.84f)), yaw);
+                // frosted glass envelope, slightly larger than the metal tube
+                m.CylinderX(tube, 0.035f, 0.342f, 10, M(new Color(0.92f, 0.92f, 0.96f, 0.28f)), yaw);
+                // left chrome bracket
+                m.Box(tube + right * 0.045f, new Vector3(0.006f, 0.05f, 0.004f), q, Mt(Chrome));
+                // right chrome bracket
+                m.Box(tube - right * 0.045f, new Vector3(0.006f, 0.05f, 0.004f), q, Mt(Chrome));
+                // front adjustment knob (west side of the fixture)
+                m.Cylinder(tube + right * 0.06f - normal * 0.015f, 0.008f, 0.004f, 12, Mt(Chrome), q);
+                // dust film, very thin, covering the tube and brackets
+                m.Box(tube + normal * 0.001f, new Vector3(0.07f, 0.07f, 0.001f), q, M(new Color(0f,0f,0f,0.12f)));
             glow?.CylinderX(tube, 0.036f, 0.342f, 10, Gl(WarmGlow), yaw);
             return tube;
         }

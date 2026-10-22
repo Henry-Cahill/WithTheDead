@@ -244,6 +244,7 @@ namespace CloneZ
             border.offsetMin = new Vector2(1f, 1f);
             border.offsetMax = new Vector2(-1f, -1f);
             var borderImg = border.gameObject.AddComponent<Image>();
+            borderImg.raycastTarget = false; // inner border is visual only
             float darken = 0.15f;
             Color baseColor = color ?? CardColor;
             borderImg.color = Color.Lerp(baseColor, Color.black, darken);
@@ -288,6 +289,7 @@ namespace CloneZ
             edge.offsetMin = new Vector2(2f, 2f);
             edge.offsetMax = new Vector2(-2f, -2f);
             var edgeImg = edge.gameObject.AddComponent<Image>();
+            edgeImg.raycastTarget = false; // edge overlay must not block scrollbar handle
             edgeImg.color = new Color(0f, 0f, 0f, 0.2f);
             var bar = sb.gameObject.AddComponent<Scrollbar>();
             bar.handleRect = handle;
@@ -413,6 +415,7 @@ namespace CloneZ
             border.offsetMin = new Vector2(1f, 1f);
             border.offsetMax = new Vector2(-1f, -1f);
             var borderImg = border.gameObject.AddComponent<Image>();
+            borderImg.raycastTarget = false; // decorative border must not block button clicks
             borderImg.color = new Color(0f, 0f, 0f, 0.2f);
             b.interactable = interactable;
             Text label = b.GetComponentInChildren<Text>();

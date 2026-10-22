@@ -110,8 +110,27 @@ namespace CloneZ
             m.Cylinder(new Vector3(0f, 0.07f, 0f), 0.025f, 0.36f, 6, Mt(Chrome));
             m.Cylinder(new Vector3(0f, 0.43f, 0f), 0.012f, 0.008f, 6, Mt(Chrome));
             m.Box(new Vector3(0f, 0.46f, 0.02f), new Vector3(0.48f, 0.08f, 0.46f), M(f));
+            // subtle stitching – two thin raised lines across the seat
+            m.Box(new Vector3(0f, 0.46f + 0.02f, 0.02f), new Vector3(0.48f, 0.001f, 0.46f),
+                M(V(f, rng, 0.02f)));
+            m.Box(new Vector3(0f, 0.46f - 0.02f, 0.02f), new Vector3(0.48f, 0.001f, 0.46f),
+                M(V(f, rng, 0.02f)));
+            // four rivet heads at seat corners
+            float hx = 0.24f; // half seat width
+            float dz = 0.23f; // half seat depth
+            Vector3[] rivetPos = {
+                new Vector3(-hx, 0.46f, -dz),
+                new Vector3( hx, 0.46f, -dz),
+                new Vector3(-hx, 0.46f,  dz),
+                new Vector3( hx, 0.46f,  dz)
+            };
+            foreach (var p in rivetPos)
+                m.Cylinder(p, 0.003f, 0.01f, 6, Mt(Chrome));
             m.Box(new Vector3(0f, 0.48f, -0.2f), new Vector3(0.06f, 0.18f, 0.04f), M(b));
-            m.Box(new Vector3(0f, 0.78f, -0.25f), new Vector3(0.44f, 0.46f, 0.07f), Quaternion.Euler(-8f, 0f, 0f), M(f));
+            // low‑profile metal brace on backrest
+            m.Rod(new Vector3(-0.22f, 0.78f, -0.25f),
+                new Vector3( 0.22f, 0.78f, -0.25f),
+                0.004f, Mt(Chrome));
         }
 
         /// <summary>A plain wooden kitchen / school chair.</summary>

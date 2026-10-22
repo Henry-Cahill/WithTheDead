@@ -436,7 +436,24 @@ Color flagCol = V(new Color(0.80f, 0.15f, 0.12f), rng, 0.07f);
             m.Ellipsoid(new Vector3(0f, 0.6f, 0f), new Vector3(0.22f, 0.16f, 0.22f), G(red), 8, 4);
             m.CylinderX(new Vector3(0f, 0.42f, 0f), 0.05f, 0.34f, 6, G(red));
             m.Ellipsoid(new Vector3(0f, 0.68f, 0f), new Vector3(0.18f, 0.08f, 0.18f), M(SnowWhite), 8, 3);
+            // Rust streak on the side of the hydrant – colour varies per instance
+            Color rustCol = V(new Color(0.55f, 0.30f, 0.20f), rng, 0.07f);
+            m.Box(new Vector3(0.13f, 0.35f, 0f), new Vector3(0.02f, 0.20f, 0.12f), Mt(rustCol));
+            // Valve handle – a short metal cylinder protruding from the front
+            Color valveCol = V(new Color(0.40f, 0.38f, 0.35f), rng, 0.05f);
+            m.Cylinder(new Vector3(0f, 0.45f, 0.105f), 0.025f, 0.12f, 6, Mt(valveCol));
+            // Hose coupling – thin cylinder with a slight bend
+            Color hoseCol = V(new Color(0.30f, 0.30f, 0.28f), rng, 0.04f);
+            Quaternion hoseRot = Quaternion.Euler(0f, -30f, 0f);
+            m.Cylinder(new Vector3(-0.12f, 0.5f, 0f), 0.015f, 0.18f, 6, Mt(hoseCol), hoseRot);
+            // Service‑tag – small matte rectangle with slightly varied colour
+            Color tagCol = V(new Color(0.22f, 0.22f, 0.20f), rng, 0.06f);
+            m.Box(new Vector3(0f, 0.58f, 0.06f), new Vector3(0.08f, 0.015f, 0.005f), M(tagCol));
+            // Worn paint patch – darker matte area
+            Color patchCol = V(new Color(0.30f, 0.25f, 0.20f), rng, 0.08f);
+            m.Box(new Vector3(0f, 0.22f, -0.09f), new Vector3(0.10f, 0.04f, 0.008f), M(patchCol));
         }
+
 
         /// <summary>A portable generator with a frame and exhaust.</summary>
         public static void Generator(RaidMesh m, System.Random rng)

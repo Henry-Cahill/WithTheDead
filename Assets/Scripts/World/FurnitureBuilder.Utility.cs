@@ -286,6 +286,29 @@ namespace CloneZ
             Color body = Chance(rng, 0.5) ? new Color(0.62f, 0.10f, 0.10f) : new Color(0.12f, 0.24f, 0.48f);
             m.Box(new Vector3(0f, 0.925f, -0.02f), new Vector3(0.9f, 1.85f, 0.76f), G(body));
             m.Box(new Vector3(-0.1f, 1.1f, 0.365f), new Vector3(0.6f, 1.2f, 0.01f), lit ? Gl(new Color(0.85f, 0.82f, 0.75f)) : M(new Color(0.6f, 0.58f, 0.55f)));
+            // Coin slot – thin black rectangle with slight random offset
+            Vector3 slotPos = new Vector3(-0.14f + (float)rng.NextDouble()*0.02f, 1.02f + (float)rng.NextDouble()*0.04f, 0.37f);
+            m.Box(slotPos, new Vector3(0.04f, 0.02f, 0.004f), M(Black));
+            // Paper‑receipt slot – light‑grey slit with random hue shift
+            Vector3 receiptPos = new Vector3(0.12f + (float)rng.NextDouble()*0.01f, 1.14f + (float)rng.NextDouble()*0.02f, 0.37f);
+            m.Box(receiptPos, new Vector3(0.08f, 0.004f, 0.006f), M(new Color(0.55f, 0.55f, 0.58f)));
+            // Chrome knob for the service door
+            Vector3 knobPos = new Vector3(0.28f + (float)rng.NextDouble()*0.005f, 1.10f, 0.36f);
+            m.Cylinder(knobPos, 0.01f, 0.004f, 8, Mt(Chrome));
+            // Button panel – three chrome push‑buttons with random offsets
+            for (int i = 0; i < 3; i++)
+            {
+                float y = 1.06f + i * 0.03f + (float)rng.NextDouble()*0.005f;
+                Vector3 btnPos = new Vector3(-0.2f + (float)rng.NextDouble()*0.01f, y, 0.37f);
+                m.Box(btnPos, new Vector3(0.018f, 0.008f, 0.004f), Mt(Chrome));
+            }
+            // LED status display – subtle emissive green strip
+            Vector3 dispPos = new Vector3(-0.05f + (float)rng.NextDouble()*0.02f, 1.12f, 0.368f);
+            m.Box(dispPos, new Vector3(0.12f, 0.015f, 0.002f), Gl(new Color(0.25f, 0.30f, 0.12f)));
+            // Brand label – small poster quad with random variant
+            int labelKind = rng.Next(0, 5);
+            Vector3 labelPos = new Vector3(0f + (float)rng.NextDouble()*0.01f, 1.04f, 0.369f);
+            m.Quad(labelPos, new Vector3(0.18f, 0f, 0f), new Vector3(0f, 0.12f, 0f), DecorMaterials.Poster(labelKind));
             m.Box(new Vector3(0.33f, 1.1f, 0.37f), new Vector3(0.14f, 0.8f, 0.02f), M(new Color(0.2f, 0.2f, 0.22f)));
             for (int i = 0; i < 6; i++) m.Box(new Vector3(0.33f, 0.8f + i * 0.11f, 0.385f), new Vector3(0.08f, 0.06f, 0.02f), M(new Color(0.8f, 0.8f, 0.76f)));
             m.Box(new Vector3(-0.1f, 0.3f, 0.37f), new Vector3(0.5f, 0.16f, 0.02f), M(Black));

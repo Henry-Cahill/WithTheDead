@@ -10,6 +10,10 @@ namespace CloneZ
 
     // Emissive surface for the bulb – uses the colour already defined in KentuckyMap.
     private static readonly Surf LampLightSurf = DecorPalette.Gloss(KentuckyMap.StreetLampLightColor);
+    // Snow mound – low‑poly white “snow” surface.
+    private static readonly Surf SnowMoundSurf = DecorPalette.Gloss(Color.white * 0.85f);
+    // Wooden street‑sign – fallback if wood palette missing.
+    private static readonly Surf SignSurf = DecorPalette.Gloss(new Color(0.45f, 0.30f, 0.15f));
 
     /// <summary>
     /// Builds a period‑correct 1993‑style street lamp at the given map position.

@@ -54,9 +54,9 @@ namespace CloneZ
         private Transform _stream, _splash;
         private bool _running, _openedForJob;
         private float _drop, _nextNoise, _nextCheck, _wobbleSeed;
-        private int _scrub;
+        private int _scrub; private int _cleanliness; // 0 = dirty, higher = cleaner
 
-        private Action<InteractContext> _toggleTap, _wash, _rinse, _openForJob, _endJob;
+        private Action<InteractContext> _toggleTap, _wash, _rinse, _openForJob, _endJob, _deepClean;
 
         public override string DisplayName => _name;
         public override Vector3 InteractPoint => _point;
@@ -189,7 +189,10 @@ namespace CloneZ
                 .DisabledIf(!WaterMains.MainsOn, Dry);
             into.Add(temp);
 
-            var inspect = new InteractAction("Inspect the tap", ctx => { ctx.Notify(_running ? "The tap is still running, wasting water." : "The tap is off."); });
+            var deep = new InteractAction("Deep clean the sink", DeepClean)
+            into.Add(deep);
+
+            var inspect = new InteractAction("Inspect the tap", ctx => { string tapMsg = _running ? "The tap is still running, wasting water." : "The tap is off."; string cleanMsg = _cleanliness >= 4 ? "The sink surface is spotless." : _cleanliness >= 2 ? "The sink looks clean enough." : "The sink is grimy and needs a good scrub."; ctx.Notify($"{tapMsg} {cleanMsg}"); });
             into.Add(inspect);
         }
 
@@ -252,6 +255,20 @@ namespace CloneZ
         #endregion
 
         #region Washing
+        private void DeepClean(InteractContext ctx)
+        {
+            // end any open‑job tap first
+            EndJob(ctx);
+            if (!WaterMains.MainsOn)
+            {
+                ctx.Notify(Dry);
+                return;
+            }
+            // a deeper scrub – more water, more soap
+            WaterUse.Freshen(ctx, _clinical ? 1.5f : 1.2f);
+            _cleanliness = Mathf.Min(_cleanliness + 2, 5);
+            ctx.Notify("You give the sink a thorough scrub. The steel shines a little brighter.");
+        }
         private void Wash(InteractContext ctx)
         {
             EndJob(ctx);
@@ -261,6 +278,7 @@ namespace CloneZ
                 return;
             }
             WaterUse.Freshen(ctx, _clinical ? 1.2f : 1f);
+            _cleanliness = Mathf.Min(_cleanliness + 1, 5); // cap at 5
             if (_clinical) ctx.Notify(ScrubLines[_scrub++ % ScrubLines.Length]);
             else ctx.Notify(PowerGrid.HousePowered
                 ? "The water runs hot after a moment. You scrub your hands with the gritty soap and splash your face. Better."

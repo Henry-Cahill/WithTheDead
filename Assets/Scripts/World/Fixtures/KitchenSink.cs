@@ -49,7 +49,8 @@ namespace CloneZ
         private Transform _stream, _splash, _sheet;
         private MeshRenderer _streamR, _splashR, _sheetR, _plugInR, _plugOutR, _dishesR;
 
-private bool _running;                // the cold tap is open and water is coming out
+        private bool _running;                // the cold tap is open and water is coming out
+        public bool IsRunning => _running;
     private bool _plugIn;
     private bool _openedForJob;           // turned on just for a wash, to be turned off again after
     private bool _toldFull;               // the survivor's been told the bowl is brimming (once a fill)
@@ -115,6 +116,9 @@ private bool _running;                // the cold tap is open and water is comin
             _statusInterval = CloneZConfig.KitchenStatusInterval;
             _noiseInterval = CloneZConfig.KitchenTapNoiseInterval;
             _noiseRadius = CloneZConfig.KitchenTapNoiseRadius;
+            // Add warm source component
+            var warmth = gameObject.AddComponent<KitchenSinkWarmth>();
+            warmth.Initialize(this);
         }
 
         #region Building
@@ -290,6 +294,12 @@ private bool _running;                // the cold tap is open and water is comin
                 var note = KitchenNotes[UnityEngine.Random.Range(0, KitchenNotes.Length)];
                 ctx.Notify(note);
             }));
+            // New action – let the survivor feel the running water’s warmth.
+            if (_running) {
+                into.Add(new InteractAction("Warm your hands", ctx => {
+                    ctx.Notify("The running water warms your hands a little.");
+                }));
+            }
         }
 
         private InteractAction PlugAction(bool mains)

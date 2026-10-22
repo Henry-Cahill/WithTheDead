@@ -283,18 +283,20 @@ namespace CloneZ
         private float _lastYaw;
         private bool _lastVisible;
 
-        private void Awake()
+        private GameSettings EnsureSettings()
         {
-            _cam = Camera.main;
-            _gs = GameSettings.Current;
+            if (_gs == null)
+            {
+                _gs = GameSettings.Current;
+            }
+            return _gs;
         }
         private void LateUpdate()
         {
             // Update compass possession check once per second
             if (Time.time > _check) { _check = Time.time + 1f; _has = _inv != null && _inv.Has("compass"); }
             Camera cam = _cam;
-            GameSettings gs = _gs;
-            if (gs == null) _gs = gs = GameSettings.Current;
+            GameSettings gs = EnsureSettings();
             bool visible = _has && cam != null && gs.Hud != HudMode.Hardcore;
             // Clear text immediately when compass is not visible (lost, camera missing, or hardcore HUD)
             if (!visible) { _text.text = ""; _lastVisible = false; return; }

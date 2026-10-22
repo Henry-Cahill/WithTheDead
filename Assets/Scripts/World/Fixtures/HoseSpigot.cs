@@ -130,12 +130,19 @@ private bool _open;
                 _autoCloseAt = Time.time + AutoCloseDelay;
                 c.Notify("You leave the tap open; it will shut itself in five minutes.");
             })
-            .DisabledIf(!_open && !_openedToWater, "The tap is closed – turn it on first.");
+            .DisabledIf(!_open || _openedToWater, "The tap is closed – turn it on first, or finish watering first.");
             into.Add(autoClose);
 
             var coil = new InteractAction("Coil the hose", c => c.Notify("You wind the hose back onto its reel, neat as anything. Habit."))
                 .Timed(CloneZConfig.HoseCoilSeconds, "Coiling the hose");
-            coil.Stopped = c => { if (_open) { SetOpen(false, false); c.Notify("You remember to shut the tap."); } };
+            coil.Stopped = c => {
+                if (_open) {
+                    SetOpen(false, false);
+                    // Cancel any pending auto‑close timer so it won’t fire on a closed tap.
+                    _autoCloseAt = 0f;
+                    c.Notify("You remember to shut the tap.");
+                }
+            };
             into.Add(coil);
         }
 
@@ -144,7 +151,7 @@ private void Turn(InteractContext ctx, bool open)
         {
             _openedToWater = false;
             SetOpen(open, false);
-            if (!open) _autoCloseAt = 0f; // cancel any pending auto‑close
+            if (!open) _autoCloseAt = 0f; // cancel any pending auto‑close // Clear auto‑close timer when manually turning off
             if (open && !WaterMains.MainsOn) ctx.Notify("The wheel squeaks round, but nothing comes out — the water's been shut off.");
         }
 
