@@ -287,7 +287,7 @@ sentence of its summary. Grep the code for details.
 - FurnitureBuilder.Kitchen.cs (754) FurnitureBuilder, KitchenTone: The colours of one run of kitchen units, picked once so the carcass and the doors drawn apart from i
 - FurnitureBuilder.Lighting.cs (262) FurnitureBuilder: A cream switch plate width wide centred on at (on the wall face).
 - FurnitureBuilder.Living.cs (312) FurnitureBuilder: Height of the middle of a DresserBody drawer (row 0 the top one).
-- FurnitureBuilder.Office.cs (284) FurnitureBuilder: A beige 1990s CRT monitor (deep tapered housing, dark glass) on a swivel foot, standing at at.
+- FurnitureBuilder.Office.cs (292) FurnitureBuilder: A beige 1990s CRT monitor (deep tapered housing, dark glass) on a swivel foot, standing at at.
 - FurnitureBuilder.RaidCivic.cs (902) FurnitureBuilder, CrateLoad: The middle of filing drawer i (0 = the bottom one).
 - FurnitureBuilder.RaidHome.cs (526) FurnitureBuilder: How many two-door bays a run of wall cupboards len long is split into (each about the starter home's
 - FurnitureBuilder.RaidOpenings.cs (338) OpeningLine, FurnitureBuilder: A straight wall line in world axes, as the raid town's door and window builders draw on it: a point 
@@ -339,7 +339,7 @@ sentence of its summary. Grep the code for details.
 - StarterHome.cs (532) StarterHome, HomeRoom, Slot: The wave-survival starter home, finished to the extraction town's standard.
 - ToxicZone.cs (298) ToxicZone: A cloud of toxic gas: breathing it without a gas mask (or with a spent filter) sickens and hurts the
 - Vehicles.cs (863) Vehicle, VehicleDriver, HudVehicle: A car (DayZ's vehicle assembly, Zomboid's hotwiring): they're found broken at the Zone's parking spo
-- WaterSource.cs (347) WaterSourceKind, WaterSource: Where the survivor can get water — a plumbed tap or a rain barrel.
+- WaterSource.cs (375) WaterSourceKind, WaterSource: Where the survivor can get water — a plumbed tap or a rain barrel.
 - WorldItem.cs (132) WorldItem: A handle to one item lying on the ground.
 
 ## Assets/Scripts/World/Fixtures
@@ -373,9 +373,9 @@ sentence of its summary. Grep the code for details.
 - RaidCivicFridge.cs (260) CivicFridge, CivicReading, Shelf: The workings of a workplace fridge-freezer — the National Guard post's kitchenette fridge, the clini
 - RaidCivicRadio.cs (341) CivicRadio, Channel, Band: A two-way set the survivor can listen in on — the National Guard post's olive field radio, the depot
 - RaidCivicSink.cs (314) CivicSink: The deep steel sink let into a workplace counter — the National Guard post's kitchenette, the clinic
-- RaidDoor.cs (425) RaidDoor, Raid: A door of the raid town: the starter home's door (HomeDoor) — a pair of leaves drawn shut across the
+- RaidDoor.cs (447) RaidDoor, Raid: A door of the raid town: the starter home's door (HomeDoor) — a pair of leaves drawn shut across the
 - RaidHomeBath.cs (403) RaidHomeBath: A raid ranch's bath: a built-in tub with a hot and a cold tap over the drain and a plug on a chain.
-- RaidHomeLiving.cs (239) RaidHomeLiving: The small pastimes and the paperwork of the raid town's houses: plumping the sofa's cushions, flicki
+- RaidHomeLiving.cs (248) RaidHomeLiving: The small pastimes and the paperwork of the raid town's houses: plumping the sofa's cushions, flicki
 - RaidHomeWasher.cs (222) RaidHomeWasher: The controls of a raid cottage's washing machine (its porthole door and the drum behind it are a Sto
 - RaidStoreCopier.cs (190) RaidStoreCopier: The county office's photocopier.
 - RaidStoreCot.cs (122) RaidStoreCot: The quarantine tent's folding camp cot: "Lie down and rest" stretches out on the canvas, awake (an o
@@ -411,9 +411,10 @@ sentence of its summary. Grep the code for details.
 - KentuckyMap.cs (522) KentuckyMap, Street, Line: Builds a raid map from a real place in Kentucky: the streets, buildings, water and land use around t
 - MapData.cs (276) MapCurrent, MapManifest, MapRegionEntry: world/current.json: the build the game and the servers load.
 - MapGeometry.cs (342) MapGeometry: Plane geometry for the real-world map, in the raid map's ground plane: a Vector2 is (x, z), metres e
-- RoadMarkingsBuilder.cs (44) RoadMarkingsBuilder: Builds thin white lane markings on road centre lines.
+- RoadMarkingsBuilder.cs (82) RoadMarkingsBuilder: Builds thin white lane markings on road centre lines.
+- RoadSideElementBuilder.cs (37) RoadSideElementBuilder: Builds concrete kerbs alongside roads that have a sidewalk.
 - StreetLampHelper.cs (39) StreetLampHelper
-- WorldStore.cs (246) WorldStore, MapBuild: The world store, where the build machines put the real-world map (Tools/World): \\192.168.1.170\CLON
+- WorldStore.cs (248) WorldStore, MapBuild: The world store, where the build machines put the real-world map (Tools/World): \\192.168.1.170\CLON
 
 ## Assets/Scripts/World/Zone
 - Helicopter.cs (387) HelicopterModel, HelicopterFlight, HelicopterService: Builds the helicopter: fuselage, cockpit glass, tail boom and fin, skids, two spinning rotors, a sea
@@ -422,7 +423,7 @@ sentence of its summary. Grep the code for details.
 - ZoneCordon.cs (296) ZoneCordon, CordonGate, SearchlightSweep: The cordon (Roadside Picnic's illegal entry): an inner fence just inside the restricted belt along t
 - ZoneKit.cs (703) ZoneKit, ZoneSmokeTint, ZoneChunks: Shared pieces for the zone overlays: the extra materials they need (chain-link, light beams, steam a
 - ZoneLandmarks.cs (459) ZoneLandmarks, LocationVisitTrigger: The handcrafted anchors of each zone (Metro's set pieces, used sparingly): a crashed helicopter, a d
-- ZoneOverlays.cs (262) ZoneForest, ZoneIndustry: Mirelock's woods: hundreds of snow-dusted conifers and bare birches crowding every open patch of gro
+- ZoneOverlays.cs (302) ZoneForest, ZoneIndustry: Mirelock's woods: hundreds of snow-dusted conifers and bare birches crowding every open patch of gro
 - ZoneSiteMap.cs (334) SiteCell, ZoneSiteMap: What lies on one metre of a raid map, as far as the zone overlays care.
 - ZoneWorld.cs (198) ZoneWorld, ZoneWorldModule, ZoneRuntime: What the zone overlays know about the raid map being built: the roots they build under, the occupanc
 
