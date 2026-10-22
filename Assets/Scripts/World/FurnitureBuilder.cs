@@ -198,18 +198,37 @@ namespace CloneZ
             Color top = c * 1.08f;
             float side = pedestalRight ? 1f : -1f;
             m.Box(new Vector3(0f, 0.74f, 0f), new Vector3(w, 0.04f, d), G(top));
+            // lamp base
+            float lx = side * (w * 0.35f);
+            float lz = 0f;
+            float topY = 0.74f + 0.02f;
+            m.Box(new Vector3(lx, topY + 0.01f, lz), new Vector3(0.04f, 0.02f, 0.04f), Mt(Chrome));
+            // lamp pole
+            m.Cylinder(new Vector3(lx, topY + 0.03f, lz), 0.008f, 0.12f, 6, Mt(Chrome));
+            // lamp shade (dark metal)
+            m.Box(new Vector3(lx, topY + 0.16f, lz), new Vector3(0.10f, 0.07f, 0.10f), M(new Color(0.15f, 0.15f, 0.15f)));
+            // paper stack – sheet 1
+            m.Box(new Vector3(lx + 0.02f, topY + 0.02f, lz + 0.02f), new Vector3(0.12f, 0.01f, 0.08f), M(Paper));
+            // paper stack – sheet 2 (slightly offset upward)
+            m.Box(new Vector3(lx + 0.015f, topY + 0.033f, lz + 0.015f), new Vector3(0.11f, 0.011f, 0.07f), M(Paper));
+            // paper stack – sheet 3 (topmost)
+            m.Box(new Vector3(lx + 0.01f, topY + 0.046f, lz + 0.01f), new Vector3(0.10f, 0.012f, 0.06f), M(Paper));
             float px = side * (w * 0.5f - 0.22f);
             m.Box(new Vector3(px, 0.36f, -0.01f), new Vector3(0.42f, 0.72f, d - 0.06f), M(c));
             for (int i = 0; i < 3; i++)
             {
                 float y = 0.6f - i * 0.23f;
                 m.Box(new Vector3(px, y, d * 0.5f - 0.025f), new Vector3(0.38f, 0.2f, 0.02f), M(c * 1.12f));
+                // metal pull‑handle (Chrome) centered on drawer front
+                m.Box(new Vector3(px, y, d * 0.5f - 0.015f + 0.001f), new Vector3(0.02f, 0.04f, 0.005f), Mt(Chrome));
                 m.Box(new Vector3(px, y + 0.03f, d * 0.5f - 0.005f), new Vector3(0.1f, 0.018f, 0.02f), Mt(Brass));
             }
             m.Box(new Vector3(-side * (w * 0.5f - 0.03f), 0.36f, -0.01f), new Vector3(0.04f, 0.72f, d - 0.06f), M(c));
             m.Box(new Vector3(-side * 0.21f, 0.5f, -d * 0.5f + 0.05f), new Vector3(w - 0.5f, 0.42f, 0.02f), M(c * 0.9f));
             // A shallow centre drawer under the top.
             m.Box(new Vector3(-side * 0.21f, 0.68f, d * 0.5f - 0.03f), new Vector3(w - 0.6f, 0.06f, 0.02f), M(c * 1.1f));
+            // centre drawer pull‑handle
+            m.Box(new Vector3(-side * 0.21f, 0.71f, d * 0.5f - 0.015f + 0.001f), new Vector3(0.02f, 0.04f, 0.005f), Mt(Chrome));
         }
 
         /// <summary>An olive field radio (green "ammo box" radio from the photo) with dials, a handle and
