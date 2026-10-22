@@ -140,6 +140,7 @@ namespace CloneZ
         {
             _broken = true;
             _scavenged = false;
+            ShowBroken(true);
             MakeNoise(CloneZConfig.RaidVendingSmashNoise);
             if (_stock != null) _stock.gameObject.SetActive(true);
             ctx.Notify("The front glass caves in with a crash that must carry halfway down the street. The coils are yours.");
