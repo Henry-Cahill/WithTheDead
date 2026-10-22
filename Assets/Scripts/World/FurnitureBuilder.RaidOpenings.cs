@@ -125,6 +125,26 @@ namespace CloneZ
                 Quaternion q = face * Quaternion.Euler(0f, 0f, R(rng, -7f, 7f));
                 Vector3 c = l.P(mid, y, outside * off);
                 m.Box(c, new Vector3(w + 0.3f, 0.16f, 0.03f), q, plank);
+            // Top wooden trim (thin strip along the top edge)
+            m.Box(c + q * new Vector3(0f, 0.076f, 0f), new Vector3(w + 0.3f, 0.008f, 0.032f), q, plank);
+            // Bottom wooden trim
+            m.Box(c + q * new Vector3(0f, -0.076f, 0f), new Vector3(w + 0.3f, 0.008f, 0.032f), q, plank);
+            // Brass corner caps
+            float halfW = (w + 0.3f) * 0.5f;
+            float halfH = 0.16f * 0.5f;
+            for (int sx = -1; sx <= 1; sx += 2)
+                for (int sy = -1; sy <= 1; sy += 2)
+                    m.Box(c + q * new Vector3(sx * halfW, sy * halfH, 0f), new Vector3(0.018f, 0.018f, 0.018f), q, Mt(Brass));
+            // Dark‑steel strap
+            m.Box(c, new Vector3(w + 0.28f, 0.004f, 0.008f), q, Mt(DarkSteel));
+            // Weathered paint patch
+            float offX = R(rng, -0.2f, 0.2f);
+            float offY = R(rng, -0.04f, 0.04f);
+            Vector3 patchPos = c + q * new Vector3(offX, offY, 0f);
+            m.Box(patchPos, new Vector3(0.20f, 0.06f, 0.032f), q, M(PlankWood * 0.85f));
+            // Brass screw‑head
+            Vector3 screwPos = c + q * new Vector3(-halfW + 0.02f, -halfH + 0.02f, 0f);
+            m.Box(screwPos, new Vector3(0.008f, 0.008f, 0.004f), q, Mt(Brass));
                 // Dark‑steel brackets near lower corners of the board for a weathered look
                 for (int e = -1; e <= 1; e += 2)
                     m.Box(c + q * new Vector3(e * (w * 0.5f - 0.02f), -0.07f, 0f), new Vector3(0.012f, 0.012f, 0.006f), q, nail);
