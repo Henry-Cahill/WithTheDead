@@ -15,14 +15,29 @@ namespace CloneZ
         private static readonly Vector3 PostSize = new Vector3(0.04f, 0.5f, 0.04f);
         // horizontal bar dimensions (thickness; length will be set per segment)
         private static readonly Vector3 BarThickness = new Vector3(0.02f, 0.02f, 0.02f);
-        // metal cap dimensions (width, height, depth) placed atop each post
-        private static readonly Vector3 PostCapSize = new Vector3(0.04f, 0.02f, 0.04f);
+// metal cap dimensions (width, height, depth) placed atop each post
+         private static readonly Vector3 PostCapSize = new Vector3(0.04f, 0.02f, 0.04f);
+                // segments longer than this become a gate (period‑correct driveway entry)
+         private const float GateMinSpan = 3f;
+         // dimensions for the "No Parking" sign (metres)
+         private const float SignWidth = 0.8f;
+         private const float SignHeight = 0.4f;
+         private const float SignDepth = 0.02f;
+         private static readonly Vector3 SignSize = new Vector3(SignWidth, SignHeight, SignDepth);
         // material – reuse the street‑lamp metal matte colour defined in KentuckyMap.Ground.cs
         private static readonly Surf MetalSurf = KentuckyMap.StreetLampMetal;
 
-        /// <summary>
-        /// Adds fence posts and connecting top bars along the given edge polyline.
-        /// </summary>
+        // Adds a “No Parking” sign at the lot entrance.
+        private static void AddEntranceSign(OutdoorBatches into, Vector2 pos, float y, float yaw)
+        {
+            // place the sign a little outward from the fence edge (0.3 m) and at eye height (1.2 m)
+            Vector3 centre = KentuckyMap.To3(
+                pos + new Vector2(Mathf.Cos(yaw * Mathf.Deg2Rad), Mathf.Sin(yaw * Mathf.Deg2Rad)) * 0.3f,
+                y + 1.2f);
+            var signMesh = into.Solid(centre);
+            signMesh.Box(centre, SignSize, yaw, MetalSurf);
+        }
+
         /// <param name="into">OutdoorBatches to receive the geometry.</param>
         /// <param name="edge">Closed polyline that defines the lot edge (already used for the ice ribbon).</param>
         /// <param name="y">Height at which the fence sits (just above the ice edge).</param>
@@ -44,22 +59,41 @@ namespace CloneZ
                 capMesh.Box(capCentre, PostCapSize, 0f, MetalSurf);
             }
 
-            // Connect successive posts with a horizontal top bar.
+            // add a “No Parking” sign at the first post (entrance)
+            if (sampled.Count > 0)
+            {
+                Vector2 first = sampled[0];
+                // yaw points outward from the lot; compute the outward normal of the first edge segment
+                Vector2 next = sampled[1 % sampled.Count];
+                float edgeYaw = -Mathf.Atan2(next.y - first.y, next.x - first.x) * Mathf.Rad2Deg;
+                AddEntranceSign(into, first, y, edgeYaw);
+            }
+
             for (int i = 0; i < sampled.Count; i++)
             {
                 Vector2 a = sampled[i];
                 Vector2 b = sampled[(i + 1) % sampled.Count];
-                // Only add a bar if the two points are close enough (prevents long spans across gaps).
-                if (Vector2.Distance(a, b) > PostInterval + 0.1f) continue;
-
-                Vector2 mid2D = (a + b) * 0.5f;
-                float length = Vector2.Distance(a, b);
-                // Bar runs horizontally between the two posts, centred 0.25 m above post tops.
+                float span = Vector2.Distance(a, b);
+                // If the gap is wide enough, place a gate instead of a simple top bar.
+                if (span >= GateMinSpan)
+                {
+                 Vector2 mid2D = (a + b) * 0.5f;
+                    float yaw = -Mathf.Atan2(b.y - a.y, b.x - a.x) * Mathf.Rad2Deg;
+                    Vector3 gateSize = new Vector3(span, PostSize.y, BarThickness.z);
+                    Vector3 gateCentre = KentuckyMap.To3(mid2D, y + PostSize.y * 0.5f);
+                    var gateMesh = into.Solid(gateCentre);
+                    gateMesh.Box(gateCentre, gateSize, yaw, MetalSurf);
+                    continue; // skip normal bar creation for this segment
+                }
+                // Existing short‑span bar logic (unchanged, but keep the 0.1 m tolerance check).
+                if (span > PostInterval + 0.1f) continue;
+                Vector2 barMid2D = (a + b) * 0.5f;
+                float length = span;
                 Vector3 barSize = new Vector3(length, BarThickness.y, BarThickness.z);
-                float yaw = -Mathf.Atan2(b.y - a.y, b.x - a.x) * Mathf.Rad2Deg;
-                Vector3 barCentre = KentuckyMap.To3(mid2D, y + PostSize.y + BarThickness.y * 0.5f);
+                float barYaw = -Mathf.Atan2(b.y - a.y, b.x - a.x) * Mathf.Rad2Deg;
+                 Vector3 barCentre = KentuckyMap.To3(barMid2D, y + PostSize.y + BarThickness.y * 0.5f);
                 var barMesh = into.Solid(barCentre);
-                barMesh.Box(barCentre, barSize, yaw, MetalSurf);
+                barMesh.Box(barCentre, barSize, barYaw, MetalSurf);
             }
         }
     }
