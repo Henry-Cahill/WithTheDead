@@ -19,6 +19,14 @@ namespace CloneZ
         private const float CoverSeconds = 1f;
         private bool _capped;
         private bool _boiled;
+        // Random period‑accurate notes displayed when inspecting the barrel.
+        private static readonly string[] _barrelNotes = new[] {
+            "The metal is nicked where the old chain once held a bucket.",
+            "A faded “Do Not Drink” sticker peels from the side, its paint long gone.",
+            "You spot a tiny rust‑eaten hole near the base, water drips through it.",
+            "Someone scrawled “Water's fine after a fire” in shaky chalk.",
+            "A dried‑out leaf clings to the rim, a reminder of late‑summer storms."
+        };
 
         public override string DisplayName => "Rain barrel";
         public override Vector3 InteractPoint => transform.position + Vector3.up * 0.9f;   // the rim
@@ -30,6 +38,11 @@ namespace CloneZ
             WaterSource b = Barrel;
             if (b == null) return;
             bool water = b.HasWater;
+            // New instant action to inspect the barrel and show a random period‑accurate note.
+            into.Add(new InteractAction("Inspect the barrel", c => {
+                int i = UnityEngine.Random.Range(0, _barrelNotes.Length);
+                c.Notify(_barrelNotes[i]);
+            }));
             into.Add(new InteractAction("Fill a water bottle  (tainted)", c => WaterUse.FillBottle(c, b))
                 .DisabledIf(!water, b.DryMessage)
                 .DisabledIf(_capped, "The barrel is covered.")
