@@ -7127,11 +7127,12 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 8: WaterSource.BuildTap – ensure the existing `m.ResetFrame(); m.ApplyTo(...); Solid(...);` calls remain after the new primitives so the collider still matches the full tap geometry.
   Done when: In‑game the kitchen sink tap shows a short steel faucet base with a modest horizontal spout, two distinct brass hot‑ and cold‑water knobs, a subtle ring of brass rivets, and occasional dark rust patches – all period‑appropriate, varied per deterministic random seed, and the tap still functions exactly as before (no change to water supply, collisions, or interaction).
   - 06:08 landed by 1htsserver in 4 min: **Summary**
-- [ ] In Assets/Scripts/Player/PlayerStats.cs: Cache the `HubRules.SafeZone` check in PlayerStats.Update to avoid a per‑frame static/property lookup.
+- [x] In Assets/Scripts/Player/PlayerStats.cs: Cache the `HubRules.SafeZone` check in PlayerStats.Update to avoid a per‑frame static/property lookup.
   Add a private bool field `private bool _cachedSafeZone;` to PlayerStats.
   In Update, after the existing per‑frame caches, assign `_cachedSafeZone = HubRules.SafeZone;`.
   Replace the line `if (!HubRules.SafeZone)` with `if (!_cachedSafeZone)`.
   No other code changes are needed; the player’s safe‑zone behavior and UI remain unchanged.
+  - 08:57 landed by 1htsserver in 1.9 min: **Changes made**
 - [x] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/AI/Creatures/PlayerMonster.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code. (Pass 2 over this file: most of it has summaries already.)
   Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
   Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.

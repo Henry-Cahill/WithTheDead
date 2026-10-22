@@ -123,6 +123,7 @@ public float SicknessMoveMultiplier =>
         private StatMods _cachedMods;
         private SandboxSettings _cachedSandbox;
         private TimeOfDay _cachedTOD;
+        private bool _cachedSafeZone;
 
         private void Awake()
         {
@@ -137,11 +138,12 @@ public float SicknessMoveMultiplier =>
             _cachedMods = PlayerModifiers.Current;
             _cachedSandbox = SandboxSettings.Current;
             _cachedTOD = TimeOfDay.Instance;
+            _cachedSafeZone = HubRules.SafeZone;
             float dt = Time.deltaTime;
 
             UpdateEndurance(dt);
             // The hub is a safe, warm room: needs don't tick down while you trade and talk.
-            if (!HubRules.SafeZone)
+            if (!_cachedSafeZone)
             {
                 UpdateSurvival(dt);
                 UpdateFatigue(dt);
