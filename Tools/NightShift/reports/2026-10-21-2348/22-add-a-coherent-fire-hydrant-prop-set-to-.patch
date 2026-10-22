@@ -1,0 +1,210 @@
+diff --git a/Assets/Scripts/World/Map/KentuckyMap.Props.cs b/Assets/Scripts/World/Map/KentuckyMap.Props.cs
+index 9818b6af..17e87122 100644
+--- a/Assets/Scripts/World/Map/KentuckyMap.Props.cs
++++ b/Assets/Scripts/World/Map/KentuckyMap.Props.cs
+@@ -8,6 +8,8 @@ namespace CloneZ
+     // at the mapped gas stations, and signs naming the mapped places (the hospital, the school, the post office...).
+     public static partial class KentuckyMap
+     {
++        /// <summary>Maximum number of fire‑hydrants to place city‑wide.</summary>
++        private const int MaxHydrants = 40;
+         private const int MaxPoles = 90;
+         private const int LitPoles = 10;
+         private const int MaxCars = 70;
+@@ -22,9 +24,8 @@ public static partial class KentuckyMap
+             new Color(0.30f, 0.22f, 0.14f), new Color(0.22f, 0.32f, 0.26f), new Color(0.55f, 0.55f, 0.56f),
+             new Color(0.80f, 0.80f, 0.78f), new Color(0.12f, 0.12f, 0.13f),
+         };
+-
+-        private static float R(System.Random rng, float a, float b) => a + (float)rng.NextDouble() * (b - a);
+-
++        }
++}
+         private static bool TownStreet(string kind) => kind == "primary" || kind == "secondary" || kind == "tertiary"
+             || kind == "residential" || kind == "unclassified" || kind == "living_street";
+ 
+@@ -60,11 +61,13 @@ private static void BuildParkProps(Site site)
+                         // Trash bag – uses the bag’s own geometry; offset is zero because the frame is already at the spot.
+                         DecorProps.TrashBag(m, rng, Vector3.zero);
+                     }
++}
+                     else
+                     {
+                         // Litter – small bits of trash scattered on the ground.
+                         DecorProps.Litter(m, rng, Vector3.zero, true);
+                     }
++}
+                     m.ResetFrame();
+                     // Small collider for the prop so the player can bump into it.
+                     site.Town.PropCollider(at3 + Vector3.up * 0.25f,
+@@ -73,11 +76,50 @@ private static void BuildParkProps(Site site)
+                     placed++;
+                     i++;
+                 }
+-                if (placed >= MaxParkProps) break;
+-            }
++}
+         }
++}
++    
+ 
+-        private static void BuildStreetLights(Site site)
++        private static void BuildFireHydrants(Site site)
++        {
++            var rng = new System.Random(site.Town.Rng.Next());
++            int placed = 0;
++            foreach (Street s in site.Area.Streets)
++            {
++                if (!TownStreet(s.Data.kind) || s.Data.tunnel || s.Data.bridge) continue;
++                float side = (s.Data.id & 1) == 0 ? 1f : -1f;
++                float walked = R(rng, 10f, 30f);
++                for (int i = 0; i + 1 < s.Pts.Count && placed < MaxHydrants; i++)
++                {
++                    Vector2 a = s.Pts[i], b = s.Pts[i + 1];
++                    float len = Vector2.Distance(a, b);
++                    if (len < 0.05f) continue;
++                    Vector2 d = (b - a) / len, n = new Vector2(-d.y, d.x);
++                    for (; walked <= len && placed < MaxHydrants; walked += 30f)
++                    {
++                        Vector2 at = a + d * walked + n * ((s.Data.width * 0.5f + 1.0f) * side);
++                        if (!site.Free(at, 0.6f)) continue;
++                        Vector3 at3 = To3(at, 0f);
++                        RaidMesh m = site.Town.Out.Solid(at3);
++                        float baseYaw = Mathf.Atan2(-n.x * side, -n.y * side) * Mathf.Rad2Deg;
++                        float yaw = baseYaw + R(rng, -5f, 5f);
++                        m.SetFrame(at3, yaw);
++                        DecorProps.Hydrant(m, rng);
++                        m.ResetFrame();
++                        site.Town.PropCollider(at3 + Vector3.up * 0.9f, new Vector3(0.6f, 1.2f, 0.6f), yaw);
++                        site.Take(at, 0.6f);
++                        placed++;
++                    }
++}
++                    walked -= len;
++                }
++}
++    
++        }
++}
++
++private static void BuildStreetLights(Site site)
+         {
+             var poles = new List<(Vector2 at, float yaw)>();
+             foreach (Street s in site.Area.Streets)
+@@ -98,9 +140,12 @@ private static void BuildStreetLights(Site site)
+                         poles.Add((at, Mathf.Atan2(toRoad.x, toRoad.y) * Mathf.Rad2Deg));
+                         site.Take(at, 0.8f);
+                     }
++}
+                     walked -= len;
+                 }
++}
+             }
++}
+             poles.Sort((p, q) => p.at.sqrMagnitude.CompareTo(q.at.sqrMagnitude));
+             var rng = new System.Random(site.Town.Rng.Next());
+             int litCount = 0;
+@@ -118,17 +163,22 @@ private static void BuildStreetLights(Site site)
+                 if (lit) site.Town.Light(site.Town.World, lamp, new Color(1f, 0.72f, 0.42f), 13f, 2.2f, rng.NextDouble() < 0.25, i < 3);
+                 if (lit) litCount++;
+             }
++}
+         }
++}
++
+ 
+         // Build all map props after points (lights, cars, trees, etc.).
+         private static void BuildAllProps(Site site)
+         {
+             BuildStreetLights(site);
++            BuildFireHydrants(site);
+             BuildParkedCars(site);
+             BuildTrees(site);
+             BuildPoints(site);
+             // park props added by BuildParkProps inside BuildPoints
+         }
++}
+         private static void BuildParkedCars(Site site)
+         {
+             var rng = new System.Random(site.Town.Rng.Next());
+@@ -170,10 +220,11 @@ private static void BuildParkedCars(Site site)
+                         site.Take(at, 2.4f);
+                         placed.Add(at);
+                     }
++}
+                     walked -= len;
+                 }
+-            }
+-        }
++}
++    
+ 
+         /// <summary>Trees per square metre for a kind of land, or 0 for none.</summary>
+         private static float TreeDensity(string kind)
+@@ -190,8 +241,7 @@ private static float TreeDensity(string kind)
+                 case "residential": return 1f / 600f;
+                 case "meadow": case "grass": return 1f / 900f;
+                 default: return 0f;
+-            }
+-        }
++    
+ 
+         // Pines and bare hardwoods where the land is wooded, with colliders, clear of everything already standing.
+         private static void BuildTrees(Site site)
+@@ -225,8 +275,8 @@ private static void BuildTrees(Site site)
+                     site.Trees++;
+                     planted++;
+                 }
+-            }
+-        }
++}
++    
+ 
+         // Gas pumps where a gas station is mapped, and a sign with the real name by the places people would look for.
+         private static void BuildPoints(Site site)
+@@ -251,8 +301,10 @@ private static void BuildPoints(Site site)
+                          site.Town.PropCollider(at3 + Vector3.up * 0.9f, new Vector3(1.0f, 1.8f, 1.6f), pumpYaw);
+                         site.Take(at, 1.2f);
+                     }
++}
+                     continue;
+                 }
++}
+                 if (signs >= MaxSigns || string.IsNullOrEmpty(s.Data.name) || !SignColours(s.Data.kind, out Color bg, out Color fg)) continue;
+                 // Slight random perturbation of sign background colour for hand‑painted variation
+                 bg.r = Mathf.Clamp01(bg.r + (float)rng.NextDouble() * 0.04f - 0.02f);
+@@ -275,9 +327,11 @@ private static void BuildPoints(Site site)
+                 site.Take(spot, 1.4f);
+                 signs++;
+             }
++}
+             // Add scattered park litter (trash bags and litter) after processing all points.
+             BuildParkProps(site);
+         }
++}
+ 
+         /// <summary>The free spot nearest <paramref name="near"/>, within 12 m, for something of radius
+         /// <paramref name="radius"/>.</summary>
+@@ -292,10 +346,13 @@ private static bool NearestFree(Site site, Vector2 near, float radius, out Vecto
+                     at = near + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * r;
+                     if (site.Free(at, radius)) return true;
+                 }
++}
+             }
++}
+             at = near;
+             return false;
+         }
++}
+ 
+         private static bool SignColours(string kind, out Color bg, out Color fg)
+         {
+@@ -323,7 +380,6 @@ private static bool SignColours(string kind, out Color bg, out Color fg)
+                     return true;
+                 default:
+                     return kind != null && kind.StartsWith("shop:");
+-            }
++    
+         }
+-    }
+ }
