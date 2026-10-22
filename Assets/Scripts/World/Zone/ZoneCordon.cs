@@ -183,6 +183,16 @@ namespace CloneZ
                 sb.Solid.Box(new Vector3(0f, 1.02f, -0.6f), new Vector3(0.4f, 0.25f, 0.02f), ZoneKit.M(new Color(0.78f, 0.25f, 0.2f)));
             }
             sb.Solid.Box(new Vector3(0f, 1.6f, -1.21f), new Vector3(1.6f, 0.7f, 0.02f), ZoneKit.Gs(new Color(0.6f, 0.7f, 0.75f)));
+            // left side frame (rusted metal)
+            sb.Solid.Box(new Vector3(-0.79f, 1.6f, -1.21f), new Vector3(0.02f, 0.7f, 0.02f), ZoneKit.Mt(ZoneKit.RustDark));
+            // right side frame (rusted metal)
+            sb.Solid.Box(new Vector3(0.79f, 1.6f, -1.21f), new Vector3(0.02f, 0.7f, 0.02f), ZoneKit.Mt(ZoneKit.RustDark));
+            // top lintel (rusted metal)
+            sb.Solid.Box(new Vector3(0f, 2.02f, -1.21f), new Vector3(1.64f, 0.04f, 0.02f), ZoneKit.Mt(ZoneKit.RustDark));
+            // bottom kick plate (rusted metal)
+            sb.Solid.Box(new Vector3(0f, 1.2f, -1.21f), new Vector3(1.64f, 0.04f, 0.02f), ZoneKit.Mt(ZoneKit.RustDark));
+            // rusted latch (small bolt)
+            sb.Solid.Box(new Vector3(0f, 1.5f, -1.18f), new Vector3(0.04f, 0.02f, 0.04f), ZoneKit.Mt(ZoneKit.RustDark));
             sb.Roof.Box(new Vector3(0f, 2.5f, 0f), new Vector3(2.8f, 0.15f, 2.8f), ZoneKit.Mt(ZoneKit.RustDark));
             sb.Collider(new Vector3(0f, 1.2f, 0f), new Vector3(2.4f, 2.4f, 2.4f));
             // Sandbags and the striped boom across the road.
