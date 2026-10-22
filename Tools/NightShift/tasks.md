@@ -6578,10 +6578,11 @@ you want to see in game. Indent extra lines under a task to add detail.
   The player sees no visual change; ceilings still appear/disappear correctly based on `ViewState.CeilingsVisible`.
   All other behaviour and fields remain unchanged.
   - 20:50 landed by hts-llm in 2 min: **Changed file**
-- [ ] Add a “Flick towel” action to `Assets/Scripts/World/Fixtures/TowelRail.cs` that makes the towel swing visibly when used.
+- [x] Add a “Flick towel” action to `Assets/Scripts/World/Fixtures/TowelRail.cs` that makes the towel swing visibly when used.
   Step 1: `Assets/Scripts/World/Fixtures/TowelRail.cs` – inside `public override void GetActions(InteractContext ctx, List<InteractAction> into)` add the new action after the existing “Let towel dry” line: `into.Add(new InteractAction("Flick towel", Flick));`
   Step 2: `Assets/Scripts/World/Fixtures/TowelRail.cs` – add a new private method right after the existing `Inspect` method: `// New playful action – gives the towel a quick flick causing it to swing.` `private void Flick(InteractContext ctx)` `{` `// Pick a random roll within the allowed crooked range.` `float max = CloneZConfig.TowelCrookedRoll;` `_roll = Random.Range(-max, max);` `ctx.Notify("You give the towel a quick flick; it ripples back and forth.");` `}`
   Step 3: `Assets/Scripts/World/Fixtures/TowelRail.cs` – ensure the `CaptureState` and `RestoreState` already persist `_roll`, so the flick’s angle is saved automatically (no change needed).
   Step 4: `Assets/Scripts/World/Fixtures/TowelRail.cs` – optionally, to give audio feedback, add a one‑liner at the end of `Flick` (only if the project has a generic SFX backend): `SfxBackend.Instance?.PlayOneShot("towel_flick");`
+  - 20:57 landed by 0htsserver in 7.1 min: **Changes made**
 - [x] Modify Assets/Scripts/World/Map/RoadSideElementBuilder.cs so that each road‑side kerb segment gets a slight random height variation, giving the concrete a weathered, hand‑painted look.
   - 20:52 landed by hts-llm in 1.6 min: Modified **RoadSideElementBuilder.cs**:
