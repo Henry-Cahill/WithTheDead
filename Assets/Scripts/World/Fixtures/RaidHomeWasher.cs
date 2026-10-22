@@ -107,8 +107,12 @@ namespace CloneZ
             into.Add(new InteractAction("Open washing machine", OpenDoor)
             .DisabledIf(_drum != null && _drum.IsOpen, "It's already open"));
             // Close the washing machine door after opening it
-            into.Add(new InteractAction("Close washing machine", CloseDoor)
-            .DisabledIf(_drum == null || !_drum.IsOpen, "It's already closed"));
+into.Add(new InteractAction("Close washing machine", CloseDoor)
+                .DisabledIf(_drum == null || !_drum.IsOpen, "It's already closed"));
+            // When the door is open and the wash isn’t running, let the survivor rummage the drum.
+            into.Add(new InteractAction("Search drum", SearchDrum)
+                .DisabledIf(_drum == null || !_drum.IsOpen, "The door is closed")
+                .DisabledIf(_running, "Can't search while the wash is running"));
         }
 
         private void StartWash(InteractContext ctx)
@@ -203,6 +207,28 @@ namespace CloneZ
             else
             {
                 ctx.Notify("There's nothing inside the machine.");
+            }
+        }
+
+        // Search the drum for loot when door is open and machine is not running
+        private void SearchDrum(InteractContext ctx)
+        {
+            if (_drum != null && _drum.IsOpen)
+            {
+                // Attempt to add a cloth rag to the player's inventory
+                bool added = ctx.Inventory?.Inventory.Add(ItemDatabase.Get("ClothRag"), 1, enforceWeight: false) > 0;
+                if (added)
+                {
+                    ctx.Notify("You poke around the drum and pull out a rag of dirty cloth.");
+                }
+                else
+                {
+                    ctx.Notify("Your pack is full – you can’t take the rag right now.");
+                }
+            }
+            else
+            {
+                ctx.Notify("There’s nothing to rummage through.");
             }
         }
 
