@@ -133,6 +133,8 @@ namespace CloneZ
 
         private PlayerAvatar _avatar;
         private PlayerGearVisuals _gearVisuals;
+        private PlayerGear _playerGear;
+        private TimeOfDay _timeOfDay;
         private float _gearLookup;
         private Light _sight;
         private Light _periphery;
@@ -291,11 +293,11 @@ CacheBones();
 
         private void UpdateNight(float dt)
         {
-            TimeOfDay clock = TimeOfDay.Instance;
+            TimeOfDay clock = _timeOfDay ?? (_timeOfDay = TimeOfDay.Instance);
             float level = clock != null ? clock.LightLevel : 1f;
             Night01 = 1f - Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(FullNightLightLevel, FullDayLightLevel, level));
 
-            PlayerGear gear = PlayerGear.Instance;
+            PlayerGear gear = _playerGear ?? (_playerGear = PlayerGear.Instance);
             bool goggles = gear != null && gear.NightVisionOn;
             if (dt > 0f)
                 NightVisionBlend = Mathf.MoveTowards(NightVisionBlend, goggles ? 1f : 0f, dt / NightVisionFadeSeconds);
@@ -458,7 +460,7 @@ CacheBones();
         // The sun (moon by night) must light the survivor's rendering layer too.
         private void PatchSun()
         {
-            TimeOfDay clock = TimeOfDay.Instance;
+            TimeOfDay clock = _timeOfDay ?? (_timeOfDay = TimeOfDay.Instance);
             Light sun = clock != null && clock.Sun != null ? clock.Sun : RenderSettings.sun;
             if (sun == _sun) return;
             UnpatchSun();
