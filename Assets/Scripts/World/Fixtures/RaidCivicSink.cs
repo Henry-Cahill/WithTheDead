@@ -36,7 +36,14 @@ namespace CloneZ
             "The ticking timer on the wall urges you to finish before infection spreads.",
             "The basin’s steel walls reverberate each scrub, a hollow clang that seems to echo the dying breaths of discarded patients.",
 
-        };
+                    "The bitter wind whistles through the cracked window, making the thin‑metal faucet feel like an icy bite.",
+            "A half‑filled bottle of homemade pine‑tar soap splashes onto your hands, leaving a resin‑rich sting.",
+            "The faded health‑poster warns of “ten seconds of thorough scrub” – you count the beats of the old fluorescent hum.",
+            "Your breath fogs the tiny glass pane above the sink; the water runs cold enough to make the copper pipe hiss.",
+            "The sudden clang of a distant gunshot makes your hand tremble, but you keep scrubbing, eyes on the sudsy suds.",
+            "An old newspaper clipping tucked under the sink reads “Keep wounds clean – your life may depend on it.”",
+            "Cold droplets bead on the steel basin, each one catching the dim light like tiny frozen stars.",
+};
 
         private string _name, _key;
         private bool _clinical;

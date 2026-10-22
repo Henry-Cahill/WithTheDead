@@ -524,9 +524,38 @@ namespace CloneZ
             m.Box(new Vector3(-0.210f, ym, z), new Vector3(0.002f, h, 0.01f), M(new Color(0.07f, 0.07f, 0.07f)));
             m.Box(new Vector3(0.013f, ym, z), new Vector3(0.002f, h, 0.01f), M(new Color(0.07f, 0.07f, 0.07f)));
 
+            // Chrome side stiles (existing)
             m.Box(new Vector3(-0.424f, ym, z), new Vector3(0.012f, h, 0.016f), chrome);
             m.Box(new Vector3(0.014f, ym, z), new Vector3(0.012f, h, 0.016f), chrome);
+            // Bottom sweep (existing)
             m.Box(new Vector3(-0.205f, y0 + 0.006f, z), new Vector3(0.426f, 0.012f, 0.014f), chrome);
+
+            // --- New visual‑detail pass ---
+            // Chrome bar‑handles on each stile
+            m.Cylinder(new Vector3(-0.418f, ym, z + 0.009f), 0.006f, 0.08f, 8, chrome, Quaternion.identity); // left handle
+            m.Cylinder(new Vector3(0.008f, ym, z + 0.009f), 0.006f, 0.08f, 8, chrome, Quaternion.identity); // right handle
+
+            // Chrome latch plate and knob at top of door
+            m.Box(new Vector3(-0.205f, y1 - 0.025f, z + 0.009f), new Vector3(0.12f, 0.006f, 0.002f), chrome);
+            m.Cylinder(new Vector3(-0.205f, y1 - 0.015f, z + 0.011f), 0.008f, 0.004f, 8, chrome, Quaternion.identity);
+
+            // Rivets on stiles (two per stile)
+            // left stile rivets
+            m.Cylinder(new Vector3(-0.424f + 0.006f, y0 + 0.22f, z), 0.003f, 0.002f, 8, chrome);
+            m.Cylinder(new Vector3(-0.424f + 0.006f, y1 - 0.22f, z), 0.003f, 0.002f, 8, chrome);
+            // right stile rivets
+            m.Cylinder(new Vector3(0.014f - 0.006f, y0 + 0.22f, z), 0.003f, 0.002f, 8, chrome);
+            m.Cylinder(new Vector3(0.014f - 0.006f, y1 - 0.22f, z), 0.003f, 0.002f, 8, chrome);
+
+            // Subtle wear streak on glass pane
+            m.Box(new Vector3(-0.205f, ym, z + 0.0095f), new Vector3(0.20f, 0.010f, 0.001f), M(new Color(0.10f, 0.10f, 0.10f)));
+
+            // Tiny chrome pull‑knob on inner edge of door
+            m.Cylinder(new Vector3(-0.205f, ym, z - 0.004f), 0.004f, 0.008f, 8, chrome, Quaternion.Euler(90f,0f,0f));
+
+            // Accent line along bottom sweep (just above existing sweep)
+            m.Box(new Vector3(-0.205f, y0 + 0.003f, z), new Vector3(0.426f, 0.002f, 0.004f), chrome);
+
             for (int s = -1; s <= 1; s += 2)
             {
                 m.Box(new Vector3(-0.04f, 1.05f, z + s * 0.024f), new Vector3(0.014f, 0.24f, 0.012f), chrome);

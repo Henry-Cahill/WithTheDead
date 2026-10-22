@@ -166,16 +166,16 @@ namespace CloneZ
             var sb = new SiteBuilder(world, "Checkpoint", boothAt, yaw, rng);
             sb.Solid.Box(new Vector3(0f, 1.2f, 0f), new Vector3(2.4f, 2.4f, 2.4f), ZoneKit.M(ZoneKit.WardenOlive));
             // 50% chance door handle on the front panel (front is –Z after the booth’s yaw)
+                        // rusted lock plate above handle (if present)
             if (ZoneKit.R(rng, 0f, 1f) < 0.5f)
             {
+                // existing handle
                 sb.Solid.Box(new Vector3(0f, 1.2f, -1.22f), new Vector3(0.02f, 0.12f, 0.04f), ZoneKit.Mt(ZoneKit.RustDark));
+                // lock plate
+                sb.Solid.Box(new Vector3(0f, 1.34f, -1.215f), new Vector3(0.12f, 0.02f, 0.02f), ZoneKit.Mt(ZoneKit.RustDark));
             }
-            // 30% chance of a rusted hinge on each side of the door, for a little visual variety.
-            if (ZoneKit.R(rng, 0f, 1f) < 0.3f)
-            {
-                sb.Solid.Box(new Vector3(-0.78f, 0.80f, -1.22f), new Vector3(0.02f, 0.04f, 0.01f), ZoneKit.Mt(ZoneKit.RustDark));
-                sb.Solid.Box(new Vector3(0.78f, 0.80f, -1.22f), new Vector3(0.02f, 0.04f, 0.01f), ZoneKit.Mt(ZoneKit.RustDark));
-            }
+                        // welcome mat on the step
+            sb.Solid.Box(new Vector3(0f, 0.03f, -1.12f), new Vector3(0.8f, 0.02f, 0.4f), ZoneKit.M(new Color(0.55f, 0.45f, 0.30f)));
             // Occasionally add a weathered flag on a short pole for visual variety.
             if (ZoneKit.R(rng, 0f, 1f) < 0.6f)
             {
@@ -185,17 +185,33 @@ namespace CloneZ
                 sb.Solid.Box(new Vector3(0f, 1.02f, -0.6f), new Vector3(0.4f, 0.25f, 0.02f), ZoneKit.M(new Color(0.78f, 0.25f, 0.2f)));
             }
             sb.Solid.Box(new Vector3(0f, 1.6f, -1.21f), new Vector3(1.6f, 0.7f, 0.02f), ZoneKit.Gs(new Color(0.6f, 0.7f, 0.75f)));
-            // left side frame (rusted metal)
-            sb.Solid.Box(new Vector3(-0.79f, 1.6f, -1.21f), new Vector3(0.02f, 0.7f, 0.02f), ZoneKit.Mt(ZoneKit.RustDark));
+            // frosted glass inset in front door
+            sb.Solid.Box(new Vector3(0f, 1.6f, -1.208f), new Vector3(0.9f, 0.45f, 0.001f), ZoneKit.Gs(new Color(0.8f, 0.9f, 1f, 0.3f)));
+                        // wooden bench to the left of the booth
+            // seat
+            sb.Solid.Box(new Vector3(-1.2f, 0.45f, -0.6f), new Vector3(0.9f, 0.07f, 0.35f), ZoneKit.M(ZoneKit.WetWood));
+            // left leg
+            sb.Solid.Rod(new Vector3(-1.65f, 0f, -0.775f), new Vector3(-1.65f, 0.45f, -0.775f), 0.04f, ZoneKit.M(ZoneKit.WetWood), 4);
+            // right leg
+            sb.Solid.Rod(new Vector3(-0.75f, 0f, -0.775f), new Vector3(-0.75f, 0.45f, -0.775f), 0.04f, ZoneKit.M(ZoneKit.WetWood), 4);
             // right side frame (rusted metal)
             sb.Solid.Box(new Vector3(0.79f, 1.6f, -1.21f), new Vector3(0.02f, 0.7f, 0.02f), ZoneKit.Mt(ZoneKit.RustDark));
-            // top lintel (rusted metal)
-            sb.Solid.Box(new Vector3(0f, 2.02f, -1.21f), new Vector3(1.64f, 0.04f, 0.02f), ZoneKit.Mt(ZoneKit.RustDark));
+                        // minor wear variation – scratched paint decal on left door frame
+            if (ZoneKit.R(rng, 0f, 1f) < 0.3f)
+            {
+                sb.Solid.Box(new Vector3(-0.79f, 2.0f, -1.19f), new Vector3(0.02f, 0.1f, 0.001f), ZoneKit.Mt(ZoneKit.Rust));
+            }
             // bottom kick plate (rusted metal)
             sb.Solid.Box(new Vector3(0f, 1.2f, -1.21f), new Vector3(1.64f, 0.04f, 0.02f), ZoneKit.Mt(ZoneKit.RustDark));
             // rusted latch (small bolt)
             sb.Solid.Box(new Vector3(0f, 1.5f, -1.18f), new Vector3(0.04f, 0.02f, 0.04f), ZoneKit.Mt(ZoneKit.RustDark));
-            sb.Roof.Box(new Vector3(0f, 2.5f, 0f), new Vector3(2.8f, 0.15f, 2.8f), ZoneKit.Mt(ZoneKit.RustDark));
+                        // hanging oil lantern from ceiling centre
+            // lantern cage (thin metal cup)
+            sb.Solid.Box(new Vector3(0f, 2.3f, 0f), new Vector3(0.2f, 0.05f, 0.2f), ZoneKit.Mt(ZoneKit.RustDark));
+            // flame effect – a tiny emissive sphere
+            var lantern = ZoneKit.Emit(sb.Solid, "LanternFlame", sb.Root, new Vector3(0f, 2.32f, 0f), ShadowCastingMode.Off);
+            lantern.sharedMaterial = ZoneKit.EmberMaterial(); // already emissive
+            lantern.transform.localScale = Vector3.one * 0.08f;
             sb.Collider(new Vector3(0f, 1.2f, 0f), new Vector3(2.4f, 2.4f, 2.4f));
             // Sandbags and the striped boom across the road.
             for (int i = 0; i < 5; i++) sb.Solid.Box(new Vector3(-1.8f + i * 0.9f, 0.3f, -2.2f), new Vector3(0.85f, 0.6f, 0.5f), ZoneKit.M(new Color(0.48f, 0.43f, 0.33f)));

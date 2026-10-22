@@ -334,12 +334,36 @@ namespace CloneZ
         {
             Color w = new Color(0.86f, 0.86f, 0.84f);
             m.Box(new Vector3(0f, 0.6f, -0.24f), new Vector3(0.44f, 0.36f, 0.18f), G(w));
+            // thin rubber gasket – sits just below the tank
+            m.Box(new Vector3(0f, 0.58f, -0.24f), new Vector3(0.44f, 0.02f, 0.18f), M(Color.black));
             m.Cylinder(new Vector3(0f, 0f, 0.02f), 0.15f, 0.3f, 10, G(w), Quaternion.identity, 1.25f);
             Vector3 handlePos = new Vector3(0.12f, 0.45f, 0.04f) + new Vector3((float)rng.NextDouble() * 0.01f - 0.005f, (float)rng.NextDouble() * 0.02f - 0.01f, 0f);
             Vector3 handleSize = new Vector3(0.02f, 0.04f, 0.01f);
             Quaternion handleRot = Quaternion.Euler(0f, (float)rng.NextDouble() * 10f - 5f, 0f);
             m.Box(handlePos, handleSize, handleRot, Mt(Chrome));
-            m.Ellipsoid(new Vector3(0f, 0.38f, 0.06f), new Vector3(0.38f, 0.08f, 0.46f), G(w), 10, 4);
+            // left bracket for paper roll holder
+            Vector3 leftBracket = new Vector3(-0.18f, 0.55f, -0.30f) + new Vector3((float)rng.NextDouble()*0.004f-0.002f,
+                (float)rng.NextDouble()*0.008f-0.004f,
+                (float)rng.NextDouble()*0.004f-0.002f);
+            m.Box(leftBracket, new Vector3(0.02f, 0.20f, 0.01f), Mt(Chrome));
+            // right bracket for paper roll holder
+            Vector3 rightBracket = new Vector3(0.18f, 0.55f, -0.30f) + new Vector3((float)rng.NextDouble()*0.004f-0.002f,
+                (float)rng.NextDouble()*0.008f-0.004f,
+                (float)rng.NextDouble()*0.004f-0.002f);
+            m.Box(rightBracket, new Vector3(0.02f, 0.20f, 0.01f), Mt(Chrome));
+            // cardboard roll – light‑grey cylinder
+            Vector3 rollPos = new Vector3(0f, 0.58f, -0.32f);
+            m.Cylinder(rollPos, 0.03f, 0.12f, 8, M(new Color(0.78f, 0.78f, 0.76f)));
+                        // flush button plate – centred on front edge of tank
+            Vector3 btnPos = new Vector3(0f, 0.44f, -0.04f) + new Vector3((float)rng.NextDouble()*0.004f-0.002f,
+                (float)rng.NextDouble()*0.006f-0.003f,
+                0f);
+            // optional slight yaw for visual variation
+            Quaternion btnRot = Quaternion.Euler(0f, (float)rng.NextDouble()*6f-3f, 0f);
+            m.Box(btnPos, new Vector3(0.06f, 0.018f, 0.004f), btnRot, Mt(Chrome));
+            // tiny knob on the button
+            Vector3 knobPos = btnPos + new Vector3(0f, 0.01f, 0f);
+            m.Cylinder(knobPos, 0.006f, 0.003f, 6, Mt(Chrome));
             m.Ellipsoid(new Vector3(0f, 0.41f, 0.06f), new Vector3(0.24f, 0.02f, 0.3f), M(new Color(0.3f, 0.32f, 0.3f)), 8, 3);
         }
 

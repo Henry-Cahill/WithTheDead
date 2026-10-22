@@ -20,6 +20,9 @@ namespace CloneZ
         private const float DoorFrameThickness = 0.08f; // thickness of side‑studs and lintel
         private const float DoorLintelHeight = 0.12f; // height of the top lintel piece
         private const int MaxContainers = 450;
+private const float BuildingKerbHeight = 0.12f; // height of concrete kerb
+private const float BuildingKerbWidth = 0.20f; // thickness of kerb slab
+private const float BuildingVergeWidth = 0.60f; // distance of grass verge beyond kerb
 
 
         private static readonly Color[] SidingColors =
@@ -96,7 +99,72 @@ Surf woodMat = DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f));
 site.Overhead.At(chimneyPos).Box(chimneyPos, new Vector3(chimneyBase, chimneyHeight, chimneyBase), Quaternion.identity, woodMat);
             }
         }
-        private static void BuildBuildings(Site site)
+        private static void BuildKerbsAndPoles(Site site)
+        {
+            // iterate every street polyline
+            foreach (Street s in site.Area.Streets)
+            {
+                // skip tunnels/bridges – they already have their own geometry
+                if (s.Data.tunnel) continue;
+                var pts = s.Pts;
+                for (int i = 0; i + 1 < pts.Count; i++)
+                {
+                    Vector2 a = pts[i];
+                    Vector2 b = pts[i + 1];
+                    Vector2 d = (b - a).normalized;
+                    float segLen = Vector2.Distance(a, b);
+                    if (segLen < 0.05f) continue;
+                    // outward normal (right side of anticlockwise polygon)
+                    Vector2 outward = new Vector2(d.y, -d.x);
+                    // ---------- kerb ----------
+                    Vector3 kerbPos = To3((a + b) * 0.5f + outward * (BuildingKerbWidth * 0.5f), BuildingKerbHeight * 0.5f);
+                    Vector3 kerbSize = new Vector3(segLen, BuildingKerbHeight, BuildingKerbWidth);
+                    Quaternion kerbRot = Quaternion.LookRotation(new Vector3(d.x, 0f, d.y));
+                    float kerbYaw = -Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
+                    site.Town.Out.Solid(kerbPos).Box(kerbPos, kerbSize, kerbRot, DecorMaterials.Concrete);
+                    site.Town.PropCollider(kerbPos, kerbSize, kerbYaw);
+                    // ---------- grass verge ----------
+                    Vector3 vergePos = To3((a + b) * 0.5f + outward * (BuildingKerbWidth + BuildingVergeWidth * 0.5f), 0.01f);
+                    Vector3 vergeSize = new Vector3(segLen, 0.02f, BuildingVergeWidth);
+                    var grassMat = DecorPalette.Matte(new Color(0.30f, 0.45f, 0.30f));
+                    site.Town.Out.Solid(vergePos).Box(vergePos, vergeSize, kerbRot, grassMat);
+                    // no collider for grass (player can walk)
+                }
+                // ---------- utility poles ----------
+                const float poleSpacing = 30f;
+                float accumulated = 0f;
+                for (int i = 0; i + 1 < pts.Count; i++)
+                {
+                    Vector2 a = pts[i];
+                    Vector2 b = pts[i + 1];
+                    float segLen = Vector2.Distance(a, b);
+                    Vector2 dir = (b - a).normalized;
+                    while (accumulated + poleSpacing <= segLen)
+                    {
+                        accumulated += poleSpacing;
+                        Vector2 pole2D = a + dir * accumulated;
+                        const float poleHeight = 3.0f;
+                        const float poleRadius = 0.07f;
+                        Vector3 polePos = To3(pole2D, poleHeight * 0.5f);
+                        Vector3 poleSize = new Vector3(poleRadius * 2f, poleHeight, poleRadius * 2f);
+                        var woodMat = DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f));
+                        site.Town.Out.Solid(polePos).Box(polePos, poleSize, 0f, woodMat);
+                        site.Town.PropCollider(polePos, poleSize, 0f);
+                        // optional small cross‑piece for visual interest
+                        const float crossHeight = 1.5f;
+                        const float crossDepth = 0.02f;
+                        const float crossWidth = 0.4f;
+                        Vector3 crossPos = To3(pole2D, poleHeight - crossHeight * 0.5f);
+                        Vector3 crossSize = new Vector3(crossWidth, crossDepth, crossDepth);
+                        site.Town.Out.Solid(crossPos).Box(crossPos, crossSize, 0f, woodMat);
+                        site.Town.PropCollider(crossPos, crossSize, 0f);
+                    }
+                    accumulated = Mathf.Max(0f, accumulated - segLen);
+                }
+            }
+        }
+
+        private static void BuildBuildings(Site site, MapBuild build)
         {
             float half = site.Half;
             var square = Rect.MinMaxRect(-half, -half, half, half);
@@ -128,11 +196,14 @@ site.Overhead.At(chimneyPos).Box(chimneyPos, new Vector3(chimneyBase, chimneyHei
                     var mesh = site.Town.Out.Solid(pos);
                     mesh.SetFrame(pos, Mathf.Atan2(outward.x, outward.y) * Mathf.Rad2Deg);   // DecorProps draws at the frame's origin
                     DecorProps.Mailbox(mesh, rng, false);
-                    mesh.ResetFrame();
+                    // Add porch if applicable
+                    PorchBuilder.Build(site, f, build);
                 }
                 }
             // Once, after the loop: called per footprint it redrew every residential roof's trim for every building.
             BuildRoofEaves(site);
+            // Add concrete kerbs, grass verges, and period‑correct utility poles to every street.
+            BuildKerbsAndPoles(site);
         }
 
         private static void BuildDoorFrame(Site site, Vector2 a, Vector2 d, float doorPos, float doorYaw, Vector2 outward, Surf exterior)
@@ -333,12 +404,14 @@ site.Overhead.At(chimneyPos).Box(chimneyPos, new Vector3(chimneyBase, chimneyHei
         }
 
         // Dark panes about every 3.2 m along a wall, on every storey, clear of the door.
+        private const float WindowFrameThickness = 0.04f; // thickness of wooden window frame strips (metres)
         private static void Windows(Site site, Vector2 a, Vector2 d, Vector2 outward, float len, float height, float doorAt, System.Random rng, Surf outside)
         {
             if (len < 2.4f) return;
             int count = Mathf.Max(1, Mathf.FloorToInt(len / 3.2f));
             float step = len / count;
             Vector3 normal = To3(outward, 0f);
+            var frameMat = DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f));
             for (int k = 0; k < count; k++)
             {
                 float s = step * (k + 0.5f);
@@ -349,6 +422,29 @@ site.Overhead.At(chimneyPos).Box(chimneyPos, new Vector3(chimneyBase, chimneyHei
                 Vector3 c = To3(at, y);
                 RaidMesh m = y < GroundStorey ? site.Town.Out.Solid(c) : site.Overhead.At(c);
                 m.Upright(c, normal, 1.0f, 1.15f, Glass);
+
+                // ---- window frame (four thin wooden strips) ----
+                float winHeight = Storey - 0.2f; // approximate window height used earlier
+                float winWidth = 1.0f; // fixed window width in the existing code
+                float halfThick = WindowFrameThickness * 0.5f;
+                float yaw = -Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
+                // top strip
+                Vector3 topCenter = c + new Vector3(0f, (winHeight * 0.5f) + halfThick, 0f);
+                Vector3 topSize = new Vector3(winWidth + WindowFrameThickness * 2f, WindowFrameThickness, WindowFrameThickness);
+                m.Box(topCenter, topSize, yaw, frameMat);
+                // bottom strip
+                Vector3 botCenter = c + new Vector3(0f, -(winHeight * 0.5f) - halfThick, 0f);
+                Vector3 botSize = topSize;
+                m.Box(botCenter, botSize, yaw, frameMat);
+                // left strip
+                Vector3 leftCenter = c + new Vector3(-(winWidth * 0.5f) - halfThick, 0f, 0f);
+                Vector3 leftSize = new Vector3(WindowFrameThickness, winHeight + WindowFrameThickness * 2f, WindowFrameThickness);
+                m.Box(leftCenter, leftSize, yaw, frameMat);
+                // right strip
+                Vector3 rightCenter = c + new Vector3((winWidth * 0.5f) + halfThick, 0f, 0f);
+                Vector3 rightSize = leftSize;
+                m.Box(rightCenter, rightSize, yaw, frameMat);
+
                 float sillHeight = 0.08f;
                 float sillDepth = 0.02f + 0.02f * (float)rng.NextDouble(); // slight random variation
                 var sillCenter = To3(at, y - sillHeight * 0.5f);

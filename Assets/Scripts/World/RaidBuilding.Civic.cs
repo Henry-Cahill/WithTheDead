@@ -526,6 +526,12 @@ namespace CloneZ
             "BED 2. Admitted 2:40 p.m., fever 103.8. \u201CAgitated. Bit orderly.\u201D Restraints at 7:15. Then nothing.",
             "The chart's been signed off every hour until nine tonight. The last line just says \u201Cmoved to County\u201D.",
             "Name, date of birth, allergies: penicillin. Under observation. Somebody has drawn a line through all of it.",
+            "Temperature dropped to 98.6 °F at midnight, then spiked to 101.2 °F by 4 a.m.; an IV drip was started.",
+            "Patient reported severe cough, chest pain, and a persistent shiver; chest X‑ray pending.",
+            "Blood pressure recorded 110/70, pulse 78; nurse noted “patient breathing shallowly”.",
+            "Medication log shows morphine administered at 02:15 a.m., patient responded with a brief sigh of relief.",
+            "Wound dressing changed; dressing was soaked with dark fluid, nurse marked “possible infection”.",
+            "End‑of‑shift note: “Patient restless, eyes glazed, mutters about snow outside”.",
         };
 
         private static System.Action<InteractContext> s_CivicLookUnder, s_CivicReadChart, s_CivicFreshPaper;

@@ -165,8 +165,29 @@ namespace CloneZ
 m.Rod(b, top, 0.08f, ZoneKit.M(ZoneKit.Bark), 6);
                      // Add a rusty bolt base ellipsoid at the rod's base
                      m.Ellipsoid(new Vector3(b.x, 0.04f, b.z), Vector3.one * 0.02f, ZoneKit.Gl(new Color(0.55f, 0.30f, 0.10f)), 5, 3);
-                     // Add a rusty ellipsoid cap at the top of each main rod
-                     m.Ellipsoid(top, Vector3.one * 0.05f, ZoneKit.Gl(new Color(0.55f, 0.30f, 0.10f)), 5, 3);
+// Add a rusty ellipsoid cap at the top of each main rod
+                      m.Ellipsoid(top, Vector3.one * 0.05f, ZoneKit.Gl(new Color(0.55f, 0.30f, 0.10f)), 5, 3);
+
+                    // Top beam spanning between side rods
+                    m.Box(new Vector3(0f, 2.62f, 0f), new Vector3(2.2f, 0.07f, 0.12f), ZoneKit.M(ZoneKit.Bark));
+
+                    // Vertical side planks attached to each main rod
+                    m.Box(new Vector3(-0.55f, 1.28f, 0f), new Vector3(0.07f, 2.4f, 0.15f), ZoneKit.M(ZoneKit.Bark));
+                    m.Box(new Vector3( 0.55f, 1.28f, 0f), new Vector3(0.07f, 2.4f, 0.15f), ZoneKit.M(ZoneKit.Bark));
+
+                    // Rusted metal latch plate
+                    m.Box(new Vector3(0f, 0.82f, 0.11f), new Vector3(0.18f, 0.08f, 0.03f), ZoneKit.Mt(ZoneKit.Rust));
+                    // Latch knob (rust colour)
+                    m.Ellipsoid(new Vector3(0f, 0.86f, 0.13f), Vector3.one * 0.025f, ZoneKit.Gl(new Color(0.55f, 0.30f, 0.10f)), 5, 3);
+
+                    // Hinge pins on each side rod
+                    m.Rod(new Vector3(-0.55f, 2.58f, 0f), new Vector3(-0.55f, 2.68f, 0f), 0.02f, ZoneKit.Mt(ZoneKit.Rust), 5);
+                    m.Rod(new Vector3( 0.55f, 2.58f, 0f), new Vector3( 0.55f, 2.68f, 0f), 0.02f, ZoneKit.Mt(ZoneKit.Rust), 5);
+
+                    // Subtle rust patches on planks and center board
+                    m.Ellipsoid(new Vector3(-0.55f, 1.9f, 0.05f), Vector3.one * 0.04f, ZoneKit.Gl(new Color(0.55f, 0.30f, 0.10f)), 5, 3);
+                    m.Ellipsoid(new Vector3( 0.55f, 1.2f, -0.04f), Vector3.one * 0.035f, ZoneKit.Gl(new Color(0.55f, 0.30f, 0.10f)), 5, 3);
+                    m.Ellipsoid(new Vector3(0f, 2.0f, 0.06f), Vector3.one * 0.045f, ZoneKit.Gl(new Color(0.55f, 0.30f, 0.10f)), 5, 3);
                 }
                 m.FlatBlob(new Vector3(0f, 0.012f, 0f), Radius, Radius * 0.7f, 0f, 0.2f, rng, ZoneKit.M(new Color(0.18f, 0.16f, 0.14f)));
                 for (int i = 0; i < 6; i++)

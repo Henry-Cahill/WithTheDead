@@ -12,6 +12,7 @@ namespace CloneZ
         /// <summary>The form picked at the door for the next hunter run.</summary>
         public static string Chosen = CreatureCatalog.Shade;
 
+        /// <summary>Returns a description string for the given hunter form identifier.</summary>
         public static string Describe(string id)
         {
             switch (id)
@@ -260,6 +261,7 @@ namespace CloneZ
     {
         private static bool s_Registered;
 
+        /// <summary>Sends a hunter network request to execute the given operation at the specified position, handling both client and server contexts.</summary>
         public static void Call(byte op, Vector3 at)
         {
             if (GameSession.Networked && !NetAuthority.IsServer)
@@ -312,6 +314,7 @@ namespace CloneZ
         private RectTransform _markRoot;
         private Camera _cam;
 
+        /// <summary>Instantiates the hunter HUD, attaches it to a UI slot, and returns the created component.</summary>
         public static HudHunter Create()
         {
             RectTransform slot = HudLayer.Anchor("Hunter", new Vector2(0.5f, 0f), new Vector2(0.5f, 0f), new Vector2(0f, 120f), new Vector2(520f, 60f));

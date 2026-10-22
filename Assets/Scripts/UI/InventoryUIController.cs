@@ -59,6 +59,7 @@ namespace CloneZ
         private UIFader _fader;
         private RectTransform _window;
         private RectTransform _uiCanvasRect;
+        private Rect _canvasRectCache;
 
         private Text _playerHeader;
         private Image _weightMeterFill;
@@ -187,7 +188,12 @@ namespace CloneZ
             if (_tooltipRoot != null) _tooltipRoot.SetActive(false);
         }
 
-        private void PositionTooltip()
+        protected void OnRectTransformDimensionsChange()
+    {
+        if (_uiCanvasRect != null)
+            _canvasRectCache = _uiCanvasRect.rect;
+    }
+private void PositionTooltip()
         {
             if (_uiCanvasRect == null || _tooltipBg == null || _mouse == null) return;
             Vector2 screen = _mouse.position.ReadValue();
@@ -195,7 +201,7 @@ namespace CloneZ
                 return;
 
             Vector2 size = _tooltipBg.sizeDelta;
-            Rect r = _uiCanvasRect.rect;
+            Rect r = _canvasRectCache;
             float x = local.x + 20f;
             float y = local.y - 20f;
             if (x + size.x > r.xMax) x = local.x - 20f - size.x;   // flip to the left near the right edge
@@ -389,11 +395,13 @@ namespace CloneZ
             {
                 Entry e = entries[i];
                 if (e.Kind == EntryKind.Floor)
-                {
-                    if (e.Pile != null && e.Pile.StillThere) _player.PickUp(e.Pile);
-                }
-                else if (Holds(_openInventory, e.Stack))
-                    _openInventory.TransferTo(_player.Inventory, e.Stack, e.Stack.Count, enforceWeight: true);
+                    {
+                        if (e.Pile != null && e.Pile.StillThere) _player.PickUp(e.Pile);
+                    }
+                    else if (Holds(_openInventory, e.Stack))
+                    {
+                        _openInventory.TransferTo(_player.Inventory, e.Stack, e.Stack.Count, enforceWeight: true);
+                    }
             }
             MarkDirty();
         }
@@ -609,7 +617,7 @@ namespace CloneZ
         private void FitWindow()
         {
             if (_window == null || _uiCanvasRect == null) return;
-            Rect r = _uiCanvasRect.rect;
+            Rect r = _canvasRectCache;
             if (r.width <= 0f || r.height <= 0f) return;
             float s = Mathf.Min(1f, (r.width - 16f) / WinW, (r.height - 16f) / WinH);
             _window.localScale = new Vector3(s, s, 1f);
@@ -654,6 +662,7 @@ namespace CloneZ
             canvasGo.AddComponent<GraphicRaycaster>();
             RectTransform root = canvas.GetComponent<RectTransform>();
             _uiCanvasRect = root;
+            _canvasRectCache = _uiCanvasRect.rect;
 
             // Dim modal backdrop.
             _root = new GameObject("Modal");

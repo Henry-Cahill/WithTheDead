@@ -197,10 +197,53 @@ namespace CloneZ
                     Vector3 poleBase = alongX ? new Vector3(fp, 0.78f, fenceAcross) : new Vector3(fenceAcross, 0.78f, fp);
                     town.Out.Solid(poleBase).Cylinder(poleBase, 0.02f, 0.40f, 8,
                         DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
-                    // lantern globe (small box with emissive material)
+                    // small metal foot plate at the bottom of the pole
+                    Vector3 footCenter = poleBase + new Vector3(0f, -0.01f, 0f);
+                    town.Out.Solid(footCenter).Cylinder(footCenter, 0.04f, 0.02f, 12,
+                        DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
+                    // three rivet studs on the pole
+                    for (int i = 0; i < 3; i++)
+                    {
+                        float height = 0.15f + i * 0.10f;
+                        float angle = (float)rng.NextDouble() * Mathf.PI * 2f;
+                        Vector3 offset = new Vector3(Mathf.Cos(angle) * 0.018f, height, Mathf.Sin(angle) * 0.018f);
+                        Vector3 rivetPos = poleBase + offset;
+                        town.Out.Solid(rivetPos).Cylinder(rivetPos, 0.006f, 0.008f, 6,
+                            DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
+                    }
+                    // lantern – 50 % chance of glass‑dome style, otherwise simple box (preserve old look)
                     Vector3 lanternCenter = alongX ? new Vector3(fp, 1.25f, fenceAcross) : new Vector3(fenceAcross, 1.25f, fp);
-                    town.Out.Solid(lanternCenter).Box(lanternCenter, new Vector3(0.12f, 0.12f, 0.12f),
-                        DecorPalette.Glow(new Color(1.0f, 0.85f, 0.60f)));
+                    if (rng.NextDouble() < 0.5)
+                    {
+                        // glass dome
+                        Vector3 domeCenter = lanternCenter;
+                        town.Out.Solid(domeCenter).Sphere(domeCenter, 0.09f,
+                            DecorPalette.Glass(new Color(0.80f, 0.90f, 1.00f, 0.5f)));
+                        // inner candle – small emissive box
+                        Vector3 candleCenter = lanternCenter + new Vector3(0f, -0.04f, 0f);
+                        town.Out.Solid(candleCenter).Box(candleCenter,
+                            new Vector3(0.04f, 0.06f, 0.04f),
+                            DecorPalette.Glow(new Color(1.0f, 0.90f, 0.60f)));
+                        // thin metal rim around dome
+                        town.Out.Solid(domeCenter).Cylinder(domeCenter, 0.095f, 0.004f, 12,
+                            DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
+                    }
+                    else
+                    {
+                        // fallback to original simple lantern box (preserve legacy appearance)
+                        town.Out.Solid(lanternCenter).Box(lanternCenter,
+                            new Vector3(0.12f, 0.12f, 0.12f),
+                            DecorPalette.Glow(new Color(1.0f, 0.85f, 0.60f)));
+                    }
+                    // thin rope (cylinder) from the post cap to the lantern
+                    Vector3 ropeStart = capCenter;
+                    Vector3 ropeEnd = lanternCenter;
+                    Vector3 ropeMid = (ropeStart + ropeEnd) * 0.5f;
+                    float ropeLen = Vector3.Distance(ropeStart, ropeEnd);
+                    // The Cylinder overload aligns to world up, so we use the centred version with height = ropeLen
+                    town.Out.Solid(ropeMid).Cylinder(ropeMid, 0.008f, ropeLen, 8,
+                        DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
+
                 }
             }
             // Add subtle rust‑stain patches on the concrete kerb (20 % chance)

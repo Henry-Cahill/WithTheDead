@@ -14,6 +14,7 @@ namespace CloneZ
         private Vector3 _origin;
         private float _yaw, _halfWidth;
         private bool _lifted;
+        private bool _priceTagTaken;
 
         public override string DisplayName => "Gas pump";
 
@@ -54,7 +55,14 @@ namespace CloneZ
             if (_lifted) {
                 into.Add(new InteractAction("Tap the nozzle", TapNozzle));
                 into.Add(new InteractAction("Check for leak", CheckLeak));
-                into.Add(new InteractAction("Inspect the price tag", c => c.Notify("The rusted price tag reads $1.09 per gallon, a relic of harder times.")));
+                    if (!_priceTagTaken)
+                    {
+                        into.Add(new InteractAction("Take the rusted price tag", TakePriceTag));
+                    }
+                    else
+                    {
+                        into.Add(new InteractAction("Inspect the rusted price tag", c => c.Notify("The rusted price tag reads $1.09 per gallon, a relic of harder times.")));
+                    }
                 into.Add(new InteractAction("Listen to the pump's hum", c => c.Notify("The pump emits a low, mournful hum against the winter wind.")));
                 into.Add(new InteractAction("Feel the cold metal", c => c.Notify("The metal is bitterly cold, frosting your fingertips.")));
                 into.Add(new InteractAction("Observe the frost on the hose", c => c.Notify("A thin layer of frost clings to the hose, glinting in the pale light.")));
@@ -70,6 +78,20 @@ namespace CloneZ
             }
         }
 
+        public override void CaptureState(FixtureSave save)
+        {
+            base.CaptureState(save);
+            save.A = _priceTagTaken ? 1f : 0f;
+            save.B = _lifted ? 1f : 0f;
+        }
+
+        public override void RestoreState(FixtureSave save)
+        {
+            base.RestoreState(save);
+            _priceTagTaken = save.A != 0f;
+            _lifted = save.B != 0f;
+        }
+
         private void ToggleNozzle(InteractContext ctx)
         {
             _lifted = !_lifted;
@@ -79,28 +101,44 @@ namespace CloneZ
                 : "You hang the nozzle back in its cradle with a clunk.");
         }
 
-private void TapNozzle(InteractContext ctx)
-    {
-        if (!_lifted)
+        private void CheckLeak(InteractContext ctx)
         {
-            ctx.Notify("The nozzle is still in its cradle.");
-            return;
+            if (!_lifted)
+            {
+                ctx.Notify("You must lift the nozzle before checking for a leak.");
+                return;
+            }
+            // Play the pump noise for feedback.
+            MakeNoise(CloneZConfig.RaidPumpNoise);
+            ctx.Notify("You inspect the nozzle for a leak. The pump hums but shows no obvious leak.");
         }
-        MakeNoise(CloneZConfig.RaidPumpNoise);
-        ctx.Notify("You give the nozzle a quick tap; it squeaks faintly but nothing else happens.");
-    }
 
-    private void CheckLeak(InteractContext ctx)
-    {
-        if (!_lifted)
+        private void TapNozzle(InteractContext ctx)
         {
-            ctx.Notify("You must lift the nozzle before checking for a leak.");
-            return;
+            if (!_lifted)
+            {
+                ctx.Notify("The nozzle is still in its cradle.");
+                return;
+            }
+            MakeNoise(CloneZConfig.RaidPumpNoise);
+            ctx.Notify("You give the nozzle a quick tap; it squeaks faintly but nothing else happens.");
         }
-        // Play the pump noise for feedback.
-        MakeNoise(CloneZConfig.RaidPumpNoise);
-        ctx.Notify("You inspect the nozzle for a leak. The pump hums but shows no obvious leak.");
-    }
+
+        private void TakePriceTag(InteractContext ctx)
+        {
+            if (!_lifted)
+            {
+                ctx.Notify("You need to lift the nozzle first.");
+                return;
+            }
+            // Give the survivor the price‑tag item.
+            var def = ItemDatabase.Get("price_tag");
+            if (def != null) ctx.Inventory?.Inventory.Add(def, 1, enforceWeight: false);
+            _priceTagTaken = true;
+            // Feedback sound and message.
+            MakeNoise(CloneZConfig.RaidPumpNoise);
+            ctx.Notify("You pry the rusted price tag off the pump and tuck it away.");
+        }
 
     }
 }

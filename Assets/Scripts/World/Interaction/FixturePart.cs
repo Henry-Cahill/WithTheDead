@@ -26,6 +26,7 @@ namespace CloneZ
         private Vector3 _closedPos;      // world position (the pivot) when closed
         private Quaternion _closedRot;   // world rotation when closed
         private float _t, _target;       // 0 closed .. 1 open
+        private float _cachedE; // cached easing value (SmoothStep)
         private float _seconds = CloneZConfig.FixturePartSeconds;
 
         /// <summary>True once the part has been told to open (it may still be moving).</summary>
@@ -107,13 +108,15 @@ namespace CloneZ
         private void Update()
         {
             _t = Mathf.MoveTowards(_t, _target, Time.deltaTime / _seconds);
+            _cachedE = Mathf.SmoothStep(0f, 1f, _t);
             Apply();
             if (Mathf.Approximately(_t, _target)) enabled = false;
         }
 
         private void Apply()
         {
-            float e = Mathf.SmoothStep(0f, 1f, _t);
+            // Use cached easing value instead of recomputing
+            float e = _cachedE;
             if (_motion == Motion.Hinge)
                 transform.SetPositionAndRotation(_closedPos, Quaternion.AngleAxis(_angle * e, _axis) * _closedRot);
             else
@@ -123,7 +126,7 @@ namespace CloneZ
         /// <summary>A world point on the part as it sits right now, given where that point is when closed.</summary>
         public Vector3 CurrentPoint(Vector3 closedWorldPoint)
         {
-            float e = Mathf.SmoothStep(0f, 1f, _t);
+            float e = _cachedE;
             if (_motion == Motion.Hinge)
                 return _closedPos + Quaternion.AngleAxis(_angle * e, _axis) * (closedWorldPoint - _closedPos);
             return closedWorldPoint + _offset * e;

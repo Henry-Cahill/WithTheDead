@@ -382,6 +382,32 @@ namespace CloneZ
                     ZoneKit.M(ZoneKit.V(new Color(0.15f, 0.25f, 0.12f), sb.Rng, 0.01f)));
             }
             sb.Solid.Cylinder(Vector3.zero, 2f, 0.4f, 16, ZoneKit.M(stone));
+            // Iron band near base (0.05 m thick, 0.12 m high, 0.44 m radius)
+            sb.Solid.Cylinder(Vector3.zero + new Vector3(0f, 0.1f, 0f), 0.44f, 0.05f, 12,
+                ZoneKit.M(ZoneKit.V(new Color(0.5f, 0.3f, 0.1f), sb.Rng, 0.02f)));
+            // Iron band mid-height (0.05 m thick, 0.12 m high, 0.44 m radius)
+            sb.Solid.Cylinder(Vector3.zero + new Vector3(0f, 0.9f, 0f), 0.44f, 0.05f, 12,
+                ZoneKit.M(ZoneKit.V(new Color(0.5f, 0.3f, 0.1f), sb.Rng, 0.02f)));
+            // Horizontal beam (0.02 m thick, 0.28 m high, 0.8 m long)
+            sb.Solid.Box(Vector3.zero + new Vector3(0f, 1.6f, 0f),
+                new Vector3(0.8f, 0.02f, 0.28f),
+                ZoneKit.M(ZoneKit.WetWood));
+            // Lantern base (0.15 m square, 0.1 m tall)
+            Vector3 lanternBase = new Vector3(0f, 2.2f, 0f);
+            sb.Solid.Box(lanternBase, new Vector3(0.15f, 0.1f, 0.15f),
+                ZoneKit.M(ZoneKit.V(new Color(0.5f, 0.3f, 0.1f), sb.Rng, 0.02f)));
+            // Lantern glass (transparent grey, no collider needed)
+            sb.Solid.Box(lanternBase + new Vector3(0f, 0.12f, 0f),
+                new Vector3(0.08f, 0.12f, 0.08f),
+                ZoneKit.M(new Color(0.8f, 0.8f, 0.9f, 0.35f)));
+            // Lantern flame light
+            Vector3 flamePos = lanternBase + new Vector3(0f, 0.18f, 0f);
+            ZoneFlameLight.Spawn(sb.Root, flamePos, new Color(1f, 0.6f, 0.3f), 0.8f, 0.2f, 0.05f);
+            // Plaque (0.22 m wide, 0.03 m tall, 0.12 m deep)
+            Vector3 plaquePos = new Vector3(0f, 1.4f, 0.22f);
+            sb.Solid.Box(plaquePos,
+                new Vector3(0.22f, 0.03f, 0.12f),
+                ZoneKit.M(ZoneKit.V(new Color(0.75f, 0.63f, 0.44f), sb.Rng, 0.01f)));
             // Add four weathered rune slabs around the central pillar for subtle visual detail
             for (int i = 0; i < 4; i++)
             {

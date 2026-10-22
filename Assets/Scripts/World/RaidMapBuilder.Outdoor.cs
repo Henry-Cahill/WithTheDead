@@ -145,6 +145,34 @@ namespace CloneZ
                 m.Cylinder(new Vector3(1.25f, 0.45f, 0f), rivetRadius, rivetHeight, 6, DecorPalette.Metal(rust));
             });
             GuardBoothProp(town, new Vector3(9.8f, 0f, -63.5f), 270f);
+            // Add rust‑stained door hardware and wear to the guard‑booth
+            Prop(town,
+                new Vector3(9.8f, 0f, -63.5f), // same world position as the booth
+                270f, // same yaw as the booth
+                new Vector3(2f, 2.4f, 0.6f), // a modest bounding box – matches the booth size
+                true,
+                (m, r) =>
+                {
+                    // rust colour (slightly varied per booth)
+                    Color rust = new Color(0.45f, 0.38f, 0.33f);
+                    // 1️⃣ left hinge – small cylinder on the door edge
+                    // size: radius 0.015 m, height 0.06 m, positioned at (-0.45 m, 0.90 m, 0.28 m) relative to booth centre
+                    m.Cylinder(new Vector3(-0.45f, 0.90f, 0.28f), 0.015f, 0.06f, 6, DecorPalette.Metal(rust));
+                    // 2️⃣ right hinge – mirror of the left hinge
+                    // positioned at (0.45 m, 0.90 m, 0.28 m)
+                    m.Cylinder(new Vector3(0.45f, 0.90f, 0.28f), 0.015f, 0.06f, 6, DecorPalette.Metal(rust));
+                    // 3️⃣ latch – thin rusted bar across the lower front of the door
+                    // size: 0.60 m × 0.02 m × 0.02 m, positioned at (0 m, 0.85 m, 0.31 m)
+                    m.Box(new Vector3(0f, 0.85f, 0.31f), new Vector3(0.60f, 0.02f, 0.02f), DecorPalette.Metal(rust));
+                    // 4️⃣ worn wood strip – a faint crack/tear in the door panel
+                    // size: 0.50 m × 0.02 m × 0.02 m, positioned at (0 m, 0.65 m, 0.33 m)
+                    m.Box(new Vector3(0f, 0.65f, 0.33f), new Vector3(0.50f, 0.02f, 0.02f),
+                        DecorPalette.Matte(new Color(0.32f, 0.23f, 0.18f)));
+                    // 5️⃣ broken glass fragment – a small clear piece near the door top
+                    // size: 0.10 m × 0.12 m × 0.01 m, positioned at (0.20 m, 1.10 m, 0.32 m)
+                    m.Box(new Vector3(0.20f, 1.10f, 0.32f), new Vector3(0.10f, 0.12f, 0.01f),
+                        DecorPalette.Glass(new Color(0.90f, 0.90f, 0.95f)));
+                });
             Wreck(town, new Vector3(-10.5f, 0f, -57f), 0f, DecorProps.CarKind.ArmyTruck, Color.white);
             Vector3 tower = new Vector3(8.6f, 0f, -54f);
             Prop(town, tower, 0f, new Vector3(0.4f, 5f, 0.4f), true, (m, r) =>

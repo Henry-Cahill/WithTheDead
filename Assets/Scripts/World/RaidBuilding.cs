@@ -604,6 +604,45 @@ namespace CloneZ
                 p.Mesh.Box(iciclePos, RunSize(r, 0.02f, 0.08f, 0.02f), ice);
             }
             WindowFrame(p);
+            // Exterior shutters (≈20 % chance) on the outside face of the window.
+            // Exterior shutters (≈20 % chance) on the outside face of the window.
+            int extSide = OutsideSide(r, o.Pos);
+            if (extSide != 0 && Rng.NextDouble() < 0.2)
+            {
+                var woodSurf = DecorPalette.Matte(Casing);
+                float shutterThick = 0.04f; // 4 cm thick
+                float shutterHeight = HeadHeight - SillHeight; // full window height
+                float halfW = w * 0.48f; // each shutter ~48 % of window width
+                // left shutter
+                Vector3 leftPos = RunPoint(r, o.A + halfW * 0.5f, (SillHeight + HeadHeight) * 0.5f, extSide * (Half + shutterThick * 0.5f));
+                p.Mesh.Box(leftPos, new Vector3(halfW, shutterHeight, shutterThick), woodSurf);
+                // right shutter
+                Vector3 rightPos = RunPoint(r, o.B - halfW * 0.5f, (SillHeight + HeadHeight) * 0.5f, extSide * (Half + shutterThick * 0.5f));
+                p.Mesh.Box(rightPos, new Vector3(halfW, shutterHeight, shutterThick), woodSurf);
+            }
+            // Interior curtain rod and simple drape (≈30 % chance) on the inner face.
+            if (extSide != 0 && Rng.NextDouble() < 0.3)
+            {
+                var woodSurf = DecorPalette.Matte(Casing);
+                float rodThick = 0.015f; // 1.5 cm
+                float rodHeight = 0.03f; // 3 cm thick bar
+                // rod positioned near top of window opening
+                Vector3 rodPos = RunPoint(r, o.Pos, HeadHeight - 0.02f, -extSide * (Half + rodThick));
+                p.Mesh.Box(rodPos, new Vector3(w - 0.2f, rodHeight, rodThick), woodSurf);
+                var drapeSurf = DecorPalette.Matte(new Color(0.60f, 0.60f, 0.60f));
+                float drapeW = w - 0.22f;
+                float drapeH = (HeadHeight - SillHeight) * 0.6f;
+                Vector3 drapePos = RunPoint(r, o.Pos, SillHeight + drapeH * 0.5f + 0.02f, -extSide * (Half + rodThick + 0.01f));
+                p.Mesh.Box(drapePos, new Vector3(drapeW, drapeH, 0.02f), drapeSurf);
+            }
+            // Small metal latch on the interior side near lower‑left (≈25 % chance).
+            if (extSide != 0 && Rng.NextDouble() < 0.25)
+            {
+                var metalSurf = DecorPalette.Matte(new Color(0.30f, 0.30f, 0.35f));
+                float latchW = 0.03f, latchH = 0.015f, latchThick = 0.005f;
+                Vector3 latchPos = RunPoint(r, o.A + latchW * 0.5f, SillHeight + 0.05f, -extSide * (Half + latchThick));
+                p.Mesh.Box(latchPos, new Vector3(latchW, latchH, latchThick), metalSurf);
+            }
             int sx = OutsideSide(r, o.Pos);
             if (sx != 0) p.Mesh.Box(RunPoint(r, o.Pos, SillHeight + 0.05f, sx * (Half + 0.04f)), RunSize(r, w + 0.1f, 0.03f, 0.06f), DecorPalette.Matte(DecorProps.SnowWhite));
         }

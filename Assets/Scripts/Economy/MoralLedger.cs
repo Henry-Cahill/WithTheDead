@@ -12,7 +12,7 @@ namespace CloneZ
     {
         public const float SparedSurrendered = 4f, KilledSurrendered = -8f, ListenedToStory = 1.5f, HelpedWounded = 5f,
             GaveToBeggar = 2f, SacrificedSomeone = -15f, RobbedHelpless = -4f, ShotTheReturned = -3f, PaidFamily = 1f,
-            MissedFamily = -2f, ReturnedLostItem = 3f, KilledInnocent = -10f, HintFromGuide = 0.2f;
+            MissedFamily = -2f, ReturnedLostItem = 3f, KilledInnocent = -10f, HintFromGuide = 0.2f, BoughtContraband = 0.03f;
 
         public int Order => 10;
 

@@ -88,6 +88,22 @@ namespace CloneZ
             T("snowblind", "Snowblind", -2, "The fresh‑fallen snow blurs your sight, making distant shapes harder to discern.", m => m.NightVision -= 0.1f),
             T("firewood_hoarder", "Fire‑Wood Hoarder", 1, "Your stash of seasoned firewood keeps the hearth alive through the longest nights.", m => { }),
             T("frostburn", "Frostburn", -1, "Your skin flinches at the slightest chill, turning brief exposure into a shiver.", m => { }),
+            // Kentucky‑winter themed traits – new entries
+            T("radio_static", "Radio Static", 1,
+                "The night broadcast crackles with warnings that make you glance skyward.",
+                m => { }, "superstitious"),
+            T("snowed_in", "Snowed‑In", 2,
+                "A relentless snowdrift seals doors; you learn to improvise shelter inside.",
+                m => m.StaminaDrain *= 0.9f),
+            T("candle_lighter", "Candle‑Lighter", 1,
+                "Your pocket matches light the darkest cellar, reducing panic in blackouts.",
+                m => m.PanicRate *= 0.95f),
+            T("barn_ghost", "Barn Ghost", -2,
+                "Faint hooves haunt the old barn, keeping you alert but tiring your nerves.",
+                m => m.PanicRate *= 1.15f, "nerves"),
+            T("old_map", "Old Map", 1,
+                "A faded map of the county shows forgotten passes, granting a small navigation boost.",
+                m => m.VisibilityMult *= 0.95f),
         };
 
         private static TraitDef T(string id, string name, int cost, string blurb, System.Action<StatMods> apply, params string[] excludes)

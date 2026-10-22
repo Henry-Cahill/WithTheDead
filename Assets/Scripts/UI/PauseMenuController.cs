@@ -134,7 +134,8 @@ private ExtractionManager _em;
         {
             // _gm cached in Awake
             // _em cached in Awake
-bool esc = Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame;
+Keyboard kbEsc = Keyboard.current;
+            bool esc = kbEsc != null && kbEsc.escapeKey.wasPressedThisFrame;
 
             if (_open) TickOpen(esc);
             else

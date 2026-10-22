@@ -21,6 +21,8 @@ namespace CloneZ
 private bool _open;
             private bool _openedToWater;   // opened just for a watering, to be closed again after
             private float _nextCheck;
+            private float _autoCloseAt; // game‑time at which the tap will auto‑close (0 = no timer)
+            private const float AutoCloseDelay = 300f; // 5 minutes in seconds
 
         // Flavor: collection of period‑correct notes that can be read from the tap.
         private static readonly string[] _tapNotes = new[]
@@ -81,6 +83,14 @@ private bool _open;
         {
             if (Time.time < _nextCheck) return;
             _nextCheck = Time.time + CloneZConfig.SwitchSyncInterval;
+            // Auto‑close handling
+            if (_autoCloseAt > 0f && Time.time >= _autoCloseAt)
+            {
+                SetOpen(false, false);
+                _autoCloseAt = 0f;
+                // Give the survivor a cue that the tap shut itself
+                MakeNoise(CloneZConfig.OutsideTapNoise);
+            }
             RefreshTrickle();
         }
 
@@ -111,13 +121,17 @@ private bool _open;
             water.Stopped = c => EndWatering();
             into.Add(water);
 
-            // Flavor: give the survivor a small piece of local lore or a practical tip while inspecting the tap.
-            var readNote = new InteractAction("Read the tap note", c =>
+            // Action to leave the tap open for a limited time, then auto‑close.
+            var autoClose = new InteractAction("Leave tap open for 5 min", c =>
             {
-                int idx = UnityEngine.Random.Range(0, _tapNotes.Length);
-                c.Notify(_tapNotes[idx]);
-            });
-            into.Add(readNote);
+                // Open the tap if it isn’t already.
+                if (!_open) SetOpen(true, false);
+                // Set the auto‑close timer.
+                _autoCloseAt = Time.time + AutoCloseDelay;
+                c.Notify("You leave the tap open; it will shut itself in five minutes.");
+            })
+            .DisabledIf(!_open && !_openedToWater, "The tap is closed – turn it on first.");
+            into.Add(autoClose);
 
             var coil = new InteractAction("Coil the hose", c => c.Notify("You wind the hose back onto its reel, neat as anything. Habit."))
                 .Timed(CloneZConfig.HoseCoilSeconds, "Coiling the hose");
@@ -126,11 +140,12 @@ private bool _open;
         }
 
 
-        private void Turn(InteractContext ctx, bool open)
+private void Turn(InteractContext ctx, bool open)
         {
             _openedToWater = false;
             SetOpen(open, false);
-            if (open && !WaterMains.MainsOn) ctx.Notify("The wheel squeaks round, but nothing comes out \u2014 the water's been shut off.");
+            if (!open) _autoCloseAt = 0f; // cancel any pending auto‑close
+            if (open && !WaterMains.MainsOn) ctx.Notify("The wheel squeaks round, but nothing comes out — the water's been shut off.");
         }
 
         private void SetOpen(bool open, bool instant)
@@ -186,6 +201,7 @@ private bool _open;
             if (!_openedToWater) return;
             _openedToWater = false;
             SetOpen(false, false);
+            _autoCloseAt = 0f; // ensure no stray timer remains
         }
 
         public override void CaptureState(FixtureSave save) => save.State = _open && !_openedToWater ? 1 : 0;

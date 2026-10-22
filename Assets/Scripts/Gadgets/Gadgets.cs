@@ -52,7 +52,9 @@ public float Speed => _vel.magnitude;
         private void OnDisable() => All.Remove(this);
 
         /// <summary>Factory method that creates and configures a new Drone instance.</summary>
-public static Drone Create(DroneKind kind, Vector3 at, float yaw, bool grenade, bool remote)
+        /// <summary>A static factory method that creates a new Drone instance and configures its properties.
+        /// </summary>
+        public static Drone Create(DroneKind kind, Vector3 at, float yaw, bool grenade, bool remote)
         {
             var go = new GameObject(kind == DroneKind.Fpv ? "FPV drone" : "Ground drone");
             go.transform.SetPositionAndRotation(at, Quaternion.Euler(0f, yaw, 0f));
@@ -121,6 +123,8 @@ public static Drone Create(DroneKind kind, Vector3 at, float yaw, bool grenade, 
         }
 
         /// <summary>One frame of piloting: move (x strafe/turn, y forward), lift (FPV only), yaw from the mouse.</summary>
+                /// <summary>One frame of piloting: moves the drone based on player input and updates physics.
+        /// </summary>
         public void Fly(Vector2 move, float lift, float yawDelta, float dt)
         {
             if (IsDead) return;
@@ -161,6 +165,8 @@ public static Drone Create(DroneKind kind, Vector3 at, float yaw, bool grenade, 
         }
 
         /// <summary>Lets the grenade go (FPV): it falls with the drone's speed.</summary>
+                /// <summary>Drops the grenades the drone carries if it has one, using the drone's current velocity.
+        /// </summary>
         public bool DropGrenade(GameObject pilot)
         {
             if (!HasGrenade || IsDead) return false;
@@ -171,6 +177,8 @@ public static Drone Create(DroneKind kind, Vector3 at, float yaw, bool grenade, 
         }
 
         /// <summary>Recover a mounted grenade from this drone and return it to the player’s inventory.</summary>
+                /// <summary>Recovers a mounted grenade from the drone and adds it back to the player's inventory.
+        /// </summary>
         public void RecoverGrenade(Inventory inv)
         {
             if (!HasGrenade) return;
@@ -182,7 +190,9 @@ public static Drone Create(DroneKind kind, Vector3 at, float yaw, bool grenade, 
         }
 
         /// <summary>Handle incoming damage, delegating to network or local processing.</summary>
-public void TakeDamage(in DamageInfo info)
+        /// <summary>Processes incoming damage, delegating to network handling if needed.
+        /// </summary>
+        public void TakeDamage(in DamageInfo info)
         {
             if (IsDead) return;
             if (Remote) { DroneNet.Hit(Owner, info.AmountHp); return; }
@@ -299,6 +309,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
         private bool _visible;
         private float _since;
 
+        /// <summary>Initiates a drone launch, consuming the required item and spawning the drone in the world.</summary>
         public static void Launch(PlayerInventory inv, DroneKind kind)
         {
             if (inv == null || HubRules.SafeZone || Local != null) return;
@@ -313,6 +324,8 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             Take(inv.GetComponent<PlayerStats>(), d);
         }
 
+                /// <summary>Creates and registers a DronePilot component for the specified player stats and drone.
+        /// </summary>
         public static void Take(PlayerStats who, Drone d)
         {
             if (who == null || d == null || Local != null) return;
@@ -402,6 +415,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
         private DroneKind _lastKind = (DroneKind)(-1);
         private bool _firstUpdate = true;
 
+        /// <summary>Creates and registers the on-screen display for the drone, initializing its UI elements.</summary>
         public static HudDrone Create()
         {
             RectTransform root = UIKit.Rect("Drone OSD", HudLayer.Root);
@@ -495,6 +509,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             });
         }
 
+        /// <summary>Sends the local drone state to other clients (or server) at 15 Hz.</summary>
         public static void Send(Drone d)
         {
             if (!NetSession.Active || Time.time < s_SendAt) return;
@@ -529,6 +544,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             d.Push(pos, yaw);
         }
 
+        /// <summary>Notifies other peers that this drone has been removed.</summary>
         public static void Gone()
         {
             if (!NetSession.Active) return;

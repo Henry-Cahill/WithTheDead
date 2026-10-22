@@ -426,6 +426,11 @@ namespace CloneZ
         public void Ellipsoid(Vector3 center, Vector3 size, in Surf s, int segments = 8, int rings = 5)
             => Ellipsoid(center, size, Quaternion.identity, s, segments, rings);
 
+        /// <summary>Creates a perfect sphere at <paramref name="center"/> with given <paramref name="radius"/>.
+        /// Uses the existing Ellipsoid implementation with equal axes.
+        /// </summary>
+        public void Sphere(Vector3 center, float radius, in Surf s) => Ellipsoid(center, new Vector3(radius, radius, radius), s);
+
         /// <summary>A thin straight rod between two local points (branches, pipes, wires, lamp arms).</summary>
         public void Rod(Vector3 a, Vector3 b, float thickness, in Surf s, int sides = 0)
         {

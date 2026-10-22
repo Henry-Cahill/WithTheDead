@@ -63,6 +63,11 @@ namespace CloneZ
             M("frostbite_chill", "Frostbite Chill", "Your skin prickles with frost, reducing your stamina regeneration and increasing thirst.", m => { m.StaminaRegen *= 0.8f; m.ThirstRate *= 1.2f; });
             M("radio_interference", "Radio Interference", "Static buzz overwhelms radios, lowering your detection of nearby sounds.", m => { m.NoiseMult *= 1.15f; });
             M("farm_whispers", "Farm Whispers", "Ghostly whispers from the abandoned farm sap your morale, increasing panic.", m => { m.PanicRate *= 1.25f; });
+                // New winter‑survival exposure marks – style reference:
+                M("shivering_hands", "Shivering Hands", "Your fingers tremble in the bitter cold; every task feels a fraction slower.", m => { m.AimSpread *= 1.08f; m.MoveSpeed *= 0.97f; });
+                M("frostbite_nails", "Frostbite Nails", "Nails in the woodwork bite into your skin through the gloves; you tire faster.", m => { m.StaminaDrain *= 1.12f; });
+                M("radio_hiss", "Radio Hiss", "Cheap radios emit a persistent hiss that masks distant sounds, making you less alert.", m => { m.NoiseMult *= 1.18f; });
+                M("snowdrift_vision", "Snowdrift Vision", "Snow piled against your eyes blurs the world; you see less clearly.", m => { m.VisibilityMult *= 0.92f; });
             foreach (Mark k in Marks)
             {
                 ZoneMarkRegistry.Names[k.Id] = k.Name;

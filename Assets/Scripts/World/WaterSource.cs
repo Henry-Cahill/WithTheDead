@@ -34,6 +34,9 @@ namespace CloneZ
         private Transform _waterFill;               // the barrel's water disc (scales with the level)
 
         private static readonly Color BarrelWater = new Color(0.34f, 0.5f, 0.52f);
+        // Cached material instances for water visual states to avoid per-frame material allocation.
+        private static readonly Material _waterNormalMaterial = _waterNormalMaterial;
+        private static readonly Material _waterFullMaterial = _waterFullMaterial;
         private static WeatherSystem _weather;
 
         // Length of a full day in hours; used to correct rain‑fill timing when the clock wraps.
@@ -320,7 +323,7 @@ namespace CloneZ
             var water = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             water.name = "Water";
             water.transform.SetParent(transform, false);
-            water.GetComponent<Renderer>().sharedMaterial = CloneZUtil.Mat(BarrelWater, smoothness: 0.7f);
+            water.GetComponent<Renderer>().sharedMaterial = _waterNormalMaterial;
             Strip(water);
             _waterFill = water.transform;
         }
@@ -405,8 +408,8 @@ namespace CloneZ
             var rend = _waterFill.GetComponent<Renderer>();
             if (rend != null)
                 rend.sharedMaterial = level >= 0.99f
-                    ? CloneZUtil.Mat(new Color(0.55f, 0.75f, 0.65f), smoothness: 0.8f)
-                    : CloneZUtil.Mat(BarrelWater, smoothness: 0.7f);
+                    ? _waterFullMaterial
+                    : _waterNormalMaterial;
         }
         #endregion
     }

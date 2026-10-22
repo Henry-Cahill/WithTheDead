@@ -137,28 +137,38 @@ namespace CloneZ
 
         // Body warmth eases toward the ambient target (air temperature / shelter / rain) plus clothing,
         // minus the chill of being wet, plus a shelter bonus while sleeping.
-        private void UpdateTemperature(float dt)
+        private Vector3 _lastWarmthPos;
+    private float _cachedWarmth;
+
+    private void UpdateTemperature(float dt)
+    {
+        // Update cached warmth from HomeComfort only when the player moves significantly.
+        Vector3 curPos = transform.position;
+        if ((curPos - _lastWarmthPos).sqrMagnitude > 0.0001f) // movement threshold (~0.01 units)
         {
-            float clothingWarmth = Clothing != null ? Clothing.TotalInsulation(_stats.Wetness) : 0f;
-            float shelter = (Sleep != null && Sleep.IsSleeping) ? CloneZConfig.TempShelterWarmth : 0f;
-
-            float target = AmbientTemperature()
-                + clothingWarmth
-                - _stats.Wetness * CloneZConfig.TempWetChill
-                + shelter
-                + HomeComfort.WarmthAt(transform.position);   // a lit burner, a hot shower close by
-            // Do not clamp – the target can be negative (freezing) or >1 (overheating)
-            target = target;
-            Target = target;
-
-            if (Climate.Winter)
-                _stats.Temperature = Mathf.Lerp(_stats.Temperature, target, 1f - Mathf.Exp(-dt / WinterResponseSeconds));
-            else
-                _stats.Temperature = Mathf.MoveTowards(_stats.Temperature, target, CloneZConfig.TempAdjustPerSec * dt);
-
-            // Update cached level and descriptor after temperature may have changed
-            UpdateLevelCache();
+            _cachedWarmth = HomeComfort.WarmthAt(curPos);
+            _lastWarmthPos = curPos;
         }
+
+        float clothingWarmth = Clothing != null ? Clothing.TotalInsulation(_stats.Wetness) : 0f;
+        float shelter = (Sleep != null && Sleep.IsSleeping) ? CloneZConfig.TempShelterWarmth : 0f;
+
+        float target = AmbientTemperature()
+            + clothingWarmth
+            - _stats.Wetness * CloneZConfig.TempWetChill
+            + shelter
+            + _cachedWarmth;   // cached warmth source
+        // Do not clamp – the target can be negative (freezing) or >1 (overheating)
+        Target = target;
+
+        if (Climate.Winter)
+            _stats.Temperature = Mathf.Lerp(_stats.Temperature, target, 1f - Mathf.Exp(-dt / WinterResponseSeconds));
+        else
+            _stats.Temperature = Mathf.MoveTowards(_stats.Temperature, target, CloneZConfig.TempAdjustPerSec * dt);
+
+        // Update cached level and descriptor after temperature may have changed
+        UpdateLevelCache();
+    }
 
         // The naked, dry ambient a body would settle at: the air temperature on the warmth scale (the
         // milder air inside a building), may fall below 0 (extreme cold) or rise above 1 (extreme heat),

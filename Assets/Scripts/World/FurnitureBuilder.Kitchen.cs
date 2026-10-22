@@ -334,6 +334,36 @@ for (int i = 0; i < 7; i++)
                 // Upright the sign texture on the front face.
                 m.Upright(boardPos + new Vector3(0f, boardHeight * 0.5f, 0.005f), Vector3.forward, boardWidth, boardHeight, boardSurf, new Rect(0f, 0f, 1f, 1f));
             }
+            // Materials for the new counter items
+            Surf glass = Gs(new Color(0.92f, 0.94f, 0.97f)); // clear glass for spice jars
+            Surf copper = Mt(new Color(0.72f, 0.42f, 0.24f)); // copper for the pot
+            Surf rag = M(new Color(0.78f, 0.71f, 0.57f)); // worn kitchen‑cloth colour
+            // Three spice‑jar cylinders (radius 0.035 m, height 0.08 m) on the left side of the top.
+            for (int i = 0; i < 3; i++)
+            {
+                float x = -0.45f + i * 0.07f;
+                Color tint = new Color(
+                    0.92f + R(rng, -0.02f, 0.02f),
+                    0.94f + R(rng, -0.02f, 0.02f),
+                    0.97f + R(rng, -0.02f, 0.02f));
+                Surf jarSurf = Gs(tint);
+                m.Cylinder(new Vector3(x, 0.94f, -0.18f), 0.035f, 0.08f, 12, jarSurf);
+            }
+            // Copper pot (a short cylinder) near the right edge of the counter.
+            m.Cylinder(new Vector3(0.42f, 0.94f, 0.20f), 0.05f, 0.06f, 12, copper);
+            // Folded rag: a thin rectangular slab (0.12 m × 0.08 m × 0.005 m)
+            m.Box(new Vector3(-0.55f, 0.94f, -0.12f), new Vector3(0.12f, 0.005f, 0.08f), rag);
+            // Vintage kitchen timer centered on the worktop.
+            float timerY = 0.94f;
+            Surf timerSurf = Mt(Chrome * 0.85f);
+            // Timer base
+            m.Box(new Vector3(0f, timerY, 0f), new Vector3(0.07f, 0.008f, 0.07f), timerSurf);
+            // Timer dial (thin disc)
+            m.Cylinder(new Vector3(0f, timerY + 0.004f, 0f), 0.032f, 0.002f, 12, timerSurf);
+            // Two hands – a longer minute hand and a shorter hour hand
+            m.Box(new Vector3(0f, timerY + 0.005f, 0f), new Vector3(0.004f, 0.001f, 0.025f), timerSurf);
+            m.Box(new Vector3(0f, timerY + 0.0055f, 0f), new Vector3(0.004f, 0.001f, 0.015f), timerSurf);
+
 
             // A crock of wooden spoons at the far end, beyond the radio.
             Surf wood = M(new Color(0.55f, 0.38f, 0.20f));

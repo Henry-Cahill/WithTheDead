@@ -139,8 +139,8 @@ namespace CloneZ
         protected override void BuildContent()
         {
             CharacterProfile c = Character;
-            Hideout.InitModules(c);
-            foreach (string n in Hideout.Tick(c)) SetStatus(n);
+            if (c == null) return;
+            HideoutInitHelper.EnsureInitialized(c);
             RectTransform[] cols = HubUI.Columns(Body, 16f, 1f, 1.1f);
             HubUI.Card(cols[0]);
             RectTransform mods = HubUI.Scroll(cols[0], 0f, 0f, 6f);

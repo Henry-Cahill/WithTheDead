@@ -251,6 +251,30 @@ bool leftSide = rng.Next(2) == 0;
                 }
                 case HomeFurnitureKind.Bookshelf:
                     FurnitureBuilder.Bookshelf(m, rng, FurnitureBuilder.Oak, 1);
+                    // metal brackets – thin vertical supports near the top edges
+                    bool leftBracket = rng.Next(2) == 0;
+                    float bracketX = leftBracket ? -0.42f : 0.42f; // relative to centre
+                    Vector3 bracketPos = new Vector3(bracketX, 0.9f, 0.15f);
+                    Vector3 bracketSize = new Vector3(0.02f, 0.25f, 0.02f);
+                    m.Box(bracketPos, bracketSize, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
+                    // thin top trim – metal strip along the front top edge
+                    Vector3 topTrimPos = new Vector3(0f, 1.79f, 0f);
+                    Vector3 topTrimSize = new Vector3(0.9f, 0.02f, 0.02f);
+                    m.Box(topTrimPos, topTrimSize, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
+                    // back panel – thin wooden board covering the back of the shelf
+                    Vector3 backPanelPos = new Vector3(0f, 0.89f, -0.16f);
+                    Vector3 backPanelSize = new Vector3(0.9f, 1.78f, 0.005f);
+                    m.Box(backPanelPos, backPanelSize, DecorPalette.Matte(FurnitureBuilder.Oak));
+                    // side label – tiny metal plaque near middle height
+                    Vector3 labelPos = new Vector3(-0.44f, 0.6f, 0f);
+                    Vector3 labelSize = new Vector3(0.05f, 0.008f, 0.02f);
+                    m.Box(labelPos, labelSize, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
+                    // wood scuff – darkened patch near bottom left
+                    bool scuffLeftBs = rng.Next(2) == 0;
+                    float scuffXB = scuffLeftBs ? -0.35f : 0.35f;
+                    Vector3 scuffPosBs = new Vector3(scuffXB, 0.07f, 0f);
+                    Vector3 scuffSizeBs = new Vector3(0.08f, 0.02f, 0.02f);
+                    m.Box(scuffPosBs, scuffSizeBs, DecorPalette.Matte(new Color(0.45f, 0.38f, 0.30f)));
                     break;
                 case HomeFurnitureKind.Armchair:
                     FurnitureBuilder.Sofa(m, rng, 0.95f, Fabrics[rng.Next(Fabrics.Length)]);

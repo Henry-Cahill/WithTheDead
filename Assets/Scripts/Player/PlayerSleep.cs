@@ -76,11 +76,13 @@ namespace CloneZ
 
             if (IsSleeping) { TickSleep(); return; }
 
-            // Looked up every frame: the bed's 2.6 m reach is too short for a 1 m movement threshold, and beds
-            // can be built or torn down while the survivor stands still.
-            _cachedBed = SleepSpot.Nearest(transform.position, CloneZConfig.SleepRange, out _);
-            _lastPos = transform.position;
-            NearBed = _cachedBed != null;
+// Cached nearest bed lookup: only recompute when the player moved more than the threshold or when no cached bed exists.
+if ((_lastPos - transform.position).sqrMagnitude > BedCacheThresholdSqr || _cachedBed == null)
+{
+    _cachedBed = SleepSpot.Nearest(transform.position, CloneZConfig.SleepRange, out _);
+    _lastPos = transform.position;
+}
+NearBed = _cachedBed != null;
 
             if (NearBed && !UIState.GameplayBlocked)
             {

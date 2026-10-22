@@ -187,11 +187,15 @@ namespace CloneZ
                 into.Add(new InteractAction("Held by " + Factions.NameOf(Owner), null).DisabledIf(true, "Your side holds it"));
                 // Owner can voluntarily abandon the outpost, reverting it to neutral (Vanguard) ownership.
                 into.Add(new InteractAction("Abandon outpost", Abandon).Timed(3f, "Tearing down the flag…"));
+                // Show a quick status summary for any player.
+                into.Add(new InteractAction("Outpost status", ShowStatus));
                 return;
             }
             CanBeTaken(out string reason);
             into.Add(new InteractAction("Raise the " + Factions.NameOf(me.Faction) + " flag", Capture)
                 .Timed(8f, "Raising the flag...").DisabledIf(reason != null, reason));
+            // Show a quick status summary for any player.
+            into.Add(new InteractAction("Outpost status", ShowStatus));
         }
 
         /// <summary>Unix timestamp until which the outpost remains locked.</summary>
@@ -256,6 +260,31 @@ Taken(me.Faction, ProfileStore.NowUnix + (long)OutpostSystem.LockSeconds, true, 
             _state.Owner = owner;
             _state.LockedUntilUnix = lockedUntil;
             Recolour();
+        }
+
+        /// <summary>Displays a toast with owner, lock time left and living garrison count.</summary>
+        private void ShowStatus(InteractContext ctx)
+        {
+            // Owner name
+            string ownerName = Factions.NameOf(Owner);
+            // Remaining lock time in minutes
+            long now = ProfileStore.NowUnix;
+            long remaining = LockedUntil > now ? LockedUntil - now : 0;
+            string lockInfo = remaining > 0 ? $"{Mathf.CeilToInt(remaining / 60f)} min left" : "none";
+            // Living garrison count
+            int alive = CountAliveGarrison();
+            string msg = $"Outpost owned by {ownerName}. Lock: {lockInfo}. Guarding: {alive} survivor{(alive == 1 ? "" : "s")}.";
+            GameEvents.RaiseToast(msg);
+        }
+
+        /// <summary>Returns the number of garrison NPCs that are still alive and not surrendered.</summary>
+        private int CountAliveGarrison()
+        {
+            int cnt = 0;
+            foreach (var g in _garrison)
+                if (g != null && !g.IsDead && !g.Actor.Surrendered && !g.Actor.Restrained)
+                    cnt++;
+            return cnt;
         }
     }
 

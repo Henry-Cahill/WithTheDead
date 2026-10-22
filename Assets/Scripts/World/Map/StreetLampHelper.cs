@@ -5,62 +5,67 @@ namespace CloneZ
 {
     internal static class StreetLampHelper
     {
-        // Builds a simple pole + lamp head, adds a collider and a point light.
-        // 'parent' is the OutdoorBatches to receive the geometry.
-        // 'pos' is world‑space (x,z) at ground level; y will be raised to StreetY.
-        internal static void PlaceLamp(OutdoorBatches parent, KentuckyMap.Site site, Vector2 pos, float yaw)
-        {
-            // Reserve a small radius so lamps don’t overlap other props.
-            const float radius = 0.25f;
-            const float baseHeight = 0.15f; // concrete slab thickness
-            const float baseSize = 0.3f; // square footprint of the slab
-            if (!site.Free(new Vector2(pos.x, pos.y), radius)) return;
-            site.Take(new Vector2(pos.x, pos.y), radius);
+// Helper to convert 2‑D map coords to 3‑D world coords (y is up).
+    private static Vector3 To3(Vector2 v, float y) => new Vector3(v.x, y, v.y);
 
-            // Deterministic variation based on world position (without reseeding everyone else's UnityEngine.Random).
-            int seed = ((int)(pos.x * 73856093f)) ^ ((int)(pos.y * 19349663f));
-            Random.State savedRandom = Random.state;
-            Random.InitState(seed);
-            float yawJitter = (Random.value - 0.5f) * 10f; // ±5°
-            float variedYaw = yaw + yawJitter;
-            float poleHeight = 3f + (Random.value - 0.5f) * 0.1f; // ±0.05 m
-            Random.state = savedRandom;
+    // Emissive surface for the bulb – uses the colour already defined in KentuckyMap.
+    private static readonly Surf LampLightSurf = DecorPalette.Gloss(KentuckyMap.StreetLampLightColor);
 
-            // Concrete base: a short square box on the ground.
-            var baseCenter = new Vector3(pos.x, KentuckyMap.StreetY + baseHeight / 2f, pos.y);
-            var baseObj = parent.Solid(baseCenter);
-            baseObj.Box(baseCenter, new Vector3(baseSize, baseHeight, baseSize), 0f, KentuckyMap.StreetLampMetal);
-            var poleCenter = new Vector3(pos.x,
-                KentuckyMap.StreetY + baseHeight + poleHeight / 2f,
-                pos.y);
-            var pole = parent.Solid(poleCenter);
-            pole.Box(poleCenter, new Vector3(0.1f, poleHeight, 0.1f), variedYaw, KentuckyMap.StreetLampMetal);
-            // Lamp head: positioned near the top of the pole.
-            var headCenter = new Vector3(pos.x, KentuckyMap.StreetY + poleHeight - 0.1f, pos.y);
-            var head = parent.Solid(headCenter);
-            head.Box(headCenter, new Vector3(0.5f, 0.2f, 0.5f), variedYaw, KentuckyMap.StreetLampMetal);
-            // Snow mound: a low, wide disc to suggest packed snow.
-            var snowCenter = new Vector3(pos.x, KentuckyMap.StreetY + baseHeight + 0.02f, pos.y);
-            var snow = parent.Solid(snowCenter);
-            snow.Box(snowCenter, new Vector3(0.6f, 0.04f, 0.6f), 0f, KentuckyMap.StreetLampMetal);
-            // Add a simple point light (warm yellow, short range, subtle flicker).
-            site.Town.Light(site.Town.World,
-                new Vector3(pos.x,
-                    KentuckyMap.StreetY + baseHeight + poleHeight + 0.5f,
-                    pos.y),
-                KentuckyMap.StreetLampLightColor,
-                5f, // range
-                0.3f, // base intensity
-                true, // enable subtle flicker
-                false); // no shadows
-            // Collider so the player can’t walk through the pole.
-            // Collider so the player can’t walk through the pole and base.
-            site.Town.PropCollider(
-                new Vector3(pos.x,
-                    KentuckyMap.StreetY + baseHeight + poleHeight / 2f,
-                    pos.y),
-                new Vector3(0.2f, poleHeight + baseHeight, 0.2f),
-                0f);
-        }
+    /// <summary>
+    /// Builds a period‑correct 1993‑style street lamp at the given map position.
+    /// All parts are simple boxes (≤ 5 primitives) and reuse existing materials.
+    /// </summary>
+    public static void PlaceLamp(OutdoorBatches parent, KentuckyMap.Site site, Vector2 pos, float yaw)
+    {
+        // Reserve a small radius so lamps don’t overlap other props.
+        const float radius = 0.30f; // extra space for icicle
+        const float baseHeight = 0.10f; // concrete slab thickness
+        const float baseSize = 0.30f; // square footprint of the slab
+        if (!site.Free(new Vector2(pos.x, pos.y), radius)) return;
+        site.Take(new Vector2(pos.x, pos.y), radius);
+
+        // Concrete base – short squat box.
+        var baseCenter = To3(pos, KentuckyMap.StreetY + baseHeight / 2f);
+        var baseObj = parent.Solid(baseCenter);
+        baseObj.Box(baseCenter, new Vector3(baseSize, baseHeight, baseSize), 0f, KentuckyMap.StreetLampMetal);
+
+        // Tall pole.
+        const float poleHeight = 2.40f;
+        var poleCenter = To3(pos, KentuckyMap.StreetY + baseHeight + poleHeight / 2f);
+        var pole = parent.Solid(poleCenter);
+        pole.Box(poleCenter, new Vector3(0.07f, poleHeight, 0.07f), yaw, KentuckyMap.StreetLampMetal);
+
+        // Horizontal arm – supports the shade.
+        const float armY = poleHeight - 0.30f; // 0.30 m below pole top
+        var armCenter = To3(pos, KentuckyMap.StreetY + baseHeight + armY);
+        var arm = parent.Solid(armCenter);
+        arm.Box(armCenter, new Vector3(0.02f, 0.02f, 0.60f), yaw, KentuckyMap.StreetLampMetal);
+
+        // Light shade – small glowing cube.
+        const float shadeY = poleHeight - 0.25f;
+        // Offset outward along road direction.
+        Vector2 offset2D = Quaternion.Euler(0f, yaw, 0f) * new Vector2(0.60f, 0f);
+        var shadePos2D = pos + offset2D;
+        var shadeCenter = To3(shadePos2D, KentuckyMap.StreetY + baseHeight + shadeY);
+        var shade = parent.Solid(shadeCenter);
+        shade.Box(shadeCenter, new Vector3(0.20f, 0.20f, 0.20f), yaw, LampLightSurf);
+
+        // Metal cap – non‑emissive top of the shade.
+        var capCenter = shadeCenter + new Vector3(0f, 0.12f, 0f);
+        var cap = parent.Solid(capCenter);
+        cap.Box(capCenter, new Vector3(0.22f, 0.02f, 0.22f), yaw, KentuckyMap.StreetLampMetal);
+
+        // Add a point light (warm yellow).
+        site.Town.Light(site.Town.World,
+            new Vector3(pos.x, KentuckyMap.StreetY + baseHeight + poleHeight + 0.5f, pos.y),
+            KentuckyMap.StreetLampLightColor,
+            5f, 0.3f, true, false);
+
+        // Collider so the player can’t walk through the pole.
+        site.Town.PropCollider(
+            new Vector3(pos.x, KentuckyMap.StreetY + baseHeight + poleHeight / 2f, pos.y),
+            new Vector3(0.2f, poleHeight + baseHeight, 0.2f),
+            0f);
+    }
     }
 }

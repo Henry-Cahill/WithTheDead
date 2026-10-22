@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +13,9 @@ namespace CloneZ
         private const int LitPoles = 10;
         private const int MaxCars = 70;
         private const int MaxTrees = 1200;
-        private const int MaxSigns = 30;
+        private const int MaxHydrants = 70; // upper bound of hydrants placed per map
+        private const float HydrantSpacing = 30f; // metres between successive hydrants on a street
+        private const int MaxSigns = 30; // existing limit for signage
         // Upper bound for litter/ trash‑bag props placed in park areas.
         private const int MaxParkProps = 200;
 
@@ -77,6 +80,46 @@ namespace CloneZ
             }
         }
 
+        private static void BuildHydrants(Site site)
+        {
+            var rng = new System.Random(site.Town.Rng.Next());
+            var placed = 0;
+            foreach (Street s in site.Area.Streets)
+            {
+                if (!TownStreet(s.Data.kind) || s.Data.tunnel || s.Data.bridge) continue;
+                float side = 1f;
+                float walked = HydrantSpacing * 0.5f; // start half-spacing in from street start
+                for (int i = 0; i + 1 < s.Pts.Count && placed < MaxHydrants; i++)
+                {
+                    Vector2 a = s.Pts[i], b = s.Pts[i + 1];
+                    float segLen = Vector2.Distance(a, b);
+                    if (segLen < 0.05f) continue;
+                    Vector2 dir = (b - a) / segLen;
+                    Vector2 normal = new Vector2(-dir.y, dir.x); // left-hand normal
+                    while (walked <= segLen && placed < MaxHydrants)
+                    {
+                        float offsetFromRoad = R(rng, 0.6f, 1.2f);
+                        Vector2 at = a + dir * walked + normal * (s.Data.width * 0.5f + offsetFromRoad) * side;
+if (site.Free(at, 0.6f))
+{
+    float yaw = side * 90f + R(rng, -10f, 10f); // hydrant faces the curb, jittered
+    Vector3 at3 = To3(at, 0f);
+    RaidMesh m = site.Town.Out.Solid(at3);
+    m.SetFrame(at3, yaw);
+    DecorProps.Hydrant(m, rng);
+    m.ResetFrame();
+    site.Town.PropCollider(at3 + Vector3.up * 0.9f,
+        new Vector3(0.4f, 1.8f, 0.4f), yaw);
+    site.Take(at, 0.6f);
+    placed++;
+    side = -side; // alternate side for next hydrant on this segment
+}
+walked += HydrantSpacing;
+                    }
+                    walked -= segLen;
+                }
+            }
+        }
         private static void BuildStreetLights(Site site)
         {
             var poles = new List<(Vector2 at, float yaw)>();
@@ -124,6 +167,7 @@ namespace CloneZ
         private static void BuildAllProps(Site site)
         {
             BuildStreetLights(site);
+            BuildHydrants(site); // <-- new line
             BuildParkedCars(site);
             BuildTrees(site);
             BuildPoints(site);

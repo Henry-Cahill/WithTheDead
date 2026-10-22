@@ -43,7 +43,7 @@ namespace CloneZ
         public float HealthNormalized => Mathf.Clamp01(Health / CloneZConfig.HealthMax);
         /// <summary>Normalized infection level (0..1) based on the configured maximum.</summary>
         public float InfectionNormalized => Mathf.Clamp01(Infection / CloneZConfig.InfectionMax);
-        /// <summary>Normalized Pain (0..1) based on the configured maximum.<//summary>
+        
         /// <summary>Normalized panic (0..1) based on the configured maximum.</summary>
         public float PanicNormalized => Mathf.Clamp01(Panic / CloneZConfig.PanicMax);
         /// <summary>Normalized sickness (0..1) based on the configured maximum.</summary>
@@ -123,6 +123,7 @@ public float SicknessMoveMultiplier =>
         private StatMods _cachedMods;
         private SandboxSettings _cachedSandbox;
         private TimeOfDay _cachedTOD;
+        private bool _cachedSafeZone;
 
         private void Awake()
         {
@@ -137,11 +138,12 @@ public float SicknessMoveMultiplier =>
             _cachedMods = PlayerModifiers.Current;
             _cachedSandbox = SandboxSettings.Current;
             _cachedTOD = TimeOfDay.Instance;
+            _cachedSafeZone = HubRules.SafeZone;
             float dt = Time.deltaTime;
 
             UpdateEndurance(dt);
             // The hub is a safe, warm room: needs don't tick down while you trade and talk.
-            if (!HubRules.SafeZone)
+            if (!_cachedSafeZone)
             {
                 UpdateSurvival(dt);
                 UpdateFatigue(dt);
@@ -324,10 +326,11 @@ public void TakeDamage(in DamageInfo info)
             if (Health <= 0f) Die("was torn apart");
         }
 
-        /// <summary>Attempts to consume endurance; returns false if none left.</summary>
+        /// <summary>Attempts to consume the given amount of endurance; returns true only if enough endurance was available.</summary>
 public bool TryConsumeEndurance(float amount)
         {
-            if (Endurance <= 0f) return false;
+            if (amount <= 0f) return false; // nothing to consume
+            if (Endurance < amount) return false; // not enough endurance
             Endurance = Mathf.Clamp01(Endurance - amount);
             return true;
         }

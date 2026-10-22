@@ -25,6 +25,9 @@ namespace CloneZ
         private Actor _for;
         private Camera _cachedCam;
         private UniversalAdditionalCameraData _cachedData;
+        // Cached singleton lookups
+        private GameSettings _settingsCache;
+        private Actor _playerCache;
         // Caching previous frame values to reduce redundant post-processing updates
         private float _lastBrightness;
         private bool _lastMotionBlur;
@@ -80,7 +83,7 @@ namespace CloneZ
                 }
             }
             if (_cachedData != null && !_cachedData.renderPostProcessing) _cachedData.renderPostProcessing = true;
-            Actor me = Actor.LocalPlayer;
+            Actor me = _playerCache ??= Actor.LocalPlayer;
             if (me != _for)
             {
                 _for = me;
@@ -88,7 +91,7 @@ namespace CloneZ
                 _stats = me != null ? me.GetComponent<PlayerStats>() : null;
                 _gear = me != null ? me.GetComponent<PlayerGear>() : null;
             }
-            GameSettings g = GameSettings.Current;
+            GameSettings g = _settingsCache ??= GameSettings.Current;
             bool body = ViewState.Current == CameraView.Bodycam;
             bool eyes = ViewState.FirstPersonLike;
 
@@ -193,6 +196,9 @@ namespace CloneZ
         private bool _filterShown;
         private int _filterPct = -1;
         private static Texture2D s_Cracks, s_Fog;
+        // Cached singleton lookups
+        private GameSettings _settingsCache;
+        private Actor _playerCache;
 
         public static GasVisorOverlay Create(PlayerStats p)
         {
@@ -390,6 +396,10 @@ namespace CloneZ
         private int _timeH = -1, _timeM = -1;
         private bool _filterShown;
         private int _filterPct = -1;
+        // Cached singleton lookups
+        private GameSettings _settingsCache;
+        private Actor _playerCache;
+        private TimeOfDay _todCache;
 
         public static DiegeticWatch Create(PlayerStats p)
         {
@@ -425,10 +435,10 @@ UIKit.Place(buckle.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5
         private void Update()
         {
             if (Time.time > _check) { _check = Time.time + 1f; _wearing = _inv != null && _inv.Has("watch_wrist"); }
-            bool show = _wearing && GameSettings.Current.Hud == HudMode.Diegetic && UIScreen.Current == null;
+            bool show = _wearing && _settingsCache?.Hud == HudMode.Diegetic && UIScreen.Current == null;
             _canvas.enabled = show;
             if (!show) return;
-            TimeOfDay t = TimeOfDay.Instance;
+            TimeOfDay t = _todCache ??= TimeOfDay.Instance;
             if (t != null)
             {
                 int h = Mathf.FloorToInt(t.Hour), m = Mathf.FloorToInt((t.Hour - h) * 60f);

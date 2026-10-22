@@ -112,6 +112,7 @@ namespace CloneZ
             b.MaxHealth = b._perPlankHealth;
             b.Health = b._perPlankHealth;
             b.RebuildBoards();
+            RaiseRaised(b); // raise event after full init
             return b;
         }
 
@@ -134,6 +135,7 @@ namespace CloneZ
             b.MaxHealth = maxHealth > 0f ? maxHealth : b.Planks * b._perPlankHealth;
             b.Health = Mathf.Clamp(health, 1f, b.MaxHealth);
             b.RebuildBoards();
+            RaiseRaised(b); // raise event after restoration
             return b;
         }
 
@@ -233,7 +235,11 @@ namespace CloneZ
 
             // Shed planks as the wall is beaten down.
             while (Planks > 0 && Health <= (Planks - 1) * _perPlankHealth + 0.01f)
-                Planks--;
+                {
+                    Planks--;
+                    // Reduce the stored maximum health to match the lost plank
+                    MaxHealth -= _perPlankHealth;
+                }
 
             if (Planks <= 0 || Health <= 0f)
             {
@@ -250,6 +256,7 @@ namespace CloneZ
         {
             Planks = 0;
             Health = 0f;
+            MaxHealth = 0f; // reset max health to prevent stale data
             NoiseSystem.Emit(transform.position, CloneZConfig.NoiseHammering);
             All.Remove(this);
             Removed?.Invoke(this);
@@ -262,6 +269,7 @@ namespace CloneZ
         {
             Planks = 0;
             Health = 0f;
+            MaxHealth = 0f; // reset max health to prevent stale data
             All.Remove(this);
             Removed?.Invoke(this);
             Destroy(gameObject);
@@ -279,6 +287,7 @@ namespace CloneZ
         {
             Planks = 0;
             Health = 0f;
+            MaxHealth = 0f; // reset max health to prevent stale data
             All.Remove(this);
             Removed?.Invoke(this);
             Destroy(gameObject);

@@ -247,6 +247,8 @@ namespace CloneZ
             door.Box(at + new Vector3(0f, 1.2f, -0.252f), new Vector3(0.226f, 0.16f, 0.012f), face);
             // Brass surface for pull knob
             Surf brass = DecorPalette.Metal(new Color(0.85f, 0.71f, 0.36f)); // faded brass for a pull knob
+            // Slightly darker metal for hinges and plates
+            Surf metal = DecorPalette.Metal(new Color(0.20f, 0.22f, 0.24f)); // slightly darker than the door face
             // Thin metal latch plate
             door.Box(at + new Vector3(0f, 1.34f, -0.263f), new Vector3(0.07f, 0.015f, 0.002f), face); // latch plate
             // Bolt protruding from plate
@@ -261,6 +263,19 @@ namespace CloneZ
             door.Ellipsoid(at + new Vector3(0f, 1.33f, -0.263f), new Vector3(0.015f, 0.008f, 0.001f), DecorPalette.Matte(new Color(0.25f, 0.18f, 0.12f)), 4, 2);
             door.Cylinder(at + new Vector3(0f, 1.28f, -0.258f), 0.113f, 0.012f, 12, face, Quaternion.Euler(90f, 0f, 0f));
             door.Box(at + new Vector3(0f, 1.35f, -0.262f), new Vector3(0.04f, 0.018f, 0.01f), DecorPalette.Metal(new Color(0.55f, 0.55f, 0.52f)));
+            // Left hinge
+            door.Cylinder(at + new Vector3(-0.108f, 1.25f, -0.252f), 0.002f, 0.015f, 8, metal, Quaternion.Euler(0f, 0f, 0f));
+            // Right hinge
+            door.Cylinder(at + new Vector3( 0.108f, 1.25f, -0.252f), 0.002f, 0.015f, 8, metal, Quaternion.Euler(0f, 0f, 0f));
+            // Hinge pins
+            door.Cylinder(at + new Vector3(-0.108f, 1.255f, -0.252f), 0.001f, 0.004f, 8, metal, Quaternion.Euler(90f, 0f, 0f));
+            door.Cylinder(at + new Vector3( 0.108f, 1.255f, -0.252f), 0.001f, 0.004f, 8, metal, Quaternion.Euler(90f, 0f, 0f));
+            // Name-plate base
+            door.Box(at + new Vector3(0f, 1.33f, -0.265f), new Vector3(0.07f, 0.001f, 0.02f), metal);
+            // Engraved "MAIL"
+            door.Box(at + new Vector3(0f, 1.331f, -0.263f), new Vector3(0.058f, 0.0005f, 0.012f), DecorPalette.Matte(new Color(0.12f,0.12f,0.10f)));
+            // Extra rust streak lower edge
+            door.Ellipsoid(at + new Vector3(0f, 1.20f, -0.260f), new Vector3(0.025f, 0.003f, 0.001f), DecorPalette.Matte(new Color(0.23f, 0.16f, 0.12f)), 4, 2);
             FixturePart doorPart = FixturePart.Hinge(fixture.transform, "Door", door, at + new Vector3(0f, 1.12f, -0.252f), Vector3.left, 100f).WithSpeed(0.3f);
 
             // The flag: a red arm lying forward along the box's side with the flag at its end; it swings up on the boss.

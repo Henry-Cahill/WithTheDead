@@ -196,6 +196,7 @@ namespace CloneZ.Db
         }
 
         /// <summary>Closes the SQLite connection and releases native resources.</summary>
+                /// <summary>Releases the native SQLite statement resources.</summary>
         public void Dispose()
         {
             if (_db != IntPtr.Zero) { SqliteNative.Close(_db); _db = IntPtr.Zero; }
@@ -214,6 +215,7 @@ namespace CloneZ.Db
 
         internal SqliteStatement(SqliteConnection conn, IntPtr stmt) { _conn = conn; _stmt = stmt; }
 
+        /// <summary>Binds a string value to the parameter at the given 1‑based index, treating null as NULL.</summary>
         public SqliteStatement Bind(int index, string value)
         {
             int rc;
@@ -230,10 +232,15 @@ namespace CloneZ.Db
             return this;
         }
 
+                /// <summary>Binds a 32‑bit integer value to the parameter at the given 1‑based index.</summary>
         public SqliteStatement Bind(int index, int value) { Check(SqliteNative.BindInt(_stmt, index, value), "bind int"); return this; }
+                /// <summary>Binds a 64‑bit integer value to the parameter at the given 1‑based index.</summary>
         public SqliteStatement Bind(int index, long value) { Check(SqliteNative.BindInt64(_stmt, index, value), "bind int64"); return this; }
+                /// <summary>Binds a double‑precision floating‑point value to the parameter at the given 1‑based index.</summary>
         public SqliteStatement Bind(int index, double value) { Check(SqliteNative.BindDouble(_stmt, index, value), "bind double"); return this; }
+                /// <summary>Binds a float value by converting it to double for the parameter at the given 1‑based index.</summary>
         public SqliteStatement Bind(int index, float value) { return Bind(index, (double)value); }
+                /// <summary>Binds a boolean value as 1 (true) or 0 (false) to the parameter at the given 1‑based index.</summary>
         public SqliteStatement Bind(int index, bool value) { return Bind(index, value ? 1 : 0); }
 
         /// <summary>Advances the cursor. Returns true when a row is available, false when done.</summary>
@@ -245,13 +252,19 @@ namespace CloneZ.Db
             throw new SqliteException("sqlite step: " + _conn.LastError);
         }
 
+                /// <summary>Resets the SQLite statement to its initial state so it can be re‑used.</summary>
         public void Reset() { SqliteNative.ResetStmt(_stmt); }
 
+                /// <summary>Gets an Int32 column value from the current row.</summary>
         public int GetInt(int col) => SqliteNative.ColumnInt(_stmt, col);
+                /// <summary>Gets an Int64 column value from the current row.</summary>
         public long GetInt64(int col) => SqliteNative.ColumnInt64(_stmt, col);
+                /// <summary>Gets a single‑precision float column value from the current row.</summary>
         public float GetFloat(int col) => (float)SqliteNative.ColumnDouble(_stmt, col);
+                /// <summary>Gets a Boolean column value from the current row (non‑zero is true).</summary>
         public bool GetBool(int col) => SqliteNative.ColumnInt(_stmt, col) != 0;
 
+                /// <summary>Gets a UTF‑8 string column value from the current row, handling NULL as null.</summary>
         public string GetString(int col)
         {
             if (SqliteNative.ColumnType(_stmt, col) == SqliteNative.TYPE_NULL) return null;
@@ -263,6 +276,7 @@ namespace CloneZ.Db
             if (rc != SqliteNative.OK) throw new SqliteException("sqlite " + what + ": " + _conn.LastError);
         }
 
+                /// <summary>Releases the native SQLite statement resources.</summary>
         public void Dispose()
         {
             if (_stmt != IntPtr.Zero) { SqliteNative.Finalize(_stmt); _stmt = IntPtr.Zero; }

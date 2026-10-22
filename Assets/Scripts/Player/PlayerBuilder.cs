@@ -79,6 +79,8 @@ private readonly Collider[] _overlapBuf = new Collider[16];
     private readonly RaycastHit[] _rayBuf = new RaycastHit[32];
     // Temporary list for mesh renderer components to avoid per‑frame allocations in ConsiderMeshes.
     private readonly List<MeshRenderer> _meshRendererTmp = new List<MeshRenderer>(8);
+    // Temporary list for renderer components to avoid per‑frame allocations in UpdateDemolishHighlight.
+    private readonly List<Renderer> _rendererTmp = new List<Renderer>(8);
 
         private static readonly Color GhostReady = new Color(0.35f, 0.9f, 0.4f, 1f);
         private static readonly Color GhostShort = new Color(0.9f, 0.7f, 0.25f, 1f);
@@ -831,16 +833,18 @@ int n = Physics.RaycastNonAlloc(ray, _rayBuf, 200f, mask, QueryTriggerInteractio
         {
             if (!(_demolishTarget is MonoBehaviour mb) || mb == null) return false;
 
-            var rends = mb.GetComponentsInChildren<Renderer>();
-            if (rends.Length == 0)
+            // Clear and reuse the temporary renderer list to avoid allocations.
+            _rendererTmp.Clear();
+            mb.GetComponentsInChildren(_rendererTmp);
+            if (_rendererTmp.Count == 0)
             {
                 _ghost.transform.SetPositionAndRotation(mb.transform.position, Quaternion.identity);
                 _ghost.transform.localScale = Vector3.one;
                 return true;
             }
 
-            Bounds b = rends[0].bounds;
-            for (int i = 1; i < rends.Length; i++) b.Encapsulate(rends[i].bounds);
+            Bounds b = _rendererTmp[0].bounds;
+            for (int i = 1; i < _rendererTmp.Count; i++) b.Encapsulate(_rendererTmp[i].bounds);
             _ghost.transform.SetPositionAndRotation(b.center, Quaternion.identity);
             _ghost.transform.localScale = b.size + new Vector3(0.1f, 0.1f, 0.1f);
             return true;

@@ -145,24 +145,62 @@ namespace CloneZ
     /// <summary>The power switch for a freight-gate exit.</summary>
     public class PowerSwitch : Interactable
     {
-        private bool _thrown;
-        public override string DisplayName => "Power switch";
-        public override Vector3 InteractPoint => transform.position;
+        private bool _on;
+        private Renderer _renderer;
+        private void Awake()
+        {
+            // The visual box created in PlaceSwitch is a child named "SwitchBox"
+            var box = transform.Find("SwitchBox");
+            if (box != null) _renderer = box.GetComponent<Renderer>();
+            UpdateColor();
+        }
+        private void UpdateColor()
+        {
+            if (_renderer != null)
+                _renderer.sharedMaterial.color = _on ? Color.green : new Color(0.55f, 0.2f, 0.2f);
+        }
+        public override void CaptureState(FixtureSave save)
+        {
+            save.State = _on ? 1 : 0;
+        }
+        public override void RestoreState(FixtureSave save)
+        {
+            _on = save.State != 0;
+            UpdateColor();
+        }
 
+        public override string DisplayName => "Power switch";
+        public override string SaveKey => KeyFor("powerswitch", transform.position);
+        public override Vector3 InteractPoint => transform.position;
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
-            into.Add(new InteractAction(_thrown ? "The power is on" : "Throw the power switch", c =>
+            // Throw action
+            into.Add(new InteractAction(_on ? "The power is on" : "Throw the power switch", c =>
             {
-                if (_thrown) return;
-                _thrown = true;
+                if (_on) return;
+                _on = true;
+                UpdateColor();
                 if (ExtractionManager.Instance != null)
                     foreach (RaidExit e in ExtractionManager.Instance.Exits)
                         if (e.Condition == ExitCondition.Switch) e.Powered = true;
                 NoiseSystem.Emit(transform.position, 25f);
                 Sfx.Play(SfxIds.DoorBash, transform.position, 0.8f);
                 c.Notify("Somewhere a freight gate hums awake.");
-            }).Timed(2.5f, "Throwing the switch").DisabledIf(_thrown, "Already on"));
-            // Listed after the switch itself so E (the first enabled action) still throws it.
+            }).Timed(2.5f, "Throwing the switch").DisabledIf(_on, "Already on"));
+            // Reset action appears after the switch has been thrown
+            into.Add(new InteractAction("Reset the power switch", c =>
+            {
+                if (!_on) return;
+                _on = false;
+                UpdateColor();
+                if (ExtractionManager.Instance != null)
+                    foreach (RaidExit e in ExtractionManager.Instance.Exits)
+                        if (e.Condition == ExitCondition.Switch) e.Powered = false;
+                NoiseSystem.Emit(transform.position, 15f);
+                Sfx.Play(SfxIds.UiClick, transform.position, 0.6f);
+                c.Notify("The freight gate powers down.");
+            }).Timed(1.5f, "Resetting the switch").DisabledIf(!_on, "Already off"));
+            // Inspect action
             into.Add(new InteractAction("Inspect the power switch", c => c.Notify("A rugged switch that powers freight‑gate exits.")));
         }
     }

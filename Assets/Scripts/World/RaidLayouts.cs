@@ -56,6 +56,11 @@ namespace CloneZ
         private static void OfficeDesk(RaidBuilding b, RaidMesh m, System.Random r, float w, Color wood, bool screenOn, int lamp, bool lampShadows)
         {
             FurnitureBuilder.Desk(m, r, w, 0.75f, wood, r.NextDouble() < 0.5);
+            // Material definitions for desk details
+            var woodMat = DecorPalette.Matte(wood); // wood surface
+            var metalMat = DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f)); // brushed steel
+            var brassMat = DecorPalette.Metal(new Color(0.80f, 0.55f, 0.30f)); // aged brass for label
+            var wearMat = DecorPalette.Matte(new Color(0.28f, 0.20f, 0.12f)); // darker wear streak
             FurnitureBuilder.CrtMonitor(m, r, new Vector3(0.1f, 0.76f, -0.1f), R(r, -12f, 12f), screenOn);
             FurnitureBuilder.Keyboard(m, r, new Vector3(0.08f, 0.76f, 0.2f), R(r, -6f, 6f));
             DeskClutter(m, r, w);
@@ -80,6 +85,26 @@ namespace CloneZ
                 FurnitureBuilder.CrtMonitorBody(m, r, crt, crtYaw);
                 FurnitureBuilder.Keyboard(m, r, new Vector3(0.08f, 0.76f, 0.2f), R(r, -6f, 6f));
                 DeskClutter(m, r, w);
+                // Material definitions for desk details
+                var woodMat = DecorPalette.Matte(wood);
+                var metalMat = DecorPalette.Metal(new Color(0.25f,0.25f,0.25f));
+                var brassMat = DecorPalette.Metal(new Color(0.80f,0.55f,0.30f));
+                var wearMat = DecorPalette.Matte(new Color(0.28f,0.20f,0.12f));
+            // Drawer handles – two small metal cylinders on each drawer front
+            m.Cylinder(new Vector3(-w*0.5f + 0.09f, 0.78f, 0f), 0.006f, 0.02f, 8, metalMat);
+            m.Cylinder(new Vector3( w*0.5f - 0.09f, 0.78f, 0f), 0.006f, 0.02f, 8, metalMat);
+            // Corner brackets – thin metal boxes at each leg
+            m.Box(new Vector3(-w*0.5f + 0.04f, 0.03f, -0.11f), Sz(0.02f, 0.06f, 0.02f), metalMat);
+            m.Box(new Vector3( w*0.5f - 0.04f, 0.03f, -0.11f), Sz(0.02f, 0.06f, 0.02f), metalMat);
+            m.Box(new Vector3(-w*0.5f + 0.04f, 0.03f,  0.09f), Sz(0.02f, 0.06f, 0.02f), metalMat);
+            m.Box(new Vector3( w*0.5f - 0.04f, 0.03f,  0.09f), Sz(0.02f, 0.06f, 0.02f), metalMat);
+            // Worn front edge strip – darkened wood strip
+            m.Box(new Vector3(0f, 0.75f, -0.11f), Sz(w - 0.02f, 0.015f, 0.003f), wearMat);
+            // Rust‑tinted label plate – aged brass rectangle
+            m.Box(new Vector3(0f, 0.77f, -0.09f), Sz(0.12f, 0.008f, 0.001f), brassMat);
+            // Optional dust puff – flat grey cylinder
+            var dustMat = DecorPalette.Matte(new Color(0.45f,0.44f,0.40f));
+            m.Cylinder(new Vector3(0f, 0.78f, 0f), 0.08f, 0.001f, 8, dustMat);
                 if (lamp > 0)
                     b.DeskLamp(m, r, new Vector3(-w * 0.5f + 0.2f, 0.76f, -0.18f), R(r, 15f, 40f), r.NextDouble() < 0.5 ? GreenShade : BlackShade, lamp == 2, lampShadows);
             });
@@ -237,9 +262,20 @@ namespace CloneZ
             Surf wood = DecorPalette.Matte(new Color(0.32f, 0.22f, 0.12f));
 var boltMat = DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f));
             m.Box(new Vector3(-0.95f, 0.8f, -0.1f), Sz(0.06f, 1.6f, 0.1f), wood);
-        // backboard – thin plywood behind the rack (adds depth and a surface for grime)
-        var boardMat = DecorPalette.Matte(new Color(0.34f, 0.24f, 0.14f));
-        m.Box(new Vector3(0f, 0.8f, -0.15f), Sz(1.92f, 1.62f, 0.02f), boardMat);
+// backboard – thin plywood behind the rack (adds depth and a surface for grime)
+         var boardMat = DecorPalette.Matte(new Color(0.34f, 0.24f, 0.14f));
+         m.Box(new Vector3(0f, 0.8f, -0.15f), Sz(1.92f, 1.62f, 0.02f), boardMat);
+
+         // thin snow layer on the upper backboard (winter detail)
+         if (Chance(r, 0.5f))
+         {
+             float snowW = R(r, 0.4f, 1.0f); // random width (metres)
+             float snowD = R(r, 0.08f, 0.18f); // random depth (metres)
+             float snowH = 0.005f; // thin height (metres)
+             var snowMat = DecorPalette.Matte(new Color(0.90f, 0.90f, 0.95f));
+             // position snow slightly forward of backboard surface
+             m.Box(new Vector3(0f, 0.8f, -0.15f - snowD/2f), Sz(snowW, snowH, snowD), snowMat);
+         }
         // front strap – reinforces the rack, anchored to the posts
         var strapMat = DecorPalette.Metal(new Color(0.28f, 0.28f, 0.26f));
         m.Box(new Vector3(0f, 0.95f, -0.045f), Sz(1.84f, 0.03f, 0.01f), strapMat);
