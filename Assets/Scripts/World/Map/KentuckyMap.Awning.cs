@@ -42,14 +42,22 @@ namespace CloneZ
             Vector3 rightOffset = Vector3.right * (awningWidth * 0.5f - supportWidth * 0.5f);
             Vector3 leftPos = awningCenter + leftOffset;
             Vector3 rightPos = awningCenter + rightOffset;
-            site.Town.Out.Solid(leftPos).Box(leftPos,
-                new Vector3(supportWidth, supportHeight, supportWidth), 0f, awningMat);
+site.Town.Out.Solid(leftPos).Box(leftPos,
+                 new Vector3(supportWidth, supportHeight, supportWidth), 0f, awningMat);
             site.Town.PropCollider(leftPos,
-                new Vector3(supportWidth, supportHeight, supportWidth), 0f);
+                 new Vector3(supportWidth, supportHeight, supportWidth), 0f);
+            // Thin vertical rope tie on left post (jute colour)
+            var ropeColor = DecorPalette.Matte(new Color(0.545f, 0.435f, 0.255f));
+            var ropeSize = new Vector3(0.02f, supportHeight, 0.02f);
+            site.Town.Out.Solid(leftPos).Box(leftPos, ropeSize, 0f, ropeColor);
+            site.Town.PropCollider(leftPos, ropeSize, 0f);
             site.Town.Out.Solid(rightPos).Box(rightPos,
-                new Vector3(supportWidth, supportHeight, supportWidth), 0f, awningMat);
+                 new Vector3(supportWidth, supportHeight, supportWidth), 0f, awningMat);
             site.Town.PropCollider(rightPos,
-                new Vector3(supportWidth, supportHeight, supportWidth), 0f);
+                 new Vector3(supportWidth, supportHeight, supportWidth), 0f);
+            // Thin vertical rope tie on right post (jute colour)
+            site.Town.Out.Solid(rightPos).Box(rightPos, ropeSize, 0f, ropeColor);
+            site.Town.PropCollider(rightPos, ropeSize, 0f);
 
             // ----- horizontal slats -----
             int slatCount = 4;
