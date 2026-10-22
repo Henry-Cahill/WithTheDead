@@ -246,11 +246,7 @@ namespace CloneZ
                 }
             }
             // NEW: occasional mailbox (≈15 % chance per sidewalk segment)
-            if (rng.NextDouble() < 0.15)
-            {
-                float mbPos = R(rng, a + 0.3f, b - 0.3f);
-                // reuse fenceAcross defined above
-                CreateMailbox(town, alongX, mbPos, fenceAcross);
+            if (b - a >= 0.6f && rng.NextDouble() < 0.15)
             }
             if (rng.NextDouble() < 0.2)
             {

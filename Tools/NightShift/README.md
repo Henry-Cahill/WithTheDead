@@ -34,7 +34,9 @@ Every change is compiled against Unity's own assemblies before it lands, and lan
 4. **Automatic pull request (optional).** Choose **A** in the menu, or run `.\NightShift.ps1 autopr`. Every
    15 minutes this PC checks the Spark, and once the agents have nothing left to do it pushes their branch to
    GitHub and opens a pull request (or updates the open one) with the reports as its description. Once that
-   pull request is merged, a new one opens only when more tasks finish on the branch. It uses
+   pull request is merged, a new one opens only when more tasks finish on the branch, and once everything on the
+   branch is merged and the night shift has stopped, it moves the Workbench project back to `main` (see
+   [Back to main](#back-to-main)). It uses
    this PC's `gh` sign-in, so no GitHub token goes near the agents. It runs only while this PC is on and
    you're logged in; `.\NightShift.ps1 autopr -Off` turns it off, and `.state\pr.log` records what it did.
 
@@ -157,7 +159,7 @@ AI Workbench itself on the Spark, if nobody has opened the Spark in the AI Workb
 and the toggle in Workbench shows the right state either way. Stopping now rolls back the unfinished tasks; they
 stay queued and start over next time. Starting again carries on with the same `nightshift/` branch (and pull
 request) as long as the Workbench project is still on it. To begin a fresh branch, switch the Workbench project
-back to `main` first.
+back to `main` first; the automatic pull request does that by itself once the branch has been merged.
 
 **While it runs, leave the Workbench project's git alone** (no branch switches, commits, pulls or pushes in
 Workbench). Switching to an older branch can hide the ignore rules for `.state/` and `.unityrefs/` (the Spark's SSH
@@ -175,7 +177,27 @@ shift's branch, the night shift stops so nothing lands on the other branch.
 - Choose **7** (or `.\NightShift.ps1 fetch`) to fetch the branch into this repo, then
   `git switch -c nightshift/<date> spark/nightshift/<date>` and try it in Unity. The night shift can
   compile but not play the game, so play-test before merging.
-- After merging, switch the Workbench project back to your normal branch so the next run starts fresh.
+- After merging, the Workbench project goes back to `main` by itself (see [Back to main](#back-to-main)). Without
+  the automatic pull request, choose **P** once the night shift has stopped, or switch the project to `main` yourself,
+  so the next run starts fresh.
+
+### Back to main
+
+Once a night's pull request is merged, the automatic pull request (or **P**) moves the Workbench project on the Spark
+back to `main`, brought up to date with GitHub, so the next run starts a fresh `nightshift/<date>` branch from
+everything merged so far. While the project sits on `main` with the night shift stopped, each check also brings `main`
+up to date with GitHub, so pull requests merged later reach the Spark too. It only ever fast-forwards, and
+`.state\pr.log` records each move.
+
+- It waits while the night shift is running; stop it or let it finish, and the next check moves the project.
+- It waits while the branch has work that isn't merged yet: tasks that landed after the merge get their own pull
+  request first.
+- It doesn't move the project, and pr.log says why, when the Spark's `main` has commits that GitHub doesn't, or when
+  switching would overwrite uncommitted changes in the project. Tasks queued with **1** (`add`) wait uncommitted in
+  `tasks.md` and come along to `main`, unless `main` changed `tasks.md` too.
+
+Merge commits, squash merges and rebase merges all count: it looks for the branch's commits on `main`, then in the
+head of the branch's merged pull request.
 
 ## How it works
 

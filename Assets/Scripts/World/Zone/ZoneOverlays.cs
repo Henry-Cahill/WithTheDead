@@ -155,9 +155,9 @@ namespace CloneZ
                 {
                     float offsetX = (float)rng.NextDouble() * 6f - 3f; // -3 .. 3 m across the segment
                     float offsetZ = (float)rng.NextDouble() * 1.5f - 0.75f; // -0.75 .. 0.75 m depth
-                    Vector3 pilePos = new Vector3(x + offsetX, 12.0f, offsetZ);
-                    wall.At(wall.Solid, pilePos, 0f,
-                        m => m.Ellipsoid(pilePos, new Vector3(0.3f, 0.15f, 0.3f),
+Vector3 pileLocal = new Vector3(offsetX, 12.0f, offsetZ);
+                    wall.At(wall.Solid, pileLocal, 0f,
+                        m => m.Ellipsoid(Vector3.zero, new Vector3(0.3f, 0.15f, 0.3f),
                             ZoneKit.M(ZoneKit.V(Color.white, rng, 0.06f)), 4, 2));
                 }
                 // Icicle drips – occasional hanging cylinders
