@@ -274,8 +274,26 @@ namespace CloneZ
             Color olive = new Color(0.25f, 0.28f, 0.18f);
             m.Box(at + normal * (depth * 0.5f), new Vector3(0.11f, 0.16f, depth), q, Mt(olive));
             m.Box(at + normal * (depth + 0.003f), new Vector3(0.09f, 0.14f, 0.006f), q, Mt(olive * 1.12f));
+            // mounting screw heads on the front face
+            float screwX = 0.03f; // offset from centre left/right
+            float screwY = 0.07f; // height above base
+            m.Box(at + normal * (depth + 0.0035f) + Vector3.right * screwX + Vector3.up * screwY,
+                new Vector3(0.008f, 0.008f, 0.001f), q, Mt(Chrome));
+            m.Box(at + normal * (depth + 0.0035f) - Vector3.right * screwX + Vector3.up * screwY,
+                new Vector3(0.008f, 0.008f, 0.001f), q, Mt(Chrome));
             m.Box(at + normal * (depth + 0.0065f) + Vector3.up * 0.045f, new Vector3(0.06f, 0.025f, 0.002f), q, M(new Color(0.82f, 0.80f, 0.70f)));
+            // faded "POWER" label
+            float labelY = 0.04f; // lower than screws
+            m.Box(at + normal * (depth + 0.004f) + Vector3.up * labelY,
+                new Vector3(0.04f, 0.004f, 0.001f), q, M(new Color(0.15f, 0.12f, 0.10f, 0.7f)));
+            // rust spot on lower edge
+            m.Box(at + normal * (depth + 0.006f) - Vector3.up * 0.08f,
+                new Vector3(0.06f, 0.01f, 0.001f), q, M(new Color(0.55f, 0.42f, 0.31f, 0.6f)));
             Vector3 pivot = at + normal * (depth + 0.006f) - Vector3.up * 0.02f;
+            // toggle lever – a thin rod extending forward from the pivot
+            m.Rod(pivot, pivot + normal * 0.018f + Vector3.up * 0.015f, 0.006f, Mt(olive), 6);
+            // grip knob – a small cylinder for the user to pull
+            m.Cylinder(pivot + normal * 0.018f + Vector3.up * 0.015f, 0.008f, 0.004f, 12, M(new Color(0.71f, 0.58f, 0.44f)), q);
             m.Box(pivot, new Vector3(0.028f, 0.028f, 0.006f), q, M(Black));
             Vector3 gland = at + normal * (depth * 0.5f) + Vector3.up * 0.08f;
             m.Cylinder(gland, 0.012f, 0.02f, 6, M(Black));
