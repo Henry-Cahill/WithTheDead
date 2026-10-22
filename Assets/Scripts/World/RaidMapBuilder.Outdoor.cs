@@ -205,8 +205,16 @@ namespace CloneZ
                 if (z < -6.6f) Paved(town, Rect.MinMaxRect(x0 - 1.9f, z, x0 + 1.9f, Mathf.Min(z1, -6.6f)), 0.02f, DecorMaterials.Gravel);
                 if (z1 > 6.6f) Paved(town, Rect.MinMaxRect(x0 - 1.9f, Mathf.Max(z, 6.6f), x0 + 1.9f, z1), 0.02f, DecorMaterials.Gravel);
                 RaidMesh m = town.Out.Solid(new Vector3(x0, 0f, (z + z1) * 0.5f));
-                for (int k = -1; k <= 1; k += 2)
+                float boltRadius = 0.01f;
+                float boltHeight = 0.025f;
+                Color rust = new Color(0.45f, 0.38f, 0.33f);
+                for (int k = -1; k <= 1; k += 2) {
                     m.Box(new Vector3(x0 + k * 0.72f, 0.09f, (z + z1) * 0.5f), new Vector3(0.08f, 0.14f, z1 - z), rail);
+                    // bolt near the front end of the rail
+                    m.Cylinder(new Vector3(x0 + k * 0.72f, 0.15f, (z + z1) * 0.5f - (z1 - z) * 0.25f), boltRadius, boltHeight, 6, DecorPalette.Metal(rust));
+                    // bolt near the rear end of the rail
+                    m.Cylinder(new Vector3(x0 + k * 0.72f, 0.15f, (z + z1) * 0.5f + (z1 - z) * 0.25f), boltRadius, boltHeight, 6, DecorPalette.Metal(rust));
+                }
                 for (float s = z + 0.3f; s < z1; s += 0.65f)
                     if (Mathf.Abs(s) > 6.6f) m.Box(new Vector3(x0, 0.045f, s), new Vector3(2.5f, 0.09f, 0.22f), sleeper);
             }

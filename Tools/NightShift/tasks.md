@@ -6606,7 +6606,7 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 4: Assets/Scripts/World/Map/MapGeometry.cs – expose the kerb‑generation method to the rest of the map builder by adding a short comment near the existing road‑colour methods so developers know it exists. `// NOTE: Call GenerateKerbQuads(roadPolygon, width) and then site.Take(...) with GetKerbColor(osmId)` `// to render period‑appropriate road kerbs.`
   Done when: When the raid map is generated, every road polygon is surrounded by a thin, slightly raised strip of concrete‑gray (kerb) that follows the road’s outer edge. The kerb uses a deterministic colour chosen from the new kKerbPalette based on the road’s OSM id, giving each road its own subtle shade while staying period‑appropriate. No existing functionality is altered – all original methods retain their behaviour, the new palette and accessor are added, and the kerb‑generation helper is pure‑data (no per‑frame work). The game’s visual world now shows believable road edges reminiscent of a 1993 Kentucky town.
   - 21:10 landed by hts-llm in 3.5 min: Implemented deterministic kerb support:
-- [ ] In Assets/Scripts/World/RaidMapBuilder.Outdoor.cs: Add tiny rust‑stained metal bolts to each rail segment in `RaidMapBuilder.Outdoor.RailLine` so the railroad looks weathered and hand‑built.
+- [x] In Assets/Scripts/World/RaidMapBuilder.Outdoor.cs: Add tiny rust‑stained metal bolts to each rail segment in `RaidMapBuilder.Outdoor.RailLine` so the railroad looks weathered and hand‑built.
   In the loop that creates the two rail boxes (`m.Box(new Vector3(x0 + k * 0.72f, 0.09f, (z + z1) * 0.5f), new Vector3(0.08f, 0.14f, z1 - z), rail);`), insert two cylinder calls after it:
   `float boltRadius = 0.01f;`
   `float boltHeight = 0.025f;`
@@ -6615,6 +6615,7 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   `m.Cylinder(new Vector3(x0 + k * 0.72f, 0.15f, (z + z1) * 0.5f - (z1 - z) * 0.25f), boltRadius, boltHeight, 6, DecorPalette.Metal(rust));`
   `// bolt near the rear end of the rail`
   `m.Cylinder(new Vector3(x0 + k * 0.72f, 0.15f, (z + z1) * 0.5f + (z1 - z) * 0.25f), boltRadius, boltHeight, 6, DecorPalette.Metal(rust));`
+  - 23:55 landed by 0htsserver in 6.3 min: **Summary**
 - [x] Cache the TimeOfDay singleton in ExtractionManager to avoid a per‑frame lookup in TickDawnClock (Assets/Scripts/Extraction/ExtractionManager.cs)
   Add a private field `private TimeOfDay _tod;` and assign it in `Setup` after the existing `TimeOfDay tod = TimeOfDay.Instance;` line (`_tod = tod;`).
   Modify `TickDawnClock` to use the cached `_tod` instead of calling `TimeOfDay.Instance` each frame:
