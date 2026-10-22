@@ -279,7 +279,7 @@ namespace CloneZ
             ReturnTaps(ctx);
             if (!mains)
             {
-            // keep current level; visual update only (no automatic drain)
+                _level = Mathf.Max(0f, _level - CloneZConfig.BathDrinkShare);
                 _bathedIn = true;
                 ShowWater();
             }

@@ -34,7 +34,6 @@ namespace CloneZ
             var rng = new System.Random(seed);
             g._fuel = Mathf.Lerp(CloneZConfig.RaidGeneratorFuelMin, CloneZConfig.RaidGeneratorFuelMax, (float)rng.NextDouble());
             g.ShowRunning(false);
-            g.enabled = false;
             return g;
         }
 
@@ -81,7 +80,6 @@ namespace CloneZ
             }
             _pulls = 0;
             _running = true;
-            enabled = true;
             _noiseAt = Time.time;
             ShowRunning(true);
             ctx.Notify("It catches with a bang and settles into a hammering roar. Everything for blocks around will hear that.");
@@ -103,7 +101,6 @@ namespace CloneZ
         private void Stop()
         {
             _running = false;
-            enabled = false;
             ShowRunning(false);
         }
 

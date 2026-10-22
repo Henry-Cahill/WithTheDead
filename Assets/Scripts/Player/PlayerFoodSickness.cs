@@ -62,7 +62,7 @@ namespace CloneZ
 
             // The illness runs its course over time; sleeping it off is quicker.
             float decay = CloneZConfig.SicknessDecayPerSec;
-
+            if (_sleepCache == null) _sleepCache = GetComponent<PlayerSleep>();   // PlayerSleep is added after this component
             if (_sleepCache != null && _sleepCache.IsSleeping) decay *= CloneZConfig.SicknessSleepMult;
             _stats.Sickness = Mathf.Max(0f, _stats.Sickness - decay * dt);
 
@@ -110,9 +110,9 @@ namespace CloneZ
         public void OnDrankTainted()
         {
             if (_stats == null || _stats.IsDead) return;
+            DrankTainted?.Invoke(this);   // every raw drink risks cholera, whether or not the stomach turns
             if (Random.value > CloneZConfig.WaterTaintedSickChance) return;   // got away with it this time
             _stats.Sickness = Mathf.Clamp(_stats.Sickness + CloneZConfig.SicknessTaintedGain, 0f, CloneZConfig.SicknessMax);
-            DrankTainted?.Invoke(this);
         }
 
         /// <summary>Raised whenever the survivor drinks tainted water raw (cholera rides in on it).</summary>

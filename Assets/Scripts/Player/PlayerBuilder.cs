@@ -176,6 +176,7 @@ private readonly Collider[] _overlapBuf = new Collider[16];
                 UIState.BuildMode = false;
             }
             HideGhost();
+            Prompt = "";
             _promptDirty = true;
         }
 
@@ -722,6 +723,7 @@ int n = Physics.RaycastNonAlloc(ray, _rayBuf, 200f, mask, QueryTriggerInteractio
             // Bigger pieces cost more planks, so they train Carpentry proportionally more.
             if (_skills != null) _skills.AddXp(PlayerSkills.Skill.Carpentry, CloneZConfig.XpCarpentryPerPlank * PlankCost(_buildSelection));
             NoiseSystem.Emit(_buildPos, CloneZConfig.NoiseHammering);
+            _inventory.WearTool(HammerId);   // hammering wears the hammer down
             Prompt = "";
             _promptDirty = true;
         }

@@ -67,6 +67,7 @@ namespace CloneZ
         {
             if (_cachedMain == null || _cachedMain != Camera.main) _cachedMain = Camera.main;
             Camera cam = _cachedMain;
+            if (cam == null) return;
 
             // The isometric camera hangs well back from the survivor, so detail and draw range are
             // measured from the point it looks at; the shoulder / first-person cameras are close enough.

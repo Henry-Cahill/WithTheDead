@@ -92,6 +92,10 @@ LOG_LOCK = threading.Lock()
 # on the helpers) and pass LFS pointer files through untouched, so checkouts never try to download LFS objects.
 GIT_SAFE = ["-c", "core.hooksPath=/dev/null", "-c", "filter.lfs.required=false", "-c", "filter.lfs.smudge=cat",
             "-c", "filter.lfs.clean=cat", "-c", "filter.lfs.process="]
+# A git lock that nothing has written to for this long was left behind by a git command that was killed partway (by a
+# container stop, say). Git never removes such a lock by itself, and every later command that needs it fails.
+STALE_LOCK_SECONDS = 300
+LOCK_EXISTS_RE = re.compile(r"Unable to create '([^']+\.lock)': File exists")
 
 
 def load_config() -> dict:
@@ -118,15 +122,34 @@ def log(msg: str, who: str = "") -> None:
         print(f"{stamp} {'[' + who + '] ' if who else ''}{msg}", flush=True)
 
 
+def clear_stale_lock(path: Path) -> bool:
+    """Deletes the git lock at `path` if nothing has touched it for STALE_LOCK_SECONDS. True once the lock is gone
+    (deleted here, or released meanwhile), so the command that ran into it can go again straight away."""
+    try:
+        touched = path.stat().st_mtime
+        if time.time() - touched < STALE_LOCK_SECONDS:
+            return False
+        path.unlink()
+    except FileNotFoundError:
+        return True
+    except OSError:
+        return False
+    log(f"removed {path}: a git command that was killed left it behind "
+        f"(untouched since {dt.datetime.fromtimestamp(touched):%a %H:%M})")
+    return True
+
+
 def git_run(repo: Path | str, *args: str, env: dict | None = None) -> subprocess.CompletedProcess:
     for attempt in range(8):
         r = subprocess.run(["git", *GIT_SAFE, "-C", str(repo), *args], capture_output=True, text=True, env=env,
                            stdin=subprocess.DEVNULL)
         # AI Workbench (or someone in a terminal) running git in the same repo holds a lock (index.lock, HEAD.lock) for
-        # a moment; wait it out.
+        # a moment; wait it out. A lock left behind by a killed git would never go away, so that one is deleted.
         if r.returncode == 0 or ".lock" not in r.stderr or "File exists" not in r.stderr or attempt == 7:
             return r
-        time.sleep(2)
+        held = LOCK_EXISTS_RE.search(r.stderr)
+        if not (held and clear_stale_lock(Path(repo, held.group(1)))):
+            time.sleep(2)
 
 
 def git(repo: Path | str, *args: str, check: bool = True, env: dict | None = None) -> str:
@@ -1662,7 +1685,8 @@ class Coordinator:
                 fd = os.open(lock_path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o666)
                 break
             except FileExistsError:
-                time.sleep(1)
+                if not clear_stale_lock(lock_path):
+                    time.sleep(1)
         else:
             raise RuntimeError("the project folder's git stayed busy (HEAD.lock) for 30 s")
         try:

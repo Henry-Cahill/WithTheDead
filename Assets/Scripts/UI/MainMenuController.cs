@@ -46,6 +46,7 @@ namespace CloneZ
             ResetCreateState();
             Clear();
             Text title = UIKit.Label(_panel, "CLONE-Z", 96, new Color(0.85f, 0.22f, 0.2f), TextAnchor.MiddleCenter, FontStyle.Bold);
+            UIKit.Place(title.rectTransform, new Vector2(0.5f, 0.86f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1000f, 130f));
             AccountProfile a = ProfileStore.Account;
             Text sub = UIKit.Label(_panel, "The Zone  \u00b7  season " + a.Season + (a.Wipes > 0 ? " (" + a.Wipes + " wipes survived)" : ""), 24, new Color(0.7f, 0.74f, 0.8f), TextAnchor.MiddleCenter);
             UIKit.Place(sub.rectTransform, new Vector2(0.5f, 0.78f), new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1000f, 40f));

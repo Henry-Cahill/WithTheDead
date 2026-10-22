@@ -78,7 +78,7 @@ namespace CloneZ
         /// Raids never touch the wave-survival save; the kit belongs to the active character.</summary>
         public void StartRaid()
         {
-
+            if (_worldBuilt) return;
             _worldBuilt = true;
             GameSession.Mode = GameMode.Extraction;
             BuildRaidWorld();
@@ -87,7 +87,7 @@ namespace CloneZ
         /// <summary>Opens the hub (the bar between raids) for the active character.</summary>
         public void StartHub()
         {
-
+            if (_worldBuilt) return;
             if (ProfileStore.ActiveCharacter == null || ProfileStore.ActiveCharacter.Dead)
             {
                 ShowMainMenu();
@@ -101,7 +101,7 @@ namespace CloneZ
         /// <summary>Begins a brand-new wave-survival run, discarding any existing save (called by the title screen).</summary>
         public void StartNewGame()
         {
-
+            if (_worldBuilt) return;
             _worldBuilt = true;
             GameSession.Mode = GameMode.WaveSurvival;
             WorldMarkers.Clear();
@@ -112,7 +112,7 @@ namespace CloneZ
         /// <summary>Resumes the saved wave-survival run (called by the title screen's Continue button).</summary>
         public void ContinueGame()
         {
-
+            if (_worldBuilt) return;
             _worldBuilt = true;
             GameSession.Mode = GameMode.WaveSurvival;
             BuildWorld(true);

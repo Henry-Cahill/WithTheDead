@@ -167,11 +167,11 @@ namespace CloneZ
             SetOpen(false, false);
         }
 
-        public override void CaptureState(FixtureSave save) => save.State = (_open ? 1 : 0) | (_openedToWater ? 2 : 0);
+        public override void CaptureState(FixtureSave save) => save.State = _open && !_openedToWater ? 1 : 0;
 
         public override void RestoreState(FixtureSave save)
         {
-            _openedToWater = (save.State & 2) != 0;
+            _openedToWater = false;
             SetOpen((save.State & 1) != 0, true);
         }
     }

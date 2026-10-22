@@ -101,11 +101,12 @@ namespace CloneZ
 
             // Saturation based on blood and body view
             float blood01 = _blood != null ? _blood.Blood01 : 1f;
-            if (Mathf.Abs(blood01 - _lastBlood01) > 0.0001f || body != _lastBody)
+            // Read once: the grain below must see the same view change the saturation does.
+            bool bodyChanged = body != _lastBody;
+            if (Mathf.Abs(blood01 - _lastBlood01) > 0.0001f || bodyChanged)
             {
                 _color.saturation.Override(Mathf.Lerp(-85f, 0f, Mathf.InverseLerp(0.45f, 0.85f, blood01)) + (body ? -12f : 0f));
                 _lastBlood01 = blood01;
-                _lastBody = body;
             }
 
             // Motion blur
@@ -131,7 +132,7 @@ namespace CloneZ
             }
 
             // Grain (body view)
-            if (body != _lastBody)
+            if (bodyChanged)
             {
                 _grain.active = body;
                 if (body)
@@ -140,6 +141,7 @@ namespace CloneZ
                     _grain.type.Override(FilmGrainLookup.Medium3);
                 }
             }
+            _lastBody = body;
 
             // Vignette based on health, gas mask and body view
             float hurt = _stats != null ? Mathf.InverseLerp(45f, 10f, _stats.Health) : 0f;
@@ -200,6 +202,9 @@ namespace CloneZ
             v._clothing = p.GetComponent<PlayerClothing>();
             v._stats = p;
             v._canvas = UIKit.CreateCanvas("GasVisor Canvas", 35, go.transform);
+            // Hidden until Update decides: the images start opaque white, so a frame drawn before the first
+            // Update would otherwise show full condensation and cracks in any view.
+            v._canvas.enabled = false;
             v._fog = Raw(v._canvas.transform, FogTexture(), "Condensation");
             v._cracks = Raw(v._canvas.transform, CrackTexture(), "Cracks");
             var rim = UIKit.Panel(v._canvas.transform, "MaskRim", new Color(0.3f, 0.3f, 0.35f, 0.5f));

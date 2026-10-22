@@ -175,8 +175,9 @@ namespace CloneZ
             else
                 into.Add(new InteractAction(_openLabel, _openAct).DisabledIf(_locked, "It's locked \u2014 unlock it first"));
 
-            // Force open action: bypass lock and open the door directly
-            into.Add(new InteractAction("Force open the " + _noun, ctx => SetOpen(true, true)).DisabledIf(_open, "It's already open"));
+            // Force open action: shoulder a stuck door open (a locked one still has to be unlocked, or kicked in on a raid)
+            into.Add(new InteractAction("Force open the " + _noun, ctx => SetOpen(true, true)).DisabledIf(_open, "It's already open")
+                .DisabledIf(_locked, "It's locked \u2014 it won't budge"));
 
             if (_lockSide != 0)
             {

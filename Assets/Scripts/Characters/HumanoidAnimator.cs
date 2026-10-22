@@ -346,7 +346,8 @@ namespace CloneZ
             if (!_dead && !Seated)
             {
                 float target = 0f;
-if (_groundDirty && !_dead && !Seated && parent != null) {
+                if (ProbeGround && parent != null)
+                {
                     // The ray starts inside the character's own collider, which a ray never reports.
                     Vector3 origin = parent.position + Vector3.up * 0.9f;
                     if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, 1.5f, GroundMask, QueryTriggerInteraction.Ignore))

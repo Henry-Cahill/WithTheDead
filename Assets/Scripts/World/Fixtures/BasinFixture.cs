@@ -263,7 +263,9 @@ namespace CloneZ
         private void Wash(InteractContext ctx)
         {
             bool mains = WaterMains.MainsOn;
-            bool wet = UseStored(CloneZConfig.BasinWashWater);
+            
+            ReturnTap(ctx);
+            UseStored(CloneZConfig.BasinWashWater);
             WaterUse.Freshen(ctx, CloneZConfig.BasinWashFreshen);
             if (wet)
             {
@@ -283,6 +285,7 @@ namespace CloneZ
 
         private void Brush(InteractContext ctx)
         {
+            ReturnTap(ctx);
             bool wet = UseStored(CloneZConfig.BasinBrushWater);
             BathroomFixtures.Nerves(ctx, -CloneZConfig.BasinBrushCalm);
             ctx.Notify(wet ? BrushLines[Random.Range(0, BrushLines.Length)]
@@ -291,6 +294,7 @@ namespace CloneZ
 
         private void Rinse(InteractContext ctx)
         {
+            ReturnTap(ctx);
             bool wet = UseStored(CloneZConfig.BasinBrushWater);
             // No extra calm effect; just a quick rinse.
             ctx.Notify(wet ? "You rinse your mouth, feeling a brief freshness." : "No water left to rinse; you gargle dry.");
@@ -298,7 +302,7 @@ namespace CloneZ
 
         private void Shave(InteractContext ctx)
         {
-
+            ReturnTap(ctx);
             UseStored(CloneZConfig.BasinShaveWater);
             BathroomFixtures.Nerves(ctx, -CloneZConfig.BasinShaveCalm);
             ctx.Notify(ShaveLines[Random.Range(0, ShaveLines.Length)]);

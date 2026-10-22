@@ -82,6 +82,7 @@ namespace CloneZ
 
                 _left.data.root = _rig.Bone(HumanBone.UpperArmL);
                 _left.data.mid = _rig.Bone(HumanBone.ForearmL);
+                _left.data.tip = _rig.Bone(HumanBone.HandL);
                 // Cache frequently used transforms for per‑frame use
                 _handL = _rig.Bone(HumanBone.HandL);
                 _chest = _rig.Bone(HumanBone.Chest);

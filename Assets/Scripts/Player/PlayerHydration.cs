@@ -39,21 +39,19 @@ namespace CloneZ
 
         private void Update()
         {
+            Prompt = "";
+            _source = null;
+            _fill = false;
+
             if (_stats != null && _stats.IsDead) return;
             // A full-screen panel or build mode owns input; don't fight the container-search prompt.
             if (UIState.GameplayBlocked || UIState.BuildMode) return;
             if (_interactor != null && (_interactor.IsBusy || _interactor.MenuOpen)) return;
 
-            // Check if the player moved enough to re‑evaluate water points.
-            float moved = Vector3.Distance(_lastPos, transform.position);
-            if (moved >= CheckDistance)
-            {
-                Prompt = "";
-                _source = null;
-                _fill = false;
-                Evaluate();
-_keyboard = Keyboard.current;
-            }
+            // Re-evaluated every frame: a source can run dry, the mains can shut off and the last empty bottle
+            // can be filled while the survivor stands still.
+            Evaluate();
+            _keyboard = Keyboard.current;
 
             if (_source != null)
             {

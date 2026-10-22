@@ -151,7 +151,6 @@ namespace CloneZ
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
-            into.Add(new InteractAction("Inspect the power switch", c => c.Notify("A rugged switch that powers freight‑gate exits.")));
             into.Add(new InteractAction(_thrown ? "The power is on" : "Throw the power switch", c =>
             {
                 if (_thrown) return;
@@ -163,6 +162,8 @@ namespace CloneZ
                 Sfx.Play(SfxIds.DoorBash, transform.position, 0.8f);
                 c.Notify("Somewhere a freight gate hums awake.");
             }).Timed(2.5f, "Throwing the switch").DisabledIf(_thrown, "Already on"));
+            // Listed after the switch itself so E (the first enabled action) still throws it.
+            into.Add(new InteractAction("Inspect the power switch", c => c.Notify("A rugged switch that powers freight‑gate exits.")));
         }
     }
 }

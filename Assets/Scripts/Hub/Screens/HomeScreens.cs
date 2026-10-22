@@ -402,7 +402,7 @@ namespace CloneZ
         {
             RectTransform[] cols = HubUI.Columns(Body, 16f, 0.35f, 1f);
             HubUI.Card(cols[0]);
-            RectTransform idx = HubUI.Stack(cols[0], 4f, 10);
+            RectTransform idx = HubUI.Scroll(cols[0], 0f, 0f, 4f);   // 33 pages no longer fit a fixed stack
             for (int i = 0; i < Pages.Length; i++)
             {
                 int p = i;

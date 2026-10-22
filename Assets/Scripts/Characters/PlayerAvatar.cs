@@ -80,6 +80,7 @@ namespace CloneZ
             _builder = GetComponent<PlayerBuilder>();
             _farming = GetComponent<PlayerFarming>();
             _seat = GetComponent<PlayerSeat>();
+            _seatVersion = _seat != null ? _seat.Version : 0;
                         _hammerDef = ItemDatabase.Get(HammerId);
             _trowelDef = ItemDatabase.Get(TrowelId);
             _wateringCanDef = ItemDatabase.Get(WateringCanId);

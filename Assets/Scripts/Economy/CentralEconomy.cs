@@ -163,7 +163,7 @@ namespace CloneZ
         {
             Load();
             ItemDatabase.LootGate = id => !GateOn || Count(id) < NominalOf(id);
-            ItemDatabase.LootRolled = (id, n) => { if (GateOn) s_Counts[id] = Count(id) + n; };
+            ItemDatabase.LootRolled = (id, n) => { if (GateOn) s_Counts[id] = Count(id) + 1; };
             PlayerInventory.GroundDropped += (def, n, at, extra) =>
             {
                 if (!SandboxSettings.Current.CentralEconomy || !GameSession.IsExtraction || def == null) return;

@@ -41,18 +41,19 @@ namespace CloneZ
 
         private void Awake()
         {
-                        // Populate static ray direction and outer offset caches
-        for (int i = 0; i < Rays; i++)
-        {
-            float ang = i * (360f / Rays);
-            Vector3 dir = Quaternion.Euler(0f, ang, 0f) * Vector3.forward;
-            _rayDirs[i] = dir;
-            _rayOuter[i] = dir * Outer;
-        }
+            // Populate static ray direction and outer offset caches
+            for (int i = 0; i < Rays; i++)
+            {
+                float ang = i * (360f / Rays);
+                Vector3 dir = Quaternion.Euler(0f, ang, 0f) * Vector3.forward;
+                _rayDirs[i] = dir;
+                _rayOuter[i] = dir * Outer;
+            }
 
-        // Cache the TimeOfDay singleton for later use.
-        _timeOfDay = TimeOfDay.Instance;
+            // Cache the TimeOfDay singleton for later use.
+            _timeOfDay = TimeOfDay.Instance;
 
+            _mesh = new Mesh { name = "Vision shade" };
             _mesh.MarkDynamic();
             _verts = new Vector3[Rays * 2];
             var tris = new int[Rays * 6];
@@ -78,9 +79,9 @@ namespace CloneZ
             if (_player == null) { Destroy(gameObject); return; }
             bool on = ViewState.Current == CameraView.Isometric && !HubRules.SafeZone && !GameSession.IsMonsterRun;
             // Fades in and out with the view (and lightens at night, when the sight light does the work).
-            float night = _timeOfDay != null ? 1f - Mathf.InverseLerp(0.18f, 0.55f, _timeOfDay.LightLevel) : 0f;
             // If the cached reference was lost (e.g., after a scene reload), refresh it.
             if (_timeOfDay == null) _timeOfDay = TimeOfDay.Instance;
+            float night = _timeOfDay != null ? 1f - Mathf.InverseLerp(0.18f, 0.55f, _timeOfDay.LightLevel) : 0f;
             float want = on ? Mathf.Lerp(0.42f, 0.15f, night) : 0f;
             _alpha = Mathf.MoveTowards(_alpha, want, Time.deltaTime * 1.5f);
             if (Mathf.Abs(_alpha - _prevAlpha) > 0.001f)
@@ -106,9 +107,8 @@ namespace CloneZ
             facing.Normalize();
             for (int i = 0; i < Rays; i++)
             {
-                float ang = i * (360f / Rays);
                 Vector3 dir = _rayDirs[i];
-                Vector3 outer = _rayOuter[i];
+                Vector3 outer = feet + _rayOuter[i];
                 float max = Vector3.Angle(facing, dir) <= ConeHalf ? Range : Behind;
                 float d = max;
                 if (Physics.Raycast(eye, dir, out RaycastHit hit, max, Actor.SightMask, QueryTriggerInteraction.Ignore))

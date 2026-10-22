@@ -371,7 +371,7 @@ namespace CloneZ
         private void Update()
         {
             if (_stats == null || _stats.IsDead) return;
-            
+            if (_sleep == null) _sleep = GetComponent<PlayerSleep>();   // PlayerSleep is added after this component
             // Wounds knit far faster while the survivor sleeps.
             float scale = _sleep != null && _sleep.IsSleeping ? CloneZConfig.WoundHealSleepMultiplier : 1f;
             Tick(Time.deltaTime, scale);

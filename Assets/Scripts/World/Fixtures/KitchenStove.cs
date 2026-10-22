@@ -163,7 +163,7 @@ public float Warmth
         private void Update()
         {
             // An old save's stove is carried to its place in the furnished home after it's built: fit it out again there.
-            if (_needsRebuild)
+            if (_needsRebuild || (transform.position - _builtAt).sqrMagnitude > 1e-6f)
             {
                 BuildFittings();
                 _needsRebuild = false;

@@ -227,6 +227,8 @@ namespace CloneZ
                         case Weather.Storm: wind = 0.55f; break;
                     }
                 }
+                // The clock is built with each world, after this director (it outlives scenes), so look again until found.
+                if (_timeOfDay == null) _timeOfDay = TimeOfDay.Instance;
                 bool night = _timeOfDay != null && _timeOfDay.IsNight;
                 float trees = ZoneForest.Density(ears);
                 forest = night ? 0f : Mathf.Clamp01(trees * 1.4f) * 0.4f + (GameSession.IsExtraction ? 0.05f : 0f);

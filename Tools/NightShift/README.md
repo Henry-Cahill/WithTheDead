@@ -180,6 +180,11 @@ Inside the container, `bash Tools/NightShift/nightshift.sh` also has `check` (co
 - **"couldn't bring the project folder up to date with the landing"**: a file that landing changed was edited in
   the project folder while it ran, so the landing was undone and the task stays queued. Adding tasks to
   `tasks.md` is fine at any time; leave the other files alone while it runs.
+- **"Unable to create '/project/.git/index.lock': File exists"**: a git command in the project folder was killed
+  partway (by a container stop, say) and left its lock behind. The night shift waits a few seconds for a lock, as
+  AI Workbench holds one briefly, but deletes one nothing has touched for 5 minutes and logs
+  `removed …: a git command that was killed left it behind`. If it stopped on this error, start it again after
+  those 5 minutes.
 - **No pull request appeared**: `.state\pr.log` on this PC says why (for example a failed push). The
   automatic one waits until nothing is left to do (or, with auto-planning on, for the next `NIGHTSHIFT_PUBLISH_EVERY`
   minutes); **P** makes it right away.

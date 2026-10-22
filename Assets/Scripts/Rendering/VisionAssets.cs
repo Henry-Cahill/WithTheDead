@@ -89,8 +89,9 @@ namespace CloneZ
                     float elevation = Mathf.Atan2(vy, Mathf.Sqrt(1f + ux * ux)) * Mathf.Rad2Deg;
                     c *= Mathf.Lerp(horizonFloor, 1f, Mathf.SmoothStep(0f, 1f,
                         Mathf.InverseLerp(HorizonEaseFromDeg, easeTo, elevation)));
-                    byte a = (byte)Mathf.Clamp(Mathf.RoundToInt(c * 255f), 0, 255);
-                    px[y * size + x] = new Color32(255, 255, 255, a);
+                    // URP samples a spot cookie's RGB from the colour atlas (alpha is ignored), so the value goes in RGB.
+                    byte b = (byte)Mathf.Clamp(Mathf.RoundToInt(c * 255f), 1, 255);
+                    px[y * size + x] = new Color32(b, b, b, 255);
                 }
             }
             tex.SetPixels32(px);

@@ -47,6 +47,7 @@ namespace CloneZ
             into.Add(PassTime("Listen to the radio", "Listening to the radio", "The radio is off"));
             into.Add(new InteractAction("Turn off the radio", c => Switch(false)).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Check battery", c => c.Notify("The battery still hums – enough juice for a few more hours.")).DisabledIf(!near, TooFar));
+            into.Add(new InteractAction("Tune to the next station", Retune).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Tune to the previous station", RetunePrev).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Turn it up", c => Louder(c, 1))
                 .DisabledIf(AtLoudest, "It won't go any louder")
@@ -62,6 +63,12 @@ namespace CloneZ
         {
             Switch(true);
             ctx.Notify("The dial lights up. " + Describe(Station) + (Broadcasts.IsOnAir(Station) ? "." : " \u2014 just static."));
+        }
+
+        private void Retune(InteractContext ctx)
+        {
+            BroadcastStation s = TuneNext();
+            ctx.Notify("You turn the dial through the hiss to " + Describe(s) + (Broadcasts.IsOnAir(s) ? "." : " \u2014 nothing there but static."));
         }
 
         private void RetunePrev(InteractContext ctx)
