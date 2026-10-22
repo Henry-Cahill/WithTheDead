@@ -183,6 +183,19 @@ namespace CloneZ
             m.Box(new Vector3(cx, 1.35f, WardrobeFront + 0.003f), new Vector3(w - 0.12f, 0.6f, 0.01f), M(wood * 0.94f));
             m.Box(new Vector3(cx, 0.6f, WardrobeFront + 0.003f), new Vector3(w - 0.12f, 0.6f, 0.01f), M(wood * 0.94f));
             m.Box(new Vector3(s * 0.04f, 1.0f, WardrobeFront + 0.01f), new Vector3(0.02f, 0.08f, 0.03f), Mt(Brass));
+            // top wood trim (1 cm high, spans the door width)
+            m.Box(new Vector3(cx, WardrobeDoorY1 - 0.005f, WardrobeFront - 0.009f), new Vector3(w, 0.01f, 0.02f), M(wood * 0.9f));
+            // bottom wood trim (1 cm high)
+            m.Box(new Vector3(cx, WardrobeDoorY0 + 0.005f, WardrobeFront - 0.009f), new Vector3(w, 0.01f, 0.02f), M(wood * 0.9f));
+            // side edge bevel (2 cm wide, 1 cm deep)
+            m.Box(new Vector3(s * (x0 + 0.005f), (WardrobeDoorY0 + WardrobeDoorY1) * 0.5f, WardrobeFront - 0.008f), new Vector3(0.02f, WardrobeDoorY1 - WardrobeDoorY0, 0.01f), M(wood * 0.85f));
+            // brass pull handle (horizontal)
+            m.CylinderX(new Vector3(cx, (WardrobeDoorY0 + WardrobeDoorY1) * 0.5f, WardrobeFront + 0.015f), 0.006f, 0.12f, 8, Mt(Brass));
+            // key-hole (black metal)
+            m.Cylinder(new Vector3(cx + w * 0.22f, WardrobeDoorY0 + 0.25f, WardrobeFront - 0.015f), 0.003f, 0.01f, 6, M(Black));
+            // wear scar (thin dark quad)
+            var scarSurf = M(wood * 0.5f);
+            m.Quad(new Vector3(cx - w * 0.3f, WardrobeDoorY0 + 0.12f, WardrobeFront - 0.008f), new Vector3(0.35f, 0f, 0f), new Vector3(0f, 0f, 0.001f), scarSurf);
             // Hinge pins
             if (left)
             {
