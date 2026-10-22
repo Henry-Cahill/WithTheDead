@@ -276,7 +276,7 @@ namespace CloneZ
             door.Box(at + new Vector3(0f, 1.331f, -0.263f), new Vector3(0.058f, 0.0005f, 0.012f), DecorPalette.Matte(new Color(0.12f,0.12f,0.10f)));
             // Extra rust streak lower edge
             door.Ellipsoid(at + new Vector3(0f, 1.20f, -0.260f), new Vector3(0.025f, 0.003f, 0.001f), DecorPalette.Matte(new Color(0.23f, 0.16f, 0.12f)), 4, 2);
-            FixturePart doorPart = FixturePart.Hinge(fixture.transform, "Door", door, at + new Vector3(0f, 1.12f, -0.252f), Vector3.left, 100f).WithSpeed(0.3f);
+            FixturePart doorPart = FixturePart.Hinge(fixture.transform, "Door", door, at + new Vector3(0f, 1.12f, -0.252f), Vector3.right, 100f).WithSpeed(0.3f);
 
             // The flag: a red arm lying forward along the box's side with the flag at its end; it swings up on the boss.
             var flag = new RaidMesh();
