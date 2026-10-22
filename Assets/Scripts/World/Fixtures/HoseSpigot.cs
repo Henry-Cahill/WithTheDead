@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 namespace CloneZ
@@ -17,9 +18,21 @@ namespace CloneZ
         private Vector3 _point, _spout, _face, _normal;
         private FixturePart _handle;
         private Renderer _trickle;
-        private bool _open;
-        private bool _openedToWater;   // opened just for a watering, to be closed again after
-        private float _nextCheck;
+private bool _open;
+            private bool _openedToWater;   // opened just for a watering, to be closed again after
+            private float _nextCheck;
+
+        // Flavor: collection of period‑correct notes that can be read from the tap.
+        private static readonly string[] _tapNotes = new[]
+        {
+            "The outside tap is dry — the water's been shut off.", // style reference
+            "A thin layer of frost clings to the wheel; winter's grip is deep here.",
+            "Old Mrs. Caldwell left a note: \"Don’t forget the chickens need water at dawn.\"",
+            "The paint on the hose reel is peeling; it’s seen more rain than anyone remembers.",
+            "Someone scratched: \"If the mains stay dead, dig a well before the frost kills the crops.\"",
+            "A child's doodle of a snowman leans against the tap, a reminder of carefree days.",
+            "The rusted handle squeaks like a warning bell when turned in the cold."
+        };
 
         public override string DisplayName => "Outside tap";
         public override Vector3 InteractPoint => _point;
@@ -98,12 +111,20 @@ namespace CloneZ
             water.Stopped = c => EndWatering();
             into.Add(water);
 
-            WaterUse.AddDrinkAndFill(ctx, this, into);
+            // Flavor: give the survivor a small piece of local lore or a practical tip while inspecting the tap.
+            var readNote = new InteractAction("Read the tap note", c =>
+            {
+                int idx = UnityEngine.Random.Range(0, _tapNotes.Length);
+                c.Notify(_tapNotes[idx]);
+            });
+            into.Add(readNote);
+
             var coil = new InteractAction("Coil the hose", c => c.Notify("You wind the hose back onto its reel, neat as anything. Habit."))
                 .Timed(CloneZConfig.HoseCoilSeconds, "Coiling the hose");
             coil.Stopped = c => { if (_open) { SetOpen(false, false); c.Notify("You remember to shut the tap."); } };
             into.Add(coil);
         }
+
 
         private void Turn(InteractContext ctx, bool open)
         {
