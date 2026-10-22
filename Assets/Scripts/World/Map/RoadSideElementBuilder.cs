@@ -45,6 +45,14 @@ namespace CloneZ
                     BuildKerbCap(site, b, normal, side, edgeOffset, yaw, build, surf);
                     BuildKerbDrain(site, b, normal, side, edgeOffset, yaw, build, surf);
                 }
+                // -------------------------------------------------
+                // Add street lamps on a subset of segments
+                // -------------------------------------------------
+                if (build.HasSidewalk(street.Data.id) && build.HasStreetLamp(street.Data.id))
+                {
+                    // place a single lamp at the midpoint of the segment
+                    StreetLampBuilder.BuildLamp(site, street, build);
+                }
             }
         }
 
