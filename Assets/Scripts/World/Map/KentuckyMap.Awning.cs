@@ -3,11 +3,23 @@ using UnityEngine;
 
 namespace CloneZ
 {
-    // Partial class to isolate awning and sign logic for retail‑type buildings.
+    // Builds period‑correct wooden awnings for retail façades:
+// – deterministic wood colour per building
+// – side support posts and horizontal slats
+// – sign pole with painted board
+// Partial class to isolate awning and sign logic for retail‑type buildings.
     public static partial class KentuckyMap
     {
-        // Adds a simple wooden awning over the front door and a small wooden sign‑board.
-        // Used for retail‑type buildings (kind "retail" or use starting with "shop:").
+        private static Color GetAwningColor(MapBuilding b)
+        {
+            // deterministic hue shift based on building id hash
+            int seed = (int)b.id; // use id field
+            UnityEngine.Random.InitState(seed);
+            float hue = UnityEngine.Random.Range(0.07f, 0.12f); // brown range
+            float sat = UnityEngine.Random.Range(0.55f, 0.65f);
+            float val = UnityEngine.Random.Range(0.45f, 0.55f);
+            return UnityEngine.Color.HSVToRGB(hue, sat, val);
+        }
         private static void BuildAwningAndSign(Site site, Vector2 doorPt, Vector2 outward, float yaw, MapBuilding b, System.Random rng)
         {
             // ----- awning -------------------------------------------------
@@ -20,12 +32,38 @@ namespace CloneZ
             Vector3 awningCenter = To3(doorPt + outward * (awningDepth * 0.5f), DoorHeight + awningHeightAboveDoor);
             Vector3 awningSize = new Vector3(awningWidth, awningThickness, awningDepth);
             // Use a slightly weathered wood colour, deterministic per building
-            Color awningCol = new Color(0.55f, 0.45f, 0.30f);
+            Color awningCol = GetAwningColor(b);
             Surf awningMat = DecorMaterials.WoodFloor(awningCol);
             site.Overhead.At(awningCenter).Box(awningCenter, awningSize, yaw, awningMat);
-            // No collider – awning is overhead only
+            // ----- side support posts -----
+            float supportWidth = 0.07f;
+            float supportHeight = awningHeightAboveDoor + 0.5f;
+            Vector3 leftOffset = Vector3.left * (awningWidth * 0.5f - supportWidth * 0.5f);
+            Vector3 rightOffset = Vector3.right * (awningWidth * 0.5f - supportWidth * 0.5f);
+            Vector3 leftPos = awningCenter + leftOffset;
+            Vector3 rightPos = awningCenter + rightOffset;
+            site.Town.Out.Solid(leftPos).Box(leftPos,
+                new Vector3(supportWidth, supportHeight, supportWidth), 0f, awningMat);
+            site.Town.PropCollider(leftPos,
+                new Vector3(supportWidth, supportHeight, supportWidth), 0f);
+            site.Town.Out.Solid(rightPos).Box(rightPos,
+                new Vector3(supportWidth, supportHeight, supportWidth), 0f, awningMat);
+            site.Town.PropCollider(rightPos,
+                new Vector3(supportWidth, supportHeight, supportWidth), 0f);
 
-            // ----- sign post -----------------------------------------------
+            // ----- horizontal slats -----
+            int slatCount = 4;
+            float slatThickness = 0.02f;
+            float slatDepth = awningDepth * 0.9f;
+            float slatStartY = awningCenter.y - awningThickness * 0.5f + slatThickness * 0.5f;
+            for (int i = 0; i < slatCount; i++)
+            {
+                float y = slatStartY + i * (awningHeightAboveDoor / (slatCount + 1));
+                Vector3 slatCenter = new Vector3(awningCenter.x, y, awningCenter.z);
+                site.Overhead.At(slatCenter).Box(slatCenter,
+                    new Vector3(awningWidth * 0.95f, slatThickness, slatDepth),
+                    yaw, awningMat);
+            }
             // Pole: 0.05 × 0.05 × 1.0 m, board: 0.6 × 0.15 × 0.02 m
             const float poleHeight = 1.0f;
             const float poleSize = 0.05f;
@@ -48,8 +86,15 @@ namespace CloneZ
                 DecorPalette.Matte(new Color(0.90f, 0.84f, 0.70f)));
             site.Town.PropCollider(boardCenter,
                 new Vector3(boardWidth, boardHeight, boardDepth), yaw);
-            // Reserve space so other props don’t intersect
-            site.Take(doorPt + outward * (awningDepth + 0.5f), awningWidth * 0.5f + 0.2f);
+            // ----- painted sign area -----
+            Color paintCol = new Color(0.75f, 0.20f, 0.20f); // faded red
+            Vector3 paintCenter = boardCenter + new Vector3(0f, 0f, boardDepth * 0.51f);
+            site.Town.Out.Solid(paintCenter).Box(paintCenter,
+                new Vector3(boardWidth * 0.9f, boardHeight * 0.8f, 0.01f),
+                yaw, DecorPalette.Matte(paintCol));
+            site.Town.PropCollider(paintCenter,
+                new Vector3(boardWidth * 0.9f, boardHeight * 0.8f, 0.01f), yaw);
+            site.Take(doorPt + outward * (awningDepth + 0.7f), awningWidth * 0.5f + 0.4f);
         }
     }
 }
