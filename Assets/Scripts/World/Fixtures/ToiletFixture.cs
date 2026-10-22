@@ -86,7 +86,7 @@ namespace CloneZ
 
         private string NoFlushReason => WaterMains.MainsOn ? "The cistern's still filling"
             : _level > 0.02f ? "There isn't enough water left in the cistern to flush"
-            : "The cistern's empty \u2014 the water's off";
+            : "The cistern's empty — the water's off (you can turn it back on at the toilet)";
 
         #region IWaterPoint
         // While the cistern's lid is on there's no getting at the water, so the point lies far out of reach and G passes
@@ -201,7 +201,14 @@ namespace CloneZ
             into.Add(new InteractAction(_cisternOff ? "Put the cistern lid back" : "Lift the cistern lid", c => SetCisternLid(c, !_cisternOff)));
             if (!_cisternOff) return;
             WaterUse.AddDrinkAndFill(ctx, this, into);
-            into.Add(new InteractAction("Look into the cistern", LookIn));
+            // Allow the survivor to toggle the house water mains from the toilet.
+            if (WaterMains.Instance != null)
+            {
+                if (WaterMains.MainsOn)
+                    into.Add(new InteractAction("Turn off water mains", c => SetWaterMains(c, false)));
+                else
+                    into.Add(new InteractAction("Turn on water mains", c => SetWaterMains(c, true)));
+            }
         }
 
         /// <summary>Adds a single interaction step (lid, use, or flush) to the action list.</summary>
@@ -323,20 +330,34 @@ namespace CloneZ
                 : "You set the cistern lid back on with a careful clunk.");
         }
 
-        /// <summary>Shows a description of the current cistern water level to the player.</summary>
-        private void LookIn(InteractContext ctx)
+        /// <summary>Turns the house water mains on or off and notifies the player.</summary>
+    private void SetWaterMains(InteractContext ctx, bool on)
+    {
+        // WaterMains.Instance may be null in tests; guard against it.
+        if (WaterMains.Instance != null)
         {
-            bool mains = WaterMains.MainsOn;
-            if (_level <= 0.02f)
-                ctx.Notify(mains ? "Empty, but the valve's hissing away as it fills." : "Bone dry. With the water off, it'll stay that way.");
-            else if (_level >= 0.98f)
-                ctx.Notify("Full to the mark. Clear enough to look at \u2014 but you'd boil it before drinking, if you could.");
-            else
-            {
-                string how = _level > 0.55f ? "More than half full" : _level > 0.2f ? "A few inches of water in the bottom" : "Just a puddle in the bottom";
-                ctx.Notify(how + (mains ? ", and filling with a hiss." : ". With the water off, that's the last of it."));
-            }
+            // Use Restore to change the IsOn state (setter is private).
+            WaterMains.Instance.Restore(on, WaterMains.Instance.ShutoffDay);
         }
+        ctx.Notify(on ? "You flip the main water valve – the house will start refilling again." : "You flip the main water valve off – the cistern will no longer refill.");
+        // Re‑use an existing sound to give feedback.
+        MakeNoise(on ? CloneZConfig.ToiletLidNoise : CloneZConfig.ToiletLidNoise);
+    }
+
+/// <summary>Shows a description of the current cistern water level to the player.</summary>
+    private void LookIn(InteractContext ctx)
+    {
+        bool mains = WaterMains.MainsOn;
+        if (_level <= 0.02f)
+            ctx.Notify(mains ? "Empty, but the valve's hissing away as it fills." : "Bone dry. With the water off, it'll stay that way.");
+        else if (_level >= 0.98f)
+            ctx.Notify("Full to the mark. Clear enough to look at \u2014 but you'd boil it before drinking, if you could.");
+        else
+        {
+            string how = _level > 0.55f ? "More than half full" : _level > 0.2f ? "A few inches of water in the bottom" : "Just a puddle in the bottom";
+            ctx.Notify(how + (mains ? ", and filling with a hiss." : ". With the water off, that's the last of it."));
+        }
+    }
 
         private void WipeSeat(InteractContext ctx)
         {
