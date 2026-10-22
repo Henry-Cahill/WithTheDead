@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace CloneZ
 {
@@ -319,6 +320,16 @@ namespace CloneZ
             {
                 m.Box(new Vector3(-12.2f, 1.05f, -6f), new Vector3(0.45f, 0.4f, 0.5f), DecorPalette.Matte(new Color(0.75f, 0.72f, 0.62f)));
                 m.Box(new Vector3(-11.97f, 1.07f, -6f), new Vector3(0.01f, 0.28f, 0.38f), DecorPalette.Glow(new Color(0.35f, 0.95f, 0.45f)));
+            }, Vector3.zero);
+                        // Metal handle and lock plate for 1993‑era locker detail
+            Deco(world, "LockerDetail", m =>
+            {
+                // small metal handle on the right side
+                m.Box(new Vector3(-12.1f, 1.2f, 2.6f), new Vector3(0.02f, 0.12f, 0.02f), st.Metal);
+                // lock plate near the top left
+                m.Box(new Vector3(-12.85f, 1.8f, 2.4f), new Vector3(0.06f, 0.04f, 0.01f), st.Metal);
+                // wear seam (thin line) across the front
+                m.Box(new Vector3(-12.55f, 0.5f, 2.7f), new Vector3(0.58f, 0.01f, 0.02f), DecorPalette.Matte(new Color(0.2f,0.2f,0.2f)));
             }, Vector3.zero);
             Solid(world, "Lockers", new Vector3(-12.55f, 1f, 2.5f), new Vector3(0.6f, 2f, 2.4f), st.Metal);
             Solid(world, "HideoutDoor", new Vector3(-12.83f, 1.15f, 5f), new Vector3(0.08f, 2.3f, 1.1f), st.DarkWood);

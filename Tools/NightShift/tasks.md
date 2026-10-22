@@ -8040,9 +8040,10 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 3: HoseSpigot.cs – Turn – ensure the timer is also cleared when the player manually turns the tap off (already done, but add a comment for clarity). Current code already contains: `if (!open) _autoCloseAt = 0f; // cancel any pending auto‑close` Add a comment above it: `// Cancel any auto‑close timer when the tap is turned off manually.`
   Done when: In‑game the player can no longer start a “Leave tap open for 5 min” timer while the tap is already opened for watering, preventing overlapping timers. After coiling the hose the tap shuts and any pending auto‑close timer is cleared, so no extra shut‑off noise plays. All other behaviours (turning on/off, watering, checking tap, coil action) remain exactly as before.
   - 14:37 landed by 0htsserver in 2.5 min: **Summary of changes**
-- [ ] Add period‑correct metal handles, hinges, lock plate and wear seam to the metal “Lockers” built in `HubWorld.BuildFurniture` (Assets/Scripts/Hub/HubWorld.cs) to make the locker row look like real 1993‑era storage.
+- [x] Add period‑correct metal handles, hinges, lock plate and wear seam to the metal “Lockers” built in `HubWorld.BuildFurniture` (Assets/Scripts/Hub/HubWorld.cs) to make the locker row look like real 1993‑era storage.
   Step 1: In `Assets/Scripts/Hub/HubWorld.cs` add the missing `using System;` directive at the top (just after the existing usings). `using System.Collections.Generic;` `using UnityEngine;` `+using System;`
   Step 2: Locate the existing locker construction in `BuildFurniture` (quoted below) and insert a decorative detail call immediately after it. `// Existing line to quote` `Solid(world, "Lockers", new Vector3(-12.55f, 1f, 2.5f), new Vector3(0.6f, 2f, 2.4f), st.Metal);`
+  - 14:42 landed by 1htsserver in 4.5 min: **Changes made**
 - [ ] In Assets/Scripts/Player/PlayerFoodSickness.cs: Cache the static `CloneZConfig` values accessed each frame in `PlayerFoodSickness.Update` to avoid repeated static field lookups.
   In `PlayerFoodSickness` add private readonly fields:
   `private float _decayPerSec;`
