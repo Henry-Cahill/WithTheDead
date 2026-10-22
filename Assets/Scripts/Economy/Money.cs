@@ -42,7 +42,8 @@ namespace CloneZ
         }
 
 
-        public static int Take(Inventory inv, int amount)
+        /// <summary>Removes up to <paramref name="amount"/> of money from the given inventory, returning any leftover amount.</summary>
+    public static int Take(Inventory inv, int amount)
         {
             if (inv == null) return amount;
             for (int i = inv.Stacks.Count - 1; i >= 0 && amount > 0; i--)
@@ -101,6 +102,7 @@ namespace CloneZ
     /// <summary>What a fresh character owns: a little money, a basic kit to wear, a few things in the stash.</summary>
     public static class StarterPack
     {
+        /// <summary>Initialises a new character with default stash items, kit equipment and basic settings.</summary>
         public static void Apply(CharacterProfile c)
         {
             ItemDatabase.EnsureInit();
@@ -146,6 +148,7 @@ namespace CloneZ
             if (string.IsNullOrEmpty(c.BloodType)) c.BloodType = BloodTypes.Roll();
         }
 
+                /// <summary>Adds the specified item (with optional note) to the character's stash, splitting into stacks respecting the item's max stack size.</summary>
         public static void AddStash(CharacterProfile c, string id, int count, string note = null)
         {
             ItemDef d = ItemDatabase.Get(id);
@@ -162,6 +165,7 @@ namespace CloneZ
             }
         }
 
+                /// <summary>Adds the specified item to the character's starter kit, splitting into stacks respecting the item's max stack size.</summary>
         public static void AddKit(CharacterProfile c, string id, int count)
         {
             ItemDef d = ItemDatabase.Get(id);
