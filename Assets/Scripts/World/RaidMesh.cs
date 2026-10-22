@@ -77,8 +77,7 @@ namespace CloneZ
 
         /// <summary>Gets the current local frame origin.</summary>
         public Vector3 FrameOrigin => _origin;
-        /// <summary>Gets the current local frame rotation.</summary>
-        /// <summary>Gets the current local frame rotation.</summary>
+/// <summary>Gets the current local frame rotation.</summary>
         public Quaternion FrameRotation => _rot;
 
         /// <summary>A local-frame point in mesh space.</summary>
