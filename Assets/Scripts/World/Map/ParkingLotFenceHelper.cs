@@ -15,6 +15,8 @@ namespace CloneZ
         private static readonly Vector3 PostSize = new Vector3(0.04f, 0.5f, 0.04f);
         // horizontal bar dimensions (thickness; length will be set per segment)
         private static readonly Vector3 BarThickness = new Vector3(0.02f, 0.02f, 0.02f);
+        // metal cap dimensions (width, height, depth) placed atop each post
+        private static readonly Vector3 PostCapSize = new Vector3(0.04f, 0.02f, 0.04f);
         // material – reuse the street‑lamp metal matte colour defined in KentuckyMap.Ground.cs
         private static readonly Surf MetalSurf = KentuckyMap.StreetLampMetal;
 
@@ -36,6 +38,10 @@ namespace CloneZ
                 Vector3 postCentre = KentuckyMap.To3(pos, y + PostSize.y * 0.5f);
                 var postMesh = into.Solid(postCentre);
                 postMesh.Box(postCentre, PostSize, 0f, MetalSurf);
+                // Add metal cap atop the post
+                Vector3 capCentre = KentuckyMap.To3(pos, y + PostSize.y + PostCapSize.y * 0.5f);
+                var capMesh = into.Solid(capCentre);
+                capMesh.Box(capCentre, PostCapSize, 0f, MetalSurf);
             }
 
             // Connect successive posts with a horizontal top bar.
