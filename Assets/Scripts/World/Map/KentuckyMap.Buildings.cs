@@ -226,12 +226,55 @@ site.Overhead.At(chimneyPos).Box(chimneyPos, new Vector3(chimneyBase, chimneyHei
                 Surf knobMat = DecorPalette.Gloss(new Color(0.8f, 0.8f, 0.8f));
                 site.Town.Out.Solid(knobCenter).Box(knobCenter, knobSize, doorYaw, knobMat);
             }
-            // Add simple front porch/stoop for residential buildings
+            // Add detailed front porch with slab, steps, and railing for residential buildings
             if (door >= 0 && (b.kind == "house" || b.kind == "trailer"))
             {
-                Vector3 porchCenter = To3(doorPoint + doorOutward * 0.4f, 0.1f);
-                Vector3 porchSize = new Vector3(1.5f, 0.2f, 0.8f);
-                site.Town.Out.Solid(porchCenter).Box(porchCenter, porchSize, doorYaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
+                // Deterministic wood colour for the porch
+                Color porchWood = new Color(0.55f, 0.40f, 0.26f);
+                // Slab
+                Vector3 porchCenter = To3(doorPoint + doorOutward * 0.4f, 0.1f); // centre height 0.1 m
+                Vector3 porchSize = new Vector3(1.5f, 0.2f, 0.8f); // width × height × depth
+                site.Town.Out.Solid(porchCenter).Box(porchCenter, porchSize, doorYaw, DecorMaterials.WoodFloor(porchWood));
+                // Steps
+                float stepDepth = 0.2f; // metre
+                float stepHeight = 0.05f; // metre
+                Vector3 outward3 = new Vector3(doorOutward.x, 0f, doorOutward.y);
+                Vector3 stepSize = new Vector3(porchSize.x, stepHeight, stepDepth);
+                // First step (lowest)
+                Vector3 step1Offset = outward3 * (-(porchSize.z * 0.5f + stepDepth * 0.5f));
+                Vector3 step1Center = porchCenter + step1Offset;
+                step1Center.y = stepHeight * 0.5f; // sits on ground
+                site.Town.Out.Solid(step1Center).Box(step1Center, stepSize, doorYaw, DecorMaterials.WoodFloor(porchWood));
+                // Second step (higher)
+                Vector3 step2Offset = outward3 * (-(porchSize.z * 0.5f + 1.5f * stepDepth));
+                Vector3 step2Center = porchCenter + step2Offset;
+                step2Center.y = stepHeight * 1.5f; // 0.075 m above ground
+                site.Town.Out.Solid(step2Center).Box(step2Center, stepSize, doorYaw, DecorMaterials.WoodFloor(porchWood));
+                // Railing
+                float postWidth = 0.05f;
+                float postDepth = 0.05f;
+                float postHeight = 0.40f; // total height above slab top
+                Vector3 postSize = new Vector3(postWidth, postHeight, postDepth);
+                // Right‑hand vector (perpendicular to outward, points to porch’s right side)
+                Vector3 rightVec = Vector3.Cross(Vector3.up, outward3);
+                // Front‑edge offset from slab centre (to the very edge of the porch)
+                Vector3 frontOffset = outward3 * (porchSize.z * 0.5f);
+                // Left post centre
+                Vector3 leftPostCenter = porchCenter + frontOffset - rightVec * ((porchSize.x * 0.5f) - postWidth * 0.5f);
+                leftPostCenter.y = porchSize.y * 0.5f + postHeight * 0.5f; // sits on top of slab
+                // Right post centre
+                Vector3 rightPostCenter = porchCenter + frontOffset + rightVec * ((porchSize.x * 0.5f) - postWidth * 0.5f);
+                rightPostCenter.y = leftPostCenter.y;
+                // Build posts (solid to block movement)
+                site.Town.Out.Solid(leftPostCenter).Box(leftPostCenter, postSize, doorYaw, DecorMaterials.WoodFloor(porchWood));
+                site.Town.Out.Solid(rightPostCenter).Box(rightPostCenter, postSize, doorYaw, DecorMaterials.WoodFloor(porchWood));
+                // Top rail (thin box spanning between posts)
+                float railHeight = 0.04f;
+                float railDepth = 0.04f;
+                Vector3 railSize = new Vector3(porchSize.x - 2f * postWidth, railHeight, railDepth);
+                Vector3 railCenter = (leftPostCenter + rightPostCenter) * 0.5f;
+                railCenter.y = leftPostCenter.y + postHeight * 0.5f - railHeight * 0.5f; // near top of posts
+                site.Town.Out.Solid(railCenter).Box(railCenter, railSize, doorYaw, DecorMaterials.WoodFloor(porchWood));
             }
 
             // Add short concrete stepping‑stone path for residential buildings (house, trailer, apartments, hotel)
