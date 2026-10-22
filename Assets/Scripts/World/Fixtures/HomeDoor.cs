@@ -74,6 +74,8 @@ namespace CloneZ
         private int _lockSide;
         private bool _deadbolt, _peephole;
         private bool _open, _locked;
+        // True when the door has been broken; it can no longer be locked and its solid parts are removed.
+        private bool _broken;
 
         private Action<InteractContext> _openAct, _closeAct, _lockAct, _unlockAct, _rattleAct, _peepAct, _knockAct;
 
@@ -191,9 +193,11 @@ namespace CloneZ
                 else if (!_locked) into.Add(new InteractAction("Lock the door").DisabledIf(true, fault ?? _lockElsewhere));
             }
 
-            if (_peephole && lockSide && !_open)
-                into.Add(new InteractAction("Look through the peephole", _peepAct)
-                    .Timed(CloneZConfig.DoorPeepSeconds, "Peering through the peephole", HumanoidActivity.Use));
+            if (_locked && !_broken)
+            {
+                into.Add(new InteractAction("Bash the door", SetBroken)
+                    .Timed(2f, "Bashing the door", HumanoidActivity.Use));
+            }
 
             into.Add(new InteractAction("Knock on the door", _knockAct));
         // Check lock state without trying to open
@@ -225,7 +229,19 @@ namespace CloneZ
         {
             for (int i = 0; i < _leaves.Length; i++)
                 if (_leaves[i] != null) _leaves[i].SetOpen(_open, instant);
-            SetSolid(!_open);
+
+            if (_broken)
+            {
+                // A broken door cannot be locked and its solid parts disappear.
+                _locked = false;
+                _lockSide = 0;
+                SetSolid(false); // remove collider and navmesh carve
+            }
+            else
+            {
+                SetSolid(!_open);
+            }
+
             if (_piece != null)
             {
                 _piece.HasDoor = true;
@@ -244,7 +260,8 @@ namespace CloneZ
         protected virtual string LockFault => null;
 
         /// <summary>Tells the camera's cutaway the door's parts changed (a renderer added or shown), so they hide with its
-        /// wall while it's cut away.</summary>
+        /// wall while it's cut away. Also runs when the door becomes broken.
+        /// </summary>
         protected void PartsChanged()
         {
             if (_occluder == null) _occluder = _piece != null ? _piece.GetComponent<CutawayOccluder>() : GetComponentInParent<CutawayOccluder>();
@@ -278,16 +295,28 @@ namespace CloneZ
             return blocked;
         }
 
+        private void SetBroken(InteractContext ctx)
+        {
+            if (_broken) return;
+            _broken = true;
+            _locked = false;
+            _lockSide = 0;
+            Apply(false);
+            PartsChanged();
+            Sfx.Play(SfxIds.DoorBash, transform.position + Vector3.up * 1.2f, 0.75f, UnityEngine.Random.Range(0.92f, 1.08f), 22f);
+            ctx.Notify("You slam the door hard; the lock snaps and the door is now broken.");
+        }
+
+        // Trying the handle of a door locked from the other side.
         private void SetLocked(bool locked, InteractContext ctx)
         {
+            if (_broken) return; // a broken door cannot be locked
             if (_lockSide == 0 || _locked == locked || (locked && (_open || LockFault != null))) return;
             _locked = locked;
             if (ctx == null) return;
             if (_deadbolt) ctx.Notify(locked ? "You turn the deadbolt. The " + _noun + " is locked." : "You draw back the deadbolt.");
             else ctx.Notify(locked ? "You slide the little bolt across. The " + _noun + " is locked." : "You slide the bolt back.");
         }
-
-        // Trying the handle of a door locked from the other side.
         private void Rattle(InteractContext ctx)
         {
             MakeNoise(CloneZConfig.DoorRattleNoise);
@@ -321,12 +350,13 @@ namespace CloneZ
                 : "You rap on the door. The sound carries \u2014 anything nearby will have heard it.");
         }
 
-        public override void CaptureState(FixtureSave save) => save.State = (_open ? 1 : 0) | (_locked ? 2 : 0);
+        public override void CaptureState(FixtureSave save) => save.State = (_open ? 1 : 0) | (_locked ? 2 : 0) | (_broken ? 4 : 0);
 
         public override void RestoreState(FixtureSave save)
         {
             _open = (save.State & 1) != 0;
             _locked = !_open && _lockSide != 0 && (save.State & 2) != 0;
+            _broken = (save.State & 4) != 0;
             Apply(true);
         }
     }
