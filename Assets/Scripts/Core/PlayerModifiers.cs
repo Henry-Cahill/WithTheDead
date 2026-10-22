@@ -71,32 +71,26 @@ namespace CloneZ
         private readonly StatMods _mods = new StatMods();
         private readonly List<IStatModSource> _external = new List<IStatModSource>();
         private readonly List<IStatModSource> _found = new List<IStatModSource>();
-        private bool _dirty;
 
                 /// <summary>Gets the current accumulated stat modifiers for the local survivor.</summary>
         public StatMods Mods => _mods;
 
-        private void Awake() { s_Instance = this; GetComponents(_found); Recompute(); _dirty = true; }
+        private void Awake() { s_Instance = this; Recompute(); }
         private void OnDestroy() { if (s_Instance == this) s_Instance = null; }
 
         /// <summary>Adds a source that doesn't live on the survivor's GameObject (a profile trait set).</summary>
-        public void Register(IStatModSource src) { if (src != null && !_external.Contains(src)) _external.Add(src); _dirty = true; }
+        public void Register(IStatModSource src) { if (src != null && !_external.Contains(src)) _external.Add(src); }
                 /// <summary>Removes a previously registered stat-mod source.</summary>
-        public void Unregister(IStatModSource src)
-    {
-        _external.Remove(src);
-        _dirty = true;
-    }
+        public void Unregister(IStatModSource src) => _external.Remove(src);
 
-        private void Update() { if (_dirty) Recompute(); }
+        private void Update() => Recompute();
 
         private void Recompute()
         {
             _mods.Reset();
-
+            GetComponents(_found);
             for (int i = 0; i < _found.Count; i++) SafeApply(_found[i]);
             for (int i = 0; i < _external.Count; i++) SafeApply(_external[i]);
-            _dirty = false;
         }
 
         private void SafeApply(IStatModSource s)

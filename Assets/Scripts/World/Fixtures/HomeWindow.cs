@@ -110,6 +110,7 @@ namespace CloneZ
             _unlatchAct = c => SetLatched(false, c);
             _curtainAct = c => SetDrawn(!_drawn);
             _lookAct = Look;
+            _climbAct = Climb;
             _checkAct = c => CheckWindow(c);
             _knockAct = c => { MakeNoise(CloneZConfig.WindowNoise); c.Notify("You rap a fist against the window."); };
         }
@@ -172,6 +173,7 @@ namespace CloneZ
                 else into.Add(new InteractAction("Latch the window", _latchAct).DisabledIf(_open, "Close the window first"));
 
                 string draw = _blind ? (_drawn ? "Raise the blind" : "Lower the blind") : (_drawn ? "Open the curtains" : "Close the curtains");
+                into.Add(new InteractAction(draw, _curtainAct));
                 into.Add(new InteractAction("Check window", _checkAct));
                 into.Add(new InteractAction("Knock on the window", _knockAct));
 

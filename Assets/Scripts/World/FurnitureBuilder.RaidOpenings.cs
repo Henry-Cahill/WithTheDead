@@ -173,6 +173,7 @@ namespace CloneZ
                 m.Box(l.P(rightEyePos, rodY - 0.004f, rodOff), new Vector3(0.008f, 0.001f, 0.008f), brass);
                 // Add short brass hook extending outward from left finial
                 m.CylinderX(l.P(r0, rodY, hookDepth), hookRad, hookLen, 10, brass, 0f);
+                m.Ellipsoid(l.P(r1, rodY, rodOff), new Vector3(0.045f, 0.045f, 0.045f), brass, 6, 4);
                 // Add short brass hook extending outward from right finial
                 m.CylinderX(l.P(r1, rodY, hookDepth), hookRad, hookLen, 10, brass, 0f);
             }

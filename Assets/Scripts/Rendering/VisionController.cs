@@ -215,7 +215,7 @@ CacheBones();
         public bool CanSee(Vector3 point)
         {
             if (!_hasSight) return true;
-            return ZombieVisibility.CanSee(in _lastSight, point, EyePosition);
+            return ZombieVisibility.CanSee(in _lastSight, point, point);
         }
 
         private void OnEnable()

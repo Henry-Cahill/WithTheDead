@@ -131,10 +131,14 @@ if (water) {
                     // Raised kerb strip along the road edge
                     if (road)
                     {
-                        Ribbon(site.Town.Out, piece, KerbWidth, StreetY + KerbHeight, KerbSurf);
-                        // thin wear strip just inside the kerb – gives the road a lived‑in look
-                        Ribbon(site.Town.Out, piece, 0.04f, StreetY + 0.001f, RandomGravelOverlay(piece[0]));
-                    Ribbon(site.Town.Out, piece, KerbWidth, StreetY + KerbHeight + 0.001f, Ice);
+                        for (int side = -1; side <= 1; side += 2)
+                        {
+                            List<Vector2> kerb = OffsetLine(piece, side * (width - KerbWidth) * 0.5f);
+                            Ribbon(site.Town.Out, kerb, KerbWidth, StreetY + KerbHeight, KerbSurf);
+                            // thin wear strip just inside the kerb – gives the road a lived‑in look
+                            Ribbon(site.Town.Out, OffsetLine(piece, side * (width * 0.5f - KerbWidth - 0.02f)), 0.04f, StreetY + 0.001f, RandomGravelOverlay(piece[0]));
+                            Ribbon(site.Town.Out, kerb, KerbWidth, StreetY + KerbHeight + 0.001f, Ice);
+                        }
                     }
                     // Place street‑lamp poles along main roads (road rank >= 2) every 30 m.
                     if (road && surf.Mat == DecorMaterials.Asphalt.Mat)
@@ -160,6 +164,7 @@ if (water) {
                     }
                     RoadMarkingsBuilder.BuildForStreet(site, s, build);
                 site.TakeLine(piece, width * 0.5f + 0.3f);
+                    if (road && width >= 7f) DashedLine(site.Town.Out, piece, StreetY + 0.003f);
                 }
                 // The road out of town carries on past the edge, as scenery.
                 if (road)
@@ -168,8 +173,12 @@ if (water) {
                     {
                         Ribbon(site.Town.Far, piece, width, StreetY, surf);
                         // Kerb on the outer road extension
-                        Ribbon(site.Town.Far, piece, KerbWidth, StreetY + KerbHeight, KerbSurf);
-                        Ribbon(site.Town.Far, piece, KerbWidth, StreetY + KerbHeight + 0.001f, Ice);
+                        for (int side = -1; side <= 1; side += 2)
+                        {
+                            List<Vector2> kerb = OffsetLine(piece, side * (width - KerbWidth) * 0.5f);
+                            Ribbon(site.Town.Far, kerb, KerbWidth, StreetY + KerbHeight, KerbSurf);
+                            Ribbon(site.Town.Far, kerb, KerbWidth, StreetY + KerbHeight + 0.001f, Ice);
+                        }
                     }
                 }
             }
@@ -270,6 +279,30 @@ if (water) {
                 m.Tri(aL, bL, bR, surf);   // clockwise seen from above: the face looks up
                 m.Tri(aL, bR, aR, surf);
             }
+        }
+
+        /// <summary>The line moved sideways by <paramref name="offset"/> (to the left of its direction when positive),
+        /// mitred at the bends as <see cref="Ribbon"/> does.</summary>
+        private static List<Vector2> OffsetLine(List<Vector2> pts, float offset)
+        {
+            int n = pts.Count;
+            var moved = new List<Vector2>(n);
+            if (n < 2)
+            {
+                moved.AddRange(pts);
+                return moved;
+            }
+            for (int i = 0; i < n; i++)
+            {
+                Vector2 dPrev = (i > 0 ? pts[i] - pts[i - 1] : pts[1] - pts[0]).normalized;
+                Vector2 dNext = (i < n - 1 ? pts[i + 1] - pts[i] : dPrev).normalized;
+                Vector2 nPrev = new Vector2(-dPrev.y, dPrev.x), nNext = new Vector2(-dNext.y, dNext.x);
+                Vector2 miter = nPrev + nNext;
+                miter = miter.sqrMagnitude > 1e-6f ? miter.normalized : nNext;
+                float stretch = 1f / Mathf.Max(0.4f, Vector2.Dot(miter, nNext));
+                moved.Add(pts[i] + miter * (offset * stretch));
+            }
+            return moved;
         }
 
         // A faded centre line: 3 m dashes every 9 m.

@@ -427,6 +427,8 @@ private bool _running;                // the cold tap is open and water is comin
             _cleanUntil = TimeOfDay.Now + CloneZConfig.KitchenDishesDirtyHours;
             RefreshDishes();
             if (ctx.Stats != null) ctx.Stats.Panic = Mathf.Max(0f, ctx.Stats.Panic - CloneZConfig.KitchenDishesCalm);
+            ctx.Notify("You scrub the plates and the mug, rinse them and stand them in the rack to drip. Such an ordinary job. It steadies you.");
+            EndJob(ctx);
         }
 
         // Empties the sink when mains are off and there is standing water.
@@ -501,7 +503,7 @@ private bool _running;                // the cold tap is open and water is comin
         #region Persistence
         public override void CaptureState(FixtureSave save)
         {
-            save.State = (_running ? 1 : 0) | (_plugIn ? 2 : 0);
+            save.State = (_running && !_openedForJob ? 1 : 0) | (_plugIn ? 2 : 0);
             save.A = _level;
             save.B = _cleanUntil;
         }

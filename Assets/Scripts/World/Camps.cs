@@ -71,13 +71,13 @@ namespace CloneZ
                 BuildPiece p = BuildPiece.SpawnRestored(null, (BuildPieceType)h.Type, h.Position, h.Yaw, h.Health, h.MaxHealth, false);
                 p.Owner = me;
                 if (p.Type == BuildPieceType.Doorway) CampGate.On(p);
-// Announce(p); // removed redundant network broadcast
+                Announce(p);
             }
             foreach (BarricadeSave s in z.CampBarricades)
             {
                 Barricade b = Barricade.SpawnRestored(null, s.Position, s.Forward, s.Planks, s.Health, s.MaxHealth, s.PerPlank);
                 b.Owner = me;
-// Announce(b); // removed redundant network broadcast
+                Announce(b);
             }
             foreach (CampGateSave g in z.Gates)
             {

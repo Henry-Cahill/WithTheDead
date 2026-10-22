@@ -728,7 +728,7 @@ private void TryPickUp()
         if (PickupTarget == null || _inventory == null) return;
         ItemDef def = PickupTarget.Def;
         Inventory inv = _inventory.Inventory;
-        if (inv != null && def != null && !inv.WouldFit(def))
+        if (inv != null && def != null && !inv.WouldFit(def, PickupTarget.Extra))
         {
             // Warn the player why the item can't be picked up.
             string why = inv.CurrentWeight + def.Weight > inv.MaxWeight + 1e-4f ? "too heavy" : "no room";
@@ -772,19 +772,18 @@ private void TryPickUp()
 
 private string FixturePrompt(Interactable f)
         {
+            // The actions follow the fixture's state, so list them afresh; only the string is reused.
+            _actions.Clear();
+            f.GetActions(_ctx, _actions);
             // Return cached prompt if fixture unchanged and actions unchanged
             if (f == _cachedPromptFixture)
             {
-                // Recompute signature to detect action changes
                 int sig = ComputeActionsSignature(_actions);
                 if (sig == _cachedPromptSig)
                 {
                     return _cachedPrompt;
                 }
             }
-            // Need to (re)build actions and prompt
-            _actions.Clear();
-            f.GetActions(_ctx, _actions);
             string prompt;
             if (_actions.Count == 0)
                 prompt = "[E] Inspect";
@@ -818,6 +817,7 @@ private string FixturePrompt(Interactable f)
                     var a = list[i];
                     sig = sig * 31 + (a.Label != null ? a.Label.GetHashCode() : 0);
                     sig = sig * 31 + (a.Enabled ? 1 : 2);
+                    sig = sig * 31 + (a.DisabledReason != null ? a.DisabledReason.GetHashCode() : 0);
                 }
             }
             return sig;

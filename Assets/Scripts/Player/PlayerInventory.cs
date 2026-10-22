@@ -78,6 +78,7 @@ namespace CloneZ
 
         private void Awake()
         {
+            _stats = GetComponent<PlayerStats>();
             _modifiers = PlayerModifiers.Current;
             _combat = GetComponent<PlayerCombat>();
             _skills = GetComponent<PlayerSkills>();
@@ -111,7 +112,7 @@ namespace CloneZ
         {
             if (_skills == null) return;
             int strength = _skills.GetLevel(PlayerSkills.Skill.Strength);
-            StatMods mods = _modifiers;
+            StatMods mods = _modifiers = PlayerModifiers.Current;   // PlayerModifiers is added after this component
             float key = strength * 1000f + mods.CarryCapacity * 100f + mods.CarryBonusKg;
             if (strength == _lastStrengthLevel && Mathf.Abs(key - _lastCapacityKey) < 0.01f) return;
             _lastStrengthLevel = strength;
@@ -137,7 +138,7 @@ namespace CloneZ
             if (layout == null) return;
 
             float strengthMult = _skills != null ? _skills.CarryCapacityMult : 1f;
-            StatMods mods = _modifiers;
+            StatMods mods = _modifiers = PlayerModifiers.Current;
             _pockets.Name = GameSession.SurvivorName + "'s Inventory";
             _pockets.Capacity = Mathf.Max(2f, CloneZConfig.PlayerCarryCapacity * strengthMult * mods.CarryCapacity + mods.CarryBonusKg);
 

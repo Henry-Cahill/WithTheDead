@@ -46,7 +46,7 @@ namespace CloneZ
             {
                 float hz = SleepSpot.Length * 0.5f - 0.2f;
                 var local = new Vector3(0f, 0.58f, 0f);
-PlayerInteractor pi = _playerInteractor;
+                PlayerInteractor pi = _playerInteractor != null ? _playerInteractor : (_playerInteractor = PlayerInteractor.Current);
                 if (pi != null) local.z = Mathf.Clamp(transform.InverseTransformPoint(pi.transform.position).z, -hz, hz);
                 return transform.TransformPoint(local);
             }

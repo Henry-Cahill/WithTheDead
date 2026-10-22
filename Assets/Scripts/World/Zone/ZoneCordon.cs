@@ -247,7 +247,7 @@ namespace CloneZ
             int carried = ctx.Inventory != null ? Money.Count(ctx.Inventory.Inventory) : 0;
             into.Add(new InteractAction("Bribe the Warden (" + Money.Format(Bribe) + ")", c =>
             {
-                if (!Money.TrySpend(Bribe, c.Inventory)) { c.Notify("Not enough money on you."); return; }
+                if (Money.Take(c.Inventory.Inventory, Bribe) > 0) { c.Notify("Not enough money on you."); return; }   // Take returns what's still owed; paid from the pack, not the stash
                 Grant(c, "He pockets it without looking at you. \"Didn't see you.\"");
                 Factions.AdjustReputation(Factions.Wardens, 5f);
             }).DisabledIf(paid, "Already paid").DisabledIf(!paid && carried < Bribe, "You need " + Money.Format(Bribe) + " on you"));

@@ -77,6 +77,7 @@ internal set
                         _light.Flicker = value;
                         _isFlickering = value;
             _isFlickering = _light?.Flicker ?? false;
+                        SyncGlow();
                     }
         }
 
@@ -194,9 +195,10 @@ internal set
             {
                 if (_ceilingsVisible() != _ceilingsShown) SyncGlow();
             }
-            // Update flicker‑dependent glow if flicker state changed
+            // Update flicker‑dependent glow if flicker state changed; a flickering lamp's shade follows its light's
+            // level every frame, dropping out through the dips.
             bool flickerNow = _light?.Flicker ?? false;
-            if (flickerNow != _isFlickering)
+            if (flickerNow != _isFlickering || (flickerNow && _glow != null))
             {
                 _isFlickering = flickerNow;
             SyncGlow();
@@ -221,8 +223,6 @@ internal set
             SyncGlow();
             // A dark lamp's bulb never shows (the camera's cutaway can leave one drawing when it lets go of it).
             if (!lit && _bulb != null && !_bulb.forceRenderingOff) _bulb.forceRenderingOff = true;
-            // Re‑enable the bulb renderer when the lamp becomes lit again.
-            if (lit && _bulb != null && _bulb.forceRenderingOff) _bulb.forceRenderingOff = false;
         }
 
         // Shows the glowing shade while the lamp is lit — a ceiling fitting's only while the ceilings show, a flickering

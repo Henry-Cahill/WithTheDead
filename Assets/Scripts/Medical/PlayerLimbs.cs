@@ -578,10 +578,6 @@ namespace CloneZ
             var h = root.gameObject.AddComponent<HudLimbs>();
             h._limbs = limbs;
             h._wounds = limbs.GetComponent<PlayerWounds>();
-            limbs.Changed += h.RefreshBleedingCache;
-            limbs.Changed += h.RefreshCache;
-            h.RefreshBleedingCache();
-            h.RefreshCache();
             // Head, thorax, stomach, arms, legs laid out as a little silhouette.
             h.Part(BodyZone.Head, new Vector2(32f, 124f), new Vector2(20f, 22f));
             h.Part(BodyZone.Thorax, new Vector2(26f, 88f), new Vector2(32f, 34f));
@@ -590,6 +586,9 @@ namespace CloneZ
             h.Part(BodyZone.RightArm, new Vector2(60f, 62f), new Vector2(14f, 60f));
             h.Part(BodyZone.LeftLeg, new Vector2(26f, 2f), new Vector2(15f, 58f));
             h.Part(BodyZone.RightLeg, new Vector2(43f, 2f), new Vector2(15f, 58f));
+            // The cache writes into the parts' labels, so it can only run once they exist.
+            limbs.Changed += h.RefreshCache;
+            h.RefreshCache();
             limbs.Hit += h.OnHit;
             return h;
         }
@@ -620,7 +619,8 @@ namespace CloneZ
                 // We keep _bleeding unchanged; it is refreshed elsewhere.
             }
         }
-                private void RefreshBleedingCache()
+
+        private void RefreshBleedingCache()
         {
             for (int i = 0; i < _bleeding.Length; i++)
             {
@@ -631,11 +631,13 @@ namespace CloneZ
 
         private void OnHit(BodyZone zone, float hp) { _flash = 0.35f; }
 
-        private void OnDestroy() { if (_limbs != null) { _limbs.Hit -= OnHit; _limbs.Changed -= RefreshBleedingCache; _limbs.Changed -= RefreshCache; } }
+        private void OnDestroy() { if (_limbs != null) { _limbs.Hit -= OnHit; _limbs.Changed -= RefreshCache; } }
 
         private void Update()
         {
             if (_limbs == null) return;
+            // Wounds open after PlayerLimbs.Changed fires and are bandaged without it, so bleeding is polled.
+            RefreshBleedingCache();
             _flash = Mathf.Max(0f, _flash - Time.deltaTime);
             float pulse = 0.5f + 0.5f * Mathf.Sin(Time.time * 8f);
             for (int i = 0; i < _parts.Length; i++)

@@ -329,7 +329,7 @@ namespace CloneZ
             RectTransform side = HubUI.Stack(cols[1], 8f, 14);
             ZoneDef zone = ZoneCatalog.Get(s_Zone);
             HubUI.Heading(side, "How you go in", 20);
-            string[] kinds = { "Your runner (everything carried is at risk)", "Scavenger run (borrowed kit, nothing to lose)", "Open Zone (no clock: stay as long as you last)", "Hunter (play one of the things in the dark)", "Co‑op (join a host's raid)", "Supply courier — deliver food and firewood to the out‑post.", "Rescue mission — bring a trapped survivor back to safety.", "Artifact hunt — track down a priceless relic before the zone collapses.", "Medical aid run — ferry bandages and antibiotics to the field clinic." };
+            string[] kinds = { "Your runner (everything carried is at risk)", "Scavenger run (borrowed kit, nothing to lose)", "Open Zone (no clock: stay as long as you last)", "Hunter (play one of the things in the dark)" };
             HubUI.Cycle(side, "Run", kinds, (int)s_Kind, v => { s_Kind = (RaidKind)v; Refresh(); });
             if (s_Kind == RaidKind.Monster && !ServerRules.AllowPlayerMonsters) HubUI.Note(side, "This server doesn't allow hunters.", UIKit.Bad);
             if (s_Kind == RaidKind.Monster)
@@ -351,7 +351,7 @@ namespace CloneZ
 
             int heliCost = 400 + zone.Depth * 350;
             HubUI.Cycle(side, "Insertion", new[] { "On foot (through the cordon)", "Helicopter (" + Money.Format(heliCost) + ")" }, s_Heli ? 1 : 0, v => { s_Heli = v == 1; Refresh(); });
-            if (s_Heli) HubUI.Cycle(side, "Landing zone", new[] { "Random", "North", "East", "South", "West", "NorthEast", "SouthEast", "SouthWest", "NorthWest" }, s_Lz + 1, v => { s_Lz = v - 1; Refresh(); });
+            if (s_Heli) HubUI.Cycle(side, "Landing zone", new[] { "Random", "North", "East", "South", "West" }, s_Lz + 1, v => { s_Lz = v - 1; Refresh(); });
             else if (zone.HasCordon)
             {
                 HubUI.Para(side, CordonRules.PassBought ? "You have a pass for the gate." : "Without a pass, the Wardens shoot anyone in the restricted belt. A pass costs " + Money.Format(CordonGate.Bribe) + " at the gate (or a Zone Permit).", 14,

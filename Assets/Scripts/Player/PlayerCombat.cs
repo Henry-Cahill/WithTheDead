@@ -118,6 +118,7 @@ namespace CloneZ
 
             if (EquippedFirearm != null)
             {
+                UpdateBuildCache();
                 AimingDownSights = ViewState.MouseLook && rightHeld;
                 if (AimingDownSights && GameInput.Held(GameAction.HoldBreath)) _stats.TryConsumeEndurance(0.12f * Time.deltaTime);
                 Keyboard kb = Keyboard.current;
@@ -437,7 +438,7 @@ namespace CloneZ
                 Mathf.Lerp(CloneZConfig.FirearmSpreadWide, CloneZConfig.FirearmSpreadTight, ComputeAimQuality())) * spreadMult;
 
             int pellets = ammo != null ? Mathf.Max(1, ammo.Pellets) : Mathf.Max(1, gun.PelletsPerShot);
-            float pelletMult = pellets > 1 ? 1f / pellets : 1f;
+            float pelletMult = pellets > 1 ? 1f : 1f;   // ammo / FirearmDamage is per pellet: every pellet hits in full
             bool anyHit = false, anyKill = false;
             for (int i = 0; i < pellets; i++)
             {
@@ -533,11 +534,9 @@ namespace CloneZ
         private void UpdateBuildCache()
         {
             ItemStack cur = Inv != null ? Inv.EquippedStack : null;
-            if (cur != _lastEquippedStack)
-            {
-                Build = Ballistics.Build(cur);
-                _lastEquippedStack = cur;
-            }
+            // Rebuilt every time: the build follows the gun's mods, upgrades, wear and fouling, not only which stack is held.
+            Build = Ballistics.Build(cur);
+            _lastEquippedStack = cur;
         }
 
         /// <summary>Aim quality 0..1 from PZ's firearm to-hit model (worse while moving).</summary>

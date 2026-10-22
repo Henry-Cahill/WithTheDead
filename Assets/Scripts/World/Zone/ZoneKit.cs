@@ -293,7 +293,7 @@ namespace CloneZ
             var tip = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             tip.name = "BeamTip";
             tip.transform.SetParent(go.transform, false);
-            tip.transform.localPosition = new Vector3(0f, 0f, length);
+            tip.transform.localPosition = new Vector3(0f, 0f, 1f);   // the cone runs z 0..1, scaled by length
             tip.transform.localScale = Vector3.one * 0.05f;
             // Remove the default collider
             Object.Destroy(tip.GetComponent<Collider>());
@@ -310,9 +310,9 @@ namespace CloneZ
             bracket.transform.SetParent(go.transform, false);
             bracket.transform.localPosition = Vector3.zero;
             bracket.transform.localScale = new Vector3(0.04f, 0.04f, 0.02f);
-            // Assign rust colour
+            // Assign rust colour (on a copy: the primitive's sharedMaterial is Unity's default material, shared by everything)
             var bracketRenderer = bracket.GetComponent<MeshRenderer>();
-            bracketRenderer.sharedMaterial.color = Rust;
+            bracketRenderer.sharedMaterial = new Material(bracketRenderer.sharedMaterial) { color = Rust };
             // Remove its default collider (visual only)
             Object.Destroy(bracket.GetComponent<Collider>());
             // Add a tiny rust‑coloured cap on the bracket to suggest a screw/hinge
@@ -323,7 +323,7 @@ namespace CloneZ
             cap.transform.localPosition = new Vector3(0f, 0.04f, 0f);
             cap.transform.localScale = new Vector3(0.02f, 0.01f, 0.02f);
             var capRenderer = cap.GetComponent<MeshRenderer>();
-            capRenderer.sharedMaterial.color = Rust;
+            capRenderer.sharedMaterial = bracketRenderer.sharedMaterial;
             Object.Destroy(cap.GetComponent<Collider>());
 
             NoBake(go);

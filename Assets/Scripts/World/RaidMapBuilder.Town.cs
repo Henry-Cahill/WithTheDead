@@ -352,10 +352,10 @@ namespace CloneZ
                     Vector3 lampPos = car + (alongX ? new Vector3(0f, 0f, 1.5f) : new Vector3(1.5f, 0f, 0f));
                     Prop(town, lampPos, 0f, new Vector3(0.15f, 2.0f, 0.15f), true, (m, r) =>
                     {
-                        // metal pole
-                        m.Box(lampPos + new Vector3(0f, 1.0f, 0f), new Vector3(0.07f, 2.0f, 0.07f), DecorPalette.Metal(new Color(0.35f, 0.33f, 0.30f)));
+                        // metal pole (Prop draws in the lamp's own frame, origin at lampPos)
+                        m.Box(new Vector3(0f, 1.0f, 0f), new Vector3(0.07f, 2.0f, 0.07f), DecorPalette.Metal(new Color(0.35f, 0.33f, 0.30f)));
                         // small glass shade
-                        m.Box(lampPos + new Vector3(0f, 2.1f, 0f), new Vector3(0.12f, 0.05f, 0.12f), DecorPalette.Matte(new Color(0.15f, 0.14f, 0.13f)));
+                        m.Box(new Vector3(0f, 2.1f, 0f), new Vector3(0.12f, 0.05f, 0.12f), DecorPalette.Matte(new Color(0.15f, 0.14f, 0.13f)));
                     });
                     town.Light(b.Root, lampPos + new Vector3(0f, 2.2f, 0f), new Color(1f, 0.55f, 0.2f), 5f, 1.2f, true, false);
                 }

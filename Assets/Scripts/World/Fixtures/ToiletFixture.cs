@@ -361,12 +361,13 @@ namespace CloneZ
         /// <summary>Restores the toilet's saved state, resetting visual parts accordingly.</summary>
         public override void RestoreState(FixtureSave save)
         {
-            if ((save.State & 32) == 0) return;
+            // 32 marks a save with the seat's cleanliness in bit 16; older saves carry only their marker, 16.
+            if ((save.State & (16 | 32)) == 0) return;
             _seatUp = (save.State & 1) != 0;
             _lidUp = (save.State & 2) != 0 || _seatUp;
             _cisternOff = (save.State & 4) != 0;
             _wantsFlush = (save.State & 8) != 0;
-            _seatClean = (save.State & 16) != 0;
+            _seatClean = (save.State & 32) == 0 || (save.State & 16) != 0;
             _flushed = false;
             _level = Mathf.Clamp01(save.A);
             _leverBackAt = -1f;

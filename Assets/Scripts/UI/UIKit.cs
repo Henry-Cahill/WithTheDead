@@ -99,57 +99,6 @@ namespace CloneZ
             RectTransform rt = Rect(name, parent);
             var img = rt.gameObject.AddComponent<Image>();
             img.color = color;
-            // Add inner border inset 2 units with semi‑transparent dark colour
-            var borderRt = Rect("Border", img.rectTransform);
-            borderRt.anchorMin = Vector2.zero;
-            borderRt.anchorMax = Vector2.one;
-            borderRt.offsetMin = new Vector2(2f, 2f);
-            borderRt.offsetMax = new Vector2(-2f, -2f);
-            var borderImg = borderRt.gameObject.AddComponent<Image>();
-            borderImg.color = new Color(0f, 0f, 0f, 0.2f);
-
-            // Add decorative screws at panel corners (6×6 px) using dark metal tint
-            // Top‑left
-            var screwTL = Rect("ScrewTL", img.rectTransform);
-            screwTL.sizeDelta = new Vector2(6f, 6f);
-            screwTL.anchorMin = screwTL.anchorMax = new Vector2(0f, 1f);
-            screwTL.pivot = new Vector2(0f, 1f);
-            var imgTL = screwTL.gameObject.AddComponent<Image>();
-            imgTL.color = new Color(0.18f, 0.18f, 0.20f);
-            // Top‑right
-            var screwTR = Rect("ScrewTR", img.rectTransform);
-            screwTR.sizeDelta = new Vector2(6f, 6f);
-            screwTR.anchorMin = screwTR.anchorMax = new Vector2(1f, 1f);
-            screwTR.pivot = new Vector2(1f, 1f);
-            var imgTR = screwTR.gameObject.AddComponent<Image>();
-            imgTR.color = new Color(0.18f, 0.18f, 0.20f);
-            // Bottom‑left
-            var screwBL = Rect("ScrewBL", img.rectTransform);
-            screwBL.sizeDelta = new Vector2(6f, 6f);
-            screwBL.anchorMin = screwBL.anchorMax = new Vector2(0f, 0f);
-            screwBL.pivot = new Vector2(0f, 0f);
-            var imgBL = screwBL.gameObject.AddComponent<Image>();
-            imgBL.color = new Color(0.18f, 0.18f, 0.20f);
-            // Bottom‑right
-            var screwBR = Rect("ScrewBR", img.rectTransform);
-            screwBR.sizeDelta = new Vector2(6f, 6f);
-            screwBR.anchorMin = screwBR.anchorMax = new Vector2(1f, 0f);
-            screwBR.pivot = new Vector2(1f, 0f);
-            var imgBR = screwBR.gameObject.AddComponent<Image>();
-            imgBR.color = new Color(0.18f, 0.18f, 0.20f);
-
-            // Subtle scratched‑metal wear overlay (≈12×12 px) at bottom‑left with slight random offset
-            int seed = name.GetHashCode();
-            int dx = (seed >> 1) & 3;
-            int dy = (seed >> 3) & 3;
-            var wearRt = Rect("Wear", img.rectTransform);
-            wearRt.sizeDelta = new Vector2(12f, 12f);
-            wearRt.anchorMin = wearRt.anchorMax = new Vector2(0f, 0f);
-            wearRt.pivot = new Vector2(0f, 0f);
-            wearRt.anchoredPosition = new Vector2(dx - 2f, dy - 2f);
-            var wearImg = wearRt.gameObject.AddComponent<Image>();
-            wearImg.color = new Color(0.22f, 0.15f, 0.10f, 0.35f);
-
             return img;
         }
         #endregion
@@ -355,7 +304,7 @@ namespace CloneZ
             RectTransform handleArea = Rect("Handle Area", track);
             Stretch(handleArea, 6f, 0f, 6f, 0f);
             RectTransform handle = Rect("Handle", handleArea);
-            handle.sizeDelta = new Vector2(12f, 12f);
+            handle.sizeDelta = new Vector2(12f, 0f);
             var hImg = handle.gameObject.AddComponent<Image>();
             hImg.color = Accent;
             var s = track.gameObject.AddComponent<Slider>();

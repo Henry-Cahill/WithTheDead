@@ -38,9 +38,13 @@ namespace CloneZ
 
                 private static void BuildRoofEaves(Site site)
         {
+            float half = site.Half;
+            var square = Rect.MinMaxRect(-half, -half, half, half);
             // Add eave trim and a simple chimney to residential buildings (house, trailer, apartments, hotel, or use containing "residential")
             foreach (Footprint f in site.Area.Buildings)
             {
+                // Only the buildings BuildBuildings raises: not the tiny ones, nor those the edge cuts through.
+                if (f.Pts.Count < 3 || f.Size < 6f || (!f.Inside(half, 1f) && f.Bounds.Overlaps(square))) continue;
                 // Consider residential kinds by use field containing "residential" or kind "house"/"trailer"/"apartments"/"hotel"
                 string use = f.Data.use ?? "";
                 bool isResidential = use.Contains("residential") ||
@@ -49,8 +53,8 @@ namespace CloneZ
                 if (!isResidential)
                     continue;
 
-                // Determine roof height: use building height if known, else default 4.5f
-                float roofY = f.Data.height > 0f ? f.Data.height : 4.5f;
+                // The roof sits at the building's height, as BuildBuildings draws it.
+                float roofY = HeightOf(f.Data);
                 // Place eave at mid-height of the eave thickness
                 float eaveY = roofY + EaveHeight * 0.5f;
 
@@ -107,7 +111,6 @@ namespace CloneZ
                     Scenery(site, f, rng);
                     site.SceneryBuildings++;
                 }
-BuildRoofEaves(site);
                 // Add a small wooden mailbox for residential footprints (house, trailer, apartments, hotel)
                 if (f.Data.kind == "house" || f.Data.kind == "trailer" || f.Data.kind == "apartments" || f.Data.kind == "hotel")
                 {
@@ -120,10 +123,13 @@ BuildRoofEaves(site);
                     Vector3 pos = new Vector3(pos2D.x, 0f, pos2D.y);
                     // Add mailbox geometry (small wooden mailbox, not a public box)
                     var mesh = site.Town.Out.Solid(pos);
+                    mesh.SetFrame(pos, Mathf.Atan2(outward.x, outward.y) * Mathf.Rad2Deg);   // DecorProps draws at the frame's origin
                     DecorProps.Mailbox(mesh, rng, false);
+                    mesh.ResetFrame();
                 }
                 }
-
+            // Once, after the loop: called per footprint it redrew every residential roof's trim for every building.
+            BuildRoofEaves(site);
         }
 
         private static void Enterable(Site site, Footprint f, System.Random rng)
@@ -271,7 +277,9 @@ BuildRoofEaves(site);
                 float sillDepth = 0.02f + 0.02f * (float)rng.NextDouble(); // slight random variation
                 var sillCenter = To3(at, y - sillHeight * 0.5f);
                 var sillSize = new Vector3(1.0f, sillHeight, sillDepth);
-                site.Town.Out.Solid(sillCenter).Box(sillCenter, sillSize, outside);
+                // Same batch as the pane (upper storeys go overhead, hidden with them) and turned along the wall.
+                float wallYaw = -Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
+                m.Box(sillCenter, sillSize, wallYaw, outside);
 
                 // Add simple wooden shutters on each side of the window (outside face)
                 const float shutterWidth = 0.26f;
@@ -287,8 +295,8 @@ BuildRoofEaves(site);
                 // second shutter on -d side
                 Vector3 center2 = basePos - new Vector3(d.x, 0f, d.y) * offset + outward3 * (Thick * 0.5f + shutterDepth * 0.5f);
                 var shutterSize = new Vector3(shutterWidth, shutterHeight, shutterDepth);
-                site.Town.Out.Solid(center1).Box(center1, shutterSize, outside);
-                site.Town.Out.Solid(center2).Box(center2, shutterSize, outside);
+                m.Box(center1, shutterSize, wallYaw, outside);
+                m.Box(center2, shutterSize, wallYaw, outside);
                 }
             }
         }
@@ -430,8 +438,18 @@ BuildRoofEaves(site);
         /// <summary>The building's height in metres: as mapped, or from its storeys and kind.</summary>
         private static float HeightOf(MapBuilding b)
         {
-            // Use the deterministic effective height defined on MapBuilding.
-            return b.EffectiveHeight();
+            if (b.height > 0f) return Mathf.Clamp(b.height, 2.6f, 90f);
+            float storeys = Mathf.Max(1, b.levels) * Storey;
+            switch (b.kind)
+            {
+                case "shed": case "garage": case "canopy": return 2.7f;
+                case "trailer": return 2.9f;
+                case "barn": return 6.5f;
+                case "warehouse": case "industrial": return Mathf.Max(storeys, 6.5f);
+                case "church": return storeys + 3.5f;
+                case "silo": return 14f;
+                default: return storeys + 0.4f;   // a parapet above the top storey
+            }
         }
 
         private static Surf RoofSurf(MapBuilding b, System.Random rng)

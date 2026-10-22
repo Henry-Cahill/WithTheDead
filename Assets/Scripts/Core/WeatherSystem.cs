@@ -184,12 +184,6 @@ namespace CloneZ
         {
             float fog = Mathf.Max(FogIntensity, PrecipitationIntensity * 0.35f);   // falling snow thickens the murk like rain
             if (Mathf.Approximately(_cachedFog, fog)) return; // no change, skip updates
-            if (fog <= 0f)
-            {
-                RenderSettings.fog = false;
-                _cachedFog = 0f;
-                return;
-            }
             RenderSettings.fog = true;
             RenderSettings.fogMode = FogMode.Linear;
             RenderSettings.fogStartDistance = Mathf.Lerp(35f, 6f, fog);
@@ -281,10 +275,14 @@ namespace CloneZ
         private void ApplyRain()
         {
             if (_rain == null) return;
-            // Rain falls round the survivor: the isometric camera hangs far behind them, so there the box
-            // centres on the point the view looks at; in the close views, on the camera itself.
-            bool iso = ViewState.Current == CameraView.Isometric && IsoCameraFollow.Instance != null;
-            _rain.transform.position = iso ? IsoCameraFollow.FocusPoint : _cam.transform.position;
+            if (_cam == null) _cam = Camera.main;
+            if (_cam != null)
+            {
+                // Rain falls round the survivor: the isometric camera hangs far behind them, so there the box
+                // centres on the point the view looks at; in the close views, on the camera itself.
+                bool iso = ViewState.Current == CameraView.Isometric && IsoCameraFollow.Instance != null;
+                _rain.transform.position = iso ? IsoCameraFollow.FocusPoint : _cam.transform.position;
+            }
             // Only liquid rain draws streaks — falling snow is drawn by the vision effects instead.
             _rainEmission.rateOverTime = RainIntensity * 1500f;
         }

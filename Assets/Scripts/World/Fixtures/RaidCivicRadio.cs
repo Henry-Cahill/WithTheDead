@@ -188,12 +188,14 @@ namespace CloneZ
 
         private void Awake()
         {
+            _turnOn = TurnOn;
             _checkVolume = ctx => ctx.Notify("Current volume: " + (_volume <= 0 ? "low." : _volume >= MaxVolume ? "loud. It carries a long way." : "medium."));
             _turnOff = c => Switch(false);
             _retune = Retune;
             _louder = c => Turn(c, 1);
             _softer = c => Turn(c, -1);
             _callIn = CallIn;
+            _listen = Listen;
             _checkChannel = ctx => ctx.Notify("Current channel: " + Tuned.Name);
         }
 

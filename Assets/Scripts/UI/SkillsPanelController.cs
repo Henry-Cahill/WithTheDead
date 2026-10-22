@@ -50,6 +50,8 @@ namespace CloneZ
             Build();
             // Initialise skill cache after UI arrays are allocated in Build()
             _skillCache = new SkillCache[_order.Length];
+            // Nothing has been drawn yet: force the first Refresh to write every row (the fills start at full scale).
+            for (int i = 0; i < _skillCache.Length; i++) { _skillCache[i].level = -1; _skillCache[i].progress = -1f; }
         }
 
         /// <summary>
@@ -63,7 +65,7 @@ namespace CloneZ
                 if (kb.kKey.wasPressedThisFrame) Toggle();
                 else if (_open && kb.escapeKey.wasPressedThisFrame) Close();
             }
-            if (_open && _dirty && _skills != null) Refresh();
+            if (_open && _skills != null) Refresh();
         }
 
         /// <summary>
