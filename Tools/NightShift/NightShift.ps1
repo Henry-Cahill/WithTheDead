@@ -11,7 +11,8 @@
     refs     Export Unity's reference assemblies from this PC and upload them to the Spark and the helpers.
              Every change is compiled against them (there is no Unity editor on those machines). Needed
              once, and again after upgrading Unity or changing packages.
-    helpers  Set up the helper machines (tools, SSH access from the Spark, Unity references).
+    helpers  Set up the helper machines (tools, SSH access from the Spark, Unity references). A Windows PC needs
+             WindowsHelper.ps1 run on it once first (SSH server, Git, Python).
     add      Queue a task (one line, plain English).
     start    Start working through the queue (same as switching the Workbench toggle on). With no stop time
              set in nightshift.env it keeps going into the day, picking up new tasks, until you stop it.
@@ -30,7 +31,7 @@
 
 .EXAMPLE
   .\NightShift.ps1 add -Task "Let the player drink straight from a kitchen tap with E"
-  .\NightShift.ps1 helpers -Helpers htsadmin@192.168.1.200, htsadmin@192.168.1.201
+  .\NightShift.ps1 helpers -Helpers htsadmin@192.168.1.200, htsadmin@192.168.1.201, htsadmin@laserengraver
   .\NightShift.ps1 fetch
   .\NightShift.ps1 autopr
 #>
@@ -45,8 +46,9 @@ param(
     # The AI Workbench project folder on the Spark, relative to the Spark user's home.
     [string]$SparkProject = 'nvidia-workbench/Henry-Cahill-CLONE-Z',
     [string]$Container = 'project-henry-cahill-clone-z',
-    # Helper machines (user@host) that run extra agents; each needs SSH access from this PC.
-    [string[]]$Helpers = $(if ($env:CLONEZ_HELPERS) { $env:CLONEZ_HELPERS -split '[,; ]+' } else { @('htsadmin@192.168.1.200', 'htsadmin@192.168.1.201', 'htsadmin@192.168.1.202') }),
+    # Helper machines (user@host) that run extra agents; each needs SSH access from this PC. laserengraver is a Windows
+    # PC that works through the documentation tasks (NIGHTSHIFT_DOCS_WORKERS in nightshift.env).
+    [string[]]$Helpers = $(if ($env:CLONEZ_HELPERS) { $env:CLONEZ_HELPERS -split '[,; ]+' } else { @('htsadmin@192.168.1.200', 'htsadmin@192.168.1.201', 'htsadmin@192.168.1.202', 'htsadmin@laserengraver') }),
     # The Unity project whose generated .csproj files and Library/ hold the reference assemblies.
     [string]$UnityProject
 )
@@ -318,6 +320,10 @@ function Get-SparkHelpers {
     return @(foreach ($l in $lines) { $p = "$l".Trim() -split '\s+'; if ($p.Count -eq 2) { [pscustomobject]@{ Name = $p[0]; Target = $p[1] } } })
 }
 
+# Whether a night shift can drive Windows helpers, from its nightshift.py: it can since it gained the WINDOWS constant. An
+# older one runs a Windows helper's worker as on Linux, and that fails on its first task.
+function Test-DrivesWindowsHelpers([string[]]$NightShiftPy) { return [bool]($NightShiftPy -cmatch '^WINDOWS = ') }
+
 function Install-Helpers {
     if (-not $Helpers -or $Helpers.Count -eq 0) { throw 'No helper machines given (-Helpers user@host, ...).' }
     # The coordinator's own key: kept in the project's ignored .state folder on the Spark and accepted by the
@@ -342,21 +348,60 @@ set -e
 DIR="`$HOME/$HelperDir"
 mkdir -p "`$DIR/repo" "`$HOME/.local/bin" "`$HOME/.ssh" && chmod 700 "`$HOME/.ssh"
 cd "`$DIR/repo" && (git rev-parse --git-dir >/dev/null 2>&1 || git init -q)
-touch "`$HOME/.ssh/authorized_keys" && chmod 600 "`$HOME/.ssh/authorized_keys"
-grep -qF '$keyBody' "`$HOME/.ssh/authorized_keys" || echo 'from="$SparkIp" $pub' >> "`$HOME/.ssh/authorized_keys"
+case "`$(uname -s)" in MINGW*|MSYS*|CYGWIN*) win=1 ;; *) win= ;; esac
 case "`$(uname -m)" in x86_64) arch=x64 ;; aarch64|arm64) arch=arm64 ;; *) echo "unsupported CPU `$(uname -m)"; exit 1 ;; esac
-if [ "`$("`$HOME/.local/bin/opencode" --version 2>/dev/null)" != "$OpenCodeVersion" ]; then
-  echo "installing OpenCode $OpenCodeVersion..."
-  curl -fsSL "https://github.com/anomalyco/opencode/releases/download/v$OpenCodeVersion/opencode-linux-`$arch.tar.gz" | tar -xz -C "`$HOME/.local/bin" opencode
+keys="`$HOME/.ssh/authorized_keys"
+if [ -n "`$win" ]; then
+  # Windows, where Git Bash is OpenSSH's shell (WindowsHelper.ps1). Checkouts keep LF as on Linux, and OpenSSH reads an
+  # administrator's keys from ProgramData, in a file only SYSTEM and Administrators may open.
+  git config core.autocrlf false && git config core.eol lf && git config core.longpaths true
+  if "`$(cygpath -S)/whoami.exe" //groups | grep -q 'S-1-5-32-544'; then
+    # cygpath -F 35 is ProgramData (CSIDL_COMMON_APPDATA). Not `$PROGRAMDATA: SSH sessions spell it ProgramData, and
+    # bash's names are case-sensitive.
+    keys="`$(cygpath -u -F 35)/ssh/administrators_authorized_keys"
+    [ -d "`${keys%/*}" ] || { echo "OpenSSH's folder `${keys%/*} is missing (run WindowsHelper.ps1 on it)"; exit 1; }
+    if [ ! -f "`$keys" ]; then
+      touch "`$keys"
+      MSYS2_ARG_CONV_EXCL='*' icacls.exe "`$(cygpath -w "`$keys")" /inheritance:r /grant '*S-1-5-32-544:F' /grant '*S-1-5-18:F' >/dev/null
+    fi
+  fi
 fi
-if [ ! -x "`$HOME/.dotnet/dotnet" ]; then
-  echo "installing the .NET SDK..."
-  curl -fsSL https://dot.net/v1/dotnet-install.sh -o /tmp/nightshift-dotnet-install.sh
-  bash /tmp/nightshift-dotnet-install.sh --channel 10.0 --install-dir "`$HOME/.dotnet" >/dev/null
-  rm -f /tmp/nightshift-dotnet-install.sh
+touch "`$keys" && { [ -n "`$win" ] || chmod 600 "`$keys"; }
+grep -qF '$keyBody' "`$keys" || echo 'from="$SparkIp" $pub' >> "`$keys" || {
+  echo "couldn't add the Spark's key to `$keys; on that PC, run WindowsHelper.ps1 -AuthorizedKey with it: from=\"$SparkIp\" $pub"; exit 1; }
+if [ -n "`$win" ]; then
+  asset="opencode-windows-`$arch"
+  [ "`$arch" = arm64 ] || grep -qw avx2 /proc/cpuinfo || asset="`$asset-baseline"  # the build for CPUs without AVX2
+  if [ "`$("`$HOME/.local/bin/opencode" --version 2>/dev/null)" != "$OpenCodeVersion" ]; then
+    echo "installing OpenCode $OpenCodeVersion..."
+    curl -fsSL "https://github.com/anomalyco/opencode/releases/download/v$OpenCodeVersion/`$asset.zip" -o "`$DIR/opencode.zip"
+    unzip -oq "`$DIR/opencode.zip" opencode.exe -d "`$HOME/.local/bin" && rm -f "`$DIR/opencode.zip"
+  fi
+  if [ ! -x "`$HOME/.dotnet/dotnet" ]; then
+    echo "installing the .NET SDK..."
+    curl -fsSL https://dot.net/v1/dotnet-install.ps1 -o "`$DIR/dotnet-install.ps1"
+    powershell.exe -NoProfile -ExecutionPolicy Bypass -File "`$(cygpath -w "`$DIR/dotnet-install.ps1")" -Channel 10.0 -InstallDir "`$(cygpath -w "`$HOME/.dotnet")" >/dev/null
+    rm -f "`$DIR/dotnet-install.ps1"
+  fi
+  for py in python "py -3" ""; do  # python3 there is often the Microsoft Store's stand-in, not Python
+    [ -n "`$py" ] || { echo "Python 3 is not installed (run WindowsHelper.ps1 on it)"; exit 1; }
+    if `$py -c 'import sys; sys.exit(sys.version_info < (3, 9))' >/dev/null 2>&1; then break; fi
+  done
+else
+  if [ "`$("`$HOME/.local/bin/opencode" --version 2>/dev/null)" != "$OpenCodeVersion" ]; then
+    echo "installing OpenCode $OpenCodeVersion..."
+    curl -fsSL "https://github.com/anomalyco/opencode/releases/download/v$OpenCodeVersion/opencode-linux-`$arch.tar.gz" | tar -xz -C "`$HOME/.local/bin" opencode
+  fi
+  if [ ! -x "`$HOME/.dotnet/dotnet" ]; then
+    echo "installing the .NET SDK..."
+    curl -fsSL https://dot.net/v1/dotnet-install.sh -o /tmp/nightshift-dotnet-install.sh
+    bash /tmp/nightshift-dotnet-install.sh --channel 10.0 --install-dir "`$HOME/.dotnet" >/dev/null
+    rm -f /tmp/nightshift-dotnet-install.sh
+  fi
 fi
 curl -fs --max-time 5 http://${SparkIp}:11434/api/version >/dev/null || { echo "can't reach Ollama on the Spark"; exit 1; }
-echo "READY `$(hostname) opencode `$("`$HOME/.local/bin/opencode" --version) dotnet `$("`$HOME/.dotnet/dotnet" --version)"
+name="`$(hostname)"; [ -z "`$win" ] || name="`$(echo "`$name" | tr '[:upper:]' '[:lower:]')"
+echo "READY `$name opencode `$("`$HOME/.local/bin/opencode" --version) dotnet `$("`$HOME/.dotnet/dotnet" --version)`${win:+ (Windows)}"
 "@ $target
             $out | Where-Object { $_ -notmatch '^READY' } | ForEach-Object { Write-Host "  $_" }
             $readyLine = $out | Where-Object { $_ -match '^READY' } | Select-Object -Last 1
@@ -365,16 +410,30 @@ echo "READY `$(hostname) opencode `$("`$HOME/.local/bin/opencode" --version) dot
             $keys = @(& ssh-keygen -F $ip -f $knownHosts | Where-Object { $_ -and $_ -notmatch '^#' })
             if ($keys.Count -eq 0) { throw "$ip isn't in this PC's known_hosts; connect to it once with ssh first" }
             $hostKeys += $keys
-            $ready += [pscustomobject]@{ Name = $name; Target = $target }
+            $ready += [pscustomobject]@{ Name = $name; Target = $target; Windows = ($readyLine -match '\(Windows\)\s*$') }
             Write-Host "  ready: $readyLine" -ForegroundColor Green
         }
-        catch { Write-Host "  skipped ${target}: $($_.Exception.Message)" -ForegroundColor Yellow }
+        catch {
+            $why = $_.Exception.Message
+            # ssh exits with 255 when it can't connect or log in, as on a Windows PC until WindowsHelper.ps1 has set up its
+            # SSH server (ssh's own message goes to the console, not into $why).
+            if ($why -match 'exit 255|not recognized as') {
+                $why += " (ssh couldn't connect or log in. A Windows PC needs Tools\NightShift\WindowsHelper.ps1 run on it once, then 'ssh $target exit' here once to accept its host key; see `"Windows helpers`" in README.md)"
+            }
+            Write-Host "  skipped ${target}: $why" -ForegroundColor Yellow
+        }
     }
     if ($ready.Count -eq 0) { throw 'No helper machine could be set up.' }
 
     $tgz = New-RefsArchive
     foreach ($h in $ready) { Send-RefsArchive $tgz $h.Target "$HelperDir/unityrefs" }
     Remove-Item $tgz
+
+    $windows = @($ready | Where-Object Windows)
+    if ($windows.Count -and -not (Test-DrivesWindowsHelpers (Get-RemoteOutput "cat $RemoteDir/nightshift.py 2>/dev/null || true"))) {
+        Write-Host "`nThe Spark won't use $(($windows | ForEach-Object Name) -join ', ') yet: its night shift predates Windows helpers and would fail there at once (No module named 'fcntl'). Put this version on the Spark (see `"Windows helpers`" in README.md), then run helpers again." -ForegroundColor Yellow
+        $ready = @($ready | Where-Object { -not $_.Windows })
+    }
 
     $helpersB64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes((($ready | ForEach-Object { "$($_.Name) $($_.Target)" }) -join "`n") + "`n"))
     $hostsB64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes(($hostKeys -join "`n") + "`n"))

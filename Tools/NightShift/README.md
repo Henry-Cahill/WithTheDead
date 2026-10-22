@@ -8,7 +8,9 @@ so CLONE-Z gets built while you sleep without spending cloud AI tokens. The mode
 - **The Spark** runs the model and the coordinator, inside the AI Workbench project container. In AI
   Workbench it is the **night-shift** toggle under *Applications*.
 - **Helper machines** (optional) run extra agents in parallel. They use the Spark's model over the LAN and
-  do their own compile checks, so more tasks get done per night.
+  do their own compile checks, so more tasks get done per night. They can be Linux or Windows (see
+  [Windows helpers](#windows-helpers)); a helper can also be set to work through the documentation tasks only (see
+  [Documentation workers](#documentation-workers)).
 - **This PC** sets things up, opens the pull request when the work is done, and fetches the results. The
   agents keep working while it sleeps.
 
@@ -26,7 +28,9 @@ Every change is compiled against Unity's own assemblies before it lands, and lan
    `.\NightShift.ps1 helpers -Helpers htsadmin@192.168.1.200, htsadmin@192.168.1.201`. This installs
    OpenCode and .NET in the helper user's home (no sudo), lets the Spark's coordinator in with its own SSH
    key (accepted only from the Spark's address) and copies the Unity references. Helper agents run at
-   low CPU priority, so game servers on the same machines aren't affected.
+   low CPU priority, so game servers on the same machines aren't affected. A Windows PC needs one step on it
+   first: see [Windows helpers](#windows-helpers). Without `-Helpers`, it sets up every helper the night shift uses
+   (the list at the top of [NightShift.ps1](NightShift.ps1)); the Spark uses those that were set up.
 4. **Automatic pull request (optional).** Choose **A** in the menu, or run `.\NightShift.ps1 autopr`. Every
    15 minutes this PC checks the Spark, and once the agents have nothing left to do it pushes their branch to
    GitHub and opens a pull request (or updates the open one) with the reports as its description. Once that
@@ -63,7 +67,7 @@ fewer are waiting than there are workers plus two. It takes the focus areas in `
 | `perf` | work repeated every frame that could be cached |
 | `features` | a small addition next to an existing action or mechanic |
 | `flavour` | new lines for an existing list of written text |
-| `docs` | missing `/// <summary>` comments (a fixed task; no model needed) |
+| `docs` | missing `/// <summary>` comments (a fixed task; no model needed; see [Documentation workers](#documentation-workers)) |
 
 For each task it picks the script that fits the focus and was shown least recently, shows it whole to the local model
 (`NIGHTSHIFT_AUTOPLAN_MODEL`, by default the helpers' model, which runs beside the agents) with
@@ -97,6 +101,48 @@ ones for the second:
   every worker takes any task and the planner writes only small ones.
 
 `plan --focus graphics+ --dry-run` shows a big task the planner would write.
+
+### Documentation workers
+
+`NIGHTSHIFT_DOCS_WORKERS` in [nightshift.env](nightshift.env) names workers (as the log names them, or by host) that
+work through the documentation queue and nothing else: the `docs` focus's tasks, which add missing `/// <summary>`
+comments. `laserengraver` is one. Tasks you write with the planner's wording ("Add a one-sentence `/// <summary>` to
+each public method and property in ...") count as documentation tasks too. While a documentation worker is on duty:
+
+- it takes only documentation tasks, and the other workers leave those to it;
+- the planner keeps a documentation task waiting for each documentation worker, and its focus rotation skips `docs`,
+  so the rest of the queue goes to the other kinds of work;
+- a script whose earlier documentation passes all landed gets another pass (three at most) once later work has left
+  three or more of its public members without a summary. A pass that found nothing to do or failed isn't repeated.
+  When no script needs one, the planner looks again later, as the night's other work lands.
+
+When no documentation worker is left on duty, the others take documentation tasks again. A documentation worker uses
+`NIGHTSHIFT_HELPER_MODEL`, like the other helpers.
+
+## Windows helpers
+
+A Windows PC can be a helper too: `laserengraver` (account `LASERENGRAVER\HTSADMIN`) is one. The Spark drives it over
+SSH like the others. Its OpenSSH server runs the commands in Git Bash, its worker runs in Windows' own Python, and the
+agent's shell commands and [check.sh](check.sh) run in Git Bash too. To set one up:
+
+1. On that PC, signed in as the account the night shift should use (Remote Desktop is fine), copy
+   [WindowsHelper.ps1](WindowsHelper.ps1) over and run it in PowerShell **as administrator**, with this PC's public
+   key (the line in `%USERPROFILE%\.ssh\id_ed25519.pub` here):
+   `powershell -ExecutionPolicy Bypass -File .\WindowsHelper.ps1 -AuthorizedKey 'ssh-ed25519 AAAA... you@this-pc'`
+   It installs and starts Windows' OpenSSH server (reachable from the local network only), installs Git and Python 3
+   with winget when they're missing, makes Git Bash the shell OpenSSH runs commands in (for every SSH login on that
+   PC; it prints the shell it replaces), and authorizes the key. Running it again is safe.
+2. On this PC, connect once so it remembers the PC's host key: `ssh htsadmin@laserengraver exit`.
+3. Choose **9** in the menu, or run `.\NightShift.ps1 helpers`. It finishes the PC like a Linux helper: OpenCode and
+   .NET in the account's home, the Spark's key (accepted only from the Spark's address; an administrator's keys live
+   in `C:\ProgramData\ssh\administrators_authorized_keys`) and the Unity references. The helper is named after the
+   computer, in lower case. The Spark only gets the PC once its night shift can drive Windows helpers: one from
+   before them would run the worker as on Linux, which fails at once. Until then `helpers` says so and leaves the PC
+   out; with the night shift stopped, switch the Workbench project to a branch that has this version (`main`, once
+   it's merged there) and pull, then run `helpers` again.
+
+Keep the PC awake through the night (WindowsHelper.ps1 warns if it sleeps on mains power). Its worker runs at
+below-normal CPU priority, and everything it starts (the agent, Git Bash, dotnet) ends with it.
 
 ## Start and stop on command
 
@@ -158,7 +204,8 @@ under `.state/` or `.unityrefs/`, or anything that looks like a private key.
 ## Settings
 
 [nightshift.env](nightshift.env) sets the models, the stop time (empty: keep going until stopped), the time
-limit per task, the number of fix rounds, auto-planning and which models take only small tasks. It's read at every start. The Spark's own agent uses `qwen3.8`, and the helpers use
+limit per task, the number of fix rounds, auto-planning, which models take only small tasks and which workers take
+only documentation tasks. It's read at every start. The Spark's own agent uses `qwen3.8`, and the helpers use
 `gpt-oss:120b`: Ollama serves `qwen3.8` one request at a time, so helpers on it would only wait their turn,
 while `gpt-oss:120b` runs several at once (and is about twice as fast).
 
@@ -177,6 +224,15 @@ Inside the container, `bash Tools/NightShift/nightshift.sh` also has `check` (co
   compile; fix it (or switch branch) first. Errors that only appear on the Spark usually mean the
   references are stale; rerun `refs`.
 - **A helper is "not used"**: the log says why. Rerun `.\NightShift.ps1 helpers` for that machine.
+- **`helpers` skips a machine with "exit 255"**: ssh couldn't connect to it or log in (its own message, such as
+  `Connection timed out`, is just above). A Windows PC answers like that until [WindowsHelper.ps1](WindowsHelper.ps1)
+  has run on it; then connect once with `ssh user@host exit` and run `helpers` again (see
+  [Windows helpers](#windows-helpers)).
+- **A Windows helper fails at once with `ModuleNotFoundError: No module named 'fcntl'`** (then "two errors in a row;
+  this worker is done for the night"): the Spark's night shift is from before Windows helpers, so it runs the worker
+  there as on Linux (and ignores `NIGHTSHIFT_DOCS_WORKERS`). Bring the Workbench project on the Spark up to this
+  version (see [Windows helpers](#windows-helpers)); until then, running `helpers` again takes the PC off the
+  Spark's list.
 - **"couldn't bring the project folder up to date with the landing"**: a file that landing changed was edited in
   the project folder while it ran, so the landing was undone and the task stays queued. Adding tasks to
   `tasks.md` is fine at any time; leave the other files alone while it runs.
@@ -198,7 +254,9 @@ Inside the container, `bash Tools/NightShift/nightshift.sh` also has `check` (co
 
 Run `pwsh -NoProfile -File Tools/NightShift/tests/Publish.Tests.ps1` from the repository root (or use
 `powershell -NoProfile -File ...` on Windows PowerShell 5). Tests use temporary local Git history only;
-they do not connect to the Spark or GitHub.
+they do not connect to the Spark or GitHub. `Tools/NightShift/tests/Helpers.Tests.ps1`, run the same way, checks that
+`helpers` can tell whether the Spark's night shift drives Windows helpers.
 
-The planner's tests need Linux (the coordinator locks files with `fcntl`), so run them on the Spark or a helper:
-`python3 -m unittest discover -s Tools/NightShift/tests -p "test_*.py"`. They use a fake model and temporary folders.
+The coordinator's tests (the planner, task routing and the helpers' commands) run on Linux or Windows:
+`python3 -m unittest discover -s Tools/NightShift/tests -p "test_*.py"` (`python` on Windows). They use a fake model,
+fake ssh and temporary folders. On Windows, which has no `fcntl`, tasks.md is locked within the process only.

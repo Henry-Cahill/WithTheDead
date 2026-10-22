@@ -20,6 +20,9 @@ fi
 if [ ! -f "$REFS/Runtime.csproj" ]; then
   echo "COMPILE CHECK UNAVAILABLE: Unity's reference assemblies are missing (run NightShift.ps1 refs on the PC)."; exit 2
 fi
+if command -v cygpath >/dev/null; then  # Git Bash on a Windows helper: dotnet there takes Windows paths
+  ROOT="$(cygpath -m "$ROOT")" OUT="$(cygpath -m "$OUT")" REFS="$(cygpath -m "$REFS")"
+fi
 
 mkdir -p "$OUT"
 build() { dotnet build "$REFS/$1.csproj" -nologo -v:q -clp:NoSummary -p:ProjectRoot="$ROOT/" -p:NightShiftOut="$OUT/" 2>&1; }
@@ -27,7 +30,9 @@ out="$(build Runtime)"; rc=$?
 if [ $rc -eq 0 ]; then out="$(build Editor)"; rc=$?; fi
 if [ $rc -eq 0 ]; then echo "COMPILE OK"; exit 0; fi
 
-errors="$(printf '%s\n' "$out" | grep -E ': error [A-Z]+[0-9]+' | sed -E 's# \[[^]]*\]$##' | sed "s#^$ROOT/##" | sort -u)"
+# Windows paths in the errors get forward slashes (only before the "(line,col)") so the project root comes off them too.
+errors="$(printf '%s\n' "$out" | grep -E ': error [A-Z]+[0-9]+' | sed -E 's# \[[^]]*\]$##' | sed -E ':a; s#^([^(]*)\\#\1/#; ta' \
+  | sed "s#^$ROOT/##" | sort -u)"
 count="$(printf '%s' "$errors" | grep -c . || true)"
 echo "COMPILE FAILED ($count errors)"
 if [ "$count" -gt 0 ]; then printf '%s\n' "$errors" | head -n 40; else printf '%s\n' "$out" | tail -n 25; fi
