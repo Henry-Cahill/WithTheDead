@@ -66,7 +66,7 @@ namespace CloneZ
         private Action<InteractContext> _openAct, _closeAct, _latchAct, _unlatchAct, _curtainAct, _lookAct, _climbAct, _checkAct, _knockAct;
 
         private static readonly Collider[] s_Hits = new Collider[16];
-        private static readonly int BodyMask = (1 << 0) | (1 << CloneZConfig.IgnoreRaycastLayer);
+        private static readonly int BodyMask = ~ (1 << CloneZConfig.IgnoreRaycastLayer);
         private static readonly int SightMask = ~(1 << CloneZConfig.IgnoreRaycastLayer);
 
         // Where a climb may land: straight across from the window first, then a stride further in or either way

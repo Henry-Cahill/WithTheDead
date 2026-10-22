@@ -8307,10 +8307,11 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 6: Add a rust‑metal handle on the right side of the door (cylinder X, radius 0.02 m, length 0.07 m) with a slight yaw jitter for visual variety. `float handleYaw = (float)sb.Rng.NextDouble() * 8f - 4f; // -4° … +4°` `Vector3 handlePos = doorCenter + new Vector3(0.39f, 1.0f, 0f);` `sb.Solid.CylinderX(handlePos, 0.02f, 0.07f, 8, ZoneKit.M(rustMetal), handleYaw);`
   Step 7: Add a low kick‑plate (0.8 m × 0.02 m × 0.12 m) flush with the ground to complete the door frame. `sb.Solid.Box(doorCenter + new Vector3(0f, 0.01f, 0f), new Vector3(0.8f, 0.02f, 0.12f),` `ZoneKit.M(ZoneKit.V(ZoneKit.Concrete, sb.Rng, 0.04f)));`
   Done when: In‑game the hunters’ hide now shows a rusted metal door on its south wall, complete with concrete side studs, a top lintel, two hinges, a slightly mis‑aligned handle, and a ground‑level kick‑plate. All new primitives use existing colours/materials, keep the original colliders and interaction points untouched, and add no more than 12 new primitive calls.
-- [ ] Fix the body‑mask used for climb‑clear checks in Assets/Scripts/World/Fixtures/HomeWindow.cs so that ignored layers are excluded rather than included.
+- [x] Fix the body‑mask used for climb‑clear checks in Assets/Scripts/World/Fixtures/HomeWindow.cs so that ignored layers are excluded rather than included.
   In the `HomeWindow` class change the line
   `private static readonly int BodyMask = (1 << 0) | (1 << CloneZConfig.IgnoreRaycastLayer);`
   to
   `private static readonly int BodyMask = ~ (1 << CloneZConfig.IgnoreRaycastLayer);` // matches `SightMask` and correctly omits the ignore‑raycast layer.
   This prevents `RoomToStand` from treating objects on the ignored layer as obstacles, allowing the survivor to climb through windows that should be clear.
   All other code remains unchanged.
+  - 16:37 landed by 1htsserver in 1.2 min: **Changed**
