@@ -203,9 +203,9 @@ private bool _running;                // the cold tap is open and water is comin
             if (!_running)
             {
                 if (_plugIn || _level <= 0f)
+                    return;
 
                 // No noise or wobble needed when not running.
-                return;
             }
             if (now >= _nextNoise)
             {
