@@ -78,6 +78,8 @@ namespace CloneZ
         public bool Dormant => Time.time < _dormantUntil;
 
         private Transform _visual;
+        private static Vector3 _cachedEyePos;
+        private static int _cachedEyeFrame;
         private ParticleSystem _ps;
         private float _psRate;
         private float _tick, _charge, _cooldown, _dormantUntil, _visible = -1f;
@@ -224,9 +226,18 @@ m.Rod(b, top, 0.08f, ZoneKit.M(ZoneKit.Bark), 6);
 
         // Close to the survivor the disturbance shows; from the high isometric camera it fades in only nearby
         // (the doc's "visible from too far: fade them in by distance").
-        private void UpdateVisibility()
+        private static Vector3 GetEyePosition()
         {
-            Vector3 eye = ListenerRig.Active ? ListenerRig.Position : (Actor.LocalPlayer != null ? Actor.LocalPlayer.transform.position : Vector3.zero);
+            if (Time.frameCount != _cachedEyeFrame)
+            {
+                _cachedEyePos = ListenerRig.Active ? ListenerRig.Position : (Actor.LocalPlayer != null ? Actor.LocalPlayer.transform.position : Vector3.zero);
+                _cachedEyeFrame = Time.frameCount;
+            }
+            return _cachedEyePos;
+        }
+                private void UpdateVisibility()
+        {
+            Vector3 eye = GetEyePosition();
             float d = Vector3.Distance(new Vector3(eye.x, 0f, eye.z), new Vector3(transform.position.x, 0f, transform.position.z));
             float k = ViewState.Current == CameraView.Isometric ? Mathf.InverseLerp(9f, 5f, d) : Mathf.InverseLerp(26f, 18f, d);
             if (Def.Id == "tollgate" && Dormant) k *= 0.5f;
