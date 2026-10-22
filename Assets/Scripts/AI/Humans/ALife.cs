@@ -17,7 +17,9 @@ namespace CloneZ
         public readonly List<HumanNpc> Live = new List<HumanNpc>();
 
         /// <summary>Gets the loadout configuration for this squad, resolving it by ID and faction.</summary>
+        /// <summary>Gets the loadout configuration for this squad, resolving it by ID and faction.</summary>
         public HumanLoadout Loadout => HumanLoadouts.Resolve(LoadoutId, Faction, null, out _);
+        /// <summary>Gets the effective combat power of the squad based on member count, loadout, and strength.</summary>
         public float Power => Members * Loadout.Power * Strength;
     }
 
@@ -31,7 +33,9 @@ namespace CloneZ
     /// </summary>
     public sealed class ALifeDirector : MonoBehaviour
     {
+        /// <summary>Singleton instance of the director, set on creation and cleared on destroy.</summary>
         public static ALifeDirector Instance { get; private set; }
+        /// <summary>Read‑only list of all squads managed by this director.</summary>
         public IReadOnlyList<ALifeSquad> Squads => _squads;
 
         private const float OnlineRange = 75f, OfflineRange = 95f;
@@ -48,6 +52,7 @@ namespace CloneZ
             ["spillway"] = new[] { (Factions.Choir, 35), (Factions.Vanguard, 25), (Factions.Freehold, 15), (Factions.Scavs, 10), (Factions.Institute, 10), (Factions.Lantern, 5) },
         };
 
+        /// <summary>Initialises the director for a zone with a deterministic random seed and spawns its initial state.</summary>
         public static void Begin(ZoneDef zone, int seed)
         {
             if (Instance != null) Destroy(Instance.gameObject);
