@@ -42,6 +42,7 @@ namespace CloneZ
         private float _flickerSeed;
 
         private int _lit;                     // bit i: burner i is lit
+        private int _litCount;               // cached number of lit burners
         private bool _oven, _doorOpen;
 
         private readonly Action<InteractContext>[] _toggleBurner = new Action<InteractContext>[4];
@@ -55,26 +56,18 @@ namespace CloneZ
         public Vector3 WarmthPosition => transform.position + new Vector3(0f, 0.9f, 0f);
         public float WarmthRadius => CloneZConfig.StoveWarmthRadius;
 
-        public float Warmth
-        {
-            get
+public float Warmth
             {
-                float w = LitCount * CloneZConfig.StoveBurnerWarmth;
-                if (_oven) w += CloneZConfig.StoveOvenWarmth + (_doorOpen ? CloneZConfig.StoveOvenOpenWarmth : 0f);
-                return Mathf.Min(w, CloneZConfig.ComfortWarmthMax);
+                get
+                {
+                    float w = _litCount * CloneZConfig.StoveBurnerWarmth;
+                    if (_oven) w += CloneZConfig.StoveOvenWarmth + (_doorOpen ? CloneZConfig.StoveOvenOpenWarmth : 0f);
+                    return Mathf.Min(w, CloneZConfig.ComfortWarmthMax);
+                }
             }
-        }
         #endregion
 
-        private int LitCount
-        {
-            get
-            {
-                int n = 0;
-                for (int i = 0; i < 4; i++) if ((_lit & (1 << i)) != 0) n++;
-                return n;
-            }
-        }
+        // Removed LitCount property; using cached _litCount instead
 
         /// <summary>Fits the controls to the gas range <paramref name="range"/> (its body already drawn by
         /// <see cref="FurnitureBuilder.GasRange"/> in <paramref name="enamel"/>): the knobs, the flames, the oven door and
@@ -207,6 +200,9 @@ namespace CloneZ
             int bit = 1 << i;
             if (((_lit & bit) != 0) == on) return;
             _lit = on ? _lit | bit : _lit & ~bit;
+            // Update cached lit count after changing _lit
+            _litCount = 0;
+            for (int b = 0; b < 4; b++) if ((_lit & (1 << b)) != 0) _litCount++;
             if (_knobs[i] != null) _knobs[i].SetOpen(on);
             if (_flames[i] != null) _flames[i].enabled = on;
             if (on && noisy) MakeNoise(CloneZConfig.FixtureNoiseSmall);   // the igniter's ticking
@@ -248,9 +244,12 @@ namespace CloneZ
         }
         private void ApplyAll()
         {
+            // Reset _litCount based on current _lit bits
+            _litCount = 0;
             for (int i = 0; i < 4; i++)
             {
                 bool on = (_lit & (1 << i)) != 0;
+                if (on) _litCount++;
                 if (_knobs[i] != null) _knobs[i].SetOpen(on, true);
                 if (_flames[i] != null) _flames[i].enabled = on;
             }
@@ -282,6 +281,9 @@ namespace CloneZ
             _lit = save.State & 0xF;
             _oven = (save.State & 16) != 0;
             _doorOpen = (save.State & 32) != 0;
+            // Update cached lit count after restoring state
+            _litCount = 0;
+            for (int b = 0; b < 4; b++) if ((_lit & (1 << b)) != 0) _litCount++;
             ApplyAll();
         }
         #endregion

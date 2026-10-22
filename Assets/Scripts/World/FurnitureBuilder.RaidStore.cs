@@ -441,6 +441,25 @@ namespace CloneZ
             m.Box(new Vector3(0f, 1.115f, 0.9f), new Vector3(1.2f, 0.03f, 0.28f), M(wall * 0.9f));
             m.Box(new Vector3(-0.3f, 1.135f, 0.98f), new Vector3(0.5f, 0.012f, 0.1f), M(DecorProps.SnowShade));
             m.Box(new Vector3(-0.25f, 1.55f, 0.762f), new Vector3(0.58f, 0.66f, 0.016f), M(wall * 0.7f));
+// ---- Guard‑booth door panel ----
+// Door colour slightly darker than the wall.
+Color doorCol = wall * 0.9f;
+m.Box(new Vector3(0f, 0.55f, 0.78f), new Vector3(1.5f, 1.0f, 0.04f), M(doorCol));
+// Guard‑booth door hinges (chrome)
+m.Box(new Vector3(-0.73f, 0.55f, 0.78f), new Vector3(0.02f, 0.9f, 0.02f), Mt(Chrome));
+m.Box(new Vector3(0.73f, 0.55f, 0.78f), new Vector3(0.02f, 0.9f, 0.02f), Mt(Chrome));
+// Chrome latch knob on the front edge of the door
+m.Cylinder(new Vector3(0f, 0.6f, 0.80f), 0.015f, 0.025f, 6, Mt(Chrome), Quaternion.identity);
+// Brass lock plate above the latch
+m.Box(new Vector3(0f, 0.75f, 0.795f), new Vector3(0.2f, 0.04f, 0.008f), M(Brass));
+// Rust weathering patches on the door
+int rustCount = rng.Next(0, 3);
+for (int i = 0; i < rustCount; i++) {
+    float rx = R(rng, -0.6f, 0.6f);
+    m.Box(new Vector3(rx, 0.4f + i * 0.2f, 0.78f), new Vector3(0.04f, 0.02f, 0.001f), M(new Color(0.55f, 0.33f, 0.28f)));
+}
+// "SAFE" paper sign above the door
+m.Box(new Vector3(0f, 1.2f, 0.79f), new Vector3(0.3f, 0.1f, 0.001f), M(Paper));
             // The booth radio, out on the ledge under the eaves (its lit dial is laid over it while it plays).
             TownFieldRadio(m, rng, TownBoothRadio, 0f);
         }

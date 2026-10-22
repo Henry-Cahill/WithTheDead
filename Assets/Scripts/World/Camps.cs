@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Reflection;
+
 using UnityEngine.AI;
 
 namespace CloneZ
@@ -296,6 +298,7 @@ namespace CloneZ
         private Transform _pivot;
         private GameObject _block;
         private float _noiseAt;
+        private const float RepairHealFraction = 0.25f; // heal up to 25% of max health per repair
 
         /// <summary>Creates or retrieves the CampGate component for a piece.</summary>
         public static CampGate On(BuildPiece p)
@@ -343,6 +346,32 @@ namespace CloneZ
                 }).Timed(6f, "Hanging the gate...", HumanoidActivity.Build).DisabledIf(!can, "Needs a hammer, 4 planks and 6 nails"));
                 return;
             }
+            if (Hung && Trusted && Piece != null && Piece.Health < Piece.MaxHealth)
+            {
+                const int needPlanks = 4;
+                const int needNails = 6;
+                bool canRepair = inv.Has("hammer") && inv.Has("plank", needPlanks) && inv.Has("nails", needNails);
+                into.Add(new InteractAction($"Repair gate ({needPlanks} planks, {needNails} nails)", c =>
+                {
+                    if (!c.Inventory.Has("plank", needPlanks) || !c.Inventory.Has("nails", needNails)) return;
+                    c.Inventory.Consume("plank", needPlanks);
+                    c.Inventory.Consume("nails", needNails);
+                    c.Inventory.WearTool("hammer");
+                    // restore up to max health (capped) using reflection
+                    float repaired = Mathf.Min(Piece.MaxHealth - Piece.Health, Piece.MaxHealth * RepairHealFraction);
+                    var healthProp = typeof(BuildPiece).GetProperty("Health");
+                    if (healthProp != null)
+                    {
+                        float newHealth = Mathf.Min(Piece.MaxHealth, Piece.Health + repaired);
+                        healthProp.SetValue(Piece, newHealth);
+                    }
+                    c.Notify("Gate repaired.");
+                    if (c.Skills != null) c.Skills.AddXp(PlayerSkills.Skill.Carpentry, 4f);
+                    Sfx.Play(SfxIds.DoorClose, transform.position, 0.7f, 1f, 15f);
+                    ZoneCamps.Announce(Piece);
+                }).Timed(6f, "Repairing the gate...", HumanoidActivity.Build).DisabledIf(!canRepair, "Needs a hammer, 4 planks and 6 nails"));
+            }
+
             if (Locked && !Trusted)
             {
                 into.Add(new InteractAction("Pry the lock off", c =>

@@ -201,6 +201,10 @@ namespace CloneZ
             return Color.HSVToRGB(hue, sat, val);
         }
 
+        /// <summary>Deterministic colour for a building identified by its long ID.
+        /// Delegates to the int‑seed overload.</summary>
+        public Color GetBuildingColour(long buildingId) => GetBuildingColour((int)buildingId);
+
         /// <summary>The credit line the game shows for the map data.</summary>
         public string Attribution => string.IsNullOrEmpty(Manifest.attribution)
             ? "Map data © OpenStreetMap contributors (ODbL)" : Manifest.attribution;

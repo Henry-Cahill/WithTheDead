@@ -7,6 +7,9 @@ namespace CloneZ
     /// </summary>
     internal static class RoadSideElementBuilder
     {
+        private const float KerbHeight = 0.08f; // metres tall concrete kerb
+        private const float KerbCapSize = 0.06f; // width/depth of the end‑cap slab (metres)
+        private const float CapHeightJitter = 0.02f; // max random height variation (metres)
         internal static void BuildKerbs(KentuckyMap.Site site, KentuckyMap.Street street, MapBuild build)
         {
             if (!build.HasSidewalk(street.Data.id)) return; // no sidewalk → no kerb
@@ -32,11 +35,23 @@ namespace CloneZ
                     var centre = (a + b) * 0.5f + normal * (side * edgeOffset);
                     var position = new Vector3(centre.x, 0f, centre.y);
                     var box = site.Overhead.At(position);
-                    box.Box(position, new Vector3(0.20f, RoadSideElementBuilder.KerbHeight, len), yaw, surf);
+                    float segmentHeight = KerbHeight + (float)(build.Random.NextDouble() * CapHeightJitter);
+                    box.Box(Vector3.zero, new Vector3(0.20f, segmentHeight, len), yaw, surf);
+                    BuildKerbCap(site, a, normal, side, edgeOffset, yaw, build, surf);
+                    BuildKerbCap(site, b, normal, side, edgeOffset, yaw, build, surf);
                 }
             }
         }
 
-        private const float KerbHeight = 0.08f; // metres tall concrete kerb
+        private static void BuildKerbCap(KentuckyMap.Site site, Vector2 point, Vector2 normal,
+            int side, float edgeOffset, float yaw, MapBuild build, Surf surf)
+        {
+            var centre = point + normal * (side * edgeOffset);
+            float height = KerbHeight + (float)(build.Random.NextDouble() * CapHeightJitter);
+            var box = site.Overhead.At(new Vector3(centre.x, 0f, centre.y));
+            box.Box(Vector3.zero,
+                new Vector3(KerbCapSize, height, KerbCapSize),
+                yaw, surf);
+        }
     }
 }

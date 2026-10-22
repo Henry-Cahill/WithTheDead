@@ -895,6 +895,22 @@ for (int s = -1; s <= 1; s += 2)
             m.Box(new Vector3(hw - CarSkin - 0.004f, (lowY + CarBeltY) * 0.5f + 0.04f, zc), new Vector3(0.008f, CarBeltY - lowY - 0.14f, len - 0.08f), M(new Color(0.22f, 0.20f, 0.18f)));
             m.Box(new Vector3(hw - 0.1f, CarBeltY + 0.215f, zc), new Vector3(0.01f, 0.43f, len - 0.06f), Gs(new Color(0.07f, 0.09f, 0.10f)));
             m.Box(new Vector3(hw - 0.1f, CarBeltY + 0.425f, zc), new Vector3(0.03f, 0.03f, len - 0.04f), G(c));
+            // Door exterior pull handle
+            m.Box(new Vector3(hw - CarSkin - 0.03f, CarBeltY - 0.10f, CarDoorZ0 + len * 0.25f), new Vector3(0.02f, 0.06f, 0.03f), Mt(Chrome));
+            // Front‑lower lock plate
+            m.Box(new Vector3(hw - CarSkin * 0.5f, CarBeltY - 0.28f, CarDoorZ0 + 0.02f), new Vector3(0.05f, 0.02f, 0.001f), Mt(Chrome));
+            // Interior pull latch (just inside the skin)
+            m.Box(new Vector3(hw - CarSkin + 0.01f, CarBeltY - 0.10f, CarDoorZ0 + len * 0.25f), new Vector3(0.015f, 0.015f, 0.01f), Mt(Chrome));
+            // Window frame top
+            m.Box(new Vector3(hw - 0.1f, CarBeltY + 0.215f + 0.215f, zc), new Vector3(0.01f, 0.005f, len - 0.06f), Mt(Chrome));
+            // Window frame bottom
+            m.Box(new Vector3(hw - 0.1f, CarBeltY + 0.215f - 0.215f, zc), new Vector3(0.01f, 0.005f, len - 0.06f), Mt(Chrome));
+            // Window frame left side
+            m.Box(new Vector3(hw - 0.1f + 0.005f, CarBeltY + 0.215f, zc - (len - 0.06f) * 0.5f + 0.005f), new Vector3(0.005f, 0.43f, 0.01f), Mt(Chrome));
+            // Window frame right side
+            m.Box(new Vector3(hw - 0.1f - 0.005f, CarBeltY + 0.215f, zc + (len - 0.06f) * 0.5f - 0.005f), new Vector3(0.005f, 0.43f, 0.01f), Mt(Chrome));
+            // Bottom seal (dark matte strip)
+            m.Box(new Vector3(hw - CarSkin * 0.5f, CarBeltY - 0.29f, zc), new Vector3(CarSkin, 0.01f, len), M(new Color(0.20f, 0.20f, 0.20f)));
         }
         #endregion
     }

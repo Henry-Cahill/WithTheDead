@@ -34,6 +34,22 @@ namespace CloneZ
             _flameLight.enabled = false;
         }
 
+        // Subtle flame flicker effect – varies intensity each frame when lit
+        private void Update()
+        {
+            if (_flameLight == null) return;
+            if (_isLit)
+            {
+                // Perlin noise creates a gentle, non‑repeating variation
+                float f = Mathf.PerlinNoise(Time.time * 5f, 0f) * 0.3f + 0.85f;
+                _flameLight.intensity = 2f * f;
+            }
+            else
+            {
+                _flameLight.intensity = 0f;
+            }
+        }
+
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             if (_isLit)

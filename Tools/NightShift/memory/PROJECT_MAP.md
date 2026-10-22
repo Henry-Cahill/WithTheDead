@@ -293,7 +293,7 @@ sentence of its summary. Grep the code for details.
 - FurnitureBuilder.RaidOpenings.cs (338) OpeningLine, FurnitureBuilder: A straight wall line in world axes, as the raid town's door and window builders draw on it: a point 
 - FurnitureBuilder.RaidStore.cs (488) FurnitureBuilder: The copier's lid hinge (its back edge, under the lid).
 - FurnitureBuilder.Utility.cs (377) FurnitureBuilder: A white steel medicine cabinet (0.9 × 0.42 × 1.8): glazed upper doors over shelves of boxes and bott
-- FurnitureBuilder.cs (251) FurnitureBuilder: The raid map's furniture, built from boxes, prisms and quads into a RaidMesh.
+- FurnitureBuilder.cs (270) FurnitureBuilder: The raid map's furniture, built from boxes, prisms and quads into a RaidMesh.
 - GeneratedItemModels.cs (128) GeneratedItemModels, FilePart, FileModel: Ground models produced by the offline LLM asset pipeline (Tools/AssetPipeline), loaded from Resource
 - GroundItemRenderer.cs (201) GroundItemRenderer: Draws every item lying on the ground near the player.
 - GroundItemStore.cs (368) GroundItemStore, Item, Chunk: Every item lying on the ground in the world, held as data rather than as scene objects.
@@ -334,7 +334,7 @@ sentence of its summary. Grep the code for details.
 - StarterHome.Grounds.cs (329) StarterHome: The street past the front of the home: sun-faded asphalt with a dashed yellow centre line and white 
 - StarterHome.Kitchen.cs (52) StarterHome: The kitchen's wall cupboards over the worktop on the west wall: the carcass, shelf and crockery draw
 - StarterHome.Lighting.cs (325) StarterHome: The starter home's lighting and wall decor.
-- StarterHome.Shell.cs (391) StarterHome, Frame, Band: Builds the finished look onto a house piece standing in one of the home's slots — its visible geomet
+- StarterHome.Shell.cs (422) StarterHome, Frame, Band: Builds the finished look onto a house piece standing in one of the home's slots — its visible geomet
 - StarterHome.Windows.cs (282) StarterHome: The starter home builds window fittings (sashes, curtains, blinds, etc.).
 - StarterHome.cs (532) StarterHome, HomeRoom, Slot: The wave-survival starter home, finished to the extraction town's standard.
 - ToxicZone.cs (298) ToxicZone: A cloud of toxic gas: breathing it without a gas mask (or with a spent filter) sickens and hurts the
@@ -343,7 +343,7 @@ sentence of its summary. Grep the code for details.
 - WorldItem.cs (132) WorldItem: A handle to one item lying on the ground.
 
 ## Assets/Scripts/World/Fixtures
-- BasinFixture.cs (318) BasinFixture: The bathroom's pedestal basin: a single-lever mixer tap and a plug on a chain.
+- BasinFixture.cs (339) BasinFixture: The bathroom's pedestal basin: a single-lever mixer tap and a plug on a chain.
 - BathroomFixtures.cs (79) BathroomFixtures: Small helpers shared by the bathroom's fixtures (ToiletFixture, BasinFixture, ShowerFixture, TowelRa
 - BedFixture.cs (221) BedFixture: The bed (on its SleepSpot).
 - BreakerPanel.cs (119) BreakerPanel: The house's breaker panel, in the store room: a grey steel box whose tin door opens on the dead-fron
@@ -412,7 +412,7 @@ sentence of its summary. Grep the code for details.
 - MapData.cs (276) MapCurrent, MapManifest, MapRegionEntry: world/current.json: the build the game and the servers load.
 - MapGeometry.cs (342) MapGeometry: Plane geometry for the real-world map, in the raid map's ground plane: a Vector2 is (x, z), metres e
 - RoadMarkingsBuilder.cs (82) RoadMarkingsBuilder: Builds thin white lane markings on road centre lines.
-- RoadSideElementBuilder.cs (37) RoadSideElementBuilder: Builds concrete kerbs alongside roads that have a sidewalk.
+- RoadSideElementBuilder.cs (58) RoadSideElementBuilder: Builds concrete kerbs alongside roads that have a sidewalk.
 - StreetLampHelper.cs (39) StreetLampHelper
 - WorldStore.cs (248) WorldStore, MapBuild: The world store, where the build machines put the real-world map (Tools/World): \\192.168.1.170\CLON
 

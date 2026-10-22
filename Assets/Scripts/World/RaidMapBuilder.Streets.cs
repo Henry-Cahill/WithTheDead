@@ -10,6 +10,7 @@ namespace CloneZ
         private static readonly Color LineWhite = new Color(0.72f, 0.72f, 0.70f);
         private static readonly Color PackedSnow = new Color(0.50f, 0.53f, 0.58f);
         private static readonly Color WetTrack = new Color(0.11f, 0.11f, 0.12f);
+        private static readonly Color FenceWood = new Color(0.45f, 0.30f, 0.20f);
 
         private struct RoadSpec
         {
@@ -175,6 +176,33 @@ namespace CloneZ
             if (b - a < 0.2f) return;
             // Kerb, then 2.25 m of sidewalk with a dusting of snow.
             Slab(town, alongX, coord, a, b, side > 0 ? hw : -hw - 0.25f, side > 0 ? hw + 0.25f : -hw, 0.05f, DecorPalette.Matte(Kerb));
+            // ----- Snow‑fence along the road‑side of the sidewalk -----
+            float fenceAcross = coord + (side > 0 ? hw + 0.12f : -hw - 0.12f);
+            for (float fp = a + 0.4f; fp < b - 0.4f; fp += R(rng, 0.7f, 1.0f))
+            {
+                // vertical post (box)
+                Vector3 postCenter = alongX ? new Vector3(fp, 0.35f, fenceAcross) : new Vector3(fenceAcross, 0.35f, fp);
+                town.Out.Solid(postCenter).Box(postCenter, new Vector3(0.05f, 0.70f, 0.05f), DecorPalette.Matte(FenceWood));
+                // horizontal cross‑bar (box)
+                Vector3 barCenter = alongX ? new Vector3(fp, 0.65f, fenceAcross) : new Vector3(fenceAcross, 0.65f, fp);
+                Vector3 barSize = alongX ? new Vector3(0.30f, 0.02f, 0.05f) : new Vector3(0.05f, 0.02f, 0.30f);
+                town.Out.Solid(barCenter).Box(barCenter, barSize, DecorPalette.Matte(FenceWood));
+                // top cap (small box)
+                Vector3 capCenter = alongX ? new Vector3(fp, 0.78f, fenceAcross) : new Vector3(fenceAcross, 0.78f, fp);
+                town.Out.Solid(capCenter).Box(capCenter, new Vector3(0.07f, 0.02f, 0.07f), DecorPalette.Matte(FenceWood));
+                // occasional lantern (metal pole + glowing lantern)
+                if (rng.NextDouble() < 0.2)
+                {
+                    // metal pole (cylinder)
+                    Vector3 poleBase = alongX ? new Vector3(fp, 0.78f, fenceAcross) : new Vector3(fenceAcross, 0.78f, fp);
+                    town.Out.Solid(poleBase).Cylinder(poleBase, 0.02f, 0.40f, 8,
+                        DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
+                    // lantern globe (small box with emissive material)
+                    Vector3 lanternCenter = alongX ? new Vector3(fp, 1.25f, fenceAcross) : new Vector3(fenceAcross, 1.25f, fp);
+                    town.Out.Solid(lanternCenter).Box(lanternCenter, new Vector3(0.12f, 0.12f, 0.12f),
+                        DecorPalette.Glow(new Color(1.0f, 0.85f, 0.60f)));
+                }
+            }
             // Add subtle rust‑stain patches on the concrete kerb (20 % chance)
             if (rng.NextDouble() < 0.2)
             {

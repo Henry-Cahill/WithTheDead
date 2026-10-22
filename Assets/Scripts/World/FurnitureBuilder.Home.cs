@@ -226,6 +226,15 @@ namespace CloneZ
             m.Box(new Vector3(0f, 0.05f, -0.02f), new Vector3(0.98f, 0.1f, 0.54f), M(c * 0.7f));
             m.Box(new Vector3(0f, 1.0f, -0.03f), new Vector3(1.0f, 1.8f, 0.54f), M(c));
             m.Box(new Vector3(0f, 1.93f, -0.02f), new Vector3(1.06f, 0.07f, 0.6f), M(c * 0.85f));
+            // thin wooden trim capping the wardrobe top (adds a worn‑look)
+            m.Box(new Vector3(0f, 1.93f + 0.07f, 0f), new Vector3(0.98f, 0.02f, 0.54f), M(c * 0.95f));
+            // left side wooden frame strip
+            m.Box(new Vector3(-0.49f, 0.9f, 0f), new Vector3(0.02f, 1.8f, 0.54f), M(c * 0.95f));
+            // right side wooden frame strip
+            m.Box(new Vector3(0.49f, 0.9f, 0f), new Vector3(0.02f, 1.8f, 0.54f), M(c * 0.95f));
+            // occasional brass plaque centered on the top trim
+            if (Chance(rng, 0.3))
+                m.Box(new Vector3(0f, 1.93f + 0.07f + 0.01f, 0f), new Vector3(0.10f, 0.004f, 0.04f), Mt(Brass));
             bool ajar = Chance(rng, 0.35);
             for (int s = -1; s <= 1; s += 2)
             {
@@ -241,7 +250,8 @@ namespace CloneZ
                 m.Box(new Vector3(s * 0.25f, 1.0f, 0.255f), new Vector3(0.48f, 1.74f, 0.02f), M(c * 1.06f));
                 m.Box(new Vector3(s * 0.25f, 1.35f, 0.268f), new Vector3(0.36f, 0.6f, 0.01f), M(c * 0.94f));
                 m.Box(new Vector3(s * 0.25f, 0.6f, 0.268f), new Vector3(0.36f, 0.6f, 0.01f), M(c * 0.94f));
-                m.Box(new Vector3(s * 0.04f, 1.0f, 0.275f), new Vector3(0.02f, 0.08f, 0.03f), Mt(Brass));
+                // brass pull handle (horizontal bar) centred on each door
+                            m.Box(new Vector3(s * 0.25f, 1.2f, 0.30f), new Vector3(0.12f, 0.015f, 0.01f), Mt(Brass));
             }
         }
 

@@ -28,7 +28,7 @@ namespace CloneZ
         private Material _mat;
         private Transform _player;
         private PlayerController _ctrl;
-        private float _next, _alpha;
+        private float _next, _alpha, _prevAlpha;
 
         public static void Attach(PlayerStats p)
         {
@@ -83,10 +83,14 @@ namespace CloneZ
             if (_timeOfDay == null) _timeOfDay = TimeOfDay.Instance;
             float want = on ? Mathf.Lerp(0.42f, 0.15f, night) : 0f;
             _alpha = Mathf.MoveTowards(_alpha, want, Time.deltaTime * 1.5f);
-            _renderer.enabled = _alpha > 0.005f;
-            Color c = _mat.color;
-            c.a = _alpha;
-            _mat.color = c;
+            if (Mathf.Abs(_alpha - _prevAlpha) > 0.001f)
+            {
+                _renderer.enabled = _alpha > 0.005f;
+                Color c = _mat.color;
+                c.a = _alpha;
+                _mat.color = c;
+            }
+            _prevAlpha = _alpha;
             if (!_renderer.enabled || Time.time < _next) return;
             _next = Time.time + 1f / 20f;
             Rebuild();
