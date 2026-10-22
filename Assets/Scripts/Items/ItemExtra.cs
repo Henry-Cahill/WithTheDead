@@ -25,6 +25,7 @@ namespace CloneZ
         public List<string> Upgrades = new List<string>();
         public string AmmoChoice;
         public string Note;
+        private const float DirtTolerance = 0.001f; // values within this are considered equal
         /// <summary>An artifact worn on the belt (its effects apply) rather than just carried.</summary>
         public bool OnBelt;
 
@@ -64,7 +65,8 @@ namespace CloneZ
             }
             return a.FoundInRaid == b.FoundInRaid && a.Insured == b.Insured && !a.OnBelt && !b.OnBelt
                 && a.Mods.Count == 0 && b.Mods.Count == 0 && a.Upgrades.Count == 0 && b.Upgrades.Count == 0
-                && a.Dirt == b.Dirt && string.Equals(a.AmmoChoice, b.AmmoChoice)
+                // Use tolerance when comparing dirt; exact float equality fails after rounding/serialization.
+                && Mathf.Abs(a.Dirt - b.Dirt) <= DirtTolerance && string.Equals(a.AmmoChoice, b.AmmoChoice)
                 && string.IsNullOrEmpty(a.Note) && string.IsNullOrEmpty(b.Note);
         }
 
