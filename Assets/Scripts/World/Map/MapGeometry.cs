@@ -306,8 +306,7 @@ private static readonly Color[] kSidewalkPalette = new[]
                 Vector2 outward = new Vector2(edge.y, -edge.x).normalized * width;
                 Vector2 aOut = a + outward;
                 Vector2 bOut = b + outward;
-                // Quad vertices ordered anticlockwise: a → b → bOut → aOut
-                var quad = new List<Vector2> { a, b, bOut, aOut };
+var quad = new List<Vector2> { a, aOut, bOut, b };
                 result.Add(quad);
             }
             return result;
