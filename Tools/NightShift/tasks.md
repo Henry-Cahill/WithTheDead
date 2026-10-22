@@ -8201,11 +8201,12 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 6: Add a faint reflective strip (emissive) along the top edge of the sign to suggest a safety‑strip. Insert: `Vector3 stripPos = new Vector3(0f, 0.78f, 0.01f); // just above the painted panel` `Vector3 stripSize = new Vector3(0.44f, 0.008f, 0.004f);` `m.Box(stripPos, stripSize, DecorPalette.Glow(new Color(0.9f, 0.85f, 0.5f)));`
   Done when: In‑game the “ROAD CLOSED” sign at the north exit shows a thin wooden backing board, two rust‑stained brackets with visible screw heads, a slightly mis‑aligned rusted latch, and a subtle yellow‑tinted glow strip on its top edge, all using the same rust colour variation logic as other props. All original colliders, interaction points and overall sign dimensions remain unchanged.
   - 16:07 landed by hts-llm in 15.1 min: Implemented a full visual‑detail pass for the “ROAD CLOSED” sign:
-- [ ] In Assets/Scripts/Characters/PlayerAvatar.cs modify the LateUpdate check to avoid the per‑frame OutfitChanged loop.
+- [x] In Assets/Scripts/Characters/PlayerAvatar.cs modify the LateUpdate check to avoid the per‑frame OutfitChanged loop.
   Change the line `if (_lookDirty || OutfitChanged()) RefreshOutfit();` to `if (_lookDirty) RefreshOutfit();`.
   This removes the per‑frame iteration over all PlayerClothing.Slots that currently happens even when nothing changed.
   Clothing changes already set _lookDirty via MarkLookDirty (registered to _clothing.Changed), so the outfit will still refresh when needed.
   The player will see the same clothing updates as before, but the game will no longer waste a small but unnecessary loop each frame.
+  - 16:07 landed by 0htsserver in 1.3 min: **Changed**
 - [!] Add a “Inspect for clues” action to Assets/Scripts/World/Fixtures/OutdoorHouseNumber.cs that appears once, gives the player a random period‑appropriate hint, and persists so it cannot be taken again.
   Step 1: In OutdoorHouseNumber.cs, add a private field to track whether the clue has been taken. `private bool _clueGiven;`
   Step 2: In OutdoorHouseNumber.cs, override `SaveKey` to give a deterministic key for this fixture. `public override string SaveKey => Interactable.KeyFor("HouseNumber", transform.position);`

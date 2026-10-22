@@ -148,7 +148,7 @@ namespace CloneZ
             float dt = Time.deltaTime;
             if (dt <= 0f || Rig == null) return;   // paused: hold the pose
 
-            if (_lookDirty || OutfitChanged()) RefreshOutfit();
+            if (_lookDirty) RefreshOutfit();
             HumanoidActivity activity = CurrentActivity();
             RefreshHeld(activity);
 
