@@ -1,0 +1,84 @@
+diff --git a/Assets/Scripts/World/HomeFurniture.cs b/Assets/Scripts/World/HomeFurniture.cs
+index 0edc1def..101868d8 100644
+--- a/Assets/Scripts/World/HomeFurniture.cs
++++ b/Assets/Scripts/World/HomeFurniture.cs
+@@ -197,11 +197,53 @@ private void Build()
+         partial void AttachLiving();
+         partial void AttachBathroom();
+ 
+-        // The original, static look of every kind.
++                /// <summary>Adds period‑correct visual details to the oak bookshelf.</summary>
++        private void AddBookshelfDetails(RaidMesh m, System.Random rng)
++        {
++            // 1. Two thin metal brackets – left/right variation
++            bool leftBracket = rng.Next(2) == 0;
++            float bracketX = leftBracket ? -0.42f : 0.42f; // half‑width ≈ 0.85 m total width
++            Vector3 bracketPos = new Vector3(bracketX, 0.68f, -0.02f);
++            m.Cylinder(bracketPos, 0.01f, 0.12f, 8, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)), Quaternion.identity, 1f, false);
++
++            // 2. Thin oak top trim – runs the full width
++            m.Box(new Vector3(0f, 0.92f, -0.03f), new Vector3(0.86f, 0.02f, 0.04f), DecorPalette.Wood(FurnitureBuilder.Oak));
++
++            // 3. Back‑panel molding – thin strip near the rear edge
++            m.Box(new Vector3(0f, 0.55f, -0.44f), new Vector3(0.86f, 0.02f, 0.02f), DecorPalette.Wood(FurnitureBuilder.Oak));
++
++            // 4. A few thin “books” as small boxes, random count 0‑3
++            int bookCount = rng.Next(4);
++            for (int i = 0; i < bookCount; i++)
++            {
++                float x = -0.35f + (float)rng.NextDouble() * 0.7f; // spread across shelf width
++                float y = 0.30f + i * 0.02f; // stack slightly
++                Vector3 bookPos = new Vector3(x, y, 0.15f);
++                Vector3 bookSize = new Vector3(0.04f, 0.02f, 0.12f);
++                m.Box(bookPos, bookSize, DecorPalette.Matte(new Color(0.55f, 0.40f, 0.30f)));
++            }
++
++            // 5. A faint wear scuff on the lower shelf, left/right variation
++            bool scuffLeft = rng.Next(2) == 0;
++            float scuffX = scuffLeft ? -0.25f : 0.25f;
++            Vector3 scuffPos = new Vector3(scuffX, 0.15f, 0.12f);
++            Vector3 scuffSize = new Vector3(0.08f, 0.01f, 0.03f);
++            m.Box(scuffPos, scuffSize, DecorPalette.Matte(new Color(0.45f, 0.38f, 0.31f)));
++
++            // 6. Two rubber foot caps at the bottom corners
++            Vector3[] footPos = {
++                new Vector3(-0.42f, 0.03f, -0.44f),
++                new Vector3( 0.42f, 0.03f, -0.44f)
++            };
++            foreach (var fp in footPos)
++            {
++                m.Cylinder(fp, 0.015f, 0.02f, 6, DecorPalette.Matte(new Color(0.10f, 0.10f, 0.10f)), Quaternion.identity, 1f, false);
++            }
+         private void DrawPlain(RaidMesh m, System.Random rng, ref RaidMesh glow, ref Vector3 bulb)
+         {
+             Vector3 p = transform.position;
+             switch (Kind)
++            {
+             {
+                 case HomeFurnitureKind.Counter:
+                     FurnitureBuilder.KitchenCounter(m, rng, 1.2f, CabinetPaint, Worktop, false);
+@@ -230,7 +272,7 @@ private void DrawPlain(RaidMesh m, System.Random rng, ref RaidMesh glow, ref Vec
+                     FurnitureBuilder.Dresser(m, rng, FurnitureBuilder.Walnut);
+                     // three drawer pulls – left/right variation per drawer
+                     for (int i = 0; i < 3; i++)
+-                    {
++
+ bool leftSide = rng.Next(2) == 0;
+                         float y = 0.27f + i * 0.22f; // drawer centre heights
+                         float x = leftSide ? -0.18f : 0.18f;
+@@ -251,6 +293,7 @@ private void DrawPlain(RaidMesh m, System.Random rng, ref RaidMesh glow, ref Vec
+                 }
+                 case HomeFurnitureKind.Bookshelf:
+                     FurnitureBuilder.Bookshelf(m, rng, FurnitureBuilder.Oak, 1);
++                    AddBookshelfDetails(m, rng);
+                     break;
+                 case HomeFurnitureKind.Armchair:
+                     FurnitureBuilder.Sofa(m, rng, 0.95f, Fabrics[rng.Next(Fabrics.Length)]);
+@@ -405,5 +448,5 @@ public void Dismantle()
+             Destroy(gameObject);
+         }
+         #endregion
+-    }
+-}
++            }
++        }
