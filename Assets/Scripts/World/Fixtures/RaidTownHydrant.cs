@@ -19,11 +19,17 @@ namespace CloneZ
         public override string SaveKey => _key;
 
         // IWaterPoint implementation
+        /// <summary>Returns the world position where water emerges from the hydrant.</summary>
         public Vector3 WaterPosition => _point;
+        /// <summary>Label used for UI when displaying this water source.</summary>
         public string WaterLabel => "hydrant";
+        /// <summary>True when the hydrant has been opened with a wrench and can supply water.</summary>
         public bool HasWater => _opened;
+        /// <summary>Hydrant water is never contaminated, so this is always false.</summary>
         public bool IsTainted => false;
+        /// <summary>Shown when the hydrant is closed; tells the player a wrench is needed to open it.</summary>
         public string DryMessage => "The hydrant is frozen solid – you need a wrench to open it";
+        /// <summary>Provides unlimited water when the hydrant is opened; otherwise does nothing.</summary>
         public void DrawWater() { /* unlimited water when opened */ }
 
         public override Vector3 InteractPoint => _point;
