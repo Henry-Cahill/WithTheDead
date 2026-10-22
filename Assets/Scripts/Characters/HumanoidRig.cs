@@ -97,6 +97,7 @@ namespace CloneZ
         public void ResetPose()
         {
             EnsureBuilt();
+            if (Proportions == null) return; // Guard against null when no look applied yet
             for (int i = 0; i < Bones.Length; i++)
             {
                 Bones[i].localPosition = Proportions.LocalBind(i);
@@ -145,7 +146,7 @@ namespace CloneZ
         {
             EnsureBuilt();
             if (def == null) style = HoldStyle.None;
-            if (def == HeldDef && style == HeldStyle && (def == null || Held != null)) return;
+            if (def == HeldDef && style == HeldStyle && Held != null) return;
 
             if (Held != null)
             {
