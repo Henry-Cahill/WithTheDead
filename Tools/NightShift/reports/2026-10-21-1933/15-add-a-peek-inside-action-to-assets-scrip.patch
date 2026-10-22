@@ -1,0 +1,173 @@
+diff --git a/Assets/Scripts/World/Interaction/StorageFixture.cs b/Assets/Scripts/World/Interaction/StorageFixture.cs
+index e99d4e4d..7a10fd36 100644
+--- a/Assets/Scripts/World/Interaction/StorageFixture.cs
++++ b/Assets/Scripts/World/Interaction/StorageFixture.cs
+@@ -23,8 +23,10 @@ public sealed class StorageOptions
+         public float SearchTime = -1f;
+         /// <summary>Verbs for a fixture with doors / drawers.</summary>
+         public string OpenVerb = "Open", CloseVerb = "Close";
+-        /// <summary>Label for the "show me what's inside" action ("Look inside", "Browse the shelves").</summary>
+-        public string LookLabel;
++/// <summary>Label for the "show me what's inside" action ("Look inside", "Browse the shelves").</summary>
++            public string LookLabel;
++            /// <summary>Label for the “peek inside” action (default “Peek inside the …”).</summary>
++            public string PeekLabel;
+         /// <summary>Noise radius of a door/drawer being worked.</summary>
+         public float Noise = CloneZConfig.FixtureNoiseSmall;
+         /// <summary>Extra actions listed after the storage ones ("Check the temperature").</summary>
+@@ -35,6 +37,7 @@ public sealed class StorageOptions
+         /// (<see cref="CloneZConfig.RaidStorageEmptyScale"/>, <see cref="CloneZConfig.RaidStorageExtraStacks"/>). False keeps
+         /// them exactly as given — for storage the raid stocks itself (<see cref="RaidBuilding.MainStock"/>).</summary>
+         public bool RaidBoost = true;
++        }
+     }
+ 
+     /// <summary>
+@@ -104,18 +107,18 @@ public static StorageFixture Create(Transform host, string displayName, string k
+             {
+                 emptyChance *= CloneZConfig.RaidStorageEmptyScale;
+                 if (maxStacks >= 0 && maxStacks < int.MaxValue - CloneZConfig.RaidStorageExtraStacks) maxStacks += CloneZConfig.RaidStorageExtraStacks;
+-            }
++    
+             f.Container = LootContainer.SpawnFixture(go.transform, interactPoint, f._opt.LootType,
+                 f._opt.ContainerName ?? displayName, key + "/items", seed, f._opt.StartEmpty, emptyChance,
+                 maxStacks, f._opt.SearchTime);
+             f.Container.Owner = f;
+             return f;
+-        }
++
+ 
+         private void Awake()
+         {
+             _player = PlayerInteractor.Current;
+-        }
++
+         private void Update()
+         {
+             // Opened from the inventory's container column (or being searched): swing the doors open to match.
+@@ -123,7 +126,7 @@ private void Update()
+             if (_player == null) return; // No player reference cached, nothing to do.
+             if (Container != null && (_player.ViewedContainer == Container || _player.SearchTarget == Container))
+                 SetOpen(true, false);
+-        }
++
+ 
+         public override void GetActions(InteractContext ctx, List<InteractAction> into)
+         {
+@@ -136,11 +139,14 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
+             {
+                 if (!_open)
+                 {
++                    // Peek inside without opening
++                    string peek = _opt.PeekLabel ?? ("Peek inside the " + noun);
++                    into.Add(new InteractAction(peek, PeekContents));
+                     // Normal open (noisy)
+                     into.Add(new InteractAction(_opt.OpenVerb + " the " + noun, c => { SetOpen(true, true); ShowContents(c); }));
+                     // Quiet open (no noise)
+                     into.Add(new InteractAction("Open the " + noun + " quietly", c => { SetOpen(true, false); ShowContents(c); }));
+-                }
++        
+                 else
+                 {
+                     // Normal close (noisy)
+@@ -149,18 +155,36 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
+                     into.Add(new InteractAction("Close the " + noun + " quietly", c => { SetOpen(false, false); }));
+                     // Look/Search action
+                     into.Add(new InteractAction(look, ShowContents));
+-                }
+-            }
++        
++    
+             else into.Add(new InteractAction(look, ShowContents));
+             _opt.ExtraActions?.Invoke(ctx, into);
+-        }
+ 
+-        private void ShowContents(InteractContext ctx)
++
++        private void PeekContents(InteractContext ctx)
+         {
+-            if (Container == null || ctx.Interactor == null) return;
+-            if (HasParts && !_open) SetOpen(true, true);
+-            ctx.Interactor.SearchOrOpen(Container);
+-        }
++            if (Container == null)
++            {
++                ctx.Notify("There is nothing here.");
++                return;
++    
++            var stacks = Container.Contents.Stacks;
++            if (stacks == null || stacks.Count == 0)
++            {
++                ctx.Notify("It looks empty.");
++                return;
++    
++            var first = stacks[0];
++            if (first == null || first.Def == null)
++            {
++                ctx.Notify("It looks empty.");
++                return;
++    
++            // Assume ItemDef has a Name property; fall back to DefId if not.
++            string itemName = first.Def.Name ?? first.Def.DefId;
++            ctx.Notify($"{first.Count} × {itemName}");
++
++
+ 
+         /// <summary>Opens or closes the doors / drawers (closing also puts the inventory panel away if it shows this).</summary>
+         public void SetOpen(bool open, bool noisy)
+@@ -174,12 +198,22 @@ public void SetOpen(bool open, bool noisy)
+             {
+                 PlayerInteractor pi = PlayerInteractor.Current;
+                 if (pi != null && Container != null && pi.ViewedContainer == Container) pi.CloseInventory();
+-            }
++    
+             _opt.OnOpenChanged?.Invoke(open);
+-        }
++
++
++        private void ShowContents(InteractContext ctx)
++        {
++            if (Container == null || ctx.Interactor == null) return;
++            if (HasParts && !_open) SetOpen(true, true);
++            ctx.Interactor.SearchOrOpen(Container);
++            }
++    }
+ 
+         public override void CaptureState(FixtureSave save) => save.State = _open ? 1 : 0;
+ 
++        
++
+         public override void RestoreState(FixtureSave save)
+         {
+             bool open = (save.State & 1) != 0;
+@@ -187,6 +221,7 @@ public override void RestoreState(FixtureSave save)
+             for (int i = 0; i < _parts.Length; i++)
+                 if (_parts[i] != null) _parts[i].SetOpen(open, false);
+             _opt.OnOpenChanged?.Invoke(open);
++
+         }
+     }
+ 
+@@ -205,7 +240,7 @@ public static LootContainer FirstHolding(Transform root)
+                 if (s_Found[i] != null && s_Found[i].IsFixture && !s_Found[i].IsEmpty) { found = s_Found[i]; break; }
+             s_Found.Clear();
+             return found;
+-        }
++
+ 
+         /// <summary>Drops everything kept in the fixtures under <paramref name="root"/> onto the floor beneath them
+         /// (a wall battered down with its cupboards full).</summary>
+@@ -228,10 +263,11 @@ public static void Spill(Transform root)
+                         st.Def.Perishable ? st.SpawnHours : float.NaN,
+                         st.Def.IsDamageable ? st.Condition : -1,
+                         st.TimesRepaired, st.Extra);
+-                }
++        
+                 c.Contents.Clear();
+-            }
++    
+             s_Found.Clear();
++
+         }
+     }
+ }
