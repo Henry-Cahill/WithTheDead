@@ -6672,3 +6672,15 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 4: Assets/Scripts/World/Map/KentuckyMap.Props.cs – add a short XML‑style comment above the new constant explaining its purpose (helps future maintainers): `/// <summary>Maximum number of fire‑hydrants to place city‑wide.</summary>` `private const int MaxHydrants = 40;`
   Step 5: Assets/Scripts/World/Map/KentuckyMap.Props.cs – ensure the new method is placed within the same partial class (no new file needed) and that it uses only members already present (`To3`, `site.Town.Out`, `site.Take`, etc.). No other scripts are touched.
   Done when: When the player walks the streets of the raid town, period‑correct 1990s‑style fire‑hydrants appear along both sides of most streets, spaced roughly every 30 m, each with a slight random yaw (±5°) and a small collider that blocks movement. The total number never exceeds the new `MaxHydrants` constant, and all existing map‑building behaviour (street lights, cars, trees, signs, park props) remains unchanged.
+- [ ] Add four tiny dark‑steel corner brackets to the painted planter built in `Assets/Scripts/World/FurnitureBuilder.RaidOpenings.cs` → method `OpeningFlowerBox`
+  In `OpeningFlowerBox`, after the snow‑ellipsoid loop, create four small boxes (≈0.018 m × 0.018 m × 0.018 m) using the existing `DarkSteel` material (`Mt(DarkSteel)`).
+  *Use the deterministic random source `rng` for a slight size jitter: `float size = R(rng, 0.018f, 0.022f);` and build a `Vector3(size, size, size)`.
+  Position each bracket at the planter’s top edges, relative to the main box’s centre (`l.P(mid, sill - 0.15f, across)`) plus offsets:
+  Front‑left: `l.P(mid - w*0.5f + 0.04f, sill - 0.05f, across + 0.04f)`
+  Front‑right: `l.P(mid + w*0.5f - 0.04f, sill - 0.05f, across + 0.04f)`
+  Back‑left: `l.P(mid - w*0.5f + 0.04f, sill - 0.05f, across - 0.04f)`
+  Back‑right: `l.P(mid + w*0.5f - 0.04f, sill - 0.05f, across - 0.04f)`
+  Each box is added with `m.Box(position, new Vector3(size, size, size), Mt(DarkSteel));`.
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Core/Sqlite/Sqlite.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code. (Pass 2 over this file: most of it has summaries already.)
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
