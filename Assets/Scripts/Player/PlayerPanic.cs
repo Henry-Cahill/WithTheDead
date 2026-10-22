@@ -31,6 +31,7 @@ namespace CloneZ
         private TimeOfDay _timeOfDay;
         private readonly int _ignoreRaycastMask = 1 << CloneZConfig.IgnoreRaycastLayer;
         private readonly int _defaultRaycastMask = 1 << 0;
+        private Transform _tr;
         // Cached panic level and descriptor; updated only when panic value changes
         private int _cachedLevel;
         private string _cachedDescriptor;
@@ -91,6 +92,7 @@ namespace CloneZ
         private void Awake()
         {
             _stats = GetComponent<PlayerStats>();
+            _tr = transform;
             _timeOfDay = TimeOfDay.Instance;
         }
 
@@ -173,10 +175,9 @@ namespace CloneZ
         {
             threat = 0f;
             int visible = 0;
-            Vector3 eye = transform.position + Vector3.up * 1f;
+            Vector3 eye = _tr.position + Vector3.up * 1f;
 
-            int n = Physics.OverlapSphereNonAlloc(
-                transform.position, CloneZConfig.PanicSightRadius, _zombieBuf,
+                int n = Physics.OverlapSphereNonAlloc(_tr.position, CloneZConfig.PanicSightRadius, _zombieBuf,
                 _ignoreRaycastMask, QueryTriggerInteraction.Ignore);
 
             _seen.Clear();
@@ -188,12 +189,12 @@ namespace CloneZ
                 if (ai == null || ai.IsDeadState || !_seen.Add(ai)) continue;
 
                 Vector3 zp = ai.transform.position;
-                float dist = Vector3.Distance(transform.position, zp);
+                float dist = Vector3.Distance(_tr.position, zp);
                 if (dist < 0.01f || dist > CloneZConfig.PanicSightRadius) continue;
 
                 // A wall between us hides the horror (PZ counts *visible* zombies). Start the ray
                 // clear of the player's own body; zombies are on Ignore Raycast so they never block.
-                Vector3 dir = (zp - transform.position) / dist;
+                Vector3 dir = (zp - _tr.position) / dist;
                 Vector3 zeye = zp + Vector3.up * 1f;
                 if (Physics.Raycast(eye + dir * 0.6f, (zeye - (eye + dir * 0.6f)).normalized,
                         Vector3.Distance(eye + dir * 0.6f, zeye), _defaultRaycastMask, QueryTriggerInteraction.Ignore))
