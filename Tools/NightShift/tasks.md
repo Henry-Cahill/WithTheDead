@@ -6541,9 +6541,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Step 5: ItemDatabase.cs – Add a private helper to centralise the string‑null check used above (optional but keeps the file tidy). Insert after the existing `private static void StatLine` method: `private static bool HasId(string id) => !string.IsNullOrEmpty(id);` Update the three tooltip blocks to use `HasId(CookedId)`, `HasId(CropId)`, and `HasId(AmmoId)` respectively. This does not change runtime behaviour but makes the intent explicit.
   Done when: Loot tables that have an empty weight (e.g., a custom “empty” container) no longer stop the whole RollLoot process; players see the expected number of rolls and items appear in those containers. Item tooltips never display blank “Cook”, “Plant”, or “Ammo” lines; the UI looks clean and only shows meaningful information. All other existing functionality and public signatures remain unchanged.
   - 20:27 landed by hts-llm in 4.8 min: **Changes Made**
-- [ ] Add a detailed guard‑booth door with hinges, a chrome latch, a lock plate, rust weathering and a “SAFE” paper sign to Assets/Scripts/World/FurnitureBuilder.RaidStore.cs (method `TownBoothBody`)
+- [x] Add a detailed guard‑booth door with hinges, a chrome latch, a lock plate, rust weathering and a “SAFE” paper sign to Assets/Scripts/World/FurnitureBuilder.RaidStore.cs (method `TownBoothBody`)
   Step 1: Open `FurnitureBuilder.RaidStore.cs` and locate the end of `TownBoothBody`. Quote the last line in the method (currently): `m.Box(new Vector3(-0.25f, 1.55f, 0.762f), new Vector3(0.58f, 0.66f, 0.016f), M(wall * 0.7f));`
   Step 2: Insert a door panel directly in front of the booth. Add the following after the quoted line: `// ---- Guard‑booth door panel ----` `// Door colour slightly darker than the wall.` `Color doorCol = wall * 0.9f;` `m.Box(new Vector3(0f, 0.55f, 0.78f), new Vector3(1.5f, 1.0f, 0.04f), M(doorCol));`
+  - 20:33 landed by 0htsserver in 7.2 min: **Summary of changes**
 - [ ] Cache the Transform lookup in Assets/Scripts/Player/PlayerPanic.cs to avoid repeated `transform` property accesses each frame.
   Add a private field `private Transform _tr;` and assign it in `Awake()` (`_tr = transform;`).
   Replace every `transform.position` (and any other `transform` use) in `Update()` and `AssessThreat()` with `_tr.position` (or `_tr` where appropriate).
