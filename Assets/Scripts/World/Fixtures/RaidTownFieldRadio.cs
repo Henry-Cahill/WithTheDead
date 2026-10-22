@@ -145,6 +145,7 @@ namespace CloneZ
             into.Add(new InteractAction("Turn it up", c => Louder(c, 1)).DisabledIf(_volume >= MaxVolume, "It won't go any louder").DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Turn it down", c => Louder(c, -1)).DisabledIf(_volume <= 0, "It's down as low as it goes").DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Check radio status", CheckStatus).DisabledIf(!near, TooFar));
+            into.Add(new InteractAction("Next transmission", NextTransmission).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Key the handset", KeyHandset).DisabledIf(!near, TooFar));
         }
 
@@ -207,6 +208,17 @@ namespace CloneZ
         {
             MakeNoise(CloneZConfig.FixtureNoiseSmall);
             ctx.Notify("You key the handset. \u201CAnyone on this net? Anyone?\u201D You let go. Only the carrier hiss answers.");
+        }
+
+        // Force the radio to emit the next line of the current net immediately.
+        private void NextTransmission(InteractContext ctx)
+        {
+            // give the same tactile feedback as turning a knob
+            MakeNoise(CloneZConfig.ReceiverKnobNoise);
+            // force the caption routine to run now, which will play the next line
+            _captionAt = Time.time;
+            Caption(Time.time);
+            ctx.Notify("You force the radio to play the next transmission.");
         }
 
         private void ShowOn(bool on)
