@@ -1,0 +1,94 @@
+diff --git a/Assets/Scripts/World/Fixtures/ClockFixture.cs b/Assets/Scripts/World/Fixtures/ClockFixture.cs
+index 42ee5b9c..46e49e01 100644
+--- a/Assets/Scripts/World/Fixtures/ClockFixture.cs
++++ b/Assets/Scripts/World/Fixtures/ClockFixture.cs
+@@ -16,6 +16,15 @@ namespace CloneZ
+     public class ClockFixture : Interactable
+     {
+         private Vector3 _point, _face, _normal;
++
++
++        private static readonly string[] _inspectClues = new[]
++        {
++            "The ticking reminds you of your mother's kitchen clock.",
++            "A tiny engraving reads \"22 Mar 1993\".",
++            "A faint smell of oil lingers on the dial.",
++            "A faint crack in the glass hints at past impacts."
++        };
+         private Transform _hour, _minute;
+         private float _calmAgainAt;
+         private float _stoppedAt = -1f;   // the hour (0..12) a stopped clock's hands show; below 0 while it runs
+@@ -42,7 +51,7 @@ internal static ClockFixture Create(Transform host, Vector3 point, Vector3 face,
+             c._point = point;
+             c._face = face;
+             c._normal = normal;
+-            c._stoppedAt = stoppedAt < 0f ? -1f : Mathf.Repeat(stoppedAt, 12f);
++            c._key = KeyFor("clock", point);
+             return c;
+         }
+ 
+@@ -104,14 +113,21 @@ private void Turn()
+             }
+         }
+ 
++        public override void CaptureState(FixtureSave save)
++        {
++            base.CaptureState(save);
++            save.State = _inspected ? 1 : 0;
++        }
+         public override void GetActions(InteractContext ctx, List<InteractAction> into)
+         {
++            if (!_inspected)
++                into.Add(new InteractAction("Inspect the clock", InspectClock));
+             into.Add(new InteractAction("Check the time", CheckTime));
+             into.Add(new InteractAction("Check battery", CheckBattery));
+             // Polishing the clock provides a calming action regardless of battery state.
+             into.Add(new InteractAction("Polish the clock", Polish)
+                 .Timed(CloneZConfig.ClockListenSeconds, "Polishing the clock", HumanoidActivity.None));
+-            // Wipe dust off the clock, providing a calming effect similar to polishing.
++            // Wipe dust off the clock, providing calm similar to polishing.
+             into.Add(new InteractAction("Wipe dust off the clock", WipeDust)
+                 .Timed(CloneZConfig.ClockListenSeconds, "Wiping dust off the clock", HumanoidActivity.None));
+             if (_stoppedAt >= 0f) return;
+@@ -162,26 +178,25 @@ private void Polish(InteractContext ctx)
+         }
+ 
+         // Wipe dust off the clock, providing calm similar to polishing.
+-        private void WipeDust(InteractContext ctx)
++        private void InspectClock(InteractContext ctx)
+         {
+-            if (Time.time >= _calmAgainAt)
+-            {
+-                LightingFixtures.Calm(ctx, CloneZConfig.ClockCalm);
+-                _calmAgainAt = Time.time + CloneZConfig.ClockCalmCooldown;
+-                ctx.Notify("You brush away the thin film of dust; the clean face steadies your thoughts.");
+-            }
+-            else ctx.Notify("You brush the clock, but its rhythm offers no new calm right now.");
++            int i = UnityEngine.Random.Range(0, _inspectClues.Length);
++            ctx.Notify(_inspectClues[i]);
++            _inspected = true;
+         }
++                private void WipeDust(InteractContext ctx)
+ 
+-        private void Listen(InteractContext ctx)
++
++        public override void CaptureState(FixtureSave save)
+         {
+-            if (Time.time >= _calmAgainAt)
+-            {
+-                LightingFixtures.Calm(ctx, CloneZConfig.ClockCalm);
+-                _calmAgainAt = Time.time + CloneZConfig.ClockCalmCooldown;
+-                ctx.Notify("Tick. Tick. Tick. Steady as anything \u2014 your breathing slows to match it.");
+-            }
+-            else ctx.Notify("Tick. Tick. Tick. It doesn't care what's going on outside.");
++            base.CaptureState(save);
++            save.State = _inspected ? 1 : 0;
++        }
++
++        public override void RestoreState(FixtureSave save)
++        {
++            base.RestoreState(save);
++            _inspected = (save.State & 1) != 0;
+         }
+     }
+ }
