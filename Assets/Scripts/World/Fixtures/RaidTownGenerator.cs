@@ -17,6 +17,8 @@ namespace CloneZ
         private bool _running;
         private float _fuel, _noiseAt;
         private int _pulls;
+        private bool _oilApplied;
+        private float _fuelDrainRate = 1f; // units of fuel per second
 
         public override string DisplayName => "Generator";
         public override Vector3 InteractPoint => _point;
@@ -40,7 +42,7 @@ namespace CloneZ
         private void Update()
         {
             if (!_running) return;
-            _fuel -= Time.deltaTime;
+            _fuel -= Time.deltaTime * _fuelDrainRate;
             if (_fuel <= 0f)
             {
                 _fuel = 0f;
@@ -60,6 +62,7 @@ namespace CloneZ
                 into.Add(new InteractAction("Pull the starter cord", Pull)
                     .Timed(CloneZConfig.RaidGeneratorPullSeconds, "Pulling the cord", HumanoidActivity.Use)
                     .DisabledIf(_fuel <= 0f, "Its tank is dry"));
+            if (!_oilApplied) into.Add(new InteractAction("Oil the generator", Oil));
             into.Add(new InteractAction("Check the fuel", CheckFuel));
             into.Add(new InteractAction("Estimate runtime", EstimateRuntime));
             into.Add(new InteractAction("Inspect generator", Inspect));
@@ -104,10 +107,16 @@ namespace CloneZ
             ShowRunning(false);
         }
 
+        private void Oil(InteractContext ctx)
+        {
+            _oilApplied = true;
+            _fuelDrainRate = 0.5f; // fuel now drains at half the original rate
+            ctx.Notify("You pour a bit of oil into the engine. It will now consume fuel twice as slowly.");
+        }
         private void Inspect(InteractContext ctx)
         {
             float percent = _fuel / CloneZConfig.RaidGeneratorFuelMax;
-if (_running)
+            if (_running)
                 ctx.Notify($"The generator rumbles on. Fuel gauge reads about {(int)(percent * 100)}%.");
             else
                 ctx.Notify($"The generator is off. Fuel gauge reads about {(int)(percent * 100)}%.");
@@ -119,7 +128,8 @@ if (_running)
             ctx.Notify(_fuel <= 0f ? "You unscrew the cap and look in. Bone dry; not even the smell of fuel left." :
                 f < 0.35f ? "A slosh in the bottom of the tank. It won't run for long." :
                 f < 0.7f ? "The tank's about half full. Enough to make a racket for a while." :
-                "Most of a tank. Somebody filled it and never got to use it.");
+                "Most of a tank. Somebody filled it and never got to use it." +
+                (_oilApplied ? " (Oil applied – fuel lasts longer.)" : ""));
         }
 
         private void EstimateRuntime(InteractContext ctx)
@@ -129,7 +139,7 @@ if (_running)
                 ctx.Notify("No fuel left – the generator can’t run any longer.");
                 return;
             }
-            float secs = _fuel; // fuel drains at 1 unit per second
+            float secs = _fuel / _fuelDrainRate; // adjust for oil‑reduced consumption
             int mins = (int)(secs / 60f);
             secs = secs % 60f;
             ctx.Notify($"It will run for about {mins} min {(int)secs}s more.");

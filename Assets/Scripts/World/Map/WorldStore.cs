@@ -17,6 +17,7 @@ namespace CloneZ
         /// <summary>The environment variable that points the game at another copy of the store.</summary>
         public const string RootVariable = "CLONEZ_WORLD";
         public const string KerbMaterialPath = "Materials/KerbConcrete";
+        public const string StreetLampMaterialPath = "Materials/Metal";
 
 
         /// <summary>Where the store is on this machine.</summary>
@@ -88,6 +89,12 @@ namespace CloneZ
             private const float RoadMarkingThickness = 0.03f; // 3 cm thick painted strip
 
             internal float GetRoadMarkingThickness() => RoadMarkingThickness;
+            /// <summary>The street‑lamp material.</summary>
+        internal Material GetStreetLampMaterial()
+        {
+            // Material reference is cached by Unity's Resources system; path must exist.
+            return Resources.Load<Material>(WorldStore.StreetLampMaterialPath);
+        }
             /// <summary>Determine if a building should get a thin snow layer on its roof.
             /// Deterministic based on the build ID and the building ID.
             /// Approximately 30% of roofs receive snow.</summary>
@@ -159,6 +166,20 @@ namespace CloneZ
                 uint hash = (uint)buildingId ^ 0x7f4a7c13u;
                 hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
                 return (hash % 100) < 35; // ~35% chance
+            }
+        }
+        /// <summary>
+        /// Determine if a road segment should receive a street lamp.
+        /// Deterministic based on the build Id and the segment Id.
+        /// Approximately 30 % of eligible segments get a lamp, giving the town a hand‑painted rural feel.
+        /// </summary>
+        public bool HasStreetLamp(long segmentId)
+        {
+            unchecked
+            {
+                uint hash = (uint)segmentId ^ 0xD4E5F6A7u;
+                hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
+                return (hash % 100) < 30; // 30% chance
             }
         }
         /// <summary>The data format this game reads (worldbuild.py's FORMAT).</summary>

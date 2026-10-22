@@ -31,6 +31,7 @@ namespace CloneZ
         /// <summary>The floor area inside the walls (world).</summary>
         public Rect Inner => Rect.MinMaxRect(World.xMin + 0.1f, World.yMin + 0.1f, World.xMax - 0.1f, World.yMax - 0.1f);
 
+        /// <summary>Returns true if the given rectangle overlaps any furniture or, optionally, reserved zones.</summary>
         public bool Overlaps(Rect r, bool includeReserved)
         {
             for (int i = 0; i < Furniture.Count; i++) if (Furniture[i].Overlaps(r)) return true;
@@ -72,14 +73,17 @@ namespace CloneZ
         public float WallH = 2.8f;
         /// <summary>What the building is (set by its layout).</summary>
         public RaidBuildingKind Kind = RaidBuildingKind.House;
+        /// <summary>The building's exterior style (e.g., siding, brick).</summary>
         public ExteriorStyle Exterior = ExteriorStyle.Siding;
         public Color ExteriorColor = new Color(0.78f, 0.76f, 0.68f);
         public Color DoorWood = new Color(0.42f, 0.27f, 0.15f);
         public Color Casing = new Color(0.36f, 0.24f, 0.14f);
         public Color WallCore = new Color(0.20f, 0.19f, 0.18f);
         /// <summary>False for buildings that draw their own roof (the tent).</summary>
+        /// <summary>Whether the building uses a flat ceiling (true for most, false for tents).</summary>
         public bool FlatCeilings = true;
         /// <summary>False to leave doorways unframed (tent flaps).</summary>
+        /// <summary>Whether doorframes are drawn (false for tent flaps).</summary>
         public bool DoorFrames = true;
 
         public readonly List<RaidRoom> Rooms = new List<RaidRoom>();
@@ -144,6 +148,7 @@ namespace CloneZ
 
         #region Frame
         /// <summary>A local (x, z) point in world XZ.</summary>
+        /// <summary>Convert local (x, z) coordinates to a world-space point.</summary>
         public Vector2 P(float lx, float lz)
         {
             if (Mirror) lx = -lx;
@@ -157,6 +162,7 @@ namespace CloneZ
         }
 
         /// <summary>World position from a local XZ point and a Y height.</summary>
+        /// <summary>World position from a local XZ point and a Y height.</summary>
         public Vector3 W(float lx, float y, float lz)
         {
             Vector2 p = P(lx, lz);
@@ -165,15 +171,18 @@ namespace CloneZ
 
         /// <summary>A local yaw (degrees; 0 faces local +Z) in world terms.</summary>
         /// <summary>Local yaw (degrees; 0 faces local +Z) converted to world space, accounting for mirroring and rotation.</summary>
+        /// <summary>Local yaw (degrees; 0 faces local +Z) converted to world space, accounting for mirroring and rotation.</summary>
         public float Yaw(float localYaw) => (Mirror ? -localYaw : localYaw) + Turns * 90f;
 
         /// <summary>A local horizontal direction in world terms.</summary>
+        /// <summary>Local horizontal direction in world terms.</summary>
         public Vector3 Dir(float lx, float lz)
         {
             Vector2 a = P(lx, lz) - P(0f, 0f);
             return new Vector3(a.x, 0f, a.y);
         }
 
+        /// <summary>Convert local wall coordinates to a world-space rectangle.</summary>
         /// <summary>Convert local wall coordinates to a world-space rectangle.</summary>
         public Rect RectW(float x0, float z0, float x1, float z1)
         {
@@ -182,12 +191,15 @@ namespace CloneZ
         }
 
         /// <summary>The building's footprint in world XZ (outer wall faces).</summary>
+        /// <summary>The building's footprint in world XZ (outer wall faces).</summary>
         public Rect Footprint => RectW(-HalfW - Half, -HalfD - Half, HalfW + Half, HalfD + Half);
         #endregion
 
         #region Authoring
         /// <summary>Adds a room (local rect on wall centre lines).</summary>
         /// <summary>Factory method for a RaidRoom with given parameters.</summary>
+        /// <summary>Adds a new room to the building and returns it.</summary>
+        /// <summary>Adds a room (local rect on wall centre lines) and returns it.</summary>
         public RaidRoom Room(string name, float x0, float z0, float x1, float z1, WallDesign design, FloorKind floor)
         {
             var r = new RaidRoom
@@ -205,12 +217,16 @@ namespace CloneZ
         /// <summary>A doorway centred on local (lx, lz), which must lie on a wall line. Doorways are at
         /// least 1.5 m wide so the navmesh stays connected through them.</summary>
         /// <summary>Creates a door opening centered at the given local coordinates.</summary>
+        /// <summary>Creates a door opening centered at the given local coordinates.</summary>
+        /// <summary>Creates a door opening centered at the given local coordinates.</summary>
         public void Door(float lx, float lz, float width = 1.5f, bool leaf = true, bool glass = false)
         {
             AddOpening(lx, lz, OpeningKind.Door, Mathf.Max(1.5f, width), o => { o.Leaf = leaf; o.Glass = glass; });
         }
 
         /// <summary>A window centred on local (lx, lz) on a wall line.</summary>
+        /// <summary>Creates a window opening centered at the given local coordinates.</summary>
+        /// <summary>Creates a window opening centered at the given local coordinates.</summary>
         /// <summary>Creates a window opening centered at the given local coordinates.</summary>
         public void Window(float lx, float lz, float width = 1.2f)
         {
@@ -232,6 +248,8 @@ namespace CloneZ
         #region Shell
         /// <summary>Derives the walls from the rooms, cuts the openings and builds floors, ceilings
         /// and wall segments. Call once all rooms and openings are declared, before furnishing.</summary>
+        /// <summary>Derives walls, openings, floors, ceilings, and pieces after all rooms and openings are declared.</summary>
+        /// <summary>Derives walls, openings, floors, ceilings, and pieces after all rooms and openings are declared.</summary>
         /// <summary>Derives walls, openings, floors, ceilings, and pieces after all rooms and openings are declared.</summary>
         public void BuildShell()
         {
@@ -497,7 +515,54 @@ namespace CloneZ
                 // bottom hinge
                 p.Mesh.Box(RunPoint(r, o.Pos, 0.15f, extSide * (Half + 0.025f)), RunSize(r, 0.04f, 0.10f, 0.008f), hingeSurf);
             }
-        }
+            /* ---------- NEW DETAILS START ---------- */
+            // Knock‑plate: metal plate on exterior side (≈25 % of doors)
+            if (extSide != 0 && Rng.NextDouble() < 0.25)
+            {
+                var metalSurf = DecorPalette.Matte(new Color(0.30f, 0.30f, 0.35f));
+                // size ≈12 cm × 2 cm × 0.8 cm, placed about 0.45 m above ground on exterior face
+                Vector3 knockPos = RunPoint(r, o.Pos, DoorHeight * 0.45f, extSide * (Half + 0.036f));
+                p.Mesh.Box(knockPos, RunSize(r, 0.12f, 0.02f, 0.008f), metalSurf);
+            }
+            // Lock‑bolt on interior side (≈30 % of doors)
+            if (Rng.NextDouble() < 0.30)
+            {
+                var metalSurf = DecorPalette.Matte(new Color(0.30f, 0.30f, 0.35f));
+                // bolt runs vertically, 15 cm high, 2 cm wide, centered at handle height (≈50 % of DoorHeight)
+                float boltY = DoorHeight * 0.5f;
+                Vector3 boltPos = RunPoint(r, o.Pos, boltY, -Half - 0.025f); // interior side (negative side)
+                p.Mesh.Box(boltPos, RunSize(r, 0.02f, 0.15f, 0.008f), metalSurf);
+            }
+            // Tiny key‑hole near the lock‑bolt (≈30 % of doors)
+            if (Rng.NextDouble() < 0.30)
+            {
+                var keyholeSurf = DecorPalette.Matte(new Color(0.05f, 0.05f, 0.07f)); // very dark metal
+                // size ≈1 cm × 2 cm × 0.2 cm, placed a few centimetres above the bolt
+                float khY = DoorHeight * 0.55f;
+                Vector3 khPos = RunPoint(r, o.Pos, khY, -Half - 0.025f);
+                p.Mesh.Box(khPos, RunSize(r, 0.01f, 0.02f, 0.002f), keyholeSurf);
+            }
+            // Subtle wear scratches on the vertical jambs (both sides). Up to three per side.
+            int scratchCount = Rng.Next(1, 4); // 1‑3 scratches per side
+            for (int i = 0; i < scratchCount; i++)
+            {
+                // pick side: -1 = left jamb, +1 = right jamb
+                int side = (i % 2 == 0) ? -1 : 1;
+                // random vertical position between floor (0) and DoorHeight
+                float y = (float)Rng.NextDouble() * (DoorHeight - 0.05f) + 0.025f;
+                // random scratch length 5‑12 cm
+                float len = 0.05f + (float)Rng.NextDouble() * 0.07f;
+                // narrow box 0.5 cm thick, 1 cm tall
+                var scratchSurf = DecorPalette.Matte(DoorWood * 0.75f); // darker wood colour
+                Vector3 scratchPos = RunPoint(r,
+                    side < 0 ? o.A + 0.012f : o.B - 0.012f, // near the jamb inner surface
+                    y,
+                    side * (Half + 0.014f));
+                p.Mesh.Box(scratchPos,
+                    new Vector3(0.005f, 0.01f, len), // thickness, height, depth (along wall)
+                    scratchSurf);
+            }
+            /* ---------- NEW DETAILS END ---------- */        }
 
         private void DrawWindow(WallPiece p)
         {
@@ -703,6 +768,7 @@ namespace CloneZ
 
         /// <summary>The room containing a world point, or null.</summary>
         /// <summary>Returns the raid room containing the given world point, or null.</summary>
+        /// <summary>The room containing a world point, or null.</summary>
         public RaidRoom RoomAt(Vector3 p)
         {
             foreach (RaidRoom r in Rooms) if (r.World.Contains(new Vector2(p.x, p.z))) return r;
@@ -711,6 +777,7 @@ namespace CloneZ
 
         /// <summary>Adds the ground in front of each outside door (3 m out) to <paramref name="into"/>, so
         /// outdoor props never block a way in.</summary>
+        /// <summary>Adds zones outside each exterior door for props to avoid blocking entry.</summary>
         /// <summary>Adds zones outside each exterior door for props to avoid blocking entry.</summary>
         public void ExteriorDoorZones(List<Rect> into)
         {

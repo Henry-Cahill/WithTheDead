@@ -50,7 +50,7 @@ namespace CloneZ
         public float Temperature => _stats != null ? _stats.Temperature : CloneZConfig.TempStart;
         public float Wetness => _stats != null ? _stats.Wetness : 0f;
 
-        /// <summary>The warmth the body is drifting toward right now (0..1, same scale as <see cref="Temperature"/>).</summary>
+        /// <summary>The warmth the body is drifting toward right now (normally 0..1, but may fall below 0 or rise above 1 when extreme weather applies).</summary>
         public float Target { get; private set; } = CloneZConfig.TempStart;
 
         /// <summary>True while the survivor is inside a building (<see cref="Shelter"/>): out of the
@@ -105,8 +105,8 @@ namespace CloneZ
         {
             if (_stats == null || _stats.IsDead) return;
             float dt = Time.deltaTime;
-            // Probed at chest height so a floor-level interior box still counts the survivor as inside.
-            Indoors = Shelter.Count > 0 && Shelter.IsSheltered(transform.position + Vector3.up);
+            // Safety: WeatherSystem may have been instantiated after Awake; re‑acquire if still null
+            if (_weather == null) _weather = WeatherSystem.Instance;
             UpdateWetness(dt);
             UpdateTemperature(dt);
             ApplyEffects(dt);
@@ -147,7 +147,8 @@ namespace CloneZ
                 - _stats.Wetness * CloneZConfig.TempWetChill
                 + shelter
                 + HomeComfort.WarmthAt(transform.position);   // a lit burner, a hot shower close by
-            target = Mathf.Clamp01(target);
+            // Do not clamp – the target can be negative (freezing) or >1 (overheating)
+            target = target;
             Target = target;
 
             if (Climate.Winter)
@@ -160,7 +161,8 @@ namespace CloneZ
         }
 
         // The naked, dry ambient a body would settle at: the air temperature on the warmth scale (the
-        // milder air inside a building), less the chill of rain beating down on someone out in it.
+        // milder air inside a building), may fall below 0 (extreme cold) or rise above 1 (extreme heat),
+        // less the chill of rain beating down on someone out in it.
         private float AmbientTemperature()
         {
             float air = Climate.AirTemperatureC;

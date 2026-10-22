@@ -46,6 +46,30 @@ namespace CloneZ
             float sillY = WindowSill - sillHeight * 0.5f;
             // outer (wall‑side) track already stored in variable 'outer'
             m.Box(f.P(f.Mid, sillY, outer - sillDepth * 0.5f), f.Size(WindowWidth, sillHeight, sillDepth), DecorMaterials.Concrete);
+            Surf wood = DecorPalette.Matte(FurnitureBuilder.Pine); // wood for the strip below
+            // stone coping cap
+            float capHeight = 0.005f;
+            float capDepth = sillDepth + 0.01f;
+            m.Box(f.P(f.Mid, sillY + sillHeight * 0.5f + capHeight * 0.5f, outer - sillDepth * 0.5f), f.Size(WindowWidth + 0.02f, capHeight, capDepth), DecorMaterials.Concrete);
+            // recessed drip-groove
+            float grooveHeight = 0.002f;
+            m.Box(f.P(f.Mid, sillY + sillHeight * 0.5f - capHeight - grooveHeight * 0.5f, outer - sillDepth * 0.5f), f.Size(WindowWidth + 0.02f, grooveHeight, sillDepth), DecorPalette.Matte(FurnitureBuilder.Pine));
+            // irregular stone bumps
+            int bumpCount = 3;
+            for (int i = 0; i < bumpCount; i++)
+            {
+                float offsetX = (float)(rng.NextDouble() * (WindowWidth - 0.04) - (WindowWidth - 0.04) * 0.5);
+                float bumpSize = 0.01f + (float)rng.NextDouble() * 0.005f;
+                m.Box(f.P(f.Mid + offsetX, sillY, outer - sillDepth * 0.5f + bumpSize * 0.5f), f.Size(bumpSize, bumpSize, bumpSize), DecorMaterials.Concrete);
+            }
+            // brass strike-plate on latch lever
+            float plateW = 0.04f, plateH = 0.02f, plateD = 0.005f;
+            Vector3 latchCenter = f.P(f.Mid, meet + 0.042f, 0f);
+            m.Box(f.P(latchCenter.x, latchCenter.y, -0.01f), f.Size(plateW, plateH, plateD), brass);
+            // thin wood strip under sill
+            float stripHeight = 0.006f;
+            float stripDepth = 0.01f;
+            m.Box(f.P(f.Mid, sillY - sillHeight * 0.5f - stripHeight * 0.5f, outer - sillDepth * 0.5f), f.Size(WindowWidth, stripHeight, stripDepth), wood);
             FixturePart sash = FixturePart.Slide(root.transform, "LowerSash", lower, f.P(f.Mid, bottom, inner), Vector3.up * SashLift)
                 .WithSpeed(CloneZConfig.WindowSashSeconds);
             Renderer latchShut = WindowLever(sash.transform, "LatchShut", f.P(f.Mid, meet + 0.042f, 0f), f.Size(0.02f, 0.008f, 0.06f), brass);

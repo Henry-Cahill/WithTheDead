@@ -44,6 +44,9 @@ namespace CloneZ
         private int _lit;                     // bit i: burner i is lit
         private int _litCount;               // cached number of lit burners
         private bool _oven, _doorOpen;
+        private const int MinOvenHeatLevel = 0; // low
+        private const int MaxOvenHeatLevel = 2; // high
+        private int _ovenHeatLevel = 0; // 0‑low,1‑medium,2‑high
 
         private readonly Action<InteractContext>[] _toggleBurner = new Action<InteractContext>[4];
         private Action<InteractContext> _allOn, _allOff, _toggleOven, _toggleDoor, _cook;
@@ -57,14 +60,20 @@ namespace CloneZ
         public float WarmthRadius => CloneZConfig.StoveWarmthRadius;
 
 public float Warmth
-            {
-                get
                 {
-                    float w = _litCount * CloneZConfig.StoveBurnerWarmth;
-                    if (_oven) w += CloneZConfig.StoveOvenWarmth + (_doorOpen ? CloneZConfig.StoveOvenOpenWarmth : 0f);
-                    return Mathf.Min(w, CloneZConfig.ComfortWarmthMax);
+                    get
+                    {
+                        float w = _litCount * CloneZConfig.StoveBurnerWarmth;
+                        if (_oven)
+                        {
+                            // base oven warmth scaled by heat level (low = 1.0, medium = 1.5, high = 2.0)
+                            float levelMul = 1f + 0.5f * _ovenHeatLevel;
+                            w += CloneZConfig.StoveOvenWarmth * levelMul;
+                            if (_doorOpen) w += CloneZConfig.StoveOvenOpenWarmth;
+                        }
+                        return Mathf.Min(w, CloneZConfig.ComfortWarmthMax);
+                    }
                 }
-            }
         #endregion
 
         // Removed LitCount property; using cached _litCount instead
@@ -191,6 +200,10 @@ public float Warmth
             into.Add(new InteractAction(_oven ? "Turn off the oven" : "Turn on the oven", _toggleOven));
             into.Add(new InteractAction(_doorOpen ? "Close the oven door" : "Open the oven door", _toggleDoor));
             into.Add(new InteractAction("Cook something", _cook));
+            if (_oven && _ovenHeatLevel < MaxOvenHeatLevel)
+                into.Add(new InteractAction("Increase oven heat", IncreaseOvenHeat));
+            if (_oven && _ovenHeatLevel > MinOvenHeatLevel)
+                into.Add(new InteractAction("Decrease oven heat", DecreaseOvenHeat));
             into.Add(new InteractAction("Feel the heat", ShowWarmth));
         }
 
@@ -238,9 +251,35 @@ public float Warmth
             if (ctx.Interactor != null) ctx.Interactor.OpenInventory();
         }
 
+        private string OvenHeatName(int level) => level switch
+        {
+            0 => "low",
+            1 => "medium",
+            2 => "high",
+            _ => "unknown",
+        };
+
         private void ShowWarmth(InteractContext ctx)
         {
             ctx.Notify($"The stove radiates warmth ({Warmth:F1}).");
+        }
+
+        private void IncreaseOvenHeat(InteractContext ctx)
+        {
+            if (_ovenHeatLevel >= MaxOvenHeatLevel) return;
+            _ovenHeatLevel++;
+            ctx.Notify($"Oven heat turned up to {OvenHeatName(_ovenHeatLevel)}.");
+            MakeNoise(CloneZConfig.FixtureNoiseSmall);
+            RefreshGlow(); // warmth may have changed
+        }
+
+        private void DecreaseOvenHeat(InteractContext ctx)
+        {
+            if (_ovenHeatLevel <= MinOvenHeatLevel) return;
+            _ovenHeatLevel--;
+            ctx.Notify($"Oven heat turned down to {OvenHeatName(_ovenHeatLevel)}.");
+            MakeNoise(CloneZConfig.FixtureNoiseSmall);
+            RefreshGlow();
         }
         private void ApplyAll()
         {
@@ -253,7 +292,8 @@ public float Warmth
                 if (_knobs[i] != null) _knobs[i].SetOpen(on, true);
                 if (_flames[i] != null) _flames[i].enabled = on;
             }
-            if (_ovenKnob != null) _ovenKnob.SetOpen(_oven, true);
+            if (_ovenKnob != null && _oven)
+                _ovenKnob.SetOpen(true, true); // knob already open; could add visual cue via rotation later if needed
             if (_ovenDoor != null) _ovenDoor.SetOpen(_doorOpen, true);
             RefreshOven();
         }
@@ -274,13 +314,19 @@ public float Warmth
         #endregion
 
         #region Persistence
-        public override void CaptureState(FixtureSave save) => save.State = (_lit & 0xF) | (_oven ? 16 : 0) | (_doorOpen ? 32 : 0);
+        public override void CaptureState(FixtureSave save) =>
+            save.State = (_lit & 0xF) |
+                (_oven ? 16 : 0) |
+                (_doorOpen ? 32 : 0) |
+                (_ovenHeatLevel << 6);
 
         public override void RestoreState(FixtureSave save)
         {
             _lit = save.State & 0xF;
             _oven = (save.State & 16) != 0;
             _doorOpen = (save.State & 32) != 0;
+            _ovenHeatLevel = (save.State >> 6) & 0x3; // bits 6‑7
+            if (_ovenHeatLevel > MaxOvenHeatLevel) _ovenHeatLevel = MaxOvenHeatLevel;
             // Update cached lit count after restoring state
             _litCount = 0;
             for (int b = 0; b < 4; b++) if ((_lit & (1 << b)) != 0) _litCount++;

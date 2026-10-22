@@ -265,6 +265,34 @@ for (int i = 0; i < 4; i++)
             rng.NextDouble();
             Vector3 n = f.N(side), at = Face(f, side, along, y);
             FurnitureBuilder.ClockDial(m, at, n);
+            // wood for the clock’s frame
+            Surf wood = DecorPalette.Matte(new Color(0.45f, 0.38f, 0.30f));
+            // frame border (thin box) around the clock face
+            // size approximates a 0.26 m square, 0.005 m thick, offset 0.005 m outward from the wall
+            m.Box(at + n * 0.005f, new Vector3(0.27f, 0.27f, 0.005f), wood);
+            // corner screws similar to picture nails
+            Vector3 right = Vector3.Cross(n, Vector3.up).normalized;
+            float half = 0.13f; // half the clock’s radius (approx)
+            for (int i = 0; i < 4; i++)
+            {
+                float signX = (i % 2 == 0) ? -1f : 1f;
+                float signY = (i < 2) ? -1f : 1f;
+                Vector3 screwPos = at + n * 0.009f + right * signX * half + Vector3.up * signY * half;
+                m.Box(screwPos, new Vector3(0.004f, 0.004f, 0.004f),
+                    DecorPalette.Matte(new Color(0.08f, 0.08f, 0.09f)));
+            }
+            // brass side pins
+            Surf brass = DecorPalette.Metal(FurnitureBuilder.Brass);
+            // left pin
+            m.Cylinder(at + n * 0.012f - right * half, 0.003f, 0.01f, 6, brass);
+            // right pin
+            m.Cylinder(at + n * 0.012f + right * half, 0.003f, 0.01f, 6, brass);
+            // frosted glass envelope – non‑emissive, lightly translucent
+            m.Box(at + n * 0.015f, new Vector3(0.27f, 0.27f, 0.004f),
+                DecorPalette.Matte(new Color(0.90f, 0.95f, 1.00f, 0.18f)));
+            // thin dust veil inside the glass
+            m.Box(at + n * 0.0145f, new Vector3(0.27f, 0.27f, 0.001f),
+                DecorPalette.Matte(new Color(0.9f, 0.85f, 0.75f, 0.25f)));
             ClockFixture clock = ClockFixture.Create(piece.transform, at + n * 0.06f, at, n);
             Transform hour = ClockHand(clock.transform, "HourHand", at, n, 0.075f, 0.012f, 0.0455f);
             Transform minute = ClockHand(clock.transform, "MinuteHand", at, n, 0.112f, 0.008f, 0.049f);

@@ -14,6 +14,7 @@ namespace CloneZ
     public static class NetPlayers
         {
             private static Camera s_MainCamera;
+        // Pitch is sent as a signed angle (-90 to +90) – we convert from Unity's 0-360 range each tick.
             
         public const double InterpolationDelay = 0.1;
         private static readonly Dictionary<ulong, RemotePlayer> s_Proxies = new Dictionary<ulong, RemotePlayer>();
@@ -92,7 +93,12 @@ namespace CloneZ
             if (held != s_LastHeld) s_LastHeld = held;
             if (s_MainCamera == null || !s_MainCamera) s_MainCamera = Camera.main;
             Camera cam = s_MainCamera;
-            float pitch = cam != null && ViewState.MouseLook ? -cam.transform.eulerAngles.x : 0f;
+            float pitch = 0f;
+            if (cam != null && ViewState.MouseLook)
+            {
+                // Unity reports eulerAngles.x in 0-360; convert to signed range.
+                pitch = -Mathf.DeltaAngle(0f, cam.transform.eulerAngles.x);
+            }
             using (var o = new NetOut(160))
             {
                 o.U(++s_Seq).V(me.transform.position).F(me.transform.eulerAngles.y).F(pitch).By(flags).S(held)
@@ -502,13 +508,33 @@ namespace CloneZ
         {
             NetworkManager nm = NetSession.NM;
             if (nm == null || _buffer.Count == 0 || IsDead) return;
-            double render = nm.ServerTime.Time - NetPlayers.InterpolationDelay;
-            Snap a = _buffer[0], b = _buffer[_buffer.Count - 1];
-            for (int i = 0; i < _buffer.Count - 1; i++)
-                if (_buffer[i].T <= render && _buffer[i + 1].T >= render) { a = _buffer[i]; b = _buffer[i + 1]; break; }
-            float k = b.T > a.T ? Mathf.Clamp01((float)((render - a.T) / (b.T - a.T))) : 1f;
-            transform.position = Vector3.Lerp(a.P, b.P, k);
-            transform.rotation = Quaternion.Euler(0f, Mathf.LerpAngle(a.Yaw, b.Yaw, k), 0f);
+                double render = nm.ServerTime.Time - NetPlayers.InterpolationDelay;
+                Snap a = _buffer[0], b = _buffer[_buffer.Count - 1];
+                // Clamp render time to the earliest and latest timestamps we have.
+                if (render <= _buffer[0].T)
+                {
+                    a = b = _buffer[0];
+                }
+                else if (render >= _buffer[_buffer.Count - 1].T)
+                {
+                    a = b = _buffer[_buffer.Count - 1];
+                }
+                else
+                {
+                    // Find the two samples that bracket the render time.
+                    for (int i = 0; i < _buffer.Count - 1; i++)
+                    {
+                        if (_buffer[i].T <= render && _buffer[i + 1].T >= render)
+                        {
+                            a = _buffer[i];
+                            b = _buffer[i + 1];
+                            break;
+                        }
+                    }
+                }
+                float k = (b.T > a.T) ? Mathf.Clamp01((float)((render - a.T) / (b.T - a.T))) : 0f;
+                transform.position = Vector3.Lerp(a.P, b.P, k);
+                transform.rotation = Quaternion.Euler(0f, Mathf.LerpAngle(a.Yaw, b.Yaw, k), 0f);
         }
 
         private void LateUpdate()

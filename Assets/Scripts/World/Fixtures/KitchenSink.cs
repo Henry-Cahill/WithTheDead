@@ -25,6 +25,20 @@ namespace CloneZ
         private const float StreamRadius = 0.0065f;
         private const string NoWater = "There's no water to wash with \u2014 the tap's dry and the sink is empty";
         private const string GaveOut = "The water gave out before you'd finished";
+        // Existing style reference:
+        // private const string NoWater = "There's no water to wash with \u2014 the tap's dry and the sink is empty";
+        private const string FrostyMorning = "The cold wind rattles the shutters, turning the kitchen into a silent icebox.";
+        private const string OldRecipe = "Grandma's chicken broth recipe, scribbled on a torn notebook: chicken, carrots, potatoes, love.";
+        private const string WarningSign = "Do not use the gas stove while the power's out – risk of carbon buildup.";
+        private const string RadioStatic = "A broken radio crackles: '———... all we got left is the howling wind...'";
+        private const string Graffiti = "“Keep the fire alive, or the night will swallow you whole” scratched on the back wall.";
+        private static readonly string[] KitchenNotes = new[] {
+            FrostyMorning,
+            OldRecipe,
+            WarningSign,
+            RadioStatic,
+            Graffiti
+        };
 
         private static readonly Vector3 PointLocal = new Vector3(FurnitureBuilder.SinkBowlX, FurnitureBuilder.SinkDeckY + 0.01f, FurnitureBuilder.SinkBowlZ);
         private static readonly Vector3 DrainLocal = new Vector3(FurnitureBuilder.SinkBowlX, FurnitureBuilder.SinkBowlBottom, FurnitureBuilder.SinkBowlZ);
@@ -271,8 +285,11 @@ private bool _running;                // the cold tap is open and water is comin
 // When mains are off and water is standing, allow emptying the sink.
         if (!WaterMains.MainsOn && _level > 0.05f)
             into.Add(new InteractAction("Empty the sink", EmptySink));
-        // New action to let the player check how full the sink is.
-        into.Add(new InteractAction("Check water level", ShowWaterLevel));
+            // New action to read kitchen notes
+            into.Add(new InteractAction("Read kitchen notes", ctx => {
+                var note = KitchenNotes[UnityEngine.Random.Range(0, KitchenNotes.Length)];
+                ctx.Notify(note);
+            }));
         }
 
         private InteractAction PlugAction(bool mains)

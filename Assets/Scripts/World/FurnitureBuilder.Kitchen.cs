@@ -713,6 +713,43 @@ for (int i = 0; i < 7; i++)
             m.Box(new Vector3(0.30f, hy - hl * 0.4f, z1 + 0.006f), new Vector3(0.02f, 0.02f, 0.014f), chrome);
             m.Box(new Vector3(0.30f, hy + hl * 0.4f, z1 + 0.006f), new Vector3(0.02f, 0.02f, 0.014f), chrome);
 
+            // Helper to place a small cylindrical magnet on the door front.
+            void AddMagnet(Vector3 at, Color col)
+            {
+                // a thin chrome disc, tinted to the magnet’s colour
+                var mat = Mt(Chrome * 0.7f + col * 0.3f);
+                m.Cylinder(at, 0.018f, 0.002f, 12, mat); // disc face
+                // tiny raised edge to catch light
+                m.Cylinder(at + new Vector3(0f, 0.001f, 0f), 0.018f, 0.0005f, 12, Mt(Chrome));
+            }
+
+            // Add 2‑4 random fridge magnets.
+            int magCount = 2 + rng.Next(3);
+
+            // Worn hinge strip – thin, slightly dulled chrome along the left edge (hinge side).
+            float hingeX = -0.36f + 0.003f;
+            m.Box(new Vector3(hingeX, cy, z1 + 0.001f), new Vector3(0.006f, h, 0.004f), Mt(Chrome * 0.6f));
+
+            // Subtle surface scratches on the door front.
+            int scratchCount = rng.Next(3); // 0‑2 scratches
+            for (int i = 0; i < scratchCount; i++)
+            {
+                float sx = R(rng, -0.3f, 0.3f);
+                float sy = R(rng, y0 + 0.1f, y1 - 0.1f);
+                float length = R(rng, 0.02f, 0.06f);
+                float angle = R(rng, -15f, 15f);
+                var dark = Mt(new Color(0.2f, 0.2f, 0.2f));
+                // thin cylinder as scratch
+                m.Cylinder(new Vector3(sx, sy, z1 + 0.002f), 0.001f, length, 6, dark, Quaternion.Euler(0f, angle, 0f));
+            }
+            for (int i = 0; i < magCount; i++)
+            {
+                float mx = R(rng, -0.25f, 0.25f);
+                float my = R(rng, y0 + 0.2f, y1 - 0.15f);
+                Color col = new Color(R(rng, 0.4f, 0.9f), R(rng, 0.4f, 0.9f), R(rng, 0.4f, 0.9f));
+                AddMagnet(new Vector3(mx, my, z1 + 0.003f), col);
+            }
+
             Surf liner = M(freezer ? FreezerFrost : FridgeLinerWhite), gasket = M(new Color(0.50f, 0.50f, 0.52f));
             m.Box(new Vector3(0f, cy, z0 - 0.002f), new Vector3(0.62f, h - 0.08f, 0.004f), liner);
             m.Box(new Vector3(0f, y1 - 0.025f, z0 - 0.004f), new Vector3(0.68f, 0.016f, 0.008f), gasket);

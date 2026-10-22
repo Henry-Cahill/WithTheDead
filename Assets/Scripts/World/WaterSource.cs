@@ -186,6 +186,46 @@ namespace CloneZ
             var m = new RaidMesh();
             m.SetFrame(position, 0f);
             FurnitureBuilder.SinkUnit(m, new System.Random(1993), FurnitureBuilder.HomeKitchen);
+            var faucetRand = new System.Random(1993);
+            // faucet base – short steel cylinder
+            m.Cylinder(new Vector3(0f, 0.92f, 0.25f), 0.015f, 0.03f, 12,
+                DecorPalette.Metal(FurnitureBuilder.Steel));
+            // faucet spout – horizontal cylinder
+            m.CylinderX(new Vector3(0f, 0.94f, 0.35f), 0.008f, 0.12f, 8,
+                DecorPalette.Metal(FurnitureBuilder.Steel), 0f);
+            // hot‑water handle – brass knob
+            m.Box(new Vector3(-0.02f, 0.93f, 0.24f),
+                new Vector3(0.004f, 0.02f, 0.004f),
+                DecorPalette.Metal(FurnitureBuilder.Brass));
+            // cold‑water handle – brass knob
+            m.Box(new Vector3(0.02f, 0.93f, 0.24f),
+                new Vector3(0.004f, 0.02f, 0.004f),
+                DecorPalette.Metal(FurnitureBuilder.Brass));
+            // rivet ring around base
+            int rivetCount = faucetRand.Next(3, 6);
+            for (int i = 0; i < rivetCount; i++)
+            {
+                float angle = (float)(i * Mathf.PI * 2.0 / rivetCount);
+                m.Cylinder(
+                    new Vector3(Mathf.Sin(angle) * (0.015f + 0.008f),
+                        0.92f,
+                        Mathf.Cos(angle) * (0.015f + 0.008f)),
+                    0.004f, 0.006f, 6,
+                    DecorPalette.Metal(FurnitureBuilder.Brass));
+            }
+            // rust‑stained matte patches
+            int rustPatchCount = faucetRand.Next(1, 3);
+            for (int i = 0; i < rustPatchCount; i++)
+            {
+                float angle = (float)(faucetRand.NextDouble() * Mathf.PI * 2.0);
+                float yOff = 0.01f + (float)(faucetRand.NextDouble() * 0.015f);
+                Vector3 pos = new Vector3(
+                    Mathf.Sin(angle) * (0.015f + 0.005f),
+                    0.92f + yOff,
+                    Mathf.Cos(angle) * (0.015f + 0.005f));
+                m.Box(pos, new Vector3(0.006f, 0.002f, 0.006f),
+                    DecorPalette.Matte(new Color(0.4f, 0.2f, 0.1f)));
+            }
             m.ResetFrame();
             m.ApplyTo(gameObject, position);
             Solid(new Vector3(0f, 0.5f, 0f), new Vector3(1.22f, 1.0f, 0.63f));

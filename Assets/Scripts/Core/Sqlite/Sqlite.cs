@@ -35,63 +35,83 @@ namespace CloneZ.Db
         public static readonly IntPtr TRANSIENT = new IntPtr(-1);
 
         [DllImport(Lib, EntryPoint = "sqlite3_open_v2", CallingConvention = CallingConvention.Cdecl)]
+        /// <summary>Opens a SQLite database file with the specified flags.</summary>
         public static extern int Open(byte[] filename, out IntPtr db, int flags, IntPtr zVfs);
 
         [DllImport(Lib, EntryPoint = "sqlite3_close_v2", CallingConvention = CallingConvention.Cdecl)]
+        /// <summary>Closes a SQLite database handle.</summary>
         public static extern int Close(IntPtr db);
 
         [DllImport(Lib, EntryPoint = "sqlite3_exec", CallingConvention = CallingConvention.Cdecl)]
+        /// <summary>Executes a semicolon-separated SQL string without returning rows.</summary>
         public static extern int Exec(IntPtr db, byte[] sql, IntPtr callback, IntPtr arg, out IntPtr errmsg);
 
         [DllImport(Lib, EntryPoint = "sqlite3_free", CallingConvention = CallingConvention.Cdecl)]
+        /// <summary>Frees a native pointer allocated by SQLite.</summary>
         public static extern void Free(IntPtr ptr);
 
         [DllImport(Lib, EntryPoint = "sqlite3_prepare_v2", CallingConvention = CallingConvention.Cdecl)]
+        /// <summary>Prepares a SQL statement for later execution.</summary>
         public static extern int Prepare(IntPtr db, byte[] sql, int nByte, out IntPtr stmt, out IntPtr tail);
 
         [DllImport(Lib, EntryPoint = "sqlite3_step", CallingConvention = CallingConvention.Cdecl)]
+        /// <summary>Advances the prepared statement to the next step, returning a row code.</summary>
         public static extern int Step(IntPtr stmt);
 
         [DllImport(Lib, EntryPoint = "sqlite3_reset", CallingConvention = CallingConvention.Cdecl)]
+        /// <summary>Resets a prepared SQLite statement to its initial state.</summary>
         public static extern int ResetStmt(IntPtr stmt);
 
         [DllImport(Lib, EntryPoint = "sqlite3_finalize", CallingConvention = CallingConvention.Cdecl)]
+        /// <summary>Finalizes (deallocates) a prepared SQLite statement.</summary>
         public static extern int Finalize(IntPtr stmt);
 
         [DllImport(Lib, EntryPoint = "sqlite3_last_insert_rowid", CallingConvention = CallingConvention.Cdecl)]
+        /// <summary>Retrieves the last inserted row ID from the connection.</summary>
         public static extern long LastInsertRowId(IntPtr db);
 
         [DllImport(Lib, EntryPoint = "sqlite3_bind_text", CallingConvention = CallingConvention.Cdecl)]
+        /// <summary>Binds a UTF‑8 text value to a parameter in a prepared statement.</summary>
         public static extern int BindText(IntPtr stmt, int index, byte[] value, int n, IntPtr destructor);
 
         [DllImport(Lib, EntryPoint = "sqlite3_bind_int", CallingConvention = CallingConvention.Cdecl)]
+        /// <summary>Binds a 32‑bit integer value to a parameter in a prepared statement.</summary>
         public static extern int BindInt(IntPtr stmt, int index, int value);
 
         [DllImport(Lib, EntryPoint = "sqlite3_bind_int64", CallingConvention = CallingConvention.Cdecl)]
+        /// <summary>Binds a 64‑bit integer value to a parameter in a prepared statement.</summary>
         public static extern int BindInt64(IntPtr stmt, int index, long value);
 
         [DllImport(Lib, EntryPoint = "sqlite3_bind_double", CallingConvention = CallingConvention.Cdecl)]
+        /// <summary>Binds a double‑precision floating‑point value to a parameter in a prepared statement.</summary>
         public static extern int BindDouble(IntPtr stmt, int index, double value);
 
         [DllImport(Lib, EntryPoint = "sqlite3_bind_null", CallingConvention = CallingConvention.Cdecl)]
+        /// <summary>Binds a NULL value to a parameter in a prepared statement.</summary>
         public static extern int BindNull(IntPtr stmt, int index);
 
         [DllImport(Lib, EntryPoint = "sqlite3_column_type", CallingConvention = CallingConvention.Cdecl)]
+        /// <summary>Queries the declared type of a column in the current row.</summary>
         public static extern int ColumnType(IntPtr stmt, int index);
 
         [DllImport(Lib, EntryPoint = "sqlite3_column_int", CallingConvention = CallingConvention.Cdecl)]
+        /// <summary>Retrieves a 32‑bit integer value from the given column of the current row.</summary>
         public static extern int ColumnInt(IntPtr stmt, int index);
 
         [DllImport(Lib, EntryPoint = "sqlite3_column_int64", CallingConvention = CallingConvention.Cdecl)]
+        /// <summary>Retrieves a 64‑bit integer value from the given column of the current row.</summary>
         public static extern long ColumnInt64(IntPtr stmt, int index);
 
         [DllImport(Lib, EntryPoint = "sqlite3_column_double", CallingConvention = CallingConvention.Cdecl)]
+        /// <summary>Retrieves a double‑precision floating‑point value from the given column of the current row.</summary>
         public static extern double ColumnDouble(IntPtr stmt, int index);
 
         [DllImport(Lib, EntryPoint = "sqlite3_column_text", CallingConvention = CallingConvention.Cdecl)]
+        /// <summary>Retrieves a UTF‑8 string pointer from the given column of the current row.</summary>
         public static extern IntPtr ColumnText(IntPtr stmt, int index);
 
         [DllImport(Lib, EntryPoint = "sqlite3_errmsg", CallingConvention = CallingConvention.Cdecl)]
+        /// <summary>Gets the most recent SQLite error message for the connection.</summary>
         public static extern IntPtr ErrMsg(IntPtr db);
 
         /// <summary>Encodes a string as a null-terminated UTF-8 buffer for the C API.</summary>

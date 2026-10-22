@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 namespace CloneZ
@@ -85,12 +86,41 @@ namespace CloneZ
             }
         }
 
-        private void OnEnable() { if (!All.Contains(this)) All.Add(this); }
-        private void OnDisable() { All.Remove(this); }
+    private Coroutine _lifetimeCoroutine;
 
-        #region IDemolishable
+    private IEnumerator LifetimeRoutine()
+    {
+        while (Lifetime > 0f)
+        {
+            Lifetime -= Time.deltaTime;
+            if (Lifetime <= 0f)
+            {
+                Destroy(gameObject);
+                yield break;
+            }
+            yield return null;
+        }
+    }
+
+        private void OnEnable()
+    {
+        if (!All.Contains(this)) All.Add(this);
+        if (Lifetime > 0f && _lifetimeCoroutine == null)
+            _lifetimeCoroutine = StartCoroutine(LifetimeRoutine());
+    }
+
+    private void OnDisable()
+    {
+        All.Remove(this);
+        if (_lifetimeCoroutine != null)
+        {
+            StopCoroutine(_lifetimeCoroutine);
+            _lifetimeCoroutine = null;
+        }
+    }
         /// <summary>Name used when displaying this container as a demolishable object.</summary>
         public string DemolishName => "container";
+        /// <summary>Returns whether the container may be demolished and, if not, supplies the reason.</summary>
         public bool CanDemolish(out string reason)
         {
             if (IsFixture) { reason = "It's part of the " + (Owner != null ? Owner.DisplayName.ToLowerInvariant() : "furniture"); return false; }
@@ -99,26 +129,25 @@ namespace CloneZ
             if (!IsEmpty) { reason = "Empty it before dismantling"; return false; }
             reason = null; return true;
         }
+        /// <summary>Returns the number of planks and nails salvaged when this container is dismantled.</summary>
         public void GetSalvage(out int planks, out int nails) { planks = CloneZConfig.SalvageContainerPlanks; nails = CloneZConfig.SalvageContainerNails; }
+        /// <summary>Indicates whether this container carves NavMesh geometry (i.e., is a solid world container).</summary>
         public bool CarvesNavMesh => !IsSack && !IsFixture && Type != ContainerType.Corpse;   // world containers carry colliders baked into the navmesh
+        /// <summary>Dismantles the container, removing it from the global list and destroying its GameObject.</summary>
         public void Dismantle()
         {
             All.Remove(this);
             gameObject.SetActive(false);   // drop out of the navmesh bake before the rebuild runs
             Destroy(gameObject);
         }
-        #endregion
+            // #endregion removed – region not needed
 
-        private void Update()
-        {
-            if (Lifetime > 0f)
-            {
-                Lifetime -= Time.deltaTime;
-                if (Lifetime <= 0f) Destroy(gameObject);
-            }
-        }
+    // Removed per‑frame Update that checked Lifetime.
+    // Instead we start a coroutine when the container is enabled if it has a positive Lifetime.
+    // This avoids unnecessary work for containers that never expire (the common case).
 
         /// <summary>Builds a container box in the world and fills it from its loot table.</summary>
+        /// <summary>Spawns a new loot container of the given type at the specified position, with deterministic contents.</summary>
         public static LootContainer Spawn(Transform parent, ContainerType type, Vector3 position, int seed)
         {
             Style(type, out Vector3 size, out Color color, out string name);
@@ -169,6 +198,7 @@ namespace CloneZ
         /// from <paramref name="lootType"/>'s table — unless <paramref name="startEmpty"/>, or it comes up empty on
         /// <paramref name="emptyChance"/> — and trimmed to <paramref name="maxStacks"/> stacks so the home stays lean.
         /// A negative <paramref name="searchTime"/> takes the loot type's usual rummaging time.</summary>
+        /// <summary>Spawns a fixture storage container (a bodiless container attached to a fixture) with optional parameters for emptiness and loot trimming.</summary>
         public static LootContainer SpawnFixture(Transform parent, Vector3 position, ContainerType lootType, string displayName,
             string fixtureKey, int seed, bool startEmpty = false, float emptyChance = 0f, int maxStacks = int.MaxValue, float searchTime = -1f)
         {
@@ -193,6 +223,7 @@ namespace CloneZ
         }
 
         /// <summary>Replaces the contents with a saved game's (a fixture's storage, matched by <see cref="FixtureKey"/>).</summary>
+        /// <summary>Replaces the container's contents from a saved game's data, restoring each item stack.</summary>
         public void RestoreContents(bool searched, List<StackSave> items)
         {
             Contents = new Inventory(999f);
@@ -247,6 +278,7 @@ namespace CloneZ
 
         /// <summary>Rolls corpse loot and, only if the body is carrying something, drops a searchable
         /// corpse marker on the ground. Returns null when the corpse yields nothing (keeps the world tidy).</summary>
+        /// <summary>Spawns a container for a corpse, rolling loot and configuring search time and lifetime.</summary>
         public static LootContainer SpawnCorpse(Vector3 position, int seed)
         {
             var rng = new System.Random(seed);
@@ -269,6 +301,7 @@ namespace CloneZ
             return c;
         }
 
+        /// <summary>Returns the appropriate search time for a container type based on configuration settings.</summary>
         private static float SearchTimeFor(ContainerType type)
         {
             switch (type)
@@ -284,6 +317,7 @@ namespace CloneZ
         /// <summary>Drops a small sack holding a single stack (used when the player drops items).
         /// A dropped damageable item keeps its <paramref name="condition"/> and repair history so wear
         /// survives the round-trip.</summary>
+        /// <summary>Spawns a small sack (a dropped item pickup) containing the specified item stack.</summary>
         public static LootContainer SpawnBag(Vector3 position, ItemDef def, int count, int condition = -1, int timesRepaired = 0)
         {
             GameObject go = CloneZUtil.Box("Sack", position, new Vector3(0.5f, 0.4f, 0.5f), new Color(0.45f, 0.38f, 0.28f));
@@ -303,6 +337,7 @@ namespace CloneZ
         /// <summary>Rebuilds a container from a saved game with explicit contents (no random roll).
         /// <paramref name="kind"/> is 0..5 for the world container types, 6 for a corpse and
         /// <see cref="KindSack"/> (7) for a dropped sack.</summary>
+        /// <summary>Recreates a container from saved data, handling world containers, corpses, sacks, and customizing appearance and contents.</summary>
         public static LootContainer SpawnSaved(Transform parent, int kind, Vector3 position, float yaw, bool searched, float lifetime, List<StackSave> items)
         {
             LootContainer c;

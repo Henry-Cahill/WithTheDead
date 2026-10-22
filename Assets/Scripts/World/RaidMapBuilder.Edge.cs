@@ -48,9 +48,16 @@ namespace CloneZ
             Prop(town, new Vector3(-EdgeLine + 0.3f, 0f, 0f), 90f, new Vector3(8f, 1.1f, 0.3f), true, (m, r) =>
             {
                 Surf wood = DecorPalette.Matte(new Color(0.40f, 0.32f, 0.22f));
+                Surf metal = DecorPalette.Metal(new Color(0.45f, 0.42f, 0.38f));
                 for (int i = -4; i <= 4; i++)
 {
     m.Box(new Vector3(i * 1.0f, 0.55f, 0f), new Vector3(0.12f, 1.1f, 0.12f), wood);
+            // hinge stub on each post (skip interior posts)
+            if (i == -4 || i == 4)
+            {
+                float hx = i * 1.0f + R(r, -0.02f, 0.02f);
+                m.Cylinder(new Vector3(hx, 0.90f, 0f), 0.02f, 0.04f, 6, metal);
+            }
             // subtle paint‑chip detail on each wooden post
             if (r.NextDouble() < 0.4)
             {
@@ -84,8 +91,18 @@ namespace CloneZ
         m.Box(new Vector3(0.35f, 1.25f, 0f), new Vector3(0.60f, 0.80f, 0.02f), signWood);
     }
 }
+                // top rail connecting the outer posts
+                float railY = 1.20f;
+                m.Box(new Vector3(0f, railY, 0f), new Vector3(8.2f, 0.03f, 0.08f), wood);
                 m.Box(new Vector3(0f, 0.95f, 0f), new Vector3(8.2f, 0.1f, 0.08f), wood);
                 m.Box(new Vector3(0f, 0.55f, 0f), new Vector3(8.2f, 0.1f, 0.08f), wood);
+                // gate panel (closed position)
+                float gateY = 0.90f;
+                float gateHalfWidth = 1.0f;
+                m.Box(new Vector3(0f, gateY, 0f), new Vector3(gateHalfWidth * 2f, 0.02f, 0.08f), Quaternion.Euler(0f, 5f, 0f), wood);
+                // latch on the right side of the gate
+                float latchX = gateHalfWidth - 0.05f;
+                m.Cylinder(new Vector3(latchX, gateY + 0.02f, 0f), 0.015f, 0.03f, 6, metal);
                 m.Box(new Vector3(0f, 1.03f, 0f), new Vector3(8.0f, 0.05f, 0.1f), DecorPalette.Matte(DecorProps.SnowWhite));
             });
         }

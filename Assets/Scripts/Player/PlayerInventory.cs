@@ -26,7 +26,7 @@ namespace CloneZ
         private static readonly ClothingSlot[] s_ContainerSlots =
             { ClothingSlot.Torso, ClothingSlot.Legs, ClothingSlot.Armor, ClothingSlot.Rig, ClothingSlot.Thigh, ClothingSlot.Back, ClothingSlot.Pouch };
 
-        /// <summary>The secure pouch's grid section (null when none is worn).</summary>
+        /// <summary>Gets the grid section for the secure pouch, if it is currently worn.</summary>
         public GridSection PouchSection
         {
             get
@@ -42,6 +42,7 @@ namespace CloneZ
         /// <summary>The survivor's carried inventory of items and containers.</summary>
         public Inventory Inventory { get; private set; }
         /// <summary>The currently equipped melee or ranged weapon definition.</summary>
+        /// <summary>Gets the currently equipped weapon definition, if any.</summary>
         public ItemDef EquippedWeapon { get; private set; }
 
         /// <summary>The grid the pack is arranged on.</summary>
@@ -445,6 +446,7 @@ namespace CloneZ
             return true;
         }
 
+        /// <summary>Equips the specified weapon, updating combat stats and UI.</summary>
         public void Equip(ItemDef weapon)
         {
             if (_combat == null || weapon == null || !weapon.IsEquippable) return;
@@ -722,6 +724,7 @@ namespace CloneZ
         /// <summary>Picks a ground item up onto a chosen grid spot (a drag from the floor panel): onto a
         /// matching stack covering that cell, or as a new stack there. Weight is enforced. Returns the
         /// number of units taken.</summary>
+        /// <summary>Picks up a ground item onto a chosen grid spot (a drag from the floor panel): onto a matching stack covering that cell, or as a new stack there. Weight is enforced. Returns the number of units taken.</summary>
         public int PickUpAt(WorldItem item, int max, GridSection section, int x, int y, bool rotated)
         {
             InventoryLayout layout = Inventory.Layout;
@@ -759,6 +762,7 @@ namespace CloneZ
 
         /// <summary>Drops a stack onto the ground as a rendered item the player can walk up to and
         /// pick back up. Perishable age and damageable wear ride along so the round-trip changes nothing.</summary>
+        /// <summary>Drops a stack onto the ground as a rendered item the player can walk up to and pick back up. Perishable age and damageable wear ride along so the round‑trip changes nothing.</summary>
         public void Drop(ItemStack stack, int count)
         {
             if (stack == null) return;
@@ -815,6 +819,7 @@ namespace CloneZ
             if (hadEquipped && EquippedStack == null) EquipBareHands();   // the weapon left the pack
         }
 
+        /// <summary>Adds a starter item to the inventory, used for initial loadout or testing.</summary>
         public void AddStarter(string id, int count)
         {
             ItemDef def = ItemDatabase.Get(id);

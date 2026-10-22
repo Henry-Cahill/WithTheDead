@@ -9,6 +9,7 @@ namespace CloneZ
         // (normal pointing out of the wall); the moving bits — a switch's toggle, a panel's door, a breaker's
         // handle, a clock's hands, a picture — are drawn on their own so the fixtures can turn them.
         public static readonly Color SwitchCream = new Color(0.90f, 0.87f, 0.78f);
+        public static readonly Color ClockWood = new Color(0.55f, 0.45f, 0.35f);
         public static readonly Color PanelGrey = new Color(0.55f, 0.57f, 0.57f);
 
         /// <summary>A cream switch plate <paramref name="width"/> wide centred on <paramref name="at"/> (on the wall face).</summary>
@@ -146,11 +147,24 @@ namespace CloneZ
         {
             Quaternion q = Quaternion.LookRotation(normal, Vector3.up);
             Quaternion disc = q * Quaternion.Euler(90f, 0f, 0f);
+            Vector3 right = Vector3.Cross(normal, Vector3.up).normalized;   // three o'clock direction
             m.Cylinder(at, 0.16f, 0.04f, 16, M(new Color(0.15f, 0.15f, 0.16f)), disc);
-            // Chrome bezel at the clock’s outer rim
+            // Wooden mounting plate that the clock bolts to (slightly larger than the dial)
+            m.Box(at + normal * 0.038f, new Vector3(0.34f, 0.34f, 0.01f), q, M(ClockWood));
+            // Small brass keyhole centred on the top of the dial
+            var brass = M(new Color(0.80f, 0.60f, 0.30f));
+            m.Cylinder(at + normal * 0.042f, 0.005f, 0.002f, 12, brass, disc);
+            // Chrome screw head at the top‑center of the mounting plate
+            m.Box(at + normal * 0.038f + Vector3.up * 0.055f, new Vector3(0.008f, 0.008f, 0.001f), q, Mt(Chrome));
+            // Small winding knob on the left side (west) of the clock
+            // Use existing 'right' vector computed earlier
+            var knobColour = M(new Color(0.60f, 0.50f, 0.40f));
+            m.Cylinder(at + normal * 0.041f - right * 0.12f, 0.006f, 0.006f, 12, knobColour, disc);
+            // Very thin dust overlay to suggest age
+            m.Box(at + normal * 0.0375f, new Vector3(0.34f, 0.34f, 0.001f), q, M(new Color(0f,0f,0f,0.15f)));
             m.Cylinder(at, 0.165f, 0.004f, 16, Mt(Chrome), disc);
             m.Cylinder(at + normal * 0.041f, 0.14f, 0.002f, 16, M(new Color(0.88f, 0.87f, 0.82f)), disc);
-            Vector3 right = Vector3.Cross(normal, Vector3.up).normalized;   // three o'clock, as a viewer facing the dial sees it
+
             for (int i = 0; i < 12; i++)
             {
                 float a = i * 30f * Mathf.Deg2Rad;

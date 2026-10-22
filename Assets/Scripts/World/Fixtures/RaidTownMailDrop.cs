@@ -32,7 +32,10 @@ namespace CloneZ
             "A shaky grocery list scrawled in blue ink: “Canned beans, powdered milk, salt, fire‑starter – enough for three days.”",
             "A faded church flyer pinned to a post: “Winter shelter tonight at St. Luke’s, 7 PM. Bring blankets and warm drinks.”",
             "A desperate telegram, ink smeared: “Please, find my son Eli, last seen near the old mill. Return him safe.”",
-        };
+            "A desperate note from a farmer, ink trembling: “Mary, the crops are ruined, please bring the seedbags before sunset.” No name.",
+            "A warning scribbled on parchment, frost‑etched: “The well’s ice may burst at any moment. Keep away.” No signature.",
+            "A hand‑drawn map, charcoal smudged: “Shortcut through the woods to the old mill – follow the bent pine.” No legend.",
+            "A solemn obituary, printed in ink: “Constable Harris, 45 years of service, died in the night. Rest in peace.” No signature.",        };
 
         private Vector3 _point;
         private int _read;

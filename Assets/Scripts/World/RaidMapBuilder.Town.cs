@@ -161,6 +161,19 @@ namespace CloneZ
                         m.Cylinder(new Vector3(0f, 1.5f, 0.18f), 0.015f, 0.25f, 12, DecorPalette.Metal(new Color(0.40f, 0.35f, 0.33f)), Quaternion.Euler(0f, (float)(r.NextDouble()*10.0 - 5.0), 0f), 1f);
                         // Tiny rust‑stained bolt detail on the pillar
                         m.Cylinder(new Vector3(0.12f, 2.0f, 0f), 0.01f, 0.015f, 6, DecorPalette.Metal(new Color(0.5f, 0.4f, 0.3f)), Quaternion.identity, 1f);
+                        // 1️⃣ nozzle – small metal cylinder protruding forward
+                        m.Cylinder(new Vector3(0f, 4.2f + 0.05f, 0.15f), 0.04f, 0.08f, 12,
+                            DecorPalette.Metal(new Color(0.45f, 0.44f, 0.42f)),
+                            Quaternion.Euler(0f, 0f, 0f), 1f);
+                        // 2️⃣ gauge plate – thin rectangular metal piece
+                        m.Box(new Vector3(0.07f, 4.0f, 0.07f), new Vector3(0.12f, 0.02f, 0.04f),
+                            DecorPalette.Metal(new Color(0.43f, 0.43f, 0.40f)));
+                        // 3️⃣ rust streak – long thin dark box on side
+                        m.Box(new Vector3(0.12f, 3.5f, 0f), new Vector3(0.02f, 0.30f, 0.005f),
+                            DecorPalette.Matte(new Color(0.35f, 0.20f, 0.10f)));
+                        // 4️⃣ tiny glow emitter on nozzle tip
+                        m.Cylinder(new Vector3(0f, 4.2f + 0.09f, 0.15f), 0.015f, 0.01f, 6,
+                            DecorPalette.Glow(new Color(1f, 0.55f, 0.20f)), Quaternion.identity, 1f);
                     });
                 }
             // Canopy roof: under the overhead root with a thin collider so the shoulder camera stays below.
@@ -286,21 +299,22 @@ namespace CloneZ
 
             Vector3 side = b.Dir(1f, 0f);
             Vector3 box = end - dir * 0.7f + side * 1.3f;
+            // Always reserve mailbox space to prevent later props from intersecting, even if the mailbox cannot be placed due to blockage.
+            town.Keepout.Add(Around(box, 0.3f, 0.3f));
             if (!town.Blocked(Around(box, 0.3f, 0.3f)))
             {
-            b.YardMailbox(box, RaidHomeLiving.Post(town.Rng));
-            // Add a small mailbox flag on ~40% of mailboxes
-            if (town.Rng.NextDouble() < 0.4)
-            {
-                var m = town.Out.Solid(box);
-                // metal pole at the top front of the mailbox
-                m.Cylinder(box + new Vector3(0f, 0.15f, 0f), 0.02f, 0.3f, 6,
-                    DecorPalette.Metal(new Color(0.5f, 0.5f, 0.5f)), Quaternion.identity, 1f);
-                // red‑brown cloth flag attached to the pole
-                m.Box(box + new Vector3(0f, 0.30f, 0f), new Vector3(0.15f, 0.1f, 0.02f),
-                    DecorPalette.Matte(new Color(0.6f, 0.1f, 0.1f)));
-            }
-            town.Keepout.Add(Around(box, 0.3f, 0.3f));
+                b.YardMailbox(box, RaidHomeLiving.Post(town.Rng));
+                // Add a small mailbox flag on ~40% of mailboxes
+                if (town.Rng.NextDouble() < 0.4)
+                {
+                    var m = town.Out.Solid(box);
+                    // metal pole at the top front of the mailbox
+                    m.Cylinder(box + new Vector3(0f, 0.15f, 0f), 0.02f, 0.3f, 6,
+                        DecorPalette.Metal(new Color(0.5f, 0.5f, 0.5f)), Quaternion.identity, 1f);
+                    // red‑brown cloth flag attached to the pole
+                    m.Box(box + new Vector3(0f, 0.30f, 0f), new Vector3(0.15f, 0.1f, 0.02f),
+                        DecorPalette.Matte(new Color(0.6f, 0.1f, 0.1f)));
+                }
             }
             b.FrontDoormat(doorLx);
 // ---- front‑door hardware detail ----

@@ -374,7 +374,9 @@ namespace CloneZ
             for (int i = t.childCount - 1; i >= 0; i--) UnityEngine.Object.Destroy(t.GetChild(i).gameObject);
         }
 
+        /// <summary>Converts a Color to a hex string (e.g., "#RRGGBB").</summary>
         public static string Hex(Color c) => "#" + ColorUtility.ToHtmlStringRGB(c);
+                /// <summary>Wraps a string in a Unity rich‑text color tag using the given Color.</summary>
         public static string Colored(string s, Color c) => "<color=" + Hex(c) + ">" + s + "</color>";
         #endregion
     }
@@ -385,6 +387,7 @@ namespace CloneZ
     /// </summary>
     public abstract class UIScreen : MonoBehaviour
     {
+                /// <summary>The currently open UI screen, or null if none.</summary>
         public static UIScreen Current { get; private set; }
 
         protected Canvas Canvas;
@@ -474,6 +477,7 @@ namespace CloneZ
             }
         }
 
+                /// <summary>Closes the screen, restoring cursor state and raising the Closed event.</summary>
         public virtual void Close()
         {
             if (this == null) return;

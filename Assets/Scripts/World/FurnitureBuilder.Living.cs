@@ -74,6 +74,17 @@ namespace CloneZ
         {
             float y = DresserDrawerY(row);
             m.Box(new Vector3(0f, y, 0.205f), new Vector3(0.94f, 0.2f, 0.02f), M(wood * 1.1f));
+            // Leather pull strap
+            m.Box(new Vector3(0f, y + 0.05f, 0.207f), new Vector3(0.04f, 0.08f, 0.002f), M(new Color(0.45f, 0.30f, 0.20f)));
+            // Small brass lock plate
+            m.Box(new Vector3(0.20f, y + 0.12f, 0.208f), new Vector3(0.06f, 0.04f, 0.003f), Mt(Brass));
+            // Brass shackle
+            m.Cylinder(new Vector3(0.23f, y + 0.14f, 0.207f), 0.005f, 0.02f, 6, Mt(Brass));
+            // Interior bottom rail
+            m.Box(new Vector3(0f, y - 0.082f, 0.195f), new Vector3(0.92f, 0.004f, 0.36f), M(wood * 0.95f));
+            // Subtle wear notch
+            m.Box(new Vector3(0f, y + 0.08f, 0.215f), new Vector3(0.94f, 0.002f, 0.001f), M(new Color(0.10f, 0.07f, 0.05f)));
+
             m.Box(new Vector3(-0.25f, y, 0.222f), new Vector3(0.04f, 0.04f, 0.016f), Mt(Brass));
             m.Box(new Vector3(0.25f, y, 0.222f), new Vector3(0.04f, 0.04f, 0.016f), Mt(Brass));
             m.Box(new Vector3(0f, y + 0.1f, 0.215f), new Vector3(0.94f, 0.008f, 0.004f), Mt(Brass));

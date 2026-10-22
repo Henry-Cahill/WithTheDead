@@ -111,6 +111,38 @@ namespace CloneZ
         {
             Quaternion q = Yaw(yaw);
             m.Box(at + new Vector3(0f, -0.03f, 0f), new Vector3(0.62f, 0.06f, 1.22f), q, M(new Color(0.70f, 0.70f, 0.68f)));
+            // dark‑metal trim (5 mm thick) around the front face
+            float trimT = 0.005f;
+            Vector3 trimSizeH = new Vector3(0.62f, 0.06f, trimT);
+            Vector3 trimSizeV = new Vector3(trimT, 0.06f, 1.22f);
+            Color trimCol = new Color(0.35f, 0.33f, 0.30f); // weathered steel
+            // top & bottom strips
+            m.Box(at + new Vector3(0f, -0.025f, 0f), trimSizeH, q, M(trimCol));
+            m.Box(at + new Vector3(0f, -0.035f, 0f), trimSizeH, q, M(trimCol));
+            // left & right strips
+            m.Box(at + new Vector3(-0.31f, -0.03f, 0f), trimSizeV, q, M(trimCol));
+            m.Box(at + new Vector3( 0.31f, -0.03f, 0f), trimSizeV, q, M(trimCol));
+            // four brass mounting screws, one per corner
+            float screwRad = 0.004f;
+            float screwH = 0.003f;
+            Vector3[] screwPos = {
+                new Vector3(-0.305f, -0.025f, 0.005f), // top‑left
+                new Vector3( 0.305f, -0.025f, 0.005f), // top‑right
+                new Vector3(-0.305f, -0.035f, 0.005f), // bottom‑left
+                new Vector3( 0.305f, -0.035f, 0.005f)  // bottom‑right
+            };
+            foreach (var p in screwPos)
+                m.Cylinder(at + q * p, screwRad, screwH, 12, Mt(Brass), Quaternion.identity);
+            // faux brand label, centred
+            Vector3 labelPos = new Vector3(0f, -0.032f, 0.002f);
+            Vector3 labelSize = new Vector3(0.12f, 0.04f, 0.002f);
+            Color labelCol = new Color(0.78f, 0.71f, 0.55f); // aged brass tint
+            m.Box(at + q * labelPos, labelSize, q, M(labelCol));
+            // fine dust coating, 1 mm thick, slightly darker than panel colour
+            float dustT = 0.001f;
+            Vector3 dustSize = new Vector3(0.62f, 0.06f, 1.22f);
+            Color dustCol = new Color(0.60f, 0.58f, 0.53f, 0.25f); // low‑alpha grey‑brown
+            m.Box(at + new Vector3(0f, -0.0305f, 0f), dustSize, q, Gl(dustCol));
             m.Box(at + new Vector3(0f, -0.062f, 0f), new Vector3(0.52f, 0.004f, 1.1f), q, lit ? Gl(new Color(1f, 0.93f, 0.78f)) : M(new Color(0.55f, 0.56f, 0.55f)));
         }
 

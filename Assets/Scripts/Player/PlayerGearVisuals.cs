@@ -597,6 +597,41 @@ namespace CloneZ
             PlayerGearParts.Tube(root, "Filter", port + filterDir * 0.045f, filterDir, 0.044f, 0.037f, canister, true);
             PlayerGearParts.Tube(root, "FilterCap", port + filterDir * 0.069f, filterDir, 0.006f, 0.032f, trim);
             PlayerGearParts.Box(root, "FilterLabel", port + filterDir * 0.073f, new Vector3(0.01f, 0.006f, 0.001f), hardware);
+            // left‑side rivet
+            PlayerGearParts.Box(root, "RivetL",
+                port + filterDir * 0.050f + new Vector3(-0.006f, 0f, 0f),
+                new Vector3(0.014f, 0.014f, 0.004f), hardware);
+            // right‑side rivet
+            PlayerGearParts.Box(root, "RivetR",
+                port + filterDir * 0.050f + new Vector3( 0.006f, 0f, 0f),
+                new Vector3(0.014f, 0.014f, 0.004f), hardware);
+
+            // canister top screw
+            PlayerGearParts.Tube(root, "CanisterScrew",
+                port + filterDir * 0.090f,
+                filterDir, 0.006f, 0.012f, hardware);
+
+            // rear strap anchor points
+            Vector3 strapStart = new Vector3(0f, 1.68f, -0.04f); // center‑back of mask
+            Vector3 strapEnd = new Vector3(-0.08f, 1.71f, 0.00f); // left‑temple area
+            PlayerGearParts.Strap(root, strapStart, strapEnd, 0.018f, 0.006f, rubber, Vector3.up);
+
+            // rear strap buckle
+            PlayerGearParts.Box(root, "StrapBuckle",
+                strapEnd + new Vector3(0f, 0.004f, 0.002f),
+                new Vector3(0.022f, 0.014f, 0.008f), hardware);
+
+            // vent grill (three parallel slats)
+            float ventY = 1.64f; // below the lenses
+            float ventZ = 0.095f;
+            float ventXStart = -0.03f;
+            for (int i = 0; i < 3; i++)
+            {
+                float x = ventXStart + i * 0.03f;
+                PlayerGearParts.Box(root, $"Vent{i}",
+                    new Vector3(x, ventY, ventZ),
+                    new Vector3(0.06f, 0.002f, 0.001f), hardware);
+            }
 
             PlayerGearParts.Band(root, "Harness", new Vector3(0f, 1.695f, -0.024f), 0.101f, 0.118f, 0.014f, Quaternion.Euler(16f, 0f, 0f), web);
         }

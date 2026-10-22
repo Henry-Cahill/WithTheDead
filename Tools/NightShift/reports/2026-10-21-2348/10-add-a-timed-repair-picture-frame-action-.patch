@@ -1,0 +1,87 @@
+diff --git a/Assets/Scripts/World/BuildPiece.cs b/Assets/Scripts/World/BuildPiece.cs
+index 8b915f1a..fa42da42 100644
+--- a/Assets/Scripts/World/BuildPiece.cs
++++ b/Assets/Scripts/World/BuildPiece.cs
+@@ -5,8 +5,7 @@
+ 
+ namespace CloneZ
+ {
+-    /// <summary>The kind of structural piece a survivor can raise when building a house.</summary>
+-    public enum BuildPieceType { Floor, Wall, Doorway, Roof, Window }
++    
+ 
+     /// <summary>
+     /// A single player-built structural piece — a floor slab, a wall, a doorway frame or a
+@@ -26,9 +25,11 @@ public enum BuildPieceType { Floor, Wall, Doorway, Roof, Window }
+     /// finished look — siding, wallpaper, glazed windows, hung doors, wood floors — from
+     /// <see cref="StarterHome"/> instead of rough planking; its colliders and carvers are the same.
+     /// </summary>
+-    public class BuildPiece : MonoBehaviour, IDamageable, IDemolishable
++    /// <summary>Increase the piece's health, clamped to MaxHealth.</summary>
++    public void Heal(float amount)
+     {
+-        public static readonly List<BuildPiece> All = new List<BuildPiece>();
++        Health = Mathf.Min(Health + amount, MaxHealth);
++    }
+ 
+         /// <summary>What kind of structural piece this instance represents.</summary>
+         public BuildPieceType Type { get; private set; }
+diff --git a/Assets/Scripts/World/Fixtures/PictureFixture.cs b/Assets/Scripts/World/Fixtures/PictureFixture.cs
+index b9bd8fb4..fab8c0a0 100644
+--- a/Assets/Scripts/World/Fixtures/PictureFixture.cs
++++ b/Assets/Scripts/World/Fixtures/PictureFixture.cs
+@@ -15,6 +15,8 @@ public class PictureFixture : Interactable
+         private const float CrookedAbove = 0.75f;   // degrees of tilt the eye notices
+         private const float SmallTilt = 15f; // small tilt amount for player action
+         private const float SwingSpeed = 45f;       // degrees a second the frame swings to its new tilt
++        private const float RepairAmount = 10f; // health points restored per repair
++        private const float RepairCooldown = 30f; // seconds before another repair can be done
+ 
+         private string _key;
+         private string _description;
+@@ -26,7 +28,7 @@ public class PictureFixture : Interactable
+         private float _roll, _shownRoll;
+         private float _wallHealth;
+         private float _calmAgainAt;
+-        private float _nextCheck;
++        private float _nextRepairAt;
+ 
+         public override string DisplayName => _name;
+         public override Vector3 InteractPoint => _point;
+@@ -111,6 +113,12 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
+             into.Add(new InteractAction("Tilt the picture", Tilt));
+             into.Add(new InteractAction("Inspect the picture", Inspect));
+             if (IsCrooked) into.Add(new InteractAction(_straightenLabel, Straighten));
++            if (_wall != null && _wall.Health < _wall.MaxHealth && Time.time >= _nextRepairAt)
++            {
++                var repair = new InteractAction("Repair picture frame", Repair);
++                repair.Timed(5f, "Repairing...", HumanoidActivity.Use);
++                into.Add(repair);
++            }
+         }
+ 
+         private void Inspect(InteractContext ctx)
+@@ -138,14 +146,16 @@ private void Tilt(InteractContext ctx)
+             }
+         }
+ 
+-        private void Straighten(InteractContext ctx)
++        private void Repair(InteractContext ctx)
+         {
+-            _roll = 0f;
+-            ctx.Notify("You nudge the frame level. Better.");
+-            if (_calming && Time.time >= _calmAgainAt) {
+-                LightingFixtures.Calm(ctx, CloneZConfig.PictureCalm);
+-                _calmAgainAt = Time.time + CloneZConfig.PictureCalmCooldown;
+-            }
++            if (_wall == null) return;
++            float missing = _wall.MaxHealth - _wall.Health;
++            if (missing <= 0f) return;
++            float healed = Mathf.Min(RepairAmount, missing);
++            _wall.Heal(healed);
++            ctx.Notify($"You tighten the frame and mend the wall, restoring {healed:F0} durability.");
++            LightingFixtures.Calm(ctx, CloneZConfig.PictureCalm);
++            _nextRepairAt = Time.time + RepairCooldown;
+         }
+ public override void CaptureState(FixtureSave save)
+         {

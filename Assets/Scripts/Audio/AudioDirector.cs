@@ -215,7 +215,7 @@ namespace CloneZ
             }
             else if (me != null)
             {
-                WeatherSystem w = _weather; if (w == null) _weather = WeatherSystem.Instance;
+                WeatherSystem w = _weather; if (w == null) { _weather = WeatherSystem.Instance; w = _weather; }
                 if (w != null)
                 {
                     switch (w.Current)

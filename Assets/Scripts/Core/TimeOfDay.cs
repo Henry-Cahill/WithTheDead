@@ -65,8 +65,24 @@ namespace CloneZ
         private static readonly Color NoonSun = new Color(1f, 0.96f, 0.86f);
         private static readonly Color DuskSun = new Color(1f, 0.62f, 0.36f);
 
-        private Camera _cam;
         private WeatherSystem _weather;
+        private Camera _cam;
+        private string _clockTextCached;
+        private string _clock12Cached;
+        private bool _clockDirty = true;
+        // Updates cached formatted time strings.
+        private void UpdateClockCache()
+        {
+            int h = Mathf.FloorToInt(Hour) % 24;
+            int m = Mathf.FloorToInt((Hour - Mathf.Floor(Hour)) * 60f);
+            _clockTextCached = string.Format("{0:00}:{1:00}", h, m);
+
+            int h12 = h % 12 == 0 ? 12 : h % 12;
+            _clock12Cached = string.Format("{0:00}:{1:00}", h12, m);
+            _clockDirty = false;
+        }
+
+
 
         private void Awake()
         {
@@ -86,6 +102,7 @@ namespace CloneZ
         {
             Day = 1;
             Hour = Mathf.Repeat(startHour, 24f);
+            _clockDirty = true;
             DayLengthSeconds = Mathf.Max(1f, dayLengthSeconds);
             StartMonth = Mathf.Clamp(startMonth, 1, 12);
             StartDayOfMonth = Mathf.Clamp(startDayOfMonth, 1, System.DateTime.DaysInMonth(Year, StartMonth));
@@ -110,6 +127,7 @@ namespace CloneZ
             float hoursPerSecond = 24f / Mathf.Max(1f, DayLengthSeconds);
             Hour += hoursPerSecond * TimeScale * dt;
             while (Hour >= 24f) { Hour -= 24f; Day++; }
+            _clockDirty = true;
         }
 
         /// <summary>Restores the clock from a saved game and refreshes the sky immediately.</summary>
@@ -117,6 +135,7 @@ namespace CloneZ
         {
             Day = Mathf.Max(1, day);
             Hour = Mathf.Repeat(hour, 24f);
+            _clockDirty = true;
             Apply();
         }
 
@@ -165,9 +184,8 @@ namespace CloneZ
         {
             get
             {
-                int h = Mathf.FloorToInt(Hour) % 24;
-                int m = Mathf.FloorToInt((Hour - Mathf.Floor(Hour)) * 60f);
-                return string.Format("{0:00}:{1:00}", h, m);
+                if (_clockDirty) UpdateClockCache();
+                return _clockTextCached;
             }
         }
 
@@ -176,10 +194,8 @@ namespace CloneZ
         {
             get
             {
-                int h = Mathf.FloorToInt(Hour) % 24;
-                int m = Mathf.FloorToInt((Hour - Mathf.Floor(Hour)) * 60f);
-                int h12 = h % 12 == 0 ? 12 : h % 12;
-                return string.Format("{0:00}:{1:00}", h12, m);
+                if (_clockDirty) UpdateClockCache();
+                return _clock12Cached;
             }
         }
 

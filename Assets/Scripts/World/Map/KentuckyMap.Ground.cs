@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -19,6 +20,11 @@ namespace CloneZ
         private const float LotY = 0.008f;
         private const float SnowBankWidth = 0.2f; // thin snow‑bank edge width for parking lots
         private const float IceY = 0.006f;
+        // Snow‑drift parameters – small ellipsoids that sit just above the road surface to suggest plowed snow.
+        private const float SnowDriftMinSize = 0.35f; // metres (half‑width of the smallest drift)
+        private const float SnowDriftMaxSize = 0.65f; // metres (half‑width of the largest drift)
+        private const float SnowDriftHeight = 0.25f; // metres (vertical radius of drifts)
+        private const float SnowDriftInterval = 8f; // metres between possible drift centres
 
                 private static Surf Ice => DecorPalette.Gloss(new Color(0.60f, 0.68f, 0.76f));
         private static Surf KerbSurf => DecorPalette.Matte(KerbColor);
@@ -92,7 +98,8 @@ if (water) {
                       border.Add(inside[0]);
                       Ribbon(site.Town.Out, border, 0.07f, LotY + 0.002f, lineSurf);
                  }
-                 if (water) site.Take(Rect.MinMaxRect(Min(inside, true), Min(inside, false), Max(inside, true), Max(inside, false)));
+                 // Reserve the parking‑lot footprint so later building placement can’t overlap it
+                    site.Take(Rect.MinMaxRect(Min(inside, true), Min(inside, false), Max(inside, true), Max(inside, false)));
                  // Add thin snow‑bank edge around parking lots for a plowed look
                  if (lot)
                  {
@@ -139,6 +146,14 @@ if (water) {
                             Ribbon(site.Town.Out, OffsetLine(piece, side * (width * 0.5f - KerbWidth - 0.02f)), 0.04f, StreetY + 0.001f, RandomGravelOverlay(piece[0]));
                             Ribbon(site.Town.Out, kerb, KerbWidth, StreetY + KerbHeight + 0.001f, Ice);
                         }
+                    }
+                    // Add subtle snow‑drift piles beside each side of the road.
+                    for (int side = -1; side <= 1; side += 2)
+                    {
+                        // Derive a deterministic RNG from the first point of the piece and the side.
+                        int seed = ((int)(piece[0].x * 73856093)) ^ ((int)(piece[0].y * 19349663)) ^ (side * 83492791);
+                        var rng = new System.Random(seed);
+                        AddSnowDrifts(site.Town.Out, piece, width, side, rng);
                     }
                     // Place street‑lamp poles along main roads (road rank >= 2) every 30 m.
                     if (road && surf.Mat == DecorMaterials.Asphalt.Mat)
@@ -315,7 +330,7 @@ if (water) {
                 float len = Vector2.Distance(a, b);
                 if (len < 0.05f) continue;
                 Vector2 d = (b - a) / len;
-                float yaw = Mathf.Atan2(d.x, d.y) * Mathf.Rad2Deg;
+                float yaw = Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
                 for (float s = carried; s + 3f <= len; s += 9f)
                 {
                     Vector3 at = To3(a + d * (s + 1.5f), y);
@@ -396,6 +411,46 @@ if (water) {
             Color baseCol = new Color(0.68f, 0.68f, 0.66f);
             Color varied = new Color(baseCol.r + r, baseCol.g + r, baseCol.b + r);
             return DecorPalette.Matte(varied);
+        }
+
+        /// <summary>Place a few small snow‑drift ellipsoids alongside a road piece.</summary>
+        // Returns the normalized road direction for the segment that contains 'point'.
+        // If the point falls exactly on a vertex, the direction of the next segment is used.
+        private static Vector2 RoadDirectionAt(List<Vector2> piece, Vector2 point)
+        {
+            for (int i = 0; i + 1 < piece.Count; i++)
+            {
+                Vector2 a = piece[i], b = piece[i + 1];
+                float segLen = Vector2.Distance(a, b);
+                if (segLen < 1e-6f) continue;
+                // Check if point lies on this segment (within a tiny tolerance).
+                if (Mathf.Abs(Vector2.Distance(a, point) + Vector2.Distance(point, b) - segLen) < 0.01f)
+                    return (b - a).normalized;
+            }
+            // Fallback: use the direction of the first segment.
+            return (piece[1] - piece[0]).normalized;
+        }
+
+        private static void AddSnowDrifts(OutdoorBatches into, List<Vector2> piece, float roadWidth, int side, System.Random rng)
+        {
+            // side = -1 for left, +1 for right of the centre line.
+            float offset = (roadWidth * 0.5f) + 0.3f; // start a little outside the kerb
+            foreach (Vector2 pos in SampleAlong(piece, SnowDriftInterval))
+            {
+                // Randomly skip some positions for natural spacing.
+                if (rng.NextDouble() < 0.4) continue;
+                // Use road direction for snow drift placement
+                Vector2 dir = RoadDirectionAt(piece, pos);
+                Vector2 perp = new Vector2(-dir.y, dir.x); // perpendicular to the road
+                Vector2 lateral = perp.normalized * offset * side;
+                Vector2 driftPos = pos + lateral;
+                // Random size within the defined range.
+                float halfWidth = SnowDriftMinSize + (float)rng.NextDouble() * (SnowDriftMaxSize - SnowDriftMinSize);
+                Vector3 centre = To3(driftPos, StreetY + 0.001f); // just above the road surface
+                RaidMesh m = into.Solid(centre);
+                // Ellipsoid (horizontal radius X/Z = halfWidth, vertical radius = SnowDriftHeight)
+                m.Ellipsoid(centre, new Vector3(halfWidth, SnowDriftHeight, halfWidth), DecorMaterials.Snow);
+            }
         }
 
         private static Surf RandomGravelOverlay(Vector2 seed)
