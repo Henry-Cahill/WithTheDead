@@ -6592,9 +6592,10 @@ you want to see in game. Indent extra lines under a task to add detail.
   Step 3: KitchenSink.cs – method `Update()` – remove the unreachable second `return;` inside the “not _running” block (the comment already returns). `// If the tap is not running and the water level cannot change this frame (plug is in or basin empty),` `// skip further updates like noise and wobble to make idle sinks cheaper.` `if (!_running)` `{` `if (_plugIn || _level <= 0f)` `return;` `// No noise or wobble needed when not running.` `return;` `}` (Delete the second `return;` line; the block now returns only once.)
   Done when: The player no longer sees two “Pull the plug” options when the tap is running and the plug is in – the combined action is the only way to turn off the tap and pull the plug. The idle‑sink early‑out no longer contains dead code, keeping the update loop clean. All other sink behaviour (water level, washing, plug handling, noise, wobble) remains unchanged.
   - 21:05 landed by hts-llm in 5.7 min: **Changes made**
-- [ ] Add a subtle flame‑flicker effect to Assets/Scripts/Hub/Fireplace.cs so the point‑light varies its intensity while the fire is lit.
+- [x] Add a subtle flame‑flicker effect to Assets/Scripts/Hub/Fireplace.cs so the point‑light varies its intensity while the fire is lit.
   Create a private `void Update()` method that runs each frame.
   If `_isLit` is true, compute a small random multiplier (e.g., `float f = Mathf.PerlinNoise(Time.time * 5f, 0f) * 0.3f + 0.85f;`) and set `_flameLight.intensity = 2f * f;`.
   If `_isLit` is false, ensure `_flameLight.intensity` stays at 0 (the existing `enabled = false` already hides it).
   Leave all existing fields, methods, and saved‑state logic unchanged.
   The player will see the fireplace’s flame gently flicker when lit, adding a more realistic, period‑appropriate ambience.
+  - 21:06 landed by 0htsserver in 1.8 min: Added a subtle flame‑flicker effect to **Assets/Scripts/Hub/Fireplace.cs**.
