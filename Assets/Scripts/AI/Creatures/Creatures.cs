@@ -44,6 +44,7 @@ private bool _isShade;
         private bool _hasLure;
         private int _packIndex;
 
+        /// <summary>Creates and registers a new creature instance at the given position, optionally adding it to a pack.</summary>
         public static Creature Spawn(string id, Vector3 position, List<Creature> pack = null)
         {
             CreatureDef def = CreatureCatalog.Get(id);
@@ -404,6 +405,7 @@ private bool _isShade;
     /// </summary>
     public sealed class CreatureBody : MonoBehaviour
     {
+        /// <summary>The head transform of the creature’s body, used for eye position and aiming.</summary>
         public Transform Head { get; private set; }
         private Transform _root, _torso;
         private readonly List<Transform> _legs = new List<Transform>();
@@ -417,6 +419,7 @@ private bool _isShade;
         private Vector3 _deathAxis;
         private bool _cloaked;
 
+        /// <summary>Builds the visual mesh and collider for the creature using the supplied definition.</summary>
         public void Build(CreatureDef def)
         {
             _def = def;
@@ -504,6 +507,7 @@ private bool _isShade;
 
         private void Start() => _c = GetComponent<Creature>();
 
+        /// <summary>Handles the creature’s death, spawning a loot container and playing death effects.</summary>
         public void Die(Vector3 dir)
         {
             _deadT = 0f;
@@ -542,6 +546,7 @@ private bool _isShade;
 
         /// <summary>Driven from outside (a network proxy, a runner playing the creature) instead of by a <see cref="Creature"/> brain.</summary>
         public bool Driven => ExternalSpeed01 > 0f || ExternalAttack || ExternalCloak || _driven;
+        /// <summary>Sets the external speed for a network‑controlled creature and marks it as driven.</summary>
         public float ExternalSpeed01 { get => _extSpeed; set { _extSpeed = value; _driven = true; } }
         public bool ExternalAttack;
         public bool ExternalCloak;
@@ -589,6 +594,7 @@ private bool _isShade;
         private System.Random _rng;
         private float _tick = 5f;
 
+        /// <summary>Initialises the ThreatDirector for a raid, clearing any previous instance.</summary>
         public static void Begin(ZoneDef zone, int seed)
         {
             var old = FindAnyObjectByType<ThreatDirector>();
