@@ -355,13 +355,35 @@ Surf brass = Mt(Brass);
                 Quaternion q = Quaternion.Euler(R(rng, -5f, 5f), R(rng, 0f, 180f), R(rng, -5f, 5f));
                 m.Box(l.P(along, 0.032f + thick * 0.4f, across), new Vector3(len, thick * 0.8f, thick), q, M(V(Chance(rng, 0.6) ? raw : wood, rng, 0.12f)));
             }
+            // half‑width of the door opening – used for frame placement
+            float halfW = width * 0.5f;
+            // left wooden jamb (weathered timber)
+            m.Box(l.P(mid - halfW - 0.01f, 0.65f, side * 0.02f),
+                new Vector3(0.02f, 1.30f, 0.02f), M(wood));
+            // right wooden jamb
+            m.Box(l.P(mid + halfW + 0.01f, 0.65f, side * 0.02f),
+                new Vector3(0.02f, 1.30f, 0.02f), M(wood));
+            // top lintel, slightly wider than the opening
+            m.Box(l.P(mid, 1.32f, side * 0.02f),
+                new Vector3(width + 0.04f, 0.04f, 0.02f), M(wood));
+            // dark‑steel hinge (period‑correct hardware)
+            m.Box(l.P(mid - halfW + 0.04f, 1.20f, side * 0.045f),
+                new Vector3(0.01f, 0.04f, 0.008f), Mt(DarkSteel));
+            // brass lever handle
+            m.CylinderX(l.P(mid + halfW - 0.07f, 0.90f, side * 0.045f),
+                0.006f, 0.12f, 10, Mt(Brass), 0f);
+            // brass lock cylinder (keyhole)
+            m.CylinderX(l.P(mid - halfW + 0.07f, 0.90f, side * 0.045f),
+                0.004f, 0.02f, 10, Mt(Brass), 0f);
+            // brass strike‑plate (moved after handle/lock)
+            m.Box(l.P(mid + R(rng, -0.3f, 0.3f), 0.034f, side * R(rng, 0.3f, 0.7f)), new Vector3(0.12f, 0.004f, 0.03f), Quaternion.Euler(0f, R(rng, 0f, 180f), 0f), Mt(Brass));
             // A couple of bigger chunks of the frame and the lock's strike plate.
             for (int i = 0; i < 2; i++)
             {
                 Quaternion q = Quaternion.Euler(0f, R(rng, 0f, 180f), 0f);
                 m.Box(l.P(mid + R(rng, -0.4f, 0.4f) * width, 0.05f, side * R(rng, 0.3f, 0.9f)), new Vector3(R(rng, 0.25f, 0.5f), 0.03f, 0.06f), q, M(V(wood, rng, 0.1f)));
             }
-            m.Box(l.P(mid + R(rng, -0.3f, 0.3f), 0.034f, side * R(rng, 0.3f, 0.7f)), new Vector3(0.12f, 0.004f, 0.03f), Quaternion.Euler(0f, R(rng, 0f, 180f), 0f), Mt(Brass));
+            // strike plate moved below
         }
 
         /// <summary>One band of a roll-up door's steel curtain, <paramref name="len"/> wide between heights <paramref name="y0"/>
