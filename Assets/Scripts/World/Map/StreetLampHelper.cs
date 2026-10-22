@@ -11,7 +11,7 @@ namespace CloneZ
         internal static void PlaceLamp(OutdoorBatches parent, KentuckyMap.Site site, Vector2 pos, float yaw)
         {
             // Reserve a small radius so lamps don’t overlap other props.
-            const float radius = 0.25f;
+            const float radius = 0.30f; // extra space for icicle
             const float baseHeight = 0.15f; // concrete slab thickness
             const float baseSize = 0.3f; // square footprint of the slab
             if (!site.Free(new Vector2(pos.x, pos.y), radius)) return;
@@ -35,10 +35,18 @@ namespace CloneZ
                 pos.y);
             var pole = parent.Solid(poleCenter);
             pole.Box(poleCenter, new Vector3(0.1f, poleHeight, 0.1f), variedYaw, KentuckyMap.StreetLampMetal);
-            // Lamp head: positioned near the top of the pole.
-            var headCenter = new Vector3(pos.x, KentuckyMap.StreetY + poleHeight - 0.1f, pos.y);
-            var head = parent.Solid(headCenter);
-            head.Box(headCenter, new Vector3(0.5f, 0.2f, 0.5f), variedYaw, KentuckyMap.StreetLampMetal);
+            // Lamp head brace and glass bulb (period‑correct lantern)
+            var braceCenter = new Vector3(pos.x, KentuckyMap.StreetY + poleHeight - 0.2f, pos.y);
+            var brace = parent.Solid(braceCenter);
+            brace.Box(braceCenter, new Vector3(0.4f, 0.05f, 0.4f), variedYaw, KentuckyMap.StreetLampMetal);
+            // Glass bulb
+            var glassMat = DecorPalette.Glass(new Color(1f, 1f, 1f, 0.5f));
+            var bulbCenter = new Vector3(pos.x, KentuckyMap.StreetY + poleHeight - 0.1f, pos.y);
+            var bulb = parent.Solid(bulbCenter);
+            bulb.Box(bulbCenter, new Vector3(0.2f, 0.2f, 0.2f), variedYaw, glassMat);
+            // Hanging icicle for winter look
+            var iciclePos = new Vector3(pos.x, KentuckyMap.StreetY + poleHeight - 0.3f, pos.y);
+            IceHelper.PlaceIcicle(parent, iciclePos);
             // Snow mound: a low, wide disc to suggest packed snow.
             var snowCenter = new Vector3(pos.x, KentuckyMap.StreetY + baseHeight + 0.02f, pos.y);
             var snow = parent.Solid(snowCenter);
