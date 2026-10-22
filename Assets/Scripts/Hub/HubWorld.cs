@@ -336,6 +336,41 @@ namespace CloneZ
             fireGo.transform.position = new Vector3(-HalfX + 0.8f, 0f, -2f);
             fireGo.AddComponent<BoxCollider>();
             fireGo.AddComponent<Fireplace>();
+            // Stone surround material for the fireplace base
+            Surf stone = DecorPalette.Matte(new Color(0.45f, 0.42f, 0.38f));
+            // Stone surround geometry
+            Deco(world, "FireplaceBase", m =>
+            {
+                // left side brick
+                m.Box(new Vector3(-HalfX + 0.6f, 0.25f, -2f), new Vector3(0.05f, 0.5f, 0.4f), stone);
+                // right side brick
+                m.Box(new Vector3(-HalfX + 1.0f, 0.25f, -2f), new Vector3(0.05f, 0.5f, 0.4f), stone);
+                // bottom slab
+                m.Box(new Vector3(-HalfX + 0.8f, 0.05f, -2f), new Vector3(0.45f, 0.1f, 0.4f), stone);
+            }, fireGo.transform.position);
+            // Metal grate in front of the fire
+            Deco(world, "FireplaceGrate", m =>
+            {
+                // thin metal bar across the opening
+                m.Box(new Vector3(-HalfX + 0.8f, 0.22f, -2f), new Vector3(0.4f, 0.02f, 0.02f), st.Metal);
+                // vertical support posts
+                m.Box(new Vector3(-HalfX + 0.62f, 0.22f, -2f), new Vector3(0.02f, 0.08f, 0.02f), st.Metal);
+                m.Box(new Vector3(-HalfX + 0.98f, 0.22f, -2f), new Vector3(0.02f, 0.08f, 0.02f), st.Metal);
+            }, fireGo.transform.position);
+            // Ember particles with subtle glow
+            Surf emberMat = DecorPalette.Glow(new Color(0.92f, 0.45f, 0.15f));
+            Deco(world, "FireplaceEmbers", m =>
+            {
+                var rng = new System.Random(13);
+                for (int i = 0; i < 12; i++)
+                {
+                    float x = -HalfX + 0.7f + (float)rng.NextDouble() * 0.2f;
+                    float y = 0.12f + (float)rng.NextDouble() * 0.05f;
+                    float z = -2f + (float)rng.NextDouble() * 0.05f - 0.025f;
+                    float radius = 0.01f + (float)rng.NextDouble() * 0.01f;
+                    m.Sphere(new Vector3(x, y, z), radius, emberMat);
+                }
+            }, fireGo.transform.position);
         }
 
         private static void BuildLights(Transform world, Style st)
