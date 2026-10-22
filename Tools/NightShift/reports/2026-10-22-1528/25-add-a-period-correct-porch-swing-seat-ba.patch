@@ -1,0 +1,110 @@
+diff --git a/Assets/Scripts/World/Map/KentuckyMap.Buildings.cs b/Assets/Scripts/World/Map/KentuckyMap.Buildings.cs
+index 096995eb..ca145031 100644
+--- a/Assets/Scripts/World/Map/KentuckyMap.Buildings.cs
++++ b/Assets/Scripts/World/Map/KentuckyMap.Buildings.cs
+@@ -158,7 +158,7 @@ private static void BuildKerbsAndPoles(Site site)
+                         Vector3 crossSize = new Vector3(crossWidth, crossDepth, crossDepth);
+                         site.Town.Out.Solid(crossPos).Box(crossPos, crossSize, 0f, woodMat);
+                         site.Town.PropCollider(crossPos, crossSize, 0f);
+-                    }
++        
+                     accumulated = Mathf.Max(0f, accumulated - segLen);
+                 }
+             }
+@@ -288,7 +288,8 @@ private static void Enterable(Site site, Footprint f, System.Random rng)
+                     Vector3 railSize = new Vector3(len, railHeight, railThickness);
+                     var railMat = DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f));
+                     site.Town.Out.Solid(railCenter).Box(railCenter, railSize, yaw, railMat);
+-                    site.Town.PropCollider(railCenter, railSize, yaw);
++
++
+                 }
+             }
+             // Add a simple door knob to every entrance
+@@ -350,20 +351,12 @@ private static void Enterable(Site site, Footprint f, System.Random rng)
+                 Vector3 railCenter = (leftPostCenter + rightPostCenter) * 0.5f;
+                 railCenter.y = leftPostCenter.y + postHeight * 0.5f - railHeight * 0.5f; // near top of posts
+                 site.Town.Out.Solid(railCenter).Box(railCenter, railSize, doorYaw, DecorMaterials.WoodFloor(porchWood));
+-            }
++                // After building the front rail, add a porch swing
++                AddPorchSwing(site, porchCenter, outward3, doorYaw, porchWood, rng);
++
++                }
++                }
+ 
+-            // Add short concrete stepping‑stone path for residential buildings (house, trailer, apartments, hotel)
+-            if (door >= 0 && (b.kind == "house" || b.kind == "trailer" || b.kind == "apartments" || b.kind == "hotel"))
+-            {
+-                const float pathLength = 1.0f;
+-                const float pathWidth = 0.3f;
+-                const float pathHeight = 0.02f;
+-                // Center positioned outward from door, after porch offset (0.4) plus half the path length
+-                Vector3 pathCenter = To3(doorPoint + doorOutward * (0.4f + pathLength * 0.5f), 0.01f);
+-                Vector3 pathSize = new Vector3(pathWidth, pathHeight, pathLength);
+-                site.Town.Out.Solid(pathCenter).Box(pathCenter, pathSize, doorYaw, DecorMaterials.Concrete);
+-                site.Town.PropCollider(pathCenter, pathSize, doorYaw);
+-            }
+ 
+             List<int> tris = MapGeometry.Triangulate(p);
+             Vector3 middle = To3(f.Middle, 0f);
+@@ -387,7 +380,59 @@ private static void Enterable(Site site, Footprint f, System.Random rng)
+             if (door >= 0) Loot(site, f, rng, doorPoint);
+         }
+ 
+-        private static void Wall(Site site, Vector2 a, Vector2 d, Vector2 inset, float s0, float s1, float y0, float y1,
++        private static void AddPorchSwing(Site site, Vector3 porchCenter, Vector3 outward, float yaw, Color woodColor, System.Random rng)
++        {
++            // swing hangs from the front edge of the porch slab (the front rail)
++            const float swingOffsetFromCenter = 0.5f; // metres outward from porch centre
++            const float ropeLengthBase = 0.55f; // metres
++                float ropeSlack = 0.03f * (float)rng.NextDouble(); // slight variation
++            float ropeLength = ropeLengthBase + ropeSlack;
++            // hang point is just below the top of the front posts (postHeight = 0.40 m, railHeight = 0.04 m)
++            const float postHeight = 0.40f;
++            const float railHeight = 0.04f;
++            Vector3 hangPos = porchCenter + outward * (swingOffsetFromCenter + 0.4f) // front edge of porch
++                + new Vector3(0f, postHeight - railHeight * 0.5f, 0f);
++            // seat dimensions
++            const float seatWidth = 0.80f;
++            const float seatDepth = 0.30f;
++            const float seatHeight = 0.08f;
++            // back‑rest dimensions
++            const float backWidth = seatWidth;
++            const float backDepth = 0.08f;
++            const float backHeight = 0.48f;
++            // compute seat centre (directly under hang point, lowered by ropeLength)
++            Vector3 seatCenter = hangPos + new Vector3(0f, -ropeLength - seatHeight * 0.5f, 0f);
++            // back‑rest centre (behind seat)
++            Vector3 backCenter = seatCenter + new Vector3(0f, backHeight * 0.5f + seatHeight * 0.5f, -(seatDepth * 0.5f + backDepth * 0.5f));
++            // material for all swing parts
++            var woodMat = DecorMaterials.WoodFloor(woodColor);
++            // seat
++            site.Town.Out.Solid(seatCenter).Box(seatCenter, new Vector3(seatWidth, seatHeight, seatDepth), yaw, woodMat);
++            site.Town.PropCollider(seatCenter, new Vector3(seatWidth, seatHeight, seatDepth), yaw);
++            // back‑rest
++            site.Town.Out.Solid(backCenter).Box(backCenter, new Vector3(backWidth, backHeight, backDepth), yaw, woodMat);
++            site.Town.PropCollider(backCenter, new Vector3(backWidth, backHeight, backDepth), yaw);
++            // two ropes – thin boxes, placed left/right of seat centre
++            const float ropeThickness = 0.02f;
++            float ropeXOffset = (seatWidth * 0.5f) - ropeThickness * 0.5f;
++            Vector3 ropeSize = new Vector3(ropeThickness, ropeLength, ropeThickness);
++            // left rope
++            Vector3 leftRopeCenter = hangPos + new Vector3(-ropeXOffset, -ropeLength * 0.5f, 0f);
++            site.Town.Out.Solid(leftRopeCenter).Box(leftRopeCenter, ropeSize, yaw, woodMat);
++            site.Town.PropCollider(leftRopeCenter, ropeSize, yaw);
++            // right rope
++            Vector3 rightRopeCenter = hangPos + new Vector3(ropeXOffset, -ropeLength * 0.5f, 0f);
++            site.Town.Out.Solid(rightRopeCenter).Box(rightRopeCenter, ropeSize, yaw, woodMat);
++            site.Town.PropCollider(rightRopeCenter, ropeSize, yaw);
++            // tiny wooden brackets where ropes attach to the rail (two small cubes)
++            const float bracketSize = 0.04f;
++            Vector3 leftBracket = hangPos + new Vector3(-ropeXOffset, -ropeThickness * 0.5f, 0f);
++            Vector3 rightBracket = hangPos + new Vector3(ropeXOffset, -ropeThickness * 0.5f, 0f);
++            site.Town.Out.Solid(leftBracket).Box(leftBracket, new Vector3(bracketSize, bracketSize, bracketSize), yaw, woodMat);
++            site.Town.Out.Solid(rightBracket).Box(rightBracket, new Vector3(bracketSize, bracketSize, bracketSize), yaw, woodMat);
++        }
++
++                    private static void Wall(Site site, Vector2 a, Vector2 d, Vector2 inset, float s0, float s1, float y0, float y1,
+             float yaw, in Surf surf, bool solid)
+         {
+             float len = s1 - s0, h = y1 - y0;
