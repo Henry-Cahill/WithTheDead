@@ -266,6 +266,39 @@ namespace CloneZ
             m.Box(new Vector3(0f, 0.45f, 0f), new Vector3(len, 0.4f, 0.36f), M(c));
             m.Box(new Vector3(0f, 0.74f, 0f), new Vector3(len, 0.18f, 0.22f), M(c * 1.03f));
             if (striped) m.Box(new Vector3(0f, 0.5f, 0f), new Vector3(len * 0.98f, 0.16f, 0.37f), DecorMaterials.Hazard);
+            // Bolt‑on metal plates spaced along the top edge (adds a hand‑fastened look)
+            int boltCount = Mathf.Max(2, Mathf.FloorToInt(len * 1.8f));
+            for (int i = 0; i < boltCount; i++) {
+                float x = -len * 0.5f + (i + 0.5f) * (len / boltCount);
+                // colour varies slightly per instance
+                Color boltCol = V(new Color(0.45f, 0.44f, 0.42f), rng, 0.07f);
+                m.Box(new Vector3(x, 0.22f, 0.31f), new Vector3(0.018f, 0.042f, 0.018f), Mt(boltCol));
+            }
+            // Random rust/dent strips (only some barriers get them)
+            int rustStrips = rng.Next(0, 3); // 0‑2 strips
+            for (int i = 0; i < rustStrips; i++) {
+                float rx = R(rng, -len * 0.4f, len * 0.4f);
+                float rw = R(rng, 0.04f, 0.14f);
+                Color rustCol = V(new Color(0.54f, 0.34f, 0.28f), rng, 0.09f);
+                m.Box(new Vector3(rx, 0.46f, 0.29f), new Vector3(rw, 0.018f, 0.018f), M(rustCol));
+            }
+            // Barbed‑wire – a thin steel cable with evenly spaced barbs
+            float wireY = 0.72f;
+            m.CylinderX(new Vector3(0f, wireY, 0.31f), 0.006f, len - 0.2f, 6, Mt(new Color(0.22f, 0.22f, 0.22f)), 0f);
+            int barbCount = Mathf.FloorToInt((len - 0.2f) / 0.25f);
+            for (int i = 0; i <= barbCount; i++) {
+                float x = -len * 0.5f + 0.1f + i * 0.25f;
+                // left‑hand barb
+                m.Box(new Vector3(x - 0.02f, wireY - 0.015f, 0.31f), new Vector3(0.004f, 0.01f, 0.014f), Mt(new Color(0.18f,0.18f,0.18f)));
+                // right‑hand barb
+                m.Box(new Vector3(x + 0.02f, wireY - 0.015f, 0.31f), new Vector3(0.004f, 0.01f, 0.014f), Mt(new Color(0.18f,0.18f,0.18f)));
+            }
+            // Worn stencil label – small rectangular matte patch with a dark‑gray sign colour
+            if (Chance(rng, 0.5)) {
+                Color signCol = V(new Color(0.20f, 0.20f, 0.22f), rng, 0.05f);
+                // place near the centre, slightly inset so it doesn’t intersect the barrier geometry
+                m.Box(new Vector3(0f, 0.61f, 0.31f), new Vector3(len * 0.4f, 0.018f, 0.018f), M(signCol));
+            }
             m.Box(new Vector3(0f, 0.85f, 0f), new Vector3(len - 0.1f, 0.04f, 0.2f), M(SnowWhite));
         }
 
