@@ -153,9 +153,9 @@ namespace CloneZ
                 ? new InteractAction("Lower the flag", c => SetFlag(c, false))
                 : new InteractAction("Raise the flag", c => SetFlag(c, true)));
             // Offer to toggle importance on the most‑recently read delivery
-                if (_read > 0 && _read <= Post.Length)
-                {
-                    bool currently = _important[_read - 1];
+if (_important == null || _important.Count != Post.Length)
+                    _important = new List<bool>(new bool[Post.Length]);
+                bool currently = _important[_read - 1];
                     string label = currently ? "Unmark last letter as important" : "Mark last letter as important";
                     into.Add(new InteractAction(label, c =>
                     {
