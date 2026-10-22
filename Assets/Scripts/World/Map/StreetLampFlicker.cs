@@ -56,15 +56,19 @@ namespace CloneZ
             _dipStrength *= dipVar;
         }
 
+        private static PlayerController s_player;
+
         private void UpdateCulling()
         {
-            var player = UnityEngine.Object.FindObjectOfType<PlayerController>();
-            if (player == null) return;
-            bool shouldEnable = Vector3.Distance(transform.position, player.transform.position) <= CullDistance;
+            if (s_player == null)
+                s_player = UnityEngine.Object.FindObjectOfType<PlayerController>();
+            if (s_player == null) return;
+            bool shouldEnable = Vector3.Distance(transform.position, s_player.transform.position) <= CullDistance;
             SetFlickerEnabled(shouldEnable);
         }
         private void Update()
         {
+            UpdateCulling();
             // sinusoidal wobble
             float sinWobble = _maxSinusoid * Mathf.Sin(Time.time * _wobbleSpeed + _phase);
             // occasional dip using Perlin noise (produces smooth darkening spikes)
