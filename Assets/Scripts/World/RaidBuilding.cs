@@ -497,7 +497,54 @@ namespace CloneZ
                 // bottom hinge
                 p.Mesh.Box(RunPoint(r, o.Pos, 0.15f, extSide * (Half + 0.025f)), RunSize(r, 0.04f, 0.10f, 0.008f), hingeSurf);
             }
-        }
+            /* ---------- NEW DETAILS START ---------- */
+            // Knock‑plate: metal plate on exterior side (≈25 % of doors)
+            if (extSide != 0 && Rng.NextDouble() < 0.25)
+            {
+                var metalSurf = DecorPalette.Matte(new Color(0.30f, 0.30f, 0.35f));
+                // size ≈12 cm × 2 cm × 0.8 cm, placed about 0.45 m above ground on exterior face
+                Vector3 knockPos = RunPoint(r, o.Pos, DoorHeight * 0.45f, extSide * (Half + 0.036f));
+                p.Mesh.Box(knockPos, RunSize(r, 0.12f, 0.02f, 0.008f), metalSurf);
+            }
+            // Lock‑bolt on interior side (≈30 % of doors)
+            if (Rng.NextDouble() < 0.30)
+            {
+                var metalSurf = DecorPalette.Matte(new Color(0.30f, 0.30f, 0.35f));
+                // bolt runs vertically, 15 cm high, 2 cm wide, centered at handle height (≈50 % of DoorHeight)
+                float boltY = DoorHeight * 0.5f;
+                Vector3 boltPos = RunPoint(r, o.Pos, boltY, -Half - 0.025f); // interior side (negative side)
+                p.Mesh.Box(boltPos, RunSize(r, 0.02f, 0.15f, 0.008f), metalSurf);
+            }
+            // Tiny key‑hole near the lock‑bolt (≈30 % of doors)
+            if (Rng.NextDouble() < 0.30)
+            {
+                var keyholeSurf = DecorPalette.Matte(new Color(0.05f, 0.05f, 0.07f)); // very dark metal
+                // size ≈1 cm × 2 cm × 0.2 cm, placed a few centimetres above the bolt
+                float khY = DoorHeight * 0.55f;
+                Vector3 khPos = RunPoint(r, o.Pos, khY, -Half - 0.025f);
+                p.Mesh.Box(khPos, RunSize(r, 0.01f, 0.02f, 0.002f), keyholeSurf);
+            }
+            // Subtle wear scratches on the vertical jambs (both sides). Up to three per side.
+            int scratchCount = Rng.Next(1, 4); // 1‑3 scratches per side
+            for (int i = 0; i < scratchCount; i++)
+            {
+                // pick side: -1 = left jamb, +1 = right jamb
+                int side = (i % 2 == 0) ? -1 : 1;
+                // random vertical position between floor (0) and DoorHeight
+                float y = (float)Rng.NextDouble() * (DoorHeight - 0.05f) + 0.025f;
+                // random scratch length 5‑12 cm
+                float len = 0.05f + (float)Rng.NextDouble() * 0.07f;
+                // narrow box 0.5 cm thick, 1 cm tall
+                var scratchSurf = DecorPalette.Matte(DoorWood * 0.75f); // darker wood colour
+                Vector3 scratchPos = RunPoint(r,
+                    side < 0 ? o.A + 0.012f : o.B - 0.012f, // near the jamb inner surface
+                    y,
+                    side * (Half + 0.014f));
+                p.Mesh.Box(scratchPos,
+                    new Vector3(0.005f, 0.01f, len), // thickness, height, depth (along wall)
+                    scratchSurf);
+            }
+            /* ---------- NEW DETAILS END ---------- */        }
 
         private void DrawWindow(WallPiece p)
         {
