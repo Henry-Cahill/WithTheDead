@@ -7543,7 +7543,7 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 5: `WindowFittings` – add three subtle rivets on the coping cap (the concrete strip built a few lines earlier). Position them evenly across the cap’s top surface. `float capRivetSize = 0.004f;` `float capRivetDepth = 0.003f;` `float capY = sillY + sillHeight*0.5f + capHeight*0.5f; // centre of coping cap` `float capZ = outer - sillDepth*0.5f; // centre of cap depth` `for (int i = -1; i <= 1; i += 2) {` `float rx = f.Mid + i * (WindowWidth*0.33f);` `m.Box(f.P(rx, capY, capZ), f.Size(capRivetSize, capRivetSize, capRivetDepth), brassCap);` `}`
   Step 6: `WindowFittings` – ensure the new primitives keep the existing colliders and interaction points untouched (they are added to the same `RaidMesh m` that already feeds the window’s colliders, so no extra collider code is needed).
   Done when: When the player looks at any exterior window, a narrow wooden apron strip runs just below the stone sill, capped by two weather‑aged iron brackets with rust‑tinted metal, a subtle grid of brass nail‑heads embossed in the wood, and three tiny rivets sit on the coping cap. All parts use only the existing materials (`wood`, `brass`, `brassCap`, plus the newly created `rustMetal`) and stay within the current collider/interaction layout. No other scripts are altered.
-- [ ] In Assets/Scripts/UI/PauseMenuController.cs: Cache the InputSystem lookups in PauseMenuController.Update and ReadNavigation to avoid repeated Keyboard.current and Gamepad.current property accesses each frame.
+- [x] In Assets/Scripts/UI/PauseMenuController.cs: Cache the InputSystem lookups in PauseMenuController.Update and ReadNavigation to avoid repeated Keyboard.current and Gamepad.current property accesses each frame.
   In Update() replace the line
   `bool esc = Keyboard.current != null && Keyboard.current.escapeKey.wasPressedThisFrame;`
   with
@@ -7552,6 +7552,7 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   At the start of ReadNavigation() add
   `Keyboard kb = Keyboard.current;`
   `Gamepad pad = Gamepad.current;`
+  - 10:55 landed by hts-llm in 2 min: **Changed file**
 - [ ] Add a “Hide spare key under the mat / Retrieve hidden key” mechanic to Assets/Scripts/World/Fixtures/DoormatFixture.cs so the player can stash a key under the mat and later pull it out, giving a visible inventory change and persistent state.
   Step 1: Assets/Scripts/World/Fixtures/DoormatFixture.cs – add a private field to track the hidden‑key state. `// after the existing fields` `private bool _hasKeyHidden;`
   Step 2: Assets/Scripts/World/Fixtures/DoormatFixture.cs – extend `CaptureState` to store both the “looked under” flag and the hidden‑key flag in the integer `save.State`. `public override void CaptureState(FixtureSave save)` `{` `// bit0 = looked under, bit1 = key hidden` `int state = (_lookedUnder ? 1 : 0) | (_hasKeyHidden ? 2 : 0);` `save.State = state;` `}`
