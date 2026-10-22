@@ -235,7 +235,7 @@ namespace CloneZ
             KitchenSink.Attach(this);   // the tap, the plug, the water, the washing-up and the cupboard under the bowl
         }
 
-        // A blue poly rain barrel, open at the top so the collected water shows inside it.
+        // A blue poly rain barrel, open at the top so the collected water shows inside it. Now includes a brass lever, gauge tick marks, a reinforcing ring and a drip catcher.
         private void BuildBarrel(Vector3 position)
         {
             Water = CloneZConfig.WaterBarrelStart;
@@ -274,8 +274,16 @@ namespace CloneZ
 
             // spigot base (short cylinder protruding from barrel side)
             m.Cylinder(new Vector3(0f, 0.12f, r + 0.03f), 0.010f, 0.04f, 8, DecorPalette.Metal(FurnitureBuilder.Brass));
+            // drip catcher – tiny brass cup that would collect overflow drops
+            m.Cylinder(new Vector3(0f, 0.09f, r + 0.03f), // positioned just below the base
+                0.008f, 0.015f, 6,
+                DecorPalette.Metal(FurnitureBuilder.Brass));
             // valve knob (small box on front of spigot)
             m.Box(new Vector3(0f, 0.13f, r + 0.045f), new Vector3(0.014f, 0.008f, 0.004f), DecorPalette.Metal(FurnitureBuilder.Brass));
+            // spigot lever – tiny brass handle extending outward
+            m.Box(new Vector3(0f, 0.13f, r + 0.052f), // 7 mm further from barrel wall
+                new Vector3(0.006f, 0.004f, 0.02f), // thin lever, 20 mm long
+                DecorPalette.Metal(FurnitureBuilder.Brass));
             // hinge pin (small cylinder)
             m.Cylinder(new Vector3(0f, 0.135f, r + 0.038f), 0.004f, 0.006f, 6, DecorPalette.Metal(FurnitureBuilder.Brass));
             // Brass rivet heads around the barrel mid‑section – period‑appropriate weathering
@@ -290,8 +298,19 @@ namespace CloneZ
             // Add small rust‑stained matte patches for weathering
             // gauge stick (thin wood)
             m.Cylinder(new Vector3(0f, h * 0.65f, r - 0.02f), 0.006f, 0.12f, 8, DecorPalette.Matte(new Color(0.48f, 0.38f, 0.28f)));
-            // metal clip near top of stick
+            // gauge tick marks – five evenly spaced wooden bars
+            for (int i = 0; i < 5; i++)
+            {
+                float y = h * 0.65f + i * 0.022f; // 22 mm apart
+                m.Box(new Vector3(0.009f, y, r - 0.02f), // 9 mm outward from stick
+                    new Vector3(0.001f, 0.015f, 0.001f), // tiny notch
+                    DecorPalette.Matte(new Color(0.45f, 0.35f, 0.25f)));
+            }
             m.Box(new Vector3(0f, h * 0.71f, r - 0.02f), new Vector3(0.018f, 0.006f, 0.004f), DecorPalette.Metal(FurnitureBuilder.Brass));
+            // brass ring around gauge stick – reinforces the clip
+            m.Cylinder(new Vector3(0f, h * 0.71f, r - 0.021f), // 1 mm outward
+                0.008f, 0.002f, 6,
+                DecorPalette.Metal(FurnitureBuilder.Brass));
             int patchCount = strapRand.Next(2, 5);
             for (int i = 0; i < patchCount; i++)
             {
