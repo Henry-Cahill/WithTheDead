@@ -291,6 +291,9 @@ namespace CloneZ
                 {
                     foreach ((string id, int n) in r.Outputs) stash.Add(ItemDatabase.Get(id), n, enforceWeight: false);
                     notes.Add("Craft finished: " + Describe(r));
+                    // New flavour notes – style reference: notes.Add("The generator ran dry. Pour in a gas can.");
+                    notes.Add("A distant howl pierces the silent night.");
+                    notes.Add("Snow drifts against the hideout's shutters, muffling every footstep.");
                     GameEvents.RaiseItemCrafted(r.Outputs[0].Id, r.Outputs[0].Count);
                 }
                 c.Crafts.RemoveAt(i);
@@ -303,13 +306,20 @@ namespace CloneZ
                 float burn = hours / (gen.Level >= 2 ? 8.5f : 6f);
                 gen.Fuel = Mathf.Max(0f, gen.Fuel - burn);
                 if (gen.Fuel <= 0f) notes.Add("The generator ran dry. Pour in a gas can.");
+                if (gen.Fuel > 0f) notes.Add("The generator’s low hum warms the cramped walls.");
             }
 
             int farmLvl = LevelOf(c, "datafarm");
             if (farmLvl > 0 && Powered(c)) Produce(c, "datafarm", farmLvl >= 2 ? 5f : 8f, "datadrive", stash, notes, hours);
             int waterLvl = LevelOf(c, "watercollector");
             if (waterLvl > 0) Produce(c, "watercollector", waterLvl >= 2 ? 2f : 4f, "waterbottle", stash, notes, hours);
+            // New winter flavour notes after production
+            if (farmLvl > 0 && Powered(c)) notes.Add("Condensation gathers on the data farm’s rusted racks.");
+            if (waterLvl > 0) notes.Add("Ice clings to the water collector’s pipes, slowing each drip.");
             TickAnimals(c, stash, notes, hours);
+            // New animal‑related winter notes
+            if (c.Animals.Count > 0) notes.Add("The hens shuffle in the cold, their feathers dusted with frost.");
+            if (c.Animals.Exists(a => a.Kind == "goat")) notes.Add("Marta’s milk tastes of pine and frost.");
 
             SetLastTick(c, now);
             if (notes.Count > 0) ProfileStore.Save();
