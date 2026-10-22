@@ -86,6 +86,8 @@ private static readonly string[] Jams =
         private bool _jammed;
         private int _original, _said; private bool _originalTaken;
         private float _noiseAt;
+        private bool _copyAvailable;
+        private string _currentCopyText;
 
         public override string DisplayName => "Photocopier";
         public override Vector3 InteractPoint => _point;
@@ -119,13 +121,20 @@ private static readonly string[] Jams =
                 into.Add(Copy().DisabledIf(true, "It's jammed \u2014 clear it first"));
             }
             else into.Add(Copy().DisabledIf(dead != null, dead));
-            // Added inspect action to report copier state
+            bool open = _lid != null && _lid.IsOpen;
             if (!_jammed)
                 into.Add(new InteractAction("Inspect copier", c => c.Notify("The copier hums smoothly – no jam in sight.")));
             else
                 into.Add(new InteractAction("Inspect copier", c => c.Notify(GetJamMessage(_said))));
-            bool open = _lid != null && _lid.IsOpen;
-            into.Add(new InteractAction(open ? "Close the lid" : "Lift the lid", c => SetLid(!open)));
+            if (_copyAvailable)
+            {
+                into.Add(new InteractAction("Take copy", c =>
+                {
+                    c.Notify($"You tuck the fresh copy into your satchel: {_currentCopyText}");
+                    _copyAvailable = false;
+                    _currentCopyText = null;
+                }));
+}
             if (open) {
                 into.Add(new InteractAction("Read what's on the glass", c => c.Notify(Originals[_original])));
                 if (!_originalTaken) {
@@ -161,20 +170,26 @@ private static readonly string[] Jams =
                 if (Random.value < CloneZConfig.RaidCopierJamChance)
                 {
                     _jammed = true;
+                _copyAvailable = false;
+                _currentCopyText = null;
                     ShowJam(true);
                     c.Notify(GetJamMessage(_said++));
                     return;
                 }
-                c.Notify(_lid != null && _lid.IsOpen
+                string copyText = _lid != null && _lid.IsOpen
                     ? "With the lid up the copy comes out black round the edges, the page floating in the middle like a window."
-                    : Copies[_said++ % Copies.Length]);
+                    : Copies[_said++ % Copies.Length];
+                c.Notify(copyText);
+                _copyAvailable = true;
+                _currentCopyText = copyText;
             };
             return a;
         }
 
         private void ClearJam(InteractContext ctx)
         {
-            _jammed = false;
+            _copyAvailable = false;
+        _currentCopyText = null;
             ShowJam(false);
             MakeNoise(CloneZConfig.FixtureNoiseSmall);
             ctx.Notify(Clears[_said++ % Clears.Length]);
