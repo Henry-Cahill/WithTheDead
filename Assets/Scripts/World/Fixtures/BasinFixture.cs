@@ -265,7 +265,7 @@ namespace CloneZ
             bool mains = WaterMains.MainsOn;
             
             ReturnTap(ctx);
-            UseStored(CloneZConfig.BasinWashWater);
+            bool wet = UseStored(CloneZConfig.BasinWashWater);
             WaterUse.Freshen(ctx, CloneZConfig.BasinWashFreshen);
             if (wet)
             {
