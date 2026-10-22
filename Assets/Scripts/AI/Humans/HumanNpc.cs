@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-
+using static CloneZ.HumanNpc;
 namespace CloneZ
 {
     /// <summary>
@@ -84,6 +84,23 @@ namespace CloneZ
         private Light _flash;
         private float _flashOff;
         private System.Random _rng;
+        // New constant for food item id
+        public const string FoodItemId = "cannedfood";
+        /// <summary>Feeds the NPC a small amount of food, restoring health and possibly ending surrender.</summary>
+        public void FeedFood(float healthFraction)
+        {
+            if (IsDead) return;
+            // healthFraction is a fraction of max health (e.g. 0.2 = 20% of max)
+            _hp = Mathf.Min(_maxHp, _hp + _maxHp * Mathf.Clamp01(healthFraction));
+            // If the NPC was surrendered and now feels safe, they may stand up.
+            if (State == Mode.Surrendered && Health01 > 0.5f)
+            {
+                State = Mode.Idle;
+                Actor.Surrendered = false;
+            }
+            Bark("Much appreciated, thanks!");
+        }
+
 
         #region Spawning
         /// <summary>Creates a person of <paramref name="faction"/> wearing <paramref name="loadout"/> (an id such as
@@ -937,7 +954,16 @@ namespace CloneZ
                     if (c.Interactor != null) c.Interactor.SearchOrOpen(box);
                 }).Timed(1.5f, "Searching..."));
                 into.Add(new InteractAction("Let them go", c => _npc.Release()));
-                return;
+            // New “Give Food” action
+            if (ctx.Inventory != null && ctx.Inventory.Has(FoodItemId))
+            {
+                into.Add(new InteractAction("Give Food", c =>
+                {
+                    if (c.Inventory.Consume(FoodItemId, 1) <= 0) return;
+                    _npc.FeedFood(0.2f); // restores ~20% of max health
+                }).Timed(1f, "Feeding...").DisabledIf(!_npc.Actor.Surrendered && !_npc.Actor.Restrained, "They don't need food"));
+            }
+            return;
             }
 
             into.Add(new InteractAction("Talk", Talk));
