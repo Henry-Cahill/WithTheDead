@@ -462,6 +462,17 @@ namespace CloneZ
             float bx = hipX + ThighRadius(bagY) + 0.006f + 0.022f;
             PlayerGearParts.Box(root, "Bag", new Vector3(bx, bagY, 0.004f), new Vector3(0.044f, 0.16f, 0.125f), body, true);
             PlayerGearParts.Box(root, "Flap", new Vector3(bx + 0.002f, bagY + 0.062f, 0.004f), new Vector3(0.047f, 0.04f, 0.128f), shade);
+            // ----- added rugged side‑pocket details -----
+            // side pocket (adds usable space on the bag’s right side)
+            PlayerGearParts.Box(root, "SidePocket", new Vector3(bx + 0.032f, bagY + 0.04f, 0.006f), new Vector3(0.022f, 0.06f, 0.056f), shade, true);
+            // zip strip on the pocket front
+            PlayerGearParts.Box(root, "PocketZip", new Vector3(bx + 0.032f, bagY + 0.075f, 0.036f), new Vector3(0.020f, 0.004f, 0.001f), web);
+            // tiny metal clasp that holds the zip
+            PlayerGearParts.Box(root, "Clasp", new Vector3(bx + 0.032f, bagY + 0.07f, 0.038f), new Vector3(0.008f, 0.008f, 0.004f), hardware);
+            // subtle wear‑scar on the bag’s front
+            PlayerGearParts.Box(root, "FrontWear", new Vector3(bx, bagY + 0.08f, 0.014f), new Vector3(0.040f, 0.003f, 0.001f), CloneZUtil.Mat(HumanoidLook.Shade(TorchColor, 0.55f), 0.2f));
+            // small metal label/tag on the pocket’s outer edge
+            PlayerGearParts.Box(root, "PocketLabel", new Vector3(bx + 0.032f, bagY + 0.042f, 0.064f), new Vector3(0.010f, 0.006f, 0.001f), hardware);
             PlayerGearParts.Box(root, "Buckle", new Vector3(bx + 0.025f, bagY + 0.04f, 0.004f), new Vector3(0.006f, 0.022f, 0.03f), hardware);
             for (int i = 0; i < 2; i++)
             {
