@@ -285,6 +285,19 @@ namespace CloneZ
                 float along = mid - w * 0.5f + (i + 0.5f) * w / 4f;
                 m.Ellipsoid(l.P(along, sill - 0.045f, across), l.Size(w / 4f + 0.08f, 0.07f, 0.17f), snow, 6, 3);
             }
+            // Tiny dark‑steel corner brackets at the planter’s top edges.
+            {
+                float size = R(rng, 0.018f, 0.022f);
+                Vector3 dim = new Vector3(size, size, size);
+                // Front‑left
+                m.Box(l.P(mid - w * 0.5f + 0.04f, sill - 0.05f, across + 0.04f), dim, Mt(DarkSteel));
+                // Front‑right
+                m.Box(l.P(mid + w * 0.5f - 0.04f, sill - 0.05f, across + 0.04f), dim, Mt(DarkSteel));
+                // Back‑left
+                m.Box(l.P(mid - w * 0.5f + 0.04f, sill - 0.05f, across - 0.04f), dim, Mt(DarkSteel));
+                // Back‑right
+                m.Box(l.P(mid + w * 0.5f - 0.04f, sill - 0.05f, across - 0.04f), dim, Mt(DarkSteel));
+            }
         }
         #endregion
 
