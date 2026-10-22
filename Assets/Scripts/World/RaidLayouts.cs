@@ -237,9 +237,20 @@ namespace CloneZ
             Surf wood = DecorPalette.Matte(new Color(0.32f, 0.22f, 0.12f));
 var boltMat = DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f));
             m.Box(new Vector3(-0.95f, 0.8f, -0.1f), Sz(0.06f, 1.6f, 0.1f), wood);
-        // backboard – thin plywood behind the rack (adds depth and a surface for grime)
-        var boardMat = DecorPalette.Matte(new Color(0.34f, 0.24f, 0.14f));
-        m.Box(new Vector3(0f, 0.8f, -0.15f), Sz(1.92f, 1.62f, 0.02f), boardMat);
+// backboard – thin plywood behind the rack (adds depth and a surface for grime)
+         var boardMat = DecorPalette.Matte(new Color(0.34f, 0.24f, 0.14f));
+         m.Box(new Vector3(0f, 0.8f, -0.15f), Sz(1.92f, 1.62f, 0.02f), boardMat);
+
+         // thin snow layer on the upper backboard (winter detail)
+         if (Chance(r, 0.5f))
+         {
+             float snowW = R(r, 0.4f, 1.0f); // random width (metres)
+             float snowD = R(r, 0.08f, 0.18f); // random depth (metres)
+             float snowH = 0.005f; // thin height (metres)
+             var snowMat = DecorPalette.Matte(new Color(0.90f, 0.90f, 0.95f));
+             // position snow slightly forward of backboard surface
+             m.Box(new Vector3(0f, 0.8f, -0.15f - snowD/2f), Sz(snowW, snowH, snowD), snowMat);
+         }
         // front strap – reinforces the rack, anchored to the posts
         var strapMat = DecorPalette.Metal(new Color(0.28f, 0.28f, 0.26f));
         m.Box(new Vector3(0f, 0.95f, -0.045f), Sz(1.84f, 0.03f, 0.01f), strapMat);
