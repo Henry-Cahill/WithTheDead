@@ -6348,7 +6348,8 @@ you want to see in game. Indent extra lines under a task to add detail.
   Step 8: Ensure the container’s collider (the existing `sb.Collider` call) still encloses the entire object; no code changes needed because the collider already covers the full hull dimensions.
   Done when: In‑game the shipping containers (the “else” branch objects) visibly feature a thin rust‑stained door flush with the front face, complete with two pairs of small rusted hinges, a vertical rusted handle, and a muted brown weathered label near the top. All new parts use the existing rust materials (`ZoneKit.RustDark`) or tinted rust (`ZoneKit.V`) and stay within the container’s existing collider; no other objects or gameplay behavior are altered.
   - 11:38 landed by 0htsserver in 10.2 min: Implemented detailed visual enhancements for shipping containers:
-- [ ] Fix software bug (Priority)
+- [x] Fix software bug (Priority)
+  - 01:27 landed by hts-llm in 9.3 min: **Summary of changes**
 - [x] In Assets/Scripts/Rendering/IsoVisionShade.cs modify `LateUpdate()` to avoid setting the renderer and material every frame when the visible alpha hasn’t actually changed.
   Add a private field `float _prevAlpha;` to store the last‑applied alpha.
   After calculating `_alpha = Mathf.MoveTowards(_alpha, want, Time.deltaTime * 1.5f);` compare it to `_prevAlpha`.
