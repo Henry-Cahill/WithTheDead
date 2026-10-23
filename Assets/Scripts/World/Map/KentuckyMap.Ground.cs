@@ -179,6 +179,27 @@ if (water) {
                         }
                     }
                     RoadMarkingsBuilder.BuildForStreet(site, s, build);
+                    // Place period‑correct road signposts every 60 m on main roads.
+                    if (road && surf.Mat == DecorMaterials.Asphalt.Mat)
+                    {
+                        const float signInterval = 60f;
+                        foreach (Vector2 signPos in SampleAlong(piece, signInterval))
+                        {
+                            // Determine sign yaw: align with road direction at the sampled point.
+                            float signYaw = 0f;
+                            for (int i = 0; i + 1 < piece.Count; i++)
+                            {
+                                Vector2 a = piece[i], b = piece[i + 1];
+                                if (Vector2.Distance(a, signPos) + Vector2.Distance(signPos, b) - Vector2.Distance(a, b) < 0.01f)
+                                {
+                                    Vector2 d = (b - a).normalized;
+                                    signYaw = -Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
+                                    break;
+                                }
+                            }
+                            SignpostHelper.PlaceSignpost(site.Town.Out, site, signPos, signYaw);
+                        }
+                    }
                 site.TakeLine(piece, width * 0.5f + 0.3f);
                     if (road && width >= 7f) DashedLine(site.Town.Out, piece, StreetY + 0.003f);
                 }
