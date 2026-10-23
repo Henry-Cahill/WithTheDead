@@ -111,6 +111,7 @@ namespace CloneZ
 
         private void OnEnable()
     {
+if (!All.Contains(this)) All.Add(this);
         StartLifetimeIfNeeded();
     }
 
@@ -352,7 +353,7 @@ namespace CloneZ
                 StripCollider(go);
                 c = go.AddComponent<LootContainer>();
                 c.DisplayName = "Sack";
-                c.Type = ContainerType.Crate; // type is irrelevant for sacks, but Crate is benign
+                c.IsSack = true;
 c.SearchTime = 0f; c.Searched = searched;
             }
             else if (kind == (int)ContainerType.Corpse)
