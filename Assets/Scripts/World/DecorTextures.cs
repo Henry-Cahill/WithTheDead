@@ -34,7 +34,7 @@ namespace CloneZ
     /// </summary>
     internal static class DecorTextures
     {
-        /// <summary>World height a wall texture spans (its v runs 0..1 from floor to wall top), and the
+        private struct ScratchInfo { public int y, x, len; }
         /// horizontal distance it covers before repeating.</summary>
         public const float WallSpan = 2.8f;
 
@@ -542,6 +542,8 @@ if (y % Row == 0) c = Mul(color, 0.4f);
             const int S = 64;
             var px = new Color32[S * S];
             var rust = new Color(0.42f, 0.24f, 0.12f);
+
+            var scratches = new List<ScratchInfo>(S); // S = texture size, worst‑case bound
             for (int y = 0; y < S; y++)
                 for (int x = 0; x < S; x++)
                 {
@@ -553,18 +555,27 @@ if (y % Row == 0) c = Mul(color, 0.4f);
                     else if (spot < 0.030f) c = Mul(c, 0.65f); // brushed‑metal edge highlight
                     float r = Fbm(u, v, 4, 3, 121);
                     if (r > 0.55f) c = Color.Lerp(c, rust, Mathf.Clamp01((r - 0.55f) / 0.2f) * 0.8f);
-                    // Add tiny low‑gloss metal scratches
-                    float scr = R01(x, y, 124);
-                    if (scr < 0.004f) {
-                        int len = 2 + (int)(R01(x, y, 125) * 3);
-                        float shade = 0.55f;
-                        for (int i = 1; i < len; i++) {
-                            int ix = Wrap(x + i, S);
-                            px[y * S + ix] = C32(Mul(c, shade));
-                        }
-                    }
-                    px[y * S + x] = C32(c);
+                     // Add tiny low‑gloss metal scratches
+                     float scr = R01(x, y, 124);
+                     if (scr < 0.004f) {
+                         int len = 2 + (int)(R01(x, y, 125) * 3);
+                         scratches.Add(new ScratchInfo { y = y, x = x, len = len });
+                     }
+                      px[y * S + x] = C32(c);
                 }
+            // Apply scratches now that the base texture is fully generated.
+            foreach (var s in scratches)
+            {
+                // base colour at the scratch start pixel (already stored in px)
+                Color32 baseCol = px[s.y * S + s.x];
+                // shaded colour for the scratch line
+                Color32 shadeCol = C32(Mul(baseCol, 0.55f));
+                for (int i = 1; i < s.len; i++)
+                {
+                    int ix = Wrap(s.x + i, S);
+                    px[s.y * S + ix] = shadeCol;
+                }
+            }
             return Finish(key, S, S, px);
         }
 
