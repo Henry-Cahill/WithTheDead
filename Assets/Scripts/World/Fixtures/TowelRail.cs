@@ -19,6 +19,8 @@ namespace CloneZ
         private string _key;
         private Vector3 _point, _face, _normal;
         private Transform _towel;
+        private Color _dryColor; // original colour of the dry renderer
+        private Color _dampBaseColor; // original colour of the damp renderer
         private Renderer _dry, _damp;
         private float _dryAt = -1f;               // the in-game hour (TimeOfDay.Now) it's dry again; below 0 it is
         private float _roll, _shownRoll;
@@ -58,20 +60,32 @@ namespace CloneZ
         internal void SetTowel(Transform towel, Renderer dry, Renderer damp)
         {
             _towel = towel;
-            _dry = dry;
-            _damp = damp;
-            ShowLook();
-            ApplyRoll();
+_dry = dry;
+                _damp = damp;
+                if (dry != null) _dryColor = dry.material.GetColor("_Color");
+                if (damp != null) _dampBaseColor = damp.material.GetColor("_Color");
+                ShowLook();
+                ApplyRoll();
         }
 
 private void Update()
     {
-        // Update visual roll interpolation
-        if (_shownRoll != _roll)
-        {
-            _shownRoll = Mathf.MoveTowards(_shownRoll, _roll, SwingSpeed * Time.deltaTime);
-            ApplyRoll();
-        }
+// Gradual colour fade for the damp renderer while the towel is drying
+            if (_damp != null && _dry != null)
+            {
+                if (IsDamp)
+                {
+                    float total = CloneZConfig.TowelDampHours;
+                    float remaining = Mathf.Max(0f, _dryAt - TimeOfDay.Now);
+                    float t = Mathf.Clamp01(1f - remaining / total); // 0 = just wet, 1 = fully dry
+                    _damp.material.SetColor("_Color", Color.Lerp(_dryColor, _dampBaseColor, t));
+                }
+                else
+                {
+                    // Ensure fully dry colour when the towel is no longer damp
+                    _damp.material.SetColor("_Color", _dryColor);
+                }
+            }
         // Cache Time.time to avoid multiple property lookups per frame
         float now = Time.time;
         // Dryness check (original behavior)
@@ -100,7 +114,11 @@ private void Update()
         private void ShowLook()
         {
             bool damp = IsDamp;
-            if (_dry != null && _dry.enabled == damp) _dry.enabled = !damp;
+            if (!IsDamp && _damp != null)
+            {
+                // Instant‑dry actions (LetDry, DryOff) should snap the colour to dry immediately
+                _damp.material.SetColor("_Color", _dryColor);
+            }
             if (_damp != null && _damp.enabled != damp) _damp.enabled = damp;
         }
 
