@@ -16,8 +16,7 @@ namespace CloneZ
         public bool Online;
         public readonly List<HumanNpc> Live = new List<HumanNpc>();
 
-        /// <summary>Gets the loadout configuration for this squad, resolving it by ID and faction.</summary>
-        /// <summary>Gets the loadout configuration for this squad, resolving it by ID and faction.</summary>
+/// <summary>Gets the loadout configuration for this squad, resolving it by ID and faction.</summary>
         public HumanLoadout Loadout => HumanLoadouts.Resolve(LoadoutId, Faction, null, out _);
         /// <summary>Gets the effective combat power of the squad based on member count, loadout, and strength.</summary>
         public float Power => Members * Loadout.Power * Strength;
@@ -81,7 +80,7 @@ namespace CloneZ
                     if (s.Members <= 0) continue;
                     _squads.Add(new ALifeSquad
                     {
-                        Id = s.Id, Faction = s.Faction, LoadoutId = HumanLoadouts.DefaultIdFor(s.Faction, _rng), Members = s.Members,
+                        Id = s.Id, Faction = s.Faction, LoadoutId = string.IsNullOrEmpty(s.LoadoutId) ? HumanLoadouts.DefaultIdFor(s.Faction, _rng) : s.LoadoutId, Members = s.Members,
                         Position = HumanUtil.ClampToMap(s.Position, 8f), GoalLabel = s.Goal, Strength = s.Strength,
                     });
                 }
@@ -105,7 +104,7 @@ namespace CloneZ
             {
                 if (s.Online) Absorb(s);
                 if (s.Members <= 0) continue;
-                state.Squads.Add(new ALifeSquadState { Id = s.Id, Faction = s.Faction, Members = s.Members, Position = s.Position, Goal = s.GoalLabel, Strength = s.Strength });
+                state.Squads.Add(new ALifeSquadState { Id = s.Id, Faction = s.Faction, LoadoutId = s.LoadoutId, Members = s.Members, Position = s.Position, Goal = s.GoalLabel, Strength = s.Strength });
             }
             state.LastVisitUnix = System.DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         }

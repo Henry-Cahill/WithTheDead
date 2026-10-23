@@ -92,6 +92,15 @@ namespace CloneZ
                 Version = SaveVersion,
                 SavedAtUtc = DateTime.UtcNow.ToString("o"),
             };
+            // Initialise all collection fields – they are null by default and cause NRE when we Add().
+            data.Containers = new List<ContainerSave>();
+            data.Barricades = new List<BarricadeSave>();
+            data.House = new List<HousePieceSave>();
+            data.Farm = new List<FarmPlotSave>();
+            data.Water = new List<WaterSourceSave>();
+            data.Props = new List<PropSave>();
+            data.Furniture = new List<FurnitureSave>();
+            data.Fixtures = new List<FixtureSave>();
 
             if (TimeOfDay.Instance != null)
             {
@@ -329,15 +338,15 @@ namespace CloneZ
         private static ContainerSave CaptureContainer(LootContainer c)
         {
 var save = new ContainerSave
-                    {
-                        Kind = c.IsSack ? LootContainer.KindSack : (int)c.Type,
-                        Position = c.transform.position,
-                        Yaw = c.transform.eulerAngles.y,
-                        Searched = c.Searched,
-                        Lifetime = c.Lifetime,
-                        FixtureKey = c.FixtureKey,
-                        Items = new List<StackSave>(),
-                    };
+{
+    Kind = c.IsSack ? LootContainer.KindSack : (int)c.Type,
+    Position = c.transform.position,
+    Yaw = c.transform.eulerAngles.y,
+    Searched = c.Searched,
+    Lifetime = c.Lifetime,
+    FixtureKey = c.FixtureKey,
+    Items = new List<StackSave>(),
+};
             if (c.Contents != null)
             {
                 List<ItemStack> stacks = c.Contents.Stacks;
@@ -359,6 +368,16 @@ var save = new ContainerSave
         public static void ApplyWorld(SaveData data, Transform world)
         {
             if (data == null) return;
+
+            if (data.Containers == null) data.Containers = new List<ContainerSave>();
+            if (data.Barricades == null) data.Barricades = new List<BarricadeSave>();
+            if (data.House == null) data.House = new List<HousePieceSave>();
+            if (data.Farm == null) data.Farm = new List<FarmPlotSave>();
+            if (data.Water == null) data.Water = new List<WaterSourceSave>();
+            if (data.Props == null) data.Props = new List<PropSave>();
+            if (data.Furniture == null) data.Furniture = new List<FurnitureSave>();
+            if (data.Fixtures == null) data.Fixtures = new List<FixtureSave>();
+
 
             if (TimeOfDay.Instance != null) TimeOfDay.Instance.RestoreClock(data.Day, data.Hour);
             if (WeatherSystem.Instance != null) WeatherSystem.Instance.Restore((Weather)data.Weather, data.Rain, data.Fog, data.Cloud);
@@ -443,6 +462,7 @@ var save = new ContainerSave
         public static void ApplyFixtures(SaveData data)
         {
             if (data == null) return;
+            if (data.Fixtures == null) data.Fixtures = new List<FixtureSave>();
             Interactable.RestoreAll(data.Fixtures, data.Containers);
         }
 

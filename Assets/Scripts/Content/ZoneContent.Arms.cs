@@ -55,6 +55,21 @@ namespace CloneZ
             Ammo(b, "ammo762r_ap", "7.62x54R AP", "762r", 90f, 68f, 0.70f, 0.10f, "Armour‑piercing. Designed to breach hardened plates, but the recoil hurts.", 1, 20);
             // 5.45×39 tracer – flares the bullet’s path, useful for night fire or signaling.
             Ammo(b, "ammo545_tracer", "5.45x39 Tracer", "545", 48f, 30f, 0.40f, 0.20f, "Brightly‑lit rounds. Leaves a short red tail, handy for spotting where you’ve shot.", 1, 90);
+            // 9×19 incendiary – burns in the cold, useful for lighting abandoned cabins.
+            Ammo(b, "ammo9mm_inc", "9mm Incendiary", "9x19", 55f, 25f, 0.40f, 0.45f,
+                "A paper‑cased round that bursts into flame on impact. Leaves a brief orange‑smoke plume.");
+            // 12 gauge incendiary – “fire‑slug” for clearing brush and freezing zombies in place.
+            Ammo(b, "ammo12g_inc", "12g Incendiary Shells", "12g", 48f, 6f, 0.30f, 0.40f,
+                "A thin‑walled shell packed with a flammable mixture. Explodes with a puff of fire.");
+            // 5.45×39 “Cold‑Snap” – extra‑cold powder that contracts metal, improving penetration in sub‑zero temps.
+            Ammo(b, "ammo545_cold", "5.45×39 Cold‑Snap Rounds", "545", 58f, 48f, 0.55f, 0.12f,
+                "Specially formulated propellant that keeps its velocity in freezing air.");
+            // 7.62×54R “Heavy‑Velocity” – hand‑loaded with extra propellant, louder but dead‑lier.
+            Ammo(b, "ammo762r_hv", "7.62×54R Heavy‑Velocity", "762r", 95f, 70f, 0.75f, 0.15f,
+                "Over‑charged cartridge, rattles the barrel and tears through armor.");
+            // 9×19 “Fuel‑Gel” – a sticky, gel‑filled round that clings to surfaces, great for makeshift traps.
+            Ammo(b, "ammo9mm_fuel", "9mm Fuel‑Gel", "9x19", 50f, 20f, 0.45f, 0.50f,
+                "Gel‑filled bullet that splatters on impact, leaving a sticky residue.");
             // Signal flares (the flare gun's "ammunition").
             ItemDef flare = b.Item("flare", "Signal Flare", ItemCategory.Ammo, 0.15f, 6, 1, 1,
                 "A red signal flare. Fire it at a landing zone and a helicopter comes — and everyone nearby sees where you are.");

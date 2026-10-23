@@ -73,6 +73,17 @@ namespace CloneZ
                 into.Add(new InteractAction("Read the safety notice", c => c.Notify("A yellowed placard reads: ‘Do not attempt to pump fuel when temperature drops below –10 °C – risk of valve seize.’")));
                 into.Add(new InteractAction("Read the faded ad", c => c.Notify("The peeling poster advertises: ‘Coke‑Zero – the perfect cold companion for a winter night.’")));
                 into.Add(new InteractAction("Read the employee’s scribble", c => c.Notify("In shaky handwriting: ‘My dad said the pump’s heart still beats – maybe the cash‑register will open one day.’")));
+                // Added flavour‑text actions (local lore, safety tip, maintenance log, family reminiscence, rumor flyer)
+                // Theme: local lore – a faded newspaper clipping about the town's founding
+                into.Add(new InteractAction("Read the faded newspaper clipping", c => c.Notify("The yellowed sheet reads: ‘In ’84 the old Miller farm survived the first snowstorm, thanks to a hidden coal stash.’")));
+                // Theme: survival tip – a warning from a former employee about cold‑fuel interactions
+                into.Add(new InteractAction("Read the safety tip note", c => c.Notify("A hand‑written note cautions: ‘Never store gasoline in the pump when temperatures dip below –5 °C – it can freeze the valve.’")));
+                // Theme: maintenance note – a rusted maintenance log entry
+                into.Add(new InteractAction("Read the rusted maintenance log", c => c.Notify("Scrawled in oily ink: ‘15‑Nov‑1992 – replaced hose clamps, but the sealant cracked after the blizzard.’")));
+                // Theme: family reminiscence – a child's drawing taped to the pump
+                into.Add(new InteractAction("Read the child's drawing", c => c.Notify("A crayon sketch of a smiling family standing beside a red pickup, captioned ‘Our happy farm.’ The corners are frayed by wind.")));
+                // Theme: whispered rumor – a torn flyer about a nearby shelter
+                into.Add(new InteractAction("Read the torn flyer", c => c.Notify("The torn flyer promises: ‘Safe haven at the old school gym, north‑west of town. Bring firewood.’ The ink is smudged, but the promise feels real.")));
 
 
             }

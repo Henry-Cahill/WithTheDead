@@ -82,6 +82,7 @@ namespace CloneZ
         private bool _open, _flagUp;
         private int _read;   // deliveries read so far
         private List<bool> _important; // one entry per delivery, true = player marked it important
+        private List<string> _playerNotes; // personal notes left by the survivor
         private string[][] _post;   // a raid house's own post, all of it come already (null: the starter home's days of post)
 
         private void Awake()
@@ -89,6 +90,7 @@ namespace CloneZ
             // Ensure the importance list matches the number of deliveries for this mailbox
             var length = Post.Length;
             _important = new List<bool>(new bool[length]);
+            _playerNotes = new List<string>();
         }
 
         public override string DisplayName => "Mailbox";
@@ -140,26 +142,38 @@ namespace CloneZ
         }
 
         // How many deliveries this box holds by now (a raid house's post has all come).
-        private int Come => _post != null ? _post.Length : Delivered;
+        private int BaseDeliveries => _post != null ? _post.Length : Delivered;
+        private int TotalDeliveries => BaseDeliveries + _playerNotes.Count;
+        private int Come => TotalDeliveries;
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
-            InteractAction check = _read < Come ? ReadNext() : new InteractAction("Check the mail", CheckEmpty);
+            InteractAction check = _read < TotalDeliveries ? ReadNext() : new InteractAction("Check the mail", CheckEmpty);
             InteractAction close = _open ? new InteractAction("Close the mailbox", c => SetOpen(false, false)) : null;
-            if (close != null && _read >= Come) into.Add(close);
+            if (close != null && _read >= TotalDeliveries) into.Add(close);
             into.Add(check);
-            // Offer to read all remaining mail at once when more than one unread delivery remains
-            if (_read < Come - 1)
-                into.Add(new InteractAction("Read all mail", c =>
+            if (ctx.Inventory != null && ctx.Inventory.Has("paper"))
                 {
-                    SetOpen(true, false);
-                    for (int i = _read; i < Come; i++)
-                        foreach (var line in Post[i])
-                            c.Notify(line);
-                    _read = Come;
-                    c.Notify("All mail has been read.");
-                }));
-            if (close != null && _read < Come) into.Add(close);
+                    into.Add(new InteractAction("Leave a note", c =>
+                    {
+                        // consume one paper
+                        // Find a stack of paper and remove one unit
+                        var inv = ctx.Inventory;
+                        // Find first stack with ID "paper"
+                        foreach (var stack in inv.Inventory.Stacks)
+                        {
+                            if (stack.Def != null && stack.Def.Id == "paper")
+                            {
+                                inv.Inventory.Remove(stack, 1);
+                                break;
+                            }
+                        }
+                        // Add placeholder note
+                        _playerNotes.Add("A handwritten note from you: \u201CStay safe, stay warm.\u201D");
+                        c.Notify("You slide a personal note into the mailbox. It will arrive with the next batch of mail.");
+                    }));
+                }
+            if (close != null && _read < TotalDeliveries) into.Add(close);
             into.Add(_flagUp
                 ? new InteractAction("Lower the flag", c => SetFlag(c, false))
                 : new InteractAction("Raise the flag", c => SetFlag(c, true)));
@@ -180,7 +194,7 @@ namespace CloneZ
             }
             into.Add(new InteractAction("Inspect the mailbox", c =>
             {
-                c.Notify($"Mailbox is {(_open ? "open" : "closed")}, flag is {(_flagUp ? "up" : "down")}, {(_read < Come ? $"{Come - _read} unread letters." : "no more mail.")}");
+                c.Notify(string.Format("Mailbox is {0}, flag is {1}, {2}", _open ? "open" : "closed", _flagUp ? "up" : "down", _read < TotalDeliveries ? $"{TotalDeliveries - _read} unread letters." : "no more mail."));
             }));
             // If any letters have been marked, let the player review them
             if (_important != null && _important.Exists(b => b))
@@ -201,7 +215,7 @@ namespace CloneZ
                     c.Notify(sb.ToString());
                 }));
             }
-            if (_read >= Come)
+            if (_read >= TotalDeliveries)
             {
                 into.Add(new InteractAction("Search the mailbox", c =>
                 {
@@ -213,7 +227,11 @@ namespace CloneZ
         // Reading the oldest unread delivery: the door drops open and the letter's lines come up one by one.
         private InteractAction ReadNext()
         {
-            string[] lines = Post[_read];
+            string[] lines;
+            if (_read < BaseDeliveries)
+                lines = Post[_read];
+            else
+                lines = new[] { _playerNotes[_read - BaseDeliveries] };
             int shown = 0;
             var a = new InteractAction("Check the mail")
                 .Timed(lines.Length * CloneZConfig.MailLineSeconds, "Reading the mail", HumanoidActivity.Use);
@@ -229,8 +247,8 @@ namespace CloneZ
             };
             a.Run = c =>
             {
-                _read = Mathf.Min(_read + 1, Post.Length);
-                if (_read < Come) {
+                _read = Mathf.Min(_read + 1, TotalDeliveries);
+                if (_read < TotalDeliveries) {
                     c.Notify("There's more post underneath.");
                 } else {
                     // Subtle hope after the final piece of mail
@@ -277,7 +295,10 @@ namespace CloneZ
             save.State = (_open ? 1 : 0) | (_flagUp ? 2 : 0);
             save.A = _read;
             // Serialize importance list as a comma‑separated "0/1" string
-            save.Text = string.Join(",", _important.ConvertAll(b => b ? "1" : "0"));
+            var importance = string.Join(",", _important.ConvertAll(b => b ? "1" : "0"));
+            // Serialize player notes as a semicolon‑separated list
+            var notes = string.Join(";", _playerNotes);
+            save.Text = importance + "|" + notes;
         }
 
         public override void RestoreState(FixtureSave save)
@@ -288,11 +309,17 @@ namespace CloneZ
             if (_flag != null) _flag.SetOpen(_flagUp, true);
             // Deserialize importance list; if the saved string is malformed, fall back to all false
             _important = new List<bool>(new bool[Post.Length]);
+            _playerNotes = new List<string>();
             if (!string.IsNullOrEmpty(save.Text))
             {
-                var parts = save.Text.Split(',');
-                for (int i = 0; i < Mathf.Min(parts.Length, _important.Count); i++)
-                    _important[i] = parts[i] == "1";
+                var split = save.Text.Split('|');
+                // first part = importance
+                var impParts = split[0].Split(',');
+                for (int i = 0; i < Mathf.Min(impParts.Length, _important.Count); i++)
+                    _important[i] = impParts[i] == "1";
+                // second part = notes (may be empty)
+                if (split.Length > 1 && !string.IsNullOrEmpty(split[1]))
+                    _playerNotes.AddRange(split[1].Split(';'));
             }
         }
     }

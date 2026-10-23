@@ -45,7 +45,7 @@ namespace CloneZ
                                     "The Choir sings to it. The ones who reach it get what they ask for... or what they deserve.",
                                     "My brother went looking. He left a journal page in Mirelock. Find it, if you're mad enough." } },
         };
-        public static readonly string[] GuideHints = new[] { "Take the left fork near the old mill.", "Avoid the frozen river – the ice cracks under weight.", "The road by the burnt barn saves you an hour.", "Keep to the high ground when the fog rolls in.", "Follow the charcoal markers; they’re the only reliable trail." };
+        public static readonly string[] GuideHints = new[] { "Take the left fork near the old mill.", "Avoid the frozen river – the ice cracks under weight.", "The road by the burnt barn saves you an hour.", "Keep to the high ground when the fog rolls in.", "Follow the charcoal markers; they’re the only reliable trail.", "Cross the cracked bridge at dawn; the ice holds till the sun climbs.", "Skirt the frozen quarry – the snow muffles any footsteps, but the wind whistles warnings.", "Take the old logging road east of the sawmill; the trees still whisper about the Zone.", "Head south to the abandoned farm, then cut through the willow thicket before the fog settles.", "Watch for the broken lantern on the ridge; it marks a safe perch above the crevasse.", "Run the hidden trail behind the ruined chapel; the stones are warm from last night’s fire." };
 
         public static HubNpc Spawn(Transform parent, Vector3 position, Vector3 lookAt, string name, string faction, Role role, string script, bool seated = false)
         {

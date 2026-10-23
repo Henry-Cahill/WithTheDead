@@ -35,6 +35,7 @@ public Transform Seat { get; private set; }
         private Transform _bodyRoot;
         private readonly Transform[] _wheels = new Transform[4];
         private Light[] _lights;
+        private bool _headlightsOn;
         private AudioSource _engine;
         private float _steer, _noiseAt, _fuelWarnAt, _wheelSpin;
         private readonly Dictionary<Actor, float> _hitAt = new Dictionary<Actor, float>();
@@ -147,7 +148,8 @@ public static Vehicle Spawn(int spot, Vector3 at, float yaw, int seed)
                 l.range = 28f;
                 l.intensity = 0f;
                 l.color = new Color(1f, 0.95f, 0.8f);
-                _lights[i] = l;
+                _headlightsOn = false;
+                UpdateHeadlights(); // ensure lights are off at spawn
             
             }
             // Side‑mirror housings (created once after headlights)
@@ -233,6 +235,13 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
                 var msg = Missing.Length > 0 ? "Car needs " + Missing : "Car looks fine";
                 GameEvents.RaiseToast(msg);
             }));
+            into.Add(new InteractAction(_headlightsOn ? "Turn headlights off" : "Turn headlights on", c =>
+            {
+                _headlightsOn = !_headlightsOn;
+                UpdateHeadlights();
+                Sfx.Play(SfxIds.Crank, transform.position, 0.3f, 1f, 10f);
+                GameEvents.RaiseToast(_headlightsOn ? "Headlights on." : "Headlights off.");
+            }).DisabledIf(!Battery, "No battery"));
             float work = ctx.Skills != null ? 1f / ctx.Skills.MechanicsMult : 1f;
             Part(into, inv, "carwheel", Wheels < 4, "Fit a wheel", 8f * work, () => { Wheels++; });
             Part(into, inv, "carbattery", !Battery, "Fit the battery", 5f * work, () => { Battery = true; });
@@ -372,11 +381,19 @@ public bool TryStart(out string why)
             return true;
         }
 
+        private void UpdateHeadlights()
+        {
+            if (_lights == null) return;
+            foreach (Light l in _lights)
+                if (l != null) l.intensity = _headlightsOn ? 2.2f : 0f;
+        }
         private void UpdateEngineFx()
         {
             if (_lights != null) foreach (Light l in _lights) if (l != null) l.intensity = EngineOn ? 2.2f : 0f;
             if (EngineOn && _engine == null) _engine = Sfx.Loop(SfxIds.EngineLoop, transform, 0.9f, 70f);
             else if (!EngineOn && _engine != null) { Sfx.Stop(_engine); _engine = null; }
+            // ensure headlights follow the current toggle
+            UpdateHeadlights();
         }
 
         private void OnDestroy() { if (_engine != null) Sfx.Stop(_engine); }

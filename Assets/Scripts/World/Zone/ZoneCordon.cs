@@ -275,6 +275,18 @@ namespace CloneZ
             s_HasGate = true;
         }
 
+        /// <summary>Turn all tower searchlights on or off.</summary>
+        internal static void SetSearchlights(bool enabled)
+        {
+            foreach (var sweep in UnityEngine.Object.FindObjectsOfType<SearchlightSweep>())
+            {
+                sweep.enabled = enabled;
+                var light = sweep.GetComponent<Light>();
+                if (light != null) light.enabled = enabled;
+            }
+            s_SearchlightsDisabled = !enabled;
+        }
+
         /// <summary>Warning signs and coils of wire along the belt.</summary>
         public static void DressBelt(Transform world, ZoneDef zone, ZoneSiteMap site, System.Random rng)
         {

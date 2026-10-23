@@ -26,6 +26,7 @@ namespace CloneZ
         private float _roll, _shownRoll;
         private float _wallHealth;
         private float _calmAgainAt;
+        private bool _secured; // true after player secures the picture, reduces future knock chance
         private float _nextCheck;
 
         public override string DisplayName => _name;
@@ -92,7 +93,8 @@ namespace CloneZ
             _nextCheck = Time.time + CloneZConfig.SwitchSyncInterval;
             // A blow to the wall can knock the picture askew.
             float hp = _wall.Health;
-            if (hp < _wallHealth - 0.01f && Random.value < CloneZConfig.PictureKnockChance)
+            float knockChance = _secured ? CloneZConfig.PictureKnockChance * 0.5f : CloneZConfig.PictureKnockChance;
+            if (hp < _wallHealth - 0.01f && Random.value < knockChance)
             {
                 float knock = Random.Range(3f, 7f) * (Random.value < 0.5f ? -1f : 1f);
                 _roll = Mathf.Clamp(_roll + knock, -CloneZConfig.PictureMaxRoll, CloneZConfig.PictureMaxRoll);
@@ -110,7 +112,7 @@ namespace CloneZ
             into.Add(new InteractAction(_lookLabel, Look));
             into.Add(new InteractAction("Tilt the picture", Tilt));
             into.Add(new InteractAction("Inspect the picture", Inspect));
-            if (IsCrooked) into.Add(new InteractAction(_straightenLabel, Straighten));
+            if (!_secured) into.Add(new InteractAction("Secure the picture", Secure));
         }
 
         private void Inspect(InteractContext ctx)
@@ -138,11 +140,13 @@ namespace CloneZ
             }
         }
 
-        private void Straighten(InteractContext ctx)
+        private void Secure(InteractContext ctx)
         {
-            _roll = 0f;
-            ctx.Notify("You nudge the frame level. Better.");
-            if (_calming && Time.time >= _calmAgainAt) {
+            _secured = true;
+            ctx.Notify("You tighten the frame; it feels steadier now.");
+            // calming boost on securing
+            if (_calming && Time.time >= _calmAgainAt)
+            {
                 LightingFixtures.Calm(ctx, CloneZConfig.PictureCalm);
                 _calmAgainAt = Time.time + CloneZConfig.PictureCalmCooldown;
             }
@@ -150,13 +154,14 @@ namespace CloneZ
 public override void CaptureState(FixtureSave save)
         {
             save.State = 1;
-            save.A = _roll;
+            if (_secured) save.State |= 2; // reserve bit 1 for secured flag
+            save.B = _secured ? 1 : 0; // store as int (0/1)
         }
 
         public override void RestoreState(FixtureSave save)
         {
             if ((save.State & 1) == 0) return;
-            _roll = _shownRoll = Mathf.Clamp(save.A, -CloneZConfig.PictureMaxRoll, CloneZConfig.PictureMaxRoll);
+            if ((save.State & 2) != 0) _secured = save.B != 0;
             Apply();
         }
     }

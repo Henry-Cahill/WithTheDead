@@ -70,6 +70,10 @@ namespace CloneZ
         public static Surf Linoleum(Color a, Color b, bool checker) => Planar(DecorTextures.Linoleum(a, b, checker), 1.2f, 0.35f);
         /// <summary>Creates a wood floor material with the given colour.</summary>
         public static Surf WoodFloor(Color c) => Planar(DecorTextures.WoodFloor(c), 2.4f, 0.3f);
+        /// <summary>Low‑gloss dark‑brown rope texture for porch swings.</summary>
+        public static Surf Rope(Color c) => DecorPalette.Matte(c);
+        /// <summary>Simple brushed‑metal surface for bracket supports.</summary>
+        public static Surf Metal(Color c) => DecorPalette.Metal(c);
         /// <summary>Creates a carpet material with the given colour.</summary>
         public static Surf Carpet(Color c) => Planar(DecorTextures.Carpet(c), 1f, 0.02f);
         /// <summary>Creates a planks material with the given colour.</summary>

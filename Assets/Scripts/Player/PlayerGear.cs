@@ -75,6 +75,7 @@ namespace CloneZ
         private PlayerClothing _clothing;
         private PlayerInventory _inventory;
         private bool _subscribed;
+        private bool _wornDirty = true;
         private Keyboard _keyboard;
 
         // Night vision (the Eyes slot): the precise charge in condition units, and the whole number last
@@ -131,6 +132,9 @@ namespace CloneZ
         {
             if (_subscribed || Pack == null) return;
             Pack.Changed += MarkPackDirty;
+            // Subscribe to clothing changes to mark worn state dirty
+            if (Clothing != null) Clothing.Changed += MarkWornDirty;
+
             _subscribed = true;
         }
 
@@ -139,25 +143,28 @@ namespace CloneZ
             if (!_subscribed) return;
             _subscribed = false;
             if (_inventory != null) _inventory.Changed -= MarkPackDirty;
+            if (Clothing != null) Clothing.Changed -= MarkWornDirty;
         }
 
         private void MarkPackDirty() => _packDirty = true;
 
-        protected virtual void Update()
+        private void MarkWornDirty() => _wornDirty = true;
+
+protected virtual void Update()
         {
             if (!_subscribed) Subscribe();
             if (_stats != null && _stats.IsDead) return;
             float dt = Time.deltaTime;
 
-            SyncWorn();
+            if (_wornDirty) { SyncWorn(); _wornDirty = false; }
             if (_packDirty) SyncPack();
             else if (_flash != null && _flash.Condition != _flashWritten) LoadFlashCharge();   // recharged from outside
 
             if (!UIState.GameplayBlocked)
             {
-            if (_keyboard == null) _keyboard = Keyboard.current;
-            if (_keyboard != null)
-            {
+                if (_keyboard == null) _keyboard = Keyboard.current;
+                if (_keyboard != null)
+                {
                     if (_keyboard.nKey.wasPressedThisFrame) ToggleNightVision();
                     if (_keyboard.lKey.wasPressedThisFrame) ToggleFlashlight();
                 }

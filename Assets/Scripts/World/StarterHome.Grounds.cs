@@ -136,6 +136,50 @@ namespace CloneZ
 
             // The front stoop and welcome mat.
             solid.Box(new Vector3(4.0f, 0.035f, 2.6f), new Vector3(1.9f, 0.07f, 0.6f), DecorMaterials.Concrete);
+            // subtle expansion joint – a thin dark line along the centre
+            solid.Ellipsoid(
+                new Vector3(4.0f, 0.069f, 2.6f), // centre (just below top surface)
+                new Vector3(1.78f, 0.0015f, 0.006f), // long, thin, slightly raised
+                DecorPalette.Matte(new Color(0.45f,0.44f,0.43f)),
+                4, 2);
+            // weather‑worn concrete patch, slightly offset
+            solid.Ellipsoid(
+                new Vector3(4.0f - 0.55f + (float)rng.NextDouble() * 0.2f,
+                    0.069f,
+                    2.6f - 0.20f + (float)rng.NextDouble() * 0.15f),
+                new Vector3(0.25f, 0.004f, 0.12f),
+                DecorPalette.Matte(new Color(0.38f,0.37f,0.36f)),
+                4, 2);
+            // three tiny gravel stones near the front edge
+            for (int i = 0; i < 3; i++)
+            {
+                float ox = (float)rng.NextDouble() * 0.4f - 0.2f; // ±0.2 m around centre X
+                float oz = (float)rng.NextDouble() * 0.2f - 0.1f; // ±0.1 m around centre Z
+                solid.Cylinder(
+                    new Vector3(4.0f + ox, 0.038f, 2.6f + oz),
+                    0.004f, 0.008f, 6,
+                    DecorPalette.Matte(new Color(0.55f,0.55f,0.53f)),
+                    Quaternion.Euler(0f, (float)rng.NextDouble() * 360f, 0f));
+            }
+            // metal plate base (loose fastener) on left‑front corner
+            solid.Box(
+                new Vector3(4.0f - 0.92f, 0.069f, 2.6f - 0.28f),
+                new Vector3(0.025f, 0.001f, 0.012f),
+                DecorPalette.Metal(new Color(0.60f,0.60f,0.55f)));
+            // nail head
+            solid.Cylinder(
+                new Vector3(4.0f - 0.92f, 0.070f, 2.6f - 0.28f),
+                0.0015f, 0.006f, 8,
+                DecorPalette.Metal(new Color(0.60f,0.60f,0.55f)),
+                Quaternion.Euler(90f,0f,0f));
+            // lone weed sprout
+            solid.Ellipsoid(
+                new Vector3(4.0f + 0.68f + (float)rng.NextDouble() * 0.06f,
+                    0.071f,
+                    2.6f - 0.12f + (float)rng.NextDouble() * 0.04f),
+                new Vector3(0.02f, 0.03f, 0.02f),
+                DecorPalette.Gloss(new Color(0.18f,0.30f,0.13f)),
+                4, 2);
             Doormat(world, solid, new Vector3(4.0f, 0.07f, 2.62f));
 
             Mailbox(world, solid, new Vector3(6.1f, 0.03f, 1.95f));

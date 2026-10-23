@@ -32,6 +32,7 @@ namespace CloneZ
 
         private float _lastHours;                   // world hour the fill sim last advanced
         private Transform _waterFill;               // the barrel's water disc (scales with the level)
+        private Transform _waterFloat;               // visual float that moves with the water level
 
         private static readonly Color BarrelWater = new Color(0.34f, 0.5f, 0.52f);
         // Cached material instances for water visual states to avoid per-frame material allocation.
@@ -361,12 +362,26 @@ namespace CloneZ
             m.Box(new Vector3(0f, 0.03f, -0.15f), new Vector3(0.34f, 0.012f, 0.024f), DecorPalette.Matte(new Color(0.45f, 0.35f, 0.25f)));
 
 
-            var water = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-            water.name = "Water";
-            water.transform.SetParent(transform, false);
-            water.GetComponent<Renderer>().sharedMaterial = _waterNormalMaterial;
-            Strip(water);
-            _waterFill = water.transform;
+var water = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                    water.name = "Water";
+                    water.transform.SetParent(transform, false);
+                    water.GetComponent<Renderer>().sharedMaterial = _waterNormalMaterial;
+                    Strip(water);
+                    _waterFill = water.transform;
+
+                    // wooden float that rides the water surface – one primitive
+                    var floatObj = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                    floatObj.name = "Float";
+                    floatObj.transform.SetParent(transform, false);
+                    // size: 2 cm diameter, 3 cm tall
+                    floatObj.transform.localScale = new Vector3(0.02f, 0.03f, 0.02f);
+                    // place it near the interior wall, a little below the expected water surface
+                    floatObj.transform.localPosition = new Vector3(r - 0.015f, 0.05f, 0f);
+                    // wood colour – slight random tint from the same strapRand used for other barrel details
+                    float woodShade = 0.6f + 0.1f * (float)strapRand.NextDouble();
+                    floatObj.GetComponent<Renderer>().sharedMaterial = DecorPalette.Matte(new Color(woodShade, woodShade * 0.9f, woodShade * 0.7f)).Mat;
+                    Strip(floatObj);
+                    _waterFloat = floatObj.transform;
         }
 
         // The inside of the barrel's wall, facing inward (seen past the open top).
@@ -443,8 +458,21 @@ namespace CloneZ
             if (level <= 0.02f) return;
 
             float h = Mathf.Lerp(0.04f, 0.88f, level);           // depth of water standing in the barrel
-            _waterFill.localScale = new Vector3(0.62f, h * 0.5f, 0.62f);
-            _waterFill.position = transform.position + new Vector3(0f, 0.025f + h * 0.5f, 0f);
+_waterFill.localScale = new Vector3(0.62f, h * 0.5f, 0.62f);
+                _waterFill.position = transform.position + new Vector3(0f, 0.025f + h * 0.5f, 0f);
+
+                // update float position and visibility
+                if (_waterFloat != null)
+                {
+                    bool showFloat = level > 0.02f;
+                    _waterFloat.gameObject.SetActive(showFloat);
+                    if (showFloat)
+                    {
+                        // water surface Y = base + half the scaled water height + small offset so the float sits half out of the water
+                        float surfaceY = transform.position.y + 0.025f + h * 0.5f + 0.015f;
+                        _waterFloat.position = new Vector3(_waterFloat.position.x, surfaceY, _waterFloat.position.z);
+                    }
+                }
             // Highlight the water while the barrel is essentially full; back to plain water once drawn from.
             var rend = _waterFill.GetComponent<Renderer>();
             if (rend != null)

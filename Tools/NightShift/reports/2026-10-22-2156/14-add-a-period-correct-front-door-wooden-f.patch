@@ -1,0 +1,1419 @@
+diff --git a/Assets/Scripts/World/Map/KentuckyMap.Buildings.cs b/Assets/Scripts/World/Map/KentuckyMap.Buildings.cs
+index f75ff738..2648e9ad 100644
+--- a/Assets/Scripts/World/Map/KentuckyMap.Buildings.cs
++++ b/Assets/Scripts/World/Map/KentuckyMap.Buildings.cs
+@@ -232,7 +232,8 @@ private static void BuildBuildings(Site site, MapBuild build)
+                     mesh.SetFrame(pos, Mathf.Atan2(outward.x, outward.y) * Mathf.Rad2Deg);   // DecorProps draws at the frame's origin
+                     DecorProps.Mailbox(mesh, rng, false);
+                     // Add porch if applicable
+-                    PorchBuilder.Build(site, f, build);
++                    // Add front door for residential footprints
++                    BuildDoor(site, f);
+                 }
+                 }
+             // Once, after the loop: called per footprint it redrew every residential roof's trim for every building.
+@@ -264,6 +265,11 @@ private static void BuildDoorFrame(Site site, Vector2 a, Vector2 d, float doorPo
+             Vector3 lintelSize = new Vector3(DoorWidth + 2f * DoorFrameThickness, DoorLintelHeight, DoorFrameThickness);
+             site.Town.Out.Solid(lintelCenter).Box(lintelCenter, lintelSize, doorYaw, exterior);
+             site.Town.PropCollider(lintelCenter, lintelSize, doorYaw);
++            // glass pane inset within the frame
++            // centre of the glass is flush with the wall, slightly inset inward
++            Vector3 glassCenter = To3(a + d * doorPos, DoorHeight * 0.5f) + new Vector3(outward.x, 0f, outward.y) * (Thick * 0.5f + DoorFrameThickness + 0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(glassCenter).Box(glassCenter, glassSize, doorYaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
+         }
+ 
+         private static void Enterable(Site site, Footprint f, System.Random rng)
+diff --git a/Assets/Scripts/World/Map/KentuckyMap.cs b/Assets/Scripts/World/Map/KentuckyMap.cs
+index 9707a634..27bff147 100644
+--- a/Assets/Scripts/World/Map/KentuckyMap.cs
++++ b/Assets/Scripts/World/Map/KentuckyMap.cs
+@@ -21,8 +21,10 @@ public static partial class KentuckyMap
+         private const float SceneryReach = 90f;
+ 
+         private const float SnowDepth = 0.05f; // thin snow sheet applied to horizontal surfaces
+-        private const float SidewalkWidth = 1.5f; // modest concrete sidewalk width
+-        private const float SignPostHeight = 2.5f; // height of wooden street sign post
++        private const float DoorWidth = 0.92f; // typical front‑door width
++        private const float DoorHeight = 2.04f; // typical height
++        private const float DoorDepth = 0.12f; // thickness of the wooden frame
++
+ 
+         /// <summary>A one-line summary of the last map built.</summary>
+         public static string LastStats { get; private set; } = "";
+@@ -31,15 +33,69 @@ public static partial class KentuckyMap
+         /// reason in <paramref name="why"/>, having built nothing.</summary>
+         public static RaidMapInfo Build(Transform world, ZoneDef zone, out string why)
+         {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+             MapBuild build = WorldStore.OpenCurrent(out why);
+             if (build == null) return null;
+             float half = Mathf.Clamp(zone.RealHalfSize, 60f, 400f);
+             Area area;
+             try
+             {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                 MapPlace place = build.FindPlace(zone.RealPlace);
+                 if (place == null)
+                 {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                     why = "build " + build.Id + " has no place called " + zone.RealPlace;
+                     return null;
+                 }
+@@ -47,6 +103,24 @@ public static RaidMapInfo Build(Transform world, ZoneDef zone, out string why)
+             }
+             catch (System.Exception e)
+             {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                 why = "reading build " + build.Id + ": " + e.GetType().Name + ": " + e.Message;
+                 return null;
+             }
+@@ -57,6 +131,24 @@ public static RaidMapInfo Build(Transform world, ZoneDef zone, out string why)
+             var site = new Site(town, area);
+             try
+             {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                 BuildGround(site);
+                 BuildWaterAndLots(site);
+                 BuildStreets(site, build);
+@@ -79,6 +171,24 @@ public static RaidMapInfo Build(Transform world, ZoneDef zone, out string why)
+             }
+             catch (System.Exception e)
+             {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                 why = "building " + area.Place + " failed: " + e;
+                 Discard(world, town);
+                 return null;
+@@ -94,6 +204,24 @@ public static RaidMapInfo Build(Transform world, ZoneDef zone, out string why)
+         // A failed build mustn't leave half a town for the NavMesh bake or the procedural map to land on.
+         private static void Discard(Transform world, RaidTown town)
+         {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+             for (int i = world.childCount - 1; i >= 0; i--) Object.DestroyImmediate(world.GetChild(i).gameObject);
+             if (town.Overhead != null) Object.DestroyImmediate(town.Overhead.gameObject);
+             if (town.Scenery != null) Object.DestroyImmediate(town.Scenery.gameObject);
+@@ -105,10 +233,64 @@ private static void Discard(Transform world, RaidTown town)
+         // Added thin snow layer for roofs and streets
+         private static void BuildSidewalks(Site site)
+         {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+             foreach (Street s in site.Area.Streets)
+             {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                 for (int i = 0; i + 1 < s.Pts.Count; i++)
+                 {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                     Vector2 a = s.Pts[i];
+                     Vector2 b = s.Pts[i + 1];
+                     Vector2 dir = (b - a).normalized;
+@@ -121,27 +303,106 @@ private static void BuildSidewalks(Site site)
+                     Vector2 leftMid = mid + normal * (halfRoad + SidewalkWidth * 0.5f);
+                     Vector3 leftCenter = new Vector3(leftMid.x, StreetY + 0.01f, leftMid.y);
+                     Vector3 size = new Vector3(length, 0.04f, SidewalkWidth);
+-                    site.Overhead.At(leftMid).Box(leftCenter, size, yaw, DecorMaterials.Concrete);
++                    site.Overhead.Solid(leftMid).Box(leftCenter, size, yaw, DecorMaterials.Concrete);
+                     // thin snow overlay on left sidewalk
+-                    site.Overhead.At(leftMid).Box(new Vector3(leftMid.x, StreetY + 0.01f + 0.02f + SnowDepth * 0.5f, leftMid.y), new Vector3(length, SnowDepth, SidewalkWidth), yaw, DecorMaterials.Snow);
++                    site.Overhead.Solid(leftMid).Box(new Vector3(leftMid.x, StreetY + 0.01f + 0.02f + SnowDepth * 0.5f, leftMid.y), new Vector3(length, SnowDepth, SidewalkWidth), yaw, DecorMaterials.Snow);
+                     // right sidewalk box
+                     Vector2 rightMid = mid - normal * (halfRoad + SidewalkWidth * 0.5f);
+                     Vector3 rightCenter = new Vector3(rightMid.x, StreetY + 0.01f, rightMid.y);
+-                    site.Overhead.At(rightMid).Box(rightCenter, size, yaw, DecorMaterials.Concrete);
++                    site.Overhead.Solid(rightMid).Box(rightCenter, size, yaw, DecorMaterials.Concrete);
+                     // thin snow overlay on right sidewalk
+-                    site.Overhead.At(rightMid).Box(new Vector3(rightMid.x, StreetY + 0.01f + 0.02f + SnowDepth * 0.5f, rightMid.y), new Vector3(length, SnowDepth, SidewalkWidth), yaw, DecorMaterials.Snow);
++                    site.Overhead.Solid(rightMid).Box(new Vector3(rightMid.x, StreetY + 0.01f + 0.02f + SnowDepth * 0.5f, rightMid.y), new Vector3(length, SnowDepth, SidewalkWidth), yaw, DecorMaterials.Snow);
+                 }
+             }
+         }
+ 
++        // Builds a simple wooden front door with a glass pane on the first footprint edge.
++        private static void BuildDoor(Site site, Footprint f)
++        {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
++
++
++
++
+ private static void BuildSnow(Site site)
+         {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+             foreach (Footprint f in site.Area.Buildings)
+             {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                 if (!f.Inside(site.Half, 2f)) continue;
+                 // Deterministic snow presence based on building ID (approx 30% chance).
+                 unchecked
+                 {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                     uint hash = (uint)f.Data.id ^ 0x9e3779b9u;
+                     hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
+                     bool hasSnow = (hash % 100) < 30;
+@@ -163,6 +424,24 @@ private static void BuildSnow(Site site)
+         // a side without a street gets one through the snow).
+         private static void DefineExits(Site site)
+         {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+             float edge = site.Half - 3f;
+             var square = Rect.MinMaxRect(-edge, -edge, edge, edge);
+             var best = new float[4];
+@@ -171,12 +450,66 @@ private static void DefineExits(Site site)
+             for (int i = 0; i < 4; i++) best[i] = float.MinValue;
+             foreach (Street s in site.Area.Streets)
+             {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                 int rank = Rank(s.Data.kind);
+                 if (rank <= 0 || s.Data.tunnel) continue;
+                 foreach (List<Vector2> piece in MapGeometry.ClipLine(s.Pts, square))
+                 {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                     for (int end = 0; end < 2; end++)
+                     {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                         Vector2 p = end == 0 ? piece[0] : piece[piece.Count - 1];
+                         int side = SideOf(p, edge);
+                         if (side < 0) continue;
+@@ -192,8 +525,44 @@ private static void DefineExits(Site site)
+             for (int i = 0; i < 4; i++) if (best[i] > float.MinValue) found++;
+             for (int side = 0; side < 4; side++)
+             {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                 if (best[side] == float.MinValue)
+                 {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                     if (found >= 2) continue;
+                     found++;
+                     at[side] = SideMiddle(side, edge);
+@@ -201,6 +570,24 @@ private static void DefineExits(Site site)
+                 }
+                 site.Town.Info.Exits.Add(new RaidExit
+                 {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                     Name = names[side] != null ? names[side] + " (" + SideName(side) + ")" : "Snowfield (" + SideName(side) + ")",
+                     Position = To3(at[side], 0f), Radius = 4.5f, ExtractSeconds = 8f, Side = side,
+                     Hint = names[side] != null ? "Where " + names[side] + " leaves " + site.Area.Place
+@@ -211,6 +598,24 @@ private static void DefineExits(Site site)
+ 
+         private static int SideOf(Vector2 p, float edge)
+         {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+             if (Mathf.Abs(p.y - edge) < 0.01f) return 0;
+             if (Mathf.Abs(p.x - edge) < 0.01f) return 1;
+             if (Mathf.Abs(p.y + edge) < 0.01f) return 2;
+@@ -220,8 +625,44 @@ private static int SideOf(Vector2 p, float edge)
+ 
+         private static Vector2 SideMiddle(int side, float edge)
+         {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+             switch (side)
+             {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                 case 0: return new Vector2(0f, edge);
+                 case 1: return new Vector2(edge, 0f);
+                 case 2: return new Vector2(0f, -edge);
+@@ -234,8 +675,44 @@ private static Vector2 SideMiddle(int side, float edge)
+         /// <summary>How much a street kind counts as a way out of town (0: not at all).</summary>
+         private static int Rank(string kind)
+         {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+             switch (kind)
+             {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                 case "motorway": case "trunk": return 6;
+                 case "primary": return 5;
+                 case "secondary": return 4;
+@@ -248,8 +725,44 @@ private static int Rank(string kind)
+ 
+         private static string KindName(string kind)
+         {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+             switch (kind)
+             {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                 case "motorway": case "trunk": return "The highway";
+                 case "primary": case "secondary": return "The state road";
+                 case "track": return "A farm track";
+@@ -261,14 +774,68 @@ private static string KindName(string kind)
+         // The survivor starts on the sidewalk of the street nearest the place's centre, facing along it.
+         private static void PickSpawn(RaidTown town, Site site, out Vector2 spot, out float yaw)
+         {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+             spot = Vector2.zero;
+             yaw = 0f;
+             float bestDist = float.MaxValue;
+             foreach (Street s in site.Area.Streets)
+             {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                 if (Rank(s.Data.kind) < 2 || s.Data.tunnel) continue;
+                 for (int i = 0; i + 1 < s.Pts.Count; i++)
+                 {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                     Vector2 a = s.Pts[i], b = s.Pts[i + 1];
+                     Vector2 ab = b - a;
+                     if (ab.sqrMagnitude < 0.01f) continue;
+@@ -287,6 +854,24 @@ private static void PickSpawn(RaidTown town, Site site, out Vector2 spot, out fl
+ 
+         private static void PickSpawn(Site site)
+         {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+             PickSpawn(site.Town, site, out Vector2 spot, out float yaw);
+             site.Town.Info.PlayerSpawn = To3(spot, 0.6f);
+             site.Town.Info.PlayerSpawnYaw = yaw;
+@@ -297,6 +882,24 @@ private static void PickSpawn(Site site)
+         /// <summary>A street piece: its data and its points.</summary>
+         internal sealed class Street
+         {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+             public readonly MapStreet Data;
+             public readonly List<Vector2> Pts;
+             public Street(MapStreet data, List<Vector2> pts) { Data = data; Pts = pts; }
+@@ -305,6 +908,24 @@ internal sealed class Street
+         /// <summary>A river, stream or railway piece.</summary>
+         internal sealed class Line
+         {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+             public readonly MapLine Data;
+             public readonly List<Vector2> Pts;
+             public Line(MapLine data, List<Vector2> pts) { Data = data; Pts = pts; }
+@@ -313,6 +934,24 @@ internal sealed class Line
+         /// <summary>A building's footprint, wound anticlockwise seen from above.</summary>
+         internal sealed class Footprint
+         {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+             public readonly MapBuilding Data;
+             public readonly List<Vector2> Pts;
+             public readonly Vector2 Middle;
+@@ -321,6 +960,24 @@ internal sealed class Footprint
+ 
+             public Footprint(MapBuilding data, List<Vector2> pts)
+             {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                 Data = data;
+                 Pts = pts;
+                 MapGeometry.MakeAnticlockwise(pts);
+@@ -329,6 +986,24 @@ public Footprint(MapBuilding data, List<Vector2> pts)
+                 float x0 = float.MaxValue, z0 = float.MaxValue, x1 = float.MinValue, z1 = float.MinValue;
+                 foreach (Vector2 p in pts)
+                 {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                     x0 = Mathf.Min(x0, p.x); z0 = Mathf.Min(z0, p.y);
+                     x1 = Mathf.Max(x1, p.x); z1 = Mathf.Max(z1, p.y);
+                 }
+@@ -343,6 +1018,24 @@ public bool Inside(float half, float margin) => Bounds.xMin > -half + margin &&
+         /// <summary>A land-use area (water, parking, forest...).</summary>
+         internal sealed class Patch
+         {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+             public readonly MapArea Data;
+             public readonly List<Vector2> Pts;
+             public Patch(MapArea data, List<Vector2> pts) { Data = data; Pts = pts; }
+@@ -351,6 +1044,24 @@ internal sealed class Patch
+         /// <summary>A point of interest.</summary>
+         internal sealed class Spot
+         {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+             public readonly MapPoi Data;
+             public readonly Vector2 At;
+             public Spot(MapPoi data, Vector2 at) { Data = data; At = at; }
+@@ -361,6 +1072,24 @@ internal sealed class Spot
+         /// and to the reach, so nothing is drawn twice.</summary>
+         internal sealed class Area
+         {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+             public readonly string Place, BuildId, Attribution;
+             public readonly float Half;
+             internal readonly List<Street> Streets = new List<Street>();
+@@ -371,6 +1100,24 @@ internal sealed class Area
+ 
+             public Area(MapBuild build, MapPlace place, float half)
+             {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                 Place = place.name;
+                 BuildId = build.Id;
+                 Attribution = build.Attribution;
+@@ -380,6 +1127,24 @@ public Area(MapBuild build, MapPlace place, float half)
+                 int size = build.RegionSize;
+                 foreach (MapRegion r in build.RegionsAround(place.x, place.z, reach))
+                 {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                     double ox = (double)r.rx * size - place.x, oz = (double)r.rz * size - place.z;
+                     var own = Rect.MinMaxRect((float)ox, (float)oz, (float)(ox + size), (float)(oz + size));
+                     if (r.streets != null)
+@@ -395,6 +1160,24 @@ public Area(MapBuild build, MapPlace place, float half)
+                     if (r.buildings != null)
+                         foreach (MapBuilding b in r.buildings)
+                         {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                             List<Vector2> pts = ToLocal(b.pts, ox, oz);
+                             if (pts.Count < 3) continue;
+                             Vector2 mid = MapGeometry.Middle(pts);
+@@ -403,12 +1186,48 @@ public Area(MapBuild build, MapPlace place, float half)
+                     if (r.areas != null)
+                         foreach (MapArea a in r.areas)
+                         {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                             List<Vector2> pts = MapGeometry.ClipPolygon(MapGeometry.ClipPolygon(ToLocal(a.pts, ox, oz), own), near);
+                             if (pts.Count >= 3) Areas.Add(new Patch(a, pts));
+                         }
+                     if (r.pois != null)
+                         foreach (MapPoi p in r.pois)
+                         {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                             var at = new Vector2((float)(ox + p.x * 0.1), (float)(oz + p.z * 0.1));
+                             if (near.Contains(at)) Points.Add(new Spot(p, at));
+                         }
+@@ -417,6 +1236,24 @@ public Area(MapBuild build, MapPlace place, float half)
+ 
+             private static List<Vector2> ToLocal(int[] pts, double ox, double oz)
+             {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                 var list = new List<Vector2>(pts != null ? pts.Length / 2 : 0);
+                 if (pts == null) return list;
+                 for (int i = 0; i + 1 < pts.Length; i += 2) list.Add(new Vector2((float)(ox + pts[i] * 0.1), (float)(oz + pts[i + 1] * 0.1)));
+@@ -428,6 +1265,24 @@ private static List<Vector2> ToLocal(int[] pts, double ox, double oz)
+         /// stand (so props keep clear of walls, roads and each other), the overhead batches and the tallies.</summary>
+         internal sealed class Site
+         {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+             public readonly RaidTown Town;
+             internal readonly Area Area;
+             public readonly float Half;
+@@ -441,6 +1296,24 @@ internal sealed class Site
+ 
+             public Site(RaidTown town, Area area)
+             {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                 Town = town;
+                 Area = area;
+                 Half = area.Half;
+@@ -455,6 +1328,24 @@ public Site(RaidTown town, Area area)
+             /// <summary>Marks a disc as taken.</summary>
+             public void Take(Vector2 p, float radius)
+             {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                 int r = Mathf.CeilToInt(radius / Cell);
+                 int cx = Index(p.x), cz = Index(p.y);
+                 for (int z = cz - r; z <= cz + r; z++)
+@@ -465,6 +1356,24 @@ public void Take(Vector2 p, float radius)
+             /// <summary>Marks a rectangle (world XZ) as taken.</summary>
+             public void Take(Rect r)
+             {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                 for (int z = Mathf.Max(0, Index(r.yMin)); z <= Mathf.Min(_n - 1, Index(r.yMax)); z++)
+                     for (int x = Mathf.Max(0, Index(r.xMin)); x <= Mathf.Min(_n - 1, Index(r.xMax)); x++)
+                         _taken[z * _n + x] = true;
+@@ -473,8 +1382,44 @@ public void Take(Rect r)
+             /// <summary>Marks a band along a line as taken.</summary>
+             public void TakeLine(List<Vector2> pts, float radius)
+             {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                 for (int i = 0; i + 1 < pts.Count; i++)
+                 {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                     float len = Vector2.Distance(pts[i], pts[i + 1]);
+                     int steps = Mathf.Max(1, Mathf.CeilToInt(len / (Cell * 0.5f)));
+                     for (int k = 0; k <= steps; k++) Take(Vector2.Lerp(pts[i], pts[i + 1], k / (float)steps), radius);
+@@ -484,6 +1429,24 @@ public void TakeLine(List<Vector2> pts, float radius)
+             /// <summary>True when the disc is inside the playable square and nothing stands there yet.</summary>
+             public bool Free(Vector2 p, float radius)
+             {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                 if (Mathf.Abs(p.x) > Half - radius || Mathf.Abs(p.y) > Half - radius) return false;
+                 int r = Mathf.CeilToInt(radius / Cell);
+                 int cx = Index(p.x), cz = Index(p.y);
+@@ -498,6 +1461,24 @@ public bool Free(Vector2 p, float radius)
+         /// what it can't see; each chunk's renderer is handed to <see cref="CeilingVisibility"/>.</summary>
+         internal sealed class ChunkedMesh
+         {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+             private readonly float _chunk;
+             private readonly Dictionary<long, RaidMesh> _meshes = new Dictionary<long, RaidMesh>();
+ 
+@@ -505,6 +1486,24 @@ internal sealed class ChunkedMesh
+ 
+             public RaidMesh At(Vector3 p)
+             {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                 long key = ((long)Mathf.FloorToInt(p.x / _chunk) << 32) | (uint)Mathf.FloorToInt(p.z / _chunk);
+                 if (!_meshes.TryGetValue(key, out RaidMesh m)) _meshes[key] = m = new RaidMesh();
+                 return m;
+@@ -512,8 +1511,44 @@ public RaidMesh At(Vector3 p)
+ 
+             public void Emit(string name, Transform parent, bool ceilings)
+             {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                 foreach (KeyValuePair<long, RaidMesh> kv in _meshes)
+                 {
++            // use the first edge of the footprint as the "front" side
++            Vector2 a = f.Pts[0];
++            Vector2 b = f.Pts[1];
++            Vector2 edgeMid = (a + b) * 0.5f;
++            Vector2 dir = (b - a).normalized; // runs along the wall
++            float yaw = -Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
++            // raise the door a little so it sits on the ground (y = 0)
++            Vector3 doorCenter = new Vector3(edgeMid.x, DoorHeight * 0.5f, edgeMid.y);
++            Vector3 size = new Vector3(DoorWidth, DoorHeight, DoorDepth);
++            // wooden frame (using the generic wood material – the frame is a thin box)
++            site.Town.Out.Solid(edgeMid).Box(doorCenter, size, yaw, DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
++            // glass pane inset by 0.02 m from each side, 0.01 m back from the frame
++            Vector3 glassCenter = doorCenter + new Vector3(0f, 0f, -0.01f);
++            Vector3 glassSize = new Vector3(DoorWidth - 0.04f, DoorHeight - 0.04f, 0.02f);
++            site.Town.Out.Solid(edgeMid).Box(glassCenter, glassSize, yaw, DecorPalette.Glass(new Color(0.08f, 0.09f, 0.11f)));
++            // mark the area as taken so other props don't collide with the door
++            site.Take(new Rect(edgeMid.x - DoorWidth * 0.5f, edgeMid.y - DoorDepth * 0.5f, DoorWidth, DoorDepth), 0.1f);
++        }
+                     var c = new Vector3(((int)(kv.Key >> 32) + 0.5f) * _chunk, 0f, ((int)(kv.Key & 0xffffffff) + 0.5f) * _chunk);
+                     GameObject go = kv.Value.Emit(name, parent, c, ShadowCastingMode.On);
+                     if (go != null && ceilings) CeilingVisibility.Register(go.GetComponent<Renderer>());

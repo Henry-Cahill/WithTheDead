@@ -332,6 +332,7 @@ namespace CloneZ
     {
         public string Id;
         public string Faction;
+        public string LoadoutId;
         public int Members;
         public Vector3 Position;
         public string Goal;

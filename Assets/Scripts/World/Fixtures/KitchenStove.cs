@@ -43,13 +43,13 @@ namespace CloneZ
 
         private int _lit;                     // bit i: burner i is lit
         private int _litCount;               // cached number of lit burners
-        private bool _oven, _doorOpen;
+        private bool _oven, _doorOpen, _glowManual; // player‑controlled extra glow lamp
         private const int MinOvenHeatLevel = 0; // low
         private const int MaxOvenHeatLevel = 2; // high
         private int _ovenHeatLevel = 0; // 0‑low,1‑medium,2‑high
 
         private readonly Action<InteractContext>[] _toggleBurner = new Action<InteractContext>[4];
-        private Action<InteractContext> _allOn, _allOff, _toggleOven, _toggleDoor, _cook;
+        private Action<InteractContext> _allOn, _allOff, _toggleOven, _toggleDoor, _cook, _toggleGlow;
 
         public override string DisplayName => "Gas stove";
         public override Vector3 InteractPoint => transform.position + transform.rotation * new Vector3(0f, 0.95f, 0.2f);
@@ -309,7 +309,7 @@ public float Warmth
         // The hob's warm light, while a burner burns or the hot oven stands open.
         private void RefreshGlow()
         {
-            if (_glow != null) _glow.On = _lit != 0 || (_oven && _doorOpen);
+            if (_glow != null) _glow.On = _lit != 0 || (_oven && _doorOpen) || _glowManual;
         }
         #endregion
 
@@ -318,6 +318,7 @@ public float Warmth
             save.State = (_lit & 0xF) |
                 (_oven ? 16 : 0) |
                 (_doorOpen ? 32 : 0) |
+                (_glowManual ? 64 : 0) |
                 (_ovenHeatLevel << 6);
 
         public override void RestoreState(FixtureSave save)
@@ -325,6 +326,7 @@ public float Warmth
             _lit = save.State & 0xF;
             _oven = (save.State & 16) != 0;
             _doorOpen = (save.State & 32) != 0;
+            _glowManual = (save.State & 64) != 0;
             _ovenHeatLevel = (save.State >> 6) & 0x3; // bits 6‑7
             if (_ovenHeatLevel > MaxOvenHeatLevel) _ovenHeatLevel = MaxOvenHeatLevel;
             // Update cached lit count after restoring state

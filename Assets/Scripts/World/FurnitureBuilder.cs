@@ -77,13 +77,40 @@ namespace CloneZ
                 m.Box(new Vector3(sx - 0.295f, 0.968f, 0.02f), new Vector3(0.03f, 0.016f, 0.44f), Mt(steel));
                 m.Box(new Vector3(sx + 0.295f, 0.968f, 0.02f), new Vector3(0.03f, 0.016f, 0.44f), Mt(steel));
                 m.Box(new Vector3(sx, 0.963f, 0.03f), new Vector3(0.06f, 0.004f, 0.06f), M(Black));
-                // Gooseneck faucet and two taps.
-                m.Cylinder(new Vector3(sx, 0.96f, -0.27f), 0.018f, 0.3f, 6, Mt(Chrome));
-                m.Box(new Vector3(sx, 1.25f, -0.17f), new Vector3(0.03f, 0.03f, 0.22f), Mt(Chrome));
-                m.Box(new Vector3(sx, 1.22f, -0.07f), new Vector3(0.025f, 0.06f, 0.025f), Mt(Chrome));
-                m.Box(new Vector3(sx - 0.12f, 1.0f, -0.27f), new Vector3(0.05f, 0.04f, 0.05f), Mt(Chrome));
-                m.Box(new Vector3(sx + 0.12f, 1.0f, -0.27f), new Vector3(0.05f, 0.04f, 0.05f), Mt(Chrome));
-                if (Chance(rng, 0.6)) m.Cylinder(new Vector3(sx + 0.1f, 0.965f, 0.05f), 0.045f, 0.1f, 8, G(new Color(0.75f, 0.74f, 0.70f)));
+// Gooseneck faucet and two taps.
+                 m.Cylinder(new Vector3(sx, 0.96f, -0.27f), 0.018f, 0.3f, 6, Mt(Chrome));
+                 m.Box(new Vector3(sx, 1.25f, -0.17f), new Vector3(0.03f, 0.03f, 0.22f), Mt(Chrome));
+                 m.Box(new Vector3(sx, 1.22f, -0.07f), new Vector3(0.025f, 0.06f, 0.025f), Mt(Chrome));
+                 m.Box(new Vector3(sx - 0.12f, 1.0f, -0.27f), new Vector3(0.05f, 0.04f, 0.05f), Mt(Chrome));
+                 m.Box(new Vector3(sx + 0.12f, 1.0f, -0.27f), new Vector3(0.05f, 0.04f, 0.05f), Mt(Chrome));
+                 // Backsplash – thin glass panel above the countertop front edge
+                 // positioned relative to the top front of the counter (center at y = 0.945 m, z = 0.33 m)
+                 m.Box(new Vector3(0f, 0.945f, 0.33f), new Vector3(len + 0.02f, 0.008f, 0.02f), G(new Color(0.90f,0.93f,0.95f)));
+                 // Left faucet knob
+                 m.Cylinder(new Vector3(sx - 0.01f, 0.97f, -0.24f), 0.008f, 0.02f, 6, Mt(Chrome));
+                 // Right faucet knob
+                 m.Cylinder(new Vector3(sx + 0.01f, 0.97f, -0.24f), 0.008f, 0.02f, 6, Mt(Chrome));
+                 // Towel‑rack – three parallel bars
+                 float rackX = sx - 0.12f;
+                 float rackZ = -0.25f;
+                 float rackY = 1.05f;
+                 float barLength = 0.18f;
+                 float barHeight = 0.008f;
+                 float barDepth = 0.004f;
+                 float barSpacing = 0.04f;
+                 for (int i = 0; i < 3; i++)
+                 {
+                     m.Box(new Vector3(rackX, rackY + i * barSpacing, rackZ), new Vector3(barLength, barHeight, barDepth), Mt(Chrome));
+                 }
+                 // Waste‑bin – simple cylinder with a lid
+                 float binX = len * 0.45f;
+                 float binY = 0.07f;
+                 float binZ = 0.2f;
+                 m.Cylinder(new Vector3(binX, binY, binZ), 0.07f, 0.07f, 12, Mt(Chrome)); // body
+                 m.Box(new Vector3(binX, binY + 0.07f, binZ), new Vector3(0.14f, 0.008f, 0.02f), Mt(Chrome)); // lid
+                 // Subtle wear line on front edge
+                 m.Box(new Vector3(0f, 0.938f, 0.33f), new Vector3(len, 0.001f, 0.001f), M(new Color(0.45f,0.38f,0.30f)));
+                 if (Chance(rng, 0.6)) m.Cylinder(new Vector3(sx + 0.1f, 0.965f, 0.05f), 0.045f, 0.1f, 8, G(new Color(0.75f, 0.74f, 0.70f)));
             }
         }
 

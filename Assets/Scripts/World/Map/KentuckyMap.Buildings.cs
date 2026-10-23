@@ -385,6 +385,8 @@ site.Overhead.At(chimneyPos).Box(chimneyPos, new Vector3(chimneyBase, chimneyHei
                 Vector3 railCenter = (leftPostCenter + rightPostCenter) * 0.5f;
                 railCenter.y = leftPostCenter.y + postHeight * 0.5f - railHeight * 0.5f; // near top of posts
                 site.Town.Out.Solid(railCenter).Box(railCenter, railSize, doorYaw, DecorMaterials.WoodFloor(porchWood));
+                // ---- NEW: add a hanging swing with ~30 % chance ----
+                PorchSwingBuilder.Build(site, leftPostCenter, rightPostCenter, doorYaw, porchWood, rng);
             }
 
             // Add short concrete stepping‑stone path for residential buildings (house, trailer, apartments, hotel)

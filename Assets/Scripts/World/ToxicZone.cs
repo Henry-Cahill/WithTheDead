@@ -45,7 +45,7 @@ namespace CloneZ
         private float _phase;
 
         private void OnEnable() { if (!All.Contains(this)) All.Add(this); }
-        private void OnDisable() { All.Remove(this); }
+        private void OnDisable() { All.Remove(this); } // now also handled in OnDestroy for safety
 
         /// <summary>Creates a gas cloud of the given radius centred on the ground at <paramref name="center"/>.</summary>
         public static ToxicZone Spawn(Transform parent, Vector3 center, float radius)
@@ -91,11 +91,13 @@ namespace CloneZ
             Build();
         }
 
-        private void Update()
+        private void OnDestroy()
         {
-            if (Mathf.Abs(_builtRadius - Radius) > 0.01f) Build();   // resized after spawning
-            UpdateSharedTint();
-            if (_glow != null) _glow.intensity = GlowIntensity * GetGlowFactor(_phase);
+            // Guarantee removal from the global list even if OnDisable wasn’t called.
+            All.Remove(this);
+            // Destroy any runtime children that were created in Build().
+            if (_particles != null) Destroy(_particles.gameObject);
+            if (_glow != null) Destroy(_glow.gameObject);
         }
 
         private void Build()
@@ -218,6 +220,15 @@ namespace CloneZ
             float lum = ambient.r * 0.3f + ambient.g * 0.59f + ambient.b * 0.11f;
             float k = Mathf.Clamp(lum / 0.42f, 0.16f, 1f);
             s_Material.SetColor(s_ColorId, new Color(k, k, k, 1f));
+        }
+
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        private static void ResetStaticState()
+        {
+            All.Clear();
+            s_Material = null;
+            s_Texture = null;
+            s_TintFrame = -1;
         }
 
         // An unlit, alpha-blended particle material over a procedural soft puff (shared by every cloud).

@@ -20,7 +20,7 @@ namespace CloneZ
         private FixturePart[] _parts;
         private Renderer[] _whenOn, _whenOff;
         private float _noise = CloneZConfig.FixtureNoiseSmall;
-        private bool _needsPower, _on;
+        private bool _needsPower, _on, _locked;
         private Action<InteractContext, List<InteractAction>> _extra;
         private Action<InteractContext> _flip;
 
@@ -50,6 +50,7 @@ namespace CloneZ
             t._extra = (c, list) => {
                 list.Add(new InteractAction("Inspect", t.Inspect));
                 list.Add(new InteractAction("Power status", t.PowerInfo));
+                list.Add(new InteractAction(t._locked ? "Unlock" : "Lock", t.ToggleLock));
             };
             return t;
         }
@@ -112,17 +113,20 @@ namespace CloneZ
             return this;
         }
 
-        private void Awake() => _flip = c => Set(c, !_on);
-
-        // Inspect action shows the current on/off state without changing it.
-        private void Inspect(InteractContext ctx) => ctx.Notify("The " + _name + " is currently " + (_on ? "on" : "off") + ".");
-        // Power status action shows house power state.
+        private void Inspect(InteractContext ctx) => ctx.Notify("The " + _name + " is currently " + (_on ? "on" : "off") + (_locked ? " and locked." : "."));
         private void PowerInfo(InteractContext ctx) => ctx.Notify(PowerGrid.HousePowered ? "The building has power." : "The building has no power.");
+
+        private void ToggleLock(InteractContext ctx)
+        {
+            _locked = !_locked;
+            ctx.Notify(_locked ? "You lock the device." : "You unlock the device.");
+        }
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             bool dead = _needsPower && !_on && !PowerGrid.HousePowered;
-            into.Add(new InteractAction(_on ? _offLabel : _onLabel, _flip).DisabledIf(dead, PowerGrid.NoPowerReason ?? "There's no power"));
+            bool locked = _locked;
+            into.Add(new InteractAction(_on ? _offLabel : _onLabel, _flip).DisabledIf(dead || locked, locked ? "The device is locked" : PowerGrid.NoPowerReason ?? "There's no power"));
             _extra?.Invoke(ctx, into);
         }
 
@@ -153,11 +157,12 @@ namespace CloneZ
                 if (rs[i] != null && rs[i].enabled != on) rs[i].enabled = on;
         }
 
-        public override void CaptureState(FixtureSave save) => save.State = _on ? 1 : 0;
+        public override void CaptureState(FixtureSave save) => save.State = (_on ? 1 : 0) | (_locked ? 2 : 0);
 
         public override void RestoreState(FixtureSave save)
         {
             _on = (save.State & 1) != 0;
+            _locked = (save.State & 2) != 0;
             Apply(true);
         }
     }

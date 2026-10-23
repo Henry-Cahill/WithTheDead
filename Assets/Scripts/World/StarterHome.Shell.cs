@@ -14,6 +14,7 @@ namespace CloneZ
         private static readonly Color CoreColor = new Color(0.20f, 0.19f, 0.18f);      // the wall tops, as in the raid town
         private static readonly Color WarmGlow = new Color(1f, 0.84f, 0.58f);
         private static readonly Color Soil = new Color(0.24f, 0.17f, 0.11f);
+        private static readonly Color Snow = new Color(0.95f, 0.95f, 0.97f);
 
         private const float WindowWidth = 1.3f;                                        // glazing between the finished jambs
         private const float WindowJamb = (Tile - WindowWidth) * 0.5f;
@@ -256,7 +257,15 @@ namespace CloneZ
                     }
                 m.Box(f.P(f.Mid, WindowHead + 0.035f, off), f.Size(w + 0.14f, 0.07f, 0.024f), casing);
                 m.Box(f.P(f.Mid, WindowSill + 0.02f, side * (Half + 0.035f)), f.Size(w + 0.18f, 0.04f, 0.07f), casing);
-                // interior latch plate – brass‑tinted metal
+                // Snow‑compact on the exterior sill – small random depth for each window
+                if (rng.NextDouble() < 0.75)
+                {
+                    float snowDepth = 0.008f + (float)rng.NextDouble() * 0.006f; // 0.8–1.4 cm
+                    // centre the box on the sill, raise half the depth above the sill plane
+                    m.Box(f.P(f.Mid, WindowSill + snowDepth * 0.5f, 0f),
+                        new Vector3(WindowWidth - 0.06f, snowDepth, 0.02f),
+                        DecorPalette.Matte(Snow));
+                }
                 float latchY = WindowSill + 0.32f; // about a foot above the sill
                 float latchZ = side * (Half + 0.004f); // flush with the interior face
                 Vector3 plateSize = new Vector3(0.06f, 0.008f, 0.015f);
@@ -403,7 +412,24 @@ namespace CloneZ
                 m.Box(f.P(o1 + 0.035f, (DoorTop + 0.07f) * 0.5f, off), f.Size(0.07f, DoorTop + 0.07f, 0.024f), casing);
                 m.Box(f.P(f.Mid, DoorTop + 0.035f, off), f.Size(gap + 0.14f, 0.07f, 0.024f), casing);
             }
-            m.Box(f.P(f.Mid, (FloorTop + 0.012f) * 0.5f, 0f), f.Size(gap, FloorTop + 0.012f, Half * 2f + 0.05f), DecorPalette.Matte(new Color(0.42f, 0.30f, 0.18f)));
+            // Snow draped across the doorway threshold – thin random layer
+            if (rng.NextDouble() < 0.65)
+            {
+                float snowDepth = 0.008f + (float)rng.NextDouble() * 0.006f; // 0.8–1.4 cm
+                // raise the snow half its thickness above the threshold surface
+                m.Box(f.P(f.Mid, (FloorTop + 0.012f) * 0.5f + snowDepth * 0.5f, 0f),
+                    new Vector3(gap, snowDepth, Half * 2f + 0.05f),
+                    DecorPalette.Matte(Snow));
+            }
+            // Small drift on the interior side of the threshold
+            if (rng.NextDouble() < 0.4)
+            {
+                float driftDepth = 0.006f + (float)rng.NextDouble() * 0.004f;
+                float driftX = f.Mid + (float)(rng.NextDouble() - 0.5) * (gap * 0.5f);
+                m.Box(f.P(driftX, (FloorTop + 0.012f) * 0.5f + driftDepth * 0.5f, 0f),
+                    new Vector3(0.12f, driftDepth, Half * 2f + 0.03f),
+                    DecorPalette.Matte(Snow));
+            }
 
             DoorFittings(piece, m, f, rooms, rng);
         }

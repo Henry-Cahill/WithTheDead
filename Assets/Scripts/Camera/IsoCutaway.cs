@@ -195,7 +195,7 @@ namespace CloneZ
             {
                 Collider c = _hits[i].collider;
                 if (c == null) continue;
-                if (side && Vector3.Dot(_hits[i].point - _feet, _viewAhead) > -SideProbeMargin) continue;
+                if (side && Vector3.Dot(_hits[i].point - _feet, _viewAhead) >= -SideProbeMargin) continue;
                 Piece p = Classify(c);
                 if (p == NotAnOccluder) continue;
                 p.LastSeen = _now;
@@ -206,7 +206,20 @@ namespace CloneZ
         // The piece a collider belongs to, worked out on first sight and cached.
         private Piece Classify(Collider c)
         {
-            if (_byCollider.TryGetValue(c, out Piece p) && (p == NotAnOccluder || p.Root != null)) return p;
+            if (_byCollider.TryGetValue(c, out Piece p))
+            {
+                // If we have a cached piece that references a disabled CutawayOccluder,
+                // treat it as “not an occluder” and rebuild so the wall can become visible again.
+                if (p != NotAnOccluder && p.Marker != null && !p.Marker.enabled)
+                {
+                    _byCollider.Remove(c);
+                    p = null;
+                }
+                else if (p == NotAnOccluder || p.Root != null)
+                {
+                    return p;
+                }
+            }
             p = Build(c);
             _byCollider[c] = p;
             return p;

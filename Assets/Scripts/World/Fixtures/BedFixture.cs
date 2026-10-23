@@ -16,6 +16,7 @@ namespace CloneZ
     public class BedFixture : Interactable
     {
         private SleepSpot _spot;
+        private TvFixture _nearbyTv;
         private Renderer _made, _rumpled;
         private bool _isMade = true;
         private PlayerSleep _sleeper;
@@ -31,7 +32,15 @@ namespace CloneZ
             "A faded newspaper clipping about a local high‑school basketball win, dated January 1993.",
             "A rusted pair of garden shears, the blades dulled by winter frost.",
             "An empty tin of marshmallows, its label peeled away, reminding you of campfire nights.",
-            "A small wooden figurine of a horse, its paint chipped, a childhood souvenir."
+            "A small wooden figurine of a horse, its paint chipped, a childhood souvenir.",
+            "A tarnished tin of fire‑steel, its flint broken – a relic from the last winter’s campfires.",
+            "A brittle newspaper clipping about the county’s annual horse‑show, dated December 1992.",
+            "A half‑filled jar of preserves, the lid warped from the cold, its sweet scent faint in the air.",
+            "A cracked ceramic mug, the blue glaze faded, still warm from the last use.",
+            "A bundle of dried corn husks, tied with twine, probably meant for a winter craft.",
+            "A rusted pocketknife, its handle splintered, the blade still dull but sharp enough to cut rope.",
+            "A torn page from a devotional book, the verses bleeding onto the floorboards.",
+            "A solitary pine‑cone, ice crystals clinging to its scales, a reminder of the forest outside."
         };
         private static readonly string[] _mattressFinds = new[]
         {
@@ -94,6 +103,8 @@ namespace CloneZ
             if (_sleeper == null) _sleeper = pi.GetComponent<PlayerSleep>();
             if (_sleeper != null && _sleeper.IsSleeping && SleepSpot.Nearest(pi.transform.position, _sleepCheckRadius, out _) == _spot)
                 SetMade(false);
+            // Cache nearby TV for use in GetActions to avoid per‑frame allocation.
+            _nearbyTv = TvFixture.PlayingNear(transform.position, CloneZConfig.TvReach + SleepSpot.Length * 0.5f);
         }
 
         private void SetMade(bool made)
@@ -113,7 +124,7 @@ namespace CloneZ
             into.Add(new InteractAction("Sleep", Sleep).DisabledIf(!canSleep, why ?? "You can't sleep now"));
 
             into.Add(RestAction("Lie down and rest", "Resting", null).DisabledIf(seat == null, "You can't lie down now"));
-            TvFixture tv = TvFixture.PlayingNear(transform.position, CloneZConfig.TvReach + SleepSpot.Length * 0.5f);
+            TvFixture tv = _nearbyTv;
             if (tv != null) into.Add(RestAction("Lie back and watch TV", "Watching TV in bed", tv).DisabledIf(seat == null, "You can't lie down now"));
 
             if (onEdge) into.Add(new InteractAction("Get up off the bed", c => c.Seat.Stand()));

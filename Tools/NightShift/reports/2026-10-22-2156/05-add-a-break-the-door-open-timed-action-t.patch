@@ -1,0 +1,114 @@
+diff --git a/Assets/Scripts/World/Fixtures/RaidDoor.cs b/Assets/Scripts/World/Fixtures/RaidDoor.cs
+index cb15a079..823d7f97 100644
+--- a/Assets/Scripts/World/Fixtures/RaidDoor.cs
++++ b/Assets/Scripts/World/Fixtures/RaidDoor.cs
+@@ -72,6 +72,11 @@ internal struct Raid
+         private Action<InteractContext, float, float> _reinforceTick;
+         private float _reinforceClock, _reinforceNext;
+ 
++        // Break‑door action fields
++        private Action<InteractContext> _breakAct, _breakBegin;
++        private Action<InteractContext, float, float> _breakTick;
++        private float _breakClock, _breakNext;
++
+         private static readonly Color BangCaption = new Color(0.88f, 0.62f, 0.46f);
+ 
+         // The detour search's candidates, best first (no allocation per search).
+@@ -109,7 +114,14 @@ protected override void Awake()
+                 _reinforceClock = 0f;
+                 _reinforceNext = CloneZConfig.RaidDoorKickInterval * 0.4f;
+             };
+-            _reinforceTick = ReinforceTick;
++            // Initialise “break door” action callbacks
++            _breakAct = BreakDoor;
++            _breakBegin = ctx =>
++            {
++                _breakClock = 0f;
++                _breakNext = CloneZConfig.RaidDoorKickInterval * 0.4f;
++            };
++            _breakTick = BreakTick;
+         }
+ 
+         protected override void OnEnable()
+@@ -165,14 +177,17 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
+                 into.Insert(Mathf.Min(start + 1, into.Count), kick);
+             }
+ 
+-            // New action to reinforce a damaged door
+-            if (!_broken && _health < _maxHealth)
++            // The survivor can smash a still‑standing door open.
++            if (!_broken && _health > 0f)
+             {
+-                var reinforce = new InteractAction("Reinforce door", _reinforceAct)
+-                    .Timed(CloneZConfig.RaidDoorKickSeconds, "Reinforcing the door", HumanoidActivity.Build);
+-                reinforce.Begin = _reinforceBegin;
+-                reinforce.Tick = _reinforceTick;
+-                into.Add(reinforce);
++                var smash = new InteractAction("Break the door open", _breakAct)
++                    .Timed(CloneZConfig.RaidDoorKickSeconds, "Breaking the door", HumanoidActivity.Build)
++                    .DisabledIf(ctx.Stats != null && ctx.Stats.Endurance < CloneZConfig.RaidDoorKickMinEndurance,
++                        "You're too winded to break it");
++                smash.Begin = _breakBegin;
++                smash.Tick = _breakTick;
++                // Insert right after the kick action (or at the end if no kick)
++                into.Insert(Mathf.Min(start + 2, into.Count), smash);
+             }
+         }
+ 
+@@ -348,7 +363,7 @@ private void Wreck(int toward)
+                     {
+                         best = off;
+                         q = t;
+-                    }
++
+                 }
+                 leaf.enabled = false;   // posed by hand from here on
+                 leaf.transform.SetPositionAndRotation(_hinges[i], q);
+@@ -376,26 +391,40 @@ private void Caption(string text, bool always)
+         }
+         #endregion
+ 
+-        // Kicking it in
+-        private void KickTick(InteractContext ctx, float dt, float progress)
++        // “Break” timing feedback – same work noise as kicking.
++        private void BreakTick(InteractContext ctx, float dt, float progress)
+         {
+-            _kickClock += dt;
+-            if (_kickClock < _kickNext) return;
+-            _kickNext += CloneZConfig.RaidDoorKickInterval;
++            _breakClock += dt;
++            if (_breakClock < _breakNext) return;
++            _breakNext += CloneZConfig.RaidDoorKickInterval;
+             MakeNoise(CloneZConfig.RaidDoorKickNoise);
+         }
+ 
+-        // The last boot: the strike plate tears out of the frame and the door flies open.
++        // Survivor‑initiated door burst.
++        private void BreakDoor(InteractContext ctx)
++        {
++            if (_broken) return; // already busted
++            // Endurance cost mirrors the kick action.
++            if (ctx.Stats != null) ctx.Stats.TryConsumeEndurance(CloneZConfig.RaidDoorKickEndurance);
++            // Use the survivor’s forward direction as the impact vector.
++            Vector3 push = ctx.Transform != null ? ctx.Transform.forward : Normal;
++            // Force a burst exactly as a zombie blow would.
++            Burst(push);
++            // Notify the player and nearby survivors.
++            ctx.Notify($"You slam the {Noun} open with a brutal crash.");
++            Caption($"The {Noun} bursts open under your force!", false);
++        }
+         private void KickIn(InteractContext ctx)
+         {
+             if (_broken || !IsLocked) return;
+             if (ctx.Stats != null) ctx.Stats.TryConsumeEndurance(CloneZConfig.RaidDoorKickEndurance);
+             _lockBroken = true;
+-            _health = Mathf.Min(_health, _maxHealth * 0.6f);   // and the frame's the weaker for it
++            _health = Mathf.Min(_health, _maxHealth * 0.6f);
+             SetOpen(true, true);
+             MakeNoise(CloneZConfig.RaidDoorKickNoise);
+             ctx.Notify("The frame splits and the " + Noun + " flies open. That lock won't hold again.");
+         }
++        }
+ 
+         // Reinforcement timing and effect
+         private void ReinforceTick(InteractContext ctx, float dt, float progress)

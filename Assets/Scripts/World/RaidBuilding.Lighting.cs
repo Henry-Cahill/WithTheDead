@@ -636,6 +636,11 @@ namespace CloneZ
         {
             "A yellow SAFETY FIRST notice with a green cross. The small print lists the warning signs of frostbite, then of hypothermia.",
             "SAFETY FIRST, over a green cross. Below it, a typed card: WASH YOUR HANDS. COVER YOUR COUGH. ASK AT THE DESK. Good advice, a little late.",
+            "A red‑bordered NOTICE: the clinic’s old defibrillator requires a fresh battery; the drawer is sealed with duct‑tape.",
+            "SAFETY FIRST – a blue‑tinted poster reminding staff to wear insulated gloves when handling IV fluids in sub‑zero temps.",
+            "A hand‑written memo pinned to the wall: “CHECK VENTILATOR FILTERS weekly – dust and snow get in the cracks.”",
+            "A faded “EMERGENCY CONTACTS” sheet: the county sheriff’s number, the volunteer fire chief, and a note “Call only if trapped”.",
+            "A yellow SAFETY FIRST reminder, its corners curled: “STORE ALL MEDICINES above the frost line – below 0°C they spoil.”",
         };
 
         private static readonly string[] StoreNotices =

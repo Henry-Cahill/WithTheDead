@@ -297,6 +297,31 @@ Surf brass = Mt(Brass);
                 m.Box(l.P(c, sill + 0.12f, side * (face + 0.045f)), l.Size(0.032f, 0.064f, 0.008f), Mt(Brass));
                 for (float y = sill + 0.04f; y < head + 0.03f; y += 0.075f)
                     m.Box(l.P(c, y, side * (face + 0.038f)), l.Size(sw - 0.06f, 0.024f, 0.012f), slat);
+                // ← NEW: metal corner brackets at top‑outer corners of each panel
+                // left‑top bracket
+                m.Box(l.P(c - sw * 0.5f + 0.02f, cy + sh * 0.5f - 0.015f, side * (face + 0.03f)),
+                    new Vector3(0.018f, 0.018f, 0.018f), Mt(DarkSteel));
+                // right‑top bracket
+                m.Box(l.P(c + sw * 0.5f - 0.02f, cy + sh * 0.5f - 0.015f, side * (face + 0.03f)),
+                    new Vector3(0.018f, 0.018f, 0.018f), Mt(DarkSteel));
+            }
+            // ← NEW: thin dark‑steel chain linking the two shutters
+            {
+                float chainZ = side * (face + 0.04f); // a little in front of the panels
+                float chainY = cy; // vertically centred
+                float chainLen = w + 0.14f + sw; // distance between panel centres
+                m.CylinderX(l.P(mid, chainY, chainZ), 0.004f, chainLen, 10, Mt(DarkSteel), 0f);
+            }
+            // ← NEW: deterministic rust patches (no RNG – offset based on geometry)
+            {
+                Color rustCol = new Color(0.55f, 0.30f, 0.20f);
+                Surf rust = M(rustCol);
+                float rustZ = side * (face + 0.025f);
+                float rustY = cy + 0.03f; // slightly above centre
+                // left panel rust
+                m.Ellipsoid(l.P(mid - w * 0.25f, rustY, rustZ), new Vector3(0.02f, 0.02f, 0.004f), rust, 4, 2);
+                // right panel rust
+                m.Ellipsoid(l.P(mid + w * 0.25f, rustY, rustZ), new Vector3(0.02f, 0.02f, 0.004f), rust, 4, 2);
             }
         }
 

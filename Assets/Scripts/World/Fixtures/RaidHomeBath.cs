@@ -19,7 +19,7 @@ namespace CloneZ
     {
         private const float SoakHipsBack = 0.3f;   // the hips rest this far back from the middle, away from the taps
         private const float SoakHipsY = 0.14f;      // just off the tub's floor
-
+        private const float CoveredCoolFactor = 0.2f; // cooling is slowed to 20 % when covered
         private Transform _body;
         private string _key;
         private Vector3 _point, _spout, _middle, _seat;
@@ -28,7 +28,7 @@ namespace CloneZ
         private Renderer _stream, _waterR, _plugIn, _plugOut;
         private Transform _water;
         private Vector3 _waterFull;
-        private bool _running, _plugged, _borrowed, _bathedIn, _toldFull, _soaking;
+        private bool _running, _plugged, _borrowed, _bathedIn, _toldFull, _soaking, _covered; // true while a makeshift cover is on the tub
         private float _level;    // 0 empty .. 1 full
         private float _heat;     // the standing water's warmth: 0 stone cold .. 1 hot
         private float _nextNoise, _nextWatch;
@@ -145,7 +145,7 @@ namespace CloneZ
                 }
             }
             else if (!_plugged && _level > 0f) _level = Mathf.Max(0f, _level - dt * _drainRate);
-            if (!running && _heat > 0f) _heat = Mathf.Max(0f, _heat - dt * _coolRate);
+            if (!running && _heat > 0f) { float factor = _covered ? CoveredCoolFactor : 1f; _heat = Mathf.Max(0f, _heat - dt * _coolRate * factor); }
             if (_level != before) ShowWater();
             if (_level < 0.9f) _toldFull = false;
 
@@ -203,11 +203,13 @@ namespace CloneZ
             wash.Begin = BorrowTaps;
             wash.Stopped = ReturnTaps;
             into.Add(wash);
-                if (_level > 0.05f) {
-                    into.Add(new InteractAction("Feel the water", FeelWater));
-                    into.Add(new InteractAction("Check water temperature", CheckTemp));
-                    into.Add(new InteractAction("Check water level", CheckLevel));
-                }
+            if (_level > 0.02f) // only useful if there is any water
+            {
+                if (_covered)
+                    into.Add(new InteractAction("Uncover the tub", ctx => SetCovered(ctx, false)));
+                else
+                    into.Add(new InteractAction("Cover the tub", ctx => SetCovered(ctx, true)));
+            }
         }
 
         #region The taps and the plug
@@ -256,6 +258,13 @@ namespace CloneZ
         {
             _plugged = plugged;
             ShowPlug();
+        }
+
+        private void SetCovered(InteractContext ctx, bool cover)
+        {
+            _covered = cover;
+            ctx.Notify(cover ? "You drape a makeshift cover over the tub. The water will stay warm longer."
+                : "You remove the cover. The bath will cool at the normal rate.");
         }
 
         // A wash runs the taps for its length while the mains are on (and turns them off again after).
@@ -382,7 +391,7 @@ namespace CloneZ
 
         public override void CaptureState(FixtureSave save)
         {
-            save.State = (_running && !_borrowed ? 1 : 0) | (_plugged ? 2 : 0) | (_bathedIn ? 4 : 0) | 8;
+            save.State = (_running && !_borrowed ? 1 : 0) | (_plugged ? 2 : 0) | (_bathedIn ? 4 : 0) | (_covered ? 0x10 : 0) | 8;
             save.A = _level;
             save.B = _heat;
         }
@@ -393,7 +402,7 @@ namespace CloneZ
             _borrowed = false;
             SetTaps((save.State & 1) != 0, true);
             SetPlugged((save.State & 2) != 0);
-            _bathedIn = (save.State & 4) != 0;
+            _covered = (save.State & 0x10) != 0;
             _level = Mathf.Clamp01(save.A);
             _heat = Mathf.Clamp01(save.B);
             ShowWater();
