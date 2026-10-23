@@ -335,7 +335,7 @@ namespace CloneZ
                 NewImage(row, "WearEdge", new Vector2(0f, 0.5f), new Vector2(2f, 0f), new Vector2(3f, h - 4f), edgeCol);
             }
 
-            if (!sub) AddIcon(row, def, badge: e.Kind == EntryKind.Worn || e.InHand, s.Condition01);
+            AddIcon(row, def, badge: e.Kind == EntryKind.Worn || e.InHand, s.Condition01);
             string count = s.Count <= 1 ? "" : sub ? "  \u00d7" + s.Count : " (" + s.Count + ")";
             AddName(row, def.DisplayName, count, h, sub ? 14 : 15, sub ? TextDim : TextMain, sub ? 12f : 0f);
 
