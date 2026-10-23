@@ -226,6 +226,19 @@ namespace CloneZ
             // The seat's hinges, the lever's rose on the cistern's side, and the cold feed from the wall with its stop tap.
             for (int s = -1; s <= 1; s += 2)
                 m.Box(new Vector3(s * 0.075f, 0.398f, -0.15f), new Vector3(0.03f, 0.014f, 0.034f), chrome);
+                // ---- Toilet‑paper holder (chrome) ----
+                // Base rod attached to the wall just left of the seat hinge
+                Vector3 holderBase = ToiletSeatHinge + new Vector3(-0.07f, 0.02f, -0.03f);
+                m.Cylinder(holderBase, 0.006f, 0.12f, 8, Mt(Chrome));
+                // End brackets (short vertical stubs)
+                Vector3 leftBracket = holderBase + new Vector3(-0.06f, 0f, 0f);
+                Vector3 rightBracket = holderBase + new Vector3( 0.06f, 0f, 0f);
+                m.Cylinder(leftBracket, 0.008f, 0.015f, 8, Mt(Chrome));
+                m.Cylinder(rightBracket, 0.008f, 0.015f, 8, Mt(Chrome));
+                // Paper roll (thin roll on the rod)
+                Vector3 rollCenter = holderBase + new Vector3(0f, 0f, 0.06f);
+                m.Cylinder(rollCenter, 0.018f, 0.04f, 10, M(new Color(0.93f, 0.92f, 0.88f))); // paper core
+                m.Box(rollCenter + new Vector3(0f, 0.02f, 0f), new Vector3(0.045f, 0.03f, 0.02f), M(new Color(0.80f, 0.78f, 0.75f))); // outer tube
             m.Cylinder(new Vector3(cx, 0.70f, -0.225f), 0.022f, 0.006f, 12, chrome, Quaternion.Euler(0f, 0f, -90f));
             var feed0 = new Vector3(-0.15f, y0 + 0.01f, -0.31f);
             var feed1 = new Vector3(-0.15f, 0.2f, -0.31f);
