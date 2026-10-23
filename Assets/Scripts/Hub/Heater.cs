@@ -12,6 +12,7 @@ namespace CloneZ
         private const float FuelPerRefill = 300f; // 5 min added per refuel
         private float _fuelSeconds; // remaining fuel while on
         private Light _light;
+        private TextMesh _timerText;
         private bool _isOn;
 
         public override string DisplayName => "Heater";
@@ -43,12 +44,12 @@ namespace CloneZ
             var txtGo = new GameObject("HeaterTimer");
             txtGo.transform.SetParent(transform, false);
             txtGo.transform.localPosition = new Vector3(0f, 0.7f, 0f);
-            var tm = txtGo.AddComponent<TextMesh>();
-            tm.text = "";
-            tm.fontSize = 32;
-            tm.alignment = TextAlignment.Center;
-            tm.anchor = TextAnchor.MiddleCenter;
-            tm.color = new Color(1f, 0.9f, 0.6f);
+            var txt = txtGo.AddComponent<TextMesh>();
+            _timerText = txt;
+            _timerText.fontSize = 32;
+            _timerText.alignment = TextAlignment.Center;
+            _timerText.anchor = TextAnchor.MiddleCenter;
+            _timerText.color = new Color(1f, 0.9f, 0.6f);
         }
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
@@ -93,7 +94,7 @@ namespace CloneZ
 
         private void UpdateTimerDisplay()
         {
-            var txt = GetComponentInChildren<TextMesh>();
+            var txt = _timerText;
             if (txt != null)
             {
                 if (_isOn)
