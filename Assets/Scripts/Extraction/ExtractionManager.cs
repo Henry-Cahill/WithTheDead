@@ -115,6 +115,7 @@ namespace CloneZ
             ExtractProgress01 = 0f;
             SpawnProtectionRemaining = 0f;
             RaidLoadout.Clear();
+            BlockedReason = null; // clear stale UI message
             RaidEnded?.Invoke(State);
         }
 
@@ -372,7 +373,11 @@ namespace CloneZ
 
         private void HandlePlayerDied()
         {
-            if (!RaidOver) EndRaid(RaidState.Dead, null);
+            if (!RaidOver)
+            {
+                BlockedReason = null; // clear stale UI message
+                EndRaid(RaidState.Dead, null);
+            }
         }
 
         private void EndRaid(RaidState outcome, RaidExit exit)
@@ -382,6 +387,7 @@ namespace CloneZ
             ExitUsed = exit;
             ClosedExitHere = null;
             SpawnProtectionRemaining = 0f;
+            BlockedReason = null; // clear stale UI message
             if (outcome == RaidState.Extracted) ExtractProgress01 = 1f;
             else
             {
