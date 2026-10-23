@@ -173,6 +173,54 @@ namespace CloneZ
                 }
                 // Shallow crack detail: a thin horizontal box on the wall face to suggest a crack
                 wall.At(wall.Solid, new Vector3(x, 6f, 0f), 0f, m => m.Box(new Vector3(0f, 0.2f, 0f), new Vector3(8f, 0.2f, 0.1f), ZoneKit.M(ZoneKit.V(ZoneKit.ConcreteDark, rng))));
+                // Winter‑worn concrete wall details
+                // Rebar (1‑3 per segment)
+                int rebarCount = rng.Next(1, 4);
+                for (int r = 0; r < rebarCount; r++)
+                {
+                    float offsetX = (float)rng.NextDouble() * 6f - 3f; // -3 .. 3
+                    float offsetZ = (float)rng.NextDouble() * 0.8f - 0.4f; // -0.4 .. 0.4
+                    float height = 0.6f + (float)rng.NextDouble() * 0.2f; // 0.6‑0.8
+                    Vector3 rebarPos = new Vector3(x + offsetX, 6f + 0.12f, offsetZ);
+                    wall.At(wall.Solid, rebarPos, 0f,
+                        m => m.Cylinder(Vector3.zero, 0.02f, height, 8, ZoneKit.Mt(ZoneKit.RustDark)));
+                }
+                // Steel plate (50% chance)
+                if (rng.NextDouble() < 0.5)
+                {
+                    Vector3 platePos = new Vector3(x, 5.2f, 0f);
+                    Vector3 plateSize = new Vector3(6f, 0.1f, 0.02f);
+                    wall.At(wall.Solid, platePos, 0f,
+                        m => m.Box(Vector3.zero, plateSize, ZoneKit.Mt(ZoneKit.RustDark)));
+                }
+                // Frozen water droplets (0‑2 per segment)
+                int dropletCount = rng.Next(0, 3);
+                for (int d = 0; d < dropletCount; d++)
+                {
+                    float offsetX = (float)rng.NextDouble() * 6f - 3f;
+                    float offsetZ = (float)rng.NextDouble() * 0.6f - 0.3f;
+                    Vector3 dropletPos = new Vector3(x + offsetX, 12.1f, offsetZ);
+                    wall.At(wall.Solid, dropletPos, 0f,
+                        m => m.Ellipsoid(dropletPos, new Vector3(0.08f, 0.12f, 0.08f),
+                            ZoneKit.M(ZoneKit.V(Color.white, rng, 0.07f)), 4, 2));
+                }
+                // Graffiti tag (20% chance)
+                if (rng.NextDouble() < 0.2)
+                {
+                    Vector3 tagPos = new Vector3(x - 2f, 8f, 0.001f);
+                    Vector3 tagSize = new Vector3(2.5f, 0.09f, 0.015f);
+                    Color tagCol = new Color(0.93f, 0.35f, 0.10f);
+                    wall.At(wall.Solid, tagPos, 0f,
+                        m => m.Box(Vector3.zero, tagSize, ZoneKit.M(tagCol)));
+                }
+                // Wooden shim (30% chance)
+                if (rng.NextDouble() < 0.3)
+                {
+                    Vector3 shimPos = new Vector3(x, 0.1f, 0f);
+                    Vector3 shimSize = new Vector3(3f, 0.15f, 0.25f);
+                    wall.At(wall.Solid, shimPos, 0f,
+                        m => m.Box(Vector3.zero, shimSize, ZoneKit.M(ZoneKit.WetWood)));
+                }
                 // Add a few rust‑stained bolt heads on the concrete block (1‑4 bolts per segment).
                 int boltCount = rng.Next(1, 5);
                 for (int b = 0; b < boltCount; b++)
