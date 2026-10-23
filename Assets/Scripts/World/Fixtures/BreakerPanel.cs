@@ -17,6 +17,7 @@ namespace CloneZ
         private Vector3 _point, _face, _normal;
         private FixturePart _door, _handle;
         private bool _open;
+        private bool _locked;
         private float _nextSync;
         private const string RepairActionLabel = "Repair breaker panel";
 
@@ -72,19 +73,22 @@ namespace CloneZ
             var breaker = new InteractAction(on ? "Switch off the main breaker" : "Switch on the main breaker", c => Throw(c, !on))
                 .DisabledIf(!_open, "The panel's door is shut")
                 .DisabledIf(_open && PowerGrid.Instance == null, "There's no supply to switch");
-            into.Add(new InteractAction(_open ? "Close the breaker panel" : "Open the breaker panel", c => SetOpen(!_open, false)));
+            into.Add(new InteractAction(_open ? "Close the breaker panel" : "Open the breaker panel", c => SetOpen(!_open, false)).DisabledIf(_locked && !_open, "The panel is locked"));
             into.Add(breaker);
-            // Offer repair when the grid is down and the panel door is open.
-            var grid = PowerGrid.Instance;
-            if (grid != null && !grid.IsOn && _open)
+            // Lock / Unlock actions – only available when the door is closed.
+            if (!_open && !_locked)
             {
-                var repair = new InteractAction(RepairActionLabel, RepairPanel)
-                    .DisabledIf(!_open, "Open the panel first");
-                into.Add(repair);
+                var lockAct = new InteractAction("Lock the panel", LockPanel);
+                into.Add(lockAct);
             }
-            into.Add(new InteractAction("Check the power", CheckPower));
-            into.Add(new InteractAction("Inspect breaker panel", c => c.Notify(_open ? "The panel's door is ajar." : "The panel's door is shut.")));
+            else if (_locked)
+            {
+                var unlockAct = new InteractAction("Unlock the panel", UnlockPanel);
+                into.Add(unlockAct);
+            }
             into.Add(new InteractAction("Inspect main breaker", c => c.Notify(BreakerOn ? "The main breaker is on." : "The main breaker is off.")));
+            into.Add(new InteractAction("Inspect breaker panel", c => c.Notify(_open ? "The panel's door is ajar." : "The panel's door is shut.")));
+            into.Add(new InteractAction("Check the power", CheckPower));
         }
 
         private void SetOpen(bool open, bool instant)
@@ -105,6 +109,19 @@ namespace CloneZ
             if (!on) ctx.Notify("Clunk. The house goes quiet \u2014 every light and appliance is dead.");
             else if (grid.IsOn) ctx.Notify("Clunk. Somewhere in the house, something hums back to life.");
             else ctx.Notify("Clunk. Nothing \u2014 the grid is down anyway.");
+        }
+        private void LockPanel(InteractContext ctx)
+        {
+            _locked = true;
+            MakeNoise(CloneZConfig.BreakerDoorNoise);
+            ctx.Notify("You lock the panel door.");
+        }
+
+        private void UnlockPanel(InteractContext ctx)
+        {
+            _locked = false;
+            MakeNoise(CloneZConfig.BreakerDoorNoise);
+            ctx.Notify("You unlock the panel door.");
         }
 
         private void RepairPanel(InteractContext ctx)
@@ -134,11 +151,20 @@ namespace CloneZ
             else ctx.Notify("The main breaker is off \u2014 and the meter has stopped anyway. The grid is down.");
         }
 
-        public override void CaptureState(FixtureSave save) => save.State = _open ? 1 : 0;
+        public override void CaptureState(FixtureSave save)
+        {
+            int state = 0;
+            if (_open) state |= 1;
+            if (_locked) state |= 2;
+            save.State = state;
+        }
 
         public override void RestoreState(FixtureSave save)
         {
-            SetOpen((save.State & 1) != 0, true);
+            bool open = (save.State & 1) != 0;
+            bool locked = (save.State & 2) != 0;
+            SetOpen(open, true);
+            _locked = locked;
             SyncHandle(true);
         }
     }
