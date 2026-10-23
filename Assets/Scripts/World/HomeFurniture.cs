@@ -206,9 +206,37 @@ namespace CloneZ
                 case HomeFurnitureKind.Counter:
                     FurnitureBuilder.KitchenCounter(m, rng, 1.2f, CabinetPaint, Worktop, false);
                     break;
-                case HomeFurnitureKind.Table:
-                    FurnitureBuilder.Table(m, rng, 1.0f, 0.8f, FurnitureBuilder.Pine);
-                    break;
+case HomeFurnitureKind.Table:
+{
+    FurnitureBuilder.Table(m, rng, 1.0f, 0.8f, FurnitureBuilder.Pine);
+    // 1️⃣ fabric runner – thin strip across the centre of the tabletop
+    // colour chosen from the existing Fabrics palette
+    Color runnerColor = Fabrics[rng.Next(Fabrics.Length)];
+    Vector3 runnerPos = new Vector3(0f, 0.79f, 0f); // just above the top
+    Vector3 runnerSize = new Vector3(0.90f, 0.015f, 0.60f);
+    m.Box(runnerPos, runnerSize, DecorPalette.Matte(runnerColor));
+    // 2️⃣ tiny metal vase – cylinder at table centre
+    Vector3 vasePos = new Vector3(0f, 0.80f, 0f);
+    m.Cylinder(vasePos, 0.02f, 0.08f, 8,
+        DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)), Quaternion.identity, 1f, false);
+    // 3️⃣ candlestick – small cylinder offset left/right
+    bool leftCandle = rng.Next(2) == 0;
+    Vector3 candPos = new Vector3(leftCandle ? -0.25f : 0.25f, 0.80f, -0.15f);
+    m.Cylinder(candPos, 0.015f, 0.06f, 6,
+        DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
+    // 4️⃣ subtle wear scuff – darkened wood patch near a random edge
+    bool scuffLeft = rng.Next(2) == 0;
+    float scuffX = scuffLeft ? -0.45f : 0.45f;
+    Vector3 scuffPos = new Vector3(scuffX, 0.78f, 0.35f);
+    Vector3 scuffSize = new Vector3(0.12f, 0.02f, 0.04f);
+    m.Box(scuffPos, scuffSize, DecorPalette.Matte(new Color(0.45f, 0.38f, 0.30f)));
+    // 5️⃣ decorative bowl – tiny ellipsoid near the opposite side
+    Vector3 bowlPos = new Vector3(-scuffX, 0.80f, -0.30f);
+    Vector3 bowlScale = new Vector3(0.07f, 0.025f, 0.07f);
+    m.Ellipsoid(bowlPos, bowlScale,
+        DecorPalette.Matte(new Color(0.85f, 0.78f, 0.70f)), 6, 4);
+    break;
+}
                 case HomeFurnitureKind.Chair:
                     FurnitureBuilder.WoodChair(m, rng, FurnitureBuilder.Pine);
                     break;
