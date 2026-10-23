@@ -16,6 +16,8 @@ namespace CloneZ
         private Renderer _lamp;
         private bool _running;
         private float _fuel, _noiseAt;
+        private float _noiseInterval;
+        private float _noiseClip;
         private int _pulls;
         private bool _oilApplied;
         private float _fuelDrainRate = 1f; // units of fuel per second
@@ -23,6 +25,12 @@ namespace CloneZ
         private const float FuelCanRestore = 30f; // units of fuel added per can
 
         public override string DisplayName => "Generator";
+
+        private void Awake()
+        {
+            _noiseInterval = CloneZConfig.RaidGeneratorNoiseInterval;
+            _noiseClip = CloneZConfig.RaidGeneratorNoise;
+        }
         public override Vector3 InteractPoint => _point;
 
         /// <summary>The generator's fixture under <paramref name="host"/>: <paramref name="point"/> is its control panel,
@@ -53,8 +61,8 @@ namespace CloneZ
                 return;
             }
             if (Time.time < _noiseAt) return;
-            _noiseAt = Time.time + CloneZConfig.RaidGeneratorNoiseInterval;
-            MakeNoise(CloneZConfig.RaidGeneratorNoise);
+            _noiseAt = Time.time + _noiseInterval;
+            MakeNoise(_noiseClip);
         }
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
