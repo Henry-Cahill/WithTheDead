@@ -59,6 +59,15 @@ namespace CloneZ
             "A spider's web glistens in the dim light, unnoticed."
         };
 
+        // Graffiti scribbles found on the bathroom wall – style reference: "You hear the faint echo of your own breath, a solitary companion."
+        private static readonly string[] GraffitiLines = {
+            "The world outside is a cold whisper, but the walls remember summer.",
+            "Someone wrote: “Stay quiet, the dead are listening.”",
+            "A child's hand traced a heart around a cracked mirror – love in the apocalypse.",
+            "“Don’t trust the lights,” the graffiti warns, smudged by water.",
+            "A faded slogan: “Survive the night, the morning will be yours.”"
+        };
+
 
         private HomeFurniture _host;
         private string _key;
@@ -190,6 +199,8 @@ namespace CloneZ
             Step first = !_lidUp ? Step.Lid : _wantsFlush ? Step.Flush : _flushed ? Step.Lid : Step.Use;
             AddStep(into, first);
             if (first != Step.Lid) AddStep(into, Step.Lid);
+            // Add graffiti inspection interaction before seat actions
+            into.Add(new InteractAction("Read graffiti on the wall", InspectGraffiti));
             into.Add(new InteractAction(_seatUp ? "Put the seat down" : "Lift the seat", c => SetSeat(!_seatUp)));
             into.Add(new InteractAction("Wipe the seat", WipeSeat));
             into.Add(new InteractAction("Scrub the seat", ScrubSeat));
@@ -359,14 +370,22 @@ namespace CloneZ
         }
     }
 
+        /// <summary>Shows a random graffiti line from the bathroom wall.</summary>
+        private void InspectGraffiti(InteractContext ctx)
+        {
+            string line = GraffitiLines[Random.Range(0, GraffitiLines.Length)];
+            ctx.Notify(line);
+        }
+
+
+        /// <summary>Wipes the toilet seat, providing a small calming effect.</summary>
         private void WipeSeat(InteractContext ctx)
         {
             ctx.Notify("You wipe away grime from the cold porcelain.");
             // a small calming effect, re‑using the existing toilet‑use calm value
             LightingFixtures.Calm(ctx, CloneZConfig.ToiletUseCalm);
         }
-
-        /// <summary>Scrubs the toilet seat clean, restoring its pristine state and calming the survivor.</summary>
+        
         private void ScrubSeat(InteractContext ctx)
         {
             if (_seatClean)
