@@ -99,6 +99,7 @@ namespace CloneZ
         public readonly RaidMesh Ceil = new RaidMesh();
 
         public Transform Root;
+        // Holds the root object for all generated wall colliders.
         private GameObject _colliders;
         private bool _shellBuilt;
 
@@ -260,6 +261,8 @@ namespace CloneZ
             BuildPieces();
             BuildFloorsAndCeilings();
             ReserveDoorways();
+            // NEW: create colliders for the wall pieces just built
+            CreateColliders();
         }
 
         private void DeriveRuns()
@@ -788,11 +791,24 @@ namespace CloneZ
             }
         }
 
-        /// <summary>Hangs the doors once the rooms are furnished, and queues the windows' working parts: a doorway declared
-        /// with a leaf gets a pair of leaves hinged at its jambs (<see cref="HangDoor"/>, a working <see cref="RaidDoor"/>),
-        /// swinging open into whichever room leaves them clear of furniture and other doorways, to rest leaning back near the
-        /// wall beside the gap (never across it). A doorway with no clear swing is left without a door. Every window is
-        /// fitted with its sash, glass and dressing (<see cref="FitWindow"/>), once its segment is an object.</summary>
+        /// <summary>Creates Unity colliders from the bounds gathered while drawing wall pieces.</summary>
+        private void CreateColliders()
+        {
+            // One parent object to hold all colliders, hidden under the building root.
+            _colliders = new GameObject("Colliders");
+            _colliders.transform.SetParent(Root, false);
+            foreach (var piece in _pieces)
+            {
+                foreach (var b in piece.Colliders)
+                {
+                    var go = new GameObject("WallCollider");
+                    go.transform.SetParent(_colliders.transform, false);
+                    var col = go.AddComponent<BoxCollider>();
+                    col.center = b.center;
+                    col.size = b.size;
+                }
+            }
+        }
         private void PlaceAllLeaves()
         {
             foreach (Opening o in _openings)
