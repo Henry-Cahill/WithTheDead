@@ -1,0 +1,81 @@
+diff --git a/Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs b/Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs
+index 72f2fd7b..0bda1cbf 100644
+--- a/Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs
++++ b/Assets/Scripts/World/Fixtures/RaidStoreWaterHeater.cs
+@@ -11,19 +11,25 @@ namespace CloneZ
+     /// lit again. Nothing is saved.
+     /// </summary>
+     [DisallowMultipleComponent]
+-    public class RaidStoreWaterHeater : Interactable, IWaterPoint
++    public class RaidStoreWaterHeater : Interactable, IWaterPoint, IWarmthSource
+     {
+         private Transform _body;
+         private Vector3 _valve, _point;
+         private Renderer _pilotGlow;
+         private int _water, _capacity;
+         private bool _pilot;
+-        private bool _valveOpen; // true = valve open, water can be drawn; false = closed
++        private const float WarmthRadiusValue = 2.5f; // metres of effective warmth when the pilot is lit
+ 
+         public override string DisplayName => "Water heater";
+         public override Vector3 InteractPoint => _point;
+         public override Transform OcclusionRoot => _body != null ? _body : transform;
+ 
++
++        #region IWarmthSource
++        public Vector3 WarmthPosition => _valve; // heat radiates from the drain valve
++        public float WarmthRadius => WarmthRadiusValue; // radius defined above
++        public float Warmth => _pilot ? 0.3f : 0f; // modest warmth when pilot is lit
++
+         #region IWaterPoint
+         public Vector3 WaterPosition => _valve;
+         public string WaterLabel => "water heater";
+@@ -72,7 +78,11 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
+             into.Add(new InteractAction("Dump water from tank", DumpWater).DisabledIf(!HasWater, DryMessage));
+             into.Add(new InteractAction("Inspect water level", InspectWaterLevel));
+             into.Add(new InteractAction("Check the pilot light", CheckPilot));
+-            into.Add(new InteractAction("Check water temperature", CheckTemperature));
++            into.Add(new InteractAction("Check heater warmth", c =>
++                {
++                    c.Notify(_pilot ? "You feel a gentle heat radiating from the heater." :
++                        "The heater is cold; no warmth reaches you.");
++                }));
+             if (_pilot)
+                 into.Add(new InteractAction("Turn off the pilot", Extinguish));
+             else
+@@ -124,6 +134,14 @@ private void CheckPilot(InteractContext ctx)
+ 
+         private void CheckTemperature(InteractContext ctx) { ctx.Notify(_pilot ? "The water feels warm." : "The water is cold."); }
+ 
++        private void SetPilot(bool lit)
++        {
++            _pilot = lit;
++            if (_pilotGlow != null) _pilotGlow.enabled = lit;
++            if (lit) HomeComfort.Register(this);
++            else HomeComfort.Unregister(this);
++        }
++
+         private void Relight(InteractContext ctx)
+         {
+             SetPilot(true);
+@@ -138,17 +156,11 @@ private void Extinguish(InteractContext ctx)
+             ctx.Notify("You turn the knob to OFF, and the pilot flame sputters out, leaving the heater dark.");
+         }
+ 
+-        private void SetPilot(bool lit)
+-        {
+-            _pilot = lit;
+-            if (_pilotGlow != null) _pilotGlow.enabled = lit;
+-        }
+ 
+-        private void CloseValve(InteractContext ctx)
++
++        private void OnDestroy()
+         {
+-            _valveOpen = false;
+-            MakeNoise(CloneZConfig.FixtureNoiseSmall);
+-            ctx.Notify("You twist the valve shut; water will no longer flow from the tank.");
++            if (_pilot) HomeComfort.Unregister(this);
+         }
+ 
+         private void OpenValve(InteractContext ctx)
