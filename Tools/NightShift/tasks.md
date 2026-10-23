@@ -9539,3 +9539,9 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 5: Add a faint emissive rust patch near the lamp to give a weathered glow: `// faint glowing rust patch on the lantern housing` `Vector3 patchPos = new Vector3(0f, 5.25f, 0.08f);` `Vector3 patchSize = new Vector3(0.12f, 0.004f, 0.001f);` `m.Box(patchPos, patchSize, DecorPalette.Glow(new Color(0.8f, 0.45f, 0.25f)));` Size = 0.12 m × 0.004 m × 0.001 m, positioned just above the grill.
   Step 6: Add a subtle paint‑chip line on the concrete base to break the monotony: `// worn paint‑chip line on concrete base` `m.Box(new Vector3(0f, 0.01f, -0.3f), new Vector3(0.6f, 0.005f, 0.02f), DecorPalette.Matte(new Color(0.70f, 0.68f, 0.65f)));` Size = 0.6 m × 0.005 m × 0.02 m, placed near the rear edge of the base.
   Done when: In‑game the flood‑light tower on the checkpoint shows a rust‑stained metal base plate, a hanging cable, a side bolt, a faint glowing rust patch, and a painted‑chip line, all with consistent rust colour variation per tower. The tower’s collider, interaction point, and overall size remain unchanged, and no other scripts are modified.
+- [ ] In Assets/Scripts/World/Fixtures/RaidTownGenerator.cs: Cache the generator’s config values that are read every frame in `RaidTownGenerator.Update` to avoid repeated static lookups.
+  Add a private float field ` _noiseInterval` (and optionally a cached noise asset ` _noiseClip`).
+  Initialize them in a new `Awake()` method: ` _noiseInterval = CloneZConfig.RaidGeneratorNoiseInterval;` (and ` _noiseClip = CloneZConfig.RaidGeneratorNoise;`).
+  Replace the per‑frame accesses `CloneZConfig.RaidGeneratorNoiseInterval` and `CloneZConfig.RaidGeneratorNoise` in `Update` with the cached `_noiseInterval` and `_noiseClip`.
+  The generator’s behaviour and visual appearance stay identical; only the per‑frame cost of static config lookups is removed.
+  No other code changes are required.
