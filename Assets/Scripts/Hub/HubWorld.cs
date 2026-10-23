@@ -336,6 +336,27 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             Solid(world, "HideoutDoor", new Vector3(-12.83f, 1.15f, 5f), new Vector3(0.08f, 2.3f, 1.1f), st.DarkWood);
             Solid(world, "LedgerDesk", new Vector3(7.5f, 0.4f, -7.8f), new Vector3(1.4f, 0.8f, 0.8f), st.DarkWood);
             Solid(world, "Bookshelf", new Vector3(-3f, 1f, -HalfZ + 0.3f), new Vector3(1.6f, 2f, 0.35f), st.Wood);
+            // Books on the shelf and a thin metal bracket for visual interest
+            Deco(world, "BookshelfDetails", m =>
+            {
+                // deterministic random for slight book‑size variation (seed tied to hub position)
+                var rng = new System.Random(31);
+                // ---- Row 1 (lower shelf) ----
+                // Four books, each a thin box; use the existing wood material for spines
+                // Size: ~0.15 m wide × 0.45 m tall × 0.28 m deep
+                // Positions are relative to the bookshelf centre (origin passed below)
+                m.Box(new Vector3(-0.55f, -0.45f, 0f), new Vector3(0.15f, 0.45f, 0.28f), st.Wood);
+                m.Box(new Vector3(-0.20f, -0.45f, 0f), new Vector3(0.15f, 0.48f, 0.28f), st.Wood);
+                m.Box(new Vector3(0.15f, -0.45f, 0f), new Vector3(0.13f, 0.44f, 0.28f), st.Wood);
+                m.Box(new Vector3(0.45f, -0.45f, 0f), new Vector3(0.16f, 0.47f, 0.28f), st.Wood);
+                // ---- Row 2 (upper shelf) ----
+                // Two books placed higher on the same shelf plane
+                m.Box(new Vector3(-0.40f, -0.05f, 0f), new Vector3(0.14f, 0.42f, 0.28f), st.Wood);
+                m.Box(new Vector3(0.30f, -0.05f, 0f), new Vector3(0.17f, 0.46f, 0.28f), st.Wood);
+                // ---- Thin metal bracket (supports the books) ----
+                // Size: 0.02 m × 0.8 m × 0.02 m, placed at the left edge of the shelf
+                m.Box(new Vector3(-0.78f, -0.25f, 0f), new Vector3(0.02f, 0.80f, 0.02f), st.Metal);
+            }, new Vector3(-3f, 1f, -HalfZ + 0.3f));
             Deco(world, "Mirror", m => m.Box(new Vector3(-8f, 1.6f, -HalfZ + 0.18f), new Vector3(0.9f, 1.4f, 0.03f), DecorPalette.Glass(new Color(0.75f, 0.82f, 0.85f))), Vector3.zero);
             Deco(world, "Rugs", m =>
             {
