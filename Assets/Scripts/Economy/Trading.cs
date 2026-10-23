@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 namespace CloneZ
 {
@@ -48,7 +49,7 @@ namespace CloneZ
                 QuestState q = c.Quest(o.Quest);
                 if (q == null || q.Status != QuestState.Done) return false;
             }
-            return ItemDatabase.Get(o.ItemId) != null;
+            return string.IsNullOrEmpty(o.ItemId) || ItemDatabase.Get(o.ItemId) != null;
         }
 
         /// <summary>Units left of an offer, restocking on the trader's timer.</summary>
@@ -56,6 +57,7 @@ namespace CloneZ
 public static int StockLeft(CharacterProfile c, TraderDef t, TraderOffer o)
         {
             TraderState s = c.Trader(t.Id);
+            if (s.Stock == null) s.Stock = new List<OfferStock>();
             long now = ProfileStore.NowUnix;
             if (now >= s.RestockUnix)
             {
@@ -70,7 +72,7 @@ public static int StockLeft(CharacterProfile c, TraderDef t, TraderOffer o)
         /// <summary>Returns a human‑readable time until the trader's stock refreshes.</summary>
 public static string RestockIn(CharacterProfile c, TraderDef t)
         {
-            long secs = c.Trader(t.Id).RestockUnix - ProfileStore.NowUnix;
+            long secs = Math.Max(0, c.Trader(t.Id).RestockUnix - ProfileStore.NowUnix);
             if (secs <= 0) return "now";
             return secs >= 3600 ? (secs / 3600) + "h " + (secs % 3600 / 60) + "m" : (secs / 60) + "m " + (secs % 60) + "s";
         }
@@ -102,7 +104,10 @@ public static bool Buy(CharacterProfile c, TraderDef t, TraderOffer o, PlayerInv
             int count = Mathf.Max(1, o.Count);
             stash.Add(def, count, enforceWeight: false);
             TraderState s = c.Trader(t.Id);
-            s.Stock.Find(x => x.OfferId == o.Id).Left--;
+            if (s.Stock == null) s.Stock = new List<OfferStock>();
+                OfferStock st = s.Stock.Find(x => x.OfferId == o.Id);
+                if (st == null) { st = new OfferStock { OfferId = o.Id, Left = o.Stock }; s.Stock.Add(st); }
+                st.Left = Mathf.Max(0, st.Left - 1);
             s.Spent += o.Price;
             s.Rep = Mathf.Clamp(s.Rep + Mathf.Min(0.01f, o.Price / 400000f), -1f, 1f);
             message = "Bought " + def.DisplayName + (count > 1 ? " x" + count : "") + " \u2014 it's in your stash.";
