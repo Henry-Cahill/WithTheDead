@@ -218,6 +218,22 @@ namespace CloneZ
                 sb.Solid.Box(new Vector3(0f, 1.2f, -1.22f), new Vector3(0.02f, 0.12f, 0.04f), ZoneKit.Mt(ZoneKit.RustDark));
                 // lock plate
                 sb.Solid.Box(new Vector3(0f, 1.34f, -1.215f), new Vector3(0.12f, 0.02f, 0.02f), ZoneKit.Mt(ZoneKit.RustDark));
+                // left frame – rust‑dark metal, inset 0.01 m from front wall
+                sb.Solid.Box(new Vector3(-0.4f, 1.2f, -1.19f), new Vector3(0.02f, 2.2f, 0.02f), ZoneKit.Mt(ZoneKit.RustDark));
+                // right frame – rust‑dark metal
+                sb.Solid.Box(new Vector3(0.4f, 1.2f, -1.19f), new Vector3(0.02f, 2.2f, 0.02f), ZoneKit.Mt(ZoneKit.RustDark));
+                // top lintel – rust‑dark metal, positioned 1.1 m above the door centre
+                sb.Solid.Box(new Vector3(0f, 1.2f + 1.1f, -1.19f), new Vector3(0.84f, 0.02f, 0.02f), ZoneKit.Mt(ZoneKit.RustDark));
+                // upper hinge
+                sb.Solid.Rod(new Vector3(-0.39f, 1.2f - 0.4f, -1.19f), new Vector3(-0.39f, 1.2f - 0.4f + 0.02f, -1.19f), 0.01f, ZoneKit.Mt(ZoneKit.RustDark), 4);
+                // lower hinge
+                sb.Solid.Rod(new Vector3(-0.39f, 1.2f + 0.9f, -1.19f), new Vector3(-0.39f, 1.2f + 0.9f + 0.02f, -1.19f), 0.01f, ZoneKit.Mt(ZoneKit.RustDark), 4);
+                // brass‑like sign plate – rust‑dark metal, 0.5 m wide, 0.02 m tall, placed 2.0 m high
+                sb.Solid.Box(new Vector3(0f, 2.0f, -1.165f), new Vector3(0.5f, 0.02f, 0.005f), ZoneKit.Mt(ZoneKit.RustDark));
+                // optional wear – thin rust‑paint decal on the left frame side
+                if (ZoneKit.R(rng, 0f, 1f) < 0.3f) {
+                    sb.Solid.Box(new Vector3(-0.41f, 1.2f, -1.19f), new Vector3(0.001f, 0.1f, 0.5f), ZoneKit.Mt(ZoneKit.Rust));
+                }
             }
                         // welcome mat on the step
             sb.Solid.Box(new Vector3(0f, 0.03f, -1.12f), new Vector3(0.8f, 0.02f, 0.4f), ZoneKit.M(new Color(0.55f, 0.45f, 0.30f)));
