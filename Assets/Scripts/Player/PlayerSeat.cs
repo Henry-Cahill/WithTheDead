@@ -121,13 +121,13 @@ namespace CloneZ
             // Move the survivor to a clear spot in front of the bed before clearing the lying‑down flags
             if (RestBed != null)
             {
-                // Try to find a spot a short distance in front of the bed (using the bed's forward direction).
-                Vector3 spot = RestBed.position + RestBed.forward * 0.8f;
-                // Ensure the spot is standable; fall back to the survivor's previous position if not.
-                if (!CanStandAt(spot, RestBed.position)) spot = transform.position;
-                transform.SetPositionAndRotation(spot, transform.rotation);
-                // Re‑enable the character controller if it was disabled while lying down.
+                // Find a safe stand‑up spot near the bed (tries front, then around the bed).
+                Vector3 spot = FindBedStandSpot(RestBed);
+                // If no spot found, fall back to the survivor's current position.
+                if (spot == Vector3.zero) spot = transform.position;
+                // Re‑enable the character controller before moving so physics does not block the teleport.
                 if (Body != null && !Body.enabled) Body.enabled = true;
+                transform.SetPositionAndRotation(spot, Quaternion.Euler(0f, RestBed.eulerAngles.y, 0f));
             }
 
             GetUp();
@@ -247,7 +247,33 @@ namespace CloneZ
                     if (CanStandAt(p, seat)) return p;
                 }
             }
-            return StoodFrom;
+return StoodFrom;
+}
+
+        // Finds a walkable spot next to the given bed, using the same algorithm as FindStandSpot but
+        // anchored to the bed’s centre and forward direction. Returns Vector3.zero if nothing is found.
+        private Vector3 FindBedStandSpot(Transform bed)
+        {
+            Vector3 bedCenter = bed.position;
+            Vector3 forward = bed.forward; // bed “head” faces –Z, forward points to the foot side.
+            for (int i = 0; i < FrontSteps.Length; i++)
+            {
+                Vector3 p = bedCenter + forward * FrontSteps[i];
+                if (CanStandAt(p, bedCenter)) return p;
+            }
+            // Try the original standing point the player had before lying down (if still reachable).
+            if (CanStandAt(StoodFrom, bedCenter)) return StoodFrom;
+            // Search around the bed using the same angle/step tables.
+            for (int a = 0; a < AroundAngles.Length; a++)
+            {
+                Vector3 dir = Quaternion.Euler(0f, AroundAngles[a], 0f) * forward;
+                for (int s = 0; s < AroundSteps.Length; s++)
+                {
+                    Vector3 p = bedCenter + dir * AroundSteps[s];
+                    if (CanStandAt(p, bedCenter)) return p;
+                }
+            }
+            return Vector3.zero;
         }
 
         // Room for the body's capsule, reached from the seat without passing through a wall.
