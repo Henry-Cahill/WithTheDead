@@ -725,6 +725,25 @@ for (int v = 0; v < 4; v++)
             if (Chance(rng, 0.5)) m.Cylinder(new Vector3(sinkX - SteelColdTap.x - 0.07f, SteelDeckY + 0.01f, SteelColdTap.z - 0.05f), 0.03f, 0.12f, 8, M(Paper));
             m.Box(new Vector3(sinkX + SteelColdTap.x, 0.98f, SteelColdTap.z), new Vector3(0.04f, 0.04f, 0.04f), chrome);
             KitchenTapHead(m, new Vector3(sinkX - SteelColdTap.x, SteelColdTap.y, SteelColdTap.z), TapHotRed);
+            // 1️⃣ Pop‑up drain stopper: a small chrome disc that lifts out of the bowl
+            float stopperY = SteelSinkBottom + 0.01f; // just above the bowl bottom
+            m.Cylinder(new Vector3(sinkX, stopperY, SteelSinkZ), 0.02f, 0.005f, 12, Mt(Chrome));
+            // 2️⃣ Drain lever: a tiny chrome lever beside the bowl with a small knob
+            float leverX = sinkX - 0.08f;
+            float leverY = stopperY + 0.02f;
+            float leverZ = SteelSinkZ;
+            m.Box(new Vector3(leverX, leverY, leverZ), new Vector3(0.005f, 0.03f, 0.12f), Mt(Chrome)); // the lever arm
+            m.Box(new Vector3(leverX, leverY + 0.03f, leverZ - 0.015f), new Vector3(0.015f, 0.015f, 0.01f), Mt(Chrome)); // the knob
+            // 3️⃣ Soap dispenser: a small white plastic cylinder with a little label
+            Vector3 soapPos = new Vector3(sinkX + 0.12f, 0.90f, SteelSinkZ + 0.08f);
+            m.Cylinder(soapPos, 0.03f, 0.12f, 12, M(new Color(0.95f, 0.95f, 0.93f)));
+            m.Box(soapPos + new Vector3(0f, 0.065f, 0f), new Vector3(0.025f, 0.005f, 0.03f), Mt(new Color(0.20f, 0.20f, 0.20f)));
+            // 4️⃣ Chrome towel‑bar: a thin horizontal bar where a dry towel can hang
+            Vector3 barPos = new Vector3(sinkX, 0.95f, SteelSinkZ - 0.15f);
+            m.Box(barPos, new Vector3(0.30f, 0.008f, 0.03f), Mt(Chrome));
+            // 5️⃣ Dry towel: a folded paper‑like rectangle clinging to the bar
+            Vector3 towelPos = barPos + new Vector3(0f, 0.015f, 0f);
+            m.Box(towelPos, new Vector3(0.12f, 0.015f, 0.05f), M(Paper));
 
             // Under the bowl: the waste, its trap and the supply pipes.
             Surf pvc = G(new Color(0.84f, 0.84f, 0.80f));
