@@ -53,7 +53,8 @@ namespace CloneZ
             float apronY = sillY - sillHeight*0.5f - apronHeight*0.5f;
             m.Box(f.P(f.Mid, apronY, outer - sillDepth*0.5f - apronDepth*0.5f), f.Size(WindowWidth, apronHeight, apronDepth), wood);
             // rust‑tinted metal surface for brackets
-            Surf rustMetal = DecorPalette.Matte(new Color(0.55f, 0.35f, 0.30f)); // weathered iron look
+            // rust‑tinted metal used for the exterior brackets (matches the material used elsewhere)
+Surf rustMetal = DecorPalette.Matte(new Color(0.55f, 0.35f, 0.30f));
             // stone coping cap
             float capHeight = 0.005f;
             float capDepth = sillDepth + 0.01f;
@@ -243,10 +244,13 @@ namespace CloneZ
             // thin inner‑face wooden trim strip (period‑correct finish)
             float trimThickness = 0.002f;
             // position on inner face of sash
-            float innerOffset = across + roomSide * (SashDepth * 0.5f + trimThickness * 0.5f);
+            // inner face is opposite the room side; subtract to move the trim inward
+float innerOffset = across - roomSide * (SashDepth * 0.5f + trimThickness * 0.5f);
             m.Box(f.P(f.Mid, (y0 + y1) * 0.5f, innerOffset), f.Size(w - 0.09f, h, trimThickness), bead);
-            // material for cap rivets
-            Surf brassCap = DecorPalette.Metal(FurnitureBuilder.Brass);
+// material for cap rivets
+Surf brassCap = DecorPalette.Metal(FurnitureBuilder.Brass);
+// rust‑tinted metal used for the exterior brackets (matches the material used elsewhere)
+Surf rustMetal = DecorPalette.Matte(new Color(0.55f, 0.35f, 0.30f));
             // three subtle rivets on the coping cap (evenly spaced)
             float capRivetSize = 0.004f;
             float capRivetDepth = 0.003f;
@@ -263,7 +267,7 @@ namespace CloneZ
 
             // brackets using rustMetal
             for (int e = -1; e <= 1; e += 2)
-                m.Box(f.P(f.Mid + e * (w * 0.5f - 0.0225f), y1 - topRail * 0.5f, across), f.Size(0.015f, 0.015f, 0.01f), brassCap);
+                m.Box(f.P(f.Mid + e * (w * 0.5f - 0.0225f), y1 - topRail * 0.5f, across), f.Size(0.015f, 0.015f, 0.01f), rustMetal);
             // top‑rail brass rivets – subtle hardware detail
             float rivetSize = 0.006f;
             float rivetDepth = 0.004f;
