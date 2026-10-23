@@ -15,6 +15,7 @@ namespace CloneZ
         private float _yaw, _halfWidth;
         private bool _lifted;
         private bool _priceTagTaken;
+        private bool _repaired;
 
         public override string DisplayName => "Gas pump";
 
@@ -55,14 +56,22 @@ namespace CloneZ
             if (_lifted) {
                 into.Add(new InteractAction("Tap the nozzle", TapNozzle));
                 into.Add(new InteractAction("Check for leak", CheckLeak));
-                    if (!_priceTagTaken)
-                    {
-                        into.Add(new InteractAction("Take the rusted price tag", TakePriceTag));
-                    }
-                    else
-                    {
-                        into.Add(new InteractAction("Inspect the rusted price tag", c => c.Notify("The rusted price tag reads $1.09 per gallon, a relic of harder times.")));
-                    }
+                if (!_priceTagTaken)
+                {
+                    into.Add(new InteractAction("Take the rusted price tag", TakePriceTag));
+                }
+                else
+                {
+                    into.Add(new InteractAction("Inspect the rusted price tag", c => c.Notify("The rusted price tag reads $1.09 per gallon, a relic of harder times.")));
+                }
+                if (!_repaired)
+                {
+                    into.Add(new InteractAction("Repair the nozzle", RepairNozzle));
+                }
+                else
+                {
+                    into.Add(new InteractAction("Pump gasoline", PumpFuel));
+                }
                 into.Add(new InteractAction("Listen to the pump's hum", c => c.Notify("The pump emits a low, mournful hum against the winter wind.")));
                 into.Add(new InteractAction("Feel the cold metal", c => c.Notify("The metal is bitterly cold, frosting your fingertips.")));
                 into.Add(new InteractAction("Observe the frost on the hose", c => c.Notify("A thin layer of frost clings to the hose, glinting in the pale light.")));
@@ -94,6 +103,7 @@ namespace CloneZ
             base.CaptureState(save);
             save.A = _priceTagTaken ? 1f : 0f;
             save.B = _lifted ? 1f : 0f;
+            save.C = _repaired ? 1f : 0f;
         }
 
         public override void RestoreState(FixtureSave save)
@@ -101,6 +111,7 @@ namespace CloneZ
             base.RestoreState(save);
             _priceTagTaken = save.A != 0f;
             _lifted = save.B != 0f;
+            _repaired = save.C != 0f;
         }
 
         private void ToggleNozzle(InteractContext ctx)
@@ -124,17 +135,6 @@ namespace CloneZ
             ctx.Notify("You inspect the nozzle for a leak. The pump hums but shows no obvious leak.");
         }
 
-        private void TapNozzle(InteractContext ctx)
-        {
-            if (!_lifted)
-            {
-                ctx.Notify("The nozzle is still in its cradle.");
-                return;
-            }
-            MakeNoise(CloneZConfig.RaidPumpNoise);
-            ctx.Notify("You give the nozzle a quick tap; it squeaks faintly but nothing else happens.");
-        }
-
         private void TakePriceTag(InteractContext ctx)
         {
             if (!_lifted)
@@ -149,6 +149,43 @@ namespace CloneZ
             // Feedback sound and message.
             MakeNoise(CloneZConfig.RaidPumpNoise);
             ctx.Notify("You pry the rusted price tag off the pump and tuck it away.");
+        }
+        private void RepairNozzle(InteractContext ctx)
+        {
+            // Optional: require a wrench; if not present just proceed.
+            var wrenchDef = ItemDatabase.Get("wrench");
+            if (wrenchDef != null && (ctx.Inventory?.Has(wrenchDef.Id) ?? false) == false)
+            {
+                ctx.Notify("You need a wrench to repair the nozzle.");
+                return;
+            }
+            _repaired = true;
+            MakeNoise(CloneZConfig.RaidPumpNoise);
+            ctx.Notify("Using the wrench you tighten the rusted fittings. The pump sighs as the leak seals.");
+        }
+
+        private void TapNozzle(InteractContext ctx)
+        {
+            if (!_lifted)
+            {
+                ctx.Notify("The nozzle is still in its cradle.");
+                return;
+            }
+            MakeNoise(CloneZConfig.RaidPumpNoise);
+            ctx.Notify("You give the nozzle a quick tap; it squeaks faintly but nothing else happens.");
+        }
+
+        private void PumpFuel(InteractContext ctx)
+        {
+            var fuelDef = ItemDatabase.Get("gasoline");
+            if (fuelDef == null)
+            {
+                ctx.Notify("There's no gasoline item defined; cannot give you fuel.");
+                return;
+            }
+            ctx.Inventory?.Inventory.Add(fuelDef, 1, enforceWeight: false);
+            MakeNoise(CloneZConfig.RaidPumpNoise);
+            ctx.Notify("You twist the handle and a can of gasoline fills up. It might be useful later.");
         }
 
     }
