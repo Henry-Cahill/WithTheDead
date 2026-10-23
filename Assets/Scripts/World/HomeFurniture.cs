@@ -336,6 +336,18 @@ bool leftHandle = rng.Next(2) == 0;
                     break;
                 case HomeFurnitureKind.Shower:
                     m.Box(new Vector3(0f, 0.04f, 0f), new Vector3(0.9f, 0.08f, 0.9f), DecorPalette.Gloss(new Color(0.9f, 0.9f, 0.88f)));
+                    // Add visual details: pipe, frosted glass door, towel rack, tiny water drip
+                    bool doorLeft = rng.Next(2) == 0;
+                    // Pipe feeding the showerhead
+                    m.Cylinder(new Vector3(0f, 1.75f, -0.25f), 0.015f, 0.30f, 8, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
+                    // Frosted‑glass door (left or right side)
+                    float doorX = doorLeft ? -0.45f : 0.45f;
+                    m.Box(new Vector3(doorX, 0.5f, 0f), new Vector3(0.01f, 1.0f, 0.9f), DecorPalette.Glass(new Color(0.8f, 0.9f, 0.95f, 0.6f)));
+                    // Towel rack on the opposite wall
+                    float rackX = doorLeft ? 0.45f : -0.45f;
+                    m.Cylinder(new Vector3(rackX, 0.9f, 0f), 0.015f, 0.6f, 8, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
+                    // Tiny water drip from the pipe ceiling
+                    m.Ellipsoid(new Vector3(0f, 1.9f, -0.25f), new Vector3(0.01f, 0.01f, 0.01f), DecorPalette.Glass(new Color(0.66f, 0.82f, 0.90f, 0.45f)), 6, 4);
                     break;
 case HomeFurnitureKind.Tv:
                      m.Box(new Vector3(0f, 0.2f, -0.02f), new Vector3(0.46f, 0.4f, 0.32f), DecorPalette.Matte(new Color(0.12f, 0.12f, 0.13f)));
