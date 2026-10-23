@@ -93,18 +93,8 @@ namespace CloneZ
             }
 
             // -------------------- porch lamp (period‑correct lantern) --------------------
-            // Position the lamp a short distance outward from the right post
-            Vector3 lampBasePos = rightPostPos + new Vector3(0f, 0f, 0.3f);
-            // Pole
-            var pole = site.Town.Out.Solid(lampBasePos + new Vector3(0f, 0.5f, 0f));
-            pole.Box(Vector3.zero,
-                new Vector3(0.07f, 1f, 0.07f),
-                new Surf(build.GetStreetLampMaterial(), Vector2.zero, 0f));
-            // Simple bulb (white box as placeholder)
-            var bulb = site.Town.Out.Solid(lampBasePos + new Vector3(0f, 1.05f, 0f));
-            bulb.Box(Vector3.zero,
-                new Vector3(0.12f, 0.12f, 0.12f),
-                DecorMaterials.WoodFloor(Color.white));
+            const float LampForwardOffset = 0.3f; // distance outward from right post
+            PorchLampBuilder.CreateLamp(site, rightPostPos + new Vector3(0f, 0f, LampForwardOffset), build);
 
             // Reserve space so other generators don’t overlap
             float radius = stepDepth * stepCount + 1f + roofOverhang;
