@@ -282,6 +282,7 @@ namespace CloneZ
                     float chipX = f.Mid + (float)(rng.NextDouble() - 0.5) * 0.02f;
                     m.Box(f.P(chipX, chipY, latchZ + 0.001f), new Vector3(0.012f, 0.006f, 0.001f), DecorPalette.Matte(brass * 0.6f));
                 }
+                if (room != null) continue;
                 Shutters(m, f, side);
                 if (f.AlongX && side < 0) FlowerBox(m, f, side, rng);   // the street front
             }

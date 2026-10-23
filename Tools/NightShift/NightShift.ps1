@@ -585,12 +585,81 @@ function Test-PublishDue($State, [string]$Stamp, [datetime]$Now = (Get-Date)) {
     return ($Now - $last).TotalMinutes -ge $every
 }
 
-# Pushes the Spark's night shift branch to GitHub and opens its pull request, or updates the open one.
+# Whether commit $Sha went into main through one of the merged pull requests $Prs (number and headRefOid each). Squash
+# and rebase merges leave a branch's own commits off main's history, but the merged pull request's head still holds them.
+function Test-MergedPullRequest([string]$Sha, $Prs) {
+    foreach ($pr in @($Prs)) {
+        $head = "$($pr.headRefOid)"
+        if (-not $head) { continue }
+        if ($head -eq $Sha) { return $true }
+        if (-not (& git -C $Root rev-parse -q --verify "$head^{commit}")) {
+            try { Invoke-Tool "git fetch of pull request $($pr.number)" git @('-C', $Root, 'fetch', '-q', 'origin', "refs/pull/$($pr.number)/head") 1 | Out-Null }
+            catch { continue }
+        }
+        & git -C $Root merge-base --is-ancestor $Sha $head
+        if ($LASTEXITCODE -eq 0) { return $true }
+    }
+    return $false
+}
+
+# Bash, run on the Spark in its project folder $Dir, that puts the idle project on GitHub's latest main: from night
+# shift branch $Branch, whose work up to commit $Spark has all been merged, it switches to main; on main it
+# fast-forwards. It leaves things alone while $Running (a shell command) succeeds, once the project has left $Branch or
+# moved past $Spark, or when the Spark's main has commits GitHub doesn't, and git refuses rather than overwrite
+# uncommitted work (tasks queued with "add" come along). It prints one line: done, same, skip or fail, then what happened.
+function Get-SparkMainScript([string]$Dir, [string]$Branch, [string]$Spark, [string]$Running) {
+    $quote = { param($s) "'" + ($s -replace "'", "'\''") + "'" }
+    $head = "cd $Dir 2>/dev/null || { echo `"fail The Spark has no project folder at $Dir.`"; exit 0; }`n" +
+        "branch=$(& $quote $Branch); spark=$(& $quote $Spark)`nrunning() { $Running; }`n"
+    return $head + @'
+say() { echo "$*"; exit 0; }
+oneline() { printf '%s' "$1" | tr -s '\n\t ' ' ' | cut -c1-300; }
+running && say "skip The night shift is running, so the Spark's project stays on $branch."
+current="$(git rev-parse --abbrev-ref HEAD 2>/dev/null)"
+[ "$current" = "$branch" ] || say "skip The Spark's project is on '$current' now, not $branch."
+if [ "$branch" != main ] && [ "$(git rev-parse HEAD)" != "$spark" ]; then
+  say "skip New work is on $branch since it was checked, so the Spark's project stays on it."
+fi
+GIT_TERMINAL_PROMPT=0 git fetch -q origin main 2>/dev/null || say "fail The Spark couldn't fetch main from GitHub."
+new="$(git rev-parse origin/main)"
+old="$(git rev-parse -q --verify refs/heads/main)"
+if [ -n "$old" ] && ! git merge-base --is-ancestor "$old" "$new"; then
+  say "fail The Spark's main has commits that aren't on GitHub, so the Spark's project wasn't moved to GitHub's main."
+fi
+if [ "$branch" = main ]; then
+  [ "$old" = "$new" ] && say "same The Spark's project is on GitHub's latest main."
+  out="$(git merge -q --ff-only "$new" 2>&1)" || say "fail Couldn't bring the Spark's main up to date: $(oneline "$out")"
+  say "done Brought the Spark's main up to date with GitHub (${old:0:8} to ${new:0:8})."
+fi
+out="$(git branch -f main origin/main 2>&1)" || say "fail Couldn't update the Spark's main: $(oneline "$out")"
+out="$(git switch -q main 2>&1)" || say "fail Couldn't move the Spark's project from $branch to main: $(oneline "$out")"
+say "done Moved the Spark's project from $branch, which is merged, to main (${new:0:8})."
+'@
+}
+
+# Puts the Spark's idle project on GitHub's latest main (see Get-SparkMainScript); pr.log records each change or failure.
+function Sync-SparkMain([string]$Branch, [string]$Spark = '') {
+    # When docker can't say, count the night shift as running.
+    $running = "! docker ps -q >/dev/null 2>&1 || docker exec $Container bash /project/Tools/NightShift/nightshift.sh health >/dev/null 2>&1"
+    try { $line = "$(@(Get-RemoteOutput (Get-SparkMainScript "~/$SparkProject" $Branch $Spark $running))[-1])".Trim() }
+    catch { Write-PrLog "Couldn't check the Spark's project against main: $($_.Exception.Message)"; return }
+    $kind, $message = $line -split ' ', 2
+    if ($kind -eq 'done' -or $kind -eq 'fail') { Write-PrLog $message }
+    elseif ($kind -eq 'same' -or $kind -eq 'skip') { Write-Host $message }
+    else { Write-PrLog "Unexpected answer from the Spark about main: $line" }
+}
+
+# Pushes the Spark's night shift branch to GitHub and opens its pull request, or updates the open one. Once everything
+# on the branch has been merged and the night shift isn't running, it moves the Spark's project back to main instead.
 function Publish-NightShift {
     [Console]::OutputEncoding = [Text.Encoding]::UTF8  # the reports are UTF-8; PowerShell 5 would read git's output as OEM
     $state = Get-NightState
     $branch = "$($state.branch)"
-    if ($branch -notlike 'nightshift/*') { Write-Host "The Spark's project is on '$branch', not a night shift branch, so there's nothing to publish."; return }
+    if ($branch -notlike 'nightshift/*') {
+        Write-Host "The Spark's project is on '$branch', not a night shift branch, so there's nothing to publish."
+        if ($branch -eq 'main' -and -not $state.running) { Sync-SparkMain 'main' }
+        return
+    }
     $stamp = Join-Path $Here '.state\last-publish.txt'
     if ($WhenDone -and -not (Test-PublishDue $state $stamp)) {
         $why = if ($state.autoplan) { "until it's done or the next update is due" } else { "until it's done" }
@@ -603,10 +672,14 @@ function Publish-NightShift {
     finally { $env:GIT_SSH_COMMAND = $old }
     $env:GIT_TERMINAL_PROMPT = '0'; $env:GCM_INTERACTIVE = 'never'  # fail rather than wait for a sign-in nobody sees
     Invoke-Tool 'git fetch of main from GitHub' git @('-C', $Root, 'fetch', '-q', 'origin', 'main') | Out-Null
-    $sha = "$(& git -C $Root rev-parse "refs/remotes/spark/$branch")".Trim()
+    $spark = "$(& git -C $Root rev-parse "refs/remotes/spark/$branch")".Trim()
     $remote = "$(Invoke-Tool 'git ls-remote on GitHub' git @('-C', $Root, 'ls-remote', 'origin', "refs/heads/$branch"))".Split("`t ")[0]
-    $sha = Get-PublishCommit $branch $sha $remote
-    if ([int]"$(& git -C $Root rev-list --count "origin/main..$sha")" -eq 0) { Write-Host "$branch has nothing that isn't on main yet."; return }
+    $sha = Get-PublishCommit $branch $spark $remote
+    if ([int]"$(& git -C $Root rev-list --count "origin/main..$sha")" -eq 0) {
+        Write-Host "$branch has nothing that isn't on main yet."
+        if (-not $state.running) { Sync-SparkMain $branch $spark }
+        return
+    }
     # Never publish what must stay on the Spark (its SSH key for the helpers, Unity's DLLs) or anything like a private key.
     $private = @(& git -C $Root log --format= --name-only "origin/main..$sha" | Where-Object {
             $_ -match '(^|/)(\.state|\.unityrefs)/|(^|/)id_(rsa|ecdsa|ed25519)$|\.(pem|pfx|p12)$' } | Select-Object -Unique)
@@ -626,7 +699,18 @@ function Publish-NightShift {
         if ($LASTEXITCODE -gt 1) { throw "Couldn't compare report '$_' with main." }
         $LASTEXITCODE -eq 1
     })
-    if ($open.Count -eq 0 -and $newReports.Count -eq 0) { Write-Host "Nothing new from the night shift on $branch since its last pull request."; return }
+    if ($open.Count -eq 0 -and $newReports.Count -eq 0) {
+        Write-Host "Nothing new from the night shift on $branch since its last pull request."
+        if (-not $state.running) {
+            try {
+                $merged = Invoke-Tool 'gh pr list of merged pull requests' gh @('pr', 'list', '--repo', $repo, '--head', $branch, '--state', 'merged', '--json', 'number,headRefOid')
+                $mergedPrs = @(if ("$merged".Trim()) { ($merged -join "`n") | ConvertFrom-Json | ForEach-Object { $_ } })
+            }
+            catch { Write-PrLog "Couldn't check whether $branch was merged: $($_.Exception.Message)"; return }
+            if (Test-MergedPullRequest $sha $mergedPrs) { Sync-SparkMain $branch $spark }
+        }
+        return
+    }
     # Refresh PR metadata even when the branch is already pushed, so failed edits can be retried.
     if ($remote -ne $sha) {
         Invoke-Tool "git push of $branch to GitHub" git @('-C', $Root, 'push', '-q', 'origin', "${sha}:refs/heads/$branch") | Out-Null
@@ -689,9 +773,10 @@ function Set-AutoPr([bool]$On) {
     $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -MultipleInstances IgnoreNew -AllowStartIfOnBatteries `
         -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Minutes 10)
     Register-ScheduledTask -TaskName $AutoPrTask -Action $action -Trigger $trigger -Settings $settings -Force `
-        -Description "Opens or updates the GitHub pull request for the CLONE-Z Night Shift's branch once the agents have nothing left to do ($PSCommandPath pr -WhenDone)." | Out-Null
+        -Description "Opens or updates the GitHub pull request for the CLONE-Z Night Shift's branch once the agents have nothing left to do, and moves the Spark's project back to main once it's merged ($PSCommandPath pr -WhenDone)." | Out-Null
     Write-Host 'The automatic pull request is on. Every 15 minutes this PC checks the Spark; once nothing is left to do, it pushes'
-    Write-Host "the night shift's branch to GitHub and opens or updates its pull request. Log: $Here\.state\pr.log"
+    Write-Host "the night shift's branch to GitHub and opens or updates its pull request. Once that's merged and the night shift"
+    Write-Host "has stopped, it moves the Spark's project back to GitHub's latest main. Log: $Here\.state\pr.log"
 }
 
 #endregion
