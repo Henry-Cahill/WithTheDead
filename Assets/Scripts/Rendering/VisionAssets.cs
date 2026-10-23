@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.SceneManagement;
 
 namespace CloneZ
 {
@@ -85,12 +86,13 @@ namespace CloneZ
                         float dist = h / vy * Mathf.Sqrt(ux * ux + vy * vy + 1f);
                         float r = dist / reference;
                         c = Mathf.Min(1f, r * r * r);
-                    }
+
+        }
                     float elevation = Mathf.Atan2(vy, Mathf.Sqrt(1f + ux * ux)) * Mathf.Rad2Deg;
                     c *= Mathf.Lerp(horizonFloor, 1f, Mathf.SmoothStep(0f, 1f,
                         Mathf.InverseLerp(HorizonEaseFromDeg, easeTo, elevation)));
                     // URP samples a spot cookie's RGB from the colour atlas (alpha is ignored), so the value goes in RGB.
-                    byte b = (byte)Mathf.Clamp(Mathf.RoundToInt(c * 255f), 1, 255);
+                    byte b = (byte)Mathf.Clamp(Mathf.RoundToInt(c * 255f), 0, 255);
                     px[y * size + x] = new Color32(b, b, b, 255);
                 }
             }
@@ -191,6 +193,11 @@ namespace CloneZ
 
         // "Universal Render Pipeline/Particles/Unlit" set up as an alpha-blended transparent, the same
         // state URP's material inspector writes for Surface = Transparent, Blend = Alpha.
+        private static void SetFloat(Material m, string property, float value)
+        {
+            if (m.HasProperty(property)) m.SetFloat(property, value);
+        }
+
         private static Material ParticleMaterial(string name, Texture2D texture)
         {
             Shader shader = Shader.Find("Universal Render Pipeline/Particles/Unlit");
@@ -338,9 +345,41 @@ namespace CloneZ
             else m.color = hdrColor;
         }
 
-        private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
+        static VisionAssets()
+        {
+            SceneManager.sceneUnloaded += (_) => CleanupCaches();
+        }
 
-        private static int Quant(float v) => Mathf.Clamp(Mathf.RoundToInt(v * 40f), 0, 999);
+        private static void CleanupCaches()
+        {
+            // Textures
+            Object.Destroy(s_VisionCookie);
+            s_VisionCookie = null;
+            Object.Destroy(s_FlashCookie);
+            s_FlashCookie = null;
+            Object.Destroy(s_SoftDot);
+            s_SoftDot = null;
+            Object.Destroy(s_Puff);
+            s_Puff = null;
+            Object.Destroy(s_Scanlines);
+            s_Scanlines = null;
+            Object.Destroy(s_Noise);
+            s_Noise = null;
+            // Sprite (its texture is already destroyed above)
+            s_Scope = null;
+            // Materials
+            Object.Destroy(s_SnowMat);
+            s_SnowMat = null;
+            Object.Destroy(s_BreathMat);
+            s_BreathMat = null;
+            // Bulb mesh
+            Object.Destroy(s_BulbMesh);
+            s_BulbMesh = null;
+            // Bulb materials dictionary
+            foreach (var kv in s_BulbMats)
+                Object.Destroy(kv.Value);
+            s_BulbMats.Clear();
+        }
         #endregion
 
         private static Texture2D NewTexture(string name, int size, bool mips, bool linear, TextureWrapMode wrap, FilterMode filter)
@@ -353,9 +392,7 @@ namespace CloneZ
             };
         }
 
-        private static void SetFloat(Material m, string property, float value)
-        {
-            if (m.HasProperty(property)) m.SetFloat(property, value);
-        }
+        private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
+        private static int Quant(float v) => Mathf.Clamp(Mathf.RoundToInt(v * 40f), 0, 999);
     }
 }
