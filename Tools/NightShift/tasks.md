@@ -9327,13 +9327,14 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 5: Stray rope hanging from the back cushion – give the sofa a tiny rope for extra lived‑in feel, 20 % chance. `if (Chance(rng, 0.2f))` `{` `Vector3 ropeBase = new Vector3(0f,` `0.62f + 0.5f, // middle of back cushion height` `-0.32f + 0.10f); // slightly forward of the back face` `m.Cylinder(ropeBase,` `0.005f,` `0.25f,` `6,` `G(new Color(0.50f, 0.45f, 0.40f)),` `Quaternion.identity);` `}`
   Done when: In‑game the sofa shows small brass‑coloured caps on the tops of both armrests, three subtle dark stitching lines on the seat surface, and, depending on RNG, a plush pillow, a folded blanket draped over one side, and/or a thin rope dangling from the back cushion. All new geometry uses the existing colour‑variation helpers, respects the original colliders and interaction points, and adds no more than ~30 primitives, leaving the sofa’s basic shape, physics and existing details untouched.
   - 02:00 landed by 1htsserver in 4.3 min: **Changes Made**
-- [ ] In Assets/Scripts/Characters/HumanoidAnimator.cs: Cache the ground‑probe raycast in HumanoidAnimator.PlaceRoot so it only runs when the character’s height may have changed
+- [x] In Assets/Scripts/Characters/HumanoidAnimator.cs: Cache the ground‑probe raycast in HumanoidAnimator.PlaceRoot so it only runs when the character’s height may have changed
   Add a private float field `private float _groundTarget;` to store the last hit height.
   In `PlaceRoot`, replace the unconditional raycast with a conditional that runs only if `_groundDirty` is true; otherwise reuse `_groundTarget`.
   Set `_groundTarget = target;` after a successful raycast and clear `_groundDirty`.
   When `_groundDirty` is false, assign `target = _groundTarget;` without calling `Physics.Raycast`.
   Leave the existing logic that marks `_groundDirty` true in `Tick` when speed changes.
   The visual result (character’s foot placement on the floor) stays identical; the raycast is now skipped on frames where the ground height cannot have changed, reducing per‑frame overhead.
+  - 02:03 landed by 1htsserver in 2.4 min: **Changed files**
 - [ ] Add a lock/unlock extra action to CivicToggle in Assets/Scripts/World/Fixtures/RaidCivicFixtures.cs so the survivor can secure a togglable fixture (e.g., a desk monitor) and see the new action label and disabled‑state feedback.
   Step 1: Assets/Scripts/World/Fixtures/RaidCivicFixtures.cs – CivicToggle class – add field `private bool _locked;` Place it alongside the other private fields (`_noise`, `_needsPower`, `_on`, …).
   Step 2: Assets/Scripts/World/Fixtures/RaidCivicFixtures.cs – CivicToggle class – modify Create() default extra Replace the `_extra = (c, list) => { … };` block with: `_extra = (c, list) => {` `list.Add(new InteractAction("Inspect", t.Inspect));` `list.Add(new InteractAction("Power status", t.PowerInfo));` `// lock / unlock action` `list.Add(new InteractAction(t._locked ? "Unlock" : "Lock", t.ToggleLock));` `};` This registers the new action immediately for every toggle fixture.

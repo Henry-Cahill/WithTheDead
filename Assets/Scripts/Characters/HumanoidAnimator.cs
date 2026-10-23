@@ -75,6 +75,7 @@ namespace CloneZ
         private float _crouch, _aimW, _activityW, _armsOutW, _hunchW, _crawlW;
         private HumanoidActivity _shownActivity;
         private float _groundOffset;
+        private float _groundTarget;
         private bool _groundInit;
         private bool _groundDirty = true;
 
@@ -348,11 +349,18 @@ namespace CloneZ
                 float target = 0f;
                 if (ProbeGround && parent != null)
                 {
-                    // The ray starts inside the character's own collider, which a ray never reports.
+                if (_groundDirty)
+                {
                     Vector3 origin = parent.position + Vector3.up * 0.9f;
                     if (Physics.Raycast(origin, Vector3.down, out RaycastHit hit, 1.5f, GroundMask, QueryTriggerInteraction.Ignore))
                         target = Mathf.Clamp(hit.point.y - parent.position.y, -0.35f, 0.3f);
+                    _groundTarget = target;
                     _groundDirty = false;
+                }
+                else
+                {
+                    target = _groundTarget;
+                }
                 }
                 _groundOffset = _groundInit ? Mathf.Lerp(_groundOffset, target, 1f - Mathf.Exp(-dt * 14f)) : target;
                 _groundInit = true;
