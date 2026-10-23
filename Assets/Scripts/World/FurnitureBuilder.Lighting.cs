@@ -55,6 +55,25 @@ namespace CloneZ
             Surf band = M(new Color(0.20f, 0.20f, 0.21f));
             for (int e = -1; e <= 1; e += 2)
                 m.Ellipsoid(dome + Vector3.up * (e * 0.028f), new Vector3(0.215f, 0.012f, 0.112f), q, band, 12, 3);
+            // east‑west and north‑south directions on the wall for placement of details
+            Vector3 right = Vector3.Cross(normal, Vector3.up).normalized; // east‑west direction
+            Vector3 forward = Vector3.Cross(right, normal).normalized; // north‑south direction
+            // chrome grille plates around the dome front
+            // east plate
+            m.Box(dome + normal * 0.02f + right * 0.06f, new Vector3(0.008f, 0.04f, 0.001f), q, Mt(Chrome));
+            // west plate
+            m.Box(dome + normal * 0.02f - right * 0.06f, new Vector3(0.008f, 0.04f, 0.001f), q, Mt(Chrome));
+            // north plate
+            m.Box(dome + normal * 0.02f + forward * 0.06f, new Vector3(0.008f, 0.04f, 0.001f), q, Mt(Chrome));
+            // south plate
+            m.Box(dome + normal * 0.02f - forward * 0.06f, new Vector3(0.008f, 0.04f, 0.001f), q, Mt(Chrome));
+            // rust‑stained weathering stripe on lower half of dome
+            m.Box(dome - Vector3.up * 0.03f, new Vector3(0.22f, 0.02f, 0.001f), q, M(new Color(0.55f, 0.35f, 0.25f, 0.4f)));
+            // thin dust film covering dome surface
+            m.Box(dome + normal * 0.001f, new Vector3(0.22f, 0.12f, 0.001f), q, M(new Color(0f, 0f, 0f, 0.12f)));
+            // brass adjustment knob on front of dome
+            var brass = M(new Color(0.80f, 0.60f, 0.30f));
+            m.Cylinder(dome + normal * 0.03f + Vector3.up * 0.02f, 0.006f, 0.004f, 12, brass, q);
             return dome;
         }
 
