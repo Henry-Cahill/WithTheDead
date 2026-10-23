@@ -21,7 +21,10 @@ namespace CloneZ
     /// </summary>
     public static void PlaceLamp(OutdoorBatches into, KentuckyMap.Site site, Vector2 pos, float yaw)
     {
-        // ---- original placement of a simple pole (removed) ----
+        // Respect placement grid – avoid overlapping props.
+        if (!site.Free(pos, 0.2f)) return;
+        site.Take(pos, 0.2f);
+
         // 1️⃣ Base plate – a thin square slab on the ground.
         // size 0.30 m × 0.02 m × 0.30 m, centred at (pos.x, 0.01 m, pos.y)
         // material: existing StreetLampMetal matte metal.
@@ -29,6 +32,12 @@ namespace CloneZ
         var baseCenter = To3(pos, 0.01f);
         var baseMesh = into.Solid(baseCenter);
         baseMesh.Box(baseCenter, new Vector3(0.30f, 0.02f, 0.30f), 0f, basePlateSurf);
+        // Ensure consistent orientation for added geometry.
+        // (Removed SetFrame call; geometry uses explicit yaw values.)
+        // 1️⃣ Snow mound – a small white sphere that sits on the ground beside the base plate.
+        var moundCenter = To3(pos, 0.08f); // slightly above ground
+        var moundMesh = into.Solid(moundCenter);
+        moundMesh.Sphere(moundCenter, 0.15f, SnowMoundSurf);
         
         // 2️⃣ Iron pole – a vertical cylinder.
         // radius 0.04 m, height 4.00 m, base at (pos.x, 0.02 m, pos.y)
@@ -53,6 +62,20 @@ namespace CloneZ
         var armYaw = yaw + 90f; // arm sticks out to the side of the road.
         armMesh.Box(armCenter, new Vector3(armLength, 0.02f, 0.02f), armYaw, KentuckyMap.StreetLampMetal);
         
+        // 3️⃣ Wooden sign – a thin board that hangs from the arm tip, with a tiny deterministic yaw wobble.
+        float signWobble = ((pos.x + pos.y) * 0.123f) % 4f - 2f; // -2° … +2°
+        var signCenter = armCenter + new Vector3(0f, -0.05f, 0f); // hangs slightly below arm tip
+        var signMesh = into.Solid(signCenter);
+        signMesh.Box(signCenter, new Vector3(0.80f, 0.10f, 0.20f), yaw + signWobble, SignSurf);
+        
+        // 4️⃣ Icicle – a thin vertical box that dangles from the lower edge of the sign.
+        var icicleCenter = signCenter + new Vector3(0f, -0.12f, 0f);
+        var icicleMesh = into.Solid(icicleCenter);
+        icicleMesh.Box(icicleCenter, new Vector3(0.02f, 0.10f, 0.02f), yaw, SnowMoundSurf);
+        
+
+
+        
         // 4️⃣ Shade – a semi‑transparent glass sphere at the end of the arm.
         // radius 0.25 m, centre at arm tip.
         // material: a matte yellow (warm street‑lamp light colour) to suggest illumination.
@@ -70,15 +93,15 @@ namespace CloneZ
         var bulbMesh = into.Solid(shadeCenter);
         bulbMesh.Sphere(shadeCenter, 0.07f, bulbSurf);
         
-        // 6️⃣ Rust speckles – 3‑5 small matte boxes randomly placed on the pole.
-        // size 0.02 m³, colour rust‑brown, deterministic per lamp position.
+
         var rustColor = new Color(0.40f, 0.30f, 0.20f);
         var rustSurf = DecorPalette.Matte(rustColor);
         int seed = ((int)(pos.x * 73856093)) ^ ((int)(pos.y * 19349663));
         var rng = new System.Random(seed);
         int speckCount = rng.Next(3, 6);
         for (int i = 0; i < speckCount; i++)
-        {
+    {
+
             float h = (float)rng.NextDouble() * (poleHeight - 0.2f) + 0.1f;
             float angle = (float)rng.NextDouble() * 360f;
             var speckCenter = To3(pos, 0.02f + h);
