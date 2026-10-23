@@ -97,8 +97,35 @@ var rng = new System.Random(unchecked((int)f.Data.id) ^ 0x5A4F);
 // Position near the centre of the footprint (could be refined to a corner)
 Vector3 chimneyPos = To3(f.Middle, roofY + chimneyHeight * 0.5f);
 // Choose a wood material (using wood floor colour)
-Surf woodMat = DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f));
-site.Overhead.At(chimneyPos).Box(chimneyPos, new Vector3(chimneyBase, chimneyHeight, chimneyBase), Quaternion.identity, woodMat);
+// deterministic brick colour for this building
+int brickIdx = Mathf.Abs((int)f.Data.id) % BrickColors.Length;
+var brickSurf = DecorMaterials.WallExterior(ExteriorStyle.Brick, BrickColors[brickIdx]);
+
+// main brick shaft (90 % of chimney height)
+float shaftHeight = chimneyHeight * 0.9f;
+float shaftRadius = chimneyBase * 0.5f;
+site.Overhead.At(chimneyPos).Cylinder(chimneyPos, shaftRadius, shaftHeight, 6, brickSurf);
+
+// flat brick cap on top of the shaft
+Vector3 capCenter = chimneyPos + new Vector3(0f, shaftHeight + chimneyHeight * 0.05f, 0f);
+Vector3 capSize = new Vector3(chimneyBase, chimneyHeight * 0.1f, chimneyBase);
+site.Overhead.At(capCenter).Box(capCenter, capSize, Quaternion.identity, brickSurf);
+
+// small vent on one side of the shaft
+Vector3 ventOffset = new Vector3(chimneyBase * 0.55f, shaftHeight * 0.5f, 0f); // offset toward +X
+Vector3 ventCenter = chimneyPos + ventOffset;
+float ventRadius = chimneyBase * 0.15f;
+float ventHeight = chimneyHeight * 0.2f;
+site.Overhead.At(ventCenter).Cylinder(ventCenter, ventRadius, ventHeight, 6, brickSurf);
+
+// chance of thin snow‑icing on the chimney top
+if (rng.NextDouble() < 0.15) // ~15 % of chimneys get icing
+{
+    // a thin snow slab covering the cap
+    Vector3 iceCenter = capCenter + new Vector3(0f, chimneyHeight * 0.06f, 0f);
+    Vector3 iceSize = new Vector3(chimneyBase * 1.1f, 0.02f, chimneyBase * 1.1f);
+    site.Overhead.At(iceCenter).Box(iceCenter, iceSize, Quaternion.identity, DecorMaterials.Snow);
+}
             }
         }
         private static void BuildRoadMarkings(Site site)
