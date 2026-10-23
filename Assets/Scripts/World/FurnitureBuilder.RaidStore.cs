@@ -469,7 +469,18 @@ namespace CloneZ
         {
             m.Box(new Vector3(0.47f, 1.18f, 0f), new Vector3(0.92f, 0.04f, 1.12f), M(new Color(0.12f, 0.12f, 0.12f)));
             m.Box(new Vector3(0.47f, 1.18f, 0.575f), new Vector3(0.3f, 0.03f, 0.03f), M(new Color(0.09f, 0.09f, 0.09f)));
-        }
+            // Hinge pins – two small chrome cylinders on the back (negative‑Z) edge of the lid
+            m.Cylinder(new Vector3(0.47f - 0.02f, 1.20f, -0.56f), 0.01f, 0.05f, 6, Mt(Chrome));
+            m.Cylinder(new Vector3(0.47f + 0.02f, 1.20f, -0.56f), 0.01f, 0.05f, 6, Mt(Chrome));
+            // Chrome latch knob on the front edge of the lid
+            m.Cylinder(new Vector3(0.47f, 1.20f, 0.56f), 0.015f, 0.03f, 6, Mt(Chrome));
+            // Wear stripe – thin dark strip around the bottom edge
+            m.Box(new Vector3(0.47f, 1.155f, 0f), new Vector3(0.90f, 0.004f, 1.12f), M(new Color(0.12f, 0.12f, 0.13f)));
+            // Rust patches – small brownish spots on the side panels
+            m.Box(new Vector3(0.47f - 0.45f, 1.18f, -0.30f), new Vector3(0.06f, 0.02f, 0.001f), M(new Color(0.55f, 0.33f, 0.28f)));
+            m.Box(new Vector3(0.47f + 0.45f, 1.18f, 0.30f), new Vector3(0.06f, 0.02f, 0.001f), M(new Color(0.55f, 0.33f, 0.28f)));
+            // Cross‑strap – thin metal bar across the lid centre
+            m.Box(new Vector3(0.47f, 1.20f, 0f), new Vector3(0.80f, 0.008f, 0.02f), Mt(Chrome));        }
 
         /// <summary>The guard booth's sliding hatch, its radio on the ledge under it, and where the survivor reaches for each.</summary>
         internal static readonly Vector3 TownBoothHatchReach = new Vector3(-0.25f, 1.35f, 0.95f);
