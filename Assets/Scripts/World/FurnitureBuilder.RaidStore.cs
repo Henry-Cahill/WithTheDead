@@ -197,6 +197,28 @@ namespace CloneZ
                 Vector3 pos = new Vector3(Mathf.Cos(a) * 0.24f, 1.5f, Mathf.Sin(a) * 0.24f);
                 m.Cylinder(pos, 0.01f, 0.02f, 6, Mt(Chrome));
             }
+            // ---- Temperature‑gauge panel (front‑upper‑right of the heater) ----
+            // Gauge face – thin matte disc, 0.12 m diameter, 0.004 m thick
+            m.Box(new Vector3(0.0f, 0.72f, 0.34f), new Vector3(0.12f, 0.004f, 0.12f), M(new Color(0.2f, 0.2f, 0.22f)));
+            // Small glass cover over the face, slightly larger, clear (BathGlass)
+            m.Box(new Vector3(0.0f, 0.724f, 0.34f), new Vector3(0.13f, 0.002f, 0.13f), BathGlass);
+            // Needle – thin black box, 0.02 m long, 0.004 m thick, 0.002 m wide, pivoted around centre
+            m.Box(new Vector3(0.03f, 0.726f, 0.34f), new Vector3(0.02f, 0.004f, 0.002f), M(new Color(0.05f, 0.05f, 0.07f)));
+            // Pressure‑relief knob (chrome) – tiny cylinder on the side of the gauge
+            m.Cylinder(new Vector3(0.07f, 0.71f, 0.345f), 0.008f, 0.02f, 6, Mt(Chrome));
+            // Brass name‑plate – thin rectangle, 0.06 m × 0.015 m × 0.002 m
+            m.Box(new Vector3(-0.07f, 0.73f, 0.34f), new Vector3(0.06f, 0.015f, 0.002f), Mt(Brass));
+            // Random rust patches (up to two) on the front panel
+            int rustPatches = rng.Next(0, 3);
+            for (int i = 0; i < rustPatches; i++)
+            {
+                float rx = R(rng, -0.2f, 0.2f);
+                float ry = R(rng, 0.4f, 0.9f);
+                m.Box(new Vector3(rx, ry, 0.31f), new Vector3(0.04f, 0.02f, 0.001f), M(new Color(0.55f, 0.33f, 0.28f)));
+            }
+            // Wear scrape – dark thin strip
+            m.Box(new Vector3(0f, 0.68f, 0.30f), new Vector3(0.5f, 0.002f, 0.02f), M(new Color(0.12f, 0.12f, 0.13f)));
+
             Surf copper = Mt(new Color(0.5f, 0.35f, 0.2f));
             m.Cylinder(new Vector3(0.12f, 1.5f, 0.06f), 0.03f, 1.2f, 6, copper);
             m.Cylinder(new Vector3(-0.12f, 1.5f, 0.06f), 0.03f, 1.2f, 6, copper);
