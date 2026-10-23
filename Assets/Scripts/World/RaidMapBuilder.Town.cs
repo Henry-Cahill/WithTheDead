@@ -430,10 +430,27 @@ namespace CloneZ
                     Vector3 lampPos = car + (alongX ? new Vector3(0f, 0f, 1.5f) : new Vector3(1.5f, 0f, 0f));
                     Prop(town, lampPos, 0f, new Vector3(0.15f, 2.0f, 0.15f), true, (m, r) =>
                     {
-                        // metal pole (Prop draws in the lamp's own frame, origin at lampPos)
-                        m.Box(new Vector3(0f, 1.0f, 0f), new Vector3(0.07f, 2.0f, 0.07f), DecorPalette.Metal(new Color(0.35f, 0.33f, 0.30f)));
-                        // small glass shade
-                        m.Box(new Vector3(0f, 2.1f, 0f), new Vector3(0.12f, 0.05f, 0.12f), DecorPalette.Matte(new Color(0.15f, 0.14f, 0.13f)));
+                        // 1️⃣ metal pole – same as before
+                        m.Box(new Vector3(0f, 1.0f, 0f), new Vector3(0.07f, 2.0f, 0.07f),
+                        DecorPalette.Metal(new Color(0.35f, 0.33f, 0.30f)));
+                        // 2️⃣ base plate at ground level (cylinder, radius 0.09 m, height 0.02 m)
+                        m.Cylinder(new Vector3(0f, 0.01f, 0f), 0.09f, 0.02f, 12,
+                        DecorPalette.Metal(new Color(0.40f, 0.38f, 0.35f)));
+                        // 3️⃣ rusted bolt on the base plate (tiny cylinder, radius 0.012 m, height 0.025 m)
+                        m.Cylinder(new Vector3(0.05f, 0.03f, 0f), 0.012f, 0.025f, 6,
+                        DecorPalette.Metal(new Color(0.55f, 0.30f, 0.15f)));
+                        // 4️⃣ horizontal cross‑bar midway up the pole (thin box, 0.12 m × 0.02 m × 0.02 m)
+                        m.Box(new Vector3(0f, 1.6f, 0f), new Vector3(0.12f, 0.02f, 0.02f),
+                        DecorPalette.Metal(new Color(0.45f, 0.44f, 0.42f)));
+                        // 5️⃣ hanging glass lantern (cylinder, radius 0.04 m, height 0.06 m) – slight orange‑yellow glow
+                        m.Cylinder(new Vector3(0f, 1.85f, 0f), 0.04f, 0.06f, 12,
+                        DecorPalette.Glow(new Color(1f, 0.55f, 0.20f)));
+                        // 6️⃣ subtle rust streak on the pole (flat box, 0.02 m × 0.005 m × 0.5 m)
+                        m.Box(new Vector3(0f, 1.2f, -0.04f), new Vector3(0.02f, 0.005f, 0.5f),
+                        DecorPalette.Matte(new Color(0.35f, 0.20f, 0.10f)));
+                        // 7️⃣ original glass shade (kept, now sits just below the lantern)
+                        m.Box(new Vector3(0f, 2.1f, 0f), new Vector3(0.12f, 0.05f, 0.12f),
+                        DecorPalette.Matte(new Color(0.15f, 0.14f, 0.13f)));
                     });
                     town.Light(b.Root, lampPos + new Vector3(0f, 2.2f, 0f), new Color(1f, 0.55f, 0.2f), 5f, 1.2f, true, false);
                 }
