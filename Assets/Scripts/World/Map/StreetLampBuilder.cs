@@ -99,6 +99,32 @@ internal static void BuildLamp(KentuckyMap.Site site, KentuckyMap.Street street,
             light.intensity = 2f;
             light.color = new Color(1f, 0.9f, 0.7f);
             light.transform.localPosition = new Vector3(0f, 2.55f, 0f);
+            // ---- winter ice decoration -------------------------------------------------
+            int lampHash = lampRoot.transform.position.GetHashCode();
+            int icicleCount = 1 + (lampHash & 0x3); // 1‑4 icicles, varies per lamp
+            GameObject iceCluster = new GameObject("IceCluster");
+            iceCluster.transform.SetParent(lampRoot.transform, false);
+            for (int i = 0; i < icicleCount; i++)
+            {
+                GameObject icicle = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                icicle.name = "Icicle_" + i;
+                icicle.transform.SetParent(iceCluster.transform, false);
+                float yPos = UnityEngine.Random.Range(1.8f, 2.3f);
+                icicle.transform.localPosition = new Vector3(0f, yPos, 0f);
+                icicle.transform.localRotation = Quaternion.Euler(
+                    UnityEngine.Random.Range(-10f, 10f),
+                    UnityEngine.Random.Range(0f, 360f),
+                    0f);
+                icicle.transform.localScale = new Vector3(0.02f, 0.12f, 0.02f);
+                var rend = icicle.GetComponent<Renderer>();
+                var icicleMat = new Material(Shader.Find("Standard"));
+                mat.color = new Color(0.85f, 0.85f, 0.90f);
+                rend.material = mat;
+                var col = icicle.GetComponent<Collider>();
+                if (col != null) col.isTrigger = true;
+            }
+            // NOTE: the IceCluster is a visual only decoration; it does not affect gameplay
+            // other than the optional light‑dimming performed in StreetLampFlicker.
             var flicker = lampRoot.AddComponent<StreetLampFlicker>();
             // configure variation based on street kind
             if (street.Data.kind == "residential")
