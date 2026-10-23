@@ -19,7 +19,12 @@ namespace CloneZ
         private Text _money;
         private bool _closed;
         private float _nextSecond;
+        private bool _needsSecond;
         private readonly List<KeyValuePair<Text, Func<string>>> _live = new List<KeyValuePair<Text, Func<string>>>();
+        private void UpdateNeedsSecond()
+        {
+            _needsSecond = _live.Count > 0 || (ShowMoney && Character != null);
+        }
 
         protected override Vector2 WindowSize => new Vector2(1800f, 980f);
 
@@ -42,7 +47,8 @@ namespace CloneZ
                 HubUI.Card((RectTransform)col.parent);
                 HubUI.Heading(col, "No runner", 24);
                 HubUI.Para(col, "There is no active character. Create or pick one from the main menu first.", 17, UIKit.TextDim);
-                RefreshMoney();
+            RefreshMoney();
+            UpdateNeedsSecond();
                 return;
             }
             try { BuildContent(); }
@@ -104,6 +110,7 @@ namespace CloneZ
             if (label == null || text == null) return label;
             label.text = text();
             _live.Add(new KeyValuePair<Text, Func<string>>(label, text));
+            UpdateNeedsSecond();
             return label;
         }
 
@@ -131,8 +138,8 @@ namespace CloneZ
             base.Update();
             if (_closed) return;
             // Determine if we need to run the once‑per‑second logic.
-            bool needSecond = _live.Count > 0 || (ShowMoney && Character != null);
-            if (!needSecond) return;
+            // needSecond cached in _needsSecond
+            if (!_needsSecond) return;
             if (Time.unscaledTime < _nextSecond) return;
             _nextSecond = Time.unscaledTime + 1f;
             for (int i = 0; i < _live.Count; i++)
@@ -151,6 +158,7 @@ namespace CloneZ
         {
             _closed = true;
             _live.Clear();
+            _needsSecond = false;
         }
 
         /// <summary>A standard service button strip (insurance, medic, technician, guide...), skipping this screen's own id.</summary>

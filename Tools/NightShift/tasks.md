@@ -9036,12 +9036,13 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 5: Assets/Scripts/Player/PlayerSeat.cs – class PlayerSeat – method FindStandSpot (unchanged) No change needed; the existing helper is still used for normal chairs.
   Done when: When the player presses a movement key or Space while lying on a bed, the survivor is teleported to a free, walkable spot just in front of the bed (or the nearest safe spot around it) and the character controller is re‑enabled, so the avatar is no longer stuck on the mattress. All other seating and lying‑down behaviours remain unchanged.
   - 00:02 landed by hts-llm in 10 min: **Changed file**
-- [ ] Cache the per‑second need‑check in HubScreenBase so Update doesn’t recompute it each frame (Assets/Scripts/Hub/Screens/HubScreenBase.cs)
+- [x] Cache the per‑second need‑check in HubScreenBase so Update doesn’t recompute it each frame (Assets/Scripts/Hub/Screens/HubScreenBase.cs)
   Add a private field `private bool _needsSecond;` to store the result of “_live.Count > 0 || (ShowMoney && Character != null)”.
   Create a private method `void UpdateNeedsSecond()` that sets `_needsSecond = _live.Count > 0 || (ShowMoney && Character != null);`.
   Call `UpdateNeedsSecond()` at the end of `Build()` (after `RefreshMoney();`), in `Live()` after adding a label, and in `OnClosed()` (set `_needsSecond = false`).
   Replace the line `bool needSecond = _live.Count > 0 || (ShowMoney && Character != null);` in `Update()` with `if (!_needsSecond) return;`.
   The player sees exactly the same UI updates; now the heavy logical check runs only when something that can affect it changes, reducing per‑frame work.
+  - 00:21 landed by hts-llm in 19.6 min: Implemented a per‑second‑need cache in **HubScreenBase**:
 - [x] Add a lock/unlock mechanic to Assets/Scripts/World/Interaction/StorageFixture.cs so survivors can secure closed storage, see “Lock …” / “Unlock …” actions, and have the lock state persist and prevent opening while locked.
   Step 1: Assets/Scripts/World/Interaction/StorageFixture.cs – add a private field for the lock state. `private bool _locked; // true = storage is locked` Place it with the other private fields (`_name`, `_player`, …). Initialise it to `false` (default).
   Step 2: Assets/Scripts/World/Interaction/StorageFixture.cs – extend `CaptureState` to store the lock flag together with the open flag. Current code: `public override void CaptureState(FixtureSave save) => save.State = _open ? 1 : 0;` Replace with: `public override void CaptureState(FixtureSave save)` `{` `// bit 0 = open, bit 1 = locked` `int state = (_open ? 1 : 0) | (_locked ? 2 : 0);` `save.State = state;` `}`
