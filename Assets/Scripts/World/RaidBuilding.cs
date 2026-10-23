@@ -644,6 +644,7 @@ namespace CloneZ
             if (extSide != 0 && Rng.NextDouble() < 0.2)
             {
                 var woodSurf = DecorPalette.Matte(Casing);
+                var metalSurf = DecorPalette.Matte(new Color(0.30f, 0.30f, 0.35f)); // metal for hinges, latch
                 float shutterThick = 0.04f; // 4 cm thick
                 float shutterHeight = HeadHeight - SillHeight; // full window height
                 float halfW = w * 0.48f; // each shutter ~48 % of window width
@@ -653,6 +654,35 @@ namespace CloneZ
                 // right shutter
                 Vector3 rightPos = RunPoint(r, o.B - halfW * 0.5f, (SillHeight + HeadHeight) * 0.5f, extSide * (Half + shutterThick * 0.5f));
                 p.Mesh.Box(rightPos, new Vector3(halfW, shutterHeight, shutterThick), woodSurf);
+
+                // left shutter hinge
+                Vector3 leftHingePos = RunPoint(r, o.A + halfW * 0.5f, HeadHeight - 0.05f, extSide * (Half + shutterThick - 0.01f));
+                p.Mesh.Box(leftHingePos, new Vector3(0.02f, 0.07f, 0.008f), metalSurf);
+                // right shutter hinge
+                Vector3 rightHingePos = RunPoint(r, o.B - halfW * 0.5f, HeadHeight - 0.05f, extSide * (Half + shutterThick - 0.01f));
+                p.Mesh.Box(rightHingePos, new Vector3(0.02f, 0.07f, 0.008f), metalSurf);
+
+                // left shutter latch
+                Vector3 leftLatchPos = RunPoint(r, o.A + halfW * 0.5f, (SillHeight + HeadHeight) * 0.5f, extSide * (Half + shutterThick - 0.015f));
+                p.Mesh.Box(leftLatchPos, new Vector3(0.04f, 0.015f, 0.008f), metalSurf);
+                // right shutter latch
+                Vector3 rightLatchPos = RunPoint(r, o.B - halfW * 0.5f, (SillHeight + HeadHeight) * 0.5f, extSide * (Half + shutterThick - 0.015f));
+                p.Mesh.Box(rightLatchPos, new Vector3(0.04f, 0.015f, 0.008f), metalSurf);
+
+                // paint‑chip wear on left shutter (≈10% chance)
+                if (Rng.NextDouble() < 0.10)
+                {
+                    var chipSurf = DecorPalette.Matte(Casing * 1.05f);
+                    Vector3 chipPos = RunPoint(r, o.A + halfW * 0.5f, SillHeight + 0.03f, extSide * (Half + shutterThick + 0.006f));
+                    p.Mesh.Box(chipPos, new Vector3(0.06f, 0.06f, 0.008f), chipSurf);
+                }
+                // paint‑chip wear on right shutter (≈10% chance)
+                if (Rng.NextDouble() < 0.10)
+                {
+                    var chipSurf = DecorPalette.Matte(Casing * 1.05f);
+                    Vector3 chipPos = RunPoint(r, o.B - halfW * 0.5f, SillHeight + 0.03f, extSide * (Half + shutterThick + 0.006f));
+                    p.Mesh.Box(chipPos, new Vector3(0.06f, 0.06f, 0.008f), chipSurf);
+                }
             }
             // Interior curtain rod and simple drape (≈30 % chance) on the inner face.
             if (extSide != 0 && Rng.NextDouble() < 0.3)
