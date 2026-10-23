@@ -58,14 +58,24 @@ namespace CloneZ
 
         /// <summary>Random lines spoken when the player washes, echoing 1993 winter‑Kentucky life.</summary>
         // Style reference: "The metal of the tap feels icy, and you wonder how long the mains will stay silent."
-        private static readonly string[] WashLines =
+private static readonly string[] WashLines =
+                        {
+                            "The cold water slaps your palms, a sharp reminder that winter never left.",
+                            "Steam rises from the basin like the ghost of a forgotten stove, fleeting and warm.",
+                            "You scrub your hands until the suds turn gray with soot, a small battle against the dust.",
+                            "The faucet gurgles, echoing the wind outside as you wash away yesterday’s grime.",
+                            "Your fingers tremble under the icy stream, but the clean feeling steadies them."
+                        };
+
+        private static readonly string[] SipLines =
         {
-            "The cold water slaps your palms, a sharp reminder that winter never left.",
-            "Steam rises from the basin like the ghost of a forgotten stove, fleeting and warm.",
-            "You scrub your hands until the suds turn gray with soot, a small battle against the dust.",
-            "The faucet gurgles, echoing the wind outside as you wash away yesterday’s grime.",
-            "Your fingers tremble under the icy stream, but the clean feeling steadies them."
+            "You cup your hands and sip the icy water, feeling the cold bite your throat.",
+            "A quick draught of frigid water slides down, a sharp reminder of the winter outside.",
+            "You draw a small mouthful, the metal taste of the basin mixing with the cold.",
+            "The basin’s water is like a breath of the storm—brief, bitter, but alive.",
+            "You swallow a sliver of water, the chill spreading through your chest."
         };
+
 
         /// <summary>Random lines spoken when the player rinses their mouth, echoing 1993 winter‑Kentucky life.</summary>
         // Style reference: "The cold water slaps your palms, a sharp reminder that winter never left."
@@ -245,6 +255,21 @@ namespace CloneZ
             else
             {
                 ctx.Notify("You can't fill the bottle right now.");
+            }
+        }
+
+        // Sip a small amount of water directly from the basin.
+        private void SipWater(InteractContext ctx)
+        {
+            const float sipShare = 0.05f; // 5 % of a full basin
+            bool got = UseStored(sipShare);
+            if (got)
+            {
+                ctx.Notify(SipLines[Random.Range(0, SipLines.Length)]);
+            }
+            else
+            {
+                ctx.Notify("You can't get any water right now.");
             }
         }
 
