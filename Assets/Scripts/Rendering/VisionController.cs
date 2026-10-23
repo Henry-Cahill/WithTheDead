@@ -135,6 +135,7 @@ namespace CloneZ
         private PlayerGearVisuals _gearVisuals;
         private PlayerGear _playerGear;
         private TimeOfDay _timeOfDay;
+        private WeatherSystem _weather;
         private float _gearLookup;
         private Light _sight;
         private Light _periphery;
@@ -236,6 +237,7 @@ CacheBones();
             UnpatchSun();
             TimeOfDay.AmbientScale = 1f;
             TimeOfDay.MoonlightScale = 1f;
+            _weather = null;
         }
 
         /// <summary>
@@ -491,7 +493,7 @@ CacheBones();
 
         private void UpdateSight(float dt)
         {
-            WeatherSystem weather = WeatherSystem.Instance;
+            WeatherSystem weather = _weather ??= WeatherSystem.Instance;
             float daySight = Mathf.Max(MinDaySightDistance, DaySightDistance * (weather != null ? weather.VisionMultiplier : 1f));
             float nightSight = SightRange * Mathf.Lerp(1f, NightVisionRangeScale, NightVisionBlend);
             SightDistance = Mathf.Lerp(daySight, nightSight, Night01);
