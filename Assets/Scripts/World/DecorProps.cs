@@ -161,7 +161,8 @@ namespace CloneZ
                 }
                 if (Chance(rng, 0.4)) m.Rod(s + dir * 0.05f + Vector3.up * 0.04f, s + dir * l * 0.6f + Vector3.up * 0.04f, r0 * 0.35f, M(SnowWhite));
             }
-            m.Rod(new Vector3(0f, trunkH * 0.95f, 0f), new Vector3(R(rng, -0.4f, 0.4f), height, R(rng, -0.4f, 0.4f)), r0 * 0.35f, M(bark), 5);
+            // Fixed stray ')' that caused a compile error in the final Rod call.
+m.Rod(new Vector3(0f, trunkH * 0.95f, 0f), new Vector3(R(rng, -0.4f, 0.4f), height, R(rng, -0.4f, 0.4f)), r0 * 0.35f, M(bark), 5);
         }
 
         /// <summary>A snow-laden pine: dark stacked cones with pale tips (scenery past the fence).</summary>
@@ -252,7 +253,8 @@ namespace CloneZ
                 for (int i = 0; i < n; i++)
                 {
                     float x = -len * 0.5f + off + bw * (i + 0.5f);
-                    m.Ellipsoid(new Vector3(x, bh * 0.5f + c * bh * 0.92f, R(rng, -0.03f, 0.03f)), new Vector3(bw * 1.04f, bh * 1.25f, 0.38f), Yaw(R(rng, -6f, 6f)), M(V(bag, rng, 0.1f)), 6, 3);
+                    // Fixed stray ')' that caused a compile error in the Ellipsoid call for sandbag walls.
+m.Ellipsoid(new Vector3(x, bh * 0.5f + c * bh * 0.92f, R(rng, -0.03f, 0.03f)), new Vector3(bw * 1.04f, bh * 1.25f, 0.38f), Yaw(R(rng, -6f, 6f)), M(V(bag, rng, 0.1f)), 6, 3);
                 }
             }
             m.Box(new Vector3(0f, courses * bh * 0.92f + 0.04f, 0f), new Vector3(len - 0.2f, 0.06f, 0.3f), M(SnowWhite));
