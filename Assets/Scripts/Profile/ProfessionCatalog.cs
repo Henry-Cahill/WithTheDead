@@ -104,6 +104,19 @@ namespace CloneZ
             T("old_map", "Old Map", 1,
                 "A faded map of the county shows forgotten passes, granting a small navigation boost.",
                 m => m.VisibilityMult *= 0.95f),
+            // additional Kentucky‑winter traits
+            T("storm_telegram", "Storm Telegram", 1,
+                "A tattered telegram warns of an approaching storm; you brace for the gale.",
+                m => { }, "superstitious"),
+            T("cellar_candle", "Cellar Candle", 1,
+                "A candle‑lit note in a cellar hints at hidden supplies, calming your nerves in blackouts.",
+                m => m.PanicRate *= 0.95f),
+            T("barn_haunt", "Barn Haunt", -2,
+                "A haunted dairy barn rumor keeps you on edge, raising your vigilance.",
+                m => m.VisibilityMult *= 1.1f, "nerves"),
+            T("orchard_memory", "Orchard Memory", 1,
+                "A frost‑bitten apple orchard memory grants a tiny navigation boost.",
+                m => m.VisibilityMult *= 0.97f),
         };
 
         private static TraitDef T(string id, string name, int cost, string blurb, System.Action<StatMods> apply, params string[] excludes)
