@@ -113,7 +113,8 @@ namespace CloneZ
         {
             if (_skills == null) return;
             int strength = _skills.GetLevel(PlayerSkills.Skill.Strength);
-            StatMods mods = _modifiers = PlayerModifiers.Current;   // PlayerModifiers is added after this component
+            // Use the cached instance fetched in Awake; the singleton may mutate its fields, but the reference never changes.
+StatMods mods = _modifiers;
             float key = strength * 1000f + mods.CarryCapacity * 100f + mods.CarryBonusKg;
             if (strength == _lastStrengthLevel && Mathf.Abs(key - _lastCapacityKey) < 0.01f) return;
             _lastStrengthLevel = strength;
