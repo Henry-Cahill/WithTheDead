@@ -214,39 +214,40 @@ namespace CloneZ
                     break;
 
 case HubNpc.Role.Keeper:
-                        if (Npc.Script == "gunsmith")
-                        {
-                            // Buy ammo from gunsmith (10 MG)
-                            into.Add(new InteractAction("Buy ammo (10 MG)", c =>
-                            {
-                                if (!Money.TrySpend(10, c.Inventory)) { c.Notify("You don't have 10 MG."); return; }
-                                var ammo = ItemDatabase.Get("ammo_9mm");
-                                if (ammo != null) c.Inventory.Inventory.Add(ammo, 1, enforceWeight: false);
-                                c.Notify("You receive a box of 9 mm ammo.");
-                                MoralLedger.Record("bought ammo", MoralLedger.BoughtAmmo);
-                                Sfx.PlayUI(SfxIds.Cash);
-                                ProfileStore.Save();
-                            }));
-                        }
-                        // fall back to chat for other keepers
-                        into.Add(new InteractAction("Chat", c => GameEvents.RaiseSubtitle(Npc.Name, "Mm.")));
-                        break;
-                            if (Npc.Script == "fence")
-                            {
-                                into.Add(new InteractAction("Buy contraband (15 MG)", c =>
-                                {
-                                    if (!Money.TrySpend(15, c.Inventory)) { c.Notify("You don't have 15 MG."); return; }
-                                    c.Notify("\"Got your goods, stay warm.\"");
-                                    MoralLedger.Record("bought contraband", MoralLedger.BoughtContraband);
-                                    Sfx.PlayUI(SfxIds.Cash);
-                                    ProfileStore.Save();
-                                }));
-                            }
-                            else
-                            {
-                                into.Add(new InteractAction("Chat", c => GameEvents.RaiseSubtitle(Npc.Name, "Mm.")));
-                            }
-                            break;
+{
+    // Gunsmith – sell ammo
+    if (Npc.Script == "gunsmith")
+    {
+        into.Add(new InteractAction("Buy ammo (10 MG)", c =>
+        {
+            if (!Money.TrySpend(10, c.Inventory)) { c.Notify("You don't have 10 MG."); return; }
+            var ammo = ItemDatabase.Get("ammo_9mm");
+            if (ammo != null) c.Inventory.Inventory.Add(ammo, 1, enforceWeight: false);
+            c.Notify("You receive a box of 9 mm ammo.");
+            MoralLedger.Record("bought ammo", MoralLedger.BoughtAmmo);
+            Sfx.PlayUI(SfxIds.Cash);
+            ProfileStore.Save();
+        }));
+    }
+    // Fence – sell contraband
+    else if (Npc.Script == "fence")
+    {
+        into.Add(new InteractAction("Buy contraband (15 MG)", c =>
+        {
+            if (!Money.TrySpend(15, c.Inventory)) { c.Notify("You don't have 15 MG."); return; }
+            c.Notify("\"Got your goods, stay warm.\"");
+            MoralLedger.Record("bought contraband", MoralLedger.BoughtContraband);
+            Sfx.PlayUI(SfxIds.Cash);
+            ProfileStore.Save();
+        }));
+    }
+    // Default chat for other keepers
+    else
+    {
+        into.Add(new InteractAction("Chat", c => GameEvents.RaiseSubtitle(Npc.Name, "Mm.")));
+    }
+    break;
+}
                         case HubNpc.Role.Guide:
                             // Ask for a route hint
                             into.Add(new InteractAction("Ask for a route hint (5 MG)", c =>
