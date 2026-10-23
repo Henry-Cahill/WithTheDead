@@ -586,7 +586,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
     public sealed class TabletScreen : UIScreen
     {
         private static int s_Tab;
-        private static readonly string[] Tabs = { "Kit", "Gun", "Loadouts", "Map", "Drones", "\"The fire was at the old barn last night.\"", "\"Radio static whispers: stay inside.\"", "\"Graffiti: 'Don’t trust the lights.'\"", "\"Diary entry: day 12 – supplies low.\"", "\"Letter to Mom: I miss the hills.\"" };
+        private static readonly string[] Tabs = { "Kit", "Gun", "Loadouts", "Map", "Drones", "\"The fire was at the old barn last night.\"", "\"Radio static whispers: stay inside.\"", "\"Graffiti: 'Don’t trust the lights.'\"", "\"Diary entry: day 12 – supplies low.\"", "\"Letter to Mom: I miss the hills.\"", "\"A cracked milk bottle lies beside the porch, half‑filled with ice‑cold water.\"", "\"The county sheriff’s radio crackles: 'Stay off the main road after dusk.'\"", "\"Graffiti on the barn wall reads: 'The dead walk at night.'\"", "\"Note pinned to the kitchen door: 'Supply run tomorrow, bring extra blankets.'\"", "\"Old newspaper clipping: 'Winter storm expected, roads closed through the hills.'\"" };
 
         protected override string Title => "Field tablet";
         protected override Vector2 WindowSize => new Vector2(1280f, 800f);
