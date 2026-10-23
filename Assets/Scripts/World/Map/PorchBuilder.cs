@@ -19,12 +19,18 @@ namespace CloneZ
             const float railingHeight = 0.9f;
             const float floorThickness = 0.03f; // metres, thin wooden decking
             const int balusterCount = 5; // number of vertical balusters between posts
+            // Roof constants and material selection
+            const float roofThickness = 0.02f; // thin wooden roof plank
+            const float roofOverhang = 0.2f; // extra length past the steps on each side
+            var roofMat = WorldStore.GetPorchMaterial(); // reuse porch wood material for the roof
             // Front edge centre (assume first point of footprint is front side)
             Vector2 front = fp.Pts[0];
             Vector2 dir = (fp.Pts[1] - fp.Pts[0]).normalized; // edge direction
             Vector2 normal = new Vector2(-dir.y, dir.x); // outward normal
             // Compute the porch’s width along the building façade (used for floor and posts)
-            float porchWidth = fp.Size * 0.4f; // a reasonable fraction of the footprint width
+            // Use the actual façade edge length (first two footprint points) for a realistic porch width
+            float façadeLength = Vector2.Distance(fp.Pts[0], fp.Pts[1]);
+            float porchWidth = façadeLength * 0.5f; // porch spans half the façade
             // Determine wood colour for this building
             var colour = build.GetBuildingColour(fp.Data.id);
             // Apply a modest random hue shift (±15 %)
@@ -63,6 +69,17 @@ namespace CloneZ
             var railMesh = site.Town.Out.Solid(railPos);
             railMesh.Box(new Vector3(0f, 0f, 0f), new Vector3(stepDepth * stepCount, railingHeight, 0.07f), DecorMaterials.WoodFloor(colour));
 
+            // -------------------- porch roof (simple over‑hanging plank) --------------------
+            float roofLength = stepDepth * stepCount + roofOverhang * 2f;
+            float roofWidth = porchWidth + roofOverhang * 2f;
+            Vector3 roofCenter = floorCenter + new Vector3(0f,
+                postHeight + roofThickness / 2f,
+                0f);
+            var roofMesh = site.Town.Out.Solid(roofCenter);
+            roofMesh.Box(Vector3.zero,
+                new Vector3(roofLength, roofThickness, roofWidth),
+                new Surf(roofMat, Vector2.zero, 0f));
+
             // -------------------- balusters --------------------
             for (int i = 1; i <= balusterCount; i++)
             {
@@ -74,9 +91,26 @@ namespace CloneZ
                 var bal = site.Town.Out.Solid(balPos);
                 bal.Box(new Vector3(0f, 0f, 0f), new Vector3(0.04f, railingHeight, 0.04f), DecorMaterials.WoodFloor(colour));
             }
+
+            // -------------------- porch lamp (period‑correct lantern) --------------------
+            // Position the lamp a short distance outward from the right post
+            Vector3 lampBasePos = rightPostPos + new Vector3(0f, 0f, 0.3f);
+            // Pole
+            var pole = site.Town.Out.Solid(lampBasePos + new Vector3(0f, 0.5f, 0f));
+            pole.Box(Vector3.zero,
+                new Vector3(0.07f, 1f, 0.07f),
+                new Surf(build.GetStreetLampMaterial(), Vector2.zero, 0f));
+            // Simple bulb (white box as placeholder)
+            var bulb = site.Town.Out.Solid(lampBasePos + new Vector3(0f, 1.05f, 0f));
+            bulb.Box(Vector3.zero,
+                new Vector3(0.12f, 0.12f, 0.12f),
+                DecorMaterials.WoodFloor(Color.white));
+
             // Reserve space so other generators don’t overlap
-            float radius = stepDepth * stepCount + 1f;
+            float radius = stepDepth * stepCount + 1f + roofOverhang;
             site.Take(new Vector2(front.x + normal.x * radius, front.y + normal.y * radius), radius);
-        }
+
+
     }
+}
 }
