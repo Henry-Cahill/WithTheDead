@@ -622,7 +622,19 @@ for (int i = 0; i < 7; i++)
             const float y0 = StoveDoorHingeY, y1 = 0.775f, z1 = StoveDoorFront, z0 = z1 - 0.035f;
             float cy = (y0 + y1) * 0.5f;
             Surf chrome = Mt(Chrome);
+            // Main enamel panel
             m.Box(new Vector3(0f, cy, (z0 + z1) * 0.5f), new Vector3(0.66f, y1 - y0, z1 - z0), G(enamel * 0.98f));
+            // Thin chrome frame around panel
+            const float edge = 0.004f; // 4 mm thick trim
+            // top edge
+            m.Box(new Vector3(0f, y1 - edge * 0.5f, (z0 + z1) * 0.5f), new Vector3(0.66f, edge, z1 - z0), chrome);
+            // bottom edge
+            m.Box(new Vector3(0f, y0 + edge * 0.5f, (z0 + z1) * 0.5f), new Vector3(0.66f, edge, z1 - z0), chrome);
+            // left edge
+            m.Box(new Vector3(-0.33f + edge * 0.5f, cy, (z0 + z1) * 0.5f), new Vector3(edge, y1 - y0, z1 - z0), chrome);
+            // right edge
+            m.Box(new Vector3(0.33f - edge * 0.5f, cy, (z0 + z1) * 0.5f), new Vector3(edge, y1 - y0, z1 - z0), chrome);
+            // Existing details
             m.Box(new Vector3(0f, 0.52f, z1 + 0.0005f), new Vector3(0.42f, 0.22f, 0.002f), Gs(new Color(0.05f, 0.05f, 0.06f)));
             m.Box(new Vector3(0f, 0.632f, z1 + 0.002f), new Vector3(0.44f, 0.01f, 0.004f), chrome);
             m.Box(new Vector3(0f, 0.408f, z1 + 0.002f), new Vector3(0.44f, 0.01f, 0.004f), chrome);
@@ -631,6 +643,35 @@ for (int i = 0; i < 7; i++)
             m.Box(new Vector3(0f, 0.72f, z1 + 0.028f), new Vector3(0.52f, 0.022f, 0.022f), chrome);
             m.Box(new Vector3(-0.22f, 0.72f, z1 + 0.01f), new Vector3(0.02f, 0.02f, 0.02f), chrome);
             m.Box(new Vector3(0.22f, 0.72f, z1 + 0.01f), new Vector3(0.02f, 0.02f, 0.02f), chrome);
+            // Curved chrome handle (4 cm down from top edge)
+            Quaternion outward = Quaternion.Euler(90f, 0f, 0f);
+            float handleY = y1 - 0.04f;
+            float handleZ = z0 + 0.025f;
+            float handleR = 0.012f;
+            float handleLen = 0.10f;
+            m.Cylinder(new Vector3(0f, handleY, handleZ), handleR, handleLen, 12, chrome, outward);
+            // Brass latch knob (lower‑right quadrant, 6 cm above bottom)
+            Surf brass = Mt(Brass);
+            float knobY = y0 + 0.06f;
+            float knobZ = z0 + 0.018f;
+            float knobR = 0.009f;
+            float knobH = 0.018f;
+            m.Cylinder(new Vector3(0.25f, knobY, knobZ), knobR, knobH, 10, brass);
+            // Top‑vent grill – three horizontal chrome bars, 2 cm below top edge
+            float grillY = y1 - 0.02f;
+            float grillZ = z0 + 0.015f;
+            float grillW = 0.56f; // door width minus 5 cm each side
+            float grillH = 0.003f; // 3 mm thick bar
+            for (int i = 0; i < 3; i++)
+            {
+                float offsetX = -0.28f + i * 0.28f;
+                m.Box(new Vector3(offsetX, grillY, grillZ), new Vector3(grillH, grillH, grillW), chrome);
+            }
+            // Subtle scorch‑mark near lower‑left corner
+            float scorchY = y0 + 0.04f;
+            float scorchZ = z0 + 0.022f;
+            m.Box(new Vector3(-0.20f, scorchY, scorchZ), new Vector3(0.06f, 0.004f, 0.03f), Mt(new Color(0.15f, 0.10f, 0.08f)));
+            // Inner dark liner
             m.Box(new Vector3(0f, cy, z0 - 0.003f), new Vector3(0.56f, 0.46f, 0.006f), M(OvenDark));
         }
 
