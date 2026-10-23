@@ -40,6 +40,8 @@ namespace CloneZ
         private Bounds _block;
         private bool _open;
         private bool _locked; // true while the raised door is secured
+        private bool _damaged; // true while the curtain is broken and needs repair
+        private Action<InteractContext> _repairAct;
         private Action<InteractContext> _secureAct, _unsecureAct;
 
         private Action<InteractContext> _raiseAct, _lowerAct, _bangAct, _inspectAct, _obstructAct;
@@ -62,6 +64,7 @@ namespace CloneZ
             _bangAct = Bang;
             _inspectAct = Inspect;
             _secureAct = Secure;
+            _repairAct = Repair;
             _unsecureAct = Unsecure;
         }
 
@@ -93,31 +96,40 @@ namespace CloneZ
             d._carver.carveOnlyStationary = false;
 
             d._open = s.Open;
+            d._damaged = UnityEngine.Random.value < 0.2f; // 20 % of doors start broken
             d.Apply(true);
             return d;
         }
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
+            // Repair action appears regardless of open/closed state when damaged
+            if (_damaged)
+            {
+                into.Add(new InteractAction("Repair the roll‑up door", _repairAct)
+                    .Timed(5f, "Repairing the door", HumanoidActivity.Use)
+                    .DisabledIf(!ctx.Inventory.Has("scrap_metal"), "Need scrap metal"));
+            }
+
             if (_open)
-                {
-                    // Lowering is only possible when the door is not secured
-                    into.Add(new InteractAction("Lower the roll-up door", _lowerAct)
-                        .Timed(CloneZConfig.RollUpWorkSeconds, "Pulling the door down", HumanoidActivity.Use)
-                        .DisabledIf(_locked, "Door is secured"));
-                    // Lock‑/unlock actions appear only when the door is raised
-                    if (_locked)
-                        into.Add(new InteractAction("Unsecure the roll-up door", _unsecureAct));
-                    else
-                        into.Add(new InteractAction("Secure the roll-up door", _secureAct));
-                }
+            {
+                // Lowering is only possible when the door is not secured
+                into.Add(new InteractAction("Lower the roll-up door", _lowerAct)
+                    .Timed(CloneZConfig.RollUpWorkSeconds, "Pulling the door down", HumanoidActivity.Use)
+                    .DisabledIf(_locked, "Door is secured"));
+                // Lock‑/unlock actions appear only when the door is raised
+                if (_locked)
+                    into.Add(new InteractAction("Unsecure the roll-up door", _unsecureAct));
                 else
-                {
-                    into.Add(new InteractAction("Raise the roll-up door", _raiseAct)
-                        .Timed(CloneZConfig.RollUpWorkSeconds, "Hauling the door up", HumanoidActivity.Use));
-                    into.Add(new InteractAction("Check for obstruction", _obstructAct)
-                        .Timed(0f, "Checking obstruction", HumanoidActivity.Use));
-                }
+                    into.Add(new InteractAction("Secure the roll-up door", _secureAct));
+            }
+            else
+            {
+                into.Add(new InteractAction("Raise the roll-up door", _raiseAct)
+                    .Timed(CloneZConfig.RollUpWorkSeconds, "Hauling the door up", HumanoidActivity.Use));
+                into.Add(new InteractAction("Check for obstruction", _obstructAct)
+                    .Timed(0f, "Checking obstruction", HumanoidActivity.Use));
+            }
 
             into.Add(new InteractAction("Bang the roll-up door", _bangAct)
                 .Timed(0f, "Banging the door", HumanoidActivity.Use));
@@ -150,7 +162,19 @@ namespace CloneZ
 
         private void Bang(InteractContext ctx) => MakeNoise(CloneZConfig.RollUpNoise);
 
-        private void Lower(InteractContext ctx)
+        private void Repair(InteractContext ctx)
+        {
+            if (!_damaged) return;
+            if (ctx.Inventory.Consume("scrap_metal", 1) <= 0)
+            {
+                ctx.Notify("You need a piece of scrap metal to repair the door.");
+                return;
+            }
+            _damaged = false;
+            ctx.Notify("You patch the steel curtain with the scrap metal. It slides more smoothly now.");
+            MakeNoise(CloneZConfig.RollUpNoise);
+        }
+            private void Lower(InteractContext ctx)
         {
             if (!_open) return;
             if (Obstructed())
@@ -190,12 +214,13 @@ namespace CloneZ
             return blocked;
         }
 
-        public override void CaptureState(FixtureSave save) => save.State = (_open ? 1 : 0) | (_locked ? 2 : 0);
+        public override void CaptureState(FixtureSave save) => save.State = (_open ? 1 : 0) | (_locked ? 2 : 0) | (_damaged ? 4 : 0);
 
         public override void RestoreState(FixtureSave save)
         {
             _open = (save.State & 1) != 0;
             _locked = (save.State & 2) != 0;
+            _damaged = (save.State & 4) != 0;
             Apply(true);
         }
     }
