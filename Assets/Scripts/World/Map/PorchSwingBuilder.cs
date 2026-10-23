@@ -20,12 +20,17 @@ namespace CloneZ
             float ropeLength = 0.85f + lengthVar;
             // Rope geometry – thin rectangular box.
             const float ropeThickness = 0.02f;
+            const float knotRadius = 0.03f; // a small metal knot at the rope’s top
             Vector3 ropeSize = new Vector3(ropeThickness, ropeLength, ropeThickness);
             // Rope sits centred at the rail height, extending downward.
             Vector3 ropePos = mid - new Vector3(0f, ropeLength * 0.5f, 0f);
             var woodMat = DecorMaterials.WoodFloor(woodColor);
             var ropeMat = DecorMaterials.Rope(Color.Lerp(woodColor, Color.black, 0.5f));
-            site.Town.Out.Solid(ropePos).Box(ropePos, ropeSize, railYaw, ropeMat);
+            // Knot sits at the rope’s attachment point (mid) and is a tiny metal sphere‑like box.
+            Vector3 knotPos = mid - new Vector3(0f, ropeLength, 0f) + new Vector3(0f, knotRadius, 0f);
+            site.Town.Out.Solid(knotPos)
+                .Box(knotPos, new Vector3(knotRadius * 2f, knotRadius * 2f, knotRadius * 2f),
+                    railYaw, DecorMaterials.Metal(Color.gray));
             // No collider for rope – player can walk through.
             // Bracket geometry – small metal L‑shaped support on each post.
             float bracketThickness = 0.04f;
@@ -52,6 +57,11 @@ namespace CloneZ
             Vector3 backPos = seatPos + backOffset;
             site.Town.Out.Solid(backPos).Box(backPos, backSize, railYaw, seatMat);
             site.Town.PropCollider(backPos, backSize, railYaw);
+            // Add a simple “Sit on swing” interactable so the player can notice the prop.
+            // Add a simple "Sit on swing" interactable so the player can notice the prop.
+            var swingGO = new GameObject("SwingInteractable");
+            swingGO.transform.position = seatPos;
+            swingGO.AddComponent<SwingInteractable>();
             // Mark the swing’s footprint as taken so other props (mailbox, etc.) won’t intersect.
             float footprintRadius = Mathf.Max(seatSize.x, seatSize.z, backSize.x, backSize.z) * 0.5f;
             site.Take(new Vector2(seatPos.x, seatPos.z), footprintRadius);
