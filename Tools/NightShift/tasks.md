@@ -8968,11 +8968,12 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 2: Directly after that line, add a `bool doorLeft = rng.Next(2) == 0;` to decide which side the door appears on.
   Step 3: Shower‑head pipe – a vertical metal cylinder from the ceiling to the wall: `// pipe feeding the showerhead` `m.Cylinder(new Vector3(0f, 1.75f, -0.25f), 0.015f, 0.30f, 8,` `DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));`
   - 23:30 landed by 0htsserver in 6.1 min: **Changed file**
-- [ ] Change Assets/Scripts/Medical/PlayerBlood.cs to stop fetching the active character each frame: remove the line `_cachedProfile = ProfileStore.ActiveCharacter;` from `Update()` and instead assign `_cachedProfile` once in `Awake()` (after `_stats` is set) or in `Start()` after the existing profile‑initialisation code.
+- [x] Change Assets/Scripts/Medical/PlayerBlood.cs to stop fetching the active character each frame: remove the line `_cachedProfile = ProfileStore.ActiveCharacter;` from `Update()` and instead assign `_cachedProfile` once in `Awake()` (after `_stats` is set) or in `Start()` after the existing profile‑initialisation code.
   This eliminates a per‑frame lookup of `ProfileStore.ActiveCharacter`, which is a singleton‑style accessor that allocates a temporary array in Unity 6’s `FindObjectsByType` implementation.
   `BloodType` and `TypeKnown` already read the cached field, so they continue to work unchanged.
   No visual or gameplay behavior changes: the player’s blood type, known‑status, and unconscious overlay remain exactly the same.
   The cached profile will be refreshed only when the game restarts or a new character is loaded (handled elsewhere), satisfying the rule that only inputs that can change the value may mark it stale.
+  - 23:33 landed by 0htsserver in 2.8 min: **Summary of changes**
 - [ ] Add a persistent “tear‑up” mechanic and automatic text generation to Assets/Scripts/World/Fixtures/CivicRadioNote.cs, plus a small state‑save update.
   Step 1: In CivicRadioNote.cs, add a private static field to cache the sound system and an Awake method that ensures the note has text when it first appears. `private static ISfxBackend _sfx;` `private void Awake()` `{` `if (_sfx == null) _sfx = FindObjectOfType<SfxBackend>();` `if (string.IsNullOrEmpty(_text)) SetRandomText();` `}`
   Step 2: Modify the existing “Read note” action in GetActions so it (a) guarantees text exists, (b) plays a rustle sound, and (c) still shows the message. Replace the lambda with: `into.Add(new InteractAction("Read note", c =>` `{` `if (string.IsNullOrEmpty(_text)) SetRandomText();` `_sfx?.PlayOneShot("note_read");` `c.Notify(_text);` `}));`

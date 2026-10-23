@@ -61,7 +61,7 @@ namespace CloneZ
         {
             _stats = GetComponent<PlayerStats>();
             _modifiers = PlayerModifiers.Current;
-            _scavType = BloodTypes.Roll();
+            _cachedProfile = ProfileStore.ActiveCharacter; // cache profile at Awake
         }
 
         private void Start()
@@ -137,7 +137,7 @@ namespace CloneZ
 
         private void Update()
         {
-            _cachedProfile = ProfileStore.ActiveCharacter;
+            // _cachedProfile = ProfileStore.ActiveCharacter; // moved to Awake
             if (_stats == null || _stats.IsDead) return;
             float dt = Time.deltaTime;
 
