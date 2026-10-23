@@ -219,7 +219,7 @@ namespace CloneZ
             float[] angles = { -60f, 0f, 60f };
             foreach (float a in angles)
             {
-                Quaternion rot = Quaternion.Euler(0f, a, 0f);
+                Quaternion rot = Quaternion.Euler(0f, 0f, a);
                 Vector3 offset = rot * new Vector3(0.09f, 0f, 0f);
                 m.Box(new Vector3(0.12f, 1.07f, 0.29f) + offset, new Vector3(0.012f, 0.004f, 0.001f), Mt(Chrome));
             }
