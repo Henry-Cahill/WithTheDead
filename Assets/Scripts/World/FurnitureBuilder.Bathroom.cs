@@ -617,6 +617,20 @@ namespace CloneZ
             Surf chrome = Mt(Chrome);
             m.Cylinder(new Vector3(ShowerLeverPivot.x, ShowerLeverPivot.y, -0.412f), 0.022f, 0.026f, 12, chrome, Quaternion.Euler(90f, 0f, 0f));
             m.Box(new Vector3(ShowerLeverPivot.x, ShowerLeverPivot.y - 0.045f, -0.392f), new Vector3(0.018f, 0.085f, 0.014f), chrome);
+            // Base plate (thin cylinder) under the boss
+            m.Cylinder(new Vector3(ShowerLeverPivot.x, ShowerLeverPivot.y - 0.022f, -0.412f), 0.022f, 0.004f, 12, chrome);
+            // Left rivet
+            m.Cylinder(new Vector3(ShowerLeverPivot.x - 0.015f, ShowerLeverPivot.y - 0.022f, -0.412f), 0.002f, 0.003f, 8, chrome);
+            // Right rivet
+            m.Cylinder(new Vector3(ShowerLeverPivot.x + 0.015f, ShowerLeverPivot.y - 0.022f, -0.412f), 0.002f, 0.003f, 8, chrome);
+            // Lever arm (horizontal cylinder)
+            m.Cylinder(new Vector3(ShowerLeverPivot.x, ShowerLeverPivot.y + 0.022f, -0.412f), 0.004f, 0.07f, 12, chrome, Quaternion.Euler(90f, 0f, 0f));
+            // Handle cap at the arm’s tip
+            m.Cylinder(new Vector3(ShowerLeverPivot.x, ShowerLeverPivot.y + 0.022f, -0.342f), 0.006f, 0.008f, 8, chrome, Quaternion.Euler(90f, 0f, 0f));
+            // Knob on the front of the cap
+            m.Cylinder(new Vector3(ShowerLeverPivot.x, ShowerLeverPivot.y + 0.022f, -0.338f), 0.003f, 0.004f, 8, chrome, Quaternion.Euler(90f, 0f, 0f));
+            // Dark wear dent on the arm front
+            m.Box(new Vector3(ShowerLeverPivot.x, ShowerLeverPivot.y + 0.022f, -0.38f), new Vector3(0.012f, 0.004f, 0.002f), M(new Color(0.30f, 0.30f, 0.35f)));
         }
 
         /// <summary>One look of the running shower: a cone of thin streaks from the rose to the tray, some breaking into
