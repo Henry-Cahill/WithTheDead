@@ -403,6 +403,12 @@ namespace CloneZ
             ("Old church bell", "The rusted bell in the town’s derelict church still rings on windy nights. Legend says ringing it summons a wandering trader; the sound also draws the Wardens, so use it wisely."),
             ("Broken tractor", "A rusted John Deere sits half‑buried in snow near the silo. If you scavenge its battery and engine parts, you can jury‑rig a makeshift snow‑mobile for faster travel across the frozen fields."),
             ("Mysterious footprints", "Deep, irregular tracks lead away from the bar toward the riverbank. They’re too large for any known animal—some say they belong to a mutated zombie variant that stalks the ice."),
+            ("Ice storm warnings", "When the sky darkens and the wind whistles, heavy sleet rattles metal roofs and shatters fragile panes. Inside, keep doors shut and wait for the storm to pass before venturing out."),
+            ("Frozen food storage", "Root cellars stay below freezing even in the deep of winter. Seal meat in oil‑treated cans or wrap it in waxed cloth to prevent flies and rot, and stash it near the back wall where the cold lingers longest."),
+            ("Snow‑drift navigation", "Fresh drifts hide treacherous drop‑offs. Mark your steps with charcoal‑black stones or a strip of rope; a clear trail saves you from walking circles and losing daylight."),
+            ("Old generator maintenance", "The town’s generator sputters on cold nights. Clean the oil screen, replace the cracked spark plug, and keep a spare fuel can under the bench – a dead engine draws the Wardens’ attention."),
+            ("Barred windows", "Many homes have boarded windows. A sturdy wooden plank can be pried loose with a crowbar, but the effort attracts nearby zombies and makes a lot of noise. Choose your target carefully."),
+            
         };
 
         protected override void BuildContent()
