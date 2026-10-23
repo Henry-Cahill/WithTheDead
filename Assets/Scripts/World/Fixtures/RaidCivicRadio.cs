@@ -121,17 +121,25 @@ namespace CloneZ
             },
         };
 
-        private static readonly string[] GuardCalls =
-        {
-            "\u201CAny station, any station, this is Juniper Base\u2026\u201D You let go of the key. Only the hiss answers.",
-            "You give the post's call sign and ask for anyone at all. A voice comes back in pieces \u2014 \u201C...say again... cannot...\u201D \u2014 then nothing.",
-            "You key up and ask for help. Somebody keys back, breathes, and lets go without a word.",
-            "\u201CMy tractor's stuck, the snow's six feet deep, I'm freezing out here.\u201D You hear his ragged breath before the static devours the line.",
-            "\u201CPlease, my little boy ran into the woods and I can't find him.\u201D Your heart tightens as a sobbing whisper fades into the hiss.",
-            "\u201CGenerator #3 sputters and died, the lights are out across the block.\u201D A clank follows, then the channel goes silent.",
-            "\u201CThe barn's catching fire, the flames are leaping toward the grain store.\u201D Flames crackle faintly before the line bursts.",
-            "\u201CI’m on Highway 12, something's howling out there, I think I'm being followed.\u201D A low howl echoes, then the static swallows the transmission.",
-        };
+		private static readonly string[] GuardCalls = new[] {
+			"\u201CAny station, any station, this is Juniper Base\u2026\u201D You let go of the key. Only the hiss answers.",
+			"You give the post's call sign and ask for anyone at all. A voice comes back in pieces \u2014 \u201C...say again... cannot...\u201D \u2014 then nothing.",
+			"You key up and ask for help. Somebody keys back, breathes, and lets go without a word.",
+			"\u201CMy tractor's stuck, the snow's six feet deep, I'm freezing out here.\u201D You hear his ragged breath before the static devours the line.",
+			"\u201CPlease, my little boy ran into the woods and I can't find him.\u201D Your heart tightens as a sobbing whisper fades into the hiss.",
+			"\u201CGenerator #3 sputters and died, the lights are out across the block.\u201D A clank follows, then the channel goes silent.",
+			"\u201CThe barn's catching fire, the flames are leaping toward the grain store.\u201D Flames crackle faintly before the line bursts.",
+			"\u201CI’m on Highway 12, something's howling out there, I think I'm being followed.\u201D A low howl echoes, then the static swallows the transmission.",
+			"\u201CMy ewe’s gone missing near the old barn, anyone seen her?\u201D You hear a weary farmer’s voice over the crackle.",
+			"\u201CWatch the high‑tension line by the creek, it’s down and sparking. Stay clear.\u201D A sharp warning cuts through the static.",
+			"\u201CMy 8‑year‑old is out in the woods, didn’t come back at dark. Please, someone find her.\u201D A mother’s panic tears the air.",
+			"\u201CWe’re down to two cans of beans and a half‑full water barrel. Any food drops would save us.\u201D Hunger rattles the line.",
+			"\u201COur only med‑kit ran out of antibiotics. Any doctor out there?\u201D The plea is thin, the breath shallow.",
+		};
+		public static string RandomGuardCall()
+		{
+			return GuardCalls[UnityEngine.Random.Range(0, GuardCalls.Length)];
+		}
 
         private static readonly string[] CbCalls =
         {
@@ -185,7 +193,13 @@ namespace CloneZ
             r._source = band == Band.Guard ? "Field radio" : "CB radio";
             r._cursors = new int[r._channels.Length];
             r.ShowOn(false);
-            return r;
+		// After creating the radio component, add a crumpled note with a random guard call.
+		var noteObj = new GameObject("Note_" + name);
+		noteObj.transform.SetParent(host, false);
+		noteObj.transform.localPosition = new Vector3(-0.3f, 0.5f, 0f);
+		var note = noteObj.AddComponent<CivicRadioNote>();
+		note.SetRandomText();
+		return r;
         }
 
         private void Awake()
