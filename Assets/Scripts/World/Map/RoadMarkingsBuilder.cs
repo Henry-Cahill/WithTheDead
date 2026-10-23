@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +14,21 @@ namespace CloneZ
         private const float KerbHeight = 0.08f; // metres tall concrete kerb
         private const float SidewalkOffset = 0.6f; // metres from road edge (kerb + sidewalk)
         private const float SidewalkThickness = 0.02f; // metres tall flat strip
+        // NEW constants for street‑lamps
+        private const float LampSpacing = 10f; // metres between lamp posts
+        private const float LampBaseSize = 0.20f; // width/depth of concrete base (metres)
+        private const float LampBaseHeight = 0.10f; // height of base (metres)
+        private const float LampPoleRadius = 0.05f; // half‑width of pole (metres)
+        private const float LampPoleHeight = 2.5f; // pole height (metres)
+        private const float LampHeadSize = 0.30f; // width/depth of glass head (metres)
+        private const float LampHeadHeight = 0.12f; // thickness of glass head (metres)
+                // NEW material surfaces
+        private static readonly Surf LampPoleSurf = new Surf(
+            Resources.Load<Material>(WorldStore.StreetLampMaterialPath) ?? Resources.Load<Material>("Materials/DefaultWhite"),
+            Vector2.zero, 0f);
+        private static readonly Surf LampGlassSurf = new Surf(
+            WorldStore.GetStreetLampGlassMaterial(),
+            Vector2.zero, 0f);
 
         /// <summary>
         /// Adds road markings for a given street if the deterministic decision says so.
@@ -56,7 +72,8 @@ namespace CloneZ
             }
             // side-line strips (always visible)
             BuildSideLines(site, street, build, new Surf(paintMat, Vector2.zero, 0f));
-            // kerbs for sidewalks
+                        // NEW: street‑lamp posts
+            BuildStreetLamps(site, street, build);
             BuildKerbsAndSidewalks(site, street, build);
         }
 
@@ -81,8 +98,69 @@ namespace CloneZ
             }
         }
 
-        private static void BuildKerbsAndSidewalks(KentuckyMap.Site site, KentuckyMap.Street street,
-            MapBuild build)
+        private static void BuildStreetLamps(KentuckyMap.Site site, KentuckyMap.Street street, MapBuild build)
+        {
+            // only place lamps on streets that were marked to have them
+            if (!build.HasStreetLamp(street.Data.id)) return;
+
+            // material for pole and glass are cached
+            var kerbMat = Resources.Load<Material>(WorldStore.KerbMaterialPath);
+            if (kerbMat == null) kerbMat = Resources.Load<Material>("Materials/DefaultConcrete");
+            var kerbSurf = new Surf(kerbMat, Vector2.zero, 0f);
+
+            var pts = street.Pts;
+            float accumulated = 0f;
+            float nextPlace = LampSpacing * 0.5f; // start half‑spacing in from the start of the road
+            for (int i = 0; i < pts.Count - 1; i++)
+            {
+                Vector2 a = pts[i];
+                Vector2 b = pts[i + 1];
+                var segDir = (b - a).normalized;
+                float segLen = Vector2.Distance(a, b);
+                float segStart = accumulated;
+                float segEnd = accumulated + segLen;
+                while (nextPlace <= segEnd)
+                {
+                    float t = (nextPlace - segStart) / segLen; // interpolation factor along this segment
+                    Vector2 posOnSeg = Vector2.Lerp(a, b, t);
+                    // offset outward from road edge (left side of travel direction)
+                    Vector2 offset = new Vector2(-segDir.y, segDir.x) * (SideLineOffset + 0.5f);
+                    // small jitter for visual variance
+                    float jitterX = (float)(build.Random.NextDouble() - 0.5) * 0.2f;
+                    float jitterZ = (float)(build.Random.NextDouble() - 0.5) * 0.2f;
+                    Vector2 finalPos = posOnSeg + offset + new Vector2(jitterX, jitterZ);
+                    var claimPos = new Vector3(finalPos.x, 0f, finalPos.y);
+                    // radius based on half of base size
+                    float radius = LampBaseSize * 0.5f;
+                    if (!site.Free(new Vector2(claimPos.x, claimPos.z), radius)) { nextPlace += LampSpacing; continue; }
+                    site.Take(new Vector2(claimPos.x, claimPos.z), radius);
+
+                    // concrete base
+                    var baseBox = site.Town.Out.Solid(claimPos);
+                    baseBox.Box(Vector3.zero,
+                        new Vector3(LampBaseSize, LampBaseHeight, LampBaseSize),
+                        0f, kerbSurf);
+
+                    // pole on top of base
+                    var poleCenter = claimPos + new Vector3(0f, LampBaseHeight, 0f);
+                    var poleBox = site.Town.Out.Solid(poleCenter);
+                    poleBox.Box(Vector3.zero,
+                        new Vector3(LampPoleRadius * 2f, LampPoleHeight, LampPoleRadius * 2f),
+                        0f, LampPoleSurf);
+
+                    // glass head on top of pole
+                    var headCenter = poleCenter + new Vector3(0f, LampPoleHeight, 0f);
+                    var headBox = site.Town.Out.Solid(headCenter);
+                    headBox.Box(Vector3.zero,
+                        new Vector3(LampHeadSize, LampHeadHeight, LampHeadSize),
+                        0f, LampGlassSurf);
+
+                    nextPlace += LampSpacing;
+                }
+                accumulated += segLen;
+            }
+        }
+        private static void BuildKerbsAndSidewalks(KentuckyMap.Site site, KentuckyMap.Street street, MapBuild build)
         {
             // load concrete kerb material (the map already defines a kerb material path)
             var kerbMat = Resources.Load<Material>(WorldStore.KerbMaterialPath);
