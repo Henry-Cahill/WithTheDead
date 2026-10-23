@@ -63,8 +63,8 @@ internal static void BuildLamp(KentuckyMap.Site site, KentuckyMap.Street street,
             }
             else
             {
-                pole.transform.localScale = new Vector3(0.09f, 1.5f, 0.09f);
-                pole.transform.localPosition = new Vector3(0f, 1.5f, 0f);
+                pole.transform.localScale = new Vector3(0.09f, 1.3f, 0.09f);
+                pole.transform.localPosition = new Vector3(0f, 1.3f, 0f);
             }
             var mat = build.GetStreetLampMaterial();
             if (mat != null) {
@@ -122,14 +122,14 @@ internal static void BuildLamp(KentuckyMap.Site site, KentuckyMap.Street street,
                     0f);
                 icicle.transform.localScale = new Vector3(0.02f, 0.12f, 0.02f);
                 var rend = icicle.GetComponent<Renderer>();
-                var icicleMat = new Material(Shader.Find("Standard"));
-                mat.color = new Color(0.85f, 0.85f, 0.90f);
-                rend.material = mat;
+                // Cached and URP-safe; tinting the lamp's shared `mat` here would recolour every later lamp.
+                rend.sharedMaterial = CloneZUtil.Mat(new Color(0.85f, 0.85f, 0.90f), 0.55f);
                 var col = icicle.GetComponent<Collider>();
                 if (col != null) col.isTrigger = true;
             }
             // NOTE: the IceCluster is a visual only decoration; it does not affect gameplay
             // other than the optional light‑dimming performed in StreetLampFlicker.
+            lampRoot.AddComponent<StreetLampInteraction>();
             var flicker = lampRoot.AddComponent<StreetLampFlicker>();
             // configure variation based on street kind
             if (street.Data.kind == "residential")

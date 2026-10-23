@@ -194,11 +194,7 @@ namespace CloneZ
                 .DisabledIf(!WaterMains.MainsOn, Dry);
             into.Add(temp);
 
-            var deep = new InteractAction("Deep clean the sink", _deepClean)
-                .Timed(CloneZConfig.CivicSinkScrubSeconds * 2, "Deep cleaning the sink")
-                .DisabledIf(!WaterMains.MainsOn, Dry);
-            deep.Begin = _openForJob;
-            deep.Stopped = _endJob;
+            var deep = new InteractAction("Deep clean the sink", DeepClean)
             into.Add(deep);
 
             var inspect = new InteractAction("Inspect the tap", ctx => { string tapMsg = _running ? "The tap is still running, wasting water." : "The tap is off."; string cleanMsg = _cleanliness >= 4 ? "The sink surface is spotless." : _cleanliness >= 2 ? "The sink looks clean enough." : "The sink is grimy and needs a good scrub."; ctx.Notify($"{tapMsg} {cleanMsg}"); });
