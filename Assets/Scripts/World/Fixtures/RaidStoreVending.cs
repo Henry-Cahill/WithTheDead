@@ -51,6 +51,7 @@ namespace CloneZ
         private Renderer _glass, _smashed;
         private LootContainer _stock, _tray;
         private bool _lit, _broken;
+        private const float LitThumpNoiseMultiplier = 1.5f;
         private int _missed;
         private bool _scavenged;
 
@@ -107,6 +108,7 @@ namespace CloneZ
                 into.Add(new InteractAction("Smash the glass", Smash)
                     .Timed(CloneZConfig.RaidVendingSmashSeconds, "Smashing the glass", HumanoidActivity.Use));
                 into.Add(new InteractAction("Press a button", PressButton));
+                into.Add(new InteractAction("Toggle power", TogglePower));
                 into.Add(new InteractAction("Inspect the machine", Inspect));
                 into.Add(new InteractAction("Listen to the machine", Listen));
                 into.Add(new InteractAction("Check the machine", CheckStock));
@@ -127,7 +129,8 @@ namespace CloneZ
 
         private void Thump(InteractContext ctx)
         {
-            MakeNoise(CloneZConfig.RaidVendingThumpNoise);
+            float noiseRadius = CloneZConfig.RaidVendingThumpNoise * (_lit ? LitThumpNoiseMultiplier : 1f);
+            MakeNoise(noiseRadius);
             ItemStack loose = _stock != null && !_stock.IsEmpty && Random.value < CloneZConfig.RaidVendingThumpChance
                 ? _stock.Contents.Stacks[Random.Range(0, _stock.Contents.Stacks.Count)] : null;
             if (loose == null)
@@ -188,6 +191,11 @@ namespace CloneZ
             }
             _scavenged = true;
         }
+        private void TogglePower(InteractContext ctx)
+        {
+            _lit = !_lit;
+            ctx.Notify(_lit ? "You wrestle the cord back into the outlet; a faint glow returns to the panel." : "You yank the cord out; the machine goes dark.");
+        }
         private void Inspect(InteractContext ctx)
         {
             if (_broken)
@@ -198,6 +206,16 @@ namespace CloneZ
                 ctx.Notify("The vending machine sits silent, its glass whole and its lights off.");
         }
 
+        public override void RestoreState(FixtureSave save)
+        {
+            base.RestoreState(save);
+            _lit = (save.State & 1) != 0;
+        }
+        public override void CaptureState(FixtureSave save)
+        {
+            base.CaptureState(save);
+            save.State = (_lit ? 1 : 0) | (save.State & ~1);
+        }
         private void ShowBroken(bool broken)
         {
             if (_glass != null) _glass.enabled = !broken;
