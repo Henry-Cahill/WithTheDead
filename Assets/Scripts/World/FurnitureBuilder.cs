@@ -279,6 +279,24 @@ namespace CloneZ
             m.Box(new Vector3(lx + 0.015f, topY + 0.033f, lz + 0.015f), new Vector3(0.11f, 0.011f, 0.07f), M(Paper));
             // paper stack – sheet 3 (topmost)
             m.Box(new Vector3(lx + 0.01f, topY + 0.046f, lz + 0.01f), new Vector3(0.10f, 0.012f, 0.06f), M(Paper));
+            // CRT monitor stand and screen
+            m.Box(new Vector3(0f, 0.86f, 0f), new Vector3(0.04f, 0.20f, 0.04f), Mt(Chrome));
+            m.Box(new Vector3(0f, 0.97f, 0f), new Vector3(0.32f, 0.24f, 0.02f), G(new Color(0.08f, 0.09f, 0.11f)));
+            // Keyboard base
+            m.Box(new Vector3(-0.2f, 0.77f, -0.2f), new Vector3(0.35f, 0.02f, 0.15f), M(Black));
+            // Keyboard keys
+            for (int row = 0; row < 3; row++)
+            {
+                for (int col = 0; col < 6; col++)
+                {
+                    float kx = -0.2f + 0.05f * col;
+                    float kz = -0.2f + 0.04f * row;
+                    m.Box(new Vector3(kx, 0.785f, kz), new Vector3(0.015f, 0.015f, 0.005f), M(Black));
+                }
+            }
+            // Coffee mug
+            m.Cylinder(new Vector3(0.25f, 0.78f, 0.15f), 0.03f, 0.07f, 12, Mt(Chrome));
+            m.Box(new Vector3(0.28f, 0.805f, 0.15f), new Vector3(0.005f, 0.02f, 0.015f), Mt(Chrome));
             float px = side * (w * 0.5f - 0.22f);
             m.Box(new Vector3(px, 0.36f, -0.01f), new Vector3(0.42f, 0.72f, d - 0.06f), M(c));
             for (int i = 0; i < 3; i++)
