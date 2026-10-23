@@ -22,6 +22,7 @@ namespace CloneZ
         private Transform _support;
         private bool _supportFound;
         private int[] _cursors;
+        private Vector3 _savePos;
         private float _noiseAt, _captionAt;
 
         /// <summary>Switched on (and, for a mains set, powered).</summary>
@@ -59,7 +60,7 @@ namespace CloneZ
         protected virtual string DeathNotice => null;
 
         public override Vector3 InteractPoint => _point;
-        public override string SaveKey => KeyFor(SaveKind, (_host != null ? _host.position : transform.position));
+        public override string SaveKey => KeyFor(SaveKind, _savePos);
 
         /// <summary>The set's own furniture, or the dresser / counter it stands on: neither blocks the reach.</summary>
         public override Transform OcclusionRoot
@@ -90,6 +91,7 @@ namespace CloneZ
             _supportKind = support;
             _supportFound = freeStanding;
             _cursors = new int[Dial.Length];
+            _savePos = (_host != null ? _host.position : transform.position);
             IsOn = false;
             ShowOn(false);
         }
@@ -255,6 +257,9 @@ namespace CloneZ
 
         public override void RestoreState(FixtureSave save)
         {
+            // Ensure the cursor array is valid (it may be null if RestoreState runs before Init)
+            if (_cursors == null || _cursors.Length != Dial.Length)
+                _cursors = new int[Dial.Length];
             Tuned = Mathf.Clamp(Mathf.RoundToInt(save.A), 0, Dial.Length - 1);
             Volume = Mathf.Clamp(Mathf.RoundToInt(save.B), 0, MaxVolume);
             IsOn = (save.State & 1) != 0 && HasPower;
