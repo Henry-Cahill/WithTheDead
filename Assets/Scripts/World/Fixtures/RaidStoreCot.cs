@@ -16,6 +16,8 @@ namespace CloneZ
         private Transform _rest;     // the bed the survivor lies on: head toward its -Z
         private float _yaw;          // the cot's facing (its length runs along its own X)
         private int _looked;
+        private bool _secured; // true after the cot has been tied down
+        private const float SecuredComfortBonus = 0.2f; // extra comfort while the cot is secured
 
         private static readonly string[] Underneath =
         {
