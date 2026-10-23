@@ -142,13 +142,28 @@ namespace CloneZ
             if (!_needsSecond) return;
             if (Time.unscaledTime < _nextSecond) return;
             _nextSecond = Time.unscaledTime + 1f;
-            for (int i = 0; i < _live.Count; i++)
-            {
-                Text t = _live[i].Key;
-                if (t == null) continue;
-                try { t.text = _live[i].Value(); }
-                catch (Exception e) { Debug.LogException(e); _live[i] = new KeyValuePair<Text, Func<string>>(null, null); }
-            }
+bool removed = false;
+                for (int i = _live.Count - 1; i >= 0; i--)
+                {
+                    Text t = _live[i].Key;
+                    if (t == null)
+                    {
+                        _live.RemoveAt(i);
+                        removed = true;
+                        continue;
+                    }
+                    try
+                    {
+                        t.text = _live[i].Value();
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogException(e);
+                        _live.RemoveAt(i);
+                        removed = true;
+                    }
+                }
+                if (removed) UpdateNeedsSecond();
             if (ShowMoney && Character != null) RefreshMoney();
             try { OnSecond(); }
             catch (Exception e) { Debug.LogException(e); }
@@ -165,7 +180,7 @@ namespace CloneZ
         protected void ServiceButton(Transform row, string label, string screenId, string arg = null, float width = 150f)
         {
             if (!HubScreens.Has(screenId)) return;
-            HubUI.Btn(row, label, () => Open(screenId, arg), width, 32f, UIKit.ButtonColor, true, 15);
+            HubUI.Btn(row, label, () => Open(screenId, arg), width, 32f, UIKit.ButtonColor);
         }
     }
 }
