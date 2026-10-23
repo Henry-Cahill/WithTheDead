@@ -440,7 +440,26 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             go.AddComponent<BoxCollider>();
             // visual metal box
             Deco(world, "HeaterBox", m =>
-                m.Box(new Vector3(-HalfX + 1.2f, 0.15f, -2.5f), new Vector3(0.4f, 0.3f, 0.3f), st.Metal), Vector3.zero);
+                {
+                    // main metal box
+                    m.Box(new Vector3(-HalfX + 1.2f, 0.15f, -2.5f), new Vector3(0.4f, 0.3f, 0.3f), st.Metal);
+                    // vent grill: horizontal bar
+                    m.Box(new Vector3(-HalfX + 1.2f, 0.25f, -2.5f + 0.14f), new Vector3(0.35f, 0.01f, 0.005f), st.Metal);
+                    // vent grill: left vertical bar
+                    m.Box(new Vector3(-HalfX + 1.025f, 0.25f, -2.5f + 0.14f), new Vector3(0.01f, 0.12f, 0.005f), st.Metal);
+                    // vent grill: right vertical bar
+                    m.Box(new Vector3(-HalfX + 1.375f, 0.25f, -2.5f + 0.14f), new Vector3(0.01f, 0.12f, 0.005f), st.Metal);
+                    // side handle
+                    m.Box(new Vector3(-HalfX + 1.38f, 0.18f, -2.5f), new Vector3(0.02f, 0.08f, 0.01f), st.Metal);
+                    // temperature gauge housing
+                    m.Cylinder(new Vector3(-HalfX + 1.2f, 0.31f, -2.5f), 0.015f, 0.02f, 12, st.Metal);
+                    // gauge needle
+                    m.Sphere(new Vector3(-HalfX + 1.2f, 0.33f, -2.5f), 0.006f, DecorPalette.Matte(new Color(0.15f,0.15f,0.15f)));
+                    // wear seam
+                    m.Box(new Vector3(-HalfX + 1.2f, 0.15f, -2.5f + 0.152f), new Vector3(0.38f, 0.003f, 0.005f), DecorPalette.Matte(new Color(0.2f,0.2f,0.2f)));
+                    // indicator light (glow)
+                    m.Sphere(new Vector3(-HalfX + 1.02f, 0.28f, -2.5f), 0.012f, DecorPalette.Glow(new Color(0.92f,0.45f,0.15f)));
+                }, Vector3.zero);
             // attach the interactable logic
             go.AddComponent<Heater>();
         }
