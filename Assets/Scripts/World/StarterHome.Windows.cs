@@ -77,7 +77,7 @@ Surf rustMetal = DecorPalette.Matte(new Color(0.55f, 0.35f, 0.30f));
             for (int i = 0; i < dentilCount; i++)
             {
                 float offsetX = -WindowWidth * 0.5f + dentilSpacing * (i + 0.5f);
-                float dentilHeight = 0.006f + 0.001f * ((float)rng.NextDouble() - 0.5f);
+                float dentilHeight = 0.006f + 0.001f * ((float)Random.value - 0.5f);
                 float dentilY = lintelY + lintelHeight * 0.5f + dentilHeight * 0.5f;
                 m.Box(f.P(offsetX, dentilY, outer - sillDepth * 0.5f), f.Size(dentilWidth, dentilHeight, dentilDepth), wood);
             }
@@ -92,8 +92,8 @@ Surf rustMetal = DecorPalette.Matte(new Color(0.55f, 0.35f, 0.30f));
             int bumpCount = 3;
             for (int i = 0; i < bumpCount; i++)
             {
-                float offsetX = (float)(rng.NextDouble() * (WindowWidth - 0.04) - (WindowWidth - 0.04) * 0.5);
-                float bumpSize = 0.01f + (float)rng.NextDouble() * 0.005f;
+                float offsetX = (float)(Random.value * (WindowWidth - 0.04) - (WindowWidth - 0.04) * 0.5);
+                float bumpSize = 0.01f + (float)Random.value * 0.005f;
                 m.Box(f.P(f.Mid + offsetX, sillY, outer - sillDepth * 0.5f + bumpSize * 0.5f), f.Size(bumpSize, bumpSize, bumpSize), DecorMaterials.Concrete);
             }
             // brass strike-plate on latch lever
@@ -208,6 +208,18 @@ Surf rustMetal = DecorPalette.Matte(new Color(0.55f, 0.35f, 0.30f));
             Color glassTint = new Color(SashGlass.r * tintFactor, SashGlass.g * tintFactor, SashGlass.b * tintFactor, SashGlass.a);
             m.Box(f.P(f.Mid, gy, across), f.Size(0.03f, glass, 0.03f), frame);
             m.Box(f.P(f.Mid, gy, across), f.Size(w - 0.09f, glass, 0.006f), DecorPalette.Glass(glassTint));
+            // period‑correct leaded‑glass pattern
+            Surf lead = DecorPalette.Metal(new Color(0.55f, 0.55f, 0.48f)); // dark‑bronze, period‑correct for leaded glass
+            int vertStrips = 2;
+            float stripWidth = 0.002f;
+            for (int i = 0; i < vertStrips; i++)
+            {
+                float offset = ((float)i / (vertStrips - 1) - 0.5f) * (w - 0.09f) + 0.001f * ((float)Random.value - 0.5f);
+                m.Box(f.P(f.Mid + offset, gy, across), f.Size(stripWidth, glass, 0.006f), lead);
+            }
+            float horizStripWidth = 0.002f;
+            float horizY = gy + 0.001f * ((float)Random.value - 0.5f);
+            m.Box(f.P(f.Mid, horizY, across), f.Size(w - 0.09f, horizStripWidth, 0.006f), lead);
             // Add decorative iron grille on the lower sash (period‑correct hardware)
             if (lower)
             {
