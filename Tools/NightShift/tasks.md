@@ -9153,12 +9153,13 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 4: Assets/Scripts/World/FurnitureBuilder.RaidOpenings.cs, same method – ensure no new colliders or interaction points are introduced; all added primitives use the same `RaidMesh` builder calls as existing parts, so they inherit the mesh’s collider handling automatically.
   Done when: In‑game each louvred shutter shows two dark‑steel corner brackets at its top‑outer corners, a thin dark‑steel chain visibly linking the left and right panels just in front of them, and two small brown‑red rust ellipsoids on the shutter faces. All existing functionality (damage, opening, collision) remains unchanged, and the total added primitive count is under twelve.
   - 01:00 landed by 0htsserver in 3.6 min: **Changes Made**
-- [ ] In Assets/Scripts/Hub/Screens/HubTooltip.cs: Optimize HubTooltip.Follow() by using a cached UI Camera instead of passing null (which makes Unity do a per‑frame Camera.main lookup).
+- [x] In Assets/Scripts/Hub/Screens/HubTooltip.cs: Optimize HubTooltip.Follow() by using a cached UI Camera instead of passing null (which makes Unity do a per‑frame Camera.main lookup).
   *Add a private Camera field `_uiCamera` to HubTooltip* (if not already present).
   *In HubTooltip.Create()* set `tip._uiCamera = Camera.main;` immediately after creating the tooltip component.
   *Update Follow()* to call `RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, m.position.ReadValue(), _uiCamera, out Vector2 local)` instead of using `null`.
   *If _uiCamera becomes null (e.g., after a scene reload), re‑assign it lazily in Follow()* before the conversion call.
   The player sees no visual change – tooltips continue to follow the mouse exactly as before – but the per‑frame hidden Camera.main lookup is eliminated, reducing CPU overhead.
+  - 01:00 landed by hts-llm in 3.8 min: **Changed files**
 - [ ] Add a “Cover / Uncover the tub” action to `Assets/Scripts/World/Fixtures/RaidHomeBath.cs` that lets the survivor keep the bath warm longer, by reducing the water‑cooling rate while covered.
   Step 1: Declare a new state field. File `Assets/Scripts/World/Fixtures/RaidHomeBath.cs`, class `RaidHomeBath`, add after the existing `private bool _soaking;` line: `private bool _covered; // true while a makeshift cover is on the tub`
   Step 2: Add a constant for the reduced cooling factor. In the same class, after the cached config fields (`private readonly float _tapNoiseRadius = …;`) insert: `private const float CoveredCoolFactor = 0.2f; // cooling is slowed to 20 % when covered`

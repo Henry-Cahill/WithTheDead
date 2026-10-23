@@ -19,6 +19,7 @@ namespace CloneZ
         private Text _text;
         private LayoutElement _textSize;
         private CanvasGroup _group;
+        private Camera _uiCamera;
         private object _owner;
 
         /// <summary>Creates a new tooltip attached to the given canvas and returns the component.</summary>
@@ -55,6 +56,8 @@ namespace CloneZ
             tip._group.blocksRaycasts = false;
             tip._group.interactable = false;
             tip._group.alpha = 0f;
+            // Cache UI camera to avoid per-frame Camera.main lookup
+            tip._uiCamera = Camera.main;
             return tip;
         }
 
@@ -99,7 +102,8 @@ namespace CloneZ
         {
             Mouse m = Mouse.current;
             if (m == null) return;
-            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, m.position.ReadValue(), null, out Vector2 local)) return;
+            if (_uiCamera == null) _uiCamera = Camera.main;
+            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, m.position.ReadValue(), _uiCamera, out Vector2 local)) return;
             Vector2 size = _root.rect.size;
             Rect cr = _canvasRect.rect;
             float x = local.x + 20f, y = local.y - 22f;
