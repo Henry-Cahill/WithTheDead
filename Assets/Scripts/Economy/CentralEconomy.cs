@@ -56,6 +56,10 @@ namespace CloneZ
 
         private struct Dropped { public string Id; public Vector3 At; public float Expires; }
         private static readonly List<Dropped> s_Dropped = new List<Dropped>();
+        // Cached collections for Tick to reduce allocations
+        private static readonly List<string> s_ShortOf = new List<string>();
+        private static readonly List<LootContainer> s_Candidates = new List<LootContainer>();
+        private static readonly System.Random s_Rng = new System.Random(Environment.TickCount);
 
         /// <summary>The loot gate runs on every peer (they all roll the same seeded loot, so it must agree); restocks
         /// and expiry are the server's.</summary>
@@ -201,7 +205,8 @@ namespace CloneZ
                 if (a != null && a.IsPlayerControlled)
                     s_PlayerCache.Add(a);
             Recount();
-            var shortOf = new List<string>();
+            s_ShortOf.Clear();
+            var shortOf = s_ShortOf;
             foreach (string id in ItemDatabase.AllIds)
             {
                 int min = MinOf(id);
