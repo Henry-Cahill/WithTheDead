@@ -9117,12 +9117,13 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 7: (Optional sanity) – keep the existing `solid.Emit("Yard", ...)` call unchanged; the new primitives are added to `solid` before the emit, so they become part of the same GameObject.
   Done when: In‑game the front stoop (the concrete slab at (4 m E, 2.6 m N) shows a faint mid‑line expansion joint, a darker weathered spot, three specks of gritty gravel, a tiny metal plate‑nail on the left‑front corner, and a lone green weed sprout, all placed with deterministic variation from the existing random seed. All original colliders, interaction points, and the rest of the world remain unchanged.
   - 00:51 landed by 1htsserver in 2.6 min: **Changed file**
-- [ ] In Assets/Scripts/World/Fixtures/BedFixture.cs: Cache the per‑frame TV proximity lookup in BedFixture so GetActions doesn’t call TvFixture.PlayingNear each time it builds the action list
+- [x] In Assets/Scripts/World/Fixtures/BedFixture.cs: Cache the per‑frame TV proximity lookup in BedFixture so GetActions doesn’t call TvFixture.PlayingNear each time it builds the action list
   · Add a private field `private TvFixture _nearbyTv;` to the class.
   · In `Update()` (after the existing logic) set `_nearbyTv = TvFixture.PlayingNear(transform.position, CloneZConfig.TvReach + SleepSpot.Length * 0.5f);`.
   · In `GetActions` replace `TvFixture tv = TvFixture.PlayingNear(...)` with `TvFixture tv = _nearbyTv;`.
   · The cached lookup is refreshed every frame, so the “Lie back and watch TV” action appears or disappears correctly as the TV starts or stops playing.
   · No visible behavior changes for the player; only the per‑frame allocation of the TV lookup is eliminated.
+  - 00:53 landed by 1htsserver in 1.9 min: **Summary**
 - [ ] In Assets/Scripts/World/Fixtures/TowelRail.cs: Add a gradual visual drying effect to the towel rail so the damp renderer’s colour fades toward the dry colour as the towel dries, giving the player a clear, time‑based visual cue.
   Step 1: Assets/Scripts/World/Fixtures/TowelRail.cs – add colour fields `private Color _dryColor; // original colour of the dry renderer` `private Color _dampBaseColor; // original colour of the damp renderer` Place these declarations with the other private fields.
   Step 2: Assets/Scripts/World/Fixtures/TowelRail.cs – capture colours in SetTowel Locate the method `internal void SetTowel(Transform towel, Renderer dry, Renderer damp)`. After the existing assignments, add: `if (dry != null) _dryColor = dry.material.GetColor("_Color");` `if (damp != null) _dampBaseColor = damp.material.GetColor("_Color");` This stores the initial colours for later interpolation.

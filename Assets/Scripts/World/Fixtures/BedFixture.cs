@@ -16,6 +16,7 @@ namespace CloneZ
     public class BedFixture : Interactable
     {
         private SleepSpot _spot;
+        private TvFixture _nearbyTv;
         private Renderer _made, _rumpled;
         private bool _isMade = true;
         private PlayerSleep _sleeper;
@@ -102,6 +103,8 @@ namespace CloneZ
             if (_sleeper == null) _sleeper = pi.GetComponent<PlayerSleep>();
             if (_sleeper != null && _sleeper.IsSleeping && SleepSpot.Nearest(pi.transform.position, _sleepCheckRadius, out _) == _spot)
                 SetMade(false);
+            // Cache nearby TV for use in GetActions to avoid per‑frame allocation.
+            _nearbyTv = TvFixture.PlayingNear(transform.position, CloneZConfig.TvReach + SleepSpot.Length * 0.5f);
         }
 
         private void SetMade(bool made)
@@ -121,7 +124,7 @@ namespace CloneZ
             into.Add(new InteractAction("Sleep", Sleep).DisabledIf(!canSleep, why ?? "You can't sleep now"));
 
             into.Add(RestAction("Lie down and rest", "Resting", null).DisabledIf(seat == null, "You can't lie down now"));
-            TvFixture tv = TvFixture.PlayingNear(transform.position, CloneZConfig.TvReach + SleepSpot.Length * 0.5f);
+            TvFixture tv = _nearbyTv;
             if (tv != null) into.Add(RestAction("Lie back and watch TV", "Watching TV in bed", tv).DisabledIf(seat == null, "You can't lie down now"));
 
             if (onEdge) into.Add(new InteractAction("Get up off the bed", c => c.Seat.Stand()));
