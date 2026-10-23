@@ -371,6 +371,34 @@ namespace CloneZ
             m.Ellipsoid(gaugePos, new Vector3(0.04f, 0.04f, 0.04f), Gs(new Color(0.20f, 0.60f, 0.80f)), 8, 4);
 
             m.Box(new Vector3(0f, 1.67f, 0f), new Vector3(0.4f, 0.04f, 0.7f), M(SnowWhite));
+
+            // Rust strip – colour varies per instance
+            Color rustCol = V(new Color(0.55f, 0.30f, 0.20f), rng, 0.07f);
+            float rustY = R(rng, 0.8f, 1.5f); // vertical position on the body
+            float rustZ = R(rng, -0.3f, 0.3f); // depth offset
+            m.Box(new Vector3(0.26f, rustY, rustZ), new Vector3(0.02f, 0.12f, 0.04f), Mt(rustCol));
+
+            // Small metal price tag – matte with slight colour variation
+            Color tagCol = V(new Color(0.4f, 0.4f, 0.38f), rng, 0.05f);
+            float tagY = R(rng, 1.0f, 1.3f);
+            m.Box(new Vector3(0f, tagY, -0.41f), new Vector3(0.30f, 0.04f, 0.02f), M(tagCol));
+
+            // Nozzle cap – tiny cylinder to close the nozzle tip
+            float capLen = R(rng, 0.03f, 0.05f);
+            Quaternion capRot = nozzleRot; // same orientation as the nozzle
+            Vector3 capPos = nozzlePos + nozzleRot * new Vector3(0f, 0f, nozzleLen * 0.5f + capLen * 0.5f);
+            m.Cylinder(capPos, 0.015f, capLen, 6, Mt(new Color(0.15f, 0.15f, 0.15f)), capRot, 0.8f);
+
+            // Fuel droplet – small emissive blob
+            Vector3 dripPos = capPos + nozzleRot * new Vector3(0f, -0.015f, capLen * 0.5f);
+            m.Ellipsoid(dripPos, new Vector3(0.012f, 0.018f, 0.012f), Gl(new Color(1f, 0.85f, 0.6f)), 6, 3);
+
+            // Paint wear patch – darker matte area on the lower side
+            Color patchCol = V(new Color(0.30f, 0.28f, 0.26f), rng, 0.08f);
+            float patchY = R(rng, 0.4f, 0.8f);
+            float patchX = R(rng, -0.2f, 0.2f);
+            m.Box(new Vector3(patchX, patchY, 0.41f), new Vector3(0.12f, 0.04f, 0.008f), M(patchCol));
+
         }
 
         /// <summary>A roadside mailbox on a post, or a blue public mail drop box.</summary>
