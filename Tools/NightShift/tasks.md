@@ -9922,11 +9922,12 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 8: Leave the existing colliders untouched – the checkpoint’s collider is added later with `sb.Collider(new Vector3(0f, 1.2f, 0f), new Vector3(2.4f, 2.4f, 2.4f));` – no changes required.
   Done when: When the player approaches the checkpoint booth, the front door now shows a full rust‑stained metal frame (two side posts and a top lintel), two small metal hinges on the left side, a thin sign‑plate above the door, and occasional rust‑paint wear on the left frame. All new parts use the existing `ZoneKit.Mt(ZoneKit.RustDark)` and `ZoneKit.Mt(ZoneKit.Rust)` materials, are sized in metres as listed, and sit at the quoted positions relative to the current handle/lock‑plate geometry. No existing colliders or interaction points are altered.
   - 07:24 landed by 1htsserver in 4 min: **Changes made**
-- [ ] In Assets/Scripts/Rendering/IsoVisionShade.cs, replace the per‑ray `Vector3.Angle` call in `IsoVisionShade.Rebuild()` with a cached dot‑product check to avoid trigonometric work each frame.
+- [x] In Assets/Scripts/Rendering/IsoVisionShade.cs, replace the per‑ray `Vector3.Angle` call in `IsoVisionShade.Rebuild()` with a cached dot‑product check to avoid trigonometric work each frame.
   Add a static field `private static float _cosConeHalf;` near the other static constants.
   In `Awake()` (after the ray‑direction loop) set `_cosConeHalf = Mathf.Cos(ConeHalf * Mathf.Deg2Rad);`.
   Change the line `float max = Vector3.Angle(facing, dir) <= ConeHalf ? Range : Behind;` to `float max = Vector3.Dot(facing, dir) >= _cosConeHalf ? Range : Behind;`.
   The shader‑shade geometry and visible alpha remain unchanged; the only effect is reducing per‑frame CPU cost by eliminating 180 angle calculations each rebuild.
+  - 07:24 landed by hts-llm in 1.4 min: **Changed file:** `Assets/Scripts/Rendering/IsoVisionShade.cs`
 - [ ] Add a “Repair lantern” interaction to Assets/Scripts/World/Fixtures/OutdoorLantern.cs that lets the survivor replace a dead bulb using a “Bulb” item from inventory, updating the HomeLamp’s DeadBulb flag and giving audible/visual feedback.
   Step 1: In Assets/Scripts/World/Fixtures/OutdoorLantern.cs, inside the class declare a new private constant for the bulb item ID: `private const string BulbItemId = "bulb"; // item id for a lantern bulb`
   Step 2: In the same file, modify the `GetActions` method to add the new action after the existing ones: `into.Add(new InteractAction("Repair lantern", RepairLantern));`
