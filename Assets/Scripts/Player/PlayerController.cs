@@ -31,6 +31,7 @@ namespace CloneZ
         private float _verticalVelocity;
         private float _groundY;
         private float _footstepTimer;
+        private Plane _groundPlane; // cached plane at the player’s current Y position
 
         /// <summary>Where the survivor aims: the ground under the cursor (isometric), or the first solid
         /// surface under the crosshair (shoulder / first person).</summary>
@@ -135,7 +136,7 @@ namespace CloneZ
             Mouse mouse = Mouse.current;
             if (mouse == null) return;
             Ray ray = _cam.ScreenPointToRay(mouse.position.ReadValue());
-            var ground = new Plane(Vector3.up, new Vector3(0f, _groundY, 0f));
+                var ground = _groundPlane;
             if (ground.Raycast(ray, out float enter))
             {
                 AimPoint = ray.GetPoint(enter);
@@ -175,23 +176,31 @@ namespace CloneZ
             }
             else
             {
-                // Nothing solid under the crosshair: the ground plane if it's looking down, else open sky.
-var ground = new Plane(Vector3.up, new Vector3(0f, _groundY, 0f));
-                AimPoint = ground.Raycast(ray, out float enter) && enter > skip && enter < skip + CrosshairRange
-                    ? ray.GetPoint(enter)
-                    : ray.GetPoint(skip + CrosshairSkyDistance);
-            }
-
-            CrosshairZombie = null;
-            if (CastPastSelf(origin, dir, solid, 1 << CloneZConfig.IgnoreRaycastLayer, out RaycastHit zombieHit, out _))
-            {
-                var zombie = zombieHit.collider.GetComponentInParent<ZombieHealth>();
-                if (zombie != null && !zombie.IsDead)
+                // Nothing solid under the crosshair: test the ground from the adjusted origin.
+                // Use the cached ground plane to avoid allocations.
+                Ray offsetRay = new Ray(origin, dir);
+                if (_groundPlane.Raycast(offsetRay, out float enter) && enter > 0f && enter < CrosshairRange)
                 {
-                    CrosshairZombie = zombie;
-                    CrosshairZombiePoint = zombieHit.point;
+                    AimPoint = offsetRay.GetPoint(enter);
+                }
+                else
+                {
+                    // Open sky – aim a fixed distance ahead from the adjusted origin.
+                    AimPoint = offsetRay.GetPoint(CrosshairSkyDistance);
                 }
             }
+
+                CrosshairZombie = null;
+                if (CastPastSelf(origin, dir, solid, ~ (1 << CloneZConfig.IgnoreRaycastLayer),
+                    out RaycastHit zombieHit, out _))
+                {
+                    var zombie = zombieHit.collider.GetComponentInParent<ZombieHealth>();
+                    if (zombie != null && !zombie.IsDead)
+                    {
+                        CrosshairZombie = zombie;
+                        CrosshairZombiePoint = zombieHit.point;
+                    }
+                }
 
             // Melee arcs and placement aim along the ground toward the aim point; when that's at the
             // survivor's own feet (looking straight down) the view's heading stands in.
@@ -315,8 +324,9 @@ var ground = new Plane(Vector3.up, new Vector3(0f, _groundY, 0f));
 
         private void LateUpdate()
         {
-            // Update cached ground Y after movement has been applied.
+            // Update cached ground Y and plane after movement has been applied.
             _groundY = transform.position.y;
+            _groundPlane = new Plane(Vector3.up, new Vector3(0f, _groundY, 0f));
         }
 
         private void EmitFootsteps(bool moving, bool sprinting)
