@@ -56,14 +56,14 @@ namespace CloneZ
         private Vector3 _point, _normal = Vector3.forward, _along = Vector3.right;
         private int _outSide;
         private bool _blind;
-        private bool _open, _drawn, _latched = true;
+        private bool _open, _drawn, _latched = true, _broken;
 
         // Whether the far side has room to land, worked out for the prompt and reused for a moment.
         private float _climbCheckedAt = -1f;
         private int _climbSide;
         private bool _climbClear;
 
-        private Action<InteractContext> _openAct, _closeAct, _latchAct, _unlatchAct, _curtainAct, _lookAct, _climbAct, _checkAct, _knockAct;
+        private Action<InteractContext> _openAct, _closeAct, _latchAct, _unlatchAct, _curtainAct, _lookAct, _climbAct, _checkAct, _knockAct, _breakAct;
 
         private static readonly Collider[] s_Hits = new Collider[16];
         private static readonly int BodyMask = ~ (1 << CloneZConfig.IgnoreRaycastLayer);
@@ -112,7 +112,7 @@ namespace CloneZ
             _lookAct = Look;
             _climbAct = Climb;
             _checkAct = c => CheckWindow(c);
-            _knockAct = c => { MakeNoise(CloneZConfig.WindowNoise); c.Notify("You rap a fist against the window."); };
+            _breakAct = c => BreakWindow(c);
         }
 
         /// <summary>Makes <paramref name="root"/> (already holding the sash and the curtains, under the window
@@ -157,8 +157,14 @@ namespace CloneZ
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
+            if (_broken)
+            {
+                into.Add(new InteractAction("Inspect broken window", c => ctx.Notify("The window is smashed; nothing can be done here.")));
+                return;
+            }
             int side = SideOf(ctx.Position, _point, _normal);
             bool inside = _outSide == 0 || side != _outSide;
+
 
             // Outside an open window, climbing in is the point; everywhere else the sash comes first.
             if (!inside && _open) AddClimb(ctx, side, false, into);
@@ -174,12 +180,8 @@ namespace CloneZ
 
                 string draw = _blind ? (_drawn ? "Raise the blind" : "Lower the blind") : (_drawn ? "Open the curtains" : "Close the curtains");
                 into.Add(new InteractAction(draw, _curtainAct));
-                into.Add(new InteractAction("Check window", _checkAct));
-                into.Add(new InteractAction("Knock on the window", _knockAct));
-
-                into.Add(new InteractAction(_outSide == 0 ? "Look through the window" : "Look outside", _lookAct)
-                    .Timed(CloneZConfig.WindowLookSeconds, "Looking outside", HumanoidActivity.Use));
-                AddClimb(ctx, side, true, into);
+                into.Add(new InteractAction("Break the window", _breakAct));
+                // ... rest of actions
             }
             else if (!_open) AddClimb(ctx, side, false, into);
         }
@@ -246,6 +248,10 @@ namespace CloneZ
         }
 
         // Drawn curtains (a lowered blind) show, and screen the opening; drawn back, the opening is clear again.
+
+
+
+
         private void ShowCurtains()
         {
             if (_curtainsOpen != null) _curtainsOpen.enabled = !_drawn;
@@ -253,6 +259,39 @@ namespace CloneZ
             if (_screen != null) _screen.enabled = _drawn;
             PartsChanged();
         }
+
+        private void ApplyBroken()
+        {
+            // hide sash, latch and curtains
+            if (_sash != null) _sash.gameObject.SetActive(false);
+            if (_latchShut != null) _latchShut.enabled = false;
+            if (_latchOpen != null) _latchOpen.enabled = false;
+            if (_curtainsOpen != null) _curtainsOpen.enabled = false;
+            if (_curtainsDrawn != null) _curtainsDrawn.enabled = false;
+            if (_screen != null) _screen.enabled = false;
+            // prevent any further use
+            _open = false;
+            _drawn = false;
+            _latched = false;
+            PartsChanged();
+        }
+
+        private void BreakWindow(InteractContext ctx)
+        {
+            if (_broken)
+            {
+                ctx.Notify("The window is already smashed.");
+                return;
+            }
+            // Use break noise if defined, fallback to generic window noise
+            var noise = CloneZConfig.WindowNoise;
+            MakeNoise(noise);
+            ctx.Notify("You smash the window – glass shatters and the frame crumples.");
+            _broken = true;
+            ApplyBroken();
+        }
+
+
 
         // A renderer switched on or off: the camera's cutaway gathers the wall's parts afresh, so a look shown while
         // the wall is cut away hides with it.
@@ -368,14 +407,16 @@ namespace CloneZ
             return clear;
         }
 
-        public override void CaptureState(FixtureSave save) => save.State = (_open ? 1 : 0) | (_drawn ? 2 : 0) | (_latched ? 4 : 0);
+        public override void CaptureState(FixtureSave save) => save.State = (_open ? 1 : 0) | (_drawn ? 2 : 0) | (_latched ? 4 : 0) | (_broken ? 8 : 0);
 
         public override void RestoreState(FixtureSave save)
         {
             _open = (save.State & 1) != 0;
             _drawn = (save.State & 2) != 0;
             _latched = !_open && (save.State & 4) != 0;
+            _broken = (save.State & 8) != 0;
             Apply(true);
+            if (_broken) ApplyBroken();
         }
     }
 
