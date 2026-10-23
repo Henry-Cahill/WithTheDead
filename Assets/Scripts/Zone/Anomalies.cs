@@ -152,6 +152,17 @@ namespace CloneZ
                         m.Rod(b, tip, 0.04f, ZoneKit.Mt(new Color(0.42f, 0.46f, 0.52f)), 5);
                         m.Ellipsoid(tip, Vector3.one * 0.07f, ZoneKit.Gl(t), 5, 3);
                     }
+                    // Weathered pole with lantern – winter detail
+                    // foot‑box at ground centre
+                    m.Box(new Vector3(0f, 0.02f, 0f), new Vector3(0.12f, 0.04f, 0.12f), ZoneKit.Mt(ZoneKit.Rust));
+                    // pole – thin rusted rod
+                    m.Rod(new Vector3(0f, 0.04f, 0f), new Vector3(0f, 1.12f, 0f), 0.02f, ZoneKit.Mt(ZoneKit.Rust), 5);
+                    // lantern housing – weather‑worn wood
+                    m.Box(new Vector3(0f, 1.22f, 0f), new Vector3(0.18f, 0.22f, 0.07f), ZoneKit.M(ZoneKit.Bark));
+                    // lantern glass – slightly frosted
+                    m.Ellipsoid(new Vector3(0f, 1.28f, 0f), Vector3.one * 0.045f, ZoneKit.Gl(new Color(0.78f, 0.86f, 1f, 0.4f)), 5, 3);
+                    // hanging rope – thin rusted rod
+                    m.Rod(new Vector3(0.07f, 1.25f, 0f), new Vector3(0.07f, 1.10f, 0f), 0.008f, ZoneKit.Mt(ZoneKit.Rust), 5);
                     m.FlatBlob(new Vector3(0f, 0.01f, 0f), Radius * 0.7f, Radius * 0.7f, 0f, 0.25f, rng, ZoneKit.M(new Color(0.1f, 0.1f, 0.12f)));
                     break;
                 case "greysyrup":
