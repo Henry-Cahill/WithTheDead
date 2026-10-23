@@ -91,6 +91,13 @@ namespace CloneZ
                  "Stay strong, soldiers; our resolve will see us through the darkness, over.",
                  "Ice has formed on Main Road; vehicles risk sliding, proceed with extreme caution, over.",
                  "Unit Bravo overrun at sector 4, request immediate assistance and reinforcement, over.",
+                // --- New winter‑logistics transmissions (night‑shift addition) ---
+                "Supply convoy Alpha delayed by ice on County Road 12, expected arrival after dawn.",
+                "Medical team requests additional blankets; any dry wool found will be exchanged at the tent.",
+                "Helicopter support limited due to low visibility; ground crews, keep generators running.",
+                "Cold snap warning: wind gusts reaching 40 mph, secure all loose equipment.",
+                "Fuel depot reports leak; seal any punctures and report to command, over.",
+                "Morale broadcast: remember the old songs around the fire, they keep the darkness at bay.",
                  },
             },
         };
