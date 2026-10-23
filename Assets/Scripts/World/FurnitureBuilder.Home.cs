@@ -99,9 +99,33 @@ namespace CloneZ
         {
             Color c = V(wood, rng, 0.06f);
             m.Box(new Vector3(0f, 0.735f, 0f), new Vector3(w, 0.04f, d), G(c));
+            // thin wooden runner (front‑edge trim)
+            m.Box(new Vector3(0f, 0.735f + 0.021f, d * 0.45f), new Vector3(w - 0.04f, 0.005f, 0.02f), M(c * 0.85f));
             m.Box(new Vector3(0f, 0.68f, 0f), new Vector3(w - 0.12f, 0.08f, d - 0.12f), M(c * 0.85f));
             for (int i = 0; i < 4; i++)
                 m.Box(new Vector3((i % 2 == 0 ? -1f : 1f) * (w * 0.5f - 0.06f), 0.36f, (i < 2 ? -1f : 1f) * (d * 0.5f - 0.06f)), new Vector3(0.05f, 0.72f, 0.05f), M(c * 0.8f));
+            // brass candle holder base
+            Vector3 candPos = new Vector3(-w * 0.2f + R(rng, -0.02f, 0.02f), 0.735f + 0.025f, d * 0.2f + R(rng, -0.02f, 0.02f));
+            m.Cylinder(candPos, 0.02f, 0.05f, 6, Mt(Brass));
+            // tiny emissive flame (visible only when lit)
+            m.Box(candPos + new Vector3(0f, 0.05f, 0f), new Vector3(0.01f, 0.015f, 0.01f), Gl(new Color(1f, 0.94f, 0.65f)));
+            // glass vase (simple translucent look using a light colour)
+            Vector3 vasePos = new Vector3(w * 0.15f + R(rng, -0.02f, 0.02f), 0.735f + 0.025f, -d * 0.1f + R(rng, -0.02f, 0.02f));
+            m.Cylinder(vasePos, 0.03f, 0.12f, 8, M(new Color(0.93f, 0.96f, 0.98f)));
+            // plate inside vase (flat disc)
+            m.Box(vasePos + new Vector3(0f, 0.12f, 0f), new Vector3(0.12f, 0.002f, 0.12f), G(new Color(0.92f, 0.92f, 0.90f)));
+            // cloth napkin (simple red‑brown pattern)
+            Vector3 napPos = new Vector3(-w * 0.2f + R(rng, -0.02f, 0.02f), 0.735f + 0.027f, d * 0.15f + R(rng, -0.02f, 0.02f));
+            m.Box(napPos, new Vector3(0.15f, 0.001f, 0.08f), G(new Color(0.78f, 0.22f, 0.22f)));
+            // occasional pair of metal shakers (left = salt, right = pepper)
+            if (Chance(rng, 0.3f))
+            {
+                Vector3 basePos = new Vector3(R(rng, -w * 0.3f, w * 0.3f), 0.745f, R(rng, -d * 0.3f, d * 0.3f));
+                // salt shaker
+                m.Cylinder(basePos, 0.01f, 0.03f, 6, Mt(Brass));
+                // pepper shaker (slightly offset)
+                m.Cylinder(basePos + new Vector3(0.02f, 0f, 0f), 0.01f, 0.03f, 6, Mt(Brass));
+            }
             int items = rng.Next(0, 4);
             for (int i = 0; i < items; i++)
             {
