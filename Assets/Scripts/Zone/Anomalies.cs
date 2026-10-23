@@ -169,7 +169,35 @@ m.Rod(b, top, 0.08f, ZoneKit.M(ZoneKit.Bark), 6);
                       m.Ellipsoid(top, Vector3.one * 0.05f, ZoneKit.Gl(new Color(0.55f, 0.30f, 0.10f)), 5, 3);
 
 // Top beam spanning between side rods
-                     m.Box(new Vector3(0f, 2.62f, 0f), new Vector3(2.2f, 0.07f, 0.12f), ZoneKit.M(ZoneKit.Bark));
+                      m.Box(new Vector3(0f, 2.62f, 0f), new Vector3(2.2f, 0.07f, 0.12f), ZoneKit.M(ZoneKit.Bark));
+
+                    // Sign post – a vertical plank in front of the gate
+                    m.Box(new Vector3(0f, 0.45f, -0.35f), new Vector3(0.08f, 0.9f, 0.08f), ZoneKit.M(ZoneKit.Bark));
+
+                    // Sign board – weathered wood
+                    m.Box(new Vector3(0f, 0.85f, -0.55f), new Vector3(0.6f, 0.35f, 0.02f), ZoneKit.M(ZoneKit.Bark));
+
+                    // Rope – thin metal rod
+                    m.Rod(new Vector3(0f, 0.9f, -0.35f), new Vector3(0f, 0.85f, -0.55f), 0.01f, ZoneKit.Mt(ZoneKit.Rust), 5);
+
+                    // Rusty nails – small ellipsoids on the sign front
+                    for (int i = 0; i < 4; i++)
+                    {
+                        float ox = ZoneKit.R(rng, -0.27f, 0.27f);
+                        float oy = ZoneKit.R(rng, -0.12f, 0.12f);
+                        m.Ellipsoid(new Vector3(ox, 0.85f + oy, -0.545f), Vector3.one * 0.012f, ZoneKit.Gl(new Color(0.55f, 0.30f, 0.10f)), 5, 3);
+                    }
+
+                    // Faded paint patch – slightly off‑bark colour
+                    Color basePaint = ZoneKit.Bark;
+                    Color patch = new Color(
+                        Mathf.Clamp01(basePaint.r + ZoneKit.R(rng, -0.05f, 0.05f)),
+                        Mathf.Clamp01(basePaint.g + ZoneKit.R(rng, -0.05f, 0.05f)),
+                        Mathf.Clamp01(basePaint.b + ZoneKit.R(rng, -0.05f, 0.05f)));
+                    m.Ellipsoid(new Vector3(0f, 0.85f, -0.545f), Vector3.one * 0.07f, ZoneKit.Gl(patch), 5, 3);
+
+                    // Metal tag – tiny rusted plate
+                    m.Box(new Vector3(0.24f, 0.71f, -0.545f), new Vector3(0.08f, 0.04f, 0.005f), ZoneKit.Mt(ZoneKit.Rust));
 
                      // Middle wooden cross‑bar providing structural support
                      m.Box(new Vector3(0f, 1.6f, 0f), new Vector3(2.2f, 0.06f, 0.10f), ZoneKit.M(ZoneKit.Bark));
