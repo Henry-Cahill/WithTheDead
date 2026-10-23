@@ -77,9 +77,8 @@ namespace CloneZ
         // 2️⃣ Small rust patch at the base of the centre post (0.20 m × 0.02 m × 0.02 m)
         Surf rust = DecorPalette.Matte(new Color(0.55f, 0.30f, 0.20f));
         m.Box(new Vector3(0f, 0.01f, 0f), new Vector3(0.20f, 0.02f, 0.02f), rust);
-        // 3️⃣ Thin rope‑loop around the post at mid‑height (cylinder, radius 0.04 m, height 0.04 m)
-        Surf rope = DecorPalette.Matte(new Color(0.28f, 0.22f, 0.18f));
-        m.Cylinder(new Vector3(0f, 0.70f, 0f), 0.04f, 0.04f, 6, rope);
+        Surf centreRope = DecorPalette.Matte(new Color(0.28f, 0.22f, 0.18f));
+        m.Cylinder(new Vector3(0f, 0.70f, 0f), 0.04f, 0.04f, 6, centreRope);
         // 4️⃣ Two weathered paint streaks on the lower horizontal beam (each 0.02 m × 0.005 m × 0.08 m)
         Surf streak = DecorPalette.Matte(new Color(0.35f, 0.28f, 0.20f));
         // left streak
@@ -100,10 +99,31 @@ namespace CloneZ
                 float gateY = 0.90f;
                 float gateHalfWidth = 1.0f;
                 m.Box(new Vector3(0f, gateY, 0f), new Vector3(gateHalfWidth * 2f, 0.02f, 0.08f), Quaternion.Euler(0f, 5f, 0f), wood);
-                // latch on the right side of the gate
-                float latchX = gateHalfWidth - 0.05f;
-                m.Cylinder(new Vector3(latchX, gateY + 0.02f, 0f), 0.015f, 0.03f, 6, metal);
-                m.Box(new Vector3(0f, 1.03f, 0f), new Vector3(8.0f, 0.05f, 0.1f), DecorPalette.Matte(DecorProps.SnowWhite));
+// latch on the right side of the gate
+        float latchX = gateHalfWidth - 0.05f;
+        m.Cylinder(new Vector3(latchX, gateY + 0.02f, 0f), 0.015f, 0.03f, 6, metal);
+        // additional visual details for the gate
+        Surf gateRope = DecorPalette.Matte(new Color(0.28f, 0.22f, 0.18f));
+        // left hinge
+        float leftHingeX = -gateHalfWidth + 0.02f;
+        m.Cylinder(new Vector3(leftHingeX, gateY + 0.02f, 0f), 0.012f, 0.04f, 6, metal);
+        // right hinge (next to latch)
+        float rightHingeX = latchX + 0.02f;
+        m.Cylinder(new Vector3(rightHingeX, gateY + 0.02f, 0f), 0.012f, 0.04f, 6, metal);
+        // centre reinforcement bar
+        m.Box(new Vector3(0f, gateY + 0.25f, 0f), new Vector3(0.02f, 0.50f, 0.08f), wood);
+        // tiny chain loop between right hinge and latch
+        m.Cylinder(new Vector3(rightHingeX - 0.005f, gateY + 0.04f, 0f), 0.005f, 0.02f, 6, gateRope);
+        // wooden knocker on far‑right side
+        m.Box(new Vector3(latchX + 0.03f, gateY + 0.12f, 0f), new Vector3(0.06f, 0.02f, 0.02f), wood);
+        // occasional paint‑chip wear on the gate panel
+        if (r.NextDouble() < 0.3)
+        {
+            Surf chip = DecorPalette.Matte(new Color(0.34f, 0.28f, 0.22f));
+            float chipX = R(r, -gateHalfWidth + 0.2f, gateHalfWidth - 0.2f);
+            m.Box(new Vector3(chipX, gateY + 0.01f, 0f), new Vector3(0.04f, 0.004f, 0.08f), chip);
+        }
+        m.Box(new Vector3(0f, 1.03f, 0f), new Vector3(8.0f, 0.05f, 0.1f), DecorPalette.Matte(DecorProps.SnowWhite));
             });
         }
 
@@ -191,8 +211,8 @@ m.Cylinder(new Vector3(x, 2.6f, -0.06f), 0.04f, 0.05f, 6, DecorPalette.Metal(new
                                  m.Box(new Vector3(x, 2.62f, -0.06f), new Vector3(w, 0.01f, 0.01f), DecorPalette.Matte(new Color(0.55f, 0.30f, 0.20f)));
                              }
                              // thin wooden rope‑tie between posts
-                             Surf rope = DecorPalette.Matte(new Color(0.28f, 0.22f, 0.18f));
-                             m.Box(new Vector3(x, 0.5f, -0.06f), new Vector3(0.04f, 0.4f, 0.04f), rope);
+Surf gateRope = DecorPalette.Matte(new Color(0.28f, 0.22f, 0.18f));
+                             m.Box(new Vector3(x, 0.5f, -0.06f), new Vector3(0.04f, 0.4f, 0.04f), gateRope);
                         }
                     m.Box(new Vector3(0f, 1.0f, 0f), new Vector3(len, 2.0f, 0.05f), DecorMaterials.Planks(new Color(0.46f, 0.38f, 0.28f)));
                     m.Box(new Vector3(0f, 2.03f, 0f), new Vector3(len, 0.05f, 0.1f), DecorPalette.Matte(DecorProps.SnowWhite));
