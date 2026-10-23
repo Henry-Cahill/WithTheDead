@@ -372,9 +372,22 @@ Surf rustMetal = DecorPalette.Matte(new Color(0.55f, 0.35f, 0.30f));
         private static Renderer WindowLever(Transform parent, string name, Vector3 centre, Vector3 size, in Surf s)
         {
             var m = new RaidMesh();
-            m.Box(centre, size, s);
+                        // back‑plate wood (period‑correct)
+            Surf wood = DecorPalette.Matte(FurnitureBuilder.Pine);
+            float plateDepth = 0.002f; // metres
+            Vector3 platePos = centre + new Vector3(0f, 0f, -size.z * 0.5f - plateDepth * 0.5f);
+            Vector3 plateSize = new Vector3(size.x + 0.01f, size.y + 0.01f, plateDepth);
+            m.Box(platePos, plateSize, wood);
+            // brass key‑hole slot centered on the back‑plate
+            Vector3 keyPos = centre + new Vector3(0f, 0f, -size.z * 0.5f - plateDepth - 0.001f);
+            Vector3 keySize = new Vector3(0.004f, 0.008f, 0.002f);
+            m.Box(keyPos, keySize, s);
+            // tiny brass hinge pin at the lever’s inner pivot end
+            Vector3 hingePos = centre + new Vector3(-size.x * 0.5f, 0f, 0f);
+            m.CylinderX(hingePos, 0.002f, 0.004f, 6, s);
             // small brass knob at the end of the lever for tactile detail
             float knobRadius = 0.008f;
+            // wooden material for back‑plate already defined above
             Vector3 knobPos = centre + new Vector3(size.x * 0.5f + knobRadius, 0f, 0f);
             m.CylinderX(knobPos, knobRadius, 0.005f, 8, DecorPalette.Metal(FurnitureBuilder.Brass));
             return EmitWindowPart(m, name, parent, centre);
