@@ -25,6 +25,9 @@ namespace CloneZ
         private float _dryAt = -1f;               // the in-game hour (TimeOfDay.Now) it's dry again; below 0 it is
         private float _roll, _shownRoll;
         private float _nextCheck;
+        private Material _dryMat; // cached material for dry renderer
+        private Material _dampMat; // cached material for damp renderer
+        private bool _materialsCached = false; // flag indicating material cache is set
         private float _nextAvailCheck;
         private bool _cachedAvailable = true;
 
@@ -57,54 +60,59 @@ namespace CloneZ
 
         /// <summary>Hands over the towel: a pivot on the rail's bar (the towel tilts about the wall's normal through it)
         /// carrying its dry look and its damp one.</summary>
-        internal void SetTowel(Transform towel, Renderer dry, Renderer damp)
+internal void SetTowel(Transform towel, Renderer dry, Renderer damp)
         {
             _towel = towel;
-_dry = dry;
-                _damp = damp;
-                if (dry != null) _dryColor = dry.material.GetColor("_Color");
-                if (damp != null) _dampBaseColor = damp.material.GetColor("_Color");
-                ShowLook();
-                ApplyRoll();
+            _dry = dry;
+            _damp = damp;
+            if (dry != null)
+            {
+                _dryColor = dry.material.GetColor("_Color");
+                _dryMat = dry.material;
+            }
+            if (damp != null)
+            {
+                _dampBaseColor = damp.material.GetColor("_Color");
+                _dampMat = damp.material;
+            }
+            _materialsCached = true;
+            ShowLook();
+            ApplyRoll();
         }
 
-private void Update()
-    {
-// Gradual colour fade for the damp renderer while the towel is drying
-            if (_damp != null && _dry != null)
+        private void Update()
+        {
+            // Gradual colour fade for the damp renderer while the towel is drying
+            if (_materialsCached)
             {
                 if (IsDamp)
                 {
                     float total = CloneZConfig.TowelDampHours;
                     float remaining = Mathf.Max(0f, _dryAt - TimeOfDay.Now);
                     float t = Mathf.Clamp01(1f - remaining / total); // 0 = just wet, 1 = fully dry
-                    _damp.material.SetColor("_Color", Color.Lerp(_dryColor, _dampBaseColor, t));
+                    _dampMat.SetColor("_Color", Color.Lerp(_dryColor, _dampBaseColor, t));
                 }
-                else
-                {
-                    // Ensure fully dry colour when the towel is no longer damp
-                    _damp.material.SetColor("_Color", _dryColor);
-                }
+                // When towel is dry, we no longer need to set colour; the material already holds the dry colour.
             }
-        // Cache Time.time to avoid multiple property lookups per frame
-        float now = Time.time;
-        // Dryness check (original behavior)
-        if (now >= _nextCheck)
-        {
-            _nextCheck = now + 1f;
-            if (_dryAt >= 0f && !IsDamp)
+            // Cache Time.time to avoid multiple property lookups per frame
+            float now = Time.time;
+            // Dryness check (original behavior)
+            if (now >= _nextCheck)
             {
-                _dryAt = -1f;
-                ShowLook();
+                _nextCheck = now + 1f;
+                if (_dryAt >= 0f && !IsDamp)
+                {
+                    _dryAt = -1f;
+                    ShowLook();
+                }
+            }
+            // Bathroom‑side availability check (cached)
+            if (now >= _nextAvailCheck)
+            {
+                _nextAvailCheck = now + 1f;
+                _cachedAvailable = BathroomFixtures.SurvivorInFront(_face, _normal);
             }
         }
-        // Bathroom‑side availability check (cached)
-        if (now >= _nextAvailCheck)
-        {
-            _nextAvailCheck = now + 1f;
-            _cachedAvailable = BathroomFixtures.SurvivorInFront(_face, _normal);
-        }
-    }
 
         private void ApplyRoll()
         {
