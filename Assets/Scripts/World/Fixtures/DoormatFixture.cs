@@ -17,6 +17,7 @@ namespace CloneZ
         private bool _lookedUnder;
         /// <summary>True while a spare key is hidden under the mat; persists via SaveState.</summary>
         private bool _hasKeyHidden;
+        private int _dirtLevel;
 
         public override string DisplayName => "Doormat";
         public override Vector3 InteractPoint => _point;
@@ -29,9 +30,10 @@ namespace CloneZ
             var go = new GameObject("Doormat");
             go.transform.SetParent(host, false);
             go.transform.SetPositionAndRotation(point, Quaternion.identity);
-            var d = go.AddComponent<DoormatFixture>();
-            d._point = point;
-            d._key = KeyFor("doormat", point);
+var d = go.AddComponent<DoormatFixture>();
+                d._point = point;
+                d._key = KeyFor("doormat", point);
+                d._dirtLevel = 2; // 2 = dirty, 1 = partially clean, 0 = clean
             return d;
         }
 
@@ -46,7 +48,10 @@ namespace CloneZ
             look.Begin = c => Lift(true);
             look.Stopped = c => Lift(false);
             into.Add(look);
-            // New: hide key – only show if player carries a spare key and key isn’t already hidden
+            if (_dirtLevel > 0 && ctx.Inventory != null && ctx.Inventory.Has("rag"))
+            {
+                into.Add(new InteractAction("Clean the mat", CleanMat).Timed(1.0f, "Cleaning the mat", HumanoidActivity.None));
+            }
             if (!_hasKeyHidden && ctx.Inventory != null && ctx.Inventory.Has("spare_key"))
             {
                 into.Add(new InteractAction("Hide spare key under mat", HideKey).Timed(1.0f, "Hiding key", HumanoidActivity.None));
@@ -58,9 +63,35 @@ namespace CloneZ
             }
         }
 
-        private static void Kick(InteractContext ctx)
+        private static void CleanMat(InteractContext ctx)
         {
-            ctx.Notify("You give the mat a hard kick, scattering a puff of dust.");
+            const string ragId = "rag";
+            if (ctx.Inventory != null && ctx.Inventory.Consume(ragId, 1) > 0)
+            {
+                var fixture = ctx.Interactor.FixtureTarget as DoormatFixture;
+                if (fixture != null && fixture._dirtLevel > 0)
+                {
+                    fixture._dirtLevel--;
+                    ctx.Notify("You wipe the mat with the rag. It looks cleaner now.");
+                }
+            }
+            else
+            {
+                ctx.Notify("You need a rag to clean the mat.");
+            }
+        }
+            private static void Kick(InteractContext ctx)
+        {
+            var fixture = ctx.Interactor.FixtureTarget as DoormatFixture;
+            if (fixture != null && fixture._dirtLevel > 0)
+            {
+                fixture._dirtLevel = Mathf.Max(0, fixture._dirtLevel - 1);
+                ctx.Notify("You give the mat a hard kick, scattering a puff of dust.");
+            }
+            else
+            {
+                ctx.Notify("You give the mat a hard kick, but it’s already clean.");
+            }
         }
 
         private static void HideKey(InteractContext ctx)
@@ -113,8 +144,8 @@ namespace CloneZ
         {
             Lift(false);
             ctx.Notify(_lookedUnder
-                ? "Still no key. The beetle hasn't moved."
-                : "No spare key. Just a dead beetle on its back and a square of damp, pale concrete.");
+                ? $"Still no key. {(_dirtLevel == 0 ? "The mat is clean." : _dirtLevel == 1 ? "The mat is a little dusty." : "The mat is covered in dust and mud.")}"
+                : $"No spare key. {(_dirtLevel == 0 ? "The mat is clean." : _dirtLevel == 1 ? "The mat is a little dusty." : "The mat is covered in dust and mud.")}");
             _lookedUnder = true;
         }
 
@@ -123,13 +154,14 @@ namespace CloneZ
             if (_mat != null) _mat.SetOpen(up);
         }
 
-        public override void CaptureState(FixtureSave save) => save.State = (_lookedUnder ? 1 : 0) | (_hasKeyHidden ? 2 : 0);
+        public override void CaptureState(FixtureSave save) => save.State = (_lookedUnder ? 1 : 0) | (_hasKeyHidden ? 2 : 0) | (_dirtLevel << 2);
 
         public override void RestoreState(FixtureSave save)
         {
             int state = save.State;
             _lookedUnder = (state & 1) != 0;
             _hasKeyHidden = (state & 2) != 0;
+            _dirtLevel = (state >> 2) & 0x3; // supports values 0‑3
         }
     }
 }
