@@ -246,7 +246,7 @@ namespace CloneZ
         public void Snap()
         {
             if (Target == null) return;
-            if (_cam == null) _cam = GetComponent<Camera>();
+            // Camera component cached in Awake; per‑frame lookup removed
             CacheTarget();
             ResolveHead(true);
             _blend = 1f;
@@ -325,7 +325,6 @@ namespace CloneZ
         private void Update()
         {
             if (Target == null || UIState.GameplayBlocked) return;
-            CacheTarget();
             if (_stats != null && _stats.IsDead) return;
 
             Keyboard kb = Keyboard.current;
@@ -415,7 +414,7 @@ namespace CloneZ
         private void LateUpdate()
         {
             if (Target == null) { MouseLookEngaged = false; return; }   // no survivor yet (title screen): leave the cursor be
-            if (_cam == null) _cam = GetComponent<Camera>();
+            // Camera component cached in Awake; per‑frame lookup removed
             CacheTarget();
             if (!_placed) Snap();
 

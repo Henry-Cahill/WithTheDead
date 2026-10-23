@@ -18,6 +18,15 @@ namespace CloneZ
         private WaterSource _barrel;
         private const float CoverSeconds = 1f;
         private bool _capped;
+        private bool _boiled;
+        // Random period‑accurate notes displayed when inspecting the barrel.
+        private static readonly string[] _barrelNotes = new[] {
+            "The metal is nicked where the old chain once held a bucket.",
+            "A faded “Do Not Drink” sticker peels from the side, its paint long gone.",
+            "You spot a tiny rust‑eaten hole near the base, water drips through it.",
+            "Someone scrawled “Water's fine after a fire” in shaky chalk.",
+            "A dried‑out leaf clings to the rim, a reminder of late‑summer storms."
+        };
 
         public override string DisplayName => "Rain barrel";
         public override Vector3 InteractPoint => transform.position + Vector3.up * 0.9f;   // the rim
@@ -29,13 +38,29 @@ namespace CloneZ
             WaterSource b = Barrel;
             if (b == null) return;
             bool water = b.HasWater;
+            // New instant action to inspect the barrel and show a random period‑accurate note.
+            into.Add(new InteractAction("Inspect the barrel", c => {
+                int i = UnityEngine.Random.Range(0, _barrelNotes.Length);
+                c.Notify(_barrelNotes[i]);
+            }));
             into.Add(new InteractAction("Fill a water bottle  (tainted)", c => WaterUse.FillBottle(c, b))
                 .DisabledIf(!water, b.DryMessage)
                 .DisabledIf(_capped, "The barrel is covered.")
                 .DisabledIf(water && !WaterUse.HasEmptyBottle(ctx), "You have no empty bottle"));
             into.Add(new InteractAction("Check the water level", CheckLevel));
-            into.Add(new InteractAction("Drink from the barrel  (tainted)", c => WaterUse.Drink(c, b))
-                .DisabledIf(!water, b.DryMessage));
+            if (water)
+            {
+                if (_boiled)
+                    into.Add(new InteractAction("Drink boiled water (safe)", c => {
+                        WaterUse.Drink(c, b);
+                        c.Notify("You sip the boiled water. It feels clean and safe.");
+                    })
+                        .DisabledIf(_capped, "The barrel is covered."));
+                else
+                    into.Add(new InteractAction("Drink from the barrel  (tainted)", c => WaterUse.Drink(c, b))
+                        .DisabledIf(_capped, "The barrel is covered.")
+                        .DisabledIf(!water, b.DryMessage));
+            }
             into.Add(new InteractAction("Wash your hands in the barrel", Wash)
                 .Timed(WashSeconds, "Washing your hands")
                 .DisabledIf(!water, b.DryMessage));
@@ -45,9 +70,11 @@ namespace CloneZ
             into.Add(new InteractAction("Skim the leaves off the top", Skim).Timed(SkimSeconds, "Skimming the barrel"));
             into.Add(new InteractAction("Shake the barrel", Shake).Timed(ShakeSeconds, "Shaking the barrel").DisabledIf(!Barrel.HasWater, Barrel.DryMessage));
             into.Add(new InteractAction("Shake the barrel vigorously", VigorousShake).Timed(ShakeSeconds * 2, "Shaking the barrel hard").DisabledIf(!Barrel.HasWater, Barrel.DryMessage));
-            // New toggle to cover/uncover the barrel
-            into.Add(new InteractAction(_capped ? "Uncover the barrel" : "Cover the barrel", ToggleCover)
-                .Timed(CoverSeconds, _capped ? "Uncovering the barrel" : "Covering the barrel"));
+                        into.Add(new InteractAction(_boiled ? "Water already boiled" : "Boil the water", BoilWater)
+                .Timed(5f, "Boiling the water")
+                .DisabledIf(!Barrel.HasWater, Barrel.DryMessage)
+                .DisabledIf(_boiled, "The water has already been boiled.")
+                .DisabledIf(HomeComfort.WarmthAt(transform.position) < 0.1f, "No fire source nearby to boil the water."));
         }
 
         private void CheckLevel(InteractContext ctx)
@@ -119,16 +146,26 @@ namespace CloneZ
             ctx.Notify(_capped ? "You place a makeshift lid over the barrel, sealing the water inside." : "You remove the lid, exposing the barrel again.");
         }
 
+        private void BoilWater(InteractContext ctx)
+        {
+            _boiled = true;
+            ctx.Notify("The water reaches a rolling boil, killing the pathogens. It’s now safe to drink.");
+        }
+
         public override void CaptureState(FixtureSave save)
         {
             base.CaptureState(save);
-            save.State = _capped ? 1 : 0;
+            int state = 0;
+            if (_capped) state |= 1; // bit 0 = capped
+            if (_boiled) state |= 2; // bit 1 = boiled
+            save.State = state;
         }
 
         public override void RestoreState(FixtureSave save)
         {
             base.RestoreState(save);
             _capped = (save.State & 1) != 0;
+            _boiled = (save.State & 2) != 0;
         }
     }
 }

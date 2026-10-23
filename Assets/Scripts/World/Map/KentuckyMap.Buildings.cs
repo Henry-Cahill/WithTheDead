@@ -23,6 +23,8 @@ namespace CloneZ
 private const float BuildingKerbHeight = 0.12f; // height of concrete kerb
 private const float BuildingKerbWidth = 0.20f; // thickness of kerb slab
 private const float BuildingVergeWidth = 0.60f; // distance of grass verge beyond kerb
+        private const float RoadMarkDash = 2.0f; // length of a white dash (metres)
+        private const float RoadMarkGap = 1.0f; // gap between dashes (metres)
 
 
         private static readonly Color[] SidingColors =
@@ -97,6 +99,39 @@ Vector3 chimneyPos = To3(f.Middle, roofY + chimneyHeight * 0.5f);
 // Choose a wood material (using wood floor colour)
 Surf woodMat = DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f));
 site.Overhead.At(chimneyPos).Box(chimneyPos, new Vector3(chimneyBase, chimneyHeight, chimneyBase), Quaternion.identity, woodMat);
+            }
+        }
+        private static void BuildRoadMarkings(Site site)
+        {
+            // Only draw centre‑line dashes on streets that have at least two travel lanes.
+            foreach (Street s in site.Area.Streets)
+            {
+                if (s.Data.lanes < 2) continue; // single‑lane roads get no markings
+                var pts = s.Pts;
+                for (int i = 0; i + 1 < pts.Count; i++)
+                {
+                    Vector2 a = pts[i];
+                    Vector2 b = pts[i + 1];
+                    Vector2 d = (b - a);
+                    float segLen = d.magnitude;
+                    if (segLen < 0.1f) continue;
+                    d /= segLen; // unit direction
+                    // How many full dash‑gap pairs fit in this segment?
+                    int pairCount = Mathf.FloorToInt(segLen / (RoadMarkDash + RoadMarkGap));
+                    // Starting offset so the marks are centred along the segment.
+                    float offsetStart = (segLen - pairCount * (RoadMarkDash + RoadMarkGap) + RoadMarkGap) * 0.5f;
+                    for (int p = 0; p < pairCount; p++)
+                    {
+                        float dashStart = offsetStart + p * (RoadMarkDash + RoadMarkGap);
+                        Vector2 dashMid2D = a + d * (dashStart + RoadMarkDash * 0.5f);
+                        Vector3 dashPos = To3(dashMid2D, 0.005f); // just above road surface
+                        Vector3 dashSize = new Vector3(RoadMarkDash, 0.02f, 0.05f); // length, height, thin width
+                        Quaternion rot = Quaternion.LookRotation(new Vector3(d.x, 0f, d.y));
+                        var whiteMat = DecorPalette.Matte(new Color(0.95f, 0.95f, 0.95f));
+                        site.Town.Out.Solid(dashPos).Box(dashPos, dashSize, rot, whiteMat);
+                        // No collider – player can walk over the thin marking.
+                    }
+                }
             }
         }
         private static void BuildKerbsAndPoles(Site site)
@@ -202,8 +237,8 @@ site.Overhead.At(chimneyPos).Box(chimneyPos, new Vector3(chimneyBase, chimneyHei
                 }
             // Once, after the loop: called per footprint it redrew every residential roof's trim for every building.
             BuildRoofEaves(site);
-            // Add concrete kerbs, grass verges, and period‑correct utility poles to every street.
             BuildKerbsAndPoles(site);
+                BuildRoadMarkings(site);
         }
 
         private static void BuildDoorFrame(Site site, Vector2 a, Vector2 d, float doorPos, float doorYaw, Vector2 outward, Surf exterior)

@@ -212,7 +212,25 @@ namespace CloneZ
                         Sfx.PlayUI(SfxIds.Cash);
                     }));
                     break;
-case HubNpc.Role.Patron:
+
+case HubNpc.Role.Keeper:
+                        if (Npc.Script == "gunsmith")
+                        {
+                            // Buy ammo from gunsmith (10 MG)
+                            into.Add(new InteractAction("Buy ammo (10 MG)", c =>
+                            {
+                                if (!Money.TrySpend(10, c.Inventory)) { c.Notify("You don't have 10 MG."); return; }
+                                var ammo = ItemDatabase.Get("ammo_9mm");
+                                if (ammo != null) c.Inventory.Inventory.Add(ammo, 1, enforceWeight: false);
+                                c.Notify("You receive a box of 9 mm ammo.");
+                                MoralLedger.Record("bought ammo", MoralLedger.BoughtAmmo);
+                                Sfx.PlayUI(SfxIds.Cash);
+                                ProfileStore.Save();
+                            }));
+                        }
+                        // fall back to chat for other keepers
+                        into.Add(new InteractAction("Chat", c => GameEvents.RaiseSubtitle(Npc.Name, "Mm.")));
+                        break;
                             if (Npc.Script == "fence")
                             {
                                 into.Add(new InteractAction("Buy contraband (15 MG)", c =>

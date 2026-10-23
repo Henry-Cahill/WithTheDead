@@ -290,6 +290,35 @@ Vector3 labelPos = doorPos + new Vector3(0f, doorSize.y * 0.4f, 0.001f);
 Vector3 labelSize = new Vector3(3.2f, 0.08f, 0.02f);
 Color labelCol = ZoneKit.V(new Color(0.35f, 0.22f, 0.12f), rng, 0.04f); // muted brown
 sb.Solid.Box(labelPos, labelSize, ZoneKit.M(labelCol));
+
+// Warning paint stripe – bright orange, runs across the centre of the door
+Vector3 stripePos = doorPos + new Vector3(0f, 0f, 0.001f); // flush with door surface
+Vector3 stripeSize = new Vector3(doorSize.x * 0.88f, 0.06f, 0.015f);
+Color orange = new Color(0.85f, 0.45f, 0.10f);
+sb.Solid.Box(stripePos, stripeSize, ZoneKit.M(orange));
+
+// Rust‑stained chain loop – short cylinder, looks like a rough chain link
+Vector3 chainPos = doorPos + new Vector3(-doorSize.x * 0.5f + 0.07f, -doorSize.y * 0.5f + 0.14f, 0f);
+sb.Solid.Cylinder(chainPos, 0.012f, 0.22f, 8, ZoneKit.Mt(ZoneKit.RustDark));
+
+// Padlock body
+Vector3 lockBodyPos = chainPos + new Vector3(0f, -0.03f, 0f);
+sb.Solid.Box(lockBodyPos, new Vector3(0.04f, 0.02f, 0.015f), ZoneKit.Mt(ZoneKit.RustDark));
+// Padlock shackle (small cylinder)
+Vector3 shacklePos = lockBodyPos + new Vector3(0f, 0.015f, 0f);
+sb.Solid.Cylinder(shacklePos, 0.008f, 0.018f, 8, ZoneKit.Mt(ZoneKit.RustDark));
+
+// Vent grill – grid of tiny rust‑stained cylinders
+Vector3 grillCenter = doorPos + new Vector3(0f, doorSize.y * 0.35f, 0.001f);
+float grillSpacing = 0.12f;
+for (int gx = -1; gx <= 1; gx++)
+{
+    for (int gz = 0; gz <= 0; gz++) // two rows
+    {
+        Vector3 grillPos = grillCenter + new Vector3(gx * grillSpacing, 0f, gz * grillSpacing);
+        sb.Solid.Cylinder(grillPos, 0.006f, 0.015f, 8, ZoneKit.Mt(ZoneKit.RustDark));
+    }
+}
 int rCount = rng.Next(2, 6);
 for (int r = 0; r < rCount; r++)
                     {

@@ -29,6 +29,7 @@ namespace CloneZ
         private Camera _cam;
 
         private float _verticalVelocity;
+        private float _groundY;
         private float _footstepTimer;
 
         /// <summary>Where the survivor aims: the ground under the cursor (isometric), or the first solid
@@ -134,7 +135,7 @@ namespace CloneZ
             Mouse mouse = Mouse.current;
             if (mouse == null) return;
             Ray ray = _cam.ScreenPointToRay(mouse.position.ReadValue());
-            var ground = new Plane(Vector3.up, new Vector3(0f, transform.position.y, 0f));
+            var ground = new Plane(Vector3.up, new Vector3(0f, _groundY, 0f));
             if (ground.Raycast(ray, out float enter))
             {
                 AimPoint = ray.GetPoint(enter);
@@ -175,7 +176,7 @@ namespace CloneZ
             else
             {
                 // Nothing solid under the crosshair: the ground plane if it's looking down, else open sky.
-                var ground = new Plane(Vector3.up, new Vector3(0f, transform.position.y, 0f));
+var ground = new Plane(Vector3.up, new Vector3(0f, _groundY, 0f));
                 AimPoint = ground.Raycast(ray, out float enter) && enter > skip && enter < skip + CrosshairRange
                     ? ray.GetPoint(enter)
                     : ray.GetPoint(skip + CrosshairSkyDistance);
@@ -310,6 +311,12 @@ namespace CloneZ
 
             KeepInsideArena();
             EmitFootsteps(moving, wantSprint);
+        }
+
+        private void LateUpdate()
+        {
+            // Update cached ground Y after movement has been applied.
+            _groundY = transform.position.y;
         }
 
         private void EmitFootsteps(bool moving, bool sprinting)

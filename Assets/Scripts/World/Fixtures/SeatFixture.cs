@@ -20,7 +20,7 @@ namespace CloneZ
         private const float KickNoiseRadius = 3f;
         private string _name, _sitLabel, _standLabel, _loungeLabel;
         private Vector3 _seatLocal;   // on the furniture, in its own frame (front +Z)
-        private float _yaw, _comfort;
+        private float _yaw, _comfort, _currentComfort;
         private bool _lounge;         // the armchair: can be sunk back into
 
         /// <summary>Every seat in the world (for the dining table's "Sit at the table").</summary>
@@ -52,6 +52,7 @@ namespace CloneZ
             s._seatLocal = seatLocal;
             s._yaw = yaw;
             s._comfort = Mathf.Clamp01(comfort);
+            s._currentComfort = s._comfort;
             s._sitLabel = sitLabel;
             s._standLabel = standLabel;
             s._lounge = lounge;
@@ -93,17 +94,25 @@ namespace CloneZ
                 }
                 // NEW: kick the seat while seated
                 into.Add(new InteractAction(KickActionLabel, KickSeat));
+                if (_currentComfort < _comfort)
+                {
+                    into.Add(new InteractAction("Repair seat", RepairSeat));
+                }
                 return;
             }
             into.Add(new InteractAction(_sitLabel, SitDown));
-            into.Add(new InteractAction("Inspect seat", c => c.Notify($"This seat feels {(int)(_comfort * 100)}% comfortable.")));
+            into.Add(new InteractAction("Inspect seat", c => c.Notify($"This seat feels {(int)(_currentComfort * 100)}% comfortable.")));
+            if (_currentComfort < _comfort)
+            {
+                into.Add(new InteractAction("Repair seat", RepairSeat));
+            }
         }
 
         /// <summary>Sits the survivor down here (the dining table's "Sit at the table" comes here too).</summary>
         public void SitDown(InteractContext ctx)
         {
             if (ctx.Seat == null) return;
-            if (!ctx.Seat.TrySit(this, SeatPoint, _yaw, _comfort, out string reason)) ctx.Notify(reason);
+            if (!ctx.Seat.TrySit(this, SeatPoint, _yaw, _currentComfort, out string reason)) ctx.Notify(reason);
         }
 
         private void KickSeat(InteractContext ctx)
@@ -113,7 +122,24 @@ namespace CloneZ
             // Show a toast / notification to the player
             ctx.Notify("You kick the seat, making a loud clatter.");
             // Slightly reduce the comfort of the seat while seated
-            // Slightly reduce the comfort of the seat while seated (cannot modify directly; omitted for compile)
+            _currentComfort = Mathf.Max(0.1f, _currentComfort - 0.25f);
+        }
+
+        private void RepairSeat(InteractContext ctx)
+        {
+            // Restore a bit of comfort, but not beyond the original design value.
+            float before = _currentComfort;
+            _currentComfort = Mathf.Min(_comfort, _currentComfort + 0.25f);
+            if (_currentComfort > before)
+            {
+                ctx.Notify("You adjust the seat, restoring some of its comfort.");
+                // Small, pleasant sound cue for repair (reuse an existing UI cue if needed)
+                MakeNoise(1f);
+            }
+            else
+            {
+                ctx.Notify("The seat is already at full comfort.");
+            }
         }
 
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -47,6 +48,7 @@ namespace CloneZ
         /// <summary>The two options of a tier for weapons or armour.</summary>
         public static void TierOptions(bool armor, int tier, List<Node> into)
         {
+            if (into == null) throw new ArgumentNullException(nameof(into));
             into.Clear();
             for (int i = 0; i < Nodes.Count; i++)
                 if (Nodes[i].ForArmor == armor && Nodes[i].Tier == tier) into.Add(Nodes[i]);
@@ -103,7 +105,7 @@ namespace CloneZ
         public static ArmorStats Effective(ArmorStats a, ItemExtra extra)
         {
             if (a == null) return null;
-            if (extra == null || extra.Upgrades.Count == 0) return a;
+            if (extra == null || extra.Upgrades == null || extra.Upgrades.Count == 0) return a;
             var e = new ArmorStats
             {
                 Id = a.Id, Class = a.Class, Zones = a.Zones, BluntThrough = a.BluntThrough, MovePenalty = a.MovePenalty,
@@ -119,6 +121,6 @@ namespace CloneZ
         }
 
         /// <summary>How fast this piece's durability wears (reinforced stitching slows it).</summary>
-        public static float WearMult(ItemExtra extra) => extra != null && extra.Upgrades.Contains("a_dur1") ? 0.7f : 1f;
+        public static float WearMult(ItemExtra extra) => extra != null && extra.Upgrades != null && extra.Upgrades.Contains("a_dur1") ? 0.7f : 1f;
     }
 }

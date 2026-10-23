@@ -100,7 +100,7 @@ namespace CloneZ
             CeilingVisibility.Clear();
         }
 
-        private static Vector3 To3(Vector2 p, float y) => new Vector3(p.x, y, p.y);
+        internal static Vector3 To3(Vector2 p, float y) => new Vector3(p.x, y, p.y);
 
         // Added thin snow layer for roofs and streets
         private static void BuildSidewalks(Site site)

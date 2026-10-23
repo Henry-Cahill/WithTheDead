@@ -4,7 +4,8 @@ using UnityEngine.Rendering;
 namespace CloneZ
 {
     /// <summary>
-    /// Builds concrete kerbs alongside roads that have a sidewalk.
+    /// Builds concrete kerbs alongside roads that have a sidewalk, and now also adds period‑correct
+    /// fire hydrants and roadside mailboxes with random placement.
     /// </summary>
     internal static class RoadSideElementBuilder
     {
@@ -16,6 +17,11 @@ namespace CloneZ
         private const float CapHeightJitter = 0.02f; // max random height variation (metres)
         private const float SnowMoundHeight = 0.04f; // metres, thin snow drift on kerb top
         private const float TrashBinWidth = 0.35f; // metres, approximate width of a 1990s metal trash bin
+        private const float FireHydrantWidth = 0.28f; // metres, typical 1990s metal hydrant width
+        private const float FireHydrantHeight = 0.80f; // metres, hydrant height
+        private const float MailboxWidth = 0.22f; // metres, width of a small metal mailbox
+        private const float MailboxDepth = 0.18f; // metres, depth of the mailbox
+        private const float MailboxHeight = 0.73f; // metres, mailbox height
         internal static void BuildKerbs(KentuckyMap.Site site, KentuckyMap.Street street, MapBuild build)
         {
             if (!build.HasSidewalk(street.Data.id)) return; // no sidewalk → no kerb
@@ -50,6 +56,18 @@ namespace CloneZ
             // new snow drifts on each end point
             BuildKerbSnow(site, a, normal, side, edgeOffset, yaw, snowSurf);
             BuildKerbSnow(site, b, normal, side, edgeOffset, yaw, snowSurf);
+            // randomly place a fire hydrant on ~8 % of segments (once per side)
+            if (build.Random.NextDouble() < 0.08)
+            {
+                var midPoint = (a + b) * 0.5f;
+                BuildFireHydrant(site, midPoint, normal, side, edgeOffset, build);
+            }
+            // randomly place a mailbox on ~8 % of segments (once per side)
+            if (build.Random.NextDouble() < 0.08)
+            {
+                var midPoint = (a + b) * 0.5f;
+                BuildMailbox(site, midPoint, normal, side, edgeOffset, build);
+            }
             // randomly place a trash bin on ~10 % of segments (once per side)
             if (build.Random.NextDouble() < 0.10)
             {
@@ -128,6 +146,39 @@ namespace CloneZ
             site.Take(pos, TrashBinWidth * 0.5f);
         }
 
+        // Builds a 1990s metal fire hydrant on the sidewalk.
+        private static void BuildFireHydrant(KentuckyMap.Site site, Vector2 point, Vector2 normal,
+            int side, float edgeOffset, MapBuild build)
+        {
+            const float sidewalkSetback = 0.45f; // metres further from kerb than a bin
+            var centre = point + normal * (side * (edgeOffset + sidewalkSetback));
+            var pos = new Vector3(centre.x, 0f, centre.y);
+            float radius = Mathf.Max(FireHydrantWidth, FireHydrantHeight) * 0.5f;
+            if (!site.Free(pos, radius)) return; // avoid overlap with other props
+            var box = site.Town.Out.Solid(pos);
+            // simple cylindrical hydrant approximated by a thin rectangular block
+            box.Box(Vector3.zero,
+                new Vector3(FireHydrantWidth, FireHydrantHeight, FireHydrantWidth),
+                0f, DecorPalette.Metal(new Color(0.6f, 0.6f, 0.6f)));
+            site.Take(pos, radius);
+        }
+
+        // Builds a period‑correct metal mailbox on the sidewalk.
+        private static void BuildMailbox(KentuckyMap.Site site, Vector2 point, Vector2 normal,
+            int side, float edgeOffset, MapBuild build)
+        {
+            const float sidewalkSetback = 0.55f; // metres further from kerb than a bin
+            var centre = point + normal * (side * (edgeOffset + sidewalkSetback));
+            var pos = new Vector3(centre.x, 0f, centre.y);
+            float radius = Mathf.Max(MailboxWidth, MailboxDepth) * 0.5f;
+            if (!site.Free(pos, radius)) return; // avoid overlap
+            var box = site.Town.Out.Solid(pos);
+            // mailbox body
+            box.Box(Vector3.zero,
+                new Vector3(MailboxWidth, MailboxHeight, MailboxDepth),
+                0f, DecorPalette.Metal(new Color(0.45f, 0.31f, 0.20f)));
+            site.Take(pos, radius);
+        }
 
     }
 }

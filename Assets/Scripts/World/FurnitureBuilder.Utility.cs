@@ -278,6 +278,25 @@ namespace CloneZ
             m.Box(at + q * new Vector3(0f, 0.25f, 0.087f), new Vector3(0.3f, 0.025f, 0.006f), q * Quaternion.Euler(0f, 0f, -50f), M(c * 0.8f));
             m.Box(at + q * new Vector3(0f, 0.5f, 0f), new Vector3(0.2f, 0.03f, 0.04f), q, M(c * 0.7f));
             m.Box(at + q * new Vector3(0.13f, 0.5f, 0f), new Vector3(0.05f, 0.05f, 0.05f), q, M(c * 0.6f));
+            // pull‑handle on the front lip of the can
+            Vector3 handlePos = at + q * new Vector3(0f, 0.58f, 0.095f) + new Vector3((float)rng.NextDouble() * 0.004f - 0.002f, 0f, 0f);
+            m.Cylinder(handlePos, 0.006f, 0.012f, 8, Mt(Chrome));
+            // recessed cap (slightly indented)
+            Vector3 capPos = at + q * new Vector3(0f, 0.57f, 0f);
+            m.Cylinder(capPos, 0.09f, 0.008f, 12, M(c * 0.9f));
+            // small rust patch (randomised position & size)
+            float rustW = 0.04f + (float)rng.NextDouble() * 0.02f;
+            float rustH = 0.02f + (float)rng.NextDouble() * 0.01f;
+            Vector3 rustPos = at + q * new Vector3(0.12f, 0.22f, -0.08f) + new Vector3((float)rng.NextDouble() * 0.01f - 0.005f, (float)rng.NextDouble() * 0.005f - 0.0025f, 0f);
+            Color rustCol = new Color(0.55f, 0.28f, 0.13f) * (0.9f + (float)rng.NextDouble() * 0.2f);
+            m.Box(rustPos, new Vector3(rustW, rustH, 0.004f), M(rustCol));
+            // thin darker stripe along the side seam
+            Vector3 seamPos = at + q * new Vector3(0f, 0.24f, -0.085f);
+            m.Box(seamPos, new Vector3(0.34f, 0.46f, 0.002f), M(c * 0.8f));
+            // front label (random variant)
+            int labelKind = rng.Next(0, 4);
+            Vector3 labelPos = at + q * new Vector3(0f, 0.38f, 0.09f) + new Vector3((float)rng.NextDouble() * 0.006f - 0.003f, 0f, 0f);
+            m.Quad(labelPos, new Vector3(0.12f, 0f, 0f), new Vector3(0f, 0.06f, 0f), DecorMaterials.Poster(labelKind));
         }
 
         /// <summary>A soft-drink vending machine with a glowing panel (0.9 × 0.8 × 1.85).</summary>

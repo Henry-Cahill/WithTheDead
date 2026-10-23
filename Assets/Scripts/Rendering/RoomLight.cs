@@ -105,6 +105,7 @@ namespace CloneZ
         private Material _bulbShared;
         private Material _bulbInstance;   // own copy, only once the bulb has to dim (flicker / switch)
         private bool _showBulb = true;
+        private bool _lightEnabledCache = false;
         private bool _culled;
         private bool _shadowed;
         private float _applied = -1f;
@@ -244,7 +245,7 @@ namespace CloneZ
             if (Light == null) return;
             float level = _culled ? 0f : Level;
             bool lit = level > 0.001f;
-            if (Light.enabled != lit) Light.enabled = lit;
+            if (_lightEnabledCache != lit) { Light.enabled = lit; _lightEnabledCache = lit; }
             if (Mathf.Abs(level - _applied) < 0.002f) return;
             _applied = level;
             Light.intensity = Intensity * level;

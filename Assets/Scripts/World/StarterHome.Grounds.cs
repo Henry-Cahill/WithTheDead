@@ -276,7 +276,7 @@ namespace CloneZ
             door.Box(at + new Vector3(0f, 1.331f, -0.263f), new Vector3(0.058f, 0.0005f, 0.012f), DecorPalette.Matte(new Color(0.12f,0.12f,0.10f)));
             // Extra rust streak lower edge
             door.Ellipsoid(at + new Vector3(0f, 1.20f, -0.260f), new Vector3(0.025f, 0.003f, 0.001f), DecorPalette.Matte(new Color(0.23f, 0.16f, 0.12f)), 4, 2);
-            FixturePart doorPart = FixturePart.Hinge(fixture.transform, "Door", door, at + new Vector3(0f, 1.12f, -0.252f), Vector3.left, 100f).WithSpeed(0.3f);
+            FixturePart doorPart = FixturePart.Hinge(fixture.transform, "Door", door, at + new Vector3(0f, 1.12f, -0.252f), Vector3.right, 100f).WithSpeed(0.3f);
 
             // The flag: a red arm lying forward along the box's side with the flag at its end; it swings up on the boss.
             var flag = new RaidMesh();
@@ -304,6 +304,8 @@ namespace CloneZ
             m.CylinderX(at + new Vector3(0f, 0.36f, 0f), 0.2f, 0.3f, 14, hose);
             Vector3 end = at + new Vector3(-0.6f, 0.01f, 0.45f);
             m.Rod(at + new Vector3(-0.1f, 0.2f, 0.1f), end, 0.035f, hose, 6);
+                // Darkened wear stripe along the hose
+// Darkened wear stripe moved below
             Vector3 dir = new Vector3(-0.5f, 0f, 0.35f).normalized;
             Vector3 tip = end + dir * 0.08f;
             m.Rod(end, tip, 0.03f, brass, 8);
@@ -311,12 +313,16 @@ namespace CloneZ
             // The standpipe, its tap and spout, and the short length of hose from the spout down onto the reel.
             Vector3 pipe = new Vector3(0.83f, at.y, at.z);
             m.Cylinder(pipe, 0.016f, 0.6f, 8, DecorPalette.Metal(new Color(0.52f, 0.54f, 0.53f)));
+                // Rust stain on standpipe side
+                m.Ellipsoid(pipe + new Vector3(0f, 0.32f, 0.008f), new Vector3(0.02f, 0.01f, 0.005f), DecorPalette.Matte(new Color(0.45f, 0.30f, 0.24f)), 4, 2);
             Vector3 body = pipe + Vector3.up * 0.63f, elbow = body + new Vector3(-0.065f, 0f, 0f);
             m.Box(body, new Vector3(0.045f, 0.04f, 0.045f), brass);
             m.Rod(body, elbow, 0.022f, brass, 8);
             m.Rod(elbow, elbow - Vector3.up * 0.045f, 0.022f, brass, 8);
             Vector3 coupling = elbow - Vector3.up * 0.075f;
             m.Cylinder(coupling, 0.017f, 0.03f, 8, brass);
+                // Metal washer on pipe coupling
+                m.Cylinder(coupling, 0.012f, 0.001f, 12, DecorPalette.Metal(new Color(0.60f, 0.60f, 0.55f)));
             m.Cylinder(coupling + new Vector3(0f, 0f, 0.015f), 0.009f, 0.004f, 6, brass);
             m.Rod(coupling, at + new Vector3(0.12f, 0.52f, 0f), 0.03f, hose, 6);
             m.Cylinder(body + Vector3.up * 0.018f, 0.005f, 0.016f, 6, brass);
@@ -328,6 +334,8 @@ namespace CloneZ
             var wheel = new RaidMesh();
             Surf red = DecorPalette.Matte(new Color(0.66f, 0.12f, 0.09f));
             Vector3 hub = body + Vector3.up * 0.032f;
+                // Brass tension knob on the wheel hub
+                wheel.Cylinder(hub + new Vector3(0f, 0.015f, 0f), 0.004f, 0.003f, 8, brass);
             wheel.Cylinder(hub, 0.032f, 0.01f, 12, red);
             for (int i = 0; i < 6; i++)
             {

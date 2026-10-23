@@ -145,6 +145,27 @@ namespace CloneZ
                     continue;
                 }
                 m.Box(new Vector3(x, 0.96f, 0.215f), new Vector3(0.46f, 1.68f, 0.02f), M(c));
+                // Chrome frame strips around door
+                m.Box(new Vector3(x, 0.96f + 1.68f - 0.008f, 0.215f), new Vector3(0.46f + 0.012f, 0.016f, 0.004f), Mt(Chrome)); // top
+                m.Box(new Vector3(x, 0.96f + 0.008f, 0.215f), new Vector3(0.46f + 0.012f, 0.016f, 0.004f), Mt(Chrome)); // bottom
+                m.Box(new Vector3(x - 0.23f - 0.008f, 0.96f + 0.84f, 0.215f), new Vector3(0.016f, 1.68f + 0.012f, 0.004f), Mt(Chrome)); // left
+                m.Box(new Vector3(x + 0.23f + 0.008f, 0.96f + 0.84f, 0.215f), new Vector3(0.016f, 1.68f + 0.012f, 0.004f), Mt(Chrome)); // right
+
+                // Low‑profile kick‑plate at base of door
+                m.Box(new Vector3(x, 0.96f + 0.008f, 0.225f), new Vector3(0.46f, 0.016f, 0.006f), M(dark));
+
+                // Subtle seal line along top edge
+                m.Box(new Vector3(x, 0.96f + 1.68f - 0.004f, 0.225f), new Vector3(0.46f, 0.002f, 0.006f), M(dark));
+
+                // Small paper label near top‑right
+                m.Box(new Vector3(x + 0.15f, 0.96f + 1.5f, 0.225f), new Vector3(0.12f, 0.02f, 0.002f), M(Paper));
+
+                // Wear‑scratch line near bottom‑center
+                Color wear = V(c, rng, 0.07f);
+                m.Box(new Vector3(x, 0.96f + 0.1f, 0.225f), new Vector3(0.18f, 0.001f, 0.006f), M(wear));
+
+                // Add a small metal pull‑handle on the front of each locker door for visual grip.
+                m.Box(new Vector3(x, 1.25f, 0.235f), new Vector3(0.02f, 0.12f, 0.005f), Mt(Chrome));
                 // Add a small metal pull-handle on the front of each locker door for visual grip.
                 m.Box(new Vector3(x, 1.25f, 0.235f), new Vector3(0.02f, 0.12f, 0.005f), Mt(Chrome));
                 // Add a thin metal hinge‑plate to the locker door for period‑correct detail.
@@ -291,6 +312,9 @@ namespace CloneZ
             Color c = V(Olive, rng, 0.06f);
             m.Box(at + q * new Vector3(0f, 0.09f, 0f), new Vector3(0.3f, 0.18f, 0.15f), q, M(c));
             m.Box(at + q * new Vector3(0f, 0.185f, 0f), new Vector3(0.31f, 0.012f, 0.16f), q, M(c * 0.8f));
+            // Thin stencilled metal band around middle of ammo can.
+            float bandY = 0.14f; // middle height relative to base
+            m.Box(at + q * new Vector3(0f, bandY, 0f), new Vector3(0.31f, 0.004f, 0.16f), q, Mt(Chrome));
             m.Box(at + q * new Vector3(0f, 0.2f, 0f), new Vector3(0.12f, 0.015f, 0.02f), q, M(c * 0.6f));
             m.Box(at + q * new Vector3(0f, 0.1f, 0.077f), new Vector3(0.2f, 0.03f, 0.004f), q, M(new Color(0.75f, 0.66f, 0.30f)));
             // Add a small period‑correct metal latch‑handle on the front of the ammo can.

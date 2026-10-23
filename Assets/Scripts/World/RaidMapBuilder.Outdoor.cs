@@ -243,7 +243,40 @@ DecorProps.PostSign(m, r, "CHECKPOINT", new Color(0.20f, 0.26f, 0.16f), new Colo
             Prop(town, new Vector3(-5.8f, 0f, 68.4f), 15f, new Vector3(1.6f, 1.05f, 0.5f), true, (m, r) => DecorProps.Sawhorse(m, r, 1.6f));
             Prop(town, new Vector3(5.6f, 0f, 68.6f), -10f, new Vector3(1.6f, 1.05f, 0.5f), true, (m, r) => DecorProps.Sawhorse(m, r, 1.6f));
             Wreck(town, new Vector3(9.2f, 0f, 66.5f), 120f, DecorProps.CarKind.Police, new Color(0.10f, 0.12f, 0.16f));
-            Prop(town, new Vector3(-7.4f, 0f, 66.6f), 180f, new Vector3(2.4f, 2.2f, 0.3f), true, (m, r) => DecorProps.PostSign(m, r, "ROAD CLOSED", new Color(0.86f, 0.84f, 0.78f), new Color(0.12f, 0.12f, 0.12f), 0.4f, 1.2f));
+Prop(town, new Vector3(-7.4f, 0f, 66.6f), 180f, new Vector3(2.4f, 2.2f, 0.3f), true, (m, r) => {
+    // pick a rust colour that varies per sign
+    float mailR = 0.40f + (float)town.Rng.NextDouble() * 0.10f;
+    float mailG = 0.35f + (float)town.Rng.NextDouble() * 0.08f;
+    float mailB = 0.30f + (float)town.Rng.NextDouble() * 0.07f;
+Color rust = new Color(mailR, mailG, mailB);
+    DecorProps.PostSign(m, r, "ROAD CLOSED", new Color(0.86f, 0.84f, 0.78f), new Color(0.12f, 0.12f, 0.12f), 0.4f, 1.2f);
+    // thin wooden back‑board, just behind the painted panel
+    Vector3 boardPos = new Vector3(0f, 0.45f, -0.01f);
+    Vector3 boardSize = new Vector3(0.45f, 0.02f, 0.28f);
+    m.Box(boardPos, boardSize, DecorPalette.Matte(new Color(0.32f, 0.24f, 0.18f)));
+    // rust‑stained brackets at top left/right of the board
+    Vector3 leftBracketPos = new Vector3(-0.20f, 0.70f, 0f);
+    Vector3 rightBracketPos = new Vector3( 0.20f, 0.70f, 0f);
+    Vector3 bracketSize = new Vector3(0.04f, 0.02f, 0.02f);
+    m.Box(leftBracketPos, bracketSize, DecorPalette.Metal(rust));
+    m.Box(rightBracketPos, bracketSize, DecorPalette.Metal(rust));
+    // screw heads on each bracket
+    float screwR = 0.005f, screwH = 0.01f;
+    m.Cylinder(leftBracketPos + new Vector3(-0.015f, 0.01f, 0f), screwR, screwH, 6, DecorPalette.Metal(rust));
+    m.Cylinder(leftBracketPos + new Vector3( 0.015f, 0.01f, 0f), screwR, screwH, 6, DecorPalette.Metal(rust));
+    m.Cylinder(rightBracketPos + new Vector3(-0.015f, 0.01f, 0f), screwR, screwH, 6, DecorPalette.Metal(rust));
+    m.Cylinder(rightBracketPos + new Vector3( 0.015f, 0.01f, 0f), screwR, screwH, 6, DecorPalette.Metal(rust));
+    // slight random offset for realism latch
+    float offsetX = (float)(town.Rng.NextDouble() * 0.04 - 0.02);
+    float offsetZ = (float)(town.Rng.NextDouble() * 0.04 - 0.02);
+    Vector3 latchPos = new Vector3(offsetX, 0.22f, 0.25f + offsetZ);
+    Vector3 latchSize = new Vector3(0.60f, 0.02f, 0.02f);
+    m.Box(latchPos, latchSize, DecorPalette.Metal(rust));
+    // faint reflective strip
+    Vector3 stripPos = new Vector3(0f, 0.78f, 0.01f);
+    Vector3 stripSize = new Vector3(0.44f, 0.008f, 0.004f);
+    m.Box(stripPos, stripSize, DecorPalette.Glow(new Color(0.9f, 0.85f, 0.5f)));
+});
         }
 
         // East: the rail line on its ballast bed, crossing Depot Rd at the Rail Bridge exit.
@@ -285,10 +318,10 @@ DecorProps.PostSign(m, r, "CHECKPOINT", new Color(0.20f, 0.26f, 0.16f), new Colo
         {
             System.Random rng = town.Rng;
             // pick a rust colour that varies slightly per box
-            float r = 0.40f + (float)rng.NextDouble() * 0.10f;
-            float g = 0.35f + (float)rng.NextDouble() * 0.08f;
-            float b = 0.30f + (float)rng.NextDouble() * 0.07f;
-            Color rust = new Color(r, g, b);
+            float mailR = 0.40f + (float)rng.NextDouble() * 0.10f;
+            float mailG = 0.35f + (float)rng.NextDouble() * 0.08f;
+            float mailB = 0.30f + (float)rng.NextDouble() * 0.07f;
+Color rust = new Color(mailR, mailG, mailB);
             // base mesh for the extra geometry – use the same batch as the mailbox so it inherits its transform
             RaidMesh m = town.Out.Solid(pos);
             m.SetFrame(pos, yaw);

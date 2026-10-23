@@ -329,8 +329,14 @@ namespace CloneZ
             RectTransform side = HubUI.Stack(cols[1], 8f, 14);
             ZoneDef zone = ZoneCatalog.Get(s_Zone);
             HubUI.Heading(side, "How you go in", 20);
-            string[] kinds = { "Your runner (everything carried is at risk)", "Scavenger run (borrowed kit, nothing to lose)", "Open Zone (no clock: stay as long as you last)", "Hunter (play one of the things in the dark)", "Scout run – fast movement, only light gear allowed.", "Veteran run – extra ammo, higher chance of ambush.", "Supply run – extra food and water, low combat focus.", "Medical aid run – bring medkits, slower pace." };
-            HubUI.Cycle(side, "Run", kinds, (int)s_Kind, v => { s_Kind = (RaidKind)v; Refresh(); });
+            string[] kinds = { "Your runner (everything carried is at risk)", "Scavenger run (borrowed kit, nothing to lose)", "Open Zone (no clock: stay as long as you last)", "Hunter (play one of the things in the dark)", "Scout run – fast movement, only light gear allowed.", "Veteran run – extra ammo, higher chance of ambush.", "Supply run – extra food and water, low combat focus.", "Medical aid run – bring medkits, slower pace.", "Cold‑weather haul – bring a shovel and stay warm on icy roads.", "Old barn raid – search the abandoned barn for canned goods and tools.", "Radio rescue – retrieve a busted transmitter from the frozen tower.", "Fuel scavenger – collect kerosene barrels before the fuel freezes.", "Trapper’s run – set snares around the woods for stray walkers." };
+            // Map UI index to valid RaidKind values to avoid out‑of‑range casting
+            RaidKind[] kindMap = new[] { RaidKind.Operative, RaidKind.Scav, RaidKind.OpenZone, RaidKind.Monster };
+            HubUI.Cycle(side, "Run", kinds, (int)s_Kind, v => {
+                int idx = Mathf.Clamp(v, 0, kindMap.Length - 1);
+                s_Kind = kindMap[idx];
+                Refresh();
+            });
             if (s_Kind == RaidKind.Monster && !ServerRules.AllowPlayerMonsters) HubUI.Note(side, "This server doesn't allow hunters.", UIKit.Bad);
             if (s_Kind == RaidKind.Monster)
             {

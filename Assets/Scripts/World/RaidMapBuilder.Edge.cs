@@ -140,21 +140,40 @@ namespace CloneZ
                         float sh = R(rng, 2.0f, 2.45f);
                         m.Box(new Vector3(x, sh * 0.5f, 0f), new Vector3(1.2f, sh, 0.03f), Quaternion.Euler(R(rng, -3f, 3f), 0f, R(rng, -2f, 2f)), sheet);
                     }
-                    // occasional rust spots on the corrugated sheet
-                    Surf rust = DecorPalette.Matte(new Color(0.55f, 0.30f, 0.20f));
+// occasional rust spots on the corrugated sheet
+                Surf rust = DecorPalette.Matte(new Color(0.55f, 0.30f, 0.20f));
+                    // ice material – very light blue, slightly translucent
+                    Surf ice = DecorPalette.Matte(new Color(0.78f, 0.88f, 1.00f));
 for (float x = -len * 0.5f + 0.3f; x < len * 0.5f; x += R(rng, 2f, 4f))
 {
     float w = R(rng, 0.2f, 0.4f);
     // small matte box placed flush on sheet surface to simulate rust stain
     m.Box(new Vector3(x, 0.01f, 0f), new Vector3(w, 0.02f, 0.02f), rust);
 }
-// occasional snow drifts sitting on the corrugated sheet surface
-for (float x = -len * 0.5f + 0.8f; x < len * 0.5f; x += R(rng, 3f, 5f))
-{
-    float w = R(rng, 0.3f, 0.6f);
-    m.Box(new Vector3(x, 2.45f, 0f), new Vector3(w, 0.05f, 0.3f), DecorMaterials.Snow);
-}
-                    break;
+// ---- NEW: thin frosted‑ice patches on sheet tops ----
+                for (float ix = -len * 0.5f + 0.5f; ix < len * 0.5f; ix += R(rng, 1.5f, 3f))
+                {
+                    float iw = R(rng, 0.3f, 0.6f);
+                    // place a very thin box just above the sheet (sheet height ≈ 2.4 m)
+                    m.Box(new Vector3(ix, 2.42f, 0f), new Vector3(iw, 0.03f, 0.04f), ice);
+                }
+
+                // occasional snow drifts sitting on the corrugated sheet surface
+                for (float sx = -len * 0.5f + 0.8f; sx < len * 0.5f; sx += R(rng, 3f, 5f))
+                {
+                    float sw = R(rng, 0.3f, 0.6f);
+                    m.Box(new Vector3(sx, 2.45f, 0f), new Vector3(sw, 0.05f, 0.3f), DecorMaterials.Snow);
+                }
+
+                // ---- NEW: hanging icicles (thin cylinders) ----
+                for (float cx = -len * 0.5f + 0.7f; cx < len * 0.5f; cx += R(rng, 2f, 4f))
+                {
+                    float ch = R(rng, 0.15f, 0.25f);
+                    // cylinder hanging from the sheet bottom (sheet bottom ≈ 0 m)
+                    m.Cylinder(new Vector3(cx, -ch * 0.5f, 0f), 0.015f, ch, 6, ice);
+                }
+                // end of case 0 block
+                break;
                 }
                 case 1:
                 {

@@ -69,6 +69,15 @@ public string WorkLabel { get; private set; } = "";
         private FarmPlot _busyPlot;
         private Vector3 _busyTillPos;
         private string _busySeedId;
+        private string _lastPrompt = null;
+
+        private void SetPrompt(string value)
+        {
+            if (value != _lastPrompt)
+            {
+                Prompt = _lastPrompt = value;
+            }
+        }
         private FarmCrop _busyCrop;
         private float _workTimer;
         private float _workTotal;
@@ -92,10 +101,10 @@ public string WorkLabel { get; private set; } = "";
 
         private void Update()
         {
-            if (_stats != null && _stats.IsDead) { CancelWork(); Prompt = ""; return; }
+            if (_stats != null && _stats.IsDead) { CancelWork(); SetPrompt(""); return; }
 
             // A full-screen panel (inventory / skills / sleep) or build mode owns input.
-            if (UIState.GameplayBlocked || UIState.BuildMode) { CancelWork(); Prompt = ""; return; }
+            if (UIState.GameplayBlocked || UIState.BuildMode) { CancelWork(); SetPrompt(""); return; }
 
             if (IsBusy) { TickWork(); return; }
 
@@ -111,7 +120,7 @@ public string WorkLabel { get; private set; } = "";
         {
             _action = FarmAction.None;
             _plot = null;
-            Prompt = "";
+            SetPrompt("");
 
             // Don't fight the container-search (or fixture job) prompt for screen space.
             if (_interactor != null && _interactor.IsBusy) return;
@@ -135,13 +144,13 @@ public string WorkLabel { get; private set; } = "";
             switch (plot.State)
             {
                 case FarmPlot.PlotState.Mature:
-                    if (HasTrowel()) { _action = FarmAction.Harvest; Prompt = "[F]  Harvest " + plot.CropName; }
-                    else Prompt = "Need a trowel to harvest " + plot.CropName;
+                    if (HasTrowel()) { _action = FarmAction.Harvest;                 SetPrompt("[F]  Harvest " + plot.CropName); }
+                    else                 SetPrompt("Need a trowel to harvest " + plot.CropName);
                     break;
 
                 case FarmPlot.PlotState.Dead:
                     _action = FarmAction.Clear;
-                    Prompt = "[F]  Clear dead crop";
+                    SetPrompt("[F]  Clear dead crop");
                     break;
 
                 case FarmPlot.PlotState.Empty:
@@ -151,29 +160,29 @@ public string WorkLabel { get; private set; } = "";
                         if (_inventory != null && _inventory.Has(_seedId, CloneZConfig.FarmSeedCost))
                         {
                             _action = FarmAction.Plant;
-                            Prompt = "[F]  Plant " + _crop.Name;
+                            SetPrompt("[F]  Plant " + _crop.Name);
                         }
                         else
                         {
-                            Prompt = "Tilled plot \u2014 need " + CloneZConfig.FarmSeedCost + " seeds to sow";
+                            SetPrompt("Tilled plot \u2014 need " + CloneZConfig.FarmSeedCost + " seeds to sow");
                         }
                     }
-                    else Prompt = "Tilled plot \u2014 need seeds to sow";
+                SetPrompt("Tilled plot \u2014 need seeds to sow");
                     break;
 
                 case FarmPlot.PlotState.Growing:
                     if (plot.NeedsWater && HasCan())
                     {
                         _action = FarmAction.Water;
-                        Prompt = "[F]  Water crop   (moisture " + Pct(plot.Water01) + ")";
+                        SetPrompt("[F]  Water crop   (moisture " + Pct(plot.Water01) + ")");
                     }
                     else if (plot.IsParched && !HasCan())
                     {
-                        Prompt = plot.CropName + " wilting \u2014 need a watering can   (growth " + Pct(plot.Growth01) + ")";
+                    SetPrompt(plot.CropName + " wilting \u2014 need a watering can   (growth " + Pct(plot.Growth01) + ")");
                     }
                     else
                     {
-                        Prompt = plot.CropName + " growing \u2014 " + Pct(plot.Growth01) + "   (moisture " + Pct(plot.Water01) + ")";
+                    SetPrompt(plot.CropName + " growing \u2014 " + Pct(plot.Growth01) + "   (moisture " + Pct(plot.Water01) + ")");
                     }
                     break;
             }
@@ -194,14 +203,14 @@ public string WorkLabel { get; private set; } = "";
             Vector3 spot = ClampToArena(pos + aim * CloneZConfig.FarmTillDistance);
 
             if (FarmPlot.AnyWithin(spot, CloneZConfig.FarmPlotSpacing))
-                Prompt = "Too close to another plot";
+                SetPrompt("Too close to another plot");
             else if (!IsGroundClear(spot))
-                Prompt = "Aim at open ground to till a plot";
+                SetPrompt("Aim at open ground to till a plot");
             else
             {
                 _action = FarmAction.Till;
                 _tillPos = spot;
-                Prompt = "[F]  Till soil";
+                SetPrompt("[F]  Till soil");
             }
         }
 
@@ -358,7 +367,7 @@ public string WorkLabel { get; private set; } = "";
 
             IsBusy = false;
             WorkProgress = 0f;
-            Prompt = "";
+            SetPrompt("");
         }
 
         private void CancelWork()
@@ -366,6 +375,7 @@ public string WorkLabel { get; private set; } = "";
             IsBusy = false;
             WorkProgress = 0f;
             _busyPlot = null;
+            SetPrompt("");
         }
 
         private void AwardXp(float amount)

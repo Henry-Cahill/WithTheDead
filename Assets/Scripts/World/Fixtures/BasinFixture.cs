@@ -67,6 +67,17 @@ namespace CloneZ
             "Your fingers tremble under the icy stream, but the clean feeling steadies them."
         };
 
+        /// <summary>Random lines spoken when the player rinses their mouth, echoing 1993 winter‑Kentucky life.</summary>
+        // Style reference: "The cold water slaps your palms, a sharp reminder that winter never left."
+        private static readonly string[] RinseLines =
+        {
+            "A quick splash of icy water flashes through your throat, a sting that wakes you up.",
+            "The frosty rinse clears the mint, leaving a fresh breath that fights the cold air.",
+            "You feel the sharp bite of the water as it swirls, a brief reminder of the winter outside.",
+            "The basin’s water rushes over your tongue, a momentary shock that makes you grin.",
+            "Cold droplets dance down your throat, and for a second the world feels less frozen."
+        };
+
         private HomeFurniture _host;
         private string _key;
         private Vector3 _point, _spout;
@@ -321,12 +332,20 @@ namespace CloneZ
                 : "No water to rinse with, so you brush dry and spit into the basin. Better than nothing.");
         }
 
+        /// <summary>Rinses the mouth, using stored water if the mains are off and playing a random rinse line.</summary>
         private void Rinse(InteractContext ctx)
         {
             ReturnTap(ctx);
             bool wet = UseStored(CloneZConfig.BasinBrushWater);
             // No extra calm effect; just a quick rinse.
-            ctx.Notify(wet ? "You rinse your mouth, feeling a brief freshness." : "No water left to rinse; you gargle dry.");
+            if (wet)
+            {
+                ctx.Notify(RinseLines[Random.Range(0, RinseLines.Length)]);
+            }
+            else
+            {
+                ctx.Notify("No water left to rinse; you gargle dry.");
+            }
         }
 
         private void Shave(InteractContext ctx)

@@ -25,7 +25,9 @@ namespace CloneZ
         private const float RockDuration = 5f; // seconds, fits existing UI timing
         private const float RockAmplitude = 8f; // max swing angle
         private const float RockSpeed = 2f; // swings per second
+        // Prevents the player from inspecting the chair every frame
         private float _calmAt;
+        private float _inspectCooldown; // time until the next inspect is allowed
 
         public override string DisplayName => Label;
         public override Transform OcclusionRoot => _chair != null ? _chair : transform;
@@ -87,11 +89,13 @@ namespace CloneZ
                 into.Add(SpinRound());
                 into.Add(Relax());
                 into.Add(Rock());
+                into.Add(new InteractAction("Inspect chair", Inspect).DisabledIf(Time.time < _inspectCooldown, "You’ve just examined it."));
                 return;
             }
             into.Add(new InteractAction("Sit down", SitDown).DisabledIf(_spinSpeed > 30f, "Let it stop spinning first"));
             into.Add(new InteractAction("Give the chair a spin", Shove));
             into.Add(new InteractAction("Kick the chair", Kick));
+            into.Add(new InteractAction("Inspect chair", Inspect).DisabledIf(Time.time < _inspectCooldown, "You’ve just examined it."));
         }
 
         private void SitDown(InteractContext ctx)
@@ -117,6 +121,19 @@ namespace CloneZ
             ctx.Notify(Random.value < 0.5f
                 ? "You kick the chair hard, sending it into a rapid spin!"
                 : "The chair rockets around wildly after your kick.");
+        }
+
+        // New inspect action: small noise, random tidying comment, minor calm boost, cooldown
+        private void Inspect(InteractContext ctx)
+        {
+            // Small audible cue
+            MakeNoise(CloneZConfig.FixtureNoiseSmall);
+            // Random period‑correct comment
+            ctx.Notify(LivingFixtures.RandomTidyingMessage());
+            // Minor calm boost
+            LivingFixtures.Calm(ctx, CloneZConfig.RaidSwivelSpinCalm * 0.3f);
+            // Cooldown – reuse the tidy‑cooldown constant for consistency
+            _inspectCooldown = Time.time + CloneZConfig.TidyCooldown;
         }
         private InteractAction Relax()
         {

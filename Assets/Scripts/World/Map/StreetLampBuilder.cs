@@ -7,6 +7,8 @@ namespace CloneZ
     {
         // Builds a single lamp post on the given street segment.
         // The lamp sits on the sidewalk side, near the road edge.
+        private const float CAGE_BAR_THICK = 0.03f; // thickness of each cage bar (metres)
+        private const float CAGE_HEIGHT = 1.0f; // height of the cage above the concrete base (metres)
 internal static void BuildLamp(KentuckyMap.Site site, KentuckyMap.Street street, MapBuild build)
         {
             // only place a lamp if the OSM data marks this segment as having one
@@ -62,12 +64,26 @@ internal static void BuildLamp(KentuckyMap.Site site, KentuckyMap.Street street,
                 pole.transform.localPosition = new Vector3(0f, 1.3f, 0f);
             }
             var mat = build.GetStreetLampMaterial();
-            if (mat != null) pole.GetComponent<Renderer>().material = mat;
-            // ---- root collider (sphere covering head)
+            if (mat != null) {
+                // create a fresh material instance and apply a deterministic hue shift per street
+                var poleMat = new Material(mat);
+                float hueShift = (float)(rng.NextDouble() * 0.1 - 0.05);
+                // Convert to HSV, shift hue, wrap around [0,1]
+                Color.RGBToHSV(poleMat.color, out float h, out float s, out float v);
+                h = (h + hueShift) % 1f;
+                if (h < 0f) h += 1f;
+                poleMat.color = Color.HSVToRGB(h, s, v);
+                pole.GetComponent<Renderer>().material = poleMat;
+            }
+            // add metal cage around pole
+            AddMetalCage(lampRoot.transform, pole.transform, rng);
+            // add decorative finial on top
+            AddFinial(lampRoot.transform, pole.transform, rng);
             var rootCol = lampRoot.AddComponent<SphereCollider>();
-            rootCol.radius = 0.3f;
-            rootCol.center = new Vector3(0f, 2.5f, 0f);
-            site.Town.PropCollider(rootCol.center, new Vector3(rootCol.radius*2, 2.5f, rootCol.radius*2), 0f);
+            rootCol.radius = 0.35f; // slightly larger to include cage & finial
+            rootCol.center = new Vector3(0f, pole.transform.localScale.y + 0.4f, 0f);
+            site.Town.PropCollider(rootCol.center,
+                new Vector3(rootCol.radius * 2, pole.transform.localScale.y + 0.8f, rootCol.radius * 2), 0f);
             // ---- lamp head ----
             var glassMat = WorldStore.GetStreetLampGlassMaterial();
             var head = GameObject.CreatePrimitive(PrimitiveType.Sphere);
@@ -98,6 +114,52 @@ internal static void BuildLamp(KentuckyMap.Site site, KentuckyMap.Street street,
                 flicker._wobbleSpeed = 0.8f;
                 flicker._dipStrength = 0.35f;
             }
+        }
+
+        // Helper to add a period‑accurate metal cage around the pole.
+        private static void AddMetalCage(Transform parent, Transform pole, System.Random rng)
+        {
+            // use the same porch material (metal look) as the concrete base
+            var metalMat = WorldStore.GetPorchMaterial();
+            if (metalMat == null) return;
+            // four evenly‑spaced vertical bars, wrapped around the pole
+            for (int i = 0; i < 4; i++)
+            {
+                var bar = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                bar.name = $"CageBar{i}";
+                bar.transform.SetParent(parent, false);
+                // scale: thin vertical bar that reaches from base to CAGE_HEIGHT
+                bar.transform.localScale = new Vector3(CAGE_BAR_THICK, CAGE_HEIGHT, CAGE_BAR_THICK);
+                // place at pole centre, then rotate around it
+                float angle = i * 90f + (float)(rng.NextDouble() * 5.0 - 2.5); // ±2.5° jitter
+                bar.transform.localRotation = Quaternion.Euler(0f, angle, 0f);
+                // raise so the bottom sits on top of the concrete base (0.05 m) and centre aligns with pole
+                bar.transform.localPosition = new Vector3(0f, 0.05f + CAGE_HEIGHT * 0.5f, 0f);
+                // copy the pole colour hue shift so the cage matches the pole's patina
+                var barMat = new Material(metalMat);
+                barMat.color = pole.GetComponent<Renderer>().material.color;
+                bar.GetComponent<Renderer>().material = barMat;
+            }
+        }
+
+        // Helper to add a small decorative finial (sphere) at the very top of the pole.
+        private static void AddFinial(Transform parent, Transform pole, System.Random rng)
+        {
+            var metalMat = WorldStore.GetPorchMaterial();
+            if (metalMat == null) return;
+            // finial is a tiny sphere, slightly darker than the pole colour
+            var fin = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            fin.name = "Finial";
+            fin.transform.SetParent(parent, false);
+            fin.transform.localScale = new Vector3(0.12f, 0.12f, 0.12f);
+            // pole height = localScale.y, pole bottom offset = localPosition.y
+            float poleHeight = pole.localScale.y;
+            float poleBaseY = pole.localPosition.y;
+            fin.transform.localPosition = new Vector3(0f, poleBaseY + poleHeight + 0.06f, 0f);
+            var finMat = new Material(metalMat);
+            // darken a little to suggest wrought‑iron patina
+            finMat.color = pole.GetComponent<Renderer>().material.color * 0.85f;
+            fin.GetComponent<Renderer>().material = finMat;
         }
     }
 }

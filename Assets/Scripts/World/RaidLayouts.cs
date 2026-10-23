@@ -56,11 +56,37 @@ namespace CloneZ
         private static void OfficeDesk(RaidBuilding b, RaidMesh m, System.Random r, float w, Color wood, bool screenOn, int lamp, bool lampShadows)
         {
             FurnitureBuilder.Desk(m, r, w, 0.75f, wood, r.NextDouble() < 0.5);
+            // --------‑ Office‑desk hardware & wear ----------
             // Material definitions for desk details
             var woodMat = DecorPalette.Matte(wood); // wood surface
             var metalMat = DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f)); // brushed steel
             var brassMat = DecorPalette.Metal(new Color(0.80f, 0.55f, 0.30f)); // aged brass for label
             var wearMat = DecorPalette.Matte(new Color(0.28f, 0.20f, 0.12f)); // darker wear streak
+            // Drawer handles – two small metal cylinders on each drawer front
+            m.Cylinder(new Vector3(-w*0.5f + 0.09f + R(r, -0.005f, 0.005f), 0.78f, 0f), 0.006f, 0.02f, 8, metalMat);
+            m.Cylinder(new Vector3( w*0.5f - 0.09f + R(r, -0.005f, 0.005f), 0.78f, 0f), 0.006f, 0.02f, 8, metalMat);
+            // Leg caps – small rounded caps on the four legs
+            m.Cylinder(new Vector3(-w*0.5f + 0.04f, 0.03f, -0.11f), 0.008f, 0.015f, 8, metalMat);
+            m.Cylinder(new Vector3( w*0.5f - 0.04f, 0.03f, -0.11f), 0.008f, 0.015f, 8, metalMat);
+            m.Cylinder(new Vector3(-w*0.5f + 0.04f, 0.03f,  0.11f), 0.008f, 0.015f, 8, metalMat);
+            m.Cylinder(new Vector3( w*0.5f - 0.04f, 0.03f,  0.11f), 0.008f, 0.015f, 8, metalMat);
+            // Corner brackets – thin metal boxes reinforcing each leg
+            m.Box(new Vector3(-w*0.5f + 0.04f, 0.08f, -0.11f), Sz(0.02f, 0.06f, 0.02f), metalMat);
+            m.Box(new Vector3( w*0.5f - 0.04f, 0.08f, -0.11f), Sz(0.02f, 0.06f, 0.02f), metalMat);
+            m.Box(new Vector3(-w*0.5f + 0.04f, 0.08f,  0.11f), Sz(0.02f, 0.06f, 0.02f), metalMat);
+            m.Box(new Vector3( w*0.5f - 0.04f, 0.08f,  0.11f), Sz(0.02f, 0.06f, 0.02f), metalMat);
+            // Worn front edge strip – darkened wood strip
+            if (Chance(r, 0.7))
+                m.Box(new Vector3(0f, 0.74f, -0.11f), Sz(w - 0.02f, 0.015f, 0.003f), wearMat);
+            // Brass label plate – aged brass rectangle
+            if (Chance(r, 0.5))
+                m.Box(new Vector3(0f, 0.77f, -0.09f), Sz(0.12f, 0.008f, 0.001f), brassMat);
+            // Optional dust puff – flat grey cylinder on top surface
+            if (Chance(r, 0.4))
+            {
+                var dustMat = DecorPalette.Matte(new Color(0.45f,0.44f,0.40f));
+                m.Cylinder(new Vector3(0f, 0.78f, 0f), 0.08f, 0.001f, 8, dustMat);
+            }
             FurnitureBuilder.CrtMonitor(m, r, new Vector3(0.1f, 0.76f, -0.1f), R(r, -12f, 12f), screenOn);
             FurnitureBuilder.Keyboard(m, r, new Vector3(0.08f, 0.76f, 0.2f), R(r, -6f, 6f));
             DeskClutter(m, r, w);

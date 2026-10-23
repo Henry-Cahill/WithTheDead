@@ -308,16 +308,45 @@ namespace CloneZ
             town.Out.Solid(latchPos).Cylinder(latchPos, 0.015f, 0.02f, 12,
                 DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
 
-            // small flag pole – thin cylinder on top right of box
+            // door flap – thin box at front of mailbox body, hinged on left side
+            Vector3 flapSize = new Vector3(0.12f, 0.18f, 0.02f);
+            Vector3 flapOffset = alongX ? new Vector3(0f, 0.09f, 0.09f) : new Vector3(0.09f, 0.09f, 0f);
+            // pivot is not required; we only need the visual piece
+            Vector3 flapCenter = bodyCenter + flapOffset;
+            town.Out.Solid(flapCenter).Box(flapCenter, flapSize, DecorPalette.Matte(FenceWood));
+
+            // metal knob on right side of flap
+            Vector3 knobPos = flapCenter + (alongX ? new Vector3(0.055f, 0f, 0f) : new Vector3(0f, 0f, 0.055f));
+            town.Out.Solid(knobPos).Cylinder(knobPos, 0.008f, 0.014f, 6,
+                DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
+
+            // hinge pins on left edge of flap (bottom and top)
+            for (int i = 0; i < 2; i++)
+            {
+                float v = (i == 0 ? 0.04f : 0.14f); // bottom / top offset from centre height
+                Vector3 hingePos = flapCenter + (alongX ? new Vector3(-0.06f, v - 0.09f, 0f) : new Vector3(0f, v - 0.09f, -0.06f));
+                town.Out.Solid(hingePos).Cylinder(hingePos, 0.006f, 0.012f, 8,
+                    DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
+            }
+
+            // small flag pole – thin cylinder on top right of box (height reduced by snow cap later)
             Vector3 flagPoleBase = bodyCenter + (alongX ? new Vector3(0.15f, 0.20f, 0f) : new Vector3(0f, 0.20f, 0.15f));
-            town.Out.Solid(flagPoleBase).Cylinder(flagPoleBase, 0.008f, 0.30f, 8,
+            // snow cap thickness (random 0.02‑0.05 m)
+            float snowHeight = 0.02f + 0.03f * (float)town.Rng.NextDouble();
+            // adjust flag pole height
+            town.Out.Solid(flagPoleBase).Cylinder(flagPoleBase, 0.008f, 0.30f - snowHeight, 8,
                 DecorPalette.Metal(new Color(0.55f, 0.55f, 0.55f)));
 
             // flag – tiny box at pole top (faded red‑brown cloth)
-            Vector3 flagCenter = flagPoleBase + (alongX ? new Vector3(0f, 0.30f, 0f) : new Vector3(0f, 0.30f, 0f));
+            Vector3 flagCenter = flagPoleBase + (alongX ? new Vector3(0f, 0.30f - snowHeight, 0f) : new Vector3(0f, 0.30f - snowHeight, 0f));
             town.Out.Solid(flagCenter).Box(flagCenter,
                 new Vector3(0.12f, 0.02f, 0.02f),
                 DecorPalette.Matte(new Color(0.68f, 0.48f, 0.30f)));
+
+            // snow cap over mailbox
+            Vector3 capSize = new Vector3(0.34f, snowHeight, 0.18f);
+            Vector3 capCenter = postCenter + new Vector3(0f, 0.38f + 0.375f + snowHeight * 0.5f, 0f);
+            town.Out.Solid(capCenter).Box(capCenter, capSize, DecorPalette.Matte(new Color(0.90f, 0.92f, 0.95f)));
         }
 
 

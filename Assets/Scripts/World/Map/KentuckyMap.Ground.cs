@@ -38,7 +38,7 @@ namespace CloneZ
 
         // Walkable snow with one collider over the playable square (like the procedural town's), and a snowfield
         // without a collider under the scenery beyond, so the horizon isn't empty.
-        private static IEnumerable<Vector2> SampleAlong(List<Vector2> pts, float interval)
+        internal static IEnumerable<Vector2> SampleAlong(List<Vector2> pts, float interval)
         {
             if (pts.Count < 2) yield break;
             float accumulated = 0f;
@@ -106,6 +106,7 @@ if (water) {
                      var edge = new List<Vector2>(inside);
                      edge.Add(inside[0]); // close loop
                      Ribbon(site.Town.Out, edge, SnowBankWidth, LotY + 0.001f, Ice);
+                    ParkingLotFenceHelper.AddFence(site.Town.Out, edge, LotY + 0.002f);
                  }
         }
         }

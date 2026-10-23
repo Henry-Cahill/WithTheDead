@@ -138,6 +138,8 @@ namespace CloneZ
 
         public static void Register(IWarmthSource s) { if (s != null && !s_Sources.Contains(s)) s_Sources.Add(s); }
         public static void Unregister(IWarmthSource s) => s_Sources.Remove(s);
+        /// <summary>Check if a source is currently registered.</summary>
+        public static bool IsRegistered(IWarmthSource s) => s != null && s_Sources.Contains(s);
 
         /// <summary>The extra warmth (0..<see cref="CloneZConfig.ComfortWarmthMax"/>) felt at <paramref name="p"/>:
         /// the strongest source in reach, fading to nothing at its radius.</summary>

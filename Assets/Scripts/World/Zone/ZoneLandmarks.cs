@@ -212,6 +212,29 @@ namespace CloneZ
             }
             sb.Upper.Box(new Vector3(3f, 3.2f, 0f), new Vector3(2.8f, 0.15f, 2.8f), ZoneKit.M(ZoneKit.WetWood));
             sb.Roof.Box(new Vector3(3f, 4.8f, 0f), new Vector3(3f, 0.1f, 3f), ZoneKit.M(new Color(0.25f, 0.30f, 0.20f)));
+            // Define rust‑metal colour for door details
+            Color rustMetal = new Color(0.5f, 0.3f, 0.1f);
+            // Door centre (south side of the shelter)
+            Vector3 doorCenter = new Vector3(3f, 0f, -1.2f);
+            // Thin rust‑metal door panel
+            sb.Solid.Box(doorCenter + new Vector3(0f, 1.0f, 0f), new Vector3(0.8f, 2f, 0.02f), ZoneKit.M(ZoneKit.V(rustMetal, sb.Rng, 0.02f)));
+            // Vertical side studs flanking the door (using wet‑wood material for consistency with shelter walls)
+            sb.Solid.Box(doorCenter + new Vector3(-0.45f, 1.1f, 0f), new Vector3(0.12f, 2.2f, 0.12f), ZoneKit.M(ZoneKit.V(ZoneKit.WetWood, sb.Rng, 0.04f)));
+            sb.Solid.Box(doorCenter + new Vector3(0.45f, 1.1f, 0f), new Vector3(0.12f, 2.2f, 0.12f), ZoneKit.M(ZoneKit.V(ZoneKit.WetWood, sb.Rng, 0.04f)));
+            // Top lintel positioned just above the door panel
+            sb.Solid.Box(doorCenter + new Vector3(0f, 2.9f, 0f), new Vector3(0.9f, 0.2f, 0.2f), ZoneKit.M(ZoneKit.V(ZoneKit.WetWood, sb.Rng, 0.04f)));
+            // Two rust‑metal hinges on the left side of the door
+            Vector3 hingeBase = doorCenter + new Vector3(-0.39f, 0.8f, 0f);
+            sb.Solid.CylinderX(hingeBase, 0.015f, 0.05f, 8, ZoneKit.M(rustMetal), 0f);
+            hingeBase.y += 0.8f;
+            sb.Solid.CylinderX(hingeBase, 0.015f, 0.05f, 8, ZoneKit.M(rustMetal), 0f);
+            // Rust‑metal handle on the right side of the door with slight yaw jitter
+            float handleYaw = (float)sb.Rng.NextDouble() * 8f - 4f;
+            Vector3 handlePos = doorCenter + new Vector3(0.39f, 1.0f, 0f);
+            sb.Solid.CylinderX(handlePos, 0.02f, 0.07f, 8, ZoneKit.M(rustMetal), handleYaw);
+            // Low kick‑plate flush with the ground
+            sb.Solid.Box(doorCenter + new Vector3(0f, 0.01f, 0f), new Vector3(0.8f, 0.02f, 0.12f), ZoneKit.M(ZoneKit.V(ZoneKit.WetWood, sb.Rng, 0.04f)));
+
             // Add subtle snow‑drift detail on the roof edge
             for (int i = 0; i < 4; i++)
             {

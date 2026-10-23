@@ -237,6 +237,7 @@ namespace CloneZ
     public static class CreatureMaterials
     {
         private static Shader s_Lit, s_Unlit;
+        private static readonly int s_BaseColorId = Shader.PropertyToID("_BaseColor");
 
         /// <summary>Creates a translucent lit material for effects, configuring smoothness and metallic.</summary>
         public static Material TransparentLit(Color color, float smoothness = 0.2f)
@@ -266,13 +267,13 @@ namespace CloneZ
         {
             if (m == null) return;
             m.color = c;
-            if (m.HasProperty("_BaseColor")) m.SetColor("_BaseColor", c);
+            if (m.HasProperty(s_BaseColorId)) m.SetColor(s_BaseColorId, c);
         }
 
         public static Color ColorOf(Material m)
         {
             if (m == null) return Color.white;
-            return m.HasProperty("_BaseColor") ? m.GetColor("_BaseColor") : m.color;
+            return m.HasProperty(s_BaseColorId) ? m.GetColor(s_BaseColorId) : m.color;
         }
 
         // The same render state URP's material inspector writes for Surface = Transparent, Blend = Alpha.

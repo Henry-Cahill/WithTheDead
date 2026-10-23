@@ -19,7 +19,7 @@ namespace CloneZ
         private Renderer _made, _rumpled;
         private bool _isMade = true;
         private PlayerSleep _sleeper;
-        private float _plumpCalmAt; private float _blanketFluffCalmAt;
+        private float _plumpCalmAt; private float _blanketFluffCalmAt; private float _mattressSearchCooldownAt;
         private PlayerInteractor _playerInteractor;
         // Existing style reference:
         // "Dust, a single odd sock and a shoebox of old birthday cards. Nothing you can use."
@@ -33,6 +33,16 @@ namespace CloneZ
             "An empty tin of marshmallows, its label peeled away, reminding you of campfire nights.",
             "A small wooden figurine of a horse, its paint chipped, a childhood souvenir."
         };
+        private static readonly string[] _mattressFinds = new[]
+        {
+            "oldphoto", // a faded family photograph
+            "bandage", // a clean cloth bandage
+            "candle", // a short wax candle
+            "matches", // a tiny box of matches
+            "tinofbeans", // a half‑empty tin of beans
+            "scrapmetal" // a piece of bent metal
+        };
+
         private float _lullabyCalmAt;
         // Cached radius for sleep proximity checks to avoid per‑frame config lookup.
         private float _sleepCheckRadius;
@@ -41,6 +51,7 @@ namespace CloneZ
             _playerInteractor = PlayerInteractor.Current;
             // Initialize cached sleep check radius.
             _sleepCheckRadius = CloneZConfig.SleepRange + 0.5f;
+            _mattressSearchCooldownAt = 0f;
         }
 
         /// <summary>True while the bed is made (fresh runs start with it made).</summary>
@@ -122,6 +133,11 @@ namespace CloneZ
                     .Timed(2f, "Singing lullaby", HumanoidActivity.None)
                     .DisabledIf(seat == null, "You need to be sitting or lying to sing"));
 
+            into.Add(new InteractAction("Search the mattress", SearchMattress)
+            .Timed(2.5f, "Rummaging under mattress", HumanoidActivity.Search)
+            .DisabledIf(seat == null, "You need to be sitting or lying to search")
+            .DisabledIf(Time.time < _mattressSearchCooldownAt,
+                "You already searched the mattress, give it a moment."));
             into.Add(new InteractAction("Look under the bed", LookUnder).Timed(1.6f, "Looking under the bed", HumanoidActivity.Search));
             into.Add(new InteractAction("Inspect the bed", InspectBed));
         }
@@ -217,6 +233,21 @@ namespace CloneZ
         {
             var msg = _underBedDiscoveries[Random.Range(0, _underBedDiscoveries.Length)];
             ctx.Notify(msg);
+        }
+
+        private void SearchMattress(InteractContext ctx)
+        {
+            // Set cooldown regardless of success.
+            _mattressSearchCooldownAt = Time.time + CloneZConfig.TidyCooldown;
+            // Pick a random find.
+            string itemId = _mattressFinds[Random.Range(0, _mattressFinds.Length)];
+            // Get the item definition.
+            var def = ItemDatabase.Get(itemId);
+            // Add the item to the survivor's inventory.
+            if (def != null && ctx.Inventory?.Inventory.Add(def, 1, enforceWeight: false) > 0)
+                ctx.Notify($"You pull out a {itemId.Replace("_", " ")} from beneath the mattress.");
+            else
+                ctx.Notify("You find something, but your pack is full.");
         }
 
         public override void CaptureState(FixtureSave save) => save.State = _isMade ? 0 : 1;

@@ -1,0 +1,99 @@
+diff --git a/Assets/Scripts/Core/CloneZConfig.Living.cs b/Assets/Scripts/Core/CloneZConfig.Living.cs
+index d0b0d885..9df44e88 100644
+--- a/Assets/Scripts/Core/CloneZConfig.Living.cs
++++ b/Assets/Scripts/Core/CloneZConfig.Living.cs
+@@ -29,12 +29,13 @@ public static partial class CloneZConfig
+         public const float BedReach = 1.9f;                  // from the bed's middle line: keeps the survivor within SleepRange of its middle
+ 
+         // ---- Reading at the bookcase ----
+-        public const float ReadBookSeconds = 12f;
+-        public const float ReadBookPanicRelief = 30f;
+         public const float ReadMagazineSeconds = 5f;
+         public const float ReadMagazinePanicRelief = 10f;
++        public const float ReadBookSeconds = 12f;
++        public const float ReadBookPanicRelief = 30f;
++        public const float ReadLetterSeconds = 8f;
++        public const float ReadLetterPanicRelief = 15f;
+         public const float TidyPanicRelief = 2f;             // straightening the books, plumping the pillows: a small comfort..
+-        public const float TidyCooldown = 45f;               // .. once in a while
+         public const float ReadingLightLevel = 0.3f;         // daylight below which reading needs a lit lamp or a torch
+ 
+         // ---- The portable TV and the kitchen radio ----
+diff --git a/Assets/Scripts/World/Fixtures/LivingReading.cs b/Assets/Scripts/World/Fixtures/LivingReading.cs
+index 40191767..5638aaef 100644
+--- a/Assets/Scripts/World/Fixtures/LivingReading.cs
++++ b/Assets/Scripts/World/Fixtures/LivingReading.cs
+@@ -62,6 +62,16 @@ private readonly struct Book
+             "a March 1993 Local Sports Digest. Highlights of the town’s winter baseball league and the upcoming snowshoe race.",
+         };
+ 
++        private static readonly string[] Letters =
++        {
++            "a crumpled note from Aunt Mabel: “Don’t forget the pine logs for the stove. The cold’s getting worse.”",
++            "a wartime postcard stamped “U.S. Army – 1992”: “Wish you were here, Sam. The weather’s milder than the front.”",
++            "a grocery list scrawled in ink: “Flour, beans, canned peaches, a jar of molasses – keep the pantry stocked.”",
++            "a love letter, faded at the edges: “Your smile kept me warm through the longest night. Come home soon.”",
++            "a farmer’s warning scribbled on a receipt: “Watch the west fields; the creek may burst when the thaw comes.”",
++            "a recipe slip titled “Grandma’s Apple Butter”: “Apples, sugar, cinnamon – simmer low, stir often, share with the house.”",
++        };
++
+         private static readonly string[] Tidying =
+         {
+             "You line the spines up neatly, tallest to shortest. It helps, a little.",
+@@ -85,7 +95,7 @@ private readonly struct Book
+             "You untangle a knot in the kitchen rope, giving the pantry door a smoother swing.",
+         };
+ 
+-        private static int s_Book = -1, s_Magazine = -1, s_Tidy;
++        private static int s_Book = -1, s_Magazine = -1, s_Tidy, s_Letter = -1;
+         private static float s_TidyCalmAt;
+ 
+         /// <summary>The bookcase's extra actions (after "Browse the shelves").</summary>
+@@ -98,7 +108,9 @@ public static void AddActions(InteractContext ctx, List<InteractAction> into)
+             into.Add(new InteractAction("Flick through a magazine", ReadMagazine)
+                 .Timed(CloneZConfig.ReadMagazineSeconds, "Flicking through a magazine", HumanoidActivity.Read)
+                 .DisabledIf(dark != null, dark));
+-            into.Add(new InteractAction("Straighten the books", Straighten));
++            into.Add(new InteractAction("Read a letter", ReadLetter)
++                .Timed(CloneZConfig.ReadLetterSeconds, "Reading a letter", HumanoidActivity.Read)
++                .DisabledIf(dark != null, dark));
+         }
+ 
+         // Daylight, a lamp (or the TV) lighting the survivor, or a torch.
+@@ -110,6 +122,14 @@ private static bool TooDark(InteractContext ctx)
+             return !RoomLight.IsPointLit(ctx.Chest);
+         }
+ 
++        private static void ReadLetter(InteractContext ctx)
++        {
++            if (s_Letter < 0) s_Letter = Random.Range(0, Letters.Length);
++            string l = Letters[s_Letter % Letters.Length];
++            s_Letter = (s_Letter + 1) % Letters.Length;
++            LivingFixtures.Calm(ctx, CloneZConfig.ReadLetterPanicRelief);
++            ctx.Notify("You unfold " + l);
++        }
+         private static void ReadBook(InteractContext ctx)
+         {
+             if (s_Book < 0) s_Book = Random.Range(0, Books.Length);
+@@ -139,6 +159,7 @@ private static void Straighten(InteractContext ctx)
+             else ctx.Notify("You straighten the books again. They were already straight.");
+         }
+ 
++
+         // Return the next tidy line without advancing the cooldown (used by other fixtures).
+         internal static string NextTidyingLine()
+         {
+@@ -147,5 +168,13 @@ internal static string NextTidyingLine()
+             s_Tidy = (s_Tidy + 1) % Tidying.Length;
+             return line;
+         }
++
++        // Helper for other fixtures to fetch a random letter.
++        internal static string NextLetter()
++        {
++            string line = Letters[s_Letter % Letters.Length];
++            s_Letter = (s_Letter + 1) % Letters.Length;
++            return line;
++        }
+     }
+ }

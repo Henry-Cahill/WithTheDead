@@ -20,6 +20,17 @@ namespace CloneZ
             float val = UnityEngine.Random.Range(0.45f, 0.55f);
             return UnityEngine.Color.HSVToRGB(hue, sat, val);
         }
+
+        private static Color GetBannerColor(MapBuilding b, System.Random rng)
+        {
+            // start from the awning colour, lift brightness a little and add a tiny random hue shift
+            Color baseCol = GetAwningColor(b);
+            float h, s, v;
+            Color.RGBToHSV(baseCol, out h, out s, out v);
+            h += (float)rng.NextDouble() * 0.02f - 0.01f; // ±0.01 hue
+            v = Mathf.Clamp01(v + 0.12f); // a bit brighter for canvas
+            return Color.HSVToRGB(h, s * 0.9f, v);
+        }
         private static void BuildAwningAndSign(Site site, Vector2 doorPt, Vector2 outward, float yaw, MapBuilding b, System.Random rng)
         {
             // ----- awning -------------------------------------------------
@@ -28,6 +39,10 @@ namespace CloneZ
             const float awningDepth = 0.6f;
             const float awningHeightAboveDoor = 1.2f;
             const float awningThickness = 0.08f;
+
+        // added constants for new decorative parts
+        const float BracketSize = 0.05f; // 5 cm cube for metal brackets
+        const float LanternSize = 0.12f; // 12 cm cube for lantern glow
             // Center of the awning (mid‑point over the door, shifted outward)
             Vector3 awningCenter = To3(doorPt + outward * (awningDepth * 0.5f), DoorHeight + awningHeightAboveDoor);
             Vector3 awningSize = new Vector3(awningWidth, awningThickness, awningDepth);
@@ -64,13 +79,21 @@ site.Town.Out.Solid(leftPos).Box(leftPos,
             float slatThickness = 0.02f;
             float slatDepth = awningDepth * 0.9f;
             float slatStartY = awningCenter.y - awningThickness * 0.5f + slatThickness * 0.5f;
-            for (int i = 0; i < slatCount; i++)
+            // ----- metal corner brackets (period‑correct iron brackets) -----
+            Surf metalMat = DecorPalette.Metal(new Color(0.45f, 0.45f, 0.48f));
+            float halfW = awningWidth * 0.5f;
+            float halfD = awningDepth * 0.5f;
+            Vector3[] corners = new Vector3[]
             {
-                float y = slatStartY + i * (awningHeightAboveDoor / (slatCount + 1));
-                Vector3 slatCenter = new Vector3(awningCenter.x, y, awningCenter.z);
-                site.Overhead.At(slatCenter).Box(slatCenter,
-                    new Vector3(awningWidth * 0.95f, slatThickness, slatDepth),
-                    yaw, awningMat);
+                awningCenter + new Vector3(-halfW, awningHeightAboveDoor, -halfD),
+                awningCenter + new Vector3( halfW, awningHeightAboveDoor, -halfD),
+                awningCenter + new Vector3(-halfW, awningHeightAboveDoor,  halfD),
+                awningCenter + new Vector3( halfW, awningHeightAboveDoor,  halfD)
+            };
+            foreach (var c in corners)
+            {
+                site.Overhead.At(c).Box(c, new Vector3(BracketSize, BracketSize, BracketSize), 0f, metalMat);
+                site.Town.PropCollider(c, new Vector3(BracketSize, BracketSize, BracketSize), 0f);
             }
             // Pole: 0.05 × 0.05 × 1.0 m, board: 0.6 × 0.15 × 0.02 m
             const float poleHeight = 1.0f;
@@ -87,22 +110,30 @@ site.Town.Out.Solid(leftPos).Box(leftPos,
                 DecorMaterials.WoodFloor(new Color(0.48f, 0.38f, 0.28f)));
             site.Town.PropCollider(poleCenter,
                 new Vector3(poleSize, poleHeight, poleSize), 0f);
-            // Board sits on top of the pole, faces the street (same yaw as door)
-            Vector3 boardCenter = poleBase + new Vector3(0f, poleHeight + boardHeight * 0.5f, 0f);
-            site.Town.Out.Solid(boardCenter).Box(boardCenter,
-                new Vector3(boardWidth, boardHeight, boardDepth), yaw,
-                DecorPalette.Matte(new Color(0.90f, 0.84f, 0.70f)));
-            site.Town.PropCollider(boardCenter,
-                new Vector3(boardWidth, boardHeight, boardDepth), yaw);
-            // ----- painted sign area -----
-            Color paintCol = new Color(0.75f, 0.20f, 0.20f); // faded red
-            Vector3 paintCenter = boardCenter + new Vector3(0f, 0f, boardDepth * 0.51f);
-            site.Town.Out.Solid(paintCenter).Box(paintCenter,
-                new Vector3(boardWidth * 0.9f, boardHeight * 0.8f, 0.01f),
-                yaw, DecorPalette.Matte(paintCol));
-            site.Town.PropCollider(paintCenter,
-                new Vector3(boardWidth * 0.9f, boardHeight * 0.8f, 0.01f), yaw);
-            site.Take(doorPt + outward * (awningDepth + 0.7f), awningWidth * 0.5f + 0.4f);
+            // ----- tiny lantern hanging from the top of the pole -----
+            Vector3 lanternPos = poleCenter + new Vector3(0f, poleHeight * 0.5f + LanternSize * 0.5f + 0.05f, 0f);
+            Surf lanternMat = DecorPalette.Glow(new Color(1.00f, 0.85f, 0.60f)); // warm amber glow
+            site.Town.Out.Solid(lanternPos).Box(lanternPos,
+                new Vector3(LanternSize, LanternSize, LanternSize), 0f, lanternMat);
+            site.Town.PropCollider(lanternPos,
+                new Vector3(LanternSize, LanternSize, LanternSize), 0f);
+            // ----- fabric banner draped in front of the awning -----
+            float bannerWidth = awningWidth * 0.78f;
+            float bannerHeight = 0.38f;
+            float bannerDepth = 0.02f;
+            Vector3 bannerCenter = new Vector3(
+                awningCenter.x,
+                awningCenter.y - awningThickness * 0.5f + bannerHeight * 0.5f,
+                awningCenter.z + (awningDepth * 0.5f) - (bannerDepth * 0.5f));
+            Color bannerCol = GetBannerColor(b, rng);
+            Surf bannerMat = DecorPalette.Matte(bannerCol);
+            site.Town.Out.Solid(bannerCenter).Box(bannerCenter,
+                new Vector3(bannerWidth, bannerHeight, bannerDepth), yaw, bannerMat);
+            site.Town.PropCollider(bannerCenter,
+                new Vector3(bannerWidth, bannerHeight, bannerDepth), yaw);
+            // original radius was awningWidth * 0.5f + 0.4f
+            site.Take(doorPt + outward * (awningDepth + 0.7f),
+                awningWidth * 0.5f + 0.6f); // extra margin for banner & brackets
         }
     }
 }

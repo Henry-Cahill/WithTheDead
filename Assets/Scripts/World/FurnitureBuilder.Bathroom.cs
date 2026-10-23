@@ -344,14 +344,39 @@ namespace CloneZ
             m.Cylinder(new Vector3(0f, 0.772f, 0.035f), 0.022f, 0.002f, 12, chrome);
             m.Cylinder(new Vector3(0f, 0.7735f, 0.035f), 0.011f, 0.001f, 10, M(new Color(0.12f, 0.12f, 0.13f)));
 
-            // The mixer: a chrome pillar on the back deck, its spout reaching out over the bowl.
-            var tap = new Vector3(0f, 0.86f, -0.165f);
-            m.Cylinder(tap, 0.026f, 0.008f, 14, chrome);
-            // Chrome escutcheon disc for period‑correct detail
-            m.Cylinder(tap + new Vector3(0f, -0.004f, 0f), 0.03f, 0.002f, 12, chrome);
-            m.Cylinder(tap, 0.019f, 0.10f, 14, chrome);
-            m.Rod(new Vector3(0f, 0.935f, -0.158f), new Vector3(0f, 0.935f, -0.05f), 0.02f, chrome, 10);
-            m.Cylinder(BasinSpout, 0.012f, 0.022f, 10, chrome);
+// The mixer: a chrome pillar on the back deck, its spout reaching out over the bowl.
+                     var tap = new Vector3(0f, 0.86f, -0.165f);
+                     m.Cylinder(tap, 0.026f, 0.008f, 14, chrome);
+                     // Chrome escutcheon disc for period‑correct detail
+                     m.Cylinder(tap + new Vector3(0f, -0.004f, 0f), 0.03f, 0.002f, 12, chrome);
+                     m.Cylinder(tap, 0.019f, 0.10f, 14, chrome);
+                     m.Rod(new Vector3(0f, 0.935f, -0.158f), new Vector3(0f, 0.935f, -0.05f), 0.02f, chrome, 10);
+                     m.Cylinder(BasinSpout, 0.012f, 0.022f, 10, chrome);
+                     // --- Period‑correct faucet detail ---
+                     // Lever arm – thin cylinder projecting forward from the tap pillar
+                     float leverAngle = (float)(rng.NextDouble() * 10.0 - 5.0); // –5°…+5° random tilt
+                     Quaternion leverRot = Quaternion.Euler(0f, leverAngle, 0f);
+                     Vector3 leverBase = tap + new Vector3(0f, 0.015f, 0f);
+                     m.Cylinder(leverBase, 0.008f, 0.025f, 12, chrome, leverRot);
+                     // Handle – small box at lever tip
+                     Vector3 handlePos = leverBase + leverRot * new Vector3(0f, 0f, -0.025f);
+                     m.Box(handlePos, new Vector3(0.018f, 0.006f, 0.004f), chrome);
+                     // Knob – tiny cylinder centred on handle front face
+                     Vector3 knobPos = handlePos + leverRot * new Vector3(0f, 0f, -0.004f);
+                     m.Cylinder(knobPos, 0.006f, 0.003f, 8, chrome, leverRot);
+                     // Spout washer – thin chrome ring
+                     m.Cylinder(BasinSpout, 0.014f, 0.001f, 12, chrome);
+                     // Spout cap – small ellipsoid as the polished tip
+                     Vector3 capPos = BasinSpout + new Vector3(0f, 0f, 0.004f);
+                     m.Ellipsoid(capPos, new Vector3(0.006f, 0.006f, 0.006f), chrome, 6, 4);
+                     // Wear dent – dark box inset in the rim edge
+                     Vector3 dentPos = new Vector3(0f, 0.86f, -0.18f);
+                     m.Box(dentPos, new Vector3(0.12f, 0.003f, 0.01f), M(new Color(0.30f, 0.30f, 0.35f)));
+                     // Wall‑mounted towel hook – thin chrome cylinder + tip
+                     Vector3 hookBase = new Vector3(-0.22f, 0.85f, -0.165f);
+                     Vector3 hookDir = Vector3.left;
+                     m.Cylinder(hookBase, 0.006f, 0.09f, 8, Mt(Chrome), Quaternion.LookRotation(hookDir, Vector3.up));
+                     m.Ellipsoid(hookBase + hookDir * 0.045f, new Vector3(0.008f, 0.008f, 0.008f), Mt(Chrome), 6, 4);
 
             // A bar of soap on one side of the tap, a tumbler of toothbrushes on the other.
             Color[] soaps = { new Color(0.90f, 0.72f, 0.70f), new Color(0.74f, 0.86f, 0.70f), new Color(0.92f, 0.88f, 0.70f) };

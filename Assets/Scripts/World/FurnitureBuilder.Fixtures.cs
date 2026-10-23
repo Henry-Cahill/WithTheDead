@@ -117,6 +117,29 @@ namespace CloneZ
             // tiny brass hub and knob for realistic pivot
             m.Cylinder(at + normal * 0.045f, 0.012f, 0.003f, 12, Mt(Brass), Quaternion.identity);
             m.Cylinder(at + normal * 0.0475f, 0.006f, 0.0015f, 12, Mt(Brass), Quaternion.identity);
+// wooden backing disc (0.332 m Ø, 2 mm thick)
+m.Cylinder(at + normal * 0.044f, 0.166f, 0.002f, 12, M(new Color(0.48f, 0.34f, 0.22f)), Quaternion.identity);
+// faint glass pane (slightly smaller than backing)
+m.Cylinder(at + normal * 0.0455f, 0.158f, 0.001f, 12, Gl(new Color(0.95f, 0.95f, 0.97f, 0.25f)), Quaternion.identity);
+// hour tick marks – small boxes spaced every 30°
+for (int i = 0; i < 12; i++)
+{
+    float ang = i * 30f * Mathf.Deg2Rad;
+    Vector3 dir = new Vector3(Mathf.Sin(ang), Mathf.Cos(ang), 0f);
+    Vector3 tickPos = at + normal * 0.0452f + q * (dir * 0.14f);
+    Quaternion tickRot = q * Quaternion.Euler(0f, 0f, i * 30f);
+    m.Box(tickPos, new Vector3(0.008f, 0.02f, 0.001f), tickRot, M(new Color(0.1f, 0.1f, 0.1f)));
+}
+// tiny dust speck on the glass
+Vector3 dustOffset = q * new Vector3(R(rng, -0.12f, 0.12f), R(rng, -0.12f, 0.12f), 0f);
+m.Blob(at + normal * 0.0456f + dustOffset, q * Vector3.right, q * Vector3.up,
+    0.015f, 0.008f, 8, 0f, rng,
+    Gl(new Color(0.55f, 0.48f, 0.42f, 0.35f)));
+// brass mounting bracket (tiny L‑shaped piece)
+Vector3 brPos = at + normal * 0.043f;
+m.Cylinder(brPos, 0.01f, 0.004f, 12, Mt(Brass), Quaternion.identity); // vertical rod
+m.Box(brPos + normal * 0.001f + new Vector3(0f, 0.005f, 0f),
+    new Vector3(0.004f, 0.01f, 0.002f), Quaternion.identity, Mt(Brass));
             float a1 = R(rng, 0f, 360f), a2 = R(rng, 0f, 360f);
             m.Box(at + normal * 0.046f + q * (Quaternion.Euler(0f, 0f, a1) * new Vector3(0f, 0.045f, 0f)), new Vector3(0.012f, 0.09f, 0.004f), q * Quaternion.Euler(0f, 0f, a1), M(Black));
             m.Box(at + normal * 0.047f + q * (Quaternion.Euler(0f, 0f, a2) * new Vector3(0f, 0.06f, 0f)), new Vector3(0.008f, 0.12f, 0.004f), q * Quaternion.Euler(0f, 0f, a2), M(Black));

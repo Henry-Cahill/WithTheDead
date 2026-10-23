@@ -143,6 +143,51 @@ namespace CloneZ
             sb.Upper.Box(new Vector3(-1.65f, h + 0.55f, 0f), new Vector3(0.1f, 0.9f, 3.4f), ZoneKit.M(ZoneKit.WardenOlive));
             sb.Roof.Box(new Vector3(0f, h + 2.3f, 0f), new Vector3(3.8f, 0.15f, 3.8f), ZoneKit.Mt(ZoneKit.RustDark));
             sb.Solid.Rod(new Vector3(1.4f, 0f, -1.6f), new Vector3(1.4f, h, -1.5f), 0.05f, ZoneKit.M(ZoneKit.WetWood), 4);
+            // 50% chance to add a rusted‑metal door on the front (+Z) side of the tower
+            if (ZoneKit.R(rng, 0f, 1f) < 0.5f)
+            {
+                // 1️⃣ Door leaf – thin weathered‑wood panel, inset 0.01 m from the frame
+                sb.Solid.Box(
+                    new Vector3(0f, h * 0.5f, 1.4f + 0.01f),
+                    new Vector3(0.78f, 2.2f, 0.001f),
+                    ZoneKit.M(ZoneKit.WetWood));
+                // 2️⃣ Left vertical frame (rusted metal)
+                sb.Solid.Box(new Vector3(-0.4f, h * 0.5f, 1.41f),
+                    new Vector3(0.02f, 2.2f, 0.02f),
+                    ZoneKit.Mt(ZoneKit.RustDark));
+                // 3️⃣ Right vertical frame (rusted metal)
+                sb.Solid.Box(new Vector3(0.4f, h * 0.5f, 1.41f),
+                    new Vector3(0.02f, 2.2f, 0.02f),
+                    ZoneKit.Mt(ZoneKit.RustDark));
+                // 4️⃣ Top lintel (rusted metal)
+                sb.Solid.Box(new Vector3(0f, h * 0.5f + 1.1f, 1.41f),
+                    new Vector3(0.84f, 0.02f, 0.02f),
+                    ZoneKit.Mt(ZoneKit.RustDark));
+                // 5️⃣ Two hinges – small metal rods on the left side of the frame
+                sb.Solid.Rod(
+                    new Vector3(-0.39f, h * 0.5f - 0.4f, 1.41f),
+                    new Vector3(-0.39f, h * 0.5f - 0.4f + 0.02f, 1.41f),
+                    0.01f, ZoneKit.Mt(ZoneKit.RustDark), 4);
+                sb.Solid.Rod(
+                    new Vector3(-0.39f, h * 0.5f + 0.9f, 1.41f),
+                    new Vector3(-0.39f, h * 0.5f + 0.9f + 0.02f, 1.41f),
+                    0.01f, ZoneKit.Mt(ZoneKit.RustDark), 4);
+                // 6️⃣ Door handle (rusted metal)
+                sb.Solid.Box(new Vector3(0.2f, h * 0.5f, 1.401f),
+                    new Vector3(0.02f, 0.12f, 0.04f),
+                    ZoneKit.Mt(ZoneKit.RustDark));
+                // 7️⃣ Small lock plate above the handle (rusted metal)
+                sb.Solid.Box(new Vector3(0.2f, h * 0.5f + 0.15f, 1.401f),
+                    new Vector3(0.12f, 0.02f, 0.02f),
+                    ZoneKit.Mt(ZoneKit.RustDark));
+                // 8️⃣ Optional wear – a thin rusted‑paint decal on the left frame side
+                if (ZoneKit.R(rng, 0f, 1f) < 0.3f)
+                {
+                    sb.Solid.Box(new Vector3(-0.41f, h * 0.5f, 1.41f),
+                        new Vector3(0.001f, 0.1f, 0.5f),
+                        ZoneKit.Mt(ZoneKit.Rust));
+                }
+            }
             sb.Finish();
 
             var lightRoot = ZoneKit.Child(ZoneWorld.Unbaked != null ? ZoneWorld.Unbaked : world, "Searchlight", at + Vector3.up * (h + 1.4f));

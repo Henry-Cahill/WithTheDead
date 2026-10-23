@@ -168,12 +168,49 @@ m.Rod(b, top, 0.08f, ZoneKit.M(ZoneKit.Bark), 6);
 // Add a rusty ellipsoid cap at the top of each main rod
                       m.Ellipsoid(top, Vector3.one * 0.05f, ZoneKit.Gl(new Color(0.55f, 0.30f, 0.10f)), 5, 3);
 
-                    // Top beam spanning between side rods
-                    m.Box(new Vector3(0f, 2.62f, 0f), new Vector3(2.2f, 0.07f, 0.12f), ZoneKit.M(ZoneKit.Bark));
+// Top beam spanning between side rods
+                     m.Box(new Vector3(0f, 2.62f, 0f), new Vector3(2.2f, 0.07f, 0.12f), ZoneKit.M(ZoneKit.Bark));
 
-                    // Vertical side planks attached to each main rod
-                    m.Box(new Vector3(-0.55f, 1.28f, 0f), new Vector3(0.07f, 2.4f, 0.15f), ZoneKit.M(ZoneKit.Bark));
-                    m.Box(new Vector3( 0.55f, 1.28f, 0f), new Vector3(0.07f, 2.4f, 0.15f), ZoneKit.M(ZoneKit.Bark));
+                     // Middle wooden cross‑bar providing structural support
+                     m.Box(new Vector3(0f, 1.6f, 0f), new Vector3(2.2f, 0.06f, 0.10f), ZoneKit.M(ZoneKit.Bark));
+
+                     // Lower wooden brace, slightly shorter for visual variety
+                     m.Box(new Vector3(0f, 0.9f, 0f), new Vector3(2.0f, 0.05f, 0.09f), ZoneKit.M(ZoneKit.Bark));
+
+                     // Rusted chain – four short links made from thin rods
+                     Vector3 chainStart = new Vector3(-0.55f, 1.2f, 0f);
+                     Vector3 linkDir = new Vector3(0.35f, 0f, 0f);
+                     float linkLen = 0.12f; // not used directly, length set by end point
+                     for (int i = 0; i < 4; i++)
+                     {
+                         Vector3 a = chainStart + i * linkDir;
+                         Vector3 linkEnd = a + new Vector3(0f, 0f, 0.06f);
+                         m.Rod(a, linkEnd, 0.015f, ZoneKit.Mt(ZoneKit.Rust), 5);
+                     }
+
+                     // Hinged metal latch bar that swings when the gate is closed
+                     m.Box(new Vector3(0f, 0.78f, -0.07f), new Vector3(0.30f, 0.04f, 0.02f), ZoneKit.Mt(ZoneKit.Rust));
+
+                     // Random rivets on the left plank
+                     for (int i = 0; i < 3; i++)
+                     {
+                         float x = -0.55f + ZoneKit.R(rng, -0.01f, 0.01f);
+                         float y = 0.6f + ZoneKit.R(rng, -0.3f, 0.8f);
+                         float z = ZoneKit.R(rng, -0.07f, 0.07f);
+                         m.Ellipsoid(new Vector3(x, y, z), Vector3.one * 0.012f, ZoneKit.Gl(new Color(0.55f, 0.30f, 0.10f)), 5, 3);
+                     }
+                     // Random rivets on the right plank
+                     for (int i = 0; i < 3; i++)
+                     {
+                         float x = 0.55f + ZoneKit.R(rng, -0.01f, 0.01f);
+                         float y = 0.6f + ZoneKit.R(rng, -0.3f, 0.8f);
+                         float z = ZoneKit.R(rng, -0.07f, 0.07f);
+                         m.Ellipsoid(new Vector3(x, y, z), Vector3.one * 0.012f, ZoneKit.Gl(new Color(0.55f, 0.30f, 0.10f)), 5, 3);
+                     }
+
+                     // Vertical side planks attached to each main rod with subtle yaw for weathered look
+                     m.Box(new Vector3(-0.55f, 1.28f, 0f), new Vector3(0.07f, 2.4f, 0.15f), Quaternion.Euler(0f, ZoneKit.R(rng, -2f, 2f), 0f), ZoneKit.M(ZoneKit.Bark));
+                     m.Box(new Vector3( 0.55f, 1.28f, 0f), new Vector3(0.07f, 2.4f, 0.15f), Quaternion.Euler(0f, ZoneKit.R(rng, -2f, 2f), 0f), ZoneKit.M(ZoneKit.Bark));
 
                     // Rusted metal latch plate
                     m.Box(new Vector3(0f, 0.82f, 0.11f), new Vector3(0.18f, 0.08f, 0.03f), ZoneKit.Mt(ZoneKit.Rust));

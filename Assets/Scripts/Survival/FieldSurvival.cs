@@ -362,16 +362,31 @@ if (PlayerChannel.Local == null || PlayerChannel.Local.Busy) return false;
                 }
             }).DisabledIf(!anyFuel, "No fuel"));
             // Inspect action to show remaining burn time
-            into.Add(new InteractAction("Inspect", c =>
-            {
-                float secs = Mathf.Max(0f, _until - Time.time);
-                GameEvents.RaiseToast($"Campfire will burn for {Mathf.CeilToInt(secs)} s.");
-            }));
+into.Add(new InteractAction("Inspect", c =>
+                    {
+                        float secs = Mathf.Max(0f, _until - Time.time);
+                        GameEvents.RaiseToast($"Campfire will burn for {Mathf.CeilToInt(secs)} s.");
+                    }));
+                // Extinguish action to douse the fire early
+                into.Add(new InteractAction("Extinguish", c =>
+                    {
+                        Extinguish();
+                    }).DisabledIf(Time.time >= _until, "The fire is already out"));
         }
         /// <summary>Radius in metres within which the campfire provides warmth.</summary>
         public float WarmthRadius => 4f;
         /// <summary>Current warmth output, zero when the fire has burned out.</summary>
         public float Warmth => Time.time < _until ? CloneZConfig.ComfortWarmthMax : 0f;
+
+        /// <summary>Immediately puts out the fire, unregistering its warmth and destroying the object.</summary>
+        private void Extinguish()
+        {
+            HomeComfort.Unregister(this);
+            // Play a short extinguish sound (re‑using the lighter SFX at lower volume).
+            Sfx.Play(SfxIds.Lighter, transform.position, 0.3f, 0.8f, 6f);
+            GameEvents.RaiseToast("You douse the fire.");
+            Destroy(gameObject);
+        }
 
         /// <summary>Creates a campfire at the given location that emits warmth for the specified duration.</summary>
         public static Campfire Light(Vector3 at, float seconds)
@@ -398,11 +413,12 @@ if (PlayerChannel.Local == null || PlayerChannel.Local.Busy) return false;
 
         private void Update()
         {
-            if (Time.time > _until)
-            {
-                HomeComfort.Unregister(this);
-                Destroy(gameObject);
-            }
+if (Time.time > _until)
+                {
+                    // If the fire was already extinguished via Extinguish(), _until may still be in the future; guard against double‑unregister.
+                    if (HomeComfort.IsRegistered(this)) HomeComfort.Unregister(this);
+                    Destroy(gameObject);
+                }
         }
 
         private void OnDestroy() => HomeComfort.Unregister(this);

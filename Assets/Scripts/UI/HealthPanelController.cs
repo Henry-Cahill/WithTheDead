@@ -42,6 +42,49 @@ namespace CloneZ
         private PlayerTemperature _temperature;
         private PlayerClothing _clothing;
         private PlayerFoodSickness _nutrition;
+        // Cached inventory supply counts, updated when inventory changes.
+        // These replace per‑frame scanning of the inventory.
+        private int _bandages;
+        private int _disinfectant;
+        private int _painkillers;
+        private int _antibiotics;
+        private int _kits;
+        private int _betablockers;
+        // Helper to recompute the cached counts from the current inventory.
+        private void RefreshSupplyCounts()
+        {
+            _bandages = _disinfectant = _painkillers = _antibiotics = _kits = _betablockers = 0;
+            if (_inventory == null) return;
+            var stacks = _inventory.Inventory.Stacks;
+            for (int i = 0; i < stacks.Count; i++)
+            {
+                var stack = stacks[i];
+                var id = stack.Def.Id;
+                int count = stack.Count;
+                switch (id)
+                {
+                    case "bandage":
+                    case "rag":
+                        _bandages += count;
+                        break;
+                    case "disinfectant":
+                        _disinfectant += count;
+                        break;
+                    case "pills":
+                        _painkillers += count;
+                        break;
+                    case "antibiotics":
+                        _antibiotics += count;
+                        break;
+                    case "firstaid":
+                        _kits += count;
+                        break;
+                    case "betablockers":
+                        _betablockers += count;
+                        break;
+                }
+            }
+        }
         private Font _font;
         private GameObject _panelRoot;
         private UIFader _fader;
@@ -71,11 +114,16 @@ namespace CloneZ
         {
             _wounds = wounds;
             _stats = stats;
+            // Unsubscribe previous inventory if any
+            if (_inventory != null) _inventory.Changed -= RefreshSupplyCounts;
             _inventory = inventory;
+            if (_inventory != null) _inventory.Changed += RefreshSupplyCounts;
             _panic = panic;
             _temperature = temperature;
             _clothing = clothing;
             _nutrition = nutrition;
+            // Initial cache refresh
+            RefreshSupplyCounts();
         }
 
         private void Awake()
@@ -278,46 +326,15 @@ namespace CloneZ
                 _rows[MaxRows - 1].text = "<i>\u2026and " + (list.Count - rowsToShow) + " more</i>";
             }
 
-            // Treatment buttons: show remaining supplies and enable each only when it would help.
-            int bandages = 0, disinfectant = 0, painkillers = 0, antibiotics = 0, kits = 0, betablockers = 0;
-            if (_inventory != null)
-            {
-                var stacks = _inventory.Inventory.Stacks;
-                for (int i = 0; i < stacks.Count; i++)
-                {
-var stack = stacks[i];
-                    var id = stack.Def.Id;
-                    int count = stack.Count;
-                    switch (id)
-                    {
-                        case "bandage":
-                        case "rag":
-                            bandages += count;
-                            break;
-                        case "disinfectant":
-                            disinfectant += count;
-                            break;
-                        case "pills":
-                            painkillers += count;
-                            break;
-                        case "antibiotics":
-                            antibiotics += count;
-                            break;
-                        case "firstaid":
-                            kits += count;
-                            break;
-                        case "betablockers":
-                            betablockers += count;
-                            break;
-                    }
-                }
-            }
-            SetButton(_bandageBtn, _bandageLbl, "Bandage", bandages, bandages > 0 && _wounds.CanBandage);
-            SetButton(_disinfectBtn, _disinfectLbl, "Disinfect", disinfectant, disinfectant > 0 && _wounds.CanDisinfect);
-            SetButton(_painkillerBtn, _painkillerLbl, "Painkiller", painkillers, painkillers > 0 && _stats.Pain > 2f);
-            SetButton(_antibioticBtn, _antibioticLbl, "Antibiotic", antibiotics, antibiotics > 0 && _wounds.HasInfectedWound);
-            SetButton(_firstAidBtn, _firstAidLbl, "First Aid", kits, kits > 0 && _wounds.WoundCount > 0);
-            SetButton(_calmBtn, _calmLbl, "Calm", betablockers, betablockers > 0 && (_panic != null && _stats.Panic >= CloneZConfig.PanicLevel1));
+
+// Treatment buttons: show remaining supplies and enable each only when it would help.
+            // Use cached inventory counts instead of scanning per‑frame.
+            SetButton(_bandageBtn, _bandageLbl, "Bandage", _bandages, _bandages > 0 && _wounds.CanBandage);
+            SetButton(_disinfectBtn, _disinfectLbl, "Disinfect", _disinfectant, _disinfectant > 0 && _wounds.CanDisinfect);
+            SetButton(_painkillerBtn, _painkillerLbl, "Painkiller", _painkillers, _painkillers > 0 && _stats.Pain > 2f);
+            SetButton(_antibioticBtn, _antibioticLbl, "Antibiotic", _antibiotics, _antibiotics > 0 && _wounds.HasInfectedWound);
+            SetButton(_firstAidBtn, _firstAidLbl, "First Aid", _kits, _kits > 0 && _wounds.WoundCount > 0);
+            SetButton(_calmBtn, _calmLbl, "Calm", _betablockers, _betablockers > 0 && (_panic != null && _stats.Panic >= CloneZConfig.PanicLevel1));
         }
 
         private static void SetButton(Button btn, Text label, string name, int count, bool usable)
