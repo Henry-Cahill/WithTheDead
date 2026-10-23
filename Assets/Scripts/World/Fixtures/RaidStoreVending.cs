@@ -38,6 +38,12 @@ namespace CloneZ
             "The vending box sighs with a metallic wheeze, yet nothing falls into the tray.",
             "A faint smell of stale soda hangs in the air, but no bottle is freed.",
             "The machine’s heart beats a silent rhythm, refusing to spill its winter‑stewed loot.",
+            "A hollow clang reverberates; the coils remain stubbornly mute.",
+            "The frosted metal shivers under your blow, yet no snack rattles free.",
+            "Your thump sends a thin gust of stale air through the machine, but no crumbs fall.",
+            "A distant echo rattles the panel, but the interior stays sealed tight.",
+            "The impact sparks a brief whine, then settles into deafening silence.",
+            "A faint scent of yesterday’s soda lingers, offering only memory, not loot.",
         };
 
         private Transform _body;
