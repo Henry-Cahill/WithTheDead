@@ -322,6 +322,13 @@ namespace CloneZ
             if (c.Animals.Exists(a => a.Kind == "goat")) notes.Add("Marta’s milk tastes of pine and frost.");
 
             SetLastTick(c, now);
+            // Additional winter‑flavour notes
+            notes.Add("The wind whistles through the cracked windowpanes, rattling old glass.");
+            notes.Add("A lone crow circles the roof, its caw echoing over the silent fields.");
+            notes.Add("Icicles drip from the ceiling, each drop a tiny thud on the wooden floor.");
+            notes.Add("The fire in the heater sputters, casting trembling shadows on the walls.");
+            notes.Add("Your breath fogs in the cold air as you step deeper into the hideout.");
+            notes.Add("A faint radio crackles, playing static‑filled war news from distant towns.");
             if (notes.Count > 0) ProfileStore.Save();
             return notes;
         }
