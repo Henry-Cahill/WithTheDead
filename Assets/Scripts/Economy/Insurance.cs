@@ -46,7 +46,7 @@ namespace CloneZ
         public static void FileClaims(CharacterProfile c, List<StackSave> lost, Vector3 where)
         {
             if (c == null || lost == null) return;
-            var claim = new InsuranceClaim { TraderId = Insurer, ReturnOnDay = c.Day + Mathf.Max(1, SandboxSettings.Current.InsuranceReturnDays) };
+            var claim = new InsuranceClaim { TraderId = Insurer, ReturnOnDay = c.Day + Mathf.Max(1, SandboxSettings.Current.InsuranceReturnDays), Items = new List<StackSave>() };
             float takenChance = GameSession.Networked && ServerRules.PvpEnabled ? 0.45f : 0.25f;
             for (int i = lost.Count - 1; i >= 0; i--)
             {
@@ -68,7 +68,7 @@ namespace CloneZ
         {
             int n = 0;
             if (c == null) return 0;
-            foreach (InsuranceClaim ic in c.Insurance) if (c.Day >= ic.ReturnOnDay) n += ic.Items.Count;
+            foreach (InsuranceClaim ic in c.Insurance) { if (ic.Items == null) continue; if (c.Day >= ic.ReturnOnDay) n += ic.Items.Count; }
             return n;
         }
 
@@ -82,7 +82,7 @@ namespace CloneZ
             {
                 InsuranceClaim ic = c.Insurance[i];
                 if (c.Day < ic.ReturnOnDay) continue;
-                foreach (StackSave s in ic.Items) n += ProfileStore.AddSave(stash, s) > 0 ? 1 : 0;
+                foreach (StackSave s in ic.Items ?? new List<StackSave>()) n += ProfileStore.AddSave(stash, s) > 0 ? 1 : 0;
                 c.Insurance.RemoveAt(i);
             }
             if (n > 0) ProfileStore.Save();
