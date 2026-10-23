@@ -9,12 +9,14 @@ namespace CloneZ
     internal sealed class PorchLampFlicker : MonoBehaviour
     {
         private Light _light;
+        private TimeOfDay _timeOfDay;
         private float _baseIntensity;
 
         void Awake()
         {
             // Find the Light component on a child (the lamp light GameObject).
             _light = GetComponentInChildren<Light>();
+            _timeOfDay = TimeOfDay.Instance;
             if (_light != null)
                 _baseIntensity = _light.intensity;
         }
@@ -23,7 +25,7 @@ namespace CloneZ
         {
             // Assume a singleton DayNightCycle with a public bool IsNight.
             // If unavailable, we default to always on (fails safe).
-            bool isNight = TimeOfDay.Instance?.IsNight ?? false;
+            bool isNight = _timeOfDay?.IsNight ?? false;
             if (isNight)
             {
                 if (_light != null && !_light.enabled) _light.enabled = true;
