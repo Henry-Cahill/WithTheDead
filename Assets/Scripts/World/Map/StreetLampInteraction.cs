@@ -18,13 +18,45 @@ namespace CloneZ
         private bool _dimmed;
         private string _displayName = "Street Lamp";
 
-        private void Awake()
+        private const float BLOCK_TOGGLE_RADIUS = 30f; // metres
+
+
+        // Used by block‑toggle to set lamp state without duplicate messages.
+        internal void ApplyState(bool on, InteractContext ctx = null)
         {
-            _light = GetComponent<Light>();
-            _flicker = GetComponent<StreetLampFlicker>();
-            _key = KeyFor("streetlamp", transform.position);
-            _flickerOn = _flicker != null && _flicker.enabled;
-            if (_flicker != null) _flicker.enabled = true; // always keep component alive
+            if (_light != null) _light.enabled = on;
+            if (on && _light != null)
+            {
+                _light.intensity = _dimmed ? 0.2f : 1f;
+            }
+            if (_flicker != null)
+            {
+                _flicker.enabled = on;
+                _flicker.SetFlickerEnabled(on && _flickerOn);
+            }
+            // No per‑lamp notification when called from block toggle (ctx may be null)
+        }
+
+        private void Toggle(InteractContext ctx, bool on)
+        {
+            ApplyState(on, ctx);
+            MakeNoise(2f);
+            ctx.Notify(on ? "The street lamp clicks on." : "The street lamp clicks off.");
+        }
+
+    private void Awake()
+    {
+        _light = GetComponent<Light>();
+        _flicker = GetComponent<StreetLampFlicker>();
+        _key = KeyFor("streetlamp", transform.position);
+        _flickerOn = _flicker != null && _flicker.enabled;
+        if (_flicker != null) _flicker.enabled = true; // always keep component alive
+        StreetLampRegistry.Register(this); // <-- new line
+    }
+
+        private void OnDestroy()
+        {
+            StreetLampRegistry.Unregister(this);
         }
 
         public override string DisplayName => _displayName;
@@ -36,34 +68,36 @@ namespace CloneZ
         {
             bool on = _light != null && _light.enabled;
             into.Add(new InteractAction(on ? "Turn off street lamp" : "Turn on street lamp", c => Toggle(c, !on)));
-                if (on && _flicker != null)
-                {
-                    string flickerLabel = _flickerOn ? "Turn off flicker" : "Turn on flicker";
-                    into.Add(new InteractAction(flickerLabel, c => ToggleFlicker(c, !_flickerOn)));
-                }
-                if (on)
-                {
-                    into.Add(new InteractAction(_dimmed ? "Brighten lamp" : "Dim lamp", c => ToggleDim(c, !_dimmed)));
-                }
-            }
-
-
-private void Toggle(InteractContext ctx, bool on)
+            if (on && _flicker != null)
             {
-                if (_light != null) _light.enabled = on;
-                // When turning the lamp on, set intensity based on dimmed state
-                if (on && _light != null)
-                {
-                    _light.intensity = _dimmed ? 0.2f : 1f;
-                }
-                if (_flicker != null)
-                {
-                    _flicker.enabled = on; // keep component alive only when lamp on
-                    _flicker.SetFlickerEnabled(on && _flickerOn);
-                }
-                MakeNoise(2f);
-                ctx.Notify(on ? "The street lamp clicks on." : "The street lamp clicks off.");
+                string flickerLabel = _flickerOn ? "Turn off flicker" : "Turn on flicker";
+                into.Add(new InteractAction(flickerLabel, c => ToggleFlicker(c, !_flickerOn)));
             }
+            if (on)
+            {
+                into.Add(new InteractAction(_dimmed ? "Brighten lamp" : "Dim lamp", c => ToggleDim(c, !_dimmed)));
+                // block toggle actions
+                into.Add(new InteractAction("Turn off block lamps", c => ToggleBlock(c, false)));
+            }
+            else
+            {
+                // block toggle when off
+                into.Add(new InteractAction("Turn on block lamps", c => ToggleBlock(c, true)));
+            }
+        }
+
+
+    private void ToggleBlock(InteractContext ctx, bool turnOn)
+    {
+        var nearby = StreetLampRegistry.GetNearby(transform.position, BLOCK_TOGGLE_RADIUS);
+        foreach (var lamp in nearby)
+        {
+            lamp.ApplyState(turnOn, ctx);
+        }
+        // One audible click for the block action
+        MakeNoise(2f);
+        ctx.Notify(turnOn ? "All nearby street lamps click on." : "All nearby street lamps click off.");
+    }
 
 
 
