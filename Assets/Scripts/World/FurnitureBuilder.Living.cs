@@ -317,6 +317,28 @@ namespace CloneZ
             m.Box(new Vector3(-(w + 0.06f) * 0.5f + 0.01f, 1.09f, -l * 0.5f + 0.01f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass)); // back‑left
             m.Box(new Vector3(0f, 1.08f, -l * 0.5f + 0.03f), new Vector3(w + 0.1f, 0.06f, 0.09f), M(c * 0.9f));
             m.Box(new Vector3(0f, 0.3f, l * 0.5f - 0.025f), new Vector3(w + 0.06f, 0.6f, 0.05f), M(c * 1.05f));
+            // Thin wooden trim rail on footboard front top edge
+            m.Box(
+                new Vector3(0f, 0.3f + 0.6f * 0.5f + 0.005f, l * 0.5f - 0.025f), // centre just above the footboard top
+                new Vector3(w + 0.08f, 0.01f, 0.02f), // width = bed width + margin, thin height, shallow depth
+                M(c * 0.9f));
+            // Brass footboard corner caps (front‑right and front‑left)
+            float footZ = l * 0.5f - 0.025f;
+            float capY = 0.3f + 0.6f * 0.5f; // centre of footboard height
+            float capX = (w + 0.06f) * 0.5f - 0.01f;
+            m.Box(new Vector3( capX, capY, footZ), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass)); // front‑right
+            m.Box(new Vector3(-capX, capY, footZ), new Vector3(0.02f, 0.02f, 0.02f), Mt(Brass)); // front‑left
+            // Leather pull strap on footboard front
+            m.Box(
+                new Vector3(0f, 0.07f, footZ), // low on the footboard
+                new Vector3(0.04f, 0.08f, 0.002f), // thin strap
+                M(new Color(0.45f, 0.30f, 0.20f)));
+            // Wear notch on footboard right side
+            m.Box(
+                new Vector3(capX - 0.015f, 0.45f, footZ), // a bit inset from the brass cap, mid‑height
+                new Vector3(0.02f, 0.003f, 0.001f), // thin dark line
+                M(new Color(0.10f, 0.07f, 0.05f)));
+
             m.Box(new Vector3(0f, 0.41f, -0.01f), new Vector3(w - 0.06f, 0.2f, l - 0.1f), M(BedSheet));
             int pillows = w > 1.2f ? 2 : 1;
             for (int i = 0; i < pillows; i++)
