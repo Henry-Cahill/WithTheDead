@@ -34,6 +34,8 @@ namespace CloneZ
         private static readonly Color TorchColor = new Color(0.20f, 0.24f, 0.18f);
         private static readonly Color TorchGlowColor = new Color(1f, 0.95f, 0.78f);
         private static readonly Color NvgGlowColor = new Color(0.45f, 1f, 0.5f);
+        // reflective safety strip colour used on the backpack front panel
+        private static readonly Color ReflectStripColor = new Color(1f, 0.85f, 0.5f);
 
         /// <summary>The chest flashlight's lens (null when none is carried); its forward is the beam's direction.</summary>
         public Transform FlashlightLens { get; private set; }
@@ -350,6 +352,15 @@ namespace CloneZ
             PlayerGearParts.Box(root, "LidRivet", new Vector3(0f, lidY + 0.032f, lidZ + 0.008f), new Vector3(0.014f, 0.014f, 0.004f), hardware);
             // Subtle wear scar on the lid's top surface
             PlayerGearParts.Box(root, "LidWear", new Vector3(0f, lidY + 0.045f, lidZ - 0.002f), new Vector3(w * 0.70f, 0.002f, 0.001f), lidWearMat);
+// thin metal frame bar across the front‑top of the pack
+PlayerGearParts.Box(root, "FrontFrame", new Vector3(0f, lidY + 0.05f, lidZ + 0.006f), new Vector3(w * 0.95f, 0.004f, 0.006f), hardware);
+// metal logo plate centred on the front
+PlayerGearParts.Box(root, "LogoPlate", new Vector3(0f, lidY + 0.03f, lidZ + 0.006f), new Vector3(0.07f, 0.018f, 0.004f), hardware);
+// reflective safety strip – glows faintly
+var reflectMat = PlayerGearParts.Glow(ReflectStripColor);
+PlayerGearParts.Box(root, "ReflectStrip", new Vector3(0f, lidY - 0.02f, lidZ + 0.0065f), new Vector3(w * 0.60f, 0.002f, 0.001f), reflectMat);
+// subtle wear scratch across the front surface
+PlayerGearParts.Box(root, "FrontWearScratch", new Vector3(0f, lidY + 0.04f, lidZ + 0.005f), new Vector3(w * 0.80f, 0.001f, 0.001f), lidWearMat);
 
             float ph = h * 0.42f, py = bottom + 0.03f + ph * 0.5f;
             PlayerGearParts.Box(root, "Pocket", new Vector3(0f, py, outer - 0.024f), new Vector3(w * 0.72f, ph, 0.048f), shade, true);
