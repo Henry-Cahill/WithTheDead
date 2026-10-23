@@ -466,6 +466,34 @@ var b = new Vector3(-end * 0.55f, h, -hz + wallZ * 0.5f);
             m.Box(new Vector3(0f, 1.11f, 0f), new Vector3(0.18f, 0.03f, 0.34f), cedar);
             Surf box = Mt(new Color(0.18f, 0.20f, 0.24f));
             m.Box(new Vector3(0f, 1.2f, 0f), new Vector3(0.22f, 0.16f, 0.48f), box);
+            // front mail slot (vertical slit)
+            var slotSurf = M(new Color(0.12f, 0.12f, 0.13f));
+            m.Quad(new Vector3(0f, 1.28f, 0.24f - 0.001f),
+                new Vector3(0.18f, 0f, 0f), // half‑width (full width 0.36 m)
+                new Vector3(0f, 0.25f, 0.001f), // half‑height (full height 0.5 m)
+                slotSurf);
+            // brass latch plate on right edge
+            var latchPos = new Vector3(0.115f, 1.28f, 0f); // box extends to +0.11 m, offset 5 mm outwards
+            m.Cylinder(latchPos, 0.006f, 0.015f, 8, Mt(Brass));
+            // rust spot on front face
+            var rustSurf = M(new Color(0.45f, 0.35f, 0.30f));
+            m.Quad(new Vector3(0.06f, 1.18f, 0.24f - 0.001f),
+                new Vector3(0.06f, 0f, 0f), // half‑width 0.12 m
+                new Vector3(0f, 0.04f, 0.001f), // half‑height 0.08 m
+                rustSurf);
+            // paint‑chip on post
+            var chipSurf = M(new Color(0.30f, 0.22f, 0.15f));
+            m.Quad(new Vector3(0f, 0.68f, 0f),
+                new Vector3(0.02f, 0f, 0f), // half‑width 0.04 m
+                new Vector3(0f, 0.03f, 0.001f), // half‑height 0.06 m
+                chipSurf);
+            // tiny “MAIL” sign on front
+            Surf mailSurf = DecorMaterials.Sign("MAIL", new Color(0.86f,0.85f,0.80f),
+                new Color(0.12f,0.12f,0.15f), out float mailAspect);
+            float mailH = 0.07f; // 7 cm tall
+            float mailW = mailH * mailAspect;
+            m.Upright(new Vector3(0f, 1.32f, 0.24f - 0.004f),
+                Vector3.forward, mailW, mailH, mailSurf, new Rect(0f,0f,1f,1f));
             m.CylinderX(new Vector3(0f, 1.28f, 0f), 0.11f, 0.48f, 10, box, 90f);
             Surf dark = M(new Color(0.04f, 0.04f, 0.05f));
             m.Box(new Vector3(0f, 1.205f, -0.241f), new Vector3(0.19f, 0.15f, 0.002f), dark);
