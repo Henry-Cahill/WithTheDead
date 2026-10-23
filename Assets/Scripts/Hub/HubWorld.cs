@@ -8,6 +8,7 @@ namespace CloneZ
     public static class HubRules
     {
         public static bool SafeZone;
+        public static bool HeaterOn; // <‑‑ new flag, persisted by the Heater component
     }
 
     /// <summary>
@@ -382,6 +383,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
                     m.Sphere(new Vector3(x, y, z), radius, emberMat);
                 }
             }, fireGo.transform.position);
+            BuildHeater(world, st);
         }
 
         private static void BuildLights(Transform world, Style st)
@@ -406,6 +408,20 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             Vector3 lampAt = spots[i] + Vector3.up * 0.15f;
             Deco(world, "Lamp", m => m.Ellipsoid(Vector3.zero, new Vector3(0.28f, 0.2f, 0.28f), DecorPalette.Glow(st.Light)), lampAt);
             }
+        }
+
+        private static void BuildHeater(Transform world, Style st)
+        {
+            // simple metal box beside the fireplace
+            var go = new GameObject("Heater");
+            go.transform.SetParent(world, false);
+            go.transform.position = new Vector3(-HalfX + 1.2f, 0f, -2.5f);
+            go.AddComponent<BoxCollider>();
+            // visual metal box
+            Deco(world, "HeaterBox", m =>
+                m.Box(new Vector3(-HalfX + 1.2f, 0.15f, -2.5f), new Vector3(0.4f, 0.3f, 0.3f), st.Metal), Vector3.zero);
+            // attach the interactable logic
+            go.AddComponent<Heater>();
         }
 
         #region Stations
