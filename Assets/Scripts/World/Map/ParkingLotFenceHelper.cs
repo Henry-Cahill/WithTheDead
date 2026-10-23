@@ -15,6 +15,8 @@ namespace CloneZ
         private static readonly Vector3 PostSize = new Vector3(0.04f, 0.5f, 0.04f);
         // horizontal bar dimensions (thickness; length will be set per segment)
         private static readonly Vector3 BarThickness = new Vector3(0.02f, 0.02f, 0.02f);
+        // latch bar thickness (metres) – a thin metal piece that hangs across the gate
+        private const float LatchThickness = 0.02f;
 // metal cap dimensions (width, height, depth) placed atop each post
          private static readonly Vector3 PostCapSize = new Vector3(0.04f, 0.02f, 0.04f);
                 // segments longer than this become a gate (period‑correct driveway entry)
@@ -26,6 +28,20 @@ namespace CloneZ
          private static readonly Vector3 SignSize = new Vector3(SignWidth, SignHeight, SignDepth);
         // material – reuse the street‑lamp metal matte colour defined in KentuckyMap.Ground.cs
         private static readonly Surf MetalSurf = KentuckyMap.StreetLampMetal;
+        /// <summary>
+        /// Creates a simple metal latch across a gate.
+        /// </summary>
+        private static void AddGateLatch(OutdoorBatches into, Vector3 gateCentre, float gateYaw, float gateSpan)
+        {
+            // latch runs across ~60 % of the gate width, sits a little higher than the gate panel
+            float latchLength = gateSpan * 0.6f;
+            Vector3 latchSize = new Vector3(latchLength, LatchThickness, BarThickness.z);
+            // raise the latch 0.08 m above the gate panel for a realistic look
+            Vector3 latchCentre = gateCentre + new Vector3(0f, LatchThickness * 2f, 0f);
+            var latchMesh = into.Solid(latchCentre);
+            latchMesh.Box(latchCentre, latchSize, gateYaw, MetalSurf);
+        }
+
 
         // Adds a “No Parking” sign at the lot entrance.
         private static void AddEntranceSign(OutdoorBatches into, Vector2 pos, float y, float yaw)
@@ -75,7 +91,7 @@ namespace CloneZ
                 Vector2 b = sampled[(i + 1) % sampled.Count];
                 float span = Vector2.Distance(a, b);
                 // If the gap is wide enough, place a gate instead of a simple top bar.
-                if (span >= GateMinSpan)
+                    // Wide driveway gap – build a gate panel and hang a period‑correct metal latch across it.
                 {
                  Vector2 mid2D = (a + b) * 0.5f;
                     float yaw = -Mathf.Atan2(b.y - a.y, b.x - a.x) * Mathf.Rad2Deg;
@@ -83,6 +99,8 @@ namespace CloneZ
                     Vector3 gateCentre = KentuckyMap.To3(mid2D, y + PostSize.y * 0.5f);
                     var gateMesh = into.Solid(gateCentre);
                     gateMesh.Box(gateCentre, gateSize, yaw, MetalSurf);
+                    // add a simple metal latch across the gate panel
+                    AddGateLatch(into, gateCentre, yaw, span);
                     continue; // skip normal bar creation for this segment
                 }
                 // Existing short‑span bar logic (unchanged, but keep the 0.1 m tolerance check).
