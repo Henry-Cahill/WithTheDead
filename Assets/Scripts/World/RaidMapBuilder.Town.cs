@@ -409,7 +409,13 @@ namespace CloneZ
     }
 }
             b.HouseNumber(doorLx, (3 + town.Rng.Next(60)).ToString());
-            b.OutsideTap(b.HalfD > 4.75f ? 0.6f : 0.3f);   // on the side wall, between its two windows
+            // ---- outdoor‑tap hardware detail ----
+            {
+                float tapOffset = b.HalfD > 4.75f ? 0.6f : 0.3f;
+                Vector3 sideDir = b.Dir(1f, 0f);
+                Vector3 tapPos = door + sideDir * (b.HalfW - tapOffset);
+                DecorExtensions.AddOutdoorTap(town, tapPos, b.HalfD > 4.75f);
+            }
 
             // A driveway beside the house with a dead car on it (about half the houses).
             if (town.Rng.NextDouble() < 0.6)
