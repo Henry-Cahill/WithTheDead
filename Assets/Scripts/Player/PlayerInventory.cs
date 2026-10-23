@@ -62,7 +62,7 @@ namespace CloneZ
         private PlayerSkills _skills;
         private PlayerWounds _wounds;
         private PlayerPanic _panic;
-        private StatMods _modifiers;
+        private StatMods _modifiers; // cached singleton; may be replaced at runtime
         private int _lastStrengthLevel = -1;
         private GridSection _pockets;
         private bool _overflowPending;
@@ -77,6 +77,20 @@ namespace CloneZ
         private PlayerClothing _clothing;
         private PlayerClothing Clothing => _clothing != null ? _clothing : (_clothing = GetComponent<PlayerClothing>());
 
+        // Add a private helper method after Awake()
+    private void EnsureClothingSubscription()
+    {
+        // If the cached reference is still null but a PlayerClothing now exists, cache and subscribe.
+        if (_clothing == null)
+        {
+            var comp = GetComponent<PlayerClothing>();
+            if (comp != null)
+            {
+                _clothing = comp;
+                _clothing.Changed += RebuildSections;
+            }
+        }
+    }
         private void Awake()
         {
             _stats = GetComponent<PlayerStats>();
@@ -94,7 +108,11 @@ namespace CloneZ
         private void OnDestroy()
         {
             if (Inventory != null) Inventory.Changed -= OnInventoryChanged;
-            if (_clothing != null) _clothing.Changed -= RebuildSections;
+                    if (_clothing != null)
+        {
+            _clothing.Changed -= RebuildSections;
+            _clothing = null;
+        }
         }
 
         private void OnInventoryChanged()
@@ -113,8 +131,12 @@ namespace CloneZ
         {
             if (_skills == null) return;
             int strength = _skills.GetLevel(PlayerSkills.Skill.Strength);
-            // Use the cached instance fetched in Awake; the singleton may mutate its fields, but the reference never changes.
-StatMods mods = _modifiers;
+                    // Ensure the clothing subscription if the component appears later (e.g., after loading a saved game)
+        EnsureClothingSubscription();
+// Update the cached PlayerModifiers reference if the singleton instance changes
+        // (no per‑frame allocation, only when the instance is swapped)
+        if (_modifiers != PlayerModifiers.Current) _modifiers = PlayerModifiers.Current;
+        StatMods mods = _modifiers;
             float key = strength * 1000f + mods.CarryCapacity * 100f + mods.CarryBonusKg;
             if (strength == _lastStrengthLevel && Mathf.Abs(key - _lastCapacityKey) < 0.01f) return;
             _lastStrengthLevel = strength;
