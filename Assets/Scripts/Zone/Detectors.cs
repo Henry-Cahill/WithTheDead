@@ -265,15 +265,18 @@ namespace CloneZ
             }
         }
 
-        private float Bearing(Vector3 target)
-        {
-            Vector3 to = target - _d.transform.position;
-            to.y = 0f;
-            Camera cam = Camera.main;
-            Vector3 fwd = cam != null ? cam.transform.forward : _d.transform.forward;
-            fwd.y = 0f;
-            if (fwd.sqrMagnitude < 0.0001f) fwd = _d.transform.forward;
-            return Vector3.SignedAngle(fwd, to, Vector3.up);
-        }
+private Camera _cam; // Cached main camera to avoid per-frame lookup
+
+    private float Bearing(Vector3 target)
+    {
+        Vector3 to = target - _d.transform.position;
+        to.y = 0f;
+        if (_cam == null) _cam = Camera.main; // cache on first use
+        Camera cam = _cam;
+        Vector3 fwd = cam != null ? cam.transform.forward : _d.transform.forward;
+        fwd.y = 0f;
+        if (fwd.sqrMagnitude < 0.0001f) fwd = _d.transform.forward;
+        return Vector3.SignedAngle(fwd, to, Vector3.up);
+    }
     }
 }
