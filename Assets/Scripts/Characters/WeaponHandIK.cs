@@ -41,7 +41,7 @@ namespace CloneZ
         private RigBuilder _builder;
         private Rig _ikRig;
         private TwoBoneIKConstraint _left;
-        private Transform _target, _hint;
+        private Transform _target, _hint, _self;
         // Cached frequently accessed transforms to avoid per‑frame bone lookups
         private Transform _handL, _chest, _gripR;
         private Vector3 _palmOffset;
@@ -53,7 +53,11 @@ namespace CloneZ
         /// <summary>How much the support hand is held by the IK right now (0 with no long gun in hand).</summary>
         public float Weight => _ikRig != null ? _ikRig.weight : 0f;
 
-        private void Awake() => _avatar = GetComponent<PlayerAvatar>();
+        private void Awake()
+    {
+        _avatar = GetComponent<PlayerAvatar>();
+        _self = transform;
+    }
 
         private void TryBuild()
         {
@@ -140,7 +144,7 @@ namespace CloneZ
 
             // The elbow points down and out, under the gun.
             Transform chest = _chest;
-            Transform root = transform;
+            Transform root = _self;
             _hint.position = chest.position - root.right * 0.45f - Vector3.up * 0.35f + root.forward * 0.1f;
 
             _builder.SyncLayers();
