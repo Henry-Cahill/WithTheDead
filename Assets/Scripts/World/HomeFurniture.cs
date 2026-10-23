@@ -305,8 +305,35 @@ bool leftSide = rng.Next(2) == 0;
                     m.Box(scuffPosBs, scuffSizeBs, DecorPalette.Matte(new Color(0.45f, 0.38f, 0.30f)));
                     break;
                 case HomeFurnitureKind.Armchair:
+                {
+                    // base chair mesh
                     FurnitureBuilder.Sofa(m, rng, 0.95f, Fabrics[rng.Next(Fabrics.Length)]);
+                    // 1️⃣ metal arm‑rest knob – left/right variation
+                    bool armKnobLeft = rng.Next(2) == 0;
+                    Vector3 armKnobPos = new Vector3(armKnobLeft ? -0.35f : 0.35f, 0.75f, 0.10f);
+                    Vector3 armKnobSize = new Vector3(0.02f, 0.04f, 0.02f);
+                    m.Box(armKnobPos, armKnobSize, DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
+                    // 2️⃣ fabric tuft button on the backrest centre
+                    Vector3 tuftPos = new Vector3(0f, 0.85f, -0.25f);
+                    m.Cylinder(tuftPos, 0.01f, 0.02f, 6,
+                        DecorPalette.Metal(new Color(0.18f, 0.18f, 0.20f)));
+                    // 3️⃣ thin wooden top trim along the backrest
+                    Vector3 trimPos = new Vector3(0f, 0.90f, -0.28f);
+                    Vector3 trimSize = new Vector3(0.90f, 0.015f, 0.01f);
+                    m.Box(trimPos, trimSize, DecorPalette.Matte(FurnitureBuilder.Walnut));
+                    // 4️⃣ subtle wear scuff on one side of the seat
+                    bool scuffLeft = rng.Next(2) == 0;
+                    float scuffX = scuffLeft ? -0.20f : 0.20f;
+                    Vector3 scuffPos = new Vector3(scuffX, 0.55f, 0f);
+                    Vector3 scuffSize = new Vector3(0.08f, 0.02f, 0.03f);
+                    m.Box(scuffPos, scuffSize, DecorPalette.Matte(new Color(0.45f, 0.38f, 0.30f)));
+                    // 5️⃣ small throw‑pillow near the seat centre
+                    Color pillowCol = Fabrics[rng.Next(Fabrics.Length)];
+                    Vector3 pillowPos = new Vector3(0f, 0.57f, 0.05f);
+                    Vector3 pillowScale = new Vector3(0.15f, 0.07f, 0.12f);
+                    m.Ellipsoid(pillowPos, pillowScale, DecorPalette.Matte(pillowCol), 6, 4);
                     break;
+                }
                 case HomeFurnitureKind.FloorLamp:
                 {
                     bulb = m.ToMeshSpace(StandardLamp(m));
