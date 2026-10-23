@@ -32,12 +32,22 @@ namespace CloneZ
         private const string WarningSign = "Do not use the gas stove while the power's out – risk of carbon buildup.";
         private const string RadioStatic = "A broken radio crackles: '———... all we got left is the howling wind...'";
         private const string Graffiti = "“Keep the fire alive, or the night will swallow you whole” scratched on the back wall.";
+        // New style references – see existing FrostyMorning entry for tone and length.
+        private const string SnowboundCough = "A cough comes up in the cold, the kind that rattles your chest when the wind whistles through cracked windows.";
+        private const string GrandmaLettuce = "Grandma’s scribbled tip: “Wrap lettuce in damp cloth, keep it crisp longer in the freezer’s cold belly.”";
+        private const string CoalStoveWarning = "Keep the coal stove’s fire low after dark – a runaway blaze will melt the roof before the sunrise.";
+        private const string HiddenCache = "A crumpled map tucked under a tin can: “Old barn north of the creek, stash buried beneath the oak. – J.”";
+        // Kitchen note themes: winter hardship, heirloom cooking tips, fire‑safety advice, and a hidden‑supply hint.
         private static readonly string[] KitchenNotes = new[] {
             FrostyMorning,
             OldRecipe,
             WarningSign,
             RadioStatic,
-            Graffiti
+            Graffiti,
+            SnowboundCough,
+            GrandmaLettuce,
+            CoalStoveWarning,
+            HiddenCache
         };
 
         private static readonly Vector3 PointLocal = new Vector3(FurnitureBuilder.SinkBowlX, FurnitureBuilder.SinkDeckY + 0.01f, FurnitureBuilder.SinkBowlZ);
