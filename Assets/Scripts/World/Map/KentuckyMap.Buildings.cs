@@ -396,13 +396,24 @@ if (rng.NextDouble() < 0.15) // ~15 % of chimneys get icing
                 // Build posts (solid to block movement)
                 site.Town.Out.Solid(leftPostCenter).Box(leftPostCenter, postSize, doorYaw, DecorMaterials.WoodFloor(porchWood));
                 site.Town.Out.Solid(rightPostCenter).Box(rightPostCenter, postSize, doorYaw, DecorMaterials.WoodFloor(porchWood));
-                // Top rail (thin box spanning between posts)
-                float railHeight = 0.04f;
-                float railDepth = 0.04f;
-                Vector3 railSize = new Vector3(porchSize.x - 2f * postWidth, railHeight, railDepth);
-                Vector3 railCenter = (leftPostCenter + rightPostCenter) * 0.5f;
-                railCenter.y = leftPostCenter.y + postHeight * 0.5f - railHeight * 0.5f; // near top of posts
-                site.Town.Out.Solid(railCenter).Box(railCenter, railSize, doorYaw, DecorMaterials.WoodFloor(porchWood));
+// Top rail (thin box spanning between posts)
+        float railHeight = 0.04f;
+        float railDepth = 0.04f;
+        Vector3 railSize = new Vector3(porchSize.x - 2f * postWidth, railHeight, railDepth);
+        Vector3 railCenter = (leftPostCenter + rightPostCenter) * 0.5f;
+        railCenter.y = leftPostCenter.y + postHeight * 0.5f - railHeight * 0.5f; // near top of posts
+        site.Town.Out.Solid(railCenter).Box(railCenter, railSize, doorYaw, DecorMaterials.WoodFloor(porchWood));
+        // Add vertical balusters between the posts
+        int balCount = Mathf.Max(2, Mathf.FloorToInt(porchSize.x / 0.20f)); // ~1 baluster per 20 cm, minimum 2
+        float balSpacing = porchSize.x / (balCount + 1);
+        Vector3 balSize = new Vector3(0.02f, postHeight * 0.8f, 0.02f); // 2 cm × 80 % post height × 2 cm depth
+        for (int i = 1; i <= balCount; i++)
+        {
+            Vector3 balPos = leftPostCenter + rightVec * (balSpacing * i);
+            balPos.y = leftPostCenter.y - postHeight * 0.5f + balSize.y * 0.5f; // sit on the rail
+            site.Town.Out.Solid(balPos).Box(balPos, balSize, doorYaw, DecorMaterials.WoodFloor(porchWood));
+            site.Town.PropCollider(balPos, balSize, doorYaw);
+        }
                 // ---- NEW: add a hanging swing with ~30 % chance ----
                 PorchSwingBuilder.Build(site, leftPostCenter, rightPostCenter, doorYaw, porchWood, rng);
             }
