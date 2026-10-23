@@ -9386,8 +9386,9 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 5: Add a subtle wear‑scrape line across the top edge of the heater to hint at usage. Position it just below the gauge: `// Wear scrape – dark thin strip` `m.Box(new Vector3(0f, 0.68f, 0.30f), new Vector3(0.5f, 0.002f, 0.02f), M(new Color(0.12f, 0.12f, 0.13f)));`
   Step 6: (If needed for compilation) Ensure the helper methods `R` (random range) and `Mt`/`M`/`BathGlass` are already in scope (they are used throughout the file). No new usings or references are required.
   Done when: In‑game the office gas water‑heater shows a small matte temperature‑gauge with a glass cover, a thin black needle, a chrome pressure‑relief knob, a brass manufacturer plate, a couple of rust spots and a dark wear‑scrape on its front face. All existing colliders, interaction points and pivots remain unchanged, and no other scripts are modified.
-- [ ] Optimize per‑frame sight raycast mask in Assets/Scripts/Zombies/ZombieAI.cs (class `ZombieAI`, method `CanSee`)
+- [x] Optimize per‑frame sight raycast mask in Assets/Scripts/Zombies/ZombieAI.cs (class `ZombieAI`, method `CanSee`)
   Cache the layer‑mask that excludes the IgnoreRaycast layer instead of rebuilding it each call.
   Add a private static readonly field, e.g. `private static readonly int _sightRaycastMask = ~(1 << CloneZConfig.IgnoreRaycastLayer);`.
   Replace the line `int mask = ~(1 << CloneZConfig.IgnoreRaycastLayer);` in `CanSee` with `int mask = _sightRaycastMask;`.
   The player‑visible behavior stays identical; the only change is that the mask is computed once at type‑initialisation, removing a trivial bit‑shift per zombie per frame.
+  - 02:22 landed by hts-llm in 1.3 min: **Summary**
