@@ -61,6 +61,32 @@ namespace CloneZ
             // recessed drip-groove
             float grooveHeight = 0.002f;
             m.Box(f.P(f.Mid, sillY + sillHeight * 0.5f - capHeight - grooveHeight * 0.5f, outer - sillDepth * 0.5f), f.Size(WindowWidth + 0.02f, grooveHeight, sillDepth), DecorPalette.Matte(FurnitureBuilder.Pine));
+
+            // wooden lintel above the window head
+            float lintelHeight = 0.015f; // metres
+            float lintelDepth = 0.03f;
+            float lintelY = WindowHead + lintelHeight * 0.5f;
+            m.Box(f.P(f.Mid, lintelY, outer - sillDepth * 0.5f), f.Size(WindowWidth, lintelHeight, lintelDepth), wood);
+
+            // dentil blocks along the front of the lintel
+            int dentilCount = Mathf.Max(2, Mathf.FloorToInt(WindowWidth / 0.025f));
+            float dentilSpacing = WindowWidth / dentilCount;
+            float dentilWidth = 0.004f;
+            float dentilDepth = lintelDepth;
+            for (int i = 0; i < dentilCount; i++)
+            {
+                float offsetX = -WindowWidth * 0.5f + dentilSpacing * (i + 0.5f);
+                float dentilHeight = 0.006f + 0.001f * ((float)rng.NextDouble() - 0.5f);
+                float dentilY = lintelY + lintelHeight * 0.5f + dentilHeight * 0.5f;
+                m.Box(f.P(offsetX, dentilY, outer - sillDepth * 0.5f), f.Size(dentilWidth, dentilHeight, dentilDepth), wood);
+            }
+
+            // decorative iron strap under the lintel (period‑correct hardware)
+            float strapHeight = 0.004f;
+            float strapDepth = 0.008f;
+            float strapY = lintelY - lintelHeight * 0.5f - strapHeight * 0.5f;
+            m.Box(f.P(f.Mid, strapY, outer - sillDepth * 0.5f - lintelDepth * 0.5f - strapDepth * 0.5f),
+                f.Size(WindowWidth, strapHeight, strapDepth), rustMetal);
             // irregular stone bumps
             int bumpCount = 3;
             for (int i = 0; i < bumpCount; i++)
