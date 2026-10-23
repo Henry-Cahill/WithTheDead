@@ -58,6 +58,7 @@ namespace CloneZ
         private FixturePart[] _parts;
         private StorageOptions _opt;
         private bool _open;
+        private bool _locked; // true = storage is locked
 
         /// <summary>The storage itself.</summary>
         public LootContainer Container { get; private set; }
@@ -135,10 +136,23 @@ namespace CloneZ
             {
                 if (!_open)
                 {
-                    // Normal open (noisy)
-                    into.Add(new InteractAction(_opt.OpenVerb + " the " + noun, c => { SetOpen(true, true); ShowContents(c); }));
+                    // Lock / Unlock actions (only when the doors are closed)
+                    if (_locked)
+                    {
+                        into.Add(new InteractAction("Unlock the " + noun, c => { SetLocked(false); }));
+                    }
+                    else
+                    {
+                        into.Add(new InteractAction("Lock the " + noun, c => { SetLocked(true); }));
+                    }
+                    // Normal open (noisy) – disabled if locked
+                    var openAction = new InteractAction(_opt.OpenVerb + " the " + noun, c => { SetOpen(true, true); ShowContents(c); });
+                    openAction.DisabledIf(_locked, "Locked");
+                    into.Add(openAction);
                     // Quiet open (no noise)
-                    into.Add(new InteractAction("Open the " + noun + " quietly", c => { SetOpen(true, false); ShowContents(c); }));
+                    var quietOpen = new InteractAction("Open the " + noun + " quietly", c => { SetOpen(true, false); ShowContents(c); });
+                    quietOpen.DisabledIf(_locked, "Locked");
+                    into.Add(quietOpen);
                 }
                 else
                 {
@@ -150,7 +164,10 @@ namespace CloneZ
                     into.Add(new InteractAction(look, ShowContents));
                 }
             }
-            else into.Add(new InteractAction(look, ShowContents));
+            else
+            {
+                into.Add(new InteractAction(look, ShowContents));
+            }
             _opt.ExtraActions?.Invoke(ctx, into);
             // Knock action adds noise without opening the storage (last: the first enabled action is the [E] default)
             into.Add(new InteractAction("Knock on the " + noun, c => { MakeNoise(_opt.Noise); }));
@@ -163,9 +180,26 @@ namespace CloneZ
             ctx.Interactor.SearchOrOpen(Container);
         }
 
-        /// <summary>Opens or closes the doors / drawers (closing also puts the inventory panel away if it shows this).</summary>
+        /// <summary>Locks or unlocks the storage; plays a quiet click sound and notifies the survivor.</summary>
+        private void SetLocked(bool locked)
+        {
+            if (_locked == locked) return;
+            _locked = locked;
+            // optional: play a faint click sound – using existing noise system but with zero radius
+            MakeNoise(0f);
+            // notify the player
+            PlayerInteractor pi = _player ?? PlayerInteractor.Current;
+            pi?.Notify(locked ? "You lock the " + Noun + "." : "You unlock the " + Noun + ".");
+        }
         public void SetOpen(bool open, bool noisy)
         {
+            if (open && _locked)
+            {
+                // cannot open a locked storage – give feedback and abort
+                PlayerInteractor pi = _player ?? PlayerInteractor.Current;
+                pi?.Notify("It’s locked.");
+                return;
+            }
             if (_open == open) return;
             _open = open;
             for (int i = 0; i < _parts.Length; i++)
@@ -180,14 +214,21 @@ namespace CloneZ
             _opt.OnOpenChanged?.Invoke(open);
         }
 
-        public override void CaptureState(FixtureSave save) => save.State = _open ? 1 : 0;
+        public override void CaptureState(FixtureSave save)
+        {
+            // bit 0 = open, bit 1 = locked
+            int state = (_open ? 1 : 0) | (_locked ? 2 : 0);
+            save.State = state;
+        }
 
         public override void RestoreState(FixtureSave save)
         {
             bool open = (save.State & 1) != 0;
+            bool locked = (save.State & 2) != 0;
             _open = open;
+            _locked = locked;
             for (int i = 0; i < _parts.Length; i++)
-                if (_parts[i] != null) _parts[i].SetOpen(open, true);   // FixturePart's flag is "instant" (no noise either way)
+                if (_parts[i] != null) _parts[i].SetOpen(open, true);
             _opt.OnOpenChanged?.Invoke(open);
         }
     }
