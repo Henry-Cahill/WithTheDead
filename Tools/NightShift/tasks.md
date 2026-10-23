@@ -9839,13 +9839,14 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 6: Assets/Scripts/World/WaterSource.cs – WaterSource.BuildBarrel – adjust the final `Rim` call that draws the outer lip so it sits just under the new lid (no visual overlap). Move the call a few lines down after the lid code (it already uses `h` for height, which remains unchanged). No code change needed; the lid simply sits slightly higher than the rim.
   Done when: In‑game the rain barrel shows a wooden, slightly oversized lid perched on the top, with two visible brass hinges on the back, a steel latch strap across the front, and a few rust‑stained patches giving it an aged, period‑correct look. The lid does not affect physics or interaction, and all existing barrel functionality (water fill, float, spigot, gauge, etc.) remains unchanged.
   - 05:57 landed by 1htsserver in 4.2 min: **Changed files**
-- [ ] In Assets/Scripts/World/Fixtures/RaidHomeBath.cs: Cache static look‑ups in RaidHomeBath.Update to avoid per‑frame property calls
+- [x] In Assets/Scripts/World/Fixtures/RaidHomeBath.cs: Cache static look‑ups in RaidHomeBath.Update to avoid per‑frame property calls
   Add two local variables at the start of `Update()` – `bool waterOn = WaterMains.MainsOn;` and `bool housePower = PowerGrid.HousePowered;`.
   Replace `bool running = Running;` with `bool running = _running && waterOn;`.
   Replace every later use of `Running` (the `if (running …)` block) with the local `running`.
   Replace `HotSupply` (which reads `PowerGrid.HousePowered`) with the cached `housePower` inside the fill‑logic: `float supply = housePower ? 1f : 0.05f;`.
   Keep the public `Running` property unchanged for other callers; this change only removes the repeated static look‑ups inside the per‑frame loop.
   Result: the player sees exactly the same water‑filling, draining, cooling and noise behaviour, but the Update no longer queries `WaterMains.MainsOn` and `PowerGrid.HousePowered` each frame, reducing unnecessary property accesses and tiny GC pressure.
+  - 06:17 landed by 0htsserver in 22.4 min: Implemented per‑frame caching for **RaidHomeBath.cs**:
 - [ ] Add a small “repair‑and‑pump” mechanic to Assets/Scripts/World/Fixtures/RaidTownGasPump.cs so that after lifting the nozzle the survivor can repair the pump (once) and then pump a can of gasoline, with state persisted across saves.
   Step 1: RaidTownGasPump.cs – add a new field `private bool _repaired;` Place it next to the existing `_priceTagTaken` declaration.
   Step 2: RaidTownGasPump.cs – persist the new flag In `CaptureState` add the line `save.C = _repaired ? 1f : 0f;` after the existing `save.B = _lifted ? 1f : 0f;`.

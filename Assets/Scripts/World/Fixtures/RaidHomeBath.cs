@@ -126,6 +126,8 @@ namespace CloneZ
         private void Update()
         {
             float dt = Time.deltaTime;
+            bool waterOn = WaterMains.MainsOn;
+            bool housePower = PowerGrid.HousePowered;
             bool running = Running;
             if (_stream != null && _stream.enabled != running) _stream.enabled = running;
 
@@ -135,7 +137,7 @@ namespace CloneZ
             if (running && _plugged && _level < 1f)
             {
                 float inflow = dt * _fillRate;
-                float supply = HotSupply ? 1f : 0.05f;
+                float supply = housePower ? 1f : 0.05f;
                 _heat = _level < 0.01f ? supply : _heat + (supply - _heat) * (inflow / (_level + inflow));
                 _level = Mathf.Min(1f, _level + inflow);
                 if (_level >= 1f && !_toldFull)
