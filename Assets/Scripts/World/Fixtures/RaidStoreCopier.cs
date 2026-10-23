@@ -142,10 +142,8 @@ private static readonly string[] Jams =
                         _originalTaken = true;
                         c.Notify(Originals[_original]);
                     }));
-                    // New action: copy the original sheet left on the glass
-                    into.Add(new InteractAction("Copy original sheet", c => {
-                        c.Notify($"You make a copy of the original sheet: {Originals[_original]}");
-                    }).DisabledIf(_jammed, "It's jammed — clear it first"));
+                // New action: copy the original sheet left on the glass
+                into.Add(CopyOriginal().DisabledIf(_jammed, "It's jammed — clear it first"));
                 }
             }
         }
@@ -170,8 +168,8 @@ private static readonly string[] Jams =
                 if (Random.value < CloneZConfig.RaidCopierJamChance)
                 {
                     _jammed = true;
-                _copyAvailable = false;
-                _currentCopyText = null;
+                    _copyAvailable = false;
+                    _currentCopyText = null;
                     ShowJam(true);
                     c.Notify(GetJamMessage(_said++));
                     return;
@@ -179,6 +177,43 @@ private static readonly string[] Jams =
                 string copyText = _lid != null && _lid.IsOpen
                     ? "With the lid up the copy comes out black round the edges, the page floating in the middle like a window."
                     : Copies[_said++ % Copies.Length];
+                c.Notify(copyText);
+                _copyAvailable = true;
+                _currentCopyText = copyText;
+            };
+            return a;
+        }
+
+        private InteractAction CopyOriginal()
+        {
+            var a = new InteractAction("Copy original sheet")
+                .Timed(CloneZConfig.RaidCopierCopySeconds, "Copying original sheet", HumanoidActivity.Use);
+            a.Begin = c =>
+            {
+                _noiseAt = 0f;
+                c.Notify("The copier whirs, the lid lifts slightly and the rollers begin to grind on the original sheet.");
+            };
+            a.Tick = (c, dt, progress) =>
+            {
+                if (Time.time < _noiseAt) return;
+                _noiseAt = Time.time + CloneZConfig.RaidCopierNoiseInterval;
+                MakeNoise(CloneZConfig.RaidCopierNoise);
+            };
+            a.Run = c =>
+            {
+                MakeNoise(CloneZConfig.RaidCopierNoise);
+                // Use the same jam chance as a normal copy
+                if (Random.value < CloneZConfig.RaidCopierJamChance)
+                {
+                    _jammed = true;
+                    _copyAvailable = false;
+                    _currentCopyText = null;
+                    ShowJam(true);
+                    c.Notify(GetJamMessage(_said++));
+                    return;
+                }
+                // Build a copy text that references the original sheet
+                string copyText = $"Copy of note: {Originals[_original]}";
                 c.Notify(copyText);
                 _copyAvailable = true;
                 _currentCopyText = copyText;
