@@ -115,6 +115,10 @@ namespace CloneZ
         private int _cachedPromptSig;
         private int _menuSignature;
 
+        // Cached pickup prompt to avoid rebuilding each frame
+        private WorldItem _cachedPickupTarget;
+        private string _cachedPickupPrompt = "";
+
         private static readonly int SightMask = ~(1 << CloneZConfig.IgnoreRaycastLayer);
 
 private void Awake()
@@ -362,6 +366,27 @@ else if (kb.qKey.wasPressedThisFrame)
             FixtureTarget = kind == FocusKind.Fixture ? bestFixture : null;
             Target = kind == FocusKind.Container ? bestContainer : null;
             PickupTarget = kind == FocusKind.Pickup ? bestItem : null;
+            // Cache pickup prompt when target changes
+            if (PickupTarget != _cachedPickupTarget)
+            {
+                _cachedPickupTarget = PickupTarget;
+                // Recompute prompt similar to original logic
+                if (PickupTarget != null)
+                {
+                    Inventory inv = _inventory != null ? _inventory.Inventory : null;
+                    ItemDef def = PickupTarget.Def;
+                    string why = null;
+                    if (inv != null && def != null && !inv.WouldFit(def))
+                        why = inv.CurrentWeight + def.Weight > inv.MaxWeight + 1e-4f ? "too heavy" : "no room";
+                    _cachedPickupPrompt = why == null
+                        ? "[E]  Pick up " + PickupTarget.PickupLabel
+                        : "[E]  Pick up " + PickupTarget.PickupLabel + "  (" + why + ")";
+                }
+                else
+                {
+                    _cachedPickupPrompt = "";
+                }
+            }
             switch (kind)
             {
                 case FocusKind.Fixture: FocusPoint = bestFixture.InteractPoint; FocusName = bestFixture.DisplayName; break;
@@ -781,14 +806,7 @@ private void TryPickUp()
                 PromptText = "[1\u2013" + Mathf.Min(9, _menuActions.Count) + "]  Choose   [Q] / [Esc]  Close";
             else if (_focus == FocusKind.Pickup)
             {
-                Inventory inv = _inventory != null ? _inventory.Inventory : null;
-                ItemDef def = PickupTarget.Def;
-                string why = null;
-                if (inv != null && def != null && !inv.WouldFit(def))
-                    why = inv.CurrentWeight + def.Weight > inv.MaxWeight + 1e-4f ? "too heavy" : "no room";
-                PromptText = why == null
-                    ? "[E]  Pick up " + PickupTarget.PickupLabel
-                    : "[E]  Pick up " + PickupTarget.PickupLabel + "  (" + why + ")";
+                PromptText = _cachedPickupPrompt;
             }
             else if (_focus == FocusKind.Container)
                 PromptText = Target.Searched
