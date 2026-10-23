@@ -63,7 +63,7 @@ namespace CloneZ
         private int _climbSide;
         private bool _climbClear;
 
-        private Action<InteractContext> _openAct, _closeAct, _latchAct, _unlatchAct, _curtainAct, _lookAct, _climbAct, _checkAct, _knockAct, _breakAct;
+        private Action<InteractContext> _openAct, _closeAct, _latchAct, _unlatchAct, _curtainAct, _lookAct, _climbAct, _checkAct, _knockAct, _breakAct, _clearDebrisAct;
 
         private static readonly Collider[] s_Hits = new Collider[16];
         private static readonly int BodyMask = ~ (1 << CloneZConfig.IgnoreRaycastLayer);
@@ -112,7 +112,7 @@ namespace CloneZ
             _lookAct = Look;
             _climbAct = Climb;
             _checkAct = c => CheckWindow(c);
-            _breakAct = c => BreakWindow(c);
+            _clearDebrisAct = c => ClearDebris(c);
         }
 
         /// <summary>Makes <paramref name="root"/> (already holding the sash and the curtains, under the window
@@ -160,7 +160,7 @@ namespace CloneZ
             if (_broken)
             {
                 into.Add(new InteractAction("Inspect broken window", c => ctx.Notify("The window is smashed; nothing can be done here.")));
-                return;
+                into.Add(new InteractAction("Clear debris", _clearDebrisAct));
             }
             int side = SideOf(ctx.Position, _point, _normal);
             bool inside = _outSide == 0 || side != _outSide;
@@ -291,7 +291,25 @@ namespace CloneZ
             ApplyBroken();
         }
 
-
+        private void ClearDebris(InteractContext ctx)
+        {
+            if (!_broken)
+            {
+                ctx.Notify("The window is already intact.");
+                return;
+            }
+            // Play a cleaning / repair noise – reuse the generic window noise.
+            MakeNoise(CloneZConfig.WindowNoise);
+            ctx.Notify("You clear the shattered glass and restore the window frame.");
+            _broken = false;
+            // Reset to a safe default: closed, curtains raised, latched.
+            _open = false;
+            _drawn = false;
+            _latched = true;
+            // Re‑enable hidden parts.
+            if (_sash != null) _sash.gameObject.SetActive(true);
+            Apply(true);
+        }
 
         // A renderer switched on or off: the camera's cutaway gathers the wall's parts afresh, so a look shown while
         // the wall is cut away hides with it.

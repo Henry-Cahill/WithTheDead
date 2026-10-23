@@ -126,7 +126,14 @@ namespace CloneZ
                          "Mayor Whitfield asks residents to share firewood; a community pile is set up at the town hall.",
                          "Remember the old Miller barn on County Road 12 – it’s a shelter for stray animals, not people.",
                          "Beware of stray dogs on the highway; they’ve been seen chasing cyclists after dusk.",
-                         "Local legend says the abandoned coal mine tunnel near Willow Creek echoes with the lost miners’ calls – avoid it after dark."),
+                         "Local legend says the abandoned coal mine tunnel near Willow Creek echoes with the lost miners’ calls – avoid it after dark.",
+                        "Remember to keep a spare set of batteries by your lantern; power outages may last through the night.",
+                        "Check the communal well for ice; a thin sheet can mask a dangerous drop‑off.",
+                        "The town fire department has set up a temporary heating hub at the high school gym – bring a blanket.",
+                        "Wild bobcats have been seen near the county road; keep dogs leashed and avoid walking alone after dark.",
+                           "Gather any leftover firewood into a single stack for easier sharing; a shared pile reduces the chance of accidental burns."
+                     ),
+                        
                     Days(2, 3,
                         "We interrupt this programme for a message from the county emergency management office.",
                         "Regular programming has been suspended. Please stay tuned to your local news station.",

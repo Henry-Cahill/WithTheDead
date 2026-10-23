@@ -11,6 +11,7 @@ namespace CloneZ
     [DisallowMultipleComponent]
     public class OutdoorLantern : Interactable
     {
+        private const string BulbItemId = "bulb"; // item id for a lantern bulb
         private HomeLamp _lamp;
         private Vector3 _point, _face, _normal;
 
@@ -37,7 +38,7 @@ namespace CloneZ
             into.Add(new InteractAction("Tap the lantern", Tap));
             into.Add(new InteractAction("Check power", CheckPower));
             into.Add(new InteractAction("Check lantern status", CheckStatus));
-            into.Add(new InteractAction("Toggle lantern switch", ToggleLantern));
+            into.Add(new InteractAction("Repair lantern", RepairLantern));
         }
 
         private void CheckStatus(InteractContext ctx)
@@ -66,20 +67,35 @@ namespace CloneZ
             else if (!PowerGrid.HousePowered) ctx.Notify("Cold glass. " + (PowerGrid.NoPowerReason ?? "There's no power") + ".");
             else ctx.Notify("Cold glass. Its little sensor is waiting for dusk.");
         }
-        private void ToggleLantern(InteractContext ctx)
+        private void RepairLantern(InteractContext ctx)
         {
-            MakeNoise(0.2f);
+            MakeNoise(0.3f);
             if (_lamp == null)
             {
-                ctx.Notify("There's no bulb to switch.");
+                ctx.Notify("There's no lantern fixture to repair.");
                 return;
             }
-            if (!PowerGrid.HousePowered)
+            if (!_lamp.DeadBulb)
             {
-                ctx.Notify("Can't switch – no power.");
+                ctx.Notify("The lantern's bulb is fine already.");
                 return;
             }
-            _lamp.SetSwitchedOn(!_lamp.SwitchedOn);
+            // check for bulb in inventory
+            var inv = ctx.Inventory.Inventory;
+            ItemDef bulbDef = ItemDatabase.Get(BulbItemId);
+            if (bulbDef == null || !inv.Stacks.Exists(s => s.Def == bulbDef))
+            {
+                ctx.Notify("You need a replacement bulb to fix the lantern.");
+                return;
+            }
+            // consume one bulb
+            var stack = inv.Stacks.Find(s => s.Def == bulbDef);
+            inv.Remove(stack, 1);
+            // repair the lamp
+            _lamp.DeadBulb = false;
+            // optionally turn it on so the survivor sees the result
+            _lamp.SetSwitchedOn(true);
+            ctx.Notify("You replace the broken bulb. The lantern flickers to life.");
         }
     }
 }

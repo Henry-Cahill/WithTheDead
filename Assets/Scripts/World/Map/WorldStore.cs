@@ -37,6 +37,8 @@ namespace CloneZ
             var mat = Resources.Load<Material>(KerbMaterialPath);
             return mat ?? Resources.Load<Material>("Materials/DefaultConcrete");
         }
+        /// <summary>Base material for mailboxes (reuses porch wood).</summary>
+        public static Material GetMailboxMaterial() => GetPorchMaterial();
         public static Material GetPorchMaterial()
         {
             if (s_PorchMaterial != null) return s_PorchMaterial;
@@ -175,6 +177,21 @@ namespace CloneZ
                 uint hash = (uint)buildingId ^ 0xA5B357F9u;
                 hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
                 return (hash % 100) < 25; // 25% chance
+            }
+        }
+
+        /// <summary>
+        /// Determine if a building should get a simple mailbox at the front door.
+        /// Deterministic based on the build Id and the building Id.
+        /// Roughly 30 % of residential buildings receive a mailbox, giving a hand‑painted rural feel.
+        /// </summary>
+        public bool HasMailbox(long buildingId)
+        {
+            unchecked
+            {
+                uint hash = (uint)buildingId ^ 0xC0FFEEu;
+                hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
+                return (hash % 100) < 30; // 30% chance
             }
         }
 

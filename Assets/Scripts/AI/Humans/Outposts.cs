@@ -177,7 +177,7 @@ namespace CloneZ
             return false;
         }
 
-        /// <summary>Adds interaction actions for the player based on ownership and capture conditions.</summary>
+        /// <summary>Adds owner‑only actions: abandon the outpost and repair it to extend the lock timer.</summary>
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             Actor me = Actor.LocalPlayer;
@@ -187,6 +187,8 @@ namespace CloneZ
                 into.Add(new InteractAction("Held by " + Factions.NameOf(Owner), null).DisabledIf(true, "Your side holds it"));
                 // Owner can voluntarily abandon the outpost, reverting it to neutral (Vanguard) ownership.
                 into.Add(new InteractAction("Abandon outpost", Abandon).Timed(3f, "Tearing down the flag…"));
+                // Owner can extend the lock period by repairing the flag.
+                into.Add(new InteractAction("Repair outpost", Repair).Timed(4f, "Repairing the flag…"));
                 // Show a quick status summary for any player.
                 into.Add(new InteractAction("Outpost status", ShowStatus));
                 return;
@@ -217,6 +219,17 @@ namespace CloneZ
             _state.LockedUntilUnix = 0;
             Recolour();
             GameEvents.RaiseToast("Outpost abandoned.");
+            ProfileStore.Save();
+        }
+        private void Repair(InteractContext ctx)
+        {
+            // Ensure we have a persistent state object.
+            if (_state == null) _state = OutpostSystem.State(ProfileStore.Account, Id, GameSession.ZoneId, Owner);
+            // Reset the lock timer to the full duration.
+            _state.LockedUntilUnix = ProfileStore.NowUnix + (long)OutpostSystem.LockSeconds;
+            // Update flag colour (unchanged) and inform the player.
+            Recolour();
+            GameEvents.RaiseToast("Outpost repaired – lock extended for 30 minutes.");
             ProfileStore.Save();
         }
 
@@ -388,7 +401,7 @@ Taken(me.Faction, ProfileStore.NowUnix + (long)OutpostSystem.LockSeconds, true, 
 
         public override bool IsAvailable => isActiveAndEnabled && !_dug;
 
-        /// <summary>Adds interaction actions for the player based on ownership and capture conditions.</summary>
+        /// <summary>Adds owner‑only actions: abandon the outpost and repair it to extend the lock timer.</summary>
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             bool trowel = ctx.Inventory != null && ctx.Inventory.Has("trowel");

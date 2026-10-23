@@ -21,6 +21,7 @@ namespace CloneZ
         
         
         private const float Range = 40f, Behind = 3.5f, ConeHalf = 105f, Outer = 95f, Height = 0.05f;
+        private static float _cosConeHalf;
 
         private Mesh _mesh;
         private Vector3[] _verts;
@@ -51,7 +52,8 @@ namespace CloneZ
             }
 
             // Cache the TimeOfDay singleton for later use.
-            _timeOfDay = TimeOfDay.Instance;
+_timeOfDay = TimeOfDay.Instance;
+            _cosConeHalf = Mathf.Cos(ConeHalf * Mathf.Deg2Rad);
 
             _mesh = new Mesh { name = "Vision shade" };
             _mesh.MarkDynamic();
@@ -109,7 +111,7 @@ namespace CloneZ
             {
                 Vector3 dir = _rayDirs[i];
                 Vector3 outer = feet + _rayOuter[i];
-                float max = Vector3.Angle(facing, dir) <= ConeHalf ? Range : Behind;
+                float max = Vector3.Dot(facing, dir) >= _cosConeHalf ? Range : Behind;
                 float d = max;
                 if (Physics.Raycast(eye, dir, out RaycastHit hit, max, Actor.SightMask, QueryTriggerInteraction.Ignore))
                     d = hit.distance + 0.35f;   // the wall itself stays in the light

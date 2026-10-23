@@ -83,6 +83,11 @@ namespace CloneZ
             T("snowdrift", "Snowdrift", 1, "You’ve learned to wade through deep drifts, forged in the harsh countryside.", m => { }),
             T("icebound", "Icebound", 1, "Your boots crunch ice, steadying you in the bleak frost of the old world.", m => { }),
             T("coldfront", "Cold Front", 1, "A sudden cold front sweeps over, and you cling to warmth with stubborn resolve.", m => { }),
+            T("frozen_well", "Frozen Well", 1, "The well’s surface is a sheet of ice, but the water below still holds life for the thirsty.", m => { }, "frostbite"),
+            T("chapel_echo", "Chapel Echo", 1, "A low, mournful hymn drifts from the ruined chapel, steadying nerves in the night.", m => m.PanicRate *= 0.97f),
+            T("sledder", "Sledder", 2, "You know how to haul supplies on a sled, moving faster across the snowy roads.", m => { }, "clumsy"),
+            T("hunter_footprints", "Hunter’s Footprints", 1, "Fresh deer tracks guide you through deep drifts, granting a tiny navigation boost.", m => m.VisibilityMult *= 0.96f),
+            T("emergency_broadcast", "Emergency Broadcast", 1, "A crackling emergency broadcast warns of an incoming storm, urging you to brace.", m => { }, "superstitious"),
             // Kentucky‑winter themed traits
             T("icecave_explorer", "Ice‑Cave Explorer", 2, "You’ve learned to navigate the frozen caverns, moving through deep drifts with confidence.", m => m.NoiseMult *= 0.9f),
             T("snowblind", "Snowblind", -2, "The fresh‑fallen snow blurs your sight, making distant shapes harder to discern.", m => m.NightVision -= 0.1f),

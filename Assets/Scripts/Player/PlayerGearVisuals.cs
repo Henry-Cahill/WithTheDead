@@ -97,10 +97,12 @@ namespace CloneZ
         private float _nvgAngle;
         private readonly Renderer[] _nvgLenses = new Renderer[2];
         private bool _nvgLit;
-        private Renderer _torchLens; // renderer for the flashlight lens
-        private Renderer _torchSwitch; // renderer for the new on‑off switch
-    private bool _torchLit; // whether flashlight is on
-        private Material _torchSwitchMat; // material for the switch (glow when on)
+private Renderer _torchLens; // renderer for the flashlight lens
+private Renderer _torchSwitch; // renderer for the new on‑off switch
+private bool _torchLit; // whether flashlight is on
+private Material _torchSwitchMat; // material for the switch (glow when on)
+private Renderer _torchLED; // renderer for the LED indicator
+private Material _torchLEDMat; // base (off) material for the LED
 
         private void Awake()
         {
@@ -418,6 +420,22 @@ PlayerGearParts.Box(root, "FrontWearScratch", new Vector3(0f, lidY + 0.04f, lidZ
             for (float y = y0; y <= y1 + 1e-4f; y += 0.02f) front = Mathf.Max(front, _torso.Surface(y, 0f, _inflate, true));
             front += 0.008f;
             PlayerGearParts.Box(root, "Panel", new Vector3(0f, (y0 + y1) * 0.5f, front + panelD * 0.5f), new Vector3(0.30f, y1 - y0, panelD), shade, true);
+            // Added detailed front panel features
+            float panelY = (y0 + y1) * 0.5f; // centre Y of the panel
+            float panelZ = front + panelD * 0.5f; // centre Z of the panel front face
+            Material wearMat = CloneZUtil.Mat(HumanoidLook.Shade(TorchColor, 0.55f), 0.2f); // subtle wear colour
+
+            // Thin reinforcement bar across the top of the panel (stiffening rib)
+            PlayerGearParts.Box(root, "FrontBar", new Vector3(0f, panelY + 0.05f, panelZ + 0.003f), new Vector3(0.30f * 0.95f, 0.004f, 0.006f), hardware);
+            // Small metal logo plate centred on the front bar
+            PlayerGearParts.Box(root, "LogoPlate", new Vector3(0f, panelY + 0.03f, panelZ + 0.003f), new Vector3(0.07f, 0.018f, 0.004f), hardware);
+            // Reflective safety strip that glows faintly
+            var reflectMat = PlayerGearParts.Glow(ReflectStripColor);
+            PlayerGearParts.Box(root, "ReflectStrip", new Vector3(0f, panelY - 0.02f, panelZ + 0.0035f), new Vector3(0.30f * 0.60f, 0.002f, 0.001f), reflectMat);
+            // Subtle wear scar across the front surface
+            PlayerGearParts.Box(root, "FrontWearScratch", new Vector3(0f, panelY + 0.04f, panelZ + 0.0045f), new Vector3(0.30f * 0.80f, 0.001f, 0.001f), wearMat);
+            // Central rivet on the reinforcement bar
+            PlayerGearParts.Box(root, "BarRivet", new Vector3(0f, panelY + 0.05f, panelZ + 0.006f), new Vector3(0.014f, 0.014f, 0.004f), hardware);
 
             // A row of four magazine pouches with flaps.
             float pz = front + panelD + 0.022f;
@@ -701,15 +719,21 @@ PlayerGearParts.Box(root, "FrontWearScratch", new Vector3(0f, lidY + 0.04f, lidZ
             PlayerGearParts.Tube(root, "Body", new Vector3(x, y - 0.005f, z + 0.025f), Vector3.up, 0.1f, 0.016f, metal, true);
             Vector3 head = new Vector3(x, y + 0.05f, z + 0.036f);
             PlayerGearParts.Tube(root, "Head", head, Vector3.forward, 0.05f, 0.021f, metal, true);
-            // tactile on‑off switch on the flashlight body
-            var switchObj = PlayerGearParts.Box(root, "Switch",
-                new Vector3(x - 0.006f, y - 0.002f, z + 0.03f),
-                new Vector3(0.006f, 0.008f, 0.004f), dark);
-            _torchSwitch = switchObj.GetComponent<Renderer>();
-            // thin reinforcement ring around the head
-            PlayerGearParts.Box(root, "HeadRing",
-                new Vector3(x, y + 0.07f, z + 0.045f),
-                new Vector3(0.022f, 0.001f, 0.004f), dark);
+// tactile on‑off switch on the flashlight body
+var switchObj = PlayerGearParts.Box(root, "Switch",
+    new Vector3(x - 0.006f, y - 0.002f, z + 0.03f),
+    new Vector3(0.006f, 0.008f, 0.004f), dark);
+_torchSwitch = switchObj.GetComponent<Renderer>();
+// tiny LED indicator that glows when the flashlight is on
+var ledObj = PlayerGearParts.Box(root, "LED",
+    new Vector3(x - 0.008f, y - 0.001f, z + 0.032f),
+    new Vector3(0.004f, 0.004f, 0.001f), dark);
+_torchLED = ledObj.GetComponent<Renderer>();
+_torchLEDMat = dark; // remember the dark material
+// thin reinforcement ring around the head
+PlayerGearParts.Box(root, "HeadRing",
+    new Vector3(x, y + 0.07f, z + 0.045f),
+    new Vector3(0.022f, 0.001f, 0.004f), dark);
             Transform lens = PlayerGearParts.Tube(root, "Lens", head + new Vector3(0f, 0f, 0.0255f), Vector3.forward, 0.003f, 0.0175f, TorchGlass);
             _torchLens = lens.GetComponent<Renderer>();
 
@@ -733,6 +757,9 @@ PlayerGearParts.Box(root, "FrontWearScratch", new Vector3(0f, lidY + 0.04f, lidZ
             _torchLens.sharedMaterial = lit ? PlayerGearParts.Glow(TorchGlowColor) : TorchGlass;
             if (_torchSwitch != null)
                 _torchSwitch.sharedMaterial = lit ? PlayerGearParts.Glow(TorchGlowColor) : _torchSwitchMat;
+            // set LED colour
+            if (_torchLED != null)
+                _torchLED.sharedMaterial = lit ? PlayerGearParts.Glow(TorchGlowColor) : _torchLEDMat;
         }
 
         private static Material TorchGlass => CloneZUtil.Mat(new Color(0.62f, 0.66f, 0.64f), 0.92f);

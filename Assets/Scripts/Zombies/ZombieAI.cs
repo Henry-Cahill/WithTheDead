@@ -75,6 +75,8 @@ namespace CloneZ
         private const float FlashlightBeamRange = 22f;
         private const float FlashlightVisionMultiplier = 1.6f;
         private static readonly float FlashlightBeamCos = Mathf.Cos(25f * Mathf.Deg2Rad);
+        // Cache raycast mask that excludes the IgnoreRaycast layer for zombie sight checks.
+        private static readonly int _sightRaycastMask = ~(1 << CloneZConfig.IgnoreRaycastLayer);
 
         /// <summary>Updates the internal NavMeshAgent reference and other components.</summary>
         private void Awake()
@@ -350,7 +352,7 @@ namespace CloneZ
 
             // Line of sight: obstacles (Default layer) block; other zombies (Ignore
             // Raycast layer) are excluded from the mask so they don't block sight.
-            int mask = ~(1 << CloneZConfig.IgnoreRaycastLayer);
+            int mask = _sightRaycastMask;
             Vector3 eye = transform.position + Vector3.up * 1.6f;
             Vector3 chest = target.transform.position + Vector3.up * 1.0f;
             if (Physics.Linecast(eye, chest, out RaycastHit hit, mask, QueryTriggerInteraction.Ignore))

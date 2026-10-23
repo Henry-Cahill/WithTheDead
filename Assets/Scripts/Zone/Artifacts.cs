@@ -25,8 +25,10 @@ namespace CloneZ
         private Transform _visual;
         private Light _glow;
         private float _revealedUntil, _songAt;
-        // Tracks the last time the artifact was studied to enforce a cooldown.
-        private float _lastStudyTime;
+// Tracks the last time the artifact was studied to enforce a short cooldown.
+            private float _lastStudyTime;
+            /// <summary>Tracks the last time this artifact was donated – enforces a short cooldown.</summary>
+            private float _lastDonateTime;
 
         public override string DisplayName => Revealed ? ArtifactCatalog.NameOf(ArtifactId) : "";
         public override bool IsAvailable => isActiveAndEnabled && Revealed;
@@ -108,14 +110,14 @@ namespace CloneZ
             }
         }
 
-/// <summary>Collect the actions the player can perform on this artifact (take, inspect, study).</summary>
+        /// <summary>Collect the actions the player can perform on this artifact (take, inspect, study, donate).</summary>
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
         {
             into.Add(new InteractAction("Take " + ArtifactCatalog.NameOf(ArtifactId), Take).Timed(1.2f, "Easing it free..."));
             into.Add(new InteractAction("Inspect " + ArtifactCatalog.NameOf(ArtifactId), Inspect).Timed(0.5f, "Looking closely..."));
             into.Add(new InteractAction("Study " + ArtifactCatalog.NameOf(ArtifactId), Study).Timed(3f, "Examining closely…"));
+            into.Add(new InteractAction("Donate " + ArtifactCatalog.NameOf(ArtifactId), Donate).Timed(1.5f, "Offering it up..."));
         }
-
         private void Take(InteractContext ctx)
         {
             if (this == null || ctx.Inventory == null) return;
@@ -140,6 +142,35 @@ namespace CloneZ
             }
             else GameEvents.RaiseToast(ArtifactCatalog.NameOf(ArtifactId) + " — " + ArtifactCatalog.KnownCount(ArtifactId) + " properties known.");
             ZoneExposure.Add(0.01f);
+            Destroy(gameObject);
+        }
+
+
+        /// <summary>Donate the artifact to the Zone, gaining exposure and a world‑wide cue.</summary>
+        private void Donate(InteractContext ctx)
+        {
+            // Prize cannot be donated.
+            if (IsPrize)
+            {
+                ctx.Notify("The Sunken Star is too precious to give up.");
+                return;
+            }
+            // Cooldown – 60 seconds between donations.
+            if (Time.time - _lastDonateTime < 60f)
+            {
+                ctx.Notify("You need a short break before donating another artifact.");
+                return;
+            }
+            _lastDonateTime = Time.time;
+            // Remove the artifact without adding to inventory.
+            GameEvents.RaiseToast($"{ArtifactCatalog.NameOf(ArtifactId)} donated – the Zone feels safer.");
+            // Grant a larger exposure boost than the normal take (0.02 instead of 0.01).
+            ZoneExposure.Add(0.02f);
+            // Small sound cue for the sacrifice.
+            Sfx.PlayUI(SfxIds.GearRustle, 0.6f);
+            // Optional world event to let other survivors hear it.
+            GameEvents.RaiseWorldEvent(transform.position, 120f, "artifact_donated");
+            // Clean up the object.
             Destroy(gameObject);
         }
 

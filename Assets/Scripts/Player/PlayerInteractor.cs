@@ -117,6 +117,8 @@ namespace CloneZ
 
         // Cached pickup prompt to avoid rebuilding each frame
         private WorldItem _cachedPickupTarget;
+        // Cache the currently focused ground‑item so we only rebuild its prompt when it changes.
+        private WorldItem _cachedInspectItem;
         private string _cachedPickupPrompt = "";
 
         private static readonly int SightMask = ~(1 << CloneZConfig.IgnoreRaycastLayer);
@@ -267,11 +269,13 @@ else if (kb.qKey.wasPressedThisFrame)
                 if (_ui.IsOpen) _ui.Close();
                 else _ui.OpenInventoryOnly();
             }
-            else if (kb.rKey.wasPressedThisFrame)
+            else if (kb.fKey.wasPressedThisFrame)
             {
-                // "R" = rummage nearest container when not busy and not already focused on a container.
-                if (!IsBusy && _focus != FocusKind.Container)
-                    AutoSearchNearestContainer();
+                // F inspects the focused ground item without picking it up.
+                if (_focus == FocusKind.Pickup)
+                {
+                    InspectFocusedItem();
+                }
             }
             else if (kb.escapeKey.wasPressedThisFrame)
             {
@@ -371,21 +375,24 @@ else if (kb.qKey.wasPressedThisFrame)
             {
                 _cachedPickupTarget = PickupTarget;
                 // Recompute prompt similar to original logic
-                if (PickupTarget != null)
-                {
-                    Inventory inv = _inventory != null ? _inventory.Inventory : null;
-                    ItemDef def = PickupTarget.Def;
-                    string why = null;
-                    if (inv != null && def != null && !inv.WouldFit(def))
-                        why = inv.CurrentWeight + def.Weight > inv.MaxWeight + 1e-4f ? "too heavy" : "no room";
-                    _cachedPickupPrompt = why == null
-                        ? "[E]  Pick up " + PickupTarget.PickupLabel
-                        : "[E]  Pick up " + PickupTarget.PickupLabel + "  (" + why + ")";
-                }
-                else
-                {
-                    _cachedPickupPrompt = "";
-                }
+                    if (PickupTarget != null)
+                    {
+                        Inventory inv = _inventory != null ? _inventory.Inventory : null;
+                        ItemDef def = PickupTarget.Def;
+                        string why = null;
+                        if (inv != null && def != null && !inv.WouldFit(def))
+                            why = inv.CurrentWeight + def.Weight > inv.MaxWeight + 1e-4f ? "too heavy" : "no room";
+                        // Existing prompt for picking up
+                        string basePrompt = why == null
+                            ? "[E]  Pick up " + PickupTarget.PickupLabel
+                            : "[E]  Pick up " + PickupTarget.PickupLabel + "  (" + why + ")";
+                        // New inspect suffix – always available
+                        _cachedPickupPrompt = basePrompt + " [F] Inspect";
+                    }
+                    else
+                    {
+                        _cachedPickupPrompt = "";
+                    }
             }
             switch (kind)
             {
@@ -778,20 +785,30 @@ else if (kb.qKey.wasPressedThisFrame)
         }
 
         /// <summary>Adds the focused ground item to the pack (as much as fits); any overflow stays put.</summary>
-private void TryPickUp()
-    {
-        if (PickupTarget == null || _inventory == null) return;
-        ItemDef def = PickupTarget.Def;
-        Inventory inv = _inventory.Inventory;
-        if (inv != null && def != null && !inv.WouldFit(def, PickupTarget.Extra))
+        private void TryPickUp()
         {
-            // Warn the player why the item can't be picked up.
-            string why = inv.CurrentWeight + def.Weight > inv.MaxWeight + 1e-4f ? "too heavy" : "no room";
-            Notify($"Can't pick up {PickupTarget.PickupLabel}: {why}");
-            return;
+            if (PickupTarget == null || _inventory == null) return;
+            ItemDef def = PickupTarget.Def;
+            Inventory inv = _inventory.Inventory;
+            if (inv != null && def != null && !inv.WouldFit(def, PickupTarget.Extra))
+            {
+                // Warn the player why the item can't be picked up.
+                string why = inv.CurrentWeight + def.Weight > inv.MaxWeight + 1e-4f ? "too heavy" : "no room";
+                Notify($"Can't pick up {PickupTarget.PickupLabel}: {why}");
+                return;
+            }
+            _inventory.PickUp(PickupTarget);
         }
-        _inventory.PickUp(PickupTarget);
-    }
+
+        /// <summary>Shows a short notice with the focused ground item's name (or description).</summary>
+        private void InspectFocusedItem()
+        {
+            if (PickupTarget == null) return;
+            string name = PickupTarget.Def?.DisplayName ?? PickupTarget.PickupLabel;
+            Notify($"Item: {name}");
+        }
+
+
         #endregion
 
         private void UpdatePrompt()

@@ -483,55 +483,52 @@ for (int v = 0; v < 4; v++)
             m.Box(new Vector3(px + 0.2f, 0.36f, pz), new Vector3(0.02f, 0.72f, pd), carcass);
             m.Box(new Vector3(px, 0.36f, pz - pd * 0.5f + 0.01f), new Vector3(0.42f, 0.72f, 0.02f), carcass);
             // ------------------- new desk accessories -------------------
-            // 1️⃣ Chrome pull handle on each drawer front (front edge at z = pz ± 0.01)
-            float handleY = 0.45f; // height of handle centre
-            float handleZ = pz + (side > 0 ? -0.015f : 0.015f);
-            float handleX = px;
-            m.Box(new Vector3(handleX, handleY, handleZ), new Vector3(0.06f, 0.015f, 0.004f), Mt(Chrome));
+            // 1️⃣ Chrome wall‑clock on the left‑hand side of the desk top
+            Vector3 clockPos = new Vector3(px - 0.15f, 0.77f, pz + 0.09f);
+            m.Box(clockPos, new Vector3(0.08f, 0.02f, 0.02f), Mt(Chrome)); // frame
+            m.Box(clockPos + new Vector3(0f, 0.005f, 0.011f), new Vector3(0.06f, 0.01f, 0.001f), Gl(new Color(0.9f,0.85f,0.5f))); // emissive face
 
-            // tiny metal stop plate at inner edge of the front drawer (adds visual depth)
-            float stopZ = pz - (side > 0 ? 0.018f : -0.018f);
-            m.Box(new Vector3(handleX, handleY - 0.015f, stopZ), new Vector3(0.06f, 0.004f, 0.001f), Mt(Chrome));
+            // 2️⃣ Chrome pen‑cup (cylinder) near the right‑hand front edge
+            Vector3 cupPos = new Vector3(px + 0.18f, 0.75f, pz - 0.12f);
+            m.Cylinder(cupPos, 0.01f, 0.06f, 12, Mt(Chrome));
 
-            // 2️⃣ Cable‑clamp (small U‑shaped metal piece) under the top rail, centred
-            Vector3 clampPos = new Vector3(0f, 0.755f, 0f);
-            m.Box(clampPos + new Vector3(-0.12f, 0f, 0f), new Vector3(0.02f, 0.008f, 0.04f), Mt(Chrome));
-            m.Box(clampPos + new Vector3( 0.12f, 0f, 0f), new Vector3(0.02f, 0.008f, 0.04f), Mt(Chrome));
-            m.Box(clampPos + new Vector3(0f, 0.004f, 0f), new Vector3(0.28f, 0.004f, 0.04f), Mt(Chrome));
-
-            // 3️⃣ Desktop lamp on the right‑hand side of the work surface
-            if (Chance(rng, 0.7f))
+            // 3️⃣ Thin stack of paper sheets (random height)
+            int sheetCount = 2 + rng.Next(3);
+            float sheetBaseY = 0.78f;
+            for (int s = 0; s < sheetCount; s++)
             {
-                Vector3 lampBase = new Vector3(w * 0.45f - 0.15f, 0.78f, d * 0.35f);
-                m.Cylinder(lampBase, 0.025f, 0.02f, 12, Mt(Chrome)); // base
-                m.Cylinder(lampBase + new Vector3(0f, 0.02f, 0f), 0.015f, 0.45f, 12, Mt(new Color(0.55f,0.55f,0.55f))); // pole
-                m.Ellipsoid(lampBase + new Vector3(0f, 0.47f, 0f), new Vector3(0.07f,0.045f,0.07f), Mt(new Color(0.25f,0.23f,0.20f)), 8, 4); // shade
-                m.Sphere(lampBase + new Vector3(0f, 0.49f, 0f), 0.018f, Gl(new Color(1f,0.94f,0.80f))); // bulb (emissive)
-                // tiny switch on the side of the base
-                m.Box(lampBase + new Vector3(0.03f, 0.01f, 0f), new Vector3(0.008f,0.018f,0.003f), Mt(Chrome));
+                float y = sheetBaseY + s * 0.008f;
+                float sheetW = R(rng, 0.22f, 0.28f);
+                float sheetD = R(rng, 0.18f, 0.24f);
+                m.Box(new Vector3(px, y, pz - 0.05f), new Vector3(w, 0.006f, d), M(Paper));
             }
 
-            // 4️⃣ Small potted plant on the left‑hand side (optional)
-            if (Chance(rng, 0.5f))
+            // 4️⃣ Coffee mug (white ceramic) with a wisp of steam
+            Vector3 mugPos = new Vector3(px - 0.07f + R(rng, -0.01f, 0.01f), 0.76f, pz - 0.05f);
+            float mugHeight = R(rng, 0.08f, 0.11f);
+            float mugRadius = 0.03f;
+            m.Cylinder(mugPos, mugRadius, mugHeight, 12, M(new Color(0.95f,0.94f,0.92f)));
+            Vector3 steamPos = mugPos + new Vector3(0f, mugHeight + 0.01f, 0f);
+            m.Cylinder(steamPos, 0.008f, 0.03f, 8, Gl(new Color(0.9f,0.9f,0.85f)));
+
+            // 5️⃣ Occasionally (30% chance) place a tiny potted plant on the far‑right side of the desk
+            if (Chance(rng, 0.3f))
             {
-                Vector3 potPos = new Vector3(w * -0.45f + 0.12f, 0.79f, d * -0.3f);
-                // pot – dark matte cylinder
+                Vector3 potPos = new Vector3(px + 0.22f, 0.79f, pz - 0.08f);
+                // Pot – dark matte cylinder
                 m.Cylinder(potPos, 0.04f, 0.02f, 10, M(new Color(0.20f,0.18f,0.16f)));
-                // soil – slightly lighter matte cylinder
-                m.Cylinder(potPos + new Vector3(0f,0.01f,0f), 0.036f, 0.005f, 8, M(new Color(0.30f,0.25f,0.20f)));
-                // plant – few tapered green cylinders
+                // Soil – slightly lighter cylinder
+                m.Cylinder(potPos + new Vector3(0f,0.01f,0f), 0.036f, 0.005f, 8, M(new Color(0.30f,0.28f,0.24f)));
+                // Plant – three tapered green ellipsoids
                 for (int p = 0; p < 3; p++)
                 {
                     float ang = R(rng, -15f, 15f);
-                    Vector3 dir = Yaw(ang) * new Vector3(0.02f,0f,0f);
-                    m.Cylinder(potPos + new Vector3(0f,0.015f,0f) + dir, 0.01f, 0.08f, 8, Mt(new Color(0.15f,0.60f,0.10f)));
+                    Vector3 dir = Yaw(ang) * new Vector3(0.015f,0f,0f);
+                    m.Ellipsoid(potPos + new Vector3(0f,0.015f,0f) + dir, new Vector3(0.01f,0.025f,0.01f), Mt(new Color(0.15f,0.55f,0.18f)), 8, 4);
                 }
             }
 
-            // 5️⃣ Wall‑clock on the back panel of the desk (emissive face)
-            Vector3 clockPos = new Vector3(0f, 1.0f, -d * 0.5f + 0.005f);
-            m.Box(clockPos, new Vector3(0.25f, 0.25f, 0.008f), Gs(new Color(0.10f,0.10f,0.12f))); // frame
-            m.FlatUV(clockPos, 0.19f, 0.19f, 0f, Gl(new Color(0.90f,0.85f,0.70f)), new Rect(0f,0f,1f,1f));
+            // ----- original desk geometry continuation -----
             m.Box(new Vector3(px, 0.02f, pz), new Vector3(0.42f, 0.04f, pd), carcass);
             m.Box(new Vector3(px, 0.38f, pz - pd * 0.5f + 0.022f), new Vector3(0.38f, 0.66f, 0.004f), M(c * 0.35f));
             for (int i = 0; i < 2; i++)
@@ -725,6 +722,25 @@ for (int v = 0; v < 4; v++)
             if (Chance(rng, 0.5)) m.Cylinder(new Vector3(sinkX - SteelColdTap.x - 0.07f, SteelDeckY + 0.01f, SteelColdTap.z - 0.05f), 0.03f, 0.12f, 8, M(Paper));
             m.Box(new Vector3(sinkX + SteelColdTap.x, 0.98f, SteelColdTap.z), new Vector3(0.04f, 0.04f, 0.04f), chrome);
             KitchenTapHead(m, new Vector3(sinkX - SteelColdTap.x, SteelColdTap.y, SteelColdTap.z), TapHotRed);
+            // 1️⃣ Pop‑up drain stopper: a small chrome disc that lifts out of the bowl
+            float stopperY = SteelSinkBottom + 0.01f; // just above the bowl bottom
+            m.Cylinder(new Vector3(sinkX, stopperY, SteelSinkZ), 0.02f, 0.005f, 12, Mt(Chrome));
+            // 2️⃣ Drain lever: a tiny chrome lever beside the bowl with a small knob
+            float leverX = sinkX - 0.08f;
+            float leverY = stopperY + 0.02f;
+            float leverZ = SteelSinkZ;
+            m.Box(new Vector3(leverX, leverY, leverZ), new Vector3(0.005f, 0.03f, 0.12f), Mt(Chrome)); // the lever arm
+            m.Box(new Vector3(leverX, leverY + 0.03f, leverZ - 0.015f), new Vector3(0.015f, 0.015f, 0.01f), Mt(Chrome)); // the knob
+            // 3️⃣ Soap dispenser: a small white plastic cylinder with a little label
+            Vector3 soapPos = new Vector3(sinkX + 0.12f, 0.90f, SteelSinkZ + 0.08f);
+            m.Cylinder(soapPos, 0.03f, 0.12f, 12, M(new Color(0.95f, 0.95f, 0.93f)));
+            m.Box(soapPos + new Vector3(0f, 0.065f, 0f), new Vector3(0.025f, 0.005f, 0.03f), Mt(new Color(0.20f, 0.20f, 0.20f)));
+            // 4️⃣ Chrome towel‑bar: a thin horizontal bar where a dry towel can hang
+            Vector3 barPos = new Vector3(sinkX, 0.95f, SteelSinkZ - 0.15f);
+            m.Box(barPos, new Vector3(0.30f, 0.008f, 0.03f), Mt(Chrome));
+            // 5️⃣ Dry towel: a folded paper‑like rectangle clinging to the bar
+            Vector3 towelPos = barPos + new Vector3(0f, 0.015f, 0f);
+            m.Box(towelPos, new Vector3(0.12f, 0.015f, 0.05f), M(Paper));
 
             // Under the bowl: the waste, its trap and the supply pipes.
             Surf pvc = G(new Color(0.84f, 0.84f, 0.80f));

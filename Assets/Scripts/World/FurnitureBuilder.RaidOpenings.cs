@@ -385,15 +385,36 @@ Surf brass = Mt(Brass);
             // left wooden jamb (weathered timber)
             m.Box(l.P(mid - halfW - 0.01f, 0.65f, side * 0.02f),
                 new Vector3(0.02f, 1.30f, 0.02f), M(wood));
+            // bottom wooden trim on left jamb
+            m.Box(l.P(mid - halfW - 0.01f, 0.03f, side * 0.02f),
+                new Vector3(0.02f, 0.06f, 0.02f), M(wood));
             // right wooden jamb
             m.Box(l.P(mid + halfW + 0.01f, 0.65f, side * 0.02f),
                 new Vector3(0.02f, 1.30f, 0.02f), M(wood));
+            // bottom wooden trim on right jamb
+            m.Box(l.P(mid + halfW + 0.01f, 0.03f, side * 0.02f),
+                new Vector3(0.02f, 0.06f, 0.02f), M(wood));
             // top lintel, slightly wider than the opening
             m.Box(l.P(mid, 1.32f, side * 0.02f),
                 new Vector3(width + 0.04f, 0.04f, 0.02f), M(wood));
             // dark‑steel hinge (period‑correct hardware)
             m.Box(l.P(mid - halfW + 0.04f, 1.20f, side * 0.045f),
                 new Vector3(0.01f, 0.04f, 0.008f), Mt(DarkSteel));
+            // left‑top iron corner cap
+            m.Box(l.P(mid - halfW - 0.01f, 1.30f, side * (0.02f + 0.009f)),
+                new Vector3(0.018f, 0.018f, 0.018f), Mt(DarkSteel));
+            // right‑top iron corner cap
+            m.Box(l.P(mid + halfW + 0.01f, 1.30f, side * (0.02f + 0.009f)),
+                new Vector3(0.018f, 0.018f, 0.018f), Mt(DarkSteel));
+            // door kick‑plate (metal strip across the bottom)
+            m.Box(l.P(mid, 0.04f, side * 0.02f),
+                new Vector3(width, 0.02f, 0.01f), Mt(DarkSteel));
+            // wear strip above kick‑plate
+            m.Box(l.P(mid, 0.062f, side * 0.02f),
+                new Vector3(width, 0.004f, 0.008f), Mt(DarkSteel));
+            // brass wear emboss on lever handle
+            m.Box(l.P(mid + halfW - 0.07f, 0.90f, side * (0.045f + 0.006f)),
+                new Vector3(0.008f, 0.004f, 0.002f), Mt(Brass));
             // brass lever handle
             m.CylinderX(l.P(mid + halfW - 0.07f, 0.90f, side * 0.045f),
                 0.006f, 0.12f, 10, Mt(Brass), 0f);

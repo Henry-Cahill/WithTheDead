@@ -223,7 +223,7 @@ namespace CloneZ
     {
         public string Key;
         public int State;
-        public float A, B;
+        public float A, B, C;
         public string Text;
     }
 }

@@ -342,7 +342,41 @@ namespace CloneZ
             float lockY = DoorTop * 0.5f + 0.30f; // around knob height
             float lockX = o0 - 0.04f;
             float lockZ = 0f;
-                     m.Box(f.P(lockX, lockY, lockZ), new Vector3(0.015f, 0.05f, 0.02f), DecorPalette.Matte(TrimWhite * 0.55f));
+                      m.Box(f.P(lockX, lockY, lockZ), new Vector3(0.015f, 0.05f, 0.02f), DecorPalette.Matte(TrimWhite * 0.55f));
+                    // Top wooden jamb cap – runs across the doorway just under the lintel.
+                    float capTopY = DoorTop - 0.01f; // 1 cm below the top edge
+                    Vector3 capTopSize = new Vector3(gap + 0.04f, 0.018f, 0.012f);
+                    m.Box(f.P(f.Mid, capTopY, 0f), capTopSize, DecorPalette.Matte(TrimWhite * 0.95f));
+
+                    // Bottom wooden jamb cap – sits on the floor edge.
+                    float capBotY = FloorTop * 0.5f + 0.011f; // half floor thickness + 1 cm
+                    Vector3 capBotSize = new Vector3(gap + 0.04f, 0.018f, 0.012f);
+                     m.Box(f.P(f.Mid, capBotY, 0f), capBotSize, DecorPalette.Matte(TrimWhite * 0.95f));
+
+                     // Rust‑stained nail heads on the left and right jambs.
+                     int nailCount = rng.Next(0, 3);
+                     for (int i = 0; i < nailCount; i++)
+                     {
+                         float nailY = FloorTop * 0.5f + 0.04f + (float)rng.NextDouble() * 0.12f;
+                         float leftX = o0 - 0.03f + (float)rng.NextDouble() * 0.01f;
+                         float rightX = o1 + 0.03f + (float)rng.NextDouble() * 0.01f;
+                         Vector3 nailSize = new Vector3(0.018f, 0.018f, 0.006f);
+                         Color nailColor = TrimWhite * 0.6f;
+                         m.Box(f.P(leftX, nailY, 0f), nailSize, DecorPalette.Matte(nailColor));
+                         m.Box(f.P(rightX, nailY, 0f), nailSize, DecorPalette.Matte(nailColor));
+                     }
+
+                     // Metal strike plate (behind the lock) – slightly recessed, darkened.
+                     float strikeZ = -0.005f; // recessed into the jamb
+                     Vector3 strikeSize = new Vector3(0.014f, 0.045f, 0.008f);
+                     m.Box(f.P(lockX, lockY, strikeZ), strikeSize, DecorPalette.Matte(new Color(0.48f, 0.41f, 0.36f) * 0.7f));
+
+                    // Optional weathered top cap variation.
+                    if (rng.NextDouble() < 0.3)
+                    {
+                        // Slightly weathered top cap.
+                        m.Box(f.P(f.Mid, capTopY, 0f), capTopSize, DecorPalette.Matte(TrimWhite * 0.85f));
+                    }
                      // Door‑bell button (brass‑tinted metal)
                      float bellY = lockY + 0.12f; // sit above the lock plate
                      float bellX = lockX; // same X as the lock plate

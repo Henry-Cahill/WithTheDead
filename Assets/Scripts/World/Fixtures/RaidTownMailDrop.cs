@@ -12,7 +12,7 @@ namespace CloneZ
     public class RaidTownMailDrop : Interactable
     {
 
-        // What can be made out through the chute, in turn. All original flavour.
+// What can be made out through the chute, in turn. All original flavour.
         private static readonly string[] Letters =
         {
             "A drift of envelopes. The top one is addressed to the county tax office in a careful hand, stamped and sealed. Somebody still meant to pay.",
@@ -43,13 +43,25 @@ namespace CloneZ
             "A folded note, penciled hurriedly: “Do not trust the man in the blue coat. He’s feeding the dead.”",
             "A weather‑alert handout, stamped “County Emergency”: “Blizzard warning – winds 45 mph, zero visibility after midnight. Stay sheltered.”",
             "A brief obituary clipping, printed in stark type: “Mrs. Eleanor Whitaker, beloved baker, 78. Services at St. Luke’s, 2 PM Saturday.”",
-            	};
+        };
 
-        private Vector3 _point;
-        private int _read;
-        private bool _isEmpty;
-        private Color _originalColor;
-        private MeshRenderer _renderer;
+        // Additional flavour text for box notes
+        private static readonly string[] BoxNotes =
+        {
+            "A faded sketch of the town’s main street, pencilled in by a child who dreamed of a future before the snow.",
+            "A torn flyer announcing a “Winter dance at the community hall – dress warm, bring a partner.” No date.",
+            "A crumpled memo from the sheriff: “Patrol the north road nightly. Keep the barricades stocked.”",
+            "A weather‑log sheet, entries hand‑written: “Jan 12 – 2 in. snow, wind 30 mph. Jan 13 – clear, bitter cold.”",
+            "A handwritten thank‑you note, ink bleeding: “To the volunteers who kept the lights on. You’re the town’s heartbeat.”",
+            "A faded newspaper clipping: “Local farmer wins ‘Best Harvest’ award – celebration postponed due to blizzard.”"
+        };
+
+private Vector3 _point;
+         private int _read;
+         private int _historyRead;
+         private bool _isEmpty;
+         private Color _originalColor;
+         private MeshRenderer _renderer;
 
         public override string DisplayName => "Mail drop box";
         public override Vector3 InteractPoint => _point;
@@ -63,7 +75,8 @@ namespace CloneZ
             var m = go.AddComponent<RaidTownMailDrop>();
             m._point = point;
             m._read = (seed & 0x7fff) % Letters.Length;
-                        m._renderer = m.GetComponent<MeshRenderer>();
+                         m._historyRead = ((seed >> 1) & 0x7fff) % BoxNotes.Length;
+                         m._renderer = m.GetComponent<MeshRenderer>();
             if (m._renderer != null) m._originalColor = m._renderer.sharedMaterial.color;
             return m;
         }
@@ -76,8 +89,8 @@ namespace CloneZ
             into.Add(new InteractAction("Read the collection times", c => c.Notify(
                 "LAST COLLECTION 5 PM WEEKDAYS, NOON SATURDAY. Taped under it in marker: NO PICK-UP UNTIL FURTHER NOTICE.")));
             into.Add(new InteractAction("Inspect the box", c => c.Notify("The blue paint is chipped and the metal groans with each gust of wind.")));
-            // Preview the next letter without consuming it
             into.Add(new InteractAction("Read next letter (preview)", PeekNext).Timed(0.8f, "Peeking into the chute", HumanoidActivity.Use));
+            into.Add(new InteractAction("Read box history", ReadHistory));
         }
 
         private bool IsEmpty() => _read >= Letters.Length;
@@ -110,6 +123,18 @@ namespace CloneZ
                 if (_renderer != null)
                     _renderer.sharedMaterial.color = Color.Lerp(_originalColor, Color.gray, 0.6f);
             }
+        }
+        
+        private void ReadHistory(InteractContext ctx)
+        {
+            MakeNoise(CloneZConfig.FixtureNoiseSmall);
+            if (BoxNotes.Length == 0)
+            {
+                ctx.Notify("There are no notes left.");
+                return;
+            }
+            ctx.Notify(BoxNotes[_historyRead]);
+            _historyRead = (_historyRead + 1) % BoxNotes.Length;
         }
     }
 }

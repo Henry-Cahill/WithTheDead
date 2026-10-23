@@ -161,7 +161,8 @@ namespace CloneZ
                 }
                 if (Chance(rng, 0.4)) m.Rod(s + dir * 0.05f + Vector3.up * 0.04f, s + dir * l * 0.6f + Vector3.up * 0.04f, r0 * 0.35f, M(SnowWhite));
             }
-            m.Rod(new Vector3(0f, trunkH * 0.95f, 0f), new Vector3(R(rng, -0.4f, 0.4f), height, R(rng, -0.4f, 0.4f)), r0 * 0.35f, M(bark), 5);
+            // Fixed stray ')' that caused a compile error in the final Rod call.
+m.Rod(new Vector3(0f, trunkH * 0.95f, 0f), new Vector3(R(rng, -0.4f, 0.4f), height, R(rng, -0.4f, 0.4f)), r0 * 0.35f, M(bark), 5);
         }
 
         /// <summary>A snow-laden pine: dark stacked cones with pale tips (scenery past the fence).</summary>
@@ -252,7 +253,8 @@ namespace CloneZ
                 for (int i = 0; i < n; i++)
                 {
                     float x = -len * 0.5f + off + bw * (i + 0.5f);
-                    m.Ellipsoid(new Vector3(x, bh * 0.5f + c * bh * 0.92f, R(rng, -0.03f, 0.03f)), new Vector3(bw * 1.04f, bh * 1.25f, 0.38f), Yaw(R(rng, -6f, 6f)), M(V(bag, rng, 0.1f)), 6, 3);
+                    // Fixed stray ')' that caused a compile error in the Ellipsoid call for sandbag walls.
+m.Ellipsoid(new Vector3(x, bh * 0.5f + c * bh * 0.92f, R(rng, -0.03f, 0.03f)), new Vector3(bw * 1.04f, bh * 1.25f, 0.38f), Yaw(R(rng, -6f, 6f)), M(V(bag, rng, 0.1f)), 6, 3);
                 }
             }
             m.Box(new Vector3(0f, courses * bh * 0.92f + 0.04f, 0f), new Vector3(len - 0.2f, 0.06f, 0.3f), M(SnowWhite));
@@ -421,16 +423,32 @@ namespace CloneZ
             m.CylinderX(new Vector3(0f, 1.26f, 0.05f), 0.11f, 0.48f, 8, Mt(box), 90f);
             m.Box(new Vector3(0.12f, 1.3f, -0.05f), new Vector3(0.02f, 0.18f, 0.04f), M(new Color(0.7f, 0.12f, 0.1f)));
         m.Box(new Vector3(0f, 1.38f, 0.05f), new Vector3(0.12f, 0.03f, 0.4f), M(SnowWhite));
+        // Coordinated mailbox front details
+        // Thin metal latch on front‑upper edge
+        m.Box(new Vector3(0f, 1.31f, 0.285f), new Vector3(0.03f, 0.02f, 0.005f), Mt(V(new Color(0.5f, 0.5f, 0.5f), rng, 0.07f)));
+        // Small keyhole cylinder projecting outward
+        m.Cylinder(new Vector3(0f, 1.22f, 0.295f), 0.01f, 0.025f, 6, Mt(V(new Color(0.4f, 0.4f, 0.4f), rng, 0.05f)), Quaternion.Euler(90f, 0f, 0f), 0.8f);
+        // Side name‑plate on right‑hand edge
+        m.Box(new Vector3(0.115f, 1.20f, 0.05f), new Vector3(0.015f, 0.03f, 0.001f), Mt(V(new Color(0.55f, 0.50f, 0.45f), rng, 0.06f)));
+        // Rusted bolt on left‑hand edge near lower middle
+        Color rustCol = V(new Color(0.55f, 0.30f, 0.20f), rng, 0.07f);
+        m.Cylinder(new Vector3(-0.115f, 1.16f, 0.05f), 0.01f, 0.02f, 6, Mt(rustCol), Quaternion.identity, 0.8f);
+        // Optional graffiti patch on rear side (30% chance)
+        if (Chance(rng, 0.3f))
+        {
+            Color graffCol = V(new Color(0.80f, 0.20f, 0.20f), rng, 0.10f);
+            m.Box(new Vector3(0f, 1.25f, -0.22f), new Vector3(0.10f, 0.015f, 0.001f), M(graffCol));
+        }
         // Optional mail‑flag – 60 % chance to appear, colour varies per instance
         if (Chance(rng, 0.6f))
         {
             // thin pole attached to the right side of the mailbox
             m.Box(new Vector3(0.09f, 1.25f, 0.05f), new Vector3(0.02f, 0.22f, 0.02f), Mt(new Color(0.25f, 0.25f, 0.26f)));
             // flag rectangle – size 0.08 m × 0.015 m, positioned at pole top, colour varies with rng
-Color flagCol = V(new Color(0.80f, 0.15f, 0.12f), rng, 0.07f);
-                    // flag rectangle – attach to pole top, thin rectangle
-                    m.Box(new Vector3(0.09f + 0.04f, 1.36f, 0.05f), new Vector3(0.08f, 0.015f, 0.01f), M(flagCol));
-                }
+            Color flagCol = V(new Color(0.80f, 0.15f, 0.12f), rng, 0.07f);
+                        // flag rectangle – attach to pole top, thin rectangle
+                        m.Box(new Vector3(0.09f + 0.04f, 1.36f, 0.05f), new Vector3(0.08f, 0.015f, 0.01f), M(flagCol));
+        }
     }
 
 

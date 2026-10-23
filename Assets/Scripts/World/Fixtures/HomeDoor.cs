@@ -77,7 +77,7 @@ namespace CloneZ
         // True when the door has been broken; it can no longer be locked and its solid parts are removed.
         private bool _broken;
 
-        private Action<InteractContext> _openAct, _closeAct, _lockAct, _unlockAct, _rattleAct, _peepAct, _knockAct;
+        private Action<InteractContext> _openAct, _closeAct, _lockAct, _unlockAct, _rattleAct, _peepAct, _knockAct, _listenAct;
 
         private static readonly Collider[] s_Hits = new Collider[16];
         private static readonly int BodyMask = (1 << 0) | (1 << CloneZConfig.IgnoreRaycastLayer);
@@ -112,6 +112,7 @@ namespace CloneZ
             _rattleAct = Rattle;
             _peepAct = Peep;
             _knockAct = Knock;
+            _listenAct = Listen;
         }
 
         /// <summary>Makes <paramref name="root"/> (already holding the leaves, under the doorway <paramref name="piece"/>)
@@ -199,7 +200,7 @@ namespace CloneZ
                     .Timed(2f, "Bashing the door", HumanoidActivity.Use));
             }
 
-            into.Add(new InteractAction("Knock on the door", _knockAct));
+            into.Add(new InteractAction("Listen at the door", _listenAct));
         // Check lock state without trying to open
         if (!_open) into.Add(new InteractAction("Check the door", ctx => ctx.Notify(_locked ? "The door is locked." : "The door is unlocked.")));
         // Inspect the lock type when on the lock side of a shut door
@@ -348,6 +349,18 @@ namespace CloneZ
             bool farSide = _lockSide != 0 && SideOf(ctx.Position, _point, _normal) != _lockSide;
             ctx.Notify(farSide ? "You knock. Nobody answers \u2014 nobody living, anyway."
                 : "You rap on the door. The sound carries \u2014 anything nearby will have heard it.");
+        }
+
+        private void Listen(InteractContext ctx)
+        {
+            // Use the same range as the peephole view; hearing is plausible through a thin door.
+            float range = CloneZConfig.DoorPeepRange;
+            int n = Lookout.Count(_point, _point, _normal, range, out float nearest);
+            string msg;
+            if (n == 0) msg = "You hear nothing but the wind.";
+            else if (n == 1) msg = "You hear a shuffling footstep nearby.";
+            else msg = $"You hear {Lookout.Number(n)} shuffling footsteps near the door.";
+            ctx.Notify(msg);
         }
 
         public override void CaptureState(FixtureSave save) => save.State = (_open ? 1 : 0) | (_locked ? 2 : 0) | (_broken ? 4 : 0);

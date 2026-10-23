@@ -115,6 +115,25 @@ namespace CloneZ
                 m.Ellipsoid(dir * 0.3f + Vector3.up * 0.03f, new Vector3(0.05f, 0.05f, 0.05f), M(b), 6, 3);
             }
             m.Cylinder(new Vector3(0f, 0.07f, 0f), 0.025f, 0.36f, 6, Mt(Chrome));
+            // metal foot‑ring under seat – width matches seat, thin height
+            m.Box(new Vector3(0f, 0.45f, 0f), new Vector3(0.48f, 0.004f, 0.46f), Mt(Chrome));
+            // vertical lumbar‑support bar on the back‑rest
+            m.Box(new Vector3(0f, 0.52f, -0.15f), new Vector3(0.02f, 0.12f, 0.02f), Mt(Chrome));
+            // caster wheels – rubber tire with a tiny chrome hub
+            Vector3[] wheelOffsets = new Vector3[] {
+                new Vector3( 0.05f, 0f, 0.05f),
+                new Vector3(-0.05f, 0f, 0.05f),
+                new Vector3( 0.05f, 0f,-0.05f),
+                new Vector3(-0.05f, 0f,-0.05f)
+            };
+            foreach (var baseOff in wheelOffsets) {
+                Vector3 jitter = new Vector3(R(rng, -0.005f, 0.005f), 0f, R(rng, -0.005f, 0.005f));
+                Vector3 pos = baseOff + jitter;
+                // rubber tire
+                m.Cylinder(pos, 0.03f, 0.015f, 8, M(new Color(0.12f, 0.12f, 0.13f)));
+                // tiny chrome hub (centered on same position, slightly thinner)
+                m.Cylinder(pos, 0.012f, 0.004f, 6, Mt(Chrome));
+            }
             m.Cylinder(new Vector3(0f, 0.43f, 0f), 0.012f, 0.008f, 6, Mt(Chrome));
             m.Box(new Vector3(0f, 0.46f, 0.02f), new Vector3(0.48f, 0.08f, 0.46f), M(f));
             // subtle stitching – two thin raised lines across the seat
@@ -254,6 +273,58 @@ namespace CloneZ
             Surf body = military ? M(wood) : DecorMaterials.Planks(wood);
             Vector3 c = at + new Vector3(0f, size.y * 0.5f, 0f);
             m.Box(c, size, q, body);
+            // ----- metal nail corners -----
+            Vector3[] cornerSigns = new Vector3[]
+            {
+                new Vector3(-1f, 1f, -1f), // left‑back
+                new Vector3( 1f, 1f, -1f), // right‑back
+                new Vector3(-1f, 1f,  1f), // left‑front
+                new Vector3( 1f, 1f,  1f)  // right‑front
+            };
+            foreach (var s in cornerSigns)
+            {
+                // nail shank (chrome, 2 mm radius, 15 mm tall)
+                Vector3 shankBase = c + q * new Vector3(
+                    s.x * (size.x * 0.5f - 0.005f),
+                    size.y * 0.5f - 0.015f,
+                    s.z * (size.z * 0.5f - 0.005f));
+                m.Cylinder(shankBase, 0.002f, 0.015f, 6, Mt(Chrome));
+                // nail head (chrome, 4 mm radius, 2 mm thick)
+                Vector3 headPos = shankBase + new Vector3(0f, 0.015f, 0f);
+                m.Cylinder(headPos, 0.004f, 0.002f, 6, Mt(Chrome));
+            }
+
+            // ----- metal nail mid‑edges (long sides) -----
+            bool longSideX = size.x >= size.z;
+            float edgeOffsetX = longSideX ? (size.x * 0.5f - 0.005f) : (size.z * 0.5f - 0.005f);
+            float edgeOffsetZ = longSideX ? (size.z * 0.5f - 0.005f) : (size.x * 0.5f - 0.005f);
+            Vector3[] midEdgeSigns = new Vector3[]
+            {
+                new Vector3(-1f, 1f, 0f), // left centre
+                new Vector3( 1f, 1f, 0f)  // right centre
+            };
+            foreach (var s in midEdgeSigns)
+            {
+                Vector3 shankBase = c + q * new Vector3(
+                    s.x * edgeOffsetX,
+                    size.y * 0.5f - 0.015f,
+                    s.z * edgeOffsetZ);
+                m.Cylinder(shankBase, 0.002f, 0.015f, 6, Mt(Chrome));
+                Vector3 headPos = shankBase + new Vector3(0f, 0.015f, 0f);
+                m.Cylinder(headPos, 0.004f, 0.002f, 6, Mt(Chrome));
+            }
+
+            // ----- occasional rust streak near a random corner nail -----
+            if (Chance(rng, 0.12f))
+            {
+                // use first corner as reference
+                Vector3 rustPos = c + q * new Vector3(
+                    -1f * (size.x * 0.5f - 0.03f),
+                    size.y * 0.5f - 0.02f,
+                    -1f * (size.z * 0.5f - 0.01f));
+                Vector3 rustSize = new Vector3(0.02f, 0.003f, 0.001f);
+                m.Box(rustPos, rustSize, M(new Color(0.55f, 0.33f, 0.28f)));
+            }
             Color bat = wood * 0.78f;
             float t = 0.045f;
             for (int sx = -1; sx <= 1; sx += 2)

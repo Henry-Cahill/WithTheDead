@@ -22,6 +22,9 @@ namespace CloneZ
         private Renderer _sprayA, _sprayB;
         private Collider _stall;
         private bool _on, _doorOpen;
+        private bool _heaterOn = true; // true = hot water, false = cold water
+        private static readonly Color _hotSprayColor = new Color(1f, 0.6f, 0.5f); // warm reddish tint
+        private static readonly Color _coldSprayColor = new Color(0.5f, 0.6f, 1f); // cool bluish tint
         private bool _inside, _turnedOnToShower, _hasEntry, _flick;
         private PlayerInteractor _playerInteractor;
         private Vector3 _enteredFrom;
@@ -47,7 +50,7 @@ namespace CloneZ
         /// <summary>Radius around the shower that provides warmth.</summary>
         public float WarmthRadius => CloneZConfig.ShowerWarmthRadius;
         /// <summary>The amount of warmth the shower provides when running and hot.</summary>
-        public float Warmth => Running && Hot ? CloneZConfig.ShowerWarmth : 0f;
+        public float Warmth => Running && _heaterOn && Hot ? CloneZConfig.ShowerWarmth : 0f;
         #endregion
 
         protected override void OnEnable()
@@ -192,19 +195,28 @@ namespace CloneZ
                 else if (!Running) ctx.Notify("The shower is off.");
                 else ctx.Notify(Hot ? "Hot water is flowing." : "Cold water is flowing.");
             }));
-            if (_inside)
+            if (Running)
             {
-                into.Add(new InteractAction("Turn off water", c => Turn(c, false)));
+                into.Add(new InteractAction(_heaterOn ? "Switch to cold water" : "Switch to hot water",
+                    c => ToggleHeater()));
             }
         }
 
-        private void Turn(InteractContext ctx, bool on)
+private void ToggleHeater()
         {
-            _turnedOnToShower = false;
-            SetOn(on, false);
-            if (!on) return;
-            if (!WaterMains.MainsOn) ctx.Notify("The pipes knock and shudder, but nothing comes out. The water's off.");
-            else if (!Hot) ctx.Notify("It runs cold and stays cold \u2014 no power for the water heater.");
+            _heaterOn = !_heaterOn;
+            UpdateSprayColor();
+            // Inform the survivor of the change
+            var ctx = PlayerInteractor.Current?.Context;
+            if (ctx != null)
+                ctx.Notify(_heaterOn ? "The water warms up." : "The water turns cold.");
+        }
+
+        private void UpdateSprayColor()
+        {
+            var col = _heaterOn ? _hotSprayColor : _coldSprayColor;
+            if (_sprayA != null) _sprayA.material.color = col;
+            if (_sprayB != null) _sprayB.material.color = col;
         }
 
         private void SetOn(bool on, bool instant)
@@ -214,8 +226,15 @@ namespace CloneZ
             if (_lever != null) _lever.SetOpen(on, instant);
             if (!instant) MakeNoise(CloneZConfig.ShowerMixerNoise);
             if (!Running) ShowSpray(false, false);
+            else UpdateSprayColor();
         }
 
+        private void Turn(InteractContext ctx, bool on)
+        {
+            _turnedOnToShower = false;
+            SetOn(on, false);
+            if (on && !WaterMains.MainsOn) ctx.Notify("The pipes knock and shudder, but nothing comes. The water's off.");
+        }
         private void SetDoor(bool open, bool instant)
         {
             if (_doorOpen == open && !instant) return;
@@ -310,13 +329,14 @@ if (!WaterMains.MainsOn)
         }
 
         public override void CaptureState(FixtureSave save)
-            => save.State = (_doorOpen ? 1 : 0) | (_on && !_turnedOnToShower ? 2 : 0) | 4;
+            => save.State = (_doorOpen ? 1 : 0) | (_on && !_turnedOnToShower ? 2 : 0) | (_heaterOn ? 8 : 0) | 4;
 
         public override void RestoreState(FixtureSave save)
         {
             if ((save.State & 4) == 0) return;
             _turnedOnToShower = false;
             _closeDoorAt = -1f;
+            _heaterOn = (save.State & 8) != 0;
             SetOn((save.State & 2) != 0, true);
             SetDoor((save.State & 1) != 0, true);
         }

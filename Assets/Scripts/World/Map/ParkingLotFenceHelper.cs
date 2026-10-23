@@ -15,6 +15,9 @@ namespace CloneZ
         private static readonly Vector3 PostSize = new Vector3(0.04f, 0.5f, 0.04f);
         // horizontal bar dimensions (thickness; length will be set per segment)
         private static readonly Vector3 BarThickness = new Vector3(0.02f, 0.02f, 0.02f);
+        // height of the lower and upper horizontal rails measured from the ground (metres)
+        private const float LowerRailHeight = 0.25f;
+        private const float UpperRailHeight = 0.40f;
         // latch bar thickness (metres) – a thin metal piece that hangs across the gate
         private const float LatchThickness = 0.02f;
 // metal cap dimensions (width, height, depth) placed atop each post
@@ -42,6 +45,28 @@ namespace CloneZ
             latchMesh.Box(latchCentre, latchSize, gateYaw, MetalSurf);
         }
 
+        /// <summary>
+        /// Adds a horizontal rail between two fence posts.
+        /// </summary>
+        /// <param name="into">OutdoorBatches to receive the geometry.</param>
+        /// <param name="a">Start point of the edge (2‑D).</param>
+        /// <param name="b">End point of the edge (2‑D).</param>
+        /// <param name="y">Base ground height of the fence.</param>
+        /// <param name="railHeight">Height from ground at which the rail centre sits.</param>
+        private static void AddRail(OutdoorBatches into, Vector2 a, Vector2 b, float y, float railHeight)
+        {
+            float span = Vector2.Distance(a, b);
+            // yaw of the rail (degrees, clockwise from +X)
+            float yaw = -Mathf.Atan2(b.y - a.y, b.x - a.x) * Mathf.Rad2Deg;
+            Vector2 mid2D = (a + b) * 0.5f;
+            // rail thickness uses the same Y thickness as BarThickness.y
+            Vector3 railSize = new Vector3(span, BarThickness.y, BarThickness.z);
+            // centre is at the computed height plus half the rail thickness so it sits on the intended level
+            Vector3 centre = KentuckyMap.To3(mid2D, y + railHeight);
+            var railMesh = into.Solid(centre);
+            railMesh.Box(centre, railSize, yaw, MetalSurf);
+        }
+
 
         // Adds a “No Parking” sign at the lot entrance.
         private static void AddEntranceSign(OutdoorBatches into, Vector2 pos, float y, float yaw)
@@ -66,7 +91,10 @@ namespace CloneZ
             // Create a post at each sampled position.
             foreach (Vector2 pos in sampled)
             {
-                Vector3 postCentre = KentuckyMap.To3(pos, y + PostSize.y * 0.5f);
+                // apply a tiny random offset (±5 cm) so the fence looks hand‑built
+                Vector2 jitter = new Vector2(Random.Range(-0.05f, 0.05f), Random.Range(-0.05f, 0.05f));
+                Vector2 jitteredPos = pos + jitter;
+                Vector3 postCentre = KentuckyMap.To3(jitteredPos, y + PostSize.y * 0.5f);
                 var postMesh = into.Solid(postCentre);
                 postMesh.Box(postCentre, PostSize, 0f, MetalSurf);
                 // Add metal cap atop the post
@@ -110,8 +138,9 @@ namespace CloneZ
                 Vector3 barSize = new Vector3(length, BarThickness.y, BarThickness.z);
                 float barYaw = -Mathf.Atan2(b.y - a.y, b.x - a.x) * Mathf.Rad2Deg;
                  Vector3 barCentre = KentuckyMap.To3(barMid2D, y + PostSize.y + BarThickness.y * 0.5f);
-                var barMesh = into.Solid(barCentre);
-                barMesh.Box(barCentre, barSize, barYaw, MetalSurf);
+                // add lower and upper horizontal rails for short‑span segments
+                AddRail(into, a, b, y, LowerRailHeight);
+                AddRail(into, a, b, y, UpperRailHeight);
             }
         }
     }

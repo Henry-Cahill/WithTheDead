@@ -222,9 +222,31 @@ namespace CloneZ
         {
             Color top = V(new Color(0.48f, 0.34f, 0.20f), rng, 0.06f);
             Color legs = new Color(0.20f, 0.24f, 0.30f);
-            m.Box(new Vector3(0f, 0.88f, 0f), new Vector3(1.8f, 0.07f, 0.75f), M(top));
+            // rivet pattern on the tabletop – small chrome cylinders in a grid
+            int rivetRows = 3 + rng.Next(2); // 3‑4 rows
+            int rivetCols = 5 + rng.Next(3); // 5‑7 columns
+            float startX = -0.85f + 0.1f;
+            float startZ = -0.35f + 0.1f;
+            float spacingX = 0.3f;
+            float spacingZ = 0.2f;
+            for (int r = 0; r < rivetRows; r++)
+            {
+                for (int c = 0; c < rivetCols; c++)
+                {
+                    float x = startX + c * spacingX + (float)rng.NextDouble() * 0.02f - 0.01f;
+                    float z = startZ + r * spacingZ + (float)rng.NextDouble() * 0.02f - 0.01f;
+                    // thin cylinder as rivet, protruding slightly above the top surface
+                    m.Cylinder(new Vector3(x, 0.91f, z), 0.003f, 0.01f, 6, Mt(Chrome), Quaternion.identity);
+                }
+            }
             for (int i = 0; i < 4; i++)
                 m.Box(new Vector3(i % 2 == 0 ? -0.85f : 0.85f, 0.43f, i < 2 ? -0.32f : 0.32f), new Vector3(0.05f, 0.86f, 0.05f), M(legs));
+            // leg‑caps – tiny chrome squares at the foot of each leg
+            for (int i = 0; i < 4; i++)
+            {
+                Vector3 legPos = new Vector3(i % 2 == 0 ? -0.85f : 0.85f, 0.43f, i < 2 ? -0.32f : 0.32f);
+                m.Box(legPos + new Vector3(0f, 0.01f, 0f), new Vector3(0.02f, 0.02f, 0.02f), Mt(Chrome));
+            }
             m.Box(new Vector3(0f, 0.18f, 0f), new Vector3(1.7f, 0.03f, 0.66f), M(top * 0.8f));
             m.Box(new Vector3(0f, 1.42f, -0.35f), new Vector3(1.8f, 0.95f, 0.03f), M(new Color(0.55f, 0.42f, 0.28f)));
             for (int i = 0; i < 9; i++)
@@ -233,7 +255,24 @@ namespace CloneZ
                 float hh = R(rng, 0.12f, 0.3f);
                 m.Box(new Vector3(x, R(rng, 1.25f, 1.6f), -0.32f), new Vector3(R(rng, 0.03f, 0.06f), hh, 0.03f), Quaternion.Euler(0f, 0f, R(rng, -20f, 20f)), Mt(new Color(0.35f, 0.36f, 0.38f)));
             }
-            m.Box(new Vector3(0.75f, 0.98f, 0.3f), new Vector3(0.18f, 0.14f, 0.2f), M(new Color(0.2f, 0.28f, 0.42f)));
+            // pull‑handle on the drawer front (chrome cylinder)
+            // (original drawer front remains)
+            Vector3 handlePos = new Vector3(0.75f, 0.98f, 0.38f) + new Vector3((float)rng.NextDouble()*0.004f-0.002f, 0f, (float)rng.NextDouble()*0.004f-0.002f);
+            m.Cylinder(handlePos, 0.005f, 0.04f, 6, Mt(Chrome), Quaternion.Euler(0f,0f,90f));
+            // small wall‑sign attached to the back of the bench (matte wood with chrome border)
+            Surf signMat = DecorPalette.Matte(new Color(0.38f,0.34f,0.30f));
+            Vector3 signPos = new Vector3(0f, 0.95f, -0.38f) + new Vector3((float)rng.NextDouble()*0.01f-0.005f, (float)rng.NextDouble()*0.01f-0.005f, 0f);
+            m.Box(signPos, new Vector3(0.3f,0.12f,0.02f), signMat);
+            // random wear scratch on the top surface (thin dark rectangle)
+            if (Chance(rng,0.4))
+            {
+                float sx = R(rng, -0.75f, 0.75f);
+                float sz = R(rng, -0.35f, 0.35f);
+                float w = 0.02f + (float)rng.NextDouble()*0.02f;
+                float h = 0.004f + (float)rng.NextDouble()*0.003f;
+                var dark = Mt(new Color(0.15f,0.15f,0.15f));
+                m.Box(new Vector3(sx, 0.891f, sz), new Vector3(w,h,0.001f), dark);
+            }
             m.Box(new Vector3(0.75f, 0.98f, 0.45f), new Vector3(0.04f, 0.04f, 0.16f), Mt(Chrome));
             m.Box(new Vector3(-0.5f, 0.96f, 0.0f), new Vector3(0.5f, 0.1f, 0.22f), G(new Color(0.65f, 0.12f, 0.1f)));
             m.Box(new Vector3(-0.5f, 1.03f, 0.0f), new Vector3(0.3f, 0.03f, 0.03f), M(Black));

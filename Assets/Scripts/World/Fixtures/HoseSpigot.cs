@@ -19,10 +19,13 @@ namespace CloneZ
         private FixturePart _handle;
         private Renderer _trickle;
 private bool _open;
+        private int _notesRead;
             private bool _openedToWater;   // opened just for a watering, to be closed again after
             private float _nextCheck;
             private float _autoCloseAt; // game‑time at which the tap will auto‑close (0 = no timer)
-            private const float AutoCloseDelay = 300f; // 5 minutes in seconds
+            private const int NotesShift = 1; // bits start after the open flag
+        private const int NotesMask = 0x1E; // four bits (max 15 notes)
+        private const float AutoCloseDelay = 300f; // 5 minutes in seconds
 
         // Flavor: collection of period‑correct notes that can be read from the tap.
         private static readonly string[] _tapNotes = new[]
@@ -70,7 +73,7 @@ private bool _open;
             s._spout = spout;
             s._face = face;
             s._normal = normal;
-            s._key = KeyFor("outsidetap", point);
+            s._notesRead = 0;
             return s;
         }
 
@@ -147,7 +150,15 @@ private bool _open;
                     c.Notify("You remember to shut the tap.");
                 }
             };
-            into.Add(coil);
+            var readNote = new InteractAction("Read tap note", c =>
+            {
+                int idx = _notesRead % _tapNotes.Length;
+                c.Notify(_tapNotes[idx]);
+                _notesRead++;
+                if (_notesRead >= _tapNotes.Length)
+                    c.Notify("You've read all the notes; the old house feels a little less lonely.");
+            });
+            into.Add(readNote);
         }
 
 
@@ -215,11 +226,18 @@ private void Turn(InteractContext ctx, bool open)
             _autoCloseAt = 0f; // ensure no stray timer remains
         }
 
-        public override void CaptureState(FixtureSave save) => save.State = _open && !_openedToWater ? 1 : 0;
+        public override void CaptureState(FixtureSave save)
+        {
+            // bit 0 = open flag, bits 1‑4 = notes‑read count
+            int openBit = _open && !_openedToWater ? 1 : 0;
+            int notesBits = (_notesRead << NotesShift) & NotesMask;
+            save.State = openBit | notesBits;
+        }
 
         public override void RestoreState(FixtureSave save)
         {
             _openedToWater = false;
+            _notesRead = (save.State & NotesMask) >> NotesShift;
             SetOpen((save.State & 1) != 0, true);
         }
     }

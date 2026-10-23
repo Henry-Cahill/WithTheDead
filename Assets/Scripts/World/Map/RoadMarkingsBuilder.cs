@@ -21,6 +21,10 @@ namespace CloneZ
         private const float LampPoleRadius = 0.05f; // half‑width of pole (metres)
         private const float LampPoleHeight = 2.5f; // pole height (metres)
         private const float LampHeadSize = 0.30f; // width/depth of glass head (metres)
+    /// <summary>Colour, intensity and range of the amber street‑lamp light.</summary>
+    internal const float LampLightIntensity = 2.5f; // warm amber intensity
+    internal const float LampLightRange = 6f; // metres of visible light
+    internal static readonly Color LampLightColor = new Color(1f, 0.75f, 0.5f); // period‑correct amber
         private const float LampHeadHeight = 0.12f; // thickness of glass head (metres)
                 // NEW material surfaces
         private static readonly Surf LampPoleSurf = new Surf(
@@ -148,18 +152,35 @@ namespace CloneZ
                         new Vector3(LampPoleRadius * 2f, LampPoleHeight, LampPoleRadius * 2f),
                         0f, LampPoleSurf);
 
-                    // glass head on top of pole
-                    var headCenter = poleCenter + new Vector3(0f, LampPoleHeight, 0f);
-                    var headBox = site.Town.Out.Solid(headCenter);
-                    headBox.Box(Vector3.zero,
-                        new Vector3(LampHeadSize, LampHeadHeight, LampHeadSize),
-                        0f, LampGlassSurf);
+// glass head on top of pole
+                     var headCenter = poleCenter + new Vector3(0f, LampPoleHeight, 0f);
+                     var headBox = site.Town.Out.Solid(headCenter);
+                     headBox.Box(Vector3.zero,
+                         new Vector3(LampHeadSize, LampHeadHeight, LampHeadSize),
+                         0f, LampGlassSurf);
 
-                    nextPlace += LampSpacing;
-                }
-                accumulated += segLen;
-            }
-        }
+                     // ----- NEW: optional functional lamp light -----
+                     // 20 % chance the lamp is broken (no light)
+                     bool broken = build.Random.NextDouble() < 0.20;
+                     if (!broken)
+                     {
+                         // place the light a little above the centre of the glass head
+                         var lightPos = headCenter + new Vector3(0f, LampHeadHeight * 0.5f, 0f);
+                         // ensure the light does not intersect other props (radius 0.1 m)
+                         if (site.Free(new Vector2(lightPos.x, lightPos.z), 0.1f))
+                         {
+                             site.Take(new Vector2(lightPos.x, lightPos.z), 0.1f);
+                             LampLightBuilder.CreateLampLight(lightPos, site.Town.World);
+
+                         }
+                     }
+                     // -----------------------------------------------
+
+                     nextPlace += LampSpacing;
+                 }
+                 accumulated += segLen;
+             }
+         }
         private static void BuildKerbsAndSidewalks(KentuckyMap.Site site, KentuckyMap.Street street, MapBuild build)
         {
             // load concrete kerb material (the map already defines a kerb material path)

@@ -1,0 +1,107 @@
+diff --git a/Assets/Scripts/World/Map/RoadSideElementBuilder.cs b/Assets/Scripts/World/Map/RoadSideElementBuilder.cs
+index 1e2b1a0b..d26b2929 100644
+--- a/Assets/Scripts/World/Map/RoadSideElementBuilder.cs
++++ b/Assets/Scripts/World/Map/RoadSideElementBuilder.cs
+@@ -25,6 +25,26 @@ internal static class RoadSideElementBuilder
+         internal const float SignPostPoleRadius = 0.04f; // metres, thin wooden post
+         internal const float SignPostPoleHeight = 1.0f; // metres, typical signpost height
+         internal const float SignPostChance = 0.06f; // 6 % of segments get a signpost
++        private const float BenchWidth = 1.2f; // metres, overall bench width
++        private const float BenchDepth = 0.45f; // metres, seat depth
++        private const float BenchSeatHeight = 0.05f; // metres, seat thickness
++        private const float BenchBackHeight = 0.45f; // metres, total back‑rest height
++        private const float BenchSetback = 0.65f; // metres, extra offset from kerb (farther than bins)
++        private const float KerbCapSize = 0.06f; // width/depth of the end‑cap slab (metres)
++        private const float DrainWidth = 0.12f; // metres, width/depth of metal drain
++        private const float DrainHeight = 0.04f; // metres tall
++        private const float DrainRotJitter = 5f; // degrees of random yaw added to the drain
++        private const float CapHeightJitter = 0.02f; // max random height variation (metres)
++        private const float SnowMoundHeight = 0.04f; // metres, thin snow drift on kerb top
++        private const float TrashBinWidth = 0.35f; // metres, approximate width of a 1990s metal trash bin
++        private const float FireHydrantWidth = 0.28f; // metres, typical 1990s metal hydrant width
++        private const float FireHydrantHeight = 0.80f; // metres, hydrant height
++        private const float MailboxWidth = 0.22f; // metres, width of a small metal mailbox
++        private const float MailboxDepth = 0.18f; // metres, depth of the mailbox
++        private const float MailboxHeight = 0.73f; // metres, mailbox height
++        internal const float SignPostPoleRadius = 0.04f; // metres, thin wooden post
++        internal const float SignPostPoleHeight = 1.0f; // metres, typical signpost height
++        internal const float SignPostChance = 0.06f; // 6 % of segments get a signpost
+         internal static void BuildKerbs(KentuckyMap.Site site, KentuckyMap.Street street, MapBuild build)
+         {
+             if (!build.HasSidewalk(street.Data.id)) return; // no sidewalk → no kerb
+@@ -71,21 +91,20 @@ internal static void BuildKerbs(KentuckyMap.Site site, KentuckyMap.Street street
+                 var midPoint = (a + b) * 0.5f;
+                 BuildMailbox(site, midPoint, normal, side, edgeOffset, build);
+             }
+-// randomly place a trash bin on ~10 % of segments (once per side)
++
+                         if (build.Random.NextDouble() < 0.10)
+                         {
+                             // place the bin near the midpoint of the segment so it isn’t duplicated at both ends
+                             var midPoint = (a + b) * 0.5f;
+                             BuildTrashBin(site, midPoint, normal, side, edgeOffset, build);
+-                        }
++
+                         // randomly place a street‑name signpost on ~6 % of segments (once per side)
+                         if (build.Random.NextDouble() < SignPostChance)
+                         {
+                             var midPoint = (a + b) * 0.5f;
+                             string signName = string.IsNullOrWhiteSpace(street.Data.name) ? $"Rd {street.Data.id}" : street.Data.name;
+                             SignpostBuilder.BuildSignpost(site, midPoint, normal, side, edgeOffset, build, signName);
+-                        }
+-                }
++        }
+                 // -------------------------------------------------
+                 // Add street lamps on a subset of segments
+                 // -------------------------------------------------
+@@ -93,11 +112,10 @@ internal static void BuildKerbs(KentuckyMap.Site site, KentuckyMap.Street street
+                 {
+                     // place a single lamp at the midpoint of the segment
+                     StreetLampBuilder.BuildLamp(site, street, build);
+-                }
+-            }
++
+         }
+ 
+-        private static void BuildKerbCap(KentuckyMap.Site site, Vector2 point, Vector2 normal,
++
+             int side, float edgeOffset, float yaw, MapBuild build, Surf surf)
+         {
+             var centre = point + normal * (side * edgeOffset);
+@@ -173,6 +191,27 @@ private static void BuildFireHydrant(KentuckyMap.Site site, Vector2 point, Vecto
+             site.Take(pos, radius);
+         }
+ 
++        // Builds a period‑correct metal mailbox on the sidewalk.
++        private static void BuildBench(KentuckyMap.Site site, Vector2 point, Vector2 normal,
++            int side, float edgeOffset, MapBuild build)
++        {
++            // place bench a little farther from the curb than a mailbox
++            var centre = point + normal * (side * (edgeOffset + BenchSetback));
++            var pos = new Vector3(centre.x, 0f, centre.y);
++            float radius = Mathf.Max(BenchWidth, BenchDepth) * 0.5f;
++            if (!site.Free(pos, radius)) return; // avoid overlap
++            var box = site.Town.Out.Solid(pos);
++            // seat
++            box.Box(Vector3.zero,
++                new Vector3(BenchWidth, BenchSeatHeight, BenchDepth),
++                0f, DecorPalette.Wood(new Color(0.55f, 0.34f, 0.18f)));
++            // back‑rest – positioned at the rear edge of the seat
++            var backPos = new Vector3(0f, BenchBackHeight * 0.5f + BenchSeatHeight, -(BenchDepth * 0.5f));
++            box.Box(backPos,
++                new Vector3(BenchWidth, BenchBackHeight, 0.05f),
++                0f, DecorPalette.Wood(new Color(0.55f, 0.34f, 0.18f)));
++            site.Take(pos, radius);
++        }
+         // Builds a period‑correct metal mailbox on the sidewalk.
+         private static void BuildMailbox(KentuckyMap.Site site, Vector2 point, Vector2 normal,
+             int side, float edgeOffset, MapBuild build)
+@@ -188,7 +227,6 @@ private static void BuildMailbox(KentuckyMap.Site site, Vector2 point, Vector2 n
+                 new Vector3(MailboxWidth, MailboxHeight, MailboxDepth),
+                 0f, DecorPalette.Metal(new Color(0.45f, 0.31f, 0.20f)));
+             site.Take(pos, radius);
+-        }
+ 
+-    }
++}
+ }

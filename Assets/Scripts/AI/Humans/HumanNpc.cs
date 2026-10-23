@@ -83,22 +83,34 @@ namespace CloneZ
         private readonly HashSet<Actor> _grudges = new HashSet<Actor>();
         private Light _flash;
         private float _flashOff;
+        private Light _handLight; // persistent flashlight given by player
+        private float _handFlashOff; // time when the hand‑light should turn off
         private System.Random _rng;
         // New constant for food item id
         public const string FoodItemId = "cannedfood";
+        // New constant for flashlight item id
+        public const string FlashlightItemId = "flashlight";
         /// <summary>Feeds the NPC a small amount of food, restoring health and possibly ending surrender.</summary>
-        public void FeedFood(float healthFraction)
+        /// <summary>Gives the NPC a handheld flashlight that shines for a short time.</summary>
+        public void GiveFlashlight(float seconds = 30f)
         {
-            if (IsDead) return;
-            // healthFraction is a fraction of max health (e.g. 0.2 = 20% of max)
-            _hp = Mathf.Min(_maxHp, _hp + _maxHp * Mathf.Clamp01(healthFraction));
-            // If the NPC was surrendered and now feels safe, they may stand up.
-            if (State == Mode.Surrendered && Health01 > 0.5f)
+            if (_handLight == null)
             {
-                State = Mode.Idle;
-                Actor.Surrendered = false;
+                var go = new GameObject("HandFlashlight");
+                // attach to the head if the avatar exists, otherwise to the root
+                Transform parent = _avatar?.Head ?? transform;
+                go.transform.SetParent(parent, false);
+                _handLight = go.AddComponent<Light>();
+                _handLight.type = LightType.Spot;
+                _handLight.range = 10f;
+                _handLight.spotAngle = 45f;
+                _handLight.intensity = 2f;
+                _handLight.color = new Color(1f, 0.95f, 0.8f);
+                _handLight.shadows = LightShadows.Soft;
             }
-            Bark("Much appreciated, thanks!");
+            _handLight.enabled = true;
+            _handFlashOff = Time.time + seconds;
+            Bark("Thanks, the night looks brighter!");
         }
 
 
@@ -702,6 +714,7 @@ namespace CloneZ
         private void UpdateFlash()
         {
             if (_flash != null && _flash.enabled && Time.time > _flashOff) _flash.enabled = false;
+            if (_handLight != null && _handLight.enabled && Time.time > _handFlashOff) _handLight.enabled = false;
         }
 
         private float _barkAt;
@@ -954,19 +967,27 @@ namespace CloneZ
                     if (c.Interactor != null) c.Interactor.SearchOrOpen(box);
                 }).Timed(1.5f, "Searching..."));
                 into.Add(new InteractAction("Let them go", c => _npc.Release()));
-            // New “Give Food” action
-            if (ctx.Inventory != null && ctx.Inventory.Has(FoodItemId))
+            // New “Give Flashlight” action for restrained or surrendered NPCs
+            if (ctx.Inventory != null && ctx.Inventory.Has(HumanNpc.FlashlightItemId))
             {
-                into.Add(new InteractAction("Give Food", c =>
+                into.Add(new InteractAction("Give Flashlight", c =>
                 {
-                    if (c.Inventory.Consume(FoodItemId, 1) <= 0) return;
-                    _npc.FeedFood(0.2f); // restores ~20% of max health
-                }).Timed(1f, "Feeding...").DisabledIf(!_npc.Actor.Surrendered && !_npc.Actor.Restrained, "They don't need food"));
+                    if (c.Inventory.Consume(HumanNpc.FlashlightItemId, 1) <= 0) return;
+                    _npc.GiveFlashlight(); // light stays on for default 30 s
+                }).Timed(1f, "Handing over..."));
             }
             return;
             }
 
-            into.Add(new InteractAction("Talk", Talk));
+            // New “Give Flashlight” action for any NPC (non‑dead)
+            if (ctx.Inventory != null && ctx.Inventory.Has(HumanNpc.FlashlightItemId) && !_npc.IsDead)
+            {
+                into.Add(new InteractAction("Give Flashlight", c =>
+                {
+                    if (c.Inventory.Consume(HumanNpc.FlashlightItemId, 1) <= 0) return;
+                    _npc.GiveFlashlight();
+                }).Timed(1f, "Handing over..."));
+            }
             into.Add(new InteractAction("Set Guard Here", c => _npc.SetGuard(_npc.transform.position)).DisabledIf(_npc.HoldPost, "Already guarding here"));
                 into.Add(new InteractAction("Intimidate", c => {
                     if (!c.Inventory.Has("pistol")) return;
@@ -1014,7 +1035,7 @@ namespace CloneZ
 "We bind pine bark and tar to make a makeshift stove that burns slow and steady.",
 "If you hear the wind howl through the frozen pipe, toss a stone—old wives say it keeps the ice from breaking the house.",
 },
-            [Factions.Scavs] = new[] { "What are you looking at?", "Easy. Easy. We're just passing.", "You got smokes?" },
+            [Factions.Scavs] = new[] { "What are you looking at?", "Easy. Easy. We're just passing.", "You got smokes?", "The wind's howling through the dead pines, keep your coat on.", "Found an old battery pack under the porch; might light a lantern.", "The river's frozen solid, we used the ice to skate for a few minutes.", "If you hear a faint hum, it's the old power line sparking again.", "Snow's piled on the barn roof; we need to clear a path for the sled.", "A busted radio crackles with static—someone said the Institute left a cache near the mill." },
             [Factions.Institute] = new[] { "Fascinating readings today. Terrifying, but fascinating.", "If you find anything unusual, the Institute pays fair prices.",
                 "Please don't touch the instruments." },
             [Factions.Choir] = new[] { "It sings to us.", "Go home. It does not want you." },

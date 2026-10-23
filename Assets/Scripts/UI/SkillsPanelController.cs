@@ -65,7 +65,7 @@ namespace CloneZ
                 if (kb.kKey.wasPressedThisFrame) Toggle();
                 else if (_open && kb.escapeKey.wasPressedThisFrame) Close();
             }
-            if (_open && _skills != null) Refresh();
+            if (_open && _skills != null && _dirty) Refresh();
         }
 
         /// <summary>

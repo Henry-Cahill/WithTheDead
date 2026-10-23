@@ -53,6 +53,7 @@ namespace CloneZ
             into.Add(new InteractAction("Inspect lamp", Inspect));
             // New secondary action to check bulb status
             into.Add(new InteractAction("Check bulb", CheckBulb));
+            into.Add(new InteractAction("Replace bulb", ReplaceBulb).DisabledIf(!_lamp.DeadBulb, "The bulb is already functional."));
             // New secondary action to check power status
             into.Add(new InteractAction("Check power", CheckPower));
             // add flicker toggle action
@@ -86,6 +87,16 @@ namespace CloneZ
             ctx.Notify(_lamp.DeadBulb ? "The bulb is burnt out." : "The bulb looks fine.");
         }
 
+        // Replaces a burnt‑out bulb with a fresh one.
+        private void ReplaceBulb(InteractContext ctx)
+        {
+            if (_lamp == null) return;
+            if (!_lamp.DeadBulb) return; // safety guard
+            _lamp.DeadBulb = false; // fix the bulb
+            ctx.Notify("You screw in a fresh bulb. The lamp is ready.");
+            MakeNoise(CloneZConfig.LightSwitchNoise); // reuse existing switch sound
+        }
+
         private void Flip(InteractContext ctx, bool on)
         {
             if (_lamp == null) return;
@@ -102,6 +113,7 @@ namespace CloneZ
             {
                 if (_lamp.SwitchedOn) state |= 1; // bit 0 = on/off
                 if (_lamp.Flicker) state |= 2; // bit 1 = flicker
+                if (_lamp.DeadBulb) state |= 4; // bit 2 = bulb burnt out
             }
             save.State = state;
         }
@@ -112,6 +124,7 @@ namespace CloneZ
             {
                 _lamp.SetSwitchedOn((save.State & 1) != 0);
                 _lamp.Flicker = (save.State & 2) != 0;
+                _lamp.DeadBulb = (save.State & 4) != 0;
             }
         }
     }

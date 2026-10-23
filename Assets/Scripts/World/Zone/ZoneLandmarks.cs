@@ -116,6 +116,51 @@ namespace CloneZ
                     m.Box(tarpPos, new Vector3(1.8f, 0.02f, 1.2f), Quaternion.Euler(0f, ZoneKit.R(r, -10f, 10f), 0f), ZoneKit.M(new Color(0.45f, 0.44f, 0.43f, 0.6f)));
 
                 }
+                // --- Cockpit glass pane with thin metal frame (visible from the front)
+                Vector3 glassCenter = new Vector3(0.35f, 2.2f, -4.8f) + new Vector3(ZoneKit.R(r, -0.05f, 0.05f), 0f, ZoneKit.R(r, -0.05f, 0.05f));
+                float glassWidth = 1.0f, glassHeight = 0.6f, glassDepth = 0.02f;
+                m.Box(glassCenter, new Vector3(glassWidth, glassHeight, glassDepth), ZoneKit.M(new Color(0.85f, 0.92f, 0.96f, 0.3f)));
+                // frame bars (horizontal top/bottom, vertical left/right)
+                float barThick = 0.04f;
+                m.Box(glassCenter + new Vector3(0f, glassHeight/2f, 0f), new Vector3(glassWidth, barThick, barThick), ZoneKit.M(rustMetal));
+                m.Box(glassCenter - new Vector3(0f, glassHeight/2f, 0f), new Vector3(glassWidth, barThick, barThick), ZoneKit.M(rustMetal));
+                m.Box(glassCenter + new Vector3(-glassWidth/2f, 0f, 0f), new Vector3(barThick, glassHeight, barThick), ZoneKit.M(rustMetal));
+                m.Box(glassCenter + new Vector3( glassWidth/2f, 0f, 0f), new Vector3(barThick, glassHeight, barThick), ZoneKit.M(rustMetal));
+
+                // Instrument panel below cockpit glass
+                Vector3 panelPos = glassCenter + new Vector3(0f, -0.45f, 0.1f);
+                m.Box(panelPos, new Vector3(0.9f, 0.12f, 0.15f), ZoneKit.M(rustMetal)); // metal panel
+                for (int k = 0; k < 3; k++)
+                {
+                    float xOff = -0.3f + k * 0.3f;
+                    m.CylinderX(panelPos + new Vector3(xOff, 0.08f, 0f), 0.015f, 0.05f, 8, ZoneKit.M(new Color(0.6f, 0.6f, 0.6f)), 0f);
+                }
+
+                // Torn banner on right side of fuselage
+                Vector3 bannerPos = new Vector3(0.9f, 1.6f, -2.0f) + new Vector3(ZoneKit.R(r, -0.02f, 0.02f), 0f, ZoneKit.R(r, -0.02f, 0.02f));
+                m.Box(bannerPos, new Vector3(0.02f, 0.8f, 2.2f), ZoneKit.M(new Color(0.45f, 0.30f, 0.20f, 0.7f)));
+                // ragged lower edge: two short protruding boxes
+                m.Box(bannerPos + new Vector3(0f, -0.4f, -0.6f), new Vector3(0.024f, 0.02f, 0.2f), ZoneKit.M(rustMetal));
+                m.Box(bannerPos + new Vector3(0f, -0.4f, 0.6f), new Vector3(0.024f, 0.02f, 0.2f), ZoneKit.M(rustMetal));
+
+                // Fuel‑spill puddle near engine
+                Vector3 spillPos = new Vector3(0.6f, 0.02f, -5.1f) + new Vector3(ZoneKit.R(r, -0.1f, 0.1f), 0f, ZoneKit.R(r, -0.1f, 0.1f));
+
+
+                // Scatter tiny rusted screws around cockpit
+                for (int s = 0; s < 4; s++)
+                {
+                    float angle = ZoneKit.R(r, 0f, 360f) * Mathf.Deg2Rad;
+                    float radius = 0.3f;
+                    Vector3 screwPos = glassCenter + new Vector3(Mathf.Cos(angle) * radius, 0.1f, Mathf.Sin(angle) * radius);
+                    sb.Solid.CylinderX(screwPos, 0.008f, 0.02f, 6, ZoneKit.M(rustMetal), 0f);
+                }
+
+                // Burnt warning sign on rear fuselage
+                Vector3 signPos = new Vector3(-0.4f, 1.5f, -5.5f) + new Vector3(ZoneKit.R(r, -0.02f, 0.02f), 0f, ZoneKit.R(r, -0.02f, 0.02f));
+                m.Box(signPos, new Vector3(0.3f, 0.2f, 0.02f), ZoneKit.M(new Color(0.25f, 0.20f, 0.15f)));
+                ZoneFlameLight.Spawn(sb.Root, signPos + new Vector3(0f, 0.12f, 0f), new Color(1f, 0.4f, 0.1f), 0.4f, 0.1f, 0.02f);
+
             });
             sb.Collider(new Vector3(0f, 1.2f, 0f), new Vector3(2.8f, 2.4f, 8f), 18f);
             for (int i = 0; i < 3; i++)
@@ -174,6 +219,27 @@ namespace CloneZ
             sb.Collider(new Vector3(-3f, 2f, -5.5f), new Vector3(3.5f, 4f, 0.5f));
             sb.Collider(new Vector3(3f, 2f, -5.5f), new Vector3(3.5f, 4f, 0.5f));
             sb.Upper.Box(new Vector3(0f, 6f, -5.2f), new Vector3(1.6f, 4f, 1.6f), ZoneKit.M(stone));
+            // Rust‑tinted metal colour for hinges, handle and small metal bits
+            Color rustMetal = new Color(0.5f, 0.3f, 0.1f);
+            // Left and right vertical studs (wet‑wood) framing the doorway (opening centred at (0f, 2f, -5.5f))
+            sb.Solid.Box(new Vector3(-1.31f, 2f, -5.5f), new Vector3(0.12f, 4f, 0.12f), ZoneKit.M(ZoneKit.V(ZoneKit.WetWood, sb.Rng, 0.04f)));
+            sb.Solid.Box(new Vector3( 1.31f, 2f, -5.5f), new Vector3(0.12f, 4f, 0.12f), ZoneKit.M(ZoneKit.V(ZoneKit.WetWood, sb.Rng, 0.04f)));
+            // Top lintel (wet‑wood) sitting just above the wall height
+            sb.Solid.Box(new Vector3(0f, 4.1f, -5.5f), new Vector3(2.6f, 0.2f, 0.2f), ZoneKit.M(ZoneKit.V(ZoneKit.WetWood, sb.Rng, 0.04f)));
+            // Door panel (wet‑wood) – fills the opening
+            sb.Solid.Box(new Vector3(0f, 2f, -5.48f), new Vector3(2.5f, 4f, 0.02f), ZoneKit.M(ZoneKit.V(ZoneKit.WetWood, sb.Rng, 0.04f)));
+            // Upper hinge
+            sb.Solid.CylinderX(new Vector3(-1.26f, 1.0f, -5.48f), 0.015f, 0.05f, 8, ZoneKit.M(rustMetal), 0f);
+            // Lower hinge (offset by 0.8 m)
+            sb.Solid.CylinderX(new Vector3(-1.26f, 1.8f, -5.48f), 0.015f, 0.05f, 8, ZoneKit.M(rustMetal), 0f);
+            // Rust‑metal handle on the right side of the door with a slight yaw jitter for visual variety
+            float handleYaw = (float)sb.Rng.NextDouble() * 6f - 3f; // -3° … +3°
+            sb.Solid.CylinderX(new Vector3( 1.26f, 1.4f, -5.48f), 0.02f, 0.07f, 8, ZoneKit.M(rustMetal), handleYaw);
+            // Kick‑plate (wet‑wood) at the base of the door
+            sb.Solid.Box(new Vector3(0f, 0.01f, -5.48f), new Vector3(2.5f, 0.02f, 0.12f), ZoneKit.M(ZoneKit.V(ZoneKit.WetWood, sb.Rng, 0.04f)));
+            // Small latch (rust‑metal) near the right‑hand side of the door
+            Vector3 latchPos = new Vector3(1.0f, 0.6f, -5.48f) + new Vector3(ZoneKit.R(sb.Rng, -0.02f, 0.02f), 0f, 0f);
+            sb.Solid.Box(latchPos, new Vector3(0.12f, 0.04f, 0.02f), ZoneKit.M(rustMetal));
             sb.Roof.Box(new Vector3(0f, 4.2f, 0f), new Vector3(9.6f, 0.3f, 11.4f), ZoneKit.M(ZoneKit.WetWood));
             // Add four metal lanterns with flame lights on the roof corners
             var metalColor = new Color(0.45f, 0.41f, 0.38f);

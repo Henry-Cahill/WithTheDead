@@ -83,16 +83,16 @@ namespace CloneZ
 
             if (inputsUnchanged) return; // early‑out, nothing changed
 
-            float fog = Mathf.Clamp01(_zone.FogDensity * (1f - _gs.FogReadability * 0.75f));
+            float fog = Mathf.Clamp01(curFogDensity * (1f - curFogReadability * 0.75f));
             float end = Mathf.Lerp(_baseEnd, Mathf.Min(_baseEnd, 24f), fog);
             float start = Mathf.Lerp(_baseStart, 1.5f, fog);
             if (_gs.FogReadability > 0f) end = Mathf.Max(end, Mathf.Lerp(end, 70f, _gs.FogReadability * 0.5f));
 
             Color ambient = _baseAmbient;
-            TimeOfDay tod = _tod;
-            if (tod != null && tod.IsNight) ambient *= Mathf.Lerp(1.15f, 0.4f, _ss.NightDarkness);
-            ambient = Multiply(ambient, _zone.Tint);
-            Color fogColor = Multiply(_baseFogColor, _zone.Tint);
+
+            if (curIsNight) ambient *= Mathf.Lerp(1.15f, 0.4f, curNightDarkness);
+            ambient = Multiply(ambient, curTint);
+            Color fogColor = Multiply(_baseFogColor, curTint);
             if (SkyOverrideStrength > 0f)
             {
                 ambient = Color.Lerp(ambient, SkyOverride * 0.55f, SkyOverrideStrength);

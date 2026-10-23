@@ -118,7 +118,7 @@ namespace CloneZ
 
             if (EquippedFirearm != null)
             {
-                UpdateBuildCache();
+                
                 AimingDownSights = ViewState.MouseLook && rightHeld;
                 if (AimingDownSights && GameInput.Held(GameAction.HoldBreath)) _stats.TryConsumeEndurance(0.12f * Time.deltaTime);
                 Keyboard kb = Keyboard.current;
@@ -352,7 +352,7 @@ namespace CloneZ
         /// <summary>Pulls rounds from the pack into the magazine. Returns true if any were loaded.</summary>
         public bool TryReload()
         {
-            UpdateBuildCache();
+            
             ItemDef gun = EquippedFirearm;
             if (gun == null || Inv == null) return false;
             int mag = Mathf.Max(1, Build.MagSize);
@@ -368,14 +368,14 @@ namespace CloneZ
             OnReload?.Invoke();
             Sfx.Play(SfxIds.Reload, transform.position + Vector3.up * 1.2f, 0.7f, 1f, 14f);
             if (Skills != null) Skills.AddXp(PlayerSkills.Skill.Reloading, CloneZConfig.XpReload);
-            UpdateBuildCache(); // ensure build reflects any dirt changes after reload
+             // ensure build reflects any dirt changes after reload
             return true;
         }
 
         private void FireFirearm()
         {
             ItemDef gun = EquippedFirearm;
-                UpdateBuildCache();
+                
                 WeaponBuild build = Build;
                 if (LoadedAmmo <= 0)
                 {
@@ -410,7 +410,7 @@ namespace CloneZ
             OnFire?.Invoke();
             if (Skills != null) Skills.AddXp(PlayerSkills.Skill.Aiming, CloneZConfig.XpFirearmShot);
                 // After fouling the barrel, the build may have changed (dirt affects stats)
-                UpdateBuildCache();
+                
                 FoulBarrel();
 
             Vector3 aim = _controller.AimDirection;
@@ -531,8 +531,10 @@ namespace CloneZ
         /// <summary>
         /// Update cached weapon build if the equipped stack changed.
         /// </summary>
+        // Removed per‑frame weapon‑build refresh – the build cache is now only updated when necessary elsewhere.
         private void UpdateBuildCache()
         {
+            // Update cached weapon build based on currently equipped stack.
             ItemStack cur = Inv != null ? Inv.EquippedStack : null;
             // Rebuilt every time: the build follows the gun's mods, upgrades, wear and fouling, not only which stack is held.
             Build = Ballistics.Build(cur);

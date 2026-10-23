@@ -231,7 +231,11 @@ namespace CloneZ
         /// <summary>A MIDI note number as its frequency in Hz (69 = A4 = 440).</summary>
         public static float Midi(float note) => 440f * MathF.Pow(2f, (note - 69f) / 12f);
         /// <summary>A frequency nudged to a whole number of cycles per loop, so a tone wraps seamlessly.</summary>
-        public static float Snap(float hz, float loopSeconds) => MathF.Max(1f, MathF.Round(hz * loopSeconds)) / loopSeconds;
+        public static float Snap(float hz, float loopSeconds)
+    {
+        if (loopSeconds <= 0f) return hz;
+        return MathF.Max(1f, MathF.Round(hz * loopSeconds)) / loopSeconds;
+    }
         #endregion
 
         #region Envelopes
@@ -897,9 +901,10 @@ namespace CloneZ
         public static void FadeIn(float[] x, int n)
         {
             n = Math.Min(n, x.Length);
+            if (n <= 1) return;
             for (int i = 0; i < n; i++)
             {
-                float w = MathF.Sin(0.5f * Pi * i / n);
+                float w = MathF.Sin(0.5f * Pi * i / (n - 1));
                 x[i] *= w * w;
             }
         }
@@ -908,10 +913,11 @@ namespace CloneZ
         public static void FadeOut(float[] x, int n)
         {
             n = Math.Min(n, x.Length);
+            if (n <= 1) return;
             int len = x.Length;
             for (int i = 0; i < n; i++)
             {
-                float w = MathF.Sin(0.5f * Pi * i / n);
+                float w = MathF.Sin(0.5f * Pi * i / (n - 1));
                 x[len - 1 - i] *= w * w;
             }
         }

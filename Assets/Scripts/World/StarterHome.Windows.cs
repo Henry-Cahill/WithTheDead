@@ -77,7 +77,7 @@ Surf rustMetal = DecorPalette.Matte(new Color(0.55f, 0.35f, 0.30f));
             for (int i = 0; i < dentilCount; i++)
             {
                 float offsetX = -WindowWidth * 0.5f + dentilSpacing * (i + 0.5f);
-                float dentilHeight = 0.006f + 0.001f * ((float)rng.NextDouble() - 0.5f);
+                float dentilHeight = 0.006f + 0.001f * ((float)Random.value - 0.5f);
                 float dentilY = lintelY + lintelHeight * 0.5f + dentilHeight * 0.5f;
                 m.Box(f.P(offsetX, dentilY, outer - sillDepth * 0.5f), f.Size(dentilWidth, dentilHeight, dentilDepth), wood);
             }
@@ -92,8 +92,8 @@ Surf rustMetal = DecorPalette.Matte(new Color(0.55f, 0.35f, 0.30f));
             int bumpCount = 3;
             for (int i = 0; i < bumpCount; i++)
             {
-                float offsetX = (float)(rng.NextDouble() * (WindowWidth - 0.04) - (WindowWidth - 0.04) * 0.5);
-                float bumpSize = 0.01f + (float)rng.NextDouble() * 0.005f;
+                float offsetX = (float)(Random.value * (WindowWidth - 0.04) - (WindowWidth - 0.04) * 0.5);
+                float bumpSize = 0.01f + (float)Random.value * 0.005f;
                 m.Box(f.P(f.Mid + offsetX, sillY, outer - sillDepth * 0.5f + bumpSize * 0.5f), f.Size(bumpSize, bumpSize, bumpSize), DecorMaterials.Concrete);
             }
             // brass strike-plate on latch lever
@@ -208,6 +208,18 @@ Surf rustMetal = DecorPalette.Matte(new Color(0.55f, 0.35f, 0.30f));
             Color glassTint = new Color(SashGlass.r * tintFactor, SashGlass.g * tintFactor, SashGlass.b * tintFactor, SashGlass.a);
             m.Box(f.P(f.Mid, gy, across), f.Size(0.03f, glass, 0.03f), frame);
             m.Box(f.P(f.Mid, gy, across), f.Size(w - 0.09f, glass, 0.006f), DecorPalette.Glass(glassTint));
+            // period‑correct leaded‑glass pattern
+            Surf lead = DecorPalette.Metal(new Color(0.55f, 0.55f, 0.48f)); // dark‑bronze, period‑correct for leaded glass
+            int vertStrips = 2;
+            float stripWidth = 0.002f;
+            for (int i = 0; i < vertStrips; i++)
+            {
+                float offset = ((float)i / (vertStrips - 1) - 0.5f) * (w - 0.09f) + 0.001f * ((float)Random.value - 0.5f);
+                m.Box(f.P(f.Mid + offset, gy, across), f.Size(stripWidth, glass, 0.006f), lead);
+            }
+            float horizStripWidth = 0.002f;
+            float horizY = gy + 0.001f * ((float)Random.value - 0.5f);
+            m.Box(f.P(f.Mid, horizY, across), f.Size(w - 0.09f, horizStripWidth, 0.006f), lead);
             // Add decorative iron grille on the lower sash (period‑correct hardware)
             if (lower)
             {
@@ -360,9 +372,22 @@ Surf rustMetal = DecorPalette.Matte(new Color(0.55f, 0.35f, 0.30f));
         private static Renderer WindowLever(Transform parent, string name, Vector3 centre, Vector3 size, in Surf s)
         {
             var m = new RaidMesh();
-            m.Box(centre, size, s);
+                        // back‑plate wood (period‑correct)
+            Surf wood = DecorPalette.Matte(FurnitureBuilder.Pine);
+            float plateDepth = 0.002f; // metres
+            Vector3 platePos = centre + new Vector3(0f, 0f, -size.z * 0.5f - plateDepth * 0.5f);
+            Vector3 plateSize = new Vector3(size.x + 0.01f, size.y + 0.01f, plateDepth);
+            m.Box(platePos, plateSize, wood);
+            // brass key‑hole slot centered on the back‑plate
+            Vector3 keyPos = centre + new Vector3(0f, 0f, -size.z * 0.5f - plateDepth - 0.001f);
+            Vector3 keySize = new Vector3(0.004f, 0.008f, 0.002f);
+            m.Box(keyPos, keySize, s);
+            // tiny brass hinge pin at the lever’s inner pivot end
+            Vector3 hingePos = centre + new Vector3(-size.x * 0.5f, 0f, 0f);
+            m.CylinderX(hingePos, 0.002f, 0.004f, 6, s);
             // small brass knob at the end of the lever for tactile detail
             float knobRadius = 0.008f;
+            // wooden material for back‑plate already defined above
             Vector3 knobPos = centre + new Vector3(size.x * 0.5f + knobRadius, 0f, 0f);
             m.CylinderX(knobPos, knobRadius, 0.005f, 8, DecorPalette.Metal(FurnitureBuilder.Brass));
             return EmitWindowPart(m, name, parent, centre);

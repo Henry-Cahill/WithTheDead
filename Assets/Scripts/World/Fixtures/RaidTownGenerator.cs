@@ -16,11 +16,21 @@ namespace CloneZ
         private Renderer _lamp;
         private bool _running;
         private float _fuel, _noiseAt;
+        private float _noiseInterval;
+        private float _noiseClip;
         private int _pulls;
         private bool _oilApplied;
         private float _fuelDrainRate = 1f; // units of fuel per second
+        private const string FuelCanItemId = "fuel_can"; // ID of the fuel can item
+        private const float FuelCanRestore = 30f; // units of fuel added per can
 
         public override string DisplayName => "Generator";
+
+        private void Awake()
+        {
+            _noiseInterval = CloneZConfig.RaidGeneratorNoiseInterval;
+            _noiseClip = CloneZConfig.RaidGeneratorNoise;
+        }
         public override Vector3 InteractPoint => _point;
 
         /// <summary>The generator's fixture under <paramref name="host"/>: <paramref name="point"/> is its control panel,
@@ -51,8 +61,8 @@ namespace CloneZ
                 return;
             }
             if (Time.time < _noiseAt) return;
-            _noiseAt = Time.time + CloneZConfig.RaidGeneratorNoiseInterval;
-            MakeNoise(CloneZConfig.RaidGeneratorNoise);
+            _noiseAt = Time.time + _noiseInterval;
+            MakeNoise(_noiseClip);
         }
 
         public override void GetActions(InteractContext ctx, List<InteractAction> into)
@@ -63,6 +73,10 @@ namespace CloneZ
                     .Timed(CloneZConfig.RaidGeneratorPullSeconds, "Pulling the cord", HumanoidActivity.Use)
                     .DisabledIf(_fuel <= 0f, "Its tank is dry"));
             if (!_oilApplied) into.Add(new InteractAction("Oil the generator", Oil));
+            // Refuel action – enabled only when the player has a fuel can
+            into.Add(new InteractAction("Refuel generator", Refuel)
+                .DisabledIf(!ctx.Inventory?.Has(FuelCanItemId) ?? true,
+                "You need a fuel can to refuel the generator"));
             into.Add(new InteractAction("Check the fuel", CheckFuel));
             into.Add(new InteractAction("Estimate runtime", EstimateRuntime));
             into.Add(new InteractAction("Inspect generator", Inspect));
@@ -112,6 +126,34 @@ namespace CloneZ
             _oilApplied = true;
             _fuelDrainRate = 0.5f; // fuel now drains at half the original rate
             ctx.Notify("You pour a bit of oil into the engine. It will now consume fuel twice as slowly.");
+        }
+
+        // Refuel action – consumes a fuel can and restores fuel
+        private void Refuel(InteractContext ctx)
+        {
+            // Ensure the player actually has a fuel can
+            if (ctx.Inventory == null || !ctx.Inventory.Has(FuelCanItemId))
+            {
+                ctx.Notify("You have nothing to pour into the tank.");
+                return;
+            }
+            // Find a stack with the fuel can and remove one unit
+            var inv = ctx.Inventory;
+            foreach (var stack in inv.Inventory.Stacks)
+            {
+                if (stack.Def != null && stack.Def.Id == FuelCanItemId)
+                {
+                    inv.Inventory.Remove(stack, 1);
+                    break;
+                }
+            }
+            // Restore fuel, clamped to the maximum allowed
+            _fuel = Mathf.Min(_fuel + FuelCanRestore, CloneZConfig.RaidGeneratorFuelMax);
+            float percent = (_fuel / CloneZConfig.RaidGeneratorFuelMax) * 100f;
+            ctx.Notify($"You pour the fuel into the tank. Fuel gauge rises to {(int)percent}%.");
+            // If the generator was off and now has fuel, update the inspect message
+            if (!_running && _fuel > 0f)
+                Inspect(ctx);
         }
         private void Inspect(InteractContext ctx)
         {

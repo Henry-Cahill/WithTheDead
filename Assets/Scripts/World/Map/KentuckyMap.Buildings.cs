@@ -97,8 +97,35 @@ var rng = new System.Random(unchecked((int)f.Data.id) ^ 0x5A4F);
 // Position near the centre of the footprint (could be refined to a corner)
 Vector3 chimneyPos = To3(f.Middle, roofY + chimneyHeight * 0.5f);
 // Choose a wood material (using wood floor colour)
-Surf woodMat = DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f));
-site.Overhead.At(chimneyPos).Box(chimneyPos, new Vector3(chimneyBase, chimneyHeight, chimneyBase), Quaternion.identity, woodMat);
+// deterministic brick colour for this building
+int brickIdx = Mathf.Abs((int)f.Data.id) % BrickColors.Length;
+var brickSurf = DecorMaterials.WallExterior(ExteriorStyle.Brick, BrickColors[brickIdx]);
+
+// main brick shaft (90 % of chimney height)
+float shaftHeight = chimneyHeight * 0.9f;
+float shaftRadius = chimneyBase * 0.5f;
+site.Overhead.At(chimneyPos).Cylinder(chimneyPos, shaftRadius, shaftHeight, 6, brickSurf);
+
+// flat brick cap on top of the shaft
+Vector3 capCenter = chimneyPos + new Vector3(0f, shaftHeight + chimneyHeight * 0.05f, 0f);
+Vector3 capSize = new Vector3(chimneyBase, chimneyHeight * 0.1f, chimneyBase);
+site.Overhead.At(capCenter).Box(capCenter, capSize, Quaternion.identity, brickSurf);
+
+// small vent on one side of the shaft
+Vector3 ventOffset = new Vector3(chimneyBase * 0.55f, shaftHeight * 0.5f, 0f); // offset toward +X
+Vector3 ventCenter = chimneyPos + ventOffset;
+float ventRadius = chimneyBase * 0.15f;
+float ventHeight = chimneyHeight * 0.2f;
+site.Overhead.At(ventCenter).Cylinder(ventCenter, ventRadius, ventHeight, 6, brickSurf);
+
+// chance of thin snow‑icing on the chimney top
+if (rng.NextDouble() < 0.15) // ~15 % of chimneys get icing
+{
+    // a thin snow slab covering the cap
+    Vector3 iceCenter = capCenter + new Vector3(0f, chimneyHeight * 0.06f, 0f);
+    Vector3 iceSize = new Vector3(chimneyBase * 1.1f, 0.02f, chimneyBase * 1.1f);
+    site.Overhead.At(iceCenter).Box(iceCenter, iceSize, Quaternion.identity, DecorMaterials.Snow);
+}
             }
         }
         private static void BuildRoadMarkings(Site site)
@@ -220,17 +247,8 @@ site.Overhead.At(chimneyPos).Box(chimneyPos, new Vector3(chimneyBase, chimneyHei
                 // Add a small wooden mailbox for residential footprints (house, trailer, apartments, hotel)
                 if (f.Data.kind == "house" || f.Data.kind == "trailer" || f.Data.kind == "apartments" || f.Data.kind == "hotel")
                 {
-                    // Choose a point near the first edge, offset outward from the wall
-                    Vector2 a = f.Pts[0];
-                    Vector2 b = f.Pts[1];
-                    Vector2 d = (b - a).normalized;
-                    Vector2 outward = new Vector2(d.y, -d.x); // outward normal (right side of anticlockwise ring)
-                    Vector2 pos2D = (a + b) * 0.5f + outward * (Thick * 0.5f + 0.5f);
-                    Vector3 pos = new Vector3(pos2D.x, 0f, pos2D.y);
-                    // Add mailbox geometry (small wooden mailbox, not a public box)
-                    var mesh = site.Town.Out.Solid(pos);
-                    mesh.SetFrame(pos, Mathf.Atan2(outward.x, outward.y) * Mathf.Rad2Deg);   // DecorProps draws at the frame's origin
-                    DecorProps.Mailbox(mesh, rng, false);
+                    // Use the new deterministic mailbox builder
+                    MailboxBuilder.Build(site, f, build);
                     // Add porch if applicable
                     PorchBuilder.Build(site, f, build);
                 }
@@ -378,13 +396,24 @@ site.Overhead.At(chimneyPos).Box(chimneyPos, new Vector3(chimneyBase, chimneyHei
                 // Build posts (solid to block movement)
                 site.Town.Out.Solid(leftPostCenter).Box(leftPostCenter, postSize, doorYaw, DecorMaterials.WoodFloor(porchWood));
                 site.Town.Out.Solid(rightPostCenter).Box(rightPostCenter, postSize, doorYaw, DecorMaterials.WoodFloor(porchWood));
-                // Top rail (thin box spanning between posts)
-                float railHeight = 0.04f;
-                float railDepth = 0.04f;
-                Vector3 railSize = new Vector3(porchSize.x - 2f * postWidth, railHeight, railDepth);
-                Vector3 railCenter = (leftPostCenter + rightPostCenter) * 0.5f;
-                railCenter.y = leftPostCenter.y + postHeight * 0.5f - railHeight * 0.5f; // near top of posts
-                site.Town.Out.Solid(railCenter).Box(railCenter, railSize, doorYaw, DecorMaterials.WoodFloor(porchWood));
+// Top rail (thin box spanning between posts)
+        float railHeight = 0.04f;
+        float railDepth = 0.04f;
+        Vector3 railSize = new Vector3(porchSize.x - 2f * postWidth, railHeight, railDepth);
+        Vector3 railCenter = (leftPostCenter + rightPostCenter) * 0.5f;
+        railCenter.y = leftPostCenter.y + postHeight * 0.5f - railHeight * 0.5f; // near top of posts
+        site.Town.Out.Solid(railCenter).Box(railCenter, railSize, doorYaw, DecorMaterials.WoodFloor(porchWood));
+        // Add vertical balusters between the posts
+        int balCount = Mathf.Max(2, Mathf.FloorToInt(porchSize.x / 0.20f)); // ~1 baluster per 20 cm, minimum 2
+        float balSpacing = porchSize.x / (balCount + 1);
+        Vector3 balSize = new Vector3(0.02f, postHeight * 0.8f, 0.02f); // 2 cm × 80 % post height × 2 cm depth
+        for (int i = 1; i <= balCount; i++)
+        {
+            Vector3 balPos = leftPostCenter + rightVec * (balSpacing * i);
+            balPos.y = leftPostCenter.y - postHeight * 0.5f + balSize.y * 0.5f; // sit on the rail
+            site.Town.Out.Solid(balPos).Box(balPos, balSize, doorYaw, DecorMaterials.WoodFloor(porchWood));
+            site.Town.PropCollider(balPos, balSize, doorYaw);
+        }
                 // ---- NEW: add a hanging swing with ~30 % chance ----
                 PorchSwingBuilder.Build(site, leftPostCenter, rightPostCenter, doorYaw, porchWood, rng);
             }

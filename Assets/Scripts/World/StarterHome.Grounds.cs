@@ -150,6 +150,11 @@ namespace CloneZ
                 new Vector3(0.25f, 0.004f, 0.12f),
                 DecorPalette.Matte(new Color(0.38f,0.37f,0.36f)),
                 4, 2);
+            // Add thin ice patches on the north and south sidewalks.
+            IcePatches(solid, Rect.MinMaxRect(-CloneZConfig.ArenaHalfSize, RoadCentre + RoadHalf + KerbWidth, CloneZConfig.ArenaHalfSize, SidewalkEdge), rng);
+            IcePatches(solid, Rect.MinMaxRect(-CloneZConfig.ArenaHalfSize, RoadCentre - RoadHalf - KerbWidth - 1.5f, CloneZConfig.ArenaHalfSize, RoadCentre - RoadHalf - KerbWidth), rng);
+            // Add a soft snow‑drift clump near the front stoop.
+            SnowDrift(solid, new Vector3(4.0f, 0.07f, 2.6f), rng);
             // three tiny gravel stones near the front edge
             for (int i = 0; i < 3; i++)
             {
@@ -207,7 +212,34 @@ namespace CloneZ
                 // No screws on far edge board (optional symmetry could be added)
         }
 
-        // A rounded shrub of a few overlapping leaf clumps, now and then in flower.
+        // Creates a few thin icy patches on a rectangular concrete area.
+        // Uses the method’s deterministic 'rng' so the same spots appear each run.
+        private static void IcePatches(RaidMesh m, Rect area, System.Random rng)
+        {
+            var iceMat = DecorPalette.Gloss(new Color(0.82f, 0.92f, 1.00f));
+            for (int i = 0; i < 4; i++) // four patches – well under the 12‑primitive limit
+            {
+                float fx = (float)rng.NextDouble() * area.width + area.xMin;
+                float fz = (float)rng.NextDouble() * area.height + area.yMin;
+                // thin ellipsoid – 0.002 m tall, ~0.25 m wide/deep, placed just above the concrete surface.
+                m.Ellipsoid(new Vector3(fx, 0.004f, fz), new Vector3(0.25f, 0.002f, 0.25f), iceMat, 4, 2);
+            }
+        }
+
+        // A soft snow‑drift clump placed near the front stoop.
+        // Uses the same 'rng' for deterministic offset.
+        private static void SnowDrift(RaidMesh m, Vector3 centre, System.Random rng)
+        {
+            var snowMat = DecorPalette.Matte(new Color(0.93f, 0.94f, 0.97f));
+            for (int i = 0; i < 3; i++) // three drifts – still well under the primitive budget
+            {
+                float ox = (float)rng.NextDouble() * 0.3f - 0.15f; // ±0.15 m X offset
+                float oz = (float)rng.NextDouble() * 0.3f - 0.15f; // ±0.15 m Z offset
+                // modest ellipsoid – 0.03 m tall, 0.15 m radius, just above ground.
+                m.Ellipsoid(centre + new Vector3(ox, 0.006f, oz), new Vector3(0.15f, 0.03f, 0.15f), snowMat, 4, 2);
+            }
+        }
+
         private static void Shrub(RaidMesh m, System.Random rng, Vector3 at)
         {
             float s = 0.75f + (float)rng.NextDouble() * 0.4f;

@@ -107,6 +107,7 @@ namespace CloneZ
             ZoneWorld.Zone = zone;
             ZoneWorld.Seed = GameSession.RaidSeed;
             ZoneWorld.Unbaked = new GameObject("ZoneUnbaked").transform;
+            ZoneWorld.Unbaked.SetParent(world, false); // keep local transform, exclude from navmesh bake
             ZoneWorld.Site = ZoneSiteMap.Analyse(world, map);
 
             // One draw from the raid's stream seeds everything here, so the overlays never shift what other
@@ -128,6 +129,7 @@ namespace CloneZ
             });
 
             var host = new GameObject("ZoneRuntime");
+            host.transform.SetParent(world, false);
             ZoneWorld.Runtime = host.AddComponent<ZoneRuntime>();
             ZoneAtmosphere.Attach(host, zone);
 
@@ -148,8 +150,9 @@ namespace CloneZ
             if (ZoneWorld.Runtime == null)
             {
                 var host = new GameObject("ZoneRuntime");
+                host.transform.SetParent(ZoneWorld.World, false);
                 ZoneWorld.Runtime = host.AddComponent<ZoneRuntime>();
-                ZoneAtmosphere.Attach(host, zone ?? ZoneCatalog.Current);
+                ZoneAtmosphere.Attach(host, zone ?? ZoneCatalog.Current); // attach only on first creation
             }
             ZoneWorld.Runtime.StartEvents(zone ?? ZoneCatalog.Current);
         }

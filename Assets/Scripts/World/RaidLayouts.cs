@@ -61,6 +61,7 @@ namespace CloneZ
             var woodMat = DecorPalette.Matte(wood); // wood surface
             var metalMat = DecorPalette.Metal(new Color(0.25f, 0.25f, 0.25f)); // brushed steel
             var brassMat = DecorPalette.Metal(new Color(0.80f, 0.55f, 0.30f)); // aged brass for label
+            // ---- extra hardware & wear ----
             var wearMat = DecorPalette.Matte(new Color(0.28f, 0.20f, 0.12f)); // darker wear streak
             // Drawer handles – two small metal cylinders on each drawer front
             m.Cylinder(new Vector3(-w*0.5f + 0.09f + R(r, -0.005f, 0.005f), 0.78f, 0f), 0.006f, 0.02f, 8, metalMat);
@@ -124,13 +125,32 @@ namespace CloneZ
             m.Box(new Vector3( w*0.5f - 0.04f, 0.03f, -0.11f), Sz(0.02f, 0.06f, 0.02f), metalMat);
             m.Box(new Vector3(-w*0.5f + 0.04f, 0.03f,  0.09f), Sz(0.02f, 0.06f, 0.02f), metalMat);
             m.Box(new Vector3( w*0.5f - 0.04f, 0.03f,  0.09f), Sz(0.02f, 0.06f, 0.02f), metalMat);
+            // Leg caps – tiny metal cylinders on each leg end
+            m.Cylinder(new Vector3(-w*0.5f + 0.04f, 0.03f, -0.11f), 0.008f, 0.015f, 8, metalMat);
+            m.Cylinder(new Vector3( w*0.5f - 0.04f, 0.03f, -0.11f), 0.008f, 0.015f, 8, metalMat);
+            m.Cylinder(new Vector3(-w*0.5f + 0.04f, 0.03f,  0.11f), 0.008f, 0.015f, 8, metalMat);
+            m.Cylinder(new Vector3( w*0.5f - 0.04f, 0.03f,  0.11f), 0.008f, 0.015f, 8, metalMat);
             // Worn front edge strip – darkened wood strip
             m.Box(new Vector3(0f, 0.75f, -0.11f), Sz(w - 0.02f, 0.015f, 0.003f), wearMat);
+            // Front reinforcement strap – thin metal strip under the desk front
+            m.Box(new Vector3(0f, 0.745f, -0.11f), Sz(w - 0.04f, 0.005f, 0.01f), metalMat);
             // Rust‑tinted label plate – aged brass rectangle
             m.Box(new Vector3(0f, 0.77f, -0.09f), Sz(0.12f, 0.008f, 0.001f), brassMat);
+            // Random ink blot – thin dark patch on the top surface
+            if (Chance(r, 0.45)) {
+                float blotW = R(r, 0.08f, 0.18f);
+                float blotD = R(r, 0.02f, 0.06f);
+                float blotX = R(r, -w*0.5f + 0.15f, w*0.5f - 0.15f);
+                m.Box(new Vector3(blotX, 0.78f, blotD/2f - 0.1f), Sz(blotW, 0.001f, blotD), DecorPalette.Matte(new Color(0.12f, 0.08f, 0.05f)));
+            }
             // Optional dust puff – flat grey cylinder
             var dustMat = DecorPalette.Matte(new Color(0.45f,0.44f,0.40f));
             m.Cylinder(new Vector3(0f, 0.78f, 0f), 0.08f, 0.001f, 8, dustMat);
+            // Cable clamp – small metal cylinder near the CRT
+            if (Chance(r, 0.5)) {
+                Vector3 clampPos = new Vector3(0.12f + R(r, -0.02f, 0.02f), 0.74f, -0.08f + R(r, -0.02f, 0.02f));
+                m.Cylinder(clampPos, 0.004f, 0.015f, 8, metalMat);
+            }
                 if (lamp > 0)
                     b.DeskLamp(m, r, new Vector3(-w * 0.5f + 0.2f, 0.76f, -0.18f), R(r, 15f, 40f), r.NextDouble() < 0.5 ? GreenShade : BlackShade, lamp == 2, lampShadows);
             });

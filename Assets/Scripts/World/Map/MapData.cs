@@ -122,6 +122,28 @@ namespace CloneZ
     [Serializable]
 public sealed class MapBuilding
     {
+        // Constants for window dimensions (metres)
+        public const float WindowWidth = 0.8f;
+        public const float WindowHeight = 1.2f;
+        public const float WindowDepth = 0.05f;
+
+        /// <summary>Returns how many window columns each façade should have (2‑5) based on the building id.</summary>
+        public int GetWindowColumns()
+        {
+            // deterministic hash → value 0‑3, then shift to 2‑5 columns
+            int hash = (int)((id * 0x9E3779B9) & 0x7);
+            return 2 + hash;
+        }
+
+        /// <summary>Colour for window frames and door trim – a slight desaturation of the building’s tint.</summary>
+        public Color GetTrimColour()
+        {
+            Color c = GetTint();
+            // lower saturation a bit for metal/painted trim
+            Color.RGBToHSV(c, out float h, out float s, out float v);
+            s = Mathf.Clamp01(s * 0.75f);
+            return Color.HSVToRGB(h, s, v);
+        }
         public long id;
         /// <summary>house, trailer, apartments, hotel, commercial, office, retail, industrial, warehouse, church,
         /// school, hospital, civic, garage, shed, barn, silo, greenhouse, canopy or ruin.</summary>

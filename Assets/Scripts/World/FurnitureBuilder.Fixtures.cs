@@ -243,6 +243,61 @@ m.Box(brPos + normal * 0.001f + new Vector3(0f, 0.005f, 0f),
         /// <summary>The lit bulb of a <see cref="ShopLamp"/> hung <paramref name="drop"/> below <paramref name="ceiling"/>.</summary>
         public static void ShopLampGlow(RaidMesh m, Vector3 ceiling, float drop)
             => m.Ellipsoid(ceiling - Vector3.up * (drop + 0.13f), new Vector3(0.098f, 0.098f, 0.098f), Gl(new Color(1f, 0.85f, 0.58f)), 6, 4);
+
+        /// <summary>A simple wall‑mounted toggle switch (single‑pole, single‑throw).
+        /// <paramref name="at"/> is the centre of the switch face on the wall,
+        /// <paramref name="normal"/> points outward from the wall.</summary>
+        public static void WallSwitch(RaidMesh m, System.Random rng, Vector3 at, Vector3 normal)
+        {
+            // 1️⃣ Main plate – thin dark‑steel sheet, slightly recessed
+            // size 0.08 m × 0.12 m × 0.003 m, offset 0.008 m from wall
+            Vector3 platePos = at + normal * 0.008f;
+            Vector3 plateSize = new Vector3(0.08f, 0.12f, 0.003f);
+            Color plateCol = new Color(0.28f, 0.28f, 0.30f); // weathered steel
+            m.Box(platePos, plateSize, Quaternion.identity, M(plateCol));
+
+            // 2️⃣ Two brass mounting screws – top‑left & top‑right of the plate
+            // radius 0.002 m, height 0.004 m
+            float screwRad = 0.002f, screwH = 0.004f;
+            Vector3[] screwOffsets = {
+                new Vector3(-plateSize.x * 0.5f + 0.015f, plateSize.y * 0.5f - 0.01f, 0f), // left
+                new Vector3( plateSize.x * 0.5f - 0.015f, plateSize.y * 0.5f - 0.01f, 0f) // right
+            };
+            foreach (var off in screwOffsets)
+                m.Cylinder(platePos + off, screwRad, screwH, 12, Mt(Brass), Quaternion.identity);
+
+            // 3️⃣ Toggle lever – thin rectangular bar, up or down according to rng
+            // size 0.01 m × 0.04 m × 0.004 m, centred on plate, pivoted about its centre
+            bool up = rng.NextDouble() < 0.5;
+            float angle = up ? 20f : -20f;
+            Vector3 leverPos = platePos + new Vector3(0f, 0f, plateSize.z * 0.5f + 0.002f);
+            Vector3 leverSize = new Vector3(0.01f, 0.04f, 0.004f);
+            Quaternion leverRot = Quaternion.Euler(0f, 0f, angle);
+            m.Box(leverPos, leverSize, leverRot, M(new Color(0.20f, 0.20f, 0.22f)));
+
+            // 4️⃣ Optional wear line – a thin scratched groove across the plate front
+            if (rng.NextDouble() < 0.4)
+            {
+                float ox = R(rng, -plateSize.x * 0.3f, plateSize.x * 0.3f);
+                float oy = R(rng, -plateSize.y * 0.3f, plateSize.y * 0.3f);
+                Vector3 wearPos = platePos + new Vector3(ox, oy, plateSize.z * 0.5f + 0.0015f);
+                Vector3 wearSize = new Vector3(0.07f, 0.001f, 0.001f);
+                m.Box(wearPos, wearSize, Quaternion.identity, M(new Color(0.15f, 0.15f, 0.17f)));
+            }
+
+            // 5️⃣ Small rust spot – dark blob on the plate front
+            if (rng.NextDouble() < 0.3)
+            {
+                Vector3 rustPos = platePos + new Vector3(
+                    R(rng, -plateSize.x * 0.25f, plateSize.x * 0.25f),
+                    R(rng, -plateSize.y * 0.25f, plateSize.y * 0.25f),
+                    plateSize.z * 0.5f + 0.001f);
+                m.Blob(rustPos, Vector3.right, Vector3.up,
+                    R(rng, 0.008f, 0.012f), R(rng, 0.006f, 0.01f),
+                    6, 0f, rng,
+                    M(new Color(0.20f, 0.12f, 0.10f)));
+            }
+        }
         #endregion
 
         #region Overgrowth and grime

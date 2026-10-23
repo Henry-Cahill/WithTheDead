@@ -346,6 +346,31 @@ namespace CloneZ
             m.Box(new Vector3(0f, 0.2f, r + 0.07f), new Vector3(0.03f, 0.05f, 0.03f), DecorPalette.Metal(FurnitureBuilder.Brass));
             // rusted chain loop (torus approximated by thin box)
             m.Box(new Vector3(0f, h - 0.02f, 0f), new Vector3(r * 0.6f, 0.008f, 0.008f), DecorPalette.Matte(new Color(0.4f, 0.18f, 0.12f)));
+
+            // wooden barrel lid – thin cylinder slightly larger than the barrel opening
+            float lidY = h + 0.012f; // sits just above the barrel lip
+            m.Cylinder(new Vector3(0f, lidY, 0f), r + 0.03f, 0.015f, 16, DecorPalette.Matte(new Color(0.45f, 0.35f, 0.25f)));
+
+            // left hinge – small cylinder on rear side of lid
+            m.Cylinder(new Vector3(-(r + 0.03f - 0.008f), lidY, -0.018f), 0.005f, 0.02f, 6, DecorPalette.Metal(FurnitureBuilder.Brass));
+            // right hinge – mirrored
+            m.Cylinder(new Vector3((r + 0.03f - 0.008f), lidY, -0.018f), 0.005f, 0.02f, 6, DecorPalette.Metal(FurnitureBuilder.Brass));
+
+            // latch strap across front of lid
+            m.Box(new Vector3(0f, lidY + 0.005f, r + 0.018f), new Vector3(0.07f, 0.015f, 0.006f), DecorPalette.Metal(FurnitureBuilder.Steel));
+
+            // rust‑stained patches on lid
+            int lidPatchCount = strapRand.Next(2, 4);
+            for (int i = 0; i < lidPatchCount; i++)
+            {
+                float angle = (float)(strapRand.NextDouble() * Mathf.PI * 2.0);
+                float yOff = 0.003f + (float)(strapRand.NextDouble() * 0.004f);
+                Vector3 pos = new Vector3(
+                    Mathf.Sin(angle) * (r + 0.025f),
+                    lidY + yOff,
+                    Mathf.Cos(angle) * (r + 0.025f));
+                m.Box(pos, new Vector3(0.015f, 0.002f, 0.015f), DecorPalette.Matte(new Color(0.4f, 0.2f, 0.1f)));
+            }
             // Subtle rust‑stained metal cap on the barrel's lip for a makeshift handle feel.
 
             Rim(m, r - wall, r + wall + 0.01f, h, 16,

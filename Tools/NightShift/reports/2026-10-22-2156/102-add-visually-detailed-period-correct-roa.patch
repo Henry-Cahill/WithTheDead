@@ -1,0 +1,176 @@
+diff --git a/Assets/Scripts/World/Map/KentuckyMap.Ground.cs b/Assets/Scripts/World/Map/KentuckyMap.Ground.cs
+index f4079a34..f938c324 100644
+--- a/Assets/Scripts/World/Map/KentuckyMap.Ground.cs
++++ b/Assets/Scripts/World/Map/KentuckyMap.Ground.cs
+@@ -51,8 +51,6 @@ internal static IEnumerable<Vector2> SampleAlong(List<Vector2> pts, float interv
+                 {
+                     accumulated += interval;
+                     yield return a + dir * accumulated;
+-                }
+-                accumulated = (accumulated + segLen) - Mathf.Floor((accumulated + segLen) / interval) * interval;
+             }
+         }
+         private static void BuildGround(Site site)
+@@ -107,10 +105,8 @@ private static void BuildWaterAndLots(Site site)
+                      edge.Add(inside[0]); // close loop
+                      Ribbon(site.Town.Out, edge, SnowBankWidth, LotY + 0.001f, Ice);
+                     ParkingLotFenceHelper.AddFence(site.Town.Out, edge, LotY + 0.002f);
+-                 }
+-        }
++            }
+         }
+-
+         private static void BuildStreets(Site site, MapBuild build)
+         {
+             float half = site.Half;
+@@ -123,14 +119,10 @@ private static void BuildStreets(Site site, MapBuild build)
+                 bool road = Rank(s.Data.kind) >= 2;
+                 foreach (List<Vector2> piece in MapGeometry.ClipLine(s.Pts, square))
+                 {
+-// Main road surface
++                     // Main road surface
+                      Ribbon(site.Town.Out, piece, width, StreetY, surf);
+-                     // Add thin icy crust overlay for footways/paths (trodden snow surfaces)
+-                     if (surf.Mat == TroddenSnow.Mat)
+-                     {
+-                         Ribbon(site.Town.Out, piece, width * 0.96f, StreetY + 0.001f, Ice);
+-                     }
+-                     // Add subtle brighter overlay for asphalt roads
++
++
+                      if (surf.Mat == DecorMaterials.Asphalt.Mat)
+                      {
+                          var varSurf = RandomAsphaltOverlay(piece[0]);
+@@ -160,28 +152,48 @@ private static void BuildStreets(Site site, MapBuild build)
+                     if (road && surf.Mat == DecorMaterials.Asphalt.Mat)
+                     {
+                         const float lampInterval = 30f;
+-                        foreach (Vector2 lampPos in SampleAlong(piece, lampInterval))
+-                        {
+-                            // Determine lamp yaw: align with road direction at the sampled point.
+-                            // Find the segment that contains the point.
+-                            float yaw = 0f;
+-                            for (int i = 0; i + 1 < piece.Count; i++)
+-                            {
+-                                Vector2 a = piece[i], b = piece[i + 1];
+-                                if (Vector2.Distance(a, lampPos) + Vector2.Distance(lampPos, b) - Vector2.Distance(a, b) < 0.01f)
+-                                {
+-                                    Vector2 d = (b - a).normalized;
+-                                    yaw = -Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
+-                                    break;
+-                                }
+-                            }
+-                            StreetLampHelper.PlaceLamp(site.Town.Out, site, lampPos, yaw);
+-                        }
++                     foreach (Vector2 lampPos in SampleAlong(piece, lampInterval))
++        {
++            // Determine lamp yaw: align with road direction at the sampled point.
++            // Find the segment that contains the point.
++            float yaw = 0f;
++            for (int i = 0; i + 1 < piece.Count; i++)
++            {
++                Vector2 a = piece[i], b = piece[i + 1];
++                if (Vector2.Distance(a, lampPos) + Vector2.Distance(lampPos, b) - Vector2.Distance(a, b) < 0.01f)
++                {
++                    Vector2 d = (b - a).normalized;
++                    yaw = -Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
++                    break;
++                }
++            }
++            StreetLampHelper.PlaceLamp(site.Town.Out, site, lampPos, yaw);
++        }
++        // Place period‑correct signposts on main roads (road rank >= 2) every 50 m.
++        if (road && surf.Mat == DecorMaterials.Asphalt.Mat)
++        {
++            const float signInterval = 50f;
++            foreach (Vector2 signPos in SampleAlong(piece, signInterval))
++            {
++                float yaw = 0f;
++                for (int i = 0; i + 1 < piece.Count; i++)
++                {
++                    Vector2 a = piece[i], b = piece[i + 1];
++                    if (Vector2.Distance(a, signPos) + Vector2.Distance(signPos, b) - Vector2.Distance(a, b) < 0.01f)
++                    {
++                        Vector2 d = (b - a).normalized;
++                        yaw = -Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
++                        break;
+                     }
+-                    RoadMarkingsBuilder.BuildForStreet(site, s, build);
+-                site.TakeLine(piece, width * 0.5f + 0.3f);
+-                    if (road && width >= 7f) DashedLine(site.Town.Out, piece, StreetY + 0.003f);
+                 }
++                SignpostHelper.PlaceSignpost(site.Town.Out, signPos, yaw);
++            }
++        }
++        RoadMarkingsBuilder.BuildForStreet(site, s, build);
++        site.TakeLine(piece, width * 0.5f + 0.3f);
++        if (road && width >= 7f) DashedLine(site.Town.Out, piece, StreetY + 0.003f);
++    }
++
+                 // The road out of town carries on past the edge, as scenery.
+                 if (road)
+                 {
+@@ -462,5 +474,4 @@ private static Surf RandomGravelOverlay(Vector2 seed)
+             Color baseCol = new Color(0.55f, 0.55f, 0.55f);
+             Color varied = new Color(baseCol.r + r, baseCol.g + r, baseCol.b + r);
+             return DecorPalette.Matte(varied);
+-        }    }
+-}
++
+diff --git a/Assets/Scripts/World/Map/SignpostHelper.cs b/Assets/Scripts/World/Map/SignpostHelper.cs
+new file mode 100644
+index 00000000..54cb19e7
+--- /dev/null
++++ b/Assets/Scripts/World/Map/SignpostHelper.cs
+@@ -0,0 +1,43 @@
++using UnityEngine;
++
++namespace CloneZ
++{
++    // Builds a simple metal‑pole signpost with a wooden board and four rivet cubes.
++    internal static class SignpostHelper
++    {
++        private static readonly Color BoardColor = new Color(0.5f, 0.35f, 0.2f); // weathered brown wood
++        private static readonly Surf BoardSurf = DecorPalette.Matte(BoardColor);
++        private static readonly float PoleRadius = 0.05f; // metres
++        private static readonly float PoleHeight = 1.2f; // metres
++        private static readonly Vector3 BoardSize = new Vector3(0.6f, 0.4f, 0.02f); // width, height, depth
++        private static readonly float RivetSize = 0.02f; // metres
++        public static void PlaceSignpost(OutdoorBatches into, Vector2 pos, float yawDeg)
++        {
++            // Ground position on the road surface.
++            Vector3 ground = new Vector3(pos.x, KentuckyMap.StreetY, pos.y);
++            // Metal pole.
++            into.Solid(ground).Box(ground, new Vector3(PoleRadius, PoleHeight, PoleRadius), yawDeg, KentuckyMap.StreetLampMetal);
++            // Board centre – at top of pole, offset forward 0.3 m.
++            float rad = yawDeg * Mathf.Deg2Rad;
++            Vector3 forward = new Vector3(Mathf.Sin(rad), 0f, Mathf.Cos(rad));
++            Vector3 boardCenter = ground + new Vector3(0f, PoleHeight, 0f) + forward * 0.3f;
++            into.Solid(boardCenter).Box(boardCenter, BoardSize, yawDeg, BoardSurf);
++            // Four rivet cubes at board corners.
++            Vector3 half = new Vector3(BoardSize.x * 0.5f, BoardSize.y * 0.5f, BoardSize.z * 0.5f);
++            Vector3[] corners = new[]
++            {
++                new Vector3( half.x, half.y, 0f),
++                new Vector3(-half.x, half.y, 0f),
++                new Vector3( half.x,-half.y, 0f),
++                new Vector3(-half.x,-half.y, 0f)
++            };
++            foreach (var off in corners)
++            {
++                // Rotate corner offset by yaw, then translate to board centre.
++                Vector3 rotated = Quaternion.Euler(0f, yawDeg, 0f) * off;
++                Vector3 rivetPos = boardCenter + rotated;
++                into.Solid(rivetPos).Box(rivetPos, new Vector3(RivetSize, RivetSize, RivetSize), yawDeg, KentuckyMap.StreetLampMetal);
++            }
++        }
++    }
++}
+diff --git a/Assets/Scripts/World/Map/SignpostHelper.cs.meta b/Assets/Scripts/World/Map/SignpostHelper.cs.meta
+new file mode 100644
+index 00000000..6789f07f
+--- /dev/null
++++ b/Assets/Scripts/World/Map/SignpostHelper.cs.meta
+@@ -0,0 +1,2 @@
++fileFormatVersion: 2
++guid: 7bb89c093236f65d66d405c0fc0893cd

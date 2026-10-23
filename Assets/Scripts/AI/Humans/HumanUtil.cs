@@ -137,7 +137,9 @@ namespace CloneZ
                 float r = radius * Mathf.Sqrt((float)rng.NextDouble());
                 if (SampleNav(center + new Vector3(Mathf.Cos(a) * r, 0f, Mathf.Sin(a) * r), 2.5f, out result)) return true;
             }
-            return SampleNav(center, radius + 2f, out result);
+            if (SampleNav(center, radius + 2f, out result) && result.y < 0.6f) return true;
+            result = Vector3.zero;
+            return false;
         }
 
         /// <summary>"north", "south-east"... for a flat direction (+Z is north, +X east).</summary>
@@ -185,20 +187,19 @@ namespace CloneZ
         /// <summary>Runs a coroutine on a helper object that is destroyed with the scene.</summary>
         public static Coroutine Run(IEnumerator routine) => routine != null ? HumanRunner.Instance.StartCoroutine(routine) : null;
 
-        /// <summary>Every landmark the current map published ("landmark:&lt;id&gt;"), as (id, position). The list is
-        /// shared: copy it if you keep it.</summary>
+/// <summary>Every landmark the current map published ("landmark:&lt;id&gt;"), as (id, position). The returned list is a new instance; callers may modify it without affecting future calls.</summary>
         public static List<KeyValuePair<string, Vector3>> Landmarks()
         {
-            s_Landmarks.Clear();
+            var result = new List<KeyValuePair<string, Vector3>>(16);
             const string prefix = "landmark:";
             foreach (string kind in WorldMarkers.Kinds)
             {
                 if (kind == null || !kind.StartsWith(prefix)) continue;
                 IReadOnlyList<Vector3> pts = WorldMarkers.Get(kind);
                 string id = kind.Substring(prefix.Length);
-                for (int i = 0; i < pts.Count; i++) s_Landmarks.Add(new KeyValuePair<string, Vector3>(id, pts[i]));
+                for (int i = 0; i < pts.Count; i++) result.Add(new KeyValuePair<string, Vector3>(id, pts[i]));
             }
-            return s_Landmarks;
+            return result;
         }
 
         /// <summary>Every published marker whose kind mentions <paramref name="word"/> (anomaly fields, camps...).</summary>
