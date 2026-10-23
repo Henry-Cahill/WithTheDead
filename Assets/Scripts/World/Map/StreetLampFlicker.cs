@@ -10,6 +10,8 @@ namespace CloneZ
     internal sealed class StreetLampFlicker : MonoBehaviour
     {
         private Light _light;
+        private Renderer _poleRenderer;
+        private bool _isPrimaryRoad;
         private float _baseIntensity;
         private float _phase;
         private float _dipTimer;
@@ -29,11 +31,28 @@ namespace CloneZ
         [SerializeField, Range(0f, 1f)] public float _dipStrength = 0.3f;
         private float _iceDimFactor; // computed from ice cluster count
 
+        private void ApplyRoadVisuals()
+        {
+            // primary roads get a slightly stronger flicker and a darker pole
+            if (_isPrimaryRoad)
+            {
+                _maxSinusoid += 0.05f; // boost sinusoidal swing
+                _swayAmplitudeDeg += 0.5f; // a little more sway
+                if (_poleRenderer != null) _poleRenderer.material.color *= 0.75f; // darken pole colour
+            }
+            else
+            {
+                // side streets keep the default values, but brighten the pole
+                if (_poleRenderer != null) _poleRenderer.material.color *= 1.15f; // lighten pole colour
+            }
+        }
+
         private void Awake()
         {
             _light = GetComponent<Light>();
-            if (_light == null) enabled = false;
+            if (_light == null) { enabled = false; return; }
             else _baseIntensity = _light.intensity;
+
             // compute ice dim factor based on IceCluster child count
             int icicleCount = 0;
             var iceCluster = transform.Find("IceCluster");
@@ -43,9 +62,18 @@ namespace CloneZ
                 {
                     if (ic.name.StartsWith("Icicle_")) icicleCount++;
                 }
+                // scale dim factor proportionally (max at 4 icicles)
+                _iceDimFactor = (icicleCount / 4f) * _maxIceDim;
             }
-            // scale dim factor proportionally (max at 4 icicles)
-            _iceDimFactor = (icicleCount / 4f) * _maxIceDim;
+
+            // retrieve road‑type metadata
+            var meta = GetComponent<StreetLampMetadata>();
+            _isPrimaryRoad = meta != null && meta.IsPrimaryRoad;
+            // find the pole mesh (expected child named "Pole") and cache its renderer
+            var pole = transform.Find("Pole");
+            if (pole != null) _poleRenderer = pole.GetComponent<Renderer>();
+            ApplyRoadVisuals();
+
             _originalLocalRot = transform.localRotation; // capture original rotation
             UpdateCulling(); // initial enable/disable based on player distance
         }
@@ -60,6 +88,7 @@ namespace CloneZ
         {
             s_registered.Remove(this);
         }
+
         private void Start()
         {
             // deterministic phase from the lamp’s position hash
@@ -89,6 +118,7 @@ namespace CloneZ
             bool shouldEnable = Vector3.Distance(transform.position, s_player.transform.position) <= CullDistance;
             SetFlickerEnabled(shouldEnable);
         }
+
         private void Update()
         {
             UpdateCulling();
@@ -104,17 +134,17 @@ namespace CloneZ
             float intensityFactor = 1f + sinWobble - dip - _iceDimFactor; // apply ice dimming
             _light.intensity = _baseIntensity * intensityFactor;
         }
-        /// Enables or disables the flicker effect without destroying the component.
-    /// </summary>
-    public void SetFlickerEnabled(bool enabled)
-    {
-        this.enabled = enabled;
-        // when disabled we restore the original base intensity
-        if (!enabled && _light != null)
+
+        public void SetFlickerEnabled(bool enabled)
         {
-            _light.intensity = _baseIntensity;
-            transform.localRotation = _originalLocalRot; // reset sway
+            this.enabled = enabled;
+            if (!enabled && _light != null)
+            {
+                _light.intensity = _baseIntensity;
+                transform.localRotation = _originalLocalRot; // reset sway
+                if (_poleRenderer != null)
+                    _poleRenderer.material.color = Color.white;
+            }
         }
     }
-}
 }

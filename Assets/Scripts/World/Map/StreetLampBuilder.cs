@@ -51,6 +51,9 @@ internal static void BuildLamp(KentuckyMap.Site site, KentuckyMap.Street street,
             if (porchMat != null) baseCube.GetComponent<Renderer>().material = porchMat;
             var pole = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             pole.name = "Pole";
+            // attach metadata that tells the flicker script whether this lamp is on a primary road
+            var meta = lampRoot.AddComponent<StreetLampMetadata>();
+            meta.IsPrimaryRoad = street.Data.width >= 6f; // 6 m+ considered a primary road
             pole.transform.SetParent(lampRoot.transform, false);
             // vary pole dimensions by street kind
             if (street.Data.kind == "residential")
