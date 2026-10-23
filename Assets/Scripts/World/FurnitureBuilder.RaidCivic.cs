@@ -759,7 +759,7 @@ for (int v = 0; v < 4; v++)
                 // shade – a shallow ellipsoid, slightly tilted for realism
                 Vector3 shadeC = new Vector3(basePos.x, basePos.y + 0.01f + poleHeight + 0.07f, basePos.z);
                 Quaternion shadeRot = Quaternion.Euler(R(rng, -5f, 5f), 0f, 0f);
-                m.Ellipsoid(shadeC, new Vector3(0.09f, 0.06f, 0.09f), Mt(new Color(0.25f, 0.23f, 0.20f)), 8, 4);
+                m.Ellipsoid(shadeC, new Vector3(0.09f, 0.06f, 0.09f), shadeRot, Mt(new Color(0.25f, 0.23f, 0.20f)), 8, 4);
                 // bulb – small emissive sphere inside the shade
                 Vector3 bulbPos = shadeC + new Vector3(0f, 0.015f, 0f);
                 m.Sphere(bulbPos, 0.015f, Gl(new Color(1f, 0.95f, 0.80f)));
