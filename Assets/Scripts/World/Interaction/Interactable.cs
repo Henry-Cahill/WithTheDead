@@ -260,6 +260,7 @@ var byKey = new Dictionary<string, FixtureSave>(fixtures.Count);
         #endregion
 
         #region Helpers for subclasses
+        // Example: a ToggleLamp creates a child Light component to visualise its on/off state.
         /// <summary>Which side of a plane (through <paramref name="point"/>, facing <paramref name="normal"/>) the
         /// survivor stands on: +1 in front, -1 behind.</summary>
         protected static int SideOf(Vector3 survivor, Vector3 point, Vector3 normal)
