@@ -147,7 +147,23 @@ namespace CloneZ
             for (int i = 0; i < 4; i++)
                 m.Box(new Vector3((i % 2 == 0 ? -1f : 1f) * (w * 0.5f - 0.08f), 0.03f, (i < 2 ? -1f : 1f) * 0.34f), new Vector3(0.05f, 0.06f, 0.05f), M(Walnut));
             m.Box(new Vector3(0f, 0.25f, -0.02f), new Vector3(w, 0.38f, 0.82f), M(c * 0.9f));
+            // Seat stitching: centre seam and side seams
+            float seatTopY = 0.25f + 0.38f * 0.5f + 0.001f; // just above seat surface
+            // centre seam
+            m.Box(new Vector3(0f, seatTopY, 0f), new Vector3(w, 0.002f, 0.01f), M(c * 0.6f));
+            // left side seam
+            m.Box(new Vector3(-w * 0.5f + 0.06f, seatTopY, 0f), new Vector3(0.01f, 0.002f, 0.8f), M(c * 0.6f));
+            // right side seam
+            m.Box(new Vector3(w * 0.5f - 0.06f, seatTopY, 0f), new Vector3(0.01f, 0.002f, 0.8f), M(c * 0.6f));
             m.Box(new Vector3(0f, 0.62f, -0.32f), new Vector3(w - 0.36f, 0.5f, 0.2f), Quaternion.Euler(-10f, 0f, 0f), M(c));
+            // Occasional decorative pillow on seat
+            // Optional draped blanket over one side of the seat (30% chance)
+            // Stray rope hanging from back cushion (20% chance)
+            if (Chance(rng, 0.2f))
+            {
+                Vector3 ropeBase = new Vector3(0f, 0.62f + 0.5f, -0.32f + 0.10f);
+                m.Cylinder(ropeBase, 0.005f, 0.25f, 6, G(new Color(0.50f, 0.45f, 0.40f)), Quaternion.identity);
+            }
             int n = w > 1.6f ? 3 : (w > 1.1f ? 2 : 1);
             float cw = (w - 0.4f) / n;
             for (int i = 0; i < n; i++)
@@ -159,6 +175,8 @@ namespace CloneZ
             {
                 m.Box(new Vector3(s * (w * 0.5f - 0.1f), 0.42f, -0.02f), new Vector3(0.2f, 0.5f, 0.82f), M(c * 0.95f));
                 m.CylinderX(new Vector3(s * (w * 0.5f - 0.1f), 0.66f, -0.02f), 0.11f, 0.82f, 8, M(c * 0.95f), 90f);
+                float armCapY = 0.66f + 0.11f + 0.02f; // just above the arm radius
+                m.Box(new Vector3(s * (w * 0.5f - 0.1f), armCapY, -0.02f), new Vector3(0.04f, 0.02f, 0.04f), M(c * 0.85f));
             }
             if (Chance(rng, 0.6))
                 m.Box(new Vector3(R(rng, -w * 0.3f, w * 0.3f), 0.68f, -0.08f), new Vector3(0.4f, 0.36f, 0.12f), Quaternion.Euler(-20f, R(rng, -20f, 20f), R(rng, -10f, 10f)), M(V(new Color(0.6f, 0.5f, 0.3f), rng, 0.2f)));
