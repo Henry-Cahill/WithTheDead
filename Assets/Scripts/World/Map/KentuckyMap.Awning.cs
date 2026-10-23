@@ -31,6 +31,19 @@ namespace CloneZ
             v = Mathf.Clamp01(v + 0.12f); // a bit brighter for canvas
             return Color.HSVToRGB(h, s * 0.9f, v);
         }
+        private static Color GetMatColor(MapBuilding b, System.Random rng)
+        {
+            // Base colour is a muted beige; add a tiny random hue/tint per building.
+            float baseHue = 0.12f; // soft beige hue
+            float baseSat = 0.25f;
+            float baseVal = 0.85f;
+            // Apply a slight per‑building offset for visual variety.
+            float h = baseHue + (float)rng.NextDouble() * 0.02f - 0.01f;
+            float s = baseSat + (float)rng.NextDouble() * 0.05f - 0.025f;
+            float v = baseVal + (float)rng.NextDouble() * 0.04f - 0.02f;
+            return Color.HSVToRGB(Mathf.Clamp01(h), Mathf.Clamp01(s), Mathf.Clamp01(v));
+        }
+
         private static void BuildAwningAndSign(Site site, Vector2 doorPt, Vector2 outward, float yaw, MapBuilding b, System.Random rng)
         {
             // ----- awning -------------------------------------------------
@@ -43,6 +56,13 @@ namespace CloneZ
         // added constants for new decorative parts
         const float BracketSize = 0.05f; // 5 cm cube for metal brackets
         const float LanternSize = 0.12f; // 12 cm cube for lantern glow
+        // Small wooden step that many 1990s rural shops placed in front of their awning; adds a realistic landing for the door and a place for a faded welcome‑mat.
+        // Footboard (small step) dimensions
+        const float FootboardHeight = 0.07f; // 7 cm tall
+        const float FootboardDepth = 0.25f; // 25 cm deep
+        // Welcome‑mat dimensions (thin rectangle placed on top of footboard)
+        const float MatThickness = 0.015f; // 1.5 cm
+        const float MatHeightOffset = 0.002f; // lift just above footboard to avoid Z‑fighting
             // Center of the awning (mid‑point over the door, shifted outward)
             Vector3 awningCenter = To3(doorPt + outward * (awningDepth * 0.5f), DoorHeight + awningHeightAboveDoor);
             Vector3 awningSize = new Vector3(awningWidth, awningThickness, awningDepth);
@@ -50,6 +70,32 @@ namespace CloneZ
             Color awningCol = GetAwningColor(b);
             Surf awningMat = DecorMaterials.WoodFloor(awningCol);
             site.Overhead.At(awningCenter).Box(awningCenter, awningSize, yaw, awningMat);
+
+            // ----- footboard step -----
+            Vector3 footboardCenter = To3(
+                doorPt + outward * (awningDepth + FootboardDepth * 0.5f),
+                FootboardHeight * 0.5f);
+            Surf woodMat = DecorMaterials.WoodFloor(GetAwningColor(b));
+            site.Town.Out.Solid(footboardCenter).Box(
+                footboardCenter,
+                new Vector3(awningWidth, FootboardHeight, FootboardDepth),
+                0f,
+                woodMat);
+            site.Town.PropCollider(footboardCenter,
+                new Vector3(awningWidth, FootboardHeight, FootboardDepth),
+                0f);
+
+            // ----- welcome mat -----
+            Color matCol = GetMatColor(b, rng);
+            Surf matMat = DecorPalette.Matte(matCol);
+            Vector3 matCenter = footboardCenter + new Vector3(0f,
+                FootboardHeight * 0.5f + MatHeightOffset + MatThickness * 0.5f,
+                0f);
+            site.Town.Out.Solid(matCenter).Box(
+                matCenter,
+                new Vector3(awningWidth * 0.78f, MatThickness, FootboardDepth - 0.02f),
+                0f,
+                matMat);
             // ----- side support posts -----
             float supportWidth = 0.07f;
             float supportHeight = awningHeightAboveDoor + 0.5f;
@@ -132,8 +178,9 @@ site.Town.Out.Solid(leftPos).Box(leftPos,
             site.Town.PropCollider(bannerCenter,
                 new Vector3(bannerWidth, bannerHeight, bannerDepth), yaw);
             // original radius was awningWidth * 0.5f + 0.4f
-            site.Take(doorPt + outward * (awningDepth + 0.7f),
-                awningWidth * 0.5f + 0.6f); // extra margin for banner & brackets
+            // Reserve extra margin for footboard and welcome mat
+            site.Take(doorPt + outward * (awningDepth + FootboardDepth + 0.7f),
+                awningWidth * 0.5f + 0.7f); // extra margin for banner & brackets and new parts
         }
     }
 }
