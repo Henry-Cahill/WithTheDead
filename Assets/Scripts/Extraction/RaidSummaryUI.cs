@@ -81,6 +81,8 @@ namespace CloneZ
         private void Update()
         {
             if (_leaving) return;
+            // Refresh the cached keyboard if it was not available during Awake.
+            if (_cachedKeyboard == null) _cachedKeyboard = Keyboard.current;
             Keyboard kb = _cachedKeyboard;
             if (kb == null || Time.unscaledTime - _shownAt < KeyDelay) return;
             if (kb.enterKey.wasPressedThisFrame || kb.numpadEnterKey.wasPressedThisFrame) OnNextRaid();
@@ -254,7 +256,8 @@ AddBorder(prt, new Color(0.25f, 0.27f, 0.30f, 0.9f), 3f);
 
             if (shown < lines.Count)
             {
-                float y = firstRowY - (RowsPerColumn - 1) * RowHeight;
+                // Place the “More” line just below the bottom of the right‑hand column.
+                float y = firstRowY - RowsPerColumn * RowHeight;
                 Label(panel, "More", top, new Vector2(230f, y), new Vector2(420f, RowHeight), 18, TextAnchor.MiddleLeft, DimText)
                     .text = "\u2026 and " + (lines.Count - shown) + " more";
             }
