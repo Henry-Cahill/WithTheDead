@@ -173,9 +173,10 @@ NearBed = _cachedBed != null;
 
         private bool ZombiesNearby()
         {
+            // Detect any zombie (including those using trigger colliders) within the danger radius.
             int n = Physics.OverlapSphereNonAlloc(
                 transform.position, CloneZConfig.SleepDangerRadius, _dangerBuf,
-                1 << CloneZConfig.IgnoreRaycastLayer, QueryTriggerInteraction.Ignore);   // zombies live on Ignore Raycast
+                1 << CloneZConfig.IgnoreRaycastLayer, QueryTriggerInteraction.Collide);   // zombies live here
             for (int i = 0; i < n; i++)
                 if (_dangerBuf[i] != null && _dangerBuf[i].GetComponentInParent<ZombieAI>() != null)
                     return true;
