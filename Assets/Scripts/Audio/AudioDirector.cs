@@ -27,6 +27,8 @@ namespace CloneZ
                 Transform t = p.transform;
                 if (controller != null) controller.Footstep += (sprint, sneak) => FootstepAudio.Play(t.position, sprint, sneak);
                 var gear = p.GetComponent<PlayerGear>();
+                var actor = p.GetComponent<Actor>();
+                AudioDirector.SetLocalPlayer(actor);
                 if (gear != null) gear.Coughed += () => Sfx.Play(SfxIds.Cough, t.position + Vector3.up * 1.6f, 0.7f, Random.Range(0.9f, 1.1f), 18f);
             };
             CombatResolver.ShotResolved += (req, r) =>
@@ -155,6 +157,8 @@ namespace CloneZ
     public sealed class AudioDirector : MonoBehaviour
     {
         private static AudioDirector s_Instance;
+        private static Actor _cachedPlayer;
+        public static void SetLocalPlayer(Actor p) => _cachedPlayer = p;
 
         // Ensure static reference is cleared when this instance is destroyed to avoid stale singleton.
         private void OnDestroy()
@@ -206,7 +210,7 @@ namespace CloneZ
         private void Update()
         {
             float dt = Time.unscaledDeltaTime;
-            Actor local = Actor.LocalPlayer;
+            Actor local = _cachedPlayer;
             if (local != _localActor)
             {
                 _localActor = local;
