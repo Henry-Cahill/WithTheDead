@@ -8835,3 +8835,6 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   - 20:36 landed by 1htsserver in 2.8 min: Implemented the detailed visual enhancements for the olive jerry‑can in **FurnitureBuilder.Utility.cs**:
 - [x] Cache the heater’s timer TextMesh in Assets/Scripts/Hub/Heater.cs to avoid a per‑frame GetComponentInChildren lookup.
   - 20:42 landed by 1htsserver in 2.5 min: Changed **Assets/Scripts/Hub/Heater.cs**
+- [ ] Add a one-sentence `/// <summary>` to each public method and property in Assets/Scripts/Hub/Heater.cs that has none, saying what it does and why, in the same voice as the existing summaries in that file. Don't change any code.
+  Skip fields, constants, constructors, and members that override a base member or implement an interface (for example DisplayName, GetActions, SaveKey, CaptureState, RestoreState, CanDemolish, TakeDamage, Dispose, and an IGameModule's Order and Init): they inherit their docs.
+  Insert only: each edit adds the new `///` lines directly above one declaration, indented exactly like that declaration, and keeps the declaration line exactly as it was. Never delete, move or rewrite existing lines; if an edit fails, re-read the file first.
