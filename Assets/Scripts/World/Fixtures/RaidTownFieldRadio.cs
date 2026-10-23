@@ -96,6 +96,16 @@ namespace CloneZ
         };
 
         private Transform _host;
+        private System.Action<InteractContext> _switchOffDelegate;
+        private System.Action<InteractContext> _turnUpDelegate;
+        private System.Action<InteractContext> _turnDownDelegate;
+
+        private void Awake()
+        {
+            _switchOffDelegate = ctx => Switch(false);
+            _turnUpDelegate = ctx => Louder(ctx, 1);
+            _turnDownDelegate = ctx => Louder(ctx, -1);
+        }
         private Vector3 _point;
         private Renderer _dial;
         private string _name;
@@ -146,11 +156,11 @@ namespace CloneZ
                 into.Add(new InteractAction("Switch on the radio", SwitchOn).DisabledIf(!near, TooFar));
                 return;
             }
-            into.Add(new InteractAction("Switch off the radio", c => Switch(false)).DisabledIf(!near, TooFar));
+            into.Add(new InteractAction("Switch off the radio", _switchOffDelegate).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Change channel", Retune).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Previous channel", PrevChannel).DisabledIf(!near, TooFar));
-            into.Add(new InteractAction("Turn it up", c => Louder(c, 1)).DisabledIf(_volume >= MaxVolume, "It won't go any louder").DisabledIf(!near, TooFar));
-            into.Add(new InteractAction("Turn it down", c => Louder(c, -1)).DisabledIf(_volume <= 0, "It's down as low as it goes").DisabledIf(!near, TooFar));
+            into.Add(new InteractAction("Turn it up", _turnUpDelegate).DisabledIf(_volume >= MaxVolume, "It won't go any louder").DisabledIf(!near, TooFar));
+            into.Add(new InteractAction("Turn it down", _turnDownDelegate).DisabledIf(_volume <= 0, "It's down as low as it goes").DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Check radio status", CheckStatus).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Next transmission", NextTransmission).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Key the handset", KeyHandset).DisabledIf(!near, TooFar));
