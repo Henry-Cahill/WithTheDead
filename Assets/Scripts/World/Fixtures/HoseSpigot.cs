@@ -33,7 +33,11 @@ private bool _open;
             "The paint on the hose reel is peeling; it’s seen more rain than anyone remembers.",
             "Someone scratched: \"If the mains stay dead, dig a well before the frost kills the crops.\"",
             "A child's doodle of a snowman leans against the tap, a reminder of carefree days.",
-            "The rusted handle squeaks like a warning bell when turned in the cold."
+            "The rusted handle squeaks like a warning bell when turned in the cold.",
+            "A faded newspaper clipping is taped here: “Winter 1993 – Water rationing announced. Conserve what you can.”",
+            "Grandpa Earl’s scrawl reads, “If the pipe freezes, tap it slowly to avoid bursts – we lost the back‑yard well once.”",
+            "A small hand‑drawn map shows the old well behind the barn, marked “Dry – dig deeper when spring thaws.”",
+            "An aged photograph of the house in summer hangs crookedly, captioned “Before the freeze, the garden burst with beans.”"
         };
 
         public override string DisplayName => "Outside tap";
