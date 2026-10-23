@@ -8845,7 +8845,7 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   Step 3: After the shade construction (the line `m.Cylinder(mouth, 0.08f, 0.15f, 10, G(shade), tilt * Quaternion.Euler(180f, 0f, 0f), 0.4f, false);`), add a tiny emissive lens disc positioned just outside the shade front: `// tiny greenish emissive lens on the shade front` `Vector3 lensPos = mouth + (tilt * Vector3.up) * 0.08f; // front of the shade` `m.Cylinder(lensPos, 0.02f, 0.001f, 12, Gl(new Color(0.2f, 0.6f, 0.2f)), tilt);`
   Done when: The desk lamp shows a small chrome rectangular switch on its base, a chrome knob at the middle arm joint, and a faint greenish glow on the front of its shade, all built from code without altering any collider or interaction logic.
   - 20:52 landed by hts-llm in 3.1 min: Implemented three visual enhancements to the desk lamp in **FurnitureBuilder.Office.cs**:
-- [ ] Reduce per‑frame wear‑state syncing in Assets/Scripts/Player/PlayerGear.cs by caching the `SyncWorn()` call
+- [x] Reduce per‑frame wear‑state syncing in Assets/Scripts/Player/PlayerGear.cs by caching the `SyncWorn()` call
   Add a private `bool _wornDirty = true;` field (initialized true)
   In `Awake()` set `_wornDirty = true;` (already true)
   Subscribe to a clothing‑change event (e.g. `Clothing.Changed += MarkWornDirty;`) in `Subscribe()` and unsubscribe in `Unsubscribe()` (mirroring the inventory subscription)
@@ -8854,6 +8854,7 @@ site.Take(Rect.MinMaxRect(Mathf.Min(a.x, b.x) - 0.5f, Mathf.Min(a.y, b.y) - 0.5f
   `if (_wornDirty) { SyncWorn(); _wornDirty = false; }`
   Keep existing explicit `SyncWorn()` calls in methods like `ToggleNightVision`, `ChargeFlattest`, `UseFilter`, etc.; they will set `_wornDirty` to false after syncing, so the per‑frame check will skip unnecessary work.
   The player’s gear state (night‑vision, mask, flashlight) remains unchanged; only the redundant per‑frame wear‑state lookup is eliminated, lowering CPU usage each frame.
+  - 22:20 landed by hts-llm in 21 min: Implemented per‑frame wear‑state caching for `PlayerGear`:
 - [x] Add a functional “Toggle headlights” feature to the car (Assets/Scripts/World/Vehicles.cs)
   Step 1: Assets/Scripts/World/Vehicles.cs – Vehicle class Add a private field to store the headlights state. `private bool _headlightsOn;` (Current code has no such field.)
   Step 2: Assets/Scripts/World/Vehicles.cs – Vehicle class Add a helper method that applies the current `_headlightsOn` value to the two Light components. `private void UpdateHeadlights()` `{` `if (_lights == null) return;` `foreach (Light l in _lights)` `if (l != null) l.intensity = _headlightsOn ? 2.2f : 0f;` `}` (Place it near `UpdateEngineFx`.)
