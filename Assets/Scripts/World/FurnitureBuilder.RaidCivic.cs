@@ -482,6 +482,56 @@ for (int v = 0; v < 4; v++)
             m.Box(new Vector3(px - 0.2f, 0.36f, pz), new Vector3(0.02f, 0.72f, pd), carcass);
             m.Box(new Vector3(px + 0.2f, 0.36f, pz), new Vector3(0.02f, 0.72f, pd), carcass);
             m.Box(new Vector3(px, 0.36f, pz - pd * 0.5f + 0.01f), new Vector3(0.42f, 0.72f, 0.02f), carcass);
+            // ------------------- new desk accessories -------------------
+            // 1️⃣ Chrome pull handle on each drawer front (front edge at z = pz ± 0.01)
+            float handleY = 0.45f; // height of handle centre
+            float handleZ = pz + (side > 0 ? -0.015f : 0.015f);
+            float handleX = px;
+            m.Box(new Vector3(handleX, handleY, handleZ), new Vector3(0.06f, 0.015f, 0.004f), Mt(Chrome));
+
+            // tiny metal stop plate at inner edge of the front drawer (adds visual depth)
+            float stopZ = pz - (side > 0 ? 0.018f : -0.018f);
+            m.Box(new Vector3(handleX, handleY - 0.015f, stopZ), new Vector3(0.06f, 0.004f, 0.001f), Mt(Chrome));
+
+            // 2️⃣ Cable‑clamp (small U‑shaped metal piece) under the top rail, centred
+            Vector3 clampPos = new Vector3(0f, 0.755f, 0f);
+            m.Box(clampPos + new Vector3(-0.12f, 0f, 0f), new Vector3(0.02f, 0.008f, 0.04f), Mt(Chrome));
+            m.Box(clampPos + new Vector3( 0.12f, 0f, 0f), new Vector3(0.02f, 0.008f, 0.04f), Mt(Chrome));
+            m.Box(clampPos + new Vector3(0f, 0.004f, 0f), new Vector3(0.28f, 0.004f, 0.04f), Mt(Chrome));
+
+            // 3️⃣ Desktop lamp on the right‑hand side of the work surface
+            if (Chance(rng, 0.7f))
+            {
+                Vector3 lampBase = new Vector3(w * 0.45f - 0.15f, 0.78f, d * 0.35f);
+                m.Cylinder(lampBase, 0.025f, 0.02f, 12, Mt(Chrome)); // base
+                m.Cylinder(lampBase + new Vector3(0f, 0.02f, 0f), 0.015f, 0.45f, 12, Mt(new Color(0.55f,0.55f,0.55f))); // pole
+                m.Ellipsoid(lampBase + new Vector3(0f, 0.47f, 0f), new Vector3(0.07f,0.045f,0.07f), Mt(new Color(0.25f,0.23f,0.20f)), 8, 4); // shade
+                m.Sphere(lampBase + new Vector3(0f, 0.49f, 0f), 0.018f, Gl(new Color(1f,0.94f,0.80f))); // bulb (emissive)
+                // tiny switch on the side of the base
+                m.Box(lampBase + new Vector3(0.03f, 0.01f, 0f), new Vector3(0.008f,0.018f,0.003f), Mt(Chrome));
+            }
+
+            // 4️⃣ Small potted plant on the left‑hand side (optional)
+            if (Chance(rng, 0.5f))
+            {
+                Vector3 potPos = new Vector3(w * -0.45f + 0.12f, 0.79f, d * -0.3f);
+                // pot – dark matte cylinder
+                m.Cylinder(potPos, 0.04f, 0.02f, 10, M(new Color(0.20f,0.18f,0.16f)));
+                // soil – slightly lighter matte cylinder
+                m.Cylinder(potPos + new Vector3(0f,0.01f,0f), 0.036f, 0.005f, 8, M(new Color(0.30f,0.25f,0.20f)));
+                // plant – few tapered green cylinders
+                for (int p = 0; p < 3; p++)
+                {
+                    float ang = R(rng, -15f, 15f);
+                    Vector3 dir = Yaw(ang) * new Vector3(0.02f,0f,0f);
+                    m.Cylinder(potPos + new Vector3(0f,0.015f,0f) + dir, 0.01f, 0.08f, 8, Mt(new Color(0.15f,0.60f,0.10f)));
+                }
+            }
+
+            // 5️⃣ Wall‑clock on the back panel of the desk (emissive face)
+            Vector3 clockPos = new Vector3(0f, 1.0f, -d * 0.5f + 0.005f);
+            m.Box(clockPos, new Vector3(0.25f, 0.25f, 0.008f), Gs(new Color(0.10f,0.10f,0.12f))); // frame
+            m.FlatUV(clockPos, 0.19f, 0.19f, 0f, Gl(new Color(0.90f,0.85f,0.70f)), new Rect(0f,0f,1f,1f));
             m.Box(new Vector3(px, 0.02f, pz), new Vector3(0.42f, 0.04f, pd), carcass);
             m.Box(new Vector3(px, 0.38f, pz - pd * 0.5f + 0.022f), new Vector3(0.38f, 0.66f, 0.004f), M(c * 0.35f));
             for (int i = 0; i < 2; i++)
