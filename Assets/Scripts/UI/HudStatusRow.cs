@@ -242,12 +242,10 @@ namespace CloneZ
             SetStatus(_food, 1f - stats.Hunger, Severity(stats.Hunger, 0.6f, 0.85f));
 
             float t = stats.Temperature;
-            Color tc = HudUI.Ink;
-            if (t < CloneZConfig.TempComfortLow)
-                tc = t < CloneZConfig.TempHypothermiaThreshold + 0.02f ? HudUI.WithAlpha(Cold, HudUI.Pulse(5f, 0.35f)) : Cold;
-            else if (t > CloneZConfig.TempComfortHigh)
-                tc = t > CloneZConfig.TempHyperthermiaThreshold - 0.01f ? HudUI.WithAlpha(Hot, HudUI.Pulse(5f, 0.35f)) : Hot;
-            SetStatus(_temp, t, tc);
+            float tempLevel;
+            Color tempColor;
+            GetTempFillAndColor(t, out tempLevel, out tempColor);
+            SetStatus(_temp, tempLevel, tempColor);
 
             float hp = stats.HealthNormalized;
             SetStatus(_health, hp, Severity(1f - hp, 0.5f, 0.75f));
@@ -284,6 +282,27 @@ namespace CloneZ
             {
                 s.Outline.color = color;
                 s.Fill.color = HudUI.WithAlpha(color, color.a * 0.5f);
+            }
+        }
+
+        // Helper for the temperature HUD element – normalises the fill amount and picks the appropriate colour.
+        private static void GetTempFillAndColor(float temperature, out float level01, out Color color)
+        {
+            // Normalise temperature within the comfort range.
+            level01 = Mathf.InverseLerp(CloneZConfig.TempComfortLow, CloneZConfig.TempComfortHigh, temperature);
+            // Determine colour exactly as the old code did.
+            color = HudUI.Ink;
+            if (temperature < CloneZConfig.TempComfortLow)
+            {
+                // Cold side – pulse when very close to hypothermia.
+                bool pulse = temperature < CloneZConfig.TempHypothermiaThreshold + 0.02f;
+                color = pulse ? HudUI.WithAlpha(Cold, HudUI.Pulse(5f, 0.35f)) : Cold;
+            }
+            else if (temperature > CloneZConfig.TempComfortHigh)
+            {
+                // Hot side – pulse when very close to hyperthermia.
+                bool pulse = temperature > CloneZConfig.TempHyperthermiaThreshold - 0.01f;
+                color = pulse ? HudUI.WithAlpha(Hot, HudUI.Pulse(5f, 0.35f)) : Hot;
             }
         }
 
