@@ -51,7 +51,9 @@ namespace CloneZ
         _key = KeyFor("streetlamp", transform.position);
         _flickerOn = _flicker != null && _flicker.enabled;
         if (_flicker != null) _flicker.enabled = true; // always keep component alive
-        StreetLampRegistry.Register(this); // <-- new line
+        StreetLampRegistry.Register(this);
+        // NEW: give this lamp a random colour/style
+        StreetLampRegistry.ApplyRandomStyle(this);
     }
 
         private void OnDestroy()
@@ -89,11 +91,8 @@ namespace CloneZ
 
     private void ToggleBlock(InteractContext ctx, bool turnOn)
     {
-        var nearby = StreetLampRegistry.GetNearby(transform.position, BLOCK_TOGGLE_RADIUS);
-        foreach (var lamp in nearby)
-        {
-            lamp.ApplyState(turnOn, ctx);
-        }
+        // Use the registry's bulk‑toggle helper.
+        StreetLampRegistry.ToggleAllNearby(transform.position, BLOCK_TOGGLE_RADIUS, turnOn);
         // One audible click for the block action
         MakeNoise(2f);
         ctx.Notify(turnOn ? "All nearby street lamps click on." : "All nearby street lamps click off.");
