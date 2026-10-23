@@ -106,18 +106,21 @@ namespace CloneZ
         private System.Action<InteractContext> _switchOffDelegate;
         private System.Action<InteractContext> _turnUpDelegate;
         private System.Action<InteractContext> _turnDownDelegate;
+        private System.Action<InteractContext> _toggleAntennaDelegate;
 
         private void Awake()
         {
             _switchOffDelegate = ctx => Switch(false);
             _turnUpDelegate = ctx => Louder(ctx, 1);
             _turnDownDelegate = ctx => Louder(ctx, -1);
+            _toggleAntennaDelegate = ctx => ToggleAntenna(ctx);
         }
         private Vector3 _point;
         private Renderer _dial;
         private string _name;
         private bool _on;
         private int _net, _volume = CloneZConfig.ReceiverDefaultVolume, _exitCursor;
+        private bool _highGain; // true when the antenna is boosted, giving longer caption range
         private readonly int[] _cursor = new int[Nets.Length];
         private float _noiseAt, _captionAt;
 
@@ -167,7 +170,7 @@ namespace CloneZ
             into.Add(new InteractAction("Change channel", Retune).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Previous channel", PrevChannel).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Turn it up", _turnUpDelegate).DisabledIf(_volume >= MaxVolume, "It won't go any louder").DisabledIf(!near, TooFar));
-            into.Add(new InteractAction("Turn it down", _turnDownDelegate).DisabledIf(_volume <= 0, "It's down as low as it goes").DisabledIf(!near, TooFar));
+            into.Add(new InteractAction(_highGain ? "Lower antenna" : "Boost antenna", _toggleAntennaDelegate).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Check radio status", CheckStatus).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Next transmission", NextTransmission).DisabledIf(!near, TooFar));
             into.Add(new InteractAction("Key the handset", KeyHandset).DisabledIf(!near, TooFar));
@@ -187,6 +190,16 @@ namespace CloneZ
             ctx.Notify($"Radio is on {n.Name} — {n.Title}. Volume: {vol}.");
         }
 
+        private void ToggleAntenna(InteractContext ctx)
+        {
+            _highGain = !_highGain;
+            // play a short “click” noise so the player feels the change
+            MakeNoise(CloneZConfig.FixtureNoiseSmall);
+            ctx.Notify(_highGain
+                ? "You extend the antenna. The radio’s reach is now greater."
+                : "You fold the antenna back. The radio’s reach returns to normal.");
+        }
+
         private void Switch(bool on)
         {
             if (_on == on) return;
@@ -199,7 +212,6 @@ namespace CloneZ
                 _noiseAt = Time.time + 0.5f;
             }
         }
-
         private void Retune(InteractContext ctx)
         {
             _net = (_net + 1) % Nets.Length;
@@ -290,7 +302,8 @@ namespace CloneZ
             InteractContext ctx = pi.Context;
             if (ctx != null && ctx.Stats != null && ctx.Stats.IsDead) return false;
             if (ctx != null && ctx.Sleep != null && ctx.Sleep.IsSleeping) return false;
-            float range = CloneZConfig.RaidFieldRadioCaptionRange * CloneZConfig.ReceiverHearingScale[_volume];
+            float baseRange = CloneZConfig.RaidFieldRadioCaptionRange * CloneZConfig.ReceiverHearingScale[_volume];
+            float range = _highGain ? baseRange * 1.5f : baseRange;
             return LivingFixtures.FlatDistance(pi.transform.position, _point) <= range;
         }
     }
