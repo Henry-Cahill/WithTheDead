@@ -48,7 +48,7 @@ namespace CloneZ
         {
             if (Busy || _stats == null || _stats.IsDead || _stats.Incapacitated) return false;
             _label = label;
-            _labelText = _label + "...";
+            _labelText = _label + "..."; 
             _len = Mathf.Max(0.1f, seconds);
             _t = 0f;
             _onDone = onDone;
@@ -81,7 +81,7 @@ namespace CloneZ
             if (_animator != null) _animator.Activity = _activity;
             _t += Time.deltaTime;
             UIKit.SetBar(_bar, _t / _len);
-            _text.text = _labelText;
+
             if (_t < _len) return;
             Action done = _onDone;
             _onDone = null;
