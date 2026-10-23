@@ -213,9 +213,18 @@ for (int i = 0; i < 4; i++)
 
             // frosted glass envelope (non‑emissive, slightly translucent)
             Vector3 glassCenter = lamp + Vector3.up * 0.13f;
+            // thin metal trim (0.002 m thick) around the glass envelope, colour varies per lantern
+            float trimRadius = 0.075f; // half of glassSize.x (0.14 m) minus a small inset
+            float trimHeight = 0.002f;
+            float tv = LightVariation(glassCenter); // 0.95‑1.05 range
+            Color trimCol = Color.Lerp(new Color(0.10f,0.10f,0.10f), new Color(0.15f,0.15f,0.15f), tv-0.95f);
+            m.Cylinder(glassCenter, trimRadius, trimHeight, 12, DecorPalette.Metal(trimCol));
             Vector3 glassSize = new Vector3(0.14f, 0.12f, 0.14f);
             m.Box(glassCenter, glassSize,
                 DecorPalette.Matte(new Color(0.90f, 0.95f, 1.00f, 0.18f))); // very light bluish tint
+            // faint ember (glow) near the centre of the glass
+            Vector3 emberPos = glassCenter + new Vector3(0f, 0.015f, 0f);
+            m.Sphere(emberPos, 0.02f, DecorPalette.Glow(WarmGlow));
 
             // four cage bars – dark iron
             float barRadius = 0.004f;
@@ -238,7 +247,25 @@ for (int i = 0; i < 4; i++)
             Vector3 finialPos = wall + n * 0.13f + Vector3.up * 0.295f;
             m.Box(finialPos, new Vector3(0.015f, 0.015f, 0.015f), brass);
 
-            // rust patches – small irregular boxes on the housing bottom
+            Vector3 hookBase = finialPos + Vector3.down * 0.015f;
+            float hookRadius = 0.003f;
+            float hookLength = 0.02f;
+            m.Cylinder(hookBase, hookRadius, hookLength, 6,
+                DecorPalette.Metal(new Color(0.12f, 0.11f, 0.10f))); // dark iron
+            Vector3 hookHead = hookBase + Vector3.down * hookLength;
+            m.Box(hookHead, new Vector3(0.006f, 0.002f, 0.006f),
+                DecorPalette.Metal(new Color(0.12f, 0.11f, 0.10f)));
+
+            // rust‑patched hinge – a tiny box protruding from the finial edge
+            Surf hingeMat = DecorPalette.Matte(new Color(0.45f, 0.30f, 0.20f));
+            Vector3 hingePos = finialPos + new Vector3(0.005f, 0f, 0f);
+            m.Box(hingePos, new Vector3(0.008f, 0.004f, 0.002f), hingeMat);
+
+            // tiny screw in the centre of the finial
+            Vector3 screwPos = finialPos + new Vector3(0.00375f, 0.00375f, 0.00375f);
+            m.Box(screwPos, new Vector3(0.004f, 0.004f, 0.004f),
+                DecorPalette.Matte(new Color(0.08f, 0.08f, 0.09f)));
+
             Surf rustMat = DecorPalette.Matte(new Color(0.45f, 0.30f, 0.20f));
             Vector3[] rustPos = new[]
             {
