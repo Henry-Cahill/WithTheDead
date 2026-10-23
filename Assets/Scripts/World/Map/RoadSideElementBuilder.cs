@@ -22,6 +22,9 @@ namespace CloneZ
         private const float MailboxWidth = 0.22f; // metres, width of a small metal mailbox
         private const float MailboxDepth = 0.18f; // metres, depth of the mailbox
         private const float MailboxHeight = 0.73f; // metres, mailbox height
+        internal const float SignPostPoleRadius = 0.04f; // metres, thin wooden post
+        internal const float SignPostPoleHeight = 1.0f; // metres, typical signpost height
+        internal const float SignPostChance = 0.06f; // 6 % of segments get a signpost
         internal static void BuildKerbs(KentuckyMap.Site site, KentuckyMap.Street street, MapBuild build)
         {
             if (!build.HasSidewalk(street.Data.id)) return; // no sidewalk → no kerb
@@ -68,13 +71,20 @@ namespace CloneZ
                 var midPoint = (a + b) * 0.5f;
                 BuildMailbox(site, midPoint, normal, side, edgeOffset, build);
             }
-            // randomly place a trash bin on ~10 % of segments (once per side)
-            if (build.Random.NextDouble() < 0.10)
-            {
-                // place the bin near the midpoint of the segment so it isn’t duplicated at both ends
-                var midPoint = (a + b) * 0.5f;
-                BuildTrashBin(site, midPoint, normal, side, edgeOffset, build);
-            }
+// randomly place a trash bin on ~10 % of segments (once per side)
+                        if (build.Random.NextDouble() < 0.10)
+                        {
+                            // place the bin near the midpoint of the segment so it isn’t duplicated at both ends
+                            var midPoint = (a + b) * 0.5f;
+                            BuildTrashBin(site, midPoint, normal, side, edgeOffset, build);
+                        }
+                        // randomly place a street‑name signpost on ~6 % of segments (once per side)
+                        if (build.Random.NextDouble() < SignPostChance)
+                        {
+                            var midPoint = (a + b) * 0.5f;
+                            string signName = string.IsNullOrWhiteSpace(street.Data.name) ? $"Rd {street.Data.id}" : street.Data.name;
+                            SignpostBuilder.BuildSignpost(site, midPoint, normal, side, edgeOffset, build, signName);
+                        }
                 }
                 // -------------------------------------------------
                 // Add street lamps on a subset of segments
