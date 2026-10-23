@@ -343,6 +343,27 @@ Color rust = new Color(mailR, mailG, mailB);
             Vector3 capPos = new Vector3(0f, 0.78f, 0f);
             Vector3 capSize = new Vector3(0.30f, 0.02f, 0.30f);
             m.Box(capPos, capSize, DecorPalette.Metal(rust));
+            // 1️⃣ left hinge – thin rod on latch edge
+            Vector3 leftHingePos = latchPos + new Vector3(-0.28f, 0.02f, 0f);
+            m.Cylinder(leftHingePos, 0.008f, 0.04f, 6, DecorPalette.Metal(rust));
+            // 2️⃣ right hinge – matching rod on opposite side
+            Vector3 rightHingePos = latchPos + new Vector3(0.28f, 0.02f, 0f);
+            m.Cylinder(rightHingePos, 0.008f, 0.04f, 6, DecorPalette.Metal(rust));
+            // 3️⃣ lock – rust‑stained cylinder centered between hinges
+            Vector3 lockPos = latchPos + new Vector3(0f, 0.02f, 0.03f);
+            m.Cylinder(lockPos, 0.012f, 0.03f, 6, DecorPalette.Metal(rust));
+            // 4️⃣ front glass – clear thin slab suggesting an opening lid
+            Vector3 glassPos = new Vector3(0f, 0.40f, 0.32f);
+            Vector3 glassSize = new Vector3(0.58f, 0.34f, 0.02f);
+            m.Box(glassPos, glassSize, DecorPalette.Glass(new Color(0.93f, 0.95f, 0.97f)));
+            // 5️⃣ emissive rust patch – faint glow on lid
+            Vector3 emblemPos = new Vector3(0f, 0.78f, 0.015f);
+            Vector3 emblemSize = new Vector3(0.12f, 0.004f, 0.001f);
+            m.Box(emblemPos, emblemSize, DecorPalette.Glow(new Color(0.8f, 0.45f, 0.25f)));
+            // 6️⃣ foot plate – low metal slab beneath box
+            Vector3 footPos = new Vector3(0f, 0.01f, 0f);
+            Vector3 footSize = new Vector3(0.30f, 0.01f, 0.30f);
+            m.Box(footPos, footSize, DecorPalette.Metal(rust));
             m.ResetFrame();
         }
 
