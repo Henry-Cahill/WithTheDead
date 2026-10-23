@@ -219,6 +219,27 @@ namespace CloneZ
             sb.Collider(new Vector3(-3f, 2f, -5.5f), new Vector3(3.5f, 4f, 0.5f));
             sb.Collider(new Vector3(3f, 2f, -5.5f), new Vector3(3.5f, 4f, 0.5f));
             sb.Upper.Box(new Vector3(0f, 6f, -5.2f), new Vector3(1.6f, 4f, 1.6f), ZoneKit.M(stone));
+            // Rust‑tinted metal colour for hinges, handle and small metal bits
+            Color rustMetal = new Color(0.5f, 0.3f, 0.1f);
+            // Left and right vertical studs (wet‑wood) framing the doorway (opening centred at (0f, 2f, -5.5f))
+            sb.Solid.Box(new Vector3(-1.31f, 2f, -5.5f), new Vector3(0.12f, 4f, 0.12f), ZoneKit.M(ZoneKit.V(ZoneKit.WetWood, sb.Rng, 0.04f)));
+            sb.Solid.Box(new Vector3( 1.31f, 2f, -5.5f), new Vector3(0.12f, 4f, 0.12f), ZoneKit.M(ZoneKit.V(ZoneKit.WetWood, sb.Rng, 0.04f)));
+            // Top lintel (wet‑wood) sitting just above the wall height
+            sb.Solid.Box(new Vector3(0f, 4.1f, -5.5f), new Vector3(2.6f, 0.2f, 0.2f), ZoneKit.M(ZoneKit.V(ZoneKit.WetWood, sb.Rng, 0.04f)));
+            // Door panel (wet‑wood) – fills the opening
+            sb.Solid.Box(new Vector3(0f, 2f, -5.48f), new Vector3(2.5f, 4f, 0.02f), ZoneKit.M(ZoneKit.V(ZoneKit.WetWood, sb.Rng, 0.04f)));
+            // Upper hinge
+            sb.Solid.CylinderX(new Vector3(-1.26f, 1.0f, -5.48f), 0.015f, 0.05f, 8, ZoneKit.M(rustMetal), 0f);
+            // Lower hinge (offset by 0.8 m)
+            sb.Solid.CylinderX(new Vector3(-1.26f, 1.8f, -5.48f), 0.015f, 0.05f, 8, ZoneKit.M(rustMetal), 0f);
+            // Rust‑metal handle on the right side of the door with a slight yaw jitter for visual variety
+            float handleYaw = (float)sb.Rng.NextDouble() * 6f - 3f; // -3° … +3°
+            sb.Solid.CylinderX(new Vector3( 1.26f, 1.4f, -5.48f), 0.02f, 0.07f, 8, ZoneKit.M(rustMetal), handleYaw);
+            // Kick‑plate (wet‑wood) at the base of the door
+            sb.Solid.Box(new Vector3(0f, 0.01f, -5.48f), new Vector3(2.5f, 0.02f, 0.12f), ZoneKit.M(ZoneKit.V(ZoneKit.WetWood, sb.Rng, 0.04f)));
+            // Small latch (rust‑metal) near the right‑hand side of the door
+            Vector3 latchPos = new Vector3(1.0f, 0.6f, -5.48f) + new Vector3(ZoneKit.R(sb.Rng, -0.02f, 0.02f), 0f, 0f);
+            sb.Solid.Box(latchPos, new Vector3(0.12f, 0.04f, 0.02f), ZoneKit.M(rustMetal));
             sb.Roof.Box(new Vector3(0f, 4.2f, 0f), new Vector3(9.6f, 0.3f, 11.4f), ZoneKit.M(ZoneKit.WetWood));
             // Add four metal lanterns with flame lights on the roof corners
             var metalColor = new Color(0.45f, 0.41f, 0.38f);
