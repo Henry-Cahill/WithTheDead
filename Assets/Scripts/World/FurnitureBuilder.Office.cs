@@ -115,6 +115,25 @@ namespace CloneZ
                 m.Ellipsoid(dir * 0.3f + Vector3.up * 0.03f, new Vector3(0.05f, 0.05f, 0.05f), M(b), 6, 3);
             }
             m.Cylinder(new Vector3(0f, 0.07f, 0f), 0.025f, 0.36f, 6, Mt(Chrome));
+            // metal foot‑ring under seat – width matches seat, thin height
+            m.Box(new Vector3(0f, 0.45f, 0f), new Vector3(0.48f, 0.004f, 0.46f), Mt(Chrome));
+            // vertical lumbar‑support bar on the back‑rest
+            m.Box(new Vector3(0f, 0.52f, -0.15f), new Vector3(0.02f, 0.12f, 0.02f), Mt(Chrome));
+            // caster wheels – rubber tire with a tiny chrome hub
+            Vector3[] wheelOffsets = new Vector3[] {
+                new Vector3( 0.05f, 0f, 0.05f),
+                new Vector3(-0.05f, 0f, 0.05f),
+                new Vector3( 0.05f, 0f,-0.05f),
+                new Vector3(-0.05f, 0f,-0.05f)
+            };
+            foreach (var baseOff in wheelOffsets) {
+                Vector3 jitter = new Vector3(R(rng, -0.005f, 0.005f), 0f, R(rng, -0.005f, 0.005f));
+                Vector3 pos = baseOff + jitter;
+                // rubber tire
+                m.Cylinder(pos, 0.03f, 0.015f, 8, M(new Color(0.12f, 0.12f, 0.13f)));
+                // tiny chrome hub (centered on same position, slightly thinner)
+                m.Cylinder(pos, 0.012f, 0.004f, 6, Mt(Chrome));
+            }
             m.Cylinder(new Vector3(0f, 0.43f, 0f), 0.012f, 0.008f, 6, Mt(Chrome));
             m.Box(new Vector3(0f, 0.46f, 0.02f), new Vector3(0.48f, 0.08f, 0.46f), M(f));
             // subtle stitching – two thin raised lines across the seat
