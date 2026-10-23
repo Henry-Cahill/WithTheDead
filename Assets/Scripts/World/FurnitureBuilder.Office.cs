@@ -51,10 +51,14 @@ namespace CloneZ
             Quaternion q = Yaw(yaw);
             Color arm = new Color(0.16f, 0.16f, 0.17f);
             m.Cylinder(at, 0.075f, 0.03f, 10, M(shade * 0.7f));
+            // tiny chrome toggle switch on the base
+            m.Box(at + new Vector3(0f, 0.018f, 0f), new Vector3(0.016f, 0.004f, 0.008f), Mt(Chrome));
             Vector3 screwPos = at + new Vector3(R(rng, -0.002f, 0.002f), 0.03f, R(rng, -0.002f, 0.002f));
             m.Cylinder(screwPos, 0.008f, 0.004f, 6, Mt(Chrome));
             Vector3 j0 = at + new Vector3(0f, 0.03f, 0f);
             Vector3 j1 = at + q * new Vector3(0f, 0.36f, -0.1f);
+            // chrome knob at the arm joint
+            m.Cylinder(j1, 0.006f, 0.014f, 8, Mt(Chrome));
             Vector3 j2 = at + q * new Vector3(0f, 0.44f, 0.22f);
             m.Rod(j0, j1, 0.018f, M(arm));
             m.Rod(j0 + q * new Vector3(0.025f, 0f, 0f), j1 + q * new Vector3(0.025f, 0f, 0f), 0.006f, Mt(Chrome));
@@ -66,6 +70,9 @@ namespace CloneZ
             Vector3 axis = tilt * Vector3.up;
             Vector3 mouth = j2 + axis * 0.15f;
             m.Cylinder(mouth, 0.08f, 0.15f, 10, G(shade), tilt * Quaternion.Euler(180f, 0f, 0f), 0.4f, false);
+            // tiny greenish emissive lens on the shade front
+            Vector3 lensPos = mouth + (tilt * Vector3.up) * 0.08f; // front of the shade
+            m.Cylinder(lensPos, 0.02f, 0.001f, 12, Gl(new Color(0.2f, 0.6f, 0.2f)), tilt);
             m.Cylinder(j2 - axis * 0.01f, 0.034f, 0.012f, 8, G(shade * 0.8f), tilt);
             m.Ellipsoid(mouth - axis * 0.045f, new Vector3(0.06f, 0.06f, 0.06f), lit ? Gl(WarmGlow) : M(new Color(0.55f, 0.55f, 0.5f)), 6, 4);
             return mouth;
