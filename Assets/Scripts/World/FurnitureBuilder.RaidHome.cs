@@ -105,6 +105,17 @@ namespace CloneZ
         {
             Color tv = Chance(rng, 0.5) ? new Color(0.12f, 0.12f, 0.13f) : new Color(0.36f, 0.24f, 0.14f);
             m.Box(new Vector3(0f, 0.78f, -0.04f), new Vector3(0.68f, 0.56f, 0.5f), M(tv));
+            // left side wooden trim (1 cm thick, 2 cm deep, full height)
+            m.Box(new Vector3(-0.34f + 0.005f, 0.78f, -0.04f + 0.01f), new Vector3(0.01f, 0.56f, 0.02f), M(tv));
+            // right side wooden trim
+            m.Box(new Vector3( 0.34f - 0.005f, 0.78f, -0.04f + 0.01f), new Vector3(0.01f, 0.56f, 0.02f), M(tv));
+
+            // speaker grill (chrome mesh)
+            var grillSurf = Mt(Chrome);
+            m.Quad(new Vector3(0f, 0.82f, -0.285f), new Vector3(0.1f, 0f, 0f), new Vector3(0f, 0.03f, 0f), grillSurf);
+
+            // power button (small chrome cylinder)
+            m.Cylinder(new Vector3(0.31f, 0.80f, -0.04f + 0.015f), 0.003f, 0.006f, 6, Mt(Chrome));
             var centre = new Vector3(-0.07f, 0.79f, 0.22f);
             screen = new Vector2(0.48f, 0.38f);
             m.Box(new Vector3(centre.x, centre.y, 0.215f), new Vector3(screen.x, screen.y, 0.01f), Gs(ScreenOff));
@@ -114,6 +125,15 @@ namespace CloneZ
             m.Ellipsoid(new Vector3(0f, 1.08f, -0.1f), new Vector3(0.12f, 0.05f, 0.1f), M(Black), 6, 3);
             m.Rod(new Vector3(0f, 1.1f, -0.1f), new Vector3(-0.28f, 1.55f, -0.16f), 0.008f, Mt(Chrome));
             m.Rod(new Vector3(0f, 1.1f, -0.1f), new Vector3(0.3f, 1.52f, -0.12f), 0.008f, Mt(Chrome));
+            // brand logo (tiny sign decal)
+            Surf logoSurf = DecorMaterials.Sign("CLONE‑Z", new Color(0.75f,0.70f,0.55f), new Color(0.10f,0.08f,0.05f), out float logoAspect);
+            float logoH = 0.04f;
+            float logoW = logoH * logoAspect;
+            m.Upright(centre + new Vector3(0f, 0.05f, 0.02f), Vector3.forward, logoW, logoH, logoSurf, new Rect(0f,0f,1f,1f));
+            // rabbit‑ear antenna – left ear
+            m.Cylinder(new Vector3(-0.02f, 1.34f, -0.04f), 0.004f, 0.12f, 6, Mt(Chrome), Quaternion.Euler(0f,0f,-30f));
+            // rabbit‑ear antenna – right ear
+            m.Cylinder(new Vector3( 0.02f, 1.34f, -0.04f), 0.004f, 0.12f, 6, Mt(Chrome), Quaternion.Euler(0f,0f, 30f));
             return centre;
         }
         #endregion
