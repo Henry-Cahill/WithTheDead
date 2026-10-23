@@ -79,8 +79,10 @@ internal static void BuildLamp(KentuckyMap.Site site, KentuckyMap.Street street,
             AddMetalCage(lampRoot.transform, pole.transform, rng);
             // add decorative finial on top
             AddFinial(lampRoot.transform, pole.transform, rng);
+            // add period‑accurate lamp arm with support brackets
+            AddLampArm(lampRoot.transform, pole.transform, rng, street.Data.kind);
             var rootCol = lampRoot.AddComponent<SphereCollider>();
-            rootCol.radius = 0.35f; // slightly larger to include cage & finial
+            rootCol.radius = 0.4f; // increased to include arm
             rootCol.center = new Vector3(0f, pole.transform.localScale.y + 0.4f, 0f);
             site.Town.PropCollider(rootCol.center,
                 new Vector3(rootCol.radius * 2, pole.transform.localScale.y + 0.8f, rootCol.radius * 2), 0f);
@@ -167,24 +169,73 @@ internal static void BuildLamp(KentuckyMap.Site site, KentuckyMap.Street street,
             }
         }
 
-        // Helper to add a small decorative finial (sphere) at the very top of the pole.
-        private static void AddFinial(Transform parent, Transform pole, System.Random rng)
+        // Helper to add a period‑accurate lamp arm and support brackets.
+        private static void AddLampArm(Transform parent, Transform pole, System.Random rng, string streetKind)
+        {
+            // Use the porch metal material for the arm and brackets.
+            var metalMat = WorldStore.GetPorchMaterial();
+            if (metalMat == null) return;
+
+            // Determine lengths based on street kind.
+            float horizLen = streetKind == "residential" ? 0.4f : 0.7f; // metres
+            float vertHeight = 0.5f; // metres above pole top
+            float thickness = 0.04f; // metres
+
+            // Root for the arm group.
+            var armRoot = new GameObject("LampArm");
+            armRoot.transform.SetParent(parent, false);
+
+            // Vertical support bar attached near the top of the pole.
+            var vert = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            vert.name = "ArmVertical";
+            vert.transform.SetParent(armRoot.transform, false);
+            vert.transform.localScale = new Vector3(thickness, vertHeight, thickness);
+
+            // Position: bottom sits on top of the pole.
+            float poleTopY = pole.localPosition.y + pole.localScale.y;
+            vert.transform.localPosition = new Vector3(0f, poleTopY + vertHeight * 0.5f, 0f);
+            var vertMat = new Material(metalMat);
+            vertMat.color = pole.GetComponent<Renderer>().material.color;
+            vert.GetComponent<Renderer>().material = vertMat;
+
+            // Horizontal arm extending outward.
+            var horiz = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            horiz.name = "ArmHorizontal";
+            horiz.transform.SetParent(armRoot.transform, false);
+            horiz.transform.localScale = new Vector3(horizLen, thickness, thickness);
+            // Small random yaw jitter for hand‑painted feel.
+            float yawJitter = (float)(rng.NextDouble() * 6.0 - 3.0); // ±3°
+            horiz.transform.localRotation = Quaternion.Euler(0f, yawJitter, 0f);
+            // Position: attached to top of vertical bar.
+            horiz.transform.localPosition = new Vector3(horizLen * 0.5f, poleTopY + vertHeight, 0f);
+            var horizMat = new Material(metalMat);
+            horizMat.color = pole.GetComponent<Renderer>().material.color;
+            horiz.GetComponent<Renderer>().material = horizMat;
+
+            // Simple colliders for interaction.
+            vert.AddComponent<BoxCollider>();
+            horiz.AddComponent<BoxCollider>();
+
+            // Slight random vertical offset for variation.
+            float yOffsetJitter = (float)(rng.NextDouble() * 0.04 - 0.02);
+            armRoot.transform.localPosition += new Vector3(0f, yOffsetJitter, 0f);
+        }
+
+            private static void AddFinial(Transform parent, Transform pole, System.Random rng)
         {
             var metalMat = WorldStore.GetPorchMaterial();
             if (metalMat == null) return;
-            // finial is a tiny sphere, slightly darker than the pole colour
             var fin = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             fin.name = "Finial";
             fin.transform.SetParent(parent, false);
             fin.transform.localScale = new Vector3(0.12f, 0.12f, 0.12f);
-            // pole height = localScale.y, pole bottom offset = localPosition.y
             float poleHeight = pole.localScale.y;
             float poleBaseY = pole.localPosition.y;
             fin.transform.localPosition = new Vector3(0f, poleBaseY + poleHeight + 0.06f, 0f);
             var finMat = new Material(metalMat);
-            // darken a little to suggest wrought‑iron patina
             finMat.color = pole.GetComponent<Renderer>().material.color * 0.85f;
             fin.GetComponent<Renderer>().material = finMat;
         }
-    }
+        }
+
 }
