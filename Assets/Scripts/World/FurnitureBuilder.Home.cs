@@ -156,14 +156,36 @@ namespace CloneZ
             // right side seam
             m.Box(new Vector3(w * 0.5f - 0.06f, seatTopY, 0f), new Vector3(0.01f, 0.002f, 0.8f), M(c * 0.6f));
             m.Box(new Vector3(0f, 0.62f, -0.32f), new Vector3(w - 0.36f, 0.5f, 0.2f), Quaternion.Euler(-10f, 0f, 0f), M(c));
-            // Occasional decorative pillow on seat
-            // Optional draped blanket over one side of the seat (30% chance)
-            // Stray rope hanging from back cushion (20% chance)
-            if (Chance(rng, 0.2f))
-            {
-                Vector3 ropeBase = new Vector3(0f, 0.62f + 0.5f, -0.32f + 0.10f);
-                m.Cylinder(ropeBase, 0.005f, 0.25f, 6, G(new Color(0.50f, 0.45f, 0.40f)), Quaternion.identity);
-            }
+// Occasional decorative pillow on seat
+// Optional draped blanket over one side of the seat (30% chance)
+// Stray rope hanging from back cushion (20% chance)
+if (Chance(rng, 0.2f))
+{
+    Vector3 ropeBase = new Vector3(0f, 0.62f + 0.5f, -0.32f + 0.10f);
+    m.Cylinder(ropeBase, 0.005f, 0.25f, 6, G(new Color(0.50f, 0.45f, 0.40f)), Quaternion.identity);
+}
+
+// occasional decorative pillow(s) on the seat
+if (Chance(rng, 0.4f))
+{
+    int pillowCount = w > 1.4f ? 2 : 1;
+    for (int i = 0; i < pillowCount; i++)
+    {
+        float px = R(rng, -w * 0.25f, w * 0.25f);
+        // pillow base – a small soft box
+        m.Box(new Vector3(px, 0.26f, -0.02f), new Vector3(0.12f, 0.018f, 0.12f), M(V(c, rng, 0.05f)));
+        // pillow top – a thin lighter‑tint lid to suggest stuffing
+        m.Box(new Vector3(px, 0.278f, -0.02f), new Vector3(0.12f, 0.004f, 0.12f), G(new Color(0.92f, 0.90f, 0.85f)));
+    }
+}
+
+// draped blanket over the left side of the seat (30% chance)
+if (Chance(rng, 0.3f))
+{
+    // blanket folded and hanging off the side – a thin, slightly crumpled box
+    m.Box(new Vector3(-w * 0.5f + 0.08f, 0.26f, 0.22f), new Vector3(0.06f, 0.001f, 0.18f),
+          G(V(c, rng, 0.07f)));
+}
             int n = w > 1.6f ? 3 : (w > 1.1f ? 2 : 1);
             float cw = (w - 0.4f) / n;
             for (int i = 0; i < n; i++)
@@ -177,9 +199,17 @@ namespace CloneZ
                 m.CylinderX(new Vector3(s * (w * 0.5f - 0.1f), 0.66f, -0.02f), 0.11f, 0.82f, 8, M(c * 0.95f), 90f);
                 float armCapY = 0.66f + 0.11f + 0.02f; // just above the arm radius
                 m.Box(new Vector3(s * (w * 0.5f - 0.1f), armCapY, -0.02f), new Vector3(0.04f, 0.02f, 0.04f), M(c * 0.85f));
+                // tiny brass rivets centred on each arm‑cap
+                m.Box(new Vector3(s * (w * 0.5f - 0.1f), armCapY + 0.015f, -0.02f), new Vector3(0.008f, 0.008f, 0.002f), Mt(Brass));
+
             }
-            if (Chance(rng, 0.6))
-                m.Box(new Vector3(R(rng, -w * 0.3f, w * 0.3f), 0.68f, -0.08f), new Vector3(0.4f, 0.36f, 0.12f), Quaternion.Euler(-20f, R(rng, -20f, 20f), R(rng, -10f, 10f)), M(V(new Color(0.6f, 0.5f, 0.3f), rng, 0.2f)));
+            // thin back‑cushion accent – a softer panel behind the main back cushion
+            m.Box(new Vector3(0f, 0.74f, -0.46f), new Vector3(w - 0.4f, 0.06f, 0.04f), M(c * 0.9f));
+            // occasional light scratch on the seat fabric (10% chance)
+            if (Chance(rng, 0.1f))
+            {
+                m.Box(new Vector3(0f, 0.25f + 0.001f, 0f), new Vector3(w * 0.4f, 0.001f, 0.002f), G(new Color(0.12f, 0.10f, 0.09f)));
+            }
         }
 
         /// <summary>A 1993 tube TV with rabbit ears on a low wooden stand with a VCR.</summary>
