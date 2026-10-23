@@ -519,6 +519,12 @@ namespace CloneZ
             "A cracked pocket‑knife, its blade nicked, lying beside a torn scrap of paper.",
             "A half‑eaten candy bar wrapped in crumpled foil, sticky and forgotten.",
             "A handwritten note “Keep the fire low – J”, scrawled on a torn napkin.",
+            "A tarnished dog‑tag with the name “PFC H. Miller” still clinging to a rusted chain.",
+            "A faded photograph of a chestnut horse, its mane dusted with snow, edges curled.",
+            "A cracked brass compass, its needle stuck pointing east, the glass splintered.",
+            "A crumpled handwritten recipe for “mom’s stew”, ink smudged and half‑erased.",
+            "A yellowed newspaper clipping titled “Local Harvest Festival Cancelled”, dated 12 Oct 1992.",
+            "A dented tin labelled “firecrackers – 1991”, some spent caps still fizzing faintly.",
         };
 
         private static readonly string[] CivicCharts =
