@@ -67,8 +67,19 @@ namespace CloneZ
                 M("shivering_hands", "Shivering Hands", "Your fingers tremble in the bitter cold; every task feels a fraction slower.", m => { m.AimSpread *= 1.08f; m.MoveSpeed *= 0.97f; });
                 M("frostbite_nails", "Frostbite Nails", "Nails in the woodwork bite into your skin through the gloves; you tire faster.", m => { m.StaminaDrain *= 1.12f; });
                 M("radio_hiss", "Radio Hiss", "Cheap radios emit a persistent hiss that masks distant sounds, making you less alert.", m => { m.NoiseMult *= 1.18f; });
-                M("snowdrift_vision", "Snowdrift Vision", "Snow piled against your eyes blurs the world; you see less clearly.", m => { m.VisibilityMult *= 0.92f; });
-            foreach (Mark k in Marks)
+                 M("snowdrift_vision", "Snowdrift Vision", "Snow piled against your eyes blurs the world; you see less clearly.", m => { m.VisibilityMult *= 0.92f; });
+                 // New winter‑survival exposure marks – style reference: "Your fingers tremble in the bitter cold; every task feels a fraction slower."
+                 M("frostbite_hands", "Frostbite Hands", "Your fingertips turn white and numb; every clench of a tool feels like breaking ice.",
+                     m => { m.AimSpread *= 1.07f; m.MoveSpeed *= 0.96f; });
+                 M("snow_blindness", "Snow Blindness", "The endless white glare burns your eyes; shadows no longer hide anything.",
+                     m => { m.VisibilityMult *= 0.88f; m.NightVision -= 0.15f; });
+                 M("radio_static", "Radio Static", "Every cheap transistor hums with a low, unease‑filled hiss that drowns out distant sounds.",
+                     m => { m.NoiseMult *= 1.20f; });
+                 M("farm_folklore", "Farm Folklore", "Old superstitions whisper on the wind, reminding you that the dead still tend the fields.",
+                     m => { m.PanicRate *= 1.18f; });
+                 M("blizzard_fear", "Blizzard Fear", "The howling blizzard chills your resolve, slowing your steps and clouding your mind.",
+                     m => { m.MoveSpeed *= 0.90f; m.VisibilityMult *= 0.85f; });
+                 foreach (Mark k in Marks)
             {
                 ZoneMarkRegistry.Names[k.Id] = k.Name;
                 ZoneMarkRegistry.Descriptions[k.Id] = k.Description;
