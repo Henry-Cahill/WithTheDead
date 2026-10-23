@@ -43,6 +43,11 @@ namespace CloneZ
             "The sudden clang of a distant gunshot makes your hand tremble, but you keep scrubbing, eyes on the sudsy suds.",
             "An old newspaper clipping tucked under the sink reads “Keep wounds clean – your life may depend on it.”",
             "Cold droplets bead on the steel basin, each one catching the dim light like tiny frozen stars.",
+            "The wind howls through the cracked window, and you grit your teeth, scraping rust‑stained soap over scar‑red knuckles.",
+            "A dented tin of powdered laundry soap sits beside the tap; you crumble it into a gritty paste that burns like winter frost.",
+            "You remember your mother's warning—‘Never let a wound stay wet’—and hurry the scrub, fearing infection in the cold night.",
+            "The metal faucet shivers under your fingertips, its icy bite reminding you that even the pipe is starving for heat.",
+            "A faded photograph of a smiling family hangs above; you scrub harder, as if cleaning away the ghosts of the past.",
 };
 
         private string _name, _key;
