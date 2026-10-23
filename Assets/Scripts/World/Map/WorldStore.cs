@@ -37,6 +37,8 @@ namespace CloneZ
             var mat = Resources.Load<Material>(KerbMaterialPath);
             return mat ?? Resources.Load<Material>("Materials/DefaultConcrete");
         }
+        /// <summary>Base material for mailboxes (reuses porch wood).</summary>
+        public static Material GetMailboxMaterial() => GetPorchMaterial();
         public static Material GetPorchMaterial()
         {
             if (s_PorchMaterial != null) return s_PorchMaterial;
