@@ -361,13 +361,41 @@ namespace CloneZ
                 hingePos.y += 0.8f;
                 sb.Solid.CylinderX(hingePos, 0.015f, 0.05f, 8, ZoneKit.M(new Color(0.6f, 0.6f, 0.6f)), 0f);
             }
-            // Rusted handle on right side of each door
-            foreach (Vector3 dc in doorCenters)
-            {
-                float yawJitter = (float)sb.Rng.NextDouble() * 10f - 5f;
-                Vector3 handlePos = dc + new Vector3(0.22f, 1.8f, 0f);
-                sb.Solid.CylinderX(handlePos, 0.02f, 0.07f, 8, ZoneKit.M(rustMetal), yawJitter);
-            }
+                // Rusted handle on right side of each door and added rust‑metal door details
+                foreach (Vector3 dc in doorCenters)
+                {
+                    float yawJitter = (float)sb.Rng.NextDouble() * 10f - 5f;
+                    Vector3 handlePos = dc + new Vector3(0.22f, 1.8f, 0f);
+                    sb.Solid.CylinderX(handlePos, 0.02f, 0.07f, 8, ZoneKit.M(rustMetal), yawJitter);
+
+                    // Rust‑tinted vent grill at door base
+                    sb.Solid.Box(dc + new Vector3(0f, 0.20f, 0f),
+                        new Vector3(0.38f, 0.02f, 0.03f),
+                        ZoneKit.M(ZoneKit.V(rustMetal, sb.Rng, 0.02f)));
+
+                    // Rust‑tinted chain across the top of the doorway
+                    sb.Solid.Cylinder(dc + new Vector3(0f, 3.50f, 0f),
+                        0.01f,
+                        0.30f,
+                        6,
+                        ZoneKit.M(ZoneKit.V(rustMetal, sb.Rng, 0.02f)));
+
+                    // Tiny rust‑metal padlock dangling from the chain
+                    sb.Solid.Cylinder(dc + new Vector3(0f, 3.20f, 0f),
+                        0.008f,
+                        0.04f,
+                        6,
+                        ZoneKit.M(rustMetal));
+
+                    // Small rust‑metal bolt on left hinge
+                    Vector3 hingeBoltPos = dc + new Vector3(-0.25f + 0.015f, 0.15f + 0.20f, 0f);
+                    sb.Solid.CylinderX(hingeBoltPos,
+                        0.008f,
+                        0.02f,
+                        6,
+                        ZoneKit.M(rustMetal),
+                        0f);
+                }
             // Small rusted maintenance plates on the outer concrete shell
             for (int i = 0; i < 8; i++)
             {
