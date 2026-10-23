@@ -1014,7 +1014,7 @@ namespace CloneZ
 "We bind pine bark and tar to make a makeshift stove that burns slow and steady.",
 "If you hear the wind howl through the frozen pipe, toss a stone—old wives say it keeps the ice from breaking the house.",
 },
-            [Factions.Scavs] = new[] { "What are you looking at?", "Easy. Easy. We're just passing.", "You got smokes?" },
+            [Factions.Scavs] = new[] { "What are you looking at?", "Easy. Easy. We're just passing.", "You got smokes?", "The wind's howling through the dead pines, keep your coat on.", "Found an old battery pack under the porch; might light a lantern.", "The river's frozen solid, we used the ice to skate for a few minutes.", "If you hear a faint hum, it's the old power line sparking again.", "Snow's piled on the barn roof; we need to clear a path for the sled.", "A busted radio crackles with static—someone said the Institute left a cache near the mill." },
             [Factions.Institute] = new[] { "Fascinating readings today. Terrifying, but fascinating.", "If you find anything unusual, the Institute pays fair prices.",
                 "Please don't touch the instruments." },
             [Factions.Choir] = new[] { "It sings to us.", "Go home. It does not want you." },
