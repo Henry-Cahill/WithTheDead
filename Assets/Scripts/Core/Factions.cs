@@ -81,7 +81,19 @@ namespace CloneZ
     Blurb = "A cracked wooden sign points toward a forgotten fire‑wood cache, the arrows faded by snow and time." } },
 
 { "evacradio", new Def { Id = "evacradio", Name = "Evacuation Radio", Color = new Color(0.60f, 0.60f, 0.70f),
-    Blurb = "Static‑filled transmission: ‘All units evacuate immediately! Head to the north ridge, safe zone established.’" } }
+    Blurb = "Static‑filled transmission: ‘All units evacuate immediately! Head to the north ridge, safe zone established.’" } },
+            { "winternote1", new Def { Id = "winternote1", Name = "Icebound Letter", Color = new Color(0.60f, 0.80f, 0.90f),
+                Blurb = "A frost‑crusted letter warns: ‘The river will freeze thin; crossing may break.’" } },
+            { "winternote2", new Def { Id = "winternote2", Name = "Frozen Diary", Color = new Color(0.70f, 0.75f, 0.85f),
+                Blurb = "Pages of a diary detail a failed trek through a snowstorm, ending with a chilling last entry." } },
+            { "winternote3", new Def { Id = "winternote3", Name = "Radio Chatter", Color = new Color(0.55f, 0.60f, 0.65f),
+                Blurb = "Static‑filled transmission: ‘Supply drop delayed, head north past the frozen barn.’" } },
+            { "winternote4", new Def { Id = "winternote4", Name = "Graffiti Warning", Color = new Color(0.30f, 0.65f, 0.30f),
+                Blurb = "Smeared graffiti on a wall: ‘Do not dig here, the ice hides a sinkhole.’" } },
+            { "winternote5", new Def { Id = "winternote5", Name = "Miner's Log", Color = new Color(0.55f, 0.45f, 0.30f),
+                Blurb = "A miner’s log mentions a hidden vein beneath the frozen lake, cursed by the cold." } },
+            { "winternote6", new Def { Id = "winternote6", Name = "Survivor's Tale", Color = new Color(0.80f, 0.20f, 0.20f),
+                Blurb = "A torn notebook recounts a night of relentless howl‑winds and a mysterious light beyond the treeline." } }
         };
 
         // Base relations: -1 hostile, 0 neutral, +1 allied. Symmetric; anything unlisted is neutral.
