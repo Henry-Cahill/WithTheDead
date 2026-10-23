@@ -418,6 +418,22 @@ PlayerGearParts.Box(root, "FrontWearScratch", new Vector3(0f, lidY + 0.04f, lidZ
             for (float y = y0; y <= y1 + 1e-4f; y += 0.02f) front = Mathf.Max(front, _torso.Surface(y, 0f, _inflate, true));
             front += 0.008f;
             PlayerGearParts.Box(root, "Panel", new Vector3(0f, (y0 + y1) * 0.5f, front + panelD * 0.5f), new Vector3(0.30f, y1 - y0, panelD), shade, true);
+            // Added detailed front panel features
+            float panelY = (y0 + y1) * 0.5f; // centre Y of the panel
+            float panelZ = front + panelD * 0.5f; // centre Z of the panel front face
+            Material wearMat = CloneZUtil.Mat(HumanoidLook.Shade(TorchColor, 0.55f), 0.2f); // subtle wear colour
+
+            // Thin reinforcement bar across the top of the panel (stiffening rib)
+            PlayerGearParts.Box(root, "FrontBar", new Vector3(0f, panelY + 0.05f, panelZ + 0.003f), new Vector3(0.30f * 0.95f, 0.004f, 0.006f), hardware);
+            // Small metal logo plate centred on the front bar
+            PlayerGearParts.Box(root, "LogoPlate", new Vector3(0f, panelY + 0.03f, panelZ + 0.003f), new Vector3(0.07f, 0.018f, 0.004f), hardware);
+            // Reflective safety strip that glows faintly
+            var reflectMat = PlayerGearParts.Glow(ReflectStripColor);
+            PlayerGearParts.Box(root, "ReflectStrip", new Vector3(0f, panelY - 0.02f, panelZ + 0.0035f), new Vector3(0.30f * 0.60f, 0.002f, 0.001f), reflectMat);
+            // Subtle wear scar across the front surface
+            PlayerGearParts.Box(root, "FrontWearScratch", new Vector3(0f, panelY + 0.04f, panelZ + 0.0045f), new Vector3(0.30f * 0.80f, 0.001f, 0.001f), wearMat);
+            // Central rivet on the reinforcement bar
+            PlayerGearParts.Box(root, "BarRivet", new Vector3(0f, panelY + 0.05f, panelZ + 0.006f), new Vector3(0.014f, 0.014f, 0.004f), hardware);
 
             // A row of four magazine pouches with flaps.
             float pz = front + panelD + 0.022f;
