@@ -136,6 +136,14 @@ namespace CloneZ
             m.Box(new Vector3(0.33f, 0.66f, 0.383f), new Vector3(0.05f, 0.09f, 0.008f), Mt(Chrome));
             m.Box(new Vector3(0.33f, 0.66f, 0.388f), new Vector3(0.006f, 0.04f, 0.004f), M(Black));
             m.Box(new Vector3(-0.1f, 0.3f, 0.37f), new Vector3(0.5f, 0.16f, 0.02f), M(Black));
+            int rivetCount = rng.Next(4, 7); // 4‑6 rivets for variation
+            for (int i = 0; i < rivetCount; i++)
+            {
+                // position on the top rim (y ≈ top of body, small inset)
+                float x = -0.4f + i * (0.8f / (rivetCount - 1f));
+                // small chrome rivet head
+                m.Cylinder(new Vector3(x, 1.85f, 0.37f), 0.01f, 0.02f, 6, Mt(Chrome));
+            }
             m.Box(new Vector3(-0.1f, 0.37f, 0.382f), new Vector3(0.4f, 0.02f, 0.012f), Mt(Chrome));
         }
 
