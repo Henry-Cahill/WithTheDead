@@ -143,6 +143,26 @@ namespace CloneZ
                 // Position near each end of the barrier, centered on Z
                 m.Cylinder(new Vector3(-1.25f, 0.45f, 0f), rivetRadius, rivetHeight, 6, DecorPalette.Metal(rust));
                 m.Cylinder(new Vector3(1.25f, 0.45f, 0f), rivetRadius, rivetHeight, 6, DecorPalette.Metal(rust));
+                // 1️⃣ reflective strip – faint glow on the top front edge
+                Vector3 stripPos = new Vector3(0f, 0.85f, 0.08f);
+                Vector3 stripSize = new Vector3(2.5f, 0.02f, 0.02f);
+                m.Box(stripPos, stripSize, DecorPalette.Glow(new Color(0.9f, 0.85f, 0.5f)));
+                // 2️⃣ rust‑stained brace – thin metal plate below the strip
+                Vector3 bracePos = new Vector3(0f, 0.78f, 0.06f);
+                Vector3 braceSize = new Vector3(1.8f, 0.03f, 0.02f);
+                m.Box(bracePos, braceSize, DecorPalette.Metal(rust));
+                // 3️⃣ paint‑chip line – matte strip indicating worn paint
+                Vector3 chipPos = new Vector3(0f, 0.88f, 0.04f);
+                Vector3 chipSize = new Vector3(2.4f, 0.004f, 0.02f);
+                m.Box(chipPos, chipSize, DecorPalette.Matte(new Color(0.70f, 0.65f, 0.60f)));
+                // 4️⃣ warning label – small rectangular label near the left end
+                Vector3 labelPos = new Vector3(-1.0f, 0.70f, 0.03f);
+                Vector3 labelSize = new Vector3(0.25f, 0.12f, 0.005f);
+                m.Box(labelPos, labelSize, DecorPalette.Matte(new Color(0.55f, 0.48f, 0.42f)));
+                // 5️⃣ emissive rust patch – subtle glow on the brace
+                Vector3 rustPatchPos = new Vector3(0f, 0.80f, 0.07f);
+                Vector3 rustPatchSize = new Vector3(0.3f, 0.004f, 0.001f);
+                m.Box(rustPatchPos, rustPatchSize, DecorPalette.Glow(new Color(0.8f, 0.45f, 0.25f)));
             });
             GuardBoothProp(town, new Vector3(9.8f, 0f, -63.5f), 270f);
             // Add rust‑stained door hardware and wear to the guard‑booth
