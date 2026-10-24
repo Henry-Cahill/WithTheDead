@@ -46,17 +46,18 @@ namespace CloneZ
         }
 
         // One parapet: a concrete wall just outside the carriageway's edge with a snowy cap, a post at each end, a
-        // collider along it; on the deck, snow the plough pushed against it.
+        // collider along it; on the deck, snow the plough pushed against it. Open where a side road joins the bridge.
         private static void Parapet(Net net, Chain c, int side)
         {
             Look look = net.Look;
-            Side d = side > 0 ? c.L : c.R;
-            float off = side * (d.Edge + ParapetThick * 0.5f + 0.05f);
-            SamplesOf(c, c.From, c.To, 0f, net.Samples2);
+            ProfileSamples(c, c.From, c.To, 0f, net.Samples2);
             List<Sample> s = net.Samples2;
             for (int i = 0; i + 1 < s.Count; i++)
             {
-                Vector2 a = s[i].P + s[i].N * off, b = s[i + 1].P + s[i + 1].N * off;
+                if (InMouth(c, side, (s[i].S + s[i + 1].S) * 0.5f)) continue;
+                float o0 = side * (EdgeAt(c, side, s[i].S) + ParapetThick * 0.5f + 0.05f);
+                float o1 = side * (EdgeAt(c, side, s[i + 1].S) + ParapetThick * 0.5f + 0.05f);
+                Vector2 a = s[i].P + s[i].N * o0, b = s[i + 1].P + s[i + 1].N * o1;
                 Vector2 dir = b - a;
                 float len = dir.magnitude;
                 if (len < 0.05f) continue;
@@ -68,8 +69,10 @@ namespace CloneZ
             }
             if (s.Count >= 2)
             {
-                EndPost(net, s[0].P + s[0].N * off);
-                EndPost(net, s[s.Count - 1].P + s[s.Count - 1].N * off);
+                float e0 = side * (EdgeAt(c, side, s[0].S) + ParapetThick * 0.5f + 0.05f);
+                float e1 = side * (EdgeAt(c, side, s[s.Count - 1].S) + ParapetThick * 0.5f + 0.05f);
+                EndPost(net, s[0].P + s[0].N * e0);
+                EndPost(net, s[s.Count - 1].P + s[s.Count - 1].N * e1);
             }
             if (!net.Full) return;
             int seed = Seed(c.W, side > 0 ? 0xB21 : 0xB22);
@@ -77,10 +80,13 @@ namespace CloneZ
             Fit(net.Samples.Count);
             for (int i = 0; i < net.Samples.Count; i++)
             {
-                s_A[i] = side * (d.Edge - 0.25f - 0.45f * Noise(net.Samples[i].P, 3.5f, seed));
-                s_B[i] = side * d.Edge;
+                float e = EdgeAt(c, side, net.Samples[i].S);
+                s_A[i] = side * (e - 0.25f - 0.45f * Noise(net.Samples[i].P, 3.5f, seed));
+                s_B[i] = side * e;
             }
-            Band(net, net.Samples, s_A, s_B, DetailY + 0.001f, DetailY + 0.05f, look.Snow, c.Lift);
+            for (int i = 0; i + 1 < net.Samples.Count; i++)
+                s_Keep[i] = !InMouth(c, side, (net.Samples[i].S + net.Samples[i + 1].S) * 0.5f);
+            Band(net, net.Samples, s_A, s_B, DetailY + 0.001f, DetailY + 0.05f, look.Snow, c.Lift, s_Keep);
         }
 
         private static void EndPost(Net net, Vector2 at)
@@ -108,9 +114,9 @@ namespace CloneZ
             Vector2 back = start ? -d : d;
             for (int side = -1; side <= 1; side += 2)
             {
-                Side sd = side > 0 ? c.L : c.R;
+                float edge = EdgeAt(c, side, s);
                 Vector2 outward = Left(d) * side;
-                Vector2 a = p + outward * (sd.Edge + 0.4f);
+                Vector2 a = p + outward * (edge + 0.4f);
                 Vector2 b = a + back * 8f + outward * 0.8f;
                 if (InBuilding(net, b, 0.3f) || OnPavement(net, b, c, 0.1f)) b = a + back * 3f + outward * 0.3f;
                 Vector3 mid = To3((a + b) * 0.5f, 0.55f);
@@ -141,7 +147,6 @@ namespace CloneZ
                 Vector2 heading = (c.P[c.P.Count - 1] - c.P[0]) * (with ? 1f : -1f);
                 if (heading.x < -0.01f || (Mathf.Abs(heading.x) <= 0.01f && heading.y < 0f)) continue;
                 int side = with ? 1 : -1;   // the median is left of the traffic
-                Side d = side > 0 ? c.L : c.R;
                 SamplesOf(c, c.From, c.To, 4f, net.Samples);
                 List<Sample> s = net.Samples;
                 int n = s.Count;
@@ -150,15 +155,16 @@ namespace CloneZ
                 for (int i = 0; i < n; i++)
                 {
                     Vector2 nrm = s[i].N * side;
+                    float edge = EdgeAt(c, side, s[i].S);
                     float gap = -1f;
                     for (float g = 0.6f; g <= 6f; g += 0.4f)
                     {
-                        if (!OnPavement(net, s[i].P + nrm * (d.Edge + g), c, 0f, false)) continue;
+                        if (!OnPavement(net, s[i].P + nrm * (edge + g), c, 0f, false)) continue;
                         gap = g;
                         break;
                     }
-                    s_KerbOk[i] = gap > 0f;
-                    s_WalkIn[i] = gap > 0f ? d.Edge + gap * 0.5f : 0f;
+                    s_KerbOk[i] = gap > 0f && !InMouth(c, side, s[i].S);
+                    s_WalkIn[i] = gap > 0f ? edge + gap * 0.5f : 0f;
                 }
                 for (int i = 0; i + 1 < n; i++)
                 {

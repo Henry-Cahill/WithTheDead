@@ -210,7 +210,7 @@ namespace CloneZ
                 float s = sx - dirn * reach;
                 if (s < 0f || s > c.Length) continue;
                 PointOn(c, s, out Vector2 q, out Vector2 t);
-                Side side = dirn > 0 ? c.R : c.L;
+                ProfAt(c, dirn > 0 ? -1 : 1, s, out Prof side);
                 float off = side.Walk ? side.Edge + KerbWidth + 0.5f : side.Edge + 1.1f;
                 Vector2 at = q + Left(t) * (-dirn * off);
                 if (OnPavement(net, at, null, 0.2f) || InBuilding(net, at, 0.4f)) continue;
