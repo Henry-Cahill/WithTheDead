@@ -308,7 +308,7 @@ namespace CloneZ
         {
             foreach (Corner corner in j.Corners)
             {
-                if (corner.Gore || corner.Path.Count < 2 || (!corner.Rounded && corner.Convex)) continue;
+                if (corner.Path.Count < 2 || (!corner.Rounded && corner.Convex)) continue;
                 Chain line = ChainOf(corner.Path);
                 if (line.Length < 0.5f) continue;
                 SamplesOf(line, 0f, line.Length, 0f, net.Samples2);
