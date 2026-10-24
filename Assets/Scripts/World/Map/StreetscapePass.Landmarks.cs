@@ -253,7 +253,7 @@ namespace CloneZ
             string name = n.Data.name ?? "";
             long id = n.Data.id;
             bool cell = Has(name, "verizon", "at&t", "cingular", "sprint", "t-mobile", "cellular", "wireless", "alltel", "cell");
-            bool broadcast = !cell && (Has(name, "radio", "broadcast", " tv", "-tv", "-fm", "-am", " fm", " am") || name.StartsWith("W"));
+            bool broadcast = !cell && (Has(name, "radio", "broadcast", " tv", "-tv", "-fm", "-am", " fm", " am") || name.StartsWith("W", System.StringComparison.Ordinal));
             float h = cell ? 42f + 12f * MapStyle.Unit(id, SaltMast) : broadcast ? 95f + 60f * MapStyle.Unit(id, SaltMast) : 48f + 30f * MapStyle.Unit(id, SaltMast);
             Vector3 foot = To3(n.At, 0f);
             RaidMesh low = ctx.Low(n.At), high = ctx.High(n.At);
@@ -350,7 +350,7 @@ namespace CloneZ
                 bool near = false;
                 foreach (Vector2 f in flags) if ((f - p.At).sqrMagnitude < 60f * 60f) near = true;
                 if (near) continue;
-                Street s = NearestRoad(ctx.Site, p.At, 70f, out Vector2 on, out _, 2);
+                Street s = NearestRoad(ctx, p.At, 70f, out Vector2 on, out _, 2);
                 if (s == null) continue;
                 Footprint b = null;
                 foreach (Footprint f in ctx.Site.Area.Buildings)
@@ -416,7 +416,7 @@ namespace CloneZ
             bool marker = Has(name, "marker", "historic");
             float r = marker ? 0.4f : 1.4f;
             if (!ctx.Site.Free(n.At, r) && !ctx.Site.FreeBeside(n.At, r)) return;
-            Street s = NearestRoad(ctx.Site, n.At, 40f, out Vector2 on, out _);
+            Street s = NearestRoad(ctx, n.At, 40f, out Vector2 on, out _);
             Vector2 facing = s != null && (on - n.At).sqrMagnitude > 0.01f ? (on - n.At).normalized : Vector2.up;
             if (n.Data.dir >= 0)
             {
