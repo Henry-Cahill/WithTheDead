@@ -44,6 +44,18 @@ namespace CloneZ
             PrePaint();
             var ctx = new Context(site);
             ProbeEnd(-2, null);
+            while (true)
+            {
+                ProbeStart();
+                bool warming = WarmNext();
+                ProbeEnd(-3, null);
+                if (!warming) break;
+                if (site.StepDue)
+                {
+                    yield return "buildings";
+                    site.BeginStep();
+                }
+            }
             float half = site.Half;
             var square = Rect.MinMaxRect(-half, -half, half, half);
             var near = new List<Footprint>(16);
@@ -367,7 +379,7 @@ namespace CloneZ
             if (!s_Profiling) return;
             double ms = (System.Diagnostics.Stopwatch.GetTimestamp() - s_ProbeAt) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
             if (ms < 2.0) return;
-            string what = stage == -2 ? "setup" : stage == -1 ? "plan" : stage == 0 ? "walls" : stage == 1 ? "openings"
+            string what = stage == -3 ? "warm-up" : stage == -2 ? "setup" : stage == -1 ? "plan" : stage == 0 ? "walls" : stage == 1 ? "openings"
                 : stage == 2 ? "roof" : stage == 3 ? "frontage" : stage == 4 ? "special" : "inside";
             int gcs = System.GC.CollectionCount(0) - s_ProbeGCs;
             if (gcs > 0) what += $" ({gcs} GC)";
