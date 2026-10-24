@@ -436,21 +436,25 @@ namespace CloneZ
         }
 
         /// <summary>Strings the drops from the poles to the buildings they feed: one each, from the nearest pole within
-        /// reach, unless another building stands in the way.</summary>
+        /// reach, unless another building stands in the way; at most three from a pole. Downtown's shops are fed from the
+        /// alleys behind them, out of sight.</summary>
         internal static void ServiceDrops(Ctx ctx)
         {
             if (ctx.Poles.Count == 0) return;
             Site site = ctx.Site;
+            var drops = new Dictionary<Pole, int>();
             foreach (BuildingShell shell in site.Shells)
             {
                 Footprint f = shell.Footprint;
                 if (f == null || !ctx.Inside(f.Middle) || f.Size < 25f || shell.WallTop < 2f || !Powered(f.Data.kind)) continue;
+                bool home = f.Data.kind == "house" || f.Data.kind == "trailer" || f.Data.kind == "apartments";
+                if (!home && ctx.Density.Downtown(f.Middle)) continue;
                 Pole best = null;
                 float bestD = MaxDrop;
                 Vector2 attach = default;
                 foreach (Pole p in ctx.Poles)
                 {
-                    if (p.Height > 15f) continue;
+                    if (p.Height > 15f || drops.TryGetValue(p, out int n) && n >= 3) continue;
                     if (Mathf.Abs(p.At.x - f.Middle.x) > MaxDrop + 30f || Mathf.Abs(p.At.y - f.Middle.y) > MaxDrop + 30f) continue;
                     Vector2 q = NearestOnOutline(f.Pts, p.At);
                     float d = Vector2.Distance(q, p.At);
@@ -460,6 +464,7 @@ namespace CloneZ
                     attach = q;
                 }
                 if (best == null || bestD < 2f || Blocked(site.Area, f, best.At, attach)) continue;
+                drops[best] = drops.TryGetValue(best, out int had) ? had + 1 : 1;
                 Vector2 outward = (best.At - attach).normalized;
                 float h = Mathf.Clamp(shell.WallTop - 0.35f, 2.5f, 4.4f);
                 Vector3 house = To3(attach + outward * 0.06f, h);

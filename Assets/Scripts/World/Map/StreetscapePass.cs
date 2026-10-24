@@ -28,20 +28,30 @@ namespace CloneZ
             if (!ctx.Full)
             {
                 PowerPass.MappedLines(ctx);
-                yield return "power lines";
+                Landmarks.Lite(ctx);
                 ctx.Finish();
+                yield return "landmarks";
                 yield break;
             }
             PowerPass.PlanStreetLines(ctx);
             yield return "utility lines";
             PowerPass.MappedLines(ctx);
             yield return "power lines";
+            SignPass.Signals(ctx);
             StreetLights.Plan(ctx);
             PowerPass.DrawPoles(ctx);
             yield return "utility poles";
             PowerPass.ServiceDrops(ctx);
             StreetLights.Draw(ctx);
             yield return "street lights";
+            SignPass.Signs(ctx);
+            yield return "signs";
+            StreetFurniture.Build(ctx);
+            yield return "street furniture";
+            Landmarks.Build(ctx);
+            yield return "landmarks";
+            BarrierPass.Build(ctx);
+            yield return "fences and walls";
             ParkLitter(site);
             ctx.Finish();
             yield return "park litter";

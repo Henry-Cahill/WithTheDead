@@ -29,7 +29,8 @@ namespace CloneZ
         {
             ctx.Lamps.Clear();
             ctx.Lights = 0;
-            ctx.MaxLights = ctx.Site.Chunked ? 12 : Mathf.RoundToInt(12 * ctx.Site.AreaShare * 0.75f);
+            // Twelve real lights to a streamed piece's worth of ground (the runtime lights only the nearest anyway).
+            ctx.MaxLights = Mathf.Min(80, Mathf.RoundToInt(12f * ctx.Half * ctx.Half / (64f * 64f)));
             var mapped = new HashSet<Street>();
             Mapped(ctx, mapped);
             OnPoles(ctx, mapped);

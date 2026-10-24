@@ -110,7 +110,8 @@ namespace CloneZ
                 Add(p, "telephone", 0, 160, 128, 32, () => Plaque(p, 0, 160, 128, 32, SignBlue, SignWhite, "TELEPHONE", 2));
                 Add(p, "busstop", 128, 160, 64, 32, () => Plaque(p, 128, 160, 64, 32, SignBlue, SignWhite, "BUS|STOP", 1));
                 Add(p, "schoolbus", 192, 160, 64, 32, () => Plaque(p, 192, 160, 64, 32, SignYellow, SignBlack, "SCHOOL|BUS STOP", 1));
-                Add(p, "nopark", 256, 160, 32, 48, () => Plaque(p, 256, 160, 32, 48, SignWhite, SignRed, "NO|PARK|ING", 1));
+                Add(p, "nopark", 352, 160, 32, 48, () => Plaque(p, 352, 160, 32, 48, SignWhite, SignRed, "NO|PARK|ING", 1));
+                Add(p, "allway", 288, 168, 64, 24, () => Plaque(p, 288, 168, 64, 24, SignRed, SignWhite, "ALL WAY", 1));
                 Add(p, "soda_red", 0, 32, 64, 128, () => Vending(p, 0, 32, C32(0.72f, 0.07f, 0.07f), "ICE|COLD|SODA"));
                 Add(p, "soda_blue", 64, 32, 64, 128, () => Vending(p, 64, 32, C32(0.10f, 0.22f, 0.60f), "DRINK|POP"));
                 Add(p, "soda_green", 128, 32, 64, 128, () => Vending(p, 128, 32, C32(0.10f, 0.42f, 0.18f), "LEMON|LIME"));
@@ -120,6 +121,7 @@ namespace CloneZ
                 Add(p, "paper_local", 336, 96, 48, 64, () => NewsBox(p, 336, 96, C32(0.85f, 0.75f, 0.15f), "LOCAL|NEWS"));
                 Add(p, "usps", 384, 96, 64, 64, () => Plaque(p, 384, 96, 64, 64, SignBlue, SignWhite, "U.S.|MAIL", 1));
                 Add(p, "tag", 448, 96, 64, 32, () => Plaque(p, 448, 96, 64, 32, SignWhite, SignBlack, "TAG", 1));
+                Add(p, "ice", 448, 128, 64, 32, () => Plaque(p, 448, 128, 64, 32, SignBlue, SignWhite, "ICE", 2));
 
                 s_Tex = new Texture2D(W, H, TextureFormat.RGBA32, true)
                 {
