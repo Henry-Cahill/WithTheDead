@@ -315,10 +315,8 @@ namespace CloneZ
             if (c.Overlaps(at, axis, hl + 0.2f, hw + 0.15f)) return false;
             float reach = Mathf.Max(0f, hl - hw);
             for (int k = -1; k <= 1; k++)
-            {
-                Vector2 q = at + axis * (k * reach);
-                if (c.Plan.WallDistance(q, hw + 1f) < hw + 0.15f || c.Plan.NearDoor(q, hw + 0.9f)) return false;
-            }
+                if (c.Plan.WallDistance(at + axis * (k * reach), hw + 1f) < hw + 0.15f) return false;
+            if (c.Plan.DoorIn(at, axis, hl + 0.6f, hw + 0.6f)) return false;
             Vector3 at3 = To3(at, 0f);
             RaidMesh m = c.Site.Town.Out.Solid(at3);
             m.SetFrame(at3, Quaternion.Euler(0f, yaw, 0f) * tilt);

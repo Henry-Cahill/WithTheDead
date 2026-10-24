@@ -622,6 +622,25 @@ namespace CloneZ
                 }
         }
 
+        /// <summary>True when a doorstep (a metre out from the middle of any enterable building's door) lies inside the
+        /// rectangle round <paramref name="at"/> (unit long <paramref name="axis"/>, half sizes).</summary>
+        public bool DoorIn(Vector2 at, Vector2 axis, float halfLength, float halfWidth)
+        {
+            _doorCells.Range(at, halfLength + halfWidth, out int x0, out int z0, out int x1, out int z1);
+            for (int z = z0; z <= z1; z++)
+                for (int x = x0; x <= x1; x++)
+                {
+                    List<int> cell = _doorCells.At(x, z);
+                    if (cell == null) continue;
+                    for (int k = 0; k < cell.Count; k++)
+                    {
+                        Vector2 d = _doors[cell[k]] - at;
+                        if (Mathf.Abs(Vector2.Dot(d, axis)) < halfLength && Mathf.Abs(axis.x * d.y - axis.y * d.x) < halfWidth) return true;
+                    }
+                }
+            return false;
+        }
+
         /// <summary>True when the middle of a door lies on the wall from <paramref name="a"/> to <paramref name="b"/>.</summary>
         public bool DoorOnWall(Vector2 a, Vector2 b)
         {
