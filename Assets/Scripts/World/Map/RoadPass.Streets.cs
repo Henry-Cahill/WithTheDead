@@ -4,7 +4,7 @@ using static CloneZ.KentuckyMap;
 
 namespace CloneZ
 {
-    // The carriageways: each chain between its junction trims in its winter surface, the junction patches over the ends,
+    // The carriageways: each chain between its junction trims in its winter surface, the junctions' patches and mouths,
     // the slush, tyre tracks and ruts on them, and past a fixed map's edge the same roads as scenery.
     internal static partial class RoadPass
     {
@@ -54,19 +54,6 @@ namespace CloneZ
             BandY(net, s, a, b, s_YA, s_YB, surf, lift, keep, solid);
         }
 
-        /// <summary><see cref="Band"/> between two fixed offsets.</summary>
-        private static void BandConst(Net net, List<Sample> s, float a, float b, float y, in Surf surf, Profile lift = null,
-            bool[] keep = null)
-        {
-            Fit(s.Count);
-            for (int i = 0; i < s.Count; i++)
-            {
-                s_A[i] = a;
-                s_B[i] = b;
-            }
-            Band(net, s, s_A, s_B, y, y, surf, lift, keep);
-        }
-
         /// <summary>A line of its own (a path, a corner's kerb line, a railway) as a chain: its arc lengths and mitred
         /// offsets, for <see cref="SamplesOf"/>.</summary>
         private static Chain ChainOf(List<Vector2> pts)
@@ -85,7 +72,8 @@ namespace CloneZ
                 if (i == 0) dPrev = dNext;
                 Vector2 m = Left(dPrev) + Left(dNext);
                 m = m.sqrMagnitude > 1e-6f ? m.normalized : Left(dNext);
-                c.N[i] = m / Mathf.Max(0.5f, Vector2.Dot(m, Left(dNext)));
+                float k = Vector2.Dot(m, Left(dNext));
+                c.N[i] = m / Mathf.Max(0.5f, float.IsNaN(k) ? 1f : k);
             }
             return c;
         }
@@ -103,22 +91,25 @@ namespace CloneZ
 
         private static int Seed(Way w, int salt) => (int)(MapStyle.Hash(w.S.Data.id, salt) & 0x3fffffff);
 
-        // Where the wheels run: the middle of each travel lane, across the chain (left offsets).
-        private static void LaneCentres(Chain c, List<float> into)
+        // Where the wheels run: the middle of each travel lane, as fractions across the travel lanes (0 their right
+        // end, 1 their left).
+        private static void LaneFractions(Chain c, List<float> into)
         {
             into.Clear();
             Way w = c.W;
-            float lo = -c.R.Lane, hi = c.L.Lane, centre = (hi + lo) * 0.5f;
-            if (w.OneWay || hi - lo < 5.4f || w.Cls >= Cls.Service)
+            ProfAt(c, 1, c.From, out Prof l);
+            ProfAt(c, -1, c.From, out Prof r);
+            float width = l.Lane + r.Lane;
+            if (w.OneWay || width < 5.4f || w.Cls >= Cls.Service)
             {
                 int n = w.OneWay ? Mathf.Max(1, w.LanesR) : 1;
-                if (hi - lo < 3.0f * n) n = Mathf.Max(1, Mathf.FloorToInt((hi - lo) / 3.0f));
-                for (int k = 0; k < n; k++) into.Add(lo + (hi - lo) * (k + 0.5f) / n);
+                if (width < 3.0f * n) n = Mathf.Max(1, Mathf.FloorToInt(width / 3.0f));
+                for (int k = 0; k < n; k++) into.Add((k + 0.5f) / n);
                 return;
             }
             int left = Mathf.Max(1, w.LanesL), right = Mathf.Max(1, w.LanesR);
-            for (int k = 0; k < left; k++) into.Add(centre + (hi - centre) * (k + 0.5f) / left);
-            for (int k = 0; k < right; k++) into.Add(centre - (centre - lo) * (k + 0.5f) / right);
+            for (int k = 0; k < left; k++) into.Add(0.5f + 0.5f * (k + 0.5f) / left);
+            for (int k = 0; k < right; k++) into.Add(0.5f - 0.5f * (k + 0.5f) / right);
         }
 
         private static void Carriageways(Net net)
@@ -129,23 +120,50 @@ namespace CloneZ
                 if (c.To - c.From < 0.02f) continue;
                 Way w = c.W;
                 float y = RoadY + w.Order * 0.0003f;
-                SamplesOf(c, c.From, c.To, 0f, net.Samples);
-                BandConst(net, net.Samples, -c.R.Edge, c.L.Edge, y, BaseSurf(look, w), c.Lift);
+                ProfileSamples(c, c.From, c.To, 0f, net.Samples);
+                List<Sample> s = net.Samples;
+                Fit(s.Count);
+                for (int i = 0; i < s.Count; i++)
+                {
+                    s_A[i] = -EdgeAt(c, -1, s[i].S);
+                    s_B[i] = EdgeAt(c, 1, s[i].S);
+                }
+                Band(net, s, s_A, s_B, y, y, BaseSurf(look, w), c.Lift);
                 if (net.Full) WinterDetail(net, c);
                 TakeChain(net, c);
             }
             foreach (Joint j in net.Joints)
             {
-                if (j.Patch == null || j.Patch.Count < 3) continue;
-                Fan(net.Out, j.At, j.Patch, PatchY, BaseSurf(look, j.Top));
+                if (!j.HasPatch) continue;
+                Surf surf = BaseSurf(look, j.Top);
+                if (j.Patch != null && j.Patch.Count >= 3) Polygon(net.Out, j.Patch, j.At, PatchY, surf);
+                foreach (List<Vector2> cap in j.Caps) Polygon(net.Out, cap, MapGeometry.Middle(cap), PatchY, surf);
                 if (net.Full && j.Top.Winter == Winter.Ploughed) PatchSlush(net, j);
                 TakePatch(net, j);
             }
         }
 
-        // The winter on a carriageway: slush along the edges, over the crown and between the wheel tracks of a ploughed
-        // road; dark tyre tracks pressed into a packed one; two ruts down a farm track. Every edge wanders a little, by
-        // noise over the ground that neighbouring chunks agree on.
+        /// <summary>A face-up polygon, ear-clipped (fanned from <paramref name="hub"/> should that fail).</summary>
+        private static void Polygon(OutdoorBatches into, List<Vector2> poly, Vector2 hub, float y, in Surf s)
+        {
+            List<int> tris = MapGeometry.Triangulate(poly, 600);
+            if (tris.Count < (poly.Count - 2) * 3)
+            {
+                Fan(into, hub, poly, y, s);
+                return;
+            }
+            RaidMesh m = into.Flat(To3(hub, y));
+            for (int i = 0; i + 2 < tris.Count; i += 3)
+            {
+                Vector3 a = To3(poly[tris[i]], y), b = To3(poly[tris[i + 1]], y), c = To3(poly[tris[i + 2]], y);
+                if (!Finite(a) || !Finite(b) || !Finite(c)) continue;
+                m.Tri(a, b, c, s);
+            }
+        }
+
+        // The winter on a carriageway: slush along the edges (not across a side road's mouth), over the crown and
+        // between the wheel tracks of a ploughed road; dark tyre tracks pressed into a packed one; two ruts down a farm
+        // track. Every edge wanders a little, by noise over the ground that neighbouring chunks agree on.
         private static void WinterDetail(Net net, Chain c)
         {
             Way w = c.W;
@@ -156,28 +174,38 @@ namespace CloneZ
             if (n < 2) return;
             Fit(n);
             int seed = Seed(w, 0x5A1);
-            LaneCentres(c, s_Lanes);
+            LaneFractions(c, s_Lanes);
             switch (w.Winter)
             {
                 case Winter.Ploughed:
                     for (int side = -1; side <= 1; side += 2)
                     {
-                        Side d = side > 0 ? c.L : c.R;
-                        bool parking = d.Edge > d.Lane + 0.8f;
+                        bool any = false;
                         for (int i = 0; i < n; i++)
                         {
+                            ProfAt(c, side, s[i].S, out Prof d);
+                            bool parking = d.Edge > d.Lane + 0.8f;
                             float wander = Noise(s[i].P, 3.5f, seed + side);
                             float inner = parking ? d.Lane + 0.15f + 0.4f * wander : d.Edge - 0.35f - 0.45f * wander;
                             s_A[i] = side * inner;
                             s_B[i] = side * d.Edge;
+                            s_YA[i] = parking ? 1f : 0f;
                         }
-                        Band(net, s, s_A, s_B, DetailY, DetailY, parking ? look.SlushLight : look.Slush, c.Lift);
+                        for (int i = 0; i + 1 < n; i++)
+                        {
+                            s_Keep[i] = !InMouth(c, side, (s[i].S + s[i + 1].S) * 0.5f);
+                            any |= s_Keep[i];
+                        }
+                        if (!any) continue;
+                        // The parking lanes' looser slush, the plough's ridge along a kerb.
+                        bool parked = s_YA[0] > 0.5f || s_YA[n - 1] > 0.5f;
+                        Band(net, s, s_A, s_B, DetailY, DetailY, parked ? look.SlushLight : look.Slush, c.Lift, s_Keep);
                     }
                     if (!w.OneWay && w.Centre != CentreLine.None)
                     {
-                        float centre = (c.L.Lane - c.R.Lane) * 0.5f;
                         for (int i = 0; i < n; i++)
                         {
+                            float centre = (EdgeLaneAt(c, 1, s[i].S) - EdgeLaneAt(c, -1, s[i].S)) * 0.5f;
                             float half = 0.18f + 0.3f * Noise(s[i].P, 3f, seed + 7);
                             s_A[i] = centre - half;
                             s_B[i] = centre + half;
@@ -187,9 +215,9 @@ namespace CloneZ
                     }
                     for (int k = 0; k < s_Lanes.Count; k++)
                     {
-                        float lc = s_Lanes[k];
                         for (int i = 0; i < n; i++)
                         {
+                            float lc = LaneAt(c, s[i].S, s_Lanes[k]);
                             float half = 0.16f + 0.22f * Noise(s[i].P, 3f, seed + 20 + k);
                             float shift = 0.15f * (Noise(s[i].P, 6f, seed + 40 + k) - 0.5f);
                             s_A[i] = lc + shift - half;
@@ -204,9 +232,9 @@ namespace CloneZ
                     for (int k = 0; k < s_Lanes.Count; k++)
                         for (int t = -1; t <= 1; t += 2)
                         {
-                            float lc = s_Lanes[k] + t * 0.8f;
                             for (int i = 0; i < n; i++)
                             {
+                                float lc = LaneAt(c, s[i].S, s_Lanes[k]) + t * 0.8f;
                                 float shift = 0.24f * (Noise(s[i].P, 4.5f, seed + k * 2 + (t > 0 ? 1 : 0)) - 0.5f);
                                 float half = 0.15f + 0.05f * Noise(s[i].P, 2.25f, seed + 77 + k);
                                 s_A[i] = lc + shift - half;
@@ -231,7 +259,20 @@ namespace CloneZ
             }
         }
 
-        // Slush the plough left along a ploughed junction's kerb lines.
+        private static float EdgeLaneAt(Chain c, int side, float s)
+        {
+            ProfAt(c, side, s, out Prof p);
+            return p.Lane;
+        }
+
+        /// <summary>The left offset of a point a fraction <paramref name="f"/> across the travel lanes.</summary>
+        private static float LaneAt(Chain c, float s, float f)
+        {
+            float lo = -EdgeLaneAt(c, -1, s), hi = EdgeLaneAt(c, 1, s);
+            return lo + (hi - lo) * f;
+        }
+
+        // Slush the plough left along a ploughed junction's kerb returns.
         private static void PatchSlush(Net net, Joint j)
         {
             foreach (Corner corner in j.Corners)
@@ -251,26 +292,50 @@ namespace CloneZ
             }
         }
 
-        // The road's surface kept clear of props: the carriageway's middle line between its trims and its half width.
+        private static readonly List<Vector2> s_Take = new List<Vector2>(64);
+
+        // The road's surface kept clear of props: the carriageway's middle line between its trims and its half width,
+        // in runs where the width holds steady.
         private static void TakeChain(Net net, Chain c)
         {
-            float shift = (c.L.Edge - c.R.Edge) * 0.5f, half = (c.L.Edge + c.R.Edge) * 0.5f;
-            SamplesOf(c, c.From, c.To, 0f, net.Samples2);
-            if (net.Samples2.Count < 2) return;
-            var pts = new List<Vector2>(net.Samples2.Count);
-            foreach (Sample s in net.Samples2) pts.Add(s.P + s.N * shift);
-            net.Site.TakeRoad(pts, half, 0.3f);
+            SamplesOf(c, c.From, c.To, c.Ramps ? 3f : 0f, net.Samples2);
+            List<Sample> s = net.Samples2;
+            if (s.Count < 2) return;
+            s_Take.Clear();
+            float runHalf = -1f;
+            for (int i = 0; i < s.Count; i++)
+            {
+                float l = EdgeAt(c, 1, s[i].S), r = EdgeAt(c, -1, s[i].S);
+                float shift = (l - r) * 0.5f, half = (l + r) * 0.5f;
+                if (runHalf >= 0f && Mathf.Abs(half - runHalf) > 0.4f && s_Take.Count >= 2)
+                {
+                    net.Site.TakeRoad(new List<Vector2>(s_Take), runHalf, 0.3f);
+                    Vector2 last = s_Take[s_Take.Count - 1];
+                    s_Take.Clear();
+                    s_Take.Add(last);
+                    runHalf = half;
+                }
+                if (runHalf < 0f) runHalf = half;
+                else runHalf = Mathf.Max(runHalf, half);
+                s_Take.Add(s[i].P + s[i].N * shift);
+            }
+            if (s_Take.Count >= 2) net.Site.TakeRoad(new List<Vector2>(s_Take), runHalf, 0.3f);
         }
 
-        // A junction's patch kept clear of props, a metre's cell at a time.
+        // A junction's patch and mouths kept clear of props, a metre's cell at a time.
         private static void TakePatch(Net net, Joint j)
         {
-            Rect b = j.Bounds;
+            if (j.Patch != null && j.Patch.Count >= 3) TakeCells(net, j.Patch, j.Bounds);
+            for (int k = 0; k < j.Caps.Count; k++) TakeCells(net, j.Caps[k], j.CapBounds[k]);
+        }
+
+        private static void TakeCells(Net net, List<Vector2> poly, Rect b)
+        {
             for (float z = Mathf.Floor(b.yMin) + 0.5f; z < b.yMax; z += 1f)
                 for (float x = Mathf.Floor(b.xMin) + 0.5f; x < b.xMax; x += 1f)
                 {
                     var p = new Vector2(x, z);
-                    if (MapGeometry.Contains(j.Patch, p)) net.Site.Take(p, 0.4f);
+                    if (MapGeometry.Contains(poly, p)) net.Site.Take(p, 0.4f);
                 }
         }
 
