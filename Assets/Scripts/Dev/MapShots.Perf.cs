@@ -246,6 +246,198 @@ namespace CloneZ
             public float Yaw;
         }
 
+        // RaidMesh's primitives as they were before the revamp made them fast (List storage, a rotation per corner), kept
+        // only to check the fast ones draw exactly the same.
+        private sealed class LegacyMesh
+        {
+            public readonly List<Vector3> V = new List<Vector3>(), N = new List<Vector3>();
+            public readonly List<Vector2> Uv = new List<Vector2>();
+            public readonly List<Material> Mats = new List<Material>();
+            public readonly List<List<int>> Tris = new List<List<int>>();
+            private Vector3 _origin;
+            private Quaternion _rot = Quaternion.identity;
+
+            private static readonly Vector3[] s_FaceN = { Vector3.up, Vector3.down, Vector3.forward, Vector3.back, Vector3.right, Vector3.left };
+
+            public void SetFrame(Vector3 origin, float yaw) { _origin = origin; _rot = Quaternion.Euler(0f, yaw, 0f); }
+            public void ResetFrame() { _origin = Vector3.zero; _rot = Quaternion.identity; }
+
+            private List<int> TrisFor(Material m)
+            {
+                for (int i = 0; i < Mats.Count; i++) if (Mats[i] == m) return Tris[i];
+                Mats.Add(m);
+                var list = new List<int>();
+                Tris.Add(list);
+                return list;
+            }
+
+            private static Vector2 UvAt(Vector3 p, Vector3 n, in Surf s)
+            {
+                if (!s.Planar) return s.Uv;
+                float k = s.PerMeter;
+                p += RaidMesh.PlanarOrigin;
+                if (n.y > 0.7f || n.y < -0.7f) return new Vector2(p.x * k, p.z * k);
+                Vector3 t = Vector3.Cross(n, Vector3.up);
+                float len = t.magnitude;
+                if (len < 1e-4f) return new Vector2(p.x * k, p.z * k);
+                t /= len;
+                return new Vector2(Vector3.Dot(p, t) * k, p.y * k);
+            }
+
+            private int Add(Vector3 p, Vector3 n, in Surf s) { V.Add(p); N.Add(n); Uv.Add(UvAt(p, n, s)); return V.Count - 1; }
+            private int Add(Vector3 p, Vector3 n, Vector2 uv) { V.Add(p); N.Add(n); Uv.Add(uv); return V.Count - 1; }
+
+            public void Box(Vector3 center, Vector3 size, Quaternion localRot, in Surf s, bool skipBottom = false)
+            {
+                Quaternion rot = _rot * localRot;
+                Vector3 c = _origin + _rot * center;
+                List<int> tris = TrisFor(s.Mat);
+                for (int f = 0; f < 6; f++)
+                {
+                    if (skipBottom && f == 1) continue;
+                    Vector3 n = s_FaceN[f], u = new Vector3(n.y, n.z, n.x), v = Vector3.Cross(n, u), wn = rot * n;
+                    Vector3 c0 = Vector3.Scale((n - u - v) * 0.5f, size), c1 = Vector3.Scale((n + u - v) * 0.5f, size);
+                    Vector3 c2 = Vector3.Scale((n + u + v) * 0.5f, size), c3 = Vector3.Scale((n - u + v) * 0.5f, size);
+                    int b = Add(c + rot * c0, wn, s);
+                    Add(c + rot * c1, wn, s);
+                    Add(c + rot * c2, wn, s);
+                    Add(c + rot * c3, wn, s);
+                    tris.Add(b); tris.Add(b + 1); tris.Add(b + 2);
+                    tris.Add(b); tris.Add(b + 2); tris.Add(b + 3);
+                }
+            }
+
+            public void Quad(Vector3 center, Vector3 halfRight, Vector3 halfUp, in Surf s)
+            {
+                Vector3 c = _origin + _rot * center, r = _rot * halfRight, u = _rot * halfUp, n = Vector3.Cross(u, r).normalized;
+                List<int> tris = TrisFor(s.Mat);
+                int b = Add(c - r - u, n, s);
+                Add(c - r + u, n, s);
+                Add(c + r + u, n, s);
+                Add(c + r - u, n, s);
+                tris.Add(b); tris.Add(b + 1); tris.Add(b + 2);
+                tris.Add(b); tris.Add(b + 2); tris.Add(b + 3);
+            }
+
+            public void QuadUV(Vector3 center, Vector3 halfRight, Vector3 halfUp, in Surf s, Rect uv)
+            {
+                Vector3 c = _origin + _rot * center, r = _rot * halfRight, u = _rot * halfUp, n = Vector3.Cross(u, r).normalized;
+                List<int> tris = TrisFor(s.Mat);
+                int b = Add(c - r - u, n, new Vector2(uv.xMin, uv.yMin));
+                Add(c - r + u, n, new Vector2(uv.xMin, uv.yMax));
+                Add(c + r + u, n, new Vector2(uv.xMax, uv.yMax));
+                Add(c + r - u, n, new Vector2(uv.xMax, uv.yMin));
+                tris.Add(b); tris.Add(b + 1); tris.Add(b + 2);
+                tris.Add(b); tris.Add(b + 2); tris.Add(b + 3);
+            }
+
+            public void Tri(Vector3 a, Vector3 b, Vector3 c, in Surf s)
+            {
+                Vector3 wa = _origin + _rot * a, wb = _origin + _rot * b, wc = _origin + _rot * c;
+                Vector3 n = Vector3.Cross(wb - wa, wc - wa).normalized;
+                List<int> tris = TrisFor(s.Mat);
+                int i0 = Add(wa, n, s);
+                Add(wb, n, s);
+                Add(wc, n, s);
+                tris.Add(i0); tris.Add(i0 + 1); tris.Add(i0 + 2);
+            }
+
+            public void Diamond(Vector3 center, Vector3 right, Vector3 up, in Surf s)
+            {
+                Vector3 c = _origin + _rot * center, r = _rot * right, u = _rot * up, n = Vector3.Cross(u, r).normalized;
+                List<int> tris = TrisFor(s.Mat);
+                int top = Add(c + u, n, s), rt = Add(c + r, n, s), bot = Add(c - u, n, s), lf = Add(c - r, n, s);
+                tris.Add(top); tris.Add(rt); tris.Add(bot);
+                tris.Add(top); tris.Add(bot); tris.Add(lf);
+            }
+
+            public void Blob(Vector3 center, Vector3 right, Vector3 up, float radiusX, float radiusY, int points, float jag, System.Random rng, in Surf s)
+            {
+                points = Mathf.Clamp(points, 5, 24);
+                Vector3 c = _origin + _rot * center, r = _rot * right, u = _rot * up, n = Vector3.Cross(u, r).normalized;
+                List<int> tris = TrisFor(s.Mat);
+                int ci = Add(c, n, s), first = V.Count;
+                for (int i = 0; i < points; i++)
+                {
+                    float a = i * Mathf.PI * 2f / points;
+                    float k = 1f - jag * (float)rng.NextDouble();
+                    Add(c + r * (Mathf.Sin(a) * radiusX * k) + u * (Mathf.Cos(a) * radiusY * k), n, s);
+                }
+                for (int i = 0; i < points; i++) { tris.Add(ci); tris.Add(first + i); tris.Add(first + (i + 1) % points); }
+            }
+
+            public void Cylinder(Vector3 baseCenter, float radius, float height, int sides, in Surf s, Quaternion localRot, float topScale, bool caps)
+            {
+                sides = Mathf.Clamp(sides, 3, 24);
+                Quaternion rot = _rot * localRot;
+                Vector3 b0 = _origin + _rot * baseCenter, up = rot * Vector3.up, top = b0 + up * height;
+                float rTop = radius * topScale;
+                List<int> tris = TrisFor(s.Mat);
+                int wall = V.Count;
+                float slope = (radius - rTop) / Mathf.Max(0.001f, height);
+                for (int i = 0; i <= sides; i++)
+                {
+                    float yaw = (float)i / sides * Mathf.PI * 2f;
+                    Vector3 dir = rot * new Vector3(Mathf.Sin(yaw), 0f, Mathf.Cos(yaw));
+                    Vector3 nrm = (dir + up * slope).normalized;
+                    Add(top + dir * rTop, nrm, s);
+                    Add(b0 + dir * radius, nrm, s);
+                }
+                for (int i = 0; i < sides; i++)
+                {
+                    int tA = wall + i * 2, bA = tA + 1, tB = tA + 2, bB = tA + 3;
+                    tris.Add(tA); tris.Add(bA); tris.Add(tB);
+                    tris.Add(tB); tris.Add(bA); tris.Add(bB);
+                }
+                if (!caps) return;
+                if (rTop > 0.001f)
+                {
+                    int tc = Add(top, up, s), ring = V.Count;
+                    for (int i = 0; i <= sides; i++)
+                    {
+                        float yaw = (float)i / sides * Mathf.PI * 2f;
+                        Add(top + rot * new Vector3(Mathf.Sin(yaw), 0f, Mathf.Cos(yaw)) * rTop, up, s);
+                    }
+                    for (int i = 0; i < sides; i++) { tris.Add(tc); tris.Add(ring + i); tris.Add(ring + i + 1); }
+                }
+                int bc = Add(b0, -up, s), bring = V.Count;
+                for (int i = 0; i <= sides; i++)
+                {
+                    float yaw = (float)i / sides * Mathf.PI * 2f;
+                    Add(b0 + rot * new Vector3(Mathf.Sin(yaw), 0f, Mathf.Cos(yaw)) * radius, -up, s);
+                }
+                for (int i = 0; i < sides; i++) { tris.Add(bc); tris.Add(bring + i + 1); tris.Add(bring + i); }
+            }
+
+            public void Ellipsoid(Vector3 center, Vector3 size, Quaternion localRot, in Surf s, int segments, int rings)
+            {
+                Quaternion rot = _rot * localRot;
+                Vector3 c = _origin + _rot * center;
+                List<int> tris = TrisFor(s.Mat);
+                int start = V.Count;
+                var inv = new Vector3(1f / Mathf.Max(0.001f, size.x), 1f / Mathf.Max(0.001f, size.y), 1f / Mathf.Max(0.001f, size.z));
+                for (int y = 0; y <= rings; y++)
+                {
+                    float pitch = (float)y / rings * Mathf.PI, sy = Mathf.Cos(pitch), r = Mathf.Sin(pitch);
+                    for (int x = 0; x <= segments; x++)
+                    {
+                        float yaw = (float)x / segments * Mathf.PI * 2f;
+                        var unit = new Vector3(Mathf.Sin(yaw) * r, sy, Mathf.Cos(yaw) * r);
+                        Vector3 p = Vector3.Scale(unit * 0.5f, size);
+                        Vector3 n = rot * Vector3.Scale(unit, inv).normalized;
+                        Add(c + rot * p, n, s);
+                    }
+                }
+                for (int y = 0; y < rings; y++)
+                    for (int x = 0; x < segments; x++)
+                    {
+                        int a = start + y * (segments + 1) + x, b = a + segments + 1;
+                        tris.Add(a); tris.Add(b); tris.Add(a + 1);
+                        tris.Add(a + 1); tris.Add(b); tris.Add(b + 1);
+                    }
+            }
+        }
+
         private sealed partial class Harness
         {
             #region What things cost
@@ -256,6 +448,7 @@ namespace CloneZ
                 var root = new GameObject("[MapShots] costs");
                 try
                 {
+                    Fence("equivalence", CostEquivalence);
                     Fence("colliders", () => CostColliders(root.transform));
                     Fence("meshes", () => CostMeshes(root.transform));
                     Fence("primitives", CostPrimitives);
@@ -626,21 +819,167 @@ namespace CloneZ
                 return "yes";
             }
 
-            // RaidMesh's primitives, each many times into a fresh mesh.
+            // RaidMesh's primitives, each many times into a fresh mesh; and a few the way they were drawn before.
             private void CostPrimitives()
             {
                 Surf matte = DecorPalette.Matte(new Color(0.5f, 0.5f, 0.5f)), snow = DecorMaterials.Snow;
                 var at = new Vector3(3.2f, 1.1f, -7.4f);
                 var size = new Vector3(1.2f, 0.4f, 0.3f);
+                Quaternion turned = Quaternion.Euler(0f, 33f, 0f);
                 Prim("Box, turned, flat colour", 20000, m => m.Box(at, size, 33f, matte));
+                PrimOld("before: Box, turned, flat colour", 20000, m => m.Box(at, size, turned, matte));
                 Prim("Box, turned, planar texture", 20000, m => m.Box(at, size, 33f, snow));
+                PrimOld("before: Box, turned, planar texture", 20000, m => m.Box(at, size, turned, snow));
                 Prim("Box, square, flat colour", 20000, m => m.Box(at, size, matte));
                 Prim("Box in a turned frame (furniture)", 20000, m => { m.SetFrame(at, 21f); m.Box(new Vector3(0.3f, 0.2f, 0.1f), size, matte); });
                 Prim("Quad (Upright)", 20000, m => m.Upright(at, new Vector3(0.6f, 0f, 0.8f), 1f, 1.2f, matte));
                 Prim("Tri", 20000, m => m.Tri(at, at + Vector3.forward, at + Vector3.right, matte));
                 Prim("Cylinder, 8 sides", 5000, m => m.Cylinder(at, 0.2f, 2f, 8, matte));
+                PrimOld("before: Cylinder, 8 sides", 5000, m => m.Cylinder(at, 0.2f, 2f, 8, matte, Quaternion.identity, 1f, true));
                 Prim("Ellipsoid, 8 x 5", 3000, m => m.Ellipsoid(at, size, matte));
+                PrimOld("before: Ellipsoid, 8 x 5", 3000, m => m.Ellipsoid(at, size, Quaternion.identity, matte, 8, 5));
             }
+
+            private void PrimOld(string name, int n, Action<LegacyMesh> draw)
+            {
+                var warm = new LegacyMesh();
+                for (int i = 0; i < 50; i++) draw(warm);
+                var m = new LegacyMesh();
+                var sw = Stopwatch.StartNew();
+                for (int i = 0; i < n; i++) draw(m);
+                AddCost("primitives", name, n, sw.Elapsed.TotalMilliseconds, F0(m.V.Count) + " vertices");
+            }
+
+            // The fast RaidMesh against the old primitives, call for call: thousands of random primitives of every kind (in
+            // turned frames, flat colours and planar textures) must draw the same vertices, normals, UVs, triangles and
+            // materials.
+            private void CostEquivalence()
+            {
+                var rng = new System.Random(1993);
+                var mesh = new RaidMesh();
+                var old = new LegacyMesh();
+                Surf[] surfs = { DecorPalette.Matte(new Color(0.3f, 0.6f, 0.2f)), DecorPalette.Gloss(new Color(0.7f, 0.1f, 0.1f)),
+                    DecorMaterials.Snow, DecorMaterials.Concrete };
+                Vector3 planar = RaidMesh.PlanarOrigin;
+                RaidMesh.PlanarOrigin = new Vector3(37.5f, 0f, 121.25f);
+                const int calls = 4000;
+                try
+                {
+                    for (int i = 0; i < calls; i++)
+                    {
+                        Surf s = surfs[rng.Next(surfs.Length)];
+                        Vector3 a = R3(rng, 40f), b = R3(rng, 3f), c = R3(rng, 3f);
+                        var size = new Vector3(0.02f + (float)rng.NextDouble() * 5f, 0.02f + (float)rng.NextDouble() * 5f, 0.02f + (float)rng.NextDouble() * 5f);
+                        Quaternion q = rng.Next(3) == 0 ? Quaternion.Euler(R(rng, 360f), R(rng, 360f), R(rng, 360f)) : Quaternion.Euler(0f, R(rng, 720f), 0f);
+                        int frame = rng.Next(6);
+                        if (frame == 0)
+                        {
+                            Vector3 fo = R3(rng, 30f);
+                            float fy = R(rng, 360f);
+                            mesh.SetFrame(fo, fy);
+                            old.SetFrame(fo, fy);
+                        }
+                        else if (frame == 1)
+                        {
+                            mesh.ResetFrame();
+                            old.ResetFrame();
+                        }
+                        switch (rng.Next(8))
+                        {
+                            case 0:
+                                bool skip = rng.Next(4) == 0;
+                                mesh.Box(a, size, q, s, skip);
+                                old.Box(a, size, q, s, skip);
+                                break;
+                            case 1:
+                                mesh.Quad(a, b, c, s);
+                                old.Quad(a, b, c, s);
+                                break;
+                            case 2:
+                                var uv = new Rect((float)rng.NextDouble(), (float)rng.NextDouble(), (float)rng.NextDouble(), (float)rng.NextDouble());
+                                mesh.QuadUV(a, b, c, s, uv);
+                                old.QuadUV(a, b, c, s, uv);
+                                break;
+                            case 3:
+                                mesh.Tri(a, a + b, a + c, s);
+                                old.Tri(a, a + b, a + c, s);
+                                break;
+                            case 4:
+                                mesh.Diamond(a, b, c, s);
+                                old.Diamond(a, b, c, s);
+                                break;
+                            case 5:
+                                int seed = rng.Next(), points = 3 + rng.Next(24);
+                                float rx = 0.1f + (float)rng.NextDouble() * 3f, ry = 0.1f + (float)rng.NextDouble() * 3f, jag = (float)rng.NextDouble() * 0.5f;
+                                mesh.Blob(a, b.normalized, c.normalized, rx, ry, points, jag, new System.Random(seed), s);
+                                old.Blob(a, b.normalized, c.normalized, rx, ry, points, jag, new System.Random(seed), s);
+                                break;
+                            case 6:
+                                int sides = 1 + rng.Next(26);
+                                float radius = 0.02f + (float)rng.NextDouble(), height = 0.05f + (float)rng.NextDouble() * 6f;
+                                float top = rng.Next(5) == 0 ? 0f : (float)rng.NextDouble() * 1.5f;
+                                bool caps = rng.Next(4) != 0;
+                                mesh.Cylinder(a, radius, height, sides, s, q, top, caps);
+                                old.Cylinder(a, radius, height, sides, s, q, top, caps);
+                                break;
+                            default:
+                                int segments = 3 + rng.Next(12), rings = 2 + rng.Next(8);
+                                mesh.Ellipsoid(a, size, q, s, segments, rings);
+                                old.Ellipsoid(a, size, q, s, segments, rings);
+                                break;
+                        }
+                    }
+                }
+                finally
+                {
+                    RaidMesh.PlanarOrigin = planar;
+                }
+                var v = new List<Vector3>();
+                var n = new List<Vector3>();
+                var uvs = new List<Vector2>();
+                var idx = new List<int>();
+                var mats = new List<Material>();
+                mesh.CopyGeometry(v, n, uvs, idx, mats);
+                var oldIdx = new List<int>();
+                foreach (List<int> t in old.Tris)
+                {
+                    oldIdx.AddRange(t);
+                    oldIdx.Add(-1);
+                }
+                int exactV = 0, exactN = 0, exactUv = 0;
+                double dv = 0, dn = 0, duv = 0;
+                int count = Math.Min(v.Count, old.V.Count);
+                for (int i = 0; i < count; i++)
+                {
+                    if (v[i] == old.V[i] && v[i].x.Equals(old.V[i].x) && v[i].y.Equals(old.V[i].y) && v[i].z.Equals(old.V[i].z)) exactV++;
+                    if (n[i].x.Equals(old.N[i].x) && n[i].y.Equals(old.N[i].y) && n[i].z.Equals(old.N[i].z)) exactN++;
+                    if (uvs[i].x.Equals(old.Uv[i].x) && uvs[i].y.Equals(old.Uv[i].y)) exactUv++;
+                    dv = Math.Max(dv, (v[i] - old.V[i]).magnitude);
+                    dn = Math.Max(dn, (n[i] - old.N[i]).magnitude);
+                    duv = Math.Max(duv, (uvs[i] - old.Uv[i]).magnitude);
+                }
+                bool sameTris = idx.Count == oldIdx.Count;
+                for (int i = 0; sameTris && i < idx.Count; i++) sameTris = idx[i] == oldIdx[i];
+                bool sameMats = mats.Count == old.Mats.Count;
+                for (int i = 0; sameMats && i < mats.Count; i++) sameMats = mats[i] == old.Mats[i];
+                bool ok = v.Count == old.V.Count && sameTris && sameMats && dv < 1e-4 && dn < 1e-4 && duv < 1e-3;
+                CostReport r = AddCost("equivalence", "the fast RaidMesh against the old primitives, call for call", calls, 0,
+                    (ok ? "SAME" : "DIFFERENT") + ": " + F0(v.Count) + " vs " + F0(old.V.Count) + " vertices; bit-exact positions " + F0(exactV)
+                    + ", normals " + F0(exactN) + ", UVs " + F0(exactUv) + "; largest difference " + dv.ToString("G3", CultureInfo.InvariantCulture)
+                    + " m, " + dn.ToString("G3", CultureInfo.InvariantCulture) + " (normals), " + duv.ToString("G3", CultureInfo.InvariantCulture)
+                    + " (UVs); triangles " + (sameTris ? "same" : "DIFFERENT") + ", materials " + (sameMats ? "same" : "DIFFERENT"));
+                r.ok = ok;
+                if (!ok)
+                {
+                    _harnessErrors++;
+                    Remark("RaidMesh's fast primitives don't draw what the old ones did: " + r.note);
+                }
+                mesh.Release();
+            }
+
+            private static float R(System.Random rng, float span) => ((float)rng.NextDouble() - 0.5f) * span;
+
+            private static Vector3 R3(System.Random rng, float span) => new Vector3(R(rng, span), R(rng, span), R(rng, span));
 
             private void Prim(string name, int n, Action<RaidMesh> draw)
             {
