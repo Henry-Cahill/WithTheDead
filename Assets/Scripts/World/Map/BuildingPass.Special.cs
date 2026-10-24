@@ -384,7 +384,7 @@ namespace CloneZ
             {
                 float y = k * h;
                 bool top = k == decks - 1;
-                Deck(up, f, j.Tris, y, top ? (snowy ? RoofSnow : AsphaltSurf) : inner);
+                Deck(up, j, y, top ? (snowy ? RoofSnow : AsphaltSurf) : inner);
                 for (int i = 0; i < j.N; i++)
                 {
                     float len = j.Len[i];
@@ -442,7 +442,7 @@ namespace CloneZ
                 }
                 // The ground floor's slab, under its deck.
                 Vector3 middle = To3(f.Middle, 0f);
-                Deck(j.Site.Town.Out.Flat(middle), f, j.Tris, 0.02f, AsphaltSurf);
+                Deck(j.Site.Town.Out.Flat(middle), j, 0.02f, AsphaltSurf);
             }
             if (!j.Scenery) Rows(j, true);
         }
@@ -497,7 +497,7 @@ namespace CloneZ
             Surf wall = bin ? WallSurf(WallKind.Metal, 0) : p.CoverTone == MetalBlue ? DecorPalette.Gloss(new Color(0.12f, 0.20f, 0.36f)) : WallSurf(WallKind.Concrete, 0);
             float g = Mathf.Min(h, GroundStorey);
             j.Shell.WallsFacing(Vector2.down).Cylinder(To3(at, 0f), r, g, sides, wall);
-            j.Shell.Upper.Cylinder(To3(at, g), r, h - g, sides, wall);
+            if (h - g > 0.05f) j.Shell.Upper.Cylinder(To3(at, g), r, h - g, sides, wall);
             j.Shell.WallTop = g;
             RaidMesh m = j.Upper;
             if (bin)

@@ -207,6 +207,8 @@ namespace CloneZ
             // A building mapped as parking is a parking deck (a lot is an area, not a building).
             if ((use == "parking" || Has(name, "parking garage") || Has(name, "parking deck")) && area >= 350f && kind != "house" && kind != "garage")
                 return Arch.Parking;
+            // On a downtown front, sharing walls or closely built.
+            bool row = core > 0.55f && (p.PartyCount > 0 || p.Density > 0.4f);
 
             switch (kind)
             {
@@ -215,57 +217,80 @@ namespace CloneZ
                 case "silo": return Arch.Silo;
                 case "greenhouse": return Arch.Greenhouse;
                 case "trailer": return Arch.Trailer;
-                case "shed": return area > 90f && town < 0.4f ? Arch.Barn : Arch.Shed;
-                case "garage": return area > 140f ? Arch.Warehouse : Arch.Garage;
-                case "barn": return barnShape && rng.NextDouble() < 0.6 ? Arch.TobaccoBarn : Arch.Barn;
                 case "church": return Arch.Church;
                 case "school": return Arch.School;
                 case "hospital": return Arch.Hospital;
-                case "civic": return use == "courthouse" || use == "townhall" || Has(name, "court") ? Arch.Courthouse : Arch.Civic;
-                case "hotel": return tagged >= 5 ? Arch.Office : core > 0.5f && area < 2500f ? Arch.Row : Arch.Motel;
-                case "apartments": return core > 0.6f && p.PartyCount > 0 && tagged < 5 ? Arch.Row : Arch.Apartments;
-                case "office": return core > 0.55f && area < 900f && tagged < 6 ? Arch.Row : Arch.Office;
-                case "retail": return core > 0.5f && area < 1500f ? Arch.Row : Arch.Store;
-                case "industrial": return distillery ? Arch.Rickhouse : Arch.Industrial;
             }
 
-            switch (use)
+            // What the building was for, as the interiors and the loot see it (MapGameplay.PurposeOf): a barn outside is a
+            // barn inside, a store a store.
+            string purpose = MapGameplay.PurposeOf(ctx.Site, f);
+            switch (purpose)
             {
-                case "place_of_worship": return Arch.Church;
-                case "school": case "kindergarten": case "college": case "university": case "childcare": return Arch.School;
-                case "hospital": return Arch.Hospital;
-                case "courthouse": case "townhall": return area >= 250f ? Arch.Courthouse : Arch.Civic;
-                case "police": case "fire_station": case "library": case "post_office": case "community_centre":
-                case "social_facility": case "prison": case "theatre": case "cinema":
-                    return core > 0.6f && p.PartyCount > 0 ? Arch.Row : Arch.Civic;
-                case "clinic": case "doctors": case "dentist": case "veterinary": return core > 0.6f ? Arch.Row : Arch.Office;
-                case "fuel": return Arch.Store;
-                case "shelter": return Arch.Canopy;
+                case MapGameplay.Purposes.Ruin: return Arch.Ruin;
+                case MapGameplay.Purposes.Greenhouse: return Arch.Greenhouse;
+                case MapGameplay.Purposes.Trailer: return Arch.Trailer;
+                case MapGameplay.Purposes.Church: return Arch.Church;
+                case MapGameplay.Purposes.School: case MapGameplay.Purposes.Childcare: return area < 140f && !row ? Arch.House : Arch.School;
+                case MapGameplay.Purposes.Hospital: return area >= 600f ? Arch.Hospital : row ? Arch.Row : Arch.Office;
+                case MapGameplay.Purposes.Courthouse:
+                    // The old county courthouse on its square; a modern justice center is a civic block.
+                    if (area >= 250f && area < 4000f && tagged <= 3 && !row) return Arch.Courthouse;
+                    return row && area < 1500f ? Arch.Row : Arch.Civic;
+                case MapGameplay.Purposes.Civic: case MapGameplay.Purposes.Library: case MapGameplay.Purposes.Community:
+                case MapGameplay.Purposes.PostOffice: case MapGameplay.Purposes.Police: case MapGameplay.Purposes.FireStation:
+                case MapGameplay.Purposes.Prison: case MapGameplay.Purposes.Funeral:
+                    if ((use == "townhall" || Has(name, "courthouse") || Has(name, "court house")) && area >= 250f && area < 4000f && tagged <= 3 && !row)
+                        return Arch.Courthouse;
+                    return row && area < 1500f ? Arch.Row : tagged >= 6 ? Arch.Office : Arch.Civic;
+                case MapGameplay.Purposes.Barn:
+                    if (round) return Arch.Silo;
+                    if (area < 50f) return Arch.Shed;
+                    return barnShape && rng.NextDouble() < 0.6 ? Arch.TobaccoBarn : Arch.Barn;
+                case MapGameplay.Purposes.Shed:
+                    if (round && town < 0.6f) return Arch.Silo;
+                    return area > 90f && town < 0.4f ? Arch.Barn : Arch.Shed;
+                case MapGameplay.Purposes.Outbuilding:
+                    return town > 0.3f ? Arch.Garage : area > 45f && rng.NextDouble() < 0.5 ? Arch.Barn : Arch.Shed;
+                case MapGameplay.Purposes.Garage: return area > 140f ? Arch.Warehouse : Arch.Garage;
+                case MapGameplay.Purposes.Distillery: return Arch.Rickhouse;
+                case MapGameplay.Purposes.Warehouse: case MapGameplay.Purposes.StorageRental:
+                    if (distillery) return Arch.Rickhouse;
+                    if (core > 0.6f && area < 6000f) return Arch.Row;
+                    return land == "industrial" || area > 9000f ? Arch.Industrial : Arch.Warehouse;
+                case MapGameplay.Purposes.Industrial: return distillery ? Arch.Rickhouse : Arch.Industrial;
+                case MapGameplay.Purposes.Apartments: return row && tagged < 5 ? Arch.Row : Arch.Apartments;
+                case MapGameplay.Purposes.Hotel: return tagged >= 5 ? Arch.Office : core > 0.5f && area < 2500f ? Arch.Row : Arch.Motel;
+                case MapGameplay.Purposes.Home:
+                    if (trailerShape && core < 0.35f) return Arch.Trailer;
+                    if (core > 0.55f && (p.PartyCount > 0 || p.Density > 0.4f || (p.RoadRank >= 4 && p.RoadDist < 10f))) return Arch.Row;
+                    return Arch.House;
+                case MapGameplay.Purposes.Office: case MapGameplay.Purposes.Clinic: case MapGameplay.Purposes.Vet:
+                case MapGameplay.Purposes.Care: case MapGameplay.Purposes.Bank:
+                    if (core > 0.45f) return area > 2600f || tagged >= 7 ? Arch.Office : Arch.Row;
+                    return purpose == MapGameplay.Purposes.Bank && area < 600f && tagged < 3 ? Arch.Store : Arch.Office;
+                case MapGameplay.Purposes.Fuel: return Arch.Store;
+                case MapGameplay.Purposes.None: return use == "shelter" ? Arch.Canopy : Arch.Shed;
+                case MapGameplay.Purposes.Commercial: break;
+                default:
+                    // A store of some kind: downtown's row, else a store of its own.
+                    if (core > 0.45f) return area > 2600f || tagged >= 7 ? Arch.Office : Arch.Row;
+                    return tagged >= 4 ? Arch.Office : Arch.Store;
             }
+
+            // What's left is "commercial" with nothing to say what for (often just an untagged building of 250-2,500 m²).
             bool shop = use.StartsWith("shop:") || use == "bank" || use == "restaurant" || use == "fast_food" || use == "cafe"
                 || use == "bar" || use == "pub" || use == "ice_cream" || use == "car_repair" || use == "car_wash";
             if (round) return town < 0.6f || area > 40f ? Arch.Silo : Arch.Shed;
-            if (kind == "warehouse")
+            switch (kind)
             {
-                if (distillery) return Arch.Rickhouse;
-                if (core > 0.6f && area < 6000f) return Arch.Row;
-                if (shop || land == "retail" || land == "commercial") return Arch.Store;
-                return land == "industrial" || area > 9000f ? Arch.Industrial : Arch.Warehouse;
+                case "civic": return row && area < 1500f ? Arch.Row : Arch.Civic;
+                case "office": return core > 0.55f && area < 900f && tagged < 6 ? Arch.Row : Arch.Office;
+                case "retail": return core > 0.5f && area < 1500f ? Arch.Row : Arch.Store;
+                case "industrial": return Arch.Industrial;
             }
-            if (kind == "house")
-            {
-                if (trailerShape && core < 0.35f && !shop) return Arch.Trailer;
-                if (shop && (core > 0.3f || area > 90f)) return core > 0.5f ? Arch.Row : Arch.Store;
-                if (area < 24f) return Arch.Shed;
-                if (area < 75f && aspect < 2.3f && ctx.BiggerNeighbour(f, 32f, 1.6f))
-                    return town > 0.3f ? Arch.Garage : area > 45f && rng.NextDouble() < 0.5 ? Arch.Barn : Arch.Shed;
-                if (core > 0.55f && (p.PartyCount > 0 || p.Density > 0.4f || (p.RoadRank >= 4 && p.RoadDist < 10f))) return Arch.Row;
-                if (land == "industrial" && area > 90f) return Arch.Warehouse;
-                if (land == "farmyard" && area > 110f && barnShape) return Arch.TobaccoBarn;
-                return Arch.House;
-            }
-            // "commercial": tagged so, or an untagged building of 250 to 2,500 m². Downtown it's a commercial row's,
-            // unless it's too big or too tall to be a store's: then an office block (a bank, a state office, a hotel).
+            // Downtown it's a commercial row's, unless it's too big or too tall to be a store's: then an office block (a
+            // bank, a state office, a hotel).
             if (core > 0.45f) return (area > 2600f || tagged >= 7) && !shop ? Arch.Office : Arch.Row;
             if (shop) return Arch.Store;
             if (tagged >= 4) return Arch.Office;
@@ -276,12 +301,10 @@ namespace CloneZ
                     return Arch.Store;
                 if (land == "school") return Arch.School;
                 if (land == "churchyard") return Arch.Church;
-                if (area < 480f && (land == "residential" || p.RoadRank <= 2)) return Arch.House;
-                return rng.NextDouble() < 0.5 ? Arch.Store : Arch.Warehouse;
+                return area < 900f || rng.NextDouble() < 0.5 ? Arch.Store : Arch.Warehouse;
             }
             if (land == "industrial") return Arch.Industrial;
             if (barnShape && rng.NextDouble() < 0.7) return Arch.TobaccoBarn;
-            if (area < 450f && aspect < 2.3f && p.RoadDist < 60f && rng.NextDouble() < 0.55) return Arch.House;
             return area > 700f && rng.NextDouble() < 0.5 ? Arch.Warehouse : Arch.Barn;
         }
 

@@ -91,7 +91,7 @@ namespace CloneZ
             public readonly NaturePlan Plan;
             public readonly bool Lite;
             public readonly int Max, MaxRing;
-            public int Count, Ring;
+            public int Count, Ring, Fitted, Wired;
             public string Diag = "";
             public readonly List<NaturePlan.CellPoint> Cells = new List<NaturePlan.CellPoint>(512);
             public readonly List<NaturePlan.Station> Stations = new List<NaturePlan.Station>(128);
@@ -103,7 +103,9 @@ namespace CloneZ
                 Site = site;
                 Plan = plan;
                 Lite = plan.Lite;
-                Max = Mathf.Max(520, Mathf.RoundToInt(2600f * site.AreaShare));
+                // As many to the square metre as a streamed piece holds, so a fixed square in the woods is as thick as the
+                // pieces round a statewide start.
+                Max = Mathf.Max(520, Mathf.RoundToInt(520f * site.Half * site.Half / (64f * 64f)));
                 MaxRing = site.Chunked ? 0 : 1600;
             }
 
@@ -172,10 +174,12 @@ namespace CloneZ
             yield return "fence rows";
             foreach (string step in Sweep(p)) yield return step;
             Diag(p, "sweep", ref before);
-            if (!site.Chunked) Debug.Log("[NatureDiag] trees " + p.Count + " (ring " + p.Ring + "): " + p.Diag);
+            if (!site.Chunked)
+                Debug.Log("[NatureDiag] trees " + p.Count + " (ring " + p.Ring + "): " + p.Diag + "fitted to walls or wires " + p.Fitted
+                    + " (wires " + p.Wired + ", of " + plan.WirePieces + " wire pieces read)");
         }
 
-        // Temporary: what each source planted, for tuning.
+        // What each source planted, for the fixed map's one-line summary in the log (the map harness reads it).
         private static void Diag(Planting p, string what, ref int before)
         {
             p.Diag += what + " " + (p.Count - before) + ", ";
@@ -200,7 +204,13 @@ namespace CloneZ
                 if (checkGrid && !site.Free(at, room)) return false;
                 var fit = default(TreeRoom);
                 if (p.Lite) tier = TreeTier.Blob;
-                else if (!Fit(p.Plan, at, kind, yaw, ref height, ref fit)) return false;
+                else
+                {
+                    float wanted = height;
+                    if (!Fit(p.Plan, at, kind, yaw, ref height, ref fit, out bool wired)) return false;
+                    if (fit.Count > 0 || height < wanted) p.Fitted++;
+                    if (wired) p.Wired++;
+                }
                 Vector3 at3 = To3(at, 0f);
                 RaidMesh m = site.Town.Out.Solid(at3);
                 m.SetFrame(at3, yaw);
@@ -223,7 +233,7 @@ namespace CloneZ
             Land land = p.Plan.LandAt(at);
             if (land == Land.Water || land == Land.Lot || land == Land.Pitch) return false;
             var ringFit = default(TreeRoom);
-            if (!Fit(p.Plan, at, kind, yaw, ref height, ref ringFit)) return false;
+            if (!Fit(p.Plan, at, kind, yaw, ref height, ref ringFit, out bool _)) return false;
             Vector3 far = To3(at, 0f);
             RaidMesh fm = site.Town.Far.Solid(far);
             fm.SetFrame(far, yaw);
@@ -242,8 +252,9 @@ namespace CloneZ
         /// (<paramref name="room"/>, in the tree's own frame, turned <paramref name="yaw"/>). False when what's left isn't
         /// worth planting.
         /// </summary>
-        private static bool Fit(NaturePlan plan, Vector2 at, TreeKind kind, float yaw, ref float height, ref TreeRoom room)
+        private static bool Fit(NaturePlan plan, Vector2 at, TreeKind kind, float yaw, ref float height, ref TreeRoom room, out bool wired)
         {
+            wired = false;
             bool conifer = TreeKit.Conifer(kind);
             float reach = TreeKit.Reach(kind, height) + 0.5f;
             plan.NearestWalls(at, reach, out Vector2 dir0, out float wall0, out Vector2 dir1, out float wall1);
@@ -258,6 +269,7 @@ namespace CloneZ
             }
             if (plan.WireNear(at, reach, height + 0.5f, out Vector2 wireDir, out float wire, out float wireY))
             {
+                wired = true;
                 if (conifer) height = Mathf.Min(height, wireY - 0.6f + wire / TreeKit.Skirt(kind));
                 else if (wire < 1.8f) height = Mathf.Min(height, wireY - 0.8f);
                 else room.Add(Azimuth(wireDir) - yaw, wire);
@@ -336,8 +348,8 @@ namespace CloneZ
                     Vector2 at = s.At + side + s.Dir * ((MapStyle.Unit(key, SaltJitter + 1) - 0.5f) * 1.5f);
                     TreeKind kind = RowMix.Pick(MapStyle.Unit(key, SaltKind));
                     Plant(p, at, kind, HeightOf(kind, key, 0.9f), key, 0.9f, TreeTier.Full);
+                    if (p.Site.StepDue) yield return "tree rows";
                 }
-                if (p.Site.StepDue) yield return "tree rows";
             }
         }
         #endregion
@@ -352,6 +364,7 @@ namespace CloneZ
                 float half = Mathf.Clamp(l.Data.width, 1f, 60f) * 0.5f;
                 p.Plan.Stations(l.Pts, 8f, p.Stations);
                 foreach (NaturePlan.Station s in p.Stations)
+                {
                     for (int side = -1; side <= 1; side += 2)
                     {
                         long key = NaturePlan.Combine(NaturePlan.Combine(l.Data.id, s.K), side);
@@ -368,7 +381,8 @@ namespace CloneZ
                         TreeKind kind = WetMix.Pick(MapStyle.Unit(key, SaltKind));
                         Plant(p, at, kind, HeightOf(kind, key), key, 1.0f, TreeTier.Full);
                     }
-                if (p.Site.StepDue) yield return "creek trees";
+                    if (p.Site.StepDue) yield return "creek trees";
+                }
             }
         }
 
@@ -446,12 +460,15 @@ namespace CloneZ
         #endregion
 
         #region The sweep: woods, grounds and open country
+        private const int SweepPasses = 4;
+
         /// <summary>
-        /// Walks the site's lattice once, cell by cell, sowing what the land there grows: the mapped woods thick (with
+        /// Walks the site's lattice, cell by cell, sowing what the land there grows: the mapped woods thick (with
         /// thickets, logs, stumps and stones under them, cedars crowding their edges and sycamores near water), scrub and
-        /// wetland thinner, parks, cemeteries, school grounds, golf courses and lawns with big scattered trees, a lone
-        /// oak in a pasture now and then, the region's own woods over unmapped open country away from the houses, and red
-        /// cedars coming up in old fields.
+        /// wetland thinner, parks, school grounds, golf courses and lawns with big scattered trees, a lone oak in a pasture
+        /// now and then, the region's own woods over unmapped open country away from the houses, and red cedars coming up
+        /// in old fields. The cells are sown in four interleaved passes (each cell's own number says which), so where the
+        /// site's limit on trees cuts the sweep short the woods come out thinner all over rather than missing a strip.
         /// </summary>
         private static IEnumerable<string> Sweep(Planting p)
         {
@@ -462,18 +479,23 @@ namespace CloneZ
             Mix forest = plan.Woodland > 0.6f ? MountainMix : ForestMix;
             const float band = 40f;
             int rows = Mathf.CeilToInt(reach * 2f / band);
-            for (int row = 0; row < rows; row++)
+            for (int pass = 0; pass < SweepPasses; pass++)
             {
-                float z0 = -reach + row * band, z1 = Mathf.Min(reach, z0 + band);
-                plan.Cells(Rect.MinMaxRect(-reach, z0, reach, z1), cell, 0.85f, SaltSow, p.Cells);
-                foreach (NaturePlan.CellPoint c in p.Cells)
+                if (p.Count >= p.Max && p.Ring >= p.MaxRing) yield break;
+                for (int row = 0; row < rows; row++)
                 {
-                    if (c.At.y >= z1 && z1 < reach) continue;   // the next band's
-                    Sow(p, c, forest, thin);
-                    if (p.Site.StepDue) yield return "woods";
+                    float z0 = -reach + row * band, z1 = Mathf.Min(reach, z0 + band);
+                    plan.Cells(Rect.MinMaxRect(-reach, z0, reach, z1), cell, 0.85f, SaltSow, p.Cells);
+                    foreach (NaturePlan.CellPoint c in p.Cells)
+                    {
+                        if (c.At.y >= z1 && z1 < reach) continue;   // the next band's
+                        if (MapStyle.Pick(c.Key, SaltSow + 11, SweepPasses) != pass) continue;
+                        Sow(p, c, forest, thin);
+                        if (p.Site.StepDue) yield return "woods";
+                    }
                 }
-                yield return "woods";
             }
+            yield return "woods";
         }
 
         private static void Sow(Planting p, NaturePlan.CellPoint c, Mix forest, float thin)
@@ -503,8 +525,8 @@ namespace CloneZ
                     if (u < 0.13f * thin) Grow(p, at, key, GroundsMix, 1f, 2.0f);
                     return;
                 case Land.Cemetery:
-                    // Inside a Full site's square the cemetery's own plots get its trees (CemeteryTrees).
-                    if (u < 0.17f * thin && (p.Lite || !plan.InSquare(at, 0f))) Grow(p, at, key, CemeteryMix, 1f, 1.6f);
+                    // Among a stoned cemetery's headstones the grid finds no room: its trees stand in its plots (CemeteryTrees).
+                    if (u < 0.17f * thin) Grow(p, at, key, CemeteryMix, 1f, 1.6f);
                     return;
                 case Land.School:
                 case Land.Grass:

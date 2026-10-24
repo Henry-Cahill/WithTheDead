@@ -143,7 +143,8 @@ namespace CloneZ
 
         // The parking lanes' stall lines, half lost under the slush: lines at 60 degrees from the lane's edge to the kerb,
         // leaning the way the traffic on that side runs, or ticks between parallel stalls; spaced on the street's whole
-        // mapped length so neighbouring chunks agree, none near the chain's ends, mouths, crosswalks or driveways.
+        // mapped length so neighbouring chunks agree, none near a junction, mouths, crosswalks or driveways. Each whole
+        // stall between two lines goes on the list KerbStalls hands out (for the parked cars).
         private static void StallLines(Net net, Chain c, int seed)
         {
             foreach (Part p in c.Parts)
@@ -160,29 +161,66 @@ namespace CloneZ
                     // Traffic along +s on the right, or on both sides of a one-way street run the chain's way.
                     bool forward = pw.OneWay ? !p.Rev : side < 0;
                     float lean = angled ? (forward ? 1f : -1f) * depth / Mathf.Tan(60f * Mathf.Deg2Rad) : 0f;
-                    float a = Mathf.Max(c.From + 5f, p.S0), b = Mathf.Min(c.To - 5f, p.S1);
+                    // Clear of a junction at the chain's ends; where it runs off the piece, the neighbour carries on.
+                    float a = Mathf.Max(c.From + (c.J0 != null ? 5f : 0.3f), p.S0), b = Mathf.Min(c.To - (c.J1 != null ? 5f : 0.3f), p.S1);
                     if (b - a < step) continue;
                     float wa = ArcOf(p, a), wb = ArcOf(p, b);
                     float lo = Mathf.Min(wa, wb), hi = Mathf.Max(wa, wb);
                     List<Cut> cuts = side > 0 ? c.CutsL : c.CutsR;
+                    bool lastOk = false;
+                    float lastS = 0f;
                     for (float x = Mathf.Ceil(lo / step) * step; x <= hi; x += step)
                     {
                         float s = p.Rev ? a + (wa - x) : a + (x - wa);
                         float s1 = s + lean;
-                        if (s1 < a || s1 > b || CutAt(cuts, s) >= 0 || CutAt(cuts, s1) >= 0) continue;
-                        if (InMouth(c, side, s - 4f) || InMouth(c, side, s + 4f) || InMouth(c, side, s1)) continue;
-                        PointOn(c, s, out Vector2 p0, out Vector2 d0);
-                        if (Noise(p0, 2.25f, seed + side) < 0.3f) continue;
-                        PointOn(c, s1, out Vector2 p1, out Vector2 d1);
-                        Vector2 from = p0 + Left(d0) * (side * (EdgeLaneAt(c, side, s) + 0.15f));
-                        Vector2 to = p1 + Left(d1) * (side * (EdgeAt(c, side, s1) - 0.3f));
-                        s_Crack.Clear();
-                        s_Crack.Add(from);
-                        s_Crack.Add(Vector2.Lerp(from, to, 0.55f + 0.3f * Noise(p1, 1.75f, seed + 5)));
-                        StrokeAt(net, s_Crack, LineWidth, net.Look.White, MarkY);
+                        bool ok = s1 >= a && s1 <= b && CutAt(cuts, s) < 0 && CutAt(cuts, s1) < 0
+                            && !InMouth(c, side, s - 4f) && !InMouth(c, side, s + 4f) && !InMouth(c, side, s1);
+                        if (ok)
+                        {
+                            PointOn(c, s, out Vector2 p0, out Vector2 d0);
+                            if (Noise(p0, 2.25f, seed + side) >= 0.3f)
+                            {
+                                PointOn(c, s1, out Vector2 p1, out Vector2 d1);
+                                Vector2 from = p0 + Left(d0) * (side * (EdgeLaneAt(c, side, s) + 0.15f));
+                                Vector2 to = p1 + Left(d1) * (side * (EdgeAt(c, side, s1) - 0.3f));
+                                s_Crack.Clear();
+                                s_Crack.Add(from);
+                                s_Crack.Add(Vector2.Lerp(from, to, 0.55f + 0.3f * Noise(p1, 1.75f, seed + 5)));
+                                StrokeAt(net, s_Crack, LineWidth, net.Look.White, MarkY);
+                            }
+                            if (lastOk) AddStall(net, c, pw, side, lastS, s, lean, angled, forward, cuts);
+                        }
+                        lastOk = ok;
+                        lastS = s;
                     }
                 }
             }
+        }
+
+        // The stall between the lines at s0 and s1 on one side of a chain, unless a cut or a mouth falls inside it.
+        private static void AddStall(Net net, Chain c, Way pw, int side, float s0, float s1, float lean, bool angled, bool forward, List<Cut> cuts)
+        {
+            float lo = Mathf.Min(s0, s0 + lean, s1, s1 + lean), hi = Mathf.Max(s0, s0 + lean, s1, s1 + lean);
+            if (cuts != null)
+                foreach (Cut k in cuts)
+                    if (k.S1 > lo && k.S0 < hi) return;
+            float sm = (s0 + s1 + lean) * 0.5f;
+            if (InMouth(c, side, sm)) return;
+            PointOn(c, sm, out Vector2 p, out Vector2 d);
+            float lane = EdgeLaneAt(c, side, sm), edge = EdgeAt(c, side, sm);
+            Vector2 at = p + Left(d) * (side * (lane + edge) * 0.5f);
+            if (!Finite(at) || !net.Square.Contains(at)) return;
+            Vector2 heading = forward ? d : -d;
+            if (angled)
+            {
+                // Along the stall's lines, from the lane's edge to the kerb: nose in.
+                PointOn(c, sm - lean * 0.5f, out Vector2 q0, out Vector2 e0);
+                PointOn(c, sm + lean * 0.5f, out Vector2 q1, out Vector2 e1);
+                heading = q1 + Left(e1) * (side * edge) - (q0 + Left(e0) * (side * lane));
+            }
+            if (heading.sqrMagnitude < 1e-6f) return;
+            heading.Normalize();
+            net.Stalls.Add(new KerbStall { At = at, Yaw = Mathf.Atan2(heading.x, heading.y) * Mathf.Rad2Deg, Angled = angled, Street = pw.S });
         }
 
         // How far before a junction's patch the lane lines stop: short of a crosswalk and its stop bar, or a stop bar.
