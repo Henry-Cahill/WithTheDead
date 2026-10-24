@@ -1036,6 +1036,30 @@ namespace CloneZ
             for (int i = 0; i < _count; i++) into.Add(_v[i]);
         }
 
+        /// <summary>The least and greatest of x, z, x + z and x - z over the vertices drawn so far (mesh space, less
+        /// <paramref name="origin"/>): the octagon in plan that holds them, without reading a baked mesh back. False when
+        /// nothing is drawn.</summary>
+        internal bool PlanExtents(Vector3 origin, out Vector4 least, out Vector4 most)
+        {
+            float x0 = float.MaxValue, z0 = float.MaxValue, s0 = float.MaxValue, d0 = float.MaxValue;
+            float x1 = float.MinValue, z1 = float.MinValue, s1 = float.MinValue, d1 = float.MinValue;
+            for (int i = 0; i < _count; i++)
+            {
+                float x = _v[i].x - origin.x, z = _v[i].z - origin.z, s = x + z, d = x - z;
+                if (x < x0) x0 = x;
+                if (x > x1) x1 = x;
+                if (z < z0) z0 = z;
+                if (z > z1) z1 = z;
+                if (s < s0) s0 = s;
+                if (s > s1) s1 = s;
+                if (d < d0) d0 = d;
+                if (d > d1) d1 = d;
+            }
+            least = new Vector4(x0, z0, s0, d0);
+            most = new Vector4(x1, z1, s1, d1);
+            return _count > 0;
+        }
+
         /// <summary>The geometry as drawn (world/mesh space, before any origin), for the map harness's checks.</summary>
         internal void CopyGeometry(List<Vector3> vertices, List<Vector3> normals, List<Vector2> uvs, List<int> indices, List<Material> materials)
         {
