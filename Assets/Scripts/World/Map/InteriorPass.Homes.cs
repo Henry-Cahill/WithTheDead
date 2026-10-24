@@ -398,12 +398,40 @@ namespace CloneZ
         {
             RaidBuilding b = c.B;
             int[] order = c.Sides(true);
-            int washers = c.Plan.Kind == RaidBuildingKind.House ? 1 : 2;
-            for (int i = 0; i < washers; i++)
-                if (c.AnyWall(order, 0.68f, 0.65f, 0.9f, 0f, out RaidBuilding.Place w, out _)) b.HouseWasher(c.R, w);
-            if (c.AnyWall(order, 0.6f, 0.6f, 1.6f, 1f, out RaidBuilding.Place heater, out _)) WaterHeater(c, heater);
+            bool home = c.Plan.Kind == RaidBuildingKind.House;
+            // A home's washer by the water heater; a block's laundry room has its washers and dryers in a row, a folding table.
+            int machines = home ? 1 : Mathf.Clamp(Mathf.FloorToInt(c.Area / 3.5f), 2, 8);
+            for (int i = 0; i < machines; i++)
+            {
+                if (!c.AnyWall(order, 0.68f, 0.65f, 0.9f, 0f, out RaidBuilding.Place w, out _)) break;
+                if (home || (i & 1) == 0) b.HouseWasher(c.R, w);
+                else b.Furnish(c.R, w, new Vector3(0.68f, 1.06f, 0.65f), true, (m, r) => Dryer(m), "Dryer");
+            }
+            if (home && c.AnyWall(order, 0.6f, 0.6f, 1.6f, 1f, out RaidBuilding.Place heater, out _)) WaterHeater(c, heater);
+            if (!home && c.Area > 12f && c.Floor(1.8f, 0.8f, 0f, c.Inner.center, 0.7f, out RaidBuilding.Place table))
+                b.Furnish(c.R, table, new Vector3(1.8f, 0.9f, 0.8f), true, (m, r) =>
+                {
+                    FurnitureBuilder.Table(m, r, 1.8f, 0.8f, new Color(0.78f, 0.76f, 0.70f));
+                    for (int k = 0; k < 3; k++)
+                        if (r.NextDouble() < 0.6)
+                            m.Box(new Vector3(-0.55f + k * 0.55f, 0.79f, MapStyle.Range(r, -0.1f, 0.1f)), new Vector3(0.36f, 0.06f + 0.04f * r.Next(3), 0.28f),
+                                DecorPalette.Matte(Quilts[r.Next(Quilts.Length)]));
+                }, "Folding table");
             MoreLoot(c, 1, order);
             Clutter(c, 1);
+        }
+
+        // A 1993 dryer (front +Z): the cabinet, its square door with the handle along the top, the control panel at the back.
+        private static void Dryer(RaidMesh m)
+        {
+            Surf enamel = DecorPalette.Gloss(new Color(0.90f, 0.89f, 0.85f)), dark = DecorPalette.Gloss(new Color(0.18f, 0.18f, 0.19f));
+            Surf chrome = DecorPalette.Metal(FurnitureBuilder.Chrome);
+            m.Box(new Vector3(0f, 0.45f, 0f), new Vector3(0.68f, 0.9f, 0.62f), enamel);
+            m.Box(new Vector3(0f, 0.98f, -0.26f), new Vector3(0.68f, 0.16f, 0.1f), enamel);
+            m.Box(new Vector3(0f, 0.98f, -0.205f), new Vector3(0.52f, 0.08f, 0.01f), dark);
+            m.Box(new Vector3(0f, 0.47f, 0.315f), new Vector3(0.5f, 0.46f, 0.012f), enamel);
+            m.Box(new Vector3(0f, 0.68f, 0.33f), new Vector3(0.3f, 0.025f, 0.02f), chrome);
+            m.Box(new Vector3(0f, 0.04f, 0.3f), new Vector3(0.6f, 0.08f, 0.02f), dark);
         }
 
         private static void Closet(RoomCtx c)

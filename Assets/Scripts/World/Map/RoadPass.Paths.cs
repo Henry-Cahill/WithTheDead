@@ -9,12 +9,15 @@ namespace CloneZ
     // carriageway (a crosswalk, or nothing), runs over a sidewalk, or goes into a building.
     internal static partial class RoadPass
     {
-        private static void Paths(Net net)
+        private static IEnumerable<string> Paths(Net net)
         {
             Look look = net.Look;
             foreach (Way p in net.Ways)
             {
                 if (p.Cls != Cls.Path) continue;
+                // Lite: pedestrian streets only (trodden paths are too faint to matter from afar).
+                if (!net.Full && p.Winter != Winter.Paved) continue;
+                if (net.Site.StepDue) yield return "paths";
                 Chain line = ChainOf(p.P);
                 if (line.Length < 0.3f) continue;
                 bool paved = p.Winter == Winter.Paved;

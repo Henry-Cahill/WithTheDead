@@ -40,6 +40,7 @@ namespace CloneZ
         internal static IEnumerable<string> Build(Site site)
         {
             site.BeginStep();
+            PrePaint();
             var ctx = new Context(site);
             float half = site.Half;
             var square = Rect.MinMaxRect(-half, -half, half, half);
@@ -65,6 +66,9 @@ namespace CloneZ
                         yield return "buildings";
                         site.BeginStep();
                     }
+#if UNITY_EDITOR
+                if (Inspect != null) Note(job);
+#endif
                 if (playable) site.Buildings++;
                 else site.SceneryBuildings++;
                 if (!site.StepDue) continue;

@@ -60,7 +60,6 @@ namespace CloneZ
             _wireCells = new Buckets(Reach, BucketCell);
             IndexRoads();
             IndexBuildings();
-            IndexDoors();
             IndexPower();
             _landMin = -Reach - LandCell;
             _landN = Mathf.CeilToInt((Reach * 2f + LandCell * 2f) / LandCell);
@@ -72,11 +71,24 @@ namespace CloneZ
             _built = new float[_dN * _dN];
             _business = new float[_dN * _dN];
             Density();
-            if (!Lite)
-            {
-                KeepRoadDriveways();
-                IndexWires();
-            }
+        }
+
+        private bool _caughtUp;
+
+        /// <summary>
+        /// Takes in what the passes before the nature passes built: the enterable buildings' doors, the driveways the
+        /// roads laid and the overhead wires the streetscape strung. The plan can be made before any of them exist (the
+        /// ground pass asks it where the woods are, <see cref="Wooded"/>), so every nature pass calls this before it starts;
+        /// only the first call does anything.
+        /// </summary>
+        internal void CatchUp()
+        {
+            if (_caughtUp) return;
+            _caughtUp = true;
+            IndexDoors();
+            if (Lite) return;
+            KeepRoadDriveways();
+            IndexWires();
         }
 
         // Where the site's middle is on the grid: its place's grid point plus the site's offset from it (a streamed piece

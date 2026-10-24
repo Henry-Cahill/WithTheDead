@@ -143,6 +143,7 @@ namespace CloneZ
         internal static IEnumerable<string> Build(Site site)
         {
             NaturePlan plan = NaturePlan.For(site);
+            plan.CatchUp();
             yield return "nature plan";
             if (!plan.Lite)
             {
@@ -185,8 +186,8 @@ namespace CloneZ
         /// <summary>
         /// Plants a tree at <paramref name="at"/> when there's room: inside the playable square with a trunk collider (on a
         /// Full site), its spot taken and the tree fitted to its room (see <see cref="Fit"/>); in a fixed map's scenery ring
-        /// as cheap scenery. <paramref name="room"/> is the clear radius it wants; <paramref name="checkGrid"/> false when
-        /// the caller has checked the spot itself. Never under a mapped power line.
+        /// as cheap scenery, kept off the roofs there too. <paramref name="room"/> is the clear radius it wants;
+        /// <paramref name="checkGrid"/> false when the caller has checked the spot itself. Never under a mapped power line.
         /// </summary>
         private static bool Plant(Planting p, Vector2 at, TreeKind kind, float height, long key, float room, TreeTier tier, bool checkGrid = true)
         {
@@ -221,10 +222,12 @@ namespace CloneZ
             if (p.Plan.RoadClearance(at, 2f) < 1.2f || p.Plan.WallDistance(at, room + 1f) < room) return false;
             Land land = p.Plan.LandAt(at);
             if (land == Land.Water || land == Land.Lot || land == Land.Pitch) return false;
+            var ringFit = default(TreeRoom);
+            if (!Fit(p.Plan, at, kind, yaw, ref height, ref ringFit)) return false;
             Vector3 far = To3(at, 0f);
             RaidMesh fm = site.Town.Far.Solid(far);
             fm.SetFrame(far, yaw);
-            TreeKit.Tree(fm, kind, height, MapStyle.Rng(key, SaltShape), TreeTier.Lite);
+            TreeKit.Tree(fm, kind, height, MapStyle.Rng(key, SaltShape), TreeTier.Lite, ringFit);
             fm.ResetFrame();
             p.RingTake(at);
             p.Ring++;

@@ -22,6 +22,9 @@ namespace CloneZ
             new Color(0.56f, 0.52f, 0.47f), new Color(0.50f, 0.42f, 0.41f),
         };
 
+        // The wood of the work yards' pallets and crates (their plank textures are made with the ground's, MakeAll).
+        private static readonly Color PalletWood = new Color(0.58f, 0.47f, 0.33f), CrateWood = new Color(0.52f, 0.43f, 0.31f);
+
         private static IEnumerable<string> Grounds(Ground g)
         {
             int stones = 0;
@@ -42,10 +45,12 @@ namespace CloneZ
                         break;
                     case "playground": Playground(g, o); break;
                     case "pitch": Pitch(g, o); break;
+                    default: continue;
                 }
+                if (g.Site.StepDue) yield return "grounds";
             }
             yield return "grounds";
-            Yards(g);
+            foreach (string step in Yards(g)) yield return step;
             Snowmen(g);
             yield return "work yards";
         }
@@ -171,7 +176,7 @@ namespace CloneZ
                     if (RealEdgeDistance(o.Pts, at, g.Square) < 1.1f) continue;
                     Headstone(g, at, faceYaw, key, o.Id, old);
                     placed++;
-                    if (++since < StonesPerStep) continue;
+                    if (++since < StonesPerStep && !g.Site.StepDue) continue;
                     yield return since;
                     since = 0;
                 }
@@ -700,7 +705,7 @@ namespace CloneZ
         #region Yards
         // Against the walls of warehouses and factories (and of anything in an industrial area): stacks of pallets,
         // groups of drums, crates and the odd dumpster, under snow, each group with one collider.
-        private static void Yards(Ground g)
+        private static IEnumerable<string> Yards(Ground g)
         {
             foreach (Footprint f in g.Site.Area.Buildings)
             {
@@ -715,6 +720,7 @@ namespace CloneZ
                 System.Random rng = MapStyle.Rng(f.Data.id, SaltYard);
                 int groups = 1 + (f.Size > 1500f ? 1 : 0) + rng.Next(0, 2);
                 for (int k = 0; k < groups; k++) YardGroup(g, f, rng);
+                if (g.Site.StepDue) yield return "work yards";
             }
         }
 
@@ -749,7 +755,7 @@ namespace CloneZ
             if (what == 0)
             {
                 // Pallets in two or three stacks.
-                Surf wood = DecorMaterials.Planks(new Color(0.58f, 0.47f, 0.33f));
+                Surf wood = DecorMaterials.Planks(PalletWood);
                 int stacks = rng.Next(2, 4);
                 for (int s = 0; s < stacks; s++)
                 {
@@ -779,7 +785,7 @@ namespace CloneZ
             else if (what == 2)
             {
                 // Crates, some stacked.
-                Surf wood = DecorMaterials.Planks(new Color(0.52f, 0.43f, 0.31f));
+                Surf wood = DecorMaterials.Planks(CrateWood);
                 int count = rng.Next(2, 5);
                 float x = -1.2f;
                 for (int i = 0; i < count; i++)
