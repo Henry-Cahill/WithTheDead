@@ -4,29 +4,38 @@ using static CloneZ.KentuckyMap;
 
 namespace CloneZ
 {
-    // Parking lots after the plow: the asphalt fill (packed snow polished by tyres in patches), the snow shoved to the
-    // lot's edges in a ragged white band, and, laid out on the lot's whole outline so every chunk agrees, rows of
-    // 90-degree stalls along the lot's long axis, their faded lines half buried, with a concrete wheel stop at the head
-    // of most. The stalls are kept (Stalls) for the cars.
+    // Parking lots after the plough: the asphalt (the fill), the snow shoved off the lot in a ragged white band along its
+    // edges, and the stalls: 90-degree stalls in rows, their faded lines half buried, a concrete wheel stop at the head
+    // of most, and the snow the plough couldn't reach between the parked cars lying packed in the stall rows while the
+    // aisles it ran down show black. The stalls lie on the parked cars' lattice (VehiclePass.LotCars: on the state's
+    // grid, rows along the lot's long side, two 5.4 m stalls back to back every 18 m round a 7.2 m aisle, stalls 2.7 m
+    // wide), so the cars stand in them and every piece of a lot that a seam cuts lays them out alike. They're kept
+    // (Stalls) for anyone else who parks.
     internal static partial class GroundPass
     {
-        private const float StallWidth = 2.7f, StallDepth = 5.4f, Aisle = 7.0f, LotMargin = 1.4f;
+        private const float StallWidth = 2.7f, StallDepth = 5.4f, RowPeriod = 18f;
+        private const int SaltCarLot = 0xCA12 + 3;   // VehiclePass's SaltLot + 3: which way a cut lot's rows run
         private const float MarkY = DecalY + 0.0005f;   // paint on a lot, over its plowed edge
         private const int MaxStalls = 1500;
 
-        private static void Parking(Ground g)
+        private static readonly Dictionary<string, (double x, double z, bool found)> s_PlaceGrid
+            = new Dictionary<string, (double, double, bool)>();
+
+        private static void Lots(Ground g)
         {
+            bool any = false;
             foreach (Owner o in g.Owners)
-                if (o.Kind == "parking" && o.Visible > 20f) Lot(g, o, g.Square, g.Site.Town.Out, !g.Lite);
+                if (o.Kind == "parking" && o.Visible > 20f)
+                {
+                    PlowedEdge(g, o, g.Square, g.Site.Town.Out);
+                    any = true;
+                }
             for (int b = 0; b < g.Ring.Count; b++)
                 foreach (Owner o in g.Ring[b])
-                    if (o.Kind == "parking" && o.Visible > 20f) Lot(g, o, RingBand(g, b), g.Site.Town.Far, false);
-        }
-
-        private static void Lot(Ground g, Owner o, Rect domain, OutdoorBatches into, bool detailed)
-        {
-            PlowedEdge(g, o, domain, into);
-            if (detailed) StallRows(g, o);
+                    if (o.Kind == "parking" && o.Visible > 20f) PlowedEdge(g, o, RingBand(g, b), g.Site.Town.Far);
+            if (!any || g.Lite) return;
+            foreach (Owner o in g.Owners)
+                if (o.Kind == "parking" && o.Visible > 20f) StallRows(g, o, g.GridX, g.GridZ);
         }
 
         // The snow the plow pushed off the lot: a ragged band along its mapped edges (the road pass draws over it where
@@ -62,101 +71,243 @@ namespace CloneZ
             }
         }
 
-        // Rows of stalls across the lot's short side, on aisles along its long side, laid out on the lot's whole outline
-        // (each chunk draws the stalls whose middle it holds). Odd-shaped and small lots stay plain.
-        private static void StallRows(Ground g, Owner o)
+        #region The stalls
+        // The lot's stall rows on the cars' lattice: each stall that fits inside the lot (on a streamed piece, inside the
+        // lot's whole outline, so pieces agree) and clear of the streets, buildings and fences on it, drawn by the piece
+        // holding its middle; each line between two stalls by the piece holding the line's middle.
+        private static void StallRows(Ground g, Owner o, double ox, double oz)
         {
-            List<Vector2> whole = g.Whole(o);
-            if (whole == null || whole.Count < 3 || g.Stalls.Count >= MaxStalls) return;
-            float area = Mathf.Abs(MapGeometry.SignedArea(whole));
-            Box(whole, out Vector2 d, out Vector2 mid, out Vector2 half);
-            if (area < 220f || area < 4f * half.x * half.y * 0.62f || half.y * 2f < StallDepth + Aisle + LotMargin * 2f) return;
-            var n = new Vector2(-d.y, d.x);
-            // Stall rows across n: double rows round each aisle, a single one when there's room left for just that.
-            float usable = half.y * 2f - LotMargin * 2f;
-            const float module = StallDepth * 2f + Aisle;
-            int modules = Mathf.FloorToInt(usable / module);
-            bool single = usable - modules * module >= StallDepth + Aisle;
-            float used = modules * module + (single ? StallDepth + Aisle : 0f);
-            float y = -used * 0.5f;
-            var rows = new List<(float at, float face)>();
-            for (int m = 0; m < modules; m++)
+            List<Vector2> poly = o.Pts;   // the lot as the square cuts it: what the cars' lattice is laid on
+            if (g.Stalls.Count >= MaxStalls || Mathf.Abs(MapGeometry.SignedArea(poly)) < 60f) return;
+            List<Vector2> outline = g.Site.Chunked ? g.Whole(o) ?? poly : poly;
+            Vector2 u = CarLotAxis(g, o.Patch, poly, ox, oz), v = new Vector2(-u.y, u.x);
+            // The lattice cells that can matter: the lot's bounds cut to the square (and a stall round it), in the
+            // lattice's frame on the state's grid.
+            Rect b = MapGeometry.Bounds(outline);
+            float m = StallDepth;
+            Rect r = Rect.MinMaxRect(Mathf.Max(b.xMin, -g.Half - m), Mathf.Max(b.yMin, -g.Half - m), Mathf.Min(b.xMax, g.Half + m), Mathf.Min(b.yMax, g.Half + m));
+            if (r.width <= 0f || r.height <= 0f) return;
+            double uMin = double.MaxValue, uMax = double.MinValue, vMin = double.MaxValue, vMax = double.MinValue;
+            for (int c = 0; c < 4; c++)
             {
-                rows.Add((y + StallDepth * 0.5f, -1f));
-                rows.Add((y + StallDepth + Aisle + StallDepth * 0.5f, 1f));
-                y += module;
+                double ax = ox + ((c & 1) == 0 ? r.xMin : r.xMax), az = oz + ((c & 2) == 0 ? r.yMin : r.yMax);
+                double qu = ax * u.x + az * u.y, qv = ax * v.x + az * v.y;
+                uMin = System.Math.Min(uMin, qu);
+                uMax = System.Math.Max(uMax, qu);
+                vMin = System.Math.Min(vMin, qv);
+                vMax = System.Math.Max(vMax, qv);
             }
-            if (single) rows.Add((y + StallDepth * 0.5f, -1f));
+            long r0 = (long)System.Math.Floor(vMin / RowPeriod) - 1, r1 = (long)System.Math.Ceiling(vMax / RowPeriod) + 1;
+            long j0 = (long)System.Math.Floor(uMin / StallWidth) - 1, j1 = (long)System.Math.Ceiling(uMax / StallWidth) + 1;
 
             System.Random lotRng = MapStyle.Rng(o.Id, SaltStall);
             bool yellow = lotRng.NextDouble() < 0.45;
-            Surf paint = DecorPalette.Matte(yellow ? new Color(0.78f, 0.67f, 0.33f) : new Color(0.80f, 0.81f, 0.78f));
-            Surf stop = DecorPalette.Matte(new Color(0.56f, 0.55f, 0.52f));
+            Surf paint = DecorPalette.Matte(yellow ? new Color(0.80f, 0.68f, 0.30f) : new Color(0.84f, 0.85f, 0.82f));
+            Surf stop = DecorPalette.Matte(new Color(0.58f, 0.57f, 0.54f));
             Surf cap = DecorPalette.Matte(new Color(0.84f, 0.89f, 0.97f));
-            float yaw = Mathf.Atan2(d.x, d.y) * Mathf.Rad2Deg;   // along the lot
-            int across = Mathf.FloorToInt((half.x * 2f - LotMargin * 2f) / StallWidth);
-            float x0 = -across * StallWidth * 0.5f;
-            for (int r = 0; r < rows.Count; r++)
-            {
-                (float rowAt, float face) = rows[r];
-                bool lastValid = false;
-                for (int j = 0; j <= across; j++)
+            float yaw = Mathf.Atan2(u.x, u.y) * Mathf.Rad2Deg;   // along the rows
+            for (long row = r0; row <= r1; row++)
+                for (int which = 0; which < 2; which++)
                 {
-                    float xc = x0 + (j + 0.5f) * StallWidth;
-                    Vector2 c = mid + d * xc + n * rowAt;
-                    bool valid = j < across && StallFits(g, o, whole, c, d, n);
-                    Vector2 lineAt = mid + d * (xc - StallWidth * 0.5f) + n * rowAt;
-                    // A line between two stalls, or at the end of a run, drawn by the chunk holding its middle.
-                    if ((valid || lastValid) && g.Square.Contains(lineAt))
-                        PaintLine(g, lineAt, n, yaw, paint, MapStyle.Key(g.World(lineAt)));
-                    lastValid = valid;
-                    if (!valid || !g.Square.Contains(c)) continue;
-                    long key = MapStyle.Key(g.World(c));
-                    Vector2 nose = n * face;   // cars nose in from the aisle towards the row's back
+                    double rowV = row * RowPeriod + (which == 0 ? StallDepth * 0.5 : RowPeriod - StallDepth * 0.5);
+                    Vector2 nose = which == 0 ? -v : v;   // cars nose in from the aisle towards the row's back
                     float noseYaw = Mathf.Atan2(nose.x, nose.y) * Mathf.Rad2Deg;
-                    g.Stalls.Add(new ParkingStall { At = c, Yaw = noseYaw, Width = StallWidth, Depth = StallDepth, Lot = o.Id });
-                    if (MapStyle.Unit(key, SaltStop) < 0.6f)
+                    bool last = false, ahead = false;
+                    float lastSnow = 0f;
+                    for (long j = j0; j <= j1 + 1; j++)
                     {
-                        Vector2 at = c + nose * (StallDepth * 0.5f - 0.55f);
-                        Vector3 s = To3(at, 0.06f);
-                        RaidMesh m = g.Site.Town.Out.Solid(s);
-                        m.Box(s, new Vector3(1.8f, 0.12f, 0.16f), yaw + 90f, stop);
-                        m.Box(To3(at, 0.125f), new Vector3(1.78f, 0.015f, 0.17f), yaw + 90f, cap);
+                        double rowU = j * StallWidth + StallWidth * 0.5;
+                        Vector2 c = Local(rowU * u.x + rowV * v.x, rowU * u.y + rowV * v.y, ox, oz);
+                        bool fits = j == j0 ? j <= j1 && StallFits(g, o, outline, c, u, v) : ahead;
+                        Vector2 lineAt = c - u * (StallWidth * 0.5f);
+                        // A line between two stalls, or at the end of a run.
+                        if ((fits || last) && g.Square.Contains(lineAt))
+                            PaintLine(g, lineAt, v, yaw, paint, StallKey(o.Id, j, row * 2 + which, 1));
+                        long key = StallKey(o.Id, j, row * 2 + which, 0);
+                        float snow = fits ? StallSnow(key) : 0f;
+                        ahead = j + 1 <= j1 && StallFits(g, o, outline, c + u * StallWidth, u, v);
+                        float nextSnow = fits && ahead ? StallSnow(StallKey(o.Id, j + 1, row * 2 + which, 0)) : 0f;
+                        float left = last ? (lastSnow + snow) * 0.5f : 0f, right = ahead ? (snow + nextSnow) * 0.5f : 0f;
+                        last = fits;
+                        lastSnow = snow;
+                        if (!fits || !g.Square.Contains(c)) continue;
+                        g.Stalls.Add(new ParkingStall { At = c, Yaw = noseYaw, Width = StallWidth, Depth = StallDepth, Lot = o.Id });
+                        PackedSnow(g, c, u, v, nose, left, snow, right);
+                        if (MapStyle.Unit(key, SaltStop) < 0.6f)
+                        {
+                            Vector2 at = c + nose * (StallDepth * 0.5f - 0.55f);
+                            Vector3 s = To3(at, 0.06f);
+                            RaidMesh mesh = g.Site.Town.Out.Solid(s);
+                            mesh.Box(s, new Vector3(1.8f, 0.12f, 0.16f), yaw + 90f, stop);
+                            mesh.Box(To3(at, 0.125f), new Vector3(1.78f, 0.015f, 0.17f), yaw + 90f, cap);
+                        }
+                        if (g.Stalls.Count >= MaxStalls) return;
                     }
-                    if (g.Stalls.Count >= MaxStalls) return;
                 }
-            }
         }
 
-        private static bool StallFits(Ground g, Owner o, List<Vector2> whole, Vector2 c, Vector2 d, Vector2 n)
+        private static long StallKey(long lot, long j, long row, int what)
+            => unchecked(((lot * 73856093L) ^ (j * 19349663L) ^ (row * 83492791L)) * 4 + what);
+
+        private static Vector2 Local(double ax, double az, double ox, double oz) => new Vector2((float)(ax - ox), (float)(az - oz));
+
+        // A stall whose corners (and middle) are inside the lot and, inside the square, on the lot's own ground and clear
+        // of everything built later. The corners as the cars' lattice tests them (VehiclePass.Stall).
+        private static bool StallFits(Ground g, Owner o, List<Vector2> outline, Vector2 c, Vector2 u, Vector2 v)
         {
+            Vector2 du = u * (StallWidth * 0.45f), dv = v * (StallDepth * 0.45f);
             for (int k = 0; k < 5; k++)
             {
-                Vector2 q = k == 4 ? c : c + d * (((k & 1) == 0 ? -0.5f : 0.5f) * (StallWidth - 0.3f)) + n * (((k & 2) == 0 ? -0.5f : 0.5f) * (StallDepth - 0.3f));
-                if (!Inside(whole, q)) return false;
-                if (!g.Square.Contains(q)) continue;   // the next chunk's ground: as mapped
+                Vector2 q = k == 4 ? c : c + ((k & 1) == 0 ? -du : du) + ((k & 2) == 0 ? -dv : dv);
+                if (!Inside(outline, q)) return false;
+                if (!g.Square.Contains(q)) continue;   // the next piece's ground: as mapped
                 if (!g.Shows(o, q) || g.Blocked(q)) return false;
             }
             return true;
         }
 
         // A stall line across the row, faded and here and there buried under packed snow (one or two pieces showing).
-        private static void PaintLine(Ground g, Vector2 at, Vector2 n, float yaw, in Surf paint, long key)
+        private static void PaintLine(Ground g, Vector2 at, Vector2 across, float yaw, in Surf paint, long key)
         {
             uint h = MapStyle.Hash(key, SaltLine);
             float len = StallDepth - 0.5f, from = -len * 0.5f;
             int pieces = 1 + (int)(h % 2);
             float piece = len / pieces;
-            float lineYaw = yaw + 90f;   // the line's length (local +z) runs across the lot, along n
+            float lineYaw = yaw + 90f;   // the line's length (local +z) runs across the rows, along the stall's depth
             for (int i = 0; i < pieces; i++)
             {
                 uint hi = h >> (4 + i * 8);
                 if ((hi & 7) == 0) continue;   // buried
                 float a = from + i * piece + (hi >> 3 & 3) * 0.1f, b = from + (i + 1) * piece - (hi >> 5 & 3) * 0.12f;
                 if (b - a < 0.25f) continue;
-                Vector3 c = To3(at + n * ((a + b) * 0.5f), MarkY);
+                Vector3 c = To3(at + across * ((a + b) * 0.5f), MarkY);
                 g.Site.Town.Out.Flat(c).Flat(c, 0.1f, b - a, lineYaw, paint);
             }
         }
+
+        // How much snow lies packed in a stall: thin where a car came and went, deeper where one stood through the storm.
+        private static float StallSnow(long key)
+        {
+            float roll = MapStyle.Unit(key, SaltStall + 1), k = MapStyle.Unit(key, SaltStall + 2);
+            return roll < 0.2f ? 0.1f + 0.15f * k : roll < 0.7f ? 0.32f + 0.2f * k : 0.52f + 0.22f * k;
+        }
+
+        // The snow left in a stall, drawn see-through with the snow's tone over the lines: the plough ran down the aisles,
+        // so it lies from the row's back (where it meets the next row's) feathering out towards the aisle, running on from
+        // stall to stall (the amounts at the stall's sides are its neighbours' means, nothing at the end of a run).
+        private static void PackedSnow(Ground g, Vector2 c, Vector2 u, Vector2 v, Vector2 nose, float left, float mid, float right)
+        {
+            const float feather = 1.6f;
+            float hu = StallWidth * 0.5f, hv = StallDepth * 0.5f;
+            Vector2 back = nose;   // the row's back is where the cars' noses point
+            Vector2 a = c - u * hu, b = c + u * hu;
+            List<Vector3> verts = g.ToneVerts;
+            List<Vector2> uvs = g.ToneUvs;
+            int b0 = verts.Count;
+            // Three columns (the stall's two sides and its middle) by three lines across: the back, the feather's start
+            // and the aisle's edge.
+            for (int col = 0; col < 3; col++)
+            {
+                Vector2 at = col == 0 ? a : col == 1 ? c : b;
+                float amount = col == 0 ? left : col == 1 ? mid : right;
+                verts.Add(To3(at + back * hv, ToneY));
+                uvs.Add(PackedUv(amount));
+                verts.Add(To3(at + back * (hv - (StallDepth - feather)), ToneY));
+                uvs.Add(PackedUv(amount * 0.9f));
+                verts.Add(To3(at - back * hv, ToneY));
+                uvs.Add(PackedUv(0f));
+            }
+            // Corner order for ToneQuad is anticlockwise seen from above; which way round depends on the row's facing.
+            bool flip = Cross2(u, back) < 0f;
+            for (int col = 0; col < 2; col++)
+                for (int line = 0; line < 2; line++)
+                {
+                    int p00 = b0 + col * 3 + line, p10 = b0 + (col + 1) * 3 + line, p11 = p10 + 1, p01 = p00 + 1;
+                    if (flip) ToneQuad(g, p00, p10, p11, p01);
+                    else ToneQuad(g, p00, p01, p11, p10);
+                }
+        }
+
+        private static float Cross2(Vector2 a, Vector2 b) => a.x * b.y - a.y * b.x;
+
+        // A quad of the tone's extra geometry, its corners anticlockwise seen from above.
+        private static void ToneQuad(Ground g, int a, int b, int c, int d)
+        {
+            List<int> t = g.ToneTris;
+            t.Add(a); t.Add(d); t.Add(c);   // clockwise seen from above: the face looks up
+            t.Add(a); t.Add(c); t.Add(b);
+        }
+        #endregion
+
+        #region The cars' lattice
+        // Where the site's middle is on the state's grid (EPSG:3088 metres), as the nature passes have it: its place's
+        // grid point plus the site's offset from it.
+        private static void GridOrigin(Site site, out double x, out double z)
+        {
+            x = site.WorldOffset.x;
+            z = site.WorldOffset.z;
+            if (site.Build == null || string.IsNullOrEmpty(site.Area.Place)) return;
+            string key = site.Build.Id + "|" + site.Area.Place;
+            if (!s_PlaceGrid.TryGetValue(key, out (double x, double z, bool found) p))
+            {
+                MapPlace place = null;
+                try
+                {
+                    place = site.Build.FindPlace(site.Area.Place);
+                }
+                catch (System.Exception)
+                {
+                    place = null;
+                }
+                p = place != null ? (place.x, place.z, true) : (0d, 0d, false);
+                s_PlaceGrid[key] = p;
+            }
+            if (!p.found) return;
+            x += p.x;
+            z += p.z;
+        }
+
+        // The way a lot's stall rows run, as the cars have it (VehiclePass.LotAxis): along the longest side of the lot as
+        // the square cuts it; for a lot the square's or a region's edge cuts, that side's direction folded to a quarter
+        // turn and turned or not by the lot's id, so the pieces on either side of the cut agree.
+        private static Vector2 CarLotAxis(Ground g, Patch pa, List<Vector2> poly, double ox, double oz)
+        {
+            float best = 0f;
+            Vector2 dir = Vector2.right;
+            bool cut = false;
+            for (int i = 0; i < poly.Count; i++)
+            {
+                Vector2 a = poly[i], b = poly[(i + 1) % poly.Count];
+                float len = Vector2.Distance(a, b);
+                if (len < 0.5f) continue;
+                if (CutVertex(g, a, ox, oz) && CutVertex(g, b, ox, oz) && (Mathf.Abs(a.x - b.x) < 0.05f || Mathf.Abs(a.y - b.y) < 0.05f))
+                {
+                    cut = true;
+                    continue;
+                }
+                if (len <= best) continue;
+                best = len;
+                dir = (b - a) / len;
+            }
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            if (cut)
+            {
+                angle = Mathf.Repeat(angle, 90f);
+                if (MapStyle.Unit(pa.Data.id, SaltCarLot) < 0.5f) angle += 90f;
+            }
+            return new Vector2(Mathf.Cos(angle * Mathf.Deg2Rad), Mathf.Sin(angle * Mathf.Deg2Rad));
+        }
+
+        private static bool CutVertex(Ground g, Vector2 p, double ox, double oz)
+        {
+            float half = g.Half;
+            if (Mathf.Abs(Mathf.Abs(p.x) - half) < 0.02f || Mathf.Abs(Mathf.Abs(p.y) - half) < 0.02f) return true;
+            float reach = half + SceneryReach;
+            if (!g.Site.Chunked && (Mathf.Abs(Mathf.Abs(p.x) - reach) < 0.02f || Mathf.Abs(Mathf.Abs(p.y) - reach) < 0.02f)) return true;
+            int size = g.Site.Build != null ? g.Site.Build.RegionSize : 8192;
+            double rx = (ox + p.x) / size, rz = (oz + p.y) / size;
+            return System.Math.Abs(rx - System.Math.Round(rx)) * size < 0.02 || System.Math.Abs(rz - System.Math.Round(rz)) * size < 0.02;
+        }
+        #endregion
     }
 }

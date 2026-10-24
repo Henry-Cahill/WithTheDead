@@ -19,12 +19,14 @@ namespace CloneZ
             Color wood = Woods[rng.Next(Woods.Length)];
             if (floor && c.Width >= 4.2f && c.Depth >= 4.2f)
             {
-                // Pods of desks back to back across the floor, a swivel chair at each.
+                // Pods of desks back to back across the floor, a swivel chair at each (as many as the building's furniture
+                // budget takes).
                 Rect i = c.Inner;
                 int cols = Mathf.Clamp(Mathf.FloorToInt((i.width - 1.6f) / 3.4f), 1, 6), rows = Mathf.Clamp(Mathf.FloorToInt((i.height - 1.6f) / 4.2f), 1, 6);
                 for (int cx = 0; cx < cols; cx++)
                     for (int cz = 0; cz < rows; cz++)
                     {
+                        if (c.Crowded) break;
                         float x = Mathf.Lerp(i.xMin + 1.7f, i.xMax - 1.7f, cols == 1 ? 0.5f : cx / (float)(cols - 1));
                         float z = Mathf.Lerp(i.yMin + 2.1f, i.yMax - 2.1f, rows == 1 ? 0.5f : cz / (float)(rows - 1));
                         if (!c.FloorAt(new Rect(x - 1.5f, z - 0.75f, 3.0f, 1.5f), 0.7f)) continue;
@@ -33,13 +35,13 @@ namespace CloneZ
                             float dx = (k & 1) == 0 ? -0.75f : 0.75f;
                             bool south = k < 2;
                             var desk = new RaidBuilding.Place(x + dx, z + (south ? -0.375f : 0.375f), south ? 180f : 0f);
-                            RaidLayouts.WorkDesk(b, c.R, desk, 1.5f, Putty, rng.NextDouble() < 0.3, rng.NextDouble() < 0.3 ? 1 : 0, false, k == 0);
+                            RaidLayouts.WorkDesk(b, c.R, desk, 1.5f, Putty, rng.NextDouble() < 0.3, DeskLampOf(c, 0.25), false, k == 0 && c.TakeLoot());
                             var chair = new RaidBuilding.Place(x + dx, z + (south ? -1.2f : 1.2f), (south ? 0f : 180f) + MapStyle.Range(rng, -25f, 25f));
                             SwivelChair(c, chair, fabric);
                         }
                     }
                 for (int k = 0; k < 2; k++)
-                    if (c.AnyWall(order, 0.46f, 0.62f, 1.4f, -1f, out RaidBuilding.Place cab, out _)) b.FilingCabinet(c.R, cab, 4, Putty);
+                    if (c.AnyWall(order, 0.46f, 0.62f, 1.4f, -1f, out RaidBuilding.Place cab, out _)) Filing(c, cab);
                 if (c.AnyWall(order, 0.9f, 0.6f, 1.1f, -1f, out RaidBuilding.Place copier, out _)) Copier(c, copier);
                 if (c.AnyWall(order, 0.32f, 0.32f, 1.4f, -1f, out RaidBuilding.Place cooler, out _)) WaterCooler(c, cooler);
             }
@@ -52,7 +54,7 @@ namespace CloneZ
                 float deep = deskSide == 0 || deskSide == 2 ? c.Depth : c.Width;
                 bool placed = false;
                 string deskName = c.P.Role == RoomRole.Sacristy ? "Desk" : "Office desk";
-                int lamp = rng.NextDouble() < 0.25 ? 2 : 1;
+                int lamp = DeskLampOf(c, 0.85);
                 if (dw >= 1.1f && deep >= 3.4f)
                 {
                     c.Span(deskSide, out float lo, out float hi);
@@ -79,7 +81,7 @@ namespace CloneZ
                     if (c.Floor(0.55f, 0.55f, RoomCtx.YawOf(deskSide) + 180f, seat, 0.02f, out RaidBuilding.Place chair)) SwivelChair(c, chair, fabric);
                 }
                 if (c.P.Role == RoomRole.Sacristy && c.AnyWall(order, 1.0f, 0.6f, 1.95f, -1f, out RaidBuilding.Place robes, out _)) b.Wardrobe(c.R, robes, FurnitureBuilder.Walnut);
-                if (c.AnyWall(order, 0.46f, 0.62f, 1.4f, -1f, out RaidBuilding.Place cab, out _)) b.FilingCabinet(c.R, cab, 4, Putty);
+                if (c.AnyWall(order, 0.46f, 0.62f, 1.4f, -1f, out RaidBuilding.Place cab, out _)) Filing(c, cab);
                 if (c.Area > 9f && c.AnyWall(order, 0.9f, 0.32f, 1.8f, -1f, out RaidBuilding.Place books, out _)) Bookcase(c, books, wood);
                 if (c.Plan.Use == InteriorUse.Bank || c.P.Role == RoomRole.BackOffice && c.Rng.NextDouble() < 0.4)
                     if (c.AnyWall(order, 0.8f, 0.6f, 1.9f, 1f, out RaidBuilding.Place safe, out _)) Safe(c, safe);
@@ -177,9 +179,10 @@ namespace CloneZ
         private static void BreakRoom(RoomCtx c)
         {
             RaidBuilding b = c.B;
-            Kitchenette(c);
-            if (c.AnyWall(c.Sides(true), 0.72f, 0.70f, 1.72f, -1f, out RaidBuilding.Place fridge, out _)) b.HomePiece(c.R, fridge, HomeFurnitureKind.Fridge);
-            TableAndChairs(c, false);
+            if (!Kitchenette(c) && c.AnyWall(c.Sides(true), 0.72f, 0.70f, 1.72f, -1f, out RaidBuilding.Place fridge, out _))
+                b.HomePiece(c.R, fridge, HomeFurnitureKind.Fridge);
+            if (c.Area > 30f) LongTables(c, c.DoorSide >= 0 ? RoomCtx.Opposite(c.DoorSide) : 2, Mathf.Clamp(Mathf.FloorToInt(c.Area / 28f), 1, 5));
+            else TableAndChairs(c, false);
             if (c.P.Role == RoomRole.DayRoom)
             {
                 if (c.AnyWall(c.Sides(false), 2.0f, 0.88f, 0.85f, -1f, out RaidBuilding.Place sofa, out int ss))
@@ -190,6 +193,25 @@ namespace CloneZ
             }
             else if (c.AnyWall(c.Sides(false), 0.9f, 0.8f, 1.85f, -1f, out RaidBuilding.Place vend, out _)) Vending(c, vend, c.P.Lit);
             WallDecor(c, 1);
+        }
+
+        // Up to `count` long tables with folding chairs down both sides, across the floor (a fellowship hall's suppers, a
+        // common room).
+        private static void LongTables(RoomCtx c, int front, int count)
+        {
+            RaidBuilding b = c.B;
+            for (int k = 0; k < count; k++)
+            {
+                if (!c.Floor(2.4f, 2.0f, front == 0 || front == 2 ? 0f : 90f, c.Inner.center, 0.5f, out RaidBuilding.Place longTable)) break;
+                var top = new RaidBuilding.Place(longTable.X, longTable.Z, longTable.Yaw);
+                b.WorkTable(c.R, top, new Vector3(2.4f, 0.8f, 0.8f), (m, r) => FurnitureBuilder.Table(m, r, 2.4f, 0.8f, new Color(0.70f, 0.66f, 0.56f)), "Table", null, true);
+                Quaternion turn = Quaternion.Euler(0f, longTable.Yaw, 0f);
+                for (int s = 0; s < 4; s++)
+                {
+                    Vector3 off = turn * new Vector3((s & 1) == 0 ? -0.6f : 0.6f, 0f, (s & 2) == 0 ? -0.62f : 0.62f);
+                    b.WoodChairSeat(c.R, new RaidBuilding.Place(longTable.X + off.x, longTable.Z + off.z, longTable.Yaw + ((s & 2) == 0 ? 0f : 180f)), FurnitureBuilder.Pine);
+                }
+            }
         }
 
         private static void Vault(RoomCtx c)
@@ -230,13 +252,13 @@ namespace CloneZ
                 int n = Mathf.Max(1, Mathf.FloorToInt(runLen / 0.9f));
                 Rect fp = alongZ ? new Rect(across - 0.33f, mid - n * 0.45f, 0.66f, n * 0.9f) : new Rect(mid - n * 0.45f, across - 0.33f, n * 0.9f, 0.66f);
                 if (!c.FloorAt(fp, 0.6f)) continue;
-                for (int k = 0; k < n; k++)
-                    for (int s = -1; s <= 1; s += 2)
-                    {
-                        float a = (alongZ ? fp.yMin : fp.xMin) + 0.45f + k * 0.9f;
-                        var p = alongZ ? new RaidBuilding.Place(across + s * 0.17f, a, s > 0 ? 90f : 270f) : new RaidBuilding.Place(a, across + s * 0.17f, s > 0 ? 0f : 180f);
-                        b.Furnish(c.R, p, new Vector3(0.9f, 1.8f, 0.32f), true, (m, rr) => FurnitureBuilder.Bookshelf(m, rr, FurnitureBuilder.Oak, 1), "Bookcase");
-                    }
+                // A double-sided run of shelving, each face one piece.
+                float len = n * 0.9f, centre = (alongZ ? fp.yMin : fp.xMin) + len * 0.5f;
+                for (int s = -1; s <= 1; s += 2)
+                {
+                    var p = alongZ ? new RaidBuilding.Place(across + s * 0.17f, centre, s > 0 ? 90f : 270f) : new RaidBuilding.Place(centre, across + s * 0.17f, s > 0 ? 0f : 180f);
+                    b.Furnish(c.R, p, new Vector3(len, 1.8f, 0.32f), true, (m, rr) => BookRow(m, rr, len), "Stacks");
+                }
             }
             for (int k = 0; k < 2; k++)
             {
@@ -261,18 +283,7 @@ namespace CloneZ
             if (fellowship)
             {
                 // Long tables with folding chairs down both sides, for the suppers.
-                for (int k = 0; k < 4; k++)
-                {
-                    if (!c.Floor(2.4f, 2.0f, front == 0 || front == 2 ? 0f : 90f, c.Inner.center, 0.5f, out RaidBuilding.Place longTable)) break;
-                    var top = new RaidBuilding.Place(longTable.X, longTable.Z, longTable.Yaw);
-                    b.WorkTable(c.R, top, new Vector3(2.4f, 0.8f, 0.8f), (m, r) => FurnitureBuilder.Table(m, r, 2.4f, 0.8f, new Color(0.70f, 0.66f, 0.56f)), "Table", null, true);
-                    Quaternion turn = Quaternion.Euler(0f, longTable.Yaw, 0f);
-                    for (int s = 0; s < 4; s++)
-                    {
-                        Vector3 off = turn * new Vector3((s & 1) == 0 ? -0.6f : 0.6f, 0f, (s & 2) == 0 ? -0.62f : 0.62f);
-                        b.WoodChairSeat(c.R, new RaidBuilding.Place(longTable.X + off.x, longTable.Z + off.z, longTable.Yaw + ((s & 2) == 0 ? 0f : 180f)), FurnitureBuilder.Pine);
-                    }
-                }
+                LongTables(c, front, 4);
                 MoreLoot(c, 1, c.Sides(false));
                 return;
             }
@@ -323,6 +334,13 @@ namespace CloneZ
         }
 
         #region Office fittings
+        // A filing cabinet: one to search while the room's loot budget lasts, else plain.
+        private static void Filing(RoomCtx c, RaidBuilding.Place p)
+        {
+            if (c.TakeLoot()) c.B.FilingCabinet(c.R, p, 4, Putty);
+            else c.B.Furnish(c.R, p, new Vector3(0.46f, 1.4f, 0.62f), true, (m, r) => FurnitureBuilder.FilingCabinet(m, r, 4, Putty), "Filing cabinet");
+        }
+
         private static void SwivelChair(RoomCtx c, RaidBuilding.Place p, Color fabric)
         {
             Transform t = c.B.FixtureBody(c.R, p, new Vector3(0.55f, 1f, 0.55f), false, (m, r) => FurnitureBuilder.OfficeChair(m, r, fabric), "Office chair");
@@ -332,12 +350,50 @@ namespace CloneZ
         private static void Bookcase(RoomCtx c, RaidBuilding.Place p, Color wood)
         {
             RaidBuilding b = c.B;
+            if (!c.TakeLoot())
+            {
+                b.Furnish(c.R, p, new Vector3(0.9f, 1.8f, 0.32f), true, (m, r) => FurnitureBuilder.Bookshelf(m, r, wood), "Bookcase");
+                return;
+            }
             Transform t = b.FixtureBody(c.R, p, new Vector3(0.9f, 1.8f, 0.32f), true, (m, r) => FurnitureBuilder.Bookshelf(m, r, wood), "Bookcase");
             StorageOptions o = RaidBuilding.SmallStock(ContainerType.Shelf, "bookcase");
             o.LookLabel = "Browse the shelves";
             o.ExtraActions = LivingReading.AddActions;
             StorageFixture.Create(t, "Bookcase", Interactable.KeyFor("bookcase", t.position), b.At(p, 0f, 1.2f, 0.18f), null, t, b.Rng.Next(), o);
         }
+
+        // One face of a run of library shelving `len` long (the piece's frame, front +Z): the back, the uprights every 0.9 m,
+        // five shelves, and the books in runs of a few colours with gaps where they've been taken.
+        private static void BookRow(RaidMesh m, System.Random r, float len)
+        {
+            Surf wood = DecorPalette.Matte(FurnitureBuilder.Oak);
+            m.Box(new Vector3(0f, 0.9f, -0.14f), new Vector3(len, 1.8f, 0.04f), wood);
+            int bays = Mathf.Max(1, Mathf.RoundToInt(len / 0.9f));
+            for (int k = 0; k <= bays; k++) m.Box(new Vector3(-len * 0.5f + len * k / bays, 0.9f, 0f), new Vector3(0.03f, 1.8f, 0.32f), wood);
+            for (int s = 0; s < 5; s++) m.Box(new Vector3(0f, 0.05f + s * 0.42f, 0f), new Vector3(len, 0.025f, 0.32f), wood);
+            for (int s = 0; s < 4; s++)
+            {
+                float y = 0.065f + s * 0.42f;
+                for (float x = -len * 0.5f + 0.04f; x < len * 0.5f - 0.1f;)
+                {
+                    float run = Mathf.Min(MapStyle.Range(r, 0.15f, 0.5f), len * 0.5f - 0.04f - x);
+                    if (r.NextDouble() < 0.18)
+                    {
+                        x += run;
+                        continue;
+                    }
+                    float h = MapStyle.Range(r, 0.22f, 0.32f);
+                    m.Box(new Vector3(x + run * 0.5f, y + h * 0.5f, 0.02f), new Vector3(run, h, 0.22f), DecorPalette.Matte(Spines[r.Next(Spines.Length)]));
+                    x += run + 0.01f;
+                }
+            }
+        }
+
+        private static readonly Color[] Spines =
+        {
+            new Color(0.42f, 0.12f, 0.10f), new Color(0.14f, 0.22f, 0.36f), new Color(0.20f, 0.30f, 0.18f), new Color(0.52f, 0.40f, 0.22f),
+            new Color(0.30f, 0.20f, 0.14f), new Color(0.62f, 0.58f, 0.48f),
+        };
 
         private static void Copier(RoomCtx c, RaidBuilding.Place p)
         {

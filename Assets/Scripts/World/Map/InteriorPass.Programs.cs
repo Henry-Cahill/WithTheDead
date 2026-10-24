@@ -13,13 +13,20 @@ namespace CloneZ
 
         #region What the building is used as
         /// <summary>What the enterable building <paramref name="e"/> is used as, or <see cref="InteriorUse.None"/> for a building
-        /// with nothing to furnish (a canopy, a ruin, a silo).</summary>
-        internal static InteriorUse UseOf(Site site, EnterableBuilding e, out bool town)
+        /// with nothing to furnish (a canopy, a ruin, a silo): what it was for as the gameplay layer reads it
+        /// (<paramref name="purpose"/>: its use, the point of interest standing in it, its name), else by its kind, size and
+        /// surroundings.</summary>
+        internal static InteriorUse UseOf(Site site, EnterableBuilding e, out bool town, out string purpose)
         {
             MapBuilding b = e.Footprint.Data;
             string use = b.use ?? "", kind = b.kind ?? "";
             float area = e.Footprint.Size;
             town = InTown(site, e.Footprint);
+            purpose = MapGameplay.PurposeOf(site, e.Footprint);
+            if (kind == "canopy" || kind == "ruin" || kind == "silo") return InteriorUse.None;
+            InteriorUse byPurpose = ByPurpose(purpose, e, area, town);
+            if (byPurpose != InteriorUse.None) return byPurpose;
+            if (purpose == MapGameplay.Purposes.None || purpose == MapGameplay.Purposes.Ruin) return InteriorUse.None;
             float pick = MapStyle.Unit(b.id, SaltUse);
             InteriorUse byUse = ByUse(use, area);
             if (byUse != InteriorUse.None || use == "shelter" || use == "parking" || use == "car_wash") return byUse;
@@ -108,6 +115,60 @@ namespace CloneZ
             }
         }
 
+        // What a building's purpose (MapGameplay.Purposes) makes its ground floor; None for a purpose that says too little
+        // (a plain commercial building), which the kind and the surroundings then decide.
+        private static InteriorUse ByPurpose(string purpose, EnterableBuilding e, float area, bool town)
+        {
+            switch (purpose)
+            {
+                case MapGameplay.Purposes.Home: return area < 66f ? InteriorUse.Cottage : InteriorUse.House;
+                case MapGameplay.Purposes.Outbuilding:
+                    if (area >= 48f) return InteriorUse.Cottage;
+                    return e.Footprint.Bounds.width > 5.5f || e.Footprint.Bounds.height > 5.5f ? InteriorUse.Garage : InteriorUse.Shed;
+                case MapGameplay.Purposes.Shed: return area < 120f ? InteriorUse.Shed : InteriorUse.Workshop;
+                case MapGameplay.Purposes.Garage: return area > 90f ? InteriorUse.Workshop : InteriorUse.Garage;
+                case MapGameplay.Purposes.Barn: return InteriorUse.Barn;
+                case MapGameplay.Purposes.Greenhouse: return InteriorUse.Greenhouse;
+                case MapGameplay.Purposes.Apartments: return area < 150f ? InteriorUse.House : InteriorUse.Apartments;
+                case MapGameplay.Purposes.Trailer: return InteriorUse.Trailer;
+                case MapGameplay.Purposes.Hotel: return InteriorUse.Motel;
+                case MapGameplay.Purposes.Grocery: return area < 300f ? InteriorUse.Store : InteriorUse.BigStore;
+                case MapGameplay.Purposes.Convenience: case MapGameplay.Purposes.Liquor: return area > 600f ? InteriorUse.Store : InteriorUse.Convenience;
+                case MapGameplay.Purposes.Fuel: return area > 900f ? InteriorUse.BigStore : InteriorUse.GasStation;
+                case MapGameplay.Purposes.Pharmacy: return InteriorUse.Pharmacy;
+                case MapGameplay.Purposes.Hardware: case MapGameplay.Purposes.FarmSupply: return InteriorUse.Hardware;
+                case MapGameplay.Purposes.Auto: return InteriorUse.AutoShop;
+                case MapGameplay.Purposes.Salon: return InteriorUse.Salon;
+                case MapGameplay.Purposes.Guns: case MapGameplay.Purposes.Clothing: case MapGameplay.Purposes.DepartmentStore:
+                case MapGameplay.Purposes.Furniture: case MapGameplay.Purposes.Electronics: case MapGameplay.Purposes.PetStore:
+                case MapGameplay.Purposes.Laundry: case MapGameplay.Purposes.Shop: case MapGameplay.Purposes.Vacant:
+                case MapGameplay.Purposes.GeneralStore:
+                    return area > 900f ? InteriorUse.BigStore : InteriorUse.Store;
+                case MapGameplay.Purposes.Restaurant: return InteriorUse.Restaurant;
+                case MapGameplay.Purposes.Bar: return InteriorUse.Bar;
+                case MapGameplay.Purposes.Bank: return InteriorUse.Bank;
+                case MapGameplay.Purposes.PostOffice: return InteriorUse.PostOffice;
+                case MapGameplay.Purposes.Police: case MapGameplay.Purposes.Prison: return InteriorUse.Police;
+                case MapGameplay.Purposes.FireStation: return InteriorUse.FireStation;
+                case MapGameplay.Purposes.Hospital: return area < 600f ? InteriorUse.Clinic : InteriorUse.Hospital;
+                case MapGameplay.Purposes.Clinic: case MapGameplay.Purposes.Vet: case MapGameplay.Purposes.Care:
+                    return area > 900f ? InteriorUse.Hospital : InteriorUse.Clinic;
+                case MapGameplay.Purposes.School: case MapGameplay.Purposes.Childcare: return InteriorUse.School;
+                case MapGameplay.Purposes.Church: return InteriorUse.Church;
+                case MapGameplay.Purposes.Civic: case MapGameplay.Purposes.Courthouse: case MapGameplay.Purposes.Community:
+                    return InteriorUse.Civic;
+                case MapGameplay.Purposes.Library: return InteriorUse.Library;
+                case MapGameplay.Purposes.Funeral: return InteriorUse.Funeral;
+                case MapGameplay.Purposes.StorageRental: case MapGameplay.Purposes.Distillery: return InteriorUse.Warehouse;
+                case MapGameplay.Purposes.Office: return InteriorUse.Office;
+                case MapGameplay.Purposes.Warehouse: return town && area < 4000f && MapStyle.Unit(e.Footprint.Data.id, SaltUse) < 0.25f
+                    ? InteriorUse.BigStore : InteriorUse.Warehouse;
+                case MapGameplay.Purposes.Industrial:
+                    return area < 250f || MapStyle.Unit(e.Footprint.Data.id, SaltUse) < 0.5f ? InteriorUse.Workshop : InteriorUse.Warehouse;
+                default: return InteriorUse.None;
+            }
+        }
+
         // A town building: neighbours close round it and a proper street near it.
         private static bool InTown(Site site, Footprint f)
         {
@@ -181,12 +242,12 @@ namespace CloneZ
         {
             Footprint f = e.Footprint;
             if (f.Pts.Count < 3 || f.Size < 9f) return null;
-            InteriorUse use = UseOf(site, e, out bool town);
+            InteriorUse use = UseOf(site, e, out bool town, out string purpose);
             if (use == InteriorUse.None) return null;
             MapBuilding b = f.Data;
             var plan = new InteriorPlan
             {
-                Record = e, Use = use, Kind = KindOf(use), Noun = NounOf(use), Town = town,
+                Record = e, Use = use, Purpose = purpose, Kind = KindOf(use), Noun = NounOf(use), Town = town,
                 Name = "KY" + b.id, Seed = unchecked((int)MapStyle.Hash(b.id, SaltPlan)),
                 Thick = e.WallThickness > 0.05f ? e.WallThickness : 0.22f,
                 WallH = Mathf.Clamp((e.StoreyHeight > 1f ? e.StoreyHeight : 3f) - 0.15f, 2.4f, 4.2f),
@@ -238,6 +299,7 @@ namespace CloneZ
             Partition(plan, rng);
             Windows(plan, e);
             Style(plan, new System.Random(unchecked(plan.Seed ^ SaltStyle)));
+            Budget(plan, site);
             return plan;
         }
 
@@ -285,6 +347,13 @@ namespace CloneZ
                     Shop(plan, m, east, rng); break;
                 case InteriorUse.AutoShop: AutoShop(plan, m, east, rng); break;
                 case InteriorUse.Church: Church(plan, m, east, rng); break;
+                case InteriorUse.Funeral: Funeral(plan, m, east, rng); break;
+                case InteriorUse.Library: FrontHall(plan, m, east, RoomRole.Stacks, 0.26f, RoomRole.Office, RoomRole.Restroom, RoomRole.Records, RoomRole.Stock); break;
+                case InteriorUse.PostOffice: PostOffice(plan, m, east, rng); break;
+                case InteriorUse.Bank: FrontHall(plan, m, east, RoomRole.Lobby, 0.36f, RoomRole.Vault, RoomRole.Office, RoomRole.Restroom, RoomRole.Office,
+                    RoomRole.BreakRoom, RoomRole.Records); break;
+                case InteriorUse.Civic when plan.Purpose == MapGameplay.Purposes.Community:
+                    FrontHall(plan, m, east, RoomRole.Meeting, 0.26f, RoomRole.BreakRoom, RoomRole.Restroom, RoomRole.Office, RoomRole.Stock, RoomRole.Restroom); break;
                 case InteriorUse.School: School(plan, m, door, rng); break;
                 case InteriorUse.FireStation: FireStation(plan, m, east, rng); break;
                 case InteriorUse.Warehouse: case InteriorUse.Workshop: Works(plan, m, east, plan.Use == InteriorUse.Workshop ? RoomRole.Workshop : RoomRole.Warehouse, rng); break;
@@ -586,9 +655,12 @@ namespace CloneZ
                     else if (area >= 9f && small >= 2.6f)
                     {
                         double k = rng.NextDouble();
-                        Add(plan, k < 0.35 ? RoomRole.Den : k < 0.7 ? RoomRole.Bedroom : RoomRole.Laundry, r);
+                        RoomRole role = k < 0.35 ? RoomRole.Den : k < 0.7 ? RoomRole.Bedroom : RoomRole.Laundry;
+                        if (role == RoomRole.Laundry && Has(plan, RoomRole.Laundry)) role = RoomRole.Den;
+                        if (role == RoomRole.Den && Has(plan, RoomRole.Den)) role = RoomRole.Bedroom;
+                        Add(plan, role, r);
                     }
-                    else Add(plan, area < 6f ? RoomRole.Closet : RoomRole.Laundry, r);
+                    else Add(plan, area < 6f || Has(plan, RoomRole.Laundry) ? RoomRole.Closet : RoomRole.Laundry, r);
                     break;
                 case InteriorUse.Church: Add(plan, area >= 25f ? RoomRole.Meeting : RoomRole.Sacristy, r); break;
                 case InteriorUse.School: Add(plan, area >= 30f ? RoomRole.Classroom : RoomRole.Office, r); break;
@@ -597,7 +669,16 @@ namespace CloneZ
                 case InteriorUse.Restaurant: case InteriorUse.Bar: Add(plan, area >= 20f ? RoomRole.Eatery : RoomRole.Stock, r); break;
                 case InteriorUse.Clinic: case InteriorUse.Hospital: Add(plan, area >= 16f ? RoomRole.Exam : RoomRole.Stock, r); break;
                 case InteriorUse.Police: Add(plan, area >= 16f ? RoomRole.Office : RoomRole.Armory, r); break;
-                case InteriorUse.Apartments: case InteriorUse.Motel: Add(plan, area >= 12f ? RoomRole.Laundry : RoomRole.Closet, r); break;
+                case InteriorUse.Apartments: case InteriorUse.Motel:
+                    if (area >= 40f && small >= 4f)
+                    {
+                        // The tenants' laundry and a common room.
+                        Rect[] s = r.width >= r.height ? SplitX(r, false, 3f, 3.4f, 0f) : SplitZ(r, false, 3f, 3.4f, 0f);
+                        Add(plan, RoomRole.Laundry, s[0]);
+                        Add(plan, RoomRole.BreakRoom, s[1]);
+                    }
+                    else Add(plan, area >= 12f ? RoomRole.Laundry : RoomRole.Closet, r);
+                    break;
                 case InteriorUse.Greenhouse: Add(plan, RoomRole.Greenhouse, r); break;
                 default: Add(plan, area >= 14f && rng.NextDouble() < 0.5 ? RoomRole.Office : RoomRole.Stock, r); break;
             }

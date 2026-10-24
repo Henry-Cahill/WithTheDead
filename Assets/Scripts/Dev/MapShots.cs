@@ -94,6 +94,8 @@ namespace CloneZ
             /// <summary>The streaming performance tests (MapShots.Perf.cs): Lite against Full, the cost of the things a build
             /// makes, simulated walks and drives through the streamed state, determinism across build orders.</summary>
             public PerfReport perf = new PerfReport();
+            /// <summary>Meshes whose vertices, normals or bounds aren't finite numbers (map errors: see MapShots.Perf.cs).</summary>
+            public NonFiniteReport nonFinite = new NonFiniteReport();
             /// <summary>Everything logged as a warning or an error during the whole run (the build stages' own logs are
             /// in their sections).</summary>
             public LogReport runLog = new LogReport();
@@ -118,6 +120,9 @@ namespace CloneZ
             public string dataBuildingKinds, dataAreaKinds, dataLineKinds;
             public SceneCounts total = new SceneCounts();
             public List<SceneCounts> roots = new List<SceneCounts>();
+            /// <summary>The roots' children grouped by name (digits and ids folded), the ones with the most material slots first:
+            /// which part of the map makes the renderers and draw calls.</summary>
+            public List<SceneCounts> groups = new List<SceneCounts>();
             public LogReport log = new LogReport();
         }
 
@@ -426,6 +431,7 @@ namespace CloneZ
                     st.error = Brief(e);
                     Debug.LogError("[MapShots] " + name + " failed: " + e);
                 }
+                TakeBaked(name);
                 st.ms = Ms(sw);
                 _r.stages.Add(st);
                 Note(name + (st.ok ? " done" : " FAILED") + " in " + F0(st.ms) + " ms");
@@ -796,6 +802,8 @@ namespace CloneZ
                 _r.square.total = Count("all", roots);
                 foreach (Transform t in roots) _r.square.roots.Add(Count(t.name, new[] { t }));
                 _r.square.ceilingRenderers = CeilingVisibility.Count;
+                ScanNonFinite("the square", roots);
+                _r.square.groups = Groups(roots, 16);
                 SceneCounts c = _r.square.total;
                 Note("square: " + F0(c.gameObjects) + " objects, " + F0(c.renderers) + " renderers, " + F0(c.vertices) + " vertices, "
                     + F0(c.triangles) + " triangles, " + c.distinctMaterials + " materials, " + c.lights + " lights, " + F0(c.colliders) + " colliders");
@@ -2231,6 +2239,7 @@ namespace CloneZ
                         rep.slowestStep = s.name;
                     }
                 rep.counts = Count(label, new[] { c.Root.transform, c.Overhead.transform });
+                ScanNonFinite("chunk " + label, new[] { c.Root.transform, c.Overhead.transform });
                 rep.buildings = c.Buildings;
                 rep.containers = c.Containers;
                 rep.trees = c.Trees;
@@ -2632,6 +2641,15 @@ namespace CloneZ
                     CountsRow(md, "**all**", sq.total);
                     md.Append('\n');
                 }
+                if (sq.groups.Count > 0)
+                {
+                    md.Append("Where the renderers come from: the roots' children grouped by name (digits folded to #), most material slots ")
+                        .Append("(about one draw call each) first:\n\n");
+                    CountsHeader(md, "group");
+                    foreach (SceneCounts c in sq.groups) CountsRow(md, Esc(c.name), c);
+                    md.Append('\n');
+                }
+                NonFiniteMarkdown(md);
 
                 if (_r.squarePasses.Count > 0 || _r.squarePassesError != null)
                 {
@@ -2826,7 +2844,9 @@ namespace CloneZ
                 public readonly List<string> Signs = new List<string>();
                 /// <summary>Every step in order, named as ChunkSteps yields them.</summary>
                 public readonly List<StepTiming> Steps = new List<StepTiming>();
-                public double TotalMs, ActivateMs;
+                /// <summary>Main-thread ms (the steps), and the ms the build waited on its worker (mesh packing) in between,
+                /// which the streamer spends on other frames' work.</summary>
+                public double TotalMs, ActivateMs, WaitMs;
                 public bool Failed;
                 public string Error;
                 public int Buildings, Containers, Trees, Lights;
@@ -2990,6 +3010,7 @@ namespace CloneZ
                         sw.Restart();
                         try
                         {
+                            if (job.Site != null) job.Site.BeginStep();
                             more = steps.MoveNext();
                         }
                         catch (Exception e)
@@ -2999,6 +3020,7 @@ namespace CloneZ
                             c.Error = "threw after step '" + last + "': " + e.GetType().Name + ": " + e.Message;
                             Debug.LogError("[MapShots] building chunk " + cx + "_" + cz + " threw after step '" + last
                                 + "' (the game leaves the piece as open snow): " + e);
+                            job.Abandon();
                         }
                         finally
                         {
@@ -3015,11 +3037,18 @@ namespace CloneZ
                             if (c.Failed || ms > 0.05) c.Steps.Add(new StepTiming { name = c.Failed ? "(threw)" : "(end)", ms = ms, count = 1, maxMs = ms });
                             break;
                         }
+                        if (steps.Current == KentuckyMap.WaitStep)
+                        {
+                            // The meshes are being packed on a worker; the streamer gives this frame to other work meanwhile.
+                            System.Threading.Thread.Yield();
+                            c.WaitMs += sw.Elapsed.TotalMilliseconds;
+                            continue;
+                        }
                         last = steps.Current;
                         c.Steps.Add(new StepTiming { name = last, ms = ms, count = 1, maxMs = ms });
                     }
                 }
-                c.TotalMs = total.Elapsed.TotalMilliseconds;
+                c.TotalMs = total.Elapsed.TotalMilliseconds - c.WaitMs;
                 c.MadeColliders = (int)(RaidTown.Colliders - colliders);
                 c.MadeColliderObjects = (int)(RaidTown.ColliderObjects - colliderObjects);
                 c.ColliderMs = TicksMs(RaidTown.ColliderTicks - colliderTicks);

@@ -184,6 +184,14 @@ namespace CloneZ
         /// <inheritdoc cref="ForeignWallMesh"/>
         public System.Func<Vector3, Transform> ForeignWallObject;
 
+        /// <summary>False for ceiling fittings that never ask for shadows (the real-world map's: a town's worth of them).</summary>
+        public bool CeilingShadows = true;
+
+        /// <summary>When set, <see cref="CeilingLight"/> lists its lamps here instead of hanging them from the ceiling at once:
+        /// <see cref="HomeLamp.HangFromCeiling"/> needs the lamp awake, which a building raised inactive (or in edit mode)
+        /// isn't, so its builder hangs them once it's shown.</summary>
+        public List<HomeLamp> HungLater;
+
         #region Frame
         /// <summary>A local (x, z) point in world XZ.</summary>
         /// <summary>Convert local (x, z) coordinates to a world-space point.</summary>

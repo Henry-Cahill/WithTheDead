@@ -83,26 +83,76 @@ namespace CloneZ
             public Vector3 Offset;
             /// <summary>How much of the piece to build.</summary>
             public Detail Detail;
+            /// <summary>The piece's data: read off the main thread beforehand (see <see cref="ReadArea"/>), else by the
+            /// first step.</summary>
             public Area Area;
+            /// <summary>Bake the meshes on this thread, at once, rather than on a worker over the next frames (a piece
+            /// built all in one go: the start square).</summary>
+            public bool Synchronous;
             public Site Site;
             public RaidTown Town;
+            /// <summary>The meshes being packed on a worker (between the "objects" and "meshes" steps).</summary>
+            public MeshBake Bake;
+
+            /// <summary>The piece's data as its first step would read it (safe on any thread).</summary>
+            public Area ReadArea() => new Area(Place, Build.Id, Build.Attribution, Region, Cx, Cz);
+
+            /// <summary>Lets go of what a piece dropped half-built still holds (the mesh buffers being packed).</summary>
+            public void Abandon()
+            {
+                Bake?.Dispose();
+                Bake = null;
+            }
         }
 
-        /// <summary>Builds one streamed piece a step at a time: its square of the region's data, then every pass the
-        /// fixed map makes, then its meshes. Each step is a few milliseconds at most.</summary>
+        /// <summary>What <see cref="ChunkSteps"/> yields while it waits on a worker thread: the streamer leaves the piece
+        /// for the next frame rather than asking again at once.</summary>
+        internal const string WaitStep = "(wait)";
+
+        /// <summary>Builds one streamed piece a step at a time: its square of the region's data (unless it was read
+        /// beforehand), then every pass the fixed map makes, then its colliders and meshes (packed on a worker thread).
+        /// Each step is a few milliseconds at most, as far as the passes' own steps allow.</summary>
         internal static IEnumerable<string> ChunkSteps(ChunkJob job)
         {
-            job.Area = new Area(job.Place, job.Build.Id, job.Build.Attribution, job.Region, job.Cx, job.Cz);
-            yield return "data";
+            if (job.Area == null)
+            {
+                job.Area = job.ReadArea();
+                yield return "data";
+            }
             job.Town = new RaidTown(job.Root, job.Seed, new RaidMapInfo { HalfSize = job.Area.Half }, job.Overhead);
             job.Site = new Site(job.Build, job.Town, job.Area, true, job.Offset, job.Detail);
             foreach (string step in Passes(job.Site)) yield return step;
-            job.Site.Overhead.Emit("Overhead", job.Town.Overhead, true);
-            job.Site.Roofs.Emit("Roofs", job.Town.Overhead, false);
-            yield return "overhead";
-            job.Town.EmitOutdoor();
+            if (job.Town.PendingColliders > 0)
+            {
+                while (!job.Town.MakeColliders(Site.StepSliceMs)) yield return "colliders";
+                yield return "colliders";
+            }
+            // Every batch's object now; their meshes packed off the main thread and filled in a frame or so later.
+            MeshBake bake = job.Town.Bake;
+            job.Site.Overhead.EmitLater("Overhead", job.Town.Overhead, true, bake);
+            job.Site.Roofs.EmitLater("Roofs", job.Town.Overhead, false, bake);
+            job.Town.Out.EmitLater("Outdoor", bake);
+            job.Town.Far.EmitLater("Scenery", bake);
+            bake = job.Town.TakeBake();
+            if (bake != null)
+            {
+                job.Bake = bake;
+                if (job.Synchronous)
+                {
+                    bake.Allocate();
+                    bake.Pack();
+                }
+                else
+                {
+                    bake.PackAsync();
+                    yield return "objects";
+                    while (!bake.Packed) yield return WaitStep;
+                }
+                job.Bake = null;
+                bake.Apply();
+            }
             DecorPalette.Apply();
-            yield return "outdoor";
+            yield return "meshes";
         }
 
         /// <summary>Plain walkable snow over a piece whose build failed, so the state has no hole in it.</summary>

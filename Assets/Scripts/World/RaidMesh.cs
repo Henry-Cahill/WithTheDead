@@ -38,10 +38,12 @@ namespace CloneZ
     /// </summary>
     /// <remarks>
     /// Built for speed, as the streamed map draws millions of vertices while the survivor travels: the geometry lives in
-    /// plain arrays (rented from a shared pool and given back by <see cref="Release"/>), each primitive works out its
-    /// rotation once (<see cref="Rot3"/>, the same sums as Unity's <c>Quaternion * Vector3</c>, so the vertices come out
-    /// exactly as they always have), and meshes are baked straight from the arrays (<see cref="ToMesh"/>) or many at once
-    /// off the main thread (<see cref="MeshBake"/>). Not thread-safe: one thread draws into a mesh at a time.
+    /// plain arrays (rented from a shared pool and given back by <see cref="Release"/>), a box turns its eight corners
+    /// rather than its 24 vertices, a prism its ring once rather than three times, round shapes take their sines from
+    /// tables, and meshes are baked straight from the arrays (<see cref="ToMesh"/>) or many at once off the main thread
+    /// (<see cref="MeshBake"/>). Every point is still turned by Unity's own <c>Quaternion * Vector3</c>, fed exactly the
+    /// values it always was, so the vertices come out bit for bit as they always have (the map harness checks this
+    /// against a copy of the old code). Not thread-safe: one thread draws into a mesh at a time.
     /// </remarks>
     internal sealed class RaidMesh
     {
@@ -58,7 +60,6 @@ namespace CloneZ
 
         private Vector3 _origin;
         private Quaternion _rot = Quaternion.identity;
-        private Rot3 _frame = Rot3.Identity;
 
         /// <summary>Gets the number of vertices currently stored.</summary>
         public int VertexCount => _count;
@@ -72,7 +73,6 @@ namespace CloneZ
         {
             _origin = origin;
             _rot = Quaternion.Euler(0f, yaw, 0f);
-            _frame = Rot3.Of(_rot);
         }
 
         /// <summary>Sets the local frame with explicit rotation quaternion.</summary>
@@ -80,7 +80,6 @@ namespace CloneZ
         {
             _origin = origin;
             _rot = rotation;
-            _frame = Rot3.Of(_rot);
         }
 
         /// <summary>Resets the local frame to the origin with no rotation.</summary>
@@ -88,7 +87,6 @@ namespace CloneZ
         {
             _origin = Vector3.zero;
             _rot = Quaternion.identity;
-            _frame = Rot3.Identity;
         }
 
         /// <summary>Gets the current local frame origin.</summary>
@@ -101,42 +99,6 @@ namespace CloneZ
         #endregion
 
         #region Storage
-        /// <summary>
-        /// A rotation as the matrix Unity's <c>Quaternion * Vector3</c> works out on every call, worked out once: the same
-        /// products summed in the same order, so a point turned by it comes out exactly as the operator would turn it.
-        /// </summary>
-        internal readonly struct Rot3
-        {
-            public readonly float M00, M01, M02, M10, M11, M12, M20, M21, M22;
-
-            public static readonly Rot3 Identity = Of(Quaternion.identity);
-
-            private Rot3(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22)
-            {
-                M00 = m00; M01 = m01; M02 = m02;
-                M10 = m10; M11 = m11; M12 = m12;
-                M20 = m20; M21 = m21; M22 = m22;
-            }
-
-            public static Rot3 Of(Quaternion q)
-            {
-                float x = q.x * 2F, y = q.y * 2F, z = q.z * 2F;
-                float xx = q.x * x, yy = q.y * y, zz = q.z * z;
-                float xy = q.x * y, xz = q.x * z, yz = q.y * z;
-                float wx = q.w * x, wy = q.w * y, wz = q.w * z;
-                return new Rot3(1F - (yy + zz), xy - wz, xz + wy, xy + wz, 1F - (xx + zz), yz - wx, xz - wy, yz + wx, 1F - (xx + yy));
-            }
-
-            public Vector3 Mul(Vector3 p)
-            {
-                Vector3 r;
-                r.x = M00 * p.x + M01 * p.y + M02 * p.z;
-                r.y = M10 * p.x + M11 * p.y + M12 * p.z;
-                r.z = M20 * p.x + M21 * p.y + M22 * p.z;
-                return r;
-            }
-        }
-
         /// <summary>Removes all accumulated geometry and resets the local frame (the buffers are kept for reuse).</summary>
         public void Clear()
         {
@@ -251,16 +213,18 @@ namespace CloneZ
         /// <summary>
         /// The shared buffer pool: arrays in power-of-two sizes, handed back by <see cref="Release"/> (and by a mesh that
         /// outgrows its arrays) so a streamed map's thousands of batches don't each leave their arrays to the garbage
-        /// collector. Thread-safe; keeps a bounded number of each size.
+        /// collector. Thread-safe; it keeps at most a few dozen MB, and never the very biggest arrays.
         /// </summary>
         private static class Pool
         {
-            private const int MinShift = 6, MaxShift = 22;   // 64 .. 4M elements
-            private const int KeepSmall = 32, KeepLarge = 6;  // per size, up to and past 64K elements
+            private const int MinShift = 6, MaxShift = 20;   // 64 .. 1M elements are kept
+            private const int KeepPerSize = 48;
+            private const long KeepBytes = 40L << 20;         // all the arrays kept, together
             private static readonly Stack<Vector3[]>[] s_Vec3 = Buckets<Vector3[]>();
             private static readonly Stack<Vector2[]>[] s_Vec2 = Buckets<Vector2[]>();
             private static readonly Stack<int[]>[] s_Ints = Buckets<int[]>();
             private static readonly object s_Lock = new object();
+            private static long s_Bytes;
 
             private static Stack<T>[] Buckets<T>()
             {
@@ -284,30 +248,48 @@ namespace CloneZ
                 return s <= MaxShift ? s : -1;
             }
 
-            private static T Take<T>(Stack<T>[] buckets, int size, System.Func<int, T> make) where T : class
+            private static T Take<T>(Stack<T>[] buckets, int size, int elementBytes, System.Func<int, T> make) where T : class
             {
                 int s = Shift(size);
                 if (s >= 0)
                     lock (s_Lock)
-                        if (buckets[s].Count > 0) return buckets[s].Pop();
+                        if (buckets[s].Count > 0)
+                        {
+                            s_Bytes -= (long)size * elementBytes;
+                            return buckets[s].Pop();
+                        }
                 return make(size);
             }
 
-            private static void Put<T>(Stack<T>[] buckets, T array, int length) where T : class
+            private static void Put<T>(Stack<T>[] buckets, T array, int length, int elementBytes) where T : class
             {
                 int s = Shift(length);
                 if (s < 0) return;
+                long bytes = (long)length * elementBytes;
                 lock (s_Lock)
-                    if (buckets[s].Count < (s <= 16 ? KeepSmall : KeepLarge)) buckets[s].Push(array);
+                {
+                    if (buckets[s].Count >= KeepPerSize || s_Bytes + bytes > KeepBytes) return;
+                    buckets[s].Push(array);
+                    s_Bytes += bytes;
+                }
             }
 
-            public static Vector3[] Vec3(int size) => Take(s_Vec3, size, n => new Vector3[n]);
-            public static Vector2[] Vec2(int size) => Take(s_Vec2, size, n => new Vector2[n]);
-            public static int[] Ints(int size) => Take(s_Ints, size, n => new int[n]);
-            public static void Give(Vector3[] a) { if (a != null && a.Length > 0) Put(s_Vec3, a, a.Length); }
-            public static void Give(Vector2[] a) { if (a != null && a.Length > 0) Put(s_Vec2, a, a.Length); }
-            public static void Give(int[] a) { if (a != null && a.Length > 0) Put(s_Ints, a, a.Length); }
+            public static Vector3[] Vec3(int size) => Take(s_Vec3, size, 12, n => new Vector3[n]);
+            public static Vector2[] Vec2(int size) => Take(s_Vec2, size, 8, n => new Vector2[n]);
+            public static int[] Ints(int size) => Take(s_Ints, size, 4, n => new int[n]);
+            public static void Give(Vector3[] a) { if (a != null && a.Length > 0) Put(s_Vec3, a, a.Length, 12); }
+            public static void Give(Vector2[] a) { if (a != null && a.Length > 0) Put(s_Vec2, a, a.Length, 8); }
+            public static void Give(int[] a) { if (a != null && a.Length > 0) Put(s_Ints, a, a.Length, 4); }
+
+            /// <summary>What the pool holds now, in bytes.</summary>
+            public static long Bytes
+            {
+                get { lock (s_Lock) return s_Bytes; }
+            }
         }
+
+        /// <summary>The bytes the shared buffer pool holds (for the map harness).</summary>
+        internal static long PooledBytes => Pool.Bytes;
         #endregion
 
         #region Vertices and UVs
@@ -376,6 +358,7 @@ namespace CloneZ
         // The four corners of each face of a box (bit 1 = +x, 2 = +y, 4 = +z, in the box's own frame) in the order the
         // faces have always been drawn: up, down, forward, back, right, left.
         private static readonly int[] s_FaceCorners = { 6, 7, 3, 2, 5, 4, 0, 1, 5, 7, 6, 4, 3, 1, 0, 2, 3, 7, 5, 1, 6, 2, 0, 4 };
+        private static readonly Vector3[] s_FaceN = { Vector3.up, Vector3.down, Vector3.forward, Vector3.back, Vector3.right, Vector3.left };
 
         /// <summary>An axis-aligned (in the local frame) box.</summary>
         public void Box(Vector3 center, Vector3 size, in Surf s) => Box(center, size, Quaternion.identity, s);
@@ -387,24 +370,14 @@ namespace CloneZ
         public void Box(Vector3 center, Vector3 size, Quaternion localRot, in Surf s, bool skipBottom = false)
         {
             if (!s.Valid) return;
-            Rot3 m = Rot3.Of(_rot * localRot);
-            Vector3 c = _origin + _frame.Mul(center);
+            Quaternion rot = _rot * localRot;
+            Vector3 c = _origin + _rot * center;
+            // Each face's corners are the box's corners (the middle plus the half-size, signed, turned), so the eight are
+            // turned once; the face normals are the six axes turned.
             float hx = 0.5f * size.x, hy = 0.5f * size.y, hz = 0.5f * size.z;
-            // The half-axes turned (each corner is the middle plus or minus each, summed x, y, z as the rotation's own
-            // sums run), and the face normals (the rotation's columns).
-            float axx = m.M00 * hx, axy = m.M10 * hx, axz = m.M20 * hx;
-            float ayx = m.M01 * hy, ayy = m.M11 * hy, ayz = m.M21 * hy;
-            float azx = m.M02 * hz, azy = m.M12 * hz, azz = m.M22 * hz;
             Vector3[] corners = t_Corners ??= new Vector3[8];
             for (int k = 0; k < 8; k++)
-            {
-                float sx = (k & 1) != 0 ? 1f : -1f, sy = (k & 2) != 0 ? 1f : -1f, sz = (k & 4) != 0 ? 1f : -1f;
-                corners[k] = new Vector3(c.x + (sx * axx + sy * ayx + sz * azx), c.y + (sx * axy + sy * ayy + sz * azy),
-                    c.z + (sx * axz + sy * ayz + sz * azz));
-            }
-            var right = new Vector3(m.M00, m.M10, m.M20);
-            var up = new Vector3(m.M01, m.M11, m.M21);
-            var forward = new Vector3(m.M02, m.M12, m.M22);
+                corners[k] = c + rot * new Vector3((k & 1) != 0 ? hx : -hx, (k & 2) != 0 ? hy : -hy, (k & 4) != 0 ? hz : -hz);
             int faces = skipBottom ? 5 : 6;
             Reserve(faces * 4);
             int sub = Sub(s.Mat, faces * 6);
@@ -412,16 +385,7 @@ namespace CloneZ
             for (int f = 0; f < 6; f++)
             {
                 if (skipBottom && f == 1) continue;
-                Vector3 n;
-                switch (f)
-                {
-                    case 0: n = up; break;
-                    case 1: n = -up; break;
-                    case 2: n = forward; break;
-                    case 3: n = -forward; break;
-                    case 4: n = right; break;
-                    default: n = -right; break;
-                }
+                Vector3 n = rot * s_FaceN[f];
                 int b = _count, at = f * 4;
                 if (planar)
                 {
@@ -456,9 +420,9 @@ namespace CloneZ
         public void Quad(Vector3 center, Vector3 halfRight, Vector3 halfUp, in Surf s)
         {
             if (!s.Valid) return;
-            Vector3 c = _origin + _frame.Mul(center);
-            Vector3 r = _frame.Mul(halfRight);
-            Vector3 u = _frame.Mul(halfUp);
+            Vector3 c = _origin + _rot * center;
+            Vector3 r = _rot * halfRight;
+            Vector3 u = _rot * halfUp;
             Vector3 n = Vector3.Cross(u, r).normalized;
             var rule = new UvRule(n, s);
             Reserve(4);
@@ -475,9 +439,9 @@ namespace CloneZ
         public void QuadUV(Vector3 center, Vector3 halfRight, Vector3 halfUp, in Surf s, Rect uv)
         {
             if (!s.Valid) return;
-            Vector3 c = _origin + _frame.Mul(center);
-            Vector3 r = _frame.Mul(halfRight);
-            Vector3 u = _frame.Mul(halfUp);
+            Vector3 c = _origin + _rot * center;
+            Vector3 r = _rot * halfRight;
+            Vector3 u = _rot * halfUp;
             Vector3 n = Vector3.Cross(u, r).normalized;
             Reserve(4);
             int sub = Sub(s.Mat, 6);
@@ -524,7 +488,7 @@ namespace CloneZ
         public void Tri(Vector3 a, Vector3 b, Vector3 c, in Surf s)
         {
             if (!s.Valid) return;
-            Vector3 wa = _origin + _frame.Mul(a), wb = _origin + _frame.Mul(b), wc = _origin + _frame.Mul(c);
+            Vector3 wa = _origin + _rot * a, wb = _origin + _rot * b, wc = _origin + _rot * c;
             Vector3 n = Vector3.Cross(wb - wa, wc - wa).normalized;
             var rule = new UvRule(n, s);
             Reserve(3);
@@ -540,9 +504,9 @@ namespace CloneZ
         public void Diamond(Vector3 center, Vector3 right, Vector3 up, in Surf s)
         {
             if (!s.Valid) return;
-            Vector3 c = _origin + _frame.Mul(center);
-            Vector3 r = _frame.Mul(right);
-            Vector3 u = _frame.Mul(up);
+            Vector3 c = _origin + _rot * center;
+            Vector3 r = _rot * right;
+            Vector3 u = _rot * up;
             Vector3 n = Vector3.Cross(u, r).normalized;
             var rule = new UvRule(n, s);
             Reserve(4);
@@ -562,9 +526,9 @@ namespace CloneZ
         {
             if (!s.Valid) return;
             points = Mathf.Clamp(points, 5, 24);
-            Vector3 c = _origin + _frame.Mul(center);
-            Vector3 r = _frame.Mul(right);
-            Vector3 u = _frame.Mul(up);
+            Vector3 c = _origin + _rot * center;
+            Vector3 r = _rot * right;
+            Vector3 u = _rot * up;
             Vector3 n = Vector3.Cross(u, r).normalized;
             var rule = new UvRule(n, s);
             Reserve(points + 1);
@@ -594,7 +558,7 @@ namespace CloneZ
         // The unit circle in 3 to 24 steps, and unit spheres by segments and rings: worked out once (their sines and
         // cosines are most of a round shape's cost).
         private static readonly Vector3[][] s_Circles = MakeCircles();
-        private static readonly Dictionary<int, Vector3[]> s_Spheres = new Dictionary<int, Vector3[]>();
+        private static readonly Dictionary<long, Vector3[]> s_Spheres = new Dictionary<long, Vector3[]>();
 
         private static Vector3[][] MakeCircles()
         {
@@ -616,7 +580,7 @@ namespace CloneZ
 
         private static Vector3[] UnitSphere(int segments, int rings)
         {
-            int key = segments * 1000 + rings;
+            long key = ((long)segments << 32) | (uint)rings;
             lock (s_Spheres)
                 if (s_Spheres.TryGetValue(key, out Vector3[] have)) return have;
             var units = new Vector3[(rings + 1) * (segments + 1)];
@@ -643,14 +607,14 @@ namespace CloneZ
         {
             if (!s.Valid) return;
             sides = Mathf.Clamp(sides, 3, 24);
-            Rot3 m = Rot3.Of(_rot * localRot);
-            Vector3 b0 = _origin + _frame.Mul(baseCenter);
-            Vector3 up = m.Mul(Vector3.up);
+            Quaternion rot = _rot * localRot;
+            Vector3 b0 = _origin + _rot * baseCenter;
+            Vector3 up = rot * Vector3.up;
             Vector3 top = b0 + up * height;
             float rTop = radius * topScale;
             Vector3[] ring = t_Ring ??= new Vector3[25];
             Vector3[] circle = Circle(sides);
-            for (int i = 0; i <= sides; i++) ring[i] = m.Mul(circle[i]);
+            for (int i = 0; i <= sides; i++) ring[i] = rot * circle[i];
             bool topCap = caps && rTop > 0.001f;
             Reserve((sides + 1) * 2 + (caps ? (topCap ? 2 : 1) * (sides + 2) : 0));
             int sub = Sub(s.Mat, sides * 6 + (caps ? (topCap ? 2 : 1) * sides * 3 : 0));
@@ -708,8 +672,11 @@ namespace CloneZ
         public void Ellipsoid(Vector3 center, Vector3 size, Quaternion localRot, in Surf s, int segments = 8, int rings = 5)
         {
             if (!s.Valid) return;
-            Rot3 m = Rot3.Of(_rot * localRot);
-            Vector3 c = _origin + _frame.Mul(center);
+            // None would divide the sphere by zero (NaN vertices).
+            if (segments < 1) segments = 1;
+            if (rings < 1) rings = 1;
+            Quaternion rot = _rot * localRot;
+            Vector3 c = _origin + _rot * center;
             Reserve((rings + 1) * (segments + 1));
             int sub = Sub(s.Mat, rings * segments * 6);
             int start = _count;
@@ -719,8 +686,8 @@ namespace CloneZ
             {
                 Vector3 unit = units[i];
                 Vector3 p = Vector3.Scale(unit * 0.5f, size);
-                Vector3 n = m.Mul(Vector3.Scale(unit, inv).normalized);
-                Put(c + m.Mul(p), n, new UvRule(n, s));
+                Vector3 n = rot * Vector3.Scale(unit, inv).normalized;
+                Put(c + rot * p, n, new UvRule(n, s));
             }
             for (int y = 0; y < rings; y++)
             {
@@ -798,15 +765,43 @@ namespace CloneZ
             }
         }
 
-        // The vertices made relative to <paramref name="origin"/> into the thread's scratch, and what they cover.
-        private PackedVertex[] PackVertices(Vector3 origin, out Bounds bounds)
+        // The vertices made relative to <paramref name="origin"/> into the thread's scratch, and what they cover. Vertices with a
+        // position, normal or UV that isn't a finite number (a NaN from a degenerate shape upstream) are made harmless: a
+        // bad normal points up, a bad UV is zero, a bad position takes the last good one's place and its triangles are
+        // folded flat (see PackIndices); <paramref name="bad"/> counts them (0 nearly always).
+        private PackedVertex[] PackVertices(Vector3 origin, out Bounds bounds, out int bad)
         {
             PackedVertex[] vs = t_Vertices;
             if (vs == null || vs.Length < _count) t_Vertices = vs = new PackedVertex[Pool.SizeFor(_count)];
             float x0 = float.MaxValue, y0 = float.MaxValue, z0 = float.MaxValue, x1 = float.MinValue, y1 = float.MinValue, z1 = float.MinValue;
+            bad = 0;
+            bool[] badAt = null;
+            Vector3 lastGood = Vector3.zero;
             for (int i = 0; i < _count; i++)
             {
-                Vector3 p = _v[i];
+                Vector3 p = _v[i], n = _n[i];
+                Vector2 uv = _uv[i];
+                // x - x is 0 for every finite x, NaN for NaN and either infinity.
+                if ((p.x - p.x) + (p.y - p.y) + (p.z - p.z) + (n.x - n.x) + (n.y - n.y) + (n.z - n.z) + (uv.x - uv.x) + (uv.y - uv.y) != 0f)
+                {
+                    bad++;
+                    if ((n.x - n.x) + (n.y - n.y) + (n.z - n.z) != 0f) n = Vector3.up;
+                    if ((uv.x - uv.x) + (uv.y - uv.y) != 0f) uv = Vector2.zero;
+                    if ((p.x - p.x) + (p.y - p.y) + (p.z - p.z) != 0f)
+                    {
+                        if (badAt == null)
+                        {
+                            badAt = t_Bad;
+                            if (badAt == null || badAt.Length < _count) t_Bad = badAt = new bool[Pool.SizeFor(_count)];
+                            System.Array.Clear(badAt, 0, _count);
+                        }
+                        badAt[i] = true;
+                        vs[i].Position = lastGood;
+                        vs[i].Normal = n;
+                        vs[i].Uv = uv;
+                        continue;
+                    }
+                }
                 p.x -= origin.x;
                 p.y -= origin.y;
                 p.z -= origin.z;
@@ -817,17 +812,25 @@ namespace CloneZ
                 if (p.z < z0) z0 = p.z;
                 if (p.z > z1) z1 = p.z;
                 vs[i].Position = p;
-                vs[i].Normal = _n[i];
-                vs[i].Uv = _uv[i];
+                vs[i].Normal = n;
+                vs[i].Uv = uv;
+                lastGood = p;
             }
-            bounds = _count > 0 ? new Bounds(new Vector3((x0 + x1) * 0.5f, (y0 + y1) * 0.5f, (z0 + z1) * 0.5f), new Vector3(x1 - x0, y1 - y0, z1 - z0))
+            t_HasBad = badAt != null;
+            bounds = x0 <= x1 ? new Bounds(new Vector3((x0 + x1) * 0.5f, (y0 + y1) * 0.5f, (z0 + z1) * 0.5f), new Vector3(x1 - x0, y1 - y0, z1 - z0))
                 : new Bounds();
             return vs;
         }
 
-        // Every sub-mesh's indices one after another into the thread's 16-bit scratch (or 32-bit when the vertices don't fit).
+        // Which vertices of the mesh being packed on this thread had no finite position (valid while t_HasBad).
+        [System.ThreadStatic] private static bool[] t_Bad;
+        [System.ThreadStatic] private static bool t_HasBad;
+
+        // Every sub-mesh's indices one after another into the thread's 16-bit scratch (or 32-bit when the vertices don't fit);
+        // a triangle touching a vertex PackVertices found no position for is folded onto one corner (no area, nothing drawn).
         private System.Array PackIndices(int indexCount, bool wide)
         {
+            bool[] bad = t_HasBad ? t_Bad : null;
             if (wide)
             {
                 int[] ix = t_Int;
@@ -838,6 +841,7 @@ namespace CloneZ
                     System.Array.Copy(_tris[s], 0, ix, k, _triCount[s]);
                     k += _triCount[s];
                 }
+                if (bad != null) Fold(ix, indexCount, bad);
                 return ix;
             }
             ushort[] sx = t_Short;
@@ -847,20 +851,67 @@ namespace CloneZ
             {
                 int[] t = _tris[s];
                 int n = _triCount[s];
-                for (int i = 0; i < n; i++) sx[j++] = (ushort)t[i];
+                if (bad == null)
+                    for (int i = 0; i < n; i++) sx[j++] = (ushort)t[i];
+                else
+                    for (int i = 0; i + 2 < n; i += 3)
+                    {
+                        int a = t[i], b = t[i + 1], c = t[i + 2];
+                        if (bad[a] || bad[b] || bad[c]) b = c = a;
+                        sx[j++] = (ushort)a;
+                        sx[j++] = (ushort)b;
+                        sx[j++] = (ushort)c;
+                    }
             }
             return sx;
         }
 
+        private static void Fold(int[] ix, int count, bool[] bad)
+        {
+            for (int i = 0; i + 2 < count; i += 3)
+                if (bad[ix[i]] || bad[ix[i + 1]] || bad[ix[i + 2]]) ix[i + 1] = ix[i + 2] = ix[i];
+        }
+
+        #region Non-finite geometry
+        /// <summary>The meshes that came here with vertices whose position, normal or UV wasn't a finite number, as
+        /// "hierarchy path (n of m vertices)" (the map harness reports them as errors; the game logs the first few). They
+        /// were baked harmless (see <see cref="PackVertices"/>), so the NavMesh bake doesn't skip them.</summary>
+        internal static readonly List<string> NonFinite = new List<string>();
+
+        private const int NonFiniteKept = 200, NonFiniteLogged = 12;
+        private static int s_NonFiniteLogged;
+
+        internal static void ReportNonFinite(string where, int bad, int vertices)
+        {
+            string line = where + " (" + bad + " of " + vertices + " vertices)";
+            lock (NonFinite)
+                if (NonFinite.Count < NonFiniteKept) NonFinite.Add(line);
+            if (s_NonFiniteLogged++ < NonFiniteLogged)
+                Debug.LogWarning("[CloneZ] A map mesh had vertices that aren't finite numbers (made harmless): " + line);
+        }
+
+        /// <summary>Where <paramref name="t"/> stands in the hierarchy ("root/.../t").</summary>
+        internal static string PathOf(Transform t)
+        {
+            if (t == null) return "(none)";
+            var sb = new System.Text.StringBuilder(t.name);
+            for (Transform p = t.parent; p != null; p = p.parent) sb.Insert(0, p.name + "/");
+            return sb.ToString();
+        }
+        #endregion
+
         /// <summary>Bakes the accumulated geometry into a mesh, with vertices made relative to
         /// <paramref name="origin"/> (mesh space). Returns null when empty.</summary>
-        public Mesh ToMesh(string name, Vector3 origin)
+        public Mesh ToMesh(string name, Vector3 origin) => Bake(name, origin, null);
+
+        // As ToMesh; a bad vertex is reported against <paramref name="owner"/>'s place in the hierarchy (else the name).
+        private Mesh Bake(string name, Vector3 origin, Transform owner)
         {
             if (_count == 0) return null;
             long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
             var mesh = new Mesh { name = name };
             CreatedMeshes?.Add(mesh);
-            PackedVertex[] vs = PackVertices(origin, out Bounds bounds);
+            PackedVertex[] vs = PackVertices(origin, out Bounds bounds, out int bad);
             mesh.SetVertexBufferParams(_count, s_Layout);
             mesh.SetVertexBufferData(vs, 0, 0, _count, 0, QuietUpdate);
             int ic = IndexCount;
@@ -870,6 +921,7 @@ namespace CloneZ
             else mesh.SetIndexBufferData((ushort[])PackIndices(ic, false), 0, 0, ic, QuietUpdate);
             SubMeshes(mesh, bounds);
             mesh.bounds = bounds;
+            if (bad > 0) ReportNonFinite(owner != null ? PathOf(owner) : name, bad, _count);
             BakedMeshes++;
             BakedVertices += _count;
             BakeTicks += System.Diagnostics.Stopwatch.GetTimestamp() - t0;
@@ -903,7 +955,7 @@ namespace CloneZ
         /// assuming an unscaled, unrotated object at <paramref name="origin"/>).</summary>
         public void ApplyTo(GameObject go, Vector3 origin, ShadowCastingMode shadows = ShadowCastingMode.On)
         {
-            Mesh mesh = ToMesh(go.name, origin);
+            Mesh mesh = Bake(go.name, origin, go.transform);
             if (mesh == null) return;
             var mf = go.GetComponent<MeshFilter>();
             if (mf == null) mf = go.AddComponent<MeshFilter>();
@@ -946,17 +998,18 @@ namespace CloneZ
             mr.sharedMaterials = Materials;
             mr.shadowCastingMode = shadows;
             mr.receiveShadows = true;
-            bake.Add(this, origin, mesh);
+            bake.Add(this, origin, mesh, go);
             Emits++;
             EmitTicks += System.Diagnostics.Stopwatch.GetTimestamp() - t0;
             return go;
         }
 
         /// <summary>Copies the geometry into <paramref name="d"/> (any thread), vertices relative to
-        /// <paramref name="origin"/>, 16-bit indices where they fit; <paramref name="bounds"/> is what it covers.</summary>
-        internal void PackInto(Mesh.MeshData d, Vector3 origin, out Bounds bounds)
+        /// <paramref name="origin"/>, 16-bit indices where they fit; <paramref name="bounds"/> is what it covers. Returns how
+        /// many vertices weren't finite (made harmless, see <see cref="PackVertices"/>): the caller reports them.</summary>
+        internal int PackInto(Mesh.MeshData d, Vector3 origin, out Bounds bounds)
         {
-            PackedVertex[] vs = PackVertices(origin, out bounds);
+            PackedVertex[] vs = PackVertices(origin, out bounds, out int bad);
             d.SetVertexBufferParams(_count, s_Layout);
             Unity.Collections.NativeArray<PackedVertex>.Copy(vs, 0, d.GetVertexData<PackedVertex>(0), 0, _count);
             int ic = IndexCount;
@@ -972,6 +1025,39 @@ namespace CloneZ
                 d.SetSubMesh(s, new SubMeshDescriptor(start, n) { bounds = bounds, firstVertex = 0, vertexCount = _count }, QuietUpdate);
                 start += n;
             }
+            return bad;
+        }
+
+        /// <summary>The positions drawn so far (mesh space, before any origin) into <paramref name="into"/> (cleared first):
+        /// for a pass that wants to measure what it drew without reading a baked mesh back.</summary>
+        internal void Positions(List<Vector3> into)
+        {
+            into.Clear();
+            for (int i = 0; i < _count; i++) into.Add(_v[i]);
+        }
+
+        /// <summary>The least and greatest of x, z, x + z and x - z over the vertices drawn so far (mesh space, less
+        /// <paramref name="origin"/>): the octagon in plan that holds them, without reading a baked mesh back. False when
+        /// nothing is drawn.</summary>
+        internal bool PlanExtents(Vector3 origin, out Vector4 least, out Vector4 most)
+        {
+            float x0 = float.MaxValue, z0 = float.MaxValue, s0 = float.MaxValue, d0 = float.MaxValue;
+            float x1 = float.MinValue, z1 = float.MinValue, s1 = float.MinValue, d1 = float.MinValue;
+            for (int i = 0; i < _count; i++)
+            {
+                float x = _v[i].x - origin.x, z = _v[i].z - origin.z, s = x + z, d = x - z;
+                if (x < x0) x0 = x;
+                if (x > x1) x1 = x;
+                if (z < z0) z0 = z;
+                if (z > z1) z1 = z;
+                if (s < s0) s0 = s;
+                if (s > s1) s1 = s;
+                if (d < d0) d0 = d;
+                if (d > d1) d1 = d;
+            }
+            least = new Vector4(x0, z0, s0, d0);
+            most = new Vector4(x1, z1, s1, d1);
+            return _count > 0;
         }
 
         /// <summary>The geometry as drawn (world/mesh space, before any origin), for the map harness's checks.</summary>
@@ -1002,17 +1088,24 @@ namespace CloneZ
     /// Bakes many <see cref="RaidMesh"/>es into their meshes in one go through Unity's MeshData API: queue them with
     /// <see cref="Add"/> (or <see cref="RaidMesh.EmitLater"/>), then <see cref="Allocate"/> and <see cref="Apply"/> on the
     /// main thread, with <see cref="Pack"/> (the heavy part: copying the geometry into the meshes' buffers) in between on
-    /// any thread. The queued RaidMeshes mustn't change until it's applied; with <see cref="ReleaseSources"/> their
-    /// buffers go back to the pool after.
+    /// any thread (<see cref="PackAsync"/> starts it on a worker). The queued RaidMeshes mustn't change until it's
+    /// applied; with <see cref="ReleaseSources"/> their buffers go back to the pool after.
     /// </summary>
     internal sealed class MeshBake
     {
         private readonly List<RaidMesh> _sources = new List<RaidMesh>();
         private readonly List<Vector3> _origins = new List<Vector3>();
         private readonly List<Mesh> _meshes = new List<Mesh>();
+        private readonly List<GameObject> _owners = new List<GameObject>();
         private Bounds[] _bounds;
+        private int[] _bad;
         private Mesh.MeshDataArray _data;
         private bool _allocated;
+        private System.Threading.Tasks.Task _packing;
+
+        // Applied meshes tell their renderers (which may be showing already), unlike RaidMesh.QuietUpdate.
+        private const MeshUpdateFlags ApplyFlags = MeshUpdateFlags.DontRecalculateBounds | MeshUpdateFlags.DontValidateIndices
+            | MeshUpdateFlags.DontResetBoneBounds;
 
         public int Count => _sources.Count;
 
@@ -1034,36 +1127,58 @@ namespace CloneZ
         public List<Mesh> Meshes => _meshes;
 
         /// <summary>Queues <paramref name="source"/>'s geometry for <paramref name="mesh"/>, its vertices relative to
-        /// <paramref name="origin"/>.</summary>
-        public void Add(RaidMesh source, Vector3 origin, Mesh mesh)
+        /// <paramref name="origin"/>; <paramref name="owner"/> (optional) names it if its geometry turns out bad.</summary>
+        public void Add(RaidMesh source, Vector3 origin, Mesh mesh, GameObject owner = null)
         {
             _sources.Add(source);
             _origins.Add(origin);
             _meshes.Add(mesh);
+            _owners.Add(owner);
         }
 
         public void Allocate()
         {
             _data = Mesh.AllocateWritableMeshData(_sources.Count);
             _bounds = new Bounds[_sources.Count];
+            _bad = new int[_sources.Count];
             _allocated = true;
         }
 
         public void Pack()
         {
-            for (int i = 0; i < _sources.Count; i++) _sources[i].PackInto(_data[i], _origins[i], out _bounds[i]);
+            for (int i = 0; i < _sources.Count; i++) _bad[i] = _sources[i].PackInto(_data[i], _origins[i], out _bounds[i]);
         }
+
+        /// <summary>Allocates (here, on the main thread) and starts <see cref="Pack"/> on a worker thread; <see cref="Packed"/>
+        /// says when it's done, and <see cref="Apply"/> waits for it if it isn't.</summary>
+        public void PackAsync()
+        {
+            if (!_allocated) Allocate();
+            _packing = System.Threading.Tasks.Task.Run(Pack);
+        }
+
+        /// <summary>True when no packing is under way (it finished, or never started on a worker).</summary>
+        public bool Packed => _packing == null || _packing.IsCompleted;
 
         public void Apply()
         {
+            if (_packing != null)
+            {
+                // A worker that failed leaves the job to this thread.
+                try { _packing.Wait(); }
+                catch (System.AggregateException) { Pack(); }
+                _packing = null;
+            }
             long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
-            Mesh.ApplyAndDisposeWritableMeshData(_data, _meshes, RaidMesh.QuietUpdate);
+            Mesh.ApplyAndDisposeWritableMeshData(_data, _meshes, ApplyFlags);
             _allocated = false;
             long vertices = 0;
             for (int i = 0; i < _meshes.Count; i++)
             {
                 _meshes[i].bounds = _bounds[i];
                 vertices += _sources[i].VertexCount;
+                if (_bad[i] > 0)
+                    RaidMesh.ReportNonFinite(_owners[i] != null ? RaidMesh.PathOf(_owners[i].transform) : _meshes[i].name, _bad[i], _sources[i].VertexCount);
                 if (ReleaseSources) _sources[i].Release();
             }
             RaidMesh.BakedMeshes += _meshes.Count;
@@ -1074,6 +1189,12 @@ namespace CloneZ
         /// <summary>Lets go of the buffers when it won't be applied after all.</summary>
         public void Dispose()
         {
+            if (_packing != null)
+            {
+                try { _packing.Wait(); }
+                catch (System.AggregateException) { }
+                _packing = null;
+            }
             if (_allocated) _data.Dispose();
             _allocated = false;
         }

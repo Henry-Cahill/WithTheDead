@@ -43,13 +43,30 @@ namespace CloneZ
         public readonly List<Mesh> Meshes = new List<Mesh>();
         /// <summary>The containers it holds, in the order they were made (the same every build).</summary>
         public readonly List<LootContainer> Containers = new List<LootContainer>();
+        /// <summary>The ceiling fittings' lamps, hung from the ceiling once the building is shown (see
+        /// <see cref="RaidBuilding.HungLater"/>).</summary>
+        private readonly List<HomeLamp> _hung = new List<HomeLamp>(16);
+        /// <summary>Every light it made (ceiling fittings and lamps), once it's finished.</summary>
         public int Lights;
+        /// <summary>The desk, bedside and standard lamps placed so far (they share the building's lamp budget).</summary>
+        public int Lamps;
+        /// <summary>Pieces of furniture with a body of their own placed so far (each is an object under the building's root;
+        /// see <see cref="InteriorPlan.PieceCap"/>).</summary>
+        public int Bodies => B != null && B.Root != null ? B.Root.childCount : 0;
+        /// <summary>Its objects, once it's finished.</summary>
+        public int Objects;
         public Bounds WorldBounds;
         public bool Done;
         public System.Random Rng;
+        /// <summary>Time spent building it, and its slowest step (ms, and the step's name).</summary>
+        public double TotalMs, MaxStepMs;
+        public string MaxStep = "";
+        public int StepCount;
+        /// <summary>How long each room took to furnish (ms; null until the rooms are reached).</summary>
+        public double[] RoomMs;
 
         private Vector3 _offset;
-        private string _failure;
+        private IEnumerator<string> _steps;
 
         /// <summary>A building's interior under <paramref name="parent"/> (the site's world root) and
         /// <paramref name="overheadParent"/> (its overhead root). <paramref name="hidden"/>: built inactive and shown at the
@@ -68,18 +85,81 @@ namespace CloneZ
             Begin();
             yield return "interior shell";
             Walls();
-            Floors();
             yield return "interior walls";
-            Doors();
+            Floors();
+            yield return "interior floors";
+            for (int k = 0; k < DoorCount; k += DoorsPerStep)
+            {
+                Doors(k, DoorsPerStep);
+                yield return "interior doors";
+            }
             Switches();
-            yield return "interior doors";
+            yield return "interior switches";
+            RoomMs = new double[Plan.Rooms.Count];
             for (int i = 0; i < Plan.Rooms.Count; i++)
             {
-                InteriorPass.Furnish(this, i);
+                long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+                // One room that can't be furnished leaves it as far as it got, not the building unfurnished.
+                try { InteriorPass.Furnish(this, i); }
+                catch (System.Exception e) { Trouble("room " + i + " (" + Plan.Rooms[i].Role + ")", e); }
+                RoomMs[i] = (System.Diagnostics.Stopwatch.GetTimestamp() - t0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
                 yield return "interior rooms";
             }
+            EmitWalls();
+            yield return "interior wall meshes";
             Finish();
             yield return "interior finish";
+        }
+
+        /// <summary>Runs the build's next step (timing it); false once it's finished. A step that throws throws here.</summary>
+        public bool Advance()
+        {
+            if (_steps == null) _steps = Steps().GetEnumerator();
+            long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+            bool more = _steps.MoveNext();
+            double ms = (System.Diagnostics.Stopwatch.GetTimestamp() - t0) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+            TotalMs += ms;
+            StepCount++;
+            if (ms > MaxStepMs)
+            {
+                MaxStepMs = ms;
+                MaxStep = more ? _steps.Current : "(end)";
+            }
+            return more;
+        }
+
+        /// <summary>Name of the step <see cref="Advance"/> last ran.</summary>
+        public string Current => _steps != null ? _steps.Current : null;
+
+        /// <summary>What went wrong in a room or a doorway that was left as far as it got (the rest of the building was
+        /// furnished), one line each; null when nothing did.</summary>
+        public List<string> Troubles;
+
+        // A room or a doorway that threw: noted (and logged once a building), and the build goes on.
+        private void Trouble(string what, System.Exception e)
+        {
+            Troubles ??= new List<string>(2);
+            string line = what + ": " + e.GetType().Name + ": " + e.Message;
+            if (e.StackTrace != null)
+            {
+                string[] frames = e.StackTrace.Split('\n');
+                for (int k = 0; k < frames.Length && k < 4; k++) line += " < " + frames[k].Trim();
+            }
+            Troubles.Add(line);
+            if (Troubles.Count == 1) Debug.LogWarning("[CloneZ] Interiors: building " + Plan.Id + " (" + Plan.Use + "), " + what + " left unfinished: " + e);
+        }
+
+        private const int DoorsPerStep = 4;
+
+        // Doorways between rooms and to the outside, each with its leaves.
+        private int DoorCount
+        {
+            get
+            {
+                int n = Plan.Entrances.Count;
+                foreach (InteriorPass.Piece p in Pieces) if (p.Door != null) n++;
+                return n;
+            }
         }
 
         #region Coordinates
@@ -125,6 +205,9 @@ namespace CloneZ
             };
             B.ForeignWallMesh = FittingsAt;
             B.ForeignWallObject = WallObjectAt;
+            // A town's worth of fittings: none asks for shadows, and they're hung from the ceiling once the building shows.
+            B.CeilingShadows = false;
+            B.HungLater = _hung;
             foreach (PlanRoom r in Plan.Rooms)
             {
                 RaidRoom rr = B.Room(r.Name, r.R.xMin, r.R.yMin, r.R.xMax, r.R.yMax, r.Design ?? RaidLayouts.GarageGrey, r.Floor);
@@ -288,6 +371,20 @@ namespace CloneZ
         private void Floors()
         {
             var m = new RaidMesh();
+            // Under the rooms, the whole outline in the biggest room's floor: what an irregular footprint's rectangles leave
+            // along its walls (and the exteriors' plain floor would show through).
+            if (Plan.Local != null && Plan.Local.Count >= 3)
+            {
+                PlanRoom main = Plan.Rooms[0];
+                foreach (PlanRoom r in Plan.Rooms) if (r.R.width * r.R.height > main.R.width * main.R.height) main = r;
+                Surf under = InteriorPass.FloorSurf(main);
+                List<int> tris = MapGeometry.Triangulate(Plan.Local);
+                for (int t = 0; t + 2 < tris.Count; t += 3)
+                {
+                    Vector2 a = Plan.Local[tris[t]], b = Plan.Local[tris[t + 1]], c = Plan.Local[tris[t + 2]];
+                    m.Tri(new Vector3(a.x, 0.026f, a.y), new Vector3(b.x, 0.026f, b.y), new Vector3(c.x, 0.026f, c.y), under);
+                }
+            }
             for (int i = 0; i < Plan.Rooms.Count; i++)
             {
                 PlanRoom r = Plan.Rooms[i];
@@ -308,11 +405,14 @@ namespace CloneZ
 
         #region Doors
         // A working door in every doorway between rooms, and in every outside doorway.
-        private void Doors()
+        private void Doors(int from, int count)
         {
+            int index = 0, to = from + count;
             foreach (InteriorPass.Piece p in Pieces)
             {
                 if (p.Door == null) continue;
+                if (index++ < from) continue;
+                if (index > to) return;
                 PlanWall w = p.Door;
                 PlanRoom minus = Plan.Rooms[w.Minus], plus = Plan.Rooms[w.Plus];
                 int swing = SwingInto(minus, plus);
@@ -320,11 +420,17 @@ namespace CloneZ
                 Vector2 alongL = w.AlongX ? Vector2.right : Vector2.up, normalL = w.AlongX ? Vector2.up : Vector2.right;
                 PlanRoom into = swing > 0 ? plus : minus;
                 RoomExtent(into, w.AlongX, out float ra, out float rb);
-                Hang(World(c, 0f), WorldDir(alongL), WorldDir(normalL), w.DoorWidth, Half, swing, w.DoorPos, ra, rb,
-                    Name(minus, plus, into), null, plus, minus, false, false, p.Object.transform, p.Occluder, RaidBuilding.DoorHeight);
+                try
+                {
+                    Hang(World(c, 0f), WorldDir(alongL), WorldDir(normalL), w.DoorWidth, Half, swing, w.DoorPos, ra, rb,
+                        Name(minus, plus, into), null, plus, minus, false, false, p.Object.transform, p.Occluder, RaidBuilding.DoorHeight);
+                }
+                catch (System.Exception e) { Trouble("the door between rooms " + w.Minus + " and " + w.Plus, e); }
             }
             for (int k = 0; k < Plan.Entrances.Count; k++)
             {
+                if (index++ < from) continue;
+                if (index > to) return;
                 PlanEntrance en = Plan.Entrances[k];
                 if (en.Width < 0.6f) continue;
                 Vector2 along = new Vector2(-en.Outward.y, en.Outward.x);
@@ -345,8 +451,12 @@ namespace CloneZ
                 bool glass = shop && Plan.Town && k == 0;
                 string name = k == 0 ? "Front door" : Vector2.Dot(en.Outward, Vector2.up) > 0.7f ? "Back door" : "Side door";
                 // Across the frame's own axes a slanting wall's door still works on the world's.
-                Hang(World(c, 0f), WorldDir(along).normalized, WorldDir(en.Outward).normalized, en.Width, Plan.Thick * 0.5f, -1, 0f, ra, rb,
-                    name, "inside the " + Plan.Noun, null, null, true, glass, Root.transform, null, OuterDoorHeight);
+                try
+                {
+                    Hang(World(c, 0f), WorldDir(along).normalized, WorldDir(en.Outward).normalized, en.Width, Plan.Thick * 0.5f, -1, 0f, ra, rb,
+                        name, "inside the " + Plan.Noun, null, null, true, glass, Root.transform, null, OuterDoorHeight);
+                }
+                catch (System.Exception e) { Trouble("the " + name.ToLowerInvariant(), e); }
             }
         }
 
@@ -499,11 +609,13 @@ namespace CloneZ
         #endregion
 
         #region Switches
-        // A light switch inside each room's first doorway, clear of the door's open leaves, worked on the room's circuit.
+        // A light switch inside each lit-able room's first doorway, clear of the door's open leaves, worked on the room's
+        // circuit (a room the lamp budget left dark has none).
         private void Switches()
         {
             for (int i = 0; i < Plan.Rooms.Count; i++)
             {
+                if (Plan.Rooms[i].Lamps <= 0) continue;
                 foreach (InteriorPass.Piece p in Pieces)
                 {
                     if (p.Door == null || (p.Door.Minus != i && p.Door.Plus != i)) continue;
@@ -554,9 +666,9 @@ namespace CloneZ
         #endregion
 
         #region Finishing
-        private void Finish()
+        // The partitions' meshes, switch plates and all; then their fittings (cupboards, mirror cabinets drawn on the wall).
+        private void EmitWalls()
         {
-            // The partitions' meshes, switch plates and all; then their fittings (cupboards, mirror cabinets drawn on the wall).
             foreach (InteriorPass.Piece p in Pieces)
             {
                 if (p.Object == null) continue;
@@ -567,25 +679,147 @@ namespace CloneZ
                 f.transform.rotation = Quaternion.identity;   // drawn in the world's axes
                 f.AddComponent<NavMeshModifier>().ignoreFromBuild = true;
             }
+        }
+
+        private void Finish()
+        {
             B.Finish();
-            Lights = Town.LightCount;
+            Root.GetComponentsInChildren(true, s_Lights);
+            Lights = s_Lights.Count;
+            s_Lights.Clear();
+            KeepLoot();
             Root.GetComponentsInChildren(true, Containers);
             Bounds b = new Bounds(World(Plan.Extent.center, Plan.WallH * 0.5f), Vector3.zero);
             foreach (Vector2 p in Plan.Footprint.Pts) b.Encapsulate(new Vector3(p.x + _offset.x, 0f, p.y + _offset.z));
             b.Encapsulate(b.center + Vector3.up * Plan.WallH * 0.5f);
             WorldBounds = b;
             if (_hidden) Root.SetActive(true);
+            HangLamps();
+            Objects = CountObjects(Root.transform) + (Town.Overhead != null ? CountObjects(Town.Overhead) : 0);
             Done = true;
+        }
+
+        // The ceiling fittings' lamps, hung from the ceiling now the building's awake: their glowing shades show only in the
+        // views that show the ceilings, their bare bulbs in the isometric view. In edit mode (the harness) nothing wakes, so
+        // they're left as the isometric view has them.
+        private void HangLamps()
+        {
+            foreach (HomeLamp lamp in _hung)
+            {
+                if (lamp == null) continue;
+                if (Application.isPlaying)
+                {
+                    if (lamp.isActiveAndEnabled) lamp.HangFromCeiling();
+                    continue;
+                }
+                RoomLight light = lamp.GetComponent<RoomLight>();
+                if (light != null) light.ShowBulb = true;
+                Transform glow = lamp.transform.Find("Glow");
+                Renderer r = glow != null ? glow.GetComponent<Renderer>() : null;
+                if (r != null) r.enabled = false;
+            }
+            _hung.Clear();
+        }
+
+        private static readonly List<RoomLight> s_Lights = new List<RoomLight>(32);
+        private static readonly List<LootContainer> s_Boxes = new List<LootContainer>(64);
+        private static readonly List<ContainerType> s_Kinds = new List<ContainerType>(8);
+
+        /// <summary>Loot containers stripped of their storage by <see cref="KeepLoot"/> (for the harness).</summary>
+        public int Stripped;
+
+        // Each room keeps as many loot containers as its plan allots it (every drawer, cupboard and compartment its furniture
+        // came with counts one): one of each kind its pool names first, the signature kind leading, then the rest in the
+        // order they were made; the others' storage is taken out and their furniture stays, shut.
+        private void KeepLoot()
+        {
+            Root.GetComponentsInChildren(true, s_Boxes);
+            int n = Plan.Rooms.Count;
+            var byRoom = new List<LootContainer>[n];
+            foreach (LootContainer box in s_Boxes)
+            {
+                if (box == null || box.IsSack || box.Type == ContainerType.Corpse) continue;
+                Vector2 l = LocalOf(box.transform.position);
+                int room = Plan.RoomAt(l);
+                if (room < 0) room = Plan.NearestRoom(l);
+                if (room < 0)
+                {
+                    Strip(box);
+                    continue;
+                }
+                (byRoom[room] ??= new List<LootContainer>(8)).Add(box);
+            }
+            s_Boxes.Clear();
+            for (int i = 0; i < n; i++)
+            {
+                List<LootContainer> list = byRoom[i];
+                PlanRoom r = Plan.Rooms[i];
+                int keep = Mathf.Max(0, r.Loot);
+                if (list == null || list.Count <= keep) continue;
+                var chosen = new bool[list.Count];
+                int kept = 0;
+                s_Kinds.Clear();
+                if (r.Pool != null)
+                    foreach (ContainerType t in r.Pool)
+                        if (!s_Kinds.Contains(t)) s_Kinds.Add(t);
+                for (bool more = true; kept < keep && more;)
+                {
+                    more = false;
+                    foreach (ContainerType t in s_Kinds)
+                    {
+                        if (kept >= keep) break;
+                        for (int k = 0; k < list.Count; k++)
+                        {
+                            if (chosen[k] || list[k].Type != t) continue;
+                            chosen[k] = true;
+                            kept++;
+                            more = true;
+                            break;
+                        }
+                    }
+                }
+                for (int k = 0; k < list.Count && kept < keep; k++)
+                    if (!chosen[k]) { chosen[k] = true; kept++; }
+                for (int k = 0; k < list.Count; k++)
+                    if (!chosen[k]) Strip(list[k]);
+            }
+        }
+
+        // Takes a container's storage out of its furniture: a fixture's holder goes whole (its doors and drawers stay shut on
+        // the piece), a free-standing container keeps its body.
+        private void Strip(LootContainer box)
+        {
+            if (box == null) return;
+            Stripped++;
+            if (box.Owner is StorageFixture fixture && fixture != null)
+            {
+                Object.DestroyImmediate(fixture.gameObject);
+                return;
+            }
+            if (box.IsFixture && box.transform.childCount == 0 && box.GetComponent<Renderer>() == null)
+            {
+                Object.DestroyImmediate(box.gameObject);
+                return;
+            }
+            Object.DestroyImmediate(box);
+        }
+
+        private static int CountObjects(Transform t)
+        {
+            int n = 1;
+            for (int i = 0; i < t.childCount; i++) n += CountObjects(t.GetChild(i));
+            return n;
         }
 
         /// <summary>Takes the interior down: its objects, its overhead root and its meshes.</summary>
         public void Discard()
         {
-            if (Root != null) Object.Destroy(Root);
-            if (Town != null && Town.Overhead != null) Object.Destroy(Town.Overhead.gameObject);
-            for (int i = 0; i < Meshes.Count; i++) if (Meshes[i] != null) Object.Destroy(Meshes[i]);
+            if (Root != null) InteriorPass.Kill(Root);
+            if (Town != null && Town.Overhead != null) InteriorPass.Kill(Town.Overhead.gameObject);
+            for (int i = 0; i < Meshes.Count; i++) InteriorPass.Kill(Meshes[i]);
             Meshes.Clear();
             Containers.Clear();
+            _hung.Clear();
         }
         #endregion
     }

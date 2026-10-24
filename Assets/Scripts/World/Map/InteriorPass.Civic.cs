@@ -78,7 +78,7 @@ namespace CloneZ
                         m.Box(new Vector3(0f, 0.45f, 0.05f), new Vector3(0.7f, 0.08f, 1.7f), DecorPalette.Matte(new Color(0.36f, 0.38f, 0.30f)));
                         for (int i = 0; i < 4; i++) m.Box(new Vector3((i & 1) == 0 ? -0.36f : 0.36f, 0.18f, (i & 2) == 0 ? -0.9f : 0.9f), new Vector3(0.04f, 0.36f, 0.04f), steel);
                     }, "Cot");
-                if (c.WallAt(back, t0 + cell - 0.35f, 0.42f, 0.70f, 0.8f, out RaidBuilding.Place toilet)) b.HomePiece(c.R, toilet, HomeFurnitureKind.Toilet);
+                if (c.WallAt(back, t0 + cell - 0.35f, 0.42f, 0.70f, 0.8f, out RaidBuilding.Place toilet)) Toilet(c, toilet);
                 // The bars: a fixed run, then the door swung back against them.
                 float fixedLen = cell - 1.0f;
                 Vector2 q = c.OnWall(back, t0 + fixedLen * 0.5f, depth);
@@ -146,8 +146,17 @@ namespace CloneZ
         {
             RaidBuilding b = c.B;
             int door = c.DoorSide >= 0 ? c.DoorSide : 0;
-            int front = RoomCtx.Opposite(door);
             Rect i = c.Inner;
+            // The front is an end of the nave's length: the one across from the door, or with the door in a long side, the
+            // end farther from it.
+            bool longZ = i.height >= i.width;
+            bool doorInEnd = longZ ? door == 0 || door == 2 : door == 1 || door == 3;
+            bool squarish = Mathf.Max(i.width, i.height) < 1.15f * Mathf.Min(i.width, i.height);
+            int front;
+            if (doorInEnd || squarish || c.DoorSide < 0) front = RoomCtx.Opposite(door);
+            else if (longZ) front = c.DoorAlong > i.center.y ? 0 : 2;
+            else front = c.DoorAlong > i.center.x ? 3 : 1;
+            int back = RoomCtx.Opposite(front);
             bool facingZ = front == 0 || front == 2;
             float width = facingZ ? i.width : i.height, depth = facingZ ? i.height : i.width;
             float mid = facingZ ? i.center.x : i.center.y;
@@ -201,11 +210,11 @@ namespace CloneZ
                     Vector2 q = c.OnWall(front, along, d);
                     Rect fp = facingZ ? new Rect(along - pewLen * 0.5f, q.y - 0.35f, pewLen, 0.7f) : new Rect(q.x - 0.35f, along - pewLen * 0.5f, 0.7f, pewLen);
                     if (!c.FloorAt(fp, 0.02f)) continue;
-                    Pew(c, new RaidBuilding.Place(q.x, q.y, RoomCtx.YawOf(door)), pewLen, true);
+                    Pew(c, new RaidBuilding.Place(q.x, q.y, RoomCtx.YawOf(back)), pewLen, true);
                 }
             }
             for (int k = 0; k < 2; k++)
-                if (c.Wall(door, 0.4f, 0.4f, 1.0f, k == 0 ? 0.05f : 0.95f, out RaidBuilding.Place plant))
+                if (c.Wall(back, 0.4f, 0.4f, 1.0f, k == 0 ? 0.05f : 0.95f, out RaidBuilding.Place plant))
                     b.Furnish(c.R, plant, new Vector3(0.4f, 1f, 0.4f), false, (m, r) => FurnitureBuilder.DeadPlant(m, r, Vector3.zero), "flowers");
             MoreLoot(c, 1, new[] { (front + 1) & 3, (front + 3) & 3 });
         }

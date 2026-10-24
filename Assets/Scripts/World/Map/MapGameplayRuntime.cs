@@ -6,27 +6,32 @@ namespace CloneZ
     /// <summary>
     /// The real map's landmarks as a survivor finds them: one component (created with the first landmark worth
     /// discovering, under the raid's world) checks twice a second which of the tracked landmarks the local survivor has
-    /// reached. The first time ever, the landmark is learnt for good (account knowledge, like the Zone's set pieces), the
-    /// survivor is told ("Discovered the Bardstown courthouse.") and rewarded once (<see cref="GameEvents.LocationVisited"/>);
-    /// after that it's simply known, so walking a town you know earns nothing. The landmarks come from
-    /// <see cref="MapGameplay"/> as the map is built (each streamed piece adds its own).
+    /// reached. The first time ever, the landmark is learnt for good (account knowledge, like the Zone's set pieces) and
+    /// the survivor is told ("Discovered the Bardstown courthouse."); the ones a town is navigated by (the courthouse,
+    /// the hospital, the police and fire stations, the water tower) are also rewarded (<see cref="GameEvents.LocationVisited"/>),
+    /// the first few of a raid, so the state's thousands can't be farmed from a car. After that it's simply known, so
+    /// walking a town you know earns nothing. The landmarks come from <see cref="MapGameplay"/> as the map is built (each
+    /// streamed piece adds its own).
     /// </summary>
     public sealed class MapGameplayRuntime : MonoBehaviour
     {
         private const float Cell = 64f;
         private const float Interval = 0.5f;
+        private const int RewardsPerRaid = 5;
 
         private struct Entry
         {
             public string Id, Name;
             public Vector3 At;
             public float Radius;
+            public bool Reward;
         }
 
         private static MapGameplayRuntime s_Instance;
         private static readonly Dictionary<long, List<Entry>> s_Cells = new Dictionary<long, List<Entry>>();
         private static readonly HashSet<string> s_Tracked = new HashSet<string>();
         private static readonly HashSet<string> s_Reached = new HashSet<string>();
+        private static int s_Rewarded;
         private float _next;
 
         /// <summary>Forgets every landmark (a new raid's map).</summary>
@@ -35,17 +40,19 @@ namespace CloneZ
             s_Cells.Clear();
             s_Tracked.Clear();
             s_Reached.Clear();
+            s_Rewarded = 0;
         }
 
         /// <summary>Watches for the local survivor reaching a landmark (within <paramref name="radius"/> of
-        /// <paramref name="at"/>, world metres); <paramref name="name"/> as told ("the Bardstown courthouse"). Only in
-        /// play: an edit-mode build has nobody to discover anything.</summary>
-        internal static void Track(string id, string name, Vector3 at, float radius, Transform host)
+        /// <paramref name="at"/>, world metres); <paramref name="name"/> as told ("the Bardstown courthouse"),
+        /// <paramref name="reward"/> when finding it is worth experience. Only in play: an edit-mode build has nobody to
+        /// discover anything.</summary>
+        internal static void Track(string id, string name, Vector3 at, float radius, bool reward, Transform host)
         {
             if (!Application.isPlaying || string.IsNullOrEmpty(id) || !s_Tracked.Add(id)) return;
             long key = Key(at);
             if (!s_Cells.TryGetValue(key, out List<Entry> list)) s_Cells[key] = list = new List<Entry>(4);
-            list.Add(new Entry { Id = id, Name = name, At = at, Radius = radius });
+            list.Add(new Entry { Id = id, Name = name, At = at, Radius = radius, Reward = reward });
             if (s_Instance == null && host != null)
             {
                 var go = new GameObject("MapLandmarks");
@@ -83,7 +90,11 @@ namespace CloneZ
             s_Reached.Add(e.Id);
             AccountProfile account = ProfileStore.Account;
             if (account == null || !account.Learn("landmark:" + e.Id)) return;
-            GameEvents.RaiseLocationVisited(e.Id);
+            if (e.Reward && s_Rewarded < RewardsPerRaid)
+            {
+                s_Rewarded++;
+                GameEvents.RaiseLocationVisited(e.Id);
+            }
             GameEvents.RaiseToast("Discovered " + e.Name + ".");
             ProfileStore.Save();
         }

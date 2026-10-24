@@ -54,7 +54,11 @@ namespace CloneZ
                 bool lit = c.P.Lit;
                 int coolers = use == InteriorUse.BigStore ? 4 : 2;
                 for (int i = 0; i < coolers; i++)
-                    if (c.Wall(back, 0.9f, 0.75f, 2.0f, 0.15f + 0.2f * i, out RaidBuilding.Place cooler)) DrinksCooler(c, cooler, lit, i == 0);
+                    if (c.Wall(back, 0.9f, 0.75f, 2.0f, 0.15f + 0.2f * i, out RaidBuilding.Place cooler))
+                    {
+                        c.TakeLoot();
+                        DrinksCooler(c, cooler, lit, i == 0);
+                    }
             }
             if (c.Plan.Kind == RaidBuildingKind.Store) WallDecor(c, 3);
         }
@@ -125,10 +129,11 @@ namespace CloneZ
             if (role == RoomRole.Records)
             {
                 for (int i = 0; i < Mathf.Clamp(Mathf.FloorToInt(c.Area / 5f), 1, 6); i++)
-                    if (c.AnyWall(order, 0.46f, 0.62f, 1.4f, -1f, out RaidBuilding.Place cab, out _)) b.FilingCabinet(c.R, cab, 4, Putty);
+                    if (c.AnyWall(order, 0.46f, 0.62f, 1.4f, -1f, out RaidBuilding.Place cab, out _)) Filing(c, cab);
                 for (int i = 0; i < 2; i++)
                     if (c.AnyWall(order, 1.4f, 0.5f, 1.9f, -1f, out RaidBuilding.Place sh, out _))
-                        b.Shelving(c.R, sh, new Vector3(1.4f, 1.9f, 0.5f), 5, 1, ShelfGrey, ContainerType.Shelf, "Records shelf", i == 0);
+                        ShelvingAt(c, sh, new Vector3(1.4f, 1.9f, 0.5f), 5, 1, ShelfGrey, "Records shelf",
+                            i == 0 ? RaidBuilding.MainStock(ContainerType.Shelf, "records shelf") : RaidBuilding.SmallStock(ContainerType.Shelf, "records shelf"));
                 Clutter(c, 2);
                 return;
             }
@@ -153,8 +158,12 @@ namespace CloneZ
                 if (!LootPiece(c, t, order)) LootPiece(c, ContainerType.Shelf, order);
             }
             if (c.Area > 12f && c.Floor(1.1f, 1.1f, 0f, c.Inner.center, 0.5f, out RaidBuilding.Place crates))
-                b.StackedCrate(c.R, crates, new Vector3(1.1f, 1.4f, 1.1f), new Vector3(1.05f, 0.8f, 1.05f), new Vector3(0.8f, 0.55f, 0.75f), 0.05f,
-                    MapStyle.Range(c.Rng, -10f, 10f), false, ContainerType.Crate, "Crate", true);
+            {
+                if (c.TakeLoot())
+                    b.StackedCrate(c.R, crates, new Vector3(1.1f, 1.4f, 1.1f), new Vector3(1.05f, 0.8f, 1.05f), new Vector3(0.8f, 0.55f, 0.75f), 0.05f,
+                        MapStyle.Range(c.Rng, -10f, 10f), false, ContainerType.Crate, "Crate", true);
+                else b.Furnish(c.R, crates, new Vector3(1.1f, 1.2f, 1.1f), true, (m, r) => FurnitureBuilder.Pallet(m, r, Vector3.zero, 0f, true), "pallet");
+            }
             if (c.Area > 20f && c.Floor(1.2f, 1.0f, 0f, c.Inner.center, 0.6f, out RaidBuilding.Place pallet))
                 b.Furnish(c.R, pallet, new Vector3(1.2f, 1.0f, 1.0f), true, (m, r) => FurnitureBuilder.Pallet(m, r, Vector3.zero, 0f, true), "pallet");
             Clutter(c, c.Area > 12f ? 3 : 1);
@@ -165,6 +174,7 @@ namespace CloneZ
         private static void Checkout(RoomCtx c, RaidBuilding.Place p, float len)
         {
             RaidBuilding b = c.B;
+            c.TakeLoot();
             float rx = 0f;
             Transform t = b.FixtureBody(c.R, p, new Vector3(len, 1.4f, 0.72f), true, (m, r) => rx = FurnitureBuilder.MartCounterBody(m, r, len), "Checkout counter");
             KitchenFrame f = b.FrameOf(p);
@@ -183,21 +193,24 @@ namespace CloneZ
             StorageFixture.Create(t, "Checkout counter", Interactable.KeyFor("register", t.position), f.P(len * 0.2f, 0.7f, 0.39f), null, t, b.Rng.Next(), under);
         }
 
-        // A double-sided gondola: one face stocked from the room's loot, the other picked over.
+        // A double-sided gondola: its stock searchable while the room's loot budget lasts (one face stocked, the other picked
+        // over), else plain shelving.
         private static void Gondola(RoomCtx c, RaidBuilding.Place p, float len, bool frontStocked)
         {
             RaidBuilding b = c.B;
+            if (!c.TakeLoot())
+            {
+                b.Furnish(c.R, p, new Vector3(len, 1.5f, 0.9f), true, (m, r) => FurnitureBuilder.Gondola(m, r, len), "Store shelves");
+                return;
+            }
             Transform t = b.FixtureBody(c.R, p, new Vector3(len, 1.5f, 0.9f), true, (m, r) => FurnitureBuilder.Gondola(m, r, len), "Store shelves");
             ContainerType loot = c.Pool != null && c.Pool.Length > 0 ? c.Pool[0] : ContainerType.Pantry;
-            for (int side = 0; side < 2; side++)
-            {
-                bool stocked = (side == 0) == frontStocked;
-                StorageOptions o = stocked ? RaidBuilding.MainStock(loot, "shelves") : RaidBuilding.SmallStock(loot, "shelves");
-                o.ContainerName = "Store shelves";
-                o.LookLabel = "Browse the shelves";
-                StorageFixture.Create(t, "Store shelves", Interactable.KeyFor("gondola", t.position, side), b.At(p, 0f, 1.0f, side == 0 ? 0.48f : -0.48f),
-                    null, null, b.Rng.Next(), o);
-            }
+            int side = frontStocked ? 0 : 1;
+            StorageOptions o = RaidBuilding.MainStock(loot, "shelves");
+            o.ContainerName = "Store shelves";
+            o.LookLabel = "Browse the shelves";
+            StorageFixture.Create(t, "Store shelves", Interactable.KeyFor("gondola", t.position, side), b.At(p, 0f, 1.0f, side == 0 ? 0.48f : -0.48f),
+                null, null, b.Rng.Next(), o);
         }
 
         // A glass-door drinks cooler, lit inside while the store has its lights.

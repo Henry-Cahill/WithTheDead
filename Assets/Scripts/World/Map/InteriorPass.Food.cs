@@ -8,6 +8,11 @@ namespace CloneZ
     internal static partial class InteriorPass
     {
         private static readonly Color[] Vinyls = { new Color(0.55f, 0.12f, 0.10f), new Color(0.16f, 0.30f, 0.34f), new Color(0.50f, 0.36f, 0.14f), new Color(0.22f, 0.22f, 0.24f) };
+        private static readonly Color[] Balls =
+        {
+            new Color(0.80f, 0.70f, 0.16f), new Color(0.16f, 0.24f, 0.62f), new Color(0.70f, 0.14f, 0.12f), new Color(0.36f, 0.16f, 0.46f),
+            new Color(0.80f, 0.42f, 0.12f), new Color(0.14f, 0.44f, 0.22f), new Color(0.90f, 0.88f, 0.84f),
+        };
 
         private static void Eatery(RoomCtx c)
         {
@@ -100,7 +105,7 @@ namespace CloneZ
             Rect behind = c.Foot(side, t, len, 0.6f + 1.0f);
             c.Taken.Add(behind);
             if (bar)
-                b.Shelving(c.R, backBar, new Vector3(len, 1.9f, 0.6f), 3, 3, new Color(0.24f, 0.16f, 0.10f), "Bottle shelves",
+                ShelvingAt(c, backBar, new Vector3(len, 1.9f, 0.6f), 3, 3, new Color(0.24f, 0.16f, 0.10f), "Bottle shelves",
                     RaidBuilding.MainStock(c.NextLoot() ?? ContainerType.Pantry, "bottle shelves"));
             else
                 b.SteelCounter(c.R, backBar, len, len > 3f ? (float?)(-len * 0.5f + 0.6f) : null, c.NextLoot() ?? ContainerType.Pantry, "Back counter",
@@ -194,7 +199,7 @@ namespace CloneZ
                     m.Box(new Vector3(0f, 0.45f, 0f), new Vector3(1.9f, 0.6f, 0.9f), rail);
                     for (int k = 0; k < 6; k++)
                         m.Sphere(new Vector3(MapStyle.Range(r, -0.9f, 0.9f), 0.828f, MapStyle.Range(r, -0.45f, 0.45f)), 0.028f,
-                            DecorPalette.Gloss(Color.HSVToRGB((float)r.NextDouble(), 0.7f, 0.8f)));
+                            DecorPalette.Gloss(Balls[r.Next(Balls.Length)]));
                     m.Rod(new Vector3(-0.6f, 0.83f, 0.2f), new Vector3(0.7f, 0.83f, 0.35f), 0.02f, DecorPalette.Matte(new Color(0.62f, 0.46f, 0.28f)));
                 }, "pool table");
             for (int k = 0; k < 4; k++)

@@ -58,7 +58,7 @@ namespace CloneZ
                 // The standard lamp at the sofa's end.
                 float end = t + (rng.NextDouble() < 0.5 ? -1f : 1f) * (sofaW * 0.5f + 0.3f);
                 if (c.WallAt(sofaSide, end, 0.36f, 0.36f, 1.55f, out RaidBuilding.Place lamp))
-                    b.LeaveLampOn(b.HomePiece(c.R, lamp, HomeFurnitureKind.FloorLamp), 0.3);
+                    LampPiece(c, lamp, HomeFurnitureKind.FloorLamp);
             }
             // An armchair turned toward the room from a corner, and a bookcase.
             if (c.Area >= 11f)
@@ -78,8 +78,9 @@ namespace CloneZ
             WallDecor(c, 2);
         }
 
-        // A kitchenette along one wall of a cabin's or a flat's living room: the sink, the range and the fridge.
-        private static void Kitchenette(RoomCtx c)
+        // A kitchenette along one wall of a cabin's or a flat's living room: the sink, the range and the fridge. False when no
+        // wall had room for it.
+        private static bool Kitchenette(RoomCtx c)
         {
             RaidBuilding b = c.B;
             int[] order = c.Sides(true);
@@ -90,7 +91,7 @@ namespace CloneZ
                 float t = a + 0.05f;
                 if (c.WallAt(side, t + 0.61f, 1.22f, 0.63f, 1.0f, out RaidBuilding.Place sink))
                 {
-                    b.HouseSink(c.R, sink);
+                    Sink(c, sink);
                     t += 1.24f;
                 }
                 if (c.WallAt(side, t + 0.38f, 0.76f, 0.62f, 1.08f, out RaidBuilding.Place range))
@@ -100,8 +101,9 @@ namespace CloneZ
                 }
                 if (c.WallAt(side, t + 0.36f, 0.72f, 0.70f, 1.72f, out RaidBuilding.Place fridge)) b.HomePiece(c.R, fridge, HomeFurnitureKind.Fridge);
                 if (c.Inside[side]) b.UpperCabinets(c.R, RoomCtx.Char(side), a + 0.05f + 0.61f, 1.2f, FurnitureBuilder.HomeCabinetPaint);
-                return;
+                return true;
             }
+            return false;
         }
         #endregion
 
@@ -144,7 +146,7 @@ namespace CloneZ
             }
             if (c.WallAt(best, t + 0.61f, 1.22f, 0.63f, 1.0f, out RaidBuilding.Place sink))
             {
-                b.HouseSink(c.R, sink);
+                Sink(c, sink);
                 counterFrom = Mathf.Min(counterFrom, t);
                 counterTo = Mathf.Max(counterTo, t + 1.22f);
                 t += 1.24f;
@@ -169,7 +171,7 @@ namespace CloneZ
                 b.UpperCabinets(c.R, RoomCtx.Char(best), (counterFrom + counterTo) * 0.5f, counterTo - counterFrom, FurnitureBuilder.HomeCabinetPaint);
             // Whatever didn't fit goes on another wall.
             int[] others = c.Sides(true);
-            if (!sinkDone && c.AnyWall(others, 1.22f, 0.63f, 1.0f, -1f, out RaidBuilding.Place s2, out _)) b.HouseSink(c.R, s2);
+            if (!sinkDone && c.AnyWall(others, 1.22f, 0.63f, 1.0f, -1f, out RaidBuilding.Place s2, out _)) Sink(c, s2);
             if (!stoveDone && c.AnyWall(others, 0.76f, 0.62f, 1.08f, -1f, out RaidBuilding.Place r2, out _)) b.HouseStove(c.R, r2);
             if (!fridgeDone && c.AnyWall(others, 0.72f, 0.70f, 1.72f, 0f, out RaidBuilding.Place f2, out _)) b.HomePiece(c.R, f2, HomeFurnitureKind.Fridge);
 
@@ -241,8 +243,8 @@ namespace CloneZ
                 b.HomePiece(c.R, shower, HomeFurnitureKind.Shower);
             if (c.AnyWall(order, 0.42f, 0.70f, 0.8f, -1f, out RaidBuilding.Place toilet, out int ts))
             {
-                b.HomePiece(c.R, toilet, HomeFurnitureKind.Toilet);
-                if (c.Inside[ts]) b.HangTowelRail(c.R, RoomCtx.Char(ts), ts == 0 || ts == 2 ? toilet.X : toilet.Z, 1.42f);
+                Toilet(c, toilet);
+                if (c.Inside[ts]) TowelRail(c, ts, ts == 0 || ts == 2 ? toilet.X : toilet.Z);
             }
             if (c.AnyWall(order, 0.52f, 0.45f, 0.9f, -1f, out RaidBuilding.Place basin, out int bs))
             {
@@ -264,7 +266,7 @@ namespace CloneZ
             {
                 float t = a + 0.1f + 0.95f * (i + 0.5f);
                 if (!c.WallAt(side, t, 0.42f, 0.70f, 0.8f, out RaidBuilding.Place toilet)) continue;
-                b.HomePiece(c.R, toilet, HomeFurnitureKind.Toilet);
+                Toilet(c, toilet);
                 if (n > 1 && i < n - 1 && across >= 1.8f)
                 {
                     // The stall's side panel.
@@ -295,7 +297,8 @@ namespace CloneZ
             if (c.Area >= 8f && c.AnyWall(c.Sides(false), 1.04f, 0.5f, 0.9f, -1f, out RaidBuilding.Place dresser, out _))
             {
                 b.HomePiece(c.R, dresser, HomeFurnitureKind.Dresser);
-                if (rng.NextDouble() < (c.P.Role == RoomRole.Guest ? 0.9 : 0.3)) b.HomePiece(c.R, b.OffsetPlace(dresser, -0.18f, 0.05f, 30f), HomeFurnitureKind.Tv);
+                // A motel room's portable TV (a set has a light of its own: not in every bedroom).
+                if (c.P.Role == RoomRole.Guest && rng.NextDouble() < 0.8) b.HomePiece(c.R, b.OffsetPlace(dresser, -0.18f, 0.05f, 30f), HomeFurnitureKind.Tv);
             }
             if (c.P.Role == RoomRole.Guest && c.Area > 9f && c.Floor(0.45f, 0.45f, 0f, c.Inner.center, 0.3f, out RaidBuilding.Place seat))
                 b.WoodChairSeat(c.R, seat, Woods[rng.Next(Woods.Length)]);
@@ -325,7 +328,7 @@ namespace CloneZ
                 for (int e = -1; e <= 1; e += 2)
                     if (c.WallAt(s, t + e * (0.7f + 0.27f), 0.45f, 0.40f, 0.62f, out RaidBuilding.Place stand))
                     {
-                        b.LeaveLampOn(b.HomePiece(c.R, stand, HomeFurnitureKind.Nightstand), 0.2);
+                        LampPiece(c, stand, HomeFurnitureKind.Nightstand);
                         if (corner) break;
                     }
                 if (!corner && c.Area > 9f)
@@ -380,7 +383,7 @@ namespace CloneZ
             int[] order = c.Sides(false);
             if (c.AnyWall(order, 1.5f, 0.75f, 0.9f, 0.5f, out RaidBuilding.Place desk, out int ds))
             {
-                RaidLayouts.WorkDesk(b, c.R, desk, 1.5f, Woods[c.Rng.Next(Woods.Length)], c.Rng.NextDouble() < 0.2, 1, false, true);
+                RaidLayouts.WorkDesk(b, c.R, desk, 1.5f, Woods[c.Rng.Next(Woods.Length)], c.Rng.NextDouble() < 0.2, DeskLampOf(c, 0.8), false, true);
                 Vector2 front = c.OnWall(ds, ds == 0 || ds == 2 ? desk.X : desk.Z, 0.75f + 0.45f);
                 if (c.Floor(0.5f, 0.5f, RoomCtx.YawOf(ds) + 180f, front, 0.02f, out RaidBuilding.Place chair))
                     b.HouseDeskChair(c.R, chair, Upholstery[c.Rng.Next(Upholstery.Length)]);
@@ -490,6 +493,56 @@ namespace CloneZ
         #endregion
 
         #region Fittings the raid town's layouts keep to themselves
+        // A toilet: the home's working one in play; in edit mode (the harness) its fixture would copy its materials (Unity
+        // refuses renderer.material there), so it's drawn plain.
+        private static void Toilet(RoomCtx c, RaidBuilding.Place p)
+        {
+            if (Application.isPlaying) c.B.HomePiece(c.R, p, HomeFurnitureKind.Toilet);
+            else c.B.Furnish(c.R, p, new Vector3(0.42f, 0.8f, 0.70f), true, (m, r) => FurnitureBuilder.Toilet(m, r), "Toilet");
+        }
+
+        // A towel rail on a bathroom's partition (in play: its towel's fixture copies materials, which edit mode refuses).
+        private static void TowelRail(RoomCtx c, int side, float t)
+        {
+            if (Application.isPlaying) c.B.HangTowelRail(c.R, RoomCtx.Char(side), t, 1.42f);
+        }
+
+        // The kitchen sink: the starter home's working one in play. In edit mode (the harness) nothing wakes, and the live
+        // sink, its config unread, would set its water at NaN: there its unit is drawn plain.
+        private static void Sink(RoomCtx c, RaidBuilding.Place p)
+        {
+            if (Application.isPlaying)
+            {
+                c.B.HouseSink(c.R, p);
+                return;
+            }
+            c.B.Furnish(c.R, p, new Vector3(1.22f, 1.0f, 0.63f), true, (m, r) => FurnitureBuilder.SinkUnit(m, r, FurnitureBuilder.HomeKitchen), "Kitchen sink");
+        }
+
+        // A home's piece with a lamp (a standard lamp, a bedside table) while the building's lamp budget lasts, its lamp
+        // left on in a room whose lights were; past the budget a bedside table comes plain (its lamp dark for good) and a
+        // standard lamp not at all.
+        private static void LampPiece(RoomCtx c, RaidBuilding.Place p, HomeFurnitureKind kind)
+        {
+            if (c.LampLeft)
+            {
+                c.Build.Lamps++;
+                c.B.LeaveLampOn(c.B.HomePiece(c.R, p, kind), c.P.Lit ? 0.5 : 0.04);
+                return;
+            }
+            if (kind != HomeFurnitureKind.Nightstand) return;
+            Color wood = Woods[c.Rng.Next(Woods.Length)];
+            c.B.Furnish(c.R, p, new Vector3(0.45f, 0.62f, 0.40f), true, (m, r) => FurnitureBuilder.Nightstand(m, r, wood, false), "Nightstand");
+        }
+
+        // A desk lamp's setting for RaidLayouts.WorkDesk (0 none, 1 off, 2 on), within the building's lamp budget.
+        private static int DeskLampOf(RoomCtx c, double chance)
+        {
+            if (!c.LampLeft || c.Rng.NextDouble() >= chance) return 0;
+            c.Build.Lamps++;
+            return c.P.Lit && c.Rng.NextDouble() < 0.5 ? 2 : 1;
+        }
+
         // The office's bottled-water cooler (drink, fill a bottle).
         private static void WaterCooler(RoomCtx c, RaidBuilding.Place p)
         {
