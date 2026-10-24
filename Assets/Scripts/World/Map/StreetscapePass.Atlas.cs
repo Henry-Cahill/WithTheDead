@@ -349,6 +349,7 @@ namespace CloneZ
             private readonly Color32[] _px;
             private readonly int _w, _h;
 
+            /// <summary>Initialises a painter with the target pixel buffer and its dimensions.</summary>
             public Painter(Color32[] px, int w, int h)
             {
                 _px = px;
@@ -356,12 +357,14 @@ namespace CloneZ
                 _h = h;
             }
 
+            /// <summary>Sets the colour of a single pixel, safely ignoring out‑of‑bounds coordinates.</summary>
             public void Set(int x, int y, Color32 c)
             {
                 if (x < 0 || y < 0 || x >= _w || y >= _h) return;
                 _px[y * _w + x] = c;
             }
 
+            /// <summary>Fills a rectangular region with a solid colour.</summary>
             public void Fill(int x0, int y0, int w, int h, Color32 c)
             {
                 for (int y = y0; y < y0 + h; y++)
@@ -392,6 +395,7 @@ namespace CloneZ
             private int _x, _y, _shelf;
             private bool _dirty;
 
+            /// <summary>Creates a name‑atlas for a given site, allocating its texture and material.</summary>
             public NameAtlas(Site site)
             {
                 _w = _h = site.Chunked ? 256 : 512;
@@ -410,6 +414,8 @@ namespace CloneZ
                 assets.Material = _mat;
             }
 
+            /// <summary>Provides the rendering surface for the name atlas using its material.</summary>
+            /// <summary>Provides the rendering surface for the name atlas using its material.</summary>
             public Surf Surf => new Surf(_mat, Vector2.zero, 0f);
 
             /// <summary>A green street-name blade with <paramref name="name"/> (abbreviated, in capitals); its width over
