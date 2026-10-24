@@ -97,8 +97,8 @@ namespace CloneZ
             public BuildingShell Shell;
             public EnterableBuilding Record;
             public float Top;
-            /// <summary>The next stage to build (see <see cref="Step"/>).</summary>
-            public int Stage;
+            /// <summary>The next stage to build (see <see cref="Step"/>), and how far into it (the openings drawn).</summary>
+            public int Stage, Cursor;
             public int N;
             public Vector2[] A = new Vector2[32], Dir = new Vector2[32], Out = new Vector2[32];
             public float[] Len = new float[32];
@@ -136,6 +136,7 @@ namespace CloneZ
                 Record = null;
                 Top = 0f;
                 Stage = 0;
+                Cursor = 0;
                 Parts = null;
                 Holes.Clear();
                 DoorEdge = -1;
@@ -284,7 +285,7 @@ namespace CloneZ
                     Walls(j);
                     return true;
                 case 1:
-                    Openings(j);
+                    if (!Openings(j)) j.Stage = 1;   // more of them: this stage again
                     return true;
                 case 2:
                     Roof(j);

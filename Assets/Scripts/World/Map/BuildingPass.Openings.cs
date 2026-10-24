@@ -345,14 +345,24 @@ namespace CloneZ
         #endregion
 
         #region Drawing
-        private static void Openings(Job j)
+        /// <summary>Doors and windows drawn a stage at a time: a big building's hundreds of windows across a streamed
+        /// piece's time slices.</summary>
+        private const int HolesPerStage = 40;
+
+        // The next batch of the doors and windows (from Job.Cursor), then the painted ones; true once all are drawn.
+        private static bool Openings(Job j)
         {
-            foreach (Hole h in j.Holes)
+            int end = Mathf.Min(j.Holes.Count, j.Cursor + HolesPerStage);
+            for (int i = j.Cursor; i < end; i++)
             {
+                Hole h = j.Holes[i];
                 if (h.IsDoor) DoorShape(j, h);
                 else WindowShape(j, h);
             }
+            j.Cursor = end;
+            if (end < j.Holes.Count) return false;
             Facades(j);
+            return true;
         }
 
         // The tone of a lit pane: lamplight mostly, now and then a television's blue.

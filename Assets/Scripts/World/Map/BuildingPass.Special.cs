@@ -497,7 +497,7 @@ namespace CloneZ
             Surf wall = bin ? WallSurf(WallKind.Metal, 0) : p.CoverTone == MetalBlue ? DecorPalette.Gloss(new Color(0.12f, 0.20f, 0.36f)) : WallSurf(WallKind.Concrete, 0);
             float g = Mathf.Min(h, GroundStorey);
             j.Shell.WallsFacing(Vector2.down).Cylinder(To3(at, 0f), r, g, sides, wall);
-            j.Shell.Upper.Cylinder(To3(at, g), r, h - g, sides, wall);
+            if (h - g > 0.05f) j.Shell.Upper.Cylinder(To3(at, g), r, h - g, sides, wall);
             j.Shell.WallTop = g;
             RaidMesh m = j.Upper;
             if (bin)
