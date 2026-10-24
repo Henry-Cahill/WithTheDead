@@ -68,15 +68,18 @@ namespace CloneZ
                 else outside++;
             }
 
-            // Houses and the rest apart: their medians and the fullest of each; the buildings past their cap.
+            // Houses and the rest apart: their medians and the fullest of each; the buildings past their cap; what the
+            // buildings were for, the commonest first.
             var homes = new List<int>();
             var others = new List<int>();
+            var purposes = new Dictionary<string, int>();
             int over = 0, worst = -1, worstOver = 0, inside = 0;
             for (int i = 0; i < buildings.Count; i++)
             {
                 Footprint f = buildings[i]?.Footprint;
                 if (f == null) continue;
                 string purpose = PurposeOf(site, f);
+                purposes[purpose] = purposes.TryGetValue(purpose, out int had) ? had + 1 : 1;
                 int n = inBuilding[i];
                 inside += n;
                 bool home = purpose == Purposes.Home || purpose == Purposes.Trailer || purpose == Purposes.Apartments;
@@ -106,6 +109,10 @@ namespace CloneZ
             for (int k = 0; k < Nominal.Length; k++)
                 sb.Append(k == 0 ? " " : ", ").Append(((ItemCategory)k).ToString().ToLowerInvariant()).Append(' ')
                     .Append(stacksBy[k]).Append('/').Append(Nominal[k]);
+            var byCount = new List<KeyValuePair<string, int>>(purposes);
+            byCount.Sort((a, b) => a.Value != b.Value ? b.Value.CompareTo(a.Value) : string.CompareOrdinal(a.Key, b.Key));
+            sb.Append(". The buildings were:");
+            for (int i = 0; i < byCount.Count; i++) sb.Append(i == 0 ? " " : ", ").Append(byCount[i].Key).Append(' ').Append(byCount[i].Value);
             sb.Append('.');
             LastLootStats = sb.ToString();
             Debug.Log("[CloneZ] " + LastLootStats);
