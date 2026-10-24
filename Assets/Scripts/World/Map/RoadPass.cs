@@ -18,17 +18,22 @@ namespace CloneZ
     /// <remarks>
     /// Heights above the snow (y = 0, the ground's top), lowest first: trodden paths <see cref="PathY"/>; carriageways
     /// <see cref="RoadY"/> (a fraction of a millimetre higher for bigger roads, so overlapping ribbons never fight);
-    /// their slush, tyre tracks and gutters <see cref="DetailY"/>; lane lines <see cref="MarkY"/>, slush over them
+    /// their slush, tyre tracks and gutters <see cref="DetailY"/> (cracks, tar seals and potholes just under them, at
+    /// RoadY + 1.2 mm); lane lines <see cref="MarkY"/>, slush over them
     /// <see cref="BuryY"/>; junction patches <see cref="PatchY"/> (they cover whatever the ribbons left under them, so a
     /// neighbouring chunk's ribbon running into a junction it can't see is harmless), their slush
     /// <see cref="PatchDetailY"/>; stop bars, crosswalks and level-crossing panels <see cref="JunctionMarkY"/>; kerb
     /// tops and sidewalks <see cref="KerbTop"/> (no colliders: the survivor walks on the ground collider, a few
     /// centimetres under the paving); berms, parapets, rails and crossbucks stand on top. The parts live in
-    /// RoadPass.Network (what each street is, junction geometry), RoadPass.Streets (carriageways, kerbs, sidewalks,
-    /// markings, berms, driveways, scenery), RoadPass.Paths, RoadPass.Rail, RoadPass.Bridges and RoadPass.Textures.
+    /// RoadPass.Network (what each street is: class, winter, sidewalks, parking), RoadPass.Junctions (junctions,
+    /// chains of pieces, cross-sections, kerb returns, mouths, the pavement index), RoadPass.Streets (carriageways,
+    /// winter detail, patches, scenery), RoadPass.Wear (cracks, potholes, slab joints), RoadPass.Sides (kerbs, ramps,
+    /// sidewalks, corners), RoadPass.Berms (berms, driveways), RoadPass.Markings (paint, crosswalks, stop bars, stall
+    /// lines), RoadPass.Paths, RoadPass.Rail, RoadPass.Bridges and RoadPass.Textures.
     /// The helpers at the top (<see cref="HalfWidth"/>, <see cref="EdgeOffset"/>, <see cref="SidewalkSides"/>,
-    /// <see cref="KerbOffset"/>, <see cref="RoadsideOffset"/>, <see cref="ArmSetback"/>, <see cref="StopLine"/>...)
-    /// tell the later passes where things stand.
+    /// <see cref="KerbOffset"/>, <see cref="SidewalkOuter"/>, <see cref="RoadsideOffset"/>, <see cref="ParkingLane"/>,
+    /// <see cref="KerbStalls"/>, <see cref="Driveways"/>, <see cref="ArmSetback"/>, <see cref="StopLine"/>...) tell the
+    /// later passes where things stand.
     /// </remarks>
     internal static partial class RoadPass
     {
@@ -89,6 +94,7 @@ namespace CloneZ
             if (!site.Chunked)
             {
                 Scenery(net);
+                SceneryRail(net);
                 yield return "scenery roads";
             }
             Publish(net);
