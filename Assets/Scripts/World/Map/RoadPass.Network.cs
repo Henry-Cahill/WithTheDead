@@ -28,6 +28,7 @@ namespace CloneZ
             public bool Mapped;             // the sidewalk is a footway mapped beside the street
             public bool Berm, EdgeLine, EdgeYellow;
             public float Lane;              // where the travel lanes end (edge lines, parking beyond)
+            /// <summary>True when the sidewalk width exceeds the walk threshold, indicating a usable path.</summary>
             public bool Walk => WalkOut > WalkIn + 0.25f;
 
             /// <summary>Copies side geometry data from another Side instance.</summary>
@@ -64,7 +65,9 @@ namespace CloneZ
             // where that side took the footway for its sidewalk (the street draws it then, not the path).
             public Way[] Beside;
             public bool[] BesideLeft, Covered;
+            /// <summary>True when the way is a carriageway (its class is Track or higher).</summary>
             public bool Carriage => Cls <= Cls.Track;
+            /// <summary>True when the way represents a set of steps rather than a drivable carriageway.</summary>
             public bool Steps => S.Data.kind == "steps";
         }
 
@@ -132,6 +135,7 @@ namespace CloneZ
             public Run Next0, Next1;        // the run carrying on past a link or through junction at each end...
             public int NextEnd0, NextEnd1;  // ...and which of its ends meets this one
             public bool Seen;
+            /// <summary>the length of this run segment, measured along its way.</summary>
             public float Length => W.Cum[V1] - W.Cum[V0];
         }
 
@@ -184,8 +188,11 @@ namespace CloneZ
         {
             public float Edge, WalkIn, WalkOut, Lane;
             public Side Of;                 // the side of the part there: its kerb, sidewalk, berm and edge line flags
+            /// <summary>True if this cross‑section side includes a kerb.</summary>
             public bool Kerb => Of.Kerb;
+            /// <summary>True when the side has a walkable sidewalk segment.</summary>
             public bool Walk => Of.Walk && WalkOut > WalkIn + 0.25f;
+            /// <summary>The back edge of the kerb, accounting for kerb width if present.</summary>
             public float KerbBack => Of.Kerb ? Edge + KerbWidth : Edge;
         }
 
