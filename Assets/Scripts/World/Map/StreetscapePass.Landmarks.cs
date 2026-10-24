@@ -25,8 +25,9 @@ namespace CloneZ
         private static readonly Color Bronze = new Color(0.33f, 0.46f, 0.40f);
         private static readonly Color Aluminium = new Color(0.78f, 0.79f, 0.80f);
 
-        /// <summary>The landmarks of a full site: water towers, masts, flagpoles and memorials.</summary>
-        internal static void Build(Ctx ctx)
+        /// <summary>The landmarks of a full site: water towers, masts, flagpoles and memorials (yielding between them once
+        /// the step has had its time).</summary>
+        internal static IEnumerable<string> Build(Ctx ctx)
         {
             var flags = new List<Vector2>();
             foreach (Node n in ctx.Site.Area.Nodes)
@@ -43,7 +44,9 @@ namespace CloneZ
                         }
                         break;
                     case "memorial": Memorial(ctx, n); break;
+                    default: continue;
                 }
+                if (ctx.Site.StepDue) yield return "landmarks";
             }
             CivicFlags(ctx, flags);
         }

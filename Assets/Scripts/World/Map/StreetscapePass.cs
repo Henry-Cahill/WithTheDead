@@ -55,7 +55,7 @@ namespace CloneZ
             yield return "signs";
             foreach (string step in StreetFurniture.Build(ctx)) yield return step;
             yield return "street furniture";
-            Landmarks.Build(ctx);
+            foreach (string step in Landmarks.Build(ctx)) yield return step;
             yield return "landmarks";
             foreach (string step in BarrierPass.Build(ctx)) yield return step;
             yield return "fences and walls";
