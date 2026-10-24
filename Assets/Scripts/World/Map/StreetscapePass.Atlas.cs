@@ -441,15 +441,23 @@ namespace CloneZ
                 return ok && Cell("shieldback:" + net, s, s, (x, y) => PaintShield(x, y, s, net, number, true), out back);
             }
 
-            /// <summary>Big painted letters on a clear ground (a water tower's name); false when the atlas is full.</summary>
+            /// <summary>Big painted letters on a clear ground (a water tower's name), in a bold stroke that reads from afar;
+            /// false when the atlas is full.</summary>
             public bool Lettering(string text, Color32 ink, out Rect uv, out float aspect)
             {
                 text = text.ToUpperInvariant();
                 if (text.Length > 18) text = text.Substring(0, 18);
-                int scale = DecorFont.Width(text, 4) + 8 <= _w ? 4 : 2;
-                int w = Mathf.Min(_w, DecorFont.Width(text, scale) + 8), h = DecorFont.GlyphH * scale + 8;
+                int scale = DecorFont.Width(text, 4) + 10 <= _w ? 4 : 2;
+                int bold = scale / 2;
+                int w = Mathf.Min(_w, DecorFont.Width(text, scale) + 8 + bold), h = DecorFont.GlyphH * scale + 8 + bold;
                 aspect = w / (float)h;
-                return Cell("letters:" + text, w, h, (x, y) => _p.TextCentred(text, x + w / 2, y + h - 5, scale, ink), out uv);
+                return Cell("letters:" + text, w, h, (x, y) =>
+                {
+                    // The strokes thickened by painting them again a little right and down.
+                    for (int dx = 0; dx <= bold; dx++)
+                        for (int dy = 0; dy <= bold; dy++)
+                            _p.TextCentred(text, x + w / 2 - bold / 2 + dx, y + h - 5 - dy, scale, ink);
+                }, out uv);
             }
 
             private bool Cell(string key, int w, int h, System.Action<int, int> paint, out Rect uv)

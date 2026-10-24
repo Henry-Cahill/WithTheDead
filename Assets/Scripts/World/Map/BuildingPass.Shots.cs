@@ -246,10 +246,10 @@ namespace CloneZ
                     SortedDictionary<string, int> d = b.Scenery ? outside : inside;
                     d.TryGetValue(b.Label, out int n);
                     d[b.Label] = n + 1;
+                    if (b.Edge) edge++;
                     if (b.Scenery) continue;
                     storeys.TryGetValue(b.Storeys, out int s);
                     storeys[b.Storeys] = s + 1;
-                    if (b.Edge) edge++;
                     if (b.Enterable) enterable++;
                 }
                 _md.Append("| what | inside the square | past its edge |\n|---|--:|--:|\n");

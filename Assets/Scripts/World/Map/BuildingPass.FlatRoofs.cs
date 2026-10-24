@@ -26,12 +26,20 @@ namespace CloneZ
             bool snowy = p.Snow != SnowCover.Bare;
             Surf cover = RoofCoverSurf(p, false);
             float surface = deck + (snowy ? 0.12f : 0.03f);
-            Deck(m, f, j.Tris, surface, snowy ? RoofSnow : cover);
+            Deck(m, j, surface, snowy ? RoofSnow : cover);
             j.Top = Mathf.Max(j.Top, deck + p.Parapet);
             if (j.Lite)
             {
                 if (p.Penthouse) Penthouse(j, deck, surface, snowy);
-                else if (p.RoofUnits && f.Size > 400f) LiteUnit(j, deck);
+                else if ((p.RoofUnits && f.Size > 400f) || f.Size > 900f) LiteUnits(j, deck);
+                if (f.Size > 600f && MapStyle.Unit(j.Id, SaltMelt + 2) < (p.Heated ? 0.8f : 0.35f))
+                {
+                    // Where the snow has gone, which shows from afar.
+                    System.Random lrng = MapStyle.Rng(j.Id, SaltMelt + 3);
+                    float r = Mathf.Clamp(Mathf.Sqrt(f.Size) * 0.06f, 1.2f, 3.2f);
+                    Surf bareLite = p.Covering == RoofCover.Membrane ? RoofSurf(RoofCover.Membrane, 1) : cover;
+                    Patches(j, m, surface + 0.006f, lrng, snowy ? bareLite : RoofSnow, 1 + Mathf.Min(2, (int)(f.Size / 1500f)), r, r * 1.5f);
+                }
                 return;
             }
             float coping = deck + p.Parapet;
@@ -41,6 +49,7 @@ namespace CloneZ
             // Where the snow has gone: a tar roof's gravel ballast, grey.
             Surf bare = p.Covering == RoofCover.Membrane ? RoofSurf(RoofCover.Membrane, 1) : cover;
             if (snowy) Drifts(j, m, surface, rng);
+            if (snowy && p.Heated && f.Size > 700f && MapStyle.Unit(j.Id, SaltMelt) < 0.7f) MeltLines(j, m, surface + 0.004f);
             Rect keep = default;
             if (p.Penthouse) keep = Penthouse(j, deck, surface, snowy);
             if (p.RoofUnits || f.Size > 220f) Furniture(j, deck, surface, snowy, bare, keep, rng);
@@ -48,10 +57,54 @@ namespace CloneZ
             else if (!snowy) Patches(j, m, surface + 0.006f, rng, RoofSnow, Mathf.Clamp(2 + Mathf.RoundToInt(f.Size / 200f), 2, 10), 0.5f, 1.6f);
         }
 
-        // The roof's top over the whole footprint at height y.
-        private static void Deck(RaidMesh m, Footprint f, List<int> tris, float y, in Surf s)
+        private static readonly List<float> s_Span = new List<float>(16);
+
+        // Where the line u = c (frame coordinates; v = c when <paramref name="alongU"/>) crosses the footprint: the
+        // stretches of it inside, as pairs of v (or u) in <see cref="s_Span"/>.
+        private static void Spans(Job j, float c, bool alongU)
         {
-            List<Vector2> pts = f.Pts;
+            s_Span.Clear();
+            Shape sh = j.Sh;
+            List<Vector2> pts = j.F.Pts;
+            int n = pts.Count;
+            for (int i = 0; i < n; i++)
+            {
+                Vector2 a = sh.Local(pts[i]), b = sh.Local(pts[(i + 1) % n]);
+                float ka = alongU ? a.y : a.x, kb = alongU ? b.y : b.x;
+                if ((ka > c) == (kb > c)) continue;
+                float t = (c - ka) / (kb - ka);
+                s_Span.Add(alongU ? a.x + (b.x - a.x) * t : a.y + (b.y - a.y) * t);
+            }
+            s_Span.Sort();
+        }
+
+        // Lines melted through the snow along the joists of a heated building's big roof, where their steel carries the
+        // warmth up: faint grey stripes a couple of metres apart across the short way, clear of the parapets.
+        private static void MeltLines(Job j, RaidMesh m, float y)
+        {
+            Shape sh = j.Sh;
+            float spacing = Mathf.Lerp(1.8f, 2.6f, MapStyle.Unit(j.Id, SaltMelt + 1));
+            Surf melt = DecorPalette.Matte(new Color(0.74f, 0.77f, 0.81f));
+            int lines = Mathf.FloorToInt((sh.HalfL * 2f - 2f) / spacing);
+            float u0 = -(lines - 1) * spacing * 0.5f;
+            for (int k = 0; k < lines; k++)
+            {
+                float u = u0 + k * spacing;
+                Spans(j, u, false);
+                for (int s = 0; s + 1 < s_Span.Count; s += 2)
+                {
+                    float v0 = s_Span[s] + 1.1f, v1 = s_Span[s + 1] - 1.1f;
+                    if (v1 - v0 < 2f) continue;
+                    m.Flat(To3(sh.World(u, (v0 + v1) * 0.5f), y), 0.22f, v1 - v0, sh.Yaw, melt);
+                }
+            }
+        }
+
+        // The roof's top over the whole footprint at height y.
+        private static void Deck(RaidMesh m, Job j, float y, in Surf s)
+        {
+            List<int> tris = j.Tris;
+            List<Vector2> pts = j.TriPts;
             for (int t = 0; t + 2 < tris.Count; t += 3)
                 m.Tri(To3(pts[tris[t]], y), To3(pts[tris[t + 1]], y), To3(pts[tris[t + 2]], y), s);
         }
@@ -273,12 +326,22 @@ namespace CloneZ
             return true;
         }
 
-        // One unit on a far roof, for its silhouette.
-        private static void LiteUnit(Job j, float deck)
+        // What stands on a far roof, for its silhouette: a unit, or a few spread along a big roof, as big as the roof.
+        private static void LiteUnits(Job j, float deck)
         {
             Shape sh = j.Sh;
-            if (!Fits(j, Vector2.zero, 1.2f, 0.8f, 1f)) return;
-            j.Upper.Box(To3(sh.O, deck + 0.6f), new Vector3(2.4f, 1.2f, 1.6f), sh.Yaw, DecorPalette.Metal(new Color(0.58f, 0.59f, 0.58f)));
+            float area = j.F.Size;
+            int count = Mathf.Clamp(Mathf.RoundToInt(area / 900f), 1, 4);
+            float scale = Mathf.Clamp(Mathf.Sqrt(area) / 34f, 1f, 2.2f);
+            float hl = 1.2f * scale, hw = 0.8f * scale, h = 1.2f * Mathf.Sqrt(scale);
+            Surf unit = DecorPalette.Matte(new Color(0.62f, 0.63f, 0.62f));
+            for (int k = 0; k < count; k++)
+            {
+                float t = count == 1 ? 0f : (k / (float)(count - 1) - 0.5f) * 1.1f;
+                var c = new Vector2(t * sh.HalfL, (count > 1 && (k & 1) == 1 ? -0.22f : 0.22f) * sh.HalfW);
+                if (!Fits(j, c, hl, hw, 1f)) continue;
+                j.Upper.Box(To3(sh.World(c), deck + h * 0.5f), new Vector3(hl * 2f, h, hw * 2f), sh.Yaw, unit);
+            }
         }
 
         private enum Kit { Unit, Condenser, Fan, Skylight, Hatch, Vent }
@@ -332,13 +395,16 @@ namespace CloneZ
             }
             int want = units + condensers + fans + skylights + 1;
             // The lattice: rows along the length, spaced so the wanted things about fill it.
-            float du = Mathf.Clamp(Mathf.Sqrt(area / Mathf.Max(1, want)) * 0.9f, 3.2f, 9f);
-            float dv = Mathf.Clamp(du * 0.8f, 3f, 7f);
+            float du = Mathf.Clamp(Mathf.Sqrt(area / Mathf.Max(1, want)) * 0.9f, 3.2f, 12f);
+            float dv = Mathf.Clamp(du * 0.8f, 3f, 9f);
             int nu = Mathf.Max(1, Mathf.FloorToInt((sh.HalfL * 2f - 2f) / du)), nv = Mathf.Max(1, Mathf.FloorToInt((sh.HalfW * 2f - 2f) / dv));
             float u0 = -(nu - 1) * du * 0.5f, v0 = -(nv - 1) * dv * 0.5f;
             RaidMesh m = j.Upper;
-            Surf metal = DecorPalette.Metal(new Color(0.60f, 0.61f, 0.60f)), dark = DecorPalette.Matte(new Color(0.14f, 0.14f, 0.15f));
-            Surf glass = DecorPalette.Gloss(new Color(0.20f, 0.24f, 0.27f));
+            // Matte, not metal: painted galvanised steel under a winter sky, which never glares at night.
+            Surf metal = DecorPalette.Matte(new Color(0.66f, 0.67f, 0.66f)), dark = DecorPalette.Matte(new Color(0.14f, 0.14f, 0.15f));
+            Surf glass = DecorPalette.Matte(new Color(0.24f, 0.28f, 0.31f));
+            // A big building's plant is bigger.
+            float scale = Mathf.Clamp(Mathf.Sqrt(area) / 34f, 1f, 2.2f);
             float yaw = sh.Yaw;
             bool hatch = false;
             int placed = 0, skip = rng.Next(3);
@@ -349,7 +415,7 @@ namespace CloneZ
                     if (want < nu * nv && ((a * 7 + b * 3 + skip) % Mathf.Max(1, nu * nv / want)) != 0) continue;
                     var c = new Vector2(u0 + a * du + Range(rng, -0.4f, 0.4f), v0 + b * dv);
                     if (keep.width > 0f && c.x > keep.xMin - 2f && c.x < keep.xMax + 2f && c.y > keep.yMin - 2f && c.y < keep.yMax + 2f) continue;
-                    if (!Fits(j, c, 1.0f, 0.8f, 0.9f)) continue;
+                    if (!Fits(j, c, 1.0f * scale, 0.8f * scale, 0.9f)) continue;
                     Kit kit = skylights > 0 && (b & 1) == 0 && p.Arch != Arch.Row ? Kit.Skylight
                         : units > 0 ? Kit.Unit : condensers > 0 ? Kit.Condenser : fans > 0 ? Kit.Fan : skylights > 0 ? Kit.Skylight
                         : !hatch ? Kit.Hatch : Kit.Vent;
@@ -362,7 +428,7 @@ namespace CloneZ
                         case Kit.Hatch: hatch = true; break;
                     }
                     placed++;
-                    RoofThing(j, m, kit, sh.World(c), deck, surface, snowy, yaw, metal, dark, glass, cover, rng);
+                    RoofThing(j, m, kit, sh.World(c), deck, surface, snowy, yaw, scale, metal, dark, glass, cover, rng);
                 }
             // Vent stacks by the walls.
             int vents = Mathf.Clamp(Mathf.RoundToInt(area / 300f), 1, 5);
@@ -377,8 +443,8 @@ namespace CloneZ
             if (area > 3000f) Curbs(j, m, surface);
         }
 
-        // One thing on a flat roof, at w (plan) on the deck.
-        private static void RoofThing(Job j, RaidMesh m, Kit kit, Vector2 w, float deck, float surface, bool snowy, float yaw,
+        // One thing on a flat roof, at w (plan) on the deck, <paramref name="scale"/> times its usual size.
+        private static void RoofThing(Job j, RaidMesh m, Kit kit, Vector2 w, float deck, float surface, bool snowy, float yaw, float scale,
             in Surf metal, in Surf dark, in Surf glass, in Surf cover, System.Random rng)
         {
             Shape sh = j.Sh;
@@ -387,7 +453,8 @@ namespace CloneZ
                 case Kit.Unit:
                 {
                     // A packaged air handler: a long box, a grille down one side, ducts into the roof, a ring melted round it.
-                    var size = new Vector3(Range(rng, 1.8f, 2.8f), Range(rng, 0.9f, 1.3f), Range(rng, 1.1f, 1.6f));
+                    var size = new Vector3(Range(rng, 1.8f, 2.8f), Range(rng, 0.9f, 1.3f), Range(rng, 1.1f, 1.6f)) * scale;
+                    size.y = Mathf.Min(size.y, 2.2f);
                     if (snowy) m.FlatBlob(To3(w, surface + 0.006f), size.x * 0.8f, size.z * 0.85f, yaw, 0.25f, rng, cover);
                     m.Box(To3(w, deck + size.y * 0.5f + 0.15f), size, yaw, metal);
                     m.Box(To3(w, deck + 0.075f), new Vector3(size.x * 0.9f, 0.15f, size.z * 0.9f), yaw, dark);
@@ -405,15 +472,19 @@ namespace CloneZ
                     break;
                 }
                 case Kit.Fan:
+                {
                     // An exhaust fan: a squat drum under a mushroom cap.
-                    m.Cylinder(To3(w, deck), 0.3f, 0.5f, 8, metal);
-                    m.Cylinder(To3(w, deck + 0.5f), 0.52f, 0.16f, 10, metal, Quaternion.identity, 0.6f);
-                    if (snowy) m.Cylinder(To3(w, deck + 0.66f), 0.3f, 0.06f, 8, RoofSnow);
+                    float k = Mathf.Min(scale, 1.6f);
+                    m.Cylinder(To3(w, deck), 0.3f * k, 0.5f * k, 8, metal);
+                    m.Cylinder(To3(w, deck + 0.5f * k), 0.52f * k, 0.16f * k, 10, metal, Quaternion.identity, 0.6f);
+                    if (snowy) m.Cylinder(To3(w, deck + 0.66f * k), 0.3f * k, 0.06f, 8, RoofSnow);
                     break;
+                }
                 case Kit.Skylight:
                 {
                     // A skylight on its curb, half under the snow.
                     var size = new Vector3(2.4f, 0.4f, 1.3f);
+                    if (scale > 1.4f) size.x = 3.6f;
                     m.Box(To3(w, deck + size.y * 0.5f), size, yaw, metal);
                     m.Flat(To3(w, deck + size.y + 0.01f), size.x * 0.9f, size.z * 0.8f, yaw, glass);
                     if (snowy)
@@ -430,22 +501,21 @@ namespace CloneZ
             }
         }
 
-        // Expansion joints across a very big roof: low curbs every 30 m or so over its blocks.
+        // Expansion joints across a very big roof: low curbs every 30 m or so, across its short way.
         private static void Curbs(Job j, RaidMesh m, float surface)
         {
             Shape sh = j.Sh;
             Surf curb = DecorPalette.Matte(new Color(0.42f, 0.42f, 0.41f));
-            foreach (Rect r in sh.Blocks)
+            int n = Mathf.FloorToInt(sh.HalfL * 2f / 30f);
+            for (int k = 1; k <= n; k++)
             {
-                int n = Mathf.FloorToInt(r.width / 30f);
-                for (int k = 1; k <= n; k++)
+                float u = -sh.HalfL + sh.HalfL * 2f * k / (n + 1);
+                Spans(j, u, false);
+                for (int s = 0; s + 1 < s_Span.Count; s += 2)
                 {
-                    float u = r.xMin + r.width * k / (n + 1);
-                    float v0 = r.yMin + 0.8f, v1 = r.yMax - 0.8f;
+                    float v0 = s_Span[s] + 0.4f, v1 = s_Span[s + 1] - 0.4f;
                     if (v1 - v0 < 2f) continue;
-                    Vector2 a = sh.World(u, v0), b = sh.World(u, v1);
-                    Vector2 c = (a + b) * 0.5f;
-                    m.Box(To3(c, surface + 0.1f), new Vector3(0.35f, 0.2f, v1 - v0), sh.Yaw, curb);
+                    m.Box(To3(sh.World(u, (v0 + v1) * 0.5f), surface + 0.1f), new Vector3(0.35f, 0.2f, v1 - v0), sh.Yaw, curb);
                 }
             }
         }

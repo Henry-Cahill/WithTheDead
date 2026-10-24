@@ -126,7 +126,7 @@ namespace CloneZ
         #endregion
 
         #region Drifts
-        private const float DriftStep = 1.1f;   // metres between a drift's cross-sections
+        private const float DriftStep = 1.3f;   // metres between a drift's cross-sections
         private static float[] s_T = new float[64], s_H = new float[64], s_D = new float[64];
 
         // Grows the scratch arrays to hold n stations.
@@ -201,10 +201,12 @@ namespace CloneZ
 
         // Snow banked along the foot of the walls of every building the building pass raised (its shells), drifting in and
         // out along the wall; none along a wall with a door (its walk shovelled, its porch and steps standing there), on the
-        // road or the sidewalk, on a lot, a driveway or under a parked car; squeezed between neighbours.
+        // road or the sidewalk, on a lot, a driveway or under a parked car; squeezed between neighbours. What a wall's band
+        // could meet (a road, a sidewalk, a neighbour) is looked for once a wall, and its stations test only what's near.
         private static IEnumerable<string> WallDrifts(Site site, NaturePlan plan)
         {
             var seen = new HashSet<Footprint>();
+            var near = new List<Footprint>(8);
             Surf snow = DecorPalette.Matte(Snow);
             for (int s = 0; s < site.Shells.Count; s++)
             {
@@ -221,6 +223,18 @@ namespace CloneZ
                     Vector2 dir = (b - a) / len, outward = new Vector2(dir.y, -dir.x);
                     long key = NaturePlan.Combine(f.Data.id, i);
                     if (!Exposure(outward, MapStyle.Unit(key, SaltDrift), out float depth, out float height)) continue;
+                    // The band's middle, and how far its stations' feet and probes reach from it.
+                    Vector2 mid = (a + b) * 0.5f + outward * (depth * 0.7f);
+                    float spread = len * 0.5f + depth * 1.3f + 0.5f;
+                    float clear = plan.RoadClearance(mid, spread + 8f);
+                    bool roads = clear < spread + 0.3f, walks = clear < spread + 7f;
+                    // A storefront's wall along the sidewalk: shovelled from end to end.
+                    if (walks && plan.OnSidewalk(a + dir * 0.6f + outward * (depth * 0.5f), 0.2f) && plan.OnSidewalk(b - dir * 0.6f + outward * (depth * 0.5f), 0.2f)
+                        && plan.OnSidewalk((a + b) * 0.5f + outward * (depth * 0.5f), 0.2f))
+                        continue;
+                    plan.BuildingsNear(mid, spread + 1f, near);
+                    // A neighbour's walls, or the building's own round a corner of anything but a box.
+                    bool squeezed = near.Count > 1 || (near.Count == 1 && near[0] != f) || p.Count > 4;
                     int n = Mathf.Max(2, Mathf.CeilToInt(len / DriftStep) + 1);
                     Room(n);
                     for (int k = 0; k < n; k++)
@@ -232,10 +246,10 @@ namespace CloneZ
                         float end = Mathf.Min(t, len - t);
                         if (end < 0.9f) h *= Mathf.Lerp(0.3f, 1f, end / 0.9f);
                         Vector2 foot = at + outward * (d * 0.5f);
-                        if (plan.NearDoor(at + outward, 1.8f) || plan.RoadClearance(foot, 1f) < 0.2f || plan.LandAt(foot) == Land.Lot
-                            || plan.IsKept(foot, 0.3f) || plan.OnSidewalk(foot, 0.2f))
+                        if (plan.NearDoor(at + outward, 1.8f) || (roads && plan.RoadClearance(foot, 1f) < 0.2f) || plan.LandAt(foot) == Land.Lot
+                            || plan.IsKept(foot, 0.3f) || (walks && plan.OnSidewalk(foot, 0.2f)))
                             h = 0f;
-                        else if (plan.WallDistance(at + outward * (d + 0.3f), 0.6f) < 0.35f)
+                        else if (squeezed && plan.WallDistance(at + outward * (d + 0.3f), 0.6f) < 0.35f)
                         {
                             d *= 0.5f;
                             h *= 0.6f;
@@ -245,8 +259,8 @@ namespace CloneZ
                         s_D[k] = d;
                     }
                     Bank(m, a, dir, outward, n, snow);
+                    if (site.StepDue) yield return "wall drifts";
                 }
-                if (site.StepDue) yield return "wall drifts";
             }
         }
 

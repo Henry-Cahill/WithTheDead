@@ -76,6 +76,10 @@ namespace CloneZ
         /// longest a stand-in took in all (ms), and how many were let go of again.</summary>
         internal static int OverlaysMade, OverlaysEvicted;
         internal static double OverlayMs, OverlaySliceMaxMs, OverlayWholeMaxMs;
+        /// <summary>The longest slice (for the harness): the stage it began at and the one it ended at (4: the stand-in
+        /// finished), the walls' vertices, and whether a garbage collection fell in it.</summary>
+        internal static int OverlaySliceMaxFrom, OverlaySliceMaxTo, OverlaySliceMaxVertices;
+        internal static bool OverlaySliceMaxGc;
 
         /// <summary>Stand-ins alive now, and their meshes' size in bytes.</summary>
         internal static int OverlaysAlive => s_Overlays.Count;
@@ -268,6 +272,8 @@ namespace CloneZ
                 return true;
             }
             long started = Stopwatch.GetTimestamp();
+            int from = job.Stage, collections = System.GC.CollectionCount(0);
+            bool done = false;
             try
             {
                 if (job.Stage == 0)
@@ -289,11 +295,13 @@ namespace CloneZ
                 }
                 FinishOverlay(job);
                 AbortOverlayJob();
+                done = true;
                 return true;
             }
             catch (System.Exception e)
             {
                 Failed(b, e.GetType().Name + ": " + e.Message);
+                done = true;
                 return true;
             }
             finally
@@ -301,7 +309,14 @@ namespace CloneZ
                 double ms = (Stopwatch.GetTimestamp() - started) * 1000.0 / Stopwatch.Frequency;
                 job.Ms += ms;
                 OverlayMs += ms;
-                if (ms > OverlaySliceMaxMs && deadline != long.MaxValue) OverlaySliceMaxMs = ms;
+                if (ms > OverlaySliceMaxMs && deadline != long.MaxValue)
+                {
+                    OverlaySliceMaxMs = ms;
+                    OverlaySliceMaxFrom = from;
+                    OverlaySliceMaxTo = done ? 4 : job.Stage;
+                    OverlaySliceMaxVertices = job.Vertices;
+                    OverlaySliceMaxGc = System.GC.CollectionCount(0) != collections;
+                }
             }
         }
 

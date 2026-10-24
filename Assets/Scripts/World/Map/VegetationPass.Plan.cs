@@ -53,7 +53,6 @@ namespace CloneZ
             _regionSize = site.Build != null ? site.Build.RegionSize : 8192;
             PlaceOrigin(site, out OriginX, out OriginZ);
             Woodland = RegionalWoodland(OriginX, OriginZ);
-            _roadCells = new Buckets(Reach, BucketCell);
             _buildingCells = new Buckets(Reach, BucketCell);
             _doorCells = new Buckets(Reach, BucketCell);
             _powerCells = new Buckets(Reach, BucketCell);
@@ -76,15 +75,17 @@ namespace CloneZ
         private bool _caughtUp;
 
         /// <summary>
-        /// Takes in what the passes before the nature passes built: the enterable buildings' doors, the driveways the
-        /// roads laid and the overhead wires the streetscape strung. The plan can be made before any of them exist (the
-        /// ground pass asks it where the woods are, <see cref="Wooded"/>), so every nature pass calls this before it starts;
-        /// only the first call does anything.
+        /// Takes in what the passes before the nature passes built: the roads as drawn (their kerbs and parking lanes), the
+        /// enterable buildings' doors, the driveways the roads laid and the overhead wires the streetscape strung. The
+        /// plan can be made before any of them exist (the ground pass asks it where the woods are, <see cref="Wooded"/>),
+        /// so every nature pass calls this before it starts; only the first call does anything.
         /// </summary>
         internal void CatchUp()
         {
             if (_caughtUp) return;
             _caughtUp = true;
+            IndexRoads();
+            _frames.Clear();
             IndexDoors();
             if (Lite) return;
             KeepRoadDriveways();
@@ -310,25 +311,29 @@ namespace CloneZ
 
         private const float BucketCell = 16f;
         private readonly List<RoadSeg> _roads = new List<RoadSeg>(256);
-        private readonly Buckets _roadCells;
+        private Buckets _roadCells;
         private int[] _roadSeen;
         private int _roadTick;
 
         public IReadOnlyList<RoadSeg> Roads => _roads;
 
+        // Every street piece's straight pieces, as wide as the roads drew them (to the wider side's kerb face: a downtown
+        // street's parking lanes reach well past its mapped width) once the road pass has run, as mapped before.
         private void IndexRoads()
         {
+            _roads.Clear();
+            _roadCells = new Buckets(Reach, BucketCell);
             List<Street> streets = Site.Area.Streets;
             for (int s = 0; s < streets.Count; s++)
             {
                 Street st = streets[s];
                 if (st.Data.tunnel) continue;
                 bool foot = FootKind(st.Data.kind);
+                float half = Mathf.Max(st.Width * 0.5f, RoadPass.HalfWidth(st));
                 for (int i = 0; i + 1 < st.Pts.Count; i++)
                 {
                     Vector2 a = st.Pts[i], b = st.Pts[i + 1];
                     if ((b - a).sqrMagnitude < 1e-4f) continue;
-                    float half = st.Width * 0.5f;
                     _roadCells.Add(_roads.Count, Rect.MinMaxRect(Mathf.Min(a.x, b.x) - half, Mathf.Min(a.y, b.y) - half,
                         Mathf.Max(a.x, b.x) + half, Mathf.Max(a.y, b.y) + half));
                     _roads.Add(new RoadSeg { A = a, B = b, Half = half, Street = s, Rank = st.Rank, Foot = foot });
@@ -424,16 +429,39 @@ namespace CloneZ
             return true;
         }
 
-        /// <summary>True when <paramref name="p"/> is on the nearest street's sidewalk (from the back of its kerb to the
-        /// sidewalk's outer edge, as the roads drew them), or within <paramref name="margin"/> of it.</summary>
+        /// <summary>True when <paramref name="p"/> is on a sidewalk as the roads drew it (from the back of a street's kerb to
+        /// its sidewalk's outer edge, on either side of any street within reach), or within <paramref name="margin"/> of
+        /// one.</summary>
         public bool OnSidewalk(Vector2 p, float margin)
         {
-            if (!NearestRoad(p, 15f, 1, out RoadSeg seg, out float dist, out Vector2 foot)) return false;
-            Street st = StreetOf(seg);
-            Vector2 d = seg.B - seg.A;
-            int side = d.x * (p.y - foot.y) - d.y * (p.x - foot.x) >= 0f ? 1 : -1;
-            float outer = RoadPass.SidewalkOuter(st, side);
-            return outer > 0f && dist > RoadPass.KerbOffset(st, side) - margin && dist < outer + margin;
+            const float within = 16f;
+            _roadTick++;
+            _roadCells.Range(p, within, out int x0, out int z0, out int x1, out int z1);
+            for (int z = z0; z <= z1; z++)
+                for (int x = x0; x <= x1; x++)
+                {
+                    List<int> cell = _roadCells.At(x, z);
+                    if (cell == null) continue;
+                    for (int k = 0; k < cell.Count; k++)
+                    {
+                        int i = cell[k];
+                        if (_roadSeen[i] == _roadTick) continue;
+                        _roadSeen[i] = _roadTick;
+                        RoadSeg r = _roads[i];
+                        if (r.Foot) continue;
+                        Vector2 ab = r.B - r.A;
+                        float t = Vector2.Dot(p - r.A, ab) / ab.sqrMagnitude;
+                        if (t < -0.02f || t > 1.02f) continue;   // past the piece's end: its neighbour's, or the junction's
+                        Vector2 q = r.A + ab * Mathf.Clamp01(t);
+                        float dist = Vector2.Distance(p, q);
+                        if (dist > within) continue;
+                        Street st = Site.Area.Streets[r.Street];
+                        int side = ab.x * (p.y - q.y) - ab.y * (p.x - q.x) >= 0f ? 1 : -1;
+                        float outer = RoadPass.SidewalkOuter(st, side);
+                        if (outer > 0f && dist > RoadPass.KerbOffset(st, side) - margin && dist < outer + margin) return true;
+                    }
+                }
+            return false;
         }
         #endregion
 
@@ -594,6 +622,25 @@ namespace CloneZ
                 }
         }
 
+        /// <summary>True when a doorstep (a metre out from the middle of any enterable building's door) lies inside the
+        /// rectangle round <paramref name="at"/> (unit long <paramref name="axis"/>, half sizes).</summary>
+        public bool DoorIn(Vector2 at, Vector2 axis, float halfLength, float halfWidth)
+        {
+            _doorCells.Range(at, halfLength + halfWidth, out int x0, out int z0, out int x1, out int z1);
+            for (int z = z0; z <= z1; z++)
+                for (int x = x0; x <= x1; x++)
+                {
+                    List<int> cell = _doorCells.At(x, z);
+                    if (cell == null) continue;
+                    for (int k = 0; k < cell.Count; k++)
+                    {
+                        Vector2 d = _doors[cell[k]] - at;
+                        if (Mathf.Abs(Vector2.Dot(d, axis)) < halfLength && Mathf.Abs(axis.x * d.y - axis.y * d.x) < halfWidth) return true;
+                    }
+                }
+            return false;
+        }
+
         /// <summary>True when the middle of a door lies on the wall from <paramref name="a"/> to <paramref name="b"/>.</summary>
         public bool DoorOnWall(Vector2 a, Vector2 b)
         {
@@ -672,6 +719,9 @@ namespace CloneZ
         private int[] _wireSeen = new int[0];
         private int _wireTick;
         private static readonly List<Vector3> s_WireVerts = new List<Vector3>(4096);
+
+        /// <summary>How many pieces of overhead wire the plan read back (see <see cref="IndexWires"/>).</summary>
+        public int WirePieces => _wires.Count;
 
         /// <summary>
         /// Reads the overhead wires back from the meshes the streetscape pass hung under the site's overhead root (one
@@ -932,9 +982,19 @@ namespace CloneZ
         }
 
         public readonly List<Keep> Kept = new List<Keep>();
+        private Buckets _keptCells;
+        private int[] _keptSeen = new int[64];
+        private int _keptTick;
 
         public void KeepRect(Vector2 at, Vector2 axis, float halfLength, float halfWidth, KeepKind kind)
-            => Kept.Add(new Keep { At = at, Axis = axis.normalized, HalfLength = halfLength, HalfWidth = halfWidth, Kind = kind });
+        {
+            axis = axis.normalized;
+            _keptCells ??= new Buckets(Reach, BucketCell);
+            float ex = Mathf.Abs(axis.x) * halfLength + Mathf.Abs(axis.y) * halfWidth, ez = Mathf.Abs(axis.y) * halfLength + Mathf.Abs(axis.x) * halfWidth;
+            _keptCells.Add(Kept.Count, Rect.MinMaxRect(at.x - ex, at.y - ez, at.x + ex, at.y + ez));
+            Kept.Add(new Keep { At = at, Axis = axis, HalfLength = halfLength, HalfWidth = halfWidth, Kind = kind });
+            if (_keptSeen.Length < Kept.Count) System.Array.Resize(ref _keptSeen, Kept.Count * 2);
+        }
 
         // The driveways the roads laid (aprons and packed tracks up to the houses), from a couple of metres out in the
         // street, where a kerbside car would block the apron, to the track's end.
@@ -954,24 +1014,49 @@ namespace CloneZ
         /// <summary>True when a disc of <paramref name="radius"/> at <paramref name="p"/> touches a kept spot.</summary>
         public bool IsKept(Vector2 p, float radius)
         {
-            for (int i = 0; i < Kept.Count; i++)
-            {
-                Keep k = Kept[i];
-                Vector2 d = p - k.At;
-                float along = Vector2.Dot(d, k.Axis), across = k.Axis.x * d.y - k.Axis.y * d.x;
-                if (Mathf.Abs(along) < k.HalfLength + radius && Mathf.Abs(across) < k.HalfWidth + radius) return true;
-            }
+            if (Kept.Count == 0) return false;
+            _keptTick++;
+            // The test below grows each spot by the radius in its own frame, which reaches √2 further along the axes.
+            _keptCells.Range(p, radius * 1.42f, out int x0, out int z0, out int x1, out int z1);
+            for (int z = z0; z <= z1; z++)
+                for (int x = x0; x <= x1; x++)
+                {
+                    List<int> cell = _keptCells.At(x, z);
+                    if (cell == null) continue;
+                    for (int c = 0; c < cell.Count; c++)
+                    {
+                        int i = cell[c];
+                        if (_keptSeen[i] == _keptTick) continue;
+                        _keptSeen[i] = _keptTick;
+                        Keep k = Kept[i];
+                        Vector2 d = p - k.At;
+                        float along = Vector2.Dot(d, k.Axis), across = k.Axis.x * d.y - k.Axis.y * d.x;
+                        if (Mathf.Abs(along) < k.HalfLength + radius && Mathf.Abs(across) < k.HalfWidth + radius) return true;
+                    }
+                }
             return false;
         }
 
         /// <summary>True when the rectangle overlaps a kept spot (separating axes).</summary>
         public bool IsKept(Vector2 at, Vector2 axis, float halfLength, float halfWidth)
         {
-            for (int i = 0; i < Kept.Count; i++)
-            {
-                Keep k = Kept[i];
-                if (Overlap(at, axis, halfLength, halfWidth, k.At, k.Axis, k.HalfLength, k.HalfWidth)) return true;
-            }
+            if (Kept.Count == 0) return false;
+            _keptTick++;
+            _keptCells.Range(at, halfLength + halfWidth, out int x0, out int z0, out int x1, out int z1);
+            for (int z = z0; z <= z1; z++)
+                for (int x = x0; x <= x1; x++)
+                {
+                    List<int> cell = _keptCells.At(x, z);
+                    if (cell == null) continue;
+                    for (int c = 0; c < cell.Count; c++)
+                    {
+                        int i = cell[c];
+                        if (_keptSeen[i] == _keptTick) continue;
+                        _keptSeen[i] = _keptTick;
+                        Keep k = Kept[i];
+                        if (Overlap(at, axis, halfLength, halfWidth, k.At, k.Axis, k.HalfLength, k.HalfWidth)) return true;
+                    }
+                }
             return false;
         }
 
@@ -1007,6 +1092,9 @@ namespace CloneZ
             public bool Road;
             /// <summary>Along the driveway, from the street towards the house.</summary>
             public Vector2 Dir;
+            /// <summary>The vehicle it was planned for (when <see cref="Bodied"/>: its length set where it stands).</summary>
+            public CarBody Body;
+            public bool Bodied;
         }
 
         /// <summary>The driveways' cars (<see cref="VehiclePass.PlanDriveways"/>).</summary>

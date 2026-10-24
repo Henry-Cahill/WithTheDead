@@ -13,12 +13,14 @@ namespace CloneZ
 
         #region Kerbs
         /// <summary>
-        /// Cars parallel-parked along the kerbs as the roads drew them (<see cref="RoadPass.EdgeOffset"/>), on stations 6.6 m
-        /// apart: nose to tail downtown and along the shopping streets (both sides where the street is wide enough), now and
-        /// then along the residential streets, hardly ever out of town; never round a junction (past its paving and
-        /// crosswalks), at a crossing, a hydrant or a bus stop, on a bend, across a driveway's apron or on a bridge. Now
-        /// and then a car was left slewed across a lane in town, its door open. Found first, then parked, thinned evenly if
-        /// there are more than the site has room for.
+        /// Cars parked along the kerbs as the roads drew them. Where the roads gave a side a parking lane (downtown) the
+        /// cars stand in the stalls they painted (<see cref="RoadPass.KerbStalls"/>): nose in at the angled ones, along the
+        /// kerb with the traffic in the parallel ones. Elsewhere they're parallel-parked at the kerb
+        /// (<see cref="RoadPass.EdgeOffset"/>) on stations 6.6 m apart: nose to tail along the shopping streets (both sides
+        /// where the street is wide enough), now and then along the residential streets, hardly ever out of town; never
+        /// round a junction (past its paving and crosswalks), at a crossing, a hydrant or a bus stop, on a bend, across a
+        /// driveway's apron or on a bridge. Now and then a car was left slewed across a lane in town, its door open. Found
+        /// first, then parked, thinned evenly if there are more than the site has room for.
         /// </summary>
         private static IEnumerable<string> KerbCars(Parking c)
         {
@@ -49,6 +51,8 @@ namespace CloneZ
                     for (int side = -1; side <= 1; side += 2)
                     {
                         if (!both && side != only) continue;
+                        // A side with a parking lane parks in its painted stalls (below); the roads count sides from the left.
+                        if (RoadPass.ParkingLane(st, -side, out _, out _, out _)) continue;
                         long key = NaturePlan.Combine(NaturePlan.Combine(st.Data.id, s.K), side + 3);
                         Vector2 n = right * side;
                         Vector2 front = s.At + n * (st.Width * 0.5f + 9f);
@@ -69,8 +73,70 @@ namespace CloneZ
                 }
                 if (c.Site.StepDue) yield return "kerbside cars";
             }
+            IReadOnlyList<RoadPass.KerbStall> stalls = RoadPass.KerbStalls(c.Site);
+            for (int i = 0; i < stalls.Count; i++)
+            {
+                if (StallCar(c, stalls[i], out Candidate car)) found.Add(car);
+                if ((i & 15) == 15 && c.Site.StepDue) yield return "kerbside cars";
+            }
             foreach (string step in ParkFound(c, c.Max - c.Count - 8, "kerbside cars")) yield return step;
             yield return "kerbside cars";
+        }
+
+        // A car in one of the painted stalls, if one's there: as many as the kerbs of shops fill (more than half), never
+        // fewer than a third. Nosed in up to the kerb at an angled stall, in the middle of a parallel one, keyed by where
+        // the stall lies so every piece and build of the street parks the same car there.
+        private static bool StallCar(Parking c, in RoadPass.KerbStall k, out Candidate car)
+        {
+            car = default;
+            NaturePlan plan = c.Plan;
+            Street st = k.Street;
+            if (st == null || st.Data.bridge || st.Data.tunnel || !plan.InSquare(k.At, 0f) || Near(c.NoParking, k.At, 4.5f)) return false;
+            int side = SideOf(st.Pts, k.At, out Vector2 outward);
+            if (side == 0 || !RoadPass.ParkingLane(st, side, out float inner, out float outer, out bool _)) return false;
+            long key = NaturePlan.Combine(NaturePlan.Combine(NaturePlan.Combine(st.Data.id, (long)System.Math.Floor(plan.AbsX(k.At.x) / 1.6)),
+                (long)System.Math.Floor(plan.AbsZ(k.At.y) / 1.6)), 0x57A1);
+            float depth = Mathf.Max(0f, outer - inner);
+            Vector2 front = k.At + outward * (depth * 0.5f + 9f);
+            if (MapStyle.Unit(key, SaltKerb) >= Mathf.Max(0.35f, KerbChance(st, plan.Business(front), plan.Urban(front)))) return false;
+            CarBody body = BodyFor(Where.Street, MapStyle.Unit(key, SaltBody));
+            Vector3 size = CarKit.Size(body);
+            Vector2 heading = Axis(k.Yaw), across = new Vector2(heading.y, -heading.x);
+            // An angled stall runs depth / sin 60 from the lane's edge to the kerb: the nose stops 0.3 m short of the kerb.
+            float shove = k.Angled ? Mathf.Max(0f, depth * 0.5f / Mathf.Sin(60f * Mathf.Deg2Rad) - size.z * 0.5f - 0.3f) : 0f;
+            Vector2 at = k.At + heading * (shove + (MapStyle.Unit(key, SaltJitter) - 0.5f) * (k.Angled ? 0.3f : 1.0f))
+                + across * ((MapStyle.Unit(key, SaltJitter + 1) - 0.5f) * 0.25f);
+            if (plan.IsKept(at, heading, size.z * 0.5f, size.x * 0.5f)) return false;
+            car = new Candidate
+            {
+                At = at, Yaw = k.Yaw + (MapStyle.Unit(key, SaltJitter + 2) - 0.5f) * (k.Angled ? 4f : 5f), Key = key, Body = body,
+                Snow = 0.5f, Stall = true,
+            };
+            return true;
+        }
+
+        // Which side of a street's line a point lies on, as the roads count them (+1 left of its points' order, -1 right),
+        // and the way out from the line to it; 0 on the line.
+        private static int SideOf(List<Vector2> pts, Vector2 p, out Vector2 outward)
+        {
+            outward = Vector2.zero;
+            float best = float.MaxValue;
+            int side = 0;
+            for (int i = 0; i + 1 < pts.Count; i++)
+            {
+                Vector2 a = pts[i], d = pts[i + 1] - a;
+                float l2 = d.sqrMagnitude;
+                if (l2 < 1e-6f) continue;
+                Vector2 foot = a + d * Mathf.Clamp01(Vector2.Dot(p - a, d) / l2);
+                Vector2 off = p - foot;
+                float dd = off.sqrMagnitude;
+                if (dd >= best) continue;
+                best = dd;
+                float cross = d.x * off.y - d.y * off.x;   // > 0 to the left of d
+                side = cross > 1e-6f ? 1 : cross < -1e-6f ? -1 : 0;
+                outward = dd > 1e-8f ? off / Mathf.Sqrt(dd) : Vector2.zero;
+            }
+            return side;
         }
 
         // How likely a kerbside station has a car: shops and offices across the sidewalk fill the kerb, homes see one now

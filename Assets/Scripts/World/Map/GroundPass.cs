@@ -46,8 +46,8 @@ namespace CloneZ
     /// <para>A streamed chunk draws exactly its own square (fills, tone and decals cut to it) and places anything that
     /// repeats (rows, headstones, stalls, drift ice) on lattices fixed to the world or to the area's whole outline, so
     /// neighbouring chunks meet without a seam. Lite chunks and the fixed map's scenery ring get the fills, the water
-    /// with its shores and shelves, the field rows, the lots' plowed edges and the tone, but no props, no stalls and no
-    /// small decals.</para>
+    /// with its shores and shelves, the field rows, the lots' plowed edges and packed stall rows and the tone, but no
+    /// props, no stall lines and no small decals.</para>
     /// </remarks>
     internal static partial class GroundPass
     {

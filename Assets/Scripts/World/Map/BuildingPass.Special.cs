@@ -373,6 +373,7 @@ namespace CloneZ
             Footprint f = j.F;
             Shape sh = j.Sh;
             j.Shell = j.Site.Shell(f, j.Scenery && !j.Edge);
+            Mark("deck shell");
             int decks = Mathf.Max(1, p.Storeys - 1) + 1;   // the floors over the ground one, the top deck last
             float h = p.Storey, spandrel = 1.05f, slab = 0.3f;
             j.Shell.WallTop = 0.4f;
@@ -384,7 +385,7 @@ namespace CloneZ
             {
                 float y = k * h;
                 bool top = k == decks - 1;
-                Deck(up, f, j.Tris, y, top ? (snowy ? RoofSnow : AsphaltSurf) : inner);
+                Deck(up, j, y, top ? (snowy ? RoofSnow : WallSurf(WallKind.Concrete, 1)) : inner);
                 for (int i = 0; i < j.N; i++)
                 {
                     float len = j.Len[i];
@@ -395,6 +396,7 @@ namespace CloneZ
             }
             float roof = (decks - 1) * h;
             j.Top = roof + spandrel;
+            Mark("decks");
             // The columns: at the corners and every seven metres or so round the outline, up through every floor.
             Surf column = concrete;
             for (int i = 0; i < j.N; i++)
@@ -425,7 +427,9 @@ namespace CloneZ
                 }
                 else CurbRun(j, i, 0.3f, len - 0.3f);
             }
+            Mark("columns and curbs");
             StairTower(j, decks, h, roof, spandrel, snowy);
+            Mark("stair tower");
             if (!j.Lite)
             {
                 // Lamp posts on the top deck.
@@ -440,11 +444,14 @@ namespace CloneZ
                     up.Box(To3(at, roof + 5.5f), new Vector3(0.9f, 0.18f, 0.35f), sh.Yaw, pole);
                     up.Box(To3(at, roof + 5.4f), new Vector3(0.7f, 0.04f, 0.25f), sh.Yaw, LampGlobe(0));
                 }
-                // The ground floor's slab, under its deck.
+                // The ground floor's slab, under its deck (the finishes painted ahead in the background, not the
+                // shared asphalt a first deck would otherwise paint inside its time slice).
                 Vector3 middle = To3(f.Middle, 0f);
-                Deck(j.Site.Town.Out.Flat(middle), f, j.Tris, 0.02f, AsphaltSurf);
+                Deck(j.Site.Town.Out.Flat(middle), j, 0.02f, WallSurf(WallKind.Concrete, 1));
             }
+            Mark("lamps and ground slab");
             if (!j.Scenery) Rows(j, true);
+            Mark("rows");
         }
 
         private static void CurbRun(Job j, int i, float s0, float s1)
@@ -497,7 +504,7 @@ namespace CloneZ
             Surf wall = bin ? WallSurf(WallKind.Metal, 0) : p.CoverTone == MetalBlue ? DecorPalette.Gloss(new Color(0.12f, 0.20f, 0.36f)) : WallSurf(WallKind.Concrete, 0);
             float g = Mathf.Min(h, GroundStorey);
             j.Shell.WallsFacing(Vector2.down).Cylinder(To3(at, 0f), r, g, sides, wall);
-            j.Shell.Upper.Cylinder(To3(at, g), r, h - g, sides, wall);
+            if (h - g > 0.05f) j.Shell.Upper.Cylinder(To3(at, g), r, h - g, sides, wall);
             j.Shell.WallTop = g;
             RaidMesh m = j.Upper;
             if (bin)

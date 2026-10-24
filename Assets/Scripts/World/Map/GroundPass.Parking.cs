@@ -10,13 +10,17 @@ namespace CloneZ
     // curb when there's room for just that), their faded lines half buried, a concrete wheel stop at the head of most; and
     // the snow the plough couldn't reach round the parked cars lying packed in the stall rows while the aisles it ran
     // down show black. The parked cars stand in the stalls (VehiclePass parks in Stalls), and every piece of a lot a seam
-    // cuts lays them out alike.
+    // cuts lays them out alike. Seen from afar (Lite pieces, a fixed map's scenery ring) a lot keeps the packed rows only.
     internal static partial class GroundPass
     {
         private const float StallWidth = 2.7f, StallDepth = 5.4f, AisleMin = 6.0f, AisleMax = 7.2f;
         private const float LotMargin = 1.2f;   // in from the lot's edge: the plowed snow lies there
         private const float MarkY = DecalY + 0.0005f;   // paint on a lot, over its plowed edge
         private const int MaxStalls = 1500;
+
+        // Working lists for laying lots out (main thread only).
+        private static readonly List<(float at, float face)> s_Rows = new List<(float at, float face)>(16);
+        private static readonly float[] s_Along = new float[4], s_Amount = new float[4];
 
         private static IEnumerable<string> Lots(Ground g)
         {
@@ -26,14 +30,23 @@ namespace CloneZ
                 {
                     PlowedEdge(g, o, g.Square, g.Site.Town.Out);
                     any = true;
+                    if (g.Site.StepDue) yield return "lots";
                 }
             for (int b = 0; b < g.Ring.Count; b++)
                 foreach (Owner o in g.Ring[b])
-                    if (o.Kind == "parking" && o.Visible > 20f) PlowedEdge(g, o, RingBand(g, b), g.Site.Town.Far);
-            if (!any || g.Lite) yield break;
+                    if (o.Kind == "parking" && o.Visible > 20f)
+                    {
+                        PlowedEdge(g, o, RingBand(g, b), g.Site.Town.Far);
+                        PackedRows(g, o, RingBand(g, b));
+                    }
+            if (!any) yield break;
             foreach (Owner o in g.Owners)
-                if (o.Kind == "parking" && o.Visible > 20f)
+            {
+                if (o.Kind != "parking" || o.Visible <= 20f) continue;
+                if (g.Lite) PackedRows(g, o, g.Square);
+                else
                     foreach (string step in StallRows(g, o)) yield return step;
+            }
         }
 
         // The snow the plow pushed off the lot: a ragged band along its mapped edges (the road pass draws over it where
@@ -79,38 +92,8 @@ namespace CloneZ
             if (g.Stalls.Count >= MaxStalls) yield break;
             List<Vector2> outline = g.Whole(o) ?? o.Pts;
             if (outline.Count < 3 || Mathf.Abs(MapGeometry.SignedArea(outline)) < 90f) yield break;
-            Vector2 u = o.Axis, v = new Vector2(-u.y, u.x);   // rows along the lot's long axis (from its data: alike everywhere)
-            float u0 = float.MaxValue, u1 = float.MinValue, v0 = float.MaxValue, v1 = float.MinValue;
-            foreach (Vector2 p in outline)
-            {
-                float pu = Vector2.Dot(p, u), pv = Vector2.Dot(p, v);
-                u0 = Mathf.Min(u0, pu); u1 = Mathf.Max(u1, pu);
-                v0 = Mathf.Min(v0, pv); v1 = Mathf.Max(v1, pv);
-            }
-            // Across the lot: double rows round each aisle, then a single row on its aisle if there's room left, the
-            // aisles widened from 6 m towards 7.2 m with what's left over, all of it centred between the margins.
-            float usable = v1 - v0 - LotMargin * 2f;
-            int modules = Mathf.FloorToInt(usable / (StallDepth * 2f + AisleMin));
-            float spare = usable - modules * (StallDepth * 2f + AisleMin);
-            bool single = spare >= StallDepth + AisleMin;
-            if (single) spare -= StallDepth + AisleMin;
-            int aisles = modules + (single ? 1 : 0);
-            if (aisles == 0) yield break;
-            float aisle = Mathf.Min(AisleMax, AisleMin + spare / aisles), module = StallDepth * 2f + aisle;
-            float used = modules * module + (single ? StallDepth + aisle : 0f);
-            float y = (v0 + v1) * 0.5f - used * 0.5f;
-            var rows = new List<(float at, float face)>(modules * 2 + 1);
-            for (int m = 0; m < modules; m++)
-            {
-                rows.Add((y + StallDepth * 0.5f, -1f));   // its back on the row before's (or the curb), its aisle above
-                rows.Add((y + module - StallDepth * 0.5f, 1f));
-                y += module;
-            }
-            if (single) rows.Add((y + StallDepth * 0.5f, -1f));
-            // Along the lot: stalls centred between the margins.
-            int across = Mathf.FloorToInt((u1 - u0 - LotMargin * 2f) / StallWidth);
-            if (across < 1) yield break;
-            float x0 = (u0 + u1) * 0.5f - across * StallWidth * 0.5f;
+            var rows = new List<(float at, float face)>(8);
+            if (!Layout(o, outline, out Vector2 u, out Vector2 v, rows, out int across, out float x0)) yield break;
 
             System.Random lotRng = MapStyle.Rng(o.Id, SaltStall);
             bool yellow = lotRng.NextDouble() < 0.45;
@@ -134,6 +117,7 @@ namespace CloneZ
                 if (!anyHere) continue;
                 for (int j = 0; j <= across; j++)
                 {
+                    if (j > 0 && g.Site.StepDue) yield return "lots";
                     bool here = j < across && fits[j], before = j > 0 && fits[j - 1];
                     // A line between two stalls, or at the end of a run.
                     Vector2 lineAt = Middle(u, v, x0 + j * StallWidth, rowAt);
@@ -161,6 +145,98 @@ namespace CloneZ
         }
 
         private static Vector2 Middle(Vector2 u, Vector2 v, float along, float across) => u * along + v * across;
+
+        // How a lot is striped, from its whole outline: the rows' way (u along them, v across, from the lot's long axis in
+        // its data, alike everywhere), each row's line across the lot and which way its cars face (double rows round each
+        // aisle, then a single row on its aisle if there's room left, the aisles widened from 6 m towards 7.2 m with what's
+        // left over, all of it centred between the margins), and the stalls along every row (from x0, centred too).
+        // False for a lot too small to stripe.
+        private static bool Layout(Owner o, List<Vector2> outline, out Vector2 u, out Vector2 v, List<(float at, float face)> rows,
+            out int across, out float x0)
+        {
+            u = o.Axis;
+            v = new Vector2(-u.y, u.x);
+            rows.Clear();
+            across = 0;
+            x0 = 0f;
+            float u0 = float.MaxValue, u1 = float.MinValue, v0 = float.MaxValue, v1 = float.MinValue;
+            foreach (Vector2 p in outline)
+            {
+                float pu = Vector2.Dot(p, u), pv = Vector2.Dot(p, v);
+                u0 = Mathf.Min(u0, pu); u1 = Mathf.Max(u1, pu);
+                v0 = Mathf.Min(v0, pv); v1 = Mathf.Max(v1, pv);
+            }
+            float usable = v1 - v0 - LotMargin * 2f;
+            int modules = Mathf.FloorToInt(usable / (StallDepth * 2f + AisleMin));
+            float spare = usable - modules * (StallDepth * 2f + AisleMin);
+            bool single = spare >= StallDepth + AisleMin;
+            if (single) spare -= StallDepth + AisleMin;
+            int aisles = modules + (single ? 1 : 0);
+            if (aisles == 0) return false;
+            float aisle = Mathf.Min(AisleMax, AisleMin + spare / aisles), module = StallDepth * 2f + aisle;
+            float used = modules * module + (single ? StallDepth + aisle : 0f);
+            float y = (v0 + v1) * 0.5f - used * 0.5f;
+            for (int m = 0; m < modules; m++)
+            {
+                rows.Add((y + StallDepth * 0.5f, -1f));   // its back on the row before's (or the curb), its aisle above
+                rows.Add((y + module - StallDepth * 0.5f, 1f));
+                y += module;
+            }
+            if (single) rows.Add((y + StallDepth * 0.5f, -1f));
+            across = Mathf.FloorToInt((u1 - u0 - LotMargin * 2f) / StallWidth);
+            x0 = (u0 + u1) * 0.5f - across * StallWidth * 0.5f;
+            return across >= 1;
+        }
+
+        // A lot seen from afar (a Lite piece's, or in a fixed map's scenery ring): no lines, stops or stalls for the cars,
+        // just the packed snow of its stall rows as the full lot has it, one band down each run of stalls whose middles
+        // the domain holds (so pieces meet at a stall's edge), fading out where the run ends at the lot's edge.
+        private static void PackedRows(Ground g, Owner o, Rect domain)
+        {
+            List<Vector2> outline = g.Whole(o) ?? o.Pts;
+            if (outline.Count < 3 || Mathf.Abs(MapGeometry.SignedArea(outline)) < 90f) return;
+            List<(float at, float face)> rows = s_Rows;
+            if (!Layout(o, outline, out Vector2 u, out Vector2 v, rows, out int across, out float x0)) return;
+            float amount = 0.38f + 0.2f * MapStyle.Unit(o.Id, SaltStall + 3);
+            for (int r = 0; r < rows.Count; r++)
+            {
+                float rowAt = rows[r].at;
+                Vector2 back = v * rows[r].face;
+                int start = -1;
+                for (int j = 0; j <= across; j++)
+                {
+                    Vector2 c = Middle(u, v, x0 + (j + 0.5f) * StallWidth, rowAt);
+                    if (j < across && domain.Contains(c) && InStall(outline, c, u, v))
+                    {
+                        if (start < 0) start = j;
+                        continue;
+                    }
+                    if (start < 0) continue;
+                    // The run start .. j - 1: carrying on past either end (into the next piece) at full depth.
+                    bool onL = start > 0 && InStall(outline, Middle(u, v, x0 + (start - 0.5f) * StallWidth, rowAt), u, v);
+                    bool onR = j < across && InStall(outline, c, u, v);
+                    float length = (j - start) * StallWidth, hu = StallWidth * 0.5f;
+                    int n = 0;
+                    s_Along[n] = 0f; s_Amount[n++] = onL ? amount : 0f;
+                    s_Along[n] = Mathf.Min(hu, length * 0.5f); s_Amount[n++] = amount;
+                    if (length - hu > hu + 0.01f)
+                    {
+                        s_Along[n] = length - hu;
+                        s_Amount[n++] = amount;
+                    }
+                    s_Along[n] = length; s_Amount[n++] = onR ? amount : 0f;
+                    PackedBand(g, Middle(u, v, x0 + start * StallWidth, rowAt), u, back, s_Along, s_Amount, n);
+                    start = -1;
+                }
+            }
+        }
+
+        // A stall's corners inside the lot's outline (as StallFits has it, without what stands on the lot).
+        private static bool InStall(List<Vector2> outline, Vector2 c, Vector2 u, Vector2 v)
+        {
+            Vector2 du = u * (StallWidth * 0.45f), dv = v * (StallDepth * 0.45f);
+            return Inside(outline, c - du - dv) && Inside(outline, c + du - dv) && Inside(outline, c - du + dv) && Inside(outline, c + du + dv);
+        }
 
         private static long StallKey(long lot, long j, long row, int what)
             => unchecked(((lot * 73856093L) ^ (j * 19349663L) ^ (row * 83492791L)) * 4 + what);
@@ -211,28 +287,36 @@ namespace CloneZ
         // stall to stall (the amounts at the stall's sides are its neighbours' means, nothing at the end of a run).
         private static void PackedSnow(Ground g, Vector2 c, Vector2 u, Vector2 back, float left, float mid, float right)
         {
+            float hu = StallWidth * 0.5f;
+            s_Along[0] = 0f; s_Amount[0] = left;
+            s_Along[1] = hu; s_Amount[1] = mid;
+            s_Along[2] = StallWidth; s_Amount[2] = right;
+            PackedBand(g, c - u * hu, u, back, s_Along, s_Amount, 3);
+        }
+
+        // Packed snow down a stretch of a stall row: from the row's back feathering out to the aisle, through columns at
+        // distances `along` (along u) from `from` on the row's middle line, with the amounts there.
+        private static void PackedBand(Ground g, Vector2 from, Vector2 u, Vector2 back, float[] along, float[] amount, int columns)
+        {
             const float feather = 1.6f;
-            float hu = StallWidth * 0.5f, hv = StallDepth * 0.5f;
-            Vector2 a = c - u * hu, b = c + u * hu;
+            float hv = StallDepth * 0.5f;
             List<Vector3> verts = g.ToneVerts;
             List<Vector2> uvs = g.ToneUvs;
             int b0 = verts.Count;
-            // Three columns (the stall's two sides and its middle) by three lines across: the back, the feather's start
-            // and the aisle's edge.
-            for (int col = 0; col < 3; col++)
+            // Each column three points across the row: the back, the feather's start and the aisle's edge.
+            for (int col = 0; col < columns; col++)
             {
-                Vector2 at = col == 0 ? a : col == 1 ? c : b;
-                float amount = col == 0 ? left : col == 1 ? mid : right;
+                Vector2 at = from + u * along[col];
                 verts.Add(To3(at + back * hv, ToneY));
-                uvs.Add(PackedUv(amount));
+                uvs.Add(PackedUv(amount[col]));
                 verts.Add(To3(at + back * (hv - (StallDepth - feather)), ToneY));
-                uvs.Add(PackedUv(amount * 0.9f));
+                uvs.Add(PackedUv(amount[col] * 0.9f));
                 verts.Add(To3(at - back * hv, ToneY));
                 uvs.Add(PackedUv(0f));
             }
             // Corner order for ToneQuad is anticlockwise seen from above; which way round depends on the row's facing.
             bool flip = Cross2(u, back) < 0f;
-            for (int col = 0; col < 2; col++)
+            for (int col = 0; col + 1 < columns; col++)
                 for (int line = 0; line < 2; line++)
                 {
                     int p00 = b0 + col * 3 + line, p10 = b0 + (col + 1) * 3 + line, p11 = p10 + 1, p01 = p00 + 1;

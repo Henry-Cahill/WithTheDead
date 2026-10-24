@@ -37,29 +37,62 @@ namespace CloneZ
             var square = Rect.MinMaxRect(-half, -half, half, half);
             var gates = new List<Vector2>();
             foreach (Node n in site.Area.Nodes) if (n.Data.kind == "gate") gates.Add(n.At);
+            var drives = new Drives();
+            foreach (RoadPass.DrivewaySpot d in RoadPass.Driveways(site))
+                if (d.Dir.sqrMagnitude > 0.5f) drives.Add(d.At, d.At + d.Dir * (d.Length + 1.5f));
+            var runs = new Runs();
+            s_Runs.Remove(site);
+            s_Runs.Add(site, runs);
             foreach (Line l in site.Area.Barriers)
             {
                 if (l.Data.kind == "tree_row" || l.Pts.Count < 2) continue;
                 Style style = StyleOf(l.Data);
-                foreach (List<Vector2> piece in MapGeometry.ClipLine(l.Pts, square)) Draw(ctx, l.Data, style, piece, gates);
+                // A texture made for the first time (once a session) gets a slice of its own.
+                if (Warm(style, false) && site.StepDue) yield return "fences and walls";
+                foreach (List<Vector2> piece in MapGeometry.ClipLine(l.Pts, square))
+                    foreach (string step in Draw(ctx, l.Data, style, piece, gates, drives, runs)) yield return step;
                 if (!site.Chunked)
+                {
+                    if (Warm(style, true) && site.StepDue) yield return "fences and walls";
                     foreach (List<Vector2> piece in Outside(l.Pts, half, ctx.Reach)) Plain(ctx, l.Data, style, piece);
+                }
                 if (site.StepDue) yield return "fences and walls";
             }
         }
 
         /// <summary>A Lite site's barriers: each straight stretch one plain shape.</summary>
-        internal static void Lite(Ctx ctx)
+        internal static IEnumerable<string> Lite(Ctx ctx)
         {
             Site site = ctx.Site;
-            if (site.Area.Barriers.Count == 0) return;
+            if (site.Area.Barriers.Count == 0) yield break;
             float half = ctx.Half;
             var square = Rect.MinMaxRect(-half, -half, half, half);
             foreach (Line l in site.Area.Barriers)
             {
                 if (l.Data.kind == "tree_row" || l.Pts.Count < 2) continue;
                 Style style = StyleOf(l.Data);
+                if (Warm(style, true) && site.StepDue) yield return "fences and walls";
                 foreach (List<Vector2> piece in MapGeometry.ClipLine(l.Pts, square)) Plain(ctx, l.Data, style, piece);
+                if (site.StepDue) yield return "fences and walls";
+            }
+        }
+
+        // Makes the texture a style is drawn with (in full, or plain) if it isn't made yet; true when it made one.
+        private static bool Warm(Style style, bool plain)
+        {
+            switch (style)
+            {
+                case Style.Plank: return plain && s_PlankMat == null && PlankPanel.Valid;
+                case Style.PlankBlack: return plain && s_BlackMat == null && BlackPanel.Valid;
+                case Style.WovenWire: return s_FieldMat == null && FieldFence.Valid;
+                case Style.Barbed: return plain && s_FieldMat == null && FieldFence.Valid;
+                case Style.ChainLink: case Style.Security: return s_ChainMat == null && ChainLink.Valid;
+                case Style.Privacy: return s_BoardTex == null && Boards.Valid;
+                case Style.Picket: return s_PicketMat == null && Picket.Valid;
+                case Style.DryStone: return s_StoneTex == null && DryStone.Valid;
+                case Style.Brick: return s_BrickTex == null && Brick.Valid;
+                case Style.Block: return s_BlockTex == null && Block.Valid;
+                default: return false;
             }
         }
 
@@ -162,16 +195,19 @@ namespace CloneZ
 
         #region In full
         // One piece of a barrier inside the square: its runs between the gates, the carriageways and the buildings, each
-        // straight stretch drawn and given a collider, posts on the lattice and at the corners.
-        private static void Draw(Ctx ctx, MapLine data, Style style, List<Vector2> pts, List<Vector2> gates)
+        // straight stretch drawn and given a collider, posts on the lattice and at the corners. Yields part way along a
+        // long piece when the step has had its time (a farm's fence may run for kilometres).
+        private static IEnumerable<string> Draw(Ctx ctx, MapLine data, Style style, List<Vector2> pts, List<Vector2> gates, Drives drives, Runs runs)
         {
             Site site = ctx.Site;
             float h = Height(style), thick = Thickness(style);
             bool fence = data.kind == "fence";
             var cuts = new List<Vector2>();   // (from, to) along the piece, cut out for gates
+            MapGeometry.Extent(pts, out float x0, out float z0, out float x1, out float z1);
             if (fence)
                 foreach (Vector2 g in gates)
                 {
+                    if (g.x < x0 - 0.8f || g.x > x1 + 0.8f || g.y < z0 - 0.8f || g.y > z1 + 0.8f) continue;
                     float d = Nearest(pts, g, out Vector2 on, out _);
                     if (d > 0.8f) continue;
                     float t = ArcOf(pts, on);
@@ -204,7 +240,9 @@ namespace CloneZ
                         float c0 = c.x - arc;
                         if (c0 > s && c0 < e) e = c0;
                     }
-                    if (e - s > 0.05f) Spans(ctx, data, style, a, d, s, e, h, thick, i > 0 && s < 0.01f);
+                    if (e - s > 0.05f)
+                        foreach (string step in Spans(ctx, data, style, a, d, s, e, h, thick, i > 0 && s < 0.01f, drives, runs))
+                            yield return step;
                     s = e;
                 }
                 arc += len;
@@ -212,9 +250,45 @@ namespace CloneZ
             site.TakeLine(pts, thick * 0.5f + 0.35f);
         }
 
-        // The stretch from s to e along a + d * t, less where it would stand in a building or cross a carriageway as the
-        // roads drew it (a metre at a time); guard rails and retaining walls belong at the road's edge and may touch it.
-        private static void Spans(Ctx ctx, MapLine data, Style style, Vector2 a, Vector2 d, float s, float e, float h, float thick, bool corner)
+        // The roads' driveways (from the kerb to the house), by 8 m cell: a fence leaves them open.
+        private sealed class Drives
+        {
+            private const float Cell = 8f, Reach = 1.9f;
+            private readonly List<(Vector2 a, Vector2 b)> _segs = new List<(Vector2 a, Vector2 b)>();
+            private readonly Dictionary<long, List<int>> _cells = new Dictionary<long, List<int>>();
+
+            public void Add(Vector2 a, Vector2 b)
+            {
+                int i = _segs.Count;
+                _segs.Add((a, b));
+                int x0 = Mathf.FloorToInt((Mathf.Min(a.x, b.x) - Reach) / Cell), x1 = Mathf.FloorToInt((Mathf.Max(a.x, b.x) + Reach) / Cell);
+                int z0 = Mathf.FloorToInt((Mathf.Min(a.y, b.y) - Reach) / Cell), z1 = Mathf.FloorToInt((Mathf.Max(a.y, b.y) + Reach) / Cell);
+                for (int z = z0; z <= z1; z++)
+                    for (int x = x0; x <= x1; x++)
+                    {
+                        long key = Key(x, z);
+                        if (!_cells.TryGetValue(key, out List<int> list)) _cells[key] = list = new List<int>(2);
+                        list.Add(i);
+                    }
+            }
+
+            // Within reach of a driveway's line.
+            public bool On(Vector2 p)
+            {
+                if (!_cells.TryGetValue(Key(Mathf.FloorToInt(p.x / Cell), Mathf.FloorToInt(p.y / Cell)), out List<int> list)) return false;
+                foreach (int i in list)
+                    if (MapGeometry.DistanceToSegment(p, _segs[i].a, _segs[i].b) < Reach) return true;
+                return false;
+            }
+
+            private static long Key(int x, int z) => ((long)x << 32) ^ (uint)z;
+        }
+
+        // The stretch from s to e along a + d * t, less where it would stand in a building, cross a carriageway as the
+        // roads drew it or a driveway (a metre at a time); guard rails and retaining walls belong at the road's edge and
+        // may touch it. Yields every 16 m or so once the step has had its time.
+        private static IEnumerable<string> Spans(Ctx ctx, MapLine data, Style style, Vector2 a, Vector2 d, float s, float e, float h, float thick,
+            bool corner, Drives drives, Runs runs)
         {
             float clear = style == Style.GuardRail || style == Style.Retaining ? -0.3f : 0.25f;
             float start = -1f;
@@ -226,17 +300,90 @@ namespace CloneZ
                 if (k < steps)
                 {
                     Vector2 mid = a + d * (s + (k + 0.5f) * step);
-                    open = ctx.Roads.Clearance(mid, 1.5f) >= clear && !ctx.Blocks.Contains(mid, 0f);
+                    open = ctx.Roads.Clearance(mid, 1.5f) >= clear && !ctx.Blocks.Contains(mid, 0f) && !drives.On(mid);
                 }
                 float t = s + k * step;
                 if (open && start < 0f) start = t;
                 else if (!open && start >= 0f)
                 {
-                    if (t - start > 0.3f) Run(ctx, data, style, a + d * start, a + d * t, d, h, thick, corner && start <= s + 0.01f);
+                    if (t - start > 0.3f)
+                    {
+                        Run(ctx, data, style, a + d * start, a + d * t, d, h, thick, corner && start <= s + 0.01f);
+                        runs.Add(a + d * start, a + d * t, Mathf.Max(thick, 0.15f) * 0.5f);
+                    }
                     start = -1f;
                 }
+                if ((k & 15) == 15 && ctx.Site.StepDue) yield return "fences and walls";
             }
         }
+
+        #region For the passes after this one
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<Site, Runs> s_Runs =
+            new System.Runtime.CompilerServices.ConditionalWeakTable<Site, Runs>();
+
+        /// <summary>True when a barrier this pass drew in full on <paramref name="site"/> (a fence, wall, hedge, guard rail
+        /// or retaining wall run, less the gaps it left at gates, carriageways, buildings and the roads' driveways) crosses
+        /// the segment from <paramref name="a"/> to <paramref name="b"/> or comes within <paramref name="pad"/> of it. For
+        /// the passes after this one that lay something along the ground (a driveway's strip, a path) and shouldn't run it
+        /// through a fence. False before this pass ran, and on Lite pieces (whose barriers are plain shapes with no
+        /// colliders).</summary>
+        internal static bool Crosses(Site site, Vector2 a, Vector2 b, float pad = 0.3f)
+            => s_Runs.TryGetValue(site, out Runs runs) && runs.Crosses(a, b, pad);
+
+        // The runs drawn in full on a site, by 16 m cell.
+        private sealed class Runs
+        {
+            private const float Cell = 16f;
+            private readonly List<(Vector2 a, Vector2 b, float half)> _runs = new List<(Vector2 a, Vector2 b, float half)>();
+            private readonly Dictionary<long, List<int>> _cells = new Dictionary<long, List<int>>();
+
+            public void Add(Vector2 a, Vector2 b, float half)
+            {
+                int i = _runs.Count;
+                _runs.Add((a, b, half));
+                int x0 = Mathf.FloorToInt((Mathf.Min(a.x, b.x) - half) / Cell), x1 = Mathf.FloorToInt((Mathf.Max(a.x, b.x) + half) / Cell);
+                int z0 = Mathf.FloorToInt((Mathf.Min(a.y, b.y) - half) / Cell), z1 = Mathf.FloorToInt((Mathf.Max(a.y, b.y) + half) / Cell);
+                for (int z = z0; z <= z1; z++)
+                    for (int x = x0; x <= x1; x++)
+                    {
+                        long key = Key(x, z);
+                        if (!_cells.TryGetValue(key, out List<int> list)) _cells[key] = list = new List<int>(4);
+                        list.Add(i);
+                    }
+            }
+
+            public bool Crosses(Vector2 a, Vector2 b, float pad)
+            {
+                pad = Mathf.Max(0f, pad);
+                int x0 = Mathf.FloorToInt((Mathf.Min(a.x, b.x) - pad) / Cell), x1 = Mathf.FloorToInt((Mathf.Max(a.x, b.x) + pad) / Cell);
+                int z0 = Mathf.FloorToInt((Mathf.Min(a.y, b.y) - pad) / Cell), z1 = Mathf.FloorToInt((Mathf.Max(a.y, b.y) + pad) / Cell);
+                for (int z = z0; z <= z1; z++)
+                    for (int x = x0; x <= x1; x++)
+                    {
+                        if (!_cells.TryGetValue(Key(x, z), out List<int> list)) continue;
+                        foreach (int i in list)
+                        {
+                            (Vector2 c, Vector2 d, float half) = _runs[i];
+                            if (Gap(a, b, c, d) < pad + half) return true;
+                        }
+                    }
+                return false;
+            }
+
+            private static long Key(int x, int z) => ((long)x << 32) ^ (uint)z;
+
+            // How far apart two segments come (0 where they cross).
+            private static float Gap(Vector2 a, Vector2 b, Vector2 c, Vector2 d)
+            {
+                float d1 = Cross(b - a, c - a), d2 = Cross(b - a, d - a), d3 = Cross(d - c, a - c), d4 = Cross(d - c, b - c);
+                if (((d1 > 0f && d2 < 0f) || (d1 < 0f && d2 > 0f)) && ((d3 > 0f && d4 < 0f) || (d3 < 0f && d4 > 0f))) return 0f;
+                return Mathf.Min(Mathf.Min(MapGeometry.DistanceToSegment(a, c, d), MapGeometry.DistanceToSegment(b, c, d)),
+                    Mathf.Min(MapGeometry.DistanceToSegment(c, a, b), MapGeometry.DistanceToSegment(d, a, b)));
+            }
+
+            private static float Cross(Vector2 u, Vector2 v) => u.x * v.y - u.y * v.x;
+        }
+        #endregion
 
         private static float ArcOf(List<Vector2> pts, Vector2 p)
         {
@@ -341,15 +488,18 @@ namespace CloneZ
                 }
                 case Style.Hedge:
                 {
+                    // A clipped hedge: a body, a rounded crown in lumps a few metres long (each a little higher or lower),
+                    // snow on each lump.
                     Surf green = Matte(Shade(HedgeGreen, shadeKey));
-                    m.Box(To3(mid, 0.72f), new Vector3(len + 0.4f, 1.44f, 0.95f), yaw, green);
-                    int lumps = Mathf.Max(1, Mathf.RoundToInt(len / 2.2f));
-                    Quaternion turn = Quaternion.Euler(0f, yaw, 0f);
+                    m.Box(To3(mid, 0.66f), new Vector3(len + 0.4f, 1.32f, 0.95f), yaw, green);
+                    int lumps = Mathf.Max(1, Mathf.RoundToInt(len / 3f));
+                    float piece = (len + 0.3f) / lumps;
                     for (int k = 0; k < lumps; k++)
                     {
                         Vector2 p = Vector2.Lerp(a, b, (k + 0.5f) / lumps);
-                        m.Ellipsoid(To3(p, 1.45f), new Vector3(Mathf.Min(2.1f, len + 0.4f), 0.42f, 1.0f), turn, green, 6, 3);
-                        m.Ellipsoid(To3(p, 1.58f), new Vector3(Mathf.Min(1.8f, len + 0.2f), 0.26f, 0.85f), turn, SnowSurf, 6, 3);
+                        float top = 1.42f + 0.12f * (MapStyle.Unit(ctx.KeyOf(p), SaltShade + 1) - 0.5f);
+                        m.Box(To3(p, (1.32f + top) * 0.5f), new Vector3(piece, top - 1.32f + 0.02f, 0.8f), yaw, green);
+                        m.Box(To3(p, top + 0.03f), new Vector3(piece - 0.1f, 0.06f, 0.62f), yaw, SnowSurf);
                     }
                     break;
                 }
@@ -373,17 +523,24 @@ namespace CloneZ
                 ctx.Collider(mid, 0f, new Vector3(len, Mathf.Min(h, 2f), Mathf.Max(thick, 0.15f)), yaw);
         }
 
-        // Posts along a run on the world's lattice (and one at its start where it turns a corner).
+        // Posts along a run on the world's lattice (the same points whichever piece draws the run; see
+        // StreetLights.Lattice), and one at its start where it turns a corner.
         private static void Posts(Ctx ctx, Vector2 a, Vector2 b, Vector2 d, Style style, float h, Surf surf, bool corner)
         {
             float spacing = PostSpacing(style);
-            var pts = new List<Vector2>(2) { a, b };
             RaidMesh m = ctx.Low((a + b) * 0.5f);
             if (corner) Post(m, a, h + 0.05f, style, surf, true);
-            foreach ((Vector2 p, Vector2 _, long k) in StreetLights.Lattice(ctx, pts, spacing))
+            float len = Vector2.Distance(a, b);
+            if (len < 0.5f) return;
+            Vector2 dir = (b - a) / len;
+            float along0 = Vector2.Dot(a + ctx.Origin, dir);
+            for (long k = (long)Mathf.Ceil(along0 / spacing); ; k++)
             {
+                float t = k * spacing - along0;
+                if (t > len) break;
+                if (t < 0f) continue;
                 bool big = style == Style.WovenWire || style == Style.Barbed ? k % 3 == 0 : true;
-                Post(m, p, h, style, surf, big);
+                Post(m, a + dir * t, h, style, surf, big);
             }
         }
 
@@ -511,6 +668,8 @@ namespace CloneZ
         #region Textures
         private static Texture2D s_ChainTex, s_PicketTex, s_FieldTex, s_StoneTex, s_PlankTex, s_BlackTex, s_BrickTex, s_BlockTex, s_BoardTex;
         private static Material s_ChainMat, s_PicketMat, s_FieldMat, s_PlankMat, s_BlackMat;
+        // The textured walls' surfaces, kept (making one names its material by its texture's name, which costs).
+        private static Surf s_StoneSurf, s_BrickSurf, s_BlockSurf, s_BoardSurf;
 
         // Chain link: galvanised diamonds, see-through; tiles every 0.6 m.
         private static Surf ChainLink
@@ -605,27 +764,28 @@ namespace CloneZ
         {
             get
             {
+                if (s_StoneSurf.Mat != null) return s_StoneSurf;
                 if (s_StoneTex == null)
                 {
-                    const int S = 256;
+                    const int S = 128;
                     var px = new Color32[S * S];
                     var rng = new System.Random(0x570E);
                     int y = 0;
                     while (y < S)
                     {
-                        int rowH = 12 + rng.Next(14);
+                        int rowH = 6 + rng.Next(7);
                         if (y + rowH > S) rowH = S - y;
-                        int x = -rng.Next(30);
+                        int x = -rng.Next(15);
                         while (x < S)
                         {
-                            int w = 18 + rng.Next(36);
+                            int w = 9 + rng.Next(18);
                             float g = 0.52f + (float)rng.NextDouble() * 0.22f;
                             var c = new Color32((byte)(g * 255), (byte)(g * 0.97f * 255), (byte)(g * 0.9f * 255), 255);
                             for (int yy = y; yy < y + rowH; yy++)
                                 for (int xx = x; xx < x + w; xx++)
                                 {
                                     int wx = ((xx % S) + S) % S;
-                                    bool gap = yy - y < 2 || xx - x < 2;
+                                    bool gap = yy - y < 1 || xx - x < 1;
                                     px[yy * S + wx] = gap ? new Color32(48, 46, 42, 255) : c;
                                 }
                             x += w;
@@ -634,7 +794,7 @@ namespace CloneZ
                     }
                     s_StoneTex = Opaque("DryStone", S, px);
                 }
-                return DecorMaterials.Planar(s_StoneTex, 1.6f, 0.05f);
+                return s_StoneSurf = DecorMaterials.Planar(s_StoneTex, 1.6f, 0.05f);
             }
         }
 
@@ -643,9 +803,10 @@ namespace CloneZ
         {
             get
             {
+                if (s_BrickSurf.Mat != null) return s_BrickSurf;
                 if (s_BrickTex == null)
                     s_BrickTex = Opaque("BarrierBrick", 128, Bricks(128, 18, 6, new Color(0.55f, 0.29f, 0.22f), new Color(0.66f, 0.63f, 0.58f), 0xB21C));
-                return DecorMaterials.Planar(s_BrickTex, 1.2f, 0.05f);
+                return s_BrickSurf = DecorMaterials.Planar(s_BrickTex, 1.2f, 0.05f);
             }
         }
 
@@ -654,9 +815,10 @@ namespace CloneZ
         {
             get
             {
+                if (s_BlockSurf.Mat != null) return s_BlockSurf;
                 if (s_BlockTex == null)
                     s_BlockTex = Opaque("BarrierBlock", 128, Bricks(128, 8, 4, new Color(0.62f, 0.62f, 0.60f), new Color(0.50f, 0.50f, 0.48f), 0xB10C));
-                return DecorMaterials.Planar(s_BlockTex, 1.6f, 0.05f);
+                return s_BlockSurf = DecorMaterials.Planar(s_BlockTex, 1.6f, 0.05f);
             }
         }
 
@@ -665,6 +827,7 @@ namespace CloneZ
         {
             get
             {
+                if (s_BoardSurf.Mat != null) return s_BoardSurf;
                 if (s_BoardTex == null)
                 {
                     const int S = 128;
@@ -685,7 +848,7 @@ namespace CloneZ
                     }
                     s_BoardTex = Opaque("BarrierBoards", S, px);
                 }
-                return DecorMaterials.Planar(s_BoardTex, 1.2f, 0.06f);
+                return s_BoardSurf = DecorMaterials.Planar(s_BoardTex, 1.2f, 0.06f);
             }
         }
 

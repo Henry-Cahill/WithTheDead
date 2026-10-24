@@ -43,8 +43,11 @@ namespace CloneZ
         {
             Plan p = j.P;
             if (p.Storefront && p.Front >= 0 && !j.Party(p.Front)) ShopFront(j, p.Front);
+            Mark("shop front");
             if (p.GhostSign) GhostSign(j);
+            Mark("ghost sign");
             if (p.Dock && j.BigEdge >= 0) LoadingDock(j, j.BigEdge);
+            Mark("dock");
             if (p.Storeys >= 2 && (p.Arch == Arch.Apartments || p.Arch == Arch.Motel))
             {
                 int front = p.Front >= 0 ? p.Front : j.DoorEdge;
@@ -54,12 +57,15 @@ namespace CloneZ
                     if (p.OutsideStair || p.Arch == Arch.Motel) OutsideStair(j, front);
                 }
             }
+            Mark("balconies");
             if (j.DoorEdge < 0) return;
             bool porch = p.Porch && j.Len[j.DoorEdge] >= 2.6f;
             if (porch) Porch(j);
             else if (p.Stoop || p.Arch == Arch.House) Stoop(j);
+            Mark("porch");
             if (p.Mailbox) WallMailbox(j);
             if (p.PorchLight || porch) DoorLamp(j);
+            Mark("lamp");
         }
 
         #region Houses
@@ -314,7 +320,9 @@ namespace CloneZ
             {
                 // The storefront cornice and, above it, the sign band.
                 OnWallBox(j, up, e, len * 0.5f, GroundStorey + 0.1f, len + 0.04f, 0.2f, 0.22f, j.AccentS);
+                Mark("  piers and cornice");
                 Sign(j, e, 0f, len, GroundStorey + 0.55f, 0.55f, 0f, SignText(j, 0), p.SignTone);
+                Mark("  sign");
             }
             else
             {
@@ -334,6 +342,7 @@ namespace CloneZ
                     Sign(j, e, each * u, each * (u + 1), y, h, 0.28f, SignText(j, u), (p.SignTone + u * 3) % SignBoards.Length);
             }
             if (p.Awning) Awning(j, e, 0.45f, len - 0.45f);
+            Mark("  awning");
         }
 
         // What's written over shop <paramref name="unit"/> of a front: the building's name (the first shop's), the trade,
@@ -355,7 +364,7 @@ namespace CloneZ
         {
             if (height < 0.25f || string.IsNullOrEmpty(text)) return;
             tone = Mathf.Clamp(tone, 0, SignBoards.Length - 1);
-            Surf board = DecorMaterials.Sign(text, SignBoards[tone], SignLetters[tone], out float aspect);
+            float aspect = LetteringAspect(text);
             float len = s1 - s0;
             float w = Mathf.Min(len - 1.2f, height * aspect);
             float h = w / Mathf.Max(0.1f, aspect);
@@ -364,8 +373,65 @@ namespace CloneZ
             float s = (s0 + s1) * 0.5f;
             OnWallBox(j, m, e, s, y, w + 0.16f, h + 0.12f, 0.05f, DecorPalette.Matte(SignBoards[tone] * 0.8f), proud);
             Vector2 c = j.At(e, s) + j.Out[e] * (proud + 0.055f);
-            m.Upright(new Vector3(c.x, y, c.y), To3(j.Out[e], 0f), w, h, board, new Rect(0f, 0f, 1f, 1f));
+            Vector3 outward = To3(j.Out[e], 0f);
+            var centre = new Vector3(c.x, y, c.y);
+            m.Upright(centre, outward, w, h, DecorPalette.Matte(SignBoards[tone] * 0.94f));
+            Letters(m, centre, outward, w, h, text, DecorPalette.Matte(SignLetters[tone]));
             j.Top = Mathf.Max(j.Top, y + h * 0.5f);
+        }
+
+        /// <summary>The longest text a sign spells out.</summary>
+        private const int SignChars = 26;
+        private static readonly Color32[] s_Ink = new Color32[(SignChars * (DecorFont.GlyphW + 1)) * DecorFont.GlyphH];
+
+        // A board's width over its height for <paramref name="text"/> in the pixel font, with a margin of two of its
+        // pixels all round.
+        private static float LetteringAspect(string text)
+        {
+            int n = Mathf.Min(text.Length, SignChars);
+            return (n * (DecorFont.GlyphW + 1) - 1 + 4f) / (DecorFont.GlyphH + 4f);
+        }
+
+        // The lettering on a board w by h centred at <paramref name="centre"/>, in the 5 x 7 pixel font, as quads just
+        // proud of it: each run of lit pixels along a row, merged with the same run on the rows under it. No texture or
+        // material of its own (making one cost a streamed piece a millisecond or more a sign, now and then tens of them
+        // waiting on the render thread, and every sign was a material and a draw of its own).
+        private static void Letters(RaidMesh m, Vector3 centre, Vector3 outward, float w, float h, string text, in Surf ink)
+        {
+            const int GW = DecorFont.GlyphW, GH = DecorFont.GlyphH;
+            if (text.Length > SignChars) text = text.Substring(0, SignChars);
+            int pw = text.Length * (GW + 1) - 1;
+            if (pw <= 0) return;
+            System.Array.Clear(s_Ink, 0, pw * GH);
+            DecorFont.Draw(s_Ink, pw, GH, text, 0, GH - 1, 1, new Color32(255, 255, 255, 255));
+            float px = Mathf.Min(w / (pw + 4f), h / (GH + 4f));
+            Vector3 right = Vector3.Cross(outward, Vector3.up).normalized;
+            // The top left corner of the text; rows count down from the top (the font's row 0 is its bottom).
+            Vector3 corner = centre - right * (pw * px * 0.5f) + Vector3.up * (GH * px * 0.5f) + outward * 0.004f;
+            for (int r = 0; r < GH; r++)
+            {
+                int row = (GH - 1 - r) * pw;
+                for (int c = 0; c < pw; c++)
+                {
+                    if (s_Ink[row + c].a == 0) continue;
+                    int c1 = c + 1;
+                    while (c1 < pw && s_Ink[row + c1].a != 0) c1++;
+                    int r1 = r + 1;
+                    while (r1 < GH && Inked((GH - 1 - r1) * pw, c, c1)) r1++;
+                    for (int rr = r; rr < r1; rr++)
+                        for (int cc = c; cc < c1; cc++) s_Ink[(GH - 1 - rr) * pw + cc].a = 0;
+                    m.Upright(corner + right * ((c + c1) * 0.5f * px) - Vector3.up * ((r + r1) * 0.5f * px), outward,
+                        (c1 - c) * px, (r1 - r) * px, ink);
+                    c = c1 - 1;
+                }
+            }
+        }
+
+        private static bool Inked(int row, int c0, int c1)
+        {
+            for (int c = c0; c < c1; c++)
+                if (s_Ink[row + c].a == 0) return false;
+            return true;
         }
         // A striped canvas awning on its iron frame, sloping out over the sidewalk, a valance along its front and the snow
         // lying on its upper half.
@@ -411,12 +477,15 @@ namespace CloneZ
             long id = j.F.Data.id;
             string text = Ghosts[MapStyle.Pick(id, SaltGhost, Ghosts.Length)];
             Color bg = Of(MapStyle.Pick(id, SaltGhost + 1, 3), new Color(0.42f, 0.16f, 0.14f), new Color(0.16f, 0.20f, 0.30f), new Color(0.14f, 0.13f, 0.12f));
-            Surf paint = DecorMaterials.Sign(text, bg, new Color(0.82f, 0.80f, 0.72f), out float aspect);
+            float aspect = LetteringAspect(text);
             float w = Mathf.Min(j.Len[best] - 2f, 2.2f * aspect), h = w / aspect;
             if (h > 2.4f) { h = 2.4f; w = h * aspect; }
             float y = Mathf.Min(top - 0.8f - h * 0.5f, j.FloorY(1) + 1.2f + h * 0.5f);
             Vector2 c = j.At(best, j.Len[best] * 0.5f) + j.Out[best] * 0.006f;
-            j.Upper.Upright(new Vector3(c.x, y, c.y), To3(j.Out[best], 0f), w, h, paint, new Rect(0f, 0f, 1f, 1f));
+            Vector3 outward = To3(j.Out[best], 0f), centre = new Vector3(c.x, y, c.y);
+            j.Upper.Upright(centre, outward, w, h, DecorPalette.Matte(bg));
+            // The lettering faded towards the paint under it.
+            Letters(j.Upper, centre, outward, w, h, text, DecorPalette.Matte(Color.Lerp(new Color(0.82f, 0.80f, 0.72f), bg, 0.3f)));
         }
         #endregion
 

@@ -13,15 +13,21 @@ namespace CloneZ
     /// newspaper boxes, vending machines, bollards, gates and bus stops (<see cref="StreetFurniture"/>); flagpoles, memorials
     /// and historical markers, water towers and masts (<see cref="Landmarks"/>); fences, rock fences, walls, hedges and
     /// guard rails (<see cref="BarrierPass"/>); and litter in the parks. From the format-2 data where it's mapped (power,
-    /// nodes, barriers), from heuristics where it's thin. A Lite site gets only the landmarks seen from afar: transmission
-    /// towers, water towers and masts. Everything claims its spot in the occupancy grid; nothing here draws from the town's
-    /// shared random stream (every choice comes from a feature's id or a world-anchored spot, so streamed pieces agree).
+    /// nodes, barriers), from heuristics where it's thin. Roadside things stand where the roads drew their roadside
+    /// (<see cref="RoadPass.RoadsideOffset"/>), never on a carriageway or a driveway, and no wire passes over a roof. A Lite
+    /// site gets only what's seen from afar: transmission towers, water towers, masts, and each fence or wall as one plain
+    /// shape; past a fixed map's edge the poles carry only their crossarm and primaries, the fences are plain. Every step
+    /// yields when a streamed piece's time slice is used (<see cref="Site.StepDue"/>). Everything claims its spot in the
+    /// occupancy grid; nothing here draws from the town's shared random stream (every choice comes from a feature's id or a
+    /// world-anchored spot, so streamed pieces agree).
     /// </summary>
     internal static partial class StreetscapePass
     {
         private const int SaltLitter = 0x1177;
         private const int MaxParkProps = 200;
 
+        // Every step below may also yield part way through (when the streamed piece's step has used its time slice: see
+        // Site.StepDue); what's built never depends on where it yields.
         internal static IEnumerable<string> Build(Site site)
         {
             var ctx = new Ctx(site);
@@ -29,39 +35,44 @@ namespace CloneZ
             {
                 PowerPass.MappedLines(ctx);
                 Landmarks.Lite(ctx);
-                BarrierPass.Lite(ctx);
-                ctx.Finish();
+                foreach (string step in BarrierPass.Lite(ctx)) yield return step;
+                foreach (string step in ctx.Finish()) yield return step;
                 yield return "landmarks";
                 yield break;
             }
-            PowerPass.PlanStreetLines(ctx);
+            foreach (string step in PowerPass.PlanStreetLines(ctx)) yield return step;
             yield return "utility lines";
             PowerPass.MappedLines(ctx);
             yield return "power lines";
             SignPass.Signals(ctx);
             StreetLights.Plan(ctx);
-            PowerPass.DrawPoles(ctx);
+            foreach (string step in PowerPass.DrawPoles(ctx)) yield return step;
             yield return "utility poles";
-            PowerPass.ServiceDrops(ctx);
-            StreetLights.Draw(ctx);
+            foreach (string step in PowerPass.ServiceDrops(ctx)) yield return step;
+            foreach (string step in StreetLights.Draw(ctx)) yield return step;
             yield return "street lights";
-            SignPass.Signs(ctx);
+            foreach (string step in SignPass.Signs(ctx)) yield return step;
             yield return "signs";
-            StreetFurniture.Build(ctx);
+            foreach (string step in StreetFurniture.Build(ctx)) yield return step;
             yield return "street furniture";
-            Landmarks.Build(ctx);
+            foreach (string step in Landmarks.Build(ctx)) yield return step;
             yield return "landmarks";
             foreach (string step in BarrierPass.Build(ctx)) yield return step;
             yield return "fences and walls";
-            ParkLitter(site);
+            foreach (string step in Litter(site)) yield return step;
             yield return "park litter";
-            ctx.Finish();
+            foreach (string step in ctx.Finish()) yield return step;
             yield return "wires";
         }
 
         /// <summary>Up to five trash bags or bits of litter in every park, anywhere still free, each with a small
         /// collider.</summary>
         internal static void ParkLitter(Site site)
+        {
+            foreach (string _ in Litter(site)) { }
+        }
+
+        private static IEnumerable<string> Litter(Site site)
         {
             float half = site.Half;
             var square = Rect.MinMaxRect(-half, -half, half, half);
@@ -92,6 +103,7 @@ namespace CloneZ
                     i++;
                 }
                 if (placed >= MaxParkProps) break;
+                if (site.StepDue) yield return "park litter";
             }
         }
     }

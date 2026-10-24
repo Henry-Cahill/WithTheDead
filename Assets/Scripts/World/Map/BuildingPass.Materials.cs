@@ -713,6 +713,8 @@ namespace CloneZ
             s_Glowing.Add(m);
             s_GlowFull.Add(emission);
             m.SetColor(s_EmissionColor, emission * GlowShare());
+            // Made under whatever light the build had: the next camera to render sets every one again.
+            s_GlowShown = -1f;
             if (s_GlowHooked) return;
             s_GlowHooked = true;
             RenderPipelineManager.beginCameraRendering += OnCameraRendering;
@@ -723,6 +725,9 @@ namespace CloneZ
             float share = GlowShare();
             if (Mathf.Abs(share - s_GlowShown) < 0.005f) return;
             s_GlowShown = share;
+#if UNITY_EDITOR
+            if (s_Profiling) Debug.Log($"[Buildings] glow {share:F2} for {s_Glowing.Count} materials (ambient {RenderSettings.ambientLight}, camera {camera.name})");
+#endif
             for (int i = s_Glowing.Count - 1; i >= 0; i--)
             {
                 Material m = s_Glowing[i];
@@ -756,10 +761,11 @@ namespace CloneZ
             new Color(0.12f, 0.18f, 0.44f), new Color(0.48f, 0.10f, 0.10f), new Color(0.58f, 0.40f, 0.12f), new Color(0.12f, 0.32f, 0.18f),
         };
 
-        // Row 0: lamplight panes, then stained glass; row 1: lamp globes.
+        // Row 0: lamplight panes (by day glass like the rest with a hint of the room's light; their light is all in the
+        // emission), then stained glass; row 1: lamp globes.
         private static readonly Color[] PaneBase =
         {
-            new Color(0.30f, 0.25f, 0.17f), new Color(0.32f, 0.27f, 0.16f), new Color(0.20f, 0.23f, 0.28f), new Color(0.30f, 0.22f, 0.14f),
+            new Color(0.15f, 0.14f, 0.13f), new Color(0.16f, 0.15f, 0.12f), new Color(0.12f, 0.14f, 0.17f), new Color(0.16f, 0.13f, 0.11f),
             new Color(0.07f, 0.11f, 0.26f), new Color(0.29f, 0.06f, 0.06f), new Color(0.35f, 0.24f, 0.07f), new Color(0.07f, 0.19f, 0.11f),
             new Color(0.93f, 0.91f, 0.84f), new Color(0.95f, 0.92f, 0.80f), new Color(0.93f, 0.91f, 0.84f), new Color(0.95f, 0.92f, 0.80f),
             new Color(0.93f, 0.91f, 0.84f), new Color(0.95f, 0.92f, 0.80f), new Color(0.93f, 0.91f, 0.84f), new Color(0.95f, 0.92f, 0.80f),
@@ -786,7 +792,7 @@ namespace CloneZ
             if (s_PaneMat == null)
             {
                 Texture2D tex = Swatches("panes", PaneBase), glow = Swatches("paneglow", PaneGlow);
-                s_PaneMat = NewLit("Bldg_Panes", tex, 0.6f, 0f);
+                s_PaneMat = NewLit("Bldg_Panes", tex, 0.8f, 0f);
                 s_PaneMat.SetTexture("_EmissionMap", glow);
                 Glowing(s_PaneMat, new Color(0.85f, 0.85f, 0.85f));
             }

@@ -30,8 +30,9 @@ namespace CloneZ
         private static readonly List<int> s_Rooms = new List<int>(128);
         private static readonly List<float> s_At = new List<float>(128);
 
-        /// <summary>The plan's outside walls lined from inside and its windows dressed, into <paramref name="shell"/>'s walls.</summary>
-        private static void Linings(InteriorPlan plan, BuildingShell shell)
+        /// <summary>The plan's outside walls lined from inside and its windows dressed, into <paramref name="shell"/>'s walls:
+        /// a wall at a time (each step one wall, so the caller can spread a big building over frames).</summary>
+        private static IEnumerable<bool> Linings(InteriorPlan plan, BuildingShell shell)
         {
             List<Vector2> p = plan.Footprint.Pts;
             int n = p.Count;
@@ -40,6 +41,7 @@ namespace CloneZ
             Color fabric = Fabrics[rng.Next(Fabrics.Length)];
             for (int i = 0; i < n; i++)
             {
+                if (i > 0) yield return true;
                 Vector2 a = p[i], c = p[(i + 1) % n];
                 float len = Vector2.Distance(a, c);
                 if (len < 0.05f) continue;
