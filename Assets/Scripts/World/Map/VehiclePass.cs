@@ -40,6 +40,8 @@ namespace CloneZ
             public long Key;
             public CarBody Body;
             public CarWear Wear;
+            /// <summary>In a stall the roads painted along a parking lane.</summary>
+            public bool Stall;
         }
 
         /// <summary>One site's parking: what's been placed (and where, to keep the cars apart).</summary>
@@ -48,7 +50,7 @@ namespace CloneZ
             public readonly Site Site;
             public readonly NaturePlan Plan;
             public readonly int Max, MaxLoot;
-            public int Count, Loot;
+            public int Count, Loot, Stalled;
             public readonly List<NaturePlan.Keep> Placed = new List<NaturePlan.Keep>(64);
             public readonly List<NaturePlan.Station> Stations = new List<NaturePlan.Station>(64);
             public readonly List<Candidate> Found = new List<Candidate>(128);
@@ -141,7 +143,7 @@ namespace CloneZ
             foreach (string step in LotCars(c)) yield return step;
             diag += "lots " + (c.Count - before) + ", "; before = c.Count;
             foreach (string step in KerbCars(c)) yield return step;
-            diag += "kerbs " + (c.Count - before) + ", "; before = c.Count;
+            diag += "kerbs " + (c.Count - before) + " (" + c.Stalled + " in painted stalls), "; before = c.Count;
             Crashes(c);
             RoadWrecks(c);
             diag += "wrecks " + (c.Count - before) + ", lootable " + c.Loot;
@@ -174,7 +176,7 @@ namespace CloneZ
             {
                 if (keep != null && !keep[i]) continue;
                 Candidate k = found[i];
-                Park(c, k.At, k.Yaw, LookFor(k.Key, k.Body, k.Snow, k.Wear), k.Key, Quaternion.identity);
+                if (Park(c, k.At, k.Yaw, LookFor(k.Key, k.Body, k.Snow, k.Wear), k.Key, Quaternion.identity) && k.Stall) c.Stalled++;
                 if (c.Site.StepDue) yield return step;
             }
             found.Clear();
@@ -315,10 +317,8 @@ namespace CloneZ
             if (c.Overlaps(at, axis, hl + 0.2f, hw + 0.15f)) return false;
             float reach = Mathf.Max(0f, hl - hw);
             for (int k = -1; k <= 1; k++)
-            {
-                Vector2 q = at + axis * (k * reach);
-                if (c.Plan.WallDistance(q, hw + 1f) < hw + 0.15f || c.Plan.NearDoor(q, hw + 0.9f)) return false;
-            }
+                if (c.Plan.WallDistance(at + axis * (k * reach), hw + 1f) < hw + 0.15f) return false;
+            if (c.Plan.DoorIn(at, axis, hl + 0.6f, hw + 0.6f)) return false;
             Vector3 at3 = To3(at, 0f);
             RaidMesh m = c.Site.Town.Out.Solid(at3);
             m.SetFrame(at3, Quaternion.Euler(0f, yaw, 0f) * tilt);
