@@ -9,8 +9,8 @@ so CLONE-Z gets built while you sleep without spending cloud AI tokens. The mode
   Workbench it is the **night-shift** toggle under *Applications*.
 - **Helper machines** (optional) run extra agents in parallel. They use the Spark's model over the LAN and
   do their own compile checks, so more tasks get done per night. They can be Linux or Windows (see
-  [Windows helpers](#windows-helpers)); a helper can also be set to work through the documentation tasks only (see
-  [Documentation workers](#documentation-workers)).
+  [Windows helpers](#windows-helpers)); a helper can also be set to work through the documentation tasks only, and so
+  can every worker, so the night shift writes nothing but comments (see [Documentation workers](#documentation-workers)).
 - **This PC** sets things up, opens the pull request when the work is done, and fetches the results. The
   agents keep working while it sleeps.
 
@@ -121,6 +121,18 @@ each public method and property in ...") count as documentation tasks too. While
 When no documentation worker is left on duty, the others take documentation tasks again. A documentation worker uses
 `NIGHTSHIFT_HELPER_MODEL`, like the other helpers.
 
+**Comments only.** `NIGHTSHIFT_DOCS_WORKERS=all` makes every worker, the Spark included, a documentation worker, so
+the night shift writes comments and nothing else: the planner writes only documentation tasks, and every other task,
+yours included, waits in tasks.md for a night without it. When every script that can have a documentation pass has had
+one, the workers wait and the planner looks again from time to time. Set it back to `laserengraver` for the other
+kinds of work.
+
+Whoever takes it, a documentation task lands the comment lines it adds and nothing else. Before the compile check, the
+worker changes back everything else the agent changed: code, existing comments, indentation, blank lines, and files it
+added or deleted. A declaration the agent re-indented keeps its old indentation and still gets its new summary, indented
+like it. A summary for a member that already has one is left out too, so no member ends up with two. The log says
+`kept only the comments it added; changed the rest back in: ...` when this happens.
+
 ## Windows helpers
 
 A Windows PC can be a helper too: `laserengraver` (account `LASERENGRAVER\HTSADMIN`) is one. The Spark drives it over
@@ -219,9 +231,10 @@ it is for, so the agent finds code without reading the whole project, which save
 
 **Guard rails.** The agent can't commit, push or switch branches. Changes to `ProjectSettings/`,
 `Packages/`, scenes, `.meta` files, generated item models and the night shift's own files are rolled
-back. `.meta` files for new scripts are generated so the branch imports cleanly. It runs in the Workbench
-container on the Spark and as the helper user on the helpers. The pull request step refuses to push anything
-under `.state/` or `.unityrefs/`, or anything that looks like a private key.
+back, and a documentation task keeps only the comment lines it adds (see
+[Documentation workers](#documentation-workers)). `.meta` files for new scripts are generated so the branch imports
+cleanly. It runs in the Workbench container on the Spark and as the helper user on the helpers. The pull request step
+refuses to push anything under `.state/` or `.unityrefs/`, or anything that looks like a private key.
 
 ## Settings
 
