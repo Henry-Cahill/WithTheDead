@@ -95,7 +95,9 @@ namespace CloneZ
             yield return "interior switches";
             for (int i = 0; i < Plan.Rooms.Count; i++)
             {
-                InteriorPass.Furnish(this, i);
+                // One room that can't be furnished leaves it as far as it got, not the building unfurnished.
+                try { InteriorPass.Furnish(this, i); }
+                catch (System.Exception e) { Trouble("room " + i + " (" + Plan.Rooms[i].Role + ")", e); }
                 yield return "interior rooms";
             }
             EmitWalls();
@@ -121,8 +123,26 @@ namespace CloneZ
             return more;
         }
 
-        /// <summary>The name of the step <see cref="Advance"/> last ran.</summary>
+        /// <summary>Name of the step <see cref="Advance"/> last ran.</summary>
         public string Current => _steps != null ? _steps.Current : null;
+
+        /// <summary>What went wrong in a room or a doorway that was left as far as it got (the rest of the building was
+        /// furnished), one line each; null when nothing did.</summary>
+        public List<string> Troubles;
+
+        // A room or a doorway that threw: noted (and logged once a building), and the build goes on.
+        private void Trouble(string what, System.Exception e)
+        {
+            Troubles ??= new List<string>(2);
+            string line = what + ": " + e.GetType().Name + ": " + e.Message;
+            if (e.StackTrace != null)
+            {
+                string[] frames = e.StackTrace.Split('\n');
+                for (int k = 0; k < frames.Length && k < 4; k++) line += " < " + frames[k].Trim();
+            }
+            Troubles.Add(line);
+            if (Troubles.Count == 1) Debug.LogWarning("[CloneZ] Interiors: building " + Plan.Id + " (" + Plan.Use + "), " + what + " left unfinished: " + e);
+        }
 
         private const int DoorsPerStep = 4;
 
@@ -381,8 +401,12 @@ namespace CloneZ
                 Vector2 alongL = w.AlongX ? Vector2.right : Vector2.up, normalL = w.AlongX ? Vector2.up : Vector2.right;
                 PlanRoom into = swing > 0 ? plus : minus;
                 RoomExtent(into, w.AlongX, out float ra, out float rb);
-                Hang(World(c, 0f), WorldDir(alongL), WorldDir(normalL), w.DoorWidth, Half, swing, w.DoorPos, ra, rb,
-                    Name(minus, plus, into), null, plus, minus, false, false, p.Object.transform, p.Occluder, RaidBuilding.DoorHeight);
+                try
+                {
+                    Hang(World(c, 0f), WorldDir(alongL), WorldDir(normalL), w.DoorWidth, Half, swing, w.DoorPos, ra, rb,
+                        Name(minus, plus, into), null, plus, minus, false, false, p.Object.transform, p.Occluder, RaidBuilding.DoorHeight);
+                }
+                catch (System.Exception e) { Trouble("the door between rooms " + w.Minus + " and " + w.Plus, e); }
             }
             for (int k = 0; k < Plan.Entrances.Count; k++)
             {
@@ -408,8 +432,12 @@ namespace CloneZ
                 bool glass = shop && Plan.Town && k == 0;
                 string name = k == 0 ? "Front door" : Vector2.Dot(en.Outward, Vector2.up) > 0.7f ? "Back door" : "Side door";
                 // Across the frame's own axes a slanting wall's door still works on the world's.
-                Hang(World(c, 0f), WorldDir(along).normalized, WorldDir(en.Outward).normalized, en.Width, Plan.Thick * 0.5f, -1, 0f, ra, rb,
-                    name, "inside the " + Plan.Noun, null, null, true, glass, Root.transform, null, OuterDoorHeight);
+                try
+                {
+                    Hang(World(c, 0f), WorldDir(along).normalized, WorldDir(en.Outward).normalized, en.Width, Plan.Thick * 0.5f, -1, 0f, ra, rb,
+                        name, "inside the " + Plan.Noun, null, null, true, glass, Root.transform, null, OuterDoorHeight);
+                }
+                catch (System.Exception e) { Trouble("the " + name.ToLowerInvariant(), e); }
             }
         }
 
@@ -640,6 +668,7 @@ namespace CloneZ
             Root.GetComponentsInChildren(true, s_Lights);
             Lights = s_Lights.Count;
             s_Lights.Clear();
+            KeepLoot();
             Root.GetComponentsInChildren(true, Containers);
             Bounds b = new Bounds(World(Plan.Extent.center, Plan.WallH * 0.5f), Vector3.zero);
             foreach (Vector2 p in Plan.Footprint.Pts) b.Encapsulate(new Vector3(p.x + _offset.x, 0f, p.y + _offset.z));
@@ -674,6 +703,87 @@ namespace CloneZ
         }
 
         private static readonly List<RoomLight> s_Lights = new List<RoomLight>(32);
+        private static readonly List<LootContainer> s_Boxes = new List<LootContainer>(64);
+        private static readonly List<ContainerType> s_Kinds = new List<ContainerType>(8);
+
+        /// <summary>Loot containers stripped of their storage by <see cref="KeepLoot"/> (for the harness).</summary>
+        public int Stripped;
+
+        // Each room keeps as many loot containers as its plan allots it (every drawer, cupboard and compartment its furniture
+        // came with counts one): one of each kind its pool names first, the signature kind leading, then the rest in the
+        // order they were made; the others' storage is taken out and their furniture stays, shut.
+        private void KeepLoot()
+        {
+            Root.GetComponentsInChildren(true, s_Boxes);
+            int n = Plan.Rooms.Count;
+            var byRoom = new List<LootContainer>[n];
+            foreach (LootContainer box in s_Boxes)
+            {
+                if (box == null || box.IsSack || box.Type == ContainerType.Corpse) continue;
+                Vector2 l = LocalOf(box.transform.position);
+                int room = Plan.RoomAt(l);
+                if (room < 0) room = Plan.NearestRoom(l);
+                if (room < 0)
+                {
+                    Strip(box);
+                    continue;
+                }
+                (byRoom[room] ??= new List<LootContainer>(8)).Add(box);
+            }
+            s_Boxes.Clear();
+            for (int i = 0; i < n; i++)
+            {
+                List<LootContainer> list = byRoom[i];
+                PlanRoom r = Plan.Rooms[i];
+                int keep = Mathf.Max(0, r.Loot);
+                if (list == null || list.Count <= keep) continue;
+                var chosen = new bool[list.Count];
+                int kept = 0;
+                s_Kinds.Clear();
+                if (r.Pool != null)
+                    foreach (ContainerType t in r.Pool)
+                        if (!s_Kinds.Contains(t)) s_Kinds.Add(t);
+                for (bool more = true; kept < keep && more;)
+                {
+                    more = false;
+                    foreach (ContainerType t in s_Kinds)
+                    {
+                        if (kept >= keep) break;
+                        for (int k = 0; k < list.Count; k++)
+                        {
+                            if (chosen[k] || list[k].Type != t) continue;
+                            chosen[k] = true;
+                            kept++;
+                            more = true;
+                            break;
+                        }
+                    }
+                }
+                for (int k = 0; k < list.Count && kept < keep; k++)
+                    if (!chosen[k]) { chosen[k] = true; kept++; }
+                for (int k = 0; k < list.Count; k++)
+                    if (!chosen[k]) Strip(list[k]);
+            }
+        }
+
+        // Takes a container's storage out of its furniture: a fixture's holder goes whole (its doors and drawers stay shut on
+        // the piece), a free-standing container keeps its body.
+        private void Strip(LootContainer box)
+        {
+            if (box == null) return;
+            Stripped++;
+            if (box.Owner is StorageFixture fixture && fixture != null)
+            {
+                Object.DestroyImmediate(fixture.gameObject);
+                return;
+            }
+            if (box.IsFixture && box.transform.childCount == 0 && box.GetComponent<Renderer>() == null)
+            {
+                Object.DestroyImmediate(box.gameObject);
+                return;
+            }
+            Object.DestroyImmediate(box);
+        }
 
         private static int CountObjects(Transform t)
         {

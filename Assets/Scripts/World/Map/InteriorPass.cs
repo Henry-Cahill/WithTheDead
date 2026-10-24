@@ -151,15 +151,16 @@ namespace CloneZ
         }
 
         /// <summary>Loose loot for a planned building whose furnishing failed after its site was gone (the streamer's): a
-        /// container from each of its biggest rooms' pools, in the middle of the room, under <paramref name="parent"/>.</summary>
+        /// container of its signature kind in the middle of each room its plan gives loot (six at most), under
+        /// <paramref name="parent"/>.</summary>
         internal static void LooseLoot(InteriorPlan plan, Transform parent, Vector3 offset)
         {
             var rng = new System.Random(unchecked(plan.Seed * 31 + SaltLoot));
             int placed = 0;
             foreach (PlanRoom r in plan.Rooms)
             {
-                if (placed >= 4) break;
-                if (r.Pool == null || r.Pool.Length == 0 || r.R.width < 2f || r.R.height < 2f) continue;
+                if (placed >= 6) break;
+                if (r.Loot <= 0 || r.Pool == null || r.Pool.Length == 0 || r.R.width < 2f || r.R.height < 2f) continue;
                 Vector2 at = plan.ToSite(r.R.center);
                 LootContainer.Spawn(parent, r.Pool[0], new Vector3(at.x + offset.x, 0f, at.y + offset.z), rng.Next());
                 placed++;
