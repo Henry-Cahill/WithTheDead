@@ -61,7 +61,8 @@ namespace CloneZ.EditorTools
         /// (see <see cref="global::CloneZ.MapShots"/>). Run it with no <c>-quit</c> (it exits by itself) and with
         /// <c>CLONEZ_WORLD</c> pointing at a world store:
         /// <c>Unity.exe -batchmode -projectPath &lt;project&gt; -executeMethod CloneZ.EditorTools.CloneZBatch.MapShots
-        /// -clonez-mapshots &lt;outDir&gt; [-clonez-mapshots-place &lt;name&gt;] [-clonez-mapshots-quick] -logFile &lt;log&gt;</c>.
+        /// -clonez-mapshots &lt;outDir&gt; [-clonez-mapshots-place &lt;name&gt;] [-clonez-mapshots-quick] [-clonez-mapshots-lite]
+        /// -logFile &lt;log&gt;</c> (lite: the streamed chunks are built in Lite detail).
         /// Exit code: 0 ok, 1 harness failure, 2 the map failed to build or logged errors while building, 3 no world store
         /// or no such place.
         /// </summary>
@@ -83,6 +84,7 @@ namespace CloneZ.EditorTools
                     OutDir = outDir,
                     Place = ArgValue(args, "-clonez-mapshots-place"),
                     Quick = Array.IndexOf(args, "-clonez-mapshots-quick") >= 0,
+                    Lite = Array.IndexOf(args, "-clonez-mapshots-lite") >= 0,
                     GameProfile = GameVolumeProfile(),
                 };
                 code = global::CloneZ.MapShots.Run(options);

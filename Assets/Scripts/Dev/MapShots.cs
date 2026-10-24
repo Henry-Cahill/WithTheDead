@@ -38,6 +38,8 @@ namespace CloneZ
             public string Place;
             /// <summary>A handful of pictures, no pass profile, no chunk tests.</summary>
             public bool Quick;
+            /// <summary>Build the streamed chunks (the chunk tests and the Louisville block) in Lite detail.</summary>
+            public bool Lite;
             /// <summary>The game scene's Global Volume profile (its bloom, tonemapping and vignette).</summary>
             public VolumeProfile GameProfile;
         }
@@ -344,6 +346,7 @@ namespace CloneZ
             {
                 _r.started = Now();
                 _r.quick = _o.Quick;
+                MapApi.ChunkDetail = _o.Lite ? KentuckyMap.Detail.Lite : KentuckyMap.Detail.Full;
                 StackTraceLogType trace = Application.GetStackTraceLogType(LogType.Log);
                 Application.SetStackTraceLogType(LogType.Log, StackTraceLogType.None);
                 Application.logMessageReceivedThreaded += OnLog;
@@ -2489,7 +2492,7 @@ namespace CloneZ
                 string place = _place != null ? _place.name : _r.place;
                 md.Append("# CLONE-Z map harness: ").Append(place).Append(" (build ").Append(_r.buildId ?? "?").Append(")\n\n");
                 md.Append("**Exit ").Append(_r.exitCode).Append("**: ").Append(Esc(_r.exitReason)).Append(". ")
-                    .Append(_o.Quick ? "Quick run" : "Full run").Append(", ").Append(F1(_r.totalSeconds)).Append(" s, started ")
+                    .Append(_o.Quick ? "Quick run" : "Full run").Append(_o.Lite ? " (streamed chunks in Lite detail)" : "").Append(", ").Append(F1(_r.totalSeconds)).Append(" s, started ")
                     .Append(_r.started).Append(".  \nUnity ").Append(_r.unity).Append(", ").Append(Esc(_r.graphics)).Append(". World store `")
                     .Append(_r.worldStore).Append("`. ").Append(Esc(_r.attribution)).Append("\n\n");
 
@@ -2695,6 +2698,9 @@ namespace CloneZ
         {
             public const int ChunkSize = KentuckyMap.ChunkSize;
 
+            /// <summary>The detail streamed chunks are built in (Lite with -clonez-mapshots-lite).</summary>
+            public static KentuckyMap.Detail ChunkDetail = KentuckyMap.Detail.Full;
+
             /// <summary>A streamed piece built by the harness, with what the streamer would know about it.</summary>
             public sealed class Chunk
             {
@@ -2811,7 +2817,7 @@ namespace CloneZ
                 {
                     Build = build, Region = region, Place = placeName, Cx = cx, Cz = cz,
                     Seed = unchecked(layoutSeed * 486187739 + cx * 73856093 ^ cz * 19349663),
-                    Root = c.Root.transform, Overhead = c.Overhead.transform, Offset = middle,
+                    Root = c.Root.transform, Overhead = c.Overhead.transform, Offset = middle, Detail = ChunkDetail,
                 };
                 var uv = new Vector3((float)Wrap((cx + 0.5) * ChunkSize), 0f, (float)Wrap((cz + 0.5) * ChunkSize));
                 var total = Stopwatch.StartNew();
