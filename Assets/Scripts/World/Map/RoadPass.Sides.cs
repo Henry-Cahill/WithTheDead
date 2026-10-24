@@ -201,7 +201,7 @@ namespace CloneZ
                 {
                     Arm a = j.Arms[corner.A], b = j.Arms[corner.B];
                     Side sa = a.SL, sb = b.SR;
-                    if (!corner.Convex || !sa.Kerb || !sb.Kerb || !sa.Walk || !sb.Walk) continue;
+                    if (corner.Gore || !corner.Convex || !sa.Kerb || !sb.Kerb || !sa.Walk || !sb.Walk) continue;
                     if (sa.WalkIn - (sa.Edge + KerbWidth) <= WideVergeWidth && sb.WalkIn - (sb.Edge + KerbWidth) <= WideVergeWidth) continue;
                     ArmKerb(j, a, 1, sa.WalkIn, a.Cap + 3f, s_KerbA);
                     ArmKerb(j, b, -1, sb.WalkIn, b.Cap + 3f, s_KerbB);
@@ -225,19 +225,7 @@ namespace CloneZ
 
         // A cut of the sidewalk alone on one side (+1 left, as seen along the arm away from the junction) of arm
         // <paramref name="arm"/>, from <paramref name="t0"/> to <paramref name="t1"/> metres out along it.
-        private static void WalkCut(Joint j, Arm arm, int armSide, float t0, float t1)
-        {
-            Chain c = arm.Through ? j.OnChain : arm.Chain;
-            if (c == null) return;
-            if (arm.Through)
-            {
-                bool fwd = arm == j.Fwd;
-                if (fwd) AddCut(c, j.AlongS + t0, j.AlongS + t1, CutKind.Walk, armSide);
-                else AddCut(c, j.AlongS - t1, j.AlongS - t0, CutKind.Walk, -armSide);
-            }
-            else if (arm.AtStart) AddCut(c, t0, t1, CutKind.Walk, armSide);
-            else AddCut(c, c.Length - t1, c.Length - t0, CutKind.Walk, -armSide);
-        }
+        private static void WalkCut(Joint j, Arm arm, int armSide, float t0, float t1) => ArmCut(j, arm, armSide, t0, t1, CutKind.Walk);
 
         private static IEnumerable<string> SidesAndCorners(Net net)
         {
@@ -480,7 +468,7 @@ namespace CloneZ
             {
                 Arm a = j.Arms[corner.A], b = j.Arms[corner.B];
                 Side sa = a.SL, sb = b.SR;
-                if (corner.Path.Count < 2) continue;
+                if (corner.Path.Count < 2 || corner.Gore) continue;
                 if (!sa.Kerb || !sb.Kerb)
                 {
                     if (net.Full && corner.Rounded && !sa.Kerb && !sb.Kerb && a.W.Carriage && b.W.Carriage
