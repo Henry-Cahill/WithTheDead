@@ -490,10 +490,19 @@ namespace CloneZ
                 }
                 _md.Append("\nStand-ins made so far: ").Append(MapCutaway.OverlaysMade).Append(" (").Append(F1(MapCutaway.OverlaysMade > 0 ? MapCutaway.OverlayMs / MapCutaway.OverlaysMade : 0))
                     .Append(" ms each on average in all, the most one took ").Append(F1(MapCutaway.OverlayWholeMaxMs)).Append(" ms, made in slices of at most ")
-                    .Append(F2(MapCutaway.OverlaySliceMaxMs)).Append(" ms); ").Append(MapCutaway.OverlaysEvicted).Append(" let go of. Roofs read in slices of at most ")
+                    .Append(F2(MapCutaway.OverlaySliceMaxMs)).Append(" ms: ").Append(SliceStory()).Append("); ").Append(MapCutaway.OverlaysEvicted).Append(" let go of. Roofs read in slices of at most ")
                     .Append(F2(MapCutaway.ResolveSliceMaxMs)).Append(" ms. Cuts held back for a stand-in: ").Append(MapCutaway.Holds).Append(", the longest ")
                     .Append(MapCutaway.LongestHold).Append(" frame(s). The longest frame's work: ").Append(F2(MapCutaway.WorkMaxMs)).Append(" ms. Door renderers hidden with their walls: ")
                     .Append(MapCutaway.DoorsHidden).Append(".\n\n");
+            }
+
+            // What the longest stand-in slice did: the stages it ran, how big the walls were, and whether the GC paused it.
+            private static string SliceStory()
+            {
+                string[] stages = { "reading the walls", "sorting the triangles", "capping the stubs", "making the mesh", "the end" };
+                int from = Mathf.Clamp(MapCutaway.OverlaySliceMaxFrom, 0, 4), to = Mathf.Clamp(MapCutaway.OverlaySliceMaxTo, 0, 4);
+                return (from == to ? stages[from] : "from " + stages[from] + " to " + stages[to]) + ", walls of "
+                    + F0(MapCutaway.OverlaySliceMaxVertices) + " vertices" + (MapCutaway.OverlaySliceMaxGc ? ", a garbage collection in it" : "");
             }
 
             private struct LapStats

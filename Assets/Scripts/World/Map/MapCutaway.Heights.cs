@@ -16,6 +16,8 @@ namespace CloneZ
         internal const float HeightStep = 0.25f;
         private const float MinHeightCell = 0.5f;
         private const int MaxHeightCells = 80;   // along a side
+        /// <summary>Cells a slice of the reading touches between looks at the time (a triangle counts as 8 more).</summary>
+        private const int CellsBetweenLooks = 1024;
         /// <summary>How far past its footprint a building is assumed to reach when what it covers isn't known (eaves, porch
         /// roofs, awnings, signs): the spatial hash cells it's put in.</summary>
         private const float CoverMargin = 3f;
@@ -181,10 +183,16 @@ namespace CloneZ
                 int w = job.W, h = job.H;
                 float cell = job.Cell;
                 Vector3 shift = job.Shift;
+                // The time is looked at every so many cells touched (a roof's big faces cover hundreds each), not triangles.
+                int work = 0;
                 for (; job.Tri + 2 < s_HI.Count; job.Tri += 3)
                 {
-                    if ((job.Tri & 127) == 0 && job.Tri > 0 && Stopwatch.GetTimestamp() > deadline) return false;
-                    Raster(field, w, h, cell, s_HV[s_HI[job.Tri]] + shift, s_HV[s_HI[job.Tri + 1]] + shift, s_HV[s_HI[job.Tri + 2]] + shift);
+                    if (work >= CellsBetweenLooks)
+                    {
+                        work = 0;
+                        if (Stopwatch.GetTimestamp() > deadline) return false;
+                    }
+                    work += 8 + Raster(field, w, h, cell, s_HV[s_HI[job.Tri]] + shift, s_HV[s_HI[job.Tri + 1]] + shift, s_HV[s_HI[job.Tri + 2]] + shift);
                 }
                 if (b.Height != null) HeightBytes -= b.Height.Length;
                 b.Height = field;
@@ -223,11 +231,12 @@ namespace CloneZ
         }
 
         // Raises the cells under triangle a-b-c (grid space: x, z from the grid's corner, y above the base) to the
-        // triangle's height over each: its highest point in that cell, or a little more, never less.
-        private static void Raster(byte[] field, int w, int h, float cell, Vector3 a, Vector3 b, Vector3 c)
+        // triangle's height over each: its highest point in that cell, or a little more, never less. Returns how many cells
+        // it looked at (its cost).
+        private static int Raster(byte[] field, int w, int h, float cell, Vector3 a, Vector3 b, Vector3 c)
         {
             float top = Mathf.Max(a.y, Mathf.Max(b.y, c.y));
-            if (top <= 0f) return;
+            if (top <= 0f) return 0;
             float minX = Mathf.Min(a.x, Mathf.Min(b.x, c.x)), maxX = Mathf.Max(a.x, Mathf.Max(b.x, c.x));
             float minZ = Mathf.Min(a.z, Mathf.Min(b.z, c.z)), maxZ = Mathf.Max(a.z, Mathf.Max(b.z, c.z));
             int i0 = Mathf.Clamp(Mathf.FloorToInt(minX / cell), 0, w - 1), i1 = Mathf.Clamp(Mathf.FloorToInt(maxX / cell), 0, w - 1);
@@ -235,15 +244,11 @@ namespace CloneZ
             if (i0 == i1 && j0 == j1)
             {
                 Raise(field, j0 * w + i0, top);
-                return;
+                return 1;
             }
             float area = (b.x - a.x) * (c.z - a.z) - (c.x - a.x) * (b.z - a.z);   // twice the signed area in plan
             float span = Mathf.Max(maxX - minX, maxZ - minZ);
-            if (Mathf.Abs(area) <= 0.02f * span * span)
-            {
-                Upright(field, w, h, cell, a, b, c);
-                return;
-            }
+            if (Mathf.Abs(area) <= 0.02f * span * span) return Upright(field, w, h, cell, a, b, c);
             // A sloping or level face: each cell it touches gets the face's plane at the cell's highest corner, capped at
             // the face's own top.
             float inv = 1f / area;
@@ -258,6 +263,7 @@ namespace CloneZ
                     float hx = gx >= 0f ? cx + half : cx - half, hz = gz >= 0f ? cz + half : cz - half;
                     Raise(field, j * w + i, Mathf.Min(top, a.y + gx * (hx - a.x) + gz * (hz - a.z)));
                 }
+            return (i1 - i0 + 1) * (j1 - j0 + 1);
         }
 
         // Whether the square cell centred (cx, cz), half-size `half`, reaches the inner side of the triangle's edge p-q
@@ -270,8 +276,8 @@ namespace CloneZ
         }
 
         // An upright triangle (a wall, a gable end, a chimney's or a steeple's side) stands on a line in plan: along it,
-        // every half cell, the cell there gets the triangle's top at that point.
-        private static void Upright(byte[] field, int w, int h, float cell, Vector3 a, Vector3 b, Vector3 c)
+        // every half cell, the cell there gets the triangle's top at that point. Returns the points looked at.
+        private static int Upright(byte[] field, int w, int h, float cell, Vector3 a, Vector3 b, Vector3 c)
         {
             // The line runs between the two corners farthest apart in plan.
             Vector3 p = a, q = b;
@@ -283,7 +289,7 @@ namespace CloneZ
             if (len < 1e-4f)
             {
                 Raise(field, Index(a.x, a.z, w, h, cell), Mathf.Max(a.y, Mathf.Max(b.y, c.y)));
-                return;
+                return 1;
             }
             float dx = (q.x - p.x) / len, dz = (q.z - p.z) / len;
             float ta = (a.x - p.x) * dx + (a.z - p.z) * dz, tb = (b.x - p.x) * dx + (b.z - p.z) * dz, tc = (c.x - p.x) * dx + (c.z - p.z) * dz;
@@ -294,6 +300,7 @@ namespace CloneZ
                 float y = Mathf.Max(Across(a, ta, b, tb, t), Mathf.Max(Across(b, tb, c, tc, t), Across(c, tc, a, ta, t)));
                 if (y > float.MinValue) Raise(field, Index(p.x + dx * t, p.z + dz * t, w, h, cell), y);
             }
+            return n + 1;
         }
 
         // The height where edge u-v (at u-v's positions tu, tv along the line) passes t, or MinValue when it doesn't.
