@@ -5,18 +5,25 @@ using static CloneZ.KentuckyMap;
 namespace CloneZ
 {
     /// <summary>
-    /// The real-world map's cars, as January 1993 left them (<see cref="CarKit"/>): in most driveways a sedan, a
-    /// station wagon or (out in the country) a pickup, nosed up beside the house at the end of a tyre-tracked strip of
-    /// packed snow; nose to tail along the kerbs downtown, here and there along the residential streets; in rows in the
-    /// parking lots, thicker towards the stores; school buses lined up at the schools, a cruiser outside the police
-    /// station, a car at the pumps; and out on the highways the ones that didn't get away: run off into the ditch, left on
-    /// the shoulder with a door hanging open, a burnt-out shell, a short jam. Late seventies to early nineties, in the
-    /// faded paints of the era, buried in snow. Kerbside cars and parking rows stand on the absolute lattice
-    /// (<see cref="NaturePlan.Stations"/>), so neighbouring pieces of a streamed map agree on them. Each car has a box
-    /// collider and takes its spot; a Lite site has none. The driveways are planned before the trees grow
-    /// (<see cref="PlanDriveways"/>, called by <see cref="VegetationPass"/>). The drivable cars the game parks for the
-    /// survivor (<see cref="VehicleModule"/>, on spots <see cref="ZoneLandmarks.PublishPoints"/> finds on the paving)
-    /// still find their room: these keep to the kerbs, driveways and stalls.
+    /// The real-world map's cars, as January 1993 left them (<see cref="CarKit"/>): at the house end of most driveways a
+    /// sedan, a station wagon or (out in the country) a pickup, snowed in, on the driveways the roads laid
+    /// (<see cref="RoadPass.Driveways"/>) and, by the homes they didn't reach, at the end of a strip of packed snow of this
+    /// pass's own; in the stalls painted on the parking lots (<see cref="GroundPass.Stalls"/>), thicker by the stores, and
+    /// nosed up to the edge of the small lots that have none; along the kerbs downtown and here and there along the
+    /// residential streets, clear of the junctions, crosswalks, hydrants, bus stops and driveway aprons; school buses lined
+    /// up at the schools, a cruiser outside the police station, a car or two on a gas station's forecourt; now and then a
+    /// rear-ended pair left at a town stop line; and out on the highways the ones that didn't get away: run off into the
+    /// ditch, left on the shoulder with a door hanging open, a burnt-out shell, a short jam. Late seventies to early
+    /// nineties, in the faded paints of the era, buried in snow. Every choice comes from a key of the car's own place or
+    /// feature (kerbs and highways on the absolute lattice, <see cref="NaturePlan.Stations"/>; stalls and driveways by
+    /// where they are), so neighbouring pieces of a streamed map agree, and a site over its limit is thinned evenly,
+    /// never by the order its streets come in. Each car has a box collider, takes its spot and keeps off the walls; one in
+    /// five has a glovebox (with the horn and the ignition, as the procedural town's wrecks have) and a trunk to search,
+    /// the game's own storage (<see cref="StorageFixture"/>), whose contents a streamed piece remembers like any
+    /// container's. A Lite site has none. The driveways are planned before the trees grow (<see cref="PlanDriveways"/>,
+    /// called by <see cref="VegetationPass"/>). The game's drivable cars (<see cref="VehicleModule"/>) are set down later on
+    /// spots <see cref="ZoneLandmarks.PublishPoints"/> finds; <see cref="ParkedCarNear"/> tells whether one of these is in
+    /// the way.
     /// </summary>
     internal static partial class VehiclePass
     {
@@ -24,7 +31,17 @@ namespace CloneZ
 
         // Salts for the cars' random choices (MapStyle).
         private const int SaltShape = 0xCA00, SaltBody = 0xCA01, SaltPaint = 0xCA02, SaltSnow = 0xCA04, SaltWear = 0xCA05,
-            SaltHasCar = 0xCA06, SaltSide = 0xCA07, SaltFace = 0xCA08, SaltJitter = 0xCA0A;
+            SaltHasCar = 0xCA06, SaltSide = 0xCA07, SaltFace = 0xCA08, SaltJitter = 0xCA0A, SaltThin = 0xCA0B, SaltHorn = 0xCA0C;
+
+        /// <summary>A car found while a step looks for room, parked (or not) once the step knows how many there are.</summary>
+        private struct Candidate
+        {
+            public Vector2 At;
+            public float Yaw, Snow;
+            public long Key;
+            public CarBody Body;
+            public CarWear Wear;
+        }
 
         /// <summary>One site's parking: what's been placed (and where, to keep the cars apart).</summary>
         private sealed class Parking
@@ -32,30 +49,35 @@ namespace CloneZ
             public readonly Site Site;
             public readonly NaturePlan Plan;
             public readonly int Max, MaxLoot;
-            public int Count, Loot, Yielded;
+            public int Count, Loot;
             public readonly List<NaturePlan.Keep> Placed = new List<NaturePlan.Keep>(64);
             public readonly List<NaturePlan.Station> Stations = new List<NaturePlan.Station>(64);
-            /// <summary>Where cars mustn't park: street corners (10 m), the mouths of service roads and lot entrances
-            /// (5 m), crossings, bus stops, hydrants and signals.</summary>
-            public readonly List<Vector2> Corners = new List<Vector2>(32), Mouths = new List<Vector2>(32), NoParking = new List<Vector2>(32);
-            /// <summary>The corners where three or more roads meet, for the odd fender-bender.</summary>
+            public readonly List<Candidate> Found = new List<Candidate>(128);
+            /// <summary>Where cars mustn't park: round the street corners (past the junction's paving and crosswalks), at
+            /// the mouths of service roads and lot entrances; and near crossings, bus stops, hydrants and signals.</summary>
+            public readonly List<(Vector2 at, float within)> Corners = new List<(Vector2, float)>(32), Mouths = new List<(Vector2, float)>(32);
+            public readonly List<Vector2> NoParking = new List<Vector2>(32);
+            /// <summary>The town crossroads (three or more roads), for the odd rear-ended pair at a stop line.</summary>
             public readonly List<Junction> Crossroads = new List<Junction>(16);
-            public Transform LootRoot;
+            public Transform LootRoot, Registry;
 
             public Parking(Site site, NaturePlan plan)
             {
                 Site = site;
                 Plan = plan;
-                Max = Mathf.Max(70, Mathf.RoundToInt(300f * site.AreaShare));
-                MaxLoot = Mathf.Max(4, Mathf.RoundToInt(60f * site.AreaShare));
+                Max = Mathf.Max(80, Mathf.RoundToInt(420f * site.AreaShare));
+                MaxLoot = Mathf.Max(6, Mathf.RoundToInt(70f * site.AreaShare));
                 foreach (Junction j in site.Junctions)
                 {
                     int roads = 0, minor = 0;
                     Vector2 first = Vector2.zero, second = Vector2.zero;
-                    foreach (JunctionArm a in j.Arms)
+                    float setback = 0f;
+                    for (int i = 0; i < j.Arms.Count; i++)
                     {
+                        JunctionArm a = j.Arms[i];
                         string kind = a.Street.Data.kind;
                         if (NaturePlan.FootKind(kind) || (a.Street.Rank == 0 && kind != "living_street")) continue;
+                        setback = Mathf.Max(setback, RoadPass.ArmSetback(j, i));
                         if (a.Street.Rank >= 2 || kind == "living_street")
                         {
                             if (roads == 0) first = a.Dir;
@@ -64,14 +86,15 @@ namespace CloneZ
                         }
                         else minor++;
                     }
+                    float corner = Mathf.Max(10f, setback + 6f), mouth = Mathf.Max(5f, setback + 2.5f);
                     if (roads >= 3)
                     {
-                        Corners.Add(j.At);
+                        Corners.Add((j.At, corner));
                         Crossroads.Add(j);
                     }
-                    else if (roads >= 1 && roads + minor >= 3) Mouths.Add(j.At);
-                    else if (roads == 2 && Vector2.Dot(first, second) > -0.86f) Corners.Add(j.At);   // a corner between two streets
-                    else if (minor >= 2 && roads + minor >= 3) Mouths.Add(j.At);
+                    else if (roads >= 1 && roads + minor >= 3) Mouths.Add((j.At, mouth));
+                    else if (roads == 2 && Vector2.Dot(first, second) > -0.86f) Corners.Add((j.At, corner));   // a corner between two streets
+                    else if (minor >= 2 && roads + minor >= 3) Mouths.Add((j.At, mouth));
                 }
                 foreach (Node n in site.Area.Nodes)
                     if (n.Data.kind == "crossing" || n.Data.kind == "bus_stop" || n.Data.kind == "hydrant" || n.Data.kind == "traffic_signals"
@@ -82,16 +105,22 @@ namespace CloneZ
             public bool Overlaps(Vector2 at, Vector2 axis, float halfLength, float halfWidth)
             {
                 foreach (NaturePlan.Keep k in Placed)
+                {
+                    float reach = k.HalfLength + halfLength;
+                    if ((k.At - at).sqrMagnitude > reach * reach) continue;
                     if (NaturePlan.Overlap(at, axis, halfLength, halfWidth, k.At, k.Axis, k.HalfLength, k.HalfWidth)) return true;
+                }
                 return false;
             }
 
-            /// <summary>True every dozen cars or so: time to let the frame go.</summary>
-            public bool Due()
+            /// <summary>True round a corner or a mouth (or near a no-parking point) at <paramref name="p"/>.</summary>
+            public bool NoParkingAt(Vector2 p)
             {
-                if (Count - Yielded < 12) return false;
-                Yielded = Count;
-                return true;
+                foreach ((Vector2 at, float within) in Corners)
+                    if ((at - p).sqrMagnitude < within * within) return true;
+                foreach ((Vector2 at, float within) in Mouths)
+                    if ((at - p).sqrMagnitude < within * within) return true;
+                return Near(NoParking, p, 4.5f);
             }
         }
 
@@ -108,19 +137,47 @@ namespace CloneZ
             Specials(c);
             diag += "specials " + (c.Count - before) + ", "; before = c.Count;
             yield return "buses and cruisers";
-            foreach (string step in KerbCars(c)) yield return step;
-            diag += "kerbs " + (c.Count - before) + ", "; before = c.Count;
             foreach (string step in LotCars(c)) yield return step;
             diag += "lots " + (c.Count - before) + ", "; before = c.Count;
+            foreach (string step in KerbCars(c)) yield return step;
+            diag += "kerbs " + (c.Count - before) + ", "; before = c.Count;
+            Crashes(c);
             RoadWrecks(c);
             diag += "wrecks " + (c.Count - before) + ", lootable " + c.Loot;
-            if (!site.Chunked) Debug.Log("[NatureDiag] cars " + c.Count + ": " + diag + "; corners " + c.Corners.Count + ", mouths " + c.Mouths.Count);
+            if (!site.Chunked) Debug.Log("[NatureDiag] cars " + c.Count + " of " + c.Max + ": " + diag + "; corners " + c.Corners.Count + ", mouths " + c.Mouths.Count);
             yield return "wrecks";
         }
 
-        /// <summary>Kept for <see cref="StreetscapePass"/>, which calls it until it drops the call: this pass parks its own
-        /// cars now (<see cref="Build"/>).</summary>
-        internal static void ParkedCars(Site site) { }
+        /// <summary>
+        /// Parks the step's candidates (<see cref="Parking.Found"/>), every one when they fit under
+        /// <paramref name="budget"/>, else that many picked evenly by a number of each one's own (so a site over its limit
+        /// is thinned all over, never by the order its streets or lots come in), in the order they were found.
+        /// </summary>
+        private static IEnumerable<string> ParkFound(Parking c, int budget, string step)
+        {
+            List<Candidate> found = c.Found;
+            bool[] keep = null;
+            if (found.Count > budget)
+            {
+                keep = new bool[found.Count];
+                var order = new List<int>(found.Count);
+                for (int i = 0; i < found.Count; i++) order.Add(i);
+                order.Sort((a, b) =>
+                {
+                    float ua = MapStyle.Unit(found[a].Key, SaltThin), ub = MapStyle.Unit(found[b].Key, SaltThin);
+                    return ua != ub ? ua.CompareTo(ub) : a.CompareTo(b);
+                });
+                for (int i = 0; i < Mathf.Max(0, budget); i++) keep[order[i]] = true;
+            }
+            for (int i = 0; i < found.Count; i++)
+            {
+                if (keep != null && !keep[i]) continue;
+                Candidate k = found[i];
+                Park(c, k.At, k.Yaw, LookFor(k.Key, k.Body, k.Snow, k.Wear), k.Key, Quaternion.identity);
+                if (c.Site.StepDue) yield return step;
+            }
+            found.Clear();
+        }
 
         #region Looks
         // The paints of the cars on Kentucky's roads in 1993, by how common they were.
@@ -246,34 +303,39 @@ namespace CloneZ
         /// Parks a vehicle at <paramref name="at"/>, nose to <paramref name="yaw"/> (degrees clockwise from north),
         /// <paramref name="tilt"/> on top (a car in a ditch): drawn into the outdoor batch, a box collider round it, its
         /// spot taken, and one in five (up to the site's share) with a glovebox and a trunk to search. False, placing
-        /// nothing, when it's outside the square, over the site's quota or in another's way.
+        /// nothing, when it's outside the square, over the site's limit, in another's way or in a wall.
         /// </summary>
         private static bool Park(Parking c, Vector2 at, float yaw, in CarLook look, long key, Quaternion tilt)
         {
             if (c.Count >= c.Max || !c.Plan.InSquare(at, 0f)) return false;
             Vector3 size = CarKit.Size(look.Body);
             Vector2 axis = Axis(yaw);
-            if (c.Overlaps(at, axis, size.z * 0.5f + 0.2f, size.x * 0.5f + 0.15f)) return false;
+            float hl = size.z * 0.5f, hw = size.x * 0.5f;
+            if (c.Overlaps(at, axis, hl + 0.2f, hw + 0.15f)) return false;
+            float reach = Mathf.Max(0f, hl - hw);
+            for (int k = -1; k <= 1; k++)
+                if (c.Plan.WallDistance(at + axis * (k * reach), hw + 1f) < hw + 0.15f) return false;
             Vector3 at3 = To3(at, 0f);
             RaidMesh m = c.Site.Town.Out.Solid(at3);
             m.SetFrame(at3, Quaternion.Euler(0f, yaw, 0f) * tilt);
             CarKit.Draw(m, look, MapStyle.Rng(key, SaltShape));
             m.ResetFrame();
             c.Site.Town.PropCollider(at3 + Vector3.up * (size.y * 0.5f), size, yaw);
-            float reach = size.z * 0.5f - size.x * 0.5f;
             int steps = Mathf.Max(1, Mathf.CeilToInt(reach * 2f / 1.5f));
-            for (int i = 0; i <= steps; i++) c.Site.Take(at + axis * Mathf.Lerp(-reach, reach, i / (float)steps), size.x * 0.5f + 0.1f);
-            c.Placed.Add(new NaturePlan.Keep { At = at, Axis = axis, HalfLength = size.z * 0.5f, HalfWidth = size.x * 0.5f, Kind = NaturePlan.KeepKind.Car });
+            for (int i = 0; i <= steps; i++) c.Site.Take(at + axis * Mathf.Lerp(-reach, reach, i / (float)steps), hw + 0.1f);
+            c.Placed.Add(new NaturePlan.Keep { At = at, Axis = axis, HalfLength = hl, HalfWidth = hw, Kind = NaturePlan.KeepKind.Car });
             c.Count++;
+            Register(c, at, Mathf.Sqrt(hl * hl + hw * hw));
             if (tilt == Quaternion.identity) Storage(c, at3, yaw, look, key, size);
             return true;
         }
 
         private const int SaltLoot = 0xCA30;
 
-        /// <summary>A car's glovebox (on the passenger side of the cab) and its trunk, a pickup's bed or a box truck's box,
-        /// as the procedural town's wrecks have them: each a little storage of the game's own, rolled from the car's key.
-        /// Burnt-out shells and school buses have none.</summary>
+        /// <summary>A car's glovebox (on the passenger side of the cab; a box truck's cab), with the horn and the ignition to
+        /// try from the driver's seat, and its trunk, a pickup's bed or a box truck's box: each a little storage of the
+        /// game's own, rolled from the car's key, as the procedural town's wrecks have them. Burnt-out shells and school
+        /// buses have none.</summary>
         private static void Storage(Parking c, Vector3 at, float yaw, in CarLook look, long key, Vector3 size)
         {
             if (c.Loot >= c.MaxLoot || (look.Wear & CarWear.Burnt) != 0 || look.Body == CarBody.Bus) return;
@@ -289,23 +351,23 @@ namespace CloneZ
             Quaternion q = Quaternion.Euler(0f, yaw, 0f);
             float hw = size.x * 0.5f, hl = size.z * 0.5f;
             bool box = look.Body == CarBody.BoxTruck, bed = look.Body == CarBody.Pickup || box;
-            Vector3 offset = c.Site.WorldOffset;   // keys by where it ends up in the world (a streamed piece is built at the origin)
+            Vector3 offset = c.Site.WorldOffset;   // a streamed piece is built at the origin and moved into place after
             int seed = unchecked((int)MapStyle.Hash(key, SaltLoot + 1));
-            if (!box)
-            {
-                Vector3 cab = at + q * new Vector3(hw + 0.12f, 0.95f, 0.3f);
-                StorageFixture.Create(host, "Glovebox", Interactable.KeyFor("carglovebox", cab + offset), cab, null, host, seed,
-                    new StorageOptions
-                    {
-                        Noun = "glovebox", LookLabel = "Search the glovebox", LootType = ContainerType.Desk,
-                        EmptyChance = CloneZConfig.RaidGloveboxEmptyChance, MaxStacks = CloneZConfig.RaidGloveboxMaxStacks, RaidBoost = false,
-                    });
-                c.Site.Containers++;
-            }
+            bool live = MapStyle.Unit(key, SaltHorn) < CloneZConfig.RaidHornLiveChance;
+            Vector3 cab = at + q * new Vector3(hw + 0.12f, box ? 1.3f : 0.95f, box ? hl - 0.85f : 0.3f);
+            Vector3 cabWorld = cab + offset;
+            Fixture(host, box ? "Truck cab" : "Glovebox", "carglovebox", cab, offset, seed,
+                new StorageOptions
+                {
+                    Noun = box ? "cab" : "glovebox", LookLabel = box ? "Search the cab" : "Search the glovebox", LootType = ContainerType.Desk,
+                    EmptyChance = CloneZConfig.RaidGloveboxEmptyChance, MaxStacks = CloneZConfig.RaidGloveboxMaxStacks, RaidBoost = false,
+                    ExtraActions = (ctx, list) => CabActions(list, cabWorld, live),
+                });
+            c.Site.Containers++;
             bool police = look.Body == CarBody.Cruiser;
             string back = box ? "Cargo box" : bed ? "Truck bed" : "Trunk";
             Vector3 rear = at + q * new Vector3(0f, box ? 1.2f : 0.9f, -hl - 0.12f);
-            StorageFixture.Create(host, back, Interactable.KeyFor("cartrunk", rear + offset), rear, null, host, seed + 1,
+            Fixture(host, back, "cartrunk", rear, offset, seed + 1,
                 new StorageOptions
                 {
                     Noun = back.ToLowerInvariant(), LookLabel = box ? "Roll up the cargo door" : bed ? "Search the truck bed" : "Pop the trunk",
@@ -318,6 +380,44 @@ namespace CloneZ
             c.Loot++;
         }
 
+        /// <summary>
+        /// A storage at <paramref name="at"/> (site metres) on <paramref name="host"/>. A fixture keeps the point it's
+        /// reached at as a place in the world, and a streamed piece is built at the origin and only then moved
+        /// <paramref name="offset"/> into place: so it's made at its place in the world (its reach and its key right) and
+        /// its object then set back where the piece's move will carry it to the same place.
+        /// </summary>
+        private static void Fixture(Transform host, string name, string kind, Vector3 at, Vector3 offset, int seed, StorageOptions options)
+        {
+            Vector3 world = at + offset;
+            StorageFixture f = StorageFixture.Create(host, name, Interactable.KeyFor(kind, world), world, null, host, seed, options);
+            if (offset != Vector3.zero) f.transform.position = at;
+        }
+
+        // From the driver's seat, as in the procedural town's wrecks: the horn (a racket heard across town while there's
+        // charge in the battery: a lure, or a mistake) and the ignition. `cab` is in the world.
+        private static void CabActions(List<InteractAction> into, Vector3 cab, bool live)
+        {
+            float next = 0f;
+            var horn = new InteractAction("Lean on the horn").Timed(CloneZConfig.RaidHornSeconds, "Leaning on the horn", HumanoidActivity.Use);
+            horn.Tick = (ctx, dt, progress) =>
+            {
+                if (!live || Time.time < next) return;
+                next = Time.time + 0.4f;
+                NoiseSystem.Emit(cab, CloneZConfig.RaidHornNoise);
+            };
+            horn.Run = ctx => ctx.Notify(live
+                ? "The horn blares across the snow, flat and endless. Every dead ear in town just turned your way."
+                : "A dry click from under the dash. The battery's long dead.");
+            into.Add(horn);
+            into.Add(new InteractAction("Try the ignition", ctx =>
+            {
+                NoiseSystem.Emit(cab, CloneZConfig.RaidIgnitionNoise);
+                ctx.Notify(live
+                    ? "No keys, but the wires hang loose under the column. You touch two together: the starter grinds, grinds, and nothing catches."
+                    : "No keys, and nothing happens when you twist the wires together. Dead as everything else.");
+            }));
+        }
+
         /// <summary>The unit plan direction of a yaw (degrees clockwise from north).</summary>
         private static Vector2 Axis(float yaw) => new Vector2(Mathf.Sin(yaw * Mathf.Deg2Rad), Mathf.Cos(yaw * Mathf.Deg2Rad));
 
@@ -325,43 +425,165 @@ namespace CloneZ
         private static float Yaw(Vector2 dir) => Mathf.Atan2(dir.x, dir.y) * Mathf.Rad2Deg;
         #endregion
 
+        #region Where the parked cars stand, for the game
+        /// <summary>A parked car in the world, as long as the piece of the map it was built with stands.</summary>
+        private struct Parked
+        {
+            public Vector2 At;
+            public float Radius;
+            public Transform Piece;
+        }
+
+        private const float ParkedCell = 16f;
+        private static readonly Dictionary<long, List<Parked>> s_Parked = new Dictionary<long, List<Parked>>();
+
+        /// <summary>
+        /// True when a car this pass parked stands within <paramref name="radius"/> (in plan, plus the car's own size) of
+        /// <paramref name="world"/>, a point in the world: for whatever is set down at run time (the game's drivable cars,
+        /// a landing pad) to keep off them. Only cars on pieces of the map still built count. Main thread only.
+        /// </summary>
+        internal static bool ParkedCarNear(Vector3 world, float radius)
+        {
+            var p = new Vector2(world.x, world.z);
+            int r = Mathf.CeilToInt((radius + 4f) / ParkedCell);
+            int cx = Mathf.FloorToInt(p.x / ParkedCell), cz = Mathf.FloorToInt(p.y / ParkedCell);
+            for (int z = cz - r; z <= cz + r; z++)
+                for (int x = cx - r; x <= cx + r; x++)
+                {
+                    if (!s_Parked.TryGetValue(NaturePlan.Combine(x, z), out List<Parked> list)) continue;
+                    for (int i = list.Count - 1; i >= 0; i--)
+                    {
+                        Parked car = list[i];
+                        if (car.Piece == null)
+                        {
+                            list.RemoveAt(i);   // its piece of the map is gone
+                            continue;
+                        }
+                        float reach = radius + car.Radius;
+                        if ((car.At - p).sqrMagnitude < reach * reach) return true;
+                    }
+                }
+            return false;
+        }
+
+        // Notes a car parked on the site, by where it ends up in the world, held by a marker under the site's root so it's
+        // forgotten when the site is.
+        private static void Register(Parking c, Vector2 at, float radius)
+        {
+            if (c.Registry == null)
+            {
+                c.Registry = new GameObject("ParkedCars").transform;
+                c.Registry.SetParent(c.Site.Town.World, false);
+            }
+            var w = new Vector2(at.x + c.Site.WorldOffset.x, at.y + c.Site.WorldOffset.z);
+            long cell = NaturePlan.Combine(Mathf.FloorToInt(w.x / ParkedCell), Mathf.FloorToInt(w.y / ParkedCell));
+            if (!s_Parked.TryGetValue(cell, out List<Parked> list)) s_Parked[cell] = list = new List<Parked>(8);
+            for (int i = list.Count - 1; i >= 0; i--)
+                if (list[i].Piece == null) list.RemoveAt(i);
+            list.Add(new Parked { At = w, Radius = radius, Piece = c.Registry });
+        }
+        #endregion
+
         #region Driveways
         /// <summary>
         /// Plans the driveways' cars (once a site; <see cref="VegetationPass"/> calls it before planting so the yards leave
-        /// them room): for most homes inside the square a car (one in six a second, an apartment block two to four) beside
-        /// the house's front corner, on whichever side has room, else in front of it where the yard is deep enough; never
-        /// on the sidewalk, in a wall, by the front door or on another driveway. Each car's spot and the strip of its
-        /// driveway out to the sidewalk are kept (<see cref="NaturePlan.Kept"/>) and taken in the occupancy grid.
+        /// them room). First the driveways the roads laid (<see cref="RoadPass.Driveways"/>): a car at the house end of
+        /// most, unless the track's too short to hold one past the sidewalk. Then the homes inside the square the roads
+        /// gave none (apartments, farmhouses set far back, homes on service roads...): a car (one in six a second, an
+        /// apartment block two to four) beside the house's front corner, on whichever side has room, else in front of it
+        /// where the yard is deep enough, at the end of a strip of packed snow out to the sidewalk; never on the sidewalk,
+        /// in a wall, by a door or on another driveway. Each car's spot (and a strip's) is kept
+        /// (<see cref="NaturePlan.Kept"/>) and taken in the occupancy grid.
         /// </summary>
         internal static void PlanDriveways(Site site, NaturePlan plan)
         {
             if (plan.DrivewaysPlanned) return;
             plan.DrivewaysPlanned = true;
             if (plan.Lite) return;
-            var doors = new Dictionary<Footprint, EnterableBuilding>();
-            foreach (EnterableBuilding e in site.Enterables)
-                if (e.Footprint != null) doors[e.Footprint] = e;
+            var served = new HashSet<Footprint>();
+            IReadOnlyList<RoadPass.DrivewaySpot> roads = RoadPass.Driveways(site);
+            for (int i = 0; i < roads.Count; i++) RoadDriveway(site, plan, roads[i], served);
             foreach (Footprint f in site.Area.Buildings)
             {
-                if (!NaturePlan.IsHome(f.Data) || f.Size < 30f || f.Pts.Count < 3 || !plan.InSquare(f.Middle, 0f)) continue;
+                if (!NaturePlan.IsHome(f.Data) || f.Size < 30f || f.Pts.Count < 3 || !plan.InSquare(f.Middle, 0f) || served.Contains(f)) continue;
                 long id = f.Data.id;
                 float u = MapStyle.Unit(id, SaltHasCar);
                 int want = f.Data.kind == "apartments" ? 2 + MapStyle.Pick(id, SaltHasCar + 1, 3) : u < 0.18f ? 0 : u < 0.84f ? 1 : 2;
                 if (want == 0) continue;
                 NaturePlan.HouseFrame hf = plan.FrameOf(f);
                 float first = MapStyle.Unit(id, SaltSide) < 0.5f ? 1f : -1f;
-                if (Driveway(site, plan, f, hf, first, want, doors) == 0) Driveway(site, plan, f, hf, -first, want, doors);
+                if (Driveway(site, plan, f, hf, first, want) == 0) Driveway(site, plan, f, hf, -first, want);
             }
+        }
+
+        // The car at the house end of a driveway the roads laid, nosed up to the house most times, backed in now and then;
+        // none where the track is too short to hold it past the sidewalk, or where the household got away in it.
+        private static void RoadDriveway(Site site, NaturePlan plan, in RoadPass.DrivewaySpot d, HashSet<Footprint> served)
+        {
+            if (d.Dir.sqrMagnitude < 0.5f || d.Length < 4f) return;
+            Footprint home = HomeBeside(plan, d.At + d.Dir * (d.Length * 0.6f), d.Length * 0.5f + 5f);
+            if (home != null) served.Add(home);
+            long key = home != null ? NaturePlan.Combine(home.Data.id, 960)
+                : NaturePlan.Combine((long)System.Math.Round(plan.AbsX(d.At.x) * 2.0), (long)System.Math.Round(plan.AbsZ(d.At.y) * 2.0));
+            if (MapStyle.Unit(key, SaltHasCar) < 0.2f) return;
+            float len = CarKit.Size(BodyOf(plan, d.At, home, key)).z;
+            if (!plan.Roadside(d.At, d.Dir, out float edge, out float back)) back = edge + 0.5f;
+            float walk = back - edge + 0.3f;
+            float centre = d.Length - len * 0.5f - 0.4f;
+            if (centre - len * 0.5f < walk) return;
+            Vector2 at = d.At + d.Dir * centre;
+            if (!plan.InSquare(at, 2.8f)) return;
+            for (int k = -1; k <= 1; k++)
+            {
+                Vector2 q = at + d.Dir * (k * (len * 0.5f - 0.9f));
+                if (plan.WallDistance(q, 2f) < 1.1f || plan.NearDoor(q, 2.4f)) return;
+            }
+            bool nose = MapStyle.Unit(key, SaltFace) < 0.7f;
+            float yaw = Yaw(nose ? d.Dir : -d.Dir) + (MapStyle.Unit(key, SaltJitter) - 0.5f) * 5f;
+            plan.Driveways.Add(new NaturePlan.CarSpot { At = at, Yaw = yaw, Key = key, Home = home, Mouth = d.At + d.Dir * walk, Road = true, Dir = d.Dir });
+            plan.KeepRect(at, d.Dir, len * 0.5f + 0.2f, 1.2f, NaturePlan.KeepKind.Car);
+            for (int k = -1; k <= 1; k++) site.Take(at + d.Dir * (k * 1.7f), 1.1f);
+        }
+
+        // The home whose walls come nearest a point within reach.
+        private static readonly List<Footprint> s_Near = new List<Footprint>(16);
+
+        private static Footprint HomeBeside(NaturePlan plan, Vector2 p, float within)
+        {
+            plan.BuildingsNear(p, within, s_Near);
+            Footprint best = null;
+            float bestD = within;
+            foreach (Footprint f in s_Near)
+            {
+                if (!NaturePlan.IsHome(f.Data)) continue;
+                float d = MapGeometry.DistanceToEdge(f.Pts, p);
+                if (d >= bestD) continue;
+                bestD = d;
+                best = f;
+            }
+            return best;
+        }
+
+        // What's parked at a home: out in the country (or at a trailer) a pickup as likely as not.
+        private static CarBody BodyOf(NaturePlan plan, Vector2 at, Footprint home, long key)
+        {
+            bool country = plan.Urban(at) < 0.035f || (home != null && home.Data.kind == "trailer");
+            return BodyFor(country ? Where.Country : Where.Town, MapStyle.Unit(key, SaltBody));
         }
 
         // One side of the house: the first spot that fits, then the second car behind it (or beside it), then the rest of an
         // apartment block's beside those. Returns how many it planned.
-        private static int Driveway(Site site, NaturePlan plan, Footprint f, NaturePlan.HouseFrame hf, float side, int want,
-            Dictionary<Footprint, EnterableBuilding> doors)
+        private static int Driveway(Site site, NaturePlan plan, Footprint f, NaturePlan.HouseFrame hf, float side, int want)
         {
             const float half = 2.6f, lane = 2.65f;
             float t = side > 0f ? hf.T1 + 1.75f : hf.T0 - 1.75f;
-            float sidewalk = hf.Street ? hf.KerbN + 2.1f : float.MinValue;   // the sidewalk's far edge, as an n
+            // The sidewalk's far edge (or the road's, without one), as an n: where the strip comes out on the street.
+            float sidewalk = float.MinValue;
+            if (hf.Street)
+            {
+                sidewalk = hf.KerbN + 2.1f;
+                if (plan.Roadside(hf.At(t, hf.KerbN), hf.N, out float _, out float back)) sidewalk = back - hf.Distance + 0.3f;
+            }
             float[] spots = { hf.N0 + 1.6f, hf.N0 - 0.6f, hf.N0 - 3.3f };
             long id = f.Data.id;
             bool nose = MapStyle.Unit(id, SaltFace) < 0.72f;   // nosed up to the house, or backed in
@@ -369,7 +591,7 @@ namespace CloneZ
             {
                 if (n - half < sidewalk + 0.5f) continue;
                 Vector2 at = hf.At(t, n);
-                if (!CarFits(site, plan, f, at, hf.N, doors)) continue;
+                if (!CarFits(site, plan, f, at, hf.N)) continue;
                 int count = 0;
                 Plan(site, plan, f, at, hf.N, nose, NaturePlan.Combine(id, 900), hf.Street ? hf.At(t, sidewalk) : at, ref count);
                 for (int k = 1; k < want; k++)
@@ -377,9 +599,9 @@ namespace CloneZ
                     Vector2 behind = hf.At(t, n - 5.4f * k);
                     Vector2 beside = hf.At(t + side * lane * k, n);
                     long key = NaturePlan.Combine(id, 900 + k);
-                    if (f.Data.kind != "apartments" && n - 5.4f * k - half >= sidewalk + 0.5f && CarFits(site, plan, f, behind, hf.N, doors))
+                    if (f.Data.kind != "apartments" && n - 5.4f * k - half >= sidewalk + 0.5f && CarFits(site, plan, f, behind, hf.N))
                         Plan(site, plan, f, behind, hf.N, nose, key, Vector2.zero, ref count);
-                    else if (CarFits(site, plan, f, beside, hf.N, doors))
+                    else if (CarFits(site, plan, f, beside, hf.N))
                         Plan(site, plan, f, beside, hf.N, MapStyle.Unit(key, SaltFace) < 0.72f, key,
                             hf.Street ? hf.At(t + side * lane * k, sidewalk) : beside, ref count);
                 }
@@ -392,7 +614,7 @@ namespace CloneZ
         {
             float yaw = Yaw(nose ? n : -n) + (MapStyle.Unit(key, SaltJitter) - 0.5f) * 8f;
             bool strip = mouth != Vector2.zero && mouth != at;
-            plan.Driveways.Add(new NaturePlan.CarSpot { At = at, Yaw = yaw, Key = key, Home = home, Mouth = mouth, StripWidth = strip ? 2.7f : 0f });
+            plan.Driveways.Add(new NaturePlan.CarSpot { At = at, Yaw = yaw, Key = key, Home = home, Mouth = mouth, StripWidth = strip ? 2.7f : 0f, Dir = n });
             plan.KeepRect(at, n, 2.75f, 1.2f, NaturePlan.KeepKind.Car);
             if (strip)
             {
@@ -403,40 +625,36 @@ namespace CloneZ
             count++;
         }
 
-        // Room for a driveway car: inside the square, off every wall, road and path, out of the water and the pitches, off
-        // the other driveways, clear of the front door and porch, and, away from the house's own bounding box (which the
-        // buildings take whole in the occupancy grid), free in the grid.
-        private static bool CarFits(Site site, NaturePlan plan, Footprint home, Vector2 at, Vector2 axis, Dictionary<Footprint, EnterableBuilding> doors)
+        // Room for a driveway car beside its house: inside the square, off every wall, road and path, out of the water and
+        // the pitches, off the other driveways and the doorsteps, its middle free in the grid (a porch, its steps, a
+        // mailbox...), and away from the house's own outline (which the buildings take in the grid, with a margin) free
+        // all along.
+        private static bool CarFits(Site site, NaturePlan plan, Footprint home, Vector2 at, Vector2 axis)
         {
-            if (!plan.InSquare(at, 2.8f) || plan.IsKept(at, axis, 2.75f, 1.15f)) return false;
+            if (!plan.InSquare(at, 2.8f) || plan.IsKept(at, axis, 2.75f, 1.15f) || !site.FreeBeside(at, 0f)) return false;
             Rect box = home.Bounds;
             for (int k = -1; k <= 1; k++)
             {
                 Vector2 q = at + axis * (k * 1.7f);
-                if (plan.WallDistance(q, 2f) < 1.25f || plan.RoadClearance(q, 2f) < 1.0f) return false;
+                if (plan.WallDistance(q, 2f) < 1.25f || plan.RoadClearance(q, 2f) < 1.0f || plan.NearDoor(q, 2.6f)) return false;
                 Land land = plan.LandAt(q);
                 if (land == Land.Water || land == Land.Pitch || land == Land.Lot) return false;
-                if (doors.TryGetValue(home, out EnterableBuilding e))
-                    foreach (Doorway d in e.Doors)
-                        if (Vector2.Distance(d.At + d.Outward * 1.2f, q) < 2.8f) return false;
                 bool byHouse = q.x > box.xMin - 1.3f && q.x < box.xMax + 1.3f && q.y > box.yMin - 1.3f && q.y < box.yMax + 1.3f;
                 if (!byHouse && !site.FreeBeside(q, 1.0f)) return false;
             }
             return true;
         }
 
-        // The planned driveway cars, mostly snowed in, each at the end of its strip of tyre-tracked packed snow.
+        // The planned driveway cars, mostly snowed in; those this pass found room for itself at the end of their strip of
+        // tyre-tracked packed snow.
         private static IEnumerable<string> DrivewayCars(Parking c)
         {
             foreach (NaturePlan.CarSpot s in c.Plan.Driveways)
             {
-                bool country = c.Plan.Urban(s.At) < 0.035f || s.Home.Data.kind == "trailer";
-                float u = MapStyle.Unit(s.Key, SaltBody);
-                CarBody body = BodyFor(country ? Where.Country : Where.Town, u);
-                CarLook look = LookFor(s.Key, body, 0.62f);
+                CarLook look = LookFor(s.Key, BodyOf(c.Plan, s.At, s.Home, s.Key), 0.62f);
                 if (!Park(c, s.At, s.Yaw, look, s.Key, Quaternion.identity)) continue;
-                if (s.StripWidth > 0f) Strip(c, s.Mouth, s.At + (s.At - s.Mouth).normalized * 2.6f, s.StripWidth);
-                if (c.Due()) yield return "driveway cars";
+                if (!s.Road && s.StripWidth > 0f) Strip(c, s.Mouth, s.At + (s.At - s.Mouth).normalized * 2.6f, s.StripWidth);
+                if (c.Site.StepDue) yield return "driveway cars";
             }
             yield return "driveway cars";
         }
