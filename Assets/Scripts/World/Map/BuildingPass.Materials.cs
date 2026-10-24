@@ -38,8 +38,10 @@ namespace CloneZ
         {
             new Color(0.50f, 0.15f, 0.12f), new Color(0.11f, 0.10f, 0.09f), new Color(0.46f, 0.43f, 0.39f),
             new Color(0.86f, 0.86f, 0.82f), new Color(0.38f, 0.27f, 0.18f),
+            // A tobacco barn's, with every third board hung open: black and weathered grey.
+            new Color(0.11f, 0.10f, 0.09f), new Color(0.46f, 0.43f, 0.39f),
         };
-        private const int BoardBlack = 1, BoardRed = 0, BoardGrey = 2;
+        private const int BoardBlack = 1, BoardRed = 0, BoardGrey = 2, TobaccoBlack = 5, TobaccoGrey = 6;
         private static readonly Color[] MetalTones =
         {
             new Color(0.62f, 0.64f, 0.66f), new Color(0.75f, 0.69f, 0.57f), new Color(0.86f, 0.87f, 0.86f),
@@ -195,24 +197,20 @@ namespace CloneZ
             tone = Mathf.Clamp(tone, 0, tones.Length - 1);
             int key = 1000 + (int)kind * 32 + tone;
             if (s_Surfs.TryGetValue(key, out Surf s) && s.Valid) return s;
-            Texture2D tex;
-            float period;
-            float smooth = 0.08f;
+            Texel texel = WallTexel(kind, tone, out string name, out int size);
+            Texture2D tex = Paint(name, size, texel);
+            float period, smooth = 0.08f;
             switch (kind)
             {
-                case WallKind.Brick: tex = Paint("brick" + tone, 128, (x, y) => BrickTexel(x, y, tones[tone], tone == BrickPainted)); period = BrickPeriod; break;
-                case WallKind.Siding: tex = Paint("siding" + tone, 128, (x, y) => SidingTexel(x, y, tones[tone])); period = SidingPeriod; smooth = 0.14f; break;
-                case WallKind.Boards: tex = Paint("boards" + tone, 128, (x, y) => BoardTexel(x, y, tones[tone], tone == BoardBlack)); period = BoardPeriod; break;
-                case WallKind.Metal: tex = Paint("ribwall" + tone, 64, (x, y) => RibTexel(x, y, 64, 4, tones[tone], false)); period = MetalWallPeriod; smooth = 0.3f; break;
-                case WallKind.Block: tex = Paint("block" + tone, 128, (x, y) => BlockTexel(x, y, tones[tone])); period = BlockPeriod; break;
-                case WallKind.Stone: tex = Paint("stone" + tone, 128, (x, y) => StoneTexel(x, y, tones[tone])); period = StonePeriod; break;
-                case WallKind.Stucco: tex = Paint("stucco" + tone, 64, (x, y) => StuccoTexel(x, y, tones[tone])); period = StuccoPeriod; break;
-                case WallKind.Trailer:
-                    tex = Paint("trailer" + tone, 128, (x, y) => TrailerTexel(x, y, TrailerBodies[tone], TrailerBands[tone % TrailerBands.Length]));
-                    period = TrailerPeriod;
-                    smooth = 0.25f;
-                    break;
-                default: tex = Paint("precast" + tone, 128, (x, y) => ConcreteTexel(x, y, tones[tone])); period = ConcretePeriod; break;
+                case WallKind.Brick: period = BrickPeriod; break;
+                case WallKind.Siding: period = SidingPeriod; smooth = 0.14f; break;
+                case WallKind.Boards: period = BoardPeriod; break;
+                case WallKind.Metal: period = MetalWallPeriod; smooth = 0.3f; break;
+                case WallKind.Block: period = BlockPeriod; break;
+                case WallKind.Stone: period = StonePeriod; break;
+                case WallKind.Stucco: period = StuccoPeriod; break;
+                case WallKind.Trailer: period = TrailerPeriod; smooth = 0.25f; break;
+                default: period = ConcretePeriod; break;
             }
             s = new Surf(MaterialFor(key, tex, smooth, kind == WallKind.Metal ? 0.25f : 0f), Vector2.zero, 1f / period);
             s_Surfs[key] = s;
@@ -237,18 +235,12 @@ namespace CloneZ
             int key = 2000 + (int)cover * 32 + tone;
             Dictionary<int, Surf> cache = fitted ? s_Fitted : s_Surfs;
             if (cache.TryGetValue(key, out Surf s) && s.Valid) return s;
-            Texture2D tex;
+            Texture2D tex = Paint(RoofTexel(cover, tone, out string texName, out int size), texName, size);
             float smooth = 0.1f, metal = 0f;
             switch (cover)
             {
-                case RoofCover.Shingle: tex = Paint("shingle" + tone, 128, (x, y) => ShingleTexel(x, y, tones[tone])); break;
-                case RoofCover.Metal:
-                    tex = Paint("seam" + tone, 128, (x, y) => SeamTexel(x, y, tones[tone], tone == MetalGalv || tone == MetalRusty));
-                    smooth = 0.35f;
-                    metal = 0.3f;
-                    break;
-                case RoofCover.Slate: tex = Paint("slate" + tone, 128, (x, y) => SlateTexel(x, y, tones[tone])); smooth = 0.25f; break;
-                default: tex = Paint("tar" + tone, 64, (x, y) => MembraneTexel(x, y, tones[tone])); break;
+                case RoofCover.Metal: smooth = 0.35f; metal = 0.3f; break;
+                case RoofCover.Slate: smooth = 0.25f; break;
             }
             Material m = MaterialFor(key, tex, smooth, metal);
             Surf planar = new Surf(m, Vector2.zero, 1f / RoofPeriod(cover));
@@ -303,16 +295,51 @@ namespace CloneZ
 
         private delegate Color Texel(int x, int y);
 
+        // The texel painter of each wall finish and roof covering, its texture's name and size: what WallSurf and
+        // RoofSurface paint, and what the background painter (PrePaint) paints ahead of them.
+        private static Texel WallTexel(WallKind kind, int tone, out string name, out int size)
+        {
+            Color[] tones = TonesOf(kind);
+            tone = Mathf.Clamp(tone, 0, tones.Length - 1);
+            Color c = tones[tone];
+            size = 128;
+            switch (kind)
+            {
+                case WallKind.Brick: name = "brick" + tone; bool painted = tone == BrickPainted; return (x, y) => BrickTexel(x, y, c, painted);
+                case WallKind.Siding: name = "siding" + tone; return (x, y) => SidingTexel(x, y, c);
+                case WallKind.Boards: name = "boards" + tone; bool tobacco = tone >= TobaccoBlack; return (x, y) => BoardTexel(x, y, c, tobacco);
+                case WallKind.Metal: name = "ribwall" + tone; size = 64; return (x, y) => RibTexel(x, y, 64, 4, c, false);
+                case WallKind.Block: name = "block" + tone; return (x, y) => BlockTexel(x, y, c);
+                case WallKind.Stone: name = "stone" + tone; return (x, y) => StoneTexel(x, y, c);
+                case WallKind.Stucco: name = "stucco" + tone; size = 64; return (x, y) => StuccoTexel(x, y, c);
+                case WallKind.Trailer:
+                    name = "trailer" + tone;
+                    Color band = TrailerBands[tone % TrailerBands.Length];
+                    return (x, y) => TrailerTexel(x, y, c, band);
+                default: name = "precast" + tone; return (x, y) => ConcreteTexel(x, y, c);
+            }
+        }
+
+        private static Texel RoofTexel(RoofCover cover, int tone, out string name, out int size)
+        {
+            Color[] tones = TonesOf(cover);
+            tone = Mathf.Clamp(tone, 0, tones.Length - 1);
+            Color c = tones[tone];
+            size = 128;
+            switch (cover)
+            {
+                case RoofCover.Shingle: name = "shingle" + tone; return (x, y) => ShingleTexel(x, y, c);
+                case RoofCover.Metal: name = "seam" + tone; bool weathered = tone == MetalGalv || tone == MetalRusty; return (x, y) => SeamTexel(x, y, c, weathered);
+                case RoofCover.Slate: name = "slate" + tone; return (x, y) => SlateTexel(x, y, c);
+                default: name = "tar" + tone; size = 64; return (x, y) => MembraneTexel(x, y, c);
+            }
+        }
+
+        private static Texture2D Paint(Texel texel, string name, int size) => Paint(name, size, texel);
+
         private static Texture2D Paint(string name, int size, Texel texel)
         {
-            var px = new Color32[size * size];
-            for (int y = 0; y < size; y++)
-                for (int x = 0; x < size; x++)
-                {
-                    Color c = texel(x, y);
-                    px[y * size + x] = new Color32((byte)Mathf.Clamp(Mathf.RoundToInt(c.r * 255f), 0, 255),
-                        (byte)Mathf.Clamp(Mathf.RoundToInt(c.g * 255f), 0, 255), (byte)Mathf.Clamp(Mathf.RoundToInt(c.b * 255f), 0, 255), 255);
-                }
+            Color32[] px = Painted(name, size, texel);
             var t = new Texture2D(size, size, TextureFormat.RGBA32, true)
             {
                 name = "Bldg_" + name,
@@ -324,6 +351,100 @@ namespace CloneZ
             t.SetPixels32(px);
             t.Apply(true, true);
             return t;
+        }
+
+        // A texture's pixels: from the background painter when it got there first, else painted now.
+        private static Color32[] Painted(string name, int size, Texel texel)
+        {
+            lock (s_Ahead)
+            {
+                s_Taken.Add(name);
+                if (s_Ahead.TryGetValue(name, out Color32[] ready) && ready.Length == size * size)
+                {
+                    s_Ahead.Remove(name);
+                    return ready;
+                }
+            }
+            return PaintPixels(size, texel);
+        }
+
+        private static Color32[] PaintPixels(int size, Texel texel)
+        {
+            var px = new Color32[size * size];
+            for (int y = 0; y < size; y++)
+                for (int x = 0; x < size; x++)
+                {
+                    Color c = texel(x, y);
+                    px[y * size + x] = new Color32((byte)Mathf.Clamp(Mathf.RoundToInt(c.r * 255f), 0, 255),
+                        (byte)Mathf.Clamp(Mathf.RoundToInt(c.g * 255f), 0, 255), (byte)Mathf.Clamp(Mathf.RoundToInt(c.b * 255f), 0, 255), 255);
+                }
+            return px;
+        }
+
+        // Pixels painted ahead of need, by name; the names already made (or being made) on the main thread, which the
+        // background painter skips; and whether it has been started this session.
+        private static readonly Dictionary<string, Color32[]> s_Ahead = new Dictionary<string, Color32[]>(96);
+        private static readonly HashSet<string> s_Taken = new HashSet<string>();
+        private static bool s_PrePainted;
+
+        /// <summary>Starts painting, on a worker thread, every wall and roof texture not yet made (the most used first), so
+        /// a streamed piece meeting a finish for the first time doesn't paint it inside its time slice. Once a session.
+        /// The painters are pure functions of their texel's place, so the pixels are the same whichever thread paints them.</summary>
+        private static void PrePaint()
+        {
+            if (s_PrePainted) return;
+            s_PrePainted = true;
+            var jobs = new List<(string name, int size, Texel texel)>(96);
+            void Wall(WallKind kind)
+            {
+                for (int tone = 0; tone < TonesOf(kind).Length; tone++)
+                {
+                    if (s_Surfs.ContainsKey(1000 + (int)kind * 32 + tone)) continue;
+                    Texel t = WallTexel(kind, tone, out string name, out int size);
+                    jobs.Add((name, size, t));
+                }
+            }
+            void Roof(RoofCover cover)
+            {
+                for (int tone = 0; tone < TonesOf(cover).Length; tone++)
+                {
+                    if (s_Surfs.ContainsKey(2000 + (int)cover * 32 + tone)) continue;
+                    Texel t = RoofTexel(cover, tone, out string name, out int size);
+                    jobs.Add((name, size, t));
+                }
+            }
+            Roof(RoofCover.Shingle);
+            Wall(WallKind.Siding);
+            Wall(WallKind.Brick);
+            Roof(RoofCover.Metal);
+            Roof(RoofCover.Membrane);
+            Wall(WallKind.Boards);
+            Wall(WallKind.Block);
+            Wall(WallKind.Metal);
+            Wall(WallKind.Trailer);
+            Wall(WallKind.Stone);
+            Wall(WallKind.Concrete);
+            Wall(WallKind.Stucco);
+            Roof(RoofCover.Slate);
+            if (jobs.Count == 0) return;
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                try
+                {
+                    foreach ((string name, int size, Texel texel) in jobs)
+                    {
+                        lock (s_Ahead)
+                            if (s_Taken.Contains(name)) continue;
+                        Color32[] px = PaintPixels(size, texel);
+                        lock (s_Ahead)
+                            if (!s_Taken.Contains(name)) s_Ahead[name] = px;
+                    }
+                }
+                catch (System.Exception)
+                {
+                    // Whatever wasn't painted ahead is painted when it's needed.
+                }
+            });
         }
         #endregion
 

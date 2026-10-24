@@ -585,7 +585,7 @@ namespace CloneZ
             p.Overhang = 0.3f;
             p.Eave = Range(rng, 5.0f, 6.4f);
             p.Wall = WallKind.Boards;
-            p.WallTone = Of(Pick(rng, 5.5f, 3.5f, 1f), BoardBlack, BoardGrey, BoardRed);
+            p.WallTone = Of(Pick(rng, 5.5f, 3.5f, 1f), TobaccoBlack, TobaccoGrey, BoardRed);
             p.Covering = RoofCover.Metal;
             p.CoverTone = Of(Pick(rng, 5f, 3.5f, 1.5f), MetalGalv, MetalRusty, MetalRed);
             p.RidgeVent = Chance(rng, 0.4f);

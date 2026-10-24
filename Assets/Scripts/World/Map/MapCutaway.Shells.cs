@@ -68,8 +68,20 @@ namespace CloneZ
             /// <summary>Facings that have walls (bit per facing).</summary>
             public int Groups;
             /// <summary>Top of the ground storey's walls and of the whole building, above its base: as the exteriors pass
-            /// set them on the shell, then (once the meshes are read, see MapCutaway.Heights.cs) what the meshes reach.</summary>
+            /// set them on the shell, then (once the meshes are baked, see Measure) what the meshes reach.</summary>
             public float WallTop, Top;
+            /// <summary>The ground storey's top as the exteriors pass set it: while the storeys above are lifted, the walls are
+            /// shown clipped here (MapCutaway.Overlay.cs).</summary>
+            public float ClipTop;
+            /// <summary>The walls reach above <see cref="ClipTop"/> (a tall window's head, the linings of a tall room): lifting
+            /// the storeys above needs the walls' stand-in, or those bits would float.</summary>
+            public bool ClipWalls;
+            /// <summary>Set once the baked meshes' bounds have been read into <see cref="WallTop"/>, <see cref="Top"/> and
+            /// <see cref="ClipWalls"/>.</summary>
+            public bool Measured;
+            /// <summary>When the roof reaches past the walls (eaves, a porch roof, an awning, a sign): the box in plan round the
+            /// footprint and everything above it, site-local (from the upper part's vertices as drawn, no mesh read back).</summary>
+            public Rect LocalCover;
             /// <summary>How thick the outside walls are (for sorting the walls by facing).</summary>
             public float WallThickness;
             public MeshRenderer Walls, Upper;
@@ -87,29 +99,35 @@ namespace CloneZ
             public float Base;
             public int X0, Z0, X1, Z1;
 
-            // The upper part's heights (MapCutaway.Heights.cs), read from its baked mesh the first time a scan meets it:
-            // per cell of a coarse grid in plan, the highest point of the upper part above the base in HeightStep units
-            // (0 = nothing there). Null until read (or when the building has no upper part).
+            // The upper part's heights (MapCutaway.Heights.cs), read from its baked mesh the first time a scan meets it (a
+            // slice at a time): per cell of a coarse grid in plan, the highest point of the upper part above the base in
+            // HeightStep units (0 = nothing there). Null until read (or when the building has no upper part).
             public byte[] Height;
             public float HX, HZ, HCell;
             public int HW, HH;
             public bool Resolved;
 
-            // Cut away: parts (bits 0-3 the walls by facing, bit 4 the upper part) cut now, and when each last had to be.
-            public int Applied;
+            // Cut away: parts (bits 0-3 the walls by facing, bit 4 the upper part) cut now, and when each last had to be; what
+            // the last scan wanted cut, and since when (MapCutaway.Work's frames) a cut has been held back for the stand-in.
+            public int Applied, Wanted, HoldFrame = -1;
             public readonly float[] Seen = { Never, Never, Never, Never, Never };
             public int Stamp;
             public bool Occupied, Active;
 
-            // The walls' stand-in while some of them are cut (MapCutaway.Overlay.cs), made the first time they are.
+            // The walls' stand-in while some of them are cut or the storeys above lifted (MapCutaway.Overlay.cs), made ahead
+            // of need, and what the walls show now: WallsWhole, WallsNone, or the facings lowered on the stand-in.
             public MeshRenderer Overlay;
             public Mesh OverlayMesh;
             public UnityEngine.Rendering.SubMeshDescriptor[] OverlayParts;
             /// <summary>Each part slot's sub-mesh in <see cref="OverlayMesh"/>, or -1 when it's empty.</summary>
             public int[] OverlayMap;
-            public int OverlayMaterials, OverlayShown = -1;
+            public int OverlayMaterials, OverlayShown = -1, WallState = WallsWhole;
+            public long OverlayBytes;
             public bool OverlayFailed;
-            /// <summary>The renderers of the doors in its cut walls, hidden with them (MapCutaway.Doors.cs).</summary>
+            /// <summary>Waiting in MapCutaway.Work's lists: a cut wants its stand-in now; a scan met it unread.</summary>
+            public bool Urgent, ToRead;
+            /// <summary>The doors in its cut walls and the renderers of theirs hidden with them (MapCutaway.Doors.cs).</summary>
+            public System.Collections.Generic.List<HomeDoor> DoorObjs;
             public System.Collections.Generic.List<Renderer> Doors;
         }
     }

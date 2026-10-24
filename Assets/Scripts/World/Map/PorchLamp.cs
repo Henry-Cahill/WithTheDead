@@ -4,16 +4,19 @@ using UnityEngine;
 namespace CloneZ
 {
     /// <summary>
-    /// The light of a lamp by a front door: lit after dark, out by day, with a faint flicker; never shadowed, and off
-    /// beyond <see cref="CullDistance"/> of the survivor, so a street of porch lights stays cheap. Built lit (a map
-    /// built at night, or in the editor, shows them on); the lamps keep no Update of their own: one driver works them all
-    /// a few times a second, and flickers only the lit ones.
+    /// The light of a lamp by a front door: lit after dark, out by day, with a faint flicker; never shadowed. However
+    /// many porches a stretch of the streamed state has, only the <see cref="MaxLit"/> lamps nearest the survivor within
+    /// <see cref="CullDistance"/> are lit (the rest still glow, see BuildingPass's lamp globes), so a street of porch lights
+    /// stays cheap. Built lit (a map built at night, or in the editor, shows them on); the lamps keep no Update of their
+    /// own: one driver works them all a few times a second, and flickers only the lit ones.
     /// </summary>
     [DisallowMultipleComponent]
     internal sealed class PorchLamp : MonoBehaviour
     {
         /// <summary>Lamps farther than this from the survivor are switched off.</summary>
         internal const float CullDistance = 42f;
+        /// <summary>At most this many porch lamps are lit at once: the nearest.</summary>
+        internal const int MaxLit = 14;
         private const float FlickerSpeed = 8f;   // how fast the flicker's noise runs
         private const float FlickerDepth = 0.1f;   // the flicker's swing, as a fraction of the lamp's output
         private const float CheckInterval = 0.25f;
@@ -22,9 +25,13 @@ namespace CloneZ
         private static PorchLampDriver s_Driver;
         private static float s_NextCheck;
         private static Transform s_Survivor;
+        // The nearest lamps found by a check, nearest first, and their squared distances.
+        private static readonly int[] s_Near = new int[MaxLit];
+        private static readonly float[] s_NearD = new float[MaxLit];
 
         private Light _light;
         private float _intensity, _phase;
+        private bool _wanted;
 
         /// <summary>A porch lamp's light at <paramref name="at"/> (world) under <paramref name="parent"/>;
         /// <paramref name="phase"/> keeps it from flickering in step with its neighbours.</summary>
@@ -55,31 +62,54 @@ namespace CloneZ
 
         private void OnDisable() => s_All.Remove(this);
 
-        /// <summary>Lights or puts out every porch lamp for the time of day and the survivor's whereabouts, and flickers
-        /// the lit ones.</summary>
+        /// <summary>Lights the porch lamps nearest the survivor after dark, puts out the rest, and flickers the lit ones.</summary>
         internal static void TickAll()
         {
             float time = Time.time;
             if (time >= s_NextCheck)
             {
                 s_NextCheck = time + CheckInterval;
-                TimeOfDay day = TimeOfDay.Instance;
-                bool night = day == null || day.IsNight;
-                bool found = TryGetSurvivor(out Vector3 at);
-                float cull = CullDistance * CullDistance;
-                for (int i = 0; i < s_All.Count; i++)
-                {
-                    PorchLamp l = s_All[i];
-                    if (l._light == null) continue;
-                    bool on = night && (!found || (l.transform.position - at).sqrMagnitude < cull);
-                    if (l._light.enabled != on) l._light.enabled = on;
-                }
+                Check();
             }
             for (int i = 0; i < s_All.Count; i++)
             {
                 PorchLamp l = s_All[i];
                 if (l._light == null || !l._light.enabled) continue;
                 l._light.intensity = l._intensity * (1f - FlickerDepth * 0.5f + FlickerDepth * Mathf.PerlinNoise((time + l._phase) * FlickerSpeed, 0f));
+            }
+        }
+
+        private static void Check()
+        {
+            TimeOfDay day = TimeOfDay.Instance;
+            bool night = day == null || day.IsNight;
+            bool found = TryGetSurvivor(out Vector3 at);
+            float cull = CullDistance * CullDistance;
+            int near = 0;
+            for (int i = 0; i < s_All.Count; i++)
+            {
+                PorchLamp l = s_All[i];
+                l._wanted = false;
+                if (!night || l._light == null) continue;
+                float d = found ? (l.transform.position - at).sqrMagnitude : 0f;
+                if (d >= cull) continue;
+                // Keep the MaxLit nearest, nearest first (an insertion into a short list).
+                if (near == MaxLit && d >= s_NearD[near - 1]) continue;
+                int k = near < MaxLit ? near++ : near - 1;
+                while (k > 0 && s_NearD[k - 1] > d)
+                {
+                    s_NearD[k] = s_NearD[k - 1];
+                    s_Near[k] = s_Near[k - 1];
+                    k--;
+                }
+                s_NearD[k] = d;
+                s_Near[k] = i;
+            }
+            for (int k = 0; k < near; k++) s_All[s_Near[k]]._wanted = true;
+            for (int i = 0; i < s_All.Count; i++)
+            {
+                PorchLamp l = s_All[i];
+                if (l._light != null && l._light.enabled != l._wanted) l._light.enabled = l._wanted;
             }
         }
 
