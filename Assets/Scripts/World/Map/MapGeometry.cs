@@ -5,11 +5,15 @@ namespace CloneZ
 {
     /// <summary>
     /// Plane geometry for the real-world map, in the raid map's ground plane: a <see cref="Vector2"/> is (x, z), metres
-    /// east and north. Clips lines and polygons to rectangles, tells which way a polygon winds, and cuts polygons into
-    /// triangles (ear clipping) wound clockwise seen from above, the way <see cref="RaidMesh.Tri"/> draws a face up.
+    /// east and north. Clips lines and polygons to rectangles, tells which way a polygon winds, cuts polygons into
+    /// triangles (ear clipping) wound clockwise seen from above, the way <see cref="RaidMesh.Tri"/> draws a face up, and
+    /// walks and offsets lines. Pure geometry: nothing here draws, or decides how anything looks.
     /// </summary>
     internal static class MapGeometry
     {
+        private const float EPS = 1e-5f;
+
+        #region Polygons
         /// <summary>Signed area: positive when the points run anticlockwise seen from above.</summary>
         public static float SignedArea(List<Vector2> p)
         {
@@ -26,25 +30,39 @@ namespace CloneZ
             return p.Count > 0 ? sum / p.Count : sum;
         }
 
+        /// <summary>The smallest rectangle holding the points.</summary>
+        public static Rect Bounds(List<Vector2> p)
+        {
+            Extent(p, out float x0, out float z0, out float x1, out float z1);
+            return Rect.MinMaxRect(x0, z0, x1, z1);
+        }
+
+        /// <summary>The least and greatest x and z of the points.</summary>
+        public static void Extent(List<Vector2> p, out float x0, out float z0, out float x1, out float z1)
+        {
+            x0 = z0 = float.MaxValue;
+            x1 = z1 = float.MinValue;
+            for (int i = 0; i < p.Count; i++)
+            {
+                x0 = Mathf.Min(x0, p[i].x); z0 = Mathf.Min(z0, p[i].y);
+                x1 = Mathf.Max(x1, p[i].x); z1 = Mathf.Max(z1, p[i].y);
+            }
+        }
+
         /// <summary>Makes the polygon run anticlockwise seen from above (reverses it if it doesn't).</summary>
         public static void MakeAnticlockwise(List<Vector2> p)
         {
             if (SignedArea(p) < 0f) p.Reverse();
         }
 
-        /// <summary>True when <paramref name="q"/> is inside the polygon (even-odd rule).</summary>
+        /// <summary>True when <paramref name="q"/> is inside the polygon (even-odd rule) or on its edge.</summary>
         public static bool Contains(List<Vector2> p, Vector2 q)
         {
-            // Points on the edge are considered inside. First check if q lies within EPS of any edge.
             for (int i = 0, j = p.Count - 1; i < p.Count; j = i++)
-            {
-                if (DistanceToSegment(q, p[j], p[i]) <= EPS)
-                    return true;
-            }
+                if (DistanceToSegment(q, p[j], p[i]) <= EPS) return true;
             bool inside = false;
             for (int i = 0, j = p.Count - 1; i < p.Count; j = i++)
             {
-                // Ray‑casting algorithm (even‑odd rule). Use strict < for crossing to keep consistency.
                 if ((p[i].y > q.y) != (p[j].y > q.y)
                     && q.x < (p[j].x - p[i].x) * (q.y - p[i].y) / (p[j].y - p[i].y) + p[i].x)
                     inside = !inside;
@@ -61,179 +79,12 @@ namespace CloneZ
             return best;
         }
 
+        /// <summary>The distance from <paramref name="q"/> to the segment from <paramref name="a"/> to <paramref name="b"/>.</summary>
         public static float DistanceToSegment(Vector2 q, Vector2 a, Vector2 b)
         {
             Vector2 ab = b - a;
             float t = ab.sqrMagnitude > 1e-8f ? Mathf.Clamp01(Vector2.Dot(q - a, ab) / ab.sqrMagnitude) : 0f;
             return Vector2.Distance(q, a + ab * t);
-        }
-
-        /// <summary>The pieces of a line inside the rectangle (Liang–Barsky per segment, joined where they meet).</summary>
-        public static List<List<Vector2>> ClipLine(List<Vector2> line, Rect r)
-        {
-            var pieces = new List<List<Vector2>>();
-            List<Vector2> cur = null;
-            for (int i = 0; i + 1 < line.Count; i++)
-            {
-                Vector2 a = line[i], b = line[i + 1];
-                if (!ClipSegment(a, b, r, out float t0, out float t1))
-                {
-                    if (cur != null && cur.Count > 1) pieces.Add(cur);
-                    cur = null;
-                    continue;
-                }
-                Vector2 start = t0 <= 0f ? a : Vector2.Lerp(a, b, t0);
-                Vector2 end = t1 >= 1f ? b : Vector2.Lerp(a, b, t1);
-                if (t0 > 0f || cur == null)
-                {
-                    if (cur != null && cur.Count > 1) pieces.Add(cur);
-                    cur = new List<Vector2> { start };
-                }
-                cur.Add(end);
-                if (t1 < 1f)
-                {
-                    pieces.Add(cur);
-                    cur = null;
-                }
-            }
-            if (cur != null && cur.Count > 1) pieces.Add(cur);
-            // Post‑process: merge consecutive pieces whose endpoints touch within EPS
-            var merged = new List<List<Vector2>>();
-            foreach (var piece in pieces)
-            {
-                if (piece == null || piece.Count < 2) continue; // skip degenerate
-                if (merged.Count == 0)
-                {
-                    merged.Add(new List<Vector2>(piece));
-                }
-                else
-                {
-                    var lastPiece = merged[merged.Count - 1];
-                    var lastPoint = lastPiece[lastPiece.Count - 1];
-                    var firstPoint = piece[0];
-                    if (Vector2.Distance(lastPoint, firstPoint) <= EPS)
-                    {
-                        // Append, skipping the duplicate start point
-                        for (int i = 1; i < piece.Count; i++)
-                            lastPiece.Add(piece[i]);
-                    }
-                    else
-                    {
-                        merged.Add(new List<Vector2>(piece));
-                    }
-                }
-            }
-            // Ensure each merged piece still has at least two points
-            var result = new List<List<Vector2>>();
-            foreach (var m in merged)
-                if (m.Count >= 2) result.Add(m);
-            return result;
-        }
-
-        private static bool ClipSegment(Vector2 a, Vector2 b, Rect r, out float t0, out float t1)
-        {
-            t0 = 0f;
-            t1 = 1f;
-            float dx = b.x - a.x, dy = b.y - a.y;
-            float[] p = { -dx, dx, -dy, dy };
-            float[] q = { a.x - r.xMin, r.xMax - a.x, a.y - r.yMin, r.yMax - a.y };
-            for (int i = 0; i < 4; i++)
-            {
-                if (Mathf.Approximately(p[i], 0f))
-                {
-                    if (q[i] < 0f) return false;
-                    continue;
-                }
-                float t = q[i] / p[i];
-                if (p[i] < 0f)
-                {
-                    if (t > t1) return false;
-                    if (t > t0) t0 = t;
-                }
-                else
-                {
-                    if (t < t0) return false;
-                    if (t < t1) t1 = t;
-                }
-            }
-            return true;
-        }
-
-        /// <summary>The polygon cut to the rectangle (Sutherland–Hodgman); may come back with fewer than 3 points.</summary>
-        public static List<Vector2> ClipPolygon(List<Vector2> poly, Rect r)
-        {
-            List<Vector2> cur = poly;
-            for (int edge = 0; edge < 4 && cur.Count > 0; edge++)
-            {
-                var next = new List<Vector2>(cur.Count + 4);
-                for (int i = 0; i < cur.Count; i++)
-                {
-                    Vector2 a = cur[(i + cur.Count - 1) % cur.Count], b = cur[i];
-                    bool ina = Inside(a, r, edge), inb = Inside(b, r, edge);
-                    if (inb)
-                    {
-                        if (!ina) next.Add(Cross(a, b, r, edge));
-                        next.Add(b);
-                    }
-                    else if (ina) next.Add(Cross(a, b, r, edge));
-                }
-                cur = next;
-            }
-            // The polygon returned is now safe from NaN vertices (Cross guard) and from an accidental
-// zero‑length edge caused by a duplicated start/end point (RemoveNearDuplicates fix).
-        MakeAnticlockwise(cur);
-        // Remove near‑duplicate vertices introduced by clipping
-        return RemoveNearDuplicates(cur);
-        }
-
-        private static List<Vector2> RemoveNearDuplicates(List<Vector2> src)
-        {
-            if (src == null || src.Count == 0) return new List<Vector2>();
-            var result = new List<Vector2>(src.Count);
-            // Add first point
-            result.Add(src[0]);
-            for (int i = 1; i < src.Count; i++)
-            {
-                var pt = src[i];
-                var last = result[result.Count - 1];
-                if (Vector2.Distance(pt, last) > EPS)
-                    result.Add(pt);
-            }
-            // If the first and last points are essentially the same, drop the last one.
-            if (result.Count >= 2 && Vector2.Distance(result[0], result[result.Count - 1]) <= EPS)
-                result.RemoveAt(result.Count - 1);
-            // If less than 3 points, return empty list as polygon invalid
-            if (result.Count < 3) return new List<Vector2>();
-            return result;
-        }
-
-        private const float EPS = 1e-5f;
-        private static bool Inside(Vector2 p, Rect r, int edge)
-        {
-            switch (edge)
-            {
-                case 0: return p.x >= r.xMin - EPS;
-                case 1: return p.x <= r.xMax + EPS;
-                case 2: return p.y >= r.yMin - EPS;
-                default: return p.y <= r.yMax + EPS;
-            }
-        }
-
-        private static Vector2 Cross(Vector2 a, Vector2 b, Rect r, int edge)
-        {
-            if (edge < 2) // left or right edge – vertical line x = const
-            {
-                float x = edge == 0 ? r.xMin : r.xMax;
-                // Guard against a perfectly vertical segment (b.x‑a.x ≈ 0) which would divide by zero.
-                if (Mathf.Approximately(b.x, a.x))
-                    return new Vector2(x, a.y); // take the start point projected onto the edge
-                return new Vector2(x, a.y + (b.y - a.y) * (x - a.x) / (b.x - a.x));
-            }
-            // top or bottom edge – horizontal line y = const
-            float y = edge == 2 ? r.yMin : r.yMax;
-            if (Mathf.Approximately(b.y, a.y))
-                return new Vector2(a.x, y); // project the start point onto the edge
-            return new Vector2(a.x + (b.x - a.x) * (y - a.y) / (b.y - a.y), y);
         }
 
         /// <summary>
@@ -288,5 +139,207 @@ namespace CloneZ
             }
             return false;
         }
+        #endregion
+
+        #region Clipping
+        /// <summary>The pieces of a line inside the rectangle (Liang–Barsky per segment, joined where they meet).</summary>
+        public static List<List<Vector2>> ClipLine(List<Vector2> line, Rect r)
+        {
+            var pieces = new List<List<Vector2>>();
+            List<Vector2> cur = null;
+            for (int i = 0; i + 1 < line.Count; i++)
+            {
+                Vector2 a = line[i], b = line[i + 1];
+                if (!ClipSegment(a, b, r, out float t0, out float t1))
+                {
+                    if (cur != null && cur.Count > 1) pieces.Add(cur);
+                    cur = null;
+                    continue;
+                }
+                Vector2 start = t0 <= 0f ? a : Vector2.Lerp(a, b, t0);
+                Vector2 end = t1 >= 1f ? b : Vector2.Lerp(a, b, t1);
+                if (t0 > 0f || cur == null)
+                {
+                    if (cur != null && cur.Count > 1) pieces.Add(cur);
+                    cur = new List<Vector2> { start };
+                }
+                cur.Add(end);
+                if (t1 < 1f)
+                {
+                    pieces.Add(cur);
+                    cur = null;
+                }
+            }
+            if (cur != null && cur.Count > 1) pieces.Add(cur);
+
+            // Pieces that touch end to start (a segment re-entering where the last one left) are one piece.
+            var merged = new List<List<Vector2>>();
+            foreach (List<Vector2> piece in pieces)
+            {
+                if (piece == null || piece.Count < 2) continue;
+                if (merged.Count > 0)
+                {
+                    List<Vector2> last = merged[merged.Count - 1];
+                    if (Vector2.Distance(last[last.Count - 1], piece[0]) <= EPS)
+                    {
+                        for (int i = 1; i < piece.Count; i++) last.Add(piece[i]);
+                        continue;
+                    }
+                }
+                merged.Add(new List<Vector2>(piece));
+            }
+            return merged;
+        }
+
+        private static bool ClipSegment(Vector2 a, Vector2 b, Rect r, out float t0, out float t1)
+        {
+            t0 = 0f;
+            t1 = 1f;
+            float dx = b.x - a.x, dy = b.y - a.y;
+            float[] p = { -dx, dx, -dy, dy };
+            float[] q = { a.x - r.xMin, r.xMax - a.x, a.y - r.yMin, r.yMax - a.y };
+            for (int i = 0; i < 4; i++)
+            {
+                if (Mathf.Approximately(p[i], 0f))
+                {
+                    if (q[i] < 0f) return false;
+                    continue;
+                }
+                float t = q[i] / p[i];
+                if (p[i] < 0f)
+                {
+                    if (t > t1) return false;
+                    if (t > t0) t0 = t;
+                }
+                else
+                {
+                    if (t < t0) return false;
+                    if (t < t1) t1 = t;
+                }
+            }
+            return true;
+        }
+
+        /// <summary>The polygon cut to the rectangle (Sutherland–Hodgman), anticlockwise, without near-duplicate points;
+        /// empty when fewer than 3 points are left.</summary>
+        public static List<Vector2> ClipPolygon(List<Vector2> poly, Rect r)
+        {
+            List<Vector2> cur = poly;
+            for (int edge = 0; edge < 4 && cur.Count > 0; edge++)
+            {
+                var next = new List<Vector2>(cur.Count + 4);
+                for (int i = 0; i < cur.Count; i++)
+                {
+                    Vector2 a = cur[(i + cur.Count - 1) % cur.Count], b = cur[i];
+                    bool ina = Inside(a, r, edge), inb = Inside(b, r, edge);
+                    if (inb)
+                    {
+                        if (!ina) next.Add(Cross(a, b, r, edge));
+                        next.Add(b);
+                    }
+                    else if (ina) next.Add(Cross(a, b, r, edge));
+                }
+                cur = next;
+            }
+            MakeAnticlockwise(cur);
+            return RemoveNearDuplicates(cur);
+        }
+
+        // Drops points within EPS of the one before (and a last point back on the first): clipping makes them.
+        private static List<Vector2> RemoveNearDuplicates(List<Vector2> src)
+        {
+            if (src == null || src.Count == 0) return new List<Vector2>();
+            var result = new List<Vector2>(src.Count) { src[0] };
+            for (int i = 1; i < src.Count; i++)
+                if (Vector2.Distance(src[i], result[result.Count - 1]) > EPS) result.Add(src[i]);
+            if (result.Count >= 2 && Vector2.Distance(result[0], result[result.Count - 1]) <= EPS) result.RemoveAt(result.Count - 1);
+            return result.Count < 3 ? new List<Vector2>() : result;
+        }
+
+        private static bool Inside(Vector2 p, Rect r, int edge)
+        {
+            switch (edge)
+            {
+                case 0: return p.x >= r.xMin - EPS;
+                case 1: return p.x <= r.xMax + EPS;
+                case 2: return p.y >= r.yMin - EPS;
+                default: return p.y <= r.yMax + EPS;
+            }
+        }
+
+        // Where the segment from a to b crosses the rectangle's edge (a segment along the edge gives its start).
+        private static Vector2 Cross(Vector2 a, Vector2 b, Rect r, int edge)
+        {
+            if (edge < 2)
+            {
+                float x = edge == 0 ? r.xMin : r.xMax;
+                if (Mathf.Approximately(b.x, a.x)) return new Vector2(x, a.y);
+                return new Vector2(x, a.y + (b.y - a.y) * (x - a.x) / (b.x - a.x));
+            }
+            float y = edge == 2 ? r.yMin : r.yMax;
+            if (Mathf.Approximately(b.y, a.y)) return new Vector2(a.x, y);
+            return new Vector2(a.x + (b.x - a.x) * (y - a.y) / (b.y - a.y), y);
+        }
+        #endregion
+
+        #region Lines
+        /// <summary>Points every <paramref name="interval"/> metres along a line, measured along it across its bends, the
+        /// first one <paramref name="interval"/> in from its start.</summary>
+        public static IEnumerable<Vector2> SampleAlong(List<Vector2> pts, float interval)
+        {
+            if (pts.Count < 2) yield break;
+            float accumulated = 0f;   // the last point, from the current segment's start (0 or less: on an earlier segment)
+            for (int i = 0; i + 1 < pts.Count; i++)
+            {
+                Vector2 a = pts[i], b = pts[i + 1];
+                float segLen = Vector2.Distance(a, b);
+                Vector2 dir = (b - a) / segLen;
+                while (accumulated + interval <= segLen)
+                {
+                    accumulated += interval;
+                    yield return a + dir * accumulated;
+                }
+                accumulated -= segLen;
+            }
+        }
+
+        /// <summary>The unit direction of the segment of <paramref name="line"/> that <paramref name="point"/> lies on (the
+        /// later one at a vertex), or of its first segment when it lies on none.</summary>
+        public static Vector2 DirectionAt(List<Vector2> line, Vector2 point)
+        {
+            for (int i = 0; i + 1 < line.Count; i++)
+            {
+                Vector2 a = line[i], b = line[i + 1];
+                float segLen = Vector2.Distance(a, b);
+                if (segLen < 1e-6f) continue;
+                if (Mathf.Abs(Vector2.Distance(a, point) + Vector2.Distance(point, b) - segLen) < 0.01f) return (b - a).normalized;
+            }
+            return (line[1] - line[0]).normalized;
+        }
+
+        /// <summary>The line moved sideways by <paramref name="offset"/> (to the left of its direction when positive),
+        /// mitred at the bends (sharp bends cut short).</summary>
+        public static List<Vector2> OffsetLine(List<Vector2> pts, float offset)
+        {
+            int n = pts.Count;
+            var moved = new List<Vector2>(n);
+            if (n < 2)
+            {
+                moved.AddRange(pts);
+                return moved;
+            }
+            for (int i = 0; i < n; i++)
+            {
+                Vector2 dPrev = (i > 0 ? pts[i] - pts[i - 1] : pts[1] - pts[0]).normalized;
+                Vector2 dNext = (i < n - 1 ? pts[i + 1] - pts[i] : dPrev).normalized;
+                Vector2 nPrev = new Vector2(-dPrev.y, dPrev.x), nNext = new Vector2(-dNext.y, dNext.x);
+                Vector2 miter = nPrev + nNext;
+                miter = miter.sqrMagnitude > 1e-6f ? miter.normalized : nNext;
+                float stretch = 1f / Mathf.Max(0.4f, Vector2.Dot(miter, nNext));
+                moved.Add(pts[i] + miter * (offset * stretch));
+            }
+            return moved;
+        }
+        #endregion
     }
 }

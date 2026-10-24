@@ -1,12 +1,12 @@
 using System;
-using UnityEngine;
 
 namespace CloneZ
 {
     // The real-world map's data, as the world builder writes it (Tools/World/worldbuild.py, format 1). The files are
     // JSON read with JsonUtility, so every field is public and named exactly as in the files. Coordinates are
     // decimetres from the region's south-west corner on Kentucky's flat grid (EPSG:3088, metres east and north), in
-    // flat lists: [x0, z0, x1, z1, ...]. Map data © OpenStreetMap contributors (ODbL).
+    // flat lists: [x0, z0, x1, z1, ...]. Plain data only: how anything looks is up to the map's passes.
+    // Map data © OpenStreetMap contributors (ODbL).
 
     /// <summary>world/current.json: the build the game and the servers load.</summary>
     [Serializable]
@@ -92,37 +92,19 @@ namespace CloneZ
 
     /// <summary>A building's footprint (its outer wall, no repeated last point) and what it is.</summary>
     [Serializable]
-public sealed class MapBuilding
+    public sealed class MapBuilding
     {
-        /// <summary>Colour for window frames and door trim – a slight desaturation of the building’s tint.</summary>
-        public Color GetTrimColour()
-        {
-            Color c = GetTint();
-            // lower saturation a bit for metal/painted trim
-            Color.RGBToHSV(c, out float h, out float s, out float v);
-            s = Mathf.Clamp01(s * 0.75f);
-            return Color.HSVToRGB(h, s, v);
-        }
         public long id;
         /// <summary>house, trailer, apartments, hotel, commercial, office, retail, industrial, warehouse, church,
         /// school, hospital, civic, garage, shed, barn, silo, greenhouse, canopy or ruin.</summary>
         public string kind;
         public string name, address;
-        /// <summary>What it's used for, when mapped: an amenity (fuel, police, pharmacy...) or "shop:<kind>".</summary>
+        /// <summary>What it's used for, when mapped: an amenity (fuel, police, pharmacy...) or "shop:&lt;kind&gt;".</summary>
         public string use;
         public int levels;
         /// <summary>Height in metres when mapped, else 0.</summary>
         public float height;
         public int[] pts;
-        public Color GetTint()
-        {
-            // deterministic hash from id → hue offset in [0,0.1]
-            float hue = ((id * 0x9E3779B9) & 0xFFFF) / 65535f * 0.1f;
-            float sat = 0.6f + ((id >> 16) & 0xFF) / 255f * 0.2f;
-            float val = 0.7f + ((id >> 24) & 0xFF) / 255f * 0.2f;
-            return Color.HSVToRGB(hue, sat, val);
-        }
-
     }
 
     /// <summary>A land-use area (water, parking, forest, farmland, residential, park...), clipped to its region.</summary>

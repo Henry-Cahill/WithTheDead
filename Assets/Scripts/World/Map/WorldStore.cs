@@ -16,28 +16,6 @@ namespace CloneZ
     {
         /// <summary>The environment variable that points the game at another copy of the store.</summary>
         public const string RootVariable = "CLONEZ_WORLD";
-        public const string StreetLampMaterialPath = "Materials/Metal";
-        public const string StreetLampGlassMaterialPath = "Materials/StreetLampGlass";
-        public const string PorchMaterialPath = "Materials/WoodPlank";
-        /// <summary>Returns the translucent glass material for lamp heads.</summary>
-        private static Material s_StreetLampGlassMaterial;
-        private static Material s_PorchMaterial;
-        public static Material GetStreetLampGlassMaterial()
-        {
-            if (s_StreetLampGlassMaterial != null) return s_StreetLampGlassMaterial;
-            var path = System.IO.Path.Combine(Root, StreetLampGlassMaterialPath);
-            s_StreetLampGlassMaterial = UnityEngine.Resources.Load<Material>(path);
-            return s_StreetLampGlassMaterial;
-        }
-
-        public static Material GetPorchMaterial()
-        {
-            if (s_PorchMaterial != null) return s_PorchMaterial;
-            var path = System.IO.Path.Combine(Root, PorchMaterialPath);
-            s_PorchMaterial = UnityEngine.Resources.Load<Material>(path);
-            return s_PorchMaterial;
-        }
-
 
         /// <summary>Where the store is on this machine.</summary>
         public static string Root
@@ -89,103 +67,7 @@ namespace CloneZ
 
     /// <summary>One published build of the real-world map: its manifest, its named places and its regions.</summary>
     public sealed class MapBuild
-        {
-            /// <summary>
-            /// Determine if a road segment should get painted lane markings.
-            /// Deterministic based on the build ID and the segment ID.
-            /// Approximately 50 % of road pieces receive markings.
-            /// </summary>
-            public bool HasRoadMarkings(long segmentId)
-            {
-                unchecked
-                {
-                    uint hash = (uint)segmentId ^ 0xA1B2C3D4u;
-                    hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
-                    return (hash % 100) < 50; // 50% chance
-                }
-            }
-
-            private const float RoadMarkingThickness = 0.03f; // 3 cm thick painted strip
-
-            internal float GetRoadMarkingThickness() => RoadMarkingThickness;
-            /// <summary>The street‑lamp material.</summary>
-        internal Material GetStreetLampMaterial()
-        {
-            // Material reference is cached by Unity's Resources system; path must exist.
-            return Resources.Load<Material>(WorldStore.StreetLampMaterialPath);
-        }
-            /// <summary>Determine if a building should get a thin snow layer on its roof.
-            /// Deterministic based on the build ID and the building ID.
-            /// Approximately 30% of roofs receive snow.</summary>
-            public bool RoofHasSnow(long buildingId)
-            {
-                unchecked
-                {
-                    uint hash = (uint)buildingId ^ 0x9e3779b9u;
-                    hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
-                    return (hash % 100) < 30; // 30% chance
-                }
-        }
-
-        /// <summary>
-        /// Determines if a building should receive a modest front porch (low railing and steps).
-        /// Deterministic based on the build ID and the building ID.
-        /// Roughly 40 % of buildings get a porch, giving a hand‑built aesthetic for a 1993 rural Kentucky home.
-        /// </summary>
-        public bool HasPorch(long buildingId)
-        {
-            unchecked
-            {
-                uint hash = (uint)buildingId ^ 0x3c6ef372u;
-                hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
-                return (hash % 100) < 40; // 40% chance
-            }
-        }
-
-        /// <summary>
-        /// Determine if a building should get a low wooden fence around its perimeter.
-        /// Deterministic based on the build ID and the building ID.
-        /// Roughly 25 % of buildings receive a fence, adding a hand‑painted rural feel.
-        /// </summary>
-        public bool HasFence(long buildingId)
-        {
-            unchecked
-            {
-                uint hash = (uint)buildingId ^ 0xA5B357F9u;
-                hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
-                return (hash % 100) < 25; // 25% chance
-            }
-        }
-
-        /// <summary>
-        /// Determine if a building should get a simple mailbox at the front door.
-        /// Deterministic based on the build Id and the building Id.
-        /// Roughly 30 % of residential buildings receive a mailbox, giving a hand‑painted rural feel.
-        /// </summary>
-        public bool HasMailbox(long buildingId)
-        {
-            unchecked
-            {
-                uint hash = (uint)buildingId ^ 0xC0FFEEu;
-                hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
-                return (hash % 100) < 30; // 30% chance
-            }
-        }
-
-        /// <summary>
-        /// Determine if a road segment should receive a street lamp.
-        /// Deterministic based on the build Id and the segment Id.
-        /// Approximately 30 % of eligible segments get a lamp, giving the town a hand‑painted rural feel.
-        /// </summary>
-        public bool HasStreetLamp(long segmentId)
-        {
-            unchecked
-            {
-                uint hash = (uint)segmentId ^ 0xD4E5F6A7u;
-                hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
-                return (hash % 100) < 30; // 30% chance
-            }
-        }
+    {
         /// <summary>The data format this game reads (worldbuild.py's FORMAT).</summary>
         public const int Format = 1;
 
@@ -195,7 +77,6 @@ namespace CloneZ
         public readonly MapManifest Manifest;
         private readonly HashSet<long> _regions = new HashSet<long>();
         private MapPlace[] _places;
-        private System.Random _rand;
 
         public MapBuild(string id, string folder, MapManifest manifest)
         {
@@ -208,9 +89,6 @@ namespace CloneZ
 
         /// <summary>The side of a region in metres (8,192).</summary>
         public int RegionSize => Manifest.region > 0 ? Manifest.region : 8192;
-
-        /// <summary>Deterministic random seeded by the build Id, useful for consistent visual tweaks.</summary>
-        public System.Random Random => _rand ??= new System.Random(Id.GetHashCode());
 
         /// <summary>The credit line the game shows for the map data.</summary>
         public string Attribution => string.IsNullOrEmpty(Manifest.attribution)
