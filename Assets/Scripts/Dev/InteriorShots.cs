@@ -42,6 +42,8 @@ namespace CloneZ
             public string Place, Use, Purpose, Kind, DataUse, Rooms, Error, Troubles;
             public float Area, Angle, Fill;
             public int Verts, RoomCount, Containers, Allotted, Stripped, Lights, Lit, CeilingLamps, Objects, Bodies, Steps;
+            /// <summary>Its meshes' vertices (the interior's root and its overhead root).</summary>
+            public long Vertices;
             public double TotalMs, MaxStepMs;
             public string MaxStep;
             /// <summary>Each room's role and how long it took to furnish (ms).</summary>
@@ -283,11 +285,13 @@ namespace CloneZ
                     _md.Append("\n\n");
                 }
                 int iObjects = 0, iContainers = 0, iLights = 0, iLit = 0, failed = 0, stripped = 0;
+                long iVerts = 0;
                 double iMs = 0, iMax = 0;
                 foreach (Rec r in recs)
                 {
                     if (r.Error != null) { failed++; continue; }
                     iObjects += r.Objects;
+                    iVerts += r.Vertices;
                     iContainers += r.Containers;
                     iLights += r.Lights;
                     iLit += r.Lit;
@@ -300,7 +304,7 @@ namespace CloneZ
                     .Append("| objects | ").Append(F0(objects)).Append(" | ").Append(F0(iObjects)).Append(" |\n")
                     .Append("| loot containers | ").Append(F0(containers)).Append(" | ").Append(F0(iContainers)).Append(" (").Append(F0(stripped)).Append(" more stripped of their storage) |\n")
                     .Append("| lights | ").Append(F0(lights)).Append(" | ").Append(F0(iLights)).Append(" (").Append(F0(iLit)).Append(" rooms left lit) |\n")
-                    .Append("| vertices | ").Append(F0(verts)).Append(" | |\n")
+                    .Append("| vertices | ").Append(F0(verts)).Append(" | ").Append(F0(iVerts)).Append(" |\n")
                     .Append("| furnishing time | | ").Append(F0(iMs)).Append(" ms in all, slowest step ").Append(F1(iMax)).Append(" ms |\n")
                     .Append("| buildings furnished | | ").Append(recs.Count - failed).Append(" (").Append(failed).Append(" failed) |\n\n");
                 if (failed > 0)
@@ -357,6 +361,8 @@ namespace CloneZ
                     if (kv.Value > 1) sb.Append('×').Append(kv.Value);
                 }
                 r.Rooms = sb.ToString();
+                if (b.Root != null) r.Vertices += VerticesUnder(b.Root.transform);
+                if (b.Town != null && b.Town.Overhead != null) r.Vertices += VerticesUnder(b.Town.Overhead);
                 if (b.RoomMs != null)
                     for (int k = 0; k < b.RoomMs.Length && k < p.Rooms.Count; k++)
                         r.RoomTimes.Add(new KeyValuePair<string, double>(p.Rooms[k].Role.ToString(), b.RoomMs[k]));
@@ -542,8 +548,8 @@ namespace CloneZ
             #region Summary
             private void Summary()
             {
-                _md.Append("## By use (every square)\n\n| use | buildings | failed | rooms (mean) | containers mean / max | allotted mean | lights mean / max | lit rooms | objects mean / max | ms mean / max | slowest step ms |\n")
-                    .Append("|---|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|\n");
+                _md.Append("## By use (every square)\n\n| use | buildings | failed | rooms (mean) | containers mean / max | allotted mean | lights mean / max | lit rooms | objects mean / max | vertices mean (k) | ms mean / max | slowest step ms |\n")
+                    .Append("|---|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|\n");
                 var uses = new SortedDictionary<string, List<Rec>>(StringComparer.Ordinal);
                 foreach (Rec r in _all)
                 {
@@ -554,11 +560,12 @@ namespace CloneZ
                 foreach (KeyValuePair<string, List<Rec>> kv in uses)
                 {
                     int n = 0, failed = 0, rooms = 0, cont = 0, contMax = 0, allot = 0, lights = 0, lightsMax = 0, lit = 0, obj = 0, objMax = 0;
-                    double ms = 0, msMax = 0, step = 0;
+                    double ms = 0, msMax = 0, step = 0, verts = 0;
                     foreach (Rec r in kv.Value)
                     {
                         if (r.Error != null) { failed++; continue; }
                         n++;
+                        verts += r.Vertices;
                         rooms += r.RoomCount;
                         cont += r.Containers;
                         contMax = Math.Max(contMax, r.Containers);
@@ -577,8 +584,8 @@ namespace CloneZ
                     float d = Math.Max(1, n);
                     _md.Append("| ").Append(kv.Key).Append(" | ").Append(n).Append(" | ").Append(failed).Append(" | ").Append(F1(rooms / d)).Append(" | ")
                         .Append(F1(cont / d)).Append(" / ").Append(contMax).Append(" | ").Append(F1(allot / d)).Append(" | ").Append(F1(lights / d)).Append(" / ")
-                        .Append(lightsMax).Append(" | ").Append(lit).Append(" | ").Append(F0(obj / d)).Append(" / ").Append(objMax).Append(" | ").Append(F1(ms / d))
-                        .Append(" / ").Append(F1(msMax)).Append(" | ").Append(F1(step)).Append(" |\n");
+                        .Append(lightsMax).Append(" | ").Append(lit).Append(" | ").Append(F0(obj / d)).Append(" / ").Append(objMax).Append(" | ").Append(F1(verts / d / 1000.0))
+                        .Append(" | ").Append(F1(ms / d)).Append(" / ").Append(F1(msMax)).Append(" | ").Append(F1(step)).Append(" |\n");
                 }
                 _md.Append("\n").Append(total).Append(" buildings furnished, ").Append(totalContainers).Append(" loot containers in them.\n\n");
                 RoomTimes();
@@ -599,11 +606,12 @@ namespace CloneZ
 
             private readonly List<string> _mixes = new List<string>();
 
-            // The pieces under an interior's root by name (numbers stripped), the commonest first; and its lights by the piece
-            // holding them.
+            // The pieces under an interior's root by name (numbers stripped), the commonest first; the vertices they take, the
+            // heaviest first; and its lights by the piece holding them.
             private static string Mix(Transform root)
             {
                 var bodies = new Dictionary<string, int>(StringComparer.Ordinal);
+                var verts = new Dictionary<string, int>(StringComparer.Ordinal);
                 var lights = new Dictionary<string, int>(StringComparer.Ordinal);
                 for (int k = 0; k < root.childCount; k++)
                 {
@@ -611,12 +619,22 @@ namespace CloneZ
                     string name = t.name.TrimEnd('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' ', '(', ')');
                     bodies.TryGetValue(name, out int n);
                     bodies[name] = n + 1;
+                    verts.TryGetValue(name, out int v);
+                    verts[name] = v + (int)VerticesUnder(t);
                     int l = t.GetComponentsInChildren<Light>(true).Length;
                     if (l == 0) continue;
                     lights.TryGetValue(name, out int m);
                     lights[name] = m + l;
                 }
-                return "bodies " + root.childCount + ": " + Top(bodies, 14) + "; lights: " + Top(lights, 10);
+                return "bodies " + root.childCount + ": " + Top(bodies, 14) + "; vertices " + F0(VerticesUnder(root)) + ": " + Top(verts, 8) + "; lights: " + Top(lights, 10);
+            }
+
+            private static long VerticesUnder(Transform t)
+            {
+                long n = 0;
+                foreach (MeshFilter mf in t.GetComponentsInChildren<MeshFilter>(true))
+                    if (mf.sharedMesh != null) n += mf.sharedMesh.vertexCount;
+                return n;
             }
 
             private static string Top(Dictionary<string, int> counts, int max)

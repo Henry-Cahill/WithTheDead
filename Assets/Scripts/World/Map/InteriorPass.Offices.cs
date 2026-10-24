@@ -541,37 +541,25 @@ namespace CloneZ
         }
 
         // One face of a run of library shelving `len` long (the piece's frame, front +Z): the back, the uprights every 0.9 m,
-        // five shelves, and the books in runs of a few colours with gaps where they've been taken.
+        // five shelves, and on four of them the books, a bay at a time (the stock texture's spines: one quad a bay, not a
+        // box a book).
         private static void BookRow(RaidMesh m, System.Random r, float len)
         {
-            Surf wood = DecorPalette.Matte(FurnitureBuilder.Oak);
+            Surf wood = DecorPalette.Matte(FurnitureBuilder.Oak), books = DecorMaterials.Stock(1);
             m.Box(new Vector3(0f, 0.9f, -0.14f), new Vector3(len, 1.8f, 0.04f), wood);
             int bays = Mathf.Max(1, Mathf.RoundToInt(len / 0.9f));
-            for (int k = 0; k <= bays; k++) m.Box(new Vector3(-len * 0.5f + len * k / bays, 0.9f, 0f), new Vector3(0.03f, 1.8f, 0.32f), wood);
+            float bay = len / bays;
+            for (int k = 0; k <= bays; k++) m.Box(new Vector3(-len * 0.5f + bay * k, 0.9f, 0f), new Vector3(0.03f, 1.8f, 0.32f), wood);
             for (int s = 0; s < 5; s++) m.Box(new Vector3(0f, 0.05f + s * 0.42f, 0f), new Vector3(len, 0.025f, 0.32f), wood);
             for (int s = 0; s < 4; s++)
-            {
-                float y = 0.065f + s * 0.42f;
-                for (float x = -len * 0.5f + 0.04f; x < len * 0.5f - 0.1f;)
+                for (int k = 0; k < bays; k++)
                 {
-                    float run = Mathf.Min(MapStyle.Range(r, 0.15f, 0.5f), len * 0.5f - 0.04f - x);
-                    if (r.NextDouble() < 0.18)
-                    {
-                        x += run;
-                        continue;
-                    }
-                    float h = MapStyle.Range(r, 0.22f, 0.32f);
-                    m.Box(new Vector3(x + run * 0.5f, y + h * 0.5f, 0.02f), new Vector3(run, h, 0.22f), DecorPalette.Matte(Spines[r.Next(Spines.Length)]));
-                    x += run + 0.01f;
+                    if (r.NextDouble() < 0.08) continue;
+                    float y = 0.0625f + s * 0.42f, h = 0.3f;
+                    m.Upright(new Vector3(-len * 0.5f + bay * (k + 0.5f), y + h * 0.5f, 0.09f), Vector3.forward, bay - 0.04f, h, books,
+                        new Rect((float)r.NextDouble() * 0.5f, 0f, 0.5f, 0.95f));
                 }
-            }
         }
-
-        private static readonly Color[] Spines =
-        {
-            new Color(0.42f, 0.12f, 0.10f), new Color(0.14f, 0.22f, 0.36f), new Color(0.20f, 0.30f, 0.18f), new Color(0.52f, 0.40f, 0.22f),
-            new Color(0.30f, 0.20f, 0.14f), new Color(0.62f, 0.58f, 0.48f),
-        };
 
         private static void Copier(RoomCtx c, RaidBuilding.Place p)
         {
