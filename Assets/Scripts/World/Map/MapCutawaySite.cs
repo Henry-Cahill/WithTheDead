@@ -17,6 +17,9 @@ namespace CloneZ
         /// <summary>Where the stand-ins for cut walls go: the site's shells under its overhead root (never baked, and gone
         /// with the site).</summary>
         internal Transform Overlays;
+        /// <summary>The highest point of its buildings in the world, as far as known (set when registered, raised as
+        /// their meshes are read).</summary>
+        internal float MaxTop;
         private bool _registered;
 
         internal static MapCutawaySite Attach(GameObject host, Transform overlays, List<MapCutaway.Building> buildings)

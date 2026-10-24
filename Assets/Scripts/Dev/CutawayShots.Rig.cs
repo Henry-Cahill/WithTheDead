@@ -20,11 +20,15 @@ namespace CloneZ
             private float[] _zoom = { 5.5f, 7f, 9f, 11f, 12.5f };
 
             private GameObject _rig, _figure;
+            private Transform _feetMark;
             private Camera _cam;
             private Light _sun;
             private Volume _volume;
             private bool _cameraRender, _pathConfirmed;
             private readonly List<Light> _mapLights = new List<Light>();
+            // The game's other cutaway (rays from the camera, by collider), run for the pictures that ask for it.
+            private readonly IsoCutaway _isoCut = new IsoCutaway();
+            private const float ChestHeight = 1.2f;   // IsoCameraFollow's for a standing survivor
 
             private float Wide => _zoom[_zoom.Length - 1];
             private float Close => _zoom[0];
@@ -101,6 +105,8 @@ namespace CloneZ
                 if (m.HasProperty("_BaseColor")) m.SetColor("_BaseColor", new Color(0.75f, 0.12f, 0.10f));
                 _figure.GetComponent<Renderer>().sharedMaterial = m;
                 _figure.SetActive(false);
+                _feetMark = new GameObject("Feet").transform;
+                _feetMark.SetParent(_rig.transform, false);
             }
 
             private void CollectLights(IEnumerable<Transform> roots)
@@ -158,24 +164,37 @@ namespace CloneZ
                 _cam.farClipPlane = 400f;
             }
 
-            /// <summary>Renders the isometric view at <paramref name="at"/> into <paramref name="file"/>.</summary>
-            private void Picture(string file, Vector3 at, float yaw, float size, bool survivor, bool night)
+            /// <summary>Renders the isometric view at <paramref name="at"/> into <paramref name="file"/>; with
+            /// <paramref name="iso"/>, the game's ray cutaway (<see cref="IsoCutaway"/>) is run for the shot as well.</summary>
+            private void Picture(string file, Vector3 at, float yaw, float size, bool survivor, bool night, bool iso = false)
             {
                 Light(night, at);
                 _figure.SetActive(survivor);
                 if (survivor) _figure.transform.SetPositionAndRotation(at + Vector3.up * 0.9f, Quaternion.identity);
                 PoseIso(at, yaw, size);
-                Texture2D tex = Capture(1600, 1000);
+                if (iso)
+                {
+                    _feetMark.position = at;
+                    Physics.SyncTransforms();
+                    _isoCut.Tick(_cam.transform.position, _cam.transform.forward, true, _feetMark, ChestHeight, true);
+                    _isoHidden = _isoCut.HiddenCount;
+                }
+                Texture2D tex = null;
                 try
                 {
+                    tex = Capture(1600, 1000);
                     File.WriteAllBytes(Path.Combine(_out, file), tex.EncodeToPNG());
                 }
                 finally
                 {
-                    Object.DestroyImmediate(tex);
+                    if (tex != null) Object.DestroyImmediate(tex);
                     _figure.SetActive(false);
+                    if (iso) _isoCut.RestoreAll();
                 }
             }
+
+            /// <summary>Pieces the ray cutaway hid for the last picture that ran it.</summary>
+            private int _isoHidden;
 
             private Texture2D Capture(int w, int h)
             {
