@@ -40,8 +40,10 @@ namespace CloneZ
         internal static IEnumerable<string> Build(Site site)
         {
             site.BeginStep();
+            ProbeStart();
             PrePaint();
             var ctx = new Context(site);
+            ProbeEnd(-2, null);
             float half = site.Half;
             var square = Rect.MinMaxRect(-half, -half, half, half);
             var near = new List<Footprint>(16);
@@ -54,18 +56,27 @@ namespace CloneZ
                 bool playable = f.Inside(half, 1f) || (Mathf.Abs(f.Middle.x) < half && Mathf.Abs(f.Middle.y) < half);
                 // A building the fixed square's edge cuts through, its middle outside: solid and whole, but shut.
                 bool edge = !playable && !site.Chunked && f.Bounds.Overlaps(square);
+                ProbeStart();
                 Shape sh = ShapeOf(f);
                 ctx.Near(f, 1.2f, near);
                 Plan plan = Classify(ctx, f, sh, near);
                 if (edge) plan.Enterable = false;
                 job.Begin(f, sh, plan, site.Detail == Detail.Lite || (!playable && !edge), !playable, edge,
                     (playable || edge) && site.Detail == Detail.Full);
-                while (Step(job))
+                ProbeEnd(-1, job);
+                while (true)
+                {
+                    ProbeStart();
+                    int stage = job.Stage;
+                    bool more = Step(job);
+                    ProbeEnd(stage, job);
+                    if (!more) break;
                     if (site.StepDue)
                     {
                         yield return "buildings";
                         site.BeginStep();
                     }
+                }
 #if UNITY_EDITOR
                 if (Inspect != null) Note(job);
 #endif
@@ -310,6 +321,42 @@ namespace CloneZ
             if (j.Shell != null) j.Shell.Top = Mathf.Max(j.Shell.Top, j.Top);
             j.Stage = int.MaxValue;
             return false;
+        }
+
+        // In the editor, with -clonez-buildings-profile on the command line: every call of the pass slower than 2 ms is
+        // logged with what it was building (stage -2 is the pass's setup, -1 a building's plan).
+#if UNITY_EDITOR
+        private static readonly bool s_Profiling =
+            System.Array.IndexOf(System.Environment.GetCommandLineArgs(), "-clonez-buildings-profile") >= 0;
+        private static long s_ProbeAt;
+#endif
+
+        [System.Diagnostics.Conditional("UNITY_EDITOR")]
+        private static void ProbeStart()
+        {
+#if UNITY_EDITOR
+            if (s_Profiling) s_ProbeAt = System.Diagnostics.Stopwatch.GetTimestamp();
+#endif
+        }
+
+        [System.Diagnostics.Conditional("UNITY_EDITOR")]
+        private static void ProbeEnd(int stage, Job j)
+        {
+#if UNITY_EDITOR
+            if (!s_Profiling) return;
+            double ms = (System.Diagnostics.Stopwatch.GetTimestamp() - s_ProbeAt) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+            if (ms < 2.0) return;
+            string what = stage == -2 ? "setup" : stage == -1 ? "plan" : stage == 0 ? "walls" : stage == 1 ? "openings"
+                : stage == 2 ? "roof" : stage == 3 ? "frontage" : stage == 4 ? "special" : "inside";
+            if (j == null)
+            {
+                Debug.Log($"[Buildings] {ms:F1} ms {what}");
+                return;
+            }
+            Plan p = j.P;
+            Debug.Log($"[Buildings] {ms:F1} ms {what}: way {j.F.Data.id} {p.Arch} {p.Roof} {j.F.Size:F0} m² {j.F.Pts.Count} corners"
+                + $" ({j.N} drawn) {p.Storeys} storeys, {j.Holes.Count} openings, lite {j.Lite}, scenery {j.Scenery}, at {j.F.Middle}");
+#endif
         }
         #endregion
 
