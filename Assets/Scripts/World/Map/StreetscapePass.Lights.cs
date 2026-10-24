@@ -109,7 +109,7 @@ namespace CloneZ
                     int side = (k & 1) == 0 ? 1 : -1;
                     Vector2 at = p + Left(d) * (side * Roadside(s, side));
                     if (!ctx.Site.FreeBeside(at, 0.5f) || NearCrossingMiddle(ctx, at) || Near(ctx, at, 11f)) continue;
-                    Add(ctx, LampKind.Acorn, at, -Left(d) * side, ctx.KeyOf(at), 0.55f);
+                    Add(ctx, LampKind.Acorn, at, -Left(d) * side, ctx.KeyOf(at), 0.7f);
                 }
             }
         }
@@ -309,18 +309,35 @@ namespace CloneZ
         private static void Burn(Ctx ctx, LampPlan lamp, Vector2 foot, float poleHeight, Vector3 head)
             => ctx.Burning.Add(new Burning { Lamp = lamp, Foot = foot, PoleHeight = poleHeight, Head = head });
 
-        // Every burning lamp made a StreetLamp, nearest the site's middle first: in an editor build those get the lights of
-        // their own, up to the cap.
+        // Every burning lamp made a StreetLamp. In an editor build the first few get lights of their own, spread over the
+        // site: the lamp nearest each 64 m cell's middle first, then each cell's next, nearest the site's middle first.
         private static void AttachAll(Ctx ctx)
         {
             List<Burning> burning = ctx.Burning;
-            burning.Sort((a, b) =>
+            var order = new List<(int rank, float d, long key, int i)>(burning.Count);
+            var perCell = new Dictionary<long, List<int>>();
+            for (int i = 0; i < burning.Count; i++)
             {
-                int c = a.Foot.sqrMagnitude.CompareTo(b.Foot.sqrMagnitude);
-                return c != 0 ? c : a.Lamp.Key.CompareTo(b.Lamp.Key);
-            });
+                Vector2 f = burning[i].Foot;
+                long cell = ((long)Mathf.FloorToInt(f.x / 64f) << 32) ^ (uint)Mathf.FloorToInt(f.y / 64f);
+                if (!perCell.TryGetValue(cell, out List<int> list)) perCell[cell] = list = new List<int>(4);
+                list.Add(i);
+            }
+            foreach (KeyValuePair<long, List<int>> kv in perCell)
+            {
+                List<int> list = kv.Value;
+                var middle = new Vector2((Mathf.Floor(burning[list[0]].Foot.x / 64f) + 0.5f) * 64f, (Mathf.Floor(burning[list[0]].Foot.y / 64f) + 0.5f) * 64f);
+                list.Sort((a, b) =>
+                {
+                    int c = (burning[a].Foot - middle).sqrMagnitude.CompareTo((burning[b].Foot - middle).sqrMagnitude);
+                    return c != 0 ? c : burning[a].Lamp.Key.CompareTo(burning[b].Lamp.Key);
+                });
+                for (int r = 0; r < list.Count; r++)
+                    order.Add((r, burning[list[r]].Foot.sqrMagnitude, burning[list[r]].Lamp.Key, list[r]));
+            }
+            order.Sort((a, b) => a.rank != b.rank ? a.rank.CompareTo(b.rank) : a.d != b.d ? a.d.CompareTo(b.d) : a.key.CompareTo(b.key));
             int lights = EditorLights(ctx);
-            for (int i = 0; i < burning.Count; i++) Attach(ctx, burning[i], i < lights);
+            for (int k = 0; k < order.Count; k++) Attach(ctx, burning[order[k].i], k < lights);
             burning.Clear();
         }
 

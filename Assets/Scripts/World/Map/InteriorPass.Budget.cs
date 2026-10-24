@@ -40,8 +40,19 @@ namespace CloneZ
                 areas[i] = InnerArea(r);
                 r.Pool = MapGameplay.ContainersFor(site, f, r.Kind);
             }
-            AllotLoot(site, f, plan.Purpose, kinds, areas, counts);
-            for (int i = 0; i < n; i++) plan.Rooms[i].Loot = plan.Rooms[i].Pool.Length == 0 ? 0 : counts[i];
+            MapGameplay.Allot(site, f, kinds, areas, counts);
+            // A room whose kind holds nothing here hands its share to the biggest rooms that do.
+            int lost = 0;
+            for (int i = 0; i < n; i++)
+                if (plan.Rooms[i].Pool.Length == 0) { lost += counts[i]; counts[i] = 0; }
+            if (lost > 0)
+            {
+                var order = new List<int>(n);
+                for (int i = 0; i < n; i++) if (plan.Rooms[i].Pool.Length > 0) order.Add(i);
+                order.Sort((a, b) => Mathf.Abs(areas[a] - areas[b]) > 0.01f ? areas[b].CompareTo(areas[a]) : a.CompareTo(b));
+                for (int k = 0; lost > 0 && order.Count > 0; k++, lost--) counts[order[k % order.Count]]++;
+            }
+            for (int i = 0; i < n; i++) plan.Rooms[i].Loot = counts[i];
 
             // Lamps: a ceiling fitting or more for each room by its size, the rooms people use first, within the building's
             // budget; what's left of it goes to desk, bedside and standard lamps as the rooms are furnished.
@@ -90,119 +101,6 @@ namespace CloneZ
 
         /// <summary>A room's floor inside its walls (m²).</summary>
         internal static float InnerArea(PlanRoom r) => Mathf.Max(0f, r.R.width - 2f * Half) * Mathf.Max(0f, r.R.height - 2f * Half);
-
-        #region How many loot containers
-        // How many loot containers each room holds: the gameplay layer's budget for the building (MapGameplay.Allot, on its
-        // way to this branch), mirrored here meanwhile on the same model: each room's need by its kind and floor, the sum
-        // scaled by how well stocked the Zone is there, within what a building of its purpose and size holds, shared out by
-        // the largest remainders. Every container rolls its table afresh each raid, so a building's loot is its count.
-        private const int SaltBudget = 0x6A60;
-
-        private static int AllotLoot(Site site, Footprint f, string purpose, string[] rooms, float[] areas, int[] counts)
-        {
-            int n = rooms.Length;
-            for (int i = 0; i < n; i++) counts[i] = 0;
-            if (n == 0) return 0;
-            var need = new float[n];
-            float sum = 0f, floor = 0f;
-            for (int i = 0; i < n; i++)
-            {
-                need[i] = Mathf.Max(0f, RoomNeed(rooms[i], areas[i]));
-                sum += need[i];
-                floor += Mathf.Max(0f, areas[i]);
-            }
-            float richness = MapGameplay.RichnessOf(site, f);
-            float wanted = sum * StockOf(purpose) * richness;
-            int whole = Mathf.FloorToInt(wanted);
-            int dithered = wanted <= 0f ? 0 : whole + (MapStyle.Unit(f.Data.id, SaltBudget) < wanted - whole ? 1 : 0);
-            int total = Mathf.Min(Mathf.RoundToInt(BuildingCap(purpose, floor) * Mathf.Max(1f, richness)), dithered);
-            if (total <= 0 || sum <= 0f) return 0;
-            float scale = total / sum;
-            int given = 0;
-            var rest = new float[n];
-            for (int i = 0; i < n; i++)
-            {
-                float exact = need[i] * scale;
-                counts[i] = Mathf.FloorToInt(exact + 1e-4f);
-                rest[i] = need[i] > 0f ? exact - counts[i] : -1f;
-                given += counts[i];
-            }
-            for (; given < total; given++)
-            {
-                int best = -1;
-                for (int i = 0; i < n; i++)
-                    if (rest[i] >= 0f && (best < 0 || rest[i] > rest[best] + 1e-4f)) best = i;
-                if (best < 0) break;
-                counts[best]++;
-                rest[best] = -1f;
-            }
-            return given;
-        }
-
-        // How stocked a building of a purpose is next to an ordinary one (the gameplay layer's profiles; the few known here).
-        private static float StockOf(string purpose)
-        {
-            switch (purpose)
-            {
-                case MapGameplay.Purposes.Grocery: case MapGameplay.Purposes.Hardware: return 1.3f;
-                case MapGameplay.Purposes.Pharmacy: return 1.2f;
-                case MapGameplay.Purposes.Church: return 0.8f;
-                case MapGameplay.Purposes.Funeral: return 0.7f;
-                case MapGameplay.Purposes.Vacant: return 0.3f;
-                case MapGameplay.Purposes.Ruin: return 0.3f;
-                default: return 1f;
-            }
-        }
-
-        private static float RoomNeed(string room, float area)
-        {
-            switch (room)
-            {
-                case RoomKinds.Kitchen: return area >= 14f ? 3f : 2f;
-                case RoomKinds.Kitchenette: return area >= 10f ? 2f : 1f;
-                case RoomKinds.Bathroom: return 1f;
-                case RoomKinds.Bedroom: return area >= 16f ? 2f : 1f;
-                case RoomKinds.Living: return area < 10f ? 0f : area >= 30f ? 2f : 1f;
-                case RoomKinds.Hall: return area >= 12f ? 1f : 0f;
-                case RoomKinds.Sales: return Mathf.Min(8f, 1f + area / 40f);
-                case RoomKinds.Stock: return Mathf.Min(5f, 1f + area / 30f);
-                case RoomKinds.Office: return area >= 20f ? 2f : 1f;
-                case RoomKinds.Storage: return Mathf.Min(4f, 1f + area / 25f);
-                case RoomKinds.Workshop: case RoomKinds.Garage: return Mathf.Min(4f, 1f + area / 40f);
-                case RoomKinds.Classroom: return 1f;
-                case RoomKinds.Nave: return area >= 60f ? 1f : 0f;
-                case RoomKinds.Ward: return Mathf.Min(4f, 1f + area / 30f);
-                case RoomKinds.Cells: return 0f;
-                case RoomKinds.Open: return Mathf.Min(6f, 1f + area / 120f);
-                default: return Mathf.Min(3f, area / 30f);
-            }
-        }
-
-        private static int BuildingCap(string purpose, float area)
-        {
-            switch (purpose)
-            {
-                case MapGameplay.Purposes.None: return 0;
-                case MapGameplay.Purposes.Vacant: case MapGameplay.Purposes.Ruin: return 1;
-                case MapGameplay.Purposes.Shed: case MapGameplay.Purposes.Greenhouse: return 2;
-                case MapGameplay.Purposes.Garage: case MapGameplay.Purposes.Outbuilding: return 3;
-                case MapGameplay.Purposes.Barn: return 4;
-                case MapGameplay.Purposes.Trailer: return 5;
-                case MapGameplay.Purposes.Home: return Mathf.Clamp(Mathf.RoundToInt(3f + area / 40f), 4, 9);
-                case MapGameplay.Purposes.Church: case MapGameplay.Purposes.Funeral: case MapGameplay.Purposes.Childcare: return 6;
-                case MapGameplay.Purposes.Apartments: case MapGameplay.Purposes.Hotel: case MapGameplay.Purposes.Care:
-                    return Mathf.Clamp(Mathf.RoundToInt(4f + area / 50f), 6, 24);
-                case MapGameplay.Purposes.Warehouse: case MapGameplay.Purposes.Industrial: case MapGameplay.Purposes.StorageRental:
-                case MapGameplay.Purposes.Distillery:
-                    return Mathf.Clamp(Mathf.RoundToInt(3f + area / 300f), 4, 12);
-                case MapGameplay.Purposes.Grocery: case MapGameplay.Purposes.DepartmentStore:
-                    return Mathf.Clamp(Mathf.RoundToInt(4f + area / 60f), 6, 24);
-                case MapGameplay.Purposes.School: case MapGameplay.Purposes.Hospital: case MapGameplay.Purposes.Prison:
-                    return Mathf.Clamp(Mathf.RoundToInt(4f + area / 150f), 8, 28);
-                default: return Mathf.Clamp(Mathf.RoundToInt(4f + area / 60f), 5, 16);
-            }
-        }
-        #endregion
 
         // Lower first: the rooms people live and work in, then the private ones, then the ones they pass through or store
         // things in.

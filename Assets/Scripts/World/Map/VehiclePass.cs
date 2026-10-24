@@ -106,7 +106,8 @@ namespace CloneZ
             {
                 foreach (NaturePlan.Keep k in Placed)
                 {
-                    float reach = k.HalfLength + halfLength;
+                    // Apart when their middles are further apart than their corners reach.
+                    float reach = k.HalfLength + k.HalfWidth + halfLength + halfWidth;
                     if ((k.At - at).sqrMagnitude > reach * reach) continue;
                     if (NaturePlan.Overlap(at, axis, halfLength, halfWidth, k.At, k.Axis, k.HalfLength, k.HalfWidth)) return true;
                 }
