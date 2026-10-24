@@ -225,6 +225,7 @@ namespace CloneZ
             /// <summary>True when the building may have another lamp (desk, bedside or standard) besides its ceilings'.</summary>
             public bool LampLeft => Build.Lamps < Plan.LampCap - Plan.CeilingLamps;
 
+            /// <summary>The total floor area of the room (width × height).</summary>
             public float Area => Inner.width * Inner.height;
             public float Width => Inner.width;
             public float Depth => Inner.height;
@@ -269,6 +270,7 @@ namespace CloneZ
 
             /// <summary>The wall the room's main door is in (-1: none).</summary>
             public int DoorSide = -1;
+            /// <summary>Exact location along the wall where the main door sits.</summary>
             public float DoorAlong;
 
             /// <summary>A piece <paramref name="w"/> wide and <paramref name="d"/> deep with its back to wall <paramref name="side"/>
@@ -338,6 +340,7 @@ namespace CloneZ
                 if (hi - cursor > b - a) { a = cursor; b = hi; }
             }
 
+            /// <summary>Creates a placement descriptor for a piece on a wall side at a given coordinate.</summary>
             public RaidBuilding.Place PlaceOn(int side, float t, float d, float gap)
             {
                 switch (side)
@@ -349,6 +352,7 @@ namespace CloneZ
                 }
             }
 
+            /// <summary>Builds a rectangular footprint for a piece on a given wall side.</summary>
             public Rect Foot(int side, float t, float w, float d)
             {
                 switch (side)
@@ -360,6 +364,7 @@ namespace CloneZ
                 }
             }
 
+            /// <summary>Determines if a piece fits on a wall side at a given location, considering gaps and clearances.</summary>
             private bool Fits(int side, float t, float w, float h, Rect fp)
             {
                 float a = t - w * 0.5f, b = t + w * 0.5f;
