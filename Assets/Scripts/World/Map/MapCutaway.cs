@@ -1,8 +1,6 @@
 using System.Collections.Generic;
-using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Rendering;
-using Debug = UnityEngine.Debug;
 
 namespace CloneZ
 {
@@ -28,10 +26,13 @@ namespace CloneZ
     /// over cut walls). A part comes back <see cref="RestoreDelay"/> seconds after it was last needed out of the way, a
     /// building already cut is tested with a little slack (no flicker at the edges), and everything comes back at once in
     /// any other view. Cut parts switch to <see cref="ShadowCastingMode.ShadowsOnly"/> (as <see cref="CeilingVisibility"/>
-    /// and <see cref="IsoCutaway"/> do: unseen, but still keeping the sun and the moon out of the rooms); cut walls are
-    /// shown by a stand-in that keeps the other facings and a capped stub of the cut ones (MapCutaway.Overlay.cs).
-    /// Nothing here has colliders, so <see cref="IsoCutaway"/>'s rays never meet these renderers (it keeps cutting the
-    /// interiors' partitions and the props in the way). Allocation-free per frame.
+    /// and <see cref="IsoCutaway"/> do: unseen, but still keeping the sun and the moon out of the rooms); the walls are
+    /// shown by a stand-in that keeps the other facings standing, clipped at the ground storey's top while the storeys
+    /// above are lifted, and a capped stub of the cut ones (MapCutaway.Overlay.cs), and the doors in a cut wall go with it
+    /// (MapCutaway.Doors.cs). The meshes are read and the stand-ins made a slice a frame, ahead of need for the buildings
+    /// round the survivor (MapCutaway.Work.cs). Nothing here has colliders, so <see cref="IsoCutaway"/>'s rays never meet
+    /// these renderers (it keeps cutting the interiors' partitions and the props in the way). Allocation-free per frame
+    /// once the stand-ins round the survivor are made.
     /// </para>
     /// </summary>
     internal static partial class MapCutaway
@@ -106,11 +107,19 @@ namespace CloneZ
             s_Sites.Clear();
             s_Active.Clear();
             s_Rehash.Clear();
+            s_Urgent.Clear();
+            s_ToRead.Clear();
+            s_Overlays.Clear();
+            System.Array.Clear(s_Prewarm, 0, PrewarmSlots);
+            s_PrewarmCount = 0;
+            AbortHeightJob();
+            AbortOverlayJob();
+            OverlayBytes = HeightBytes = 0;
             s_Count = 0;
             s_MaxTop = 0f;
             s_Driver = null;
             s_Iso = false;
-            s_NextScan = s_NextSweep = 0f;
+            s_NextScan = s_NextSweep = s_NextEvict = 0f;
         }
 
         #region Sites coming and going
@@ -176,7 +185,9 @@ namespace CloneZ
                 Building b = list[i];
                 if (b.Site != site) continue;
                 if (b.Applied != 0) Apply(b, 0);
+                Unqueue(b);
                 ReleaseOverlay(b);
+                ShowDoors(b);
                 if (b.Active)
                 {
                     s_Active.Remove(b);
@@ -186,6 +197,7 @@ namespace CloneZ
                 Reset(b, AllBits);
                 b.Occupied = false;
                 b.Site = null;
+                b.WallState = WallsWhole;
                 // The heights are in the world's plan: read afresh should the site ever come back elsewhere.
                 if (b.Height != null) HeightBytes -= b.Height.Length;
                 b.Height = null;
@@ -202,6 +214,13 @@ namespace CloneZ
             s_Active.Clear();
             s_Cells.Clear();
             s_Rehash.Clear();
+            s_Urgent.Clear();
+            s_ToRead.Clear();
+            s_Overlays.Clear();
+            System.Array.Clear(s_Prewarm, 0, PrewarmSlots);
+            s_PrewarmCount = 0;
+            AbortHeightJob();
+            AbortOverlayJob();
             s_Count = 0;
             s_MaxTop = 0f;
             s_Iso = false;
@@ -240,6 +259,7 @@ namespace CloneZ
             float pitch = cam.IsoPitch;
             float reach = cam.IsoDistance * Mathf.Cos(Mathf.Clamp(pitch, 10f, 89f) * Mathf.Deg2Rad) + 1f;
             Run(cam.Target.position, cam.IsoYaw, pitch, reach, cam.WallCutaway, now, false);
+            Work(WorkBudgetMs);
         }
 
         /// <summary>
@@ -262,8 +282,16 @@ namespace CloneZ
             s_Iso = true;
             s_Yaw = yaw;
             s_Feet = feet;
-            Scan(feet, yaw, pitch, reach, walls, now, immediate);
-            Settle(now);
+            s_Immediate = immediate;
+            try
+            {
+                Scan(feet, yaw, pitch, reach, walls, now);
+                Settle(now);
+            }
+            finally
+            {
+                s_Immediate = false;
+            }
         }
 
         /// <summary>Brings everything back at once (any view but the isometric one; the camera or the survivor gone).</summary>
@@ -272,6 +300,9 @@ namespace CloneZ
             for (int i = s_Active.Count - 1; i >= 0; i--)
             {
                 Building b = s_Active[i];
+                DropUrgent(b);
+                b.HoldFrame = -1;
+                b.Wanted = 0;
                 if (b.Applied != 0) Apply(b, 0);
                 Reset(b, AllBits);
                 b.Occupied = false;
@@ -293,7 +324,7 @@ namespace CloneZ
         }
 
         // Finds what's in the way now and marks it seen.
-        private static void Scan(Vector3 feet, float yawDeg, float pitchDeg, float camReach, bool walls, float now, bool unbudgeted)
+        private static void Scan(Vector3 feet, float yawDeg, float pitchDeg, float camReach, bool walls, float now)
         {
             float yaw = yawDeg * Mathf.Deg2Rad;
             var look = new Vector2(Mathf.Sin(yaw), Mathf.Cos(yaw));   // the camera's heading on the ground
@@ -311,8 +342,6 @@ namespace CloneZ
             int x0 = Cell(Mathf.Min(a.x, c.x) - width), x1 = Cell(Mathf.Max(a.x, c.x) + width);
             int z0 = Cell(Mathf.Min(a.y, c.y) - width), z1 = Cell(Mathf.Max(a.y, c.y) + width);
             int stamp = ++s_Stamp;
-            long deadline = Stopwatch.GetTimestamp() + (long)(ResolveBudgetMs * Stopwatch.Frequency / 1000.0);
-            bool read = false;
             for (int z = z0; z <= z1; z++)
                 for (int x = x0; x <= x1; x++)
                 {
@@ -322,7 +351,8 @@ namespace CloneZ
                         Building b = cell[i];
                         if (b.Stamp == stamp) continue;
                         b.Stamp = stamp;
-                        if (!b.Resolved && (unbudgeted || !read || Stopwatch.GetTimestamp() < deadline) && Resolve(b)) read = true;
+                        if (!b.Measured) Measure(b);
+                        if (!b.Resolved && b.Measured) WantRead(b);
                         int want = Want(b, at, y0, back, side, tan, reach, walls ? facing : 0, walls);
                         if (want == 0) continue;
                         for (int p = 0; p < 5; p++)
@@ -332,7 +362,7 @@ namespace CloneZ
                         s_Active.Add(b);
                     }
                 }
-            if (s_Rehash.Count > 0) Rehash();
+            Prewarm(at);
         }
 
         // What of building b is in the way of a survivor standing at s (plan) with their feet at y0.
@@ -378,8 +408,10 @@ namespace CloneZ
                     for (int p = 0; p < 5; p++)
                         if (now - b.Seen[p] <= RestoreDelay) mask |= 1 << p;
                 if ((mask & WallBits) != 0) mask |= UpperBit;
+                mask = Ready(b, mask);
                 if (mask != b.Applied) Apply(b, mask);
-                if (mask != 0) continue;
+                else if ((mask & WallBits) != 0) KeepDoorsHidden(b);
+                if (mask != 0 || b.HoldFrame >= 0) continue;
                 b.Active = false;
                 b.Occupied = false;
                 int last = s_Active.Count - 1;
@@ -389,26 +421,16 @@ namespace CloneZ
         }
 
         // Shows and hides a building's parts to match mask (bits 0-3: the walls facing north, east, south and west; bit 4:
-        // the upper part).
+        // the upper part). The walls themselves are baked into the NavMesh, so never changed but for their shadows: their
+        // stand-in shows them clipped and cut (ShowWalls).
         private static void Apply(Building b, int mask)
         {
             int was = b.Applied;
             b.Applied = mask;
             if (((was ^ mask) & UpperBit) != 0 && b.Upper != null)
                 b.Upper.shadowCastingMode = (mask & UpperBit) != 0 ? ShadowCastingMode.ShadowsOnly : ShadowCastingMode.On;
-            int walls = mask & WallBits;
-            if (((was ^ mask) & WallBits) == 0 || b.Walls == null) return;
-            Doors(b, walls);
-            if (walls == 0)
-            {
-                b.Walls.shadowCastingMode = ShadowCastingMode.On;
-                if (b.Overlay != null) b.Overlay.enabled = false;
-                return;
-            }
-            // The walls themselves only cast shadows now (they're baked into the NavMesh, so never changed); the
-            // stand-in shows the rest, or, when it can't be made, every wall goes.
-            b.Walls.shadowCastingMode = ShadowCastingMode.ShadowsOnly;
-            ShowOverlay(b, walls);
+            if (((was ^ mask) & WallBits) != 0 && b.Walls != null) Doors(b, mask & WallBits);
+            ShowWalls(b);
         }
         #endregion
 
