@@ -515,8 +515,8 @@ namespace CloneZ
                     if (u < 0.13f * thin) Grow(p, at, key, GroundsMix, 1f, 2.0f);
                     return;
                 case Land.Cemetery:
-                    // Inside a Full site's square the cemetery's own plots get its trees (CemeteryTrees).
-                    if (u < 0.17f * thin && (p.Lite || !plan.InSquare(at, 0f))) Grow(p, at, key, CemeteryMix, 1f, 1.6f);
+                    // Among a stoned cemetery's headstones the grid finds no room: its trees stand in its plots (CemeteryTrees).
+                    if (u < 0.17f * thin) Grow(p, at, key, CemeteryMix, 1f, 1.6f);
                     return;
                 case Land.School:
                 case Land.Grass:

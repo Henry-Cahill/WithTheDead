@@ -319,10 +319,11 @@ namespace CloneZ
                 if (room.Count > 0)
                 {
                     // The knee's second piece and the branches carry a limb a third again past its heading's reach, and a
-                    // leaning trunk has already carried the limb's foot some way towards (or away from) what's there.
+                    // leaning trunk has already carried the limb's foot some way towards (or away from) what's there; the
+                    // margin keeps the twigs out from under the eaves.
                     float a = azimuth * Mathf.Deg2Rad;
                     float carried = start.x * Mathf.Sin(a) + start.z * Mathf.Cos(a);
-                    outward = Mathf.Min(outward, (room.Reach(azimuth) - 0.3f - carried) / 1.35f);
+                    outward = Mathf.Min(outward, (room.Reach(azimuth) - 0.6f - carried) / 1.35f);
                 }
                 float len = Mathf.Min(outward / horizontal, (h * 0.98f - y) / vertical);
                 if (len < 0.4f) continue;
