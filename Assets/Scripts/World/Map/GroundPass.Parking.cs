@@ -34,9 +34,8 @@ namespace CloneZ
                 foreach (Owner o in g.Ring[b])
                     if (o.Kind == "parking" && o.Visible > 20f) PlowedEdge(g, o, RingBand(g, b), g.Site.Town.Far);
             if (!any || g.Lite) return;
-            GridOrigin(g.Site, out double ox, out double oz);
             foreach (Owner o in g.Owners)
-                if (o.Kind == "parking" && o.Visible > 20f) StallRows(g, o, ox, oz);
+                if (o.Kind == "parking" && o.Visible > 20f) StallRows(g, o, g.GridX, g.GridZ);
         }
 
         // The snow the plow pushed off the lot: a ragged band along its mapped edges (the road pass draws over it where
@@ -113,21 +112,27 @@ namespace CloneZ
                     double rowV = row * RowPeriod + (which == 0 ? StallDepth * 0.5 : RowPeriod - StallDepth * 0.5);
                     Vector2 nose = which == 0 ? -v : v;   // cars nose in from the aisle towards the row's back
                     float noseYaw = Mathf.Atan2(nose.x, nose.y) * Mathf.Rad2Deg;
-                    bool last = false;
+                    bool last = false, ahead = false;
+                    float lastSnow = 0f;
                     for (long j = j0; j <= j1 + 1; j++)
                     {
                         double rowU = j * StallWidth + StallWidth * 0.5;
                         Vector2 c = Local(rowU * u.x + rowV * v.x, rowU * u.y + rowV * v.y, ox, oz);
-                        bool fits = j <= j1 && StallFits(g, o, outline, c, u, v);
+                        bool fits = j == j0 ? j <= j1 && StallFits(g, o, outline, c, u, v) : ahead;
                         Vector2 lineAt = c - u * (StallWidth * 0.5f);
                         // A line between two stalls, or at the end of a run.
                         if ((fits || last) && g.Square.Contains(lineAt))
                             PaintLine(g, lineAt, v, yaw, paint, StallKey(o.Id, j, row * 2 + which, 1));
-                        last = fits;
-                        if (!fits || !g.Square.Contains(c)) continue;
                         long key = StallKey(o.Id, j, row * 2 + which, 0);
+                        float snow = fits ? StallSnow(key) : 0f;
+                        ahead = j + 1 <= j1 && StallFits(g, o, outline, c + u * StallWidth, u, v);
+                        float nextSnow = fits && ahead ? StallSnow(StallKey(o.Id, j + 1, row * 2 + which, 0)) : 0f;
+                        float left = last ? (lastSnow + snow) * 0.5f : 0f, right = ahead ? (snow + nextSnow) * 0.5f : 0f;
+                        last = fits;
+                        lastSnow = snow;
+                        if (!fits || !g.Square.Contains(c)) continue;
                         g.Stalls.Add(new ParkingStall { At = c, Yaw = noseYaw, Width = StallWidth, Depth = StallDepth, Lot = o.Id });
-                        PackedSnow(g, c, u, v, nose, key);
+                        PackedSnow(g, c, u, v, nose, left, snow, right);
                         if (MapStyle.Unit(key, SaltStop) < 0.6f)
                         {
                             Vector2 at = c + nose * (StallDepth * 0.5f - 0.55f);
@@ -180,48 +185,50 @@ namespace CloneZ
             }
         }
 
-        // The snow left in a stall: packed thin where a car came and went, deeper where one stood through the storm,
-        // feathered towards the aisle; drawn see-through with the snow's tone, over the lines.
-        private static void PackedSnow(Ground g, Vector2 c, Vector2 u, Vector2 v, Vector2 nose, long key)
+        // How much snow lies packed in a stall: thin where a car came and went, deeper where one stood through the storm.
+        private static float StallSnow(long key)
         {
-            float roll = MapStyle.Unit(key, SaltStall + 1);
-            float amount = roll < 0.18f ? MapStyle.Range(MapStyle.Rng(key, SaltStall + 2), 0.08f, 0.25f)
-                : roll < 0.7f ? MapStyle.Range(MapStyle.Rng(key, SaltStall + 2), 0.38f, 0.6f)
-                : MapStyle.Range(MapStyle.Rng(key, SaltStall + 2), 0.62f, 0.85f);
+            float roll = MapStyle.Unit(key, SaltStall + 1), k = MapStyle.Unit(key, SaltStall + 2);
+            return roll < 0.2f ? 0.1f + 0.15f * k : roll < 0.7f ? 0.32f + 0.2f * k : 0.52f + 0.22f * k;
+        }
+
+        // The snow left in a stall, drawn see-through with the snow's tone over the lines: the plough ran down the aisles,
+        // so it lies from the row's back (where it meets the next row's) feathering out towards the aisle, running on from
+        // stall to stall (the amounts at the stall's sides are its neighbours' means, nothing at the end of a run).
+        private static void PackedSnow(Ground g, Vector2 c, Vector2 u, Vector2 v, Vector2 nose, float left, float mid, float right)
+        {
+            const float feather = 1.6f;
             float hu = StallWidth * 0.5f, hv = StallDepth * 0.5f;
-            // Inner edges: in a little from the stall's sides, less at its back (the next row's snow meets it), more
-            // towards the aisle the plough ran down.
-            float side = 0.3f, back = 0.15f, aisle = 0.7f;
-            bool backIsPlus = Vector2.Dot(nose, v) > 0f;
-            float vLo = -hv + (backIsPlus ? aisle : back), vHi = hv - (backIsPlus ? back : aisle);
-            var outer = new Vector2[4];
-            var inner = new Vector2[4];
-            for (int k = 0; k < 4; k++)
-            {
-                float su = k == 0 || k == 3 ? -1f : 1f, sv = k < 2 ? -1f : 1f;   // anticlockwise: (-,-) (+,-) (+,+) (-,+)
-                outer[k] = c + u * (su * hu) + v * (sv * hv);
-                inner[k] = c + u * (su * (hu - side)) + v * (sv < 0f ? vLo : vHi);
-            }
+            Vector2 back = nose;   // the row's back is where the cars' noses point
+            Vector2 a = c - u * hu, b = c + u * hu;
             List<Vector3> verts = g.ToneVerts;
             List<Vector2> uvs = g.ToneUvs;
             int b0 = verts.Count;
-            for (int k = 0; k < 4; k++)
+            // Three columns (the stall's two sides and its middle) by three lines across: the back, the feather's start
+            // and the aisle's edge.
+            for (int col = 0; col < 3; col++)
             {
-                verts.Add(To3(outer[k], ToneY));
+                Vector2 at = col == 0 ? a : col == 1 ? c : b;
+                float amount = col == 0 ? left : col == 1 ? mid : right;
+                verts.Add(To3(at + back * hv, ToneY));
+                uvs.Add(PackedUv(amount));
+                verts.Add(To3(at + back * (hv - (StallDepth - feather)), ToneY));
+                uvs.Add(PackedUv(amount * 0.9f));
+                verts.Add(To3(at - back * hv, ToneY));
                 uvs.Add(PackedUv(0f));
             }
-            for (int k = 0; k < 4; k++)
-            {
-                verts.Add(To3(inner[k], ToneY));
-                uvs.Add(PackedUv(amount));
-            }
-            ToneQuad(g, b0 + 4, b0 + 5, b0 + 6, b0 + 7);
-            for (int k = 0; k < 4; k++)
-            {
-                int k1 = (k + 1) & 3;
-                ToneQuad(g, b0 + k, b0 + k1, b0 + 4 + k1, b0 + 4 + k);
-            }
+            // Corner order for ToneQuad is anticlockwise seen from above; which way round depends on the row's facing.
+            bool flip = Cross2(u, back) < 0f;
+            for (int col = 0; col < 2; col++)
+                for (int line = 0; line < 2; line++)
+                {
+                    int p00 = b0 + col * 3 + line, p10 = b0 + (col + 1) * 3 + line, p11 = p10 + 1, p01 = p00 + 1;
+                    if (flip) ToneQuad(g, p00, p10, p11, p01);
+                    else ToneQuad(g, p00, p01, p11, p10);
+                }
         }
+
+        private static float Cross2(Vector2 a, Vector2 b) => a.x * b.y - a.y * b.x;
 
         // A quad of the tone's extra geometry, its corners anticlockwise seen from above.
         private static void ToneQuad(Ground g, int a, int b, int c, int d)

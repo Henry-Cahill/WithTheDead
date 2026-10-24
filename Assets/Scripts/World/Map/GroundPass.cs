@@ -8,13 +8,14 @@ namespace CloneZ
 {
     /// <summary>
     /// The real-world map's ground, which sets the palette of the whole map: a January snow cover over everything,
-    /// cool white and gently uneven (drifts, wind-scoured crust, greyer round industry and lots), on which the land use
-    /// reads the way it would from a hill after a week of snow: farm fields striped with corn stubble or soybean rows,
-    /// pasture tufts, darker woods with leaf litter showing, reed beds, frozen mud on lots and farmyards, gravel yards
-    /// with pallets and drums, cemeteries with rows of headstones, playgrounds and ball fields, plowed parking lots with
-    /// half-buried stall lines and wheel stops, plazas, gas station forecourts; and the water: ponds and lakes frozen
-    /// grey-blue under drifted snow, with white rims and reedy or muddy banks, big rivers with a dark open channel
-    /// between shelves of ice, streams and ditches as dark threads of water between ice shelves (culverts aren't drawn).
+    /// cool white and gently uneven (drifts, wind-scoured crust, greyer round industry, shaded in the woods), on which
+    /// the land use reads the way it would from a hill after a week of snow: farm fields striped with corn stubble or
+    /// soybean rows, pasture tufts, darker woods with leaf litter showing, reed beds, frozen mud on lots and farmyards,
+    /// gravel yards with pallets and drums, cemeteries with rows of headstones, playgrounds and ball fields, plowed
+    /// parking lots (black aisles, packed snow in the stall rows round the parked cars, half-buried stall lines, wheel
+    /// stops), plazas, gas station forecourts; and the water: ponds and lakes frozen grey-blue under drifted snow, with
+    /// white rims and reedy or muddy banks, rivers running black between shelves of ice with drift ice coming down,
+    /// streams and ditches as dark threads of water between ice shelves (culverts aren't drawn).
     /// </summary>
     /// <remarks>
     /// <para>Land-use outlines overlap (the world data keeps only their outer rings, so a field's woodlot or a forest's
@@ -22,26 +23,31 @@ namespace CloneZ
     /// (<see cref="Compose"/>): where they overlap, features (parking, pitches, cemeteries...) beat cover (water,
     /// forest, fields...), which beats broad land use (residential, industrial, parks...), and within a tier the smaller
     /// area wins. Every fill is then drawn at one height, so no two fight.</para>
-    /// <para>The ground's heights above the base snow, all below the railway beds (<see cref="MapStyle.LotY"/>, 8 mm)
-    /// and the roads (<see cref="MapStyle.StreetY"/>, 12 mm, and everything the road pass draws above it):</para>
+    /// <para>The ground's heights above the base snow, all below the railway beds (<see cref="MapStyle.LotY"/>, 8 mm),
+    /// the nature pass's driveways (9 mm), the paths (10.5 mm) and the roads (<see cref="MapStyle.StreetY"/>, 12 mm, and
+    /// everything the road pass draws above it):</para>
     /// <list type="table">
     /// <item><term>0</term><description>the base snow: the walkable Ground box's top (the fixed map's far snowfield
     /// lies 20 mm lower)</description></item>
-    /// <item><term>1.5 mm (<see cref="FillY"/>)</term><description>the land-use fills: ice, forest floor, lots,
-    /// paving...</description></item>
+    /// <item><term>1.5 mm (<see cref="FillY"/>)</term><description>the land-use fills: ice or open water, forest floor,
+    /// lots, paving...</description></item>
     /// <item><term>3 mm (<see cref="DecalY"/>)</term><description>what lies on them: snow on the ice, shore rims and
-    /// banks, stubble rows, the plowed snow round a lot, stall lines, tree wells (other passes' ground decals belong
-    /// here too)</description></item>
+    /// banks, stubble rows, the plowed snow round a lot, tree wells (other passes' ground decals belong here too);
+    /// stall lines half a millimetre higher</description></item>
     /// <item><term>4 mm (<see cref="ToneY"/>)</term><description>the snow's tone: a see-through layer of drifts,
-    /// scoured crust and grime over everything below it but the paved and the frozen</description></item>
+    /// scoured crust, grime and shade over everything below it but the lots and the water, and the packed snow in the
+    /// lots' stall rows</description></item>
+    /// <item><term>4.5, 4.8 mm (<see cref="ShelfY"/>, <see cref="FloeY"/>)</term><description>open rivers: the shelf
+    /// ice along the banks; the snow on it, and the drift ice</description></item>
     /// <item><term>5, 5.5, 6 mm (<see cref="BedY"/>, <see cref="StreamIceY"/>, <see cref="StreamWaterY"/>)</term>
-    /// <description>waterways: the banks of streams and ditches, their ice shelves, the open water (and big rivers'
-    /// open channels)</description></item>
+    /// <description>waterways: the banks of streams and ditches, their ice shelves, the open water (and the thread of it
+    /// down a frozen river)</description></item>
     /// </list>
     /// <para>A streamed chunk draws exactly its own square (fills, tone and decals cut to it) and places anything that
-    /// repeats (rows, headstones, stalls) on lattices fixed to the world or to the area's whole outline, so
-    /// neighbouring chunks meet without a seam. Lite chunks and the fixed map's scenery ring get the fills, the water,
-    /// the field rows, the lots' plowed edges and the tone, but no props and no small decals.</para>
+    /// repeats (rows, headstones, stalls, drift ice) on lattices fixed to the world or to the area's whole outline, so
+    /// neighbouring chunks meet without a seam. Lite chunks and the fixed map's scenery ring get the fills, the water
+    /// with its shores and shelves, the field rows, the lots' plowed edges and the tone, but no props, no stalls and no
+    /// small decals.</para>
     /// </remarks>
     internal static partial class GroundPass
     {
@@ -51,11 +57,15 @@ namespace CloneZ
         internal const float DecalY = 0.003f;
         /// <summary>The see-through layer of the snow's tone.</summary>
         internal const float ToneY = 0.004f;
+        /// <summary>An open river's shelf ice.</summary>
+        internal const float ShelfY = 0.0045f;
+        /// <summary>The snow on an open river's shelf ice, and the drift ice.</summary>
+        internal const float FloeY = 0.0048f;
         /// <summary>The banks of streams and ditches.</summary>
         internal const float BedY = 0.005f;
-        /// <summary>The ice shelves of streams and rivers.</summary>
+        /// <summary>The ice shelves of streams.</summary>
         internal const float StreamIceY = 0.0055f;
-        /// <summary>Open water: the dark thread down a stream, a big river's open channel.</summary>
+        /// <summary>Open water: the dark thread down a stream or a frozen river.</summary>
         internal const float StreamWaterY = 0.006f;
 
         private const float FarSnowY = -0.02f;   // the fixed map's snowfield past its scenery
@@ -164,6 +174,7 @@ namespace CloneZ
         // Salts for MapStyle's hashes, one per kind of choice.
         private const int SaltWell = 0x6E11, SaltRows = 0x6A01, SaltRowGap = 0x6A02, SaltCrop = 0x6A03, SaltIcePatch = 0x6B01,
             SaltRim = 0x6B02, SaltBank = 0x6B03, SaltChannel = 0x6B04, SaltStream = 0x6B05, SaltReeds = 0x6B06,
+            SaltFloe = 0x6B07, SaltShelf = 0x6B08,
             SaltStone = 0x6C01, SaltGraves = 0x6C02, SaltPlot = 0x6C03, SaltPlay = 0x6C04, SaltPitch = 0x6C05,
             SaltYard = 0x6C06, SaltStall = 0x6D01, SaltLine = 0x6D02, SaltStop = 0x6D03, SaltLotEdge = 0x6D04,
             SaltTone = 0x6E01, SaltPlaza = 0x6E02, SaltOrchard = 0x6A04;
@@ -179,6 +190,8 @@ namespace CloneZ
             /// <summary>Where the site's middle is in the world (x, z): site-local + this is the same point in every
             /// chunk that sees it.</summary>
             public readonly Vector2 Offset;
+            /// <summary>Where the site's middle is on the state's grid (EPSG:3088 metres; see <see cref="GridOrigin"/>).</summary>
+            public readonly double GridX, GridZ;
             /// <summary>The areas cut to the square, in priority order (the last one shows where they overlap).</summary>
             public List<Owner> Owners = new List<Owner>();
             /// <summary>A fixed map's areas past its edge (the scenery ring), in the four bands round the square.</summary>
@@ -204,6 +217,7 @@ namespace CloneZ
                 Half = site.Half;
                 Square = Rect.MinMaxRect(-Half, -Half, Half, Half);
                 Offset = new Vector2(site.WorldOffset.x, site.WorldOffset.z);
+                GridOrigin(site, out GridX, out GridZ);
             }
 
             /// <summary>The point in world metres (the same in every chunk).</summary>

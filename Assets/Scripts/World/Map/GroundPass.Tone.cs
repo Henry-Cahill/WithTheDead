@@ -31,12 +31,16 @@ namespace CloneZ
             int cells = chunk ? 50 : Mathf.CeilToInt(half * 2f / 2.9f);
             float cell = half * 2f / cells;
             int row = cells + 1;
+            var owners = new Owner[row * row];
+            Raster(g.Owners, owners, half, cell, row);
+            foreach (List<Owner> band in g.Ring) Raster(band, owners, half, cell, row);
             var tone = new Vector2[row * row];
             for (int j = 0; j <= cells; j++)
                 for (int i = 0; i <= cells; i++)
                 {
                     var p = new Vector2(-half + i * cell, -half + j * cell);
-                    tone[j * row + i] = ToneAt(g, p, chunk ? 1f : Mathf.Clamp01((half - Mathf.Max(Mathf.Abs(p.x), Mathf.Abs(p.y))) / 20f));
+                    float fade = chunk ? 1f : Mathf.Clamp01((half - Mathf.Max(Mathf.Abs(p.x), Mathf.Abs(p.y))) / 20f);
+                    tone[j * row + i] = ToneAt(g, p, owners[j * row + i], fade);
                 }
             int extra = g.ToneVerts.Count;
             var verts = new List<Vector3>(row * row / 2 + extra);
@@ -88,11 +92,30 @@ namespace CloneZ
 
         private static bool Clean(Vector2 t) => Mathf.Abs(t.x - 0.5f) < 0.04f && t.y < 0.02f;
 
-        // How drifted (x: scoured 0, untouched 0.5, drifted 1) and how grimy or shaded (y) the snow is at a point, both
-        // eased to nothing (0.5, 0) by <paramref name="fade"/>; water and parking lots untouched.
-        private static Vector2 ToneAt(Ground g, Vector2 p, float fade)
+        // Which owner's ground shows at each point of the tone's grid, from the partition's trapezoids (they don't
+        // overlap, so each point gets the one it's in).
+        private static void Raster(List<Owner> owners, Owner[] into, float half, float cell, int row)
         {
-            Owner o = OwnerAnywhere(g, p);
+            foreach (Owner o in owners)
+                foreach (Trap t in o.Traps)
+                {
+                    int j0 = Mathf.Max(0, Mathf.CeilToInt((t.Y0 + half) / cell)), j1 = Mathf.Min(row - 1, Mathf.FloorToInt((t.Y1 + half) / cell));
+                    float h = t.Y1 - t.Y0;
+                    for (int j = j0; j <= j1; j++)
+                    {
+                        float y = -half + j * cell, f = h > 1e-6f ? (y - t.Y0) / h : 0f;
+                        float l = t.L0 + (t.L1 - t.L0) * f, r = t.R0 + (t.R1 - t.R0) * f;
+                        int i0 = Mathf.Max(0, Mathf.CeilToInt((l + half) / cell)), i1 = Mathf.Min(row - 1, Mathf.FloorToInt((r + half) / cell));
+                        for (int i = i0; i <= i1; i++) into[j * row + i] = o;
+                    }
+                }
+        }
+
+        // How drifted (x: scoured 0, untouched 0.5, drifted 1) and how grimy or shaded (y) the snow is at a point whose
+        // ground is <paramref name="o"/>'s, both eased to nothing (0.5, 0) by <paramref name="fade"/>; water and parking
+        // lots untouched.
+        private static Vector2 ToneAt(Ground g, Vector2 p, Owner o, float fade)
+        {
             Vector2 w = g.World(p);
             float along = Vector2.Dot(w, Downwind), across = Vector2.Dot(w, new Vector2(-Downwind.y, Downwind.x));
             float grime = 0f, calm = 1f;
@@ -116,24 +139,6 @@ namespace CloneZ
             float drift = 0.5f + calm * (1.1f * (large - 0.5f) + 0.75f * (streak - 0.5f));
             grime *= 0.5f + WorldNoise(w, 17f, SaltTone + 2);
             return new Vector2(Mathf.Lerp(0.5f, Mathf.Clamp01(drift), fade), Mathf.Clamp01(grime) * fade);
-        }
-
-        // The owner at a point of a fixed map's square or scenery ring (or a chunk's square).
-        private static Owner OwnerAnywhere(Ground g, Vector2 p)
-        {
-            if (Mathf.Abs(p.x) <= g.Half && Mathf.Abs(p.y) <= g.Half) return g.OwnerAt(p);
-            for (int b = 0; b < g.Ring.Count; b++)
-            {
-                if (!RingBand(g, b).Contains(p)) continue;
-                List<Owner> owners = g.Ring[b];
-                for (int i = owners.Count - 1; i >= 0; i--)
-                {
-                    Owner o = owners[i];
-                    if (o.Bounds.Contains(p) && Inside(o.Pts, p)) return o;
-                }
-                return null;
-            }
-            return null;
         }
     }
 }
