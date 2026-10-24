@@ -508,7 +508,7 @@ namespace CloneZ
                     | MeshColliderCookingOptions.WeldColocatedVertices | MeshColliderCookingOptions.UseFastMidphase;
                 for (int strategy = 0; strategy < 4; strategy++)
                 {
-                    string name = strategy == 0 ? "today: an object per turned box" : strategy == 1 ? "grouped: an object per angle"
+                    string name = strategy == 0 ? "an object per turned box (the procedural town's way)" : strategy == 1 ? "grouped: an object per angle (the Kentucky map's way)"
                         : strategy == 2 ? "one MeshCollider, cooked on the main thread" : "one MeshCollider, baked on a worker";
                     var root = new GameObject("colliders " + strategy);
                     root.SetActive(false);
@@ -1458,6 +1458,52 @@ namespace CloneZ
             #endregion
 
             #region Non-finite geometry
+            // The roots' children grouped by their names with the digits folded ("Walls 1234" and "Walls 98" are "Walls #"),
+            // counted, the ones with the most material slots first (at most <paramref name="max"/>).
+            private static List<SceneCounts> Groups(List<Transform> roots, int max)
+            {
+                var byName = new Dictionary<string, List<Transform>>();
+                var order = new List<string>();
+                foreach (Transform root in roots)
+                {
+                    if (root == null) continue;
+                    foreach (Transform child in root)
+                    {
+                        string key = root.name + "/" + Fold(child.name);
+                        if (!byName.TryGetValue(key, out List<Transform> list))
+                        {
+                            byName[key] = list = new List<Transform>();
+                            order.Add(key);
+                        }
+                        list.Add(child);
+                    }
+                }
+                var all = new List<SceneCounts>(order.Count);
+                foreach (string key in order) all.Add(Count(key, byName[key]));
+                all.Sort((a, b) => b.materialSlots.CompareTo(a.materialSlots));
+                if (all.Count > max) all.RemoveRange(max, all.Count - max);
+                return all;
+            }
+
+            private static string Fold(string name)
+            {
+                var sb = new StringBuilder(name.Length);
+                bool digits = false;
+                foreach (char ch in name)
+                {
+                    if (char.IsDigit(ch))
+                    {
+                        if (!digits) sb.Append('#');
+                        digits = true;
+                    }
+                    else
+                    {
+                        sb.Append(ch);
+                        digits = false;
+                    }
+                }
+                return sb.ToString();
+            }
             private readonly List<Vector3> _scanV = new List<Vector3>(1 << 14), _scanN = new List<Vector3>(1 << 14);
             private int _bakedSeen;
 

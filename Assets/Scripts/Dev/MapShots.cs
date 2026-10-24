@@ -120,6 +120,9 @@ namespace CloneZ
             public string dataBuildingKinds, dataAreaKinds, dataLineKinds;
             public SceneCounts total = new SceneCounts();
             public List<SceneCounts> roots = new List<SceneCounts>();
+            /// <summary>The roots' children grouped by name (digits and ids folded), the ones with the most material slots first:
+            /// which part of the map makes the renderers and draw calls.</summary>
+            public List<SceneCounts> groups = new List<SceneCounts>();
             public LogReport log = new LogReport();
         }
 
@@ -800,6 +803,7 @@ namespace CloneZ
                 foreach (Transform t in roots) _r.square.roots.Add(Count(t.name, new[] { t }));
                 _r.square.ceilingRenderers = CeilingVisibility.Count;
                 ScanNonFinite("the square", roots);
+                _r.square.groups = Groups(roots, 16);
                 SceneCounts c = _r.square.total;
                 Note("square: " + F0(c.gameObjects) + " objects, " + F0(c.renderers) + " renderers, " + F0(c.vertices) + " vertices, "
                     + F0(c.triangles) + " triangles, " + c.distinctMaterials + " materials, " + c.lights + " lights, " + F0(c.colliders) + " colliders");
@@ -2635,6 +2639,14 @@ namespace CloneZ
                     CountsHeader(md, "root");
                     foreach (SceneCounts c in sq.roots) CountsRow(md, c.name, c);
                     CountsRow(md, "**all**", sq.total);
+                    md.Append('\n');
+                }
+                if (sq.groups.Count > 0)
+                {
+                    md.Append("Where the renderers come from: the roots' children grouped by name (digits folded to #), most material slots ")
+                        .Append("(about one draw call each) first:\n\n");
+                    CountsHeader(md, "group");
+                    foreach (SceneCounts c in sq.groups) CountsRow(md, Esc(c.name), c);
                     md.Append('\n');
                 }
                 NonFiniteMarkdown(md);
