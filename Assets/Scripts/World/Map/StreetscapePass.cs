@@ -13,9 +13,13 @@ namespace CloneZ
     /// newspaper boxes, vending machines, bollards, gates and bus stops (<see cref="StreetFurniture"/>); flagpoles, memorials
     /// and historical markers, water towers and masts (<see cref="Landmarks"/>); fences, rock fences, walls, hedges and
     /// guard rails (<see cref="BarrierPass"/>); and litter in the parks. From the format-2 data where it's mapped (power,
-    /// nodes, barriers), from heuristics where it's thin. A Lite site gets only the landmarks seen from afar: transmission
-    /// towers, water towers and masts. Everything claims its spot in the occupancy grid; nothing here draws from the town's
-    /// shared random stream (every choice comes from a feature's id or a world-anchored spot, so streamed pieces agree).
+    /// nodes, barriers), from heuristics where it's thin. Roadside things stand where the roads drew their roadside
+    /// (<see cref="RoadPass.RoadsideOffset"/>), never on a carriageway or a driveway, and no wire passes over a roof. A Lite
+    /// site gets only what's seen from afar: transmission towers, water towers, masts, and each fence or wall as one plain
+    /// shape; past a fixed map's edge the poles carry only their crossarm and primaries, the fences are plain. Every step
+    /// yields when a streamed piece's time slice is used (<see cref="Site.StepDue"/>). Everything claims its spot in the
+    /// occupancy grid; nothing here draws from the town's shared random stream (every choice comes from a feature's id or a
+    /// world-anchored spot, so streamed pieces agree).
     /// </summary>
     internal static partial class StreetscapePass
     {
