@@ -41,6 +41,15 @@ namespace CloneZ
             if (p.Arch == Arch.Trailer) Hitch(j);
         }
 
+        // What a far building keeps of what makes it what it is: its silhouette (a church's steeple, a courthouse's
+        // cupola, a big chimney), drawn plainly.
+        private static void LiteSpecial(Job j)
+        {
+            Plan p = j.P;
+            if (p.Steeple || p.Belfry) Steeple(j);
+            if (p.Cupola) Cupola(j);
+        }
+
         #region Chimneys
         private static void Chimneys(Job j)
         {
@@ -139,17 +148,32 @@ namespace CloneZ
         #endregion
 
         #region Steeples and cupolas
+        // The main roof block's axes and the height of its top: the first block of a pitched roof (x along its ridge), or
+        // the frame's own over a flat roof. Which end of it, if any, a wing joins.
+        private static Axes MainAxes(Job j, out float top, out int attached)
+        {
+            if (j.Parts != null && j.Parts.Count > 0)
+            {
+                RoofPart main = j.Parts[0];
+                top = main.Ridge;
+                attached = AttachedSide(main);
+                return AxesOf(j.Sh, main);
+            }
+            Shape sh = j.Sh;
+            top = j.P.WallHeight;
+            attached = -1;
+            return new Axes { X = sh.U, Y = sh.V, O = sh.O, X0 = -sh.HalfL, X1 = sh.HalfL, Y0 = -sh.HalfW, Y1 = sh.HalfW };
+        }
+
         // A church's tower over its front end, through the roof to a louvred belfry and a spire; or, on a small church, a
-        // belfry on the ridge.
+        // belfry on the ridge. A far one is drawn plainly: tower, belfry and spire.
         private static void Steeple(Job j)
         {
             Plan p = j.P;
-            if (j.Parts == null) return;
-            RoofPart main = j.Parts[0];
-            Axes ax = AxesOf(j.Sh, main);
+            Axes ax = MainAxes(j, out float ridge, out int attached);
             Vector2 front = j.DoorEdge >= 0 ? j.Out[j.DoorEdge] : p.RoadDir;
             int end = Vector2.Dot(-ax.X, front) >= Vector2.Dot(ax.X, front) ? 0 : 1;
-            if (AttachedSide(main) == end) end = 1 - end;
+            if (attached == end) end = 1 - end;
             float span = ax.Y1 - ax.Y0, yc = (ax.Y0 + ax.Y1) * 0.5f;
             float inward = end == 0 ? 1f : -1f;
             float face = end == 0 ? ax.X0 : ax.X1;
@@ -162,81 +186,104 @@ namespace CloneZ
             Surf dark = DecorPalette.Matte(new Color(0.10f, 0.10f, 0.11f));
             float t, baseY, bellY;
             Vector2 at;
-            if (p.Steeple)
+            bool tower = p.Steeple;
+            if (tower)
             {
                 t = Mathf.Clamp(span * 0.34f, 2.4f, 5f);
-                at = Point(ax, face + inward * (t * 0.5f - 0.25f), yc);
+                // On the front end's middle, stepped in until it stands on the footprint (an outline that doesn't fill its
+                // frame might leave the end's middle outside).
+                float x = face + inward * (t * 0.5f - 0.25f);
+                at = Point(ax, x, yc);
+                for (int k = 0; k < 4 && !MapGeometry.Contains(j.F.Pts, at); k++)
+                {
+                    x += inward * t * 0.5f;
+                    at = Point(ax, x, yc);
+                }
                 baseY = GroundStorey;
-                bellY = main.Ridge + Mathf.Max(1.0f, t * 0.45f);
+                bellY = Mathf.Max(ridge, p.WallHeight + 0.6f) + Mathf.Max(1.0f, t * 0.45f);
                 m.Box(To3(at, (baseY + bellY) * 0.5f), new Vector3(t, bellY - baseY, t), yaw, body);
-                // Corner quoins and a band at the belfry's foot.
-                m.Box(To3(at, bellY + 0.08f), new Vector3(t + 0.2f, 0.16f, t + 0.2f), yaw, white);
+                if (!j.Lite)
+                {
+                    // A band at the belfry's foot, and the tower's door-height lancet over the entry.
+                    m.Box(To3(at, bellY + 0.08f), new Vector3(t + 0.2f, 0.16f, t + 0.2f), yaw, white);
+                    Vector3 o = end == 0 ? To3(-ax.X, 0f) : To3(ax.X, 0f);
+                    m.Upright(To3(at, (baseY + bellY) * 0.5f + 0.8f) + o * (t * 0.5f + 0.01f), o, t * 0.22f, Mathf.Min(2.4f, (bellY - baseY) * 0.35f), dark);
+                }
             }
             else
             {
+                if (j.Parts == null) return;   // a belfry stands on a ridge
                 t = Mathf.Clamp(span * 0.22f, 1.4f, 2.2f);
                 at = Point(ax, face + inward * (t * 0.5f + 0.6f), yc);
-                baseY = main.Ridge - 0.9f;
-                bellY = main.Ridge + 0.2f;
+                baseY = ridge - 0.9f;
+                bellY = ridge + 0.2f;
                 m.Box(To3(at, (baseY + bellY) * 0.5f), new Vector3(t, bellY - baseY, t), yaw, frame ? white : body);
             }
             // The belfry: open louvred arches on all four sides under a cornice.
-            float belfry = t * (p.Steeple ? 0.75f : 0.8f), bh = Mathf.Clamp(t * 0.7f, 1.3f, 2.6f);
+            float belfry = t * (tower ? 0.75f : 0.8f), bh = Mathf.Clamp(t * 0.7f, 1.3f, 2.6f);
             float bTop = bellY + 0.16f + bh;
             m.Box(To3(at, (bellY + 0.16f + bTop) * 0.5f), new Vector3(belfry, bh, belfry), yaw, frame ? white : body);
-            Quaternion q = Quaternion.Euler(0f, yaw, 0f);
-            for (int s = 0; s < 4; s++)
+            if (!j.Lite)
             {
-                Vector3 n = Quaternion.Euler(0f, 90f * s, 0f) * (q * Vector3.right);
-                Vector3 c = To3(at, (bellY + 0.16f + bTop) * 0.5f) + n * (belfry * 0.5f + 0.01f);
-                m.Upright(c, n, belfry * 0.5f, bh * 0.7f, dark);
-                for (int k = 1; k < 4; k++) m.Upright(c + n * 0.01f + Vector3.up * (bh * 0.7f * (k / 4f - 0.5f)), n, belfry * 0.5f, 0.05f, white);
+                Quaternion q = Quaternion.Euler(0f, yaw, 0f);
+                for (int s = 0; s < 4; s++)
+                {
+                    Vector3 n = Quaternion.Euler(0f, 90f * s, 0f) * (q * Vector3.right);
+                    Vector3 c = To3(at, (bellY + 0.16f + bTop) * 0.5f) + n * (belfry * 0.5f + 0.01f);
+                    m.Upright(c, n, belfry * 0.5f, bh * 0.7f, dark);
+                    for (int k = 1; k < 4; k++) m.Upright(c + n * 0.01f + Vector3.up * (bh * 0.7f * (k / 4f - 0.5f)), n, belfry * 0.5f, 0.05f, white);
+                }
+                m.Box(To3(at, bTop + 0.1f), new Vector3(belfry + 0.3f, 0.2f, belfry + 0.3f), yaw, white);
             }
-            m.Box(To3(at, bTop + 0.1f), new Vector3(belfry + 0.3f, 0.2f, belfry + 0.3f), yaw, white);
-            float spireH = p.Steeple ? t * Range(j.Rng, 2.2f, 3.2f) : t * 1.6f;
-            m.Cylinder(To3(at, bTop + 0.2f), belfry * 0.62f, spireH, 8, spire, Quaternion.Euler(0f, yaw + 22.5f, 0f), 0.02f, false);
+            float spireH = tower ? t * Mathf.Lerp(2.2f, 3.2f, MapStyle.Unit(j.Id, SaltDetail + 3)) : t * 1.6f;
+            m.Cylinder(To3(at, bTop + 0.2f), belfry * 0.62f, spireH, j.Lite ? 4 : 8, spire, Quaternion.Euler(0f, yaw + (j.Lite ? 45f : 22.5f), 0f), 0.02f, false);
             float tip = bTop + 0.2f + spireH;
-            Surf gilt = DecorPalette.Metal(new Color(0.72f, 0.62f, 0.32f));
-            m.Box(To3(at, tip + 0.45f), new Vector3(0.07f, 0.9f, 0.07f), yaw, gilt);
-            m.Box(To3(at, tip + 0.6f), new Vector3(0.45f, 0.07f, 0.07f), yaw, gilt);
+            if (!j.Lite)
+            {
+                Surf gilt = DecorPalette.Metal(new Color(0.72f, 0.62f, 0.32f));
+                m.Box(To3(at, tip + 0.45f), new Vector3(0.07f, 0.9f, 0.07f), yaw, gilt);
+                m.Box(To3(at, tip + 0.6f), new Vector3(0.45f, 0.07f, 0.07f), yaw, gilt);
+            }
             j.Top = Mathf.Max(j.Top, tip + 0.9f);
         }
 
         private static Vector2 Point(Axes ax, float x, float y) => ax.O + ax.X * x + ax.Y * y;
 
-        // The courthouse's cupola: a square base through the ridge, a clock on each face, an octagonal drum and a dome.
+        // The courthouse's cupola: a square base through the ridge (or on the flat roof), a clock on each face, an
+        // octagonal drum and a dome.
         private static void Cupola(Job j)
         {
-            if (j.Parts == null) return;
-            RoofPart main = j.Parts[0];
-            Axes ax = AxesOf(j.Sh, main);
+            Axes ax = MainAxes(j, out float ridge, out _);
+            bool flat = j.Parts == null;
             Vector2 at = Point(ax, (ax.X0 + ax.X1) * 0.5f, (ax.Y0 + ax.Y1) * 0.5f);
             float c = Mathf.Clamp((ax.Y1 - ax.Y0) * 0.22f, 2.8f, 4.6f);
             float yaw = -Mathf.Atan2(ax.X.y, ax.X.x) * Mathf.Rad2Deg;
             RaidMesh m = j.Upper;
             Surf white = DecorPalette.Matte(new Color(0.93f, 0.92f, 0.88f));
             Surf dark = DecorPalette.Matte(new Color(0.08f, 0.08f, 0.09f));
-            float y0 = main.Ridge - 1.2f, y1 = main.Ridge + 2.0f;
+            float y0 = flat ? j.P.Eave : ridge - 1.2f, y1 = (flat ? j.P.WallHeight + 1.2f : ridge) + 2.0f;
             m.Box(To3(at, (y0 + y1) * 0.5f), new Vector3(c, y1 - y0, c), yaw, white);
             m.Box(To3(at, y1 + 0.1f), new Vector3(c + 0.3f, 0.2f, c + 0.3f), yaw, white);
-            Quaternion q = Quaternion.Euler(0f, yaw, 0f);
-            float clockY = main.Ridge + 0.9f;
-            for (int s = 0; s < 4; s++)
+            if (!j.Lite)
             {
-                Vector3 n = Quaternion.Euler(0f, 90f * s, 0f) * (q * Vector3.right);
-                Vector3 face = To3(at, clockY) + n * (c * 0.5f);
-                m.Cylinder(face, c * 0.3f, 0.05f, 12, DecorPalette.Matte(new Color(0.96f, 0.95f, 0.90f)), Quaternion.FromToRotation(Vector3.up, n));
-                m.Upright(face + n * 0.06f + Vector3.up * c * 0.08f, n, 0.05f, c * 0.16f, dark);
-                m.Upright(face + n * 0.06f + Vector3.Cross(Vector3.up, n) * c * 0.06f, n, c * 0.12f, 0.05f, dark);
+                Quaternion q = Quaternion.Euler(0f, yaw, 0f);
+                float clockY = y1 - 1.1f;
+                for (int s = 0; s < 4; s++)
+                {
+                    Vector3 n = Quaternion.Euler(0f, 90f * s, 0f) * (q * Vector3.right);
+                    Vector3 face = To3(at, clockY) + n * (c * 0.5f);
+                    m.Cylinder(face, c * 0.3f, 0.05f, 12, DecorPalette.Matte(new Color(0.96f, 0.95f, 0.90f)), Quaternion.FromToRotation(Vector3.up, n));
+                    m.Upright(face + n * 0.06f + Vector3.up * c * 0.08f, n, 0.05f, c * 0.16f, dark);
+                    m.Upright(face + n * 0.06f + Vector3.Cross(Vector3.up, n) * c * 0.06f, n, c * 0.12f, 0.05f, dark);
+                }
             }
             float r = c * 0.36f;
-            m.Cylinder(To3(at, y1 + 0.2f), r, 1.5f, 8, white, Quaternion.Euler(0f, yaw + 22.5f, 0f));
+            m.Cylinder(To3(at, y1 + 0.2f), r, 1.5f, j.Lite ? 6 : 8, white, Quaternion.Euler(0f, yaw + 22.5f, 0f));
             Surf dome = j.P.Covering == RoofCover.Metal ? RoofSurf(RoofCover.Metal, j.P.CoverTone) : DecorPalette.Metal(new Color(0.30f, 0.48f, 0.40f));
-            m.Ellipsoid(To3(at, y1 + 1.7f), new Vector3(r * 2.1f, r * 1.9f, r * 2.1f), dome, 10, 6);
-            m.Box(To3(at, y1 + 1.7f + r * 0.95f + 0.4f), new Vector3(0.08f, 0.8f, 0.08f), yaw, DecorPalette.Metal(new Color(0.72f, 0.62f, 0.32f)));
+            m.Ellipsoid(To3(at, y1 + 1.7f), new Vector3(r * 2.1f, r * 1.9f, r * 2.1f), dome, j.Lite ? 6 : 10, j.Lite ? 4 : 6);
+            if (!j.Lite) m.Box(To3(at, y1 + 1.7f + r * 0.95f + 0.4f), new Vector3(0.08f, 0.8f, 0.08f), yaw, DecorPalette.Metal(new Color(0.72f, 0.62f, 0.32f)));
             j.Top = Mathf.Max(j.Top, y1 + 1.7f + r + 0.9f);
         }
-
         // A raised vent along the ridge, capped.
         private static void RidgeVent(Job j)
         {
@@ -284,7 +331,7 @@ namespace CloneZ
             float len = j.Len[e], depth = 1.6f, y = j.FloorY(1);
             Vector2 mid = j.At(e, len * 0.5f) + j.Out[e] * (depth * 0.5f);
             float yaw = j.Yaw(e);
-            j.Upper.Box(To3(mid, y - 0.1f), new Vector3(len, 0.2f, depth), yaw, DecorMaterials.Concrete);
+            j.Upper.Box(To3(mid, y - 0.1f), new Vector3(len, 0.2f, depth), yaw, ConcreteSurf);
             Surf steel = DecorPalette.Metal(new Color(0.38f, 0.40f, 0.42f));
             Vector2 rail = j.At(e, len * 0.5f) + j.Out[e] * (depth - 0.05f);
             j.Upper.Box(To3(rail, y + 0.95f), new Vector3(len, 0.06f, 0.06f), yaw, steel);
@@ -316,12 +363,132 @@ namespace CloneZ
         #endregion
 
         #region Silos, canopies, ruins
+        // A parking deck: a concrete slab a floor, open between its spandrels (the low walls round each deck's edge) on
+        // columns, a stair tower at the corner nearest the road with its lamp; the top deck under the snow, lamp posts on it.
+        // The ground floor is open to walk into (columns and a curb have colliders) and out of the weather; the decks
+        // above are the upper part, lifted with the cutaway.
+        private static void ParkingDeck(Job j)
+        {
+            Plan p = j.P;
+            Footprint f = j.F;
+            Shape sh = j.Sh;
+            j.Shell = j.Site.Shell(f, j.Scenery && !j.Edge);
+            int decks = Mathf.Max(1, p.Storeys - 1) + 1;   // the floors over the ground one, the top deck last
+            float h = p.Storey, spandrel = 1.05f, slab = 0.3f;
+            j.Shell.WallTop = 0.4f;
+            RaidMesh up = j.Upper;
+            bool snowy = p.Snow != SnowCover.Bare;
+            Surf concrete = j.WallS;
+            Surf inner = DecorPalette.Matte(ConcreteTones[Mathf.Clamp(p.WallTone, 0, ConcreteTones.Length - 1)] * 0.62f);
+            for (int k = 1; k < decks; k++)
+            {
+                float y = k * h;
+                bool top = k == decks - 1;
+                Deck(up, f, j.Tris, y, top ? (snowy ? RoofSnow : AsphaltSurf) : inner);
+                for (int i = 0; i < j.N; i++)
+                {
+                    float len = j.Len[i];
+                    if (len < 0.1f) continue;
+                    WallBox(j, up, j.A[i], j.Dir[i], -j.Out[i] * (Thick * 0.5f), -j.Run0[i], len + j.Run1[i], y - slab, y + spandrel, j.Yaw(i), concrete, false);
+                    if (!j.Lite && top) OnWallBox(j, up, i, len * 0.5f, y + spandrel + 0.04f, len + 0.08f, 0.08f, Thick + 0.1f, CopingSurf(p), -Thick - 0.05f);
+                }
+            }
+            float roof = (decks - 1) * h;
+            j.Top = roof + spandrel;
+            // The columns: at the corners and every seven metres or so round the outline, up through every floor.
+            Surf column = concrete;
+            for (int i = 0; i < j.N; i++)
+            {
+                float len = j.Len[i];
+                if (len < 1f) continue;
+                int n = Mathf.Max(1, Mathf.RoundToInt(len / 7.5f));
+                float yaw = j.Yaw(i);
+                RaidMesh walls = j.Facing(i);
+                for (int c = 0; c < n; c++)
+                {
+                    float s = len * c / n + 0.3f;
+                    Vector2 at = j.At(i, s) - j.Out[i] * 0.3f;
+                    var size = new Vector3(0.5f, h - slab, 0.5f);
+                    Vector3 centre = To3(at, (h - slab) * 0.5f);
+                    walls.Box(centre, size, yaw, column);
+                    Collider(j, centre, size, yaw);
+                    if (j.Lite) continue;
+                    for (int k = 1; k < decks - 1; k++)
+                        up.Box(To3(at, k * h + spandrel + (h - slab - spandrel) * 0.5f), new Vector3(0.45f, h - slab - spandrel, 0.45f), yaw, column);
+                }
+                // A curb round the ground floor, open where the drive comes in (on the front).
+                if (i == p.Front && len > 7f)
+                {
+                    float gap = Mathf.Min(7f, len * 0.4f), mid = len * 0.5f;
+                    CurbRun(j, i, 0.3f, mid - gap * 0.5f);
+                    CurbRun(j, i, mid + gap * 0.5f, len - 0.3f);
+                }
+                else CurbRun(j, i, 0.3f, len - 0.3f);
+            }
+            StairTower(j, decks, h, roof, spandrel, snowy);
+            if (!j.Lite)
+            {
+                // Lamp posts on the top deck.
+                Surf pole = DecorPalette.Metal(new Color(0.30f, 0.31f, 0.32f));
+                int lamps = Mathf.Clamp(Mathf.RoundToInt(f.Size / 700f), 1, 6);
+                for (int k = 0; k < lamps; k++)
+                {
+                    var c = new Vector2(Mathf.Lerp(-sh.HalfL * 0.6f, sh.HalfL * 0.6f, lamps == 1 ? 0.5f : k / (float)(lamps - 1)), 0f);
+                    Vector2 at = sh.World(c);
+                    if (!MapGeometry.Contains(f.Pts, at)) continue;
+                    up.Cylinder(To3(at, roof), 0.08f, 5.5f, 6, pole);
+                    up.Box(To3(at, roof + 5.5f), new Vector3(0.9f, 0.18f, 0.35f), sh.Yaw, pole);
+                    up.Box(To3(at, roof + 5.4f), new Vector3(0.7f, 0.04f, 0.25f), sh.Yaw, LampGlobe(0));
+                }
+                // The ground floor's slab, under its deck.
+                Vector3 middle = To3(f.Middle, 0f);
+                Deck(j.Site.Town.Out.Flat(middle), f, j.Tris, 0.02f, AsphaltSurf);
+            }
+            if (!j.Scenery) Rows(j, true);
+        }
+
+        private static void CurbRun(Job j, int i, float s0, float s1)
+        {
+            if (s1 - s0 < 0.3f) return;
+            WallBox(j, j.Facing(i), j.A[i], j.Dir[i], -j.Out[i] * (Thick * 0.5f), s0, s1, 0f, 0.35f, j.Yaw(i), j.WallS, true);
+        }
+
+        // The stair tower of a parking deck: at the corner nearest the road, up past the top deck, a door at its foot.
+        private static void StairTower(Job j, int decks, float h, float roof, float spandrel, bool snowy)
+        {
+            Shape sh = j.Sh;
+            Plan p = j.P;
+            Vector2 road = p.RoadDir == Vector2.zero ? -sh.V : p.RoadDir;
+            float su = Vector2.Dot(road, sh.U) >= 0f ? 1f : -1f, sv = Vector2.Dot(road, sh.V) >= 0f ? 1f : -1f;
+            const float T = 3.6f;
+            var c = new Vector2(su * (sh.HalfL - T * 0.5f - 0.3f), sv * (sh.HalfW - T * 0.5f - 0.3f));
+            if (!Fits(j, c, T * 0.5f, T * 0.5f, 0.05f)) return;
+            Vector2 at = sh.World(c);
+            float top = roof + 3.2f;
+            float g = Mathf.Min(GroundStorey, top);
+            RaidMesh walls = j.Shell.WallsFacing(sh.V * sv);
+            var low = new Vector3(T, g, T);
+            walls.Box(To3(at, g * 0.5f), low, sh.Yaw, j.WallS);
+            Collider(j, To3(at, g * 0.5f), low, sh.Yaw);
+            j.Upper.Box(To3(at, (g + top) * 0.5f), new Vector3(T, top - g, T), sh.Yaw, j.WallS);
+            j.Upper.Box(To3(at, top + 0.06f), new Vector3(T + 0.2f, 0.12f, T + 0.2f), sh.Yaw, CopingSurf(p));
+            if (snowy) j.Upper.Box(To3(at, top + 0.16f), new Vector3(T - 0.1f, 0.08f, T - 0.1f), sh.Yaw, RoofSnow);
+            if (!j.Lite)
+            {
+                // Its glazed stair window up the side facing the road, and a door at the foot.
+                Vector3 o = To3(sh.V * sv, 0f);
+                j.Upper.Upright(To3(at, (GroundStorey + top) * 0.5f) + o * (T * 0.5f + 0.01f), o, 0.9f, top - GroundStorey - 1f, j.GlassS);
+                walls.Upright(To3(at, 1.05f) + o * (T * 0.5f + 0.01f), o, 1.0f, 2.1f, DecorPalette.Matte(new Color(0.42f, 0.44f, 0.46f)));
+            }
+            j.Top = Mathf.Max(j.Top, top + 0.2f);
+        }
+
         // A grain bin (corrugated steel under a cone) or a stave silo under a dome, with a ladder up its side.
         private static void SiloBuilding(Job j)
         {
             Plan p = j.P;
             Footprint f = j.F;
-            j.Shell = j.Site.Shell(f, j.Scenery);
+            j.Shell = j.Site.Shell(f, j.Scenery && !j.Edge);
             float r = Mathf.Sqrt(f.Size / Mathf.PI);
             Vector2 at = f.Middle;
             float h = p.Eave;
@@ -360,7 +527,6 @@ namespace CloneZ
             }
             if (j.Solid) Collider(j, To3(at, h * 0.5f), new Vector3(r * 1.5f, h, r * 1.5f), j.Sh.Yaw);
             if (!j.Scenery) Rows(j, false);
-            j.Cost += j.Lite ? 2f : 6f;
         }
 
         // A canopy: a gas station's over its pump islands, or a carport's or a shelter's roof on posts.
@@ -368,7 +534,7 @@ namespace CloneZ
         {
             Plan p = j.P;
             Shape sh = j.Sh;
-            j.Shell = j.Site.Shell(j.F, j.Scenery);
+            j.Shell = j.Site.Shell(j.F, j.Scenery && !j.Edge);
             j.Shell.WallTop = 0f;
             float yaw = sh.Yaw;
             System.Random rng = MapStyle.Rng(j.F.Data.id, SaltCanopy);
@@ -441,14 +607,13 @@ namespace CloneZ
                 foreach (RoofPart part in j.Parts) PartRoof(j, part);
             }
             if (!j.Scenery) Rows(j, false);
-            j.Cost += j.Lite ? 2f : 8f;
         }
 
         // Broken walls of brick or stone, stepped and gapped, rubble heaped inside, no roof.
         private static void RuinBuilding(Job j)
         {
             Plan p = j.P;
-            j.Shell = j.Site.Shell(j.F, j.Scenery);
+            j.Shell = j.Site.Shell(j.F, j.Scenery && !j.Edge);
             System.Random rng = MapStyle.Rng(j.F.Data.id, SaltRuin);
             float highest = 0f;
             for (int i = 0; i < j.N; i++)
@@ -495,7 +660,6 @@ namespace CloneZ
                 }
             }
             if (!j.Scenery) Inside(j);
-            j.Cost += 6f;
         }
         #endregion
     }

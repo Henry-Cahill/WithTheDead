@@ -7,21 +7,23 @@ namespace CloneZ
 {
     /// <summary>
     /// A street light that still burns: the fixture at the foot of its pole (carrying the pole's collider, so the pole never
-    /// blocks the reach for its own switch) with its glowing lens up top and, for most, a real spot light. The lamps keep no
-    /// Update of their own: one driver (<see cref="StreetLampDriver"/>) works them all, a few times a second lighting only
-    /// the <see cref="MaxLit"/> burning lamps nearest the survivor (the nearest within <see cref="ShadowReach"/> with shadows)
-    /// and putting every lamp out by day (photocells); each frame it flickers the failing ones it lights, and blinks the
-    /// map's flashing signal lenses and aviation beacons (<see cref="Blinkers"/>). The survivor can switch a lamp, steady or
-    /// set off its flicker, or switch the block's lamps; a lamp's state is saved under its place
+    /// blocks the reach for its own switch) with its glowing lens up top. The lamps keep no Update and, in play, no lights
+    /// of their own: one driver (<see cref="StreetLampDriver"/>) works them all, a few times a second lending its pool of
+    /// <see cref="MaxLit"/> spot lights to the burning lamps nearest the survivor (the nearest within
+    /// <see cref="ShadowReach"/> with shadows), however many lamps the streamed pieces hold, and putting every lamp out by day
+    /// (photocells); each frame it flickers the failing ones it lights, and blinks the map's flashing signal lenses and
+    /// aviation beacons (<see cref="Blinkers"/>). A map built in the editor (previews, the map harness) has no driver
+    /// running, so a few of its lamps (the builder's cap) get a light of their own instead. The survivor can switch a lamp,
+    /// steady or set off its flicker, or switch the block's lamps; a lamp's state is saved under its place
     /// (<c>"streetlamp@x,z"</c>: bit 0 on, bit 1 flickering) and remembered when a streamed piece is built again.
     /// </summary>
     [DisallowMultipleComponent]
     internal sealed class StreetLamp : Interactable
     {
-        /// <summary>Real lights burning at once, the nearest burning lamps to the survivor.</summary>
-        public const int MaxLit = 10;
+        /// <summary>Real lights burning at once: the driver's pool, lent to the nearest burning lamps to the survivor.</summary>
+        public const int MaxLit = 8;
         /// <summary>Lamps farther than this from the survivor only glow.</summary>
-        public const float LightReach = 70f;
+        public const float LightReach = 64f;
         /// <summary>The nearest lit lamp within this casts shadows.</summary>
         public const float ShadowReach = 22f;
         private const float BlockRadius = 30f;   // how far "the block's lamps" reach
@@ -36,10 +38,13 @@ namespace CloneZ
         private static Material s_DeadLens;
         private static readonly Dictionary<int, Mesh> s_LensMeshes = new Dictionary<int, Mesh>();
 
-        private Light _light;
+        // An edit-mode build's own light (null in play), or the pool's light lent to the lamp while it's among the nearest.
+        private Light _light, _lent;
+        private Transform _head;
         private Renderer _lens;
         private Material[] _states;   // the lens off, dim, on
-        private float _intensity, _phase, _level = 1f;
+        private Color _colour;
+        private float _intensity, _range, _angle, _phase, _level = 1f;
         private bool _on = true, _flicker, _ready, _lit;
         private int _shown = -1;
         private string _key;
@@ -50,8 +55,9 @@ namespace CloneZ
 
         /// <summary>Puts a burning lamp's fixture at the foot of its pole (<paramref name="foot"/>, the pole
         /// <paramref name="pole"/> in size, its collider), its lens at <paramref name="lens"/> turned <paramref name="yaw"/>
-        /// degrees (all in the site's coordinates, under <paramref name="town"/>'s world) and, with <paramref name="light"/>,
-        /// a spot light shining down from it (counted in the town's lights).</summary>
+        /// degrees (all in the site's coordinates, under <paramref name="town"/>'s world), and the spot light it shines
+        /// with when lit: lent by the driver in play; with <paramref name="light"/> in an editor build, its own (counted in
+        /// the town's lights).</summary>
         internal static StreetLamp Attach(RaidTown town, Vector3 foot, Vector3 pole, Vector3 lens, float yaw, Lens shape, float size,
             Color colour, float range, float intensity, float spotAngle, bool light, bool flicker)
         {
@@ -62,7 +68,8 @@ namespace CloneZ
             box.center = new Vector3(0f, pole.y * 0.5f, 0f);
             box.size = pole;
 
-            // The lens and the light share one object, pitched to look down: the lens meshes are made lying that way.
+            // The lens (and an editor build's light) on one object, pitched to look down: the lens meshes are made lying
+            // that way.
             var head = new GameObject("Lens");
             head.transform.SetParent(go.transform, false);
             head.transform.localPosition = lens - foot;
@@ -77,36 +84,55 @@ namespace CloneZ
             r.reflectionProbeUsage = ReflectionProbeUsage.Off;
 
             Light spot = null;
-            if (light)
+            if (light && !Application.isPlaying)
             {
                 spot = head.AddComponent<Light>();
-                spot.type = LightType.Spot;
-                spot.color = colour;
-                spot.range = range;
-                spot.intensity = intensity;
-                spot.spotAngle = spotAngle;
-                spot.innerSpotAngle = spotAngle * 0.45f;
-                spot.shadows = LightShadows.None;
-                spot.shadowBias = 0.05f;
-                spot.shadowNormalBias = 0.4f;
-                spot.shadowNearPlane = 0.2f;
-                UniversalAdditionalLightData data = spot.GetUniversalAdditionalLightData();
-                data.usePipelineSettings = false;
-                data.renderingLayers = uint.MaxValue;   // includes the survivor's layer (see VisionRig)
-                if (Application.isPlaying)
-                    data.additionalLightsShadowResolutionTier = UniversalAdditionalLightData.AdditionalLightsShadowResolutionTierLow;
+                Setup(spot);
+                Shine(spot, colour, range, intensity, spotAngle);
                 town.LightCount++;
             }
 
             StreetLamp lamp = go.AddComponent<StreetLamp>();
             lamp._light = spot;
+            lamp._head = head.transform;
             lamp._lens = r;
             lamp._states = states;
+            lamp._colour = colour;
             lamp._intensity = intensity;
+            lamp._range = range;
+            lamp._angle = spotAngle;
             lamp._flicker = flicker;
             lamp._phase = Mathf.Repeat(foot.x * 0.37f + foot.z * 0.61f, 100f);
             return lamp;
         }
+
+        // What every street light shares: a spot, no shadows until the driver says, on every rendering layer (the
+        // survivor's too, see VisionRig).
+        private static void Setup(Light spot)
+        {
+            spot.type = LightType.Spot;
+            spot.shadows = LightShadows.None;
+            spot.shadowBias = 0.05f;
+            spot.shadowNormalBias = 0.4f;
+            spot.shadowNearPlane = 0.2f;
+            UniversalAdditionalLightData data = spot.GetUniversalAdditionalLightData();
+            data.usePipelineSettings = false;
+            data.renderingLayers = uint.MaxValue;
+            if (Application.isPlaying)
+                data.additionalLightsShadowResolutionTier = UniversalAdditionalLightData.AdditionalLightsShadowResolutionTierLow;
+        }
+
+        private static void Shine(Light spot, Color colour, float range, float intensity, float angle)
+        {
+            spot.color = colour;
+            spot.range = range;
+            spot.intensity = intensity;
+            spot.spotAngle = angle;
+            spot.innerSpotAngle = angle * 0.45f;
+        }
+
+        // The light the lamp shines with right now: its own (an editor build) or the one lent from the pool.
+        private Light Shining => _light != null ? _light : _lent;
 
         /// <summary>True when <paramref name="point"/> is in the pool of a lamp that's lit right now (walls aside: pair it
         /// with a line-of-sight test), like <see cref="RoomLight.IsPointLit"/>.</summary>
@@ -115,10 +141,12 @@ namespace CloneZ
             for (int i = 0; i < s_All.Count; i++)
             {
                 StreetLamp l = s_All[i];
-                if (l == null || !l._lit || l._light == null || !l._light.enabled || l._level < 0.3f) continue;
-                Vector3 at = l._light.transform.position;
+                if (l == null || !l._lit || l._level < 0.3f) continue;
+                Light shining = l.Shining;
+                if (shining == null || !shining.enabled) continue;
+                Vector3 at = shining.transform.position;
                 if (point.y > at.y) continue;
-                float reach = l._light.range * 0.55f;
+                float reach = shining.range * 0.55f;
                 float dx = point.x - at.x, dz = point.z - at.z;
                 if (dx * dx + dz * dz <= reach * reach) return true;
             }
@@ -187,6 +215,8 @@ namespace CloneZ
         {
             base.OnDisable();
             s_All.Remove(this);
+            _lent = null;
+            _lit = false;
         }
 
         private void Awake()
@@ -274,6 +304,7 @@ namespace CloneZ
         private static bool s_Night = true;
         private static readonly StreetLamp[] s_Nearest = new StreetLamp[MaxLit];
         private static readonly float[] s_NearestSqr = new float[MaxLit];
+        private static readonly Light[] s_Pool = new Light[MaxLit];
         private static Transform s_Survivor;
 
         /// <summary>Once a frame, from the driver.</summary>
@@ -312,6 +343,7 @@ namespace CloneZ
                 StreetLamp l = s_All[i];
                 if (l == null) continue;
                 if (!l._ready) l.Ready();
+                l._lit = false;
                 bool burning = s_Night && l._on;
                 if (!burning)
                 {
@@ -323,22 +355,58 @@ namespace CloneZ
                     if (!l._flicker) l._level = 1f;
                     l.Show(l._flicker ? LensFor(l._level) : 2);
                 }
-                if (!burning || l._light == null || !have) continue;
-                float d = (l._light.transform.position - centre).sqrMagnitude;
+                if (!burning || !have || l._head == null) continue;
+                float d = (l._head.position - centre).sqrMagnitude;
                 if (d <= reach) Insert(l, d);
             }
+            bool shadow = s_NearestSqr[0] <= ShadowReach * ShadowReach;
+            // The lamps' own lights (an editor build's): on only for the nearest.
             for (int i = 0; i < s_All.Count; i++)
             {
                 StreetLamp l = s_All[i];
-                if (l == null || l._light == null) continue;
+                if (l == null) continue;
+                l._lent = null;
+                if (l._light == null) continue;
                 int slot = System.Array.IndexOf(s_Nearest, l);
                 bool lit = slot >= 0;
-                l._lit = lit;
                 if (l._light.enabled != lit) l._light.enabled = lit;
-                LightShadows want = lit && slot == 0 && s_NearestSqr[0] <= ShadowReach * ShadowReach ? LightShadows.Soft : LightShadows.None;
+                LightShadows want = lit && slot == 0 && shadow ? LightShadows.Soft : LightShadows.None;
                 if (l._light.shadows != want) l._light.shadows = want;
                 if (lit && !l._flicker) l._light.intensity = l._intensity;
             }
+            // The pool's lights lent to the nearest lamps that have none of their own.
+            for (int i = 0; i < MaxLit; i++)
+            {
+                StreetLamp l = s_Nearest[i];
+                if (l != null) l._lit = true;
+                Light pool = Pool(i, l != null && l._light == null);
+                if (pool == null) continue;
+                if (l == null || l._light != null)
+                {
+                    if (pool.enabled) pool.enabled = false;
+                    continue;
+                }
+                l._lent = pool;
+                pool.transform.SetPositionAndRotation(l._head.position, l._head.rotation);
+                Shine(pool, l._colour, l._range, l._intensity * (l._flicker ? l._level : 1f), l._angle);
+                LightShadows want = i == 0 && shadow ? LightShadows.Soft : LightShadows.None;
+                if (pool.shadows != want) pool.shadows = want;
+                if (!pool.enabled) pool.enabled = true;
+            }
+        }
+
+        // The pool's light i, made under the driver the first time it's wanted (play only: an editor build lights its own).
+        private static Light Pool(int i, bool want)
+        {
+            Light l = s_Pool[i];
+            if (l != null || !want || !Application.isPlaying || s_Driver == null) return l;
+            var go = new GameObject("StreetLight " + i);
+            go.transform.SetParent(s_Driver.transform, false);
+            l = go.AddComponent<Light>();
+            Setup(l);
+            l.enabled = false;
+            s_Pool[i] = l;
+            return l;
         }
 
         private static void Insert(StreetLamp l, float sqr)
@@ -366,7 +434,8 @@ namespace CloneZ
             if (outage > 0.74f) level = 0f;
             else if (Mathf.PerlinNoise(t * 2.7f, _phase + 7f) > 0.8f) level *= 0.35f;
             _level = level;
-            if (_light != null) _light.intensity = _intensity * level;
+            Light shining = Shining;
+            if (shining != null) shining.intensity = _intensity * level;
             Show(LensFor(level));
         }
 
@@ -393,8 +462,8 @@ namespace CloneZ
         #endregion
     }
 
-    /// <summary>Works every <see cref="StreetLamp"/> and blinks the <see cref="Blinkers"/>, once a frame; made with the
-    /// first lamp, gone with the scene.</summary>
+    /// <summary>Works every <see cref="StreetLamp"/>, holds the pool of street lights it lends them, and blinks the
+    /// <see cref="Blinkers"/>, once a frame; made with the first lamp, gone with the scene.</summary>
     internal sealed class StreetLampDriver : MonoBehaviour
     {
         private void Update() => StreetLamp.Tick();

@@ -10,8 +10,10 @@ namespace CloneZ
     /// corners and every few poles along the town's streets, at the junctions out in the country), galvanised davit poles
     /// along the main roads through town, black post-tops with acorn globes along the downtown sidewalks, a mercury
     /// "dusk-to-dawn" light on a pole in the farmyards, and the mapped lamps where they're mapped (a street with mapped lamps
-    /// gets no others). Some still burn — more downtown, fewer out of town — and those become <see cref="StreetLamp"/>s; the
-    /// real lights are capped per site and the runtime lights only the nearest anyway.
+    /// gets no others). Each kind keeps its distance from the lamps already planned, so no corner gets a cluster. Some
+    /// still burn (more downtown, fewer out of town) and those become <see cref="StreetLamp"/>s, which in play borrow the
+    /// runtime's few lights only while they're among the nearest to the survivor; an editor build gives the burning lamps
+    /// nearest the site's middle lights of their own, up to a small cap, for previews and the map harness.
     /// </summary>
     internal static class StreetLights
     {
@@ -24,13 +26,15 @@ namespace CloneZ
         private static readonly Color AcornBlack = new Color(0.06f, 0.07f, 0.07f);
         private static readonly Color GlobeMilk = new Color(0.72f, 0.72f, 0.68f);
 
+        /// <summary>The burning lamps of an editor build that get a light of their own: six to a streamed piece's worth of
+        /// ground, at most two dozen (in play the runtime's pool lights the nearest instead).</summary>
+        internal static int EditorLights(Ctx ctx) => Mathf.Clamp(Mathf.RoundToInt(6f * ctx.Half * ctx.Half / (64f * 64f)), 2, 24);
+
         /// <summary>Chooses every lamp: mapped ones, the poles that get an arm, and the lamps on their own.</summary>
         internal static void Plan(Ctx ctx)
         {
             ctx.Lamps.Clear();
-            ctx.Lights = 0;
-            // Twelve real lights to a streamed piece's worth of ground (the runtime lights only the nearest anyway).
-            ctx.MaxLights = Mathf.Min(80, Mathf.RoundToInt(12f * ctx.Half * ctx.Half / (64f * 64f)));
+            ctx.AllLamps.Clear();
             var mapped = new HashSet<Street>();
             Mapped(ctx, mapped);
             OnPoles(ctx, mapped);
@@ -49,7 +53,7 @@ namespace CloneZ
                 Street s = NearestRoad(ctx.Site, n.At, 14f, out Vector2 on, out _);
                 Vector2 reach = s != null && (on - n.At).sqrMagnitude > 0.01f ? (on - n.At).normalized : Vector2.up;
                 if (s != null) count[s] = count.TryGetValue(s, out int k) ? k + 1 : 1;
-                if (!ctx.Site.FreeBeside(n.At, 0.35f)) continue;
+                if (!ctx.Site.FreeBeside(n.At, 0.35f) || Near(ctx, n.At, 3f)) continue;
                 LampKind kind = ctx.Density.Downtown(n.At) ? LampKind.Acorn : s != null && RoadRank(s) >= 4 ? LampKind.Davit : LampKind.Wood;
                 Add(ctx, kind, n.At, reach, MapStyle.Hash(n.Data.id, SaltLit), kind == LampKind.Acorn ? 0.55f : 0.4f);
             }
@@ -65,7 +69,7 @@ namespace CloneZ
             var nearestD = new Dictionary<Crossing, float>();
             foreach (Pole p in ctx.Poles)
             {
-                if (p.Street == null || p.Edge || p.Height > 15f || mapped.Contains(p.Street) || p.Street.Data.lit == 2) continue;
+                if (!Lampable(ctx, p, mapped)) continue;
                 Crossing c = ctx.NearestCrossing(p.At, 24f);
                 if (c == null || c.TopRank < 2) continue;
                 float d = (c.At - p.At).sqrMagnitude;
@@ -74,18 +78,24 @@ namespace CloneZ
                 nearestTo[c] = p;
             }
             var corner = new HashSet<Pole>(nearestTo.Values);
-            foreach (Pole p in ctx.Poles)
-            {
-                if (p.Street == null || p.Edge || p.Height > 15f || mapped.Contains(p.Street) || p.Street.Data.lit == 2) continue;
-                bool town = ctx.Density.Town(p.At);
-                if (ctx.Density.Downtown(p.At) && !corner.Contains(p)) continue;
-                bool want;
-                if (corner.Contains(p)) want = town || MapStyle.Unit(p.Key, SaltPoleLamp) < 0.55f;
-                else want = town && RoadRank(p.Street) <= 3 && MapStyle.Unit(p.Key, SaltPoleLamp) < 0.3f;
-                if (!want) continue;
-                p.Lamp = Lamp(ctx, LampKind.CobraOnPole, p.At, p.ToRoad, p.Key, town ? 0.3f : 0.22f);
-            }
+            // The corners' first, then the poles between them.
+            for (int pass = 0; pass < 2; pass++)
+                foreach (Pole p in ctx.Poles)
+                {
+                    if (corner.Contains(p) != (pass == 0) || !Lampable(ctx, p, mapped)) continue;
+                    bool town = ctx.Density.Town(p.At);
+                    bool want;
+                    if (pass == 0) want = town || MapStyle.Unit(p.Key, SaltPoleLamp) < 0.55f;
+                    else want = town && !ctx.Density.Downtown(p.At) && RoadRank(p.Street) <= 3 && MapStyle.Unit(p.Key, SaltPoleLamp) < 0.3f;
+                    if (!want || Near(ctx, p.At, 14f)) continue;
+                    p.Lamp = Lamp(ctx, LampKind.CobraOnPole, p.At, p.ToRoad, p.Key, town ? 0.3f : 0.22f);
+                    ctx.AllLamps.Add(p.Lamp);
+                }
         }
+
+        // A pole of a line along a road, inside the square, not on its edge, on a street that may have lamps.
+        private static bool Lampable(Ctx ctx, Pole p, HashSet<Street> mapped)
+            => p.Street != null && !p.Edge && p.Height < 15f && ctx.Inside(p.At) && !mapped.Contains(p.Street) && p.Street.Data.lit != 2;
 
         // Black post-tops with acorn globes along both sidewalks downtown, staggered from side to side.
         private static void Downtown(Ctx ctx, HashSet<Street> mapped)
@@ -93,13 +103,12 @@ namespace CloneZ
             foreach (Street s in ctx.Site.Area.Streets)
             {
                 if (s.Data.tunnel || s.Data.bridge || RoadRank(s) < 2 || RoadRank(s) > 5 || mapped.Contains(s) || s.Data.lit == 2) continue;
-                float off = HalfWidth(s) + 0.6f;
                 foreach ((Vector2 p, Vector2 d, long k) in Lattice(ctx, s.Pts, AcornSpacing * 0.5f))
                 {
                     if (!ctx.Inside(p) || !ctx.Density.Downtown(p)) continue;
-                    float side = (k & 1) == 0 ? 1f : -1f;
-                    Vector2 at = p + Left(d) * (off * side);
-                    if (!ctx.Site.FreeBeside(at, 0.5f) || NearCrossingMiddle(ctx, at)) continue;
+                    int side = (k & 1) == 0 ? 1 : -1;
+                    Vector2 at = p + Left(d) * (side * Roadside(s, side));
+                    if (!ctx.Site.FreeBeside(at, 0.5f) || NearCrossingMiddle(ctx, at) || Near(ctx, at, 11f)) continue;
                     Add(ctx, LampKind.Acorn, at, -Left(d) * side, ctx.KeyOf(at), 0.55f);
                 }
             }
@@ -115,13 +124,13 @@ namespace CloneZ
                 bool main = rank >= 4 && s.Data.kind != "motorway";
                 if (!main && !(s.Data.lit == 1 && rank >= 2)) continue;
                 // The far side from the utility line (which keeps to one side of each piece by its road's name).
-                float side = MapStyle.Unit(NameId(s), 0x5E1D) < 0.5f ? -1f : 1f;
-                float off = HalfWidth(s) + Verge(s) + 0.2f;
+                int side = MapStyle.Unit(NameId(s), 0x5E1D) < 0.5f ? -1 : 1;
+                float off = Roadside(s, side) + 0.2f;
                 foreach ((Vector2 p, Vector2 d, long _) in Lattice(ctx, s.Pts, DavitSpacing))
                 {
                     if (!ctx.Inside(p) || ctx.Density.Downtown(p) || (!ctx.Density.Town(p) && s.Data.lit != 1)) continue;
                     Vector2 at = p + Left(d) * (off * side);
-                    if (!ctx.Site.FreeBeside(at, 0.5f) || NearCrossingMiddle(ctx, at)) continue;
+                    if (!ctx.Site.FreeBeside(at, 0.5f) || NearCrossingMiddle(ctx, at) || Near(ctx, at, 24f)) continue;
                     Add(ctx, LampKind.Davit, at, -Left(d) * side, ctx.KeyOf(at), 0.35f);
                 }
             }
@@ -156,11 +165,21 @@ namespace CloneZ
             }
         }
 
+        // A lamp planned within this of the spot already.
+        private static bool Near(Ctx ctx, Vector2 at, float within)
+        {
+            float r2 = within * within;
+            foreach (LampPlan l in ctx.AllLamps)
+                if ((l.At - at).sqrMagnitude < r2) return true;
+            return false;
+        }
+
         private static void Add(Ctx ctx, LampKind kind, Vector2 at, Vector2 reach, long key, float litChance)
         {
             LampPlan lamp = Lamp(ctx, kind, at, reach, key, litChance);
             lamp.Height = kind == LampKind.Acorn ? 3.7f : kind == LampKind.Davit ? 9.2f : kind == LampKind.Farm ? 7.2f : 8.4f;
             ctx.Lamps.Add(lamp);
+            ctx.AllLamps.Add(lamp);
             if (ctx.Inside(at)) ctx.Site.Take(at, 0.45f);
         }
 
@@ -178,11 +197,11 @@ namespace CloneZ
         // Too near a crossing's middle for a post (the corners' kerb returns).
         private static bool NearCrossingMiddle(Ctx ctx, Vector2 at)
         {
-            Crossing c = ctx.NearestCrossing(at, 9f);
+            Crossing c = ctx.NearestCrossing(at, 14f);
             if (c == null) return false;
             float w = 0f;
-            foreach (JunctionArm a in c.Arms) w = Mathf.Max(w, a.HalfWidth);
-            return (c.At - at).sqrMagnitude < (w + 2.5f) * (w + 2.5f);
+            for (int k = 0; k < c.Arms.Count; k++) w = Mathf.Max(w, c.Setback(k));
+            return (c.At - at).sqrMagnitude < (w + 1.2f) * (w + 1.2f);
         }
 
         /// <summary>Points along a polyline every <paramref name="spacing"/> metres of the world (the same points whichever
@@ -209,11 +228,13 @@ namespace CloneZ
             }
         }
 
-        /// <summary>Draws the lamps standing on their own.</summary>
+        /// <summary>Draws the lamps standing on their own, then makes every burning lamp (on the poles too) a
+        /// <see cref="StreetLamp"/>.</summary>
         internal static void Draw(Ctx ctx)
         {
             foreach (LampPlan lamp in ctx.Lamps) Draw(ctx, lamp, lamp.Height);
             ctx.Lamps.Clear();
+            AttachAll(ctx);
         }
 
         private static void Draw(Ctx ctx, LampPlan lamp, float h)
@@ -236,7 +257,7 @@ namespace CloneZ
                     high.Cylinder(head + new Vector3(0f, 0.25f, 0f), 0.16f, 0.1f, 8, black, Quaternion.identity, 0.5f);
                     high.Cylinder(head + new Vector3(0f, 0.35f, 0f), 0.03f, 0.16f, 6, black, Quaternion.identity, 0.4f);
                     high.Cylinder(head + new Vector3(0f, 0.3f, 0f), 0.11f, 0.04f, 8, SnowSurf);
-                    if (lamp.Lit && inside) Attach(ctx, lamp, at, h, head);
+                    if (lamp.Lit && inside) Burn(ctx, lamp, at, h, head);
                     else ctx.Collider(at, 0f, new Vector3(0.3f, 3f, 0.3f), 0f);
                     break;
                 }
@@ -256,7 +277,7 @@ namespace CloneZ
                     high.Rod(p2, p3, 0.07f, steel, 6);
                     head = p3;
                     PowerPass.CobraHead(ctx, lamp, head, lamp.Reach, 0.34f);
-                    if (lamp.Lit && inside) Attach(ctx, lamp, at, h, head);
+                    if (lamp.Lit && inside) Burn(ctx, lamp, at, h, head);
                     else ctx.Collider(at, 0f, new Vector3(0.3f, 4f, 0.3f), 0f);
                     break;
                 }
@@ -278,21 +299,38 @@ namespace CloneZ
                         if (!lamp.Lit) high.Ellipsoid(tip + new Vector3(0f, -0.15f, 0f), new Vector3(0.26f, 0.12f, 0.26f), Gloss(GlobeMilk), 8, 4);
                     }
                     else PowerPass.CobraHead(ctx, lamp, head, lamp.Reach, 0.3f);
-                    if (lamp.Lit && inside) Attach(ctx, lamp, at, h, head);
+                    if (lamp.Lit && inside) Burn(ctx, lamp, at, h, head);
                     else ctx.Collider(at, 0f, new Vector3(0.28f, 4f, 0.28f), 0f);
                     break;
                 }
             }
         }
 
-        /// <summary>Makes a burning lamp a <see cref="StreetLamp"/>: its lens glowing under the head at
-        /// <paramref name="head"/> (where the arm ends, or the globe's middle) and, while the site has lights to spare, a real
-        /// spot light.</summary>
-        internal static void Attach(Ctx ctx, LampPlan lamp, Vector2 foot, float poleHeight, Vector3 head)
+        private static void Burn(Ctx ctx, LampPlan lamp, Vector2 foot, float poleHeight, Vector3 head)
+            => ctx.Burning.Add(new Burning { Lamp = lamp, Foot = foot, PoleHeight = poleHeight, Head = head });
+
+        // Every burning lamp made a StreetLamp, nearest the site's middle first: in an editor build those get the lights of
+        // their own, up to the cap.
+        private static void AttachAll(Ctx ctx)
         {
+            List<Burning> burning = ctx.Burning;
+            burning.Sort((a, b) =>
+            {
+                int c = a.Foot.sqrMagnitude.CompareTo(b.Foot.sqrMagnitude);
+                return c != 0 ? c : a.Lamp.Key.CompareTo(b.Lamp.Key);
+            });
+            int lights = EditorLights(ctx);
+            for (int i = 0; i < burning.Count; i++) Attach(ctx, burning[i], i < lights);
+            burning.Clear();
+        }
+
+        /// <summary>Makes a burning lamp a <see cref="StreetLamp"/>: its lens glowing under the head (where the arm ends, or
+        /// the globe's middle) and the spot light it shines with.</summary>
+        private static void Attach(Ctx ctx, Burning b, bool light)
+        {
+            LampPlan lamp = b.Lamp;
+            Vector3 head = b.Head;
             Color colour = lamp.Kind == LampKind.Acorn ? Incandescent : lamp.Mercury ? Mercury : Sodium;
-            bool light = ctx.Lights < ctx.MaxLights;
-            if (light) ctx.Lights++;
             float yaw = Yaw(lamp.Reach);
             Vector3 lens;
             StreetLamp.Lens shape;
@@ -327,8 +365,8 @@ namespace CloneZ
                     break;
                 }
             }
-            var pole = new Vector3(lamp.Kind == LampKind.Acorn ? 0.3f : 0.32f, Mathf.Min(poleHeight, 4f), lamp.Kind == LampKind.Acorn ? 0.3f : 0.32f);
-            StreetLamp.Attach(ctx.Site.Town, To3(foot, 0f), pole, lens, yaw, shape, size, colour, range, intensity, angle, light, lamp.Flicker);
+            var pole = new Vector3(lamp.Kind == LampKind.Acorn ? 0.3f : 0.32f, Mathf.Min(b.PoleHeight, 4f), lamp.Kind == LampKind.Acorn ? 0.3f : 0.32f);
+            StreetLamp.Attach(ctx.Site.Town, To3(b.Foot, 0f), pole, lens, yaw, shape, size, colour, range, intensity, angle, light, lamp.Flicker);
         }
     }
 }

@@ -4,9 +4,9 @@ using static CloneZ.KentuckyMap;
 
 namespace CloneZ
 {
-    // The snow the ploughs pushed off the carriageways (a low berm along each edge, broken at junctions, crosswalks,
-    // driveways and here and there where someone dug through), and the driveways: an apron through the kerb and a
-    // packed track up to the house.
+    // The snow the ploughs pushed off the carriageways (a low berm along each edge, broken at junctions, side roads'
+    // mouths, crosswalks, driveways and here and there where someone dug through), and the driveways: an apron through
+    // the kerb and a packed track up to the house.
     internal static partial class RoadPass
     {
         /// <summary>A driveway the roads laid from a street to a house: <see cref="At"/> on the kerb line,
@@ -32,20 +32,24 @@ namespace CloneZ
         internal static IReadOnlyList<DrivewaySpot> Driveways(Site site)
             => s_Driveways.TryGetValue(site, out List<DrivewaySpot> list) ? list : (IReadOnlyList<DrivewaySpot>)System.Array.Empty<DrivewaySpot>();
 
-        private static void Berms(Net net)
+        private static IEnumerable<string> Berms(Net net)
         {
             foreach (Chain c in net.Chains)
             {
                 if (c.To - c.From < 1.5f) continue;
-                if (c.L.Berm) Berm(net, c, 1, c.L);
-                if (c.R.Berm) Berm(net, c, -1, c.R);
+                Berm(net, c, 1);
+                Berm(net, c, -1);
+                if (net.Site.StepDue) yield return "berms and driveways";
             }
         }
 
         // One berm: a ridge of three lines (the foot on the road, the crest, the foot on the snow or the kerb), its height
         // wandering with the noise, tapering to nothing at its gaps and ends; the road-facing slope grey with grime.
-        private static void Berm(Net net, Chain c, int side, Side d)
+        private static void Berm(Net net, Chain c, int side)
         {
+            bool any = false;
+            foreach (Part part in c.Parts) if (SideOf(part, side).Berm) any = true;
+            if (!any) return;
             Way w = c.W;
             List<Sample> s = net.Samples;
             SamplesOf(c, c.From, c.To, 1.5f, s);
@@ -54,29 +58,34 @@ namespace CloneZ
             FitSides(n);
             int seed = Seed(w, side > 0 ? 0xBE1 : 0xBE2);
             List<Cut> cuts = side > 0 ? c.CutsL : c.CutsR;
-            bool kerbed = d.Kerb;
-            bool cleared = kerbed && (w.Downtown || (w.Winter == Winter.Ploughed && w.Town));
-            float baseH = kerbed ? 0.2f : w.Winter == Winter.Ploughed ? 0.36f : 0.26f;
-            float crestOff = kerbed ? d.Edge - 0.18f : d.Edge + 0.4f;
             float[] h = s_WalkIn;
             for (int i = 0; i < n; i++)
             {
-                Vector2 crest = s[i].P + s[i].N * (side * crestOff);
-                bool gap = Noise(s[i].P, 12f, seed) < 0.15f
+                ProfAt(c, side, s[i].S, out Prof d);
+                Way pw = c.Parts[PartAt(c, s[i].S)].Run.W;
+                bool kerbed = d.Kerb;
+                bool cleared = kerbed && (pw.Downtown || (pw.Winter == Winter.Ploughed && pw.Town));
+                float baseH = kerbed ? 0.2f : pw.Winter == Winter.Ploughed ? 0.36f : 0.26f;
+                float crestOff = kerbed ? d.Edge - 0.18f : d.Edge + 0.4f;
+                float outer = kerbed ? d.Edge + 0.12f : d.Edge + 1.0f + 0.4f * Noise(s[i].P, 3.5f, seed + 3);
+                Vector2 crest = s[i].P + s[i].N * (side * crestOff), foot = s[i].P + s[i].N * (side * outer);
+                bool gap = !d.Of.Berm || Noise(s[i].P, 12f, seed) < 0.15f
                     || (cleared && Noise(s[i].P, 9f, seed + 1) < 0.62f)
                     || CutAt(cuts, s[i].S) >= 0
-                    || OnPavement(net, crest, c, 0.25f) || InBuilding(net, crest, 0.4f);
+                    || OnPavement(net, crest, c, 0.25f) || InBuilding(net, crest, 0.4f)
+                    || (!kerbed && (OnPavement(net, foot, c, 0.1f) || InBuilding(net, foot, 0.2f)));
                 h[i] = gap ? 0f : baseH * (0.55f + 0.8f * Noise(s[i].P, 4.5f, seed + 2));
+                s_A[i] = side * (kerbed ? d.Edge - 0.6f : d.Edge - 0.12f);
+                s_B[i] = side * crestOff;
+                s_WalkOut[i] = side * outer;
+                s_YB[i] = kerbed ? KerbTop + 0.01f : 0.004f;
             }
             // Taper into junctions and dead ends; where the chain runs off the chunk the neighbour carries the berm on.
             if (!AtSquareEdge(net, s[0].P)) h[0] = 0f;
             if (!AtSquareEdge(net, s[n - 1].P)) h[n - 1] = 0f;
             for (int i = 0; i < n; i++)
             {
-                float outer = kerbed ? d.Edge + 0.12f : d.Edge + 1.0f + 0.4f * Noise(s[i].P, 3.5f, seed + 3);
-                s_A[i] = side * (kerbed ? d.Edge - 0.6f : d.Edge - 0.12f);
-                s_B[i] = side * crestOff;
-                s_WalkOut[i] = side * outer;
+                s_Edge[i] = s_YB[i];
                 s_YA[i] = DetailY + 0.001f;
                 s_YB[i] = DetailY + h[i];
                 s_Keep[i] = i + 1 < n && (h[i] > 0f || h[i + 1] > 0f);
@@ -87,7 +96,7 @@ namespace CloneZ
                 s_A[i] = s_B[i];
                 s_B[i] = s_WalkOut[i];
                 s_YA[i] = DetailY + h[i];
-                s_YB[i] = kerbed ? KerbTop + 0.01f : 0.004f;
+                s_YB[i] = s_Edge[i];
             }
             BandY(net, s, s_A, s_B, s_YA, s_YB, net.Look.Snow, c.Lift, s_Keep, true);
         }
@@ -147,8 +156,9 @@ namespace CloneZ
                 string kind = f.Data.kind;
                 if ((kind != "house" && kind != "trailer") || f.Size > 450f || !f.Inside(net.Half, 1f)) continue;
                 if (!NearestChainTo(net, f.Middle, 32f, out Chain c, out float s, out int side, out float dist)) continue;
-                Side d = side > 0 ? c.L : c.R;
-                if (c.W.Cls < Cls.Primary || c.W.Cls > Cls.Minor || (!d.Berm && !d.Kerb) || dist - d.Edge < 5f) continue;
+                ProfAt(c, side, s, out Prof d);
+                Way pw = c.Parts[PartAt(c, s)].Run.W;
+                if (pw.Cls < Cls.Primary || pw.Cls > Cls.Minor || (!d.Of.Berm && !d.Kerb) || dist - d.Edge < 5f) continue;
                 PointOn(c, s, out Vector2 p, out Vector2 t);
                 float lo = float.MaxValue, hi = float.MinValue;
                 foreach (Vector2 v in f.Pts)
@@ -163,6 +173,7 @@ namespace CloneZ
                 if (!DrivewayFits(net, c, side, sd)) sd = s + second;
                 if (!DrivewayFits(net, c, side, sd)) continue;
                 PointOn(c, sd, out Vector2 at, out Vector2 dir);
+                ProfAt(c, side, sd, out d);
                 Vector2 nrm = Left(dir) * side;
                 float back = d.Walk ? d.WalkOut : d.Edge + 1.0f;
                 Vector2 backPt = at + nrm * back;
@@ -185,11 +196,12 @@ namespace CloneZ
             }
         }
 
-        // Room for a driveway at <paramref name="s"/>: clear of the chain's ends (its junctions), of other driveways on
-        // that side and of mapped service roads joining near it.
+        // Room for a driveway at <paramref name="s"/>: clear of the chain's ends (its junctions) and side roads' mouths, of
+        // other driveways on that side and of mapped service roads joining near it.
         private static bool DrivewayFits(Net net, Chain c, int side, float s)
         {
             if (s < c.From + 7f || s > c.To - 7f) return false;
+            if (InMouth(c, side, s - 4f) || InMouth(c, side, s) || InMouth(c, side, s + 4f)) return false;
             foreach (Driveway o in net.Driveways)
                 if (o.C == c && o.Side == side && Mathf.Abs(o.S - s) < 7.5f) return false;
             PointOn(c, s, out Vector2 p, out Vector2 _);
@@ -208,7 +220,7 @@ namespace CloneZ
             foreach (Driveway dw in net.Driveways)
             {
                 Chain c = dw.C;
-                Side d = dw.Side > 0 ? c.L : c.R;
+                ProfAt(c, dw.Side, dw.S, out Prof d);
                 Vector2 nrm = dw.Dir, along = new Vector2(nrm.y, -nrm.x);
                 float roadY = RoadY + c.W.Order * 0.0003f;
                 Vector2 e = dw.Edge;

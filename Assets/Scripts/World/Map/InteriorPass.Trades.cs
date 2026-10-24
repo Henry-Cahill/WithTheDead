@@ -38,7 +38,7 @@ namespace CloneZ
                     var p = rowsAlongZ ? new RaidBuilding.Place(across, a, 90f) : new RaidBuilding.Place(a, across, 0f);
                     ContainerType loot = c.NextLoot() ?? ContainerType.Crate;
                     StorageOptions o = c.Rng.NextDouble() < 0.3 ? RaidBuilding.MainStock(loot, "racking") : RaidBuilding.SpareStock(loot, "racking");
-                    b.Shelving(c.R, p, new Vector3(len - 0.1f, 2.6f, 0.9f), 4, 2, frame, "Racking", o);
+                    ShelvingAt(c, p, new Vector3(len - 0.1f, 2.6f, 0.9f), 4, 2, frame, "Racking", o);
                     budget--;
                 }
             }
@@ -48,7 +48,7 @@ namespace CloneZ
                 Vector2 near = c.OnWall(door, (door == 0 || door == 2 ? i.center.x : i.center.y) + MapStyle.Range(c.Rng, -span * 0.4f, span * 0.4f), 2.2f);
                 if (!c.Floor(1.2f, 1.0f, 0f, near, 0.4f, out RaidBuilding.Place pallet)) break;
                 bool loaded = c.Rng.NextDouble() < 0.6;
-                if (loaded && c.Rng.NextDouble() < 0.5)
+                if (loaded && c.Rng.NextDouble() < 0.5 && c.TakeLoot())
                     b.StackedCrate(c.R, pallet, new Vector3(1.2f, 1.4f, 1.0f), new Vector3(1.1f, 0.8f, 0.95f), new Vector3(0.8f, 0.55f, 0.7f), 0.05f,
                         MapStyle.Range(c.Rng, -10f, 10f), false, c.NextLoot() ?? ContainerType.Crate, "Crate", false);
                 else

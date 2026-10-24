@@ -6,15 +6,16 @@ namespace CloneZ
 {
     /// <summary>
     /// The real-world map's lying snow, past what the ground, the roads and the roofs carry: the plough's dirty heaps in
-    /// the parking lots' corners (planned before the lots fill, <see cref="PlanPiles"/>, and solid when they're big),
-    /// drifts banked against the buildings' walls (deep in the lee of the north-west wind, a scoured ridge on the windward
-    /// side, none where the sidewalk's been shovelled, at the doors or on the lots) and along the fences and walls, the
-    /// heaps shovelled off the driveways beside their mouths, and here and there a snowman in a front yard. Full sites only.
+    /// the parking lots' corners (planned before the lots fill, <see cref="PlanPiles"/>, solid when they're big, never
+    /// across an aisle or a lot's way in), drifts banked against the buildings' walls (deep in the lee of the north-west
+    /// wind, a scoured ridge on the windward side; none at the doors, under a porch or its steps, on the sidewalks, the
+    /// lots or the driveways) and along the fences and walls, and the heaps shovelled off the driveways beside their
+    /// mouths. Full sites only. (The front yards' snowmen are the ground pass's.)
     /// </summary>
     internal static class SnowPass
     {
         // Salts for the snow's random choices (MapStyle).
-        private const int SaltPile = 0x5A00, SaltDrift = 0x5A10, SaltFence = 0x5A20, SaltShovel = 0x5A30, SaltSnowman = 0x5A40;
+        private const int SaltPile = 0x5A00, SaltDrift = 0x5A10, SaltFence = 0x5A20, SaltShovel = 0x5A30;
 
         /// <summary>Which way the January wind blows the snow: from the north-west, so it banks up on the south-east sides.</summary>
         private static readonly Vector2 Downwind = new Vector2(0.6f, -0.8f);
@@ -31,15 +32,11 @@ namespace CloneZ
             yield return "plough piles";
             foreach (string step in WallDrifts(site, plan)) yield return step;
             yield return "wall drifts";
-            FenceDrifts(site, plan);
+            foreach (string step in FenceDrifts(site, plan)) yield return step;
             yield return "fence drifts";
-            YardSnow(site, plan);
-            yield return "yard snow";
+            Shovelled(site, plan);
+            yield return "shovelled snow";
         }
-
-        /// <summary>Kept for <see cref="StreetscapePass"/>, which calls it until it drops the call: this pass heaps its own
-        /// snow now (<see cref="Build"/>).</summary>
-        internal static void Piles(Site site) { }
 
         #region Plough piles
         /// <summary>
@@ -77,6 +74,8 @@ namespace CloneZ
                     float h = (0.8f + MapStyle.Unit(key, SaltPile + 3) * 0.7f) * Mathf.Sqrt(scale);
                     Vector2 c = at + inward * (Mathf.Max(w, depth) * 0.5f + 0.6f);
                     if (!plan.InSquare(c, 1f) || !MapGeometry.Contains(poly, c) || plan.WallDistance(c, 3f) < 1.2f) continue;
+                    // Not across an aisle, a service road or the lot's way in, nor where a building's door gives onto it.
+                    if (plan.RoadClearance(c, 4f, true) < Mathf.Max(w, depth) * 0.5f + 0.8f || plan.NearDoor(c, Mathf.Max(w, depth) * 0.5f + 2f)) continue;
                     plan.Piles.Add(new NaturePlan.Pile { At = c, Yaw = Mathf.Atan2(inward.x, inward.y) * Mathf.Rad2Deg, Width = w, Depth = depth, Height = h, Key = key });
                     plan.KeepRect(c, inward, depth * 0.5f + 0.7f, w * 0.5f + 0.7f, NaturePlan.KeepKind.Pile);
                     made++;
@@ -200,28 +199,24 @@ namespace CloneZ
         }
 
         // Snow banked along the foot of the walls of every building the building pass raised (its shells), drifting in and
-        // out along the wall; none at a door, on the road, on a lot or under a parked car; squeezed between neighbours.
+        // out along the wall; none along a wall with a door (its walk shovelled, its porch and steps standing there), on the
+        // road or the sidewalk, on a lot, a driveway or under a parked car; squeezed between neighbours.
         private static IEnumerable<string> WallDrifts(Site site, NaturePlan plan)
         {
-            var doors = new Dictionary<Footprint, EnterableBuilding>();
-            foreach (EnterableBuilding e in site.Enterables)
-                if (e.Footprint != null) doors[e.Footprint] = e;
             var seen = new HashSet<Footprint>();
             Surf snow = DecorPalette.Matte(Snow);
-            int done = 0;
             for (int s = 0; s < site.Shells.Count; s++)
             {
                 Footprint f = site.Shells[s].Footprint;
                 if (f == null || f.Pts.Count < 3 || f.Size < 12f || f.Data.kind == "canopy" || !seen.Add(f)) continue;
                 if (!f.Owned && !plan.InSquare(f.Middle, 0f)) continue;   // scenery past the edge
-                doors.TryGetValue(f, out EnterableBuilding entry);
                 List<Vector2> p = f.Pts;
                 RaidMesh m = site.Town.Out.Solid(To3(f.Middle, 0f));
                 for (int i = 0; i < p.Count; i++)
                 {
                     Vector2 a = p[i], b = p[(i + 1) % p.Count];
                     float len = Vector2.Distance(a, b);
-                    if (len < 1.2f) continue;
+                    if (len < 1.2f || plan.DoorOnWall(a, b)) continue;
                     Vector2 dir = (b - a) / len, outward = new Vector2(dir.y, -dir.x);
                     long key = NaturePlan.Combine(f.Data.id, i);
                     if (!Exposure(outward, MapStyle.Unit(key, SaltDrift), out float depth, out float height)) continue;
@@ -236,7 +231,8 @@ namespace CloneZ
                         float end = Mathf.Min(t, len - t);
                         if (end < 0.9f) h *= Mathf.Lerp(0.3f, 1f, end / 0.9f);
                         Vector2 foot = at + outward * (d * 0.5f);
-                        if (NearDoor(entry, at, 1.7f) || plan.RoadClearance(foot, 1f) < 0.2f || plan.LandAt(foot) == Land.Lot || plan.IsKept(foot, 0.3f))
+                        if (plan.NearDoor(at + outward, 1.8f) || plan.RoadClearance(foot, 1f) < 0.2f || plan.LandAt(foot) == Land.Lot
+                            || plan.IsKept(foot, 0.3f) || plan.OnSidewalk(foot, 0.2f))
                             h = 0f;
                         else if (plan.WallDistance(at + outward * (d + 0.3f), 0.6f) < 0.35f)
                         {
@@ -249,28 +245,21 @@ namespace CloneZ
                     }
                     Bank(m, a, dir, outward, n, snow);
                 }
-                if (++done % 12 == 0) yield return "wall drifts";
+                if (site.StepDue) yield return "wall drifts";
             }
-        }
-
-        private static bool NearDoor(EnterableBuilding e, Vector2 at, float within)
-        {
-            if (e == null) return false;
-            foreach (Doorway d in e.Doors)
-                if (Vector2.Distance(d.At, at) < within) return true;
-            return false;
         }
 
         // Banks along the fences, walls and hedges on their lee side, coming and going with the noise; none where they'd
         // lie on a road, a lot or a parked car. The cross-sections stand on the state's lattice, so a fence cut by a
         // seam drifts on unbroken.
-        private static void FenceDrifts(Site site, NaturePlan plan)
+        private static IEnumerable<string> FenceDrifts(Site site, NaturePlan plan)
         {
             Surf snow = DecorPalette.Matte(Snow);
             foreach (Line l in site.Area.Barriers)
             {
                 string kind = l.Data.kind;
                 if (kind != "fence" && kind != "wall" && kind != "hedge" && kind != "retaining_wall") continue;
+                if (site.StepDue) yield return "fence drifts";
                 for (int i = 0; i + 1 < l.Pts.Count; i++)
                 {
                     Vector2 a = l.Pts[i], b = l.Pts[i + 1];
@@ -316,87 +305,47 @@ namespace CloneZ
         }
         #endregion
 
-        #region Yards
-        // The heaps shovelled off each driveway, either side of its mouth, and a snowman in one front yard in twenty.
-        private static void YardSnow(Site site, NaturePlan plan)
+        #region Shovelled snow
+        // The heaps shovelled off the driveways either side of where they meet the sidewalk (or the road, without one): the
+        // driveways the roads laid and the strips this pass laid to its own cars.
+        private static void Shovelled(Site site, NaturePlan plan)
         {
+            IReadOnlyList<RoadPass.DrivewaySpot> roads = RoadPass.Driveways(site);
+            for (int i = 0; i < roads.Count; i++)
+            {
+                RoadPass.DrivewaySpot d = roads[i];
+                if (d.Dir.sqrMagnitude < 0.5f || d.Length < 3f) continue;
+                if (!plan.Roadside(d.At, d.Dir, out float edge, out float back)) back = edge + 0.5f;
+                long key = NaturePlan.Combine((long)System.Math.Round(plan.AbsX(d.At.x) * 2.0), (long)System.Math.Round(plan.AbsZ(d.At.y) * 2.0));
+                Heaps(site, plan, d.At + d.Dir * (back - edge + 0.3f), d.Dir, 3.0f, Mathf.Max(0.5f, d.Length - (back - edge) - 1f), key);
+            }
             foreach (NaturePlan.CarSpot s in plan.Driveways)
             {
-                if (s.StripWidth <= 0f) continue;
-                Vector2 dir = (s.At - s.Mouth).normalized, across = new Vector2(-dir.y, dir.x);
-                for (int side = -1; side <= 1; side += 2)
-                {
-                    long key = NaturePlan.Combine(s.Key, 40 + side);
-                    if (MapStyle.Unit(key, SaltShovel) < 0.35f) continue;
-                    Vector2 at = s.Mouth + dir * (1.0f + MapStyle.Unit(key, SaltShovel + 1) * 2.5f) + across * (side * (s.StripWidth * 0.5f + 0.75f));
-                    if (!plan.InSquare(at, 1f) || plan.RoadClearance(at, 2f) < 0.4f || plan.IsKept(at, 0.5f) || plan.WallDistance(at, 1.5f) < 1f) continue;
-                    System.Random rng = MapStyle.Rng(key, SaltShovel + 2);
-                    Vector3 c = To3(at, 0f);
-                    RaidMesh m = site.Town.Out.Solid(c);
-                    m.SetFrame(c, Mathf.Atan2(dir.x, dir.y) * Mathf.Rad2Deg);
-                    Heap(m, rng, 0.9f + (float)rng.NextDouble() * 0.6f, 1.2f + (float)rng.NextDouble() * 0.8f, 0.32f + (float)rng.NextDouble() * 0.2f, false);
-                    m.ResetFrame();
-                    site.Take(at, 0.7f);
-                }
-            }
-            foreach (Footprint f in site.Area.Buildings)
-            {
-                if (!NaturePlan.IsHome(f.Data) || f.Data.kind == "apartments" || !plan.InSquare(f.Middle, 0f)) continue;
-                long key = f.Data.id;
-                if (MapStyle.Unit(key, SaltSnowman) >= 0.05f) continue;
-                NaturePlan.HouseFrame hf = plan.FrameOf(f);
-                if (!hf.Street) continue;
-                for (int k = 0; k < 4; k++)
-                {
-                    long sk = NaturePlan.Combine(key, 60 + k);
-                    Vector2 at = hf.At(Mathf.Lerp(hf.T0, hf.T1, MapStyle.Unit(sk, SaltSnowman + 1)), hf.N0 - 2.5f - MapStyle.Unit(sk, SaltSnowman + 2) * 3f);
-                    if (!plan.InSquare(at, 1f) || plan.RoadClearance(at, 3f) < 2.4f || plan.WallDistance(at, 2f) < 1.6f || plan.IsKept(at, 1f)) continue;
-                    if (!site.FreeBeside(at, 0.6f) && !InBox(f.Bounds, at, 1.5f)) continue;
-                    Vector3 c = To3(at, 0f);
-                    RaidMesh m = site.Town.Out.Solid(c);
-                    m.SetFrame(c, Mathf.Atan2(-hf.N.x, -hf.N.y) * Mathf.Rad2Deg + (MapStyle.Unit(sk, SaltSnowman + 3) - 0.5f) * 50f);
-                    Snowman(m, MapStyle.Rng(sk, SaltSnowman + 4));
-                    m.ResetFrame();
-                    site.Take(at, 0.6f);
-                    break;
-                }
+                if (s.Road || s.StripWidth <= 0f) continue;
+                Vector2 dir = (s.At - s.Mouth).normalized;
+                Heaps(site, plan, s.Mouth, dir, s.StripWidth, Vector2.Distance(s.Mouth, s.At), s.Key);
             }
         }
 
-        private static bool InBox(Rect box, Vector2 p, float margin)
-            => p.x > box.xMin - margin && p.x < box.xMax + margin && p.y > box.yMin - margin && p.y < box.yMax + margin;
-
-        /// <summary>A snowman facing +Z: three balls, coal eyes and buttons, a carrot, stick arms; a scarf and an old hat on
-        /// some.</summary>
-        private static void Snowman(RaidMesh m, System.Random rng)
+        // A heap either side of a driveway of `width` from `mouth` up along `dir` (two in three driveways' sides), a metre
+        // or three up it, off the sidewalk, the road, the walls and anything standing.
+        private static void Heaps(Site site, NaturePlan plan, Vector2 mouth, Vector2 dir, float width, float reach, long id)
         {
-            float s = 0.85f + (float)rng.NextDouble() * 0.3f;
-            Surf snow = DecorPalette.Matte(Snow), coal = DecorPalette.Matte(new Color(0.06f, 0.06f, 0.06f));
-            Surf stick = DecorPalette.Matte(new Color(0.30f, 0.22f, 0.15f));
-            float r0 = 0.42f * s, r1 = 0.31f * s, r2 = 0.22f * s;
-            float y0 = r0 * 0.85f, y1 = y0 + r0 * 0.8f + r1 * 0.75f, y2 = y1 + r1 * 0.8f + r2 * 0.8f;
-            m.Ellipsoid(new Vector3(0f, y0, 0f), new Vector3(r0, r0 * 0.95f, r0) * 2f, snow, 8, 5);
-            m.Ellipsoid(new Vector3(0f, y1, 0f), new Vector3(r1, r1, r1) * 2f, snow, 8, 4);
-            m.Ellipsoid(new Vector3(0f, y2, 0f), new Vector3(r2, r2, r2) * 2f, snow, 7, 4);
-            for (int i = 0; i < 3; i++)
-                m.Box(new Vector3(0f, y1 + r1 * (0.45f - i * 0.4f), r1 * (0.97f - Mathf.Abs(0.45f - i * 0.4f) * 0.25f)), new Vector3(0.05f, 0.05f, 0.04f), coal);
+            Vector2 across = new Vector2(-dir.y, dir.x);
             for (int side = -1; side <= 1; side += 2)
             {
-                m.Box(new Vector3(side * r2 * 0.38f, y2 + r2 * 0.25f, r2 * 0.9f), new Vector3(0.045f, 0.045f, 0.03f), coal);
-                Vector3 from = new Vector3(side * r1 * 0.85f, y1 + r1 * 0.2f, 0f);
-                Vector3 to = from + new Vector3(side * (0.45f + (float)rng.NextDouble() * 0.2f), 0.25f + (float)rng.NextDouble() * 0.2f, (float)rng.NextDouble() * 0.2f - 0.1f);
-                m.Rod(from, to, 0.035f, stick, 3);
-                m.Rod(Vector3.Lerp(from, to, 0.7f), Vector3.Lerp(from, to, 0.7f) + new Vector3(side * 0.08f, 0.14f, 0.04f), 0.025f, stick, 3);
-            }
-            m.Cylinder(new Vector3(0f, y2, r2 * 0.85f), 0.035f, 0.22f * s, 5, DecorPalette.Matte(new Color(0.85f, 0.42f, 0.10f)), Quaternion.Euler(90f, 0f, 0f), 0.1f, false);
-            if (rng.NextDouble() < 0.5)
-                m.Cylinder(new Vector3(0f, y1 + r1 * 0.72f, 0f), r1 * 0.72f, 0.09f, 8,
-                    DecorPalette.Matte(rng.NextDouble() < 0.5 ? new Color(0.62f, 0.10f, 0.09f) : new Color(0.14f, 0.24f, 0.46f)), Quaternion.identity, 0.9f, false);
-            if (rng.NextDouble() < 0.4)
-            {
-                Surf hat = DecorPalette.Matte(new Color(0.09f, 0.09f, 0.10f));
-                m.Cylinder(new Vector3(0f, y2 + r2 * 0.8f, 0f), r2 * 1.05f, 0.03f, 8, hat);
-                m.Cylinder(new Vector3(0f, y2 + r2 * 0.8f, 0f), r2 * 0.68f, 0.2f * s, 8, hat);
+                long key = NaturePlan.Combine(id, 40 + side);
+                if (MapStyle.Unit(key, SaltShovel) < 0.35f) continue;
+                Vector2 at = mouth + dir * Mathf.Min(reach, 1.0f + MapStyle.Unit(key, SaltShovel + 1) * 2.5f) + across * (side * (width * 0.5f + 0.75f));
+                if (!plan.InSquare(at, 1f) || plan.RoadClearance(at, 2f) < 0.4f || plan.IsKept(at, 0.5f) || plan.WallDistance(at, 1.5f) < 1f
+                    || plan.OnSidewalk(at, 0.4f) || plan.NearDoor(at, 1.5f) || !site.FreeBeside(at, 0f)) continue;
+                System.Random rng = MapStyle.Rng(key, SaltShovel + 2);
+                Vector3 c = To3(at, 0f);
+                RaidMesh m = site.Town.Out.Solid(c);
+                m.SetFrame(c, Mathf.Atan2(dir.x, dir.y) * Mathf.Rad2Deg);
+                Heap(m, rng, 0.9f + (float)rng.NextDouble() * 0.6f, 1.2f + (float)rng.NextDouble() * 0.8f, 0.32f + (float)rng.NextDouble() * 0.2f, false);
+                m.ResetFrame();
+                site.Take(at, 0.7f);
             }
         }
         #endregion

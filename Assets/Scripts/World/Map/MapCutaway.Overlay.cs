@@ -92,6 +92,7 @@ namespace CloneZ
 
         private static bool BuildOverlay(Building b)
         {
+            if (b.WallsMesh != null && b.WallsMesh.vertexCount == 0) return false;   // queued on its site's bake, not baked yet
             long started = System.Diagnostics.Stopwatch.GetTimestamp();
             try
             {
@@ -127,6 +128,7 @@ namespace CloneZ
                 while (s_U.Count < s_V.Count) s_U.Add(Vector2.zero);
 
                 int lines = WallLines(b);
+                LineGrid(lines, src.bounds);
                 for (int m = 0; m < mats; m++)
                 {
                     s_Src.Clear();
@@ -230,21 +232,104 @@ namespace CloneZ
             return n;
         }
 
+        // The nearest wall line to p (mesh space) decides its facing: the lines in p's cell of the grid first, then ring
+        // after ring of cells round it until no farther cell could hold a nearer line.
         private static int FacingOf(Building b, int lines, Vector3 p)
         {
             var q = new Vector2(p.x, p.z);
-            float best = float.MaxValue;
-            int at = 0;
+            int ci = Mathf.Clamp(Mathf.FloorToInt((q.x - s_GX) / s_CW), 0, s_GW - 1);
+            int cj = Mathf.Clamp(Mathf.FloorToInt((q.y - s_GZ) / s_CH), 0, s_GH - 1);
+            float best = float.MaxValue, ring = Mathf.Min(s_CW, s_CH);
+            int at = -1;
+            for (int r = 0; ; r++)
+            {
+                bool any = false;
+                for (int j = cj - r; j <= cj + r; j++)
+                {
+                    if (j < 0 || j >= s_GH) continue;
+                    bool full = r == 0 || j == cj - r || j == cj + r;
+                    for (int i = ci - r; i <= ci + r; i += full ? 1 : 2 * r)
+                    {
+                        if (i < 0 || i >= s_GW) continue;
+                        any = true;
+                        int cell = j * s_GW + i;
+                        for (int k = s_GridStart[cell]; k < s_GridStart[cell + 1]; k++)
+                        {
+                            int line = s_GridLines[k];
+                            Vector2 a = s_LineA[line], ab = s_LineB[line] - a;
+                            float t = ab.sqrMagnitude > 1e-8f ? Mathf.Clamp01(Vector2.Dot(q - a, ab) / ab.sqrMagnitude) : 0f;
+                            float d = (a + ab * t - q).sqrMagnitude;
+                            if (d >= best) continue;
+                            best = d;
+                            at = line;
+                        }
+                    }
+                }
+                if (!any) break;
+                float clear = r * ring;   // nothing in the rings past this one is nearer than this
+                if (at >= 0 && best <= clear * clear) break;
+            }
+            return at >= 0 ? b.EdgeGroup[at] : 0;
+        }
+
+        // A grid over the walls' mesh (mesh space, cells about LineCell metres), each cell listing the wall lines whose box
+        // touches it: s_GridLines[s_GridStart[cell] .. s_GridStart[cell + 1]).
+        private const float LineCell = 2f;
+        private const int MaxLineCells = 128;   // along a side
+        private static int[] s_GridStart = new int[1025], s_GridFill = new int[1024], s_GridLines = new int[1024];
+        private static int s_GW, s_GH;
+        private static float s_GX, s_GZ, s_CW, s_CH;
+
+        private static void LineGrid(int lines, Bounds mesh)
+        {
+            float x0 = mesh.min.x, z0 = mesh.min.z, x1 = mesh.max.x, z1 = mesh.max.z;
             for (int i = 0; i < lines; i++)
             {
-                Vector2 a = s_LineA[i], ab = s_LineB[i] - a;
-                float t = ab.sqrMagnitude > 1e-8f ? Mathf.Clamp01(Vector2.Dot(q - a, ab) / ab.sqrMagnitude) : 0f;
-                float d = (a + ab * t - q).sqrMagnitude;
-                if (d >= best) continue;
-                best = d;
-                at = i;
+                x0 = Mathf.Min(x0, Mathf.Min(s_LineA[i].x, s_LineB[i].x));
+                x1 = Mathf.Max(x1, Mathf.Max(s_LineA[i].x, s_LineB[i].x));
+                z0 = Mathf.Min(z0, Mathf.Min(s_LineA[i].y, s_LineB[i].y));
+                z1 = Mathf.Max(z1, Mathf.Max(s_LineA[i].y, s_LineB[i].y));
             }
-            return b.EdgeGroup[at];
+            s_GX = x0;
+            s_GZ = z0;
+            s_CW = Mathf.Max(LineCell, (x1 - x0) / MaxLineCells);
+            s_CH = Mathf.Max(LineCell, (z1 - z0) / MaxLineCells);
+            s_GW = Mathf.Max(1, Mathf.CeilToInt((x1 - x0) / s_CW));
+            s_GH = Mathf.Max(1, Mathf.CeilToInt((z1 - z0) / s_CH));
+            int cells = s_GW * s_GH;
+            if (s_GridStart.Length < cells + 1)
+            {
+                s_GridStart = new int[cells + 1];
+                s_GridFill = new int[cells];
+            }
+            System.Array.Clear(s_GridStart, 0, cells + 1);
+            int total = 0;
+            for (int pass = 0; pass < 2; pass++)
+            {
+                for (int line = 0; line < lines; line++)
+                {
+                    Vector2 a = s_LineA[line], c = s_LineB[line];
+                    int i0 = Mathf.Clamp(Mathf.FloorToInt((Mathf.Min(a.x, c.x) - s_GX) / s_CW), 0, s_GW - 1);
+                    int i1 = Mathf.Clamp(Mathf.FloorToInt((Mathf.Max(a.x, c.x) - s_GX) / s_CW), 0, s_GW - 1);
+                    int j0 = Mathf.Clamp(Mathf.FloorToInt((Mathf.Min(a.y, c.y) - s_GZ) / s_CH), 0, s_GH - 1);
+                    int j1 = Mathf.Clamp(Mathf.FloorToInt((Mathf.Max(a.y, c.y) - s_GZ) / s_CH), 0, s_GH - 1);
+                    for (int j = j0; j <= j1; j++)
+                        for (int i = i0; i <= i1; i++)
+                        {
+                            int cell = j * s_GW + i;
+                            if (pass == 0) s_GridStart[cell + 1]++;
+                            else s_GridLines[s_GridFill[cell]++] = line;
+                        }
+                }
+                if (pass > 0) break;
+                for (int cell = 0; cell < cells; cell++)
+                {
+                    s_GridStart[cell + 1] += s_GridStart[cell];
+                    s_GridFill[cell] = s_GridStart[cell];
+                }
+                total = s_GridStart[cells];
+                if (s_GridLines.Length < total) s_GridLines = new int[total * 2];
+            }
         }
 
         // The part of triangle (i0, i1, i2) below StubHeight into stub, the points where its edges cross that height (in

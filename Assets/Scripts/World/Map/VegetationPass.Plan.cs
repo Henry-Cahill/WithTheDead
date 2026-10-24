@@ -18,8 +18,10 @@ namespace CloneZ
     /// a site, worked out once when the first of them asks (<see cref="For"/>): where the site lies on the state's grid,
     /// so woods, fence rows, kerbside parking and parking rows fall on one absolute lattice and every piece that builds
     /// a stretch of them builds the same trees and cars, meeting its neighbours along the seams; quick lookups of the
-    /// roads, buildings and land use round a point; how built up the ground is and how wooded the region; and the spots
-    /// one pass keeps for another (the driveways' cars, the lots' plough piles).
+    /// roads (with their kerbs and sidewalks as the roads drew them), buildings, doors, land use and power lines round a
+    /// point; the overhead wires the streetscape strung (read back from its meshes); how built up the ground is and how
+    /// wooded the region; and the spots kept clear for one another (the roads' driveways, the driveways' cars, the lots'
+    /// plough piles).
     /// </summary>
     internal sealed class NaturePlan
     {
@@ -53,8 +55,12 @@ namespace CloneZ
             Woodland = RegionalWoodland(OriginX, OriginZ);
             _roadCells = new Buckets(Reach, BucketCell);
             _buildingCells = new Buckets(Reach, BucketCell);
+            _doorCells = new Buckets(Reach, BucketCell);
+            _powerCells = new Buckets(Reach, BucketCell);
             IndexRoads();
             IndexBuildings();
+            IndexDoors();
+            IndexPower();
             _landMin = -Reach - LandCell;
             _landN = Mathf.CeilToInt((Reach * 2f + LandCell * 2f) / LandCell);
             _land = new byte[_landN * _landN];
@@ -65,6 +71,11 @@ namespace CloneZ
             _built = new float[_dN * _dN];
             _business = new float[_dN * _dN];
             Density();
+            if (!Lite)
+            {
+                KeepRoadDriveways();
+                IndexWires();
+            }
         }
 
         // Where the site's middle is on the grid: its place's grid point plus the site's offset from it (a streamed piece
@@ -379,6 +390,38 @@ namespace CloneZ
                 }
             return found;
         }
+
+        /// <summary>The street piece a <see cref="RoadSeg"/> belongs to.</summary>
+        public Street StreetOf(in RoadSeg seg) => Site.Area.Streets[seg.Street];
+
+        /// <summary>For the nearest street within 6 m of <paramref name="p"/> (a point by its edge), on the side
+        /// <paramref name="away"/> points to: how far from the street's line its carriageway ends (<paramref name="edge"/>,
+        /// its kerb face or edge) and its sidewalk does (<paramref name="back"/>, or, without one, the back of its kerb),
+        /// as the roads drew them (see <see cref="RoadPass.SidewalkOuter"/>). False when there's no street so near.</summary>
+        public bool Roadside(Vector2 p, Vector2 away, out float edge, out float back)
+        {
+            edge = back = 0f;
+            if (!NearestRoad(p, 6f, 1, out RoadSeg seg, out float _, out Vector2 _)) return false;
+            Street st = StreetOf(seg);
+            Vector2 d = seg.B - seg.A;
+            int side = d.x * away.y - d.y * away.x >= 0f ? 1 : -1;
+            edge = RoadPass.EdgeOffset(st, side);
+            float outer = RoadPass.SidewalkOuter(st, side);
+            back = Mathf.Max(edge, outer > 0f ? outer : RoadPass.KerbOffset(st, side));
+            return true;
+        }
+
+        /// <summary>True when <paramref name="p"/> is on the nearest street's sidewalk (from the back of its kerb to the
+        /// sidewalk's outer edge, as the roads drew them), or within <paramref name="margin"/> of it.</summary>
+        public bool OnSidewalk(Vector2 p, float margin)
+        {
+            if (!NearestRoad(p, 15f, 1, out RoadSeg seg, out float dist, out Vector2 foot)) return false;
+            Street st = StreetOf(seg);
+            Vector2 d = seg.B - seg.A;
+            int side = d.x * (p.y - foot.y) - d.y * (p.x - foot.x) >= 0f ? 1 : -1;
+            float outer = RoadPass.SidewalkOuter(st, side);
+            return outer > 0f && dist > RoadPass.KerbOffset(st, side) - margin && dist < outer + margin;
+        }
         #endregion
 
         #region Buildings
@@ -474,6 +517,193 @@ namespace CloneZ
                 default:
                     return false;
             }
+        }
+
+        /// <summary>The nearest wall within <paramref name="within"/> of <paramref name="p"/> (outside every building): the
+        /// unit plan direction towards it and how far it is. False when there's none so near (or p is inside one).</summary>
+        public bool NearestWall(Vector2 p, float within, out Vector2 dir, out float dist)
+        {
+            dir = Vector2.zero;
+            dist = WallDistance(p, within, out Footprint f);
+            if (f == null || dist <= 0.01f) return false;
+            List<Vector2> pts = f.Pts;
+            float best = float.MaxValue;
+            Vector2 on = p;
+            for (int i = 0, k = pts.Count - 1; i < pts.Count; k = i++)
+            {
+                Vector2 a = pts[k], ab = pts[i] - a;
+                float t = ab.sqrMagnitude > 1e-6f ? Mathf.Clamp01(Vector2.Dot(p - a, ab) / ab.sqrMagnitude) : 0f;
+                Vector2 q = a + ab * t;
+                float d = (q - p).sqrMagnitude;
+                if (d >= best) continue;
+                best = d;
+                on = q;
+            }
+            Vector2 to = on - p;
+            float len = to.magnitude;
+            if (len < 1e-3f) return false;
+            dir = to / len;
+            return true;
+        }
+        #endregion
+
+        #region Doors
+        // Every enterable building's doors: the middle of each on its wall, and its doorstep a metre out.
+        private readonly List<Vector2> _doors = new List<Vector2>(64), _doorWalls = new List<Vector2>(64);
+        private readonly Buckets _doorCells;
+
+        private void IndexDoors()
+        {
+            foreach (EnterableBuilding e in Site.Enterables)
+                foreach (Doorway d in e.Doors)
+                {
+                    Vector2 at = d.At + d.Outward * 1f;
+                    _doorCells.Add(_doors.Count, new Rect(at.x, at.y, 0f, 0f));
+                    _doors.Add(at);
+                    _doorWalls.Add(d.At);
+                }
+        }
+
+        /// <summary>True when the middle of a door lies on the wall from <paramref name="a"/> to <paramref name="b"/>.</summary>
+        public bool DoorOnWall(Vector2 a, Vector2 b)
+        {
+            Vector2 mid = (a + b) * 0.5f;
+            _doorCells.Range(mid, Vector2.Distance(a, b) * 0.5f + 1.5f, out int x0, out int z0, out int x1, out int z1);
+            for (int z = z0; z <= z1; z++)
+                for (int x = x0; x <= x1; x++)
+                {
+                    List<int> cell = _doorCells.At(x, z);
+                    if (cell == null) continue;
+                    for (int k = 0; k < cell.Count; k++)
+                        if (MapGeometry.DistanceToSegment(_doorWalls[cell[k]], a, b) < 0.4f) return true;
+                }
+            return false;
+        }
+
+        /// <summary>True when <paramref name="p"/> is within <paramref name="within"/> of a doorstep (a metre out from the
+        /// middle of any enterable building's door): the way in is left clear.</summary>
+        public bool NearDoor(Vector2 p, float within)
+        {
+            _doorCells.Range(p, within, out int x0, out int z0, out int x1, out int z1);
+            float w2 = within * within;
+            for (int z = z0; z <= z1; z++)
+                for (int x = x0; x <= x1; x++)
+                {
+                    List<int> cell = _doorCells.At(x, z);
+                    if (cell == null) continue;
+                    for (int k = 0; k < cell.Count; k++)
+                        if ((_doors[cell[k]] - p).sqrMagnitude < w2) return true;
+                }
+            return false;
+        }
+        #endregion
+
+        #region Power lines and overhead wires
+        // The mapped power lines' pieces, each with the half-width of the strip kept clear of trees under it.
+        private readonly List<(Vector2 a, Vector2 b, float half)> _power = new List<(Vector2, Vector2, float)>(16);
+        private readonly Buckets _powerCells;
+
+        private void IndexPower()
+        {
+            foreach (Line l in Site.Area.Power)
+            {
+                // A transmission line runs down a cleared right of way; a distribution line keeps its poles clear.
+                float half = l.Data.kind == "line" ? 13f : 3f;
+                for (int i = 0; i + 1 < l.Pts.Count; i++)
+                {
+                    Vector2 a = l.Pts[i], b = l.Pts[i + 1];
+                    if ((b - a).sqrMagnitude < 1e-4f) continue;
+                    _powerCells.Add(_power.Count, Rect.MinMaxRect(Mathf.Min(a.x, b.x) - half, Mathf.Min(a.y, b.y) - half,
+                        Mathf.Max(a.x, b.x) + half, Mathf.Max(a.y, b.y) + half));
+                    _power.Add((a, b, half));
+                }
+            }
+        }
+
+        /// <summary>True under a mapped power line's cleared strip: its right of way through the woods.</summary>
+        public bool UnderPowerLine(Vector2 p)
+        {
+            if (_power.Count == 0) return false;
+            _powerCells.Range(p, 0f, out int x0, out int z0, out int x1, out int z1);
+            List<int> cell = _powerCells.At(x0, z0);
+            if (cell == null) return false;
+            for (int k = 0; k < cell.Count; k++)
+            {
+                (Vector2 a, Vector2 b, float half) = _power[cell[k]];
+                if (MapGeometry.DistanceToSegment(p, a, b) < half) return true;
+            }
+            return false;
+        }
+
+        private const float WireCell = 2f;
+        // The lowest overhead wire over each 2 m cell of a Full site's square, read back from the wires the streetscape
+        // strung (see IndexWires).
+        private readonly Dictionary<long, float> _wires = new Dictionary<long, float>();
+        private static readonly List<Vector3> s_WireVerts = new List<Vector3>(4096);
+
+        /// <summary>
+        /// Reads the overhead wires back from the meshes the streetscape pass hung under the site's overhead root (one
+        /// "Wires" object per cell; every three vertices a ring round a strand, and each ring three vertices on from the
+        /// last along the same strand): each stretch between two rings marks the cells it passes over with its height,
+        /// so the trees can keep their crowns off the lines. Nothing found (no wires, or a mesh that can't be read): no
+        /// wires to keep off.
+        /// </summary>
+        private void IndexWires()
+        {
+            Transform root = Site.Town.Overhead;
+            if (root == null) return;
+            Matrix4x4 toSite = root.worldToLocalMatrix;
+            for (int c = 0; c < root.childCount; c++)
+            {
+                Transform t = root.GetChild(c);
+                if (t.name != "Wires") continue;
+                var mf = t.GetComponent<MeshFilter>();
+                Mesh mesh = mf != null ? mf.sharedMesh : null;
+                if (mesh == null || !mesh.isReadable) continue;
+                mesh.GetVertices(s_WireVerts);
+                Matrix4x4 m = toSite * t.localToWorldMatrix;
+                for (int i = 0; i + 3 < s_WireVerts.Count; i += 3)
+                {
+                    Vector3 a = m.MultiplyPoint3x4(s_WireVerts[i]), b = m.MultiplyPoint3x4(s_WireVerts[i + 3]);
+                    float len = Vector2.Distance(new Vector2(a.x, a.z), new Vector2(b.x, b.z));
+                    if (len > 8f || float.IsNaN(len)) continue;   // the next strand's first ring
+                    int steps = Mathf.Max(1, Mathf.CeilToInt(len / 1f));
+                    for (int k = 0; k <= steps; k++)
+                    {
+                        Vector3 q = Vector3.Lerp(a, b, k / (float)steps);
+                        if (!InSquare(new Vector2(q.x, q.z), -WireCell)) continue;
+                        long key = Combine(Mathf.FloorToInt(q.x / WireCell), Mathf.FloorToInt(q.z / WireCell));
+                        if (!_wires.TryGetValue(key, out float low) || q.y < low) _wires[key] = q.y;
+                    }
+                }
+            }
+            s_WireVerts.Clear();
+        }
+
+        /// <summary>The nearest overhead wire (in plan) within <paramref name="within"/> of <paramref name="p"/> hanging
+        /// lower than <paramref name="below"/>: the unit direction towards it, how far it is and how high it hangs there.</summary>
+        public bool WireNear(Vector2 p, float within, float below, out Vector2 dir, out float dist, out float height)
+        {
+            dir = Vector2.zero;
+            dist = within;
+            height = 0f;
+            if (_wires.Count == 0) return false;
+            int r = Mathf.CeilToInt(within / WireCell);
+            int cx = Mathf.FloorToInt(p.x / WireCell), cz = Mathf.FloorToInt(p.y / WireCell);
+            bool found = false;
+            for (int z = cz - r; z <= cz + r; z++)
+                for (int x = cx - r; x <= cx + r; x++)
+                {
+                    if (!_wires.TryGetValue(Combine(x, z), out float y) || y >= below) continue;
+                    var at = new Vector2((x + 0.5f) * WireCell, (z + 0.5f) * WireCell);
+                    float d = Vector2.Distance(at, p);
+                    if (d >= dist) continue;
+                    dist = d;
+                    height = y;
+                    dir = d > 1e-3f ? (at - p) / d : Vector2.up;
+                    found = true;
+                }
+            return found;
         }
         #endregion
 
@@ -663,6 +893,21 @@ namespace CloneZ
         public void KeepRect(Vector2 at, Vector2 axis, float halfLength, float halfWidth, KeepKind kind)
             => Kept.Add(new Keep { At = at, Axis = axis.normalized, HalfLength = halfLength, HalfWidth = halfWidth, Kind = kind });
 
+        // The driveways the roads laid (aprons and packed tracks up to the houses), from a couple of metres out in the
+        // street, where a kerbside car would block the apron, to the track's end.
+        private void KeepRoadDriveways()
+        {
+            IReadOnlyList<RoadPass.DrivewaySpot> spots = RoadPass.Driveways(Site);
+            for (int i = 0; i < spots.Count; i++)
+            {
+                RoadPass.DrivewaySpot d = spots[i];
+                if (d.Dir.sqrMagnitude < 0.5f) continue;
+                const float from = -2.2f;
+                float to = Mathf.Max(d.Length, 1f);
+                KeepRect(d.At + d.Dir * ((from + to) * 0.5f), d.Dir, (to - from) * 0.5f, 1.7f, KeepKind.Driveway);
+            }
+        }
+
         /// <summary>True when a disc of <paramref name="radius"/> at <paramref name="p"/> touches a kept spot.</summary>
         public bool IsKept(Vector2 p, float radius)
         {
@@ -709,10 +954,16 @@ namespace CloneZ
             /// <summary>Degrees clockwise from north the car's nose points.</summary>
             public float Yaw;
             public long Key;
+            /// <summary>The home it belongs to (null for a road's driveway no home was found for).</summary>
             public Footprint Home;
-            /// <summary>Where the driveway meets the street's sidewalk, and its width (0: no strip to draw).</summary>
+            /// <summary>Where the driveway meets the street's sidewalk, and the width of the strip this pass draws to the
+            /// car (0: none, the roads drew the driveway).</summary>
             public Vector2 Mouth;
             public float StripWidth;
+            /// <summary>On a driveway the roads laid: <see cref="Mouth"/> is where it leaves the sidewalk.</summary>
+            public bool Road;
+            /// <summary>Along the driveway, from the street towards the house.</summary>
+            public Vector2 Dir;
         }
 
         /// <summary>The driveways' cars (<see cref="VehiclePass.PlanDriveways"/>).</summary>

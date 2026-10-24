@@ -62,7 +62,7 @@ namespace CloneZ
             foreach (Crossing c in ctx.Crossings) crossings[SnapKey(c.At)] = c;
             int line = ctx.Poles.Count > 0 ? ctx.Poles[ctx.Poles.Count - 1].Line + 1 : 0;
             int firstPole = ctx.Poles.Count;
-            foreach (Chain chain in Chains(pieces))
+            foreach (Chain chain in Chains(ctx, pieces))
             {
                 if (ctx.Density.CityCore(chain.C[chain.C.Count / 2])) continue;
                 PlaceLine(ctx, chain, crossings, line++);
@@ -94,7 +94,7 @@ namespace CloneZ
                 }
                 if (best == null) continue;
                 long pair = i < bestIndex ? ((long)i << 32) | (uint)bestIndex : ((long)bestIndex << 32) | (uint)i;
-                if (!joined.Add(pair)) continue;
+                if (!joined.Add(pair) || ctx.Blocks.Crosses(t.At, best.At, WirePad)) continue;
                 // A tap carries one primary and the neutral (and the low-voltage run and telephone where both have them).
                 Span(ctx, t, best, true);
             }
@@ -132,7 +132,7 @@ namespace CloneZ
         // The pieces joined into runs: one road (by name) carried on through its pieces where one ends where the next
         // starts (both drawn the same way: the line keeps to one side of each piece's own direction, so a road whose pieces
         // run against each other gets two runs, joined by a span across it) and turns less than a right angle.
-        private static List<Chain> Chains(List<Street> pieces)
+        private static List<Chain> Chains(Ctx ctx, List<Street> pieces)
         {
             var chains = new List<Chain>();
             var used = new bool[pieces.Count];
@@ -169,7 +169,7 @@ namespace CloneZ
                         else run.Insert(0, pieces[found]);
                     }
                 }
-                chains.Add(MakeChain(run, name));
+                chains.Add(MakeChain(ctx, run, name));
             }
             return chains;
         }
@@ -178,13 +178,18 @@ namespace CloneZ
 
         private static Vector2 EndDir(Street s) => (s.Pts[s.Pts.Count - 1] - s.Pts[s.Pts.Count - 2]).normalized;
 
-        private static Chain MakeChain(List<Street> run, string name)
+        private static Chain MakeChain(Ctx ctx, List<Street> run, string name)
         {
             var c = new Chain { Name = name };
             c.Side = MapStyle.Unit(NameId(run[0]), SaltSide) < 0.5f ? 1f : -1f;
             foreach (Street s in run)
             {
-                List<Vector2> moved = MapGeometry.OffsetLine(s.Pts, c.Side * (HalfWidth(s) + Verge(s)));
+                List<Vector2> moved = MapGeometry.OffsetLine(s.Pts, c.Side * Roadside(s, (int)c.Side));
+                // Where the piece meets the edge, a streamed piece's neighbour carries the line on from a pole they share:
+                // its spot comes from the data alone, so both put it in the same place.
+                int last = s.Pts.Count - 1;
+                if (OnEdge(ctx, s.Pts[0])) moved[0] = s.Pts[0] + Left(StartDir(s)) * (c.Side * (MappedHalf(s) + Verge(s)));
+                if (OnEdge(ctx, s.Pts[last])) moved[last] = s.Pts[last] + Left(EndDir(s)) * (c.Side * (MappedHalf(s) + Verge(s)));
                 for (int i = 0; i < s.Pts.Count; i++)
                 {
                     Vector2 p = s.Pts[i], q = moved[i];
@@ -228,7 +233,7 @@ namespace CloneZ
                 if (!crossings.TryGetValue(SnapKey(c.C[i]), out Crossing x)) continue;
                 float w = 0f;
                 foreach (JunctionArm a in x.Arms)
-                    if (NameKey(a.Street) != c.Name) w = Mathf.Max(w, a.HalfWidth + 2.6f);
+                    if (NameKey(a.Street) != c.Name) w = Mathf.Max(w, HalfWidth(a.Street) + 2.6f);
                 if (w <= 0f) continue;
                 zones.Add(new Vector2(c.Arc[i] - w, c.Arc[i] + w));
             }
@@ -258,9 +263,9 @@ namespace CloneZ
             for (int k = 0; k < anchors.Count; k++)
             {
                 Anchor a = anchors[k];
-                // A pole where the line crosses the site's edge is shared with the neighbouring piece: both drop it if it
-                // would stand on a carriageway (both see the roads that cross the edge there).
-                if (a.Edge && OnCarriageway(ctx.Site.Area, PointAt(c, a.T, out _))) continue;
+                // A pole where the line crosses the site's edge is shared with the neighbouring piece: dropped where it
+                // would stand on a carriageway as the roads drew it, or in a building.
+                if (a.Edge && !EdgeClear(ctx, PointAt(c, a.T, out _))) continue;
                 if (placed.Count > 0 && a.T - placed[placed.Count - 1].t < 5f)
                 {
                     // Two anchors this close are one pole (an edge pole wins).
@@ -292,6 +297,25 @@ namespace CloneZ
                 placed.Add((a.T, a));
             }
             if (placed.Count < 2) return;
+            // A span whose wires would stray from the road (round a bend) or pass over a building gets a pole between.
+            for (int k = 0, guard = 0; k + 1 < placed.Count && guard < 64; guard++)
+            {
+                float t0 = placed[k].t, t1 = placed[k + 1].t;
+                if (t1 - t0 >= 15f)
+                {
+                    Vector2 a = PointAt(c, t0, out _), b = PointAt(c, t1, out _);
+                    if (Deviation(c, t0, t1, a, b) > 1.3f || ctx.Blocks.Crosses(a, b, WirePad))
+                    {
+                        float t = (t0 + t1) * 0.5f;
+                        if (TryFree(ctx, c, ref t, t0 + 6.5f, t1 - 6.5f, zones))
+                        {
+                            placed.Insert(k + 1, (t, new Anchor { T = t }));
+                            continue;
+                        }
+                    }
+                }
+                k++;
+            }
 
             bool three = rank >= 3;
             bool secondary = main.Data.kind != "unclassified" || ctx.Density.Town(c.C[n / 2]);
@@ -340,10 +364,33 @@ namespace CloneZ
                     if (pull.sqrMagnitude > 1e-4f) p.Guy = -pull.normalized;
                 }
             }
-            for (int i = first + 1; i < ctx.Poles.Count; i++) Span(ctx, ctx.Poles[i - 1], ctx.Poles[i]);
+            for (int i = first + 1; i < ctx.Poles.Count; i++)
+            {
+                Pole a = ctx.Poles[i - 1], b = ctx.Poles[i];
+                // Still over a building (no room for a pole between): the line breaks there.
+                if (!ctx.Blocks.Crosses(a.At, b.At, WirePad)) Span(ctx, a, b);
+            }
         }
 
+        /// <summary>How close a span's wires may pass a building's walls (its eaves reach out past them).</summary>
+        private const float WirePad = 0.7f;
+
         private static bool OnEdge(Ctx ctx, Vector2 p) => Mathf.Abs(p.x) >= ctx.Reach - 0.02f || Mathf.Abs(p.y) >= ctx.Reach - 0.02f;
+
+        // A pole on the site's edge: off the carriageways as the roads drew them and out of the buildings.
+        private static bool EdgeClear(Ctx ctx, Vector2 p) => ctx.Roads.Clearance(p, 2f) >= 0.4f && !ctx.Blocks.Contains(p, 0.3f);
+
+        // How far the line strays from the straight wire between t0 (at a) and t1 (at b).
+        private static float Deviation(Chain c, float t0, float t1, Vector2 a, Vector2 b)
+        {
+            float worst = 0f;
+            for (int i = 0; i < c.L.Count; i++)
+            {
+                if (c.Arc[i] <= t0 || c.Arc[i] >= t1) continue;
+                worst = Mathf.Max(worst, MapGeometry.DistanceToSegment(c.L[i], a, b));
+            }
+            return worst;
+        }
 
         private static bool InZone(List<Vector2> zones, float t, out Vector2 zone)
         {
@@ -358,7 +405,8 @@ namespace CloneZ
 
         private static float ZoneStart(List<Vector2> zones, float t, float fallback) => InZone(zones, t - 0.01f, out Vector2 z) ? z.x : fallback;
 
-        // A free spot for a pole at t along the line, or a step or three either way (within lo..hi, out of the zones).
+        // A free spot for a pole at t along the line, or a step or three either way (within lo..hi, out of the zones): off
+        // the roads and driveways, clear of what already stands there, out of the buildings.
         private static bool TryFree(Ctx ctx, Chain c, ref float t, float lo, float hi, List<Vector2> zones)
         {
             for (int k = 0; k < 7; k++)
@@ -366,40 +414,10 @@ namespace CloneZ
                 float shift = (k + 1) / 2 * 1.6f * (k % 2 == 0 ? 1f : -1f);
                 float tt = t + shift;
                 if (tt < lo || tt > hi || InZone(zones, tt, out _)) continue;
-                Vector2 p = PointAt(c, tt, out _);
-                if (ctx.Inside(p))
-                {
-                    if (!ctx.Site.FreeBeside(p, 0.4f)) continue;
-                }
-                else if (InBuilding(ctx.Site.Area, p) || OnCarriageway(ctx.Site.Area, p)) continue;
+                if (!ctx.Roadside(PointAt(c, tt, out _), 0.4f)) continue;
                 t = tt;
                 return true;
             }
-            return false;
-        }
-
-        // On a road's carriageway (tunnels aside).
-        private static bool OnCarriageway(Area area, Vector2 p)
-        {
-            foreach (Street s in area.Streets)
-            {
-                if (s.Data.tunnel || RoadRank(s) < 1) continue;
-                float reach = HalfWidth(s) + 0.3f;
-                for (int i = 0; i + 1 < s.Pts.Count; i++)
-                {
-                    Vector2 a = s.Pts[i], b = s.Pts[i + 1];
-                    if (p.x < Mathf.Min(a.x, b.x) - reach || p.x > Mathf.Max(a.x, b.x) + reach
-                        || p.y < Mathf.Min(a.y, b.y) - reach || p.y > Mathf.Max(a.y, b.y) + reach) continue;
-                    if (MapGeometry.DistanceToSegment(p, a, b) < reach) return true;
-                }
-            }
-            return false;
-        }
-
-        private static bool InBuilding(Area area, Vector2 p)
-        {
-            foreach (Footprint f in area.Buildings)
-                if (f.Bounds.Contains(p) && MapGeometry.Contains(f.Pts, p)) return true;
             return false;
         }
 
@@ -444,12 +462,15 @@ namespace CloneZ
             if (len < 2f || len > 95f) return;
             Vector2 acrossB = Vector2.Dot(a.Across, b.Across) < 0f ? -b.Across : b.Across;
             bool far = !ctx.Inside((a.At + b.At) * 0.5f);
+            // Past a fixed map's edge only the wires seen from afar: the primaries and the neutral.
+            bool ring = far && !ctx.Site.Chunked;
             float sagHigh = 0.15f + len * 0.012f, sagLow = 0.2f + len * 0.02f;
             if (!tap && a.ThreePhase && b.ThreePhase)
                 for (int k = 0; k < 3; k++)
                     ctx.Wires.Add(Slot(a, k, a.Across), Slot(b, k, acrossB), sagHigh, 0.017f, Conductor, far);
             else ctx.Wires.Add(Slot(a, a.ThreePhase ? 2 : 0, a.Across), Slot(b, b.ThreePhase ? 2 : 0, acrossB), sagHigh, 0.017f, Conductor, far);
             ctx.Wires.Add(Slot(a, 3, a.Across), Slot(b, 3, acrossB), sagHigh + 0.1f, 0.015f, Conductor, far);
+            if (ring) return;
             if (a.Secondary && b.Secondary)
                 ctx.Wires.Add(Slot(a, 4, a.Across), Slot(b, 4, acrossB), sagLow, 0.022f, WireBlack, far);
             if (a.Telephone && b.Telephone)
@@ -457,8 +478,9 @@ namespace CloneZ
         }
 
         /// <summary>Strings the drops from the poles to the buildings they feed: one each, from the nearest pole within
-        /// reach, unless another building stands in the way; at most three from a pole. Downtown's shops are fed from the
-        /// alleys behind them, out of sight.</summary>
+        /// reach, unless a building stands in the way; at most three from a pole. Downtown's shops are fed from the
+        /// alleys behind them, out of sight. A drop comes down to a weatherhead on a short mast up the wall (through the
+        /// eaves of a single storey; on a taller building, the upper storey's wall), clear of the roof.</summary>
         internal static void ServiceDrops(Ctx ctx)
         {
             if (ctx.Poles.Count == 0) return;
@@ -484,20 +506,22 @@ namespace CloneZ
                     best = p;
                     attach = q;
                 }
-                if (best == null || bestD < 2f || Blocked(site.Area, f, best.At, attach)) continue;
-                drops[best] = drops.TryGetValue(best, out int had) ? had + 1 : 1;
+                if (best == null || bestD < 2f) continue;
                 Vector2 outward = (best.At - attach).normalized;
-                float h = Mathf.Clamp(shell.WallTop - 0.35f, 2.5f, 4.4f);
-                Vector3 house = To3(attach + outward * 0.06f, h);
+                Vector2 end = attach + outward * 0.12f;
+                // Over no other building, and not back across this one's own outline (an L-shaped house's wing).
+                if (ctx.Blocks.Crosses(best.At, end, 0.35f, f) || BuildingGrid.Meets(f.Pts, best.At, end, 0f)) continue;
+                drops[best] = drops.TryGetValue(best, out int had) ? had + 1 : 1;
+                float top = Mathf.Clamp(shell.WallTop, 2.4f, 4.6f) + 0.75f;
                 Vector2 side = Vector2.Dot(best.Across, outward) >= 0f ? best.Across : -best.Across;
                 Vector3 pole = To3(best.At + side * 0.14f, best.Height - 2.3f);
-                ctx.Wires.Add(pole, house, 0.3f + bestD * 0.01f, 0.02f, WireBlack, false);
-                // The service mast on the wall: a pipe up past the eaves with its weatherhead.
+                ctx.Wires.Add(pole, To3(end + outward * 0.05f, top - 0.08f), 0.3f + bestD * 0.01f, 0.02f, WireBlack, false);
+                // The mast up the wall and its weatherhead, bent towards the pole.
                 RaidMesh m = ctx.High(attach);
-                Vector3 pipe = To3(attach + outward * 0.06f, h + 0.1f);
-                m.Box(pipe, new Vector3(0.05f, 1.1f, 0.05f), DarkMetal);
-                m.Box(pipe + new Vector3(0f, 0.58f, 0f) + To3(outward * 0.03f, 0f), new Vector3(0.1f, 0.06f, 0.1f), DarkMetal);
-                m.Box(pipe + new Vector3(0f, -0.65f, 0f), new Vector3(0.16f, 0.24f, 0.1f), Matte(new Color(0.55f, 0.56f, 0.55f)));
+                Vector3 mast = To3(end, top - 0.55f);
+                m.Box(mast, new Vector3(0.05f, 1.1f, 0.05f), DarkMetal);
+                m.Box(To3(end + outward * 0.04f, top + 0.02f), new Vector3(0.11f, 0.07f, 0.11f), DarkMetal);
+                m.Box(To3(end - outward * 0.05f, top - 0.95f), new Vector3(0.08f, 0.05f, 0.1f), DarkMetal);
             }
         }
 
@@ -528,18 +552,6 @@ namespace CloneZ
             return on;
         }
 
-        // Another building's outline in the way of a drop.
-        private static bool Blocked(Area area, Footprint self, Vector2 a, Vector2 b)
-        {
-            Rect r = Rect.MinMaxRect(Mathf.Min(a.x, b.x), Mathf.Min(a.y, b.y), Mathf.Max(a.x, b.x), Mathf.Max(a.y, b.y));
-            foreach (Footprint f in area.Buildings)
-            {
-                if (f == self || !f.Bounds.Overlaps(r)) continue;
-                for (int k = 1; k < 4; k++)
-                    if (MapGeometry.Contains(f.Pts, Vector2.Lerp(a, b, k * 0.25f))) return true;
-            }
-            return false;
-        }
         #endregion
 
         #region Drawing the poles
@@ -554,16 +566,28 @@ namespace CloneZ
         private static void DrawPole(Ctx ctx, Pole p)
         {
             bool inside = ctx.Inside(p.At);
+            // Past a fixed map's edge the poles are scenery, seen from afar: a plain pole and its crossarm.
+            bool ring = !inside && !ctx.Site.Chunked;
             Surf wood = Matte(PoleWoods[MapStyle.Pick(p.Key, SaltWood, PoleWoods.Length)]);
             float h = p.Height;
             Vector3 foot = To3(p.At, 0f);
-            ctx.Low(p.At).Cylinder(foot, 0.14f, h, 7, wood, Quaternion.identity, 0.72f);
+            ctx.Low(p.At).Cylinder(foot, 0.14f, h, ring ? 5 : 7, wood, Quaternion.identity, 0.72f);
             bool burning = p.Lamp != null && p.Lamp.Lit && inside;
-            if (!burning) ctx.Collider(p.At, 0f, new Vector3(0.3f, 4f, 0.3f), 0f);
+            if (!burning)
+            {
+                if (inside) ctx.Collider(p.At, 0f, new Vector3(0.3f, 4f, 0.3f), 0f);
+                else if (OwnsEdge(ctx, p.At)) ctx.Site.Town.PropCollider(To3(p.At, 2f), new Vector3(0.3f, 4f, 0.3f), 0f);
+            }
 
             RaidMesh m = ctx.High(p.At);
             m.SetFrame(foot, Yaw(Left(p.Across)));
             // Local frame: x across the line, z along it, y up.
+            if (ring)
+            {
+                if (p.ThreePhase) m.Box(new Vector3(0f, h - 0.45f, 0f), new Vector3(2.44f, 0.1f, 0.09f), wood);
+                m.ResetFrame();
+                return;
+            }
             Surf insulator = Gloss(MapStyle.Unit(p.Key, SaltWood + 1) < 0.5f ? InsulatorBrown : InsulatorGlass);
             if (p.ThreePhase)
             {
@@ -611,20 +635,26 @@ namespace CloneZ
                 Vector3 head = m.ToMeshSpace(tip);
                 m.ResetFrame();
                 CobraHead(ctx, p.Lamp, head, toRoad, p.Height < 15f ? 0.30f : 0.36f);
-                if (burning) StreetLights.Attach(ctx, p.Lamp, p.At, h, head);
+                if (burning) ctx.Burning.Add(new Burning { Lamp = p.Lamp, Foot = p.At, PoleHeight = h, Head = head });
             }
             m.ResetFrame();
             if (p.Guy.sqrMagnitude > 0.5f) Guy(ctx, p, inside);
         }
 
+        /// <summary>True for a spot on a streamed piece's west or south edge: the one of the two pieces sharing a pole
+        /// there that gives it its collider.</summary>
+        internal static bool OwnsEdge(Ctx ctx, Vector2 p)
+            => ctx.Site.Chunked && Mathf.Abs(p.x) <= ctx.Half + 0.05f && Mathf.Abs(p.y) <= ctx.Half + 0.05f
+                && (p.x <= -ctx.Half + 0.05f || p.y <= -ctx.Half + 0.05f);
+
         // A guy wire from near the pole's top to an anchor in the ground behind it; in town, a yellow guard round its foot.
         private static void Guy(Ctx ctx, Pole p, bool inside)
         {
             Vector2 ground = p.At + p.Guy * (p.Height * 0.42f);
-            if (ctx.Inside(ground) && !ctx.Site.FreeBeside(ground, 0.3f))
+            if (!ctx.Roadside(ground, 0.3f))
             {
                 ground = p.At + p.Guy * (p.Height * 0.28f);
-                if (ctx.Inside(ground) && !ctx.Site.FreeBeside(ground, 0.3f)) return;
+                if (!ctx.Roadside(ground, 0.3f)) return;
             }
             Vector3 top = To3(p.At, p.Height - 0.7f), anchor = To3(ground, 0.02f);
             ctx.Wires.Add(top, anchor, 0.02f, 0.01f, GuyGrey, !inside);
@@ -745,7 +775,9 @@ namespace CloneZ
             return MapGeometry.DistanceToSegment(p[k], a, b) < 0.06f && Vector2.Distance(p[k], a) > 0.01f;
         }
 
-        // The support at vertex j: square to the bend's bisector there.
+        // The support at vertex j: square to the bend's bisector there. A wooden pole the mapping put on a carriageway as the
+        // roads drew it (mapping is good to a metre or two) steps off it sideways, when every span it carries is this site's
+        // to draw (so a neighbouring piece's span still ends on it).
         private static Pole Support(Ctx ctx, MapLine data, Vector2[] at, bool[] inRegion, int j, Tower look, int line, bool draw = true)
         {
             Vector2 dir = Vector2.zero;
@@ -760,6 +792,15 @@ namespace CloneZ
                 ThreePhase = look == Tower.Wood && MapStyle.Unit(data.id, SaltMinor) < 0.45f,
                 Height = look == Tower.Wood ? 9.6f + 1.2f * MapStyle.Unit(key, SaltPole) : look == Tower.HFrame ? 15f : 27f,
             };
+            if (look == Tower.Wood && ctx.Inside(at[j]) && (j == 0 || ctx.Inside(at[j - 1])) && (j + 1 >= at.Length || ctx.Inside(at[j + 1]))
+                && ctx.Roads.Clearance(at[j], 2f) < 0.4f)
+                for (int k = 1; k <= 6; k++)
+                {
+                    Vector2 q = at[j] + p.Across * ((k + 1) / 2 * (k % 2 == 1 ? 1f : -1f));
+                    if (ctx.Roads.Clearance(q, 2f) < 0.4f || ctx.Blocks.Contains(q, 0.3f)) continue;
+                    p.At = q;
+                    break;
+                }
             if (!draw) return p;
             bool terminal = j == 0 || j == at.Length - 1;
             if (look == Tower.Wood)
@@ -924,7 +965,7 @@ namespace CloneZ
         #region Shared with the street lights
         /// <summary>A cobra-head street light at the end of an arm (<paramref name="end"/>, world), reaching along
         /// <paramref name="reach"/>: an aluminium housing with a rounded nose, a dark refractor under it (a burning one
-        /// gets its glowing lens from <see cref="StreetLights.Attach"/>) and snow on top.</summary>
+        /// gets its glowing lens when it's made a <see cref="StreetLamp"/>) and snow on top.</summary>
         internal static void CobraHead(Ctx ctx, LampPlan lamp, Vector3 end, Vector2 reach, float size)
         {
             Vector2 at = new Vector2(end.x, end.z);

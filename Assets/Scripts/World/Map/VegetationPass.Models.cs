@@ -29,11 +29,56 @@ namespace CloneZ
         ScrubPine,
     }
 
-    /// <summary>How much of a tree to draw: Full near the survivor, Wood for the many trees of a forest, Lite far off.</summary>
-    internal enum TreeTier : byte { Full, Wood, Lite }
+    /// <summary>How much of a tree to draw: Full near the survivor, Wood for the many trees of a forest, Lite for a fixed
+    /// map's scenery past its edge, Blob for a far streamed piece (a trunk under one mass of crown).</summary>
+    internal enum TreeTier : byte { Full, Wood, Lite, Blob }
 
     /// <summary>The bushes: evergreen foundation plantings and bare thickets.</summary>
     internal enum ShrubKind : byte { Yew, Boxwood, Juniper, Thicket }
+
+    /// <summary>
+    /// What a tree's crown must keep clear of: up to two obstacles (the nearest wall, the nearest overhead wire), each as
+    /// the plan direction to it in the tree's own frame (degrees clockwise from the frame's +z) and its distance from the
+    /// trunk. A hardwood's limbs reaching towards one are cut back short of it, the way a yard tree is pruned off a house
+    /// and the power company side-trims the trees under its lines.
+    /// </summary>
+    internal struct TreeRoom
+    {
+        public int Count;
+        public float Az0, D0, Az1, D1;
+
+        public void Add(float azimuth, float distance)
+        {
+            if (Count == 0)
+            {
+                Az0 = azimuth;
+                D0 = distance;
+            }
+            else if (Count == 1)
+            {
+                Az1 = azimuth;
+                D1 = distance;
+            }
+            else return;
+            Count++;
+        }
+
+        /// <summary>How far out from the trunk a limb heading along <paramref name="azimuth"/> may reach.</summary>
+        public float Reach(float azimuth)
+        {
+            float best = float.MaxValue;
+            if (Count > 0) best = Limit(azimuth, Az0, D0, best);
+            if (Count > 1) best = Limit(azimuth, Az1, D1, best);
+            return best;
+        }
+
+        // The obstacle as a plane square to its direction: d away straight towards it, farther off to the side.
+        private static float Limit(float azimuth, float towards, float d, float best)
+        {
+            float delta = Mathf.Abs(Mathf.DeltaAngle(azimuth, towards));
+            return delta >= 80f ? best : Mathf.Min(best, d / Mathf.Cos(delta * Mathf.Deg2Rad));
+        }
+    }
 
     /// <summary>
     /// The nature passes' winter trees, bushes and deadwood, drawn into a <see cref="RaidMesh"/> round the local frame's
@@ -130,17 +175,81 @@ namespace CloneZ
             return Mathf.Clamp(height * FormOf(kind).Girth * 1.25f, 0.15f, 0.55f);
         }
 
+        /// <summary>A conifer's widest skirt per metre of height (its lowest tiers at their widest and most ragged).</summary>
+        public static float Skirt(TreeKind kind)
+        {
+            switch (kind)
+            {
+                case TreeKind.Cedar: return 0.3f;
+                case TreeKind.Spruce: return 0.37f;
+                default: return 0.36f;
+            }
+        }
+
+        /// <summary>How far from the trunk a tree of the kind reaches at most (a hardwood's limbs with their branches, a
+        /// conifer's skirt).</summary>
+        public static float Reach(TreeKind kind, float height)
+            => Conifer(kind) ? height * Skirt(kind) : height * FormOf(kind).Spread * 1.6f;
+
+        /// <summary>The shortest a tree of the kind is drawn: a smaller one isn't worth planting where its room cuts it
+        /// down.</summary>
+        public static float Shortest(TreeKind kind)
+        {
+            switch (kind)
+            {
+                case TreeKind.Dogwood: case TreeKind.Cedar: return 3f;
+                case TreeKind.Pear: case TreeKind.Spruce: case TreeKind.ScrubPine: return 4f;
+                default: return 6f;
+            }
+        }
+
         /// <summary>Draws a tree of <paramref name="height"/> metres standing at the frame's origin.</summary>
         public static void Tree(RaidMesh m, TreeKind kind, float height, System.Random rng, TreeTier tier)
+            => Tree(m, kind, height, rng, tier, default);
+
+        /// <summary>Draws a tree of <paramref name="height"/> metres standing at the frame's origin, a hardwood's limbs cut
+        /// back short of what's in <paramref name="room"/> (a conifer is sized to its room by the caller).</summary>
+        public static void Tree(RaidMesh m, TreeKind kind, float height, System.Random rng, TreeTier tier, in TreeRoom room)
         {
+            if (tier == TreeTier.Blob)
+            {
+                Blob(m, kind, height, rng);
+                return;
+            }
             switch (kind)
             {
                 case TreeKind.Cedar: Cedar(m, height, rng, tier); break;
                 case TreeKind.WhitePine: WhitePine(m, height, rng, tier); break;
                 case TreeKind.Spruce: Spruce(m, height, rng, tier); break;
                 case TreeKind.ScrubPine: ScrubPine(m, height, rng, tier); break;
-                default: Hardwood(m, FormOf(kind), height, rng, tier); break;
+                default: Hardwood(m, FormOf(kind), height, rng, tier, room); break;
             }
+        }
+
+        // A far tree: a trunk under one low mass of crown, a bare hardwood's grey-brown haze of twigs (a sycamore's paler)
+        // or a conifer's dark cone with snow on its upper half.
+        private static void Blob(RaidMesh m, TreeKind kind, float h, System.Random rng)
+        {
+            if (Conifer(kind))
+            {
+                Color needles = kind == TreeKind.Spruce ? new Color(0.24f, 0.33f, 0.35f) : kind == TreeKind.Cedar
+                    ? new Color(0.20f, 0.23f, 0.13f) : kind == TreeKind.ScrubPine ? new Color(0.24f, 0.30f, 0.16f) : new Color(0.14f, 0.23f, 0.20f);
+                float foot = kind == TreeKind.WhitePine ? h * 0.25f : kind == TreeKind.ScrubPine ? h * 0.3f : h * 0.05f;
+                float r = h * Skirt(kind) * R(rng, 0.7f, 0.85f);
+                m.Cylinder(Vector3.zero, Mathf.Max(0.1f, h * 0.025f), foot + 0.3f, 3, M(new Color(0.30f, 0.24f, 0.20f)), Quaternion.identity, 0.7f, false);
+                m.Cylinder(new Vector3(0f, foot, 0f), r, h - foot, 5, M(V(needles, rng, 0.06f)), Quaternion.identity, 0.04f, false);
+                float y = foot + (h - foot) * 0.45f;
+                m.Cylinder(new Vector3(0f, y, 0f), r * 0.6f, h - y + 0.05f, 5, M(Snow), Quaternion.identity, 0.05f, false);
+                return;
+            }
+            Form f = FormOf(kind);
+            float crownBase = h * R(rng, f.BaseMin, f.BaseMax);
+            float crownR = h * f.Spread * R(rng, 0.75f, 0.95f);
+            Color bark = V(f.Bark, rng, 0.05f);
+            Color haze = Color.Lerp(bark, f.Pale ? PaleBark : new Color(0.50f, 0.47f, 0.43f), f.Pale ? 0.45f : 0.3f);
+            m.Cylinder(Vector3.zero, Mathf.Max(0.12f, h * f.Girth), crownBase + (h - crownBase) * 0.3f, 4, M(bark), Quaternion.identity, 0.6f, false);
+            m.Ellipsoid(new Vector3(0f, (crownBase + h) * 0.5f, 0f), new Vector3(crownR * 2f, (h - crownBase) * 0.95f, crownR * 2f),
+                Quaternion.Euler(0f, R(rng, 0f, 90f), 0f), M(haze), 6, 3);
         }
 
         #region Hardwoods
@@ -155,8 +264,9 @@ namespace CloneZ
 
         // A bare hardwood: the flared foot and the trunk (on a sycamore, grey-brown below and white above), scaffold limbs
         // round it on a golden-angle spiral (a leader tree's climbing it, shorter and steeper towards the top, so the crown
-        // rounds off), two or three branches off each, two twigs off each branch, and snow along the lower limbs.
-        private static void Hardwood(RaidMesh m, Form f, float h, System.Random rng, TreeTier tier)
+        // rounds off), two or three branches off each, two twigs off each branch, and snow along the lower limbs. A limb
+        // heading for something in its room (a wall, a wire) is cut back short of it, its branches with it.
+        private static void Hardwood(RaidMesh m, Form f, float h, System.Random rng, TreeTier tier, in TreeRoom room)
         {
             bool lite = tier == TreeTier.Lite, full = tier == TreeTier.Full;
             Color barkColour = V(f.Bark, rng, 0.06f);
@@ -198,6 +308,8 @@ namespace CloneZ
                 float horizontal = Mathf.Max(0.25f, Mathf.Cos(rise * Mathf.Deg2Rad));
                 float vertical = Mathf.Max(0.2f, Mathf.Sin(rise * Mathf.Deg2Rad));
                 float outward = crownR * (f.Leader ? 1f - 0.55f * frac : 1f) * R(rng, 0.75f, 1.05f);
+                // The knee's second piece and the branches carry a limb a third again past its heading's reach.
+                if (room.Count > 0) outward = Mathf.Min(outward, (room.Reach(azimuth) - 0.3f) / 1.35f);
                 float len = Mathf.Min(outward / horizontal, (h * 0.98f - y) / vertical);
                 if (len < 0.4f) continue;
                 Vector3 start = up * y;
