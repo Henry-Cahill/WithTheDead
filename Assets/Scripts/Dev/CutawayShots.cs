@@ -539,6 +539,9 @@ namespace CloneZ
                         .Append("first lap that made the cut walls), at most ").Append(maxCut).Append(" buildings cut at once.\n\n");
                     if (alloc > 4096) _md.Append("**The scan allocates.**\n\n");
                 }
+                _md.Append("Cut walls' stand-ins made so far (each the first time its building's walls are cut): ").Append(MapCutaway.OverlaysMade)
+                    .Append(", ").Append(F1(MapCutaway.OverlaysMade > 0 ? MapCutaway.OverlayMs / MapCutaway.OverlaysMade : 0)).Append(" ms each on average, ")
+                    .Append(F1(MapCutaway.OverlayMaxMs)).Append(" ms the longest.\n\n");
                 MapCutaway.RestoreAll();
             }
             #endregion

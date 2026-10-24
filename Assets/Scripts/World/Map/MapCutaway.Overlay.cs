@@ -35,6 +35,10 @@ namespace CloneZ
         private static bool[] s_Used = new bool[256];
         private static bool s_Warned;
 
+        /// <summary>Stand-ins made so far, the time that took in all (ms) and the longest one (ms): the cost of a first cut.</summary>
+        internal static int OverlaysMade;
+        internal static double OverlayMs, OverlayMaxMs;
+
         // Sub-mesh slot (before packing) of facing g's walls (kind 0) or stub (kind 1) in material m, or its cap (kind 2).
         private static int Part(int kind, int g, int m, int mats) => kind == 2 ? 8 * mats + g : (kind * 4 + g) * mats + m;
 
@@ -88,6 +92,7 @@ namespace CloneZ
 
         private static bool BuildOverlay(Building b)
         {
+            long started = System.Diagnostics.Stopwatch.GetTimestamp();
             try
             {
                 MeshFilter mf = b.Walls.GetComponent<MeshFilter>();
@@ -186,6 +191,13 @@ namespace CloneZ
                 if (!s_Warned) Debug.LogWarning("[MapCutaway] couldn't make the cut walls of building " + b.Id + "; its walls go whole: " + e);
                 s_Warned = true;
                 return false;
+            }
+            finally
+            {
+                double ms = (System.Diagnostics.Stopwatch.GetTimestamp() - started) * 1000.0 / System.Diagnostics.Stopwatch.Frequency;
+                OverlaysMade++;
+                OverlayMs += ms;
+                if (ms > OverlayMaxMs) OverlayMaxMs = ms;
             }
         }
 
