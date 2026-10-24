@@ -34,6 +34,7 @@ namespace CloneZ
                 Points(site);
                 yield return "points";
             }
+            if (!site.Chunked) TallyLoot(site);
         }
 
         #region Exits
