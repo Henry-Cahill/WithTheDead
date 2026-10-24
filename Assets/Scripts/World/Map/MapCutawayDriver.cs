@@ -14,5 +14,7 @@ namespace CloneZ
         private void LateUpdate() => MapCutaway.Tick();
 
         private void OnDisable() => MapCutaway.RestoreAll();
+
+        private void OnDestroy() => MapCutaway.LogSession();
     }
 }

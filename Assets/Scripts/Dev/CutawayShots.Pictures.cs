@@ -325,6 +325,7 @@ namespace CloneZ
                     for (int k = 0; k < 6; k++)
                     {
                         if (k > 0) frame.Restart();
+                        MapCutaway.KeepDoors();
                         MapCutaway.Work(MapCutaway.WorkBudgetMs);
                         worst = System.Math.Max(worst, frame.Elapsed.TotalMilliseconds);
                     }
