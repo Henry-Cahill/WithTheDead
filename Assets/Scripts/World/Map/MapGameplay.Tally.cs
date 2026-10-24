@@ -84,7 +84,7 @@ namespace CloneZ
                 inside += n;
                 bool home = purpose == Purposes.Home || purpose == Purposes.Trailer || purpose == Purposes.Apartments;
                 (home ? homes : others).Add(n);
-                int cap = BuildingCap(purpose, f.Size);
+                int cap = CapAt(purpose, f.Size, RichnessOf(site, f));
                 if (n <= cap) continue;
                 over++;
                 if (n - cap > worstOver) { worstOver = n - cap; worst = i; }
@@ -103,7 +103,7 @@ namespace CloneZ
                 Footprint f = buildings[worst].Footprint;
                 string purpose = PurposeOf(site, f);
                 sb.Append(" (fullest: ").Append(NameOf(site, f) ?? purpose).Append(", ").Append(Mathf.RoundToInt(f.Size)).Append(" m², ")
-                    .Append(inBuilding[worst]).Append(" for a cap of ").Append(BuildingCap(purpose, f.Size)).Append(')');
+                    .Append(inBuilding[worst]).Append(" for a cap of ").Append(CapAt(purpose, f.Size, RichnessOf(site, f))).Append(')');
             }
             sb.Append(". Stacks by category against the Central Economy's nominal:");
             for (int k = 0; k < Nominal.Length; k++)

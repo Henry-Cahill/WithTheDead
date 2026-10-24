@@ -494,9 +494,10 @@ namespace CloneZ
         // alone has a dozen), and the real map has many more buildings to the hectare than the raid town the Central
         // Economy's stock was set for, so the count is budgeted: each room's share by its kind and floor (RoomNeed), the
         // building's sum scaled by what it was (its purpose's stock) and how well stocked the Zone is there
-        // (LootRichnessAt), within what a building of its kind and size can hold (BuildingCap). In the start town that's
-        // four to six for a house (the fridge and a kitchen cupboard, the bathroom cabinet, a wardrobe or two, a desk),
-        // about seven for a downtown store, eighteen or so for a supermarket or a school; Bardstown's 400 m square (117
+        // (LootRichnessAt), within what a building of its kind and size can hold (BuildingCap, raised where the Zone is
+        // richer). In the start town that's four or five for a house (the fridge and a kitchen cupboard, the bathroom
+        // cabinet, a wardrobe, a desk), seven for a downtown store, thirteen for a pharmacy, eighteen or so for a
+        // supermarket, eleven or more for a school; seven or eight for a house 50 km out. Bardstown's 400 m square (117
         // buildings) holds some 600 in its buildings, about 1,100 stacks.
         private const int SaltBudget = 0x6A60;
 
@@ -528,7 +529,8 @@ namespace CloneZ
         }
 
         /// <summary>The most loot containers a building of <paramref name="purpose"/> with <paramref name="area"/> m² of
-        /// furnished floor holds, however rich the Zone.</summary>
+        /// furnished floor holds where the Zone is ordinarily stocked (a richer Zone raises it in step: see
+        /// <see cref="CapAt"/>).</summary>
         internal static int BuildingCap(string purpose, float area)
         {
             switch (purpose)
@@ -588,7 +590,7 @@ namespace CloneZ
                 sum += need[i];
                 floor += Mathf.Max(0f, areas[i]);
             }
-            int total = Mathf.Min(BuildingCap(purpose, floor), Dither(sum * ProfileOf(purpose).Stock * richness, id));
+            int total = Mathf.Min(CapAt(purpose, floor, richness), Dither(sum * ProfileOf(purpose).Stock * richness, id));
             if (total <= 0 || sum <= 0f) return 0;
             // Each room's share of the total, then the rest to the rooms nearest their next one (the first such room on a tie).
             float scale = total / sum;
@@ -619,8 +621,9 @@ namespace CloneZ
         {
             Prepare(site);
             string purpose = PurposeOf(site, f);
-            float target = Mathf.Clamp(f.Size / 45f, 1f, 7f) * ProfileOf(purpose).Stock * RichnessOf(site, f);
-            return Mathf.Min(BuildingCap(purpose, f.Size), Dither(target, f.Data.id));
+            float richness = RichnessOf(site, f);
+            float target = Mathf.Clamp(f.Size / 45f, 1f, 7f) * ProfileOf(purpose).Stock * richness;
+            return Mathf.Min(CapAt(purpose, f.Size, richness), Dither(target, f.Data.id));
         }
 
         /// <summary>How many of a room's pieces of storage hold loot taken on its own (a room furnished apart from its
@@ -630,9 +633,15 @@ namespace CloneZ
         {
             Prepare(site);
             string purpose = PurposeOf(site, f);
-            float n = RoomNeed(room, roomArea) * ProfileOf(purpose).Stock * RichnessOf(site, f);
-            return Mathf.Min(BuildingCap(purpose, Mathf.Max(roomArea, f.Size)), Dither(n, f.Data.id ^ HumanUtil.StableHash(room)));
+            float richness = RichnessOf(site, f);
+            float n = RoomNeed(room, roomArea) * ProfileOf(purpose).Stock * richness;
+            return Mathf.Min(CapAt(purpose, Mathf.Max(roomArea, f.Size), richness), Dither(n, f.Data.id ^ HumanUtil.StableHash(room)));
         }
+
+        /// <summary><see cref="BuildingCap"/> where the Zone's <paramref name="richness"/> is as given: raised in step where
+        /// it's richer than usual, never lowered (a picked-over town holds fewer by the count, not by the cap).</summary>
+        internal static int CapAt(string purpose, float area, float richness)
+            => Mathf.RoundToInt(BuildingCap(purpose, area) * Mathf.Max(1f, richness));
 
         // A fractional count made whole, rounded up as often as its fraction says (from the building's id, so the same
         // every build).

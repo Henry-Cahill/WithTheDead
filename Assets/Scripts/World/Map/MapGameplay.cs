@@ -223,6 +223,51 @@ namespace CloneZ
                 e.Hint = way + " out of " + area.Place
                     + (e.Destination != null ? ", towards " + e.Destination + ", " + Mathf.Max(1, Mathf.RoundToInt(e.Miles)) + " miles" : "");
             }
+            Distinguish(exits);
+        }
+
+        // Exits that came out with the same name (two roads carrying only KY 420 leave south) are told apart by their
+        // streets ("KY 420 south (High Street)"), and those still alike by where along their side they are ("KY 420
+        // south, west end"): the list is in clockwise order along each side.
+        private static void Distinguish(List<ExitPlan> exits)
+        {
+            for (int pass = 0; pass < 2; pass++)
+                for (int i = 0; i < exits.Count; i++)
+                {
+                    int same = 0, first = -1;
+                    for (int j = 0; j < exits.Count; j++)
+                        if (exits[j].Name == exits[i].Name)
+                        {
+                            same++;
+                            if (first < 0) first = j;
+                        }
+                    if (same < 2) continue;
+                    string name = exits[i].Name;
+                    int k = 0;
+                    for (int j = first; j < exits.Count; j++)
+                    {
+                        ExitPlan e = exits[j];
+                        if (e.Name != name) continue;
+                        string street = e.Street != null ? StreetName(e.Street) : null;
+                        if (pass == 0 && street != null && street != e.Route && !name.Contains(street)) e.Name = name + " (" + street + ")";
+                        else if (pass == 1) e.Name = name + ", " + EndWord(e.Side, k, same);
+                        k++;
+                    }
+                }
+        }
+
+        // "west end", "middle", "east end": the k-th of n exits along a side, clockwise.
+        private static string EndWord(int side, int k, int n)
+        {
+            if (n > 2 && k > 0 && k < n - 1) return "middle";
+            bool start = k == 0;
+            switch (side)
+            {
+                case 0: return start ? "west end" : "east end";
+                case 1: return start ? "north end" : "south end";
+                case 2: return start ? "east end" : "west end";
+                default: return start ? "south end" : "north end";
+            }
         }
 
         // The route each road out goes by: as many different ones as can be, each road's first-listed route when it
@@ -353,7 +398,7 @@ namespace CloneZ
             }
             if (!ok) return false;
             var rng = MapStyle.Rng(MapStyle.Key(e.At), SaltExitSign);
-            string top = e.Route != null ? (e.Name ?? e.Route).ToUpperInvariant() : SideName(e.Side).ToUpperInvariant();
+            string top = e.Route != null ? (e.Route + " " + SideName(e.Side)).ToUpperInvariant() : SideName(e.Side).ToUpperInvariant();
             string bottom = e.Destination != null
                 ? e.Destination.ToUpperInvariant() + "  " + Mathf.Max(1, Mathf.RoundToInt(e.Miles))
                 : (e.Street != null ? StreetName(e.Street).ToUpperInvariant() : "");
