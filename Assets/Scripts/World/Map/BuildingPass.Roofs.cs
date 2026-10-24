@@ -471,7 +471,7 @@ namespace CloneZ
                 RoofFace4(j, m, ka, kb, ax.P(x1, yc, ridge), ax.P(x0, yc, ridge), nUp, ek, ridge);
                 if (!j.Lite) Eave(j, m, a, b, o, ax.P(x0, wall, low), ax.P(x1, wall, low), nLow, low, ek);
             }
-            var pent = new List<Vector3>(5);
+            List<Vector3> pent = s_Pent;
             for (int end = 0; end < 2; end++)
             {
                 if (att == end) continue;
@@ -500,7 +500,8 @@ namespace CloneZ
             RaidMesh m = j.Upper;
             bool plastic = p.Arch == Arch.Greenhouse;
             Surf skin = plastic ? DecorPalette.Matte(new Color(0.84f, 0.87f, 0.86f)) : RoofCoverSurf(p, false);
-            var arc = new List<Vector3>(segs + 1);
+            List<Vector3> arc = s_Arc;
+            arc.Clear();
             for (int k = 0; k <= segs; k++)
             {
                 float y = ax.Y0 + (ax.Y1 - ax.Y0) * k / segs;
@@ -515,9 +516,9 @@ namespace CloneZ
                 if (n.y < 0f) n = -n;
                 Quad4(m, a, b, c, d, n, skin);
                 if (!j.Lite && n.y > 0.8f && p.Snow != SnowCover.Bare)
-                    Slab(m, new List<Vector3> { a, b, c, d }, n, -1f, 99f, 0.07f);
+                    Slab(m, Scratch4(a, b, c, d), n, -1f, 99f, 0.07f);
             }
-            var cap = new List<Vector3>(segs + 1);
+            List<Vector3> cap = s_Pent;
             for (int end = 0; end < 2; end++)
             {
                 float x = end == 0 ? ax.X0 : ax.X1;
@@ -563,95 +564,6 @@ namespace CloneZ
             }
             Quad4(m, i[0], i[1], i[2], i[3], Vector3.up, p.Snow == SnowCover.Bare ? RoofCoverSurf(p, false) : RoofSnow);
             j.Top = Mathf.Max(j.Top, top);
-        }
-        #endregion
-
-        #region Flat roofs
-        private static void FlatRoof(Job j)
-        {
-            Plan p = j.P;
-            Footprint f = j.F;
-            RaidMesh m = j.Upper;
-            float deck = p.Eave;
-            List<int> tris = MapGeometry.Triangulate(f.Pts);
-            bool snowy = p.Snow != SnowCover.Bare;
-            float y = deck + (snowy ? 0.14f : 0.03f);
-            Surf top = snowy ? RoofSnow : RoofCoverSurf(p, false);
-            if (j.Lite && p.Snow == SnowCover.Partial) top = RoofSnow;
-            for (int t = 0; t + 2 < tris.Count; t += 3)
-                m.Tri(To3(f.Pts[tris[t]], y), To3(f.Pts[tris[t + 1]], y), To3(f.Pts[tris[t + 2]], y), top);
-            j.Top = Mathf.Max(j.Top, deck + p.Parapet);
-            if (j.Lite) return;
-            if (p.Snow == SnowCover.Partial)
-            {
-                // Tar showing round the edges and between the drifts.
-                float yb = deck + 0.02f;
-                Surf tar = RoofCoverSurf(p, false);
-                for (int t = 0; t + 2 < tris.Count; t += 3)
-                    m.Tri(To3(f.Pts[tris[t]], yb), To3(f.Pts[tris[t + 1]], yb), To3(f.Pts[tris[t + 2]], yb), tar);
-            }
-            float coping = deck + p.Parapet;
-            Surf cap = p.Wall == WallKind.Brick || p.Wall == WallKind.Stone ? WallSurf(WallKind.Stone, 0) : DecorPalette.Metal(new Color(0.62f, 0.62f, 0.60f));
-            for (int i = 0; i < j.N; i++)
-            {
-                float len = j.Len[i];
-                if (len < 0.1f) continue;
-                Vector2 c = j.At(i, len * 0.5f) - j.Out[i] * (Thick * 0.5f);
-                bool cornice = p.Cornice && !j.Party(i) && (i == p.Front || FacesRoad(j, i));
-                if (cornice) Cornice(j, i, coping);
-                else m.Box(new Vector3(c.x, coping + 0.04f, c.y), new Vector3(len + 0.1f, 0.08f, Thick + 0.1f), j.Yaw(i), cap);
-            }
-            if (p.RoofUnits) RoofUnits(j, deck);
-        }
-
-        private static bool FacesRoad(Job j, int edge) => j.P.RoadDir != Vector2.zero && Vector2.Dot(j.Out[edge], j.P.RoadDir) > 0.7f
-            && j.Len[edge] > 3f;
-
-        // A pressed-metal cornice on brackets along the top of a downtown front, over a frieze.
-        private static void Cornice(Job j, int i, float top)
-        {
-            RaidMesh m = j.Upper;
-            float len = j.Len[i];
-            Surf trim = j.P.Wall == WallKind.Brick && j.P.WallTone != BrickPainted ? j.TrimS : DecorPalette.Matte(j.P.Trim * 0.9f);
-            OnWallBox(j, m, i, len * 0.5f, top - 0.16f, len + 0.36f, 0.32f, 0.42f, trim, -0.1f);
-            OnWallBox(j, m, i, len * 0.5f, top - 0.55f, len, 0.42f, 0.08f, trim);
-            int brackets = Mathf.Max(2, Mathf.RoundToInt(len / 0.9f));
-            for (int k = 0; k <= brackets; k++)
-            {
-                float s = Mathf.Lerp(0.15f, len - 0.15f, k / (float)brackets);
-                OnWallBox(j, m, i, s, top - 0.48f, 0.1f, 0.3f, 0.28f, trim);
-            }
-            j.Top = Mathf.Max(j.Top, top + 0.02f);
-        }
-
-        // Air handlers, vent stacks and a hatch on a commercial roof, each snow-capped.
-        private static void RoofUnits(Job j, float deck)
-        {
-            Footprint f = j.F;
-            System.Random rng = MapStyle.Rng(f.Data.id, SaltUnits);
-            int count = Mathf.Clamp(Mathf.RoundToInt(f.Size / 260f), 1, 7);
-            Surf metal = DecorPalette.Metal(new Color(0.58f, 0.59f, 0.58f));
-            Surf dark = DecorPalette.Matte(new Color(0.14f, 0.14f, 0.15f));
-            RaidMesh m = j.Upper;
-            float yaw = j.Sh.Yaw;
-            for (int k = 0, tries = 0; k < count && tries < count * 6; tries++)
-            {
-                var at = new Vector2(Mathf.Lerp(f.Bounds.xMin, f.Bounds.xMax, (float)rng.NextDouble()),
-                    Mathf.Lerp(f.Bounds.yMin, f.Bounds.yMax, (float)rng.NextDouble()));
-                if (!MapGeometry.Contains(f.Pts, at) || MapGeometry.DistanceToEdge(f.Pts, at) < 2f) continue;
-                k++;
-                if (rng.NextDouble() < 0.3)
-                {
-                    float r = Range(rng, 0.08f, 0.16f);
-                    m.Cylinder(To3(at, deck), r, Range(rng, 0.6f, 1.2f), 6, metal);
-                    continue;
-                }
-                var size = new Vector3(Range(rng, 1.2f, 2.4f), Range(rng, 0.8f, 1.3f), Range(rng, 1.0f, 1.8f));
-                m.Box(To3(at, deck + size.y * 0.5f), size, yaw, metal);
-                m.Box(To3(at, deck + size.y + 0.04f), new Vector3(size.x * 0.96f, 0.08f, size.z * 0.96f), yaw, RoofSnow);
-                Vector2 side = at + j.Sh.U * (size.x * 0.5f + 0.005f);
-                m.Upright(To3(side, deck + size.y * 0.5f), To3(j.Sh.U, 0f), size.z * 0.7f, size.y * 0.6f, dark);
-            }
         }
         #endregion
 
@@ -720,7 +632,7 @@ namespace CloneZ
             return snow ? RoofSnow : RoofCoverSurf(p, false);
         }
 
-        private static readonly List<Vector3> s_Face = new List<Vector3>(8);
+        private static readonly List<Vector3> s_Face = new List<Vector3>(8), s_Pent = new List<Vector3>(16), s_Arc = new List<Vector3>(16);
 
         private static List<Vector3> Scratch4(Vector3 a, Vector3 b, Vector3 c, Vector3 d)
         {
@@ -833,16 +745,16 @@ namespace CloneZ
         {
             float len = Vector3.Distance(a, b);
             if (len < 0.5f) return;
-            System.Random rng = MapStyle.Rng(j.F.Data.id ^ Mathf.RoundToInt(a.x * 10f + a.z * 7f), SaltIcicles);
+            var dice = new Dice(j.Id ^ Mathf.RoundToInt(a.x * 10f + a.z * 7f), SaltIcicles);
             Surf ice = DecorPalette.Gloss(new Color(0.80f, 0.88f, 0.95f));
             Vector3 along = (b - a) / len;
             int count = Mathf.FloorToInt(len / 0.3f);
             for (int k = 0; k < count; k++)
             {
-                if (rng.NextDouble() < 0.4) continue;
-                float s = (k + 0.5f) * len / count + Range(rng, -0.08f, 0.08f);
-                float r = (float)rng.NextDouble();
-                float l = 0.1f + r * r * 0.7f, w = Range(rng, 0.04f, 0.09f);
+                if (dice.Chance(0.4f)) continue;
+                float s = (k + 0.5f) * len / count + dice.Range(-0.08f, 0.08f);
+                float r = dice.Next();
+                float l = 0.1f + r * r * 0.7f, w = dice.Range(0.04f, 0.09f);
                 Vector3 top = a + along * s;
                 Vector3 l0 = top - along * w, l1 = top + along * w, tip = top - Vector3.up * l + outward * 0.01f;
                 Tri3(m, l0, l1, tip, outward, ice);

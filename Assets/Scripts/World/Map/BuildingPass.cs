@@ -8,100 +8,157 @@ namespace CloneZ
     /// The real-world map's buildings, from their mapped footprints. What each one is and how it's built is worked out
     /// first (BuildingPass.Plan: a brick store downtown, a frame house with a porch, a trailer, a tobacco barn...; the
     /// data rarely says, so mostly from its outline and surroundings, BuildingPass.Context and BuildingPass.Shape), then
-    /// it's raised: walls by storey with their doors and windows (BuildingPass.Openings), a real roof on the blocks of its
-    /// outline with the snow lying on it (BuildingPass.Roofs), and what stands in front of it (BuildingPass.Frontage:
-    /// porches, stoops, shop fronts, awnings, signs) or makes it what it is (BuildingPass.Special: steeples, silos, gas
-    /// station canopies, ruins). Everything draws through the building's shell (<see cref="Site.Shell"/>): the ground
-    /// storey's outside walls and what's on them by the way they face, everything above them in its upper part, so the
-    /// isometric cutaway can lift a building's roof and front walls off around the survivor. The ground storey's walls
-    /// have colliders (one object per building, in its own frame) and real door openings; each building with a door is
-    /// listed in <see cref="Site.Enterables"/> with its doors and ground-floor windows exactly as built, for
-    /// <see cref="InteriorPass"/> to furnish. Past the edge of a fixed map, and on a Lite site, buildings are drawn cheaply
-    /// (walls, plain windows and the roof, no colliders or frontage); a fixed map builds the buildings its edge cuts
-    /// through too: playable when their middle is inside, else as scenery with colliders.
+    /// it's raised: walls by storey with their doors and windows (BuildingPass.Openings, and BuildingPass.Facades for the
+    /// upper floors of tall buildings and for cheap ones), a real roof on the blocks of its outline with the snow lying on
+    /// it, or a flat one with what stands on it (BuildingPass.Roofs), and what stands in front of it (BuildingPass.Frontage:
+    /// porches, stoops, shop fronts, awnings, signs, balconies, loading docks) or makes it what it is (BuildingPass.Special:
+    /// steeples, silos, gas station canopies, parking decks, ruins). Everything draws through the building's shell
+    /// (<see cref="Site.Shell"/>): the ground storey's outside walls and what's on them by the way they face, everything
+    /// above them in its upper part, so the isometric cutaway can lift a building's roof and front walls off around the
+    /// survivor. The ground storey's walls have colliders and real door openings; each building with a door is listed in
+    /// <see cref="Site.Enterables"/> with its doors and ground-floor windows exactly as built, for <see cref="InteriorPass"/>
+    /// to furnish. Past the edge of a fixed map, and on a Lite site, buildings are drawn cheaply (walls, windows painted on,
+    /// the roof and its silhouette, no colliders or frontage); a fixed map builds the buildings its edge cuts through too:
+    /// playable when their middle is inside, else solid and whole but shut.
     /// </summary>
+    /// <remarks>
+    /// A streamed piece builds a step at a time, so the pass yields whenever its time slice is used up
+    /// (<see cref="Site.StepDue"/>), between buildings and between the stages of a big one; one job's buffers are reused for
+    /// every building of a site, and the colliders join the site's merged ones (<see cref="RaidTown.PropCollider"/>).
+    /// </remarks>
     internal static partial class BuildingPass
     {
         private const float GroundStorey = 3.0f;   // the ground storey's walls (with colliders) stop here
         private const float CeilingY = 2.85f;
         private const float Thick = 0.22f;
         private const float DoorWidth = 1.1f, DoubleDoorWidth = 1.8f, DoorHeight = 2.15f;
-        private const float StepBudget = 360f;      // build cost (see Job.Cost) between yields
+        /// <summary>A loading dock's deck above the yard.</summary>
+        private const float DockHeight = 1.2f;
 
         private const int SaltInterior = 0x1A7E, SaltDetail = 0xDE7A;
 
         internal static IEnumerable<string> Build(Site site)
         {
+            site.BeginStep();
             var ctx = new Context(site);
             float half = site.Half;
             var square = Rect.MinMaxRect(-half, -half, half, half);
             var near = new List<Footprint>(16);
-            float cost = 0f;
-            foreach (Footprint f in site.Area.Buildings)
+            var job = new Job(site);
+            List<Footprint> all = site.Area.Buildings;
+            for (int b = 0; b < all.Count; b++)
             {
+                Footprint f = all[b];
                 if (f.Pts.Count < 3 || f.Size < 6f) continue;
                 bool playable = f.Inside(half, 1f) || (Mathf.Abs(f.Middle.x) < half && Mathf.Abs(f.Middle.y) < half);
+                // A building the fixed square's edge cuts through, its middle outside: solid and whole, but shut.
+                bool edge = !playable && !site.Chunked && f.Bounds.Overlaps(square);
                 Shape sh = ShapeOf(f);
                 ctx.Near(f, 1.2f, near);
                 Plan plan = Classify(ctx, f, sh, near);
-                var job = new Job(site, f, sh, plan)
-                {
-                    Lite = !playable || site.Detail == Detail.Lite,
-                    Scenery = !playable,
-                    Solid = playable ? site.Detail == Detail.Full : f.Bounds.Overlaps(square),
-                };
-                Make(job);
+                if (edge) plan.Enterable = false;
+                job.Begin(f, sh, plan, site.Detail == Detail.Lite || (!playable && !edge), !playable, edge,
+                    (playable || edge) && site.Detail == Detail.Full);
+                while (Step(job))
+                    if (site.StepDue)
+                    {
+                        yield return "buildings";
+                        site.BeginStep();
+                    }
                 if (playable) site.Buildings++;
                 else site.SceneryBuildings++;
-                cost += job.Cost;
-                if (cost < StepBudget) continue;
-                cost = 0f;
+                if (!site.StepDue) continue;
                 yield return "buildings";
+                site.BeginStep();
             }
             yield return "buildings";
         }
 
         #region The job
-        /// <summary>One building being raised.</summary>
+        /// <summary>The building being raised; one per site, its buffers reused building after building.</summary>
         private sealed class Job
         {
             public readonly Site Site;
-            public readonly Footprint F;
-            public readonly Shape Sh;
-            public readonly Plan P;
-            public readonly System.Random Rng;
-            public bool Lite, Scenery, Solid;
+            public Footprint F;
+            public Shape Sh;
+            public Plan P;
+            /// <summary>Drawn cheaply: a Lite site's, or scenery's past the edge.</summary>
+            public bool Lite;
+            /// <summary>Past the playable square: never listed for the interiors.</summary>
+            public bool Scenery;
+            /// <summary>Scenery the fixed square's edge cuts through: its own shell, in the world, solid.</summary>
+            public bool Edge;
+            /// <summary>Its walls and what stands round it get colliders.</summary>
+            public bool Solid;
             public BuildingShell Shell;
             public EnterableBuilding Record;
-            public float Top, Cost;
-            public readonly int N;
-            public readonly Vector2[] A, Dir, Out;
-            public readonly float[] Len;
+            public float Top;
+            /// <summary>The next stage to build (see <see cref="Step"/>).</summary>
+            public int Stage;
+            public int N;
+            public Vector2[] A = new Vector2[32], Dir = new Vector2[32], Out = new Vector2[32];
+            public float[] Len = new float[32];
+            /// <summary>How far each wall runs on past its start and end, to close the corner with its neighbour.</summary>
+            public float[] Run0 = new float[32], Run1 = new float[32];
+            /// <summary>Per wall: windows painted on its ground storey, and on its upper storeys (BuildingPass.Facades).</summary>
+            public bool[] GridLow = new bool[32], GridHigh = new bool[32];
             /// <summary>Per wall: its top, by stretch (a lower wing's walls stop lower).</summary>
-            public readonly List<Seg>[] Tops;
+            public List<Seg>[] Tops = new List<Seg>[0];
             /// <summary>The roof blocks of a pitched roof; null for a flat one.</summary>
             public List<RoofPart> Parts;
-            public readonly List<Hole> Holes = new List<Hole>();
+            public readonly List<Hole> Holes = new List<Hole>(48);
             /// <summary>The front door's wall and where along it (or -1).</summary>
             public int DoorEdge = -1;
             public float DoorAt;
-            public GameObject Colliders;
+            /// <summary>The wall the big doors are in (or -1); how many shops a strip's front holds (0 for one).</summary>
+            public int BigEdge = -1, Units;
+            /// <summary>Porch lamps given a real light on this site so far (see MaxPorchLights).</summary>
+            public int PorchLights;
             public Surf WallS, TrimS, AccentS, GlassS;
+            private List<int> _tris;
 
-            public Job(Site site, Footprint f, Shape sh, Plan p)
+            public Job(Site site) { Site = site; }
+
+            public void Begin(Footprint f, Shape sh, Plan p, bool lite, bool scenery, bool edge, bool solid)
             {
-                Site = site;
                 F = f;
                 Sh = sh;
                 P = p;
-                Rng = MapStyle.Rng(f.Data.id, SaltDetail);
+                Lite = lite;
+                Scenery = scenery;
+                Edge = edge;
+                Solid = solid;
+                Shell = null;
+                Record = null;
+                Top = 0f;
+                Stage = 0;
+                Parts = null;
+                Holes.Clear();
+                DoorEdge = -1;
+                DoorAt = 0f;
+                BigEdge = -1;
+                Units = 0;
+                _tris = null;
                 List<Vector2> pts = f.Pts;
                 N = pts.Count;
-                A = new Vector2[N];
-                Dir = new Vector2[N];
-                Out = new Vector2[N];
-                Len = new float[N];
-                Tops = new List<Seg>[N];
+                if (A.Length < N)
+                {
+                    int size = Mathf.NextPowerOfTwo(N);
+                    A = new Vector2[size];
+                    Dir = new Vector2[size];
+                    Out = new Vector2[size];
+                    Len = new float[size];
+                    Run0 = new float[size];
+                    Run1 = new float[size];
+                    GridLow = new bool[size];
+                    GridHigh = new bool[size];
+                }
+                if (Tops.Length < N)
+                {
+                    var tops = new List<Seg>[Mathf.NextPowerOfTwo(N)];
+                    for (int i = 0; i < tops.Length; i++) tops[i] = i < Tops.Length ? Tops[i] : new List<Seg>(2);
+                    Tops = tops;
+                }
                 for (int i = 0; i < N; i++)
                 {
                     Vector2 a = pts[i], c = pts[(i + 1) % N];
@@ -111,22 +168,36 @@ namespace CloneZ
                     Vector2 d = len > 1e-4f ? (c - a) / len : Vector2.right;
                     Dir[i] = d;
                     Out[i] = new Vector2(d.y, -d.x);   // an anticlockwise ring: outside is on the right
-                    Tops[i] = new List<Seg>(2);
+                    Tops[i].Clear();
+                    GridLow[i] = GridHigh[i] = false;
+                }
+                // Walls stand just inside the outline: at an outside corner they meet as they are; at an inside one each
+                // runs on into the other by the thickness its turn needs.
+                for (int i = 0; i < N; i++)
+                {
+                    int prev = (i + N - 1) % N;
+                    float turn = Dir[prev].x * Dir[i].y - Dir[prev].y * Dir[i].x, dot = Vector2.Dot(Dir[prev], Dir[i]);
+                    float run = turn >= -1e-3f ? 0f : Mathf.Min(Thick * 2f, Thick * Mathf.Tan(0.5f * Mathf.Atan2(-turn, dot)));
+                    Run0[i] = run;
+                    Run1[prev] = run;
                 }
                 WallS = WallSurf(p.Wall, p.WallTone);
                 TrimS = DecorPalette.Matte(p.Trim);
                 AccentS = DecorPalette.Matte(p.Accent);
                 GlassS = DecorPalette.Gloss(new Color(0.11f, 0.13f, 0.16f));
-                Cost = 4f + f.Size * 0.012f + N * 1.5f;
             }
 
             public RaidMesh Facing(int edge) => Shell.WallsFacing(Out[edge]);
             public RaidMesh Upper => Shell.Upper;
+            public long Id => F.Data.id;
             public float Yaw(int edge) => -Mathf.Atan2(Dir[edge].y, Dir[edge].x) * Mathf.Rad2Deg;
             public Vector2 At(int edge, float s) => A[edge] + Dir[edge] * s;
             /// <summary>Height of storey <paramref name="k"/>'s floor.</summary>
             public float FloorY(int k) => k <= 0 ? 0f : P.FirstStorey + (k - 1) * P.Storey;
-            public bool Party(int edge) => P.Party != null && P.Party[edge];
+            public bool Party(int edge) => P.Party != null && edge < P.Party.Length && P.Party[edge];
+
+            /// <summary>The footprint in triangles (index triples into its points), worked out once.</summary>
+            public List<int> Tris => _tris ??= MapGeometry.Triangulate(F.Pts);
 
             /// <summary>The top of wall <paramref name="edge"/> at <paramref name="s"/> along it.</summary>
             public float TopAt(int edge, float s)
@@ -147,48 +218,68 @@ namespace CloneZ
             public float S, W, Sill, Head;
             public WindowKind Win;
             public DoorKind Door;
-            /// <summary>A closed door drawn on the wall (garage, roll-up, barn, motel room): no gap.</summary>
+            /// <summary>A closed door drawn on the wall (garage, roll-up, barn, motel room, a shut building's): no gap.</summary>
             public bool Closed;
+            /// <summary>A garage, roll-up or barn door (always closed).</summary>
+            public bool Big;
             public bool Lit;
             public bool IsDoor => Win == WindowKind.None;
             public bool Gap => Win == WindowKind.None && !Closed;
         }
 
-        private static void Make(Job j)
-        {
-            switch (j.P.Arch)
-            {
-                case Arch.Silo: SiloBuilding(j); break;
-                case Arch.Canopy: CanopyBuilding(j); break;
-                case Arch.Ruin: RuinBuilding(j); break;
-                default: Ordinary(j); break;
-            }
-            if (j.Shell != null) j.Shell.Top = Mathf.Max(j.Shell.Top, j.Top);
-        }
-
-        private static void Ordinary(Job j)
+        // The next stage of the job's building; false once it's done. A big building is raised in a few stages (its
+        // walls, their openings, its roof, its frontage, its insides) so a streamed piece can stop between them.
+        private static bool Step(Job j)
         {
             Plan p = j.P;
-            j.Shell = j.Site.Shell(j.F, j.Scenery);
-            PlanRoof(j);
-            j.Shell.WallTop = Mathf.Min(GroundStorey, p.WallHeight);
-            j.Top = p.WallHeight;
-            PlanOpenings(j);
-            Walls(j);
-            Openings(j);
-            Roof(j);
-            if (!j.Lite)
+            switch (p.Arch)
             {
-                Frontage(j);
-                Special(j);
+                case Arch.Silo: SiloBuilding(j); return Done(j);
+                case Arch.Canopy: CanopyBuilding(j); return Done(j);
+                case Arch.Ruin: RuinBuilding(j); return Done(j);
+                case Arch.Parking: if (j.Stage == 0) { ParkingDeck(j); return Done(j); } break;
             }
-            if (!j.Scenery) Inside(j);
-            j.Cost += j.Lite ? 2f : 10f + p.Storeys * j.N * 1.2f + (j.Parts != null ? j.Parts.Count * 6f : 4f);
+            switch (j.Stage++)
+            {
+                case 0:
+                    j.Shell = j.Site.Shell(j.F, j.Scenery && !j.Edge);
+                    PlanRoof(j);
+                    j.Shell.WallTop = Mathf.Min(GroundStorey, p.WallHeight);
+                    j.Top = p.WallHeight;
+                    PlanOpenings(j);
+                    Walls(j);
+                    return true;
+                case 1:
+                    Openings(j);
+                    return true;
+                case 2:
+                    Roof(j);
+                    return true;
+                case 3:
+                    if (!j.Lite)
+                    {
+                        Frontage(j);
+                        Special(j);
+                    }
+                    else LiteSpecial(j);
+                    return true;
+                default:
+                    if (!j.Scenery) Inside(j);
+                    return Done(j);
+            }
+        }
+
+        private static bool Done(Job j)
+        {
+            if (j.Shell != null) j.Shell.Top = Mathf.Max(j.Shell.Top, j.Top);
+            j.Stage = int.MaxValue;
+            return false;
         }
         #endregion
 
         #region Walls
         private static readonly List<Vector3> s_Gaps = new List<Vector3>(8);
+        private static readonly System.Comparison<Vector3> s_ByStart = (x, y) => x.x.CompareTo(y.x);
 
         // The walls, wall by wall and stretch by stretch: the ground storey's (with colliders) cut round its door
         // openings, everything above in the upper part; then the foundation, the corner boards and the belt courses.
@@ -203,13 +294,10 @@ namespace CloneZ
                 float yaw = j.Yaw(i);
                 RaidMesh facing = j.Facing(i);
                 Vector2 inset = -o * (Thick * 0.5f);   // the wall stands just inside the mapped outline
-                s_Gaps.Clear();
-                foreach (Hole h in j.Holes)
-                    if (h.Edge == i && h.Storey == 0 && h.Gap) s_Gaps.Add(new Vector3(h.S - h.W * 0.5f, h.S + h.W * 0.5f, h.Head));
-                s_Gaps.Sort((x, y) => x.x.CompareTo(y.x));
+                Gaps(j, i);
                 foreach (Seg seg in j.Tops[i])
                 {
-                    float s0 = seg.S0 <= 1e-3f ? -Thick * 0.5f : seg.S0, s1 = seg.S1 >= len - 1e-3f ? len + Thick * 0.5f : seg.S1;
+                    float s0 = seg.S0 <= 1e-3f ? -j.Run0[i] : seg.S0, s1 = seg.S1 >= len - 1e-3f ? len + j.Run1[i] : seg.S1;
                     float ground = Mathf.Min(seg.Top, GroundStorey);
                     float cur = s0;
                     foreach (Vector3 g in s_Gaps)
@@ -231,6 +319,15 @@ namespace CloneZ
             StepWalls(j);
         }
 
+        // The door openings in wall i's ground storey, by where they start: (start, end, head).
+        private static void Gaps(Job j, int i)
+        {
+            s_Gaps.Clear();
+            foreach (Hole h in j.Holes)
+                if (h.Edge == i && h.Storey == 0 && h.Gap) s_Gaps.Add(new Vector3(h.S - h.W * 0.5f, h.S + h.W * 0.5f, h.Head));
+            if (s_Gaps.Count > 1) s_Gaps.Sort(s_ByStart);
+        }
+
         // One run of wall into <paramref name="into"/>, from s0 to s1 along it and y0 to y1 up, with a collider when
         // it's solid (and the job's walls are).
         private static void WallBox(Job j, RaidMesh into, Vector2 a, Vector2 d, Vector2 inset, float s0, float s1, float y0, float y1,
@@ -242,7 +339,7 @@ namespace CloneZ
             var center = new Vector3(c.x, (y0 + y1) * 0.5f, c.y);
             var size = new Vector3(len, h, Thick);
             into.Box(center, size, yaw, surf);
-            if (solid && j.Solid) Collider(j, center, size, yaw);
+            if (solid) Collider(j, center, size, yaw);
         }
 
         // A concrete, block, brick or stone band along the foot of the wall, standing a little proud, broken at doors.
@@ -274,7 +371,8 @@ namespace CloneZ
             Plan p = j.P;
             float len = j.Len[i];
             Surf stone = j.P.Wall == WallKind.Brick ? WallSurf(WallKind.Stone, 0) : j.TrimS;
-            for (int k = 1; k < p.Storeys; k++)
+            int every = p.Storeys > 6 ? Mathf.CeilToInt(p.Storeys / 4f) : 1;   // a tower's every few floors
+            for (int k = 1; k < p.Storeys; k += every)
             {
                 float y = j.FloorY(k);
                 if (y + 0.2f > j.TopAt(i, len * 0.5f)) break;
@@ -305,29 +403,11 @@ namespace CloneZ
         #endregion
 
         #region Colliders
-        // A collider for a wall or anything solid: on the building's own object, turned to its frame, when the box runs
-        // along the frame (most do: one object per building, not one per wall); else on the town's.
+        // A collider for a wall or anything solid round a building, when the job's are: one of the site's merged prop
+        // colliders (one mesh a site, cooked off the main thread), so a building costs no objects of its own for them.
         private static void Collider(Job j, Vector3 center, Vector3 size, float yaw)
         {
-            float frame = j.Sh.Yaw;
-            float off = Mathf.Repeat(yaw - frame, 90f);
-            if (off > 0.5f && off < 89.5f)
-            {
-                j.Site.Town.PropCollider(center, size, yaw);
-                return;
-            }
-            if (j.Colliders == null)
-            {
-                j.Colliders = new GameObject("BuildingColliders");
-                j.Colliders.transform.SetParent(j.Site.Town.World, false);
-                j.Colliders.transform.SetPositionAndRotation(To3(j.Sh.O, 0f), Quaternion.Euler(0f, frame, 0f));
-            }
-            Vector2 local = j.Sh.Local(new Vector2(center.x, center.z));
-            bool quarter = Mathf.Abs(Mathf.DeltaAngle(yaw, frame + 90f)) < 1f || Mathf.Abs(Mathf.DeltaAngle(yaw, frame - 90f)) < 1f;
-            var box = j.Colliders.AddComponent<BoxCollider>();
-            box.center = new Vector3(local.x, center.y, local.y);
-            box.size = quarter ? new Vector3(size.z, size.y, size.x) : size;
-            j.Site.Town.ColliderCount++;
+            if (j.Solid) j.Site.Town.PropCollider(center, size, yaw);
         }
         #endregion
 
@@ -341,17 +421,18 @@ namespace CloneZ
             bool roofed = p.Arch != Arch.Ruin && p.Arch != Arch.Canopy;
             if (!j.Lite)
             {
-                List<int> tris = MapGeometry.Triangulate(f.Pts);
+                List<int> tris = j.Tris;
                 Vector3 middle = To3(f.Middle, 0f);
                 RaidMesh floor = j.Site.Town.Out.Flat(middle);
                 RaidMesh ceilings = j.Site.Overhead.At(middle);
                 Surf floorSurf = FloorOf(p);
+                Surf ceilingSurf = CeilingSurf;
                 float ceiling = p.Storeys == 1 && p.Eave > 4.5f && p.Arch != Arch.Row ? p.Eave - 0.15f : CeilingY;
                 for (int t = 0; t + 2 < tris.Count; t += 3)
                 {
                     Vector2 a = f.Pts[tris[t]], b = f.Pts[tris[t + 1]], c = f.Pts[tris[t + 2]];
                     floor.Tri(To3(a, 0.02f), To3(b, 0.02f), To3(c, 0.02f), floorSurf);
-                    if (roofed) ceilings.Tri(To3(a, ceiling), To3(c, ceiling), To3(b, ceiling), DecorMaterials.Ceiling);
+                    if (roofed) ceilings.Tri(To3(a, ceiling), To3(c, ceiling), To3(b, ceiling), ceilingSurf);
                 }
             }
             Rows(j, roofed && !j.Lite);
@@ -390,19 +471,36 @@ namespace CloneZ
             }
         }
 
+        // The shared floor and ceiling finishes, kept (DecorMaterials makes a key string on every ask).
+        private static Surf s_Concrete, s_Asphalt, s_Ceiling, s_HomeFloor, s_HallFloor, s_ShopFloor, s_OfficeFloor, s_PorchWood, s_SwingWood;
+
+        private static Surf Cached(ref Surf slot, System.Func<Surf> make)
+        {
+            if (!slot.Valid) slot = make();
+            return slot;
+        }
+
+        private static Surf ConcreteSurf => Cached(ref s_Concrete, () => DecorMaterials.Concrete);
+        private static Surf AsphaltSurf => Cached(ref s_Asphalt, () => DecorMaterials.Asphalt);
+        private static Surf CeilingSurf => Cached(ref s_Ceiling, () => DecorMaterials.Ceiling);
+        private static Surf PorchWood => Cached(ref s_PorchWood, () => DecorMaterials.WoodFloor(new Color(0.52f, 0.42f, 0.32f)));
+        private static Surf SwingWood => Cached(ref s_SwingWood, () => DecorMaterials.WoodFloor(new Color(0.50f, 0.36f, 0.24f)));
+
         private static Surf FloorOf(Plan p)
         {
             switch (p.Arch)
             {
                 case Arch.House: case Arch.Trailer: case Arch.Apartments: case Arch.Motel:
-                    return DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f));
+                    return Cached(ref s_HomeFloor, () => DecorMaterials.WoodFloor(new Color(0.55f, 0.40f, 0.26f)));
                 case Arch.Warehouse: case Arch.Industrial: case Arch.Rickhouse: case Arch.Garage: case Arch.Shed: case Arch.Barn:
-                case Arch.TobaccoBarn: case Arch.Greenhouse: case Arch.Ruin:
-                    return DecorMaterials.Concrete;
+                case Arch.TobaccoBarn: case Arch.Greenhouse: case Arch.Ruin: case Arch.Parking:
+                    return ConcreteSurf;
                 case Arch.Church: case Arch.Courthouse:
-                    return DecorMaterials.WoodFloor(new Color(0.46f, 0.32f, 0.20f));
+                    return Cached(ref s_HallFloor, () => DecorMaterials.WoodFloor(new Color(0.46f, 0.32f, 0.20f)));
+                case Arch.Store:
+                    return Cached(ref s_ShopFloor, () => DecorMaterials.Linoleum(new Color(0.78f, 0.76f, 0.70f), new Color(0.60f, 0.58f, 0.54f), true));
                 default:
-                    return DecorMaterials.Linoleum(new Color(0.78f, 0.76f, 0.70f), new Color(0.60f, 0.58f, 0.54f), p.Arch == Arch.Store);
+                    return Cached(ref s_OfficeFloor, () => DecorMaterials.Linoleum(new Color(0.78f, 0.76f, 0.70f), new Color(0.60f, 0.58f, 0.54f), false));
             }
         }
         #endregion
@@ -445,7 +543,9 @@ namespace CloneZ
             Vector3 d = b - a;
             float len = d.magnitude;
             if (len < 0.01f) return;
-            Quaternion q = Quaternion.LookRotation(d / len, up);
+            Vector3 f = d / len;
+            if (Mathf.Abs(Vector3.Dot(f, up.normalized)) > 0.999f) up = Mathf.Abs(f.y) < 0.9f ? Vector3.up : Vector3.forward;
+            Quaternion q = Quaternion.LookRotation(f, up);
             m.Box((a + b) * 0.5f, new Vector3(width, depth, len), q, s);
         }
 
@@ -463,6 +563,34 @@ namespace CloneZ
         {
             Vector2 c = j.At(edge, s) + j.Out[edge] * (proud + depth * 0.5f);
             m.Box(new Vector3(c.x, y, c.y), new Vector3(w, h, depth), j.Yaw(edge), surf);
+        }
+        #endregion
+
+        #region Dice
+        /// <summary>A short run of random numbers from a feature's id and a salt, without allocating (a xorshift over
+        /// <see cref="MapStyle.Hash"/>): for the small choices drawn while a building is raised.</summary>
+        private struct Dice
+        {
+            private ulong _s;
+
+            public Dice(long id, int salt)
+            {
+                _s = ((ulong)MapStyle.Hash(id, salt) << 32) | MapStyle.Hash(id, salt ^ 0x5BD1E995);
+                if (_s == 0UL) _s = 0x9E3779B97F4A7C15UL;
+            }
+
+            /// <summary>In [0, 1).</summary>
+            public float Next()
+            {
+                _s ^= _s << 13;
+                _s ^= _s >> 7;
+                _s ^= _s << 17;
+                return (_s >> 40) * (1f / 16777216f);
+            }
+
+            public float Range(float a, float b) => a + Next() * (b - a);
+            public bool Chance(float p) => Next() < p;
+            public int Int(int n) => n > 0 ? Mathf.Min(n - 1, (int)(Next() * n)) : 0;
         }
         #endregion
     }

@@ -15,7 +15,7 @@ namespace CloneZ
         internal enum Arch
         {
             House, Trailer, Shed, Garage, Barn, TobaccoBarn, Silo, Row, Store, Office, Apartments, Motel, Church, School,
-            Civic, Courthouse, Hospital, Warehouse, Industrial, Rickhouse, Canopy, Greenhouse, Ruin,
+            Civic, Courthouse, Hospital, Warehouse, Industrial, Rickhouse, Canopy, Greenhouse, Ruin, Parking,
         }
 
         internal enum HouseStyle { None, Ranch, Cottage, Bungalow, Shotgun, TwoStorey, Foursquare, Farmhouse, Victorian, Cape }
@@ -85,6 +85,16 @@ namespace CloneZ
             public string Sign;
             public int AwningTone, SignTone;
             public bool Enterable = true, Fuel;
+            /// <summary>A tower's walls all glass, its floors painted on as a curtain wall.</summary>
+            public bool Curtain;
+            /// <summary>A mechanical penthouse on a tall flat roof.</summary>
+            public bool Penthouse;
+            /// <summary>The big doors open onto a loading dock a truck bed high.</summary>
+            public bool Dock;
+            /// <summary>An apartment block's balconies on its upper floors, and its stair up the outside.</summary>
+            public bool Balconies, OutsideStair;
+            /// <summary>A downtown front's parapet: 0 straight, 1 raised in the middle, 2 stepped, 3 a pediment.</summary>
+            public int FrontParapet;
 
             /// <summary>The highest point of the walls (a flat roof's parapet included).</summary>
             public float WallHeight => Roof == RoofKind.Flat ? Eave + Parapet : Eave;
@@ -139,6 +149,7 @@ namespace CloneZ
                 case Arch.Row: Row(p, area, city, rng); break;
                 case Arch.Store: Store(p, area, rng); break;
                 case Arch.Office: Office(p, area, city, rng); break;
+                case Arch.Parking: Parking(p, area, city, rng); break;
                 case Arch.Apartments: Apartments(p, area, rng); break;
                 case Arch.Motel: Motel(p, rng); break;
                 case Arch.Church: Church(p, area, rng); break;
@@ -190,6 +201,12 @@ namespace CloneZ
                 && sh.Fill >= 0.85f && area < 145f;
             bool barnShape = aspect >= 1.8f && width >= 8f && width <= 18f && area >= 140f;
             bool distillery = Has(name, "distill") || Has(name, "bourbon") || Has(name, "rickhouse") || Has(name, "rackhouse");
+            // Storeys the data gives (its default for the kind means it gave none): a tower isn't a shop row.
+            int tagged = b.levels > 0 && b.levels != DefaultLevels(kind) ? b.levels : 0;
+
+            // A building mapped as parking is a parking deck (a lot is an area, not a building).
+            if ((use == "parking" || Has(name, "parking garage") || Has(name, "parking deck")) && area >= 350f && kind != "house" && kind != "garage")
+                return Arch.Parking;
 
             switch (kind)
             {
@@ -205,9 +222,9 @@ namespace CloneZ
                 case "school": return Arch.School;
                 case "hospital": return Arch.Hospital;
                 case "civic": return use == "courthouse" || use == "townhall" || Has(name, "court") ? Arch.Courthouse : Arch.Civic;
-                case "hotel": return core > 0.5f && area < 2500f ? Arch.Row : Arch.Motel;
-                case "apartments": return core > 0.6f && p.PartyCount > 0 ? Arch.Row : Arch.Apartments;
-                case "office": return core > 0.55f && area < 900f ? Arch.Row : Arch.Office;
+                case "hotel": return tagged >= 5 ? Arch.Office : core > 0.5f && area < 2500f ? Arch.Row : Arch.Motel;
+                case "apartments": return core > 0.6f && p.PartyCount > 0 && tagged < 5 ? Arch.Row : Arch.Apartments;
+                case "office": return core > 0.55f && area < 900f && tagged < 6 ? Arch.Row : Arch.Office;
                 case "retail": return core > 0.5f && area < 1500f ? Arch.Row : Arch.Store;
                 case "industrial": return distillery ? Arch.Rickhouse : Arch.Industrial;
             }
@@ -247,9 +264,11 @@ namespace CloneZ
                 if (land == "farmyard" && area > 110f && barnShape) return Arch.TobaccoBarn;
                 return Arch.House;
             }
-            // "commercial": tagged so, or an untagged building of 250 to 2,500 m².
-            if (core > 0.45f) return Arch.Row;
+            // "commercial": tagged so, or an untagged building of 250 to 2,500 m². Downtown it's a commercial row's,
+            // unless it's too big or too tall to be a store's: then an office block (a bank, a state office, a hotel).
+            if (core > 0.45f) return (area > 2600f || tagged >= 7) && !shop ? Arch.Office : Arch.Row;
             if (shop) return Arch.Store;
+            if (tagged >= 4) return Arch.Office;
             if (town > 0.45f)
             {
                 if (land == "industrial") return area < 700f ? Arch.Industrial : Arch.Warehouse;
@@ -279,6 +298,41 @@ namespace CloneZ
             return weights.Length - 1;
         }
 
+        // The same without a params array a call (the plan is drawn for every building a streamed piece builds).
+        private static readonly float[] s_Weights = new float[8];
+
+        private static int Pick(System.Random rng, float a, float b) => PickOf(rng, 2, a, b, 0f, 0f, 0f, 0f, 0f);
+        private static int Pick(System.Random rng, float a, float b, float c) => PickOf(rng, 3, a, b, c, 0f, 0f, 0f, 0f);
+        private static int Pick(System.Random rng, float a, float b, float c, float d) => PickOf(rng, 4, a, b, c, d, 0f, 0f, 0f);
+        private static int Pick(System.Random rng, float a, float b, float c, float d, float e) => PickOf(rng, 5, a, b, c, d, e, 0f, 0f);
+        private static int Pick(System.Random rng, float a, float b, float c, float d, float e, float f) => PickOf(rng, 6, a, b, c, d, e, f, 0f);
+        private static int Pick(System.Random rng, float a, float b, float c, float d, float e, float f, float g) => PickOf(rng, 7, a, b, c, d, e, f, g);
+
+        private static int PickOf(System.Random rng, int n, float a, float b, float c, float d, float e, float f, float g)
+        {
+            float[] w = s_Weights;
+            w[0] = a; w[1] = b; w[2] = c; w[3] = d; w[4] = e; w[5] = f; w[6] = g;
+            float sum = 0f;
+            for (int i = 0; i < n; i++) sum += w[i];
+            float r = (float)rng.NextDouble() * sum;
+            for (int i = 0; i < n; i++)
+            {
+                r -= w[i];
+                if (r <= 0f) return i;
+            }
+            return n - 1;
+        }
+
+        // One of a few values by index (what an array literal indexed at once would give, without the array).
+        private static T Of<T>(int i, T a, T b) => i <= 0 ? a : b;
+        private static T Of<T>(int i, T a, T b, T c) => i <= 0 ? a : i == 1 ? b : c;
+        private static T Of<T>(int i, T a, T b, T c, T d) => i <= 0 ? a : i == 1 ? b : i == 2 ? c : d;
+        private static T Of<T>(int i, T a, T b, T c, T d, T e) => i <= 0 ? a : i == 1 ? b : i == 2 ? c : i == 3 ? d : e;
+        private static T Of<T>(int i, T a, T b, T c, T d, T e, T f) => i <= 3 ? Of(i, a, b, c, d) : i == 4 ? e : f;
+        private static T Of<T>(int i, T a, T b, T c, T d, T e, T f, T g) => i <= 3 ? Of(i, a, b, c, d) : i == 4 ? e : i == 5 ? f : g;
+        private static T Of<T>(int i, T a, T b, T c, T d, T e, T f, T g, T h, T k, T l)
+            => i <= 3 ? Of(i, a, b, c, d) : i <= 6 ? Of(i - 4, e, f, g) : Of(i - 7, h, k, l);
+
         private static float Range(System.Random rng, float a, float b) => a + (float)rng.NextDouble() * (b - a);
         private static bool Chance(System.Random rng, float p) => rng.NextDouble() < p;
 
@@ -293,15 +347,15 @@ namespace CloneZ
             else if (rural)
             {
                 if (aspect >= 1.65f && sh.Width <= 9.8f && area >= 70f && !frontIsEnd && Chance(rng, 0.6f)) style = HouseStyle.Farmhouse;
-                else if (area >= 105f) style = new[] { HouseStyle.Ranch, HouseStyle.TwoStorey, HouseStyle.Cape }[Pick(rng, 0.6f, 0.25f, 0.15f)];
+                else if (area >= 105f) style = Of(Pick(rng, 0.6f, 0.25f, 0.15f), HouseStyle.Ranch, HouseStyle.TwoStorey, HouseStyle.Cape);
                 else style = HouseStyle.Cottage;
             }
             else if (old)
             {
-                if (aspect < 1.35f && area >= 80f) style = new[] { HouseStyle.Foursquare, HouseStyle.Victorian, HouseStyle.Bungalow }[Pick(rng, 0.55f, 0.25f, 0.2f)];
-                else style = new[] { HouseStyle.Victorian, HouseStyle.Bungalow, HouseStyle.TwoStorey, HouseStyle.Cape }[Pick(rng, 0.35f, 0.35f, 0.15f, 0.15f)];
+                if (aspect < 1.35f && area >= 80f) style = Of(Pick(rng, 0.55f, 0.25f, 0.2f), HouseStyle.Foursquare, HouseStyle.Victorian, HouseStyle.Bungalow);
+                else style = Of(Pick(rng, 0.35f, 0.35f, 0.15f, 0.15f), HouseStyle.Victorian, HouseStyle.Bungalow, HouseStyle.TwoStorey, HouseStyle.Cape);
             }
-            else style = new[] { HouseStyle.Ranch, HouseStyle.TwoStorey, HouseStyle.Cape, HouseStyle.Bungalow }[Pick(rng, 0.55f, 0.2f, 0.15f, 0.1f)];
+            else style = Of(Pick(rng, 0.55f, 0.2f, 0.15f, 0.1f), HouseStyle.Ranch, HouseStyle.TwoStorey, HouseStyle.Cape, HouseStyle.Bungalow);
             if (area < 62f && style != HouseStyle.Shotgun) style = HouseStyle.Cottage;
             else if (area > 240f && (style == HouseStyle.Cottage || style == HouseStyle.Bungalow)) style = HouseStyle.TwoStorey;
             if (style == HouseStyle.Farmhouse && frontIsEnd) style = HouseStyle.TwoStorey;
@@ -408,17 +462,17 @@ namespace CloneZ
             }
             if (p.Storeys == 1 && area > 200f && style != HouseStyle.Ranch && Chance(rng, 0.5f)) p.Storeys = 2;
             p.Wall = brick ? WallKind.Brick : WallKind.Siding;
-            p.WallTone = brick ? new[] { 0, 1, 2, 3, 4, 6 }[Pick(rng, 3f, 1.5f, 2f, 1.5f, 1.5f, 1f)]
-                : old || rural ? new[] { 0, 0, 1, 2, 3, 4, 5, 6, 8, 9 }[rng.Next(10)] : new[] { 0, 1, 3, 5, 6, 7, 9 }[rng.Next(7)];
-            p.Trim = brick ? TrimTones[new[] { TrimWhite, TrimCream, TrimBrown, TrimBlack }[Pick(rng, 5f, 2f, 2f, 1f)]]
-                : TrimTones[new[] { TrimWhite, TrimCream, TrimGreen, TrimBlack, TrimBrown }[Pick(rng, 6f, 1.5f, 1f, 1f, 1f)]];
+            p.WallTone = brick ? Of(Pick(rng, 3f, 1.5f, 2f, 1.5f, 1.5f, 1f), 0, 1, 2, 3, 4, 6)
+                : old || rural ? Of(rng.Next(10), 0, 0, 1, 2, 3, 4, 5, 6, 8, 9) : Of(rng.Next(7), 0, 1, 3, 5, 6, 7, 9);
+            p.Trim = brick ? TrimTones[Of(Pick(rng, 5f, 2f, 2f, 1f), TrimWhite, TrimCream, TrimBrown, TrimBlack)]
+                : TrimTones[Of(Pick(rng, 6f, 1.5f, 1f, 1f, 1f), TrimWhite, TrimCream, TrimGreen, TrimBlack, TrimBrown)];
             p.Accent = ShutterTones[rng.Next(ShutterTones.Length - 1)];
             p.Shutters = Chance(rng, brick ? 0.35f : 0.5f);
             p.CornerBoards = !brick;
             p.Covering = rural && Chance(rng, style == HouseStyle.Farmhouse ? 0.5f : 0.25f) ? RoofCover.Metal : RoofCover.Shingle;
             p.CoverTone = p.Covering == RoofCover.Metal
-                ? new[] { MetalGalv, MetalRed, MetalGreen, MetalRusty }[Pick(rng, 4f, 2f, 1.5f, 1.5f)]
-                : new[] { ShingleCharcoal, ShingleBlack, ShingleGrey, ShingleBrown, ShingleGreen, ShingleRed, ShingleBlue }[Pick(rng, 3f, 1.5f, 2f, 2f, 0.8f, 0.4f, 0.4f)];
+                ? Of(Pick(rng, 4f, 2f, 1.5f, 1.5f), MetalGalv, MetalRed, MetalGreen, MetalRusty)
+                : Of(Pick(rng, 3f, 1.5f, 2f, 2f, 0.8f, 0.4f, 0.4f), ShingleCharcoal, ShingleBlack, ShingleGrey, ShingleBrown, ShingleGreen, ShingleRed, ShingleBlue);
             if (style == HouseStyle.Victorian && Chance(rng, 0.25f)) p.Covering = RoofCover.Slate;
             if (p.Foundation < 0.5f) p.Foundation = Range(rng, 0.3f, 0.5f);
             p.FoundationSurf = brick ? WallSurf(WallKind.Block, 2) : Chance(rng, 0.5f) ? WallSurf(WallKind.Brick, 1) : WallSurf(WallKind.Block, 2);
@@ -461,9 +515,9 @@ namespace CloneZ
             p.Overhang = 0.15f;
             p.Eave = Range(rng, 2.25f, 2.5f);
             p.Wall = Chance(rng, 0.65f) ? WallKind.Boards : WallKind.Metal;
-            p.WallTone = p.Wall == WallKind.Boards ? new[] { BoardRed, BoardGrey, 3, 4 }[rng.Next(4)] : rng.Next(MetalTones.Length);
+            p.WallTone = p.Wall == WallKind.Boards ? Of(rng.Next(4), BoardRed, BoardGrey, 3, 4) : rng.Next(MetalTones.Length);
             p.Covering = Chance(rng, 0.6f) ? RoofCover.Metal : RoofCover.Shingle;
-            p.CoverTone = p.Covering == RoofCover.Metal ? new[] { MetalGalv, MetalRusty, MetalRed, MetalGreen }[rng.Next(4)] : rng.Next(4);
+            p.CoverTone = p.Covering == RoofCover.Metal ? Of(rng.Next(4), MetalGalv, MetalRusty, MetalRed, MetalGreen) : rng.Next(4);
             p.Foundation = 0.12f;
             p.FoundationSurf = WallSurf(WallKind.Concrete, 1);
             p.GroundWindow = p.UpperWindow = p.FrontWindow = WindowKind.Small;
@@ -508,9 +562,9 @@ namespace CloneZ
             p.Overhang = 0.35f;
             p.Eave = pole ? Range(rng, 4.2f, 5.2f) : Range(rng, 3.6f, 4.6f);
             p.Wall = pole ? WallKind.Metal : WallKind.Boards;
-            p.WallTone = pole ? new[] { 0, 1, 2, 6 }[rng.Next(4)] : new[] { BoardRed, BoardRed, BoardGrey, BoardBlack, 3 }[Pick(rng, 3f, 2f, 2.5f, 1.5f, 1f)];
+            p.WallTone = pole ? Of(rng.Next(4), 0, 1, 2, 6) : Of(Pick(rng, 3f, 2f, 2.5f, 1.5f, 1f), BoardRed, BoardRed, BoardGrey, BoardBlack, 3);
             p.Covering = RoofCover.Metal;
-            p.CoverTone = new[] { MetalGalv, MetalRusty, MetalRed, MetalGreen, MetalWhite }[Pick(rng, 5f, 2f, 1.5f, 1f, 0.5f)];
+            p.CoverTone = Of(Pick(rng, 5f, 2f, 1.5f, 1f, 0.5f), MetalGalv, MetalRusty, MetalRed, MetalGreen, MetalWhite);
             p.Foundation = 0.2f;
             p.FoundationSurf = WallSurf(WallKind.Concrete, 1);
             p.GroundWindow = p.UpperWindow = p.FrontWindow = WindowKind.Small;
@@ -531,9 +585,9 @@ namespace CloneZ
             p.Overhang = 0.3f;
             p.Eave = Range(rng, 5.0f, 6.4f);
             p.Wall = WallKind.Boards;
-            p.WallTone = new[] { BoardBlack, BoardGrey, BoardRed }[Pick(rng, 5.5f, 3.5f, 1f)];
+            p.WallTone = Of(Pick(rng, 5.5f, 3.5f, 1f), BoardBlack, BoardGrey, BoardRed);
             p.Covering = RoofCover.Metal;
-            p.CoverTone = new[] { MetalGalv, MetalRusty, MetalRed }[Pick(rng, 5f, 3.5f, 1.5f)];
+            p.CoverTone = Of(Pick(rng, 5f, 3.5f, 1.5f), MetalGalv, MetalRusty, MetalRed);
             p.RidgeVent = Chance(rng, 0.4f);
             p.Foundation = 0f;
             p.GroundWindow = p.UpperWindow = p.FrontWindow = WindowKind.None;
@@ -569,7 +623,7 @@ namespace CloneZ
         {
             int storeys;
             if (city) storeys = area < 400f ? 2 + rng.Next(2) : area < 1200f ? 3 + rng.Next(2) : 4 + rng.Next(3);
-            else storeys = new[] { 1, 2, 3 }[Pick(rng, 2f, 5.5f, p.Core > 0.75f ? 2.5f : 1.2f)];
+            else storeys = Of(Pick(rng, 2f, 5.5f, p.Core > 0.75f ? 2.5f : 1.2f), 1, 2, 3);
             if (area > 700f && storeys < 2) storeys = 2;
             p.Storeys = storeys;
             p.FirstStorey = 3.9f;
@@ -578,8 +632,8 @@ namespace CloneZ
             p.Parapet = Range(rng, 0.6f, 1.1f);
             int wall = Pick(rng, 8.5f, 0.6f, 0.5f, 0.4f);
             p.Wall = wall == 0 ? WallKind.Brick : wall == 1 ? WallKind.Stone : wall == 2 ? WallKind.Stucco : WallKind.Block;
-            p.WallTone = p.Wall == WallKind.Brick ? new[] { 0, 1, 2, 3, 6, BrickPainted }[Pick(rng, 3f, 2f, 2f, 1.5f, 1f, 1f)] : rng.Next(TonesOf(p.Wall).Length);
-            p.Trim = TrimTones[new[] { TrimGreen, TrimBlack, TrimOxblood, TrimCream, TrimWhite, TrimBrown }[rng.Next(6)]];
+            p.WallTone = p.Wall == WallKind.Brick ? Of(Pick(rng, 3f, 2f, 2f, 1.5f, 1f, 1f), 0, 1, 2, 3, 6, BrickPainted) : rng.Next(TonesOf(p.Wall).Length);
+            p.Trim = TrimTones[Of(rng.Next(6), TrimGreen, TrimBlack, TrimOxblood, TrimCream, TrimWhite, TrimBrown)];
             p.Accent = p.Trim;
             p.Foundation = 0.12f;
             p.FoundationSurf = WallSurf(WallKind.Stone, 0);
@@ -602,6 +656,9 @@ namespace CloneZ
             p.Covering = RoofCover.Membrane;
             p.CoverTone = 0;
             p.Chimneys = Chance(rng, 0.5f) ? 1 : 0;
+            p.RoofUnits = Chance(rng, 0.65f);
+            // Victorian fronts: a parapet raised in the middle, stepped, or under a pediment, over two storeys or three.
+            p.FrontParapet = storeys >= 2 && storeys <= 3 ? Pick(rng, 3.5f, 3f, 1.5f, 2f) : 0;
             p.Lit = Chance(rng, 0.15f);
             p.Icicles = Chance(rng, 0.3f);
         }
@@ -619,7 +676,7 @@ namespace CloneZ
                 p.Roof = RoofKind.Mansard;
                 p.Pitch = 68f;
                 p.Covering = RoofCover.Shingle;
-                p.CoverTone = new[] { ShingleBrown, ShingleCharcoal, ShingleRed, ShingleGreen }[rng.Next(4)];
+                p.CoverTone = Of(rng.Next(4), ShingleBrown, ShingleCharcoal, ShingleRed, ShingleGreen);
             }
             else if (rural && area < 500f && Chance(rng, 0.45f))
             {
@@ -627,7 +684,7 @@ namespace CloneZ
                 p.Roof = RoofKind.Gable;
                 p.Pitch = Range(rng, 20f, 28f);
                 p.Covering = RoofCover.Metal;
-                p.CoverTone = new[] { MetalGalv, MetalRed, MetalGreen }[rng.Next(3)];
+                p.CoverTone = Of(rng.Next(3), MetalGalv, MetalRed, MetalGreen);
             }
             else
             {
@@ -641,7 +698,7 @@ namespace CloneZ
             p.Wall = wall == 0 ? WallKind.Block : wall == 1 ? WallKind.Brick : wall == 2 ? WallKind.Metal : WallKind.Stucco;
             p.WallTone = rng.Next(TonesOf(p.Wall).Length);
             if (p.Wall == WallKind.Brick && p.WallTone == BrickPainted) p.WallTone = 0;
-            p.Trim = TrimTones[new[] { TrimWhite, TrimBrown, TrimGreen, TrimOxblood, TrimGrey }[rng.Next(5)]];
+            p.Trim = TrimTones[Of(rng.Next(5), TrimWhite, TrimBrown, TrimGreen, TrimOxblood, TrimGrey)];
             p.Foundation = 0.1f;
             p.FoundationSurf = WallSurf(WallKind.Concrete, 1);
             p.Storefront = true;
@@ -656,21 +713,26 @@ namespace CloneZ
             p.RoofUnits = p.Roof == RoofKind.Flat;
             p.Lit = Chance(rng, 0.25f);
             p.Icicles = Chance(rng, 0.25f);
-            if (p.Use == "fuel") p.Sign = new[] { "FOOD MART", "GAS FOOD", "QUIK STOP", "CONVENIENCE" }[rng.Next(4)];
+            if (p.Use == "fuel") p.Sign = Of(rng.Next(4), "FOOD MART", "GAS FOOD", "QUIK STOP", "CONVENIENCE");
         }
 
+        // An office block, a bank, a state office: flat-roofed (now and then hipped), ribbon windows, taller the bigger its
+        // footprint and the nearer the middle of a bigger town; a tower's top floors over a mechanical penthouse, now and
+        // then all glass.
         private static void Office(Plan p, float area, bool city, System.Random rng)
         {
-            p.Storeys = city ? 2 + rng.Next(3) : area > 900f ? 2 : 1 + rng.Next(2);
+            int byArea = Mathf.Clamp(Mathf.RoundToInt(1f + Mathf.Sqrt(area) / 30f + p.Core * 1.2f), 1, 6);
+            p.Storeys = city ? Mathf.Max(byArea, 2 + rng.Next(3)) : Mathf.Max(byArea, area > 900f ? 2 : 1 + rng.Next(2));
             p.Storey = 3.4f;
-            p.Roof = Chance(rng, 0.75f) ? RoofKind.Flat : RoofKind.Hip;
+            p.FirstStorey = p.Storeys >= 3 ? 3.8f : GroundStorey;
+            p.Roof = p.Storeys <= 2 && Chance(rng, 0.3f) ? RoofKind.Hip : RoofKind.Flat;
             p.Pitch = 22f;
             p.Overhang = 0.5f;
             p.Parapet = 0.6f;
-            p.Wall = new[] { WallKind.Brick, WallKind.Concrete, WallKind.Stone, WallKind.Block }[Pick(rng, 5f, 2f, 1f, 1f)];
+            p.Wall = Of(Pick(rng, 5f, 2.5f, 1f, 1f), WallKind.Brick, WallKind.Concrete, WallKind.Stone, WallKind.Block);
             p.WallTone = rng.Next(TonesOf(p.Wall).Length);
             if (p.Wall == WallKind.Brick && p.WallTone == BrickPainted) p.WallTone = 2;
-            p.Trim = TrimTones[new[] { TrimWhite, TrimBrown, TrimBlack, TrimGrey }[rng.Next(4)]];
+            p.Trim = TrimTones[Of(rng.Next(4), TrimWhite, TrimBrown, TrimBlack, TrimGrey)];
             p.Foundation = 0.2f;
             p.FoundationSurf = WallSurf(WallKind.Concrete, 0);
             p.GroundWindow = p.UpperWindow = p.FrontWindow = WindowKind.Ribbon;
@@ -681,7 +743,27 @@ namespace CloneZ
             p.Covering = p.Roof == RoofKind.Flat ? RoofCover.Membrane : RoofCover.Shingle;
             p.CoverTone = rng.Next(2);
             p.RoofUnits = p.Roof == RoofKind.Flat;
-            p.Lit = Chance(rng, 0.2f);
+            p.Lit = Chance(rng, 0.25f);
+        }
+
+        // A parking deck: open concrete floors behind low walls, a stair tower at a corner.
+        private static void Parking(Plan p, float area, bool city, System.Random rng)
+        {
+            p.Storeys = city ? 3 + rng.Next(4) : area > 3000f ? 3 + rng.Next(2) : 2 + rng.Next(2);
+            p.FirstStorey = 3.0f;
+            p.Storey = 3.0f;
+            p.Roof = RoofKind.Flat;
+            p.Parapet = 1.05f;
+            p.Wall = WallKind.Concrete;
+            p.WallTone = rng.Next(ConcreteTones.Length);
+            p.Trim = TrimTones[TrimGrey];
+            p.Foundation = 0f;
+            p.GroundWindow = p.UpperWindow = p.FrontWindow = WindowKind.None;
+            p.Enterable = false;
+            p.Heated = false;
+            p.BackDoor = false;
+            p.Covering = RoofCover.Membrane;
+            p.CoverTone = 1;
         }
 
         private static void Apartments(Plan p, float area, System.Random rng)
@@ -694,7 +776,7 @@ namespace CloneZ
             p.Wall = Chance(rng, 0.6f) ? WallKind.Brick : WallKind.Siding;
             p.WallTone = rng.Next(TonesOf(p.Wall).Length);
             if (p.Wall == WallKind.Brick && p.WallTone == BrickPainted) p.WallTone = 3;
-            p.Trim = TrimTones[new[] { TrimWhite, TrimCream, TrimBrown }[rng.Next(3)]];
+            p.Trim = TrimTones[Of(rng.Next(3), TrimWhite, TrimCream, TrimBrown)];
             p.Foundation = 0.3f;
             p.FoundationSurf = WallSurf(WallKind.Concrete, 1);
             p.FrontWindow = WindowKind.Picture;
@@ -705,6 +787,9 @@ namespace CloneZ
             p.Lit = Chance(rng, 0.4f);
             p.Icicles = Chance(rng, 0.4f);
             p.RoofUnits = p.Roof == RoofKind.Flat;
+            // A garden apartment block: balconies on its upper floors, a stair up its front.
+            p.Balconies = Chance(rng, 0.55f);
+            p.OutsideStair = Chance(rng, 0.45f);
         }
 
         private static void Motel(Plan p, System.Random rng)
@@ -716,7 +801,7 @@ namespace CloneZ
             p.Parapet = 0.4f;
             p.Wall = Chance(rng, 0.6f) ? WallKind.Block : WallKind.Brick;
             p.WallTone = rng.Next(TonesOf(p.Wall).Length);
-            p.Trim = TrimTones[new[] { TrimWhite, TrimBrown, TrimGreen }[rng.Next(3)]];
+            p.Trim = TrimTones[Of(rng.Next(3), TrimWhite, TrimBrown, TrimGreen)];
             p.Accent = ShutterTones[rng.Next(5)];
             p.Foundation = 0.12f;
             p.FoundationSurf = WallSurf(WallKind.Concrete, 1);
@@ -738,7 +823,7 @@ namespace CloneZ
             p.Overhang = 0.35f;
             p.Eave = small ? Range(rng, 4.2f, 4.8f) : big ? Range(rng, 7.0f, 8.5f) : Range(rng, 5.4f, 6.4f);
             p.Wall = frame ? WallKind.Siding : big && Chance(rng, 0.25f) ? WallKind.Stone : WallKind.Brick;
-            p.WallTone = frame ? 0 : p.Wall == WallKind.Stone ? 0 : new[] { 0, 1, 3, 2 }[rng.Next(4)];
+            p.WallTone = frame ? 0 : p.Wall == WallKind.Stone ? 0 : Of(rng.Next(4), 0, 1, 3, 2);
             p.Trim = TrimTones[TrimWhite];
             p.Foundation = 0.5f;
             p.FoundationSurf = WallSurf(WallKind.Stone, 1);
@@ -752,9 +837,9 @@ namespace CloneZ
             p.Stoop = true;
             p.Steeple = !small || Chance(rng, 0.5f);
             p.Belfry = !p.Steeple;
-            p.Covering = new[] { RoofCover.Shingle, RoofCover.Slate, RoofCover.Metal }[Pick(rng, 5f, big ? 4f : 1.5f, 2f)];
-            p.CoverTone = p.Covering == RoofCover.Shingle ? new[] { ShingleCharcoal, ShingleBlack, ShingleGrey }[rng.Next(3)]
-                : p.Covering == RoofCover.Metal ? new[] { MetalGalv, MetalGreen, MetalRed }[rng.Next(3)] : 0;
+            p.Covering = Of(Pick(rng, 5f, big ? 4f : 1.5f, 2f), RoofCover.Shingle, RoofCover.Slate, RoofCover.Metal);
+            p.CoverTone = p.Covering == RoofCover.Shingle ? Of(rng.Next(3), ShingleCharcoal, ShingleBlack, ShingleGrey)
+                : p.Covering == RoofCover.Metal ? Of(rng.Next(3), MetalGalv, MetalGreen, MetalRed) : 0;
             p.Lit = Chance(rng, 0.2f);
             p.Icicles = Chance(rng, 0.4f);
         }
@@ -768,8 +853,8 @@ namespace CloneZ
             p.Eave = 0f;
             p.Parapet = 0.7f;
             p.Wall = Chance(rng, 0.85f) ? WallKind.Brick : WallKind.Block;
-            p.WallTone = p.Wall == WallKind.Brick ? new[] { 0, 3, 4, 2 }[rng.Next(4)] : rng.Next(BlockTones.Length);
-            p.Trim = TrimTones[new[] { TrimWhite, TrimGrey, TrimBrown }[rng.Next(3)]];
+            p.WallTone = p.Wall == WallKind.Brick ? Of(rng.Next(4), 0, 3, 4, 2) : rng.Next(BlockTones.Length);
+            p.Trim = TrimTones[Of(rng.Next(3), TrimWhite, TrimGrey, TrimBrown)];
             p.Foundation = 0.25f;
             p.FoundationSurf = WallSurf(WallKind.Concrete, 0);
             p.GroundWindow = p.UpperWindow = p.FrontWindow = WindowKind.Ribbon;
@@ -794,7 +879,7 @@ namespace CloneZ
             p.Overhang = 0.5f;
             p.Parapet = 0.8f;
             p.Wall = Chance(rng, 0.75f) ? WallKind.Brick : WallKind.Stone;
-            p.WallTone = p.Wall == WallKind.Brick ? new[] { 0, 1, 2, 3 }[rng.Next(4)] : rng.Next(StoneTones.Length);
+            p.WallTone = p.Wall == WallKind.Brick ? Of(rng.Next(4), 0, 1, 2, 3) : rng.Next(StoneTones.Length);
             p.Trim = TrimTones[TrimWhite];
             p.Foundation = 0.4f;
             p.FoundationSurf = WallSurf(WallKind.Stone, 0);
@@ -825,7 +910,7 @@ namespace CloneZ
             p.Pitch = Range(rng, 22f, 28f);
             p.Overhang = 0.6f;
             p.Wall = Chance(rng, 0.6f) ? WallKind.Brick : WallKind.Stone;
-            p.WallTone = p.Wall == WallKind.Brick ? new[] { 0, 1 }[rng.Next(2)] : 0;
+            p.WallTone = p.Wall == WallKind.Brick ? Of(rng.Next(2), 0, 1) : 0;
             p.Trim = TrimTones[TrimWhite];
             p.Foundation = 0.8f;
             p.FoundationSurf = WallSurf(WallKind.Stone, 0);
@@ -847,10 +932,12 @@ namespace CloneZ
         {
             p.Storeys = area < 2500f ? 2 + rng.Next(2) : 3 + rng.Next(3);
             p.Storey = 3.6f;
+            p.FirstStorey = 4.0f;
             p.Roof = RoofKind.Flat;
             p.Parapet = 0.6f;
+            p.Penthouse = p.Storeys >= 4;
             p.Wall = Chance(rng, 0.7f) ? WallKind.Brick : WallKind.Concrete;
-            p.WallTone = p.Wall == WallKind.Brick ? new[] { 0, 2, 4 }[rng.Next(3)] : rng.Next(ConcreteTones.Length);
+            p.WallTone = p.Wall == WallKind.Brick ? Of(rng.Next(3), 0, 2, 4) : rng.Next(ConcreteTones.Length);
             p.Trim = TrimTones[TrimWhite];
             p.Foundation = 0.3f;
             p.FoundationSurf = WallSurf(WallKind.Concrete, 0);
@@ -873,7 +960,7 @@ namespace CloneZ
             p.Overhang = 0.25f;
             p.Parapet = old ? 0.8f : 0.35f;
             p.Wall = old ? WallKind.Brick : Chance(rng, 0.75f) ? WallKind.Metal : WallKind.Block;
-            p.WallTone = old ? new[] { 0, 1, 2 }[rng.Next(3)] : rng.Next(TonesOf(p.Wall).Length);
+            p.WallTone = old ? Of(rng.Next(3), 0, 1, 2) : rng.Next(TonesOf(p.Wall).Length);
             p.Trim = TrimTones[TrimGrey];
             p.Foundation = 0.3f;
             p.FoundationSurf = WallSurf(WallKind.Concrete, 1);
@@ -885,18 +972,27 @@ namespace CloneZ
             p.BigDoors = Mathf.Clamp(Mathf.RoundToInt(sh.Length / 14f), 1, 5);
             p.BigDoorWidth = 3.6f;
             p.BigDoorHeight = Mathf.Min(4.2f, p.Eave - 1f);
+            // A distribution warehouse's doors open onto a loading dock.
+            p.Dock = p.Arch == Arch.Warehouse && !old && area > 600f && Chance(rng, 0.5f);
+            if (p.Dock)
+            {
+                p.BigDoorWidth = 3.0f;
+                p.BigDoorHeight = Mathf.Min(p.Eave - 0.6f, DockHeight + 3.0f);
+            }
             p.Covering = pitched ? RoofCover.Metal : RoofCover.Membrane;
-            p.CoverTone = pitched ? new[] { MetalGalv, MetalWhite, MetalBlue }[rng.Next(3)] : 1;
+            p.CoverTone = pitched ? Of(rng.Next(3), MetalGalv, MetalWhite, MetalBlue) : 1;
             p.RoofUnits = !pitched;
             p.Heated = false;
             p.BackDoor = Chance(rng, 0.5f);
         }
 
-        // A bourbon rickhouse: six iron-clad floors of barrels, small windows in rows, a long ridge vent.
+        // A bourbon rickhouse: six iron-clad floors of barrels, small windows in rows (a row a floor), a long ridge vent.
         private static void Rickhouse(Plan p, System.Random rng)
         {
-            p.Storeys = 1;
             p.Eave = Range(rng, 16f, 21f);
+            p.Storey = 3.2f;
+            p.FirstStorey = 3.2f;
+            p.Storeys = Mathf.Max(3, Mathf.RoundToInt((p.Eave - 1f) / p.Storey));
             p.Roof = RoofKind.Gable;
             p.Pitch = Range(rng, 12f, 16f);
             p.Overhang = 0.3f;
@@ -927,7 +1023,7 @@ namespace CloneZ
             p.Eave = p.Fuel ? Range(rng, 4.5f, 5.0f) : 2.6f;
             p.Overhang = 0.2f;
             p.Covering = p.Fuel ? RoofCover.Membrane : RoofCover.Metal;
-            p.CoverTone = p.Fuel ? 1 : new[] { MetalGalv, MetalGreen, MetalRed, MetalRusty }[rng.Next(4)];
+            p.CoverTone = p.Fuel ? 1 : Of(rng.Next(4), MetalGalv, MetalGreen, MetalRed, MetalRusty);
             p.Enterable = false;
             p.Heated = false;
             p.SignTone = rng.Next(4);
@@ -972,7 +1068,7 @@ namespace CloneZ
             if (b.levels > 0 && b.levels != DefaultLevels(b.kind) && p.Arch != Arch.Silo && p.Arch != Arch.Canopy
                 && p.Arch != Arch.Church && p.Arch != Arch.Rickhouse)
                 p.Storeys = Mathf.Clamp(b.levels, 1, 40);
-            if (b.height > 0f) p.TaggedHeight = Mathf.Clamp(b.height, 2.4f, 90f);
+            if (b.height > 0f) p.TaggedHeight = Mathf.Clamp(b.height, 2.4f, 160f);
             switch (b.roof)
             {
                 case "flat": p.Roof = RoofKind.Flat; if (p.Parapet <= 0f) p.Parapet = 0.4f; break;
@@ -995,7 +1091,7 @@ namespace CloneZ
                 case "concrete": p.Wall = WallKind.Concrete; break;
                 case "metal": p.Wall = WallKind.Metal; break;
                 case "stucco": p.Wall = WallKind.Stucco; break;
-                case "glass": p.Wall = WallKind.Concrete; p.UpperWindow = WindowKind.Band; break;
+                case "glass": p.Wall = WallKind.Concrete; p.UpperWindow = WindowKind.Band; p.Curtain = p.Storeys >= 3; break;
             }
             Color[] tones = TonesOf(p.Wall);
             if (p.WallTone >= tones.Length) p.WallTone = 0;
@@ -1026,6 +1122,15 @@ namespace CloneZ
                     p.Storeys = Mathf.Max(1, Mathf.RoundToInt((p.Eave - p.FirstStorey) / p.Storey) + 1);
             }
             if (p.Arch == Arch.Canopy) p.Storeys = 1;
+            // A tall block's roof: a mechanical penthouse on it, a higher parapet; now and then a tower all of glass.
+            if (p.Roof == RoofKind.Flat && p.Storeys >= 5 && (p.Arch == Arch.Office || p.Arch == Arch.Hospital || p.Arch == Arch.Apartments
+                || p.Arch == Arch.Row || p.Arch == Arch.Civic))
+            {
+                p.Penthouse = true;
+                p.RoofUnits = true;
+                p.Parapet = Mathf.Max(p.Parapet, p.Storeys >= 8 ? 1.0f : 0.7f);
+                if (p.Arch == Arch.Office && p.Storeys >= 10 && MapStyle.Unit(b.id, SaltPlan + 11) < 0.45f) p.Curtain = true;
+            }
 
             float r = (float)rng.NextDouble();
             if (p.Roof == RoofKind.Flat) p.Snow = r < 0.82f ? SnowCover.Full : SnowCover.Partial;
