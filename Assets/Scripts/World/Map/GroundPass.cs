@@ -190,8 +190,6 @@ namespace CloneZ
             /// <summary>Where the site's middle is in the world (x, z): site-local + this is the same point in every
             /// chunk that sees it.</summary>
             public readonly Vector2 Offset;
-            /// <summary>Where the site's middle is on the state's grid (EPSG:3088 metres; see <see cref="GridOrigin"/>).</summary>
-            public readonly double GridX, GridZ;
             /// <summary>The areas cut to the square, in priority order (the last one shows where they overlap).</summary>
             public List<Owner> Owners = new List<Owner>();
             /// <summary>A fixed map's areas past its edge (the scenery ring), in the four bands round the square.</summary>
@@ -217,7 +215,6 @@ namespace CloneZ
                 Half = site.Half;
                 Square = Rect.MinMaxRect(-Half, -Half, Half, Half);
                 Offset = new Vector2(site.WorldOffset.x, site.WorldOffset.z);
-                GridOrigin(site, out GridX, out GridZ);
             }
 
             /// <summary>The point in world metres (the same in every chunk).</summary>
@@ -418,7 +415,8 @@ namespace CloneZ
                 for (int i = 0; i + 1 < pts.Length; i += 2)
                     list.Add(new Vector2((float)(shift.x + pts[i] * 0.1), (float)(shift.y + pts[i + 1] * 0.1)));
                 float size = Site.Build.RegionSize;
-                list = MapGeometry.ClipPolygon(list, new Rect(shift.x, shift.y, size, size));
+                o.Region = new Rect(shift.x, shift.y, size, size);
+                list = MapGeometry.ClipPolygon(list, o.Region);
                 return o.Whole = list.Count >= 3 ? list : null;
             }
 
