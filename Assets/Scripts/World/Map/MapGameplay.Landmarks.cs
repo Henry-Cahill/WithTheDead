@@ -34,6 +34,63 @@ namespace CloneZ
         private static readonly Dictionary<string, RealLandmark> s_Landmarks = new Dictionary<string, RealLandmark>();
         private static object s_LandmarkEpoch;
 
+        /// <summary>A stretch of open ground near the start (a parking lot, a ball field, a school's grounds, a park, a
+        /// field), for setting a helicopter down.</summary>
+        private struct OpenGround
+        {
+            public Vector3 At;
+            public float Size;
+            public int Preference;
+        }
+
+        private static readonly List<OpenGround> s_Open = new List<OpenGround>();
+        private const float OpenReach = 700f;   // metres from the start town's middle
+
+        /// <summary>Open ground near <paramref name="target"/> (world metres, within <paramref name="within"/>) in the
+        /// start town, best first: paved lots, fields and grounds before grass, the bigger and the nearer the better.</summary>
+        internal static void OpenGroundNear(Vector3 target, float within, List<Vector3> into)
+        {
+            into.Clear();
+            var scored = new List<KeyValuePair<float, Vector3>>();
+            foreach (OpenGround g in s_Open)
+            {
+                float d = Vector2.Distance(new Vector2(g.At.x, g.At.z), new Vector2(target.x, target.z));
+                if (d > within) continue;
+                scored.Add(new KeyValuePair<float, Vector3>(g.Preference * 2f + Mathf.Log10(g.Size) - d / 25f, g.At));
+            }
+            scored.Sort((a, b) => b.Key.CompareTo(a.Key));
+            foreach (KeyValuePair<float, Vector3> kv in scored) into.Add(kv.Value);
+        }
+
+        private static int OpenPreference(string kind)
+        {
+            switch (kind)
+            {
+                case "parking": case "plaza": case "pitch": return 3;
+                case "school": case "park": case "golf": case "farmland": case "meadow": case "grass": return 2;
+                case "playground": case "lot": return 1;
+                default: return 0;
+            }
+        }
+
+        // Notes the site's open ground, if it's near the start.
+        private static void RecordOpenGround(Site site)
+        {
+            if (site.WorldOffset.magnitude > OpenReach || s_Open.Count > 4000) return;
+            foreach (Patch a in site.Area.Areas)
+            {
+                int pref = OpenPreference(a.Data.kind);
+                if (pref == 0) continue;
+                float size = Mathf.Abs(MapGeometry.SignedArea(a.Pts));
+                if (size < 250f) continue;
+                Rect r = MapGeometry.Bounds(a.Pts);
+                Vector2 at = MapGeometry.Middle(a.Pts);
+                if (!MapGeometry.Contains(a.Pts, at)) at = r.center;
+                if (!MapGeometry.Contains(a.Pts, at)) continue;
+                s_Open.Add(new OpenGround { At = site.WorldOffset + To3(at, 0f), Size = size, Preference = pref });
+            }
+        }
+
         /// <summary>The name of a real landmark by its id (as published, without "landmark:"), for the HUD, the map and
         /// the descriptions of places; false for any other id.</summary>
         internal static bool TryLandmarkName(string id, out string name)
@@ -129,9 +186,11 @@ namespace CloneZ
             if (!ReferenceEquals(epoch, s_LandmarkEpoch))
             {
                 s_Landmarks.Clear();
+                s_Open.Clear();
                 s_LandmarkEpoch = epoch;
                 MapGameplayRuntime.Reset();
             }
+            RecordOpenGround(site);
             SiteInfo info = Analyse(site);
             var found = new List<RealLandmark>();
             var hosts = new HashSet<Footprint>();

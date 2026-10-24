@@ -542,7 +542,11 @@ namespace CloneZ
         #endregion
 
         #region Published points
-        /// <summary>Publishes the landing, vehicle‑spot and outpost points for the zone, used by AI navigation.
+        private static readonly List<Vector3> s_OpenGround = new List<Vector3>();
+
+        /// <summary>Publishes the landing, vehicle‑spot and outpost points for the zone, used by AI navigation. On a real
+        /// map the helicopter sets down on real open ground near each side where there is some (a parking lot, a ball
+        /// field, a school's grounds, a park, a field: <see cref="MapGameplay.OpenGroundNear"/>).
         /// </summary>
         public static void PublishPoints(Transform world, RaidMapInfo map, ZoneDef zone, ZoneSiteMap site, System.Random rng)
         {
@@ -552,7 +556,8 @@ namespace CloneZ
             {
                 Vector3 target = sides[s] * (half - (zone.HasCordon ? CordonRules.BeltWidth + 6f : 16f));
                 Vector3 pad = target;
-                if (site.TryFind(rng, new Vector2(10f, 10f), 0f, 1f, ZoneSiteMap.Hard | SiteCell.Edge, 4f,
+                if (!(!string.IsNullOrEmpty(zone.RealPlace) && OpenPad(site, target, half, out pad))
+                    && site.TryFind(rng, new Vector2(10f, 10f), 0f, 1f, ZoneSiteMap.Hard | SiteCell.Edge, 4f,
                         p => 1f / (1f + Vector3.Distance(p, target)), 160, out Vector3 found) && Vector3.Distance(found, target) < 26f)
                     pad = found;
                 site.Claim(pad, new Vector2(10f, 10f), 0f);
@@ -581,6 +586,31 @@ namespace CloneZ
                 site.Claim(at, new Vector2(12f, 12f), 0f);
                 WorldMarkers.Add(WorldMarkers.Outpost, at);
             }
+        }
+
+        // A clear 10 m pad on real open ground within 90 m of a side's landing target: the best stretch first, the pad
+        // anywhere on it within 16 m of its middle (a spiral, so every peer finds the same one).
+        private static bool OpenPad(ZoneSiteMap site, Vector3 target, float half, out Vector3 pad)
+        {
+            pad = target;
+            MapGameplay.OpenGroundNear(target, 90f, s_OpenGround);
+            const SiteCell mask = ZoneSiteMap.Hard | SiteCell.Edge;
+            float inside = half - 12f;
+            foreach (Vector3 c in s_OpenGround)
+                for (float r = 0f; r <= 16f; r += 2f)
+                {
+                    int steps = r == 0f ? 1 : 12;
+                    for (int i = 0; i < steps; i++)
+                    {
+                        float a = i * Mathf.PI * 2f / steps;
+                        var p = new Vector3(c.x + Mathf.Cos(a) * r, 0f, c.z + Mathf.Sin(a) * r);
+                        if (Mathf.Abs(p.x) > inside || Mathf.Abs(p.z) > inside) continue;
+                        if (site.Any(ZoneSiteMap.Grow(ZoneSiteMap.Footprint(p, new Vector2(10f, 10f), 0f), 1f), mask)) continue;
+                        pad = p;
+                        return true;
+                    }
+                }
+            return false;
         }
         #endregion
     }

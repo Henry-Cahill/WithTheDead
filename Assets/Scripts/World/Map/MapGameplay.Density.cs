@@ -351,15 +351,19 @@ namespace CloneZ
         /// <summary>True when <paramref name="world"/> is inside <paramref name="place"/>'s built-up pull (its radius).</summary>
         internal static bool Within(MapPlace place, float distance) => place != null && distance < PlaceRadius(Population(place));
 
+        /// <summary>Where a place's point is in the world (metres from the start town).</summary>
+        internal static Vector3 WorldOf(MapPlace place)
+            => place == null ? Vector3.zero : new Vector3((float)(place.x - s_OriginX), 0f, (float)(place.z - s_OriginZ));
+
         /// <summary>
         /// How well stocked the Zone is at <paramref name="world"/>, as a multiple of the usual: the start town has been
-        /// picked over (0.8), and the farther from it the better (1.0 at about 9 km, 1.15 at 20 km, 1.35 at 50 km), more
+        /// picked over (0.85), and the farther from it the better (1.0 at about 7 km, 1.15 at 22 km, 1.35 at 55 km), more
         /// so in the bigger places (Louisville's core about a fifth richer, a village a tenth poorer). 0.75 to 1.6.
         /// </summary>
         internal static float LootRichnessAt(Vector3 world)
         {
             float km = Mathf.Sqrt(world.x * world.x + world.z * world.z) / 1000f;
-            float far = 0.8f + 0.65f * (1f - Mathf.Exp(-km / 25f));
+            float far = 0.85f + 0.6f * (1f - Mathf.Exp(-km / 25f));
             float pull = StrongestPlace(world, out MapPlace place, out float d);
             float size = 1f;
             if (place != null && pull > 0.05f)
