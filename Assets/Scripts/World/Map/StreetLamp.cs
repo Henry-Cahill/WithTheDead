@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
@@ -62,14 +61,12 @@ namespace CloneZ
             var box = go.AddComponent<BoxCollider>();
             box.center = new Vector3(0f, pole.y * 0.5f, 0f);
             box.size = pole;
-            NavMeshModifier skip = go.AddComponent<NavMeshModifier>();
-            skip.ignoreFromBuild = true;
-            skip.applyToChildren = true;
 
+            // The lens and the light share one object, pitched to look down: the lens meshes are made lying that way.
             var head = new GameObject("Lens");
             head.transform.SetParent(go.transform, false);
             head.transform.localPosition = lens - foot;
-            head.transform.localRotation = Quaternion.Euler(0f, yaw, 0f);
+            head.transform.localRotation = Quaternion.Euler(90f, yaw, 0f);
             head.AddComponent<MeshFilter>().sharedMesh = LensMesh(shape, size);
             var r = head.AddComponent<MeshRenderer>();
             Material[] states = LensStates(colour);
@@ -82,11 +79,7 @@ namespace CloneZ
             Light spot = null;
             if (light)
             {
-                var lo = new GameObject("Light");
-                lo.transform.SetParent(head.transform, false);
-                lo.transform.localPosition = new Vector3(0f, -0.05f, 0f);
-                lo.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
-                spot = lo.AddComponent<Light>();
+                spot = head.AddComponent<Light>();
                 spot.type = LightType.Spot;
                 spot.color = colour;
                 spot.range = range;
@@ -163,11 +156,12 @@ namespace CloneZ
             {
                 var m = new RaidMesh();
                 Surf any = DecorPalette.Matte(Color.white);
+                // Lying as the lens object is pitched: its local y runs out along the arm, its local z points down.
                 switch (shape)
                 {
-                    case Lens.Cobra: m.Ellipsoid(Vector3.zero, new Vector3(size * 0.85f, size * 0.32f, size * 1.6f), any, 10, 5); break;
-                    case Lens.Globe: m.Ellipsoid(Vector3.zero, new Vector3(size, size * 1.35f, size), any, 10, 6); break;
-                    default: m.Ellipsoid(Vector3.zero, new Vector3(size, size * 0.45f, size), any, 10, 4); break;
+                    case Lens.Cobra: m.Ellipsoid(Vector3.zero, new Vector3(size * 0.85f, size * 1.6f, size * 0.32f), any, 10, 5); break;
+                    case Lens.Globe: m.Ellipsoid(Vector3.zero, new Vector3(size, size, size * 1.35f), any, 10, 6); break;
+                    default: m.Ellipsoid(Vector3.zero, new Vector3(size, size, size * 0.45f), any, 10, 4); break;
                 }
                 mesh = m.ToMesh("StreetLampLens", Vector3.zero);
                 mesh.hideFlags = HideFlags.DontUnloadUnusedAsset;

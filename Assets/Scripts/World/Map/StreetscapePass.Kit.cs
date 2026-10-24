@@ -86,6 +86,20 @@ namespace CloneZ
                 Site.Town.PropCollider(new Vector3(p.x, y0 + size.y * 0.5f, p.y), size, yaw);
             }
 
+            /// <summary>A small prop's collider: exact when it stands square to the axes, else an upright square box about its
+            /// size (a turned box would cost an object of its own, and a bench or a phone needn't be exact).</summary>
+            public void Block(Vector2 p, Vector3 size, float yaw)
+            {
+                float k = Mathf.Repeat(yaw, 90f);
+                if (k < 1f || k > 89f)
+                {
+                    Collider(p, 0f, size, yaw);
+                    return;
+                }
+                float s = Mathf.Lerp(Mathf.Min(size.x, size.z), Mathf.Max(size.x, size.z), 0.6f);
+                Collider(p, 0f, new Vector3(s, size.y, s), 0f);
+            }
+
             /// <summary>A world-anchored key for a spot (to half a metre), so a thing two streamed pieces both build comes
             /// out the same in each.</summary>
             public long KeyOf(Vector2 local)

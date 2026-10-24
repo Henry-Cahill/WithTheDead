@@ -350,7 +350,7 @@ namespace CloneZ
             for (int i = 0; i < 2; i++) m.Box(new Vector3(0f, 0.62f + i * 0.17f, -0.22f), new Vector3(1.72f, 0.09f, 0.03f), wood);
             m.Box(new Vector3(0f, 0.48f, 0.07f), new Vector3(1.62f, 0.03f, 0.36f), SnowSurf);
             m.ResetFrame();
-            ctx.Collider(at, 0f, new Vector3(1.75f, 0.8f, 0.55f), Yaw(facing));
+            ctx.Block(at, new Vector3(1.75f, 0.8f, 0.55f), Yaw(facing));
             Claim(ctx, at, 0.9f);
         }
 
@@ -370,7 +370,7 @@ namespace CloneZ
                 m.Upright(To3(p + facing * 0.201f, 0.74f), To3(facing, 0f), 0.4f, 0.5f, SignArt.Surf, SignArt.Cell(Papers[kind]));
                 m.Box(To3(p, 1.055f), new Vector3(0.42f, 0.03f, 0.38f), yaw, SnowSurf);
             }
-            ctx.Collider(at, 0f, new Vector3(count * 0.5f, 1.05f, 0.42f), Yaw(facing));
+            ctx.Block(at, new Vector3(count * 0.5f, 1.05f, 0.42f), Yaw(facing));
             Claim(ctx, at, count * 0.3f);
         }
 
@@ -389,7 +389,7 @@ namespace CloneZ
             m.ResetFrame();
             m.Upright(foot + To3(facing, 0f) * 0.252f + new Vector3(0f, 0.62f, 0f), To3(facing, 0f), 0.36f, 0.36f, SignArt.Surf, SignArt.Cell("usps"));
             m.Ellipsoid(foot + new Vector3(0f, 1.36f, 0f), new Vector3(0.5f, 0.1f, 0.42f), SnowSurf, 8, 3);
-            ctx.Collider(at, 0f, new Vector3(0.55f, 1.35f, 0.55f), Yaw(facing));
+            ctx.Block(at, new Vector3(0.55f, 1.35f, 0.55f), Yaw(facing));
             Claim(ctx, at, 0.45f);
         }
 
@@ -410,7 +410,7 @@ namespace CloneZ
             m.ResetFrame();
             Vector3 front = foot + To3(-facing, 0f) * 0.185f + new Vector3(0f, 1.9f, 0f);
             m.Upright(front, To3(-facing, 0f), 0.6f, 0.15f, SignArt.Surf, SignArt.Cell("telephone"));
-            ctx.Collider(at, 0f, new Vector3(0.64f, 2f, 0.4f), Yaw(facing));
+            ctx.Block(at, new Vector3(0.64f, 2f, 0.4f), Yaw(facing));
             Claim(ctx, at, 0.5f);
         }
 
@@ -430,7 +430,7 @@ namespace CloneZ
             Vector3 side = Vector3.Cross(n, Vector3.up).normalized;
             m.Upright(foot + n * 0.404f + new Vector3(0f, 1.27f, 0f) - side * 0.12f, n, 0.5f, 1.12f, DecorPalette.Glow(new Color(0.85f, 0.82f, 0.70f)));
             m.Box(foot + new Vector3(0f, 1.855f, 0f), new Vector3(0.93f, 0.03f, 0.78f), yaw, SnowSurf);
-            ctx.Collider(at, 0f, new Vector3(0.95f, 1.85f, 0.8f), yaw);
+            ctx.Block(at, new Vector3(0.95f, 1.85f, 0.8f), yaw);
             Claim(ctx, at, 0.7f);
         }
 
@@ -603,7 +603,7 @@ namespace CloneZ
             Vector3 n = To3(front, 0f);
             m.Upright(foot + n * 0.361f + new Vector3(0f, 0.8f, 0f), n, 0.9f, 0.3f, SignArt.Surf, SignArt.Cell("ice"));
             m.Box(foot + new Vector3(0f, 1.115f, 0f), new Vector3(1.28f, 0.03f, 0.7f), yaw, SnowSurf);
-            ctx.Collider(at, 0f, new Vector3(1.3f, 1.1f, 0.72f), yaw);
+            ctx.Block(at, new Vector3(1.3f, 1.1f, 0.72f), yaw);
             Claim(ctx, at, 0.7f);
         }
         #endregion

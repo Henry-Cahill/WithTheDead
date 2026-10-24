@@ -380,8 +380,7 @@ namespace CloneZ
         /// </summary>
         internal sealed class NameAtlas
         {
-            private const int W = 512;
-            private readonly int _h;
+            private readonly int _w, _h;
             private readonly Color32[] _px;
             private readonly Painter _p;
             private readonly Texture2D _tex;
@@ -392,10 +391,10 @@ namespace CloneZ
 
             public NameAtlas(Site site)
             {
-                _h = site.Chunked ? 256 : 1024;
-                _px = new Color32[W * _h];
-                _p = new Painter(_px, W, _h);
-                _tex = new Texture2D(W, _h, TextureFormat.RGBA32, true)
+                _w = _h = site.Chunked ? 256 : 512;
+                _px = new Color32[_w * _h];
+                _p = new Painter(_px, _w, _h);
+                _tex = new Texture2D(_w, _h, TextureFormat.RGBA32, true)
                 {
                     name = "StreetNames", wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear, anisoLevel = 4,
                 };
@@ -415,14 +414,15 @@ namespace CloneZ
             public bool Blade(string name, out Rect uv, out float aspect)
             {
                 string text = BladeText(name);
-                int w = Mathf.Min(W, DecorFont.Width(text, 2) + 14), h = 20;
+                int scale = DecorFont.Width(text, 2) + 14 <= _w ? 2 : 1;
+                int w = Mathf.Min(_w, DecorFont.Width(text, scale) + 14), h = 20;
                 aspect = w / (float)h;
                 return Cell("blade:" + text, w, h, (x, y) =>
                 {
                     _p.Fill(x, y, w, h, SignGreen);
                     for (int i = 0; i < w; i++) { _p.Set(x + i, y + 1, SignWhite); _p.Set(x + i, y + h - 2, SignWhite); }
                     for (int j = 1; j < h - 1; j++) { _p.Set(x + 1, y + j, SignWhite); _p.Set(x + w - 2, y + j, SignWhite); }
-                    _p.TextCentred(text, x + w / 2, y + h - 4, 2, SignWhite);
+                    _p.TextCentred(text, x + w / 2, y + h / 2 + DecorFont.GlyphH * scale / 2, scale, SignWhite);
                 }, out uv);
             }
 
@@ -443,15 +443,16 @@ namespace CloneZ
             {
                 text = text.ToUpperInvariant();
                 if (text.Length > 18) text = text.Substring(0, 18);
-                int w = Mathf.Min(W, DecorFont.Width(text, 4) + 8), h = DecorFont.GlyphH * 4 + 8;
+                int scale = DecorFont.Width(text, 4) + 8 <= _w ? 4 : 2;
+                int w = Mathf.Min(_w, DecorFont.Width(text, scale) + 8), h = DecorFont.GlyphH * scale + 8;
                 aspect = w / (float)h;
-                return Cell("letters:" + text, w, h, (x, y) => _p.TextCentred(text, x + w / 2, y + h - 5, 4, ink), out uv);
+                return Cell("letters:" + text, w, h, (x, y) => _p.TextCentred(text, x + w / 2, y + h - 5, scale, ink), out uv);
             }
 
             private bool Cell(string key, int w, int h, System.Action<int, int> paint, out Rect uv)
             {
                 if (_done.TryGetValue(key, out uv)) return true;
-                if (_x + w > W)
+                if (_x + w > _w)
                 {
                     _x = 0;
                     _y += _shelf + 1;
@@ -459,7 +460,7 @@ namespace CloneZ
                 }
                 if (_y + h > _h) return false;
                 paint(_x, _y);
-                uv = new Rect((_x + 0.5f) / W, (_y + 0.5f) / _h, (w - 1f) / W, (h - 1f) / _h);
+                uv = new Rect((_x + 0.5f) / _w, (_y + 0.5f) / _h, (w - 1f) / _w, (h - 1f) / _h);
                 _done[key] = uv;
                 _x += w + 1;
                 _shelf = Mathf.Max(_shelf, h);

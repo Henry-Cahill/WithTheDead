@@ -258,6 +258,9 @@ namespace CloneZ
             for (int k = 0; k < anchors.Count; k++)
             {
                 Anchor a = anchors[k];
+                // A pole where the line crosses the site's edge is shared with the neighbouring piece: both drop it if it
+                // would stand on a carriageway (both see the roads that cross the edge there).
+                if (a.Edge && OnCarriageway(ctx.Site.Area, PointAt(c, a.T, out _))) continue;
                 if (placed.Count > 0 && a.T - placed[placed.Count - 1].t < 5f)
                 {
                     // Two anchors this close are one pole (an edge pole wins).
@@ -368,9 +371,27 @@ namespace CloneZ
                 {
                     if (!ctx.Site.FreeBeside(p, 0.4f)) continue;
                 }
-                else if (InBuilding(ctx.Site.Area, p)) continue;
+                else if (InBuilding(ctx.Site.Area, p) || OnCarriageway(ctx.Site.Area, p)) continue;
                 t = tt;
                 return true;
+            }
+            return false;
+        }
+
+        // On a road's carriageway (tunnels aside).
+        private static bool OnCarriageway(Area area, Vector2 p)
+        {
+            foreach (Street s in area.Streets)
+            {
+                if (s.Data.tunnel || RoadRank(s) < 1) continue;
+                float reach = HalfWidth(s) + 0.3f;
+                for (int i = 0; i + 1 < s.Pts.Count; i++)
+                {
+                    Vector2 a = s.Pts[i], b = s.Pts[i + 1];
+                    if (p.x < Mathf.Min(a.x, b.x) - reach || p.x > Mathf.Max(a.x, b.x) + reach
+                        || p.y < Mathf.Min(a.y, b.y) - reach || p.y > Mathf.Max(a.y, b.y) + reach) continue;
+                    if (MapGeometry.DistanceToSegment(p, a, b) < reach) return true;
+                }
             }
             return false;
         }

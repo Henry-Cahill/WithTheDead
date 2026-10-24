@@ -303,9 +303,9 @@ namespace CloneZ
                     lens = head;
                     shape = StreetLamp.Lens.Globe;
                     size = 0.42f;
-                    range = 13f;
-                    intensity = 4.5f;
-                    angle = 160f;
+                    range = 14f;
+                    intensity = 6f;
+                    angle = 165f;
                     break;
                 case LampKind.Farm:
                     lens = head + new Vector3(0f, -0.16f, 0f);

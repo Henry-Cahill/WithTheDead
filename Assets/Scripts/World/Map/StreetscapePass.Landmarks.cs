@@ -414,7 +414,7 @@ namespace CloneZ
                 m.Cylinder(new Vector3(0f, 7.0f, 0f), 0.29f, 0.6f, 4, stone, square, 0.02f);
             }
             m.ResetFrame();
-            ctx.Collider(n.At, 0f, new Vector3(2.2f, 2f, 2.2f), Yaw(facing));
+            ctx.Block(n.At, new Vector3(2.2f, 2f, 2.2f), Yaw(facing));
             ctx.Site.Take(n.At, 1.4f);
         }
         #endregion
