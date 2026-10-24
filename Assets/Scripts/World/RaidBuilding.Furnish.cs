@@ -209,8 +209,9 @@ namespace CloneZ
             float range = Mathf.Clamp(1.3f * halfDiagonal, 3.5f, 9f);
             float intensity = 2.0f + (float)Rng.NextDouble() * 1.0f;
             // The light sits at the fitting's own bulb, just under the panel / dome / shade.
-            HomeLamp lamp = HomeLamp.Attach(Root, pos - Vector3.up * drop, range, intensity, true, glow, CircuitOf(room), color: CeilingLightColor);
-            lamp.HangFromCeiling();
+            HomeLamp lamp = HomeLamp.Attach(Root, pos - Vector3.up * drop, range, intensity, CeilingShadows, glow, CircuitOf(room), color: CeilingLightColor);
+            if (HungLater != null) HungLater.Add(lamp);
+            else lamp.HangFromCeiling();
             lamp.Flicker = room.Flicker;
             RoomLamps(room).Add(lamp);
             Town.LightCount++;

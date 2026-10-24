@@ -41,6 +41,8 @@ namespace CloneZ
     {
         public EnterableBuilding Record;
         public InteriorUse Use;
+        /// <summary>What the building was for, as the loot tables see it (<see cref="MapGameplay.Purposes"/>).</summary>
+        public string Purpose;
         public RaidBuildingKind Kind;
         /// <summary>The building's own name for objects and light circuits ("KY123456").</summary>
         public string Name;
@@ -49,6 +51,12 @@ namespace CloneZ
         public int Seed;
         /// <summary>Town (dense, on streets) rather than open country.</summary>
         public bool Town;
+        /// <summary>How many lamps (ceiling fittings, desk, bedside and standard lamps) the building may have in all, and
+        /// how many of them its rooms' ceilings take (see <see cref="PlanRoom.Lamps"/>).</summary>
+        public int LampCap, CeilingLamps;
+        /// <summary>The most pieces of furniture with a body of their own (an object, a collider, often a fixture) the
+        /// building may have: the big ones get plainer as they fill.</summary>
+        public int PieceCap;
         public Vector2 Origin, Ex, Ez;
         /// <summary>The frame's turn, as <see cref="RaidBuilding.Yaw"/> counts it.</summary>
         public float Yaw;
@@ -131,6 +139,13 @@ namespace CloneZ
         public Color FloorTint = new Color(0.25f, 0.30f, 0.38f);
         public LightStyle Light;
         public bool Lit, Flicker;
+        /// <summary>Its ceiling fittings (0: a dark closet, or past the building's lamp budget; no switch then).</summary>
+        public int Lamps;
+        /// <summary>The kinds of container its storage holds (<see cref="MapGameplay.ContainersFor(Site, Footprint, string)"/>:
+        /// the first is its signature piece; empty when it holds no loot), and how many of its pieces should hold loot
+        /// (<see cref="MapGameplay.ContainerCount"/>, within the building's budget).</summary>
+        public ContainerType[] Pool;
+        public int Loot;
         /// <summary>An outside door opens into it.</summary>
         public bool Entry;
         /// <summary>No wall toward these rooms (a hall open to the living room).</summary>
