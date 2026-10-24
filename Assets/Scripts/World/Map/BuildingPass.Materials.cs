@@ -713,6 +713,8 @@ namespace CloneZ
             s_Glowing.Add(m);
             s_GlowFull.Add(emission);
             m.SetColor(s_EmissionColor, emission * GlowShare());
+            // Made under whatever light the build had: the next camera to render sets every one again.
+            s_GlowShown = -1f;
             if (s_GlowHooked) return;
             s_GlowHooked = true;
             RenderPipelineManager.beginCameraRendering += OnCameraRendering;
@@ -723,6 +725,9 @@ namespace CloneZ
             float share = GlowShare();
             if (Mathf.Abs(share - s_GlowShown) < 0.005f) return;
             s_GlowShown = share;
+#if UNITY_EDITOR
+            if (s_Profiling) Debug.Log($"[Buildings] glow {share:F2} for {s_Glowing.Count} materials (ambient {RenderSettings.ambientLight}, camera {camera.name})");
+#endif
             for (int i = s_Glowing.Count - 1; i >= 0; i--)
             {
                 Material m = s_Glowing[i];
