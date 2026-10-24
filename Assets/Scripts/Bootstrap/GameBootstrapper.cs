@@ -147,6 +147,7 @@ namespace CloneZ
             EnsureEventSystem();
 
             var world = new GameObject("World").transform;
+            CloneZConfig.ResetArena(CloneZConfig.ArenaHalfSize);
             RaidMapInfo map = null;
             if (!string.IsNullOrEmpty(zone.RealPlace))
             {
@@ -206,7 +207,7 @@ namespace CloneZ
             WorldMarkers.Clear();
             StarterHome.SetActive(false);
             HubRules.SafeZone = true;
-            CloneZConfig.ArenaHalfSize = 16f;
+            CloneZConfig.ResetArena(16f);
 
             var gm = new GameObject("GameManager").AddComponent<GameManager>();
             Light sun = SetupEnvironment();
@@ -242,7 +243,7 @@ namespace CloneZ
             Climate.Winter = false;
             Shelter.Clear();
             StarterHome.SetActive(true);    // before any house piece is raised or restored
-            CloneZConfig.ArenaHalfSize = CloneZConfig.WaveArenaHalfSize;
+            CloneZConfig.ResetArena(CloneZConfig.WaveArenaHalfSize);
 
             var gm = new GameObject("GameManager").AddComponent<GameManager>();
 
@@ -459,6 +460,14 @@ namespace CloneZ
 
         private void BakeNavMesh(Transform world)
         {
+            // The whole of Kentucky can't be baked at once: its streamer bakes the start now and the state around the
+            // survivor as they travel.
+            KentuckyStreamer streamer = KentuckyStreamer.Active;
+            if (streamer != null && streamer.World == world)
+            {
+                streamer.BakeNow();
+                return;
+            }
             // Bake the whole arena so the player and the horde can move (and zombies can spawn)
             // anywhere inside the perimeter walls. The surface lives on the World root and collects
             // only its children, so a runtime rebuild (after demolishing a baked-in obstacle) ignores

@@ -49,10 +49,71 @@ namespace CloneZ
         {
             if (type != LogType.Exception && type != LogType.Error && type != LogType.Assert) return;
             if (message.StartsWith("[Smoke]")) return;
-            // The editor's own AI Assistant relay complains in batch mode; it's no part of the game.
-            if (stack != null && stack.Contains("com.unity.ai.assistant")) return;
+            // The editor's own AI Assistant relay complains in batch mode, its search indexer throws on startup in this Unity,
+            // and with -nographics its play-mode layout has no device to draw on; none of it is any part of the game.
+            if (stack != null && (stack.Contains("com.unity.ai.assistant") || stack.Contains("UnityEditor.Search.")
+                || stack.Contains("UnityEditor.EditorApplicationLayout"))) return;
             s_Errors++;
             if (s_FirstErrors.Count < 30) s_FirstErrors.Add(type + ": " + message + (string.IsNullOrEmpty(stack) ? "" : " @ " + FirstLine(stack)));
+            // The NavMesh bake names no mesh it rejects; look for the culprit now (the bake is synchronous, so the scene is as
+            // the bake saw it) and again on the next frame.
+            if (message.Contains("invalid vertex data"))
+            {
+                ScanMeshes("during the bake");
+                s_FindBadMeshes = true;
+            }
+        }
+
+        private static bool s_FindBadMeshes;
+
+        private void Update()
+        {
+            if (!s_FindBadMeshes) return;
+            s_FindBadMeshes = false;
+            ScanMeshes("a frame later");
+        }
+
+        private static void ScanMeshes(string when)
+        {
+            int found = 0;
+            foreach (MeshFilter mf in FindObjectsByType<MeshFilter>(FindObjectsSortMode.None))
+            {
+                Mesh m = mf.sharedMesh;
+                if (m == null) continue;
+                Vector3 s = mf.transform.lossyScale;
+                string why = !m.isReadable ? "not readable" : m.vertexCount == 0 ? "no vertices" : !Finite(m) ? "non-finite"
+                    : !IsFinite(mf.transform.position) || !IsFinite(s) ? "non-finite transform"
+                    : s.x == 0f || s.y == 0f || s.z == 0f ? "zero scale" : null;
+                if (why == null) continue;
+                Debug.Log("[Smoke] suspect mesh " + when + " (" + why + "): " + PathOf(mf.transform) + " (mesh '" + m.name + "', "
+                    + m.vertexCount + " vertices, " + m.subMeshCount + " submeshes)");
+                if (++found >= 20) break;
+            }
+            if (found == 0) Debug.Log("[Smoke] suspect mesh " + when + ": none among the scene's mesh filters");
+            foreach (TextMesh tm in FindObjectsByType<TextMesh>(FindObjectsSortMode.None))
+            {
+                if (tm.GetComponentInParent<UnityEngine.AI.NavMeshAgent>() != null) continue;
+                var mod = tm.GetComponentInParent<Unity.AI.Navigation.NavMeshModifier>();
+                if (mod != null && mod.ignoreFromBuild) continue;
+                Debug.Log("[Smoke] text mesh in reach of a NavMesh bake " + when + ": " + PathOf(tm.transform) + " (text '" + tm.text + "')");
+            }
+        }
+
+        private static bool Finite(Mesh m)
+        {
+            Bounds b = m.bounds;
+            if (!IsFinite(b.center) || !IsFinite(b.extents)) return false;
+            foreach (Vector3 v in m.vertices) if (!IsFinite(v)) return false;
+            return true;
+        }
+
+        private static bool IsFinite(Vector3 v) => float.IsFinite(v.x) && float.IsFinite(v.y) && float.IsFinite(v.z);
+
+        private static string PathOf(Transform t)
+        {
+            string path = t.name;
+            for (Transform p = t.parent; p != null; p = p.parent) path = p.name + "/" + path;
+            return path;
         }
 
         private static string FirstLine(string s)
@@ -175,6 +236,83 @@ namespace CloneZ
             Census();
             if (hunter) { yield return HunterPass(); yield break; }
             yield return RunnerPass();
+            if (KentuckyStreamer.Active != null) yield return StatewidePass();
+        }
+
+        // The statewide map: far across the state and back. The ground, the NavMesh and the dead follow the survivor; a
+        // stretch let go of and built again keeps what was taken from it; the start town stays built.
+        private IEnumerator StatewidePass()
+        {
+            KentuckyStreamer streamer = KentuckyStreamer.Active;
+            Actor me = Actor.LocalPlayer;
+            bool untargetable = me.Untargetable;
+            me.Untargetable = true;   // the dead may come; this pass isn't about them biting
+            Vector3 home = me.transform.position;
+            Check("statewide: start built", streamer.IsBuiltAt(home), streamer.Summary);
+            yield return Until(() => streamer.IsNavigableAt(home), 60f);
+            Check("statewide: start navigable", streamer.IsNavigableAt(home));
+
+            Vector3 near = home + new Vector3(1500f, 0f, 300f), far = home + new Vector3(9000f, 0f, -4500f);
+            yield return Travel(streamer, me, near, "1.5 km east");
+            LootContainer box = null;
+            foreach (LootContainer c in LootContainer.All)
+                if (c != null && c.transform.IsChildOf(streamer.World) && !c.IsEmpty && FlatDistance(c.transform.position, me.transform.position) < 150f)
+                {
+                    box = c;
+                    break;
+                }
+            Check("statewide: loot out there", box != null, LootContainer.All.Count + " containers");
+            Vector3 boxAt = box != null ? box.transform.position : Vector3.zero;
+            if (box != null)
+            {
+                box.Contents.Stacks.Clear();
+                box.Searched = true;
+            }
+            yield return Travel(streamer, me, far, "9 km east and 4.5 km south");
+            if (box != null || boxAt != Vector3.zero)
+                Check("statewide: the stretch behind was let go of", box == null && !streamer.IsBuiltAt(near), streamer.Summary);
+            yield return Travel(streamer, me, near, "back 1.5 km east");
+            if (boxAt != Vector3.zero)
+            {
+                LootContainer again = null;
+                foreach (LootContainer c in LootContainer.All)
+                    if (c != null && FlatDistance(c.transform.position, boxAt) < 0.2f) { again = c; break; }
+                Check("statewide: an emptied container stays empty", again != null && again.IsEmpty && again.Searched,
+                    again == null ? "not found again" : again.Contents.Stacks.Count + " stacks");
+            }
+            yield return Travel(streamer, me, home, "home");
+            Check("statewide: the start town stayed built", streamer.IsBuiltAt(home), streamer.Summary);
+            me.Untargetable = untargetable;
+        }
+
+        // A long drive in a frame: the survivor is set down at <paramref name="to"/> and the state must catch up.
+        private IEnumerator Travel(KentuckyStreamer streamer, Actor me, Vector3 to, string label)
+        {
+            to.y = 0.1f;
+            var cc = me.GetComponent<CharacterController>();
+            if (cc != null) cc.enabled = false;
+            me.transform.position = to;
+            if (cc != null) cc.enabled = true;
+            Physics.SyncTransforms();
+            float t0 = Time.realtimeSinceStartup;
+            yield return Until(() => streamer.IsNavigableAt(to), 120f);
+            Check("statewide: " + label + " built and navigable", streamer.IsNavigableAt(to),
+                (Time.realtimeSinceStartup - t0).ToString("0.0") + " s; " + streamer.Summary);
+            yield return new WaitForSeconds(2f);
+            Vector3 p = me.transform.position;
+            Check("statewide: standing " + label, p.y > -0.5f && p.y < 2f && FlatDistance(p, to) < 30f, "at " + p);
+            yield return Until(() => ZombiesNear(p, 300f) > 0, 120f);
+            Check("statewide: the dead roam " + label, ZombiesNear(p, 300f) > 0, ZombiesNear(p, 300f) + " within 300 m");
+        }
+
+        private static float FlatDistance(Vector3 a, Vector3 b) => new Vector2(a.x - b.x, a.z - b.z).magnitude;
+
+        private static int ZombiesNear(Vector3 p, float radius)
+        {
+            int n = 0;
+            foreach (Actor a in Actor.All)
+                if (a != null && a.Kind == ActorKind.Zombie && FlatDistance(a.transform.position, p) < radius) n++;
+            return n;
         }
 
         private void Census()

@@ -72,13 +72,7 @@ namespace CloneZ
         }
 
         /// <summary>Clamps a point to stay within the map bounds, leaving a margin from the edge.</summary>
-        public static Vector3 ClampToMap(Vector3 p, float margin)
-        {
-            float h = Mathf.Max(1f, MapHalf - margin);
-            p.x = Mathf.Clamp(p.x, -h, h);
-            p.z = Mathf.Clamp(p.z, -h, h);
-            return p;
-        }
+        public static Vector3 ClampToMap(Vector3 p, float margin) => CloneZConfig.ClampToArena(p, Mathf.Min(margin, MapHalf - 1f));
 
 
         /// <summary>Generates a random point on the map's edge band, inset from the fence by a given distance.</summary>
@@ -86,12 +80,13 @@ namespace CloneZ
         {
             float h = Mathf.Max(1f, MapHalf - inset);
             float t = (float)(rng.NextDouble() * 2.0 - 1.0) * h;
+            Vector3 c = CloneZConfig.ArenaCenter;
             switch (rng.Next(4))
             {
-                case 0: return new Vector3(t, 0f, h);
-                case 1: return new Vector3(t, 0f, -h);
-                case 2: return new Vector3(h, 0f, t);
-                default: return new Vector3(-h, 0f, t);
+                case 0: return new Vector3(c.x + t, 0f, c.z + h);
+                case 1: return new Vector3(c.x + t, 0f, c.z - h);
+                case 2: return new Vector3(c.x + h, 0f, c.z + t);
+                default: return new Vector3(c.x - h, 0f, c.z + t);
             }
         }
 
@@ -100,20 +95,18 @@ namespace CloneZ
         public static Vector3 NearestEdge(Vector3 p, float inset)
         {
             float h = Mathf.Max(1f, MapHalf - inset);
+            Vector3 c = CloneZConfig.ArenaCenter;
             p = ClampToMap(p, inset);
-            float dx = h - Mathf.Abs(p.x), dz = h - Mathf.Abs(p.z);
-            if (dx < dz) p.x = (p.x < 0f ? -1f : 1f) * h;
-            else p.z = (p.z < 0f ? -1f : 1f) * h;
+            float rx = p.x - c.x, rz = p.z - c.z;
+            float dx = h - Mathf.Abs(rx), dz = h - Mathf.Abs(rz);
+            if (dx < dz) p.x = c.x + (rx < 0f ? -1f : 1f) * h;
+            else p.z = c.z + (rz < 0f ? -1f : 1f) * h;
             p.y = 0f;
             return p;
         }
 
         /// <summary>Creates a random point anywhere on the map, keeping a margin off the fence.</summary>
-        public static Vector3 RandomMapPoint(System.Random rng, float margin)
-        {
-            float h = Mathf.Max(1f, MapHalf - margin);
-            return new Vector3((float)(rng.NextDouble() * 2.0 - 1.0) * h, 0f, (float)(rng.NextDouble() * 2.0 - 1.0) * h);
-        }
+        public static Vector3 RandomMapPoint(System.Random rng, float margin) => CloneZConfig.RandomArenaPoint(rng, margin);
 
         /// <summary>A random ground-level navmesh point anywhere on the map (kept <paramref name="margin"/> off the fence).</summary>
         /// <summary>Generates a random ground-level NavMesh point on the map, respecting a margin from the fence.</summary>
@@ -153,9 +146,16 @@ namespace CloneZ
             return s_Compass[Mathf.RoundToInt(ang / 45f) % 8];
         }
 
-        /// <summary>"crashed_helicopter" → "crashed helicopter".</summary>
-        /// <summary>Makes a readable string from an identifier by replacing underscores with spaces.</summary>
-        public static string Pretty(string id) => string.IsNullOrEmpty(id) ? "" : id.Replace('_', ' ');
+        /// <summary>"crashed_helicopter" → "crashed helicopter"; a real landmark's id (see <see cref="MapGameplay"/>)
+        /// → its name ("Bardstown courthouse").</summary>
+        public static string Pretty(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return "";
+            return MapGameplay.TryLandmarkName(id, out string name) ? name : id.Replace('_', ' ');
+        }
+
+        // A distance in words: metres to the hundred under 2 km, kilometres past it.
+        private static string Far(float d) => d >= 2000f ? Mathf.RoundToInt(d / 1000f) + " km" : Mathf.Max(100, Mathf.RoundToInt(d / 100f) * 100) + " m";
 
         /// <summary>Formats a float to a short string with invariant culture.</summary>
         public static string Inv(float f) => f.ToString("0.#", CultureInfo.InvariantCulture);
@@ -187,20 +187,50 @@ namespace CloneZ
         /// <summary>Runs a coroutine on a helper object that is destroyed with the scene.</summary>
         public static Coroutine Run(IEnumerator routine) => routine != null ? HumanRunner.Instance.StartCoroutine(routine) : null;
 
-/// <summary>Every landmark the current map published ("landmark:&lt;id&gt;"), as (id, position). The returned list is a new instance; callers may modify it without affecting future calls.</summary>
+        /// <summary>Every landmark the current map published ("landmark:&lt;id&gt;"), as (id, position). On the streamed map
+        /// only those around the country built near the survivors (the state's far landmarks are no goal for anyone here);
+        /// of the real map's landmarks only the most important of any within <see cref="RealLandmarkSpacing"/> of each
+        /// other (the courthouse, not the bank across the street), so the Zone map's pins stay readable downtown. The
+        /// returned list is a new instance; callers may modify it without affecting future calls.</summary>
         public static List<KeyValuePair<string, Vector3>> Landmarks()
         {
             var result = new List<KeyValuePair<string, Vector3>>(16);
             const string prefix = "landmark:";
+            KentuckyStreamer streamer = KentuckyStreamer.Active;
+            float reach = streamer != null ? streamer.BuiltReach + 160f : float.MaxValue;
+            Vector3 centre = CloneZConfig.ArenaCenter;
+            s_Real.Clear();
             foreach (string kind in WorldMarkers.Kinds)
             {
-                if (kind == null || !kind.StartsWith(prefix)) continue;
+                if (kind == null || !kind.StartsWith(prefix, System.StringComparison.Ordinal)) continue;
                 IReadOnlyList<Vector3> pts = WorldMarkers.Get(kind);
                 string id = kind.Substring(prefix.Length);
-                for (int i = 0; i < pts.Count; i++) result.Add(new KeyValuePair<string, Vector3>(id, pts[i]));
+                bool real = MapGameplay.TryLandmark(id, out _, out int rank);
+                for (int i = 0; i < pts.Count; i++)
+                {
+                    if (streamer != null && (Mathf.Abs(pts[i].x - centre.x) > reach || Mathf.Abs(pts[i].z - centre.z) > reach)) continue;
+                    if (real) s_Real.Add((id, pts[i], rank));
+                    else result.Add(new KeyValuePair<string, Vector3>(id, pts[i]));
+                }
             }
+            if (s_Real.Count == 0) return result;
+            s_Real.Sort((a, b) => a.rank != b.rank ? b.rank.CompareTo(a.rank) : string.CompareOrdinal(a.id, b.id));
+            int first = result.Count;
+            const float spacing2 = RealLandmarkSpacing * RealLandmarkSpacing;
+            foreach (var l in s_Real)
+            {
+                bool crowded = false;
+                for (int k = first; k < result.Count && !crowded; k++) crowded = FlatSqr(result[k].Value, l.at) < spacing2;
+                if (!crowded) result.Add(new KeyValuePair<string, Vector3>(l.id, l.at));
+            }
+            s_Real.Clear();
             return result;
         }
+
+        /// <summary>The least distance between two real landmarks listed by <see cref="Landmarks"/>, in metres.</summary>
+        public const float RealLandmarkSpacing = 45f;
+
+        private static readonly List<(string id, Vector3 at, int rank)> s_Real = new List<(string, Vector3, int)>(64);
 
         /// <summary>Every published marker whose kind mentions <paramref name="word"/> (anomaly fields, camps...).</summary>
         public static void MarkersMatching(string word, List<Vector3> into)
@@ -241,11 +271,27 @@ namespace CloneZ
         /// <summary>"the north-west part of Kestrel Flats, by the fence", from the position alone.</summary>
         public static string DescribeRegion(Vector3 p, string zoneName)
         {
+            string of = " of " + (string.IsNullOrEmpty(zoneName) ? "the map" : zoneName);
+            ZoneDef zone = ZoneCatalog.Current;
+            if (KentuckyStreamer.Active != null && zone != null && !string.IsNullOrEmpty(zone.RealPlace))
+            {
+                // The whole state: the start town's square has its parts; elsewhere the nearest town says where (in it,
+                // on its edge, or so far and which way from it), else so far and which way from the start town.
+                float d = Mathf.Sqrt(p.x * p.x + p.z * p.z), start = zone.RealHalfSize;
+                string tail = string.IsNullOrEmpty(zoneName) ? "" : ", " + zoneName;
+                if (Mathf.Max(Mathf.Abs(p.x), Mathf.Abs(p.z)) < start)
+                    return (d < start * 0.3f ? "the middle" : "the " + Compass(p) + " part") + " of " + zone.RealPlace;
+                if (MapGameplay.StrongestPlace(p, out MapPlace inside, out float din) > 0.05f && MapGameplay.Within(inside, din))
+                    return (din < 400f ? "the middle of " : "the " + Compass(p - MapGameplay.WorldOf(inside)) + " side of ") + inside.name + tail;
+                if (MapGameplay.NearestPlace(p, 300, out MapPlace town, out float dn, out Vector3 at) && dn < 25000f)
+                    return Far(dn) + " " + Compass(p - at) + " of " + town.name + tail;
+                return Far(d) + " " + Compass(p) + " of " + zone.RealPlace + tail;
+            }
             float h = MapHalf;
             float edge = Mathf.Max(Mathf.Abs(p.x), Mathf.Abs(p.z));
             string where = edge < h * 0.3f ? "the middle" : "the " + Compass(p) + " part";
             string near = edge > h - 14f ? ", by the fence" : "";
-            return where + " of " + (string.IsNullOrEmpty(zoneName) ? "the map" : zoneName) + near;
+            return where + of + near;
         }
     }
 
@@ -261,7 +307,7 @@ namespace CloneZ
             {
                 if (s_Instance == null)
                 {
-                    s_Instance = UnityEngine.Object.FindObjectOfType<HumanRunner>();
+                    s_Instance = UnityEngine.Object.FindAnyObjectByType<HumanRunner>();
                     if (s_Instance == null)
                         s_Instance = new GameObject("[ZonePeople]").AddComponent<HumanRunner>();
                 }

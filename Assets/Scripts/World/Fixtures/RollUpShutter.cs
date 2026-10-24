@@ -63,6 +63,7 @@ namespace CloneZ
             _lowerAct = Lower;
             _bangAct = Bang;
             _inspectAct = Inspect;
+            _obstructAct = CheckObstruction;
             _secureAct = Secure;
             _repairAct = Repair;
             _unsecureAct = Unsecure;

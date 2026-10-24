@@ -210,7 +210,7 @@ namespace CloneZ
                 (_wounds.PainkillersActive ? "   <size=16><color=#7fd0ff>(painkillers)</color></size>" : "");
             _painText.color = _stats.PainNormalized > 0.6f ? PainHigh
                 : _stats.PainNormalized > 0.3f ? PainMid
-                : SicknessLow;
+                : PainLow;
 
             // Panic.
             if (_panicText != null)

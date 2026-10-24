@@ -1,13 +1,13 @@
-{"version": 1, "id": "TrapperCarbine", "baseHeight": 0.17, "name": "Trapper Carbine", "model": "gpt-oss:120b", "notes": "Trapper Carbine about 0.90 m long lying on its side (barrel +X). Barrel ≈0.55 m, rear stock ≈0.35 m, polymer grip, metal trigger‑guard, detachable box magazine (7 rounds) and simple iron sights. Silhouette is a long cylinder with a blocky stock and a raised grip.", "score": 6, "parts": [
-  {"name":"Barrel","shape":"cylinder","pos":[0.175,-0.095,0.0],"rot":[0.0,0.0,90.0],"size":[0.03,0.55,0.03],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"Stock","shape":"cube","pos":[-0.275,-0.05,0.0],"rot":[0.0,0.0,0.0],"size":[0.35,0.12,0.2],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
-  {"name":"Grip","shape":"cylinder","pos":[0.075,-0.035,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.15,0.04],"color":[0.05,0.05,0.07],"smooth":0.3,"metal":0.0},
-  {"name":"TriggerGuard","shape":"cube","pos":[0.075,-0.08,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.12],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"MagazineBody","shape":"cube","pos":[0.045,-0.01,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.2,0.12],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"MagazineLip","shape":"cube","pos":[0.045,0.1,0.0],"rot":[0.0,0.0,0.0],"size":[0.07,0.02,0.14],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"FrontSight","shape":"cylinder","pos":[0.435,-0.075,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"RearSight","shape":"cube","pos":[-0.375,0.03,0.0],"rot":[0.0,0.0,0.0],"size":[0.03,0.04,0.06],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"BarrelRail","shape":"cube","pos":[0.175,-0.075,0.04],"rot":[0.0,0.0,0.0],"size":[0.45,0.008,0.02],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"BoltHandle","shape":"cube","pos":[-0.025,-0.065,0.04],"rot":[0.0,0.0,0.0],"size":[0.03,0.02,0.015],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"Trigger","shape":"cylinder","pos":[0.075,-0.065,0.06],"rot":[90.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0}
+{"version": 1, "id": "TrapperCarbine", "baseHeight": 0.16, "name": "Trapper Carbine", "model": "gpt-oss:120b", "notes": "Trapper Carbine about 0.90 m long lying on its side (barrel +X). Barrel ≈0.55 m, rear stock ≈0.35 m, polymer grip, metal trigger‑guard, detachable box magazine (7 rounds) and simple iron sights. Silhouette is a long cylinder with a blocky stock and a raised grip.", "score": 6, "parts": [
+  {"name":"Barrel","shape":"cylinder","pos":[0.175,-0.0,0.095],"rot":[-90.0,90.0,0.0],"size":[0.03,0.55,0.03],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"Stock","shape":"cube","pos":[-0.275,-0.0,0.05],"rot":[-90.0,0.0,0.0],"size":[0.35,0.12,0.2],"color":[0.4,0.3,0.2],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cylinder","pos":[0.075,-0.0,0.035],"rot":[-90.0,0.0,0.0],"size":[0.04,0.15,0.04],"color":[0.05,0.05,0.07],"smooth":0.3,"metal":0.0},
+  {"name":"TriggerGuard","shape":"cube","pos":[0.075,-0.0,0.08],"rot":[-90.0,0.0,0.0],"size":[0.08,0.04,0.12],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"MagazineBody","shape":"cube","pos":[0.045,-0.0,0.01],"rot":[-90.0,0.0,0.0],"size":[0.06,0.2,0.12],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"MagazineLip","shape":"cube","pos":[0.045,0.0,-0.1],"rot":[-90.0,0.0,0.0],"size":[0.07,0.02,0.14],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"FrontSight","shape":"cylinder","pos":[0.435,-0.0,0.075],"rot":[-90.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"RearSight","shape":"cube","pos":[-0.375,0.0,-0.03],"rot":[-90.0,0.0,0.0],"size":[0.03,0.04,0.06],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"BarrelRail","shape":"cube","pos":[0.175,0.04,0.075],"rot":[-90.0,0.0,0.0],"size":[0.45,0.008,0.02],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"BoltHandle","shape":"cube","pos":[-0.025,0.04,0.065],"rot":[-90.0,0.0,0.0],"size":[0.03,0.02,0.015],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"Trigger","shape":"cylinder","pos":[0.075,0.06,0.065],"rot":[0.0,0.0,0.0],"size":[0.008,0.03,0.008],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0}
 ]}

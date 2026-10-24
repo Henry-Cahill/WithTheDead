@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
 
 namespace CloneZ
@@ -44,6 +45,9 @@ namespace CloneZ
             var txtGo = new GameObject("HeaterTimer");
             txtGo.transform.SetParent(transform, false);
             txtGo.transform.localPosition = new Vector3(0f, 0.7f, 0f);
+            // A floating label, no part of the floor: its text mesh (empty until the heater runs, and not readable) would
+            // be handed to the hub's NavMesh bake, which rejects it as invalid vertex data.
+            txtGo.AddComponent<NavMeshModifier>().ignoreFromBuild = true;
             var txt = txtGo.AddComponent<TextMesh>();
             _timerText = txt;
             _timerText.fontSize = 32;

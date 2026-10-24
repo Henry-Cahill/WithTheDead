@@ -147,11 +147,57 @@ namespace CloneZ
             Root.SetParent(town.World, false);
         }
 
+        // A building turned by any angle (the free frame), not by quarter turns.
+        private readonly bool _free;
+        private readonly float _freeYaw, _freeCos, _freeSin;
+
+        /// <summary>A building whose local frame is turned by any angle, <paramref name="yaw"/> degrees (as <see cref="Yaw"/>
+        /// counts them), instead of quarter turns: a real-world building on the Kentucky map, furnished on its own axes by
+        /// <c>InteriorPass</c>, which raises its walls itself. Its random stream is seeded with <paramref name="seed"/>
+        /// (nothing is drawn from the town's) and its root goes under <paramref name="parent"/>. Only the furnishing half of
+        /// the building is meant for it (rooms, pieces, lights, <see cref="Finish"/>): its rooms' <see cref="RaidRoom.World"/>
+        /// rectangles are the boxes round the turned rooms, which the wall builder (<see cref="BuildShell"/>) can't use.</summary>
+        public RaidBuilding(RaidTown town, string name, Vector2 center, float yaw, float width, float depth, int seed, Transform parent)
+        {
+            Town = town;
+            Name = name;
+            Center = center;
+            HalfW = width * 0.5f;
+            HalfD = depth * 0.5f;
+            Rng = new System.Random(seed);
+            _free = true;
+            _freeYaw = yaw;
+            float r = yaw * Mathf.Deg2Rad;
+            _freeCos = Mathf.Cos(r);
+            _freeSin = Mathf.Sin(r);
+            Root = new GameObject("Bldg_" + name).transform;
+            Root.SetParent(parent != null ? parent : town.World, false);
+        }
+
+        /// <summary>False for a building whose shelter is registered by whoever raised its walls (the real-world map's).</summary>
+        public bool RegisterShelter = true;
+
+        /// <summary>For a building whose walls are raised by someone else (the free frame): the mesh and the object of the
+        /// wall at a world point on a wall face, for the fittings hung there (cupboards, posters, clocks), so they hide with
+        /// it when the camera cuts it away. Null, or returning null, leaves them on the furniture.</summary>
+        public System.Func<Vector3, RaidMesh> ForeignWallMesh;
+        /// <inheritdoc cref="ForeignWallMesh"/>
+        public System.Func<Vector3, Transform> ForeignWallObject;
+
+        /// <summary>False for ceiling fittings that never ask for shadows (the real-world map's: a town's worth of them).</summary>
+        public bool CeilingShadows = true;
+
+        /// <summary>When set, <see cref="CeilingLight"/> lists its lamps here instead of hanging them from the ceiling at once:
+        /// <see cref="HomeLamp.HangFromCeiling"/> needs the lamp awake, which a building raised inactive (or in edit mode)
+        /// isn't, so its builder hangs them once it's shown.</summary>
+        public List<HomeLamp> HungLater;
+
         #region Frame
         /// <summary>A local (x, z) point in world XZ.</summary>
         /// <summary>Convert local (x, z) coordinates to a world-space point.</summary>
         public Vector2 P(float lx, float lz)
         {
+            if (_free) return new Vector2(Center.x + lx * _freeCos + lz * _freeSin, Center.y - lx * _freeSin + lz * _freeCos);
             if (Mirror) lx = -lx;
             switch (Turns)
             {
@@ -173,7 +219,7 @@ namespace CloneZ
         /// <summary>A local yaw (degrees; 0 faces local +Z) in world terms.</summary>
         /// <summary>Local yaw (degrees; 0 faces local +Z) converted to world space, accounting for mirroring and rotation.</summary>
         /// <summary>Local yaw (degrees; 0 faces local +Z) converted to world space, accounting for mirroring and rotation.</summary>
-        public float Yaw(float localYaw) => (Mirror ? -localYaw : localYaw) + Turns * 90f;
+        public float Yaw(float localYaw) => (Mirror ? -localYaw : localYaw) + (_free ? _freeYaw : Turns * 90f);
 
         /// <summary>A local horizontal direction in world terms.</summary>
         /// <summary>Local horizontal direction in world terms.</summary>

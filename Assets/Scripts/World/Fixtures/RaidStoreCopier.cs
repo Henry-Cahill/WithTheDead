@@ -126,6 +126,7 @@ private static readonly string[] Jams =
                 into.Add(new InteractAction("Inspect copier", c => c.Notify("The copier hums smoothly – no jam in sight.")));
             else
                 into.Add(new InteractAction("Inspect copier", c => c.Notify(GetJamMessage(_said))));
+            into.Add(new InteractAction(open ? "Close the lid" : "Lift the lid", c => SetLid(!open)));
             if (_copyAvailable)
             {
                 into.Add(new InteractAction("Take copy", c =>
@@ -223,8 +224,9 @@ private static readonly string[] Jams =
 
         private void ClearJam(InteractContext ctx)
         {
+            _jammed = false;
             _copyAvailable = false;
-        _currentCopyText = null;
+            _currentCopyText = null;
             ShowJam(false);
             MakeNoise(CloneZConfig.FixtureNoiseSmall);
             ctx.Notify(Clears[_said++ % Clears.Length]);

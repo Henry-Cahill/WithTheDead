@@ -377,14 +377,10 @@ namespace CloneZ
 
         private void KeepInsideArena()
         {
-            float half = CloneZConfig.ArenaHalfSize;
             Vector3 p = transform.position;
-            if (Mathf.Abs(p.x) > half || Mathf.Abs(p.z) > half)
-            {
-                p.x = Mathf.Clamp(p.x, -half, half);
-                p.z = Mathf.Clamp(p.z, -half, half);
-                transform.position = p;
-            }
+            // On the streamed Kentucky map the arena follows the survivor; only the edge of the world holds them.
+            Vector3 q = KentuckyStreamer.Active != null ? CloneZConfig.ClampToWorld(p) : CloneZConfig.ClampToArena(p);
+            if (q.x != p.x || q.z != p.z) transform.position = q;
         }
     }
 }

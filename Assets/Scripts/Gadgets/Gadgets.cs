@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 namespace CloneZ
@@ -36,6 +37,8 @@ public Camera Cam { get; private set; }
 public bool Remote { get; private set; }
         /// <summary>Current speed magnitude of the drone.</summary>
 public float Speed => _vel.magnitude;
+        /// <summary>True while the head-light is switched on.</summary>
+        public bool LightOn => _lightOn;
 
         private float _hp = 60f, _yaw, _lift;
         private Vector3 _vel;
@@ -110,6 +113,20 @@ public float Speed => _vel.magnitude;
             Cam.nearClipPlane = 0.03f;
             Cam.depth = 20f;
             Cam.enabled = false;
+            // Head-light just under the camera, aimed the same way; ToggleLight switches it (starts off).
+            var lamp = new GameObject("Headlight").transform;
+            lamp.SetParent(transform, false);
+            lamp.localPosition = Cam.transform.localPosition + new Vector3(0f, -0.02f, 0.01f);
+            lamp.localRotation = Cam.transform.localRotation;
+            _headlight = lamp.gameObject.AddComponent<Light>();
+            _headlight.type = LightType.Spot;
+            _headlight.range = 12f;
+            _headlight.spotAngle = 45f;
+            _headlight.intensity = 2f;
+            _headlight.color = new Color(1f, 0.95f, 0.8f);
+            _headlight.shadows = LightShadows.None;
+            _headlight.GetUniversalAdditionalLightData().renderingLayers |= VisionRig.SurvivorRenderingLayerMask;
+            _headlight.enabled = false;
         }
 
         private Transform Part(Vector3 pos, Vector3 size, Color c, Quaternion? rot = null)
@@ -134,6 +151,12 @@ public float Speed => _vel.magnitude;
                         if (Battery01 <= 0.1f && _lastBatteryWarn > 0.1f) GameEvents.RaiseToast("Drone battery low – land soon.");
             _lastBatteryWarn = Battery01;
             if (Battery01 <= 0f) { move = Vector2.zero; lift = Kind == DroneKind.Fpv ? -1f : 0f; }
+            if (Battery01 <= 0f && _lightOn)
+            {
+                _lightOn = false;
+                if (_headlight != null) _headlight.enabled = false;
+                GameEvents.RaiseToast("The drone's battery is flat — its light goes out.");
+            }
             if (Kind == DroneKind.Fpv)
             {
                 _yaw += yawDelta;
@@ -189,6 +212,16 @@ public float Speed => _vel.magnitude;
             ItemDef g = ItemDatabase.Get("grenade");
             if (g != null) inv.Add(g, 1, enforceWeight: false);
             GameEvents.RaiseToast("Grenade recovered from the drone.");
+        }
+
+        /// <summary>Switches the head-light on or off. A flat battery can't power it.</summary>
+        public void ToggleLight()
+        {
+            if (_headlight == null || IsDead) return;
+            if (!_lightOn && Battery01 <= 0f) { GameEvents.RaiseToast("The drone's battery is flat — the light won't come on."); return; }
+            _lightOn = !_lightOn;
+            _headlight.enabled = _lightOn;
+            GameEvents.RaiseToast("Drone light " + (_lightOn ? "on" : "off"));
         }
 
         /// <summary>Handle incoming damage, delegating to network or local processing.</summary>
@@ -281,19 +314,25 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
                 if (d == null) return;
                 string msg = "Battery " + Mathf.RoundToInt(d.Battery01 * 100f) + "%";
                 if (d.HasGrenade) msg += ", grenade armed";
+                if (d.LightOn) msg += ", light on";
                 GameEvents.RaiseToast(msg);
             }));
             into.Add(new InteractAction("Detach grenade", c => {
                 var d = _d;
                 if (d != null) d.RecoverGrenade(c.Inventory.Inventory);
             }).DisabledIf(_d == null || !_d.HasGrenade, "No grenade aboard"));
+            bool lit = _d != null && _d.LightOn;
+            into.Add(new InteractAction(lit ? "Turn off the drone's light" : "Turn on the drone's light", c => {
+                var d = _d;
+                if (d != null) d.ToggleLight();
+            }).DisabledIf(!lit && _d != null && _d.Battery01 <= 0f, "The battery's flat"));
         }
     }
 
     /// <summary>
     /// Flying (or driving) a drone: the screen is the drone's camera; your body stands still. FPV: WASD fly, mouse
-    /// turns, Space climbs, Ctrl sinks, left mouse drops the grenade. Ground: W/S drive, A/D turn. E lands and hands
-    /// the view back; getting hurt snaps you out of it.
+    /// turns, Space climbs, Ctrl sinks, left mouse drops the grenade. Ground: W/S drive, A/D turn. L switches the
+    /// head-light. E lands and hands the view back; getting hurt snaps you out of it.
     /// </summary>
     public sealed class DronePilot : MonoBehaviour
     {
@@ -375,6 +414,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             Drone.Fly(move, lift, yaw, Time.deltaTime);
             DroneNet.Send(Drone);
             if (!blocked && mouse != null && mouse.leftButton.wasPressedThisFrame && Drone.DropGrenade(gameObject)) GameEvents.RaiseToast("Grenade away.");
+            if (!blocked && kb.lKey.wasPressedThisFrame) Drone.ToggleLight();
             if (!blocked && Time.time - _since > 0.4f && (kb.eKey.wasPressedThisFrame || kb.escapeKey.wasPressedThisFrame)) End();
         }
 
@@ -414,6 +454,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
         private int _lastSpeedKmh = -1;
         private float _lastDist = -1f;
         private bool _lastHasGrenade = false;
+        private bool _lastLightOn = false;
         private DroneKind _lastKind = (DroneKind)(-1);
         private bool _firstUpdate = true;
 
@@ -451,6 +492,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
                 int speedKmh = Mathf.RoundToInt(d.Speed * 3.6f);
                 float dist = Actor.LocalPlayer != null ? Vector3.Distance(Actor.LocalPlayer.transform.position, d.transform.position) : 0f;
                 bool hasGrenade = d.HasGrenade;
+                bool lightOn = d.LightOn;
                 DroneKind kind = d.Kind;
 
                 // Rebuild text only if something changed or first frame
@@ -460,12 +502,14 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
                     speedKmh != _lastSpeedKmh ||
                     !Mathf.Approximately(dist, _lastDist) ||
                     hasGrenade != _lastHasGrenade ||
+                    lightOn != _lastLightOn ||
                     kind != _lastKind)
                 {
                     newText = (kind == DroneKind.Fpv ? "FPV" : "UGV") + "  BAT " + Mathf.RoundToInt(battery * 100f) + "%"
                         + "   ALT " + altitude.ToString("0.0") + " m   SPD " + speedKmh + " km/h"
                         + "\nDIST " + Mathf.RoundToInt(dist) + " m"
-                        + (hasGrenade ? "   PAYLOAD ARMED [LMB]" : "") + "\n[E] land and hand back";
+                        + (hasGrenade ? "   PAYLOAD ARMED [LMB]" : "") + (lightOn ? "   LIGHT ON" : "")
+                        + "\n[L] light   [E] land and hand back";
 
                     // Cache values for next frame
                     _lastBattery = battery;
@@ -473,6 +517,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
                     _lastSpeedKmh = speedKmh;
                     _lastDist = dist;
                     _lastHasGrenade = hasGrenade;
+                    _lastLightOn = lightOn;
                     _lastKind = kind;
                     _firstUpdate = false;
                 }
@@ -581,12 +626,26 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
     /// <summary>
     /// The field tablet (Bodycam): the menus live on a cracked screen in your hands — your kit and its weight, the
     /// gun in your hands (its numbers, its parts: fit what you carry, strip what you found), saved loadouts (refilled
-    /// from the stash in the bar), the map, and the drones.
+    /// from the stash in the bar), the map, the drones, and a page of notes.
     /// </summary>
     public sealed class TabletScreen : UIScreen
     {
         private static int s_Tab;
-        private static readonly string[] Tabs = { "Kit", "Gun", "Loadouts", "Map", "Drones", "\"The fire was at the old barn last night.\"", "\"Radio static whispers: stay inside.\"", "\"Graffiti: 'Don’t trust the lights.'\"", "\"Diary entry: day 12 – supplies low.\"", "\"Letter to Mom: I miss the hills.\"", "\"A cracked milk bottle lies beside the porch, half‑filled with ice‑cold water.\"", "\"The county sheriff’s radio crackles: 'Stay off the main road after dusk.'\"", "\"Graffiti on the barn wall reads: 'The dead walk at night.'\"", "\"Note pinned to the kitchen door: 'Supply run tomorrow, bring extra blankets.'\"", "\"Old newspaper clipping: 'Winter storm expected, roads closed through the hills.'\"" };
+        private static readonly string[] Tabs = { "Kit", "Gun", "Loadouts", "Map", "Drones", "Notes" };
+        // Flavour notes listed on the Notes tab (the quotes are part of each note).
+        private static readonly string[] Notes =
+        {
+            "\"The fire was at the old barn last night.\"",
+            "\"Radio static whispers: stay inside.\"",
+            "\"Graffiti: 'Don’t trust the lights.'\"",
+            "\"Diary entry: day 12 – supplies low.\"",
+            "\"Letter to Mom: I miss the hills.\"",
+            "\"A cracked milk bottle lies beside the porch, half‑filled with ice‑cold water.\"",
+            "\"The county sheriff’s radio crackles: 'Stay off the main road after dusk.'\"",
+            "\"Graffiti on the barn wall reads: 'The dead walk at night.'\"",
+            "\"Note pinned to the kitchen door: 'Supply run tomorrow, bring extra blankets.'\"",
+            "\"Old newspaper clipping: 'Winter storm expected, roads closed through the hills.'\""
+        };
 
         protected override string Title => "Field tablet";
         protected override Vector2 WindowSize => new Vector2(1280f, 800f);
@@ -598,6 +657,7 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             bezel.transform.SetAsFirstSibling();
             RectTransform tabs = HubUI.Row(Body, 44f, new Color(1f, 1f, 1f, 0.04f));
             ((RectTransform)tabs).anchorMin = new Vector2(0f, 1f);
+            if (s_Tab < 0 || s_Tab >= Tabs.Length) s_Tab = 0;   // a stale index from a longer tab list
             for (int i = 0; i < Tabs.Length; i++)
             {
                 int t = i;
@@ -612,11 +672,11 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             RectTransform page = HubUI.Area(Body, 0f, 0f, 1f, 0.92f);
             switch (s_Tab)
             {
-                case 0: KitPage(page); break;
                 case 1: GunPage(page); break;
                 case 2: LoadoutPage(page); break;
                 case 4: DronePage(page); break;
-                default: FlavourTextPage(page, s_Tab); break;
+                case 5: NotesPage(page); break;
+                default: KitPage(page); break;
             }
         }
 
@@ -769,12 +829,10 @@ public override void GetActions(InteractContext ctx, List<InteractAction> into)
             return moved + " item(s) from the stash" + (short_ > 0 ? "; " + short_ + " missing" : "") + ".";
         }
 
-        private void FlavourTextPage(RectTransform page, int tabIndex)
+        private void NotesPage(RectTransform page)
         {
-            // Pull the sentence from Tabs – it already includes surrounding quotes.
-            string text = Tabs[tabIndex];
-            RectTransform col = HubUI.Scroll(page);
-            HubUI.Para(col, text, 18, UIKit.TextDim);
+            RectTransform col = HubUI.Scroll(page, spacing: 10f);
+            foreach (string note in Notes) HubUI.Para(col, note, 18, UIKit.TextDim);
         }
 
         private void DronePage(RectTransform page)

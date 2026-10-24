@@ -209,8 +209,9 @@ namespace CloneZ
             float range = Mathf.Clamp(1.3f * halfDiagonal, 3.5f, 9f);
             float intensity = 2.0f + (float)Rng.NextDouble() * 1.0f;
             // The light sits at the fitting's own bulb, just under the panel / dome / shade.
-            HomeLamp lamp = HomeLamp.Attach(Root, pos - Vector3.up * drop, range, intensity, true, glow, CircuitOf(room), color: CeilingLightColor);
-            lamp.HangFromCeiling();
+            HomeLamp lamp = HomeLamp.Attach(Root, pos - Vector3.up * drop, range, intensity, CeilingShadows, glow, CircuitOf(room), color: CeilingLightColor);
+            if (HungLater != null) HungLater.Add(lamp);
+            else lamp.HangFromCeiling();
             lamp.Flicker = room.Flicker;
             RoomLamps(room).Add(lamp);
             Town.LightCount++;
@@ -254,7 +255,8 @@ namespace CloneZ
                 float along = r.AlongX ? p.x : p.z;
                 if (Mathf.Abs(across - r.Coord) < 0.2f && along >= w.S - 0.01f && along <= w.E + 0.01f) return w.Mesh;
             }
-            return Static;
+            RaidMesh foreign = ForeignWallMesh?.Invoke(p);
+            return foreign ?? Static;
         }
 
         /// <summary>A framed poster on a room wall (local coordinate along the wall), a fixture as the home's pictures are —
@@ -512,7 +514,8 @@ namespace CloneZ
             if (ceil != null) CeilingVisibility.Register(ceil.GetComponent<MeshRenderer>());
 
             Rect f = Footprint;
-            Shelter.Register(new Bounds(new Vector3(f.center.x, WallH * 0.5f, f.center.y), new Vector3(f.width - 0.4f, WallH, f.height - 0.4f)));
+            if (RegisterShelter)
+                Shelter.Register(new Bounds(new Vector3(f.center.x, WallH * 0.5f, f.center.y), new Vector3(f.width - 0.4f, WallH, f.height - 0.4f)));
 
             RunLater();
         }

@@ -1,12 +1,12 @@
-{"version": 1, "id": "Pistol", "baseHeight": 0.1013, "name": "Pistol", "model": "gpt-oss:120b", "notes": "Pistol ~0.25 m long lying on its side, barrel along +X. Main dark‑metal body with slide/receiver, short barrel, rear grip, trigger guard, detachable magazine (15 rnd), simple front/rear sights and a few tiny details.", "score": 6, "parts": [
-  {"name":"Receiver","shape":"cube","pos":[-0.04,0.0112,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.18,0.03,0.04],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"Barrel","shape":"cylinder","pos":[0.09,0.0022,-0.0015],"rot":[0.0,0.0,90.0],"size":[0.012,0.08,0.012],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"Grip","shape":"cube","pos":[-0.09,0.0112,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.08,0.03,0.04],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"TriggerGuard","shape":"cylinder","pos":[-0.06,0.0112,-0.0015],"rot":[90.0,0.0,0.0],"size":[0.015,0.04,0.015],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"Magazine","shape":"cube","pos":[-0.09,-0.0188,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.03,0.045,0.04],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"RearSight","shape":"cylinder","pos":[-0.1,0.0312,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"FrontSight","shape":"cylinder","pos":[0.125,0.0312,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"Trigger","shape":"cylinder","pos":[-0.06,0.0112,0.0185],"rot":[0.0,0.0,0.0],"size":[0.006,0.008,0.006],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"EjectorPort","shape":"sphere","pos":[0.09,0.0142,0.0185],"rot":[0.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"TopRail","shape":"cube","pos":[-0.04,0.0212,-0.0015],"rot":[0.0,0.0,0.0],"size":[0.18,0.005,0.04],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0}
+{"version": 1, "id": "Pistol", "baseHeight": 0.0815, "name": "Pistol", "model": "gpt-oss:120b", "notes": "Pistol ~0.25 m long lying on its side, barrel along +X. Main dark‑metal body with slide/receiver, short barrel, rear grip, trigger guard, detachable magazine (15 rnd), simple front/rear sights and a few tiny details.", "score": 6, "parts": [
+  {"name":"Receiver","shape":"cube","pos":[-0.04,0.0015,0.0113],"rot":[90.0,0.0,0.0],"size":[0.18,0.03,0.04],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"Barrel","shape":"cylinder","pos":[0.09,0.0015,0.0023],"rot":[90.0,-90.0,0.0],"size":[0.012,0.08,0.012],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"Grip","shape":"cube","pos":[-0.09,0.0015,0.0113],"rot":[90.0,0.0,0.0],"size":[0.08,0.03,0.04],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"TriggerGuard","shape":"cylinder","pos":[-0.06,0.0015,0.0113],"rot":[0.0,-180.0,-180.0],"size":[0.015,0.04,0.015],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"Magazine","shape":"cube","pos":[-0.09,0.0015,-0.0187],"rot":[90.0,0.0,0.0],"size":[0.03,0.045,0.04],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"RearSight","shape":"cylinder","pos":[-0.1,0.0015,0.0312],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"FrontSight","shape":"cylinder","pos":[0.125,0.0015,0.0312],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"Trigger","shape":"cylinder","pos":[-0.06,-0.0185,0.0113],"rot":[90.0,0.0,0.0],"size":[0.006,0.008,0.006],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"EjectorPort","shape":"sphere","pos":[0.09,-0.0185,0.0143],"rot":[90.0,0.0,0.0],"size":[0.004,0.004,0.004],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"TopRail","shape":"cube","pos":[-0.04,0.0015,0.0213],"rot":[90.0,0.0,0.0],"size":[0.18,0.005,0.04],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0}
 ]}

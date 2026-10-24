@@ -56,15 +56,13 @@ namespace CloneZ
             shape.angle = 20f;
             shape.radius = 0.3f;
             _smoke.Stop();
-            // start disabled; will be enabled when lit
-            enabled = false;
         }
 
         // Subtle flame flicker effect – varies intensity each frame when lit
         private void Update()
         {
-            if (_flameLight == null) return;
-            // Per-frame flicker and fuel consumption only when lit (component enabled)
+            if (!_isLit || _flameLight == null) return;
+            // Per-frame flicker and fuel consumption only while lit (the flame light is off otherwise)
             // Perlin noise creates a gentle, non‑repeating variation
             float f = Mathf.PerlinNoise(Time.time * 5f, 0f) * 0.3f + 0.85f;
             _flameLight.intensity = 2f * f;
@@ -99,18 +97,16 @@ namespace CloneZ
             {
                 if (_fuelSeconds <= 0f) _fuelSeconds = DEFAULT_FUEL_SECONDS;
                 if (_flameLight != null) _flameLight.enabled = true;
-                _smoke?.Play();
+                if (_smoke != null) _smoke.Play();
             }
             else
             {
                 if (_flameLight != null) _flameLight.enabled = false;
-                _smoke?.Stop();
+                if (_smoke != null) _smoke.Stop();
             }
             // simple sound; UI click works even if a dedicated fire sfx isn’t defined yet
             Sfx.PlayUI(SfxIds.UiClick);
             GameEvents.RaiseToast(on ? "The fire crackles warmly." : "You smother the flames.");
-            // enable or disable this component based on lit state
-            this.enabled = on;
         }
 
         public override void CaptureState(FixtureSave save)
@@ -124,9 +120,10 @@ namespace CloneZ
             _isLit = (save.State & LIT_BIT) != 0;
             _fuelSeconds = (save.State >> FUEL_SHIFT);
             if (_flameLight != null) _flameLight.enabled = _isLit;
-            if (_isLit) _smoke?.Play(); else _smoke?.Stop();
-            // ensure component enabled state matches fire state
-            this.enabled = _isLit;
+            if (_smoke != null)
+            {
+                if (_isLit) _smoke.Play(); else _smoke.Stop();
+            }
         }
     }
 }

@@ -146,7 +146,60 @@ namespace CloneZ
         // world is built: the wave arena keeps the default; an extraction raid map is larger.
         public const float WaveArenaHalfSize = 34f;
         public static float ArenaHalfSize = WaveArenaHalfSize;
+        /// <summary>Centre of the playable square (y = 0). Zero on every fixed map; the streamed Kentucky map
+        /// (<see cref="KentuckyStreamer"/>) moves it with the survivor, so spawns, the A-Life and the clamps that
+        /// work across "the arena" work across the live square around them.</summary>
+        public static UnityEngine.Vector3 ArenaCenter = UnityEngine.Vector3.zero;
+        /// <summary>The edge of the world on a streamed map (world XZ), past which nobody walks or drives; null on
+        /// fixed maps, whose arena square is their edge.</summary>
+        public static UnityEngine.Rect? HardBounds;
         public const int LootContainerCount = 50;    // world containers scattered across the arena each build
+
+        /// <summary>A fixed map's arena: <paramref name="half"/> either side of the origin, no world edge beyond it.</summary>
+        public static void ResetArena(float half)
+        {
+            ArenaHalfSize = half;
+            ArenaCenter = UnityEngine.Vector3.zero;
+            HardBounds = null;
+        }
+
+        /// <summary>True when <paramref name="p"/> lies inside the arena square, <paramref name="margin"/> in from its
+        /// edge (a negative margin reaches past it).</summary>
+        public static bool InArena(UnityEngine.Vector3 p, float margin = 0f)
+        {
+            float h = ArenaHalfSize - margin;
+            return UnityEngine.Mathf.Abs(p.x - ArenaCenter.x) <= h && UnityEngine.Mathf.Abs(p.z - ArenaCenter.z) <= h;
+        }
+
+        /// <summary><paramref name="p"/> moved into the arena square (<paramref name="margin"/> in from its edge) and
+        /// inside the world's edge; y is kept.</summary>
+        public static UnityEngine.Vector3 ClampToArena(UnityEngine.Vector3 p, float margin = 0f)
+        {
+            float h = UnityEngine.Mathf.Max(0f, ArenaHalfSize - margin);
+            p.x = UnityEngine.Mathf.Clamp(p.x, ArenaCenter.x - h, ArenaCenter.x + h);
+            p.z = UnityEngine.Mathf.Clamp(p.z, ArenaCenter.z - h, ArenaCenter.z + h);
+            return ClampToWorld(p, margin);
+        }
+
+        /// <summary><paramref name="p"/> moved inside the world's edge (<paramref name="margin"/> in from it) when the
+        /// map has one; y is kept.</summary>
+        public static UnityEngine.Vector3 ClampToWorld(UnityEngine.Vector3 p, float margin = 0f)
+        {
+            if (!HardBounds.HasValue) return p;
+            UnityEngine.Rect r = HardBounds.Value;
+            float mx = UnityEngine.Mathf.Min(margin, r.width * 0.5f), mz = UnityEngine.Mathf.Min(margin, r.height * 0.5f);
+            p.x = UnityEngine.Mathf.Clamp(p.x, r.xMin + mx, r.xMax - mx);
+            p.z = UnityEngine.Mathf.Clamp(p.z, r.yMin + mz, r.yMax - mz);
+            return p;
+        }
+
+        /// <summary>A random point (y = 0) in the arena square, <paramref name="margin"/> in from its edge.</summary>
+        public static UnityEngine.Vector3 RandomArenaPoint(System.Random rng, float margin = 0f)
+        {
+            float h = UnityEngine.Mathf.Max(1f, ArenaHalfSize - margin);
+            return new UnityEngine.Vector3(ArenaCenter.x + (float)(rng.NextDouble() * 2.0 - 1.0) * h, 0f,
+                ArenaCenter.z + (float)(rng.NextDouble() * 2.0 - 1.0) * h);
+        }
 
         // ---- Day / night cycle ----
         public const float DayLengthSeconds = 720f;      // real seconds for a full 24h day (12 min)

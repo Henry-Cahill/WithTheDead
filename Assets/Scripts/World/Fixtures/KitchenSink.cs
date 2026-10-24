@@ -68,13 +68,14 @@ namespace CloneZ
     private float _cleanUntil = -1f;      // world hour the washing-up stays done until (past it, there's more)
     private float _drop;                  // the stream's length, spout to where it lands
     private float _nextNoise, _nextCheck, _wobbleSeed;
-    // Cached config values for per‑frame performance
-    private float _capacity;
-    private float _fillRate;
-    private float _drainRate;
-    private float _statusInterval;
-    private float _noiseInterval;
-    private float _noiseRadius;
+    // Config values read at construction (not in Awake, which hasn't run when a sink is built under an inactive root or
+    // in edit mode, and a zero capacity there put the water at NaN).
+    private readonly float _capacity = CloneZConfig.KitchenBasinCapacity;
+    private readonly float _fillRate = CloneZConfig.KitchenBasinFillSeconds;
+    private readonly float _drainRate = CloneZConfig.KitchenBasinDrainSeconds;
+    private readonly float _statusInterval = CloneZConfig.KitchenStatusInterval;
+    private readonly float _noiseInterval = CloneZConfig.KitchenTapNoiseInterval;
+    private readonly float _noiseRadius = CloneZConfig.KitchenTapNoiseRadius;
 
         private Action<InteractContext> _toggleTap, _putPlug, _pullPlug, _wash, _rinse, _washDishes, _openForJob, _endJob;
 
@@ -119,13 +120,6 @@ namespace CloneZ
             _washDishes = WashDishes;
             _openForJob = OpenForJob;
             _endJob = EndJob;
-            // Cache config values for per‑frame use
-            _capacity = CloneZConfig.KitchenBasinCapacity;
-            _fillRate = CloneZConfig.KitchenBasinFillSeconds;
-            _drainRate = CloneZConfig.KitchenBasinDrainSeconds;
-            _statusInterval = CloneZConfig.KitchenStatusInterval;
-            _noiseInterval = CloneZConfig.KitchenTapNoiseInterval;
-            _noiseRadius = CloneZConfig.KitchenTapNoiseRadius;
             // Add warm source component
             var warmth = gameObject.AddComponent<KitchenSinkWarmth>();
             warmth.Initialize(this);
@@ -299,6 +293,7 @@ namespace CloneZ
 // When mains are off and water is standing, allow emptying the sink.
         if (!WaterMains.MainsOn && _level > 0.05f)
             into.Add(new InteractAction("Empty the sink", EmptySink));
+            into.Add(new InteractAction("Check water level", ShowWaterLevel));
             // New action to read kitchen notes
             into.Add(new InteractAction("Read kitchen notes", ctx => {
                 var note = KitchenNotes[UnityEngine.Random.Range(0, KitchenNotes.Length)];

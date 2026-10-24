@@ -151,7 +151,7 @@ namespace CloneZ
             {
                 float h = CloneZConfig.ArenaHalfSize - 6f;
                 float a = (float)rng.NextDouble() * Mathf.PI * 2f;
-                from = new Vector3(Mathf.Cos(a) * h, 0f, Mathf.Sin(a) * h);
+                from = CloneZConfig.ArenaCenter + new Vector3(Mathf.Cos(a) * h, 0f, Mathf.Sin(a) * h);
             }
             if (!NavMesh.SamplePosition(from, out NavMeshHit hit, 12f, NavMesh.AllAreas)) return null;
 

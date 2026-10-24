@@ -103,6 +103,7 @@ public float Warmth
             _toggleOven = ToggleOven;
             _toggleDoor = c => SetDoor(!_doorOpen, false);
             _cook = Cook;
+            _toggleGlow = ToggleGlow;
         }
 
         protected override void OnEnable()
@@ -205,6 +206,7 @@ public float Warmth
             if (_oven && _ovenHeatLevel > MinOvenHeatLevel)
                 into.Add(new InteractAction("Decrease oven heat", DecreaseOvenHeat));
             into.Add(new InteractAction("Feel the heat", ShowWarmth));
+            into.Add(new InteractAction(_glowManual ? "Turn off stove lamp" : "Turn on stove lamp", _toggleGlow));
         }
 
         #region The controls
@@ -226,6 +228,16 @@ public float Warmth
         {
             SetOven(!_oven, false);
             if (_oven) ctx.Notify("The oven ticks and catches with a soft whump. It'll take a while to heat through.");
+        }
+
+        // The stove's lamp: the hob's warm glow switched on by hand, whatever the burners and the oven are doing.
+        private void ToggleGlow(InteractContext ctx)
+        {
+            _glowManual = !_glowManual;
+            MakeNoise(CloneZConfig.FixtureNoiseSmall);
+            ctx.Notify(_glowManual ? "You flip the stove's lamp on \u2014 a soft amber glow spreads."
+                : "You flip the stove's lamp off \u2014 the room darkens.");
+            RefreshGlow();
         }
 
         private void SetOven(bool on, bool instant)
@@ -318,7 +330,7 @@ public float Warmth
             save.State = (_lit & 0xF) |
                 (_oven ? 16 : 0) |
                 (_doorOpen ? 32 : 0) |
-                (_glowManual ? 64 : 0) |
+                (_glowManual ? 256 : 0) |   // bit 8: bits 6-7 hold the oven's heat level
                 (_ovenHeatLevel << 6);
 
         public override void RestoreState(FixtureSave save)
@@ -326,7 +338,7 @@ public float Warmth
             _lit = save.State & 0xF;
             _oven = (save.State & 16) != 0;
             _doorOpen = (save.State & 32) != 0;
-            _glowManual = (save.State & 64) != 0;
+            _glowManual = (save.State & 256) != 0;
             _ovenHeatLevel = (save.State >> 6) & 0x3; // bits 6‑7
             if (_ovenHeatLevel > MaxOvenHeatLevel) _ovenHeatLevel = MaxOvenHeatLevel;
             // Update cached lit count after restoring state

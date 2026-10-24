@@ -112,6 +112,8 @@ namespace CloneZ
             _lookAct = Look;
             _climbAct = Climb;
             _checkAct = c => CheckWindow(c);
+            _knockAct = c => { MakeNoise(CloneZConfig.WindowNoise); c.Notify("You rap a fist against the window."); };
+            _breakAct = c => BreakWindow(c);
             _clearDebrisAct = c => ClearDebris(c);
         }
 
@@ -161,6 +163,7 @@ namespace CloneZ
             {
                 into.Add(new InteractAction("Inspect broken window", c => ctx.Notify("The window is smashed; nothing can be done here.")));
                 into.Add(new InteractAction("Clear debris", _clearDebrisAct));
+                return;
             }
             int side = SideOf(ctx.Position, _point, _normal);
             bool inside = _outSide == 0 || side != _outSide;
@@ -180,8 +183,13 @@ namespace CloneZ
 
                 string draw = _blind ? (_drawn ? "Raise the blind" : "Lower the blind") : (_drawn ? "Open the curtains" : "Close the curtains");
                 into.Add(new InteractAction(draw, _curtainAct));
+                into.Add(new InteractAction("Check window", _checkAct));
+                into.Add(new InteractAction("Knock on the window", _knockAct));
+
+                into.Add(new InteractAction(_outSide == 0 ? "Look through the window" : "Look outside", _lookAct)
+                    .Timed(CloneZConfig.WindowLookSeconds, "Looking outside", HumanoidActivity.Use));
+                AddClimb(ctx, side, true, into);
                 into.Add(new InteractAction("Break the window", _breakAct));
-                // ... rest of actions
             }
             else if (!_open) AddClimb(ctx, side, false, into);
         }

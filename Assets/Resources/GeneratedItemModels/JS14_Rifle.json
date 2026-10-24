@@ -1,15 +1,15 @@
-{"version": 1, "id": "JS14_Rifle", "baseHeight": 0.1362, "name": "JS14 Rifle", "model": "gpt-oss:120b", "notes": "JS‑14 rifle ~1.05 m long, barrel 0.60 m along +X, rear wooden‑styled stock, polymer grip, metal trigger‑guard & sights, 20‑round box magazine under the grip.", "score": 6, "parts": [
-  {"name":"Barrel","shape":"cylinder","pos":[0.14,-0.0062,0.0],"rot":[0.0,0.0,90.0],"size":[0.04,0.6,0.04],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"Stock","shape":"cube","pos":[-0.285,0.0137,0.0],"rot":[0.0,0.0,0.0],"size":[0.25,0.12,0.18],"color":[0.24,0.25,0.28],"smooth":0.15,"metal":0.0},
-  {"name":"Grip","shape":"cube","pos":[0.14,-0.0262,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.08],"color":[0.24,0.25,0.28],"smooth":0.2,"metal":0.0},
-  {"name":"TriggerGuard","shape":"cube","pos":[0.12,-0.0163,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.06],"color":[0.24,0.25,0.28],"smooth":0.5,"metal":1.0},
-  {"name":"Trigger","shape":"cylinder","pos":[0.12,0.0088,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"MagazineBody","shape":"cube","pos":[0.26,-0.0563,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.02,0.15],"color":[0.24,0.25,0.28],"smooth":0.4,"metal":0.0},
-  {"name":"MagazineWell","shape":"cube","pos":[0.23,-0.0612,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.16],"color":[0.24,0.25,0.28],"smooth":0.4,"metal":0.0},
-  {"name":"FrontSight","shape":"cube","pos":[0.45,0.0238,0.0],"rot":[0.0,0.0,0.0],"size":[0.02,0.015,0.03],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"RearSightBase","shape":"cube","pos":[-0.44,0.0437,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.06],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"RearSightLeaf","shape":"cube","pos":[-0.44,0.0688,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.015,0.06],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"BarrelRim","shape":"cylinder","pos":[-0.16,-0.0062,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.02,0.045],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"FrontSightRim","shape":"cylinder","pos":[0.45,0.0287,0.0],"rot":[0.0,0.0,90.0],"size":[0.025,0.015,0.025],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"MagazineCatch","shape":"cylinder","pos":[0.32,-0.0512,0.0],"rot":[0.0,0.0,90.0],"size":[0.015,0.02,0.015],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0}
+{"version": 1, "id": "JS14_Rifle", "baseHeight": 0.15, "name": "JS14 Rifle", "model": "gpt-oss:120b", "notes": "JS‑14 rifle ~1.05 m long, barrel 0.60 m along +X, rear wooden‑styled stock, polymer grip, metal trigger‑guard & sights, 20‑round box magazine under the grip.", "score": 6, "parts": [
+  {"name":"Barrel","shape":"cylinder","pos":[0.14,-0.0,-0.0063],"rot":[90.0,-90.0,0.0],"size":[0.04,0.6,0.04],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"Stock","shape":"cube","pos":[-0.285,0.0,0.0136],"rot":[90.0,0.0,0.0],"size":[0.25,0.12,0.18],"color":[0.24,0.25,0.28],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cube","pos":[0.14,-0.0,-0.0263],"rot":[90.0,0.0,0.0],"size":[0.12,0.04,0.08],"color":[0.24,0.25,0.28],"smooth":0.2,"metal":0.0},
+  {"name":"TriggerGuard","shape":"cube","pos":[0.12,-0.0,-0.0163],"rot":[90.0,0.0,0.0],"size":[0.08,0.04,0.06],"color":[0.24,0.25,0.28],"smooth":0.5,"metal":1.0},
+  {"name":"Trigger","shape":"cylinder","pos":[0.12,0.0,0.0087],"rot":[90.0,0.0,0.0],"size":[0.015,0.03,0.015],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"MagazineBody","shape":"cube","pos":[0.26,-0.0,-0.0564],"rot":[90.0,0.0,0.0],"size":[0.12,0.02,0.15],"color":[0.24,0.25,0.28],"smooth":0.4,"metal":0.0},
+  {"name":"MagazineWell","shape":"cube","pos":[0.23,-0.0,-0.0612],"rot":[90.0,0.0,0.0],"size":[0.04,0.03,0.16],"color":[0.24,0.25,0.28],"smooth":0.4,"metal":0.0},
+  {"name":"FrontSight","shape":"cube","pos":[0.45,0.0,0.0238],"rot":[90.0,0.0,0.0],"size":[0.02,0.015,0.03],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"RearSightBase","shape":"cube","pos":[-0.44,0.0,0.0437],"rot":[90.0,0.0,0.0],"size":[0.04,0.02,0.06],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"RearSightLeaf","shape":"cube","pos":[-0.44,0.0,0.0688],"rot":[90.0,0.0,0.0],"size":[0.04,0.015,0.06],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"BarrelRim","shape":"cylinder","pos":[-0.16,-0.0,-0.0063],"rot":[90.0,-90.0,0.0],"size":[0.045,0.02,0.045],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"FrontSightRim","shape":"cylinder","pos":[0.45,0.0,0.0286],"rot":[90.0,-90.0,0.0],"size":[0.025,0.015,0.025],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"MagazineCatch","shape":"cylinder","pos":[0.32,-0.0,-0.0513],"rot":[90.0,-90.0,0.0],"size":[0.015,0.02,0.015],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0}
 ]}

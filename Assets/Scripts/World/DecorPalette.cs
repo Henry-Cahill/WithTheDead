@@ -62,7 +62,8 @@ namespace CloneZ
             int key = (r << 12) | (g << 6) | b;
             if (!s_Index.TryGetValue(key, out int idx))
             {
-                if (s_Count >= Size * Size) idx = Size * Size - 1;   // full: reuse the last texel
+                // Full (a long trip across the streamed state meets a lot of colours): the nearest colour already in it.
+                if (s_Count >= Size * Size) s_Index[key] = idx = Nearest(r, g, b);
                 else
                 {
                     idx = s_Count++;
@@ -73,6 +74,21 @@ namespace CloneZ
             }
             int x = idx % Size, y = idx / Size;
             return new Vector2((x + 0.5f) / Size, (y + 0.5f) / Size);
+        }
+
+        private static int Nearest(int r, int g, int b)
+        {
+            int best = 0, bestD = int.MaxValue;
+            for (int i = 0; i < s_Count; i++)
+            {
+                Color32 p = s_Pixels[i];
+                int dr = p.r * 63 / 255 - r, dg = p.g * 63 / 255 - g, db = p.b * 63 / 255 - b;
+                int d = dr * dr + dg * dg + db * db;
+                if (d >= bestD) continue;
+                bestD = d;
+                best = i;
+            }
+            return best;
         }
 
         private static Material Make(ref Material slot, bool unlit, float smoothness, float metallic, string name)

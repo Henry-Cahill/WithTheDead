@@ -214,6 +214,10 @@ private static readonly string[] WashLines =
                     .DisabledIf(true, "You have no empty container"));
             }
 
+            // Unlike a full drink, a sip can be had from whatever's left in the basin (see UseStored).
+            into.Add(new InteractAction("Sip water from the basin", SipWater)
+                .DisabledIf(!WaterMains.MainsOn && _level <= 0.02f, DryMessage));
+
             bool mains = WaterMains.MainsOn;
             var wash = new InteractAction("Wash your hands and face", Wash)
                 .Timed(CloneZConfig.BasinWashSeconds, "Washing", HumanoidActivity.Use)
@@ -244,17 +248,13 @@ private static readonly string[] WashLines =
 
         private void CollectWater(InteractContext ctx)
         {
-            // Try to fill an empty bottle from this basin.
+            // Try to fill an empty bottle from this basin (FillBottle says why when it can't).
             bool filled = WaterUse.FillBottle(ctx, this);
             if (filled)
             {
                 ctx.Notify("You scoop water into your bottle, the basin level dropping just a bit.");
                 // Visual update – ShowWater reads the new _level after FillBottle adjusts it.
                 ShowWater();
-            }
-            else
-            {
-                ctx.Notify("You can't fill the bottle right now.");
             }
         }
 
@@ -265,6 +265,8 @@ private static readonly string[] WashLines =
             bool got = UseStored(sipShare);
             if (got)
             {
+                // A basinful is one drink (see DrawWater), so a sip of it is that share of a drink.
+                if (ctx.Stats != null) ctx.Stats.Drink(CloneZConfig.WaterDrinkAmount * sipShare);
                 ctx.Notify(SipLines[Random.Range(0, SipLines.Length)]);
             }
             else
@@ -331,20 +333,18 @@ private static readonly string[] WashLines =
             
             ReturnTap(ctx);
             bool wet = UseStored(CloneZConfig.BasinWashWater);
-            WaterUse.Freshen(ctx, CloneZConfig.BasinWashFreshen);
             if (wet)
             {
-                // Choose a random wash flavour line.
-                ctx.Notify(WashLines[Random.Range(0, WashLines.Length)]);
+                WaterUse.Freshen(ctx, CloneZConfig.BasinWashFreshen);
+                // From the running tap, a random flavour line; once the mains are off, the water saved in the basin.
+                ctx.Notify(mains
+                    ? WashLines[Random.Range(0, WashLines.Length)]
+                    : "You wash in the water you saved in the basin. Every drop counts now.");
             }
             else
             {
-                // No water left – keep the existing fallback.
-                ctx.Notify(!mains
-                    ? "You wash in the water you saved in the basin. Every drop counts now."
-                    : PowerGrid.HousePowered
-                        ? "Warm water and soap. You scrub your hands, splash your face and feel more like yourself."
-                        : "The water's cold — no power for the heater — but it wakes you up.");
+                // No water at all: the mains are off and the basin's run dry.
+                ctx.Notify("There's no water left to wash with \u2014 the basin's run dry.");
             }
         }
 

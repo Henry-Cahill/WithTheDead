@@ -111,7 +111,10 @@ tar -czf pull.tgz Assets/Resources/GeneratedItemModels Tools/AssetPipeline/out
     $tgz = Join-Path $env:TEMP 'clonez-pull.tgz'
     & scp -q @Ssh "${SparkHost}:~/$Remote/pull.tgz" $tgz
     if ($LASTEXITCODE -ne 0) { throw 'scp failed' }
-    & tar.exe -xzf $tgz -C $Root
+    # Files changed here since they were last pulled (hand fixes, re-posed models) are newer than the
+    # Spark's copies; keep them rather than silently reverting them.
+    & tar.exe -xzf $tgz -C $Root --keep-newer-files
+    if ($LASTEXITCODE -ne 0) { throw 'tar failed' }
     Remove-Item $tgz
     $n = (Get-ChildItem (Join-Path $Root 'Assets/Resources/GeneratedItemModels') -Filter *.json).Count
     Write-Host "$n generated models are now in Assets/Resources/GeneratedItemModels." -ForegroundColor Green

@@ -18,7 +18,10 @@ namespace CloneZ
 
         private static Texture2D s_Tex;
         private static int s_TexSeed = int.MinValue;
+        private static Vector3 s_TexCentre;
+        private static float s_TexHalf;
         private RectTransform _paper;
+        private Vector3 _centre;
         private float _half;
         private string _markLabel = "Anomalies";
 
@@ -33,6 +36,13 @@ namespace CloneZ
             bool hasMap = inv != null && inv.Has("map_zone");
             bool gps = inv != null && inv.Has("gps");
             _half = ZoneWorld.Map != null ? ZoneWorld.Map.HalfSize : CloneZConfig.ArenaHalfSize;
+            _centre = Vector3.zero;
+            if (KentuckyStreamer.Active != null)
+            {
+                // The whole state won't fit a clipboard: the sheet shows the country built around you.
+                _centre = CloneZConfig.ArenaCenter;
+                _half = KentuckyStreamer.Active.BuiltReach;
+            }
 
             Image paper = UIKit.Panel(Body, "Paper", new Color(0.86f, 0.83f, 0.74f));
             _paper = UIKit.Place(paper.rectTransform, new Vector2(0.5f, 0.5f), new Vector2(0.5f, 0.5f), new Vector2(0f, 20f), new Vector2(760f, 760f));
@@ -118,7 +128,9 @@ namespace CloneZ
 
         private void Pin(Vector3 world, string text, Color c)
         {
-            Vector2 uv = new Vector2(Mathf.InverseLerp(-_half, _half, world.x), Mathf.InverseLerp(-_half, _half, world.z));
+            float u = (world.x - (_centre.x - _half)) / (2f * _half), v = (world.z - (_centre.z - _half)) / (2f * _half);
+            if (u < 0f || u > 1f || v < 0f || v > 1f) return;   // off this sheet
+            Vector2 uv = new Vector2(u, v);
             Text t = UIKit.Label(_paper, text, 13, c, TextAnchor.MiddleLeft, FontStyle.Bold);
             UIKit.Place(t.rectTransform, uv, new Vector2(0f, 0.5f), Vector2.zero, new Vector2(200f, 18f));
             t.raycastTarget = false;
@@ -130,7 +142,7 @@ namespace CloneZ
             if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(_paper, UnityEngine.InputSystem.Mouse.current.position.ReadValue(), null, out local)) return;
             Rect r = _paper.rect;
             float u = Mathf.InverseLerp(r.xMin, r.xMax, local.x), v = Mathf.InverseLerp(r.yMin, r.yMax, local.y);
-            var world = new Vector3(Mathf.Lerp(-_half, _half, u), 0f, Mathf.Lerp(-_half, _half, v));
+            var world = new Vector3(Mathf.Lerp(_centre.x - _half, _centre.x + _half, u), 0f, Mathf.Lerp(_centre.z - _half, _centre.z + _half, v));
             ProfileStore.Account?.Learn(Prefix + Mathf.RoundToInt(world.x) + "," + Mathf.RoundToInt(world.z) + ":" + _markLabel);
             Sfx.PlayUI(SfxIds.PageTurn, 0.4f, 1.3f);
             Rebuild();
@@ -154,18 +166,20 @@ namespace CloneZ
             }
         }
 
-        // The streets drawn once per raid layout, read from the world: paving grey, buildings dark, woods green.
+        // The streets drawn once per raid layout (and, on the streamed map, per stretch of it), read from the world:
+        // paving grey, buildings dark, woods green.
         private Texture2D Texture()
         {
             int seed = ZoneCatalog.Current != null ? ZoneCatalog.Current.LayoutSeed : 0;
-            if (s_Tex != null && s_TexSeed == seed) return s_Tex;
+            if (s_Tex != null && s_TexSeed == seed && s_TexCentre == _centre && s_TexHalf == _half) return s_Tex;
             const int N = 192;
             if (s_Tex == null) s_Tex = new Texture2D(N, N, TextureFormat.RGBA32, false) { filterMode = FilterMode.Bilinear, wrapMode = TextureWrapMode.Clamp };
             var px = new Color32[N * N];
             for (int y = 0; y < N; y++)
                 for (int x = 0; x < N; x++)
                 {
-                    var p = new Vector3(Mathf.Lerp(-_half, _half, (x + 0.5f) / N), 0f, Mathf.Lerp(-_half, _half, (y + 0.5f) / N));
+                    var p = new Vector3(Mathf.Lerp(_centre.x - _half, _centre.x + _half, (x + 0.5f) / N), 0f,
+                        Mathf.Lerp(_centre.z - _half, _centre.z + _half, (y + 0.5f) / N));
                     Color c = new Color(0.86f, 0.83f, 0.74f, 0f);
                     if (Physics.Raycast(p + Vector3.up * 30f, Vector3.down, out RaycastHit hit, 40f, 1, QueryTriggerInteraction.Ignore))
                     {
@@ -182,6 +196,8 @@ namespace CloneZ
             s_Tex.SetPixels32(px);
             s_Tex.Apply();
             s_TexSeed = seed;
+            s_TexCentre = _centre;
+            s_TexHalf = _half;
             return s_Tex;
         }
     }
@@ -295,6 +311,7 @@ namespace CloneZ
         {
             // Update compass possession check once per second
             if (Time.time > _check) { _check = Time.time + 1f; _has = _inv != null && _inv.Has("compass"); }
+            if (_cam == null) _cam = Camera.main;
             Camera cam = _cam;
             GameSettings gs = EnsureSettings();
             bool visible = _has && cam != null && gs.Hud != HudMode.Hardcore;

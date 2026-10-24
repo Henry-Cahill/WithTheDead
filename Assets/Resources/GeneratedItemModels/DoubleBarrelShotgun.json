@@ -1,14 +1,14 @@
-{"version": 1, "id": "DoubleBarrelShotgun", "baseHeight": 0.0955, "name": "Double Barrel Shotgun", "model": "gpt-oss:120b", "notes": "Double‑barrel shotgun ~0.9 m long lying on its side (barrels along +X). Two parallel steel barrels, wood stock at rear, polymer grip, steel trigger guard, tubular magazine underneath, front and rear iron sights.", "score": 6, "parts": [
-  {"name":"BarrelL","shape":"cylinder","pos":[0.095,-0.0195,-0.015],"rot":[0.0,0.0,90.0],"size":[0.03,0.45,0.03],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
-  {"name":"BarrelR","shape":"cylinder","pos":[0.095,-0.0195,0.015],"rot":[0.0,0.0,90.0],"size":[0.03,0.45,0.03],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
-  {"name":"BarrelEndFrontL","shape":"cylinder","pos":[0.32,-0.0195,-0.015],"rot":[0.0,0.0,90.0],"size":[0.032,0.01,0.032],"color":[0.18,0.19,0.2],"smooth":0.6,"metal":1.0},
-  {"name":"BarrelEndFrontR","shape":"cylinder","pos":[0.32,-0.0195,0.015],"rot":[0.0,0.0,90.0],"size":[0.032,0.01,0.032],"color":[0.18,0.19,0.2],"smooth":0.6,"metal":1.0},
-  {"name":"BarrelEndRearL","shape":"cylinder","pos":[-0.13,-0.0195,-0.015],"rot":[0.0,0.0,90.0],"size":[0.032,0.01,0.032],"color":[0.18,0.19,0.2],"smooth":0.6,"metal":1.0},
-  {"name":"BarrelEndRearR","shape":"cylinder","pos":[-0.13,-0.0195,0.015],"rot":[0.0,0.0,90.0],"size":[0.032,0.01,0.032],"color":[0.18,0.19,0.2],"smooth":0.6,"metal":1.0},
-  {"name":"FrontSight","shape":"cylinder","pos":[0.315,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.2,0.21,0.22],"smooth":0.6,"metal":1.0},
-  {"name":"RearSight","shape":"cylinder","pos":[-0.125,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.008,0.018,0.008],"color":[0.2,0.21,0.22],"smooth":0.6,"metal":1.0},
-  {"name":"Stock","shape":"cube","pos":[-0.235,0.0005,0.0],"rot":[0.0,0.0,0.0],"size":[0.18,0.07,0.12],"color":[0.35,0.2,0.1],"smooth":0.15,"metal":0.0},
-  {"name":"Grip","shape":"cube","pos":[0.045,-0.0145,0.0],"rot":[0.0,0.0,0.0],"size":[0.12,0.04,0.07],"color":[0.1,0.1,0.12],"smooth":0.4,"metal":0.0},
-  {"name":"TriggerGuard","shape":"cube","pos":[0.095,-0.0195,0.0],"rot":[0.0,0.0,0.0],"size":[0.06,0.02,0.04],"color":[0.2,0.21,0.22],"smooth":0.6,"metal":1.0},
-  {"name":"MagazineTube","shape":"cylinder","pos":[0.045,-0.0265,0.0],"rot":[0.0,0.0,90.0],"size":[0.016,0.3,0.016],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0}
+{"version": 1, "id": "DoubleBarrelShotgun", "baseHeight": 0.12, "name": "Double Barrel Shotgun", "model": "gpt-oss:120b", "notes": "Double‑barrel shotgun ~0.9 m long lying on its side (barrels along +X). Two parallel steel barrels, wood stock at rear, polymer grip, steel trigger guard, tubular magazine underneath, front and rear iron sights.", "score": 6, "parts": [
+  {"name":"BarrelL","shape":"cylinder","pos":[0.095,0.015,-0.0195],"rot":[90.0,-90.0,0.0],"size":[0.03,0.45,0.03],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"BarrelR","shape":"cylinder","pos":[0.095,-0.015,-0.0195],"rot":[90.0,-90.0,0.0],"size":[0.03,0.45,0.03],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"BarrelEndFrontL","shape":"cylinder","pos":[0.32,0.015,-0.0195],"rot":[90.0,-90.0,0.0],"size":[0.032,0.01,0.032],"color":[0.18,0.19,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"BarrelEndFrontR","shape":"cylinder","pos":[0.32,-0.015,-0.0195],"rot":[90.0,-90.0,0.0],"size":[0.032,0.01,0.032],"color":[0.18,0.19,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"BarrelEndRearL","shape":"cylinder","pos":[-0.13,0.015,-0.0195],"rot":[90.0,-90.0,0.0],"size":[0.032,0.01,0.032],"color":[0.18,0.19,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"BarrelEndRearR","shape":"cylinder","pos":[-0.13,-0.015,-0.0195],"rot":[90.0,-90.0,0.0],"size":[0.032,0.01,0.032],"color":[0.18,0.19,0.2],"smooth":0.6,"metal":1.0},
+  {"name":"FrontSight","shape":"cylinder","pos":[0.315,0.0,0.0005],"rot":[90.0,0.0,0.0],"size":[0.008,0.02,0.008],"color":[0.2,0.21,0.22],"smooth":0.6,"metal":1.0},
+  {"name":"RearSight","shape":"cylinder","pos":[-0.125,0.0,0.0005],"rot":[90.0,0.0,0.0],"size":[0.008,0.018,0.008],"color":[0.2,0.21,0.22],"smooth":0.6,"metal":1.0},
+  {"name":"Stock","shape":"cube","pos":[-0.235,0.0,0.0005],"rot":[90.0,0.0,0.0],"size":[0.18,0.07,0.12],"color":[0.35,0.2,0.1],"smooth":0.15,"metal":0.0},
+  {"name":"Grip","shape":"cube","pos":[0.045,-0.0,-0.0145],"rot":[90.0,0.0,0.0],"size":[0.12,0.04,0.07],"color":[0.1,0.1,0.12],"smooth":0.4,"metal":0.0},
+  {"name":"TriggerGuard","shape":"cube","pos":[0.095,-0.0,-0.0195],"rot":[90.0,0.0,0.0],"size":[0.06,0.02,0.04],"color":[0.2,0.21,0.22],"smooth":0.6,"metal":1.0},
+  {"name":"MagazineTube","shape":"cylinder","pos":[0.045,-0.0,-0.0265],"rot":[90.0,-90.0,0.0],"size":[0.016,0.3,0.016],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0}
 ]}

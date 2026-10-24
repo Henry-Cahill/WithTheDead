@@ -1,14 +1,14 @@
-{"version": 1, "id": "Revolver_Short", "baseHeight": 0.1152, "name": "Revolver Short", "model": "gpt-oss:120b", "notes": "Short revolver ~0.16 m long lying on its side (barrel +X). Main steel body (tint 0.24,0.25,0.28) with wooden grip, five‑chamber cylinder on top, trigger guard, hammer and simple front/rear sights that all touch the main frame.", "score": 6, "parts": [
-  {"name":"Grip","shape":"cube","pos":[-0.0612,-0.0353,0.0],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.03],"color":[0.15,0.09,0.05],"smooth":0.2,"metal":0.0},
-  {"name":"Barrel","shape":"cylinder","pos":[0.0387,-0.0052,0.0],"rot":[0.0,0.0,90.0],"size":[0.02,0.12,0.02],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
-  {"name":"CylinderBody","shape":"cylinder","pos":[0.0387,0.0273,0.0],"rot":[0.0,0.0,90.0],"size":[0.045,0.03,0.045],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
-  {"name":"Chamber1","shape":"cylinder","pos":[0.0387,0.0472,0.0],"rot":[0.0,0.0,90.0],"size":[0.016,0.03,0.016],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
-  {"name":"Chamber2","shape":"cylinder","pos":[0.0387,0.0335,0.019],"rot":[0.0,0.0,90.0],"size":[0.016,0.03,0.016],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
-  {"name":"Chamber3","shape":"cylinder","pos":[0.0387,0.011,0.0118],"rot":[0.0,0.0,90.0],"size":[0.016,0.03,0.016],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
-  {"name":"Chamber4","shape":"cylinder","pos":[0.0387,0.011,-0.0118],"rot":[0.0,0.0,90.0],"size":[0.016,0.03,0.016],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
-  {"name":"Chamber5","shape":"cylinder","pos":[0.0387,0.0335,-0.019],"rot":[0.0,0.0,90.0],"size":[0.016,0.03,0.016],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
-  {"name":"TriggerGuard","shape":"cube","pos":[-0.0213,0.0047,0.0],"rot":[0.0,0.0,0.0],"size":[0.04,0.03,0.04],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
-  {"name":"Hammer","shape":"cube","pos":[-0.0363,0.0148,0.0],"rot":[0.0,0.0,0.0],"size":[0.015,0.025,0.02],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
-  {"name":"FrontSight","shape":"cube","pos":[0.0988,0.0148,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.01,0.008],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
-  {"name":"RearSight","shape":"cube","pos":[-0.0312,0.0148,0.0],"rot":[0.0,0.0,0.0],"size":[0.005,0.01,0.008],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0}
+{"version": 1, "id": "Revolver_Short", "baseHeight": 0.087, "name": "Revolver Short", "model": "gpt-oss:120b", "notes": "Short revolver ~0.16 m long lying on its side (barrel +X). Main steel body (tint 0.24,0.25,0.28) with wooden grip, five‑chamber cylinder on top, trigger guard, hammer and simple front/rear sights that all touch the main frame.", "score": 6, "parts": [
+  {"name":"Grip","shape":"cube","pos":[-0.0612,-0.0,-0.0352],"rot":[90.0,0.0,0.0],"size":[0.08,0.04,0.03],"color":[0.15,0.09,0.05],"smooth":0.2,"metal":0.0},
+  {"name":"Barrel","shape":"cylinder","pos":[0.0386,-0.0,-0.0051],"rot":[90.0,-90.0,0.0],"size":[0.02,0.12,0.02],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"CylinderBody","shape":"cylinder","pos":[0.0386,0.0,0.0274],"rot":[90.0,-90.0,0.0],"size":[0.045,0.03,0.045],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"Chamber1","shape":"cylinder","pos":[0.0386,0.0,0.0473],"rot":[90.0,-90.0,0.0],"size":[0.016,0.03,0.016],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"Chamber2","shape":"cylinder","pos":[0.0386,-0.019,0.0336],"rot":[90.0,-90.0,0.0],"size":[0.016,0.03,0.016],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"Chamber3","shape":"cylinder","pos":[0.0386,-0.0118,0.0111],"rot":[90.0,-90.0,0.0],"size":[0.016,0.03,0.016],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"Chamber4","shape":"cylinder","pos":[0.0386,0.0118,0.0111],"rot":[90.0,-90.0,0.0],"size":[0.016,0.03,0.016],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"Chamber5","shape":"cylinder","pos":[0.0386,0.019,0.0336],"rot":[90.0,-90.0,0.0],"size":[0.016,0.03,0.016],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"TriggerGuard","shape":"cube","pos":[-0.0214,0.0,0.0048],"rot":[90.0,0.0,0.0],"size":[0.04,0.03,0.04],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"Hammer","shape":"cube","pos":[-0.0364,0.0,0.0149],"rot":[90.0,0.0,0.0],"size":[0.015,0.025,0.02],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"FrontSight","shape":"cube","pos":[0.0988,0.0,0.0149],"rot":[90.0,0.0,0.0],"size":[0.005,0.01,0.008],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"RearSight","shape":"cube","pos":[-0.0312,0.0,0.0149],"rot":[90.0,0.0,0.0],"size":[0.005,0.01,0.008],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0}
 ]}

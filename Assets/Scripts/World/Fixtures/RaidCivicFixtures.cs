@@ -32,6 +32,8 @@ namespace CloneZ
         public override Transform OcclusionRoot => _occlusion != null ? _occlusion : transform;
         public override string SaveKey => _key;
 
+        private void Awake() => _flip = c => Set(c, !_on);
+
         /// <summary>A two-state fitting on <paramref name="host"/>, reached at <paramref name="point"/> (world), worked with
         /// <paramref name="onLabel"/> / <paramref name="offLabel"/>. <paramref name="occlusion"/> is the furniture it's part of.</summary>
         internal static CivicToggle Create(Transform host, string name, string key, Vector3 point, Transform occlusion, string onLabel, string offLabel)

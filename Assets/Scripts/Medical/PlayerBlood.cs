@@ -61,6 +61,7 @@ namespace CloneZ
         {
             _stats = GetComponent<PlayerStats>();
             _modifiers = PlayerModifiers.Current;
+            _scavType = BloodTypes.Roll();
             _cachedProfile = ProfileStore.ActiveCharacter; // cache profile at Awake
         }
 

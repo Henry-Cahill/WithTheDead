@@ -16,37 +16,6 @@ namespace CloneZ
     {
         /// <summary>The environment variable that points the game at another copy of the store.</summary>
         public const string RootVariable = "CLONEZ_WORLD";
-        public const string StreetLampMaterialPath = "Materials/Metal";
-        public const string KerbMaterialPath = "Materials/KerbConcrete";
-        public const string StreetLampGlassMaterialPath = "Materials/StreetLampGlass";
-        public const string PorchMaterialPath = "Materials/WoodPlank";
-        /// <summary>Returns the translucent glass material for lamp heads.</summary>
-        private static Material s_StreetLampGlassMaterial;
-        private static Material s_PorchMaterial;
-        public static Material GetStreetLampGlassMaterial()
-        {
-            if (s_StreetLampGlassMaterial != null) return s_StreetLampGlassMaterial;
-            var path = System.IO.Path.Combine(Root, StreetLampGlassMaterialPath);
-            s_StreetLampGlassMaterial = UnityEngine.Resources.Load<Material>(path);
-            return s_StreetLampGlassMaterial;
-        }
-
-        /// <summary>Loads the concrete kerb material defined by <see cref="KerbMaterialPath"/>.</summary>
-        public static Material GetKerbMaterial()
-        {
-            var mat = Resources.Load<Material>(KerbMaterialPath);
-            return mat ?? Resources.Load<Material>("Materials/DefaultConcrete");
-        }
-        /// <summary>Base material for mailboxes (reuses porch wood).</summary>
-        public static Material GetMailboxMaterial() => GetPorchMaterial();
-        public static Material GetPorchMaterial()
-        {
-            if (s_PorchMaterial != null) return s_PorchMaterial;
-            var path = System.IO.Path.Combine(Root, PorchMaterialPath);
-            s_PorchMaterial = UnityEngine.Resources.Load<Material>(path);
-            return s_PorchMaterial;
-        }
-
 
         /// <summary>Where the store is on this machine.</summary>
         public static string Root
@@ -79,10 +48,10 @@ namespace CloneZ
                 }
                 string folder = Path.Combine(root, "world", "builds", current.build);
                 MapManifest manifest = JsonUtility.FromJson<MapManifest>(File.ReadAllText(Path.Combine(folder, "manifest.json")));
-                if (manifest == null || manifest.format != MapBuild.Format)
+                if (manifest == null || manifest.format < MapBuild.OldestFormat || manifest.format > MapBuild.Format)
                 {
                     why = "build " + current.build + " is format " + (manifest != null ? manifest.format : 0)
-                        + "; this game reads format " + MapBuild.Format;
+                        + "; this game reads formats " + MapBuild.OldestFormat + " to " + MapBuild.Format;
                     return null;
                 }
                 why = null;
@@ -98,135 +67,12 @@ namespace CloneZ
 
     /// <summary>One published build of the real-world map: its manifest, its named places and its regions.</summary>
     public sealed class MapBuild
-        {
-            /// <summary>
-            /// Determine if a road segment should get painted lane markings.
-            /// Deterministic based on the build ID and the segment ID.
-            /// Approximately 50 % of road pieces receive markings.
-            /// </summary>
-            public bool HasRoadMarkings(long segmentId)
-            {
-                unchecked
-                {
-                    uint hash = (uint)segmentId ^ 0xA1B2C3D4u;
-                    hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
-                    return (hash % 100) < 50; // 50% chance
-                }
-            }
-
-            private const float RoadMarkingThickness = 0.03f; // 3 cm thick painted strip
-
-            internal float GetRoadMarkingThickness() => RoadMarkingThickness;
-            /// <summary>The street‑lamp material.</summary>
-        internal Material GetStreetLampMaterial()
-        {
-            // Material reference is cached by Unity's Resources system; path must exist.
-            return Resources.Load<Material>(WorldStore.StreetLampMaterialPath);
-        }
-            /// <summary>Determine if a building should get a thin snow layer on its roof.
-            /// Deterministic based on the build ID and the building ID.
-            /// Approximately 30% of roofs receive snow.</summary>
-            public bool RoofHasSnow(long buildingId)
-            {
-                unchecked
-                {
-                    uint hash = (uint)buildingId ^ 0x9e3779b9u;
-                    hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
-                    return (hash % 100) < 30; // 30% chance
-                }
-        }
-        /// <summary>
-        /// Determine if a road segment should get a sidewalk/curb on its side.
-        /// Deterministic based on the build ID and the segment ID.
-        /// Approximately 45 % of road pieces receive a sidewalk.
-        /// </summary>
-        public bool HasSidewalk(long segmentId)
-        {
-            unchecked
-            {
-                uint hash = (uint)segmentId ^ 0x517cc1b7u;
-                hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
-                return (hash % 100) < 45; // 45% chance
-            }
-        }
-
-        /// <summary>
-        /// Determines if a building should receive a modest front porch (low railing and steps).
-        /// Deterministic based on the build ID and the building ID.
-        /// Roughly 40 % of buildings get a porch, giving a hand‑built aesthetic for a 1993 rural Kentucky home.
-        /// </summary>
-        public bool HasPorch(long buildingId)
-        {
-            unchecked
-            {
-                uint hash = (uint)buildingId ^ 0x3c6ef372u;
-                hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
-                return (hash % 100) < 40; // 40% chance
-            }
-        }
-
-        /// <summary>
-        /// Determine if a building should get a low wooden fence around its perimeter.
-        /// Deterministic based on the build ID and the building ID.
-        /// Roughly 25 % of buildings receive a fence, adding a hand‑painted rural feel.
-        /// </summary>
-        public bool HasFence(long buildingId)
-        {
-            unchecked
-            {
-                uint hash = (uint)buildingId ^ 0xA5B357F9u;
-                hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
-                return (hash % 100) < 25; // 25% chance
-            }
-        }
-
-        /// <summary>
-        /// Determine if a building should get a simple mailbox at the front door.
-        /// Deterministic based on the build Id and the building Id.
-        /// Roughly 30 % of residential buildings receive a mailbox, giving a hand‑painted rural feel.
-        /// </summary>
-        public bool HasMailbox(long buildingId)
-        {
-            unchecked
-            {
-                uint hash = (uint)buildingId ^ 0xC0FFEEu;
-                hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
-                return (hash % 100) < 30; // 30% chance
-            }
-        }
-
-
-
-        /// <summary>
-        /// Determine if an upper‑story window should receive a period‑correct metal grate.
-        /// Deterministic based on the build ID and the building ID.
-        /// Approximately 35 % of eligible windows get a grate, adding a hand‑built 1993 Kentucky look.
-        /// </summary>
-        public bool HasWindowGrate(long buildingId)
-        {
-            unchecked
-            {
-                uint hash = (uint)buildingId ^ 0x7f4a7c13u;
-                hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
-                return (hash % 100) < 35; // ~35% chance
-            }
-        }
-        /// <summary>
-        /// Determine if a road segment should receive a street lamp.
-        /// Deterministic based on the build Id and the segment Id.
-        /// Approximately 30 % of eligible segments get a lamp, giving the town a hand‑painted rural feel.
-        /// </summary>
-        public bool HasStreetLamp(long segmentId)
-        {
-            unchecked
-            {
-                uint hash = (uint)segmentId ^ 0xD4E5F6A7u;
-                hash = (hash * 0x85ebca6bu) ^ (hash >> 13);
-                return (hash % 100) < 30; // 30% chance
-            }
-        }
-        /// <summary>The data format this game reads (worldbuild.py's FORMAT).</summary>
-        public const int Format = 1;
+    {
+        /// <summary>The newest data format this game reads (worldbuild.py's FORMAT); it reads every format back to
+        /// <see cref="OldestFormat"/>, as each only adds to the one before (see <see cref="MapRegion"/>).</summary>
+        public const int Format = 2;
+        /// <summary>The oldest data format this game still reads.</summary>
+        public const int OldestFormat = 1;
 
         public readonly string Id;
         /// <summary>The build's folder in the store.</summary>
@@ -234,7 +80,6 @@ namespace CloneZ
         public readonly MapManifest Manifest;
         private readonly HashSet<long> _regions = new HashSet<long>();
         private MapPlace[] _places;
-        private System.Random _rand;
 
         public MapBuild(string id, string folder, MapManifest manifest)
         {
@@ -248,32 +93,31 @@ namespace CloneZ
         /// <summary>The side of a region in metres (8,192).</summary>
         public int RegionSize => Manifest.region > 0 ? Manifest.region : 8192;
 
-        /// <summary>Deterministic random seeded by the build Id, useful for consistent visual tweaks.</summary>
-        public System.Random Random => _rand ??= new System.Random(Id.GetHashCode());
-
-        /// <summary>Deterministic colour for a building (or other feature) identified by <paramref name="seed"/>.
-        /// Uses the build‑id hash combined with the seed to produce a stable hue in a muted range.</summary>
-        public Color GetBuildingColour(int seed)
-        {
-            // combine build id hash with the specific seed so each feature gets its own stream
-            int combined = Id.GetHashCode() ^ seed;
-            var rand = new System.Random(combined);
-            // Generate a hue in [0,1) and muted saturation/value
-            float hue = (float)rand.NextDouble();
-            float sat = 0.4f + (float)rand.NextDouble() * 0.2f; // 0.4‑0.6
-            float val = 0.6f + (float)rand.NextDouble() * 0.2f; // 0.6‑0.8
-            return Color.HSVToRGB(hue, sat, val);
-        }
-
-        /// <summary>Deterministic colour for a building identified by its long ID.
-        /// Delegates to the int‑seed overload.</summary>
-        public Color GetBuildingColour(long buildingId) => GetBuildingColour((int)buildingId);
-
         /// <summary>The credit line the game shows for the map data.</summary>
         public string Attribution => string.IsNullOrEmpty(Manifest.attribution)
             ? "Map data © OpenStreetMap contributors (ODbL)" : Manifest.attribution;
 
         private static long Key(int rx, int rz) => ((long)rx << 32) | (uint)rz;
+
+        /// <summary>True when the build has a region file at (<paramref name="rx"/>, <paramref name="rz"/>).</summary>
+        public bool HasRegion(int rx, int rz) => _regions.Contains(Key(rx, rz));
+
+        /// <summary>The grid rectangle (metres) the build's regions cover; false when it has none.</summary>
+        public bool TryGetExtent(out double x0, out double z0, out double x1, out double z1)
+        {
+            x0 = z0 = x1 = z1 = 0;
+            if (Manifest.regions == null || Manifest.regions.Length == 0) return false;
+            int rx0 = int.MaxValue, rz0 = int.MaxValue, rx1 = int.MinValue, rz1 = int.MinValue;
+            foreach (MapRegionEntry r in Manifest.regions)
+            {
+                rx0 = Math.Min(rx0, r.rx); rz0 = Math.Min(rz0, r.rz);
+                rx1 = Math.Max(rx1, r.rx); rz1 = Math.Max(rz1, r.rz);
+            }
+            int size = RegionSize;
+            x0 = (double)rx0 * size; z0 = (double)rz0 * size;
+            x1 = (double)(rx1 + 1) * size; z1 = (double)(rz1 + 1) * size;
+            return true;
+        }
 
         /// <summary>The most populous place called <paramref name="name"/> (any case), or null.</summary>
         public MapPlace FindPlace(string name)

@@ -54,6 +54,8 @@ namespace CloneZ
         private readonly List<IDamageable> _targets = new List<IDamageable>();
         // Cache for the last equipped item stack used to compute weapon build
         private ItemStack _lastEquippedStack;
+        private float _lastDirt;
+        private bool _buildDirty = true;
 
         /// <summary>The equipped firearm, or null when using melee / bare hands.</summary>
         public ItemDef EquippedFirearm { get; private set; }
@@ -91,6 +93,20 @@ namespace CloneZ
             _stats = GetComponent<PlayerStats>();
         }
 
+        // PlayerInventory is added after this component. Its Changed event covers what alters the build in place:
+        // fitting or stripping attachments, upgrades, wear and repairs.
+        private void Start()
+        {
+            if (Inv != null) Inv.Changed += MarkBuildDirty;
+        }
+
+        private void OnDestroy()
+        {
+            if (_inventory != null) _inventory.Changed -= MarkBuildDirty;
+        }
+
+        private void MarkBuildDirty() => _buildDirty = true;
+
         private void Update()
         {
             float dt = Time.deltaTime;
@@ -118,7 +134,7 @@ namespace CloneZ
 
             if (EquippedFirearm != null)
             {
-                
+                UpdateBuildCache();
                 AimingDownSights = ViewState.MouseLook && rightHeld;
                 if (AimingDownSights && GameInput.Held(GameAction.HoldBreath)) _stats.TryConsumeEndurance(0.12f * Time.deltaTime);
                 Keyboard kb = Keyboard.current;
@@ -352,7 +368,7 @@ namespace CloneZ
         /// <summary>Pulls rounds from the pack into the magazine. Returns true if any were loaded.</summary>
         public bool TryReload()
         {
-            
+            UpdateBuildCache();
             ItemDef gun = EquippedFirearm;
             if (gun == null || Inv == null) return false;
             int mag = Mathf.Max(1, Build.MagSize);
@@ -536,9 +552,14 @@ namespace CloneZ
         {
             // Update cached weapon build based on currently equipped stack.
             ItemStack cur = Inv != null ? Inv.EquippedStack : null;
-            // Rebuilt every time: the build follows the gun's mods, upgrades, wear and fouling, not only which stack is held.
+            float dirt = cur.DirtLevel();
+            // Rebuilt only on a change: the build follows which stack is held, its fouling (shots, cleaning) and,
+            // through the pack's Changed event, its mods, upgrades and wear.
+            if (cur == _lastEquippedStack && dirt == _lastDirt && !_buildDirty) return;
             Build = Ballistics.Build(cur);
             _lastEquippedStack = cur;
+            _lastDirt = dirt;
+            _buildDirty = false;
         }
 
         /// <summary>Aim quality 0..1 from PZ's firearm to-hit model (worse while moving).</summary>

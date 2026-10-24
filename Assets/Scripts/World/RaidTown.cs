@@ -54,6 +54,22 @@ namespace CloneZ
             Far = new OutdoorBatches(Scenery, 60f, info.HalfSize + 60f);
         }
 
+        /// <summary>One piece of a streamed map: its overhead and scenery roots go under
+        /// <paramref name="overheadParent"/> (the map's one overhead root, which carries the
+        /// <see cref="CeilingVisibility"/>), so they unload with the piece.</summary>
+        public RaidTown(Transform world, int seed, RaidMapInfo info, Transform overheadParent)
+        {
+            Rng = new System.Random(seed);
+            World = world;
+            Info = info;
+            Overhead = new GameObject("Overhead").transform;
+            Overhead.SetParent(overheadParent, false);
+            Scenery = new GameObject("Scenery").transform;
+            Scenery.SetParent(overheadParent, false);
+            Out = new OutdoorBatches(world, 35f, info.HalfSize + 2f);
+            Far = new OutdoorBatches(Scenery, 60f, info.HalfSize + 60f);
+        }
+
         /// <summary>Records a warning message to be reported later.</summary>
     public void Warn(string message) => _warnings.Add(message);
         /// <summary>Read‑only list of warning messages recorded during town build.</summary>
@@ -62,34 +78,133 @@ namespace CloneZ
         /// <summary>A room / desk / street light (counted).</summary>
         public void Light(Transform parent, Vector3 pos, Color color, float range, float intensity, bool flicker, bool shadows)
         {
+            long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
             RoomLight.Spawn(parent, pos, color, range, intensity, flicker, shadows);
             LightCount++;
+            Lights++;
+            LightTicks += System.Diagnostics.Stopwatch.GetTimestamp() - t0;
         }
+
+        /// <summary>Running totals over every town built in the process (the map harness reads them around a build):
+        /// colliders made, the objects made to hold them, lights, and the time spent making each.</summary>
+        internal static long Colliders, ColliderObjects, ColliderTicks, Lights, LightTicks;
+
+        /// <summary>
+        /// Keep the prop colliders as plain boxes until <see cref="MakeColliders"/> (or <see cref="EmitOutdoor"/>) makes
+        /// them, so a streamed piece makes them in a step of their own (the Kentucky map). Off for the procedural town,
+        /// whose colliders are made as they're asked for.
+        /// </summary>
+        internal bool DeferColliders;
+
+        private readonly List<ColliderBox> _boxes = new List<ColliderBox>();
+        private int _boxesMade;
+
+        /// <summary>A prop collider kept for later: a box turned <see cref="Yaw"/> degrees about Y.</summary>
+        internal struct ColliderBox
+        {
+            public Vector3 Center, Size;
+            public float Yaw;
+        }
+
+        /// <summary>The prop colliders kept for later and not yet made.</summary>
+        internal int PendingColliders => _boxes.Count - _boxesMade;
 
         /// <summary>A solid outdoor collider (cars, trees, dumpsters, barricades) under <c>world</c>.</summary>
         public void PropCollider(Vector3 center, Vector3 size, float yaw)
+        {
+            ColliderCount++;
+            Colliders++;
+            if (DeferColliders)
+            {
+                _boxes.Add(new ColliderBox { Center = center, Size = size, Yaw = yaw });
+                return;
+            }
+            long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+            MakeCollider(center, size, yaw, false);
+            ColliderTicks += System.Diagnostics.Stopwatch.GetTimestamp() - t0;
+        }
+
+        /// <summary>Makes the prop colliders kept so far (see <see cref="DeferColliders"/>) until about
+        /// <paramref name="ms"/> milliseconds have gone (0: all of them). True once none are left.</summary>
+        internal bool MakeColliders(double ms = 0)
+        {
+            long t0 = System.Diagnostics.Stopwatch.GetTimestamp();
+            long until = ms > 0 ? t0 + (long)(ms * System.Diagnostics.Stopwatch.Frequency / 1000.0) : long.MaxValue;
+            while (_boxesMade < _boxes.Count)
+            {
+                ColliderBox b = _boxes[_boxesMade++];
+                MakeCollider(b.Center, b.Size, b.Yaw, true);
+                if ((_boxesMade & 7) == 0 && System.Diagnostics.Stopwatch.GetTimestamp() >= until) break;
+            }
+            if (_boxesMade == _boxes.Count)
+            {
+                _boxes.Clear();
+                _boxesMade = 0;
+            }
+            ColliderTicks += System.Diagnostics.Stopwatch.GetTimestamp() - t0;
+            return _boxes.Count == 0;
+        }
+
+        // Boxes square to the grid go on the shared PropColliders object; the others each on an object of their own, or
+        // (<paramref name="grouped"/>, the Kentucky map) on an object turned their way shared by every box turned the same
+        // (a row of parked cars, a fence's posts). A holder takes at most this many (adding components to one object gets
+        // dearer the more it has).
+        private const int BoxesPerHolder = 32;
+        private GameObject _squareHolder;
+        private int _squareCount;
+        private readonly Dictionary<float, GameObject> _turnedHolders = new Dictionary<float, GameObject>();
+        private readonly Dictionary<GameObject, int> _holderCounts = new Dictionary<GameObject, int>();
+
+        private void MakeCollider(Vector3 center, Vector3 size, float yaw, bool grouped)
         {
             if (_propColliders == null)
             {
                 _propColliders = new GameObject("PropColliders");
                 _propColliders.transform.SetParent(World, false);
+                _squareHolder = _propColliders;
+                ColliderObjects++;
             }
             float k = Mathf.Repeat(yaw, 90f);
             if (k < 1f || k > 89f)
             {
+                if (grouped && _squareCount == BoxesPerHolder)
+                {
+                    _squareHolder = new GameObject("PropColliders");
+                    _squareHolder.transform.SetParent(_propColliders.transform, false);
+                    _squareCount = 0;
+                    ColliderObjects++;
+                }
                 bool swap = Mathf.Abs(Mathf.Repeat(yaw, 180f) - 90f) < 45f;
-                var bc = _propColliders.AddComponent<BoxCollider>();
+                var bc = (grouped ? _squareHolder : _propColliders).AddComponent<BoxCollider>();
                 bc.center = center;
                 bc.size = swap ? new Vector3(size.z, size.y, size.x) : size;
+                _squareCount++;
+                return;
             }
-            else
+            if (!grouped)
             {
                 var go = new GameObject("PropCollider");
                 go.transform.SetParent(_propColliders.transform, false);
                 go.transform.SetPositionAndRotation(center, Quaternion.Euler(0f, yaw, 0f));
                 go.AddComponent<BoxCollider>().size = size;
+                ColliderObjects++;
+                return;
             }
-            ColliderCount++;
+            float turn = Mathf.Repeat(yaw, 360f);
+            if (!_turnedHolders.TryGetValue(turn, out GameObject holder) || _holderCounts[holder] == BoxesPerHolder)
+            {
+                // The holder stands on its first box, so that one is exactly where it was asked for.
+                holder = new GameObject("PropCollider");
+                holder.transform.SetParent(_propColliders.transform, false);
+                holder.transform.SetPositionAndRotation(center, Quaternion.Euler(0f, yaw, 0f));
+                _turnedHolders[turn] = holder;
+                _holderCounts[holder] = 0;
+                ColliderObjects++;
+            }
+            var box = holder.AddComponent<BoxCollider>();
+            if (_holderCounts[holder] > 0) box.center = holder.transform.InverseTransformPoint(center);
+            box.size = size;
+            _holderCounts[holder]++;
         }
 
         /// <summary>A thin overhead collider (ceiling, canopy, tent roof) under the overhead root, so the
@@ -122,11 +237,34 @@ namespace CloneZ
             return false;
         }
 
-        /// <summary>Emits every outdoor chunk mesh (call once everything is drawn).</summary>
+        /// <summary>Emits every outdoor chunk mesh (call once everything is drawn), bakes what was queued on
+        /// <see cref="Bake"/>, and makes the prop colliders still kept (see <see cref="DeferColliders"/>).</summary>
         public void EmitOutdoor()
         {
+            MakeColliders();
             Out.Emit("Outdoor");
             Far.Emit("Scenery");
+            if (_bake != null && _bake.Count > 0)
+            {
+                _bake.Allocate();
+                _bake.Pack();
+                _bake.Apply();
+                _bake = null;
+            }
+        }
+
+        private MeshBake _bake;
+
+        /// <summary>Meshes waiting to be baked all at once (see <see cref="RaidMesh.EmitLater"/>): a streamed piece packs
+        /// them off the main thread; otherwise <see cref="EmitOutdoor"/> bakes them.</summary>
+        internal MeshBake Bake => _bake ??= new MeshBake { ReleaseSources = true };
+
+        /// <summary>Takes the meshes waiting to be baked (null when none), leaving a fresh queue.</summary>
+        internal MeshBake TakeBake()
+        {
+            MeshBake b = _bake;
+            _bake = null;
+            return b != null && b.Count > 0 ? b : null;
         }
 
         /// <summary>Everything instantiated by the build (for the report).</summary>
@@ -192,6 +330,21 @@ namespace CloneZ
                 Vector3 c = new Vector3(-_half + (i % _n + 0.5f) * _chunk, 0f, -_half + (i / _n + 0.5f) * _chunk);
                 if (_solid[i] != null) _solid[i].Emit(name + "Props", _parent, c, ShadowCastingMode.On);
                 if (_flat[i] != null) _flat[i].Emit(name + "Ground", _parent, c, ShadowCastingMode.Off);
+            }
+        }
+
+        /// <summary>As <see cref="Emit"/>, but the meshes are left empty for <paramref name="bake"/> to fill (all of a
+        /// piece's at once, off the main thread), and the batches are forgotten (their buffers go back to the pool once
+        /// baked).</summary>
+        internal void EmitLater(string name, MeshBake bake)
+        {
+            for (int i = 0; i < _solid.Length; i++)
+            {
+                Vector3 c = new Vector3(-_half + (i % _n + 0.5f) * _chunk, 0f, -_half + (i / _n + 0.5f) * _chunk);
+                if (_solid[i] != null) _solid[i].EmitLater(name + "Props", _parent, c, ShadowCastingMode.On, bake);
+                if (_flat[i] != null) _flat[i].EmitLater(name + "Ground", _parent, c, ShadowCastingMode.Off, bake);
+                _solid[i] = null;
+                _flat[i] = null;
             }
         }
     }

@@ -108,7 +108,7 @@ This maps every row of *Survival Shooter Mechanics Breakdown* (Oct 2026) to wher
 | Vehicles (keys or hotwiring, part condition, fuel, Mechanics) | [Vehicles.cs](Assets/Scripts/World/Vehicles.cs) (engine, tyres and battery wear) |
 | Sandbox settings | [SandboxSettings.cs](Assets/Scripts/Core/SandboxSettings.cs), `SandboxScreen` |
 | Build 42 additions (workstations, animals, darker nights) | [Hideout.cs](Assets/Scripts/Economy/Hideout.cs) (animal pen), [VisionController.cs](Assets/Scripts/Rendering/VisionController.cs), `NightDarkness` |
-| A real place for a map: Kentucky's streets and buildings in 256 m cells, buildings with typed rooms and loot by use (the structure only; the data is OpenStreetMap's, see [Tools/World](Tools/World/README.md)) | [KentuckyMap.cs](Assets/Scripts/World/Map/KentuckyMap.cs), [WorldStore.cs](Assets/Scripts/World/Map/WorldStore.cs), the Bardstown zone in [ZoneCatalog.cs](Assets/Scripts/Zone/ZoneCatalog.cs) |
+| A real place for a map: all of Kentucky, its streets and buildings in 256 m cells, streamed around the survivor in 128 m pieces, buildings with typed rooms and loot by use (the structure only; the data is OpenStreetMap's, see [Tools/World](Tools/World/README.md)) | [KentuckyMap.cs](Assets/Scripts/World/Map/KentuckyMap.cs), [KentuckyStreamer.cs](Assets/Scripts/World/Map/KentuckyStreamer.cs), [MapRegionIndex.cs](Assets/Scripts/World/Map/MapRegionIndex.cs), [WorldStore.cs](Assets/Scripts/World/Map/WorldStore.cs), the Kentucky zone in [ZoneCatalog.cs](Assets/Scripts/Zone/ZoneCatalog.cs) |
 
 ## 6. Beautiful Light
 
@@ -202,7 +202,10 @@ Each of these can be switched off from the sandbox rules where the doc suggests 
   * a camp gate blown by a breaching charge;
   * cuffs and rope;
   * the Central Economy;
-  * a quest.
+  * a quest;
+  * on the statewide Kentucky zone (`-clonez-smoke-zone bardstown`), a trip 1.5 km out, 10 km across a region border and
+    back: the pieces under the survivor get built and baked into the NavMesh, the dead come back around them, the stretch
+    left behind is let go of, and a container emptied there is still empty when it's built again.
 * **Hunter:** plays a raid as a monster.
 * **Host and client:** play a networked raid together on port 7791.
 

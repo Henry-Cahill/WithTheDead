@@ -1,15 +1,15 @@
-{"version": 1, "id": "JS3T_Shotgun", "baseHeight": 0.1387, "name": "JS3 T Shotgun", "model": "gpt-oss:120b", "notes": "JS3 T shotgun ~1.0 m long, lying on its side (barrel +X). Main blocks: steel barrel & receiver, wooden stock, polymer grip, tubular magazine, trigger‑guard ring, front/rear sights and a bolt handle. All parts rest on the floor (y=0) with the barrel’s centre at y≈0.02 m.", "score": 6, "parts": [
-  {"name":"Barrel","shape":"cylinder","pos":[0.2275,-0.0562,-0.0025],"rot":[0.0,0.0,90.0],"size":[0.04,0.6,0.04],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
-  {"name":"Receiver","shape":"cube","pos":[-0.1225,0.0038,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.25,0.12,0.06],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"Stock","shape":"cube","pos":[-0.4225,0.0137,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.3,0.13,0.07],"color":[0.15,0.12,0.09],"smooth":0.2,"metal":0.0},
-  {"name":"Grip","shape":"cube","pos":[-0.4225,-0.0362,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.08,0.04,0.06],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":0.0},
-  {"name":"Magazine","shape":"cube","pos":[-0.2225,-0.0462,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.18,0.04,0.06],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"TriggerGuard","shape":"cylinder","pos":[-0.1225,-0.0062,-0.0025],"rot":[90.0,0.0,0.0],"size":[0.05,0.02,0.05],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
-  {"name":"BoltHandle","shape":"cylinder","pos":[-0.0025,0.0038,-0.0025],"rot":[0.0,0.0,90.0],"size":[0.02,0.07,0.02],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
-  {"name":"SafetyLever","shape":"cube","pos":[-0.1725,0.0437,0.0275],"rot":[0.0,0.0,0.0],"size":[0.03,0.01,0.02],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"FrontSight","shape":"cube","pos":[0.5775,-0.0312,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.03,0.015,0.015],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
-  {"name":"RearSight","shape":"cube","pos":[-0.5725,0.0638,-0.0025],"rot":[0.0,0.0,0.0],"size":[0.04,0.02,0.01],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
-  {"name":"BarrelRim","shape":"cylinder","pos":[0.5275,-0.0562,-0.0025],"rot":[0.0,0.0,90.0],"size":[0.045,0.02,0.045],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
-  {"name":"ReceiverRing","shape":"cylinder","pos":[-0.1225,0.0038,-0.0025],"rot":[0.0,0.0,90.0],"size":[0.07,0.02,0.07],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
-  {"name":"StockEndCap","shape":"cylinder","pos":[-0.5725,0.0137,-0.0025],"rot":[0.0,0.0,90.0],"size":[0.07,0.02,0.07],"color":[0.15,0.12,0.09],"smooth":0.2,"metal":0.0}
+{"version": 1, "id": "JS3T_Shotgun", "baseHeight": 0.0975, "name": "JS3 T Shotgun", "model": "gpt-oss:120b", "notes": "JS3 T shotgun ~1.0 m long, lying on its side (barrel +X). Main blocks: steel barrel & receiver, wooden stock, polymer grip, tubular magazine, trigger‑guard ring, front/rear sights and a bolt handle. All parts rest on the floor (y=0) with the barrel’s centre at y≈0.02 m.", "score": 6, "parts": [
+  {"name":"Barrel","shape":"cylinder","pos":[0.2275,0.0025,-0.0562],"rot":[90.0,-90.0,0.0],"size":[0.04,0.6,0.04],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"Receiver","shape":"cube","pos":[-0.1225,0.0025,0.0038],"rot":[90.0,0.0,0.0],"size":[0.25,0.12,0.06],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"Stock","shape":"cube","pos":[-0.4225,0.0025,0.0137],"rot":[90.0,0.0,0.0],"size":[0.3,0.13,0.07],"color":[0.15,0.12,0.09],"smooth":0.2,"metal":0.0},
+  {"name":"Grip","shape":"cube","pos":[-0.4225,0.0025,-0.0362],"rot":[90.0,0.0,0.0],"size":[0.08,0.04,0.06],"color":[0.3,0.3,0.35],"smooth":0.4,"metal":0.0},
+  {"name":"Magazine","shape":"cube","pos":[-0.2225,0.0025,-0.0462],"rot":[90.0,0.0,0.0],"size":[0.18,0.04,0.06],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"TriggerGuard","shape":"cylinder","pos":[-0.1225,0.0025,-0.0062],"rot":[0.0,-180.0,-180.0],"size":[0.05,0.02,0.05],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"BoltHandle","shape":"cylinder","pos":[-0.0025,0.0025,0.0038],"rot":[90.0,-90.0,0.0],"size":[0.02,0.07,0.02],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"SafetyLever","shape":"cube","pos":[-0.1725,-0.0275,0.0437],"rot":[90.0,0.0,0.0],"size":[0.03,0.01,0.02],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"FrontSight","shape":"cube","pos":[0.5775,0.0025,-0.0312],"rot":[90.0,0.0,0.0],"size":[0.03,0.015,0.015],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"RearSight","shape":"cube","pos":[-0.5725,0.0025,0.0638],"rot":[90.0,0.0,0.0],"size":[0.04,0.02,0.01],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"BarrelRim","shape":"cylinder","pos":[0.5275,0.0025,-0.0562],"rot":[90.0,-90.0,0.0],"size":[0.045,0.02,0.045],"color":[0.24,0.25,0.28],"smooth":0.6,"metal":1.0},
+  {"name":"ReceiverRing","shape":"cylinder","pos":[-0.1225,0.0025,0.0038],"rot":[90.0,-90.0,0.0],"size":[0.07,0.02,0.07],"color":[0.24,0.25,0.28],"smooth":0.55,"metal":1.0},
+  {"name":"StockEndCap","shape":"cylinder","pos":[-0.5725,0.0025,0.0137],"rot":[90.0,-90.0,0.0],"size":[0.07,0.02,0.07],"color":[0.15,0.12,0.09],"smooth":0.2,"metal":0.0}
 ]}
