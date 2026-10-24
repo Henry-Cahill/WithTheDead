@@ -146,6 +146,7 @@ namespace CloneZ
 
             public Job(Site site) { Site = site; }
 
+            /// <summary>Initializes the job with building data and configuration.</summary>
             public void Begin(Footprint f, Shape sh, Plan p, bool lite, bool scenery, bool edge, bool solid)
             {
                 F = f;
@@ -215,13 +216,19 @@ namespace CloneZ
                 GlassS = DecorPalette.Gloss(new Color(0.11f, 0.13f, 0.16f));
             }
 
+            /// <summary>Gets the mesh that faces outward from the given wall edge.</summary>
             public RaidMesh Facing(int edge) => Shell.WallsFacing(Out[edge]);
+            /// <summary>Gets the upper (roof) mesh for the building.</summary>
             public RaidMesh Upper => Shell.Upper;
+            /// <summary>Unique identifier for this building.</summary>
             public long Id => F.Data.id;
+            /// <summary>Calculates the yaw (rotation) of the wall edge in degrees.</summary>
             public float Yaw(int edge) => -Mathf.Atan2(Dir[edge].y, Dir[edge].x) * Mathf.Rad2Deg;
+            /// <summary>Computes a point along the wall edge at a given distance.</summary>
             public Vector2 At(int edge, float s) => A[edge] + Dir[edge] * s;
             /// <summary>Height of storey <paramref name="k"/>'s floor.</summary>
             public float FloorY(int k) => k <= 0 ? 0f : P.FirstStorey + (k - 1) * P.Storey;
+            /// <summary>Indicates whether a wall edge has a party (special) feature.</summary>
             public bool Party(int edge) => P.Party != null && edge < P.Party.Length && P.Party[edge];
 
             /// <summary>The footprint in triangles (index triples into <see cref="TriPts"/>), worked out once.</summary>
