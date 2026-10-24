@@ -63,8 +63,10 @@ namespace CloneZ
             }
             else
             {
-                // A deck girder bridge: the track on a steel deck between two plate girders.
-                for (int i = 0; i + 1 < n; i++) s_Keep[i] = s_KerbOk[i];
+                // A deck girder bridge: the track on a steel deck between two plate girders, open over whatever passes
+                // beneath (at grade, the map being flat).
+                Underpasses(net, line, null, l, s_Under);
+                for (int i = 0; i + 1 < n; i++) s_Keep[i] = s_KerbOk[i] && !Under(s_Under, (s[i].S + s[i + 1].S) * 0.5f);
                 for (int i = 0; i < n; i++)
                 {
                     s_A[i] = -1.75f;
@@ -74,21 +76,35 @@ namespace CloneZ
                 SamplesOf(line, 0f, line.Length, 0f, net.Samples2);
                 List<Sample> c = net.Samples2;
                 for (int i = 0; i + 1 < c.Count; i++)
-                    for (int side = -1; side <= 1; side += 2)
-                    {
-                        Vector2 a = c[i].P + c[i].N * (side * 1.95f), b = c[i + 1].P + c[i + 1].N * (side * 1.95f);
-                        Vector3 mid = To3((a + b) * 0.5f, 0.5f);
-                        Beam(net.Out.Solid(mid), a, b, 0f, 1.0f, 0.22f, look.Girder);
-                        Beam(net.Out.Solid(mid), a, b, 1.0f, 0.04f, 0.3f, look.ParapetCap);
-                        Vector2 d = b - a;
-                        if (d.sqrMagnitude > 0.01f)
-                            net.Site.Town.PropCollider(mid, new Vector3(d.magnitude, 1.0f, 0.22f), -Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg);
-                    }
+                {
+                    Outside(c[i].S, c[i + 1].S, s_Under, s_Pieces);
+                    foreach (Vector2 piece in s_Pieces)
+                        for (int side = -1; side <= 1; side += 2)
+                        {
+                            Vector2 a = GirderPoint(line, side, piece.x, c[i], c[i + 1]), b = GirderPoint(line, side, piece.y, c[i], c[i + 1]);
+                            Vector3 mid = To3((a + b) * 0.5f, 0.5f);
+                            Beam(net.Out.Solid(mid), a, b, 0f, 1.0f, 0.22f, look.Girder);
+                            Beam(net.Out.Solid(mid), a, b, 1.0f, 0.04f, 0.3f, look.ParapetCap);
+                            Vector2 d = b - a;
+                            if (d.sqrMagnitude > 0.01f)
+                                net.Site.Town.PropCollider(mid, new Vector3(d.magnitude, 1.0f, 0.22f), -Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg);
+                        }
+                }
             }
             if (!abandoned && net.Full) Ties(net, line, seed, disused);
             if (!abandoned) Rails(net, line, disused);
             if (net.Full && !abandoned) LevelCrossings(net, line, s);
             net.Site.TakeLine(pts, 2.2f);
+        }
+
+        // A girder's line at arc length sv between two samples: mitred at the samples themselves.
+        private static Vector2 GirderPoint(Chain line, int side, float sv, in Sample s0, in Sample s1)
+        {
+            float o = side * 1.95f;
+            if (Mathf.Abs(sv - s0.S) < 1e-3f) return s0.P + s0.N * o;
+            if (Mathf.Abs(sv - s1.S) < 1e-3f) return s1.P + s1.N * o;
+            PointOn(line, sv, out Vector2 p, out Vector2 d);
+            return p + Left(d) * o;
         }
 
         // Ties every 0.6 m on the open stretches, about one in three under snow (most, on a disused line).

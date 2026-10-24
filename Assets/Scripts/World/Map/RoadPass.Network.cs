@@ -201,6 +201,7 @@ namespace CloneZ
             public readonly List<Run> Runs = new List<Run>();
             public readonly List<Chain> Chains = new List<Chain>();
             public readonly List<Driveway> Driveways = new List<Driveway>();
+            public readonly List<KerbStall> Stalls = new List<KerbStall>();
             public readonly List<Footprint> Prints = new List<Footprint>();
             public CellGrid PrintGrid, PaveGrid, WalkGrid, EdgeGrid;
             public readonly List<(Chain c, int k)> PaveItems = new List<(Chain, int)>();
@@ -621,10 +622,9 @@ namespace CloneZ
         }
 
         // Kerbs, sidewalks, berms, edge lines, the winter state and the markings of a carriageway. A footway mapped
-        // along a side is its sidewalk when it runs at the kerb, or past a parking lane (parallel, or angled where the
-        // street is lined with buildings), or past a grass verge on a lesser street; one farther off is a path of its
-        // own, and the side keeps a plain kerb. Without one, the side takes the sidewalk tag, else what the town around it
-        // suggests.
+        // along a side is its sidewalk: at the kerb, or past a parking lane (parallel, or angled where the street is
+        // lined with shops), or past a snowy verge however wide. Without one, the side takes the sidewalk tag, else what
+        // the town around it suggests.
         private static void DecideSides(Net net, Way w)
         {
             if (!w.Carriage) return;
@@ -670,14 +670,14 @@ namespace CloneZ
                         d.WalkIn = d.Edge + KerbWidth;
                         d.WalkOut = Mathf.Max(d.WalkIn + 1.5f, far);
                     }
-                    else if (gap <= 5f)
+                    else
                     {
-                        // A snowy verge between the kerb and the sidewalk.
+                        // A snowy verge between the kerb and the sidewalk, however wide: a threshold here would flip
+                        // between two chunks that see the footway a little nearer or farther (each measures its own piece).
                         d.Mapped = true;
                         d.WalkIn = Mathf.Max(d.Edge + KerbWidth + 0.4f, dist - FootwayWidth * 0.5f - 0.25f);
                         d.WalkOut = Mathf.Max(d.WalkIn + 1.2f, far);
                     }
-                    else d.Kerb = w.Town;
                 }
                 else if (tagged || (tag != "no" && townClass && w.Town))
                 {

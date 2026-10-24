@@ -132,6 +132,7 @@ namespace CloneZ
                 if (net.Full)
                 {
                     Wear(net, c);
+                    if (net.Site.StepDue) yield return "streets";
                     WinterDetail(net, c);
                 }
                 TakeChain(net, c);
@@ -229,20 +230,21 @@ namespace CloneZ
                             float half = 0.18f + 0.3f * Noise(s[i].P, 3f, seed + 7);
                             s_A[i] = centre - half;
                             s_B[i] = centre + half;
-                            s_Keep[i] = Noise(s[i].P, 7f, seed + 9) > 0.45f;
+                            s_Keep[i] = Noise(s[i].P, 7f, seed + 9) > 0.45f && !Crossing(c, s[i].S);
                         }
                         Band(net, s, s_A, s_B, BuryY, BuryY, look.Slush, c.Lift, s_Keep);
                     }
+                    // Between the wheel paths: broken, lumpy, and churned away where the traffic crosses a junction.
                     for (int k = 0; k < s_Lanes.Count; k++)
                     {
                         for (int i = 0; i < n; i++)
                         {
                             float lc = LaneAt(c, s[i].S, s_Lanes[k]);
-                            float half = 0.16f + 0.22f * Noise(s[i].P, 3f, seed + 20 + k);
+                            float half = 0.1f + 0.26f * Noise(s[i].P, 2.25f, seed + 20 + k);
                             float shift = 0.15f * (Noise(s[i].P, 6f, seed + 40 + k) - 0.5f);
                             s_A[i] = lc + shift - half;
                             s_B[i] = lc + shift + half;
-                            s_Keep[i] = Noise(s[i].P, 4.5f, seed + 60 + k) > 0.38f;
+                            s_Keep[i] = Noise(s[i].P, 3.5f, seed + 60 + k) > 0.48f && !Crossing(c, s[i].S);
                         }
                         Band(net, s, s_A, s_B, DetailY, DetailY, look.SlushLight, c.Lift, s_Keep);
                     }
@@ -284,6 +286,9 @@ namespace CloneZ
             ProfAt(c, side, s, out Prof p);
             return p.Lane;
         }
+
+        /// <summary>True where a chain runs through a junction: a side road's mouth opens on either side of it there.</summary>
+        private static bool Crossing(Chain c, float s) => c.Mouths.Count > 0 && (InMouth(c, 1, s) || InMouth(c, -1, s));
 
         /// <summary>The left offset of a point a fraction <paramref name="f"/> across the travel lanes.</summary>
         private static float LaneAt(Chain c, float s, float f)
