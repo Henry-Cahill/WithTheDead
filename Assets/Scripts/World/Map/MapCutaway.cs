@@ -97,6 +97,10 @@ namespace CloneZ
         /// <summary>Buildings with anything cut away right now.</summary>
         internal static int CutBuildings => s_Active.Count;
 
+        /// <summary>Running totals since play began (the harness; the driver's line at the end of a session): sites
+        /// registered and let go of, the most buildings registered at once, scans run, and buildings cut from whole.</summary>
+        internal static int SitesRegistered, SitesLetGo, MostRegistered, Scans, Cuts;
+
         /// <summary>The buildings cut away right now (read only; for the harness and debugging).</summary>
         internal static IReadOnlyList<Building> Cut => s_Active;
 
@@ -116,6 +120,8 @@ namespace CloneZ
             AbortOverlayJob();
             ForgetInteractables();
             OverlayBytes = HeightBytes = 0;
+            SitesRegistered = SitesLetGo = MostRegistered = Scans = Cuts = 0;
+            OverlaysMade = OverlaysEvicted = Holds = LongestHold = DoorsHidden = 0;
             s_Count = 0;
             s_MaxTop = 0f;
             s_Driver = null;
@@ -129,6 +135,7 @@ namespace CloneZ
         {
             if (site == null || site.Buildings == null || IndexOf(site) >= 0) return;
             s_Sites.Add(site);
+            SitesRegistered++;
             Vector3 offset = site.transform.position;
             List<Building> list = site.Buildings;
             site.MaxTop = offset.y;
@@ -149,6 +156,7 @@ namespace CloneZ
                 s_Count++;
             }
             s_MaxTop = Mathf.Max(s_MaxTop, site.MaxTop);
+            MostRegistered = Mathf.Max(MostRegistered, s_Count);
             if (Application.isPlaying && s_Driver == null) s_Driver = new GameObject("MapCutaway").AddComponent<MapCutawayDriver>();
         }
 
@@ -159,6 +167,7 @@ namespace CloneZ
             int at = IndexOf(site);
             if (at < 0) return;
             s_Sites.RemoveAt(at);
+            SitesLetGo++;
             Forget(site);
             MaxTopAgain();
         }
@@ -186,7 +195,7 @@ namespace CloneZ
             for (int i = 0; i < list.Count; i++)
             {
                 Building b = list[i];
-                if (b.Site != site) continue;
+                if (!ReferenceEquals(b.Site, site)) continue;
                 if (b.Applied != 0) Apply(b, 0);
                 Unqueue(b);
                 ReleaseOverlay(b);
@@ -267,6 +276,18 @@ namespace CloneZ
             Work(WorkBudgetMs);
         }
 
+        /// <summary>One line at the end of a session (the driver going with its scene): what the cutaway did.</summary>
+        internal static void LogSession()
+        {
+            if (!Debug.isDebugBuild || SitesRegistered == 0) return;
+            Debug.Log(string.Format(System.Globalization.CultureInfo.InvariantCulture,
+                "[CloneZ] Cutaway this session: sites registered {0} times and let go of {1} times ({2} on now, {3} buildings; "
+                + "{4} at most), {5} scans, {6} buildings cut, {7} cut-wall stand-ins made ({8} evicted), {9} cuts held for one "
+                + "(longest {10} frames), {11} door renderers hidden; roofs' heights and stand-ins kept: {12:0.0} MB.",
+                SitesRegistered, SitesLetGo, s_Sites.Count, s_Count, MostRegistered, Scans, Cuts, OverlaysMade, OverlaysEvicted,
+                Holds, LongestHold, DoorsHidden, (HeightBytes + OverlayBytes) / 1048576.0));
+        }
+
         /// <summary>
         /// The cutaway for a survivor whose feet are at <paramref name="feet"/>, seen by the isometric camera at
         /// <paramref name="yaw"/> (compass heading it looks along) and <paramref name="pitch"/> (degrees down), whose
@@ -284,6 +305,7 @@ namespace CloneZ
             else if (turned) ResetAll(WallBits);   // the walls turned to the camera are others now: no lingering
             if (!immediate && !turned && !jumped && now < s_NextScan) return;
             s_NextScan = now + ScanInterval;
+            Scans++;
             s_Iso = true;
             s_Yaw = yaw;
             s_Feet = feet;
@@ -431,6 +453,7 @@ namespace CloneZ
         {
             int was = b.Applied;
             b.Applied = mask;
+            if (was == 0 && mask != 0) Cuts++;
             if (((was ^ mask) & UpperBit) != 0 && b.Upper != null)
                 b.Upper.shadowCastingMode = (mask & UpperBit) != 0 ? ShadowCastingMode.ShadowsOnly : ShadowCastingMode.On;
             if (((was ^ mask) & WallBits) != 0 && b.Walls != null) Doors(b, mask & WallBits);
